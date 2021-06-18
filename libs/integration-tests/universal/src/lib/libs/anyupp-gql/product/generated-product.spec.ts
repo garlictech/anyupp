@@ -1,6 +1,6 @@
 import {
-  createGeneratedProducts,
-  deleteGeneratedProductsForAUnit,
+  createGeneratedProductsInDb,
+  deleteGeneratedProductsForAUnitFromDb,
   listGeneratedProductsForUnits,
 } from '@bgap/anyupp-gql/backend';
 import { getSortedIds } from '@bgap/shared/utils';
@@ -51,9 +51,9 @@ describe('GenerateProduct tests', () => {
   };
 
   it('should NOT the deleteGeneratedProductsForAUnit complete the stream without any item to delete', done => {
-    deleteGeneratedProductsForAUnit(
+    deleteGeneratedProductsForAUnitFromDb(deps)(
       'WONT_BE_THERE_ANY_GENERATED_PROD_WITH_THIS_UNITID_FOR_SURE',
-    )(deps).subscribe({
+    ).subscribe({
       next() {
         // SHOULD NOT TIMEOUT so this next callback should be triggered
         done();
@@ -71,8 +71,8 @@ describe('GenerateProduct tests', () => {
             deps.crudSdk,
           ),
         ),
-        switchMap(() => deleteGeneratedProductsForAUnit(unitId_01)(deps)),
-        switchMap(() => deleteGeneratedProductsForAUnit(unitId_03)(deps)),
+        switchMap(() => deleteGeneratedProductsForAUnitFromDb(deps)(unitId_01)),
+        switchMap(() => deleteGeneratedProductsForAUnitFromDb(deps)(unitId_03)),
       );
 
     beforeAll(async () => {
@@ -103,13 +103,13 @@ describe('GenerateProduct tests', () => {
         .pipe(
           // CREATE
           switchMap(() =>
-            createGeneratedProducts([
+            createGeneratedProductsInDb([
               unit03_generatedProduct_01,
               unit03_generatedProduct_02,
             ]),
           ),
           delay(DYNAMODB_OPERATION_DELAY),
-          switchMap(() => listGeneratedProductsForUnits([unitId_03])(deps)),
+          switchMap(() => listGeneratedProductsForUnits(deps)([unitId_03])),
           tap({
             next(result) {
               expect(getSortedIds(result)).toEqual([
@@ -121,13 +121,13 @@ describe('GenerateProduct tests', () => {
           delay(DYNAMODB_OPERATION_DELAY),
           // DELETE
           switchMap(() =>
-            deleteGeneratedProductsForAUnit(unit03_generatedProduct_01.unitId)(
-              deps,
+            deleteGeneratedProductsForAUnitFromDb(deps)(
+              unit03_generatedProduct_01.unitId,
             ),
           ),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
-            listGeneratedProductsForUnits([unitId_02, unitId_03])(deps),
+            listGeneratedProductsForUnits(deps)([unitId_02, unitId_03]),
           ),
           tap({
             next(result) {
@@ -162,7 +162,7 @@ describe('GenerateProduct tests', () => {
       of(fullProducts)
         .pipe(
           // CREATE
-          switchMap(createGeneratedProducts),
+          switchMap(createGeneratedProductsInDb),
           // Count the emission number
           scan((acc: number) => acc + 1, 0),
           tap({
@@ -173,7 +173,7 @@ describe('GenerateProduct tests', () => {
             },
           }),
           delay(DYNAMODB_OPERATION_DELAY),
-          switchMap(() => listGeneratedProductsForUnits([unitId_01])(deps)),
+          switchMap(() => listGeneratedProductsForUnits(deps)([unitId_01])),
           tap({
             next(result) {
               expect(getSortedIds(result)).toEqual(productIds);
@@ -182,10 +182,12 @@ describe('GenerateProduct tests', () => {
           }),
           delay(DYNAMODB_OPERATION_DELAY),
           // DELETE
-          switchMap(() => deleteGeneratedProductsForAUnit(unitId_01)(deps)),
+          switchMap(() =>
+            deleteGeneratedProductsForAUnitFromDb(deps)(unitId_01),
+          ),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
-            listGeneratedProductsForUnits([unitId_01, unitId_02])(deps),
+            listGeneratedProductsForUnits(deps)([unitId_01, unitId_02]),
           ),
           tap({
             // should delete all the generatedProducts for the unit01

@@ -25,13 +25,19 @@ export interface ProductsPartialState {
   readonly [PRODUCTS_FEATURE_KEY]: ProductsState;
 }
 
+export interface ExtendedGroupProduct
+  extends CrudApi.ChainProduct,
+    CrudApi.GroupProduct {}
+export interface ExtendedUnitProduct
+  extends ExtendedGroupProduct,
+    CrudApi.UnitProduct {}
+
 //
 // CHAIN
 //
 
-export const chainProductsAdapter: EntityAdapter<CrudApi.ChainProduct> = createEntityAdapter<
-  CrudApi.ChainProduct
->();
+export const chainProductsAdapter: EntityAdapter<CrudApi.ChainProduct> =
+  createEntityAdapter<CrudApi.ChainProduct>();
 
 export const initialChainProductState = chainProductsAdapter.getInitialState(
   {},
@@ -51,9 +57,8 @@ const chainProductsReducer = createReducer(
 // GROUP
 //
 
-export const groupProductsAdapter: EntityAdapter<CrudApi.GroupProduct> = createEntityAdapter<
-  CrudApi.GroupProduct
->();
+export const groupProductsAdapter: EntityAdapter<CrudApi.GroupProduct> =
+  createEntityAdapter<CrudApi.GroupProduct>();
 
 export const initialGroupProductState = groupProductsAdapter.getInitialState(
   {},
@@ -73,9 +78,8 @@ const groupProductsReducer = createReducer(
 // UNIT
 //
 
-export const unitProductsAdapter: EntityAdapter<CrudApi.UnitProduct> = createEntityAdapter<
-  CrudApi.UnitProduct
->();
+export const unitProductsAdapter: EntityAdapter<CrudApi.UnitProduct> =
+  createEntityAdapter<CrudApi.UnitProduct>();
 
 export const initialUnitProductState = unitProductsAdapter.getInitialState({});
 
@@ -93,13 +97,11 @@ const unitProductsReducer = createReducer(
 // GENERATED
 //
 
-export const generatedProductsAdapter: EntityAdapter<CrudApi.GeneratedProduct> = createEntityAdapter<
-  CrudApi.GeneratedProduct
->();
+export const generatedProductsAdapter: EntityAdapter<CrudApi.GeneratedProduct> =
+  createEntityAdapter<CrudApi.GeneratedProduct>();
 
-export const initialGeneratedUnitProductState = generatedProductsAdapter.getInitialState(
-  {},
-);
+export const initialGeneratedUnitProductState =
+  generatedProductsAdapter.getInitialState({});
 
 const generatedProductsReducer = createReducer(
   initialGeneratedUnitProductState,
@@ -118,9 +120,8 @@ const reducerMap: ActionReducerMap<ProductsState> = {
   generatedProducts: generatedProductsReducer,
 };
 
-const combinedReducer: ActionReducer<ProductsState> = combineReducers(
-  reducerMap,
-);
+const combinedReducer: ActionReducer<ProductsState> =
+  combineReducers(reducerMap);
 
 export function productsReducer(
   state: ProductsState | undefined,

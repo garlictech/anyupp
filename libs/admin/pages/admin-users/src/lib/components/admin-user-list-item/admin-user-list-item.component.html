@@ -1,5 +1,5 @@
 <nb-user
-  class="float-left role-border {{ role?.toLowerCase() }}"
+  class="float-start role-border {{ role?.toLowerCase() }}"
   [name]="adminUser?.name || ''"
   [picture]="(adminUser?.profileImage || '' | awsStoragePath) || ''"
 ></nb-user>
@@ -19,7 +19,7 @@
   nbButton
   shape="round"
   size="tiny"
-  class="float-right mr-2"
+  class="float-right me-2"
   [title]="'roles.editRoles' | translate"
   (click)="editAdminUserRoles()"
 >
@@ -30,7 +30,7 @@
   nbButton
   shape="round"
   size="tiny"
-  class="float-right mr-2"
+  class="float-right me-2"
   [title]="'auth.sendResetEmail' | translate"
   (click)="resetEmail()"
 >
@@ -39,7 +39,7 @@
 
 <div class="clearfix"></div>
 
-<div class="pl-5">
+<div class="ps-5">
   <div class="caption" *ngFor="let item of adminUser?.roleContexts?.items">
     {{ 'roles.' + item?.roleContext?.role | translate }} @
     {{ item?.roleContext | roleEntityNames | async }}

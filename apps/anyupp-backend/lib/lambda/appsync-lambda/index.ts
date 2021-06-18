@@ -1,22 +1,36 @@
-import { Context, Handler } from 'aws-lambda';
-import * as fp from 'lodash/fp';
-import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
-
 import {
   adminRequestHandler,
+  createStripeClient,
+  createSzamlazzClient,
   orderRequestHandler,
   productRequestHandler,
   stripeRequestHandler,
   unitRequestHandler,
   userRequestHandler,
 } from '@bgap/anyupp-gql/backend';
+import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
+import { Context, Handler } from 'aws-lambda';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import * as fp from 'lodash/fp';
+import { v1 as uuidV1 } from 'uuid';
 
 export interface AnyuppRequest {
   handler: string;
   payload: unknown;
+}
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw Error(
+    'Stripe secret key not found in lambda environment. Add itt with the name STRIPE_SECRET_KEY',
+  );
+}
+
+if (!process.env.SZAMLAZZ_HU_AGENT_KEY) {
+  throw Error(
+    'SzamlazzHu agent key not found in lambda environment. Add itt with the name SZAMLAZZ_HU_AGENT_KEY',
+  );
 }
 
 const consumerUserPoolId = config.ConsumerUserPoolId;
@@ -25,6 +39,8 @@ const awsAccesskeyId = 'AKIAYIT7GMY5WQZFXOOX'; // process.env.AWS_ACCESS_KEY_ID 
 const awsSecretAccessKey = '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'; // process.env.AWS_SECRET_ACCESS_KEY || '';
 const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
+const szamlazzClient = createSzamlazzClient(process.env.SZAMLAZZ_HU_AGENT_KEY);
+const stripeClient = createStripeClient(process.env.STRIPE_SECRET_KEY);
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -35,9 +51,13 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
   _context: Context,
 ): Promise<unknown> => {
+  console.debug('### Appsync Lambda handler ~ event:AnyuppRequest', event);
+
   const adminUserRequestHandlers = adminRequestHandler({
     userPoolId,
     crudSdk,
+    cognitoidentityserviceprovider,
+    userNameGenerator: uuidV1,
   });
 
   const orderRequestHandlers = orderRequestHandler({
@@ -55,6 +75,8 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   const stripeRequestHandlers = stripeRequestHandler({
     crudSdk,
     anyuppSdk,
+    szamlazzClient,
+    stripeClient,
   });
 
   const userRequestHandlers = userRequestHandler({

@@ -50,7 +50,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(orderItem.getPrice(), orderItem.priceShown.currency ?? 'huf'), // TODO geounit!!
+            formatCurrency(orderItem.getPrice(), orderItem.priceShown.currency ?? 'ft'), 
             style: GoogleFonts.poppins(
               fontSize: 14,
               color: theme.text,
@@ -66,7 +66,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
       orderItem.selectedConfigMap.forEach((key, value) {
         for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
           children.add(Text(
-            getLocalizedText(context, generatedProductConfigComponent.name), // TODO geounit!!
+            getLocalizedText(context, generatedProductConfigComponent.name), 
             textAlign: TextAlign.left,
             style: GoogleFonts.poppins(
               color: theme.text,

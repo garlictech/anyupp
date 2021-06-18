@@ -8,7 +8,7 @@ import awsmobile from './generated/aws-exports';
 import { pipe } from 'fp-ts/function';
 
 const createSdk = (gqlClient: GraphqlApiClient) =>
-  (getSdkAmplify(gqlClient._client) as unknown) as CrudSdk;
+  getSdkAmplify(gqlClient._client) as unknown as CrudSdk;
 
 export const getCrudSdkForIAM = (
   awsAccesskeyId: string,

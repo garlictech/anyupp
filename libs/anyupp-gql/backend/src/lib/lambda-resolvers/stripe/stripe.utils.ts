@@ -3,10 +3,13 @@ import { Stripe } from 'stripe';
 import { toFixed0Number, toFixed2Number } from '@bgap/shared/utils';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import * as Szamlazz from 'szamlazz.js';
 
 export interface StripeResolverDeps {
   crudSdk: CrudSdk;
   anyuppSdk: AnyuppSdk;
+  szamlazzClient: Szamlazz.Client;
+  stripeClient: Stripe;
 }
 
 export const mapPaymentMethodToCard = (

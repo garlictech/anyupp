@@ -1,11 +1,10 @@
-import { bindNodeCallback, from, merge, Observable, of } from 'rxjs';
-import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
-
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
 import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
+import { bindNodeCallback, from, merge, Observable, of } from 'rxjs';
+import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -90,7 +89,7 @@ export class CognitoService {
 
         return {
           user: {
-            id: decoded?.sub,
+            id: decoded?.['cognito:username'],
             email: decoded?.email,
             role: decoded?.role,
           },

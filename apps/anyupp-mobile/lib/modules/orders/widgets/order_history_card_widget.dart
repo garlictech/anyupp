@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:fa_prev/modules/orders/orders.dart';
+
+import '../../../shared/widgets/transaction_info_widget.dart';
 import 'order_simple_list_item_widget.dart';
 
 class OrderHistoryCard extends StatelessWidget {
@@ -39,6 +41,7 @@ class OrderHistoryCard extends StatelessWidget {
             _buildOrderHeader(context),
             _buildDivider(context),
             ..._buildOrderItemList(context),
+            TransactionInfoWidget(order.transactionItem),
             _buildFooter(context),
           ],
         ),
@@ -81,13 +84,13 @@ class OrderHistoryCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+             order.orderNum != null ? Text(
                 '${order.orderNum}',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: theme.text,
                 ),
-              ),
+              ) : Container(),
               Padding(
                 padding: const EdgeInsets.only(
                   right: 20.0,
@@ -158,7 +161,8 @@ class OrderHistoryCard extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown?.currency ?? 'huf'),  // TODO geounit!!
+            formatCurrency(
+                order.sumPriceShown.priceSum, order.items[0].priceShown?.currency ?? 'ft'), 
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,

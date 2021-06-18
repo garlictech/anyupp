@@ -21,19 +21,19 @@ Array [
       "hu": null,
     },
     "position": 1,
-    "productCategoryId": "productCategoryId_",
+    "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
     "tax": 1,
-    "unitId": "seeded_unit_c1_g1_1_id",
+    "unitId": "test_REGEN_UNIT_ID_01",
     "variants": Array [
       Object {
-        "id": "test_groupProductVariant_id_1",
+        "id": "test_GroupProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 1,
-        "price": 1.5,
+        "price": 1,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -41,13 +41,13 @@ Array [
         },
       },
       Object {
-        "id": "test_groupProductVariant_id_2",
+        "id": "test_GroupProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 2,
-        "price": 3,
+        "price": 2,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -55,10 +55,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_1",
+        "id": "test_UnitProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 1,
         "price": 1.5,
@@ -69,10 +69,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_2",
+        "id": "test_UnitProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 2,
         "price": 3,
@@ -197,7 +197,7 @@ Array [
       "en": "DESCRIPTION",
       "hu": null,
     },
-    "id": "test_REGEN_unitProduct_useeded_unit_c1_g1_1_id_01",
+    "id": "test_REGEN_unitProduct_utest_REGEN_UNIT_ID_01_01",
     "image": "IMAGE",
     "name": Object {
       "de": null,
@@ -205,19 +205,19 @@ Array [
       "hu": null,
     },
     "position": 1,
-    "productCategoryId": "productCategoryId_",
+    "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
     "tax": 1,
-    "unitId": "seeded_unit_c1_g1_1_id",
+    "unitId": "test_REGEN_UNIT_ID_01",
     "variants": Array [
       Object {
-        "id": "test_groupProductVariant_id_1",
+        "id": "test_GroupProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 1,
-        "price": 1.5,
+        "price": 1,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -225,13 +225,13 @@ Array [
         },
       },
       Object {
-        "id": "test_groupProductVariant_id_2",
+        "id": "test_GroupProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 2,
-        "price": 3,
+        "price": 2,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -239,10 +239,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_1",
+        "id": "test_UnitProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 1,
         "price": 1.5,
@@ -253,10 +253,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_2",
+        "id": "test_UnitProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 2,
         "price": 3,
@@ -279,7 +279,7 @@ Array [
       "en": "DESCRIPTION",
       "hu": null,
     },
-    "id": "test_REGEN_unitProduct_useeded_unit_c1_g1_1_id_02",
+    "id": "test_REGEN_unitProduct_utest_REGEN_UNIT_ID_01_02",
     "image": "IMAGE",
     "name": Object {
       "de": null,
@@ -287,19 +287,19 @@ Array [
       "hu": null,
     },
     "position": 1,
-    "productCategoryId": "productCategoryId_",
+    "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
     "tax": 1,
-    "unitId": "seeded_unit_c1_g1_1_id",
+    "unitId": "test_REGEN_UNIT_ID_01",
     "variants": Array [
       Object {
-        "id": "test_groupProductVariant_id_1",
+        "id": "test_GroupProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 1,
-        "price": 1.5,
+        "price": 1,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -307,13 +307,13 @@ Array [
         },
       },
       Object {
-        "id": "test_groupProductVariant_id_2",
+        "id": "test_GroupProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "GROUP_UNIT",
         },
         "position": 2,
-        "price": 3,
+        "price": 2,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -321,10 +321,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_1",
+        "id": "test_UnitProductVariant_id_1",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 1,
         "price": 1.5,
@@ -335,10 +335,10 @@ Array [
         },
       },
       Object {
-        "id": "test_chainProductVariant_id_2",
+        "id": "test_UnitProductVariant_id_2",
         "pack": Object {
           "size": 2,
-          "unit": "UNIT",
+          "unit": "UNIT_UNIT",
         },
         "position": 2,
         "price": 3,
@@ -408,6 +408,35 @@ Array [
     ],
   },
 ]
+`;
+
+exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit: A Generated ProductCategory 1`] = `
+Object {
+  "createdAt": Any<String>,
+  "id": "test_REGEN_UNIT_ID_01__test_REGEN__ProductCategoryId_01",
+  "productCategory": Object {
+    "chainId": "seeded_chain_1_id",
+    "createdAt": Any<String>,
+    "description": Object {
+      "de": null,
+      "en": "DESCRIPTION",
+      "hu": null,
+    },
+    "id": "test_REGEN__ProductCategoryId_01",
+    "image": "IMAGE",
+    "name": Object {
+      "de": null,
+      "en": "PRODUCT_CATEGORY",
+      "hu": null,
+    },
+    "position": 0,
+    "updatedAt": Any<String>,
+  },
+  "productCategoryId": "test_REGEN__ProductCategoryId_01",
+  "productNum": 3,
+  "unitId": "test_REGEN_UNIT_ID_01",
+  "updatedAt": Any<String>,
+}
 `;
 
 exports[`RegenerateUnitData mutation tests should return helpful error message in case the unit has no items 1`] = `[Error: GraphQL error: {"message":"There is no product in this unit","code":"ERROR_NO_PRODUCT_IN_UNIT"}]`;

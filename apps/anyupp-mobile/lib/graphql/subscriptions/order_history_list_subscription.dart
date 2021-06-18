@@ -1,11 +1,14 @@
 const SUBSCRIPTION_ORDER_HISTORY_LIST = '''
 subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: String) {
   onOrderChanged(unitId: \$unitId, userId: \$userId) {
-   	id
+    id
+    orderNum
     unitId
     userId
+    archived
     paymentIntention
     takeAway
+    archived
     paymentMode {
       caption
       type
@@ -27,6 +30,69 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
       tax
       taxSum
     }
+    transaction {
+      createdAt
+      currency
+      externalTransactionId
+      id
+      invoice {
+        city
+        country
+        createdAt
+        customerName
+        email
+        externalInvoiceId
+        id
+        orderId
+        pdfUrl
+        postalCode
+        status
+        streetAddress
+        taxNumber
+        transactionId
+        userId
+        updatedAt
+      }
+      invoiceId
+      orderId
+      receipt {
+        createdAt
+        email
+        externalReceiptId
+        id
+        orderId
+        pdfData
+        status
+        transactionId
+        updatedAt
+        userId
+      }
+      receiptId
+      status
+      total
+      type
+      updatedAt
+      user {
+        createdAt
+        email
+        id
+        invoiceAddress {
+          city
+          country
+          customerName
+          email
+          postalCode
+          streetAddress
+          taxNumber
+        }
+        name
+        phone
+        profileImage
+        stripeCustomerId
+        updatedAt
+      }
+      userId
+    }
     items {
       productId
       productName {
@@ -40,18 +106,6 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
         priceSum
         tax
         taxSum
-      }
-      quantity
-      statusLog {
-        status
-        ts
-        userId
-      }
-      variantId
-      variantName {
-        de
-        en
-        hu
       }
       configSets {
         items {
@@ -72,7 +126,27 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
         productSetId
         type
       }
+      quantity
+      statusLog {
+        status
+        ts
+        userId
+      }
+      variantId
+      variantName {
+        de
+        en
+        hu
+      }
+      allergens
+      image
+      laneId
+      created
     }
+    transactionId
+    transactionStatus
+    updatedAt
+    createdAt
   }
 }
 ''';

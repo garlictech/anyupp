@@ -10,7 +10,10 @@ import {
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
-import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
+import {
+  dashboardActions,
+  dashboardSelectors,
+} from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
 import {
   loggedUserActions,
@@ -24,8 +27,13 @@ import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
-import { catchGqlError, DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import {
+  catchGqlError,
+  DEFAULT_LANG,
+  getDayIntervals,
+} from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { IDateIntervals } from '@bgap/shared/types';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -313,61 +321,48 @@ export class DataService {
   }
 
   private _subscribeToSelectedUnitOrders(unitId: string): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this._crudSdk.doListSubscription<any>(
+    this._crudSdk.doListSubscription(
       ordersActions.resetActiveOrders(),
       this._crudSdk.sdk.ListOrders({
-        filter: { unitId: { eq: unitId } },
+        filter: { unitId: { eq: unitId }, archived: { ne: true } },
       }),
-      this._crudSdk.sdk.OnOrdersChange(),
-      (orders: CrudApi.Order[]) => {
-        return ordersActions.upsertActiveOrders({ orders });
-      },
+      this._crudSdk.sdk.OnUnitOrdersChange({
+        unitId,
+        archived: false,
+      }),
+      (orders: CrudApi.Order[]) =>
+        ordersActions.upsertActiveOrders({
+          orders,
+        }),
       this._settingsChanged$,
     );
 
-    /*
     this._store
       .pipe(
         select(dashboardSelectors.getSelectedHistoryDate),
-        tap(() => {
-          this._store.dispatch(
-            ordersActions.setAllHistoryOrders({
-              orders: [],
-            }),
-          );
-        }),
         switchMap((historyDate: number) => {
           const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
-          return this._angularFireDatabase
-            .list(`/orders/chains/${chainId}/units/${unitId}/history`, ref =>
-              ref
-                .orderByChild('created')
-                .startAt(dayIntervals.from)
-                .endAt(dayIntervals.to),
-            )
-            .stateChanges();
-        }),
-        takeUntil(this._settingsChanged$),
-      )
-      .subscribe((data): void => {
-        if (data.type === EFirebaseStateEvent.CHILD_REMOVED) {
-          this._store.dispatch(
-            ordersActions.removeHistoryOrder({
-              orderId: data.key || '',
-            }),
-          );
-        } else {
-          this._store.dispatch(
-            ordersActions.upsertHistoryOrder({
-              order: {
-                ...(<IOrder>data.payload.val()),
-                id: data.key || '',
+
+          return this._crudSdk.doListQuery(
+            ordersActions.resetHistoryOrders(),
+            this._crudSdk.sdk.ListOrders({
+              filter: {
+                unitId: { eq: unitId },
+                archived: { eq: true },
+                createdAt: {
+                  ge: new Date(dayIntervals.from).toISOString(),
+                  le: new Date(dayIntervals.to).toISOString(),
+                },
               },
             }),
+            (orders: CrudApi.Order[]) =>
+              ordersActions.upsertHistoryOrders({
+                orders,
+              }),
           );
-        }
-      });*/
+        }),
+      )
+      .subscribe();
   }
 
   private _subscribeToAdminUsers(): void {

@@ -6,10 +6,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import {
-  IFloorMapTableOrderObjects,
-  IFloorMapTableOrders,
-} from '@bgap/shared/types';
+import { IFloorMapOrderObjects, IFloorMapOrders } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({
@@ -21,8 +18,9 @@ import { NbDialogRef } from '@nebular/theme';
 export class FloorMapOrdersComponent implements OnInit {
   public tableId!: string;
   public seatId!: string;
-  public allTableOrders$!: BehaviorSubject<IFloorMapTableOrderObjects>;
-  public tableOrders?: IFloorMapTableOrders;
+  public allOrders$!: BehaviorSubject<IFloorMapOrderObjects>;
+  public tableOrders?: IFloorMapOrders;
+  public mode?: string;
 
   constructor(
     private _nbDialogRef: NbDialogRef<unknown>,
@@ -30,10 +28,13 @@ export class FloorMapOrdersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.allTableOrders$
+    this.allOrders$
       .pipe()
-      .subscribe((tableOrders: IFloorMapTableOrderObjects): void => {
-        this.tableOrders = tableOrders[`${this.tableId}.${this.seatId}`];
+      .subscribe((tableOrders: IFloorMapOrderObjects): void => {
+        this.tableOrders =
+          this.mode === 'table'
+            ? tableOrders[this.tableId]
+            : tableOrders[`${this.tableId}.${this.seatId}`];
 
         this._changeDetectorRef.detectChanges();
       });

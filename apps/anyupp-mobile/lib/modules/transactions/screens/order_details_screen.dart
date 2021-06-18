@@ -156,7 +156,7 @@ class OrderDetailsScreen extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: AutoSizeText(
-                  formatCurrency(item.priceShown.priceSum, item.priceShown.currency ?? 'huf'),
+                  formatCurrency(item.priceShown.priceSum, item.priceShown.currency ?? 'ft'),
                   style: GoogleFonts.poppins(
                     //fontSize: 14,
                     color: theme.text,
@@ -208,7 +208,7 @@ class OrderDetailsScreen extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency ?? 'huf'), // TODO geounit!!
+            formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency ?? 'ft'),
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,

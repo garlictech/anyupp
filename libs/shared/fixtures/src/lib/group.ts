@@ -1,7 +1,7 @@
 import * as CrudApi from '@bgap/crud-gql/api';
+import { RequiredId } from '@bgap/shared/types';
 import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
-import { RequiredId } from '@bgap/shared/types';
 
 const groupId_01 = `${testIdPrefix}group_1_id`;
 const groupId_seeded_01 = `${seededIdPrefix}group_c1_1_id`;
@@ -9,7 +9,7 @@ const groupId_seeded_02 = `${seededIdPrefix}group_c1_2_id`;
 const groupId_seeded_03 = `${seededIdPrefix}group_c2_1_id`;
 
 const groupBase: Omit<CrudApi.CreateGroupInput, 'chainId'> = {
-  name: `Test group #${groupId_01}`,
+  name: `Monád csoport S`,
   address: {
     address: 'Ág u. 1.',
     city: 'Budapest',
@@ -33,7 +33,7 @@ const groupBase: Omit<CrudApi.CreateGroupInput, 'chainId'> = {
 const group_01: RequiredId<CrudApi.CreateGroupInput> = {
   ...groupBase,
   id: groupId_01,
-  chainId: chainFixture.chainId_seeded_01,
+  chainId: chainFixture.chain_01.id,
 };
 
 export const groupFixture = {

@@ -1,0 +1,26 @@
+version = 1
+
+test_patterns = ["*/*.spec.ts"]
+
+exclude_patterns = [
+    "public/**,",
+    "dist/**"
+]
+
+[[analyzers]]
+name = "javascript"
+enabled = true
+
+  [analyzers.meta]
+  ecma_version = "2016"
+  module_system = "commonjs"
+  environment = [
+    "nodejs",
+    "browser",
+    "jest",
+  ]
+
+  plugins = ["angular"]
+  style_guide = "airbnb"
+  dialect = "typescript"
+

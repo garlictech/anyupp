@@ -1,6 +1,6 @@
 <div class="row p-0 m-0">
   <ng-container *ngFor="let orderItem of order?.items; index as i">
-    <div class="col-1 col-md-1 p-2 m-auto subtitle-2 text-right font-larger">
+    <div class="col-1 col-md-1 p-2 m-auto subtitle-2 text-end font-larger">
       {{ i + 1 }}.
     </div>
     <div class="col-11 col-md-5 p-2 m-auto subtitle-2 font-larger">
@@ -24,22 +24,29 @@
       </div>
     </div>
     <div
-      class="col-1 col-md-1 p-2 m-auto caption text-right font-weight-bold font-larger"
+      class="
+        col-1 col-md-1
+        p-2
+        m-auto
+        caption
+        text-end
+        font-weight-bold font-larger
+      "
     >
       {{ orderItem.quantity }}x
     </div>
-    <div class="col-3 col-md-2 p-2 m-auto caption text-right font-larger">
+    <div class="col-3 col-md-2 p-2 m-auto caption text-end font-larger">
       {{
         orderItem.priceShown.priceSum
           | currencyFormatter: orderItem.priceShown.currency
       }}
     </div>
-    <div class="text-right p-2 col-8 col-md-3 m-auto">
-      <ng-container *ngIf="isListMode('CURRENT') || isListMode('FLOOR_MAP')">
+    <div class="text-end p-2 col-8 col-md-3 m-auto">
+      <ng-container *ngIf="isListMode('current') || isListMode('floormap')">
         <button
           *ngIf="isStatusLog(orderItem, 'served')"
           nbButton
-          class="mr-2"
+          class="me-2"
           [status]="getPlacedButtonStatus()"
           [size]="buttonSize"
           shape="round"
@@ -63,7 +70,7 @@
       <nb-badge
         class="font-larger p-2 position-static"
         [status]="getButtonStatus(orderItem.statusLog)"
-        *ngIf="isListMode('HISTORY')"
+        *ngIf="isListMode('history')"
         [text]="currentStatus(orderItem.statusLog)"
       ></nb-badge>
     </div>
@@ -73,14 +80,14 @@
 <hr class="mt-1 mb-1" />
 
 <div class="row p-0 m-0">
-  <div class="col-1 text-right p-2 m-auto font-larger"><strong>Σ</strong></div>
+  <div class="col-1 text-end p-2 m-auto font-larger"><strong>Σ</strong></div>
   <div class="col-5 p-2 m-auto">
     <ng-container
       *ngIf="order.transaction?.status === EPaymentStatus.waiting_for_payment"
     >
       <button
         nbButton
-        class="float-right mr-2"
+        class="float-right me-2"
         status="success"
         [size]="buttonSize"
         shape="round"
@@ -90,7 +97,7 @@
       </button>
       <button
         nbButton
-        class="float-right mr-2"
+        class="float-right me-2"
         status="danger"
         [size]="buttonSize"
         shape="round"
@@ -100,7 +107,7 @@
       </button>
     </ng-container>
   </div>
-  <div class="col-1 text-right p-2 m-auto font-larger caption-2">
+  <div class="col-1 text-end p-2 m-auto font-larger caption-2">
     {{ order.paymentMode.method }}
   </div>
   <!--  *ngIf="currentOrderStatus === OrderStatus.NONE"-->
@@ -108,7 +115,7 @@
     <button
       *ngFor="let mode of unit?.paymentModes"
       nbButton
-      class="float-right mr-1"
+      class="float-right me-1"
       [status]="order.paymentMode.type === mode.name ? 'success' : 'basic'"
       [size]="buttonSize"
       shape="round"
@@ -118,18 +125,18 @@
     </button>
   </div-->
 
-  <div class="col-2 p-2 caption text-right m-auto font-weight-bold font-larger">
+  <div class="col-2 p-2 caption text-end m-auto font-weight-bold font-larger">
     {{
       order.sumPriceShown.priceSum
         | currencyFormatter: order.sumPriceShown.currency
     }}
   </div>
-  <div class="text-right p-2 col-3 m-auto">
+  <div class="text-end p-2 col-3 m-auto">
     <button
       [nbSpinner]="workingOrderStatus"
       nbSpinnerStatus="control"
       [disabled]="workingOrderStatus"
-      *ngIf="isListMode('CURRENT') || isListMode('FLOOR_MAP')"
+      *ngIf="isListMode('current') || isListMode('floormap')"
       nbButton
       [status]="getButtonStatus(order.statusLog)"
       [size]="buttonSize"
@@ -142,13 +149,13 @@
 
     <nb-badge
       class="font-larger p-2 position-static"
-      *ngIf="isListMode('HISTORY')"
+      *ngIf="isListMode('history')"
       [text]="currentStatus(order.statusLog)"
       [status]="getButtonStatus(order.statusLog)"
     ></nb-badge>
   </div>
 
-  <div class="col-12 p-2 pl-4">
+  <div class="col-12 p-2 ps-4">
     <button
       nbButton
       status="danger"

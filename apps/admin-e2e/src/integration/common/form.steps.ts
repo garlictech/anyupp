@@ -1,4 +1,4 @@
-import { When } from 'cypress-cucumber-preprocessor/steps';
+import { When, Then } from 'cypress-cucumber-preprocessor/steps';
 
 When(
   'I fill out the input with id {string} with the {string} value',
@@ -14,6 +14,11 @@ When(
   },
 );
 
+When('I set the currency to {string}', (value: string) => {
+  cy.findByTestId('currency').click();
+  cy.findAllByText(value).last().click();
+});
+
 When(
   'I fill out the {string} input with {string}',
   (inputLabel: string, value: string) => {
@@ -27,3 +32,10 @@ When(
     cy.findAllByLabelText(inputLabel).last().clear().type(value);
   },
 );
+
+Then('The chain selector should contain {string}', (value: string) => {
+  cy.findByTestId('chainId').contains(value).should('exist');
+});
+Then('The group selector should contain {string}', (value: string) => {
+  cy.findByTestId('groupId').contains(value).should('exist');
+});

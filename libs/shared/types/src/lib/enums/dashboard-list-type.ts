@@ -1,13 +1,13 @@
 export enum EDashboardListMode {
-  CURRENT = 'current',
-  HISTORY = 'history',
-  LANES = 'lanes',
-  FLOOR_MAP = 'floorMap',
-  REPORTS = 'reports',
+  current = 'current',
+  history = 'history',
+  lanes = 'lanes',
+  floormap = 'floorMap',
+  reports = 'reports',
 }
 
 export enum EDashboardTicketListType {
   placed = 'placed',
-  ready = 'ready',
-  PAYMENT_INTENTION = 'paymentIntention',
+  manual = 'ready',
+  problematic = 'paymentIntention',
 }

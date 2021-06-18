@@ -1,13 +1,13 @@
 <nb-card [ngClass]="{ resized: resized }" class="h-100 mb-0">
   <nb-card-header class="position-relative">
-    <div class="float-left font-larger">
+    <div class="float-start font-larger">
       {{ 'dashboard.listTitle' | translate }}
       <button
         shape="round"
         nbButton
         *ngIf="selectedUnit"
         size="small"
-        class="ml-3 font-larger"
+        class="ms-3 font-larger"
         [status]="selectedUnit.isAcceptingOrders ? 'success' : 'danger'"
         (click)="toggleAcceptingOrders($event)"
       >
@@ -28,70 +28,76 @@
       <nb-action
         [icon]="resized ? 'minimize-outline' : 'maximize-outline'"
         (click)="toggleResize()"
+        [title]="'dashboard.actions.fontSize' | translate"
       ></nb-action>
       <nb-action
         [ngClass]="
-          dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP
+          dashboardSettings.listMode === EDashboardListMode.floormap
             ? 'active'
             : 'inactive'
         "
         icon="map-outline"
-        (click)="selectListMode(EDashboardListMode.FLOOR_MAP)"
+        (click)="selectListMode(EDashboardListMode.floormap)"
+        [title]="'dashboard.actions.floorMap' | translate"
       ></nb-action>
       <nb-action
         [ngClass]="
-          dashboardSettings.listMode === EDashboardListMode.LANES
+          dashboardSettings.listMode === EDashboardListMode.lanes
             ? 'active'
             : 'inactive'
         "
         icon="swap-outline"
-        (click)="selectListMode(EDashboardListMode.LANES)"
+        (click)="selectListMode(EDashboardListMode.lanes)"
+        [title]="'dashboard.actions.lanes' | translate"
       ></nb-action>
       <nb-action
         [ngClass]="
-          dashboardSettings.listMode === EDashboardListMode.CURRENT
+          dashboardSettings.listMode === EDashboardListMode.current
             ? 'active'
             : 'inactive'
         "
         icon="clock-outline"
-        (click)="selectListMode(EDashboardListMode.CURRENT)"
+        (click)="selectListMode(EDashboardListMode.current)"
+        [title]="'dashboard.actions.current' | translate"
       ></nb-action>
       <nb-action
         [ngClass]="
-          dashboardSettings.listMode === EDashboardListMode.HISTORY
+          dashboardSettings.listMode === EDashboardListMode.history
             ? 'active'
             : 'inactive'
         "
         icon="archive-outline"
-        (click)="selectListMode(EDashboardListMode.HISTORY)"
+        (click)="selectListMode(EDashboardListMode.history)"
+        [title]="'dashboard.actions.history' | translate"
       ></nb-action>
       <nb-action
         [ngClass]="
-          dashboardSettings.listMode === EDashboardListMode.REPORTS
+          dashboardSettings.listMode === EDashboardListMode.reports
             ? 'active'
             : 'inactive'
         "
         icon="pie-chart-outline"
-        (click)="selectListMode(EDashboardListMode.REPORTS)"
+        (click)="selectListMode(EDashboardListMode.reports)"
+        [title]="'dashboard.actions.reports' | translate"
       ></nb-action>
     </nb-actions>
   </nb-card-header>
   <nb-card-body id="dashboardMainCardBody" class="p-1">
     <bgap-order-ticket-body
       *ngIf="
-        dashboardSettings.listMode === EDashboardListMode.CURRENT ||
-        dashboardSettings.listMode === EDashboardListMode.HISTORY
+        dashboardSettings.listMode === EDashboardListMode.current ||
+        dashboardSettings.listMode === EDashboardListMode.history
       "
       [unit]="selectedUnit"
     ></bgap-order-ticket-body>
     <bgap-lanes-body
-      *ngIf="dashboardSettings.listMode === EDashboardListMode.LANES"
+      *ngIf="dashboardSettings.listMode === EDashboardListMode.lanes"
     ></bgap-lanes-body>
     <bgap-floor-map-body
-      *ngIf="dashboardSettings.listMode === EDashboardListMode.FLOOR_MAP"
+      *ngIf="dashboardSettings.listMode === EDashboardListMode.floormap"
     ></bgap-floor-map-body>
     <bgap-reports-body
-      *ngIf="dashboardSettings.listMode === EDashboardListMode.REPORTS"
+      *ngIf="dashboardSettings.listMode === EDashboardListMode.reports"
     ></bgap-reports-body>
   </nb-card-body>
 </nb-card>

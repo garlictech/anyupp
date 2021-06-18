@@ -1,20 +1,18 @@
-import { AnyuppSdk } from 'libs/anyupp-gql/api/src';
-import { combineLatest } from 'rxjs';
-import { delay, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
-
 import * as CrudApi from '@bgap/crud-gql/api';
 import { validateOrder } from '@bgap/shared/data-validators';
 import {
   cartFixture,
-  testAdminUsername,
+  groupFixture,
+  testAdminEmail,
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { filterNullish, toFixed2Number } from '@bgap/shared/utils';
-
-import { groupFixture } from '../../../../../../../shared/fixtures/src/lib/group';
+import { AnyuppSdk } from 'libs/anyupp-gql/api/src';
+import { combineLatest } from 'rxjs';
+import { delay, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 import {
   createAuthenticatedAnyuppSdk,
   createIamCrudSdk,
@@ -68,25 +66,25 @@ const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   unitId: unitFixture.unit_01.id,
   userId: 'WILL BE THE AUTHENTICATED USERID',
   items: [
-    cartFixture.getOrderItem(), // Price 2.02
+    cartFixture.getOrderItem(), // Price 1 * 2
     {
       ...cartFixture.getOrderItem(),
-      configSets: [orderItemConfigSet_01], // Price (1 -1.5 + 2.3) * 2 + VAT =  3.636 (3.6+0.036)
+      configSets: [orderItemConfigSet_01], // Price (1 -1.5 + 2.3) * 2
     },
     {
       ...cartFixture.getOrderItem(),
-      configSets: [orderItemConfigSet_01, orderItemConfigSet_02], // Price (1 + (-1.5 + 2.3) + (5 + -1)) * 2 + VAT = 11.716 (11.6 + 0.116)
+      configSets: [orderItemConfigSet_01, orderItemConfigSet_02], // Price (1 + (-1.5 + 2.3) + (5 + -1)) * 2
     },
   ],
 };
 
-const orderItemPrice_01 = 2;
-const orderItemPrice_02 = 3.6;
-const orderItemPrice_03 = 11.6;
+const orderItemPrice_01 = 2; // brutto
+const orderItemPrice_02 = 3.6; // brutto
+const orderItemPrice_03 = 11.6; // brutto
 
-const orderItemTax_01 = 0.02;
-const orderItemTax_02 = 0.036;
-const orderItemTax_03 = 0.116;
+const orderItemTax_01 = 0.425196;
+const orderItemTax_02 = 0.7653528;
+const orderItemTax_03 = 2.4661368;
 
 const cart_02: RequiredId<CrudApi.CreateCartInput> = {
   ...cartFixture.cart_01,
@@ -130,20 +128,17 @@ describe('CreatCartFromOrder mutation test', () => {
       deleteTestGroup(groupFixture.group_01.id, orderDeps.crudSdk),
     ]);
 
-  beforeAll(async done => {
-    await createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
-      .toPromise()
-      .then(x => {
-        authAnyuppSdk = x.authAnyuppSdk;
-        authenticatedUserId = x.userAttributes.id;
-      });
-
-    cart_01.userId = authenticatedUserId;
-    cart_02.userId = authenticatedUserId;
-    cart_04_different_unit.userId = authenticatedUserId;
-
-    cleanup()
+  beforeAll(done => {
+    createAuthenticatedAnyuppSdk(testAdminEmail, testAdminUserPassword)
       .pipe(
+        tap(x => {
+          authAnyuppSdk = x.authAnyuppSdk;
+          authenticatedUserId = x.userAttributes.id;
+          cart_01.userId = authenticatedUserId;
+          cart_02.userId = authenticatedUserId;
+          cart_04_different_unit.userId = authenticatedUserId;
+        }),
+        switchMap(cleanup),
         switchMap(() =>
           // Seeding
           combineLatest([
@@ -193,8 +188,11 @@ describe('CreatCartFromOrder mutation test', () => {
             expect(order.orderNum).toEqual(
               `${cart_01.place?.table}${cart_01.place?.seat}01`,
             );
+            expect(order.archived).toEqual(false);
             expect(order.items[0]).not.toBeNull();
             expect(order.items[0].allergens).not.toBeNull();
+            expect(order.items[0].priceShown.currency).toEqual('EUR');
+            expect(order.items[0].priceShown.tax).toEqual(27);
             expect(order.items[0].allergens).toEqual(
               cart_01.items[0].allergens,
             );
@@ -233,8 +231,8 @@ describe('CreatCartFromOrder mutation test', () => {
         switchMap(() => {
           const input = { id: cart_02.id };
           return authAnyuppSdk.CreateOrderFromCart({ input });
-          // return defer(() =>
           //   // TO DEBUG
+          // return defer(() =>
           //   orderRequestHandler(orderDeps).createOrderFromCart({
           //     userId,
           //     input,
@@ -267,7 +265,7 @@ describe('CreatCartFromOrder mutation test', () => {
 
   it("should fail in case the cart is not the user's", done => {
     const cartId = cart_03_different_user.id;
-    const userId = 'DIFFERENT_USER';
+    // const userId = 'DIFFERENT_USER';
     const input = { id: cartId };
 
     // To Debug use direct handler call

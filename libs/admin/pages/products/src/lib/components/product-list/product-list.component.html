@@ -1,6 +1,6 @@
 <nb-card class="h-100 mb-0">
   <nb-card-header>
-    <div class="float-left">
+    <div class="float-start">
       {{ 'products.listTitle' | translate }}
     </div>
 
@@ -14,10 +14,11 @@
           !selectedProductCategoryId
         "
         nbButton
-        class="float-right mr-2"
+        class="float-right me-2"
         type="button"
         shape="round"
         size="small"
+        [title]="'products.addProduct' | translate"
         (click)="addProduct()"
       >
         <nb-icon icon="plus-outline"></nb-icon>

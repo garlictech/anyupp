@@ -1,6 +1,6 @@
 <nb-card class="h-100 mb-0">
   <nb-card-header>
-    <div class="float-left">
+    <div class="float-start">
       {{ 'units.listTitle' | translate }}
     </div>
     <button
@@ -11,6 +11,7 @@
       class="float-right"
       [disabled]="!(selectedGroupId$ | async)"
       (click)="addUnit()"
+      [title]="'units.addUnit' | translate"
     >
       <nb-icon icon="plus-outline"></nb-icon>
     </button>

@@ -127,10 +127,10 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = false;
-    if( cart.place == null || (cart.place.seat == "00" && cart.place.table == "00")){
+    if (cart.place == null || (cart.place.seat == "00" && cart.place.table == "00")) {
       showQrCodeScan = true;
     }
-    
+
     Map<int, String> cartAllergens = {};
     for (OrderItem item in cart.items) {
       if (item.allergens != null) {
@@ -209,7 +209,7 @@ class CartScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          formatCurrency(cart.totalPrice, unit.currency ?? 'huf'), // TODO GeoUnit currency!
+                          formatCurrency(cart.totalPrice, unit.currency ?? 'ft'),
                           style: GoogleFonts.poppins(
                             color: theme.text,
                             fontSize: 16,
@@ -235,9 +235,13 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: theme.indicator,
                     primary: theme.text2,
                   ),
-                  onPressed: () => showQrCodeScan
-                      ? Nav.to(QRCodeScannerScreen(navigateToCart: true,))
-                      : showSelectPaymentMethodBottomSheet(context),
+                  onPressed: () => 
+                  showQrCodeScan
+                      ? Nav.to(QRCodeScannerScreen(
+                          navigateToCart: true,
+                        ))
+                      : 
+                      showSelectPaymentMethodBottomSheet(context),
                   child: showQrCodeScan
                       ? SvgPicture.asset(
                           'assets/icons/qr_code_scanner.svg',

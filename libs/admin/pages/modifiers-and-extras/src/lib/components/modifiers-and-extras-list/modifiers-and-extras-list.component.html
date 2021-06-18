@@ -1,17 +1,23 @@
 <nb-card class="h-100 mb-0">
   <nb-card-header>
-    <div class="float-left">
+    <div class="float-start">
       {{ 'modifiersAndExtras.listTitle' | translate }}
     </div>
 
     <div class="float-right">
       <button
         nbButton
-        class="float-right mr-2"
+        class="float-right me-2"
         type="button"
         shape="round"
         size="small"
         (click)="addItem()"
+        [title]="
+          (selectedTab === eModExtTab.PRODUCT_COMPONENTS
+            ? 'productComponentSets.addProductComponent'
+            : 'productComponentSets.addProductComponentSet'
+          ) | translate
+        "
       >
         <nb-icon icon="plus-outline"></nb-icon>
       </button>

@@ -5,9 +5,27 @@ console.log('Starting Stripe API lambda');
 import awsServerlessExpress from 'aws-serverless-express';
 // import app from '@bgap/stripe'
 // import app from './app';
-import { createStripeWebhookExpressApp } from '@bgap/anyupp-gql/backend';
-const app = createStripeWebhookExpressApp();
+import {
+  createStripeClient,
+  createStripeWebhookExpressApp,
+  createSzamlazzClient,
+} from '@bgap/anyupp-gql/backend';
 
+if (!process.env.SZAMLAZZ_HU_AGENT_KEY) {
+  throw Error(
+    'SzamlazzHu agent key not found in lambda environment. Add itt with the name SZAMLAZZ_HU_AGENT_KEY',
+  );
+}
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw Error(
+    'Stripe secret key not found in lambda environment. Add itt with the name STRIPE_SECRET_KEY',
+  );
+}
+
+const szamlazzClient = createSzamlazzClient(process.env.SZAMLAZZ_HU_AGENT_KEY);
+const stripeClient = createStripeClient(process.env.STRIPE_SECRET_KEY);
+
+const app = createStripeWebhookExpressApp(szamlazzClient, stripeClient);
 const server = awsServerlessExpress.createServer(app);
 
 // export interface StripeWebhookRequest {

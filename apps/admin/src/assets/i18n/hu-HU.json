@@ -33,6 +33,7 @@
     "unit": "Unit",
     "currency": "Pénznem",
     "taxPercent": "Adó (%)",
+    "date": "Dátum",
     "from": "-tól",
     "to": "-ig",
     "language": "Nyelv",
@@ -93,7 +94,9 @@
     },
     "sum": "Összesen",
     "width": "szélesség",
-    "height": "magasság"
+    "height": "magasság",
+    "receipt": "nyugta",
+    "invoice": "számla"
   },
   "menu": {
     "dashboard": "Vezérlőpult",
@@ -115,6 +118,18 @@
     "listTitle": "Vezérlőpult",
     "isAcceptingOrders": "Rendeléseket fogad",
     "defaultLane": "Default",
+    "orderItemsCount": "Rendelés tételek száma",
+    "actions": {
+      "fontSize": "Betűméret",
+      "floorMap": "Asztal térkép",
+      "lanes": "Pályák",
+      "current": "Aktív rendelések",
+      "history": "Rendelés történet",
+      "reports": "Statisztikák",
+      "placedOrders": "Beküldött rendelések",
+      "manualOrders": "KP/Kártyás fizetések",
+      "problematicOrders": "Problémás rendelések"
+    },
     "reports": {
       "salesPerType": "Termék típusok",
       "salesPerPaymentMethod": "Fizetési típusok",
@@ -132,6 +147,7 @@
     "listTitle": "Chainek",
     "editChain": "Chain szerkesztése",
     "newChain": "Új chain",
+    "addChain": "Chain hozzáadása",
     "style": {
       "style": "Stílus",
       "colors": {
@@ -158,6 +174,7 @@
     "unitProducts": "Unit termékek",
     "editProduct": "Termék szerkesztése",
     "extendProduct": "Termék származtatása",
+    "addProduct": "Termék hozzáadása",
     "newProduct": "Új termék",
     "availability": "Elérhetőség",
     "isAvailable": "Elérhető",
@@ -211,6 +228,7 @@
     "takeaway": "Elvitelre"
   },
   "productCategories": {
+    "addProductCategory": "Termék kategória hozzáadása",
     "listTitle": "Termék kategóriák",
     "editProductCategory": "Kategória szerkesztése",
     "newProductCategory": "Új kategória"
@@ -220,6 +238,8 @@
     "newProductComponent": "Új termék komponens"
   },
   "productComponentSets": {
+    "addProductComponent": "Termék komponens hozzáadása",
+    "addProductComponentSet": "Módosító vagy extra hozzáadása",
     "editProductComponentSet": "Termék komponens készlet szerkesztése",
     "newProductComponentSet": "Új termék komponens készlet",
     "productComponent": "Termék komponens",
@@ -237,6 +257,7 @@
   },
   "groups": {
     "listTitle": "Groupok",
+    "addGroup": "Group hozzáadása",
     "editGroup": "Group szerkesztése",
     "newGroup": "Új group"
   },
@@ -244,6 +265,7 @@
     "listTitle": "Unitok",
     "editUnit": "Unit szerkesztése",
     "newUnit": "Új unit",
+    "addUnit": "Unit hozzáadása",
     "open": "Nyitva",
     "openFrom": "Nyitva -tól",
     "openTo": "Nyitva -ig",
@@ -253,6 +275,7 @@
     "addLane": "Pálya hozzáadása",
     "regenerateMenu": "Étlap újragenerálása",
     "editFloorMap": "Alaprajz szerkesztése",
+    "missingFloorMap": "Nincs alaprajz adat.",
     "table": "Asztal",
     "seat": "Szék",
     "counter": "Pult",
@@ -268,12 +291,14 @@
   },
   "adminUsers": {
     "listTitle": "Adminisztrátorok",
+    "addAdminUser": "Adminisztrátor hozzáadása",
     "editAdminUser": "Adminisztrátor szerkesztése",
     "newAdminUser": "Új adminisztrátor",
     "editAdminUserRole": "Adminisztrátori jogok szerkesztése"
   },
   "roleContexts": {
     "listTitle": "Jogkörnyezetek",
+    "addRoleContext": "Jogkörnyezet hozzáadása",
     "editAdminUser": "Jogkörnyezet szerkesztése",
     "newAdminUser": "Új jogkörnyezet",
     "contextId": "Jogkörnyezet azonosító"
@@ -291,6 +316,8 @@
     "confirmSuccessTransaction": "Biztosan sikeresre állítod a tranzakciót?",
     "confirmDeleteOrder": "Biztosan törlöd a rendelést?",
     "userOrdersCount": "{{ count }} rendelés",
+    "tableNum": "Asztalszám",
+    "receiptType": "Bizonylattípus",
     "status": {
       "placed": "Placed",
       "processing": "Processing",
@@ -341,6 +368,7 @@
     "availabilityWeeklyDateInterval": "A nyitó nap kisebb kell legyen, mint a záró!",
     "availabilityWeeklyTimeInterval": "A nyitó óra kisebb kell legyen, mint a záró!",
     "commonGqlError": "Sikertelen adatbázis művelet! Kérjük vegye fel a kapcsolatot az adminisztrátorral!",
+    "loginContextFailure": "Érvénytelen jogkörnyezet!",
     "ERROR_NO_PRODUCT_IN_UNIT": "Nincsenek termékek a unitban!"
   }
 }

@@ -1,5 +1,6 @@
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/shared/widgets/transaction_info_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
@@ -46,6 +47,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
             // status == OrderStatus.ready ? _buildPayButtonWidget(context) : _buildTotalPrice(context, order),
             _buildTotalPrice(context, order),
             ..._buildOrderItemList(context, order),
+            TransactionInfoWidget(order.transactionItem),
             _buildPayButtonIfNeeded(context, order),
           ],
         ),
@@ -158,7 +160,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown?.currency ?? 'huf'),
+            formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown?.currency ?? 'ft'),
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,

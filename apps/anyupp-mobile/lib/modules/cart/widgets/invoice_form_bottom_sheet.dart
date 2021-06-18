@@ -2,12 +2,13 @@ import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/models/InvoiceInfo.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/utils/invoice_form_utils.dart';
+import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/user-details/user_details.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:fa_prev/shared/widgets/country_picker_widget.dart';
 import 'package:fa_prev/shared/widgets/custom_text_form_widget.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void showInvoiceFormBottomSheet(BuildContext context, String paymentMethod) {
+void showInvoiceFormBottomSheet(BuildContext context, String orderId, PaymentMode paymentMode) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   showModalBottomSheet(
@@ -32,21 +33,23 @@ void showInvoiceFormBottomSheet(BuildContext context, String paymentMethod) {
     elevation: 4.0,
     backgroundColor: theme.background,
     builder: (context) {
-      return InvoiceFormBottomSheetWidget(paymentMethod);
+      return Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: InvoiceFormBottomSheetWidget(orderId, paymentMode),
+      );
     },
   );
 }
 
 class InvoiceFormBottomSheetWidget extends StatefulWidget {
-  final String paymentMethod;
-  InvoiceFormBottomSheetWidget(this.paymentMethod);
+  final String orderId;
+  final PaymentMode paymentMode;
+  InvoiceFormBottomSheetWidget(this.orderId, this.paymentMode);
   @override
-  _InvoiceFormBottomSheetWidgetState createState() =>
-      _InvoiceFormBottomSheetWidgetState();
+  _InvoiceFormBottomSheetWidgetState createState() => _InvoiceFormBottomSheetWidgetState();
 }
 
-class _InvoiceFormBottomSheetWidgetState
-    extends State<InvoiceFormBottomSheetWidget> {
+class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWidget> {
   final profileFormKey = GlobalKey<FormState>();
   final _nameOrCompanyController = TextEditingController();
   final _emailController = TextEditingController();
@@ -57,16 +60,24 @@ class _InvoiceFormBottomSheetWidgetState
   final _cityController = TextEditingController();
   final _streetController = TextEditingController();
   FieldValidator taxFieldValidator;
+  User _userProfile;
 
   @override
   void initState() {
+    getIt<UserDetailsBloc>().add(GetUserDetailsEvent());
+
     _countryCodeController.addListener(() {
       setState(() {
         profileFormKey.currentState.reset();
       });
     });
-    // TODO: implement initState
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    getIt<UserDetailsBloc>().add(ResetUserDetailsEvent());
+    super.dispose();
   }
 
   @override
@@ -84,7 +95,7 @@ class _InvoiceFormBottomSheetWidgetState
       child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, state) {
           if (state is UnitSelected) {
-            print('Unit selected=${state.unit}');
+            // print('Unit selected=${state.unit}');
             return _buildInvoiceFormScreen(
               context,
               state.unit,
@@ -121,110 +132,136 @@ class _InvoiceFormBottomSheetWidgetState
             },
             child: LayoutBuilder(
               builder: (context, constrains) {
-                return Stack(
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      color: theme.background,
-                      width: constrains.maxWidth - 32,
-                      height: 60,
+                    Stack(
+                      children: [
+                        Container(
+                          color: theme.background,
+                          width: constrains.maxWidth - 32,
+                          height: 60,
 
-                      // padding: const EdgeInsets.symmetric(
-                      //   vertical: 19.0,
-                      // ),
-                      child: Center(
-                        child: Text(
-                          trans('payment.paymentInfo.invoicing.invoice_info'),
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: theme.text,
-                            fontWeight: FontWeight.w500,
+                          // padding: const EdgeInsets.symmetric(
+                          //   vertical: 19.0,
+                          // ),
+                          child: Center(
+                            child: Text(
+                              trans('payment.paymentInfo.invoicing.invoice_info'),
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                color: theme.text,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                      ),
+                        Positioned(
+                            right: -5,
+                            top: 10,
+                            child: GestureDetector(
+                              onTap: () => Nav.pop(),
+                              child: Icon(Icons.close),
+                            ))
+                      ],
                     ),
-                    Positioned(
-                        right: -5,
-                        top: 10,
-                        child: GestureDetector(
-                          onTap: () => Nav.pop(),
-                          child: Icon(Icons.close),
-                        ))
+                    BlocListener<UserDetailsBloc, UserDetailsState>(
+                      listener: (BuildContext context, UserDetailsState state) {
+                        if (state is UserDetailsLoaded) {
+                          User user = state.userDetails;
+                          if (user?.invoiceAddress != null) {
+                            _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress.customerName);
+                            _setTextFieldValue(_cityController, user.invoiceAddress.city);
+                            _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
+                            _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
+                            _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
+                            _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
+                          }
+                          setState(() {
+                            _userProfile = state.userDetails;
+                          });
+                        }
+                      },
+                      child: Container(),
+                    ),
                   ],
                 );
               },
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 14.0,
-            ),
-            child: Form(
-              key: profileFormKey,
-              // autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.name_or_company'),
-                    _nameOrCompanyController,
-                    TextInputType.text,
-                    false,
-                    requiredValidator(context),
-                  ),
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.tax_id'),
-                    _taxNumberController,
-                    TextInputType.number,
-                    false,
-                    taxFieldValidator,
-                  ),
-                  customCountryPickerWidget(
-                      theme,
-                      context,
-                      trans('payment.paymentInfo.invoicing.country'),
-                      _countryController,
-                      _countryCodeController),
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.zip'),
-                    _zipController,
-                    TextInputType.number,
-                    false,
-                    requiredValidator(context),
-                  ),
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.city'),
-                    _cityController,
-                    TextInputType.text,
-                    false,
-                    requiredValidator(context),
-                  ),
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.street_address'),
-                    _streetController,
-                    TextInputType.text,
-                    false,
-                    requiredValidator(context),
-                  ),
-                  customTextFormWidget(
-                    context,
-                    trans('payment.paymentInfo.invoicing.invoice_email'),
-                    _emailController,
-                    TextInputType.emailAddress,
-                    false,
-                    emailValidator(context),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          _buildInvoiceForm(context),
           _buildSendCartButton(context, unit),
         ],
+      ),
+    );
+  }
+
+  Widget _buildInvoiceForm(BuildContext context) {
+    print('_buildInvoiceForm()=${_userProfile?.email}');
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 14.0,
+      ),
+      child: Form(
+        key: profileFormKey,
+        // autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.name_or_company'),
+              _nameOrCompanyController,
+              TextInputType.text,
+              false,
+              requiredValidator(context),
+            ),
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.tax_id'),
+              _taxNumberController,
+              TextInputType.number,
+              false,
+              taxFieldValidator,
+            ),
+            customCountryPickerWidget(theme, context, trans('payment.paymentInfo.invoicing.country'),
+                _countryController, _countryCodeController),
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.zip'),
+              _zipController,
+              TextInputType.number,
+              false,
+              requiredValidator(context),
+            ),
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.city'),
+              _cityController,
+              TextInputType.text,
+              false,
+              requiredValidator(context),
+            ),
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.street_address'),
+              _streetController,
+              TextInputType.text,
+              false,
+              requiredValidator(context),
+            ),
+            customTextFormWidget(
+              context,
+              trans('payment.paymentInfo.invoicing.invoice_email'),
+              _emailController,
+              TextInputType.emailAddress,
+              false,
+              emailValidator(context),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -270,20 +307,52 @@ class _InvoiceFormBottomSheetWidgetState
               final formValid = profileFormKey.currentState.validate();
 
               if (formValid) {
-                BlocProvider.of<CartBloc>(context).add(AddInvoiceInfo(
-                    InvoiceInfo(
-                        name: _nameOrCompanyController.text,
-                        invoiceMail: _emailController.text,
-                        taxNumber: _taxNumberController.text,
-                        country: _countryController.text,
-                        postalCode: _zipController.text,
-                        city: _cityController.text,
-                        streetAddress: _streetController.text)));
+                // BlocProvider.of<CartBloc>(context).add(AddInvoiceInfo(
+                //     InvoiceInfo(
+                //         name: _nameOrCompanyController.text,
+                //         invoiceMail: _emailController.text,
+                //         taxNumber: _taxNumberController.text,
+                //         country: _countryController.text,
+                //         postalCode: _zipController.text,
+                //         city: _cityController.text,
+                //         streetAddress: _streetController.text)));
+
+                UserInvoiceAddress invoiceAddress = UserInvoiceAddress(
+                  customerName: _nameOrCompanyController.text,
+                  email: _emailController.text,
+                  taxNumber: _taxNumberController.text,
+                  country: _countryController.text,
+                  postalCode: _zipController.text,
+                  city: _cityController.text,
+                  streetAddress: _streetController.text,
+                );
+
+                if (widget.paymentMode.method == 'inapp') {
+                  Nav.pop();
+                  Nav.to(StripePaymentScreen(
+                    orderId: widget.orderId,
+                    invoiceAddress: invoiceAddress,
+                  ));
+                } else {
+                  getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
+                    // cart: widget.cart,
+                    orderId: widget.orderId,
+                    paymentMethod: widget.paymentMode.method,
+                    invoiceAddress: invoiceAddress,
+                  ));
+                }
               }
             }
             //: null,
             ),
       );
     });
+  }
+
+  void _setTextFieldValue(TextEditingController textController, String value) {
+    textController.value = textController.value.copyWith(
+      text: value,
+      selection: TextSelection.collapsed(offset: value?.length ?? 0),
+    );
   }
 }

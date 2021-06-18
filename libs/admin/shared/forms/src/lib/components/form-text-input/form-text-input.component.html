@@ -8,12 +8,13 @@
       [fieldSize]="fieldSize!"
       [formControl]="control"
       [autocomplete]="false"
+      [readonly]="readonly"
       [status]="
         control.touched && (control.errors?.required || control.invalid)
           ? 'danger'
           : 'basic'
       "
-      [id]="inputId"
+      [attr.data-testid]="inputId"
     />
   </label>
 </div>

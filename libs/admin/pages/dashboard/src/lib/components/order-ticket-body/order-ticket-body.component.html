@@ -3,11 +3,11 @@
   <div class="col-12 col-md-4 p-1 md-h-100">
     <ng-container *ngIf="!dashboardSettings.orderEditing">
       <bgap-order-ticket-list
-        *ngIf="dashboardSettings.listMode === EDashboardListMode.CURRENT"
+        *ngIf="dashboardSettings.listMode === EDashboardListMode.current"
       ></bgap-order-ticket-list>
 
       <bgap-order-ticket-history-list
-        *ngIf="dashboardSettings.listMode === EDashboardListMode.HISTORY"
+        *ngIf="dashboardSettings.listMode === EDashboardListMode.history"
       ></bgap-order-ticket-history-list>
     </ng-container>
 
@@ -21,15 +21,15 @@
   <div class="col-12 col-md-8 p-1 md-h-100">
     <nb-card *ngIf="selectedOrder" class="md-h-100">
       <nb-card-header class="p-2">
-        <div class="float-left font-larger pt-1">
-          <div class="d-inline mr-3 ml-2" *ngIf="ordersSum">
+        <div class="float-start font-larger pt-1">
+          <div class="d-inline me-3 ms-2" *ngIf="ordersSum">
             #{{ selectedOrder.orderNum }}
           </div>
 
           <nb-icon class="user-icon" icon="person-outline"></nb-icon>
           {{ selectedOrder.place?.table }}/{{ selectedOrder.place?.seat }}
 
-          <div class="d-inline ml-3" *ngIf="ordersSum">
+          <div class="d-inline ms-3" *ngIf="ordersSum">
             Σ
             {{
               (dashboardSettings.showAllUserOrders
@@ -41,13 +41,13 @@
 
           <button
             *ngIf="
-              dashboardSettings.listMode === EDashboardListMode.CURRENT &&
+              dashboardSettings.listMode === EDashboardListMode.current &&
               activeOrdersCount > 1 &&
               !dashboardSettings.orderEditing
             "
             nbButton
             shape="round"
-            class="ml-3 d-inline"
+            class="ms-3 d-inline"
             [size]="buttonSize"
             [status]="dashboardSettings.showAllUserOrders ? 'success' : 'basic'"
             (click)="toggleShowAllUserOrders()"
@@ -57,7 +57,7 @@
         </div>
 
         <!--button
-          *ngIf="dashboardSettings.listMode === EDashboardListMode.CURRENT"
+          *ngIf="dashboardSettings.listMode === EDashboardListMode.current"
           nbButton
           class="float-right mt-1"
           [size]="buttonSize"
@@ -73,7 +73,7 @@
           status="success"
           [size]="buttonSize"
           shape="round"
-          class="float-right mr-2 mt-1"
+          class="float-right me-2 mt-1"
           (click)="print()"
         >
           <nb-icon icon="printer-outline"></nb-icon>
@@ -86,7 +86,7 @@
             *ngIf="
               !dashboardSettings.showAllUserOrders ||
               (dashboardSettings.showAllUserOrders &&
-                dashboardSettings.listMode === EDashboardListMode.HISTORY)
+                dashboardSettings.listMode === EDashboardListMode.history)
             "
             [order]="selectedOrder"
             [unit]="unit"
@@ -95,7 +95,7 @@
           <ng-container
             *ngIf="
               dashboardSettings.showAllUserOrders &&
-              dashboardSettings.listMode === EDashboardListMode.CURRENT
+              dashboardSettings.listMode === EDashboardListMode.current
             "
           >
             <ng-container *ngFor="let order of userActiveOrders">
@@ -105,7 +105,7 @@
           </ng-container>
 
           <!--bgap-order-print
-            [orders]="(dashboardSettings.showAllUserOrders && dashboardSettings.listMode === EDashboardListMode.CURRENT) ? userActiveOrders : [selectedOrder]"
+            [orders]="(dashboardSettings.showAllUserOrders && dashboardSettings.listMode === EDashboardListMode.current) ? userActiveOrders : [selectedOrder]"
           ></bgap-order-print-->
         </ng-container>
 

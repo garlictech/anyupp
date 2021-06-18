@@ -1,4 +1,5 @@
 import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync';
+import { getAuthenticatedUserIdFromContextIdentity } from '../../resolver-mapping-templates';
 
 export const createOrderResolvers = ({
   lambdaDs,
@@ -16,7 +17,7 @@ export const createOrderResolvers = ({
         "payload": {
           "handler": "createOrderFromCart",
           "payload": {
-            "userId": $util.toJson($ctx.identity.sub),
+            "userId": ${getAuthenticatedUserIdFromContextIdentity},
             "input": $util.toJson($ctx.arguments.input)
           }
         }

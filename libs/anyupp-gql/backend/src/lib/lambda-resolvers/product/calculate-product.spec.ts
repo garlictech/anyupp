@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EProductType,
   EVariantAvailabilityType,
@@ -10,10 +11,9 @@ import {
   calculateActualPricesAndCheckActivity,
   toCreateGeneratedProductInputType,
 } from './calculate-product';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 describe('calculatePricesAndCheckActivity method', () => {
-  const baseProduct: Product = {
+  const baseProduct: Product & { unitId: string } = {
     id: 'PRODUCT_ID',
     chainId: 'CHAIN_ID',
     groupId: 'GROUP_ID',
@@ -72,7 +72,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     ],
   };
   const prodComponentMap: ProductComponentMap = {
-    ['PRODUCT_COMPONENT_ID_01']: {
+    PRODUCT_COMPONENT_ID_01: {
       id: 'PRODUCT_COMPONENT_ID_01',
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_NAME' },
@@ -81,7 +81,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
     },
-    ['PRODUCT_COMPONENT_ID_02']: {
+    PRODUCT_COMPONENT_ID_02: {
       id: 'PRODUCT_COMPONENT_ID_02',
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_NAME' },
@@ -92,7 +92,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     },
   };
   const prodComponentSetMap: ProductComponentSetMap = {
-    ['PROUDCT_SET_01']: {
+    PROUDCT_SET_01: {
       id: 'PROUDCT_SET_01',
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_SET_NAME' },
@@ -180,7 +180,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     expect(
       toCreateGeneratedProductInputType({
         product: result,
-        unitId: baseProduct.unitId!,
+        unitId: baseProduct.unitId,
         productConfigSets: result.configSets,
         productComponentSetMap: prodComponentSetMap,
         productComponentMap: prodComponentMap,
