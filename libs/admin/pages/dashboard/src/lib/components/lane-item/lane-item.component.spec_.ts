@@ -6,13 +6,11 @@ xdescribe('LaneItemComponent', (): void => {
   let component: LaneItemComponent;
   let fixture: ComponentFixture<LaneItemComponent>;
 
-  beforeEach(
-    async (): Promise<void> => {
-      await TestBed.configureTestingModule({
-        declarations: [LaneItemComponent],
-      }).compileComponents();
-    },
-  );
+  beforeEach(async (): Promise<void> => {
+    await TestBed.configureTestingModule({
+      declarations: [LaneItemComponent],
+    }).compileComponents();
+  });
 
   beforeEach((): void => {
     fixture = TestBed.createComponent(LaneItemComponent);

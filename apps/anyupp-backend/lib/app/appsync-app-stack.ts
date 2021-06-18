@@ -150,6 +150,7 @@ export class AppsyncAppStack extends sst.Stack {
         new iam.PolicyStatement({
           actions: [
             'cognito-idp:AdminCreateUser',
+            'cognito-idp:ListUsers',
             'cognito-idp:AdminGetUser',
             'cognito-idp:AdminDeleteUser',
             'cognito-idp:AdminSetUserPassword',

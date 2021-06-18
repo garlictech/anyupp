@@ -26,7 +26,8 @@ import { select, Store } from '@ngrx/store';
 })
 export class ProductCategoryFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit {
+  implements OnInit
+{
   public productCategory?: CrudApi.ProductCategory;
   public eImageType = EImageType;
 

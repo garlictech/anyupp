@@ -118,6 +118,7 @@
     "listTitle": "Vezérlőpult",
     "isAcceptingOrders": "Rendeléseket fogad",
     "defaultLane": "Default",
+    "orderItemsCount": "Rendelés tételek száma",
     "actions": {
       "fontSize": "Betűméret",
       "floorMap": "Asztal térkép",
@@ -274,6 +275,7 @@
     "addLane": "Pálya hozzáadása",
     "regenerateMenu": "Étlap újragenerálása",
     "editFloorMap": "Alaprajz szerkesztése",
+    "missingFloorMap": "Nincs alaprajz adat.",
     "table": "Asztal",
     "seat": "Szék",
     "counter": "Pult",

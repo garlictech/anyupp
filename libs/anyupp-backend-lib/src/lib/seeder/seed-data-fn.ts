@@ -1,5 +1,6 @@
 import { catchError, map, switchMap } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { EProductType } from '@bgap/shared/types';
 import {
   chainFixture,
@@ -16,6 +17,7 @@ import { CognitoIdentityServiceProvider } from 'aws-sdk';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
+  anyuppSdk: AnyuppApi.AnyuppSdk;
   userPoolId: string;
   cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
 }
@@ -58,8 +60,11 @@ const generateCartId = (idx: number) => `${seededIdPrefix}cart_${idx}_id`;
 const generateUserId = (idx: number) => `${seededIdPrefix}user_${idx}_id`;
 const generateRoleContextId = (idx: number, role: CrudApi.Role) =>
   `${seededIdPrefix}role_context_${idx}_${role}_id`;
-const generateAdminRoleContextId = (idx: number, role: CrudApi.Role) =>
-  `${seededIdPrefix}admin_role_context_${idx}_${role}_id`;
+const generateAdminRoleContextId = (
+  idx: number,
+  role: CrudApi.Role,
+  username: string,
+) => `${seededIdPrefix}admin_role_context_${idx}_${role}_${username}_id`;
 
 const deleteCreate = <T, K>(
   deleteOperation: () => Observable<T>,
@@ -154,6 +159,159 @@ export const createTestUnit =
           name: 'konyha',
         },
       ],
+      floorMap: {
+        w: 800,
+        h: 300,
+        objects: [
+          {
+            id: 'caxj47xzn7n',
+            t: CrudApi.UnitMapObjectType.table_r,
+            c: '01',
+            w: 150,
+            h: 60,
+            r: null,
+            a: 0,
+            x: 10,
+            y: 10,
+            tID: '01',
+            sID: null,
+          },
+          {
+            id: 'f87azndb8ct',
+            t: CrudApi.UnitMapObjectType.table_r,
+            c: '03',
+            w: 150,
+            h: 60,
+            r: null,
+            a: 0,
+            x: 376,
+            y: 10,
+            tID: '03',
+            sID: null,
+          },
+          {
+            id: 'cyh9qwe2axr',
+            t: CrudApi.UnitMapObjectType.table_r,
+            c: '02',
+            w: 150,
+            h: 60,
+            r: null,
+            a: 0,
+            x: 192,
+            y: 10,
+            tID: '02',
+            sID: null,
+          },
+          {
+            id: 'ufegqdtf82h',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 20,
+            y: 60,
+            c: '01',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '01',
+            sID: '01',
+          },
+          {
+            id: 'eohk3z8f9oq',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 68,
+            y: 60,
+            c: '02',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '01',
+            sID: '02',
+          },
+          {
+            id: 'l4i62x7idpo',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 116,
+            y: 60,
+            c: '03',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '01',
+            sID: '03',
+          },
+          {
+            id: 'nlqoylp88p9',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 206,
+            y: 60,
+            c: '01',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '02',
+            sID: '01',
+          },
+          {
+            id: 'mxo7tnz53sh',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 254,
+            y: 60,
+            c: '02',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '02',
+            sID: '02',
+          },
+          {
+            id: 'temzt4yr0uc',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 300,
+            y: 60,
+            c: '03',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '02',
+            sID: '03',
+          },
+          {
+            id: '7r01h7bl7j2',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 386,
+            y: 60,
+            c: '01',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '03',
+            sID: '01',
+          },
+          {
+            id: 't767czui7oj',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 436,
+            y: 60,
+            c: '02',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '03',
+            sID: '02',
+          },
+          {
+            id: 'w6hsmjl8jo',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 484,
+            y: 60,
+            c: '03',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '03',
+            sID: '03',
+          },
+        ],
+      },
     };
     return deleteCreate(
       () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
@@ -546,6 +704,7 @@ export const createTestAdminRoleContext =
       id: generateAdminRoleContextId(
         adminRoleContextIdx,
         CrudApi.Role.superuser,
+        adminUserId,
       ),
       adminUserId,
       roleContextId: generateRoleContextId(
@@ -557,6 +716,7 @@ export const createTestAdminRoleContext =
       id: generateAdminRoleContextId(
         adminRoleContextIdx,
         CrudApi.Role.chainadmin,
+        adminUserId,
       ),
       adminUserId,
       roleContextId: generateRoleContextId(

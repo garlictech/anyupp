@@ -37,7 +37,7 @@ class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   }
 
   @override
-  Future<bool> registerUserWithEmailAndPassword(
+  Future<String> registerUserWithEmailAndPassword(
       String userEmail, String userPhone, String email, String password) {
     return _emailLoginProvider.registerUserWithEmailAndPassword(
         userEmail, userPhone, email, password);

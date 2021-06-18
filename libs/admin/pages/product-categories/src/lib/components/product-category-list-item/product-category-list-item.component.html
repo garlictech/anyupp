@@ -1,5 +1,5 @@
 <nb-user
-  class="float-left"
+  class="float-start"
   [name]="productCategory.name | localize"
   [title]="productCategory.description | localize"
   [picture]="(productCategory.image || '' | awsStoragePath) || ''"
@@ -21,7 +21,7 @@
   nbButton
   shape="round"
   size="tiny"
-  class="float-right mr-2"
+  class="float-right me-2"
   [title]="'common.moveDown' | translate"
   (click)="moveDown()"
 >
@@ -32,7 +32,7 @@
   nbButton
   shape="round"
   size="tiny"
-  class="float-right mr-2"
+  class="float-right me-2"
   [title]="'common.moveUp' | translate"
   (click)="moveUp()"
 >
