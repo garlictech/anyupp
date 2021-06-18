@@ -9,8 +9,8 @@ Feature: Create or update Unit
     Then I should be on the dashboard page
     # Set the desired lang
     Then I set the language to EN
-    And I select the "Seeded chain #1" chain in the header menu
-    And I select the "Seeded group #1" group in the header menu
+    And I select the "Rab lánc #1" chain in the header menu
+    And I select the "Nagy csoport #1" group in the header menu
     When I click on the menu icon
     And I click on the "Units" text
     Then the "Units" title is displayed
@@ -21,7 +21,7 @@ Feature: Create or update Unit
     When I click on the close button
     Then the "Units" title is displayed
     When I click on the plus button
-    Then The group selector should contain "Seeded group #1"
+    Then The group selector should contain "Nagy csoport #1"
     When I fill out the "Name" input with "test unit 1"
     And I fill out the "Description (HU)" input with "test description"
     And I fill out the "Description (EN)" input with "test description"
