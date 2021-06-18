@@ -1,4 +1,5 @@
 import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync';
+import { getAuthenticatedUserIdFromContextIdentity } from '../../resolver-mapping-templates';
 
 export const createStripeResolvers = ({
   lambdaDs,
@@ -17,7 +18,7 @@ export const createStripeResolvers = ({
         "payload": {
           "handler": "startStripePayment",
           "payload": {
-            "userId": $util.toJson($ctx.identity.claims.get("cognito:username")),
+            "userId": ${getAuthenticatedUserIdFromContextIdentity},
             "input": $util.toJson($ctx.arguments.input)
           }
         }
@@ -38,7 +39,7 @@ export const createStripeResolvers = ({
         "payload": {
           "handler": "listStripeCards",
           "payload": {
-            "userId": $util.toJson($ctx.identity.claims.get("cognito:username")),
+            "userId": ${getAuthenticatedUserIdFromContextIdentity},
             "input": $util.toJson($ctx.arguments.input)
           }
         }

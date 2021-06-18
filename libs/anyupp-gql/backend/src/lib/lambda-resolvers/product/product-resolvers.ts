@@ -1,4 +1,5 @@
 import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync';
+import { getAuthenticatedUserIdFromContextIdentity } from '../../resolver-mapping-templates';
 
 export const createProductResolvers = ({
   lambdaDs,
@@ -16,7 +17,7 @@ export const createProductResolvers = ({
         "payload": {
           "handler": "createUnitProduct",
           "payload": {
-            "userId": $util.toJson($ctx.identity.claims.get("cognito:username")),
+            "userId": ${getAuthenticatedUserIdFromContextIdentity},
             "input": $util.toJson($ctx.arguments.input)
           }
         }
