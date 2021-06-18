@@ -29,7 +29,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       CognitoUser user = _service.createCognitoUser(email);
       CognitoUserSession session = await user.authenticateUser(_service.getAuthDetails(email, password));
       if (session.isValid()) {
-        User user = await _authProvider.loginWithCognitoSession(session, username: isAnonymus ? 'Anonymus' : email);
+        User user = await _authProvider.loginWithCognitoSession(session, isAnonymus ? 'Anonymus' : email);
         await _service;
         return ProviderLoginResponse(
           credential: null,
@@ -66,14 +66,14 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       print('signInAnonymously.response().exception=${result.exception}');
       print('signInAnonymously.response().data=${jsonEncode(result.data)}');
       
-      String email = result.data['createAnonymUser']['email'];
+      String email = result.data['createAnonymUser']['username'];
       String pwd = result.data['createAnonymUser']['pwd'];
       if (email != null && pwd != null) {
         return loginWithEmailAndPassword(email, pwd, isAnonymus: true);
       }
       return null;
     } on Exception catch (e) {
-      print('AwsOrderProvider.addInvoiceInfo().exception=$e');
+      print('AwsOrderProvider.emailLogin().exception=$e');
       throw LoginException(
             code: LoginException.CODE,
             message: "Failed to Create Anonymus user",
