@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash/fp';
 import { EMPTY } from 'rxjs';
-import { catchError, switchMap, take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
