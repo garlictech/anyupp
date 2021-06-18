@@ -2,9 +2,9 @@
 
 exports[`Admin user creation/deletion Admin user should be created/deleted: Cleanup 1`] = `true`;
 
-exports[`Admin user creation/deletion Admin user should be created/deleted: Invalid phone number error 1`] = `[Error: GraphQL error: Invalid phone number format.]`;
+exports[`Admin user creation/deletion Admin user should be created/deleted: Invalid phone number error 1`] = `[InvalidParameterException: Invalid phone number format.]`;
 
-exports[`Admin user creation/deletion Admin user should be created/deleted: Malformed email error 1`] = `[Error: GraphQL error: Invalid email address format.]`;
+exports[`Admin user creation/deletion Admin user should be created/deleted: Malformed email error 1`] = `[InvalidParameterException: Invalid email address format.]`;
 
 exports[`Admin user creation/deletion Admin user should be created/deleted: Should not create existing user 1`] = `
 Object {
