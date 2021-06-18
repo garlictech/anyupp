@@ -16,7 +16,7 @@ import {
   validateUnit,
 } from '../libs/shared/data-validators/src';
 
-const EMAIL = 'megafirstsuperuser@anyupp.com';
+const EMAIL = 'anyupp-admin@anyupp.com';
 const PASSWORD = 'Hideghegy12_';
 const USER_NAME = 'megafirstsuperuser';
 const CONTEXT = 'SU_CTX_ID';

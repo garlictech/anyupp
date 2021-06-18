@@ -7,6 +7,7 @@ import {
 import { switchMap } from 'rxjs/operators';
 import { createAuthenticatedCrudSdk } from '../../../api-clients';
 import { createTestCart, deleteTestCart } from '../../seeds/cart';
+import { Auth } from 'aws-amplify';
 
 describe('getCart test', () => {
   let authSdk: CrudApi.CrudSdk;
@@ -24,6 +25,7 @@ describe('getCart test', () => {
 
   afterAll(async () => {
     await deleteTestCart(cartFixture.cart_01.id, authSdk).toPromise();
+    await Auth.signOut();
   });
 
   it('successful query execution', done => {
