@@ -26,7 +26,9 @@ class AwsAuthProvider implements IAuthProvider {
       if (isLooggedIn) {
         if (_user == null) {
           CognitoUser user = await _service.currentUser;
-          _user = await _userFromAttributes(user);
+          if (user != null) {
+            _user = await _userFromAttributes(user);
+          }
         }
       } else {
         if (_user != null) {
@@ -49,7 +51,7 @@ class AwsAuthProvider implements IAuthProvider {
   }
 
   @override
-  Future<User> loginWithCognitoSession(CognitoUserSession session, {String username}) async {
+  Future<User> loginWithCognitoSession(CognitoUserSession session, String username) async {
     print('loginWithCognitoSession().session=$session, username=$username');
     try {
       CognitoUser user = await _service.createCognitoUserFromSession(session, username);
