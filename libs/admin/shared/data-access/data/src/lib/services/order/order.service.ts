@@ -210,7 +210,7 @@ export class OrderService {
             userId: this._adminUser.id,
           });
 
-          let input: CrudApi.UpdateOrderInput = {
+          const input: CrudApi.UpdateOrderInput = {
             id: order.id,
             items: _order.items,
           };
