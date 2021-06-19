@@ -8,7 +8,7 @@ import { AdminUserResolverDeps } from './utils';
 export const deleteAdminUser =
   (params: AnyuppApi.DeleteAdminUserMutationVariables) =>
   (deps: AdminUserResolverDeps) => {
-    console.debug('Resolver parameters: ', params);
+    console.debug('deleteAdminUser Resolver parameters: ', params);
 
     return from(
       deps.cognitoidentityserviceprovider

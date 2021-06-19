@@ -7,22 +7,37 @@ import {
 } from '@bgap/shared/fixtures';
 import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { createAuthenticatedCrudSdk } from '../../api-clients';
+import {
+  createAuthenticatedCrudSdk,
+  createIamCrudSdk,
+} from '../../api-clients';
 
-describe('CRUD ownership tests', () => {
+describe.skip('CRUD ownership tests', () => {
   let authSdk: CrudApi.CrudSdk;
   const publicSdk = CrudApi.getCrudSdkPublic();
+  const iamSdk = createIamCrudSdk();
   const adminUserId = testAdminEmail.split('@')[0];
+
+  const cleanup = async () => {
+    await iamSdk.DeleteUser({ input: { id: adminUserId } }).toPromise();
+  };
 
   beforeAll(async () => {
     authSdk = await createAuthenticatedCrudSdk(
       testAdminEmail,
       testAdminUserPassword,
     ).toPromise();
+
+    cleanup();
+    await iamSdk.CreateUser({ input: { id: adminUserId } }).toPromise();
+  });
+
+  afterAll(async () => {
+    cleanup();
   });
 
   it('It should not access own data of AdminUser without signin', done => {
-    publicSdk.GetAdminUser({ id: adminUserId }).subscribe({
+    publicSdk.GetUser({ id: adminUserId }).subscribe({
       next: x => console.warn(x),
       error(e) {
         expect(e).toMatchSnapshot();
@@ -32,9 +47,9 @@ describe('CRUD ownership tests', () => {
   }, 15000);
 
   it('It should access own data of AdminUser with signin', done => {
-    authSdk.GetAdminUser({ id: adminUserId }).subscribe({
-      next(e) {
-        expect(e).toMatchSnapshot();
+    authSdk.GetUser({ id: adminUserId }).subscribe({
+      next(data) {
+        expect(data?.id).toEqual(adminUserId);
         done();
       },
     });
@@ -44,7 +59,7 @@ describe('CRUD ownership tests', () => {
     createAuthenticatedCrudSdk(otherAdminEmails[0], testAdminUserPassword)
       .pipe(
         switchMap(anotherAuthSdk =>
-          anotherAuthSdk.GetAdminUser({ id: adminUserId }),
+          anotherAuthSdk.GetUser({ id: adminUserId }),
         ),
       )
       .subscribe({

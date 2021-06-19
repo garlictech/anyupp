@@ -47,6 +47,12 @@ export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
     userData.map(({ email, username, phone }) =>
       deps.crudSdk.DeleteAdminUser({ input: { id: username } }).pipe(
+        catchError(err => {
+          console.warn(
+            `Temporarily ignored error during admin user deletion: ${err}`,
+          );
+          return of({});
+        }),
         switchMap(() =>
           defer(() =>
             from(

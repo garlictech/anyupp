@@ -20,8 +20,8 @@ const chainBase: CrudApi.CreateChainInput = {
     },
   },
   description: {
-    hu: `Teszt chain #${chainId_01} leírás`,
-    en: `Test chain #${chainId_01} description`,
+    hu: `Rab lánc leírás`,
+    en: `Prisoner chain description`,
   },
   isActive: true,
   email: 'test@anyupp.com',

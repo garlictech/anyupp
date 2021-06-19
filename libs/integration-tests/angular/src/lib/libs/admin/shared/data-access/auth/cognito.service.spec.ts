@@ -32,21 +32,21 @@ describe('Testing cognito service', () => {
 
     from(Auth.signIn(testAdminEmail, testAdminUserPassword))
       .pipe(
-        //tap(x => console.warn('****1', x)),
         switchMap(() => service.handleContext()),
-        //tap(x => console.warn('****2', x)),
         switchMap(() => from(Auth.currentAuthenticatedUser())),
-        //tap(x => console.warn('****3', x)),
         tap((auth: CognitoUser) => {
           const token = auth?.getSignInUserSession()?.getIdToken();
           const decoded = token?.decodePayload();
-          console.warn('****4', decoded);
-          //expect(decoded?.role).toEqual('superuser');
-          //expect(decoded?.['custom:context']).toEqual(goodContext);
+          expect(decoded?.role).toEqual('superuser');
+          expect(decoded?.['custom:context']).toEqual(goodContext);
         }),
       )
       .subscribe(() => done());
   }, 25000);
+
+  afterAll(async () => {
+    await Auth.signOut();
+  });
 
   test('Test invalid authorization', done => {
     service.currentContext = badContext;
