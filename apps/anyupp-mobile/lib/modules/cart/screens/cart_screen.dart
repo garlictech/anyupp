@@ -105,7 +105,7 @@ class CartScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is UnitSelected) {
             return StreamBuilder<Cart>(
-              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
+              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
               builder: (context, AsyncSnapshot<Cart> snapshot) {
                 // print('CartScreen.snapshot=$snapshot');
                 if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {

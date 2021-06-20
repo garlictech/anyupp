@@ -211,7 +211,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                 ),
                 StreamBuilder<Cart>(
-                  stream: getIt<CartRepository>().getCurrentCartStream(unit.chainId, unit.id),
+                  stream: getIt<CartRepository>().getCurrentCartStream(unit.id),
                   builder: (context, AsyncSnapshot<Cart> snapshot) {
                     if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                       //return _buildVariantsList(snapshot.data, widget.item.variants);

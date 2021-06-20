@@ -32,13 +32,13 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
         if (event.orderId != null) {
            await _paymentRepository.startOrderExternalPayment(
             event.orderId,
-            event.paymentMethod,
+            event.paymentMode,
             event.invoiceAddress,
           );
         } else {
           await _paymentRepository.startExternalPayment(
             _orderRepository.cart,
-            event.paymentMethod,
+            event.paymentMode,
             event.invoiceAddress,
           );
         }

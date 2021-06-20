@@ -8,48 +8,48 @@ class OrderRepository {
 
   OrderRepository(this._provider);
 
-  Future<Cart> getCurrentCart(String chainId, String unitId) async {
-    return _provider.getCurrentCart(chainId, unitId);
+  Future<Cart> getCurrentCart(String unitId) async {
+    return _provider.getCurrentCart(unitId);
   }
 
-  Stream<Cart> getCurrentCartStream(String chainId, String unitId) {
-    return _provider.getCurrentCartStream(chainId, unitId);
+  Stream<Cart> getCurrentCartStream(String unitId) {
+    return _provider.getCurrentCartStream(unitId);
   }
 
-  Future<void> updateCart(String chainId, String unitId, Cart cart) async {
-    return _provider.updateCart(chainId, unitId, cart);
+  Future<void> updateCart(String unitId, Cart cart) async {
+    return _provider.updateCart(unitId, cart);
   }
 
-  Future<void> clearCart(String chainId, String unitId) async {
-    return _provider.clearCart(chainId, unitId);
+  Future<void> clearCart() async {
+    return _provider.clearCart();
   }
 
-  Stream<List<Order>> getCurrentOrders(String chainId, String unitId) {
-    return _provider.getCurrentOrders(chainId, unitId);
+  Stream<List<Order>> getCurrentOrders(String unitId) {
+    return _provider.getCurrentOrders(unitId);
   }
 
-  Stream<List<Order>> getOrderHistory(String chainId, String unitId) {
-    return _provider.getOrderHistory(chainId, unitId);
+  Stream<List<Order>> getOrderHistory(String unitId) {
+    return _provider.getOrderHistory(unitId);
   }
 
   Future<void> createAndSendOrderFromCart() async {
     await _provider.createAndSendOrderFromCart();
   }
 
-  Future<void> userPaymentIntentionSignal(String chainId, String unitId) async {
-    await _provider.userPaymentIntentionSignal(chainId, unitId);
+  Future<void> userPaymentIntentionSignal(String unitId) async {
+    await _provider.userPaymentIntentionSignal(unitId);
   }
 
-  Future<void> startOrderListSubscription(String chainId, String unitId) async {
-    await _provider.startOrderListSubscription(chainId, unitId);
+  Future<void> startOrderListSubscription(String unitId) async {
+    await _provider.startOrderListSubscription(unitId);
   }
 
   Future<void> stopOrderListSubscription() async {
     await _provider.stopOrderListSubscription();
   }
 
-  Future<void> startOrderHistoryListSubscription(String chainId, String unitId) async {
-    await _provider.startOrderHistoryListSubscription(chainId, unitId);
+  Future<void> startOrderHistoryListSubscription(String unitId) async {
+    await _provider.startOrderHistoryListSubscription(unitId);
   }
 
   Future<void> stopOrderHistoryListSubscription() async {
