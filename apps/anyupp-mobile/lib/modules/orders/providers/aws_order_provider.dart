@@ -32,7 +32,7 @@ class AwsOrderProvider implements IOrdersProvider {
         subscriptionNodeName: 'onOrderChanged',
         modelFromJson: (json) => Order.fromJson(json),
         filterModel: (model) => !model.archived,
-        sortItems: (items) => items.sort((a, b) => b.orderNum.compareTo(a.orderNum)),
+        sortItems: (items) => items.sort((a, b) => b.created.compareTo(a.created)),
         );
 
     _subOrderHistoryList = AwsSubscription<Order>(
@@ -43,7 +43,7 @@ class AwsOrderProvider implements IOrdersProvider {
       subscriptionNodeName: 'onOrderChanged',
       modelFromJson: (json) => Order.fromJson(json),
       filterModel: (model) => model.archived,
-        sortItems: (items) => items.sort((a, b) => b.orderNum.compareTo(a.orderNum)),
+        sortItems: (items) => items.sort((a, b) => b.created.compareTo(a.created)),
     );
   }
 
