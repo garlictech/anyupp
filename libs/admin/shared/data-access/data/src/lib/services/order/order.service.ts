@@ -4,7 +4,11 @@ import { switchMap, take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import {
+  currentStatus,
+  getOrderStatusByItemsStatus,
+  ordersSelectors,
+} from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
 
@@ -154,6 +158,41 @@ export class OrderService {
     }
   }
 
+  public updateOrderStatusFromNoneToPlaced(order: CrudApi.Order) {
+    if (this._adminUser?.id) {
+      const userId = this._adminUser?.id;
+      const items = cloneDeep(order.items);
+      items.forEach(item => {
+        // Update only none item status to placed!!!
+        if (currentStatus(item.statusLog) === CrudApi.OrderStatus.none) {
+          item.statusLog.push({
+            status: CrudApi.OrderStatus.placed,
+            ts: new Date().getTime(),
+            userId,
+          });
+        }
+      });
+
+      return this._crudSdk.doMutation(
+        this._crudSdk.sdk.UpdateOrder({
+          input: {
+            id: order.id,
+            items,
+            statusLog: [
+              {
+                status: CrudApi.OrderStatus.placed,
+                ts: new Date().getTime(),
+                userId,
+              },
+            ],
+          },
+        }),
+      );
+    } else {
+      return EMPTY;
+    }
+  }
+
   public updateOrderItemStatus(
     orderId: string,
     status: CrudApi.OrderStatus,
@@ -171,12 +210,25 @@ export class OrderService {
             userId: this._adminUser.id,
           });
 
+          const input: CrudApi.UpdateOrderInput = {
+            id: order.id,
+            items: _order.items,
+          };
+
+          const newOrderStatus = getOrderStatusByItemsStatus(_order);
+          if (newOrderStatus) {
+            input.statusLog = [
+              {
+                status: newOrderStatus,
+                ts: new Date().getTime(),
+                userId: this._adminUser.id,
+              },
+            ];
+          }
+
           return this._crudSdk.doMutation(
             this._crudSdk.sdk.UpdateOrder({
-              input: {
-                id: order.id,
-                items: _order.items,
-              },
+              input,
             }),
           );
         } else {

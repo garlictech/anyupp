@@ -51,7 +51,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
           if (state is UnitSelected) {
             final GeoUnit unit = state.unit;
             return StreamBuilder<List<Order>>(
-              stream: _repository.getOrderHistory(unit.chainId, unit.id),
+              stream: _repository.getOrderHistory(unit.id),
               builder: (context, AsyncSnapshot<List<Order>> historySnapshot) {
                 if (historySnapshot.connectionState != ConnectionState.waiting || historySnapshot.hasData) {
                   if (historySnapshot.data == null || historySnapshot.data.isEmpty) {

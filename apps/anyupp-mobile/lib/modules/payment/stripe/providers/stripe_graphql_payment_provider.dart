@@ -43,6 +43,11 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   Future<void> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId, UserInvoiceAddress invoiceAddress) async {
     print('startStripePaymentWithExistingCard().start()=$cart');
     print('startStripePaymentWithExistingCard().invoiceAddress=$invoiceAddress');
+    await _ordersProvider.setPaymentMode(cart.unitId, PaymentMode(
+      method: 'inapp',
+      type: 'stripe',
+      caption: 'stripe'
+    ));
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
     print('startStripePaymentWithExistingCard().orderId=$orderId');
@@ -85,6 +90,11 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     print('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
     print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
     print('startStripePaymentWithExistingCard().invoiceAddress=$invoiceAddress');
+    await _ordersProvider.setPaymentMode(cart.unitId, PaymentMode(
+      method: 'inapp',
+      type: 'stripe',
+      caption: 'stripe'
+    ));
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
     print('startStripePaymentWithNewCard().orderId=$orderId');

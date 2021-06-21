@@ -190,7 +190,7 @@
         "country": "Country",
         "zip": "Zip Code",
         "city": "City",
-        "street address": "Street address",
+        "street_address": "Street address",
         "invoice_email": "Invoice Email",
         "invoiceAddress": "Use previous address",
         "show": "Show"

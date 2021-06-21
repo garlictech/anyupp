@@ -14,8 +14,10 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
 
 
   @override
-  Future<void> startExternalPayment(Cart cart, String orderMethod, UserInvoiceAddress invoiceAddress) async {
-    print('startExternalPayment().start()=$cart');
+  Future<void> startExternalPayment(Cart cart, PaymentMode paymentMode, UserInvoiceAddress invoiceAddress) async {
+    print('startExternalPayment().start().orderMethod=$paymentMode, cart=${cart?.id}');
+
+    await _ordersProvider.setPaymentMode(cart.unitId, paymentMode);
 
     String orderId = await _ordersProvider.createAndSendOrderFromCart();
     print('startExternalPayment().orderId=$orderId');
@@ -29,8 +31,8 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
       mutation: MUTATION_START_PAYMENT,
       variables: createStartPaymentRequestVariables(
         orderId: orderId,
-        paymentMethod: orderMethod,
-        paymentMethodId: 'cash',
+        paymentMethod: paymentMode.method,
+        paymentMethodId: paymentMode.method,
         saveCard: false,
         invoiceAddress: invoiceAddress,
       ),
@@ -40,8 +42,8 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
   }
 
    @override
-  Future<void> startOrderExternalPayment(String orderId, String orderMethod, UserInvoiceAddress invoiceAddress) async {
-    print('startOrderExternalPayment().orderId=$orderId, orderMethod=$orderMethod, invoice=$invoiceAddress');
+  Future<void> startOrderExternalPayment(String orderId, PaymentMode paymentMode, UserInvoiceAddress invoiceAddress) async {
+    print('startOrderExternalPayment().orderId=$orderId, orderMethod=$paymentMode, invoice=$invoiceAddress');
   if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR,
@@ -52,8 +54,8 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
       mutation: MUTATION_START_PAYMENT,
       variables: createStartPaymentRequestVariables(
         orderId: orderId,
-        paymentMethod: orderMethod,
-        paymentMethodId: orderMethod,
+        paymentMethod: paymentMode.method,
+        paymentMethodId: paymentMode.method,
         saveCard: false,
         invoiceAddress: invoiceAddress,
       ),
