@@ -12,8 +12,9 @@ import { EProductType } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
+import { DateTime } from 'luxon';
 import { combineLatest, concat, Observable, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
@@ -56,7 +57,7 @@ const generateVariantId = (
   type: string,
 ) =>
   `${seededIdPrefix}${type}_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
-const generateCartId = (idx: number) => `${seededIdPrefix}cart_${idx}_id`;
+const generateOrderId = (idx: number) => `${seededIdPrefix}order_${idx}_id`;
 const generateUserId = (idx: number) => `${seededIdPrefix}user_${idx}_id`;
 const generateRoleContextId = (idx: number, role: CrudApi.Role) =>
   `${seededIdPrefix}role_context_${idx}_${role}_id`;
@@ -535,33 +536,33 @@ export const createTestUnitProduct =
     );
   };
 
-export const createTestCart =
+export const createTestOrder =
   ({
     chainIdx,
     groupIdx,
     unitIdx,
     productIdx,
     userIdx,
-    cartIdx,
+    orderIdx,
   }: {
     chainIdx: number;
     groupIdx: number;
     unitIdx: number;
     productIdx: number;
     userIdx: number;
-    cartIdx: number;
+    orderIdx: number;
   }) =>
   (deps: SeederDependencies) => {
-    console.debug('createTestCart', {
+    console.debug('createTestOrder', {
       chainIdx,
       groupIdx,
       unitIdx,
       productIdx,
       userIdx,
-      cartIdx,
+      orderIdx,
     });
-    const input: DeletableInput<CrudApi.CreateCartInput> = {
-      id: generateCartId(cartIdx),
+    const input: DeletableInput<CrudApi.CreateOrderInput> = {
+      id: generateOrderId(orderIdx),
       userId: generateUserId(userIdx),
       unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
       paymentMode: {
@@ -569,6 +570,27 @@ export const createTestCart =
         method: CrudApi.PaymentMethod.inapp,
       },
       takeAway: false,
+      archived: false,
+      orderNum: '007007',
+      statusLog: [
+        {
+          userId: 'ADMIN_USER_ID',
+          status: CrudApi.OrderStatus.none,
+          ts: DateTime.utc().toMillis(),
+        },
+      ],
+      place: {
+        seat: '00',
+        table: '70',
+      },
+      sumPriceShown: {
+        currency: 'HUF',
+        pricePerUnit: 0,
+        priceSum: 700,
+        tax: 0, // empty
+        taxSum: 0, // empty
+      },
+      paymentIntention: 0,
       items: [
         {
           productName: {
@@ -579,8 +601,15 @@ export const createTestCart =
             currency: 'HUF',
             pricePerUnit: 350,
             priceSum: 700,
-            tax: 0, // empty
-            taxSum: 0, // empty
+            tax: 27, // empty
+            taxSum: 149, // empty
+          },
+          sumPriceShown: {
+            currency: 'HUF',
+            pricePerUnit: 350,
+            priceSum: 700,
+            tax: 27, // empty
+            taxSum: 149, // empty
           },
           productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
           quantity: 2,
@@ -596,8 +625,8 @@ export const createTestCart =
       ],
     };
     return deleteCreate(
-      () => deps.crudSdk.DeleteCart({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateCart({ input }),
+      () => deps.crudSdk.DeleteOrder({ input: { id: input.id ?? '' } }),
+      () => deps.crudSdk.CreateOrder({ input }),
     );
   };
 

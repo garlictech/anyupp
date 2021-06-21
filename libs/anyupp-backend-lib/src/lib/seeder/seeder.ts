@@ -1,4 +1,8 @@
 import {
+  createAdminUser as resolverCreateAdminUser,
+  ResolverErrorCode,
+} from '@bgap/anyupp-gql/backend';
+import {
   otherAdminEmails,
   testAdminEmail,
   testAdminUserPassword,
@@ -6,26 +10,29 @@ import {
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
-import { catchError, delay, switchMap, tap, toArray } from 'rxjs/operators';
 import {
-  createTestCart,
+  catchError,
+  delay,
+  switchMap,
+  takeLast,
+  tap,
+  toArray,
+} from 'rxjs/operators';
+import {
+  createAdminUser,
+  createComponentSets,
+  createTestAdminRoleContext,
   createTestChain,
   createTestChainProduct,
   createTestGroup,
   createTestGroupProduct,
+  createTestOrder,
   createTestProductCategory,
   createTestRoleContext,
   createTestUnit,
   createTestUnitProduct,
-  createAdminUser,
   SeederDependencies,
-  createComponentSets,
-  createTestAdminRoleContext,
 } from './seed-data-fn';
-import {
-  createAdminUser as resolverCreateAdminUser,
-  ResolverErrorCode,
-} from '@bgap/anyupp-gql/backend';
 
 const ce = (tag: string) =>
   catchError(err => {
@@ -145,6 +152,7 @@ export const seedBusinessData = (deps: SeederDependencies) =>
   )(deps)
     .pipe(
       ce('### RoleContext SEED 01'),
+      takeLast(1), // THIS takeLast is important to not trigger the seed creation multiple times
       delay(1000),
       switchMap(() =>
         concat(
@@ -201,13 +209,13 @@ export const seedBusinessData = (deps: SeederDependencies) =>
             2,
             2,
           )(deps).pipe(ce('### UnitProd SEED 02')),
-          createTestCart({
+          createTestOrder({
             chainIdx: 1,
             groupIdx: 1,
             unitIdx: 1,
             productIdx: 1,
             userIdx: 1,
-            cartIdx: 1,
+            orderIdx: 1,
           })(deps),
         ),
       ),
