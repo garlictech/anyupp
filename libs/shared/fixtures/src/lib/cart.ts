@@ -1,10 +1,9 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { RequiredId } from '@bgap/shared/types';
-import { seededIdPrefix, testIdPrefix } from './common';
+import { testIdPrefix } from './common';
 import { productFixture } from './product';
 import { unitFixture } from './unit';
 const cartId_01 = `${testIdPrefix}cart_1_id`;
-const cart_seeded_01_id = `${seededIdPrefix}cart_1_id`;
 const unitId_01 = unitFixture.unitId_seeded_01;
 const unitProductId_01 = productFixture.unitProductId_seeded_id_01;
 // fictional - not exsisting
@@ -74,7 +73,6 @@ const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   items: [getOrderItem()],
 };
 export const cartFixture = {
-  cart_seeded_01_id,
   cartId_NotExisting,
   cart_01,
   getOrderItem,
