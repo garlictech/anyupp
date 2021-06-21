@@ -11,6 +11,8 @@ export interface StripeStackProps extends sst.StackProps {
   stripeSecretKey: string;
   stripeSigningSecret: string;
   szamlazzhuAgentKey: string;
+  apiAccessKeyId: string;
+  apiSecretAccessKey: string;
 }
 
 export class StripeStack extends sst.Stack {
@@ -33,6 +35,8 @@ export class StripeStack extends sst.Stack {
           STRIPE_SECRET_KEY: props.stripeSecretKey,
           STRIPE_SIGNING_SECRET: props.stripeSigningSecret,
           SZAMLAZZ_HU_AGENT_KEY: props.szamlazzhuAgentKey,
+          API_ACCESS_KEY_ID: props.apiAccessKeyId,
+          API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
         },
       },
     );
