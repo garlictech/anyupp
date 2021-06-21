@@ -2,19 +2,17 @@ import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
-  generatedProductFixture,
   groupFixture,
   productComponentSetFixture,
   seededIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { EProductType } from '@bgap/shared/types';
-import { filterNullish } from '@bgap/shared/utils';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import { DateTime } from 'luxon';
 import { combineLatest, concat, Observable, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
@@ -513,26 +511,6 @@ export const createTestUnitProduct =
     return deleteCreate(
       () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id ?? '' } }),
       () => deps.crudSdk.CreateUnitProduct({ input }),
-    ).pipe(
-      filterNullish(),
-      switchMap(unitProduct => {
-        const input: CrudApi.CreateGeneratedProductInput = {
-          ...generatedProductFixture.getGeneratedProduct({
-            id: unitProduct.id,
-            unitId: unitProduct.unitId,
-            productCategoryId: generateProductCategoryId(1, 1),
-          }),
-          position: unitProduct.position,
-          configSets: productComponentSetFixture.generatedProductConfigSets,
-        };
-        return deleteCreate(
-          () =>
-            deps.crudSdk.DeleteGeneratedProduct({
-              input: { id: input.id ?? '' },
-            }),
-          () => deps.crudSdk.CreateGeneratedProduct({ input }),
-        ).pipe(map(generatedProduct => ({ unitProduct, generatedProduct })));
-      }),
     );
   };
 

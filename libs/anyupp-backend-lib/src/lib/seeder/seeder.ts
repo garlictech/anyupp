@@ -1,11 +1,13 @@
 import {
   createAdminUser as resolverCreateAdminUser,
   ResolverErrorCode,
+  unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
 import {
   otherAdminEmails,
   testAdminEmail,
   testAdminUserPassword,
+  unitFixture,
 } from '@bgap/shared/fixtures';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
@@ -223,10 +225,38 @@ export const seedBusinessData = (deps: SeederDependencies) =>
     )
     .pipe(ce('### seedBusinessData'));
 
+const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
+  of('start').pipe(
+    switchMap(() =>
+      defer(() =>
+        unitRequestHandler({ crudSdk: deps.crudSdk }).regenerateUnitData({
+          input: { id: unitFixture.unitId_seeded_01 },
+        }),
+      ),
+    ),
+    switchMap(() =>
+      defer(() =>
+        unitRequestHandler({ crudSdk: deps.crudSdk }).regenerateUnitData({
+          input: { id: unitFixture.unitId_seeded_02 },
+        }),
+      ),
+    ),
+    switchMap(() =>
+      defer(() =>
+        unitRequestHandler({ crudSdk: deps.crudSdk }).regenerateUnitData({
+          input: { id: unitFixture.unitId_seeded_03 },
+        }),
+      ),
+    ),
+    ce('### regenerateUnitData'),
+  );
+
 export const seedAll = (deps: SeederDependencies) =>
   seedAdminUser(deps).pipe(
     delay(2000),
     switchMap(() => seedBusinessData(deps)),
+    delay(2000),
+    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
     switchMap(() =>
       combineLatest(
         userData.map(({ username }) =>

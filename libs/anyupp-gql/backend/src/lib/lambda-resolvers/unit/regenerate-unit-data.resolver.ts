@@ -114,11 +114,7 @@ const listUnitProductsForAUnit =
       switchMap(validateUnitProductList),
       filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
       switchMap(items =>
-        iif(
-          () => items.length > 0,
-          of(items),
-          throwError(getNoProductInUnitgError()),
-        ),
+        items.length > 0 ? of(items) : throwError(getNoProductInUnitgError()),
       ),
     );
   };
