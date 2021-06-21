@@ -1,10 +1,17 @@
 import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import {
-  testAdminUsername,
+  testAdminEmail,
   testAdminUserPassword,
 } from 'libs/shared/fixtures/src';
 import { interval, of } from 'rxjs';
-import { switchMap, switchMapTo, take, takeUntil, tap } from 'rxjs/operators';
+import {
+  catchError,
+  switchMap,
+  switchMapTo,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 import { createAuthenticatedCrudSdk } from '../../../api-clients';
 import { productFixture } from '@bgap/shared/fixtures';
 
@@ -17,7 +24,7 @@ describe('CRUD sdk test', () => {
     const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
     sdk = getCrudSdkForIAM(accessKeyId, secretAccessKey);
     authSdk = await createAuthenticatedCrudSdk(
-      testAdminUsername,
+      testAdminEmail,
       testAdminUserPassword,
     ).toPromise();
   });
@@ -90,9 +97,11 @@ describe('CRUD sdk test', () => {
 
     const subsSubs = subs$.subscribe();
 
-    of(1)
+    authSdk
+      .DeleteAdminUser({ input: { id } })
       .pipe(
-        switchMap(() => authSdk.DeleteAdminUser({ input: { id } })),
+        // we swallow the error if we cannot delete the user (probably it does not exist)
+        catchError(() => of(true)),
         switchMap(() =>
           authSdk.CreateAdminUser({
             input: { id, name: 'NAME', phone: 'phone', email: 'a@a.hu' },

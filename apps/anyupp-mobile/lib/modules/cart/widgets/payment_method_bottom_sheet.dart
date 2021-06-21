@@ -246,10 +246,8 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
               onPressed: (_selectedPaymentMethod != BottomSheetPaymentMethods.PAYMENT_UNKNOWN)
                   ? () async {
                       if (!loading) {
-                        PaymentMode mode =
-                            BottomSheetPaymentMethods.getPaymentModeFromSelection(_selectedPaymentMethod);
 
-                        getIt<CartBloc>().add(SetPaymentMode(unit, mode));
+                        // getIt<CartBloc>().add(SetPaymentMode(unit.id, mode));
                         print('_selectedPaymentMethod=$_selectedPaymentMethod');
                         if (_selectedPaymentMethod == BottomSheetPaymentMethods.PAYMENT_INAPP) {
                           if (_wantsInvoce) {
@@ -269,8 +267,8 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                             getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
                               // cart: widget.cart,
                               orderId: widget.orderId,
-                              paymentMethod:
-                                  BottomSheetPaymentMethods.getPaymentMethodNameFromNumberValue(_selectedPaymentMethod),
+                              paymentMode:
+                                  BottomSheetPaymentMethods.getPaymentModeFromSelection(_selectedPaymentMethod),
                             ));
                           }
                         }
@@ -365,47 +363,6 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
       ),
     );
   }
-
-  // void _showDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: true,
-  //     builder: (context) {
-  //       return SimpleDialog(
-  //         children: <Widget>[
-  //           Padding(
-  //             padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
-  //             child: Column(
-  //               mainAxisSize: MainAxisSize.min,
-  //               children: <Widget>[
-  //                 SizedBox(
-  //                   width: 64.0,
-  //                   height: 64.0,
-
-  //                   // Check mark animation
-  //                   child: SuccessAnimationWidget(),
-  //                 ),
-
-  //                 // Display message to the user
-  //                 Padding(
-  //                   padding: const EdgeInsets.only(top: 30.0),
-  //                   child: Text(
-  //                     trans('payment.orderPlaced'),
-  //                     style: TextStyle(
-  //                       color: Colors.black,
-  //                       fontSize: 15.0,
-  //                       fontWeight: FontWeight.w500,
-  //                     ),
-  //                   ),
-  //                 )
-  //               ],
-  //             ),
-  //           )
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   Widget createSimplePaymentInfo() {
     return RichText(

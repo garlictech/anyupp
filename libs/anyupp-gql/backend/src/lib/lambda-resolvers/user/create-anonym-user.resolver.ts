@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
 import { v1 as uuidV1 } from 'uuid';
 
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
@@ -20,10 +19,5 @@ export const createAnonymUser = (
     email,
     password,
     name: 'AnonymUser',
-  }).pipe(
-    mapTo({
-      email,
-      pwd: password,
-    }),
-  );
+  });
 };

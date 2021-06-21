@@ -4,8 +4,10 @@ import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
+import 'package:fa_prev/modules/selectunit/screens/flutter_qr_code_scanner.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
@@ -103,7 +105,7 @@ class CartScreen extends StatelessWidget {
         builder: (context, state) {
           if (state is UnitSelected) {
             return StreamBuilder<Cart>(
-              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.chainId, state.unit.id),
+              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
               builder: (context, AsyncSnapshot<Cart> snapshot) {
                 // print('CartScreen.snapshot=$snapshot');
                 if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
@@ -152,6 +154,7 @@ class CartScreen extends StatelessWidget {
       children: <Widget>[
         // LIST
         Expanded(
+          flex: 10,
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 15),
             child: AnimationLimiter(
@@ -175,7 +178,7 @@ class CartScreen extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 30, top: 20, right: 15, bottom: 15),
+          padding: EdgeInsets.only(left: 30, top: 5, right: 15, bottom: 10),
           child: cartAllergens.keys.toList().isNotEmpty
               ? AllergensWidget(allergens: cartAllergens.values.toList())
               : Container(),
@@ -234,11 +237,11 @@ class CartScreen extends StatelessWidget {
                     primary: theme.text2,
                   ),
                   onPressed: () => 
-                  // showQrCodeScan
-                      // ? Nav.to(QRCodeScannerScreen(
-                      //     navigateToCart: true,
-                      //   ))
-                      // : 
+                  showQrCodeScan
+                      ? Nav.to(QRCodeScannerScreen(
+                          navigateToCart: true,
+                        ))
+                      : 
                       showSelectPaymentMethodBottomSheet(context),
                   child: showQrCodeScan
                       ? SvgPicture.asset(

@@ -37,7 +37,8 @@ import { ProductFormService } from '../../services/product-form/product-form.ser
 })
 export class ProductFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit {
+  implements OnInit
+{
   public eImageType = EImageType;
   public product?: Product;
   public productLevel!: EProductLevel;

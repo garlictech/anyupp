@@ -1,7 +1,7 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import {
-  IFloorMapTableOrderObjects,
+  IFloorMapOrderObjects,
   IFloorMapUserOrderObjects,
   IFloorMapUserOrders,
   ILaneOrderItem,
@@ -124,14 +124,17 @@ export const getOrdersByUser = (
         userId: order.userId,
         orders: [{ ...order }],
         lastOrder: { ...order },
-        hasPaymentIntention: (order.paymentIntention || 0) > 0,
+        hasPaymentIntention:
+          order.paymentMode.type === CrudApi.PaymentType.card ||
+          order.paymentMode.type === CrudApi.PaymentType.cash,
         lowestStatus: currentStatus(order.statusLog),
       };
     } else {
       ordersByUser[order.userId].orders.push({ ...order });
       ordersByUser[order.userId].hasPaymentIntention =
         ordersByUser[order.userId].hasPaymentIntention ||
-        (order.paymentIntention || 0) > 0;
+        order.paymentMode.type === CrudApi.PaymentType.card ||
+        order.paymentMode.type === CrudApi.PaymentType.cash;
 
       if (order.createdAt > ordersByUser[order.userId].lastOrder.createdAt) {
         ordersByUser[order.userId].lastOrder = { ...order };
@@ -148,10 +151,31 @@ export const getOrdersByUser = (
 };
 
 export const getTableOrders = (
+  tableIds: string[],
+  ordersByUser: IFloorMapUserOrderObjects,
+): IFloorMapOrderObjects => {
+  const tableOrders: IFloorMapOrderObjects = {};
+
+  tableIds.forEach((tsID: string): void => {
+    const userOrders = Object.values(ordersByUser).filter(
+      (userOrder: IFloorMapUserOrders): boolean =>
+        userOrder.lastOrder.place?.table === tsID,
+    );
+
+    tableOrders[tsID] = {
+      tsID,
+      userOrders,
+    };
+  });
+
+  return tableOrders;
+};
+
+export const getTableSeatOrders = (
   tableSeatIds: string[],
   ordersByUser: IFloorMapUserOrderObjects,
-): IFloorMapTableOrderObjects => {
-  const tableOrders: IFloorMapTableOrderObjects = {};
+): IFloorMapOrderObjects => {
+  const tableSeatOrders: IFloorMapOrderObjects = {};
 
   tableSeatIds.forEach((tsID: string): void => {
     const userOrders = Object.values(ordersByUser).filter(
@@ -161,7 +185,7 @@ export const getTableOrders = (
         }` === tsID,
     );
 
-    tableOrders[tsID] = {
+    tableSeatOrders[tsID] = {
       tsID,
       userOrders,
       hasPaymentIntention: userOrders
@@ -173,5 +197,29 @@ export const getTableOrders = (
     };
   });
 
-  return tableOrders;
+  return tableSeatOrders;
+};
+
+export const getOrderStatusByItemsStatus = (order: CrudApi.Order) => {
+  const itemsUniqueStatus = [
+    ...new Set(order.items.map(i => currentStatus(i.statusLog))),
+  ];
+
+  if (itemsUniqueStatus.every(i => i === CrudApi.OrderStatus.served)) {
+    return CrudApi.OrderStatus.served;
+  } else if (getLowestStatus(itemsUniqueStatus) === CrudApi.OrderStatus.ready) {
+    return CrudApi.OrderStatus.ready;
+  } else if (
+    itemsUniqueStatus.some(i =>
+      [
+        CrudApi.OrderStatus.processing,
+        CrudApi.OrderStatus.ready,
+        CrudApi.OrderStatus.served,
+      ].includes(i),
+    )
+  ) {
+    return CrudApi.OrderStatus.processing;
+  } else {
+    return;
+  }
 };

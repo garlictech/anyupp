@@ -34,7 +34,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
           getLocalizedText(context, widget.extraSet.name),
           style: GoogleFonts.poppins(
             color: theme.text,
-            fontSize: 24.0,
+            fontSize: 20.0,
           ),
         ),
         collapsed: Text(

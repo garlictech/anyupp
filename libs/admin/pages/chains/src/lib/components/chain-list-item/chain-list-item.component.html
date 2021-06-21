@@ -1,12 +1,12 @@
-<div class="float-left">
+<div class="float-start">
   <nb-user
-    class="float-left d-block"
+    class="float-start d-block"
     [name]="chain.name"
     [title]="chain.description | localize"
     [picture]="(chainLogo || '' | awsStoragePath) || ''"
   ></nb-user>
   <bgap-status-led
-    class="float-left ml-2"
+    class="float-start ms-2"
     [status]="chain.isActive"
   ></bgap-status-led>
 

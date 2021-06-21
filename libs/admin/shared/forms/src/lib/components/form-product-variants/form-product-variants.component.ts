@@ -61,7 +61,8 @@ export class FormProductVariantsComponent {
 
           (arr[i]?.availabilities || []).forEach(
             (availability: CrudApi.Availability): void => {
-              const availabilityGroup = this._formsService.createProductAvailabilityFormGroup();
+              const availabilityGroup =
+                this._formsService.createProductAvailabilityFormGroup();
               availabilityGroup.patchValue(availability);
 
               (g.get('availabilities') as FormArray).push(availabilityGroup);

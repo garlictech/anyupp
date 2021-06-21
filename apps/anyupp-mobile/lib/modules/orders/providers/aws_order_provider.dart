@@ -32,7 +32,7 @@ class AwsOrderProvider implements IOrdersProvider {
         subscriptionNodeName: 'onOrderChanged',
         modelFromJson: (json) => Order.fromJson(json),
         filterModel: (model) => !model.archived,
-        sortItems: (items) => items.sort((a, b) => b.orderNum.compareTo(a.orderNum)),
+        sortItems: (items) => items.sort((a, b) => b.created.compareTo(a.created)),
         );
 
     _subOrderHistoryList = AwsSubscription<Order>(
@@ -43,19 +43,18 @@ class AwsOrderProvider implements IOrdersProvider {
       subscriptionNodeName: 'onOrderChanged',
       modelFromJson: (json) => Order.fromJson(json),
       filterModel: (model) => model.archived,
-        sortItems: (items) => items.sort((a, b) => b.orderNum.compareTo(a.orderNum)),
+        sortItems: (items) => items.sort((a, b) => b.created.compareTo(a.created)),
     );
   }
 
   Cart get cart => _cart;
 
   @override
-  Future<void> clearCart(String chainId, String unitId) async {
+  Future<void> clearCart() async {
     if (_cart != null && _cart.id != null) {
-      await _deleteCartFromBackend(_cart.id);
+      _cart = null;
+      _cartController.add(null);
     }
-    _cart = null;
-    _cartController.add(null);
   }
 
   @override
@@ -100,7 +99,7 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Future<Cart> getCurrentCart(String chainId, String unitId) async {
+  Future<Cart> getCurrentCart(String unitId) async {
     // if (_cart == null) {
     //   _cart = await _getCartFromBackEnd(unitId);
     //   _cartController.add(_cart);
@@ -112,14 +111,14 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Stream<Cart> getCurrentCartStream(String chainId, String unitId) async* {
+  Stream<Cart> getCurrentCartStream(String unitId) async* {
     yield _cart;
     yield* _cartController.stream;
   }
 
   @override
-  Future<void> updateCart(String chainId, String unitId, Cart cart) async {
-    // print('updateCart=$cart');
+  Future<void> updateCart(String unitId, Cart cart) async {
+    print('updateCart=$cart');
     bool delete = cart != null && cart.items.isEmpty;
     if (delete) {
       await _deleteCartFromBackend(cart.id);
@@ -233,16 +232,16 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Stream<List<Order>> getCurrentOrders(String chainId, String unitId) => _subOrderList?.stream;
+  Stream<List<Order>> getCurrentOrders(String unitId) => _subOrderList?.stream;
 
   @override
-  Future<void> userPaymentIntentionSignal(String chainId, String unitId) {
+  Future<void> userPaymentIntentionSignal(String unitId) {
     // TODO: implement userPaymentIntentionSignal
     throw UnimplementedError();
   }
 
   @override
-  Future<void> startOrderListSubscription(String chainId, String unitId) async {
+  Future<void> startOrderListSubscription(String unitId) async {
     User user = await _authProvider.getAuthenticatedUserProfile();
     return _subOrderList.startListSubscription(
       variables: {
@@ -259,7 +258,7 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Future<void> startOrderHistoryListSubscription(String chainId, String unitId) async {
+  Future<void> startOrderHistoryListSubscription(String unitId) async {
     User user = await _authProvider.getAuthenticatedUserProfile();
     return _subOrderHistoryList.startListSubscription(
       variables: {
@@ -277,7 +276,7 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Stream<List<Order>> getOrderHistory(String chainId, String unitId) => _subOrderHistoryList.stream;
+  Stream<List<Order>> getOrderHistory(String unitId) => _subOrderHistoryList.stream;
 
   @override
   Future<Order> getOrder(String orderId) async {
@@ -394,5 +393,16 @@ class AwsOrderProvider implements IOrdersProvider {
             : null,
       },
     };
+  }
+
+Future<Cart> setPaymentMode(String unitId, PaymentMode mode) async {
+    print('OrdersProvider.setPaymentMode()=$mode');
+    Cart _cart = await getCurrentCart(unitId);
+    print('OrdersProvider.setPaymentMode().cart=${_cart?.id}');
+    if (_cart != null) {
+      _cart = _cart.copyWith(paymentMode: mode);
+      await updateCart(unitId, _cart);
+    }
+    return _cart;
   }
 }

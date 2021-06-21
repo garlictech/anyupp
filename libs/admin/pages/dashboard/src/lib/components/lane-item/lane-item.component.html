@@ -5,7 +5,7 @@
   >
     {{ orderItem.place!.table! }}<br />{{ orderItem.place!.seat! }}
   </div>
-  <div class="row w-100 p-0 m-0 ml-2 float-right">
+  <div class="row w-100 p-0 m-0 ms-2 float-right">
     <div
       class="p-1 subtitle-2 font-larger position-relative"
       [ngClass]="{
@@ -15,7 +15,7 @@
       }"
     >
       <nb-user
-        class="w-100 ml-4 font-larger"
+        class="w-100 ms-4 font-larger"
         [name]="orderItem.productName | localize"
         [title]="orderItem.variantName | localize"
         [picture]="orderItem.image || ''"
@@ -32,7 +32,15 @@
       </div>
     </div>
     <div
-      class="col-2 col-xl-1 p-0 m-auto subtitle-2 font-weight-bold text-right font-larger"
+      class="
+        col-2 col-xl-1
+        p-0
+        m-auto
+        subtitle-2
+        font-weight-bold
+        text-end
+        font-larger
+      "
     >
       {{ orderItem.quantity }}x
     </div>
@@ -45,14 +53,14 @@
       ></nb-badge>
     </div>
 
-    <div class="p-1 col-8 col-xl-3 text-right">
+    <div class="p-1 col-8 col-xl-3 text-end">
       <button
         *ngIf="isOrderItemStatus('processing') || isOrderItemStatus('ready')"
         nbButton
         status="warning"
         [size]="buttonSize"
         shape="round"
-        class="font-larger mr-2"
+        class="font-larger me-2"
         (click)="moveBack()"
       >
         <nb-icon class="smaller-icon" icon="arrow-left-outline"></nb-icon>

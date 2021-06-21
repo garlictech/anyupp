@@ -8,7 +8,7 @@ APPNAME=$1
 STAGE=$2
 
 USERNAME=${3:-test@test.com}
-PASSWORD=${4:-"Testtesttest12_"}
+PASSWORD=${4:-"Hideghegy12_"}
 
 sh ./tools/create-admin-user.sh $APPNAME $STAGE $USERNAME $PASSWORD
 

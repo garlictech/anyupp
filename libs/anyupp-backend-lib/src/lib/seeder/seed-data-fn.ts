@@ -1,6 +1,5 @@
-import { catchError, map, switchMap } from 'rxjs/operators';
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductType } from '@bgap/shared/types';
 import {
   chainFixture,
   generatedProductFixture,
@@ -9,13 +8,16 @@ import {
   seededIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { combineLatest, concat, Observable, of } from 'rxjs';
-import { pipe } from 'fp-ts/lib/function';
+import { EProductType } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import { pipe } from 'fp-ts/lib/function';
+import { combineLatest, concat, Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
+  anyuppSdk: AnyuppApi.AnyuppSdk;
   userPoolId: string;
   cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
 }
@@ -58,8 +60,11 @@ const generateCartId = (idx: number) => `${seededIdPrefix}cart_${idx}_id`;
 const generateUserId = (idx: number) => `${seededIdPrefix}user_${idx}_id`;
 const generateRoleContextId = (idx: number, role: CrudApi.Role) =>
   `${seededIdPrefix}role_context_${idx}_${role}_id`;
-const generateAdminRoleContextId = (idx: number, role: CrudApi.Role) =>
-  `${seededIdPrefix}admin_role_context_${idx}_${role}_id`;
+const generateAdminRoleContextId = (
+  idx: number,
+  role: CrudApi.Role,
+  username: string,
+) => `${seededIdPrefix}admin_role_context_${idx}_${role}_${username}_id`;
 
 const deleteCreate = <T, K>(
   deleteOperation: () => Observable<T>,
@@ -81,7 +86,7 @@ export const createTestChain =
     const input: CrudApi.CreateChainInput = {
       ...chainFixture.chainBase,
       id: generateChainId(chainIdx),
-      name: `Seeded chain #${chainIdx}`,
+      name: `Rab lánc #${chainIdx}`,
     };
     return deleteCreate(
       () => deps.crudSdk.DeleteChain({ input: { id: input.id ?? '' } }),
@@ -99,8 +104,9 @@ export const createTestGroup =
       ...groupFixture.groupBase,
       id: generateGroupId(chainIdx, groupIdx),
       chainId: generateChainId(chainIdx),
-      name: `Seeded group #${groupIdx}`,
-      currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
+      name: `Nagy csoport #${groupIdx}`,
+      // currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
+      currency: 'HUF',
     };
     return deleteCreate(
       () => deps.crudSdk.DeleteGroup({ input: { id: input.id ?? '' } }),
@@ -141,7 +147,7 @@ export const createTestUnit =
       id: generateUnitId(chainIdx, groupIdx, unitIdx),
       groupId: generateGroupId(chainIdx, groupIdx),
       chainId: generateChainId(chainIdx),
-      name: `Seeded unit #${chainIdx}${groupIdx}${unitIdx}`,
+      name: `Késdobáló #${chainIdx}${groupIdx}${unitIdx}`,
       lanes: [
         {
           color: '#e72222',
@@ -154,6 +160,159 @@ export const createTestUnit =
           name: 'konyha',
         },
       ],
+      floorMap: {
+        w: 800,
+        h: 300,
+        objects: [
+          {
+            id: 'caxj47xzn7n',
+            t: CrudApi.UnitMapObjectType.table_r,
+            c: '01',
+            w: 150,
+            h: 60,
+            r: null,
+            a: 0,
+            x: 10,
+            y: 10,
+            tID: '01',
+            sID: null,
+          },
+          {
+            id: 'f87azndb8ct',
+            t: CrudApi.UnitMapObjectType.table_r,
+            c: '03',
+            w: 150,
+            h: 60,
+            r: null,
+            a: 0,
+            x: 376,
+            y: 10,
+            tID: '03',
+            sID: null,
+          },
+          {
+            id: 'cyh9qwe2axr',
+            t: CrudApi.UnitMapObjectType.table_r,
+            c: '02',
+            w: 150,
+            h: 60,
+            r: null,
+            a: 0,
+            x: 192,
+            y: 10,
+            tID: '02',
+            sID: null,
+          },
+          {
+            id: 'ufegqdtf82h',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 20,
+            y: 60,
+            c: '01',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '01',
+            sID: '01',
+          },
+          {
+            id: 'eohk3z8f9oq',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 68,
+            y: 60,
+            c: '02',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '01',
+            sID: '02',
+          },
+          {
+            id: 'l4i62x7idpo',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 116,
+            y: 60,
+            c: '03',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '01',
+            sID: '03',
+          },
+          {
+            id: 'nlqoylp88p9',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 206,
+            y: 60,
+            c: '01',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '02',
+            sID: '01',
+          },
+          {
+            id: 'mxo7tnz53sh',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 254,
+            y: 60,
+            c: '02',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '02',
+            sID: '02',
+          },
+          {
+            id: 'temzt4yr0uc',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 300,
+            y: 60,
+            c: '03',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '02',
+            sID: '03',
+          },
+          {
+            id: '7r01h7bl7j2',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 386,
+            y: 60,
+            c: '01',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '03',
+            sID: '01',
+          },
+          {
+            id: 't767czui7oj',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 436,
+            y: 60,
+            c: '02',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '03',
+            sID: '02',
+          },
+          {
+            id: 'w6hsmjl8jo',
+            t: CrudApi.UnitMapObjectType.seat_r,
+            x: 484,
+            y: 60,
+            c: '03',
+            a: 0,
+            w: 30,
+            h: 30,
+            tID: '03',
+            sID: '03',
+          },
+        ],
+      },
     };
     return deleteCreate(
       () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
@@ -326,7 +485,7 @@ export const createTestUnitProduct =
         {
           id: generateVariantId(chainIdx, productIdx, 1, 'unit'),
           isAvailable: true,
-          price: 11,
+          price: 150,
           position: 1,
           pack: {
             size: 2,
@@ -340,7 +499,7 @@ export const createTestUnitProduct =
             {
               dayFrom: '',
               dayTo: '',
-              price: productIdx * 60,
+              price: productIdx * 150,
               timeFrom: '',
               timeTo: '',
               type: 'A',
@@ -417,9 +576,9 @@ export const createTestCart =
             hu: 'Viz',
           },
           priceShown: {
-            currency: 'EUR',
-            pricePerUnit: 1,
-            priceSum: 2,
+            currency: 'HUF',
+            pricePerUnit: 350,
+            priceSum: 700,
             tax: 0, // empty
             taxSum: 0, // empty
           },
@@ -546,6 +705,7 @@ export const createTestAdminRoleContext =
       id: generateAdminRoleContextId(
         adminRoleContextIdx,
         CrudApi.Role.superuser,
+        adminUserId,
       ),
       adminUserId,
       roleContextId: generateRoleContextId(
@@ -557,6 +717,7 @@ export const createTestAdminRoleContext =
       id: generateAdminRoleContextId(
         adminRoleContextIdx,
         CrudApi.Role.chainadmin,
+        adminUserId,
       ),
       adminUserId,
       roleContextId: generateRoleContextId(

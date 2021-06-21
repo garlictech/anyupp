@@ -29,7 +29,8 @@ import { Store } from '@ngrx/store';
 })
 export class AdminUserFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit {
+  implements OnInit
+{
   public adminUser!: CrudApi.AdminUser;
   public eImageType = EImageType;
 
