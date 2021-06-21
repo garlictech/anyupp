@@ -168,9 +168,8 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
             switchMap(() =>
               status === CrudApi.PaymentStatus.success &&
               currentStatusFn(this.order.statusLog) === CrudApi.OrderStatus.none
-                ? this._orderService.updateOrderStatus(
+                ? this._orderService.updateOrderStatusFromNoneToPlaced(
                     this.order,
-                    CrudApi.OrderStatus.placed,
                   )
                 : of(true),
             ),

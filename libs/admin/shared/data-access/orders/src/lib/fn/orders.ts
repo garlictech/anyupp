@@ -199,3 +199,27 @@ export const getTableSeatOrders = (
 
   return tableSeatOrders;
 };
+
+export const getOrderStatusByItemsStatus = (order: CrudApi.Order) => {
+  const itemsUniqueStatus = [
+    ...new Set(order.items.map(i => currentStatus(i.statusLog))),
+  ];
+
+  if (itemsUniqueStatus.every(i => i === CrudApi.OrderStatus.served)) {
+    return CrudApi.OrderStatus.served;
+  } else if (getLowestStatus(itemsUniqueStatus) === CrudApi.OrderStatus.ready) {
+    return CrudApi.OrderStatus.ready;
+  } else if (
+    itemsUniqueStatus.some(i =>
+      [
+        CrudApi.OrderStatus.processing,
+        CrudApi.OrderStatus.ready,
+        CrudApi.OrderStatus.served,
+      ].includes(i),
+    )
+  ) {
+    return CrudApi.OrderStatus.processing;
+  } else {
+    return;
+  }
+};
