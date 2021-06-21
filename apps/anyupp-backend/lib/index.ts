@@ -29,6 +29,8 @@ export class AnyUppStack extends Stack {
       appleTeamId: paramsStack.appleTeamId,
       appleKeyId: paramsStack.appleKeyId,
       appleServiceId: paramsStack.appleServiceId,
+      apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
+      apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
     });
 
     const appsyncStack = new AppsyncAppStack(scope, 'appsync', {
@@ -37,6 +39,8 @@ export class AnyUppStack extends Stack {
       stripeSecretKey: secretsManagerStack.stripeSecretKey,
       stripeSigningSecret: secretsManagerStack.stripeSigningSecret,
       secretsManager: secretsManagerStack.secretsManager,
+      apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
+      apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
       szamlazzhuAgentKey: secretsManagerStack.szamlazzhuAgentKey,
     });
 
@@ -44,12 +48,16 @@ export class AnyUppStack extends Stack {
       stripeSecretKey: secretsManagerStack.stripeSecretKey,
       stripeSigningSecret: secretsManagerStack.stripeSigningSecret,
       szamlazzhuAgentKey: secretsManagerStack.szamlazzhuAgentKey,
+      apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
+      apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
     });
 
     if (scope.stage === 'dev' || scope.stage === 'qa') {
       new SeederStack(scope, 'seeder', {
         adminUserPool: cognitoStack.adminUserPool,
         anyuppApiArn: appsyncStack.api.arn,
+        apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
+        apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
       });
     }
 

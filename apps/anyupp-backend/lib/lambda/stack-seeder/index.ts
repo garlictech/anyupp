@@ -22,18 +22,17 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
    */
   const AdminUserPoolId = event.ResourceProperties.AdminUserPoolId;
   const physicalResourceId = event.ResourceProperties.physicalResourceId;
+  const awsAccessKeyId =
+    process.env.API_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID || '';
+
+  const awsSecretAccessKey =
+    process.env.API_SECRET_ACCESS_KEY ||
+    process.env.AWS_SECRET_ACCESS_KEY ||
+    '';
 
   const seederDeps: SeederDependencies = {
-    //process.env.AWS_ACCESS_KEY_ID || '',
-    //process.env.AWS_SECRET_ACCESS_KEY || '',
-    crudSdk: CrudApi.getCrudSdkForIAM(
-      'AKIAYIT7GMY5WQZFXOOX',
-      'shvXP0lODOdUBFL09LjHfUpIb6bZRxVjyjLulXDR',
-    ),
-    anyuppSdk: AnyuppApi.getAnyuppSdkForIAM(
-      'AKIAYIT7GMY5WQZFXOOX',
-      'shvXP0lODOdUBFL09LjHfUpIb6bZRxVjyjLulXDR',
-    ),
+    crudSdk: CrudApi.getCrudSdkForIAM(awsAccessKeyId, awsSecretAccessKey),
+    anyuppSdk: AnyuppApi.getAnyuppSdkForIAM(awsAccessKeyId, awsSecretAccessKey),
     userPoolId: AdminUserPoolId,
     cognitoidentityserviceprovider,
   };
