@@ -23,19 +23,19 @@ describe('Anonym user creation', () => {
     of('BEGINNING_OF_A_BEAUTIFUL_JOURNEY')
       .pipe(
         // CREATE USER
-        // TO debug or development use direct logic call switchMap(() =>
-        //   createAnonymUser({
-        //     crudGraphqlClient: anyuppGraphQLClient,
-        //     cognito: cognitoidentityserviceprovider,
-        //     consumerUserPoolId,
-        //   }),
-        // ),
-        // USE this to check the endpoint registration, permissions, etc, the whole endpoint
+        // TO debug or development use direct logic call
         switchMap(() => createAnonymUser(deps)),
+
+        // USE this to check the endpoint registration, permissions, etc, the whole endpoint
+        // switchMap(() =>
+        //   executeMutation(anyuppGraphQLClient)<
+        //     AnyuppApi.CreateAnonymUserMutation
+        //   >(AnyuppApi.CreateAnonymUser).pipe(map(x => x.createAnonymUser)),
+        // ),
         tap({
           next(result) {
             // SHOULD RETURN THE email and password
-            expect(result).toHaveProperty('email');
+            expect(result).toHaveProperty('username');
             expect(result).toHaveProperty('pwd');
           },
         }),
@@ -48,7 +48,7 @@ describe('Anonym user creation', () => {
                 ClientId: config.ConsumerWebUserPoolClientId,
                 AuthFlow: 'USER_PASSWORD_AUTH',
                 AuthParameters: {
-                  USERNAME: props.email,
+                  USERNAME: props.username,
                   PASSWORD: props.pwd,
                 },
               })
@@ -77,7 +77,7 @@ describe('Anonym user creation', () => {
             cognitoidentityserviceprovider
               .adminGetUser({
                 UserPoolId: consumerUserPoolId,
-                Username: props.email,
+                Username: props.username,
               })
               .promise(),
           ).pipe(
@@ -105,7 +105,7 @@ describe('Anonym user creation', () => {
             cognitoidentityserviceprovider
               .adminDeleteUser({
                 UserPoolId: consumerUserPoolId,
-                Username: props.email,
+                Username: props.username,
               })
               .promise(),
           ),

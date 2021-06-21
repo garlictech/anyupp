@@ -56,7 +56,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
         if (state is UnitSelected) {
           final GeoUnit unit = state.unit;
           return StreamBuilder<List<Order>>(
-            stream: _orderRepository.getCurrentOrders(unit.chainId, unit.id),
+            stream: _orderRepository.getCurrentOrders(unit.id),
             builder: (context, AsyncSnapshot<List<Order>> orderState) {
               // print('Screen.startListSubscription().state=$orderState');
               if (orderState.connectionState != ConnectionState.waiting || orderState.hasData) {

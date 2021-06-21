@@ -12,9 +12,8 @@ import {
   ExtendedUnitProduct,
 } from './products.reducer';
 
-export const getProductsState = createFeatureSelector<ProductsState>(
-  PRODUCTS_FEATURE_KEY,
-);
+export const getProductsState =
+  createFeatureSelector<ProductsState>(PRODUCTS_FEATURE_KEY);
 
 // CHAIN PRODUCTS
 
@@ -208,9 +207,10 @@ export const getAllGeneratedProducts = generatedProductsAdapter.getSelectors(
 export const getAllGeneratedProductIds = generatedProductsAdapter.getSelectors(
   generatedProductListSelector,
 ).selectIds;
-export const getAllGeneratedProductCount = generatedProductsAdapter.getSelectors(
-  generatedProductListSelector,
-).selectTotal;
+export const getAllGeneratedProductCount =
+  generatedProductsAdapter.getSelectors(
+    generatedProductListSelector,
+  ).selectTotal;
 
 export const getGeneratedProductImageById = (id: string) => {
   return createSelector(

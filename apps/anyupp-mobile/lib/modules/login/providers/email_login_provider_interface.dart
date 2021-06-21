@@ -1,7 +1,7 @@
 import 'package:fa_prev/modules/login/login.dart';
 
 abstract class IEmailLoginProvider {
-  Future<bool> registerUserWithEmailAndPassword(String userEmail, String userPhone, String email, String password);
+  Future<String> registerUserWithEmailAndPassword(String userEmail, String userPhone, String email, String password);
   Future<ProviderLoginResponse> loginWithEmailAndPassword(String email, String password);
   Future<ProviderLoginResponse> signInAnonymously();
   Future<String> get email;

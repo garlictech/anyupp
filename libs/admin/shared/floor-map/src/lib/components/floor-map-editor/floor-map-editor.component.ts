@@ -26,7 +26,8 @@ import * as floorMapFuncs from '../../fn';
   styleUrls: ['./floor-map-editor.component.scss'],
 })
 export class FloorMapEditorComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @Input() editMode?: boolean;
   @Input() floorMap?: CrudApi.Maybe<CrudApi.FloorMapData>;
   public dimensionForm!: FormGroup;

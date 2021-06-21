@@ -7,7 +7,7 @@ const chainId_seeded_01 = `${seededIdPrefix}chain_1_id`;
 
 const chainBase: CrudApi.CreateChainInput = {
   id: `${testIdPrefix}chain_id_`,
-  name: `Test chain #${chainId_01}`,
+  name: `˜Rab lánc S`,
   address: {
     address: 'Ág u. 1.',
     city: 'Budapest',
@@ -20,8 +20,8 @@ const chainBase: CrudApi.CreateChainInput = {
     },
   },
   description: {
-    hu: `Teszt chain #${chainId_01} leírás`,
-    en: `Test chain #${chainId_01} description`,
+    hu: `Rab lánc leírás`,
+    en: `Prisoner chain description`,
   },
   isActive: true,
   email: 'test@anyupp.com',

@@ -26,36 +26,34 @@ import {
  * @param modulo The size of the counter before reset
  * @returns the next Order number to use
  */
-export const incrementOrderNum = (tableName: string) => (
-  id: string,
-  modulo = 100,
-): Observable<number | undefined> => {
-  // TODO: extract this logic somewhere as Increment
-  return executeUpdateItem<Pick<CrudApi.Unit, 'lastOrderNum'>>({
-    TableName: tableName,
-    Key: { id: { S: id } },
-    UpdateExpression: 'add lastOrderNum :val', // IF the lastOrderNum not exist on the UNIT the ADD operator initialized it as 0 so the first orderNum will be 1 in this case
-    ExpressionAttributeValues: {
-      ':val': { N: '1' },
-    },
-    ReturnValues: 'UPDATED_NEW',
-  }).pipe(map(x => (x.lastOrderNum ? x.lastOrderNum % modulo : undefined)));
-};
-
-export const deleteItems = (tableName: string) => (
-  items: Array<{ id: string }>,
-) =>
-  of(items).pipe(
-    map(items => items.map(x => x.id)),
-    switchMap(executeBatchDelete(tableName)),
-    tap({
-      next() {
-        console.log(
-          `deleteItems in the ${tableName} table EXECUTED, ${items.length} item deleted`,
-        );
+export const incrementOrderNum =
+  (tableName: string) =>
+  (id: string, modulo = 100): Observable<number | undefined> => {
+    // TODO: extract this logic somewhere as Increment
+    return executeUpdateItem<Pick<CrudApi.Unit, 'lastOrderNum'>>({
+      TableName: tableName,
+      Key: { id: { S: id } },
+      UpdateExpression: 'add lastOrderNum :val', // IF the lastOrderNum not exist on the UNIT the ADD operator initialized it as 0 so the first orderNum will be 1 in this case
+      ExpressionAttributeValues: {
+        ':val': { N: '1' },
       },
-    }),
-  );
+      ReturnValues: 'UPDATED_NEW',
+    }).pipe(map(x => (x.lastOrderNum ? x.lastOrderNum % modulo : undefined)));
+  };
+
+export const deleteItems =
+  (tableName: string) => (items: Array<{ id: string }>) =>
+    of(items).pipe(
+      map(items => items.map(x => x.id)),
+      switchMap(executeBatchDelete(tableName)),
+      tap({
+        next() {
+          console.log(
+            `deleteItems in the ${tableName} table EXECUTED, ${items.length} item deleted`,
+          );
+        },
+      }),
+    );
 
 export const createItems = (tableName: string) => (items: Array<unknown>) =>
   executeBatchPut(tableName)(items);

@@ -68,8 +68,12 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
       print('SocialLoginScreen.signUserInWithAuthCode().accessToken=${accessToken.jwtToken}');
       print('SocialLoginScreen.signUserInWithAuthCode().refreshToken=${refreshToken.token}');
 
+      dynamic payload = idToken.decodePayload();
+      String username = payload['cognito:username'];
+      print('SocialLoginScreen()signUserInWithAuthCode().username=' + username);
+
       final session = CognitoUserSession(idToken, accessToken, refreshToken: refreshToken);
-      User user = await _authProvider.loginWithCognitoSession(session);
+      User user = await _authProvider.loginWithCognitoSession(session, username);
       return ProviderLoginResponse(
         user: user,
         credential: session,

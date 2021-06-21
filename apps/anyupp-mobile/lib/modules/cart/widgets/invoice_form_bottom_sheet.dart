@@ -337,7 +337,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                   getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
                     // cart: widget.cart,
                     orderId: widget.orderId,
-                    paymentMethod: widget.paymentMode.method,
+                    paymentMode: widget.paymentMode,
                     invoiceAddress: invoiceAddress,
                   ));
                 }

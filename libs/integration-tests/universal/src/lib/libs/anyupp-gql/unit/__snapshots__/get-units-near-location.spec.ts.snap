@@ -28,7 +28,7 @@ Object {
   "distance": 0,
   "groupId": "test_group_1_id",
   "id": "test_unit_03",
-  "name": "Test unit #test_unit_1_id",
+  "name": "Késdobáló S",
   "openingHours": "09:00 - 22:00",
   "paymentModes": Array [
     Object {
@@ -82,7 +82,7 @@ Object {
   "distance": 0,
   "groupId": "test_group_1_id",
   "id": "test_unit_03",
-  "name": "Test unit #test_unit_1_id",
+  "name": "Késdobáló S",
   "openingHours": "09:00 - 22:00",
   "paymentModes": Array [
     Object {

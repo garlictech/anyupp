@@ -3,14 +3,13 @@ Feature: Create or update Group
   Background: Login and steps to the Groups
     Given I am on the login page
     When I fill out the input with id "username" with the "test@anyupp.com" value
-    And I fill out the input with id "password" with the "Testtesttest12_" value
+    And I fill out the input with id "password" with the "Hideghegy12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
-    When I click the "skip" text with timeout 15000
     Then I should be on the dashboard page
     # Set the desired lang
     Then I set the language to EN
-    And I select the "Seeded chain #1" chain in the header menu
+    And I select the "Rab lánc #1" chain in the header menu
     When I click on the menu icon
     And I click on the "Groups" text
     Then the "Groups" title is displayed
@@ -21,7 +20,7 @@ Feature: Create or update Group
     When I click on the close button
     Then the "Groups" title is displayed
     When I click on the plus button
-    Then The chain selector should contain "Seeded chain #1"
+    Then The chain selector should contain "Rab lánc #1"
     When I set the currency to "HUF"
     And I fill out the "Name" input with "test group 1"
     And I fill out the "Description (HU)" input with "test descripton 1"

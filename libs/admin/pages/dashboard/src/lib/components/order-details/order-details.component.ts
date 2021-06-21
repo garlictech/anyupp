@@ -159,26 +159,24 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  private _updateTransactionStatusCallback = (
-    status: CrudApi.PaymentStatus,
-  ) => () => {
-    if (this.order.transactionId) {
-      this._orderService
-        .updateOrderTransactionStatus(this.order.transactionId, status)
-        .pipe(
-          switchMap(() =>
-            status === CrudApi.PaymentStatus.success &&
-            currentStatusFn(this.order.statusLog) === CrudApi.OrderStatus.none
-              ? this._orderService.updateOrderStatus(
-                  this.order,
-                  CrudApi.OrderStatus.placed,
-                )
-              : of(true),
-          ),
-        )
-        .subscribe();
-    }
-  };
+  private _updateTransactionStatusCallback =
+    (status: CrudApi.PaymentStatus) => () => {
+      if (this.order.transactionId) {
+        this._orderService
+          .updateOrderTransactionStatus(this.order, status)
+          .pipe(
+            switchMap(() =>
+              status === CrudApi.PaymentStatus.success &&
+              currentStatusFn(this.order.statusLog) === CrudApi.OrderStatus.none
+                ? this._orderService.updateOrderStatusFromNoneToPlaced(
+                    this.order,
+                  )
+                : of(true),
+            ),
+          )
+          .subscribe();
+      }
+    };
 
   public resetOrderItemStatus(idx: number): void {
     const dialog = this._nbDialogService.open(ConfirmDialogComponent);
@@ -222,7 +220,13 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
             if (this.order.id) {
               this._orderService
                 .archiveOrder(this.order, CrudApi.OrderStatus.rejected)
-                .subscribe();
+                .subscribe(() => {
+                  this._store.dispatch(
+                    ordersActions.removeActiveOrder({
+                      orderId: this.order.id,
+                    }),
+                  );
+                });
             }
           },
           status: 'success',

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CRUD ownership tests It should not access other users private data even with signin 1`] = `[Error: GraphQL error: Not Authorized to access getAdminUser on type Query]`;
+
+exports[`CRUD ownership tests It should not access own data of AdminUser without signin 1`] = `[Error: GraphQL error: Not Authorized to access getUser on type Query]`;

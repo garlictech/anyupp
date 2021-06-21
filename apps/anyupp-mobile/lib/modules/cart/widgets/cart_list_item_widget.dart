@@ -74,7 +74,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         ),
                       ),
                       ...getExtraNames(context),
-                      getOrderItemAllergenWidget(),
+                     // getOrderItemAllergenWidget(),
                       SizedBox(
                         height: 16,
                       ),
@@ -210,7 +210,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
 
   void _removeOrder() {
     BlocProvider.of<CartBloc>(context)
-        .add(RemoveProductFromCartAction(widget.unit.chainId, widget.unit.id, widget.order));
+        .add(RemoveProductFromCartAction(widget.unit.id, widget.order));
   }
 
   double getTotalPriceOfOrederItem(OrderItem item) {

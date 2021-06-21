@@ -26,7 +26,9 @@ class AwsAuthProvider implements IAuthProvider {
       if (isLooggedIn) {
         if (_user == null) {
           CognitoUser user = await _service.currentUser;
-          _user = _userFromAttributes(await user.getUserAttributes());
+          if (user != null) {
+            _user = await _userFromAttributes(user);
+          }
         }
       } else {
         if (_user != null) {
@@ -48,54 +50,16 @@ class AwsAuthProvider implements IAuthProvider {
     }
   }
 
-  // @override
-  // Future<User> getAuthenticatedUserProfile() async {
-  //   try {
-  //     _cognitoUser = await _service.refreshUserTokenFromStorageIsExists();
-  //     if (_cognitoUser != null) {
-  //       _user = _userFromAttributes(await _cognitoUser.getUserAttributes());
-  //       _userController.add(_user);
-  //       return _user;
-  //     }
-  //     print('getAuthenticatedUserProfile().user=$_user');
-  //     if (_user != null) {
-  //       return _user;
-  //     }
-  //     if (_user == null) {
-  //       _cognitoUser = await _service.currentUser;
-  //       if (_cognitoUser == null) {
-  //         _user = null;
-  //       } else {
-  //         _user = _userFromAttributes(await _cognitoUser.getUserAttributes());
-  //       }
-  //       _userController.add(_user);
-  //       return _user;
-  //     }
-  //     return _user;
-  //   } on Exception catch (e) {
-  //     print('getAuthenticatedUserProfile().exception=$e');
-  //     _user = null;
-  //     _cognitoUser = null;
-  //     _userController.add(null);
-  //     return null;
-  //   } on Error catch (e) {
-  //     print('getAuthenticatedUserProfile().error=$e');
-  //     _user = null;
-  //     _cognitoUser = null;
-  //     _userController.add(null);
-  //     return null;
-  //   }
-  // }
-
   @override
-  Future<User> loginWithCognitoSession(CognitoUserSession session, {String username}) async {
+  Future<User> loginWithCognitoSession(CognitoUserSession session, String username) async {
     print('loginWithCognitoSession().session=$session, username=$username');
     try {
       CognitoUser user = await _service.createCognitoUserFromSession(session, username);
+      await user.cacheTokens();
       print('loginWithCognitoSession().cognitoUser=${user.username}');
-      _user = _userFromAttributes(await user.getUserAttributes());
+      _user = await _userFromAttributes(user);
       print('loginWithCognitoSession().user=$_user');
-      await _service.createCognitoUserFromSession(session, _user.id);
+      // await _service.createCognitoUserFromSession(session, _user.id);
       _userController.add(_user);
     } on Exception catch (e) {
       print('loginWithCognitoSession().error=$e');
@@ -118,32 +82,36 @@ class AwsAuthProvider implements IAuthProvider {
     await getAuthenticatedUserProfile();
   }
 
-  User _userFromAttributes(List<CognitoUserAttribute> attributes) {
+  Future<User> _userFromAttributes(CognitoUser cognitoUser) async {
     String email;
     String name;
-    String subId;
+    String phone;
+    List<CognitoUserAttribute> attributes = await cognitoUser.getUserAttributes();
+
+    print('_userFromAttributes().start()');
     for (int i = 0; i < attributes.length; i++) {
       CognitoUserAttribute a = attributes[i];
-      if (a.name == 'name') {
-        if (a.name != null) {
+      print('\tattr[${a.name}]=${a.value}');
+      if (a.name != null && a.name == 'name') {
           name = a.value;
-        }
       }
       // print('\t attr[${a.userAttributeKey}]=${a.value}');
-      if (a.name == 'email') {
+      if (a.name != null && name == null && a.name == 'email') {
         email = a.value;
-        if (name == null) {
-          name = email.split('@').first;
-          continue;
-        }
+        name = email.split('@').first;
       }
-      if (a.name == 'sub') {
-        // TODO
-        subId = a.value;
-        continue;
+
+      if (a.name != null && a.name == 'phone_number') {
+        phone = a.value;
       }
     }
-    User user = User(email: email, name: name, id: subId);
+
+    CognitoIdToken idToken = (await cognitoUser.getSession()).idToken;
+    dynamic payload = idToken.decodePayload();
+    String username = payload['cognito:username'];
+    print('loginWithCognitoSession().username=' + username);
+
+    User user = User(email: email, name: name, id: username, phone: phone);
     return user;
   }
 

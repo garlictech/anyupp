@@ -146,7 +146,7 @@
       "tags": ["type:backend", "platform:nodejs"]
     },
     "anyupp-backend-lib": {
-      "tags": ["type:backend", "platform:universal"]
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "anyupp-gql-api": {
       "tags": ["type:utils", "platform:universal"]

@@ -5,7 +5,7 @@ import { validateOrder } from '@bgap/shared/data-validators';
 import {
   cartFixture,
   groupFixture,
-  testAdminUsername,
+  testAdminEmail,
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
@@ -131,20 +131,17 @@ describe('CreatCartFromOrder mutation test', () => {
       deleteTestGroup(groupFixture.group_01.id, orderDeps.crudSdk),
     ]);
 
-  beforeAll(async done => {
-    await createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
-      .toPromise()
-      .then(x => {
-        authAnyuppSdk = x.authAnyuppSdk;
-        authenticatedUserId = x.userAttributes.id;
-      });
-
-    cart_01.userId = authenticatedUserId;
-    cart_02.userId = authenticatedUserId;
-    cart_04_different_unit.userId = authenticatedUserId;
-
-    cleanup()
+  beforeAll(done => {
+    createAuthenticatedAnyuppSdk(testAdminEmail, testAdminUserPassword)
       .pipe(
+        tap(x => {
+          authAnyuppSdk = x.authAnyuppSdk;
+          authenticatedUserId = x.userAttributes.id;
+          cart_01.userId = authenticatedUserId;
+          cart_02.userId = authenticatedUserId;
+          cart_04_different_unit.userId = authenticatedUserId;
+        }),
+        switchMap(cleanup),
         switchMap(() =>
           // Seeding
           combineLatest([
