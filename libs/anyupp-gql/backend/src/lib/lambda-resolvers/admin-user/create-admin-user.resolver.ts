@@ -62,6 +62,10 @@ export const createAdminUser =
                   Value: vars.input.email,
                 },
                 {
+                  Name: 'email_verified',
+                  Value: 'true',
+                },
+                {
                   Name: 'phone_number',
                   Value: vars.input.phone,
                 },
