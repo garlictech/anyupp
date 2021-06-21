@@ -133,6 +133,12 @@ export const calculateOrderItemSumPriceRounded = (
 ): CrudApi.PriceShown =>
   pipe(item, calculateItemPriceShownWithConfigSets, roundSums);
 
+/**
+ * Without ConfigSets
+ *
+ * @param item OrderItem
+ * @returns a complete recalculate PriceShown object without config set prices
+ */
 export const calculateOrderItemPriceRounded = (
   item: CrudApi.OrderItemInput,
 ): CrudApi.PriceShown => pipe(item, calculatePriceShown, roundSums);

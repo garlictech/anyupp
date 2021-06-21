@@ -74,8 +74,8 @@ export const createReceiptSzamlazzHu =
         label,
         quantity: orderItem.quantity,
         unit: 'db', // Should be translated it in the future (Covered by #751)
-        vat: orderItem.sumPriceShown.tax, // can be a number or a special string
-        grossUnitPrice: orderItem.sumPriceShown.priceSum, // calculates gross and net values from per item net // TODO: shouldn't we use the NOT summarized price?
+        vat: orderItem.priceShown.tax, // can be a number or a special string
+        grossUnitPrice: orderItem.priceShown.pricePerUnit, // calculates gross and net values from per item net // TODO: shouldn't we use the NOT summarized price?
         receiptItemId: orderItem.productId,
       });
     });

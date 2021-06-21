@@ -220,7 +220,7 @@ describe('CreatCartFromOrder mutation test', () => {
 
             // SumPriceShown contains the configSets too
             expect(order.items[0].sumPriceShown).toEqual(
-              priceShownBasicWithoutConfigSet,
+              priceShownBasicWithoutConfigSet, // the item 0 has no config sets
             );
             expect(order.items[1].sumPriceShown).toEqual({
               currency: 'EUR',
@@ -229,7 +229,7 @@ describe('CreatCartFromOrder mutation test', () => {
               tax: 27,
               taxSum: toFixed2Number(orderItemTax_02),
             });
-            expect(order.items[1].sumPriceShown).toEqual({
+            expect(order.items[2].sumPriceShown).toEqual({
               currency: 'EUR',
               pricePerUnit: 1,
               priceSum: toFixed2Number(orderItemPrice_03),
