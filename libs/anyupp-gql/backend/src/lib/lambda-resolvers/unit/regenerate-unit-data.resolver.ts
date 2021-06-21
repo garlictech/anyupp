@@ -16,7 +16,7 @@ import {
   filterNullishGraphqlListWithDefault,
   getNoProductInUnitgError,
 } from '@bgap/shared/utils';
-import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
+import { combineLatest, from, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, mergeMap, switchMap, toArray } from 'rxjs/operators';
 import { getTimezoneFromLocation } from '../../utils';
 import { deleteGeneratedProductsForAUnitFromDb } from '../product';
