@@ -59,7 +59,7 @@
           nbButton
           [status]="getButtonStatus(orderItem.statusLog)"
           [size]="buttonSize"
-          *ngIf="currentStatus(orderItem.statusLog) !== EOrderStatus.none"
+          *ngIf="currentStatus(order.statusLog) !== EOrderStatus.none"
           shape="round"
           class="font-larger"
           (click)="updateOrderItemStatus(i)"
