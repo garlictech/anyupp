@@ -12,12 +12,11 @@ abstract class BaseCartAction extends Equatable {
 }
 
 class GetCurrentCartAction extends BaseCartAction {
-  final String chainId;
   final String unitId;
-  const GetCurrentCartAction(this.chainId, this.unitId);
+  const GetCurrentCartAction(this.unitId);
 
   @override
-  List<Object> get props => [chainId, unitId];
+  List<Object> get props => [unitId];
 }
 
 class AddProductToCartAction extends BaseCartAction {
@@ -31,39 +30,36 @@ class AddProductToCartAction extends BaseCartAction {
 }
 
 class RemoveProductFromCartAction extends BaseCartAction {
-  final String chainId;
   final String unitId;
   final OrderItem order;
 
-  const RemoveProductFromCartAction(this.chainId, this.unitId, this.order);
+  const RemoveProductFromCartAction(this.unitId, this.order);
 
   @override
-  List<Object> get props => [chainId, unitId, order];
+  List<Object> get props => [unitId, order];
 }
 
 class UpdateProductInCartAction extends BaseCartAction {
-  final String chainId;
   final String unitId;
   final GeneratedProduct product;
   final ProductVariant variant;
   final int quantity;
 
   const UpdateProductInCartAction(
-      this.chainId, this.unitId, this.product, this.variant, this.quantity);
+      this.unitId, this.product, this.variant, this.quantity);
 
   @override
-  List<Object> get props => [chainId, unitId, product, variant, quantity];
+  List<Object> get props => [unitId, product, variant, quantity];
 }
 
 class RemoveOrderFromCartAction extends BaseCartAction {
   final OrderItem order;
-  final String chainId;
   final String unitId;
 
-  const RemoveOrderFromCartAction(this.chainId, this.unitId, this.order);
+  const RemoveOrderFromCartAction(this.unitId, this.order);
 
   @override
-  List<Object> get props => [chainId, unitId, order];
+  List<Object> get props => [unitId, order];
 }
 
 class ClearCartAction extends BaseCartAction {
@@ -111,14 +107,4 @@ class AddInvoiceInfo extends BaseCartAction {
 
   @override
   List<Object> get props => [invoiceInfo];
-}
-
-class SetPaymentMode extends BaseCartAction {
-  final GeoUnit unit;
-  final PaymentMode paymentMode;
-
-  const SetPaymentMode(this.unit, this.paymentMode);
-
-  @override
-  List<Object> get props => [unit, paymentMode];
 }

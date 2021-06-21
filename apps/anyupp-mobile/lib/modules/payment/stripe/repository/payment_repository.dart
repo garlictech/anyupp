@@ -30,8 +30,8 @@ class StripePaymentRepository implements IStripePaymentProvider, IExternalPaymen
   }
 
   @override
-  Future<void> startExternalPayment(Cart cart, String paymentMethod, UserInvoiceAddress invoiceAddress) {
-    return _externalPaymentProvider.startExternalPayment(cart, paymentMethod, invoiceAddress);
+  Future<void> startExternalPayment(Cart cart, PaymentMode paymentMode, UserInvoiceAddress invoiceAddress) {
+    return _externalPaymentProvider.startExternalPayment(cart, paymentMode, invoiceAddress);
   }
 
   @override
@@ -45,7 +45,7 @@ class StripePaymentRepository implements IStripePaymentProvider, IExternalPaymen
   }
 
   @override
-  Future<void> startOrderExternalPayment(String orderId, String orderMethod, UserInvoiceAddress invoiceAddress) {
-     return _externalPaymentProvider.startOrderExternalPayment(orderId, orderMethod, invoiceAddress);
+  Future<void> startOrderExternalPayment(String orderId, PaymentMode paymentMode, UserInvoiceAddress invoiceAddress) {
+     return _externalPaymentProvider.startOrderExternalPayment(orderId, paymentMode, invoiceAddress);
   }
 }
