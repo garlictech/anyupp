@@ -10,6 +10,8 @@ import * as cognito from '@aws-cdk/aws-cognito';
 export interface SeederStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
   anyuppApiArn: string;
+  apiAccessKeyId: string;
+  apiSecretAccessKey: string;
 }
 
 export class SeederStack extends sst.Stack {
@@ -25,6 +27,10 @@ export class SeederStack extends sst.Stack {
         path.join(__dirname, '../../.serverless/stack-seeder.zip'),
       ),
       timeout: Duration.minutes(15),
+      environment: {
+        API_ACCESS_KEY_ID: props.apiAccessKeyId,
+        API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
+      },
       initialPolicy: [
         new iam.PolicyStatement({
           effect: iam.Effect.ALLOW,
