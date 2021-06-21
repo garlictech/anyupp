@@ -7,6 +7,7 @@ import { App, Stack, StackProps } from '@serverless-stack/resources';
 import path from 'path';
 import { commonLambdaProps } from './lambda-common';
 import { getFQParamName } from './utils';
+import * as kms from '@aws-cdk/aws-kms';
 
 export interface CognitoStackProps extends StackProps {
   adminSiteUrl: string;
@@ -18,6 +19,8 @@ export interface CognitoStackProps extends StackProps {
   appleTeamId: string;
   appleKeyId: string;
   appleServiceId: string;
+  apiAccessKeyId: string;
+  apiSecretAccessKey: string;
 }
 
 type poolLabel = 'Admin' | 'Consumer';
@@ -26,7 +29,7 @@ export class CognitoStack extends Stack {
   public adminUserPool: cognito.UserPool;
   public consumerUserPool: cognito.UserPool;
 
-  constructor(scope: App, id: string, props: CognitoStackProps) {
+  constructor(scope: App, id: string, private props: CognitoStackProps) {
     super(scope, id, props);
     const app = this.node.root as App;
 
@@ -470,6 +473,10 @@ export class CognitoStack extends Stack {
         code: lambda.Code.fromAsset(
           path.join(__dirname, '../../.serverless/pre-token-generation.zip'),
         ),
+        environment: {
+          API_ACCESS_KEY_ID: this.props.apiAccessKeyId,
+          API_SECRET_ACCESS_KEY: this.props.apiSecretAccessKey,
+        },
       },
     );
 
