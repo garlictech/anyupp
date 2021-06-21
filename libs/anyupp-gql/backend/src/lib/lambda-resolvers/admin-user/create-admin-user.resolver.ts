@@ -1,5 +1,6 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { filterNullish } from '@bgap/shared/utils';
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as E from 'fp-ts/lib/Either';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { defer, from, of, throwError } from 'rxjs';
@@ -52,24 +53,27 @@ export const createAdminUser =
               }),
             ),
           ),
-          E.map(() => ({
-            Username: newUsername,
-            UserAttributes: [
-              {
-                Name: 'email',
-                Value: vars.input.email,
-              },
-              {
-                Name: 'phone_number',
-                Value: vars.input.phone,
-              },
-              {
-                Name: 'name',
-                Value: vars.input.name,
-              },
-            ],
-            UserPoolId: deps.userPoolId,
-          })),
+          E.map(
+            (): CognitoIdentityServiceProvider.Types.AdminCreateUserRequest => ({
+              Username: newUsername,
+              UserAttributes: [
+                {
+                  Name: 'email',
+                  Value: vars.input.email,
+                },
+                {
+                  Name: 'phone_number',
+                  Value: vars.input.phone,
+                },
+                {
+                  Name: 'name',
+                  Value: vars.input.name,
+                },
+              ],
+              UserPoolId: deps.userPoolId,
+              DesiredDeliveryMediums: ['EMAIL'],
+            }),
+          ),
         ),
       ),
       switchMap(res => (E.isLeft(res) ? throwError(res.left) : of(res.right))),
