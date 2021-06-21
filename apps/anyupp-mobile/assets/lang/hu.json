@@ -48,7 +48,7 @@
       "dialogResetSentTitle": "Kód elküldve",
       "dialogResetSentMessage": "Elküldtük email-ben a jelszó megváltoztatásához szükséges kódot ide: ",
       "dialogPasswordRefreshedTitle": "Jelszó frissítve",
-      "dialogPasswordRefreshedMessage": "A jelszavadat frissítettük mostmár belépetsz vele.",
+      "dialogPasswordRefreshedMessage": "A jelszavadat frissítettük, mostantól beléphetsz vele.",
       "closeButton": "Bezárás",
       "setMailTo": "A kódot elküldtük a megadott email címre",
       "checkInbox": "Ellenőrizd a bejövő leveleidet!",
@@ -155,7 +155,7 @@
     "status": {
       "none": "VÁR",
       "placed": "BEADVA",
-      "processing": "FOLYAMATBAN",
+      "processing": "KÉSZÜL",
       "ready": "KÉSZ",
       "paid": "FIZETVE",
       "rejected": "TÖRÖLVE"
@@ -163,15 +163,15 @@
     "pay": "Fizetni szeretnék",
     "waiting": "Kérjük, várj a pincérre!",
     "simplepay": "Fizetés SimplePay-jel",
-    "stripepay": "Fizetés Stripe-al"
+    "stripepay": "Fizetés Stripe-pal"
   },
   "payment": {
-    "title": "FIZETÉS",
+    "title": "FIZETÉSI MÓD",
     "choose": "Melyik fizetési módot választod?",
     "method": {
       "cash": "Pincérnél készpénzzel",
       "creditCard": "Pincérnél kártyával",
-      "inAppPayment": "Kártyás fizetés Stripe-al (ajánlott)"
+      "inAppPayment": "Kártyás fizetés Stripe-pal (ajánlott)"
     },
     "sendOrder": "RENDELÉS",
     "fillInvoice": "SZÁMLAADATOK MEGADÁSA",
@@ -183,9 +183,9 @@
       },
       "invoicing": {
         "want_invoice": "Áfás számlát kérek",
-        "invoice_info": "Számla Információ",
-        "receipt_info": "Nyugta Információ",
-        "name_or_company": "Név/Cég név",
+        "invoice_info": "Számlázási Adatok",
+        "receipt_info": "Nyugta Adatok",
+        "name_or_company": "Név/Cégnév",
         "tax_id": "Adószám",
         "country": "Ország",
         "zip": "Irányítószám",
@@ -248,8 +248,8 @@
     "chair": "szék #{{0}} asztalszám #{{1}}",
     "findingSeat": "Asztal és szék választása...",
     "tableReserved": {
-      "title": "Asztal lefoglalva!",
-      "description": "Asztal sikeresen lefoglalva. Asztal: {{0}}, Szék: {{1}}"
+      "title": "Hely kiválasztva!",
+      "description": "Hely sikeresen kiválasztva. Asztal: {{0}}, Szék: {{1}}"
     },
     "qrCodeError": {
       "title": "Hibás QR kód",
@@ -257,7 +257,7 @@
     },
     "qrUnitsError": {
       "title": "Nem találtam éttermet",
-      "description": "Úgy tűnik nincs egyetlen egy étterem sem a közeledben. :("
+      "description": "Úgy tűnik nincs éttermünk a közeledben. :("
     },
     "qrGeneralError": {
       "title": "Valami hiba történt",
@@ -267,7 +267,7 @@
   "qrScan": {
     "loading": "QR kód adatainak betöltése...",
     "moveCloser": "Közelítsd a kamerát a QR kódhoz!",
-    "pointCamera": "Iránítsd a kamerát a QR kódra!",
+    "pointCamera": "Irányítsd a kamerát a QR kódra!",
     "permission": {
       "denied": {
         "title": "Kamerahasználat",
@@ -316,7 +316,7 @@
       "settings": "Beállítások",
       "regulations": "Szabályzatok",
       "language": "Nyelv",
-      "payment": "Fizetés és számla adatok"
+      "payment": "Fizetés és számlaadatok"
     },
     "transactions": {
       "status": "Státusz",
@@ -330,10 +330,10 @@
   },
   "validators": {
     "required": "Ez a mező szükséges",
-    "enterValidEmail": "érvényes email címet adj meg",
-    "eneterValidPhone": "érvényes telefonszmot adj meg",
+    "enterValidEmail": "érvényes email cím szükséges",
+    "eneterValidPhone": "érvényes telefonszám szükséges",
     "passwordIsRequired": "jelszó megadása szükséges",
-    "passwordValidatorText": "Tartalmaznia kell számot, nagy és kis betűt",
+    "passwordValidatorText": "Tartalmaznia kell számot, nagy- és kisbetűt",
     "passwordLengthError": "a jelszónak legalább 8 karakter hosszúnak kell lennie"
   },
   "error": {

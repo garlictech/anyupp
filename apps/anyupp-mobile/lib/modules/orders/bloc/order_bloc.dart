@@ -16,7 +16,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
   @override
   Stream<BaseOrderState> mapEventToState(BaseOrderAction event) async* {
     if (event is StartGetOrderListSubscription) {
-      await _repository.startOrderListSubscription(event.chainId, event.unitId);
+      await _repository.startOrderListSubscription(event.unitId);
       yield OrderSubscriptionsState('OrderList', true);
     }
 
@@ -26,7 +26,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
     }
 
     if (event is StartGetOrderHistoryListSubscription) {
-      await _repository.startOrderHistoryListSubscription(event.chainId, event.unitId);
+      await _repository.startOrderHistoryListSubscription(event.unitId);
       yield OrderSubscriptionsState('OrderHistoryList', true);
     }
 

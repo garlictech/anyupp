@@ -19,13 +19,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       if (action is GetCurrentCartAction) {
         yield CartLoadingState();
         Cart cart =
-            await _cartRepository.getCurrentCart(action.chainId, action.unitId);
-        yield CurrentCartState(cart);
-      }
-
-      if (action is SetPaymentMode) {
-        yield CartLoadingState();
-        Cart cart = await _cartRepository.setPaymentMode(action.unit, action.paymentMode);
+            await _cartRepository.getCurrentCart(action.unitId);
         yield CurrentCartState(cart);
       }
 
@@ -40,7 +34,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       if (action is RemoveProductFromCartAction) {
         yield CartLoadingState();
         Cart cart = await _cartRepository.removeProductFromCart(
-            action.chainId, action.unitId, action.order);
+            action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 
@@ -54,7 +48,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       if (action is RemoveOrderFromCartAction) {
         yield CartLoadingState();
         Cart cart = await _cartRepository.removeOrderFromCart(
-            action.chainId, action.unitId, action.order);
+            action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 
@@ -73,7 +67,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
 
       if (action is ClearCartAction) {
         yield CartLoadingState();
-        await _cartRepository.clearCart(action.user, action.unit);
+        await _cartRepository.clearCart();
         yield EmptyCartState();
       }
       if (action is AddInvoiceInfo) {
