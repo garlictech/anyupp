@@ -175,8 +175,8 @@ const unitInput: CrudApi.CreateUnitInput = {
   phone: '+36203324200',
 };
 
-const awsAccesskeyId = 'AKIAYIT7GMY5WQZFXOOX'; // process.env.AWS_ACCESS_KEY_ID || '';
-const awsSecretAccessKey = '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'; // process.env.AWS_SECRET_ACCESS_KEY || '';
+const awsAccesskeyId = process.env.AWS_ACCESS_KEY_ID || '';
+const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
 // const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const crudSdk = CrudApi.getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const adminUserPoolId = awsConfig.aws_user_pools_id;
