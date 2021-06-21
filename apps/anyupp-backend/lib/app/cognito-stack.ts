@@ -7,7 +7,6 @@ import { App, Stack, StackProps } from '@serverless-stack/resources';
 import path from 'path';
 import { commonLambdaProps } from './lambda-common';
 import { getFQParamName } from './utils';
-import * as kms from '@aws-cdk/aws-kms';
 
 export interface CognitoStackProps extends StackProps {
   adminSiteUrl: string;
