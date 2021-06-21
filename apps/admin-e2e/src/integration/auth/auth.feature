@@ -8,11 +8,10 @@ Feature: Authentication
 
   Scenario: Login and log out
     When I fill out the input with id "username" with the "test@anyupp.com" value
-    And I fill out the input with id "password" with the "Testtesttest12_" value
+    And I fill out the input with id "password" with the "Hideghegy12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
-    Then I should see "Account recovery requires verified contact information" sub-header
-    When I click the "skip" text with timeout 15000
+    # When I click the "skip" text with timeout 15000
     Then I should be on the dashboard page
     Then I set the language to EN
     Then I should see "John Doe" text
