@@ -49,6 +49,9 @@ Array [
 exports[`Handle the good case: adminCreateUser parameters 1`] = `
 Array [
   Object {
+    "DesiredDeliveryMediums": Array [
+      "EMAIL",
+    ],
     "UserAttributes": Array [
       Object {
         "Name": "email",
