@@ -58,6 +58,10 @@ Array [
         "Value": "a@a.hu",
       },
       Object {
+        "Name": "email_verified",
+        "Value": "true",
+      },
+      Object {
         "Name": "phone_number",
         "Value": "+123456789",
       },
