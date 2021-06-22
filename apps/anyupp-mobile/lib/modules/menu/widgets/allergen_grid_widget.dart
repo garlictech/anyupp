@@ -67,7 +67,7 @@ Widget allergenGridWidget(
                 shape: BadgeShape.circle,
                 toAnimate: false,
                 badgeContent: FittedBox(
-                    fit: BoxFit.contain, child: Text(index.toString(), style: TextStyle(color: Colors.white))),
+                    fit: BoxFit.contain, child: Text(index.toString(), style: TextStyle(color: Colors.black))),
               ),
             ),
           )
