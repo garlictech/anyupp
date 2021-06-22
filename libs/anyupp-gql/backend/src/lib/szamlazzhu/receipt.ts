@@ -1,5 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-
 import * as Szamlazz from 'szamlazz.js';
 
 export const createReceiptSzamlazzHu =
@@ -45,8 +44,7 @@ export const createReceiptSzamlazzHu =
       );
     }
 
-    // TODO: user from transaction.currency
-    const currency: Szamlazz.Interface.Currency = Szamlazz.Currency.HUF;
+    const currency: Szamlazz.Interface.Currency = Szamlazz.Currency.HUF; // should use currency from transaction.currency (Covered by #750)
 
     // User
     // let buyer = new Szamlazz.Buyer({
@@ -63,8 +61,7 @@ export const createReceiptSzamlazzHu =
 
     // OrderItems
     const items = order.items.map(orderItem => {
-      // TODO: use the language input param
-      let label = orderItem.productName.hu;
+      let label = orderItem.productName.hu; // Should use the language input param (Covered by #750)
       if (!label) {
         label = orderItem.productName.en;
         if (!label) {
@@ -76,16 +73,16 @@ export const createReceiptSzamlazzHu =
       return new Szamlazz.ReceiptItem({
         label,
         quantity: orderItem.quantity,
-        unit: 'db', // TODO: translate it in the future
+        unit: 'db', // Should be translated it in the future (Covered by #751)
         vat: orderItem.priceShown.tax, // can be a number or a special string
-        grossUnitPrice: orderItem.priceShown.priceSum, // calculates gross and net values from per item net
+        grossUnitPrice: orderItem.priceShown.pricePerUnit, // the szamlazz lib will calculate gross and net values from per item net
         receiptItemId: orderItem.productId,
       });
     });
 
     const receipt = new Szamlazz.Receipt({
       paymentMethod, // optional, default: BankTransfer
-      receiptNumberPrefix: 'KHU',
+      receiptNumberPrefix: 'KHU', // What kind of prefixes should we use ??? (Covered by #946)
       currency,
       comment: transaction.externalTransactionId,
       items: items,

@@ -21,7 +21,6 @@ import {
 } from '@bgap/shared/fixtures';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
 import { filterNullish, getSortedIds, sortById } from '@bgap/shared/utils';
-import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
 import {
   combineLatest,
   concat,
@@ -42,7 +41,10 @@ import {
   tap,
   toArray,
 } from 'rxjs/operators';
-import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
+import {
+  createAuthenticatedAnyuppSdk,
+  createIamCrudSdk,
+} from '../../../../api-clients';
 import {
   createTestChainProduct,
   deleteTestChainProduct,
@@ -416,7 +418,6 @@ describe('RegenerateUnitData mutation tests', () => {
 
         // PHASE 1: EXECUTE THE LOGIC - check generated products
         switchMap(() =>
-          // TO DEBUG
           iif(
             () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
             defer(() =>
