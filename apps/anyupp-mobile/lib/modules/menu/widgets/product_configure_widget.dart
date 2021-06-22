@@ -178,7 +178,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   Widget _buildAllergensListWidget(BuildContext context) {
-    return AllergensWidget(allergens: _allergeens.toList(), );
+    return AllergensWidget(allergens: _allergeens.toList(),);
   }
 
   Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> getSelectedComponentMap() {
