@@ -75,14 +75,14 @@ export const createReceiptSzamlazzHu =
         quantity: orderItem.quantity,
         unit: 'db', // Should be translated it in the future (Covered by #751)
         vat: orderItem.priceShown.tax, // can be a number or a special string
-        grossUnitPrice: orderItem.priceShown.pricePerUnit, // calculates gross and net values from per item net // TODO: shouldn't we use the NOT summarized price?
+        grossUnitPrice: orderItem.priceShown.pricePerUnit, // the szamlazz lib will calculate gross and net values from per item net
         receiptItemId: orderItem.productId,
       });
     });
 
     const receipt = new Szamlazz.Receipt({
       paymentMethod, // optional, default: BankTransfer
-      receiptNumberPrefix: 'KHU', // TODO: What kind of prefixes should we use ???
+      receiptNumberPrefix: 'KHU', // What kind of prefixes should we use ??? (Covered by #946)
       currency,
       comment: transaction.externalTransactionId,
       items: items,

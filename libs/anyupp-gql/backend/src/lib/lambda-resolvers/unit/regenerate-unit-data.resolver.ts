@@ -107,15 +107,15 @@ const listUnitProductsForAUnit =
     const input: CrudApi.ListUnitProductsQueryVariables = {
       filter: { unitId: { eq: unitId } },
     };
+    const throwOnEmptyList = (items: CrudApi.UnitProduct[]) =>
+      items.length > 0 ? of(items) : throwError(getNoProductInUnitgError());
 
     return from(
       deps.crudSdk.ListUnitProducts(input, { fetchPolicy: 'no-cache' }),
     ).pipe(
       switchMap(validateUnitProductList),
       filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
-      switchMap(items =>
-        items.length > 0 ? of(items) : throwError(getNoProductInUnitgError()),
-      ),
+      switchMap(throwOnEmptyList),
     );
   };
 
