@@ -216,6 +216,7 @@ export class OrderService {
           };
 
           const newOrderStatus = getOrderStatusByItemsStatus(_order);
+
           if (newOrderStatus) {
             input.statusLog = [
               {
@@ -224,6 +225,12 @@ export class OrderService {
                 userId: this._adminUser.id,
               },
             ];
+            if (
+              newOrderStatus === CrudApi.OrderStatus.served &&
+              _order.transaction?.status === CrudApi.PaymentStatus.success
+            ) {
+              input.archived = true;
+            }
           }
 
           return this._crudSdk.doMutation(
@@ -269,21 +276,26 @@ export class OrderService {
     }
   }
 
-  public archiveOrder(order: CrudApi.Order, status: CrudApi.OrderStatus) {
+  public archiveOrder(order: CrudApi.Order, status?: CrudApi.OrderStatus) {
     if (this._adminUser?.id) {
+      const input: CrudApi.UpdateOrderInput = {
+        id: order.id,
+        archived: true,
+      };
+
+      if (status) {
+        input.statusLog = [
+          {
+            status,
+            ts: new Date().getTime(),
+            userId: this._adminUser.id,
+          },
+        ];
+      }
+
       return this._crudSdk.doMutation(
         this._crudSdk.sdk.UpdateOrder({
-          input: {
-            id: order.id,
-            archived: true,
-            statusLog: [
-              {
-                status,
-                ts: new Date().getTime(),
-                userId: this._adminUser.id,
-              },
-            ],
-          },
+          input,
         }),
       );
     } else {
