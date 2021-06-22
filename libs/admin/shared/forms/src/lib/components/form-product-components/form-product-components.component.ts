@@ -92,16 +92,14 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
     );
 
     if (componentSet) {
-      const componentSetGroup =
-        this._formsService.createProductConfigSetFormGroup();
+      const componentSetGroup = this._formsService.createProductConfigSetFormGroup();
       componentSetGroup.patchValue({
         productSetId: componentSet.id,
         position: this.componentFormArray.value.length + 1,
       });
 
       componentSet.items.forEach((componentId, i) => {
-        const itemGroup =
-          this._formsService.createProductConfigSetItemFormGroup();
+        const itemGroup = this._formsService.createProductConfigSetItemFormGroup();
         itemGroup.patchValue({
           productComponentId: componentId,
           position: i + 1,
@@ -154,8 +152,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
 
           (arr[i]?.items || []).forEach(
             (item: CrudApi.ProductConfigComponent): void => {
-              const itemGroup =
-                this._formsService.createProductConfigSetItemFormGroup();
+              const itemGroup = this._formsService.createProductConfigSetItemFormGroup();
               itemGroup.patchValue(item);
 
               (g.get('items') as FormArray).push(itemGroup);

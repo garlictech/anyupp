@@ -32,8 +32,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./reports-hourly-breakdown.component.scss'],
 })
 export class ReportsHourlyBreakdownComponent
-  implements AfterViewInit, OnDestroy
-{
+  implements AfterViewInit, OnDestroy {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
   @Input() orders$!: Observable<CrudApi.Order[]>;
   @Input() currency = '';
@@ -207,14 +206,26 @@ export class ReportsHourlyBreakdownComponent
     this._translateService.onLangChange
       .pipe(untilDestroyed(this))
       .subscribe(() => {
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].label =
-          this._translateService.instant('dashboard.reports.ordersCount');
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[1].label =
-          this._translateService.instant('products.productType.food');
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[2].label =
-          this._translateService.instant('products.productType.drink');
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[3].label =
-          this._translateService.instant('products.productType.other');
+        (<Chart.ChartDataSets[]>(
+          this._chart.data.datasets
+        ))[0].label = this._translateService.instant(
+          'dashboard.reports.ordersCount',
+        );
+        (<Chart.ChartDataSets[]>(
+          this._chart.data.datasets
+        ))[1].label = this._translateService.instant(
+          'products.productType.food',
+        );
+        (<Chart.ChartDataSets[]>(
+          this._chart.data.datasets
+        ))[2].label = this._translateService.instant(
+          'products.productType.drink',
+        );
+        (<Chart.ChartDataSets[]>(
+          this._chart.data.datasets
+        ))[3].label = this._translateService.instant(
+          'products.productType.other',
+        );
 
         this._chart.update();
 

@@ -43,14 +43,13 @@ export class ParamsStack extends sst.Stack {
       exportName: app.logicalPrefixedName('facebookAppId'),
     });
 
-    this.stripePublishableKey =
-      ssm.StringParameter.fromStringParameterAttributes(
-        this,
-        'stripePublishableKeyParam',
-        {
-          parameterName: `/${app.stage}-${rootAppName}/StripePublishableKey`,
-        },
-      ).stringValue;
+    this.stripePublishableKey = ssm.StringParameter.fromStringParameterAttributes(
+      this,
+      'stripePublishableKeyParam',
+      {
+        parameterName: `/${app.stage}-${rootAppName}/StripePublishableKey`,
+      },
+    ).stringValue;
 
     new CfnOutput(this, 'stripePublishableKeyOutput', {
       value: this.stripePublishableKey,

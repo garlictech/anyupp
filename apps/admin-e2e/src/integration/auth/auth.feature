@@ -12,7 +12,6 @@ Feature: Authentication
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
     Then I should be on the dashboard page
-    # Set the desired lang
     Then I set the language to EN
     Then I should see "John Doe" text
     And the "Dashboard" title is displayed

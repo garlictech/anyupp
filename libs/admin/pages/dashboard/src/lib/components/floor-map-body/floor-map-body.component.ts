@@ -51,10 +51,12 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
   public unit?: CrudApi.Unit;
 
-  private _allTableSeatOrders$: BehaviorSubject<IFloorMapOrderObjects> =
-    new BehaviorSubject({});
-  private _allTableOrders$: BehaviorSubject<IFloorMapOrderObjects> =
-    new BehaviorSubject({});
+  private _allTableSeatOrders$: BehaviorSubject<
+    IFloorMapOrderObjects
+  > = new BehaviorSubject({});
+  private _allTableOrders$: BehaviorSubject<
+    IFloorMapOrderObjects
+  > = new BehaviorSubject({});
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

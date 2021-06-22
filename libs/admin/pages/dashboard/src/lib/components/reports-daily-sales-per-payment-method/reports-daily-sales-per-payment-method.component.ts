@@ -27,8 +27,7 @@ import { IOrderAmounts } from '@bgap/shared/types';
   styleUrls: ['./reports-daily-sales-per-payment-method.component.scss'],
 })
 export class ReportsDailySalesPerPaymentMethodComponent
-  implements AfterViewInit, OnDestroy
-{
+  implements AfterViewInit, OnDestroy {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
   @Input() orders$!: Observable<CrudApi.Order[]>;
   @Input() currency = '';
@@ -92,10 +91,8 @@ export class ReportsDailySalesPerPaymentMethodComponent
                 },
               },
               formatter: (value, ctx) => {
-                const sum = (
-                  (<Chart.ChartDataSets[]>ctx.chart.data.datasets)[0]
-                    .data as number[]
-                ).reduce(reducer);
+                const sum = ((<Chart.ChartDataSets[]>ctx.chart.data.datasets)[0]
+                  .data as number[]).reduce(reducer);
                 const perc = ((value / sum) * 100).toFixed(0);
                 return `${perc}%`;
               },

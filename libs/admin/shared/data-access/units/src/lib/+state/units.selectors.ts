@@ -4,8 +4,9 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { UnitsState, UNITS_FEATURE_KEY, unitsAdapter } from './units.reducer';
 
-export const getUnitsState =
-  createFeatureSelector<UnitsState>(UNITS_FEATURE_KEY);
+export const getUnitsState = createFeatureSelector<UnitsState>(
+  UNITS_FEATURE_KEY,
+);
 
 const { selectAll, selectEntities } = unitsAdapter.getSelectors();
 
@@ -24,11 +25,9 @@ export const getUnitsEntities = createSelector(
 );
 
 export const getUnitById = (id: string) => {
-  return createSelector(
-    getAllUnits,
-    (units: CrudApi.Unit[]): CrudApi.Unit | undefined =>
-      units.find((unit): boolean => unit.id === id),
-  );
+  return createSelector(getAllUnits, (units: CrudApi.Unit[]):
+    | CrudApi.Unit
+    | undefined => units.find((unit): boolean => unit.id === id));
 };
 
 export const getUnitsByGroupId = (groupId: string) => {

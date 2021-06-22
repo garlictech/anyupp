@@ -10,8 +10,9 @@ import {
 } from './orders.reducer';
 import * as CrudApi from '@bgap/crud-gql/api';
 
-export const getOrdersState =
-  createFeatureSelector<IOrdersState>(ORDERS_FEATURE_KEY);
+export const getOrdersState = createFeatureSelector<IOrdersState>(
+  ORDERS_FEATURE_KEY,
+);
 
 // ACTIVE
 
@@ -30,11 +31,9 @@ export const getAllActiveOrderCount = activeOrdersAdapter.getSelectors(
 ).selectTotal;
 
 export const getActiveOrderById = (id: string) => {
-  return createSelector(
-    getAllActiveOrders,
-    (orders: CrudApi.Order[]): CrudApi.Order | undefined =>
-      orders.find((order): boolean => order.id === id),
-  );
+  return createSelector(getAllActiveOrders, (orders: CrudApi.Order[]):
+    | CrudApi.Order
+    | undefined => orders.find((order): boolean => order.id === id));
 };
 
 export const getActiveOrdersByUserId = (userId: string) => {
@@ -100,9 +99,7 @@ export const getAllHistoryOrderCount = historyOrdersAdapter.getSelectors(
 ).selectTotal;
 
 export const getHistoryOrderById = (id: string) => {
-  return createSelector(
-    getAllHistoryOrders,
-    (orders: CrudApi.Order[]): CrudApi.Order | undefined =>
-      orders.find((order): boolean => order.id === id),
-  );
+  return createSelector(getAllHistoryOrders, (orders: CrudApi.Order[]):
+    | CrudApi.Order
+    | undefined => orders.find((order): boolean => order.id === id));
 };

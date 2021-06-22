@@ -92,8 +92,10 @@ export class CognitoStack extends Stack {
       },
     );
 
-    const { consumerWebClient, consumerNativeClient } =
-      this.createConsumerUserPoolClient(app, this.consumerUserPool);
+    const {
+      consumerWebClient,
+      consumerNativeClient,
+    } = this.createConsumerUserPoolClient(app, this.consumerUserPool);
 
     consumerWebClient.node.addDependency(googleIdProvider);
     consumerWebClient.node.addDependency(facebookIdProvider);
@@ -113,12 +115,14 @@ export class CognitoStack extends Stack {
     // Admin resources
     this.adminUserPool = this.createAdminUserPool(app);
     const adminDomain = this.createDomain(app, 'Admin', this.adminUserPool);
-    const { adminNativeClient, adminWebClient } =
-      this.createAdminUserPoolClients(
-        app,
-        this.adminUserPool,
-        props.adminSiteUrl,
-      );
+    const {
+      adminNativeClient,
+      adminWebClient,
+    } = this.createAdminUserPoolClients(
+      app,
+      this.adminUserPool,
+      props.adminSiteUrl,
+    );
 
     this.createUserPoolOutputs(app, this.adminUserPool, adminDomain, 'Admin');
 

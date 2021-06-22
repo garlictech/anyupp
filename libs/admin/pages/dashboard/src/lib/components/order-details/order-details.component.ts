@@ -159,24 +159,23 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  private _updateTransactionStatusCallback =
-    (status: CrudApi.PaymentStatus) => () => {
-      if (this.order.transactionId) {
-        this._orderService
-          .updateOrderTransactionStatus(this.order, status)
-          .pipe(
-            switchMap(() =>
-              status === CrudApi.PaymentStatus.success &&
-              currentStatusFn(this.order.statusLog) === CrudApi.OrderStatus.none
-                ? this._orderService.updateOrderStatusFromNoneToPlaced(
-                    this.order,
-                  )
-                : of(true),
-            ),
-          )
-          .subscribe();
-      }
-    };
+  private _updateTransactionStatusCallback = (
+    status: CrudApi.PaymentStatus,
+  ) => () => {
+    if (this.order.transactionId) {
+      this._orderService
+        .updateOrderTransactionStatus(this.order, status)
+        .pipe(
+          switchMap(() =>
+            status === CrudApi.PaymentStatus.success &&
+            currentStatusFn(this.order.statusLog) === CrudApi.OrderStatus.none
+              ? this._orderService.updateOrderStatusFromNoneToPlaced(this.order)
+              : of(true),
+          ),
+        )
+        .subscribe();
+    }
+  };
 
   public resetOrderItemStatus(idx: number): void {
     const dialog = this._nbDialogService.open(ConfirmDialogComponent);

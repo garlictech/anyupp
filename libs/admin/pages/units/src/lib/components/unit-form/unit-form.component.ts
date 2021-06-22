@@ -41,8 +41,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class UnitFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   public unit!: CrudApi.Unit;
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[] = [];
@@ -126,8 +125,7 @@ export class UnitFormComponent
       if (custom) {
         custom.forEach(day => {
           if (day) {
-            const dayGroup =
-              this._formsService.createCustomDailyScheduleFormGroup();
+            const dayGroup = this._formsService.createCustomDailyScheduleFormGroup();
             dayGroup.patchValue(day);
 
             (<FormArray>(

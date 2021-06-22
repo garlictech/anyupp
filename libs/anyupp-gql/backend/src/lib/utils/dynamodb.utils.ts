@@ -50,31 +50,32 @@ const toBatchPutParam = (item: any): WriteRequest => ({
 });
 
 /** Returns all the results in a single emission */
-const executeBatchWrite =
-  (tablename: string) => (writeRequests: WriteRequest[]) => {
-    return from(writeRequests).pipe(
-      // SPLIT the operations into fix sized chunks
-      bufferCount(DYNAMODB_BATCH_WRITE_ITEM_COUNT),
-      map(toBatchWriteIteminput(tablename)),
-      // EXECUTE fix amount of the operation concurrently
-      mergeMap(
-        params =>
-          from(dbClient.batchWriteItem(params).promise()).pipe(
-            delay(DYNAMODB_OPERATION_DELAY),
-          ),
-        DYNAMODB_CONCURRENT_OPERATION_COUNT,
-      ),
-      toArray(),
-      map(fp.flatten),
-    );
-  };
-const toBatchWriteIteminput =
-  (tablename: string) =>
-  (writeRequests: WriteRequest[]): DocumentClient.BatchWriteItemInput => ({
-    RequestItems: {
-      [tablename]: writeRequests,
-    },
-  });
+const executeBatchWrite = (tablename: string) => (
+  writeRequests: WriteRequest[],
+) => {
+  return from(writeRequests).pipe(
+    // SPLIT the operations into fix sized chunks
+    bufferCount(DYNAMODB_BATCH_WRITE_ITEM_COUNT),
+    map(toBatchWriteIteminput(tablename)),
+    // EXECUTE fix amount of the operation concurrently
+    mergeMap(
+      params =>
+        from(dbClient.batchWriteItem(params).promise()).pipe(
+          delay(DYNAMODB_OPERATION_DELAY),
+        ),
+      DYNAMODB_CONCURRENT_OPERATION_COUNT,
+    ),
+    toArray(),
+    map(fp.flatten),
+  );
+};
+const toBatchWriteIteminput = (tablename: string) => (
+  writeRequests: WriteRequest[],
+): DocumentClient.BatchWriteItemInput => ({
+  RequestItems: {
+    [tablename]: writeRequests,
+  },
+});
 
 export const executeBatchDelete = (tablename: string) => (ids: Array<string>) =>
   executeBatchWrite(tablename)(ids.map(toBatchDeleteParam));

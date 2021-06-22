@@ -7,7 +7,6 @@ Feature: Create a new Chain
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
     Then I should be on the dashboard page
-    # Set the desired lang
     Then I set the language to EN
     And I click on the menu icon
     And I click on the "Chains" text
@@ -20,7 +19,7 @@ Feature: Create a new Chain
     Then the "Chains" title is displayed
     When I click on the plus button
     And I click on the "Active" checkbox
-    And I fill out the "Name" input with "test chain 1"
+    And I fill out the "Name" input with "test chain e2e"
     And I fill out the "Description (HU)" input with "test description"
     And I fill out the "Description (EN)" input with "test description"
     And I fill out the "Description (DE)" input with "test description"
@@ -43,17 +42,17 @@ Feature: Create a new Chain
     And I click on the "Disabled" picker fill out with "#303030"
     And I click on the "Locate on map" button
     And I click on the "Submit" button
-    Then I should see "test chain 1" text
+    Then I should see "test chain e2e" text
     And I should see "test description" text
     And I should see "test@anyupp.com" text
     And I should see "1234567890" text
 
   Scenario: Update the Chain
-    When I click the edit button in the listitem with "test chain 1" content
+    When I click the edit button in the listitem with "test chain e2e" content
     And I fill out the "Name" input with "test chain e2eUpdated"
-    And I fill out the "Description (HU)" input with "test descripton e2eUpdated"
-    And I fill out the "Description (EN)" input with "test descripton e2eUpdated"
-    And I fill out the "Description (DE)" input with "test descripton e2eUpdated"
+    And I fill out the "Description (HU)" input with "test description e2eUpdated"
+    And I fill out the "Description (EN)" input with "test description e2eUpdated"
+    And I fill out the "Description (DE)" input with "test description e2eUpdated"
     And I fill out the "Email" input with "test123@anyupp.com"
     And I click on the "Background (light)" picker fill out with "#ffffff"
     And I fill out the "Phone" input with "1234567890123"
@@ -73,6 +72,6 @@ Feature: Create a new Chain
     And I click on the "Locate on map" button
     And I click on the "Submit" button
     Then I should see "test chain e2eUpdated" text
-    And I should see "test descripton e2eUpdated" text
+    And I should see "test description e2eUpdated" text
     And I should see "test123@anyupp.com" text
     And I should see "1234567890123" text
