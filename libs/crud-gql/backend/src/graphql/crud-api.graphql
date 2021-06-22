@@ -257,8 +257,8 @@ type OrderItem {
 ### Order
 type Order
   @model
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "byDate", fields: ["id", "createdAt"]) {
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   createdAt: String!
   userId: ID!
