@@ -245,6 +245,7 @@ type OrderItem {
   created: Float
   productName: LocalizedItem!
   image: String
+  sumPriceShown: PriceShown!
   priceShown: PriceShown!
   quantity: Int!
   statusLog: [StatusLog!]!

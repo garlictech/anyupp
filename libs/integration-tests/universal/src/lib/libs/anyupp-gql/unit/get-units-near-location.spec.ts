@@ -94,7 +94,7 @@ describe('GetUnitsNearLocation tests', () => {
   });
 
   describe('input validation', () => {
-    it('should throw without a input', done => {
+    it('should throw without an input', done => {
       const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {} as any;
       from(
         unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),

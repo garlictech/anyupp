@@ -1,8 +1,9 @@
 import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import {
+  productFixture,
   testAdminEmail,
   testAdminUserPassword,
-} from 'libs/shared/fixtures/src';
+} from '@bgap/shared/fixtures';
 import { interval, of } from 'rxjs';
 import {
   catchError,
@@ -13,7 +14,6 @@ import {
   tap,
 } from 'rxjs/operators';
 import { createAuthenticatedCrudSdk } from '../../../api-clients';
-import { productFixture } from '@bgap/shared/fixtures';
 
 describe('CRUD sdk test', () => {
   let sdk: CrudSdk;

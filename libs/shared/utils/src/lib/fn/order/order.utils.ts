@@ -1,57 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { toFixed2Number } from '../number.utils';
 import { pipe } from 'fp-ts/function';
-
-/**
- * RE-calculate all the item prices without rounding on any of them.
- * Calculate the configSet prices too on each orderItem.
- *
- * Only the result will be rounded and only once at the end.
- *
- * @param items OrderItems
- * @returns a complete PriceShown but the tax and pricePerUnit are 0
- *  because those have no meaning in a summarized object
- */
-export const calculateOrderSumPrice = (
-  items: CrudApi.OrderItemInput[],
-): CrudApi.PriceShown => pipe(items, sumItems, roundSums);
-
-const sumItems = (items: CrudApi.OrderItem[]): CrudApi.PriceShown => {
-  const initValue: CrudApi.PriceShown = {
-    currency: '',
-    priceSum: 0,
-    pricePerUnit: 0,
-    tax: 0,
-    taxSum: 0,
-  };
-  if (!items) {
-    return initValue;
-  }
-  return items.reduce((sum, item) => {
-    const lastStatus = currentStatus(item.statusLog);
-
-    if (lastStatus === CrudApi.OrderStatus.rejected) {
-      return sum;
-    }
-    const itemPrice = calculatePriceShown({
-      ...item.priceShown,
-      quantity: item.quantity,
-    });
-    const itemPriceWithConfigSetPrices =
-      itemPrice.priceSum + sumItemConfigSetPrices(item) * item.quantity;
-    const itemTaxSum = calculateTaxSum({
-      tax: item.priceShown.tax,
-      brutto: itemPriceWithConfigSetPrices,
-    });
-    return {
-      priceSum: sum.priceSum + itemPriceWithConfigSetPrices,
-      taxSum: sum.taxSum + itemTaxSum,
-      currency: item.priceShown.currency,
-      tax: 0,
-      pricePerUnit: 0,
-    };
-  }, initValue);
-};
+import { toFixed2Number } from '../number.utils';
 
 const roundSums = (price: CrudApi.PriceShown) => {
   return {
@@ -86,25 +35,110 @@ const sumItemConfigSetPrices = (item: CrudApi.OrderItem): number => {
   }, 0);
 };
 
-export const calculatePriceShown = ({
-  pricePerUnit,
-  quantity,
+export const calculateTaxSumFromBrutto = ({
   tax,
-  currency,
+  brutto,
 }: {
-  pricePerUnit: number;
-  quantity: number;
   tax: number;
-  currency: string;
-}): CrudApi.PriceShown => {
+  brutto: number;
+}): number => (tax / 100 / (1 + tax / 100)) * brutto;
+
+const calculateItemPriceWithConfigSets = (item: CrudApi.OrderItem): number =>
+  item.priceShown.pricePerUnit * item.quantity +
+  sumItemConfigSetPrices(item) * item.quantity;
+
+const calculatePriceShown = (item: CrudApi.OrderItem): CrudApi.PriceShown => {
   return {
-    tax,
-    currency,
-    pricePerUnit,
-    priceSum: pricePerUnit * quantity,
-    taxSum: calculateTaxSum({ tax, brutto: pricePerUnit * quantity }),
+    tax: item.priceShown.tax,
+    currency: item.priceShown.currency,
+    pricePerUnit: item.priceShown.pricePerUnit,
+    priceSum: item.priceShown.pricePerUnit * item.quantity,
+    taxSum: calculateTaxSumFromBrutto({
+      tax: item.priceShown.tax,
+      brutto: item.priceShown.pricePerUnit * item.quantity,
+    }),
   };
 };
 
-const calculateTaxSum = ({ tax, brutto }: { tax: number; brutto: number }) =>
-  (tax / 100 / (1 + tax / 100)) * brutto;
+const calculateItemPriceShownWithConfigSets = (
+  item: CrudApi.OrderItem,
+): CrudApi.PriceShown => {
+  const itemPriceWithConfigSetPrices = calculateItemPriceWithConfigSets(item);
+  return {
+    tax: item.priceShown.tax,
+    currency: item.priceShown.currency,
+    pricePerUnit: item.priceShown.pricePerUnit,
+    priceSum: itemPriceWithConfigSetPrices,
+    taxSum: calculateTaxSumFromBrutto({
+      tax: item.priceShown.tax,
+      brutto: itemPriceWithConfigSetPrices,
+    }),
+  };
+};
+
+const sumItems = (items: CrudApi.OrderItem[]): CrudApi.PriceShown => {
+  const initValue: CrudApi.PriceShown = {
+    currency: '',
+    priceSum: 0,
+    pricePerUnit: 0,
+    tax: 0,
+    taxSum: 0,
+  };
+  if (!items) {
+    return initValue;
+  }
+  return items.reduce((sum, item) => {
+    const lastStatus = currentStatus(item.statusLog);
+
+    if (lastStatus === CrudApi.OrderStatus.rejected) {
+      return sum;
+    }
+    const itemPriceWithConfigSetPrices = calculateItemPriceWithConfigSets(item);
+    const itemTaxSum = calculateTaxSumFromBrutto({
+      tax: item.priceShown.tax,
+      brutto: itemPriceWithConfigSetPrices,
+    });
+    return {
+      priceSum: sum.priceSum + itemPriceWithConfigSetPrices,
+      taxSum: sum.taxSum + itemTaxSum,
+      currency: item.priceShown.currency,
+      tax: 0,
+      pricePerUnit: 0,
+    };
+  }, initValue);
+};
+
+/**
+ * RE-calculate all the item prices without rounding on any of them.
+ * Calculate the configSet prices too on each orderItem.
+ *
+ * Only the result will be rounded and only once at the end.
+ *
+ * @param items OrderItems
+ * @returns a complete PriceShown but the tax and pricePerUnit are 0
+ *  because those have no meaning in a summarized object
+ */
+export const calculateOrderSumPriceRounded = (
+  items: CrudApi.OrderItemInput[],
+): CrudApi.PriceShown => pipe(items, sumItems, roundSums);
+
+/**
+ * With ConfigSets
+ *
+ * @param item OrderItem
+ * @returns a complete recalculate PriceShown object with added config set prices
+ */
+export const calculateOrderItemSumPriceRounded = (
+  item: CrudApi.OrderItemInput,
+): CrudApi.PriceShown =>
+  pipe(item, calculateItemPriceShownWithConfigSets, roundSums);
+
+/**
+ * Without ConfigSets
+ *
+ * @param item OrderItem
+ * @returns a complete recalculate PriceShown object without config set prices
+ */
+export const calculateOrderItemPriceRounded = (
+  item: CrudApi.OrderItemInput,
+): CrudApi.PriceShown => pipe(item, calculatePriceShown, roundSums);
