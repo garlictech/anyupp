@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GetUnitsNearLocation tests input validation should throw without a input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input\\" is required"`;
+exports[`GetUnitsNearLocation tests input validation should throw without an input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input\\" is required"`;
 
 exports[`GetUnitsNearLocation tests input validation should throw without a lat arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location.lng\\" is required"`;
 

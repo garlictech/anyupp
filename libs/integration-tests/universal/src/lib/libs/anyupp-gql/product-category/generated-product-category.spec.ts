@@ -12,9 +12,9 @@ import {
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { sortById } from '@bgap/shared/utils';
-import { createIamCrudSdk } from 'libs/integration-tests/universal/src/api-clients';
 import { of } from 'rxjs';
 import { delay, map, switchMap, tap } from 'rxjs/operators';
+import { createIamCrudSdk } from '../../../../api-clients';
 import { getSortedProductCatIds } from '../test-utils/test-utils';
 
 const DYNAMODB_OPERATION_DELAY = 3000;

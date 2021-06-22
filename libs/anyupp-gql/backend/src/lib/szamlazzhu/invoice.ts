@@ -1,5 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-
 import * as Szamlazz from 'szamlazz.js';
 
 export const createInvoice =

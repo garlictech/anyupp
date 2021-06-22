@@ -16,7 +16,7 @@ import {
   filterNullishGraphqlListWithDefault,
   getNoProductInUnitgError,
 } from '@bgap/shared/utils';
-import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
+import { combineLatest, from, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, mergeMap, switchMap, toArray } from 'rxjs/operators';
 import { getTimezoneFromLocation } from '../../utils';
 import { deleteGeneratedProductsForAUnitFromDb } from '../product';
@@ -107,19 +107,15 @@ const listUnitProductsForAUnit =
     const input: CrudApi.ListUnitProductsQueryVariables = {
       filter: { unitId: { eq: unitId } },
     };
+    const throwOnEmptyList = (items: CrudApi.UnitProduct[]) =>
+      items.length > 0 ? of(items) : throwError(getNoProductInUnitgError());
 
     return from(
       deps.crudSdk.ListUnitProducts(input, { fetchPolicy: 'no-cache' }),
     ).pipe(
       switchMap(validateUnitProductList),
       filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
-      switchMap(items =>
-        iif(
-          () => items.length > 0,
-          of(items),
-          throwError(getNoProductInUnitgError()),
-        ),
-      ),
+      switchMap(throwOnEmptyList),
     );
   };
 

@@ -179,8 +179,8 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
                   AllergensWidget(
                     allergens: allergenNames.toList(),
                     showHeader: false,
-                    size: 30.0,
-                    fontSize: 10.0,
+                    //size: 30.0,
+                    //fontSize: 10.0,
                     iconBorderRadius: 10.0,
                   ),
                   //buildAllergensListWidget(context, modifier),
