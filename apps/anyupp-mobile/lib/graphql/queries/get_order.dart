@@ -23,6 +23,13 @@ query GetOrderQuery(\$orderId: ID!) {
         tax
         taxSum
       }
+      sumPriceShown {
+        currency
+        pricePerUnit
+        priceSum
+        tax
+        taxSum
+      }
       configSets {
         items {
           allergens
