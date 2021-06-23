@@ -127,7 +127,7 @@ describe('calculateOrderItemPriceRounded method', () => {
   });
 });
 
-describe('calculateOrderItemSumPriceRounded method', () => {
+describe('calculateOrderItemSumPriceRounded function', () => {
   const item: CrudApi.OrderItem = {
     ...cartFixture.getOrderItem(),
     quantity: 3,
@@ -143,6 +143,7 @@ describe('calculateOrderItemSumPriceRounded method', () => {
   it("should add the summarized confiset prices to the item's price too", () => {
     expect(calculateOrderItemSumPriceRounded(item)).toEqual({
       ...item.priceShown,
+      pricePerUnit: 14.88,
       priceSum: 44.64, // (10+4+0.88)*3
       taxSum: 4.06,
     });
