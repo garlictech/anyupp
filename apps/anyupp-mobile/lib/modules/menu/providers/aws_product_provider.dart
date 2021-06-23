@@ -4,7 +4,6 @@ import 'package:fa_prev/models/GeneratedProductCategory.dart';
 import 'package:fa_prev/models/ProductCategory.dart';
 
 import 'package:fa_prev/models/GeneratedProduct.dart';
-import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'product_provider_interface.dart';

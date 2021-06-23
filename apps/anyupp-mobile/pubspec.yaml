@@ -80,6 +80,7 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   test: any
+  bloc_test: ^8.0.2
   pedantic:
     ^1.11.1
 
