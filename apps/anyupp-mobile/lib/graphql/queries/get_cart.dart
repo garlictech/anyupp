@@ -11,6 +11,13 @@ listCarts(filter: {unitId: {eq: \$unitId}, userId: {eq: \$userId}}) {
           tax
           taxSum
         }
+        sumPriceShown {
+          currency
+          pricePerUnit
+          priceSum
+          tax
+          taxSum
+        }
         configSets {
           items {
             allergens
