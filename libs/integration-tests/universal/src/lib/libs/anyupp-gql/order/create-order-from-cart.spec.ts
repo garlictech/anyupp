@@ -82,7 +82,9 @@ const cart_01: RequiredId<CrudApi.CreateCartInput> = {
 };
 
 const orderItemPrice_01 = 2; // brutto - has NO config sets
+const orderItemPricePerUnit_02 = 1.8; // brutto - with config sets
 const orderItemPrice_02 = 3.6; // brutto - with config sets
+const orderItemPricePerUnit_03 = 5.8; // brutto - with config sets
 const orderItemPrice_03 = 11.6; // brutto - with config sets
 
 const orderItemTax_01 = 0.425196; // with - has NO config sets
@@ -224,14 +226,14 @@ describe('CreatCartFromOrder mutation test', () => {
             );
             expect(order.items[1].sumPriceShown).toEqual({
               currency: 'EUR',
-              pricePerUnit: 1,
+              pricePerUnit: toFixed2Number(orderItemPricePerUnit_02),
               priceSum: toFixed2Number(orderItemPrice_02),
               tax: 27,
               taxSum: toFixed2Number(orderItemTax_02),
             });
             expect(order.items[2].sumPriceShown).toEqual({
               currency: 'EUR',
-              pricePerUnit: 1,
+              pricePerUnit: toFixed2Number(orderItemPricePerUnit_03),
               priceSum: toFixed2Number(orderItemPrice_03),
               tax: 27,
               taxSum: toFixed2Number(orderItemTax_03),
