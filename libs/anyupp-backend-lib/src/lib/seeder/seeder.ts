@@ -41,6 +41,11 @@ const ce = (tag: string) =>
     console.error(`[${tag}: Error]`, JSON.stringify(err, undefined, 2));
     throw err;
   });
+const catchAndIgnoreError = (tag: string) =>
+  catchError(err => {
+    console.error(`[${tag}: Error]`, JSON.stringify(err, undefined, 2));
+    return of({});
+  });
 
 const userData = pipe([testAdminEmail, ...otherAdminEmails], emails =>
   emails.map((email, index) => ({
@@ -232,23 +237,22 @@ const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
         unitRequestHandler({ crudSdk: deps.crudSdk }).regenerateUnitData({
           input: { id: unitFixture.unitId_seeded_01 },
         }),
-      ),
+      ).pipe(catchAndIgnoreError('UNIT DATA REGENERATE')),
     ),
     switchMap(() =>
       defer(() =>
         unitRequestHandler({ crudSdk: deps.crudSdk }).regenerateUnitData({
           input: { id: unitFixture.unitId_seeded_02 },
         }),
-      ),
+      ).pipe(catchAndIgnoreError('UNIT DATA REGENERATE')),
     ),
     switchMap(() =>
       defer(() =>
         unitRequestHandler({ crudSdk: deps.crudSdk }).regenerateUnitData({
           input: { id: unitFixture.unitId_seeded_03 },
         }),
-      ),
+      ).pipe(catchAndIgnoreError('UNIT DATA REGENERATE')),
     ),
-    ce('### regenerateUnitData'),
   );
 
 export const seedAll = (deps: SeederDependencies) =>
