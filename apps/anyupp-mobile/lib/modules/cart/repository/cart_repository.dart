@@ -49,7 +49,7 @@ class CartRepository {
     }
 
     await _ordersProvider.updateCart(unit.id, _cart);
-    return _cart;
+    return await _ordersProvider.getCurrentCart(unit.id);
   }
 
   Future<Cart> removeProductFromCart(String unitId, OrderItem item) async {
@@ -80,7 +80,7 @@ class CartRepository {
     }
 
     await _ordersProvider.updateCart(unitId, _cart);
-    return _cart;
+    return await _ordersProvider.getCurrentCart(unitId);
   }
 
   Future<Cart> removeOrderFromCart(String unitId, OrderItem order) async {
