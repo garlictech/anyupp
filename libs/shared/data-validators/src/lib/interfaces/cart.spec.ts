@@ -1,5 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { isCart, validateCart } from './cart';
 
@@ -17,6 +16,13 @@ const cart: CrudApi.Cart = {
       created: 100,
       productName: { en: 'EN' },
       priceShown: {
+        currency: 'HUF',
+        pricePerUnit: 100,
+        priceSum: 100,
+        tax: 100,
+        taxSum: 100,
+      },
+      sumPriceShown: {
         currency: 'HUF',
         pricePerUnit: 100,
         priceSum: 100,
@@ -45,52 +51,59 @@ const cart: CrudApi.Cart = {
 describe('Cart validaton test', () => {
   it('should be valid', async () => {
     expect(await validateCart(cart).toPromise()).toMatchInlineSnapshot(`
-      Object {
-        "createdAt": "CREATEDAT",
-        "id": "ID",
-        "items": Array [
-          Object {
-            "created": 100,
-            "laneId": "LANEID",
-            "priceShown": Object {
-              "currency": "HUF",
-              "pricePerUnit": 100,
-              "priceSum": 100,
-              "tax": 100,
-              "taxSum": 100,
-            },
-            "productId": "PRODUCTID",
-            "productName": Object {
-              "en": "EN",
-            },
-            "quantity": 100,
-            "statusLog": Array [
-              Object {
-                "status": "none",
-                "ts": 1.2,
-                "userId": "USERID",
-              },
-            ],
-            "variantId": "VARIANTID",
-            "variantName": Object {
-              "en": "EN",
-            },
-          },
-        ],
-        "paymentMode": Object {
-          "method": "card",
-          "type": "card",
+Object {
+  "createdAt": "CREATEDAT",
+  "id": "ID",
+  "items": Array [
+    Object {
+      "created": 100,
+      "laneId": "LANEID",
+      "priceShown": Object {
+        "currency": "HUF",
+        "pricePerUnit": 100,
+        "priceSum": 100,
+        "tax": 100,
+        "taxSum": 100,
+      },
+      "productId": "PRODUCTID",
+      "productName": Object {
+        "en": "EN",
+      },
+      "quantity": 100,
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": 1.2,
+          "userId": "USERID",
         },
-        "place": Object {
-          "seat": "SEAT",
-          "table": "TABLE",
-        },
-        "takeAway": false,
-        "unitId": "UNITID",
-        "updatedAt": "UPDATEDAT",
-        "userId": "USERID",
-      }
-    `);
+      ],
+      "sumPriceShown": Object {
+        "currency": "HUF",
+        "pricePerUnit": 100,
+        "priceSum": 100,
+        "tax": 100,
+        "taxSum": 100,
+      },
+      "variantId": "VARIANTID",
+      "variantName": Object {
+        "en": "EN",
+      },
+    },
+  ],
+  "paymentMode": Object {
+    "method": "card",
+    "type": "card",
+  },
+  "place": Object {
+    "seat": "SEAT",
+    "table": "TABLE",
+  },
+  "takeAway": false,
+  "unitId": "UNITID",
+  "updatedAt": "UPDATEDAT",
+  "userId": "USERID",
+}
+`);
     expect(isCart(cart)).toEqual(true);
   });
 
