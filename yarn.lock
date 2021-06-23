@@ -5402,10 +5402,10 @@
     webpack-merge "4.2.1"
     webpack-node-externals "1.7.2"
 
-"@nrwl/nx-cloud@12.2.4":
-  version "12.2.4"
-  resolved "https://registry.yarnpkg.com/@nrwl/nx-cloud/-/nx-cloud-12.2.4.tgz#a6b054a627e6c68741ce503ebb414e9e80b60561"
-  integrity sha512-q1tqh87VqPZhvByOMit6q9aWF0MjRx1ItqQFQvwXOBx0Hx8z/8UfRgSwPK5AQBL7Npue10KMgwAooR4r/nvvMw==
+"@nrwl/nx-cloud@12.2.6":
+  version "12.2.6"
+  resolved "https://registry.yarnpkg.com/@nrwl/nx-cloud/-/nx-cloud-12.2.6.tgz#bd63afd6bac6238e9b2fa005d8aa17ebc4e79fbe"
+  integrity sha512-+ExSV0u+0Q0QeB6NX7VfHSTEM7w4QSHsoCM3nBjtbxwBhh3ONKz1+XwX5t1w+4nW+NOrDtvtYsJ+bE+HfH5bcA==
   dependencies:
     axios "^0.21.1"
     chalk "4.1.0"
@@ -9071,10 +9071,10 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bootstrap@5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.0.1.tgz#e7939d599119dc818a90478a2a299bdaff037e09"
-  integrity sha512-Fl79+wsLOZKoiU345KeEaWD0ik8WKRI5zm0YSPj2oF1Qr+BO7z0fco6GbUtqjoG1h4VI89PeKJnMsMMVQdKKTw==
+bootstrap@5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.0.2.tgz#aff23d5e0e03c31255ad437530ee6556e78e728e"
+  integrity sha512-1Ge963tyEQWJJ+8qtXFU6wgmAVj9gweEjibUdbmcCEYsn38tVwRk8107rk2vzt6cfQcRr3SlZ8aQBqaD8aqf+Q==
 
 bottleneck@^2.18.1:
   version "2.19.5"
