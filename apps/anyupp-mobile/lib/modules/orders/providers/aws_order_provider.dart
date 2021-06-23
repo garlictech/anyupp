@@ -332,6 +332,13 @@ class AwsOrderProvider implements IOrdersProvider {
               'tax': item.priceShown.tax,
               'taxSum': item.priceShown.taxSum,
             },
+            'sumPriceShown': {
+              'currency': item.priceShown.currency,
+              'pricePerUnit': item.getPrice(),
+              'priceSum': item.getPrice()*item.quantity,
+              'tax': item.priceShown.tax,
+              'taxSum': item.priceShown.taxSum,
+            },
             'statusLog': {
               'userId': cart.userId,
               'status': 'none',
