@@ -214,7 +214,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
   }
 
   double getTotalPriceOfOrederItem(OrderItem item) {
-    return item.sumPriceShown.priceSum;
+    return item.quantity * item.getPrice();
     //return item.quantity * item...price;
   }
 }

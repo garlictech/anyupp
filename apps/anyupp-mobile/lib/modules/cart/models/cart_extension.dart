@@ -12,17 +12,16 @@ extension CartExtension on Cart {
   double get totalPrice {
     double value = 0;
     items.forEach((order) {
-      value += order.sumPriceShown.priceSum;
-      // double orderPrice = order.priceShown.pricePerUnit;
-      // if (order.selectedConfigMap != null) {
-      //   order.selectedConfigMap.forEach((key, comps) {
-      //     for (GeneratedProductConfigComponent generatedProductConfigComponent in comps) {
-      //       orderPrice += generatedProductConfigComponent.price;
-      //     }
-      //   });
-      // }
-      // orderPrice *= order.quantity;
-      // value += orderPrice;
+      double orderPrice = order.priceShown.pricePerUnit;
+      if (order.selectedConfigMap != null) {
+        order.selectedConfigMap.forEach((key, comps) {
+          for (GeneratedProductConfigComponent generatedProductConfigComponent in comps) {
+            orderPrice += generatedProductConfigComponent.price;
+          }
+        });
+      }
+      orderPrice *= order.quantity;
+      value += orderPrice;
     });
     return value;
   }
