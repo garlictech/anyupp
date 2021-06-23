@@ -101,34 +101,35 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         // Collect items
         if (variants[item.variantId]) {
           variants[item.variantId].quantity += item.quantity;
-          variants[item.variantId].priceShown.priceSum +=
-            item.priceShown.priceSum;
-          variants[item.variantId].priceShown.taxSum += item.priceShown.taxSum;
+          variants[item.variantId].sumPriceShown.priceSum +=
+            item.sumPriceShown.priceSum;
+          variants[item.variantId].sumPriceShown.taxSum +=
+            item.sumPriceShown.taxSum;
         } else {
           variants[item.variantId] = {
             quantity: item.quantity,
             productName: { ...item.productName },
-            priceShown: { ...item.priceShown },
+            sumPriceShown: { ...item.sumPriceShown },
             variantName: { ...item.variantName },
           };
         }
 
         // Collect vats
-        if (vats[item.priceShown.tax]) {
-          vats[item.priceShown.tax].priceSum += item.priceShown.priceSum;
-          vats[item.priceShown.tax].taxSum += item.priceShown.taxSum;
+        if (vats[item.sumPriceShown.tax]) {
+          vats[item.sumPriceShown.tax].priceSum += item.sumPriceShown.priceSum;
+          vats[item.sumPriceShown.tax].taxSum += item.sumPriceShown.taxSum;
         } else {
-          vats[item.priceShown.tax] = {
-            priceSum: item.priceShown.priceSum,
-            taxSum: item.priceShown.taxSum,
-            tax: item.priceShown.tax,
-            currency: item.priceShown.currency,
+          vats[item.sumPriceShown.tax] = {
+            priceSum: item.sumPriceShown.priceSum,
+            taxSum: item.sumPriceShown.taxSum,
+            tax: item.sumPriceShown.tax,
+            currency: item.sumPriceShown.currency,
           };
         }
 
         // SUM
-        this.sum.value += item.priceShown.priceSum;
-        this.sum.currency = item.priceShown.currency;
+        this.sum.value += item.sumPriceShown.priceSum;
+        this.sum.currency = item.sumPriceShown.currency;
       });
     });
 

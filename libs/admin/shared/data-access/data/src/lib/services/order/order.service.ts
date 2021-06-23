@@ -1,12 +1,13 @@
 import { cloneDeep } from 'lodash/fp';
 import { EMPTY } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   currentStatus,
   getOrderStatusByItemsStatus,
+  ordersActions,
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -233,11 +234,21 @@ export class OrderService {
             }
           }
 
-          return this._crudSdk.doMutation(
-            this._crudSdk.sdk.UpdateOrder({
-              input,
-            }),
-          );
+          return this._crudSdk
+            .doMutation(
+              this._crudSdk.sdk.UpdateOrder({
+                input,
+              }),
+            )
+            .pipe(
+              tap(() => {
+                if (input.archived) {
+                  this._store.dispatch(
+                    ordersActions.removeActiveOrder({ orderId: _order.id }),
+                  );
+                }
+              }),
+            );
         } else {
           return EMPTY;
         }
