@@ -156,7 +156,7 @@ class OrderDetailsScreen extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: AutoSizeText(
-                  formatCurrency(item.priceShown.priceSum, item.priceShown.currency ?? 'ft'),
+                  formatCurrency(item.sumPriceShown.priceSum, item.priceShown.currency ?? 'ft'),
                   style: GoogleFonts.poppins(
                     //fontSize: 14,
                     color: theme.text,

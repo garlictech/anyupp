@@ -50,7 +50,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(orderItem.getPrice(), orderItem.priceShown.currency ?? 'ft'), 
+            formatCurrency(orderItem.sumPriceShown.priceSum, orderItem.priceShown.currency ?? 'ft'), 
             style: GoogleFonts.poppins(
               fontSize: 14,
               color: theme.text,

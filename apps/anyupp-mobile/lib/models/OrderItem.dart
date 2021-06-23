@@ -11,6 +11,7 @@ class OrderItem extends Model {
   final String variantId;
   final LocalizedItem productName;
   final PriceShown priceShown;
+  final PriceShown sumPriceShown;
   final int quantity;
   final List<StatusLog> statusLog;
   final LocalizedItem variantName;
@@ -31,6 +32,7 @@ class OrderItem extends Model {
       @required this.variantId,
       this.productName,
       this.priceShown,
+      this.sumPriceShown,
       @required this.quantity,
       this.statusLog,
       this.variantName,
@@ -46,6 +48,7 @@ class OrderItem extends Model {
       @required String variantId,
       LocalizedItem productName,
       PriceShown priceShown,
+      PriceShown sumPriceShown,
       @required int quantity,
       List<StatusLog> statusLog,
       LocalizedItem variantName,
@@ -60,6 +63,7 @@ class OrderItem extends Model {
         variantId: variantId,
         productName: productName,
         priceShown: priceShown,
+        sumPriceShown: sumPriceShown,
         quantity: quantity,
         statusLog: statusLog != null ? List.unmodifiable(statusLog) : statusLog,
         variantName: variantName,
@@ -83,6 +87,7 @@ class OrderItem extends Model {
         variantId == other.variantId &&
         productName == other.productName &&
         priceShown == other.priceShown &&
+        sumPriceShown == other.sumPriceShown &&
         quantity == other.quantity &&
         DeepCollectionEquality().equals(statusLog, other.statusLog) &&
         variantName == other.variantName &&
@@ -106,6 +111,7 @@ class OrderItem extends Model {
     buffer.write("variantId=" + "$variantId" + ", ");
     buffer.write("productName=" + (productName != null ? productName.toString() : "null") + ", ");
     buffer.write("priceShown=" + (priceShown != null ? priceShown.toString() : "null") + ", ");
+    buffer.write("sumPriceShown=" + (sumPriceShown != null ? sumPriceShown.toString() : "null") + ", ");
     buffer.write("quantity=" + (quantity != null ? quantity.toString() : "null") + ", ");
     buffer.write("variantName=" + (variantName != null ? variantName.toString() : "null") + ", ");
     buffer.write("takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
@@ -123,6 +129,7 @@ class OrderItem extends Model {
       String variantId,
       LocalizedItem productName,
       PriceShown priceShown,
+      PriceShown sumPriceShown,
       int quantity,
       List<StatusLog> statusLog,
       LocalizedItem variantName,
@@ -137,6 +144,7 @@ class OrderItem extends Model {
         variantId: variantId ?? this.variantId,
         productName: productName ?? this.productName,
         priceShown: priceShown ?? this.priceShown,
+        sumPriceShown: sumPriceShown ?? this.sumPriceShown,
         quantity: quantity ?? this.quantity,
         statusLog: statusLog ?? this.statusLog,
         variantName: variantName ?? this.variantName,
@@ -155,6 +163,8 @@ class OrderItem extends Model {
             json['productName'] != null ? LocalizedItem.fromJson(Map<String, dynamic>.from(json['productName'])) : null,
         priceShown =
             json['priceShown'] != null ? PriceShown.fromJson(Map<String, dynamic>.from(json['priceShown'])) : null,
+        sumPriceShown =
+            json['sumPriceShown'] != null ? PriceShown.fromJson(Map<String, dynamic>.from(json['sumPriceShown'])) : null,
         quantity = json['quantity'],
         statusLog = json['statusLog'] is List
             ? (json['statusLog'] as List).map((e) => StatusLog.fromJson(Map<String, dynamic>.from(e))).toList()
@@ -174,6 +184,7 @@ class OrderItem extends Model {
         'variantId': variantId,
         'productName': productName?.toJson(),
         'priceShown': priceShown?.toJson(),
+        'sumPriceShown': sumPriceShown?.toJson(),
         'quantity': quantity,
         'statusLog': statusLog?.map((e) => e?.toJson())?.toList(),
         'variantName': variantName?.toJson(),
@@ -192,7 +203,6 @@ class OrderItem extends Model {
         }
       });
     }
-
     return sum;
   }
 
