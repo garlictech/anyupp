@@ -89,9 +89,10 @@ describe('Anonym user creation', () => {
             expect(
               props.adminGetUserResponse.UserAttributes,
             ).not.toBeUndefined();
-            const typeAttribute = props.adminGetUserResponse.UserAttributes?.find(
-              x => x.Name === 'name',
-            );
+            const typeAttribute =
+              props.adminGetUserResponse.UserAttributes?.find(
+                x => x.Name === 'name',
+              );
             expect(typeAttribute).not.toBeUndefined();
             expect(typeAttribute).toHaveProperty('Name', 'name');
             expect(typeAttribute).toHaveProperty('Value', 'AnonymUser');

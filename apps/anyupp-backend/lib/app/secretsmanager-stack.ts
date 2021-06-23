@@ -4,14 +4,11 @@ import * as sst from '@serverless-stack/resources';
 import { App } from '@serverless-stack/resources';
 
 const secretsManagerArns: Record<string, string> = {
-  dev:
-    'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k',
-  qa:
-    'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-qa-secrets-4cFY1U',
+  dev: 'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k',
+  qa: 'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-qa-secrets-4cFY1U',
   staging:
     'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-staging-secrets-4rGQUb',
-  prod:
-    'arn:aws:secretsmanager:eu-west-1:486782650003:secret:anyupp-prod-secrets-OQjuwn',
+  prod: 'arn:aws:secretsmanager:eu-west-1:486782650003:secret:anyupp-prod-secrets-OQjuwn',
   appleSigninKey:
     'arn:aws:secretsmanager:eu-west-1:568276182587:secret:apple-signin-private-key-eHFjFn',
   appleSigninKeyProd:
@@ -57,20 +54,17 @@ export class SecretsManagerStack extends sst.Stack {
 
     this.appleSigninKey = appleSigninKeySecret.secretValue.toString();
 
-    const googleClientSecret = this.secretsManager.secretValueFromJson(
-      'googleClientSecret',
-    );
+    const googleClientSecret =
+      this.secretsManager.secretValueFromJson('googleClientSecret');
     this.googleClientSecret = googleClientSecret.toString();
 
-    const facebookAppSecret = this.secretsManager.secretValueFromJson(
-      'facebookAppSecret',
-    );
+    const facebookAppSecret =
+      this.secretsManager.secretValueFromJson('facebookAppSecret');
     this.facebookAppSecret = facebookAppSecret.toString();
 
     //--- get Stripe secret keys
-    const stripeSecretKey = this.secretsManager.secretValueFromJson(
-      'stripeSecretKey',
-    );
+    const stripeSecretKey =
+      this.secretsManager.secretValueFromJson('stripeSecretKey');
     this.stripeSecretKey = stripeSecretKey.toString();
 
     const stripeSigningSecret = this.secretsManager.secretValueFromJson(
@@ -78,9 +72,8 @@ export class SecretsManagerStack extends sst.Stack {
     );
     this.stripeSigningSecret = stripeSigningSecret.toString();
 
-    const szamlazzhuAgentKey = this.secretsManager.secretValueFromJson(
-      'szamlazzhuAgentKey',
-    );
+    const szamlazzhuAgentKey =
+      this.secretsManager.secretValueFromJson('szamlazzhuAgentKey');
     this.szamlazzhuAgentKey = szamlazzhuAgentKey.toString();
 
     this.apiAccessKeyId = this.secretsManager

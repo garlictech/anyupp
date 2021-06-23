@@ -2,3 +2,10 @@
 
 /dist
 /coverage
+.*
+cdk.out
+amplify
+generated
+cyreport
+./nx.json
+apps/anyupp-mobile/assets/animations

@@ -9,19 +9,18 @@ import { ProductResolverDeps } from './utils';
 
 const TABLE_NAME = tableConfig.GeneratedProduct.TableName;
 
-export const deleteGeneratedProductsForAUnitFromDb = (
-  deps: ProductResolverDeps,
-) => (unitId: string) => {
-  return listGeneratedProductsForUnits(deps)([unitId]).pipe(
-    switchMap(items =>
-      iif(
-        () => items.length > 0,
-        deleteGeneratedProductsItemsFromDb(items),
-        of([]),
+export const deleteGeneratedProductsForAUnitFromDb =
+  (deps: ProductResolverDeps) => (unitId: string) => {
+    return listGeneratedProductsForUnits(deps)([unitId]).pipe(
+      switchMap(items =>
+        iif(
+          () => items.length > 0,
+          deleteGeneratedProductsItemsFromDb(items),
+          of([]),
+        ),
       ),
-    ),
-  );
-};
+    );
+  };
 const deleteGeneratedProductsItemsFromDb = (
   items: CrudApi.GeneratedProduct[],
 ) => deleteItems(TABLE_NAME)(items);
@@ -32,18 +31,18 @@ export const createGeneratedProductsInDb = (
   return createItems(TABLE_NAME)(products);
 };
 
-export const listGeneratedProductsForUnits = (deps: ProductResolverDeps) => (
-  unitIds: string[],
-): Observable<Array<CrudApi.GeneratedProduct>> => {
-  const input: CrudApi.ListGeneratedProductsQueryVariables = {
-    filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
-    limit: 200, // DO NOT USE FIX limit (Covered by #472)
-  };
+export const listGeneratedProductsForUnits =
+  (deps: ProductResolverDeps) =>
+  (unitIds: string[]): Observable<Array<CrudApi.GeneratedProduct>> => {
+    const input: CrudApi.ListGeneratedProductsQueryVariables = {
+      filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
+      limit: 200, // DO NOT USE FIX limit (Covered by #472)
+    };
 
-  return defer(() =>
-    deps.crudSdk.ListGeneratedProducts(input, { fetchPolicy: 'no-cache' }),
-  ).pipe(
-    switchMap(validateGeneratedProductList),
-    filterNullishGraphqlListWithDefault<CrudApi.GeneratedProduct>([]),
-  );
-};
+    return defer(() =>
+      deps.crudSdk.ListGeneratedProducts(input, { fetchPolicy: 'no-cache' }),
+    ).pipe(
+      switchMap(validateGeneratedProductList),
+      filterNullishGraphqlListWithDefault<CrudApi.GeneratedProduct>([]),
+    );
+  };

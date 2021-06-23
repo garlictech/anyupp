@@ -56,6 +56,5 @@ export const orderSchema: Joi.SchemaMap<CrudApi.Order> = {
   updatedAt: Joi.string().required(),
 };
 
-export const { validate: validateOrder, isType: isOrder } = validateSchema<
-  CrudApi.Order
->(orderSchema, 'Order');
+export const { validate: validateOrder, isType: isOrder } =
+  validateSchema<CrudApi.Order>(orderSchema, 'Order');

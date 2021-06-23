@@ -17,55 +17,57 @@ export interface CreateConfirmedUserInput {
   username?: string;
 }
 
-export const createConfirmedUserInCognito = (deps: {
-  userPoolId: string;
-  cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
-}) => (input: CreateConfirmedUserInput): Observable<CreateAnonymUserOutput> => {
-  const username = input.username ? input.username : uuidV1();
+export const createConfirmedUserInCognito =
+  (deps: {
+    userPoolId: string;
+    cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
+  }) =>
+  (input: CreateConfirmedUserInput): Observable<CreateAnonymUserOutput> => {
+    const username = input.username ? input.username : uuidV1();
 
-  return defer(() =>
-    deps.cognitoidentityserviceprovider
-      .adminCreateUser({
-        UserPoolId: deps.userPoolId,
-        Username: username,
-        UserAttributes: [
-          {
-            Name: 'email',
-            Value: input.email,
-          },
-          {
-            Name: 'name',
-            Value: input.name,
-          },
-          {
-            Name: 'email_verified',
-            Value: 'true',
-          },
-        ],
-      })
-      .promise(),
-  ).pipe(
-    switchMap(newUser =>
-      from(
-        deps.cognitoidentityserviceprovider
-          .adminSetUserPassword({
-            Password: input.password,
-            UserPoolId: deps.userPoolId,
-            Username: username,
-            Permanent: true,
-          })
-          .promise(),
-      ).pipe(
-        map(() => {
-          if (newUser.User?.Username !== username) {
-            throw new Error('The Just created UserId is missing');
-          }
-          return {
-            pwd: input.password,
-            username,
-          };
-        }),
+    return defer(() =>
+      deps.cognitoidentityserviceprovider
+        .adminCreateUser({
+          UserPoolId: deps.userPoolId,
+          Username: username,
+          UserAttributes: [
+            {
+              Name: 'email',
+              Value: input.email,
+            },
+            {
+              Name: 'name',
+              Value: input.name,
+            },
+            {
+              Name: 'email_verified',
+              Value: 'true',
+            },
+          ],
+        })
+        .promise(),
+    ).pipe(
+      switchMap(newUser =>
+        from(
+          deps.cognitoidentityserviceprovider
+            .adminSetUserPassword({
+              Password: input.password,
+              UserPoolId: deps.userPoolId,
+              Username: username,
+              Permanent: true,
+            })
+            .promise(),
+        ).pipe(
+          map(() => {
+            if (newUser.User?.Username !== username) {
+              throw new Error('The Just created UserId is missing');
+            }
+            return {
+              pwd: input.password,
+              username,
+            };
+          }),
+        ),
       ),
-    ),
-  );
-};
+    );
+  };

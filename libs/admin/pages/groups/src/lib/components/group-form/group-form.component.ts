@@ -36,7 +36,8 @@ import { select, Store } from '@ngrx/store';
 })
 export class GroupFormComponent
   extends AbstractFormDialogComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   public group!: CrudApi.Group;
   public chainOptions: IKeyValue[] = [];
   public currencyOptions: IKeyValue[] = [];

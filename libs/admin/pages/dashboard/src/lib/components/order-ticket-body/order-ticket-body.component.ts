@@ -173,9 +173,10 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       dialogClass: 'print-dialog',
     });
 
-    dialog.componentRef.instance.orders = (this.dashboardSettings
-      .showAllUserOrders
-      ? this.userActiveOrders
-      : [this.selectedOrder]) as CrudApi.Order[];
+    dialog.componentRef.instance.orders = (
+      this.dashboardSettings.showAllUserOrders
+        ? this.userActiveOrders
+        : [this.selectedOrder]
+    ) as CrudApi.Order[];
   }
 }
