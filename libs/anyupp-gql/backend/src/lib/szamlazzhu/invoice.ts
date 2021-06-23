@@ -84,8 +84,8 @@ export const createInvoice =
       paymentMethod, // optional, default: BankTransfer
       currency,
       language, // optional, default: Hungarian
-      seller: seller, // the seller, required
-      buyer: buyer, // the buyer, required
+      seller, // the seller, required
+      buyer, // the buyer, required
       items, // the sold items, required
       prepaymentInvoice: false, // prepayment/deposit invoice should be issued, optional, default: false
       paid: true,
