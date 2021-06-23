@@ -23,9 +23,9 @@ Feature: Create or update Unit
     When I click on the plus button
     Then The group selector should contain "Nagy csoport #1"
     When I fill out the "Name" input with "test unit e2e"
-    And I fill out the "Description (HU)" input with "test description"
-    And I fill out the "Description (EN)" input with "test description"
-    And I fill out the "Description (DE)" input with "test description"
+    And I fill out the "Description (HU)" input with "test description  e2e"
+    And I fill out the "Description (EN)" input with "test description  e2e"
+    And I fill out the "Description (DE)" input with "test description  e2e"
     And I fill out the "Open from" input with "2021-05-05"
     And I fill out the "Open to" input with "2021-09-05"
     And I click on the "Active" checkbox

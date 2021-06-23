@@ -18,9 +18,9 @@ Feature: Create a new component
     Scenario: Create a new product component
         When I click on the button with title "Add product component"
         Then The chain selector should contain "Rab lánc #1"
-        And I fill out the "Name (HU)" input with "test component 4 e2e"
-        And I fill out the "Name (EN)" input with "test component 4 e2e"
-        And I fill out the "Name (DE)" input with "test component 4 e2e"
+        And I fill out the "Name (HU)" input with "test component 5 e2e"
+        And I fill out the "Name (EN)" input with "test component 5 e2e"
+        And I fill out the "Name (DE)" input with "test component 5 e2e"
         And I fill out the "Description" input with "test description"
         And I click on the "1. Gluten" checkbox
         And I click on the "2. Crustaceans" checkbox
@@ -37,15 +37,15 @@ Feature: Create a new component
         And I click on the "13. Lupin" checkbox
         And I click on the "14. Molluscs" checkbox
         And I click on the "Submit" button
-        Then I should see "test component 4 e2e" text
+        Then I should see "test component 5 e2e" text
         And I should see "test description" text
 
     Scenario: Update a product component
-        When I click the edit button in the listitem with "test component 4 e2e" content
+        When I click the edit button in the listitem with "test component 5 e2e" content
         Then The chain selector should contain "Rab lánc #1"
-        When I fill out the "Name (HU)" input with "test component 4 e2eUpdated"
-        And I fill out the "Name (EN)" input with "test component 4 e2eUpdated"
-        And I fill out the "Name (DE)" input with "test component 4 e2eUpdated"
+        When I fill out the "Name (HU)" input with "test component 5 e2eUpdated"
+        And I fill out the "Name (EN)" input with "test component 5 e2eUpdated"
+        And I fill out the "Name (DE)" input with "test component 5 e2eUpdated"
         And I fill out the "Description" input with "test description e2eUpdated"
         And I click on the "8. Treenuts" checkbox
         And I click on the "9. Sulphites" checkbox
@@ -55,7 +55,7 @@ Feature: Create a new component
         And I click on the "13. Lupin" checkbox
         And I click on the "14. Molluscs" checkbox
         And I click on the "Submit" button
-        Then I should see "test component 4 e2eUpdated" text
+        Then I should see "test component 5 e2eUpdated" text
         And I should see "test description e2eUpdated" text
 
     Scenario: Create an Extra component
@@ -67,7 +67,7 @@ Feature: Create a new component
         And I fill out the "Name (EN)" input with "test extra"
         And I fill out the "Name (DE)" input with "test extra"
         And I fill out the "Description" input with "test description"
-        And I click the component selector to set "test component 4 e2eUpdated"
+        And I click the component selector to set "test component 5 e2eUpdated"
         And I fill out the "Max selection" input with "1"
         And I click on the "Add" button
         And I click on the "Submit" button
@@ -95,7 +95,7 @@ Feature: Create a new component
         And I fill out the "Name (EN)" input with "test modifier"
         And I fill out the "Name (DE)" input with "test modifier"
         And I fill out the "Description" input with "test description"
-        And I click the component selector to set "test component 4 e2eUpdated"
+        And I click the component selector to set "test component 5 e2eUpdated"
         And I click on the "Add" button
         And I click on the "Submit" button
         Then I should see "test modifier" text
@@ -110,7 +110,7 @@ Feature: Create a new component
         And I fill out the "Name (DE)" input with "test modifier e2eUpdated"
         And I fill out the "Description" input with "test description e2eUpdated"
         And I click on the first "Delete" button
-        And I click the component selector to set "test component 4 e2eUpdated"
+        And I click the component selector to set "test component 5 e2eUpdated"
         And I click on the "Add" button
         And I click on the "Submit" button
         Then I should see "test modifier e2eUpdated" text
