@@ -21,10 +21,5 @@ These are the required applications and SDK-s to run the E2E tests on real devic
 ### Steps
 
 ```
-flutter drive \
-  --driver=test_driver/integration_test.dart \
-  --target=integration_test/e2e_test.dart \
-  -d <DEVICE_ID>
+flutter drive --driver=test_driver/integration_test.dart --target=integration_test/start_app_test.dart -d <DEVICE_ID>
 ```
-
-flutter drive --driver=test_driver/e2e.dart --target=integration_test/e2e_test.dart -d <DEVICE_ID>

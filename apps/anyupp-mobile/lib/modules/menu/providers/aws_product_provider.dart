@@ -63,13 +63,7 @@ class AwsProductProvider implements IProductProvider {
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
           Map<String, dynamic> json = Map<String, dynamic>.from(items[i]);
-          // TODO ADD HACKED CONFIGURATIONS SETS!!!!
-          try {
-            results.add(GeneratedProduct.fromJson(json));
-          } on Error catch (e) {
-            print('listGeneratedProducts.error()');
-            FlutterError.dumpErrorToConsole(FlutterErrorDetails(exception: e));
-          }
+          results.add(GeneratedProduct.fromJson(json));
         }
       }
       results.sort((a, b) => a.position.compareTo(b.position));

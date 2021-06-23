@@ -19,7 +19,6 @@ import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'core/dependency_indjection/dependency_injection.dart';
@@ -74,19 +73,6 @@ class _MyAppState extends State<MyApp> {
     } on Exception catch (e) {
       print('***** _initDeepLinks().exception=$e');
     }
-
-    // try to listen
-    _deeplinkSubscription = getUriLinksStream().asBroadcastStream().listen((Uri uri) {
-      print('_initDeepLinks().stream().uri=$uri');
-
-      if (isValidUrl(uri)) {
-        handleUrl(uri);
-      }
-    }, onError: (e) {
-      // Handle exception by warning the user their action did not succeed
-      print('***** _initDeepLinks().stream().exception=$e');
-      showErrorDialog(context, 'DEEPLINK_ERROR', e.toString());
-    });
   }
 
   Future<void> checkForAndroidUpdates() async {
@@ -125,6 +111,7 @@ class _MyAppState extends State<MyApp> {
           var locale = (localeState is LocaleSelected) ? localeState.locale : null;
           return MaterialApp(
             title: 'AnyUpp',
+            key: const Key('anyupp-main-app'),
 
             /// Catcher init STEP 3. Add navigator key from Catcher. It will be used to navigate user to report page or to show dialog.
             navigatorKey: Catcher.navigatorKey,

@@ -1,7 +1,12 @@
-import 'package:flutter_driver/flutter_driver.dart';
-import 'package:test/test.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:fa_prev/main.dart' as app;
 
 void main() {
+
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  
   group('AnyUpp Mobile App', () {
     // First, define the Finders and use them to locate widgets from the
     // test suite. Note: the Strings provided to the `byValueKey` method must
@@ -12,25 +17,27 @@ void main() {
     // final buttonSubtract = find.byValueKey("subtract");
     // final alertText = find.byValueKey("alert_text");
     // final btnClose = find.byValueKey("close_button");
+    // final Finder main = find.byKey(Key('anyupp-main-app')); 
 
-    FlutterDriver driver;
 
-    // Connect to the Flutter driver before running any tests.
-    setUpAll(() async {
-      driver = await FlutterDriver.connect();
-    });
 
-    // Close the connection to the driver after the tests have completed.
-    tearDownAll(() async {
-      if (driver != null) {
-        await driver.close();
-      }
-    });
 
-    test('Checks the app is started', () async {
+    testWidgets('Checks the app is started', (WidgetTester tester) async {
       // // First, tap on the button
       // await driver.tap(buttonFinder);
 
+      print('****** Waiting the app to start');
+      app.main();
+      await tester.pumpAndSettle(Duration(seconds: 10));
+      print('****** App started');
+
+      // await Future.delayed(Duration(seconds: 10));
+
+      final Finder main = find.byKey(Key('anyupp-main-app')); 
+      print('****** MAIN = $main');
+
+      expect(main, isNotNull);
+      // expect(true, equals(true));
       // // Then, verify the counter text has been incremented by 1
       // expect(await driver.getText(counterTextFinder), "1");
 
@@ -41,7 +48,7 @@ void main() {
       // expect(await driver.getText(counterTextFinder), "2");
     });
 
-    test("test login with Email", () async {
+    testWidgets("test login with Email", (WidgetTester tester) async {
       // await driver.tap(buttonAdd);
 
       // expect(await driver.getText(alertText), "Welcome to ExecuteAutomation 2");
@@ -54,6 +61,7 @@ void main() {
 
       // //Verify if its correct
       // expect(await driver.getText(counterTextFinder), "1");
+      expect(true, equals(true));
     });
   });
 }
