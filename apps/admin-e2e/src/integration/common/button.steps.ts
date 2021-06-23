@@ -1,5 +1,4 @@
-import { When, Then } from 'cypress-cucumber-preprocessor/steps';
-import { values } from 'cypress/types/lodash';
+import { When } from 'cypress-cucumber-preprocessor/steps';
 
 When('I click on the {string} icon', (icon: string) => {
   cy.contains('nb-icon', icon).click();
