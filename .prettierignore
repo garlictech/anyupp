@@ -2,3 +2,9 @@
 
 /dist
 /coverage
+.*
+cdk.out
+amplify
+generated
+cyreport
+nx.json
