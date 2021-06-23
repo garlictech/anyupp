@@ -72,7 +72,7 @@
     "aws-lambda": "1.0.6",
     "aws-sdk": "2.932.0",
     "aws-serverless-express": "3.4.0",
-    "bootstrap": "5.0.1",
+    "bootstrap": "5.0.2",
     "chart.js": "2.9.4",
     "chartjs-plugin-datalabels": "1.0.0",
     "enum-values": "1.2.1",
