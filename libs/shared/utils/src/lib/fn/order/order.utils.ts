@@ -5,6 +5,7 @@ import { toFixed2Number } from '../number.utils';
 const roundSums = (price: CrudApi.PriceShown) => {
   return {
     ...price,
+    pricePerUnit: toFixed2Number(price.pricePerUnit),
     priceSum: toFixed2Number(price.priceSum),
     taxSum: toFixed2Number(price.taxSum),
   };
@@ -43,9 +44,13 @@ export const calculateTaxSumFromBrutto = ({
   brutto: number;
 }): number => (tax / 100 / (1 + tax / 100)) * brutto;
 
-const calculateItemPriceWithConfigSets = (item: CrudApi.OrderItem): number =>
+const calculateItemPriceSumWithConfigSets = (item: CrudApi.OrderItem): number =>
   item.priceShown.pricePerUnit * item.quantity +
   sumItemConfigSetPrices(item) * item.quantity;
+
+const calculateItemUnitPriceWithConfigSets = (
+  item: CrudApi.OrderItem,
+): number => item.priceShown.pricePerUnit + sumItemConfigSetPrices(item);
 
 const calculatePriceShown = (item: CrudApi.OrderItem): CrudApi.PriceShown => {
   return {
@@ -63,15 +68,16 @@ const calculatePriceShown = (item: CrudApi.OrderItem): CrudApi.PriceShown => {
 const calculateItemPriceShownWithConfigSets = (
   item: CrudApi.OrderItem,
 ): CrudApi.PriceShown => {
-  const itemPriceWithConfigSetPrices = calculateItemPriceWithConfigSets(item);
+  const itemPriceSumWithConfigSetPrices =
+    calculateItemPriceSumWithConfigSets(item);
   return {
     tax: item.priceShown.tax,
     currency: item.priceShown.currency,
-    pricePerUnit: item.priceShown.pricePerUnit,
-    priceSum: itemPriceWithConfigSetPrices,
+    pricePerUnit: calculateItemUnitPriceWithConfigSets(item),
+    priceSum: itemPriceSumWithConfigSetPrices,
     taxSum: calculateTaxSumFromBrutto({
       tax: item.priceShown.tax,
-      brutto: itemPriceWithConfigSetPrices,
+      brutto: itemPriceSumWithConfigSetPrices,
     }),
   };
 };
@@ -93,13 +99,15 @@ const sumItems = (items: CrudApi.OrderItem[]): CrudApi.PriceShown => {
     if (lastStatus === CrudApi.OrderStatus.rejected) {
       return sum;
     }
-    const itemPriceWithConfigSetPrices = calculateItemPriceWithConfigSets(item);
+
+    const itemPriceSumWithConfigSetPrices =
+      calculateItemPriceSumWithConfigSets(item);
     const itemTaxSum = calculateTaxSumFromBrutto({
       tax: item.priceShown.tax,
-      brutto: itemPriceWithConfigSetPrices,
+      brutto: itemPriceSumWithConfigSetPrices,
     });
     return {
-      priceSum: sum.priceSum + itemPriceWithConfigSetPrices,
+      priceSum: sum.priceSum + itemPriceSumWithConfigSetPrices,
       taxSum: sum.taxSum + itemTaxSum,
       currency: item.priceShown.currency,
       tax: 0,
