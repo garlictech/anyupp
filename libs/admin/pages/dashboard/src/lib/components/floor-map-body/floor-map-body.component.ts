@@ -128,7 +128,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           const tableIds = getTableIds(this.unit.floorMap);
           const tableSeatIds = getTableSeatIds(this.unit.floorMap);
           const ordersByUser = getOrdersByUser(orders);
-          console.error('ordersByUser', ordersByUser);
+
           const _allTableSeatOrders = getTableSeatOrders(
             tableSeatIds,
             ordersByUser,

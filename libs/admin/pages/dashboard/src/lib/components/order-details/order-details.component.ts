@@ -96,7 +96,10 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     if (status) {
       this.workingOrderStatus = true;
 
-      if (status === CrudApi.OrderStatus.served) {
+      if (
+        status === CrudApi.OrderStatus.served &&
+        this.order.transaction?.status === CrudApi.PaymentStatus.success
+      ) {
         this._orderService.archiveOrder(this.order, status).subscribe(() => {
           this._store.dispatch(
             ordersActions.removeActiveOrder({ orderId: this.order.id }),
@@ -166,12 +169,23 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       this._orderService
         .updateOrderTransactionStatus(this.order, status)
         .pipe(
-          switchMap(() =>
-            status === CrudApi.PaymentStatus.success &&
-            currentStatusFn(this.order.statusLog) === CrudApi.OrderStatus.none
-              ? this._orderService.updateOrderStatusFromNoneToPlaced(this.order)
-              : of(true),
-          ),
+          switchMap(() => {
+            if (status === CrudApi.PaymentStatus.success) {
+              const currentStatus = currentStatusFn(this.order.statusLog);
+
+              if (currentStatus === CrudApi.OrderStatus.none) {
+                return this._orderService.updateOrderStatusFromNoneToPlaced(
+                  this.order,
+                );
+              } else if (currentStatus === CrudApi.OrderStatus.served) {
+                return this._orderService.archiveOrder(this.order);
+              }
+
+              return of(true);
+            }
+
+            return of(true);
+          }),
         )
         .subscribe();
     }
