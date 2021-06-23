@@ -115,7 +115,7 @@ const listUnitProductsForAUnit =
     ).pipe(
       switchMap(validateUnitProductList),
       filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
-      switchMap(items => throwOnEmptyList(items)),
+      switchMap(throwOnEmptyList),
     );
   };
 
