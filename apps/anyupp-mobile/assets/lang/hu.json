@@ -158,7 +158,8 @@
       "processing": "KÉSZÜL",
       "ready": "KÉSZ",
       "paid": "FIZETVE",
-      "rejected": "TÖRÖLVE"
+      "rejected": "TÖRÖLVE",
+      "served": "FELSZOLGÁLVA"
     },
     "pay": "Fizetni szeretnék",
     "waiting": "Kérjük, várj a pincérre!",

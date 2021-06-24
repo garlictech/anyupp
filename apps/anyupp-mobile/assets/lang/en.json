@@ -158,7 +158,8 @@
       "processing": "PROCESSING",
       "ready": "READY",
       "paid": "PAID",
-      "rejected": "REJECTED"
+      "rejected": "REJECTED",
+      "served": "SERVED"
     },
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
