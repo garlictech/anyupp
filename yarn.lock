@@ -5743,10 +5743,10 @@
     lodash "^4.17.4"
     read-pkg-up "^7.0.0"
 
-"@serverless-stack/cli@0.29.2":
-  version "0.29.2"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.29.2.tgz#801b197bd698a78901701546c770098e9c43b6e4"
-  integrity sha512-Ys/g46Iqpvelyv9JyEEVXiJiCZArwRxUEbdh5yLcBxrnw2sl8GVRHRaeiXwKvIIqfX/+SvC+2kldYvrEW6CoaQ==
+"@serverless-stack/cli@0.29.5":
+  version "0.29.5"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.29.5.tgz#5ccb13718450e442e72e6b20dc081bb352fb5b65"
+  integrity sha512-RXM4Krpv0hBqqxUxxl/tsZL9lIRBDsPrrZ6fgFR5vlf0klkX+KiHxPxEGw7XMWH+ttluLo1BFOiJyVk8QEbbtw==
   dependencies:
     "@aws-cdk/aws-apigatewayv2" "1.105.0"
     "@aws-cdk/aws-dynamodb" "1.105.0"
@@ -5758,8 +5758,8 @@
     "@babel/eslint-plugin" "^7.11.3"
     "@babel/plugin-proposal-class-properties" "^7.10.4"
     "@babel/preset-env" "^7.10.4"
-    "@serverless-stack/core" "^0.29.2"
-    "@serverless-stack/resources" "^0.29.2"
+    "@serverless-stack/core" "^0.29.5"
+    "@serverless-stack/resources" "^0.29.5"
     "@types/jest" "^26.0.7"
     "@types/node" "^14.0.27"
     "@typescript-eslint/eslint-plugin" "^4.15.1"
@@ -5790,10 +5790,10 @@
     ws "^7.4.0"
     yargs "^15.4.1"
 
-"@serverless-stack/core@^0.29.2":
-  version "0.29.2"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.29.2.tgz#dd5819c435d96ebd9b60aeec1f572b691c63563b"
-  integrity sha512-XWIh/ugWYYyen3uYfpckMZRkqfKu5jsnPTM6xPjMoD9xLIdeTjEVJ0iMGIC7wDoQhb/5fbDPaZ7TAg6jGNMrYQ==
+"@serverless-stack/core@^0.29.5":
+  version "0.29.5"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.29.5.tgz#3f7099a778a0eef7242755edce3ac5a2bbe4271e"
+  integrity sha512-/r5qQSAC0LoX5J7bCjCCYVwd2t/fBTW2Ebc+ksOG0BNgn+yj5nEaMNPrDTuclF7hycDRqcvTU4FwxZ/k72UDHg==
   dependencies:
     aws-cdk "1.105.0"
     aws-sdk "^2.761.0"
@@ -5802,10 +5802,10 @@
     fs-extra "^9.0.1"
     log4js "^6.3.0"
 
-"@serverless-stack/resources@0.29.2", "@serverless-stack/resources@^0.29.2":
-  version "0.29.2"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.29.2.tgz#cbb257b69e8428cb95cfdbc474e8d46b51979862"
-  integrity sha512-CiikRUWXXZVzcRkjdLT+4HuPLIRQSguifQxEwbkdOB5uqqDm5wZbYWBVQZZXpXVo0CVA9gdBPJl9Ujdj7w5Ghw==
+"@serverless-stack/resources@0.29.5", "@serverless-stack/resources@^0.29.5":
+  version "0.29.5"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.29.5.tgz#58faa675f32a673887787f3df076baea3fdb07eb"
+  integrity sha512-rJ2PT9x9zIEnsSZtiEPssAZs1meaUIUu0AFlSPqS2FQAExcY5UOOiUFlUB9aoLvQTWKuzwaywdFIh0YdfoGbVQ==
   dependencies:
     "@aws-cdk/aws-apigateway" "1.105.0"
     "@aws-cdk/aws-apigatewayv2" "1.105.0"
@@ -5830,14 +5830,15 @@
     "@aws-cdk/aws-route53-patterns" "1.105.0"
     "@aws-cdk/aws-route53-targets" "1.105.0"
     "@aws-cdk/aws-s3" "1.105.0"
-    "@aws-cdk/aws-s3-deployment" "1.105.0"
+    "@aws-cdk/aws-s3-assets" "1.105.0"
     "@aws-cdk/aws-secretsmanager" "1.105.0"
     "@aws-cdk/aws-sns" "1.105.0"
     "@aws-cdk/aws-sns-subscriptions" "1.105.0"
     "@aws-cdk/aws-sqs" "1.105.0"
     "@aws-cdk/core" "1.105.0"
     "@aws-cdk/cx-api" "1.105.0"
-    "@serverless-stack/core" "^0.29.2"
+    "@aws-cdk/lambda-layer-awscli" "1.105.0"
+    "@serverless-stack/core" "^0.29.5"
     "@types/jest" "^26.0.7"
     chalk "^4.1.0"
     cross-spawn "^7.0.3"
@@ -8582,10 +8583,10 @@ aws-sdk@*, aws-sdk@^2.518.0, aws-sdk@^2.761.0, aws-sdk@^2.814.0, aws-sdk@^2.848.
     uuid "3.3.2"
     xml2js "0.4.19"
 
-aws-sdk@2.932.0:
-  version "2.932.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.932.0.tgz#43da32ab6de58a0eac6c7976feb6c9879fe09e7c"
-  integrity sha512-U6MWUtFD0npWa+ReVEgm0fCIM0fMOYahFp14GLv8fC+BWOTvh5Iwt/gF8NrLomx42bBjA1Abaw6yhmiaSJDQHQ==
+aws-sdk@2.933.0:
+  version "2.933.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.933.0.tgz#42f2cab2ebb63291ce6e764510e8bfa997847256"
+  integrity sha512-WJBQSE3zdX5YbzTa5+k45hzUAL5EPyiZJAnzCV6TIkPEYPMY215q8iloBATqbntbvAyWC4j2Rto6+RYmki1MOQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
