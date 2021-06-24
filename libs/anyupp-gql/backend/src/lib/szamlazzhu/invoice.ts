@@ -1,5 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-
 import * as Szamlazz from 'szamlazz.js';
 
 export const createInvoice =
@@ -75,8 +74,8 @@ export const createInvoice =
         label,
         quantity: orderItem.quantity,
         unit: 'db', // Should be translated it in the future (Covered by #751)
-        vat: orderItem.priceShown.tax, // can be a number or a special string
-        grossUnitPrice: orderItem.priceShown.pricePerUnit, // calculates gross and net values from per item net
+        vat: orderItem.sumPriceShown.tax, // can be a number or a special string
+        grossUnitPrice: orderItem.sumPriceShown.pricePerUnit, // calculates gross and net values from per item net
       });
     });
 
@@ -85,8 +84,8 @@ export const createInvoice =
       paymentMethod, // optional, default: BankTransfer
       currency,
       language, // optional, default: Hungarian
-      seller: seller, // the seller, required
-      buyer: buyer, // the buyer, required
+      seller, // the seller, required
+      buyer, // the buyer, required
       items, // the sold items, required
       prepaymentInvoice: false, // prepayment/deposit invoice should be issued, optional, default: false
       paid: true,

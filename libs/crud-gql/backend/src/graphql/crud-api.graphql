@@ -245,6 +245,7 @@ type OrderItem {
   created: Float
   productName: LocalizedItem!
   image: String
+  sumPriceShown: PriceShown!
   priceShown: PriceShown!
   quantity: Int!
   statusLog: [StatusLog!]!
@@ -257,8 +258,8 @@ type OrderItem {
 ### Order
 type Order
   @model
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "byDate", fields: ["id", "createdAt"]) {
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   createdAt: String!
   userId: ID!
@@ -273,26 +274,6 @@ type Order
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
-  transactionId: ID
-  transaction: Transaction @connection(fields: ["transactionId"])
-}
-
-type OrderHistory
-  @model
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "byDate", fields: ["id", "createdAt"]) {
-  id: ID!
-  createdAt: String!
-  userId: ID!
-  unitId: ID!
-  orderNum: String!
-  items: [OrderItem!]!
-  paymentMode: PaymentMode!
-  statusLog: [StatusLog!]!
-  sumPriceShown: PriceShown!
-  takeAway: Boolean!
-  place: Place
-  paymentIntention: Float
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
 }

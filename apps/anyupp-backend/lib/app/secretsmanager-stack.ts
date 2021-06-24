@@ -22,6 +22,8 @@ export class SecretsManagerStack extends sst.Stack {
   public stripeSigningSecret: string;
   public szamlazzhuAgentKey: string;
   public appleSigninKey: string;
+  public apiAccessKeyId: string;
+  public apiSecretAccessKey: string;
   public secretsManager: sm.ISecret;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
@@ -50,6 +52,8 @@ export class SecretsManagerStack extends sst.Stack {
       },
     );
 
+    this.appleSigninKey = appleSigninKeySecret.secretValue.toString();
+
     const googleClientSecret =
       this.secretsManager.secretValueFromJson('googleClientSecret');
     this.googleClientSecret = googleClientSecret.toString();
@@ -72,7 +76,13 @@ export class SecretsManagerStack extends sst.Stack {
       this.secretsManager.secretValueFromJson('szamlazzhuAgentKey');
     this.szamlazzhuAgentKey = szamlazzhuAgentKey.toString();
 
-    this.appleSigninKey = appleSigninKeySecret.secretValue.toString();
+    this.apiAccessKeyId = this.secretsManager
+      .secretValueFromJson('apiAccessKeyId')
+      .toString();
+
+    this.apiSecretAccessKey = this.secretsManager
+      .secretValueFromJson('apiSecretAccessKey')
+      .toString();
 
     new CfnOutput(this, 'SecretsManager', {
       value: this.secretsManager.secretArn,

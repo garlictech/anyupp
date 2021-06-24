@@ -1,3 +1,5 @@
+import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { validateOrder } from '@bgap/shared/data-validators';
 import {
@@ -10,8 +12,7 @@ import {
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { filterNullish, toFixed2Number } from '@bgap/shared/utils';
-import { AnyuppSdk } from 'libs/anyupp-gql/api/src';
-import { combineLatest } from 'rxjs';
+import { combineLatest, defer, iif } from 'rxjs';
 import { delay, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 import {
   createAuthenticatedAnyuppSdk,
@@ -20,6 +21,8 @@ import {
 import { createTestCart, deleteTestCart } from '../../../seeds/cart';
 import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
+
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 
 const orderItemConfigSet_01: CrudApi.OrderItemConfigSetInput = {
   productSetId: 'PRODUCTSET_ID_01',
@@ -78,13 +81,15 @@ const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   ],
 };
 
-const orderItemPrice_01 = 2; // brutto
-const orderItemPrice_02 = 3.6; // brutto
-const orderItemPrice_03 = 11.6; // brutto
+const orderItemPrice_01 = 2; // brutto - has NO config sets
+const orderItemPricePerUnit_02 = 1.8; // brutto - with config sets
+const orderItemPrice_02 = 3.6; // brutto - with config sets
+const orderItemPricePerUnit_03 = 5.8; // brutto - with config sets
+const orderItemPrice_03 = 11.6; // brutto - with config sets
 
-const orderItemTax_01 = 0.425196;
-const orderItemTax_02 = 0.7653528;
-const orderItemTax_03 = 2.4661368;
+const orderItemTax_01 = 0.425196; // with - has NO config sets
+const orderItemTax_02 = 0.7653528; // with config sets
+const orderItemTax_03 = 2.4661368; // with config sets
 
 const cart_02: RequiredId<CrudApi.CreateCartInput> = {
   ...cartFixture.cart_01,
@@ -164,12 +169,14 @@ describe('CreatCartFromOrder mutation test', () => {
     const unitId = cart_01.unitId;
     const input = { id: cart_01.id };
 
-    // To Debug use direct handler call
-    // defer(() =>
-    //   orderRequestHandler(orderDeps).createOrderFromCart({ userId, input }),
-    // )
-    authAnyuppSdk
-      .CreateOrderFromCart({ input })
+    iif(
+      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+      // To Debug use direct handler call
+      defer(() =>
+        orderRequestHandler(orderDeps).createOrderFromCart({ userId, input }),
+      ),
+      authAnyuppSdk.CreateOrderFromCart({ input }),
+    )
       .pipe(
         // check order has been truly created
         filterNullish<string>(),
@@ -191,11 +198,47 @@ describe('CreatCartFromOrder mutation test', () => {
             expect(order.archived).toEqual(false);
             expect(order.items[0]).not.toBeNull();
             expect(order.items[0].allergens).not.toBeNull();
-            expect(order.items[0].priceShown.currency).toEqual('EUR');
-            expect(order.items[0].priceShown.tax).toEqual(27);
             expect(order.items[0].allergens).toEqual(
               cart_01.items[0].allergens,
             );
+
+            // The item.priceShown should NOT contain the configSetPrices
+            const priceShownBasicWithoutConfigSet = {
+              currency: 'EUR',
+              pricePerUnit: 1,
+              priceSum: toFixed2Number(orderItemPrice_01),
+              tax: 27,
+              taxSum: toFixed2Number(orderItemTax_01),
+            };
+            expect(order.items[0].priceShown).toEqual(
+              priceShownBasicWithoutConfigSet,
+            );
+            expect(order.items[1].priceShown).toEqual(
+              priceShownBasicWithoutConfigSet,
+            );
+            expect(order.items[2].priceShown).toEqual(
+              priceShownBasicWithoutConfigSet,
+            );
+
+            // SumPriceShown contains the configSets too
+            expect(order.items[0].sumPriceShown).toEqual(
+              priceShownBasicWithoutConfigSet, // the item 0 has no config sets
+            );
+            expect(order.items[1].sumPriceShown).toEqual({
+              currency: 'EUR',
+              pricePerUnit: toFixed2Number(orderItemPricePerUnit_02),
+              priceSum: toFixed2Number(orderItemPrice_02),
+              tax: 27,
+              taxSum: toFixed2Number(orderItemTax_02),
+            });
+            expect(order.items[2].sumPriceShown).toEqual({
+              currency: 'EUR',
+              pricePerUnit: toFixed2Number(orderItemPricePerUnit_03),
+              priceSum: toFixed2Number(orderItemPrice_03),
+              tax: 27,
+              taxSum: toFixed2Number(orderItemTax_03),
+            });
+
             // expect(
             //   order.items[0].allergens?.sort(
             //     (a, b) => (a && b && a > b ? 1 : -1), // using sort it will be in the same order all the time
@@ -230,14 +273,16 @@ describe('CreatCartFromOrder mutation test', () => {
         // Secound ORDER with 02 as orderNum
         switchMap(() => {
           const input = { id: cart_02.id };
-          return authAnyuppSdk.CreateOrderFromCart({ input });
-          //   // TO DEBUG
-          // return defer(() =>
-          //   orderRequestHandler(orderDeps).createOrderFromCart({
-          //     userId,
-          //     input,
-          //   }),
-          // );
+          return iif(
+            () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+            defer(() =>
+              orderRequestHandler(orderDeps).createOrderFromCart({
+                userId,
+                input,
+              }),
+            ),
+            authAnyuppSdk.CreateOrderFromCart({ input }),
+          );
         }),
         delay(1000),
         switchMap(newOrderId =>
@@ -265,26 +310,23 @@ describe('CreatCartFromOrder mutation test', () => {
 
   it("should fail in case the cart is not the user's", done => {
     const cartId = cart_03_different_user.id;
-    // const userId = 'DIFFERENT_USER';
+    const userId = 'DIFFERENT_USER';
     const input = { id: cartId };
-
-    // To Debug use direct handler call
-    // defer(() =>
-    //   orderRequestHandler(orderDeps).createOrderFromCart({
-    //     userId,
-    //     input,
-    //   }),
-    // )
-    authAnyuppSdk
-      .CreateOrderFromCart({
-        input,
-      })
-      .subscribe({
-        error(e) {
-          expect(e).toMatchSnapshot();
-          done();
-        },
-      });
+    iif(
+      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+      defer(() =>
+        orderRequestHandler(orderDeps).createOrderFromCart({
+          userId,
+          input,
+        }),
+      ),
+      authAnyuppSdk.CreateOrderFromCart({ input }),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
   }, 15000);
 
   it('should fail without a unit', done => {
@@ -292,35 +334,42 @@ describe('CreatCartFromOrder mutation test', () => {
     const userId = cart_04_different_unit.userId;
     const input = { id: cartId };
 
-    // defer(() =>
-    //   orderRequestHandler(orderDeps).createOrderFromCart({
-    //     userId,
-    //     input,
-    //   }),
-    // )
-    authAnyuppSdk
-      .CreateOrderFromCart({
-        input,
-      })
-      .subscribe({
-        error(e) {
-          expect(e).toMatchSnapshot();
-          done();
-        },
-      });
+    iif(
+      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+      defer(() =>
+        orderRequestHandler(orderDeps).createOrderFromCart({
+          userId,
+          input,
+        }),
+      ),
+      authAnyuppSdk.CreateOrderFromCart({ input }),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
   }, 15000);
 
   it('should fail without a cart', done => {
-    authAnyuppSdk
-      .CreateOrderFromCart({
-        input: { id: cartFixture.cartId_NotExisting },
-      })
-      .subscribe({
-        error(e) {
-          expect(e).toMatchSnapshot();
-          done();
-        },
-      });
+    const input = { id: cartFixture.cartId_NotExisting };
+    const userId = 'NOT_IMPORTANT';
+
+    iif(
+      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+      defer(() =>
+        orderRequestHandler(orderDeps).createOrderFromCart({
+          userId,
+          input,
+        }),
+      ),
+      authAnyuppSdk.CreateOrderFromCart({ input }),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
   }, 15000);
 });
 

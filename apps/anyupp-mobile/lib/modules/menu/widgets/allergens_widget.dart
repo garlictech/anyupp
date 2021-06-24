@@ -33,7 +33,7 @@ class AllergensWidget extends StatelessWidget {
               assetPath: "assets/allergens/$allergen.svg",
               borderRadius: iconBorderRadius,
               fontSize: fontSize,
-              themeColor: theme.highlight
+              themeColor: theme.background
             ),
           ),
         ));

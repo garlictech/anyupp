@@ -1,7 +1,7 @@
+import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { createAnonymUser, UserResolverDeps } from '@bgap/anyupp-gql/backend';
 import { config } from '@bgap/shared/config';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import * as AnyuppApi from 'libs/anyupp-gql/api/src';
 import { from, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 

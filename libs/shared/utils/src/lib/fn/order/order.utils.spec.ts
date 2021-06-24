@@ -1,18 +1,85 @@
-import { calculatePriceShown, calculateOrderSumPrice } from './order.utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { cartFixture } from '@bgap/shared/fixtures';
 import { toFixed2Number } from '../number.utils';
-describe('calculatePriceShown method', () => {
-  it('should return all the given fields without changing the currency, pricePerUnit and tax fields', () => {
-    const priceShown: CrudApi.PriceShown = {
+import {
+  calculateOrderItemPriceRounded,
+  calculateOrderItemSumPriceRounded,
+  calculateOrderSumPriceRounded,
+  calculateTaxSumFromBrutto,
+} from './order.utils';
+
+const orderItemConfigSetBase: Pick<
+  CrudApi.OrderItemConfigSetInput,
+  'productSetId' | 'name' | 'type'
+> = {
+  productSetId: 'PRODUCTSET_ID',
+  name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
+  type: 'TYPE',
+};
+const orderItemConfigComponentBase: Pick<
+  CrudApi.OrderItemConfigComponentInput,
+  'productComponentId' | 'name'
+> = {
+  productComponentId: 'PRODUCT_COMPONENT_ID',
+  name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
+};
+/** priceSum of the config set is  +0.88*/
+const orderItemConfigSet_01: CrudApi.OrderItemConfigSetInput = {
+  ...orderItemConfigSetBase,
+  items: [
+    {
+      ...orderItemConfigComponentBase,
+      price: -1.125,
+    },
+    {
+      ...orderItemConfigComponentBase,
+      price: 2.005,
+    },
+  ],
+};
+/** priceSum of the config set is +4 */
+const orderItemConfigSet_02: CrudApi.OrderItemConfigSetInput = {
+  ...orderItemConfigSetBase,
+  items: [
+    {
+      ...orderItemConfigComponentBase,
+      price: 5,
+    },
+    {
+      ...orderItemConfigComponentBase,
+      price: -1,
+    },
+  ],
+};
+
+describe('calculateTaxSumFromBrutto method', () => {
+  it('should calculate the correct taxSum from tax and brutto inputs', () => {
+    expect(calculateTaxSumFromBrutto({ tax: 0, brutto: 10 })).toEqual(0);
+    expect(calculateTaxSumFromBrutto({ tax: 10, brutto: 11 })).toEqual(1);
+    expect(calculateTaxSumFromBrutto({ tax: 5, brutto: 10 })).toEqual(
+      0.47619047619047616,
+    );
+    expect(calculateTaxSumFromBrutto({ tax: 27, brutto: 10 })).toEqual(
+      2.125984251968504,
+    );
+  });
+});
+
+describe('calculateOrderItemPriceRounded method', () => {
+  const item: CrudApi.OrderItem = {
+    ...cartFixture.getOrderItem(),
+    quantity: 1,
+    priceShown: {
       currency: 'EUR',
       pricePerUnit: 10,
       priceSum: 0,
       tax: 0,
       taxSum: 0,
-    };
-    expect(calculatePriceShown({ ...priceShown, quantity: 1 })).toEqual({
-      ...priceShown,
+    },
+  };
+  it('should return all the given fields without changing the currency, pricePerUnit and tax fields', () => {
+    expect(calculateOrderItemPriceRounded(item)).toEqual({
+      ...item.priceShown,
       priceSum: 10,
     });
   });
@@ -24,7 +91,9 @@ describe('calculatePriceShown method', () => {
       tax: 0,
       taxSum: 0,
     };
-    expect(calculatePriceShown({ ...priceShown, quantity: 2 })).toEqual({
+    expect(
+      calculateOrderItemPriceRounded({ ...item, priceShown, quantity: 2 }),
+    ).toEqual({
       ...priceShown,
       priceSum: 20,
     });
@@ -38,34 +107,50 @@ describe('calculatePriceShown method', () => {
       taxSum: 0,
     };
     const quantity = 2;
-    const result = calculatePriceShown({ ...priceShown, quantity });
+    const result = calculateOrderItemPriceRounded({
+      ...item,
+      priceShown,
+      quantity,
+    });
     expect(result.priceSum).toEqual(priceShown.pricePerUnit * quantity); // 20
     expect(result.taxSum).toEqual(4); // 0.25 ÷ 1.25 * 10 = 2  => 2* quantity = 4
-    const result02 = calculatePriceShown({
-      ...priceShown,
-      tax: 27,
+    const result02 = calculateOrderItemPriceRounded({
+      ...item,
+      priceShown: {
+        ...priceShown,
+        tax: 27,
+      },
       quantity,
     });
     expect(result02.priceSum).toEqual(priceShown.pricePerUnit * quantity);
-    expect(result02.taxSum).toEqual(4.251968503937008); // result.priceSum * (0.27 / 1.27)
+    expect(result02.taxSum).toEqual(4.25); // result.priceSum * (0.27 / 1.27)
   });
 });
-describe('calculateOrderSumPrice function', () => {
-  const orderItemConfigSetBase: Pick<
-    CrudApi.OrderItemConfigSetInput,
-    'productSetId' | 'name' | 'type'
-  > = {
-    productSetId: 'PRODUCTSET_ID',
-    name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-    type: 'TYPE',
+
+describe('calculateOrderItemSumPriceRounded function', () => {
+  const item: CrudApi.OrderItem = {
+    ...cartFixture.getOrderItem(),
+    quantity: 3,
+    priceShown: {
+      currency: 'EUR',
+      pricePerUnit: 10,
+      priceSum: 0,
+      tax: 10,
+      taxSum: 0,
+    },
+    configSets: [orderItemConfigSet_01, orderItemConfigSet_02],
   };
-  const orderItemConfigComponentBase: Pick<
-    CrudApi.OrderItemConfigComponentInput,
-    'productComponentId' | 'name'
-  > = {
-    productComponentId: 'PRODUCT_COMPONENT_ID',
-    name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-  };
+  it("should add the summarized confiset prices to the item's price too", () => {
+    expect(calculateOrderItemSumPriceRounded(item)).toEqual({
+      ...item.priceShown,
+      pricePerUnit: 14.88,
+      priceSum: 44.64, // (10+4+0.88)*3
+      taxSum: 4.06,
+    });
+  });
+});
+
+describe('calculateOrderSumPriceRounded function', () => {
   it('should summarize all the items prices and round only at the end', () => {
     const orderItem_01: CrudApi.OrderItemInput = {
       // PriceSum: 2, TaxSum: 0.01980198019
@@ -96,7 +181,7 @@ describe('calculateOrderSumPrice function', () => {
     ];
     const expectedBruttoPriceSum = 4 * orderItemPrice_02 + orderItemPrice_01; // Prices
     const expectedTaxSum = 4 * orderItemTax_02 + orderItemTax_01;
-    const result = calculateOrderSumPrice(input);
+    const result = calculateOrderSumPriceRounded(input);
     expect(result.tax).toEqual(0); // There is no summariezed tax percent because the tax can be different for every items
     expect(result.pricePerUnit).toEqual(0); // There is no summariezed pricePerUnit
     expect(result.currency).toEqual(orderItem_01.priceShown.currency);
@@ -104,32 +189,6 @@ describe('calculateOrderSumPrice function', () => {
     expect(result.priceSum).toEqual(toFixed2Number(expectedBruttoPriceSum));
   });
   it('should summarize all the items with all the config sets', () => {
-    const orderItemConfigSet_01: CrudApi.OrderItemConfigSetInput = {
-      ...orderItemConfigSetBase,
-      items: [
-        {
-          ...orderItemConfigComponentBase,
-          price: -1.125,
-        },
-        {
-          ...orderItemConfigComponentBase,
-          price: 2.005,
-        },
-      ],
-    };
-    const orderItemConfigSet_02: CrudApi.OrderItemConfigSetInput = {
-      ...orderItemConfigSetBase,
-      items: [
-        {
-          ...orderItemConfigComponentBase,
-          price: 5,
-        },
-        {
-          ...orderItemConfigComponentBase,
-          price: -1,
-        },
-      ],
-    };
     const orderItem_01: CrudApi.OrderItemInput = {
       ...cartFixture.getOrderItem({ tax: 1 }), // PriceSum: 2 * 1, TaxSum: 0.01980...
     };
@@ -146,7 +205,7 @@ describe('calculateOrderSumPrice function', () => {
       orderItem_02,
       orderItem_03,
     ];
-    const result = calculateOrderSumPrice(input);
+    const result = calculateOrderSumPriceRounded(input);
     expect(result.priceSum).toEqual(2 + 3.76 + 11.76);
     expect(result.taxSum).toEqual(0.17); //  0.173459
   });

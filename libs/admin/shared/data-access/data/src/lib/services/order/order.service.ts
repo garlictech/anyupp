@@ -1,12 +1,13 @@
 import { cloneDeep } from 'lodash/fp';
 import { EMPTY } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   currentStatus,
   getOrderStatusByItemsStatus,
+  ordersActions,
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -216,6 +217,7 @@ export class OrderService {
           };
 
           const newOrderStatus = getOrderStatusByItemsStatus(_order);
+
           if (newOrderStatus) {
             input.statusLog = [
               {
@@ -224,13 +226,29 @@ export class OrderService {
                 userId: this._adminUser.id,
               },
             ];
+            if (
+              newOrderStatus === CrudApi.OrderStatus.served &&
+              _order.transaction?.status === CrudApi.PaymentStatus.success
+            ) {
+              input.archived = true;
+            }
           }
 
-          return this._crudSdk.doMutation(
-            this._crudSdk.sdk.UpdateOrder({
-              input,
-            }),
-          );
+          return this._crudSdk
+            .doMutation(
+              this._crudSdk.sdk.UpdateOrder({
+                input,
+              }),
+            )
+            .pipe(
+              tap(() => {
+                if (input.archived) {
+                  this._store.dispatch(
+                    ordersActions.removeActiveOrder({ orderId: _order.id }),
+                  );
+                }
+              }),
+            );
         } else {
           return EMPTY;
         }
@@ -269,21 +287,26 @@ export class OrderService {
     }
   }
 
-  public archiveOrder(order: CrudApi.Order, status: CrudApi.OrderStatus) {
+  public archiveOrder(order: CrudApi.Order, status?: CrudApi.OrderStatus) {
     if (this._adminUser?.id) {
+      const input: CrudApi.UpdateOrderInput = {
+        id: order.id,
+        archived: true,
+      };
+
+      if (status) {
+        input.statusLog = [
+          {
+            status,
+            ts: new Date().getTime(),
+            userId: this._adminUser.id,
+          },
+        ];
+      }
+
       return this._crudSdk.doMutation(
         this._crudSdk.sdk.UpdateOrder({
-          input: {
-            id: order.id,
-            archived: true,
-            statusLog: [
-              {
-                status,
-                ts: new Date().getTime(),
-                userId: this._adminUser.id,
-              },
-            ],
-          },
+          input,
         }),
       );
     } else {

@@ -1,3 +1,6 @@
+<div class="p-2">
+  <strong>#{{ order.orderNum }}</strong>
+</div>
 <div class="row p-0 m-0">
   <ng-container *ngFor="let orderItem of order?.items; index as i">
     <div class="col-1 col-md-1 p-2 m-auto subtitle-2 text-end font-larger">
@@ -37,8 +40,8 @@
     </div>
     <div class="col-3 col-md-2 p-2 m-auto caption text-end font-larger">
       {{
-        orderItem.priceShown.priceSum
-          | currencyFormatter: orderItem.priceShown.currency
+        orderItem.sumPriceShown.priceSum
+          | currencyFormatter: orderItem.sumPriceShown.currency
       }}
     </div>
     <div class="text-end p-2 col-8 col-md-3 m-auto">
@@ -59,7 +62,7 @@
           nbButton
           [status]="getButtonStatus(orderItem.statusLog)"
           [size]="buttonSize"
-          *ngIf="currentStatus(orderItem.statusLog) !== EOrderStatus.none"
+          *ngIf="currentStatus(order.statusLog) !== EOrderStatus.none"
           shape="round"
           class="font-larger"
           (click)="updateOrderItemStatus(i)"
