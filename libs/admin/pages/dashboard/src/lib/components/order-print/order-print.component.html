@@ -78,8 +78,8 @@
             <div class="col-1 p-0">{{ order.quantity }}x</div>
             <div class="col-3 p-0 text-end">
               {{
-                order.priceShown.priceSum
-                  | currencyFormatter: order.priceShown.currency
+                order.sumPriceShown.priceSum
+                  | currencyFormatter: order.sumPriceShown.currency
               }}
             </div>
           </div>
