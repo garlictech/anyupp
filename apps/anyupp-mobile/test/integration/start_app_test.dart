@@ -38,15 +38,6 @@ void main() {
       print('****** MAIN = $main');
 
       expect(main, isNotNull);
-      // expect(true, equals(true));
-      // // Then, verify the counter text has been incremented by 1
-      // expect(await driver.getText(counterTextFinder), "1");
-
-      // // First, tap on the button
-      // await driver.tap(buttonFinder);
-
-      // // Then, verify the counter text has been incremented by 1
-      // expect(await driver.getText(counterTextFinder), "2");
     });
 
     testWidgets("test login with Email", (WidgetTester tester) async {
