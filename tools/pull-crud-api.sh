@@ -31,21 +31,21 @@ NATIVECLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/Ad
   jq -r '.Parameter.Value')
 echo "NATIVECLIENTID=$NATIVECLIENTID"
 
-ANGULARconfig="{\
+ANGULARCONFIG="{\
 \"SourceDir\":\"../../libs/crud-gql/api/src/lib/generated\",\
 \"DistributionDir\":\"../../dist/apps/admin\",\
 \"BuildCommand\":\"yarn nx build admin\",\
 \"StartCommand\":\"yarn nx serve admin\"\
 }"
 
-AUTHconfig="{\
+AUTHCONFIG="{\
 \"userPoolId\":\"$USERPOOLID\",\
 \"identityPoolId\":\"$IDENTITYPOOLID\",\
 \"webClientId\":\"$WEBCLIENTID\",\
 \"nativeClientId\":\"$NATIVECLIENTID\"\
 }"
 
-AWSCLOUDFORMATIONconfig="{\
+AWSCLOUDFORMATIONCONFIG="{\
 \"configLevel\":\"project\",\
 \"useProfile\":true,\
 \"profileName\":\"${AWS_PROFILE}\"\
@@ -61,11 +61,11 @@ AMPLIFY="{\
 FRONTEND="{\
 \"frontend\":\"javascript\",\
 \"framework\":\"none\",\
-\"config\":$ANGULARconfig\
+\"config\":$ANGULARCONFIG\
 }"
 
 PROVIDERS="{\
-\"awscloudformation\":$AWSCLOUDFORMATIONconfig\
+\"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
 }"
 
 CODEGEN="{\
@@ -78,7 +78,7 @@ CODEGEN="{\
 }"
 
 CATEGORIES="{\
-\"auth\":$AUTHconfig\
+\"auth\":$AUTHCONFIG\
 }"
 
 rm -rf amplify

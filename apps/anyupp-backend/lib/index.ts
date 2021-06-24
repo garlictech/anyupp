@@ -60,11 +60,6 @@ export class AnyUppStack extends Stack {
         apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
       });
     }
-
-    /*    new CognitoTriggersStack(scope, 'cognitoTriggers', {
-      appsyncApi: appsyncStack.api,
-      pretokenTriggerLambda: cognitoStack.pretokenTriggerLambda,
-    });*/
   }
 }
 
