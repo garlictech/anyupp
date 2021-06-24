@@ -1,7 +1,5 @@
-import * as Joi from 'joi';
-
 import * as CrudApi from '@bgap/crud-gql/api';
-
+import * as Joi from 'joi';
 import { validateGqlList, validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
 import { allergenListSchema } from './product';
@@ -39,7 +37,7 @@ export const productComponentSchema: Joi.SchemaMap<CrudApi.ProductComponent> = {
   id: Joi.string().required(),
   chainId: Joi.string().required(),
   name: localizedItemSchema.required(),
-  description: Joi.string().allow(null),
+  description: Joi.string().allow(null, ''),
   allergens: allergenListSchema.allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),

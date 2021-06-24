@@ -220,6 +220,6 @@ export const getOrderStatusByItemsStatus = (order: CrudApi.Order) => {
   ) {
     return CrudApi.OrderStatus.processing;
   } else {
-    return;
+    return CrudApi.OrderStatus.placed;
   }
 };

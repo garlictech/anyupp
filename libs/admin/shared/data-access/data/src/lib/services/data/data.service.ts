@@ -345,16 +345,19 @@ export class DataService {
 
           return this._crudSdk.doListQuery(
             ordersActions.resetHistoryOrders(),
-            this._crudSdk.sdk.ListOrders({
-              filter: {
-                unitId: { eq: unitId },
-                archived: { eq: true },
-                createdAt: {
-                  ge: new Date(dayIntervals.from).toISOString(),
-                  le: new Date(dayIntervals.to).toISOString(),
+            this._crudSdk.sdk.SearchOrders(
+              {
+                filter: {
+                  unitId: { eq: unitId },
+                  archived: { eq: true },
+                  createdAt: {
+                    gte: new Date(dayIntervals.from).toISOString(),
+                    lte: new Date(dayIntervals.to).toISOString(),
+                  },
                 },
               },
-            }),
+              { fetchPolicy: 'no-cache' },
+            ),
             (orders: CrudApi.Order[]) =>
               ordersActions.upsertHistoryOrders({
                 orders,

@@ -1,5 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { cartFixture } from '@bgap/shared/fixtures';
+import { orderFixture } from '@bgap/shared/fixtures';
 import { createIamCrudSdk } from '../../api-clients';
 
 describe('CRUD endpoints AUTH test', () => {
@@ -7,7 +7,7 @@ describe('CRUD endpoints AUTH test', () => {
   const iamSdk = createIamCrudSdk();
 
   it('should require authentication to access', done => {
-    crudSdk.GetCart({ id: cartFixture.cart_seeded_01_id }).subscribe({
+    crudSdk.GetOrder({ id: orderFixture.order_seeded_01_id }).subscribe({
       error(e) {
         expect(e).toMatchSnapshot();
         done();
@@ -17,9 +17,9 @@ describe('CRUD endpoints AUTH test', () => {
 
   describe('IAM Auth', () => {
     it('should be able to execute a query with IAM authenticated graphql client', done => {
-      iamSdk.GetCart({ id: cartFixture.cart_seeded_01_id }).subscribe({
+      iamSdk.GetOrder({ id: orderFixture.order_seeded_01_id }).subscribe({
         next(x) {
-          expect(x?.id).toEqual(cartFixture.cart_seeded_01_id);
+          expect(x?.id).toEqual(orderFixture.order_seeded_01_id);
           done();
         },
       });

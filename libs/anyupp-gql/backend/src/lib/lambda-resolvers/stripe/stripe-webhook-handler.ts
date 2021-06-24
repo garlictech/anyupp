@@ -24,10 +24,8 @@ export const createStripeWebhookExpressApp = (
   stripeClient: Stripe,
 ) => {
   // declare a new express app
-  // const awsAccesskeyId = process.env.AWS_ACCESS_KEY_ID || '';
-  // const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
-  const awsAccesskeyId = 'AKIAYIT7GMY5WQZFXOOX'; // process.env.AWS_ACCESS_KEY_ID || '';
-  const awsSecretAccessKey = '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'; // process.env.AWS_SECRET_ACCESS_KEY || '';
+  const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
+  const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
 
   const deps: StripeResolverDeps = {
     crudSdk: getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey),
