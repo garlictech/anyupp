@@ -18,8 +18,7 @@ void main() {
     // final alertText = find.byValueKey("alert_text");
     // final btnClose = find.byValueKey("close_button");
     // final Finder main = find.byKey(Key('anyupp-main-app')); 
-
-
+    final Function(FlutterErrorDetails) original = FlutterError.onError;
 
 
     testWidgets('Checks the app is started', (WidgetTester tester) async {
@@ -32,6 +31,8 @@ void main() {
       print('****** App started');
 
       // await Future.delayed(Duration(seconds: 10));
+      print('****** Restoring flutter onError');
+      FlutterError.onError = original;
 
       final Finder main = find.byKey(Key('anyupp-main-app')); 
       print('****** MAIN = $main');
