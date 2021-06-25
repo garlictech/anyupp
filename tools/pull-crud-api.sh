@@ -135,7 +135,7 @@ echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 # ----------------------------------------------------------
 CRUD_CONFIG_FILE=../../libs/crud-gql/api/src/lib/generated/crud-api-config.ts
 
-echo "Generating ${CRUD_CONFIG_FILE}...\n"
+printf "Generating ${CRUD_CONFIG_FILE}...\n"
 
 echo "
 export const CrudApiConfig = {
