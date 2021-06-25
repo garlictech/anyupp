@@ -13,9 +13,7 @@ Then('I should see {string} text', (text: string) => {
 });
 
 When('I click the {string} text', (value: string) => {
-  cy.contains(value, { matchCase: false }).click({
-    force: true,
-  });
+  cy.contains(value, { matchCase: false }).click({ force: true });
 });
 
 When(

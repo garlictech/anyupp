@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 import * as sst from '@serverless-stack/resources';
+import * as lambda from '@aws-cdk/aws-lambda';
+||||||| d746b686
+import * as lambda from '@aws-cdk/aws-lambda';
+=======
+>>>>>>> 74a495adc9eac0c14a2d1d2100857d4edc3a971d
 import * as cognito from '@aws-cdk/aws-cognito';
 import { UserPoolClientProps } from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
