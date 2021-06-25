@@ -66,7 +66,7 @@ class OrderHistoryCard extends StatelessWidget {
         color: status == 'REJECTED' ? Colors.red : Colors.green,
         textStyle: GoogleFonts.poppins(
           color: Colors.white,
-          fontSize: 13.0,
+          fontSize: 8.0,
         ),
         child: Container(
           decoration: BoxDecoration(

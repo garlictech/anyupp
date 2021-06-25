@@ -112,6 +112,13 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
           tax
           taxSum
         }
+        sumPriceShown {
+          currency
+          pricePerUnit
+          priceSum
+          tax
+          taxSum
+        }
         quantity
         statusLog {
           status
