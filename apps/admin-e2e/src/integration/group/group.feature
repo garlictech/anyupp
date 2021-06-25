@@ -7,7 +7,6 @@ Feature: Create or update Group
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
     Then I should be on the dashboard page
-    # Set the desired lang
     Then I set the language to EN
     And I select the "Rab lánc #1" chain in the header menu
     When I click on the menu icon
@@ -21,11 +20,11 @@ Feature: Create or update Group
     Then the "Groups" title is displayed
     When I click on the plus button
     Then The chain selector should contain "Rab lánc #1"
-    When I set the currency to "HUF"
-    And I fill out the "Name" input with "test group 1"
-    And I fill out the "Description (HU)" input with "test descripton 1"
-    And I fill out the "Description (EN)" input with "test descripton 1"
-    And I fill out the "Description (DE)" input with "test descripton 1"
+    When I set the currency to "EUR"
+    And I fill out the "Name" input with "test group e2e"
+    And I fill out the "Description (HU)" input with "test description e2e"
+    And I fill out the "Description (EN)" input with "test description e2e"
+    And I fill out the "Description (DE)" input with "test description e2e"
     And I fill out the "Email" input with "test@anyupp.com"
     And I fill out the "Phone" input with "1234567890"
     And I fill out the "Title" input with "test title"
@@ -35,28 +34,28 @@ Feature: Create or update Group
     And I fill out the "Address" input with "Kis u. 45."
     And I click on the "Locate on map" button
     And I click on the "Submit" button
-    Then I should see "test group 1" text
-    And I should see "test descripton 1" text
+    Then I should see "test group e2e" text
+    And I should see "test description e2e" text
     And I should see "test@anyupp.com" text
     And I should see "1234567890" text
 
   Scenario: Update the Group
-    When I click the edit button in the listitem with "test group 1" content
-    And I set the currency to "EUR"
+    When I click the edit button in the listitem with "test group e2e" content
+    And I set the currency to "HUF"
     And I fill out the "Name" input with "test group e2eUpdated"
-    And I fill out the "Description (EN)" input with "test descripton e2eUpdated"
-    And I fill out the "Description (HU)" input with "test descripton e2eUpdated"
-    And I fill out the "Description (DE)" input with "test descripton e2eUpdated"
+    And I fill out the "Description (EN)" input with "test description e2eUpdated"
+    And I fill out the "Description (HU)" input with "test description e2eUpdated"
+    And I fill out the "Description (DE)" input with "test description e2eUpdated"
     And I fill out the "Email" input with "test123@anyupp.com"
     And I fill out the "Phone" input with "1234567890123"
     And I fill out the "Title" input with "test title updated"
     And I fill out the "Country" input with "Hungary"
-    And I fill out the "Postal code" input with "1021"
+    And I fill out the "Postal code" input with "1234"
     And I fill out the "City" input with "Budapest"
-    And I fill out the "Address" input with "Kis u. 42."
+    And I fill out the "Address" input with "Kis u. 42. e2eUpdated"
     And I click on the "Locate on map" button
     And I click on the "Submit" button
     Then I should see "test group e2eUpdated" text
-    And I should see "test descripton e2eUpdated" text
+    And I should see "test description e2eUpdated" text
     And I should see "test123@anyupp.com" text
     And I should see "1234567890123" text
