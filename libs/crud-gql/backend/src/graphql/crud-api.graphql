@@ -278,26 +278,6 @@ type Order
   transaction: Transaction @connection(fields: ["transactionId"])
 }
 
-type OrderHistory
-  @model
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "byDate", fields: ["id", "createdAt"]) {
-  id: ID!
-  createdAt: String!
-  userId: ID!
-  unitId: ID!
-  orderNum: String!
-  items: [OrderItem!]!
-  paymentMode: PaymentMode!
-  statusLog: [StatusLog!]!
-  sumPriceShown: PriceShown!
-  takeAway: Boolean!
-  place: Place
-  paymentIntention: Float
-  transactionId: ID
-  transaction: Transaction @connection(fields: ["transactionId"])
-}
-
 enum PaymentStatus {
   waiting_for_payment
   success

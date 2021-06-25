@@ -234,21 +234,6 @@ const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
         }),
       ),
     ),
-    switchMap(() =>
-      defer(() =>
-        unitRequestHandler({ crudSdk: deps.crudSdk }).regenerateUnitData({
-          input: { id: unitFixture.unitId_seeded_02 },
-        }),
-      ),
-    ),
-    switchMap(() =>
-      defer(() =>
-        unitRequestHandler({ crudSdk: deps.crudSdk }).regenerateUnitData({
-          input: { id: unitFixture.unitId_seeded_03 },
-        }),
-      ),
-    ),
-    ce('### regenerateUnitData'),
   );
 
 export const seedAll = (deps: SeederDependencies) =>
