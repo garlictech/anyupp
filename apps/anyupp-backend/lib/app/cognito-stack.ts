@@ -1,20 +1,13 @@
-import * as sst from '@serverless-stack/resources';
 import * as cognito from '@aws-cdk/aws-cognito';
 import { UserPoolClientProps } from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as ssm from '@aws-cdk/aws-ssm';
-import {
-  CfnOutput,
-  CustomResource,
-  Duration,
-  RemovalPolicy,
-} from '@aws-cdk/core';
+import { CfnOutput, Duration, RemovalPolicy } from '@aws-cdk/core';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
 import path from 'path';
 import { commonLambdaProps } from './lambda-common';
 import { getFQParamName } from './utils';
-import { Provider } from '@aws-cdk/custom-resources';
 
 export interface CognitoStackProps extends StackProps {
   adminSiteUrl: string;
@@ -154,7 +147,6 @@ export class CognitoStack extends Stack {
     });
 
     this.configureIdentityPool(identityPool);
-    this.configureCrudApi();
 
     const identityPoolId = 'IdentityPoolId';
     new CfnOutput(this, identityPoolId, {
@@ -634,38 +626,5 @@ export class CognitoStack extends Stack {
       removalPolicy:
         this.stage === 'prod' ? RemovalPolicy.SNAPSHOT : RemovalPolicy.DESTROY,
     };
-  }
-
-  private configureCrudApi() {
-    const app = this.node.root as sst.App;
-
-    const updaterLambda = new lambda.Function(this, 'CrudApiUpdaterLambda', {
-      ...commonLambdaProps,
-      handler: 'lib/lambda/crud-api-updater/index.handler',
-      code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/crud-api-updater.zip'),
-      ),
-    });
-
-    updaterLambda.role &&
-      updaterLambda.role.addToPrincipalPolicy(
-        new iam.PolicyStatement({
-          actions: ['*'],
-          resources: ['*'],
-        }),
-      );
-
-    const provider = new Provider(this, 'CrudApiUpdaterProvider', {
-      onEventHandler: updaterLambda,
-    });
-
-    new CustomResource(this, 'CrudApiUpdater', {
-      serviceToken: provider.serviceToken,
-      resourceType: 'Custom::CrudApiUpdater',
-      properties: {
-        userPoolId: this.consumerUserPool.userPoolId,
-        physicalResourceId: app.logicalPrefixedName('CrudApiUpdater'),
-      },
-    });
   }
 }
