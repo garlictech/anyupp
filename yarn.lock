@@ -8484,32 +8484,28 @@ aws-amplify@4.1.2:
     "@aws-amplify/ui" "2.0.3"
     "@aws-amplify/xr" "3.0.4"
 
-aws-appsync-auth-link@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/aws-appsync-auth-link/-/aws-appsync-auth-link-2.0.3.tgz#1a2d5dc9d8712765354cacb906da27557267d2e2"
-  integrity sha512-CfXLILhhjMZvQ6OqKFAt6nd02T8YpQPyWS2H4Fmoe54RcQvYDBQDH9Gu1H3wFK77Wn866cwU3jd+W93UaZ7YXw==
+aws-appsync-auth-link@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/aws-appsync-auth-link/-/aws-appsync-auth-link-3.0.4.tgz#acc709b5bd80831589a9417a7c2ef04cb78733c4"
+  integrity sha512-5zuD5JUaHdHTEOerMY4GFS9RyGquTNq3oIDAh8Ld+U74Qeo9UODT1QEfSSf6M9c+etDIghDcgQKxRQmkJwUEzA==
   dependencies:
-    apollo-link "1.2.5"
-    aws-sdk "^2.518.0"
+    aws-sdk "^2.814.0"
     debug "2.6.9"
 
-aws-appsync-subscription-link@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/aws-appsync-subscription-link/-/aws-appsync-subscription-link-2.2.1.tgz#712a2e3ad39aa693870a5802debbbb4b415b1406"
-  integrity sha512-dqr4P+Zc3oy7ttNzOwBhYuVH7XwEgPKAAOv79DjxzEcQIqSxAn+3HYMxn8gASrFcFNV1H04Cgd1wPxITZsJpnw==
+aws-appsync-subscription-link@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/aws-appsync-subscription-link/-/aws-appsync-subscription-link-3.0.6.tgz#d3fcf9465bbdc9702c46a645544e1e0d29f42f80"
+  integrity sha512-8iXJt+b6q7r8GCN75JVwYMN8H0+3hrUHQ/sgdikmb/pE+lBjqFOyFg2Pfu8OYqsyxwVKkxywHRKYeV1+61opXw==
   dependencies:
-    apollo-link "1.2.5"
-    apollo-link-context "1.0.11"
-    apollo-link-http "1.5.8"
-    apollo-link-retry "2.2.7"
-    aws-appsync-auth-link "^2.0.3"
+    apollo-utilities "^1.3.4"
+    aws-appsync-auth-link "^3.0.4"
     debug "2.6.9"
     url "^0.11.0"
 
-aws-appsync@4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/aws-appsync/-/aws-appsync-4.0.3.tgz#2233b482cce1d0316fb581e113d6fec22d91d3ea"
-  integrity sha512-ld6hgunSewQzTwQui9Rj2Adzj8ikVLaurPU732/Ci85edvyyYmqCoWZqG8EZZFvNdz7tIYFolJD7BsiggTTwJQ==
+aws-appsync@4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/aws-appsync/-/aws-appsync-4.0.4.tgz#9aa1f93e3ffb8a1ce8d5d9a3f40210aa5bf11230"
+  integrity sha512-XPEgvY8KGZO8zScz6J7mtyjjywhSYm1aOlnSbL/cafqVxr3b2K+JqQZXi2O8MF+werfqQormuE2Mh5QCAK7how==
   dependencies:
     "@redux-offline/redux-offline" "2.5.2-native.3"
     apollo-cache-inmemory "1.3.12"
@@ -8518,8 +8514,8 @@ aws-appsync@4.0.3:
     apollo-link-context "1.0.11"
     apollo-link-http "1.5.8"
     apollo-link-retry "2.2.7"
-    aws-appsync-auth-link "^2.0.3"
-    aws-appsync-subscription-link "^2.2.1"
+    aws-appsync-auth-link "^3.0.4"
+    aws-appsync-subscription-link "^3.0.6"
     aws-sdk "^2.814.0"
     debug "2.6.9"
     graphql "0.13.0"
@@ -8568,7 +8564,7 @@ aws-lambda@1.0.6:
     js-yaml "^3.13.1"
     watchpack "^2.0.0-beta.10"
 
-aws-sdk@*, aws-sdk@^2.518.0, aws-sdk@^2.761.0, aws-sdk@^2.814.0, aws-sdk@^2.848.0:
+aws-sdk@*, aws-sdk@^2.761.0, aws-sdk@^2.814.0, aws-sdk@^2.848.0:
   version "2.930.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.930.0.tgz#f98871a790ffdbfae5439e50db99f6d4635afe19"
   integrity sha512-g8fPOy7Skh2Pqpz2SaDI+M9re2rjTWBQUirAMgtUD/6I/Lf6CR1Q0amsjtQU8WqRQH06kNGwuLtc8Tt6wAux3Q==
