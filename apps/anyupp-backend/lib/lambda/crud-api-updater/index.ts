@@ -1,4 +1,4 @@
-import { CloudFormationCustomResourceEvent } from 'aws-lambda';
+import { CloudFormationCustomResourceEvent, Handler } from 'aws-lambda';
 import { AppSync } from 'aws-sdk';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
 import { defer, from, of, throwError } from 'rxjs';
@@ -14,7 +14,9 @@ const appsync = new AppSync({
 
 const region = process.env.AWS_REGION || '';
 
-export const handler = async (event: CloudFormationCustomResourceEvent) => {
+export const handler: Handler = async (
+  event: CloudFormationCustomResourceEvent,
+) => {
   console.log('### EVENT:', JSON.stringify(event, null, 2));
 
   /**

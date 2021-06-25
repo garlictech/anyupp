@@ -24,13 +24,14 @@ export class ConfiguratorStack extends sst.Stack {
       ),
     });
 
-    updaterLambda.role &&
+    if (updaterLambda.role) {
       updaterLambda.role.addToPrincipalPolicy(
         new iam.PolicyStatement({
           actions: ['*'],
           resources: ['*'],
         }),
       );
+    }
 
     const provider = new Provider(this, 'CrudApiUpdaterProvider', {
       onEventHandler: updaterLambda,
