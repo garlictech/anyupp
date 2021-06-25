@@ -18,7 +18,7 @@ void main() {
     // final alertText = find.byValueKey("alert_text");
     // final btnClose = find.byValueKey("close_button");
     // final Finder main = find.byKey(Key('anyupp-main-app')); 
-    final Function(FlutterErrorDetails) original = FlutterError.onError;
+    // final Function(FlutterErrorDetails) original = FlutterError.onError;
 
 
     testWidgets('Checks the app is started', (WidgetTester tester) async {
@@ -32,27 +32,17 @@ void main() {
 
       // await Future.delayed(Duration(seconds: 10));
       print('****** Restoring flutter onError');
-      FlutterError.onError = original;
+      // FlutterError.onError = original;
 
-      final Finder main = find.byKey(Key('anyupp-main-app')); 
-      print('****** MAIN = $main');
+      final Finder main = find.byKey(Key('anyupp-main-app'));
+      print('****** MAIN = ${main.description}');
+      await tester.pump();
 
       expect(main, isNotNull);
     });
 
     testWidgets("test login with Email", (WidgetTester tester) async {
-      // await driver.tap(buttonAdd);
 
-      // expect(await driver.getText(alertText), "Welcome to ExecuteAutomation 2");
-
-      // // Tap the close link to close the alert box
-      // await driver.tap(btnClose);
-
-      // //Click subtract again
-      // await driver.tap(buttonSubtract);
-
-      // //Verify if its correct
-      // expect(await driver.getText(counterTextFinder), "1");
       expect(true, equals(true));
     });
   });

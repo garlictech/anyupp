@@ -1,8 +1,15 @@
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
+
+
+  setUp(() {
+    GoogleFonts.config.allowRuntimeFetching = false;
+  });
+
   testWidgets('Test Common Error widget', (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
     await tester.pumpWidget(MaterialApp(
