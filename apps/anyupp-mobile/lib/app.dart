@@ -58,10 +58,6 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-  void handleLink(Uri link) async {
-    print('handleLink()=$link');
-  }
-
   Future<void> _initDeepLinks() async {
     try {
       Uri uri = await getInitialUri();
@@ -73,13 +69,29 @@ class _MyAppState extends State<MyApp> {
     } on Exception catch (e) {
       print('***** _initDeepLinks().exception=$e');
     }
+
+    _deeplinkSubscription = linkStream.listen((String link) async {
+      try {
+        Uri uri = await getInitialUri();
+        print('_initDeepLinks().uri=$uri');
+
+        if (isValidUrl(uri)) {
+          await handleUrl(uri);
+        }
+      } on Exception catch (e) {
+        print('***** _initDeepLinks().exception=$e');
+      }
+    }, onError: (err) {
+      // Handle exception by warning the user their action did not succeed
+      print('***** _initDeepLinks().error=$err');
+    });
   }
 
   Future<void> checkForAndroidUpdates() async {
-      AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
-      if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-        await InAppUpdate.performImmediateUpdate();
-      }
+    AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
+    if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+      await InAppUpdate.performImmediateUpdate();
+    }
   }
 
   @override
