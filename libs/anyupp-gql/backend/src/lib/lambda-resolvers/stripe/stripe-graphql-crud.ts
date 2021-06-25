@@ -169,7 +169,7 @@ export const updateOrderState =
     transactionId?: string | undefined,
     transactionStatus?: CrudApi.PaymentStatus | undefined,
   ) =>
-  (deps: StripeResolverDeps) => {
+  async (deps: StripeResolverDeps) => {
     console.debug(
       '***** updateOrderState().id=' +
         id +
@@ -180,11 +180,30 @@ export const updateOrderState =
         ', userId=' +
         userId,
     );
+    const order = await loadOrder(id)(deps);
+    if (!order) {
+      throw Error('Order not found with ID+' + id);
+    }
+
+    if (status) {
+      // TODO we should create a utility function to handle Order + all it's OrderItems state change, because we use it in several places
+      // For now, the problem is that we use different logic, this should be standardized and solved in a single function that covers all the different logic used so far.
+      order.items.forEach(item => {
+        // Update only none item status to placed!!!
+        item.statusLog.push({
+          status: status,
+          ts: new Date().getTime(),
+          userId,
+        });
+      });
+    }
+
     const updateOrderVars: CrudApi.UpdateOrderMutationVariables = {
       input: {
         id: id,
         transactionId: transactionId,
         transactionStatus: transactionStatus,
+        items: order.items,
         statusLog: status
           ? [
               {

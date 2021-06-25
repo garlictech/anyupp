@@ -159,6 +159,8 @@ export class OrderService {
     }
   }
 
+  // TODO we should create a utility function to handle Order + all it's OrderItems state change, because we use it in several places
+  // For now, the problem is that we use different logic, this should be standardized and solved in a single function that covers all the different logic used so far.
   public updateOrderStatusFromNoneToPlaced(order: CrudApi.Order) {
     if (this._adminUser?.id) {
       const userId = this._adminUser?.id;
