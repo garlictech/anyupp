@@ -130,6 +130,19 @@ echo $RESULT > ${TABLE_CONFIG_NAME}
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
+# ----------------------------------------------------------
+# Generate crud config
+# ----------------------------------------------------------
+CRUD_CONFIG_FILE=../../libs/crud-gql/api/src/lib/generated/crud-api-config.ts
+
+echo "Generating ${CRUD_CONFIG_FILE}...\n"
+
+echo "
+export const CrudApiConfig = {
+  appId: '${APPID}',
+  appsyncApiId: '${API_ID}'
+}
+" > ${CRUD_CONFIG_FILE}
 
 # ----------------------------------------------------------
 # Post-processing the result

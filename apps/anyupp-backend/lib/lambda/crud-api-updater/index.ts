@@ -1,8 +1,8 @@
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import { AppSync } from 'aws-sdk';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
-import { defer, from } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { defer, from, of, throwError } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { sendResponse } from '../utils/send-response';
 import { UpdateGraphqlApiRequest } from 'aws-sdk/clients/appsync';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
@@ -62,6 +62,13 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
               responseUrl: event.ResponseURL,
             }),
           ),
+        ),
+        catchError(err =>
+          JSON.stringify(err, null, 2).includes(
+            'Additional authentication provider',
+          )
+            ? of(true)
+            : throwError(err),
         ),
       )
       .toPromise();
