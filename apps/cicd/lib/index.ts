@@ -122,7 +122,7 @@ export default function main(app: App): void {
     };
 
     new ProdBuildPipelineStack(app, 'ProdBuildStack', {
-      repoBranch: 'master',
+      repoBranch: 'prod',
       secretsManager,
       ...commonConfig,
     });
