@@ -70,8 +70,7 @@ export const configurePermissions = (
 };
 
 export const getAppcenterArtifactBucketName = (stage: string) =>
-  `${appConfig.appcenterArtifactBucketNamePrefix}-` +
-  (stage === 'prod' ? 'master' : stage);
+  `${appConfig.appcenterArtifactBucketNamePrefix}-${stage}`;
 
 export const createBuildProject = (
   stack: sst.Stack,
