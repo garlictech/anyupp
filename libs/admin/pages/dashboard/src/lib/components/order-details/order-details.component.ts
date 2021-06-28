@@ -240,9 +240,10 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
             if (this.order.id) {
               this._orderService
                 .updateOrderStatus(this.order, CrudApi.OrderStatus.rejected)
+                .pipe(
+                  switchMap(() => this._orderService.archiveOrder(this.order)),
+                )
                 .subscribe(() => {
-                  this._orderService.archiveOrder(this.order).subscribe();
-
                   this._changeDetectorRef.detectChanges();
                 });
             }
