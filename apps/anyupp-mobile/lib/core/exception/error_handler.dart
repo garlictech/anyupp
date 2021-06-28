@@ -35,5 +35,5 @@ void configureCatcherAndRunZonedApp(Widget mainApp) {
       ],
       customParameters: customParameters);
 
-  Catcher(mainApp, debugConfig: debugOptions, releaseConfig: releaseOptions);
+  Catcher(rootWidget: mainApp, debugConfig: debugOptions, releaseConfig: releaseOptions);
 }

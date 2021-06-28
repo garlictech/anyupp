@@ -33,15 +33,21 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 30
+    ndkVersion "23.0.7196353"
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-        // checkReleaseBuilds false
-    }
+    // buildFeatures {
+    //     // Enables Jetpack Compose for this module
+    //     compose true
+    // }
+
+    // lintOptions {
+    //     disable 'InvalidPackage'
+    //     // checkReleaseBuilds false
+    // }
 
     defaultConfig {
         applicationId "net.cyberg.anyupp"
@@ -79,5 +85,5 @@ flutter {
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

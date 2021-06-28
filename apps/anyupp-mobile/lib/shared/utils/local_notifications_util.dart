@@ -70,7 +70,7 @@ class Locally {
     /// initializationSetting declared above is here assigned
     /// to InitializationSetting, which comes from flutter_local_notification
     /// package.
-    initializationSetting = InitializationSettings(initializationSettingAndroid, initializationSettingIos);
+    initializationSetting = InitializationSettings(android: initializationSettingAndroid, iOS: initializationSettingIos);
 
     /// localNotificationPlugin is initialized here finally
     localNotificationsPlugin.initialize(initializationSetting, onSelectNotification: onSelectNotification);
@@ -144,8 +144,8 @@ class Locally {
       channelName = 'channel Name',
       channelID = 'channelID',
       channelDescription = 'channel Description',
-      importance = Importance.High,
-      priority = Priority.High,
+      importance = Importance.high,
+      priority = Priority.high,
       ticker = 'test ticker'}) async {
     if (title == null && message == null) {
       throw "Missing parameters, title: message";
@@ -158,7 +158,7 @@ class Locally {
 
       var iosPlatformChannelSpecifics = IOSNotificationDetails();
 
-      var platformChannelSpecifics = NotificationDetails(androidPlatformChannelSpecifics, iosPlatformChannelSpecifics);
+      var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iosPlatformChannelSpecifics);
 
       await localNotificationsPlugin.show(0, title, message, platformChannelSpecifics, payload: payload);
     }

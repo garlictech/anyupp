@@ -10,6 +10,8 @@ abstract class UserDetailsState extends Equatable {
 
 class NoUserDetailsState extends UserDetailsState {}
 
+class UserDetailsLoadingState extends UserDetailsState {}
+
 class UserDetailsLoadingErrorState extends UserDetailsState {}
 
 class UserDetailsLoaded extends UserDetailsState {
