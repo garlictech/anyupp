@@ -1,6 +1,7 @@
 import { App, Stack } from '@serverless-stack/resources';
 import { AppsyncAppStack } from './app/appsync-app-stack';
 import { CognitoStack } from './app/cognito-stack';
+import { ConfiguratorStack } from './app/configurator-stack';
 import { ParamsStack } from './app/params-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SeederStack } from './app/seeder-stack';
@@ -52,6 +53,10 @@ export class AnyUppStack extends Stack {
       apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
     });
 
+    new ConfiguratorStack(scope, 'configurator', {
+      consumerUserPoolId: cognitoStack.consumerUserPool.userPoolId,
+    });
+
     if (scope.stage === 'dev' || scope.stage === 'qa') {
       new SeederStack(scope, 'seeder', {
         adminUserPool: cognitoStack.adminUserPool,
@@ -60,11 +65,6 @@ export class AnyUppStack extends Stack {
         apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
       });
     }
-
-    /*    new CognitoTriggersStack(scope, 'cognitoTriggers', {
-      appsyncApi: appsyncStack.api,
-      pretokenTriggerLambda: cognitoStack.pretokenTriggerLambda,
-    });*/
   }
 }
 
