@@ -14,6 +14,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
 
 import { CrudSdkService } from '../crud-sdk.service';
+import { dashboardActions } from 'libs/admin/shared/data-access/dashboard/src';
 
 @Injectable({
   providedIn: 'root',
@@ -212,7 +213,7 @@ export class OrderService {
           });
 
           const input: CrudApi.UpdateOrderInput = {
-            id: order.id,
+            id: _order.id,
             items: _order.items,
           };
 
@@ -226,12 +227,6 @@ export class OrderService {
                 userId: this._adminUser.id,
               },
             ];
-            if (
-              newOrderStatus === CrudApi.OrderStatus.served &&
-              _order.transaction?.status === CrudApi.PaymentStatus.success
-            ) {
-              input.archived = true;
-            }
           }
 
           return this._crudSdk
@@ -242,10 +237,15 @@ export class OrderService {
             )
             .pipe(
               tap(() => {
-                if (input.archived) {
+                if (
+                  newOrderStatus === CrudApi.OrderStatus.served &&
+                  _order.transaction?.status === CrudApi.PaymentStatus.success
+                ) {
                   this._store.dispatch(
                     ordersActions.removeActiveOrder({ orderId: _order.id }),
                   );
+
+                  this.archiveOrder(_order).subscribe();
                 }
               }),
             );
@@ -287,28 +287,26 @@ export class OrderService {
     }
   }
 
-  public archiveOrder(order: CrudApi.Order, status?: CrudApi.OrderStatus) {
+  public archiveOrder(order: CrudApi.Order) {
     if (this._adminUser?.id) {
       const input: CrudApi.UpdateOrderInput = {
         id: order.id,
         archived: true,
       };
 
-      if (status) {
-        input.statusLog = [
-          {
-            status,
-            ts: new Date().getTime(),
-            userId: this._adminUser.id,
-          },
-        ];
-      }
-
-      return this._crudSdk.doMutation(
-        this._crudSdk.sdk.UpdateOrder({
-          input,
-        }),
-      );
+      return this._crudSdk
+        .doMutation(
+          this._crudSdk.sdk.UpdateOrder({
+            input,
+          }),
+        )
+        .pipe(
+          tap(() => {
+            this._store.dispatch(
+              ordersActions.removeActiveOrder({ orderId: order.id }),
+            );
+          }),
+        );
     } else {
       return EMPTY;
     }

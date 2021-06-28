@@ -91,26 +91,36 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   }
 
   public async updateOrderStatus(): Promise<void> {
-    const status = getNextOrderStatus(currentStatusFn(this.order.statusLog));
+    const currentStatus = currentStatusFn(this.order.statusLog);
 
-    if (status) {
+    if (currentStatus === CrudApi.OrderStatus.none) {
       this.workingOrderStatus = true;
 
-      if (
-        status === CrudApi.OrderStatus.served &&
-        this.order.transaction?.status === CrudApi.PaymentStatus.success
-      ) {
-        this._orderService.archiveOrder(this.order, status).subscribe(() => {
-          this._store.dispatch(
-            ordersActions.removeActiveOrder({ orderId: this.order.id }),
-          );
-          this._store.dispatch(dashboardActions.resetSelectedOrderId());
+      this._orderService
+        .updateOrderStatusFromNoneToPlaced(this.order)
+        .subscribe(() => {
+          this.workingOrderStatus = false;
+          this._changeDetectorRef.detectChanges();
         });
-      } else {
+    } else {
+      const status = getNextOrderStatus(currentStatus);
+
+      if (status) {
+        this.workingOrderStatus = true;
+
         this._orderService
           .updateOrderStatus(this.order, status)
           .subscribe(() => {
             this.workingOrderStatus = false;
+
+            // Archive order only after status change! We need to get the latest status
+            if (
+              status === CrudApi.OrderStatus.served &&
+              this.order.transaction?.status === CrudApi.PaymentStatus.success
+            ) {
+              this._orderService.archiveOrder(this.order).subscribe();
+            }
+
             this._changeDetectorRef.detectChanges();
           });
       }
@@ -231,13 +241,11 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
           callback: async () => {
             if (this.order.id) {
               this._orderService
-                .archiveOrder(this.order, CrudApi.OrderStatus.rejected)
+                .updateOrderStatus(this.order, CrudApi.OrderStatus.rejected)
                 .subscribe(() => {
-                  this._store.dispatch(
-                    ordersActions.removeActiveOrder({
-                      orderId: this.order.id,
-                    }),
-                  );
+                  this._orderService.archiveOrder(this.order).subscribe();
+
+                  this._changeDetectorRef.detectChanges();
                 });
             }
           },
