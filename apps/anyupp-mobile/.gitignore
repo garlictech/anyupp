@@ -31,6 +31,7 @@
 /build/
 .fvm/
 pubspec.lock
+.gradle
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -87,4 +88,3 @@ amplifytools.xcconfig
 android/*.jks
 android/key.properties
 lib/awsconfiguration.dart
-
