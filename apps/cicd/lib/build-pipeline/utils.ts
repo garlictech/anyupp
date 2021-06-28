@@ -270,6 +270,17 @@ export const createPipeline = (
     stages.push(props.finalizationStage);
   }
 
+  stages.push({
+    stageName: 'CLeanup',
+    actions: [
+      new codepipeline_actions.CloudFormationDeleteStackAction({
+        actionName: `DeleteConfigurator`,
+        stackName: `${utils.projectPrefix(stage)}-configurator`,
+        adminPermissions: true,
+      }),
+    ],
+  });
+
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
     stages,
   });
