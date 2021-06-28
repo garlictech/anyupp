@@ -50,7 +50,7 @@
     "@angular/platform-browser-dynamic": "12.1.0",
     "@angular/router": "12.1.0",
     "@aws-amplify/ui-angular": "1.0.13",
-    "@nebular/eva-icons": "7.0.0",
+    "@nebular/eva-icons": "8.0.0",
     "@nebular/theme": "7.0.0",
     "@ngneat/until-destroy": "8.0.4",
     "@ngrx/effects": "12.1.0",
