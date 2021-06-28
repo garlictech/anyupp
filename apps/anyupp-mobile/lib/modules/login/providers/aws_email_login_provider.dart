@@ -106,7 +106,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
         return Future.value(username);
       }
     } on CognitoClientException catch (e) {
-      if (e.code == 'UsernameExistsException') {
+      if (e.code == 'UsernameExistsException' || e.code == 'UserLambdaValidationException') {
         throw SignUpException.fromException(SignUpException.USER_EXISTS, e.message, e);
       }
       if (e.code == 'InvalidPasswordException') {

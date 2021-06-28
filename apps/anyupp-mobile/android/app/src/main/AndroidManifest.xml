@@ -44,6 +44,7 @@
                 <data android:scheme="https" android:host="dev.anyupp.com" />
                 <data android:scheme="https" android:host="qa.anyupp.com" />
                 <data android:scheme="https" android:host="anyupp.com" />
+                <data android:scheme="https" android:host="dev-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com"/>
             </intent-filter>
 
             <intent-filter>

@@ -45,7 +45,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
             return _buildEmailConfirmedInfo(context);
           }
           if (state is ConfirmCodeState) {
-            return _buildSignUpConfirmForm(context, state.user);
+            return _buildConfirmLinkSent(context);
           }
           if (state is CodeReSendining) {
             _buildLoading(
@@ -208,6 +208,70 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
           ),
         ),
       ),
+    );
+  }
+
+
+  Widget _buildConfirmLinkSent(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 16.0),
+                child: Text(
+                  trans('login.email.dialogEmailSentTitle'),
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.poppins(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF3C2F2F),
+                  ),
+                ),
+              ),
+              // Phone number input field
+              Center(
+                child: Container(
+                    margin: EdgeInsets.only(top: 16.0, bottom: 26.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          trans('login.email.setMailTo'),
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            fontSize: 18.0,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            getIt<LoginBloc>().add(ChangeEmailFormUI(
+                                ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                                animationCurve: Curves.easeIn));
+                          },
+                          child: Text(
+                            trans('login.email.signIn'),
+                            textAlign: TextAlign.start,
+                            style: GoogleFonts.poppins(
+                              fontSize: 18,
+                              color: theme.highlight,
+                              fontWeight: FontWeight.normal,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+              ),
+              // Buttons
+            ],
+          ),
+        ),
+      ],
     );
   }
 

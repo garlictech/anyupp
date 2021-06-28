@@ -1,4 +1,7 @@
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/modules/login/bloc/login_bloc.dart';
+import 'package:fa_prev/modules/login/bloc/login_event.dart';
 import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
@@ -9,6 +12,7 @@ import 'package:flutter/material.dart';
 class DeeplinkType {
   static const QR = 'QR';
   static const TRANSACTION_BACK = 'TRANSACTION_BACK';
+  static const VERIFY_EMAIL = "VERIFY_EMAIL";
 }
 
 final regAlphaNumericSeatOrTable = RegExp(r'^[a-zA-Z0-9]{1,16}$');
@@ -16,13 +20,14 @@ final regTransactionId = RegExp(r'^[a-zA-Z0-9_-]{21}$'); // NanoId uuid
 
 Future<bool> handleUrl(Uri uri) async {
   print('***** handleUrl()=$uri');
-
   switch (getDeeplinkType(uri)) {
     case DeeplinkType.QR:
       return await handleUrlQR(uri);
       break;
     case DeeplinkType.TRANSACTION_BACK:
       return await handleUrlTransactionBack(uri);
+    case DeeplinkType.VERIFY_EMAIL:
+      return await handleVerifyEmail(uri);
       break;
     default:
       return false;
@@ -43,6 +48,8 @@ String getDeeplinkType(Uri uri) {
     return DeeplinkType.QR;
   } else if (isValidTransactionBackUrl(uri)) {
     return DeeplinkType.TRANSACTION_BACK;
+  } else if (isValidConfirmationUrl(uri)) {
+    return DeeplinkType.VERIFY_EMAIL;
   }
   return null;
 }
@@ -55,7 +62,7 @@ Future<bool> handleUrlQR(Uri uri) async {
     return false;
   }
 
-    AuthRepository auth = getIt<AuthRepository>();
+  AuthRepository auth = getIt<AuthRepository>();
 
   // --- check authentication
   User user = await auth.getAuthenticatedUserProfile();
@@ -110,6 +117,10 @@ bool isValidTransactionBackUrl(Uri uri) {
       uri.origin.contains('open.anyupp');
 }
 
+bool isValidConfirmationUrl(Uri uri) {
+  return uri != null && uri.origin.contains(AppConfig.UserPoolDomain);
+}
+
 String getTransactionIdFromTransactionBackUrl(Uri uri) {
   return uri.pathSegments[1];
 }
@@ -119,5 +130,13 @@ Future<bool> handleUrlTransactionBack(Uri uri) async {
   print('***** handleUrlTransactionBack().transactionId=$transactionId');
   getIt<SimplePayBloc>().add(CollectSimplePayTransactionStatus(transactionId));
 
+  return false;
+}
+
+Future<bool> handleVerifyEmail(Uri uri) async {
+  Map<String, String> params = uri.queryParameters;
+  String userName = params['user_name'];
+  String confirmationCode = params['confirmation_code'];
+  getIt<LoginBloc>().add(ConfirmRegistration(userName, confirmationCode));
   return false;
 }
