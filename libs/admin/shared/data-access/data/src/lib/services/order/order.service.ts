@@ -14,7 +14,6 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
 
 import { CrudSdkService } from '../crud-sdk.service';
-import { dashboardActions } from 'libs/admin/shared/data-access/dashboard/src';
 
 @Injectable({
   providedIn: 'root',

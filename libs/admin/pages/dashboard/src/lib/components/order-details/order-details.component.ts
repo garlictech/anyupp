@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import {
-  dashboardActions,
   dashboardSelectors,
   IDashboardSettings,
 } from '@bgap/admin/shared/data-access/dashboard';
@@ -20,7 +19,6 @@ import {
   currentStatus as currentStatusFn,
   getNextOrderStatus,
   getStatusColor,
-  ordersActions,
 } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
