@@ -45,7 +45,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
             return _buildEmailConfirmedInfo(context);
           }
           if (state is ConfirmCodeState) {
-            return _buildConfirmLinkSent(context);
+            return _buildConfirmLinkSent(context, state.user);
           }
           if (state is CodeReSendining) {
             _buildLoading(
@@ -212,7 +212,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
   }
 
 
-  Widget _buildConfirmLinkSent(BuildContext context) {
+  Widget _buildConfirmLinkSent(BuildContext context, String user) {
     return Stack(
       children: [
         Container(
@@ -267,6 +267,44 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                       ],
                     )),
               ),
+                              Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: trans('login.email.codeNotReceived') +
+                                      ' ',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14.0,
+                                    color: Color(0x993C2F2F),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              _resendCode(user);
+                            },
+                            child: Text(
+                              trans('login.email.resendCode'),
+                              textAlign: TextAlign.start,
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                color: theme.highlight,
+                                fontWeight: FontWeight.normal,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
               // Buttons
             ],
           ),
