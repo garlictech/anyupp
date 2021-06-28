@@ -5038,10 +5038,10 @@
   resolved "https://registry.yarnpkg.com/@nebular/eva-icons/-/eva-icons-8.0.0.tgz#186bfda564be9521b0584eb23a09e4a1be036bb9"
   integrity sha512-eUNEQJP5w+XiAW1FyEVneno0qiNKoDZlobkglhdvVR1u7e3D4a5IxwnaKK0Izl/6j6eSs/qoBuzrBkJ4alaNjw==
 
-"@nebular/theme@7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@nebular/theme/-/theme-7.0.0.tgz#e239e19f12159205ffe247bdb03a282b5b721888"
-  integrity sha512-0S9Pans6eevkSgg8aoNG7dypkLeOUsTRLMoBsp7LjjuBIDLGJr9/zf9d8sPZ8uaJvPG1AIOtw89KGwNnhatIGA==
+"@nebular/theme@8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@nebular/theme/-/theme-8.0.0.tgz#808ba716cd96dc02d14aeec5583daf6d71ddec26"
+  integrity sha512-Lq1a3IgjfU1bqwCrsPQBd3nGmjK61fND+6r4lmXFWDRvXti18k5KMIvzY+KryNsTEhEOyby+V5R16T67MKZs6g==
   dependencies:
     intersection-observer "0.7.0"
 
