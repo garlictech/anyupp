@@ -29,7 +29,7 @@ void debugRequest(RequestOptions options) {
 }
 
 void debugResponse(Response response) {
-  print("<-- ${response.statusCode} ${(response.request != null ? (response.request.baseUrl + response.request.path) : 'URL')}");
+  print("<-- ${response.statusCode} $response");
     print("Headers:");
     response.headers?.forEach((k, v) => print('$k: $v'));
     print("ResponseType: ${response.data?.runtimeType}");
@@ -39,7 +39,7 @@ void debugResponse(Response response) {
 
 void debugError(DioError dioError) {
   print(
-        "<-- ${dioError.message} ${(dioError.response?.request != null ? (dioError.response.request.baseUrl + dioError.response.request.path) : 'URL')}");
+        "<-- ${dioError.message} ${dioError.error}");
     print(
         "${dioError.response != null ? dioError.response.data : 'Unknown Error'}");
     print("<-- End error");

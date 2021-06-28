@@ -5,6 +5,8 @@ import 'awsconfiguration.dart';
 class AppConfig {
   static String get Region => _config['Region'];
 
+  static String get Stage => _config['Stage'];
+
   static String get StripePublishableKey => _config['StripePublishableKey'];
 
   static String get AnyuppGraphqlApiUrl => _config['AnyuppGraphqlApiUrl'];
