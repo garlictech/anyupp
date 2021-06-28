@@ -485,6 +485,7 @@ export class CognitoStack extends Stack {
       'AdminPreTokenGenerationLambda',
       {
         ...commonLambdaProps,
+        memorySize: 256,
         // It must be relative to the serverless.yml file
         handler: 'lib/lambda/pre-token-generation/index.handler',
         code: lambda.Code.fromAsset(
