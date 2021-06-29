@@ -32,6 +32,7 @@ import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
 import 'modules/transactions/bloc/transactions_bloc.dart';
 import 'shared/utils/deeplink_utils.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -44,10 +45,16 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _initDeepLinks();
+    init();
+  }
+
+  Future<void> init() async {
+    await _initDeepLinks();
     if (Platform.isAndroid) {
-      checkForAndroidUpdates();
+      await checkForAndroidUpdates();
     }
+    final status = await AppTrackingTransparency.requestTrackingAuthorization();
+    print('checkTrackingTransparencyPermission().status=$status');
   }
 
   @override
@@ -88,9 +95,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> checkForAndroidUpdates() async {
-    AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
-    if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-      await InAppUpdate.performImmediateUpdate();
+    try {
+      AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
+      if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        await InAppUpdate.performImmediateUpdate();
+      }
+    } catch (e) {
+      print('checkForAndroidUpdates.error=$e');
     }
   }
 

@@ -98,6 +98,8 @@
 	<string>You should never see this, please contact us.</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>You should never see this, please contact us.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This app uses tracking data to show you personalized ads.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need to access your camera to read QR codes and for statistical analysis.</string>
 	<key>NSContactsUsageDescription</key>
@@ -145,4 +147,3 @@
 	<true/>
 </dict>
 </plist>
-
