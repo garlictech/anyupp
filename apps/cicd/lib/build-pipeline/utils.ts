@@ -330,6 +330,7 @@ export const createCommonDevPipeline = (
         commands: [
           `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
           'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
+          `yarn deleteAllTableData`,
           `yarn nx deploy crud-backend`,
           `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
           'export PATH=$PATH:/tmp/flutter/bin',
@@ -350,7 +351,8 @@ export const createCommonDevPipeline = (
           `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
           `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
           `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
-          'yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts',
+          `yarn deleteAllTableData`,
+          `yarn seed`,
           'yarn cucumber:report',
           'yarn cypress:generate:html:report',
         ],
