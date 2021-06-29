@@ -91,10 +91,10 @@ dev_dependencies:
   # ferry_generator: ^0.3.3
   flutter_launcher_icons: ^0.9.0
 
+
 #dependency_overrides:
 # sqflite: 1.3.0
 # analyzer: '0.39.14'
-
 flutter_icons:
   android: 'launcher_icon'
   ios: true
