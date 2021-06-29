@@ -101,19 +101,21 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       //   AttributeArg(name: 'Username', value: username),
       // );
       CognitoUserPoolData userPoolData = await _service.userPool.signUp(username, password, userAttributes: attributes);
+      print('**** registerUserWithEmailAndPassword().userPoolData=$userPoolData');
 
       if (userPoolData.user != null) {
         return Future.value(username);
       }
     } on CognitoClientException catch (e) {
-      if (e.code == 'UsernameExistsException') {
+      print('**** registerUserWithEmailAndPassword().CognitoClientException=$e');
+      if (e.code == 'UsernameExistsException' || e.code == 'UserLambdaValidationException') {
         throw SignUpException.fromException(SignUpException.USER_EXISTS, e.message, e);
       }
       if (e.code == 'InvalidPasswordException') {
         throw SignUpException.fromException(SignUpException.INVALID_PASSWORD, e.message, e);
       }
 
-      print(e.code);
+      rethrow;
     } on Exception catch (e) {
       print('**** registerUserWithEmailAndPassword().error=$e');
       throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e.toString(), e);

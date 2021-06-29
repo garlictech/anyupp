@@ -4,7 +4,6 @@ import 'package:fa_prev/models/GeneratedProductCategory.dart';
 import 'package:fa_prev/models/ProductCategory.dart';
 
 import 'package:fa_prev/models/GeneratedProduct.dart';
-import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'product_provider_interface.dart';
@@ -63,13 +62,7 @@ class AwsProductProvider implements IProductProvider {
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
           Map<String, dynamic> json = Map<String, dynamic>.from(items[i]);
-          // TODO ADD HACKED CONFIGURATIONS SETS!!!!
-          try {
-            results.add(GeneratedProduct.fromJson(json));
-          } on Error catch (e) {
-            print('listGeneratedProducts.error()');
-            FlutterError.dumpErrorToConsole(FlutterErrorDetails(exception: e));
-          }
+          results.add(GeneratedProduct.fromJson(json));
         }
       }
       results.sort((a, b) => a.position.compareTo(b.position));

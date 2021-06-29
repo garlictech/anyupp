@@ -56,10 +56,10 @@
       "dialogPasswordRefreshedTitle": "Password updated'",
       "dialogPasswordRefreshedMessage": "Your password has been updated, you can sign in now.",
       "closeButton": "Close",
-      "setMailTo": "We have sent a code by email",
+      "setMailTo": "We have sent the activation email",
       "checkInbox": "Check your inbox!",
       "enterToConfirm": "Enter it below to confirm your account.",
-      "codeNotReceived": "Didn't receive a code?",
+      "codeNotReceived": "Didn't receive a link?",
       "resendCode": "Resend it",
       "verificationCode": "Verification Code",
       "confirmAccount": "Confirm Account",
@@ -158,7 +158,8 @@
       "processing": "PROCESSING",
       "ready": "READY",
       "paid": "PAID",
-      "rejected": "REJECTED"
+      "rejected": "REJECTED",
+      "served": "SERVED"
     },
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",

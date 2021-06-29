@@ -18,7 +18,7 @@ void main() {
 
   test('Check affiniate ad selection by gender and age', () async {
 
-    final file = File('test/data/project-3fa-affiliate-export.json');
+    final file = File('test/unit/data/project-3fa-affiliate-export.json');
     final json = jsonDecode(await file.readAsString());
     Affiliate affiliate = Affiliate.fromMap(json);
     // print('affiliate=$affiliate');
@@ -26,14 +26,14 @@ void main() {
     for (int i = 0; i < 100; i++) {
       Advertisement result = await AffiliateUtils.getAdvertisement(affiliate.advertisements, 'male', null);
       bool ok = maleValid.contains(result.product.name);
-      print('MALE: ${result.product.name}=$ok');
+      // print('MALE: ${result.product.name}=$ok');
       expect(ok, true);
     }
 
     for (int i = 0; i < 100; i++) {
       Advertisement result = await AffiliateUtils.getAdvertisement(affiliate.advertisements, 'female', null);
       bool ok = femaleValid.contains(result.product.name);
-      print('FEMALE: ${result.product.name}=$ok');
+      // print('FEMALE: ${result.product.name}=$ok');
       expect(ok, true);
     }
   });

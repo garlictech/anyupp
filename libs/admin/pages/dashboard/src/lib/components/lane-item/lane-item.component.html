@@ -18,7 +18,7 @@
         class="w-100 ms-4 font-larger"
         [name]="orderItem.productName | localize"
         [title]="orderItem.variantName | localize"
-        [picture]="orderItem.image || ''"
+        [picture]="orderItem.image || '' | awsStoragePath"
       ></nb-user>
 
       <div class="config-sets" *ngIf="orderItem.configSets">

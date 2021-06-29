@@ -1,6 +1,7 @@
-import * as lambda from '@aws-cdk/aws-lambda';
 import * as cognito from '@aws-cdk/aws-cognito';
+import { UserPoolClientProps } from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
+import * as lambda from '@aws-cdk/aws-lambda';
 import * as ssm from '@aws-cdk/aws-ssm';
 import { CfnOutput, Duration, RemovalPolicy } from '@aws-cdk/core';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
@@ -214,7 +215,7 @@ export class CognitoStack extends Stack {
   private commonUserPoolProps(
     userPool: cognito.UserPool,
     generateSecret: boolean,
-  ) {
+  ): Partial<UserPoolClientProps> & { userPool: cognito.UserPool } {
     return {
       userPool,
       generateSecret,
@@ -242,7 +243,10 @@ export class CognitoStack extends Stack {
       logoutUrls.push(`http://localhost:4200/auth/login`);
     }
 
-    const commonProps = (callbackUrls: string[], logoutUrls: string[]) => ({
+    const commonProps = (
+      callbackUrls: string[],
+      logoutUrls: string[],
+    ): Partial<UserPoolClientProps> => ({
       oAuth: {
         flows: {
           authorizationCodeGrant: true,
@@ -303,7 +307,7 @@ export class CognitoStack extends Stack {
   }
 
   private createConsumerUserPoolClient(app: App, userPool: cognito.UserPool) {
-    const commonProps = {
+    const commonProps: Partial<UserPoolClientProps> = {
       oAuth: {
         flows: {
           authorizationCodeGrant: true,
@@ -373,12 +377,16 @@ export class CognitoStack extends Stack {
       selfSignUpEnabled: true,
       autoVerify: { email: true },
       userVerification: {
-        emailSubject: 'Verify your email for AnyUPP',
-        emailBody:
-          'Hello, thanks for signing up to AnyUPP! Your verification code is {####}',
-        emailStyle: cognito.VerificationEmailStyle.CODE,
-        smsMessage:
-          'Hello thanks for signing up to AnyUPP! Your verification code is {####}',
+        emailSubject:
+          'AnyUPP email cím ellenőrzés | Verify your email for AnyUPP',
+        emailBody: `
+          Köszönjük, hogy regisztráltál az AnyUPP alkalmazásba! Email címed azonosításához kattints a lenti linkre .
+          <br><hr><br>
+          Hello, thanks for signing up to AnyUPP! Verify your account by clicking on the link below.
+          <br><hr><br>
+          Email ellenőrzés | verify email: {##Verify Email##}
+        `,
+        emailStyle: cognito.VerificationEmailStyle.LINK,
       },
       mfa: cognito.Mfa.OPTIONAL,
       mfaSecondFactor: {
@@ -456,6 +464,16 @@ export class CognitoStack extends Stack {
       lambdaTriggers: {
         preTokenGeneration: pretokenTriggerLambda,
       },
+      userInvitation: {
+        emailSubject: 'AnyUPP ideiglenes jelszó | AnyUPP temporary password',
+        emailBody: `
+          Belépéshez használd az email címed és az átmeneti jelszavad <strong>{####}</strong>
+          <br>
+          Ha bármi kérdésed van, keresd ügyfélszolgálatunk. Felhasználó azonosítód: {username}
+          <br><hr><br>
+          You can use your email address and your temporary password <strong>{####}</strong> to sign in.
+        `,
+      },
     });
 
     return userPool;
@@ -467,6 +485,7 @@ export class CognitoStack extends Stack {
       'AdminPreTokenGenerationLambda',
       {
         ...commonLambdaProps,
+        memorySize: 256,
         // It must be relative to the serverless.yml file
         handler: 'lib/lambda/pre-token-generation/index.handler',
         code: lambda.Code.fromAsset(
