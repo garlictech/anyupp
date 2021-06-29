@@ -22,7 +22,7 @@ export class StagingBuildPipelineStack extends sst.Stack {
           commands: [
             `./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
             'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
-            `yarn nx deploy crud-backend`,
+            `yarn nx deploy crud-backend --stage=${stage} --app=${utils.appConfig.name}`,
             `yarn nx deploy anyupp-backend --stage=${stage} --app=${utils.appConfig.name}`,
             'export PATH=$PATH:/tmp/flutter/bin',
             'flutter doctor',
