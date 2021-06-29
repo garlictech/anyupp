@@ -80,6 +80,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (event is ConfirmRegistration) {
         bool confirmed = await _repository.confirmSignUp(event.user, event.code);
         if (confirmed) {
+          getIt<LoginBloc>().add(ChangeEmailFormUI(ui: LoginFormUI.SHOW_CONFIRM_SIGNUP, animationCurve: Curves.easeIn));
           getIt<LoginBloc>().add(SignUpConfirmed());
         } else {
           getIt<ExceptionBloc>().add(ShowException(
