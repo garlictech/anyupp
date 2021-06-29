@@ -14,6 +14,7 @@ TARGET_APP=anyupp-backend
 TARGET_STAGE=prod
 
 TABLES="
+AdminRoleContext
 AdminUser
 RoleContext
 Chain
@@ -76,7 +77,7 @@ for table in $TABLES; do
   sourceTable="${table}-${SOURCE_API_ID}-${SOURCE_STAGE}"
   targetTable="${table}-${TARGET_API_ID}-${TARGET_STAGE}"
   echo "Restoring table $sourceTable to $targetTable..."
-  dynamodump --dataOnly -m restore -r eu-west-1 -s $sourceTable -d $targetTable
+  dynamodump --skipThroughputUpdate --dataOnly -m restore -r eu-west-1 -s $sourceTable -d $targetTable
 done
 
 TARGET_USERPOOLID=$(aws ssm get-parameter --name "/${TARGET_STAGE}-${TARGET_APP}/generated/AdminUserPoolId" | \

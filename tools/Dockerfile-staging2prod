@@ -9,7 +9,7 @@ RUN apk update && apk upgrade \
     && pip3 install --upgrade pip \
     && pip3 install awscli \
     && rm -rf /var/cache/apk/* \
-    && git clone https://github.com/bgap/dynamodump.git \
+    && git clone https://github.com/bchew/dynamodump.git \
     && cd dynamodump \
     && pip install -r requirements.txt \
     && cp ./dynamodump.py /usr/local/bin/dynamodump \
