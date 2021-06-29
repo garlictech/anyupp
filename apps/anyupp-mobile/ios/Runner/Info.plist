@@ -62,6 +62,8 @@
 	</array>  
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Can we use your information to show you customized ads?</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>You should never see this, please contact us.</string>
 	<key>NSCalendarsUsageDescription</key>
