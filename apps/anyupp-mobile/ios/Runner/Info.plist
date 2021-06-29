@@ -33,37 +33,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>EnableBackgroundLocationUpdates</key>
 	<true/>
-	<key>FacebookAdvertiserIDCollectionEnabled</key>
-	<string>TRUE</string>
-	<key>FacebookAppID</key>
-	<string>166876958090898</string>
-	<key>FacebookAutoLogAppEventsEnabled</key>
-	<string>TRUE</string>
-	<key>FacebookDisplayName</key>
-	<string>AnyUpp Login</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>fbapi</string>
-		<string>fbapi20130214</string>
-		<string>fbapi20130410</string>
-		<string>fbapi20130702</string>
-		<string>fbapi20131010</string>
-		<string>fbapi20131219</string>
-		<string>fbapi20140410</string>
-		<string>fbapi20140116</string>
-		<string>fbapi20150313</string>
-		<string>fbapi20150629</string>
-		<string>fbapi20160328</string>
-		<string>fbauth</string>
-		<string>fbauth2</string>
-		<string>fb-messenger-share-api</string>
-		<string>fbauth2</string>
-		<string>fbshareextension</string>
-	</array>  
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Can we use your information to show you customized ads?</string>
+	<string>This app uses tracking data to show you personalized ads.</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>You should never see this, please contact us.</string>
 	<key>NSCalendarsUsageDescription</key>

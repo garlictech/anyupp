@@ -93,9 +93,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> checkForAndroidUpdates() async {
-    AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
-    if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-      await InAppUpdate.performImmediateUpdate();
+    try {
+      AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
+      if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        await InAppUpdate.performImmediateUpdate();
+      }
+    } catch (e) {
+      print('checkForAndroidUpdates.error=$e');
     }
   }
 
