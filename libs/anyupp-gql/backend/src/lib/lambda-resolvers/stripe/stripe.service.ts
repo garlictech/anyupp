@@ -379,7 +379,7 @@ const loadAndConnectUserForStripe =
             ? {
                 city: invoiceAddress.city,
                 country: invoiceAddress.country,
-                postalCode: invoiceAddress.customerName,
+                postalCode: invoiceAddress.postalCode,
                 email: invoiceAddress.email,
                 streetAddress: invoiceAddress.streetAddress,
                 taxNumber: invoiceAddress.taxNumber,
