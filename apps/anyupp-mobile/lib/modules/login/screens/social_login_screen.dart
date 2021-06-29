@@ -73,7 +73,7 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
         'code=$authCode&'
         'redirect_uri=${SocialLoginScreen.SIGNIN_CALLBACK}';
     final response = await http.post(
-      url,
+      Uri.parse(url),
       body: {},
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

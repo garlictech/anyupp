@@ -48,8 +48,8 @@ functions:
   pre-token-generation:
     handler: lib/lambda/pre-token-generation/index.handler
 
-  cognito-trigger-setup:
-    handler: lib/lambda/cognito-trigger-setup/index.handler
+  crud-api-updater:
+    handler: lib/lambda/crud-api-updater/index.handler
 
   consumer-pre-signup:
     handler: lib/lambda/consumer-pre-signup/index.handler

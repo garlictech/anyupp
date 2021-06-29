@@ -36,6 +36,7 @@ When(
 Then('The chain selector should contain {string}', (value: string) => {
   cy.findByTestId('chainId').contains(value).should('exist');
 });
+
 Then('The group selector should contain {string}', (value: string) => {
   cy.findByTestId('groupId').contains(value).should('exist');
 });

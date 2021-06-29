@@ -1,9 +1,5 @@
 import { When } from 'cypress-cucumber-preprocessor/steps';
 
-// When('I click on the {string} button', (buttonTitle: string) => {
-//   cy.findByRole('button').contains(new RegExp(buttonTitle, 'i')).click();
-// });
-
 When('I click on the {string} icon', (icon: string) => {
   cy.contains('nb-icon', icon).click();
 });
@@ -18,10 +14,6 @@ When('I click on the {string} text', (text: string) => {
 
 When('I click on the plus button', () => {
   cy.get('nb-icon[icon="plus-outline"]').click();
-});
-
-When('I click on the first Edit button', () => {
-  cy.findAllByTitle('Edit').first().click({ force: true });
 });
 
 When(
@@ -47,47 +39,44 @@ When('I click on the {string} button', (value: string) => {
   cy.findByText(value).click();
 });
 
-When('I click on the {string} selector', (value: string) => {
-  cy.contains('button', value).click({ force: true });
-  // cy.findByRole('button').contains(value).click({force: true});
+When('I click on the button with title {string}', (value: string) => {
+  cy.findByTitle(value).click();
 });
-
-When('I select {string}', (value: string) => {
-  cy.contains('nb-option', value).click();
-});
-
-// When('I click the selector to set {string}', (value: string) => {
-//   cy.get('[caption="common.productType"]').click();
-//   cy.findAllByText(value).click();
-// });
 
 When('I click on the {string} link', (value: string) => {
   cy.get('.tab-link').contains(value).click();
-});
-
-// When('I click the type selector to set {string}', (value: string) => {
-//   cy.get('[caption="common.type"]', { timeout: 30000 }).click({ force: true });
-//   cy.findAllByText(value).last().click({ force: true });
-// });
-
-// TODO: replace the caption match with something less brittle selection mode
-When('I click the component selector to set {string}', (value: string) => {
-  cy.get('[caption="productComponentSets.productComponent"]').click();
-  cy.findAllByText(value).last().click();
-});
-
-// TODO: replace the caption match with something less brittle selection mode
-When('I click on the modifier selector to add {string}', (value: string) => {
-  cy.get('[caption="products.productModifierSet"]').click();
-  cy.findAllByText(value).first().click();
 });
 
 When('I click on the first {string} button', (value: string) => {
   cy.findAllByTitle(value).first().click({ force: true });
 });
 
-// TODO: find it by title, if the button has no title we should request it from the ADMIN developers
-// TODO: a button without a title is not user friendly either
-When('I click on the download button', () => {
-  cy.get('[icon="download-outline"]').first().click();
+When('I select {string} in the type selector', (value: string) => {
+  cy.findByTestId('type').click();
+  cy.findAllByText(value).last().click();
+});
+
+When('I click the component selector to set {string}', (value: string) => {
+  cy.findByTestId('productComponentId').click();
+  cy.findAllByText(value).last().click();
+});
+
+When('I click the lane selector to set {string}', (value: string) => {
+  cy.findByTestId('laneId').click();
+  cy.findAllByText(value).last().click();
+});
+
+When(
+  'I click the delete button in the listitem with {string} content',
+  (name: string) => {
+    cy.findAllByRole('listitem')
+      .contains(name)
+      .findAllByTitle('Delete')
+      .click();
+  },
+);
+
+When('I click the category selector to set {string}', (value: string) => {
+  cy.get('bgap-active-product-category-selector').click();
+  cy.findAllByText(value).last().click();
 });
