@@ -108,7 +108,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       }
     } on CognitoClientException catch (e) {
       print('**** registerUserWithEmailAndPassword().CognitoClientException=$e');
-      if (e.code == 'UsernameExistsException') {
+      if (e.code == 'UsernameExistsException' || e.code == 'UserLambdaValidationException') {
         throw SignUpException.fromException(SignUpException.USER_EXISTS, e.message, e);
       }
       if (e.code == 'InvalidPasswordException') {
