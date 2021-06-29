@@ -12,7 +12,7 @@ Then('I select the {string} in the product type selector', (value: string) => {
 
 When('I select the {string} in the modifier selector', (value: string) => {
   cy.findByTestId('productComponentSetId').click();
-  cy.findAllByText(value).first().click();
+  cy.contains(value).first().click();
 });
 
 Then('The category selector should contain {string}', (value: string) => {
