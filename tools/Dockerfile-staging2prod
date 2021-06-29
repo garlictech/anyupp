@@ -1,0 +1,24 @@
+# BUILD ME: cd tools && docker build -f Dockerfile-staging2prod -t anyupp/migrate-staging2prod .
+#
+# RUN ME: docker run -v $HOME/.aws:/root/.aws anyupp/migrate-staging2prod
+#
+FROM python:3.9.0-alpine3.12
+
+RUN apk update && apk upgrade \
+    && apk add --no-cache bash curl unzip git openssh nodejs npm jq \
+    && pip3 install --upgrade pip \
+    && pip3 install awscli \
+    && rm -rf /var/cache/apk/* \
+    && git clone https://github.com/bgap/dynamodump.git \
+    && cd dynamodump \
+    && pip install -r requirements.txt \
+    && cp ./dynamodump.py /usr/local/bin/dynamodump \
+    && chmod +x /usr/local/bin/dynamodump \
+    && npm install -g cognito-backup-restore @aws-amplify/cli
+
+COPY ./migrate-staging2prod/migrate-staging2prod.sh /
+COPY ./pull-crud-api.sh /
+
+ENV AWS_REGION=eu-west-1
+ENTRYPOINT /migrate-staging2prod.sh
+
