@@ -7,7 +7,7 @@ Feature: Authentication
     Then I should see "AnyUPP Admin" sub-header
 
   Scenario: Login and log out
-    When I fill out the input with id "username" with the "test@anyupp.com" value
+    When I fill out the input with id "username" with the "test-monad@anyupp.com" value
     And I fill out the input with id "password" with the "Hideghegy12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
@@ -24,7 +24,7 @@ Feature: Authentication
   Scenario: Forgotten password steps
     When I click the "Reset password" text
     Then I should see "Reset your password" sub-header
-    When I fill out the username input with the "test@anyupp.com" value
+    When I fill out the username input with the "test-monad@anyupp.com" value
     Then I should see the Send Code button
     And I click the "Back to Sign In" text
     Then I should see "AnyUPP Admin" sub-header

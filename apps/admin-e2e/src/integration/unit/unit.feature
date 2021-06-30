@@ -2,7 +2,7 @@ Feature: Create or update Unit
 
   Background: Login and steps to the Groups
     Given I am on the login page
-    When I fill out the input with id "username" with the "test@anyupp.com" value
+    When I fill out the input with id "username" with the "test-monad@anyupp.com" value
     And I fill out the input with id "password" with the "Hideghegy12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
@@ -35,7 +35,7 @@ Feature: Create or update Unit
     And I click on the "Apple Pay" checkbox
     And I click on the "Stripe" checkbox
     And I click on the "Simple" checkbox
-    And I fill out the "Email" input with "test@anyupp.com"
+    And I fill out the "Email" input with "test-monad@anyupp.com"
     And I fill out the "Phone" input with "1234567890"
     And I fill out the "Title" input with "test title"
     And I fill out the "Country" input with "Hungary"
@@ -51,15 +51,16 @@ Feature: Create or update Unit
     And I click on the "Submit" button
     Then I should see "test unit e2e" text
     And I should see "test description e2e" text
-    And I should see "test@anyupp.com" text
+    And I should see "test-monad@anyupp.com" text
     And I should see "1234567890" text
 
   Scenario: Update the Unit and the activity
     When I click the edit button in the listitem with "test unit e2e" content
-    And I fill out the "Name" input with "test unit e2eUpdated"
-    And I fill out the "Description (HU)" input with "test description e2eUpdated"
-    And I fill out the "Description (EN)" input with "test description e2eUpdated"
-    And I fill out the "Description (DE)" input with "test description e2eUpdated"
+    Then The "Name" input should contain "test unit e2e"
+    When I fill out the "Name" input with "test e2eUpdated unit"
+    And I fill out the "Description (HU)" input with "test e2eUpdated description"
+    And I fill out the "Description (EN)" input with "test e2eUpdated description"
+    And I fill out the "Description (DE)" input with "test e2eUpdated description"
     And I fill out the "Open from" input with "2021-01-01"
     And I fill out the "Open to" input with "2022-01-01"
     And I click on the "Active" checkbox
@@ -71,18 +72,18 @@ Feature: Create or update Unit
     And I click on the "Simple" checkbox
     And I fill out the "Email" input with "test123@anyupp.com"
     And I fill out the "Phone" input with "1234567890123"
-    And I fill out the "Title" input with "test title e2eUpdated"
+    And I fill out the "Title" input with "test e2eUpdated title"
     And I fill out the "Country" input with "Hungary"
     And I fill out the "Postal code" input with "1234"
-    And I fill out the "City" input with "Budapest e2eUpdated"
-    And I fill out the "Address" input with "Kis u. 42. e2eUpdated"
+    And I fill out the "City" input with "Budae2eUpdatedpest"
+    And I fill out the "Address" input with "Kis u. 42e2eUpdated ."
     And I click on the "Locate on map" button
     And I add a Custom date with "2022-12-24"
     And I fill all the hour inputs
     And I fill out the last "Name" input with "Lane updated"
     And I click on the Color picker fill out with "#c17d5d"
     And I click on the "Submit" button
-    Then I should see "test unit e2eUpdated" text
-    And I should see "test description e2eUpdated" text
+    Then I should see "test e2eUpdated unit" text
+    And I should see "test e2eUpdated description" text
     And I should see "test123@anyupp.com" text
     And I should see "1234567890123" text
