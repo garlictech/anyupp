@@ -147,7 +147,6 @@ class _MyAppState extends State<MyApp> {
 
                 /// Catcher init STEP 3. Add navigator key from Catcher. It will be used to navigate user to report page or to show dialog.
                 navigatorKey: Catcher.navigatorKey,
-                // Default theme settings TODO: do we need these?
                 theme: themeData,
 
                 builder: (context, child) {
