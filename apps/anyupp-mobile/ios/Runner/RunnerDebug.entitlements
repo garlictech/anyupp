@@ -8,6 +8,7 @@
 	</array>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
+		<string>applinks:anyupp.com</string>
 		<string>applinks:dev-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com</string>
 		<string>applinks:qa-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com</string>
 		<string>applinks:staging-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com</string>
