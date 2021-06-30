@@ -240,7 +240,7 @@ export const startStripePayment =
       order = await updateOrderState(
         order.id,
         userId,
-        CrudApi.OrderStatus.none,
+        undefined, // use undefined to prevend graphql api to override this field
         transaction.id,
         // it should be undefined because we don't want to overwrite the field with GraphQL API.
         transaction.status ? transaction.status : undefined,
@@ -306,7 +306,7 @@ export const startStripePayment =
       order = await updateOrderState(
         order.id,
         userId,
-        CrudApi.OrderStatus.none,
+        undefined, // use undefined to prevend graphql api to override this field
         transaction.id,
         // it should be undefined because we don't want to overwrite the field with GraphQL API.
         transaction.status ? transaction.status : undefined,
