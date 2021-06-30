@@ -332,6 +332,7 @@ export const createCommonDevPipeline = (
           'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
           `yarn nx deploy crud-backend --stage=${stage} --app=${appConfig.name}`,
           `yarn deleteAllTableData`,
+          `yarn seed`,
           `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
           'export PATH=$PATH:/tmp/flutter/bin',
           'flutter doctor',
