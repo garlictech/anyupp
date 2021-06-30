@@ -2,6 +2,7 @@ export * from './lib/generated/graphql/mutations';
 export * from './lib/generated/graphql/queries';
 export * from './lib/generated/graphql/subscriptions';
 export * from './lib/generated/api';
+export * from './lib/generated/crud-api-config';
 export { CrudSdk } from './lib/sdk';
 export * from './lib/clients';
 

@@ -54,7 +54,6 @@ type AdminRoleContext
   roleContextId: ID!
   adminUserId: ID!
   roleContext: RoleContext! @connection(fields: ["roleContextId"])
-  adminUser: AdminUser! @connection(fields: ["adminUserId"])
 }
 
 ### RoleContext
@@ -78,8 +77,6 @@ type RoleContext
   chainId: String
   groupId: String
   unitId: String
-  adminUsers: [AdminRoleContext]
-    @connection(keyName: "byRoleContext", fields: ["id"])
 }
 
 ### Stripe
@@ -645,7 +642,6 @@ type Transaction
   userId: ID!
   user: User! @connection(fields: ["userId"])
   orderId: ID!
-  # order: Order! @connection(fields: ["orderId"])
   type: String
   total: Float
   currency: String

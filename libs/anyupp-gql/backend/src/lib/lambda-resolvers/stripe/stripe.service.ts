@@ -1,5 +1,6 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { toFixed0Number } from '@bgap/shared/utils';
 import Stripe from 'stripe';
 import { createInvoiceAndConnectTransaction } from './invoice-receipt.utils';
 import {
@@ -159,7 +160,7 @@ export const startStripePayment =
 
       const stripeAmount: number =
         order.sumPriceShown.currency === 'HUF'
-          ? order.sumPriceShown.priceSum * 100
+          ? toFixed0Number(order.sumPriceShown.priceSum * 100)
           : order.sumPriceShown.priceSum;
 
       // 6a. Create payment intent data
@@ -379,7 +380,7 @@ const loadAndConnectUserForStripe =
             ? {
                 city: invoiceAddress.city,
                 country: invoiceAddress.country,
-                postalCode: invoiceAddress.customerName,
+                postalCode: invoiceAddress.postalCode,
                 email: invoiceAddress.email,
                 streetAddress: invoiceAddress.streetAddress,
                 taxNumber: invoiceAddress.taxNumber,
