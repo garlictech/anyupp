@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/shared/exception/bloc/exception_bloc.dart';
+import 'package:fa_prev/shared/exception/bloc/exception_event.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/gestures.dart';
@@ -20,8 +22,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
-    with TickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _backgroundImageScaleAnimation;
 
@@ -34,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen>
   final double _backgroundAnimationSize = 50.0;
   bool _showLogin = false;
   double _emailFormHeight = EMAIL_FORM_HEIGHT;
+  bool isLoading = true;
   // String _userAgent = '<unknown>';
 
   static const double EMAIL_FORM_HEIGHT = 235.0;
@@ -59,14 +61,12 @@ class _LoginScreenState extends State<LoginScreen>
       curve: Curves.easeInOut,
     );
 
-    _buttonsOpacityAnim =
-        CurveTween(curve: Curves.easeOut).animate(_buttonAnimController);
+    _buttonsOpacityAnim = CurveTween(curve: Curves.easeOut).animate(_buttonAnimController);
     _buttonsPositionAnim = Tween(begin: Offset(-1.0, 0.0), end: Offset.zero)
         .chain(CurveTween(curve: Curves.elasticOut))
         .animate(_buttonAnimController);
 
-    Future.delayed(Duration(milliseconds: 1000))
-        .then((value) => _switchAnimation());
+    Future.delayed(Duration(milliseconds: 1000)).then((value) => _switchAnimation());
   }
 
   // Future<void> setUserAgent() async {
@@ -146,14 +146,10 @@ class _LoginScreenState extends State<LoginScreen>
           children: [
             // BACKGROUND IMAGE
             Positioned(
-              top: -_backgroundImageScaleAnimation.value *
-                  _backgroundAnimationSize,
-              left: -_backgroundImageScaleAnimation.value *
-                  _backgroundAnimationSize,
-              bottom: -_backgroundImageScaleAnimation.value *
-                  _backgroundAnimationSize,
-              right: -_backgroundImageScaleAnimation.value *
-                  _backgroundAnimationSize,
+              top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+              left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+              bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+              right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
               child: _buildBackground(context),
             ),
             CenterLoadingWidget(),
@@ -196,11 +192,9 @@ class _LoginScreenState extends State<LoginScreen>
           behavior: HitTestBehavior.deferToChild,
           onTap: () => _switchAnimation(),
           onVerticalDragUpdate: (details) {
-            if (_controller.status == AnimationStatus.dismissed &&
-                details.delta.dy < -20.0) {
+            if (_controller.status == AnimationStatus.dismissed && details.delta.dy < -20.0) {
               _switchAnimation();
-            } else if (_controller.status == AnimationStatus.completed &&
-                details.delta.dy > 20.0) {
+            } else if (_controller.status == AnimationStatus.completed && details.delta.dy > 20.0) {
               _switchAnimation();
             }
           },
@@ -210,14 +204,10 @@ class _LoginScreenState extends State<LoginScreen>
                 Container(height: height - statusBarHeight),
                 // BACKGROUND IMAGE
                 Positioned(
-                  top: -_backgroundImageScaleAnimation.value *
-                      _backgroundAnimationSize,
-                  left: -_backgroundImageScaleAnimation.value *
-                      _backgroundAnimationSize,
-                  bottom: -_backgroundImageScaleAnimation.value *
-                      _backgroundAnimationSize,
-                  right: -_backgroundImageScaleAnimation.value *
-                      _backgroundAnimationSize,
+                  top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+                  left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+                  bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+                  right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
                   child: _buildBackground(context),
                 ),
 
@@ -235,9 +225,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                 // Center logo
                 Positioned(
-                  top: (height / 2.0 - 50) -
-                      ((height / 2.0 - 50 - 36.0) *
-                          _backgroundImageScaleAnimation.value),
+                  top: (height / 2.0 - 50) - ((height / 2.0 - 50 - 36.0) * _backgroundImageScaleAnimation.value),
                   left: 0.0,
                   right: 0.0,
                   child: _buildLogo(context),
@@ -250,15 +238,12 @@ class _LoginScreenState extends State<LoginScreen>
                       : _bottomWidgetHeight == null
                           ? height
                           : height -
-                              ((_bottomWidgetHeight +
-                                          (iOS == true ? 0.0 : 20.0)) *
+                              ((_bottomWidgetHeight + (iOS == true ? 0.0 : 20.0)) *
                                       _backgroundImageScaleAnimation.value) *
                                   1.0,
                   left: 0.0,
                   right: 0.0,
-                  bottom: _controller.status == AnimationStatus.completed
-                      ? 0.0
-                      : null,
+                  bottom: _controller.status == AnimationStatus.completed ? 0.0 : null,
                   child: _buildBottomSheetContent(context, iOS),
                 ),
               ],
@@ -420,9 +405,7 @@ class _LoginScreenState extends State<LoginScreen>
                         _buildEmailLoginForms(context),
                         Padding(
                           // TODO
-                          padding: _showLogin
-                              ? const EdgeInsets.all(0.0)
-                              : const EdgeInsets.only(top: 28.0),
+                          padding: _showLogin ? const EdgeInsets.all(0.0) : const EdgeInsets.only(top: 28.0),
                           child: Text(
                             trans('login.continueWith'),
                             style: GoogleFonts.poppins(
@@ -456,8 +439,7 @@ class _LoginScreenState extends State<LoginScreen>
                                   padding: EdgeInsets.all(8.0),
                                 ),
                                 //: Colors.blueAccent,
-                                onPressed:
-                                    () => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
+                                onPressed: () => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
                                     style: GoogleFonts.poppins(
                                       fontSize: 14.0,
@@ -506,26 +488,25 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Widget _buildSocialLoginButtons(BuildContext context) {
-       return Container(
-            margin: EdgeInsets.only(
-              top: 6.0,
-              bottom: 6.0,
-            ),
-            child: Center(
-              child: Wrap(
-                direction: Axis.horizontal,
-                children: [
-                  _createSocialButtonWidget('google', LoginMethod.GOOGLE),
-                  _createSocialButtonWidget('facebook', LoginMethod.FACEBOOK),
-                 // if (snapshot.data == true) // has Apple Login
-                  _createSocialButtonWidget('apple', LoginMethod.APPLE),
-                  _createSocialButtonWidget(
-                      'email', LoginMethod.EMAIL, theme.indicator),
-                  // _createSocialButtonWidget('phone', LoginMethod.PHONE),
-                ],
-              ),
-            ),
-          );
+    return Container(
+      margin: EdgeInsets.only(
+        top: 6.0,
+        bottom: 6.0,
+      ),
+      child: Center(
+        child: Wrap(
+          direction: Axis.horizontal,
+          children: [
+            _createSocialButtonWidget('google', LoginMethod.GOOGLE),
+            _createSocialButtonWidget('facebook', LoginMethod.FACEBOOK),
+            // if (snapshot.data == true) // has Apple Login
+            _createSocialButtonWidget('apple', LoginMethod.APPLE),
+            _createSocialButtonWidget('email', LoginMethod.EMAIL, theme.indicator),
+            // _createSocialButtonWidget('phone', LoginMethod.PHONE),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildEmailLoginForms(BuildContext context) {
@@ -537,8 +518,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget _createSocialButtonWidget(String icon, LoginMethod method,
-      [Color iconColor]) {
+  Widget _createSocialButtonWidget(String icon, LoginMethod method, [Color iconColor]) {
     final bool iOS = Theme.of(context).platform == TargetPlatform.iOS;
     return Padding(
       padding: const EdgeInsets.all(6.0),
@@ -566,8 +546,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Widget _buildSocialLoginWebView(LoginMethod method) {
-    Completer<WebViewController> _webViewController =
-        Completer<WebViewController>();
+    Completer<WebViewController> _webViewController = Completer<WebViewController>();
     String provider;
     switch (method) {
       case LoginMethod.FACEBOOK:
@@ -604,7 +583,12 @@ class _LoginScreenState extends State<LoginScreen>
               ),
             ),
             child: BackButton(
-              onPressed: () => getIt<LoginBloc>().add(ResetLogin()),
+              onPressed: () {
+                setState(() {
+                  getIt<LoginBloc>().add(ResetLogin());
+                  isLoading = true;
+                });
+              },
               color: theme.text,
             ),
           ),
@@ -622,31 +606,58 @@ class _LoginScreenState extends State<LoginScreen>
           //getLocalizedText(context, widget.item.name),
         ),
       ),
-      body: WebView(
-        key: UniqueKey(),
-        userAgent: 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) ' +
-            'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36',
-        initialUrl: url,
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: (WebViewController webViewController) async{
-          _webViewController.complete(webViewController);
-        },
-        navigationDelegate: (NavigationRequest request) {
-          print('SocialLoginScreen.navigationDelegate().request=$request');
-          if (request.url
-              .startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
-            var code = request.url
-                .substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
-            //For some reasion there is an extra # and some other stuff at the end of the url in case of first login.
-            //Remove it so it will be a valid url
-            code = code.split("#").first;
-            // This is the authorization code!!!
-            signUserInWithAuthCode(code);
-            return NavigationDecision.prevent;
-          }
-          return NavigationDecision.navigate;
-        },
-        gestureNavigationEnabled: true,
+      body: Stack(
+        children: [
+          WebView(
+            userAgent: 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) ' +
+                'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36',
+            initialUrl: url,
+            onPageFinished: (finish) {
+              setState(() {
+                isLoading = false;
+              });
+            },
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) async {
+              _webViewController.complete(webViewController);
+            },
+            navigationDelegate: (NavigationRequest request) {
+              print('SocialLoginScreen.navigationDelegate().request=$request');
+              Uri uri = Uri.parse(request.url);
+              String error = uri.queryParameters['error_description'];
+              if (request.url.startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
+                var code = request.url.substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
+                //For some reasion there is an extra # and some other stuff at the end of the url in case of first login.
+                //Remove it so it will be a valid url
+                code = code.split("#").first;
+                // This is the authorization code!!!
+                signUserInWithAuthCode(code);
+                return NavigationDecision.prevent;
+              }
+              if (error != null) {
+                setState(() {
+                  getIt<ExceptionBloc>().add(ShowException(
+                      LoginException(code: LoginException.CODE, subCode: LoginException.CODE, message: error)));
+                  getIt<LoginBloc>().add(ResetLogin());
+                  isLoading = true;
+                });
+              }
+              if (uri.pathSegments.contains("idpresponse")) {
+                setState(() {
+                  isLoading = true;
+                });
+              }
+
+              return NavigationDecision.navigate;
+            },
+            gestureNavigationEnabled: true,
+          ),
+          isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Container()
+        ],
       ),
     );
   }

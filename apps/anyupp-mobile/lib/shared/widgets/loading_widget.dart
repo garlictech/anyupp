@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 
 class CenterLoadingWidget extends StatelessWidget {
   final Color color;
@@ -10,14 +9,13 @@ class CenterLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var iconColor = color ?? theme.highlight;
     return Container(
         child: Center(
       child: Container(
         width: size,
         height: size,
         child: CircularProgressIndicator(
-          backgroundColor: iconColor,
+          backgroundColor: color,
           strokeWidth: strokeWidth,
         ),
       ),

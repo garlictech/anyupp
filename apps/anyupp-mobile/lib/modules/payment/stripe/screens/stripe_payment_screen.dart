@@ -14,7 +14,6 @@ import 'package:lottie/lottie.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 class StripePaymentScreen extends StatefulWidget {
-
   final String orderId;
   final UserInvoiceAddress invoiceAddress;
 
@@ -25,7 +24,6 @@ class StripePaymentScreen extends StatefulWidget {
 }
 
 class _StripePaymentScreenState extends State<StripePaymentScreen> {
-
   StripePaymentMethod _paymentMethod;
   GlobalKey<FormState> _formKey;
   bool _saveCard = false;
@@ -38,12 +36,11 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
   @override
   void initState() {
     super.initState();
-        getIt<StripePaymentBloc>().add(ResetStripePaymentState());
+    getIt<StripePaymentBloc>().add(ResetStripePaymentState());
   }
 
   @override
   Widget build(BuildContext context) {
-
     this._form = CardForm(
       cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
       cardNumberDecoration: InputDecoration(
@@ -62,7 +59,6 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
       ),
     );
     this._formKey = _form.formKey;
-    
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: theme.background,
       statusBarIconBrightness: Brightness.dark,
@@ -107,7 +103,13 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                 // if (state is StripePaymentLoading) {
                 //   return CenterLoadingWidget();
                 // }
-                return _buildPaymentMethodForm(context, state);
+                return Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(child: Center(child: _buildPaymentMethodForm(context, state))),
+                    _buildPayButton(context, state),
+                  ],
+                );
               },
             ),
           )),
@@ -115,7 +117,11 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
   }
 
   Widget _buildPaymentMethodForm(BuildContext context, StripePaymentState state) {
-    return SingleChildScrollView(
+    bool enabled = true;
+    if (state is StripePaymentLoading) {
+      enabled = false;
+    }
+    Widget child = SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
         children: [
@@ -155,11 +161,15 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                 ),
               ],
             ),
-          // Spacer(),
-          _buildPayButton(context, state),
         ],
       ),
     );
+
+    return enabled
+        ? child
+        : IgnorePointer(
+            child: child,
+          );
   }
 
   Widget _buildPayButton(BuildContext context, StripePaymentState state) {
@@ -174,16 +184,15 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
-              side: BorderSide(
-                color: theme.indicator,
-              ),
+              // side: BorderSide(
+              // //  color: theme.indicator,
+              // ),
             ),
             primary: theme.indicator,
           ),
           onPressed: isLoading ? null : () => _startStripePayment(),
           child: isLoading
               ? CenterLoadingWidget(
-                  color: theme.highlight,
                   size: 20.0,
                 )
               : Text(
@@ -241,7 +250,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 width: 1,
-                color: theme.border2,
+                // color: theme.border2,
               ),
             ),
             child: IconButton(
