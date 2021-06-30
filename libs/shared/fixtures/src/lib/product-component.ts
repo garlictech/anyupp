@@ -1,6 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
-
 import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 
@@ -81,12 +80,22 @@ const seededProdComp_01: RequiredId<CrudApi.CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_01,
   }),
+  name: {
+    en: 'ROOM TEMPERATURE',
+    de: 'ROOM TEMPERATURE',
+    hu: 'SZOBAHŐMÉRSÉKLETŰ',
+  },
   chainId: chainFixture.chainId_seeded_01,
 };
 const seededProdComp_02: RequiredId<CrudApi.CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_02,
   }),
+  name: {
+    en: 'CLASSIC',
+    de: 'CLASSIC',
+    hu: 'KLASSZIKUS',
+  },
   chainId: chainFixture.chainId_seeded_01,
   allergens: [CrudApi.Allergen.sesame, CrudApi.Allergen.treenuts],
 };
@@ -94,6 +103,11 @@ const seededProdComp_03: RequiredId<CrudApi.CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_03,
   }),
+  name: {
+    en: 'FRENCH FRIES',
+    de: 'FRENCH FRIES',
+    hu: 'HASÁBBURGONYA',
+  },
   chainId: chainFixture.chainId_seeded_01,
   allergens: [CrudApi.Allergen.mustard],
 };
@@ -105,6 +119,11 @@ const seededProdCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> =
       chainId: chainFixture.chainId_seeded_01,
       itemIds: [prodCompId_01, prodCompId_02],
     }),
+    name: {
+      en: `Extra comp set`,
+      de: `Extra comp set`,
+      hu: `Extra komponens set`,
+    },
     type: EProductComponentSetType.EXTRAS,
   };
 
@@ -115,6 +134,11 @@ const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> =
       chainId: chainFixture.chainId_seeded_01,
       itemIds: [prodCompId_01, prodCompId_02, prodCompId_03],
     }),
+    name: {
+      en: `Modifier comp set`,
+      de: `Modifier comp set`,
+      hu: `Módosító komponens set`,
+    },
     type: EProductComponentSetType.MODIFIER,
   };
 
