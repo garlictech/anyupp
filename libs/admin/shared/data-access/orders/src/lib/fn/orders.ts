@@ -125,16 +125,19 @@ export const getOrdersByUser = (
         orders: [{ ...order }],
         lastOrder: { ...order },
         hasPaymentIntention:
-          order.paymentMode.type === CrudApi.PaymentType.card ||
-          order.paymentMode.type === CrudApi.PaymentType.cash,
+          (order.paymentMode.type === CrudApi.PaymentType.card ||
+            order.paymentMode.type === CrudApi.PaymentType.cash) &&
+          order.transactionStatus === CrudApi.PaymentStatus.waiting_for_payment,
         lowestStatus: currentStatus(order.statusLog),
       };
     } else {
       ordersByUser[order.userId].orders.push({ ...order });
       ordersByUser[order.userId].hasPaymentIntention =
         ordersByUser[order.userId].hasPaymentIntention ||
-        order.paymentMode.type === CrudApi.PaymentType.card ||
-        order.paymentMode.type === CrudApi.PaymentType.cash;
+        ((order.paymentMode.type === CrudApi.PaymentType.card ||
+          order.paymentMode.type === CrudApi.PaymentType.cash) &&
+          order.transactionStatus ===
+            CrudApi.PaymentStatus.waiting_for_payment);
 
       if (order.createdAt > ordersByUser[order.userId].lastOrder.createdAt) {
         ordersByUser[order.userId].lastOrder = { ...order };

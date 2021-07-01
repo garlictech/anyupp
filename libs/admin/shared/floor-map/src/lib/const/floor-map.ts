@@ -106,4 +106,5 @@ export const FLOOR_MAP_STATUS_COLORS = {
   PLACED: '#ffaa00', // === color-warning-500
   PROCESSING: '#3366ff', // === color-primary-500
   READY: '#ea3bf0', // === color-info-500
+  SERVED: '#00d68f', // === color-success-500
 };

@@ -92,7 +92,10 @@ export const getTableSeatIds = (data: CrudApi.FloorMapData): string[] =>
     .filter(o => o?.t?.indexOf('seat') === 0)
     .map(o => getTableSeatId(o));
 
-export const getStatusBgColor = (status: CrudApi.OrderStatus): string => {
+export const getStatusBgColor = (
+  status: CrudApi.OrderStatus,
+  hasPaymentIntention: boolean,
+): string | undefined => {
   switch (status) {
     case CrudApi.OrderStatus.none:
       return FLOOR_MAP_STATUS_COLORS.NONE;
@@ -102,6 +105,8 @@ export const getStatusBgColor = (status: CrudApi.OrderStatus): string => {
       return FLOOR_MAP_STATUS_COLORS.PROCESSING;
     case CrudApi.OrderStatus.ready:
       return FLOOR_MAP_STATUS_COLORS.READY;
+    case CrudApi.OrderStatus.served:
+      return hasPaymentIntention ? FLOOR_MAP_STATUS_COLORS.SERVED : undefined;
     default:
       return '';
   }
