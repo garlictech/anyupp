@@ -1,3 +1,4 @@
+import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import {
@@ -12,12 +13,14 @@ import {
   dashboardActions,
   dashboardSelectors,
 } from '@bgap/admin/shared/data-access/dashboard';
+import { DataService } from '@bgap/admin/shared/data-access/data';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   currentStatus as currentStatusFn,
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
-import { customNumberCompare } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -37,18 +40,31 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _dataService: DataService,
   ) {}
 
   ngOnInit(): void {
-    this._store
-      .pipe(select(dashboardSelectors.getSelectedHistoryDate), take(1))
-      .subscribe((historyDate: number): void => {
+    combineLatest([
+      this._store.pipe(
+        select(dashboardSelectors.getSelectedHistoryDate),
+        take(1),
+      ),
+      this._store.pipe(select(loggedUserSelectors.getSelectedUnitId), take(1)),
+    ]).subscribe(
+      ([hDate, unitId]: [number, string | null | undefined]): void => {
         this.dateFormControl = new FormControl(
-          new Date(historyDate).toISOString().slice(0, 10),
+          new Date(hDate).toISOString().slice(0, 10),
         );
 
+        if (hDate && unitId) {
+          this._dataService
+            .listHistoryQuery(unitId, this.dateFormControl.value)
+            .subscribe();
+        }
+
         this._changeDetectorRef.detectChanges();
-      });
+      },
+    );
 
     this._store
       .pipe(

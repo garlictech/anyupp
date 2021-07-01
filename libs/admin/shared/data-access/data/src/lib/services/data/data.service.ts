@@ -340,32 +340,36 @@ export class DataService {
     this._store
       .pipe(
         select(dashboardSelectors.getSelectedHistoryDate),
-        switchMap((historyDate: number) => {
-          const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
-
-          return this._crudSdk.doListQuery(
-            ordersActions.resetHistoryOrders(),
-            this._crudSdk.sdk.SearchOrders(
-              {
-                filter: {
-                  unitId: { eq: unitId },
-                  archived: { eq: true },
-                  createdAt: {
-                    gte: new Date(dayIntervals.from).toISOString(),
-                    lte: new Date(dayIntervals.to).toISOString(),
-                  },
-                },
-              },
-              { fetchPolicy: 'no-cache' },
-            ),
-            (orders: CrudApi.Order[]) =>
-              ordersActions.upsertHistoryOrders({
-                orders,
-              }),
-          );
-        }),
+        switchMap((historyDate: number) =>
+          this.listHistoryQuery(unitId, historyDate),
+        ),
       )
       .subscribe();
+  }
+
+  public listHistoryQuery(unitId: string, historyDate: number) {
+    const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
+
+    return this._crudSdk.doListQuery(
+      ordersActions.resetHistoryOrders(),
+      this._crudSdk.sdk.SearchOrders(
+        {
+          filter: {
+            unitId: { eq: unitId },
+            archived: { eq: true },
+            createdAt: {
+              gte: new Date(dayIntervals.from).toISOString(),
+              lte: new Date(dayIntervals.to).toISOString(),
+            },
+          },
+        },
+        { fetchPolicy: 'no-cache' },
+      ),
+      (orders: CrudApi.Order[]) =>
+        ordersActions.upsertHistoryOrders({
+          orders,
+        }),
+    );
   }
 
   private _subscribeToAdminUsers(): void {
