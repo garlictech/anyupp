@@ -1,4 +1,3 @@
-import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import {
@@ -13,14 +12,12 @@ import {
   dashboardActions,
   dashboardSelectors,
 } from '@bgap/admin/shared/data-access/dashboard';
-import { DataService } from '@bgap/admin/shared/data-access/data';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   currentStatus as currentStatusFn,
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { customNumberCompare } from '@bgap/shared/utils';
+import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -40,31 +37,23 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _dataService: DataService,
   ) {}
 
   ngOnInit(): void {
-    combineLatest([
-      this._store.pipe(
-        select(dashboardSelectors.getSelectedHistoryDate),
-        take(1),
-      ),
-      this._store.pipe(select(loggedUserSelectors.getSelectedUnitId), take(1)),
-    ]).subscribe(
-      ([hDate, unitId]: [number, string | null | undefined]): void => {
+    this._store
+      .select(dashboardSelectors.getSelectedHistoryDate)
+      .pipe(filterNullish(), take(1), untilDestroyed(this))
+      .subscribe(historyDate => {
         this.dateFormControl = new FormControl(
-          new Date(hDate).toISOString().slice(0, 10),
+          new Date(historyDate).toISOString().slice(0, 10),
         );
 
-        if (hDate && unitId) {
-          this._dataService
-            .listHistoryQuery(unitId, this.dateFormControl.value)
-            .subscribe();
-        }
+        this._store.dispatch(
+          dashboardActions.updateSelectedUnitOrderHistory({ historyDate }),
+        );
 
         this._changeDetectorRef.detectChanges();
-      },
-    );
+      });
 
     this._store
       .pipe(
@@ -92,7 +81,7 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
     this.dateFormControl.valueChanges.subscribe((): void => {
       this._store.dispatch(
         dashboardActions.setHistoryDate({
-          historyDate: this.dateFormControl?.value,
+          historyDate: this.dateFormControl.value,
         }),
       );
     });

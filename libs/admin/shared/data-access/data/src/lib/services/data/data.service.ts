@@ -10,10 +10,7 @@ import {
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
-import {
-  dashboardActions,
-  dashboardSelectors,
-} from '@bgap/admin/shared/data-access/dashboard';
+import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsActions } from '@bgap/admin/shared/data-access/groups';
 import {
   loggedUserActions,
@@ -336,21 +333,12 @@ export class DataService {
         }),
       this._settingsChanged$,
     );
-
-    this._store
-      .pipe(
-        select(dashboardSelectors.getSelectedHistoryDate),
-        switchMap((historyDate: number) =>
-          this.listHistoryQuery(unitId, historyDate),
-        ),
-      )
-      .subscribe();
   }
 
-  public listHistoryQuery(unitId: string, historyDate: number) {
+  public listHistoryQuery(unitId: string, historyDate: string | number) {
     const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
 
-    return this._crudSdk.doListQuery(
+    this._crudSdk.doListQuery(
       ordersActions.resetHistoryOrders(),
       this._crudSdk.sdk.SearchOrders(
         {
@@ -435,7 +423,7 @@ export class DataService {
   // Unit
   //
 
-  public updateUnit(
+  public updateUnit$(
     unit: CrudApi.UpdateUnitInput,
   ): Observable<CrudApi.Unit | undefined | null | unknown> {
     return this._crudSdk.sdk
@@ -443,11 +431,11 @@ export class DataService {
       .pipe(catchGqlError(this._store));
   }
 
-  public regenerateUnitData(unitId: string) {
+  public regenerateUnitData$(unitId: string) {
     return this._anyuppSdk.sdk.RegenerateUnitData({ input: { id: unitId } });
   }
 
-  public updateAdminUserSettings(
+  public updateAdminUserSettings$(
     userId: string,
     settings: CrudApi.UpdateAdminUserInput['settings'],
   ) {

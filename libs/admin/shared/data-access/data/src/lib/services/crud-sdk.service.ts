@@ -64,13 +64,15 @@ export class CrudSdkService {
       this._store.dispatch(resetAction);
     }
 
-    return listOp.pipe(
-      filterNullish(),
-      map(list => list.items),
-      filterNullishElements(),
-      tap(items => this._store.dispatch(upsertActionCreator(items))),
-      catchGqlError(this._store),
-    );
+    listOp
+      .pipe(
+        filterNullish(),
+        map(list => list.items),
+        filterNullishElements(),
+        tap(items => this._store.dispatch(upsertActionCreator(items))),
+        catchGqlError(this._store),
+      )
+      .subscribe();
   }
 
   public doMutation<T>(mutationOp: Observable<T | null | undefined>) {
