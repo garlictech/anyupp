@@ -169,7 +169,7 @@ export const updateOrderState =
     transactionId?: string | undefined,
     transactionStatus?: CrudApi.PaymentStatus | undefined,
   ) =>
-  (deps: StripeResolverDeps) => {
+  async (deps: StripeResolverDeps) => {
     console.debug(
       '***** updateOrderState().id=' +
         id +
@@ -180,11 +180,28 @@ export const updateOrderState =
         ', userId=' +
         userId,
     );
+    const order = await loadOrder(id)(deps);
+    if (!order) {
+      throw Error('Order not found with ID+' + id);
+    }
+
+    if (status) {
+      order.items.forEach(item => {
+        // Update only none item status to placed!!!
+        item.statusLog.push({
+          status: status,
+          ts: new Date().getTime(),
+          userId,
+        });
+      });
+    }
+
     const updateOrderVars: CrudApi.UpdateOrderMutationVariables = {
       input: {
         id: id,
         transactionId: transactionId,
         transactionStatus: transactionStatus,
+        items: order.items,
         statusLog: status
           ? [
               {

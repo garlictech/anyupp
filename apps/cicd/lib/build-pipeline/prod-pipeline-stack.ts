@@ -21,9 +21,9 @@ export class ProdBuildPipelineStack extends sst.Stack {
         build: {
           commands: [
             `./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
-            'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
-            `yarn nx deploy crud-backend`,
+            `yarn nx deploy crud-backend --stage=${stage} --app=${utils.appConfig.name}`,
             `yarn nx deploy anyupp-backend --stage=${stage} --app=${utils.appConfig.name}`,
+            'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
             'export PATH=$PATH:/tmp/flutter/bin',
             'flutter doctor',
             `yarn nx buildApk anyupp-mobile`,
