@@ -146,7 +146,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           label: 'common.ok',
           callback: (): void => {
             this._dataService
-              .updateUnit({
+              .updateUnit$({
                 id:
                   this.selectedUnit?.id ??
                   'FIXME THIS IS FROM UNHANDLED UNKNOWN IN toggleAcceptingOrders',

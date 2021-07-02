@@ -41,3 +41,7 @@ export const setHistoryDate = createAction(
   '[Dashboard] Set history date',
   props<{ historyDate: number }>(),
 );
+export const updateSelectedUnitOrderHistory = createAction(
+  '[Dashboard] Update selected unit order history',
+  props<{ historyDate: number | string }>(),
+);

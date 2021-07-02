@@ -66,7 +66,7 @@ export class ActiveChainSelectorComponent implements OnInit, OnDestroy {
       chainId !== this._loggedUser?.settings?.selectedChainId
     ) {
       this._dataService
-        .updateAdminUserSettings(this._loggedUser.id, {
+        .updateAdminUserSettings$(this._loggedUser.id, {
           ...(this._loggedUser?.settings || {}),
           selectedChainId: chainId,
           selectedGroupId: null, // Reset group id!
