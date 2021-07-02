@@ -615,7 +615,7 @@ export class CognitoStack extends Stack {
         email: true,
       },
       passwordPolicy: {
-        minLength: 12,
+        minLength: 8,
         requireLowercase: true,
         requireUppercase: true,
         requireDigits: true,
