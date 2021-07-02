@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { AbstractControl, Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';

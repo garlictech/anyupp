@@ -35,8 +35,10 @@ import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
-import { AnyuppSdkService } from '../anyupp-sdk.service';
-import { CrudSdkService } from '../crud-sdk.service';
+import {
+  AnyuppSdkService,
+  CrudSdkService,
+} from '@bgap/admin/shared/data-access/sdk';
 
 @Injectable({
   providedIn: 'root',
@@ -332,31 +334,6 @@ export class DataService {
           orders,
         }),
       this._settingsChanged$,
-    );
-  }
-
-  public listHistoryQuery(unitId: string, historyDate: string | number) {
-    const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
-
-    this._crudSdk.doListQuery(
-      ordersActions.resetHistoryOrders(),
-      this._crudSdk.sdk.SearchOrders(
-        {
-          filter: {
-            unitId: { eq: unitId },
-            archived: { eq: true },
-            createdAt: {
-              gte: new Date(dayIntervals.from).toISOString(),
-              lte: new Date(dayIntervals.to).toISOString(),
-            },
-          },
-        },
-        { fetchPolicy: 'no-cache' },
-      ),
-      (orders: CrudApi.Order[]) =>
-        ordersActions.upsertHistoryOrders({
-          orders,
-        }),
     );
   }
 

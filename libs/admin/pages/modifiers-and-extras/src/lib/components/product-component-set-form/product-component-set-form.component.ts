@@ -1,7 +1,7 @@
 import { combineLatest } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
