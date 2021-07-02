@@ -10,17 +10,16 @@ Feature: Create or update Unit
     Then I set the language to EN
     And I select the "Rab lánc #1" chain in the header menu
     And I select the "Nagy csoport #1" group in the header menu
-    And I select the "Késdobáló #111" unit in the header menu
     When I click on the menu icon
     And I click on the "Units" text
     Then the "Units" title is displayed
 
   Scenario: Create new unit
-    When I click on the plus button
+    When I click on the button with title "Add unit"
     Then the "New unit" title is displayed
     When I click on the close button
     Then the "Units" title is displayed
-    When I click on the plus button
+    When I click on the button with title "Add unit"
     Then The group selector should contain "Nagy csoport #1"
     When I fill out the "Name" input with "test unit e2e"
     And I fill out the "Description (HU)" input with "test description  e2e"
