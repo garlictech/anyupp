@@ -454,7 +454,7 @@
     },
     "LIMIT_EXCEEDED": {
       "title": "Sign up error",
-      "description": "Resed limit exceeded."
+      "description": "Resend limit exceeded."
     }
   }
 }
