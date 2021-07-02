@@ -2,7 +2,7 @@ Feature: Create a new Chain
 
   Background: Login and steps to the Chains
     Given I am on the login page
-    When I fill out the input with id "username" with the "test@anyupp.com" value
+    When I fill out the input with id "username" with the "test-monad@anyupp.com" value
     And I fill out the input with id "password" with the "Hideghegy12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
@@ -13,11 +13,11 @@ Feature: Create a new Chain
     Then the "Chains" title is displayed
 
   Scenario: Create new chain
-    When I click on the plus button
+    When I click on the button with title "Add chain"
     Then the "New chain" title is displayed
     When I click on the close button
     Then the "Chains" title is displayed
-    When I click on the plus button
+    When I click on the button with title "Add chain"
     And I click on the "Active" checkbox
     And I fill out the "Name" input with "test chain e2e"
     And I fill out the "Description (HU)" input with "test description"

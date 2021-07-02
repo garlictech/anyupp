@@ -16,7 +16,7 @@ Feature: Product categories
     Then the "Product categories (EN)" title is displayed
 
   Scenario: Add new category
-    When I click on the plus button
+    When I click on the button with title "Add product category"
     Then the "New product category" title is displayed
     And I fill out the "Name (HU)" input with "test category 1"
     And I fill out the "Name (EN)" input with "test category 1"
@@ -41,7 +41,7 @@ Feature: Product categories
     And I should see "test description e2eUpdated" text
 
   Scenario: Add an other category
-    When I click on the plus button
+    When I click on the button with title "Add product category"
     And I fill out the "Name (HU)" input with "test category e2e"
     And I fill out the "Name (EN)" input with "test category e2e"
     And I fill out the "Name (DE)" input with "test category e2e"

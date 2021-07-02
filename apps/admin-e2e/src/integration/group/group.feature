@@ -2,7 +2,7 @@ Feature: Create or update Group
 
   Background: Login and steps to the Groups
     Given I am on the login page
-    When I fill out the input with id "username" with the "test@anyupp.com" value
+    When I fill out the input with id "username" with the "test-monad@anyupp.com" value
     And I fill out the input with id "password" with the "Hideghegy12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
@@ -14,11 +14,11 @@ Feature: Create or update Group
     Then the "Groups" title is displayed
 
   Scenario: Create new group
-    And I click on the plus button
+    When I click on the button with title "Add group"
     Then the "New group" title is displayed
     When I click on the close button
     Then the "Groups" title is displayed
-    When I click on the plus button
+    When I click on the button with title "Add group"
     Then The chain selector should contain "Rab lánc #1"
     When I set the currency to "EUR"
     And I fill out the "Name" input with "test group e2e"
