@@ -1,10 +1,10 @@
 <nb-card>
   <nb-card-header>
     <div class="float-start" *ngIf="mode === 'table'">
-      {{ 'units.table' }} #{{ tableId }}
+      {{ 'units.table' | translate }} #{{ tableId }}
     </div>
     <div class="float-start" *ngIf="mode === 'seat'">
-      {{ 'units.seat' }} #{{ tableId }}/{{ seatId }}
+      {{ 'units.seat' | translate }} #{{ tableId }}/{{ seatId }}
     </div>
 
     <button

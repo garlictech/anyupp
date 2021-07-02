@@ -24,7 +24,7 @@ Feature: Authentication
   Scenario: Forgotten password steps
     When I click the "Reset password" text
     Then I should see "Reset your password" sub-header
-    When I fill out the username input with the "test@anyupp.com" value
+    When I fill out the username input with the "test-monad@anyupp.com" value
     Then I should see the Send Code button
     And I click the "Back to Sign In" text
     Then I should see "AnyUPP Admin" sub-header

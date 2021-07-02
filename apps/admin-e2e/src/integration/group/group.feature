@@ -25,7 +25,7 @@ Feature: Create or update Group
     And I fill out the "Description (HU)" input with "test description e2e"
     And I fill out the "Description (EN)" input with "test description e2e"
     And I fill out the "Description (DE)" input with "test description e2e"
-    And I fill out the "Email" input with "test@anyupp.com"
+    And I fill out the "Email" input with "test-monad@anyupp.com"
     And I fill out the "Phone" input with "1234567890"
     And I fill out the "Title" input with "test title"
     And I fill out the "Country" input with "Hungary"
@@ -36,26 +36,27 @@ Feature: Create or update Group
     And I click on the "Submit" button
     Then I should see "test group e2e" text
     And I should see "test description e2e" text
-    And I should see "test@anyupp.com" text
+    And I should see "test-monad@anyupp.com" text
     And I should see "1234567890" text
 
   Scenario: Update the Group
     When I click the edit button in the listitem with "test group e2e" content
-    And I set the currency to "HUF"
-    And I fill out the "Name" input with "test group e2eUpdated"
-    And I fill out the "Description (EN)" input with "test description e2eUpdated"
-    And I fill out the "Description (HU)" input with "test description e2eUpdated"
-    And I fill out the "Description (DE)" input with "test description e2eUpdated"
+    Then The "Name" input should contain "test group e2e"
+    When I set the currency to "HUF"
+    And I fill out the "Name" input with "test e2eUpdated group"
+    And I fill out the "Description (EN)" input with "test e2eUpdated description"
+    And I fill out the "Description (HU)" input with "test e2eUpdated description"
+    And I fill out the "Description (DE)" input with "test e2eUpdated description"
     And I fill out the "Email" input with "test123@anyupp.com"
     And I fill out the "Phone" input with "1234567890123"
     And I fill out the "Title" input with "test title updated"
     And I fill out the "Country" input with "Hungary"
     And I fill out the "Postal code" input with "1234"
     And I fill out the "City" input with "Budapest"
-    And I fill out the "Address" input with "Kis u. 42. e2eUpdated"
+    And I fill out the "Address" input with "Kis u. 42e2eUpdated ."
     And I click on the "Locate on map" button
     And I click on the "Submit" button
-    Then I should see "test group e2eUpdated" text
-    And I should see "test description e2eUpdated" text
+    Then I should see "test e2eUpdated group" text
+    And I should see "test e2eUpdated description" text
     And I should see "test123@anyupp.com" text
     And I should see "1234567890123" text

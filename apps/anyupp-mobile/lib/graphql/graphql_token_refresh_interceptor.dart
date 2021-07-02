@@ -14,33 +14,30 @@ class DioTokenInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  Future onRequest(RequestOptions options) async {
-    // debugRequest(options);
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     if (options.headers.containsKey('requirestoken')) {
       options.headers.remove('requirestoken');
       String accessToken = _prefs.getString('cognito_accesstoken');
       print('accessToken: $accessToken');
       options.headers.addAll({'Authorization': 'Bearer $accessToken'});
     }
-    return options;
+    super.onRequest(options, handler);
   }
 
   @override
-  Future onResponse(Response response) async {
-    // debugResponse(response);
-    if (response.data['token'] != null) {
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
+   if (response.data['token'] != null) {
       // print('SAVING TOKENS!');
       await setTokenPreferences(response, _prefs);
       // print('TOKENS SAVED!');
     }
-    return super.onResponse(response);
+    super.onResponse(response, handler);
   }
 
   @override
-  Future onError(DioError dioError) async {
-    
+  void onError(DioError dioError, ErrorInterceptorHandler handler) async {
+
     debugError(dioError);
-    // return super.onError(dioError);
 
     int responseCode = dioError.response.statusCode;
     String oldAccessToken = _prefs.getString('cognito_accesstoken');
@@ -50,7 +47,8 @@ class DioTokenInterceptor extends InterceptorsWrapper {
 
       String refreshToken = _prefs.get('cognito_refreshtoken');
       if (refreshToken == null) {
-         return super.onError(dioError);
+         super.onError(dioError, handler);
+         return;
       }
       print('==>Refresh token=' + refreshToken);
 
@@ -62,13 +60,13 @@ class DioTokenInterceptor extends InterceptorsWrapper {
 
       // setTokenPreferences(response, _prefs);
 
-      RequestOptions options = dioError.response.request;
+      RequestOptions options = dioError.response.requestOptions;
       options.headers.addAll({'requiresToken': true});
       _dio.interceptors.requestLock.unlock();
       _dio.interceptors.responseLock.unlock();
-      return _dio.request(options.path, options: options);
+      await _dio.request(options.path, data: options);
     } else {
-      return super.onError(dioError);
+      super.onError(dioError, handler);
     }
   }
 }

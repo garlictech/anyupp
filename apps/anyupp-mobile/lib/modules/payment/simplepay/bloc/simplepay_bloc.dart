@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:catcher/catcher.dart';
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,18 +21,17 @@ class SimplePayBloc extends Bloc<SimplePayEvent, SimplePayState> {
       yield* _mapStartPaymentToState(event);
     }
 
+    
+
     if (event is CollectSimplePayTransactionStatus) {
       yield* _mapCollectSimplePayTransactionStatusToState(event).onErrorReturnWith((dynamic error) {
-        if (error is RetryError) {
-          Catcher.reportCheckedError(error.errors[0].error, error.errors[0].stackTrace);
-        } else {
-          Catcher.reportCheckedError(error, error.stackTrace);
-        }
+        Catcher.reportCheckedError(error, error.stackTrace);
+
         // Show error dialog (with the transactionId in it) to the user in case we don't know the transaction's actual state
         getIt<ExceptionBloc>().add(ShowException(SimplePayException(
             code: SimplePayException.ERROR_SIMPLE_PAY_TRANSACTION_STATUS_UNKNOWN,
             message: null,
-            details: [event.transactionId])));
+            details: AppConfig.Stage == 'dev' ? [event.transactionId] : null)));
         return SimplePayError();
       });
     }

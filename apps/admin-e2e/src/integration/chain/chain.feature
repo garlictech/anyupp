@@ -23,7 +23,7 @@ Feature: Create a new Chain
     And I fill out the "Description (HU)" input with "test description"
     And I fill out the "Description (EN)" input with "test description"
     And I fill out the "Description (DE)" input with "test description"
-    And I fill out the "Email" input with "test@anyupp.com"
+    And I fill out the "Email" input with "test-monad@anyupp.com"
     Then I should see 9 color picker with "#ffffff"
     When I click on the "Background (light)" picker fill out with "#fff9f0"
     And I fill out the "Phone" input with "1234567890"
@@ -44,34 +44,35 @@ Feature: Create a new Chain
     And I click on the "Submit" button
     Then I should see "test chain e2e" text
     And I should see "test description" text
-    And I should see "test@anyupp.com" text
+    And I should see "test-monad@anyupp.com" text
     And I should see "1234567890" text
 
   Scenario: Update the Chain
     When I click the edit button in the listitem with "test chain e2e" content
-    And I fill out the "Name" input with "test chain e2eUpdated"
-    And I fill out the "Description (HU)" input with "test description e2eUpdated"
-    And I fill out the "Description (EN)" input with "test description e2eUpdated"
-    And I fill out the "Description (DE)" input with "test description e2eUpdated"
+    Then The "Name" input should contain "test chain e2e"
+    When I fill out the "Name" input with "test e2eUpdated chain"
+    And I fill out the "Description (HU)" input with "test e2eUpdated description"
+    And I fill out the "Description (EN)" input with "test e2eUpdated description"
+    And I fill out the "Description (DE)" input with "test e2eUpdated description"
     And I fill out the "Email" input with "test123@anyupp.com"
     And I click on the "Background (light)" picker fill out with "#ffffff"
     And I fill out the "Phone" input with "1234567890123"
     And I click on the "Background (dark)" picker fill out with "#d6dde0"
-    And I fill out the "Title" input with "test title e2eUpdated"
+    And I fill out the "Title" input with "test e2eUpdated title"
     And I click on the "Text (light)" picker fill out with "#ffffff"
     And I fill out the "Country" input with "Hungary"
     And I click on the "Text (dark)" picker fill out with "#303030"
     And I click on the "Border (light)" picker fill out with "#e7e5d0"
     And I fill out the "Postal code" input with "9999"
     And I click on the "Border (dark)" picker fill out with "#c3cacd"
-    And I fill out the "City" input with "Budapest e2eUpdated"
+    And I fill out the "City" input with "BudaE2eUpdatedpest"
     And I click on the "Highlight" picker fill out with "#a8692a"
-    And I fill out the "Address" input with "Kis u. 45. e2eUpdated"
+    And I fill out the "Address" input with "Kis u. 45e2eUpdated."
     And I click on the "Indicator" picker fill out with "#30bf60"
     And I click on the "Disabled" picker fill out with "#303030"
     And I click on the "Locate on map" button
     And I click on the "Submit" button
-    Then I should see "test chain e2eUpdated" text
-    And I should see "test description e2eUpdated" text
+    Then I should see "test e2eUpdated chain" text
+    And I should see "test e2eUpdated description" text
     And I should see "test123@anyupp.com" text
     And I should see "1234567890123" text

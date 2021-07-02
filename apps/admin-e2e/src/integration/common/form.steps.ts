@@ -1,4 +1,4 @@
-import { When, Then } from 'cypress-cucumber-preprocessor/steps';
+import { Then, When } from 'cypress-cucumber-preprocessor/steps';
 
 When(
   'I fill out the input with id {string} with the {string} value',
@@ -41,6 +41,13 @@ When(
   'I fill out the last {string} input with {string}',
   (inputLabel: string, value: string) => {
     cy.findAllByLabelText(inputLabel).last().clear().type(value);
+  },
+);
+
+Then(
+  'The {string} input should contain {string}',
+  (inputLabel: string, value: string) => {
+    cy.findAllByLabelText(inputLabel).first().should('contain.value', value);
   },
 );
 

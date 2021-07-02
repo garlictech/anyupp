@@ -270,6 +270,17 @@ export const createPipeline = (
     stages.push(props.finalizationStage);
   }
 
+  stages.push({
+    stageName: 'CLeanup',
+    actions: [
+      new codepipeline_actions.CloudFormationDeleteStackAction({
+        actionName: `DeleteConfigurator`,
+        stackName: `${utils.projectPrefix(stage)}-configurator`,
+        adminPermissions: true,
+      }),
+    ],
+  });
+
   const pipeline = new codepipeline.Pipeline(scope, 'Pipeline', {
     stages,
   });
@@ -319,7 +330,9 @@ export const createCommonDevPipeline = (
         commands: [
           `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
           'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
-          `yarn nx deploy crud-backend`,
+          `yarn nx deploy crud-backend --stage=${stage} --app=${appConfig.name}`,
+          `yarn deleteAllTableData`,
+          `yarn seed`,
           `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
           'export PATH=$PATH:/tmp/flutter/bin',
           'flutter doctor',
@@ -339,7 +352,8 @@ export const createCommonDevPipeline = (
           `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
           `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
           `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
-          'yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts',
+          `yarn deleteAllTableData`,
+          `yarn seed`,
           'yarn cucumber:report',
           'yarn cypress:generate:html:report',
         ],
