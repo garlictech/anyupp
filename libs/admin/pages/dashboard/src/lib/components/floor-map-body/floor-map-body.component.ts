@@ -23,6 +23,7 @@ import {
   fabricCanvas,
   floorMapActions,
   floorMapSelectors,
+  FLOOR_MAP_STATUS_COLORS,
   getObjectById,
   getStatusBgColor,
   getTableIds,
@@ -154,7 +155,9 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
                 // Highlight or clear border
                 setBorder(
                   fabricObj,
-                  tableSeatOrder.hasPaymentIntention ? '#a9ff29' : undefined,
+                  tableSeatOrder.hasPaymentIntention
+                    ? FLOOR_MAP_STATUS_COLORS.NONE
+                    : undefined,
                   tableSeatOrder.hasPaymentIntention ? 5 : undefined,
                 );
 
@@ -162,7 +165,10 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
                 setBgColor(
                   fabricObj,
                   tableSeatOrder.lowestStatus
-                    ? getStatusBgColor(tableSeatOrder.lowestStatus)
+                    ? getStatusBgColor(
+                        tableSeatOrder.lowestStatus,
+                        !!tableSeatOrder.hasPaymentIntention,
+                      )
                     : undefined,
                 );
               }

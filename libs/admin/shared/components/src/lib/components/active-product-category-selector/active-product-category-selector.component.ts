@@ -71,7 +71,7 @@ export class ActiveProductCategorySelectorComponent
         this._loggedUser?.settings?.selectedProductCategoryId
     ) {
       this._dataService
-        .updateAdminUserSettings(this._loggedUser.id, {
+        .updateAdminUserSettings$(this._loggedUser.id, {
           ...(this._loggedUser?.settings || {}),
           selectedProductCategoryId: productCategoryId,
         })

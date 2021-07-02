@@ -77,6 +77,7 @@
               <nb-select
                 size="small"
                 [formControl]="dialogForm.get('chainId')! | asFormControl"
+                [attr.data-testid]="'chainId'"
               >
                 <nb-option value="">-</nb-option>
                 <nb-option
@@ -100,6 +101,7 @@
             <nb-select
               size="small"
               [formControl]="dialogForm.get('groupId')! | asFormControl"
+              [attr.data-testid]="'groupId'"
             >
               <nb-option value="">-</nb-option>
               <nb-option
@@ -121,6 +123,7 @@
               <nb-select
                 size="small"
                 [formControl]="dialogForm.get('unitId')! | asFormControl"
+                [attr.data-testid]="'unitId'"
               >
                 <nb-option value="">-</nb-option>
                 <nb-option

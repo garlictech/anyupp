@@ -8,13 +8,13 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { select, Store } from '@ngrx/store';
 import { filterNullish } from '@bgap/shared/utils';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
@@ -68,7 +68,7 @@ export class ActiveGroupSelectorComponent implements OnInit, OnDestroy {
       groupId !== this._loggedUser?.settings?.selectedGroupId
     ) {
       this._dataService
-        .updateAdminUserSettings(this._loggedUser.id, {
+        .updateAdminUserSettings$(this._loggedUser.id, {
           ...(this._loggedUser?.settings || {}),
           selectedGroupId: groupId,
           selectedUnitId: null, // Reset unit id!
