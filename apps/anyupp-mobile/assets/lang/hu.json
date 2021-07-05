@@ -369,16 +369,16 @@
       "description": "The supplied auth credential is malformed or has expired."
     },
     "ERROR_INVALID_EMAIL": {
-      "title": "Login error",
-      "description": "The email address is badly formatted."
+      "title": "Login hiba",
+      "description": "Az email nem megfelelő formátumú."
     },
     "ERROR_WRONG_PASSWORD": {
       "title": "Login error",
       "description": "The password is invalid or the user does not have a password."
     },
     "ERROR_PASSWORD_MISSMATCH": {
-      "title": "Signup error",
-      "description": "The passwords are not matching."
+      "title": "Regisztrációs hiba",
+      "description": "A megadott jelszavak különböznek."
     },
     "ERROR_USER_MISMATCH": {
       "title": "Login error",
@@ -393,8 +393,8 @@
       "description": "An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address."
     },
     "ERROR_EMAIL_ALREADY_IN_USE": {
-      "title": "Login error",
-      "description": "The email address is already in use by another account."
+      "title": "Regisztrációs hiba",
+      "description": "A megadott email cím már korábban regisztrálva."
     },
     "ERROR_CREDENTIAL_ALREADY_IN_USE": {
       "title": "Login error",
@@ -421,40 +421,40 @@
       "description": "This operation is not allowed. You must enable this service in the console."
     },
     "ERROR_WEAK_PASSWORD": {
-      "title": "Login error",
-      "description": "The given password is invalid."
+      "title": "Regisztrációs hiba",
+      "description": "Érvénytelen, gyenge jelszó."
     },
     "INVALID_CREDENTIALS": {
-      "title": "Sign up error",
-      "description": "Invalid user or password. Try again."
+      "title": "Bejelentkezési hiba",
+      "description": "Érvénytelen felhasználó vagy jelszó. Próbálkozz újra!"
     },
     "ERROR_MISSING_EMAIL": {
-      "title": "Login error",
-      "description": "An email address must be provided."
+      "title": "Regisztrációs hiba",
+      "description": "Az email címet kötelező megadni."
     },
     "INVALID_PASSWORD": {
-      "title": "Sign up error",
-      "description": "Password did not conform with policy"
+      "title": "Regisztrációs hiba",
+      "description": "Nem megfelelő jelszót adtál meg. A jelszó ne hasonlítson az email címedre, felhasználónevedre és ne tartalmazzon könnyen kitalálható karaktersorozatot!"
     },
     "INVALID_CONFIRMATION_CODE": {
-      "title": "Sign up error",
-      "description": "The given confirmation code is invalid, try to resend it"
+      "title": "Regisztrációs hiba",
+      "description": "A megadott ellenőrző kód érvénytelen. Ellenőrizd, hogy helyesen adtad-e meg! Vagy próbáld újraküldetni, ha már lejárt!"
     },
     "EXPIRED_CONFIRMATION_CODE": {
-      "title": "Invalid code",
-      "description": "Invalid code provided, please request a code again."
+      "title": "Érévnytelen kód",
+      "description": "Érvénytelen kódot adtál meg. Próbálj újat küldetni magadnak!"
     },
     "NOT_EMAIL_OR_PHONE": {
-      "title": "Sign up error",
-      "description": "Username should be either an email or a phone number."
+      "title": "Regisztrációs hiba",
+      "description": "A felhasználónév érvényes email vagy telefonszám legyen."
     },
     "USER_EMAIL_NOT_SAME": {
       "title": "Sign up error",
       "description": "User email should be empty or same as username, since username attribute is email."
     },
     "LIMIT_EXCEEDED": {
-      "title": "Sign up error",
-      "description": "Resed limit exceeded."
+      "title": "Regisztrációs hiba",
+      "description": "Újraküldési limit túllépve. Próbálkozz kicsit később!"
     }
   }
 }

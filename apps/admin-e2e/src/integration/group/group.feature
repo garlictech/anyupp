@@ -14,11 +14,11 @@ Feature: Create or update Group
     Then the "Groups" title is displayed
 
   Scenario: Create new group
-    And I click on the plus button
+    When I click on the button with title "Add group"
     Then the "New group" title is displayed
     When I click on the close button
     Then the "Groups" title is displayed
-    When I click on the plus button
+    When I click on the button with title "Add group"
     Then The chain selector should contain "Rab lánc #1"
     When I set the currency to "EUR"
     And I fill out the "Name" input with "test group e2e"

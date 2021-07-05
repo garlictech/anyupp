@@ -12,10 +12,6 @@ When('I click on the {string} text', (text: string) => {
   cy.findByText(text).click();
 });
 
-When('I click on the plus button', () => {
-  cy.get('nb-icon[icon="plus-outline"]').click();
-});
-
 When(
   'I click the edit button in the listitem with {string} content',
   (name: string) => {
@@ -23,9 +19,15 @@ When(
   },
 );
 
-When('I click on the last Edit button', () => {
-  cy.findAllByTitle('Edit').last().click({ force: true });
-});
+When(
+  'I click the extend button in the listitem with {string} content',
+  (name: string) => {
+    cy.findAllByRole('listitem')
+      .contains(name)
+      .findByTitle('Extend product')
+      .click();
+  },
+);
 
 When('I click on the close button', () => {
   cy.get('nb-icon[icon="close-outline"]').click();
@@ -52,7 +54,7 @@ When('I click on the first {string} button', (value: string) => {
 });
 
 When('I select {string} in the type selector', (value: string) => {
-  cy.findByTestId('type').click();
+  cy.findAllByTestId('type').last().click();
   cy.findAllByText(value).last().click();
 });
 
