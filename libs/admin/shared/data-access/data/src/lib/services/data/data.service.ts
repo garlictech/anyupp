@@ -22,21 +22,17 @@ import { productComponentSetsActions } from '@bgap/admin/shared/data-access/prod
 import { productComponentsActions } from '@bgap/admin/shared/data-access/product-components';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
+import {
+  AnyuppSdkService,
+  CrudSdkService,
+} from '@bgap/admin/shared/data-access/sdk';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
-import {
-  catchGqlError,
-  DEFAULT_LANG,
-  getDayIntervals,
-} from '@bgap/admin/shared/utils';
+import { catchGqlError, DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IDateIntervals } from '@bgap/shared/types';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-
-import { AnyuppSdkService } from '../anyupp-sdk.service';
-import { CrudSdkService } from '../crud-sdk.service';
 
 @Injectable({
   providedIn: 'root',
@@ -332,31 +328,6 @@ export class DataService {
           orders,
         }),
       this._settingsChanged$,
-    );
-  }
-
-  public listHistoryQuery(unitId: string, historyDate: string | number) {
-    const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
-
-    this._crudSdk.doListQuery(
-      ordersActions.resetHistoryOrders(),
-      this._crudSdk.sdk.SearchOrders(
-        {
-          filter: {
-            unitId: { eq: unitId },
-            archived: { eq: true },
-            createdAt: {
-              gte: new Date(dayIntervals.from).toISOString(),
-              lte: new Date(dayIntervals.to).toISOString(),
-            },
-          },
-        },
-        { fetchPolicy: 'no-cache' },
-      ),
-      (orders: CrudApi.Order[]) =>
-        ordersActions.upsertHistoryOrders({
-          orders,
-        }),
     );
   }
 

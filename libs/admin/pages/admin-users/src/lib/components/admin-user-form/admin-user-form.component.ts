@@ -9,7 +9,7 @@ import { Validators } from '@angular/forms';
 import {
   AnyuppSdkService,
   CrudSdkService,
-} from '@bgap/admin/shared/data-access/data';
+} from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   catchGqlError,
