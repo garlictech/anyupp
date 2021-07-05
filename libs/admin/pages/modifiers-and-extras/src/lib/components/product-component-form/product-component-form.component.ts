@@ -28,7 +28,7 @@ import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 
 @UntilDestroy()
 @Component({

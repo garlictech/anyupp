@@ -14,7 +14,7 @@ import {
   dashboardSelectors,
   IDashboardSettings,
 } from '@bgap/admin/shared/data-access/dashboard';
-import { OrderService } from '@bgap/admin/shared/data-access/data';
+import { OrderService } from '@bgap/admin/shared/data-access/order';
 import {
   currentStatus as currentStatusFn,
   getNextOrderStatus,

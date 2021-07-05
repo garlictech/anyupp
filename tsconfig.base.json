@@ -84,6 +84,9 @@
       "@bgap/admin/shared/data-access/logged-user": [
         "libs/admin/shared/data-access/logged-user/src/index.ts"
       ],
+      "@bgap/admin/shared/data-access/order": [
+        "libs/admin/shared/data-access/order/src/index.ts"
+      ],
       "@bgap/admin/shared/data-access/orders": [
         "libs/admin/shared/data-access/orders/src/index.ts"
       ],
@@ -101,6 +104,9 @@
       ],
       "@bgap/admin/shared/data-access/role-contexts": [
         "libs/admin/shared/data-access/role-contexts/src/index.ts"
+      ],
+      "@bgap/admin/shared/data-access/sdk": [
+        "libs/admin/shared/data-access/sdk/src/index.ts"
       ],
       "@bgap/admin/shared/data-access/storage": [
         "libs/admin/shared/data-access/storage/src/index.ts"

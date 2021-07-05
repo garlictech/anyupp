@@ -7,7 +7,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { catchGqlError } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
