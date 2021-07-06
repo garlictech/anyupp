@@ -10,7 +10,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';

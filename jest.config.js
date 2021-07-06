@@ -77,5 +77,7 @@ module.exports = {
     '<rootDir>/libs/gql-sdk',
     '<rootDir>/libs/admin/shared/data-access/core',
     '<rootDir>/libs/admin/shared/data-access/app-core',
+    '<rootDir>/libs/admin/shared/data-access/order',
+    '<rootDir>/libs/admin/shared/data-access/sdk',
   ],
 };

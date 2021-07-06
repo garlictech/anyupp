@@ -1,0 +1,8 @@
+/.github
+/.husky
+/.vim
+/.vscode
+/android
+/dist
+/ios
+/node_modules

@@ -10,7 +10,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
