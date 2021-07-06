@@ -30,6 +30,7 @@ Feature: Authentication
   Scenario: Login with the wrong email and pw
     When I fill out the input with id "username" with the "teszt-monad@anyupp.com" value
     And I fill out the input with id "password" with the "Hideghegy_" value
+    And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
     Then I should see "Incorrect username or password." message
 
