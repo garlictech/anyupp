@@ -162,7 +162,6 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
         break;
       case EDashboardTicketListType.manual:
         this.filteredOrders = this.manualPaymentOrders;
-
         break;
       case EDashboardTicketListType.problematic:
         this.filteredOrders = this.problematicOrders.sort(
@@ -170,7 +169,9 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
         );
         break;
     }
+  }
 
+  private _selectFirstItem() {
     this._store
       .pipe(select(dashboardSelectors.getSelectedOrderId), take(1))
       .subscribe((selectedOrderId: string | undefined): void => {
@@ -204,6 +205,8 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
         ticketListType: listType,
       }),
     );
+
+    this._selectFirstItem();
   }
 
   public trackByFn(_index: number, item: CrudApi.Order): string {
