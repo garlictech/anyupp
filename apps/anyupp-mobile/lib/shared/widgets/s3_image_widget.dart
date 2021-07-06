@@ -42,18 +42,15 @@ class _S3ImageWidgetState extends State<S3ImageWidget> {
     return _error == null
         ? (_imageUrl == null
             ? _buildLoadingWidget(context)
-            : Container(
-                height: widget.height,
-                width: widget.width,
-                child: CachedNetworkImage(
-                  cacheKey: widget.bucketImageKey,
-                  imageUrl: _imageUrl,
-                  placeholder: widget.placeholder != null ? (context, url) => widget.placeholder : null,
-                  errorWidget: widget.errorWidget != null ? (context, url, error) => widget.errorWidget : null,
-                  fit: widget.fit,
-                  width: widget.width,
-                  height: widget.height,
-                )))
+            : CachedNetworkImage(
+              cacheKey: widget.bucketImageKey,
+              imageUrl: _imageUrl,
+              placeholder: widget.placeholder != null ? (context, url) => widget.placeholder : null,
+              errorWidget: widget.errorWidget != null ? (context, url, error) => widget.errorWidget : null,
+              fit: widget.fit,
+              width: widget.width,
+              height: widget.height,
+            ))
         : _buildErrorWidget(context);
   }
 
