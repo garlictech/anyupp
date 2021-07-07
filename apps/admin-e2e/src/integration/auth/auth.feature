@@ -21,10 +21,12 @@ Feature: Authentication
     Then I should be on the login page
     And I should see "AnyUPP Admin" sub-header
 
-  Scenario: Forgotten password steps
+  Scenario: Reset password
+    When I delete all messages from the inbox
     When I click the "Reset password" text
-    Then I should see "Reset your password" sub-header
-    When I fill out the username input with the "test-monad@anyupp.com" value
-    Then I should see the Send Code button
-    And I click the "Back to Sign In" text
-    Then I should see "AnyUPP Admin" sub-header
+    And I fill out the username input with the "anyupp-dev-b3182b@inbox.mailtrap.io" value
+    And I click the "Send Code" text
+    And I wait for the message
+    And I read and type the verification code from the email
+    And I click to the forgot password button
+    Then I should be on the login page

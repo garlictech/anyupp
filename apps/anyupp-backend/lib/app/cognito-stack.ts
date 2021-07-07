@@ -467,7 +467,7 @@ export class CognitoStack extends Stack {
       userInvitation: {
         emailSubject: 'AnyUPP ideiglenes jelszó | AnyUPP temporary password',
         emailBody: `
-          Belépéshez használd az email címed és az átmeneti jelszavad <strong>{####}</strong>
+          Belépéshez használd az email címed és az átmeneti jelszavad <strong id="anyupp-passw">{####}</strong>
           <br>
           Ha bármi kérdésed van, keresd ügyfélszolgálatunk. Felhasználó azonosítód: {username}
           <br><hr><br>
