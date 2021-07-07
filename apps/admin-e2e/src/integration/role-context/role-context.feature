@@ -1,6 +1,6 @@
-Feature: Chain product
+Feature: Role contexts
 
-  Background: Login and steps to the Group products
+  Background: Login and steps to the Role contexts
     Given I am on the login page
     When I fill out the input with id "username" with the "test-monad@anyupp.com" value
     And I fill out the input with id "password" with the "Hideghegy12_" value
