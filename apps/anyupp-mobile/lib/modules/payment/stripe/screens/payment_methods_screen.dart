@@ -35,22 +35,25 @@ class _StripePaymentMethodsScreenState extends State<StripePaymentMethodsScreen>
           )
         ],
       ),
-      body: BlocBuilder<StripePaymentBloc, StripePaymentState>(
-        builder: (context, StripePaymentState state) {
-          if (state is StripePaymentMethodsList) {
-            if (state.data == null) {
-              return NoPaymentMethodsWidget();
+      body: Container(
+        padding: EdgeInsets.only(top: 12.0),
+        child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
+          builder: (context, StripePaymentState state) {
+            if (state is StripePaymentMethodsList) {
+              if (state.data == null) {
+                return NoPaymentMethodsWidget();
+              }
+              return StripePaymentMethodListWidget(methods: state.data ?? []);
             }
-            return StripePaymentMethodListWidget(methods: state.data ?? []);
-          }
-          if (state is StripeError) {
-            return CommonErrorWidget(error: state.code, description: state.message);
-          }
-          if (state is StripePaymentLoading) {
-            return CenterLoadingWidget();
-          }
-          return NoPaymentMethodsWidget();
-        },
+            if (state is StripeError) {
+              return CommonErrorWidget(error: state.code, description: state.message);
+            }
+            if (state is StripePaymentLoading) {
+              return CenterLoadingWidget();
+            }
+            return NoPaymentMethodsWidget();
+          },
+        ),
       ),
     );
   }

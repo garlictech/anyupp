@@ -25,13 +25,11 @@ class StripePaymentScreen extends StatefulWidget {
 
 class _StripePaymentScreenState extends State<StripePaymentScreen> {
   StripePaymentMethod _paymentMethod;
-  GlobalKey<FormState> _formKey;
+  GlobalKey<FormState> _formKey =GlobalKey<FormState>();
   bool _saveCard = false;
   CardForm _form;
 
-  _StripePaymentScreenState() {
-    _formKey = GlobalKey<FormState>();
-  }
+  _StripePaymentScreenState();
 
   @override
   void initState() {
@@ -42,6 +40,8 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
   @override
   Widget build(BuildContext context) {
     this._form = CardForm(
+      displayAnimatedCard: true,
+      formKey: _formKey,
       cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
       cardNumberDecoration: InputDecoration(
         labelText: trans('payment.cardFields.card_number.label'),
@@ -58,7 +58,6 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
         hintText: trans('payment.cardFields.cvc.hint'),
       ),
     );
-    this._formKey = _form.formKey;
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: theme.background,
       statusBarIconBrightness: Brightness.dark,

@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class GraphQLException extends AppException {
-
   static const CODE = 'GRAPHQL_EXCEPTION';
 
   static const CODE_MUTATION_EXCEPTION = 'GRAPHQL_MUTATION_EXCEPTION';
@@ -26,7 +25,7 @@ class GraphQLException extends AppException {
     );
   }
 
-    factory GraphQLException.fromApolloException(OperationException oe) {
+  factory GraphQLException.fromApolloException(OperationException oe) {
     return GraphQLException(
       code: GraphQLException.CODE,
       subCode: oe.graphqlErrors[0].extensions['code'],

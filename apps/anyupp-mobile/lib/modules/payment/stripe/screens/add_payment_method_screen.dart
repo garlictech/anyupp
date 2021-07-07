@@ -1,5 +1,12 @@
+import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/widgets.dart';
+import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stripe_sdk/src/ui/widgets/card_form.dart';
+import 'package:stripe_sdk/stripe_sdk_ui.dart';
+import 'package:fa_prev/shared/locale.dart';
 
 class StripeAddPaymentMethodScreen extends StatefulWidget {
   @override
@@ -7,67 +14,92 @@ class StripeAddPaymentMethodScreen extends StatefulWidget {
 }
 
 class _StripeAddPaymentMethodScreenState extends State<StripeAddPaymentMethodScreen> {
-  // StripeCard _cardData;
-  GlobalKey<FormState> _formKey;
+  StripeCard _cardData = StripeCard();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   CardForm _form;
 
-  // Future<IntentResponse> setupIntent;
-
-  _StripeAddPaymentMethodScreenState() {
-    _form = CardForm();
-    // _cardData = _form.card;
-    _formKey = _form.formKey;
-  }
+  _StripeAddPaymentMethodScreenState();
 
   @override
   void initState() {
-    // if (widget._useSetupIntent) setupIntent = widget._createSetupIntent();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    _form = CardForm(
+      card: _cardData,
+      formKey: _formKey,
+      displayAnimatedCard: true,
+      cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
+      cardNumberDecoration: InputDecoration(
+        labelText: trans('payment.cardFields.card_number.label'),
+        hintText: trans('payment.cardFields.card_number.hint'),
+      ),
+      cardExpiryErrorText: trans('payment.cardFields.expiry.validationError'),
+      cardExpiryDecoration: InputDecoration(
+        labelText: trans('payment.cardFields.expiry.label'),
+        hintText: trans('payment.cardFields.expiry.hint'),
+      ),
+      cardCvcErrorText: trans('payment.cardFields.cvc.validationError'),
+      cardCvcDecoration: InputDecoration(
+        labelText: trans('payment.cardFields.cvc.label'),
+        hintText: trans('payment.cardFields.cvc.hint'),
+      ),
+      // cardDecoration: BoxDecoration(
+      //   color: theme.indicator,
+      // ),
+    );
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Add payment method'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.check),
-              onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
+      appBar: AppBar(
+        title: Text('Add payment method'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.check),
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                print('saving card=$_cardData');
+                print('saving card=${_cardData.cvc}');
+                print('saving card=${_cardData.number}');
+                Nav.pop();
+              }
+            },
+          )
+        ],
+      ),
+      body: BlocListener<StripePaymentBloc, StripePaymentState>(
+        listener: (BuildContext context, StripePaymentState state) {
+          if (state is StripeOperationSuccess) {
+            // Navigate away in case of an empty cart. The cart gets deleted after the order has been created
+            Nav.pop();
+          } else if (state is StripeError) {
+            showErrorDialog(context, state.code, state.message, onClose: () => Nav.pop());
+          }
+        },
+        child: BlocBuilder<StripePaymentBloc, StripePaymentState>(builder: (context, StripePaymentState state) {
+          if (state is StripePaymentLoading) {
+            return _buildLoadingWidget(context);
+          }
+          return _buildAddCardForm(context);
+        }),
+      ),
+    );
+  }
 
-                  showProgressDialog(context);
+  Widget _buildAddCardForm(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: 12.0),
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: _form,
+      ),
+    );
+  }
 
-                  // var paymentMethod = await this.widget._stripe.api.createPaymentMethodFromCard(_cardData);
-                  // if (this.widget._useSetupIntent) {
-                  //   final createSetupIntentResponse = await this.setupIntent;
-                  //   var setupIntent = await this
-                  //       .widget
-                  //       ._stripe
-                  //       .confirmSetupIntent(createSetupIntentResponse.clientSecret, paymentMethod['id']);
-
-                  //hideProgressDialog(context);
-                  // if (setupIntent['status'] == 'succeeded') {
-                  //   /// A new payment method has been attached, so refresh the store.
-                  //   // ignore: unawaited_futures
-                  //   widget._paymentMethodStore.refresh();
-                  //   Navigator.pop(context, true);
-                  //   return;
-                  // }
-                  //} else {
-                  //paymentMethod = await widget._paymentMethodStore.attachPaymentMethod(paymentMethod['id']);
-                  //   hideProgressDialog(context);
-                  //   Navigator.pop(context, true);
-                  //   return;
-                  // }
-                  Navigator.pop(context, false);
-                }
-              },
-            )
-          ],
-        ),
-        body: _form);
+  Widget _buildLoadingWidget(BuildContext context) {
+    return CenterLoadingWidget();
   }
 
   void hideProgressDialog(BuildContext context) {

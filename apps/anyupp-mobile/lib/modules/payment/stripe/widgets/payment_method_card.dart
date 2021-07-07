@@ -18,25 +18,31 @@ class PaymentMethodCardWidget extends StatelessWidget {
       child: InkWell(
         onTap: () => onItemSelected != null ? onItemSelected(method) : null,
         child: CreditCard(
-            cardNumber: '**** **** **** ${method.last4}',
-            cardExpiry: _getExpirityDateString(method),
-            bankName: method.country,
-            cardHolderName: method.brand,
-            cvv: '',
-            frontBackground: isVisa ? CardBackgrounds.black : CardBackgrounds.white,
-            frontTextColor: isVisa ? Colors.white : Colors.black,
-            backBackground: isVisa ? CardBackgrounds.white : CardBackgrounds.black,
-            showBackSide: false,
-            showShadow: true,
-            cardType: isVisa ? CardType.visa : CardType.masterCard),
+          cardNumber: '**** **** **** ${method.last4}',
+          cardExpiry: _getExpirityDateString(method),
+          bankName: method.name ?? '-',
+          cardHolderName: ' ', //method.brand,
+          cvv: '',
+          frontBackground: isVisa ? CardBackgrounds.black : CardBackgrounds.white,
+          frontTextColor: isVisa ? Colors.white : Colors.black,
+          backBackground: isVisa ? CardBackgrounds.white : CardBackgrounds.black,
+          showBackSide: false,
+          showShadow: true,
+          cardType:  _getCardTypeFromString(method.brand), // isVisa ? CardType.visa : CardType.masterCard,
+        ),
       ),
     );
   }
 
-  
   String _getExpirityDateString(StripePaymentMethod payment) {
     String year = payment.expYear.toString().substring(2);
     String month = payment.expMonth < 10 ? '0${payment.expMonth}' : '${payment.expMonth}';
-    return  '$year/$month';
+    return '$year/$month';
   }
+
+  CardType _getCardTypeFromString(String cardType) {
+    return  CardType.values.firstWhere((element) => 'CardType.${cardType}'.toLowerCase() == element.toString().toLowerCase(), 
+    orElse: () => CardType.other);
+  }
+
 }

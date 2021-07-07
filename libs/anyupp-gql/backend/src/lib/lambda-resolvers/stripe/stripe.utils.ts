@@ -16,6 +16,7 @@ export const mapPaymentMethodToCard = (
   pm: Stripe.PaymentMethod,
 ): AnyuppApi.StripeCard => ({
   id: pm.id,
+  name: pm.metadata?.name,
   country: pm.card?.country,
   last4: pm.card?.last4,
   exp_month: pm.card?.exp_month,
