@@ -331,7 +331,8 @@
   },
   "print": {
     "items": "Tételek",
-    "vatDetails": "ÁFA részletezés"
+    "vatDetails": "ÁFA részletezés",
+    "selectedPaymentMode": "Választott fizetési mód"
   },
   "auth": {
     "login": "Bejelentkezés",
