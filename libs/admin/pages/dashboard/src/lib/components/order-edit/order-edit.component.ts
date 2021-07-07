@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
-import { OrderService } from '@bgap/admin/shared/data-access/data';
+import { OrderService } from '@bgap/admin/shared/data-access/order';
 import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';

@@ -1,28 +1,28 @@
 import { take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { DataService } from '@bgap/admin/shared/data-access/data';
+import { OrderService } from '@bgap/admin/shared/data-access/order';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { fetch } from '@nrwl/angular';
 
-import * as DashboardActions from './dashboard.actions';
+import * as dashboardActions from './dashboard.actions';
 
 @Injectable()
 export class DashboardEffects {
   constructor(
     private actions$: Actions,
     private _store: Store,
-    private _dataService: DataService,
+    private _orderService: OrderService,
   ) {}
 
   setHistoryDate$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DashboardActions.setHistoryDate),
+      ofType(dashboardActions.setHistoryDate),
       fetch({
         run: action =>
-          DashboardActions.updateSelectedUnitOrderHistory({
+          dashboardActions.updateSelectedUnitOrderHistory({
             historyDate: action.historyDate,
           }),
         onError: (/*action, error*/) => {
@@ -34,7 +34,7 @@ export class DashboardEffects {
 
   updateSelectedUnitOrderHistory$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DashboardActions.updateSelectedUnitOrderHistory),
+      ofType(dashboardActions.updateSelectedUnitOrderHistory),
       fetch({
         run: action => {
           this._store
@@ -42,7 +42,7 @@ export class DashboardEffects {
             .pipe(take(1))
             .subscribe(unitId => {
               if (unitId) {
-                this._dataService.listHistoryQuery(unitId, action.historyDate);
+                this._orderService.listHistoryQuery(unitId, action.historyDate);
               }
             });
         },

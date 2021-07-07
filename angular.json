@@ -675,6 +675,27 @@
         }
       }
     },
+    "admin-shared-data-access-order": {
+      "root": "libs/admin/shared/data-access/order",
+      "sourceRoot": "libs/admin/shared/data-access/order/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/data-access/order/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/data-access/order"],
+          "options": {
+            "jestConfig": "libs/admin/shared/data-access/order/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "admin-shared-data-access-orders": {
       "projectType": "library",
       "root": "libs/admin/shared/data-access/orders",
@@ -814,6 +835,27 @@
           "outputs": ["coverage/libs/admin/shared/data-access/role-contexts"],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/role-contexts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-data-access-sdk": {
+      "root": "libs/admin/shared/data-access/sdk",
+      "sourceRoot": "libs/admin/shared/data-access/sdk/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/data-access/sdk/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/data-access/sdk"],
+          "options": {
+            "jestConfig": "libs/admin/shared/data-access/sdk/jest.config.js",
             "passWithNoTests": true
           }
         }
