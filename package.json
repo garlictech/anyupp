@@ -138,7 +138,7 @@
     "@types/aws-lambda": "8.10.78",
     "@types/aws-serverless-express": "3.3.4",
     "@types/chart.js": "2.9.34",
-    "@types/cypress-cucumber-preprocessor": "4.0.0",
+    "@types/cypress-cucumber-preprocessor": "4.0.1",
     "@types/fabric": "4.5.1",
     "@types/googlemaps": "3.43.3",
     "@types/jasmine": "3.7.8",
