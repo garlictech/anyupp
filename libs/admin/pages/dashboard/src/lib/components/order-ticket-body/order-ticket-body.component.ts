@@ -158,17 +158,6 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   }
 
   public print(): void {
-    /*
-    printJS({
-      printable: 'print-content',
-      type: 'html',
-      showModal: false,
-      targetStyles: ['*'],
-      font_size: '10px;',
-      font: 'Arial',
-    });
-    */
-
     const dialog = this._nbDialogService.open(OrderPrintComponent, {
       dialogClass: 'print-dialog',
     });

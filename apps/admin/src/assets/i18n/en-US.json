@@ -342,7 +342,8 @@
   },
   "print": {
     "items": "Items",
-    "vatDetails": "VAT details"
+    "vatDetails": "VAT details",
+    "selectedPaymentMode": "Választott fizetési mód"
   },
   "roles": {
     "role": "Role",
