@@ -173,7 +173,9 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
 
   Widget _buildPayButton(BuildContext context, StripePaymentState state) {
     bool isLoading = state is StripePaymentLoading;
-
+    if (isLoading) {
+      FocusScope.of(context).unfocus();
+    }
     return Container(
       padding: EdgeInsets.all(15.0),
       child: SizedBox(

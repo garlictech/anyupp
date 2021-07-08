@@ -21,6 +21,19 @@ Feature: Authentication
     Then I should be on the login page
     And I should see "AnyUPP Admin" sub-header
 
+  Scenario: Login without role context
+    When I fill out the input with id "username" with the "test-monad@anyupp.com" value
+    And I fill out the input with id "password" with the "Hideghegy12_" value
+    And I click the "sign in" text
+    Then I should see "Invalid role context!" error message
+
+  Scenario: Login with the wrong email and pw
+    When I fill out the input with id "username" with the "teszt-monad@anyupp.com" value
+    And I fill out the input with id "password" with the "Hideghegy_" value
+    And I fill out the "Context" input with the "SU_CTX_ID" id
+    And I click the "sign in" text
+    Then I should see "Incorrect username or password." message
+
   Scenario: Forgotten password steps
     When I click the "Reset password" text
     Then I should see "Reset your password" sub-header
