@@ -17,6 +17,24 @@ class PaymentMethodCardWidget extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 8.0),
       child: InkWell(
         onTap: () => onItemSelected != null ? onItemSelected(method) : null,
+        onLongPress: () {
+                  showMenu(
+                    // onSelected: () => setState(() => imageList.remove(index))}
+                    position: RelativeRect.fromLTRB(100, 100, 100, 100),
+                    items: <PopupMenuEntry>[
+                      PopupMenuItem(
+                        value: 1,
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.delete),
+                            Text("Delete"),
+                          ],
+                        ),
+                      )
+                    ],
+                    context: context,
+                  );
+                },
         child: CreditCard(
           cardNumber: '**** **** **** ${method.last4}',
           cardExpiry: _getExpirityDateString(method),

@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -63,7 +64,8 @@ class _StripeAddPaymentMethodScreenState extends State<StripeAddPaymentMethodScr
                 print('saving card=$_cardData');
                 print('saving card=${_cardData.cvc}');
                 print('saving card=${_cardData.number}');
-                Nav.pop();
+                getIt<StripePaymentBloc>().add(CreateStripeCardEvent(_cardData, null));
+                // Nav.pop();
               }
             },
           )
