@@ -2,7 +2,7 @@ Feature: Create a new component
 
   Background: Login and steps to the Modifiers
     Given I am on the login page
-    When I fill out the input with id "username" with the "test-monad@anyupp.com" value
+    When I fill out the input with id "username" with the "anyupp-dev-b3182b@inbox.mailtrap.io" value
     And I fill out the input with id "password" with the "Hideghegy12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
