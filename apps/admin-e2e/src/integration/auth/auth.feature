@@ -7,7 +7,7 @@ Feature: Authentication
     Then I should see "AnyUPP Admin" sub-header
 
   Scenario: Login and log out
-    When I fill out the input with id "username" with the "test-monad@anyupp.com" value
+    When I fill out the input with id "username" with the "anyupp-dev-b3182b@inbox.mailtrap.io" value
     And I fill out the input with id "password" with the "Hideghegy12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
@@ -21,9 +21,22 @@ Feature: Authentication
     Then I should be on the login page
     And I should see "AnyUPP Admin" sub-header
 
-  Scenario: Reset password
+  Scenario: Login without role context
+    When I fill out the input with id "username" with the "anyupp-dev-b3182b@inbox.mailtrap.io" value
+    And I fill out the input with id "password" with the "Hideghegy12_" value
+    And I click the "sign in" text
+    Then I should see "Invalid role context!" error message
+
+  Scenario: Login with the wrong email and pw
+    When I fill out the input with id "username" with the "teszt-monad@anyupp.com" value
+    And I fill out the input with id "password" with the "Hideghegy_" value
+    And I fill out the "Context" input with the "SU_CTX_ID" id
+    And I click the "sign in" text
+    Then I should see "Incorrect username or password." message
+
+  Scenario: Forgotten password steps
     When I delete all messages from the inbox
-    When I click the "Reset password" text
+    And I click the "Reset password" text
     And I fill out the username input with the "anyupp-dev-b3182b@inbox.mailtrap.io" value
     And I click the "Send Code" text
     And I wait for the message
