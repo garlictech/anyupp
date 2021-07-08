@@ -111,6 +111,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
             productName: { ...item.productName },
             sumPriceShown: { ...item.sumPriceShown },
             variantName: { ...item.variantName },
+            configSets: item.configSets,
           };
         }
 

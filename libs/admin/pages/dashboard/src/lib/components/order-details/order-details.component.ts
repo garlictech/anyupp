@@ -29,6 +29,7 @@ import {
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { OrderPrintComponent } from '../order-print/order-print.component';
 
 @UntilDestroy()
 @Component({
@@ -40,6 +41,7 @@ import { select, Store } from '@ngrx/store';
 export class OrderDetailsComponent implements OnInit, OnDestroy {
   @Input() order!: CrudApi.Order;
   @Input() unit?: CrudApi.Unit;
+  @Input() allowPrintOrder = false;
   public dashboardSettings!: IDashboardSettings;
   public EDashboardListMode = EDashboardListMode;
   public EOrderStatus = CrudApi.OrderStatus;
@@ -272,5 +274,13 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     return (
       this.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
     );
+  }
+
+  public printOrder(order: CrudApi.Order) {
+    const dialog = this._nbDialogService.open(OrderPrintComponent, {
+      dialogClass: 'print-dialog',
+    });
+
+    dialog.componentRef.instance.orders = [order];
   }
 }
