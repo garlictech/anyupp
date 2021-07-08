@@ -236,7 +236,9 @@
       "title": "Fizetés online",
       "add_card_tooltip": "Új kártya",
       "save_card": "Kártya elmentése",
-      "payment_success": "Sikeres fizetés!"
+      "payment_success": "Sikeres fizetés!",
+      "new_card" : "Új kártya",
+      "saved_cards" : "Mentett Kártyák"
     }
   },
   "selectUnit": {

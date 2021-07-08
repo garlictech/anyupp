@@ -20,4 +20,4 @@ export 'payment/simplepay/screens/payment_screen.dart';
 export 'payment/simplepay/screens/simplepay_screen.dart';
 export 'payment/stripe/screens/add_payment_method_screen.dart';
 export 'payment/stripe/screens/payment_methods_screen.dart';
-export 'payment/stripe/screens/stripe_payment_screen.dart';
+export 'payment/stripe/widgets/new_card_payment_widget.dart';

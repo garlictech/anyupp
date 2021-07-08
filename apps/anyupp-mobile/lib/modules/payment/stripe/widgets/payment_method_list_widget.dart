@@ -5,10 +5,13 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class StripePaymentMethodListWidget extends StatelessWidget {
   final OnPaymentMethodSelected onItemSelected;
+  final int selected;
 
   final List<StripePaymentMethod> methods;
 
-  const StripePaymentMethodListWidget({Key key, this.methods, this.onItemSelected}) : super(key: key);
+  const StripePaymentMethodListWidget(
+      {Key key, this.methods, this.onItemSelected, this.selected})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,7 @@ class StripePaymentMethodListWidget extends StatelessWidget {
                 verticalOffset: 50.0,
                 child: FadeInAnimation(
                   child: PaymentMethodCardWidget(
+                    selected: position == selected,
                     method: methods[position],
                     onItemSelected: onItemSelected,
                   ),
