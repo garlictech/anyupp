@@ -4,7 +4,7 @@ import { StripeResolverDeps } from '../stripe.utils';
 
 export const deleteStripeCard =
   (userId: string, input: AnyuppApi.StripeCardDeleteInput) =>
-  async (deps: StripeResolverDeps): Promise<Boolean> => {
+  async (deps: StripeResolverDeps): Promise<boolean> => {
     console.debug('**** deleteStripeCard().start()');
 
     const user = await loadUser(userId)(deps);
