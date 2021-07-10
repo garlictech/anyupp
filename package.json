@@ -141,7 +141,7 @@
     "@types/cypress-cucumber-preprocessor": "4.0.1",
     "@types/fabric": "4.5.1",
     "@types/googlemaps": "3.43.3",
-    "@types/jasmine": "3.7.8",
+    "@types/jasmine": "3.8.1",
     "@types/jasminewd2": "2.0.10",
     "@types/jest": "26.0.24",
     "@types/lodash-es": "4.17.4",
