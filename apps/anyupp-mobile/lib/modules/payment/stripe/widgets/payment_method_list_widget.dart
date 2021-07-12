@@ -24,7 +24,7 @@ class StripePaymentMethodListWidget extends StatelessWidget {
             itemCount: methods.length,
             options: CarouselOptions(
               onPageChanged: (index, reason) => onItemSelected(methods[index]),
-              viewportFraction: 0.55,
+              viewportFraction: 0.45,
               scrollDirection: Axis.vertical,
               enlargeCenterPage: false,
               enableInfiniteScroll: false,
