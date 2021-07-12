@@ -1,6 +1,10 @@
 import { Client, Inbox } from 'mailtrap';
 
-import { config } from '@bgap/shared/config';
+//import { config } from '@bgap/shared/config';
+
+const config = {
+  MailtrapApiKey: 'dssddsds',
+};
 
 export const mailtrapBox = () => {
   const client = new Client({
