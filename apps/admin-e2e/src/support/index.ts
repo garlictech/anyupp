@@ -15,8 +15,6 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
-import './mailtrap';
-export * from './mailtrap';
 
 // Commands from 3rd party libs
 import '@testing-library/cypress/add-commands';
