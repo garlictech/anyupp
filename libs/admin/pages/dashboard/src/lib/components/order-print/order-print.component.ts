@@ -1,6 +1,8 @@
+import { LocalizePipe } from 'libs/admin/shared/pipes/src';
 import * as printJS from 'print-js';
 import { combineLatest } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,8 +13,8 @@ import {
 } from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { ICurrencyValue, IKeyValueObject } from '@bgap/shared/types';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { ICurrencyValue, IKeyValueObject } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -40,6 +42,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     private _store: Store,
     private _nbDialogRef: NbDialogRef<unknown>,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _localizePipe: LocalizePipe,
   ) {
     this.sum = {
       value: 0,
@@ -111,7 +114,14 @@ export class OrderPrintComponent implements OnInit, OnChanges {
             productName: { ...item.productName },
             sumPriceShown: { ...item.sumPriceShown },
             variantName: { ...item.variantName },
-            configSets: item.configSets,
+            configSets: (item.configSets || [])
+              .map(
+                set =>
+                  `<div>${this._localizePipe.transform(set.name)}: ${set.items
+                    .map(item => this._localizePipe.transform(item.name))
+                    .join(', ')}</div>`,
+              )
+              .join(''),
           };
         }
 
