@@ -1,4 +1,3 @@
-import { LocalizePipe } from 'libs/admin/shared/pipes/src';
 import * as printJS from 'print-js';
 import { combineLatest } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
@@ -13,6 +12,7 @@ import {
 } from '@angular/core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { LocalizePipe } from '@bgap/admin/shared/pipes';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { ICurrencyValue, IKeyValueObject } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
