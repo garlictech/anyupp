@@ -45,10 +45,7 @@ const ce = (tag: string) =>
 const userData = pipe([testAdminEmail, ...otherAdminEmails], emails =>
   emails.map((email, index) => ({
     email,
-    username:
-      email === 'anyupp-dev-b3182b@inbox.mailtrap.io'
-        ? 'test-monad'
-        : email.split('@')[0],
+    username: email.split('@')[0],
     phone: `+123456789${index}`,
   })),
 );

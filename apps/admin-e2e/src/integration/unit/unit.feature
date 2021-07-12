@@ -2,7 +2,7 @@ Feature: Create or update Unit
 
   Background: Login and steps to the Groups
     Given I am on the login page
-    When I fill out the input with id "username" with the "anyupp-dev-b3182b@inbox.mailtrap.io" value
+    When I fill out the input with id "username" with the "test-monad@anyupp.com" value
     And I fill out the input with id "password" with the "Hideghegy12_" value
     And I fill out the "Context" input with the "SU_CTX_ID" id
     And I click the "sign in" text
@@ -34,7 +34,7 @@ Feature: Create or update Unit
     And I click on the "Apple Pay" checkbox
     And I click on the "Stripe" checkbox
     And I click on the "Simple" checkbox
-    And I fill out the "Email" input with "anyupp-dev-b3182b@inbox.mailtrap.io"
+    And I fill out the "Email" input with "test-monad@anyupp.com"
     And I fill out the "Phone" input with "1234567890"
     And I fill out the "Title" input with "test title"
     And I fill out the "Country" input with "Hungary"
@@ -50,7 +50,7 @@ Feature: Create or update Unit
     And I click on the "Submit" button
     Then I should see "test unit e2e" text
     And I should see "test description e2e" text
-    And I should see "anyupp-dev-b3182b@inbox.mailtrap.io" text
+    And I should see "test-monad@anyupp.com" text
     And I should see "1234567890" text
 
   Scenario: Update the Unit and the activity
