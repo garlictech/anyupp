@@ -1,24 +1,14 @@
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_bloc.dart';
-import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_state.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PaymentButtonWidget extends StatelessWidget {
+class AddCardButtonWidget extends StatelessWidget {
   final Function _startStripePayment;
-  PaymentButtonWidget(this._startStripePayment);
+  AddCardButtonWidget(this._startStripePayment);
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StripePaymentBloc, StripePaymentState>(
-      builder: (context, state) {
-        bool isLoading = state is StripePaymentLoading;
-        if (isLoading) {
-          FocusScope.of(context).unfocus();
-        }
-        return Container(
+      return Container(
           padding: EdgeInsets.all(15.0),
           child: SizedBox(
             width: double.infinity,
@@ -30,13 +20,9 @@ class PaymentButtonWidget extends StatelessWidget {
                 ),
                 primary: theme.indicator,
               ),
-              onPressed: isLoading ? null : () => _startStripePayment(),
-              child: isLoading
-                  ? CenterLoadingWidget(
-                      size: 20.0,
-                    )
-                  : Text(
-                      trans(context, 'orders.stripepay'),
+              onPressed: () => _startStripePayment(),
+              child: Text(
+                      trans(context, 'payment.manageCard.add_card'),
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         color: theme.text2,
@@ -46,8 +32,6 @@ class PaymentButtonWidget extends StatelessWidget {
             ),
           ),
         );
-      },
-    );
   }
 
 }

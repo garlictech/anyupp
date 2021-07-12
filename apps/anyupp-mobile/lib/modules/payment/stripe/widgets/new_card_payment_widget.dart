@@ -6,7 +6,6 @@ import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/payment/stripe/widgets/payment_button_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,12 +71,6 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
           final scaffold = ScaffoldMessenger.of(context);
           scaffold.showSnackBar(SnackBar(
             content: Text(trans('payment.stripe.payment_success')),
-            // action: SnackBarAction(
-            //     label: 'Close',
-            //     onPressed: () {
-            //       scaffold.hideCurrentSnackBar();
-            //       // Nav.pop();
-            //     }),
           ));
           Nav.pop();
           getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
@@ -86,24 +79,10 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
       },
       child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
         builder: (context, StripePaymentState state) {
-          // if (state is StripeOperationSuccess) {
-          //   return _buildPaymentSuccess(context);
-          // }
-
           if (state is StripeError) {
             return _buildPaymentFailed(context, state.code, state.message);
           }
-          // if (state is StripePaymentMethodsList) {
-          //   return _buildPaymentMethodsList(state.data);
-          // }
-          // if (state is StripeError) {
-          //   return CommonErrorWidget(error: state.code, description: state.message);
-          // }
-          // if (state is StripePaymentLoading) {
-          //   return CenterLoadingWidget();
-          // }
           return Column(
-            //mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(child: _buildPaymentMethodForm(context, state)),
               PaymentButtonWidget(_startStripePayment)
@@ -165,44 +144,6 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
             child: child,
           );
   }
-
-  // Widget _buildPayButton(BuildContext context, StripePaymentState state) {
-  //   bool isLoading = state is StripePaymentLoading;
-  //   if (isLoading) {
-  //     FocusScope.of(context).unfocus();
-  //   }
-  //   return Container(
-  //     padding: EdgeInsets.all(15.0),
-  //     child: SizedBox(
-  //       width: double.infinity,
-  //       height: 50.0,
-  //       child: ElevatedButton(
-  //         style: ElevatedButton.styleFrom(
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(8.0),
-  //             // side: BorderSide(
-  //             // //  color: theme.indicator,
-  //             // ),
-  //           ),
-  //           primary: theme.indicator,
-  //         ),
-  //         onPressed: isLoading ? null : () => _startStripePayment(),
-  //         child: isLoading
-  //             ? CenterLoadingWidget(
-  //                 size: 20.0,
-  //               )
-  //             : Text(
-  //                 trans('orders.stripepay'),
-  //                 style: GoogleFonts.poppins(
-  //                   fontSize: 16,
-  //                   color: theme.text2,
-  //                   fontWeight: FontWeight.w500,
-  //                 ),
-  //               ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildPaymentFailed(
       BuildContext context, String code, String message) {

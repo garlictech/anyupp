@@ -97,7 +97,7 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
         yield StripePaymentLoading();
         StripePaymentMethod result = await _paymentRepository.createStripeCard(event.stripeCard, event.name);
         print('StripePaymentBloc.CreateStripeCard.result=$result');
-        yield StripeOperationSuccess();
+        yield StripeCardCreated();
       }
 
       // --- Update card
@@ -114,6 +114,7 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
         bool result = await _paymentRepository.deleteStripeCard(event.stripeCardId);
         print('StripePaymentBloc.DeleteStripeCard.result=$result');
         yield StripeOperationSuccess();
+        getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
       }
 
     } on PlatformException catch (pe) {

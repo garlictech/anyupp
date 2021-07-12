@@ -18,6 +18,6 @@ export 'splash/screens/splash_screen.dart';
 export 'splash/screens/on_boarding_screen.dart';
 export 'payment/simplepay/screens/payment_screen.dart';
 export 'payment/simplepay/screens/simplepay_screen.dart';
-export 'payment/stripe/screens/add_payment_method_screen.dart';
+export 'payment/stripe/widgets/add_payment_method_widget.dart';
 export 'payment/stripe/screens/payment_methods_screen.dart';
 export 'payment/stripe/widgets/new_card_payment_widget.dart';

@@ -1,7 +1,12 @@
 import 'package:awesome_card/awesome_card.dart';
-import 'package:fa_prev/models.dart';
-import 'package:flutter/material.dart';
+import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_bloc.dart';
+import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/widgets/common_confirm_dialog.dart';
+import 'package:flutter/material.dart';
 
 import 'select_payment_method_dialog.dart';
 
@@ -17,67 +22,82 @@ class PaymentMethodCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isVisa = method.brand == 'visa';
-    return
-        //   padding: EdgeInsets.all(3.0),
-        Wrap(
+
+    //   padding: EdgeInsets.all(3.0),
+    return Wrap(
+      children: [
+        Stack(
           children: [
             Container(
               decoration: selected
                   ? BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        width: 5,
-                        color: theme.highlight,
+                        width: 2,
+                        color: theme.indicator,
                       ),
                     )
                   : null,
-              child: InkWell(
-                  onTap: () => onItemSelected != null ? onItemSelected(method) : null,
-                  onLongPress: () {
-                    showMenu(
-                      // onSelected: () => setState(() => imageList.remove(index))}
-                      position: RelativeRect.fromLTRB(100, 100, 100, 100),
-                      items: <PopupMenuEntry>[
-                        PopupMenuItem(
-              value: 1,
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.delete),
-                  Text("Delete"),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CreditCard(
+                    cardNumber: '**** **** **** ${method.last4}',
+                    cardExpiry: _getExpirityDateString(method),
+                    bankName: method.name ?? '-',
+                    cardHolderName: ' ', //method.brand,
+                    cvv: '',
+                    frontBackground:
+                        isVisa ? CardBackgrounds.black : CardBackgrounds.white,
+                    frontTextColor: isVisa ? Colors.white : Colors.black,
+                    backBackground:
+                        isVisa ? CardBackgrounds.white : CardBackgrounds.black,
+                    showBackSide: false,
+                    showShadow: true,
+                    cardType: _getCardTypeFromString(method
+                        .brand), // isVisa ? CardType.visa : CardType.masterCard,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-                        )
-                      ],
-                      context: context,
-                    );
-                  },
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20,),
-                      CreditCard(
-
-                        cardNumber: '**** **** **** ${method.last4}',
-                        cardExpiry: _getExpirityDateString(method),
-                        bankName: method.name ?? '-',
-                        cardHolderName: ' ', //method.brand,
-                        cvv: '',
-                        frontBackground:
-                            isVisa ? CardBackgrounds.black : CardBackgrounds.white,
-                        frontTextColor: isVisa ? Colors.white : Colors.black,
-                        backBackground:
-                            isVisa ? CardBackgrounds.white : CardBackgrounds.black,
-                        showBackSide: false,
-                        showShadow: true,
-                        cardType: _getCardTypeFromString(
-                            method.brand), // isVisa ? CardType.visa : CardType.masterCard,
-                      ),
-                      SizedBox(height: 20,),
-                    ],
-                  ),
-                ),
             ),
+
+            Positioned(
+              left: 35,
+              top: 35,
+              child: GestureDetector(
+                                 onTap: () async {
+                   await showConfirmDialog(context,
+                       onConfirm: () => getIt<StripePaymentBloc>()
+                           .add(DeleteStripeCardEvent(method.id)),
+                       title: trans(context, "payment.manageCard.are_you_sure"),
+                       message:trans(context, "payment.manageCard.card_will_delete"),
+                       cancelText: trans(context, "payment.manageCard.cancel"),
+                       confirmText: trans(context, "payment.manageCard.delete"));
+                 },
+                
+                              child: Container(
+                    height: 40,
+                    width: 40,
+                    child: Icon(
+                      
+                      Icons.delete,
+                      color: isVisa ? Colors.white : Colors.black,
+                      
+                    )),
+              ),
+            ),
+            //    )
+            //  : Container()
           ],
-        );
+        ),
+      ],
+    );
   }
 
   String _getExpirityDateString(StripePaymentMethod payment) {
