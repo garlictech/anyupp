@@ -101,7 +101,7 @@ class _ProfileState extends State<Profile> {
           createOptionMenu(trans('profile.menu.about'), () => Nav.to(AboutApp()), true),
           createOptionMenu(trans('profile.menu.settings'), () => Nav.to(SettingsScreen()), true),
           createOptionMenu(trans('profile.menu.transactions'), () => Nav.to(TransactionsScreen()), true),
-          createOptionMenu(trans('profile.menu.cards'), () => Nav.to(StripePaymentMethodsScreen()), true), // TODO Removed
+          createOptionMenu(trans('profile.menu.cards'), () => Nav.to(StripePaymentMethodsScreen()), true), 
           createOptionMenu(trans('profile.menu.regulations'), () => launch('https://www.anyupp.com/privacy/'), true),
           createOptionMenu(trans('profile.menu.logout'), () => showConfirmLogoutDialog(context), false),
         ],
