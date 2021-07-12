@@ -7,7 +7,6 @@ import 'package:fa_prev/modules/cart/widgets/invoice_form_bottom_sheet.dart';
 import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/payment/stripe/screens/stripe_payment_screen.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
