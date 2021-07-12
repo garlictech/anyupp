@@ -1,4 +1,4 @@
-import { mailtrapBox } from '../../../support';
+import { mailtrapBox } from '../../../support/mailtrap';
 import { When } from 'cypress-cucumber-preprocessor/steps';
 
 const mtBox = mailtrapBox();
