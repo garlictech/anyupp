@@ -54,6 +54,7 @@ export const configurePermissions = (
     'StripePublishableKey',
     'FacebookAppId',
     'GoogleApiKey',
+    'MailtrapApiKey',
   ].map(paramName => `/${prefix}/${paramName}`);
 
   resources.forEach((resource, index) => {

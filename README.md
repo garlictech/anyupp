@@ -323,7 +323,7 @@ To execute the seeder locally run the following command:
 ```
   test-bob@anyupp.com,
   test-alice@anyupp.com,
-  test-monad@anyupp.com,
+  anyupp-dev-b3182b@inbox.mailtrap.io (ex test-monad@anyupp.com),
   test-kati@anyupp.com,
   test-emen@anyupp.com,
 ```

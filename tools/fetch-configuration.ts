@@ -35,9 +35,11 @@ const generatedParams = [
   'ConsumerUserPoolId',
 ].map(paramName => `/${prefix}/generated/${paramName}`);
 
-const fixParams = ['StripePublishableKey', 'GoogleApiKey'].map(
-  paramName => `/${prefix}/${paramName}`,
-);
+const fixParams = [
+  'StripePublishableKey',
+  'GoogleApiKey',
+  'MailtrapApiKey',
+].map(paramName => `/${prefix}/${paramName}`);
 
 pipe(
   [...generatedParams, ...fixParams],

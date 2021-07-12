@@ -34,10 +34,12 @@ Feature: Authentication
     And I click the "sign in" text
     Then I should see "Incorrect username or password." message
 
-  Scenario: Forgotten password steps
-    When I click the "Reset password" text
-    Then I should see "Reset your password" sub-header
-    When I fill out the username input with the "test-monad@anyupp.com" value
-    Then I should see the Send Code button
-    And I click the "Back to Sign In" text
-    Then I should see "AnyUPP Admin" sub-header
+  #Scenario: Forgotten password steps
+  #  When I delete all messages from the inbox
+  #  And I click the "Reset password" text
+  #  And I fill out the username input with the "test-monad@anyupp.com" value
+  #  And I click the "Send Code" text
+  #  And I wait for the message
+  #  And I read and type the verification code from the email
+  #  And I click to the forgot password button
+  #  Then I should be on the login page
