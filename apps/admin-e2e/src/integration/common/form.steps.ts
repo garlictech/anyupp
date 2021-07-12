@@ -21,7 +21,7 @@ When('I set the currency to {string}', (value: string) => {
 });
 
 When(
-  'I fill out the {string} input with {string}',
+  'I fill out the {string} input with {fixture}',
   (inputLabel: string, value: string) => {
     cy.findAllByLabelText(inputLabel).first().clear().type(value);
   },

@@ -9,5 +9,8 @@ const fixtures: Record<string, string> = {
 defineParameterType({
   name: 'fixture',
   regexp: new RegExp('.*'),
-  transformer: s => fixtures[s] ?? s,
+  // Cypress passes the apostrophes (", ') to this string. As we always pass
+  // strings in apostrophes, we simply remove teh first and last characters. They are
+  // always the apostrophes.
+  transformer: s => fixtures[s] ?? s.slice(1, s.length - 1),
 });

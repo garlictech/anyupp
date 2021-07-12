@@ -8,7 +8,7 @@ Then('the {string} title is displayed', (title: string) => {
   cy.contains(title).should('exist');
 });
 
-Then('I should see {string} text', (text: string) => {
+Then('I should see {fixture} text', (text: string) => {
   cy.contains(text, { matchCase: false }).should('exist');
 });
 
