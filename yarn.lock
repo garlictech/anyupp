@@ -17508,7 +17508,7 @@ magic-string@0.25.7, magic-string@^0.25.0:
   dependencies:
     sourcemap-codec "^1.4.4"
 
-mailtrap@^2.0.2:
+mailtrap@2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/mailtrap/-/mailtrap-2.0.2.tgz#8d803d44e5f8f59b712370d2f0c25c6afe50c084"
   integrity sha512-IQqnbaYOmsJPIH+s70FsOXCemPhjtFR95oq4b9tOYKkdbFw5oPGxJyFRWgdrYDdRp3yWKehmECCTIXxU1h76VQ==
