@@ -33,6 +33,7 @@ const generatedParams = [
   'ConsumerWebUserPoolClientId',
   'ConsumerUserPoolDomain',
   'ConsumerUserPoolId',
+  'AdminUserPoolId',
 ].map(paramName => `/${prefix}/generated/${paramName}`);
 
 const fixParams = [

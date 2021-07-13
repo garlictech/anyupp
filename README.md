@@ -361,59 +361,7 @@ Execute on single integration test suite:
 
 ## Executing cucumber/cypress tests
 
-After cloning the repo:
-
-```
-yarn install
-yarn nx e2e admin-e2e
-```
-
-The last command should build and start the admin, launch cypress and execute the admin tests. To start it in watch mode:
-
-```
-yarn nx e2e admin-e2e --watch
-```
-
-To launch cypress and execute the admin test on the REMOTE admin without the starting the admin locally.
-
-```
-yarn nx e2e-remote admin-e2e --watch --baseUrl=https://qa-admin-anyupp-backend.anyupp.com
-```
-
-All the reports and videos recording the test execution are generated in the `cyreport` folder of the project root. To generate a nice html report out of them:
-
-```
-
-yarn cucumber:report
-```
-
-then open `cyreport/cucumber_report.html` file with the browser. Enjoy!
-
-To get a super-cool report, with failure screenshots embedded:
-
-`yarn cypress:generate:html:report`
-
-then open `cyreport/cypress-tests-report.html` file with the browser.
-
-### Writing Cucumber/Cypress tests
-
-#### VsCode
-
-To have Gherkin Syntax highlighting, step suggestions, linting and "Go to definition" support install and configure the
-[Cucumber Full Language Support](https://github.com/alexkrechik/VSCucumberAutoComplete#how-to-use) extension
-
-1. Install the `cucumberautocomplete` extension
-
-1. Set the following configs in your `.vscode/settings.json` file
-
-```
-    "cucumberautocomplete.steps": [
-      "apps/admin-e2e/src/integration/**/*.steps.ts",
-    ],
-    "cucumberautocomplete.strictGherkinCompletion": true,
-    "cucumberautocomplete.smartSnippets": true,
-    "cucumberautocomplete.stepsInvariants": true
-```
+See [e2e-testing-with-Cucumber].
 
 ## The generated nx docs
 
