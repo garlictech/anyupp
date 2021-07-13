@@ -237,17 +237,17 @@
       "add_card_tooltip": "Új kártya",
       "save_card": "Kártya elmentése",
       "payment_success": "Sikeres fizetés!",
-      "new_card" : "Új kártya",
-      "saved_cards" : "Mentett Kártyák"
+      "new_card": "Új kártya",
+      "saved_cards": "Mentett Kártyák"
     },
     "manageCard": {
-      "card_will_delete" : "Ez a kártya törlésre kerül.",
-      "are_you_sure" : "Biztos vagy benne?",
-      "delete" : "Törlés",
-      "cancel" : "Vissza",
-      "add_card" : "Kártya hozzáadása",
-      "card_added" : "Kártya sikeresen hozzáadva!",
-      "success" : "Siker!"
+      "card_will_delete": "Ez a kártya törlésre kerül.",
+      "are_you_sure": "Biztos vagy benne?",
+      "delete": "Törlés",
+      "cancel": "Vissza",
+      "add_card": "Kártya hozzáadása",
+      "card_added": "Kártya sikeresen hozzáadva!",
+      "success": "Siker!"
     }
   },
   "selectUnit": {
