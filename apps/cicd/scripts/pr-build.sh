@@ -4,7 +4,7 @@ set -e
 APPNAME=$1
 STAGE=$2
 
-generatedLibExcludes=--exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api
+generatedLibExcludes="--exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api"
 
 time ./tools/build-workspace.sh ${APPNAME} ${STAGE}
 time yarn nx format:check --all
