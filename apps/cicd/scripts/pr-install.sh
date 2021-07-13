@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-docker pull cirrusci/flutter &
+docker pull cirrusci/flutter 
 chmod +x ./tools/*.sh
 ./tools/setup-aws-environment.sh
 time ./tools/install-nodejs-14.sh
