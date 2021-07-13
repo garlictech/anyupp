@@ -92,7 +92,7 @@
     "lodash-es": "4.17.21",
     "luxon": "2.0.1",
     "ngx-color-picker": "11.0.0",
-    "ngx-logger": "4.2.2",
+    "ngx-logger": "4.3.3",
     "print-js": "1.6.0",
     "ramda": "0.27.1",
     "reflect-metadata": "0.1.13",
