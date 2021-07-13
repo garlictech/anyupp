@@ -133,8 +133,16 @@
     "@nrwl/tao": "12.5.8",
     "@nrwl/workspace": "12.5.8",
     "@nxrocks/nx-flutter": "2.1.0",
+<<<<<<< HEAD
+    "@serverless-stack/cli": "0.32.0",
+    "@serverless-stack/resources": "0.32.0",
+||||||| 40e04c78
+    "@serverless-stack/resources": "0.32.0",
+    "@serverless-stack/cli": "0.32.0",
+=======
     "@serverless-stack/resources": "0.32.0",
     "@serverless-stack/cli": "0.32.1",
+>>>>>>> 0031444b640e2a533e44ba35a643792df6b4ed16
     "@testing-library/cypress": "7.0.6",
     "@types/aws-lambda": "8.10.78",
     "@types/aws-serverless-express": "3.3.4",
