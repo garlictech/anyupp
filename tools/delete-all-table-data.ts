@@ -27,7 +27,7 @@ defer(() =>
   .pipe(
     tap(() =>
       console.warn(
-        '***Deleting cognito users: currently max 60. If there are more users, then handle the Limit parameter, and delete teh users in multiple steps.',
+        '*** Deleting cognito users: currently max 60. If there are more users, then handle the Limit parameter, and delete the users in multiple steps.',
       ),
     ),
     map(
