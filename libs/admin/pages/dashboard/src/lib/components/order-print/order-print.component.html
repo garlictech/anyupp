@@ -43,8 +43,8 @@
           {{ 'common.date' | translate }}: {{ now | localizedDate: 'short' }}
         </div>
         <div class="mb-4">
-          {{ 'orders.tableNum' | translate }}: {{ place?.seat || '?' }}/{{
-            place?.table || '?'
+          {{ 'orders.tableNum' | translate }}: {{ place?.table || '?' }}/{{
+            place?.seat || '?'
           }}
         </div>
 
@@ -70,8 +70,16 @@
         <div *ngFor="let order of parsedOrders">
           <div class="row p-0 m-0">
             <div class="col-8 p-0">
-              {{ order.productName | localize }}
-              {{ order.variantName | localize }}
+              <div>
+                {{ order.productName | localize }}
+                {{ order.variantName | localize }}
+
+                <div
+                  class="font-weight-normal"
+                  *ngIf="order.configSets"
+                  [innerHTML]="order.configSets"
+                ></div>
+              </div>
             </div>
             <div class="col-1 p-0">{{ order.quantity }}x</div>
             <div class="col-3 p-0 text-end">
