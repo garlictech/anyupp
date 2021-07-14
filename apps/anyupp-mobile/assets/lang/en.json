@@ -236,7 +236,18 @@
       "title": "Pay with Stripe",
       "add_card_tooltip": "Add new card",
       "save_card": "Save card for later use",
-      "payment_success": "Payment success!"
+      "payment_success": "Payment success!",
+      "new_card": "New Card",
+      "saved_cards": "Saved Cards"
+    },
+    "manageCard": {
+      "card_will_delete": "This card will be deleted",
+      "are_you_sure": "Are you sure?",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "add_card": "Add New Card",
+      "card_added": "Card added successfully!",
+      "success": "Success!"
     }
   },
   "selectUnit": {

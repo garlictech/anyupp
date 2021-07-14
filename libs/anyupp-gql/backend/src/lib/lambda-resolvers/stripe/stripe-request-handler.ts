@@ -1,82 +1,43 @@
 // import { missingParametersCheck } from '@bgap/shared/utils';
-import * as stripeService from './stripe.service';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import { createStripeCard } from './handlers/create-stripe-card';
+import { deleteStripeCard } from './handlers/delete-stripe-card';
+import { listStripeCards } from './handlers/list-stripe-cards';
+import { startStripePayment } from './handlers/start-stripe-payment';
+import { updateStripeCard } from './handlers/update-stripe-card';
 import { StripeResolverDeps } from './stripe.utils';
 
-// interface WithStripeCustomer {
-//   stripeCustomerId: string;
-// }
 interface WithCognitoUser {
   userId: string;
 }
 
-// type UpdateStripeCardRequest = WithStripeCustomer &
-//   AnyuppApi.MutationUpdateMyStripeCardArgs;
-// type DeleteStripeCardRequest = WithStripeCustomer &
-//   AnyuppApi.MutationDeleteMyStripeCardArgs;
 type StartStripePaymentRequest = WithCognitoUser &
   AnyuppApi.MutationStartStripePaymentArgs;
+
+type CreateStripeCardRequest = WithCognitoUser &
+  AnyuppApi.MutationCreateStripeCardArgs;
+
+type DeleteStripeCardRequest = WithCognitoUser &
+  AnyuppApi.MutationDeleteMyStripeCardArgs;
+
+type UpdateStripeCardRequest = WithCognitoUser &
+  AnyuppApi.MutationUpdateMyStripeCardArgs;
 
 export type ListStripeCardsRequest = WithCognitoUser;
 
 export const stripeRequestHandler = (deps: StripeResolverDeps) => ({
-  // LIST STRIPE CARDS FOR THE LOGGED IN CUSTOMER
   listStripeCards: (requestPayload: ListStripeCardsRequest) =>
-    stripeService.listStripeCards(requestPayload.userId)(deps),
+    listStripeCards(requestPayload.userId)(deps),
 
-  startStripePayment: (requestPayload: StartStripePaymentRequest) => {
-    const { userId, input } = requestPayload as StartStripePaymentRequest;
+  createStripeCard: (requestPayload: CreateStripeCardRequest) =>
+    createStripeCard(requestPayload.userId, requestPayload.input)(deps),
 
-    return stripeService.startStripePayment(userId, input)(deps);
-  },
+  deleteStripeCard: (requestPayload: DeleteStripeCardRequest) =>
+    deleteStripeCard(requestPayload.userId, requestPayload.input)(deps),
 
-  // getStripeCardsForCustomer(
-  //   requestPayload: unknown,
-  // ): Promise<AnyuppApi.StripeCard[]> {
-  //   const { stripeCustomerId } = requestPayload as WithStripeCustomer;
+  updateStripeCard: (requestPayload: UpdateStripeCardRequest) =>
+    updateStripeCard(requestPayload.userId, requestPayload.input)(deps),
 
-  //   if (!stripeCustomerId) {
-  //     return Promise.resolve([]);
-  //   }
-
-  //   return stripeService.getStripeCardsForCustomer(stripeCustomerId);
-  // },
-  // updateStripeCard(requestPayload: unknown): Promise<AnyuppApi.StripeCard> {
-  //   const {
-  //     stripeCustomerId,
-  //     input,
-  //   } = requestPayload as UpdateStripeCardRequest;
-
-  //   missingParametersCheck(requestPayload, ['stripeCustomerId']);
-  //   missingParametersCheck(input, ['id']);
-
-  //   return stripeService.updateStripeCard(stripeCustomerId, input);
-  // },
-  // deleteStripeCard(requestPayload: unknown) {
-  //   const {
-  //     stripeCustomerId,
-  //     input,
-  //   } = requestPayload as DeleteStripeCardRequest;
-
-  //   missingParametersCheck(requestPayload, ['stripeCustomerId']);
-  //   missingParametersCheck(input, ['id']);
-
-  //   return stripeService.deleteStripeCard(stripeCustomerId, input);
-  // },
-  // startStripePaymentOrig(requestPayload: unknown) {
-  //   const {
-  //     stripeCustomerId,
-  //     input,
-  //   } = requestPayload as StartStripePaymentRequest;
-
-  //   missingParametersCheck(requestPayload, ['stripeCustomerId']);
-  //   missingParametersCheck(input, [
-  //     'chainId',
-  //     'unitId',
-  //     'paymentMethod',
-  //     'userLocation',
-  //   ]);
-
-  //   return stripeService.startStripePayment(stripeCustomerId, input);
-  // },
+  startStripePayment: (requestPayload: StartStripePaymentRequest) =>
+    startStripePayment(requestPayload.userId, requestPayload.input)(deps),
 });

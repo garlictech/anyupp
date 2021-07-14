@@ -1,0 +1,20 @@
+const MUTATION_UPDATE_STRIPE_CARD = '''
+mutation UpdateStripeCardMutation(\$paymentMethodId: String!, \$name: String) {
+  updateMyStripeCard(input: {
+    paymentMethodId: \$paymentMethodId,
+    name: \$name,
+    default_for_currency: false
+  }) {
+    brand
+    country
+    exp_month
+    exp_year
+    fingerprint
+    funding
+    id
+    last4
+    name
+    three_d_secure
+  }
+}
+''';
