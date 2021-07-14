@@ -116,7 +116,9 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
             // Archive order only after status change! We need to get the latest status
             if (
               status === CrudApi.OrderStatus.served &&
-              this.order.transaction?.status === CrudApi.PaymentStatus.success
+              (this.order.transaction?.status ===
+                CrudApi.PaymentStatus.success ||
+                this.order.transaction?.status === CrudApi.PaymentStatus.failed)
             ) {
               this._orderService.archiveOrder(this.order).subscribe();
             }
@@ -179,9 +181,9 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
           .updateOrderTransactionStatus(this.order, status)
           .pipe(
             switchMap(() => {
-              if (status === CrudApi.PaymentStatus.success) {
-                const currentStatus = currentStatusFn(this.order.statusLog);
+              const currentStatus = currentStatusFn(this.order.statusLog);
 
+              if (status === CrudApi.PaymentStatus.success) {
                 if (currentStatus === CrudApi.OrderStatus.none) {
                   return this._orderService.updateOrderStatusFromNoneToPlaced(
                     this.order,
@@ -191,6 +193,11 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
                 }
 
                 return of(true);
+              } else if (
+                status === CrudApi.PaymentStatus.failed &&
+                currentStatus === CrudApi.OrderStatus.served
+              ) {
+                return this._orderService.archiveOrder(this.order);
               }
 
               return of(true);
