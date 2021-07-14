@@ -58,7 +58,7 @@ export class UnitListItemComponent {
 
     if (this.unit) {
       this._dataService
-        .regenerateUnitData(this.unit?.id)
+        .regenerateUnitData$(this.unit?.id)
         .pipe(
           catchError(err => {
             const _err = jsonParsedOrNull(err.graphQLErrors?.[0]?.message);

@@ -2,7 +2,7 @@
 #
 # RUN ME: docker run -v $HOME/.aws:/root/.aws anyupp/migrate-staging2prod
 #
-FROM python:3.9.0-alpine3.12
+FROM python:3.10.0b2-alpine3.12
 
 RUN apk update && apk upgrade \
     && apk add --no-cache bash curl unzip git openssh nodejs npm jq \

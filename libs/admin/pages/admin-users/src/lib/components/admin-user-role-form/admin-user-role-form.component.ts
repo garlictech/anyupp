@@ -10,7 +10,7 @@ import {
 import { Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { roleContextsSelectors } from '@bgap/admin/shared/data-access/role-contexts';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { catchGqlError, EToasterType } from '@bgap/admin/shared/utils';

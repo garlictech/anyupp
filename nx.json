@@ -31,7 +31,7 @@
       "implicitDependencies": ["anyupp-backend"]
     },
     "admin-e2e": {
-      "tags": [],
+      "tags": ["type:utils", "platform:angular"],
       "implicitDependencies": ["admin"]
     },
     "admin-pages-admin-users": {
@@ -97,6 +97,9 @@
     "admin-shared-data-access-logged-user": {
       "tags": ["type:utils", "platform:angular"]
     },
+    "admin-shared-data-access-order": {
+      "tags": ["type:utils", "platform:angular"]
+    },
     "admin-shared-data-access-orders": {
       "tags": ["type:utils", "platform:angular"]
     },
@@ -113,6 +116,9 @@
       "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-role-contexts": {
+      "tags": ["type:utils", "platform:angular"]
+    },
+    "admin-shared-data-access-sdk": {
       "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-storage": {

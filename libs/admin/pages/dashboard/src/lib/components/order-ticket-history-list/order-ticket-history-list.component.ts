@@ -16,8 +16,8 @@ import {
   currentStatus as currentStatusFn,
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
-import { customNumberCompare } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -41,10 +41,15 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._store
-      .pipe(select(dashboardSelectors.getSelectedHistoryDate), take(1))
-      .subscribe((historyDate: number): void => {
+      .select(dashboardSelectors.getSelectedHistoryDate)
+      .pipe(filterNullish(), take(1), untilDestroyed(this))
+      .subscribe(historyDate => {
         this.dateFormControl = new FormControl(
           new Date(historyDate).toISOString().slice(0, 10),
+        );
+
+        this._store.dispatch(
+          dashboardActions.updateSelectedUnitOrderHistory({ historyDate }),
         );
 
         this._changeDetectorRef.detectChanges();
@@ -76,7 +81,7 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
     this.dateFormControl.valueChanges.subscribe((): void => {
       this._store.dispatch(
         dashboardActions.setHistoryDate({
-          historyDate: this.dateFormControl?.value,
+          historyDate: this.dateFormControl.value,
         }),
       );
     });

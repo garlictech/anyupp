@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets/common_error_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +29,7 @@ class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {
               Catcher.navigatorKey.currentContext, 'error.$subCode.title', details, 'error.$code.title', 'error.title'),
           transEx(Catcher.navigatorKey.currentContext, 'error.$subCode.description', details, 'error.$code.description',
               'error.description'),
-          exceptionDetails: event.exception.toString());
+          exceptionDetails: ['dev', 'qa'].contains(AppConfig.Stage) ? event.exception.toString() : null);
     }
   }
 }

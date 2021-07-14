@@ -31,24 +31,26 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(0.0),
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 0),
       height: MediaQuery.of(context).size.height * 0.76, // 76 percent of the screen height
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Container(
-                padding: EdgeInsets.only(top: 12.0),
-                child: _buildPaymentMethodList(context),
-              ),
-            ),
-          ),
-          _buildSelectPaymentMethodButton(),
-        ],
+      child: LayoutBuilder(
+        builder: (_, constrains){
+          return Container(
+            height: constrains.maxHeight,
+            child: Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(child: _buildPaymentMethodList(context)),
+              // Spacer(),
+              SizedBox(height: 8),
+              _buildSelectPaymentMethodButton(),
+            ],
+        ),
+          );
+
+        },
       ),
       // child: Stack(
       //   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,10 +76,10 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
   Widget _buildSelectPaymentMethodButton() {
     return Container(
       //height: 57.0,
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(0.0),
       width: double.infinity,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.zero),
+        borderRadius: BorderRadius.zero,
         border: Border.all(
           width: 1.5,
           color: theme.border,
@@ -105,8 +107,8 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
       builder: (context, StripePaymentState state) {
         // print('SelectStripePaymentMethodWidget.state=$state');
         if (state is StripePaymentMethodsList) {
-          if (state.data == null) {
-            return NoPaymentMethodsWidget();
+          if (state.data == null || state.data.isEmpty) {
+            return SingleChildScrollView(child: NoPaymentMethodsWidget());
           }
           return SingleChildScrollView(
             child: StripePaymentMethodListWidget(
@@ -122,7 +124,7 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
           return CommonErrorWidget(error: state.code, description: state.message);
         }
         if (state is StripePaymentLoading) {
-          return Flexible(child: CenterLoadingWidget());
+          return  CenterLoadingWidget();
         }
         return NoPaymentMethodsWidget();
       },

@@ -282,8 +282,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
           unitId: unitId,
           navigateToCart: widget.navigateToCart,
         ));
-        dispose();
-        return;
+        controller.dispose();
       }
       setState(() {
         result = scanData;

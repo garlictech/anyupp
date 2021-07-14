@@ -10,7 +10,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { OrderService } from '@bgap/admin/shared/data-access/data';
+import { OrderService } from '@bgap/admin/shared/data-access/order';
 import {
   currentStatus as currentStatusFn,
   getNextOrderStatus,
