@@ -11,7 +11,7 @@ RUN apk add --no-cache \
 
 RUN aws --version
 
-RUN npm install --global yarn @aws-amplify/cli cowsay
+RUN npm install --global @aws-amplify/cli cowsay
 
 COPY ./tools/setup-aws-environment.sh /setup-aws-environment.sh
 RUN /setup-aws-environment.sh
