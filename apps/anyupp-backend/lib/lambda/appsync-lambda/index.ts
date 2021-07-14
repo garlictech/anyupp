@@ -88,6 +88,9 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   const resolverMap = {
     listStripeCards: stripeRequestHandlers.listStripeCards,
     startStripePayment: stripeRequestHandlers.startStripePayment,
+    createStripeCard: stripeRequestHandlers.createStripeCard,
+    updateMyStripeCard: stripeRequestHandlers.updateStripeCard,
+    deleteMyStripeCard: stripeRequestHandlers.deleteStripeCard,
     createAdminUser: adminUserRequestHandlers.createAdminUser,
     deleteAdminUser: adminUserRequestHandlers.deleteAdminUser,
     createOrderFromCart: orderRequestHandlers.createOrderFromCart,

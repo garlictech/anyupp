@@ -45,20 +45,30 @@ query GetUnitsNearLocation($input: GetUnitsNearLocationInput!) {
   }
 }
 
-# query GetMyStripeCards {
-#   getMyStripeCards {
-#     brand
-#     id
-#     country
-#     last4
-#     exp_year
-#     exp_month
-#     fingerprint
-#     three_d_secure
-#     name
-#     metadata {
-#       key
-#       value
-#     }
-#   }
-# }
+query ListStripeCards {
+  listStripeCards {
+    billing_details {
+      address {
+        city
+        country
+        line1
+        line2
+        postal_code
+        state
+      }
+      email
+      name
+      phone
+    }
+    brand
+    country
+    exp_month
+    exp_year
+    fingerprint
+    funding
+    id
+    last4
+    name
+    three_d_secure
+  }
+}
