@@ -6,7 +6,7 @@ STAGE=$2
 
 generatedLibExcludes="--exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api"
 
-#time ./tools/build-workspace.sh ${APPNAME} ${STAGE}
+time ./tools/build-workspace.sh ${APPNAME} ${STAGE}
 #time yarn nx format:check --affected
 #time yarn nx affected:lint --base=${STAGE} ${generatedLibExcludes} 
 #time yarn nx affected:test --base=${STAGE} --exclude="integration-tests-angular" --exclude="integration-tests-universal" ${generatedLibExcludes} --codeCoverage --coverageReporters=clover
