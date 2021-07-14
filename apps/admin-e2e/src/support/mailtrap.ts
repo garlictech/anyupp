@@ -1,9 +1,7 @@
 import { Client, Inbox } from 'mailtrap';
 
-//import { config } from '@bgap/shared/config';
-
 const config = {
-  MailtrapApiKey: 'dssddsds',
+  MailtrapApiKey: '646cceec28fd28c1ed832b13e48ad2d1',
 };
 
 export const mailtrapBox = () => {
