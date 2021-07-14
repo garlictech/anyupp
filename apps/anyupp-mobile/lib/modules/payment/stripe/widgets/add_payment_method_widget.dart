@@ -93,6 +93,7 @@ class _StripeAddPaymentMethodWidgetState
         labelText: trans('payment.cardFields.cvc.label'),
         hintText: trans('payment.cardFields.cvc.hint'),
       ),
+      displayPostalCode: true,
     );
     return Container(
       padding: EdgeInsets.only(top: 12.0),

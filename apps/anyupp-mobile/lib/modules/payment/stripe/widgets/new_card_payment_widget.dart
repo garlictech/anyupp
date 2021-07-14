@@ -59,6 +59,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
         labelText: trans('payment.cardFields.cvc.label'),
         hintText: trans('payment.cardFields.cvc.hint'),
       ),
+      displayPostalCode: true,
     );
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: theme.background,
