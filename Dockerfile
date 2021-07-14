@@ -2,8 +2,6 @@ FROM node:14-alpine
 
 WORKDIR /
 
-RUN pwd
-
 ENV GLIBC_VER=2.31-r0
 
 # install glibc compatibility for alpine
@@ -34,9 +32,4 @@ RUN apk --no-cache add \
         curl \
     && rm -rf /var/cache/apk/* 
 
-RUN aws --version
-
 RUN npm install --global @aws-amplify/cli cowsay
-
-COPY ./tools/setup-aws-environment.sh /setup-aws-environment.sh
-RUN source /setup-aws-environment.sh
