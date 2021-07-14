@@ -1,13 +1,12 @@
 FROM node:14-alpine
 
-WORKDIR /
-
 ENV GLIBC_VER=2.31-r0
 
 # install glibc compatibility for alpine
 RUN apk --no-cache add \
         binutils \
         curl \
+        git \
     && curl -sL https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub -o /etc/apk/keys/sgerrand.rsa.pub \
     && curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-${GLIBC_VER}.apk \
     && curl -sLO https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VER}/glibc-bin-${GLIBC_VER}.apk \
@@ -32,4 +31,11 @@ RUN apk --no-cache add \
         curl \
     && rm -rf /var/cache/apk/* 
 
-RUN npm install --global @aws-amplify/cli cowsay
+RUN mkdir /build
+
+WORKDIR /build
+
+COPY apps/cicd/package.json /build/cicd/package.json 
+COPY apps/anyupp-backend/package.json /build/anyupp-backend/package.json 
+COPY package.json /build 
+RUN yarn --frozen-lockfile
