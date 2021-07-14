@@ -7,6 +7,7 @@ class StripePaymentMethod {
   final int expMonth;
   final int expYear;
   final String country;
+  final String name;
 
   StripePaymentMethod({
     this.id,
@@ -15,6 +16,7 @@ class StripePaymentMethod {
     this.expMonth,
     this.expYear,
     this.country,
+    this.name,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,6 +27,7 @@ class StripePaymentMethod {
       'exp_month': expMonth,
       'exp_year': expYear,
       'country': country,
+      'name': name,
     };
   }
 
@@ -36,6 +39,7 @@ class StripePaymentMethod {
       expMonth: map['exp_month'],
       expYear: map['exp_year'],
       country: map['country'],
+      name: map['name'],
     );
   }
 
@@ -45,7 +49,7 @@ class StripePaymentMethod {
 
   @override
   String toString() {
-    return 'StripePaymentMethod(id: $id, last4: $last4, brand: $brand, expMonth: $expMonth, expYear: $expYear, country: $country)';
+    return 'StripePaymentMethod(name: $name, id: $id, last4: $last4, brand: $brand, expMonth: $expMonth, expYear: $expYear, country: $country)';
   }
 
   @override
@@ -58,11 +62,12 @@ class StripePaymentMethod {
         other.brand == brand &&
         other.expMonth == expMonth &&
         other.expYear == expYear &&
-        other.country == country;
+        other.country == country &&
+        other.name == name;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ last4.hashCode ^ brand.hashCode ^ expMonth.hashCode ^ expYear.hashCode ^ country.hashCode;
+    return id.hashCode ^ last4.hashCode ^ brand.hashCode ^ expMonth.hashCode ^ expYear.hashCode ^ country.hashCode ^ name.hashCode;
   }
 }

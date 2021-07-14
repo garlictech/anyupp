@@ -228,6 +228,7 @@ type CardChecks {
 
 type StripeCard @aws_cognito_user_pools {
   id: String!
+  name: String
   brand: CardBrand
   checks: CardChecks
   country: String
@@ -263,17 +264,23 @@ type StartStripePaymentOutput @aws_cognito_user_pools {
   status: String!
 }
 
+input StripeCardCreateInput {
+  card_number: String!
+  exp_month: Int!
+  exp_year: Int!
+  cvc: String!
+  default_for_currency: Boolean
+  name: String!
+}
+
 input StripeCardUpdateInput {
-  id: ID!
-  exp_month: String
-  exp_year: String
-  # metadata: [StripeMetadata!]
+  paymentMethodId: String!
   default_for_currency: Boolean
   name: String
 }
 
 input StripeCardDeleteInput {
-  id: ID!
+  paymentMethodId: String!
 }
 
 ### UNIT GEO_UNIT
@@ -327,6 +334,8 @@ type Mutation {
   startStripePayment(
     input: StartStripePaymentInput!
   ): StartStripePaymentOutput! @aws_cognito_user_pools
+  createStripeCard(input: StripeCardCreateInput!): StripeCard!
+    @aws_cognito_user_pools
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard!
     @aws_cognito_user_pools
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean!

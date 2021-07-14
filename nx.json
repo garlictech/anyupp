@@ -5,10 +5,6 @@
   },
   "implicitDependencies": {
     "angular.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
     "tsconfig.base.json": "*",
     "nx.json": "*",
     ".eslintrc.json": "*"

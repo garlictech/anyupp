@@ -52,3 +52,32 @@ class StartStripePaymentWithNewCardEvent extends StripePaymentEvent {
 class ResetStripePaymentState extends StripePaymentEvent {
   const ResetStripePaymentState();
 }
+
+class CreateStripeCardEvent extends StripePaymentEvent {
+  final StripeCard stripeCard;
+  final String name;
+
+  CreateStripeCardEvent(this.stripeCard, this.name);
+
+  @override
+  List<Object> get props => [stripeCard, name];
+}
+
+class UpdateStripeCardEvent extends StripePaymentEvent {
+  final String stripeCardId;
+  final String name;
+
+  UpdateStripeCardEvent(this.stripeCardId, this.name);
+
+  @override
+  List<Object> get props => [stripeCardId, name];
+}
+
+class DeleteStripeCardEvent extends StripePaymentEvent {
+  final String stripeCardId;
+
+  DeleteStripeCardEvent(this.stripeCardId);
+
+  @override
+  List<Object> get props => [stripeCardId];
+}
