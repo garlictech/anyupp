@@ -6,7 +6,7 @@ When(
     cy.findAllByRole('listitem')
       .contains(name)
       .findByTitle('Edit roles')
-      .click();
+      .click({ force: true });
   },
 );
 

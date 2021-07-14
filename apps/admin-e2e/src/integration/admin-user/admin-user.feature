@@ -24,7 +24,7 @@ Feature: Admin users
     And I click on the button with title "Add admin user"
     And I fill out the "Name" input with "Test User"
     And I fill out the "Phone" input with "+3601234567890"
-    And I fill out the "Email" input with mailtrapEmail
+    And I fill out the "Email" input with "anyupp-dev-b3182b@inbox.mailtrap.io"
     And I click on the "Submit" button
     Then I should see "Test User" text
     When I click the edit button in the listitem with "Test User" content
@@ -40,7 +40,7 @@ Feature: Admin users
     And I click on the "Log out" title
     And I click on the "OK" title
     Then I should be on the login page
-    And I fill out the input with id "username" with the mailtrapEmail value
+    And I fill out the input with id "username" with the "anyupp-dev-b3182b@inbox.mailtrap.io" value
     And I wait for the message
     And I read and type the temporary password from the email
     And I fill out the "Context" input with the superuserContextId id
@@ -55,7 +55,7 @@ Feature: Admin users
     Then I should be on the login page
     And I delete all messages from the mailtrap inbox
     And I click the "Reset password" text
-    And I fill out the last input with id "username" with the mailtrapEmail value
+    And I fill out the last input with id "username" with the "anyupp-dev-b3182b@inbox.mailtrap.io" value
     And I click the "Send Code" text
     And I wait for the message
     And I read and type the verification code from the email
