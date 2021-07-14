@@ -57,6 +57,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
         labelText: trans('payment.cardFields.cvc.label'),
         hintText: trans('payment.cardFields.cvc.hint'),
       ),
+      displayPostalCode: true,
     );
     this._formKey = _form.formKey;
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

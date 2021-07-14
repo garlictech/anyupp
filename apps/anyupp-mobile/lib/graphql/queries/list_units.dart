@@ -23,7 +23,6 @@ query GetUnitsNearLocationQuery(\$lat: Float!, \$lng: Float!) {
       chainId
       groupId
       name
-      openingHours
       paymentModes {
         caption
         method
