@@ -32,10 +32,10 @@ RUN apk --no-cache add \
     && rm -rf /var/cache/apk/* 
 
 RUN mkdir /build
-
+RUN yarn global add @aws-amplify/cli
 WORKDIR /build
 
 COPY apps/cicd/package.json /build/cicd/package.json 
 COPY apps/anyupp-backend/package.json /build/anyupp-backend/package.json 
-COPY package.json /build 
+COPY package.json yarn.lock patches /build/
 RUN yarn --frozen-lockfile
