@@ -1,14 +1,13 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/payment/stripe/widgets/add_card_button_widget.dart';
-import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stripe_sdk/src/ui/widgets/card_form.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
-import 'package:fa_prev/shared/locale.dart';
 
 class StripeAddPaymentMethodWidget extends StatefulWidget {
   @override
@@ -34,17 +33,7 @@ class _StripeAddPaymentMethodWidgetState
     return Scaffold(
       body: BlocListener<StripePaymentBloc, StripePaymentState>(
         listener: (BuildContext context, StripePaymentState state) {
-          if (state is StripeCardCreated) {
-            _cardData = StripeCard();
-            _formKey = GlobalKey<FormState>();
-            showSuccessDialog(context, trans("payment.manageCard.success"),
-                trans("payment.manageCard.card_added"));
-            getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
-          }
-          if (state is StripeError) {
-            showErrorDialog(context, state.code, state.message,
-                onClose: () => Nav.pop());
-          }
+
         },
         child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
             builder: (context, StripePaymentState state) {

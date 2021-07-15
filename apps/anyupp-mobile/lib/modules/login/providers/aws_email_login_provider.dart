@@ -74,11 +74,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       return null;
     } on Exception catch (e) {
       print('AwsOrderProvider.emailLogin().exception=$e');
-      throw LoginException(
-            code: LoginException.CODE,
-            message: "Failed to Create Anonymus user",
-            subCode: LoginException.INVALID_ANONYMUS_USER,
-            details: "Couldn't create anonymus user.");
+      throw  GraphQLException.fromCrudException(e);
     }
   }
 
