@@ -46,6 +46,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
             invoiceAddress: widget.invoiceAddress,
           ),
           SelectStripePaymentMethodWidget(
+            showPaymentButton: true,
             orderId: widget.orderId,
             userInvoiceAddress: widget.invoiceAddress,
           ),

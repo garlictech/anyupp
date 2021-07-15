@@ -29,7 +29,7 @@ class GraphQLClientService {
     _dio.interceptors.add(DioTokenInterceptor(_dio, this.authProvider));
   }
 
-  Future<ValueNotifier<GraphQLClient>> getAmplifyClient({bool force = false}) async {
+  Future<ValueNotifier<GraphQLClient>> getCrudClient({bool force = false}) async {
 
 
     String accessToken = await authProvider.getAccessToken();
@@ -96,7 +96,7 @@ class GraphQLClientService {
     return amplifyClient;
   }
 
-  Future<ValueNotifier<GraphQLClient>> getGraphQLClient({bool useApi = false}) async {
+  Future<ValueNotifier<GraphQLClient>> getAnyuppClient({bool useApi = false}) async {
 
     String accessToken = useApi ? null : await authProvider.getAccessToken();
     // print('GraphQLClientService.getGraphQLClient.accessToken=$accessToken');
