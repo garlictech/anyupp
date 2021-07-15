@@ -46,3 +46,7 @@ class StripePaymentIntentReceived extends StripePaymentState {
 class StripeOperationSuccess extends StripePaymentState {
   const StripeOperationSuccess();
 }
+
+class StripeCardCreated extends StripePaymentState {
+  const StripeCardCreated();
+}

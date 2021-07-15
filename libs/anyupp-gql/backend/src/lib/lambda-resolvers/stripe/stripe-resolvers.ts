@@ -47,6 +47,66 @@ export const createStripeResolvers = ({
       `,
     ),
   });
+
+  lambdaDs.createResolver({
+    typeName: 'Mutation',
+    fieldName: 'createStripeCard',
+    requestMappingTemplate: MappingTemplate.fromString(
+      `
+      {
+        "version" : "2017-02-28",
+        "operation" : "Invoke",
+        "payload": {
+          "handler": "createStripeCard",
+          "payload": {
+            "userId": ${getAuthenticatedUserIdFromContextIdentity},
+            "input": $util.toJson($ctx.arguments.input)
+          }
+        }
+      }
+      `,
+    ),
+  });
+
+  lambdaDs.createResolver({
+    typeName: 'Mutation',
+    fieldName: 'deleteMyStripeCard',
+    requestMappingTemplate: MappingTemplate.fromString(
+      `
+      {
+        "version" : "2017-02-28",
+        "operation" : "Invoke",
+        "payload": {
+          "handler": "deleteMyStripeCard",
+          "payload": {
+            "userId": ${getAuthenticatedUserIdFromContextIdentity},
+            "input": $util.toJson($ctx.arguments.input)
+          }
+        }
+      }
+      `,
+    ),
+  });
+
+  lambdaDs.createResolver({
+    typeName: 'Mutation',
+    fieldName: 'updateMyStripeCard',
+    requestMappingTemplate: MappingTemplate.fromString(
+      `
+      {
+        "version" : "2017-02-28",
+        "operation" : "Invoke",
+        "payload": {
+          "handler": "updateMyStripeCard",
+          "payload": {
+            "userId": ${getAuthenticatedUserIdFromContextIdentity},
+            "input": $util.toJson($ctx.arguments.input)
+          }
+        }
+      }
+      `,
+    ),
+  });
 };
 
 // import {

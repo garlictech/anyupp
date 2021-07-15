@@ -9,6 +9,13 @@ When(
 );
 
 When(
+  'I fill out the last input with id {string} with the {fixture} value',
+  (id: string, value: string) => {
+    cy.get(`#${id}`).last().type(value, { force: true });
+  },
+);
+
+When(
   'I fill out the {string} input with the {fixture} id',
   (context: string, id: string) => {
     cy.findAllByPlaceholderText(context).type(id);
@@ -83,6 +90,6 @@ When(
 );
 
 When('I select the {string} in the modifier selector', (value: string) => {
-  cy.findByTestId('productComponentSetId').click();
-  cy.findAllByText(value).first().click();
+  cy.findByTestId('productComponentSetId').click({ force: true });
+  cy.findAllByText(value).first().click({ force: true });
 });
