@@ -1,28 +1,7 @@
-import 'dart:async';
-
+import 'package:fa_prev/main.dart' as app;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:fa_prev/main.dart' as app;
-
-Future<void> pumpUntilFound(
-  WidgetTester tester,
-  Finder finder, {
-  Duration timeout = const Duration(seconds: 50),
-}) async {
-  bool timerDone = false;
-  final timer =
-      Timer(timeout, () => throw TimeoutException("Pump until has timed out"));
-  while (timerDone != true) {
-    await tester.pump();
-
-    final found = tester.any(finder);
-    if (found) {
-      timerDone = true;
-    }
-  }
-  timer.cancel();
-}
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -42,35 +21,48 @@ void main() {
     // final Finder main = find.byKey(Key('anyupp-main-app'));
     // final Function(FlutterErrorDetails) original = FlutterError.onError;
     testWidgets('Checks the app is started', (WidgetTester tester) async {
+      // // First, tap on the button
+      // await driver.tap(buttonFinder);
       print('****** Waiting the app to start');
       app.main();
+      await tester.pumpAndSettle(Duration(seconds: 5));
       print('****** App started');
-
+      // await Future.delayed(Duration(seconds: 10));
       final Finder main = find.byKey(Key('anyupp-main-app'));
-      await pumpUntilFound(tester, main);
-      //print('****** MAIN = ${main.description}');
-      expect(main, isNotNull);
-
-      final Finder loginBtn = find.byKey(Key('login-btn-anonymous'));
-      //print('****** loginBtn = ${loginBtn.description}');
-
-      await pumpUntilFound(tester, loginBtn);
-      await tester.pumpAndSettle();
-
-      expect(loginBtn, isNotNull);
-
-      await tester.tap(loginBtn);
-      final Finder unitSelectSreen = find.byKey(Key('unitselect-screen'));
-      await pumpUntilFound(tester, unitSelectSreen);
-      expect(unitSelectSreen, isNotNull);
-
-      // final Finder unitWidget = find.byKey(Key('unit-widget'));
-      // //await pumpUntilFound(tester, unitWidget);
+      // print('****** MAIN = ${main.description}');
       // await tester.pumpAndSettle();
-      // expect(unitWidget, isNotNull);
+      expect(main, isNotNull);
+      await tester.pumpAndSettle(Duration(seconds: 20));
+      // await Future.delayed(Duration(seconds: 15));
+      final Finder loginBtn = find.byKey(Key('login-btn-anonymous'));
+      print('****** loginBtn = ${loginBtn.description}');
+      expect(loginBtn, isNotNull);
+      await tester.tap(find.byKey(Key('login-btn-anonymous')));
+       await tester.pump(Duration(seconds: 15));
+     // await tester.pump();
+      final Finder unitSelectSreen = find.byKey(Key('unitselect-screen'));
+      // print('****** loginBtn = ${loginBtn.description}');
+      expect(unitSelectSreen, isNotNull);    //   final Finder unitWidget = find.byKey(Key('unit-widget'));
+    //   expect(unitWidget, isNotNull);
+    //      print('****** Tap unit widget ');
+    //   await tester.tap(unitWidget);
+    //   await tester.pump(Duration(seconds: 10));
+    //  print('****** search Profile');
 
-      //  await tester.tap(unitWidget);
-      
+    //   expect(
+    //     find.byWidgetPredicate((widget) =>
+    //         widget is BottomBarItem &&
+    //         widget.text is Text &&
+    //         (widget.text as Text).data.startsWith("Profile")),
+    //     findsOneWidget);
+
+      // final Finder barItemFinder = find.ancestor(
+      //     of: find.text("Profile"),
+      //     matching:
+      //         find.byWidgetPredicate((widget) => widget is BottomBarItem));
+      // expect(barItemFinder, isNotNull);
+
+      // print('****** loginBtn = ${loginBtn.description}');
     });
     // testWidgets("test login with Anonymously", (WidgetTester tester) async {
     //   await tester.pumpAndSettle(Duration(seconds: 15));
