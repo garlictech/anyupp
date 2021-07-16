@@ -25,15 +25,16 @@ class AwsOrderProvider implements IOrdersProvider {
 
   AwsOrderProvider(this._authProvider) {
     _subOrderList = AwsSubscription<Order>(
-        authProvider: _authProvider,
-        listQuery: QUERY_LIST_ACTIVE_ORDERS,
-        listNodeName: 'listOrders',
-        subscriptionQuery: SUBSCRIPTION_ORDER_LIST,
-        subscriptionNodeName: 'onOrderChanged',
-        modelFromJson: (json) => Order.fromJson(json),
-        filterModel: (model) => !model.archived,
-        sortItems: (items) => items.sort((a, b) => b.created.compareTo(a.created)),
-        );
+      authProvider: _authProvider,
+      listQuery: QUERY_LIST_ACTIVE_ORDERS,
+      listNodeName: 'listOrders',
+      subscriptionQuery: SUBSCRIPTION_ORDER_LIST,
+      subscriptionNodeName: 'onOrderChanged',
+      modelFromJson: (json) => Order.fromJson(json),
+      filterModel: (model) => !model.archived,
+      sortItems: (items) =>
+          items.sort((a, b) => b.created.compareTo(a.created)),
+    );
 
     _subOrderHistoryList = AwsSubscription<Order>(
       authProvider: _authProvider,
@@ -43,7 +44,8 @@ class AwsOrderProvider implements IOrdersProvider {
       subscriptionNodeName: 'onOrderChanged',
       modelFromJson: (json) => Order.fromJson(json),
       filterModel: (model) => model.archived,
-        sortItems: (items) => items.sort((a, b) => b.created.compareTo(a.created)),
+      sortItems: (items) =>
+          items.sort((a, b) => b.created.compareTo(a.created)),
     );
   }
 
@@ -68,7 +70,8 @@ class AwsOrderProvider implements IOrdersProvider {
         },
       );
 
-      print('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
+      print(
+          'AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
       String id;
       if (result.data != null && result.data['createOrderFromCart'] != null) {
         id = result.data['createOrderFromCart'];
@@ -79,22 +82,23 @@ class AwsOrderProvider implements IOrdersProvider {
       return id;
     } on Exception catch (e) {
       print('AwsOrderProvider.createAndSendOrderFromCart.Exception: $e');
-      rethrow;
+      throw GraphQLException.fromCrudException(e);
     }
   }
 
   @override
-  Future<bool> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
+  Future<void> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
     try {
       QueryResult result = await GQL.backend.executeMutation(
         mutation: MUTATION_ADD_INVOICE_INFO,
         variables: {},
       );
-
-      return Future.value(!result.hasException);
+      if (result.hasException) {
+        throw GraphQLException.fromCrudException(result.exception);
+      }
     } on Exception catch (e) {
       print('AwsOrderProvider.addInvoiceInfo().exception=$e');
-      return Future.value(false);
+      throw GraphQLException.fromCrudException(e);
     }
   }
 
@@ -140,7 +144,8 @@ class AwsOrderProvider implements IOrdersProvider {
 
   Future<Cart> _getCartFromBackEnd(String unitId) async {
     User user = await _authProvider.getAuthenticatedUserProfile();
-    print('AwsOrderProvider._getCartFromBackEnd().unit=$unitId, user=${user?.id}');
+    print(
+        'AwsOrderProvider._getCartFromBackEnd().unit=$unitId, user=${user?.id}');
     try {
       QueryResult result = await GQL.amplify.executeQuery(
         query: QUERY_GET_CART,
@@ -244,10 +249,7 @@ class AwsOrderProvider implements IOrdersProvider {
   Future<void> startOrderListSubscription(String unitId) async {
     User user = await _authProvider.getAuthenticatedUserProfile();
     return _subOrderList.startListSubscription(
-      variables: {
-        'userId': user.id,
-        'unitId': unitId
-      },
+      variables: {'userId': user.id, 'unitId': unitId},
     );
   }
 
@@ -261,11 +263,7 @@ class AwsOrderProvider implements IOrdersProvider {
   Future<void> startOrderHistoryListSubscription(String unitId) async {
     User user = await _authProvider.getAuthenticatedUserProfile();
     return _subOrderHistoryList.startListSubscription(
-      variables: {
-        'userId': user.id,
-        'unitId': unitId,
-        'archived' : true
-      },
+      variables: {'userId': user.id, 'unitId': unitId, 'archived': true},
     );
   }
 
@@ -276,7 +274,8 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  Stream<List<Order>> getOrderHistory(String unitId) => _subOrderHistoryList.stream;
+  Stream<List<Order>> getOrderHistory(String unitId) =>
+      _subOrderHistoryList.stream;
 
   @override
   Future<Order> getOrder(String orderId) async {
@@ -308,7 +307,8 @@ class AwsOrderProvider implements IOrdersProvider {
     }
   }
 
-  Map<String, dynamic> _getCartMutationVariablesFromCart(Cart cart, String name) {
+  Map<String, dynamic> _getCartMutationVariablesFromCart(
+      Cart cart, String name) {
     // print('_getCartMutationVariablesFromCart().cart=$cart');
     return {
       '$name': {
@@ -335,7 +335,7 @@ class AwsOrderProvider implements IOrdersProvider {
             'sumPriceShown': {
               'currency': item.priceShown.currency,
               'pricePerUnit': item.getPrice(),
-              'priceSum': item.getPrice()*item.quantity,
+              'priceSum': item.getPrice() * item.quantity,
               'tax': item.priceShown.tax,
               'taxSum': item.priceShown.taxSum,
             },
@@ -353,7 +353,9 @@ class AwsOrderProvider implements IOrdersProvider {
               'hu': item.variantName.hu,
             },
             'configSets': item.selectedConfigMap != null
-                ? item.selectedConfigMap.keys.toList().map((GeneratedProductConfigSet generatedProductConfigSet) {
+                ? item.selectedConfigMap.keys
+                    .toList()
+                    .map((GeneratedProductConfigSet generatedProductConfigSet) {
                     return {
                       "name": {
                         'en': generatedProductConfigSet.name.en,
@@ -364,13 +366,17 @@ class AwsOrderProvider implements IOrdersProvider {
                       "type": generatedProductConfigSet.type,
                       "items": item.selectedConfigMap != null
                           ? item.selectedConfigMap[generatedProductConfigSet]
-                              .map((GeneratedProductConfigComponent generatedProductConfigComponent) {
+                              .map((GeneratedProductConfigComponent
+                                  generatedProductConfigComponent) {
                               return {
-                                "allergens": generatedProductConfigComponent.allergens
+                                "allergens": generatedProductConfigComponent
+                                    .allergens
                                     .map((e) => e.toString().split(".").last)
                                     .toList(),
                                 "price": generatedProductConfigComponent.price,
-                                "productComponentId": generatedProductConfigComponent.productComponentId,
+                                "productComponentId":
+                                    generatedProductConfigComponent
+                                        .productComponentId,
                                 "name": {
                                   'en': generatedProductConfigComponent.name.en,
                                   'de': generatedProductConfigComponent.name.de,
@@ -402,7 +408,7 @@ class AwsOrderProvider implements IOrdersProvider {
     };
   }
 
-Future<Cart> setPaymentMode(String unitId, PaymentMode mode) async {
+  Future<Cart> setPaymentMode(String unitId, PaymentMode mode) async {
     print('OrdersProvider.setPaymentMode()=$mode');
     Cart _cart = await getCurrentCart(unitId);
     print('OrdersProvider.setPaymentMode().cart=${_cart?.id}');

@@ -1,18 +1,27 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/main/bloc/main_navigation_bloc.dart';
+import 'package:fa_prev/modules/main/bloc/main_navigation_event.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/payment/stripe/widgets/payment_button_widget.dart';
+import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fa_prev/shared/locale.dart';
 
 class SelectStripePaymentMethodWidget extends StatefulWidget {
+  final bool showPaymentButton;
   final OnPaymentMethodSelected onItemSelected;
   final String orderId;
   final UserInvoiceAddress userInvoiceAddress;
 
   const SelectStripePaymentMethodWidget(
-      {Key key, this.orderId, this.userInvoiceAddress, this.onItemSelected})
+      {Key key,
+      this.orderId,
+      this.userInvoiceAddress,
+      this.onItemSelected,
+      this.showPaymentButton = false})
       : super(key: key);
 
   @override
@@ -22,15 +31,20 @@ class SelectStripePaymentMethodWidget extends StatefulWidget {
 
 class _SelectStripePaymentMethodWidgetState
     extends State<SelectStripePaymentMethodWidget> {
-  // StripePaymentMethod _selectedCard;
-  int selectedItem = 0;
-
   @override
   void initState() {
     super.initState();
-    print('SelectStripePaymentMethodWidget.initState()');
-    getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
   }
+
+  @override
+  void didChangeDependencies() {
+     FocusScope.of(context).unfocus();
+    super.didChangeDependencies();
+    
+  }
+
+  // StripePaymentMethod _selectedCard;
+  int selectedItem = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +62,7 @@ class _SelectStripePaymentMethodWidgetState
                 Expanded(
                     child: Center(child: _buildPaymentMethodList(context))),
                 SizedBox(height: 8),
-                widget.orderId != null 
-                    ? buildPaymentButton()
-                    : Container()
+                widget.showPaymentButton ? buildPaymentButton() : Container()
               ],
             ),
           );
@@ -60,24 +72,37 @@ class _SelectStripePaymentMethodWidgetState
   }
 
   Widget buildPaymentButton() {
-    return BlocBuilder<StripePaymentBloc, StripePaymentState>(
-      builder: (context, state) {
-        if (state is StripePaymentMethodsList) {
-          if (state.data != null && state.data.isNotEmpty) {
-            return PaymentButtonWidget(() {
-              getIt<StripePaymentBloc>()
-                  .add(StartStripePaymentWithExistingCardEvent(
-                orderId: widget.orderId,
-                paymentMethodId: state.data[selectedItem].id,
-                invoiceAddress: widget.userInvoiceAddress,
-              ));
-            });
-          } else {
-            return Container();
-          }
+    return BlocListener<StripePaymentBloc, StripePaymentState>(
+      listener: (context, state) {
+        if (state is StripeOperationSuccess) {
+          final scaffold = ScaffoldMessenger.of(context);
+          scaffold.showSnackBar(SnackBar(
+            content: Text(trans('payment.stripe.payment_success')),
+          ));
+          Nav.pop();
+          getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+          //Nav.replace(MainNavigation(pageIndex: 2));
         }
-        return Container();
       },
+      child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
+        builder: (context, state) {
+          if (state is StripePaymentMethodsList) {
+            if (state.data != null && state.data.isNotEmpty) {
+              return PaymentButtonWidget(() {
+                getIt<StripePaymentBloc>()
+                    .add(StartStripePaymentWithExistingCardEvent(
+                  orderId: widget.orderId,
+                  paymentMethodId: state.data[selectedItem].id,
+                  invoiceAddress: widget.userInvoiceAddress,
+                ));
+              });
+            } else {
+              return Container();
+            }
+          }
+          return Container();
+        },
+      ),
     );
   }
 

@@ -2,6 +2,8 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/utils/navigator.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:fa_prev/shared/widgets/tab_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,25 +26,36 @@ class _StripePaymentMethodsScreenState
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StripePaymentBloc, StripePaymentState>(
-      builder: (context, StripePaymentState state) {
-        int initialIndex = 1;
+    return BlocListener<StripePaymentBloc, StripePaymentState>(
+      listener: (context, state) {
+        if (state is StripeCardCreated) {
+          showSuccessDialog(context, trans("payment.manageCard.success"),
+              trans("payment.manageCard.card_added"));
+          getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
+        }
+        if (state is StripeError) {
+          showErrorDialog(context, state.code, state.message,
+              onClose: () => Nav.pop());
+        }
+      },
+      child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
+        builder: (context, StripePaymentState state) {
+          int initialIndex = 1;
           if (state is StripePaymentMethodsList) {
-            if (state.data == null && state.data.isEmpty) {
+            if (state.data != null && state.data.isEmpty) {
               initialIndex = 0;
             }
+            return TabBarWidget(
+              StripeAddPaymentMethodWidget(),
+              SelectStripePaymentMethodWidget(),
+              trans('payment.stripe.new_card'),
+              trans('payment.stripe.saved_cards'),
+              tabIndex: initialIndex,
+            );
           }
-          return TabBarWidget(
-            StripeAddPaymentMethodWidget(),
-                  SelectStripePaymentMethodWidget(
-
-          ),
-            trans('payment.stripe.new_card'),
-            trans('payment.stripe.saved_cards'),
-            tabIndex: initialIndex,
-          );
-
-      },
+          return Scaffold(body: CenterLoadingWidget());
+        },
+      ),
     );
   }
 }

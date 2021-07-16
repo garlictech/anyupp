@@ -132,7 +132,7 @@ class CartRepository {
     return cart;
   }
 
-  Future<bool> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
+  Future<void> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
     return _ordersProvider.addInvoiceInfo(invoiceInfo);
   }
 }

@@ -466,6 +466,10 @@
     "LIMIT_EXCEEDED": {
       "title": "Regisztrációs hiba",
       "description": "Újraküldési limit túllépve. Próbálkozz kicsit később!"
+    },
+    "INTERNAL_SERVER_ERROR": {
+      "title": "Belső Szerver hiba",
+      "description": "Valami félrement."
     }
   }
 }
