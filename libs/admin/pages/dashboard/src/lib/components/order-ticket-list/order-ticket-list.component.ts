@@ -136,6 +136,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
           (o.paymentMode.method === CrudApi.PaymentMethod.card ||
             o.paymentMode.method === CrudApi.PaymentMethod.cash) &&
           o.transaction?.status !== CrudApi.PaymentStatus.success &&
+          o.transaction?.status !== CrudApi.PaymentStatus.failed &&
           currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.rejected,
       ),
     ];
@@ -168,6 +169,10 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
           customNumberCompare('paymentIntention'),
         );
         break;
+    }
+
+    if (this.filteredOrders.length === 0) {
+      this._store.dispatch(dashboardActions.resetSelectedOrderId());
     }
   }
 
