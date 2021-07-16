@@ -1,8 +1,7 @@
-import 'package:fa_prev/main.dart' as app;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-
+import 'package:fa_prev/main.dart' as app;
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group('AnyUpp Mobile App', () {
@@ -38,31 +37,11 @@ void main() {
       print('****** loginBtn = ${loginBtn.description}');
       expect(loginBtn, isNotNull);
       await tester.tap(find.byKey(Key('login-btn-anonymous')));
-       await tester.pump(Duration(seconds: 15));
-     // await tester.pump();
+      // await tester.pumpAndSettle();
+      await tester.pump(Duration(seconds: 15));
       final Finder unitSelectSreen = find.byKey(Key('unitselect-screen'));
       // print('****** loginBtn = ${loginBtn.description}');
-      expect(unitSelectSreen, isNotNull);    //   final Finder unitWidget = find.byKey(Key('unit-widget'));
-    //   expect(unitWidget, isNotNull);
-    //      print('****** Tap unit widget ');
-    //   await tester.tap(unitWidget);
-    //   await tester.pump(Duration(seconds: 10));
-    //  print('****** search Profile');
-
-    //   expect(
-    //     find.byWidgetPredicate((widget) =>
-    //         widget is BottomBarItem &&
-    //         widget.text is Text &&
-    //         (widget.text as Text).data.startsWith("Profile")),
-    //     findsOneWidget);
-
-      // final Finder barItemFinder = find.ancestor(
-      //     of: find.text("Profile"),
-      //     matching:
-      //         find.byWidgetPredicate((widget) => widget is BottomBarItem));
-      // expect(barItemFinder, isNotNull);
-
-      // print('****** loginBtn = ${loginBtn.description}');
+      expect(unitSelectSreen, isNotNull);
     });
     // testWidgets("test login with Anonymously", (WidgetTester tester) async {
     //   await tester.pumpAndSettle(Duration(seconds: 15));
