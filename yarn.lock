@@ -21874,10 +21874,10 @@ serve-static@1.14.1:
     parseurl "~1.3.3"
     send "0.17.1"
 
-serverless-bundle@4.3.1:
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/serverless-bundle/-/serverless-bundle-4.3.1.tgz#6a3539f33ca07974123c475a7636b53294459dbe"
-  integrity sha512-k3FaHN28e4kfQFjSHSDpkZUFJG10m+oIV4GCFd/REs+4Ostl2ciyJ2zlHbeF3mXOX9xgLQVDZF2taxqQQcxDLw==
+serverless-bundle@4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/serverless-bundle/-/serverless-bundle-4.4.0.tgz#113714b809fedbacdae975416e1b8db72a1e3286"
+  integrity sha512-upzxESCrLOfTaWW/zlqOeIKx7yiY+4o6eTnV6Ts0xA2GsSXreu+5rDy6YyQFdMQDDONZvCU75Do/GxIk6w8s6Q==
   dependencies:
     "@babel/core" "^7.5.4"
     "@babel/plugin-proposal-class-properties" "^7.5.5"
