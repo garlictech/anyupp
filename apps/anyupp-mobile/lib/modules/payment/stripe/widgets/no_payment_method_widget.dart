@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/shared/locale.dart';
 
 class NoPaymentMethodsWidget extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _NoPaymentMethodsWidgetState extends State<NoPaymentMethodsWidget> {
               height: 60.0,
             ),
             Text(
-              'To payment methods saved...',
+              trans("payment.stripe.no_payment_methods"),
               style: GoogleFonts.poppins(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,

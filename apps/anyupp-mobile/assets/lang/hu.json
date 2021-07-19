@@ -238,7 +238,8 @@
       "save_card": "Kártya elmentése",
       "payment_success": "Sikeres fizetés!",
       "new_card": "Új kártya",
-      "saved_cards": "Mentett Kártyák"
+      "saved_cards": "Mentett Kártyák",
+      "no_payment_methods": "Nincsenek elmentett kártyáid..."
     },
     "manageCard": {
       "card_will_delete": "Ez a kártya törlésre kerül.",

@@ -238,7 +238,8 @@
       "save_card": "Save card for later use",
       "payment_success": "Payment success!",
       "new_card": "New Card",
-      "saved_cards": "Saved Cards"
+      "saved_cards": "Saved Cards",
+      "no_payment_methods": "No payment methods saved..."
     },
     "manageCard": {
       "card_will_delete": "This card will be deleted",
