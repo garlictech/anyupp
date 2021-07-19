@@ -183,7 +183,7 @@
       [status]="getPlacedButtonStatus()"
       [size]="buttonSize"
       shape="round"
-      *ngIf="isListMode('history')"
+      *ngIf="isListMode('history') && allowRecallHistoryOrder"
       (click)="recallOrderFromHistory(order)"
     >
       <nb-icon icon="arrow-ios-back-outline"></nb-icon>

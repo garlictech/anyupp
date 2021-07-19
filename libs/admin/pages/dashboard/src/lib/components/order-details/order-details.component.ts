@@ -10,6 +10,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
+import { adminUserRoleIsAtLeast } from '@bgap/shared/utils';
 import {
   dashboardSelectors,
   IDashboardSettings,
@@ -30,6 +31,7 @@ import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { OrderPrintComponent } from '../order-print/order-print.component';
+import { loggedUserSelectors } from 'libs/admin/shared/data-access/logged-user/src';
 
 @UntilDestroy()
 @Component({
@@ -48,6 +50,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   public EPaymentStatus = CrudApi.PaymentStatus;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
+  public allowRecallHistoryOrder = false;
   public currentStatus = currentStatusFn;
 
   constructor(
@@ -69,6 +72,21 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
           this.dashboardSettings.size === EDashboardSize.LARGER
             ? ENebularButtonSize.MEDIUM
             : ENebularButtonSize.SMALL;
+
+        this._changeDetectorRef.detectChanges();
+      });
+
+    this._store
+      .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
+      .subscribe(adminUser => {
+        if (adminUser) {
+          this.allowRecallHistoryOrder = adminUserRoleIsAtLeast(
+            adminUser,
+            CrudApi.Role.unitadmin,
+          );
+        } else {
+          this.allowRecallHistoryOrder = false;
+        }
 
         this._changeDetectorRef.detectChanges();
       });
