@@ -101,7 +101,7 @@
   <div class="col-1 text-end p-2 m-auto font-larger"><strong>Σ</strong></div>
   <div class="col-5 p-2 m-auto">
     <ng-container
-      *ngIf="order.transaction?.status === EPaymentStatus.waiting_for_payment"
+      *ngIf="order.transactionStatus === EPaymentStatus.waiting_for_payment"
     >
       <button
         nbButton
@@ -126,13 +126,13 @@
     </ng-container>
     <nb-badge
       class="font-larger p-2 position-static"
-      *ngIf="order.transaction?.status === EPaymentStatus.success"
+      *ngIf="order.transactionStatus === EPaymentStatus.success"
       text="{{ 'common.transactionStatus.SUCCESS' | translate }}"
       status="success"
     ></nb-badge>
     <nb-badge
       class="font-larger p-2 position-static"
-      *ngIf="order.transaction?.status === EPaymentStatus.failed"
+      *ngIf="order.transactionStatus === EPaymentStatus.failed"
       text="{{ 'common.transactionStatus.FAILED' | translate }}"
       status="danger"
     ></nb-badge>
@@ -175,6 +175,18 @@
       (click)="updateOrderStatus()"
     >
       {{ currentStatus(order.statusLog) }}
+    </button>
+
+    <button
+      nbButton
+      class="me-2"
+      [status]="getPlacedButtonStatus()"
+      [size]="buttonSize"
+      shape="round"
+      *ngIf="isListMode('history')"
+      (click)="recallOrderFromHistory(order)"
+    >
+      <nb-icon icon="arrow-ios-back-outline"></nb-icon>
     </button>
 
     <nb-badge

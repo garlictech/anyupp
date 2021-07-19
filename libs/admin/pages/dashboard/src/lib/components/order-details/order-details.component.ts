@@ -290,4 +290,28 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 
     dialog.componentRef.instance.orders = [order];
   }
+
+  public recallOrderFromHistory(order: CrudApi.Order) {
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
+
+    dialog.componentRef.instance.options = {
+      message: 'orders.confirmRecallHistoryOrder',
+      buttons: [
+        {
+          label: 'common.ok',
+          callback: (): void => {
+            this._orderService.recallOrderFromHistory(order).subscribe();
+          },
+          status: 'success',
+        },
+        {
+          label: 'common.cancel',
+          callback: (): void => {
+            /**/
+          },
+          status: 'basic',
+        },
+      ],
+    };
+  }
 }

@@ -312,6 +312,7 @@
     "confirmIsAcceptOrder": "Biztosan engedélyezed a rendelések fogadását?",
     "confirmNotAcceptOrder": "Biztosan letiltod a rendelések fogadását?",
     "confirmResetOrderItemStatus": "Biztosan visszaállítod a rendelési tétel státuszát?",
+    "confirmRecallHistoryOrder": "Biztosan visszaállítod az archivált rendelést?",
     "confirmFailedTransaction": "Biztosan sikertelenre állítod a tranzakciót?",
     "confirmSuccessTransaction": "Biztosan sikeresre állítod a tranzakciót?",
     "confirmDeleteOrder": "Biztosan törlöd a rendelést?",

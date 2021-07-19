@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash/fp';
-import { EMPTY } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
@@ -338,5 +338,62 @@ export class OrderService {
           orders,
         }),
     );
+  }
+
+  public recallOrderFromHistory(order: CrudApi.Order) {
+    if (this._adminUser?.id) {
+      const userId = this._adminUser?.id;
+      const items = cloneDeep(order.items);
+      items.forEach(item => {
+        // Update only none item status to placed!!!
+        if (currentStatus(item.statusLog) === CrudApi.OrderStatus.none) {
+          item.statusLog.push({
+            status: CrudApi.OrderStatus.ready,
+            ts: new Date().getTime(),
+            userId,
+          });
+        }
+      });
+
+      return this._crudSdk
+        .doMutation(
+          this._crudSdk.sdk.UpdateOrder({
+            input: {
+              id: order.id,
+              archived: false,
+              items,
+              statusLog: [
+                {
+                  status: CrudApi.OrderStatus.ready,
+                  ts: new Date().getTime(),
+                  userId,
+                },
+              ],
+              transactionStatus: CrudApi.PaymentStatus.waiting_for_payment,
+            },
+          }),
+        )
+        .pipe(
+          switchMap(() =>
+            order.transactionId
+              ? this._crudSdk.doMutation(
+                  this._crudSdk.sdk.UpdateTransaction({
+                    input: {
+                      id: order.transactionId,
+                      status: CrudApi.PaymentStatus.waiting_for_payment,
+                    },
+                  }),
+                )
+              : of(undefined),
+          ),
+          tap(() => {
+            this._store.dispatch(
+              ordersActions.removeHistoryOrder({ orderId: order.id }),
+            );
+          }),
+        );
+    } else {
+      return EMPTY;
+    }
   }
 }
