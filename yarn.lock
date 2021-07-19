@@ -5885,10 +5885,10 @@
     lodash "^4.17.4"
     read-pkg-up "^7.0.0"
 
-"@serverless-stack/cli@0.33.1":
-  version "0.33.1"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.33.1.tgz#be410937c6db8d9c564042a05785d3c75eba5c6e"
-  integrity sha512-gr7FC/lgrIW0u3gGUiJke7ms3FFKZBSB85FiTGPHS3cYVU3u424foUvkrMCkhv3QEdiP22b4k2FvPxI9Iyxb8w==
+"@serverless-stack/cli@0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.34.0.tgz#66dd6e7eda6a95e583a52700cb8de2089ba5d109"
+  integrity sha512-cC8sHkLUmyMTBcorGfN06PUTRBw8toJpMpUGDYD5bnWlhLd3AE6GT88jtp+0LIAbdDsZape2P0+jq+CCftbqQQ==
   dependencies:
     "@aws-cdk/aws-apigatewayv2" "1.111.0"
     "@aws-cdk/aws-dynamodb" "1.111.0"
@@ -5900,8 +5900,8 @@
     "@babel/eslint-plugin" "^7.11.3"
     "@babel/plugin-proposal-class-properties" "^7.10.4"
     "@babel/preset-env" "^7.10.4"
-    "@serverless-stack/core" "^0.33.1"
-    "@serverless-stack/resources" "^0.33.1"
+    "@serverless-stack/core" "^0.34.0"
+    "@serverless-stack/resources" "^0.34.0"
     "@types/jest" "^26.0.7"
     "@types/node" "^14.0.27"
     "@typescript-eslint/eslint-plugin" "^4.15.1"
@@ -5932,18 +5932,6 @@
     ws "^7.4.0"
     yargs "^15.4.1"
 
-"@serverless-stack/core@^0.33.1":
-  version "0.33.1"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.33.1.tgz#33bf44dcf866ec9f748a255666afdb1892e5bb38"
-  integrity sha512-Tcda5XgAvT9g5F+V8h31Dpab9YykJv/zTWPI7UpWk5HNBSRrH3cGntBwmY2wF6PUUsNxgm0lP7rXguahaxnvNg==
-  dependencies:
-    aws-cdk "1.111.0"
-    aws-sdk "^2.761.0"
-    chalk "^4.1.0"
-    cross-spawn "^7.0.3"
-    fs-extra "^9.0.1"
-    log4js "^6.3.0"
-
 "@serverless-stack/core@^0.34.0":
   version "0.34.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.34.0.tgz#8f107f2ef043b1d08773835a740d14492b607929"
@@ -5956,7 +5944,7 @@
     fs-extra "^9.0.1"
     log4js "^6.3.0"
 
-"@serverless-stack/resources@0.34.0":
+"@serverless-stack/resources@0.34.0", "@serverless-stack/resources@^0.34.0":
   version "0.34.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.34.0.tgz#ca9aca5b5b0f1fa4ebf081292967f9034f971c27"
   integrity sha512-1xzWGqRZaMpKMIdFlzz2iXQywTIGStKRYSdcw2KB+6RcVBckFJqkcTBL9ECpvqfoiL1Q7tE3RvbRMc3zFL7Vxg==
@@ -6002,54 +5990,6 @@
     eslint "^7.16.0"
     fs-extra "^9.0.1"
     glob "^7.1.7"
-    jest "^26.1.0"
-    ts-jest "^26.1.4"
-    typescript "^4.2.3"
-    zip-local "^0.3.4"
-
-"@serverless-stack/resources@^0.33.1":
-  version "0.33.1"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.33.1.tgz#e042f6c38322b9952c2fbe07fc9a93cd37a55f73"
-  integrity sha512-TBtq9fNkXlEw6gcVsN574kMLmqEOc2BnprSQKqxPus4/fVqV1QigaD54fo6WZ5KOjmpycURr7TjcAThiQMT2+A==
-  dependencies:
-    "@aws-cdk/aws-apigateway" "1.111.0"
-    "@aws-cdk/aws-apigatewayv2" "1.111.0"
-    "@aws-cdk/aws-apigatewayv2-authorizers" "1.111.0"
-    "@aws-cdk/aws-apigatewayv2-integrations" "1.111.0"
-    "@aws-cdk/aws-appsync" "1.111.0"
-    "@aws-cdk/aws-certificatemanager" "1.111.0"
-    "@aws-cdk/aws-cloudfront" "1.111.0"
-    "@aws-cdk/aws-cloudfront-origins" "1.111.0"
-    "@aws-cdk/aws-cognito" "1.111.0"
-    "@aws-cdk/aws-dynamodb" "1.111.0"
-    "@aws-cdk/aws-events" "1.111.0"
-    "@aws-cdk/aws-events-targets" "1.111.0"
-    "@aws-cdk/aws-iam" "1.111.0"
-    "@aws-cdk/aws-kinesis" "1.111.0"
-    "@aws-cdk/aws-lambda" "1.111.0"
-    "@aws-cdk/aws-lambda-event-sources" "1.111.0"
-    "@aws-cdk/aws-lambda-nodejs" "1.111.0"
-    "@aws-cdk/aws-logs" "1.111.0"
-    "@aws-cdk/aws-rds" "1.111.0"
-    "@aws-cdk/aws-route53" "1.111.0"
-    "@aws-cdk/aws-route53-patterns" "1.111.0"
-    "@aws-cdk/aws-route53-targets" "1.111.0"
-    "@aws-cdk/aws-s3" "1.111.0"
-    "@aws-cdk/aws-s3-assets" "1.111.0"
-    "@aws-cdk/aws-secretsmanager" "1.111.0"
-    "@aws-cdk/aws-sns" "1.111.0"
-    "@aws-cdk/aws-sns-subscriptions" "1.111.0"
-    "@aws-cdk/aws-sqs" "1.111.0"
-    "@aws-cdk/core" "1.111.0"
-    "@aws-cdk/cx-api" "1.111.0"
-    "@aws-cdk/lambda-layer-awscli" "1.111.0"
-    "@serverless-stack/core" "^0.33.1"
-    "@types/jest" "^26.0.7"
-    chalk "^4.1.0"
-    cross-spawn "^7.0.3"
-    esbuild "^0.8.31"
-    eslint "^7.16.0"
-    fs-extra "^9.0.1"
     jest "^26.1.0"
     ts-jest "^26.1.4"
     typescript "^4.2.3"
