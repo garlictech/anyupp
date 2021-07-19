@@ -287,6 +287,14 @@ input StripeCardDeleteInput {
 input GetUnitsNearLocationInput {
   location: LocationInput!
 }
+
+type OpeningHoursByDate @aws_cognito_user_pools {
+  date: String!
+  closed: Boolean!
+  from: Float
+  to: Float
+}
+
 type GeoUnit @aws_cognito_user_pools {
   id: ID!
   groupId: ID!
@@ -296,8 +304,14 @@ type GeoUnit @aws_cognito_user_pools {
   style: ChainStyle!
   paymentModes: [PaymentMode]
   distance: Int!
-  openingHours: String!
   currency: String!
+  isAcceptingOrders: Boolean!
+  # isCurrentlyOpen: Boolean!
+  openingHours: String!
+    @deprecated(
+      reason: "The new and better openingHoursNext7 field should be used instead of this static string"
+    )
+  openingHoursNext7: [OpeningHoursByDate!]!
 }
 type GeoUnitList @aws_cognito_user_pools {
   items: [GeoUnit]

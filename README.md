@@ -326,6 +326,7 @@ To execute the seeder locally run the following command:
   test-monad@anyupp.com,
   test-kati@anyupp.com,
   test-emen@anyupp.com,
+  test-ee2@anyupp.com,
 ```
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
