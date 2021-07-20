@@ -10,7 +10,7 @@ import {
 } from '@bgap/shared/fixtures';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import * as fp from 'lodash/fp';
-import { combineLatest, from } from 'rxjs';
+import { combineLatest, defer, from, iif } from 'rxjs';
 import { map, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 import {
   createAuthenticatedAnyuppSdk,
@@ -21,6 +21,7 @@ import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 
 const TEST_NAME = 'GEOUNIT_';
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
@@ -165,34 +166,15 @@ describe('GetUnitsNearLocation tests', () => {
   });
 
   // TODO: create test with A NOT ACTIVE CHAIN
-  it('should return all the units in geoUnitsFormat ordered by distance with direct handler call', done => {
+  it('should return all the units in geoUnitsFormat ordered by distance', done => {
     const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
-
-    // To test with the local appsync code
-    from(unitRequestHandler({ crudSdk }).getUnitsNearLocation(input)).subscribe(
-      {
-        next(result) {
-          expect(result).toHaveProperty('items');
-          const foundItems: Array<AnyuppApi.GeoUnit> = result.items;
-          successfullExecutionChecks(foundItems);
-          done();
-        },
-        error(err) {
-          console.error(`${TEST_NAME}Test ERROR`, err);
-        },
-      },
-    );
-  }, 15000);
-
-  // TODO: create test with A NOT ACTIVE CHAIN
-  it('should return all the units in geoUnitsFormat ordered by distance with remote anyupp-backend api call', done => {
-    const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
-      input: userLoc,
-    };
-    authAnyuppSdk
-      .GetUnitsNearLocation(input)
+    iif(
+      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+      defer(() => unitRequestHandler({ crudSdk }).getUnitsNearLocation(input)),
+      authAnyuppSdk.GetUnitsNearLocation(input),
+    )
       .pipe(
         filterNullish(),
         map(result => result.items),
@@ -200,8 +182,21 @@ describe('GetUnitsNearLocation tests', () => {
         throwIfEmpty(),
       )
       .subscribe({
-        next(result) {
-          successfullExecutionChecks(result);
+        next(foundItems) {
+          const ids = foundItems.map(x => x.id);
+          expect(ids).not.toContain(unitNotActive.id);
+
+          expect(foundItems[0].id).toEqual(unit_03.id);
+          expect(foundItems[1].id).toEqual(unit_01.id);
+          expect(foundItems[2].id).toEqual(unit_02.id);
+          expect(foundItems[0].distance).toEqual(0);
+          expect(foundItems[1].distance).toEqual(74);
+          expect(foundItems[2].distance).toEqual(153);
+          expect(foundItems[0].openingHoursNext7).toHaveLength(7);
+
+          expect(foundItems[0]).toMatchSnapshot({
+            openingHoursNext7: expect.any(Array),
+          });
           done();
         },
         error(err) {
@@ -209,18 +204,4 @@ describe('GetUnitsNearLocation tests', () => {
         },
       });
   }, 15000);
-
-  const successfullExecutionChecks = (foundItems: Array<AnyuppApi.GeoUnit>) => {
-    const ids = foundItems.map(x => x.id);
-    expect(ids).not.toContain(unitNotActive.id);
-
-    expect(foundItems[0].id).toEqual(unit_03.id);
-    expect(foundItems[1].id).toEqual(unit_01.id);
-    expect(foundItems[2].id).toEqual(unit_02.id);
-    expect(foundItems[0].distance).toEqual(0);
-    expect(foundItems[1].distance).toEqual(74);
-    expect(foundItems[2].distance).toEqual(153);
-
-    expect(foundItems[0]).toMatchSnapshot();
-  };
 });

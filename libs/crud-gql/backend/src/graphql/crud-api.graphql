@@ -549,9 +549,9 @@ type DateInterval {
 }
 
 type CustomDailySchedule {
-  date: String
-  from: String
-  to: String
+  date: String!
+  from: String!
+  to: String!
 }
 
 type WeeklySchedule {
