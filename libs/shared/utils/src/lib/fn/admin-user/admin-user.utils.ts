@@ -6,6 +6,7 @@ export const adminUserRoleIsAtLeast = (
 ) => {
   const ROLE_HIERARCHY = [
     undefined,
+    CrudApi.Role.inactive,
     CrudApi.Role.staff,
     CrudApi.Role.unitadmin,
     CrudApi.Role.groupadmin,
