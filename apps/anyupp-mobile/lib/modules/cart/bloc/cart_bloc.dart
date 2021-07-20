@@ -1,3 +1,4 @@
+import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/core/core.dart';
@@ -18,8 +19,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
     try {
       if (action is GetCurrentCartAction) {
         yield CartLoadingState();
-        Cart cart =
-            await _cartRepository.getCurrentCart(action.unitId);
+        Cart cart = await _cartRepository.getCurrentCart(action.unitId);
         yield CurrentCartState(cart);
       }
 
@@ -73,6 +73,10 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       if (action is AddInvoiceInfo) {
         await _cartRepository.addInvoiceInfo(action.invoiceInfo);
       }
+    } on GraphQLException catch (e) {
+      print('CartBloc.ExceptionBloc.GraphQLException=$e');
+      getIt<ExceptionBloc>().add(ShowException(e));
+      yield CartErrorState(code: e.code, message: e.message);
     } on PlatformException catch (e) {
       print('CartBloc.ExceptionBloc.PlatformException=$e');
       getIt<ExceptionBloc>()

@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
+import 'package:fa_prev/shared/connectivity/bloc/network_event.dart';
+import 'package:fa_prev/shared/connectivity/bloc/network_status_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils/http_utils.dart';
@@ -26,7 +29,7 @@ class DioTokenInterceptor extends InterceptorsWrapper {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
-   if (response.data['token'] != null) {
+    if (response.data['token'] != null) {
       // print('SAVING TOKENS!');
       await setTokenPreferences(response, _prefs);
       // print('TOKENS SAVED!');
@@ -36,10 +39,8 @@ class DioTokenInterceptor extends InterceptorsWrapper {
 
   @override
   void onError(DioError dioError, ErrorInterceptorHandler handler) async {
-
     debugError(dioError);
-
-    int responseCode = dioError.response.statusCode;
+    int responseCode = dioError.response?.statusCode;
     String oldAccessToken = _prefs.getString('cognito_accesstoken');
     if (oldAccessToken != null && responseCode == 401) {
       _dio.interceptors.requestLock.lock();
@@ -47,8 +48,8 @@ class DioTokenInterceptor extends InterceptorsWrapper {
 
       String refreshToken = _prefs.get('cognito_refreshtoken');
       if (refreshToken == null) {
-         super.onError(dioError, handler);
-         return;
+        super.onError(dioError, handler);
+        return;
       }
       print('==>Refresh token=' + refreshToken);
 
@@ -65,6 +66,11 @@ class DioTokenInterceptor extends InterceptorsWrapper {
       _dio.interceptors.requestLock.unlock();
       _dio.interceptors.responseLock.unlock();
       await _dio.request(options.path, data: options);
+    } else if (dioError.message.contains("Failed host lookup")) {
+      NetworkStatusBloc networkStatusBloc = getIt<NetworkStatusBloc>();
+      networkStatusBloc.add((NetworkConnectionChangedEvent(
+          networkStatusBloc.getLastConnectivityResult(), false, true, false)));
+      super.onError(dioError, handler);
     } else {
       super.onError(dioError, handler);
     }

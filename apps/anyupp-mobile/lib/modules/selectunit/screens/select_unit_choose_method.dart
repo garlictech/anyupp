@@ -42,6 +42,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
   Widget buildPage(BuildContext context, User user) {
     return SafeArea(
       child: Scaffold(
+        key: const Key('unitselect-screen'),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
@@ -307,6 +308,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return InkWell(
+            key: const Key('unit-widget'),
             onTap: () => _selectUnitAndGoToMenuScreen(context, units[index]),
             child: Container(
               width: MediaQuery.of(context).size.width / (3 / 2),
