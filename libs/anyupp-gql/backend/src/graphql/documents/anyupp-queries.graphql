@@ -40,6 +40,13 @@ query GetUnitsNearLocation($input: GetUnitsNearLocationInput!) {
       }
       distance
       openingHours
+      openingHoursNext7 {
+        from
+        to
+        closed
+        date
+      }
+      isAcceptingOrders
       currency
     }
   }
