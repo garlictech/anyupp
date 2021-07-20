@@ -5,7 +5,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class GraphQLException extends AppException {
   static const CODE = 'GRAPHQL_EXCEPTION';
 
-  static const CRUDE_CODE = "CRUD_CLIENT_EXCEPTION";
+  static const CRUD_CODE = "CRUD_CLIENT_EXCEPTION";
 
   static const ANYUPP_CODE = "ANYUPP_CLIENT_EXCEPTION";
 
@@ -49,7 +49,7 @@ class GraphQLException extends AppException {
   factory GraphQLException.fromCrudException(Exception e){
     return GraphQLException(
         code: CODE,
-        subCode: GraphQLException.CRUDE_CODE,
+        subCode: GraphQLException.CRUD_CODE,
         message: e.toString(),
         details: e.runtimeType);
   }

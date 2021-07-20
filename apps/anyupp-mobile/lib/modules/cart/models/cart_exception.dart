@@ -12,7 +12,7 @@ class CartException extends AppException {
 
   factory CartException.fromPlatformException(PlatformException pe) {
     return CartException(
-        code: "CRUD_CLIENT_ERROR", message: pe.message, details: pe.details);
+        code: pe.code, message: pe.message, details: pe.details);
   }
 
   factory CartException.fromException(String code, Exception e) {
