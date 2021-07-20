@@ -109,7 +109,7 @@
         status="success"
         [size]="buttonSize"
         shape="round"
-        (click)="updateTransactionStatus(EPaymentStatus.success)"
+        (click)="transactionStatusSuccess()"
       >
         {{ 'common.transactionStatus.SUCCESS' | translate }}
       </button>
@@ -119,7 +119,7 @@
         status="danger"
         [size]="buttonSize"
         shape="round"
-        (click)="updateTransactionStatus(EPaymentStatus.failed)"
+        (click)="transactionStatusFailed()"
       >
         {{ 'common.transactionStatus.FAILED' | translate }}
       </button>

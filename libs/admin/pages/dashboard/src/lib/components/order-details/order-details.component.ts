@@ -9,7 +9,10 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
+import {
+  ConfirmDialogComponent,
+  UnpayCategoriesComponent,
+} from '@bgap/admin/shared/components';
 import { adminUserRoleIsAtLeast } from '@bgap/shared/utils';
 import {
   dashboardSelectors,
@@ -31,7 +34,7 @@ import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { OrderPrintComponent } from '../order-print/order-print.component';
-import { loggedUserSelectors } from 'libs/admin/shared/data-access/logged-user/src';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 
 @UntilDestroy()
 @Component({
@@ -165,20 +168,42 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  public async updateTransactionStatus(
-    status: CrudApi.PaymentStatus,
-  ): Promise<void> {
+  public async transactionStatusSuccess(): Promise<void> {
     const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {
-      message:
-        status === CrudApi.PaymentStatus.success
-          ? 'orders.confirmSuccessTransaction'
-          : 'orders.confirmFailedTransaction',
+      message: 'orders.confirmSuccessTransaction',
       buttons: [
         {
           label: 'common.ok',
-          callback: this._updateTransactionStatusCallback(status),
+          callback: this._updateTransactionStatusCallback(
+            CrudApi.PaymentStatus.success,
+          ),
+          status: 'success',
+        },
+        {
+          label: 'common.cancel',
+          callback: (): void => {
+            /**/
+          },
+          status: 'basic',
+        },
+      ],
+    };
+  }
+
+  public async transactionStatusFailed(): Promise<void> {
+    const dialog = this._nbDialogService.open(UnpayCategoriesComponent);
+
+    dialog.componentRef.instance.options = {
+      message: 'orders.confirmFailedTransaction',
+      buttons: [
+        {
+          label: 'common.ok',
+          callback: (unpayCategory: any) => {
+            console.error('FAILED CALLBACK', unpayCategory);
+            // this._updateTransactionStatusCallback(CrudApi.PaymentStatus.failed),
+          },
           status: 'success',
         },
         {
