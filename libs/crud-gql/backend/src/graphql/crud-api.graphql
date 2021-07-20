@@ -273,12 +273,23 @@ type Order
   transactionStatus: PaymentStatus
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
+  unpayCategory: UnpayCategory
 }
 
 enum PaymentStatus {
   waiting_for_payment
   success
   failed
+}
+
+enum UnpayCategory {
+  staff_meal
+  manager_meal
+  marketing_promo
+  error_cooked
+  error_no_cooked
+  payment_mode_change
+  other
 }
 
 enum OrderStatus {
