@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:fa_prev/shared/connectivity.dart';
@@ -9,11 +10,15 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
   StreamSubscription _connectivitySubscription;
   ConnectivityResult _lastState;
 
-  NetworkStatusBloc() : super(NetworkState(ConnectivityResult.wifi, null, null)) {
-    print('NetworkStatusBloc.constructor()._connectivitySubscription=$_connectivitySubscription');
+  NetworkStatusBloc()
+      : super(NetworkState(ConnectivityResult.wifi, null, null)) {
+    print(
+        'NetworkStatusBloc.constructor()._connectivitySubscription=$_connectivitySubscription');
 
     if (_connectivitySubscription != null) {
-      _connectivitySubscription.cancel().then((value) => _initConnectionSubscription);
+      _connectivitySubscription
+          .cancel()
+          .then((value) => _initConnectionSubscription);
     } else {
       _initConnectionSubscription();
     }
@@ -24,9 +29,21 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
     });
   }
 
+  Future<bool> hasDataConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return Future.value(true);
+      }
+    } on SocketException catch (_) {
+      return Future.value(false);
+    }
+    return Future.value(false);
+  }
+
   void _initConnectionSubscription() {
     _connectivitySubscription = Connectivity().onConnectivityChanged.listen(
-      (ConnectivityResult result) {
+      (ConnectivityResult result) async {
         print('NetworkStatusBloc.result=$result');
         bool show = false;
         bool hide = false;
@@ -43,6 +60,11 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
             hide = true;
           }
         }
+
+        if (!await hasDataConnection()) {
+          result = ConnectivityResult.none;
+          show = true;
+        }
         add(NetworkConnectionChangedEvent(result, show, hide));
         _lastState = result;
       },
@@ -58,7 +80,8 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
 
   @override
   Future<void> close() async {
-    print('NetworkStatusBloc.close()._connectivitySubscription=$_connectivitySubscription');
+    print(
+        'NetworkStatusBloc.close()._connectivitySubscription=$_connectivitySubscription');
     await _connectivitySubscription?.cancel();
     return super.close();
   }
