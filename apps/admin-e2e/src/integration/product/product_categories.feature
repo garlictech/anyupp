@@ -15,10 +15,20 @@ Feature: Product categories
     And I click on the "Product categories" text
     Then the "Product categories (EN)" title is displayed
 
+  Scenario: Change list position
+    Then the first item should be "Test product category #1 name"
+    When I click on the Move down button
+    Then I should wait for 20000
+    Then the first item should be "Test product category #2 name"
+    And I click on the Move up button
+    Then I should wait for 20000
+    Then the last item should be "Test product category #2 name"
+    And the first item should be "Test product category #1 name"
+
   Scenario: Add new category
     When I click on the button with title "Add product category"
     Then the "New product category" title is displayed
-    And I fill out the "Name (HU)" input with "test category 1"
+    When I fill out the "Name (HU)" input with "test category 1"
     And I fill out the "Name (EN)" input with "test category 1"
     And I fill out the "Name (DE)" input with "test category 1"
     And I fill out the "Description (HU)" input with "test description"
@@ -53,6 +63,3 @@ Feature: Product categories
     Then I should see "test category e2e" text
     And I should see "test description e2e" text
 
-  Scenario: Change list position
-    When I click on the Move down button
-    When I click on the Move up button
