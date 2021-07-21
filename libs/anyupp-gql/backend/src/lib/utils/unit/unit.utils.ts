@@ -6,6 +6,9 @@ import { getTimezoneFromLocation } from '../date.utils';
 
 const dateFormat = 'y-MM-dd';
 
+export const getUnitTimeZone = (unit: CrudApi.Unit): string =>
+  getTimezoneFromLocation(unit.address.location);
+
 export const filterOutNotOpenUnits = ({
   units,
   atUtcTimeISO = DateTime.utc().toISO(),
@@ -26,11 +29,11 @@ const isUnitOpenAtTime =
   (unit: CrudApi.Unit): boolean => {
     const unitTimeZone = getUnitTimeZone(unit);
 
-    /** Millisecunds from the open.FROM in the units timeZone or a time in the past */
+    /** Millisecunds from the open.FROM in the units timeZone or a time in the past because the open field is optional */
     const from = unit.open?.from
       ? DateTime.fromISO(unit.open?.from, { zone: unitTimeZone }).toMillis()
       : 0;
-    /** Millisecunds from the open.TO in the units timeZone or a time in the future */
+    /** Millisecunds from the open.TO in the units timeZone or a time in the future because the open field is optional */
     const to = unit.open?.to
       ? DateTime.fromISO(unit.open?.to, { zone: unitTimeZone })
           .endOf('day')
@@ -217,6 +220,3 @@ export const getUnitOpeningHoursAtTime = (
     ),
   ];
 };
-
-export const getUnitTimeZone = (unit: CrudApi.Unit): string =>
-  getTimezoneFromLocation(unit.address.location);
