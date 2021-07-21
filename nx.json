@@ -5,10 +5,6 @@
   },
   "implicitDependencies": {
     "angular.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
     "tsconfig.base.json": "*",
     "nx.json": "*",
     ".eslintrc.json": "*"
@@ -31,7 +27,7 @@
       "implicitDependencies": ["anyupp-backend"]
     },
     "admin-e2e": {
-      "tags": [],
+      "tags": ["type:utils", "platform:angular"],
       "implicitDependencies": ["admin"]
     },
     "admin-pages-admin-users": {

@@ -1,16 +1,17 @@
-import * as geolib from 'geolib';
-import { combineLatest, EMPTY, Observable, of } from 'rxjs';
-import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
-import * as CrudApi from '@bgap/crud-gql/api';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { Maybe } from '@bgap/crud-gql/api';
 import {
   validateChain,
   validateGetGroupCurrency,
   validateUnitList,
 } from '@bgap/shared/data-validators';
-import { UnitsResolverDeps } from './utils';
-import { Maybe } from '@bgap/crud-gql/api';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
+import * as geolib from 'geolib';
+import { combineLatest, EMPTY, Observable, of } from 'rxjs';
+import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
+import { filterOutNotOpenUnits, getUnitOpeningHoursAtTime } from '../../utils';
+import { UnitsResolverDeps } from './utils';
 
 type ListResponse<T> = {
   items: Array<T>;
@@ -25,6 +26,7 @@ export const getUnitsInRadius =
     // TODO: use geoSearch for the units
     return listActiveUnits()(deps).pipe(
       filterNullishGraphqlListWithDefault<CrudApi.Unit>([]),
+      map(units => filterOutNotOpenUnits({ units })),
       switchMap(units =>
         combineLatest(
           units.map(unit =>
@@ -82,7 +84,9 @@ const toGeoUnit = ({
   currency,
   distance: geolib.getDistance(unit.address.location, inputLocation),
   paymentModes: paymentModes,
-  openingHours: '09:00 - 22:00',
+  isAcceptingOrders: unit.isAcceptingOrders,
+  openingHours: '09:00-22:00',
+  openingHoursNext7: getUnitOpeningHoursAtTime(unit),
 });
 
 /*const getOpeningOursForToday = (openingHours: IWeeklySchedule): string => {

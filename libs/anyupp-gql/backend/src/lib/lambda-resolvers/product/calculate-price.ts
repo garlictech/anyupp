@@ -1,6 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { DateTime } from 'luxon';
 import { EVariantAvailabilityType } from '@bgap/shared/types';
+import { DateTime } from 'luxon';
 import {
   getSeasonalAvailabilityFromTime,
   getSeasonalAvailabilityToTime,

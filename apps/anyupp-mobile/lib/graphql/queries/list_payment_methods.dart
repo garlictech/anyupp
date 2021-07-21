@@ -10,6 +10,7 @@ query ListStripePaymentMethodsQuery {
     funding
     last4
     three_d_secure
+    name
   }
 }
 ''';

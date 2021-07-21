@@ -29,6 +29,7 @@ import {
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { OrderPrintComponent } from '../order-print/order-print.component';
 
 @UntilDestroy()
 @Component({
@@ -40,6 +41,7 @@ import { select, Store } from '@ngrx/store';
 export class OrderDetailsComponent implements OnInit, OnDestroy {
   @Input() order!: CrudApi.Order;
   @Input() unit?: CrudApi.Unit;
+  @Input() allowPrintOrder = false;
   public dashboardSettings!: IDashboardSettings;
   public EDashboardListMode = EDashboardListMode;
   public EOrderStatus = CrudApi.OrderStatus;
@@ -114,7 +116,9 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
             // Archive order only after status change! We need to get the latest status
             if (
               status === CrudApi.OrderStatus.served &&
-              this.order.transaction?.status === CrudApi.PaymentStatus.success
+              (this.order.transaction?.status ===
+                CrudApi.PaymentStatus.success ||
+                this.order.transaction?.status === CrudApi.PaymentStatus.failed)
             ) {
               this._orderService.archiveOrder(this.order).subscribe();
             }
@@ -177,9 +181,9 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
           .updateOrderTransactionStatus(this.order, status)
           .pipe(
             switchMap(() => {
-              if (status === CrudApi.PaymentStatus.success) {
-                const currentStatus = currentStatusFn(this.order.statusLog);
+              const currentStatus = currentStatusFn(this.order.statusLog);
 
+              if (status === CrudApi.PaymentStatus.success) {
                 if (currentStatus === CrudApi.OrderStatus.none) {
                   return this._orderService.updateOrderStatusFromNoneToPlaced(
                     this.order,
@@ -189,6 +193,11 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
                 }
 
                 return of(true);
+              } else if (
+                status === CrudApi.PaymentStatus.failed &&
+                currentStatus === CrudApi.OrderStatus.served
+              ) {
+                return this._orderService.archiveOrder(this.order);
               }
 
               return of(true);
@@ -272,5 +281,13 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     return (
       this.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
     );
+  }
+
+  public printOrder(order: CrudApi.Order) {
+    const dialog = this._nbDialogService.open(OrderPrintComponent, {
+      dialogClass: 'print-dialog',
+    });
+
+    dialog.componentRef.instance.orders = [order];
   }
 }

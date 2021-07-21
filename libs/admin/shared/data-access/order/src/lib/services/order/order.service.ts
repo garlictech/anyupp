@@ -240,7 +240,9 @@ export class OrderService {
               tap(() => {
                 if (
                   newOrderStatus === CrudApi.OrderStatus.served &&
-                  _order.transaction?.status === CrudApi.PaymentStatus.success
+                  (_order.transaction?.status ===
+                    CrudApi.PaymentStatus.success ||
+                    _order.transaction?.status === CrudApi.PaymentStatus.failed)
                 ) {
                   this._store.dispatch(
                     ordersActions.removeActiveOrder({ orderId: _order.id }),

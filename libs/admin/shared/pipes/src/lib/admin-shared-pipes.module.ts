@@ -10,6 +10,7 @@ import { IterableAbstractControlsPipe } from './iterable-abstract-controls/itera
 import { LocalizePipe } from './localize/localize.pipe';
 import { LocalizedDatePipe } from './localized-date/localized-date.pipe';
 import { ObjectToArrayPipe } from './object-to-array/object-to-array.pipe';
+import { PaymentModeTypePipe } from './payment-mode-type/payment-mode-type.pipe';
 import { ProductComponentInfoPipe } from './product-component-info/product-component-info';
 import { ProductComponentSetInfoPipe } from './product-component-set-info/product-component-set-info';
 import { RoleEntityNamesPipe } from './role-entity-names/role-entity-names.pipe';
@@ -29,6 +30,7 @@ const PIPES = [
   AwsStoragePathPipe,
   ProductComponentInfoPipe,
   ProductComponentSetInfoPipe,
+  PaymentModeTypePipe,
 ];
 
 @NgModule({

@@ -1,17 +1,23 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/screens.dart';
+import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:fa_prev/shared/widgets/tab_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/shared/nav.dart';
 
 class StripePaymentMethodsScreen extends StatefulWidget {
   @override
-  _StripePaymentMethodsScreenState createState() => _StripePaymentMethodsScreenState();
+  _StripePaymentMethodsScreenState createState() =>
+      _StripePaymentMethodsScreenState();
 }
 
-class _StripePaymentMethodsScreenState extends State<StripePaymentMethodsScreen> {
+class _StripePaymentMethodsScreenState
+    extends State<StripePaymentMethodsScreen> {
+  int selectedItem = 0;
+  int initialIndex;
   @override
   void initState() {
     super.initState();
@@ -20,36 +26,34 @@ class _StripePaymentMethodsScreenState extends State<StripePaymentMethodsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Payment methods"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Nav.to(StripeAddPaymentMethodScreen());
-            },
-          )
-        ],
-      ),
-      body: BlocBuilder<StripePaymentBloc, StripePaymentState>(
+    return BlocListener<StripePaymentBloc, StripePaymentState>(
+      listener: (context, state) {
+        if (state is StripeCardCreated) {
+          showSuccessDialog(context, trans("payment.manageCard.success"),
+              trans("payment.manageCard.card_added"));
+          getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
+        }
+        if (state is StripeError) {
+          showErrorDialog(context, state.code, state.message,
+              onClose: () => Nav.pop());
+        }
+      },
+      child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
         builder: (context, StripePaymentState state) {
+          int initialIndex = 1;
           if (state is StripePaymentMethodsList) {
-            if (state.data == null) {
-              return NoPaymentMethodsWidget();
+            if (state.data != null && state.data.isEmpty) {
+              initialIndex = 0;
             }
-            return StripePaymentMethodListWidget(methods: state.data ?? []);
+            return TabBarWidget(
+              StripeAddPaymentMethodWidget(),
+              SelectStripePaymentMethodWidget(),
+              trans('payment.stripe.new_card'),
+              trans('payment.stripe.saved_cards'),
+              tabIndex: initialIndex,
+            );
           }
-          if (state is StripeError) {
-            return CommonErrorWidget(error: state.code, description: state.message);
-          }
-          if (state is StripePaymentLoading) {
-            return CenterLoadingWidget();
-          }
-          return NoPaymentMethodsWidget();
+          return Scaffold(body: CenterLoadingWidget());
         },
       ),
     );

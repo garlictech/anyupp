@@ -228,6 +228,7 @@ type CardChecks {
 
 type StripeCard @aws_cognito_user_pools {
   id: String!
+  name: String
   brand: CardBrand
   checks: CardChecks
   country: String
@@ -263,23 +264,37 @@ type StartStripePaymentOutput @aws_cognito_user_pools {
   status: String!
 }
 
+input StripeCardCreateInput {
+  card_number: String!
+  exp_month: Int!
+  exp_year: Int!
+  cvc: String!
+  default_for_currency: Boolean
+  name: String!
+}
+
 input StripeCardUpdateInput {
-  id: ID!
-  exp_month: String
-  exp_year: String
-  # metadata: [StripeMetadata!]
+  paymentMethodId: String!
   default_for_currency: Boolean
   name: String
 }
 
 input StripeCardDeleteInput {
-  id: ID!
+  paymentMethodId: String!
 }
 
 ### UNIT GEO_UNIT
 input GetUnitsNearLocationInput {
   location: LocationInput!
 }
+
+type OpeningHoursByDate @aws_cognito_user_pools {
+  date: String!
+  closed: Boolean!
+  from: Float
+  to: Float
+}
+
 type GeoUnit @aws_cognito_user_pools {
   id: ID!
   groupId: ID!
@@ -289,8 +304,14 @@ type GeoUnit @aws_cognito_user_pools {
   style: ChainStyle!
   paymentModes: [PaymentMode]
   distance: Int!
-  openingHours: String!
   currency: String!
+  isAcceptingOrders: Boolean!
+  # isCurrentlyOpen: Boolean!
+  openingHours: String!
+    @deprecated(
+      reason: "The new and better openingHoursNext7 field should be used instead of this static string"
+    )
+  openingHoursNext7: [OpeningHoursByDate!]!
 }
 type GeoUnitList @aws_cognito_user_pools {
   items: [GeoUnit]
@@ -327,6 +348,8 @@ type Mutation {
   startStripePayment(
     input: StartStripePaymentInput!
   ): StartStripePaymentOutput! @aws_cognito_user_pools
+  createStripeCard(input: StripeCardCreateInput!): StripeCard!
+    @aws_cognito_user_pools
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard!
     @aws_cognito_user_pools
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean!

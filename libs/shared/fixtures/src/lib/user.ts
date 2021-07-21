@@ -7,4 +7,5 @@ export const otherAdminEmails = [
   'test-monad@anyupp.com',
   'test-kati@anyupp.com',
   'test-emen@anyupp.com',
+  'test-e2e@anyupp.com',
 ];

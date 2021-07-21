@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:catcher/catcher.dart';
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/core/units/bloc/units_bloc.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
@@ -41,16 +42,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   StreamSubscription _deeplinkSubscription;
+  bool isProd;
 
   @override
   void initState() {
+    isProd = AppConfig.Stage == "prod";
     super.initState();
     init();
   }
 
   Future<void> init() async {
     await _initDeepLinks();
-    if (Platform.isAndroid) {
+    if (Platform.isAndroid && isProd) {
       await checkForAndroidUpdates();
     }
     final status = await AppTrackingTransparency.requestTrackingAuthorization();
@@ -97,7 +100,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> checkForAndroidUpdates() async {
     try {
       AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
-      if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+      if (appUpdateInfo.updateAvailability ==
+          UpdateAvailability.updateAvailable) {
         await InAppUpdate.performImmediateUpdate();
       }
     } catch (e) {
@@ -114,24 +118,37 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (BuildContext context) => getIt<ExceptionBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<PaymentBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<OrderBloc>()),
-        BlocProvider(create: (BuildContext context) => getIt<StripePaymentBloc>()),
+        BlocProvider(
+            create: (BuildContext context) => getIt<StripePaymentBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<CartBloc>()),
-        BlocProvider(create: (BuildContext context) => getIt<NetworkStatusBloc>()),
+        BlocProvider(
+            create: (BuildContext context) => getIt<NetworkStatusBloc>()),
         BlocProvider<UnitsBloc>(create: (context) => getIt<UnitsBloc>()),
-        BlocProvider<UnitSelectBloc>(create: (context) => getIt<UnitSelectBloc>()),
-        BlocProvider<FavoritesBloc>(create: (context) => getIt<FavoritesBloc>()),
-        BlocProvider<TransactionsBloc>(create: (context) => getIt<TransactionsBloc>()),
-        BlocProvider<LoginBloc>(create: (BuildContext context) => getIt<LoginBloc>()),
-        BlocProvider<SimplePayBloc>(create: (BuildContext context) => getIt<SimplePayBloc>()),
-        BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
-        BlocProvider<AffiliateBloc>(create: (BuildContext context) => getIt<AffiliateBloc>()),
-        BlocProvider<MainNavigationBloc>(create: (BuildContext context) => getIt<MainNavigationBloc>()),
-        BlocProvider<ConfigsetBloc>(create: (BuildContext context) => getIt<ConfigsetBloc>()),
-        BlocProvider<UserDetailsBloc>(create: (BuildContext context) => getIt<UserDetailsBloc>()),
+        BlocProvider<UnitSelectBloc>(
+            create: (context) => getIt<UnitSelectBloc>()),
+        BlocProvider<FavoritesBloc>(
+            create: (context) => getIt<FavoritesBloc>()),
+        BlocProvider<TransactionsBloc>(
+            create: (context) => getIt<TransactionsBloc>()),
+        BlocProvider<LoginBloc>(
+            create: (BuildContext context) => getIt<LoginBloc>()),
+        BlocProvider<SimplePayBloc>(
+            create: (BuildContext context) => getIt<SimplePayBloc>()),
+        BlocProvider<ThemeBloc>(
+            create: (BuildContext context) => getIt<ThemeBloc>()),
+        BlocProvider<AffiliateBloc>(
+            create: (BuildContext context) => getIt<AffiliateBloc>()),
+        BlocProvider<MainNavigationBloc>(
+            create: (BuildContext context) => getIt<MainNavigationBloc>()),
+        BlocProvider<ConfigsetBloc>(
+            create: (BuildContext context) => getIt<ConfigsetBloc>()),
+        BlocProvider<UserDetailsBloc>(
+            create: (BuildContext context) => getIt<UserDetailsBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, LocaleState localeState) {
-          var locale = (localeState is LocaleSelected) ? localeState.locale : null;
+          var locale =
+              (localeState is LocaleSelected) ? localeState.locale : null;
           return BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, state) {
               ThemeData themeData;
@@ -168,7 +185,12 @@ class _MyAppState extends State<MyApp> {
                 },
 
                 // The first app page
-                home: UpgradeAlert(showIgnore: false, showLater: false, child: OnBoarding()),
+                home: isProd
+                    ? UpgradeAlert(
+                        showIgnore: false,
+                        showLater: false,
+                        child: OnBoarding())
+                    : OnBoarding(),
 
                 // To hide the debug mark (in debugging and development modes)
                 debugShowCheckedModeBanner: false,
@@ -186,7 +208,8 @@ class _MyAppState extends State<MyApp> {
                 ],
                 supportedLocales: SupportedLocales.locales,
                 localeListResolutionCallback:
-                    (List<Locale> userPreferredlocales, Iterable<Locale> appSupportedLocales) {
+                    (List<Locale> userPreferredlocales,
+                        Iterable<Locale> appSupportedLocales) {
                   // userPreferredlocales: comes from the phone settings in the same order
                   // appSupportedLocales: comes from the supportedLocales parameter what was defined up ahead
 

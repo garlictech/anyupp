@@ -45,6 +45,14 @@ When('I click on the button with title {string}', (value: string) => {
   cy.findAllByTitle(value).first().click();
 });
 
+When('I click on the {string} title', (title: string) => {
+  cy.contains(title).click({ force: true });
+});
+
+When('I click to the header user button', async () => {
+  cy.get('nb-user[data-testid="userMenu"]').click();
+});
+
 When('I click on the {string} link', (value: string) => {
   cy.get('.tab-link').contains(value).click();
 });

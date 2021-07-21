@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GetUnitsNearLocation tests input validation should throw without an input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input\\" is required"`;
-
 exports[`GetUnitsNearLocation tests input validation should throw without a lat arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location.lng\\" is required"`;
 
 exports[`GetUnitsNearLocation tests input validation should throw without a lng arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location.lat\\" is required"`;
 
 exports[`GetUnitsNearLocation tests input validation should throw without a location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location\\" is required"`;
 
+exports[`GetUnitsNearLocation tests input validation should throw without an input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input\\" is required"`;
+
 exports[`GetUnitsNearLocation tests input validation should throw without valid location input 1`] = `[Error: GraphQL error: GetUnitsNearLocationQueryVariables Object Validation Error (JOI): "input.location.lat" must be greater than or equal to -90, "input.location.lng" must be less than or equal to 180]`;
 
-exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance with direct handler call 1`] = `
+exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance 1`] = `
 Object {
   "address": Object {
     "address": "Ág u. 1.",
@@ -28,62 +28,10 @@ Object {
   "distance": 0,
   "groupId": "test_group_1_id",
   "id": "test_unit_03",
+  "isAcceptingOrders": true,
   "name": "Késdobáló S",
-  "openingHours": "09:00 - 22:00",
-  "paymentModes": Array [
-    Object {
-      "caption": null,
-      "method": "cash",
-      "type": "cash",
-    },
-    Object {
-      "caption": null,
-      "method": "card",
-      "type": "card",
-    },
-    Object {
-      "caption": null,
-      "method": "inapp",
-      "type": "stripe",
-    },
-  ],
-  "style": Object {
-    "colors": Object {
-      "backgroundDark": "#d6dde0",
-      "backgroundLight": "#ffffff",
-      "borderDark": "#c3cacd",
-      "borderLight": "#e7e5d0",
-      "disabled": "#303030",
-      "highlight": "#a8692a",
-      "indicator": "#30bf60",
-      "textDark": "#303030",
-      "textLight": "#ffffff",
-    },
-    "images": null,
-  },
-}
-`;
-
-exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance with remote anyupp-backend api call 1`] = `
-Object {
-  "address": Object {
-    "address": "Ág u. 1.",
-    "city": "Budapest",
-    "country": "Magyarország",
-    "location": Object {
-      "lat": 47.48992,
-      "lng": 19.046135,
-    },
-    "postalCode": "1021",
-    "title": "HQ",
-  },
-  "chainId": "test_chain_1_id",
-  "currency": "EUR",
-  "distance": 0,
-  "groupId": "test_group_1_id",
-  "id": "test_unit_03",
-  "name": "Késdobáló S",
-  "openingHours": "09:00 - 22:00",
+  "openingHours": "09:00-22:00",
+  "openingHoursNext7": Any<Array>,
   "paymentModes": Array [
     Object {
       "caption": null,

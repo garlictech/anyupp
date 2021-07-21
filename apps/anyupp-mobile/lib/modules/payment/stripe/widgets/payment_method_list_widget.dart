@@ -1,41 +1,46 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class StripePaymentMethodListWidget extends StatelessWidget {
   final OnPaymentMethodSelected onItemSelected;
+  final int selected;
 
   final List<StripePaymentMethod> methods;
 
-  const StripePaymentMethodListWidget({Key key, this.methods, this.onItemSelected}) : super(key: key);
+  const StripePaymentMethodListWidget(
+      {Key key, this.methods, this.onItemSelected, this.selected})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: AnimationLimiter(
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: methods.length,
-          scrollDirection: Axis.vertical,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, position) {
-            return AnimationConfiguration.staggeredList(
-              position: position,
-              duration: const Duration(milliseconds: 375),
-              child: SlideAnimation(
-                verticalOffset: 50.0,
-                child: FadeInAnimation(
-                  child: PaymentMethodCardWidget(
-                    method: methods[position],
-                    onItemSelected: onItemSelected,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
+    return Container(    
+      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      child: LayoutBuilder(builder: (context, constrains) {
+        return Container(
+          height: constrains.maxHeight,
+          child: CarouselSlider.builder(
+            itemCount: methods.length,
+            options: CarouselOptions(
+              onPageChanged: (index, reason) => onItemSelected(methods[index]),
+              viewportFraction: 0.45,
+              scrollDirection: Axis.vertical,
+              enlargeCenterPage: false,
+              enableInfiniteScroll: false,
+              initialPage: selected,
+              autoPlay: false,
+            ),
+            itemBuilder: (context, index, position) {
+              return PaymentMethodCardWidget(
+                selected: position == selected,
+                method: methods[position],
+                onItemSelected: onItemSelected,
+              );
+            },
+          ),
+        );
+      }),
     );
   }
 }

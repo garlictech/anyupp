@@ -1,9 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const geoTz = require('geo-tz');
 import * as CrudApi from '@bgap/crud-gql/api';
-
-import { DateTime } from 'luxon';
 import { ILocation } from '@bgap/shared/types';
+import { DateTime } from 'luxon';
 
 export const WEEK_DAYS: {
   MONDAY: number;
@@ -39,6 +38,12 @@ export const getSeasonalAvailabilityToTime = (
     zone: inTimeZone,
   });
 
-export const getTimezoneFromLocation = (location: ILocation): string => {
+export const getTimezoneFromLocation = (
+  location?: ILocation | null,
+): string => {
+  if (!location || (!location.lat && !location.lng)) {
+    return 'Europe/Budapest';
+  }
+
   return geoTz(location.lat, location.lng)[0];
 };

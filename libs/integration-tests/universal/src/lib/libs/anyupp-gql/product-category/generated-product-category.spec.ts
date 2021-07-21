@@ -263,6 +263,6 @@ describe('GenerateProductCategory tests', () => {
             console.error(`${TEST_NAME}Test ERROR`, err);
           },
         });
-    }, 15000);
+    }, 25000);
   });
 });

@@ -159,6 +159,37 @@ export const createTestUnit =
           name: 'konyha',
         },
       ],
+      openingHours: {
+        mon: {
+          from: '09:00',
+          to: '17:00',
+        },
+        tue: {
+          from: '09:00',
+          to: '18:00',
+        },
+        wed: {
+          from: '09:00',
+          to: '19:00',
+        },
+        thu: {
+          from: '09:00',
+          to: '20:00',
+        },
+        fri: {
+          from: '09:00',
+          to: '21:00',
+        },
+        sat: {
+          from: '',
+          to: '',
+        },
+        sun: {
+          from: '',
+          to: '',
+        },
+        custom: [],
+      },
       floorMap: {
         w: 800,
         h: 300,

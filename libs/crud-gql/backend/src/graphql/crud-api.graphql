@@ -538,20 +538,25 @@ type Unit
   paymentModes: [PaymentMode]
   floorMap: FloorMapData
   lanes: [Lane]
-  open: DateInterval
+  open: DateIntervalOpen
   openingHours: WeeklySchedule
   merchantId: String
 }
 
-type DateInterval {
+type DateIntervalOpen {
   from: String
   to: String
 }
 
+type DateInterval {
+  from: String!
+  to: String!
+}
+
 type CustomDailySchedule {
-  date: String
-  from: String
-  to: String
+  date: String!
+  from: String!
+  to: String!
 }
 
 type WeeklySchedule {

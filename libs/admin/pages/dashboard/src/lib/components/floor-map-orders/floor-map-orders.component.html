@@ -28,6 +28,7 @@
       <bgap-order-details
         *ngFor="let order of userOrder.orders"
         [order]="order"
+        [allowPrintOrder]="true"
       ></bgap-order-details>
       <hr class="mb-2" />
     </ng-container>

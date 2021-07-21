@@ -27,26 +27,24 @@
         <table class="mb-3 w-100">
           <tr>
             <td style="width: 40%">
-              <img class="logo" [src]="chain?.style?.images?.logo" />
+              <img
+                class="logo"
+                [src]="chain?.style?.images?.logo || '' | awsStoragePath"
+              />
             </td>
             <td style="width: 60%" class="chain-header">
               <div class="font-weight-bold">{{ unit?.name }}</div>
               <div>{{ unit?.address?.city }}, {{ unit?.address?.address }}</div>
-              <div>Adószám: 1234567-12-1</div>
             </td>
           </tr>
         </table>
-
-        <!--div class="text-center p-3 mb-5">
-          -------------------- RENDELÉS ÖSSZESÍTŐ --------------------
-        </div-->
 
         <div>
           {{ 'common.date' | translate }}: {{ now | localizedDate: 'short' }}
         </div>
         <div class="mb-4">
-          {{ 'orders.tableNum' | translate }}: {{ place?.seat || '?' }}/{{
-            place?.table || '?'
+          {{ 'orders.tableNum' | translate }}: {{ place?.table || '?' }}/{{
+            place?.seat || '?'
           }}
         </div>
 
@@ -72,8 +70,16 @@
         <div *ngFor="let order of parsedOrders">
           <div class="row p-0 m-0">
             <div class="col-8 p-0">
-              {{ order.productName | localize }}
-              {{ order.variantName | localize }}
+              <div>
+                {{ order.productName | localize }}
+                {{ order.variantName | localize }}
+
+                <div
+                  class="font-weight-normal"
+                  *ngIf="order.configSets"
+                  [innerHTML]="order.configSets"
+                ></div>
+              </div>
             </div>
             <div class="col-1 p-0">{{ order.quantity }}x</div>
             <div class="col-3 p-0 text-end">
@@ -118,6 +124,8 @@
         <div class="mt-4">Rendelés azonosítók:</div>
         <div *ngFor="let order of orders">
           #{{ order.orderNum }} ({{ order.id }})
+          {{ 'print.selectedPaymentMode' | translate }}:
+          {{ order.paymentMode.type | paymentModeType }}
         </div>
 
         <div class="pt-5 text-center">Köszönjük a vásárlást!</div>
