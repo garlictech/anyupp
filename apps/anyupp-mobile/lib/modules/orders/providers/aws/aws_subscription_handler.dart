@@ -54,7 +54,7 @@ class AwsSubscription<T extends Model> {
 
       User user = await _authProvider.getAuthenticatedUserProfile();
       print('**** startListSubscription[$listNodeName].userId=${user.id}');
-      _client = await getIt<GraphQLClientService>().getAmplifyClient();
+      _client = await getIt<GraphQLClientService>().getCrudClient();
       _listSubscription = _client.value
           .subscribe(
         SubscriptionOptions(

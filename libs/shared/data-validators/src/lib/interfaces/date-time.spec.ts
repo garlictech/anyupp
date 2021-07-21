@@ -1,4 +1,3 @@
-import * as Joi from 'joi';
 import { dateStringSchema, timeStringSchema } from './date-time';
 
 describe('DateTime -', () => {
