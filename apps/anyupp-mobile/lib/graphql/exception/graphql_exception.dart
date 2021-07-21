@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fa_prev/core/core.dart';
 import 'package:flutter/services.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -29,12 +31,23 @@ class GraphQLException extends AppException {
     );
   }
 
-  factory GraphQLException.fromApolloException(OperationException oe) {
+  factory GraphQLException.fromOperationException(String code, OperationException oe) {
+    GraphQLError graphQLError = oe.graphqlErrors.first;
+    String message = graphQLError.message.toString();
+    String subCode;
+    Map<String, dynamic> decodedMessage;
+    try {
+      decodedMessage = json.decode(message.trim());
+      subCode = decodedMessage["code"];
+      message = decodedMessage["message"];
+    } on FormatException {
+      subCode = code;
+    }
     return GraphQLException(
       code: GraphQLException.CODE,
-      subCode: oe.graphqlErrors[0].extensions['code'],
-      message: oe.graphqlErrors[0].message,
-      details: oe.toString(),
+      subCode: subCode,
+      message: message,
+      details: oe.runtimeType,
     );
   }
 
@@ -46,9 +59,17 @@ class GraphQLException extends AppException {
         details: e.runtimeType);
   }
 
-  factory GraphQLException.fromCrudException(Exception e){
+  factory GraphQLException.fromCrudException(Exception e) {
     return GraphQLException(
-        code: CODE,
+        code: GraphQLException.CODE,
+        subCode: GraphQLException.CRUD_CODE,
+        message: e.toString(),
+        details: e.runtimeType);
+  }
+
+  factory GraphQLException.fromAnyuppException(Exception e) {
+    return GraphQLException(
+        code: GraphQLException.CODE,
         subCode: GraphQLException.CRUD_CODE,
         message: e.toString(),
         details: e.runtimeType);

@@ -82,23 +82,20 @@ class AwsOrderProvider implements IOrdersProvider {
       return id;
     } on Exception catch (e) {
       print('AwsOrderProvider.createAndSendOrderFromCart.Exception: $e');
-      throw GraphQLException.fromCrudException(e);
+      rethrow;
     }
   }
 
   @override
   Future<void> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
     try {
-      QueryResult result = await GQL.backend.executeMutation(
+      await GQL.backend.executeMutation(
         mutation: MUTATION_ADD_INVOICE_INFO,
         variables: {},
       );
-      if (result.hasException) {
-        throw GraphQLException.fromCrudException(result.exception);
-      }
     } on Exception catch (e) {
       print('AwsOrderProvider.addInvoiceInfo().exception=$e');
-      throw GraphQLException.fromCrudException(e);
+      rethrow;
     }
   }
 

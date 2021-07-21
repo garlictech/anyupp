@@ -6,7 +6,10 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 abstract class _BaseGraphQLWrapper {
   Future<ValueNotifier<GraphQLClient>> _getClient({bool useApi = false});
 
-  Future<QueryResult> executeQuery({String query, Map<String, dynamic> variables, FetchPolicy fetchPolicy}) async {
+  Future<QueryResult> executeQuery(
+      {String query,
+      Map<String, dynamic> variables,
+      FetchPolicy fetchPolicy}) async {
     ValueNotifier<GraphQLClient> client = await _getClient();
     try {
       QueryResult result = await client.value.query(
@@ -17,7 +20,8 @@ abstract class _BaseGraphQLWrapper {
         ),
       );
       if (result.hasException) {
-        throw GraphQLException.fromException(GraphQLException.CODE_QUERY_EXCEPTION, result.exception);
+        throw GraphQLException.fromOperationException(
+            GraphQLException.CODE_QUERY_EXCEPTION, result.exception);
       }
       return result;
     } finally {
@@ -25,7 +29,11 @@ abstract class _BaseGraphQLWrapper {
     }
   }
 
-  Future<QueryResult> executeMutation({String mutation, Map<String, dynamic> variables, FetchPolicy fetchPolicy, bool useApi = false}) async {
+  Future<QueryResult> executeMutation(
+      {String mutation,
+      Map<String, dynamic> variables,
+      FetchPolicy fetchPolicy,
+      bool useApi = false}) async {
     ValueNotifier<GraphQLClient> client = await _getClient(useApi: useApi);
     try {
       QueryResult result = await client.value.mutate(
@@ -36,7 +44,8 @@ abstract class _BaseGraphQLWrapper {
         ),
       );
       if (result.hasException) {
-        throw GraphQLException.fromException(GraphQLException.CODE_MUTATION_EXCEPTION, result.exception);
+        throw GraphQLException.fromOperationException(
+            GraphQLException.CODE_MUTATION_EXCEPTION, result.exception);
       }
       return result;
     } finally {
@@ -52,10 +61,42 @@ class GQL {
 
 class AmplifyApi extends _BaseGraphQLWrapper {
   @override
-  Future<ValueNotifier<GraphQLClient>> _getClient({bool useApi = false}) async => getIt<GraphQLClientService>().getCrudClient();
+  Future<ValueNotifier<GraphQLClient>> _getClient(
+          {bool useApi = false}) async =>
+      getIt<GraphQLClientService>().getCrudClient();
+  @override
+  Future<QueryResult> executeQuery(
+      {String query,
+      Map<String, dynamic> variables,
+      FetchPolicy fetchPolicy}) async {
+    try {
+      return super.executeQuery(query: query, variables: variables, fetchPolicy: fetchPolicy);
+    } on GraphQLException catch (e) {
+      throw GraphQLException.fromCrudException(e);
+    }
+  }
+
+  @override
+  Future<QueryResult> executeMutation(
+      {String mutation,
+      Map<String, dynamic> variables,
+      FetchPolicy fetchPolicy,
+      bool useApi = false}) async {
+    try {
+      return super.executeMutation(
+          mutation: mutation,
+          variables: variables,
+          fetchPolicy: fetchPolicy,
+          useApi: useApi);
+    } on GraphQLException catch (e) {
+      throw GraphQLException.fromCrudException(e);
+    }
+  }
 }
 
 class BackendApi extends _BaseGraphQLWrapper {
   @override
-  Future<ValueNotifier<GraphQLClient>> _getClient({bool useApi = false}) async => getIt<GraphQLClientService>().getAnyuppClient(useApi: useApi);
+  Future<ValueNotifier<GraphQLClient>> _getClient(
+          {bool useApi = false}) async =>
+      getIt<GraphQLClientService>().getAnyuppClient(useApi: useApi);
 }
