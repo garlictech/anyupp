@@ -1,11 +1,9 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/payment/stripe/widgets/payment_button_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +33,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
   @override
   void initState() {
     super.initState();
-    getIt<StripePaymentBloc>().add(ResetStripePaymentState());
+    // getIt<StripePaymentBloc>().add(ResetStripePaymentState());
   }
 
   @override
@@ -66,31 +64,18 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
       statusBarIconBrightness: Brightness.dark,
     ));
 
-    return BlocListener<StripePaymentBloc, StripePaymentState>(
-      listener: (BuildContext context, StripePaymentState state) {
-        if (state is StripeOperationSuccess) {
-          final scaffold = ScaffoldMessenger.of(context);
-          scaffold.showSnackBar(SnackBar(
-            content: Text(trans('payment.stripe.payment_success')),
-          ));
-          Nav.pop();
-          getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
-          //Nav.replace(MainNavigation(pageIndex: 2));
+    return BlocBuilder<StripePaymentBloc, StripePaymentState>(
+      builder: (context, StripePaymentState state) {
+        if (state is StripeError) {
+          return _buildPaymentFailed(context, state.code, state.message);
         }
+        return Column(
+          children: [
+            Expanded(child: _buildPaymentMethodForm(context, state)),
+            PaymentButtonWidget(_startStripePayment)
+          ],
+        );
       },
-      child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
-        builder: (context, StripePaymentState state) {
-          if (state is StripeError) {
-            return _buildPaymentFailed(context, state.code, state.message);
-          }
-          return Column(
-            children: [
-              Expanded(child: _buildPaymentMethodForm(context, state)),
-              PaymentButtonWidget(_startStripePayment)
-            ],
-          );
-        },
-      ),
     );
   }
 

@@ -172,7 +172,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     );
 
     if (result.hasException) {
-      throw GraphQLException.fromApolloException(result.exception);
+      throw GraphQLException.fromCrudException(result.exception);
     }
 
     Map<String, dynamic> paymentIntent = Map<String, dynamic>.from(result.data['createStripeCard']);
@@ -189,7 +189,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     );
 
     if (result.hasException) {
-      throw GraphQLException.fromApolloException(result.exception);
+      throw GraphQLException.fromCrudException(result.exception);
     }
 
     return true;
@@ -206,7 +206,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     );
 
     if (result.hasException) {
-      throw GraphQLException.fromApolloException(result.exception);
+      throw GraphQLException.fromCrudException(result.exception);
     }
 
     Map<String, dynamic> paymentIntent = Map<String, dynamic>.from(result.data['updateMyStripeCard']);

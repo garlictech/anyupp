@@ -14,7 +14,7 @@ class NetworkConnectionWrapperWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NetworkStatusBloc, NetworkState>(builder: (context, state) {
       // print('NetworkConnectionWrapperWidget.NetworkStatusBloc=$state');
-      return state.state == ConnectivityResult.none ? NoNetworkScreen() : child;
+      return (state.state == ConnectivityResult.none || !state.hasDataConnection) ? NoNetworkScreen() : child;
     });
   }
 }

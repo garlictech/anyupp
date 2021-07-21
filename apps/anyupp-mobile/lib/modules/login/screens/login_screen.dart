@@ -22,7 +22,8 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _backgroundImageScaleAnimation;
 
@@ -61,12 +62,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       curve: Curves.easeInOut,
     );
 
-    _buttonsOpacityAnim = CurveTween(curve: Curves.easeOut).animate(_buttonAnimController);
+    _buttonsOpacityAnim =
+        CurveTween(curve: Curves.easeOut).animate(_buttonAnimController);
     _buttonsPositionAnim = Tween(begin: Offset(-1.0, 0.0), end: Offset.zero)
         .chain(CurveTween(curve: Curves.elasticOut))
         .animate(_buttonAnimController);
 
-    Future.delayed(Duration(milliseconds: 1000)).then((value) => _switchAnimation());
+    Future.delayed(Duration(milliseconds: 1000))
+        .then((value) => _switchAnimation());
   }
 
   // Future<void> setUserAgent() async {
@@ -146,10 +149,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           children: [
             // BACKGROUND IMAGE
             Positioned(
-              top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-              left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-              bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-              right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+              top: -_backgroundImageScaleAnimation.value *
+                  _backgroundAnimationSize,
+              left: -_backgroundImageScaleAnimation.value *
+                  _backgroundAnimationSize,
+              bottom: -_backgroundImageScaleAnimation.value *
+                  _backgroundAnimationSize,
+              right: -_backgroundImageScaleAnimation.value *
+                  _backgroundAnimationSize,
               child: _buildBackground(context),
             ),
             CenterLoadingWidget(),
@@ -192,9 +199,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           behavior: HitTestBehavior.deferToChild,
           onTap: () => _switchAnimation(),
           onVerticalDragUpdate: (details) {
-            if (_controller.status == AnimationStatus.dismissed && details.delta.dy < -20.0) {
+            if (_controller.status == AnimationStatus.dismissed &&
+                details.delta.dy < -20.0) {
               _switchAnimation();
-            } else if (_controller.status == AnimationStatus.completed && details.delta.dy > 20.0) {
+            } else if (_controller.status == AnimationStatus.completed &&
+                details.delta.dy > 20.0) {
               _switchAnimation();
             }
           },
@@ -204,10 +213,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 Container(height: height - statusBarHeight),
                 // BACKGROUND IMAGE
                 Positioned(
-                  top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-                  left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-                  bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-                  right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+                  top: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
+                  left: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
+                  bottom: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
+                  right: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
                   child: _buildBackground(context),
                 ),
 
@@ -225,7 +238,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
                 // Center logo
                 Positioned(
-                  top: (height / 2.0 - 50) - ((height / 2.0 - 50 - 36.0) * _backgroundImageScaleAnimation.value),
+                  top: (height / 2.0 - 50) -
+                      ((height / 2.0 - 50 - 36.0) *
+                          _backgroundImageScaleAnimation.value),
                   left: 0.0,
                   right: 0.0,
                   child: _buildLogo(context),
@@ -238,12 +253,15 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       : _bottomWidgetHeight == null
                           ? height
                           : height -
-                              ((_bottomWidgetHeight + (iOS == true ? 0.0 : 20.0)) *
+                              ((_bottomWidgetHeight +
+                                          (iOS == true ? 0.0 : 20.0)) *
                                       _backgroundImageScaleAnimation.value) *
                                   1.0,
                   left: 0.0,
                   right: 0.0,
-                  bottom: _controller.status == AnimationStatus.completed ? 0.0 : null,
+                  bottom: _controller.status == AnimationStatus.completed
+                      ? 0.0
+                      : null,
                   child: _buildBottomSheetContent(context, iOS),
                 ),
               ],
@@ -405,7 +423,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         _buildEmailLoginForms(context),
                         Padding(
                           // TODO
-                          padding: _showLogin ? const EdgeInsets.all(0.0) : const EdgeInsets.only(top: 28.0),
+                          padding: _showLogin
+                              ? const EdgeInsets.all(0.0)
+                              : const EdgeInsets.only(top: 28.0),
                           child: Text(
                             trans('login.continueWith'),
                             style: GoogleFonts.poppins(
@@ -434,12 +454,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               ),
                             ),
                             child: TextButton(
+                                key: const Key('login-btn-anonymous'),
                                 style: TextButton.styleFrom(
                                   backgroundColor: Colors.transparent,
                                   padding: EdgeInsets.all(8.0),
                                 ),
                                 //: Colors.blueAccent,
-                                onPressed: () => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
+                                onPressed: () => getIt<LoginBloc>().add(
+                                    LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
                                     style: GoogleFonts.poppins(
                                       fontSize: 14.0,
@@ -501,7 +523,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             _createSocialButtonWidget('facebook', LoginMethod.FACEBOOK),
             // if (snapshot.data == true) // has Apple Login
             _createSocialButtonWidget('apple', LoginMethod.APPLE),
-            _createSocialButtonWidget('email', LoginMethod.EMAIL, theme.indicator),
+            _createSocialButtonWidget(
+                'email', LoginMethod.EMAIL, theme.indicator),
             // _createSocialButtonWidget('phone', LoginMethod.PHONE),
           ],
         ),
@@ -518,7 +541,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     );
   }
 
-  Widget _createSocialButtonWidget(String icon, LoginMethod method, [Color iconColor]) {
+  Widget _createSocialButtonWidget(String icon, LoginMethod method,
+      [Color iconColor]) {
     final bool iOS = Theme.of(context).platform == TargetPlatform.iOS;
     return Padding(
       padding: const EdgeInsets.all(6.0),
@@ -546,7 +570,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   }
 
   Widget _buildSocialLoginWebView(LoginMethod method) {
-    Completer<WebViewController> _webViewController = Completer<WebViewController>();
+    Completer<WebViewController> _webViewController =
+        Completer<WebViewController>();
     String provider;
     switch (method) {
       case LoginMethod.FACEBOOK:
@@ -625,8 +650,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               print('SocialLoginScreen.navigationDelegate().request=$request');
               Uri uri = Uri.parse(request.url);
               String error = uri.queryParameters['error_description'];
-              if (request.url.startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
-                var code = request.url.substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
+              if (request.url
+                  .startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
+                var code = request.url.substring(
+                    '${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
                 //For some reasion there is an extra # and some other stuff at the end of the url in case of first login.
                 //Remove it so it will be a valid url
                 code = code.split("#").first;
@@ -636,8 +663,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               }
               if (error != null) {
                 setState(() {
-                  getIt<ExceptionBloc>().add(ShowException(
-                      LoginException(code: LoginException.CODE, subCode: LoginException.CODE, message: error)));
+                  getIt<ExceptionBloc>().add(ShowException(LoginException(
+                      code: LoginException.CODE,
+                      subCode: LoginException.CODE,
+                      message: error)));
                   getIt<LoginBloc>().add(ResetLogin());
                   isLoading = true;
                 });
