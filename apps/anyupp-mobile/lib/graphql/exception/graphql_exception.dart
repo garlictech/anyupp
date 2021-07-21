@@ -67,14 +67,6 @@ class GraphQLException extends AppException {
         details: e.runtimeType);
   }
 
-  factory GraphQLException.fromAnyuppException(Exception e) {
-    return GraphQLException(
-        code: GraphQLException.CODE,
-        subCode: GraphQLException.CRUD_CODE,
-        message: e.toString(),
-        details: e.runtimeType);
-  }
-
   @override
   String toString() {
     return 'GraphQLException[code=$code, subCode=$subCode, message=$message, details=$details]';
