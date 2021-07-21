@@ -313,7 +313,7 @@
     "confirmNotAcceptOrder": "Biztosan letiltod a rendelések fogadását?",
     "confirmResetOrderItemStatus": "Biztosan visszaállítod a rendelési tétel státuszát?",
     "confirmRecallHistoryOrder": "Biztosan visszaállítod az archivált rendelést?",
-    "confirmFailedTransaction": "Biztosan sikertelenre állítod a tranzakciót?",
+    "confirmFailedTransaction": "Sikertelen tranzakció. Válassz unpay kategóriát!",
     "confirmSuccessTransaction": "Biztosan sikeresre állítod a tranzakciót?",
     "confirmDeleteOrder": "Biztosan törlöd a rendelést?",
     "userOrdersCount": "{{ count }} rendelés",
@@ -328,6 +328,16 @@
       "PAID": "Paid",
       "FAILED": "Failed",
       "REJECTED": "Rejected"
+    },
+    "unpayCategory": "Unpay kategória",
+    "unpayCategories": {
+      "staff_meal": "Staff étkezés",
+      "manager_meal": "Manager étkezés",
+      "marketing_promo": "Marketing/Promo",
+      "error_cooked": "Hiba (kész)",
+      "error_no_cooked": "Hiba (nincs kész)",
+      "payment_mode_change": "Fizetési mód változtatás",
+      "other": "Egyéb"
     }
   },
   "print": {

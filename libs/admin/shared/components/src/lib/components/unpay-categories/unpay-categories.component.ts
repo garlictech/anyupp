@@ -4,7 +4,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { IConfirmOptions } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({
@@ -13,22 +13,43 @@ import { NbDialogRef } from '@nebular/theme';
   templateUrl: './unpay-categories.component.html',
 })
 export class UnpayCategoriesComponent implements OnInit {
-  public options?: IConfirmOptions;
+  public clickCallback: (unpayCategory: CrudApi.UnpayCategory) => void =
+    () => {};
+  public unpayCategories: CrudApi.UnpayCategory[];
+  public selectedCategory?: CrudApi.UnpayCategory;
 
   constructor(
     private _nbDialogRef: NbDialogRef<unknown>,
     private _changeDetectorRef: ChangeDetectorRef,
-  ) {}
+  ) {
+    this.unpayCategories = [
+      CrudApi.UnpayCategory.staff_meal,
+      CrudApi.UnpayCategory.manager_meal,
+      CrudApi.UnpayCategory.marketing_promo,
+      CrudApi.UnpayCategory.error_cooked,
+      CrudApi.UnpayCategory.error_no_cooked,
+      CrudApi.UnpayCategory.payment_mode_change,
+      CrudApi.UnpayCategory.other,
+    ];
+  }
 
   ngOnInit() {
     this._changeDetectorRef.detectChanges();
   }
 
-  public click(callbackFn: () => void): void {
-    if (callbackFn) {
-      callbackFn();
+  public select(): void {
+    if (this.clickCallback && this.selectedCategory) {
+      this.clickCallback(this.selectedCategory);
     }
 
     this._nbDialogRef.close();
+  }
+
+  public close(): void {
+    this._nbDialogRef.close();
+  }
+
+  public onCategorySelected(category: string): void {
+    this._changeDetectorRef.detectChanges();
   }
 }

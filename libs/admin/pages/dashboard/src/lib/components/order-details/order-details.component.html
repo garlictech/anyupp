@@ -133,7 +133,9 @@
     <nb-badge
       class="font-larger p-2 position-static"
       *ngIf="order.transactionStatus === EPaymentStatus.failed"
-      text="{{ 'common.transactionStatus.FAILED' | translate }}"
+      text="{{ 'common.transactionStatus.FAILED' | translate }} ({{
+        'orders.unpayCategories.' + order.unpayCategory | translate
+      }})"
       status="danger"
     ></nb-badge>
   </div>

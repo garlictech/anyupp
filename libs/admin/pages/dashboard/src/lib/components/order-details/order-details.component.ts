@@ -195,33 +195,21 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   public async transactionStatusFailed(): Promise<void> {
     const dialog = this._nbDialogService.open(UnpayCategoriesComponent);
 
-    dialog.componentRef.instance.options = {
-      message: 'orders.confirmFailedTransaction',
-      buttons: [
-        {
-          label: 'common.ok',
-          callback: (unpayCategory: any) => {
-            console.error('FAILED CALLBACK', unpayCategory);
-            // this._updateTransactionStatusCallback(CrudApi.PaymentStatus.failed),
-          },
-          status: 'success',
-        },
-        {
-          label: 'common.cancel',
-          callback: (): void => {
-            /**/
-          },
-          status: 'basic',
-        },
-      ],
-    };
+    dialog.componentRef.instance.clickCallback = (
+      unpayCategory: CrudApi.UnpayCategory,
+    ) =>
+      this._updateTransactionStatusCallback(
+        CrudApi.PaymentStatus.failed,
+        unpayCategory,
+      )();
   }
 
   private _updateTransactionStatusCallback =
-    (status: CrudApi.PaymentStatus) => () => {
+    (status: CrudApi.PaymentStatus, unpayCategory?: CrudApi.UnpayCategory) =>
+    () => {
       if (this.order.transactionId) {
         this._orderService
-          .updateOrderTransactionStatus(this.order, status)
+          .updateOrderTransactionStatus(this.order, status, unpayCategory)
           .pipe(
             switchMap(() => {
               const currentStatus = currentStatusFn(this.order.statusLog);

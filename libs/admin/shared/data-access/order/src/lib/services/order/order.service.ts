@@ -262,6 +262,7 @@ export class OrderService {
   public updateOrderTransactionStatus(
     order: CrudApi.Order,
     status: CrudApi.PaymentStatus,
+    unpayCategory?: CrudApi.UnpayCategory,
   ) {
     if (order.transactionId) {
       return this._crudSdk
@@ -280,6 +281,7 @@ export class OrderService {
                 input: {
                   id: order.id,
                   transactionStatus: status,
+                  unpayCategory,
                 },
               }),
             ),
