@@ -133,7 +133,7 @@
     "@nrwl/tao": "12.5.8",
     "@nrwl/workspace": "12.5.8",
     "@nxrocks/nx-flutter": "2.1.0",
-    "@serverless-stack/cli": "0.34.0",
+    "@serverless-stack/cli": "0.35.0",
     "@serverless-stack/resources": "0.34.0",
     "@testing-library/cypress": "7.0.7",
     "@types/aws-lambda": "8.10.79",
