@@ -290,6 +290,9 @@ enum UnpayCategory {
   error_no_cooked
   payment_mode_change
   other
+  delivery
+  coupon
+  event
 }
 
 enum OrderStatus {

@@ -337,7 +337,10 @@
       "error_cooked": "Error (cooked)",
       "error_no_cooked": "Error (no cooked)",
       "payment_mode_change": "Payment mode change",
-      "other": "Other"
+      "other": "Other",
+      "delivery": "Delivery",
+      "coupon": "Coupon",
+      "event": "Event"
     }
   },
   "auth": {

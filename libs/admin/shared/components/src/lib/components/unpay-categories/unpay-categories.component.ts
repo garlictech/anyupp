@@ -30,6 +30,9 @@ export class UnpayCategoriesComponent implements OnInit {
       CrudApi.UnpayCategory.error_no_cooked,
       CrudApi.UnpayCategory.payment_mode_change,
       CrudApi.UnpayCategory.other,
+      CrudApi.UnpayCategory.delivery,
+      CrudApi.UnpayCategory.coupon,
+      CrudApi.UnpayCategory.event,
     ];
   }
 

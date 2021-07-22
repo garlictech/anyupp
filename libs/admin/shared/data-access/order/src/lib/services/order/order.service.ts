@@ -347,7 +347,6 @@ export class OrderService {
       const userId = this._adminUser?.id;
       const items = cloneDeep(order.items);
       items.forEach(item => {
-        // Update only none item status to placed!!!
         if (currentStatus(item.statusLog) === CrudApi.OrderStatus.none) {
           item.statusLog.push({
             status: CrudApi.OrderStatus.ready,

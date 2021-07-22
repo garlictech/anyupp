@@ -205,16 +205,23 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   }
 
   private _updateTransactionStatusCallback =
-    (status: CrudApi.PaymentStatus, unpayCategory?: CrudApi.UnpayCategory) =>
+    (
+      paymentStatus: CrudApi.PaymentStatus,
+      unpayCategory?: CrudApi.UnpayCategory,
+    ) =>
     () => {
       if (this.order.transactionId) {
         this._orderService
-          .updateOrderTransactionStatus(this.order, status, unpayCategory)
+          .updateOrderTransactionStatus(
+            this.order,
+            paymentStatus,
+            unpayCategory,
+          )
           .pipe(
             switchMap(() => {
               const currentStatus = currentStatusFn(this.order.statusLog);
 
-              if (status === CrudApi.PaymentStatus.success) {
+              if (paymentStatus === CrudApi.PaymentStatus.success) {
                 if (currentStatus === CrudApi.OrderStatus.none) {
                   return this._orderService.updateOrderStatusFromNoneToPlaced(
                     this.order,
@@ -225,7 +232,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 
                 return of(true);
               } else if (
-                status === CrudApi.PaymentStatus.failed &&
+                paymentStatus === CrudApi.PaymentStatus.failed &&
                 currentStatus === CrudApi.OrderStatus.served
               ) {
                 return this._orderService.archiveOrder(this.order);
