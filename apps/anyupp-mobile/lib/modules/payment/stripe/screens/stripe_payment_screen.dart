@@ -46,6 +46,9 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
           Nav.pop();
           getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
         }
+        if (state is StripeError) {
+          Nav.pop();
+        }
       },
       child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
         builder: (context, state) {

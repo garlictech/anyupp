@@ -34,8 +34,7 @@ class _StripePaymentMethodsScreenState
           getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
         }
         if (state is StripeError) {
-          showErrorDialog(context, state.code, state.message,
-              onClose: () => Nav.pop());
+          Nav.pop();
         }
       },
       child: BlocBuilder<StripePaymentBloc, StripePaymentState>(

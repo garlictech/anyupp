@@ -471,6 +471,10 @@
     "INTERNAL_SERVER_ERROR": {
       "title": "Belső Szerver hiba",
       "description": "Valami félrement."
+    },
+    "ERROR_UNIT_NOT_ACCEPTING_ORDERS": {
+      "title": "Étterem zárva",
+      "description": "Az étterem jelenleg nem fogad rendeléseket. Próbáld meg később!"
     }
   }
 }
