@@ -23,7 +23,12 @@ query GetUnitsNearLocationQuery(\$lat: Float!, \$lng: Float!) {
       chainId
       groupId
       name
-      openingHours
+      openingHoursNext7 {
+        to
+        from
+        date
+        closed
+      }
       paymentModes {
         caption
         method

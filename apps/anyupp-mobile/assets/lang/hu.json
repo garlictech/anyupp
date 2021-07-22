@@ -275,7 +275,9 @@
     "qrGeneralError": {
       "title": "Valami hiba történt",
       "description": "Valami hiba történt az éttermek keresgélése közben. :("
-    }
+    },
+    "opened": "Nyitva",
+    "closed": "Zárva"
   },
   "qrScan": {
     "loading": "QR kód adatainak betöltése...",

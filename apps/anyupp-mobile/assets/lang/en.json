@@ -275,7 +275,9 @@
     "qrGeneralError": {
       "title": "Something went wrong",
       "description": "Something went wrong while searching for restaurants. :("
-    }
+    },
+    "opened": "Opened",
+    "closed": "Closed"
   },
   "qrScan": {
     "loading": "Loading QR code information...",

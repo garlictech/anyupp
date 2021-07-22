@@ -17,10 +17,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SelectUnitByLocationScreen extends StatefulWidget {
   @override
-  _SelectUnitByLocationScreenState createState() => _SelectUnitByLocationScreenState();
+  _SelectUnitByLocationScreenState createState() =>
+      _SelectUnitByLocationScreenState();
 }
 
-class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen> {
+class _SelectUnitByLocationScreenState
+    extends State<SelectUnitByLocationScreen> {
   GoogleMapController _mapController;
   Map<MarkerId, Marker> _unitMarkers = <MarkerId, Marker>{};
   Marker _userMarker = Marker(markerId: MarkerId('USER'));
@@ -55,7 +57,8 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       width: 1,
-                      color: theme.highlight.withOpacity(0.2), // Color(0x33857C18),
+                      color: theme.highlight
+                          .withOpacity(0.2), // Color(0x33857C18),
                     ),
                     color: theme.background, // Colors.white,
                   ),
@@ -96,43 +99,47 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
           minChildSize: 0.25,
           maxChildSize: 0.9,
           builder: (BuildContext context, ScrollController scrollController) {
-            return Stack(clipBehavior: Clip.none, fit: StackFit.expand, children: [
-              Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    ),
-                    color: theme.background,
-                  ),
-                  child: _buildUnitList(scrollController)),
-              Positioned(
-                top: 15,
-                right: 15,
-                child: Container(
-                  width: 44.0,
-                  height: 44.0,
-                  child: FittedBox(
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        _determineUserPositionAndLoadUnits();
-                      },
-                      child: Icon(
-                        Icons.my_location,
-                        size: 32.0,
+            return Stack(
+                clipBehavior: Clip.none,
+                fit: StackFit.expand,
+                children: [
+                  Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0),
+                        ),
+                        color: theme.background,
                       ),
-                      foregroundColor: theme.highlight, //Color(0xFF857C18),
-                      shape: CircleBorder(
-                        side: BorderSide(
-                          color: theme.highlight.withOpacity(0.2), //Color(0xFFE7E5D0),
-                          width: 1.0,
+                      child: _buildUnitList(scrollController)),
+                  Positioned(
+                    top: 15,
+                    right: 15,
+                    child: Container(
+                      width: 44.0,
+                      height: 44.0,
+                      child: FittedBox(
+                        child: FloatingActionButton(
+                          onPressed: () {
+                            _determineUserPositionAndLoadUnits();
+                          },
+                          child: Icon(
+                            Icons.my_location,
+                            size: 32.0,
+                          ),
+                          foregroundColor: theme.highlight, //Color(0xFF857C18),
+                          shape: CircleBorder(
+                            side: BorderSide(
+                              color: theme.highlight
+                                  .withOpacity(0.2), //Color(0xFFE7E5D0),
+                              width: 1.0,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ]);
+                ]);
           },
         ),
       ],
@@ -170,7 +177,8 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
           child: Align(
             alignment: Alignment.topCenter,
             // UNITS_BLOC
-            child: BlocBuilder<UnitsBloc, UnitsState>(builder: (context, state) {
+            child:
+                BlocBuilder<UnitsBloc, UnitsState>(builder: (context, state) {
               if (state is UnitsNoNearUnit) {
                 return Text(trans('selectUnitMap.noNearUnits'));
               }
@@ -184,7 +192,8 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                   physics: BouncingScrollPhysics(),
                   controller: scrollController,
                   itemBuilder: (context, index) {
-                    return _buildUnitCardItem(context, state.units[index], index == 0);
+                    return _buildUnitCardItem(
+                        context, state.units[index], index == 0);
                   },
                 );
               }
@@ -196,7 +205,8 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
     );
   }
 
-  Widget _buildUnitCardItem(BuildContext context, GeoUnit unit, bool highlight) {
+  Widget _buildUnitCardItem(
+      BuildContext context, GeoUnit unit, bool highlight) {
     return InkWell(
       onTap: () => _selectUnitAndGoToMenuScreen(context, unit),
       child: Container(
@@ -247,7 +257,12 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     ),
                   ),
                   Text(
-                    '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
+                    //  '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
+                    unit.getTodaysOpening() != null
+                        ? transEx(context, "selectUnit.opened") +
+                            " : " +
+                            unit.getTodaysOpening()
+                        : transEx(context, "selectUnit.closed"),
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: theme.text, //const Color(0xff3c2f2f),
@@ -275,11 +290,13 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                       borderRadius: BorderRadius.circular(6.0),
                       color: highlight
                           ? theme.indicator
-                          : theme.highlight, //const Color(0xFF1E6F4A) : const Color(0xff857c18),
+                          : theme
+                              .highlight, //const Color(0xFF1E6F4A) : const Color(0xff857c18),
                     ),
                     child: Center(
                       child: Text(
-                        ((unit.distance ?? 0) / 1000).toStringAsFixed(3) + ' km',
+                        ((unit.distance ?? 0) / 1000).toStringAsFixed(3) +
+                            ' km',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: theme.text2, //const Color(0xffffffff),
@@ -289,7 +306,8 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     ),
                   ),
                   Text(
-                    unit.openingHours ?? '',
+                    // unit.openingHours ??
+                    '',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: theme.text, //const Color(0xff3c2f2f),
@@ -313,7 +331,8 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
 
   void _determineUserPositionAndLoadUnits() async {
     try {
-      LatLng userLocation = await getIt<LocationRepository>().getUserCurrentLocation();
+      LatLng userLocation =
+          await getIt<LocationRepository>().getUserCurrentLocation();
       print('_determineUserPositionAndLoadUnits().location=$userLocation');
       await _animateMapToLocation(userLocation);
       _loadNearUnits(userLocation);
@@ -335,7 +354,8 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
       trans('selectUnitMap.userMarker.description'),
     );
     if (mounted) {
-      await _mapController.animateCamera(CameraUpdate.newCameraPosition(position));
+      await _mapController
+          .animateCamera(CameraUpdate.newCameraPosition(position));
     }
   }
 
@@ -373,7 +393,9 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
         position: LatLng(unit.address.location.lat, unit.address.location.lng),
         infoWindow: InfoWindow(
-            title: unit.name, snippet: '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
+            title: unit.name,
+            snippet:
+                '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
         onTap: () {
           // TODO _onMarkerTapped(markerId);
         },
@@ -386,7 +408,8 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
     });
   }
 
-  Future<void> _showLocationPermissionRejectedAlertDialog(BuildContext context) async {
+  Future<void> _showLocationPermissionRejectedAlertDialog(
+      BuildContext context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
