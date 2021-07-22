@@ -1,0 +1,39 @@
+<nb-card>
+  <nb-card-header>{{ 'common.confirm' | translate }}</nb-card-header>
+  <nb-card-body>
+    {{ 'orders.confirmFailedTransaction' | translate }}
+
+    <div class="mt-3">
+      <nb-select
+        status="basic"
+        placeholder="{{ 'orders.unpayCategory' | translate }}"
+        title="{{ 'orders.unpayCategory' | translate }}"
+        size="small"
+        (selectedChange)="onCategorySelected()"
+        [(ngModel)]="selectedCategory"
+        data-testid="unpayCategorySelector"
+      >
+        <nb-option
+          *ngFor="let category of unpayCategories"
+          [value]="category"
+          >{{ 'orders.unpayCategories.' + category | translate }}</nb-option
+        >
+      </nb-select>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <button
+      class="float-right ms-3"
+      status="success"
+      [disabled]="!selectedCategory"
+      nbButton
+      (click)="select()"
+    >
+      {{ 'common.ok' | translate }}
+    </button>
+
+    <button class="float-right ms-3" status="basic" nbButton (click)="close()">
+      {{ 'common.cancel' | translate }}
+    </button>
+  </nb-card-footer>
+</nb-card>

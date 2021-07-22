@@ -1,3 +1,4 @@
+export * from './lib/admin-user';
 export * from './lib/cart';
 export * from './lib/chain';
 export * from './lib/common';

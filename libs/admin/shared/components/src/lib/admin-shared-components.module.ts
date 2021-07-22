@@ -25,13 +25,14 @@ import { ActiveGroupSelectorComponent } from './components/active-group-selector
 import { ActiveProductCategorySelectorComponent } from './components/active-product-category-selector';
 import { ActiveUnitSelectorComponent } from './components/active-unit-selector';
 import { AddressComponent } from './components/address';
+import { AllergensComponent } from './components/allergens/allergens.component';
 import { ColorizedLaneIconComponent } from './components/colorized-lane-icon';
 import { ConfirmDialogComponent } from './components/confirm-dialog';
 import { ContactComponent } from './components/contact';
 import { GoogleMapComponent } from './components/google-map';
 import { StatusLedComponent } from './components/status-led';
+import { UnpayCategoriesComponent } from './components/unpay-categories';
 import { VariantAvailabilityBadgeComponent } from './components/variant-availability-badge';
-import { AllergensComponent } from './components/allergens/allergens.component';
 
 const NB_MODULES = [
   NbIconModule,
@@ -64,6 +65,7 @@ const COMPONENTS = [
   ColorizedLaneIconComponent,
   ContactComponent,
   AllergensComponent,
+  UnpayCategoriesComponent,
 ];
 
 @NgModule({
