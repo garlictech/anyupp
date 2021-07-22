@@ -135,7 +135,7 @@
     "@nxrocks/nx-flutter": "2.1.0",
     "@serverless-stack/cli": "0.35.0",
     "@serverless-stack/resources": "0.34.0",
-    "@testing-library/cypress": "7.0.7",
+    "@testing-library/cypress": "8.0.0",
     "@types/aws-lambda": "8.10.79",
     "@types/aws-serverless-express": "3.3.5",
     "@types/chart.js": "2.9.34",
