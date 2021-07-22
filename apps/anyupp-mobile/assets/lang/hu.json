@@ -448,6 +448,10 @@
       "title": "Regisztrációs hiba",
       "description": "Nem megfelelő jelszót adtál meg. A jelszó ne hasonlítson az email címedre, felhasználónevedre és ne tartalmazzon könnyen kitalálható karaktersorozatot!"
     },
+    "USER_ALREADY_EXISTS": {
+      "title": "Már létező felhasználó",
+      "description": "Ezzel az email-el már regisztráltak."
+    },
     "INVALID_CONFIRMATION_CODE": {
       "title": "Regisztrációs hiba",
       "description": "A megadott ellenőrző kód érvénytelen. Ellenőrizd, hogy helyesen adtad-e meg! Vagy próbáld újraküldetni, ha már lejárt!"

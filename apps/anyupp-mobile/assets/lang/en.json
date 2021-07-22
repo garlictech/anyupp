@@ -448,6 +448,10 @@
       "title": "Sign up error",
       "description": "Password did not conform with policy"
     },
+    "USER_ALREADY_EXISTS": {
+      "title": "User already exists",
+      "description": "This email address is already registered."
+    },
     "INVALID_CONFIRMATION_CODE": {
       "title": "Sign up error",
       "description": "The given confirmation code is invalid, try to resend it"
