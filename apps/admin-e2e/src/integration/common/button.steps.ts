@@ -42,7 +42,7 @@ When('I click on the {string} button', (value: string) => {
 });
 
 When('I click on the button with title {string}', (value: string) => {
-  cy.findByTitle(value).click();
+  cy.findAllByTitle(value).first().click();
 });
 
 When('I click on the {string} title', (title: string) => {
