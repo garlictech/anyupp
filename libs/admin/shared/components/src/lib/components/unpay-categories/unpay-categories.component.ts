@@ -53,7 +53,7 @@ export class UnpayCategoriesComponent implements OnInit {
     this._nbDialogRef.close();
   }
 
-  public onCategorySelected(category: string): void {
+  public onCategorySelected(): void {
     this._changeDetectorRef.detectChanges();
   }
 }

@@ -9,7 +9,7 @@
         placeholder="{{ 'orders.unpayCategory' | translate }}"
         title="{{ 'orders.unpayCategory' | translate }}"
         size="small"
-        (selectedChange)="onCategorySelected($event)"
+        (selectedChange)="onCategorySelected()"
         [(ngModel)]="selectedCategory"
         data-testid="unpayCategorySelector"
       >
