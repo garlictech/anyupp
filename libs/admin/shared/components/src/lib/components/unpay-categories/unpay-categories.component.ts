@@ -13,8 +13,9 @@ import { NbDialogRef } from '@nebular/theme';
   templateUrl: './unpay-categories.component.html',
 })
 export class UnpayCategoriesComponent implements OnInit {
-  public clickCallback: (unpayCategory: CrudApi.UnpayCategory) => void =
-    () => {};
+  public clickCallback: (unpayCategory: CrudApi.UnpayCategory) => void = () => {
+    /**/
+  };
   public unpayCategories: CrudApi.UnpayCategory[];
   public selectedCategory?: CrudApi.UnpayCategory;
 
