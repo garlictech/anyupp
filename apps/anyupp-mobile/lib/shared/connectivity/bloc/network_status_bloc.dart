@@ -12,7 +12,7 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
   bool _hasDataConnection;
 
   NetworkStatusBloc()
-      : super(NetworkState(ConnectivityResult.wifi, false, null, null)) {
+      : super(NetworkState(ConnectivityResult.wifi, true, null, null)) {
     print(
         'NetworkStatusBloc.constructor()._connectivitySubscription=$_connectivitySubscription');
 
