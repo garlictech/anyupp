@@ -69,7 +69,7 @@ class GeoUnit extends Model {
     );
   }
 
-  String getTodaysOpening() {
+  String getOpeningString() {
     if (openingHoursNext7 != null && openingHoursNext7.isNotEmpty) {
       return openingHoursNext7.first.getRangeString();
     }

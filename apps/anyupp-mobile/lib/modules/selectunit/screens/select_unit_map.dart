@@ -258,10 +258,10 @@ class _SelectUnitByLocationScreenState
                   ),
                   Text(
                     //  '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
-                    unit.getTodaysOpening() != null
+                    unit.getOpeningString() != null
                         ? transEx(context, "selectUnit.opened") +
                             " : " +
-                            unit.getTodaysOpening()
+                            unit.getOpeningString()
                         : transEx(context, "selectUnit.closed"),
                     style: GoogleFonts.poppins(
                       fontSize: 14,

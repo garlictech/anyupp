@@ -126,10 +126,10 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
               ),
               child: Text(
                 //'${unit.openingHours ?? ""}',
-                unit.getTodaysOpening() != null
+                unit.getOpeningString() != null
                     ? transEx(context, "selectUnit.opened") +
                         " : " +
-                        unit.getTodaysOpening()
+                        unit.getOpeningString()
                     : transEx(context, "selectUnit.closed"),
                 //'Nyitva: 09:00 - 22:00',
                 style: GoogleFonts.poppins(
