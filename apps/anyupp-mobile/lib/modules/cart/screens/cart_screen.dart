@@ -1,3 +1,4 @@
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
@@ -127,7 +128,7 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = false;
-    if (cart.place == null || (cart.place.seat == "00" && cart.place.table == "00")) {
+    if (cart.place == null || (cart.place.seat == "00" && cart.place.table == "00") && AppConfig.Stage != "dev") {
       showQrCodeScan = true;
     }
 
