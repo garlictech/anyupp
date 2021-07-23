@@ -34,7 +34,10 @@
             </td>
             <td style="width: 60%" class="chain-header">
               <div class="font-weight-bold">{{ unit?.name }}</div>
-              <div>{{ unit?.address?.city }}, {{ unit?.address?.address }}</div>
+              <div>
+                {{ unit?.address?.postalCode }}, {{ unit?.address?.city }}
+                {{ unit?.address?.address }}
+              </div>
             </td>
           </tr>
         </table>

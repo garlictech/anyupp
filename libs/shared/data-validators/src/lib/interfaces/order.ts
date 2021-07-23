@@ -1,6 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as Joi from 'joi';
-import { paymentStatusSchema } from '../enums/enums';
+import { paymentStatusSchema, unpayCategorySchema } from '../enums/enums';
 import { validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
 import { paymentModeSchema } from './payment';
@@ -52,6 +52,7 @@ export const orderSchema: Joi.SchemaMap<CrudApi.Order> = {
   transactionStatus: paymentStatusSchema.allow(null),
   transactionId: Joi.string().allow(null, ''),
   transaction: Joi.object().allow(null),
+  unpayCategory: unpayCategorySchema.allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };
