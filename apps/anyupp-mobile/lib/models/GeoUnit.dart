@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/models/OpeningHours.dart';
 import 'package:flutter/foundation.dart';
 
 import 'core/model_base.dart';
-
 
 @immutable
 class GeoUnit extends Model {
@@ -15,7 +15,7 @@ class GeoUnit extends Model {
   final ChainStyle style;
   final List<PaymentMode> paymentModes;
   final int distance;
-  final String openingHours;
+  final List<OpeningHours> openingHoursNext7;
   final String currency;
   final Place place;
   final int position;
@@ -34,7 +34,7 @@ class GeoUnit extends Model {
       this.style,
       this.paymentModes,
       this.distance,
-      this.openingHours,
+      this.openingHoursNext7,
       this.currency,
       this.place,
       this.position});
@@ -48,26 +48,32 @@ class GeoUnit extends Model {
       ChainStyle style,
       List<PaymentMode> paymentModes,
       int distance,
-      String openingHours,
+      List<OpeningHours> openingHoursNext7,
       String currency,
       Place place,
       int position}) {
     return GeoUnit._internal(
-        id: id == null ? UUID.getUUID() : id,
-        groupId: groupId,
-        chainId: chainId,
-        name: name,
-        address: address,
-        style: style,
-        paymentModes: paymentModes != null
-            ? List.unmodifiable(paymentModes)
-            : paymentModes,
-        distance: distance,
-        openingHours: openingHours,
-        currency: currency,
-        place: place,
-        position: position,
-        );
+      id: id == null ? UUID.getUUID() : id,
+      groupId: groupId,
+      chainId: chainId,
+      name: name,
+      address: address,
+      style: style,
+      paymentModes:
+          paymentModes != null ? List.unmodifiable(paymentModes) : paymentModes,
+      distance: distance,
+      openingHoursNext7: openingHoursNext7,
+      currency: currency,
+      place: place,
+      position: position,
+    );
+  }
+
+  String getOpeningString() {
+    if (openingHoursNext7 != null && openingHoursNext7.isNotEmpty) {
+      return openingHoursNext7.first.getRangeString();
+    }
+    return null;
   }
 
   bool equals(Object other) {
@@ -86,7 +92,8 @@ class GeoUnit extends Model {
         style == other.style &&
         DeepCollectionEquality().equals(paymentModes, other.paymentModes) &&
         distance == other.distance &&
-        openingHours == other.openingHours &&
+        DeepCollectionEquality()
+            .equals(openingHoursNext7, other.openingHoursNext7) &&
         currency == other.currency &&
         place == other.place &&
         position == other.position;
@@ -109,10 +116,12 @@ class GeoUnit extends Model {
     buffer.write("style=" + (style != null ? style.toString() : "null") + ", ");
     buffer.write(
         "distance=" + (distance != null ? distance.toString() : "null") + ", ");
-    buffer.write("openingHours=" + "$openingHours" + ", ");
+    buffer
+        .write("openingHoursNext7=" + "${openingHoursNext7.toString()}" + ", ");
     buffer.write("currency=" + "$currency" + ", ");
     buffer.write("place=" + (place != null ? place.toString() : "null"));
-    buffer.write("position=" + (position != null ? position.toString() : "null"));
+    buffer
+        .write("position=" + (position != null ? position.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -127,24 +136,24 @@ class GeoUnit extends Model {
       ChainStyle style,
       List<PaymentMode> paymentModes,
       int distance,
-      String openingHours,
+      OpeningHours openingHoursNext7,
       String currency,
       Place place,
       int position}) {
     return GeoUnit(
-        id: id ?? this.id,
-        groupId: groupId ?? this.groupId,
-        chainId: chainId ?? this.chainId,
-        name: name ?? this.name,
-        address: address ?? this.address,
-        style: style ?? this.style,
-        paymentModes: paymentModes ?? this.paymentModes,
-        distance: distance ?? this.distance,
-        openingHours: openingHours ?? this.openingHours,
-        currency: currency ?? this.currency,
-        place: place ?? this.place,
-        position: position ?? this.position,
-        );
+      id: id ?? this.id,
+      groupId: groupId ?? this.groupId,
+      chainId: chainId ?? this.chainId,
+      name: name ?? this.name,
+      address: address ?? this.address,
+      style: style ?? this.style,
+      paymentModes: paymentModes ?? this.paymentModes,
+      distance: distance ?? this.distance,
+      openingHoursNext7: openingHoursNext7 ?? this.openingHoursNext7,
+      currency: currency ?? this.currency,
+      place: place ?? this.place,
+      position: position ?? this.position,
+    );
   }
 
   GeoUnit.fromJson(Map<String, dynamic> json)
@@ -160,12 +169,15 @@ class GeoUnit extends Model {
             : null,
         paymentModes = json['paymentModes'] is List
             ? (json['paymentModes'] as List)
-                .map((e) =>
-                    PaymentMode.fromJson(Map<String, dynamic>.from(e)))
+                .map((e) => PaymentMode.fromJson(Map<String, dynamic>.from(e)))
                 .toList()
             : null,
         distance = json['distance'],
-        openingHours = json['openingHours'],
+        openingHoursNext7 = json['openingHoursNext7'] is List
+            ? (json['openingHoursNext7'] as List)
+                .map((e) => OpeningHours.fromMap(Map<String, dynamic>.from(e)))
+                .toList()
+            : null,
         currency = json['currency'],
         place = json['place'] != null
             ? Place.fromJson(Map<String, dynamic>.from(json['place']))
@@ -181,7 +193,7 @@ class GeoUnit extends Model {
         'style': style?.toJson(),
         'paymentModes': paymentModes?.map((e) => e?.toJson())?.toList(),
         'distance': distance,
-        'openingHours': openingHours,
+        'openingHoursNext7': openingHoursNext7,
         'currency': currency,
         'place': place?.toJson(),
         'position': position
