@@ -166,6 +166,11 @@
     "simplepay": "Fizetés SimplePay-jel",
     "stripepay": "Fizetés Stripe-pal"
   },
+  "notifications": {
+    "messageFrom": "Üzenet az AnyUpp-tól!",
+    "orderProcessing": "Rendelésed már készítjük.",
+    "orderReady": "Rendelésed elkészült. Felszolgálása folyamatban."
+  },
   "payment": {
     "title": "FIZETÉSI MÓD",
     "choose": "Melyik fizetési módot választod?",

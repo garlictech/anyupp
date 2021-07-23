@@ -166,6 +166,11 @@
     "simplepay": "Pay with SimplePay",
     "stripepay": "Pay with Stripe"
   },
+  "notifications": {
+    "messageFrom": "Message from AnyUpp!",
+    "orderProcessing": "Your order is being processed.",
+    "orderReady": "Your order is ready!"
+  },
   "payment": {
     "title": "PAY",
     "choose": "Please select a payment method",

@@ -70,11 +70,8 @@ class GeoUnit extends Model {
   }
 
   String getTodaysOpening() {
-    DateTime today = DateTime.now();
-    for (OpeningHours openingHours in openingHoursNext7) {
-      if (openingHours.getDate().day == today.day && !openingHours.closed) {
-        return openingHours.getRangeString();
-      }
+    if (openingHoursNext7 != null && openingHoursNext7.isNotEmpty) {
+      return openingHoursNext7.first.getRangeString();
     }
     return null;
   }
