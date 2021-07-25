@@ -10,12 +10,11 @@ import {
   ordersActions,
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { getDayIntervals } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { IDateIntervals } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
-
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 
 @Injectable({
   providedIn: 'root',
@@ -240,9 +239,8 @@ export class OrderService {
               tap(() => {
                 if (
                   newOrderStatus === CrudApi.OrderStatus.served &&
-                  (_order.transaction?.status ===
-                    CrudApi.PaymentStatus.success ||
-                    _order.transaction?.status === CrudApi.PaymentStatus.failed)
+                  (_order.transactionStatus === CrudApi.PaymentStatus.success ||
+                    _order.transactionStatus === CrudApi.PaymentStatus.failed)
                 ) {
                   this._store.dispatch(
                     ordersActions.removeActiveOrder({ orderId: _order.id }),

@@ -14,14 +14,14 @@ import {
 } from '@angular/core';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EProductType,
   IKeyValueObject,
   IOrderAmount,
 } from '@bgap/shared/types';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
@@ -42,7 +42,6 @@ export class ReportsHourlyBreakdownComponent
   private _amounts: IOrderAmount = {};
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _currencyFormatter: CurrencyFormatterPipe,
     private _translateService: TranslateService,
@@ -179,7 +178,7 @@ export class ReportsHourlyBreakdownComponent
     );
 
     combineLatest([
-      this._store.pipe(select(productsSelectors.getAllGeneratedProducts)),
+      this._store.select(productsSelectors.getAllGeneratedProducts),
       this.orders$,
     ])
       .pipe(untilDestroyed(this))
@@ -241,17 +240,21 @@ export class ReportsHourlyBreakdownComponent
     };
 
     const productTypeMap: IKeyValueObject = {};
-    products.forEach(p => {
-      productTypeMap[p.id || ''] = p.productType;
-    });
+    products
+      .filter(p => !!p.id)
+      .forEach(p => {
+        productTypeMap[p.id] = p.productType;
+      });
 
     orders.forEach(o => {
       const hour = new Date(o.createdAt || 0).getHours();
-      o.items?.forEach((i: CrudApi.OrderItem) => {
-        amounts[<EProductType>productTypeMap[i.productId]][hour] +=
-          i.priceShown.priceSum;
-        amounts['sum'][hour] += i.priceShown.priceSum;
-      });
+      o.items
+        ?.filter(i => productTypeMap[i.productId])
+        .forEach((i: CrudApi.OrderItem) => {
+          amounts[<EProductType>productTypeMap[i.productId]][hour] +=
+            i.priceShown.priceSum;
+          amounts['sum'][hour] += i.priceShown.priceSum;
+        });
 
       amounts['ordersCount'][hour] += 1;
     });

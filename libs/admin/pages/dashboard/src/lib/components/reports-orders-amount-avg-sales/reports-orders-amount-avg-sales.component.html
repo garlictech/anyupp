@@ -3,10 +3,15 @@
     'dashboard.reports.ordersAmount' | translate
   }}</nb-card-header>
   <nb-card-body class="p-1">
-    <h1 class="order-count text-center mt-4">
+    <h1 class="order-count text-center mt-4 mb-2">
       {{ ordersSum | currencyFormatter: currency }}
     </h1>
 
+    <div class="sales-value text-center d-block mb-3">
+      {{ ordersCount }}
+
+      <nb-icon class="smaller-icon" icon="shopping-cart-outline"></nb-icon>
+    </div>
     <div class="sales-value text-center d-block mb-3">
       {{ ordersSumAvg | currencyFormatter: currency }}
       /

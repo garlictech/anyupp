@@ -6,7 +6,7 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators';
-
+import { NGXLogger } from 'ngx-logger';
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
@@ -48,6 +48,7 @@ export class DataService {
     private _translateService: TranslateService,
     private _crudSdk: CrudSdkService,
     private _anyuppSdk: AnyuppSdkService,
+    private _logger: NGXLogger,
   ) {}
 
   public async initDataConnections(
@@ -96,6 +97,7 @@ export class DataService {
         (
           adminUserSettings: CrudApi.AdminUserSettings | undefined | null,
         ): void => {
+          this._logger.log('SETTINGS SUBJECT CHANGED');
           this._settingsChanged$.next(true);
 
           if (adminUserSettings?.selectedChainId) {
@@ -185,6 +187,7 @@ export class DataService {
   }
 
   private _subscribeToChains(): void {
+    this._logger.log('Subscribe to chains');
     this._crudSdk.doListSubscription(
       chainsActions.resetChains(),
       this._crudSdk.sdk.ListChains(),
@@ -195,6 +198,7 @@ export class DataService {
   }
 
   private _subscribeToGroups(): void {
+    this._logger.log('Subscribe to groups');
     this._crudSdk.doListSubscription(
       groupsActions.resetGroups(),
       this._crudSdk.sdk.ListGroups(),
@@ -205,6 +209,7 @@ export class DataService {
   }
 
   private _subscribeToUnits(): void {
+    this._logger.log('Subscribe to units');
     this._crudSdk.doListSubscription(
       unitsActions.resetUnits(),
       this._crudSdk.sdk.ListUnits(),
@@ -215,6 +220,7 @@ export class DataService {
   }
 
   private _subscribeToChainProductCategories(chainId: string): void {
+    this._logger.log('Subscribe to chain product categories');
     this._crudSdk.doListSubscription(
       productCategoriesActions.resetProductCategories(),
       this._crudSdk.sdk.ListProductCategorys({
@@ -228,6 +234,7 @@ export class DataService {
   }
 
   private _subscribeToChainProductComponents(chainId: string): void {
+    this._logger.log('Subscribe to chain product components');
     this._crudSdk.doListSubscription(
       productComponentsActions.resetProductComponents(),
 
@@ -242,6 +249,7 @@ export class DataService {
   }
 
   private _subscribeToChainProductComponentSets(chainId: string): void {
+    this._logger.log('Subscribe to chain product component sets');
     this._crudSdk.doListSubscription(
       productComponentSetsActions.resetProductComponentSets(),
 
@@ -258,6 +266,7 @@ export class DataService {
   }
 
   private _subscribeToSelectedChainProducts(chainId: string): void {
+    this._logger.log('Subscribe to selected chain products');
     this._crudSdk.doListSubscription(
       productsActions.resetChainProducts(),
 
@@ -272,6 +281,7 @@ export class DataService {
   }
 
   private _subscribeToSelectedGroupProducts(groupId: string): void {
+    this._logger.log('Subscribe to selected group products');
     this._crudSdk.doListSubscription(
       productsActions.resetGroupProducts(),
 
@@ -286,6 +296,7 @@ export class DataService {
   }
 
   private _subscribeToSelectedUnitProducts(unitId: string): void {
+    this._logger.log('Subscribe to selected unit products');
     this._crudSdk.doListSubscription(
       productsActions.resetUnitProducts(),
 
@@ -300,6 +311,7 @@ export class DataService {
   }
 
   private _subscribeToGeneratedUnitProducts(unitId: string): void {
+    this._logger.log('Subscribe to generated unit products');
     this._crudSdk.doListSubscription(
       productsActions.resetGeneratedProducts(),
 
@@ -314,6 +326,7 @@ export class DataService {
   }
 
   private _subscribeToSelectedUnitOrders(unitId: string): void {
+    this._logger.log('Subscribe to selected unit orders');
     this._crudSdk.doListSubscription(
       ordersActions.resetActiveOrders(),
       this._crudSdk.sdk.ListOrders({
@@ -332,6 +345,7 @@ export class DataService {
   }
 
   private _subscribeToAdminUsers(): void {
+    this._logger.log('Subscribe to admin users');
     this._crudSdk.doListSubscription(
       adminUsersActions.resetAdminUsers(),
 
@@ -344,6 +358,7 @@ export class DataService {
   }
 
   private _subscribeToAdminRoleContexts(): void {
+    this._logger.log('Subscribe to admin role contexts');
     this._crudSdk.sdk
       .OnAdminRoleContextsChange()
       .pipe(
