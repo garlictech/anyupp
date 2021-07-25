@@ -16,7 +16,7 @@ class AwsTransactionsProvider implements ITransactionProvider {
       User user = await _authProvider.getAuthenticatedUserProfile();
       QueryResult result = await GQL.amplify.executeQuery(
         query: QUERY_LIST_TRANSACTIONS,
-         variables: {
+        variables: {
           'userId': user.id,
         },
         fetchPolicy: FetchPolicy.networkOnly,
@@ -32,6 +32,7 @@ class AwsTransactionsProvider implements ITransactionProvider {
         transactions
             .add(TransactionItem.fromMap(Map<String, dynamic>.from(items[i])));
       }
+      transactions.sort((b, a) => a.createdAt.compareTo(b.createdAt));
 
       return transactions;
     } on Exception catch (e) {

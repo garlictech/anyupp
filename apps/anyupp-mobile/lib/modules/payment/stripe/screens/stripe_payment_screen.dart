@@ -1,7 +1,6 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/models/UserInvoiceAddress.dart';
-import 'package:fa_prev/modules/main/bloc/main_navigation_bloc.dart';
-import 'package:fa_prev/modules/main/bloc/main_navigation_event.dart';
+import 'package:fa_prev/modules/main/screens/main_navigation_screen.dart';
 import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_bloc.dart';
 import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_events.dart';
 import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_state.dart';
@@ -44,7 +43,8 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
             content: Text(trans('payment.stripe.payment_success')),
           ));
           Nav.pop();
-          getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+          Nav.replace(MainNavigation(pageIndex: 2));
+          //getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
         }
         if (state is StripeError) {
           Nav.pop();

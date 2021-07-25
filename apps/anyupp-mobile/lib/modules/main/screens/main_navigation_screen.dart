@@ -111,6 +111,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       MainNavigationState navState = getIt<MainNavigationBloc>().state;
       if (navState is MainNavaigationNeed) {
         // print('***** MainNaevigationScreen.didChangeDependencies().toPage=${navState.pageIndex}');
+        
         _navigateToPage(navState.pageIndex);
       }
     }
