@@ -43,3 +43,14 @@ export interface ICurrencyValue {
   value: number;
   currency: string;
 }
+
+export interface UnpayCategoryStatObjItem {
+  category: CrudApi.UnpayCategory;
+  count: number;
+  sum: number;
+  uniqueUsersCount: number;
+}
+
+export interface UnpayCategoryStatObj {
+  [category: string]: UnpayCategoryStatObjItem;
+}

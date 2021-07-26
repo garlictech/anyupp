@@ -12,10 +12,9 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
 @Component({
@@ -32,8 +31,6 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
   private _chart!: Chart;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}

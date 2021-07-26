@@ -1,5 +1,5 @@
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { filter, skipWhile } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { skipWhile, take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -9,13 +9,21 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import {
+  dashboardActions,
+  dashboardSelectors,
+} from '@bgap/admin/shared/data-access/dashboard';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
-import { dayInterval } from '@bgap/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { IKeyValueObject } from '@bgap/shared/types';
+import {
+  filterNullish,
+  isRejectedOrder,
+  orderHasIncome,
+} from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -26,13 +34,17 @@ import * as CrudApi from '@bgap/crud-gql/api';
 })
 export class ReportsBodyComponent implements OnInit, OnDestroy {
   public dateFormControl: FormControl;
-  public dailyHistoryOrders$: BehaviorSubject<CrudApi.Order[]> =
+  public incomeOrders$: BehaviorSubject<CrudApi.Order[]> = new BehaviorSubject<
+    CrudApi.Order[]
+  >([]);
+  public noIncomeOrders$: BehaviorSubject<CrudApi.Order[]> =
+    new BehaviorSubject<CrudApi.Order[]>([]);
+  public rejectedOrders$: BehaviorSubject<CrudApi.Order[]> =
     new BehaviorSubject<CrudApi.Order[]>([]);
   public dailyOrdersSum: IKeyValueObject = {};
   public groupCurrency = '';
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -40,6 +52,21 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._store
+      .select(dashboardSelectors.getSelectedHistoryDate)
+      .pipe(filterNullish(), take(1), untilDestroyed(this))
+      .subscribe(historyDate => {
+        this.dateFormControl = new FormControl(
+          new Date(historyDate).toISOString().slice(0, 10),
+        );
+
+        this._store.dispatch(
+          dashboardActions.updateSelectedUnitOrderHistory({ historyDate }),
+        );
+
+        this._changeDetectorRef.detectChanges();
+      });
+
     this._store
       .pipe(
         select(groupsSelectors.getSeletedGroup),
@@ -52,29 +79,30 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
         this._changeDetectorRef.detectChanges();
       });
 
-    combineLatest([
-      this._store.pipe(select(ordersSelectors.getAllHistoryOrders)),
-      this.dateFormControl.valueChanges.pipe(filter((v): boolean => !!v)),
-    ])
+    this._store
+      .pipe(select(ordersSelectors.getAllHistoryOrders))
       .pipe(untilDestroyed(this))
-      .subscribe(
-        ([historyOrders, dateFormValue]: [CrudApi.Order[], string]): void => {
-          // TODO Use history with daily query from FB
-          // TODO test it: new Date(o.createdAt).getTime()
-          const selectedDayInterval = dayInterval(dateFormValue);
-          const dailyHistoryOrders: CrudApi.Order[] = historyOrders.filter(
-            (o: CrudApi.Order): boolean =>
-              new Date(o.createdAt).getTime() >= selectedDayInterval.start &&
-              new Date(o.createdAt).getTime() <= selectedDayInterval.end,
-          );
+      .subscribe((historyOrders: CrudApi.Order[]): void => {
+        this.incomeOrders$.next(
+          historyOrders.filter(o => orderHasIncome(o) && !isRejectedOrder(o)),
+        );
+        this.noIncomeOrders$.next(
+          historyOrders.filter(o => !orderHasIncome(o) && !isRejectedOrder(o)),
+        );
+        this.rejectedOrders$.next(
+          historyOrders.filter(o => isRejectedOrder(o)),
+        );
 
-          this.dailyHistoryOrders$.next(dailyHistoryOrders);
+        this._changeDetectorRef.detectChanges();
+      });
 
-          this._changeDetectorRef.detectChanges();
-        },
+    this.dateFormControl.valueChanges.subscribe((): void => {
+      this._store.dispatch(
+        dashboardActions.setHistoryDate({
+          historyDate: this.dateFormControl.value,
+        }),
       );
-
-    this.dateFormControl.setValue(new Date().toISOString().slice(0, 10));
+    });
   }
 
   ngOnDestroy(): void {
