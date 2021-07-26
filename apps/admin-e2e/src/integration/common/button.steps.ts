@@ -1,5 +1,8 @@
 import { When } from 'cypress-cucumber-preprocessor/steps';
-import { getListItemFromActiveTabThatContains } from '../../support';
+import {
+  getListItemFromActiveTabThatContains,
+  getListItemThatContains,
+} from '../../support';
 
 When('I click on the {string} icon', (icon: string) => {
   cy.contains('nb-icon', icon).click();
@@ -16,12 +19,19 @@ When('I click on the {string} text', (text: string) => {
 When(
   'I click the edit button in the listitem with {string} content',
   (name: string) => {
+    getListItemThatContains(name).findByTitle('Edit').click();
+  },
+);
+
+When(
+  'On the active tab I click the edit button in the listitem with {string} content',
+  (name: string) => {
     getListItemFromActiveTabThatContains(name).findByTitle('Edit').click();
   },
 );
 
 When(
-  'I click the extend button in the listitem with {string} content',
+  'On the active tab I click the extend button in the listitem with {string} content',
   (name: string) => {
     getListItemFromActiveTabThatContains(name)
       .findByTitle('Extend product')
