@@ -14,12 +14,13 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands';
-
 // Commands from 3rd party libs
 import '@testing-library/cypress/add-commands';
-
 import addContext from 'mochawesome/addContext';
+import './commands';
+
+export * from './mailtrap';
+export * from './utils';
 
 Cypress.on('test:after:run', (test, runnable) => {
   if (test.state === 'failed') {
