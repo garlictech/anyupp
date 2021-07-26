@@ -1,4 +1,5 @@
 import { When } from 'cypress-cucumber-preprocessor/steps';
+import { getListItemFromActiveTabThatContains } from '../../support';
 
 When('I click on the {string} icon', (icon: string) => {
   cy.contains('nb-icon', icon).click();
@@ -15,15 +16,14 @@ When('I click on the {string} text', (text: string) => {
 When(
   'I click the edit button in the listitem with {string} content',
   (name: string) => {
-    cy.findAllByRole('listitem').contains(name).findByTitle('Edit').click();
+    getListItemFromActiveTabThatContains(name).findByTitle('Edit').click();
   },
 );
 
 When(
   'I click the extend button in the listitem with {string} content',
   (name: string) => {
-    cy.findAllByRole('listitem')
-      .contains(name)
+    getListItemFromActiveTabThatContains(name)
       .findByTitle('Extend product')
       .click();
   },
@@ -79,10 +79,7 @@ When('I click the lane selector to set {string}', (value: string) => {
 When(
   'I click the delete button in the listitem with {string} content',
   (name: string) => {
-    cy.findAllByRole('listitem')
-      .contains(name)
-      .findAllByTitle('Delete')
-      .click();
+    cy.contains('nb-list-item', name).findAllByTitle('Delete').click();
   },
 );
 

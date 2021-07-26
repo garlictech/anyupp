@@ -5,9 +5,9 @@ Given('I am on the login page', () => {
 });
 
 Then('I should be on the dashboard page', () => {
-  cy.url().should('include', '/dashboard', { timeout: 100000 });
+  cy.url({ timeout: 10000 }).should('include', '/dashboard');
 });
 
 Then('I should be on the login page', () => {
-  cy.url().should('include', '/login');
+  cy.url({ timeout: 10000 }).should('include', '/login');
 });

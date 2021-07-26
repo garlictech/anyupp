@@ -3,8 +3,7 @@ import { When } from 'cypress-cucumber-preprocessor/steps';
 When(
   'I click on the edit role button in the listitem with {string} content',
   (name: string) => {
-    cy.findAllByRole('listitem')
-      .contains(name)
+    cy.contains('nb-list-item', name)
       .findByTitle('Edit roles')
       .click({ force: true });
   },
