@@ -13509,10 +13509,10 @@ fp-ts-rxjs@0.6.15:
   resolved "https://registry.yarnpkg.com/fp-ts-rxjs/-/fp-ts-rxjs-0.6.15.tgz#4c53ecaf5e18a82c94e4a43a4cf8148978ef9e6c"
   integrity sha512-5fD4a/439l0aUkSkPq7xnznXYsD7YwGyYANO3v6dkkZJTta36et3bNJ2tzq28UcVR6bS9nTDbP7kMjgQqFFxYQ==
 
-fp-ts@2.10.5:
-  version "2.10.5"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.10.5.tgz#7c77868fe8bd9b229743303c1bec505b959f631b"
-  integrity sha512-X2KfTIV0cxIk3d7/2Pvp/pxL/xr2MV1WooyEzKtTWYSc1+52VF4YzjBTXqeOlSiZsPCxIBpDGfT9Dyo7WEY0DQ==
+fp-ts@2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.11.0.tgz#2dc1e3c8a136cfb9ffe7877e7fac253304de49cc"
+  integrity sha512-MRss/AgPUBgScVtHaaNkKa/3+SaN3QOokYr1CnOOgdfterSwuaE2x6h/ADQOTcs3mKDC17d6NzQyZOZDFijQmA==
 
 fragment-cache@^0.2.1:
   version "0.2.1"
