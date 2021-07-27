@@ -25,6 +25,7 @@ export class ReportsOrdersAmountAvgSalesComponent implements OnInit, OnDestroy {
 
   public ordersSum = 0;
   public ordersSumAvg = 0;
+  public ordersCount = 0;
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
@@ -33,6 +34,7 @@ export class ReportsOrdersAmountAvgSalesComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((orders: CrudApi.Order[]): void => {
         this.ordersSum = getDailyOrdersSum(orders);
+        this.ordersCount = orders.length;
         this.ordersSumAvg =
           orders.length > 0 ? this.ordersSum / orders.length : 0;
 

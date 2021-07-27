@@ -11,6 +11,8 @@ typedef CreateModelFromJson<T extends Model> = T Function(Map<String, dynamic> j
 typedef FilterModelFromJson<T extends Model> = bool Function(T model);
 typedef SortItems<T extends Model> = void Function(List<T> items);
 
+const REPEAT_TIMEOUT_MS = 120000;
+
 class AwsSubscription<T extends Model> {
   StreamSubscription<QueryResult> _listSubscription;
   StreamController<List<T>> _listController = BehaviorSubject<List<T>>();
@@ -41,16 +43,20 @@ class AwsSubscription<T extends Model> {
   Stream<List<T>> get stream => _listController?.stream;
 
   Future<void> startListSubscription({Map<String, dynamic> variables}) async {
-    // print('**** startListSubscription[$listNodeName].variables=$variables');
     try {
-      // if (_listController == null) {
-      //   _listController = BehaviorSubject<List<T>>();
-      // }
-      // await _listSubscription?.cancel();
+      if (_listSubscription != null) {
+        await stopListSubscription();
+      }
+      print('**** startListSubscription[$listNodeName].variables=$variables');
 
       _items = await _getList(variables);
-      // print('**** startListSubscription[$listNodeName].items=${_items?.length}');
+      print('**** startListSubscription[$listNodeName].items=${_items?.length}');
       _listController.add(_items);
+
+      // Start refresh timer.
+      Future.delayed(Duration(milliseconds: REPEAT_TIMEOUT_MS), () async {
+        await startListSubscription(variables: variables);
+      });
 
       User user = await _authProvider.getAuthenticatedUserProfile();
       print('**** startListSubscription[$listNodeName].userId=${user.id}');
@@ -62,7 +68,8 @@ class AwsSubscription<T extends Model> {
           variables: variables,
           fetchPolicy: FetchPolicy.networkOnly,
         ),
-      ).listen((QueryResult result) async {
+      )
+          .listen((QueryResult result) async {
         print('**** startListSubscription[$listNodeName].onData.result.source=${result.source}');
         // print('**** startListSubscription().onData.context=${result.context}');
         // print('**** startListSubscription[$listNodeName].onData.hasException=${result.hasException}');
@@ -70,29 +77,13 @@ class AwsSubscription<T extends Model> {
           _items = await _getList(variables);
           print('**** startListSubscription[$listNodeName].items=${_items?.length}');
           _listController.add(_items);
-          // T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
-          // print('**** startListSubscription[$listNodeName].onData.item=$item');
-          // if (_items == null) {
-          //   _items = [];
-          // }
-          // int index = _items.indexWhere((o) => o.id == item.id);
-          // // print('**** startListSubscription[$listNodeName].index=$index');
-          // if (index != -1) {
-          //   bool isFiltered = filterModel(item) ?? true;
-          //   if (isFiltered) {
-          //     _items[index] = item;
-          //     _listController.add(_items);
-          //   } else {
-          //     _items.removeAt(index);
-          //     _listController.add(_items);
-          //   }
-          // } else {
-          //   _items.add(item);
-          //   _listController.add(_items);
-          // }
+          
         } else {
           print('**** startListSubscription[$listNodeName].exception=${result.exception}');
           _listController.add(_items);
+          Future.delayed(Duration(milliseconds: REPEAT_TIMEOUT_MS), () async {
+            await startListSubscription(variables: variables);
+          });
         }
       }, onDone: () {
         print('**** startListSubscription[$listNodeName].onDone');
@@ -152,11 +143,14 @@ class AwsSubscription<T extends Model> {
   }
 
   Future<void> stopListSubscription() async {
-    print('**** stopListSubscription()');
-    await _listSubscription?.cancel();
-    // await _listController?.close();
-    _client.dispose();
-    _listSubscription = null;
-    // _listController = null;
+    await print('**** stopListSubscription()');
+    try {
+      await _listSubscription?.cancel();
+      _listSubscription = null;
+      _client?.dispose();
+    } on Error catch (e) {
+      await print('**** stopListSubscription().(ignored).error=$e');
+      _listSubscription = null;
+    }
   }
 }

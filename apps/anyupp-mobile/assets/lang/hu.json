@@ -166,6 +166,11 @@
     "simplepay": "Fizetés SimplePay-jel",
     "stripepay": "Fizetés Stripe-pal"
   },
+  "notifications": {
+    "messageFrom": "Üzenet az AnyUpp-tól!",
+    "orderProcessing": "Rendelésed már készítjük.",
+    "orderReady": "Rendelésed elkészült. Felszolgálása folyamatban."
+  },
   "payment": {
     "title": "FIZETÉSI MÓD",
     "choose": "Melyik fizetési módot választod?",
@@ -275,7 +280,9 @@
     "qrGeneralError": {
       "title": "Valami hiba történt",
       "description": "Valami hiba történt az éttermek keresgélése közben. :("
-    }
+    },
+    "opened": "Nyitva",
+    "closed": "Zárva"
   },
   "qrScan": {
     "loading": "QR kód adatainak betöltése...",
@@ -448,6 +455,10 @@
       "title": "Regisztrációs hiba",
       "description": "Nem megfelelő jelszót adtál meg. A jelszó ne hasonlítson az email címedre, felhasználónevedre és ne tartalmazzon könnyen kitalálható karaktersorozatot!"
     },
+    "USER_ALREADY_EXISTS": {
+      "title": "Már létező felhasználó",
+      "description": "Ezzel az email-el már regisztráltak."
+    },
     "INVALID_CONFIRMATION_CODE": {
       "title": "Regisztrációs hiba",
       "description": "A megadott ellenőrző kód érvénytelen. Ellenőrizd, hogy helyesen adtad-e meg! Vagy próbáld újraküldetni, ha már lejárt!"
@@ -471,6 +482,10 @@
     "INTERNAL_SERVER_ERROR": {
       "title": "Belső Szerver hiba",
       "description": "Valami félrement."
+    },
+    "ERROR_UNIT_NOT_ACCEPTING_ORDERS": {
+      "title": "Étterem zárva",
+      "description": "Az étterem jelenleg nem fogad rendeléseket. Próbáld meg később!"
     }
   }
 }

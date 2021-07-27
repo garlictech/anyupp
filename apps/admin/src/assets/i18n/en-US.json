@@ -140,7 +140,11 @@
       "historyToday": "Today",
       "history1W": "1W",
       "history1Y": "1Y",
-      "hourlyBreakdown": "Hourly breakdown"
+      "hourlyBreakdown": "Hourly breakdown",
+      "incomeOrders": "Paid orders",
+      "noIncomeOrders": "Unpay orders",
+      "unpayCategories": "Unpay categories",
+      "rejectedOrders": "Rejected orders"
     }
   },
   "chains": {
@@ -312,7 +316,8 @@
     "confirmIsAcceptOrder": "Are you sure you accept orders?",
     "confirmNotAcceptOrder": "Are you sure you block orders?",
     "confirmResetOrderItemStatus": "Are you sure you reset the status?",
-    "confirmFailedTransaction": "Are you sure you set the transaction status to 'failed'?",
+    "confirmRecallHistoryOrder": "Are you sure you recall the archived order?",
+    "confirmFailedTransaction": "Failed transaction. Please select unpay category!",
     "confirmSuccessTransaction": "Are you sure you set the transaction status to 'success'?",
     "confirmDeleteOrder": "Are you sure you delete the order?",
     "userOrdersCount": "{{ count }} order(s)",
@@ -327,6 +332,19 @@
       "PAID": "Paid",
       "FAILED": "Failed",
       "REJECTED": "Rejected"
+    },
+    "unpayCategory": "Unpay category",
+    "unpayCategories": {
+      "staff_meal": "Staff meal",
+      "manager_meal": "Manager meal",
+      "marketing_promo": "Marketing/Promo",
+      "error_cooked": "Error (cooked)",
+      "error_no_cooked": "Error (no cooked)",
+      "payment_mode_change": "Payment mode change",
+      "other": "Other",
+      "delivery": "Delivery",
+      "coupon": "Coupon",
+      "event": "Event"
     }
   },
   "auth": {

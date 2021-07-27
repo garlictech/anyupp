@@ -1,0 +1,28 @@
+<nb-card class="h-100">
+  <nb-card-header class="p-1 ps-2">{{
+    'dashboard.reports.unpayCategories' | translate
+  }}</nb-card-header>
+  <nb-card-body class="p-2">
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-3 text-end">
+        <nb-icon class="smaller-icon" icon="shopping-cart-outline"></nb-icon>
+      </div>
+      <div class="col-3 text-end">∑</div>
+      <div class="col-3 text-end">
+        <nb-icon class="smaller-icon" icon="person-outline"></nb-icon>
+      </div>
+    </div>
+
+    <div class="row" *ngFor="let category of unpayCategoryStats">
+      <div class="col-3">
+        {{ 'orders.unpayCategories.' + category.category | translate }}
+      </div>
+      <div class="col-3 text-end">{{ category.count }}</div>
+      <div class="col-3 text-end">
+        {{ category.sum | currencyFormatter: currency }}
+      </div>
+      <div class="col-3 text-end">{{ category.uniqueUsersCount }}</div>
+    </div>
+  </nb-card-body>
+</nb-card>

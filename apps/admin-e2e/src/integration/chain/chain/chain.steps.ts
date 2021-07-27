@@ -1,5 +1,4 @@
 import { Then, When } from 'cypress-cucumber-preprocessor/steps';
-//import { When } from "cypress-cucumber-preprocessor/steps/index";
 
 When(
   'I click on the {string} picker fill out with {string}',

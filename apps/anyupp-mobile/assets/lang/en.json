@@ -166,6 +166,11 @@
     "simplepay": "Pay with SimplePay",
     "stripepay": "Pay with Stripe"
   },
+  "notifications": {
+    "messageFrom": "Message from AnyUpp!",
+    "orderProcessing": "Your order is being processed.",
+    "orderReady": "Your order is ready!"
+  },
   "payment": {
     "title": "PAY",
     "choose": "Please select a payment method",
@@ -275,7 +280,9 @@
     "qrGeneralError": {
       "title": "Something went wrong",
       "description": "Something went wrong while searching for restaurants. :("
-    }
+    },
+    "opened": "Opened",
+    "closed": "Closed"
   },
   "qrScan": {
     "loading": "Loading QR code information...",
@@ -448,6 +455,10 @@
       "title": "Sign up error",
       "description": "Password did not conform with policy"
     },
+    "USER_ALREADY_EXISTS": {
+      "title": "User already exists",
+      "description": "This email address is already registered."
+    },
     "INVALID_CONFIRMATION_CODE": {
       "title": "Sign up error",
       "description": "The given confirmation code is invalid, try to resend it"
@@ -471,6 +482,10 @@
     "INTERNAL_SERVER_ERROR": {
       "title": "Internal Server Error",
       "description": "Something went wrong."
+    },
+    "ERROR_UNIT_NOT_ACCEPTING_ORDERS": {
+      "title": "Unit is closed",
+      "description": "Unit is not accepting orders right now. Try it later!"
     }
   }
 }

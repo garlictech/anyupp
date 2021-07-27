@@ -18,12 +18,15 @@ class MainNavigation extends StatefulWidget {
   final int pageIndex;
   final bool animateCartIcon;
 
-  const MainNavigation({Key key, this.pageIndex = 0, this.animateCartIcon = true}) : super(key: key);
+  const MainNavigation(
+      {Key key, this.pageIndex = 0, this.animateCartIcon = true})
+      : super(key: key);
 
   _MainNavigationState createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
+class _MainNavigationState extends State<MainNavigation>
+    with SingleTickerProviderStateMixin {
   List<MainPageOptions> _pageOptions;
 
   // --- For bottom animation bar
@@ -33,7 +36,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   CurvedAnimation curve;
 
   // Caching pages
-  final List<Widget> _pages = [
+  List<Widget> _pages = [
     Menu(),
     FavoritesScreen(),
     OrdersScreen(),
@@ -99,18 +102,33 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     super.didChangeDependencies();
     if (_pageOptions == null) {
       _pageOptions = [
-        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.menu'), systemBarColor: theme.background),
-        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.favorites'), systemBarColor: theme.background2),
         MainPageOptions(
-            showAppBar: false, appBarText: trans('main.menu.orderStatus'), systemBarColor: theme.background2),
-        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.profile'), systemBarColor: theme.background2),
-        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.cart'), systemBarColor: theme.background),
+            showAppBar: false,
+            appBarText: trans('main.menu.menu'),
+            systemBarColor: theme.background),
+        MainPageOptions(
+            showAppBar: false,
+            appBarText: trans('main.menu.favorites'),
+            systemBarColor: theme.background2),
+        MainPageOptions(
+            showAppBar: false,
+            appBarText: trans('main.menu.orderStatus'),
+            systemBarColor: theme.background2),
+        MainPageOptions(
+            showAppBar: false,
+            appBarText: trans('main.menu.profile'),
+            systemBarColor: theme.background2),
+        MainPageOptions(
+            showAppBar: false,
+            appBarText: trans('main.menu.cart'),
+            systemBarColor: theme.background),
       ];
       _navigateToPage(widget.pageIndex);
     } else {
       MainNavigationState navState = getIt<MainNavigationBloc>().state;
       if (navState is MainNavaigationNeed) {
         // print('***** MainNaevigationScreen.didChangeDependencies().toPage=${navState.pageIndex}');
+
         _navigateToPage(navState.pageIndex);
       }
     }
@@ -118,7 +136,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-
     // --- This build method called again AFTER the product screen build run. So it set the statusbar color back.
     // --- This little trick need to prevent the statusbar color change back to main screen statusbar color
     if (ModalRoute.of(context).isCurrent) {
@@ -129,7 +146,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     }
 
     // The main scaffold for the whole application
-    return BlocBuilder<ThemeBloc, ThemeState>(builder: (context, ThemeState themeState) {
+    return BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, ThemeState themeState) {
       var theme = themeState.theme;
       return SafeArea(
         child: NetworkConnectionWrapperWidget(
@@ -147,13 +165,14 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
             // Opening the selected page
             // body: pages[_selectedIndex],
             body: BlocListener<MainNavigationBloc, MainNavigationState>(
-                listener: (BuildContext context, MainNavigationState state) {
-                  if (state is MainNavaigationNeed) {
-                    print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
-                    _navigateToPage(state.pageIndex);
-                  }
-                },
-                child: DoubleBackToCloseApp(
+              listener: (BuildContext context, MainNavigationState state) {
+                if (state is MainNavaigationNeed) {
+                  print(
+                      '******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                  _navigateToPage(state.pageIndex);
+                }
+              },
+              child: DoubleBackToCloseApp(
                 snackBar: SnackBar(
                   elevation: 8,
                   duration: Duration(seconds: 1),
@@ -170,7 +189,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   index: _selectedIndex,
                   children: _pages,
                 ),
-//        child: _pages[_selectedIndex],
+                // child: _pages[_selectedIndex],
               ),
             ),
             floatingActionButton: ScaleTransition(
@@ -195,19 +214,23 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                 },
               ),
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: BottomAppBar(
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  _createBottomBarIconWithText(0, Icons.restaurant, 'main.bottomTitles.menu'),
-                  _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
+                  _createBottomBarIconWithText(
+                      0, Icons.restaurant, 'main.bottomTitles.menu'),
+                  _createBottomBarIconWithText(
+                      1, Icons.favorite, 'main.bottomTitles.favorites'),
                   SizedBox(
                     width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
                   ),
                   _createOrdersBottomBarIconWithTextAndBadge(),
-                  _createBottomBarIconWithText(3, Icons.person, 'main.bottomTitles.profile'),
+                  _createBottomBarIconWithText(
+                      3, Icons.person, 'main.bottomTitles.profile'),
                 ],
               ),
               shape: CircularNotchedRectangle(),
@@ -222,7 +245,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   }
 
   Widget _createOrdersBottomBarIconWithTextAndBadge() {
-    return BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
+    return BlocBuilder<UnitSelectBloc, UnitSelectState>(
+        builder: (context, state) {
       if (state is UnitSelected) {
         final GeoUnit unit = state.unit;
         return StreamBuilder<List<Order>>(
@@ -230,15 +254,20 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
             builder: (context, AsyncSnapshot<List<Order>> orderState) {
               int orderCount = orderState?.data?.length ?? 0;
               return _createBottomBarIconWithText(
-                  2, Icons.receipt, 'main.bottomTitles.orders', orderCount > 0 ? orderCount.toString() : null);
+                  2,
+                  Icons.receipt,
+                  'main.bottomTitles.orders',
+                  orderCount > 0 ? orderCount.toString() : null);
             });
       } else {
-        return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders');
+        return _createBottomBarIconWithText(
+            2, Icons.receipt, 'main.bottomTitles.orders');
       }
     });
   }
 
-  Widget _createBottomBarIconWithText(int index, IconData icon, String textKey, [String badge]) {
+  Widget _createBottomBarIconWithText(int index, IconData icon, String textKey,
+      [String badge]) {
     return BottomBarItem(
       icon: icon,
       text: trans(textKey),
@@ -249,6 +278,9 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   }
 
   void _navigateToPage(int index) {
+    if (index == 2) {
+      _pages[2] = OrdersScreen(key: UniqueKey(),);
+    }
     setState(() {
       _selectedIndex = index;
     });
