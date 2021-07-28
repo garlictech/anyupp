@@ -140,7 +140,11 @@
       "historyToday": "Today",
       "history1W": "1W",
       "history1Y": "1Y",
-      "hourlyBreakdown": "Hourly breakdown"
+      "hourlyBreakdown": "Hourly breakdown",
+      "incomeOrders": "Paid orders",
+      "noIncomeOrders": "Unpay orders",
+      "unpayCategories": "Unpay categories",
+      "rejectedOrders": "Rejected orders"
     }
   },
   "chains": {

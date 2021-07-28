@@ -44,6 +44,7 @@ import { ReportsDayHistoryComponent } from './components/reports-day-history/rep
 import { ReportsHourlyBreakdownComponent } from './components/reports-hourly-breakdown/reports-hourly-breakdown.component';
 import { ReportsOrdersAmountAvgSalesComponent } from './components/reports-orders-amount-avg-sales/reports-orders-amount-avg-sales.component';
 import { ReportsUniqueGuestAvgSalesComponent } from './components/reports-unique-guest-avg-sales/reports-unique-guest-avg-sales.component';
+import { ReportsUnpayTableComponent } from './components/reports-unpay-table/reports-unpay-table.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -84,6 +85,7 @@ const NB_MODULES = [
     ReportsDayHistoryComponent,
     ReportsDailySalesPerPaymentMethodComponent,
     ReportsHourlyBreakdownComponent,
+    ReportsUnpayTableComponent,
   ],
   imports: [
     CommonModule,

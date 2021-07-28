@@ -17,7 +17,7 @@ import {
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
+import { customDateCompare, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -69,7 +69,7 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
     this._store
       .pipe(select(ordersSelectors.getAllHistoryOrders), untilDestroyed(this))
       .subscribe((historyOrders: CrudApi.Order[]): void => {
-        this.dailyOrders = historyOrders.sort(customNumberCompare('created'));
+        this.dailyOrders = historyOrders.sort(customDateCompare('created'));
 
         if (!this.selectedOrder) {
           this.selectOrder(this.dailyOrders[0]);
