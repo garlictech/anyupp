@@ -17,7 +17,7 @@ Feature: Group product
 
   Scenario: Add new group product
     When I click on the "Group products" text
-    And I click the extend button in the listitem with "test product e2eUpdated" content
+    And On the active tab I click the extend button in the listitem with "test product e2eUpdated" content
     Then the "Extend product" title is displayed
     When I fill out the "Tax (%)" input with "27"
     And I click on the "Is visible" checkbox
@@ -36,7 +36,7 @@ Feature: Group product
 
   Scenario: Update group product
     When I click on the "Group products" text
-    And I click the edit button in the listitem with "test product e2eUpdated" content
+    And On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
     Then the "Edit product" title is displayed
     When I fill out the "Tax (%)" input with "27"
     And I click on the "Is visible" checkbox

@@ -17,7 +17,7 @@ Feature: Unit product
 
   Scenario: Add new unit product
     When I click on the "Unit products" text
-    And I click the extend button in the listitem with "test product e2eUpdated" content
+    And On the active tab I click the extend button in the listitem with "test product e2eUpdated" content
     Then the "Extend product" title is displayed
     When I click the lane selector to set "konyha"
     And I click on the "Takeaway" checkbox

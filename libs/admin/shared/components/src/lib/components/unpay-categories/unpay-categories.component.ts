@@ -5,6 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { UNPAY_CATEGORIES_ARR } from '@bgap/shared/utils';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({
@@ -16,26 +17,13 @@ export class UnpayCategoriesComponent implements OnInit {
   public clickCallback: (unpayCategory: CrudApi.UnpayCategory) => void = () => {
     /**/
   };
-  public unpayCategories: CrudApi.UnpayCategory[];
+  public unpayCategories: CrudApi.UnpayCategory[] = UNPAY_CATEGORIES_ARR;
   public selectedCategory?: CrudApi.UnpayCategory;
 
   constructor(
     private _nbDialogRef: NbDialogRef<unknown>,
     private _changeDetectorRef: ChangeDetectorRef,
-  ) {
-    this.unpayCategories = [
-      CrudApi.UnpayCategory.staff_meal,
-      CrudApi.UnpayCategory.manager_meal,
-      CrudApi.UnpayCategory.marketing_promo,
-      CrudApi.UnpayCategory.error_cooked,
-      CrudApi.UnpayCategory.error_no_cooked,
-      CrudApi.UnpayCategory.payment_mode_change,
-      CrudApi.UnpayCategory.other,
-      CrudApi.UnpayCategory.delivery,
-      CrudApi.UnpayCategory.coupon,
-      CrudApi.UnpayCategory.event,
-    ];
-  }
+  ) {}
 
   ngOnInit() {
     this._changeDetectorRef.detectChanges();

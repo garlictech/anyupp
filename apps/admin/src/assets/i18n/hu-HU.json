@@ -140,7 +140,11 @@
       "historyToday": "Ma",
       "history1W": "1H",
       "history1Y": "1É",
-      "hourlyBreakdown": "Óránkénti bontás"
+      "hourlyBreakdown": "Óránkénti bontás",
+      "incomeOrders": "Paid orders",
+      "noIncomeOrders": "Unpay orders",
+      "unpayCategories": "Unpay kategóriák",
+      "rejectedOrders": "Rejected orders"
     }
   },
   "chains": {
@@ -338,7 +342,7 @@
       "error_no_cooked": "Hiba (nincs kész)",
       "payment_mode_change": "Fizetési mód változtatás",
       "other": "Egyéb",
-      "delivery": "Kiszállítás",
+      "delivery": "Delivery",
       "coupon": "Kupon",
       "event": "Rendezvény"
     }

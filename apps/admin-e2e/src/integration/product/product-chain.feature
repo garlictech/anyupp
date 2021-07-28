@@ -58,7 +58,7 @@ Feature: Chain product
     And I should see "test description" text
 
   Scenario: Update chain product
-    When I click the edit button in the listitem with "test product" content
+    When On the active tab I click the edit button in the listitem with "test product" content
     Then the "Edit product" title is displayed
     When I fill out the "Name (HU)" input with "test product e2eUpdated"
     And I fill out the "Name (EN)" input with "test product e2eUpdated"

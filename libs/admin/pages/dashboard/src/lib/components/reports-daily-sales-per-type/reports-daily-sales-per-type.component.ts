@@ -42,7 +42,6 @@ export class ReportsDailySalesPerTypeComponent
   private _chart!: Chart;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _translateService: TranslateService,
     private _currencyFormatter: CurrencyFormatterPipe,
