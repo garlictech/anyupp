@@ -282,7 +282,17 @@
       "description": "Something went wrong while searching for restaurants. :("
     },
     "opened": "Opened",
-    "closed": "Closed"
+    "closed": "Closed",
+    "opens": "opens next",
+    "weekdays": {
+      "monday": "monday",
+      "tuesday": "tuesday",
+      "wednesday": "wednesday",
+      "thursday": "thursday",
+      "friday": "friday",
+      "saturday": "saturday",
+      "sunday": "sunday"
+    }
   },
   "qrScan": {
     "loading": "Loading QR code information...",

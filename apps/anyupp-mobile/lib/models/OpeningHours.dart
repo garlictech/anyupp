@@ -9,6 +9,15 @@ class OpeningHours {
   final bool closed;
   DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   DateFormat hourFormat = DateFormat('HH:mm');
+  Map<int, String> days = {
+    1: "monday",
+    2: "tuesday",
+    3: "wednesday",
+    4: "thursday",
+    5: "friday",
+    6: "saturday",
+    7: "sunday"
+  };
 
   OpeningHours({
     this.to,
@@ -55,10 +64,19 @@ class OpeningHours {
         .toString();
   }
 
-  String getRangeString() {
-    return getHourFormattedString(from.toInt()) +
-        " - " +
-        getHourFormattedString(to.toInt());
+  String getDayString() {
+    return days[getDate().weekday];
+  }
+
+  String getOpenRangeString({bool fromTo = true}) {
+    if (!closed) {
+      String formattedString = getHourFormattedString(from.toInt()) + " - ";
+      if (fromTo) {
+        formattedString += getHourFormattedString(to.toInt());
+      }
+      return formattedString;
+    }
+    return null;
   }
 
   DateTime getDate() {
