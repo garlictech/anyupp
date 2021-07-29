@@ -85,15 +85,14 @@ Feature: Whole product feature
     And I select the "Modifier comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_02_id)" in the modifier selector
     And I click on the "Add" button
     And I click on the "Submit" button
-    Then I should see "test product e2eUpdated" text
-    When On the active tab I click the edit button in the listitem with "test product" content
+    When On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
     Then I should see "test variant e2eUpdated" text
 
   Scenario: Add new group product
     When I click on the "Group products" text
     When I click the category selector to set "Test product category #2 name"
-    Then I should see "Test chain product #3 name" text
-    And On the active tab I click the extend button in the listitem with "Test chain product #3 name" content
+    Then I should see "test product e2eUpdated" text
+    And On the active tab I click the extend button in the listitem with "test product e2eUpdated" content
     Then the "Extend product" title is displayed
     When I fill out the "Tax (%)" input with "27"
     And I fill out the "Variant name (HU)" input with "test variant 1"
@@ -106,13 +105,12 @@ Feature: Whole product feature
     And I click on the "Add" button
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
-    Then I should see "Test chain product #3 name" text
     # Scenario: Update group product
     And I should see "Group products" text
     When I click the category selector to set "Test product category #2 name"
-    And On the active tab I click the edit button in the listitem with "Test chain product #3 name" content
+    And On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
     Then the "Edit product" title is displayed
-    Then I should see "Test chain product #3 name" text
+    Then I should see "test product e2eUpdated" text
     Then I should see "test variant 1" text
     When I fill out the "Tax (%)" input with "27"
     And I click on the "Is visible" checkbox
@@ -127,15 +125,13 @@ Feature: Whole product feature
     And I click on the "Add" button
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
-    Then I should see "Test chain product #3 name" text
-    When On the active tab I click the edit button in the listitem with "Test chain product #3 name" content
+    When On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
     Then I should see "test variant e2eUpdated" text
 
   Scenario: Add new unit product
-    When I select the "Késdobáló #112" unit in the header menu
     And I click on the "Unit products" text
     And I click the category selector to set "Test product category #1 name"
-    And On the active tab I click the extend button in the listitem with "Test chain product #1 name" content
+    And On the active tab I click the extend button in the listitem with "test product e2eUpdated" content
     Then the "Extend product" title is displayed
     When I click the lane selector to set "konyha"
     And I click on the "Takeaway" checkbox
@@ -160,13 +156,12 @@ Feature: Whole product feature
     And I fill out the last "Time to" input with "18:00"
     And I fill out all the "Price (HUF)" input with index multiply by 10
     And I click on the "Submit" button
-    Then I should see "Test chain product #1 name" text
     # Scenario: Update unit product
     And I should see "Unit products" text
     And I click the category selector to set "Test product category #1 name"
-    And On the active tab I click the edit button in the listitem with "Test chain product #1 name" content
-    Then the "Edit" title is displayed
-    Then I should see "Test chain product #1 name" text
+    And On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
+    Then the "Edit product" title is displayed
+    Then I should see "test product e2eUpdated" text
     Then I should see "test variant 1" text
     When I click the lane selector to set "bár"
     And I click on the "Takeaway" checkbox
@@ -179,6 +174,5 @@ Feature: Whole product feature
     And I click on the "Is available" checkbox
     And I fill out all the "Price (HUF)" input with index multiply by 10
     And I click on the "Submit" button
-    Then I should see "Test chain product #1 name" text
-    When On the active tab I click the edit button in the listitem with "Test chain product #1 name" content
+    When On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
     Then I should see "test variant e2eUpdated" text
