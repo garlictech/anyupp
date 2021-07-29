@@ -36,7 +36,6 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
     builder: (context, state) {
       if (state is UnitSelected) {
         final GeoUnit unit = state.unit;
-
         return Wrap(
           alignment: WrapAlignment.start,
           direction: Axis.horizontal,
@@ -125,12 +124,18 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                 left: 14.0,
               ),
               child: Text(
-                //'${unit.openingHours ?? ""}',
-                unit.getOpeningString() != null
-                    ? transEx(context, "selectUnit.opened") +
-                        " : " +
-                        unit.getOpeningString()
-                    : transEx(context, "selectUnit.closed"),
+                unit.isClosed()
+                    ? unit.getClosedText(
+                        transEx(context, "selectUnit.closed"),
+                        transEx(context, "selectUnit.opens"),
+                        transEx(context,
+                            "selectUnit.weekdays.${unit.getOpenedHour()?.getDayString()}"),
+                      )
+                    : transEx(context, "selectUnit.opened") +
+                        ": " +
+                        transEx(
+                            context, unit.getOpenedHour().getOpenRangeString()),
+
                 //'Nyitva: 09:00 - 22:00',
                 style: GoogleFonts.poppins(
                   fontSize: 16,
