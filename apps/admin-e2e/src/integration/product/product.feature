@@ -53,11 +53,12 @@ Feature: Whole product feature
     And I click on the "Add" button
     And I click on the "Submit" button
     Then I should see "test product" text
-    And I should see "test description" text
     # Scenario: Update chain product
     And I should see "Chain products" text
     When On the active tab I click the edit button in the listitem with "test product" content
     Then the "Edit product" title is displayed
+    Then I should see "test product" text
+    Then I should see "test variant 1" text
     When I fill out the "Name (HU)" input with "test product e2eUpdated"
     And I fill out the "Name (EN)" input with "test product e2eUpdated"
     And I fill out the "Name (DE)" input with "test product e2eUpdated"
@@ -85,7 +86,8 @@ Feature: Whole product feature
     And I click on the "Add" button
     And I click on the "Submit" button
     Then I should see "test product e2eUpdated" text
-    And I should see "test description e2eUpdated" text
+    When On the active tab I click the edit button in the listitem with "test product" content
+    Then I should see "test variant e2eUpdated" text
 
   Scenario: Add new group product
     When I click on the "Group products" text
@@ -105,12 +107,13 @@ Feature: Whole product feature
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
     Then I should see "Test chain product #3 name" text
-    And I should see "Test chain termék #3 description" text
     # Scenario: Update group product
     And I should see "Group products" text
     When I click the category selector to set "Test product category #2 name"
     And On the active tab I click the edit button in the listitem with "Test chain product #3 name" content
     Then the "Edit product" title is displayed
+    Then I should see "Test chain product #3 name" text
+    Then I should see "test variant 1" text
     When I fill out the "Tax (%)" input with "27"
     And I click on the "Is visible" checkbox
     And I fill out the "Variant name (HU)" input with "test variant e2eUpdated"
@@ -125,7 +128,8 @@ Feature: Whole product feature
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
     Then I should see "Test chain product #3 name" text
-    And I should see "Test chain termék #3 description" text
+    When On the active tab I click the edit button in the listitem with "Test chain product #3 name" content
+    Then I should see "test variant e2eUpdated" text
 
   Scenario: Add new unit product
     When I select the "Késdobáló #112" unit in the header menu
@@ -157,12 +161,13 @@ Feature: Whole product feature
     And I fill out all the "Price (HUF)" input with index multiply by 10
     And I click on the "Submit" button
     Then I should see "Test chain product #1 name" text
-    And I should see "Test chain termék #1 description" text
     # Scenario: Update unit product
     And I should see "Unit products" text
     And I click the category selector to set "Test product category #1 name"
     And On the active tab I click the edit button in the listitem with "Test chain product #1 name" content
     Then the "Edit" title is displayed
+    Then I should see "Test chain product #1 name" text
+    Then I should see "test variant 1" text
     When I click the lane selector to set "bár"
     And I click on the "Takeaway" checkbox
     And I click on the "Is visible" checkbox
@@ -175,4 +180,5 @@ Feature: Whole product feature
     And I fill out all the "Price (HUF)" input with index multiply by 10
     And I click on the "Submit" button
     Then I should see "Test chain product #1 name" text
-    And I should see "Test chain termék #1 description" text
+    When On the active tab I click the edit button in the listitem with "Test chain product #1 name" content
+    Then I should see "test variant e2eUpdated" text
