@@ -28,24 +28,34 @@ export const getAllPaginatedData = <
 >(
   op: (
     query: INPUT,
+    options?: Record<string, unknown>,
   ) => Observable<
     | { nextToken?: string | null; items?: Array<OUTPUT> | null }
     | null
     | undefined
   >,
-  startQuery?: INPUT,
+  params?: {
+    query?: INPUT;
+    options?: Record<string, unknown>;
+  },
 ): Observable<{ items: OUTPUT[] }> => {
   const getPage = (nextToken?: string | null) => {
     const fullOp = R.cond([
       [R.isNil, R.always({ limit: 100 } as INPUT)],
-      [flow(R.prop('item'), R.isNil), R.always({ ...startQuery, limit: 100 })],
-      [R.T, R.always(startQuery)],
+      [
+        flow(R.prop('item'), R.isNil),
+        R.always({ ...params?.query, limit: 100 }),
+      ],
+      [R.T, R.always(params?.query)],
     ]);
 
-    return op({
-      ...fullOp(startQuery),
-      nextToken,
-    });
+    return op(
+      {
+        ...fullOp(params?.query),
+        nextToken,
+      },
+      params?.options,
+    );
   };
 
   return getPage().pipe(

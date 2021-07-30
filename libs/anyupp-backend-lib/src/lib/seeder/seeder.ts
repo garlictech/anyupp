@@ -239,8 +239,10 @@ const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
     ),
   );
 
-const seedLotsOfOrders = (deps: SeederDependencies) =>
-  pipe(
+const seedLotsOfOrders = (deps: SeederDependencies) => {
+  console.debug(`Creating a lot of test orders.`);
+
+  return pipe(
     R.range(1, 200),
     R.map(
       (index): CrudApi.CreateOrderInput => ({
@@ -266,11 +268,11 @@ const seedLotsOfOrders = (deps: SeederDependencies) =>
     ),
     x => from(x),
   ).pipe(
-    tap(() => console.debug(`Creating a lot of test orders.`)),
     concatMap(input => deps.crudSdk.CreateOrder({ input })),
     toArray(),
     tap(objects => console.debug(`Created ${objects?.length} test orders.`)),
   );
+};
 
 export const seedAll = (deps: SeederDependencies) =>
   seedAdminUser(deps).pipe(

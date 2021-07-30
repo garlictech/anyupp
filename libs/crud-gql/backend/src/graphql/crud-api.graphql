@@ -261,7 +261,7 @@ type Order
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  createdAt: String!
+  createdAt: AWSDateTime!
   userId: ID!
   unitId: ID!
   orderNum: String!

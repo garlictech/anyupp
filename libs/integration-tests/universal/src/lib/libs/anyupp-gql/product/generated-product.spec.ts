@@ -172,7 +172,8 @@ describe('GenerateProduct tests', () => {
               expect(emissionCount).toEqual(1);
             },
           }),
-          delay(DYNAMODB_OPERATION_DELAY),
+          // bigger delay, to let elastic search index the new items
+          delay(10000),
           switchMap(() => listGeneratedProductsForUnits(deps)([unitId_01])),
           tap({
             next(result) {

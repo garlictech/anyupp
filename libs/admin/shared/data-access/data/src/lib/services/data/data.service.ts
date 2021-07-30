@@ -225,7 +225,9 @@ export class DataService {
     this._crudSdk.doListSubscription(
       productCategoriesActions.resetProductCategories(),
       getAllPaginatedData(op => this._crudSdk.sdk.SearchProductCategorys(op), {
-        filter: { chainId: { eq: chainId } },
+        query: {
+          filter: { chainId: { eq: chainId } },
+        },
       }),
       this._crudSdk.sdk.OnProductCategoriesChange(),
       (productCategorys: CrudApi.ProductCategory[]) =>
@@ -240,7 +242,9 @@ export class DataService {
       productComponentsActions.resetProductComponents(),
 
       getAllPaginatedData(op => this._crudSdk.sdk.SearchProductComponents(op), {
-        filter: { chainId: { eq: chainId } },
+        query: {
+          filter: { chainId: { eq: chainId } },
+        },
       }),
       this._crudSdk.sdk.OnProductComponentsChange(),
       (productComponents: CrudApi.ProductComponent[]) =>
@@ -257,7 +261,9 @@ export class DataService {
       getAllPaginatedData(
         op => this._crudSdk.sdk.SearchProductComponentSets(op),
         {
-          filter: { chainId: { eq: chainId } },
+          query: {
+            filter: { chainId: { eq: chainId } },
+          },
         },
       ),
       this._crudSdk.sdk.OnProductComponentSetsChange(),
@@ -275,7 +281,9 @@ export class DataService {
       productsActions.resetChainProducts(),
 
       getAllPaginatedData(op => this._crudSdk.sdk.SearchChainProducts(op), {
-        filter: { chainId: { eq: chainId } },
+        query: {
+          filter: { chainId: { eq: chainId } },
+        },
       }),
       this._crudSdk.sdk.OnChainProductChange(),
       (products: CrudApi.ChainProduct[]) =>
@@ -290,7 +298,9 @@ export class DataService {
       productsActions.resetGroupProducts(),
 
       getAllPaginatedData(op => this._crudSdk.sdk.SearchGroupProducts(op), {
-        filter: { groupId: { eq: groupId } },
+        query: {
+          filter: { groupId: { eq: groupId } },
+        },
       }),
       this._crudSdk.sdk.OnGroupProductChange(),
       (products: CrudApi.GroupProduct[]) =>
@@ -305,7 +315,9 @@ export class DataService {
       productsActions.resetUnitProducts(),
 
       getAllPaginatedData(op => this._crudSdk.sdk.SearchUnitProducts(op), {
-        filter: { unitId: { eq: unitId } },
+        query: {
+          filter: { unitId: { eq: unitId } },
+        },
       }),
       this._crudSdk.sdk.OnUnitProductChange(),
       (products: CrudApi.UnitProduct[]) =>
@@ -320,7 +332,9 @@ export class DataService {
       productsActions.resetGeneratedProducts(),
 
       getAllPaginatedData(op => this._crudSdk.sdk.SearchGeneratedProducts(op), {
-        filter: { unitId: { eq: unitId } },
+        query: {
+          filter: { unitId: { eq: unitId } },
+        },
       }),
       this._crudSdk.sdk.OnGeneratedProductChange(),
       (products: CrudApi.GeneratedProduct[]) =>
@@ -335,7 +349,13 @@ export class DataService {
       ordersActions.resetActiveOrders(),
 
       getAllPaginatedData(op => this._crudSdk.sdk.SearchOrders(op), {
-        filter: { unitId: { eq: unitId }, archived: { ne: true } },
+        query: {
+          filter: { unitId: { eq: unitId }, archived: { ne: true } },
+          sort: {
+            field: CrudApi.SearchableOrderSortableFields.createdat,
+            direction: CrudApi.SearchableSortDirection.desc,
+          },
+        },
       }),
       this._crudSdk.sdk.OnUnitOrdersChange({
         unitId,

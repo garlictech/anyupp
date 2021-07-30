@@ -59,8 +59,10 @@ describe('Test paginated graphql lists', () => {
     'Pagination must work with limit %p',
     async limit => {
       await getAllPaginatedData(crudSdk.ListAdminUsers, {
-        limit,
-        filter: { name: { eq: testId } },
+        query: {
+          limit,
+          filter: { name: { eq: testId } },
+        },
       })
         .pipe(
           map(
@@ -83,7 +85,9 @@ describe('Test paginated graphql lists', () => {
 
   test('Pagination must work with missing limit', async () => {
     await getAllPaginatedData(crudSdk.ListAdminUsers, {
-      filter: { name: { eq: testId } },
+      query: {
+        filter: { name: { eq: testId } },
+      },
     })
       .pipe(
         map(
@@ -115,5 +119,16 @@ describe('Test paginated graphql lists', () => {
         ),
       )
       .toPromise();
+  });
+
+  test('Pagination should call operation with proper options', () => {
+    const operation = jest.fn().mockReturnValue(of({}));
+
+    getAllPaginatedData(operation, {
+      query: { limit: 100 },
+      options: { fetchPolicy: 'no-cache' },
+    });
+
+    expect((operation as jest.Mock).mock.calls).toMatchSnapshot();
   });
 });

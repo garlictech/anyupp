@@ -1,7 +1,7 @@
+import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { cloneDeep } from 'lodash/fp';
 import { EMPTY, of } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
-
 import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
@@ -21,7 +21,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class OrderService {
   private _adminUser?: CrudApi.AdminUser;
-  private _groupCurrency?: string;
+  //private _groupCurrency?: string;
 
   constructor(private _store: Store, private _crudSdk: CrudSdkService) {
     this._store
@@ -320,8 +320,8 @@ export class OrderService {
 
     this._crudSdk.doListQuery(
       ordersActions.resetHistoryOrders(),
-      this._crudSdk.sdk.SearchOrders(
-        {
+      getAllPaginatedData(op => this._crudSdk.sdk.SearchOrders(op), {
+        query: {
           filter: {
             unitId: { eq: unitId },
             archived: { eq: true },
@@ -331,8 +331,8 @@ export class OrderService {
             },
           },
         },
-        { fetchPolicy: 'no-cache' },
-      ),
+        options: { fetchPolicy: 'no-cache' },
+      }),
       (orders: CrudApi.Order[]) =>
         ordersActions.upsertHistoryOrders({
           orders,
