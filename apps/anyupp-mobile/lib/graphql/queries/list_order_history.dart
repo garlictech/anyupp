@@ -1,10 +1,17 @@
 const QUERY_LIST_ORDER_HISTORY = '''
-query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
-  listOrders(filter: {
-    userId: {eq: \$userId},
-    unitId: {eq: \$unitId},
-    archived: {eq: true}
-  }) {
+query SearchOrderHistoryQuery(\$userId: ID!, \$unitId: ID!, \$nextToken: String) {
+  searchOrders(
+    filter: {
+      userId: {eq: \$userId},
+      unitId: {eq: \$unitId},
+      archived: {eq: true}
+    },
+    sort: {
+      direction: desc,
+      field: orderNum
+    },
+    nextToken: \$nextToken
+    ) {
     items {
       id
       unitId
@@ -161,6 +168,8 @@ query ListOrderHistoryQuery(\$userId: ID!, \$unitId: ID!) {
       transactionStatus
       updatedAt
     }
+    nextToken
+    total
   }
 }
 ''';
