@@ -52,13 +52,13 @@ class AwsAuthProvider implements IAuthProvider {
 
   @override
   Future<User> loginWithCognitoSession(CognitoUserSession session, String username) async {
-    print('loginWithCognitoSession().session=$session, username=$username');
+    // print('loginWithCognitoSession().session=$session, username=$username');
     try {
       CognitoUser user = await _service.createCognitoUserFromSession(session, username);
       await user.cacheTokens();
-      print('loginWithCognitoSession().cognitoUser=${user.username}');
+      // print('loginWithCognitoSession().cognitoUser=${user.username}');
       _user = await _userFromAttributes(user);
-      print('loginWithCognitoSession().user=$_user');
+      // print('loginWithCognitoSession().user=$_user');
       // await _service.createCognitoUserFromSession(session, _user.id);
       _userController.add(_user);
     } on Exception catch (e) {

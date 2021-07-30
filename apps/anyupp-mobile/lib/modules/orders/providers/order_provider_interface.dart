@@ -18,13 +18,31 @@ abstract class IOrdersProvider {
 
   Future<void> userPaymentIntentionSignal(String unitId);
 
+  // --- ORDERS
   Future<void> startOrderListSubscription(String unitId);
 
   Future<void> stopOrderListSubscription();
 
+  Future<List<Order>> loadOrdersNextPage(String unitId, String nextToken);
+
+  bool get orderListHasMoreItems;
+
+  int get orderListTotalCount;
+
+  String get orderListNextToken;
+
+  // --- ORDER HISTORY
   Future<void> startOrderHistoryListSubscription(String unitId);
 
   Future<void> stopOrderHistoryListSubscription();
+
+  Future<List<Order>> loadOrderHistoryNextPage(String unitId, String nextToken);
+
+  bool get orderHistoryListHasMoreItems;
+
+  int get orderHistoryListTotalCount;
+
+  String get orderHistoryListNextToken;
 
   Future<void> addInvoiceInfo(InvoiceInfo invioceInfo);
 

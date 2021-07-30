@@ -5,19 +5,19 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:rxdart/rxdart.dart';
 
-
 class MockAuthProvider implements IAuthProvider {
   StreamController<User> _userController = BehaviorSubject<User>();
   User _user;
 
-  MockAuthProvider() {
-    _user = User(
+  MockAuthProvider({User user}) {
+    _user = user ?? User(
       id: 'test@anyupp.com',
       email: 'test@anyupp.com',
       name: 'Test User',
     );
     getAuthenticatedUserProfile();
   }
+
 
   @override
   Future<User> getAuthenticatedUserProfile() async {

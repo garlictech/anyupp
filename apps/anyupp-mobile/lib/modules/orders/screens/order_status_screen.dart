@@ -27,62 +27,63 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
   OrderRepository _orderRepository = getIt<OrderRepository>();
   OrderNotificationService _orderNotificationService = getIt<OrderNotificationService>();
 
+  bool _hasMoreItems = false;
+  String _nextToken;
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
-    print('initState.StartGetOrderListSubscription()');
     getIt<OrderBloc>().add(StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id));
     super.initState();
-    // Future.delayed(Duration(seconds: 1)).then(
-    //   (value) => getIt<OrderBloc>().add(
-    //     StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id),
-    //   ),
-    // );
-  }
-
-  @override
-  void dispose() {
-    getIt<OrderBloc>().add(StopOrderListSubscription());
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocBuilder<UnitSelectBloc, UnitSelectState>(
-      builder: (context, state) {
-        if (state is UnitSelected) {
-          final GeoUnit unit = state.unit;
-          return StreamBuilder<List<Order>>(
-            stream: _orderRepository.getCurrentOrders(unit.id),
-            builder: (context, AsyncSnapshot<List<Order>> orderState) {
-              // print('Screen.startListSubscription().state=$orderState');
-              if (orderState.connectionState != ConnectionState.waiting || orderState.hasData) {
-                if (orderState.data == null || orderState.data.isEmpty) {
-                  return _noOrder();
+    return BlocListener<OrderBloc, BaseOrderState>(
+      listener: (BuildContext context, BaseOrderState state) {
+        if (state is OrdersLoadedState) {
+          setState(() {
+            _hasMoreItems = state.hasMoreItems;
+            _nextToken = state.nextToken;
+          });
+        }
+      },
+      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+        builder: (context, state) {
+          if (state is UnitSelected) {
+            final GeoUnit unit = state.unit;
+            return StreamBuilder<List<Order>>(
+              stream: _orderRepository.getCurrentOrders(unit.id),
+              builder: (context, AsyncSnapshot<List<Order>> orderState) {
+                // print('Screen.startListSubscription().state=$orderState');
+                if (orderState.connectionState != ConnectionState.waiting || orderState.hasData) {
+                  if (orderState.data == null || orderState.data.isEmpty) {
+                    return _noOrder();
+                  }
+
+                  // --- CHECK IF NEED TO SHOW SOME KIND OF NOTIFICATION
+                  _orderNotificationService.checkIfShowOrderStatusNotification(context, orderState.data);
+
+                  //return _buildList(unit, orderState.data);
+                  return _buildOrderList(orderState.data);
+                } else if (orderState.hasError) {
+                  return CommonErrorWidget(
+                    error: '',
+                    description: '${orderState.error}',
+                  );
                 }
 
-                // --- CHECK IF NEED TO SHOW SOME KIND OF NOTIFICATION
-                _orderNotificationService.checkIfShowOrderStatusNotification(context, orderState.data);
+                return CenterLoadingWidget();
+              },
+            );
+          }
 
-                //return _buildList(unit, orderState.data);
-                return _buildOrderList(orderState.data);
-              } else if (orderState.hasError) {
-                return CommonErrorWidget(
-                  error: '',
-                  description: '${orderState.error}',
-                );
-              }
-
-              return CenterLoadingWidget();
-            },
-          );
-        }
-
-        return CenterLoadingWidget();
-      },
+          return CenterLoadingWidget();
+        },
+      ),
     );
   }
 
@@ -245,7 +246,6 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
           // _openSimplePayUrlInBrowser(state.url);
         }
 
-        // TODO: relocate this logic into the SimplePayBloc and use Events (cancel/timeout/etc) again
         if (state is SimplePayPaymentResultState) {
           // _closeInAppBrowser();
 
@@ -365,24 +365,68 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
   Widget _buildOrderList(List<Order> list) {
     return AnimationLimiter(
       child: ListView.builder(
-        itemCount: list.length,
+        itemCount: list.length + 1,
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, position) {
-          return AnimationConfiguration.staggeredList(
-            position: position,
-            duration: const Duration(milliseconds: 375),
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: FadeInAnimation(
-                child: CurrentOrderCardWidget(
-                  order: list[position],
+          if (position < list.length) {
+            return AnimationConfiguration.staggeredList(
+              position: position,
+              duration: const Duration(milliseconds: 375),
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: CurrentOrderCardWidget(
+                    order: list[position],
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          } else if (_hasMoreItems) {
+            return _buildLoadMoreItemsButton();
+          } else {
+            return Container();
+          }
         },
       ),
+    );
+  }
+
+  Widget _buildLoadMoreItemsButton() {
+    return BlocBuilder<OrderBloc, BaseOrderState>(
+      builder: (context, state) {
+        if (state is OrdersLoadingState) {
+          return Container(
+            height: 120,
+            child: CenterLoadingWidget(),
+          );
+        }
+
+        return Container(
+          margin: EdgeInsets.only(bottom: 76.0),
+          child: TextButton(
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.all(0),
+              shape: CircleBorder(
+                side: BorderSide(
+                  color: theme.border2.withOpacity(0.4),
+                ),
+              ),
+              backgroundColor: Colors.transparent,
+              primary: theme.text,
+            ),
+            onPressed: () => getIt<OrderBloc>().add(LoadMoreOrders(widget.unit.id, _nextToken)),
+            child: Text(
+              trans('orders.loadMore'),
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                color: theme.text.withOpacity(0.6),
+                fontSize: 26,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 

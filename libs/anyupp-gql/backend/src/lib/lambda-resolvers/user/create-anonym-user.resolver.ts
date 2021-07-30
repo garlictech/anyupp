@@ -9,7 +9,7 @@ export const createAnonymUser = (
   deps: UserResolverDeps,
 ): Observable<AnyuppApi.CreateAnonymUserOutput> => {
   const generatedId = uuidV1();
-  const email = `${generatedId}@${generatedId}.hu`;
+  const email = `anonymuser+${generatedId}@anyupp.com`;
   const password = uuidV1() + 'UPPERCASE';
 
   return createConfirmedUserInCognito({

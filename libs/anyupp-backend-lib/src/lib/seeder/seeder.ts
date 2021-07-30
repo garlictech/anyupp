@@ -249,7 +249,7 @@ const seedLotsOfOrders = (deps: SeederDependencies) => {
       (index): CrudApi.CreateOrderInput => ({
         userId: 'test-monad',
         unitId: unitFixture.unitId_seeded_01,
-        orderNum: `${index}`,
+        orderNum: index.toString().padStart(6, '0'),
         items: [],
         paymentMode: {
           type: CrudApi.PaymentType.cash,
@@ -334,9 +334,9 @@ export const seedAll = (deps: SeederDependencies) =>
     switchMap(() => seedConsumerUser(deps)),
     delay(2000),
     switchMap(() => seedBusinessData(deps)),
+    delay(2000),
     switchMap(() => seedLotsOfOrders(deps)),
     delay(2000),
-    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
     switchMap(() =>
       combineLatest(
         userData.map(({ username }) =>
@@ -348,4 +348,7 @@ export const seedAll = (deps: SeederDependencies) =>
         ),
       ),
     ),
+    delay(5000),
+    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
+    catchError(() => of(true)),
   );
