@@ -16,10 +16,12 @@ import 'flutter_qr_code_scanner.dart';
 
 class SelectUnitChooseMethodScreen extends StatefulWidget {
   @override
-  _SelectUnitChooseMethodScreenState createState() => _SelectUnitChooseMethodScreenState();
+  _SelectUnitChooseMethodScreenState createState() =>
+      _SelectUnitChooseMethodScreenState();
 }
 
-class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScreen> {
+class _SelectUnitChooseMethodScreenState
+    extends State<SelectUnitChooseMethodScreen> {
   @override
   void initState() {
     super.initState();
@@ -100,7 +102,9 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               left: 12.0,
             ),
             child: Text(
-              trans('selectUnit.welcome', [user.name != null ? user.name : trans('selectUnit.unknown')]),
+              trans('selectUnit.welcome', [
+                user.name != null ? user.name : trans('selectUnit.unknown')
+              ]),
               style: GoogleFonts.poppins(
                 fontSize: 14.0,
                 color: Color(0xFF3C2F2F),
@@ -332,6 +336,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               child: Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
                       units[index].name,
@@ -351,8 +356,29 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                         color: Color(0xFF3C2F2F),
                       ),
                     ),
-                    Expanded(
-                      child: Container(),
+                    FittedBox(
+                      fit: BoxFit.contain,
+                      child: Text(
+                        units[index].isClosed()
+                            ? units[index].getClosedText(
+                                transEx(context, "selectUnit.closed"),
+                                transEx(context, "selectUnit.opens"),
+                                transEx(context,
+                                    "selectUnit.weekdays.${units[index].getOpenedHour()?.getDayString()}"),
+                              )
+                            : transEx(context, "selectUnit.opened") +
+                                ": " +
+                                transEx(
+                                    context,
+                                    units[index]
+                                        .getOpenedHour()
+                                        .getOpenRangeString()),
+                        style: GoogleFonts.poppins(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF3C2F2F),
+                        ),
+                      ),
                     ),
                     Row(
                       children: [
@@ -371,7 +397,9 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                           ),
                           child: Center(
                               child: Text(
-                            ((units[index].distance ?? 0) / 1000).toStringAsFixed(3) + ' km',
+                            ((units[index].distance ?? 0) / 1000)
+                                    .toStringAsFixed(3) +
+                                ' km',
                             style: GoogleFonts.poppins(
                               fontSize: 12,
                               color: const Color(0xffffffff),
