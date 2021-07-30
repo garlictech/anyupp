@@ -18,6 +18,7 @@ import {
   catchError,
   concatMap,
   delay,
+  map,
   switchMap,
   takeLast,
   tap,
@@ -274,8 +275,63 @@ const seedLotsOfOrders = (deps: SeederDependencies) => {
   );
 };
 
+const seedConsumerUser = (deps: SeederDependencies) => {
+  console.debug(`Seeding a consumer user`);
+  const Username = 'test-monad';
+
+  return pipe(
+    {
+      Username,
+      UserAttributes: [
+        {
+          Name: 'email',
+          Value: 'test-monad@anyupp.com',
+        },
+        {
+          Name: 'email_verified',
+          Value: 'true',
+        },
+        {
+          Name: 'name',
+          Value: 'Gombóc Artúr',
+        },
+      ],
+      UserPoolId: deps.consumerUserPoolId,
+      DesiredDeliveryMediums: ['EMAIL'],
+    },
+    params =>
+      defer(() =>
+        from(
+          deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),
+        ),
+      ),
+  ).pipe(
+    map(() => ({
+      UserPoolId: deps.consumerUserPoolId,
+      Username,
+      Password: password,
+      Permanent: true,
+    })),
+    switchMap(params =>
+      defer(() =>
+        deps.cognitoidentityserviceprovider
+          .adminSetUserPassword(params)
+          .promise(),
+      ),
+    ),
+    catchError(err => {
+      console.warn(
+        'User cannot be created in the consumer pool, probably normal: ',
+        err,
+      );
+      return of(true);
+    }),
+  );
+};
+
 export const seedAll = (deps: SeederDependencies) =>
   seedAdminUser(deps).pipe(
+    switchMap(() => seedConsumerUser(deps)),
     delay(2000),
     switchMap(() => seedBusinessData(deps)),
     switchMap(() => seedLotsOfOrders(deps)),

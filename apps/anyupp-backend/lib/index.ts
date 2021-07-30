@@ -60,6 +60,7 @@ export class AnyUppStack extends Stack {
     if (scope.stage === 'dev' || scope.stage === 'qa') {
       new SeederStack(scope, 'seeder', {
         adminUserPool: cognitoStack.adminUserPool,
+        consumerUserPool: cognitoStack.consumerUserPool,
         anyuppApiArn: appsyncStack.api.arn,
         apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
         apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
