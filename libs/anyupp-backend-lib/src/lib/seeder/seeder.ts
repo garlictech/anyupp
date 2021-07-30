@@ -247,7 +247,7 @@ const seedLotsOfOrders = (deps: SeederDependencies) => {
     R.range(1, 200),
     R.map(
       (index): CrudApi.CreateOrderInput => ({
-        userId: 'test-monad@anyupp.com',
+        userId: 'test-monad',
         unitId: unitFixture.unitId_seeded_01,
         orderNum: `${index}`,
         items: [],
