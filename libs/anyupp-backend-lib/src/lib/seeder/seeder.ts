@@ -334,9 +334,9 @@ export const seedAll = (deps: SeederDependencies) =>
     switchMap(() => seedConsumerUser(deps)),
     delay(2000),
     switchMap(() => seedBusinessData(deps)),
+    delay(2000),
     switchMap(() => seedLotsOfOrders(deps)),
     delay(2000),
-    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
     switchMap(() =>
       combineLatest(
         userData.map(({ username }) =>
@@ -348,4 +348,7 @@ export const seedAll = (deps: SeederDependencies) =>
         ),
       ),
     ),
+    delay(2000),
+    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
+    catchError(() => of(true)),
   );
