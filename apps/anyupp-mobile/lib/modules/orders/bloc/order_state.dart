@@ -30,3 +30,23 @@ class OrderDetailLoadedState extends BaseOrderState {
   @override
   List<Object> get props => [order];
 }
+
+class OrdersLoadingState extends BaseOrderState {
+
+}
+
+class OrderHistoryLoadingState extends BaseOrderState {
+  
+}
+
+class OrdersLoadedState extends BaseOrderState {
+  final List<Order> orders;
+  final int totalCount;
+  final bool hasMoreItems;
+  final String nextToken;
+
+  OrdersLoadedState({this.orders, this.hasMoreItems, this.totalCount, this.nextToken});
+
+    @override
+  List<Object> get props => [orders, totalCount, hasMoreItems, nextToken];
+}

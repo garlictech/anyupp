@@ -164,7 +164,8 @@
     "pay": "Fizetni szeretnék",
     "waiting": "Kérjük, várj a pincérre!",
     "simplepay": "Fizetés SimplePay-jel",
-    "stripepay": "Fizetés Stripe-pal"
+    "stripepay": "Fizetés Stripe-pal",
+    "loadMore": "Még több betöltése..."
   },
   "notifications": {
     "messageFrom": "Üzenet az AnyUpp-tól!",
@@ -282,7 +283,17 @@
       "description": "Valami hiba történt az éttermek keresgélése közben. :("
     },
     "opened": "Nyitva",
-    "closed": "Zárva"
+    "closed": "Zárva",
+    "opens": "nyitás",
+    "weekdays": {
+      "monday": "hétfő",
+      "tuesday": "kedd",
+      "wednesday": "szerda",
+      "thursday": "csütörtök",
+      "friday": "péntek",
+      "saturday": "szombat",
+      "sunday": "vasárnap"
+    }
   },
   "qrScan": {
     "loading": "QR kód adatainak betöltése...",

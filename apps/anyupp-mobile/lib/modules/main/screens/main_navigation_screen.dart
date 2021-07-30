@@ -252,12 +252,13 @@ class _MainNavigationState extends State<MainNavigation>
         return StreamBuilder<List<Order>>(
             stream: getIt<OrderRepository>().getCurrentOrders(unit.id),
             builder: (context, AsyncSnapshot<List<Order>> orderState) {
-              int orderCount = orderState?.data?.length ?? 0;
+              // int orderCount = orderState?.data?.length ?? 0;
+              int orderCount =  getIt<OrderRepository>().orderListTotalCount;
               return _createBottomBarIconWithText(
                   2,
                   Icons.receipt,
                   'main.bottomTitles.orders',
-                  orderCount > 0 ? orderCount.toString() : null);
+                  orderCount != null && orderCount > 0 ? orderCount.toString() : null);
             });
       } else {
         return _createBottomBarIconWithText(

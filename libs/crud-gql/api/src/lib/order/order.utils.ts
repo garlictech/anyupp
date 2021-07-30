@@ -1,6 +1,10 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import * as CrudApi from '../generated/api';
 import { pipe } from 'fp-ts/function';
-import { toFixed2Number } from '../number.utils';
+
+// Copypasted, as importing from @bgap/shared/utils results in an ugly
+// circular dependency. shared types import types from crud api 🤷
+const toFixed2Number = (value: string | number) =>
+  Number(Number(value).toFixed(2));
 
 const roundSums = (price: CrudApi.PriceShown) => {
   return {

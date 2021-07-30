@@ -17,13 +17,10 @@ import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { IKeyValueObject } from '@bgap/shared/types';
-import {
-  filterNullish,
-  isRejectedOrder,
-  orderHasIncome,
-} from '@bgap/shared/utils';
+import { filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { isRejectedOrder, orderHasIncome } from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({

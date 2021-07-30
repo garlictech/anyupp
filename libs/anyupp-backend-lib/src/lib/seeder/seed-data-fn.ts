@@ -18,6 +18,7 @@ export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
   anyuppSdk: AnyuppApi.AnyuppSdk;
   userPoolId: string;
+  consumerUserPoolId: string;
   cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
 }
 

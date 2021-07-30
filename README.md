@@ -17,9 +17,7 @@ sections below. The configuration and build commands generally support `app` and
 `stage` flags. The `app` is an unique identification of your stack. The stage is
 important as the app uses some stage-dependent externally configured resources
 (like secrets). The stage specifies which resource set is used.
-There are three stages: `dev`, `qa`, `producton`.
-
-Production is not yet available!
+There are four stages: `dev`, `qa`, `staging`, `producton`.
 
 You should almost always use the `dev` stage.
 
@@ -30,7 +28,10 @@ please :)
 
 Install the following tools:
 
-- AWS CLI - [install](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) [configure](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
+- You will need `node`, `npm` and `yarn`
+- Git CLI or a client
+- AWS CLI installed and configured - [install](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) [configure](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) You will need an `AWS Access Key ID`, `AWS Secret Access Key` and set `eu-west-1` as the region and `json` as the output format.
+
 - Amplify CLI - `npm i -g @aws-amplify/cli`
 - The following command line tools: `jq` - [install](https://stedolan.github.io/jq/)
 
@@ -326,7 +327,7 @@ To execute the seeder locally run the following command:
   test-monad@anyupp.com,
   test-kati@anyupp.com,
   test-emen@anyupp.com,
-  test-ee2@anyupp.com,
+  test-e2e@anyupp.com,
 ```
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
@@ -358,6 +359,9 @@ Execute all the integration tests:
 Execute on single integration test suite:
 
 `yarn jest -c libs/integration-tests/universal/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
+
+Execute the `admin` integration tests:
+
 `yarn jest -c libs/integration-tests/angular/jest.config.js admin`
 
 ## Executing cucumber/cypress tests
@@ -613,7 +617,9 @@ publish!
 
 ### Reconfig the whole workspace
 
+`./tools/build-workspace.sh APPNAME STAGE`
+Example using the dev stack
 `./tools/build-workspace.sh anyupp-backend dev`
 
-Before it, remove `apps/crud-backend/amplify`. Ensure that all your changes are pushed or discard them.
-The command fethes the crud backend, the configurations and regenerates the code files.
+Ensure that all your changes are pushed or discard them. Because it will remove your local amplify folder.
+The command fetches the crud backend, the configurations and regenerates the code files.

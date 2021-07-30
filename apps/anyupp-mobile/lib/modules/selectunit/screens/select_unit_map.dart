@@ -3,9 +3,9 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/location.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -257,12 +257,17 @@ class _SelectUnitByLocationScreenState
                     ),
                   ),
                   Text(
-                    //  '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
-                    unit.getOpeningString() != null
-                        ? transEx(context, "selectUnit.opened") +
-                            " : " +
-                            unit.getOpeningString()
-                        : transEx(context, "selectUnit.closed"),
+                    unit.isClosed()
+                        ? unit.getClosedText(
+                            transEx(context, "selectUnit.closed"),
+                            transEx(context, "selectUnit.opens"),
+                            transEx(context,
+                                "selectUnit.weekdays.${unit.getOpenedHour()?.getDayString()}"),
+                          )
+                        : transEx(context, "selectUnit.opened") +
+                            ": " +
+                            transEx(context,
+                                unit.getOpenedHour().getOpenRangeString()),
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: theme.text, //const Color(0xff3c2f2f),

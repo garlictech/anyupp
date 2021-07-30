@@ -3,7 +3,7 @@
 // yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/delete-all-table-data.ts
 import { deleteInAllTables } from '../libs/anyupp-backend-lib/src/lib/seeder';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { defer, from } from 'rxjs';
+import { combineLatest, defer, from } from 'rxjs';
 import { map, switchMap, mergeMap, tap } from 'rxjs/operators';
 import { config } from '../libs/shared/config/src';
 import * as R from 'ramda';
@@ -17,14 +17,14 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   region: process.env.AWS_REGION,
 });
 
-defer(() =>
-  from(
-    cognitoidentityserviceprovider
-      .listUsers({ UserPoolId: config.AdminUserPoolId, Limit: 60 })
-      .promise(),
-  ),
-)
-  .pipe(
+const cleanUserPool = (UserPoolId: string) =>
+  defer(() =>
+    from(
+      cognitoidentityserviceprovider
+        .listUsers({ UserPoolId, Limit: 60 })
+        .promise(),
+    ),
+  ).pipe(
     tap(() =>
       console.warn(
         '*** Deleting cognito users: currently max 60. If there are more users, then handle the Limit parameter, and delete the users in multiple steps.',
@@ -35,7 +35,7 @@ defer(() =>
         x => x.Users ?? [],
         R.map(x => ({
           Username: x.Username,
-          UserPoolId: config.AdminUserPoolId,
+          UserPoolId,
         })),
       ),
     ),
@@ -43,5 +43,9 @@ defer(() =>
     mergeMap(params =>
       from(cognitoidentityserviceprovider.adminDeleteUser(params).promise()),
     ),
-  )
-  .subscribe();
+  );
+
+combineLatest([
+  cleanUserPool(config.AdminUserPoolId),
+  cleanUserPool(config.ConsumerUserPoolId),
+]).subscribe();
