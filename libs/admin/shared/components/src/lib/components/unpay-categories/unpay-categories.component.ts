@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { UNPAY_CATEGORIES_ARR } from '@bgap/shared/utils';
+import { UNPAY_CATEGORIES_ARR } from '@bgap/crud-gql/api';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({

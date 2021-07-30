@@ -1,4 +1,4 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import * as CrudApi from '../generated/api';
 
 export const adminUserRoleIsAtLeast = (
   adminUser: CrudApi.AdminUser,

@@ -1,12 +1,12 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { cartFixture } from '@bgap/shared/fixtures';
-import { toFixed2Number } from '../number.utils';
+import { toFixed2Number } from '@bgap/shared/utils';
 import {
   calculateOrderItemPriceRounded,
   calculateOrderItemSumPriceRounded,
   calculateOrderSumPriceRounded,
   calculateTaxSumFromBrutto,
-} from './order.utils';
+} from '@bgap/crud-gql/api';
 
 const orderItemConfigSetBase: Pick<
   CrudApi.OrderItemConfigSetInput,

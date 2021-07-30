@@ -1,4 +1,5 @@
 import { concat, Observable, Subject } from 'rxjs';
+import { getAllPaginatedData } from '@bgap/gql-sdk';
 import {
   distinctUntilChanged,
   map,
@@ -162,7 +163,7 @@ export class DataService {
     this._store.dispatch(roleContextActions.resetRoleContexts());
 
     concat(
-      this._crudSdk.sdk.ListRoleContexts().pipe(
+      getAllPaginatedData(op => this._crudSdk.sdk.ListRoleContexts(op)).pipe(
         filterNullish(),
         map(result => result.items),
       ),
@@ -190,7 +191,7 @@ export class DataService {
     this._logger.log('Subscribe to chains');
     this._crudSdk.doListSubscription(
       chainsActions.resetChains(),
-      this._crudSdk.sdk.ListChains(),
+      getAllPaginatedData(op => this._crudSdk.sdk.ListChains(op)),
       this._crudSdk.sdk.OnChainsChange(),
       (chains: CrudApi.Chain[]) => chainsActions.upsertChains({ chains }),
       this._destroyConnection$,
@@ -201,7 +202,7 @@ export class DataService {
     this._logger.log('Subscribe to groups');
     this._crudSdk.doListSubscription(
       groupsActions.resetGroups(),
-      this._crudSdk.sdk.ListGroups(),
+      getAllPaginatedData(op => this._crudSdk.sdk.ListGroups(op)),
       this._crudSdk.sdk.OnGroupsChange(),
       (groups: CrudApi.Group[]) => groupsActions.upsertGroups({ groups }),
       this._destroyConnection$,
@@ -212,7 +213,7 @@ export class DataService {
     this._logger.log('Subscribe to units');
     this._crudSdk.doListSubscription(
       unitsActions.resetUnits(),
-      this._crudSdk.sdk.ListUnits(),
+      getAllPaginatedData(op => this._crudSdk.sdk.ListUnits(op)),
       this._crudSdk.sdk.OnUnitsChange(),
       (units: CrudApi.Unit[]) => unitsActions.upsertUnits({ units }),
       this._destroyConnection$,
@@ -223,7 +224,7 @@ export class DataService {
     this._logger.log('Subscribe to chain product categories');
     this._crudSdk.doListSubscription(
       productCategoriesActions.resetProductCategories(),
-      this._crudSdk.sdk.ListProductCategorys({
+      getAllPaginatedData(op => this._crudSdk.sdk.SearchProductCategorys(op), {
         filter: { chainId: { eq: chainId } },
       }),
       this._crudSdk.sdk.OnProductCategoriesChange(),
@@ -238,7 +239,7 @@ export class DataService {
     this._crudSdk.doListSubscription(
       productComponentsActions.resetProductComponents(),
 
-      this._crudSdk.sdk.ListProductComponents({
+      getAllPaginatedData(op => this._crudSdk.sdk.SearchProductComponents(op), {
         filter: { chainId: { eq: chainId } },
       }),
       this._crudSdk.sdk.OnProductComponentsChange(),
@@ -253,9 +254,12 @@ export class DataService {
     this._crudSdk.doListSubscription(
       productComponentSetsActions.resetProductComponentSets(),
 
-      this._crudSdk.sdk.ListProductComponentSets({
-        filter: { chainId: { eq: chainId } },
-      }),
+      getAllPaginatedData(
+        op => this._crudSdk.sdk.SearchProductComponentSets(op),
+        {
+          filter: { chainId: { eq: chainId } },
+        },
+      ),
       this._crudSdk.sdk.OnProductComponentSetsChange(),
       (productComponentSets: CrudApi.ProductComponentSet[]) =>
         productComponentSetsActions.upsertProductComponentSets({
@@ -270,7 +274,7 @@ export class DataService {
     this._crudSdk.doListSubscription(
       productsActions.resetChainProducts(),
 
-      this._crudSdk.sdk.ListChainProducts({
+      getAllPaginatedData(op => this._crudSdk.sdk.SearchChainProducts(op), {
         filter: { chainId: { eq: chainId } },
       }),
       this._crudSdk.sdk.OnChainProductChange(),
@@ -285,7 +289,7 @@ export class DataService {
     this._crudSdk.doListSubscription(
       productsActions.resetGroupProducts(),
 
-      this._crudSdk.sdk.ListGroupProducts({
+      getAllPaginatedData(op => this._crudSdk.sdk.SearchGroupProducts(op), {
         filter: { groupId: { eq: groupId } },
       }),
       this._crudSdk.sdk.OnGroupProductChange(),
@@ -300,7 +304,7 @@ export class DataService {
     this._crudSdk.doListSubscription(
       productsActions.resetUnitProducts(),
 
-      this._crudSdk.sdk.ListUnitProducts({
+      getAllPaginatedData(op => this._crudSdk.sdk.SearchUnitProducts(op), {
         filter: { unitId: { eq: unitId } },
       }),
       this._crudSdk.sdk.OnUnitProductChange(),
@@ -315,7 +319,7 @@ export class DataService {
     this._crudSdk.doListSubscription(
       productsActions.resetGeneratedProducts(),
 
-      this._crudSdk.sdk.ListGeneratedProducts({
+      getAllPaginatedData(op => this._crudSdk.sdk.SearchGeneratedProducts(op), {
         filter: { unitId: { eq: unitId } },
       }),
       this._crudSdk.sdk.OnGeneratedProductChange(),
@@ -329,7 +333,8 @@ export class DataService {
     this._logger.log('Subscribe to selected unit orders');
     this._crudSdk.doListSubscription(
       ordersActions.resetActiveOrders(),
-      this._crudSdk.sdk.ListOrders({
+
+      getAllPaginatedData(op => this._crudSdk.sdk.SearchOrders(op), {
         filter: { unitId: { eq: unitId }, archived: { ne: true } },
       }),
       this._crudSdk.sdk.OnUnitOrdersChange({
@@ -349,7 +354,7 @@ export class DataService {
     this._crudSdk.doListSubscription(
       adminUsersActions.resetAdminUsers(),
 
-      this._crudSdk.sdk.ListAdminUsers(),
+      getAllPaginatedData(op => this._crudSdk.sdk.ListAdminUsers(op)),
       this._crudSdk.sdk.OnAdminUsersChange(),
       (adminUsers: CrudApi.AdminUser[]) =>
         adminUsersActions.upsertAdminUsers({ adminUsers }),

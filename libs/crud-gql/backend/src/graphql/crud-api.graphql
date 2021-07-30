@@ -22,6 +22,7 @@ type LocalizedItem {
 
 type AdminUser
   @model
+  @searchable
   @auth(rules: [{ allow: private, provider: iam }, { allow: private }]) {
   id: ID!
   name: String!
@@ -160,6 +161,7 @@ type RoleContext
 ### Chain
 type Chain
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
@@ -196,6 +198,7 @@ type ChainStyleImages {
 ### Group
 type Group
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
@@ -328,6 +331,7 @@ type Place {
 ### ProductCategory
 type ProductCategory
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
@@ -340,6 +344,7 @@ type ProductCategory
 ### ProductComponent
 type ProductComponent
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
@@ -351,6 +356,7 @@ type ProductComponent
 ### ProductComponent
 type ProductComponentSet
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
@@ -395,6 +401,7 @@ type GeneratedProductConfigSet {
 ### Product
 type ChainProduct
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
@@ -428,6 +435,7 @@ enum Allergen {
 
 type GroupProduct
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   parentId: ID! # parent chainProduct ID
@@ -442,6 +450,7 @@ type GroupProduct
 
 type UnitProduct
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   parentId: ID! # parent groupProduct ID
@@ -484,6 +493,7 @@ type Availability {
 
 type GeneratedProductCategory
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "productCategoriesByUnit", fields: ["unitId"]) {
   id: ID!
@@ -495,6 +505,7 @@ type GeneratedProductCategory
 
 type GeneratedProduct
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "productsByUnit", fields: ["unitId"])
   @key(
@@ -526,6 +537,7 @@ type GeneratedProductVariant {
 
 type FavoriteProduct
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
   id: ID!
@@ -537,6 +549,7 @@ type FavoriteProduct
 ### Unit
 type Unit
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   groupId: ID!
@@ -630,6 +643,7 @@ type Lane {
 ### User
 type User
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   name: String
@@ -643,6 +657,7 @@ type User
 ### Cart
 type Cart
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
@@ -696,6 +711,7 @@ enum ReceiptStatus {
 
 type Invoice
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
@@ -715,6 +731,7 @@ type Invoice
 
 type Receipt
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
