@@ -164,7 +164,8 @@
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
     "simplepay": "Pay with SimplePay",
-    "stripepay": "Pay with Stripe"
+    "stripepay": "Pay with Stripe",
+    "loadMore": "Load more..."
   },
   "notifications": {
     "messageFrom": "Message from AnyUpp!",

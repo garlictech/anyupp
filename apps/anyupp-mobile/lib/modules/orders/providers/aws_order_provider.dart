@@ -15,6 +15,7 @@ import 'package:rxdart/rxdart.dart';
 import 'order_provider_interface.dart';
 
 class AwsOrderProvider implements IOrdersProvider {
+
   final IAuthProvider _authProvider;
 
   StreamController<Cart> _cartController = BehaviorSubject<Cart>();
@@ -27,25 +28,23 @@ class AwsOrderProvider implements IOrdersProvider {
     _subOrderList = AwsSubscription<Order>(
       authProvider: _authProvider,
       listQuery: QUERY_LIST_ACTIVE_ORDERS,
-      listNodeName: 'listOrders',
+      listNodeName: 'searchOrders',
       subscriptionQuery: SUBSCRIPTION_ORDER_LIST,
       subscriptionNodeName: 'onOrderChanged',
       modelFromJson: (json) => Order.fromJson(json),
-      filterModel: (model) => !model.archived,
       sortItems: (items) =>
-          items.sort((a, b) => b.created.compareTo(a.created)),
+          items.sort((a, b) => b.orderNum.compareTo(a.orderNum)),
     );
 
     _subOrderHistoryList = AwsSubscription<Order>(
       authProvider: _authProvider,
       listQuery: QUERY_LIST_ORDER_HISTORY,
-      listNodeName: 'listOrders',
+      listNodeName: 'searchOrders',
       subscriptionQuery: SUBSCRIPTION_ORDER_HISTORY_LIST,
       subscriptionNodeName: 'onOrderChanged',
       modelFromJson: (json) => Order.fromJson(json),
-      filterModel: (model) => model.archived,
       sortItems: (items) =>
-          items.sort((a, b) => b.created.compareTo(a.created)),
+          items.sort((a, b) => b.orderNum.compareTo(a.orderNum)),
     );
   }
 
@@ -238,7 +237,6 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> userPaymentIntentionSignal(String unitId) {
-    // TODO: implement userPaymentIntentionSignal
     throw UnimplementedError();
   }
 
@@ -260,7 +258,7 @@ class AwsOrderProvider implements IOrdersProvider {
   Future<void> startOrderHistoryListSubscription(String unitId) async {
     User user = await _authProvider.getAuthenticatedUserProfile();
     return _subOrderHistoryList.startListSubscription(
-      variables: {'userId': user.id, 'unitId': unitId, 'archived': true},
+      variables: {'userId': user.id, 'unitId': unitId },
     );
   }
 
@@ -415,4 +413,35 @@ class AwsOrderProvider implements IOrdersProvider {
     }
     return _cart;
   }
+
+  @override
+  Future<List<Order>> loadOrderHistoryNextPage(String unitId, String nextToken) async {
+     User user = await _authProvider.getAuthenticatedUserProfile();
+    return _subOrderHistoryList.loadNextPage({'userId': user.id, 'unitId': unitId }, nextToken);
+  }
+
+  @override
+  Future<List<Order>> loadOrdersNextPage(String unitId, String nextToken) async {
+     User user = await _authProvider.getAuthenticatedUserProfile();
+    return _subOrderList.loadNextPage({'userId': user.id, 'unitId': unitId }, nextToken);
+  }
+
+  @override
+  bool get orderHistoryListHasMoreItems => _subOrderHistoryList.hasMoreItems;
+
+  @override
+  int get orderHistoryListTotalCount => _subOrderHistoryList.itemCount;
+
+  @override
+  String get orderHistoryListNextToken => _subOrderHistoryList.nextToken;
+
+  @override
+  bool get orderListHasMoreItems => _subOrderList.hasMoreItems;
+
+  @override
+  int get orderListTotalCount => _subOrderList.itemCount;
+
+
+  @override
+  String get orderListNextToken => _subOrderList.nextToken;
 }

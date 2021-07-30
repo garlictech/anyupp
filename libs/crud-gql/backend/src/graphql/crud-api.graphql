@@ -48,6 +48,7 @@ type AdminUserSettings {
 # and can query through Post.editors and AdminUser.roleContexts
 type AdminRoleContext
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
   @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
@@ -70,6 +71,7 @@ enum Role {
 
 type RoleContext
   @model
+  @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   contextId: ID! # Readable short id

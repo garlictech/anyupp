@@ -79,7 +79,7 @@ class CognitoService {
   }
 
   Future<CognitoUser> createCognitoUserFromSession(CognitoUserSession session, String userName) async {
-    print('CognitoService.createCognitoUserFromSession().session=$session, userName=$userName');
+    // print('CognitoService.createCognitoUserFromSession().session=$session, userName=$userName');
     _cognitoUser = CognitoUser(userName, userPool, signInUserSession: session);
     _userSession = session;
     await _cognitoUser.cacheTokens();

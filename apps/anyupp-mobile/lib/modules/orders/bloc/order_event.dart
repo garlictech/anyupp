@@ -41,3 +41,21 @@ class LoadOrderDetail extends BaseOrderAction {
   @override
   List<Object> get props => [orderId];
 }
+
+class LoadMoreOrders extends BaseOrderAction {
+  final String unitId;
+  final String nextToken;
+
+  LoadMoreOrders(this.unitId, this.nextToken);
+   @override
+  List<Object> get props => [unitId, nextToken];
+}
+
+class LoadMoreOrderHistory extends BaseOrderAction {
+  final String unitId;
+  final String nextToken;
+
+  LoadMoreOrderHistory(this.unitId, this.nextToken);
+   @override
+  List<Object> get props => [unitId, nextToken];
+}

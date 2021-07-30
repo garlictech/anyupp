@@ -249,7 +249,7 @@ const seedLotsOfOrders = (deps: SeederDependencies) => {
       (index): CrudApi.CreateOrderInput => ({
         userId: 'test-monad',
         unitId: unitFixture.unitId_seeded_01,
-        orderNum: `${index}`,
+        orderNum: index.toString().padStart(6, '0'),
         items: [],
         paymentMode: {
           type: CrudApi.PaymentType.cash,

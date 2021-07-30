@@ -1,9 +1,10 @@
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/models/InvoiceInfo.dart';
 import 'dart:async';
 
 import 'package:fa_prev/modules/orders/orders.dart';
 
-class OrderRepository {
+class OrderRepository implements IOrdersProvider {
   final IOrdersProvider _provider;
 
   OrderRepository(this._provider);
@@ -32,8 +33,8 @@ class OrderRepository {
     return _provider.getOrderHistory(unitId);
   }
 
-  Future<void> createAndSendOrderFromCart() async {
-    await _provider.createAndSendOrderFromCart();
+  Future<String> createAndSendOrderFromCart() {
+    return _provider.createAndSendOrderFromCart();
   }
 
   Future<void> userPaymentIntentionSignal(String unitId) async {
@@ -61,4 +62,43 @@ class OrderRepository {
   }
 
   Cart get cart => _provider.cart;
+
+  @override
+  Future<void> addInvoiceInfo(InvoiceInfo invioceInfo) {
+    return _provider.addInvoiceInfo(invioceInfo);
+  }
+
+  @override
+  Future<Cart> setPaymentMode(String unitId, PaymentMode mode) {
+    return _provider.setPaymentMode(unitId, mode);
+  }
+
+  @override
+  bool get orderListHasMoreItems => _provider.orderListHasMoreItems;
+
+  @override
+  int get orderListTotalCount => _provider.orderListTotalCount;
+
+  @override
+  Future<List<Order>> loadOrdersNextPage(String unitId, String nextToken) {
+    return _provider.loadOrdersNextPage(unitId, nextToken);
+  }
+
+  @override
+  bool get orderHistoryListHasMoreItems => _provider.orderHistoryListHasMoreItems;
+
+  @override
+  int get orderHistoryListTotalCount => _provider.orderHistoryListTotalCount;
+
+
+  @override
+  Future<List<Order>> loadOrderHistoryNextPage(String unitId, String nextToken) {
+    return _provider.loadOrderHistoryNextPage(unitId, nextToken);
+  }
+
+  @override
+  String get orderHistoryListNextToken => _provider.orderHistoryListNextToken;
+
+  @override
+  String get orderListNextToken => _provider.orderListNextToken;
 }
