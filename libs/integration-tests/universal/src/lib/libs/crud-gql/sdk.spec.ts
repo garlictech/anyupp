@@ -30,50 +30,43 @@ describe('CRUD sdk test', () => {
   });
 
   test('An arbitrary CRUD', done => {
-    const id = productFixture.unitProductId_seeded_id_01;
+    const id = 'TEST_ADMIN_USER';
     const toMatchSnapshot = (x: any, name?: string) =>
       expect(x).toMatchSnapshot(
         {
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
-          product: expect.any(Object),
         },
         name,
       );
 
     of(1)
       .pipe(
-        switchMap(() => sdk.DeleteFavoriteProduct({ input: { id } })),
-        switchMap(() =>
-          sdk.GetFavoriteProduct({ id }, { fetchPolicy: 'no-cache' }),
-        ),
+        switchMap(() => sdk.DeleteAdminUser({ input: { id } })),
+        switchMap(() => sdk.GetAdminUser({ id }, { fetchPolicy: 'no-cache' })),
         tap(x => expect(x).toMatchSnapshot('SHOULD BE NULL')),
         switchMap(() =>
-          sdk.CreateFavoriteProduct({
+          sdk.CreateAdminUser({
             input: {
               id,
-              userId: 'USER_FOO',
-              unitId: 'UNIT_BAR',
-              favoriteProductProductId: id,
+              name: 'NAME',
+              phone: 'phone',
+              email: 'a@a.hu',
             },
           }),
         ),
         tap(x => toMatchSnapshot(x, 'CREATE')),
-        switchMap(() =>
-          sdk.GetFavoriteProduct({ id }, { fetchPolicy: 'no-cache' }),
-        ),
+        switchMap(() => sdk.GetAdminUser({ id }, { fetchPolicy: 'no-cache' })),
         tap(x => toMatchSnapshot(x, 'READ')),
         switchMap(() =>
-          sdk.UpdateFavoriteProduct({
-            input: { id, userId: 'UPDATED_USER' },
+          sdk.UpdateAdminUser({
+            input: { id, name: 'UPDATED_USER' },
           }),
         ),
         tap(x => toMatchSnapshot(x, 'UPDATE')),
-        switchMap(() => sdk.DeleteFavoriteProduct({ input: { id } })),
+        switchMap(() => sdk.DeleteAdminUser({ input: { id } })),
         tap(x => toMatchSnapshot(x, 'DELETE')),
-        switchMap(() =>
-          sdk.GetFavoriteProduct({ id }, { fetchPolicy: 'no-cache' }),
-        ),
+        switchMap(() => sdk.GetAdminUser({ id }, { fetchPolicy: 'no-cache' })),
         tap(x =>
           expect(x).toMatchSnapshot('READ AFTER DELETE - SHOULD BE NULL'),
         ),

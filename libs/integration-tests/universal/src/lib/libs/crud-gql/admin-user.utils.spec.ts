@@ -1,7 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
+import { adminUserRoleIsAtLeast } from '@bgap/crud-gql/api';
 import { adminUserFixture, getRoleContextItem } from '@bgap/shared/fixtures';
-
-import { adminUserRoleIsAtLeast } from './admin-user.utils';
 
 const getAdminUserWithRole = (role: CrudApi.Role): CrudApi.AdminUser => ({
   ...adminUserFixture,

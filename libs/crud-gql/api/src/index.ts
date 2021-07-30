@@ -5,6 +5,8 @@ export * from './lib/generated/api';
 export * from './lib/generated/crud-api-config';
 export { CrudSdk } from './lib/sdk';
 export * from './lib/clients';
+export * from './lib/order/order.utils';
+export * from './lib/admin-user/admin-user.utils';
 
 import awsmobile from './lib/generated/aws-exports';
 

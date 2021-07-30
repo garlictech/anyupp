@@ -1,8 +1,10 @@
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   createAdminUser as resolverCreateAdminUser,
   ResolverErrorCode,
   unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
+import * as R from 'ramda';
 import {
   otherAdminEmails,
   testAdminEmail,
@@ -14,7 +16,9 @@ import * as fp from 'lodash/fp';
 import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
 import {
   catchError,
+  concatMap,
   delay,
+  map,
   switchMap,
   takeLast,
   tap,
@@ -236,10 +240,101 @@ const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
     ),
   );
 
+const seedLotsOfOrders = (deps: SeederDependencies) => {
+  console.debug(`Creating a lot of test orders.`);
+
+  return pipe(
+    R.range(1, 200),
+    R.map(
+      (index): CrudApi.CreateOrderInput => ({
+        userId: 'test-monad',
+        unitId: unitFixture.unitId_seeded_01,
+        orderNum: `${index}`,
+        items: [],
+        paymentMode: {
+          type: CrudApi.PaymentType.cash,
+          method: CrudApi.PaymentMethod.cash,
+        },
+        statusLog: [],
+        archived: !(index % 2),
+        sumPriceShown: {
+          currency: 'huf',
+          pricePerUnit: 10.0,
+          priceSum: 10.0,
+          tax: 10,
+          taxSum: 1,
+        },
+        takeAway: false,
+      }),
+    ),
+    x => from(x),
+  ).pipe(
+    concatMap(input => deps.crudSdk.CreateOrder({ input })),
+    toArray(),
+    tap(objects => console.debug(`Created ${objects?.length} test orders.`)),
+  );
+};
+
+const seedConsumerUser = (deps: SeederDependencies) => {
+  console.debug(`Seeding a consumer user`);
+  const Username = 'test-monad';
+
+  return pipe(
+    {
+      Username,
+      UserAttributes: [
+        {
+          Name: 'email',
+          Value: 'test-monad@anyupp.com',
+        },
+        {
+          Name: 'email_verified',
+          Value: 'true',
+        },
+        {
+          Name: 'name',
+          Value: 'Gombóc Artúr',
+        },
+      ],
+      UserPoolId: deps.consumerUserPoolId,
+      DesiredDeliveryMediums: ['EMAIL'],
+    },
+    params =>
+      defer(() =>
+        from(
+          deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),
+        ),
+      ),
+  ).pipe(
+    map(() => ({
+      UserPoolId: deps.consumerUserPoolId,
+      Username,
+      Password: password,
+      Permanent: true,
+    })),
+    switchMap(params =>
+      defer(() =>
+        deps.cognitoidentityserviceprovider
+          .adminSetUserPassword(params)
+          .promise(),
+      ),
+    ),
+    catchError(err => {
+      console.warn(
+        'User cannot be created in the consumer pool, probably normal: ',
+        err,
+      );
+      return of(true);
+    }),
+  );
+};
+
 export const seedAll = (deps: SeederDependencies) =>
   seedAdminUser(deps).pipe(
+    switchMap(() => seedConsumerUser(deps)),
     delay(2000),
     switchMap(() => seedBusinessData(deps)),
+    switchMap(() => seedLotsOfOrders(deps)),
     delay(2000),
     switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
     switchMap(() =>

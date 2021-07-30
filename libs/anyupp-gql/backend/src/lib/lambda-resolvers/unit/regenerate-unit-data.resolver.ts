@@ -1,3 +1,4 @@
+import { getAllPaginatedData } from '@bgap/gql-sdk';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   validateChainProduct,
@@ -104,15 +105,16 @@ const calculateAndFilterNotActiveProducts = (
 
 const listUnitProductsForAUnit =
   (deps: UnitsResolverDeps) => (unitId: string) => {
-    const input: CrudApi.ListUnitProductsQueryVariables = {
+    const input: CrudApi.SearchUnitProductsQueryVariables = {
       filter: { unitId: { eq: unitId } },
     };
     const throwOnEmptyList = (items: CrudApi.UnitProduct[]) =>
       items.length > 0 ? of(items) : throwError(getNoProductInUnitgError());
 
-    return from(
-      deps.crudSdk.ListUnitProducts(input, { fetchPolicy: 'no-cache' }),
-    ).pipe(
+    return getAllPaginatedData(deps.crudSdk.SearchUnitProducts, {
+      query: input,
+      options: { fetchPolicy: 'no-cache' },
+    }).pipe(
       switchMap(validateUnitProductList),
       filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
       switchMap(throwOnEmptyList),
@@ -161,13 +163,14 @@ const getTimezoneForUnit =
 const getProductComponentSetMap =
   (chainId: string) =>
   (deps: UnitsResolverDeps): Observable<ProductComponentSetMap> => {
-    const input: CrudApi.ListProductComponentSetsQueryVariables = {
+    const input: CrudApi.SearchProductComponentSetsQueryVariables = {
       filter: { chainId: { eq: chainId } },
     };
 
-    return from(
-      deps.crudSdk.ListProductComponentSets(input, { fetchPolicy: 'no-cache' }),
-    ).pipe(
+    return getAllPaginatedData(deps.crudSdk.SearchProductComponentSets, {
+      query: input,
+      options: { fetchPolicy: 'no-cache' },
+    }).pipe(
       switchMap(validateProductComponentSetList),
       filterNullishGraphqlListWithDefault<CrudApi.ProductComponentSet>([]),
       map(prodCompSets =>
@@ -178,12 +181,13 @@ const getProductComponentSetMap =
 const getProductComponentMap =
   (chainId: string) =>
   (deps: UnitsResolverDeps): Observable<ProductComponentMap> => {
-    const input: CrudApi.ListProductComponentsQueryVariables = {
+    const input: CrudApi.SearchProductComponentsQueryVariables = {
       filter: { chainId: { eq: chainId } },
     };
-    return from(
-      deps.crudSdk.ListProductComponents(input, { fetchPolicy: 'no-cache' }),
-    ).pipe(
+    return getAllPaginatedData(deps.crudSdk.SearchProductComponents, {
+      query: input,
+      options: { fetchPolicy: 'no-cache' },
+    }).pipe(
       switchMap(validateProductComponentList),
       filterNullishGraphqlListWithDefault<CrudApi.ProductComponent>([]),
       map(prodComps =>
