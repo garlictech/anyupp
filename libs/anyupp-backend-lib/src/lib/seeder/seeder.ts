@@ -348,7 +348,7 @@ export const seedAll = (deps: SeederDependencies) =>
         ),
       ),
     ),
-    delay(2000),
+    delay(5000),
     switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
     catchError(() => of(true)),
   );
