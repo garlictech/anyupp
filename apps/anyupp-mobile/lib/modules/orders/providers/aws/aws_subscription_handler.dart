@@ -7,7 +7,8 @@ import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
-typedef CreateModelFromJson<T extends Model> = T Function(Map<String, dynamic> json);
+typedef CreateModelFromJson<T extends Model> = T Function(
+    Map<String, dynamic> json);
 typedef FilterModelFromJson<T extends Model> = bool Function(T model);
 typedef SortItems<T extends Model> = void Function(List<T> items);
 
@@ -74,30 +75,42 @@ class AwsSubscription<T extends Model> {
         ),
       )
           .listen((QueryResult result) async {
-        // print('**** startListSubscription[$listNodeName].onData.result.source=${result.source}');
+        // print(
+        //     '**** startListSubscription[$listNodeName].onData.result.source=${result.source}');
         // print('**** startListSubscription().onData=${result.data}');
         // print(jsonEncode(result.data));
         // print('**** startListSubscription[$listNodeName].onData.hasException=${result.hasException}');
         if (!result.hasException) {
-          T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
-          // print('**** startListSubscription[$listNodeName].onData.item=$item');
-          if (_items == null) {
-            _items = [];
-          }
-          int index = _items.indexWhere((o) => o.id == item.id);
-          // print('**** startListSubscription[$listNodeName].index=$index');
-          if (index != -1) {
-            _items[index] = item;
-            _listController.add(_items);
-          } else {  
-            _items.add(item);
-            if (sortItems != null) {
-              sortItems(_items);
-            }
-            _listController.add(_items);
-          }
+          T item = modelFromJson(
+              Map<String, dynamic>.from(result.data[subscriptionNodeName]));
+          print(
+              '**** startListSubscription[$listNodeName].archived=${item.toJson()["archived"]}');
+          await Future.delayed(Duration(milliseconds: 2000));
+          _items = await _getList(variables);
+          print(
+              '**** startListSubscription[$listNodeName].items=${_items?.length}');
+          _listController.add(_items);
+
+          // T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
+          // // print('**** startListSubscription[$listNodeName].onData.item=$item');
+          // if (_items == null) {
+          //   _items = [];
+          // }
+          // int index = _items.indexWhere((o) => o.id == item.id);
+          // // print('**** startListSubscription[$listNodeName].index=$index');
+          // if (index != -1) {
+          //   _items[index] = item;
+          //   _listController.add(_items);
+          // } else {
+          //   _items.add(item);
+          //   if (sortItems != null) {
+          //     sortItems(_items);
+          //   }
+          //   _listController.add(_items);
+          // }
         } else {
-          print('**** startListSubscription[$listNodeName].exception=${result.exception}');
+          print(
+              '**** startListSubscription[$listNodeName].exception=${result.exception}');
           _listController.add(_items);
           Future.delayed(Duration(milliseconds: REPEAT_TIMEOUT_MS), () async {
             await _startListSubscription(variables: variables);
@@ -140,7 +153,8 @@ class AwsSubscription<T extends Model> {
       _totalCount = result.data[listNodeName]['total'];
       _nextToken = result.data[listNodeName]['nextToken'];
 
-      print('_getList[$listNodeName].nextToken=$_nextToken, total=$_totalCount');
+      print(
+          '_getList[$listNodeName].nextToken=$_nextToken, total=$_totalCount');
 
       List<T> results = [];
       for (int i = 0; i < items.length; i++) {
@@ -166,7 +180,8 @@ class AwsSubscription<T extends Model> {
 
   String get nextToken => _nextToken;
 
-  Future<List<T>> loadNextPage(Map<String, dynamic> variables, String token) async {
+  Future<List<T>> loadNextPage(
+      Map<String, dynamic> variables, String token) async {
     print('**** loadNextPage().nextToken=$token');
     variables['nextToken'] = token;
     // print('**** loadNextPage().variables=$variables');
