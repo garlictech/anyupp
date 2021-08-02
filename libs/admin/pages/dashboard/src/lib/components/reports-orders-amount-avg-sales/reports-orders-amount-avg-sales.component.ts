@@ -8,7 +8,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { getDailyOrdersSum } from '@bgap/admin/shared/data-access/orders';
+import { getDailyOrdersSum } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 

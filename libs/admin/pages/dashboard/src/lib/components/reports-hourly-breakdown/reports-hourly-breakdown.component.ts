@@ -14,12 +14,9 @@ import {
 } from '@angular/core';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
+import { hourlyBreakdownOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  EProductType,
-  IKeyValueObject,
-  IOrderAmount,
-} from '@bgap/shared/types';
+import { EProductType, IOrderAmount } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -148,7 +145,6 @@ export class ReportsHourlyBreakdownComponent
               },
             },
           },
-
           plugins: {
             datalabels: {
               color: 'white',
@@ -183,7 +179,7 @@ export class ReportsHourlyBreakdownComponent
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([products, orders]): void => {
-        this._amounts = this._orderAmounts(products, orders);
+        this._amounts = hourlyBreakdownOrderAmounts(products, orders);
 
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
           ...this._amounts.ordersCount,
@@ -225,40 +221,5 @@ export class ReportsHourlyBreakdownComponent
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
-  }
-
-  private _orderAmounts(
-    products: CrudApi.GeneratedProduct[],
-    orders: CrudApi.Order[],
-  ): IOrderAmount {
-    const amounts: IOrderAmount = {
-      [EProductType.DRINK]: new Array(24).fill(0),
-      [EProductType.FOOD]: new Array(24).fill(0),
-      [EProductType.OTHER]: new Array(24).fill(0),
-      ordersCount: new Array(24).fill(0),
-      sum: new Array(24).fill(0),
-    };
-
-    const productTypeMap: IKeyValueObject = {};
-    products
-      .filter(p => !!p.id)
-      .forEach(p => {
-        productTypeMap[p.id] = p.productType;
-      });
-
-    orders.forEach(o => {
-      const hour = new Date(o.createdAt || 0).getHours();
-      o.items
-        ?.filter(i => productTypeMap[i.productId])
-        .forEach((i: CrudApi.OrderItem) => {
-          amounts[<EProductType>productTypeMap[i.productId]][hour] +=
-            i.priceShown.priceSum;
-          amounts['sum'][hour] += i.priceShown.priceSum;
-        });
-
-      amounts['ordersCount'][hour] += 1;
-    });
-
-    return amounts;
   }
 }
