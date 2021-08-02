@@ -19,15 +19,21 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   @override
+  void initState() {
+    super.initState();
+    // getIt<OrderRepository>().startOrderHistoryListSubscription(widget.unit.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UnitSelectBloc, UnitSelectState>(
-        builder: (context, state) {
+    return BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
       if (state is UnitSelected) {
         return TabBarWidget(
-            OrderStatusScreen(unit: state.unit),
-            OrderHistoryScreen(unit: state.unit),
-            trans('orders.tabCurrentOrder'),
-            trans('orders.tabOrderHistory'));
+          OrderStatusScreen(unit: state.unit),
+          OrderHistoryScreen(unit: state.unit),
+          trans('orders.tabCurrentOrder'),
+          trans('orders.tabOrderHistory'),
+        );
       }
       return CenterLoadingWidget();
     });

@@ -55,6 +55,7 @@ dependencies:
   gql_dio_link: ^0.1.0
   intl: ^0.17.0
   lottie: ^1.0.1
+  location_permissions: ^4.0.0
   mask_text_input_formatter: ^2.0.0
   odometer: ^2.1.0
   package_info: ^2.0.2

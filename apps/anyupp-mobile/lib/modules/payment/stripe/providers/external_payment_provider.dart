@@ -1,28 +1,25 @@
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ExternalPaymentProvider implements IExternalPaymentProvider {
-  final IOrdersProvider _ordersProvider;
+  final ICartProvider _cartProvider;
 
-  ExternalPaymentProvider(this._ordersProvider);
+  ExternalPaymentProvider(this._cartProvider);
 
   @override
-  Future<void> startExternalPayment(Cart cart, PaymentMode paymentMode,
-      UserInvoiceAddress invoiceAddress) async {
-    print(
-        'startExternalPayment().start().orderMethod=$paymentMode, cart=${cart?.id}');
-    await _ordersProvider.setPaymentMode(cart.unitId, paymentMode);
+  Future<void> startExternalPayment(Cart cart, PaymentMode paymentMode, UserInvoiceAddress invoiceAddress) async {
+    print('startExternalPayment().start().orderMethod=$paymentMode, cart=${cart?.id}');
+    await _cartProvider.setPaymentMode(cart.unitId, paymentMode);
 
-    String orderId = await _ordersProvider.createAndSendOrderFromCart();
+    String orderId = await _cartProvider.createAndSendOrderFromCart();
     print('startExternalPayment().orderId=$orderId');
     if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR,
-          message:
-              'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
+          message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
     }
     try {
       QueryResult result = await GQL.backend.executeMutation(
@@ -44,15 +41,13 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
   }
 
   @override
-  Future<void> startOrderExternalPayment(String orderId,
-      PaymentMode paymentMode, UserInvoiceAddress invoiceAddress) async {
-    print(
-        'startOrderExternalPayment().orderId=$orderId, orderMethod=$paymentMode, invoice=$invoiceAddress');
+  Future<void> startOrderExternalPayment(
+      String orderId, PaymentMode paymentMode, UserInvoiceAddress invoiceAddress) async {
+    print('startOrderExternalPayment().orderId=$orderId, orderMethod=$paymentMode, invoice=$invoiceAddress');
     if (orderId == null) {
       throw StripeException(
           code: StripeException.UNKNOWN_ERROR,
-          message:
-              'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
+          message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
     }
     try {
       QueryResult result = await GQL.backend.executeMutation(

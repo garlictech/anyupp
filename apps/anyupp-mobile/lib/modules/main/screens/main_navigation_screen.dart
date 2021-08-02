@@ -1,8 +1,6 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -18,15 +16,12 @@ class MainNavigation extends StatefulWidget {
   final int pageIndex;
   final bool animateCartIcon;
 
-  const MainNavigation(
-      {Key key, this.pageIndex = 0, this.animateCartIcon = true})
-      : super(key: key);
+  const MainNavigation({Key key, this.pageIndex = 0, this.animateCartIcon = true}) : super(key: key);
 
   _MainNavigationState createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation>
-    with SingleTickerProviderStateMixin {
+class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
   List<MainPageOptions> _pageOptions;
 
   // --- For bottom animation bar
@@ -68,17 +63,6 @@ class _MainNavigationState extends State<MainNavigation>
       end: 1,
     ).animate(curve);
 
-    // TODO: Comment aout this if you want to show Cart icon by default
-    // this._cartBloc.getCart.listen((cart) {
-    //   if ((cart == null || cart.orderCount == 0) && !_animationController.isAnimating) {
-    //     _animationController.reverse();
-    //   }
-    //   if (cart != null && cart.orderCount == 1 && !_animationController.isAnimating) {
-    //     _animationController.forward();
-    //   }
-    // });
-
-    // TODO: Remove comment if you want to show Cart icon by default
     if (widget.animateCartIcon == false) {
       _animationController.forward();
     } else {
@@ -90,38 +74,16 @@ class _MainNavigationState extends State<MainNavigation>
   }
 
   @override
-  void dispose() {
-    // Stop advertisement
-    // getIt<AffiliateBloc>().add(StopAdvertisement());
-    super.dispose();
-  }
-
-  @override
   void didChangeDependencies() {
-    // print('***** MainNaevigationScreen.didChangeDependencies()');
     super.didChangeDependencies();
     if (_pageOptions == null) {
       _pageOptions = [
+        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.menu'), systemBarColor: theme.background),
+        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.favorites'), systemBarColor: theme.background2),
         MainPageOptions(
-            showAppBar: false,
-            appBarText: trans('main.menu.menu'),
-            systemBarColor: theme.background),
-        MainPageOptions(
-            showAppBar: false,
-            appBarText: trans('main.menu.favorites'),
-            systemBarColor: theme.background2),
-        MainPageOptions(
-            showAppBar: false,
-            appBarText: trans('main.menu.orderStatus'),
-            systemBarColor: theme.background2),
-        MainPageOptions(
-            showAppBar: false,
-            appBarText: trans('main.menu.profile'),
-            systemBarColor: theme.background2),
-        MainPageOptions(
-            showAppBar: false,
-            appBarText: trans('main.menu.cart'),
-            systemBarColor: theme.background),
+            showAppBar: false, appBarText: trans('main.menu.orderStatus'), systemBarColor: theme.background2),
+        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.profile'), systemBarColor: theme.background2),
+        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.cart'), systemBarColor: theme.background),
       ];
       _navigateToPage(widget.pageIndex);
     } else {
@@ -146,8 +108,7 @@ class _MainNavigationState extends State<MainNavigation>
     }
 
     // The main scaffold for the whole application
-    return BlocBuilder<ThemeBloc, ThemeState>(
-        builder: (context, ThemeState themeState) {
+    return BlocBuilder<ThemeBloc, ThemeState>(builder: (context, ThemeState themeState) {
       var theme = themeState.theme;
       return SafeArea(
         child: NetworkConnectionWrapperWidget(
@@ -167,8 +128,7 @@ class _MainNavigationState extends State<MainNavigation>
             body: BlocListener<MainNavigationBloc, MainNavigationState>(
               listener: (BuildContext context, MainNavigationState state) {
                 if (state is MainNavaigationNeed) {
-                  print(
-                      '******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                  print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
                   _navigateToPage(state.pageIndex);
                 }
               },
@@ -214,23 +174,19 @@ class _MainNavigationState extends State<MainNavigation>
                 },
               ),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: BottomAppBar(
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  _createBottomBarIconWithText(
-                      0, Icons.restaurant, 'main.bottomTitles.menu'),
-                  _createBottomBarIconWithText(
-                      1, Icons.favorite, 'main.bottomTitles.favorites'),
+                  _createBottomBarIconWithText(0, Icons.restaurant, 'main.bottomTitles.menu'),
+                  _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
                   SizedBox(
                     width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
                   ),
                   _createOrdersBottomBarIconWithTextAndBadge(),
-                  _createBottomBarIconWithText(
-                      3, Icons.person, 'main.bottomTitles.profile'),
+                  _createBottomBarIconWithText(3, Icons.person, 'main.bottomTitles.profile'),
                 ],
               ),
               shape: CircularNotchedRectangle(),
@@ -244,35 +200,67 @@ class _MainNavigationState extends State<MainNavigation>
     });
   }
 
+  int _orderCount = 0;
+
   Widget _createOrdersBottomBarIconWithTextAndBadge() {
-    return BlocBuilder<UnitSelectBloc, UnitSelectState>(
-        builder: (context, state) {
-      if (state is UnitSelected) {
-        final GeoUnit unit = state.unit;
-        return StreamBuilder<List<Order>>(
-            stream: getIt<OrderRepository>().getCurrentOrders(unit.id),
-            builder: (context, AsyncSnapshot<List<Order>> orderState) {
-              print(
-                  '_createOrdersBottomBarIconWithTextAndBadge.state=${orderState.data}');
-              int orderCount = orderState?.data?.length ?? 0;
-              // int orderCount =  getIt<OrderRepository>().orderListTotalCount;
-              return _createBottomBarIconWithText(
-                  2,
-                  Icons.receipt,
-                  'main.bottomTitles.orders',
-                  orderCount != null && orderCount > 0
-                      ? orderCount.toString()
-                      : null);
-            });
-      } else {
-        return _createBottomBarIconWithText(
-            2, Icons.receipt, 'main.bottomTitles.orders');
-      }
-    });
+    return BlocListener<OrderCounterBloc, BaseOrderCounterState>(
+      listener: (BuildContext context, BaseOrderCounterState state) {
+        if (state is ActiveOrderCount) {
+          setState(() {
+            _orderCount = state.count;
+          });
+        }
+      },
+      child: _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders',
+          _orderCount != null && _orderCount > 0 ? _orderCount.toString() : null),
+    );
+
+    // return BlocListener<OrderBloc, BaseOrderState>(
+    //   listener: (BuildContext context, BaseOrderState state) {
+    //     if (state is OrdersLoadedState) {
+    //       setState(() {
+    //         _orderCount = state.totalCount;
+    //       });
+    //     }
+
+    //     if (state is NoOrdersLoaded) {
+    //       setState(() {
+    //         _orderCount = 0;
+    //       });
+    //     }
+    //   },
+    //   child: _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders',
+    //       _orderCount != null && _orderCount > 0 ? _orderCount.toString() : null),
+    // );
+
+    // return BlocBuilder<OrderBloc, BaseOrderState>(builder: (context, state) {
+    //   if (state is OrdersLoadedState) {
+    //     int orderCount = state.totalCount;
+    //     return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders',
+    //         orderCount != null && orderCount > 0 ? orderCount.toString() : null);
+    //   }
+    //   return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders');
+    // });
+    // return BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
+    //   if (state is UnitSelected) {
+    //     final GeoUnit unit = state.unit;
+    //     return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders');
+    //     // return StreamBuilder<List<Order>>(
+    //     //     stream: getIt<OrderRepository>().getCurrentOrders(unit.id),
+    //     //     builder: (context, AsyncSnapshot<List<Order>> orderState) {
+    //     //       print('_createOrdersBottomBarIconWithTextAndBadge.state=${orderState.data}');
+    //     //       int orderCount = orderState?.data?.length ?? 0;
+    //     //       // int orderCount =  getIt<OrderRepository>().orderListTotalCount;
+    //     //       return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders',
+    //     //           orderCount != null && orderCount > 0 ? orderCount.toString() : null);
+    //     //     });
+    //   } else {
+    //     return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders');
+    //   }
+    // });
   }
 
-  Widget _createBottomBarIconWithText(int index, IconData icon, String textKey,
-      [String badge]) {
+  Widget _createBottomBarIconWithText(int index, IconData icon, String textKey, [String badge]) {
     return BottomBarItem(
       icon: icon,
       text: trans(textKey),
