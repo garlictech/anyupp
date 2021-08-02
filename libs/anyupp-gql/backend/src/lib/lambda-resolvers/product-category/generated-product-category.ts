@@ -1,8 +1,9 @@
+import { getAllPaginatedData } from '@bgap/gql-sdk';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { validateGeneratedProductCategoryList } from '@bgap/shared/data-validators';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
-import { defer, iif, Observable, of } from 'rxjs';
+import { iif, Observable, of } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 import { createItems, deleteItems } from '../../database';
 import { ProductCategoryResolverDeps } from './utils';
@@ -98,16 +99,17 @@ export const createGeneratedProductCategoriesInDb = (
 export const listGeneratedProductCategoriesForUnits =
   (deps: ProductCategoryResolverDeps) =>
   (unitIds: string[]): Observable<Array<CrudApi.GeneratedProductCategory>> => {
-    const input: CrudApi.ListGeneratedProductCategorysQueryVariables = {
+    const input: CrudApi.SearchGeneratedProductCategorysQueryVariables = {
       filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
       limit: 200, // DO NOT USE FIX limit (Covered by #472)
     };
 
-    return defer(() =>
-      deps.crudSdk.ListGeneratedProductCategorys(input, {
+    return getAllPaginatedData(deps.crudSdk.SearchGeneratedProductCategorys, {
+      query: input,
+      options: {
         fetchPolicy: 'no-cache',
-      }),
-    ).pipe(
+      },
+    }).pipe(
       switchMap(validateGeneratedProductCategoryList),
       filterNullishGraphqlListWithDefault<CrudApi.GeneratedProductCategory>([]),
     );

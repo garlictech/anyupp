@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test paginated graphql lists Pagination should call operation with proper options 1`] = `
+Array [
+  Array [
+    Object {
+      "limit": 100,
+      "nextToken": undefined,
+    },
+    Object {
+      "fetchPolicy": "no-cache",
+    },
+  ],
+]
+`;

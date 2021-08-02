@@ -9,6 +9,7 @@ import * as cognito from '@aws-cdk/aws-cognito';
 
 export interface SeederStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
+  consumerUserPool: cognito.UserPool;
   anyuppApiArn: string;
   apiAccessKeyId: string;
   apiSecretAccessKey: string;
@@ -18,6 +19,7 @@ export class SeederStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: SeederStackProps) {
     super(scope, id);
     const AdminUserPoolId = props.adminUserPool.userPoolId;
+    const ConsumerUserPoolId = props.consumerUserPool.userPoolId;
 
     const seederLambda = new lambda.Function(this, 'StackSeederLambda', {
       ...commonLambdaProps,
@@ -69,6 +71,7 @@ export class SeederStack extends sst.Stack {
       resourceType: 'Custom::StackSeeder',
       properties: {
         AdminUserPoolId,
+        ConsumerUserPoolId,
         physicalResourceId: scope.logicalPrefixedName('seeder'),
       },
     });

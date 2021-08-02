@@ -1,5 +1,10 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { PaymentStatus } from '@bgap/crud-gql/api';
+import {
+  calculateOrderItemPriceRounded,
+  calculateOrderItemSumPriceRounded,
+  calculateOrderSumPriceRounded,
+  PaymentStatus,
+} from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   validateCart,
@@ -10,9 +15,6 @@ import {
   validateUnitProduct,
 } from '@bgap/shared/data-validators';
 import {
-  calculateOrderItemPriceRounded,
-  calculateOrderItemSumPriceRounded,
-  calculateOrderSumPriceRounded,
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
   missingParametersError,

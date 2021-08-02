@@ -69,11 +69,36 @@ class GeoUnit extends Model {
     );
   }
 
-  String getOpeningString() {
+  bool isClosed() {
     if (openingHoursNext7 != null && openingHoursNext7.isNotEmpty) {
-      return openingHoursNext7.first.getRangeString();
+      return openingHoursNext7.first.closed;
+    }
+    return true;
+  }
+
+  OpeningHours getOpenedHour() {
+    if (openingHoursNext7 != null && openingHoursNext7.isNotEmpty) {
+      for (OpeningHours openingHours in openingHoursNext7) {
+        if (!openingHours.closed) {
+          return openingHours;
+        }
+      }
     }
     return null;
+  }
+
+  String getClosedText(String closed, String opens, String day) {
+    String text = closed;
+    OpeningHours openingHours = getOpenedHour();
+    if (openingHours != null) {
+      text += " - " +
+          opens +
+          " " +
+          day +
+          " " +
+          getOpenedHour().getOpenRangeString(fromTo: false);
+    }
+    return text;
   }
 
   bool equals(Object other) {

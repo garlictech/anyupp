@@ -4,6 +4,7 @@
 
 import { handler } from '../apps/anyupp-backend/lib/lambda/stack-seeder';
 import { awsConfig } from '../libs/crud-gql/api/src';
+import { config } from '../libs/shared/config/src';
 
 handler({
   RequestType: 'Create',
@@ -16,6 +17,7 @@ handler({
 
   ResourceProperties: {
     AdminUserPoolId: awsConfig.aws_user_pools_id,
+    ConsumerUserPoolId: config.ConsumerUserPoolId,
     physicalResourceId: 'atyala',
     ServiceToken: 'foobar',
   },

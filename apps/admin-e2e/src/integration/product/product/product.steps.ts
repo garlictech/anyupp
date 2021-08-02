@@ -18,3 +18,11 @@ When('I select the {string} in the modifier selector', (value: string) => {
 Then('The category selector should contain {string}', (value: string) => {
   cy.findByTestId('productCategoryId').contains(value).should('exist');
 });
+
+When(
+  'I click the {string} day selector to set {string}',
+  (name: string, value: string) => {
+    cy.findByTestId(name).click();
+    cy.get('nb-option').contains(value).click();
+  },
+);
