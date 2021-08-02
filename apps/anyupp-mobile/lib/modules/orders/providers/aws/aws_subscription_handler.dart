@@ -1,14 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:rxdart/rxdart.dart';
 
-typedef CreateModelFromJson<T extends Model> = T Function(
-    Map<String, dynamic> json);
+typedef CreateModelFromJson<T extends Model> = T Function(Map<String, dynamic> json);
 typedef FilterModelFromJson<T extends Model> = bool Function(T model);
 typedef SortItems<T extends Model> = void Function(List<T> items);
 
@@ -16,55 +14,60 @@ const REPEAT_TIMEOUT_MS = 120000;
 
 class AwsSubscription<T extends Model> {
   StreamSubscription<QueryResult> _listSubscription;
-  StreamController<List<T>> _listController = BehaviorSubject<List<T>>();
   List<T> _items;
   String _nextToken;
   int _totalCount;
 
-  final IAuthProvider _authProvider;
+  final String name;
   final String listQuery;
   final String listNodeName;
   final String subscriptionQuery;
   final String subscriptionNodeName;
   final CreateModelFromJson<T> modelFromJson;
   final SortItems<T> sortItems;
+  final FilterModelFromJson<T> filterModel;
 
   ValueNotifier<GraphQLClient> _client;
 
   AwsSubscription({
-    authProvider,
+    this.name,
     this.listQuery,
     this.listNodeName,
     this.subscriptionQuery,
     this.subscriptionNodeName,
     this.modelFromJson,
     this.sortItems,
-  }) : _authProvider = authProvider;
+    this.filterModel,
+  });
 
-  Stream<List<T>> get stream => _listController?.stream;
-
-  Future<void> startListSubscription({Map<String, dynamic> variables}) async {
+  Future<void> startListSubscription({
+    Map<String, dynamic> variables,
+    StreamController<List<T>> controller,
+  }) async {
+    print('**** startListSubscription[$name].start().controller=$controller');
     if (_listSubscription != null) {
+      // print('**** startListSubscription[$name].stopping');
       await stopListSubscription();
+      // print('**** startListSubscription[$name].stopped');
     }
-    print('**** startListSubscription[$listNodeName].variables=$variables');
+    // print('**** startListSubscription[$name].variables=$variables');
 
     _items = await _getList(variables);
-    // print('**** startListSubscription[$listNodeName].items=${_items?.length}');
-    _listController.add(_items);
+    print('**** startListSubscription[$name].items=${_items?.length}');
+    controller.add(_items);
 
-    await _startListSubscription(variables: variables);
+    await _startListSubscription(variables: variables, controller: controller);
 
     // Start refresh timer.
-    Future.delayed(Duration(milliseconds: REPEAT_TIMEOUT_MS), () async {
-      await _startListSubscription(variables: variables);
-    });
+    await _initSubscriptionRestartTimer(variables: variables);
+    // print('**** startListSubscription[$name].end()');
   }
 
-  Future<void> _startListSubscription({Map<String, dynamic> variables}) async {
+  Future<void> _startListSubscription({
+    Map<String, dynamic> variables,
+    StreamController<List<T>> controller,
+  }) async {
     try {
-      User user = await _authProvider.getAuthenticatedUserProfile();
-      print('**** startListSubscription[$listNodeName].userId=${user.id}');
       _client = await getIt<GraphQLClientService>().getCrudClient();
       _listSubscription = _client.value
           .subscribe(
@@ -76,60 +79,77 @@ class AwsSubscription<T extends Model> {
       )
           .listen((QueryResult result) async {
         // print(
-        //     '**** startListSubscription[$listNodeName].onData.result.source=${result.source}');
-        // print('**** startListSubscription().onData=${result.data}');
+        //     '**** startListSubscription[$name].onData.result.source=${result.source}');
+        print('**** startListSubscription().onData=${result.data}');
         // print(jsonEncode(result.data));
-        // print('**** startListSubscription[$listNodeName].onData.hasException=${result.hasException}');
+        // print('**** startListSubscription[$name].onData.hasException=${result.hasException}');
         if (!result.hasException) {
-          T item = modelFromJson(
-              Map<String, dynamic>.from(result.data[subscriptionNodeName]));
-          print(
-              '**** startListSubscription[$listNodeName].archived=${item.toJson()["archived"]}');
-          await Future.delayed(Duration(milliseconds: 2000));
-          _items = await _getList(variables);
-          print(
-              '**** startListSubscription[$listNodeName].items=${_items?.length}');
-          _listController.add(_items);
-
-          // T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
-          // // print('**** startListSubscription[$listNodeName].onData.item=$item');
-          // if (_items == null) {
-          //   _items = [];
-          // }
-          // int index = _items.indexWhere((o) => o.id == item.id);
-          // // print('**** startListSubscription[$listNodeName].index=$index');
-          // if (index != -1) {
-          //   _items[index] = item;
-          //   _listController.add(_items);
-          // } else {
-          //   _items.add(item);
-          //   if (sortItems != null) {
-          //     sortItems(_items);
-          //   }
-          //   _listController.add(_items);
-          // }
+          T item = modelFromJson(Map<String, dynamic>.from(result.data[subscriptionNodeName]));
+          // print('**** startListSubscription[$name].onData.archived=${item.toJson()["archived"]}');
+          // print('**** startListSubscription[$name].onData.item=${item.toJson()}');
+          // print('**** startListSubscription[$name].onData.item=$item');
+          if (_items == null) {
+            _totalCount = 0;
+            _nextToken = null;
+            _items = [];
+          }
+          int index = _items.indexWhere((o) => o.id == item.id);
+          // print('**** startListSubscription[$name].onData.index=$index');
+          // Update or Delete
+          if (index != -1) {
+            if (filterModel != null) {
+              // print('**** startListSubscription[$name].onData.filterModel[$filterModel]=${filterModel(item)}');
+              if (filterModel(item)) {
+                _items[index] = item;
+                print('**** startListSubscription[$name].onData.UPDATE');
+              } else {
+                print('**** startListSubscription[$name].onData.DELETE');
+                _totalCount = max(0, _totalCount - 1);
+                _items.removeAt(index);
+              }
+            } else {
+              print('**** startListSubscription[$name].onData.UPDATE2');
+              _items[index] = item;
+            }
+            controller.add(_items);
+          } else if (filterModel != null && filterModel(item)) {
+            // Add
+            print('**** startListSubscription[$name].onData.ADD');
+            _totalCount++;
+            _items.add(item);
+            if (sortItems != null) {
+              sortItems(_items);
+            }
+            controller.add(_items);
+          }
         } else {
-          print(
-              '**** startListSubscription[$listNodeName].exception=${result.exception}');
-          _listController.add(_items);
-          Future.delayed(Duration(milliseconds: REPEAT_TIMEOUT_MS), () async {
-            await _startListSubscription(variables: variables);
-          });
+          print('**** startListSubscription[$name].exception=${result.exception}');
+          // _listController.add(_items);
+          await _initSubscriptionRestartTimer(variables: variables);
         }
       }, onDone: () {
-        print('**** startListSubscription[$listNodeName].onDone');
+        print('**** startListSubscription[$name].onDone');
       }, onError: (error) {
-        print('**** startListSubscription[$listNodeName].onError=$error');
+        print('**** startListSubscription[$name].onError=$error');
+        _initSubscriptionRestartTimer(variables: variables);
       }, cancelOnError: false);
     } on Exception catch (e) {
-      print('**** startListSubscription[$listNodeName].Exception: $e');
+      print('**** startListSubscription[$name].Exception: $e');
       rethrow;
     }
+    // print('**** startListSubscription[$name].end()');
+    return;
+  }
+
+  Future<Null> _initSubscriptionRestartTimer({Map<String, dynamic> variables}) async {
+    // Future.delayed(Duration(milliseconds: REPEAT_TIMEOUT_MS), () async {
+    //   await _startListSubscription(variables: variables);
+    // });
+    return null;
   }
 
   Future<List<T>> _getList(Map<String, dynamic> variables) async {
-    // print('_getList[$listNodeName].query=$listQuery');
-    print('_getList[$listNodeName].variables=$variables');
+    // print('_getList[$name].variables=$variables');
     try {
       QueryResult result = await GQL.amplify.executeQuery(
         query: listQuery,
@@ -137,9 +157,11 @@ class AwsSubscription<T extends Model> {
         fetchPolicy: FetchPolicy.networkOnly,
       );
 
-      // print('_getList[$listNodeName].result.data=${result.data}');
-      // print('_getList[$listNodeName].result.exception=${result.exception}');
+      // print('_getList[$name].result.data=${result.data}');
+      // print('_getList[$name].result.exception=${result.exception}');
       if (result == null || result.data == null) {
+        _nextToken = null;
+        _totalCount = 0;
         return [];
       }
 
@@ -147,14 +169,14 @@ class AwsSubscription<T extends Model> {
       // print('***** _getList().items=$items');
       if (items == null || items.isEmpty) {
         _nextToken = null;
-        return null;
+        _totalCount = 0;
+        return [];
       }
 
       _totalCount = result.data[listNodeName]['total'];
       _nextToken = result.data[listNodeName]['nextToken'];
 
-      print(
-          '_getList[$listNodeName].nextToken=$_nextToken, total=$_totalCount');
+      print('_getList[$name].nextToken=$_nextToken, total=$_totalCount');
 
       List<T> results = [];
       for (int i = 0; i < items.length; i++) {
@@ -180,8 +202,11 @@ class AwsSubscription<T extends Model> {
 
   String get nextToken => _nextToken;
 
-  Future<List<T>> loadNextPage(
-      Map<String, dynamic> variables, String token) async {
+  Future<List<T>> loadNextPage({
+    Map<String, dynamic> variables,
+    String token,
+    StreamController<List<T>> controller,
+  }) async {
     print('**** loadNextPage().nextToken=$token');
     variables['nextToken'] = token;
     // print('**** loadNextPage().variables=$variables');
@@ -192,7 +217,7 @@ class AwsSubscription<T extends Model> {
     }
     if (items != null) {
       _items.addAll(items);
-      _listController.add(_items);
+      controller.add(_items);
     }
     print('**** loadNextPage().total.count=${_items.length}');
     return items;
@@ -208,5 +233,7 @@ class AwsSubscription<T extends Model> {
       await print('**** stopListSubscription().(ignored).error=$e');
       _listSubscription = null;
     }
+    _items = null;
+    // _listController.add(_items);
   }
 }

@@ -9,3 +9,5 @@ export 'widgets/cart_icon_widget.dart';
 export 'widgets/cart_list_item_widget.dart';
 export 'widgets/payment_method_bottom_sheet.dart';
 export 'widgets/data_transfer_dialog.dart';
+export 'providers/cart_provider_interface.dart';
+export 'providers/aws_cart_provider.dart';

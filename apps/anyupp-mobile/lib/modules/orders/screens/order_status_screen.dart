@@ -23,73 +23,38 @@ class OrderStatusScreen extends StatefulWidget {
   _OrderStatusScreenState createState() => _OrderStatusScreenState();
 }
 
-class _OrderStatusScreenState extends State<OrderStatusScreen>
-    with AutomaticKeepAliveClientMixin<OrderStatusScreen> {
-  OrderRepository _orderRepository = getIt<OrderRepository>();
-  OrderNotificationService _orderNotificationService =
-      getIt<OrderNotificationService>();
-
-  // String _nextToken;
-
-  @override
-  bool get wantKeepAlive => true;
+class _OrderStatusScreenState extends State<OrderStatusScreen> {
+  OrderNotificationService _orderNotificationService = getIt<OrderNotificationService>();
 
   @override
   void initState() {
-    getIt<OrderBloc>().add(
-        StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id));
     super.initState();
+    getIt<OrderBloc>().add(StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id));
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return BlocListener<OrderBloc, BaseOrderState>(
-      listener: (BuildContext context, BaseOrderState state) {
-        // if (state is OrdersLoadedState) {
-        //   setState(() {
-        //     _nextToken = state.nextToken;
-        //   });
-        // }
-      },
-      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-        builder: (context, state) {
-          if (state is UnitSelected) {
-            final GeoUnit unit = state.unit;
-            return StreamBuilder<List<Order>>(
-              stream: _orderRepository.getCurrentOrders(unit.id),
-              builder: (context, AsyncSnapshot<List<Order>> orderState) {
-                print('***** OrderScreen.state=$orderState');
-                if (orderState.connectionState != ConnectionState.waiting ||
-                    orderState.hasData) {
-                  if (orderState.data == null || orderState.data.isEmpty) {
-                    return _noOrder();
-                  }
+    return BlocBuilder<OrderBloc, BaseOrderState>(builder: (context, state) {
+      print('***** OrderScreen.bloc.state=$state');
+      if (state is NoOrdersLoaded) {
+        return _noOrder();
+      }
 
-                  print('***** OrderScreen.length=${orderState.data?.length}');
+      if (state is OrdersLoadedState) {
+        if (state.orders == null || state.orders.isEmpty) {
+          return _noOrder();
+        }
+        _orderNotificationService.checkIfShowOrderStatusNotification(context, state.orders);
+        return _buildOrderList(state.orders);
+      } else if (state is OrderLoadError) {
+        return CommonErrorWidget(
+          error: state.message,
+          description: state.details,
+        );
+      }
 
-                  // --- CHECK IF NEED TO SHOW SOME KIND OF NOTIFICATION
-                  _orderNotificationService.checkIfShowOrderStatusNotification(
-                      context, orderState.data);
-
-                  //return _buildList(unit, orderState.data);
-                  return _buildOrderList(orderState.data);
-                } else if (orderState.hasError) {
-                  return CommonErrorWidget(
-                    error: '',
-                    description: '${orderState.error}',
-                  );
-                }
-
-                return CenterLoadingWidget();
-              },
-            );
-          }
-
-          return CenterLoadingWidget();
-        },
-      ),
-    );
+      return CenterLoadingWidget();
+    });
   }
 
   Widget buildListOld(GeoUnit unit, List<Order> list) {
@@ -107,8 +72,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
     list.forEach((order) {
       String status = order.statusLog[order.statusLog.length - 1].status;
       if (status == 'ready') {
-        if (order.paymentMode.method == 'card' ||
-            order.paymentMode.method == 'cash') {
+        if (order.paymentMode.method == 'card' || order.paymentMode.method == 'cash') {
           // --- Payable
           if (order.paymentIntention == null) {
             cashOrderCount++;
@@ -140,8 +104,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
             color: theme.background,
             // height: 100,
             child: Center(
-              child: _buildStripePayButtonWidget(
-                  context, onlineOrders[0], onlineOrderSum),
+              child: _buildStripePayButtonWidget(context, onlineOrders[0], onlineOrderSum),
               //_buildSimplePayButtonWidget(context, onlineOrders[0], onlineOrderSum),
             ),
           ),
@@ -153,8 +116,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
             color: theme.background,
             // height: 100,
             child: Center(
-              child: _buildCallWaiterButtonWidget(context, unit, cashOrderSum,
-                  cashOrders[0].sumPriceShown.currency, cashOrders),
+              child: _buildCallWaiterButtonWidget(
+                  context, unit, cashOrderSum, cashOrders[0].sumPriceShown.currency, cashOrders),
             ),
           ),
         if (waitingForCashPaymentCount > 0)
@@ -165,8 +128,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
             color: theme.background2,
             // height: 100,
             child: Center(
-              child: _buildWaitingForPaymentInfo(context,
-                  waitingForCashPaymentCount, waitingForCashPaymentSum),
+              child: _buildWaitingForPaymentInfo(context, waitingForCashPaymentCount, waitingForCashPaymentSum),
             ),
           ),
         Expanded(
@@ -176,8 +138,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
     );
   }
 
-  Widget _buildWaitingForPaymentInfo(
-      BuildContext context, int count, double sum) {
+  Widget _buildWaitingForPaymentInfo(BuildContext context, int count, double sum) {
     return Container(
       height: 50.0,
       child: Center(
@@ -193,8 +154,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
     );
   }
 
-  Widget _buildStripePayButtonWidget(
-      BuildContext context, Order order, double sum) {
+  Widget _buildStripePayButtonWidget(BuildContext context, Order order, double sum) {
     return StreamBuilder<User>(
         stream: getIt<AuthRepository>().getAuthenticatedUserProfileStream(),
         builder: (BuildContext context, AsyncSnapshot<User> userSnapshot) {
@@ -202,8 +162,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
             return CenterLoadingWidget();
           }
 
-          return BlocBuilder<UnitSelectBloc, UnitSelectState>(
-              builder: (context, UnitSelectState unitState) {
+          return BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, UnitSelectState unitState) {
             // final GeoUnit unit = (unitState is UnitSelected) ? unitState.unit : null;
 
             return Column(
@@ -249,8 +208,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
   }
 
   // ignore: unused_element
-  Widget _buildSimplePayButtonWidget(
-      BuildContext context, Order order, double sum) {
+  Widget _buildSimplePayButtonWidget(BuildContext context, Order order, double sum) {
     return BlocListener<SimplePayBloc, SimplePayState>(
       listener: (BuildContext context, SimplePayState state) {
         if (state is SimplePayWebStarted) {
@@ -266,29 +224,21 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
             case SimplePayPaymentStatus.TIMEOUT:
               showErrorDialog(
                   context,
-                  trans(
-                      'payment.simplePayStatus.${stringFromEnum(state.result.status).toLowerCase()}.title'),
-                  trans(
-                      'payment.simplePayStatus.${stringFromEnum(state.result.status).toLowerCase()}.description',
+                  trans('payment.simplePayStatus.${stringFromEnum(state.result.status).toLowerCase()}.title'),
+                  trans('payment.simplePayStatus.${stringFromEnum(state.result.status).toLowerCase()}.description',
                       [state.result.externalTransactionId]));
               break;
             case SimplePayPaymentStatus.FRAUD:
             case SimplePayPaymentStatus.NOTAUTHORIZED:
               // FAILED
-              showErrorDialog(
-                  context,
-                  trans('payment.simplePayStatus.failed.title'),
-                  trans('payment.simplePayStatus.failed.description',
-                      [state.result.externalTransactionId]));
+              showErrorDialog(context, trans('payment.simplePayStatus.failed.title'),
+                  trans('payment.simplePayStatus.failed.description', [state.result.externalTransactionId]));
               break;
             case SimplePayPaymentStatus.INFRAUD:
             case SimplePayPaymentStatus.AUTHORIZED:
             case SimplePayPaymentStatus.FINISHED:
-              showSuccessDialog(
-                  context,
-                  trans('payment.simplePayStatus.finished.title'),
-                  trans('payment.simplePayStatus.finished.description',
-                      [state.result.externalTransactionId]));
+              showSuccessDialog(context, trans('payment.simplePayStatus.finished.title'),
+                  trans('payment.simplePayStatus.finished.description', [state.result.externalTransactionId]));
               break;
             case SimplePayPaymentStatus.INIT:
             case SimplePayPaymentStatus.INPAYMENT:
@@ -299,12 +249,9 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
           }
         }
       },
-      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-          builder: (context, UnitSelectState unitState) {
-        final GeoUnit unit =
-            (unitState is UnitSelected) ? unitState.unit : null;
-        return BlocBuilder<SimplePayBloc, SimplePayState>(
-            builder: (context, SimplePayState state) {
+      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, UnitSelectState unitState) {
+        final GeoUnit unit = (unitState is UnitSelected) ? unitState.unit : null;
+        return BlocBuilder<SimplePayBloc, SimplePayState>(builder: (context, SimplePayState state) {
           return Column(
             children: [
               SizedBox(
@@ -321,11 +268,9 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
                     primary: theme.indicator,
                   ),
                   onPressed: () => !(state is SimplePayLoading)
-                      ? getIt<SimplePayBloc>()
-                          .add(StartSimplePayPayment(unit, order))
+                      ? getIt<SimplePayBloc>().add(StartSimplePayPayment(unit, order))
                       : null,
-                  child: (state is SimplePayLoading ||
-                          state is SimplePayWebStarted)
+                  child: (state is SimplePayLoading || state is SimplePayWebStarted)
                       ? CenterLoadingWidget(
                           color: theme.highlight,
                           size: 20.0,
@@ -347,8 +292,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
     );
   }
 
-  Widget _buildCallWaiterButtonWidget(BuildContext context, GeoUnit unit,
-      double price, String currency, List<Order> orders) {
+  Widget _buildCallWaiterButtonWidget(
+      BuildContext context, GeoUnit unit, double price, String currency, List<Order> orders) {
     return SizedBox(
       width: double.infinity,
       height: 50.0,
@@ -365,10 +310,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen>
               ),
               primary: theme.indicator,
             ),
-            onPressed: () => loading
-                ? null
-                : getIt<PaymentBloc>()
-                    .add(UserPaymentIntentionSignalAction(unit)),
+            onPressed: () => loading ? null : getIt<PaymentBloc>().add(UserPaymentIntentionSignalAction(unit)),
             child: loading
                 ? CenterLoadingWidget(
                     color: theme.highlight,

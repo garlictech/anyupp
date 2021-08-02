@@ -3,47 +3,41 @@ import 'package:fa_prev/models/Order.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
-abstract class BaseOrderState extends Equatable {
-  const BaseOrderState();
+abstract class BaseOrderHistoryState extends Equatable {
+  const BaseOrderHistoryState();
 
   @override
   List<Object> get props => [];
 }
 
-class NoOrdersLoaded extends BaseOrderState {
-  const NoOrdersLoaded();
+class NoOrderHistoryLoaded extends BaseOrderHistoryState {
+  const NoOrderHistoryLoaded();
 }
 
-class OrderDetailLoadedState extends BaseOrderState {
-  final Order order;
-  const OrderDetailLoadedState({this.order});
+class OrderHistoryLoadingState extends BaseOrderHistoryState {}
 
-  @override
-  List<Object> get props => [order];
-}
+class OrderHistoryLoadingMoreState extends BaseOrderHistoryState {}
 
-class OrdersLoadingState extends BaseOrderState {}
-
-class OrdersLoadedState extends BaseOrderState {
+class OrderHistoryLoadedState extends BaseOrderHistoryState {
   final List<Order> orders;
   final int totalCount;
   final bool hasMoreItems;
   final String nextToken;
   final int timeStamp;
 
-  OrdersLoadedState({this.orders, this.hasMoreItems, this.totalCount, this.nextToken})
+  OrderHistoryLoadedState({this.orders, this.hasMoreItems, this.totalCount, this.nextToken})
       : timeStamp = DateTime.now().microsecondsSinceEpoch;
 
   @override
   List<Object> get props => [orders, totalCount, hasMoreItems, nextToken, timeStamp];
 }
 
-class OrderLoadError extends BaseOrderState {
+class OrderLoadHistoryError extends BaseOrderHistoryState {
   final String code;
   final String message;
   final String details;
 
-  OrderLoadError(this.code, this.message, this.details);
+  OrderLoadHistoryError(this.code, this.message, this.details);
 
   @override
   List<Object> get props => [code, message, details];

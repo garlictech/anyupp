@@ -132,6 +132,13 @@ subscription OnOrderHistoryChangedSubscription(\$userId: String, \$unitId: Strin
         ts
         userId
       }
+      sumPriceShown {
+        currency
+        pricePerUnit
+        priceSum
+        tax
+        taxSum
+      }
       variantId
       variantName {
         de

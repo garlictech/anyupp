@@ -2,19 +2,20 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/models/InvoiceInfo.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 
-class CartRepository {
+class CartRepository implements ICartProvider {
   final IAuthProvider _authProvider;
-  final IOrdersProvider _ordersProvider;
+  final ICartProvider _cartProvider;
 
-  CartRepository(this._ordersProvider, this._authProvider);
+  CartRepository(this._cartProvider, this._authProvider);
+
+  Cart get cart => _cartProvider.cart;
 
   Future<Cart> addProductToCart(GeoUnit unit, OrderItem item) async {
-    Cart _cart = await _ordersProvider.getCurrentCart(unit.id);
+    Cart _cart = await _cartProvider.getCurrentCart(unit.id);
     User user = await _authProvider.getAuthenticatedUserProfile();
     if (_cart == null || _cart.items == null || _cart.items.isEmpty) {
       _cart = Cart(
@@ -48,14 +49,14 @@ class CartRepository {
       _cart = _cart.copyWith(items: items);
     }
 
-    await _ordersProvider.updateCart(unit.id, _cart);
+    await _cartProvider.updateCart(unit.id, _cart);
     return _cart;
   }
 
   Future<Cart> removeProductFromCart(String unitId, OrderItem item) async {
-    Cart _cart = await _ordersProvider.getCurrentCart(unitId);
+    Cart _cart = await _cartProvider.getCurrentCart(unitId);
     if (_cart == null) {
-      await _ordersProvider.updateCart(unitId, _cart);
+      await _cartProvider.updateCart(unitId, _cart);
       return null;
     }
 
@@ -79,12 +80,12 @@ class CartRepository {
       }
     }
 
-    await _ordersProvider.updateCart(unitId, _cart);
+    await _cartProvider.updateCart(unitId, _cart);
     return _cart;
   }
 
   Future<Cart> removeOrderFromCart(String unitId, OrderItem order) async {
-    Cart _cart = await _ordersProvider.getCurrentCart(unitId);
+    Cart _cart = await _cartProvider.getCurrentCart(unitId);
     if (_cart == null) {
       return null;
     }
@@ -92,34 +93,34 @@ class CartRepository {
     List<OrderItem> items = List<OrderItem>.from(_cart.items);
     items.removeWhere((o) => o.id == order.id);
     _cart = _cart.copyWith(items: items);
-    await _ordersProvider.updateCart(unitId, _cart);
+    await _cartProvider.updateCart(unitId, _cart);
     return _cart;
   }
 
   Future<Cart> updatePlaceInCart(GeoUnit unit) async {
-    Cart _cart = await _ordersProvider.getCurrentCart(unit.id);
+    Cart _cart = await _cartProvider.getCurrentCart(unit.id);
     if (_cart == null || _cart.items == null) {
       return null;
     }
     _cart = _cart.copyWith(place: unit.place);
-    await _ordersProvider.updateCart(unit.id, _cart);
+    await _cartProvider.updateCart(unit.id, _cart);
     return _cart;
   }
 
   Future<Cart> getCurrentCart(String unitId) {
-    return _ordersProvider.getCurrentCart(unitId);
+    return _cartProvider.getCurrentCart(unitId);
   }
 
   Stream<Cart> getCurrentCartStream(String unitId) {
-    return _ordersProvider.getCurrentCartStream(unitId);
+    return _cartProvider.getCurrentCartStream(unitId);
   }
 
-  Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
-    await _ordersProvider.createAndSendOrderFromCart();
-  }
+  // Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
+  //   await _cartProvider.createAndSendOrderFromCart();
+  // }
 
   Future<Cart> clearCart() async {
-    await _ordersProvider.clearCart();
+    await _cartProvider.clearCart();
     return null;
   }
 
@@ -127,12 +128,23 @@ class CartRepository {
     Cart cart = await getCurrentCart(unit.id);
     if (cart != null) {
       cart = cart.copyWith(place: null);
-      await _ordersProvider.updateCart(unit.id, cart);
+      await _cartProvider.updateCart(unit.id, cart);
     }
     return cart;
   }
 
-  Future<void> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
-    return _ordersProvider.addInvoiceInfo(invoiceInfo);
+  @override
+  Future<String> createAndSendOrderFromCart() {
+    return _cartProvider.createAndSendOrderFromCart();
+  }
+
+  @override
+  Future<Cart> setPaymentMode(String unitId, PaymentMode mode) {
+    return _cartProvider.setPaymentMode(unitId, mode);
+  }
+
+  @override
+  Future<void> updateCart(String unitId, Cart cart) {
+    return _cartProvider.updateCart(unitId, cart);
   }
 }

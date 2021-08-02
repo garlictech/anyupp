@@ -18,67 +18,49 @@ class OrderHistoryScreen extends StatefulWidget {
   _OrderHistoryScreenState createState() => _OrderHistoryScreenState();
 }
 
-class _OrderHistoryScreenState extends State<OrderHistoryScreen>
-    with AutomaticKeepAliveClientMixin<OrderHistoryScreen> {
-  OrderRepository _repository = getIt<OrderRepository>();
-
+class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   bool _hasMoreItems = false;
   String _nextToken;
 
   @override
-  bool get wantKeepAlive => true;
-
-  @override
   void initState() {
-    getIt<OrderBloc>().add(StartGetOrderHistoryListSubscription(widget.unit.chainId, widget.unit.id));
     super.initState();
+    getIt<OrderHistoryBloc>().add(StartGetOrderHistoryListSubscription(widget.unit.id));
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Container(
-      key: PageStorageKey('history'),
-      child: BlocListener<OrderBloc, BaseOrderState>(
-        listener: (BuildContext context, BaseOrderState state) {
-          if (state is OrdersLoadedState) {
+      // key: PageStorageKey('history'),
+      child: BlocListener<OrderHistoryBloc, BaseOrderHistoryState>(
+        listener: (BuildContext context, BaseOrderHistoryState state) {
+          if (state is OrderHistoryLoadedState) {
             setState(() {
               _hasMoreItems = state.hasMoreItems;
               _nextToken = state.nextToken;
             });
           }
         },
-        child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-          builder: (context, state) {
-            if (state is UnitSelected) {
-              final GeoUnit unit = state.unit;
-              return StreamBuilder<List<Order>>(
-                stream: _repository.getOrderHistory(unit.id),
-                builder: (context, AsyncSnapshot<List<Order>> historySnapshot) {
-                  if (historySnapshot.connectionState != ConnectionState.waiting || historySnapshot.hasData) {
-                    if (historySnapshot.data == null || historySnapshot.data.isEmpty) {
-                      return _noOrderHistory();
-                    }
+        child: BlocBuilder<OrderHistoryBloc, BaseOrderHistoryState>(builder: (context, state) {
+          // print('***** OrderHistoryScreen.bloc.state=$state');
+          if (state is NoOrderHistoryLoaded) {
+            return _noOrderHistory();
+          }
 
-                    // Display all the available sandwiches
-                    return _buildList(historySnapshot.data);
-
-                    // In case of error, display error message to the user
-                  } else if (historySnapshot.hasError) {
-                    return CommonErrorWidget(
-                      error: '',
-                      description: '${historySnapshot.error}',
-                    );
-                  }
-
-                  return CenterLoadingWidget();
-                },
-              );
+          if (state is OrderHistoryLoadedState) {
+            if (state.orders == null || state.orders.isEmpty) {
+              return _noOrderHistory();
             }
+            return _buildList(state.orders);
+          } else if (state is OrderLoadHistoryError) {
+            return CommonErrorWidget(
+              error: state.message,
+              description: state.details,
+            );
+          }
 
-            return CenterLoadingWidget();
-          },
-        ),
+          return CenterLoadingWidget();
+        }),
       ),
     );
   }
@@ -114,7 +96,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
   }
 
   Widget _buildLoadMoreItemsButton() {
-    return BlocBuilder<OrderBloc, BaseOrderState>(
+    return BlocBuilder<OrderHistoryBloc, BaseOrderHistoryState>(
       builder: (context, state) {
         if (state is OrderHistoryLoadingState) {
           return Container(
@@ -136,7 +118,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
               backgroundColor: Colors.transparent,
               primary: theme.text,
             ),
-            onPressed: () => getIt<OrderBloc>().add(LoadMoreOrderHistory(widget.unit.id, _nextToken)),
+            onPressed: () => getIt<OrderHistoryBloc>().add(LoadMoreOrderHistory(widget.unit.id, _nextToken)),
             child: Text(
               trans('orders.loadMore'),
               textAlign: TextAlign.center,
