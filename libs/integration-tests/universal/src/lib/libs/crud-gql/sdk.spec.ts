@@ -1,7 +1,8 @@
 import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import {
+  getCognitoUsername,
   productFixture,
-  testAdminEmail,
+  testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
 import { interval, of } from 'rxjs';
@@ -24,7 +25,7 @@ describe('CRUD sdk test', () => {
     const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
     sdk = getCrudSdkForIAM(accessKeyId, secretAccessKey);
     authSdk = await createAuthenticatedCrudSdk(
-      testAdminEmail,
+      getCognitoUsername(testAdminUsername),
       testAdminUserPassword,
     ).toPromise();
   });

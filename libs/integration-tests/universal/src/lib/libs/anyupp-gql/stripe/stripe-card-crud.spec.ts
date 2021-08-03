@@ -1,5 +1,8 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { testAdminEmail, testAdminUserPassword } from '@bgap/shared/fixtures';
+import {
+  testAdminUsername,
+  testAdminUserPassword,
+} from '@bgap/shared/fixtures';
 import { combineLatest, Observable, of } from 'rxjs';
 import { delay, switchMap, tap } from 'rxjs/operators';
 import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
@@ -27,7 +30,7 @@ describe('Stripe Payment Method CRUD tests', () => {
 
   beforeAll(done => {
     // console.debug('beforeAll()');
-    createAuthenticatedAnyuppSdk(testAdminEmail, testAdminUserPassword)
+    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
       .pipe(
         tap(x => {
           // console.debug('beforeAll().createAuthenticatedAnyuppSdk.tap()=' + x);
