@@ -42,7 +42,7 @@ void _initCommon() async {
 
   final Stripe stripe = Stripe(
     AppConfig.StripePublishableKey,
-    returnUrlForSca: 'anyupp://stripe' ?? 'todo', // TODO
+    returnUrlForSca: 'anyupp://stripe' ?? 'todo',
   );
 
   final CognitoService cognitoService = CognitoService(
@@ -59,14 +59,13 @@ void _initProviders() {
   // Providers
   getIt.registerLazySingleton<IAuthProvider>(() => AwsAuthProvider(getIt<CognitoService>()));
   getIt.registerLazySingleton<IFavoritesProvider>(() => AwsFavoritesProvider(getIt<IAuthProvider>()));
-  getIt.registerLazySingleton<IOrdersProvider>(() => AwsOrderProvider(
-        getIt<IAuthProvider>(),
-      ));
+  getIt.registerLazySingleton<ICartProvider>(() => AwsCartProvider(getIt<IAuthProvider>()));
+  getIt.registerFactory<IOrdersProvider>(() => AwsOrderProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
   getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(
-      () => GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<IOrdersProvider>()));
-  getIt.registerLazySingleton<IExternalPaymentProvider>(() => ExternalPaymentProvider(getIt<IOrdersProvider>()));
+      () => GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<ICartProvider>()));
+  getIt.registerLazySingleton<IExternalPaymentProvider>(() => ExternalPaymentProvider(getIt<ICartProvider>()));
   getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
   getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(
@@ -96,7 +95,7 @@ void _initRepositories() {
         getIt<IEmailLoginProvider>(),
       ));
   getIt.registerLazySingleton<ProductRepository>(() => ProductRepository(getIt<IProductProvider>()));
-  getIt.registerLazySingleton<OrderRepository>(() => OrderRepository(getIt<IOrdersProvider>()));
+  getIt.registerFactory<OrderRepository>(() => OrderRepository(getIt<IOrdersProvider>()));
   getIt.registerLazySingleton<UnitRepository>(() => UnitRepository(getIt<IUnitProvider>()));
   getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository(getIt<IFavoritesProvider>()));
   getIt.registerLazySingleton<SimplePayRepository>(() => SimplePayRepository(getIt<ISimplePayProvider>()));
@@ -107,7 +106,7 @@ void _initRepositories() {
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepository(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<OrderNotificationService>(() => OrderNotificationService());
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
-  getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<IOrdersProvider>(), getIt<IAuthProvider>()));
+  getIt.registerLazySingleton<CartRepository>(() => CartRepository(getIt<ICartProvider>(), getIt<IAuthProvider>()));
   getIt.registerLazySingleton<StripePaymentRepository>(
       () => StripePaymentRepository(getIt<IStripePaymentProvider>(), getIt<IExternalPaymentProvider>()));
 
@@ -137,13 +136,15 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => LoginBloc(getIt<LoginRepository>()));
   getIt.registerLazySingleton(() => SimplePayBloc(getIt<SimplePayRepository>()));
   getIt.registerLazySingleton(() => ThemeBloc(getIt<UnitSelectBloc>()));
-  getIt.registerLazySingleton(() => CartBloc(getIt<CartRepository>()));
+  getIt.registerLazySingleton(() => CartBloc(getIt<CartRepository>(), getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => NetworkStatusBloc());
   getIt.registerLazySingleton(() => PaymentBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => AffiliateBloc(getIt<AffiliateRepository>()));
-  getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>(), getIt<OrderRepository>()));
+  getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>(), getIt<CartRepository>()));
   getIt.registerLazySingleton(() => OrderBloc(getIt<OrderRepository>()));
+  getIt.registerLazySingleton(() => OrderCounterBloc(getIt<OrderRepository>()));
+  getIt.registerLazySingleton(() => OrderHistoryBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => MainNavigationBloc());
   getIt.registerLazySingleton(() => ConfigsetBloc());
-  getIt.registerLazySingleton(() => UserDetailsBloc(getIt<UserDetailsRepository>())); 
+  getIt.registerLazySingleton(() => UserDetailsBloc(getIt<UserDetailsRepository>()));
 }

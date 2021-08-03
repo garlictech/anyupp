@@ -6,8 +6,8 @@ import {
 } from '@bgap/anyupp-gql/backend';
 import * as R from 'ramda';
 import {
-  otherAdminEmails,
-  testAdminEmail,
+  otherAdminUsernames,
+  testAdminUsername,
   testAdminUserPassword,
   unitFixture,
 } from '@bgap/shared/fixtures';
@@ -46,10 +46,10 @@ const ce = (tag: string) =>
     throw err;
   });
 
-const userData = pipe([testAdminEmail, ...otherAdminEmails], emails =>
-  emails.map((email, index) => ({
-    email,
-    username: email.split('@')[0],
+const userData = pipe([testAdminUsername, ...otherAdminUsernames], emails =>
+  emails.map((username, index) => ({
+    email: `testuser+${username}@anyupp.com`,
+    username: `test-${username}`,
     phone: `+123456789${index}`,
   })),
 );

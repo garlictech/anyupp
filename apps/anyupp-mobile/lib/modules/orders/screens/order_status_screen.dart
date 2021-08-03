@@ -23,68 +23,38 @@ class OrderStatusScreen extends StatefulWidget {
   _OrderStatusScreenState createState() => _OrderStatusScreenState();
 }
 
-class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKeepAliveClientMixin<OrderStatusScreen> {
-  OrderRepository _orderRepository = getIt<OrderRepository>();
+class _OrderStatusScreenState extends State<OrderStatusScreen> {
   OrderNotificationService _orderNotificationService = getIt<OrderNotificationService>();
-
-  bool _hasMoreItems = false;
-  String _nextToken;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
-    getIt<OrderBloc>().add(StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id));
     super.initState();
+    getIt<OrderBloc>().add(StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id));
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return BlocListener<OrderBloc, BaseOrderState>(
-      listener: (BuildContext context, BaseOrderState state) {
-        if (state is OrdersLoadedState) {
-          setState(() {
-            _hasMoreItems = state.hasMoreItems;
-            _nextToken = state.nextToken;
-          });
+    return BlocBuilder<OrderBloc, BaseOrderState>(builder: (context, state) {
+      print('***** OrderScreen.bloc.state=$state');
+      if (state is NoOrdersLoaded) {
+        return _noOrder();
+      }
+
+      if (state is OrdersLoadedState) {
+        if (state.orders == null || state.orders.isEmpty) {
+          return _noOrder();
         }
-      },
-      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-        builder: (context, state) {
-          if (state is UnitSelected) {
-            final GeoUnit unit = state.unit;
-            return StreamBuilder<List<Order>>(
-              stream: _orderRepository.getCurrentOrders(unit.id),
-              builder: (context, AsyncSnapshot<List<Order>> orderState) {
-                // print('Screen.startListSubscription().state=$orderState');
-                if (orderState.connectionState != ConnectionState.waiting || orderState.hasData) {
-                  if (orderState.data == null || orderState.data.isEmpty) {
-                    return _noOrder();
-                  }
+        _orderNotificationService.checkIfShowOrderStatusNotification(context, state.orders);
+        return _buildOrderList(state.orders);
+      } else if (state is OrderLoadError) {
+        return CommonErrorWidget(
+          error: state.message,
+          description: state.details,
+        );
+      }
 
-                  // --- CHECK IF NEED TO SHOW SOME KIND OF NOTIFICATION
-                  _orderNotificationService.checkIfShowOrderStatusNotification(context, orderState.data);
-
-                  //return _buildList(unit, orderState.data);
-                  return _buildOrderList(orderState.data);
-                } else if (orderState.hasError) {
-                  return CommonErrorWidget(
-                    error: '',
-                    description: '${orderState.error}',
-                  );
-                }
-
-                return CenterLoadingWidget();
-              },
-            );
-          }
-
-          return CenterLoadingWidget();
-        },
-      ),
-    );
+      return CenterLoadingWidget();
+    });
   }
 
   Widget buildListOld(GeoUnit unit, List<Order> list) {
@@ -382,8 +352,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
                 ),
               ),
             );
-          } else if (_hasMoreItems) {
-            return _buildLoadMoreItemsButton();
+            // } else if (_hasMoreItems) {
+            //   return _buildLoadMoreItemsButton();
           } else {
             return Container();
           }
@@ -392,43 +362,44 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> with AutomaticKee
     );
   }
 
-  Widget _buildLoadMoreItemsButton() {
-    return BlocBuilder<OrderBloc, BaseOrderState>(
-      builder: (context, state) {
-        if (state is OrdersLoadingState) {
-          return Container(
-            height: 120,
-            child: CenterLoadingWidget(),
-          );
-        }
+  // Widget _buildLoadMoreItemsButton() {
+  //   return BlocBuilder<OrderBloc, BaseOrderState>(
+  //     builder: (context, state) {
+  //       if (state is OrdersLoadingState) {
+  //         return Container(
+  //           height: 120,
+  //           child: CenterLoadingWidget(),
+  //         );
+  //       }
 
-        return Container(
-          margin: EdgeInsets.only(bottom: 76.0),
-          child: TextButton(
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.all(0),
-              shape: CircleBorder(
-                side: BorderSide(
-                  color: theme.border2.withOpacity(0.4),
-                ),
-              ),
-              backgroundColor: Colors.transparent,
-              primary: theme.text,
-            ),
-            onPressed: () => getIt<OrderBloc>().add(LoadMoreOrders(widget.unit.id, _nextToken)),
-            child: Text(
-              trans('orders.loadMore'),
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                color: theme.text.withOpacity(0.6),
-                fontSize: 26,
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+  //       return Container(
+  //         margin: EdgeInsets.only(bottom: 76.0),
+  //         child: TextButton(
+  //           style: TextButton.styleFrom(
+  //             padding: EdgeInsets.all(0),
+  //             shape: CircleBorder(
+  //               side: BorderSide(
+  //                 color: theme.border2.withOpacity(0.4),
+  //               ),
+  //             ),
+  //             backgroundColor: Colors.transparent,
+  //             primary: theme.text,
+  //           ),
+  //           onPressed: () => getIt<OrderBloc>()
+  //               .add(LoadMoreOrders(widget.unit.id, _nextToken)),
+  //           child: Text(
+  //             trans('orders.loadMore'),
+  //             textAlign: TextAlign.center,
+  //             style: GoogleFonts.poppins(
+  //               color: theme.text.withOpacity(0.6),
+  //               fontSize: 22,
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget _noOrder() {
     return Column(

@@ -2,6 +2,7 @@ import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:flutter/services.dart';
@@ -11,8 +12,9 @@ import 'package:fa_prev/modules/cart/cart.dart';
 
 class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
   CartRepository _cartRepository;
+  OrderRepository _orderRepository;
 
-  CartBloc(this._cartRepository) : super(EmptyCartState());
+  CartBloc(this._cartRepository, this._orderRepository) : super(EmptyCartState());
 
   @override
   Stream<BaseCartState> mapEventToState(BaseCartAction action) async* {
@@ -26,15 +28,13 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       if (action is AddProductToCartAction) {
         yield CartLoadingState();
         // _currentCart.addProductToCart(action.product, action.variant);
-        Cart cart =
-            await _cartRepository.addProductToCart(action.unit, action.order);
+        Cart cart = await _cartRepository.addProductToCart(action.unit, action.order);
         yield CurrentCartState(cart);
       }
 
       if (action is RemoveProductFromCartAction) {
         yield CartLoadingState();
-        Cart cart = await _cartRepository.removeProductFromCart(
-            action.unitId, action.order);
+        Cart cart = await _cartRepository.removeProductFromCart(action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 
@@ -47,15 +47,13 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
 
       if (action is RemoveOrderFromCartAction) {
         yield CartLoadingState();
-        Cart cart = await _cartRepository.removeOrderFromCart(
-            action.unitId, action.order);
+        Cart cart = await _cartRepository.removeOrderFromCart(action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 
       if (action is CreateAndSendOrder) {
         yield CartLoadingState();
-        await _cartRepository.createAndSendOrderFromCart(
-            action.unit, action.paymentMethod);
+        await _cartRepository.createAndSendOrderFromCart();
         yield EmptyCartState();
       }
 
@@ -71,7 +69,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
         yield EmptyCartState();
       }
       if (action is AddInvoiceInfo) {
-        await _cartRepository.addInvoiceInfo(action.invoiceInfo);
+        await _orderRepository.addInvoiceInfo(action.invoiceInfo);
       }
     } on GraphQLException catch (e) {
       print('CartBloc.ExceptionBloc.GraphQLException=$e');
@@ -79,17 +77,14 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       yield CartErrorState(code: e.code, message: e.message);
     } on PlatformException catch (e) {
       print('CartBloc.ExceptionBloc.PlatformException=$e');
-      getIt<ExceptionBloc>()
-          .add(ShowException(CartException.fromPlatformException(e)));
+      getIt<ExceptionBloc>().add(ShowException(CartException.fromPlatformException(e)));
       yield CartErrorState(code: e.code, message: e.message);
       // TODO: we don't use thie serror state
       // TODO: we don't use cart states either but a live stream in the cartScreen
     } on Exception catch (e) {
       print('CartBloc.ExceptionBloc.Exception=$e');
-      getIt<ExceptionBloc>().add(ShowException(
-          CartException.fromException(CartException.UNKNOWN_ERROR, e)));
-      yield CartErrorState(
-          code: CartException.UNKNOWN_ERROR, message: e.toString());
+      getIt<ExceptionBloc>().add(ShowException(CartException.fromException(CartException.UNKNOWN_ERROR, e)));
+      yield CartErrorState(code: CartException.UNKNOWN_ERROR, message: e.toString());
     }
   }
 }

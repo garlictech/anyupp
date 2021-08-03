@@ -322,12 +322,12 @@ To execute the seeder locally run the following command:
 - Additional test users (same password, context):
 
 ```
-  test-bob@anyupp.com,
-  test-alice@anyupp.com,
-  test-monad@anyupp.com,
-  test-kati@anyupp.com,
-  test-emen@anyupp.com,
-  test-e2e@anyupp.com,
+  testuser+bob@anyupp.com,
+  testuser+alice@anyupp.com,
+  testuser+monad@anyupp.com,
+  testuser+kati@anyupp.com,
+  testuser+emen@anyupp.com,
+  testuser+e2e@anyupp.com,
 ```
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
