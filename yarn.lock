@@ -5997,18 +5997,6 @@
     ws "^7.4.0"
     yargs "^15.4.1"
 
-"@serverless-stack/core@^0.36.0":
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.36.0.tgz#8f9ab8277a68884876da2086676535119c2dcd4b"
-  integrity sha512-lIdWdzRBAnztg3Mhx/mo4SgFXsbjEIkWAzr6oZQ9Hv1bIyySOfVEcsA3QhvRWc9scMSWuUA1j5w20F73EhpeHw==
-  dependencies:
-    aws-cdk "1.111.0"
-    aws-sdk "^2.761.0"
-    chalk "^4.1.0"
-    cross-spawn "^7.0.3"
-    fs-extra "^9.0.1"
-    log4js "^6.3.0"
-
 "@serverless-stack/core@^0.37.0":
   version "0.37.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.37.0.tgz#58f57c23ed57f9811c93fb8d4471e11b25b1f9d3"
@@ -6021,62 +6009,7 @@
     fs-extra "^9.0.1"
     log4js "^6.3.0"
 
-"@serverless-stack/resources@0.36.0":
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.36.0.tgz#5b3dbcdb95edc6d63c616be3567c1eff576246b9"
-  integrity sha512-1fEjc3E1LuIzmS6mWILMtXvGdUcUbPDpymX4dB5p7ir5NbDOpXDl0iVF+sDdmufxkpk2kzd3BEbvyz5FXuRh7Q==
-  dependencies:
-    "@aws-cdk/aws-apigateway" "1.111.0"
-    "@aws-cdk/aws-apigatewayv2" "1.111.0"
-    "@aws-cdk/aws-apigatewayv2-authorizers" "1.111.0"
-    "@aws-cdk/aws-apigatewayv2-integrations" "1.111.0"
-    "@aws-cdk/aws-appsync" "1.111.0"
-    "@aws-cdk/aws-autoscaling" "1.111.0"
-    "@aws-cdk/aws-certificatemanager" "1.111.0"
-    "@aws-cdk/aws-cloudfront" "1.111.0"
-    "@aws-cdk/aws-cloudfront-origins" "1.111.0"
-    "@aws-cdk/aws-cognito" "1.111.0"
-    "@aws-cdk/aws-dynamodb" "1.111.0"
-    "@aws-cdk/aws-ec2" "1.111.0"
-    "@aws-cdk/aws-elasticloadbalancingv2" "1.111.0"
-    "@aws-cdk/aws-events" "1.111.0"
-    "@aws-cdk/aws-events-targets" "1.111.0"
-    "@aws-cdk/aws-iam" "1.111.0"
-    "@aws-cdk/aws-kinesis" "1.111.0"
-    "@aws-cdk/aws-lambda" "1.111.0"
-    "@aws-cdk/aws-lambda-event-sources" "1.111.0"
-    "@aws-cdk/aws-lambda-nodejs" "1.111.0"
-    "@aws-cdk/aws-logs" "1.111.0"
-    "@aws-cdk/aws-rds" "1.111.0"
-    "@aws-cdk/aws-route53" "1.111.0"
-    "@aws-cdk/aws-route53-patterns" "1.111.0"
-    "@aws-cdk/aws-route53-targets" "1.111.0"
-    "@aws-cdk/aws-s3" "1.111.0"
-    "@aws-cdk/aws-s3-assets" "1.111.0"
-    "@aws-cdk/aws-s3-notifications" "1.111.0"
-    "@aws-cdk/aws-secretsmanager" "1.111.0"
-    "@aws-cdk/aws-sns" "1.111.0"
-    "@aws-cdk/aws-sns-subscriptions" "1.111.0"
-    "@aws-cdk/aws-sqs" "1.111.0"
-    "@aws-cdk/aws-ssm" "1.111.0"
-    "@aws-cdk/core" "1.111.0"
-    "@aws-cdk/cx-api" "1.111.0"
-    "@aws-cdk/lambda-layer-awscli" "1.111.0"
-    "@serverless-stack/core" "^0.36.0"
-    "@types/jest" "^26.0.7"
-    archiver "^5.3.0"
-    chalk "^4.1.0"
-    cross-spawn "^7.0.3"
-    esbuild "^0.8.31"
-    eslint "^7.16.0"
-    fs-extra "^9.0.1"
-    glob "^7.1.7"
-    jest "^26.1.0"
-    ts-jest "^26.1.4"
-    typescript "^4.2.3"
-    zip-local "^0.3.4"
-
-"@serverless-stack/resources@^0.37.0":
+"@serverless-stack/resources@0.37.0", "@serverless-stack/resources@^0.37.0":
   version "0.37.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.37.0.tgz#3b3057b482ed304bb56db51c7f12c133d79683fe"
   integrity sha512-RWUrS3A8Hp4rB8SSb1SXCj0DlZCybKGILmSCuXQpnz3oKH6q7FGFV/viYWDAbaDQel8oyEn2CbAEPM0VKI029w==
