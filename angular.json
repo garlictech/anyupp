@@ -1454,7 +1454,7 @@
             "cwd": "apps/crud-backend",
             "parallel": false,
             "commands": [
-              "../../tools/ remove-crud-api.sh '{args.app}' '{args.stage}'"
+              "../../tools/remove-crud-api.sh '{args.app}' '{args.stage}'"
             ]
           }
         },

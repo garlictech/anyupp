@@ -39,7 +39,7 @@ export class AutoDeleteBucket extends Bucket {
       serviceToken: provider.serviceToken,
       resourceType: 'Custom::AutoDeleteBucket',
       properties: {
-        bucketName: this.bucketName,
+        BucketName: this.bucketName,
       },
     });
   }
