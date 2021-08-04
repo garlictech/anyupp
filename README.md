@@ -318,10 +318,11 @@ To execute the seeder locally run the following command:
 
 ### Test user
 
-- A test user: username: `test@anyupp.com`, password: `Hideghegy12_`, context: `SU_CTX_ID`
-- Additional test users (same password, context):
+- A test user: username: `testuser+<id>`, email: `<username>@anyupp.com`, password: `Hideghegy12_`, context: `SU_CTX_ID`
+- The seeded test users (same password, context):
 
 ```
+  testuser+test@anyupp.com,
   testuser+bob@anyupp.com,
   testuser+alice@anyupp.com,
   testuser+monad@anyupp.com,

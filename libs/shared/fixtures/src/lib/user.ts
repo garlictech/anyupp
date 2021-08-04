@@ -9,3 +9,5 @@ export const otherAdminUsernames = [
   'emen',
   'e2e',
 ];
+
+export const getCognitoUsername = (userName: string) => `testuser+${userName}`;

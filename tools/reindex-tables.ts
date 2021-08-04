@@ -1,8 +1,14 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import { combineLatest, concat, defer, from } from 'rxjs';
-import { concatMap, delay, switchMap, tap, toArray } from 'rxjs/operators';
-import { v1 as uuidV1 } from 'uuid';
+import { combineLatest, defer, from } from 'rxjs';
+import {
+  concatMap,
+  delay,
+  switchMap,
+  take,
+  tap,
+  toArray,
+} from 'rxjs/operators';
 import * as cliProgress from 'cli-progress';
 import AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
@@ -33,19 +39,40 @@ const getAllRecords = async (tableName: string) => {
   return items;
 };
 
-const triggerReindex = (table: string, id: string) => {
-  const params: DocumentClient.Update = {
+const deleteItem = (table: string, id: string) => {
+  const params: DocumentClient.DeleteItemInput = {
     TableName: table,
     Key: {
       id: id,
     },
-    UpdateExpression: 'set migrationTrigger = :uuid',
-    ExpressionAttributeValues: {
-      ':uuid': uuidV1(),
+  };
+
+  return docClient.delete(params).promise();
+};
+
+const putItem = (table: string, item: DocumentClient.PutItemInput) => {
+  const params: DocumentClient.PutItemInput = {
+    TableName: table,
+    Item: {
+      ...item,
+      migrationTrigger: null,
+      createdAt: '2021-08-03T12:19:42.272Z',
+      updatedAt: '2021-08-03T12:19:42.272Z',
     },
   };
 
-  return docClient.update(params).promise();
+  return docClient.put(params).promise();
+};
+
+const triggerReindex = (
+  table: string,
+  id: string,
+  item: DocumentClient.PutItemInput,
+) => {
+  return defer(() => from(deleteItem(table, id))).pipe(
+    delay(3000),
+    switchMap(() => from(putItem(table, item))),
+  );
 };
 
 const multibar = new cliProgress.MultiBar(
@@ -62,7 +89,7 @@ const reindexAllInTable = (tableName: string) => {
   return defer(() => from(getAllRecords(tableName))).pipe(
     tap(items => (progressBar = multibar.create(items.length, 0))),
     switchMap(from),
-    concatMap(item => defer(() => from(triggerReindex(tableName, item.id)))),
+    concatMap(item => triggerReindex(tableName, item.id, item)),
     tap(() => progressBar.increment()),
     toArray(),
   );
