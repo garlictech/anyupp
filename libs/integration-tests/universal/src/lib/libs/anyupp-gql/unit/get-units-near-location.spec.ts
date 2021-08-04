@@ -3,7 +3,7 @@ import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import {
   chainFixture,
   groupFixture,
-  testAdminEmail,
+  testAdminUsername,
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
@@ -69,7 +69,7 @@ describe('GetUnitsNearLocation tests', () => {
   let authAnyuppSdk: AnyuppApi.AnyuppSdk;
 
   beforeAll(done => {
-    createAuthenticatedAnyuppSdk(testAdminEmail, testAdminUserPassword)
+    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
       .pipe(
         tap(x => {
           authAnyuppSdk = x.authAnyuppSdk;

@@ -6,8 +6,9 @@ import {
 } from '@bgap/anyupp-gql/backend';
 import * as R from 'ramda';
 import {
-  otherAdminEmails,
-  testAdminEmail,
+  getCognitoUsername,
+  otherAdminUsernames,
+  testAdminUsername,
   testAdminUserPassword,
   unitFixture,
 } from '@bgap/shared/fixtures';
@@ -46,12 +47,15 @@ const ce = (tag: string) =>
     throw err;
   });
 
-const userData = pipe([testAdminEmail, ...otherAdminEmails], emails =>
-  emails.map((email, index) => ({
-    email,
-    username: email.split('@')[0],
-    phone: `+123456789${index}`,
-  })),
+const userData = pipe(
+  [testAdminUsername, ...otherAdminUsernames],
+  fp.map(getCognitoUsername),
+  userNames =>
+    userNames.map((username, index) => ({
+      email: `${username}@anyupp.com`,
+      username,
+      phone: `+123456789${index}`,
+    })),
 );
 
 const password = testAdminUserPassword;
@@ -71,13 +75,13 @@ export const seedAdminUser = (deps: SeederDependencies) =>
             from(
               resolverCreateAdminUser({
                 input: {
-                  name: email.split('@')[0],
+                  name: username,
                   phone,
                   email,
                 },
               })({
                 ...deps,
-                userNameGenerator: () => email.split('@')[0],
+                userNameGenerator: () => username,
               }),
             ),
           ),
@@ -277,7 +281,7 @@ const seedLotsOfOrders = (deps: SeederDependencies) => {
 
 const seedConsumerUser = (deps: SeederDependencies) => {
   console.debug(`Seeding a consumer user`);
-  const Username = 'test-monad';
+  const Username = 'testuser+monad';
 
   return pipe(
     {
@@ -285,7 +289,7 @@ const seedConsumerUser = (deps: SeederDependencies) => {
       UserAttributes: [
         {
           Name: 'email',
-          Value: 'test-monad@anyupp.com',
+          Value: 'testuser+monad@anyupp.com',
         },
         {
           Name: 'email_verified',

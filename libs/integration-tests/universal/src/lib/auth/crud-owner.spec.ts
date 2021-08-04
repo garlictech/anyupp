@@ -1,11 +1,9 @@
-import { Auth } from '@aws-amplify/auth';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
-  otherAdminEmails,
-  testAdminEmail,
+  otherAdminUsernames,
+  testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
-import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {
   createAuthenticatedCrudSdk,
@@ -16,7 +14,7 @@ describe.skip('CRUD ownership tests', () => {
   let authSdk: CrudApi.CrudSdk;
   const publicSdk = CrudApi.getCrudSdkPublic();
   const iamSdk = createIamCrudSdk();
-  const adminUserId = testAdminEmail.split('@')[0];
+  const adminUserId = testAdminUsername;
 
   const cleanup = async () => {
     await iamSdk.DeleteUser({ input: { id: adminUserId } }).toPromise();
@@ -24,7 +22,7 @@ describe.skip('CRUD ownership tests', () => {
 
   beforeAll(async () => {
     authSdk = await createAuthenticatedCrudSdk(
-      testAdminEmail,
+      testAdminUsername,
       testAdminUserPassword,
     ).toPromise();
 
@@ -56,7 +54,7 @@ describe.skip('CRUD ownership tests', () => {
   }, 15000);
 
   it('It should not access other users private data even with signin', done => {
-    createAuthenticatedCrudSdk(otherAdminEmails[0], testAdminUserPassword)
+    createAuthenticatedCrudSdk(otherAdminUsernames[0], testAdminUserPassword)
       .pipe(
         switchMap(anotherAuthSdk =>
           anotherAuthSdk.GetUser({ id: adminUserId }),

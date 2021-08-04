@@ -318,16 +318,17 @@ To execute the seeder locally run the following command:
 
 ### Test user
 
-- A test user: username: `test@anyupp.com`, password: `Hideghegy12_`, context: `SU_CTX_ID`
-- Additional test users (same password, context):
+- A test user: username: `testuser+<id>`, email: `<username>@anyupp.com`, password: `Hideghegy12_`, context: `SU_CTX_ID`
+- The seeded test users (same password, context):
 
 ```
-  test-bob@anyupp.com,
-  test-alice@anyupp.com,
-  test-monad@anyupp.com,
-  test-kati@anyupp.com,
-  test-emen@anyupp.com,
-  test-e2e@anyupp.com,
+  testuser+test@anyupp.com,
+  testuser+bob@anyupp.com,
+  testuser+alice@anyupp.com,
+  testuser+monad@anyupp.com,
+  testuser+kati@anyupp.com,
+  testuser+emen@anyupp.com,
+  testuser+e2e@anyupp.com,
 ```
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example

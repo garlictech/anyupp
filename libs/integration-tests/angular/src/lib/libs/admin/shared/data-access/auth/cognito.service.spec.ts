@@ -2,7 +2,10 @@ import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { from } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
-import { testAdminEmail, testAdminUserPassword } from '@bgap/shared/fixtures';
+import {
+  testAdminUsername,
+  testAdminUserPassword,
+} from '@bgap/shared/fixtures';
 import { awsConfig } from '@bgap/crud-gql/api';
 
 describe('Testing cognito service', () => {
@@ -30,7 +33,7 @@ describe('Testing cognito service', () => {
   test.only('Test valid authorization', done => {
     service.currentContext = goodContext;
 
-    from(Auth.signIn(testAdminEmail, testAdminUserPassword))
+    from(Auth.signIn(testAdminUsername, testAdminUserPassword))
       .pipe(
         switchMap(() => service.handleContext()),
         switchMap(() => from(Auth.currentAuthenticatedUser())),
@@ -51,7 +54,7 @@ describe('Testing cognito service', () => {
   test('Test invalid authorization', done => {
     service.currentContext = badContext;
 
-    from(Auth.signIn(testAdminEmail, testAdminUserPassword))
+    from(Auth.signIn(testAdminUsername, testAdminUserPassword))
       .pipe(
         switchMap(() => service.handleContext()),
         switchMap(() => from(Auth.currentAuthenticatedUser())),

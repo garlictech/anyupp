@@ -10,7 +10,7 @@ import {
 } from '@bgap/crud-gql/api';
 import { Auth } from 'aws-amplify';
 import { from, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 interface AuthenticatdGraphQLClientWithUserId {
   userAttributes: {
@@ -42,7 +42,7 @@ export const createAuthenticatedAnyuppSdk = (
   password: string,
 ): Observable<AuthenticatdGraphQLClientWithUserId> => {
   authConfig();
-  return from(Auth.signIn(userName, password)).pipe(
+  return from(Auth.signIn(`testuser+${userName}`, password)).pipe(
     map(user => ({
       userAttributes: {
         id: user.signInUserSession?.idToken?.payload?.['cognito:username'], // The Username is the new userId
