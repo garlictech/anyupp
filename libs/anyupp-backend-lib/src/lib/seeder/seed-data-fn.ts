@@ -381,30 +381,37 @@ export const createTestProductCategory =
   };
 
 export const createTestChainProduct =
-  (chainIdx: number, productCategoryIdx: number, productIdx: number) =>
+  (
+    chainIdx: number,
+    productCategoryIdx: number,
+    productIdx: number,
+    productName: string,
+    productType: EProductType,
+  ) =>
   (deps: SeederDependencies) => {
     console.debug('createTestChainProduct', {
       chainIdx,
       productCategoryIdx,
       productIdx,
+      productName,
+      productType,
     });
     const input: DeletableInput<CrudApi.CreateChainProductInput> = {
       id: generateChainProductId(chainIdx, productIdx),
       chainId: generateChainId(chainIdx),
       name: {
-        hu: `Teszt chain termék #${productIdx} név`,
-        en: `Test chain product #${productIdx} name`,
+        hu: `${productName} #${productIdx}`,
+        en: `${productName} #${productIdx}`,
       },
       description: {
-        hu: `Teszt chain termék #${productIdx} leírás`,
-        en: `Test chain termék #${productIdx} description`,
+        hu: `${productName} #${productIdx} leírás`,
+        en: `${productName} #${productIdx} description`,
       },
       productCategoryId: generateProductCategoryId(
         chainIdx,
         productCategoryIdx,
       ),
-      productType:
-        productIdx % 2 === 0 ? EProductType.FOOD : EProductType.DRINK,
+      productType,
       isVisible: true,
       variants: [
         {
@@ -422,7 +429,7 @@ export const createTestChainProduct =
           },
         },
       ],
-      image: 'https://picsum.photos/100',
+      image: 'https://picsum.photos/200',
       allergens: [
         CrudApi.Allergen.egg,
         CrudApi.Allergen.gluten,

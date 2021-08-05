@@ -108,10 +108,42 @@ const unitProductBase: Omit<
   variants: [getUnitProductVariant(1), getUnitProductVariant(2)],
 };
 
+const generatedProductBase: RequiredId<CrudApi.CreateGeneratedProductInput> = {
+  id: `${testIdPrefix}generatedProduct_id_`,
+  unitId: 'unitId_',
+  productCategoryId: 'productCategoryId_',
+  name: { en: 'CHAIN_PRODUCT' },
+  description: { en: 'DESCRIPTION' },
+  productType: 'drink',
+  tax: 1,
+  position: 1,
+  variants: [getGroupProductVariant(1), getGroupProductVariant(2)],
+  allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
+};
+
+const generatedDrinkProduct: CrudApi.GeneratedProduct = {
+  ...generatedProductBase,
+  id: `${testIdPrefix}generatedProduct_id_1`,
+  productType: 'drink',
+  createdAt: '',
+  updatedAt: '',
+};
+
+const generatedFoodProduct: CrudApi.GeneratedProduct = {
+  ...generatedProductBase,
+  id: `${testIdPrefix}generatedProduct_id_2`,
+  productType: 'food',
+  createdAt: '',
+  updatedAt: '',
+};
+
 export const productFixture = {
   chainProductBase,
   groupProductBase,
   unitProductBase,
+  generatedProductBase,
   unitProductId_seeded_id_01,
   unitProductId_seeded_id_02,
+  generatedDrinkProduct,
+  generatedFoodProduct,
 };
