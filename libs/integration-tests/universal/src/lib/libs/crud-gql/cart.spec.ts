@@ -1,7 +1,8 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   cartFixture,
-  testAdminEmail,
+  getCognitoUsername,
+  testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
 import { switchMap } from 'rxjs/operators';
@@ -14,7 +15,7 @@ describe('getCart test', () => {
 
   beforeAll(async () => {
     authSdk = await createAuthenticatedCrudSdk(
-      testAdminEmail,
+      getCognitoUsername(testAdminUsername),
       testAdminUserPassword,
     ).toPromise();
 

@@ -68,15 +68,6 @@ PROVIDERS="{\
 \"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
 }"
 
-CODEGEN="{\
-\"generateCode\":true,\
-\"codeLanguage\":\"javascript\",\
-\"fileNamePattern\":\"../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts\",\
-\"generatedFileName\":\"../../libs/crud-gql/api/src/lib/generated/api.ts\",\
-\"maxDepth\":10,\
-\"generateDocs\":true\
-}"
-
 CATEGORIES="{\
 \"auth\":$AUTHCONFIG\
 }"
