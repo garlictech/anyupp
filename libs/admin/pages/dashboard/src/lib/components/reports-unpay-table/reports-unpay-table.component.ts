@@ -13,8 +13,8 @@ import {
   UnpayCategoryStatObj,
   UnpayCategoryStatObjItem,
 } from '@bgap/shared/types';
-import { UNPAY_CATEGORIES_ARR } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UNPAY_CATEGORIES_ARR } from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({

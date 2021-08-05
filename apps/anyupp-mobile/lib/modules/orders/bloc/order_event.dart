@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -22,22 +23,30 @@ class StopOrderListSubscription extends BaseOrderAction {
   const StopOrderListSubscription();
 }
 
-class StartGetOrderHistoryListSubscription extends BaseOrderAction {
-  final String chainId;
-  final String unitId;
-  const StartGetOrderHistoryListSubscription(this.chainId, this.unitId);
-
-  @override
-  List<Object> get props => [chainId, unitId];
-}
-
-class StopOrderHistoryListSubscription extends BaseOrderAction {
-  const StopOrderHistoryListSubscription();
-}
-
 class LoadOrderDetail extends BaseOrderAction {
   final String orderId;
   LoadOrderDetail({this.orderId});
   @override
   List<Object> get props => [orderId];
+}
+
+class OrdersLoaded extends BaseOrderAction {
+  final List<Order> orders;
+  final int totalCount;
+  final bool hasMoreItems;
+  final String nextToken;
+
+  OrdersLoaded({this.orders, this.totalCount, this.hasMoreItems, this.nextToken});
+
+  @override
+  List<Object> get props => [orders, totalCount, hasMoreItems, nextToken];
+}
+
+class LoadMoreOrders extends BaseOrderAction {
+  final String unitId;
+  final String nextToken;
+
+  LoadMoreOrders(this.unitId, this.nextToken);
+  @override
+  List<Object> get props => [unitId, nextToken];
 }

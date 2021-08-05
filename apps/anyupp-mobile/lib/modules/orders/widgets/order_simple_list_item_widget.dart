@@ -50,7 +50,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(orderItem.sumPriceShown.priceSum, orderItem.priceShown.currency ?? 'ft'), 
+            formatCurrency(orderItem.sumPriceShown?.priceSum ?? 0, orderItem.priceShown.currency ?? 'ft'),
             style: GoogleFonts.poppins(
               fontSize: 14,
               color: theme.text,
@@ -60,13 +60,14 @@ class OrderSimpleListItemWidget extends StatelessWidget {
       ),
     );
   }
+
   List<Widget> getExtraNames(BuildContext context) {
     List<Widget> children = [];
     if (orderItem.selectedConfigMap != null) {
       orderItem.selectedConfigMap.forEach((key, value) {
         for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
           children.add(Text(
-            getLocalizedText(context, generatedProductConfigComponent.name), 
+            getLocalizedText(context, generatedProductConfigComponent.name),
             textAlign: TextAlign.left,
             style: GoogleFonts.poppins(
               color: theme.text,

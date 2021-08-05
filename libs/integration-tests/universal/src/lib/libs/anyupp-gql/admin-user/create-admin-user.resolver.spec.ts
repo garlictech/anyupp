@@ -4,7 +4,10 @@ import {
   deleteAdminUser,
 } from '@bgap/anyupp-gql/backend';
 import { awsConfig } from '@bgap/crud-gql/api';
-import { testAdminEmail, testAdminUserPassword } from '@bgap/shared/fixtures';
+import {
+  testAdminUsername,
+  testAdminUserPassword,
+} from '@bgap/shared/fixtures';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { defer, iif, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -26,7 +29,7 @@ const staticUserNameGenerator = () => userName;
 
 describe('Admin user creation/deletion', () => {
   const authAnyuppSdk = createAuthenticatedAnyuppSdk(
-    testAdminEmail,
+    testAdminUsername,
     testAdminUserPassword,
   );
   const deps: AdminUserResolverDeps = {

@@ -24,6 +24,8 @@ These are the required applications and SDK-s to run the E2E tests on real devic
 
 ```
 flutter test test/unit/user_details_bloc_test.dart
+flutter test test/unit/order_pagination_test.dart
+
 ```
 
 #### Widget

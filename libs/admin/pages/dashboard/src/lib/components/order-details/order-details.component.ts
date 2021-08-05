@@ -13,7 +13,6 @@ import {
   ConfirmDialogComponent,
   UnpayCategoriesComponent,
 } from '@bgap/admin/shared/components';
-import { adminUserRoleIsAtLeast } from '@bgap/shared/utils';
 import {
   dashboardSelectors,
   IDashboardSettings,
@@ -35,6 +34,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { OrderPrintComponent } from '../order-print/order-print.component';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { adminUserRoleIsAtLeast } from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({

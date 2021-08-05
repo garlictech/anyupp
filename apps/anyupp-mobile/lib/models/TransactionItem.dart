@@ -46,7 +46,8 @@ class TransactionItem {
     return TransactionItem(
         createdAt: createdAt ?? this.createdAt,
         currency: currency ?? this.currency,
-        externalTransactionId: externalTransactionId ?? this.externalTransactionId,
+        externalTransactionId:
+            externalTransactionId ?? this.externalTransactionId,
         orderId: orderId ?? this.orderId,
         status: status ?? this.status,
         total: total ?? this.total,
@@ -70,8 +71,8 @@ class TransactionItem {
       'updatedAt': updatedAt,
       'id': id,
       'userId': userId,
-      'receipt': receipt.toMap(),
-      'invoice': invoice.toMap()
+      'receipt': receipt != null ? receipt.toMap() : null,
+      'invoice': invoice != null ? invoice.toMap() : null,
     };
   }
 
@@ -86,14 +87,19 @@ class TransactionItem {
         type: map['type'],
         updatedAt: map['updatedAt'],
         id: map['id'],
-        userId: map['userId'],  
-        invoice: map['invoice'] != null ? Invoice.fromMap(Map<String, dynamic>.from(map['invoice'])) : null,
-        receipt: map['receipt'] != null ? Receipt.fromMap(Map<String, dynamic>.from(map['receipt'])) : null);
+        userId: map['userId'],
+        invoice: map['invoice'] != null
+            ? Invoice.fromMap(Map<String, dynamic>.from(map['invoice']))
+            : null,
+        receipt: map['receipt'] != null
+            ? Receipt.fromMap(Map<String, dynamic>.from(map['receipt']))
+            : null);
   }
 
   String toJson() => json.encode(toMap());
 
-  factory TransactionItem.fromJson(String source) => TransactionItem.fromMap(json.decode(source));
+  factory TransactionItem.fromJson(String source) =>
+      TransactionItem.fromMap(json.decode(source));
 
   @override
   String toString() {

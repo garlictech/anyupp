@@ -17,9 +17,7 @@ sections below. The configuration and build commands generally support `app` and
 `stage` flags. The `app` is an unique identification of your stack. The stage is
 important as the app uses some stage-dependent externally configured resources
 (like secrets). The stage specifies which resource set is used.
-There are three stages: `dev`, `qa`, `producton`.
-
-Production is not yet available!
+There are four stages: `dev`, `qa`, `staging`, `producton`.
 
 You should almost always use the `dev` stage.
 
@@ -30,7 +28,10 @@ please :)
 
 Install the following tools:
 
-- AWS CLI - [install](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) [configure](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
+- You will need `node`, `npm` and `yarn`
+- Git CLI or a client
+- AWS CLI installed and configured - [install](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) [configure](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) You will need an `AWS Access Key ID`, `AWS Secret Access Key` and set `eu-west-1` as the region and `json` as the output format.
+
 - Amplify CLI - `npm i -g @aws-amplify/cli`
 - The following command line tools: `jq` - [install](https://stedolan.github.io/jq/)
 
@@ -104,152 +105,7 @@ Check the invoked scripts for their internals and parameters!
 
 ## Create private stack
 
-First, find a name for your app stack. It is important, as it will appear everywhere: amplify app names, CDK stack, etc.
-In the examples below, we use APPNAME for the stack name. Then, choose an environment: dev, qa, prod. The difference
-between the stage environments are the different parameters in the parameter store.
-
-**WARNING** Don't use dots in the private stack name.
-
-### Option 1: Create everything from scratch
-
-After cloning the repo, configure your environment. You need the following environment variables:
-
-```
-export AWS_PROFILE=anyupp
-export EDITORNAME=vim
-```
-
-... if, for a reason, you don't like vim, use something else, VScode is `code`. Any editor command works.
-
-Then, create an amplify app for admin:
-
-`nx init crud-backend --app APPNAME --stage STAGE` :exclamation: use your own app name
-
-The stuff writes the amplify app id to parameter store, CDK will use it to fetch
-the amplify resources.
-
-**WARNING** The command above overwrites the amplify app id belonging to the CDK
-stack in the Parameter Store!
-
-Unfortunately, the SST tools we use to deploy the CDK stack do not support app name parametrization, so:
-
-- in `apps/anyupp-backend/sst.json`, write your app name
-  to the "name" field
-- in `anyupp-backend/serverless.yml`, use the same name
-  in the `service` field
-- in `apps/crud-backend/.graphqlconfig.yml`, use the same name
-  in the `schemaPath` field (...api/<APPNAME>/build...)
-- build and deploy the stack to the desired stage (it will use the stage-related
-  parameters, secrets, etc:)
-
-:exclamation: use your own app name
-
-!!! Before the next command probably you should regenerate the anyupp/crud schema or the next command: `nx build anyupp-backend...` wont work
-
-```
-nx build anyupp-backend --app=APPNAME --stage=dev
-nx deploy anyupp-backend --app=APPNAME --stage=dev
-```
-
-**Be careful** and do NOT check in the mentioned two config files!
-
-Ok, now we have an amplify app and a CDK stack, and they know about each other.
-Finish configuring amplify, by adding the previously created Cognito resources and
-the API. Unfortunately, the procedure is not fully automated, as the add/import commands
-are not yet supported in headless mode :( So fill in the forms if required.
-
-Cognito part:
-
-```
-cd apps/crud-backend
-amplify remove auth
-amplify import auth
-```
-
-- Choose `Cognito User Pool and Identity Pool`
-- Select your new user pool (STAGE-APPNAME-admin-user-pool)
-- Select the NATIVE client (in this point it should assume well which client is the native one)
-
-Appsync part:
-
-```
-amplify add api
-```
-
-Answer these questions
-
-- ? Please select from one of the below mentioned services: `GraphQL`
-- ? Provide API name: `APPNAME` :exclamation: use your own app name
-- ? Choose the default authorization type for the API: `API key`
-- ? Enter a description for the API key: `DEV graphql api key`
-- ? After how many days from now the API key should expire (1-365): `365`
-- ? Do you want to configure advanced settings for the GraphQL API: `Yes, I want to make some additional changes.`
-- ? Configure additional auth types? `Yes`
-- ? Choose the additional authorization types you want to configure for the API
-  - `Amazon Cognito User Pool`
-  - `IAM`
-
-Cognito UserPool configuration
-Use a Cognito user pool configured as a part of this project.
-
-- ? Enable conflict detection? `No`
-- ? Do you have an annotated GraphQL schema? `Yes`
-- ? Provide your schema file path: `../../libs/crud-gql/backend/src/graphql/crud-api.graphql`
-
-```
-amplify add storage
-```
-
-- ? Please select from one of the below mentioned services: `Content (Images, audio, video, etc.)`
-- ? Please provide a friendly name for your resource that will be used to label this category in the project: `anyuppstorage`
-- ? Please provide bucket name: `anyupp-images`
-- ? Who should have access: `Auth and guest users`
-- ? What kind of access do you want for Authenticated users? (Press <space> to select, <a> to toggle all, <i> to invert selection) `read, write, delete`
-- ? What kind of access do you want for Guest users? `read`
-- ? Do you want to add a Lambda Trigger for your S3 Bucket? `(y/N)`
-
-Then, we should push the app, and generat code. Code generation steps:
-
-```
-amplify push
-```
-
-- ? Do you want to generate code for your newly created GraphQL API `Yes`
-- ? Choose the code generation language target `typescript`
-- ? Enter the file name pattern of graphql queries, mutations and subscriptions `../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts`
-- ? Do you want to generate/update all possible GraphQL operations - queries, mutations and subscriptions `Yes`
-- ? Enter maximum statement depth [increase from default if your schema is deeply nested] `10`
-- ? Enter the file name for the generated code `../../libs/crud-gql/api/src/lib/generated/api.ts`
-- ? Do you want to generate code for your newly created GraphQL API `Yes`
-
-Then, answer `yes` to the _code generation/code overwrite_ questions.
-
-So, for auth, add API key, IAM and user pool options. Select the annotated schema file
-from your source tree.
-
-**WARNING** always synchronize the schema files between amplify and github! When you
-change the schema, apply the changes to `libs/crud-gql/backend/src/graphql/crud-api.graphql`
-as well!
-
-### Option 2: Configure your project with existing resources
-
-You should use this option when you clone the repo or change app stack and/or stage.
-Mind, that this method assumes that you followed the naming convention in the previous section,
-you need to configure full arbitrary resources, then you are on your own: check resource id-s
-in the AWS console, use the shell scripts behind the angular commands as hints.
-
-First, pull the admin amplify app:
-
-`nx config crud-backend --app APPNAME --stage STAGE` :exclamation: use your own app name
-
-example: `nx config crud-backend --app anyupp-backend --stage dev` for the dev
-
-It pulls the admin Amplify project and connects it to the actual CDK resources.
-
-## CRUD api resources
-
-The above `nx config crud-backend` generates a config file `libs/crud-gql/backend/src/generated/table-config.json`
-containing the table names/arns of the crud backend.
+See [the wiki page](wiki/Private-backend-stack)
 
 ## Building the project
 
@@ -317,16 +173,17 @@ To execute the seeder locally run the following command:
 
 ### Test user
 
-- A test user: username: `test@anyupp.com`, password: `Hideghegy12_`, context: `SU_CTX_ID`
-- Additional test users (same password, context):
+- A test user: username: `testuser+<id>`, email: `<username>@anyupp.com`, password: `Hideghegy12_`, context: `SU_CTX_ID`
+- The seeded test users (same password, context):
 
 ```
-  test-bob@anyupp.com,
-  test-alice@anyupp.com,
-  test-monad@anyupp.com,
-  test-kati@anyupp.com,
-  test-emen@anyupp.com,
-  test-ee2@anyupp.com,
+  testuser+test@anyupp.com,
+  testuser+bob@anyupp.com,
+  testuser+alice@anyupp.com,
+  testuser+monad@anyupp.com,
+  testuser+kati@anyupp.com,
+  testuser+emen@anyupp.com,
+  testuser+e2e@anyupp.com,
 ```
 
 If you want to test registration, email, etc., then you should use a disposable email service, for example
@@ -358,6 +215,9 @@ Execute all the integration tests:
 Execute on single integration test suite:
 
 `yarn jest -c libs/integration-tests/universal/jest.config.js libs/integration-tests/src/lib/backend-seed.spec.ts`
+
+Execute the `admin` integration tests:
+
 `yarn jest -c libs/integration-tests/angular/jest.config.js admin`
 
 ## Executing cucumber/cypress tests
@@ -613,7 +473,9 @@ publish!
 
 ### Reconfig the whole workspace
 
+`./tools/build-workspace.sh APPNAME STAGE`
+Example using the dev stack
 `./tools/build-workspace.sh anyupp-backend dev`
 
-Before it, remove `apps/crud-backend/amplify`. Ensure that all your changes are pushed or discard them.
-The command fethes the crud backend, the configurations and regenerates the code files.
+Ensure that all your changes are pushed or discard them. Because it will remove your local amplify folder.
+The command fetches the crud backend, the configurations and regenerates the code files.

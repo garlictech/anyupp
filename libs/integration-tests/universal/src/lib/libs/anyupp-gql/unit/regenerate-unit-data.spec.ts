@@ -14,7 +14,7 @@ import {
   productCategoryFixture,
   productComponentSetFixture,
   productFixture,
-  testAdminEmail,
+  testAdminUsername,
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
@@ -287,7 +287,7 @@ describe('RegenerateUnitData mutation tests', () => {
   ).pipe(toArray());
 
   beforeAll(async () => {
-    await createAuthenticatedAnyuppSdk(testAdminEmail, testAdminUserPassword)
+    await createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
       .toPromise()
       .then(x => {
         authAnyuppSdk = x.authAnyuppSdk;

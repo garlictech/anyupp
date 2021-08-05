@@ -3,7 +3,7 @@ import { from } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as fp from 'lodash/fp';
-import { testAdminEmail } from '@bgap/shared/fixtures';
+import { getCognitoUsername, testAdminUsername } from '@bgap/shared/fixtures';
 import { Auth } from 'aws-amplify';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
@@ -11,7 +11,7 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   region: 'eu-west-1',
 });
 
-const username = testAdminEmail;
+const username = getCognitoUsername(testAdminUsername);
 
 // TODO add test to find the user in the DB
 describe('Testing backend seed state', () => {

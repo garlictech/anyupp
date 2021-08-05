@@ -12,12 +12,12 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
+import { dailySalesPerPaymentMethodOrderAmounts } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { reducer } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
-import { IOrderAmounts } from '@bgap/shared/types';
 
 @UntilDestroy()
 @Component({
@@ -108,7 +108,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
     this.orders$
       .pipe(untilDestroyed(this))
       .subscribe((orders: CrudApi.Order[]): void => {
-        const amounts = this._orderAmounts(orders);
+        const amounts = dailySalesPerPaymentMethodOrderAmounts(orders);
 
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
           amounts[CrudApi.PaymentMethod.card],
@@ -135,20 +135,6 @@ export class ReportsDailySalesPerPaymentMethodComponent
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
-  }
-
-  private _orderAmounts(orders: CrudApi.Order[]) {
-    const amounts: IOrderAmounts = {
-      [CrudApi.PaymentMethod.card]: 0,
-      [CrudApi.PaymentMethod.cash]: 0,
-      [CrudApi.PaymentMethod.inapp]: 0,
-    };
-
-    orders.forEach(o => {
-      amounts[o.paymentMode.method] += o.sumPriceShown.priceSum;
-    });
-
-    return amounts;
   }
 
   private _translatedLabels = (): string[] => [

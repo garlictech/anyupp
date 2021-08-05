@@ -14,19 +14,37 @@ class NoOrdersLoaded extends BaseOrderState {
   const NoOrdersLoaded();
 }
 
-class OrderSubscriptionsState extends BaseOrderState {
-  final String name;
-  final bool started;
-  const OrderSubscriptionsState(this.name, this.started);
-
-  @override
-  List<Object> get props => [name, started];
-}
-
 class OrderDetailLoadedState extends BaseOrderState {
   final Order order;
   const OrderDetailLoadedState({this.order});
 
   @override
   List<Object> get props => [order];
+}
+
+class OrdersLoadingState extends BaseOrderState {}
+
+class OrdersLoadedState extends BaseOrderState {
+  final List<Order> orders;
+  final int totalCount;
+  final bool hasMoreItems;
+  final String nextToken;
+  final int timeStamp;
+
+  OrdersLoadedState({this.orders, this.hasMoreItems, this.totalCount, this.nextToken})
+      : timeStamp = DateTime.now().microsecondsSinceEpoch;
+
+  @override
+  List<Object> get props => [orders, totalCount, hasMoreItems, nextToken, timeStamp];
+}
+
+class OrderLoadError extends BaseOrderState {
+  final String code;
+  final String message;
+  final String details;
+
+  OrderLoadError(this.code, this.message, this.details);
+
+  @override
+  List<Object> get props => [code, message, details];
 }

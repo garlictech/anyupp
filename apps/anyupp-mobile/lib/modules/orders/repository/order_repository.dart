@@ -1,55 +1,32 @@
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/models/InvoiceInfo.dart';
 import 'dart:async';
 
 import 'package:fa_prev/modules/orders/orders.dart';
 
-class OrderRepository {
+class OrderRepository implements IOrdersProvider {
   final IOrdersProvider _provider;
 
   OrderRepository(this._provider);
 
-  Future<Cart> getCurrentCart(String unitId) async {
-    return _provider.getCurrentCart(unitId);
-  }
+  // Stream<List<Order>> getCurrentOrders(String unitId) {
+  //   return _provider.getCurrentOrders(unitId);
+  // }
 
-  Stream<Cart> getCurrentCartStream(String unitId) {
-    return _provider.getCurrentCartStream(unitId);
-  }
-
-  Future<void> updateCart(String unitId, Cart cart) async {
-    return _provider.updateCart(unitId, cart);
-  }
-
-  Future<void> clearCart() async {
-    return _provider.clearCart();
-  }
-
-  Stream<List<Order>> getCurrentOrders(String unitId) {
-    return _provider.getCurrentOrders(unitId);
-  }
-
-  Stream<List<Order>> getOrderHistory(String unitId) {
-    return _provider.getOrderHistory(unitId);
-  }
-
-  Future<void> createAndSendOrderFromCart() async {
-    await _provider.createAndSendOrderFromCart();
-  }
+  // Stream<List<Order>> getOrderHistory(String unitId) {
+  //   return _provider.getOrderHistory(unitId);
+  // }
 
   Future<void> userPaymentIntentionSignal(String unitId) async {
     await _provider.userPaymentIntentionSignal(unitId);
-  }
-
-  Future<void> startOrderListSubscription(String unitId) async {
-    await _provider.startOrderListSubscription(unitId);
   }
 
   Future<void> stopOrderListSubscription() async {
     await _provider.stopOrderListSubscription();
   }
 
-  Future<void> startOrderHistoryListSubscription(String unitId) async {
-    await _provider.startOrderHistoryListSubscription(unitId);
+  Future<void> startOrderHistoryListSubscription(String unitId, StreamController<List<Order>> controller) async {
+    await _provider.startOrderHistoryListSubscription(unitId, controller);
   }
 
   Future<void> stopOrderHistoryListSubscription() async {
@@ -60,5 +37,60 @@ class OrderRepository {
     return _provider.getOrder(orderId);
   }
 
-  Cart get cart => _provider.cart;
+  @override
+  Future<void> addInvoiceInfo(InvoiceInfo invioceInfo) {
+    return _provider.addInvoiceInfo(invioceInfo);
+  }
+
+  // @override
+  // Future<Cart> setPaymentMode(String unitId, PaymentMode mode) {
+  //   return _provider.setPaymentMode(unitId, mode);
+  // }
+
+  @override
+  bool get orderListHasMoreItems => _provider.orderListHasMoreItems;
+
+  @override
+  int get orderListTotalCount => _provider.orderListTotalCount;
+
+  @override
+  bool get orderHistoryListHasMoreItems => _provider.orderHistoryListHasMoreItems;
+
+  @override
+  int get orderHistoryListTotalCount => _provider.orderHistoryListTotalCount;
+
+  @override
+  String get orderHistoryListNextToken => _provider.orderHistoryListNextToken;
+
+  @override
+  String get orderListNextToken => _provider.orderListNextToken;
+
+  @override
+  Future<List<Order>> loadOrderHistoryNextPage(
+      {String unitId, String nextToken, StreamController<List<Order>> controller}) {
+    return _provider.loadOrderHistoryNextPage(
+      unitId: unitId,
+      controller: controller,
+      nextToken: nextToken,
+    );
+  }
+
+  @override
+  Future<List<Order>> loadOrdersNextPage({String unitId, String nextToken, StreamController<List<Order>> controller}) {
+    return _provider.loadOrdersNextPage(
+      unitId: unitId,
+      controller: controller,
+      nextToken: nextToken,
+    );
+  }
+
+  @override
+  Future<void> startOrderListSubscription(String unitId, StreamController<List<Order>> controller) {
+    return _provider.startOrderListSubscription(unitId, controller);
+  }
+
+  @override
+  Future<int> getActiveOrderCount(String unitId) {
+    return _provider.getActiveOrderCount(unitId);
+  }
 }

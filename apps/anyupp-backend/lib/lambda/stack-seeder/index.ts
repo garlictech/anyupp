@@ -21,6 +21,7 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
    * https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-requests.html
    */
   const AdminUserPoolId = event.ResourceProperties.AdminUserPoolId;
+  const ConsumerUserPoolId = event.ResourceProperties.ConsumerUserPoolId;
   const physicalResourceId = event.ResourceProperties.physicalResourceId;
   const awsAccessKeyId =
     process.env.API_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID || '';
@@ -34,6 +35,7 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
     crudSdk: CrudApi.getCrudSdkForIAM(awsAccessKeyId, awsSecretAccessKey),
     anyuppSdk: AnyuppApi.getAnyuppSdkForIAM(awsAccessKeyId, awsSecretAccessKey),
     userPoolId: AdminUserPoolId,
+    consumerUserPoolId: ConsumerUserPoolId,
     cognitoidentityserviceprovider,
   };
 

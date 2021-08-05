@@ -7,6 +7,7 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
   final GeoUnit unit;
@@ -17,62 +18,49 @@ class OrderHistoryScreen extends StatefulWidget {
   _OrderHistoryScreenState createState() => _OrderHistoryScreenState();
 }
 
-class _OrderHistoryScreenState extends State<OrderHistoryScreen>
-    with AutomaticKeepAliveClientMixin<OrderHistoryScreen> {
-  OrderRepository _repository = getIt<OrderRepository>();
-
-  @override
-  bool get wantKeepAlive => true;
+class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
+  bool _hasMoreItems = false;
+  String _nextToken;
 
   @override
   void initState() {
-    getIt<OrderBloc>().add(StartGetOrderHistoryListSubscription(widget.unit.chainId, widget.unit.id));
     super.initState();
-    // Future.delayed(Duration(seconds: 1)).then(
-    //   (value) => getIt<OrderBloc>().add(
-    //     StartGetOrderHistoryListSubscription(widget.unit.chainId, widget.unit.id),
-    //   ),
-    // );
-  }
-
-  @override
-  void dispose() {
-    getIt<OrderBloc>().add(StopOrderHistoryListSubscription());
-    super.dispose();
+    getIt<OrderHistoryBloc>().add(StartGetOrderHistoryListSubscription(widget.unit.id));
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Container(
-      key: PageStorageKey('history'),
-      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-        builder: (context, state) {
-          if (state is UnitSelected) {
-            final GeoUnit unit = state.unit;
-            return StreamBuilder<List<Order>>(
-              stream: _repository.getOrderHistory(unit.id),
-              builder: (context, AsyncSnapshot<List<Order>> historySnapshot) {
-                if (historySnapshot.connectionState != ConnectionState.waiting || historySnapshot.hasData) {
-                  if (historySnapshot.data == null || historySnapshot.data.isEmpty) {
-                    return _noOrderHistory();
-                  }
+      // key: PageStorageKey('history'),
+      child: BlocListener<OrderHistoryBloc, BaseOrderHistoryState>(
+        listener: (BuildContext context, BaseOrderHistoryState state) {
+          if (state is OrderHistoryLoadedState) {
+            setState(() {
+              _hasMoreItems = state.hasMoreItems;
+              _nextToken = state.nextToken;
+            });
+          }
+        },
+        child: BlocBuilder<OrderHistoryBloc, BaseOrderHistoryState>(builder: (context, state) {
+          // print('***** OrderHistoryScreen.bloc.state=$state');
+          if (state is NoOrderHistoryLoaded) {
+            return _noOrderHistory();
+          }
 
-                  // Display all the available sandwiches
-                  return _buildList(historySnapshot.data);
-
-                  // In case of error, display error message to the user
-                } else if (historySnapshot.hasError) {
-                  return Text("Error get order history list: ${historySnapshot.error}");
-                }
-
-                return CenterLoadingWidget();
-              },
+          if (state is OrderHistoryLoadedState) {
+            if (state.orders == null || state.orders.isEmpty) {
+              return _noOrderHistory();
+            }
+            return _buildList(state.orders);
+          } else if (state is OrderLoadHistoryError) {
+            return CommonErrorWidget(
+              error: state.message,
+              description: state.details,
             );
           }
 
           return CenterLoadingWidget();
-        },
+        }),
       ),
     );
   }
@@ -80,24 +68,68 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
   Widget _buildList(List<Order> list) {
     return AnimationLimiter(
       child: ListView.builder(
-        itemCount: list.length,
+        itemCount: list.length + 1,
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, position) {
-          return AnimationConfiguration.staggeredList(
-            position: position,
-            duration: const Duration(milliseconds: 375),
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: FadeInAnimation(
-                child: OrderHistoryCard(
-                  order: list[position],
+          if (position < list.length) {
+            return AnimationConfiguration.staggeredList(
+              position: position,
+              duration: const Duration(milliseconds: 375),
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: OrderHistoryCard(
+                    order: list[position],
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          } else if (_hasMoreItems) {
+            return _buildLoadMoreItemsButton();
+          } else {
+            return Container();
+          }
         },
       ),
+    );
+  }
+
+  Widget _buildLoadMoreItemsButton() {
+    return BlocBuilder<OrderHistoryBloc, BaseOrderHistoryState>(
+      builder: (context, state) {
+        if (state is OrderHistoryLoadingState) {
+          return Container(
+            height: 120,
+            child: CenterLoadingWidget(),
+          );
+        }
+
+        return Container(
+          margin: EdgeInsets.only(bottom: 76.0),
+          child: TextButton(
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.all(0),
+              shape: CircleBorder(
+                side: BorderSide(
+                  color: theme.border2.withOpacity(0.4),
+                ),
+              ),
+              backgroundColor: Colors.transparent,
+              primary: theme.text,
+            ),
+            onPressed: () => getIt<OrderHistoryBloc>().add(LoadMoreOrderHistory(widget.unit.id, _nextToken)),
+            child: Text(
+              trans('orders.loadMore'),
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(
+                color: theme.text.withOpacity(0.6),
+                fontSize: 26,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 

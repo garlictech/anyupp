@@ -9,6 +9,8 @@ export 'models/FavoriteProduct.dart';
 export 'models/GeneratedProduct.dart';
 export 'models/GeneratedProductConfigSet.dart';
 export 'models/GeoUnit.dart';
+export 'models/Invoice.dart';
+export 'models/InvoiceInfo.dart';
 export 'models/LocalizedItem.dart';
 export 'models/Location.dart';
 export 'models/Order.dart';
