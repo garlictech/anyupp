@@ -1,6 +1,6 @@
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -17,13 +17,13 @@ import {
   currentStatus as currentStatusFn,
   ordersSelectors,
 } from '@bgap/admin/shared/data-access/orders';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardSize,
   EDashboardTicketListType,
   ENebularButtonSize,
 } from '@bgap/shared/types';
-import { customDateCompare, customNumberCompare } from '@bgap/shared/utils';
+import { customDateCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
@@ -162,11 +162,13 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
         );
         break;
       case EDashboardTicketListType.manual:
-        this.filteredOrders = this.manualPaymentOrders;
+        this.filteredOrders = this.manualPaymentOrders.sort(
+          customDateCompare('createdAt'),
+        );
         break;
       case EDashboardTicketListType.problematic:
         this.filteredOrders = this.problematicOrders.sort(
-          customNumberCompare('paymentIntention'),
+          customDateCompare('createdAt'),
         );
         break;
     }

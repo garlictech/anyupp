@@ -69,7 +69,9 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
     this._store
       .pipe(select(ordersSelectors.getAllHistoryOrders), untilDestroyed(this))
       .subscribe((historyOrders: CrudApi.Order[]): void => {
-        this.dailyOrders = historyOrders.sort(customDateCompare('created'));
+        this.dailyOrders = historyOrders.sort(
+          customDateCompare('createdAt', true),
+        );
 
         if (!this.selectedOrder) {
           this.selectOrder(this.dailyOrders[0]);

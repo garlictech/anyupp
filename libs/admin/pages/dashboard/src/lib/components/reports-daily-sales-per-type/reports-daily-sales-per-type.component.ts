@@ -14,13 +14,10 @@ import {
 } from '@angular/core';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
-import { reducer } from '@bgap/shared/utils';
-import {
-  EProductType,
-  IKeyValueObject,
-  IOrderAmounts,
-} from '@bgap/shared/types';
+import { dailySalesPerTypeOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { EProductType } from '@bgap/shared/types';
+import { reducer } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -118,7 +115,7 @@ export class ReportsDailySalesPerTypeComponent
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([products, orders]) => {
-        const amounts = this._orderAmounts(products, orders);
+        const amounts = dailySalesPerTypeOrderAmounts(products, orders);
 
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
           amounts[EProductType.FOOD],
@@ -145,31 +142,6 @@ export class ReportsDailySalesPerTypeComponent
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
-  }
-
-  private _orderAmounts(
-    products: CrudApi.GeneratedProduct[],
-    orders: CrudApi.Order[],
-  ) {
-    const amounts: IOrderAmounts = {
-      [EProductType.DRINK]: 0,
-      [EProductType.FOOD]: 0,
-      [EProductType.OTHER]: 0,
-    };
-
-    const productTypeMap: IKeyValueObject = {};
-    products.forEach(p => {
-      productTypeMap[p.id] = p.productType;
-    });
-
-    orders.forEach(o => {
-      o.items.forEach(i => {
-        amounts[<EProductType>productTypeMap[i.productId]] +=
-          i.priceShown.priceSum;
-      });
-    });
-
-    return amounts;
   }
 
   private _translatedLabels = (): string[] => [
