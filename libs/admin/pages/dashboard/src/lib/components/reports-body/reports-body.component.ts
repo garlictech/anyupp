@@ -36,6 +36,9 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
   >([]);
   public noIncomeOrders$: BehaviorSubject<CrudApi.Order[]> =
     new BehaviorSubject<CrudApi.Order[]>([]);
+  public unpayOrders$: BehaviorSubject<CrudApi.Order[]> = new BehaviorSubject<
+    CrudApi.Order[]
+  >([]);
   public rejectedOrders$: BehaviorSubject<CrudApi.Order[]> =
     new BehaviorSubject<CrudApi.Order[]>([]);
   public dailyOrdersSum: IKeyValueObject = {};
@@ -85,6 +88,11 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
         );
         this.noIncomeOrders$.next(
           historyOrders.filter(o => !orderHasIncome(o) && !isRejectedOrder(o)),
+        );
+        this.unpayOrders$.next(
+          historyOrders.filter(
+            o => o.transactionStatus === CrudApi.PaymentStatus.failed,
+          ),
         );
         this.rejectedOrders$.next(
           historyOrders.filter(o => isRejectedOrder(o)),

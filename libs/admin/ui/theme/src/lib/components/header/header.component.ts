@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { fromEvent, Observable } from 'rxjs';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   ChangeDetectionStrategy,
@@ -23,6 +23,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { map, take } from 'rxjs/operators';
 
 interface IMenuItem {
   title: string;
@@ -44,6 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public userMenu: IMenuItem[];
   public languageMenu: IMenuItem[];
   public selectedLang: string;
+  public networkError$: Observable<string>;
 
   constructor(
     private _store: Store,
@@ -59,6 +61,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _ngZone: NgZone,
   ) {
     this.selectedLang = DEFAULT_LANG.split('-')[0];
+    this.networkError$ = fromEvent(window, 'offline').pipe(
+      take(1),
+      untilDestroyed(this),
+      map(() => new Date().toLocaleTimeString()),
+    );
 
     this.userMenu = [
       {
@@ -209,5 +216,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         })
         .subscribe();
     }
+  }
+
+  public reloadWindow(): void {
+    window.location.reload();
   }
 }

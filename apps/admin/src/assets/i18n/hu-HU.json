@@ -112,7 +112,8 @@
   },
   "header": {
     "profile": "Profil",
-    "logout": "Kijelentkezés"
+    "logout": "Kijelentkezés",
+    "networkError": "Network error"
   },
   "dashboard": {
     "listTitle": "Vezérlőpult",

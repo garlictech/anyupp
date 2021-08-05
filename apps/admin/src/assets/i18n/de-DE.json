@@ -112,7 +112,8 @@
   },
   "header": {
     "profile": "Profile",
-    "logout": "Log out"
+    "logout": "Log out",
+    "networkError": "Network error"
   },
   "dashboard": {
     "listTitle": "Dashboard",
