@@ -50,16 +50,3 @@ Feature: Product categories
     And I click on the "Submit" button
     Then I should see "test e2eUpdated category" text
     And I should see "test e2eUpdated description" text
-
-  Scenario: Add an other category
-    When I click on the button with title "Add product category"
-    And I fill out the "Name (HU)" input with "test category e2e"
-    And I fill out the "Name (EN)" input with "test category e2e"
-    And I fill out the "Name (DE)" input with "test category e2e"
-    And I fill out the "Description (HU)" input with "test description e2e"
-    And I fill out the "Description (EN)" input with "test description e2e"
-    And I fill out the "Description (DE)" input with "test description e2e"
-    And I click on the "Submit" button
-    Then I should see "test category e2e" text
-    And I should see "test description e2e" text
-
