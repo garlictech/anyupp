@@ -78,6 +78,21 @@ const deleteCreate = <T, K>(
     switchMap(() => createOperation()),
   );
 
+export const createConsumerUser = () => (deps: SeederDependencies) => {
+  console.debug('createConsumerUser');
+
+  const input: CrudApi.CreateUserInput = {
+    id: 'test-alice',
+    name: 'Mekk Elek',
+    email: 'testuser+alice@anyupp.com',
+    phone: '1234',
+  };
+  return deleteCreate(
+    () => deps.crudSdk.DeleteUser({ input: { id: input.id ?? '' } }),
+    () => deps.crudSdk.CreateUser({ input }),
+  );
+};
+
 export const createTestChain =
   (chainIdx: number) => (deps: SeederDependencies) => {
     console.debug('createTestChain', {

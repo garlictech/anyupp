@@ -1,7 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 
 import { seededIdPrefix, testIdPrefix } from './common';
-import { productFixture } from './product';
 import { unitFixture } from './unit';
 
 const order_seeded_01_id = `${seededIdPrefix}order_1_id`;
@@ -93,6 +92,10 @@ const orderInputBase = {
     pricePerUnit: 298.2,
   },
   takeAway: false,
+  place: {
+    table: '01',
+    seat: '01',
+  },
 };
 
 const cardPayment = {
@@ -119,7 +122,7 @@ const stripePayment = {
 const getOrderStatusLog = (status: CrudApi.OrderStatus) => ({
   statusLog: [
     {
-      userId: 'test-monad',
+      userId: 'test-alice',
       status,
       ts: 1627909024677,
     },

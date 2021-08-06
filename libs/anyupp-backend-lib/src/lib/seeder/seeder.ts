@@ -26,6 +26,7 @@ import {
   seededIdPrefix,
   testAdminUsername,
   testAdminUserPassword,
+  transactionFixture,
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { EProductType } from '@bgap/shared/types';
@@ -33,6 +34,7 @@ import { EProductType } from '@bgap/shared/types';
 import {
   createAdminUser,
   createComponentSets,
+  createConsumerUser,
   createTestAdminRoleContext,
   createTestChain,
   createTestChainProduct,
@@ -171,6 +173,7 @@ export const seedBusinessData = (deps: SeederDependencies) =>
       delay(1000),
       switchMap(() =>
         concat(
+          createConsumerUser()(deps).pipe(ce('### Consumer user')),
           createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
           createTestGroup(1, 1)(deps).pipe(ce('### Group SEED 01')),
           createTestGroup(1, 2)(deps).pipe(ce('### Group SEED 02')),
@@ -180,9 +183,7 @@ export const seedBusinessData = (deps: SeederDependencies) =>
           createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
           createTestProductCategory(1, 1)(deps).pipe(ce('### ProdCat SEED 01')),
           createTestProductCategory(1, 2)(deps).pipe(ce('### ProdCat SEED 02')),
-
           createComponentSets(deps).pipe(ce('### ComponentSets')),
-
           createTestChainProduct(
             1,
             1,
@@ -263,28 +264,52 @@ interface BulkOrderProperties {
   archived: boolean;
 }
 
+interface BulkOrderInput {
+  order: CrudApi.CreateOrderInput;
+  transaction: CrudApi.CreateTransactionInput;
+}
+
 const seedLotsOfOrders = (
   deps: SeederDependencies,
+  idxBase: number,
   range: number,
-  inputBase: CrudApi.CreateOrderInput,
+  orderInput: CrudApi.CreateOrderInput,
+  transactionInput: CrudApi.CreateTransactionInput,
 ) => {
   console.debug(`Creating a lot of test orders (${range}).`);
 
   return pipe(
-    R.range(1, range),
-    R.map((index): CrudApi.CreateOrderInput => {
+    R.range(1, range + 1),
+    R.map((index): BulkOrderInput => {
+      const orderId = `${seededIdPrefix}_order_id_${idxBase + index}`;
+      const transactionId = `${seededIdPrefix}_transaction_id_${
+        idxBase + index
+      }`;
+
       return {
-        ...inputBase,
-        id: `${seededIdPrefix}_order_id`,
-        orderNum: index.toString().padStart(6, '0'),
+        order: {
+          ...orderInput,
+          id: orderId,
+          transactionId,
+          orderNum: index.toString().padStart(6, '0'),
+        },
+        transaction: {
+          ...transactionInput,
+          id: transactionId,
+          orderId,
+        },
       };
     }),
     x => from(x),
   ).pipe(
-    tap(input => {
-      console.debug('input', input);
-    }),
-    concatMap(input => deps.crudSdk.CreateOrder({ input })),
+    concatMap((input: BulkOrderInput) =>
+      of('magic').pipe(
+        switchMap(() =>
+          deps.crudSdk.CreateTransaction({ input: input.transaction }),
+        ),
+        switchMap(() => deps.crudSdk.CreateOrder({ input: input.order })),
+      ),
+    ),
     toArray(),
     tap(objects => console.debug(`Created ${objects?.length} test orders.`)),
   );
@@ -370,8 +395,25 @@ export const seedAll = (deps: SeederDependencies) =>
     ),
     delay(2000),
     switchMap(() => seedBusinessData(deps)),
-    // delay(2000),
-    // switchMap(() => seedLotsOfOrders(deps, 100, orderFixture.activeWaitingCardOrderInput)),
+    delay(2000),
+    switchMap(() =>
+      seedLotsOfOrders(
+        deps,
+        0,
+        10,
+        orderFixture.activeWaitingCardOrderInput,
+        transactionFixture.waitingCardTransactionInput,
+      ),
+    ),
+    switchMap(() =>
+      seedLotsOfOrders(
+        deps,
+        10,
+        10,
+        orderFixture.activeWaitingCashOrderInput,
+        transactionFixture.waitingCashTransactionInput,
+      ),
+    ),
     delay(2000),
     switchMap(() =>
       combineLatest(
