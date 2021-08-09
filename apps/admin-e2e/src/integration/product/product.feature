@@ -56,6 +56,7 @@ Feature: Whole product feature
     # Scenario: Update chain product
     And I should see "Chain products" text
     When I click the category selector to set "Test product category #1 name"
+    Then I should see "test product" text
     When On the active tab I click the edit button in the listitem with "test product" content
     Then the "Edit product" title is displayed
     Then I should see "test product" text
