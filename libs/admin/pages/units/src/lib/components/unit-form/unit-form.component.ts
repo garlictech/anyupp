@@ -1,6 +1,6 @@
 import * as fp from 'lodash/fp';
 import { delay, take } from 'rxjs/operators';
-
+import { getTimeZones, rawTimeZones, timeZonesNames } from '@vvo/tzdb';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -46,6 +46,7 @@ export class UnitFormComponent
   public unit!: CrudApi.Unit;
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[] = [];
+  public timeZoneOptions: IKeyValue[] = [];
 
   private _groups: CrudApi.Group[] = [];
 
@@ -71,6 +72,7 @@ export class UnitFormComponent
         },
         { validators: multiLangValidator },
       ),
+      timeZone: [''],
       paymentModes: [[]],
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder, true),
@@ -190,6 +192,11 @@ export class UnitFormComponent
 
         this._changeDetectorRef.detectChanges();
       });
+
+    this.timeZoneOptions = timeZonesNames.map(n => ({
+      key: n,
+      value: n,
+    }));
   }
 
   ngOnDestroy(): void {

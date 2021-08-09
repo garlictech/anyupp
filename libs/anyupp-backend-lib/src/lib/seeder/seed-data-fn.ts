@@ -163,6 +163,7 @@ export const createTestUnit =
       groupId: generateGroupId(chainIdx, groupIdx),
       chainId: generateChainId(chainIdx),
       name: `Késdobáló #${chainIdx}${groupIdx}${unitIdx}`,
+      timeZone: 'Europe/Budapest',
       lanes: [
         {
           color: '#e72222',

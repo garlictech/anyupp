@@ -40,7 +40,7 @@ export class ReportsUnpayTableComponent implements OnDestroy {
         UNPAY_CATEGORIES_ARR.forEach(category => {
           unpayCategoryStatObj[category] = calculateUnpayCategoryStat(
             category,
-            orders.filter(o => o.unpayCategory === category),
+            orders,
           );
         });
         this.unpayCategoryStats = Object.values(unpayCategoryStatObj);

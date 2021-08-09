@@ -96,7 +96,8 @@
     "width": "szélesség",
     "height": "magasság",
     "receipt": "nyugta",
-    "invoice": "számla"
+    "invoice": "számla",
+    "timeZone": "Időzóna"
   },
   "menu": {
     "dashboard": "Vezérlőpult",

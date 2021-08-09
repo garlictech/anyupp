@@ -77,11 +77,11 @@ const orderInputBase = {
   items: [
     {
       ...orderItemInputBase('Hamburger'),
-      productId: `${testIdPrefix}generatedProduct_id_1`,
+      productId: `seeded_unit_product_c1_g1_2_id`,
     },
     {
       ...orderItemInputBase('Fanta'),
-      productId: `${testIdPrefix}generatedProduct_id_2`,
+      productId: `seeded_unit_product_c1_g1_1_id`,
     },
   ],
   sumPriceShown: {

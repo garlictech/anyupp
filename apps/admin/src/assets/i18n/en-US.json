@@ -96,7 +96,8 @@
     "width": "width",
     "height": "height",
     "receipt": "receipt",
-    "invoice": "invoice"
+    "invoice": "invoice",
+    "timeZone": "Timezone"
   },
   "menu": {
     "dashboard": "Dashboard",

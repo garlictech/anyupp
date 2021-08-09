@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
 import {
@@ -21,6 +21,7 @@ import { filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { isRejectedOrder, orderHasIncome } from '@bgap/crud-gql/api';
+import { unitsSelectors } from 'libs/admin/shared/data-access/units/src';
 
 @UntilDestroy()
 @Component({
@@ -41,6 +42,7 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
   >([]);
   public rejectedOrders$: BehaviorSubject<CrudApi.Order[]> =
     new BehaviorSubject<CrudApi.Order[]>([]);
+  public selectedUnit$: Observable<CrudApi.Unit>;
   public dailyOrdersSum: IKeyValueObject = {};
   public groupCurrency = '';
 
@@ -49,6 +51,12 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.dateFormControl = new FormControl();
+
+    this.selectedUnit$ = this._store.pipe(
+      select(unitsSelectors.getSelectedUnit),
+      filterNullish(),
+      untilDestroyed(this),
+    );
   }
 
   ngOnInit(): void {

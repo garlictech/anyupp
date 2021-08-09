@@ -63,6 +63,7 @@
     "@nrwl/angular": "12.6.3",
     "@types/luxon": "1.27.1",
     "@types/uuid": "8.3.1",
+    "@vvo/tzdb": "^6.9.0",
     "apollo-angular": "2.6.0",
     "apollo-client": "2.6.10",
     "apollo-link-error": "1.1.13",

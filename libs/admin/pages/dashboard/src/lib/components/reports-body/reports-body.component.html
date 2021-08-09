@@ -48,7 +48,8 @@
   <div class="col-12 p-1">
     <bgap-reports-hourly-breakdown
       class="d-block w-100 h-100"
-      [orders$]="noIncomeOrders$"
+      [orders$]="incomeOrders$"
+      [selectedUnit$]="selectedUnit$"
       [currency]="groupCurrency"
     ></bgap-reports-hourly-breakdown>
   </div>
@@ -94,6 +95,7 @@
     <bgap-reports-hourly-breakdown
       class="d-block w-100 h-100"
       [orders$]="noIncomeOrders$"
+      [selectedUnit$]="selectedUnit$"
       [currency]="groupCurrency"
     ></bgap-reports-hourly-breakdown>
   </div>
