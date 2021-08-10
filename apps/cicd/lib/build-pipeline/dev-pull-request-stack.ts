@@ -34,7 +34,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
           phases: {
             install: {
               commands: ['apps/cicd/scripts/pr-install.sh'],
-              runtimeVersions: {
+              'runtime-versions': {
                 nodejs: 14,
               },
             },
