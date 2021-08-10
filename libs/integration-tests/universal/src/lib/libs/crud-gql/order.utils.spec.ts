@@ -1,12 +1,14 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { cartFixture } from '@bgap/shared/fixtures';
 import { toFixed2Number } from '@bgap/shared/utils';
-import {
-  calculateOrderItemPriceRounded,
-  calculateOrderItemSumPriceRounded,
-  calculateOrderSumPriceRounded,
-  calculateTaxSumFromBrutto,
-} from '@bgap/crud-gql/api';
+import { getDayIntervals } from '@bgap/admin/shared/utils';
+import { orderFixture as ofx } from '@bgap/shared/fixtures';
+import { getAllPaginatedData } from 'libs/gql-sdk/src';
+import { map } from 'rxjs/operators';
+import { IDateIntervals } from '@bgap/shared/types';
+
+const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
 
 const orderItemConfigSetBase: Pick<
   CrudApi.OrderItemConfigSetInput,
@@ -54,12 +56,16 @@ const orderItemConfigSet_02: CrudApi.OrderItemConfigSetInput = {
 
 describe('calculateTaxSumFromBrutto method', () => {
   it('should calculate the correct taxSum from tax and brutto inputs', () => {
-    expect(calculateTaxSumFromBrutto({ tax: 0, brutto: 10 })).toEqual(0);
-    expect(calculateTaxSumFromBrutto({ tax: 10, brutto: 11 })).toEqual(1);
-    expect(calculateTaxSumFromBrutto({ tax: 5, brutto: 10 })).toEqual(
+    expect(CrudApi.calculateTaxSumFromBrutto({ tax: 0, brutto: 10 })).toEqual(
+      0,
+    );
+    expect(CrudApi.calculateTaxSumFromBrutto({ tax: 10, brutto: 11 })).toEqual(
+      1,
+    );
+    expect(CrudApi.calculateTaxSumFromBrutto({ tax: 5, brutto: 10 })).toEqual(
       0.47619047619047616,
     );
-    expect(calculateTaxSumFromBrutto({ tax: 27, brutto: 10 })).toEqual(
+    expect(CrudApi.calculateTaxSumFromBrutto({ tax: 27, brutto: 10 })).toEqual(
       2.125984251968504,
     );
   });
@@ -78,7 +84,7 @@ describe('calculateOrderItemPriceRounded method', () => {
     },
   };
   it('should return all the given fields without changing the currency, pricePerUnit and tax fields', () => {
-    expect(calculateOrderItemPriceRounded(item)).toEqual({
+    expect(CrudApi.calculateOrderItemPriceRounded(item)).toEqual({
       ...item.priceShown,
       priceSum: 10,
     });
@@ -92,7 +98,11 @@ describe('calculateOrderItemPriceRounded method', () => {
       taxSum: 0,
     };
     expect(
-      calculateOrderItemPriceRounded({ ...item, priceShown, quantity: 2 }),
+      CrudApi.calculateOrderItemPriceRounded({
+        ...item,
+        priceShown,
+        quantity: 2,
+      }),
     ).toEqual({
       ...priceShown,
       priceSum: 20,
@@ -107,14 +117,14 @@ describe('calculateOrderItemPriceRounded method', () => {
       taxSum: 0,
     };
     const quantity = 2;
-    const result = calculateOrderItemPriceRounded({
+    const result = CrudApi.calculateOrderItemPriceRounded({
       ...item,
       priceShown,
       quantity,
     });
     expect(result.priceSum).toEqual(priceShown.pricePerUnit * quantity); // 20
     expect(result.taxSum).toEqual(4); // 0.25 ÷ 1.25 * 10 = 2  => 2* quantity = 4
-    const result02 = calculateOrderItemPriceRounded({
+    const result02 = CrudApi.calculateOrderItemPriceRounded({
       ...item,
       priceShown: {
         ...priceShown,
@@ -141,7 +151,7 @@ describe('calculateOrderItemSumPriceRounded function', () => {
     configSets: [orderItemConfigSet_01, orderItemConfigSet_02],
   };
   it("should add the summarized confiset prices to the item's price too", () => {
-    expect(calculateOrderItemSumPriceRounded(item)).toEqual({
+    expect(CrudApi.calculateOrderItemSumPriceRounded(item)).toEqual({
       ...item.priceShown,
       pricePerUnit: 14.88,
       priceSum: 44.64, // (10+4+0.88)*3
@@ -181,7 +191,7 @@ describe('calculateOrderSumPriceRounded function', () => {
     ];
     const expectedBruttoPriceSum = 4 * orderItemPrice_02 + orderItemPrice_01; // Prices
     const expectedTaxSum = 4 * orderItemTax_02 + orderItemTax_01;
-    const result = calculateOrderSumPriceRounded(input);
+    const result = CrudApi.calculateOrderSumPriceRounded(input);
     expect(result.tax).toEqual(0); // There is no summariezed tax percent because the tax can be different for every items
     expect(result.pricePerUnit).toEqual(0); // There is no summariezed pricePerUnit
     expect(result.currency).toEqual(orderItem_01.priceShown.currency);
@@ -205,8 +215,77 @@ describe('calculateOrderSumPriceRounded function', () => {
       orderItem_02,
       orderItem_03,
     ];
-    const result = calculateOrderSumPriceRounded(input);
+    const result = CrudApi.calculateOrderSumPriceRounded(input);
     expect(result.priceSum).toEqual(2 + 3.76 + 11.76);
     expect(result.taxSum).toEqual(0.17); //  0.173459
+  });
+});
+
+describe('SearchOrders function', () => {
+  const crudSdk = CrudApi.getCrudSdkForIAM(accessKeyId, secretAccessKey);
+
+  test('Pagination should return with new archived orders', async () => {
+    const isoDate = new Date().toISOString();
+    const dayIntervals: IDateIntervals = getDayIntervals(isoDate);
+    const orderId = 'int_test_order_id_2';
+    const searchParams = {
+      query: {
+        filter: {
+          unitId: { eq: 'seeded_unit_c1_g1_1_id' },
+          archived: { eq: true },
+          createdAt: {
+            gte: new Date(dayIntervals.from).toISOString(),
+            lte: new Date(dayIntervals.to).toISOString(),
+          },
+        },
+      },
+      options: { fetchPolicy: 'no-cache' },
+    };
+    let ordersCount = -1;
+
+    // Get initial list
+    await getAllPaginatedData(crudSdk.SearchOrders, searchParams)
+      .pipe(
+        map(orderList => {
+          ordersCount = orderList.items.length;
+          expect(orderList.items.length).toBeGreaterThanOrEqual(0);
+        }),
+      )
+      .toPromise();
+
+    // Insert a new order
+    await crudSdk
+      .CreateOrder({
+        input: {
+          ...ofx.historySuccessCardOrderInput,
+          id: orderId,
+          createdAt: isoDate,
+        },
+      })
+      .toPromise();
+
+    // Check the new pagination
+    await getAllPaginatedData(crudSdk.SearchOrders, searchParams).pipe(
+      map(orderList => {
+        console.error('orderList', orderList);
+        expect(orderList.items.length).toBe(ordersCount + 1);
+      }),
+    );
+
+    // Clear DB
+    await crudSdk
+      .DeleteOrder({
+        input: {
+          id: orderId,
+        },
+      })
+      .toPromise();
+    await crudSdk
+      .DeleteOrder({
+        input: {
+          id: 'int_test_order_id_1',
+        },
+      })
+      .toPromise();
   });
 });
