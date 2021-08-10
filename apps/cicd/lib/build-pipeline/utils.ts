@@ -102,7 +102,7 @@ export const createBuildProject = (
     cache,
     environment: {
       computeType: codebuild.ComputeType.MEDIUM,
-      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+      buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
     },
   });
 };
