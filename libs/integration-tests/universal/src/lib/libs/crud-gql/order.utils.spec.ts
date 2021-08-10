@@ -1,10 +1,14 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { cartFixture } from '@bgap/shared/fixtures';
+import {
+  cartFixture,
+  orderFixture as ofx,
+  transactionFixture as tfx,
+} from '@bgap/shared/fixtures';
 import { toFixed2Number } from '@bgap/shared/utils';
 import { getDayIntervals } from '@bgap/admin/shared/utils';
-import { orderFixture as ofx } from '@bgap/shared/fixtures';
+
 import { getAllPaginatedData } from 'libs/gql-sdk/src';
-import { map } from 'rxjs/operators';
+import { delay, map, switchMap } from 'rxjs/operators';
 import { IDateIntervals } from '@bgap/shared/types';
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
@@ -227,7 +231,8 @@ describe('SearchOrders function', () => {
   test('Pagination should return with new archived orders', async () => {
     const isoDate = new Date().toISOString();
     const dayIntervals: IDateIntervals = getDayIntervals(isoDate);
-    const orderId = 'int_test_order_id_2';
+    const orderId = 'int_test_order_id_1';
+    const transactionId = 'int_test_transaction_id_1';
     const searchParams = {
       query: {
         filter: {
@@ -248,44 +253,50 @@ describe('SearchOrders function', () => {
       .pipe(
         map(orderList => {
           ordersCount = orderList.items.length;
+          console.error('ordersCount1', ordersCount);
           expect(orderList.items.length).toBeGreaterThanOrEqual(0);
         }),
+        switchMap(() =>
+          crudSdk.CreateTransaction({
+            input: {
+              ...tfx.successCardTransactionInput,
+              id: transactionId,
+              orderId,
+            },
+          }),
+        ),
+        switchMap(() =>
+          crudSdk.CreateOrder({
+            input: {
+              ...ofx.historySuccessCardOrderInput,
+              id: orderId,
+              transactionId,
+            },
+          }),
+        ),
+        delay(5000),
+        switchMap(() =>
+          getAllPaginatedData(crudSdk.SearchOrders, searchParams).pipe(
+            map(orderList => {
+              expect(orderList.items.length).toBe(ordersCount + 1);
+            }),
+          ),
+        ),
+        switchMap(() =>
+          crudSdk.DeleteOrder({
+            input: {
+              id: orderId,
+            },
+          }),
+        ),
+        switchMap(() =>
+          crudSdk.DeleteTransaction({
+            input: {
+              id: transactionId,
+            },
+          }),
+        ),
       )
       .toPromise();
-
-    // Insert a new order
-    await crudSdk
-      .CreateOrder({
-        input: {
-          ...ofx.historySuccessCardOrderInput,
-          id: orderId,
-          createdAt: isoDate,
-        },
-      })
-      .toPromise();
-
-    // Check the new pagination
-    await getAllPaginatedData(crudSdk.SearchOrders, searchParams).pipe(
-      map(orderList => {
-        console.error('orderList', orderList);
-        expect(orderList.items.length).toBe(ordersCount + 1);
-      }),
-    );
-
-    // Clear DB
-    await crudSdk
-      .DeleteOrder({
-        input: {
-          id: orderId,
-        },
-      })
-      .toPromise();
-    await crudSdk
-      .DeleteOrder({
-        input: {
-          id: 'int_test_order_id_1',
-        },
-      })
-      .toPromise();
-  });
+  }, 20000);
 });
