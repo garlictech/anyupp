@@ -15,13 +15,12 @@ import {
 } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { IKeyValueObject } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { isRejectedOrder, orderHasIncome } from '@bgap/crud-gql/api';
-import { unitsSelectors } from 'libs/admin/shared/data-access/units/src';
 
 @UntilDestroy()
 @Component({
@@ -92,10 +91,14 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((historyOrders: CrudApi.Order[]): void => {
         this.incomeOrders$.next(
-          historyOrders.filter(o => orderHasIncome(o) && !isRejectedOrder(o)),
+          historyOrders.filter(
+            o => CrudApi.orderHasIncome(o) && !CrudApi.isRejectedOrder(o),
+          ),
         );
         this.noIncomeOrders$.next(
-          historyOrders.filter(o => !orderHasIncome(o) && !isRejectedOrder(o)),
+          historyOrders.filter(
+            o => !CrudApi.orderHasIncome(o) && !CrudApi.isRejectedOrder(o),
+          ),
         );
         this.unpayOrders$.next(
           historyOrders.filter(
@@ -103,7 +106,7 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
           ),
         );
         this.rejectedOrders$.next(
-          historyOrders.filter(o => isRejectedOrder(o)),
+          historyOrders.filter(o => CrudApi.isRejectedOrder(o)),
         );
 
         this._changeDetectorRef.detectChanges();

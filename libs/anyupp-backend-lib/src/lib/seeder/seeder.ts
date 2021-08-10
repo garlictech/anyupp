@@ -256,14 +256,6 @@ const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
     ),
   );
 
-interface BulkOrderProperties {
-  range: number;
-  userId: string;
-  paymentType: CrudApi.PaymentType;
-  status: CrudApi.OrderStatus;
-  archived: boolean;
-}
-
 interface BulkOrderInput {
   order: CrudApi.CreateOrderInput;
   transaction: CrudApi.CreateTransactionInput;
