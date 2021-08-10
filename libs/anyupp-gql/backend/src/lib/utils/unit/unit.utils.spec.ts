@@ -40,6 +40,7 @@ const pluckId = (unit: CrudApi.Unit) => unit.id;
 
 describe('Unit utils', () => {
   describe('filterOutCurrentlyNotOpenUnits function', () => {
+    // THIS IS NOT for THE DAILY OPENING HOURS
     it('should filter out the NOT open units simple case with current time', () => {
       const openUnit_01_openEnded: CrudApi.Unit = {
         ...unitBase,
@@ -653,7 +654,123 @@ describe('Unit utils', () => {
       `);
     });
 
-    it('should return opening hours from the day before the requested day as the first, in case that is the active', () => {
+    it('should return CLOSED withOUT from, to fields for today in case we are AFTER the opening hours interval', () => {
+      const unit = {
+        ...unitBase,
+        openingHours: {
+          wed: {
+            // 2021-07-14
+            from: '09:00',
+            to: '19:00',
+          },
+        },
+      };
+
+      const afterOpeningHours = DateTime.fromISO('2021-07-14T19:01', {
+        zone: timezoneBudapest,
+      });
+      const responseAfterOpeningHours = getUnitOpeningHoursAtTime(
+        unit,
+        afterOpeningHours,
+      );
+
+      expect(responseAfterOpeningHours[0]).toEqual({
+        date: '2021-07-14',
+        closed: true,
+      });
+    });
+
+    it('should return CLOSED with from, to fields for today in case we are BEFORE the opening hours interval', () => {
+      const unit = {
+        ...unitBase,
+        openingHours: {
+          wed: {
+            // 2021-07-14
+            from: '09:00',
+            to: '19:00',
+          },
+        },
+      };
+
+      const beforeOpeningHours = DateTime.fromISO('2021-07-14T08:59', {
+        zone: timezoneBudapest,
+      });
+      const responseBeforeOpeningHours = getUnitOpeningHoursAtTime(
+        unit,
+        beforeOpeningHours,
+      );
+
+      expect(responseBeforeOpeningHours[0]).toEqual({
+        date: '2021-07-14',
+        closed: true,
+        from: DateTime.fromISO('2021-07-14T09:00', {
+          zone: timezoneBudapest,
+        }).toMillis(),
+        to: DateTime.fromISO('2021-07-14T19:00', {
+          zone: timezoneBudapest,
+        }).toMillis(),
+      });
+    });
+
+    it('the given time should NOT tigger the CLOSED state on the day AFTER today', () => {
+      const unit = {
+        ...unitBase,
+        openingHours: {
+          thu: {
+            // 2021-07-15
+            from: '10:00',
+            to: '20:00',
+          },
+          fri: {
+            // 2021-07-16
+            from: '10:00',
+            to: '20:00',
+          },
+        },
+      };
+      const wednesdayAfterOpeningHours = DateTime.fromISO('2021-07-14T20:01', {
+        zone: timezoneBudapest,
+      });
+      const responseAfterOpeningHours = getUnitOpeningHoursAtTime(
+        unit,
+        wednesdayAfterOpeningHours,
+      );
+
+      // The Next day is NOT closed
+      expect(responseAfterOpeningHours[1]).toEqual({
+        closed: false,
+        date: '2021-07-15', // Thuseday
+        from: 1626336000000,
+        to: 1626372000000,
+      });
+      // Nor the Next after
+      expect(responseAfterOpeningHours[2]).toEqual({
+        closed: false,
+        date: '2021-07-16', // Friday
+        from: 1626422400000,
+        to: 1626458400000,
+      });
+    });
+
+    it('should return CLOSED for the given date without from, to in case it has NO opening hours for the given date', () => {
+      const unit = {
+        ...unitBase,
+      };
+      const aDateWithoutOpeningHours = DateTime.fromISO('2021-07-14T12:00', {
+        zone: timezoneBudapest,
+      });
+      const responseOpeningHours = getUnitOpeningHoursAtTime(
+        unit,
+        aDateWithoutOpeningHours,
+      );
+
+      expect(responseOpeningHours[0]).toEqual({
+        closed: true,
+        date: '2021-07-14',
+      });
+    });
+
+    it('should return opening hours from the day before the requested day as the first, in case that is still active', () => {
       const getNext7ActiveOpeningHoursFromThusedayDawn = DateTime.fromISO(
         '2021-07-13T01:01',
         { zone: timezoneBudapest },
