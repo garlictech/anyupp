@@ -45,7 +45,7 @@ WORKING_DIR="$(pwd)"
 # Check out the repository to a temporary directory
 # Note that --quiet doesn't work on the current CodeBuild agents, but
 # hopefully it will in the future
-TEMP_FOLDER="$(mktemp -d)"
+TEMP_FOLDER="$WORKING_DIR/__"
 git clone --quiet "$REPO_URL" "$TEMP_FOLDER"
 
 # Wind the repository back to the specified branch and commit
@@ -65,3 +65,5 @@ if [ ! -d  .git ] ; then
 fi
 
 mv .git "$WORKING_DIR"
+cd $WORKING_DIR
+rm -rf $TEMP_FOLDER

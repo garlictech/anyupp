@@ -6,11 +6,16 @@ STAGE=$2
 
 generatedLibExcludes="--exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api"
 
+<<<<<<< HEAD
+./apps/cicd/scripts/codebuild-git-wrapper.sh $CODEBUILD_SOURCE_REPO_URL $CODEBUILD_SOURCE_VERSION
+||||||| 8bbf01c4
+=======
 #./apps/cicd/scripts/codebuild-git-wrapper.sh $CODEBUILD_SOURCE_REPO_URL $CODEBUILD_RESOLVED_SOURCE_VERSION
 echo "*******************************"
 ls -l .git
 ls -l .git/*
 echo "*******************************"
+>>>>>>> 1de453fa8b34565cfc8e1a987159bd8198c18e0e
 time ./tools/build-workspace.sh ${APPNAME} ${STAGE}
 time yarn nx format:check --affected
 time yarn nx affected:lint --base=${STAGE} ${generatedLibExcludes}
