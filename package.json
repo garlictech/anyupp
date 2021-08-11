@@ -41,7 +41,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "12.1.5",
-    "@angular/cdk": "12.2.0",
+    "@angular/cdk": "12.2.1",
     "@angular/common": "12.1.5",
     "@angular/compiler": "12.1.5",
     "@angular/core": "12.1.5",
@@ -63,7 +63,7 @@
     "@nrwl/angular": "12.6.6",
     "@types/luxon": "2.0.0",
     "@types/uuid": "8.3.1",
-    "@vvo/tzdb": "^6.9.0",
+    "@vvo/tzdb": "6.9.0",
     "apollo-angular": "2.6.0",
     "apollo-client": "2.6.10",
     "apollo-link-error": "1.1.13",

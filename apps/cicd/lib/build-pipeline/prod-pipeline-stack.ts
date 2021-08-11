@@ -10,22 +10,17 @@ export class ProdBuildPipelineStack extends sst.Stack {
       ...props,
       buildProjectPhases: {
         install: {
-          commands: [
-            'chmod +x ./tools/*.sh',
-            `./tools/setup-aws-environment.sh`,
-            'yarn --frozen-lockfile',
-            'npm install -g @aws-amplify/cli appcenter-cli',
-          ],
+          commands: ['apps/cicd/scripts/prod-install.sh'],
+          'runtime-versions': {
+            nodejs: 14,
+          },
         },
         build: {
           commands: [
             `./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
             `yarn nx deploy crud-backend --stage=${stage} --app=${utils.appConfig.name}`,
             `yarn nx deploy anyupp-backend --stage=${stage} --app=${utils.appConfig.name}`,
-            'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
-            'export PATH=$PATH:/tmp/flutter/bin',
-            'flutter doctor',
-            `yarn nx buildApk anyupp-mobile`,
+            `yarn nx buildApk-ci-prod anyupp-mobile`,
           ],
         },
         post_build: {

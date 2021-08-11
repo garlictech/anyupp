@@ -32,6 +32,7 @@ Feature: Stripe Card
     When I tap the text "Saved Cards"
     Then there is the text "No payment methods saved"
 
+  # about the issue #244 and #396
   Scenario: Pay with a new card then pay with the added card
     When I tap the "TEST CHAIN PRODUCT #2 NAME" card under "Test product category #1 name" category
     Then there is the product details screen
@@ -86,10 +87,20 @@ Feature: Stripe Card
     And the banner on the "Orders" icon is "2"
     And the "Orders" page is selected on the top navigator
     And there is an order in the list
-    And the state of the order is "Placed"
+    And the state of the order is "PLACED"
+    And the admin set it to "PROCESSING"
+    And I click on the "Show" text
+    Then I should see the receipt of the order
+    When I click on the "Done" button
+    Then I should see my order on the "Orders" tab
+    And the admin set it to "READY"
+    And the admin set it to paid
+    Then I should see the text "No active order placed yet"
+    When I swipe to the "History" tab
+    Then I should see the paid order
 
   Scenario: Pay without saving the card
-    # about the #1250 issue
+    # about the #1250 issue, issue #244
     When I tap the "TEST CHAIN PRODUCT #2 NAME" card under "Test product category #1 name" category
     And I tap the "Add To Cart" button
     Then The shop cart icon banner should show "1"
@@ -117,4 +128,14 @@ Feature: Stripe Card
     And the banner on the "Orders" icon is "1"
     And the "Orders" page is selected on the top navigator
     And there is an order in the list
-    And the state of the order is "Placed"
+    And the state of the order is "PLACED"
+    And the admin set it to "PROCESSING"
+    And I click on the "Show" text
+    Then I should see the receipt of the order
+    When I click on the "Done" button
+    Then I should see my order on the "Orders" tab
+    And the admin set it to "READY"
+    And the admin set it to paid
+    Then I should see the text "No active order placed yet"
+    When I swipe to the "History" tab
+    Then I should see the paid order
