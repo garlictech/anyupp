@@ -322,7 +322,6 @@ export const createCommonDevPipeline = (
         commands: [
           'chmod +x ./tools/*.sh',
           `./tools/setup-aws-environment.sh`,
-          './tools/install-nodejs-14.sh',
           'yarn --frozen-lockfile',
           'npm install -g @aws-amplify/cli appcenter-cli',
         ],
