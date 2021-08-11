@@ -26,12 +26,12 @@ describe.skip('CRUD ownership tests', () => {
       testAdminUserPassword,
     ).toPromise();
 
-    cleanup();
+    await cleanup();
     await iamSdk.CreateUser({ input: { id: adminUserId } }).toPromise();
   });
 
   afterAll(async () => {
-    cleanup();
+    await cleanup();
   });
 
   it('It should not access own data of AdminUser without signin', done => {

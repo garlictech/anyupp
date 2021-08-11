@@ -5,12 +5,15 @@ import {
   transactionFixture as tfx,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { toFixed2Number } from '@bgap/shared/utils';
+import { pipeDebug, toFixed2Number } from '@bgap/shared/utils';
 import { getDayIntervals } from '@bgap/admin/shared/utils';
 
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { delay, map, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { IDateIntervals } from '@bgap/shared/types';
+
+const TEST_NAME = 'ORDER_UTILS_';
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
@@ -227,12 +230,41 @@ describe('calculateOrderSumPriceRounded function', () => {
 });
 
 describe('SearchOrders function', () => {
-  const crudSdk = CrudApi.getCrudSdkForIAM(accessKeyId, secretAccessKey);
-  test('Pagination should return with new archived orders', async () => {
+  let crudSdk: CrudApi.CrudSdk;
+  const orderId = 'int_test_order_id_1';
+  const transactionId = 'int_test_transaction_id_1';
+
+  const cleanup = async () => {
+    await crudSdk
+      .DeleteOrder({
+        input: {
+          id: orderId,
+        },
+      })
+      .toPromise();
+
+    await crudSdk
+      .DeleteTransaction({
+        input: {
+          id: transactionId,
+        },
+      })
+      .toPromise();
+  };
+
+  beforeAll(async () => {
+    crudSdk = CrudApi.getCrudSdkForIAM(accessKeyId, secretAccessKey);
+
+    await cleanup();
+  });
+
+  afterAll(async () => {
+    await cleanup();
+  });
+
+  test('Pagination should return with new archived orders', done => {
     const isoDate = new Date().toISOString();
     const dayIntervals: IDateIntervals = getDayIntervals(isoDate);
-    const orderId = 'int_test_order_id_1';
-    const transactionId = 'int_test_transaction_id_1';
     const searchParams = {
       query: {
         filter: {
@@ -249,11 +281,14 @@ describe('SearchOrders function', () => {
     let ordersCount = -1;
 
     // Get initial list
-    await getAllPaginatedData(crudSdk.SearchOrders, searchParams)
+    of('test')
       .pipe(
+        // delay(5000),
+        switchMap(() =>
+          getAllPaginatedData(crudSdk.SearchOrders, searchParams),
+        ),
         map(orderList => {
           ordersCount = orderList.items.length;
-          console.error('ordersCount1', ordersCount);
           expect(orderList.items.length).toBeGreaterThanOrEqual(0);
         }),
         switchMap(() =>
@@ -282,21 +317,14 @@ describe('SearchOrders function', () => {
             }),
           ),
         ),
-        switchMap(() =>
-          crudSdk.DeleteOrder({
-            input: {
-              id: orderId,
-            },
-          }),
-        ),
-        switchMap(() =>
-          crudSdk.DeleteTransaction({
-            input: {
-              id: transactionId,
-            },
-          }),
-        ),
       )
-      .toPromise();
+      .subscribe({
+        next() {
+          done();
+        },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
+        },
+      });
   }, 20000);
 });
