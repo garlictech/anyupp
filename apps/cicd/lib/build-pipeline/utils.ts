@@ -96,6 +96,7 @@ export const createBuildProject = (
         variables: {
           NODE_OPTIONS:
             '--unhandled-rejections=strict --max_old_space_size=8196',
+          GIT_DISCOVERY_ACROSS_FILESYSTEM: 1,
         },
       },
     }),
@@ -324,6 +325,7 @@ export const createCommonDevPipeline = (
       },
       build: {
         commands: [
+          'ls -l .git/*',
           `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
           `yarn nx deploy crud-backend --stage=${stage} --app=${appConfig.name}`,
           `yarn deleteAllTableData`,
