@@ -33,6 +33,7 @@ export class ReportsHourlyBreakdownComponent
 {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
   @Input() orders$!: Observable<CrudApi.Order[]>;
+  @Input() selectedUnit$!: Observable<CrudApi.Unit>;
   @Input() currency = '';
 
   private _chart!: Chart;
@@ -59,7 +60,7 @@ export class ReportsHourlyBreakdownComponent
                 'dashboard.reports.ordersCount',
               ),
               fill: true,
-              data: new Array(24).fill(24),
+              data: new Array(24).fill(0),
               backgroundColor: 'rgba(249,94,1, 0.2)',
               borderColor: 'rgba(249,94,1, 0.8)',
               borderWidth: 2,
@@ -70,7 +71,7 @@ export class ReportsHourlyBreakdownComponent
               label: this._translateService.instant(
                 'products.productType.food',
               ),
-              data: new Array(24).fill(20),
+              data: new Array(24).fill(0),
               backgroundColor: 'rgba(60,186,159, 0.8)',
               yAxisID: 'y-axis-left',
             },
@@ -79,7 +80,7 @@ export class ReportsHourlyBreakdownComponent
               label: this._translateService.instant(
                 'products.productType.drink',
               ),
-              data: new Array(24).fill(23),
+              data: new Array(24).fill(0),
               backgroundColor: 'rgba(62,149,205,0.8)',
               yAxisID: 'y-axis-left',
             },
@@ -88,7 +89,7 @@ export class ReportsHourlyBreakdownComponent
               label: this._translateService.instant(
                 'products.productType.other',
               ),
-              data: new Array(24).fill(24),
+              data: new Array(24).fill(0),
               backgroundColor: 'rgba(142,94,162,0.8)',
               yAxisID: 'y-axis-left',
             },
@@ -174,12 +175,17 @@ export class ReportsHourlyBreakdownComponent
     );
 
     combineLatest([
+      this.selectedUnit$,
       this._store.select(productsSelectors.getAllGeneratedProducts),
       this.orders$,
     ])
       .pipe(untilDestroyed(this))
-      .subscribe(([products, orders]): void => {
-        this._amounts = hourlyBreakdownOrderAmounts(products, orders);
+      .subscribe(([unit, products, orders]): void => {
+        this._amounts = hourlyBreakdownOrderAmounts(
+          unit.timeZone || 'Europe/Budapest',
+          products,
+          orders,
+        );
 
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
           ...this._amounts.ordersCount,

@@ -7481,6 +7481,13 @@
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
+"@vvo/tzdb@^6.9.0":
+  version "6.9.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.9.0.tgz#f1841cdcd01b5bae552d87788789d625501f7e1f"
+  integrity sha512-0PcxXN5QT414p8j9eNlmcyHJKAFw5j212LYFHlQu0b3I/TqkgXdJABKe3P/n57ZaRqvwCdnmm8sqxodhvpO9nQ==
+  dependencies:
+    luxon "1.26.0"
+
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.11.1.tgz#2bfd767eae1a6996f432ff7e8d7fc75679c0b6a7"

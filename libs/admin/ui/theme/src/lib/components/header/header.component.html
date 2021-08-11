@@ -23,6 +23,17 @@
   <nb-actions size="small">
     <nb-action class="user-action">
       <button
+        *ngIf="networkError$ | async as networkError"
+        nbButton
+        shape="round"
+        status="danger"
+        size="small"
+        (click)="reloadWindow()"
+      >
+        {{ 'header.networkError' | translate }}: {{ networkError }}
+      </button>
+
+      <button
         nbButton
         shape="round"
         class="me-2"

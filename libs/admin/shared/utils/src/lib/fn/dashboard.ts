@@ -6,19 +6,24 @@ import {
   IOrderAmounts,
   UnpayCategoryStatObjItem,
 } from '@bgap/shared/types';
+import { DateTime } from 'luxon';
 
 export const calculateUnpayCategoryStat = (
   category: CrudApi.UnpayCategory,
-  categoryOrders: CrudApi.Order[],
+  orders: CrudApi.Order[],
 ): UnpayCategoryStatObjItem => {
+  const filteredOrders = (orders || []).filter(
+    o => o.unpayCategory === category,
+  );
+
   return {
     category,
-    count: categoryOrders.length,
-    sum: categoryOrders.reduce(
+    count: filteredOrders.length,
+    sum: filteredOrders.reduce(
       (prev, cur) => prev + cur.sumPriceShown.priceSum,
       0,
     ),
-    uniqueUsersCount: [...new Set(categoryOrders.map(o => o.userId))].length,
+    uniqueUsersCount: [...new Set(filteredOrders.map(o => o.userId))].length,
   };
 };
 
@@ -35,6 +40,7 @@ export const getDailyOrdersSum = (
 };
 
 export const hourlyBreakdownOrderAmounts = (
+  timeZone: string,
   products: CrudApi.GeneratedProduct[],
   orders: CrudApi.Order[],
 ): IOrderAmount => {
@@ -54,16 +60,19 @@ export const hourlyBreakdownOrderAmounts = (
     });
 
   orders.forEach(o => {
-    const hour = new Date(o.createdAt || 0).getHours();
-    o.items
-      ?.filter(i => productTypeMap[i.productId])
-      .forEach((i: CrudApi.OrderItem) => {
-        amounts[<EProductType>productTypeMap[i.productId]][hour] +=
-          i.priceShown.priceSum;
-        amounts['sum'][hour] += i.priceShown.priceSum;
-      });
+    if (o.createdAt) {
+      const date: DateTime = DateTime.fromISO(o.createdAt, { zone: timeZone });
 
-    amounts['ordersCount'][hour] += 1;
+      o.items
+        ?.filter(i => productTypeMap[i.productId])
+        .forEach((i: CrudApi.OrderItem) => {
+          amounts[<EProductType>productTypeMap[i.productId]][date.hour] +=
+            i.priceShown.priceSum;
+          amounts['sum'][date.hour] += i.priceShown.priceSum;
+        });
+
+      amounts['ordersCount'][date.hour] += 1;
+    }
   });
 
   return amounts;
@@ -87,7 +96,7 @@ export const dailySalesPerTypeOrderAmounts = (
   orders.forEach(o => {
     o.items.forEach(i => {
       amounts[<EProductType>productTypeMap[i.productId]] +=
-        i.priceShown.priceSum;
+        i.sumPriceShown.priceSum;
     });
   });
 
