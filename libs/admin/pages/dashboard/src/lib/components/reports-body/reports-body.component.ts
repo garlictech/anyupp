@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
 import {
@@ -15,12 +15,12 @@ import {
 } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { IKeyValueObject } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { isRejectedOrder, orderHasIncome } from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -36,8 +36,12 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
   >([]);
   public noIncomeOrders$: BehaviorSubject<CrudApi.Order[]> =
     new BehaviorSubject<CrudApi.Order[]>([]);
+  public unpayOrders$: BehaviorSubject<CrudApi.Order[]> = new BehaviorSubject<
+    CrudApi.Order[]
+  >([]);
   public rejectedOrders$: BehaviorSubject<CrudApi.Order[]> =
     new BehaviorSubject<CrudApi.Order[]>([]);
+  public selectedUnit$: Observable<CrudApi.Unit>;
   public dailyOrdersSum: IKeyValueObject = {};
   public groupCurrency = '';
 
@@ -46,6 +50,12 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.dateFormControl = new FormControl();
+
+    this.selectedUnit$ = this._store.pipe(
+      select(unitsSelectors.getSelectedUnit),
+      filterNullish(),
+      untilDestroyed(this),
+    );
   }
 
   ngOnInit(): void {
@@ -81,13 +91,22 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((historyOrders: CrudApi.Order[]): void => {
         this.incomeOrders$.next(
-          historyOrders.filter(o => orderHasIncome(o) && !isRejectedOrder(o)),
+          historyOrders.filter(
+            o => CrudApi.orderHasIncome(o) && !CrudApi.isRejectedOrder(o),
+          ),
         );
         this.noIncomeOrders$.next(
-          historyOrders.filter(o => !orderHasIncome(o) && !isRejectedOrder(o)),
+          historyOrders.filter(
+            o => !CrudApi.orderHasIncome(o) && !CrudApi.isRejectedOrder(o),
+          ),
+        );
+        this.unpayOrders$.next(
+          historyOrders.filter(
+            o => o.transactionStatus === CrudApi.PaymentStatus.failed,
+          ),
         );
         this.rejectedOrders$.next(
-          historyOrders.filter(o => isRejectedOrder(o)),
+          historyOrders.filter(o => CrudApi.isRejectedOrder(o)),
         );
 
         this._changeDetectorRef.detectChanges();

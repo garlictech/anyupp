@@ -78,6 +78,21 @@ const deleteCreate = <T, K>(
     switchMap(() => createOperation()),
   );
 
+export const createConsumerUser = () => (deps: SeederDependencies) => {
+  console.debug('createConsumerUser');
+
+  const input: CrudApi.CreateUserInput = {
+    id: 'test-alice',
+    name: 'Mekk Elek',
+    email: 'testuser+alice@anyupp.com',
+    phone: '1234',
+  };
+  return deleteCreate(
+    () => deps.crudSdk.DeleteUser({ input: { id: input.id ?? '' } }),
+    () => deps.crudSdk.CreateUser({ input }),
+  );
+};
+
 export const createTestChain =
   (chainIdx: number) => (deps: SeederDependencies) => {
     console.debug('createTestChain', {
@@ -148,6 +163,7 @@ export const createTestUnit =
       groupId: generateGroupId(chainIdx, groupIdx),
       chainId: generateChainId(chainIdx),
       name: `Késdobáló #${chainIdx}${groupIdx}${unitIdx}`,
+      timeZone: 'Europe/Budapest',
       lanes: [
         {
           color: '#e72222',
@@ -381,30 +397,37 @@ export const createTestProductCategory =
   };
 
 export const createTestChainProduct =
-  (chainIdx: number, productCategoryIdx: number, productIdx: number) =>
+  (
+    chainIdx: number,
+    productCategoryIdx: number,
+    productIdx: number,
+    productName: string,
+    productType: EProductType,
+  ) =>
   (deps: SeederDependencies) => {
     console.debug('createTestChainProduct', {
       chainIdx,
       productCategoryIdx,
       productIdx,
+      productName,
+      productType,
     });
     const input: DeletableInput<CrudApi.CreateChainProductInput> = {
       id: generateChainProductId(chainIdx, productIdx),
       chainId: generateChainId(chainIdx),
       name: {
-        hu: `Teszt chain termék #${productIdx} név`,
-        en: `Test chain product #${productIdx} name`,
+        hu: `${productName} #${productIdx}`,
+        en: `${productName} #${productIdx}`,
       },
       description: {
-        hu: `Teszt chain termék #${productIdx} leírás`,
-        en: `Test chain termék #${productIdx} description`,
+        hu: `${productName} #${productIdx} leírás`,
+        en: `${productName} #${productIdx} description`,
       },
       productCategoryId: generateProductCategoryId(
         chainIdx,
         productCategoryIdx,
       ),
-      productType:
-        productIdx % 2 === 0 ? EProductType.FOOD : EProductType.DRINK,
+      productType,
       isVisible: true,
       variants: [
         {
@@ -422,7 +445,7 @@ export const createTestChainProduct =
           },
         },
       ],
-      image: 'https://picsum.photos/100',
+      image: 'https://picsum.photos/200',
       allergens: [
         CrudApi.Allergen.egg,
         CrudApi.Allergen.gluten,

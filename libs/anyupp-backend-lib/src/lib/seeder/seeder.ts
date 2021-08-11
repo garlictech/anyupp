@@ -1,19 +1,6 @@
-import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  createAdminUser as resolverCreateAdminUser,
-  ResolverErrorCode,
-  unitRequestHandler,
-} from '@bgap/anyupp-gql/backend';
-import * as R from 'ramda';
-import {
-  getCognitoUsername,
-  otherAdminUsernames,
-  testAdminUsername,
-  testAdminUserPassword,
-  unitFixture,
-} from '@bgap/shared/fixtures';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
+import * as R from 'ramda';
 import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
 import {
   catchError,
@@ -25,9 +12,29 @@ import {
   tap,
   toArray,
 } from 'rxjs/operators';
+
+import {
+  createAdminUser as resolverCreateAdminUser,
+  ResolverErrorCode,
+  unitRequestHandler,
+} from '@bgap/anyupp-gql/backend';
+import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  getCognitoUsername,
+  orderFixture,
+  otherAdminUsernames,
+  seededIdPrefix,
+  testAdminUsername,
+  testAdminUserPassword,
+  transactionFixture,
+  unitFixture,
+} from '@bgap/shared/fixtures';
+import { EProductType } from '@bgap/shared/types';
+
 import {
   createAdminUser,
   createComponentSets,
+  createConsumerUser,
   createTestAdminRoleContext,
   createTestChain,
   createTestChainProduct,
@@ -166,6 +173,7 @@ export const seedBusinessData = (deps: SeederDependencies) =>
       delay(1000),
       switchMap(() =>
         concat(
+          createConsumerUser()(deps).pipe(ce('### Consumer user')),
           createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
           createTestGroup(1, 1)(deps).pipe(ce('### Group SEED 01')),
           createTestGroup(1, 2)(deps).pipe(ce('### Group SEED 02')),
@@ -175,23 +183,27 @@ export const seedBusinessData = (deps: SeederDependencies) =>
           createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
           createTestProductCategory(1, 1)(deps).pipe(ce('### ProdCat SEED 01')),
           createTestProductCategory(1, 2)(deps).pipe(ce('### ProdCat SEED 02')),
-
           createComponentSets(deps).pipe(ce('### ComponentSets')),
-
           createTestChainProduct(
             1,
             1,
             1,
+            'Hamburger',
+            EProductType.FOOD,
           )(deps).pipe(ce('### ChainProduct SEED 01')),
           createTestChainProduct(
             1,
             1,
             2,
+            'Fanta',
+            EProductType.DRINK,
           )(deps).pipe(ce('### ChainProduct SEED 02')),
           createTestChainProduct(
             1,
             2,
             3,
+            'Hamburger',
+            EProductType.FOOD,
           )(deps).pipe(ce('### ChainProduct SEED 03')),
           createTestGroupProduct(
             1,
@@ -244,60 +256,82 @@ const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
     ),
   );
 
-const seedLotsOfOrders = (deps: SeederDependencies) => {
-  console.debug(`Creating a lot of test orders.`);
+interface BulkOrderInput {
+  order: CrudApi.CreateOrderInput;
+  transaction: CrudApi.CreateTransactionInput;
+}
+
+const seedLotsOfOrders = (
+  deps: SeederDependencies,
+  idxBase: number,
+  range: number,
+  orderInput: CrudApi.CreateOrderInput,
+  transactionInput: CrudApi.CreateTransactionInput,
+) => {
+  console.debug(`Creating a lot of test orders (${range}).`);
 
   return pipe(
-    R.range(1, 200),
-    R.map(
-      (index): CrudApi.CreateOrderInput => ({
-        userId: 'test-monad',
-        unitId: unitFixture.unitId_seeded_01,
-        orderNum: index.toString().padStart(6, '0'),
-        items: [],
-        paymentMode: {
-          type: CrudApi.PaymentType.cash,
-          method: CrudApi.PaymentMethod.cash,
+    R.range(1, range + 1),
+    R.map((index): BulkOrderInput => {
+      const orderId = `${seededIdPrefix}order_id_${idxBase + index}`;
+      const transactionId = `${seededIdPrefix}transaction_id_${
+        idxBase + index
+      }`;
+
+      return {
+        order: {
+          ...orderInput,
+          id: orderId,
+          transactionId,
+          orderNum: index.toString().padStart(6, '0'),
         },
-        statusLog: [],
-        archived: !(index % 2),
-        sumPriceShown: {
-          currency: 'huf',
-          pricePerUnit: 10.0,
-          priceSum: 10.0,
-          tax: 10,
-          taxSum: 1,
+        transaction: {
+          ...transactionInput,
+          id: transactionId,
+          orderId,
         },
-        takeAway: false,
-      }),
-    ),
+      };
+    }),
     x => from(x),
   ).pipe(
-    concatMap(input => deps.crudSdk.CreateOrder({ input })),
+    concatMap((input: BulkOrderInput) =>
+      of('magic').pipe(
+        switchMap(() =>
+          deps.crudSdk.CreateTransaction({ input: input.transaction }),
+        ),
+        switchMap(() => deps.crudSdk.CreateOrder({ input: input.order })),
+      ),
+    ),
     toArray(),
     tap(objects => console.debug(`Created ${objects?.length} test orders.`)),
   );
 };
 
-const seedConsumerUser = (deps: SeederDependencies) => {
+interface ConsumerUser {
+  username: string;
+  email: string;
+  emailVerified: string;
+  name: string;
+}
+
+const seedConsumerUser = (deps: SeederDependencies, userData: ConsumerUser) => {
   console.debug(`Seeding a consumer user`);
-  const Username = 'testuser+monad';
 
   return pipe(
     {
-      Username,
+      Username: userData.username,
       UserAttributes: [
         {
           Name: 'email',
-          Value: 'testuser+monad@anyupp.com',
+          Value: userData.email,
         },
         {
           Name: 'email_verified',
-          Value: 'true',
+          Value: userData.emailVerified,
         },
         {
           Name: 'name',
-          Value: 'Gombóc Artúr',
+          Value: userData.name,
         },
       ],
       UserPoolId: deps.consumerUserPoolId,
@@ -312,7 +346,7 @@ const seedConsumerUser = (deps: SeederDependencies) => {
   ).pipe(
     map(() => ({
       UserPoolId: deps.consumerUserPoolId,
-      Username,
+      Username: userData.username,
       Password: password,
       Permanent: true,
     })),
@@ -335,11 +369,43 @@ const seedConsumerUser = (deps: SeederDependencies) => {
 
 export const seedAll = (deps: SeederDependencies) =>
   seedAdminUser(deps).pipe(
-    switchMap(() => seedConsumerUser(deps)),
+    switchMap(() =>
+      seedConsumerUser(deps, {
+        username: 'test-monad',
+        email: 'testuser+monad@anyupp.com',
+        emailVerified: 'true',
+        name: 'Gombóc Artúr',
+      }),
+    ),
+    switchMap(() =>
+      seedConsumerUser(deps, {
+        username: 'test-alice',
+        email: 'testuser+alice@anyupp.com',
+        emailVerified: 'true',
+        name: 'Mekk Elek',
+      }),
+    ),
     delay(2000),
     switchMap(() => seedBusinessData(deps)),
     delay(2000),
-    switchMap(() => seedLotsOfOrders(deps)),
+    switchMap(() =>
+      seedLotsOfOrders(
+        deps,
+        0,
+        10,
+        orderFixture.activeWaitingCardOrderInput,
+        transactionFixture.waitingCardTransactionInput,
+      ),
+    ),
+    switchMap(() =>
+      seedLotsOfOrders(
+        deps,
+        10,
+        10,
+        orderFixture.activeWaitingCashOrderInput,
+        transactionFixture.waitingCashTransactionInput,
+      ),
+    ),
     delay(2000),
     switchMap(() =>
       combineLatest(
