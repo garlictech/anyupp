@@ -174,26 +174,60 @@ export const getOpeningHoursAtDate = (
   };
 };
 
+/**
+ * Get the next 7 opening hours
+ * The first day could be yesterday
+ *
+ * @param unit
+ * @param time exact UTC time
+ * @returns An array with daily opening hours
+ */
 export const getUnitOpeningHoursAtTime = (
   unit: CrudApi.Unit,
   time: DateTime = DateTime.utc(),
 ): Array<AnyuppApi.OpeningHoursByDate> => {
   const yesterday = time.minus({ day: 1 });
   const today = time;
-
   const openingHoursYesterday = getOpeningHoursAtDate(
     yesterday.toFormat(dateFormat),
     unit,
   );
-  const firstActiveDate = isTimeInOpeningHours({
+  const openingHoursToday = getOpeningHoursAtDate(
+    today.toFormat(dateFormat),
+    unit,
+  );
+
+  const isYesterdayOpeningHoursStillActive = isTimeInOpeningHours({
     atUtcTime: time,
     openingHours: openingHoursYesterday,
-  })
-    ? yesterday
-    : today;
+  });
+
+  const isTodayOpeningHoursActive = isTimeInOpeningHours({
+    atUtcTime: time,
+    openingHours: openingHoursToday,
+  });
+
+  let firstActiveDate;
+  let actualOpeningHours: AnyuppApi.OpeningHoursByDate;
+
+  if (isYesterdayOpeningHoursStillActive) {
+    firstActiveDate = yesterday;
+    actualOpeningHours = openingHoursYesterday;
+  } else {
+    firstActiveDate = today;
+    actualOpeningHours = openingHoursToday;
+    if (!isTodayOpeningHoursActive) {
+      actualOpeningHours.closed = true;
+      if (openingHoursToday.to && openingHoursToday.to <= time.toMillis()) {
+        // AFTER Opening hours
+        delete actualOpeningHours.from;
+        delete actualOpeningHours.to;
+      }
+    }
+  }
 
   return [
-    getOpeningHoursAtDate(firstActiveDate.toFormat(dateFormat), unit),
+    actualOpeningHours,
     getOpeningHoursAtDate(
       firstActiveDate.plus({ day: 1 }).toFormat(dateFormat),
       unit,
