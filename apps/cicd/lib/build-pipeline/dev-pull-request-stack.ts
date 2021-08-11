@@ -53,6 +53,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
             variables: {
               NODE_OPTIONS:
                 '--unhandled-rejections=strict --max_old_space_size=8196',
+              GIT_DISCOVERY_ACROSS_FILESYSTEM: 1,
             },
             'git-credential-helper': 'yes',
           },
