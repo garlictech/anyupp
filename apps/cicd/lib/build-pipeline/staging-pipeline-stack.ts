@@ -11,6 +11,9 @@ export class StagingBuildPipelineStack extends sst.Stack {
       buildProjectPhases: {
         install: {
           commands: ['apps/cicd/scripts/stage-install.sh'],
+          'runtime-versions': {
+            nodejs: 14,
+          },
         },
         build: {
           commands: [

@@ -103,6 +103,7 @@ export const createBuildProject = (
     environment: {
       computeType: codebuild.ComputeType.MEDIUM,
       buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
+      privileged: true,
     },
   });
 };

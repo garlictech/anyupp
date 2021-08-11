@@ -11,6 +11,9 @@ export class ProdBuildPipelineStack extends sst.Stack {
       buildProjectPhases: {
         install: {
           commands: ['apps/cicd/scripts/prod-install.sh'],
+          'runtime-versions': {
+            nodejs: 14,
+          },
         },
         build: {
           commands: [
