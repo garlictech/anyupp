@@ -7481,7 +7481,7 @@
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
-"@vvo/tzdb@^6.9.0":
+"@vvo/tzdb@6.9.0":
   version "6.9.0"
   resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.9.0.tgz#f1841cdcd01b5bae552d87788789d625501f7e1f"
   integrity sha512-0PcxXN5QT414p8j9eNlmcyHJKAFw5j212LYFHlQu0b3I/TqkgXdJABKe3P/n57ZaRqvwCdnmm8sqxodhvpO9nQ==
@@ -17773,6 +17773,11 @@ lru-queue@^0.1.0:
   integrity sha1-Jzi9nw089PhEkMVzbEhpmsYyzaM=
   dependencies:
     es5-ext "~0.10.2"
+
+luxon@1.26.0:
+  version "1.26.0"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.26.0.tgz#d3692361fda51473948252061d0f8561df02b578"
+  integrity sha512-+V5QIQ5f6CDXQpWNICELwjwuHdqeJM1UenlZWx5ujcRMc9venvluCjFb4t5NYLhb6IhkbMVOxzVuOqkgMxee2A==
 
 luxon@2.0.2:
   version "2.0.2"
