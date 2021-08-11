@@ -102,7 +102,7 @@ export const createBuildProject = (
     cache,
     environment: {
       computeType: codebuild.ComputeType.MEDIUM,
-      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+      buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
     },
   });
 };
@@ -322,7 +322,6 @@ export const createCommonDevPipeline = (
         commands: [
           'chmod +x ./tools/*.sh',
           `./tools/setup-aws-environment.sh`,
-          './tools/install-nodejs-14.sh',
           'yarn --frozen-lockfile',
           'npm install -g @aws-amplify/cli appcenter-cli',
         ],

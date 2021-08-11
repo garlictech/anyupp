@@ -37,7 +37,7 @@ export class BuildEnvironmentStack extends sst.Stack {
     const x86Image = new codebuild.Project(this, 'AnyUpp: Docker Dev X86', {
       source: githubSource,
       environment: {
-        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+        buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
         privileged: true,
       },
       environmentVariables: {
@@ -79,7 +79,7 @@ export class BuildEnvironmentStack extends sst.Stack {
           'buildspec-manifest.yml',
         ),
         environment: {
-          buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+          buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
           privileged: true,
         },
         environmentVariables: {
