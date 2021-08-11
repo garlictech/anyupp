@@ -29,12 +29,6 @@ const generateGroupId = (chainIdx: number, idx: number) =>
   `${seededIdPrefix}group_c${chainIdx}_${idx}_id`;
 const generateUnitId = (chainIdx: number, groupIdx: number, idx: number) =>
   `${seededIdPrefix}unit_c${chainIdx}_g${groupIdx}_${idx}_id`;
-const generateLaneId = (
-  chainIdx: number,
-  groupIdx: number,
-  unitIdx: number,
-  idx: number,
-) => `${seededIdPrefix}lane_c${chainIdx}_g${groupIdx}_u${unitIdx}_${idx}_id`;
 const generateProductCategoryId = (chainIdx: number, idx: number) =>
   `${seededIdPrefix}product_category_c${chainIdx}_${idx}_id`;
 const generateChainProductId = (chainIdx: number, idx: number) =>
@@ -167,12 +161,12 @@ export const createTestUnit =
       lanes: [
         {
           color: '#e72222',
-          id: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
+          id: 'lane_01',
           name: 'bár',
         },
         {
           color: '#e123ef',
-          id: generateLaneId(chainIdx, groupIdx, unitIdx, 2),
+          id: 'lane_02',
           name: 'konyha',
         },
       ],
@@ -531,7 +525,7 @@ export const createTestUnitProduct =
       chainId: generateChainId(chainIdx),
       groupId: generateGroupId(chainIdx, groupIdx),
       unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
-      laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
+      laneId: 'lane_01',
       isVisible: true,
       takeaway: false,
       position: productIdx,
@@ -651,7 +645,7 @@ export const createTestOrder =
             en: 'glass',
             hu: 'pohár',
           },
-          laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
+          laneId: 'lane_01',
           image: 'https://picsum.photos/100',
           statusLog: [],
         },
