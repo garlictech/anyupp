@@ -1,5 +1,5 @@
 #!/bin/bash
-source './tools/utils.sh'
+source '../../tools/utils.sh'
 
 APPNAME=$1
 STAGE=$2
