@@ -9,6 +9,56 @@ Feature: Dashboard
     Then I set the language to EN
     Then I should see "John Doe" text
     And the "Dashboard" title is displayed
+    And I should see the "ORDERS ACCEPTED" button
+    Then I always should see the "Active orders" tab first
+
+  Scenario: Active orders tab
+    Then I should see the "Placed orders" icon with title
+    And the "Placed orders" is selected
+    And I should see the "Manual payments" icon with title
+    And I should see the "Problematic orders" icon with title
+    # about the issue #1342
+    And I should see at least 100 orders on the "Manual payments" icon
+    When I click on the "Manual payments" icon
+    Then I should see at least 100 orders as I scrolling down on the list
+    And I should see at least 100 orders on the "Problematic orders" icon
+    When I click on the "Problematic orders" icon
+    Then I should see at least 100 orders as I scrolling down on the list
+
+  Scenario: Get the order to History from Active orders (stripe)
+    Given I have an inapp "PLACED" order with 1 product
+    When the "Placed orders" icon is selected
+    Then I should see an order with an id starts with "#"
+    And I should see the time of the created order
+    When I click on the order
+    Then I should see the deatils of it
+    When I click on the "PLACED" button next to the product name
+    Then I should see the buttons in "PROCESSING"
+    When I click on the "PROCESSING" button next to the product name
+    Then I should see the buttons in "READY"
+    When I click on the "READY" button next to the product name
+    Then I should not see the order on the "Active orders" tab
+    When I click on the "Orders history" tab
+    Then I should see the paid inapp order
+
+  Scenario: Get the order to History from Active orders (cash/card)
+    Given I have a cash/card "NONE" order with 1 product
+    When the "Placed orders" icon is selected
+    And I click on the "Manual payments" icon with title
+    Then I should see an order with an id starts with "#"
+    And I should see the time of the created order
+    When I click on the order
+    Then I should see the deatils of it
+    When I click on the "NONE" button next to the product name
+    Then I should see the buttons in "PLACED"
+    When I click on the "PLACED" button next to the product name
+    Then I should see the buttons in "PROCESSING"
+    When I click on the "PROCESSING" button next to the product name
+    Then I should see the buttons in "READY"
+    When I click on the "READY" button next to the product name
+    Then I should not see the order on the "Active orders" tab
+    When I click on the "Orders history" tab
+    Then I should see the paid cash/card order
 
   Scenario: Floormap status updates
     Given I am on the dashboard page
