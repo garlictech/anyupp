@@ -2,6 +2,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import {
   orderFixture as ofx,
   generatedProductFixture as gpfx,
+  testIdPrefix,
 } from '@bgap/shared/fixtures';
 
 import {
@@ -13,10 +14,16 @@ import {
 } from './dashboard';
 
 const products: CrudApi.GeneratedProduct[] = [
-  gpfx.generatedDrinkProduct,
-  gpfx.generatedFoodProduct,
+  {
+    ...gpfx.generatedDrinkProduct,
+    id: `${testIdPrefix}_unit_product_fanta`,
+  },
+  {
+    ...gpfx.generatedFoodProduct,
+    id: `${testIdPrefix}_unit_product_hamburger`,
+  },
 ];
-const tz = 'Europe/Budapest';
+const timezoneBudapest = 'Europe/Budapest';
 const singleOrder = [ofx.convertInputToOrder(ofx.historySuccessCardOrderInput)];
 const successHistoryOrders = [
   ofx.convertInputToOrder(ofx.historySuccessCardOrderInput),
@@ -90,7 +97,11 @@ describe('Dashboard pure function tests', () => {
 
   describe('hourlyBreakdownOrderAmounts', () => {
     it('should calculate 1 item', () => {
-      const result = hourlyBreakdownOrderAmounts(tz, products, singleOrder);
+      const result = hourlyBreakdownOrderAmounts(
+        timezoneBudapest,
+        products,
+        singleOrder,
+      );
       const expected = {
         drink: [
           0, 0, 0, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -119,7 +130,7 @@ describe('Dashboard pure function tests', () => {
 
     it('should calculate success history items', () => {
       const result = hourlyBreakdownOrderAmounts(
-        tz,
+        timezoneBudapest,
         products,
         successHistoryOrders,
       );
@@ -151,7 +162,7 @@ describe('Dashboard pure function tests', () => {
 
     it('should calculate failed history items', () => {
       const result = hourlyBreakdownOrderAmounts(
-        tz,
+        timezoneBudapest,
         products,
         failedHistoryOrders,
       );

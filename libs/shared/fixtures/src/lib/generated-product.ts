@@ -62,7 +62,7 @@ const generatedProductBase: CrudApi.CreateGeneratedProductInput = {
 
 const generatedDrinkProduct: CrudApi.GeneratedProduct = {
   ...generatedProductBase,
-  id: `seeded_unit_product_c1_g1_1_id`,
+  id: `${testIdPrefix}_generated_product_id_1`,
   productType: 'drink',
   createdAt: '',
   updatedAt: '',
@@ -70,7 +70,7 @@ const generatedDrinkProduct: CrudApi.GeneratedProduct = {
 
 const generatedFoodProduct: CrudApi.GeneratedProduct = {
   ...generatedProductBase,
-  id: `seeded_unit_product_c1_g1_2_id`,
+  id: `${testIdPrefix}_generated_product_id_2`,
   productType: 'food',
   createdAt: '',
   updatedAt: '',

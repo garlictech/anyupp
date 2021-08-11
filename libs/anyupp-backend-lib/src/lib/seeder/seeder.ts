@@ -273,8 +273,8 @@ const seedLotsOfOrders = (
   return pipe(
     R.range(1, range + 1),
     R.map((index): BulkOrderInput => {
-      const orderId = `${seededIdPrefix}_order_id_${idxBase + index}`;
-      const transactionId = `${seededIdPrefix}_transaction_id_${
+      const orderId = `${seededIdPrefix}order_id_${idxBase + index}`;
+      const transactionId = `${seededIdPrefix}transaction_id_${
         idxBase + index
       }`;
 

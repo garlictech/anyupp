@@ -32,7 +32,7 @@ const orderItemInputBase = (productName: string) => ({
     CrudApi.Allergen.gluten,
     CrudApi.Allergen.peanut,
   ],
-  laneId: 'seeded_lane_c1_g1_u1_1_id',
+  laneId: `${testIdPrefix}_lane_id`,
   priceShown: {
     taxSum: 318.9,
     currency: 'HUF',
@@ -40,7 +40,7 @@ const orderItemInputBase = (productName: string) => ({
     priceSum: 1500,
     pricePerUnit: 300,
   },
-  variantId: 'seeded_unit_product_variant_c1_p2_1_id',
+  variantId: `${testIdPrefix}_variant_id`,
   variantName: {
     de: null,
     en: 'glass',
@@ -56,7 +56,7 @@ const orderItemInputBase = (productName: string) => ({
       type: 'modifier',
       items: [
         {
-          productComponentId: 'seeded_product_component_01_id',
+          productComponentId: `${testIdPrefix}_product_component_id`,
           name: {
             de: 'Room temperature',
             en: 'Room temperature',
@@ -66,7 +66,7 @@ const orderItemInputBase = (productName: string) => ({
           allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
         },
       ],
-      productSetId: 'seeded_product_component_set_02_id',
+      productSetId: `${testIdPrefix}_product_component_set_id`,
     },
   ],
 });
@@ -77,11 +77,11 @@ const orderInputBase = {
   items: [
     {
       ...orderItemInputBase('Hamburger'),
-      productId: `seeded_unit_product_c1_g1_2_id`,
+      productId: `${testIdPrefix}_unit_product_hamburger`,
     },
     {
       ...orderItemInputBase('Fanta'),
-      productId: `seeded_unit_product_c1_g1_1_id`,
+      productId: `${testIdPrefix}_unit_product_fanta`,
     },
   ],
   sumPriceShown: {

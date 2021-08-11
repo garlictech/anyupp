@@ -3,11 +3,12 @@ import {
   cartFixture,
   orderFixture as ofx,
   transactionFixture as tfx,
+  unitFixture,
 } from '@bgap/shared/fixtures';
 import { toFixed2Number } from '@bgap/shared/utils';
 import { getDayIntervals } from '@bgap/admin/shared/utils';
 
-import { getAllPaginatedData } from 'libs/gql-sdk/src';
+import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { delay, map, switchMap } from 'rxjs/operators';
 import { IDateIntervals } from '@bgap/shared/types';
 
@@ -227,7 +228,6 @@ describe('calculateOrderSumPriceRounded function', () => {
 
 describe('SearchOrders function', () => {
   const crudSdk = CrudApi.getCrudSdkForIAM(accessKeyId, secretAccessKey);
-
   test('Pagination should return with new archived orders', async () => {
     const isoDate = new Date().toISOString();
     const dayIntervals: IDateIntervals = getDayIntervals(isoDate);
@@ -236,7 +236,7 @@ describe('SearchOrders function', () => {
     const searchParams = {
       query: {
         filter: {
-          unitId: { eq: 'seeded_unit_c1_g1_1_id' },
+          unitId: { eq: unitFixture.unitId_seeded_01 },
           archived: { eq: true },
           createdAt: {
             gte: new Date(dayIntervals.from).toISOString(),
