@@ -54,6 +54,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
               NODE_OPTIONS:
                 '--unhandled-rejections=strict --max_old_space_size=8196',
             },
+            'git-credential-helper': 'yes',
           },
         }),
         environment: {
