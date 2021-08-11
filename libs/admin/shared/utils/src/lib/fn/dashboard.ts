@@ -4,27 +4,50 @@ import {
   IKeyValueObject,
   IOrderAmount,
   IOrderAmounts,
+  UnpayCategoryMethodStatObjItem,
   UnpayCategoryStatObjItem,
 } from '@bgap/shared/types';
 import { DateTime } from 'luxon';
 
+export const calculatePaymentMethodSums = (
+  paymentMethods: CrudApi.PaymentMethod[],
+  orders: CrudApi.Order[],
+) => {
+  const paymentMethodSums: UnpayCategoryMethodStatObjItem = {};
+
+  paymentMethods.forEach(method => {
+    paymentMethodSums[method] = orders
+      .filter(o => o.paymentMode.method === method)
+      .reduce((prev, cur) => prev + cur.sumPriceShown.priceSum, 0);
+  });
+
+  return paymentMethodSums;
+};
+
 export const calculateUnpayCategoryStat = (
   category: CrudApi.UnpayCategory,
   orders: CrudApi.Order[],
+  paymentMethods: CrudApi.PaymentMethod[],
 ): UnpayCategoryStatObjItem => {
-  const filteredOrders = (orders || []).filter(
+  const categoryOrders = (orders || []).filter(
     o => o.unpayCategory === category,
   );
 
-  return {
+  const stat = {
     category,
-    count: filteredOrders.length,
-    sum: filteredOrders.reduce(
+    count: categoryOrders.length,
+    sum: categoryOrders.reduce(
       (prev, cur) => prev + cur.sumPriceShown.priceSum,
       0,
     ),
-    uniqueUsersCount: [...new Set(filteredOrders.map(o => o.userId))].length,
+    uniqueUsersCount: [...new Set(categoryOrders.map(o => o.userId))].length,
+    paymentMethodSums: calculatePaymentMethodSums(
+      paymentMethods,
+      categoryOrders,
+    ),
   };
+
+  return stat;
 };
 
 export const getDailyOrdersSum = (

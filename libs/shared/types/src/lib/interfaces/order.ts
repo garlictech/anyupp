@@ -44,10 +44,15 @@ export interface ICurrencyValue {
   currency: string;
 }
 
+export interface UnpayCategoryMethodStatObjItem {
+  [mode: string]: number;
+}
+
 export interface UnpayCategoryStatObjItem {
-  category: CrudApi.UnpayCategory;
+  category: CrudApi.UnpayCategory | string;
   count: number;
   sum: number;
+  paymentMethodSums: UnpayCategoryMethodStatObjItem;
   uniqueUsersCount: number;
 }
 

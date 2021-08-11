@@ -346,7 +346,8 @@
       "other": "Egyéb",
       "delivery": "Delivery",
       "coupon": "Kupon",
-      "event": "Rendezvény"
+      "event": "Rendezvény",
+      "sum": "Összesen"
     }
   },
   "print": {
