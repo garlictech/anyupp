@@ -346,7 +346,8 @@
       "other": "Other",
       "delivery": "Delivery",
       "coupon": "Coupon",
-      "event": "Event"
+      "event": "Event",
+      "sum": "Sum"
     }
   },
   "auth": {

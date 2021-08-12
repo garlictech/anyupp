@@ -6,6 +6,7 @@ import {
 } from '@bgap/shared/fixtures';
 
 import {
+  calculatePaymentMethodSums,
   calculateUnpayCategoryStat,
   dailySalesPerPaymentMethodOrderAmounts,
   dailySalesPerTypeOrderAmounts,
@@ -16,11 +17,11 @@ import {
 const products: CrudApi.GeneratedProduct[] = [
   {
     ...gpfx.generatedDrinkProduct,
-    id: `${testIdPrefix}_unit_product_fanta`,
+    id: `${testIdPrefix}unit_product_fanta`,
   },
   {
     ...gpfx.generatedFoodProduct,
-    id: `${testIdPrefix}_unit_product_hamburger`,
+    id: `${testIdPrefix}unit_product_hamburger`,
   },
 ];
 const timezoneBudapest = 'Europe/Budapest';
@@ -55,15 +56,45 @@ const failedHistoryOrders = [
 ];
 
 describe('Dashboard pure function tests', () => {
+  describe('calculatePaymentMethodSums', () => {
+    it('should calculate 1 item', () => {
+      const result = calculatePaymentMethodSums(
+        [
+          CrudApi.PaymentMethod.card,
+          CrudApi.PaymentMethod.cash,
+          CrudApi.PaymentMethod.inapp,
+        ],
+        failedHistoryOrders,
+      );
+      const expected = {
+        card: 29820,
+        cash: 29820,
+        inapp: 0,
+      };
+
+      expect(result).toEqual(expected);
+    });
+  });
+
   describe('calculateUnpayCategoryStat', () => {
     it('should calculate 1 item', () => {
       const result = calculateUnpayCategoryStat(
         CrudApi.UnpayCategory.manager_meal,
         failedHistoryOrders,
+        [
+          CrudApi.PaymentMethod.card,
+          CrudApi.PaymentMethod.cash,
+          CrudApi.PaymentMethod.inapp,
+        ],
       );
       const expected = {
         category: 'manager_meal',
         count: 2,
+        paymentMethodSums: {
+          card: 2982,
+          cash: 2982,
+          inapp: 0,
+        },
         sum: 5964,
         uniqueUsersCount: 1,
       };

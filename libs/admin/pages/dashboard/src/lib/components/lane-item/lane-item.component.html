@@ -9,9 +9,9 @@
     <div
       class="p-1 subtitle-2 font-larger position-relative"
       [ngClass]="{
-        'col-12 col-xl-6':
+        'col-12 col-xl-7':
           isOrderItemStatus('processing') || isOrderItemStatus('ready'),
-        'col-12 col-xl-8': isOrderItemStatus('placed')
+        'col-12 col-xl-9': isOrderItemStatus('placed')
       }"
     >
       <nb-user
@@ -21,28 +21,18 @@
         [picture]="orderItem.image || '' | awsStoragePath"
       ></nb-user>
 
+      <div class="position-absolute ms-4 quantity">
+        {{ orderItem.quantity }}x
+      </div>
+
       <div class="config-sets" *ngIf="orderItem.configSets">
         <div *ngFor="let set of orderItem.configSets">
-          {{ set.name | localize }}:
           <span *ngFor="let setItem of set.items; let last = last">
             {{ setItem.name | localize }}
             <ng-container *ngIf="!last">,</ng-container>
           </span>
         </div>
       </div>
-    </div>
-    <div
-      class="
-        col-2 col-xl-1
-        p-0
-        m-auto
-        subtitle-2
-        font-weight-bold
-        text-end
-        font-larger
-      "
-    >
-      {{ orderItem.quantity }}x
     </div>
 
     <div *ngIf="isOrderItemStatus('processing')" class="col-2 col-xl-2 m-auto">
