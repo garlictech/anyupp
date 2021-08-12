@@ -17,11 +17,11 @@ import {
 const products: CrudApi.GeneratedProduct[] = [
   {
     ...gpfx.generatedDrinkProduct,
-    id: `${testIdPrefix}_unit_product_fanta`,
+    id: `${testIdPrefix}unit_product_fanta`,
   },
   {
     ...gpfx.generatedFoodProduct,
-    id: `${testIdPrefix}_unit_product_hamburger`,
+    id: `${testIdPrefix}unit_product_hamburger`,
   },
 ];
 const timezoneBudapest = 'Europe/Budapest';
