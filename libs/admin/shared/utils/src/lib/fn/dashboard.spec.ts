@@ -55,6 +55,7 @@ const failedHistoryOrders = [
   ofx.convertInputToOrder(ofx.historyFailedCashCouponOrderInput),
   ofx.convertInputToOrder(ofx.historyFailedCashEventOrderInput),
 ];
+
 const paymentMethods = [
   CrudApi.PaymentMethod.card,
   CrudApi.PaymentMethod.cash,
@@ -65,11 +66,7 @@ describe('Dashboard pure function tests', () => {
   describe('calculatePaymentMethodSums', () => {
     it('should calculate 1 item', () => {
       const result = calculatePaymentMethodSums(
-        [
-          CrudApi.PaymentMethod.card,
-          CrudApi.PaymentMethod.cash,
-          CrudApi.PaymentMethod.inapp,
-        ],
+        paymentMethods,
         failedHistoryOrders,
       );
       const expected = {
@@ -87,11 +84,7 @@ describe('Dashboard pure function tests', () => {
       const result = calculateUnpayCategoryStat(
         CrudApi.UnpayCategory.manager_meal,
         failedHistoryOrders,
-        [
-          CrudApi.PaymentMethod.card,
-          CrudApi.PaymentMethod.cash,
-          CrudApi.PaymentMethod.inapp,
-        ],
+        paymentMethods,
       );
       const expected = {
         category: 'manager_meal',
