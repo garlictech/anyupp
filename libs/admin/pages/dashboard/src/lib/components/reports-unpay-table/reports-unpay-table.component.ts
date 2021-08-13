@@ -48,6 +48,15 @@ export class ReportsUnpayTableComponent implements OnDestroy {
           ...new Set(orders.map(o => o.paymentMode.method)),
         ];
 
+        const incomeFilteredOrders: CrudApi.Order[] = orders.filter(
+          o =>
+            o.unpayCategory &&
+            (this.hasIncome
+              ? UNPAY_INCOME_CATEGORIES_ARR
+              : UNPAY_NO_INCOME_CATEGORIES_ARR
+            ).includes(o.unpayCategory),
+        );
+
         (this.hasIncome
           ? UNPAY_INCOME_CATEGORIES_ARR
           : UNPAY_NO_INCOME_CATEGORIES_ARR
@@ -71,16 +80,11 @@ export class ReportsUnpayTableComponent implements OnDestroy {
           ),
           paymentMethodSums: calculatePaymentMethodSums(
             this.paymentMethods,
-            orders.filter(
-              o =>
-                o.unpayCategory &&
-                (this.hasIncome
-                  ? UNPAY_INCOME_CATEGORIES_ARR
-                  : UNPAY_NO_INCOME_CATEGORIES_ARR
-                ).includes(o.unpayCategory),
-            ),
+            incomeFilteredOrders,
           ),
-          uniqueUsersCount: [...new Set(orders.map(o => o.userId))].length,
+          uniqueUsersCount: [
+            ...new Set(incomeFilteredOrders.map(o => o.userId)),
+          ].length,
         };
 
         this.unpayCategoryStats = Object.values(unpayCategoryStatObj);
