@@ -7,20 +7,10 @@ import {
   Input,
   OnDestroy,
 } from '@angular/core';
-import {
-  calculatePaymentMethodSums,
-  calculateUnpayCategoryStat,
-} from '@bgap/admin/shared/utils';
+import { unpayCategoryTableData } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  UnpayCategoryStatObj,
-  UnpayCategoryStatObjItem,
-} from '@bgap/shared/types';
+import { UnpayCategoryStatObjItem } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import {
-  UNPAY_INCOME_CATEGORIES_ARR,
-  UNPAY_NO_INCOME_CATEGORIES_ARR,
-} from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -43,47 +33,15 @@ export class ReportsUnpayTableComponent implements OnDestroy {
     this.orders$
       .pipe(untilDestroyed(this))
       .subscribe((orders: CrudApi.Order[]): void => {
-        const unpayCategoryStatObj: UnpayCategoryStatObj = {};
         this.paymentMethods = [
           ...new Set(orders.map(o => o.paymentMode.method)),
         ];
 
-        (this.hasIncome
-          ? UNPAY_INCOME_CATEGORIES_ARR
-          : UNPAY_NO_INCOME_CATEGORIES_ARR
-        ).forEach(category => {
-          unpayCategoryStatObj[category] = calculateUnpayCategoryStat(
-            category,
-            orders,
-            this.paymentMethods,
-          );
-        });
-
-        unpayCategoryStatObj['sum'] = {
-          category: 'sum',
-          count: Object.values(unpayCategoryStatObj).reduce(
-            (prev, cur) => prev + cur.count,
-            0,
-          ),
-          sum: Object.values(unpayCategoryStatObj).reduce(
-            (prev, cur) => prev + cur.sum,
-            0,
-          ),
-          paymentMethodSums: calculatePaymentMethodSums(
-            this.paymentMethods,
-            orders.filter(
-              o =>
-                o.unpayCategory &&
-                (this.hasIncome
-                  ? UNPAY_INCOME_CATEGORIES_ARR
-                  : UNPAY_NO_INCOME_CATEGORIES_ARR
-                ).includes(o.unpayCategory),
-            ),
-          ),
-          uniqueUsersCount: [...new Set(orders.map(o => o.userId))].length,
-        };
-
-        this.unpayCategoryStats = Object.values(unpayCategoryStatObj);
+        this.unpayCategoryStats = unpayCategoryTableData(
+          orders,
+          this.hasIncome,
+          this.paymentMethods,
+        );
 
         this._changeDetectorRef.detectChanges();
       });

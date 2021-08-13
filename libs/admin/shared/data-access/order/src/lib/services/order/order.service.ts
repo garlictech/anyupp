@@ -320,7 +320,7 @@ export class OrderService {
 
     this._crudSdk.doListQuery(
       ordersActions.resetHistoryOrders(),
-      getAllPaginatedData(op => this._crudSdk.sdk.SearchOrders(op), {
+      getAllPaginatedData(this._crudSdk.sdk.SearchOrders, {
         query: {
           filter: {
             unitId: { eq: unitId },

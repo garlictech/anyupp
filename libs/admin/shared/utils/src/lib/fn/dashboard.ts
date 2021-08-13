@@ -1,10 +1,17 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
+  UNPAY_INCOME_CATEGORIES_ARR,
+  UNPAY_NO_INCOME_CATEGORIES_ARR,
+} from '@bgap/crud-gql/api';
+import {
   EProductType,
   IKeyValueObject,
   IOrderAmount,
   IOrderAmounts,
+  IProducMixObject,
+  IProducMixObjectInfo,
   UnpayCategoryMethodStatObjItem,
+  UnpayCategoryStatObj,
   UnpayCategoryStatObjItem,
 } from '@bgap/shared/types';
 import { DateTime } from 'luxon';
@@ -140,4 +147,126 @@ export const dailySalesPerPaymentMethodOrderAmounts = (
   });
 
   return amounts;
+};
+
+export const calculateProductMix = (orders: CrudApi.Order[]) => {
+  const productMix: IProducMixObject = {};
+
+  orders.forEach(order => {
+    order.items.forEach(orderItem => {
+      if (!productMix[orderItem.productId]) {
+        productMix[orderItem.productId] = {
+          productId: orderItem.productId,
+          quantity: 0,
+          name: orderItem.productName,
+          variants: {},
+          components: {},
+        };
+      }
+
+      productMix[orderItem.productId].quantity += orderItem.quantity;
+
+      //
+      // Variants
+      //
+
+      if (!productMix[orderItem.productId].variants[orderItem.variantId]) {
+        productMix[orderItem.productId].variants[orderItem.variantId] = {
+          variantId: orderItem.variantId,
+          quantity: 0,
+          name: orderItem.variantName,
+        };
+      }
+
+      productMix[orderItem.productId].variants[orderItem.variantId].quantity +=
+        orderItem.quantity;
+
+      //
+      // Modifiers & Extras
+      //
+
+      if (orderItem.configSets) {
+        orderItem.configSets.forEach(configSet => {
+          configSet.items.forEach(component => {
+            if (
+              !productMix[orderItem.productId].components[
+                component.productComponentId
+              ]
+            ) {
+              productMix[orderItem.productId].components[
+                component.productComponentId
+              ] = {
+                componentId: component.productComponentId,
+                quantity: 0,
+                name: component.name,
+              };
+            }
+
+            productMix[orderItem.productId].components[
+              component.productComponentId
+            ].quantity += orderItem.quantity;
+          });
+        });
+      }
+    });
+  });
+
+  const sorter = (a: IProducMixObjectInfo, b: IProducMixObjectInfo) =>
+    a.quantity > b.quantity ? -1 : 1;
+
+  return Object.values(productMix)
+    .map(p => ({
+      ...p,
+      variants: Object.values(p.variants).sort(sorter),
+      components: Object.values(p.components).sort(sorter),
+    }))
+    .sort(sorter);
+};
+
+export const unpayCategoryTableData = (
+  orders: CrudApi.Order[],
+  hasIncome: boolean,
+  paymentMethods: CrudApi.PaymentMethod[],
+) => {
+  const unpayCategoryStatObj: UnpayCategoryStatObj = {};
+
+  const incomeFilteredOrders: CrudApi.Order[] = orders.filter(
+    o =>
+      o.unpayCategory &&
+      (hasIncome
+        ? UNPAY_INCOME_CATEGORIES_ARR
+        : UNPAY_NO_INCOME_CATEGORIES_ARR
+      ).includes(o.unpayCategory),
+  );
+
+  (hasIncome
+    ? UNPAY_INCOME_CATEGORIES_ARR
+    : UNPAY_NO_INCOME_CATEGORIES_ARR
+  ).forEach(category => {
+    unpayCategoryStatObj[category] = calculateUnpayCategoryStat(
+      category,
+      orders,
+      paymentMethods,
+    );
+  });
+
+  unpayCategoryStatObj['sum'] = {
+    category: 'sum',
+    count: Object.values(unpayCategoryStatObj).reduce(
+      (prev, cur) => prev + cur.count,
+      0,
+    ),
+    sum: Object.values(unpayCategoryStatObj).reduce(
+      (prev, cur) => prev + cur.sum,
+      0,
+    ),
+    paymentMethodSums: calculatePaymentMethodSums(
+      paymentMethods,
+      incomeFilteredOrders,
+    ),
+    uniqueUsersCount: [...new Set(incomeFilteredOrders.map(o => o.userId))]
+      .length,
+  };
+
+  return Object.values(unpayCategoryStatObj);
 };
