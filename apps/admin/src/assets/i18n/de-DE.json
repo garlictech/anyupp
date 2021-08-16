@@ -146,7 +146,9 @@
       "incomeOrders": "Paid orders",
       "noIncomeOrders": "Unpay orders",
       "unpayCategories": "Unpay categories",
-      "rejectedOrders": "Rejected orders"
+      "rejectedOrders": "Rejected orders",
+      "productMix": "Product mix",
+      "listAll": "List all"
     }
   },
   "chains": {

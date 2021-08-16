@@ -6,6 +6,7 @@ import {
   Component,
   Input,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
 import { unpayCategoryTableData } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -19,7 +20,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   templateUrl: './reports-unpay-table.component.html',
   styleUrls: ['./reports-unpay-table.component.scss'],
 })
-export class ReportsUnpayTableComponent implements OnDestroy {
+export class ReportsUnpayTableComponent implements OnInit, OnDestroy {
   @Input() orders$!: Observable<CrudApi.Order[]>;
   @Input() currency = '';
   @Input() hasIncome = false;

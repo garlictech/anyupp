@@ -7,6 +7,7 @@ import {
 
 import {
   calculatePaymentMethodSums,
+  calculateProductMix,
   calculateUnpayCategoryStat,
   dailySalesPerPaymentMethodOrderAmounts,
   dailySalesPerTypeOrderAmounts,
@@ -272,6 +273,123 @@ describe('Dashboard pure function tests', () => {
       const result =
         dailySalesPerPaymentMethodOrderAmounts(failedHistoryOrders);
       const expected = { card: 29820, cash: 29820, inapp: 0 };
+
+      expect(result).toEqual(expected);
+    });
+  });
+
+  describe('calculateProductMix', () => {
+    it('should calculate 1 item', () => {
+      const result = calculateProductMix(singleOrder, products);
+      const expected = [
+        {
+          components: [
+            {
+              componentId: 'test_product_component_id',
+              name: {
+                de: 'Room temperature',
+                en: 'Room temperature',
+                hu: 'Szobahőmérsékletű',
+              },
+              quantity: 5,
+            },
+          ],
+          name: { de: null, en: 'Hamburger', hu: 'Hamburger' },
+          productId: 'test_unit_product_hamburger',
+          productType: 'food',
+          quantity: 5,
+          variants: [
+            {
+              name: { de: null, en: 'glass', hu: 'pohár' },
+              quantity: 5,
+              variantId: 'test_variant_id',
+            },
+          ],
+        },
+        {
+          components: [
+            {
+              componentId: 'test_product_component_id',
+              name: {
+                de: 'Room temperature',
+                en: 'Room temperature',
+                hu: 'Szobahőmérsékletű',
+              },
+              quantity: 5,
+            },
+          ],
+          name: { de: null, en: 'Fanta', hu: 'Fanta' },
+          productId: 'test_unit_product_fanta',
+          productType: 'drink',
+          quantity: 5,
+          variants: [
+            {
+              name: { de: null, en: 'glass', hu: 'pohár' },
+              quantity: 5,
+              variantId: 'test_variant_id',
+            },
+          ],
+        },
+      ];
+
+      expect(result).toEqual(expected);
+    });
+
+    it('should calculate lots of order items', () => {
+      const result = calculateProductMix(
+        [...successHistoryOrders, ...failedHistoryOrders],
+        products,
+      );
+      const expected = [
+        {
+          components: [
+            {
+              componentId: 'test_product_component_id',
+              name: {
+                de: 'Room temperature',
+                en: 'Room temperature',
+                hu: 'Szobahőmérsékletű',
+              },
+              quantity: 115,
+            },
+          ],
+          name: { de: null, en: 'Hamburger', hu: 'Hamburger' },
+          productId: 'test_unit_product_hamburger',
+          productType: 'food',
+          quantity: 115,
+          variants: [
+            {
+              name: { de: null, en: 'glass', hu: 'pohár' },
+              quantity: 115,
+              variantId: 'test_variant_id',
+            },
+          ],
+        },
+        {
+          components: [
+            {
+              componentId: 'test_product_component_id',
+              name: {
+                de: 'Room temperature',
+                en: 'Room temperature',
+                hu: 'Szobahőmérsékletű',
+              },
+              quantity: 115,
+            },
+          ],
+          name: { de: null, en: 'Fanta', hu: 'Fanta' },
+          productId: 'test_unit_product_fanta',
+          productType: 'drink',
+          quantity: 115,
+          variants: [
+            {
+              name: { de: null, en: 'glass', hu: 'pohár' },
+              quantity: 115,
+              variantId: 'test_variant_id',
+            },
+          ],
+        },
+      ];
 
       expect(result).toEqual(expected);
     });
