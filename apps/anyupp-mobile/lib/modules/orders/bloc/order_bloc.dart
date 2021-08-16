@@ -24,6 +24,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
     // print('OrderBloc.mapEventToState()=$event');
     try {
       if (event is OrdersLoaded) {
+        print('**** OrderBloc.OrderCounterBloc.add.UpdateActiveOrderCount(${event.totalCount})');
         getIt<OrderCounterBloc>().add(UpdateActiveOrderCount(event.totalCount));
         yield OrdersLoadedState(
           orders: event.orders,

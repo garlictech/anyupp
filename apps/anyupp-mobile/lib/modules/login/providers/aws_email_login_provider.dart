@@ -1,14 +1,11 @@
-import 'dart:convert';
-
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/graphql/mutations/create_anonym_user.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/login/models/provider_login_response.dart';
 import 'package:fa_prev/modules/login/models/sign_up_exception.dart';
 import 'package:fa_prev/shared/auth.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'email_login_provider_interface.dart';
@@ -58,16 +55,17 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   @override
   Future<ProviderLoginResponse> signInAnonymously() async {
     try {
-      QueryResult result = await GQL.backend.executeMutation(
-        mutation: MUTATION_CREATE_ANONYM_USER,
-        variables: {},
-        useApi: true,
-      );
-      print('signInAnonymously.response().exception=${result.exception}');
-      print('signInAnonymously.response().data=${jsonEncode(result.data)}');
-      
-      String email = result.data['createAnonymUser']['username'];
-      String pwd = result.data['createAnonymUser']['pwd'];
+      var result = await GQL.backend.execute(CreateAnonymUserMutation());
+      // QueryResult result = await GQL.backend.executeMutation(
+      //   mutation: MUTATION_CREATE_ANONYM_USER,
+      //   variables: {},
+      //   useApi: true,
+      // );
+      // print('signInAnonymously.response().exception=${result.exception}');
+      // print('signInAnonymously.response().data=${jsonEncode(result.data)}');
+
+      String email = result.data.createAnonymUser.username;
+      String pwd = result.data.createAnonymUser.pwd;
       if (email != null && pwd != null) {
         return loginWithEmailAndPassword(email, pwd, isAnonymus: true);
       }
@@ -75,10 +73,10 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
     } on Exception catch (e) {
       print('signInAnonymously.exception=$e');
       throw LoginException(
-            code: LoginException.CODE,
-            message: "Failed to Create Anonymus user",
-            subCode: LoginException.INVALID_ANONYMUS_USER,
-            details: "Couldn't create anonymus user.");
+          code: LoginException.CODE,
+          message: "Failed to Create Anonymus user",
+          subCode: LoginException.INVALID_ANONYMUS_USER,
+          details: "Couldn't create anonymus user.");
     }
   }
 

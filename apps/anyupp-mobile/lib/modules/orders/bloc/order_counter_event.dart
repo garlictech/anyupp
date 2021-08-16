@@ -18,9 +18,10 @@ class GetActiveOrderCount extends BaseOrderCounterAction {
 }
 
 class UpdateActiveOrderCount extends BaseOrderCounterAction {
+  final int timestamp;
   final int count;
 
-  UpdateActiveOrderCount(this.count);
+  UpdateActiveOrderCount(this.count) : timestamp = DateTime.now().millisecond;
   @override
-  List<Object> get props => [count];
+  List<Object> get props => [count, timestamp];
 }

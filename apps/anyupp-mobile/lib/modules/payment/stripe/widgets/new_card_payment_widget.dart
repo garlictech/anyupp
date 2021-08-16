@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/payment/stripe/widgets/payment_button_widget.dart';
@@ -15,8 +16,7 @@ class NewCardPaymentWidget extends StatefulWidget {
   final String orderId;
   final UserInvoiceAddress invoiceAddress;
 
-  const NewCardPaymentWidget({Key key, this.orderId, this.invoiceAddress})
-      : super(key: key);
+  const NewCardPaymentWidget({Key key, this.orderId, this.invoiceAddress}) : super(key: key);
 
   @override
   _NewCardPaymentWidgetState createState() => _NewCardPaymentWidgetState();
@@ -41,8 +41,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
     this._form = CardForm(
       displayAnimatedCard: true,
       formKey: _formKey,
-      cardNumberErrorText:
-          trans('payment.cardFields.card_number.validationError'),
+      cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
       cardNumberDecoration: InputDecoration(
         labelText: trans('payment.cardFields.card_number.label'),
         hintText: trans('payment.cardFields.card_number.hint'),
@@ -79,8 +78,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
     );
   }
 
-  Widget _buildPaymentMethodForm(
-      BuildContext context, StripePaymentState state) {
+  Widget _buildPaymentMethodForm(BuildContext context, StripePaymentState state) {
     bool enabled = true;
     if (state is StripePaymentLoading) {
       enabled = false;
@@ -131,8 +129,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
           );
   }
 
-  Widget _buildPaymentFailed(
-      BuildContext context, String code, String message) {
+  Widget _buildPaymentFailed(BuildContext context, String code, String message) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

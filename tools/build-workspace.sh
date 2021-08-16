@@ -11,6 +11,10 @@ time yarn nx config shared-config --app=$APPNAME --stage=$STAGE
 time yarn nx build-schema anyupp-gql-api 
 time yarn nx build-schema crud-backend --app=$APPNAME --stage=$STAGE
 
+# Added mobile schema generation here
+time yarn nx build-schema anyupp-mobile --stage=$STAGE
+
+
 if [ $STAGE = 'dev' ]; then
   time yarn nx build admin --skip-nx-cache
 elif [ $STAGE = 'prod' ]; then
