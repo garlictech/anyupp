@@ -34,7 +34,7 @@ Feature: Stripe Card
 
   # about the issue #244 and #396
   Scenario: Pay with a new card then pay with the added card
-    When I tap the "TEST CHAIN PRODUCT #2 NAME" card under "Test product category #1 name" category
+    When I tap the "FANTA #2" card under "Test product category #1 name" category
     Then there is the product details screen
     When I tap the "Add To Cart" button
     Then The shop cart icon banner should show "1"
@@ -64,9 +64,21 @@ Feature: Stripe Card
     And the banner on the "Orders" icon is "1"
     And the "Orders" page is selected on the top navigator
     And there is "1" order in the list
-    And the state of the order is "Placed"
+    And I should see the order in "PLACED"
+    When the admin set it to "PROCESSING"
+    And I tap on the "Show" text
+    Then I should see the receipt of the order
+    When I tap on the "Done" button
+    Then I should see my order on the "Orders" tab
+    And the admin set it to "READY"
+    And the admin set it to served
+    Then I should see the text "No active order placed yet"
+    When I swipe to the "History" tab
+    Then I should see the "SERVED" label on the paid order
+    And I should see "Load more..." at the bottom of the ordoers
+    # Scenario: second order with stripe
     When I tap the "Menu" icon from the bottom navigation bar
-    And I tap the "TEST CHAIN PRODUCT #2 NAME" card under "Test product category #1 name" category
+    And I tap the "FANTA #2" card under "Test product category #1 name" category
     And I tap the "Add To Cart" button
     Then the cart icon banner should show "1"
     When I tap the cart icon
@@ -87,21 +99,22 @@ Feature: Stripe Card
     And the banner on the "Orders" icon is "2"
     And the "Orders" page is selected on the top navigator
     And there is an order in the list
-    And the state of the order is "PLACED"
-    And the admin set it to "PROCESSING"
-    And I click on the "Show" text
+    And I should see the order in "PLACED"
+    When the admin set it to "PROCESSING"
+    And I tap on the "Show" text
     Then I should see the receipt of the order
-    When I click on the "Done" button
+    When I tap on the "Done" button
     Then I should see my order on the "Orders" tab
     And the admin set it to "READY"
-    And the admin set it to paid
+    And the admin set it to served
     Then I should see the text "No active order placed yet"
     When I swipe to the "History" tab
-    Then I should see the paid order
+    Then I should see the "SERVED" label on the paid order
+    And I should see "Load more..." at the bottom of the ordoers
 
   Scenario: Pay without saving the card
     # about the #1250 issue, issue #244
-    When I tap the "TEST CHAIN PRODUCT #2 NAME" card under "Test product category #1 name" category
+    When I tap the "FANTA #2" card under "Test product category #1 name" category
     And I tap the "Add To Cart" button
     Then The shop cart icon banner should show "1"
     When I tap the cart icon
@@ -135,7 +148,8 @@ Feature: Stripe Card
     When I click on the "Done" button
     Then I should see my order on the "Orders" tab
     And the admin set it to "READY"
-    And the admin set it to paid
+    And the admin set it to served
     Then I should see the text "No active order placed yet"
     When I swipe to the "History" tab
-    Then I should see the paid order
+    Then I should see the "SERVED" label on the paid order
+    And I should see "Load more..." at the bottom of the ordoers

@@ -91,10 +91,10 @@ Feature: Dashboard
 
   Scenario: Order History feature
     When I click on the "Orders history" tab
-    Then I shpuld see the paid orders on the left
+    Then I should see the paid orders on the left
     And I should see the first selected paid order on the right
+    And I should see the orders descending by date/time
     #Scenario: Order print
-    # about the #1248 issue
     When I click on the print button
     Then I should see the recipe form
     And I should see the address "1021, Budapest Ág u. 1." of the unit
