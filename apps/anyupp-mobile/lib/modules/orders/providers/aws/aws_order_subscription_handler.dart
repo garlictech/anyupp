@@ -1,0 +1,209 @@
+import 'dart:async';
+import 'dart:math';
+import 'package:artemis/artemis.dart';
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:fa_prev/graphql/graphql.dart';
+import 'package:fa_prev/models.dart';
+
+// const REPEAT_TIMEOUT_MS = 120000;
+
+class AwsOrderSubscription {
+  StreamSubscription<GraphQLResponse<OnOrderChanged$Subscription>> _listSubscription;
+  List<Order> _items;
+  String _nextToken;
+  int _totalCount;
+
+  final String unitId;
+  final String userId;
+  ArtemisClient _client;
+
+  AwsOrderSubscription({
+    this.userId,
+    this.unitId,
+  });
+
+  Future<void> startListSubscription({
+    StreamController<List<Order>> controller,
+  }) async {
+    print('**** startOrderSubscription.start().controller=$controller');
+    if (_listSubscription != null) {
+      // print('**** startOrderSubscription.stopping');
+      await stopListSubscription();
+      // print('**** startOrderSubscription.stopped');
+    }
+    // print('**** startOrderSubscription.variables=$variables');
+
+    _items = await _getList();
+    print('**** startOrderSubscription.items=${_items?.length}');
+    controller.add(_items);
+
+    await _startListSubscription(controller: controller);
+
+    // Start refresh timer.
+    await _initSubscriptionRestartTimer();
+    // print('**** startOrderSubscription.end()');
+  }
+
+  Future<void> _startListSubscription({
+    StreamController<List<Order>> controller,
+  }) async {
+    try {
+      // ArtemisClient client = await GQL.crud;
+      var client = await GQL.amplify.client;
+      _listSubscription = GQL.amplify
+          .stream(
+        OnOrderChangedSubscription(
+          variables: OnOrderChangedArguments(
+            unitId: unitId,
+            userId: userId,
+          ),
+        ),
+        client: client,
+      )
+          .listen((result) async {
+        print('**** startListSubscription().onData=${result.data}');
+        // print(jsonEncode(result.data));
+        // print('**** startOrderSubscription.onData.hasException=${result.hasException}');
+        if (result.errors == null || result.errors.isEmpty) {
+          Order item = Order.fromJson(result.data.onOrderChanged.toJson());
+          // print('**** startOrderSubscription.onData.archived=${item.toJson()["archived"]}');
+          // print('**** startOrderSubscription.onData.item=${item.toJson()}');
+          // print('**** startOrderSubscription.onData.item=$item');
+          if (_items == null) {
+            _totalCount = 0;
+            _nextToken = null;
+            _items = [];
+          }
+          int index = _items.indexWhere((o) => o.id == item.id);
+          // print('**** startOrderSubscription.onData.index=$index');
+          // Update or Delete
+          if (index != -1) {
+            // print('**** startOrderSubscription.onData.filterModel[$filterModel]=${filterModel(item)}');
+            if (!item.archived) {
+              _items[index] = item;
+              print('**** startOrderSubscription.onData.UPDATE');
+            } else {
+              print('**** startOrderSubscription.onData.DELETE');
+              _totalCount = max(0, _totalCount - 1);
+              _items.removeAt(index);
+            }
+            controller.add(_items);
+          } else if (!item.archived) {
+            // Add
+            print('**** startOrderSubscription.onData.ADD');
+            _totalCount++;
+            _items.add(item);
+            _items.sort((a, b) => b.orderNum.compareTo(a.orderNum));
+            controller.add(_items);
+          }
+        } else {
+          print('**** startOrderSubscription.exception=${result.errors}');
+          // _listController.add(_items);
+          await _initSubscriptionRestartTimer();
+        }
+      }, onDone: () {
+        print('**** startOrderSubscription.onDone');
+      }, onError: (error) {
+        print('**** startOrderSubscription.onError=$error');
+        _initSubscriptionRestartTimer();
+      }, cancelOnError: false);
+    } on Exception catch (e) {
+      print('**** startOrderSubscription.Exception: $e');
+      rethrow;
+    }
+    // print('**** startOrderSubscription.end()');
+    return;
+  }
+
+  Future<Null> _initSubscriptionRestartTimer() async {
+    // Future.delayed(Duration(milliseconds: REPEAT_TIMEOUT_MS), () async {
+    //   await _startListSubscription(variables: variables);
+    // });
+    return null;
+  }
+
+  Future<List<Order>> _getList() async {
+    // print('_getOrderList.variables=$variables');
+    try {
+      var result = await GQL.amplify.execute(SearchOrdersQuery(
+          variables: SearchOrdersArguments(
+        userId: userId,
+        unitId: unitId,
+        limit: getIt<AppConstants>().paginationSize,
+        nextToken: _nextToken,
+      )));
+
+      // print('_getOrderList().result.data=${result.data}');
+      // print('_getOrderList().result.exception=${result.exception}');
+      if (result == null || result.data == null) {
+        _nextToken = null;
+        _totalCount = 0;
+        return [];
+      }
+
+      var items = result.data.searchOrders.items;
+      // print('***** _getOrderList().items=$items');
+      if (items == null || items.isEmpty) {
+        _nextToken = null;
+        _totalCount = 0;
+        return [];
+      }
+
+      _totalCount = result.data.searchOrders.total;
+      _nextToken = result.data.searchOrders.nextToken;
+
+      print('_getOrderList.nextToken=$_nextToken, total=$_totalCount');
+
+      List<Order> results = [];
+      for (int i = 0; i < items.length; i++) {
+        results.add(Order.fromJson(items[i].toJson()));
+      }
+
+      print('***** _getOrderList().results.length=${results.length}');
+      return results;
+    } on Exception catch (e) {
+      print('_getOrderList().Exception: $e');
+      rethrow;
+    }
+  }
+
+  bool get hasMoreItems => _nextToken != null;
+
+  int get itemCount => _totalCount;
+
+  String get nextToken => _nextToken;
+
+  Future<List<Order>> loadNextPage({
+    String token,
+    StreamController<List<Order>> controller,
+  }) async {
+    print('**** loadNextPage().nextToken=$token');
+    _nextToken = token;
+    List<Order> items = await _getList();
+    // print('**** loadNextPage().items=$items');
+    if (_items == null) {
+      _items = [];
+    }
+    if (items != null) {
+      _items.addAll(items);
+      controller.add(_items);
+    }
+    print('**** loadNextPage().total.count=${_items.length}');
+    return items;
+  }
+
+  Future<void> stopListSubscription() async {
+    await print('**** stopListSubscription()');
+    try {
+      await _listSubscription?.cancel();
+      _listSubscription = null;
+      _client?.dispose();
+    } on Error catch (e) {
+      await print('**** stopListSubscription().(ignored).error=$e');
+      _listSubscription = null;
+    }
+    _items = null;
+    // _listController.add(_items);
+  }
+}

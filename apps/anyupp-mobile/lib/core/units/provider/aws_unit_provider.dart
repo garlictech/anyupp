@@ -1,29 +1,34 @@
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/graphql/generated/anyupp-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 
 class AwsUnitProvider implements IUnitProvider {
   @override
   Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
     print('***** searchUnitsNearLocation().start(): lat=${location?.latitude} lng:${location.longitude}');
     try {
-       QueryResult result = await GQL.backend.executeQuery(query: QUERY_SEARCH_UNITS, variables: {
-        'lat': location.latitude,
-        'lng': location.longitude,
-      });
+      var result = await GQL.backend.execute(GetUnitsNearLocationQuery(
+        variables: GetUnitsNearLocationArguments(
+          lat: location.latitude,
+          lng: location.longitude,
+        ),
+      ));
+      // print('***** searchUnitsNearLocation().result=$result');
+      // print('***** searchUnitsNearLocation().result.data=${result.data}');
+      // print('***** searchUnitsNearLocation().result.errors=${result.errors}');
 
-      if (result.data == null || result.data['getUnitsNearLocation'] == null) {
+      if (result.data == null || result.data.getUnitsNearLocation == null) {
         return [];
       }
 
-      List<dynamic> items = result.data['getUnitsNearLocation']['items'];
+      var items = result.data.getUnitsNearLocation.items;
       // print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
       List<GeoUnit> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
-          GeoUnit unit = GeoUnit.fromJson(Map<String, dynamic>.from(items[i]));
+          GeoUnit unit = GeoUnit.fromJson(items[i].toJson());
           // print('***** searchUnitsNearLocation().unit[$i]=${unit.name} ${unit.address}');
           results.add(unit);
         }
@@ -32,10 +37,8 @@ class AwsUnitProvider implements IUnitProvider {
 
       return results;
     } on Exception catch (e) {
-      print('AwsUnitProvider.searchUnitsNearLocation.Exception: $e');
+      print('***** searchUnitsNearLocation().Exception: $e');
       return [];
-      // TODO rethrow vagy nem?
-      // rethrow;
     }
   }
 }

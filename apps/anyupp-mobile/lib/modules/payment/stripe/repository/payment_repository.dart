@@ -1,3 +1,4 @@
+import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/providers/external_payment_provider_interface.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
@@ -20,12 +21,14 @@ class StripePaymentRepository implements IStripePaymentProvider, IExternalPaymen
   }
 
   @override
-  Future<void> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId, UserInvoiceAddress invoiceAddress) {
+  Future<void> startStripePaymentWithExistingCard(
+      Cart cart, String paymentMethodId, UserInvoiceAddress invoiceAddress) {
     return _stripePaymentProvider.startStripePaymentWithExistingCard(cart, paymentMethodId, invoiceAddress);
   }
 
   @override
-  Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard) {
+  Future<void> startStripePaymentWithNewCard(
+      Cart cart, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard) {
     return _stripePaymentProvider.startStripePaymentWithNewCard(cart, stripeCard, invoiceAddress, saveCard);
   }
 
@@ -35,18 +38,20 @@ class StripePaymentRepository implements IStripePaymentProvider, IExternalPaymen
   }
 
   @override
-  Future<void> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId, UserInvoiceAddress invoiceAddress) {
-       return _stripePaymentProvider.startOrderStripePaymentWithExistingCard(orderId, paymentMethodId, invoiceAddress);
-    }
-  
-    @override
-    Future<void> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard) {
-     return _stripePaymentProvider.startOrderStripePaymentWithNewCard(orderId, stripeCard, invoiceAddress, saveCard);
+  Future<void> startOrderStripePaymentWithExistingCard(
+      String orderId, String paymentMethodId, UserInvoiceAddress invoiceAddress) {
+    return _stripePaymentProvider.startOrderStripePaymentWithExistingCard(orderId, paymentMethodId, invoiceAddress);
+  }
+
+  @override
+  Future<void> startOrderStripePaymentWithNewCard(
+      String orderId, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard) {
+    return _stripePaymentProvider.startOrderStripePaymentWithNewCard(orderId, stripeCard, invoiceAddress, saveCard);
   }
 
   @override
   Future<void> startOrderExternalPayment(String orderId, PaymentMode paymentMode, UserInvoiceAddress invoiceAddress) {
-     return _externalPaymentProvider.startOrderExternalPayment(orderId, paymentMode, invoiceAddress);
+    return _externalPaymentProvider.startOrderExternalPayment(orderId, paymentMode, invoiceAddress);
   }
 
   @override

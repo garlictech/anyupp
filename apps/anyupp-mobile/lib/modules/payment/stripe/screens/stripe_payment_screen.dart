@@ -1,5 +1,5 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/models/UserInvoiceAddress.dart';
+import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/modules/main/bloc/main_navigation_bloc.dart';
 import 'package:fa_prev/modules/main/bloc/main_navigation_event.dart';
 import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_bloc.dart';
@@ -19,9 +19,7 @@ class StripePaymentScreen extends StatefulWidget {
   final UserInvoiceAddress invoiceAddress;
   final int tabIndex;
 
-  const StripePaymentScreen(
-      {Key key, this.orderId, this.invoiceAddress, this.tabIndex = 0})
-      : super(key: key);
+  const StripePaymentScreen({Key key, this.orderId, this.invoiceAddress, this.tabIndex = 0}) : super(key: key);
 
   @override
   _StripePaymentScreenState createState() => _StripePaymentScreenState();

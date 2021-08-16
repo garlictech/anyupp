@@ -22,9 +22,10 @@ class OrderCounterLoadError extends BaseOrderCounterState {
 
 class ActiveOrderCount extends BaseOrderCounterState {
   final int count;
+  final int timestamp;
 
-  ActiveOrderCount(this.count);
+  ActiveOrderCount(this.count) : timestamp = DateTime.now().millisecond;
 
   @override
-  List<Object> get props => [count];
+  List<Object> get props => [count, timestamp];
 }

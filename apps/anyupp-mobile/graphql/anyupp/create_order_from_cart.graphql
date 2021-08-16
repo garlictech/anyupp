@@ -1,0 +1,3 @@
+mutation CreateOrderFromCart($cartId: ID!) {
+  createOrderFromCart(input: { id: $cartId })
+}
