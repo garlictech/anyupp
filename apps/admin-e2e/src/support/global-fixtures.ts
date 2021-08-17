@@ -1,11 +1,5 @@
 import { defineParameterType } from 'cypress-cucumber-preprocessor/steps';
-
-const fixtures: Record<string, string> = {
-  adminEmail: 'testuser+monad@anyupp.com',
-  adminPassword: 'Hideghegy12_',
-  superuserContextId: 'SU_CTX_ID',
-  mailtrapEmail: 'anyupp-dev-b3182b@inbox.mailtrap.io',
-};
+import { fixtures } from '../fixtures/global';
 
 defineParameterType({
   name: 'fixture',
@@ -13,5 +7,6 @@ defineParameterType({
   // Cypress passes the apostrophes (", ') to this string. As we always pass
   // strings in apostrophes, we simply remove the first and last characters. They are
   // always the apostrophes.
-  transformer: s => fixtures[s] ?? s.slice(1, s.length - 1),
+  transformer: s =>
+    (fixtures as Record<string, string>)[s] ?? s.slice(1, s.length - 1),
 });

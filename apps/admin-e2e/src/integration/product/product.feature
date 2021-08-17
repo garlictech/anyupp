@@ -1,12 +1,7 @@
 Feature: Whole product feature
 
   Background: Login and steps to the Chain products
-    Given I am on the login page
-    When I fill out the input with id "username" with the adminEmail value
-    And I fill out the input with id "password" with the adminPassword value
-    And I fill out the "Context" input with the superuserContextId id
-    And I click the "sign in" text
-    Then I should be on the dashboard page
+    Given I am on the dashboard as an authenticated superUser
     Then I set the language to EN
     And I select the "Rab lánc #1" chain in the header menu
     And I select the "Nagy csoport #1" group in the header menu
@@ -18,19 +13,20 @@ Feature: Whole product feature
   Scenario: Add new chain product
     When I click the category selector to set "Test product category #1 name"
     And I click on the button with title "Add product"
-    Then the "New product" title is displayed
-    When I fill out the "Name (HU)" input with "test product"
-    And I fill out the "Name (EN)" input with "test product"
-    And I fill out the "Name (DE)" input with "test product"
-    And I fill out the "Description (HU)" input with "test description"
-    And I fill out the "Description (EN)" input with "test description"
-    And I fill out the "Description (DE)" input with "test description"
+    Then The dialog should be visible
+    And I should see "New product" text on the dialog
+    When I fill out the "Name (HU)" input with "test chain product"
+    And I fill out the "Name (EN)" input with "test chain product"
+    And I fill out the "Name (DE)" input with "test chain product"
+    And I fill out the "Description (HU)" input with "test chain description"
+    And I fill out the "Description (EN)" input with "test chain description"
+    And I fill out the "Description (DE)" input with "test chain description"
     Then I select the "Test product category #1 name" in the category selector
     And I select the "Drink" in the product type selector
     When I click on the "Add variant" button
-    And I fill out the "Variant name (HU)" input with "test variant 1"
-    And I fill out the "Variant name (EN)" input with "test variant 1"
-    And I fill out the "Variant name (DE)" input with "test variant 1"
+    And I fill out the "Variant name (HU)" input with "test chain variant 1"
+    And I fill out the "Variant name (EN)" input with "test chain variant 1"
+    And I fill out the "Variant name (DE)" input with "test chain variant 1"
     And I fill out the "Pack size" input with "0.5"
     And I fill out the "Pack unit" input with "liter"
     And I click on the "1. Gluten" checkbox
@@ -52,26 +48,31 @@ Feature: Whole product feature
     And I select the "Modifier comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_02_id)" in the modifier selector
     And I click on the "Add" button
     And I click on the "Submit" button
+    Then I should see a success toastr
+    And The dialog should NOT exist
     Then I should see "test product" text
-    # Scenario: Update chain product
+
+
+  Scenario: Update chain product
     And I should see "Chain products" text
     When I click the category selector to set "Test product category #1 name"
-    Then I should see "test product" text
-    When On the active tab I click the edit button in the listitem with "test product" content
-    Then the "Edit product" title is displayed
-    Then I should see "test product" text
-    Then I should see "test variant 1" text
-    When I fill out the "Name (HU)" input with "test product e2eUpdated"
-    And I fill out the "Name (EN)" input with "test product e2eUpdated"
-    And I fill out the "Name (DE)" input with "test product e2eUpdated"
-    And I fill out the "Description (HU)" input with "test description e2eUpdated"
-    And I fill out the "Description (EN)" input with "test description e2eUpdated"
-    And I fill out the "Description (DE)" input with "test description e2eUpdated"
+    Then On the active tab I should see "test chain product" text
+    When On the active tab I click the edit button in the listitem with "test chain product" content
+    Then The dialog should be visible
+    And I should see "Edit product" text on the dialog
+    And The "Name (HU)" input should contain "test chain product"
+    And The "Variant name (HU)" input should contain "test chain variant 1"
+    When I fill out the "Name (HU)" input with "test chain e2eUpdated product"
+    And I fill out the "Name (EN)" input with "test chain e2eUpdated product"
+    And I fill out the "Name (DE)" input with "test chain e2eUpdated product"
+    And I fill out the "Description (HU)" input with "test chain e2eUpdated description"
+    And I fill out the "Description (EN)" input with "test chain e2eUpdated description"
+    And I fill out the "Description (DE)" input with "test chain e2eUpdated description"
     Then The category selector should contain "Test product category #1 name"
     And I select the "Other" in the product type selector
-    And I fill out the "Variant name (HU)" input with "test variant e2eUpdated"
-    And I fill out the "Variant name (EN)" input with "test variant e2eUpdated"
-    And I fill out the "Variant name (DE)" input with "test variant e2eUpdated"
+    And I fill out the "Variant name (HU)" input with "test chain e2eUpdated variant HU"
+    And I fill out the "Variant name (EN)" input with "test chain e2eUpdated variant EN"
+    And I fill out the "Variant name (DE)" input with "test chain e2eUpdated variant DE"
     And I fill out the "Pack size" input with "500"
     And I fill out the "Pack unit" input with "ml"
     And I click on the "1. Gluten" checkbox
@@ -84,21 +85,31 @@ Feature: Whole product feature
     And I click the delete button in the listitem with "Modifier comp set" content
     And I select the "Modifier comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_02_id)" in the modifier selector
     And I click on the "Add" button
-    And I click on the "Submit" button
-    When On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
-    Then I should see "test variant e2eUpdated" text
+    When I click on the "Submit" button
+    Then I should see a success toastr
+    And The dialog should NOT exist
+    When On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
+    Then The "Variant name (HU)" input should contain "test chain e2eUpdated variant HU"
     When I click on the close button
+    Then The dialog should NOT exist
 
   Scenario: Add new group product
     When I click on the "Group products" text
     And I click the category selector to set "Test product category #1 name"
-    Then I should see "test product e2eUpdated" text
-    When On the active tab I click the extend button in the listitem with "test product e2eUpdated" content
-    Then the "Extend product" title is displayed
+    Then On the active tab I should see "test chain e2eUpdated product" text
+    When On the active tab I click the extend button in the listitem with "test chain e2eUpdated product" content
+    Then I should see "Extend product" text on the dialog
     When I fill out the "Tax (%)" input with "27"
-    And I fill out the "Variant name (HU)" input with "test variant 1"
-    And I fill out the "Variant name (EN)" input with "test variant 1"
-    And I fill out the "Variant name (DE)" input with "test variant 1"
+    # Variant prefill text
+    And The "Variant name (HU)" input should contain "test chain e2eUpdated variant HU"
+    And The "Variant name (EN)" input should contain "test chain e2eUpdated variant EN"
+    And The "Variant name (DE)" input should contain "test chain e2eUpdated variant DE"
+    And The "Pack size" input should contain "500"
+    And The "Pack unit" input should contain "ml"
+    # Variant changes
+    And I fill out the "Variant name (HU)" input with "test group variant 1"
+    And I fill out the "Variant name (EN)" input with "test group variant 1"
+    And I fill out the "Variant name (DE)" input with "test group variant 1"
     And I fill out the "Pack size" input with "5"
     And I fill out the "Pack unit" input with "dl"
     And I click the delete button in the listitem with "Extra comp set" content
@@ -106,17 +117,19 @@ Feature: Whole product feature
     And I click on the "Add" button
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
-    # Scenario: Update group product
-    Then I should see "Group products" text
+    And I should see a success toastr
+
+  Scenario: Update group product
+    When I click on the "Group products" text
     When I click the category selector to set "Test product category #1 name"
-    And On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
-    Then the "Edit product" title is displayed
-    And I should see "test product e2eUpdated" text
-    And I should see "test variant 1" text
+    And On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
+    Then I should see "Edit product" text on the dialog
+    And I should see "test chain e2eUpdated product" text on the dialog
+    And The "Variant name (HU)" input should contain "test group variant 1"
     When I fill out the "Tax (%)" input with "27"
-    And I fill out the "Variant name (HU)" input with "test variant e2eUpdated"
-    And I fill out the "Variant name (EN)" input with "test variant e2eUpdated"
-    And I fill out the "Variant name (DE)" input with "test variant e2eUpdated"
+    And I fill out the "Variant name (HU)" input with "test group e2eUpdated variant HU"
+    And I fill out the "Variant name (EN)" input with "test group e2eUpdated variant EN"
+    And I fill out the "Variant name (DE)" input with "test group e2eUpdated variant DE"
     And I fill out the "Pack size" input with "500"
     And I fill out the "Pack unit" input with "ml"
     And I click the delete button in the listitem with "Modifier comp set" content
@@ -124,20 +137,30 @@ Feature: Whole product feature
     And I click on the "Add" button
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
-    And On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
-    Then I should see "test variant e2eUpdated" text
+    And I should see a success toastr
+    Then The dialog should NOT exist
+    And On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
+    Then The "Variant name (HU)" input should contain "test group e2eUpdated variant HU"
     When I click on the close button
+    Then The dialog should NOT exist
 
   Scenario: Add new unit product
     When I click on the "Unit products" text
     And I click the category selector to set "Test product category #1 name"
-    And On the active tab I click the extend button in the listitem with "test product e2eUpdated" content
-    Then the "Extend product" title is displayed
+    And On the active tab I click the extend button in the listitem with "test chain e2eUpdated product" content
+    Then I should see "Extend product" text on the dialog
     When I click the lane selector to set "konyha"
     And I click on the "Takeaway" checkbox
-    And I fill out the "Variant name (HU)" input with "test variant 1"
-    And I fill out the "Variant name (EN)" input with "test variant 1"
-    And I fill out the "Variant name (DE)" input with "test variant 1"
+    # Variant prefill text
+    And The "Variant name (HU)" input should contain "test group e2eUpdated variant HU"
+    And The "Variant name (EN)" input should contain "test group e2eUpdated variant EN"
+    And The "Variant name (DE)" input should contain "test group e2eUpdated variant DE"
+    And The "Pack size" input should contain "500"
+    And The "Pack unit" input should contain "ml"
+    # Variant changes
+    And I fill out the "Variant name (HU)" input with "test unit variant 1"
+    And I fill out the "Variant name (EN)" input with "test unit variant 1"
+    And I fill out the "Variant name (DE)" input with "test unit variant 1"
     And I fill out the "Pack size" input with "5"
     And I fill out the "Pack unit" input with "dl"
     And I click on the "Add availability" button
@@ -156,23 +179,30 @@ Feature: Whole product feature
     And I fill out the last "Time to" input with "18:00"
     And I fill out all the "Price (HUF)" input with index multiply by 10
     And I click on the "Submit" button
-    # Scenario: Update unit product
-    Then I should see "Unit products" text
+    Then I should see a success toastr
+    And The dialog should NOT exist
+
+  Scenario: Update unit product
+    When I click on the "Unit products" text
     When I click the category selector to set "Test product category #1 name"
-    And On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
-    Then the "Edit product" title is displayed
-    And I should see "test product e2eUpdated" text
-    And I should see "test variant 1" text
+    And On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
+    Then I should see "Edit product" text on the dialog
+    And I should see "test chain e2eUpdated product" text on the dialog
+    And The "Variant name (HU)" input should contain "test unit variant 1"
     When I click the lane selector to set "bár"
     And I click on the "Takeaway" checkbox
     And I click on the "Is visible" checkbox
-    And I fill out the "Variant name (HU)" input with "test variant e2eUpdated"
-    And I fill out the "Variant name (EN)" input with "test variant e2eUpdated"
-    And I fill out the "Variant name (DE)" input with "test variant e2eUpdated"
+    And I fill out the "Variant name (HU)" input with "test unit e2eUpdated variant HU"
+    And I fill out the "Variant name (EN)" input with "test unit e2eUpdated variant EN"
+    And I fill out the "Variant name (DE)" input with "test unit e2eUpdated variant DE"
     And I fill out the "Pack size" input with "200"
     And I fill out the "Pack unit" input with "ml"
     And I click on the "Is available" checkbox
     And I fill out all the "Price (HUF)" input with index multiply by 10
     And I click on the "Submit" button
-    And On the active tab I click the edit button in the listitem with "test product e2eUpdated" content
-    Then I should see "test variant e2eUpdated" text
+    Then I should see a success toastr
+    And The dialog should NOT exist
+    When On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
+    Then The "Variant name (HU)" input should contain "test unit e2eUpdated variant HU"
+    When I click on the close button
+    Then The dialog should NOT exist
