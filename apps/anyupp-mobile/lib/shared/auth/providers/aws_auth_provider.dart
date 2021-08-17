@@ -93,7 +93,7 @@ class AwsAuthProvider implements IAuthProvider {
       CognitoUserAttribute a = attributes[i];
       print('\tattr[${a.name}]=${a.value}');
       if (a.name != null && a.name == 'name') {
-          name = a.value;
+        name = a.value;
       }
       // print('\t attr[${a.userAttributeKey}]=${a.value}');
       if (a.name != null && name == null && a.name == 'email') {
@@ -120,7 +120,7 @@ class AwsAuthProvider implements IAuthProvider {
     try {
       CognitoUserSession session = await _service.session;
       if (session == null || !session.isValid()) {
-        session = await (await _service.currentUser).getSession();
+        session = await (await _service.currentUser)?.getSession();
       }
 
       String token = session?.accessToken?.jwtToken;
