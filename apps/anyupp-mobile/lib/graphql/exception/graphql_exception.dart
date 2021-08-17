@@ -53,10 +53,11 @@ class GraphQLException extends AppException {
 
   factory GraphQLException.fromException(String code, Exception e) {
     return GraphQLException(
-        code: GraphQLException.CODE,
-        subCode: code,
-        message: e.toString(),
-        details: e.runtimeType);
+      code: GraphQLException.CODE,
+      subCode: code,
+      message: e.toString(),
+      details: e.runtimeType,
+    );
   }
 
   factory GraphQLException.fromCrudException(Exception e) {
@@ -65,6 +66,15 @@ class GraphQLException extends AppException {
         subCode: GraphQLException.CRUD_CODE,
         message: e.toString(),
         details: e.runtimeType);
+  }
+
+  factory GraphQLException.fromGraphQLError(String code, List<GraphQLError> errors) {
+    return GraphQLException(
+      code: GraphQLException.CODE,
+      subCode: code,
+      message: errors[0].toString(),
+      details: errors.toString(),
+    );
   }
 
   @override

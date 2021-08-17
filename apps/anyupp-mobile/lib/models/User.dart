@@ -1,3 +1,4 @@
+import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
@@ -17,16 +18,10 @@ class User extends Model {
     return id;
   }
 
-  const User._internal(
-      {@required this.id, this.name, this.email, this.phone, this.profileImage, this.invoiceAddress});
+  const User._internal({@required this.id, this.name, this.email, this.phone, this.profileImage, this.invoiceAddress});
 
   factory User(
-      {String id,
-      String name,
-      String email,
-      String phone,
-      String profileImage,
-      UserInvoiceAddress invoiceAddress}) {
+      {String id, String name, String email, String phone, String profileImage, UserInvoiceAddress invoiceAddress}) {
     return User._internal(
         id: id == null ? UUID.getUUID() : id,
         name: name,
@@ -71,7 +66,8 @@ class User extends Model {
     return buffer.toString();
   }
 
-  User copyWith({String id, String name, String email, String phone, String profileImage, UserInvoiceAddress invoiceAddress}) {
+  User copyWith(
+      {String id, String name, String email, String phone, String profileImage, UserInvoiceAddress invoiceAddress}) {
     return User(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -87,7 +83,7 @@ class User extends Model {
         email = json['email'],
         phone = json['phone'],
         profileImage = json['profileImage'],
-        invoiceAddress = json['invoiceAddress'] != null ? UserInvoiceAddress.fromMap(json['invoiceAddress']) : null;
+        invoiceAddress = json['invoiceAddress'] != null ? UserInvoiceAddress.fromJson(json['invoiceAddress']) : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,

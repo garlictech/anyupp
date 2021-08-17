@@ -1,0 +1,14 @@
+query ListStripePaymentMethods {
+  listStripeCards {
+    id
+    brand
+    country
+    exp_month
+    exp_year
+    fingerprint
+    funding
+    last4
+    three_d_secure
+    name
+  }
+}

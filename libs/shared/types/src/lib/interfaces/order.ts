@@ -39,15 +39,41 @@ export interface IOrderAmount {
   [key: string]: number[];
 }
 
+export interface IProducMixObjectInfo {
+  variantId?: string;
+  componentId?: string;
+  quantity: number;
+  name: CrudApi.LocalizedItem;
+}
+
+export interface IProducMixObjectItem extends IProducMixObjectInfo {
+  productId: string;
+  variants: {
+    [variantId: string]: IProducMixObjectInfo;
+  };
+  components: {
+    [variantId: string]: IProducMixObjectInfo;
+  };
+}
+
+export interface IProducMixObject {
+  [productId: string]: IProducMixObjectItem;
+}
+
 export interface ICurrencyValue {
   value: number;
   currency: string;
 }
 
+export interface UnpayCategoryMethodStatObjItem {
+  [mode: string]: number;
+}
+
 export interface UnpayCategoryStatObjItem {
-  category: CrudApi.UnpayCategory;
+  category: CrudApi.UnpayCategory | string;
   count: number;
   sum: number;
+  paymentMethodSums: UnpayCategoryMethodStatObjItem;
   uniqueUsersCount: number;
 }
 

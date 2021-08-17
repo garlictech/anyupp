@@ -11,6 +11,7 @@ class OrderCounterBloc extends Bloc<BaseOrderCounterAction, BaseOrderCounterStat
 
   @override
   Stream<BaseOrderCounterState> mapEventToState(BaseOrderCounterAction event) async* {
+    print('**** OrderCounterBloc.mapEventToState=$event');
     try {
       if (event is GetActiveOrderCount) {
         int count = await _repository.getActiveOrderCount(event.unitId);

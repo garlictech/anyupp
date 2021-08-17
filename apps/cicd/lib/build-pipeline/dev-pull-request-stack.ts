@@ -34,6 +34,9 @@ export class DevPullRequestBuildStack extends sst.Stack {
           phases: {
             install: {
               commands: ['apps/cicd/scripts/pr-install.sh'],
+              'runtime-versions': {
+                nodejs: 14,
+              },
             },
             build: {
               commands: [
@@ -50,11 +53,13 @@ export class DevPullRequestBuildStack extends sst.Stack {
             variables: {
               NODE_OPTIONS:
                 '--unhandled-rejections=strict --max_old_space_size=8196',
+              GIT_DISCOVERY_ACROSS_FILESYSTEM: 1,
             },
+            'git-credential-helper': 'yes',
           },
         }),
         environment: {
-          buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+          buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
           computeType: codebuild.ComputeType.MEDIUM,
           privileged: true,
         },

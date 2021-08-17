@@ -8,21 +8,46 @@ import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../graphql/graphql_dummy.dart';
+
 void main() {
-  const String unitId = 'seeded_unit_c1_g1_1_id';
-  const String testUserEmail = 'test-monad@anyupp.com';
+  const String unitId = 'seeded_unit_c1_g1_1_id_MOBIL';
+  const String testUsername = 'testuser+monad';
+  const String testUserEmail = 'testuser+monad@anyupp.com';
   const String testUserPassword = 'Hideghegy12_';
+
+  const int dummy_order_count = 13;
+  const int dummy_order_history_count = 12;
+  const int dummy_page_size = 3;
 
   group('Order list pagination test...', () {
     OrderRepository _repository;
     StreamController<List<Order>> _controller;
 
+    cleanUpOrders() async {
+      List<bool> deleteResults = await deleteAllOrders(testUsername, unitId, false);
+      print('***** Deleting Orders results=${deleteResults}');
+      deleteResults = await deleteAllOrders(testUsername, unitId, true);
+      print('***** Deleting Order Histories results=${deleteResults}');
+    }
+
     setUpAll(() async {
       EquatableConfig.stringify = true;
       await initDependencyInjection();
+      AppConstants constants = getIt<AppConstants>();
 
-      ProviderLoginResponse response =
-          await getIt<LoginRepository>().loginWithEmailAndPassword(testUserEmail, testUserPassword);
+      await getIt.unregister<AppConstants>(instance: constants);
+      getIt.registerLazySingleton<AppConstants>(() => AppConstants(
+            paginationSize: dummy_page_size,
+          ));
+
+      constants = getIt<AppConstants>();
+      await print('Pagination size=' + constants.paginationSize.toString());
+
+      ProviderLoginResponse response = await getIt<LoginRepository>().loginWithEmailAndPassword(
+        testUserEmail,
+        testUserPassword,
+      );
       expect(response, isNotNull);
       expect(response.user, isNotNull);
 
@@ -32,68 +57,100 @@ void main() {
       _controller = BehaviorSubject();
       expect(_controller, isNotNull);
 
-      await _repository.startOrderListSubscription(unitId, _controller);
+      await cleanUpOrders();
+
+      print('Creating orders');
+      await createDummyOrders(
+        userId: testUsername,
+        unitId: unitId,
+        count: dummy_order_count,
+        archived: false,
+      );
+
+      print('Creating order histories');
+      await createDummyOrders(
+        userId: testUsername,
+        unitId: unitId,
+        count: dummy_order_history_count,
+        archived: true,
+      );
+
+      print('Waiting to backend to finish order creation');
+      await Future.delayed(Duration(seconds: 5));
+
+      await await _repository.startOrderListSubscription(unitId, _controller);
       await _repository.startOrderHistoryListSubscription(unitId, _controller);
     });
 
     test('Test pagination on Order repository', () async {
-      // print('endpoint=${AppConfig.AnyuppGraphqlApiUrl}');
       String nextToken;
-      List<Order> orders =
-          await _repository.loadOrdersNextPage(unitId: unitId, nextToken: nextToken, controller: _controller);
-      print('TEST: 1. orders=${orders?.length}');
-      nextToken = _repository.orderListNextToken;
-      print('TEST: 1. nextToken=$nextToken');
+      int remainingCount = dummy_order_count % dummy_page_size;
+      print('TEST.remainingCount=$remainingCount');
+      int i = 0;
+      do {
+        List<Order> orders = await _repository.loadOrdersNextPage(
+          unitId: unitId,
+          nextToken: nextToken,
+          controller: _controller,
+        );
+        print('TEST[$i].orders.length=${orders?.length}');
+        nextToken = _repository.orderListNextToken;
+        print('TEST[$i].nextToken=$nextToken');
+        if (orders.length == dummy_page_size) {
+          expect(orders.length, dummy_page_size);
+        } else if (orders.isNotEmpty) {
+          expect(orders, isNotNull);
+          expect(orders.length, remainingCount);
+          expect(nextToken, isNotNull);
+        } else if (orders.isEmpty) {
+          expect(orders, []);
+          expect(nextToken, isNull);
+        }
+        i++;
+      } while (nextToken != null);
+    }, skip: false);
 
-      expect(orders, isNotNull);
-      expect(orders.length, 100);
-      expect(nextToken, isNotNull);
-
-      // while (_nextToken != null) {
-      //   orders = await repository.loadOrdersNextPage(unitId, _nextToken);
-      //   _nextToken = repository.orderListNextToken;
-      //   await print('TEST: 2. orders=${orders?.length}');
-      //   await print('TEST: 2. nextToken=$_nextToken');
-      // }
-
-      orders = await _repository.loadOrdersNextPage(unitId: unitId, nextToken: nextToken, controller: _controller);
-      print('TEST: 2. orders=${orders?.length}');
-      nextToken = _repository.orderListNextToken;
-      print('TEST: 2. nextToken=$nextToken');
-
-      expect(orders, []);
-      expect(nextToken, isNull);
-    });
+    test('dummy', () async {
+      print('DUMMY.START 5 SEC');
+      await Future.delayed(Duration(seconds: 2));
+    }, skip: true);
 
     test('Test pagination on Order History repository', () async {
-      // print('endpoint=${AppConfig.AnyuppGraphqlApiUrl}');
       String nextToken;
-      List<Order> orders =
-          await _repository.loadOrderHistoryNextPage(unitId: unitId, nextToken: nextToken, controller: _controller);
-      print('HISTORY TEST: 1. orders=${orders?.length}');
-      nextToken = _repository.orderHistoryListNextToken;
-      print('HISTORY TEST: 1. nextToken=$nextToken');
-
-      expect(orders, isNotNull);
-      expect(orders.length, greaterThanOrEqualTo(99));
-      expect(nextToken, isNotNull);
-
-      orders =
-          await _repository.loadOrderHistoryNextPage(unitId: unitId, nextToken: nextToken, controller: _controller);
-      print('HISTORY TEST: 2. orders=${orders?.length}');
-      nextToken = _repository.orderHistoryListNextToken;
-      print('HISTORY TEST: 2. nextToken=$nextToken');
-
-      expect(orders, []);
-      expect(nextToken, isNull);
-    });
+      int remainingCount = dummy_order_history_count % dummy_page_size;
+      print('HISTORY TEST.remainingCount=$remainingCount');
+      int i = 0;
+      do {
+        List<Order> histories = await _repository.loadOrderHistoryNextPage(
+          unitId: unitId,
+          nextToken: nextToken,
+          controller: _controller,
+        );
+        print('HISTORY TEST[$i].orders.length=${histories?.length}');
+        nextToken = _repository.orderHistoryListNextToken;
+        print('HISTORY TEST[$i].nextToken=$nextToken');
+        if (histories.length == dummy_page_size) {
+          expect(histories.length, dummy_page_size);
+        } else if (histories.isNotEmpty) {
+          expect(histories, isNotNull);
+          expect(histories.length, remainingCount);
+          expect(nextToken, isNotNull);
+        } else if (histories.isEmpty) {
+          expect(histories, []);
+          expect(nextToken, isNull);
+        }
+        i++;
+      } while (nextToken != null);
+    }, skip: false);
 
     tearDownAll(() async {
-      getIt.unregister<OrderRepository>();
+      await cleanUpOrders();
       await _controller?.close();
       await _repository.stopOrderListSubscription();
       await _repository.stopOrderHistoryListSubscription();
       _repository = null;
+
+      getIt.unregister<OrderRepository>();
     });
   });
 }

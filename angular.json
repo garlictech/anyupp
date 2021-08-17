@@ -1216,6 +1216,31 @@
             "cwd": "apps/anyupp-mobile"
           }
         },
+        "build-schema": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "parallel": false,
+            "command": "../../tools/build-schema-mobile-api.sh {args.stage}",
+            "cwd": "apps/crud-backend"
+          },
+          "outputs": ["apps/anyupp-mobile/graphql/"]
+        },
+        "pub-get": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "parallel": false,
+            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build  568276182587.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub get",
+            "cwd": "apps/anyupp-mobile"
+          }
+        },
+        "graphql-codegen": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "parallel": false,
+            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build  568276182587.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub run build_runner build --delete-conflicting-outputs",
+            "cwd": "apps/anyupp-mobile"
+          }
+        },
         "format": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
@@ -1297,6 +1322,13 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build 568276182587.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build apk",
+            "cwd": "apps/anyupp-mobile"
+          }
+        },
+        "buildApk-ci-prod": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build 486782650003.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build apk",
             "cwd": "apps/anyupp-mobile"
           }
         },

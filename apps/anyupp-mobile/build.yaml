@@ -1,0 +1,32 @@
+targets:
+  $default:
+    sources:
+      - graphql/**
+      - lib/$lib$
+      - $package$
+    builders:
+      artemis:
+        options:
+          schema_mapping:
+            # Schema mapping for CRUD
+            - schema: graphql/crud-api-schema.graphql
+              queries_glob: graphql/crud/**.graphql
+              output: lib/graphql/generated/crud-api.dart
+              naming_scheme: pathedWithTypes
+
+            # Schema mapping for ANYUPP
+            - schema: graphql/anyupp-api-schema.graphql
+              queries_glob: graphql/anyupp/**.graphql
+              output: lib/graphql/generated/anyupp-api.dart
+              naming_scheme: pathedWithTypes
+
+            # Schema mapping for Flutter tests
+            - schema: graphql/crud-api-schema.graphql
+              queries_glob: graphql/test/**.graphql
+              output: lib/../test/graphql/generated/crud-api.dart
+              naming_scheme: pathedWithTypes
+          scalar_mapping:
+            - custom_parser_import: 'package:fa_prev/graphql/utils/graphql_coercers.dart'
+              graphql_type: AWSDateTime
+              dart_type: DateTime
+          generate_helpers: true

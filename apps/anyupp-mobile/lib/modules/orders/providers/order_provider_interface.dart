@@ -16,7 +16,6 @@ abstract class IOrdersProvider {
   Future<void> stopOrderListSubscription();
 
   Future<List<Order>> loadOrdersNextPage({
-    String unitId,
     String nextToken,
     StreamController<List<Order>> controller,
   });
@@ -35,7 +34,6 @@ abstract class IOrdersProvider {
   Future<void> stopOrderHistoryListSubscription();
 
   Future<List<Order>> loadOrderHistoryNextPage({
-    String unitId,
     String nextToken,
     StreamController<List<Order>> controller,
   });

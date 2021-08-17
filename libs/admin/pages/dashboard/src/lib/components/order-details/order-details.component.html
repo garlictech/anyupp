@@ -32,7 +32,6 @@
       </div>
       <div class="font-weight-normal" *ngIf="orderItem.configSets">
         <div *ngFor="let set of orderItem.configSets">
-          {{ set.name | localize }}:
           <span *ngFor="let setItem of set.items; let last = last">
             {{ setItem.name | localize }}
             <ng-container *ngIf="!last">,</ng-container>

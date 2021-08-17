@@ -69,7 +69,6 @@ class OrderRepository implements IOrdersProvider {
   Future<List<Order>> loadOrderHistoryNextPage(
       {String unitId, String nextToken, StreamController<List<Order>> controller}) {
     return _provider.loadOrderHistoryNextPage(
-      unitId: unitId,
       controller: controller,
       nextToken: nextToken,
     );
@@ -78,7 +77,6 @@ class OrderRepository implements IOrdersProvider {
   @override
   Future<List<Order>> loadOrdersNextPage({String unitId, String nextToken, StreamController<List<Order>> controller}) {
     return _provider.loadOrdersNextPage(
-      unitId: unitId,
       controller: controller,
       nextToken: nextToken,
     );

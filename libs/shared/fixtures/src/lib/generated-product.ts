@@ -60,7 +60,25 @@ const generatedProductBase: CrudApi.CreateGeneratedProductInput = {
   ],
 };
 
+const generatedDrinkProduct: CrudApi.GeneratedProduct = {
+  ...generatedProductBase,
+  id: `${testIdPrefix}_generated_product_id_1`,
+  productType: 'drink',
+  createdAt: '',
+  updatedAt: '',
+};
+
+const generatedFoodProduct: CrudApi.GeneratedProduct = {
+  ...generatedProductBase,
+  id: `${testIdPrefix}_generated_product_id_2`,
+  productType: 'food',
+  createdAt: '',
+  updatedAt: '',
+};
+
 export const generatedProductFixture = {
   base: generatedProductBase,
   getGeneratedProduct,
+  generatedDrinkProduct,
+  generatedFoodProduct,
 };

@@ -3,6 +3,7 @@ import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { from } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import {
+  getCognitoUsername,
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
@@ -33,7 +34,9 @@ describe('Testing cognito service', () => {
   test.only('Test valid authorization', done => {
     service.currentContext = goodContext;
 
-    from(Auth.signIn(testAdminUsername, testAdminUserPassword))
+    from(
+      Auth.signIn(getCognitoUsername(testAdminUsername), testAdminUserPassword),
+    )
       .pipe(
         switchMap(() => service.handleContext()),
         switchMap(() => from(Auth.currentAuthenticatedUser())),

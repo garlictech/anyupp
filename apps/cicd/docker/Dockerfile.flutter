@@ -1,3 +1,11 @@
 FROM cirrusci/flutter:stable
 
 RUN flutter doctor
+
+COPY apps/anyupp-mobile anyupp-mobile
+
+RUN cd anyupp-mobile \
+  && flutter pub get \
+  && flutter build apk \ 
+  && cd .. \
+  && rm -rf anyupp-mobile
