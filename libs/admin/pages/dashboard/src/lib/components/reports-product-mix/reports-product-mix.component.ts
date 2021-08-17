@@ -1,4 +1,3 @@
-import { IProducMixArrayItem } from 'libs/shared/types/src';
 import { Observable } from 'rxjs';
 
 import {
@@ -7,6 +6,7 @@ import {
   Input,
   Optional,
 } from '@angular/core';
+import { IProducMixArrayItem } from '@bgap/shared/types';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 

@@ -1,5 +1,3 @@
-import { productsSelectors } from 'libs/admin/shared/data-access/products/src';
-import { calculateProductMix } from 'libs/admin/shared/utils/src';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
@@ -17,7 +15,9 @@ import {
 } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { calculateProductMix } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { IKeyValueObject, IProducMixArrayItem } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
