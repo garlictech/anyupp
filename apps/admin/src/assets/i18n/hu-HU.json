@@ -146,7 +146,9 @@
       "incomeOrders": "Paid orders",
       "noIncomeOrders": "Unpay orders",
       "unpayCategories": "Unpay kategóriák",
-      "rejectedOrders": "Rejected orders"
+      "rejectedOrders": "Rejected orders",
+      "productMix": "Product mix",
+      "listAll": "Mutasd mindet"
     }
   },
   "chains": {
