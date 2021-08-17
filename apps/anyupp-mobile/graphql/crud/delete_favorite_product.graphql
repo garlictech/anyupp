@@ -1,0 +1,5 @@
+mutation DeleteFavoriteProduct($favoriteProductId: ID!) {
+  deleteFavoriteProduct(input: { id: $favoriteProductId }) {
+    id
+  }
+}

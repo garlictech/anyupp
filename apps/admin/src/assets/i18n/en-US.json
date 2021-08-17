@@ -96,7 +96,8 @@
     "width": "width",
     "height": "height",
     "receipt": "receipt",
-    "invoice": "invoice"
+    "invoice": "invoice",
+    "timeZone": "Timezone"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -112,7 +113,8 @@
   },
   "header": {
     "profile": "Profile",
-    "logout": "Log out"
+    "logout": "Log out",
+    "networkError": "Network error"
   },
   "dashboard": {
     "listTitle": "Dashboard",
@@ -344,7 +346,8 @@
       "other": "Other",
       "delivery": "Delivery",
       "coupon": "Coupon",
-      "event": "Event"
+      "event": "Event",
+      "sum": "Sum"
     }
   },
   "auth": {

@@ -96,7 +96,8 @@
     "width": "szélesség",
     "height": "magasság",
     "receipt": "nyugta",
-    "invoice": "számla"
+    "invoice": "számla",
+    "timeZone": "Időzóna"
   },
   "menu": {
     "dashboard": "Vezérlőpult",
@@ -112,7 +113,8 @@
   },
   "header": {
     "profile": "Profil",
-    "logout": "Kijelentkezés"
+    "logout": "Kijelentkezés",
+    "networkError": "Network error"
   },
   "dashboard": {
     "listTitle": "Vezérlőpult",
@@ -344,7 +346,8 @@
       "other": "Egyéb",
       "delivery": "Delivery",
       "coupon": "Kupon",
-      "event": "Rendezvény"
+      "event": "Rendezvény",
+      "sum": "Összesen"
     }
   },
   "print": {

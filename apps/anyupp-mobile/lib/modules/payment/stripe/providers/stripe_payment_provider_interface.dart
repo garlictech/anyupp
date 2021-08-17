@@ -1,3 +1,4 @@
+import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
@@ -6,11 +7,14 @@ abstract class IStripePaymentProvider {
 
   Future<void> startStripePaymentWithExistingCard(Cart cart, String paymentMethodId, UserInvoiceAddress invoiceAddress);
 
-  Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard);
+  Future<void> startStripePaymentWithNewCard(
+      Cart cart, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard);
 
-  Future<void> startOrderStripePaymentWithExistingCard(String orderId, String paymentMethodId, UserInvoiceAddress invoiceAddress);
+  Future<void> startOrderStripePaymentWithExistingCard(
+      String orderId, String paymentMethodId, UserInvoiceAddress invoiceAddress);
 
-  Future<void> startOrderStripePaymentWithNewCard(String orderId, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard);
+  Future<void> startOrderStripePaymentWithNewCard(
+      String orderId, StripeCard stripeCard, UserInvoiceAddress invoiceAddress, bool saveCard);
 
   Future<bool> createPaymentMethodFromCard(String secret, StripeCard card);
 

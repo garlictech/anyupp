@@ -1,0 +1,21 @@
+query GetUserQuery($userId: ID!) {
+  getUser(id: $userId) {
+    createdAt
+    email
+    id
+    name
+    phone
+    profileImage
+    stripeCustomerId
+    updatedAt
+    invoiceAddress {
+      city
+      country
+      customerName
+      email
+      postalCode
+      streetAddress
+      taxNumber
+    }
+  }
+}

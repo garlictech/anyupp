@@ -1,0 +1,3 @@
+mutation DeleteStripeCard($paymentMethodId: String!) {
+  deleteMyStripeCard(input: { paymentMethodId: $paymentMethodId })
+}

@@ -116,7 +116,6 @@ export class ReportsDailySalesPerTypeComponent
       .pipe(untilDestroyed(this))
       .subscribe(([products, orders]) => {
         const amounts = dailySalesPerTypeOrderAmounts(products, orders);
-
         (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
           amounts[EProductType.FOOD],
           amounts[EProductType.DRINK],

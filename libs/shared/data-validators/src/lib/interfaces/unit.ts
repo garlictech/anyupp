@@ -58,6 +58,7 @@ export const unitSchema: Joi.SchemaMap<CrudApi.Unit> = {
   lanes: Joi.array().items(laneSchema).allow(null),
   floorMap: Joi.object(floorMapSchema).allow(null),
   lastOrderNum: Joi.number().allow(null),
+  timeZone: Joi.string().allow(null, ''),
   paymentModes: Joi.array().items(paymentModeSchema).allow(null),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),

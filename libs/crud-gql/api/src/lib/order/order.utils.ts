@@ -25,17 +25,29 @@ export const currentStatus = (
   return lastElement?.status || CrudApi.OrderStatus.none;
 };
 
+export const UNPAY_INCOME_CATEGORIES_ARR = [
+  CrudApi.UnpayCategory.delivery,
+  CrudApi.UnpayCategory.coupon,
+  CrudApi.UnpayCategory.event,
+];
+
+export const UNPAY_NO_INCOME_CATEGORIES_ARR = [
+  CrudApi.UnpayCategory.staff_meal,
+  CrudApi.UnpayCategory.manager_meal,
+  CrudApi.UnpayCategory.marketing_promo,
+  CrudApi.UnpayCategory.error_cooked,
+  CrudApi.UnpayCategory.error_no_cooked,
+  CrudApi.UnpayCategory.payment_mode_change,
+  CrudApi.UnpayCategory.other,
+];
+
 export const orderHasIncome = (order: CrudApi.Order) => {
   if (order.transactionStatus === CrudApi.PaymentStatus.success) {
     return true;
   } else if (order.transactionStatus === CrudApi.PaymentStatus.failed) {
     return (
       order.unpayCategory &&
-      [
-        CrudApi.UnpayCategory.delivery,
-        CrudApi.UnpayCategory.coupon,
-        CrudApi.UnpayCategory.event,
-      ].includes(order.unpayCategory)
+      UNPAY_INCOME_CATEGORIES_ARR.includes(order.unpayCategory)
     );
   } else {
     return false;
@@ -45,19 +57,6 @@ export const orderHasIncome = (order: CrudApi.Order) => {
 export const isRejectedOrder = (order: CrudApi.Order) => {
   return currentStatus(order.statusLog) === CrudApi.OrderStatus.rejected;
 };
-
-export const UNPAY_CATEGORIES_ARR = [
-  CrudApi.UnpayCategory.staff_meal,
-  CrudApi.UnpayCategory.manager_meal,
-  CrudApi.UnpayCategory.marketing_promo,
-  CrudApi.UnpayCategory.error_cooked,
-  CrudApi.UnpayCategory.error_no_cooked,
-  CrudApi.UnpayCategory.payment_mode_change,
-  CrudApi.UnpayCategory.other,
-  CrudApi.UnpayCategory.delivery,
-  CrudApi.UnpayCategory.coupon,
-  CrudApi.UnpayCategory.event,
-];
 
 const sumItemConfigSetPrices = (item: CrudApi.OrderItem): number => {
   if (!item.configSets) {

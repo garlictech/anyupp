@@ -1,10 +1,10 @@
+import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
-import 'package:stripe_sdk/stripe_sdk_ui.dart';
+import 'package:stripe_sdk/stripe_sdk_ui.dart' hide PaymentMethod;
 
 import 'stripe_payment_provider_interface.dart';
 
@@ -18,17 +18,21 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   Future<List<StripePaymentMethod>> getPaymentMethods() async {
     print('getPaymentMethods().start()');
     try {
-      QueryResult result = await GQL.backend.executeQuery(
-        query: QUERY_LIST_PAYMENT_METHODS,
-        variables: {},
+      var result = await GQL.backend.execute(
+        ListStripePaymentMethodsQuery(),
       );
 
-      List<dynamic> items = result.data['listStripeCards'];
+      // QueryResult result = await GQL.backend.executeQuery(
+      //   query: QUERY_LIST_PAYMENT_METHODS,
+      //   variables: {},
+      // );
+
+      var items = result.data.listStripeCards;
       List<StripePaymentMethod> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
           print('getPaymentMethods().card=${items[i]}');
-          results.add(StripePaymentMethod.fromMap(Map<String, dynamic>.from(items[i])));
+          results.add(StripePaymentMethod.fromMap(items[i].toJson()));
         }
       }
       // results.add(createPaymentMethod(Map<String,dynamic>.from(card)));
@@ -60,23 +64,32 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
           code: StripeException.UNKNOWN_ERROR,
           message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
     }
-
-    QueryResult result = await GQL.backend.executeMutation(
-      mutation: MUTATION_START_PAYMENT,
-      variables: createStartPaymentRequestVariables(
+    var result = await GQL.backend.execute(StartPaymentMutation(
+      variables: StartPaymentArguments(
         orderId: orderId,
-        paymentMethod: 'inapp',
+        paymentMethod: PaymentMethod.inapp,
         paymentMethodId: paymentMethodId,
-        saveCard: false,
+        savePaymentMethod: false,
         invoiceAddress: invoiceAddress,
       ),
-    );
+    ));
 
-    if (result.data == null || result.data['startStripePayment'] == null) {
+    // QueryResult result = await GQL.backend.executeMutation(
+    //   mutation: MUTATION_START_PAYMENT,
+    //   variables: createStartPaymentRequestVariables(
+    //     orderId: orderId,
+    //     paymentMethod: 'inapp',
+    //     paymentMethodId: paymentMethodId,
+    //     saveCard: false,
+    //     invoiceAddress: invoiceAddress,
+    //   ),
+    // );
+
+    if (result.data == null || result.data.startStripePayment == null) {
       return;
     }
 
-    String clientSecret = result.data['startStripePayment']['clientSecret'];
+    String clientSecret = result.data.startStripePayment.clientSecret;
     print('startStripePaymentWithExistingCard.clientSecret=$clientSecret');
 
     print('startStripePaymentWithExistingCard.confirmPayment().start()');
@@ -109,22 +122,32 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     String paymentMethodId = paymentMethod['id'];
     print('startStripePaymentWithNewCard().paymentMethodId=$paymentMethodId');
 
-    QueryResult result = await GQL.backend.executeMutation(
-      mutation: MUTATION_START_PAYMENT,
-      variables: createStartPaymentRequestVariables(
+    var result = await GQL.backend.execute(StartPaymentMutation(
+      variables: StartPaymentArguments(
         orderId: orderId,
-        paymentMethod: 'inapp',
+        paymentMethod: PaymentMethod.inapp,
         paymentMethodId: paymentMethodId,
-        saveCard: saveCard,
+        savePaymentMethod: saveCard,
         invoiceAddress: invoiceAddress,
       ),
-    );
+    ));
 
-    if (result.data == null || result.data['startStripePayment'] == null) {
+    // QueryResult result = await GQL.backend.executeMutation(
+    //   mutation: MUTATION_START_PAYMENT,
+    //   variables: createStartPaymentRequestVariables(
+    //     orderId: orderId,
+    //     paymentMethod: 'inapp',
+    //     paymentMethodId: paymentMethodId,
+    //     saveCard: saveCard,
+    //     invoiceAddress: invoiceAddress,
+    //   ),
+    // );
+
+    if (result.data == null || result.data.startStripePayment == null) {
       return;
     }
 
-    String clientSecret = result.data['startStripePayment']['clientSecret'];
+    String clientSecret = result.data.startStripePayment.clientSecret;
     print('startStripePaymentWithNewCard.clientSecret=$clientSecret');
 
     print('startStripePaymentWithNewCard.confirmPayment().start()');
@@ -158,21 +181,34 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   @override
   Future<StripePaymentMethod> createStripeCard(StripeCard card, String name) async {
     try {
-      QueryResult result = await GQL.backend.executeMutation(
-        mutation: MUTATION_CREATE_STRIPE_CARD,
-        variables: {
-          'card': {
-            'card_number': card.number,
-            'exp_year': card.expYear,
-            'exp_month': card.expMonth,
-            'cvc': card.cvc,
-            'default_for_currency': false,
-            'name': name ?? ' ',
-          },
-        },
-      );
-      Map<String, dynamic> paymentIntent = Map<String, dynamic>.from(result.data['createStripeCard']);
-      return StripePaymentMethod.fromMap(Map<String, dynamic>.from(paymentIntent));
+      var result = await GQL.backend.execute(CreateStripeCardMutation(
+        variables: CreateStripeCardArguments(
+          card: StripeCardCreateInput(
+            cardNumber: card.number,
+            expYear: card.expYear,
+            expMonth: card.expMonth,
+            cvc: card.cvc,
+            defaultForCurrency: false,
+            name: name ?? ' ',
+          ),
+        ),
+      ));
+
+      // QueryResult result = await GQL.backend.executeMutation(
+      //   mutation: MUTATION_CREATE_STRIPE_CARD,
+      //   variables: {
+      //     'card': {
+      //       'card_number': card.number,
+      //       'exp_year': card.expYear,
+      //       'exp_month': card.expMonth,
+      //       'cvc': card.cvc,
+      //       'default_for_currency': false,
+      //       'name': name ?? ' ',
+      //     },
+      //   },
+      // );
+      // Map<String, dynamic> paymentIntent = Map<String, dynamic>.from(result.data.createStripeCard.toJson()));
+      return StripePaymentMethod.fromMap(result.data.createStripeCard.toJson());
     } on Exception catch (e) {
       print('createStripeCard().exception=$e');
       rethrow;
@@ -182,13 +218,18 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   @override
   Future<bool> deleteStripeCard(String cardId) async {
     try {
-      await GQL.backend.executeMutation(
-        mutation: MUTATION_DELETE_STRIPE_CARD,
-        variables: {
-          'paymentMethodId': cardId,
-        },
-      );
-      return true;
+      var result = await GQL.backend.execute(DeleteStripeCardMutation(
+        variables: DeleteStripeCardArguments(
+          paymentMethodId: cardId,
+        ),
+      ));
+      // await GQL.backend.executeMutation(
+      //   mutation: MUTATION_DELETE_STRIPE_CARD,
+      //   variables: {
+      //     'paymentMethodId': cardId,
+      //   },
+      // );
+      return !result.hasErrors;
     } on Exception catch (e) {
       print('deleteStripeCard().exception=$e');
       rethrow;
@@ -198,15 +239,22 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   @override
   Future<StripePaymentMethod> updateStripeCard(String cardId, String name) async {
     try {
-      QueryResult result = await GQL.backend.executeMutation(
-        mutation: MUTATION_UPDATE_STRIPE_CARD,
-        variables: {
-          'paymentMethodId': cardId,
-          'name': name,
-        },
-      );
-      Map<String, dynamic> paymentIntent = Map<String, dynamic>.from(result.data['updateMyStripeCard']);
-      return StripePaymentMethod.fromMap(Map<String, dynamic>.from(paymentIntent));
+      var result = await GQL.backend.execute(UpdateStripeCardMutation(
+        variables: UpdateStripeCardArguments(
+          paymentMethodId: cardId,
+          name: name,
+        ),
+      ));
+      // QueryResult result = await GQL.backend.executeMutation(
+      //   mutation: MUTATION_UPDATE_STRIPE_CARD,
+      //   variables: {
+      //     'paymentMethodId': cardId,
+      //     'name': name,
+      //   },
+      // );
+      // Map<String, dynamic> paymentIntent = Map<String, dynamic>.from(result.data['updateMyStripeCard']);
+      // return StripePaymentMethod.fromMap(Map<String, dynamic>.from(paymentIntent));
+      return StripePaymentMethod.fromMap(result.data.updateMyStripeCard.toJson());
     } on Exception catch (e) {
       print('updateStripeCard().exception=$e');
       rethrow;

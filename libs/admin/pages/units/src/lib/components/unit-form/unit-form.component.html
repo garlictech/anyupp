@@ -78,6 +78,16 @@
 
       <div class="row">
         <div class="col-md-4">
+          <bgap-form-select
+            caption="common.timeZone"
+            [options]="timeZoneOptions"
+            [control]="dialogForm.get('timeZone')! | asFormControl"
+            [localize]="false"
+            inputId="timeZone"
+          ></bgap-form-select>
+        </div>
+
+        <div class="col-md-3">
           <bgap-form-text-input
             caption="units.openFrom"
             type="date"
@@ -85,7 +95,7 @@
             inputId="openFrom"
           ></bgap-form-text-input>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <bgap-form-text-input
             caption="units.openTo"
             type="date"
@@ -94,7 +104,7 @@
           ></bgap-form-text-input>
         </div>
 
-        <div class="col-md-4 pt-4">
+        <div class="col-md-2 pt-4">
           <bgap-form-checkbox
             caption="common.isActive"
             [control]="dialogForm.get('isActive')! | asFormControl"

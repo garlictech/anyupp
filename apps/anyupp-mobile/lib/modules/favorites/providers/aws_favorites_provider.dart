@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:fa_prev/graphql/graphql-queries.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'favorites_provider_interface.dart';
@@ -74,21 +73,26 @@ class AwsFavoritesProvider implements IFavoritesProvider {
     print('_getFavorites().unitId=$unitId');
     try {
       User user = await _authProvider.getAuthenticatedUserProfile();
-      QueryResult result = await GQL.amplify.executeQuery(
-        query: QUERY_LIST_FAVORITES,
-        variables: {
-          'userId': user.id,
-          'unitId': unitId,
-        },
-        fetchPolicy: FetchPolicy.networkOnly,
-      );
+      var result = await GQL.amplify.execute(ListFavoriteProductsQuery(
+          variables: ListFavoriteProductsArguments(
+        userId: user.id,
+        unitId: unitId,
+      )));
+      // QueryResult result = await GQL.amplify.executeQuery(
+      //   query: QUERY_LIST_FAVORITES,
+      //   variables: {
+      //     'userId': user.id,
+      //     'unitId': unitId,
+      //   },
+      //   fetchPolicy: FetchPolicy.networkOnly,
+      // );
 
-      if (result.data == null || result.data['listFavoriteProducts'] == null) {
+      if (result.data == null || result.data.listFavoriteProducts == null) {
         _favoritesController.add([]);
         return [];
       }
 
-      List<dynamic> items = result.data['listFavoriteProducts']['items'];
+      var items = result.data.listFavoriteProducts.items;
       if (items == null || items.isEmpty) {
         _favoritesController.add([]);
         return [];
@@ -96,7 +100,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
 
       List<FavoriteProduct> favorites = [];
       for (int i = 0; i < items.length; i++) {
-        favorites.add(FavoriteProduct.fromJson(Map<String, dynamic>.from(items[i])));
+        favorites.add(FavoriteProduct.fromJson(items[i].toJson()));
       }
 
       // print('***** getFavoritesList().favorites=$favorites');
@@ -111,14 +115,18 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   Future<bool> _deleteFavoriteProduct(String favoriteProductId) async {
     print('_deleteFavoriteProduct().id=$favoriteProductId');
     try {
-      QueryResult result = await GQL.amplify.executeMutation(
-        mutation: MUTATION_DELETE_FAVORITE_PRODUCT,
-        variables: {
-          'favoriteProductId': favoriteProductId,
-        },
-      );
+      var result = await GQL.amplify.execute(DeleteFavoriteProductMutation(
+          variables: DeleteFavoriteProductArguments(
+        favoriteProductId: favoriteProductId,
+      )));
+      // QueryResult result = await GQL.amplify.executeMutation(
+      //   mutation: MUTATION_DELETE_FAVORITE_PRODUCT,
+      //   variables: {
+      //     'favoriteProductId': favoriteProductId,
+      //   },
+      // );
 
-      return result?.exception == null ? true : false;
+      return result.errors == null || result.errors.isEmpty;
     } on Exception catch (e) {
       print('AwsFavoritesProvider._deleteFavoriteProduct.Exception: $e');
       rethrow;
@@ -129,16 +137,22 @@ class AwsFavoritesProvider implements IFavoritesProvider {
     print('AwsFavoritesProvider._addFavoriteProduct().unit=$unitId');
     try {
       User user = await _authProvider.getAuthenticatedUserProfile();
-      QueryResult result = await GQL.amplify.executeMutation(
-        mutation: MUTATION_ADD_FAVORITE_PRODUCT,
-        variables: {
-            'userId': user.id,
-            'unitId': unitId,
-            'productId': productId,
-          },
-      );
-      
-      return result?.exception == null ? true : false;
+      var result = await GQL.amplify.execute(CreateFavoriteProductMutation(
+          variables: CreateFavoriteProductArguments(
+        userId: user.id,
+        unitId: unitId,
+        productId: productId,
+      )));
+      // QueryResult result = await GQL.amplify.executeMutation(
+      //   mutation: MUTATION_ADD_FAVORITE_PRODUCT,
+      //   variables: {
+      //     'userId': user.id,
+      //     'unitId': unitId,
+      //     'productId': productId,
+      //   },
+      // );
+
+      return result.errors == null || result.errors.isEmpty;
     } on Exception catch (e) {
       print('AwsFavoritesProvider._addFavoriteProduct.Exception: $e');
       rethrow;

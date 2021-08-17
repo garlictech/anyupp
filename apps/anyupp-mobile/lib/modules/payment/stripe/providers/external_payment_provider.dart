@@ -1,8 +1,8 @@
+import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 
 class ExternalPaymentProvider implements IExternalPaymentProvider {
   final ICartProvider _cartProvider;
@@ -22,16 +22,26 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
           message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
     }
     try {
-      QueryResult result = await GQL.backend.executeMutation(
-        mutation: MUTATION_START_PAYMENT,
-        variables: createStartPaymentRequestVariables(
-          orderId: orderId,
-          paymentMethod: paymentMode.method,
-          paymentMethodId: paymentMode.method,
-          saveCard: false,
-          invoiceAddress: invoiceAddress,
-        ),
-      );
+      var result = await GQL.backend.execute(StartPaymentMutation(
+          variables: StartPaymentArguments(
+        orderId: orderId,
+        paymentMethod: PaymentMethod.values
+            .firstWhere((m) => m.toString() == paymentMode.method, orElse: () => PaymentMethod.cash),
+        paymentMethodId: paymentMode.method,
+        savePaymentMethod: false,
+        invoiceAddress: invoiceAddress,
+      )));
+
+      // QueryResult result = await GQL.backend.executeMutation(
+      //   mutation: MUTATION_START_PAYMENT,
+      //   variables: createStartPaymentRequestVariables(
+      //     orderId: orderId,
+      //     paymentMethod: paymentMode.method,
+      //     paymentMethodId: paymentMode.method,
+      //     saveCard: false,
+      //     invoiceAddress: invoiceAddress,
+      //   ),
+      // );
       print('startExternalPayment().result=$result}');
       return;
     } on Exception catch (e) {
@@ -50,16 +60,25 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
           message: 'response validation error createAndSendOrderFromCart()! OrderId cannot be null!');
     }
     try {
-      QueryResult result = await GQL.backend.executeMutation(
-        mutation: MUTATION_START_PAYMENT,
-        variables: createStartPaymentRequestVariables(
-          orderId: orderId,
-          paymentMethod: paymentMode.method,
-          paymentMethodId: paymentMode.method,
-          saveCard: false,
-          invoiceAddress: invoiceAddress,
-        ),
-      );
+      var result = await GQL.backend.execute(StartPaymentMutation(
+          variables: StartPaymentArguments(
+        orderId: orderId,
+        paymentMethod: PaymentMethod.values
+            .firstWhere((m) => m.toString() == paymentMode.method, orElse: () => PaymentMethod.cash),
+        paymentMethodId: paymentMode.method,
+        savePaymentMethod: false,
+        invoiceAddress: invoiceAddress,
+      )));
+      // QueryResult result = await GQL.backend.executeMutation(
+      //   mutation: MUTATION_START_PAYMENT,
+      //   variables: createStartPaymentRequestVariables(
+      //     orderId: orderId,
+      //     paymentMethod: paymentMode.method,
+      //     paymentMethodId: paymentMode.method,
+      //     saveCard: false,
+      //     invoiceAddress: invoiceAddress,
+      //   ),
+      // );
       print('startOrderExternalPayment().result=$result}');
       await Future.delayed(Duration(seconds: 2));
       return;

@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/utils/invoice_form_utils.dart';
@@ -18,8 +19,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void showInvoiceFormBottomSheet(
-    BuildContext context, String orderId, PaymentMode paymentMode) {
+void showInvoiceFormBottomSheet(BuildContext context, String orderId, PaymentMode paymentMode) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   showModalBottomSheet(
@@ -48,12 +48,10 @@ class InvoiceFormBottomSheetWidget extends StatefulWidget {
   final PaymentMode paymentMode;
   InvoiceFormBottomSheetWidget(this.orderId, this.paymentMode);
   @override
-  _InvoiceFormBottomSheetWidgetState createState() =>
-      _InvoiceFormBottomSheetWidgetState();
+  _InvoiceFormBottomSheetWidgetState createState() => _InvoiceFormBottomSheetWidgetState();
 }
 
-class _InvoiceFormBottomSheetWidgetState
-    extends State<InvoiceFormBottomSheetWidget> {
+class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWidget> {
   final profileFormKey = GlobalKey<FormState>();
   final _nameOrCompanyController = TextEditingController();
   final _emailController = TextEditingController();
@@ -151,8 +149,7 @@ class _InvoiceFormBottomSheetWidgetState
                           // ),
                           child: Center(
                             child: Text(
-                              trans(
-                                  'payment.paymentInfo.invoicing.invoice_info'),
+                              trans('payment.paymentInfo.invoicing.invoice_info'),
                               style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 color: theme.text,
@@ -176,18 +173,12 @@ class _InvoiceFormBottomSheetWidgetState
                         if (state is UserDetailsLoaded) {
                           User user = state.userDetails;
                           if (user?.invoiceAddress != null) {
-                            _setTextFieldValue(_nameOrCompanyController,
-                                user.invoiceAddress.customerName);
-                            _setTextFieldValue(
-                                _cityController, user.invoiceAddress.city);
-                            _setTextFieldValue(_emailController,
-                                user.invoiceAddress.email ?? user.email);
-                            _setTextFieldValue(
-                                _zipController, user.invoiceAddress.postalCode);
-                            _setTextFieldValue(_streetController,
-                                user.invoiceAddress.streetAddress);
-                            _setTextFieldValue(_taxNumberController,
-                                user.invoiceAddress.taxNumber);
+                            _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress.customerName);
+                            _setTextFieldValue(_cityController, user.invoiceAddress.city);
+                            _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
+                            _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
+                            _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
+                            _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
                           }
                           setState(() {
                             _userProfile = state.userDetails;
@@ -237,12 +228,8 @@ class _InvoiceFormBottomSheetWidgetState
               false,
               taxFieldValidator,
             ),
-            customCountryPickerWidget(
-                theme,
-                context,
-                trans('payment.paymentInfo.invoicing.country'),
-                _countryController,
-                _countryCodeController),
+            customCountryPickerWidget(theme, context, trans('payment.paymentInfo.invoicing.country'),
+                _countryController, _countryCodeController),
             customTextFormWidget(
               context,
               trans('payment.paymentInfo.invoicing.zip'),

@@ -570,6 +570,7 @@ type Unit
   open: DateIntervalOpen
   openingHours: WeeklySchedule
   merchantId: String
+  timeZone: String
 }
 
 type DateIntervalOpen {
