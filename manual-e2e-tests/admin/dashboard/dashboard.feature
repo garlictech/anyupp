@@ -80,14 +80,28 @@ Feature: Dashboard
     Then I should see "black" border with "0201" id on the floormap
 
   Scenario: Order payment failure
-    Given I am on the dashboard page
-    When I create a cash order
-    Then I should see my order on the list
-    When I click to the failure button
+    # about the #1112 issue
+    # if we need to select all the options or mention the options, then let me know
+    Given I create a cash or card order from the app
+    When I click on the "Manual payments" icon with title
+    Then I should see my order at the bottom on the list
+    When I click on the created order
+    And I click on the "FAILED" button
     Then I should see the unpay modal
-    When I select an item from the list
-    And I click to the OK button
-    Then I should see the red badge with the selected status caption
+    And I should see "Failed transaction. Please select unpay category!" text
+    When I click on the "Unpay category" button
+    Then I should see 10 options on the list
+    When I click on the "Staff meal" option
+    And I click on the "OK" button
+    Then I should see the red badge with "Staff meal" caption
+    When I click on the "DELETE ORDER" button
+    Then I should see "Are you sure you delete the order?" text
+    When I click on the "OK" button
+    Then the order is disappeared from the manual payments
+    When I click on the "Orders history" tab
+    Then I should see the first selected and deleted order
+    And I should see the red badge with "Staff meal" caption
+    And I should see the red badge with "rejected" caption
 
   Scenario: Order History feature
     When I click on the "Orders history" tab

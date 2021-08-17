@@ -17,7 +17,7 @@ Feature: Cash and card payment
     And I tap the "Add To Cart" button
     Then The shop cart icon banner should show "1"
     When I tap the cart icon
-    When I tap the qr code icon
+    And I tap the qr code icon
     And the qr code reader opens the camera
     And I read a seat qr code
     Then I should see the "Finding your seat..." and the "Connected to" loading screens
@@ -51,7 +51,6 @@ Feature: Cash and card payment
     When I swipe to the "History" tab
     Then I should see the "SERVED" label on the paid order
     And I should see "Load more..." at the bottom of the ordoers
-    # about the #1344 issue
     # next order, with VAT and set the language to HU, to get the notification messages
     When I tap the "Profile" menu
     And I tap the "Settings" tab
