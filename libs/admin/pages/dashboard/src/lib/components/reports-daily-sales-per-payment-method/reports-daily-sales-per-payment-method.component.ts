@@ -1,6 +1,6 @@
 import * as Chart from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
+import { Context } from 'vm';
 
 import {
   AfterViewInit,
@@ -12,12 +12,13 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
 import { dailySalesPerPaymentMethodOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { reducer } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
+
+import { ReportsService } from '../../services/reports.service';
 
 @UntilDestroy()
 @Component({
@@ -36,72 +37,22 @@ export class ReportsDailySalesPerPaymentMethodComponent
   private _chart!: Chart;
 
   constructor(
-    private _currencyFormatter: CurrencyFormatterPipe,
+    private _reportsService: ReportsService,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(
-      <CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'),
-      {
-        type: 'pie',
-        plugins: [ChartDataLabels],
-        data: {
-          labels: this._translatedLabels(),
-          datasets: [
-            {
-              backgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2'],
-              data: [0, 0, 0],
-            },
-          ],
-        },
-        options: {
-          legend: {
-            position: 'bottom',
-          },
-          responsive: true,
-          maintainAspectRatio: false,
-          tooltips: {
-            callbacks: {
-              label: (tooltipItem, data) => {
-                const label =
-                  (<string[]>data.labels)[tooltipItem.index || 0] || '';
-                const value: number =
-                  <number>(
-                    (<Chart.ChartDataSets[]>(
-                      (<Chart.ChartDataSets[]>data.datasets)[0].data
-                    ))[tooltipItem.index || 0]
-                  ) || 0;
-
-                return ` ${label}: ${this._currencyFormatter.transform(
-                  value,
-                  this.currency,
-                )}`;
-              },
-            },
-          },
-          plugins: {
-            datalabels: {
-              color: 'white',
-              labels: {
-                title: {
-                  font: {
-                    weight: 'bold',
-                  },
-                },
-              },
-              formatter: (value, ctx) => {
-                const sum = (
-                  (<Chart.ChartDataSets[]>ctx.chart.data.datasets)[0]
-                    .data as number[]
-                ).reduce(reducer);
-                const perc = ((value / sum) * 100).toFixed(0);
-                return `${perc}%`;
-              },
-            },
-          },
-        },
+    this._chart = this._reportsService.createDailySalesPerPaymentMethodChart(
+      this.chart,
+      this.currency,
+      this._translatedLabels,
+      (value: number, ctx: Context) => {
+        const sum = (
+          (<Chart.ChartDataSets[]>ctx.chart.data.datasets)[0].data as number[]
+        ).reduce(reducer);
+        const perc = ((value / sum) * 100).toFixed(0);
+        return `${perc}%`;
       },
     );
 

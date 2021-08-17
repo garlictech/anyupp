@@ -58,6 +58,16 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
   ) {
     this.dateFormControl = new FormControl();
 
+    this._store
+      .pipe(
+        select(groupsSelectors.getSeletedGroup),
+        skipWhile((group): boolean => !group),
+        untilDestroyed(this),
+      )
+      .subscribe((group: CrudApi.Group | undefined): void => {
+        this.groupCurrency = group?.currency || '';
+      });
+
     this.selectedUnit$ = this._store.pipe(
       select(unitsSelectors.getSelectedUnit),
       filterNullish(),
@@ -77,18 +87,6 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
         this._store.dispatch(
           dashboardActions.updateSelectedUnitOrderHistory({ historyDate }),
         );
-
-        this._changeDetectorRef.detectChanges();
-      });
-
-    this._store
-      .pipe(
-        select(groupsSelectors.getSeletedGroup),
-        skipWhile((group): boolean => !group),
-        untilDestroyed(this),
-      )
-      .subscribe((group: CrudApi.Group | undefined): void => {
-        this.groupCurrency = group?.currency || '';
 
         this._changeDetectorRef.detectChanges();
       });
