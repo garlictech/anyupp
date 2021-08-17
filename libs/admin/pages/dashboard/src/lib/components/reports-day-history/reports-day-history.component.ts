@@ -25,7 +25,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$!: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<CrudApi.Order[]>;
   @Input() currency = '';
 
   private _chart!: Chart;

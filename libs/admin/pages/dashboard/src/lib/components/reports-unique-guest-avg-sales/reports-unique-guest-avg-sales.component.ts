@@ -20,7 +20,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./reports-unique-guest-avg-sales.component.scss'],
 })
 export class ReportsUniqueGuestAvgSalesComponent implements OnInit, OnDestroy {
-  @Input() orders$!: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<CrudApi.Order[]>;
   @Input() currency = '';
 
   public uniqueUserCount = 0;
@@ -29,16 +29,20 @@ export class ReportsUniqueGuestAvgSalesComponent implements OnInit, OnDestroy {
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.orders$
-      .pipe(untilDestroyed(this))
-      .subscribe((orders: CrudApi.Order[]): void => {
-        this.uniqueUserCount = [...new Set(orders.map(o => o.userId))].length;
-        const dailyOrdersSum = getDailyOrdersSum(orders);
-        this.ordersSumAvg =
-          this.uniqueUserCount > 0 ? dailyOrdersSum / this.uniqueUserCount : 0;
+    if (this.orders$) {
+      this.orders$
+        .pipe(untilDestroyed(this))
+        .subscribe((orders: CrudApi.Order[]): void => {
+          this.uniqueUserCount = [...new Set(orders.map(o => o.userId))].length;
+          const dailyOrdersSum = getDailyOrdersSum(orders);
+          this.ordersSumAvg =
+            this.uniqueUserCount > 0
+              ? dailyOrdersSum / this.uniqueUserCount
+              : 0;
 
-        this._changeDetectorRef.detectChanges();
-      });
+          this._changeDetectorRef.detectChanges();
+        });
+    }
   }
 
   ngOnDestroy(): void {
