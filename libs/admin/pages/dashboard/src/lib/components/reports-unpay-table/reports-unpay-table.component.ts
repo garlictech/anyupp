@@ -21,7 +21,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./reports-unpay-table.component.scss'],
 })
 export class ReportsUnpayTableComponent implements OnInit, OnDestroy {
-  @Input() orders$!: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<CrudApi.Order[]>;
   @Input() currency = '';
   @Input() hasIncome = false;
 
@@ -31,21 +31,23 @@ export class ReportsUnpayTableComponent implements OnInit, OnDestroy {
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.orders$
-      .pipe(untilDestroyed(this))
-      .subscribe((orders: CrudApi.Order[]): void => {
-        this.paymentMethods = [
-          ...new Set(orders.map(o => o.paymentMode.method)),
-        ];
+    if (this.orders$) {
+      this.orders$
+        .pipe(untilDestroyed(this))
+        .subscribe((orders: CrudApi.Order[]): void => {
+          this.paymentMethods = [
+            ...new Set(orders.map(o => o.paymentMode.method)),
+          ];
 
-        this.unpayCategoryStats = unpayCategoryTableData(
-          orders,
-          this.hasIncome,
-          this.paymentMethods,
-        );
+          this.unpayCategoryStats = unpayCategoryTableData(
+            orders,
+            this.hasIncome,
+            this.paymentMethods,
+          );
 
-        this._changeDetectorRef.detectChanges();
-      });
+          this._changeDetectorRef.detectChanges();
+        });
+    }
   }
 
   ngOnDestroy(): void {

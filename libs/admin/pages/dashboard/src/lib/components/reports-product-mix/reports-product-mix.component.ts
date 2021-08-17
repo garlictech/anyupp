@@ -18,7 +18,7 @@ import { UntilDestroy } from '@ngneat/until-destroy';
   styleUrls: ['./reports-product-mix.component.scss'],
 })
 export class ReportsProductMixComponent {
-  @Input() productMixData$!: Observable<IProducMixArrayItem[]>;
+  @Input() productMixData$?: Observable<IProducMixArrayItem[]>;
   @Input() isModal = false;
 
   constructor(
@@ -27,10 +27,12 @@ export class ReportsProductMixComponent {
   ) {}
 
   public showFullProductMix() {
-    const dialog = this._nbDialogService.open(ReportsProductMixComponent);
+    if (this.productMixData$) {
+      const dialog = this._nbDialogService.open(ReportsProductMixComponent);
 
-    dialog.componentRef.instance.productMixData$ = this.productMixData$;
-    dialog.componentRef.instance.isModal = true;
+      dialog.componentRef.instance.productMixData$ = this.productMixData$;
+      dialog.componentRef.instance.isModal = true;
+    }
   }
 
   public close(): void {
