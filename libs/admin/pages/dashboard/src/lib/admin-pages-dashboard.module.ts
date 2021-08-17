@@ -43,6 +43,7 @@ import { ReportsDailySalesPerTypeComponent } from './components/reports-daily-sa
 import { ReportsDayHistoryComponent } from './components/reports-day-history/reports-day-history.component';
 import { ReportsHourlyBreakdownComponent } from './components/reports-hourly-breakdown/reports-hourly-breakdown.component';
 import { ReportsOrdersAmountAvgSalesComponent } from './components/reports-orders-amount-avg-sales/reports-orders-amount-avg-sales.component';
+import { ReportsProductMixComponent } from './components/reports-product-mix/reports-product-mix.component';
 import { ReportsUniqueGuestAvgSalesComponent } from './components/reports-unique-guest-avg-sales/reports-unique-guest-avg-sales.component';
 import { ReportsUnpayTableComponent } from './components/reports-unpay-table/reports-unpay-table.component';
 
@@ -61,6 +62,7 @@ const NB_MODULES = [
   NbSpinnerModule,
   NbInputModule,
   NbUserModule,
+  NbDialogModule,
 ];
 
 @NgModule({
@@ -86,6 +88,7 @@ const NB_MODULES = [
     ReportsDailySalesPerPaymentMethodComponent,
     ReportsHourlyBreakdownComponent,
     ReportsUnpayTableComponent,
+    ReportsProductMixComponent,
   ],
   imports: [
     CommonModule,

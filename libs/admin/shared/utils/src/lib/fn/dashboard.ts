@@ -1,8 +1,6 @@
+import { DateTime } from 'luxon';
+
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  UNPAY_INCOME_CATEGORIES_ARR,
-  UNPAY_NO_INCOME_CATEGORIES_ARR,
-} from '@bgap/crud-gql/api';
 import {
   EProductType,
   IKeyValueObject,
@@ -14,7 +12,6 @@ import {
   UnpayCategoryStatObj,
   UnpayCategoryStatObjItem,
 } from '@bgap/shared/types';
-import { DateTime } from 'luxon';
 
 export const calculatePaymentMethodSums = (
   paymentMethods: CrudApi.PaymentMethod[],
@@ -149,14 +146,23 @@ export const dailySalesPerPaymentMethodOrderAmounts = (
   return amounts;
 };
 
-export const calculateProductMix = (orders: CrudApi.Order[]) => {
+export const calculateProductMix = (
+  orders: CrudApi.Order[],
+  products: CrudApi.GeneratedProduct[],
+) => {
   const productMix: IProducMixObject = {};
+
+  const productTypeMap: IKeyValueObject = {};
+  products.forEach(p => {
+    productTypeMap[p.id] = p.productType;
+  });
 
   orders.forEach(order => {
     order.items.forEach(orderItem => {
       if (!productMix[orderItem.productId]) {
         productMix[orderItem.productId] = {
           productId: orderItem.productId,
+          productType: productTypeMap[orderItem.productId],
           quantity: 0,
           name: orderItem.productName,
           variants: {},
@@ -234,14 +240,14 @@ export const unpayCategoryTableData = (
     o =>
       o.unpayCategory &&
       (hasIncome
-        ? UNPAY_INCOME_CATEGORIES_ARR
-        : UNPAY_NO_INCOME_CATEGORIES_ARR
+        ? CrudApi.UNPAY_INCOME_CATEGORIES_ARR
+        : CrudApi.UNPAY_NO_INCOME_CATEGORIES_ARR
       ).includes(o.unpayCategory),
   );
 
   (hasIncome
-    ? UNPAY_INCOME_CATEGORIES_ARR
-    : UNPAY_NO_INCOME_CATEGORIES_ARR
+    ? CrudApi.UNPAY_INCOME_CATEGORIES_ARR
+    : CrudApi.UNPAY_NO_INCOME_CATEGORIES_ARR
   ).forEach(category => {
     unpayCategoryStatObj[category] = calculateUnpayCategoryStat(
       category,

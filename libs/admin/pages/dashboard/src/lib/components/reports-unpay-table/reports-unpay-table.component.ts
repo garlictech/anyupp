@@ -6,6 +6,7 @@ import {
   Component,
   Input,
   OnDestroy,
+  OnInit,
 } from '@angular/core';
 import { unpayCategoryTableData } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -19,8 +20,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   templateUrl: './reports-unpay-table.component.html',
   styleUrls: ['./reports-unpay-table.component.scss'],
 })
-export class ReportsUnpayTableComponent implements OnDestroy {
-  @Input() orders$!: Observable<CrudApi.Order[]>;
+export class ReportsUnpayTableComponent implements OnInit, OnDestroy {
+  @Input() orders$?: Observable<CrudApi.Order[]>;
   @Input() currency = '';
   @Input() hasIncome = false;
 
@@ -30,21 +31,23 @@ export class ReportsUnpayTableComponent implements OnDestroy {
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.orders$
-      .pipe(untilDestroyed(this))
-      .subscribe((orders: CrudApi.Order[]): void => {
-        this.paymentMethods = [
-          ...new Set(orders.map(o => o.paymentMode.method)),
-        ];
+    if (this.orders$) {
+      this.orders$
+        .pipe(untilDestroyed(this))
+        .subscribe((orders: CrudApi.Order[]): void => {
+          this.paymentMethods = [
+            ...new Set(orders.map(o => o.paymentMode.method)),
+          ];
 
-        this.unpayCategoryStats = unpayCategoryTableData(
-          orders,
-          this.hasIncome,
-          this.paymentMethods,
-        );
+          this.unpayCategoryStats = unpayCategoryTableData(
+            orders,
+            this.hasIncome,
+            this.paymentMethods,
+          );
 
-        this._changeDetectorRef.detectChanges();
-      });
+          this._changeDetectorRef.detectChanges();
+        });
+    }
   }
 
   ngOnDestroy(): void {

@@ -33,7 +33,7 @@ export class ReportsDailySalesPerTypeComponent
   implements AfterViewInit, OnDestroy
 {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$!: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<CrudApi.Order[]>;
   @Input() currency = '';
 
   private _chart!: Chart;
@@ -109,23 +109,25 @@ export class ReportsDailySalesPerTypeComponent
       },
     );
 
-    combineLatest([
-      this._store.pipe(select(productsSelectors.getAllGeneratedProducts)),
-      this.orders$,
-    ])
-      .pipe(untilDestroyed(this))
-      .subscribe(([products, orders]) => {
-        const amounts = dailySalesPerTypeOrderAmounts(products, orders);
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
-          amounts[EProductType.FOOD],
-          amounts[EProductType.DRINK],
-          amounts[EProductType.OTHER],
-        ];
+    if (this.orders$) {
+      combineLatest([
+        this._store.pipe(select(productsSelectors.getAllGeneratedProducts)),
+        this.orders$,
+      ])
+        .pipe(untilDestroyed(this))
+        .subscribe(([products, orders]) => {
+          const amounts = dailySalesPerTypeOrderAmounts(products, orders);
+          (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
+            amounts[EProductType.FOOD],
+            amounts[EProductType.DRINK],
+            amounts[EProductType.OTHER],
+          ];
 
-        this._chart.update();
+          this._chart.update();
 
-        this._changeDetectorRef.detectChanges();
-      });
+          this._changeDetectorRef.detectChanges();
+        });
+    }
 
     this._translateService.onLangChange
       .pipe(untilDestroyed(this))

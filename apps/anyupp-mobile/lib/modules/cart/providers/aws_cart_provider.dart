@@ -184,7 +184,7 @@ class AwsCartProvider implements ICartProvider {
     try {
       var result = await GQL.amplify.execute(UpdateCartMutation(
           variables: UpdateCartArguments(
-        updateCartInput: UpdateCartInput.fromJson(cart.toJson()),
+        updateCartInput: UpdateCartInput.fromJson(_getCartMutationVariablesFromCart(cart)),
       )));
 
       // QueryResult result = await GQL.amplify.executeMutation(
@@ -254,11 +254,13 @@ class AwsCartProvider implements ICartProvider {
             'tax': item.priceShown.tax,
             'taxSum': item.priceShown.taxSum,
           },
-          'statusLog': {
-            'userId': cart.userId,
-            'status': 'none',
-            'ts': 1.0,
-          },
+          'statusLog': [
+            {
+              'userId': cart.userId,
+              'status': 'none',
+              'ts': 1.0,
+            }
+          ],
           "allergens": item.allergens,
           "image": item.image,
           'quantity': item.quantity,

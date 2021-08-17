@@ -48,12 +48,20 @@ export interface IProducMixObjectInfo {
 
 export interface IProducMixObjectItem extends IProducMixObjectInfo {
   productId: string;
+  productType: string;
   variants: {
     [variantId: string]: IProducMixObjectInfo;
   };
   components: {
     [variantId: string]: IProducMixObjectInfo;
   };
+}
+
+export interface IProducMixArrayItem extends IProducMixObjectInfo {
+  productId: string;
+  productType: string;
+  variants: IProducMixObjectInfo[];
+  components: IProducMixObjectInfo[];
 }
 
 export interface IProducMixObject {

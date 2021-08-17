@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { skipWhile, take } from 'rxjs/operators';
 
 import {
@@ -15,9 +15,11 @@ import {
 } from '@bgap/admin/shared/data-access/dashboard';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { calculateProductMix } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IKeyValueObject } from '@bgap/shared/types';
+import { IKeyValueObject, IProducMixArrayItem } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -44,9 +46,14 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
   public selectedUnit$: Observable<CrudApi.Unit>;
   public dailyOrdersSum: IKeyValueObject = {};
   public groupCurrency = '';
+  public productMixData$: BehaviorSubject<IProducMixArrayItem[]> =
+    new BehaviorSubject<IProducMixArrayItem[]>([]);
+  public productMixLimitedData$: BehaviorSubject<IProducMixArrayItem[]> =
+    new BehaviorSubject<IProducMixArrayItem[]>([]);
 
   constructor(
     private _store: Store,
+
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.dateFormControl = new FormControl();
@@ -86,31 +93,45 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
         this._changeDetectorRef.detectChanges();
       });
 
-    this._store
-      .pipe(select(ordersSelectors.getAllHistoryOrders))
+    combineLatest([
+      this._store.select(ordersSelectors.getAllHistoryOrders),
+      this._store.select(productsSelectors.getAllGeneratedProducts),
+    ])
       .pipe(untilDestroyed(this))
-      .subscribe((historyOrders: CrudApi.Order[]): void => {
-        this.incomeOrders$.next(
-          historyOrders.filter(
-            o => CrudApi.orderHasIncome(o) && !CrudApi.isRejectedOrder(o),
-          ),
-        );
-        this.noIncomeOrders$.next(
-          historyOrders.filter(
-            o => !CrudApi.orderHasIncome(o) && !CrudApi.isRejectedOrder(o),
-          ),
-        );
-        this.unpayOrders$.next(
-          historyOrders.filter(
-            o => o.transactionStatus === CrudApi.PaymentStatus.failed,
-          ),
-        );
-        this.rejectedOrders$.next(
-          historyOrders.filter(o => CrudApi.isRejectedOrder(o)),
-        );
+      .subscribe(
+        ([historyOrders, products]: [
+          CrudApi.Order[],
+          CrudApi.GeneratedProduct[],
+        ]): void => {
+          this.incomeOrders$.next(
+            historyOrders.filter(
+              o => CrudApi.orderHasIncome(o) && !CrudApi.isRejectedOrder(o),
+            ),
+          );
+          this.noIncomeOrders$.next(
+            historyOrders.filter(
+              o => !CrudApi.orderHasIncome(o) && !CrudApi.isRejectedOrder(o),
+            ),
+          );
+          this.unpayOrders$.next(
+            historyOrders.filter(
+              o => o.transactionStatus === CrudApi.PaymentStatus.failed,
+            ),
+          );
+          this.rejectedOrders$.next(
+            historyOrders.filter(o => CrudApi.isRejectedOrder(o)),
+          );
 
-        this._changeDetectorRef.detectChanges();
-      });
+          const productMix = calculateProductMix(
+            historyOrders.filter(o => !CrudApi.isRejectedOrder(o)),
+            products,
+          );
+          this.productMixData$.next(productMix);
+          this.productMixLimitedData$.next(productMix.slice(0, 10));
+
+          this._changeDetectorRef.detectChanges();
+        },
+      );
 
     this.dateFormControl.valueChanges.subscribe((): void => {
       this._store.dispatch(
