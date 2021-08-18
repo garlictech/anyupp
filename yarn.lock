@@ -11449,10 +11449,10 @@ cucumber-expressions@^6.0.1:
   dependencies:
     becke-ch--regex--s0-0-v1--base--pl--lib "^1.2.0"
 
-cucumber-html-reporter@5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/cucumber-html-reporter/-/cucumber-html-reporter-5.4.0.tgz#d7731d7cc8872f85a4783b1a8214c4c4e0c66bc4"
-  integrity sha512-PHaJvH9POQrbydzVdd12jgV9NWS8zO58lLwz6wmyZSTDp4PQOjEdS69SFvPLXOQYTIU8o0MM3QBRMpeUpvulvA==
+cucumber-html-reporter@5.5.0:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/cucumber-html-reporter/-/cucumber-html-reporter-5.5.0.tgz#62603bf576d46250127bbe81bb487b8e7dc0ce96"
+  integrity sha512-kF7vIwvTe7we7Wp/5uNZVZk+Ryozb688LpNvCNhou6N0RmLYPqaoV2aiN8GIB94JUBpribtlq6kDkEUHwxBVeQ==
   dependencies:
     chalk "^2.4.2"
     find "^0.3.0"
