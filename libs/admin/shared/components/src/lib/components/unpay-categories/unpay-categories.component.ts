@@ -6,7 +6,10 @@ import {
 } from '@angular/core';
 import * as CrudApi from '@bgap/crud-gql/api';
 
-import { UNPAY_CATEGORIES_ARR } from '@bgap/crud-gql/api';
+import {
+  UNPAY_NO_INCOME_CATEGORIES_ARR,
+  UNPAY_INCOME_CATEGORIES_ARR,
+} from '@bgap/crud-gql/api';
 
 import { NbDialogRef } from '@nebular/theme';
 
@@ -19,7 +22,10 @@ export class UnpayCategoriesComponent implements OnInit {
   public clickCallback: (unpayCategory: CrudApi.UnpayCategory) => void = () => {
     /**/
   };
-  public unpayCategories: CrudApi.UnpayCategory[] = UNPAY_CATEGORIES_ARR;
+  public unpayCategories: CrudApi.UnpayCategory[] = [
+    ...UNPAY_NO_INCOME_CATEGORIES_ARR,
+    ...UNPAY_INCOME_CATEGORIES_ARR,
+  ];
   public selectedCategory?: CrudApi.UnpayCategory;
 
   constructor(

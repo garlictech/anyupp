@@ -30,12 +30,9 @@ class GraphQLClientService {
   }
 
   Future<ValueNotifier<GraphQLClient>> getCrudClient({bool force = false}) async {
-
-
     String accessToken = await authProvider.getAccessToken();
     // print('GraphQLClientService.getAmplifyClient.accessToken=$accessToken');
 
-    // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
     // accessToken = null;
 
     Map<String, String> headers;
@@ -97,11 +94,9 @@ class GraphQLClientService {
   }
 
   Future<ValueNotifier<GraphQLClient>> getAnyuppClient({bool useApi = false}) async {
-
     String accessToken = useApi ? null : await authProvider.getAccessToken();
     // print('GraphQLClientService.getGraphQLClient.accessToken=$accessToken');
 
-    // TODO API key auth van most, HA lesz cognito, akkor torolni ezt a sort:
     // accessToken = null;
 
     Map<String, String> headers;

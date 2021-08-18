@@ -45,6 +45,10 @@ void _initCommon() async {
     returnUrlForSca: 'anyupp://stripe' ?? 'todo',
   );
 
+  getIt.registerLazySingleton<AppConstants>(() => AppConstants(
+        paginationSize: 100,
+      ));
+
   final CognitoService cognitoService = CognitoService(
     region: AppConfig.Region,
     userPoolId: AppConfig.UserPoolId,

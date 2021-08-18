@@ -18,7 +18,9 @@
 import '@testing-library/cypress/add-commands';
 import addContext from 'mochawesome/addContext';
 import './commands';
+import './global-fixtures';
 
+export * from './auth-provider-commands/cognito';
 export * from './mailtrap';
 export * from './utils';
 

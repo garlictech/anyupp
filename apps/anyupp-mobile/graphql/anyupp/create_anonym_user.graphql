@@ -1,0 +1,6 @@
+mutation CreateAnonymUser {
+  createAnonymUser {
+    pwd
+    username
+  }
+}

@@ -20,7 +20,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./reports-orders-amount-avg-sales.component.scss'],
 })
 export class ReportsOrdersAmountAvgSalesComponent implements OnInit, OnDestroy {
-  @Input() orders$!: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<CrudApi.Order[]>;
   @Input() currency = '';
 
   public ordersSum = 0;
@@ -30,16 +30,18 @@ export class ReportsOrdersAmountAvgSalesComponent implements OnInit, OnDestroy {
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.orders$
-      .pipe(untilDestroyed(this))
-      .subscribe((orders: CrudApi.Order[]): void => {
-        this.ordersSum = getDailyOrdersSum(orders);
-        this.ordersCount = orders.length;
-        this.ordersSumAvg =
-          orders.length > 0 ? this.ordersSum / orders.length : 0;
+    if (this.orders$) {
+      this.orders$
+        .pipe(untilDestroyed(this))
+        .subscribe((orders: CrudApi.Order[]): void => {
+          this.ordersSum = getDailyOrdersSum(orders);
+          this.ordersCount = orders.length;
+          this.ordersSumAvg =
+            orders.length > 0 ? this.ordersSum / orders.length : 0;
 
-        this._changeDetectorRef.detectChanges();
-      });
+          this._changeDetectorRef.detectChanges();
+        });
+    }
   }
 
   ngOnDestroy(): void {

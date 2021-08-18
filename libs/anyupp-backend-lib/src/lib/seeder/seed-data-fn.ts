@@ -29,12 +29,6 @@ const generateGroupId = (chainIdx: number, idx: number) =>
   `${seededIdPrefix}group_c${chainIdx}_${idx}_id`;
 const generateUnitId = (chainIdx: number, groupIdx: number, idx: number) =>
   `${seededIdPrefix}unit_c${chainIdx}_g${groupIdx}_${idx}_id`;
-const generateLaneId = (
-  chainIdx: number,
-  groupIdx: number,
-  unitIdx: number,
-  idx: number,
-) => `${seededIdPrefix}lane_c${chainIdx}_g${groupIdx}_u${unitIdx}_${idx}_id`;
 const generateProductCategoryId = (chainIdx: number, idx: number) =>
   `${seededIdPrefix}product_category_c${chainIdx}_${idx}_id`;
 const generateChainProductId = (chainIdx: number, idx: number) =>
@@ -77,6 +71,21 @@ const deleteCreate = <T, K>(
     }),
     switchMap(() => createOperation()),
   );
+
+export const createConsumerUser = () => (deps: SeederDependencies) => {
+  console.debug('createConsumerUser');
+
+  const input: CrudApi.CreateUserInput = {
+    id: 'test-alice',
+    name: 'Mekk Elek',
+    email: 'testuser+alice@anyupp.com',
+    phone: '1234',
+  };
+  return deleteCreate(
+    () => deps.crudSdk.DeleteUser({ input: { id: input.id ?? '' } }),
+    () => deps.crudSdk.CreateUser({ input }),
+  );
+};
 
 export const createTestChain =
   (chainIdx: number) => (deps: SeederDependencies) => {
@@ -148,15 +157,16 @@ export const createTestUnit =
       groupId: generateGroupId(chainIdx, groupIdx),
       chainId: generateChainId(chainIdx),
       name: `Késdobáló #${chainIdx}${groupIdx}${unitIdx}`,
+      timeZone: 'Europe/Budapest',
       lanes: [
         {
           color: '#e72222',
-          id: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
+          id: 'lane_01',
           name: 'bár',
         },
         {
           color: '#e123ef',
-          id: generateLaneId(chainIdx, groupIdx, unitIdx, 2),
+          id: 'lane_02',
           name: 'konyha',
         },
       ],
@@ -381,30 +391,37 @@ export const createTestProductCategory =
   };
 
 export const createTestChainProduct =
-  (chainIdx: number, productCategoryIdx: number, productIdx: number) =>
+  (
+    chainIdx: number,
+    productCategoryIdx: number,
+    productIdx: number,
+    productName: string,
+    productType: EProductType,
+  ) =>
   (deps: SeederDependencies) => {
     console.debug('createTestChainProduct', {
       chainIdx,
       productCategoryIdx,
       productIdx,
+      productName,
+      productType,
     });
     const input: DeletableInput<CrudApi.CreateChainProductInput> = {
       id: generateChainProductId(chainIdx, productIdx),
       chainId: generateChainId(chainIdx),
       name: {
-        hu: `Teszt chain termék #${productIdx} név`,
-        en: `Test chain product #${productIdx} name`,
+        hu: `${productName} #${productIdx}`,
+        en: `${productName} #${productIdx}`,
       },
       description: {
-        hu: `Teszt chain termék #${productIdx} leírás`,
-        en: `Test chain termék #${productIdx} description`,
+        hu: `${productName} #${productIdx} leírás`,
+        en: `${productName} #${productIdx} description`,
       },
       productCategoryId: generateProductCategoryId(
         chainIdx,
         productCategoryIdx,
       ),
-      productType:
-        productIdx % 2 === 0 ? EProductType.FOOD : EProductType.DRINK,
+      productType,
       isVisible: true,
       variants: [
         {
@@ -422,7 +439,7 @@ export const createTestChainProduct =
           },
         },
       ],
-      image: 'https://picsum.photos/100',
+      image: 'https://picsum.photos/200',
       allergens: [
         CrudApi.Allergen.egg,
         CrudApi.Allergen.gluten,
@@ -508,7 +525,7 @@ export const createTestUnitProduct =
       chainId: generateChainId(chainIdx),
       groupId: generateGroupId(chainIdx, groupIdx),
       unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
-      laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
+      laneId: 'lane_01',
       isVisible: true,
       takeaway: false,
       position: productIdx,
@@ -628,7 +645,7 @@ export const createTestOrder =
             en: 'glass',
             hu: 'pohár',
           },
-          laneId: generateLaneId(chainIdx, groupIdx, unitIdx, 1),
+          laneId: 'lane_01',
           image: 'https://picsum.photos/100',
           statusLog: [],
         },

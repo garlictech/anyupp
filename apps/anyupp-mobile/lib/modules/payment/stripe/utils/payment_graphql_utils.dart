@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fa_prev/models.dart';
+import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 
 Map<String, dynamic> createStartPaymentRequestVariables({
   String orderId,
@@ -9,12 +9,12 @@ Map<String, dynamic> createStartPaymentRequestVariables({
   bool saveCard,
   UserInvoiceAddress invoiceAddress,
 }) {
-  Map<String, dynamic>  map = {
+  Map<String, dynamic> map = {
     'orderId': orderId,
     'paymentMethod': paymentMethod,
     'paymentMethodId': paymentMethodId,
     'savePaymentMethod': saveCard,
-    'invoiceAddress': invoiceAddress?.toMap(),
+    'invoiceAddress': invoiceAddress?.toJson(),
   };
   print('createStartPaymentRequestVariables().map=${jsonEncode(map)}');
   return map;

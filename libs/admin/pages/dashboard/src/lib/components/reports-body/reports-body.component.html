@@ -44,11 +44,12 @@
   </div-->
 </div>
 
-<div class="row md-overflow-hidden m-0 p-0 hourly-breakdown-row">
+<div class="row md-overflow-hidden m-0 p-0 fixed-height">
   <div class="col-12 p-1">
     <bgap-reports-hourly-breakdown
       class="d-block w-100 h-100"
-      [orders$]="noIncomeOrders$"
+      [orders$]="incomeOrders$"
+      [selectedUnit$]="selectedUnit$"
       [currency]="groupCurrency"
     ></bgap-reports-hourly-breakdown>
   </div>
@@ -89,22 +90,35 @@
   </div>
 </div>
 
-<div class="row md-overflow-hidden m-0 p-0 hourly-breakdown-row">
+<div class="row md-overflow-hidden m-0 p-0 fixed-height">
   <div class="col-12 p-1">
     <bgap-reports-hourly-breakdown
       class="d-block w-100 h-100"
       [orders$]="noIncomeOrders$"
+      [selectedUnit$]="selectedUnit$"
       [currency]="groupCurrency"
     ></bgap-reports-hourly-breakdown>
   </div>
 </div>
 
-<div class="row md-overflow-hidden m-0 p-0 hourly-breakdown-row">
+<div class="row md-overflow-hidden m-0 p-0">
   <div class="col-12 p-1">
     <bgap-reports-unpay-table
       class="d-block w-100 h-100"
-      [orders$]="noIncomeOrders$"
+      [orders$]="unpayOrders$"
       [currency]="groupCurrency"
+      [hasIncome]="false"
+    ></bgap-reports-unpay-table>
+  </div>
+</div>
+
+<div class="row md-overflow-hidden m-0 p-0">
+  <div class="col-12 p-1">
+    <bgap-reports-unpay-table
+      class="d-block w-100 h-100"
+      [orders$]="unpayOrders$"
+      [currency]="groupCurrency"
+      [hasIncome]="true"
     ></bgap-reports-unpay-table>
   </div>
 </div>
@@ -141,5 +155,14 @@
       [orders$]="rejectedOrders$"
       [currency]="groupCurrency"
     ></bgap-reports-daily-sales-per-payment-method>
+  </div>
+</div>
+
+<div class="row md-overflow-hidden m-0 p-0">
+  <div class="col-12 p-1">
+    <bgap-reports-product-mix
+      class="d-block w-100 h-100"
+      [productMixData$]="productMixLimitedData$"
+    ></bgap-reports-product-mix>
   </div>
 </div>

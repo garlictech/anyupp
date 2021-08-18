@@ -101,15 +101,21 @@ export class OrderPrintComponent implements OnInit, OnChanges {
       }
 
       order.items.forEach((item: CrudApi.OrderItem): void => {
+        // Create unique key from the variant ID and the selected componentIds.
+        const uniqueKey = `${item.variantId}-${(item.configSets || [])
+          .map(set => set.items.map(item => item.productComponentId))
+          .reduce((a, b) => a.concat(b), [])
+          .sort()
+          .join('-')}`;
+
         // Collect items
-        if (variants[item.variantId]) {
-          variants[item.variantId].quantity += item.quantity;
-          variants[item.variantId].sumPriceShown.priceSum +=
+        if (variants[uniqueKey]) {
+          variants[uniqueKey].quantity += item.quantity;
+          variants[uniqueKey].sumPriceShown.priceSum +=
             item.sumPriceShown.priceSum;
-          variants[item.variantId].sumPriceShown.taxSum +=
-            item.sumPriceShown.taxSum;
+          variants[uniqueKey].sumPriceShown.taxSum += item.sumPriceShown.taxSum;
         } else {
-          variants[item.variantId] = {
+          variants[uniqueKey] = {
             quantity: item.quantity,
             productName: { ...item.productName },
             sumPriceShown: { ...item.sumPriceShown },
@@ -117,7 +123,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
             configSets: (item.configSets || [])
               .map(
                 set =>
-                  `<div>${this._localizePipe.transform(set.name)}: ${set.items
+                  `<div>${set.items
                     .map(item => this._localizePipe.transform(item.name))
                     .join(', ')}</div>`,
               )

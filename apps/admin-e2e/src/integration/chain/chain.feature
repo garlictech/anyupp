@@ -1,12 +1,7 @@
 Feature: Create a new Chain
 
   Background: Login and steps to the Chains
-    Given I am on the login page
-    When I fill out the input with id "username" with the adminEmail value
-    And I fill out the input with id "password" with the adminPassword value
-    And I fill out the "Context" input with the superuserContextId id
-    And I click the "sign in" text
-    Then I should be on the dashboard page
+    Given I am on the dashboard as an authenticated superUser
     Then I set the language to EN
     And I click on the menu icon
     And I click on the "Chains" text
@@ -23,7 +18,7 @@ Feature: Create a new Chain
     And I fill out the "Description (HU)" input with "test description"
     And I fill out the "Description (EN)" input with "test description"
     And I fill out the "Description (DE)" input with "test description"
-    And I fill out the "Email" input with adminEmail
+    And I fill out the "Email" input with a fixture adminEmail
     Then I should see 9 color picker with "#ffffff"
     When I click on the "Background (light)" picker fill out with "#fff9f0"
     And I fill out the "Phone" input with "1234567890"
@@ -44,7 +39,7 @@ Feature: Create a new Chain
     And I click on the "Submit" button
     Then I should see "test chain e2e" text
     And I should see "test description" text
-    And I should see adminEmail text
+    And I should see the adminEmail fixture
     And I should see "1234567890" text
 
   Scenario: Update the Chain

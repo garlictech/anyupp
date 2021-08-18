@@ -8,3 +8,6 @@ amplify
 generated
 cyreport
 apps/anyupp-mobile/assets/animations
+apps/anyupp-mobile/build
+apps/anyupp-mobile/ios
+apps/anyupp-mobile/android

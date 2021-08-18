@@ -10,9 +10,9 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import {
   AbstractFormDialogComponent,
   FormsService,
@@ -32,6 +32,7 @@ import { IKeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { timeZonesNames } from '@vvo/tzdb';
 
 @UntilDestroy()
 @Component({
@@ -46,6 +47,7 @@ export class UnitFormComponent
   public unit!: CrudApi.Unit;
   public paymentModes = PAYMENT_MODES;
   public groupOptions: IKeyValue[] = [];
+  public timeZoneOptions: IKeyValue[] = [];
 
   private _groups: CrudApi.Group[] = [];
 
@@ -71,6 +73,7 @@ export class UnitFormComponent
         },
         { validators: multiLangValidator },
       ),
+      timeZone: [''],
       paymentModes: [[]],
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder, true),
@@ -190,6 +193,11 @@ export class UnitFormComponent
 
         this._changeDetectorRef.detectChanges();
       });
+
+    this.timeZoneOptions = timeZonesNames.map(n => ({
+      key: n,
+      value: n,
+    }));
   }
 
   ngOnDestroy(): void {

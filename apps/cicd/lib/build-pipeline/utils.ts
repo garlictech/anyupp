@@ -96,13 +96,15 @@ export const createBuildProject = (
         variables: {
           NODE_OPTIONS:
             '--unhandled-rejections=strict --max_old_space_size=8196',
+          GIT_DISCOVERY_ACROSS_FILESYSTEM: 1,
         },
       },
     }),
     cache,
     environment: {
       computeType: codebuild.ComputeType.MEDIUM,
-      buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+      buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
+      privileged: true,
     },
   });
 };
@@ -319,25 +321,17 @@ export const createCommonDevPipeline = (
     },
     buildProjectPhases: {
       install: {
-        commands: [
-          'chmod +x ./tools/*.sh',
-          `./tools/setup-aws-environment.sh`,
-          './tools/install-nodejs-14.sh',
-          'yarn --frozen-lockfile',
-          'npm install -g @aws-amplify/cli appcenter-cli',
-        ],
+        commands: ['apps/cicd/scripts/stage-install.sh'],
       },
       build: {
         commands: [
+          'ls -l .git/*',
           `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
-          'git clone https://github.com/flutter/flutter.git -b stable --depth 1 /tmp/flutter',
           `yarn nx deploy crud-backend --stage=${stage} --app=${appConfig.name}`,
           `yarn deleteAllTableData`,
           `yarn seed`,
           `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
-          'export PATH=$PATH:/tmp/flutter/bin',
-          'flutter doctor',
-          `yarn nx buildApk anyupp-mobile`,
+          `yarn nx buildApk-ci anyupp-mobile`,
         ],
       },
       post_build: {
