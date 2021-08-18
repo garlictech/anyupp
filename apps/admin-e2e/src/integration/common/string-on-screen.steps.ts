@@ -1,15 +1,24 @@
 import { Then, When } from 'cypress-cucumber-preprocessor/steps';
+import { getActiveTab, getDialog } from '../../support';
 
 Then('I should see {string} sub-header', (title: string) => {
-  cy.contains('h3', title, { timeout: 15000 }).should('exist');
+  cy.contains('h3', title, { timeout: 15000 }).should('be.visible');
 });
 
 Then('the {string} title is displayed', (title: string) => {
-  cy.contains(title).should('exist');
+  cy.contains(title).should('be.visible');
 });
 
-Then('I should see {fixture} text', (text: string) => {
-  cy.contains(text, { matchCase: false }).should('exist');
+Then('I should see {string} text', (text: string) => {
+  cy.contains(text, { matchCase: false }).should('be.visible');
+});
+
+Then('I should see the {fixture} fixture', (fixture: string) => {
+  cy.contains(fixture, { matchCase: false }).should('be.visible');
+});
+
+Then('On the active tab I should see {string} text', (text: string) => {
+  getActiveTab().contains(text, { matchCase: false }).should('be.visible');
 });
 
 When('I click the {string} text', (value: string) => {
@@ -24,3 +33,7 @@ When(
     });
   },
 );
+
+Then('I should see {string} text on the dialog', (text: string) => {
+  getDialog().contains(text).should('be.visible');
+});
