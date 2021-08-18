@@ -1,12 +1,7 @@
 Feature: Create or update Unit
 
   Background: Login and steps to the Groups
-    Given I am on the login page
-    When I fill out the input with id "username" with the adminEmail value
-    And I fill out the input with id "password" with the adminPassword value
-    And I fill out the "Context" input with the superuserContextId id
-    And I click the "sign in" text
-    Then I should be on the dashboard page
+    Given I am on the dashboard as an authenticated superUser
     Then I set the language to EN
     And I select the "Rab lánc #1" chain in the header menu
     And I select the "Nagy csoport #1" group in the header menu
@@ -34,7 +29,7 @@ Feature: Create or update Unit
     And I click on the "Apple Pay" checkbox
     And I click on the "Stripe" checkbox
     And I click on the "Simple" checkbox
-    And I fill out the "Email" input with adminEmail
+    And I fill out the "Email" input with a fixture adminEmail
     And I fill out the "Phone" input with "1234567890"
     And I fill out the "Title" input with "test title"
     And I fill out the "Country" input with "Hungary"
@@ -50,7 +45,7 @@ Feature: Create or update Unit
     And I click on the "Submit" button
     Then I should see "test unit e2e" text
     And I should see "test description e2e" text
-    And I should see adminEmail text
+    And I should see the adminEmail fixture
     And I should see "1234567890" text
 
   Scenario: Update the Unit and the activity
