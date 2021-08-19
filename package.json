@@ -184,7 +184,7 @@
     "serverless": "2.55.0",
     "serverless-bundle": "4.4.0",
     "ts-jest": "27.0.5",
-    "ts-node": "10.2.0",
+    "ts-node": "10.2.1",
     "typescript": "4.2.4"
   },
   "workspaces": [
