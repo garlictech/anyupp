@@ -325,7 +325,6 @@ export const createCommonDevPipeline = (
       },
       build: {
         commands: [
-          'ls -l .git/*',
           `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
           `yarn nx deploy crud-backend --stage=${stage} --app=${appConfig.name}`,
           `yarn deleteAllTableData`,
