@@ -38,6 +38,8 @@ PODS:
     - GoogleMaps/Base
   - integration_test (0.0.1):
     - Flutter
+  - "location_permissions (3.0.0+1)":
+    - Flutter
   - MTBBarcodeScanner (5.0.11)
   - open_file (0.0.1):
     - Flutter
@@ -81,6 +83,7 @@ DEPENDENCIES:
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
+  - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - open_file (from `.symlinks/plugins/open_file/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -130,6 +133,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
+  location_permissions:
+    :path: ".symlinks/plugins/location_permissions/ios"
   open_file:
     :path: ".symlinks/plugins/open_file/ios"
   package_info:
@@ -170,6 +175,7 @@ SPEC CHECKSUMS:
   google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
   GoogleMaps: 4b5346bddfe6911bb89155d43c903020170523ac
   integration_test: 6eb66a19f7104200dcfdd62bc0077e1b09686e4f
+  location_permissions: 7e0f9aa0f60deb8ff93ddf0e2a164c7e8197bc94
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
