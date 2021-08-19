@@ -42,15 +42,17 @@ Feature: Cash and card payment
     And the banner on the "Orders" icon is "1"
     And the "Orders" page is selected on the top navigator
     And the state of the order is "WAITING"
-    When the admin set it to "SUCCESS" payment
-    Then I should see the order in "PLACED"
-    When the admin set it to "PROCESSING"
-    And the admin set it to "READY"
-    And the admin set it to served
+    When the admin set the state of order to "SUCCESS"
+    Then in the app the order should be in "PLACED" state
+    When the admin set the state of order to "PROCESSING"
+    Then in the app the order should be in "PROCESSING" state
+    When the admin set the state of order to "READY"
+    Then in the app the order should be in "READY" state
+    When the admin set the state of order to "SERVED"
     Then I should see the text "No active order placed yet"
-    When I swipe to the "History" tab
+    When I tap the "History" tab
     Then I should see the "SERVED" label on the paid order
-    And I should see "Load more..." at the bottom of the ordoers
+    And I should see "Load more..." at the bottom of the list
     # next order, with VAT and set the language to HU, to get the notification messages
     When I tap the "Profile" menu
     And I tap the "Settings" tab
@@ -59,7 +61,7 @@ Feature: Cash and card payment
     And I tap the back arrow 2 times
     Then I should see the tabs in HU language
     When I tap the "Étlap" icon from the bottom navigation bar
-    When I tap the "FANTA #2" card under "Teszt termék kategória #1 név" category
+    And I tap the "FANTA #2" card under "Teszt termék kategória #1 név" category
     And I tap the "Kosárhoz adás" button
     Then The shop cart icon banner should show "1"
     When I tap the cart icon
@@ -73,23 +75,25 @@ Feature: Cash and card payment
     And I tap the "SZÁMLAADATOK MEGADÁSA" button
     Then I should see "Számlázási adatok" page
     And I should see the form filled with the previous datas
-    And I tap the "RENDELÉS" button
+    When I tap the "RENDELÉS" button
     Then I wait around 10 secs
     And the "Rendelések" option is selected on the bottom navigator
     And the banner on the "Rendelések" icon is "2"
     And the "Rendelések" page is selected on the top navigator
     And the state of the order is "VÁR"
-    When the admin set it to "SIKERES" payment
-    Then I should see the order in "BEADVA"
-    When the admin set it to "KÉSZÜL"
+    When the admin set the state of order to "SIKERES"
+    Then in the app the order should be in "BEADVA" state
+    When the admin set the state of order to "PROCESSING"
     Then I get the text message "Rendelésed már készítjük."
-    When the admin set it to "KÉSZ"
+    And in the app the order should be in "KÉSZÜL" state
+    When the admin set the state of order to "READY"
     Then I get the text message "Rendelésed elkészült. Felszolgálása folyamatban."
-    And the admin set it to served
+    When the admin set the state of order to "SERVED"
     Then I should see the text "Nincs teljesítésre váró rendelésed."
-    When I swipe to the "Történet" tab
+    When I tap the "Történet" tab
     Then I should see the "FELSZOLGÁLVA" label on the paid order
-    And I should see "Még több betöltése..." at the bottom of the ordoers
+    And I should see "Még több betöltése..." at the bottom of the list
+  # I had to write "half" in EN and HU, because the admin doesn't have the buttons in HU language (form NONE to SERVED), except the "SIKERTELEN" and "SIKERES" buttons
 
   Scenario: Failed payment with cash or card
     When I tap the "FANTA #2" card under "Test product category #1 name" category
@@ -111,10 +115,10 @@ Feature: Cash and card payment
     And the banner on the "Orders" icon is "1"
     And the "Orders" page is selected on the top navigator
     And the state of the order is "WAITING"
-    When the admin set it to "FAILED" payment
+    When the admin set the state of order to "FAILED"
     And the admin confirms with "Payment mode change"
-    And the admin delete the order with the button
-    Then I should not see my order on the "Orders" tab
+    When the admin set the order to "DELETE ORDER"
+    Then I should see the text "No active order placed yet"
     When I tap the "History" tab
     Then I should see the "REJECTED" label on the unpaid order
-    And I should see "Load more..." at the bottom of the ordoers
+    And I should see "Load more..." at the bottom of the list

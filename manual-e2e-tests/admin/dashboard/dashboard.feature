@@ -17,7 +17,6 @@ Feature: Dashboard
     And the "Placed orders" is selected
     And I should see the "Manual payments" icon with title
     And I should see the "Problematic orders" icon with title
-    # about the issue #1342
     And I should see at least 100 orders on the "Manual payments" icon
     When I click on the "Manual payments" icon
     Then I should see at least 100 orders as I scrolling down on the list
@@ -42,7 +41,7 @@ Feature: Dashboard
     Then I should see the paid inapp order
 
   Scenario: Get the order to History from Active orders (cash/card)
-    Given I have a cash/card "NONE" order with 1 product
+    Given I have a cash/card "NONE" order with 1 "Fanta #2" product
     When the "Placed orders" icon is selected
     And I click on the "Manual payments" icon with title
     Then I should see an order with an id starts with "#"
@@ -58,7 +57,16 @@ Feature: Dashboard
     When I click on the "READY" button next to the product name
     Then I should not see the order on the "Active orders" tab
     When I click on the "Orders history" tab
-    Then I should see the paid cash/card order
+    Then I should see the green badge with "Success" caption
+    And I should see the green badge with "served" caption
+    When I click on the "Reports" tab
+    Then I should see "298 Ft" on the "Orders amount" card
+    When I scroll down to see the "Product mix"
+    Then I should see the "Fanta #2" product with the number "1"
+    When I click on the "LIST ALL" button
+    Then I should see the "Product mix" dialog with the "Fanta #2"
+    And I click on the close button
+
 
   Scenario: Floormap status updates
     Given I am on the dashboard page
@@ -80,8 +88,6 @@ Feature: Dashboard
     Then I should see "black" border with "0201" id on the floormap
 
   Scenario: Order payment failure
-    # about the #1112 issue
-    # if we need to select all the options or mention the options, then let me know
     Given I create a cash or card order from the app
     When I click on the "Manual payments" icon with title
     Then I should see my order at the bottom on the list
@@ -100,8 +106,14 @@ Feature: Dashboard
     Then the order is disappeared from the manual payments
     When I click on the "Orders history" tab
     Then I should see the first selected and deleted order
-    And I should see the red badge with "Staff meal" caption
+    And I should see the red badge with "Failed (Staff meal)" caption
     And I should see the red badge with "rejected" caption
+    When I click on the "Reports" tab
+    And I scroll down to see the "Unpay categories"
+    Then I should see a number "1" in the "Staff meal" line
+    And I should see the price "298 Ft"
+    And I should see "1" on the "Unique users" card
+    And I should see "298 Ft" on the "Orders amount" card
 
   Scenario: Order History feature
     When I click on the "Orders history" tab
@@ -114,3 +126,11 @@ Feature: Dashboard
     And I should see the address "1021, Budapest Ág u. 1." of the unit
     When I click on the close button
     Then I should see the "Orders history" page
+
+#  Scenario: Reports feature
+#    When I click on the "Reports" icon with title
+#    Then I should see "Paid orders" text
+#    Then I should see "Unpaid orders" text
+#    When I scroll down to the bottom of the page
+#    Then I should see "Rejected orders" text
+# Is it necessary?
