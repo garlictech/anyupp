@@ -7,9 +7,14 @@ import GoogleMaps
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-  ) -> Bool {
-        // Google Maps
-        GMSServices.provideAPIKey("AIzaSyBk3DCFqeMOuK2hHA0Q6b6mdyPYx22jI6A")
+  ) -> Bool 
+  {
+    // Google Maps
+    GMSServices.provideAPIKey("AIzaSyBk3DCFqeMOuK2hHA0Q6b6mdyPYx22jI6A")
+
+    if #available(iOS 10.0, *) {
+      UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+    }
     
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)

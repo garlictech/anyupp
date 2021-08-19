@@ -1,5 +1,4 @@
 import { Then, When } from 'cypress-cucumber-preprocessor/steps';
-import './global-fixtures';
 
 When(
   'I fill out the input with id {string} with the {fixture} value',
@@ -28,9 +27,26 @@ When('I set the currency to {string}', (value: string) => {
 });
 
 When(
-  'I fill out the {string} input with {fixture}',
+  'I fill out the {string} input with {string}',
   (inputLabel: string, value: string) => {
     cy.findAllByLabelText(inputLabel).first().clear().type(value);
+  },
+);
+
+When(
+  'I fill out the {string} input with a fixture {fixture}',
+  (inputLabel: string, value: string) => {
+    cy.findAllByLabelText(inputLabel).first().clear().type(value);
+  },
+);
+
+When(
+  'I fill out the {string} input with {string} and some random text',
+  (inputLabel: string, value: string) => {
+    cy.findAllByLabelText(inputLabel)
+      .first()
+      .clear()
+      .type(`${value} ${new Date().getTime()}`);
   },
 );
 

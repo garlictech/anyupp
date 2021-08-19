@@ -7,6 +7,7 @@ import {
 
 import {
   calculatePaymentMethodSums,
+  calculateProductMix,
   calculateUnpayCategoryStat,
   dailySalesPerPaymentMethodOrderAmounts,
   dailySalesPerTypeOrderAmounts,
@@ -61,24 +62,21 @@ const paymentMethods = [
   CrudApi.PaymentMethod.inapp,
 ];
 
+const paymentMethods = [
+  CrudApi.PaymentMethod.card,
+  CrudApi.PaymentMethod.cash,
+  CrudApi.PaymentMethod.inapp,
+];
+
 describe('Dashboard pure function tests', () => {
   describe('calculatePaymentMethodSums', () => {
     it('should calculate 1 item', () => {
       const result = calculatePaymentMethodSums(
-        [
-          CrudApi.PaymentMethod.card,
-          CrudApi.PaymentMethod.cash,
-          CrudApi.PaymentMethod.inapp,
-        ],
+        paymentMethods,
         failedHistoryOrders,
       );
-      const expected = {
-        card: 29820,
-        cash: 29820,
-        inapp: 0,
-      };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
   });
 
@@ -87,48 +85,30 @@ describe('Dashboard pure function tests', () => {
       const result = calculateUnpayCategoryStat(
         CrudApi.UnpayCategory.manager_meal,
         failedHistoryOrders,
-        [
-          CrudApi.PaymentMethod.card,
-          CrudApi.PaymentMethod.cash,
-          CrudApi.PaymentMethod.inapp,
-        ],
+        paymentMethods,
       );
-      const expected = {
-        category: 'manager_meal',
-        count: 2,
-        paymentMethodSums: {
-          card: 2982,
-          cash: 2982,
-          inapp: 0,
-        },
-        sum: 5964,
-        uniqueUsersCount: 1,
-      };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
   });
 
   describe('getDailyOrdersSum', () => {
     it('should calculate 1 item', () => {
       const result = getDailyOrdersSum(singleOrder);
-      const expected = 2982;
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
 
     it('should calculate success history items', () => {
       const result = getDailyOrdersSum(successHistoryOrders);
-      const expected = 8946;
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
 
     it('should calculate failed history items', () => {
       const result = getDailyOrdersSum(failedHistoryOrders);
-      const expected = 59640;
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
   });
 
@@ -139,30 +119,8 @@ describe('Dashboard pure function tests', () => {
         products,
         singleOrder,
       );
-      const expected = {
-        drink: [
-          0, 0, 0, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0,
-        ],
-        food: [
-          0, 0, 0, 1500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0,
-        ],
-        ordersCount: [
-          0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0,
-        ],
-        other: [
-          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0,
-        ],
-        sum: [
-          0, 0, 0, 3000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0,
-        ],
-      };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
 
     it('should calculate success history items', () => {
@@ -171,30 +129,8 @@ describe('Dashboard pure function tests', () => {
         products,
         successHistoryOrders,
       );
-      const expected = {
-        drink: [
-          0, 0, 0, 4500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0,
-        ],
-        food: [
-          0, 0, 0, 4500, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0,
-        ],
-        ordersCount: [
-          0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0,
-        ],
-        other: [
-          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0,
-        ],
-        sum: [
-          0, 0, 0, 9000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0,
-        ],
-      };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
 
     it('should calculate failed history items', () => {
@@ -203,39 +139,16 @@ describe('Dashboard pure function tests', () => {
         products,
         failedHistoryOrders,
       );
-      const expected = {
-        drink: [
-          0, 0, 0, 30000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0,
-        ],
-        food: [
-          0, 0, 0, 30000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0,
-        ],
-        ordersCount: [
-          0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0,
-        ],
-        other: [
-          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0,
-        ],
-        sum: [
-          0, 0, 0, 60000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0,
-        ],
-      };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
   });
 
   describe('dailySalesPerTypeOrderAmounts', () => {
     it('should calculate 1 item', () => {
       const result = dailySalesPerTypeOrderAmounts(products, singleOrder);
-      const expected = { drink: 1491, food: 1491, other: 0 };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
 
     it('should calculate success history items', () => {
@@ -243,9 +156,8 @@ describe('Dashboard pure function tests', () => {
         products,
         successHistoryOrders,
       );
-      const expected = { drink: 4473, food: 4473, other: 0 };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
 
     it('should calculate failed history items', () => {
@@ -253,34 +165,69 @@ describe('Dashboard pure function tests', () => {
         products,
         failedHistoryOrders,
       );
-      const expected = { drink: 29820, food: 29820, other: 0 };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
   });
 
   describe('dailySalesPerPaymentMethodOrderAmounts', () => {
     it('should calculate 1 item', () => {
       const result = dailySalesPerPaymentMethodOrderAmounts(singleOrder);
-      const expected = { card: 2982, cash: 0, inapp: 0 };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
 
     it('should calculate success history items', () => {
       const result =
         dailySalesPerPaymentMethodOrderAmounts(successHistoryOrders);
-      const expected = { card: 2982, cash: 2982, inapp: 2982 };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
     });
 
     it('should calculate failed history items', () => {
       const result =
         dailySalesPerPaymentMethodOrderAmounts(failedHistoryOrders);
-      const expected = { card: 29820, cash: 29820, inapp: 0 };
 
-      expect(result).toEqual(expected);
+      expect(result).toMatchSnapshot();
+    });
+  });
+
+  describe('calculateProductMix', () => {
+    it('should calculate 1 item', () => {
+      const result = calculateProductMix(singleOrder, products);
+
+      expect(result).toMatchSnapshot();
+    });
+
+    it('should calculate lots of order items', () => {
+      const result = calculateProductMix(
+        [...successHistoryOrders, ...failedHistoryOrders],
+        products,
+      );
+
+      expect(result).toMatchSnapshot();
+    });
+  });
+
+  describe('unpayCategoryTableData', () => {
+    it('should calculate hasIncome stats', () => {
+      const result = unpayCategoryTableData(
+        failedHistoryOrders,
+        true,
+        paymentMethods,
+      );
+
+      expect(result).toMatchSnapshot();
+    });
+
+    it('should calculate hasIncome stats', () => {
+      const result = unpayCategoryTableData(
+        failedHistoryOrders,
+        false,
+        paymentMethods,
+      );
+
+      expect(result).toMatchSnapshot();
     });
   });
 

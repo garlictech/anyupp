@@ -1,0 +1,762 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard pure function tests calculatePaymentMethodSums should calculate 1 item 1`] = `
+Object {
+  "card": 29820,
+  "cash": 29820,
+  "inapp": 0,
+}
+`;
+
+exports[`Dashboard pure function tests calculateProductMix should calculate 1 item 1`] = `
+Array [
+  Object {
+    "components": Array [
+      Object {
+        "componentId": "test_product_component_id",
+        "name": Object {
+          "de": "Room temperature",
+          "en": "Room temperature",
+          "hu": "Szobahőmérsékletű",
+        },
+        "quantity": 5,
+      },
+    ],
+    "name": Object {
+      "de": null,
+      "en": "Hamburger",
+      "hu": "Hamburger",
+    },
+    "productId": "test_unit_product_hamburger",
+    "productType": "food",
+    "quantity": 5,
+    "variants": Array [
+      Object {
+        "name": Object {
+          "de": null,
+          "en": "glass",
+          "hu": "pohár",
+        },
+        "quantity": 5,
+        "variantId": "test_variant_id",
+      },
+    ],
+  },
+  Object {
+    "components": Array [
+      Object {
+        "componentId": "test_product_component_id",
+        "name": Object {
+          "de": "Room temperature",
+          "en": "Room temperature",
+          "hu": "Szobahőmérsékletű",
+        },
+        "quantity": 5,
+      },
+    ],
+    "name": Object {
+      "de": null,
+      "en": "Fanta",
+      "hu": "Fanta",
+    },
+    "productId": "test_unit_product_fanta",
+    "productType": "drink",
+    "quantity": 5,
+    "variants": Array [
+      Object {
+        "name": Object {
+          "de": null,
+          "en": "glass",
+          "hu": "pohár",
+        },
+        "quantity": 5,
+        "variantId": "test_variant_id",
+      },
+    ],
+  },
+]
+`;
+
+exports[`Dashboard pure function tests calculateProductMix should calculate lots of order items 1`] = `
+Array [
+  Object {
+    "components": Array [
+      Object {
+        "componentId": "test_product_component_id",
+        "name": Object {
+          "de": "Room temperature",
+          "en": "Room temperature",
+          "hu": "Szobahőmérsékletű",
+        },
+        "quantity": 115,
+      },
+    ],
+    "name": Object {
+      "de": null,
+      "en": "Hamburger",
+      "hu": "Hamburger",
+    },
+    "productId": "test_unit_product_hamburger",
+    "productType": "food",
+    "quantity": 115,
+    "variants": Array [
+      Object {
+        "name": Object {
+          "de": null,
+          "en": "glass",
+          "hu": "pohár",
+        },
+        "quantity": 115,
+        "variantId": "test_variant_id",
+      },
+    ],
+  },
+  Object {
+    "components": Array [
+      Object {
+        "componentId": "test_product_component_id",
+        "name": Object {
+          "de": "Room temperature",
+          "en": "Room temperature",
+          "hu": "Szobahőmérsékletű",
+        },
+        "quantity": 115,
+      },
+    ],
+    "name": Object {
+      "de": null,
+      "en": "Fanta",
+      "hu": "Fanta",
+    },
+    "productId": "test_unit_product_fanta",
+    "productType": "drink",
+    "quantity": 115,
+    "variants": Array [
+      Object {
+        "name": Object {
+          "de": null,
+          "en": "glass",
+          "hu": "pohár",
+        },
+        "quantity": 115,
+        "variantId": "test_variant_id",
+      },
+    ],
+  },
+]
+`;
+
+exports[`Dashboard pure function tests calculateUnpayCategoryStat should calculate 1 item 1`] = `
+Object {
+  "category": "manager_meal",
+  "count": 2,
+  "paymentMethodSums": Object {
+    "card": 2982,
+    "cash": 2982,
+    "inapp": 0,
+  },
+  "sum": 5964,
+  "uniqueUsersCount": 1,
+}
+`;
+
+exports[`Dashboard pure function tests dailySalesPerPaymentMethodOrderAmounts should calculate 1 item 1`] = `
+Object {
+  "card": 2982,
+  "cash": 0,
+  "inapp": 0,
+}
+`;
+
+exports[`Dashboard pure function tests dailySalesPerPaymentMethodOrderAmounts should calculate failed history items 1`] = `
+Object {
+  "card": 29820,
+  "cash": 29820,
+  "inapp": 0,
+}
+`;
+
+exports[`Dashboard pure function tests dailySalesPerPaymentMethodOrderAmounts should calculate success history items 1`] = `
+Object {
+  "card": 2982,
+  "cash": 2982,
+  "inapp": 2982,
+}
+`;
+
+exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate 1 item 1`] = `
+Object {
+  "drink": 1491,
+  "food": 1491,
+  "other": 0,
+}
+`;
+
+exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate failed history items 1`] = `
+Object {
+  "drink": 29820,
+  "food": 29820,
+  "other": 0,
+}
+`;
+
+exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate success history items 1`] = `
+Object {
+  "drink": 4473,
+  "food": 4473,
+  "other": 0,
+}
+`;
+
+exports[`Dashboard pure function tests getDailyOrdersSum should calculate 1 item 1`] = `2982`;
+
+exports[`Dashboard pure function tests getDailyOrdersSum should calculate failed history items 1`] = `59640`;
+
+exports[`Dashboard pure function tests getDailyOrdersSum should calculate success history items 1`] = `8946`;
+
+exports[`Dashboard pure function tests hourlyBreakdownOrderAmounts should calculate 1 item 1`] = `
+Object {
+  "drink": Array [
+    0,
+    0,
+    0,
+    1500,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "food": Array [
+    0,
+    0,
+    0,
+    1500,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "ordersCount": Array [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "other": Array [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "sum": Array [
+    0,
+    0,
+    0,
+    3000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+}
+`;
+
+exports[`Dashboard pure function tests hourlyBreakdownOrderAmounts should calculate failed history items 1`] = `
+Object {
+  "drink": Array [
+    0,
+    0,
+    0,
+    30000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "food": Array [
+    0,
+    0,
+    0,
+    30000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "ordersCount": Array [
+    0,
+    0,
+    0,
+    20,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "other": Array [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "sum": Array [
+    0,
+    0,
+    0,
+    60000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+}
+`;
+
+exports[`Dashboard pure function tests hourlyBreakdownOrderAmounts should calculate success history items 1`] = `
+Object {
+  "drink": Array [
+    0,
+    0,
+    0,
+    4500,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "food": Array [
+    0,
+    0,
+    0,
+    4500,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "ordersCount": Array [
+    0,
+    0,
+    0,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "other": Array [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "sum": Array [
+    0,
+    0,
+    0,
+    9000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+  ],
+}
+`;
+
+exports[`Dashboard pure function tests unpayCategoryTableData should calculate hasIncome stats 1`] = `
+Array [
+  Object {
+    "category": "delivery",
+    "count": 2,
+    "paymentMethodSums": Object {
+      "card": 2982,
+      "cash": 2982,
+      "inapp": 0,
+    },
+    "sum": 5964,
+    "uniqueUsersCount": 1,
+  },
+  Object {
+    "category": "coupon",
+    "count": 2,
+    "paymentMethodSums": Object {
+      "card": 2982,
+      "cash": 2982,
+      "inapp": 0,
+    },
+    "sum": 5964,
+    "uniqueUsersCount": 1,
+  },
+  Object {
+    "category": "event",
+    "count": 2,
+    "paymentMethodSums": Object {
+      "card": 2982,
+      "cash": 2982,
+      "inapp": 0,
+    },
+    "sum": 5964,
+    "uniqueUsersCount": 1,
+  },
+  Object {
+    "category": "sum",
+    "count": 6,
+    "paymentMethodSums": Object {
+      "card": 8946,
+      "cash": 8946,
+      "inapp": 0,
+    },
+    "sum": 17892,
+    "uniqueUsersCount": 1,
+  },
+]
+`;
+
+exports[`Dashboard pure function tests unpayCategoryTableData should calculate hasIncome stats 2`] = `
+Array [
+  Object {
+    "category": "staff_meal",
+    "count": 2,
+    "paymentMethodSums": Object {
+      "card": 2982,
+      "cash": 2982,
+      "inapp": 0,
+    },
+    "sum": 5964,
+    "uniqueUsersCount": 1,
+  },
+  Object {
+    "category": "manager_meal",
+    "count": 2,
+    "paymentMethodSums": Object {
+      "card": 2982,
+      "cash": 2982,
+      "inapp": 0,
+    },
+    "sum": 5964,
+    "uniqueUsersCount": 1,
+  },
+  Object {
+    "category": "marketing_promo",
+    "count": 2,
+    "paymentMethodSums": Object {
+      "card": 2982,
+      "cash": 2982,
+      "inapp": 0,
+    },
+    "sum": 5964,
+    "uniqueUsersCount": 1,
+  },
+  Object {
+    "category": "error_cooked",
+    "count": 2,
+    "paymentMethodSums": Object {
+      "card": 2982,
+      "cash": 2982,
+      "inapp": 0,
+    },
+    "sum": 5964,
+    "uniqueUsersCount": 1,
+  },
+  Object {
+    "category": "error_no_cooked",
+    "count": 2,
+    "paymentMethodSums": Object {
+      "card": 2982,
+      "cash": 2982,
+      "inapp": 0,
+    },
+    "sum": 5964,
+    "uniqueUsersCount": 1,
+  },
+  Object {
+    "category": "payment_mode_change",
+    "count": 2,
+    "paymentMethodSums": Object {
+      "card": 2982,
+      "cash": 2982,
+      "inapp": 0,
+    },
+    "sum": 5964,
+    "uniqueUsersCount": 1,
+  },
+  Object {
+    "category": "other",
+    "count": 2,
+    "paymentMethodSums": Object {
+      "card": 2982,
+      "cash": 2982,
+      "inapp": 0,
+    },
+    "sum": 5964,
+    "uniqueUsersCount": 1,
+  },
+  Object {
+    "category": "sum",
+    "count": 14,
+    "paymentMethodSums": Object {
+      "card": 20874,
+      "cash": 20874,
+      "inapp": 0,
+    },
+    "sum": 41748,
+    "uniqueUsersCount": 1,
+  },
+]
+`;

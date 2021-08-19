@@ -70,7 +70,8 @@ class Locally {
     /// initializationSetting declared above is here assigned
     /// to InitializationSetting, which comes from flutter_local_notification
     /// package.
-    initializationSetting = InitializationSettings(android: initializationSettingAndroid, iOS: initializationSettingIos);
+    initializationSetting =
+        InitializationSettings(android: initializationSettingAndroid, iOS: initializationSettingIos);
 
     /// localNotificationPlugin is initialized here finally
     localNotificationsPlugin.initialize(initializationSetting, onSelectNotification: onSelectNotification);
@@ -150,6 +151,7 @@ class Locally {
     if (title == null && message == null) {
       throw "Missing parameters, title: message";
     } else {
+      //print('Notification.show()');
       this.title = title;
       this.message = message;
 
@@ -158,7 +160,8 @@ class Locally {
 
       var iosPlatformChannelSpecifics = IOSNotificationDetails();
 
-      var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iosPlatformChannelSpecifics);
+      var platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iosPlatformChannelSpecifics);
 
       await localNotificationsPlugin.show(0, title, message, platformChannelSpecifics, payload: payload);
     }
@@ -201,13 +204,14 @@ class Locally {
 Locally _locally;
 
 void showNotification(BuildContext context, String title, String message, Widget navigateToPage) {
+  //print('showNotification()=$title');
   if (_locally == null) {
     _locally = Locally(
       context: context,
       payload: '3fa',
       appIcon: 'mipmap/ic_launcher',
-      iosRequestAlertPermission: true,
-      iosRequestSoundPermission: true,
+      // iosRequestAlertPermission: true,
+      // iosRequestSoundPermission: true,
     );
   }
 

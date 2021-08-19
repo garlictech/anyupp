@@ -1,5 +1,3 @@
-import { map } from 'rxjs/operators';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,16 +5,20 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { catchGqlError } from '@bgap/admin/shared/utils';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+import {
+  catchGqlError,
+  EToasterType,
+  ToasterService,
+} from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-
+import { map } from 'rxjs/operators';
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
 
 @UntilDestroy()
@@ -34,6 +36,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
     private _nbDialogService: NbDialogService,
     private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _toasterService: ToasterService,
   ) {}
 
   ngOnInit(): void {
@@ -89,7 +92,13 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
               },
             })
             .pipe(catchGqlError(this._store))
-            .subscribe();
+            .subscribe(() => {
+              this._toasterService.show(
+                EToasterType.SUCCESS,
+                '',
+                'common.insertSuccessful',
+              );
+            });
         },
       );
     }

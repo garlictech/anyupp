@@ -19,7 +19,7 @@ abstract class _BaseGraphQLWrapper {
         .subscribe(
           SubscriptionOptions(
             document: query.document,
-            variables: query.variables.toJson(),
+            variables: query.variables?.toJson(),
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
@@ -39,7 +39,7 @@ abstract class _BaseGraphQLWrapper {
       QueryResult response = await client.value.query(
         QueryOptions(
           document: query.document,
-          variables: query.variables.toJson(),
+          variables: query.variables?.toJson(),
           fetchPolicy: fetchPolicy,
         ),
       );

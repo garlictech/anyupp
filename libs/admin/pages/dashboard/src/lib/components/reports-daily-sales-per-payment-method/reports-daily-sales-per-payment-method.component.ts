@@ -30,7 +30,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
   implements AfterViewInit, OnDestroy
 {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$!: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<CrudApi.Order[]>;
   @Input() currency = '';
 
   private _chart!: Chart;
@@ -105,21 +105,23 @@ export class ReportsDailySalesPerPaymentMethodComponent
       },
     );
 
-    this.orders$
-      .pipe(untilDestroyed(this))
-      .subscribe((orders: CrudApi.Order[]): void => {
-        const amounts = dailySalesPerPaymentMethodOrderAmounts(orders);
+    if (this.orders$) {
+      this.orders$
+        .pipe(untilDestroyed(this))
+        .subscribe((orders: CrudApi.Order[]): void => {
+          const amounts = dailySalesPerPaymentMethodOrderAmounts(orders);
 
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
-          amounts[CrudApi.PaymentMethod.card],
-          amounts[CrudApi.PaymentMethod.cash],
-          amounts[CrudApi.PaymentMethod.inapp],
-        ];
+          (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
+            amounts[CrudApi.PaymentMethod.card],
+            amounts[CrudApi.PaymentMethod.cash],
+            amounts[CrudApi.PaymentMethod.inapp],
+          ];
 
-        this._chart.update();
+          this._chart.update();
 
-        this._changeDetectorRef.detectChanges();
-      });
+          this._changeDetectorRef.detectChanges();
+        });
+    }
 
     this._translateService.onLangChange
       .pipe(untilDestroyed(this))

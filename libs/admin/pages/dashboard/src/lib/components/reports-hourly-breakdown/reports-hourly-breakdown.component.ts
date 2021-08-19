@@ -32,8 +32,8 @@ export class ReportsHourlyBreakdownComponent
   implements AfterViewInit, OnDestroy
 {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$!: Observable<CrudApi.Order[]>;
-  @Input() selectedUnit$!: Observable<CrudApi.Unit>;
+  @Input() orders$?: Observable<CrudApi.Order[]>;
+  @Input() selectedUnit$?: Observable<CrudApi.Unit>;
   @Input() currency = '';
 
   private _chart!: Chart;
@@ -174,36 +174,38 @@ export class ReportsHourlyBreakdownComponent
       },
     );
 
-    combineLatest([
-      this.selectedUnit$,
-      this._store.select(productsSelectors.getAllGeneratedProducts),
-      this.orders$,
-    ])
-      .pipe(untilDestroyed(this))
-      .subscribe(([unit, products, orders]): void => {
-        this._amounts = hourlyBreakdownOrderAmounts(
-          unit.timeZone || 'Europe/Budapest',
-          products,
-          orders,
-        );
+    if (this.selectedUnit$ && this.orders$) {
+      combineLatest([
+        this.selectedUnit$,
+        this._store.select(productsSelectors.getAllGeneratedProducts),
+        this.orders$,
+      ])
+        .pipe(untilDestroyed(this))
+        .subscribe(([unit, products, orders]): void => {
+          this._amounts = hourlyBreakdownOrderAmounts(
+            unit.timeZone || 'Europe/Budapest',
+            products,
+            orders,
+          );
 
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
-          ...this._amounts.ordersCount,
-        ];
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[1].data = [
-          ...this._amounts[EProductType.FOOD],
-        ];
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[2].data = [
-          ...this._amounts[EProductType.DRINK],
-        ];
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[3].data = [
-          ...this._amounts[EProductType.OTHER],
-        ];
+          (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
+            ...this._amounts.ordersCount,
+          ];
+          (<Chart.ChartDataSets[]>this._chart.data.datasets)[1].data = [
+            ...this._amounts[EProductType.FOOD],
+          ];
+          (<Chart.ChartDataSets[]>this._chart.data.datasets)[2].data = [
+            ...this._amounts[EProductType.DRINK],
+          ];
+          (<Chart.ChartDataSets[]>this._chart.data.datasets)[3].data = [
+            ...this._amounts[EProductType.OTHER],
+          ];
 
-        this._chart.update();
+          this._chart.update();
 
-        this._changeDetectorRef.detectChanges();
-      });
+          this._changeDetectorRef.detectChanges();
+        });
+    }
 
     this._translateService.onLangChange
       .pipe(untilDestroyed(this))

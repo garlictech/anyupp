@@ -55,7 +55,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   @override
   Future<ProviderLoginResponse> signInAnonymously() async {
     try {
-      var result = await GQL.backend.execute(CreateAnonymUserMutation());
+      var result = await GQL.backend.execute(CreateAnonymUserMutation(), useApi: true);
       // QueryResult result = await GQL.backend.executeMutation(
       //   mutation: MUTATION_CREATE_ANONYM_USER,
       //   variables: {},
