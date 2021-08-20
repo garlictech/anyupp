@@ -1,14 +1,11 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels, { Context } from 'chartjs-plugin-datalabels';
 import * as FileSaver from 'file-saver';
-import {
-  CurrencyFormatterPipe,
-  LocalizePipe,
-} from 'libs/admin/shared/pipes/src';
-import { IProducMixArrayItem } from 'libs/shared/types/src';
 import * as XLSX from 'xlsx';
 
 import { ElementRef, Injectable } from '@angular/core';
+import { CurrencyFormatterPipe, LocalizePipe } from '@bgap/admin/shared/pipes';
+import { IProducMixArrayItem } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
@@ -472,7 +469,7 @@ export class ReportsService {
       Sheets: { data: myworksheet },
       SheetNames: ['data'],
     };
-    const excelBuffer: any = XLSX.write(myworkbook, {
+    const excelBuffer = XLSX.write(myworkbook, {
       bookType: 'xlsx',
       type: 'array',
     });
