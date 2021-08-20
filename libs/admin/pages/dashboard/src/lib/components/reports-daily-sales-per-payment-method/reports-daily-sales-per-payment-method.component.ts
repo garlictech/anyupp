@@ -51,8 +51,8 @@ export class ReportsDailySalesPerPaymentMethodComponent
         const sum = (
           (<Chart.ChartDataSets[]>ctx.chart.data.datasets)[0].data as number[]
         ).reduce(reducer);
-        const perc = ((value / sum) * 100).toFixed(0);
-        return `${perc}%`;
+        const percent = ((value / sum) * 100).toFixed(0);
+        return `${percent}%`;
       },
     );
 

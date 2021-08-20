@@ -48,12 +48,9 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
   public groupCurrency = '';
   public productMixData$: BehaviorSubject<IProducMixArrayItem[]> =
     new BehaviorSubject<IProducMixArrayItem[]>([]);
-  public productMixLimitedData$: BehaviorSubject<IProducMixArrayItem[]> =
-    new BehaviorSubject<IProducMixArrayItem[]>([]);
 
   constructor(
     private _store: Store,
-
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.dateFormControl = new FormControl();
@@ -125,7 +122,6 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
             products,
           );
           this.productMixData$.next(productMix);
-          this.productMixLimitedData$.next(productMix.slice(0, 10));
 
           this._changeDetectorRef.detectChanges();
         },

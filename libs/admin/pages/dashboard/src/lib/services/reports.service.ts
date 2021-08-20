@@ -1,6 +1,12 @@
 import * as Chart from 'chart.js';
 import ChartDataLabels, { Context } from 'chartjs-plugin-datalabels';
-import { CurrencyFormatterPipe } from 'libs/admin/shared/pipes/src';
+import * as FileSaver from 'file-saver';
+import {
+  CurrencyFormatterPipe,
+  LocalizePipe,
+} from 'libs/admin/shared/pipes/src';
+import { IProducMixArrayItem } from 'libs/shared/types/src';
+import * as XLSX from 'xlsx';
 
 import { ElementRef, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class ReportsService {
   constructor(
     private _translateService: TranslateService,
+    private _localizePipe: LocalizePipe,
     private _currencyFormatter: CurrencyFormatterPipe,
   ) {}
 
@@ -410,5 +417,73 @@ export class ReportsService {
         },
       },
     );
+  }
+
+  public exportProductMix(
+    unitName: string,
+    date: Date,
+    data: IProducMixArrayItem[],
+  ) {
+    const arr: (string | number)[][] = [
+      ['Név', 'Típus', 'Komponens', 'Variáns', 'Termék'],
+    ];
+
+    data.forEach(product => {
+      // Product row
+      arr.push([
+        this._localizePipe.transform(product.name),
+        this._translateService.instant(
+          `products.productType.${product.productType}`,
+        ),
+        '',
+        '',
+        product.quantity,
+      ]);
+
+      // Variants row
+      product.variants.forEach(variant => {
+        arr.push([
+          this._localizePipe.transform(variant.name),
+          this._translateService.instant(
+            `products.productType.${product.productType}`,
+          ),
+          '',
+          variant.quantity,
+          '',
+        ]);
+      });
+
+      // Components row
+      product.components.forEach(component => {
+        arr.push([
+          this._localizePipe.transform(component.name),
+          this._translateService.instant(
+            `products.productType.${product.productType}`,
+          ),
+          component.quantity,
+          '',
+          '',
+        ]);
+      });
+    });
+
+    const myworksheet: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(arr);
+    const myworkbook: XLSX.WorkBook = {
+      Sheets: { data: myworksheet },
+      SheetNames: ['data'],
+    };
+    const excelBuffer: any = XLSX.write(myworkbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    });
+
+    const EXCEL_TYPE =
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const EXCEL_EXTENSION = '.xlsx';
+    const _data: Blob = new Blob([excelBuffer], {
+      type: EXCEL_TYPE,
+    });
+
+    FileSaver.saveAs(_data, `${unitName} - ${date}` + EXCEL_EXTENSION);
   }
 }

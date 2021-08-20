@@ -148,7 +148,8 @@
       "unpayCategories": "Unpay kategóriák",
       "rejectedOrders": "Rejected orders",
       "productMix": "Product mix",
-      "listAll": "Mutasd mindet"
+      "listAll": "Mutasd mindet",
+      "export": "Export"
     }
   },
   "chains": {
