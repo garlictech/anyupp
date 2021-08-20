@@ -56,6 +56,11 @@ const failedHistoryOrders = [
   ofx.convertInputToOrder(ofx.historyFailedCashCouponOrderInput),
   ofx.convertInputToOrder(ofx.historyFailedCashEventOrderInput),
 ];
+const paymentMethods = [
+  CrudApi.PaymentMethod.card,
+  CrudApi.PaymentMethod.cash,
+  CrudApi.PaymentMethod.inapp,
+];
 
 const paymentMethods = [
   CrudApi.PaymentMethod.card,
@@ -223,6 +228,162 @@ describe('Dashboard pure function tests', () => {
       );
 
       expect(result).toMatchSnapshot();
+    });
+  });
+
+  describe('unpayCategoryTableData', () => {
+    it('should calculate hasIncome stats', () => {
+      const result = unpayCategoryTableData(
+        failedHistoryOrders,
+        true,
+        paymentMethods,
+      );
+      const expected = [
+        {
+          category: 'delivery',
+          count: 2,
+          paymentMethodSums: {
+            card: 2982,
+            cash: 2982,
+            inapp: 0,
+          },
+          sum: 5964,
+          uniqueUsersCount: 1,
+        },
+        {
+          category: 'coupon',
+          count: 2,
+          paymentMethodSums: {
+            card: 2982,
+            cash: 2982,
+            inapp: 0,
+          },
+          sum: 5964,
+          uniqueUsersCount: 1,
+        },
+        {
+          category: 'event',
+          count: 2,
+          paymentMethodSums: {
+            card: 2982,
+            cash: 2982,
+            inapp: 0,
+          },
+          sum: 5964,
+          uniqueUsersCount: 1,
+        },
+        {
+          category: 'sum',
+          count: 6,
+          paymentMethodSums: {
+            card: 8946,
+            cash: 8946,
+            inapp: 0,
+          },
+          sum: 17892,
+          uniqueUsersCount: 1,
+        },
+      ];
+      expect(result).toEqual(expected);
+    });
+
+    it('should calculate hasIncome stats', () => {
+      const result = unpayCategoryTableData(
+        failedHistoryOrders,
+        false,
+        paymentMethods,
+      );
+      const expected = [
+        {
+          category: 'staff_meal',
+          count: 2,
+          paymentMethodSums: {
+            card: 2982,
+            cash: 2982,
+            inapp: 0,
+          },
+          sum: 5964,
+          uniqueUsersCount: 1,
+        },
+        {
+          category: 'manager_meal',
+          count: 2,
+          paymentMethodSums: {
+            card: 2982,
+            cash: 2982,
+            inapp: 0,
+          },
+          sum: 5964,
+          uniqueUsersCount: 1,
+        },
+        {
+          category: 'marketing_promo',
+          count: 2,
+          paymentMethodSums: {
+            card: 2982,
+            cash: 2982,
+            inapp: 0,
+          },
+          sum: 5964,
+          uniqueUsersCount: 1,
+        },
+        {
+          category: 'error_cooked',
+          count: 2,
+          paymentMethodSums: {
+            card: 2982,
+            cash: 2982,
+            inapp: 0,
+          },
+          sum: 5964,
+          uniqueUsersCount: 1,
+        },
+        {
+          category: 'error_no_cooked',
+          count: 2,
+          paymentMethodSums: {
+            card: 2982,
+            cash: 2982,
+            inapp: 0,
+          },
+          sum: 5964,
+          uniqueUsersCount: 1,
+        },
+        {
+          category: 'payment_mode_change',
+          count: 2,
+          paymentMethodSums: {
+            card: 2982,
+            cash: 2982,
+            inapp: 0,
+          },
+          sum: 5964,
+          uniqueUsersCount: 1,
+        },
+        {
+          category: 'other',
+          count: 2,
+          paymentMethodSums: {
+            card: 2982,
+            cash: 2982,
+            inapp: 0,
+          },
+          sum: 5964,
+          uniqueUsersCount: 1,
+        },
+        {
+          category: 'sum',
+          count: 14,
+          paymentMethodSums: {
+            card: 20874,
+            cash: 20874,
+            inapp: 0,
+          },
+          sum: 41748,
+          uniqueUsersCount: 1,
+        },
+      ];
+      expect(result).toEqual(expected);
     });
   });
 });
