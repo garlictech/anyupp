@@ -19,7 +19,7 @@ export class ReportsService {
   public createHourlyBreakdownChart(
     chart: ElementRef<HTMLCanvasElement>,
     currency: string,
-    formatterFn: (value: number, ctx: Context) => {},
+    formatterFn: (value: number, ctx: Context) => unknown,
   ) {
     return new Chart(
       <CanvasRenderingContext2D>chart.nativeElement.getContext('2d'),
@@ -206,7 +206,7 @@ export class ReportsService {
     chart: ElementRef<HTMLCanvasElement>,
     currency: string,
     translateLabelsFn: () => string[],
-    formatterFn: (value: number, ctx: Context) => {},
+    formatterFn: (value: number, ctx: Context) => unknown,
   ) {
     return new Chart(
       <CanvasRenderingContext2D>chart.nativeElement.getContext('2d'),
@@ -313,7 +313,7 @@ export class ReportsService {
     chart: ElementRef<HTMLCanvasElement>,
     currency: string,
     translateLabelsFn: () => string[],
-    formatterFn: (value: number, ctx: Context) => {},
+    formatterFn: (value: number, ctx: Context) => unknown,
   ) {
     return new Chart(
       <CanvasRenderingContext2D>chart.nativeElement.getContext('2d'),
