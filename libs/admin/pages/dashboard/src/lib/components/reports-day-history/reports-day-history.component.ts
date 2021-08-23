@@ -1,5 +1,4 @@
 import * as Chart from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Observable } from 'rxjs';
 
 import {
@@ -15,6 +14,8 @@ import {
 import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
+
+import { ReportsService } from '../../services/reports.service';
 
 @UntilDestroy()
 @Component({
@@ -32,67 +33,14 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private _translateService: TranslateService,
+    private _reportsService: ReportsService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(
-      <CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'),
-      {
-        type: 'bar',
-        plugins: [ChartDataLabels],
-        data: {
-          labels: this._translatedLabels(),
-          datasets: [
-            {
-              data: [4234, 1456, undefined],
-              backgroundColor: ['#ffc107', '#3e95cd', '#8e5ea2'],
-            },
-          ],
-        },
-        options: {
-          legend: {
-            display: false,
-          },
-          responsive: true,
-          maintainAspectRatio: false,
-          tooltips: {
-            callbacks: {
-              label: () => {
-                return ''; //tooltipItem.yLabel;
-              },
-            },
-          },
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
-          plugins: {
-            datalabels: {
-              color: 'white',
-              labels: {
-                title: {
-                  font: {
-                    weight: 'bold',
-                  },
-                },
-              },
-              /* formatter: (value, ctx) => {
-              console.error('value', value);
-              console.error('ctx', ctx);
-              const label = ctx.chart.data.datasets[ctx.datasetIndex].label;
-
-              return label
-            },*/
-            },
-          },
-        },
-      },
+    this._chart = this._reportsService.createDayHistoryChart(
+      this.chart,
+      this._translatedLabels,
     );
 
     /*
@@ -111,7 +59,6 @@ export class ReportsDayHistoryComponent implements AfterViewInit, OnDestroy {
 
       this._changeDetectorRef.detectChanges();
     });
-
 
     combineLatest([this._store.pipe(select(productsSelectors.getAllGeneratedProducts)), this.orders$])
       .pipe(untilDestroyed(this))

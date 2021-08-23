@@ -162,7 +162,9 @@
   <div class="col-12 p-1">
     <bgap-reports-product-mix
       class="d-block w-100 h-100"
-      [productMixData$]="productMixLimitedData$"
+      [productMixData$]="productMixData$"
+      [selectedUnit$]="selectedUnit$"
+      [date]="dateFormControl.value"
     ></bgap-reports-product-mix>
   </div>
 </div>
