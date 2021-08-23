@@ -47,10 +47,15 @@ then
     echo 'Build Mobile schema in local mode'
     yarn nx pub-get-local anyupp-mobile
     yarn nx graphql-codegen-local anyupp-mobile
+elif [[ $STAGING = 'prod' ]]
+then
+    echo 'Build Mobile schema in docker container in PROD'
+    yarn nx pub-get-prod anyupp-mobile
+    yarn nx graphql-codegen-ci-prod anyupp-mobile
 else
     echo 'Build Mobile schema in docker container'
     yarn nx pub-get anyupp-mobile
-    yarn nx graphql-codegen anyupp-mobile
+    yarn nx graphql-codegen-ci anyupp-mobile
 fi
 echo 'Done.'
 

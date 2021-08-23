@@ -325,7 +325,6 @@ export const createCommonDevPipeline = (
       },
       build: {
         commands: [
-          'ls -l .git/*',
           `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
           `yarn nx deploy crud-backend --stage=${stage} --app=${appConfig.name}`,
           `yarn deleteAllTableData`,
@@ -336,7 +335,10 @@ export const createCommonDevPipeline = (
       },
       post_build: {
         commands: [
-          'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart',
+          'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart ' +
+            'apps/anyupp-mobile/graphql/crud-api-schema.graphql ' +
+            'apps/anyupp-mobile/graphql/anyupp-api-schema.graphql ' +
+            'apps/anyupp-mobile/lib/graphql/generated ',
           `aws s3 cp \${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz s3://${getAppcenterArtifactBucketName(
             stage,
           )}/`,

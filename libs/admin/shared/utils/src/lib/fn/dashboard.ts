@@ -2,6 +2,10 @@ import { DateTime } from 'luxon';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
+  UNPAY_INCOME_CATEGORIES_ARR,
+  UNPAY_NO_INCOME_CATEGORIES_ARR,
+} from '@bgap/crud-gql/api';
+import {
   EProductType,
   IKeyValueObject,
   IOrderAmount,
