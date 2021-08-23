@@ -35,3 +35,8 @@ export const unpayCategorySchema = Joi.string().valid(
   CrudApi.UnpayCategory.coupon,
   CrudApi.UnpayCategory.event,
 );
+
+export const posTypeSchema = Joi.string().valid(
+  CrudApi.PosType.anyupp,
+  CrudApi.PosType.rkeeper,
+);
