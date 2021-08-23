@@ -148,7 +148,8 @@
       "unpayCategories": "Unpay categories",
       "rejectedOrders": "Rejected orders",
       "productMix": "Product mix",
-      "listAll": "List all"
+      "listAll": "List all",
+      "export": "Export"
     }
   },
   "chains": {
