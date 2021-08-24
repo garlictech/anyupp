@@ -21,14 +21,18 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements AfterViewInit {
-  public context = '';
+  public context;
 
   constructor(
     private _store: Store,
     private _cognitoService: CognitoService,
     private _nbToastrService: NbToastrService,
     private _translateService: TranslateService,
-  ) {}
+  ) {
+    // Temp fix
+    this.context = 'SU_CTX_ID';
+    this._cognitoService.currentContext = this.context;
+  }
 
   ngAfterViewInit() {
     this._store

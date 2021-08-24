@@ -48,15 +48,22 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
   public groupCurrency = '';
   public productMixData$: BehaviorSubject<IProducMixArrayItem[]> =
     new BehaviorSubject<IProducMixArrayItem[]>([]);
-  public productMixLimitedData$: BehaviorSubject<IProducMixArrayItem[]> =
-    new BehaviorSubject<IProducMixArrayItem[]>([]);
 
   constructor(
     private _store: Store,
-
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.dateFormControl = new FormControl();
+
+    this._store
+      .pipe(
+        select(groupsSelectors.getSeletedGroup),
+        skipWhile((group): boolean => !group),
+        untilDestroyed(this),
+      )
+      .subscribe((group: CrudApi.Group | undefined): void => {
+        this.groupCurrency = group?.currency || '';
+      });
 
     this.selectedUnit$ = this._store.pipe(
       select(unitsSelectors.getSelectedUnit),
@@ -77,18 +84,6 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
         this._store.dispatch(
           dashboardActions.updateSelectedUnitOrderHistory({ historyDate }),
         );
-
-        this._changeDetectorRef.detectChanges();
-      });
-
-    this._store
-      .pipe(
-        select(groupsSelectors.getSeletedGroup),
-        skipWhile((group): boolean => !group),
-        untilDestroyed(this),
-      )
-      .subscribe((group: CrudApi.Group | undefined): void => {
-        this.groupCurrency = group?.currency || '';
 
         this._changeDetectorRef.detectChanges();
       });
@@ -127,7 +122,6 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
             products,
           );
           this.productMixData$.next(productMix);
-          this.productMixLimitedData$.next(productMix.slice(0, 10));
 
           this._changeDetectorRef.detectChanges();
         },

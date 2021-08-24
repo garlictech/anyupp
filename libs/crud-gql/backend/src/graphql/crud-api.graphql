@@ -571,6 +571,7 @@ type Unit
   openingHours: WeeklySchedule
   merchantId: String
   timeZone: String
+  pos: Pos
 }
 
 type DateIntervalOpen {
@@ -640,6 +641,25 @@ type Lane {
   id: ID!
   name: String!
   color: String!
+}
+
+type Pos {
+  type: PosType!
+  rkeeper: RKeeper
+}
+
+type RKeeper {
+  endpointUri: String!
+  rkeeperUsername: String!
+  rkeeperPassword: String!
+  anyuppUsername: String!
+  anyuppPassword: String!
+  restaurantId: String!
+}
+
+enum PosType {
+  anyupp
+  rkeeper
 }
 
 # TODO: use to store User META in the near future

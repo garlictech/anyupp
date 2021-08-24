@@ -2,13 +2,17 @@ import { Observable } from 'rxjs';
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   Optional,
 } from '@angular/core';
 import { IProducMixArrayItem } from '@bgap/shared/types';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { ReportsService } from '../../services/reports.service';
+import { map, take } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -19,12 +23,36 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 })
 export class ReportsProductMixComponent {
   @Input() productMixData$?: Observable<IProducMixArrayItem[]>;
+  @Input() selectedUnit$?: Observable<CrudApi.Unit>;
+  @Input() date?: Date;
   @Input() isModal = false;
+
+  public productMixListData: IProducMixArrayItem[] = [];
+  private _productMixFullData: IProducMixArrayItem[] = [];
 
   constructor(
     @Optional() private _nbDialogRef: NbDialogRef<unknown>,
     private _nbDialogService: NbDialogService,
+    private _reportsService: ReportsService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
+
+  ngOnInit() {
+    if (this.productMixData$) {
+      this.productMixData$
+        .pipe(untilDestroyed(this))
+        .subscribe((data: IProducMixArrayItem[]) => {
+          this.productMixListData = this.isModal ? data : data.slice(0, 10);
+          this._productMixFullData = data;
+
+          this._changeDetectorRef.detectChanges();
+        });
+    }
+  }
+
+  ngOnDestroy(): void {
+    // untilDestroyed uses it.
+  }
 
   public showFullProductMix() {
     if (this.productMixData$) {
@@ -33,6 +61,23 @@ export class ReportsProductMixComponent {
       dialog.componentRef.instance.productMixData$ = this.productMixData$;
       dialog.componentRef.instance.isModal = true;
     }
+  }
+
+  public async export() {
+    const unitName: string = this.selectedUnit$
+      ? await this.selectedUnit$
+          .pipe(
+            take(1),
+            map((unit: CrudApi.Unit) => unit.name),
+          )
+          .toPromise()
+      : '';
+
+    this._reportsService.exportProductMix(
+      unitName,
+      this.date || new Date(),
+      this._productMixFullData,
+    );
   }
 
   public close(): void {
