@@ -21,6 +21,12 @@ Feature: Authentication
     Then I should be on the login page
     And I should see "AnyUPP Admin" sub-header
 
+  Scenario: Login with prefilled context
+    When I fill out the input with id "username" with the adminEmail value
+    And I fill out the input with id "password" with the adminPassword value
+    And I click the "sign in" text
+    Then I should be on the dashboard page
+
   Scenario: Login without role context
     When I fill out the input with id "username" with the adminEmail value
     And I fill out the input with id "password" with the adminPassword value
