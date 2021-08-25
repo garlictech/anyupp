@@ -9,8 +9,8 @@ Feature: Dashboard
     Then I set the language to EN
     Then I should see "John Doe" text
     And the "Dashboard" title is displayed
-    And I should see the "ORDERS ACCEPTED" button
-    Then I always should see the "Active orders" tab first
+    And I should see "ORDERS ACCEPTED" text
+    And the "Active orders" tab is selected
 
   Scenario: Active orders tab
     Then I should see the "Placed orders" icon with title
@@ -29,7 +29,7 @@ Feature: Dashboard
     When the "Placed orders" icon is selected
     Then I should see the order id starts with "#"
     And I should see the time of the created order
-    When I click on the order
+    When I click on the order with "148 Ft"
     Then I should see the deatils of order
     Then I should see the green badge with "Success" caption
     When I click on the "PLACED" button next to the product name
@@ -54,17 +54,18 @@ Feature: Dashboard
     And I click on the "Manual payments" icon with title
     Then I should see an order with an id starts with "#"
     And I should see the time of the created order
-    When I click on the order
-    Then I should see the deatils of it
+    When I click on the order with "298 Ft"
+    Then I should see the deatils of order
     When I click on the "SUCCESS" button
     Then I should see a dialog with "Are you sure you set the transaction status to 'success'?" text
     When I click on the "OK" button
     Then I should see the buttons in "PLACED"
-    # about the #1286 issue
-    When I reload the admin page
     And I click on the "Placed orders" icon with title
     When I click on the "PLACED" button next to the product name
     Then I should see the buttons in "PROCESSING"
+    # about the #1286 issue
+    When I reload the admin page
+    And I click on the order with "298 Ft"
     When I click on the "PROCESSING" button next to the product name
     Then I should see the buttons in "READY"
     When I click on the "READY" button next to the product name
