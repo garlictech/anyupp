@@ -1,5 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as Joi from 'joi';
+import { posTypeSchema } from '../enums/enums';
 import { validateGqlList, validateSchema } from '../validator/validate';
 import { addressInfoSchema } from './address';
 import { contactSchema } from './contact';
@@ -44,6 +45,19 @@ const weeklySchedule = Joi.object({
   sun: timeIntervalSchema,
   custom: Joi.array().items(customDailyScheduleSchema).allow(null),
 });
+const rkeeperSchema = Joi.object({
+  endpointUri: Joi.string().required(),
+  rkeeperUsername: Joi.string().required(),
+  rkeeperPassword: Joi.string().required(),
+  anyuppUsername: Joi.string().required(),
+  anyuppPassword: Joi.string().required(),
+  restaurantId: Joi.string().required(),
+});
+
+const pos = Joi.object({
+  type: posTypeSchema.required(),
+  rkeeper: rkeeperSchema.allow(null),
+});
 
 export const unitSchema: Joi.SchemaMap<CrudApi.Unit> = {
   id: Joi.string().required(),
@@ -65,6 +79,7 @@ export const unitSchema: Joi.SchemaMap<CrudApi.Unit> = {
   merchantId: Joi.string().allow(null, ''),
   ...contactSchema,
   ...addressInfoSchema,
+  pos: pos.allow(null),
 };
 
 export const { validate: validateUnit, isType: isUnit } =

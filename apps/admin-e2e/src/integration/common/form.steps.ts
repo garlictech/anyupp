@@ -17,9 +17,13 @@ When(
 When(
   'I fill out the {string} input with the {fixture} id',
   (context: string, id: string) => {
-    cy.findAllByPlaceholderText(context).type(id);
+    cy.findAllByPlaceholderText(context).clear().type(id);
   },
 );
+
+When('I clear the input with id {string}', (id: string) => {
+  cy.findAllByPlaceholderText(id).clear();
+});
 
 When('I set the currency to {string}', (value: string) => {
   cy.findByTestId('currency').click();
