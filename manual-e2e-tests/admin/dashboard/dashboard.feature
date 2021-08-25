@@ -17,20 +17,21 @@ Feature: Dashboard
     And the "Placed orders" is selected
     And I should see the "Manual payments" icon with title
     And I should see the "Problematic orders" icon with title
-    And I should see at least 100 orders on the "Manual payments" icon
+    And I should see at least 20 orders on the "Manual payments" icon
     When I click on the "Manual payments" icon
-    Then I should see at least 100 orders as I scrolling down on the list
-    And I should see at least 100 orders on the "Problematic orders" icon
+    Then I should see at least 20 orders as I scrolling down on the list
+    And I should see at least 20 orders on the "Problematic orders" icon
     When I click on the "Problematic orders" icon
-    Then I should see at least 100 orders as I scrolling down on the list
+    Then I should see at least 20 orders as I scrolling down on the list
 
   Scenario: Get the order to History from Active orders (stripe)
-    Given I have an inapp "PLACED" order with 1 product
+    Given I have an inapp "PLACED" order with 1 "Hamburger #1" product
     When the "Placed orders" icon is selected
-    Then I should see an order with an id starts with "#"
+    Then I should see the order id starts with "#"
     And I should see the time of the created order
     When I click on the order
-    Then I should see the deatils of it
+    Then I should see the deatils of order
+    Then I should see the green badge with "Success" caption
     When I click on the "PLACED" button next to the product name
     Then I should see the buttons in "PROCESSING"
     When I click on the "PROCESSING" button next to the product name
@@ -38,7 +39,14 @@ Feature: Dashboard
     When I click on the "READY" button next to the product name
     Then I should not see the order on the "Active orders" tab
     When I click on the "Orders history" tab
-    Then I should see the paid inapp order
+    Then I should see the served order selected
+    And I should see the green badge with "served" caption
+    When I click on the "Reports" tab
+    Then I should see "148 Ft" on the "Orders amount" card
+    When I scroll down to see the "Product mix"
+    Then there is "Hamburger #1" product with number "1" in the row
+    When I click on the "LIST ALL" button
+    Then I should see the "Product mix" dialog with the "Hamburger #1"
 
   Scenario: Get the order to History from Active orders (cash/card)
     Given I have a cash/card "NONE" order with 1 "Fanta #2" product
@@ -48,8 +56,13 @@ Feature: Dashboard
     And I should see the time of the created order
     When I click on the order
     Then I should see the deatils of it
-    When I click on the "NONE" button next to the product name
+    When I click on the "SUCCESS" button
+    Then I should see a dialog with "Are you sure you set the transaction status to 'success'?" text
+    When I click on the "OK" button
     Then I should see the buttons in "PLACED"
+    # about the #1286 issue
+    When I reload the admin page
+    And I click on the "Placed orders" icon with title
     When I click on the "PLACED" button next to the product name
     Then I should see the buttons in "PROCESSING"
     When I click on the "PROCESSING" button next to the product name
@@ -57,16 +70,17 @@ Feature: Dashboard
     When I click on the "READY" button next to the product name
     Then I should not see the order on the "Active orders" tab
     When I click on the "Orders history" tab
+    Then I should see the served order selected
+    Then I should see the "Fanta #2 (glass)" product with "ROOM TEMPERATURE"
     Then I should see the green badge with "Success" caption
     And I should see the green badge with "served" caption
     When I click on the "Reports" tab
     Then I should see "298 Ft" on the "Orders amount" card
     When I scroll down to see the "Product mix"
-    Then I should see the "Fanta #2" product with the number "1"
+    Then there is "Fanta #2" product with number "1" in the row
     When I click on the "LIST ALL" button
     Then I should see the "Product mix" dialog with the "Fanta #2"
     And I click on the close button
-
 
   Scenario: Floormap status updates
     Given I am on the dashboard page
@@ -116,13 +130,12 @@ Feature: Dashboard
     And I should see "298 Ft" on the "Orders amount" card
 
   Scenario: Order History feature
+    Given I have 1 cash/card served order with VAT
     When I click on the "Orders history" tab
-    Then I should see the paid orders on the left
-    And I should see the first selected paid order on the right
-    And I should see the orders descending by date/time
-    #Scenario: Order print
+    Then the served orders list is on the left descending by time
+    And the order with VAT is selected on the right
     When I click on the print button
-    Then I should see the recipe form
+    Then I should see "Receipt type: invoice" text
     And I should see the address "1021, Budapest Ág u. 1." of the unit
     When I click on the close button
     Then I should see the "Orders history" page
