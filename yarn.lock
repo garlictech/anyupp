@@ -6092,10 +6092,10 @@
     yargs "15.4.1"
     yargs-parser "20.0.0"
 
-"@nxrocks/nx-flutter@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@nxrocks/nx-flutter/-/nx-flutter-2.1.0.tgz#671691f04f15d6ca520468d7dfba3b60ed04e615"
-  integrity sha512-2T4DoGepIGfQUzsbouunQyfUaETFpwZQSXlGBN/pbC+C4r/amgdSSqTM42w21kypvXbwCaBy4q1CgQJYWQ73Qw==
+"@nxrocks/nx-flutter@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@nxrocks/nx-flutter/-/nx-flutter-3.0.0.tgz#01303748e27345b38c29002b54113fa026528d88"
+  integrity sha512-DCEiB8zICNZdgNcI+QVBU+3ERHuTbnkEtUZrEn1xP8bu94h1TNOqlkjVwbXCGSwl07wixzY8xYpGaA4/oZBIQA==
   dependencies:
     "@nrwl/devkit" "*"
     "@nrwl/workspace" "*"

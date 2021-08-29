@@ -137,7 +137,7 @@
     "@nrwl/nx-cloud": "12.3.10",
     "@nrwl/tao": "12.7.2",
     "@nrwl/workspace": "12.7.2",
-    "@nxrocks/nx-flutter": "2.1.0",
+    "@nxrocks/nx-flutter": "3.0.0",
     "@serverless-stack/cli": "0.40.1",
     "@serverless-stack/resources": "0.40.1",
     "@testing-library/cypress": "8.0.0",
