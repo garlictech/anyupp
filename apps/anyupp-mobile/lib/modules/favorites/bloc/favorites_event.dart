@@ -16,6 +16,6 @@ class AddOrRemoveFavoriteProduct extends FavoritesEvent {
   final categoryId;
   final String unitId;
 
-  const AddOrRemoveFavoriteProduct(this.chainId, this.unitId,  this.categoryId, this.productId);
+  const AddOrRemoveFavoriteProduct(this.chainId, this.unitId, this.categoryId, this.productId);
 }
 // TODO ide kell meg a favorites lista!!!

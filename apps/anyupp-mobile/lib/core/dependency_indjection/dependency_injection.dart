@@ -8,14 +8,12 @@ import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/menu/bloc/configset_bloc.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
 import 'package:fa_prev/modules/payment/stripe/providers/external_payment_provider.dart';
 import 'package:fa_prev/modules/payment/stripe/providers/external_payment_provider_interface.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/transactions/bloc/transactions_bloc.dart';
 import 'package:fa_prev/modules/transactions/providers/aws_transactions_provider.dart';
 import 'package:fa_prev/modules/transactions/repository/transactions_repository.dart';
-import 'package:fa_prev/shared/affiliate.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/exception.dart';
@@ -42,7 +40,7 @@ void _initCommon() async {
 
   final Stripe stripe = Stripe(
     AppConfig.StripePublishableKey,
-    returnUrlForSca: 'anyupp://stripe' ?? 'todo',
+    returnUrlForSca: 'anyupp://stripe',
   );
 
   getIt.registerLazySingleton<AppConstants>(() => AppConstants(
@@ -70,7 +68,6 @@ void _initProviders() {
   getIt.registerLazySingleton<IStripePaymentProvider>(
       () => GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<ICartProvider>()));
   getIt.registerLazySingleton<IExternalPaymentProvider>(() => ExternalPaymentProvider(getIt<ICartProvider>()));
-  getIt.registerLazySingleton<ISimplePayProvider>(() => AwsSimplepayProvider());
 
   getIt.registerLazySingleton<ICommonLoginProvider>(() => AwsCommonLoginProvider(
         getIt<IAuthProvider>(),
@@ -85,7 +82,6 @@ void _initProviders() {
 
   // Login providers AWS
   getIt.registerLazySingleton<ISocialLoginProvider>(() => AwsSocialLoginProvider(getIt<IAuthProvider>()));
-  getIt.registerLazySingleton<IAffiliateProvider>(() => AwsAffiliateProvider());
 
   // User details
   getIt.registerLazySingleton<IUserDetailsProvider>(() => AwsUserDetailsProvider(getIt<IAuthProvider>()));
@@ -102,11 +98,9 @@ void _initRepositories() {
   getIt.registerFactory<OrderRepository>(() => OrderRepository(getIt<IOrdersProvider>()));
   getIt.registerLazySingleton<UnitRepository>(() => UnitRepository(getIt<IUnitProvider>()));
   getIt.registerLazySingleton<FavoritesRepository>(() => FavoritesRepository(getIt<IFavoritesProvider>()));
-  getIt.registerLazySingleton<SimplePayRepository>(() => SimplePayRepository(getIt<ISimplePayProvider>()));
   getIt.registerLazySingleton<TransactionsRepository>(() => TransactionsRepository(getIt<AwsTransactionsProvider>()));
 
   // Repostories
-  getIt.registerLazySingleton<AffiliateRepository>(() => AffiliateRepository(getIt<IAffiliateProvider>()));
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepository(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<OrderNotificationService>(() => OrderNotificationService());
   getIt.registerLazySingleton<LocationRepository>(() => LocationRepository());
@@ -138,12 +132,9 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => FavoritesBloc(getIt<FavoritesRepository>()));
   getIt.registerLazySingleton(() => LocaleBloc());
   getIt.registerLazySingleton(() => LoginBloc(getIt<LoginRepository>()));
-  getIt.registerLazySingleton(() => SimplePayBloc(getIt<SimplePayRepository>()));
   getIt.registerLazySingleton(() => ThemeBloc(getIt<UnitSelectBloc>()));
   getIt.registerLazySingleton(() => CartBloc(getIt<CartRepository>(), getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => NetworkStatusBloc());
-  getIt.registerLazySingleton(() => PaymentBloc(getIt<OrderRepository>()));
-  getIt.registerLazySingleton(() => AffiliateBloc(getIt<AffiliateRepository>()));
   getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>(), getIt<CartRepository>()));
   getIt.registerLazySingleton(() => OrderBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => OrderCounterBloc(getIt<OrderRepository>()));

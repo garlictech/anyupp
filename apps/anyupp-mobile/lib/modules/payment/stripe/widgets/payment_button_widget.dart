@@ -49,5 +49,4 @@ class PaymentButtonWidget extends StatelessWidget {
       },
     );
   }
-
 }

@@ -4,11 +4,11 @@ abstract class ThemeEvent extends Equatable {
   const ThemeEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class ThemeSelected extends ThemeEvent {
   final ThemeChainData theme;
 
-  const ThemeSelected({@required this.theme}) : assert(theme != null);
+  const ThemeSelected({required this.theme});
 }

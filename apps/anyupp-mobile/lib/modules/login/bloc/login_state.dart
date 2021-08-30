@@ -10,26 +10,24 @@ class LoginSuccess extends LoginState {
   const LoginSuccess();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoggedOut extends LoginState {
   const LoggedOut();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class NeedAccountLinking extends LoginState {
-  // TODO AWS remove
   final dynamic newProviderCredentials;
   final List<LoginMethod> existingProviderList;
 
-  const NeedAccountLinking(
-      this.newProviderCredentials, this.existingProviderList);
+  const NeedAccountLinking(this.newProviderCredentials, this.existingProviderList);
 
   @override
-  List<Object> get props => [newProviderCredentials, existingProviderList];
+  List<Object?> get props => [newProviderCredentials, existingProviderList];
 }
 
 class NeedSMSCode extends LoginState {
@@ -37,45 +35,45 @@ class NeedSMSCode extends LoginState {
   final String phoneNumber;
   const NeedSMSCode(this.verificationId, this.phoneNumber);
   @override
-  List<Object> get props => [verificationId, phoneNumber];
+  List<Object?> get props => [verificationId, phoneNumber];
 }
 
 class LoginInProgress extends LoginState {
   const LoginInProgress();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class EmailLoginInProgress extends LoginState {
   const EmailLoginInProgress();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class PasswordResetInProgress extends LoginState {
   const PasswordResetInProgress();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class PasswordReset extends LoginState {
   const PasswordReset();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoginError extends LoginState {
   final String code;
-  final String message;
+  final String? message;
 
   const LoginError(this.code, this.message);
 
   @override
-  List<Object> get props => [code, message];
+  List<Object?> get props => [code, message];
 }
 
 class SignUpError extends LoginState {
@@ -85,7 +83,7 @@ class SignUpError extends LoginState {
   const SignUpError(this.code, this.message);
 
   @override
-  List<Object> get props => [code, message];
+  List<Object?> get props => [code, message];
 }
 
 class AccountLinked extends LoginState {
@@ -96,7 +94,7 @@ class AccountLinked extends LoginState {
   const AccountLinked(this.provider, this.linked);
 
   @override
-  List<Object> get props => [provider, linked];
+  List<Object?> get props => [provider, linked];
 }
 
 class EmailLinkSent extends LoginState {
@@ -105,7 +103,7 @@ class EmailLinkSent extends LoginState {
   EmailLinkSent(this.email);
 
   @override
-  List<Object> get props => [email];
+  List<Object?> get props => [email];
 }
 
 class PasswordResetInfoSentState extends LoginState {
@@ -113,18 +111,17 @@ class PasswordResetInfoSentState extends LoginState {
   final String deliveryMedium;
   final String destination;
 
-  PasswordResetInfoSentState(
-      this.userName, this.deliveryMedium, this.destination);
+  PasswordResetInfoSentState(this.userName, this.deliveryMedium, this.destination);
 
   @override
-  List<Object> get props => [userName];
+  List<Object?> get props => [userName];
 }
 
 class ConfirmCodeSending extends LoginState {
   ConfirmCodeSending();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class ConfirmCodeEmailSent extends LoginState {
@@ -133,7 +130,7 @@ class ConfirmCodeEmailSent extends LoginState {
   ConfirmCodeEmailSent(this.user);
 
   @override
-  List<Object> get props => [user];
+  List<Object?> get props => [user];
 }
 
 class EmailRegistrationSuccess extends LoginState {
@@ -142,14 +139,14 @@ class EmailRegistrationSuccess extends LoginState {
   EmailRegistrationSuccess(this.email);
 
   @override
-  List<Object> get props => [email];
+  List<Object?> get props => [email];
 }
 
 class CodeConfirmedState extends LoginState {
   const CodeConfirmedState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class ConfirmCodeState extends LoginState {
@@ -157,27 +154,26 @@ class ConfirmCodeState extends LoginState {
   const ConfirmCodeState(this.user);
 
   @override
-  List<Object> get props => [user];
+  List<Object?> get props => [user];
 }
 
 class UserCreated extends LoginState {
   const UserCreated();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class EmailFormUIChange extends LoginState {
   final LoginFormUI ui;
-  final Duration animationDuration;
-  final Curve animationCurve;
-  final String userName;
+  final Duration? animationDuration;
+  final Curve? animationCurve;
+  final String? userName;
 
-  EmailFormUIChange(
-      {this.ui, this.animationDuration, this.animationCurve, this.userName});
+  EmailFormUIChange({required this.ui, this.animationDuration, this.animationCurve, this.userName});
 
   @override
-  List<Object> get props => [ui, animationDuration, animationCurve];
+  List<Object?> get props => [ui, userName];
 }
 
 class ShowSocialLoginWebView extends LoginState {
@@ -185,5 +181,5 @@ class ShowSocialLoginWebView extends LoginState {
   ShowSocialLoginWebView(this.provider);
 
   @override
-  List<Object> get props => [provider];
+  List<Object?> get props => [provider];
 }

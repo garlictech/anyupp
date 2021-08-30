@@ -10,7 +10,7 @@ import 'utils/http_utils.dart';
 class DioTokenInterceptor extends InterceptorsWrapper {
   final Dio _dio;
   final IAuthProvider _provider;
-  SharedPreferences _prefs;
+  late SharedPreferences _prefs;
 
   DioTokenInterceptor(this._dio, this._provider) {
     SharedPreferences.getInstance().then((preferences) => _prefs = preferences);
@@ -20,7 +20,7 @@ class DioTokenInterceptor extends InterceptorsWrapper {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     if (options.headers.containsKey('requirestoken')) {
       options.headers.remove('requirestoken');
-      String accessToken = _prefs.getString('cognito_accesstoken');
+      String? accessToken = _prefs.getString('cognito_accesstoken');
       print('accessToken: $accessToken');
       options.headers.addAll({'Authorization': 'Bearer $accessToken'});
     }
@@ -40,13 +40,13 @@ class DioTokenInterceptor extends InterceptorsWrapper {
   @override
   void onError(DioError dioError, ErrorInterceptorHandler handler) async {
     debugError(dioError);
-    int responseCode = dioError.response?.statusCode;
-    String oldAccessToken = _prefs.getString('cognito_accesstoken');
+    int responseCode = dioError.response?.statusCode ?? 0;
+    String? oldAccessToken = _prefs.getString('cognito_accesstoken');
     if (oldAccessToken != null && responseCode == 401) {
       _dio.interceptors.requestLock.lock();
       _dio.interceptors.responseLock.lock();
 
-      String refreshToken = _prefs.get('cognito_refreshtoken');
+      String? refreshToken = _prefs.getString('cognito_refreshtoken');
       if (refreshToken == null) {
         super.onError(dioError, handler);
         return;
@@ -55,21 +55,17 @@ class DioTokenInterceptor extends InterceptorsWrapper {
 
       await _provider.getAuthenticatedUserProfile();
 
-      // Response response = await _dio.put(URL_ROOT + 'auth/refresh', data: {
-      //   'refresh_token': refreshToken
-      // });
-
-      // setTokenPreferences(response, _prefs);
-
-      RequestOptions options = dioError.response.requestOptions;
+      RequestOptions options = dioError.response!.requestOptions;
       options.headers.addAll({'requiresToken': true});
       _dio.interceptors.requestLock.unlock();
       _dio.interceptors.responseLock.unlock();
       await _dio.request(options.path, data: options);
     } else if (dioError.message.contains("Failed host lookup")) {
       NetworkStatusBloc networkStatusBloc = getIt<NetworkStatusBloc>();
-      networkStatusBloc.add((NetworkConnectionChangedEvent(
-          networkStatusBloc.getLastConnectivityResult(), false, true, false)));
+      var status = networkStatusBloc.getLastConnectivityResult();
+      if (status != null) {
+        networkStatusBloc.add((NetworkConnectionChangedEvent(status, false, true, false)));
+      }
       super.onError(dioError, handler);
     } else {
       super.onError(dioError, handler);

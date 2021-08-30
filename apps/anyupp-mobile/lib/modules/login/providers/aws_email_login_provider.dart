@@ -11,22 +11,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'email_login_provider_interface.dart';
 
 class AwsEmailLoginProvider implements IEmailLoginProvider {
-  final AwsAuthProvider _authProvider;
+  final IAuthProvider _authProvider;
   final CognitoService _service;
 
   AwsEmailLoginProvider(this._authProvider, this._service);
 
   @override
-  Future<String> get email async => (await SharedPreferences.getInstance()).getString('auth_email');
+  Future<String?> get email async => (await SharedPreferences.getInstance()).getString('auth_email');
 
   @override
   Future<ProviderLoginResponse> loginWithEmailAndPassword(String email, String password,
       {bool isAnonymus = false}) async {
     try {
       CognitoUser user = _service.createCognitoUser(email);
-      CognitoUserSession session = await user.authenticateUser(_service.getAuthDetails(email, password));
-      if (session.isValid()) {
-        User user = await _authProvider.loginWithCognitoSession(session, isAnonymus ? 'Anonymus' : email);
+      CognitoUserSession? session = await user.authenticateUser(_service.getAuthDetails(email, password));
+      if (session != null && session.isValid()) {
+        User? user = await _authProvider.loginWithCognitoSession(session, isAnonymus ? 'Anonymus' : email);
         await _service;
         return ProviderLoginResponse(
           credential: null,
@@ -47,7 +47,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       } else {
         rethrow;
       }
-    } catch (e) {
+    } on Exception catch (e) {
       throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
     }
   }
@@ -64,12 +64,15 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       // print('signInAnonymously.response().exception=${result.exception}');
       // print('signInAnonymously.response().data=${jsonEncode(result.data)}');
 
-      String email = result.data.createAnonymUser.username;
-      String pwd = result.data.createAnonymUser.pwd;
+      String? email = result.data?.createAnonymUser.username;
+      String? pwd = result.data?.createAnonymUser.pwd;
       if (email != null && pwd != null) {
         return loginWithEmailAndPassword(email, pwd, isAnonymus: true);
       }
-      return null;
+      throw LoginException(
+        code: LoginException.INVALID_CREDENTIALS,
+        message: 'signInAnonymously(): Username or password is null',
+      );
     } on Exception catch (e) {
       print('signInAnonymously.exception=$e');
       throw LoginException(
@@ -82,35 +85,27 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
 
   @override
   Future<String> registerUserWithEmailAndPassword(
-      String userEmail, String userPhone, String email, String password) async {
+    String userEmail,
+    String? userPhone,
+    String email,
+    String password,
+  ) async {
     try {
       List<AttributeArg> attributes = [];
-      if (userPhone != null) {
-        attributes.add(
-          AttributeArg(name: 'phone_number', value: userPhone),
-        );
-      }
-      if (userEmail != null) {
-        attributes.add(AttributeArg(name: 'email', value: userEmail));
-      }
+      attributes.add(AttributeArg(name: 'email', value: userEmail));
       String username = UUID.getUUID();
       print('**** registerUserWithEmailAndPassword().username=$username, email=$email');
-      // attributes.add(
-      //   AttributeArg(name: 'Username', value: username),
-      // );
       CognitoUserPoolData userPoolData = await _service.userPool.signUp(username, password, userAttributes: attributes);
       print('**** registerUserWithEmailAndPassword().userPoolData=$userPoolData');
 
-      if (userPoolData.user != null) {
-        return Future.value(username);
-      }
+      return Future.value(username);
     } on CognitoClientException catch (e) {
       print('**** registerUserWithEmailAndPassword().CognitoClientException=$e');
       if (e.code == 'UsernameExistsException' || e.code == 'UserLambdaValidationException') {
-        throw SignUpException.fromException(SignUpException.USER_EXISTS, e.message, e);
+        throw SignUpException.fromException(SignUpException.USER_EXISTS, e.message!, e);
       }
       if (e.code == 'InvalidPasswordException') {
-        throw SignUpException.fromException(SignUpException.INVALID_PASSWORD, e.message, e);
+        throw SignUpException.fromException(SignUpException.INVALID_PASSWORD, e.message!, e);
       }
 
       rethrow;
@@ -118,7 +113,6 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       print('**** registerUserWithEmailAndPassword().error=$e');
       throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
-    return Future.value(null);
   }
 
   @override
@@ -163,30 +157,26 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   @override
   Future<Map<String, dynamic>> sendPasswordResetEmail(String userName) async {
     CognitoUser user = _service.createCognitoUser(userName);
-    Map<String, dynamic> codeDeliveryDetails;
     try {
+      Map<String, dynamic> codeDeliveryDetails = {};
       final data = await user.forgotPassword();
       if (data != null) {
         codeDeliveryDetails = data['CodeDeliveryDetails'];
       }
+      return Future.value(codeDeliveryDetails);
     } on Exception catch (e) {
       throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
-    return Future.value(codeDeliveryDetails);
   }
 
   @override
   Future<bool> confirmPassword(String userName, String code, String newPassword) async {
     CognitoUser user = _service.createCognitoUser(userName);
-    bool passwordConfirmed = false;
     try {
-      final data = await user.confirmPassword(code, newPassword);
-      if (data != null) {
-        passwordConfirmed = true;
-      }
+      final passwordConfirmed = await user.confirmPassword(code, newPassword);
+      return Future.value(passwordConfirmed);
     } on Exception catch (e) {
       throw SignUpException.fromException(SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
-    return Future.value(passwordConfirmed);
   }
 }

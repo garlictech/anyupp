@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 class OrderHistoryScreen extends StatefulWidget {
   final GeoUnit unit;
 
-  const OrderHistoryScreen({Key key, @required this.unit}) : super(key: key);
+  const OrderHistoryScreen({required this.unit});
 
   @override
   _OrderHistoryScreenState createState() => _OrderHistoryScreenState();
@@ -20,12 +20,12 @@ class OrderHistoryScreen extends StatefulWidget {
 
 class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   bool _hasMoreItems = false;
-  String _nextToken;
+  String? _nextToken;
 
   @override
   void initState() {
     super.initState();
-    getIt<OrderHistoryBloc>().add(StartGetOrderHistoryListSubscription(widget.unit.id));
+    getIt<OrderHistoryBloc>().add(StartGetOrderHistoryListSubscription(widget.unit.id!));
   }
 
   @override
@@ -48,13 +48,13 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
           }
 
           if (state is OrderHistoryLoadedState) {
-            if (state.orders == null || state.orders.isEmpty) {
+            if (state.orders == null || (state.orders != null && state.orders!.isEmpty)) {
               return _noOrderHistory();
             }
-            return _buildList(state.orders);
+            return _buildList(state.orders!);
           } else if (state is OrderLoadHistoryError) {
             return CommonErrorWidget(
-              error: state.message,
+              error: state.message!,
               description: state.details,
             );
           }
@@ -118,7 +118,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               backgroundColor: Colors.transparent,
               primary: theme.text,
             ),
-            onPressed: () => getIt<OrderHistoryBloc>().add(LoadMoreOrderHistory(widget.unit.id, _nextToken)),
+            onPressed: () => getIt<OrderHistoryBloc>().add(LoadMoreOrderHistory(widget.unit.id!, _nextToken)),
             child: Text(
               trans('orders.loadMore'),
               textAlign: TextAlign.center,

@@ -16,7 +16,7 @@ class StripeAddPaymentMethodWidget extends StatefulWidget {
 class _StripeAddPaymentMethodWidgetState extends State<StripeAddPaymentMethodWidget> {
   StripeCard _cardData = StripeCard();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  CardFormWidget _form;
+  late CardFormWidget _form;
 
   _StripeAddPaymentMethodWidgetState();
 
@@ -38,12 +38,12 @@ class _StripeAddPaymentMethodWidgetState extends State<StripeAddPaymentMethodWid
             children: [
               Expanded(child: _buildAddCardForm(context)),
               AddCardButtonWidget(() async {
-                if (_formKey.currentState.validate()) {
-                  _formKey.currentState.save();
+                if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
                   print('saving card=$_cardData');
                   print('saving card=${_cardData.cvc}');
                   print('saving card=${_cardData.number}');
-                  getIt<StripePaymentBloc>().add(CreateStripeCardEvent(_cardData, null));
+                  getIt<StripePaymentBloc>().add(CreateStripeCardEvent(_cardData, ''));
                   // Nav.pop();
                 }
               })

@@ -23,8 +23,8 @@ class Menu extends StatelessWidget {
         // print('Menu.ProductCategoriesBloc.state=$state');
         if (state is ProductCategoriesLoaded) {
           // print('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
-          if (state.productCategories != null && state.productCategories.isNotEmpty) {
-            return _buildTabBar(context, state.productCategories);
+          if (state.productCategories != null && state.productCategories!.isNotEmpty) {
+            return _buildTabBar(context, state.productCategories ?? []);
           } else {
             return _noCategoriesWidget(context);
           }
@@ -45,7 +45,7 @@ class Menu extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             children: productCategories
                 .map((category) => ProductMenuTabScreen(
-                      categoryId: category.id,
+                      categoryId: category.id!,
                     ))
                 .toList(),
           ),
@@ -54,7 +54,7 @@ class Menu extends StatelessWidget {
     );
   }
 
-  Widget _createAppBar(BuildContext context, List<ProductCategory> productCategories) {
+  AppBar _createAppBar(BuildContext context, List<ProductCategory> productCategories) {
     return AppBar(
       elevation: 0.0,
       backgroundColor: theme.background,
@@ -93,8 +93,8 @@ class Menu extends StatelessWidget {
                 ImageWidget(
                   //width: 200,
                   height: 40,
-                  url: theme?.images?.header != null
-                      ? theme?.images?.header
+                  url: theme.images?.header != null
+                      ? theme.images?.header
                       : 'https://${AppConfig.S3BucketName}.s3-${AppConfig.Region}.amazonaws.com/public/chains/kajahu-logo.svg',
                   errorWidget: Icon(Icons.error),
                   fit: BoxFit.fitHeight,

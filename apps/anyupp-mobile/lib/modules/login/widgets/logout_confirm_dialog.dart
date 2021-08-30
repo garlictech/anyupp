@@ -4,8 +4,6 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/shared/nav.dart';
 
-
-
 showConfirmLogoutDialog(BuildContext context, [bool shouldPopNavigation = true]) {
   // show the dialog
   showDialog(

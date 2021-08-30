@@ -16,25 +16,25 @@ class MainNavigation extends StatefulWidget {
   final int pageIndex;
   final bool animateCartIcon;
 
-  const MainNavigation({Key key, this.pageIndex = 0, this.animateCartIcon = true}) : super(key: key);
+  const MainNavigation({this.pageIndex = 0, this.animateCartIcon = true});
 
   _MainNavigationState createState() => _MainNavigationState();
 }
 
 class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
-  List<MainPageOptions> _pageOptions;
+  List<MainPageOptions>? _pageOptions;
 
   // --- For bottom animation bar
   int _selectedIndex = 0;
-  AnimationController _animationController;
-  Animation<double> animation;
-  CurvedAnimation curve;
+  late AnimationController _animationController;
+  late Animation<double> animation;
+  late CurvedAnimation curve;
 
   // Caching pages
   List<Widget> _pages = [
     Menu(),
     FavoritesScreen(),
-    OrdersScreen(),
+    OrdersScreen(key: UniqueKey()),
     Profile(),
     CartScreen(),
   ];
@@ -100,9 +100,10 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   Widget build(BuildContext context) {
     // --- This build method called again AFTER the product screen build run. So it set the statusbar color back.
     // --- This little trick need to prevent the statusbar color change back to main screen statusbar color
-    if (ModalRoute.of(context).isCurrent) {
+    var route = ModalRoute.of(context);
+    if (route != null && route.isCurrent) {
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: _pageOptions[_selectedIndex].systemBarColor,
+        statusBarColor: _pageOptions![_selectedIndex].systemBarColor,
         statusBarIconBrightness: Brightness.dark,
       ));
     }
@@ -114,9 +115,9 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
         child: NetworkConnectionWrapperWidget(
           child: Scaffold(
             // Depending on the boolean showAppBar, you can control the appearance of the appBar
-            appBar: _pageOptions[_selectedIndex].showAppBar
+            appBar: _pageOptions![_selectedIndex].showAppBar
                 ? AppBar(
-                    title: Text(_pageOptions[_selectedIndex].appBarText,
+                    title: Text(_pageOptions![_selectedIndex].appBarText,
                         style: TextStyle(color: Theme.of(context).accentColor)),
                     centerTitle: false,
                     leading: Container(),
@@ -211,8 +212,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           });
         }
       },
-      child: _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders',
-          _orderCount != null && _orderCount > 0 ? _orderCount.toString() : null),
+      child: _createBottomBarIconWithText(
+          2, Icons.receipt, 'main.bottomTitles.orders', _orderCount > 0 ? _orderCount.toString() : null),
     );
 
     // return BlocListener<OrderBloc, BaseOrderState>(
@@ -260,7 +261,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     // });
   }
 
-  Widget _createBottomBarIconWithText(int index, IconData icon, String textKey, [String badge]) {
+  Widget _createBottomBarIconWithText(int index, IconData icon, String textKey, [String? badge]) {
     return BottomBarItem(
       icon: icon,
       text: trans(textKey),

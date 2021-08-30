@@ -27,9 +27,9 @@ class AppConfig {
 
   static String get S3BucketName => _config['S3BucketName'];
 
-  static String get SlackErrorWebhookUrl => _config['SlackErrorWebhookUrl'];
+  static String? get SlackErrorWebhookUrl => _config['SlackErrorWebhookUrl'];
 
-  static String get SlackErrorChannel => _config['SlackErrorChannel'];
+  static String? get SlackErrorChannel => _config['SlackErrorChannel'];
 
   static Map<String, dynamic> _config = jsonDecode(AWSCONFIG);
 

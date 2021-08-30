@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
@@ -102,7 +103,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                     ),
                     child: Center(
                       child: Text(
-                        '${((unit.distance ?? 0) / 1000).toStringAsFixed(3)} km',
+                        '${(unit.distance / 1000).toStringAsFixed(3)} km',
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           color: theme.text2,
@@ -124,17 +125,16 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                 left: 14.0,
               ),
               child: Text(
-                unit.isClosed()
-                    ? unit.getClosedText(
+                GeoUnitUtils.isClosed(unit)
+                    ? GeoUnitUtils.getClosedText(
+                        unit,
                         transEx(context, "selectUnit.closed"),
                         transEx(context, "selectUnit.opens"),
-                        transEx(context,
-                            "selectUnit.weekdays.${unit.getOpenedHour()?.getDayString()}"),
+                        transEx(context, "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
                       )
                     : transEx(context, "selectUnit.opened") +
                         ": " +
-                        transEx(
-                            context, unit.getOpenedHour().getOpenRangeString()),
+                        transEx(context, GeoUnitUtils.getOpenedHour(unit)?.getOpenRangeString() ?? ''),
 
                 //'Nyitva: 09:00 - 22:00',
                 style: GoogleFonts.poppins(

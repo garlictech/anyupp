@@ -13,7 +13,9 @@ import 'order_simple_list_item_widget.dart';
 class OrderHistoryCard extends StatelessWidget {
   final Order order;
 
-  const OrderHistoryCard({Key key, this.order}) : super(key: key);
+  const OrderHistoryCard({
+    required this.order,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class OrderHistoryCard extends StatelessWidget {
             _buildOrderHeader(context),
             _buildDivider(context),
             ..._buildOrderItemList(context),
-            TransactionInfoWidget(order.transactionItem),
+            if (order.transaction != null) TransactionInfoWidget(order.transaction!),
             _buildFooter(context),
           ],
         ),
@@ -84,13 +86,13 @@ class OrderHistoryCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-             order.orderNum != null ? Text(
+              Text(
                 '${order.orderNum}',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: theme.text,
                 ),
-              ) : Container(),
+              ),
               Padding(
                 padding: const EdgeInsets.only(
                   right: 20.0,
@@ -161,8 +163,7 @@ class OrderHistoryCard extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(
-                order.sumPriceShown.priceSum, order.items[0].priceShown?.currency ?? 'ft'), 
+            formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown.currency),
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,

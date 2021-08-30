@@ -7,27 +7,28 @@ enum NavAnim {
 }
 
 class Nav {
-
-  static const Duration _DEFAULT_ANIM_DURATION = Duration(milliseconds: 750); 
+  static const Duration _DEFAULT_ANIM_DURATION = Duration(milliseconds: 750);
 
   static void to(Widget page, {Duration duration = _DEFAULT_ANIM_DURATION, NavAnim animationType = NavAnim.FADE_IN}) {
-    Catcher.navigatorKey.currentState.push(_createRoute(page, duration, animationType));
+    Catcher.navigatorKey!.currentState!.push(_createRoute(page, duration, animationType));
   }
 
-  static void replace(Widget page, {Duration duration = _DEFAULT_ANIM_DURATION, NavAnim animationType = NavAnim.FADE_IN}) {
-    Catcher.navigatorKey.currentState.pushReplacement(_createRoute(page, duration, animationType));
+  static void replace(Widget page,
+      {Duration duration = _DEFAULT_ANIM_DURATION, NavAnim animationType = NavAnim.FADE_IN}) {
+    Catcher.navigatorKey!.currentState!.pushReplacement(_createRoute(page, duration, animationType));
   }
 
-  static void reset(Widget page,{Duration duration = _DEFAULT_ANIM_DURATION, NavAnim animationType = NavAnim.FADE_IN}) {
-    Catcher.navigatorKey.currentState.pushAndRemoveUntil(
+  static void reset(Widget page,
+      {Duration duration = _DEFAULT_ANIM_DURATION, NavAnim animationType = NavAnim.FADE_IN}) {
+    Catcher.navigatorKey!.currentState!.pushAndRemoveUntil(
       _createRoute(page, duration, animationType),
       (Route<dynamic> route) => false,
     );
   }
 
   static void pop() {
-    if (Catcher.navigatorKey.currentState.canPop()) {
-      Catcher.navigatorKey.currentState.pop();
+    if (Catcher.navigatorKey!.currentState!.canPop()) {
+      Catcher.navigatorKey!.currentState!.pop();
     }
   }
 
@@ -38,10 +39,13 @@ class Nav {
       reverseTransitionDuration: duration,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         switch (animationType) {
-          case NavAnim.FADE_IN: return _createFadeInAnimation(animation, child);
-          case NavAnim.SLIDEIN_DOWN: return _createSlideInFromDownAnimation(animation, child);
+          case NavAnim.FADE_IN:
+            return _createFadeInAnimation(animation, child);
+          case NavAnim.SLIDEIN_DOWN:
+            return _createSlideInFromDownAnimation(animation, child);
+          default:
+            return _createFadeInAnimation(animation, child);
         }
-        return _createFadeInAnimation(animation, child);
       },
     );
   }

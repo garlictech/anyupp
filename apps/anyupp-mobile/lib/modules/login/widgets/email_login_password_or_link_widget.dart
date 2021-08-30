@@ -9,12 +9,10 @@ import 'package:fa_prev/modules/login/login.dart';
 
 class EmailLoginDialogContentWidget extends StatefulWidget {
   @override
-  _EmailLoginDialogContentWidgetState createState() =>
-      _EmailLoginDialogContentWidgetState();
+  _EmailLoginDialogContentWidgetState createState() => _EmailLoginDialogContentWidgetState();
 }
 
-class _EmailLoginDialogContentWidgetState
-    extends State<EmailLoginDialogContentWidget> {
+class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentWidget> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -34,13 +32,11 @@ class _EmailLoginDialogContentWidgetState
           // Navigator.of(context).pop();
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
-          builder: (BuildContext context, LoginState state) {
+      child: BlocBuilder<LoginBloc, LoginState>(builder: (BuildContext context, LoginState state) {
         // print('EmailLoginDialogContentWidget.bloc.state=$state');
 
         if (state is EmailLoginInProgress) {
-          return _buildLoading(context,
-              message: trans('login.email.loginProgress'));
+          return _buildLoading(context, message: trans('login.email.loginProgress'));
         }
 
         if (state is EmailLinkSent) {
@@ -212,8 +208,7 @@ class _EmailLoginDialogContentWidgetState
                         ),
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 350),
-                          transitionBuilder:
-                              (Widget child, Animation<double> animation) {
+                          transitionBuilder: (Widget child, Animation<double> animation) {
                             return ScaleTransition(
                               child: child,
                               scale: animation,
@@ -284,10 +279,9 @@ class _EmailLoginDialogContentWidgetState
 
   void _loginWithEmailAndPassword() {
     print('_loginWithEmailAndPassword()=${_emailController.text}');
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      getIt<LoginBloc>().add(LoginWithEmailAndPassword(
-          _emailController.text, _passwordController.text));
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      getIt<LoginBloc>().add(LoginWithEmailAndPassword(_emailController.text, _passwordController.text));
     }
   }
 }

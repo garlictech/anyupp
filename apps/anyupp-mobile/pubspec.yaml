@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.1.7+10107
 
 environment:
-  sdk: '>=2.11.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -75,11 +75,6 @@ dependencies:
   upgrader: ^3.3.1
   carousel_slider: ^4.0.0
   artemis: ^7.1.1-beta.1
-  #json_serializable: ^4.1.3
-  # artemis:
-  #   git:
-  #     url: https://github.com/comigor/artemis.git
-  #     ref: beta
 
 dev_dependencies:
   flutter_test:

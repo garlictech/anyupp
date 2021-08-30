@@ -8,8 +8,7 @@ typedef LoginPageViewIndexChangedCallback = void Function({int selectedIndex});
 
 class EmailLoginPageViewWidget extends StatefulWidget {
   @override
-  _EmailLoginPageViewWidgetState createState() =>
-      _EmailLoginPageViewWidgetState();
+  _EmailLoginPageViewWidgetState createState() => _EmailLoginPageViewWidgetState();
 }
 
 class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
@@ -58,8 +57,7 @@ class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
         index = 4;
         break;
     }
-    print(
-        'setPage().page=$index, duration=${state.animationDuration}, curve=${state.animationCurve}');
+    print('setPage().page=$index, duration=${state.animationDuration}, curve=${state.animationCurve}');
 
     _pageController.animateToPage(
       index,

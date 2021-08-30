@@ -13,13 +13,16 @@ import 'package:fa_prev/shared/locale.dart';
 
 class SelectStripePaymentMethodWidget extends StatefulWidget {
   final bool showPaymentButton;
-  final OnPaymentMethodSelected onItemSelected;
-  final String orderId;
-  final UserInvoiceAddress userInvoiceAddress;
+  final String? orderId;
+  final OnPaymentMethodSelected? onItemSelected;
+  final UserInvoiceAddress? userInvoiceAddress;
 
-  const SelectStripePaymentMethodWidget(
-      {Key key, this.orderId, this.userInvoiceAddress, this.onItemSelected, this.showPaymentButton = false})
-      : super(key: key);
+  const SelectStripePaymentMethodWidget({
+    this.orderId,
+    this.userInvoiceAddress,
+    this.onItemSelected,
+    this.showPaymentButton = false,
+  });
 
   @override
   _SelectStripePaymentMethodWidgetState createState() => _SelectStripePaymentMethodWidgetState();
@@ -79,11 +82,11 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
       child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
         builder: (context, state) {
           if (state is StripePaymentMethodsList) {
-            if (state.data != null && state.data.isNotEmpty) {
+            if (state.data != null && state.data!.isNotEmpty) {
               return PaymentButtonWidget(() {
                 getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
                   orderId: widget.orderId,
-                  paymentMethodId: state.data[selectedItem].id,
+                  paymentMethodId: state.data![selectedItem].id!,
                   invoiceAddress: widget.userInvoiceAddress,
                 ));
               });
@@ -102,7 +105,7 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
       builder: (context, StripePaymentState state) {
         // print('SelectStripePaymentMethodWidget.state=$state');
         if (state is StripePaymentMethodsList) {
-          if (state.data == null || state.data.isEmpty) {
+          if (state.data == null || (state.data != null && state.data!.isEmpty)) {
             return SingleChildScrollView(child: NoPaymentMethodsWidget());
           }
           return StripePaymentMethodListWidget(
@@ -110,7 +113,7 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
             onItemSelected: (StripePaymentMethod method) {
               print('SelectStripePaymentMethodWidget.Card selected=$method');
               setState(() {
-                selectedItem = state.data.indexOf(method);
+                selectedItem = state.data!.indexOf(method);
               });
 
               // widget.onItemSelected(method);

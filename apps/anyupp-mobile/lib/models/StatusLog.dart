@@ -1,113 +1,85 @@
-import 'package:fa_prev/models.dart';
-import 'package:flutter/foundation.dart';
-
-import 'core/model_base.dart';
-
-
-@immutable
-class StatusLog extends Model {
-  final String id;
+class StatusLog {
+  final String? id;
   final String userId;
   final String status;
   final double ts;
-  final String orderStatusLogId;
-  final String orderItemStatusLogId;
+  final String? orderStatusLogId; // TODO ez mit keres itt?
+  final String? orderItemStatusLogId; // TODO ez mit keres itt?
+
+  StatusLog({
+    this.id,
+    required this.userId,
+    required this.status,
+    required this.ts,
+    this.orderStatusLogId,
+    this.orderItemStatusLogId,
+  });
+
+  StatusLog copyWith({
+    String? id,
+    String? userId,
+    String? status,
+    double? ts,
+    String? orderStatusLogId,
+    String? orderItemStatusLogId,
+  }) {
+    return StatusLog(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      status: status ?? this.status,
+      ts: ts ?? this.ts,
+      orderStatusLogId: orderStatusLogId ?? this.orderStatusLogId,
+      orderItemStatusLogId: orderItemStatusLogId ?? this.orderItemStatusLogId,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'userId': userId,
+      'status': status,
+      'ts': ts,
+      'orderStatusLogId': orderStatusLogId,
+      'orderItemStatusLogId': orderItemStatusLogId,
+    };
+  }
+
+  factory StatusLog.fromJson(Map<String, dynamic> map) {
+    return StatusLog(
+      id: map['id'],
+      userId: map['userId'],
+      status: map['status'],
+      ts: map['ts'],
+      orderStatusLogId: map['orderStatusLogId'],
+      orderItemStatusLogId: map['orderItemStatusLogId'],
+    );
+  }
 
   @override
-  String getId() {
-    return id;
-  }
-
-  const StatusLog._internal(
-      {@required this.id,
-      @required this.userId,
-      this.status,
-      this.ts,
-      this.orderStatusLogId,
-      this.orderItemStatusLogId});
-
-  factory StatusLog(
-      {String id,
-      @required String userId,
-      String status,
-      double ts,
-      String orderStatusLogId,
-      String orderItemStatusLogId}) {
-    return StatusLog._internal(
-        id: id == null ? UUID.getUUID() : id,
-        userId: userId,
-        status: status,
-        ts: ts,
-        orderStatusLogId: orderStatusLogId,
-        orderItemStatusLogId: orderItemStatusLogId);
-  }
-
-  bool equals(Object other) {
-    return this == other;
+  String toString() {
+    return 'StatusLog(id: $id, userId: $userId, status: $status, ts: $ts, orderStatusLogId: $orderStatusLogId, orderItemStatusLogId: $orderItemStatusLogId)';
   }
 
   @override
   bool operator ==(Object other) {
-    if (identical(other, this)) return true;
+    if (identical(this, other)) return true;
+
     return other is StatusLog &&
-        id == other.id &&
-        userId == other.userId &&
-        status == other.status &&
-        ts == other.ts &&
-        orderStatusLogId == other.orderStatusLogId &&
-        orderItemStatusLogId == other.orderItemStatusLogId;
+        other.id == id &&
+        other.userId == userId &&
+        other.status == status &&
+        other.ts == ts &&
+        other.orderStatusLogId == orderStatusLogId &&
+        other.orderItemStatusLogId == orderItemStatusLogId;
   }
 
   @override
-  int get hashCode => toString().hashCode;
-
-  @override
-  String toString() {
-    var buffer = StringBuffer();
-
-    buffer.write("StatusLog {");
-    buffer.write("id=" + "$id" + ", ");
-    buffer.write("userId=" + "$userId" + ", ");
-    buffer.write("status=" + "$status" + ", ");
-    buffer.write("ts=" + (ts != null ? ts.toString() : "null") + ", ");
-    buffer.write("orderStatusLogId=" + "$orderStatusLogId" + ", ");
-    buffer.write("orderItemStatusLogId=" + "$orderItemStatusLogId");
-    buffer.write("}");
-
-    return buffer.toString();
+  int get hashCode {
+    return id.hashCode ^
+        userId.hashCode ^
+        status.hashCode ^
+        ts.hashCode ^
+        orderStatusLogId.hashCode ^
+        orderItemStatusLogId.hashCode;
   }
-
-  StatusLog copyWith(
-      {String id,
-      String userId,
-      String status,
-      int ts,
-      String orderStatusLogId,
-      String orderItemStatusLogId}) {
-    return StatusLog(
-        id: id ?? this.id,
-        userId: userId ?? this.userId,
-        status: status ?? this.status,
-        ts: ts ?? this.ts,
-        orderStatusLogId: orderStatusLogId ?? this.orderStatusLogId,
-        orderItemStatusLogId:
-            orderItemStatusLogId ?? this.orderItemStatusLogId);
-  }
-
-  StatusLog.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        userId = json['userId'],
-        status = json['status'],
-        ts = json['ts'],
-        orderStatusLogId = json['orderStatusLogId'],
-        orderItemStatusLogId = json['orderItemStatusLogId'];
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'userId': userId,
-        'status': status,
-        'ts': ts,
-        'orderStatusLogId': orderStatusLogId,
-        'orderItemStatusLogId': orderItemStatusLogId
-      };
 }

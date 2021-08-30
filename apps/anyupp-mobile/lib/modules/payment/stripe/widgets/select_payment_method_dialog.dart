@@ -8,10 +8,10 @@ import 'package:flutter/scheduler.dart';
 
 typedef OnPaymentMethodSelected = void Function(StripePaymentMethod method);
 
-showSelectStripePaymentDialog(BuildContext context, {OnPaymentMethodSelected onItemSelected}) {
+showSelectStripePaymentDialog(BuildContext context, {OnPaymentMethodSelected? onItemSelected}) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
-  SchedulerBinding.instance.addPostFrameCallback((_) {
+  SchedulerBinding.instance?.addPostFrameCallback((_) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -23,13 +23,13 @@ showSelectStripePaymentDialog(BuildContext context, {OnPaymentMethodSelected onI
         backgroundColor: theme.background,
         insetPadding: EdgeInsets.only(left: 8.0, right: 8.0),
         child: SelectStripePaymentMethodWidget(
-          onItemSelected: (StripePaymentMethod method)  {
+          onItemSelected: (StripePaymentMethod method) {
             print('showSelectStripePaymentDialog().method=$method');
             if (onItemSelected != null) {
               onItemSelected(method);
             }
             Nav.pop();
-          } ,
+          },
         ),
       ),
     );

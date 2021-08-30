@@ -21,8 +21,8 @@ void main() {
   const int dummy_page_size = 3;
 
   group('Order list pagination test...', () {
-    OrderRepository _repository;
-    StreamController<List<Order>> _controller;
+    late OrderRepository _repository;
+    late StreamController<List<Order>> _controller;
 
     cleanUpOrders() async {
       List<bool> deleteResults = await deleteAllOrders(testUsername, unitId, false);
@@ -42,7 +42,7 @@ void main() {
           ));
 
       constants = getIt<AppConstants>();
-      await print('Pagination size=' + constants.paginationSize.toString());
+      print('Pagination size=' + constants.paginationSize.toString());
 
       ProviderLoginResponse response = await getIt<LoginRepository>().loginWithEmailAndPassword(
         testUserEmail,
@@ -78,25 +78,24 @@ void main() {
       print('Waiting to backend to finish order creation');
       await Future.delayed(Duration(seconds: 5));
 
-      await await _repository.startOrderListSubscription(unitId, _controller);
+      await _repository.startOrderListSubscription(unitId, _controller);
       await _repository.startOrderHistoryListSubscription(unitId, _controller);
     });
 
     test('Test pagination on Order repository', () async {
-      String nextToken;
+      String? nextToken;
       int remainingCount = dummy_order_count % dummy_page_size;
       print('TEST.remainingCount=$remainingCount');
       int i = 0;
       do {
-        List<Order> orders = await _repository.loadOrdersNextPage(
-          unitId: unitId,
+        List<Order>? orders = await _repository.loadOrdersNextPage(
           nextToken: nextToken,
           controller: _controller,
         );
         print('TEST[$i].orders.length=${orders?.length}');
         nextToken = _repository.orderListNextToken;
         print('TEST[$i].nextToken=$nextToken');
-        if (orders.length == dummy_page_size) {
+        if (orders!.length == dummy_page_size) {
           expect(orders.length, dummy_page_size);
         } else if (orders.isNotEmpty) {
           expect(orders, isNotNull);
@@ -116,20 +115,19 @@ void main() {
     }, skip: true);
 
     test('Test pagination on Order History repository', () async {
-      String nextToken;
+      String? nextToken;
       int remainingCount = dummy_order_history_count % dummy_page_size;
       print('HISTORY TEST.remainingCount=$remainingCount');
       int i = 0;
       do {
-        List<Order> histories = await _repository.loadOrderHistoryNextPage(
-          unitId: unitId,
+        List<Order>? histories = await _repository.loadOrderHistoryNextPage(
           nextToken: nextToken,
           controller: _controller,
         );
         print('HISTORY TEST[$i].orders.length=${histories?.length}');
         nextToken = _repository.orderHistoryListNextToken;
         print('HISTORY TEST[$i].nextToken=$nextToken');
-        if (histories.length == dummy_page_size) {
+        if (histories!.length == dummy_page_size) {
           expect(histories.length, dummy_page_size);
         } else if (histories.isNotEmpty) {
           expect(histories, isNotNull);
@@ -145,11 +143,9 @@ void main() {
 
     tearDownAll(() async {
       await cleanUpOrders();
-      await _controller?.close();
+      await _controller.close();
       await _repository.stopOrderListSubscription();
       await _repository.stopOrderHistoryListSubscription();
-      _repository = null;
-
       getIt.unregister<OrderRepository>();
     });
   });

@@ -10,12 +10,12 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<BaseAuthEvent, BaseAuthState> {
   final AuthRepository _authRepository;
 
-  StreamSubscription _authSubscription;
+  late StreamSubscription _authSubscription;
 
   AuthBloc(this._authRepository) : super(InitialAuthState()) {
     _authSubscription = _authRepository.getAuthenticatedUserProfileStream().listen(
       (user) {
-        add(AuthStateChangedEvent(user != null));
+        add(AuthStateChangedEvent(true));
       },
       onError: (error, stackTrace) {
         Catcher.reportCheckedError(error, stackTrace);

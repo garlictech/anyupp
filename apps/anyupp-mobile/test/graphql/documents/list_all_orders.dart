@@ -11,12 +11,12 @@ Future<List<String>> listAllDummyOrders(String userId, String unitId, bool archi
 
     // print('***** listAllDummyOrders.result.data=${result.data}');
     // print('***** listAllDummyOrders.result.exception=${result.exception}');
-    if (result == null || result.data == null) {
+    if (result.data?.searchOrders == null) {
       print('***** listAllDummyOrders.results=0');
       return [];
     }
 
-    var items = result.data.searchOrders.items;
+    var items = result.data!.searchOrders!.items;
     if (items == null || items.isEmpty) {
       print('***** listAllDummyOrders.results=0');
       return [];
@@ -24,11 +24,11 @@ Future<List<String>> listAllDummyOrders(String userId, String unitId, bool archi
 
     List<String> results = [];
     for (int i = 0; i < items.length; i++) {
-      String item = items[i].id;
+      String item = items[i]!.id;
       results.add(item);
     }
 
-    print('***** listAllDummyOrders.results=${results?.length}');
+    print('***** listAllDummyOrders.results=${results.length}');
     return results;
   } on Exception catch (e) {
     print('***** listAllDummyOrders.Exception: $e');

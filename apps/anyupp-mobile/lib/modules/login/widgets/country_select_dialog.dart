@@ -28,7 +28,7 @@ class CountrySelectDialog {
                     onChanged: (value) {
                       setState(() {
                         filteredCountries = countries
-                            .where((country) => country['name'].toLowerCase().contains(value.toLowerCase()))
+                            .where((country) => country['name']!.toLowerCase().contains(value.toLowerCase()))
                             .toList();
                       });
                     },
@@ -42,19 +42,19 @@ class CountrySelectDialog {
                         children: <Widget>[
                           ListTile(
                             leading: Text(
-                              filteredCountries[index]['flag'],
+                              filteredCountries[index]['flag']!,
                               style: TextStyle(fontSize: 30),
                             ),
                             title: Text(
-                              filteredCountries[index]['name'],
+                              filteredCountries[index]['name']!,
                               style: TextStyle(fontWeight: FontWeight.w700),
                             ),
                             trailing: Text(
-                              filteredCountries[index]['dial_code'],
+                              filteredCountries[index]['dial_code']!,
                               style: TextStyle(fontWeight: FontWeight.w700),
                             ),
                             onTap: () {
-                              onCountrySelected(Country.fromMap(filteredCountries[index]));
+                              onCountrySelected(Country.fromJson(filteredCountries[index]));
                               Nav.pop();
                             },
                           ),

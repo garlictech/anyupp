@@ -1,125 +1,95 @@
-import 'package:flutter/foundation.dart';
+import 'package:fa_prev/models.dart';
 
-import 'Location.dart';
-import 'core/model_base.dart';
-import 'core/uuid.dart';
-
-@immutable
-class Address extends Model {
+class Address {
   // static const classType = AddressType();
-  final String id;
+  final String? id;
   final String address;
   final String city;
   final String country;
   final String title;
   final String postalCode;
   final Location location;
+  Address({
+    this.id,
+    required this.address,
+    required this.city,
+    required this.country,
+    required this.title,
+    required this.postalCode,
+    required this.location,
+  });
 
-  String getId() {
-    return id;
+  Address copyWith({
+    String? id,
+    String? address,
+    String? city,
+    String? country,
+    String? title,
+    String? postalCode,
+    Location? location,
+  }) {
+    return Address(
+      id: id ?? this.id,
+      address: address ?? this.address,
+      city: city ?? this.city,
+      country: country ?? this.country,
+      title: title ?? this.title,
+      postalCode: postalCode ?? this.postalCode,
+      location: location ?? this.location,
+    );
   }
 
-  const Address._internal(
-      {@required this.id,
-      this.address,
-      this.city,
-      this.country,
-      this.title,
-      this.postalCode,
-      this.location});
-
-  factory Address(
-      {String id,
-      String address,
-      String city,
-      String country,
-      String title,
-      String postalCode,
-      Location location}) {
-    return Address._internal(
-        id: id == null ? UUID.getUUID() : id,
-        address: address,
-        city: city,
-        country: country,
-        title: title,
-        postalCode: postalCode,
-        location: location);
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'address': address,
+      'city': city,
+      'country': country,
+      'title': title,
+      'postalCode': postalCode,
+      'location': location.toJson(),
+    };
   }
 
-  bool equals(Object other) {
-    return this == other;
+  factory Address.fromJson(Map<String, dynamic> map) {
+    return Address(
+      id: map['id'],
+      address: map['address'],
+      city: map['city'],
+      country: map['country'],
+      title: map['title'],
+      postalCode: map['postalCode'],
+      location: Location.fromJson(map['location']),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Address(id: $id, address: $address, city: $city, country: $country, title: $title, postalCode: $postalCode, location: $location)';
   }
 
   @override
   bool operator ==(Object other) {
-    if (identical(other, this)) return true;
+    if (identical(this, other)) return true;
+
     return other is Address &&
-        id == other.id &&
-        address == other.address &&
-        city == other.city &&
-        country == other.country &&
-        title == other.title &&
-        postalCode == other.postalCode &&
-        location == other.location;
+        other.id == id &&
+        other.address == address &&
+        other.city == city &&
+        other.country == country &&
+        other.title == title &&
+        other.postalCode == postalCode &&
+        other.location == location;
   }
 
   @override
-  int get hashCode => toString().hashCode;
-
-  @override
-  String toString() {
-    var buffer = StringBuffer();
-
-    buffer.write("Address {");
-    buffer.write("id=" + "$id" + ", ");
-    buffer.write("address=" + "$address" + ", ");
-    buffer.write("city=" + "$city" + ", ");
-    buffer.write("country=" + "$country" + ", ");
-    buffer.write("title=" + "$title" + ", ");
-    buffer.write("postalCode=" + "$postalCode" + ", ");
-    buffer
-        .write("location=" + (location != null ? location.toString() : "null"));
-    buffer.write("}");
-
-    return buffer.toString();
+  int get hashCode {
+    return id.hashCode ^
+        address.hashCode ^
+        city.hashCode ^
+        country.hashCode ^
+        title.hashCode ^
+        postalCode.hashCode ^
+        location.hashCode;
   }
-
-  Address copyWith(
-      {String id,
-      String address,
-      String city,
-      String country,
-      String title,
-      String postalCode,
-      Location location}) {
-    return Address(
-        id: id ?? this.id,
-        address: address ?? this.address,
-        city: city ?? this.city,
-        country: country ?? this.country,
-        title: title ?? this.title,
-        postalCode: postalCode ?? this.postalCode,
-        location: location ?? this.location);
-  }
-
-  Address.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        address = json['address'],
-        city = json['city'],
-        country = json['country'],
-        title = json['title'],
-        postalCode = json['postalCode'],
-        location = json['location'] != null
-            ? Location.fromJson(Map<String, dynamic>.from(json['location']))
-            : null;
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'address': address,
-        'city': city,
-        'country': country,
-        'title': title,
-        'postalCode': postalCode,
-        'location': location?.toJson()
-      };
 }

@@ -11,7 +11,10 @@ import 'order_status_screen.dart';
 class OrdersScreen extends StatefulWidget {
   final int tabIndex;
 
-  const OrdersScreen({Key key, this.tabIndex = 0}) : super(key: key);
+  const OrdersScreen({
+    required Key key,
+    this.tabIndex = 0,
+  }) : super(key: key);
 
   @override
   _OrdersScreenState createState() => _OrdersScreenState();

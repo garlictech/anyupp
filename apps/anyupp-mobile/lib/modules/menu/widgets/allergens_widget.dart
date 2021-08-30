@@ -1,5 +1,5 @@
-import 'package:fa_prev/models/GeneratedProduct.dart';
-import 'package:fa_prev/modules/menu/screens/allergen_details_screen.dart';
+import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -15,29 +15,31 @@ class AllergensWidget extends StatelessWidget {
   final double fontSize;
   final double iconBorderRadius;
   final bool showHeader;
-  AllergensWidget(
-      {this.allergens, this.size = 43, this.fontSize = 16.0, this.iconBorderRadius = 12.0, this.showHeader = true});
+  AllergensWidget({
+    required this.allergens,
+    this.size = 43,
+    this.fontSize = 16.0,
+    this.iconBorderRadius = 12.0,
+    this.showHeader = true,
+  });
 
   List<Widget> getAllergenGrids(BuildContext context) {
     List<Widget> allergenGrids = [];
-    if (allergens != null) {
-      for (String allergen in allergens) {
-        allergenGrids.add(Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Container(
-            height: size,
-            width: size,
-            child: allergenGridWidget(
+    for (String allergen in allergens) {
+      allergenGrids.add(Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+          height: size,
+          width: size,
+          child: allergenGridWidget(
               allergen: trans(context, "allergens.$allergen"),
-              index: GeneratedProduct.allergenMap[allergen],
+              index: allergenMap[allergen]!,
               assetPath: "assets/allergens/$allergen.svg",
               borderRadius: iconBorderRadius,
               fontSize: fontSize,
-              themeColor: theme.background
-            ),
-          ),
-        ));
-      }
+              themeColor: theme.background),
+        ),
+      ));
     }
     return allergenGrids;
   }

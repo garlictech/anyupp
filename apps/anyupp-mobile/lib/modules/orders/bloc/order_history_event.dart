@@ -7,7 +7,7 @@ abstract class BaseOrderHistoryAction extends Equatable {
   const BaseOrderHistoryAction();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class StartGetOrderHistoryListSubscription extends BaseOrderHistoryAction {
@@ -15,7 +15,7 @@ class StartGetOrderHistoryListSubscription extends BaseOrderHistoryAction {
   const StartGetOrderHistoryListSubscription(this.unitId);
 
   @override
-  List<Object> get props => [unitId];
+  List<Object?> get props => [unitId];
 }
 
 class StopOrderHistoryListSubscription extends BaseOrderHistoryAction {
@@ -24,21 +24,21 @@ class StopOrderHistoryListSubscription extends BaseOrderHistoryAction {
 
 class LoadMoreOrderHistory extends BaseOrderHistoryAction {
   final String unitId;
-  final String nextToken;
+  final String? nextToken;
 
   LoadMoreOrderHistory(this.unitId, this.nextToken);
   @override
-  List<Object> get props => [unitId, nextToken];
+  List<Object?> get props => [unitId, nextToken];
 }
 
 class OrderHistoryLoaded extends BaseOrderHistoryAction {
-  final List<Order> orders;
+  final List<Order>? orders;
   final int totalCount;
   final bool hasMoreItems;
-  final String nextToken;
+  final String? nextToken;
 
-  OrderHistoryLoaded({this.orders, this.totalCount, this.hasMoreItems, this.nextToken});
+  OrderHistoryLoaded({this.orders, this.totalCount = 0, this.hasMoreItems = false, this.nextToken});
 
   @override
-  List<Object> get props => [orders, totalCount, hasMoreItems, nextToken];
+  List<Object?> get props => [orders, totalCount, hasMoreItems, nextToken];
 }

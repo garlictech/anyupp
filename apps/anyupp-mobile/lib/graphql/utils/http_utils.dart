@@ -14,33 +14,29 @@ Future<void> setTokenPreferences(Response response, SharedPreferences _prefs) as
 }
 
 void debugRequest(RequestOptions options) {
-  print("--> ${options.method != null ? options.method.toUpperCase() : 'METHOD'} ${"" + (options.baseUrl ?? "") + (options.path ?? "")}");
+  print("--> ${options.method.toUpperCase()} ${"" + options.baseUrl + options.path}");
   print("Headers:");
   options.headers.forEach((k, v) => print('$k: $v'));
-  if (options.queryParameters != null) {
-    print("queryParameters:");
-    options.queryParameters.forEach((k, v) => print('$k: $v'));
-  }
+  print("queryParameters:");
+  options.queryParameters.forEach((k, v) => print('$k: $v'));
   if (options.data != null) {
     print("BodyType: ${options.data?.runtimeType}");
     print("Body: ${options.data}");
   }
-  print("--> END ${options.method != null ? options.method.toUpperCase() : 'METHOD'}");
+  print("--> END ${options.method.toUpperCase()}");
 }
 
 void debugResponse(Response response) {
   print("<-- ${response.statusCode} $response");
-    print("Headers:");
-    response.headers?.forEach((k, v) => print('$k: $v'));
-    print("ResponseType: ${response.data?.runtimeType}");
-    print("Response: ${response.data}");
-    print("<-- END HTTP");
+  print("Headers:");
+  response.headers.forEach((k, v) => print('$k: $v'));
+  print("ResponseType: ${response.data?.runtimeType}");
+  print("Response: ${response.data}");
+  print("<-- END HTTP");
 }
 
 void debugError(DioError dioError) {
-  print(
-        "<-- ${dioError.message} ${dioError.error}");
-    print(
-        "${dioError.response != null ? dioError.response.data : 'Unknown Error'}");
-    print("<-- End error");
+  print("<-- ${dioError.message} ${dioError.error}");
+  print("${dioError.response != null ? dioError.response?.data : 'Unknown Error'}");
+  print("<-- End error");
 }

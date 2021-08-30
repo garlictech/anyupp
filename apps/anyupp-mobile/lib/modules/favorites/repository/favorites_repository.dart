@@ -8,7 +8,7 @@ class FavoritesRepository {
 
   FavoritesRepository(this._provider);
 
-  Stream<List<FavoriteProduct>> getFavoritesList(String chainId, String unitId) {
+  Stream<List<FavoriteProduct>?> getFavoritesList(String chainId, String unitId) {
     return _provider.getFavoritesList(chainId, unitId);
   }
 

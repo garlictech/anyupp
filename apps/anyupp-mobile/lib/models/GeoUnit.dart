@@ -1,170 +1,45 @@
 import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/models/OpeningHours.dart';
-import 'package:flutter/foundation.dart';
 
-import 'core/model_base.dart';
-
-@immutable
-class GeoUnit extends Model {
-  final String id;
+class GeoUnit {
+  final String? id;
   final String groupId;
   final String chainId;
   final String name;
   final Address address;
   final ChainStyle style;
-  final List<PaymentMode> paymentModes;
+  final List<PaymentMode?>? paymentModes;
   final int distance;
-  final List<OpeningHours> openingHoursNext7;
   final String currency;
-  final Place place;
-  final int position;
+  final bool isAcceptingOrders;
+  final List<OpeningHours> openingHoursNext7;
+  GeoUnit({
+    this.id,
+    required this.groupId,
+    required this.chainId,
+    required this.name,
+    required this.address,
+    required this.style,
+    this.paymentModes,
+    required this.distance,
+    required this.currency,
+    required this.isAcceptingOrders,
+    required this.openingHoursNext7,
+  });
 
-  @override
-  String getId() {
-    return id;
-  }
-
-  const GeoUnit._internal(
-      {@required this.id,
-      @required this.groupId,
-      @required this.chainId,
-      this.name,
-      this.address,
-      this.style,
-      this.paymentModes,
-      this.distance,
-      this.openingHoursNext7,
-      this.currency,
-      this.place,
-      this.position});
-
-  factory GeoUnit(
-      {String id,
-      @required String groupId,
-      @required String chainId,
-      String name,
-      Address address,
-      ChainStyle style,
-      List<PaymentMode> paymentModes,
-      int distance,
-      List<OpeningHours> openingHoursNext7,
-      String currency,
-      Place place,
-      int position}) {
-    return GeoUnit._internal(
-      id: id == null ? UUID.getUUID() : id,
-      groupId: groupId,
-      chainId: chainId,
-      name: name,
-      address: address,
-      style: style,
-      paymentModes:
-          paymentModes != null ? List.unmodifiable(paymentModes) : paymentModes,
-      distance: distance,
-      openingHoursNext7: openingHoursNext7,
-      currency: currency,
-      place: place,
-      position: position,
-    );
-  }
-
-  bool isClosed() {
-    if (openingHoursNext7 != null && openingHoursNext7.isNotEmpty) {
-      return openingHoursNext7.first.closed;
-    }
-    return true;
-  }
-
-  OpeningHours getOpenedHour() {
-    if (openingHoursNext7 != null && openingHoursNext7.isNotEmpty) {
-      for (OpeningHours openingHours in openingHoursNext7) {
-        if (!openingHours.closed) {
-          return openingHours;
-        }
-      }
-    }
-    return null;
-  }
-
-  String getClosedText(String closed, String opens, String day) {
-    String text = closed;
-    OpeningHours openingHours = getOpenedHour();
-    if (openingHours != null) {
-      text += " - " +
-          opens +
-          " " +
-          day +
-          " " +
-          getOpenedHour().getOpenRangeString(fromTo: false);
-    }
-    return text;
-  }
-
-  bool equals(Object other) {
-    return this == other;
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GeoUnit &&
-        id == other.id &&
-        groupId == other.groupId &&
-        chainId == other.chainId &&
-        name == other.name &&
-        address == other.address &&
-        style == other.style &&
-        DeepCollectionEquality().equals(paymentModes, other.paymentModes) &&
-        distance == other.distance &&
-        DeepCollectionEquality()
-            .equals(openingHoursNext7, other.openingHoursNext7) &&
-        currency == other.currency &&
-        place == other.place &&
-        position == other.position;
-  }
-
-  @override
-  int get hashCode => toString().hashCode;
-
-  @override
-  String toString() {
-    var buffer = StringBuffer();
-
-    buffer.write("GeoUnit {");
-    buffer.write("id=" + "$id" + ", ");
-    buffer.write("groupId=" + "$groupId" + ", ");
-    buffer.write("chainId=" + "$chainId" + ", ");
-    buffer.write("name=" + "$name" + ", ");
-    buffer.write(
-        "address=" + (address != null ? address.toString() : "null") + ", ");
-    buffer.write("style=" + (style != null ? style.toString() : "null") + ", ");
-    buffer.write(
-        "distance=" + (distance != null ? distance.toString() : "null") + ", ");
-    buffer
-        .write("openingHoursNext7=" + "${openingHoursNext7.toString()}" + ", ");
-    buffer.write("currency=" + "$currency" + ", ");
-    buffer.write("place=" + (place != null ? place.toString() : "null"));
-    buffer
-        .write("position=" + (position != null ? position.toString() : "null"));
-    buffer.write("}");
-
-    return buffer.toString();
-  }
-
-  GeoUnit copyWith(
-      {String id,
-      String groupId,
-      String chainId,
-      String name,
-      Address address,
-      ChainStyle style,
-      List<PaymentMode> paymentModes,
-      int distance,
-      OpeningHours openingHoursNext7,
-      String currency,
-      Place place,
-      int position}) {
+  GeoUnit copyWith({
+    String? id,
+    String? groupId,
+    String? chainId,
+    String? name,
+    Address? address,
+    ChainStyle? style,
+    List<PaymentMode?>? paymentModes,
+    int? distance,
+    String? currency,
+    bool? isAcceptingOrders,
+    List<OpeningHours>? openingHoursNext7,
+  }) {
     return GeoUnit(
       id: id ?? this.id,
       groupId: groupId ?? this.groupId,
@@ -174,53 +49,80 @@ class GeoUnit extends Model {
       style: style ?? this.style,
       paymentModes: paymentModes ?? this.paymentModes,
       distance: distance ?? this.distance,
-      openingHoursNext7: openingHoursNext7 ?? this.openingHoursNext7,
       currency: currency ?? this.currency,
-      place: place ?? this.place,
-      position: position ?? this.position,
+      isAcceptingOrders: isAcceptingOrders ?? this.isAcceptingOrders,
+      openingHoursNext7: openingHoursNext7 ?? this.openingHoursNext7,
     );
   }
 
-  GeoUnit.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        groupId = json['groupId'],
-        chainId = json['chainId'],
-        name = json['name'],
-        address = json['address'] != null
-            ? Address.fromJson(Map<String, dynamic>.from(json['address']))
-            : null,
-        style = json['style'] != null
-            ? ChainStyle.fromJson(Map<String, dynamic>.from(json['style']))
-            : null,
-        paymentModes = json['paymentModes'] is List
-            ? (json['paymentModes'] as List)
-                .map((e) => PaymentMode.fromJson(Map<String, dynamic>.from(e)))
-                .toList()
-            : null,
-        distance = json['distance'],
-        openingHoursNext7 = json['openingHoursNext7'] is List
-            ? (json['openingHoursNext7'] as List)
-                .map((e) => OpeningHours.fromMap(Map<String, dynamic>.from(e)))
-                .toList()
-            : null,
-        currency = json['currency'],
-        place = json['place'] != null
-            ? Place.fromJson(Map<String, dynamic>.from(json['place']))
-            : null,
-        position = json['position'] ?? 0;
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'groupId': groupId,
+      'chainId': chainId,
+      'name': name,
+      'address': address.toJson(),
+      'style': style.toJson(),
+      'paymentModes': paymentModes?.map((x) => x?.toJson()).toList(),
+      'distance': distance,
+      'currency': currency,
+      'isAcceptingOrders': isAcceptingOrders,
+      'openingHoursNext7': openingHoursNext7.map((x) => x.toJson()).toList(),
+    };
+  }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'groupId': groupId,
-        'chainId': chainId,
-        'name': name,
-        'address': address?.toJson(),
-        'style': style?.toJson(),
-        'paymentModes': paymentModes?.map((e) => e?.toJson())?.toList(),
-        'distance': distance,
-        'openingHoursNext7': openingHoursNext7,
-        'currency': currency,
-        'place': place?.toJson(),
-        'position': position
-      };
+  factory GeoUnit.fromJson(Map<String, dynamic> map) {
+    return GeoUnit(
+      id: map['id'],
+      groupId: map['groupId'],
+      chainId: map['chainId'],
+      name: map['name'],
+      address: Address.fromJson(map['address']),
+      style: ChainStyle.fromJson(map['style']),
+      paymentModes: List<PaymentMode?>.from(map['paymentModes']?.map((x) => PaymentMode?.fromJson(x))),
+      distance: map['distance'],
+      currency: map['currency'],
+      isAcceptingOrders: map['isAcceptingOrders'],
+      openingHoursNext7: List<OpeningHours>.from(map['openingHoursNext7']?.map((x) => OpeningHours.fromJson(x))),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    final listEquals = const DeepCollectionEquality().equals;
+
+    return other is GeoUnit &&
+        other.id == id &&
+        other.groupId == groupId &&
+        other.chainId == chainId &&
+        other.name == name &&
+        other.address == address &&
+        other.style == style &&
+        listEquals(other.paymentModes, paymentModes) &&
+        other.distance == distance &&
+        other.currency == currency &&
+        other.isAcceptingOrders == isAcceptingOrders &&
+        listEquals(other.openingHoursNext7, openingHoursNext7);
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        groupId.hashCode ^
+        chainId.hashCode ^
+        name.hashCode ^
+        address.hashCode ^
+        style.hashCode ^
+        paymentModes.hashCode ^
+        distance.hashCode ^
+        currency.hashCode ^
+        isAcceptingOrders.hashCode ^
+        openingHoursNext7.hashCode;
+  }
 }

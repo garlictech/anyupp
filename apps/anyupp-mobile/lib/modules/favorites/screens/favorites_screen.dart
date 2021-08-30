@@ -31,14 +31,14 @@ class FavoritesScreen extends StatelessWidget {
 
   Widget _buildFavorites(BuildContext context, GeoUnit unit) {
     FavoritesRepository _repository = getIt<FavoritesRepository>();
-    return StreamBuilder<List<FavoriteProduct>>(
-        stream: _repository.getFavoritesList(unit.chainId, unit.id),
-        builder: (context, AsyncSnapshot<List<FavoriteProduct>> snapshot) {
+    return StreamBuilder<List<FavoriteProduct>?>(
+        stream: _repository.getFavoritesList(unit.chainId, unit.id!),
+        builder: (context, AsyncSnapshot<List<FavoriteProduct>?> snapshot) {
           // print('**** FavoritesScreen.snapshot=$snapshot');
           // print('**** FavoritesScreen.snapshot=${snapshot.hasData}');
           if (snapshot.hasData || snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data != null && snapshot.data.isNotEmpty) {
-              return _buildList(unit, snapshot.data);
+            if (snapshot.data != null && snapshot.data!.isNotEmpty) {
+              return _buildList(unit, snapshot.data!);
             }
             return _buildEmptyList(context);
           } else if (snapshot.hasError) {

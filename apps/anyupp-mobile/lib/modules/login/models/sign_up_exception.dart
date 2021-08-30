@@ -36,13 +36,8 @@ class SignUpException extends AppException {
     );
   }
 
-  factory SignUpException.fromException(
-      String code, String message, Exception e) {
-    return SignUpException(
-        code: SignUpException.CODE,
-        subCode: code,
-        message: message,
-        details: e.runtimeType);
+  factory SignUpException.fromException(String code, String message, Exception e) {
+    return SignUpException(code: SignUpException.CODE, subCode: code, message: message, details: e.runtimeType);
   }
 
   @override

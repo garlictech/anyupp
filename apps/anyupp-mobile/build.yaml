@@ -3,8 +3,14 @@ targets:
     sources:
       - graphql/**
       - lib/$lib$
+      - lib/models/**
       - $package$
     builders:
+      # json_serializable:
+      #   options:
+      #     include_if_null: false
+      #     # explicit_to_json: true
+      #     # checked: false
       artemis:
         options:
           schema_mapping:

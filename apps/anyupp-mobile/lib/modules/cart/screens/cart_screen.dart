@@ -29,9 +29,9 @@ class CartScreen extends StatelessWidget {
         elevation: 0.0,
         // Only dev and qa builds are show the table and seat in the top right corner
         title: (true)
-            ? FutureBuilder<Place>(
+            ? FutureBuilder<Place?>(
                 future: getPlacePref(),
-                builder: (BuildContext context, AsyncSnapshot<Place> placeSnapshot) {
+                builder: (BuildContext context, AsyncSnapshot<Place?> placeSnapshot) {
                   // print('placeSnapshot=$placeSnapshot');
 
                   if (placeSnapshot.hasData) {
@@ -56,7 +56,7 @@ class CartScreen extends StatelessWidget {
                               color: theme.indicator,
                             ),
                             Text(
-                              ' ${placeSnapshot.data.table}',
+                              ' ${placeSnapshot.data?.table}',
                               style: GoogleFonts.poppins(
                                 color: theme.text,
                                 fontSize: 14.0,
@@ -70,7 +70,7 @@ class CartScreen extends StatelessWidget {
                               color: theme.indicator,
                             ),
                             Text(
-                              '${placeSnapshot.data.seat}',
+                              '${placeSnapshot.data?.seat}',
                               style: GoogleFonts.poppins(
                                 color: theme.text,
                                 fontSize: 14.0,
@@ -93,6 +93,7 @@ class CartScreen extends StatelessWidget {
                   );
                 },
               )
+            // ignore: dead_code
             : Text(
                 trans(context, 'main.menu.cart'),
                 style: GoogleFonts.poppins(
@@ -105,13 +106,13 @@ class CartScreen extends StatelessWidget {
       body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, state) {
           if (state is UnitSelected) {
-            return StreamBuilder<Cart>(
-              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
-              builder: (context, AsyncSnapshot<Cart> snapshot) {
+            return StreamBuilder<Cart?>(
+              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id!),
+              builder: (context, AsyncSnapshot<Cart?> snapshot) {
                 // print('CartScreen.snapshot=$snapshot');
                 if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                  if (snapshot.data != null && snapshot.data.items.isNotEmpty) {
-                    return _buildCartListAndTotal(context, state.unit, snapshot.data);
+                  if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
+                    return _buildCartListAndTotal(context, state.unit, snapshot.data!);
                   }
                   return _emptyCart(context);
                 }
@@ -128,25 +129,26 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = false;
-    if (cart.place == null || (cart.place.seat == "00" && cart.place.table == "00") && AppConfig.Stage != "dev") {
+    if (cart.place == null || (cart.place?.seat == "00" && cart.place?.table == "00") && AppConfig.Stage != "dev") {
       showQrCodeScan = true;
     }
 
     Map<int, String> cartAllergens = {};
     for (OrderItem item in cart.items) {
       if (item.allergens != null) {
-        for (String allergen in item.allergens) {
-          cartAllergens[GeneratedProduct.allergenMap[allergen]] = allergen;
+        for (String allergen in item.allergens!) {
+          cartAllergens[allergenMap[allergen]!] = allergen;
         }
       }
       if (item.selectedConfigMap != null) {
-        item.selectedConfigMap.forEach((key, value) {
-          for (GeneratedProductConfigComponent component in value) {
-            for (Allergen allergen in component.allergens) {
-              String temp = allergen.toString().split(".").last;
-              cartAllergens[GeneratedProduct.allergenMap[temp]] = temp;
+        item.selectedConfigMap!.forEach((key, value) {
+          for (OrderItemConfigComponent component in value) {
+            if (component.allergens != null) {
+              for (Allergen allergen in component.allergens!) {
+                String temp = allergen.toString().split(".").last;
+                cartAllergens[allergenMap[temp]!] = temp;
+              }
             }
-            ;
           }
         });
       }
@@ -165,7 +167,7 @@ class CartScreen extends StatelessWidget {
                 ),
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
-                itemCount: cart.items?.length ?? 0,
+                itemCount: cart.items.length,
                 itemBuilder: (context, position) {
                   final OrderItem order = cart.items[position];
                   return AnimationConfiguration.staggeredList(
@@ -211,7 +213,7 @@ class CartScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: Text(
-                          formatCurrency(cart.totalPrice, unit.currency ?? 'ft'),
+                          formatCurrency(cart.totalPrice, unit.currency),
                           style: GoogleFonts.poppins(
                             color: theme.text,
                             fontSize: 16,
@@ -237,13 +239,11 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: theme.indicator,
                     primary: theme.text2,
                   ),
-                  onPressed: () => 
-                  showQrCodeScan
+                  onPressed: () => showQrCodeScan
                       ? Nav.to(QRCodeScannerScreen(
                           navigateToCart: true,
                         ))
-                      : 
-                      showSelectPaymentMethodBottomSheet(context),
+                      : showSelectPaymentMethodBottomSheet(context),
                   child: showQrCodeScan
                       ? SvgPicture.asset(
                           'assets/icons/qr_code_scanner.svg',

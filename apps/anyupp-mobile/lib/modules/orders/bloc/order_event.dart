@@ -7,7 +7,7 @@ abstract class BaseOrderAction extends Equatable {
   const BaseOrderAction();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class StartGetOrderListSubscription extends BaseOrderAction {
@@ -16,7 +16,7 @@ class StartGetOrderListSubscription extends BaseOrderAction {
   const StartGetOrderListSubscription(this.chainId, this.unitId);
 
   @override
-  List<Object> get props => [chainId, unitId];
+  List<Object?> get props => [chainId, unitId];
 }
 
 class StopOrderListSubscription extends BaseOrderAction {
@@ -25,21 +25,21 @@ class StopOrderListSubscription extends BaseOrderAction {
 
 class LoadOrderDetail extends BaseOrderAction {
   final String orderId;
-  LoadOrderDetail({this.orderId});
+  LoadOrderDetail({required this.orderId});
   @override
-  List<Object> get props => [orderId];
+  List<Object?> get props => [orderId];
 }
 
 class OrdersLoaded extends BaseOrderAction {
-  final List<Order> orders;
+  final List<Order>? orders;
   final int totalCount;
   final bool hasMoreItems;
-  final String nextToken;
+  final String? nextToken;
 
-  OrdersLoaded({this.orders, this.totalCount, this.hasMoreItems, this.nextToken});
+  OrdersLoaded({this.orders, this.totalCount = 0, this.hasMoreItems = false, this.nextToken});
 
   @override
-  List<Object> get props => [orders, totalCount, hasMoreItems, nextToken];
+  List<Object?> get props => [orders, totalCount, hasMoreItems, nextToken];
 }
 
 class LoadMoreOrders extends BaseOrderAction {
@@ -48,5 +48,5 @@ class LoadMoreOrders extends BaseOrderAction {
 
   LoadMoreOrders(this.unitId, this.nextToken);
   @override
-  List<Object> get props => [unitId, nextToken];
+  List<Object?> get props => [unitId, nextToken];
 }

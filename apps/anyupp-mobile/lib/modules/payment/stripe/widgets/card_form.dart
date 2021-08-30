@@ -1,4 +1,3 @@
-// @dart= 2.12
 import 'package:awesome_card/credit_card.dart';
 import 'package:awesome_card/style/card_background.dart';
 import 'package:flutter/foundation.dart';

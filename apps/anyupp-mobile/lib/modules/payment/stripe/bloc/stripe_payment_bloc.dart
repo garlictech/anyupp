@@ -17,7 +17,7 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
 
   @override
   Stream<StripePaymentState> mapEventToState(StripePaymentEvent event) async* {
-    print('StripePaymentBloc.event=$event');
+    // print('StripePaymentBloc.event=$event');
     try {
       // --- Handle payment method list
       if (event is PaymentMethodListEvent) {
@@ -32,13 +32,13 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
         yield StripePaymentLoading();
         if (event.orderId != null) {
           await _paymentRepository.startOrderExternalPayment(
-            event.orderId,
+            event.orderId!,
             event.paymentMode,
             event.invoiceAddress,
           );
         } else {
           await _paymentRepository.startExternalPayment(
-            _cartRepository.cart,
+            _cartRepository.cart!,
             event.paymentMode,
             event.invoiceAddress,
           );
@@ -52,13 +52,13 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
         yield StripePaymentLoading();
         if (event.orderId != null) {
           await _paymentRepository.startOrderStripePaymentWithExistingCard(
-            event.orderId,
+            event.orderId!,
             event.paymentMethodId,
             event.invoiceAddress,
           );
         } else {
           await _paymentRepository.startStripePaymentWithExistingCard(
-            _cartRepository.cart,
+            _cartRepository.cart!,
             event.paymentMethodId,
             event.invoiceAddress,
           );
@@ -71,14 +71,14 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
         yield StripePaymentLoading();
         if (event.orderId != null) {
           await _paymentRepository.startOrderStripePaymentWithNewCard(
-            event.orderId,
+            event.orderId!,
             event.stripeCard,
             event.invoiceAddress,
             event.saveCard,
           );
         } else {
           await _paymentRepository.startStripePaymentWithNewCard(
-            _cartRepository.cart,
+            _cartRepository.cart!,
             event.stripeCard,
             event.invoiceAddress,
             event.saveCard,
@@ -120,15 +120,15 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
     } on GraphQLException catch (e) {
       print('********* StripePaymentBloc.ExceptionBloc.GraphQLException=$e');
       getIt<ExceptionBloc>().add(ShowException(e));
-      yield StripeError(e.code, e.message);
+      yield StripeError(e.code, e.message!);
     } on PlatformException catch (pe) {
       print('********* StripePaymentBloc.ExceptionBloc.PlatformException=$pe');
       getIt<ExceptionBloc>().add(ShowException(StripeException.fromPlatformException(pe)));
-      yield StripeError(pe.code, pe.message);
+      yield StripeError(pe.code, pe.message!);
     } on StripeException catch (le) {
       print('********* StripePaymentBloc.ExceptionBloc.StripeException=$le');
       getIt<ExceptionBloc>().add(ShowException(le));
-      yield StripeError(le.code, le.message);
+      yield StripeError(le.code, le.message!);
     } on Exception catch (e) {
       print('********* StripePaymentBloc.ExceptionBloc.Exception=$e');
       getIt<ExceptionBloc>().add(ShowException(StripeException.fromException(StripeException.UNKNOWN_ERROR, e)));

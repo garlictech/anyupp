@@ -1,235 +1,168 @@
-import 'package:collection/collection.dart';
-import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
+import 'package:fa_prev/models.dart';
 
-import 'core/model_base.dart';
-
-@immutable
-class Order extends Model {
+class Order {
   final String id;
   final String orderNum;
   final String userId;
   final String unitId;
   final List<OrderItem> items;
   final PaymentMode paymentMode;
-  final String staffId;
   final PriceShown sumPriceShown;
   final bool takeAway;
-  final Place place;
-  final int paymentIntention;
+  final Place? place;
+  final double? paymentIntention;
   final List<StatusLog> statusLog;
-  final String created;
-  final OrderStatus status;
+  final String? createdAt;
   final bool archived;
-  final TransactionItem transactionItem;
+  final Transaction? transaction;
+  final PaymentStatus? transactionStatus;
+  final String? transactionId;
+  Order({
+    required this.id,
+    required this.orderNum,
+    required this.userId,
+    required this.unitId,
+    required this.items,
+    required this.paymentMode,
+    required this.sumPriceShown,
+    required this.takeAway,
+    this.place,
+    this.paymentIntention,
+    required this.statusLog,
+    this.createdAt,
+    required this.archived,
+    this.transaction,
+    this.transactionStatus,
+    this.transactionId,
+  });
+  // final UnpayCategory? unpayCategory;
+
+  Order copyWith({
+    String? id,
+    String? orderNum,
+    String? userId,
+    String? unitId,
+    List<OrderItem>? items,
+    PaymentMode? paymentMode,
+    PriceShown? sumPriceShown,
+    bool? takeAway,
+    Place? place,
+    double? paymentIntention,
+    List<StatusLog>? statusLog,
+    String? created,
+    bool? archived,
+    Transaction? transaction,
+    PaymentStatus? transactionStatus,
+    String? transactionId,
+  }) {
+    return Order(
+      id: id ?? this.id,
+      orderNum: orderNum ?? this.orderNum,
+      userId: userId ?? this.userId,
+      unitId: unitId ?? this.unitId,
+      items: items ?? this.items,
+      paymentMode: paymentMode ?? this.paymentMode,
+      sumPriceShown: sumPriceShown ?? this.sumPriceShown,
+      takeAway: takeAway ?? this.takeAway,
+      place: place ?? this.place,
+      paymentIntention: paymentIntention ?? this.paymentIntention,
+      statusLog: statusLog ?? this.statusLog,
+      createdAt: created ?? this.createdAt,
+      archived: archived ?? this.archived,
+      transaction: transaction ?? this.transaction,
+      transactionStatus: transactionStatus ?? this.transactionStatus,
+      transactionId: transactionId ?? this.transactionId,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'orderNum': orderNum,
+      'userId': userId,
+      'unitId': unitId,
+      'items': items.map((x) => x.toJson()).toList(),
+      'paymentMode': paymentMode.toJson(),
+      'sumPriceShown': sumPriceShown.toJson(),
+      'takeAway': takeAway,
+      'place': place?.toJson(),
+      'paymentIntention': paymentIntention,
+      'statusLog': statusLog.map((x) => x.toJson()).toList(),
+      'created': createdAt,
+      'archived': archived,
+      'transaction': transaction?.toJson(),
+      'transactionStatus': transactionStatus,
+      'transactionId': transactionId,
+    };
+  }
+
+  factory Order.fromJson(Map<String, dynamic> map) {
+    return Order(
+      id: map['id'],
+      orderNum: map['orderNum'],
+      userId: map['userId'],
+      unitId: map['unitId'],
+      items: List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
+      paymentMode: PaymentMode.fromJson(map['paymentMode']),
+      sumPriceShown: PriceShown.fromJson(map['sumPriceShown']),
+      takeAway: map['takeAway'],
+      place: map['place'] != null ? Place.fromJson(map['place']) : null,
+      paymentIntention: map['paymentIntention'],
+      statusLog: List<StatusLog>.from(map['statusLog']?.map((x) => StatusLog.fromJson(x))),
+      createdAt: map['created'],
+      archived: map['archived'],
+      transaction: map['transaction'] != null ? Transaction.fromJson(map['transaction']) : null,
+      transactionStatus: enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values),
+      transactionId: map['transactionId'],
+    );
+  }
 
   @override
-  String getId() {
-    return id;
-  }
-
-  const Order._internal(
-      {@required this.id,
-      @required this.orderNum,
-      @required this.userId,
-      @required this.unitId,
-      this.items,
-      this.paymentMode,
-      this.staffId,
-      this.sumPriceShown,
-      this.takeAway,
-      this.place,
-      this.paymentIntention,
-      this.statusLog,
-      this.created,
-      this.status,
-      this.archived,
-      this.transactionItem});
-
-  factory Order(
-      {String id,
-      @required String orderNum,
-      @required String userId,
-      @required String unitId,
-      List<OrderItem> items,
-      PaymentMode paymentMode,
-      String staffId,
-      PriceShown sumPriceShown,
-      bool takeAway,
-      Place place,
-      int paymentIntention,
-      List<StatusLog> statusLog,
-      String created,
-      OrderStatus status,
-      bool archived,
-      TransactionItem transactionItem}) {
-    return Order._internal(
-        id: id == null ? UUID.getUUID() : id,
-        orderNum: orderNum,
-        userId: userId,
-        unitId: unitId,
-        items: items != null ? List.unmodifiable(items) : items,
-        paymentMode: paymentMode,
-        staffId: staffId,
-        sumPriceShown: sumPriceShown,
-        takeAway: takeAway,
-        place: place,
-        paymentIntention: paymentIntention,
-        statusLog: statusLog != null ? List.unmodifiable(statusLog) : statusLog,
-        created: created,
-        status: status,
-        archived: archived,
-        transactionItem: transactionItem);
-  }
-
-  bool equals(Object other) {
-    return this == other;
+  String toString() {
+    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, takeAway: $takeAway, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, created: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
   }
 
   @override
   bool operator ==(Object other) {
-    if (identical(other, this)) return true;
+    if (identical(this, other)) return true;
+
     return other is Order &&
-        id == other.id &&
-        orderNum == other.orderNum &&
-        userId == other.userId &&
-        unitId == other.unitId &&
-        DeepCollectionEquality().equals(items, other.items) &&
-        paymentMode == other.paymentMode &&
-        staffId == other.staffId &&
-        sumPriceShown == other.sumPriceShown &&
-        takeAway == other.takeAway &&
-        place == other.place &&
-        paymentIntention == other.paymentIntention &&
-        DeepCollectionEquality().equals(statusLog, other.statusLog) &&
-        created == other.created &&
-        status == other.status &&
-        archived == other.archived &&
-        transactionItem == other.transactionItem;
+        other.id == id &&
+        other.orderNum == orderNum &&
+        other.userId == userId &&
+        other.unitId == unitId &&
+        listEquals(other.items, items) &&
+        other.paymentMode == paymentMode &&
+        other.sumPriceShown == sumPriceShown &&
+        other.takeAway == takeAway &&
+        other.place == place &&
+        other.paymentIntention == paymentIntention &&
+        listEquals(other.statusLog, statusLog) &&
+        other.createdAt == createdAt &&
+        other.archived == archived &&
+        other.transaction == transaction &&
+        other.transactionStatus == transactionStatus &&
+        other.transactionId == transactionId;
   }
 
   @override
-  int get hashCode => toString().hashCode;
-
-  @override
-  String toString() {
-    var buffer = StringBuffer();
-
-    buffer.write("Order {");
-    buffer.write("id=" + "$id" + ", ");
-    buffer.write("orderNum=" + "$orderNum" + ", ");
-    buffer.write("userId=" + "$userId" + ", ");
-    buffer.write("unitId=" + "$unitId" + ", ");
-    buffer.write("paymentMode=" + (paymentMode != null ? paymentMode.toString() : "null") + ", ");
-    buffer.write("staffId=" + "$staffId" + ", ");
-    buffer.write("sumPriceShown=" + (sumPriceShown != null ? sumPriceShown.toString() : "null") + ", ");
-    buffer.write("takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
-    buffer.write("place=" + (place != null ? place.toString() : "null") + ", ");
-    buffer.write("paymentIntention=" + (paymentIntention != null ? paymentIntention.toString() : "null") + ", ");
-    buffer.write("created=" + (created != null ? created.toString() : "null") + ", ");
-    buffer.write("status=" + (status != null ? enumToString(status) : "null"));
-    buffer.write("archived=" + (archived != null ? archived.toString() : "null"));
-    buffer.write("transactionItem=" + (transactionItem != null ? transactionItem.toString() : "null"));
-    buffer.write("}");
-
-    return buffer.toString();
-  }
-
-  Order copyWith(
-      {String id,
-      String orderItem,
-      String userId,
-      String unitId,
-      List<OrderItem> items,
-      PaymentMode paymentMode,
-      String staffId,
-      PriceShown sumPriceShown,
-      bool takeAway,
-      Place place,
-      int paymentIntention,
-      List<StatusLog> statusLog,
-      String created,
-      OrderStatus status,
-      bool archived,
-      TransactionItem transactionItem}) {
-    return Order(
-        id: id ?? this.id,
-        orderNum: orderNum ?? this.orderNum,
-        userId: userId ?? this.userId,
-        unitId: unitId ?? this.unitId,
-        items: items ?? this.items,
-        paymentMode: paymentMode ?? this.paymentMode,
-        staffId: staffId ?? this.staffId,
-        sumPriceShown: sumPriceShown ?? this.sumPriceShown,
-        takeAway: takeAway ?? this.takeAway,
-        place: place ?? this.place,
-        paymentIntention: paymentIntention ?? this.paymentIntention,
-        statusLog: statusLog ?? this.statusLog,
-        created: created ?? this.created,
-        status: status ?? this.status,
-        archived: archived ?? this.archived,
-        transactionItem: transactionItem ?? this.transactionItem);
-  }
-
-  Order.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        orderNum = json['orderNum'],
-        userId = json['userId'],
-        unitId = json['unitId'],
-        items = json['items'] is List
-            ? (json['items'] as List).map((e) => OrderItem.fromJson(Map<String, dynamic>.from(e))).toList()
-            : null,
-        paymentMode =
-            json['paymentMode'] != null ? PaymentMode.fromJson(Map<String, dynamic>.from(json['paymentMode'])) : null,
-        staffId = json['staffId'],
-        sumPriceShown = json['sumPriceShown'] != null
-            ? PriceShown.fromJson(Map<String, dynamic>.from(json['sumPriceShown']))
-            : null,
-        takeAway = json['takeAway'],
-        place = json['place'] != null ? Place.fromJson(Map<String, dynamic>.from(json['place'])) : null,
-        paymentIntention = json['paymentIntention'],
-        statusLog = json['statusLog'] is List
-            ? (json['statusLog'] as List).map((e) => StatusLog.fromJson(Map<String, dynamic>.from(e))).toList()
-            : null,
-        created = json['createdAt'],
-        status = enumFromString<OrderStatus>(json['status'], OrderStatus.values),
-        archived = json['archived'],
-        transactionItem = json['transaction'] != null
-            ? TransactionItem.fromMap(Map<String, dynamic>.from(json['transaction']))
-            : null;
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'orderNum': orderNum,
-        'userId': userId,
-        'unitId': unitId,
-        'items': items?.map((e) => e?.toJson())?.toList(),
-        'paymentMode': paymentMode?.toJson(),
-        'staffId': staffId,
-        'sumPriceShown': sumPriceShown?.toJson(),
-        'takeAway': takeAway,
-        'place': place?.toJson(),
-        'paymentIntention': paymentIntention,
-        'statusLog': statusLog?.map((e) => e?.toJson())?.toList(),
-        'createdAt': created,
-        'status': enumToString(status),
-        'archived': archived,
-        'transaction': transactionItem?.toMap()
-      };
-
-  String getFormattedDate() {
-    final DateFormat parser = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
-    if (this.created != null) {
-      try {
-        DateTime dateTime = parser.parseUTC(created).toLocal();
-        return formatter.format(dateTime);
-      } on Exception {
-        return "";
-      }
-    } else {
-      return "";
-    }
+  int get hashCode {
+    return id.hashCode ^
+        orderNum.hashCode ^
+        userId.hashCode ^
+        unitId.hashCode ^
+        items.hashCode ^
+        paymentMode.hashCode ^
+        sumPriceShown.hashCode ^
+        takeAway.hashCode ^
+        place.hashCode ^
+        paymentIntention.hashCode ^
+        statusLog.hashCode ^
+        createdAt.hashCode ^
+        archived.hashCode ^
+        transaction.hashCode ^
+        transactionStatus.hashCode ^
+        transactionId.hashCode;
   }
 }

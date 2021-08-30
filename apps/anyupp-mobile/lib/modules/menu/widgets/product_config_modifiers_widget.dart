@@ -16,11 +16,10 @@ class ProductConfigModifiersWidget extends StatefulWidget {
   final OnModifiersSelected onModifiersSelected;
 
   const ProductConfigModifiersWidget({
-    Key key,
-    this.product,
-    this.unit,
-    this.onModifiersSelected,
-  }) : super(key: key);
+    required this.product,
+    required this.unit,
+    required this.onModifiersSelected,
+  });
 
   @override
   _ProductConfigModifiersWidgetState createState() => _ProductConfigModifiersWidgetState();
@@ -38,7 +37,7 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
   }
 
   void _initDefaultSelections() {
-    widget.product.configSets.forEach((modifier) {
+    widget.product.configSets?.forEach((modifier) {
       if (modifier.type == ConfigType.MODIFIER) {
         _selectedModifier[modifier.productSetId] = modifier.items.first.productComponentId;
         _expandableModifierController[modifier.productSetId] = ExpandableController(initialExpanded: false);
@@ -59,9 +58,9 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
     );
   }
 
-  List<Widget> _buildModifiers(BuildContext context, List<GeneratedProductConfigSet> sets) {
+  List<Widget> _buildModifiers(BuildContext context, List<GeneratedProductConfigSet>? sets) {
     List<Widget> widgets = [];
-    sets.forEach((modifier) {
+    sets?.forEach((modifier) {
       if (modifier.type == ConfigType.MODIFIER) {
         widgets.add(Container(
           padding: EdgeInsets.only(bottom: 16),
@@ -81,7 +80,7 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
                 Text(
                   getLocalizedText(
                     context,
-                    getComponentByIdFromSet(_selectedModifier[modifier.productSetId], modifier).name,
+                    getComponentByIdFromSet(_selectedModifier[modifier.productSetId]!, modifier)!.name,
                   ),
                   softWrap: true,
                   maxLines: 2,
@@ -125,7 +124,7 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
       BuildContext context, GeneratedProductConfigComponent item, String productSetId, String value) {
     Set<String> allergenNames = {};
     if (item.allergens != null) {
-      for (Allergen allergen in item?.allergens) {
+      for (Allergen allergen in item.allergens!) {
         allergenNames.add(allergen.toString().split('.').last);
       }
     }
@@ -141,7 +140,7 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
             _selectedModifier[productSetId] = value;
           });
           widget.onModifiersSelected(_selectedModifier);
-          _expandableModifierController[productSetId].toggle();
+          _expandableModifierController[productSetId]?.toggle();
         },
         child: Row(
           //crossAxisAlignment: CrossAxisAlignment.center,
@@ -154,19 +153,21 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
                 value: value,
                 activeColor: theme.indicator,
                 // focusColor: theme.indicator,
-                onChanged: (String value) {
-                  setState(() {
-                    _selectedModifier[productSetId] = value;
-                  });
-                  widget.onModifiersSelected(_selectedModifier);
-                  _expandableModifierController[productSetId].toggle();
+                onChanged: (String? value) {
+                  if (value != null) {
+                    setState(() {
+                      _selectedModifier[productSetId] = value;
+                    });
+                    widget.onModifiersSelected(_selectedModifier);
+                    _expandableModifierController[productSetId]?.toggle();
+                  }
                 },
               ),
             ),
             Expanded(
               flex: 10,
               child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(

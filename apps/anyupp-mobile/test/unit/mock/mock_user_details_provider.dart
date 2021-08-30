@@ -12,7 +12,7 @@ class MockUserDetailsProvider implements IUserDetailsProvider {
 
   @override
   Future<User> getUserDetails() async {
-    User user = await _authProvider.getAuthenticatedUserProfile();
-    return MOCK_USER(user.id);
+    User? user = await _authProvider.getAuthenticatedUserProfile();
+    return MOCK_USER(user!.id);
   }
 }

@@ -1,12 +1,8 @@
-import 'package:collection/collection.dart';
-import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fa_prev/models.dart';
 
-import 'core/model_base.dart';
-
-@immutable
-class OrderItem extends Model {
-  final String id;
+class OrderItem {
+  final String? id;
   final String productId;
   final String variantId;
   final LocalizedItem productName;
@@ -15,214 +11,129 @@ class OrderItem extends Model {
   final int quantity;
   final List<StatusLog> statusLog;
   final LocalizedItem variantName;
-  final bool takeAway;
-  final String orderItemsId;
-  final String image;
-  final List<String> allergens;
-  final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> selectedConfigMap;
+  final String? image;
+  final List<String>? allergens;
+  final List<OrderItemConfigSet>? configSets;
+  Map<OrderItemConfigSet, List<OrderItemConfigComponent>>? selectedConfigMap;
+
+  OrderItem({
+    this.id,
+    required this.productId,
+    required this.variantId,
+    required this.productName,
+    required this.priceShown,
+    required this.sumPriceShown,
+    required this.quantity,
+    required this.statusLog,
+    required this.variantName,
+    this.image,
+    this.allergens,
+    this.configSets,
+  });
+
+  OrderItem copyWith({
+    String? id,
+    String? productId,
+    String? variantId,
+    LocalizedItem? productName,
+    PriceShown? priceShown,
+    PriceShown? sumPriceShown,
+    int? quantity,
+    List<StatusLog>? statusLog,
+    LocalizedItem? variantName,
+    String? image,
+    List<String>? allergens,
+    List<OrderItemConfigSet>? configSets,
+  }) {
+    return OrderItem(
+      id: id ?? this.id,
+      productId: productId ?? this.productId,
+      variantId: variantId ?? this.variantId,
+      productName: productName ?? this.productName,
+      priceShown: priceShown ?? this.priceShown,
+      sumPriceShown: sumPriceShown ?? this.sumPriceShown,
+      quantity: quantity ?? this.quantity,
+      statusLog: statusLog ?? this.statusLog,
+      variantName: variantName ?? this.variantName,
+      image: image ?? this.image,
+      allergens: allergens ?? this.allergens,
+      configSets: configSets ?? this.configSets,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'productId': productId,
+      'variantId': variantId,
+      'productName': productName.toJson(),
+      'priceShown': priceShown.toJson(),
+      'sumPriceShown': sumPriceShown.toJson(),
+      'quantity': quantity,
+      'statusLog': statusLog.map((x) => x.toJson()).toList(),
+      'variantName': variantName.toJson(),
+      'image': image,
+      'allergens': allergens,
+      'configSets': configSets?.map((x) => x.toJson()).toList(),
+    };
+  }
+
+  factory OrderItem.fromJson(Map<String, dynamic> map) {
+    return OrderItem(
+      id: map['id'],
+      productId: map['productId'],
+      variantId: map['variantId'],
+      productName: LocalizedItem.fromJson(map['productName']),
+      priceShown: PriceShown.fromJson(map['priceShown']),
+      sumPriceShown: PriceShown.fromJson(map['sumPriceShown']),
+      quantity: map['quantity'],
+      statusLog: List<StatusLog>.from(map['statusLog']?.map((x) => StatusLog.fromJson(x))),
+      variantName: LocalizedItem.fromJson(map['variantName']),
+      image: map['image'],
+      allergens: map['allergens'] != null ? List<String>.from(map['allergens']) : null,
+      configSets: map['configSets'] != null
+          ? List<OrderItemConfigSet>.from(map['configSets']?.map((x) => OrderItemConfigSet.fromJson(x)))
+          : null,
+    );
+  }
 
   @override
-  String getId() {
-    return id;
-  }
-
-  OrderItem._internal(
-      {@required this.id,
-      @required this.productId,
-      @required this.variantId,
-      this.productName,
-      this.priceShown,
-      this.sumPriceShown,
-      @required this.quantity,
-      this.statusLog,
-      this.variantName,
-      this.takeAway,
-      this.orderItemsId,
-      this.image,
-      this.allergens,
-      this.selectedConfigMap});
-
-  factory OrderItem(
-      {String id,
-      @required String productId,
-      @required String variantId,
-      LocalizedItem productName,
-      PriceShown priceShown,
-      PriceShown sumPriceShown,
-      @required int quantity,
-      List<StatusLog> statusLog,
-      LocalizedItem variantName,
-      bool takeAway,
-      String orderItemsId,
-      String image,
-      List<String> allergens,
-      Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> selectedConfigMap}) {
-    return OrderItem._internal(
-        id: id == null ? UUID.getUUID() : id,
-        productId: productId,
-        variantId: variantId,
-        productName: productName,
-        priceShown: priceShown,
-        sumPriceShown: sumPriceShown,
-        quantity: quantity,
-        statusLog: statusLog != null ? List.unmodifiable(statusLog) : statusLog,
-        variantName: variantName,
-        takeAway: takeAway,
-        orderItemsId: orderItemsId,
-        image: image,
-        allergens: allergens,
-        selectedConfigMap: selectedConfigMap);
-  }
-
-  bool equals(Object other) {
-    return this == other;
+  String toString() {
+    return 'OrderItem(id: $id, productId: $productId, variantId: $variantId, productName: $productName, priceShown: $priceShown, sumPriceShown: $sumPriceShown, quantity: $quantity, statusLog: $statusLog, variantName: $variantName, image: $image, allergens: $allergens, configSets: $configSets)';
   }
 
   @override
   bool operator ==(Object other) {
-    if (identical(other, this)) return true;
+    if (identical(this, other)) return true;
+
     return other is OrderItem &&
-        id == other.id &&
-        productId == other.productId &&
-        variantId == other.variantId &&
-        productName == other.productName &&
-        priceShown == other.priceShown &&
-        sumPriceShown == other.sumPriceShown &&
-        quantity == other.quantity &&
-        DeepCollectionEquality().equals(statusLog, other.statusLog) &&
-        variantName == other.variantName &&
-        takeAway == other.takeAway &&
-        orderItemsId == other.orderItemsId &&
-        image == image &&
-        ListEquality().equals(allergens, other.allergens) &&
-        DeepCollectionEquality().equals(selectedConfigMap, other.selectedConfigMap);
+        other.id == id &&
+        other.productId == productId &&
+        other.variantId == variantId &&
+        other.productName == productName &&
+        other.priceShown == priceShown &&
+        other.sumPriceShown == sumPriceShown &&
+        other.quantity == quantity &&
+        listEquals(other.statusLog, statusLog) &&
+        other.variantName == variantName &&
+        other.image == image &&
+        listEquals(other.allergens, allergens) &&
+        listEquals(other.configSets, configSets);
   }
 
   @override
-  int get hashCode => toString().hashCode;
-
-  @override
-  String toString() {
-    var buffer = StringBuffer();
-
-    buffer.write("OrderItem {");
-    buffer.write("id=" + "$id" + ", ");
-    buffer.write("productId=" + "$productId" + ", ");
-    buffer.write("variantId=" + "$variantId" + ", ");
-    buffer.write("productName=" + (productName != null ? productName.toString() : "null") + ", ");
-    buffer.write("priceShown=" + (priceShown != null ? priceShown.toString() : "null") + ", ");
-    buffer.write("sumPriceShown=" + (sumPriceShown != null ? sumPriceShown.toString() : "null") + ", ");
-    buffer.write("quantity=" + (quantity != null ? quantity.toString() : "null") + ", ");
-    buffer.write("variantName=" + (variantName != null ? variantName.toString() : "null") + ", ");
-    buffer.write("takeAway=" + (takeAway != null ? takeAway.toString() : "null") + ", ");
-    buffer.write("orderItemsId=" + "$orderItemsId" + ", ");
-    buffer.write("image=" + "$image");
-    buffer.write(allergens.toString());
-    buffer.write("}");
-
-    return buffer.toString();
-  }
-
-  OrderItem copyWith(
-      {String id,
-      String productId,
-      String variantId,
-      LocalizedItem productName,
-      PriceShown priceShown,
-      PriceShown sumPriceShown,
-      int quantity,
-      List<StatusLog> statusLog,
-      LocalizedItem variantName,
-      bool takeAway,
-      String orderItemsId,
-      String image,
-      List<String> allergens,
-      Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> selectedConfigMap}) {
-    return OrderItem(
-        id: id ?? this.id,
-        productId: productId ?? this.productId,
-        variantId: variantId ?? this.variantId,
-        productName: productName ?? this.productName,
-        priceShown: priceShown ?? this.priceShown,
-        sumPriceShown: sumPriceShown ?? this.sumPriceShown,
-        quantity: quantity ?? this.quantity,
-        statusLog: statusLog ?? this.statusLog,
-        variantName: variantName ?? this.variantName,
-        takeAway: takeAway ?? this.takeAway,
-        orderItemsId: orderItemsId ?? this.orderItemsId,
-        image: image ?? this.image,
-        allergens: allergens ?? this.allergens,
-        selectedConfigMap: selectedConfigMap ?? this.selectedConfigMap);
-  }
-
-  OrderItem.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        productId = json['productId'],
-        variantId = json['variantId'],
-        productName =
-            json['productName'] != null ? LocalizedItem.fromJson(Map<String, dynamic>.from(json['productName'])) : null,
-        priceShown =
-            json['priceShown'] != null ? PriceShown.fromJson(Map<String, dynamic>.from(json['priceShown'])) : null,
-        sumPriceShown =
-            json['sumPriceShown'] != null ? PriceShown.fromJson(Map<String, dynamic>.from(json['sumPriceShown'])) : null,
-        quantity = json['quantity'],
-        statusLog = json['statusLog'] is List
-            ? (json['statusLog'] as List).map((e) => StatusLog.fromJson(Map<String, dynamic>.from(e))).toList()
-            : null,
-        variantName =
-            json['variantName'] != null ? LocalizedItem.fromJson(Map<String, dynamic>.from(json['variantName'])) : null,
-        takeAway = json['takeAway'],
-        orderItemsId = json['orderItemsId'],
-        image = json['image'],
-        //TODO replace with real item
-        allergens = json['allergens'] is List ? (json['allergens'] as List).map((e) => e as String).toList() : null,
-        selectedConfigMap = json['configSets'] != null ? getSelectdConfigMap(json['configSets']) : null;
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'productId': productId,
-        'variantId': variantId,
-        'productName': productName?.toJson(),
-        'priceShown': priceShown?.toJson(),
-        'sumPriceShown': sumPriceShown?.toJson(),
-        'quantity': quantity,
-        'statusLog': statusLog?.map((e) => e?.toJson())?.toList(),
-        'variantName': variantName?.toJson(),
-        'takeAway': takeAway,
-        'orderItemsId': orderItemsId,
-        'image': image,
-        'allergens': allergens
-      };
-
-  double getPrice() {
-    double sum = priceShown.pricePerUnit;
-    if (selectedConfigMap != null) {
-      selectedConfigMap.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
-          sum += generatedProductConfigComponent.price;
-        }
-      });
-    }
-    return sum;
-  }
-
-  Map<String, List<String>> getConfigIdMap() {
-    Map<String, List<String>> idMap = {};
-    if (selectedConfigMap != null) {
-      selectedConfigMap.forEach((key, value) {
-        idMap[key.productSetId] = value.map((e) => e.productComponentId).toList();
-      });
-    }
-    return idMap;
-  }
-
-  static Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> getSelectdConfigMap(
-      List<dynamic> mapList) {
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> selectedConfigMap = {};
-    for (Map<String, dynamic> configJson in mapList) {
-      GeneratedProductConfigSet temp = GeneratedProductConfigSet.fromJson(configJson);
-      selectedConfigMap[temp] = temp.items;
-    }
-    return selectedConfigMap;
+  int get hashCode {
+    return id.hashCode ^
+        productId.hashCode ^
+        variantId.hashCode ^
+        productName.hashCode ^
+        priceShown.hashCode ^
+        sumPriceShown.hashCode ^
+        quantity.hashCode ^
+        statusLog.hashCode ^
+        variantName.hashCode ^
+        image.hashCode ^
+        allergens.hashCode ^
+        configSets.hashCode;
   }
 }

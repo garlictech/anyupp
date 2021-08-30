@@ -20,17 +20,17 @@ class GraphQLClientService {
   final _dio = Dio();
 
   GraphQLClientService({
-    @required this.authProvider,
-    @required this.amplifyApiUrl,
-    @required this.amplifyApiKey,
-    @required this.graphqlApiUrl,
-    @required this.graphqlApiKey,
+    required this.authProvider,
+    required this.amplifyApiUrl,
+    required this.amplifyApiKey,
+    required this.graphqlApiUrl,
+    required this.graphqlApiKey,
   }) {
     _dio.interceptors.add(DioTokenInterceptor(_dio, this.authProvider));
   }
 
   Future<ValueNotifier<GraphQLClient>> getCrudClient({bool force = false}) async {
-    String accessToken = await authProvider.getAccessToken();
+    String? accessToken = await authProvider.getAccessToken();
     // print('GraphQLClientService.getAmplifyClient.accessToken=$accessToken');
 
     // accessToken = null;
@@ -94,7 +94,7 @@ class GraphQLClientService {
   }
 
   Future<ValueNotifier<GraphQLClient>> getAnyuppClient({bool useApi = false}) async {
-    String accessToken = useApi ? null : await authProvider.getAccessToken();
+    String? accessToken = useApi ? null : await authProvider.getAccessToken();
     // print('GraphQLClientService.getGraphQLClient.accessToken=$accessToken');
 
     // accessToken = null;

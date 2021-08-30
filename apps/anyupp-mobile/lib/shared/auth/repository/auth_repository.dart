@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 class AuthRepository implements IAuthProvider {
   final IAuthProvider _authProvider;
 
-  // TODO not so nice here...
-  Widget nextPageAfterLogin;
+  Widget? nextPageAfterLogin;
 
   AuthRepository(this._authProvider);
 
-  Future<User> getAuthenticatedUserProfile() {
+  Future<User?> getAuthenticatedUserProfile() {
     return _authProvider.getAuthenticatedUserProfile();
   }
 
-  Stream<User> getAuthenticatedUserProfileStream() {
+  Stream<User?> getAuthenticatedUserProfileStream() {
+    // TODO: ezt lehet at kene irni, hogy ne null User-t adjon, hanem exception, ha nincs user.
     return _authProvider.getAuthenticatedUserProfileStream();
   }
 
@@ -25,12 +25,12 @@ class AuthRepository implements IAuthProvider {
   }
 
   @override
-  Future<String> getAccessToken() {
+  Future<String?> getAccessToken() {
     return _authProvider.getAccessToken();
   }
 
   @override
-  Future<String> getIdToken() {
+  Future<String?> getIdToken() {
     return _authProvider.getIdToken();
   }
 
@@ -40,7 +40,7 @@ class AuthRepository implements IAuthProvider {
   }
 
   @override
-  Future<User> loginWithCognitoSession(CognitoUserSession session, String username) {
+  Future<User?> loginWithCognitoSession(CognitoUserSession session, String username) {
     return _authProvider.loginWithCognitoSession(session, username);
   }
 }

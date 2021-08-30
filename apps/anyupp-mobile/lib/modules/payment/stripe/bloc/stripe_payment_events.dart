@@ -6,48 +6,48 @@ import 'package:stripe_sdk/src/models/card.dart';
 abstract class StripePaymentEvent extends Equatable {
   const StripePaymentEvent();
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class PaymentMethodListEvent extends StripePaymentEvent {}
 
 class StartStripePaymentWithExistingCardEvent extends StripePaymentEvent {
-  final String orderId;
+  final String? orderId;
   final String paymentMethodId;
-  final UserInvoiceAddress invoiceAddress;
+  final UserInvoiceAddress? invoiceAddress;
 
-  const StartStripePaymentWithExistingCardEvent({this.orderId, this.paymentMethodId, this.invoiceAddress});
+  const StartStripePaymentWithExistingCardEvent({this.orderId, required this.paymentMethodId, this.invoiceAddress});
 
   @override
-  List<Object> get props => [orderId, paymentMethodId, invoiceAddress];
+  List<Object?> get props => [orderId, paymentMethodId, invoiceAddress];
 }
 
 class StartExternalPaymentEvent extends StripePaymentEvent {
   final PaymentMode paymentMode;
-  final String orderId;
-  final UserInvoiceAddress invoiceAddress;
+  final String? orderId;
+  final UserInvoiceAddress? invoiceAddress;
 
-  const StartExternalPaymentEvent({this.paymentMode, this.orderId, this.invoiceAddress});
+  const StartExternalPaymentEvent({this.orderId, required this.paymentMode, this.invoiceAddress});
 
   @override
-  List<Object> get props => [paymentMode, orderId, invoiceAddress];
+  List<Object?> get props => [paymentMode, orderId, invoiceAddress];
 }
 
 class StartStripePaymentWithNewCardEvent extends StripePaymentEvent {
-  final String orderId;
+  final String? orderId;
   final StripeCard stripeCard;
-  final UserInvoiceAddress invoiceAddress;
+  final UserInvoiceAddress? invoiceAddress;
   final bool saveCard;
 
   const StartStripePaymentWithNewCardEvent({
-    this.stripeCard,
-    this.saveCard,
+    required this.stripeCard,
+    required this.saveCard,
     this.orderId,
-    this.invoiceAddress,
+    required this.invoiceAddress,
   });
 
   @override
-  List<Object> get props => [stripeCard, saveCard, orderId, invoiceAddress];
+  List<Object?> get props => [stripeCard, saveCard, orderId, invoiceAddress];
 }
 
 class ResetStripePaymentState extends StripePaymentEvent {
@@ -61,7 +61,7 @@ class CreateStripeCardEvent extends StripePaymentEvent {
   CreateStripeCardEvent(this.stripeCard, this.name);
 
   @override
-  List<Object> get props => [stripeCard, name];
+  List<Object?> get props => [stripeCard, name];
 }
 
 class UpdateStripeCardEvent extends StripePaymentEvent {
@@ -71,7 +71,7 @@ class UpdateStripeCardEvent extends StripePaymentEvent {
   UpdateStripeCardEvent(this.stripeCardId, this.name);
 
   @override
-  List<Object> get props => [stripeCardId, name];
+  List<Object?> get props => [stripeCardId, name];
 }
 
 class DeleteStripeCardEvent extends StripePaymentEvent {
@@ -80,5 +80,5 @@ class DeleteStripeCardEvent extends StripePaymentEvent {
   DeleteStripeCardEvent(this.stripeCardId);
 
   @override
-  List<Object> get props => [stripeCardId];
+  List<Object?> get props => [stripeCardId];
 }

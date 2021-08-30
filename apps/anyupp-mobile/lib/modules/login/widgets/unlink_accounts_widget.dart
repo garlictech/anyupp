@@ -11,14 +11,14 @@ import 'social_login_button_widget.dart';
 class UnlinkAccountsWidget extends StatelessWidget {
   final User user;
 
-  const UnlinkAccountsWidget({Key key, @required this.user}) : super(key: key);
+  const UnlinkAccountsWidget({required this.user});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (BuildContext context, LoginState state) {
         return FutureBuilder<List<LoginMethod>>(
-          future: getIt<LoginRepository>().fetchSignInMethodsForEmail(user.email),
+          future: getIt<LoginRepository>().fetchSignInMethodsForEmail(user.email!),
           builder: (BuildContext context, AsyncSnapshot<List<LoginMethod>> methodSnapshot) {
             if (methodSnapshot.hasData) {
               print('**** User Login methods=${methodSnapshot.data}');
@@ -31,13 +31,13 @@ class UnlinkAccountsWidget extends StatelessWidget {
                       context,
                       'google',
                       LoginMethod.GOOGLE,
-                      methodSnapshot.data.contains(LoginMethod.GOOGLE),
+                      methodSnapshot.data!.contains(LoginMethod.GOOGLE),
                     ),
                     _createLinkedSocialButtonWidget(
                       context,
                       'facebook',
                       LoginMethod.FACEBOOK,
-                      methodSnapshot.data.contains(LoginMethod.FACEBOOK),
+                      methodSnapshot.data!.contains(LoginMethod.FACEBOOK),
                     ),
                     // TODO PHONE
                     // _createLinkedSocialButtonWidget(
@@ -51,7 +51,7 @@ class UnlinkAccountsWidget extends StatelessWidget {
                       context,
                       'apple',
                       LoginMethod.APPLE,
-                      methodSnapshot.data.contains(LoginMethod.APPLE),
+                      methodSnapshot.data!.contains(LoginMethod.APPLE),
                     ),
                   ],
                 ),
@@ -86,6 +86,7 @@ class UnlinkAccountsWidget extends StatelessWidget {
   Widget _createSocialButtonWidget(BuildContext context, String icon, LoginMethod method, bool linked) {
     return SocialLoginButtonWidget(
       providerIcon: icon,
+      iconColor: theme.indicator,
       method: method,
       borderColor: theme.border,
       size: 60.0,

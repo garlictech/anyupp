@@ -3,9 +3,9 @@ import 'package:flutter/scheduler.dart';
 import 'email_login_password_or_link_widget.dart';
 
 class LoginWithEmailDialog {
-  static void show(BuildContext context, { bool linkAccount = false }) {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      return showDialog(
+  static void show(BuildContext context, {bool linkAccount = false}) {
+    SchedulerBinding.instance?.addPostFrameCallback((_) async {
+      await showDialog(
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) => Dialog(
@@ -19,5 +19,4 @@ class LoginWithEmailDialog {
       );
     });
   }
-
 }

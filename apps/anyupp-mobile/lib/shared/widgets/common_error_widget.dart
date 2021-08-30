@@ -3,10 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CommonErrorWidget extends StatelessWidget {
   final String error;
-  final String description;
-  final String errorDetails;
+  final String? description;
+  final String? errorDetails;
 
-  const CommonErrorWidget({Key key, this.error, this.description = '', this.errorDetails}) : super(key: key);
+  const CommonErrorWidget({required this.error, this.description = '', this.errorDetails = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -37,25 +37,26 @@ class CommonErrorWidget extends StatelessWidget {
             SizedBox(
               height: 8.0,
             ),
-            Text(
-              description,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.grey,
+            if (description != null)
+              Text(
+                description!,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey,
+                ),
               ),
-            ),
             if (errorDetails != null)
-            Text(
-              errorDetails,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                fontSize: 12.0,
-                fontWeight: FontWeight.w300,
-                color: Colors.grey.withOpacity(0.7),
+              Text(
+                errorDetails!,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.grey.withOpacity(0.7),
+                ),
               ),
-            ),
           ],
         ),
       ),

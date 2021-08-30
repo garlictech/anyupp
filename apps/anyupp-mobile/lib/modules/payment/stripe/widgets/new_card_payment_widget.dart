@@ -12,20 +12,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
 class NewCardPaymentWidget extends StatefulWidget {
-  final String orderId;
-  final UserInvoiceAddress invoiceAddress;
+  final String? orderId;
+  final UserInvoiceAddress? invoiceAddress;
 
-  const NewCardPaymentWidget({Key key, this.orderId, this.invoiceAddress}) : super(key: key);
+  const NewCardPaymentWidget({
+    this.orderId,
+    this.invoiceAddress,
+  });
 
   @override
   _NewCardPaymentWidgetState createState() => _NewCardPaymentWidgetState();
 }
 
 class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
-  StripePaymentMethod _paymentMethod;
+  StripePaymentMethod? _paymentMethod;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _saveCard = false;
-  CardFormWidget _form;
+  late CardFormWidget _form;
 
   _NewCardPaymentWidgetState();
 
@@ -96,7 +99,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
                 value: _saveCard,
                 onChanged: (value) {
                   setState(() {
-                    _saveCard = value;
+                    _saveCard = value == null ? false : value;
                   });
                 },
               ),
@@ -149,12 +152,12 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
     if (_paymentMethod != null) {
       getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
         orderId: widget.orderId,
-        paymentMethodId: _paymentMethod.id,
+        paymentMethodId: _paymentMethod!.id!,
         invoiceAddress: widget.invoiceAddress,
       ));
     } else {
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
+      if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
         getIt<StripePaymentBloc>().add(StartStripePaymentWithNewCardEvent(
           orderId: widget.orderId,
           stripeCard: _form.card,

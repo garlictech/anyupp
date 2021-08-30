@@ -6,15 +6,17 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ProductDetailVariantItemWidget extends StatelessWidget {
   final GeoUnit unit;
-  final Cart cart;
   final GeneratedProduct product;
   final ProductVariant variant;
-  final Widget child;
+  final Widget? child;
 
-  const ProductDetailVariantItemWidget({Key key, this.unit, this.cart, this.product, this.variant, this.child})
-      : super(key: key);
+  const ProductDetailVariantItemWidget({
+    required this.unit,
+    required this.product,
+    required this.variant,
+    this.child,
+  });
   @override
-
   Widget build(BuildContext context) {
     return Container(
       //height: 76,
@@ -56,11 +58,11 @@ class ProductDetailVariantItemWidget extends StatelessWidget {
                           fontSize: 16,
                         ),
                       ),
-                      if (variant.pack.size > 0.0)
+                      if (variant.pack != null && variant.pack!.size > 0.0)
                         Container(
                           margin: EdgeInsets.only(top: 4),
                           child: Text(
-                            '${variant.pack.size} ${variant.pack.unit}',
+                            '${variant.pack!.size} ${variant.pack!.unit}',
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
                               color: theme.highlight,
@@ -73,7 +75,7 @@ class ProductDetailVariantItemWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              child
+              if (child != null) child!
             ],
           ),
         ],

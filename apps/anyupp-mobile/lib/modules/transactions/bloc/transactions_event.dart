@@ -4,7 +4,7 @@ abstract class TransactionsEvent extends Equatable {
   const TransactionsEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class LoadTransactions extends TransactionsEvent {
@@ -14,4 +14,3 @@ class LoadTransactions extends TransactionsEvent {
 class Loading extends TransactionsEvent {
   const Loading();
 }
-

@@ -16,10 +16,14 @@ import 'package:google_fonts/google_fonts.dart';
 class UnitFoundByQRCodeScreen extends StatefulWidget {
   final String unitId;
   final Place place;
-    // TODO navigation hack, should replace with navigation bloc 
+  // TODO navigation hack, should replace with navigation bloc
   final bool navigateToCart;
 
-  UnitFoundByQRCodeScreen({Key key, @required this.unitId, @required this.place, this.navigateToCart = false}) : super(key: key);
+  UnitFoundByQRCodeScreen({
+    required this.unitId,
+    required this.place,
+    this.navigateToCart = false,
+  });
 
   @override
   _UnitFoundByQRCodeScreenState createState() => _UnitFoundByQRCodeScreenState();
@@ -45,35 +49,37 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
           listener: (BuildContext context, UnitsState state) {
             if (state is UnitsLoaded) {
               print('***************** UNITS LOADED=${state.units}');
-              GeoUnit unit = state.units.firstWhere((unit) => unit.id == widget.unitId, orElse: () => null);
+              int index = state.units.indexWhere((GeoUnit unit) => unit.id == widget.unitId);
+              GeoUnit? unit = index >= 0 ? state.units[index] : null;
               if (unit != null) {
-                unit = unit.copyWith(place: widget.place);
+                // unit = unit.copyWith(place: widget.place);
                 // print('***************** UNITS FOUND=$unit');
                 setPlacePref(widget.place);
-                _flipCardState.currentState.toggleCard();
-                showNotification(context, trans('selectUnit.tableReserved.title'), trans('selectUnit.tableReserved.description', [widget.place.table, widget.place.seat]), null);
+                _flipCardState.currentState?.toggleCard();
+                showNotification(context, trans('selectUnit.tableReserved.title'),
+                    trans('selectUnit.tableReserved.description', [widget.place.table, widget.place.seat]), null);
                 getIt<UnitSelectBloc>().add(SelectUnit(unit));
-                getIt<CartBloc>().add(UpdatePlaceInCartAction(unit));
+                getIt<CartBloc>().add(UpdatePlaceInCartAction(unit, widget.place));
                 Future.delayed(Duration(
                   milliseconds: 1000,
                 )).then((value) => Nav.reset(MainNavigation(
-                  pageIndex: widget.navigateToCart ? 4 : 0,
-                )));
+                      pageIndex: widget.navigateToCart ? 4 : 0,
+                    )));
               } else {
-                showErrorDialog(context, trans('selectUnit.qrCodeError.title'), trans('selectUnit.qrCodeError.description'), onClose: () => 
-                Nav.reset(SelectUnitChooseMethodScreen()));
+                showErrorDialog(
+                    context, trans('selectUnit.qrCodeError.title'), trans('selectUnit.qrCodeError.description'),
+                    onClose: () => Nav.reset(SelectUnitChooseMethodScreen()));
               }
             }
             if (state is UnitsNotLoaded) {
-                //showErrorDialog(context, trans('selectUnit.qrUnitsError.title'), trans('selectUnit.qrUnitsError.description'), () => 
-                showErrorDialog(context, state.reasonCode, state.reasonMessage, onClose: () => 
-                Nav.reset(SelectUnitChooseMethodScreen()));
-
+              //showErrorDialog(context, trans('selectUnit.qrUnitsError.title'), trans('selectUnit.qrUnitsError.description'), () =>
+              showErrorDialog(context, state.reasonCode, state.reasonMessage ?? '',
+                  onClose: () => Nav.reset(SelectUnitChooseMethodScreen()));
             }
             if (state is UnitsNoNearUnit) {
-                showErrorDialog(context, trans('selectUnit.qrGeneralError.title'), trans('selectUnit.qrGeneralError.description'), onClose: () => 
-                Nav.reset(SelectUnitChooseMethodScreen()));
-
+              showErrorDialog(
+                  context, trans('selectUnit.qrGeneralError.title'), trans('selectUnit.qrGeneralError.description'),
+                  onClose: () => Nav.reset(SelectUnitChooseMethodScreen()));
             }
           },
           child: Container(

@@ -1,65 +1,52 @@
-import 'package:fa_prev/models.dart';
-import 'package:flutter/foundation.dart';
+class Place {
+  final String? id;
+  final String? seat;
+  final String? table;
 
-import 'core/model_base.dart';
+  Place({
+    this.id,
+    this.seat,
+    this.table,
+  });
 
+  Place copyWith({
+    String? id,
+    String? seat,
+    String? table,
+  }) {
+    return Place(
+      id: id ?? this.id,
+      seat: seat ?? this.seat,
+      table: table ?? this.table,
+    );
+  }
 
-@immutable
-class Place extends Model {
-  final String id;
-  final String seat;
-  final String table;
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'seat': seat,
+      'table': table,
+    };
+  }
+
+  factory Place.fromJson(Map<String, dynamic> map) {
+    return Place(
+      id: map['id'],
+      seat: map['seat'],
+      table: map['table'],
+    );
+  }
 
   @override
-  String getId() {
-    return id;
-  }
-
-  const Place._internal({@required this.id, this.seat, this.table});
-
-  factory Place({String id, String seat, String table}) {
-    return Place._internal(
-        id: id == null ? UUID.getUUID() : id, seat: seat, table: table);
-  }
-
-  bool equals(Object other) {
-    return this == other;
-  }
+  String toString() => 'Place(id: $id, seat: $seat, table: $table)';
 
   @override
   bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is Place &&
-        id == other.id &&
-        seat == other.seat &&
-        table == other.table;
+    if (identical(this, other)) return true;
+
+    return other is Place && other.id == id && other.seat == seat && other.table == table;
   }
 
   @override
-  int get hashCode => toString().hashCode;
-
-  @override
-  String toString() {
-    var buffer = StringBuffer();
-
-    buffer.write("Place {");
-    buffer.write("id=" + "$id" + ", ");
-    buffer.write("seat=" + "$seat" + ", ");
-    buffer.write("table=" + "$table");
-    buffer.write("}");
-
-    return buffer.toString();
-  }
-
-  Place copyWith({String id, String seat, String table}) {
-    return Place(
-        id: id ?? this.id, seat: seat ?? this.seat, table: table ?? this.table);
-  }
-
-  Place.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        seat = json['seat'],
-        table = json['table'];
-
-  Map<String, dynamic> toJson() => {'id': id, 'seat': seat, 'table': table};
+  int get hashCode => id.hashCode ^ seat.hashCode ^ table.hashCode;
 }

@@ -22,7 +22,7 @@ class ProductDetailsScreen extends StatefulWidget {
   final GeoUnit unit;
   final String heroId;
   final GeneratedProduct item;
-  ProductDetailsScreen({Key key, @required this.item, @required this.heroId, @required this.unit}) : super(key: key);
+  ProductDetailsScreen({required this.item, required this.heroId, required this.unit});
 
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -30,11 +30,6 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   bool isFavorite = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -210,9 +205,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ),
                 ),
-                StreamBuilder<Cart>(
-                  stream: getIt<CartRepository>().getCurrentCartStream(unit.id),
-                  builder: (context, AsyncSnapshot<Cart> snapshot) {
+                StreamBuilder<Cart?>(
+                  stream: getIt<CartRepository>().getCurrentCartStream(unit.id!),
+                  builder: (context, AsyncSnapshot<Cart?> snapshot) {
                     if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                       //return _buildVariantsList(snapshot.data, widget.item.variants);
                       return ProductDetailVariantListWidget(
@@ -230,7 +225,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 30.0, top: 16.0),
                     child: Text(
-                      getLocalizedText(context, widget.item.description),
+                      widget.item.description == null ? '' : getLocalizedText(context, widget.item.description!),
                       textAlign: TextAlign.left,
                       style: GoogleFonts.poppins(
                         color: theme.text,
@@ -244,7 +239,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ),
         ),
-        (widget.item.configSets == null || widget.item.configSets.isEmpty)
+        (widget.item.configSets == null || (widget.item.configSets != null && widget.item.configSets!.isEmpty))
             ? Container()
             : _buildTotalButtonWidget(context)
       ],
@@ -292,8 +287,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       duration: Duration(milliseconds: 300),
                     ),
                     Text(
-                      getNumberFormatter(widget.unit.currency).currencySymbol + ")" ??
-                          'ft' + ")", // + formatCurrencyWithSignal(_modifierTotalPrice, widget.unit.currency),
+                      getNumberFormatter(widget.unit.currency).currencySymbol + ")",
                       style: GoogleFonts.poppins(
                         fontSize: 24.0,
                         color: theme.text2,

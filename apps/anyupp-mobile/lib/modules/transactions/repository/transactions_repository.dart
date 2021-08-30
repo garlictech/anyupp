@@ -1,7 +1,6 @@
 import 'dart:async';
 
-
-import 'package:fa_prev/models/TransactionItem.dart';
+import 'package:fa_prev/models/Transaction.dart';
 import 'package:fa_prev/modules/transactions/providers/transactions_provider_interface.dart';
 
 class TransactionsRepository {
@@ -9,7 +8,7 @@ class TransactionsRepository {
 
   TransactionsRepository(this._provider);
 
-  Future<List<TransactionItem>> getTransactions() {
+  Future<List<Transaction>?> getTransactions() {
     return _provider.getTransactions();
   }
 }

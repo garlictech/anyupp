@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models/TransactionItem.dart';
+import 'package:fa_prev/models/Transaction.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets/app_bar.dart';
@@ -13,27 +13,25 @@ import 'package:path_provider/path_provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TransactionInfoWidget extends StatelessWidget {
-  final TransactionItem transactionItem;
+  final Transaction transactionItem;
   const TransactionInfoWidget(this.transactionItem);
 
   @override
   Widget build(BuildContext context) {
-    bool showInvoice;
-    if (transactionItem?.invoice?.pdfUrl != null) {
+    bool showInvoice = false;
+    if (transactionItem.invoice?.pdfUrl != null) {
       showInvoice = true;
-    } else if (transactionItem?.receipt?.pdfData != null) {
+    } else if (transactionItem.receipt?.pdfData != null) {
       showInvoice = false;
     }
-    if (showInvoice == null) {
-      return Container();
-    } else if (showInvoice) {
+    if (showInvoice) {
       return buildInfo(context, true);
     } else {
       return buildInfo(context, false);
     }
   }
 
-  createAndOpenPdf(String baseString) async {
+  createAndOpenPdf(String? baseString) async {
     if (baseString != null) {
       var bytes = base64Decode(baseString.replaceAll('\n', ''));
       final output = await getTemporaryDirectory();
@@ -61,9 +59,8 @@ class TransactionInfoWidget extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => isInvoice
-                ? Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PdfWebView(transactionItem?.invoice?.pdfUrl)))
-                : createAndOpenPdf(transactionItem?.receipt?.pdfData),
+                ? Nav.to(PdfWebView(transactionItem.invoice!.pdfUrl!))
+                : createAndOpenPdf(transactionItem.receipt?.pdfData),
             child: Text(
               trans(context, 'payment.paymentInfo.invoicing.show'),
               style: GoogleFonts.poppins(
@@ -80,7 +77,7 @@ class TransactionInfoWidget extends StatelessWidget {
 
 class PdfWebView extends StatefulWidget {
   final String url;
-  PdfWebView(this.url, {Key key}) : super(key: key);
+  PdfWebView(this.url);
 
   @override
   _PdfWebViewState createState() => _PdfWebViewState();
@@ -90,8 +87,7 @@ class _PdfWebViewState extends State<PdfWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(theme,
-          onBackButtonPressed: () => Nav.pop()),
+      appBar: appBar(theme, onBackButtonPressed: () => Nav.pop()),
       body: WebView(
         initialUrl: widget.url,
         javascriptMode: JavascriptMode.unrestricted,

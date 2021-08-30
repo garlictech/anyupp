@@ -9,19 +9,20 @@ class MockCognitoService {
   MockCognitoService() {
     _cognitoUser = CognitoUser(
       'test',
-      null,
+      // ignore: null_check_always_fails
+      null!,
     );
   }
 
-  CognitoUser _cognitoUser;
+  late CognitoUser? _cognitoUser;
 
-  CognitoUserSession _userSession;
+  CognitoUserSession? _userSession;
 
-  CognitoUserSession get session => _userSession;
+  CognitoUserSession? get session => _userSession;
 
-  CognitoUserPool get userPool => null;
+  CognitoUserPool? get userPool => null;
 
-  Future<CognitoUser> get currentUser async {
+  Future<CognitoUser?> get currentUser async {
     return _cognitoUser;
   }
 
@@ -30,7 +31,7 @@ class MockCognitoService {
   Future<bool> get isSessionValid async => true;
 
   CognitoUser createCognitoUser(String username) {
-    return CognitoUser(username, userPool);
+    return CognitoUser(username, userPool!);
   }
 
   AuthenticationDetails getAuthDetails(String username, String password) {
@@ -44,7 +45,7 @@ class MockCognitoService {
     return true;
   }
 
-  Future<CognitoUser> createCognitoUserFromSession(CognitoUserSession session, String userName) async {
+  Future<CognitoUser?> createCognitoUserFromSession(CognitoUserSession session, String userName) async {
     return _cognitoUser;
   }
 
@@ -54,7 +55,7 @@ class MockCognitoService {
 
   Future<CognitoCredentials> loginWithCredentials(String accessToken, String provider) async {
     print('loginWithCredentials()=$provider, identityPoolId=$identityPoolId');
-    CognitoCredentials credentials = CognitoCredentials(identityPoolId, userPool);
+    CognitoCredentials credentials = CognitoCredentials(identityPoolId, userPool!);
     return credentials;
   }
 }

@@ -12,14 +12,14 @@ abstract class _BaseGraphQLWrapper {
 
   Stream<GraphQLResponse<T>> stream<T, U extends JsonSerializable>(
     GraphQLQuery<T, U> query, {
-    GraphQLClient client,
+    required GraphQLClient client,
     Context context = const Context(),
   }) {
     return client
         .subscribe(
           SubscriptionOptions(
             document: query.document,
-            variables: query.variables?.toJson(),
+            variables: query.variables?.toJson() ?? const {},
             fetchPolicy: FetchPolicy.networkOnly,
           ),
         )
@@ -33,13 +33,13 @@ abstract class _BaseGraphQLWrapper {
   }
 
   Future<GraphQLResponse<T>> execute<T, U extends JsonSerializable>(GraphQLQuery<T, U> query,
-      {FetchPolicy fetchPolicy, bool useApi = false}) async {
+      {FetchPolicy? fetchPolicy, bool useApi = false}) async {
     ValueNotifier<GraphQLClient> client = await _getClient(useApi: useApi);
     try {
       QueryResult response = await client.value.query(
         QueryOptions(
           document: query.document,
-          variables: query.variables?.toJson(),
+          variables: query.variables?.toJson() ?? const {},
           fetchPolicy: fetchPolicy,
         ),
       );
@@ -52,7 +52,7 @@ abstract class _BaseGraphQLWrapper {
         context: response.context,
       );
     } finally {
-      client?.dispose();
+      client.dispose();
     }
   }
 }

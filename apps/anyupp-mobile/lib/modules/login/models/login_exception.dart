@@ -20,11 +20,9 @@ class LoginException extends AppException {
 
   static const ERROR_LOGIN_INVALID_PROVIDER = 'ERROR_LOGIN_INVALID_PROVIDER';
 
-  static const ERROR_ACCOUNT_LINK_EMAIL_NOT_MATCH =
-      'ERROR_ACCOUNT_LINK_EMAIL_NOT_MATCH';
+  static const ERROR_ACCOUNT_LINK_EMAIL_NOT_MATCH = 'ERROR_ACCOUNT_LINK_EMAIL_NOT_MATCH';
 
-  static const ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL =
-      'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL';
+  static const ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL = 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL';
 
   static const ERROR_ACCOUNT_UNLINK = 'ERROR_ACCOUNT_UNLINK';
 
@@ -39,6 +37,8 @@ class LoginException extends AppException {
   static const UNCONFIRMED = 'UNCONFIRMED';
 
   static const INVALID_ANONYMUS_USER = 'INVALID_ANONYMUS_USER';
+
+  static const USER_NOT_LOGGED_IN = 'USER_NOT_LOGGED_IN';
 
   LoginException({
     code,
@@ -57,11 +57,7 @@ class LoginException extends AppException {
   }
 
   factory LoginException.fromException(String code, Exception e) {
-    return LoginException(
-        code: LoginException.CODE,
-        subCode: code,
-        message: e.toString(),
-        details: e.runtimeType);
+    return LoginException(code: LoginException.CODE, subCode: code, message: e.toString(), details: e.runtimeType);
   }
 
   @override

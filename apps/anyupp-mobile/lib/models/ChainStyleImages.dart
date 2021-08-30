@@ -1,67 +1,51 @@
-import 'package:fa_prev/models.dart';
-import 'package:flutter/foundation.dart';
+class ChainStyleImages {
+  final String? id;
+  final String? header;
+  final String? logo;
+  ChainStyleImages({
+    this.id,
+    this.header,
+    this.logo,
+  });
 
-import 'core/model_base.dart';
+  ChainStyleImages copyWith({
+    String? id,
+    String? header,
+    String? logo,
+  }) {
+    return ChainStyleImages(
+      id: id ?? this.id,
+      header: header ?? this.header,
+      logo: logo ?? this.logo,
+    );
+  }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'header': header,
+      'logo': logo,
+    };
+  }
 
-@immutable
-class ChainStyleImages extends Model {
-  final String id;
-  final String header;
-  final String logo;
+  factory ChainStyleImages.fromJson(Map<String, dynamic> map) {
+    return ChainStyleImages(
+      id: map['id'],
+      header: map['header'],
+      logo: map['logo'],
+    );
+  }
 
   @override
-  String getId() {
-    return id;
-  }
-
-  const ChainStyleImages._internal({@required this.id, this.header, this.logo});
-
-  factory ChainStyleImages({String id, String header, String logo}) {
-    return ChainStyleImages._internal(
-        id: id == null ? UUID.getUUID() : id, header: header, logo: logo);
-  }
-
-  bool equals(Object other) {
-    return this == other;
-  }
+  String toString() => 'ChainStyleImages(id: $id, header: $header, logo: $logo)';
 
   @override
   bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is ChainStyleImages &&
-        id == other.id &&
-        header == other.header &&
-        logo == other.logo;
+    if (identical(this, other)) return true;
+
+    return other is ChainStyleImages && other.id == id && other.header == header && other.logo == logo;
   }
 
   @override
-  int get hashCode => toString().hashCode;
-
-  @override
-  String toString() {
-    var buffer = StringBuffer();
-
-    buffer.write("ChainStyleImages {");
-    buffer.write("id=" + "$id" + ", ");
-    buffer.write("header=" + "$header" + ", ");
-    buffer.write("logo=" + "$logo");
-    buffer.write("}");
-
-    return buffer.toString();
-  }
-
-  ChainStyleImages copyWith({String id, String header, String logo}) {
-    return ChainStyleImages(
-        id: id ?? this.id,
-        header: header ?? this.header,
-        logo: logo ?? this.logo);
-  }
-
-  ChainStyleImages.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        header = json['header'],
-        logo = json['logo'];
-
-  Map<String, dynamic> toJson() => {'id': id, 'header': header, 'logo': logo};
+  int get hashCode => id.hashCode ^ header.hashCode ^ logo.hashCode;
 }

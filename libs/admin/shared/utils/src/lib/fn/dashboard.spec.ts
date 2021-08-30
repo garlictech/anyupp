@@ -56,11 +56,6 @@ const failedHistoryOrders = [
   ofx.convertInputToOrder(ofx.historyFailedCashCouponOrderInput),
   ofx.convertInputToOrder(ofx.historyFailedCashEventOrderInput),
 ];
-const paymentMethods = [
-  CrudApi.PaymentMethod.card,
-  CrudApi.PaymentMethod.cash,
-  CrudApi.PaymentMethod.inapp,
-];
 
 const paymentMethods = [
   CrudApi.PaymentMethod.card,

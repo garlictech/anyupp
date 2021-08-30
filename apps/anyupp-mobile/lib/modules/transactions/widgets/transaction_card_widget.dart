@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models/TransactionItem.dart';
+import 'package:fa_prev/models/Transaction.dart';
+import 'package:fa_prev/models/core/parsers.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/transactions/screens/order_details_screen.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -12,9 +13,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class TransactionCard extends StatelessWidget {
-  final TransactionItem transactionItem;
+  final Transaction transaction;
 
-  TransactionCard({Key key, this.transactionItem}) : super(key: key);
+  TransactionCard({required this.transaction});
   final DateFormat parser = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
   final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
 
@@ -44,7 +45,7 @@ class TransactionCard extends StatelessWidget {
             _buildTransactionHeader(context),
             _buildDivider(context),
             _buildTransactionDeatails(context),
-             TransactionInfoWidget(transactionItem),
+            TransactionInfoWidget(transaction),
             _buildFooter(context),
           ],
         ),
@@ -60,7 +61,7 @@ class TransactionCard extends StatelessWidget {
   }
 
   Widget _buildTransactionHeader(BuildContext context) {
-    DateTime dateTime = parser.parseUTC(transactionItem.createdAt);
+    DateTime? dateTime = transaction.createdAt != null ? parser.parseUTC(transaction.createdAt!) : null;
 
     return ClipRect(
       child: Container(
@@ -84,7 +85,7 @@ class TransactionCard extends StatelessWidget {
                 right: 20.0,
               ),
               child: Text(
-                formatter.format(dateTime.toLocal()),
+                dateTime == null ? '-' : formatter.format(dateTime.toLocal()),
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   color: theme.text,
@@ -93,8 +94,7 @@ class TransactionCard extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                getIt<OrderBloc>()
-                    .add(LoadOrderDetail(orderId: transactionItem.orderId));
+                getIt<OrderBloc>().add(LoadOrderDetail(orderId: transaction.orderId));
                 Nav.to(OrderDetailsScreen());
               },
               child: RichText(
@@ -102,8 +102,7 @@ class TransactionCard extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text:
-                          trans(context, 'profile.transactions.details') + ' ',
+                      text: trans(context, 'profile.transactions.details') + ' ',
                       style: GoogleFonts.poppins(
                         fontSize: 14.0,
                         color: Color(0x993C2F2F),
@@ -142,7 +141,7 @@ class TransactionCard extends StatelessWidget {
                 ),
               ),
               Text(
-                transactionItem.status,
+                enumToString(transaction.status) ?? '-',
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: theme.text,
@@ -165,7 +164,7 @@ class TransactionCard extends StatelessWidget {
                 ),
               ),
               Text(
-                transactionItem.type,
+                transaction.type!,
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: theme.text,
@@ -205,8 +204,7 @@ class TransactionCard extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(transactionItem.total,
-                transactionItem.currency ?? 'ft'), 
+            formatCurrency(transaction.total, transaction.currency ?? 'ft'),
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,

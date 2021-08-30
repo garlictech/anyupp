@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class SplashScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -17,29 +14,29 @@ class SplashScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
-            children: [
-              // BACKGROUND IMAGE
-              Positioned(
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                child: _buildBackground(context),
-              ),
+          children: [
+            // BACKGROUND IMAGE
+            Positioned(
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              child: _buildBackground(context),
+            ),
 
-              // Center logo
-              Positioned(
-                top: (height / 2.0 - 50),
-                left: 0.0,
-                right: 0.0,
-                child: _buildLogo(context),
-              ),
-
-            ],
+            // Center logo
+            Positioned(
+              top: (height / 2.0 - 50),
+              left: 0.0,
+              right: 0.0,
+              child: _buildLogo(context),
+            ),
+          ],
         ),
       ),
     );
   }
+
   Widget _buildBackground(BuildContext context) {
     return Container(
       decoration: BoxDecoration(

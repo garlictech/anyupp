@@ -7,7 +7,7 @@ abstract class BaseOrderState extends Equatable {
   const BaseOrderState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class NoOrdersLoaded extends BaseOrderState {
@@ -15,36 +15,36 @@ class NoOrdersLoaded extends BaseOrderState {
 }
 
 class OrderDetailLoadedState extends BaseOrderState {
-  final Order order;
+  final Order? order;
   const OrderDetailLoadedState({this.order});
 
   @override
-  List<Object> get props => [order];
+  List<Object?> get props => [order];
 }
 
 class OrdersLoadingState extends BaseOrderState {}
 
 class OrdersLoadedState extends BaseOrderState {
-  final List<Order> orders;
+  final List<Order>? orders;
   final int totalCount;
   final bool hasMoreItems;
-  final String nextToken;
+  final String? nextToken;
   final int timeStamp;
 
-  OrdersLoadedState({this.orders, this.hasMoreItems, this.totalCount, this.nextToken})
+  OrdersLoadedState({this.orders, this.hasMoreItems = false, this.totalCount = 0, this.nextToken})
       : timeStamp = DateTime.now().microsecondsSinceEpoch;
 
   @override
-  List<Object> get props => [orders, totalCount, hasMoreItems, nextToken, timeStamp];
+  List<Object?> get props => [orders, totalCount, hasMoreItems, nextToken, timeStamp];
 }
 
 class OrderLoadError extends BaseOrderState {
   final String code;
-  final String message;
-  final String details;
+  final String? message;
+  final String? details;
 
   OrderLoadError(this.code, this.message, this.details);
 
   @override
-  List<Object> get props => [code, message, details];
+  List<Object?> get props => [code, message, details];
 }

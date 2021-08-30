@@ -1,1 +1,1 @@
-export 'simplepay/simplepay.dart';
+export 'stripe/stripe.dart';

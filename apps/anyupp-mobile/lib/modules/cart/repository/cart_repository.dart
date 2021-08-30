@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 
@@ -12,20 +13,27 @@ class CartRepository implements ICartProvider {
 
   CartRepository(this._cartProvider, this._authProvider);
 
-  Cart get cart => _cartProvider.cart;
+  Cart? get cart => _cartProvider.cart;
 
-  Future<Cart> addProductToCart(GeoUnit unit, OrderItem item) async {
-    Cart _cart = await _cartProvider.getCurrentCart(unit.id);
-    User user = await _authProvider.getAuthenticatedUserProfile();
-    if (_cart == null || _cart.items == null || _cart.items.isEmpty) {
+  Future<Cart?> addProductToCart(GeoUnit unit, OrderItem item) async {
+    Cart? _cart = await _cartProvider.getCurrentCart(unit.id!);
+    User? user = await _authProvider.getAuthenticatedUserProfile();
+    if (user == null) {
+      throw LoginException(
+        code: LoginException.CODE,
+        subCode: LoginException.USER_NOT_LOGGED_IN,
+        message: 'User not logged in. getAuthenticatedUserProfile() is null',
+      );
+    }
+    if (_cart == null || _cart.items.isEmpty) {
       _cart = Cart(
         userId: user.id,
-        unitId: unit.id,
+        unitId: unit.id!,
         takeAway: false,
         paymentMode: PaymentMode(
           caption: 'inapp',
-          method: 'inapp',
-          type: 'stripe',
+          method: PaymentMethod.inapp,
+          type: PaymentType.stripe,
         ),
         place: await getPlacePref() ?? Place(seat: '00', table: '00'),
         items: [
@@ -49,12 +57,12 @@ class CartRepository implements ICartProvider {
       _cart = _cart.copyWith(items: items);
     }
 
-    await _cartProvider.updateCart(unit.id, _cart);
+    await _cartProvider.updateCart(unit.id!, _cart);
     return _cart;
   }
 
-  Future<Cart> removeProductFromCart(String unitId, OrderItem item) async {
-    Cart _cart = await _cartProvider.getCurrentCart(unitId);
+  Future<Cart?> removeProductFromCart(String unitId, OrderItem item) async {
+    Cart? _cart = await _cartProvider.getCurrentCart(unitId);
     if (_cart == null) {
       await _cartProvider.updateCart(unitId, _cart);
       return null;
@@ -84,8 +92,8 @@ class CartRepository implements ICartProvider {
     return _cart;
   }
 
-  Future<Cart> removeOrderFromCart(String unitId, OrderItem order) async {
-    Cart _cart = await _cartProvider.getCurrentCart(unitId);
+  Future<Cart?> removeOrderFromCart(String unitId, OrderItem order) async {
+    Cart? _cart = await _cartProvider.getCurrentCart(unitId);
     if (_cart == null) {
       return null;
     }
@@ -97,21 +105,21 @@ class CartRepository implements ICartProvider {
     return _cart;
   }
 
-  Future<Cart> updatePlaceInCart(GeoUnit unit) async {
-    Cart _cart = await _cartProvider.getCurrentCart(unit.id);
-    if (_cart == null || _cart.items == null) {
+  Future<Cart?> updatePlaceInCart(GeoUnit unit, Place place) async {
+    Cart? _cart = await _cartProvider.getCurrentCart(unit.id!);
+    if (_cart == null || _cart.items.isEmpty) {
       return null;
     }
-    _cart = _cart.copyWith(place: unit.place);
-    await _cartProvider.updateCart(unit.id, _cart);
+    _cart = _cart.copyWith(place: place);
+    await _cartProvider.updateCart(unit.id!, _cart);
     return _cart;
   }
 
-  Future<Cart> getCurrentCart(String unitId) {
+  Future<Cart?> getCurrentCart(String unitId) {
     return _cartProvider.getCurrentCart(unitId);
   }
 
-  Stream<Cart> getCurrentCartStream(String unitId) {
+  Stream<Cart?> getCurrentCartStream(String unitId) {
     return _cartProvider.getCurrentCartStream(unitId);
   }
 
@@ -119,16 +127,16 @@ class CartRepository implements ICartProvider {
   //   await _cartProvider.createAndSendOrderFromCart();
   // }
 
-  Future<Cart> clearCart() async {
+  Future<Cart?> clearCart() async {
     await _cartProvider.clearCart();
     return null;
   }
 
-  Future<Cart> clearPlaceInCart(GeoUnit unit) async {
-    Cart cart = await getCurrentCart(unit.id);
+  Future<Cart?> clearPlaceInCart(GeoUnit unit) async {
+    Cart? cart = await getCurrentCart(unit.id!);
     if (cart != null) {
       cart = cart.copyWith(place: null);
-      await _cartProvider.updateCart(unit.id, cart);
+      await _cartProvider.updateCart(unit.id!, cart);
     }
     return cart;
   }
@@ -139,12 +147,12 @@ class CartRepository implements ICartProvider {
   }
 
   @override
-  Future<Cart> setPaymentMode(String unitId, PaymentMode mode) {
+  Future<Cart?> setPaymentMode(String unitId, PaymentMode mode) {
     return _cartProvider.setPaymentMode(unitId, mode);
   }
 
   @override
-  Future<void> updateCart(String unitId, Cart cart) {
+  Future<void> updateCart(String unitId, Cart? cart) {
     return _cartProvider.updateCart(unitId, cart);
   }
 }

@@ -10,7 +10,7 @@ import 'package:rxdart/rxdart.dart';
 class OrderHistoryBloc extends Bloc<BaseOrderHistoryAction, BaseOrderHistoryState> {
   final OrderRepository _repository;
 
-  StreamController<List<Order>> _orderHistoryController;
+  StreamController<List<Order>?>? _orderHistoryController;
 
   OrderHistoryBloc(
     this._repository,
@@ -32,10 +32,9 @@ class OrderHistoryBloc extends Bloc<BaseOrderHistoryAction, BaseOrderHistoryStat
       if (event is LoadMoreOrderHistory) {
         if (_repository.orderHistoryListHasMoreItems) {
           yield OrderHistoryLoadingMoreState();
-          List<Order> items = await _repository.loadOrderHistoryNextPage(
-            unitId: event.unitId,
+          List<Order>? items = await _repository.loadOrderHistoryNextPage(
             nextToken: event.nextToken,
-            controller: _orderHistoryController,
+            controller: _orderHistoryController!,
           );
           yield OrderHistoryLoadedState(
             orders: items,
@@ -48,13 +47,13 @@ class OrderHistoryBloc extends Bloc<BaseOrderHistoryAction, BaseOrderHistoryStat
 
       if (event is StartGetOrderHistoryListSubscription) {
         yield OrderHistoryLoadingState();
-        if (_orderHistoryController != null && !_orderHistoryController.isClosed) {
-          await _orderHistoryController.close();
+        if (_orderHistoryController != null && !_orderHistoryController!.isClosed) {
+          await _orderHistoryController?.close();
           _orderHistoryController = null;
         }
         await Future.delayed(Duration(microseconds: 700));
         _orderHistoryController = BehaviorSubject<List<Order>>();
-        _orderHistoryController.stream.asBroadcastStream().listen((orderHistoryList) {
+        _orderHistoryController!.stream.asBroadcastStream().listen((orderHistoryList) {
           // print('OrderHistoryBloc.listen=${orderHistoryList?.length}');
           // print('********************* OrderBloc.HISTROY.hashCode=$hashCode');
           // print('********************* OrderBloc.HISTROY.state=${this.state}');
@@ -65,7 +64,7 @@ class OrderHistoryBloc extends Bloc<BaseOrderHistoryAction, BaseOrderHistoryStat
             totalCount: _repository.orderHistoryListTotalCount,
           ));
         });
-        await _repository.startOrderHistoryListSubscription(event.unitId, _orderHistoryController);
+        await _repository.startOrderHistoryListSubscription(event.unitId, _orderHistoryController!);
       }
 
       if (event is StopOrderHistoryListSubscription) {

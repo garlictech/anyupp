@@ -1,8 +1,6 @@
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/login/bloc/login_bloc.dart';
-import 'package:fa_prev/modules/login/bloc/login_event.dart';
-import 'package:fa_prev/modules/payment/simplepay/simplepay.dart';
+import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/models.dart';
@@ -23,24 +21,23 @@ Future<bool> handleUrl(Uri uri) async {
   switch (getDeeplinkType(uri)) {
     case DeeplinkType.QR:
       return await handleUrlQR(uri);
-      break;
-    case DeeplinkType.TRANSACTION_BACK:
-      return await handleUrlTransactionBack(uri);
     case DeeplinkType.VERIFY_EMAIL:
       return await handleVerifyEmail(uri);
-      break;
     default:
       return false;
   }
 }
 
-bool isValidUrl(Uri uri) {
+bool isValidUrl(Uri? uri) {
   print('***** isValidUrl().uri=$uri');
+  if (uri == null) {
+    return false;
+  }
 
-  return uri != null && uri.scheme == 'https' && uri.port == 443;
+  return uri.scheme == 'https' && uri.port == 443;
 }
 
-String getDeeplinkType(Uri uri) {
+String? getDeeplinkType(Uri uri) {
   if (!isValidUrl(uri)) {
     return null;
   }
@@ -57,7 +54,7 @@ String getDeeplinkType(Uri uri) {
 // *************************
 // QR deeplink
 Future<bool> handleUrlQR(Uri uri) async {
-  final Widget page = getNavigationPageByUrlFromQRDeeplink(uri);
+  final Widget? page = getNavigationPageByUrlFromQRDeeplink(uri);
   if (page == null) {
     return false;
   }
@@ -65,7 +62,7 @@ Future<bool> handleUrlQR(Uri uri) async {
   AuthRepository auth = getIt<AuthRepository>();
 
   // --- check authentication
-  User user = await auth.getAuthenticatedUserProfile();
+  User? user = await auth.getAuthenticatedUserProfile();
 
   // Not authenticated
   if (user == null) {
@@ -86,8 +83,7 @@ Future<bool> handleUrlQR(Uri uri) async {
 }
 
 bool isValidQRUrl(Uri uri) {
-  return uri != null &&
-      uri.pathSegments.length == 3 &&
+  return uri.pathSegments.length == 3 &&
       regAlphaNumericSeatOrTable.hasMatch(uri.pathSegments[1]) &&
       regAlphaNumericSeatOrTable.hasMatch(uri.pathSegments[2]) &&
       uri.origin.contains('anyupp.com');
@@ -109,8 +105,7 @@ Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
 // TRANSACTION_BACK deeplink
 
 bool isValidTransactionBackUrl(Uri uri) {
-  return uri != null &&
-      uri.scheme == 'https' &&
+  return uri.scheme == 'https' &&
       uri.pathSegments.length == 3 &&
       uri.pathSegments[0] == 'transaction' &&
       regTransactionId.hasMatch(uri.pathSegments[1]) &&
@@ -118,25 +113,20 @@ bool isValidTransactionBackUrl(Uri uri) {
 }
 
 bool isValidConfirmationUrl(Uri uri) {
-  return uri != null && uri.origin.contains(AppConfig.UserPoolDomain);
+  return uri.origin.contains(AppConfig.UserPoolDomain);
 }
 
 String getTransactionIdFromTransactionBackUrl(Uri uri) {
   return uri.pathSegments[1];
 }
 
-Future<bool> handleUrlTransactionBack(Uri uri) async {
-  final transactionId = uri.pathSegments[1];
-  print('***** handleUrlTransactionBack().transactionId=$transactionId');
-  getIt<SimplePayBloc>().add(CollectSimplePayTransactionStatus(transactionId));
-
-  return false;
-}
-
 Future<bool> handleVerifyEmail(Uri uri) async {
-  Map<String, String> params = uri.queryParameters;
-  String userName = params['user_name'];
-  String confirmationCode = params['confirmation_code'];
-  getIt<LoginBloc>().add(ConfirmRegistration(userName, confirmationCode));
+  Map<String, String?> params = uri.queryParameters;
+  String? userName = params['user_name'];
+  String? confirmationCode = params['confirmation_code'];
+  if (userName != null && confirmationCode != null) {
+    getIt<LoginBloc>().add(ConfirmRegistration(userName, confirmationCode));
+    return true;
+  }
   return false;
 }

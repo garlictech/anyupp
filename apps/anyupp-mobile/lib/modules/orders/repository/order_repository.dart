@@ -25,7 +25,7 @@ class OrderRepository implements IOrdersProvider {
     await _provider.stopOrderListSubscription();
   }
 
-  Future<void> startOrderHistoryListSubscription(String unitId, StreamController<List<Order>> controller) async {
+  Future<void> startOrderHistoryListSubscription(String unitId, StreamController<List<Order>?> controller) async {
     await _provider.startOrderHistoryListSubscription(unitId, controller);
   }
 
@@ -33,7 +33,7 @@ class OrderRepository implements IOrdersProvider {
     await _provider.stopOrderHistoryListSubscription();
   }
 
-  Future<Order> getOrder(String orderId) async {
+  Future<Order?> getOrder(String orderId) async {
     return _provider.getOrder(orderId);
   }
 
@@ -60,14 +60,16 @@ class OrderRepository implements IOrdersProvider {
   int get orderHistoryListTotalCount => _provider.orderHistoryListTotalCount;
 
   @override
-  String get orderHistoryListNextToken => _provider.orderHistoryListNextToken;
+  String? get orderHistoryListNextToken => _provider.orderHistoryListNextToken;
 
   @override
-  String get orderListNextToken => _provider.orderListNextToken;
+  String? get orderListNextToken => _provider.orderListNextToken;
 
   @override
-  Future<List<Order>> loadOrderHistoryNextPage(
-      {String unitId, String nextToken, StreamController<List<Order>> controller}) {
+  Future<List<Order>?> loadOrderHistoryNextPage({
+    String? nextToken,
+    required StreamController<List<Order>?> controller,
+  }) {
     return _provider.loadOrderHistoryNextPage(
       controller: controller,
       nextToken: nextToken,
@@ -75,7 +77,10 @@ class OrderRepository implements IOrdersProvider {
   }
 
   @override
-  Future<List<Order>> loadOrdersNextPage({String unitId, String nextToken, StreamController<List<Order>> controller}) {
+  Future<List<Order>?> loadOrdersNextPage({
+    String? nextToken,
+    required StreamController<List<Order>?> controller,
+  }) {
     return _provider.loadOrdersNextPage(
       controller: controller,
       nextToken: nextToken,
@@ -83,7 +88,7 @@ class OrderRepository implements IOrdersProvider {
   }
 
   @override
-  Future<void> startOrderListSubscription(String unitId, StreamController<List<Order>> controller) {
+  Future<void> startOrderListSubscription(String unitId, StreamController<List<Order>?> controller) {
     return _provider.startOrderListSubscription(unitId, controller);
   }
 

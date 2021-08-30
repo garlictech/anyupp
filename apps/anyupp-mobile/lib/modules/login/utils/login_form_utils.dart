@@ -72,36 +72,26 @@ class LoginFormUtils {
     );
   }
 
-  static FieldValidator emailOrPhoneValidator(BuildContext context) =>
-      MultiValidator([
+  static FieldValidator emailOrPhoneValidator(BuildContext context) => MultiValidator([
         RequiredValidator(errorText: transEx(context, 'validators.required')),
       ]);
 
-  static FieldValidator confirmCodeValidator(BuildContext context) =>
-      MultiValidator([
+  static FieldValidator confirmCodeValidator(BuildContext context) => MultiValidator([
         RequiredValidator(errorText: transEx(context, 'validators.required')),
       ]);
 
   static FieldValidator emailValidator(BuildContext context) => MultiValidator([
-        EmailValidator(
-            errorText: transEx(context, 'validators.enterValidEmail')),
-        RequiredValidator(
-            errorText:
-                transEx(context, transEx(context, 'validators.required'))),
+        EmailValidator(errorText: transEx(context, 'validators.enterValidEmail')),
+        RequiredValidator(errorText: transEx(context, transEx(context, 'validators.required'))),
       ]);
 
-  static FieldValidator passwordValidator(BuildContext context) =>
-      MultiValidator([
-        RequiredValidator(
-            errorText: transEx(context, 'validators.passwordIsRequired')),
-        MinLengthValidator(8,
-            errorText: transEx(context, 'validators.passwordLengthError')),
+  static FieldValidator passwordValidator(BuildContext context) => MultiValidator([
+        RequiredValidator(errorText: transEx(context, 'validators.passwordIsRequired')),
+        MinLengthValidator(8, errorText: transEx(context, 'validators.passwordLengthError')),
         PatternValidator(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$',
             errorText: transEx(context, 'validators.passwordValidatorText')),
       ]);
 
-  static FieldValidator phoneValidator(BuildContext context) => MultiValidator([
-        PatternValidator(r'^\+(?:[0-9]●?){6,14}[0-9]$',
-            errorText: transEx(context, 'validators.eneterValidPhone'))
-      ]);
+  static FieldValidator phoneValidator(BuildContext context) => MultiValidator(
+      [PatternValidator(r'^\+(?:[0-9]●?){6,14}[0-9]$', errorText: transEx(context, 'validators.eneterValidPhone'))]);
 }

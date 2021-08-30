@@ -1,7 +1,7 @@
 import 'package:fa_prev/graphql/graphql.dart';
 import 'generated/crud-api.dart';
 
-Future<String> createDummyOrder(String userId, String unitId, bool archived, int orderNum) async {
+Future<String?> createDummyOrder(String userId, String unitId, bool archived, int orderNum) async {
   // print('GraphQLCrud.createDummyOrder().unit=$unitId, user=$userId');
   try {
     var result = await GQL.amplify.execute(CreateOrderMutation(
@@ -74,14 +74,14 @@ Future<String> createDummyOrder(String userId, String unitId, bool archived, int
     // print('GraphQLCrud.createDummyOrder().result.data=${result.data}');
     // print('GraphQLCrud.createDummyOrder().result.exception=${result.exception}');
 
-    if (result.data != null) {
-      String id = result.data.createOrder.id;
-      bool archived = result.data.createOrder.archived;
+    if (result.data?.createOrder != null) {
+      String id = result.data!.createOrder!.id;
+      bool archived = result.data!.createOrder!.archived;
       print('GraphQLCrud.createDummyOrder().created[$orderNum]=$id, archived=$archived');
       return id;
+    } else {
+      return null;
     }
-
-    return null;
   } on Exception catch (e) {
     print('GraphQLCrud.createDummyOrder().Exception: $e');
     rethrow;
@@ -89,15 +89,17 @@ Future<String> createDummyOrder(String userId, String unitId, bool archived, int
 }
 
 Future<List<String>> createDummyOrders({
-  int count,
-  String userId,
-  String unitId,
-  bool archived,
+  required int count,
+  required String userId,
+  required String unitId,
+  required bool archived,
 }) async {
   List<String> ids = [];
   for (int i = 0; i < count; i++) {
-    String id = await createDummyOrder(userId, unitId, archived, i + 1);
-    ids.add(id);
+    String? id = await createDummyOrder(userId, unitId, archived, i + 1);
+    if (id != null) {
+      ids.add(id);
+    }
   }
   print('createDummyOrders().created[${ids.length}]=$ids');
   return ids;

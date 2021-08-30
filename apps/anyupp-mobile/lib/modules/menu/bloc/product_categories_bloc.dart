@@ -4,10 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/models.dart';
-import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 
-// TODO ezt a trukkot at kellene tenni a tobbi blocba is
 part 'product_categories_event.dart';
 part 'product_categories_state.dart';
 
@@ -15,19 +12,19 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
   final UnitSelectBloc _unitSelectBloc;
   final ProductRepository _productRepository;
 
-  StreamSubscription _unitSelectSubscription;
-  StreamSubscription _productCategoriesSubscription;
+  late StreamSubscription _unitSelectSubscription;
+  StreamSubscription? _productCategoriesSubscription;
 
   ProductCategoriesBloc(this._unitSelectBloc, this._productRepository) : super(ProductCategoriesLoading()) {
     if (_unitSelectBloc.state is UnitSelected) {
       add(LoadProductCategories(
         (_unitSelectBloc.state as UnitSelected).unit.chainId,
-        (_unitSelectBloc.state as UnitSelected).unit.id,
+        (_unitSelectBloc.state as UnitSelected).unit.id!,
       ));
     }
     _unitSelectSubscription = _unitSelectBloc.stream.asBroadcastStream().listen((state) {
       if (state is UnitSelected) {
-        add(LoadProductCategories(state.unit.chainId, state.unit.id));
+        add(LoadProductCategories(state.unit.chainId, state.unit.id!));
       }
     });
   }
@@ -46,7 +43,7 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
 
   @override
   Future<void> close() async {
-    await _unitSelectSubscription?.cancel();
+    await _unitSelectSubscription.cancel();
     return super.close();
   }
 
@@ -55,7 +52,7 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
     await _productCategoriesSubscription?.cancel();
     _productCategoriesSubscription =
         _productRepository.getProductCategoryList(event.chainId, event.unitId).listen((event) {
-          print('productCategory._mapLoadProductCategoriesToState().event=$event');
+      print('productCategory._mapLoadProductCategoriesToState().event=$event');
       add(ProductCategoriesUpdated(event));
     });
   }

@@ -7,7 +7,7 @@ class AppSyncRequest extends RequestSerializer {
   final Map<String, dynamic> authHeader;
 
   const AppSyncRequest({
-    this.authHeader,
+    required this.authHeader,
   });
 
   @override

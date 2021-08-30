@@ -1,6 +1,5 @@
 part of 'unit_select_bloc.dart';
 
-@immutable
 abstract class UnitSelectEvent {
   const UnitSelectEvent();
 }

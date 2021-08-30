@@ -4,9 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget allergenGridWidget(
-    {String allergen,
-    int index,
-    String assetPath,
+    {required String allergen,
+    required int index,
+    required String assetPath,
     bool showName = false,
     double fontSize = 16.0,
     double borderRadius = 12.0,
@@ -17,7 +17,7 @@ Widget allergenGridWidget(
       return Stack(
         children: [
           Padding(
-            padding: EdgeInsets.all(fontSize/3),
+            padding: EdgeInsets.all(fontSize / 3),
             child: Container(
               padding: EdgeInsets.only(
                 top: showName ? 0 : padding,

@@ -8,11 +8,10 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fa_prev/shared/nav.dart';
 
-
 showSimpleDialog(BuildContext context) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
-  SchedulerBinding.instance.addPostFrameCallback((_) {
+  SchedulerBinding.instance?.addPostFrameCallback((_) {
     showDialog(
         context: context,
         builder: (BuildContext context) => Dialog(

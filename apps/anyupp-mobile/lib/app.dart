@@ -14,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/affiliate.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/exception.dart';
@@ -28,7 +27,6 @@ import 'modules/cart/cart.dart';
 import 'modules/favorites/favorites.dart';
 import 'modules/main/main.dart';
 import 'modules/orders/orders.dart';
-import 'modules/payment/simplepay/simplepay.dart';
 import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
 import 'modules/transactions/bloc/transactions_bloc.dart';
@@ -41,8 +39,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  StreamSubscription _deeplinkSubscription;
-  bool isProd;
+  late StreamSubscription? _deeplinkSubscription;
+  late bool isProd;
 
   @override
   void initState() {
@@ -63,30 +61,30 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     if (_deeplinkSubscription != null) {
-      _deeplinkSubscription.cancel();
+      _deeplinkSubscription!.cancel();
     }
     super.dispose();
   }
 
   Future<void> _initDeepLinks() async {
     try {
-      Uri uri = await getInitialUri();
+      Uri? uri = await getInitialUri();
       print('_initDeepLinks().uri=$uri');
 
       if (isValidUrl(uri)) {
-        await handleUrl(uri);
+        await handleUrl(uri!);
       }
     } on Exception catch (e) {
       print('***** _initDeepLinks().exception=$e');
     }
 
-    _deeplinkSubscription = linkStream.listen((String link) async {
+    _deeplinkSubscription = linkStream.listen((String? link) async {
       try {
-        Uri uri = await getInitialUri();
+        Uri? uri = await getInitialUri();
         print('_initDeepLinks().uri=$uri');
 
         if (isValidUrl(uri)) {
-          await handleUrl(uri);
+          await handleUrl(uri!);
         }
       } on Exception catch (e) {
         print('***** _initDeepLinks().exception=$e');
@@ -115,7 +113,6 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (BuildContext context) => getIt<AuthBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<LocaleBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<ExceptionBloc>()),
-        BlocProvider(create: (BuildContext context) => getIt<PaymentBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<OrderBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<OrderHistoryBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<OrderCounterBloc>()),
@@ -127,9 +124,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<FavoritesBloc>(create: (context) => getIt<FavoritesBloc>()),
         BlocProvider<TransactionsBloc>(create: (context) => getIt<TransactionsBloc>()),
         BlocProvider<LoginBloc>(create: (BuildContext context) => getIt<LoginBloc>()),
-        BlocProvider<SimplePayBloc>(create: (BuildContext context) => getIt<SimplePayBloc>()),
         BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
-        BlocProvider<AffiliateBloc>(create: (BuildContext context) => getIt<AffiliateBloc>()),
         BlocProvider<MainNavigationBloc>(create: (BuildContext context) => getIt<MainNavigationBloc>()),
         BlocProvider<ConfigsetBloc>(create: (BuildContext context) => getIt<ConfigsetBloc>()),
         BlocProvider<UserDetailsBloc>(create: (BuildContext context) => getIt<UserDetailsBloc>()),
@@ -167,7 +162,7 @@ class _MyAppState extends State<MyApp> {
 
                 builder: (context, child) {
                   return MediaQuery(
-                    child: child,
+                    child: child ?? Container(),
                     data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
                   );
                 },
@@ -191,17 +186,19 @@ class _MyAppState extends State<MyApp> {
                 ],
                 supportedLocales: SupportedLocales.locales,
                 localeListResolutionCallback:
-                    (List<Locale> userPreferredlocales, Iterable<Locale> appSupportedLocales) {
+                    (List<Locale>? userPreferredlocales, Iterable<Locale> appSupportedLocales) {
                   // userPreferredlocales: comes from the phone settings in the same order
                   // appSupportedLocales: comes from the supportedLocales parameter what was defined up ahead
 
                   // Try to find a userPreferred Local what is supported by the APP
-                  for (Locale locale in userPreferredlocales) {
-                    for (Locale supportedLocale in appSupportedLocales) {
-                      if (supportedLocale.languageCode == locale.languageCode &&
-                          supportedLocale.countryCode == locale.countryCode) {
-                        // Return the first userPreferred Local what is supported by the APP
-                        return supportedLocale;
+                  if (userPreferredlocales != null) {
+                    for (Locale locale in userPreferredlocales) {
+                      for (Locale supportedLocale in appSupportedLocales) {
+                        if (supportedLocale.languageCode == locale.languageCode &&
+                            supportedLocale.countryCode == locale.countryCode) {
+                          // Return the first userPreferred Local what is supported by the APP
+                          return supportedLocale;
+                        }
                       }
                     }
                   }

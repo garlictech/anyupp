@@ -27,16 +27,14 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (BuildContext context, LoginState state) {
         if (state is LoginInProgress) {
-          return _buildLoading(context,
-              message: trans('login.email.sendPasswordResetMessage'));
+          return _buildLoading(context, message: trans('login.email.sendPasswordResetMessage'));
         }
 
         if (state is PasswordResetInProgress) {
           return _buildLoading(context);
         }
         if (state is PasswordResetInfoSentState) {
-          return _buildEmailSentInfo(
-              context, state.userName, state.deliveryMedium, state.destination);
+          return _buildEmailSentInfo(context, state.userName, state.deliveryMedium, state.destination);
         }
 
         return _buildResetPasswordForm(context);
@@ -64,8 +62,7 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
     );
   }
 
-  Widget _buildEmailSentInfo(BuildContext context, String userName,
-      String deliveryMedium, String destination) {
+  Widget _buildEmailSentInfo(BuildContext context, String userName, String deliveryMedium, String destination) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -95,11 +92,9 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
               ),
               InkWell(
                 onTap: () {
-                  getIt<LoginBloc>().add(ChangeEmailFormUI(
-                      ui: LoginFormUI.SHOW_PASSWORD_CONFIRM,
-                      animationCurve: Curves.easeIn));
-                  getIt<LoginBloc>().add(PasswordResetInfoSent(
-                      userName, deliveryMedium, destination));
+                  getIt<LoginBloc>()
+                      .add(ChangeEmailFormUI(ui: LoginFormUI.SHOW_PASSWORD_CONFIRM, animationCurve: Curves.easeIn));
+                  getIt<LoginBloc>().add(PasswordResetInfoSent(userName, deliveryMedium, destination));
                 },
                 child: Text(
                   trans('login.email.enterCode'),
@@ -144,9 +139,8 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
                     // Sing in link button
                     InkWell(
                       onTap: () {
-                        getIt<LoginBloc>().add(ChangeEmailFormUI(
-                            ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
-                            animationCurve: Curves.easeIn));
+                        getIt<LoginBloc>().add(
+                            ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
                       },
                       child: Text(
                         trans('login.email.linkSignIn'),
@@ -197,8 +191,8 @@ class _PasswordResetWidgetState extends State<PasswordResetWidget> {
 
   void _sendPasswordResetEmail() {
     print('_sendPasswordResetEmail()=${_emailController.text}');
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       getIt<LoginBloc>().add(SendPasswordResetEmail(_emailController.text));
     }
   }

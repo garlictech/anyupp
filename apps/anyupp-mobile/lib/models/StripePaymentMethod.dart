@@ -1,37 +1,55 @@
-import 'dart:convert';
-
 class StripePaymentMethod {
-  final String id;
+  final String? id;
   final String last4;
-  final String brand;
+  final String? brand;
   final int expMonth;
   final int expYear;
-  final String country;
-  final String name;
+  final String? country;
+  final String? name;
 
   StripePaymentMethod({
     this.id,
-    this.last4,
+    required this.last4,
     this.brand,
-    this.expMonth,
-    this.expYear,
+    required this.expMonth,
+    required this.expYear,
     this.country,
     this.name,
   });
 
-  Map<String, dynamic> toMap() {
+  StripePaymentMethod copyWith({
+    String? id,
+    String? last4,
+    String? brand,
+    int? expMonth,
+    int? expYear,
+    String? country,
+    String? name,
+  }) {
+    return StripePaymentMethod(
+      id: id ?? this.id,
+      last4: last4 ?? this.last4,
+      brand: brand ?? this.brand,
+      expMonth: expMonth ?? this.expMonth,
+      expYear: expYear ?? this.expYear,
+      country: country ?? this.country,
+      name: name ?? this.name,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'last4': last4,
       'brand': brand,
-      'exp_month': expMonth,
-      'exp_year': expYear,
+      'expMonth': expMonth,
+      'expYear': expYear,
       'country': country,
       'name': name,
     };
   }
 
-  factory StripePaymentMethod.fromMap(Map<String, dynamic> map) {
+  factory StripePaymentMethod.fromJson(Map<String, dynamic> map) {
     return StripePaymentMethod(
       id: map['id'],
       last4: map['last4'],
@@ -43,13 +61,9 @@ class StripePaymentMethod {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory StripePaymentMethod.fromJson(String source) => StripePaymentMethod.fromMap(json.decode(source));
-
   @override
   String toString() {
-    return 'StripePaymentMethod(name: $name, id: $id, last4: $last4, brand: $brand, expMonth: $expMonth, expYear: $expYear, country: $country)';
+    return 'StripePaymentMethod(id: $id, last4: $last4, brand: $brand, expMonth: $expMonth, expYear: $expYear, country: $country, name: $name)';
   }
 
   @override
@@ -68,6 +82,12 @@ class StripePaymentMethod {
 
   @override
   int get hashCode {
-    return id.hashCode ^ last4.hashCode ^ brand.hashCode ^ expMonth.hashCode ^ expYear.hashCode ^ country.hashCode ^ name.hashCode;
+    return id.hashCode ^
+        last4.hashCode ^
+        brand.hashCode ^
+        expMonth.hashCode ^
+        expYear.hashCode ^
+        country.hashCode ^
+        name.hashCode;
   }
 }

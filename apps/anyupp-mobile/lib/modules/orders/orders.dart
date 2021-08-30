@@ -14,5 +14,7 @@ export 'repository/order_notification_repository.dart';
 export 'widgets/current_order_card_widget.dart';
 export 'widgets/order_history_card_widget.dart';
 export 'widgets/order_simple_list_item_widget.dart';
-export 'widgets/order_state_card.dart';
 export 'widgets/order_status_footer.dart';
+export 'widgets/animated_dot.dart';
+export 'widgets/animated_order_icon.dart';
+export 'widgets/current_order_card_widget.dart';

@@ -9,12 +9,12 @@ import 'common_error_widget.dart';
 
 Future showConfirmDialog(
   BuildContext context, {
-  String title,
-  String message,
-  String cancelText,
-  String confirmText,
-  VoidCallback onCancel,
-  VoidCallback onConfirm,
+  required String title,
+  required String message,
+  required String cancelText,
+  required String confirmText,
+  VoidCallback? onCancel,
+  VoidCallback? onConfirm,
 }) async {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 

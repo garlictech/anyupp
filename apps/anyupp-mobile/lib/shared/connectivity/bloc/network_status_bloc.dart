@@ -7,31 +7,21 @@ import 'package:fa_prev/shared/connectivity/bloc/network_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
-  StreamSubscription _connectivitySubscription;
-  ConnectivityResult _lastState;
-  bool _hasDataConnection;
+  late StreamSubscription _connectivitySubscription;
+  ConnectivityResult? _lastState;
+  bool? _hasDataConnection;
 
-  NetworkStatusBloc()
-      : super(NetworkState(ConnectivityResult.wifi, true, null, null)) {
-    print(
-        'NetworkStatusBloc.constructor()._connectivitySubscription=$_connectivitySubscription');
-
-    if (_connectivitySubscription != null) {
-      _connectivitySubscription
-          .cancel()
-          .then((value) => _initConnectionSubscription);
-    } else {
-      _initConnectionSubscription();
-    }
+  NetworkStatusBloc() : super(NetworkState(ConnectivityResult.wifi, true, null, null)) {
+    _initConnectionSubscription();
+    print('NetworkStatusBloc.constructor()._connectivitySubscription=$_connectivitySubscription');
 
     Connectivity().checkConnectivity().then((result) {
       print('NetworkStatusBloc.checkConnectivity()=$result');
-      checkDataConnection().then((value) =>
-          add(NetworkConnectionChangedEvent(result, value, false, false)));
+      checkDataConnection().then((value) => add(NetworkConnectionChangedEvent(result, value, false, false)));
     });
   }
 
-  ConnectivityResult getLastConnectivityResult() {
+  ConnectivityResult? getLastConnectivityResult() {
     return _lastState;
   }
 
@@ -68,19 +58,17 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
         }
 
         _hasDataConnection = await checkDataConnection();
-        add(NetworkConnectionChangedEvent(
-            result, _hasDataConnection, show, hide));
+        add(NetworkConnectionChangedEvent(result, _hasDataConnection, show, hide));
         _lastState = result;
       },
     );
   }
 
   void tryToReconnect() async {
-    while (!_hasDataConnection) {
+    while (_hasDataConnection == null || _hasDataConnection == false) {
       _hasDataConnection = await checkDataConnection();
-      if (_hasDataConnection) {
-        add(NetworkConnectionChangedEvent(
-            _lastState, _hasDataConnection, false, true));
+      if (_hasDataConnection! && _lastState != null) {
+        add(NetworkConnectionChangedEvent(_lastState!, _hasDataConnection, false, true));
         break;
       }
       await Future.delayed(Duration(seconds: 5));
@@ -90,21 +78,19 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
   @override
   Stream<NetworkState> mapEventToState(NetworkStatusEvent event) async* {
     if (event is NetworkConnectionChangedEvent) {
-      if ([ConnectivityResult.mobile, ConnectivityResult.wifi]
-          .contains(event.state) && !event.hasDataConnection) {
+      if ([ConnectivityResult.mobile, ConnectivityResult.wifi].contains(event.state) &&
+          (event.hasDataConnection == null || event.hasDataConnection == false)) {
         _hasDataConnection = event.hasDataConnection;
         tryToReconnect();
       }
-      yield NetworkState(event.state, event.hasDataConnection, event.showDialog,
-          event.hideDialog);
+      yield NetworkState(event.state, event.hasDataConnection, event.showDialog, event.hideDialog);
     }
   }
 
   @override
   Future<void> close() async {
-    print(
-        'NetworkStatusBloc.close()._connectivitySubscription=$_connectivitySubscription');
-    await _connectivitySubscription?.cancel();
+    print('NetworkStatusBloc.close()._connectivitySubscription=$_connectivitySubscription');
+    await _connectivitySubscription.cancel();
     return super.close();
   }
 }

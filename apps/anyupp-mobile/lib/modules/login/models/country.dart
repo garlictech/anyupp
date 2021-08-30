@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Country {
   String name;
   String flag;
@@ -7,13 +5,27 @@ class Country {
   String dialCode;
 
   Country({
-    this.name,
-    this.flag,
-    this.code,
-    this.dialCode,
+    required this.name,
+    required this.flag,
+    required this.code,
+    required this.dialCode,
   });
 
-  Map<String, dynamic> toMap() {
+  Country copyWith({
+    String? name,
+    String? flag,
+    String? code,
+    String? dialCode,
+  }) {
+    return Country(
+      name: name ?? this.name,
+      flag: flag ?? this.flag,
+      code: code ?? this.code,
+      dialCode: dialCode ?? this.dialCode,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
     return {
       'name': name,
       'flag': flag,
@@ -22,9 +34,7 @@ class Country {
     };
   }
 
-  factory Country.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-  
+  factory Country.fromJson(Map<String, dynamic> map) {
     return Country(
       name: map['name'],
       flag: map['flag'],
@@ -33,12 +43,24 @@ class Country {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory Country.fromJson(String source) => Country.fromMap(json.decode(source));
-
   @override
   String toString() {
     return 'Country(name: $name, flag: $flag, code: $code, dialCode: $dialCode)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Country &&
+        other.name == name &&
+        other.flag == flag &&
+        other.code == code &&
+        other.dialCode == dialCode;
+  }
+
+  @override
+  int get hashCode {
+    return name.hashCode ^ flag.hashCode ^ code.hashCode ^ dialCode.hashCode;
   }
 }
