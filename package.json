@@ -73,7 +73,7 @@
     "aws-amplify": "4.2.5",
     "aws-appsync": "4.1.1",
     "aws-lambda": "1.0.6",
-    "aws-sdk": "2.971.0",
+    "aws-sdk": "2.978.0",
     "aws-serverless-express": "3.4.0",
     "bootstrap": "5.1.0",
     "chart.js": "2.9.4",
