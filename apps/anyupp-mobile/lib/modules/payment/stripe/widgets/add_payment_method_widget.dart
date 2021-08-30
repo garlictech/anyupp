@@ -6,20 +6,17 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stripe_sdk/src/ui/widgets/card_form.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 class StripeAddPaymentMethodWidget extends StatefulWidget {
   @override
-  _StripeAddPaymentMethodWidgetState createState() =>
-      _StripeAddPaymentMethodWidgetState();
+  _StripeAddPaymentMethodWidgetState createState() => _StripeAddPaymentMethodWidgetState();
 }
 
-class _StripeAddPaymentMethodWidgetState
-    extends State<StripeAddPaymentMethodWidget> {
+class _StripeAddPaymentMethodWidgetState extends State<StripeAddPaymentMethodWidget> {
   StripeCard _cardData = StripeCard();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  CardForm _form;
+  CardFormWidget _form;
 
   _StripeAddPaymentMethodWidgetState();
 
@@ -32,11 +29,8 @@ class _StripeAddPaymentMethodWidgetState
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<StripePaymentBloc, StripePaymentState>(
-        listener: (BuildContext context, StripePaymentState state) {
-
-        },
-        child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
-            builder: (context, StripePaymentState state) {
+        listener: (BuildContext context, StripePaymentState state) {},
+        child: BlocBuilder<StripePaymentBloc, StripePaymentState>(builder: (context, StripePaymentState state) {
           if (state is StripePaymentLoading) {
             return _buildLoadingWidget(context);
           }
@@ -49,8 +43,7 @@ class _StripeAddPaymentMethodWidgetState
                   print('saving card=$_cardData');
                   print('saving card=${_cardData.cvc}');
                   print('saving card=${_cardData.number}');
-                  getIt<StripePaymentBloc>()
-                      .add(CreateStripeCardEvent(_cardData, null));
+                  getIt<StripePaymentBloc>().add(CreateStripeCardEvent(_cardData, null));
                   // Nav.pop();
                 }
               })
@@ -62,12 +55,11 @@ class _StripeAddPaymentMethodWidgetState
   }
 
   Widget _buildAddCardForm(BuildContext context) {
-    _form = CardForm(
+    _form = CardFormWidget(
       card: _cardData,
       formKey: _formKey,
       displayAnimatedCard: true,
-      cardNumberErrorText:
-          trans('payment.cardFields.card_number.validationError'),
+      cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
       cardNumberDecoration: InputDecoration(
         labelText: trans('payment.cardFields.card_number.label'),
         hintText: trans('payment.cardFields.card_number.hint'),
@@ -82,7 +74,7 @@ class _StripeAddPaymentMethodWidgetState
         labelText: trans('payment.cardFields.cvc.label'),
         hintText: trans('payment.cardFields.cvc.hint'),
       ),
-      displayPostalCode: true,
+      displayPostalCode: false,
     );
     return Container(
       padding: EdgeInsets.only(top: 12.0),
@@ -103,8 +95,6 @@ class _StripeAddPaymentMethodWidgetState
 
   void showProgressDialog(BuildContext context) {
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => Center(child: CircularProgressIndicator()));
+        context: context, barrierDismissible: false, builder: (context) => Center(child: CircularProgressIndicator()));
   }
 }

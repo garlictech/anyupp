@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 class NewCardPaymentWidget extends StatefulWidget {
   final String orderId;
@@ -26,7 +25,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
   StripePaymentMethod _paymentMethod;
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _saveCard = false;
-  CardForm _form;
+  CardFormWidget _form;
 
   _NewCardPaymentWidgetState();
 
@@ -38,7 +37,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    this._form = CardForm(
+    this._form = CardFormWidget(
       displayAnimatedCard: true,
       formKey: _formKey,
       cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
@@ -56,7 +55,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
         labelText: trans('payment.cardFields.cvc.label'),
         hintText: trans('payment.cardFields.cvc.hint'),
       ),
-      displayPostalCode: true,
+      displayPostalCode: false,
     );
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: theme.background,
