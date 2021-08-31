@@ -11,6 +11,8 @@ npx cowsay "TESTING $STAGE..."
 
 yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover
 yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover
+yarn deleteAllTableData
+yarn seed
 yarn nx e2e-remote admin-e2e --headless --baseUrl=$ADMIN_SITE_URL
 yarn deleteAllTableData
 yarn seed
