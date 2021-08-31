@@ -141,6 +141,12 @@ Feature: Dashboard
     When I click on the close button
     Then I should see the "Orders history" page
 
+  Scenario: Report export feature
+    When I click on the "Reports" icon with title
+    Then I should see "Product mix" table
+    When I click on the "Export" button
+    Then I should download the product mix export file
+
 #  Scenario: Reports feature
 #    When I click on the "Reports" icon with title
 #    Then I should see "Paid orders" text

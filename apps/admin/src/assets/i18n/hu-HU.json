@@ -97,7 +97,8 @@
     "height": "magasság",
     "receipt": "nyugta",
     "invoice": "számla",
-    "timeZone": "Időzóna"
+    "timeZone": "Időzóna",
+    "resetPassword": "Új jelszó"
   },
   "menu": {
     "dashboard": "Vezérlőpult",
@@ -291,7 +292,21 @@
     "wall": "Fal",
     "label": "Felirat",
     "tableId": "Asztal ID",
-    "seatId": "Szék ID"
+    "seatId": "Szék ID",
+    "pos": "POS",
+    "posType": {
+      "anyupp": "AnyUPP",
+      "rkeeper": "RKeepeR"
+    },
+    "rkeeper": {
+      "endpointUri": "Endpoint URI",
+      "rkeeperUsername": "RKeepeR username",
+      "rkeeperPassword": "RKeepeR password",
+      "anyuppUsername": "AnyUPP username",
+      "anyuppPassword": "AnyUPP password",
+      "restaurantId": "Restaurant ID"
+    },
+    "rkeeperDeletionAlert": "AzAnyUPP POS has been selected. RKeeper data will be deleted."
   },
   "users": {
     "listTitle": "Felhasználók",

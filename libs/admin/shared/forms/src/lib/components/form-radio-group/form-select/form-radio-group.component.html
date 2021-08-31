@@ -1,0 +1,17 @@
+<div class="form-control-group">
+  <div>
+    <label class="caption">{{ caption | translate }}</label>
+  </div>
+  <div>
+    <nb-radio-group [formControl]="control" [attr.data-testid]="inputId">
+      <nb-radio
+        *ngFor="let option of options"
+        [value]="option.key"
+        [ngClass]="{ 'd-inline-block': horizontal }"
+        >{{
+          localize ? (option.value! | localize) : (option.value! | translate)
+        }}</nb-radio
+      >
+    </nb-radio-group>
+  </div>
+</div>

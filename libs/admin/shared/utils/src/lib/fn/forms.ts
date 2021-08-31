@@ -165,3 +165,16 @@ export const getDayIntervals = (dateValue: string | number): IDateIntervals => {
     to: end.getTime(),
   };
 };
+
+export const makeId = (length: number): string => {
+  let result = '';
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charsLength = chars.length;
+
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * charsLength));
+  }
+
+  return result;
+};

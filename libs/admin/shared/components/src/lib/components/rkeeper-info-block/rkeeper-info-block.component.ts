@@ -1,0 +1,13 @@
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import * as CrudApi from '@bgap/crud-gql/api';
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'bgap-rkeeper-info-block',
+  templateUrl: './rkeeper-info-block.component.html',
+  styleUrls: ['./rkeeper-info-block.component.scss'],
+})
+export class RkeeperInfoBlockComponent {
+  @Input() unitID?: string;
+  @Input() pos?: CrudApi.Pos | undefined | null;
+}

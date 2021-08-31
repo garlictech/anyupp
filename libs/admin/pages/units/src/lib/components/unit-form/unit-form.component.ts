@@ -1,4 +1,4 @@
-import * as fp from 'lodash/fp';
+import { cloneDeep, omit, pick } from 'lodash/fp';
 import { delay, take } from 'rxjs/operators';
 
 import {
@@ -10,6 +10,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray, Validators } from '@angular/forms';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
@@ -30,6 +31,7 @@ import {
 import * as CrudApi from '@bgap/crud-gql/api';
 import { IKeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
+import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { timeZonesNames } from '@vvo/tzdb';
@@ -50,11 +52,13 @@ export class UnitFormComponent
   public timeZoneOptions: IKeyValue[] = [];
 
   private _groups: CrudApi.Group[] = [];
+  private _isInitiallyRkeeper = false;
 
   constructor(
     protected _injector: Injector,
     private _store: Store,
     private _formsService: FormsService,
+    private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
   ) {
@@ -77,6 +81,10 @@ export class UnitFormComponent
       paymentModes: [[]],
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder, true),
+      pos: this._formBuilder.group({
+        type: [CrudApi.PosType.anyupp],
+        rkeeper: this._formsService.createRkeeperFormGroup(),
+      }),
       open: this._formBuilder.group({
         from: [''],
         to: [''],
@@ -121,7 +129,10 @@ export class UnitFormComponent
 
   ngOnInit(): void {
     if (this.unit) {
-      this.dialogForm.patchValue(cleanObject(fp.omit(['lanes'], this.unit)));
+      this._isInitiallyRkeeper =
+        this.unit.pos?.type === CrudApi.PosType.rkeeper;
+
+      this.dialogForm.patchValue(cleanObject(omit(['lanes'], this.unit)));
 
       // Parse openingHours object to temp array
       const custom = this.unit?.openingHours?.custom;
@@ -206,42 +217,79 @@ export class UnitFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      if (this.unit?.id) {
-        this._crudSdk.sdk
-          .UpdateUnit({
-            input: {
-              id: this.unit.id,
-              ...this.dialogForm?.value,
-            },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful',
-            );
+      if (
+        this._isInitiallyRkeeper &&
+        this.dialogForm?.value.pos?.type !== CrudApi.PosType.rkeeper
+      ) {
+        const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
-            this.close();
-          });
-      } else {
-        this._crudSdk.sdk
-          .CreateUnit({
-            input: {
-              ...this.dialogForm?.value,
-              isAcceptingOrders: false,
+        dialog.componentRef.instance.options = {
+          message: 'units.rkeeperDeletionAlert',
+          buttons: [
+            {
+              label: 'common.ok',
+              callback: (): void => {
+                this._submitForm();
+              },
+              status: 'success',
             },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
-            this.close();
-          });
+            {
+              label: 'common.cancel',
+              callback: () => {
+                /* */
+              },
+              status: 'basic',
+            },
+          ],
+        };
+      } else {
+        this._submitForm();
       }
+    }
+  }
+
+  private _submitForm() {
+    const value = cloneDeep(this.dialogForm?.value);
+
+    if (value.pos?.type !== CrudApi.PosType.rkeeper) {
+      delete value.pos?.rkeeper;
+    }
+
+    if (this.unit?.id) {
+      this._crudSdk.sdk
+        .UpdateUnit({
+          input: {
+            id: this.unit.id,
+            ...value,
+          },
+        })
+        .pipe(catchGqlError(this._store))
+        .subscribe(() => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.updateSuccessful',
+          );
+
+          this.close();
+        });
+    } else {
+      this._crudSdk.sdk
+        .CreateUnit({
+          input: {
+            ...value,
+            isAcceptingOrders: false,
+          },
+        })
+        .pipe(catchGqlError(this._store))
+        .subscribe(() => {
+          this._toasterService.show(
+            EToasterType.SUCCESS,
+            '',
+            'common.insertSuccessful',
+          );
+          this.close();
+        });
     }
   }
 
@@ -260,7 +308,7 @@ export class UnitFormComponent
       .indexOf(paymentMode.type);
 
     if (idx < 0) {
-      paymentModesArr.push(fp.pick(['type', 'method'], paymentMode));
+      paymentModesArr.push(pick(['type', 'method'], paymentMode));
     } else {
       paymentModesArr.splice(idx, 1);
     }

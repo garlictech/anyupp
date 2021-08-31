@@ -1,0 +1,106 @@
+<fieldset class="form">
+  <legend class="label">{{ 'units.pos' | translate }}</legend>
+  <div>
+    <div class="row">
+      <div class="col-12">
+        <div class="col-md-6">
+          <bgap-form-radio-group
+            caption="common.type"
+            [options]="posTypeOptions"
+            [control]="posFormGroup.get('type')! | asFormControl"
+            [localize]="false"
+            [horizontal]="true"
+            inputId="groupId"
+          ></bgap-form-radio-group>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="posFormGroup.value.type === ePosType.rkeeper">
+      <div class="row">
+        <div class="col-12">
+          <bgap-form-text-input
+            caption="units.rkeeper.endpointUri"
+            type="text"
+            [control]="
+              posFormGroup.get('rkeeper')!.get('endpointUri')! | asFormControl
+            "
+            inputId="endpointUri"
+          ></bgap-form-text-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <bgap-form-text-input
+            caption="units.rkeeper.rkeeperUsername"
+            type="text"
+            [control]="
+              posFormGroup.get('rkeeper')!.get('rkeeperUsername')!
+                | asFormControl
+            "
+            inputId="rkeeperUsername"
+          ></bgap-form-text-input>
+        </div>
+        <div class="col-6">
+          <bgap-form-text-input
+            caption="units.rkeeper.rkeeperPassword"
+            type="text"
+            [control]="
+              posFormGroup.get('rkeeper')!.get('rkeeperPassword')!
+                | asFormControl
+            "
+            inputId="rkeeperPassword"
+          ></bgap-form-text-input>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <bgap-form-text-input
+            caption="units.rkeeper.anyuppUsername"
+            type="text"
+            [control]="
+              posFormGroup.get('rkeeper')!.get('anyuppUsername')!
+                | asFormControl
+            "
+            inputId="anyuppUsername"
+          ></bgap-form-text-input>
+        </div>
+        <div class="col-3">
+          <bgap-form-text-input
+            caption="units.rkeeper.anyuppPassword"
+            type="text"
+            [control]="
+              posFormGroup.get('rkeeper')!.get('anyuppPassword')!
+                | asFormControl
+            "
+            inputId="anyuppPassword"
+          ></bgap-form-text-input>
+        </div>
+        <div class="col-3">
+          <button
+            nbButton
+            size="small"
+            type="button"
+            status="primary"
+            class="reset-password"
+            (click)="generateNewPassword()"
+          >
+            {{ 'common.resetPassword' | translate }}
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <bgap-form-text-input
+            caption="units.rkeeper.restaurantId"
+            type="text"
+            [control]="
+              posFormGroup.get('rkeeper')!.get('restaurantId')! | asFormControl
+            "
+            inputId="restaurantId"
+          ></bgap-form-text-input>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</fieldset>

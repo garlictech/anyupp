@@ -5,6 +5,11 @@
   </div>
   <div class="caption">{{ unit!.description! | localize }}</div>
   <bgap-contact [contact]="unit"></bgap-contact>
+  <bgap-rkeeper-info-block
+    *ngIf="unit?.pos?.type === ePosType.rkeeper"
+    [unitID]="unit?.id"
+    [pos]="unit?.pos"
+  ></bgap-rkeeper-info-block>
 </div>
 
 <button

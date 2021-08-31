@@ -15,6 +15,7 @@ import {
   NbInputModule,
   NbLayoutModule,
   NbListModule,
+  NbRadioModule,
   NbSelectModule,
   NbUserModule,
 } from '@nebular/theme';
@@ -35,6 +36,8 @@ import { FormWeeklyScheduleComponent } from './components/form-weekly-schedule/f
 import { FormAllergensComponent } from './components/form-allergens/form-allergens.component';
 import { FormProductComponentsComponent } from './components/form-product-components/form-product-components.component';
 import { FormProductComponentItemComponent } from './components/form-product-component-item/form-product-component-item.component';
+import { FormUnitPosComponent } from './components/form-unit-pos/form-unit-pos.component';
+import { FormRadioGroupComponent } from './components/form-radio-group/form-select/form-radio-group.component';
 
 const NB_MODULES = [
   NbIconModule,
@@ -52,6 +55,7 @@ const NB_MODULES = [
   NbDialogModule,
   NbSelectModule,
   NbCheckboxModule,
+  NbRadioModule,
 ];
 
 const COMPONENTS = [
@@ -70,6 +74,8 @@ const COMPONENTS = [
   FormAllergensComponent,
   FormProductComponentsComponent,
   FormProductComponentItemComponent,
+  FormUnitPosComponent,
+  FormRadioGroupComponent,
 ];
 
 @NgModule({

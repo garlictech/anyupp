@@ -30,6 +30,7 @@ import { ColorizedLaneIconComponent } from './components/colorized-lane-icon';
 import { ConfirmDialogComponent } from './components/confirm-dialog';
 import { ContactComponent } from './components/contact';
 import { GoogleMapComponent } from './components/google-map';
+import { RkeeperInfoBlockComponent } from './components/rkeeper-info-block';
 import { StatusLedComponent } from './components/status-led';
 import { UnpayCategoriesComponent } from './components/unpay-categories';
 import { VariantAvailabilityBadgeComponent } from './components/variant-availability-badge';
@@ -66,6 +67,7 @@ const COMPONENTS = [
   ContactComponent,
   AllergensComponent,
   UnpayCategoriesComponent,
+  RkeeperInfoBlockComponent,
 ];
 
 @NgModule({
