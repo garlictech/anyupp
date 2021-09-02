@@ -138,6 +138,7 @@
       "@bgap/integration-tests/universal": [
         "libs/integration-tests/universal/src/index.ts"
       ],
+      "@bgap/rkeeper-api": ["libs/rkeeper-api/src/index.ts"],
       "@bgap/shared/config": ["libs/shared/config/src/index.ts"],
       "@bgap/shared/data-validators": [
         "libs/shared/data-validators/src/index.ts"

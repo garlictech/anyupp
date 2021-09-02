@@ -1639,6 +1639,27 @@
         }
       }
     },
+    "rkeeper-api": {
+      "root": "libs/rkeeper-api",
+      "sourceRoot": "libs/rkeeper-api/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/rkeeper-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/rkeeper-api"],
+          "options": {
+            "jestConfig": "libs/rkeeper-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "shared-config": {
       "root": "libs/shared/config",
       "sourceRoot": "libs/shared/config/src",

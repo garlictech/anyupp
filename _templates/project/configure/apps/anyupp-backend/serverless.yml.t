@@ -8,6 +8,7 @@ frameworkVersion: ^2.16.1
 
 plugins:
   - serverless-bundle
+  - serverless-offline
 
 package:
   individually: true
@@ -53,3 +54,6 @@ functions:
 
   consumer-pre-signup:
     handler: lib/lambda/consumer-pre-signup/index.handler
+
+  rkeeper-webhook:
+    handler: lib/lambda/rkeeper-webhook/index.handler

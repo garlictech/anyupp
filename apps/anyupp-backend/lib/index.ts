@@ -3,6 +3,7 @@ import { AppsyncAppStack } from './app/appsync-app-stack';
 import { CognitoStack } from './app/cognito-stack';
 import { ConfiguratorStack } from './app/configurator-stack';
 import { ParamsStack } from './app/params-stack';
+import { RKeeperStack } from './app/rkeeper-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SeederStack } from './app/seeder-stack';
 import { SiteStack } from './app/site-stack';
@@ -56,6 +57,8 @@ export class AnyUppStack extends Stack {
     new ConfiguratorStack(scope, 'configurator', {
       consumerUserPoolId: cognitoStack.consumerUserPool.userPoolId,
     });
+
+    new RKeeperStack(scope, 'rkeeper');
 
     if (scope.stage === 'dev' || scope.stage === 'qa') {
       new SeederStack(scope, 'seeder', {
