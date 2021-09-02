@@ -9,7 +9,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormArray, Validators } from '@angular/forms';
+import { FormArray, FormGroup, Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
@@ -129,10 +129,15 @@ export class UnitFormComponent
 
   ngOnInit(): void {
     if (this.unit) {
-      this._isInitiallyRkeeper =
-        this.unit.pos?.type === CrudApi.PosType.rkeeper;
-
       this.dialogForm.patchValue(cleanObject(omit(['lanes'], this.unit)));
+
+      if (this.unit.pos?.type === CrudApi.PosType.rkeeper) {
+        this._isInitiallyRkeeper = true;
+
+        (<FormGroup>this.dialogForm.controls['pos']).controls[
+          'rkeeper'
+        ].enable();
+      }
 
       // Parse openingHours object to temp array
       const custom = this.unit?.openingHours?.custom;

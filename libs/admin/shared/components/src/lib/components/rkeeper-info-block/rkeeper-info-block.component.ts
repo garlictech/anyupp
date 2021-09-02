@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { config } from '@bgap/shared/config';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -10,4 +11,6 @@ import * as CrudApi from '@bgap/crud-gql/api';
 export class RkeeperInfoBlockComponent {
   @Input() unitID?: string;
   @Input() pos?: CrudApi.Pos | undefined | null;
+
+  public webHookUrl = config.RKeeperWebhookEndpoint;
 }

@@ -21,6 +21,7 @@ export const contactFormGroup = (requiredEmail = false) => ({
     : ['', [Validators.email]],
   phone: [''],
 });
+
 export const addressFormGroup = (
   formBuilder: FormBuilder,
   required = false,

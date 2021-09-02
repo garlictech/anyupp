@@ -37,7 +37,7 @@ import { FormAllergensComponent } from './components/form-allergens/form-allerge
 import { FormProductComponentsComponent } from './components/form-product-components/form-product-components.component';
 import { FormProductComponentItemComponent } from './components/form-product-component-item/form-product-component-item.component';
 import { FormUnitPosComponent } from './components/form-unit-pos/form-unit-pos.component';
-import { FormRadioGroupComponent } from './components/form-radio-group/form-select/form-radio-group.component';
+import { FormRadioGroupComponent } from './components/form-radio-group/form-radio-group.component';
 
 const NB_MODULES = [
   NbIconModule,

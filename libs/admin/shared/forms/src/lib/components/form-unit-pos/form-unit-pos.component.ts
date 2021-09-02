@@ -41,11 +41,18 @@ export class FormUnitPosComponent implements OnInit {
 
   ngOnInit(): void {
     this.posFormGroup.controls['type'].valueChanges.subscribe(newTypeValue => {
-      if (
-        newTypeValue === CrudApi.PosType.rkeeper &&
-        !this.posFormGroup.value.rkeeper?.anyuppPassword
-      ) {
-        this.generateNewPassword();
+      if (newTypeValue === CrudApi.PosType.rkeeper) {
+        this.posFormGroup.controls['rkeeper'].enable();
+
+        if (!this.posFormGroup.value.rkeeper?.anyuppPassword) {
+          this.generateNewPassword();
+
+          (<FormGroup>this.posFormGroup.controls['rkeeper']).controls[
+            'anyuppUsername'
+          ].patchValue('user');
+        }
+      } else {
+        this.posFormGroup.controls['rkeeper'].disable();
       }
 
       // detectChanges not refresh the UI correctly!

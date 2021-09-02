@@ -88,12 +88,15 @@ export class FormsService {
 
   public createRkeeperFormGroup = (): FormGroup =>
     this._formBuilder.group({
-      endpointUri: ['', Validators.required],
-      rkeeperUsername: ['', Validators.required],
-      rkeeperPassword: ['', Validators.required],
-      anyuppUsername: ['', Validators.required],
-      anyuppPassword: ['', [Validators.required, Validators.minLength(8)]],
-      restaurantId: ['', Validators.required],
+      endpointUri: [{ value: '', disabled: true }, Validators.required],
+      rkeeperUsername: [{ value: '', disabled: true }, Validators.required],
+      rkeeperPassword: [{ value: '', disabled: true }, Validators.required],
+      anyuppUsername: [{ value: '', disabled: true }, Validators.required],
+      anyuppPassword: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(8)],
+      ],
+      restaurantId: [{ value: '', disabled: true }, Validators.required],
     });
 
   public generateRkeeperPassword = (rkeeperFormGroup: FormGroup) => {

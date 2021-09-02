@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Forms pure function tests getDayIntervals should calculate intervals from date 1`] = `
+Object {
+  "from": 1612047600000,
+  "to": 1612133999999,
+}
+`;
+
+exports[`Forms pure function tests getDayIntervals should calculate intervals from date 2`] = `
+Object {
+  "from": 1630447200000,
+  "to": 1630533599999,
+}
+`;
