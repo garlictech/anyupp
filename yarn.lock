@@ -6999,7 +6999,7 @@
     "@types/cookiejar" "*"
     "@types/node" "*"
 
-"@types/supertest@^2.0.11":
+"@types/supertest@2.0.11":
   version "2.0.11"
   resolved "https://registry.yarnpkg.com/@types/supertest/-/supertest-2.0.11.tgz#2e70f69f220bc77b4f660d72c2e1a4231f44a77d"
   integrity sha512-uci4Esokrw9qGb9bvhhSVEjd6rkny/dk5PK/Qz4yxKiyppEI+dOPlNrZBahE3i+PoKFYyDxChVXZ/ysS/nrm1Q==
@@ -8616,7 +8616,7 @@ aws-cdk@1.114.0:
     yaml "1.10.2"
     yargs "^16.2.0"
 
-aws-lambda-fastify@^1.7.1:
+aws-lambda-fastify@1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/aws-lambda-fastify/-/aws-lambda-fastify-1.7.1.tgz#425da3c49fb80e9d884e6439a4be695022541cff"
   integrity sha512-FRFabrmCZ7jWVZRHlDHQAxd6cRpwrI9VzI/Q4issMTP4DJHCx69U3MVlW8LDTJK3O0DmGsXNJ+bfiwOOZNhhsA==
@@ -13191,7 +13191,7 @@ fastify-warning@^0.2.0:
   resolved "https://registry.yarnpkg.com/fastify-warning/-/fastify-warning-0.2.0.tgz#e717776026a4493dc9a2befa44db6d17f618008f"
   integrity sha512-s1EQguBw/9qtc1p/WTY4eq9WMRIACkj+HTcOIK1in4MV5aFaQC9ZCIt0dJ7pr5bIf4lPpHvAtP2ywpTNgs7hqw==
 
-fastify@^3.20.1:
+fastify@3.20.2:
   version "3.20.2"
   resolved "https://registry.yarnpkg.com/fastify/-/fastify-3.20.2.tgz#99a5a2b4b4a8c468dfae245219af053b12c5fe55"
   integrity sha512-POvayPpbyvkE/wHQquQsNwIgYKVRz7HhCXYJyzUuWEN3kch7/QeI+/azQCjS6+XHiHZPWQwrBKjJB9FBdJHrgA==
@@ -22215,7 +22215,7 @@ serverless-bundle@5.0.0:
     webpack-node-externals "^2.5.2"
     webpack-permissions-plugin "^1.0.8"
 
-serverless-offline-multi@^1.2.0:
+serverless-offline-multi@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/serverless-offline-multi/-/serverless-offline-multi-1.2.0.tgz#25f0380ae248088d662fb249094d71879a89c200"
   integrity sha512-48AMn5ygpzQ1B7U8NhkWVFa5HG4alsa8K0L5KvmW/+lr5/HkwM9FqtCvBaRGCMhQelo2ihKKzhnW/wuBhPmfkg==
@@ -22225,7 +22225,7 @@ serverless-offline-multi@^1.2.0:
     minimist "1.2.5"
     nodemon "2.0.3"
 
-serverless-offline@^8.0.0:
+serverless-offline@8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-8.0.0.tgz#66ffb69d8f631b096957b9cc657cc5c66600f1b8"
   integrity sha512-ov5PbO8gbT+KtHK0rA6NiYnNdzeVaCt8FLn9sJGN2nPvuyTbemJ5i0eOeOOX8Wn9LsHIIyYuxGa+tQM353M8wg==
@@ -23403,7 +23403,7 @@ superagent@^6.1.0:
     readable-stream "^3.6.0"
     semver "^7.3.2"
 
-supertest@^6.1.6:
+supertest@6.1.6:
   version "6.1.6"
   resolved "https://registry.yarnpkg.com/supertest/-/supertest-6.1.6.tgz#6151c518f4c5ced2ac2aadb9f96f1bf8198174c8"
   integrity sha512-0hACYGNJ8OHRg8CRITeZOdbjur7NLuNs0mBjVhdpxi7hP6t3QIbOzLON5RTUmZcy2I9riuII3+Pr2C7yztrIIg==
