@@ -519,17 +519,17 @@
     events "^3.1.0"
     sinon "^7.5.0"
 
-"@aws-amplify/ui-angular@1.0.20":
-  version "1.0.20"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/ui-angular/-/ui-angular-1.0.20.tgz#910e1d953f3742efb252ff69ab6c8719d0a0bc97"
-  integrity sha512-oVjTQZW32ObtETQgpk7d+AzYwwjFMX/4MaR2KJnVd+ZFfKolSLhfPXJHRjzZGJAmH4WUvZmOwN5VCB3R15zyCA==
+"@aws-amplify/ui-angular@1.0.21":
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/ui-angular/-/ui-angular-1.0.21.tgz#20c0a79a4974efb44bb9fe383fd4ec3b76353b7d"
+  integrity sha512-P9xdJTvuzDHmcGAYl/j2pIv2t6Dy9i8vtEn4cRbtsRiykBEt/q4fj3eZ5Q0biPGeWwTXeRhX3qfVMhI8ioK6zg==
   dependencies:
-    "@aws-amplify/ui-components" "1.7.4"
+    "@aws-amplify/ui-components" "1.7.5"
 
-"@aws-amplify/ui-components@1.7.4":
-  version "1.7.4"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/ui-components/-/ui-components-1.7.4.tgz#7639958e448b5236467c04b43369925fc1841fb9"
-  integrity sha512-SSMLcMBfErvK5ZQmUuM9oVEvzq1vZ6qgweEB+Q1Cwo59V5YlwzrSbH2SXODG2CnCQqJ6lOnEm1W9M26t03wQYA==
+"@aws-amplify/ui-components@1.7.5":
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/ui-components/-/ui-components-1.7.5.tgz#5182b94ae39047048821618625587bac72dd2574"
+  integrity sha512-ms8lrWPDJyC9cauqpdhZ7lvmJQ73gWVtyb8xjIqvZ+CpCFBVdgVtHselEAafT8fUNnyP5c7jSrtMn3toyKnIdQ==
   dependencies:
     qrcode "^1.4.4"
     uuid "^8.2.0"
