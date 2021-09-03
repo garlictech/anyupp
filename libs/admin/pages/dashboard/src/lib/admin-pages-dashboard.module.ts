@@ -46,7 +46,6 @@ import { ReportsOrdersAmountAvgSalesComponent } from './components/reports-order
 import { ReportsProductMixComponent } from './components/reports-product-mix/reports-product-mix.component';
 import { ReportsUniqueGuestAvgSalesComponent } from './components/reports-unique-guest-avg-sales/reports-unique-guest-avg-sales.component';
 import { ReportsUnpayTableComponent } from './components/reports-unpay-table/reports-unpay-table.component';
-import { ReportsService } from './services/reports.service';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -91,7 +90,6 @@ const NB_MODULES = [
     ReportsUnpayTableComponent,
     ReportsProductMixComponent,
   ],
-  providers: [ReportsService],
   imports: [
     CommonModule,
     TranslateModule,
