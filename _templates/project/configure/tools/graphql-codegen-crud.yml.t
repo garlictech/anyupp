@@ -6,7 +6,7 @@ schema:
   - libs/gql-sdk/src/schema/aws.graphql
   - apps/crud-backend/amplify/backend/api/<%= h.changeCase.lower(h.changeCase.camelCase(app)) %>/build/schema.graphql
 documents:
-  - libs/crud-gql/api/src/lib/documents/*.graphql
+  - libs/crud-gql/backend/src/graphql/documents/*.graphql
   - libs/crud-gql/api/src/lib/generated/graphql/*.ts
 generates:
   libs/crud-gql/api/src/lib/generated/api.ts:
