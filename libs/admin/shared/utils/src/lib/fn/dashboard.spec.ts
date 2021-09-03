@@ -4,6 +4,7 @@ import {
   generatedProductFixture as gpfx,
   testIdPrefix,
 } from '@bgap/shared/fixtures';
+import { timezoneBudapest } from '../const';
 
 import {
   calculatePaymentMethodSums,
@@ -26,7 +27,7 @@ const products: CrudApi.GeneratedProduct[] = [
     id: `${testIdPrefix}unit_product_hamburger`,
   },
 ];
-const timezoneBudapest = 'Europe/Budapest';
+
 const singleOrder = [ofx.convertInputToOrder(ofx.historySuccessCardOrderInput)];
 const successHistoryOrders = [
   ofx.convertInputToOrder(ofx.historySuccessCardOrderInput),

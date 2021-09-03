@@ -8,7 +8,9 @@ import { CurrencyFormatterPipe, LocalizePipe } from '@bgap/admin/shared/pipes';
 import { IProducMixArrayItem } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ReportsService {
   constructor(
     private _translateService: TranslateService,

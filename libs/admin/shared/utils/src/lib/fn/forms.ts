@@ -1,5 +1,5 @@
 import { isNumber, omit } from 'lodash/fp';
-
+import { DateTime } from 'luxon';
 import {
   AbstractControl,
   FormBuilder,
@@ -154,16 +154,17 @@ export const unitOpeningHoursValidator: ValidatorFn = (
   return error;
 };
 
-export const getDayIntervals = (dateValue: string | number): IDateIntervals => {
-  const start = new Date(dateValue);
-  start.setHours(0, 0, 0, 0);
-
-  const end = new Date(dateValue);
-  end.setHours(23, 59, 59, 999);
+export const getDayIntervals = (
+  dateValue: string | number,
+  timeZone: string,
+): IDateIntervals => {
+  const date: DateTime = DateTime.fromISO(new Date(dateValue).toISOString(), {
+    zone: timeZone,
+  });
 
   return {
-    from: start.getTime(),
-    to: end.getTime(),
+    from: date.startOf('day').valueOf(),
+    to: date.endOf('day').valueOf(),
   };
 };
 
