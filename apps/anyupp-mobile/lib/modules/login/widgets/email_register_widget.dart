@@ -10,12 +10,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class EmailRegisterDialogContentWidget extends StatefulWidget {
   @override
-  _EmailRegisterDialogContentWidgetState createState() =>
-      _EmailRegisterDialogContentWidgetState();
+  _EmailRegisterDialogContentWidgetState createState() => _EmailRegisterDialogContentWidgetState();
 }
 
-class _EmailRegisterDialogContentWidgetState
-    extends State<EmailRegisterDialogContentWidget> {
+class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogContentWidget> {
   final _emailController = TextEditingController();
   final _password1Controller = TextEditingController();
   final _password2Controller = TextEditingController();
@@ -35,13 +33,11 @@ class _EmailRegisterDialogContentWidgetState
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (BuildContext context, LoginState state) {},
-      child: BlocBuilder<LoginBloc, LoginState>(
-          builder: (BuildContext context, LoginState state) {
+      child: BlocBuilder<LoginBloc, LoginState>(builder: (BuildContext context, LoginState state) {
         if (state is EmailRegistrationSuccess) {
           print('EmailRegisterDialogContentWidget.auth.bloc.state=$state');
-          getIt<LoginBloc>().add(ChangeEmailFormUI(
-              ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
-              animationCurve: Curves.easeIn));
+          getIt<LoginBloc>()
+              .add(ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
         }
         // print('PhoneDialogContentWidget.bloc.state=$state');
 
@@ -122,9 +118,8 @@ class _EmailRegisterDialogContentWidgetState
                     // Sing in link button
                     InkWell(
                       onTap: () {
-                        getIt<LoginBloc>().add(ChangeEmailFormUI(
-                            ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
-                            animationCurve: Curves.easeIn));
+                        getIt<LoginBloc>().add(
+                            ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
                       },
                       child: Text(
                         trans('login.email.linkSignIn'),
@@ -177,12 +172,11 @@ class _EmailRegisterDialogContentWidgetState
 
   void _sendRegistrationRequest() {
     print('_sendRegistrationRequest()=${_emailController.text}');
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       if (_password1Controller.text != _password2Controller.text) {
-        getIt<ExceptionBloc>().add(ShowException(SignUpException(
-            code: SignUpException.CODE,
-            subCode: SignUpException.ERROR_PASSWORD_MISSMATCH)));
+        getIt<ExceptionBloc>().add(ShowException(
+            SignUpException(code: SignUpException.CODE, subCode: SignUpException.ERROR_PASSWORD_MISSMATCH)));
       } else {
         getIt<LoginBloc>().add(RegisterWithEmailAndPassword(
             userEmail: _emailController.text,

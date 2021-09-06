@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 typedef ConnectivityCallback = Function(ConnectivityResult);
 
 class NetworkConnectionWrapperWidget extends StatelessWidget {
-  NetworkConnectionWrapperWidget({@required this.child}) : assert(child != null);
+  NetworkConnectionWrapperWidget({required this.child});
 
   final Widget child;
 
@@ -14,7 +14,10 @@ class NetworkConnectionWrapperWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NetworkStatusBloc, NetworkState>(builder: (context, state) {
       // print('NetworkConnectionWrapperWidget.NetworkStatusBloc=$state');
-      return (state.state == ConnectivityResult.none || !state.hasDataConnection) ? NoNetworkScreen() : child;
+      return (state.state == ConnectivityResult.none ||
+              (state.hasDataConnection == null || state.hasDataConnection == false))
+          ? NoNetworkScreen()
+          : child;
     });
   }
 }

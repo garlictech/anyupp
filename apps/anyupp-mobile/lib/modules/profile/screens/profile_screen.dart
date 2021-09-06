@@ -27,12 +27,12 @@ class _ProfileState extends State<Profile> {
       // The appBar head text
       // appBar:null
       backgroundColor: theme.background2,
-      body: StreamBuilder<User>(
+      body: StreamBuilder<User?>(
           stream: getIt<AuthRepository>()
               .getAuthenticatedUserProfileStream(), // a previously-obtained Future<String> or null
-          builder: (BuildContext context, AsyncSnapshot<User> userSnapshot) {
+          builder: (BuildContext context, AsyncSnapshot<User?> userSnapshot) {
             if (userSnapshot.hasData) {
-              return buildMain(context, userSnapshot.data);
+              return buildMain(context, userSnapshot.data!);
             }
             return CenterLoadingWidget();
           }),
@@ -55,7 +55,7 @@ class _ProfileState extends State<Profile> {
                 height: 70.0,
                 child: CircleAvatar(
                   radius: 30.0,
-                  backgroundImage: (user.profileImage != null) ? NetworkImage(user.profileImage) : null,
+                  backgroundImage: (user.profileImage != null) ? NetworkImage(user.profileImage!) : null,
                   backgroundColor: Colors.transparent,
                 ),
               ),
@@ -66,7 +66,8 @@ class _ProfileState extends State<Profile> {
                   bottom: 20.0,
                 ),
                 child: Text(
-                  user.name,
+                  user.name ?? '-',
+                  textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w600,
@@ -101,7 +102,7 @@ class _ProfileState extends State<Profile> {
           createOptionMenu(trans('profile.menu.about'), () => Nav.to(AboutApp()), true),
           createOptionMenu(trans('profile.menu.settings'), () => Nav.to(SettingsScreen()), true),
           createOptionMenu(trans('profile.menu.transactions'), () => Nav.to(TransactionsScreen()), true),
-          createOptionMenu(trans('profile.menu.cards'), () => Nav.to(StripePaymentMethodsScreen()), true), 
+          createOptionMenu(trans('profile.menu.cards'), () => Nav.to(StripePaymentMethodsScreen()), true),
           createOptionMenu(trans('profile.menu.regulations'), () => launch('https://www.anyupp.com/privacy/'), true),
           createOptionMenu(trans('profile.menu.logout'), () => showConfirmLogoutDialog(context), false),
         ],

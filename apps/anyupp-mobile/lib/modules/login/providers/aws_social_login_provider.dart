@@ -8,7 +8,7 @@ import 'package:fa_prev/shared/auth.dart';
 import 'package:http/http.dart' as http;
 
 class AwsSocialLoginProvider implements ISocialLoginProvider {
-  final AwsAuthProvider _authProvider;
+  final IAuthProvider _authProvider;
 
   AwsSocialLoginProvider(this._authProvider);
 
@@ -73,7 +73,7 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
       print('SocialLoginScreen()signUserInWithAuthCode().username=' + username);
 
       final session = CognitoUserSession(idToken, accessToken, refreshToken: refreshToken);
-      User user = await _authProvider.loginWithCognitoSession(session, username);
+      User? user = await _authProvider.loginWithCognitoSession(session, username);
       return ProviderLoginResponse(
         user: user,
         credential: session,

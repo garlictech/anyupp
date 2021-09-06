@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'success_animation_widget.dart';
 
-showSuccessDialog(BuildContext context, String title, String message, [VoidCallback onClose]) {
-  SchedulerBinding.instance.addPostFrameCallback((_) {
+showSuccessDialog(BuildContext context, String title, String message, [VoidCallback? onClose]) {
+  SchedulerBinding.instance?.addPostFrameCallback((_) {
     showDialog(
         context: context,
         barrierDismissible: true,

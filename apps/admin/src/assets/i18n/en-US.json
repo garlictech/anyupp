@@ -97,7 +97,8 @@
     "height": "height",
     "receipt": "receipt",
     "invoice": "invoice",
-    "timeZone": "Timezone"
+    "timeZone": "Timezone",
+    "resetPassword": "Reset password"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -148,7 +149,8 @@
       "unpayCategories": "Unpay categories",
       "rejectedOrders": "Rejected orders",
       "productMix": "Product mix",
-      "listAll": "List all"
+      "listAll": "List all",
+      "export": "Export"
     }
   },
   "chains": {
@@ -290,7 +292,21 @@
     "wall": "Wall",
     "label": "Label",
     "tableId": "Table ID",
-    "seatId": "Seat ID"
+    "seatId": "Seat ID",
+    "pos": "POS",
+    "posType": {
+      "anyupp": "AnyUPP",
+      "rkeeper": "RKeepeR"
+    },
+    "rkeeper": {
+      "endpointUri": "Endpoint URI",
+      "rkeeperUsername": "RKeepeR username",
+      "rkeeperPassword": "RKeepeR password",
+      "anyuppUsername": "AnyUPP username",
+      "anyuppPassword": "AnyUPP password",
+      "restaurantId": "Restaurant ID"
+    },
+    "rkeeperDeletionAlert": "AnyUPP POS has been selected. RKeeper data will be deleted."
   },
   "users": {
     "listTitle": "Users",

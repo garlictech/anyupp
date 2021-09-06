@@ -13,7 +13,6 @@ class ConfirmSignUpWidget extends StatefulWidget {
 
 class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
   final _confirmCodeController = TextEditingController();
-  String userName;
 
   @override
   void dispose() {
@@ -33,9 +32,8 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                 'login.email.checkInbox',
               ));
 
-          return _buildConfirmLinkSent(context, state.user);
+          // return _buildConfirmLinkSent(context, state.user);
         }
-
       },
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (BuildContext context, LoginState state) {
@@ -49,6 +47,9 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
             _buildLoading(
               context,
             );
+          }
+          if (state is ConfirmCodeEmailSent) {
+            return _buildConfirmLinkSent(context, state.user);
           }
 
           return _buildLoading(
@@ -78,7 +79,6 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
       ),
     );
   }
-
 
   Widget _buildConfirmLinkSent(BuildContext context, String user) {
     return Stack(
@@ -118,8 +118,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                         InkWell(
                           onTap: () {
                             getIt<LoginBloc>().add(ChangeEmailFormUI(
-                                ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
-                                animationCurve: Curves.easeIn));
+                                ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
                           },
                           child: Text(
                             trans('login.email.signIn'),
@@ -135,44 +134,43 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                       ],
                     )),
               ),
-                              Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Container(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
                         children: [
-                          RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: trans('login.email.codeNotReceived') +
-                                      ' ',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 14.0,
-                                    color: Color(0x993C2F2F),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              _resendCode(user);
-                            },
-                            child: Text(
-                              trans('login.email.resendCode'),
-                              textAlign: TextAlign.start,
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: theme.highlight,
-                                fontWeight: FontWeight.normal,
-                                decoration: TextDecoration.underline,
-                              ),
+                          TextSpan(
+                            text: trans('login.email.codeNotReceived') + ' ',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14.0,
+                              color: Color(0x993C2F2F),
                             ),
                           ),
                         ],
                       ),
                     ),
+                    InkWell(
+                      onTap: () async {
+                        _resendCode(user);
+                      },
+                      child: Text(
+                        trans('login.email.resendCode'),
+                        textAlign: TextAlign.start,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          color: theme.highlight,
+                          fontWeight: FontWeight.normal,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               // Buttons
             ],
           ),
@@ -219,8 +217,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                         InkWell(
                           onTap: () {
                             getIt<LoginBloc>().add(ChangeEmailFormUI(
-                                ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
-                                animationCurve: Curves.easeIn));
+                                ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
                           },
                           child: Text(
                             trans('login.email.signIn'),

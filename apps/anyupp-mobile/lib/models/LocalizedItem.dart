@@ -1,72 +1,62 @@
-import 'package:fa_prev/models.dart';
-import 'package:flutter/foundation.dart';
+class LocalizedItem {
+  final String? id;
+  final String? en;
+  final String? de;
+  final String? hu;
 
-import 'core/model_base.dart';
+  LocalizedItem({
+    this.id,
+    this.en,
+    this.de,
+    this.hu,
+  });
 
+  LocalizedItem copyWith({
+    String? id,
+    String? en,
+    String? de,
+    String? hu,
+  }) {
+    return LocalizedItem(
+      id: id ?? this.id,
+      en: en ?? this.en,
+      de: de ?? this.de,
+      hu: hu ?? this.hu,
+    );
+  }
 
-@immutable
-class LocalizedItem extends Model {
-  final String id;
-  final String en;
-  final String de;
-  final String hu;
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'en': en,
+      'de': de,
+      'hu': hu,
+    };
+  }
+
+  factory LocalizedItem.fromJson(Map<String, dynamic> map) {
+    return LocalizedItem(
+      id: map['id'],
+      en: map['en'],
+      de: map['de'],
+      hu: map['hu'],
+    );
+  }
 
   @override
-  String getId() {
-    return id;
-  }
-
-  const LocalizedItem._internal({@required this.id, this.en, this.de, this.hu});
-
-  factory LocalizedItem({String id, String en, String de, String hu}) {
-    return LocalizedItem._internal(
-        id: id == null ? UUID.getUUID() : id, en: en, de: de, hu: hu);
-  }
-
-  bool equals(Object other) {
-    return this == other;
+  String toString() {
+    return 'LocalizedItem(id: $id, en: $en, de: $de, hu: $hu)';
   }
 
   @override
   bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is LocalizedItem &&
-        id == other.id &&
-        en == other.en &&
-        de == other.de &&
-        hu == other.hu;
+    if (identical(this, other)) return true;
+
+    return other is LocalizedItem && other.id == id && other.en == en && other.de == de && other.hu == hu;
   }
 
   @override
-  int get hashCode => toString().hashCode;
-
-  @override
-  String toString() {
-    var buffer = StringBuffer();
-
-    buffer.write("LocalizedItem {");
-    buffer.write("id=" + "$id" + ", ");
-    buffer.write("en=" + "$en" + ", ");
-    buffer.write("de=" + "$de" + ", ");
-    buffer.write("hu=" + "$hu");
-    buffer.write("}");
-
-    return buffer.toString();
+  int get hashCode {
+    return id.hashCode ^ en.hashCode ^ de.hashCode ^ hu.hashCode;
   }
-
-  LocalizedItem copyWith({String id, String en, String de, String hu}) {
-    return LocalizedItem(
-        id: id ?? this.id,
-        en: en ?? this.en,
-        de: de ?? this.de,
-        hu: hu ?? this.hu);
-  }
-
-  LocalizedItem.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        en = json['en'],
-        de = json['de'],
-        hu = json['hu'];
-
-  Map<String, dynamic> toJson() => {'id': id, 'en': en, 'de': de, 'hu': hu};
 }

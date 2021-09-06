@@ -9,7 +9,7 @@ import 'mock/mock_user_details_provider.dart';
 
 void main() {
   group('GetUserDetails BloC test', () {
-    UserDetailsBloc userDetailsBloc;
+    late UserDetailsBloc userDetailsBloc;
     UserDetailsRepository userDetailsRepository;
     MockAuthProvider authProvider;
     MockUserDetailsProvider userDetailsProvider;
@@ -33,7 +33,7 @@ void main() {
     );
 
     tearDown(() {
-      userDetailsBloc?.close();
+      userDetailsBloc.close();
     });
   });
 }

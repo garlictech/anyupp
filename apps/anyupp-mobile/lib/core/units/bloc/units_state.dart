@@ -1,11 +1,10 @@
 part of 'units_bloc.dart';
 
-@immutable
 abstract class UnitsState extends Equatable {
   const UnitsState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class UnitsInitial extends UnitsState {}
@@ -18,17 +17,17 @@ class UnitsLoaded extends UnitsState {
   const UnitsLoaded([this.units = const []]);
 
   @override
-  List<Object> get props => [units];
+  List<Object?> get props => [units];
 }
 
 class UnitsNoNearUnit extends UnitsState {}
 
 class UnitsNotLoaded extends UnitsState {
   final String reasonCode;
-  final String reasonMessage;
+  final String? reasonMessage;
 
-  const UnitsNotLoaded({this.reasonCode, this.reasonMessage});
+  const UnitsNotLoaded({required this.reasonCode, this.reasonMessage});
 
   @override
-  List<Object> get props => [reasonCode, reasonMessage];
+  List<Object?> get props => [reasonCode, reasonMessage];
 }

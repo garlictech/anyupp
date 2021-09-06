@@ -16,23 +16,22 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key key}) : super(key: key);
+  const LoginScreen();
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
-    with TickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _backgroundImageScaleAnimation;
+class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _backgroundImageScaleAnimation;
 
-  AnimationController _buttonAnimController;
-  Animation<double> _buttonsOpacityAnim;
-  Animation<Offset> _buttonsPositionAnim;
+  late AnimationController _buttonAnimController;
+  late Animation<double> _buttonsOpacityAnim;
+  late Animation<Offset> _buttonsPositionAnim;
 
   GlobalKey _bottomKey = GlobalKey();
-  double _bottomWidgetHeight;
+  double? _bottomWidgetHeight;
   final double _backgroundAnimationSize = 50.0;
   bool _showLogin = false;
   double _emailFormHeight = EMAIL_FORM_HEIGHT;
@@ -62,14 +61,12 @@ class _LoginScreenState extends State<LoginScreen>
       curve: Curves.easeInOut,
     );
 
-    _buttonsOpacityAnim =
-        CurveTween(curve: Curves.easeOut).animate(_buttonAnimController);
+    _buttonsOpacityAnim = CurveTween(curve: Curves.easeOut).animate(_buttonAnimController);
     _buttonsPositionAnim = Tween(begin: Offset(-1.0, 0.0), end: Offset.zero)
         .chain(CurveTween(curve: Curves.elasticOut))
         .animate(_buttonAnimController);
 
-    Future.delayed(Duration(milliseconds: 1000))
-        .then((value) => _switchAnimation());
+    Future.delayed(Duration(milliseconds: 1000)).then((value) => _switchAnimation());
   }
 
   // Future<void> setUserAgent() async {
@@ -78,8 +75,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   void dispose() {
-    _buttonAnimController?.dispose();
-    _controller?.dispose();
+    _buttonAnimController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -117,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen>
         builder: (BuildContext context, LoginState state) {
           if (state is NeedAccountLinking) {
             // Need schedulerBinding to handle dialog popup
-            SchedulerBinding.instance.addPostFrameCallback((_) {
+            SchedulerBinding.instance?.addPostFrameCallback((_) {
               showSelectAccountToLinkDialog(context, state);
             });
             return _buildLoadingScreen();
@@ -149,14 +146,10 @@ class _LoginScreenState extends State<LoginScreen>
           children: [
             // BACKGROUND IMAGE
             Positioned(
-              top: -_backgroundImageScaleAnimation.value *
-                  _backgroundAnimationSize,
-              left: -_backgroundImageScaleAnimation.value *
-                  _backgroundAnimationSize,
-              bottom: -_backgroundImageScaleAnimation.value *
-                  _backgroundAnimationSize,
-              right: -_backgroundImageScaleAnimation.value *
-                  _backgroundAnimationSize,
+              top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+              left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+              bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+              right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
               child: _buildBackground(context),
             ),
             CenterLoadingWidget(),
@@ -184,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
-  Widget _buildAnimation(BuildContext context, Widget child) {
+  Widget _buildAnimation(BuildContext context, Widget? child) {
     final height = MediaQuery.of(context).size.height;
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final iOS = Theme.of(context).platform == TargetPlatform.iOS;
@@ -199,11 +192,9 @@ class _LoginScreenState extends State<LoginScreen>
           behavior: HitTestBehavior.deferToChild,
           onTap: () => _switchAnimation(),
           onVerticalDragUpdate: (details) {
-            if (_controller.status == AnimationStatus.dismissed &&
-                details.delta.dy < -20.0) {
+            if (_controller.status == AnimationStatus.dismissed && details.delta.dy < -20.0) {
               _switchAnimation();
-            } else if (_controller.status == AnimationStatus.completed &&
-                details.delta.dy > 20.0) {
+            } else if (_controller.status == AnimationStatus.completed && details.delta.dy > 20.0) {
               _switchAnimation();
             }
           },
@@ -213,14 +204,10 @@ class _LoginScreenState extends State<LoginScreen>
                 Container(height: height - statusBarHeight),
                 // BACKGROUND IMAGE
                 Positioned(
-                  top: -_backgroundImageScaleAnimation.value *
-                      _backgroundAnimationSize,
-                  left: -_backgroundImageScaleAnimation.value *
-                      _backgroundAnimationSize,
-                  bottom: -_backgroundImageScaleAnimation.value *
-                      _backgroundAnimationSize,
-                  right: -_backgroundImageScaleAnimation.value *
-                      _backgroundAnimationSize,
+                  top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+                  left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+                  bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+                  right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
                   child: _buildBackground(context),
                 ),
 
@@ -238,9 +225,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                 // Center logo
                 Positioned(
-                  top: (height / 2.0 - 50) -
-                      ((height / 2.0 - 50 - 36.0) *
-                          _backgroundImageScaleAnimation.value),
+                  top: (height / 2.0 - 50) - ((height / 2.0 - 50 - 36.0) * _backgroundImageScaleAnimation.value),
                   left: 0.0,
                   right: 0.0,
                   child: _buildLogo(context),
@@ -253,15 +238,12 @@ class _LoginScreenState extends State<LoginScreen>
                       : _bottomWidgetHeight == null
                           ? height
                           : height -
-                              ((_bottomWidgetHeight +
-                                          (iOS == true ? 0.0 : 20.0)) *
+                              ((_bottomWidgetHeight! + (iOS == true ? 0.0 : 20.0)) *
                                       _backgroundImageScaleAnimation.value) *
                                   1.0,
                   left: 0.0,
                   right: 0.0,
-                  bottom: _controller.status == AnimationStatus.completed
-                      ? 0.0
-                      : null,
+                  bottom: _controller.status == AnimationStatus.completed ? 0.0 : null,
                   child: _buildBottomSheetContent(context, iOS),
                 ),
               ],
@@ -423,9 +405,7 @@ class _LoginScreenState extends State<LoginScreen>
                         _buildEmailLoginForms(context),
                         Padding(
                           // TODO
-                          padding: _showLogin
-                              ? const EdgeInsets.all(0.0)
-                              : const EdgeInsets.only(top: 28.0),
+                          padding: _showLogin ? const EdgeInsets.all(0.0) : const EdgeInsets.only(top: 28.0),
                           child: Text(
                             trans('login.continueWith'),
                             style: GoogleFonts.poppins(
@@ -460,8 +440,7 @@ class _LoginScreenState extends State<LoginScreen>
                                   padding: EdgeInsets.all(8.0),
                                 ),
                                 //: Colors.blueAccent,
-                                onPressed: () => getIt<LoginBloc>().add(
-                                    LoginWithMethod(LoginMethod.ANONYMOUS)),
+                                onPressed: () => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
                                     style: GoogleFonts.poppins(
                                       fontSize: 14.0,
@@ -523,8 +502,7 @@ class _LoginScreenState extends State<LoginScreen>
             _createSocialButtonWidget('facebook', LoginMethod.FACEBOOK),
             // if (snapshot.data == true) // has Apple Login
             _createSocialButtonWidget('apple', LoginMethod.APPLE),
-            _createSocialButtonWidget(
-                'email', LoginMethod.EMAIL, theme.indicator),
+            _createSocialButtonWidget('email', LoginMethod.EMAIL, iconColor: theme.indicator),
             // _createSocialButtonWidget('phone', LoginMethod.PHONE),
           ],
         ),
@@ -541,8 +519,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget _createSocialButtonWidget(String icon, LoginMethod method,
-      [Color iconColor]) {
+  Widget _createSocialButtonWidget(String icon, LoginMethod method, {Color? iconColor}) {
     final bool iOS = Theme.of(context).platform == TargetPlatform.iOS;
     return Padding(
       padding: const EdgeInsets.all(6.0),
@@ -570,8 +547,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Widget _buildSocialLoginWebView(LoginMethod method) {
-    Completer<WebViewController> _webViewController =
-        Completer<WebViewController>();
+    Completer<WebViewController> _webViewController = Completer<WebViewController>();
     String provider;
     switch (method) {
       case LoginMethod.FACEBOOK:
@@ -649,11 +625,9 @@ class _LoginScreenState extends State<LoginScreen>
             navigationDelegate: (NavigationRequest request) {
               print('SocialLoginScreen.navigationDelegate().request=$request');
               Uri uri = Uri.parse(request.url);
-              String error = uri.queryParameters['error_description'];
-              if (request.url
-                  .startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
-                var code = request.url.substring(
-                    '${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
+              String? error = uri.queryParameters['error_description'];
+              if (request.url.startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
+                var code = request.url.substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
                 //For some reasion there is an extra # and some other stuff at the end of the url in case of first login.
                 //Remove it so it will be a valid url
                 code = code.split("#").first;
@@ -663,10 +637,8 @@ class _LoginScreenState extends State<LoginScreen>
               }
               if (error != null) {
                 setState(() {
-                  getIt<ExceptionBloc>().add(ShowException(LoginException(
-                      code: LoginException.CODE,
-                      subCode: LoginException.CODE,
-                      message: error)));
+                  getIt<ExceptionBloc>().add(ShowException(
+                      LoginException(code: LoginException.CODE, subCode: LoginException.CODE, message: error)));
                   getIt<LoginBloc>().add(ResetLogin());
                   isLoading = true;
                 });
@@ -700,7 +672,6 @@ class _LoginScreenState extends State<LoginScreen>
 
   void signUserInWithAuthCode(String code) {
     print('loginScreen.signUserInWithAuthCode().code=$code');
-    getIt<LoginBloc>().add(CompleteLoginWithMethod(null, code));
-    // getIt<LoginRepository>().signUserInWithAuthCode(code);
+    getIt<LoginBloc>().add(CompleteLoginWithMethod(code));
   }
 }

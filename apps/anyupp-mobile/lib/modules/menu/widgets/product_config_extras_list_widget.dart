@@ -9,7 +9,7 @@ class ProductConfigExtrasWidget extends StatefulWidget {
   final GeoUnit unit;
   final OnExtraSetItemSelected onExtraSelected;
 
-  const ProductConfigExtrasWidget({Key key, this.product, this.unit, this.onExtraSelected}) : super(key: key);
+  const ProductConfigExtrasWidget({required this.product, required this.unit, required this.onExtraSelected});
 
   @override
   _ProductConfigExtrasWidgetState createState() => _ProductConfigExtrasWidgetState();
@@ -21,9 +21,9 @@ class _ProductConfigExtrasWidgetState extends State<ProductConfigExtrasWidget> {
     return _buildExtraSets(context, widget.product.configSets);
   }
 
-  Widget _buildExtraSets(BuildContext context, List<GeneratedProductConfigSet> extras) {
+  Widget _buildExtraSets(BuildContext context, List<GeneratedProductConfigSet>? extras) {
     List<Widget> widgets = [];
-    for (int i = 0; i < extras.length; i++) {
+    for (int i = 0; extras != null && i < extras.length; i++) {
       if (extras[i].type == ConfigType.EXTRA) {
         widgets.add(ProductConfigExtrasItemWidget(
           extraSet: extras[i],

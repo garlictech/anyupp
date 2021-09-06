@@ -6,9 +6,9 @@ typedef void OnWidgetSizeChange(Size size);
 /// Simply wrap your widget with [MeasuredWidget] and listen to size changes with [onChange].
 class MeasuredWidget extends StatefulWidget {
   final Widget child;
-  final OnWidgetSizeChange onChange;
+  final OnWidgetSizeChange? onChange;
 
-  const MeasuredWidget({Key key, this.onChange, this.child}) : super(key: key);
+  const MeasuredWidget({required this.child, this.onChange});
   @override
   _MeasuredWidgetState createState() => _MeasuredWidgetState();
 }
@@ -19,13 +19,13 @@ class _MeasuredWidgetState extends State<MeasuredWidget> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback(_postFrameCallback);
+    WidgetsBinding.instance?.addPostFrameCallback(_postFrameCallback);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback(_postFrameCallback);
+    WidgetsBinding.instance?.addPostFrameCallback(_postFrameCallback);
     return Container(
       key: widgetKey,
       child: widget.child,
@@ -34,13 +34,17 @@ class _MeasuredWidgetState extends State<MeasuredWidget> {
 
   void _postFrameCallback(_) {
     var context = widgetKey.currentContext;
-    RenderObject ro = context.findRenderObject();
-    if (ro is RenderBox && !ro.debugNeedsLayout) {
-      Size newSize = context.size;
-      if (newSize == Size.zero) return;
-      if (oldSize == newSize) return;
-      oldSize = newSize;
-      widget.onChange(newSize);
+    if (context != null) {
+      RenderObject? ro = context.findRenderObject();
+      if (ro is RenderBox && !ro.debugNeedsLayout) {
+        Size? newSize = context.size;
+        if (newSize == Size.zero) return;
+        if (oldSize == newSize) return;
+        oldSize = newSize;
+        if (newSize != null && widget.onChange != null) {
+          widget.onChange!(newSize);
+        }
+      }
     }
   }
 }

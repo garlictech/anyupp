@@ -8,7 +8,6 @@ void configureCatcherAndRunZonedApp(Widget mainApp) {
   print('configureCatcherAndRunZonedApp().awsConfig=${AppConfig.config}');
   bool useSlack = AppConfig.SlackErrorWebhookUrl != null;
 
-  // TODO
   final slackHandler = SlackHandler(
       (AppConfig.SlackErrorWebhookUrl ?? ''), '#' + (AppConfig.SlackErrorChannel ?? 'anyupp-errors'),
       username: "ErrorCatcher",

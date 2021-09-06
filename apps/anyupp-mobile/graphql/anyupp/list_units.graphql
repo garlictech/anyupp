@@ -18,6 +18,7 @@ query getUnitsNearLocation($lat: Float!, $lng: Float!) {
       chainId
       groupId
       name
+      isAcceptingOrders
       openingHoursNext7 {
         to
         from

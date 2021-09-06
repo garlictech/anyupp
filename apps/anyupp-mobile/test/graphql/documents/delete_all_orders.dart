@@ -26,7 +26,7 @@ Future<bool> _deleteOrder(String id) async {
       ),
     ));
 
-    return result.hasErrors == null ? true : false;
+    return !result.hasErrors;
   } on Exception catch (e) {
     print('AwsOrderProvider._deleteCartFromBackend.Exception: $e');
     rethrow;

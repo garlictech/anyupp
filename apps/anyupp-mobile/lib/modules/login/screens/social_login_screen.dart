@@ -18,7 +18,7 @@ class SocialLoginScreen extends StatefulWidget {
   static const SIGNIN_CALLBACK = 'anyupp://signin/';
   static const SIGNOUT_CALLBACK = 'anyupp://signout/';
 
-  SocialLoginScreen({Key key, this.title, this.provider}) : super(key: key);
+  SocialLoginScreen({required this.title, required this.provider});
 
   @override
   _SocialLoginScreenState createState() => _SocialLoginScreenState();
@@ -26,7 +26,7 @@ class SocialLoginScreen extends StatefulWidget {
 
 class _SocialLoginScreenState extends State<SocialLoginScreen> {
   final Completer<WebViewController> _webViewController = Completer<WebViewController>();
-  String _error;
+  String? _error;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +107,7 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
       final session = CognitoUserSession(idToken, accessToken, refreshToken: refreshToken);
       AuthRepository repository = getIt<AuthRepository>();
       await repository.loginWithCognitoSession(session, username);
-      
+
       Navigator.of(context).pop();
     } on Exception catch (e) {
       setState(() {
@@ -122,7 +122,7 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
         child: Column(
           children: [
             Text(
-              _error,
+              _error!,
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(
                 color: Colors.red,

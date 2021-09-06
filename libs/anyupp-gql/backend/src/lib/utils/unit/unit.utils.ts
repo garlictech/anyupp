@@ -186,7 +186,7 @@ export const getUnitOpeningHoursAtTime = (
   unit: CrudApi.Unit,
   time: DateTime = DateTime.utc(),
 ): Array<AnyuppApi.OpeningHoursByDate> => {
-  const yesterday = time.minus({ day: 1 });
+  const yesterday = time.minus({ days: 1 });
   const today = time;
   const openingHoursYesterday = getOpeningHoursAtDate(
     yesterday.toFormat(dateFormat),
@@ -229,27 +229,27 @@ export const getUnitOpeningHoursAtTime = (
   return [
     actualOpeningHours,
     getOpeningHoursAtDate(
-      firstActiveDate.plus({ day: 1 }).toFormat(dateFormat),
+      firstActiveDate.plus({ days: 1 }).toFormat(dateFormat),
       unit,
     ),
     getOpeningHoursAtDate(
-      firstActiveDate.plus({ day: 2 }).toFormat(dateFormat),
+      firstActiveDate.plus({ days: 2 }).toFormat(dateFormat),
       unit,
     ),
     getOpeningHoursAtDate(
-      firstActiveDate.plus({ day: 3 }).toFormat(dateFormat),
+      firstActiveDate.plus({ days: 3 }).toFormat(dateFormat),
       unit,
     ),
     getOpeningHoursAtDate(
-      firstActiveDate.plus({ day: 4 }).toFormat(dateFormat),
+      firstActiveDate.plus({ days: 4 }).toFormat(dateFormat),
       unit,
     ),
     getOpeningHoursAtDate(
-      firstActiveDate.plus({ day: 5 }).toFormat(dateFormat),
+      firstActiveDate.plus({ days: 5 }).toFormat(dateFormat),
       unit,
     ),
     getOpeningHoursAtDate(
-      firstActiveDate.plus({ day: 6 }).toFormat(dateFormat),
+      firstActiveDate.plus({ days: 6 }).toFormat(dateFormat),
       unit,
     ),
   ];

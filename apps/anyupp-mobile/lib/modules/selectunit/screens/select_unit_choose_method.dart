@@ -2,6 +2,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -16,12 +17,10 @@ import 'flutter_qr_code_scanner.dart';
 
 class SelectUnitChooseMethodScreen extends StatefulWidget {
   @override
-  _SelectUnitChooseMethodScreenState createState() =>
-      _SelectUnitChooseMethodScreenState();
+  _SelectUnitChooseMethodScreenState createState() => _SelectUnitChooseMethodScreenState();
 }
 
-class _SelectUnitChooseMethodScreenState
-    extends State<SelectUnitChooseMethodScreen> {
+class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScreen> {
   @override
   void initState() {
     super.initState();
@@ -31,11 +30,11 @@ class _SelectUnitChooseMethodScreenState
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<User>(
+    return FutureBuilder<User?>(
         future: getIt<AuthRepository>().getAuthenticatedUserProfile(),
-        builder: (BuildContext context, AsyncSnapshot<User> userSnapshot) {
+        builder: (BuildContext context, AsyncSnapshot<User?> userSnapshot) {
           if (userSnapshot.hasData) {
-            return buildPage(context, userSnapshot.data);
+            return buildPage(context, userSnapshot.data!);
           }
           return CenterLoadingWidget();
         });
@@ -72,10 +71,12 @@ class _SelectUnitChooseMethodScreenState
               height: 46.0,
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.7),
-                image: DecorationImage(
-                  image: NetworkImage(user.profileImage),
-                  fit: BoxFit.cover,
-                ),
+                image: user.profileImage != null
+                    ? DecorationImage(
+                        image: NetworkImage(user.profileImage!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
                 borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
                 ),
@@ -97,14 +98,12 @@ class _SelectUnitChooseMethodScreenState
                 color: Colors.white.withOpacity(0.7),
               ),
             ),
-          Padding(
+          Container(
             padding: const EdgeInsets.only(
               left: 12.0,
             ),
             child: Text(
-              trans('selectUnit.welcome', [
-                user.name != null ? user.name : trans('selectUnit.unknown')
-              ]),
+              trans('selectUnit.welcome', [user.name ?? trans('selectUnit.unknown')]),
               style: GoogleFonts.poppins(
                 fontSize: 14.0,
                 color: Color(0xFF3C2F2F),
@@ -348,7 +347,7 @@ class _SelectUnitChooseMethodScreenState
                       ),
                     ),
                     Text(
-                      units[index].address?.address ?? '',
+                      units[index].address.address,
                       maxLines: 2,
                       style: GoogleFonts.poppins(
                         fontSize: 12.0,
@@ -359,20 +358,17 @@ class _SelectUnitChooseMethodScreenState
                     FittedBox(
                       fit: BoxFit.contain,
                       child: Text(
-                        units[index].isClosed()
-                            ? units[index].getClosedText(
+                        GeoUnitUtils.isClosed(units[index])
+                            ? GeoUnitUtils.getClosedText(
+                                units[index],
                                 transEx(context, "selectUnit.closed"),
                                 transEx(context, "selectUnit.opens"),
                                 transEx(context,
-                                    "selectUnit.weekdays.${units[index].getOpenedHour()?.getDayString()}"),
+                                    "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(units[index])?.getDayString()}"),
                               )
                             : transEx(context, "selectUnit.opened") +
                                 ": " +
-                                transEx(
-                                    context,
-                                    units[index]
-                                        .getOpenedHour()
-                                        .getOpenRangeString()),
+                                transEx(context, GeoUnitUtils.getOpenedHour(units[index])!.getOpenRangeString()!),
                         style: GoogleFonts.poppins(
                           fontSize: 12.0,
                           fontWeight: FontWeight.w400,
@@ -397,9 +393,7 @@ class _SelectUnitChooseMethodScreenState
                           ),
                           child: Center(
                               child: Text(
-                            ((units[index].distance ?? 0) / 1000)
-                                    .toStringAsFixed(3) +
-                                ' km',
+                            (units[index].distance / 1000).toStringAsFixed(3) + ' km',
                             style: GoogleFonts.poppins(
                               fontSize: 12,
                               color: const Color(0xffffffff),

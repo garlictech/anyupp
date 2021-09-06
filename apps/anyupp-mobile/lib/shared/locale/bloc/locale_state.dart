@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-@immutable
 abstract class LocaleState {
   const LocaleState();
 }
@@ -8,6 +7,6 @@ abstract class LocaleState {
 class NoLocal extends LocaleState {}
 
 class LocaleSelected extends LocaleState {
-  final Locale locale;
+  final Locale? locale;
   const LocaleSelected(this.locale);
 }

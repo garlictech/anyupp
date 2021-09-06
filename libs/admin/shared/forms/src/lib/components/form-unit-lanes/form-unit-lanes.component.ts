@@ -16,14 +16,12 @@ import { select, Store } from '@ngrx/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-unit-lanes',
   templateUrl: './form-unit-lanes.component.html',
-  styleUrls: ['./form-unit-lanes.component.scss'],
 })
 export class FormUnitLanesComponent implements OnInit {
   @Input() lanesFormArray!: FormArray;
   public usedLaneIds: string[];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _formsService: FormsService,
     private _changeDetectorRef: ChangeDetectorRef,

@@ -17,25 +17,14 @@ export class StagingBuildPipelineStack extends sst.Stack {
         },
         build: {
           commands: [
-            `./tools/build-workspace.sh ${utils.appConfig.name} ${stage}`,
-            `yarn nx deploy crud-backend --stage=${stage} --app=${utils.appConfig.name}`,
-            `yarn nx deploy anyupp-backend --stage=${stage} --app=${utils.appConfig.name}`,
-            `yarn nx buildApk-ci anyupp-mobile`,
+            `apps/cicd/scripts/prod-build.sh ${utils.appConfig.name} ${stage} $CI`,
           ],
         },
         post_build: {
           commands: [
-            'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart ' +
-              'apps/anyupp-mobile/graphql/crud-api-schema.graphql ' +
-              'apps/anyupp-mobile/graphql/anyupp-api-schema.graphql ' +
-              'apps/anyupp-mobile/lib/graphql/generated ',
-            `aws s3 cp \${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz s3://${utils.getAppcenterArtifactBucketName(
+            `apps/cicd/scripts/prod-post_build.sh ${stage} ${utils.getAppcenterArtifactBucketName(
               stage,
-            )}/`,
-            `echo 'Pushing Android APK to appcenter'`,
-            `./tools/publish-to-appcenter.sh ${stage} android`,
-            `echo 'Triggering ios app build in appcenter...'`,
-            `./tools/trigger-appcenter-builds.sh ${stage} ios`,
+            )}`,
           ],
         },
       },

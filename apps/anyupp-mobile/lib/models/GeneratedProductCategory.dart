@@ -1,104 +1,95 @@
-import 'dart:convert';
+import 'package:fa_prev/models.dart';
 
-import 'package:fa_prev/models/ProductCategory.dart';
-import 'package:flutter/foundation.dart';
-
-@immutable
 class GeneratedProductCategory {
-  final String updatedAt;
-  final String createdAt;
   final String id;
   final String productCategoryId;
-  final int productNum;
+  final int? productNum;
   final String unitId;
   final ProductCategory productCategory;
+  final String? updatedAt;
+  final String? createdAt;
+
   GeneratedProductCategory({
-     this.updatedAt,
-     this.createdAt,
-     this.id,
-     this.productCategoryId,
-     this.productNum,
-     this.unitId,
-     this.productCategory,
+    required this.id,
+    required this.productCategoryId,
+    this.productNum,
+    required this.unitId,
+    required this.productCategory,
+    this.updatedAt,
+    this.createdAt,
   });
 
   GeneratedProductCategory copyWith({
-    String updatedAt,
-    String createdAt,
-    String id,
-    String productCategoryId,
-    int productNum,
-    String unitId,
-    ProductCategory  productCategory,
+    String? id,
+    String? productCategoryId,
+    int? productNum,
+    String? unitId,
+    ProductCategory? productCategory,
+    String? updatedAt,
+    String? createdAt,
   }) {
     return GeneratedProductCategory(
-      updatedAt: updatedAt ?? this.updatedAt,
-      createdAt: createdAt ?? this.createdAt,
       id: id ?? this.id,
       productCategoryId: productCategoryId ?? this.productCategoryId,
       productNum: productNum ?? this.productNum,
       unitId: unitId ?? this.unitId,
       productCategory: productCategory ?? this.productCategory,
+      updatedAt: updatedAt ?? this.updatedAt,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      'updatedAt': updatedAt,
-      'createdAt': createdAt,
       'id': id,
       'productCategoryId': productCategoryId,
       'productNum': productNum,
       'unitId': unitId,
-      'productCategory': productCategory,
+      'productCategory': productCategory.toJson(),
+      'updatedAt': updatedAt,
+      'createdAt': createdAt,
     };
   }
 
-  factory GeneratedProductCategory.fromMap(Map<String, dynamic> map) {
+  factory GeneratedProductCategory.fromJson(Map<String, dynamic> map) {
     return GeneratedProductCategory(
-      updatedAt: map['updatedAt'],
-      createdAt: map['createdAt'],
       id: map['id'],
       productCategoryId: map['productCategoryId'],
       productNum: map['productNum'],
       unitId: map['unitId'],
-      productCategory: map['productCategory'] != null
-            ?  ProductCategory.fromJson(Map<String, dynamic>.from(map['productCategory']))
-            : null
+      productCategory: ProductCategory.fromJson(map['productCategory']),
+      updatedAt: map['updatedAt'],
+      createdAt: map['createdAt'],
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory GeneratedProductCategory.fromJson(String source) => GeneratedProductCategory.fromMap(json.decode(source));
-
   @override
   String toString() {
-    return 'GeneratedProductCategory(updatedAt: $updatedAt, createdAt: $createdAt, id: $id, productCategoryId: $productCategoryId, productNum: $productNum, unitId: $unitId, productCategory: $productCategory)';
+    return 'GeneratedProductCategory(id: $id, productCategoryId: $productCategoryId, productNum: $productNum, unitId: $unitId, productCategory: $productCategory, updatedAt: $updatedAt, createdAt: $createdAt)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is GeneratedProductCategory &&
-      other.updatedAt == updatedAt &&
-      other.createdAt == createdAt &&
-      other.id == id &&
-      other.productCategoryId == productCategoryId &&
-      other.productNum == productNum &&
-      other.unitId == unitId &&
-      productCategory == other.productCategory;
+        other.id == id &&
+        other.productCategoryId == productCategoryId &&
+        other.productNum == productNum &&
+        other.unitId == unitId &&
+        other.productCategory == productCategory &&
+        other.updatedAt == updatedAt &&
+        other.createdAt == createdAt;
   }
 
   @override
   int get hashCode {
-    return updatedAt.hashCode ^
-      createdAt.hashCode ^
-      id.hashCode ^
-      productCategoryId.hashCode ^
-      productNum.hashCode ^
-      unitId.hashCode ^
-      productCategory.hashCode;
+    return id.hashCode ^
+        productCategoryId.hashCode ^
+        productNum.hashCode ^
+        unitId.hashCode ^
+        productCategory.hashCode ^
+        updatedAt.hashCode ^
+        createdAt.hashCode;
   }
 }

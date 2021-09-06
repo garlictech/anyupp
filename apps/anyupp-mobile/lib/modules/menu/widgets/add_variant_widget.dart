@@ -2,6 +2,7 @@ import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
@@ -10,27 +11,46 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AddVariantWidget extends StatefulWidget {
   final GeoUnit unit;
-  final Cart cart;
+  final Cart? cart;
   final GeneratedProduct product;
   final ProductVariant variant;
-  AddVariantWidget({this.cart, this.product, this.variant, this.unit, Key key}) : super(key: key);
+  AddVariantWidget({
+    this.cart,
+    required this.product,
+    required this.variant,
+    required this.unit,
+  });
 
   @override
   _AddVariantWidgetState createState() => _AddVariantWidgetState();
 }
 
 class _AddVariantWidgetState extends State<AddVariantWidget> {
-  
   Future<void> _addOrder() async {
-    User user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
+    User? user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
+    if (user == null) {
+      // TODO ezt ki kene vinni vagy a getAuthenticatedUserProfile-ból dobni
+      throw LoginException(
+        code: LoginException.CODE,
+        subCode: LoginException.USER_NOT_LOGGED_IN,
+        message: 'User not logged in. getAuthenticatedUserProfile() is null',
+      );
+    }
     BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
       widget.unit,
       OrderItem(
         productId: widget.product.id,
-        variantId: widget.variant.id,
+        variantId: widget.variant.id!,
         image: widget.product.image,
         priceShown: PriceShown(
-          currency: widget.unit.currency ?? 'ft', // TODO
+          currency: widget.unit.currency,
+          pricePerUnit: widget.variant.price,
+          priceSum: widget.variant.price,
+          tax: 0,
+          taxSum: 0,
+        ),
+        sumPriceShown: PriceShown(
+          currency: widget.unit.currency,
           pricePerUnit: widget.variant.price,
           priceSum: widget.variant.price,
           tax: 0,
@@ -38,7 +58,6 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
         ),
         allergens: widget.product.allergens,
         productName: widget.product.name,
-        takeAway: false,
         variantName: widget.variant.variantName,
         statusLog: [
           StatusLog(
@@ -54,7 +73,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final int variantCountInCart = widget.cart == null ? 0 : widget.cart.variantCount(widget.product, widget.variant);
+    final int variantCountInCart = widget.cart?.variantCount(widget.product, widget.variant) ?? 0;
     return Container(
       child: Align(
         alignment: Alignment.centerRight,
@@ -65,7 +84,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
             Container(
               margin: EdgeInsets.only(right: 8.0),
               child: Text(
-                formatCurrency(widget.variant.price, widget.unit.currency ?? 'ft'), 
+                formatCurrency(widget.variant.price, widget.unit.currency),
                 textAlign: TextAlign.right,
                 style: GoogleFonts.poppins(
                   color: theme.highlight,

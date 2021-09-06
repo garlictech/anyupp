@@ -15,14 +15,19 @@ class ProductMenuItem extends StatelessWidget {
   final GeneratedProduct item;
   final String heroPrefix;
 
-  ProductMenuItem({Key key, this.item, this.heroPrefix, this.unit}) : super(key: key);
+  ProductMenuItem({
+    required this.item,
+    required this.heroPrefix,
+    required this.unit,
+  });
 
   Widget build(BuildContext context) {
     return buildProductItem(context, this.unit, this.item, this.heroPrefix, theme);
   }
 }
 
-Widget buildProductItem(BuildContext context, GeoUnit unit, GeneratedProduct item, String heroPrefix, ThemeChainData theme) {
+Widget buildProductItem(
+    BuildContext context, GeoUnit unit, GeneratedProduct item, String heroPrefix, ThemeChainData theme) {
   // Defining the dimensions and shadow of each sandwich in menu list (Menu page)
   final double heightContainer = 130;
   final double widthContainer = 130;
@@ -30,12 +35,11 @@ Widget buildProductItem(BuildContext context, GeoUnit unit, GeneratedProduct ite
   return InkWell(
     focusColor: theme.indicator,
     onTap: () {
-      Nav.to(
-          ProductDetailsScreen(
-            unit: unit,
-            item: item,
-            heroId: '${heroPrefix}_${item.id}',
-          ));
+      Nav.to(ProductDetailsScreen(
+        unit: unit,
+        item: item,
+        heroId: '${heroPrefix}_${item.id}',
+      ));
     },
     child: Container(
       margin: const EdgeInsets.only(
@@ -127,13 +131,13 @@ Widget buildProductItem(BuildContext context, GeoUnit unit, GeneratedProduct ite
                         ],
                       ),
                     ),
-                    _buildVariantsInfo(context, theme, item.variants, unit.currency ?? 'ft'),
+                    _buildVariantsInfo(context, theme, item.variants, unit.currency),
                     Padding(
                       padding: const EdgeInsets.only(
                         top: 12.0,
                       ),
                       child: Text(
-                        getLocalizedText(context, item.description),
+                        item.description == null ? '' : getLocalizedText(context, item.description!),
                         style: GoogleFonts.poppins(
                           fontSize: 11.0,
                           color: theme.text,
@@ -152,9 +156,6 @@ Widget buildProductItem(BuildContext context, GeoUnit unit, GeneratedProduct ite
 }
 
 Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme, List<ProductVariant> variants, String currency) {
-  if (variants == null) {
-    return Container();
-  }
   final prices = variants.map((variant) => variant.price).toList();
   prices.sort();
 

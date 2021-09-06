@@ -71,7 +71,7 @@ echo "************************************************************************"
 echo
 tput sgr 0
 
-yarn nx build anyupp-backend --app=$APPNAME --stage=$STAGE 
+yarn nx build anyupp-backend --app=$APPNAME --stage=$STAGE
 
 tput bold
 tput setaf 2
@@ -162,12 +162,12 @@ echo "* 'Choose the default authorization type for the API': 'API key'"
 echo "* 'Enter a description for the API key' > type what you like"
 echo "* 'After how many days from now the API key should expire' > 365"
 echo "* 'Do you want to configure advanced settings for the GraphQL API': 'Yes, I want to make some additional changes.'"
-echo "* 'Configure additional auth types?' > Yes"
+echo "* 'Configure additional auth types?' > Y"
 echo "* 'Choose the additional authorization types you want to configure for the API' > select 'Amazon Cognito User Pool' and 'IAM'"
 echo "* 'Enable conflict detection?' > N"
 echo "* 'Do you have an annotated GraphQL schema?' > Y"
 echo "* 'Do you have an annotated GraphQL schema?' > Y"
-echo "* 'Provide your schema file path:' > ../../libs/crud-gql/backend/src/graphql/crud-api.graphql "
+echo "* 'Provide your schema file path:' > ../../libs/crud-gql/backend/src/graphql/schema/crud-api.graphql "
 echo "************************************************************************"
 echo
 tput sgr 0
@@ -182,13 +182,13 @@ tput setaf 2
 echo
 echo "************************************************************************"
 echo "* At this point, we have all the resources to proceed. So, we rebuild"
-echo "* and deploy the whole ${APPNAME} stack." 
+echo "* and deploy the whole ${APPNAME} stack."
 echo "************************************************************************"
 echo
 tput sgr 0
 
-yarn nx build anyupp-backend --app=$APPNAME --stage=$STAGE 
-yarn nx deploy anyupp-backend --app=$APPNAME --stage=$STAGE 
+yarn nx build anyupp-backend --app=$APPNAME --stage=$STAGE
+yarn nx deploy anyupp-backend --app=$APPNAME --stage=$STAGE
 
 tput bold
 tput setaf 2
@@ -201,6 +201,6 @@ echo
 tput sgr 0
 
 ./tools/build-workspace.sh $APPNAME $STAGE
-yarn nx deploy crud-backend --app=$APPNAME --stage=$STAGE 
-yarn nx deploy anyupp-backend --app=$APPNAME --stage=$STAGE 
+yarn nx deploy crud-backend --app=$APPNAME --stage=$STAGE
+yarn nx deploy anyupp-backend --app=$APPNAME --stage=$STAGE
 

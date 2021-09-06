@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models/Order.dart';
-import 'package:fa_prev/models/OrderItem.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
@@ -16,7 +15,6 @@ class OrderDetailsScreen extends StatelessWidget {
   OrderDetailsScreen();
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
         appBar:
             appBar(theme, onBackButtonPressed: () => Nav.pop(), title: trans(context, 'profile.transactions.details')),
@@ -25,7 +23,7 @@ class OrderDetailsScreen extends StatelessWidget {
         body: BlocBuilder<OrderBloc, BaseOrderState>(
           builder: (context, state) {
             if (state is OrderDetailLoadedState) {
-              return _buildLoadedOrderDetails(context, state.order);
+              return _buildLoadedOrderDetails(context, state.order!);
             }
 
             return CenterLoadingWidget();
@@ -156,7 +154,7 @@ class OrderDetailsScreen extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: AutoSizeText(
-                  formatCurrency(item.sumPriceShown.priceSum, item.priceShown.currency ?? 'ft'),
+                  formatCurrency(item.sumPriceShown.priceSum, item.priceShown.currency),
                   style: GoogleFonts.poppins(
                     //fontSize: 14,
                     color: theme.text,
@@ -208,7 +206,7 @@ class OrderDetailsScreen extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency ?? 'ft'),
+            formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency),
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,

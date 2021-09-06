@@ -16,21 +16,15 @@ class OrderStatusItem {
 class OrderStatusFooter extends StatefulWidget {
   final Order order;
 
-  const OrderStatusFooter({Key key, this.order}) : super(key: key);
+  const OrderStatusFooter({required this.order});
   @override
   _OrderStatusFooterState createState() => _OrderStatusFooterState();
 }
 
 class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTickerProviderStateMixin {
-  Animation animation;
-  AnimationController controller;
+  late AnimationController controller;
 
-  final List<String> statusList = [
-    'none',
-    'placed',
-    'processing',
-    'ready'
-  ];
+  final List<String> statusList = ['none', 'placed', 'processing', 'ready'];
 
   @override
   void initState() {
@@ -155,12 +149,9 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
             child: Container(
               width: 40.0,
               height: 40.0,
-              child: Icon(
-                item.icon,
-                color: item.iconColor
-              ),
+              child: Icon(item.icon, color: item.iconColor),
             ),
-            builder: (BuildContext context, Widget _widget) {
+            builder: (BuildContext context, Widget? _widget) {
               return Transform.rotate(
                 angle: controller.value * 6.3,
                 child: _widget,

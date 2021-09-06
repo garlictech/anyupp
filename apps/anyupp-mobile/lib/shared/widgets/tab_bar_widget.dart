@@ -10,20 +10,17 @@ class TabBarWidget extends StatefulWidget {
   final String firstPageText;
   final String secondPageText;
   final int tabIndex;
-  final Function onTabChanged;
+  final Function? onTabChanged;
 
-  const TabBarWidget(
-      this.firstPage, this.secondPage, this.firstPageText, this.secondPageText,
-      {Key key, this.tabIndex = 0, this.onTabChanged})
-      : super(key: key);
+  const TabBarWidget(this.firstPage, this.secondPage, this.firstPageText, this.secondPageText,
+      {this.tabIndex = 0, this.onTabChanged});
 
   @override
   _TabBarWidgetState createState() => _TabBarWidgetState();
 }
 
-class _TabBarWidgetState extends State<TabBarWidget>
-    with SingleTickerProviderStateMixin {
-  TabController _tabController;
+class _TabBarWidgetState extends State<TabBarWidget> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   @override
   void initState() {
     _tabController = TabController(
@@ -33,7 +30,7 @@ class _TabBarWidgetState extends State<TabBarWidget>
     );
     _tabController.addListener(() {
       if (widget.onTabChanged != null) {
-        widget.onTabChanged();
+        widget.onTabChanged!();
       }
     });
     super.initState();
@@ -56,8 +53,7 @@ class _TabBarWidgetState extends State<TabBarWidget>
                   isScrollable: false,
                   indicatorColor: Colors.transparent,
                   indicatorSize: TabBarIndicatorSize.tab,
-                  indicator:
-                      CircleTabIndicator(color: theme.highlight, radius: 3),
+                  indicator: CircleTabIndicator(color: theme.highlight, radius: 3),
                   labelColor: theme.highlight,
                   labelStyle: GoogleFonts.poppins(
                     fontSize: 16.0,
@@ -72,13 +68,10 @@ class _TabBarWidgetState extends State<TabBarWidget>
           ),
         ),
       ),
-      body: TabBarView(
-          controller: _tabController,
-          physics: BouncingScrollPhysics(),
-          children: [
-            widget.firstPage,
-            widget.secondPage,
-          ]),
+      body: TabBarView(controller: _tabController, physics: BouncingScrollPhysics(), children: [
+        widget.firstPage,
+        widget.secondPage,
+      ]),
     );
   }
 }

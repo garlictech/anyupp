@@ -6,9 +6,9 @@ Future<bool> setOrderStatusPref(String orderId, String status) async {
   return prefs.setString('ORDERS_$orderId', status);
 }
 
-Future<String> getOrderStatusPref(String orderId) async {
+Future<String?> getOrderStatusPref(String orderId) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String status = prefs.getString('ORDERS_$orderId');
+  String? status = prefs.getString('ORDERS_$orderId');
   //print('**** getOrderStatusPref["$orderId"]=$status');
   return status;
 }

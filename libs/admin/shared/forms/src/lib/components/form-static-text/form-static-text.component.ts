@@ -4,7 +4,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-static-text',
   templateUrl: './form-static-text.component.html',
-  styleUrls: ['./form-static-text.component.scss'],
 })
 export class FormStaticTextComponent {
   @Input() caption = ''; // Language key!!!

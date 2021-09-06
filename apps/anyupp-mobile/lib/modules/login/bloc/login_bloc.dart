@@ -1,14 +1,12 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/modules/login/models/sign_up_exception.dart';
+import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fa_prev/shared/nav.dart';
-
-import 'package:fa_prev/modules/login/login.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepository _repository;
@@ -19,30 +17,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     print('*** LoginBloc().mapEventToState=$event');
     try {
-      // --- Handle logins
-      // if (event is LoginWithMethod) {
-      //   yield LoginInProgress();
-
-      //   // --- HANDLE FEDERATED LOGINS (FACEBOOK, APPLE, GOOGLE)
-      //   if (_repository.isFederated(event.method)) {
-      //     print('*** LoginBloc().federated=${event.method}');
-
-      //     // --- Get provider specific auth Credential from the given provider
-      //     ProviderLoginResponse loginResponse =
-      //         await _repository.signInWithProvider(event.method);
-      //     print('*** LoginBloc().federated.loginResponse=$loginResponse');
-      //     yield LoginSuccess();
-      //   } else {
-      //     // --- Handle not Federated logins (PHONE, Anonymous)
-      //     yield LoginInProgress();
-
-      //     // --- Handle Anonymous login
-      //     if (event.method == LoginMethod.ANONYMOUS) {
-      //       await _repository.signInAnonymously();
-      //     }
-      //   }
-      // }
-
       if (event is LoginWithMethod) {
         if (event.method == LoginMethod.ANONYMOUS) {
           yield LoginInProgress();
@@ -55,8 +29,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
 
       if (event is CompleteLoginWithMethod) {
-        ProviderLoginResponse response =
-            await _repository.signUserInWithAuthCode(event.code);
+        ProviderLoginResponse response = await _repository.signUserInWithAuthCode(event.code);
         print('*** LoginBloc().federated.loginResponse=$response');
         yield LoginSuccess();
       }
@@ -64,8 +37,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle login with email and password
       if (event is LoginWithEmailAndPassword) {
         yield EmailLoginInProgress();
-        ProviderLoginResponse response = await _repository
-            .loginWithEmailAndPassword(event.email, event.password);
+        ProviderLoginResponse response = await _repository.loginWithEmailAndPassword(event.email, event.password);
         print('**** LoginBloc.LoginWithEmailAndPassword().finish()=$response');
         yield LoginSuccess();
       }
@@ -74,26 +46,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (event is RegisterWithEmailAndPassword) {
         yield EmailLoginInProgress();
         String username = await _repository.registerUserWithEmailAndPassword(
-            event.userEmail, event.userPhone, event.email, event.password);
-        if (username != null) {
-          getIt<LoginBloc>().add(ChangeEmailFormUI(
-              ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
-              animationCurve: Curves.easeIn));
-          getIt<LoginBloc>().add(SignUpConfirm(username));
-        }
+          event.userEmail,
+          event.userPhone,
+          event.email,
+          event.password,
+        );
+        getIt<LoginBloc>().add(ChangeEmailFormUI(ui: LoginFormUI.SHOW_CONFIRM_SIGNUP, animationCurve: Curves.easeIn));
+        getIt<LoginBloc>().add(SignUpConfirm(username));
       }
       if (event is ConfirmRegistration) {
-        bool confirmed =
-            await _repository.confirmSignUp(event.user, event.code);
+        bool confirmed = await _repository.confirmSignUp(event.user, event.code);
         if (confirmed) {
-          getIt<LoginBloc>().add(ChangeEmailFormUI(
-              ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
-              animationCurve: Curves.easeIn));
+          getIt<LoginBloc>().add(ChangeEmailFormUI(ui: LoginFormUI.SHOW_CONFIRM_SIGNUP, animationCurve: Curves.easeIn));
           getIt<LoginBloc>().add(SignUpConfirmed());
         } else {
-          getIt<ExceptionBloc>().add(ShowException(SignUpException(
-              code: SignUpException.CODE,
-              subCode: SignUpException.INVALID_CONFIRMATION_CODE)));
+          getIt<ExceptionBloc>().add(ShowException(
+              SignUpException(code: SignUpException.CODE, subCode: SignUpException.INVALID_CONFIRMATION_CODE)));
           getIt<LoginBloc>().add(SignUpConfirm(event.user));
         }
       }
@@ -105,9 +73,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           getIt<LoginBloc>().add(SentConfirmCodeEmail(event.user));
           getIt<LoginBloc>().add(SignUpConfirm(event.user));
         } else {
-          getIt<ExceptionBloc>().add(ShowException(SignUpException(
-              code: SignUpException.CODE,
-              subCode: SignUpException.UNKNOWN_ERROR)));
+          getIt<ExceptionBloc>()
+              .add(ShowException(SignUpException(code: SignUpException.CODE, subCode: SignUpException.UNKNOWN_ERROR)));
           getIt<LoginBloc>().add(SignUpConfirm(event.user));
         }
       }
@@ -131,19 +98,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // --- Handle send password reset to email
       if (event is SendPasswordResetEmail) {
         yield PasswordResetInProgress();
-        Map<String, dynamic> passwordSentInfo =
-            await _repository.sendPasswordResetEmail(event.email);
-        if (passwordSentInfo != null) {
-          getIt<LoginBloc>().add(PasswordResetInfoSent(
-              event.email,
-              passwordSentInfo['DeliveryMedium'],
-              passwordSentInfo['Destination']));
-        }
+        Map<String, dynamic> passwordSentInfo = await _repository.sendPasswordResetEmail(event.email);
+        getIt<LoginBloc>().add(PasswordResetInfoSent(
+          event.email,
+          passwordSentInfo['DeliveryMedium'],
+          passwordSentInfo['Destination'],
+        ));
       }
 
       if (event is PasswordResetInfoSent) {
         yield PasswordResetInfoSentState(
-            event.userName, event.deliveryMedium, event.destination);
+          event.userName,
+          event.deliveryMedium,
+          event.destination,
+        );
       }
 
       if (event is ConfirmPassword) {
@@ -152,13 +120,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         try {
           success = await _repository.confirmPassword(
-              event.userName, event.code, event.password);
+            event.userName,
+            event.code,
+            event.password,
+          );
         } on SignUpException catch (se) {
           print('********* SignUpBloc.Exception()=$se');
           getIt<ExceptionBloc>().add(ShowException(se));
         } on Exception catch (e) {
           print('********* LoginBloc.Exception()=$e');
-          getIt<ExceptionBloc>().add(ShowException(e));
+          getIt<ExceptionBloc>().add(ShowException(SignUpException.fromException(
+            SignUpException.UNKNOWN_ERROR,
+            e.toString(),
+            e,
+          )));
         }
         if (success) {
           yield PasswordReset();
@@ -167,18 +142,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       // --- Handle external errors (eg. errors from repository)
       if (event is LoginErrorOccured) {
-        getIt<ExceptionBloc>().add(ShowException(LoginException(
-            code: LoginException.CODE,
-            subCode: event.code,
-            message: event.message)));
+        getIt<ExceptionBloc>()
+            .add(ShowException(LoginException(code: LoginException.CODE, subCode: event.code, message: event.message)));
         yield LoginError(event.code, event.message);
       }
 
       if (event is SignUpErrorOccured) {
-        getIt<ExceptionBloc>().add(ShowException(SignUpException(
-            code: SignUpException.CODE,
-            subCode: event.code,
-            message: event.message)));
+        getIt<ExceptionBloc>().add(
+            ShowException(SignUpException(code: SignUpException.CODE, subCode: event.code, message: event.message)));
         yield LoginError(event.code, event.message);
       }
 
@@ -199,9 +170,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (event is ChangeEmailFormUI) {
         yield EmailFormUIChange(
           ui: event.ui,
-          animationDuration:
-              event.animationDuration ?? Duration(milliseconds: 350),
-          animationCurve: event.animationCurve ?? Curves.bounceInOut,
+          animationDuration: event.animationDuration ?? Duration(milliseconds: 350),
+          animationCurve: event.animationCurve,
         );
       }
     } on GraphQLException catch (e) {
@@ -210,16 +180,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginError(e.code, e.message);
     } on PlatformException catch (pe) {
       print('********* LoginBloc.PlatformException()=$pe');
-      getIt<ExceptionBloc>()
-          .add(ShowException(LoginException.fromPlatformException(pe)));
+      getIt<ExceptionBloc>().add(ShowException(LoginException.fromPlatformException(pe)));
       yield LoginError(pe.code, pe.message);
     } on LoginException catch (le) {
       print('********* LoginBloc.LoginException()=$le');
       if (le.subCode == LoginException.UNCONFIRMED) {
-        getIt<LoginBloc>().add(ChangeEmailFormUI(
-            ui: LoginFormUI.SHOW_CONFIRM_SIGNUP,
-            animationCurve: Curves.easeIn));
-        getIt<LoginBloc>().add(SignUpConfirm(le.message));
+        getIt<LoginBloc>().add(ChangeEmailFormUI(ui: LoginFormUI.SHOW_CONFIRM_SIGNUP, animationCurve: Curves.easeIn));
       } else {
         getIt<ExceptionBloc>().add(ShowException(le));
         yield LoginError(le.code, le.message);
@@ -227,15 +193,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } on SignUpException catch (se) {
       print('********* SignUpBloc.Exception()=$se');
       getIt<ExceptionBloc>().add(ShowException(se));
-      yield SignUpError(se.code, se.message);
-      if (se.subCode == SignUpException.INVALID_CONFIRMATION_CODE ||
-          se.subCode == SignUpException.LIMIT_ECXEEDED) {
-        getIt<LoginBloc>().add(SignUpConfirm(se.message));
+      if (se.subCode == SignUpException.INVALID_CONFIRMATION_CODE || se.subCode == SignUpException.LIMIT_ECXEEDED) {
+        getIt<LoginBloc>().add(SignUpConfirm(se.message!)); // TODO ez mi? ez tuti nem jó... ?!
       }
     } on Exception catch (e) {
       print('********* LoginBloc.Exception()=$e');
-      getIt<ExceptionBloc>().add(ShowException(
-          LoginException.fromException(LoginException.UNKNOWN_ERROR, e)));
+      getIt<ExceptionBloc>().add(ShowException(LoginException.fromException(LoginException.UNKNOWN_ERROR, e)));
       yield LoginError(LoginException.UNKNOWN_ERROR, e.toString());
     }
   }

@@ -4,7 +4,7 @@ import 'package:fa_prev/models.dart';
 abstract class StripePaymentState extends Equatable {
   const StripePaymentState();
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class StripePaymentInitialState extends StripePaymentState {
@@ -16,12 +16,12 @@ class StripePaymentLoading extends StripePaymentState {
 }
 
 class StripePaymentMethodsList extends StripePaymentState {
-  final List<StripePaymentMethod> data;
+  final List<StripePaymentMethod>? data;
 
   const StripePaymentMethodsList(this.data);
 
   @override
-  List<Object> get props => [data];
+  List<Object?> get props => [data];
 }
 
 class StripeError extends StripePaymentState {
@@ -31,7 +31,7 @@ class StripeError extends StripePaymentState {
   const StripeError(this.code, this.message);
 
   @override
-  List<Object> get props => [code, message];
+  List<Object?> get props => [code, message];
 }
 
 class StripePaymentIntentReceived extends StripePaymentState {
@@ -40,7 +40,7 @@ class StripePaymentIntentReceived extends StripePaymentState {
   const StripePaymentIntentReceived(this.key);
 
   @override
-  List<Object> get props => [key];
+  List<Object?> get props => [key];
 }
 
 class StripeOperationSuccess extends StripePaymentState {

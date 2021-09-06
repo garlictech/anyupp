@@ -1,7 +1,6 @@
 import 'package:fa_prev/modules/login/login.dart';
 
 abstract class ISocialLoginProvider {
-
   // Future<ProviderLoginResponse> signInWithProvider(LoginMethod method);
 
   // Future<ProviderLoginResponse> signInWithGoogle();
@@ -19,5 +18,4 @@ abstract class ISocialLoginProvider {
   bool isFederated(LoginMethod method);
 
   Future<ProviderLoginResponse> signUserInWithAuthCode(String authCode);
-
 }

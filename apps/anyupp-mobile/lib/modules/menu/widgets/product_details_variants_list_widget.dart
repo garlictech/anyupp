@@ -1,18 +1,17 @@
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/models/GeneratedProduct.dart';
-import 'package:fa_prev/modules/menu/widgets/add_variant_widget.dart';
-import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
-import 'package:fa_prev/modules/menu/widgets/product_configure_widget.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:flutter/material.dart';
-
-import 'product_details_variant_item_widget.dart';
 
 class ProductDetailVariantListWidget extends StatefulWidget {
   final GeoUnit unit;
   final GeneratedProduct product;
-  final Cart cart;
+  final Cart? cart;
 
-  const ProductDetailVariantListWidget({Key key, this.unit, this.product, this.cart}) : super(key: key);
+  const ProductDetailVariantListWidget({
+    required this.unit,
+    required this.product,
+    required this.cart,
+  });
 
   @override
   _ProductDetailVariantListWidgetState createState() => _ProductDetailVariantListWidgetState();
@@ -23,13 +22,13 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
 
   @override
   Widget build(BuildContext context) {
-    if (widget.product.configSets == null || widget.product.configSets.isEmpty) {
+    if (widget.product.configSets == null ||
+        (widget.product.configSets != null && widget.product.configSets!.isEmpty)) {
       return _buildWithNormalPanel(context);
     } else {
       return Padding(
         padding: const EdgeInsets.all(16),
         child: ProductConfiguratorWidget(
-          cart: widget.cart,
           product: widget.product,
           unit: widget.unit,
         ),
@@ -41,7 +40,7 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
 
   Widget _buildWithNormalPanel(BuildContext context) {
     List<ProductVariant> variants = widget.product.variants;
-    if (variants == null) {
+    if (variants.isEmpty) {
       return Container();
     }
 
@@ -51,7 +50,6 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
         padding: EdgeInsets.symmetric(horizontal: 16),
         child: ProductDetailVariantItemWidget(
           unit: widget.unit,
-          cart: widget.cart,
           product: widget.product,
           variant: variant,
           child: AddVariantWidget(
@@ -63,10 +61,11 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
         ),
       ));
     });
-    if (widget.product.allergens != null && widget.product.allergens.isNotEmpty) {
+    if (widget.product.allergens != null &&
+        (widget.product.allergens != null && widget.product.allergens!.isNotEmpty)) {
       items.add(Padding(
         padding: const EdgeInsets.all(16),
-        child: AllergensWidget(allergens: widget.product.allergens),
+        child: AllergensWidget(allergens: widget.product.allergens!),
       ));
     }
     return Column(
@@ -102,7 +101,6 @@ class _ProductDetailVariantListWidgetState extends State<ProductDetailVariantLis
       headerBuilder: (context, isExpanded) {
         return ProductDetailVariantItemWidget(
           unit: widget.unit,
-          cart: widget.cart,
           product: widget.product,
           variant: variant,
         );

@@ -9,13 +9,15 @@ class StripePaymentMethodListWidget extends StatelessWidget {
 
   final List<StripePaymentMethod> methods;
 
-  const StripePaymentMethodListWidget(
-      {Key key, this.methods, this.onItemSelected, this.selected})
-      : super(key: key);
+  const StripePaymentMethodListWidget({
+    required this.methods,
+    required this.onItemSelected,
+    required this.selected,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(    
+    return Container(
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: LayoutBuilder(builder: (context, constrains) {
         return Container(

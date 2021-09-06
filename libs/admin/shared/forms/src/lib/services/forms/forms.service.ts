@@ -3,6 +3,7 @@ import { v1 as uuidV1 } from 'uuid';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
+  makeId,
   multiLangValidator,
   productAvailabilityValidator,
   TIME_FORMAT_PATTERN,
@@ -13,8 +14,7 @@ import { EVariantAvailabilityType } from '@bgap/shared/types';
   providedIn: 'root',
 })
 export class FormsService {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(/*private _store: Store,*/ private _formBuilder: FormBuilder) {}
+  constructor(private _formBuilder: FormBuilder) {}
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {
@@ -85,4 +85,21 @@ export class FormsService {
       refGroupPrice: [0, Validators.required],
       price: [0, Validators.required],
     });
+
+  public createRkeeperFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      endpointUri: [{ value: '', disabled: true }, Validators.required],
+      rkeeperUsername: [{ value: '', disabled: true }, Validators.required],
+      rkeeperPassword: [{ value: '', disabled: true }, Validators.required],
+      anyuppUsername: [{ value: '', disabled: true }, Validators.required],
+      anyuppPassword: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(8)],
+      ],
+      restaurantId: [{ value: '', disabled: true }, Validators.required],
+    });
+
+  public generateRkeeperPassword = (rkeeperFormGroup: FormGroup) => {
+    rkeeperFormGroup.controls['anyuppPassword'].patchValue(makeId(8));
+  };
 }

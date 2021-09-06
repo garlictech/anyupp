@@ -83,12 +83,12 @@ Widget customCountryPickerWidget(
                 ),
               ),
               padding: EdgeInsets.all(0.0),
-              onInit: (CountryCode code) => nameController.text = code.name,
+              onInit: (CountryCode? code) => nameController.text = code?.name ?? '',
               //alignLeft: true,
 
               onChanged: (CountryCode countryCode) {
-                codeController.text = countryCode.code;
-                nameController.text = countryCode.name;
+                codeController.text = countryCode.code ?? '';
+                nameController.text = countryCode.name ?? '';
               },
               showDropDownButton: true,
               // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')

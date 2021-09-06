@@ -1,8 +1,7 @@
 import 'package:fa_prev/shared/auth.dart';
-
 import 'common_login_provider_interface.dart';
-class AwsCommonLoginProvider implements ICommonLoginProvider {
 
+class AwsCommonLoginProvider implements ICommonLoginProvider {
   final IAuthProvider _provider;
   final CognitoService _service;
 

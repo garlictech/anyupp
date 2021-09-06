@@ -7,12 +7,10 @@ class BottomBarItem extends StatelessWidget {
   final String text;
   final IconData icon;
   final bool selected;
-  final String badge;
-  final VoidCallback onTapped;
+  final String? badge;
+  final VoidCallback? onTapped;
 
-  const BottomBarItem(
-      {Key key, @required this.text, @required this.icon, this.selected = false, this.badge, this.onTapped})
-      : super(key: key);
+  const BottomBarItem({required this.text, required this.icon, this.selected = false, this.badge, this.onTapped});
 
   @override
   Widget build(BuildContext context) {

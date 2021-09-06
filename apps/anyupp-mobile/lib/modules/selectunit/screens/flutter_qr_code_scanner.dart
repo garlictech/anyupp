@@ -37,27 +37,26 @@ class QRCodeScannerScreen extends StatefulWidget {
 }
 
 class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerProviderStateMixin {
-  Barcode result;
-  QRViewController controller;
+  Barcode? result;
+  late QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   bool flashState = false;
 
-  AnimationController _animationController;
+  AnimationController? _animationController;
   bool _closeWindow = false;
   AnimationState _currentState = AnimationState.search;
-  CustomPainter _animationPainter;
+  CustomPainter? _animationPainter;
   int animationStart = DateTime.now().millisecondsSinceEpoch;
 
   @override
   void initState() {
     //setFlashState();
     _switchAnimationState(AnimationState.search);
-    // TODO: implement initState
     super.initState();
   }
 
   Future<void> setFlashState() async {
-    this.flashState = await controller.getFlashStatus();
+    this.flashState = await controller.getFlashStatus() ?? false;
     setState(() {});
   }
 
@@ -86,14 +85,14 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
             height: widget.validRectangle.height * widget.traceMultiplier,
             color: Colors.transparent,
           ),
-        ).animate(_animationController),
+        ).animate(_animationController!),
       );
 
-      _animationController.addStatusListener((AnimationStatus status) {
+      _animationController!.addStatusListener((AnimationStatus status) {
         if (status == AnimationStatus.completed) {
           Future<void>.delayed(const Duration(milliseconds: 1600), () {
             if (_currentState == AnimationState.search) {
-              _animationController.forward(from: 0);
+              _animationController!.forward(from: 0);
             }
           });
         }
@@ -101,9 +100,9 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     } else if (newState == AnimationState.barcodeNear ||
         newState == AnimationState.barcodeFound ||
         newState == AnimationState.endSearch) {
-      double begin;
+      double? begin;
       if (_currentState == AnimationState.barcodeNear) {
-        begin = lerpDouble(0.0, 0.5, _animationController.value);
+        begin = lerpDouble(0.0, 0.5, _animationController!.value);
       } else if (_currentState == AnimationState.search) {
         _initAnimation(const Duration(milliseconds: 500));
         begin = 0.0;
@@ -118,11 +117,11 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
         animation: Tween<double>(
           begin: begin,
           end: newState == AnimationState.barcodeNear ? 0.5 : 1.0,
-        ).animate(_animationController),
+        ).animate(_animationController!),
       );
 
       if (newState == AnimationState.barcodeFound) {
-        _animationController.addStatusListener((AnimationStatus status) {
+        _animationController!.addStatusListener((AnimationStatus status) {
           if (status == AnimationStatus.completed) {
             Future<void>.delayed(const Duration(milliseconds: 300), () {
               if (_currentState != AnimationState.endSearch) {
@@ -138,7 +137,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
 
     _currentState = newState;
     if (newState != AnimationState.endSearch) {
-      _animationController.forward(from: 0);
+      _animationController!.forward(from: 0);
       animationStart = DateTime.now().millisecondsSinceEpoch;
     }
   }
@@ -294,7 +293,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
   void dispose() {
     _currentState = AnimationState.endSearch;
     _animationController?.dispose();
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 }

@@ -5,14 +5,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 /// Locally class created
 class Locally {
-  /// A key identifier property is needed
-  Key key;
-
   /// A String title for Notification
-  String title;
+  String? title;
 
   /// A String message
-  String message;
+  String? message;
 
   /// Payload for Navigation
   String payload;
@@ -21,7 +18,7 @@ class Locally {
   String appIcon;
 
   /// Page Route which is also required on Initialization
-  Widget navigatePage;
+  Widget? navigatePage;
 
   /// A context is also required
   BuildContext context;
@@ -47,10 +44,10 @@ class Locally {
   /// localNotification settings is initialized with Flutter Local Notification
   /// Setting declared above
   Locally({
-    @required this.context,
+    required this.context,
     this.navigatePage,
-    @required this.appIcon,
-    @required this.payload,
+    required this.appIcon,
+    required this.payload,
     this.iosRequestSoundPermission = false,
     this.iosRequestBadgePermission = false,
     this.iosRequestAlertPermission = false,
@@ -92,7 +89,7 @@ class Locally {
   /// onSelectNotification
   /// Obtains a string payload
   /// And perform navigation function
-  Future<void> onSelectNotification(String payload) async {
+  Future<void> onSelectNotification(String? payload) async {
     // print('***** onSelectNotification().payload=$payload, page=$navigatePage, context=$context');
     // if (payload != null) {
     //   debugPrint('notification payload: ' + payload);
@@ -100,7 +97,7 @@ class Locally {
     // await Navigator.push(context, pageRoute);
     if (navigatePage != null) {
       print('***** onSelectNotification().navigateTo=$navigatePage');
-      Nav.reset(navigatePage);
+      Nav.reset(navigatePage!);
     }
   }
 
@@ -121,7 +118,7 @@ class Locally {
               child: Text('Ok'),
               onPressed: () async {
                 if (navigatePage != null) {
-                  Nav.reset(navigatePage);
+                  Nav.reset(navigatePage!);
                 }
               },
             )
@@ -177,7 +174,7 @@ class Locally {
   /// The cancel method as the name goes
   /// cancels a with a provided index id
   ///
-  Future cancel(int index) async {
+  Future cancel(int? index) async {
     if (index == null) {
       throw 'Error: index required';
     } else {
@@ -201,10 +198,9 @@ class Locally {
   }
 }
 
-Locally _locally;
+Locally? _locally;
 
-void showNotification(BuildContext context, String title, String message, Widget navigateToPage) {
-  //print('showNotification()=$title');
+void showNotification(BuildContext context, String title, String message, Widget? navigateToPage) {
   if (_locally == null) {
     _locally = Locally(
       context: context,
@@ -215,7 +211,7 @@ void showNotification(BuildContext context, String title, String message, Widget
     );
   }
 
-  _locally.context = context;
-  _locally.navigatePage = navigateToPage;
-  _locally.show(title: title, message: message);
+  _locally!.context = context;
+  _locally!.navigatePage = navigateToPage;
+  _locally!.show(title: title, message: message);
 }

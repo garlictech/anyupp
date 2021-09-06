@@ -1,5 +1,5 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
+import 'package:fa_prev/graphql/generated/anyupp-api.dart' hide PaymentMethod;
 import 'package:fa_prev/modules/main/bloc/main_navigation_bloc.dart';
 import 'package:fa_prev/modules/main/bloc/main_navigation_event.dart';
 import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_bloc.dart';
@@ -15,11 +15,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StripePaymentScreen extends StatefulWidget {
-  final String orderId;
-  final UserInvoiceAddress invoiceAddress;
+  final String? orderId;
+  final UserInvoiceAddress? invoiceAddress;
   final int tabIndex;
 
-  const StripePaymentScreen({Key key, this.orderId, this.invoiceAddress, this.tabIndex = 0}) : super(key: key);
+  const StripePaymentScreen({this.orderId, this.invoiceAddress, this.tabIndex = 0});
 
   @override
   _StripePaymentScreenState createState() => _StripePaymentScreenState();
@@ -52,7 +52,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
         builder: (context, state) {
           if (state is StripePaymentMethodsList) {
             int initialIndex = 1;
-            if (state.data != null && state.data.isEmpty) {
+            if (state.data != null && state.data!.isEmpty) {
               initialIndex = 0;
             }
             return TabBarWidget(

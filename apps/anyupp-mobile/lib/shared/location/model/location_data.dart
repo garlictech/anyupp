@@ -1,69 +1,148 @@
-
 class GeolocationData {
   String status;
-  String country;
-  String countryCode;
-  String region;
-  String regionName;
-  String city;
-  String zip;
+  String? country;
+  String? countryCode;
+  String? region;
+  String? regionName;
+  String? city;
+  String? zip;
   double lat;
   double lon;
-  String timezone;
-  String isp;
-  String org;
-  String as;
-  String query;
+  String? timezone;
+  String? isp;
+  String? org;
+  String? as;
+  String? query;
+  GeolocationData({
+    required this.status,
+    this.country,
+    this.countryCode,
+    this.region,
+    this.regionName,
+    this.city,
+    this.zip,
+    required this.lat,
+    required this.lon,
+    this.timezone,
+    this.isp,
+    this.org,
+    this.as,
+    this.query,
+  });
 
-  GeolocationData(
-      {this.status,
-        this.country,
-        this.countryCode,
-        this.region,
-        this.regionName,
-        this.city,
-        this.zip,
-        this.lat,
-        this.lon,
-        this.timezone,
-        this.isp,
-        this.org,
-        this.as,
-        this.query});
-
-  GeolocationData.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    country = json['country'];
-    countryCode = json['countryCode'];
-    region = json['region'];
-    regionName = json['regionName'];
-    city = json['city'];
-    zip = json['zip'];
-    lat = json['lat'];
-    lon = json['lon'];
-    timezone = json['timezone'];
-    isp = json['isp'];
-    org = json['org'];
-    as = json['as'];
-    query = json['query'];
+  GeolocationData copyWith({
+    String? status,
+    String? country,
+    String? countryCode,
+    String? region,
+    String? regionName,
+    String? city,
+    String? zip,
+    double? lat,
+    double? lon,
+    String? timezone,
+    String? isp,
+    String? org,
+    String? as,
+    String? query,
+  }) {
+    return GeolocationData(
+      status: status ?? this.status,
+      country: country ?? this.country,
+      countryCode: countryCode ?? this.countryCode,
+      region: region ?? this.region,
+      regionName: regionName ?? this.regionName,
+      city: city ?? this.city,
+      zip: zip ?? this.zip,
+      lat: lat ?? this.lat,
+      lon: lon ?? this.lon,
+      timezone: timezone ?? this.timezone,
+      isp: isp ?? this.isp,
+      org: org ?? this.org,
+      as: as ?? this.as,
+      query: query ?? this.query,
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['status'] = this.status;
-    data['country'] = this.country;
-    data['countryCode'] = this.countryCode;
-    data['region'] = this.region;
-    data['regionName'] = this.regionName;
-    data['city'] = this.city;
-    data['zip'] = this.zip;
-    data['lat'] = this.lat;
-    data['lon'] = this.lon;
-    data['timezone'] = this.timezone;
-    data['isp'] = this.isp;
-    data['org'] = this.org;
-    data['as'] = this.as;
-    data['query'] = this.query;
-    return data;
+    return {
+      'status': status,
+      'country': country,
+      'countryCode': countryCode,
+      'region': region,
+      'regionName': regionName,
+      'city': city,
+      'zip': zip,
+      'lat': lat,
+      'lon': lon,
+      'timezone': timezone,
+      'isp': isp,
+      'org': org,
+      'as': as,
+      'query': query,
+    };
+  }
+
+  factory GeolocationData.fromJson(Map<String, dynamic> map) {
+    return GeolocationData(
+      status: map['status'],
+      country: map['country'],
+      countryCode: map['countryCode'],
+      region: map['region'],
+      regionName: map['regionName'],
+      city: map['city'],
+      zip: map['zip'],
+      lat: map['lat'],
+      lon: map['lon'],
+      timezone: map['timezone'],
+      isp: map['isp'],
+      org: map['org'],
+      as: map['as'],
+      query: map['query'],
+    );
+  }
+
+  @override
+  String toString() {
+    return 'GeolocationData(status: $status, country: $country, countryCode: $countryCode, region: $region, regionName: $regionName, city: $city, zip: $zip, lat: $lat, lon: $lon, timezone: $timezone, isp: $isp, org: $org, as: $as, query: $query)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is GeolocationData &&
+        other.status == status &&
+        other.country == country &&
+        other.countryCode == countryCode &&
+        other.region == region &&
+        other.regionName == regionName &&
+        other.city == city &&
+        other.zip == zip &&
+        other.lat == lat &&
+        other.lon == lon &&
+        other.timezone == timezone &&
+        other.isp == isp &&
+        other.org == org &&
+        other.as == as &&
+        other.query == query;
+  }
+
+  @override
+  int get hashCode {
+    return status.hashCode ^
+        country.hashCode ^
+        countryCode.hashCode ^
+        region.hashCode ^
+        regionName.hashCode ^
+        city.hashCode ^
+        zip.hashCode ^
+        lat.hashCode ^
+        lon.hashCode ^
+        timezone.hashCode ^
+        isp.hashCode ^
+        org.hashCode ^
+        as.hashCode ^
+        query.hashCode;
   }
 }

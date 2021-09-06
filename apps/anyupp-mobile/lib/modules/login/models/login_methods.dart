@@ -3,10 +3,14 @@ enum LoginMethod { FACEBOOK, GOOGLE, PHONE, APPLE, ANONYMOUS, EMAIL, UNKNOWN }
 class LoginMethodUtils {
   static String methodToString(LoginMethod method) {
     switch (method) {
-      case LoginMethod.APPLE: return 'apple.com';
-      case LoginMethod.FACEBOOK: return 'facebook.com';
-      case LoginMethod.GOOGLE: return 'google.com';
-      default: return method.toString();
+      case LoginMethod.APPLE:
+        return 'apple.com';
+      case LoginMethod.FACEBOOK:
+        return 'facebook.com';
+      case LoginMethod.GOOGLE:
+        return 'google.com';
+      default:
+        return method.toString();
     }
   }
 
@@ -18,9 +22,9 @@ class LoginMethodUtils {
         return LoginMethod.FACEBOOK;
       case 'google.com':
         return LoginMethod.GOOGLE;
-      case 'phone': 
+      case 'phone':
         return LoginMethod.PHONE;
-      case 'email': 
+      case 'email':
         return LoginMethod.EMAIL;
       default:
         return LoginMethod.UNKNOWN;

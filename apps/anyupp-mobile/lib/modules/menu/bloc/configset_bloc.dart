@@ -10,7 +10,6 @@ class ConfigsetBloc extends Bloc<ConfigsetEvent, ConfigsetState> {
   Stream<ConfigsetState> mapEventToState(
     ConfigsetEvent event,
   ) async* {
-    // TODO: implement mapEventToState
     if (event is ConfigsetUpdatedEvent) {
       yield ConfigsetUpdated(orderItem: event.orderItem, unit: event.unit, totalPrice: event.totalPrice);
     }

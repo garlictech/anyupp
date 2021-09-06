@@ -1,6 +1,5 @@
 import 'dart:ui' show lerpDouble;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 const Color kShrinePink50 = Color(0xFFFEEAE6);
@@ -8,10 +7,9 @@ const Color kShrinePink100 = Color(0xFFFEDBD0);
 const Color kShrineFrameBrown = Color(0x8A442C2E);
 const Color kShrineScrim = Color(0x73442C2E);
 
-
 class WindowPainter extends CustomPainter {
   WindowPainter({
-    @required this.windowSize,
+    required this.windowSize,
     this.outerFrameColor = Colors.white54,
     this.innerFrameColor = const Color(0xFF442C2E),
     this.innerFrameStrokeWidth = 3,
@@ -75,14 +73,14 @@ class WindowPainter extends CustomPainter {
 }
 
 class Rectangle {
-  const Rectangle({this.width, this.height, this.color});
+  const Rectangle({required this.width, required this.height, this.color});
 
   final double width;
   final double height;
-  final Color color;
+  final Color? color;
 
   static Rectangle lerp(Rectangle begin, Rectangle end, double t) {
-    Color color;
+    late Color? color;
     if (t > .5) {
       color = Color.lerp(begin.color, end.color, (t - .5) / .25);
     } else {
@@ -90,9 +88,9 @@ class Rectangle {
     }
 
     return Rectangle(
-      width: lerpDouble(begin.width, end.width, t),
-      height: lerpDouble(begin.height, end.height, t),
-      color: color,
+      width: lerpDouble(begin.width, end.width, t)!,
+      height: lerpDouble(begin.height, end.height, t)!,
+      color: color!,
     );
   }
 }
@@ -101,12 +99,12 @@ class RectangleTween extends Tween<Rectangle> {
   RectangleTween(Rectangle begin, Rectangle end) : super(begin: begin, end: end);
 
   @override
-  Rectangle lerp(double t) => Rectangle.lerp(begin, end, t);
+  Rectangle lerp(double t) => Rectangle.lerp(begin!, end!, t);
 }
 
 class RectangleOutlinePainter extends CustomPainter {
   RectangleOutlinePainter({
-    @required this.animation,
+    required this.animation,
     this.strokeWidth = 3,
   }) : super(repaint: animation);
 
@@ -119,7 +117,7 @@ class RectangleOutlinePainter extends CustomPainter {
 
     final Paint paint = Paint()
       ..strokeWidth = strokeWidth
-      ..color = rectangle.color
+      ..color = rectangle.color ?? Colors.white
       ..style = PaintingStyle.stroke;
 
     final Offset center = size.center(Offset.zero);
@@ -142,8 +140,8 @@ class RectangleOutlinePainter extends CustomPainter {
 
 class RectangleTracePainter extends CustomPainter {
   RectangleTracePainter({
-    @required this.animation,
-    @required this.rectangle,
+    required this.animation,
+    required this.rectangle,
     this.strokeWidth = 3,
   }) : super(repaint: animation);
 
@@ -168,7 +166,7 @@ class RectangleTracePainter extends CustomPainter {
 
     final Paint paint = Paint()
       ..strokeWidth = strokeWidth
-      ..color = rectangle.color;
+      ..color = rectangle.color ?? Colors.white;
 
     final double halfStrokeWidth = strokeWidth / 2;
 

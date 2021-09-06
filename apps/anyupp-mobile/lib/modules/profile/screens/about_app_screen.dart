@@ -71,7 +71,7 @@ class _AboutAppState extends State<AboutApp> {
                         future: PackageInfo.fromPlatform(),
                         builder: (context, AsyncSnapshot<PackageInfo> snapshot) {
                           return Text(
-                            snapshot.hasData ? '${trans("about.version")}: ${snapshot.data.version}' : '',
+                            snapshot.hasData ? '${trans("about.version")}: ${snapshot.data!.version}' : '',
                             style: GoogleFonts.poppins(
                               fontSize: 14.0,
                               color: Colors.grey,

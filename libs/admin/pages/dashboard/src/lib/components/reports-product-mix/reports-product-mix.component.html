@@ -11,6 +11,15 @@
       {{ 'dashboard.reports.listAll' | translate }}
     </button>
     <button
+      *ngIf="!isModal"
+      nbButton
+      size="tiny"
+      class="float-right me-2"
+      (click)="export()"
+    >
+      {{ 'dashboard.reports.export' | translate }}
+    </button>
+    <button
       *ngIf="isModal"
       nbButton
       ghost
@@ -23,7 +32,7 @@
     </button>
   </nb-card-header>
   <nb-card-body class="p-2 overflow-hidden">
-    <ng-container *ngFor="let product of (productMixData$ | async) || []">
+    <ng-container *ngFor="let product of productMixListData">
       <div class="row fw-bold">
         <div class="col-9">{{ product.name | localize }}</div>
         <div class="col-2">

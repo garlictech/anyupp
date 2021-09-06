@@ -4,22 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ImageWidget extends StatelessWidget {
-  final String url;
-  final double width;
-  final double height;
+  final String? url;
+  final double? width;
+  final double? height;
   final BoxFit fit;
-  final Widget errorWidget;
-  final Widget placeholder;
+  final Widget? errorWidget;
+  final Widget? placeholder;
 
   const ImageWidget({
-    Key key,
-    @required this.url,
+    this.url,
     this.width,
     this.height,
     this.fit = BoxFit.cover,
     this.errorWidget,
     this.placeholder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +26,13 @@ class ImageWidget extends StatelessWidget {
       return Container();
     }
 
-    final bool isS3Image = !url.startsWith('http');
+    final bool isS3Image = !url!.startsWith('http');
     // print('ImageWidget.isS3=$isS3Image, image=$url');
 
-    final bool isSvg = url.toLowerCase().endsWith('.svg');
+    final bool isSvg = url!.toLowerCase().endsWith('.svg');
     return isS3Image
         ? S3ImageWidget(
-            bucketImageKey: url,
+            bucketImageKey: url!,
             fit: fit,
             width: width,
             height: height,
@@ -42,16 +41,16 @@ class ImageWidget extends StatelessWidget {
           )
         : isSvg
             ? SvgPicture.network(
-                url,
+                url!,
                 fit: fit,
                 width: width,
                 height: height,
-                placeholderBuilder: placeholder != null ? (context) => placeholder : null,
+                placeholderBuilder: placeholder != null ? (context) => placeholder! : null,
               )
             : CachedNetworkImage(
-                imageUrl: url,
-                placeholder: placeholder != null ? (context, url) => placeholder : null,
-                errorWidget: errorWidget != null ? (context, url, error) => errorWidget : null,
+                imageUrl: url!,
+                placeholder: placeholder != null ? (context, url) => placeholder! : null,
+                errorWidget: errorWidget != null ? (context, url, error) => errorWidget! : null,
                 fit: fit,
                 width: width,
                 height: height,

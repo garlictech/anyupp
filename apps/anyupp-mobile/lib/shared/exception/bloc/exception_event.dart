@@ -5,7 +5,7 @@ abstract class ExceptionEvent extends Equatable {
   const ExceptionEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class ShowException extends ExceptionEvent {
@@ -14,5 +14,5 @@ class ShowException extends ExceptionEvent {
   const ShowException(this.exception);
 
   @override
-  List<Object> get props => [exception];
+  List<Object?> get props => [exception];
 }

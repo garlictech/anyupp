@@ -1,59 +1,60 @@
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
-
-@immutable
 class Invoice {
-  final String updatedAt;
+  final String? id;
+  final String? updatedAt;
   final String userId;
   final String transactionId;
-  final String taxNumber;
+  final String? taxNumber;
   final String streetAddress;
   final String status;
   final String postalCode;
-  final String pdfUrl;
+  final String? pdfUrl;
   final String orderId;
-  final String externalInvoiceId;
-  final String email;
+  final String? externalInvoiceId;
+  final String? email;
   final String customerName;
-  final String createdAt;
+  final String? createdAt;
   final String country;
   final String city;
+
   Invoice({
+    this.id,
     this.updatedAt,
-    this.userId,
-    this.transactionId,
+    required this.userId,
+    required this.transactionId,
     this.taxNumber,
-    this.streetAddress,
-    this.status,
-    this.postalCode,
+    required this.streetAddress,
+    required this.status,
+    required this.postalCode,
     this.pdfUrl,
-    this.orderId,
+    required this.orderId,
     this.externalInvoiceId,
     this.email,
-    this.customerName,
+    required this.customerName,
     this.createdAt,
-    this.country,
-    this.city,
+    required this.country,
+    required this.city,
   });
 
   Invoice copyWith({
-    String updatedAt,
-    String userId,
-    String transactionId,
-    String taxNumber,
-    String streetAddress,
-    String status,
-    String postalCode,
-    String pdfUrl,
-    String orderId,
-    String externalInvoiceId,
-    String email,
-    String customerName,
-    String createdAt,
-    String country,
-    String city,
+    String? id,
+    String? updatedAt,
+    String? userId,
+    String? transactionId,
+    String? taxNumber,
+    String? streetAddress,
+    String? status,
+    String? postalCode,
+    String? pdfUrl,
+    String? orderId,
+    String? externalInvoiceId,
+    String? email,
+    String? customerName,
+    String? createdAt,
+    String? country,
+    String? city,
   }) {
     return Invoice(
+      id: id ?? this.id,
       updatedAt: updatedAt ?? this.updatedAt,
       userId: userId ?? this.userId,
       transactionId: transactionId ?? this.transactionId,
@@ -72,8 +73,9 @@ class Invoice {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'updatedAt': updatedAt,
       'userId': userId,
       'transactionId': transactionId,
@@ -92,8 +94,9 @@ class Invoice {
     };
   }
 
-  factory Invoice.fromMap(Map<String, dynamic> map) {
+  factory Invoice.fromJson(Map<String, dynamic> map) {
     return Invoice(
+      id: map['id'],
       updatedAt: map['updatedAt'],
       userId: map['userId'],
       transactionId: map['transactionId'],
@@ -112,13 +115,9 @@ class Invoice {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory Invoice.fromJson(String source) => Invoice.fromMap(json.decode(source));
-
   @override
   String toString() {
-    return 'Invoice(updatedAt: $updatedAt, userId: $userId, transactionId: $transactionId, taxNumber: $taxNumber, streetAddress: $streetAddress, status: $status, postalCode: $postalCode, pdfUrl: $pdfUrl, orderId: $orderId, externalInvoiceId: $externalInvoiceId, email: $email, customerName: $customerName, createdAt: $createdAt, country: $country, city: $city)';
+    return 'Invoice(id: $id, updatedAt: $updatedAt, userId: $userId, transactionId: $transactionId, taxNumber: $taxNumber, streetAddress: $streetAddress, status: $status, postalCode: $postalCode, pdfUrl: $pdfUrl, orderId: $orderId, externalInvoiceId: $externalInvoiceId, email: $email, customerName: $customerName, createdAt: $createdAt, country: $country, city: $city)';
   }
 
   @override
@@ -126,6 +125,7 @@ class Invoice {
     if (identical(this, other)) return true;
 
     return other is Invoice &&
+        other.id == id &&
         other.updatedAt == updatedAt &&
         other.userId == userId &&
         other.transactionId == transactionId &&
@@ -145,7 +145,8 @@ class Invoice {
 
   @override
   int get hashCode {
-    return updatedAt.hashCode ^
+    return id.hashCode ^
+        updatedAt.hashCode ^
         userId.hashCode ^
         transactionId.hashCode ^
         taxNumber.hashCode ^

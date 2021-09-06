@@ -1,5 +1,5 @@
 import { isNumber, omit } from 'lodash/fp';
-
+import { DateTime } from 'luxon';
 import {
   AbstractControl,
   FormBuilder,
@@ -21,6 +21,7 @@ export const contactFormGroup = (requiredEmail = false) => ({
     : ['', [Validators.email]],
   phone: [''],
 });
+
 export const addressFormGroup = (
   formBuilder: FormBuilder,
   required = false,
@@ -153,15 +154,29 @@ export const unitOpeningHoursValidator: ValidatorFn = (
   return error;
 };
 
-export const getDayIntervals = (dateValue: string | number): IDateIntervals => {
-  const start = new Date(dateValue);
-  start.setHours(0, 0, 0, 0);
-
-  const end = new Date(dateValue);
-  end.setHours(23, 59, 59, 999);
+export const getDayIntervals = (
+  dateValue: string | number,
+  timeZone: string,
+): IDateIntervals => {
+  const date: DateTime = DateTime.fromISO(new Date(dateValue).toISOString(), {
+    zone: timeZone,
+  });
 
   return {
-    from: start.getTime(),
-    to: end.getTime(),
+    from: date.startOf('day').valueOf(),
+    to: date.endOf('day').valueOf(),
   };
+};
+
+export const makeId = (length: number): string => {
+  let result = '';
+  const chars =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charsLength = chars.length;
+
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * charsLength));
+  }
+
+  return result;
 };

@@ -9,8 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'auth_provider_interface.dart';
 
 class AwsAuthProvider implements IAuthProvider {
-  StreamController<User> _userController = BehaviorSubject<User>();
-  User _user;
+  StreamController<User?> _userController = BehaviorSubject<User?>();
+  User? _user;
   final CognitoService _service;
 
   AwsAuthProvider(this._service) {
@@ -19,13 +19,13 @@ class AwsAuthProvider implements IAuthProvider {
   }
 
   @override
-  Future<User> getAuthenticatedUserProfile() async {
+  Future<User?> getAuthenticatedUserProfile() async {
     try {
       bool isLooggedIn = await _service.refreshUserToken();
       // print('getAuthenticatedUserProfile().isLoggedIn=$isLooggedIn, user=$_user');
       if (isLooggedIn) {
         if (_user == null) {
-          CognitoUser user = await _service.currentUser;
+          CognitoUser? user = await _service.currentUser;
           if (user != null) {
             _user = await _userFromAttributes(user);
           }
@@ -51,10 +51,10 @@ class AwsAuthProvider implements IAuthProvider {
   }
 
   @override
-  Future<User> loginWithCognitoSession(CognitoUserSession session, String username) async {
+  Future<User?> loginWithCognitoSession(CognitoUserSession session, String username) async {
     // print('loginWithCognitoSession().session=$session, username=$username');
     try {
-      CognitoUser user = await _service.createCognitoUserFromSession(session, username);
+      CognitoUser? user = await _service.createCognitoUserFromSession(session, username);
       await user.cacheTokens();
       // print('loginWithCognitoSession().cognitoUser=${user.username}');
       _user = await _userFromAttributes(user);
@@ -70,7 +70,7 @@ class AwsAuthProvider implements IAuthProvider {
   }
 
   @override
-  Stream<User> getAuthenticatedUserProfileStream() => _userController.stream;
+  Stream<User?> getAuthenticatedUserProfileStream() => _userController.stream;
 
   @override
   Future<void> cancel() async {
@@ -82,50 +82,57 @@ class AwsAuthProvider implements IAuthProvider {
     await getAuthenticatedUserProfile();
   }
 
-  Future<User> _userFromAttributes(CognitoUser cognitoUser) async {
-    String email;
-    String name;
-    String phone;
-    List<CognitoUserAttribute> attributes = await cognitoUser.getUserAttributes();
+  Future<User?> _userFromAttributes(CognitoUser cognitoUser) async {
+    String? email;
+    String? name;
+    String? phone;
+    List<CognitoUserAttribute>? attributes = await cognitoUser.getUserAttributes();
 
     print('_userFromAttributes().start()');
-    for (int i = 0; i < attributes.length; i++) {
+    for (int i = 0; attributes != null && i < attributes.length; i++) {
       CognitoUserAttribute a = attributes[i];
       print('\tattr[${a.name}]=${a.value}');
       if (a.name != null && a.name == 'name') {
         name = a.value;
+        // if (name == null || name.startsWith('anonymuser')) {
+        //   name = 'AnonymUser';
+        // }
       }
       // print('\t attr[${a.userAttributeKey}]=${a.value}');
-      if (a.name != null && name == null && a.name == 'email') {
-        email = a.value;
-        name = email.split('@').first;
+      if (a.name != null && a.name == 'email') {
+        email = a.value!;
+        // name = email.split('@').first;
       }
 
       if (a.name != null && a.name == 'phone_number') {
-        phone = a.value;
+        phone = a.value!;
       }
     }
+    if (name == null && email != null) {
+      name = email.split('@').first;
+    }
 
-    CognitoIdToken idToken = (await cognitoUser.getSession()).idToken;
-    dynamic payload = idToken.decodePayload();
-    String username = payload['cognito:username'];
-    print('loginWithCognitoSession().username=' + username);
+    CognitoUserSession? session = await cognitoUser.getSession();
 
-    User user = User(email: email, name: name, id: username, phone: phone);
-    return user;
+    if (session != null) {
+      CognitoIdToken idToken = session.idToken;
+      dynamic payload = idToken.decodePayload();
+      String username = payload['cognito:username'];
+      print('loginWithCognitoSession().username=' + username);
+      User user = User(email: email, name: name, id: username, phone: phone);
+      return user;
+    }
+    return null;
   }
 
   @override
-  Future<String> getAccessToken() async {
+  Future<String?> getAccessToken() async {
     try {
-      CognitoUserSession session = await _service.session;
+      CognitoUserSession? session = await _service.session;
       if (session == null || !session.isValid()) {
         session = await (await _service.currentUser)?.getSession();
       }
-
-      String token = session?.accessToken?.jwtToken;
-      // print('***** getAccessToken().token=$token');
-      return token;
+      return session?.accessToken.jwtToken;
     } on Exception catch (e) {
       print('***** getAccessToken().error=$e');
       return null;
@@ -133,12 +140,10 @@ class AwsAuthProvider implements IAuthProvider {
   }
 
   @override
-  Future<String> getIdToken() async {
+  Future<String?> getIdToken() async {
     try {
-      CognitoUserSession session = await _service.session;
-      String token = session?.idToken?.jwtToken;
-      // print('***** getIdToken().token=$token');
-      return token;
+      CognitoUserSession? session = await _service.session;
+      return session?.idToken.jwtToken;
     } on Exception catch (e) {
       print('***** getIdToken().error=$e');
       return null;

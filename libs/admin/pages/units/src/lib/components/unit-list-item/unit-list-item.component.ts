@@ -28,6 +28,7 @@ import { jsonParsedOrNull } from '@bgap/shared/utils';
 export class UnitListItemComponent {
   @Input() unit?: CrudApi.Unit;
   public workingGenerateStatus = false;
+  public ePosType = CrudApi.PosType;
 
   constructor(
     private _store: Store,

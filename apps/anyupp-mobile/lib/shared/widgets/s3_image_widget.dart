@@ -7,29 +7,28 @@ import 'package:google_fonts/google_fonts.dart';
 
 class S3ImageWidget extends StatefulWidget {
   final String bucketImageKey;
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
   final BoxFit fit;
-  final Widget errorWidget;
-  final Widget placeholder;
+  final Widget? errorWidget;
+  final Widget? placeholder;
 
   const S3ImageWidget({
-    Key key,
-    @required this.bucketImageKey,
-    this.width,
-    this.height,
-    this.fit,
+    required this.bucketImageKey,
+    required this.width,
+    required this.height,
+    this.fit = BoxFit.cover,
     this.errorWidget,
     this.placeholder,
-  }) : super(key: key);
+  });
 
   @override
   _S3ImageWidgetState createState() => _S3ImageWidgetState();
 }
 
 class _S3ImageWidgetState extends State<S3ImageWidget> {
-  String _imageUrl;
-  String _error;
+  String? _imageUrl;
+  String? _error;
 
   @override
   void initState() {
@@ -43,32 +42,34 @@ class _S3ImageWidgetState extends State<S3ImageWidget> {
         ? (_imageUrl == null
             ? _buildLoadingWidget(context)
             : CachedNetworkImage(
-              cacheKey: widget.bucketImageKey,
-              imageUrl: _imageUrl,
-              placeholder: widget.placeholder != null ? (context, url) => widget.placeholder : null,
-              errorWidget: widget.errorWidget != null ? (context, url, error) => widget.errorWidget : null,
-              fit: widget.fit,
-              width: widget.width,
-              height: widget.height,
-            ))
-        : _buildErrorWidget(context);
+                cacheKey: widget.bucketImageKey,
+                imageUrl: _imageUrl!,
+                placeholder: widget.placeholder != null ? (context, url) => widget.placeholder! : null,
+                errorWidget: widget.errorWidget != null ? (context, url, error) => widget.errorWidget! : null,
+                fit: widget.fit,
+                width: widget.width,
+                height: widget.height,
+              ))
+        : _buildErrorWidget(context, _error!);
   }
 
   Widget _buildLoadingWidget(BuildContext context) {
     return Container(
       width: widget.width,
       height: widget.height,
-      child: CenterLoadingWidget(),
+      child: CenterLoadingWidget(
+        color: theme.highlight,
+      ),
     );
   }
 
-  Widget _buildErrorWidget(BuildContext context) {
+  Widget _buildErrorWidget(BuildContext context, String error) {
     return Container(
       width: widget.width,
       height: widget.height,
       child: Center(
         child: Text(
-          _error,
+          error,
           style: GoogleFonts.poppins(
             color: theme.text,
             fontSize: 16.0,

@@ -2,7 +2,6 @@ import 'package:fa_prev/core/core.dart';
 import 'package:flutter/services.dart';
 
 class TransactionException extends AppException {
-
   static const CODE = 'TRANSACTION_EXCEPTION';
 
   static const UNKNOWN_ERROR = 'UNKNOWN_ERROR';
@@ -24,6 +23,7 @@ class TransactionException extends AppException {
   }
 
   factory TransactionException.fromException(String code, Exception e) {
-    return TransactionException(code: TransactionException.CODE, subCode: code, message: e.toString(), details: e.runtimeType);
+    return TransactionException(
+        code: TransactionException.CODE, subCode: code, message: e.toString(), details: e.runtimeType);
   }
 }

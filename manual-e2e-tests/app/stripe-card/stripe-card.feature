@@ -32,9 +32,8 @@ Feature: Stripe Card
     When I tap the text "Saved Cards"
     Then there is the text "No payment methods saved"
 
-  # about the issue #244 and #396
-  Scenario: Pay with a new card then pay with the added card
-    When I tap the "TEST CHAIN PRODUCT #2 NAME" card under "Test product category #1 name" category
+  Scenario: Pay with a new card then pay with the saved card
+    When I tap the "FANTA #2" card under "Test product category #1 name" category
     Then there is the product details screen
     When I tap the "Add To Cart" button
     Then The shop cart icon banner should show "1"
@@ -64,9 +63,25 @@ Feature: Stripe Card
     And the banner on the "Orders" icon is "1"
     And the "Orders" page is selected on the top navigator
     And there is "1" order in the list
-    And the state of the order is "Placed"
+    Then in the app the order should be in "PLACED" state
+    When the admin set the state of order to "PROCESSING"
+    Then in the app the order should be in "PROCESSING" state
+    And I tap on the "Show" text
+    Then I should see the receipt of the order
+    When I tap on the "Done" button
+    Then I should see my order on the "Orders" tab
+    When the admin set the state of order to "READY"
+    Then in the app the order should be in "READY" state
+    When the admin set the state of order to "SERVED"
+    Then I should see the text "No active order placed yet"
+    When I swipe to the "History" tab
+    Then I should see the "SERVED" label on the paid order
+    And I should see "Load more..." at the bottom of the ordoers
+    # Scenario: second order with stripe
     When I tap the "Menu" icon from the bottom navigation bar
-    And I tap the "TEST CHAIN PRODUCT #2 NAME" card under "Test product category #1 name" category
+    And I tap the "FANTA #2" card under "Test product category #1 name" category
+    And I tap the "Extra comp set" button
+    And I select the "CLASSIC" modifier
     And I tap the "Add To Cart" button
     Then the cart icon banner should show "1"
     When I tap the cart icon
@@ -87,21 +102,25 @@ Feature: Stripe Card
     And the banner on the "Orders" icon is "2"
     And the "Orders" page is selected on the top navigator
     And there is an order in the list
-    And the state of the order is "PLACED"
-    And the admin set it to "PROCESSING"
-    And I click on the "Show" text
+    Then in the app the order should be in "PLACED" state
+    When the admin set the state of order to "PROCESSING"
+    Then in the app the order should be in "PROCESSING" state
+    And I tap on the "Show" text
     Then I should see the receipt of the order
-    When I click on the "Done" button
+    When I tap on the "Done" button
     Then I should see my order on the "Orders" tab
-    And the admin set it to "READY"
-    And the admin set it to paid
+    When the admin set the state of order to "READY"
+    Then in the app the order should be in "READY" state
+    When the admin set the state of order to "SERVED"
     Then I should see the text "No active order placed yet"
     When I swipe to the "History" tab
-    Then I should see the paid order
+    Then I should see the "SERVED" label on the paid order
+    And I should see "Load more..." at the bottom of the ordoers
 
-  Scenario: Pay without saving the card
-    # about the #1250 issue, issue #244
-    When I tap the "TEST CHAIN PRODUCT #2 NAME" card under "Test product category #1 name" category
+  Scenario: Pay without saving the card and use the VAT form
+    When I tap the "FANTA #2" card under "Test product category #1 name" category
+    And I tap the "Modifier comp set" button
+    And I select the "CLASSIC" modifier
     And I tap the "Add To Cart" button
     Then The shop cart icon banner should show "1"
     When I tap the cart icon
@@ -116,7 +135,17 @@ Feature: Stripe Card
     Then there is a bottom dialog
     When I tap the option "Pay by Card via Stripe (preferred)"
     Then the option "Pay by Card via Stripe (preferred)" is highlighted
-    When I tap the "PLACE ORDER" button
+    When I click the button next to "I want a VAT invoice"
+    And I tap the "FILL INVOICE FORM" button
+    Then I should see "Invoice info" page
+    When I fill out the "Name/Company name" input with "E2E test Company"
+    And I fill out the "Tax ID Number" input with "1234567890"
+    Then the "Country" button should contain "Hungary"
+    When I fill out the "Zip code" input with "1234"
+    And I fill out the "City" input with "Nekeresd"
+    And I fill out the "Street address" input with "Test street"
+    And I fill out the "Invoice email" input with "testuser+test@anyupp.com"
+    And I tap the "PLACE ORDER" button
     Then there is a loading screen
     When I fill out the input with id "Card number" with "5555 5555 5555 4444"
     And I fill out the input with id "Expiration Date" with "11/22" date
@@ -127,15 +156,18 @@ Feature: Stripe Card
     And the "Orders" option is selected on the bottom navigator
     And the banner on the "Orders" icon is "1"
     And the "Orders" page is selected on the top navigator
-    And there is an order in the list
-    And the state of the order is "PLACED"
-    And the admin set it to "PROCESSING"
-    And I click on the "Show" text
+    Then in the app the order should be in "PLACED" state
+    When the admin set the state of order to "PROCESSING"
+    Then in the app the order should be in "PROCESSING" state
+    And I tap the "Show" text
+    And I tap the "Megnézem" text
     Then I should see the receipt of the order
-    When I click on the "Done" button
+    When I tap the back arrow
     Then I should see my order on the "Orders" tab
-    And the admin set it to "READY"
-    And the admin set it to paid
+    When the admin set the state of order to "READY"
+    Then in the app the order should be in "READY" state
+    When the admin set the state of order to "SERVED"
     Then I should see the text "No active order placed yet"
-    When I swipe to the "History" tab
-    Then I should see the paid order
+    When I tap the "History" tab
+    Then I should see the "SERVED" label on the paid order
+    And I should see "Load more..." at the bottom of the ordoers

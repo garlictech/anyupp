@@ -2,7 +2,7 @@ import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/models/GeoUnit.dart';
-import 'package:fa_prev/models/TransactionItem.dart';
+import 'package:fa_prev/models/Transaction.dart';
 import 'package:fa_prev/modules/transactions/transactions.dart';
 import 'package:fa_prev/modules/transactions/widgets/transaction_card_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -21,8 +21,7 @@ class TransactionsScreen extends StatefulWidget {
 }
 
 class _TransactionsScreenState extends State<TransactionsScreen> {
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     getIt<TransactionsBloc>().add(Loading());
@@ -35,9 +34,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(theme,
-          onBackButtonPressed: () => Nav.pop(),
-          title: trans('profile.menu.transactions')),
+      appBar: appBar(theme, onBackButtonPressed: () => Nav.pop(), title: trans('profile.menu.transactions')),
       // The appBar head text
       backgroundColor: theme.background,
       body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
@@ -59,7 +56,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
         }
         if (state is TransactionsLoadedState) {
           _refreshController.refreshCompleted();
-          return _buildList(state.items);
+          return _buildList(state.items ?? []);
           // }
         }
         return CenterLoadingWidget();
@@ -67,13 +64,13 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     );
   }
 
-  Widget _buildList(List<TransactionItem> list) {
+  Widget _buildList(List<Transaction> list) {
     return AnimationLimiter(
         child: SmartRefresher(
       enablePullDown: true,
       header: WaterDropHeader(),
       footer: CustomFooter(
-        builder: (BuildContext context, LoadStatus mode) {
+        builder: (BuildContext context, LoadStatus? mode) {
           Widget body;
           if (mode == LoadStatus.idle) {
             body = Text("pull up load");
@@ -108,7 +105,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     verticalOffset: 50.0,
                     child: FadeInAnimation(
                       child: TransactionCard(
-                        transactionItem: list[position],
+                        transaction: list[position],
                       ),
                     ),
                   ),

@@ -6,33 +6,33 @@ import 'package:fa_prev/shared/auth.dart';
 import 'package:rxdart/rxdart.dart';
 
 class MockAuthProvider implements IAuthProvider {
-  StreamController<User> _userController = BehaviorSubject<User>();
-  User _user;
+  StreamController<User?> _userController = BehaviorSubject<User>();
+  late User? _user;
 
-  MockAuthProvider({User user}) {
-    _user = user ?? User(
-      id: 'test@anyupp.com',
-      email: 'test@anyupp.com',
-      name: 'Test User',
-    );
+  MockAuthProvider({User? user}) {
+    _user = user ??
+        User(
+          id: 'test@anyupp.com',
+          email: 'test@anyupp.com',
+          name: 'Test User',
+        );
     getAuthenticatedUserProfile();
   }
 
-
   @override
-  Future<User> getAuthenticatedUserProfile() async {
+  Future<User?> getAuthenticatedUserProfile() async {
     _userController.add(_user);
     return _user;
   }
 
   @override
-  Future<User> loginWithCognitoSession(CognitoUserSession session, String username) async {
+  Future<User?> loginWithCognitoSession(CognitoUserSession session, String username) async {
     _userController.add(_user);
     return _user;
   }
 
   @override
-  Stream<User> getAuthenticatedUserProfileStream() => _userController.stream;
+  Stream<User?> getAuthenticatedUserProfileStream() => _userController.stream;
 
   @override
   Future<void> cancel() async {

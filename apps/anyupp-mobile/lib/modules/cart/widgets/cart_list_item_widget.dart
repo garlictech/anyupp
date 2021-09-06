@@ -15,7 +15,7 @@ import 'package:fa_prev/modules/cart/cart.dart';
 class CartListItemWidget extends StatefulWidget {
   final GeoUnit unit;
   final OrderItem order;
-  CartListItemWidget({Key key, this.unit, this.order}) : super(key: key);
+  CartListItemWidget({required this.unit, required this.order});
 
   @override
   _CartListItemWidgetState createState() => _CartListItemWidgetState();
@@ -74,7 +74,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         ),
                       ),
                       ...getExtraNames(context),
-                     // getOrderItemAllergenWidget(),
+                      // getOrderItemAllergenWidget(),
                       SizedBox(
                         height: 16,
                       ),
@@ -84,8 +84,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                           Container(
                             margin: EdgeInsets.only(bottom: 2),
                             child: Text(
-                              formatCurrency(getTotalPriceOfOrederItem(widget.order),
-                                  widget.unit.currency ?? 'ft'), 
+                              formatCurrency(getTotalPriceOfOrederItem(widget.order), widget.unit.currency),
                               textAlign: TextAlign.left,
                               style: GoogleFonts.poppins(
                                 color: theme.highlight,
@@ -164,10 +163,10 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
   List<Widget> getExtraNames(BuildContext context) {
     List<Widget> children = [];
     if (widget.order.selectedConfigMap != null) {
-      widget.order.selectedConfigMap.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+      widget.order.selectedConfigMap!.forEach((key, value) {
+        for (OrderItemConfigComponent generatedProductConfigComponent in value) {
           children.add(Text(
-            getLocalizedText(context, generatedProductConfigComponent.name), 
+            getLocalizedText(context, generatedProductConfigComponent.name),
             textAlign: TextAlign.left,
             style: GoogleFonts.poppins(
               color: theme.text,
@@ -185,14 +184,16 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
   }
 
   Widget getOrderItemAllergenWidget() {
-    List<String> allergens = widget.order.allergens;
+    List<String> allergens = widget.order.allergens ?? [];
     if (widget.order.selectedConfigMap != null) {
-      widget.order.selectedConfigMap.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
-          for (Allergen allergen in generatedProductConfigComponent.allergens) {
-            String temp = allergen.toString().split(".").last;
-            if (!allergens.contains(temp)) {
-              allergens.add(temp);
+      widget.order.selectedConfigMap!.forEach((key, value) {
+        for (OrderItemConfigComponent generatedProductConfigComponent in value) {
+          if (generatedProductConfigComponent.allergens != null) {
+            for (Allergen allergen in generatedProductConfigComponent.allergens!) {
+              String temp = allergen.toString().split(".").last;
+              if (!allergens.contains(temp)) {
+                allergens.add(temp);
+              }
             }
           }
         }
@@ -209,8 +210,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
   }
 
   void _removeOrder() {
-    BlocProvider.of<CartBloc>(context)
-        .add(RemoveProductFromCartAction(widget.unit.id, widget.order));
+    BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(widget.unit.id!, widget.order));
   }
 
   double getTotalPriceOfOrederItem(OrderItem item) {

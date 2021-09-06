@@ -5,7 +5,7 @@ abstract class UserDetailsState extends Equatable {
   const UserDetailsState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class NoUserDetailsState extends UserDetailsState {}
@@ -20,5 +20,5 @@ class UserDetailsLoaded extends UserDetailsState {
   UserDetailsLoaded(this.userDetails);
 
   @override
-  List<Object> get props => [userDetails];
+  List<Object?> get props => [userDetails];
 }

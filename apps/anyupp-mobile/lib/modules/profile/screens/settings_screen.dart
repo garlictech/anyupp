@@ -54,8 +54,7 @@ class SettingsScreen extends StatelessWidget {
             SizedBox(
               height: 20.0,
             ),
-            createOptionMenu(trans(context, 'profile.menu.language'),
-                () => Nav.to(LanguageMenu()), true),
+            createOptionMenu(trans(context, 'profile.menu.language'), () => Nav.to(LanguageMenu()), true),
           ],
         ),
       ),

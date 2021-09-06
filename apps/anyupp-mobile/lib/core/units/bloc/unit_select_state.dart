@@ -1,11 +1,10 @@
 part of 'unit_select_bloc.dart';
 
-@immutable
 abstract class UnitSelectState extends Equatable {
   const UnitSelectState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class NoUnitSelected extends UnitSelectState {}
@@ -15,7 +14,7 @@ class UnitSelected extends UnitSelectState {
   const UnitSelected(this.unit);
 
   @override
-  List<Object> get props => [unit.chainId, unit.groupId, unit.id];
+  List<Object?> get props => [unit.chainId, unit.groupId, unit.id];
 
   @override
   String toString() => 'UnitSelected { unitId: $unit.id, groupId: $unit.groupId, chainId: $unit.chainId }';

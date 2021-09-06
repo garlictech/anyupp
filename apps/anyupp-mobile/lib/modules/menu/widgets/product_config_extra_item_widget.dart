@@ -12,7 +12,7 @@ class ProductConfigExtrasItemWidget extends StatefulWidget {
   final GeoUnit unit;
   final OnExtraSetItemSelected onExtraSelected;
 
-  const ProductConfigExtrasItemWidget({Key key, this.extraSet, this.unit, this.onExtraSelected}) : super(key: key);
+  const ProductConfigExtrasItemWidget({required this.extraSet, required this.unit, required this.onExtraSelected});
 
   @override
   _ProductConfigExtrasItemWidgetState createState() => _ProductConfigExtrasItemWidgetState();
@@ -67,7 +67,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
   List<Widget> _buildSingleExtraList(
       BuildContext context, List<GeneratedProductConfigComponent> components, GeneratedProductConfigSet productSet) {
     List<Widget> widgets = [];
-    components.sort((a, b) => a.position - b.position);
+    components.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
     components.forEach((extra) {
       bool isSelected = _selectedExtras['${extra.productComponentId}'] ?? false;
 
@@ -138,7 +138,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
     StringBuffer sb = StringBuffer();
     _selectedExtras.forEach((key, value) {
       if (value == true) {
-        GeneratedProductConfigComponent component = getComponentByIdFromSet(key, widget.extraSet);
+        GeneratedProductConfigComponent? component = getComponentByIdFromSet(key, widget.extraSet);
         if (component != null) {
           sb.write(getLocalizedText(context, component.name));
           sb.write(',');
@@ -168,7 +168,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
     int selectedCount = 0;
     _selectedExtras.forEach((key, value) => value ? ++selectedCount : selectedCount);
     setState(() {
-      _canSelectExtra = selectedCount < widget.extraSet.maxSelection;
+      _canSelectExtra = selectedCount < (widget.extraSet.maxSelection ?? 0);
       _selectedExtraCount = selectedCount;
     });
     print(

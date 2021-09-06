@@ -14,7 +14,7 @@ import 'package:fa_prev/modules/menu/menu.dart';
 class ProductMenuTabScreen extends StatefulWidget {
   final String categoryId;
 
-  const ProductMenuTabScreen({Key key, this.categoryId}) : super(key: key);
+  const ProductMenuTabScreen({required this.categoryId});
 
   @override
   _ProductMenuTabScreenState createState() => _ProductMenuTabScreenState();
@@ -37,16 +37,16 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
         builder: (context, state) {
           if (state is UnitSelected) {
             final GeoUnit unit = state.unit;
-            return StreamBuilder<List<GeneratedProduct>>(
-              stream: _productRepository.getProductList(unit.id, widget.categoryId),
-              builder: (context, AsyncSnapshot<List<GeneratedProduct>> snapshot) {
+            return StreamBuilder<List<GeneratedProduct>?>(
+              stream: _productRepository.getProductList(unit.id!, widget.categoryId),
+              builder: (context, AsyncSnapshot<List<GeneratedProduct>?> snapshot) {
                 if (snapshot.hasData) {
-                  if (snapshot.data.isEmpty) {
+                  if (snapshot.data == null || (snapshot.data != null && snapshot.data!.isEmpty)) {
                     return _buildEmptyList(context);
                   }
 
                   // Display all the available sandwiches
-                  return _buildList(unit, snapshot.data);
+                  return _buildList(unit, snapshot.data!);
 
                   // In case of error, display error message to the user
                 } else if (snapshot.hasError) {
@@ -67,7 +67,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
   Widget _buildList(GeoUnit unit, List<GeneratedProduct> list) {
     return AnimationLimiter(
       child: ListView.builder(
-        // itemCount: list.length + 1, // TODO remove affiliate
+        // itemCount: list.length + 1,
         itemCount: list.length,
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),

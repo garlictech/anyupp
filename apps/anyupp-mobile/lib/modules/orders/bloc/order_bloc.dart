@@ -13,7 +13,7 @@ import 'order_state.dart';
 class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
   final OrderRepository _repository;
 
-  StreamController<List<Order>> _orderController;
+  StreamController<List<Order>?>? _orderController;
 
   OrderBloc(
     this._repository,
@@ -36,13 +36,12 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
       if (event is LoadMoreOrders) {
         if (_repository.orderListHasMoreItems) {
           yield OrdersLoadingState();
-          List<Order> items = await _repository.loadOrdersNextPage(
-            unitId: event.unitId,
+          List<Order>? items = await _repository.loadOrdersNextPage(
             nextToken: event.nextToken,
-            controller: _orderController,
+            controller: _orderController!,
           );
           yield OrdersLoadedState(
-            orders: items,
+            orders: items ?? [],
             nextToken: _repository.orderListNextToken,
             hasMoreItems: _repository.orderListHasMoreItems,
             totalCount: _repository.orderListTotalCount,
@@ -53,13 +52,13 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
       if (event is StartGetOrderListSubscription) {
         yield OrdersLoadingState();
         // print('OrderBloc.mapEventToState().StartGetOrderListSubscription()');
-        if (_orderController != null && !_orderController.isClosed) {
-          await _orderController.close();
+        if (_orderController != null && !_orderController!.isClosed) {
+          await _orderController!.close();
           _orderController = null;
         }
         await Future.delayed(Duration(microseconds: 700));
         _orderController = BehaviorSubject<List<Order>>();
-        _orderController.stream.asBroadcastStream().listen((orderList) {
+        _orderController!.stream.asBroadcastStream().listen((orderList) {
           // print('********************* OrderBloc.ORDER.listen=${orderList?.length}');
           // print('********************* OrderBloc.ORDER.status=${order');
           // int count = orderList != null ? orderList.length : 0;
@@ -70,7 +69,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
             totalCount: _repository.orderListTotalCount,
           ));
         });
-        await _repository.startOrderListSubscription(event.unitId, _orderController);
+        await _repository.startOrderListSubscription(event.unitId, _orderController!);
       }
 
       if (event is StopOrderListSubscription) {
@@ -80,7 +79,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
       }
 
       if (event is LoadOrderDetail) {
-        Order order = await _repository.getOrder(event.orderId);
+        Order? order = await _repository.getOrder(event.orderId);
         yield OrderDetailLoadedState(order: order);
       }
     } on Exception catch (e) {

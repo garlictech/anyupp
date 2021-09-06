@@ -6,7 +6,7 @@ abstract class BaseOrderCounterAction extends Equatable {
   const BaseOrderCounterAction();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class GetActiveOrderCount extends BaseOrderCounterAction {
@@ -14,7 +14,7 @@ class GetActiveOrderCount extends BaseOrderCounterAction {
 
   GetActiveOrderCount(this.unitId);
   @override
-  List<Object> get props => [unitId];
+  List<Object?> get props => [unitId];
 }
 
 class UpdateActiveOrderCount extends BaseOrderCounterAction {
@@ -23,5 +23,5 @@ class UpdateActiveOrderCount extends BaseOrderCounterAction {
 
   UpdateActiveOrderCount(this.count) : timestamp = DateTime.now().millisecond;
   @override
-  List<Object> get props => [count, timestamp];
+  List<Object?> get props => [count, timestamp];
 }

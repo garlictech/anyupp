@@ -1,8 +1,5 @@
-
-
-
-import 'package:fa_prev/models/TransactionItem.dart';
+import 'package:fa_prev/models/Transaction.dart';
 
 abstract class ITransactionProvider {
-  Future<List<TransactionItem>> getTransactions();
+  Future<List<Transaction>?> getTransactions();
 }

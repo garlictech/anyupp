@@ -6,11 +6,9 @@ STAGE=$1
 MODE=$2
 echo STAGE=$STAGE
 
-if [[ $MODE = 'local' ]]
+if [[ $MODE = 'ci' ]]
 then
-  echo MODE IS LOCAL
-else
-  echo MODE IS REMOTE
+  echo RUnning in CI mode
 fi
 
 APPID=$(amplify env get --name ${STAGE} --json | jq -r '.awscloudformation.AmplifyAppId')
@@ -42,21 +40,17 @@ echo 'Done.'
 
 echo 'Generating Dart models from schema...'
 echo '===================================='
-if [[ $MODE = 'local' ]]
+if [[ $MODE = 'ci' ]]
 then
-    echo 'Build Mobile schema in local mode'
-    yarn nx pub-get-local anyupp-mobile
-    yarn nx graphql-codegen-local anyupp-mobile
-elif [[ $STAGING = 'prod' ]]
-then
-    echo 'Build Mobile schema in docker container in PROD'
-    yarn nx pub-get-prod anyupp-mobile
-    yarn nx graphql-codegen-ci-prod anyupp-mobile
-else
-    echo 'Build Mobile schema in docker container'
-    yarn nx pub-get anyupp-mobile
+  echo 'Build Mobile schema in docker container (CI mode)'
+    yarn nx pub-get-ci anyupp-mobile
     yarn nx graphql-codegen-ci anyupp-mobile
+else
+    echo 'Build Mobile schema in development mode'
+    yarn nx pub-get anyupp-mobile
+    yarn nx graphql-codegen anyupp-mobile
 fi
+
 echo 'Done.'
 
 #echo 'Removing temporary schema files...'

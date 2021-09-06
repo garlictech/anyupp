@@ -8,13 +8,13 @@ class FavoritesNotLoaded extends FavoritesState {
   const FavoritesNotLoaded();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class FavoritesLoading extends FavoritesState {
   const FavoritesLoading();
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class ProductIsFavorite extends FavoritesState {
@@ -22,5 +22,5 @@ class ProductIsFavorite extends FavoritesState {
 
   const ProductIsFavorite(this.isFavorite);
   @override
-  List<Object> get props => [isFavorite];
+  List<Object?> get props => [isFavorite];
 }

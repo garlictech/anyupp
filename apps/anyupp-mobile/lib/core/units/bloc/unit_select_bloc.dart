@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/models.dart';
-import 'package:meta/meta.dart';
 
 part 'unit_select_event.dart';
 part 'unit_select_state.dart';

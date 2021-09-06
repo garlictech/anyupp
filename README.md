@@ -95,6 +95,12 @@ The command fetches the config parameters and writes them into files in
 `libs/shared/config`. You need AWS credentials set in your environment with the
 appropriate access!
 
+You also need to add the AWS account number to the `AWS_ACCOUNT` environment variable,
+in order to run the docker (CI) based commands locally. You can obtain your account number
+like this:
+
+`export AWS_ACCOUNT=$(aws sts get-caller-identity --query Account --output text)`
+
 **IMPORTANT**
 
 The configs are generated in `/libs/shared/config/src/lib/<stage>`. This folder

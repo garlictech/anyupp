@@ -26,15 +26,10 @@ class Flag extends StatelessWidget {
   /// The [country] parameter must not be null.
   Flag(
     this.country, {
-    Key key,
-    this.height,
-    this.width,
+    required this.height,
+    required this.width,
     this.fit = BoxFit.contain,
-  })  : assert(
-          country != null,
-          'The Country must be provided.',
-        ),
-        super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

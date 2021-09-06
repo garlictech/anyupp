@@ -1,36 +1,21 @@
-import 'dart:convert';
-
-import 'package:intl/intl.dart';
-
 class OpeningHours {
-  final double to;
-  final double from;
+  final double? to;
+  final double? from;
   final String date;
   final bool closed;
-  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
-  DateFormat hourFormat = DateFormat('HH:mm');
-  Map<int, String> days = {
-    1: "monday",
-    2: "tuesday",
-    3: "wednesday",
-    4: "thursday",
-    5: "friday",
-    6: "saturday",
-    7: "sunday"
-  };
 
   OpeningHours({
     this.to,
     this.from,
-    this.date,
-    this.closed,
+    required this.date,
+    required this.closed,
   });
 
   OpeningHours copyWith({
-    double to,
-    double from,
-    String date,
-    bool closed,
+    double? to,
+    double? from,
+    String? date,
+    bool? closed,
   }) {
     return OpeningHours(
       to: to ?? this.to,
@@ -40,7 +25,7 @@ class OpeningHours {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'to': to,
       'from': from,
@@ -49,7 +34,7 @@ class OpeningHours {
     };
   }
 
-  factory OpeningHours.fromMap(Map<String, dynamic> map) {
+  factory OpeningHours.fromJson(Map<String, dynamic> map) {
     return OpeningHours(
       to: map['to'],
       from: map['from'],
@@ -58,39 +43,9 @@ class OpeningHours {
     );
   }
 
-  String getHourFormattedString(int timeStamp) {
-    return hourFormat
-        .format(DateTime.fromMillisecondsSinceEpoch(timeStamp))
-        .toString();
-  }
-
-  String getDayString() {
-    return days[getDate().weekday];
-  }
-
-  String getOpenRangeString({bool fromTo = true}) {
-    if (!closed) {
-      String formattedString = getHourFormattedString(from.toInt()) + " - ";
-      if (fromTo) {
-        formattedString += getHourFormattedString(to.toInt());
-      }
-      return formattedString;
-    }
-    return null;
-  }
-
-  DateTime getDate() {
-    return dateFormat.parse(date);
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory OpeningHours.fromJson(String source) =>
-      OpeningHours.fromMap(json.decode(source));
-
   @override
   String toString() {
-    return 'OpeningHoursNext7(to: $to, from: $from, date: $date, closed: $closed)';
+    return 'OpeningHours(to: $to, from: $from, date: $date, closed: $closed)';
   }
 
   @override

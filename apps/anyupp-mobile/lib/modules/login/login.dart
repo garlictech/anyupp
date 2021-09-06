@@ -29,3 +29,4 @@ export 'widgets/logout_confirm_dialog.dart';
 export 'widgets/password_resend_widget.dart';
 export 'widgets/social_login_button_widget.dart';
 export 'widgets/unlink_accounts_widget.dart';
+export 'models/sign_up_exception.dart';

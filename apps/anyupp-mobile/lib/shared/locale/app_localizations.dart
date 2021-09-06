@@ -9,13 +9,13 @@ import 'package:intl/intl.dart';
 import 'dot_notate.dart';
 
 class AppLocalizations {
-  static AppLocalizations of(BuildContext context) {
+  static AppLocalizations? of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
   static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
-  static Map<String, String> _translations;
+  static late Map<String, String> _translations;
 
   static Future<bool> load(Locale locale) async {
     // Load JSON
@@ -36,11 +36,11 @@ class AppLocalizations {
     return true;
   }
 
-  String trans(String key, [List<dynamic> params, String fallbackKey1, String fallbackKey2]) {
+  String trans(String key, [List<dynamic>? params, String? fallbackKey1, String? fallbackKey2]) {
     if (params != null) {
       String trans = _translations[key] ?? _translations[fallbackKey1] ?? _translations[fallbackKey2] ?? key;
       for (var i = 0; i < params.length; i++) {
-        trans = trans.replaceFirst('{{$i}}', params[i]?.toString());
+        trans = trans.replaceFirst('{{$i}}', params[i]!.toString());
       }
       return trans;
     }

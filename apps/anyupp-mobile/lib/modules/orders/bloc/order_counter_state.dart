@@ -6,18 +6,18 @@ abstract class BaseOrderCounterState extends Equatable {
   const BaseOrderCounterState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class OrderCounterLoadError extends BaseOrderCounterState {
   final String code;
-  final String message;
-  final String details;
+  final String? message;
+  final String? details;
 
   OrderCounterLoadError(this.code, this.message, this.details);
 
   @override
-  List<Object> get props => [code, message, details];
+  List<Object?> get props => [code, message, details];
 }
 
 class ActiveOrderCount extends BaseOrderCounterState {
@@ -27,5 +27,5 @@ class ActiveOrderCount extends BaseOrderCounterState {
   ActiveOrderCount(this.count) : timestamp = DateTime.now().millisecond;
 
   @override
-  List<Object> get props => [count, timestamp];
+  List<Object?> get props => [count, timestamp];
 }

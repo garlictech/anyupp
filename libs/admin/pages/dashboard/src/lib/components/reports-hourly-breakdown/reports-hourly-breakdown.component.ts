@@ -1,5 +1,5 @@
 import * as Chart from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Context } from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
 
 import {
@@ -13,13 +13,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
 import { hourlyBreakdownOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductType, IOrderAmount } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+
+import { ReportsService } from '../../services/reports.service';
 
 @UntilDestroy()
 @Component({
@@ -41,136 +42,25 @@ export class ReportsHourlyBreakdownComponent
 
   constructor(
     private _store: Store,
-    private _currencyFormatter: CurrencyFormatterPipe,
     private _translateService: TranslateService,
+    private _reportsService: ReportsService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
-    this._chart = new Chart(
-      <CanvasRenderingContext2D>this.chart.nativeElement.getContext('2d'),
-      {
-        plugins: [ChartDataLabels],
-        data: {
-          labels: Array.from(Array(24).keys()),
-          datasets: [
-            {
-              type: 'line',
-              label: this._translateService.instant(
-                'dashboard.reports.ordersCount',
-              ),
-              fill: true,
-              data: new Array(24).fill(0),
-              backgroundColor: 'rgba(249,94,1, 0.2)',
-              borderColor: 'rgba(249,94,1, 0.8)',
-              borderWidth: 2,
-              yAxisID: 'y-axis-right',
-            },
-            {
-              type: 'bar',
-              label: this._translateService.instant(
-                'products.productType.food',
-              ),
-              data: new Array(24).fill(0),
-              backgroundColor: 'rgba(60,186,159, 0.8)',
-              yAxisID: 'y-axis-left',
-            },
-            {
-              type: 'bar',
-              label: this._translateService.instant(
-                'products.productType.drink',
-              ),
-              data: new Array(24).fill(0),
-              backgroundColor: 'rgba(62,149,205,0.8)',
-              yAxisID: 'y-axis-left',
-            },
-            {
-              type: 'bar',
-              label: this._translateService.instant(
-                'products.productType.other',
-              ),
-              data: new Array(24).fill(0),
-              backgroundColor: 'rgba(142,94,162,0.8)',
-              yAxisID: 'y-axis-left',
-            },
-          ],
-        },
-        options: {
-          legend: {
-            position: 'bottom',
-          },
-          scales: {
-            xAxes: [
-              {
-                stacked: true,
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-            yAxes: [
-              {
-                stacked: true,
-                ticks: {
-                  beginAtZero: true,
-                },
-                position: 'left',
-                id: 'y-axis-left',
-              },
-              {
-                stacked: true,
-                ticks: {
-                  beginAtZero: true,
-                },
-                position: 'right',
-                id: 'y-axis-right',
-              },
-            ],
-          },
-          responsive: true,
-          maintainAspectRatio: false,
-          tooltips: {
-            callbacks: {
-              label: (tooltipItem, data) => {
-                const label =
-                  (<Chart.ChartDataSets[]>data.datasets)[
-                    tooltipItem.datasetIndex || 0
-                  ].label || '';
-
-                return tooltipItem.datasetIndex === 0
-                  ? ` ${label}: ${tooltipItem.value}`
-                  : ` ${label}: ${this._currencyFormatter.transform(
-                      tooltipItem.value || '',
-                      this.currency,
-                    )}`;
-              },
-            },
-          },
-          plugins: {
-            datalabels: {
-              color: 'white',
-              labels: {
-                title: {
-                  font: {
-                    weight: 'bold',
-                  },
-                },
-              },
-              formatter: (value, ctx) => {
-                if (ctx.datasetIndex === 0) {
-                  return value > 0 ? value : '';
-                } else {
-                  return this._amounts?.sum?.[ctx.dataIndex] > 0
-                    ? `${(
-                        (value / this._amounts?.sum?.[ctx.dataIndex]) *
-                        100
-                      ).toFixed(0)}%`
-                    : '';
-                }
-              },
-            },
-          },
-        },
+    this._chart = this._reportsService.createHourlyBreakdownChart(
+      this.chart,
+      this.currency,
+      (value: number, ctx: Context) => {
+        if (ctx.datasetIndex === 0) {
+          return value > 0 ? value : '';
+        } else {
+          return this._amounts?.sum?.[ctx.dataIndex] > 0
+            ? `${((value / this._amounts?.sum?.[ctx.dataIndex]) * 100).toFixed(
+                0,
+              )}%`
+            : '';
+        }
       },
     );
 

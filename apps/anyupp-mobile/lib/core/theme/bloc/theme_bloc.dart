@@ -7,7 +7,6 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/color.dart';
-import 'package:flutter/material.dart';
 
 part 'theme_event.dart';
 part 'theme_state.dart';
@@ -16,13 +15,11 @@ part 'theme_state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   final UnitSelectBloc _unitSelectBloc;
-  StreamSubscription _unitSelectSubscription;
+  late StreamSubscription _unitSelectSubscription;
 
   ThemeBloc(this._unitSelectBloc) : super(ThemeState(theme: ThemeAnyUpp())) {
     _unitSelectSubscription = _unitSelectBloc.stream.asBroadcastStream().listen((unitSelectedState) {
       if (unitSelectedState is UnitSelected) {
-        // TODO THEME TEMPORARY HACK!!!!
-        // add(ThemeSelected(theme: ThemeAnyUpp()));
         add(ThemeSelected(theme: unitThemeToThemeChainData(unitSelectedState.unit)));
       }
     });
@@ -43,9 +40,6 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 }
 
 ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
-  if (unit.style == null) {
-    return ThemeAnyUpp();
-  }
   try {
     return ThemeChainData(
       background: HexColor.fromHex(unit.style.colors.backgroundLight),

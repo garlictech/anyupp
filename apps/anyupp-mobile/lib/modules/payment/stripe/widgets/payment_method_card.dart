@@ -15,9 +15,11 @@ class PaymentMethodCardWidget extends StatelessWidget {
   final OnPaymentMethodSelected onItemSelected;
   final bool selected;
 
-  const PaymentMethodCardWidget(
-      {Key key, this.method, this.onItemSelected, this.selected})
-      : super(key: key);
+  const PaymentMethodCardWidget({
+    required this.method,
+    required this.onItemSelected,
+    this.selected = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +52,12 @@ class PaymentMethodCardWidget extends StatelessWidget {
                     bankName: method.name ?? '-',
                     cardHolderName: ' ', //method.brand,
                     cvv: '',
-                    frontBackground:
-                        isVisa ? CardBackgrounds.black : CardBackgrounds.white,
+                    frontBackground: isVisa ? CardBackgrounds.black : CardBackgrounds.white,
                     frontTextColor: isVisa ? Colors.white : Colors.black,
-                    backBackground:
-                        isVisa ? CardBackgrounds.white : CardBackgrounds.black,
+                    backBackground: isVisa ? CardBackgrounds.white : CardBackgrounds.black,
                     showBackSide: false,
                     showShadow: true,
-                    cardType: _getCardTypeFromString(method
-                        .brand), // isVisa ? CardType.visa : CardType.masterCard,
+                    cardType: _getCardTypeFromString(method.brand!), // isVisa ? CardType.visa : CardType.masterCard,
                   ),
                   SizedBox(
                     height: 20,
@@ -71,24 +70,20 @@ class PaymentMethodCardWidget extends StatelessWidget {
               left: 35,
               top: 35,
               child: GestureDetector(
-                                 onTap: () async {
-                   await showConfirmDialog(context,
-                       onConfirm: () => getIt<StripePaymentBloc>()
-                           .add(DeleteStripeCardEvent(method.id)),
-                       title: trans(context, "payment.manageCard.are_you_sure"),
-                       message:trans(context, "payment.manageCard.card_will_delete"),
-                       cancelText: trans(context, "payment.manageCard.cancel"),
-                       confirmText: trans(context, "payment.manageCard.delete"));
-                 },
-                
-                              child: Container(
+                onTap: () async {
+                  await showConfirmDialog(context,
+                      onConfirm: () => getIt<StripePaymentBloc>().add(DeleteStripeCardEvent(method.id!)),
+                      title: trans(context, "payment.manageCard.are_you_sure"),
+                      message: trans(context, "payment.manageCard.card_will_delete"),
+                      cancelText: trans(context, "payment.manageCard.cancel"),
+                      confirmText: trans(context, "payment.manageCard.delete"));
+                },
+                child: Container(
                     height: 40,
                     width: 40,
                     child: Icon(
-                      
                       Icons.delete,
                       color: isVisa ? Colors.white : Colors.black,
-                      
                     )),
               ),
             ),
@@ -102,16 +97,13 @@ class PaymentMethodCardWidget extends StatelessWidget {
 
   String _getExpirityDateString(StripePaymentMethod payment) {
     String year = payment.expYear.toString().substring(2);
-    String month =
-        payment.expMonth < 10 ? '0${payment.expMonth}' : '${payment.expMonth}';
+    String month = payment.expMonth < 10 ? '0${payment.expMonth}' : '${payment.expMonth}';
     return '$year/$month';
   }
 
   CardType _getCardTypeFromString(String cardType) {
     return CardType.values.firstWhere(
-        (element) =>
-            'CardType.${cardType}'.toLowerCase() ==
-            element.toString().toLowerCase(),
+        (element) => 'CardType.${cardType}'.toLowerCase() == element.toString().toLowerCase(),
         orElse: () => CardType.other);
   }
 }

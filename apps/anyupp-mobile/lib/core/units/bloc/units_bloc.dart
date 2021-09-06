@@ -7,7 +7,6 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/location.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:meta/meta.dart';
 
 part 'units_event.dart';
 part 'units_state.dart';
@@ -61,11 +60,17 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     try {
       print('****** Start getting location');
       // --- Get device current location (ask permissions if not granted)
-      final LatLng location = await _locationService.getUserCurrentLocation();
+      final LatLng? location = await _locationService.getUserCurrentLocation();
       print('****** Current Location=$location');
-
-      // --- Find locations
-      yield* _findNearestLoactions(location);
+      if (location == null) {
+        yield UnitsNotLoaded(
+          reasonCode: 'ERROR_LOCATION_NOT_FOUND',
+          reasonMessage: 'Cannot access location of the user\'s device',
+        );
+      } else {
+        // --- Find locations
+        yield* _findNearestLoactions(location);
+      }
     } on PlatformException catch (e) {
       yield UnitsNotLoaded(
         reasonCode: e.code,
@@ -85,7 +90,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
       final geoUnits = await _unitRepository.searchUnitsNearLocation(location, radiusInMeter);
       print('UnitsBloc._findNearestLoactions().units=$geoUnits');
 
-      if (geoUnits == null || geoUnits.isEmpty) {
+      if (geoUnits.isEmpty) {
         yield UnitsNoNearUnit();
       } else {
         yield UnitsLoaded(geoUnits);

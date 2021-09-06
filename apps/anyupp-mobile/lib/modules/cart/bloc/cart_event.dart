@@ -8,7 +8,7 @@ abstract class BaseCartAction extends Equatable {
   const BaseCartAction();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class GetCurrentCartAction extends BaseCartAction {
@@ -16,7 +16,7 @@ class GetCurrentCartAction extends BaseCartAction {
   const GetCurrentCartAction(this.unitId);
 
   @override
-  List<Object> get props => [unitId];
+  List<Object?> get props => [unitId];
 }
 
 class AddProductToCartAction extends BaseCartAction {
@@ -26,7 +26,7 @@ class AddProductToCartAction extends BaseCartAction {
   const AddProductToCartAction(this.unit, this.order);
 
   @override
-  List<Object> get props => [unit, order];
+  List<Object?> get props => [unit, order];
 }
 
 class RemoveProductFromCartAction extends BaseCartAction {
@@ -36,7 +36,7 @@ class RemoveProductFromCartAction extends BaseCartAction {
   const RemoveProductFromCartAction(this.unitId, this.order);
 
   @override
-  List<Object> get props => [unitId, order];
+  List<Object?> get props => [unitId, order];
 }
 
 class UpdateProductInCartAction extends BaseCartAction {
@@ -45,11 +45,10 @@ class UpdateProductInCartAction extends BaseCartAction {
   final ProductVariant variant;
   final int quantity;
 
-  const UpdateProductInCartAction(
-      this.unitId, this.product, this.variant, this.quantity);
+  const UpdateProductInCartAction(this.unitId, this.product, this.variant, this.quantity);
 
   @override
-  List<Object> get props => [unitId, product, variant, quantity];
+  List<Object?> get props => [unitId, product, variant, quantity];
 }
 
 class RemoveOrderFromCartAction extends BaseCartAction {
@@ -59,7 +58,7 @@ class RemoveOrderFromCartAction extends BaseCartAction {
   const RemoveOrderFromCartAction(this.unitId, this.order);
 
   @override
-  List<Object> get props => [unitId, order];
+  List<Object?> get props => [unitId, order];
 }
 
 class ClearCartAction extends BaseCartAction {
@@ -69,7 +68,7 @@ class ClearCartAction extends BaseCartAction {
   const ClearCartAction(this.user, this.unit);
 
   @override
-  List<Object> get props => [unit, user];
+  List<Object?> get props => [unit, user];
 }
 
 class ClearPlaceInCart extends BaseCartAction {
@@ -78,16 +77,17 @@ class ClearPlaceInCart extends BaseCartAction {
   const ClearPlaceInCart(this.unit);
 
   @override
-  List<Object> get props => [unit];
+  List<Object?> get props => [unit];
 }
 
 class UpdatePlaceInCartAction extends BaseCartAction {
   final GeoUnit unit;
+  final Place place;
 
-  const UpdatePlaceInCartAction(this.unit);
+  const UpdatePlaceInCartAction(this.unit, this.place);
 
   @override
-  List<Object> get props => [unit];
+  List<Object?> get props => [unit, place];
 }
 
 class CreateAndSendOrder extends BaseCartAction {
@@ -97,7 +97,7 @@ class CreateAndSendOrder extends BaseCartAction {
   const CreateAndSendOrder(this.unit, this.paymentMethod);
 
   @override
-  List<Object> get props => [unit, paymentMethod];
+  List<Object?> get props => [unit, paymentMethod];
 }
 
 class AddInvoiceInfo extends BaseCartAction {
@@ -106,5 +106,5 @@ class AddInvoiceInfo extends BaseCartAction {
   const AddInvoiceInfo(this.invoiceInfo);
 
   @override
-  List<Object> get props => [invoiceInfo];
+  List<Object?> get props => [invoiceInfo];
 }

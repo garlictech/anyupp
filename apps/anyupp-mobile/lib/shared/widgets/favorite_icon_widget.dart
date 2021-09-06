@@ -6,11 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavoriteIconWidget extends StatefulWidget {
   const FavoriteIconWidget({
-    Key key,
-    @required this.theme,
-    @required this.unit,
-    @required this.product,
-  }) : super(key: key);
+    required this.theme,
+    required this.unit,
+    required this.product,
+  });
 
   final ThemeChainData theme;
   final GeneratedProduct product;
@@ -27,7 +26,7 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
 
     BlocProvider.of<FavoritesBloc>(context).add(CheckProductIsFavorite(
       widget.unit.chainId,
-      widget.unit.id,
+      widget.unit.id!,
       widget.product.id,
     ));
   }
@@ -71,7 +70,7 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
   void _addRemoveFavorite(BuildContext context, GeneratedProduct product) {
     BlocProvider.of<FavoritesBloc>(context).add(AddOrRemoveFavoriteProduct(
       widget.unit.chainId,
-      widget.unit.id,
+      widget.unit.id!,
       product.productCategoryId,
       product.id,
     ));

@@ -315,8 +315,12 @@ export class OrderService {
     }
   }
 
-  public listHistoryQuery(unitId: string, historyDate: string | number) {
-    const dayIntervals: IDateIntervals = getDayIntervals(historyDate);
+  public listHistoryQuery(
+    unitId: string,
+    historyDate: string | number,
+    timeZone: string,
+  ) {
+    const dayIntervals: IDateIntervals = getDayIntervals(historyDate, timeZone);
 
     this._crudSdk.doListQuery(
       ordersActions.resetHistoryOrders(),

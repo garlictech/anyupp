@@ -14,20 +14,19 @@ class SocialLoginButtonWidget extends StatelessWidget {
 
   final double iconSize;
 
-  final Color iconColor;
+  final Color? iconColor;
 
   final VoidCallback onTap;
 
   const SocialLoginButtonWidget({
-    Key key,
-    this.providerIcon,
-    this.method,
+    required this.providerIcon,
+    required this.method,
     this.borderColor = const Color(0xffe7e5d0),
     this.size = 70.0,
-    this.iconSize = 26.0, 
+    this.iconSize = 26.0,
     this.iconColor,
-    @required this.onTap,
-  }) : super(key: key);
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {

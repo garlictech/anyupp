@@ -1,8 +1,10 @@
-import { take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { OrderService } from '@bgap/admin/shared/data-access/order';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { OrderService } from '@bgap/admin/shared/data-access/order';
+import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { timezoneBudapest } from '@bgap/admin/shared/utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { fetch } from '@nrwl/angular';
@@ -39,10 +41,19 @@ export class DashboardEffects {
         run: action => {
           this._store
             .select(loggedUserSelectors.getSelectedUnitId)
-            .pipe(take(1))
-            .subscribe(unitId => {
-              if (unitId) {
-                this._orderService.listHistoryQuery(unitId, action.historyDate);
+            .pipe(
+              take(1),
+              switchMap(unitId =>
+                this._store.select(unitsSelectors.getUnitById(unitId || '')),
+              ),
+            )
+            .subscribe(unit => {
+              if (unit) {
+                this._orderService.listHistoryQuery(
+                  unit.id,
+                  action.historyDate,
+                  unit.timeZone || timezoneBudapest,
+                );
               }
             });
         },

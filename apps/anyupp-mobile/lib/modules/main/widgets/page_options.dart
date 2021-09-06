@@ -6,9 +6,9 @@ class MainPageOptions {
   final Color systemBarColor;
 
   MainPageOptions({
-    this.showAppBar,
-    this.appBarText,
-    this.systemBarColor,
+    required this.showAppBar,
+    required this.appBarText,
+    required this.systemBarColor,
   });
 
   @override

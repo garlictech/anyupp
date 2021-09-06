@@ -4,4 +4,4 @@ export 'bloc/favorites_state.dart';
 export 'providers/aws_favorites_provider.dart';
 export 'providers/favorites_provider_interface.dart';
 export 'repository/favorites_repository.dart';
-export 'model/favorite_product.dart';
+export 'screens/favorites_screen.dart';

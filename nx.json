@@ -180,6 +180,9 @@
     "integration-tests-universal": {
       "tags": ["type:integration-tests", "platform:universal"]
     },
+    "rkeeper-api": {
+      "tags": []
+    },
     "shared-config": {
       "tags": ["type:utils", "platform:universal"]
     },

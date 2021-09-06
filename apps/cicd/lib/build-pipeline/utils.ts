@@ -97,6 +97,8 @@ export const createBuildProject = (
           NODE_OPTIONS:
             '--unhandled-rejections=strict --max_old_space_size=8196',
           GIT_DISCOVERY_ACROSS_FILESYSTEM: 1,
+          AWS_ACCOUNT: stack.account,
+          CI: 'ci',
         },
       },
     }),
@@ -325,34 +327,14 @@ export const createCommonDevPipeline = (
       },
       build: {
         commands: [
-          `./tools/build-workspace.sh ${appConfig.name} ${stage}`,
-          `yarn nx deploy crud-backend --stage=${stage} --app=${appConfig.name}`,
-          `yarn deleteAllTableData`,
-          `yarn seed`,
-          `yarn nx deploy anyupp-backend --stage=${stage} --app=${appConfig.name}`,
-          `yarn nx buildApk-ci anyupp-mobile`,
+          `apps/cicd/scripts/dev-build.sh ${utils.appConfig.name} ${stage} $CI`,
         ],
       },
       post_build: {
         commands: [
-          'tar -cvf ${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz apps/anyupp-mobile/lib/awsconfiguration.dart ' +
-            'apps/anyupp-mobile/graphql/crud-api-schema.graphql ' +
-            'apps/anyupp-mobile/graphql/anyupp-api-schema.graphql ' +
-            'apps/anyupp-mobile/lib/graphql/generated ',
-          `aws s3 cp \${CODEBUILD_RESOLVED_SOURCE_VERSION}.tgz s3://${getAppcenterArtifactBucketName(
+          `apps/cicd/scripts/dev-post_build.sh ${stage} ${utils.getAppcenterArtifactBucketName(
             stage,
-          )}/`,
-          `echo 'Pushing Android APK to appcenter'`,
-          `./tools/publish-to-appcenter.sh ${stage} android`,
-          `echo 'Triggering ios app build in appcenter...'`,
-          `./tools/trigger-appcenter-builds.sh ${stage} ios`,
-          `yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover`,
-          `yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover`,
-          `yarn nx e2e-remote admin-e2e --headless --baseUrl=${adminSiteUrl}`,
-          `yarn deleteAllTableData`,
-          `yarn seed`,
-          'yarn cucumber:report',
-          'yarn cypress:generate:html:report',
+          )} ${adminSiteUrl}`,
         ],
       },
     },

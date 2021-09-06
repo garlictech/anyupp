@@ -1,7 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
+import 'package:fa_prev/graphql/generated/anyupp-api.dart' hide PaymentMethod;
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/utils/invoice_form_utils.dart';
@@ -16,10 +16,9 @@ import 'package:fa_prev/shared/widgets/country_picker_widget.dart';
 import 'package:fa_prev/shared/widgets/custom_text_form_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void showInvoiceFormBottomSheet(BuildContext context, String orderId, PaymentMode paymentMode) {
+void showInvoiceFormBottomSheet(BuildContext context, String? orderId, PaymentMode paymentMode) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   showModalBottomSheet(
@@ -44,7 +43,7 @@ void showInvoiceFormBottomSheet(BuildContext context, String orderId, PaymentMod
 }
 
 class InvoiceFormBottomSheetWidget extends StatefulWidget {
-  final String orderId;
+  final String? orderId;
   final PaymentMode paymentMode;
   InvoiceFormBottomSheetWidget(this.orderId, this.paymentMode);
   @override
@@ -61,8 +60,8 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
   final _zipController = TextEditingController();
   final _cityController = TextEditingController();
   final _streetController = TextEditingController();
-  FieldValidator taxFieldValidator;
-  User _userProfile;
+  FormFieldValidator<String>? taxFieldValidator;
+  User? _userProfile;
 
   @override
   void initState() {
@@ -70,7 +69,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
 
     _countryCodeController.addListener(() {
       setState(() {
-        profileFormKey.currentState.reset();
+        profileFormKey.currentState?.reset();
       });
     });
     super.initState();
@@ -172,13 +171,13 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                       listener: (BuildContext context, UserDetailsState state) {
                         if (state is UserDetailsLoaded) {
                           User user = state.userDetails;
-                          if (user?.invoiceAddress != null) {
-                            _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress.customerName);
-                            _setTextFieldValue(_cityController, user.invoiceAddress.city);
-                            _setTextFieldValue(_emailController, user.invoiceAddress.email ?? user.email);
-                            _setTextFieldValue(_zipController, user.invoiceAddress.postalCode);
-                            _setTextFieldValue(_streetController, user.invoiceAddress.streetAddress);
-                            _setTextFieldValue(_taxNumberController, user.invoiceAddress.taxNumber);
+                          if (user.invoiceAddress != null) {
+                            _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress!.customerName);
+                            _setTextFieldValue(_cityController, user.invoiceAddress!.city);
+                            _setTextFieldValue(_emailController, user.invoiceAddress?.email ?? user.email!);
+                            _setTextFieldValue(_zipController, user.invoiceAddress!.postalCode);
+                            _setTextFieldValue(_streetController, user.invoiceAddress!.streetAddress);
+                            _setTextFieldValue(_taxNumberController, user.invoiceAddress!.taxNumber);
                           }
                           setState(() {
                             _userProfile = state.userDetails;
@@ -306,8 +305,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                 // (_selectedPaymentMethod != PAYMENT_UNKNOWN)
                 //?
                 () {
-              final formValid = profileFormKey.currentState.validate();
-
+              final formValid = profileFormKey.currentState?.validate() ?? false;
               if (formValid) {
                 // BlocProvider.of<CartBloc>(context).add(AddInvoiceInfo(
                 //     InvoiceInfo(
@@ -329,7 +327,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                   streetAddress: _streetController.text,
                 );
 
-                if (widget.paymentMode.method == 'inapp') {
+                if (widget.paymentMode.method == PaymentMethod.inapp) {
                   Nav.pop();
                   Nav.to(StripePaymentScreen(
                     orderId: widget.orderId,
@@ -355,7 +353,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
   void _setTextFieldValue(TextEditingController textController, String value) {
     textController.value = textController.value.copyWith(
       text: value,
-      selection: TextSelection.collapsed(offset: value?.length ?? 0),
+      selection: TextSelection.collapsed(offset: value.length),
     );
   }
 }

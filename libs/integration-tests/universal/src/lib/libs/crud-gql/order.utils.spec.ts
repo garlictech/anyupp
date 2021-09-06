@@ -1,17 +1,17 @@
+import { of } from 'rxjs';
+import { delay, map, switchMap } from 'rxjs/operators';
+
+import { getDayIntervals, timezoneBudapest } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { getAllPaginatedData } from '@bgap/gql-sdk';
 import {
   cartFixture,
   orderFixture as ofx,
   transactionFixture as tfx,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { pipeDebug, toFixed2Number } from '@bgap/shared/utils';
-import { getDayIntervals } from '@bgap/admin/shared/utils';
-
-import { getAllPaginatedData } from '@bgap/gql-sdk';
-import { delay, map, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { IDateIntervals } from '@bgap/shared/types';
+import { toFixed2Number } from '@bgap/shared/utils';
 
 const TEST_NAME = 'ORDER_UTILS_';
 
@@ -264,7 +264,10 @@ describe('SearchOrders function', () => {
 
   test('Pagination should return with new archived orders', done => {
     const isoDate = new Date().toISOString();
-    const dayIntervals: IDateIntervals = getDayIntervals(isoDate);
+    const dayIntervals: IDateIntervals = getDayIntervals(
+      isoDate,
+      timezoneBudapest,
+    );
     const searchParams = {
       query: {
         filter: {

@@ -24,7 +24,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
       }
       if (event is LoadTransactions) {
         yield LoadingState();
-        List<TransactionItem> transActionItems = await _transactionsRepository.getTransactions();
+        List<Transaction>? transActionItems = await _transactionsRepository.getTransactions();
         yield TransactionsLoadedState(items: transActionItems);
       }
     } on Exception catch (e) {

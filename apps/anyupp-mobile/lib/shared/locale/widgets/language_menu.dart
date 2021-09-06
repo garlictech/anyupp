@@ -13,7 +13,7 @@ class LangChoice {
   final String country;
   final Widget flag;
 
-  LangChoice({this.title, this.language, this.country, this.flag});
+  LangChoice({required this.title, required this.language, required this.country, required this.flag});
 }
 
 class LanguageMenu extends StatefulWidget {

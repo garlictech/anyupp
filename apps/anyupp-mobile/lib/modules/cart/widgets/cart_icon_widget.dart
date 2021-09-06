@@ -16,12 +16,11 @@ class CartIconWidget extends StatefulWidget {
   final VoidCallback onTapped;
 
   const CartIconWidget({
-    Key key,
     this.color = Colors.white,
     this.badgeColor = Colors.red,
     this.badgeStyle = const TextStyle(color: Colors.white),
-    this.onTapped,
-  }) : super(key: key);
+    required this.onTapped,
+  });
   @override
   _CartIconWidgetState createState() => _CartIconWidgetState();
 }
@@ -32,12 +31,12 @@ class _CartIconWidgetState extends State<CartIconWidget> {
     return BlocBuilder<UnitSelectBloc, UnitSelectState>(
       builder: (context, state) {
         if (state is UnitSelected) {
-          return StreamBuilder<Cart>(
-            stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
-            builder: (context, AsyncSnapshot<Cart> snapshot) {
+          return StreamBuilder<Cart?>(
+            stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id!),
+            builder: (context, AsyncSnapshot<Cart?> snapshot) {
               if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                 if (snapshot.data != null) {
-                  return getCartIcon(snapshot.data.totalCount);
+                  return getCartIcon(snapshot.data!.totalCount);
                 }
                 return getCartIcon(0);
               }

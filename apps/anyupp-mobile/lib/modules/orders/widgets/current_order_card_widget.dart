@@ -13,9 +13,8 @@ import 'order_status_footer.dart';
 
 class CurrentOrderCardWidget extends StatelessWidget {
   const CurrentOrderCardWidget({
-    Key key,
-    @required this.order,
-  }) : super(key: key);
+    required this.order,
+  });
 
   final Order order;
 
@@ -47,7 +46,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
             // status == OrderStatus.ready ? _buildPayButtonWidget(context) : _buildTotalPrice(context, order),
             _buildTotalPrice(context, order),
             ..._buildOrderItemList(context, order),
-            TransactionInfoWidget(order.transactionItem),
+            if (order.transaction != null) TransactionInfoWidget(order.transaction!),
             _buildPayButtonIfNeeded(context, order),
           ],
         ),
@@ -58,7 +57,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
   Widget _buildPayButtonIfNeeded(BuildContext context, Order order) {
     StatusLog status = order.statusLog[order.statusLog.length - 1];
     // print('_buildPayButtonIfNeeded().status=$status, payment=${order.paymentMode}');
-    bool needButton = (status.status == 'none' && order.paymentMode?.method == 'inapp');
+    bool needButton = (status.status == 'none' && order.paymentMode.method == PaymentMethod.inapp);
 
     if (!needButton) {
       return Container();
@@ -160,7 +159,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown?.currency ?? 'ft'),
+            formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown.currency),
             style: GoogleFonts.poppins(
               fontSize: 16,
               color: theme.text,

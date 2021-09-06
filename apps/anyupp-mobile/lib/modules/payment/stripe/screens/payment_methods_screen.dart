@@ -1,6 +1,5 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -10,14 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StripePaymentMethodsScreen extends StatefulWidget {
   @override
-  _StripePaymentMethodsScreenState createState() =>
-      _StripePaymentMethodsScreenState();
+  _StripePaymentMethodsScreenState createState() => _StripePaymentMethodsScreenState();
 }
 
-class _StripePaymentMethodsScreenState
-    extends State<StripePaymentMethodsScreen> {
+class _StripePaymentMethodsScreenState extends State<StripePaymentMethodsScreen> {
   int selectedItem = 0;
-  int initialIndex;
+  int? initialIndex;
   @override
   void initState() {
     super.initState();
@@ -29,8 +26,7 @@ class _StripePaymentMethodsScreenState
     return BlocListener<StripePaymentBloc, StripePaymentState>(
       listener: (context, state) {
         if (state is StripeCardCreated) {
-          showSuccessDialog(context, trans("payment.manageCard.success"),
-              trans("payment.manageCard.card_added"));
+          showSuccessDialog(context, trans("payment.manageCard.success"), trans("payment.manageCard.card_added"));
           getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
         }
         if (state is StripeError) {
@@ -41,7 +37,7 @@ class _StripePaymentMethodsScreenState
         builder: (context, StripePaymentState state) {
           int initialIndex = 1;
           if (state is StripePaymentMethodsList) {
-            if (state.data != null && state.data.isEmpty) {
+            if (state.data != null && state.data!.isEmpty) {
               initialIndex = 0;
             }
             return TabBarWidget(

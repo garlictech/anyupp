@@ -2,7 +2,6 @@ import 'package:fa_prev/core/core.dart';
 import 'package:flutter/services.dart';
 
 class StripeException extends AppException {
-
   static const CODE = 'STRIPE_EXCEPTION';
 
   static const UNKNOWN_ERROR = 'UNKNOWN_ERROR';

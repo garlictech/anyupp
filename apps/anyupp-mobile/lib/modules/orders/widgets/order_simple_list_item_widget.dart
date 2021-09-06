@@ -9,9 +9,8 @@ class OrderSimpleListItemWidget extends StatelessWidget {
   final OrderItem orderItem;
 
   const OrderSimpleListItemWidget({
-    Key key,
-    this.orderItem,
-  }) : super(key: key);
+    required this.orderItem,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +49,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(orderItem.sumPriceShown?.priceSum ?? 0, orderItem.priceShown.currency ?? 'ft'),
+            formatCurrency(orderItem.sumPriceShown.priceSum, orderItem.priceShown.currency),
             style: GoogleFonts.poppins(
               fontSize: 14,
               color: theme.text,
@@ -64,8 +63,8 @@ class OrderSimpleListItemWidget extends StatelessWidget {
   List<Widget> getExtraNames(BuildContext context) {
     List<Widget> children = [];
     if (orderItem.selectedConfigMap != null) {
-      orderItem.selectedConfigMap.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+      orderItem.selectedConfigMap!.forEach((key, value) {
+        for (OrderItemConfigComponent generatedProductConfigComponent in value) {
           children.add(Text(
             getLocalizedText(context, generatedProductConfigComponent.name),
             textAlign: TextAlign.left,

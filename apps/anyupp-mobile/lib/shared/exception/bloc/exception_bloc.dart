@@ -23,13 +23,15 @@ class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {
         details = event.exception.details;
       }
       // not needed at the moment: yield NewExceptionArrivedState(event.exception);
-      showErrorDialog(
-          Catcher.navigatorKey.currentContext,
-          transEx(
-              Catcher.navigatorKey.currentContext, 'error.$subCode.title', details, 'error.$code.title', 'error.title'),
-          transEx(Catcher.navigatorKey.currentContext, 'error.$subCode.description', details, 'error.$code.description',
-              'error.description'),
-          exceptionDetails: ['dev', 'qa'].contains(AppConfig.Stage) ? event.exception.toString() : null);
+      if (Catcher.navigatorKey?.currentContext != null) {
+        showErrorDialog(
+            Catcher.navigatorKey!.currentContext!,
+            transEx(Catcher.navigatorKey!.currentContext!, 'error.$subCode.title', details, 'error.$code.title',
+                'error.title'),
+            transEx(Catcher.navigatorKey!.currentContext!, 'error.$subCode.description', details,
+                'error.$code.description', 'error.description'),
+            exceptionDetails: ['dev', 'qa'].contains(AppConfig.Stage) ? event.exception.toString() : null);
+      }
     }
   }
 }

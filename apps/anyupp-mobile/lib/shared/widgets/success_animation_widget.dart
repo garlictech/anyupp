@@ -12,9 +12,9 @@ class SuccessAnimationWidget extends StatefulWidget {
 }
 
 class SuccessAnimationWidgetState extends State<SuccessAnimationWidget> with SingleTickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
 
-  SequenceAnimation sequenceAnimation;
+  late SequenceAnimation sequenceAnimation;
 
   @override
   void initState() {
@@ -69,10 +69,10 @@ class _CustomPainter extends CustomPainter {
   double strokeEnd;
   double total = 0;
 
-  double _strokeStart;
-  double _strokeEnd;
+  late double _strokeStart;
+  late double _strokeEnd;
 
-  _CustomPainter({this.strokeEnd, this.strokeStart, this.context}) {
+  _CustomPainter({required this.strokeEnd, required this.strokeStart, required this.context}) {
     _paint.strokeCap = StrokeCap.round;
     _paint.style = PaintingStyle.stroke;
 
@@ -90,8 +90,7 @@ class _CustomPainter extends CustomPainter {
 
   Path createPath() {
     Path path = Path();
-    path.addArc(
-        Rect.fromCircle(center: Offset(_r, _r), radius: _r), math.radians(60.0 - 30.0), math.radians(-200.0));
+    path.addArc(Rect.fromCircle(center: Offset(_r, _r), radius: _r), math.radians(60.0 - 30.0), math.radians(-200.0));
     path.lineTo(24.0, 46.0);
     path.lineTo(49.0, 18.0);
     return path;
