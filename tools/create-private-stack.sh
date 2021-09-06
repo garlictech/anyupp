@@ -182,11 +182,12 @@ tput setaf 2
 echo
 echo "************************************************************************"
 echo "* At this point, we have all the resources to proceed. So, we rebuild"
-echo "* and deploy the whole ${APPNAME} stack."
+echo "* and deploy ${APPNAME} stack."
 echo "************************************************************************"
 echo
 tput sgr 0
 
+yarn nx build-schema crud-backend --app=$APPNAME --stage=$STAGE
 yarn nx build anyupp-backend --app=$APPNAME --stage=$STAGE
 yarn nx deploy anyupp-backend --app=$APPNAME --stage=$STAGE
 
