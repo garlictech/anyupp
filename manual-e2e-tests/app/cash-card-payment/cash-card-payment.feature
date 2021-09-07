@@ -13,6 +13,9 @@ Feature: Cash and card payment
     And the "Menu" option is selected on the bottom navigator
 
   Scenario: Pay successfully with cash or card
+    # about the #1592 issue
+    Then I should see "HAMBURGER #1" with picture
+    And I should see "FANTA #2" with picture
     When I tap the "FANTA #2" card under "Test product category #1 name" category
     And I tap the "Add To Cart" button
     Then The shop cart icon banner should show "1"
@@ -93,7 +96,6 @@ Feature: Cash and card payment
     When I tap the "Történet" tab
     Then I should see the "FELSZOLGÁLVA" label on the paid order
     And I should see "Még több betöltése..." at the bottom of the list
-  # I had to write "half" in EN and HU, because the admin doesn't have the buttons in HU language (form NONE to SERVED), except the "SIKERTELEN" and "SIKERES" buttons
 
   Scenario: Failed payment with cash or card
     When I tap the "FANTA #2" card under "Test product category #1 name" category

@@ -76,7 +76,7 @@ Feature: Stripe Card
     Then I should see the text "No active order placed yet"
     When I swipe to the "History" tab
     Then I should see the "SERVED" label on the paid order
-    And I should see "Load more..." at the bottom of the ordoers
+    And I should see "Load more..." at the bottom of the orders
     # Scenario: second order with stripe
     When I tap the "Menu" icon from the bottom navigation bar
     And I tap the "FANTA #2" card under "Test product category #1 name" category
@@ -95,7 +95,10 @@ Feature: Stripe Card
     Then there is a loading screen
     And There is the "Saved cards" page
     And I should see the higlighted card with the number "4242"
-    When I tap the button "Pay with Stripe"
+    When I tap the button "Delete"
+    Then I should see "Are you sure? This card will be deleted" text
+    When I tap the button "Cancel"
+    And I tap the button "Pay with Stripe"
     Then There is a loading screen
     And I should get the "Payment success!" message
     And the "Orders" option is selected on the bottom navigator
@@ -115,7 +118,7 @@ Feature: Stripe Card
     Then I should see the text "No active order placed yet"
     When I swipe to the "History" tab
     Then I should see the "SERVED" label on the paid order
-    And I should see "Load more..." at the bottom of the ordoers
+    And I should see "Load more..." at the bottom of the orders
 
   Scenario: Pay without saving the card and use the VAT form
     When I tap the "FANTA #2" card under "Test product category #1 name" category
@@ -160,7 +163,7 @@ Feature: Stripe Card
     When the admin set the state of order to "PROCESSING"
     Then in the app the order should be in "PROCESSING" state
     And I tap the "Show" text
-    And I tap the "Megnézem" text
+    And I tap the "Megtekintés" text
     Then I should see the receipt of the order
     When I tap the back arrow
     Then I should see my order on the "Orders" tab
@@ -170,4 +173,4 @@ Feature: Stripe Card
     Then I should see the text "No active order placed yet"
     When I tap the "History" tab
     Then I should see the "SERVED" label on the paid order
-    And I should see "Load more..." at the bottom of the ordoers
+    And I should see "Load more..." at the bottom of the orders

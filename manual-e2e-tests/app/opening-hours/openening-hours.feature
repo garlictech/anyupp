@@ -18,6 +18,8 @@ Feature: Opening Hours
     # Scenario: Check opening hours from the map
     When I tap the text "Check them all on the map"
     Then there is the map screen
+    And I should see my location with red marker
+    And I should see "Késdobáló #111" unit with green marker
     When I swipe up at the botttom sheet
     Then I should see the list of units
     And I check if below the name of the units there is an opening hour range

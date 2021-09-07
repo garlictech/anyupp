@@ -1,12 +1,7 @@
 Feature: Admin users
 
   Background: Login and steps to the Admin users
-    Given I am on the login page
-    When I fill out the input with id "username" with the adminEmail value
-    And I fill out the input with id "password" with the adminPassword value
-    And I fill out the "Context" input with the superuserContextId id
-    And I click the "sign in" text
-    Then I should be on the dashboard page
+    Given I am on the dashboard as an authenticated superUser
     Then I set the language to EN
     And I select the "Rab lánc #1" chain in the header menu
     And I select the "Nagy csoport #1" group in the header menu
@@ -59,5 +54,7 @@ Feature: Admin users
     And I click the "Send Code" text
     And I wait for the message
     And I read and type the verification code from the email
-    And I click to the forgot password button
+    And I set the new password
+    And I click the "SUBMIT" button
+    # And I click to the forgot password button
     Then I should be on the login page

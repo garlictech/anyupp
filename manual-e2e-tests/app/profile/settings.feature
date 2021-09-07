@@ -10,7 +10,6 @@ Feature: Set the language
     And the "Menu" option is selected on the bottom navigator
 
   Scenario: Set the language to HU then set it back to EN
-    # about the #1249 issue
     When I tap the "Profile" menu
     Then I should see the "Settings" tab
     When I tap the "Settings" tab

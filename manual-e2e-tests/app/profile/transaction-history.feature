@@ -11,7 +11,6 @@ Feature: Transaction History
     Given I have three order historys at unit "Késdobáló #111"
 
   Scenario: Transaction history listing
-    # about the #1244 issue
     When I tap the "Profile" icon at the bottom navigator
     Then there is the profile screen
     When I tap the "Transactions" option
