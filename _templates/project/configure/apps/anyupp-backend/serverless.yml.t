@@ -24,6 +24,8 @@ custom:
     linting: false
     sourcemaps: true
     caching: true
+    concurrency: 1
+    esbuild: true
 
   offline:
     useChildProcesses: true

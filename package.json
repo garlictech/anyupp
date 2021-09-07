@@ -89,7 +89,7 @@
     "fp-ts-rxjs": "0.6.15",
     "geo-tz": "6.0.1",
     "geolib": "3.3.1",
-    "graphql": "15.5.2",
+    "graphql": "15.5.3",
     "graphql-subscriptions": "1.2.1",
     "graphql-tag": "2.12.5",
     "graphql-tools": "8.2.0",
@@ -189,7 +189,7 @@
     "pretty-quick": "3.1.1",
     "semantic-release": "17.4.7",
     "serverless": "2.57.0",
-    "serverless-bundle": "5.0.0",
+    "serverless-bundle": "4.4.0",
     "supertest": "6.1.6",
     "ts-jest": "27.0.5",
     "ts-node": "10.2.1",
@@ -205,7 +205,7 @@
     ]
   },
   "resolutions": {
-    "graphql": "15.5.2",
+    "graphql": "15.5.3",
     "typescript": "4.3.5"
   }
 }
