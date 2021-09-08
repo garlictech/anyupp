@@ -1,5 +1,3 @@
-import { combineLatest } from 'rxjs';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,8 +8,8 @@ import {
 import { Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { roleContextsSelectors } from '@bgap/admin/shared/data-access/role-contexts';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { catchGqlError, EToasterType } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -19,6 +17,7 @@ import { IKeyValue } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -89,24 +88,24 @@ export class AdminUserRoleFormComponent
         {
           label: 'common.ok',
           callback: () => {
-            this._crudSdk.sdk
-              .DeleteAdminRoleContext({
-                input: {
-                  id:
-                    roleContext?.id ??
-                    'FIXME IT IS FROm AN UNHANDLED NULL CASE!',
-                },
-              })
-              .pipe(catchGqlError(this._store))
-              .subscribe(() => {
-                this._toasterService.show(
-                  EToasterType.SUCCESS,
-                  '',
-                  'common.updateSuccessful',
-                );
+            if (roleContext?.id) {
+              this._crudSdk.sdk
+                .DeleteAdminRoleContext({
+                  input: {
+                    id: roleContext.id,
+                  },
+                })
+                .pipe(catchGqlError(this._store))
+                .subscribe(() => {
+                  this._toasterService.show(
+                    EToasterType.SUCCESS,
+                    '',
+                    'common.updateSuccessful',
+                  );
 
-                this._changeDetectorRef.detectChanges();
-              });
+                  this._changeDetectorRef.detectChanges();
+                });
+            }
           },
           status: 'success',
         },
@@ -122,13 +121,12 @@ export class AdminUserRoleFormComponent
   }
 
   public submit() {
-    if (this.dialogForm?.valid) {
+    if (this.dialogForm?.valid && this.adminUser?.id) {
       this._crudSdk.sdk
         .CreateAdminRoleContext({
           input: {
             ...this.dialogForm?.value,
-            adminUserId:
-              this.adminUser?.id ?? 'FIXME IT IS FROm AN UNHANDLED NULL CASE!',
+            adminUserId: this.adminUser.id,
           },
         })
         .pipe(catchGqlError(this._store))

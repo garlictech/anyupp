@@ -1,5 +1,5 @@
+import { NGXLogger } from 'ngx-logger';
 import { concat, Observable, Subject } from 'rxjs';
-import { getAllPaginatedData } from '@bgap/gql-sdk';
 import {
   distinctUntilChanged,
   map,
@@ -7,7 +7,7 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators';
-import { NGXLogger } from 'ngx-logger';
+
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
@@ -31,6 +31,7 @@ import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { catchGqlError, DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -163,7 +164,9 @@ export class DataService {
     this._store.dispatch(roleContextActions.resetRoleContexts());
 
     concat(
-      getAllPaginatedData(op => this._crudSdk.sdk.ListRoleContexts(op)).pipe(
+      getAllPaginatedData(op => this._crudSdk.sdk.ListRoleContexts(op), {
+        options: { fetchPolicy: 'no-cache' },
+      }).pipe(
         filterNullish(),
         map(result => result.items),
       ),
@@ -191,7 +194,9 @@ export class DataService {
     this._logger.log('Subscribe to chains');
     this._crudSdk.doListSubscription(
       chainsActions.resetChains(),
-      getAllPaginatedData(op => this._crudSdk.sdk.ListChains(op)),
+      getAllPaginatedData(op => this._crudSdk.sdk.ListChains(op), {
+        options: { fetchPolicy: 'no-cache' },
+      }),
       this._crudSdk.sdk.OnChainsChange(),
       (chains: CrudApi.Chain[]) => chainsActions.upsertChains({ chains }),
       this._destroyConnection$,
@@ -202,7 +207,9 @@ export class DataService {
     this._logger.log('Subscribe to groups');
     this._crudSdk.doListSubscription(
       groupsActions.resetGroups(),
-      getAllPaginatedData(op => this._crudSdk.sdk.ListGroups(op)),
+      getAllPaginatedData(op => this._crudSdk.sdk.ListGroups(op), {
+        options: { fetchPolicy: 'no-cache' },
+      }),
       this._crudSdk.sdk.OnGroupsChange(),
       (groups: CrudApi.Group[]) => groupsActions.upsertGroups({ groups }),
       this._destroyConnection$,
@@ -213,7 +220,9 @@ export class DataService {
     this._logger.log('Subscribe to units');
     this._crudSdk.doListSubscription(
       unitsActions.resetUnits(),
-      getAllPaginatedData(op => this._crudSdk.sdk.ListUnits(op)),
+      getAllPaginatedData(op => this._crudSdk.sdk.ListUnits(op), {
+        options: { fetchPolicy: 'no-cache' },
+      }),
       this._crudSdk.sdk.OnUnitsChange(),
       (units: CrudApi.Unit[]) => unitsActions.upsertUnits({ units }),
       this._destroyConnection$,
@@ -227,6 +236,9 @@ export class DataService {
       getAllPaginatedData(op => this._crudSdk.sdk.SearchProductCategorys(op), {
         query: {
           filter: { chainId: { eq: chainId } },
+        },
+        options: {
+          fetchPolicy: 'no-cache',
         },
       }),
       this._crudSdk.sdk.OnProductCategoriesChange(),
@@ -244,6 +256,9 @@ export class DataService {
       getAllPaginatedData(op => this._crudSdk.sdk.SearchProductComponents(op), {
         query: {
           filter: { chainId: { eq: chainId } },
+        },
+        options: {
+          fetchPolicy: 'no-cache',
         },
       }),
       this._crudSdk.sdk.OnProductComponentsChange(),
@@ -264,6 +279,7 @@ export class DataService {
           query: {
             filter: { chainId: { eq: chainId } },
           },
+          options: { fetchPolicy: 'no-cache' },
         },
       ),
       this._crudSdk.sdk.OnProductComponentSetsChange(),
@@ -284,6 +300,7 @@ export class DataService {
         query: {
           filter: { chainId: { eq: chainId } },
         },
+        options: { fetchPolicy: 'no-cache' },
       }),
       this._crudSdk.sdk.OnChainProductChange(),
       (products: CrudApi.ChainProduct[]) =>
@@ -301,6 +318,7 @@ export class DataService {
         query: {
           filter: { groupId: { eq: groupId } },
         },
+        options: { fetchPolicy: 'no-cache' },
       }),
       this._crudSdk.sdk.OnGroupProductChange(),
       (products: CrudApi.GroupProduct[]) =>
@@ -318,6 +336,7 @@ export class DataService {
         query: {
           filter: { unitId: { eq: unitId } },
         },
+        options: { fetchPolicy: 'no-cache' },
       }),
       this._crudSdk.sdk.OnUnitProductChange(),
       (products: CrudApi.UnitProduct[]) =>
@@ -335,6 +354,7 @@ export class DataService {
         query: {
           filter: { unitId: { eq: unitId } },
         },
+        options: { fetchPolicy: 'no-cache' },
       }),
       this._crudSdk.sdk.OnGeneratedProductChange(),
       (products: CrudApi.GeneratedProduct[]) =>
@@ -356,6 +376,7 @@ export class DataService {
             direction: CrudApi.SearchableSortDirection.desc,
           },
         },
+        options: { fetchPolicy: 'no-cache' },
       }),
       this._crudSdk.sdk.OnUnitOrdersChange({
         unitId,
@@ -373,8 +394,9 @@ export class DataService {
     this._logger.log('Subscribe to admin users');
     this._crudSdk.doListSubscription(
       adminUsersActions.resetAdminUsers(),
-
-      getAllPaginatedData(op => this._crudSdk.sdk.ListAdminUsers(op)),
+      getAllPaginatedData(op => this._crudSdk.sdk.ListAdminUsers(op), {
+        options: { fetchPolicy: 'no-cache' },
+      }),
       this._crudSdk.sdk.OnAdminUsersChange(),
       (adminUsers: CrudApi.AdminUser[]) =>
         adminUsersActions.upsertAdminUsers({ adminUsers }),
@@ -390,16 +412,20 @@ export class DataService {
         takeUntil(this._destroyConnection$),
         filterNullish(),
         switchMap(data =>
-          this._crudSdk.sdk.GetAdminUser({ id: data.adminUserId }),
+          this._crudSdk.sdk.GetAdminUser(
+            { id: data.adminUserId },
+            { fetchPolicy: 'no-cache' },
+          ),
         ),
         filterNullish(),
-        tap(adminUser =>
-          this._store.dispatch(
+        tap(adminUser => {
+          return this._store.dispatch(
             adminUsersActions.upsertAdminUsers({
               adminUsers: [adminUser],
             }),
-          ),
-        ),
+          );
+        }),
+
         catchGqlError(this._store),
       )
       .subscribe();
