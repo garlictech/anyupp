@@ -7534,10 +7534,10 @@
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
-"@vvo/tzdb@6.10.0":
-  version "6.10.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.10.0.tgz#b9275c9c45669f2656e2538833f0953f31e612d5"
-  integrity sha512-BK49/v6R23ZAFqBsU0/Jgv/lBIDyds5B6vJkaUn9z11jWj0og6cmMzh0OmVY+7lTW4G91jLMZFtzZMFSBLyf9A==
+"@vvo/tzdb@6.11.0":
+  version "6.11.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.11.0.tgz#d1d66bf8fe2b189c04fe7be956955cb3b85a19e8"
+  integrity sha512-rXAECYmgXucWBjxULU32hGTZpqZDixTMuh69HFwYdGyigz96vnyDb0ZLElJURPy8+lAteImQk7VRhz/kLtWeHg==
   dependencies:
     luxon "1.26.0"
 
