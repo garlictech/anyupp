@@ -35,4 +35,4 @@ echo "************************************************************************"
 echo " Executing the integration tests..."
 echo "************************************************************************"
 echo
-flutter test ./integration_test/start_app_test.dart
+flutter test ./integration_test/start_app_test.dart --timeout "300s"
