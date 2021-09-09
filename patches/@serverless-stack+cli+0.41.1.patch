@@ -1,5 +1,5 @@
 diff --git a/node_modules/@serverless-stack/cli/bin/scripts.js b/node_modules/@serverless-stack/cli/bin/scripts.js
-index 74c9977..8529d72 100755
+index 70314f0..24cce8c 100755
 --- a/node_modules/@serverless-stack/cli/bin/scripts.js
 +++ b/node_modules/@serverless-stack/cli/bin/scripts.js
 @@ -15,6 +15,7 @@ require("source-map-support").install();
@@ -10,22 +10,24 @@ index 74c9977..8529d72 100755
  const yargs = require("yargs");
  const chalk = require("chalk");
  const spawn = require("cross-spawn");
-@@ -375,7 +376,17 @@ switch (script) {
+@@ -412,8 +413,18 @@ async function run() {
  
-     // Prepare app
-     prepareCdk(argv, cliInfo, config)
--      .then(() => internals[script](argv, config, cliInfo))
+       // Prepare app
+       prepareCdk(argv, cliInfo, config)
+-        .then(() => internals[script](argv, config, cliInfo))
+-        .catch((e) => exitWithMessage(e.message));
 +      .then(() => {
 +        const res = internals[script](argv, config, cliInfo);
-+         res.then(
-+           fp.flow(
-+             fp.map('status'),
-+             fp.indexOf('failed'),
-+             fp.tap(found => process.exit(found >= 0))
-+           )
-+         );
-+         return res;
++        res.then(
++         fp.flow(
++           fp.map('status'),
++           fp.indexOf('failed'),
++           fp.tap(found => process.exit(found >= 0))
++         )
++        );
++        return res;
 +      })
-       .catch((e) => exitWithMessage(e.message));
++      .catch((e) => exitWithMessage(e.message));
  
-     break;
+       break;
+     }
