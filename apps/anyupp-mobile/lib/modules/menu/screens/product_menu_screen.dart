@@ -1,4 +1,5 @@
 import 'package:fa_prev/app-config.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
@@ -17,24 +18,44 @@ import 'product_menu_tab_screen.dart';
 class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => getIt<ProductCategoriesBloc>(),
-      child: BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(builder: (context, state) {
-        // print('Menu.ProductCategoriesBloc.state=$state');
-        if (state is ProductCategoriesLoaded) {
-          // print('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
-          if (state.productCategories != null && state.productCategories!.isNotEmpty) {
-            return _buildTabBar(context, state.productCategories ?? []);
-          } else {
-            return _noCategoriesWidget(context);
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (BuildContext context) => getIt<ProductCategoriesBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<ProductListBloc>()),
+      ],
+      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+        builder: (context, UnitSelectState unitState) {
+          if (unitState is UnitSelected) {
+            return BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(builder: (context, state) {
+              // print('Menu.ProductCategoriesBloc.state=$state');
+              if (state is ProductCategoriesLoaded) {
+                // print('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
+                if (state.productCategories?.data != null && state.productCategories!.data!.isNotEmpty) {
+                  return _buildTabBar(context, unitState.unit, state.productCategories?.data ?? []);
+                } else {
+                  return _noCategoriesWidget(context);
+                }
+              }
+              return _buildLoadingWidget(context);
+            });
           }
-        }
-        return CenterLoadingWidget();
-      }),
+
+          return _buildLoadingWidget(context);
+        },
+      ),
     );
   }
 
-  Widget _buildTabBar(BuildContext context, List<ProductCategory> productCategories) {
+  Widget _buildLoadingWidget(BuildContext context) {
+    return SafeArea(
+        child: Scaffold(
+      appBar: _createAppBar(context, []),
+      backgroundColor: theme.background2,
+      body: CenterLoadingWidget(),
+    ));
+  }
+
+  Widget _buildTabBar(BuildContext context, GeoUnit unit, List<ProductCategory> productCategories) {
     return DefaultTabController(
       length: productCategories.length,
       child: SafeArea(
@@ -45,6 +66,7 @@ class Menu extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             children: productCategories
                 .map((category) => ProductMenuTabScreen(
+                      unit: unit,
                       categoryId: category.id!,
                     ))
                 .toList(),
@@ -90,15 +112,16 @@ class Menu extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ImageWidget(
-                  //width: 200,
-                  height: 40,
-                  url: theme.images?.header != null
-                      ? theme.images?.header
-                      : 'https://${AppConfig.S3BucketName}.s3-${AppConfig.Region}.amazonaws.com/public/chains/kajahu-logo.svg',
-                  errorWidget: Icon(Icons.error),
-                  fit: BoxFit.fitHeight,
-                ),
+                if (theme.images?.header != null)
+                  ImageWidget(
+                    //width: 200,
+                    height: 40,
+                    url: theme.images?.header != null
+                        ? theme.images?.header
+                        : 'https://${AppConfig.S3BucketName}.s3-${AppConfig.Region}.amazonaws.com/public/chains/kajahu-logo.svg',
+                    errorWidget: Container(),
+                    fit: BoxFit.fitHeight,
+                  ),
               ],
             ),
           ),
@@ -132,31 +155,8 @@ class Menu extends StatelessWidget {
       child: Scaffold(
         appBar: _createAppBar(context, []),
         backgroundColor: theme.background,
-        body: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              // Display cart icon
-              Image.asset(
-                'assets/images/no-items-in-cart-icon.png',
-                width: 128.0,
-                fit: BoxFit.fitWidth,
-              ),
-              SizedBox(
-                height: 60.0,
-              ),
-              Center(
-
-                  // Display message to the user
-                  child: Text(
-                trans(context, 'main.noCategories'),
-                style: TextStyle(
-                  fontSize: 15.0,
-                ),
-              ))
-            ],
-          ),
+        body: EmptyWidget(
+          messageKey: 'main.noCategories',
         ),
       ),
     );

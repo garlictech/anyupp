@@ -1,5 +1,4 @@
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/payment/payment.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/utils/local_notifications_util.dart';
 import 'package:fa_prev/shared/utils/order_status_preferences.dart';
@@ -13,6 +12,7 @@ class OrderNotificationService {
       // print('***** checkIfShowOrderStatusNotification()=${order.id}, status=$currentStatus');
 
       String? previousStatus = await getOrderStatusPref(order.id);
+      // print('***** checkIfShowOrderStatusNotification()=$previousStatus');
 
       if (previousStatus == null || previousStatus != currentStatus) {
         await setOrderStatusPref(order.id, currentStatus);
@@ -34,25 +34,14 @@ class OrderNotificationService {
         if (currentStatus == 'ready' && previousStatus == 'processing') {
           print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMode}');
 
-          if (order.paymentMode.method == PaymentMethod.inapp) {
-            showNotification(
-              context,
-              transEx(context, "notifications.messageFrom"),
-              transEx(context, "notifications.orderReady"),
-              StripePaymentScreen(
-                orderId: order.id,
-              ),
-            );
-          } else {
-            showNotification(
-              context,
-              transEx(context, "notifications.messageFrom"),
-              transEx(context, "notifications.orderReady"),
-              MainNavigation(
-                pageIndex: 2,
-              ),
-            );
-          }
+          showNotification(
+            context,
+            transEx(context, "notifications.messageFrom"),
+            transEx(context, "notifications.orderReady"),
+            MainNavigation(
+              pageIndex: 2,
+            ),
+          );
         }
       }
     });

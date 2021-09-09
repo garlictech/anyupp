@@ -56,7 +56,7 @@ module.exports = {
     '<rootDir>/libs/api/graphql/resolver-mapping-templates',
     '<rootDir>/apps/crud-api',
     '<rootDir>/libs/admin/amplify',
-    '<rootDir>/libs/integration-tests',
+    '<rootDir>/libs/integration-tests/universal',
     '<rootDir>/libs/shared/appsync-client',
     '<rootDir>/libs/admin/pages/contexts',
     '<rootDir>/libs/admin/shared/data-access/contexts',

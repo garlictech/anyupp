@@ -28,16 +28,6 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
         invoiceAddress: invoiceAddress,
       )));
 
-      // QueryResult result = await GQL.backend.executeMutation(
-      //   mutation: MUTATION_START_PAYMENT,
-      //   variables: createStartPaymentRequestVariables(
-      //     orderId: orderId,
-      //     paymentMethod: paymentMode.method,
-      //     paymentMethodId: paymentMode.method,
-      //     saveCard: false,
-      //     invoiceAddress: invoiceAddress,
-      //   ),
-      // );
       print('startExternalPayment().result=$result}');
       return;
     } on Exception catch (e) {
@@ -60,16 +50,6 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
         savePaymentMethod: false,
         invoiceAddress: invoiceAddress,
       )));
-      // QueryResult result = await GQL.backend.executeMutation(
-      //   mutation: MUTATION_START_PAYMENT,
-      //   variables: createStartPaymentRequestVariables(
-      //     orderId: orderId,
-      //     paymentMethod: paymentMode.method,
-      //     paymentMethodId: paymentMode.method,
-      //     saveCard: false,
-      //     invoiceAddress: invoiceAddress,
-      //   ),
-      // );
       print('startOrderExternalPayment().result=$result}');
       await Future.delayed(Duration(seconds: 2));
       return;

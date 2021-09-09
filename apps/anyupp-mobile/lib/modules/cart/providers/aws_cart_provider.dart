@@ -34,7 +34,7 @@ class AwsCartProvider implements ICartProvider {
         cartId: _cart!.id!,
       )));
 
-      print('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
+      // print('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
       String? id;
       if (result.data != null && result.data?.createOrderFromCart != null) {
         id = result.data!.createOrderFromCart;
@@ -61,11 +61,6 @@ class AwsCartProvider implements ICartProvider {
 
   @override
   Future<Cart?> getCurrentCart(String unitId) async {
-    // if (_cart == null) {
-    //   _cart = await _getCartFromBackEnd(unitId);
-    //   _cartController.add(_cart);
-    // }
-    // return _cart;
     _cart = await _getCartFromBackEnd(unitId);
     _cartController.add(_cart);
     return _cart;
@@ -90,7 +85,7 @@ class AwsCartProvider implements ICartProvider {
 
   @override
   Future<void> updateCart(String unitId, Cart? cart) async {
-    print('updateCart=$cart');
+    print('updateCart=${cart?.id}');
     bool delete = cart != null && cart.items.isEmpty;
     if (delete) {
       await _deleteCartFromBackend(cart.id!);
@@ -121,7 +116,7 @@ class AwsCartProvider implements ICartProvider {
         message: 'User not logged in. getAuthenticatedUserProfile() is null',
       );
     }
-    print('CartProvider._getCartFromBackEnd().unit=$unitId, user=${user.id}');
+    // print('CartProvider._getCartFromBackEnd().unit=$unitId, user=${user.id}');
     try {
       var result = await GQL.amplify.execute(
           GetCurrentCartQuery(
@@ -131,16 +126,12 @@ class AwsCartProvider implements ICartProvider {
             ),
           ),
           fetchPolicy: FetchPolicy.networkOnly);
-      // QueryResult result = await GQL.amplify.executeQuery(
-      //   query: QUERY_GET_CART,
-      //   variables: {
-      //     'userId': user.id,
-      //     'unitId': unitId,
-      //   },
-      //   fetchPolicy: FetchPolicy.networkOnly,
-      // );
+      if (result.hasErrors) {
+        print('AwsOrderProvider._getCartFromBackEnd().error()=${result.errors}');
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors!);
+      }
 
-      print('AwsOrderProvider._getCartFromBackEnd().result()=$result');
+      // print('AwsOrderProvider._getCartFromBackEnd().result()=$result');
       if (result.data == null || result.data?.listCarts == null) {
         return null;
       }
@@ -163,7 +154,7 @@ class AwsCartProvider implements ICartProvider {
   }
 
   Future<bool> _saveCartToBackend(Cart cart) async {
-    print('******** CREATING CART IN BACKEND=${cart.id}');
+    // print('******** CREATING CART IN BACKEND');
     try {
       var result = await GQL.amplify.execute(CreateCartMutation(
         variables: CreateCartArguments(
@@ -172,12 +163,8 @@ class AwsCartProvider implements ICartProvider {
           ),
         ),
       ));
-      // QueryResult result = await GQL.amplify.executeMutation(
-      //   mutation: MUTATION_SAVE_CART,
-      //   variables: _getCartMutationVariablesFromCart(cart, 'createCartInput'),
-      // );
-      print('******** CREATING CART IN BACKEND.result.data=${result.data}');
-      print('******** CREATING CART IN BACKEND.result.errors=${result.errors}');
+      // print('******** CREATING CART IN BACKEND.result.data=${result.data}');
+      // print('******** CREATING CART IN BACKEND.result.errors=${result.errors}');
 
       String? id = result.data?.createCart?.id;
       print('CartProvider._saveCartToBackend().id=$id');
@@ -200,12 +187,8 @@ class AwsCartProvider implements ICartProvider {
         updateCartInput: UpdateCartInput.fromJson(_getCartMutationVariablesFromCart(cart)),
       )));
 
-      // QueryResult result = await GQL.amplify.executeMutation(
-      //   mutation: MUTATION_UPDATE_CART,
-      //   variables: _getCartMutationVariablesFromCart(cart, 'updateCartInput'),
-      // );
-      print('******** UPDATING CART IN BACKEND.result.data=${result.data}');
-      print('******** UPDATING CART IN BACKEND.result.errors=${result.errors}');
+      // print('******** UPDATING CART IN BACKEND.result.data=${result.data}');
+      // print('******** UPDATING CART IN BACKEND.result.errors=${result.errors}');
 
       return !result.hasErrors;
     } on Exception catch (e) {
@@ -221,14 +204,6 @@ class AwsCartProvider implements ICartProvider {
         variables: DeleteCartArguments(cartId: cartId),
       ));
 
-      // QueryResult result = await GQL.amplify.executeMutation(
-      //   mutation: MUTATION_DELETE_CART,
-      //   variables: {
-      //     'cartId': cartId,
-      //   },
-      // );
-
-      //return result?.exception == null ? true : false;
       return !result.hasErrors;
     } on Exception catch (e) {
       print('AwsOrderProvider._deleteCartFromBackend.Exception: $e');
@@ -238,6 +213,7 @@ class AwsCartProvider implements ICartProvider {
 
   Map<String, dynamic> _getCartMutationVariablesFromCart(Cart cart) {
     // print('_getCartMutationVariablesFromCart().cart=$cart');
+
     return {
       if (cart.id != null) 'id': cart.id,
       'unitId': cart.unitId,
@@ -270,7 +246,7 @@ class AwsCartProvider implements ICartProvider {
             {
               'userId': cart.userId,
               'status': 'none',
-              'ts': 1.0,
+              'ts': DateTime.now().millisecond,
             }
           ],
           "allergens": item.allergens,
@@ -282,7 +258,7 @@ class AwsCartProvider implements ICartProvider {
             'hu': item.variantName.hu,
           },
           'configSets': item.selectedConfigMap != null
-              ? item.selectedConfigMap?.keys.toList().map((OrderItemConfigSet generatedProductConfigSet) {
+              ? item.selectedConfigMap?.keys.toList().map((GeneratedProductConfigSet generatedProductConfigSet) {
                   return {
                     "name": {
                       'en': generatedProductConfigSet.name.en,
@@ -293,7 +269,7 @@ class AwsCartProvider implements ICartProvider {
                     "type": generatedProductConfigSet.type,
                     "items": item.selectedConfigMap != null
                         ? item.selectedConfigMap![generatedProductConfigSet]
-                            ?.map((OrderItemConfigComponent generatedProductConfigComponent) {
+                            ?.map((GeneratedProductConfigComponent generatedProductConfigComponent) {
                             return {
                               "allergens": generatedProductConfigComponent.allergens
                                   ?.map((e) => e.toString().split(".").last)

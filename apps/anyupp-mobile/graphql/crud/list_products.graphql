@@ -1,10 +1,19 @@
-query ListProducts($unitId: ID!, $categoryId: ID!) {
-  listGeneratedProducts(
+query ListProducts(
+  $unitId: ID!
+  $categoryId: ID!
+  $nextToken: String
+  $limit: Int
+) {
+  searchGeneratedProducts(
     filter: {
       unitId: { eq: $unitId }
       and: { productCategoryId: { eq: $categoryId } }
     }
+    nextToken: $nextToken
+    limit: $limit
   ) {
+    total
+    nextToken
     items {
       id
       unitId

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:fa_prev/models.dart';
 
+@immutable
 class Order {
   final String id;
   final String orderNum;

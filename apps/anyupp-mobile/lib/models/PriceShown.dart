@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class PriceShown {
   final String? id;
   final String currency;

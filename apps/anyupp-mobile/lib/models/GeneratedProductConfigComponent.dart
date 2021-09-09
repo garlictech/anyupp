@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:fa_prev/models.dart';
 
+@immutable
 class GeneratedProductConfigComponent {
   final String productComponentId;
   final double price;

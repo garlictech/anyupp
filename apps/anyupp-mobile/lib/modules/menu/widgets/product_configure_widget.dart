@@ -79,7 +79,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           ),
         ],
         quantity: 0,
-        // selectedConfigMap: getSelectedComponentMap(), TODO EZ MI A FRANC?
+        selectedConfigMap: getSelectedComponentMap(),
       );
     }
 

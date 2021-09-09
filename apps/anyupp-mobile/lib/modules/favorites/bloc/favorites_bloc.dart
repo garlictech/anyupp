@@ -10,19 +10,32 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
 
   @override
   Stream<FavoritesState> mapEventToState(FavoritesEvent event) async* {
-    // TODO ide kell meg a favorites lista!!!
+    if (event is ListFavoriteProducts) {
+      yield FavoritesLoading();
+      var response = await _favoritesRepository.getFavoritesList(event.unitId);
+      yield FavoriteListLoaded(response.data);
+      return;
+    }
+
     if (event is AddOrRemoveFavoriteProduct) {
       bool isFavorite = await _favoritesRepository.addOrRemoveFavoriteProduct(
-          event.chainId, event.unitId, event.categoryId, event.productId);
+        event.unitId,
+        event.categoryId,
+        event.productId,
+      );
       yield ProductIsFavorite(isFavorite);
+      yield FavoriteListLoaded(_favoritesRepository.favorites);
       return;
     }
 
     if (event is CheckProductIsFavorite) {
       yield FavoritesLoading();
-      bool isFavorite =
-          await _favoritesRepository.checkIfProductIsFavorite(event.chainId, event.unitId, event.productId);
+      bool isFavorite = await _favoritesRepository.checkIfProductIsFavorite(
+        event.unitId,
+        event.productId,
+      );
       yield ProductIsFavorite(isFavorite);
+      yield FavoriteListLoaded(_favoritesRepository.favorites);
       return;
     }
   }

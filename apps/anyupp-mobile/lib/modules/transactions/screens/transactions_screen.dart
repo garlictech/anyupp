@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/app-constants.dart';
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
@@ -8,11 +9,11 @@ import 'package:fa_prev/modules/transactions/widgets/transaction_card_widget.dar
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets/app_bar.dart';
+import 'package:fa_prev/shared/widgets/empty_widget.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TransactionsScreen extends StatefulWidget {
@@ -22,8 +23,18 @@ class TransactionsScreen extends StatefulWidget {
 
 class _TransactionsScreenState extends State<TransactionsScreen> {
   RefreshController _refreshController = RefreshController(initialRefresh: false);
+  String? _nextToken;
+  late int _pageSize;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageSize = getIt<AppConstants>().paginationSize;
+    getIt<TransactionsBloc>().add(LoadTransactions(nextToken: null));
+  }
 
   void _onRefresh() async {
+    _nextToken = null;
     getIt<TransactionsBloc>().add(Loading());
     getIt<TransactionsBloc>().add(LoadTransactions());
   }
@@ -51,12 +62,11 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   Widget _buildTransactions(BuildContext context, GeoUnit unit) {
     return BlocBuilder<TransactionsBloc, TransactionsState>(
       builder: (context, state) {
-        if (state is TransactionsInitial) {
-          getIt<TransactionsBloc>().add(LoadTransactions());
-        }
         if (state is TransactionsLoadedState) {
+          _nextToken = state.response?.nextToken;
+          print('_buildTransactions._nextToken=$_nextToken');
           _refreshController.refreshCompleted();
-          return _buildList(state.items ?? []);
+          return _buildList(state.response?.data ?? []);
           // }
         }
         return CenterLoadingWidget();
@@ -98,6 +108,10 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               scrollDirection: Axis.vertical,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, position) {
+                if (position == list.length - 1 && list.length % _pageSize == 0 && _nextToken != null) {
+                  getIt<TransactionsBloc>().add(LoadTransactions(nextToken: _nextToken));
+                }
+
                 return AnimationConfiguration.staggeredList(
                   position: position,
                   duration: const Duration(milliseconds: 375),
@@ -117,22 +131,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   }
 
   Widget _buildEmptyList(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                trans('profile.transactions.noTransactions'),
-                style: GoogleFonts.poppins(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                  color: theme.text,
-                ),
-              )
-            ]),
-      ),
+    return EmptyWidget(
+      messageKey: 'profile.transactions.noTransactions',
     );
   }
 }

@@ -1,6 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
 
+import 'package:flutter/foundation.dart';
+
+@immutable
 class GeneratedProduct {
   final String id;
   final String unitId;

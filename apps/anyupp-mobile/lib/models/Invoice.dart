@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class Invoice {
   final String? id;
   final String? updatedAt;

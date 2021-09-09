@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class ProductVariantPack {
   final String? id;
   final double size;

@@ -3,19 +3,23 @@ abstract class FavoritesEvent {
 }
 
 class CheckProductIsFavorite extends FavoritesEvent {
-  final String productId;
-  final String chainId;
   final String unitId;
+  final String productId;
 
-  const CheckProductIsFavorite(this.chainId, this.unitId, this.productId);
+  const CheckProductIsFavorite(this.unitId, this.productId);
 }
 
 class AddOrRemoveFavoriteProduct extends FavoritesEvent {
-  final String productId;
-  final String chainId;
-  final categoryId;
   final String unitId;
+  final categoryId;
+  final String productId;
 
-  const AddOrRemoveFavoriteProduct(this.chainId, this.unitId, this.categoryId, this.productId);
+  const AddOrRemoveFavoriteProduct(this.unitId, this.categoryId, this.productId);
 }
-// TODO ide kell meg a favorites lista!!!
+
+class ListFavoriteProducts extends FavoritesEvent {
+  final String unitId;
+  final String? nextToken;
+
+  ListFavoriteProducts({required this.unitId, this.nextToken});
+}

@@ -1,6 +1,7 @@
 import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
+@immutable
 class OrderItemConfigSet {
   final String productSetId;
   final LocalizedItem name;

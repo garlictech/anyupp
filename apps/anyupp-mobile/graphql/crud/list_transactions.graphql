@@ -1,5 +1,11 @@
-query ListTransactions($userId: ID!) {
-  listTransactions(filter: { userId: { eq: $userId } }) {
+query ListTransactions($userId: ID!, $nextToken: String, $limit: Int) {
+  searchTransactions(
+    filter: { userId: { eq: $userId } }
+    nextToken: $nextToken
+    limit: $limit
+  ) {
+    nextToken
+    total
     items {
       createdAt
       currency

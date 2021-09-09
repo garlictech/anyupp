@@ -2,21 +2,28 @@ import 'dart:async';
 
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/shared/pagination/pagination.dart';
 
-class FavoritesRepository {
+class FavoritesRepository implements IFavoritesProvider {
   final IFavoritesProvider _provider;
 
   FavoritesRepository(this._provider);
 
-  Stream<List<FavoriteProduct>?> getFavoritesList(String chainId, String unitId) {
-    return _provider.getFavoritesList(chainId, unitId);
+  @override
+  Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId, [String? nextToken]) {
+    return _provider.getFavoritesList(unitId, nextToken);
   }
 
-  Future<bool> addOrRemoveFavoriteProduct(String chainId, String unitId, String categoryId, String productId) async {
-    return _provider.addOrRemoveFavoriteProduct(chainId, unitId, categoryId, productId);
+  @override
+  Future<bool> addOrRemoveFavoriteProduct(String unitId, String categoryId, String productId) async {
+    return _provider.addOrRemoveFavoriteProduct(unitId, categoryId, productId);
   }
 
-  Future<bool> checkIfProductIsFavorite(String chainId, String unitId, String productId) async {
-    return _provider.checkIfProductIsFavorite(chainId, unitId, productId);
+  @override
+  Future<bool> checkIfProductIsFavorite(String unitId, String productId) async {
+    return _provider.checkIfProductIsFavorite(unitId, productId);
   }
+
+  @override
+  List<FavoriteProduct>? get favorites => _provider.favorites;
 }

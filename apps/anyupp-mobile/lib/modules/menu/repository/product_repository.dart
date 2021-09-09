@@ -1,17 +1,18 @@
 import 'package:fa_prev/models.dart';
 
 import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/shared/pagination/pagination.dart';
 
 class ProductRepository {
   final IProductProvider _provider;
 
   ProductRepository(this._provider);
 
-  Stream<List<ProductCategory>?> getProductCategoryList(String chainId, String unitId) {
-    return _provider.getProductCategoryList(chainId, unitId);
+  Future<PageResponse<ProductCategory>> getProductCategoryList(String unitId, [String? nextToken]) {
+    return _provider.getProductCategoryList(unitId);
   }
 
-  Stream<List<GeneratedProduct>?> getProductList(String unitId, String categoryId) {
+  Future<PageResponse<GeneratedProduct>> getProductList(String unitId, String categoryId, [String? nextToken]) {
     return _provider.getProductList(unitId, categoryId);
   }
 }

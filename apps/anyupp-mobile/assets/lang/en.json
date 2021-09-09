@@ -144,12 +144,16 @@
     "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out Kajahu Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
   },
   "favorites": {
-    "noFavorites": "No favorites added yet"
+    "noFavorites": "You have not added any favorite items yet.",
+    "noFavoritesDesc": "Find the food and drinks you like under the Menu tab.",
+    "noFavoritesButton": "DISCOVER MENU"
   },
   "orders": {
     "tabCurrentOrder": "Orders",
     "tabOrderHistory": "History",
     "noActiveOrder": "No active order placed yet",
+    "noActiveOrderDesc": "Find the food and drinks you like under the Menu tab.",
+    "noActiveOrderButton": "DISCOVER MENU",
     "totalCost": "TOTAL COST",
     "noOrderHistory": "No order history yet",
     "status": {

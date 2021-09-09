@@ -1,5 +1,15 @@
-query ListGeneratedProductCategories($unitId: ID!) {
-  listGeneratedProductCategorys(filter: { unitId: { eq: $unitId } }) {
+query ListGeneratedProductCategories(
+  $unitId: ID!
+  $nextToken: String
+  $limit: Int
+) {
+  searchGeneratedProductCategorys(
+    filter: { unitId: { eq: $unitId } }
+    nextToken: $nextToken
+    limit: $limit
+  ) {
+    total
+    nextToken
     items {
       updatedAt
       createdAt

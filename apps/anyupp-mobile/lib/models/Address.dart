@@ -1,5 +1,8 @@
 import 'package:fa_prev/models.dart';
 
+import 'package:flutter/foundation.dart';
+
+@immutable
 class Address {
   // static const classType = AddressType();
   final String? id;

@@ -5,3 +5,5 @@ export 'providers/aws_favorites_provider.dart';
 export 'providers/favorites_provider_interface.dart';
 export 'repository/favorites_repository.dart';
 export 'screens/favorites_screen.dart';
+export 'widgets/favorite_icon_widget.dart';
+export 'widgets/favorites_list_widget.dart';

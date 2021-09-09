@@ -1,5 +1,8 @@
 import 'package:fa_prev/models.dart';
 
+import 'package:flutter/foundation.dart';
+
+@immutable
 class FavoriteProduct {
   final String? id;
   final String userId;

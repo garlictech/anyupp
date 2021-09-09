@@ -52,6 +52,12 @@ class Locally {
     this.iosRequestBadgePermission = false,
     this.iosRequestAlertPermission = false,
   }) {
+    _init();
+  }
+
+  Future<void> _init() async {
+    // await requestPermission();
+
     /// initializationSettingAndroid declared above is assigned
     /// to AndroidInitializationSettings.
     initializationSettingAndroid = AndroidInitializationSettings(this.appIcon);
@@ -71,17 +77,24 @@ class Locally {
         InitializationSettings(android: initializationSettingAndroid, iOS: initializationSettingIos);
 
     /// localNotificationPlugin is initialized here finally
-    localNotificationsPlugin.initialize(initializationSetting, onSelectNotification: onSelectNotification);
+    await localNotificationsPlugin.initialize(initializationSetting, onSelectNotification: onSelectNotification);
   }
 
   /// requestPermission()
   /// for IOS developers only
   Future requestPermission() async {
-    return await localNotificationsPlugin
+    await localNotificationsPlugin
         .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
           alert: true,
-          badge: true,
+          badge: false,
+          sound: true,
+        );
+    await localNotificationsPlugin
+        .resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: false,
           sound: true,
         );
   }
@@ -144,11 +157,11 @@ class Locally {
       channelDescription = 'channel Description',
       importance = Importance.high,
       priority = Priority.high,
-      ticker = 'test ticker'}) async {
+      ticker = 'ticker'}) async {
     if (title == null && message == null) {
       throw "Missing parameters, title: message";
     } else {
-      //print('Notification.show()');
+      print('Notification.show()');
       this.title = title;
       this.message = message;
 
@@ -201,13 +214,16 @@ class Locally {
 Locally? _locally;
 
 void showNotification(BuildContext context, String title, String message, Widget? navigateToPage) {
+  print('showNotification().title=$title, mmessage=$message');
   if (_locally == null) {
     _locally = Locally(
       context: context,
       payload: '3fa',
-      appIcon: 'mipmap/ic_launcher',
-      // iosRequestAlertPermission: true,
-      // iosRequestSoundPermission: true,
+      appIcon: '@mipmap/ic_launcher',
+      iosRequestBadgePermission: false,
+      iosRequestAlertPermission: true,
+      iosRequestSoundPermission: true,
+      navigatePage: navigateToPage,
     );
   }
 

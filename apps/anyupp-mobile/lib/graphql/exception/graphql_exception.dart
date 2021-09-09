@@ -68,12 +68,12 @@ class GraphQLException extends AppException {
         details: e.runtimeType);
   }
 
-  factory GraphQLException.fromGraphQLError(String code, List<GraphQLError> errors) {
+  factory GraphQLException.fromGraphQLError(String code, List<GraphQLError>? errors) {
     return GraphQLException(
       code: GraphQLException.CODE,
       subCode: code,
-      message: errors[0].toString(),
-      details: errors.toString(),
+      message: errors?[0].toString(),
+      details: errors?.toString(),
     );
   }
 

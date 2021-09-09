@@ -164,7 +164,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
     List<Widget> children = [];
     if (widget.order.selectedConfigMap != null) {
       widget.order.selectedConfigMap!.forEach((key, value) {
-        for (OrderItemConfigComponent generatedProductConfigComponent in value) {
+        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
           children.add(Text(
             getLocalizedText(context, generatedProductConfigComponent.name),
             textAlign: TextAlign.left,
@@ -187,7 +187,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
     List<String> allergens = widget.order.allergens ?? [];
     if (widget.order.selectedConfigMap != null) {
       widget.order.selectedConfigMap!.forEach((key, value) {
-        for (OrderItemConfigComponent generatedProductConfigComponent in value) {
+        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
           if (generatedProductConfigComponent.allergens != null) {
             for (Allergen allergen in generatedProductConfigComponent.allergens!) {
               String temp = allergen.toString().split(".").last;

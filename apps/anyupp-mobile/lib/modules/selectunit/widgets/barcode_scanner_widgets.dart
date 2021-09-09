@@ -90,7 +90,7 @@ class Rectangle {
     return Rectangle(
       width: lerpDouble(begin.width, end.width, t)!,
       height: lerpDouble(begin.height, end.height, t)!,
-      color: color!,
+      color: color,
     );
   }
 }

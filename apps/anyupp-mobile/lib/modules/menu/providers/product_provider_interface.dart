@@ -1,7 +1,8 @@
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/shared/pagination/pagination.dart';
 
 abstract class IProductProvider {
-  Stream<List<ProductCategory>?> getProductCategoryList(String chainId, String unitId);
+  Future<PageResponse<ProductCategory>> getProductCategoryList(String unitId, [String nextToken]);
 
-  Stream<List<GeneratedProduct>?> getProductList(String unitId, String categoryId);
+  Future<PageResponse<GeneratedProduct>> getProductList(String unitId, String categoryId, [String nextToken]);
 }

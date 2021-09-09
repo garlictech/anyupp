@@ -70,17 +70,6 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       ),
     ));
 
-    // QueryResult result = await GQL.backend.executeMutation(
-    //   mutation: MUTATION_START_PAYMENT,
-    //   variables: createStartPaymentRequestVariables(
-    //     orderId: orderId,
-    //     paymentMethod: 'inapp',
-    //     paymentMethodId: paymentMethodId,
-    //     saveCard: false,
-    //     invoiceAddress: invoiceAddress,
-    //   ),
-    // );
-
     if (result.data == null || result.data?.startStripePayment == null) {
       return;
     }
@@ -133,17 +122,6 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
         invoiceAddress: invoiceAddress,
       ),
     ));
-
-    // QueryResult result = await GQL.backend.executeMutation(
-    //   mutation: MUTATION_START_PAYMENT,
-    //   variables: createStartPaymentRequestVariables(
-    //     orderId: orderId,
-    //     paymentMethod: 'inapp',
-    //     paymentMethodId: paymentMethodId,
-    //     saveCard: saveCard,
-    //     invoiceAddress: invoiceAddress,
-    //   ),
-    // );
 
     if (result.data == null || result.data?.startStripePayment == null) {
       return;

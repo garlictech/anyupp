@@ -1,20 +1,19 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:fa_prev/modules/menu/menu.dart';
-
 class ProductMenuTabScreen extends StatefulWidget {
+  final GeoUnit unit;
   final String categoryId;
 
-  const ProductMenuTabScreen({required this.categoryId});
+  const ProductMenuTabScreen({required this.unit, required this.categoryId});
 
   @override
   _ProductMenuTabScreenState createState() => _ProductMenuTabScreenState();
@@ -22,10 +21,19 @@ class ProductMenuTabScreen extends StatefulWidget {
 
 class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     with AutomaticKeepAliveClientMixin<ProductMenuTabScreen> {
-  ProductRepository _productRepository = getIt<ProductRepository>();
+  String? _nextToken;
+  late int _pageSize;
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageSize = getIt<AppConstants>().paginationSize;
+    getIt<ProductListBloc>()
+        .add(LoadProductList(unitId: widget.unit.id!, categoryId: widget.categoryId, nextToken: _nextToken));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,51 +41,39 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     return Container(
       key: PageStorageKey(widget.categoryId),
       padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.015),
-      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-        builder: (context, state) {
-          if (state is UnitSelected) {
-            final GeoUnit unit = state.unit;
-            return StreamBuilder<List<GeneratedProduct>?>(
-              stream: _productRepository.getProductList(unit.id!, widget.categoryId),
-              builder: (context, AsyncSnapshot<List<GeneratedProduct>?> snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data == null || (snapshot.data != null && snapshot.data!.isEmpty)) {
-                    return _buildEmptyList(context);
-                  }
-
-                  // Display all the available sandwiches
-                  return _buildList(unit, snapshot.data!);
-
-                  // In case of error, display error message to the user
-                } else if (snapshot.hasError) {
-                  return Text("Error get product list: ${snapshot.error}");
-                }
-
-                return CenterLoadingWidget();
-              },
-            );
-          }
-
+      child: BlocBuilder<ProductListBloc, ProductListState>(builder: (context, state) {
+        if (state is ProductListLoading) {
           return CenterLoadingWidget();
-        },
-      ),
+        }
+
+        if (state is ProductListLoaded) {
+          var items = state.products.data;
+          _nextToken = state.products.nextToken;
+          if (items == null || items.isEmpty) {
+            return _buildEmptyList(context);
+          }
+          return _buildList(widget.unit, items);
+        }
+
+        return CenterLoadingWidget();
+      }),
     );
   }
 
   Widget _buildList(GeoUnit unit, List<GeneratedProduct> list) {
     return AnimationLimiter(
       child: ListView.builder(
-        // itemCount: list.length + 1,
         itemCount: list.length,
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, position) {
-          // if (position == list.length) {
-          //   return Container(
-          //     padding: EdgeInsets.all(8.0),
-          //     child: AffiliateCardWidget(),
-          //   );
-          // }
+          if (position == list.length - 1 && list.length % _pageSize == 0 && _nextToken != null) {
+            getIt<ProductListBloc>().add(LoadProductList(
+              unitId: widget.unit.id!,
+              categoryId: widget.categoryId,
+              nextToken: _nextToken,
+            ));
+          }
 
           return AnimationConfiguration.staggeredList(
             position: position,

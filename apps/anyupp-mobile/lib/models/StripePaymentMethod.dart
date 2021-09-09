@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class StripePaymentMethod {
   final String? id;
   final String last4;

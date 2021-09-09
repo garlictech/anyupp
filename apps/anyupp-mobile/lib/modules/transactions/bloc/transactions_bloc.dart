@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/transactions/repository/transactions_repository.dart';
 import 'package:fa_prev/shared/exception.dart';
 
@@ -24,8 +23,8 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
       }
       if (event is LoadTransactions) {
         yield LoadingState();
-        List<Transaction>? transActionItems = await _transactionsRepository.getTransactions();
-        yield TransactionsLoadedState(items: transActionItems);
+        var response = await _transactionsRepository.getTransactions();
+        yield TransactionsLoadedState(response: response);
       }
     } on Exception catch (e) {
       print('TransactionsBloc.exception=$e');

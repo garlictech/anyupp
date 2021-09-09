@@ -20,12 +20,13 @@ class FavoriteIconWidget extends StatefulWidget {
 }
 
 class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
+  bool? _isFavorite;
+
   @override
   void initState() {
     super.initState();
 
     BlocProvider.of<FavoritesBloc>(context).add(CheckProductIsFavorite(
-      widget.unit.chainId,
       widget.unit.id!,
       widget.product.id,
     ));
@@ -33,43 +34,37 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FavoritesBloc, FavoritesState>(
-      builder: (context, state) {
+    return BlocListener<FavoritesBloc, FavoritesState>(
+      listener: (BuildContext context, FavoritesState state) {
         if (state is ProductIsFavorite) {
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return FadeTransition(
-                child: child,
-                opacity: animation,
-                // scale: animation,
-              );
-            },
-            child: IconButton(
-              key: ValueKey<String>('${state.isFavorite}'),
-              icon: Icon(
-                state.isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: widget.theme.text,
-              ),
-              onPressed: () => _addRemoveFavorite(context, widget.product),
-            ),
-          );
+          setState(() {
+            _isFavorite = state.isFavorite;
+          });
         }
-        // return Container();
-        return IconButton(
-          onPressed: () => {},
-          icon: Icon(
-            Icons.favorite_border,
-            color: widget.theme.background,
-          ),
-        );
       },
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(
+            child: child,
+            opacity: animation,
+            // scale: animation,
+          );
+        },
+        child: IconButton(
+          key: ValueKey<String>('$_isFavorite'),
+          icon: Icon(
+            _isFavorite == true ? Icons.favorite : Icons.favorite_border,
+            color: widget.theme.text,
+          ),
+          onPressed: () => _addRemoveFavorite(context, widget.product),
+        ),
+      ),
     );
   }
 
   void _addRemoveFavorite(BuildContext context, GeneratedProduct product) {
     BlocProvider.of<FavoritesBloc>(context).add(AddOrRemoveFavoriteProduct(
-      widget.unit.chainId,
       widget.unit.id!,
       product.productCategoryId,
       product.id,

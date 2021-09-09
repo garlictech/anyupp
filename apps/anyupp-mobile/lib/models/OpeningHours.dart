@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class OpeningHours {
   final double? to;
   final double? from;

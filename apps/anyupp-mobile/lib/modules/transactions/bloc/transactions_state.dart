@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/models/Transaction.dart';
+import 'package:fa_prev/shared/pagination/pagination.dart';
 
 abstract class TransactionsState extends Equatable {
   const TransactionsState();
@@ -11,11 +12,11 @@ abstract class TransactionsState extends Equatable {
 class TransactionsInitial extends TransactionsState {}
 
 class TransactionsLoadedState extends TransactionsState {
-  final List<Transaction>? items;
-  TransactionsLoadedState({this.items});
+  final PageResponse<Transaction>? response;
+  const TransactionsLoadedState({this.response});
 
   @override
-  List<Object?> get props => [items];
+  List<Object?> get props => [response];
 }
 
 class LoadingState extends TransactionsState {

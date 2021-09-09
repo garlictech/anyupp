@@ -22,11 +22,6 @@ class AwsUserDetailsProvider implements IUserDetailsProvider {
       userId: user.id,
     )));
 
-    // QueryResult result = await GQL.amplify.executeQuery(
-    //   query: QUERY_GET_USER_BY_ID,
-    //   variables: {'userId': user.id},
-    // );
-
     if (result.data == null || result.data?.getUser == null) {
       return null;
     }

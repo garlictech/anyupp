@@ -1,6 +1,13 @@
-query ListFavoriteProducts($userId: ID!, $unitId: ID!) {
-  listFavoriteProducts(
+query ListFavoriteProducts(
+  $userId: ID!
+  $unitId: ID!
+  $nextToken: String
+  $limit: Int
+) {
+  searchFavoriteProducts(
     filter: { userId: { eq: $userId }, unitId: { eq: $unitId } }
+    nextToken: $nextToken
+    limit: $limit
   ) {
     items {
       id
@@ -63,5 +70,7 @@ query ListFavoriteProducts($userId: ID!, $unitId: ID!) {
         }
       }
     }
+    nextToken
+    total
   }
 }

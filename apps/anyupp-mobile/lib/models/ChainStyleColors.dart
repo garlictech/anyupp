@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class ChainStyleColors {
   final String? id;
   final String backgroundLight;

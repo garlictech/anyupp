@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class LocalizedItem {
   final String? id;
   final String? en;

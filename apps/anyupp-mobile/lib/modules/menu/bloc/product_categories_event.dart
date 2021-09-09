@@ -6,11 +6,10 @@ abstract class ProductCategoriesEvent {
 
 class LoadProductCategories extends ProductCategoriesEvent {
   final String unitId;
-  final String chainId;
-  const LoadProductCategories(this.chainId, this.unitId);
+  const LoadProductCategories(this.unitId);
 }
 
 class ProductCategoriesUpdated extends ProductCategoriesEvent {
-  final List<ProductCategory>? productCategories;
+  final PageResponse<ProductCategory>? productCategories;
   const ProductCategoriesUpdated(this.productCategories);
 }

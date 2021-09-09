@@ -132,11 +132,6 @@ class AwsOrderHistorySubscription {
         limit: getIt<AppConstants>().paginationSize,
         nextToken: _nextToken,
       )));
-      // QueryResult result = await GQL.amplify.executeQuery(arguments
-      //   query: listQuery,
-      //   variables: variables,
-      //   fetchPolicy: FetchPolicy.networkOnly,
-      // );
 
       // print('_getOrderList().result.data=${result.data}');
       // print('_getOrderList().result.exception=${result.exception}');
@@ -157,7 +152,7 @@ class AwsOrderHistorySubscription {
       _totalCount = result.data?.searchOrders?.total ?? 0;
       _nextToken = result.data?.searchOrders?.nextToken;
 
-      print('_getOrderList.nextToken=$_nextToken, total=$_totalCount');
+      // print('_getOrderList.nextToken=$_nextToken, total=$_totalCount');
 
       List<Order> results = [];
       for (int i = 0; i < items.length; i++) {
@@ -172,7 +167,7 @@ class AwsOrderHistorySubscription {
     }
   }
 
-  bool get hasMoreItems => _nextToken != null;
+  bool get hasMoreItems => _nextToken != null && _totalCount >= getIt<AppConstants>().paginationSize;
 
   int get itemCount => _totalCount;
 

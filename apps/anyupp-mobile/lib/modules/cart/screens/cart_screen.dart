@@ -142,7 +142,7 @@ class CartScreen extends StatelessWidget {
       }
       if (item.selectedConfigMap != null) {
         item.selectedConfigMap!.forEach((key, value) {
-          for (OrderItemConfigComponent component in value) {
+          for (GeneratedProductConfigComponent component in value) {
             if (component.allergens != null) {
               for (Allergen allergen in component.allergens!) {
                 String temp = allergen.toString().split(".").last;
@@ -290,42 +290,46 @@ class CartScreen extends StatelessWidget {
 
 // In case of empty cart
   Widget _emptyCart(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              'assets/images/no-items-in-cart-icon.png',
-              width: 128.0,
-              fit: BoxFit.fitWidth,
-            ),
-            SizedBox(
-              height: 60.0,
-            ),
-            Text(
-              trans(context, 'cart.emptyCartLine1'),
-              style: GoogleFonts.poppins(
-                color: theme.text,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(
-              height: 6.0,
-            ),
-            Text(
-              trans(context, 'cart.emptyCartLine2'),
-              style: GoogleFonts.poppins(
-                color: theme.text,
-                fontSize: 14.0,
-                fontWeight: FontWeight.normal,
-              ),
-            )
-          ],
-        ),
-      ),
+    return EmptyWidget(
+      messageKey: 'cart.emptyCartLine1',
+      descriptionKey: 'cart.emptyCartLine2',
     );
+    // return Container(
+    //   child: Center(
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       crossAxisAlignment: CrossAxisAlignment.center,
+    //       children: <Widget>[
+    //         Image.asset(
+    //           'assets/images/no-items-in-cart-icon.png',
+    //           width: 128.0,
+    //           fit: BoxFit.fitWidth,
+    //         ),
+    //         SizedBox(
+    //           height: 60.0,
+    //         ),
+    //         Text(
+    //           trans(context, 'cart.emptyCartLine1'),
+    //           style: GoogleFonts.poppins(
+    //             color: theme.text,
+    //             fontSize: 18.0,
+    //             fontWeight: FontWeight.bold,
+    //           ),
+    //         ),
+    //         SizedBox(
+    //           height: 6.0,
+    //         ),
+    //         Text(
+    //           trans(context, 'cart.emptyCartLine2'),
+    //           style: GoogleFonts.poppins(
+    //             color: theme.text,
+    //             fontSize: 14.0,
+    //             fontWeight: FontWeight.normal,
+    //           ),
+    //         )
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }

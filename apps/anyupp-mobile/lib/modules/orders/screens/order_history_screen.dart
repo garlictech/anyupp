@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -123,8 +124,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               trans('orders.loadMore'),
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(
-                color: theme.text.withOpacity(0.6),
-                fontSize: 26,
+                color: theme.text.withOpacity(0.3),
+                fontSize: 20,
               ),
             ),
           ),
@@ -134,30 +135,40 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   }
 
   Widget _noOrderHistory() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        // Display cart icon
-        Image.asset(
-          'assets/images/no-items-in-cart-icon.png',
-          width: 128.0,
-          fit: BoxFit.fitWidth,
+    return EmptyWidget(
+      messageKey: 'orders.noOrderHistory',
+      descriptionKey: 'orders.noActiveOrderDesc',
+      buttonTextKey: 'orders.noActiveOrderButton',
+      onTap: () => getIt<MainNavigationBloc>().add(
+        DoMainNavigation(
+          pageIndex: 0,
         ),
-        SizedBox(
-          height: 60.0,
-        ),
-        Center(
-
-            // Display message to the user
-            child: Text(
-          trans('orders.noOrderHistory'),
-          style: TextStyle(
-            fontSize: 15.0,
-            color: theme.text,
-          ),
-        ))
-      ],
+      ),
     );
+    // return Column(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   crossAxisAlignment: CrossAxisAlignment.center,
+    //   children: <Widget>[
+    //     // Display cart icon
+    //     Image.asset(
+    //       'assets/images/no-items-in-cart-icon.png',
+    //       width: 128.0,
+    //       fit: BoxFit.fitWidth,
+    //     ),
+    //     SizedBox(
+    //       height: 60.0,
+    //     ),
+    //     Center(
+
+    //         // Display message to the user
+    //         child: Text(
+    //       trans('orders.noOrderHistory'),
+    //       style: TextStyle(
+    //         fontSize: 15.0,
+    //         color: theme.text,
+    //       ),
+    //     ))
+    //   ],
+    // );
   }
 }

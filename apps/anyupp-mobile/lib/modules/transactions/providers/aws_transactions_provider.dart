@@ -5,13 +5,14 @@ import 'package:fa_prev/models/User.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/transactions/transactions.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
+import 'package:fa_prev/shared/pagination/pagination.dart';
 
 class AwsTransactionsProvider implements ITransactionProvider {
   final IAuthProvider _authProvider;
 
   AwsTransactionsProvider(this._authProvider);
 
-  Future<List<Transaction>?> getTransactions() async {
+  Future<PageResponse<Transaction>?> getTransactions({String? nextToken}) async {
     try {
       User? user = await _authProvider.getAuthenticatedUserProfile();
       if (user == null) {
@@ -24,19 +25,27 @@ class AwsTransactionsProvider implements ITransactionProvider {
       var result = await GQL.amplify.execute(ListTransactionsQuery(
           variables: ListTransactionsArguments(
         userId: user.id,
+        nextToken: nextToken,
       )));
 
-      if (result.data == null || result.data?.listTransactions == null) {
+      if (result.data == null || result.data?.searchTransactions == null) {
         return null;
       }
 
-      var items = result.data?.listTransactions?.items ?? [];
+      int count = result.data?.searchTransactions?.total ?? 0;
+      String? token = result.data?.searchTransactions?.nextToken;
+
+      var items = result.data?.searchTransactions?.items ?? [];
       List<Transaction> transactions = [];
       for (int i = 0; i < items.length; i++) {
         transactions.add(Transaction.fromJson(items[i]!.toJson()));
       }
 
-      return transactions;
+      return PageResponse(
+        data: transactions,
+        totalCount: count,
+        nextToken: token,
+      );
     } on Exception catch (e) {
       print('AwsTransactionsProvider.listTransactions.Exception: $e');
       rethrow;

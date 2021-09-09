@@ -1,5 +1,8 @@
 import 'package:fa_prev/models.dart';
 
+import 'package:flutter/foundation.dart';
+
+@immutable
 class ChainStyle {
   final String? id;
   final ChainStyleColors colors;

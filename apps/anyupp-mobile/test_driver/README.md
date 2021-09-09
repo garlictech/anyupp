@@ -37,5 +37,5 @@ flutter test test/widget/error_widget_test.dart
 #### Integration
 
 ```
-flutter drive --driver=test_driver/integration_test.dart --target=test/integration/start_app_test.dart -d <DEVICE_ID>
+flutter drive --driver=test_driver/integration_test.dart --target=integration_test/start_app_test.dart -d <DEVICE_ID>
 ```

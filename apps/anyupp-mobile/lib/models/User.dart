@@ -1,5 +1,7 @@
 import 'package:fa_prev/graphql/generated/anyupp-api.dart';
+import 'package:flutter/foundation.dart';
 
+@immutable
 class User {
   final String id;
   final String? name;

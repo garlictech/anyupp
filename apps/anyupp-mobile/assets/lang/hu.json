@@ -144,12 +144,16 @@
     "disclaimer": "Ételeink leírása nem minden esetben teljeskörű, ételérzékenység esetén kérdezze a Kajahu Csapatát vagy kérje allergén 1 összetevőket bemutató táblázatunkat. Teljesen allergén mentes környezetet vagy termékeket nem tudunk biztosítani."
   },
   "favorites": {
-    "noFavorites": "Még nincsenek kedvenceid"
+    "noFavorites": "Még nem adtál hozzá kedvenc tételt.",
+    "noFavoritesDesc": "Találj kedvedre való ételeket, italokat az Étlap fül alatt.",
+    "noFavoritesButton": "ÉTLAP FELFEDEZÉSE"
   },
   "orders": {
     "tabCurrentOrder": "Rendelések",
     "tabOrderHistory": "Történet",
     "noActiveOrder": "Nincs teljesítésre váró rendelésed.",
+    "noActiveOrderDesc": "Találj kedvedre való ételeket, italokat az Étlap fül alatt.",
+    "noActiveOrderButton": "ÉTLAP FELFEDEZÉSE",
     "totalCost": "ÖSSZESEN",
     "noOrderHistory": "Még nincs rendeléstörténeted",
     "status": {

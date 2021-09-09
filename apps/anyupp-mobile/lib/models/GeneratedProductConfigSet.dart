@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:fa_prev/models.dart';
 
+@immutable
 class GeneratedProductConfigSet {
   final String productSetId;
   final LocalizedItem name;

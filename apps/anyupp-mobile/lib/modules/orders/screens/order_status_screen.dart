@@ -1,6 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,29 +84,39 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
   }
 
   Widget _noOrder() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        // Display cart icon
-        Image.asset(
-          'assets/images/no-items-in-cart-icon.png',
-          width: 128.0,
-          fit: BoxFit.fitWidth,
+    return EmptyWidget(
+      messageKey: 'orders.noActiveOrder',
+      descriptionKey: 'orders.noActiveOrderDesc',
+      buttonTextKey: 'orders.noActiveOrderButton',
+      onTap: () => getIt<MainNavigationBloc>().add(
+        DoMainNavigation(
+          pageIndex: 0,
         ),
-        SizedBox(
-          height: 60.0,
-        ),
-        Center(
-
-            // Display message to the user
-            child: Text(
-          trans('orders.noActiveOrder'),
-          style: TextStyle(
-            fontSize: 15.0,
-          ),
-        ))
-      ],
+      ),
     );
+    // return Column(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   crossAxisAlignment: CrossAxisAlignment.center,
+    //   children: <Widget>[
+    //     // Display cart icon
+    //     Image.asset(
+    //       'assets/images/no-items-in-cart-icon.png',
+    //       width: 128.0,
+    //       fit: BoxFit.fitWidth,
+    //     ),
+    //     SizedBox(
+    //       height: 60.0,
+    //     ),
+    //     Center(
+
+    //         // Display message to the user
+    //         child: Text(
+    //       trans('orders.noActiveOrder'),
+    //       style: TextStyle(
+    //         fontSize: 15.0,
+    //       ),
+    //     ))
+    //   ],
+    // );
   }
 }

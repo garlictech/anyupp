@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:fa_prev/models.dart';
+import 'package:collection/collection.dart';
 
+@immutable
 class OrderItem {
   final String? id;
   final String productId;
@@ -14,7 +16,7 @@ class OrderItem {
   final String? image;
   final List<String>? allergens;
   final List<OrderItemConfigSet>? configSets;
-  Map<OrderItemConfigSet, List<OrderItemConfigComponent>>? selectedConfigMap;
+  final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>? selectedConfigMap;
 
   OrderItem({
     this.id,
@@ -29,6 +31,7 @@ class OrderItem {
     this.image,
     this.allergens,
     this.configSets,
+    this.selectedConfigMap,
   });
 
   OrderItem copyWith({
@@ -44,6 +47,7 @@ class OrderItem {
     String? image,
     List<String>? allergens,
     List<OrderItemConfigSet>? configSets,
+    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>? selectedConfigMap,
   }) {
     return OrderItem(
       id: id ?? this.id,
@@ -58,6 +62,7 @@ class OrderItem {
       image: image ?? this.image,
       allergens: allergens ?? this.allergens,
       configSets: configSets ?? this.configSets,
+      selectedConfigMap: selectedConfigMap ?? this.selectedConfigMap,
     );
   }
 
@@ -94,6 +99,10 @@ class OrderItem {
       configSets: map['configSets'] != null
           ? List<OrderItemConfigSet>.from(map['configSets']?.map((x) => OrderItemConfigSet.fromJson(x)))
           : null,
+      selectedConfigMap: map['configSets'] != null
+          ? getSelectdConfigMap(List<GeneratedProductConfigSet>.from(
+              map['configSets']?.map((x) => GeneratedProductConfigSet.fromJson(x))))
+          : null,
     );
   }
 
@@ -118,7 +127,8 @@ class OrderItem {
         other.variantName == variantName &&
         other.image == image &&
         listEquals(other.allergens, allergens) &&
-        listEquals(other.configSets, configSets);
+        listEquals(other.configSets, configSets) &&
+        DeepCollectionEquality().equals(selectedConfigMap, other.selectedConfigMap);
   }
 
   @override
@@ -135,5 +145,14 @@ class OrderItem {
         image.hashCode ^
         allergens.hashCode ^
         configSets.hashCode;
+  }
+
+  static Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> getSelectdConfigMap(
+      List<GeneratedProductConfigSet> mapList) {
+    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> selectedConfigMap = {};
+    for (GeneratedProductConfigSet temp in mapList) {
+      selectedConfigMap[temp] = temp.items;
+    }
+    return selectedConfigMap;
   }
 }

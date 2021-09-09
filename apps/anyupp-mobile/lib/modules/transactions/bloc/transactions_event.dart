@@ -8,7 +8,10 @@ abstract class TransactionsEvent extends Equatable {
 }
 
 class LoadTransactions extends TransactionsEvent {
-  const LoadTransactions();
+  final String? nextToken;
+  const LoadTransactions({this.nextToken});
+  @override
+  List<Object?> get props => [nextToken];
 }
 
 class Loading extends TransactionsEvent {

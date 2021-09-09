@@ -4,60 +4,85 @@ import 'package:fa_prev/models/GeneratedProductCategory.dart';
 import 'package:fa_prev/models/ProductCategory.dart';
 
 import 'package:fa_prev/models/GeneratedProduct.dart';
+import 'package:fa_prev/shared/pagination/pagination.dart';
 
 import 'product_provider_interface.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 
 class AwsProductProvider implements IProductProvider {
   @override
-  Stream<List<ProductCategory>?> getProductCategoryList(String chainId, String unitId) async* {
-    print('***** getProductCategoryList().start().chainId=$chainId, unitId=$unitId');
+  Future<PageResponse<ProductCategory>> getProductCategoryList(String unitId, [String? nextToken]) async {
+    print('***** getProductCategoryList().start().unitId=$unitId');
 
     try {
       var result = await GQL.amplify.execute(ListGeneratedProductCategoriesQuery(
         variables: ListGeneratedProductCategoriesArguments(
           unitId: unitId,
+          nextToken: nextToken,
         ),
       ));
 
-      if (result.data == null || result.data?.listGeneratedProductCategorys == null) {
-        yield null;
-        return;
+      if (result.hasErrors) {
+        print('***** getProductCategoryList().error=${result.errors}');
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
 
-      var items = result.data?.listGeneratedProductCategorys?.items;
+      if (result.data == null || result.data?.searchGeneratedProductCategorys == null) {
+        return PageResponse(data: null);
+      }
+
+      int count = result.data?.searchGeneratedProductCategorys?.total ?? 0;
+      String? token = result.data?.searchGeneratedProductCategorys?.nextToken;
+      print('***** getProductCategoryList().totalCount=$count, nextToken=$token');
+
+      var items = result.data?.searchGeneratedProductCategorys?.items;
+
       List<ProductCategory> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
           results.add(GeneratedProductCategory.fromJson(items[i]!.toJson()).productCategory);
         }
       }
+      print('***** getProductCategoryList().results=${results.length}');
       results.sort((a, b) => a.position.compareTo(b.position));
-      yield results;
+      return PageResponse(
+        data: results,
+        totalCount: count,
+        nextToken: token,
+      );
     } on Exception catch (e) {
       print('***** getProductCategoryList().error=$e');
-      yield null;
+      rethrow;
+      // return PageResponse(data: null);
     }
   }
 
   @override
-  Stream<List<GeneratedProduct>?> getProductList(String unitId, String categoryId) async* {
+  Future<PageResponse<GeneratedProduct>> getProductList(String unitId, String categoryId, [String? nextToken]) async {
     print('***** getProductList().start().unitId=$unitId, categoryId=$categoryId');
-
     try {
       var result = await GQL.amplify.execute(ListProductsQuery(
         variables: ListProductsArguments(
           unitId: unitId,
           categoryId: categoryId,
+          nextToken: nextToken,
         ),
       ));
 
-      if (result.data == null || result.data?.listGeneratedProducts == null) {
-        yield null;
-        return;
+      if (result.hasErrors) {
+        print('***** getProductList().error=${result.errors}');
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
 
-      var items = result.data?.listGeneratedProducts?.items;
+      if (result.data == null || result.data?.searchGeneratedProducts == null) {
+        print('***** getProductList().empty results');
+        return PageResponse(data: null);
+      }
+
+      int count = result.data?.searchGeneratedProducts?.total ?? 0;
+      String? token = result.data?.searchGeneratedProducts?.nextToken;
+      print('***** getProductList().totalCount=$count, nextToken=$token');
+      var items = result.data?.searchGeneratedProducts?.items;
       List<GeneratedProduct> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
@@ -66,10 +91,17 @@ class AwsProductProvider implements IProductProvider {
         }
       }
       results.sort((a, b) => a.position.compareTo(b.position));
-      yield results;
+      print('***** getProductList().items.length=${results.length}');
+
+      return PageResponse(
+        data: results,
+        totalCount: count,
+        nextToken: token,
+      );
     } on Exception catch (e) {
       print('***** getProductList().error=$e');
-      yield null;
+      // return PageResponse(data: null);
+      rethrow;
     }
   }
 }

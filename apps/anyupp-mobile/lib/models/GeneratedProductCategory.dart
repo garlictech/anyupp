@@ -1,5 +1,8 @@
 import 'package:fa_prev/models.dart';
 
+import 'package:flutter/foundation.dart';
+
+@immutable
 class GeneratedProductCategory {
   final String id;
   final String productCategoryId;

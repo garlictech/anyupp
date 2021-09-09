@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class ChainStyleImages {
   final String? id;
   final String? header;
