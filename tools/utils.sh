@@ -4,11 +4,11 @@ IFS='|'
 export AWS_PAGER=""
 
 function deleteParam() {
-  aws ssm delete-parameter --name "/${STAGE}-${APPNAME}/$1"
+  aws ssm delete-parameter --name "/${APPNAME}/$1"
 }
 
 function deleteGeneratedParam() {
-  aws ssm delete-parameter --name "/${STAGE}-${APPNAME}/generated/$1"
+  aws ssm delete-parameter --name "/${APPNAME}/generated/$1"
 }
 
 BASE_PARAMS="

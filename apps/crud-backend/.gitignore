@@ -20,3 +20,6 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 #amplify-do-not-edit-end
+
+# We store the schema elsewhere, because we preprocess it
+amplify/backend/api/anyuppbackend/schema.graphql

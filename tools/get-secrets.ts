@@ -4,12 +4,12 @@ import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import * as fs from 'fs';
 
-// Project is unised now, it's anyupp always. Might be changed in the future!
-//const project = process.argv[2];
 const project = 'anyupp';
-const stage = process.argv[3];
+const environment = process.argv[2];
+const secretEnvironment =
+  environment in ['dev', 'qa', 'staging', 'prod'] ? environment : 'dev';
 
-const secretName = `${project}-${stage}-secrets`;
+const secretName = `${project}-${secretEnvironment}-secrets`;
 const targetDir = `${__dirname}/../libs/shared/config/src/lib/generated`;
 const androidKeyStoreTargetFile = `${__dirname}/../apps/anyupp-mobile/android/anyupp-keystore.jks`;
 const androidKeyPropertiesTargetFile = `${__dirname}/../apps/anyupp-mobile/android/key.properties`;

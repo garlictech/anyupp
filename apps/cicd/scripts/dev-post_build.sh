@@ -1,13 +1,13 @@
 #!/bin/bash
 set -e
 
-STAGE=$1
+ENVNAME=$1
 BUCKET_NAME=$2
 ADMIN_SITE_URL=$3
 
-./apps/cicd/scripts/common-post_build.sh $STAGE $BUCKET_NAME
+./apps/cicd/scripts/common-post_build.sh $ENVNAME $BUCKET_NAME
 
-npx cowsay "TESTING $STAGE..."
+npx cowsay "TESTING $ENVNAME..."
 
 yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover
 yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover
@@ -20,4 +20,4 @@ yarn seed
 yarn cucumber:report
 yarn cypress:generate:html:report
 
-npx cowsay "$STAGE TESTING OK!!!"
+npx cowsay "$ENVNAME TESTING OK!!!"

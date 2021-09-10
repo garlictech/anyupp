@@ -2,14 +2,11 @@
 set -e
 IFS='|'
 
-STAGE=$1
+ENVNAME=$1
+APPNAME=anyuppbackend
 
-APPID=$(amplify env get --name ${STAGE} --json | \
-  jq -r '.awscloudformation.AmplifyAppId')
+cp ../../libs/crud-gql/backend/src/graphql/schema/crud-api.graphql amplify/backend/api/$APPNAME/schema.graphql
 
-APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
-
-cp ../../libs/crud-gql/backend/src/graphql/schema/crud-api.graphql amplify/backend/api/$APINAME/schema.graphql
 amplify api gql-compile
 amplify codegen
 yarn graphql-codegen --config tools/graphql-codegen-crud.yml

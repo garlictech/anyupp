@@ -9,9 +9,8 @@ import { bindNodeCallback, Observable, combineLatest } from 'rxjs';
 
 const client = new AWS.SSM({ region });
 
-const project = process.argv[2];
-const stage = process.argv[3];
-const prefix = `${stage}-${project}`;
+const environment = process.argv[2];
+const prefix = `${environment}-anyupp-backend`;
 
 const targetDir = `${__dirname}/../libs/shared/config/src/lib/generated`;
 const targetFile = `${targetDir}/config.json`;
@@ -79,12 +78,12 @@ pipe(
         const apiKeyName = Object.keys(amplifyConfig['api'])[0];
         if (!amplifyConfig['storage']) {
           throw Error(
-            'No bucket configured for this Amplify project! amplify-meta.json must have a "bucket": section.',
+            'No bucket configured for this Amplify environment! amplify-meta.json must have a "bucket": section.',
           );
         }
         const bucketKeyName = Object.keys(amplifyConfig['storage'])[0];
         config['Region'] = region;
-        config['Stage'] = stage;
+        config['Stage'] = environment;
         config['CrudGraphqlApiUrl'] =
           amplifyConfig['api'][apiKeyName]['output'][
             'GraphQLAPIEndpointOutput'

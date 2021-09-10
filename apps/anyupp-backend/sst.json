@@ -1,8 +1,5 @@
----
-to: apps/anyupp-backend/sst.json 
----
 {
-  "name": "<%= app %>",
+  "name": "anyupp-backend",
   "type": "@serverless-stack/resources",
   "stage": "dev",
   "region": "eu-west-1",

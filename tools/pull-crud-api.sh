@@ -2,32 +2,30 @@
 set -e
 IFS='|'
 
-APPNAME=$1
-STAGE=$2
+ENVNAME=$1
 EDITORNAME=${EDITORNAME:-vim}
 AWS_PROFILE=${AWS_PROFILE:-default}
-echo "APPNAME=$APPNAME"
-echo "STAGE=$STAGE"
+echo "ENVNAME=$ENVNAME"
 echo "EDITORNAME=$EDITORNAME"
 echo "AWS_PROFILE=$AWS_PROFILE"
 
-APPID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/CrudApiAppId" | \
+APPID=$(aws ssm get-parameter --name "/${ENVNAME}-anyupp-backend/generated/CrudApiAppId" | \
   jq -r '.Parameter.Value')
 echo "APPID=$APPID"
 
-USERPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminUserPoolId" | \
+USERPOOLID=$(aws ssm get-parameter --name "/${ENVNAME}-anyupp-backend/generated/AdminUserPoolId" | \
   jq -r '.Parameter.Value')
 echo "USERPOOLID=$USERPOOLID"
 
-IDENTITYPOOLID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/IdentityPoolId" | \
+IDENTITYPOOLID=$(aws ssm get-parameter --name "/${ENVNAME}-anyupp-backend/generated/IdentityPoolId" | \
   jq -r '.Parameter.Value')
 echo "IDENTITYPOOLID=$IDENTITYPOOLID"
 
-WEBCLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminWebUserPoolClientId" | \
+WEBCLIENTID=$(aws ssm get-parameter --name "/${ENVNAME}-anyupp-backend/generated/AdminWebUserPoolClientId" | \
   jq -r '.Parameter.Value')
 echo "WEBCLIENTID=$WEBCLIENTID"
 
-NATIVECLIENTID=$(aws ssm get-parameter --name "/${STAGE}-${APPNAME}/generated/AdminNativeUserPoolClientId" | \
+NATIVECLIENTID=$(aws ssm get-parameter --name "/${ENVNAME}-anyupp-backend/generated/AdminNativeUserPoolClientId" | \
   jq -r '.Parameter.Value')
 echo "NATIVECLIENTID=$NATIVECLIENTID"
 
@@ -54,7 +52,7 @@ AWSCLOUDFORMATIONCONFIG="{\
 AMPLIFY="{\
 \"projectName\":\"amplifyadmin\",\
 \"appId\":\"$APPID\",\
-\"envName\":\"${STAGE}\",\
+\"envName\":\"${ENVNAME}\",\
 \"defaultEditor\":\"${EDITORNAME}\"\
 }"
 
@@ -72,15 +70,14 @@ CATEGORIES="{\
 \"auth\":$AUTHCONFIG\
 }"
 
-rm -rf amplify
-echo "Existing Amplify app folder deleted."
-
 amplify pull \
 --amplify $AMPLIFY \
 --frontend $FRONTEND \
 --providers $PROVIDERS \
 --categories $CATEGORIES \
 --yes
+
+amplify env checkout $ENVNAME
 
 # ----------------------------------------------------------
 # Get the CRUD table config and write it to a generated file
@@ -110,10 +107,6 @@ for name in $TABLE_NAMES; do
   TABLE_INFO=$(aws dynamodb describe-table --table-name $name --output json | jq "{TableArn: .Table.TableArn, TableName: .Table.TableName, LatestStreamArn: .Table.LatestStreamArn}")
   RESULT+="  $TABLE_INFO,"
 done
-
-# RESULT+="}"
-# Remove the last , from the JSON because it won't be valid
-# echo $RESULT | sed 'x;${s/,$//;p;x;};1d' > ${TABLE_CONFIG_NAME}
 
 # On the CI the SED is not working so this CLOSING TAG is a workaround
 RESULT+="\"_closing_tag\": \"dont use me\"}"

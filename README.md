@@ -11,29 +11,7 @@ See the official nx docs below, let's start with the Anyupp-specific stuff.
 
 ## General knowledge
 
-The system supports building and deploying separate stacks for development and
-testing purposes. You have to configure and build these stacks, according to the
-sections below. The configuration and build commands generally support `app` and
-`stage` flags. The `app` is an unique identification of your stack. The stage is
-important as the app uses some stage-dependent externally configured resources
-(like secrets). The stage specifies which resource set is used.
-There are four stages: `dev`, `qa`, `staging`, `producton`.
-
-You should almost always use the `dev` stage.
-
-The app name for production is currently `anyupp-backend`. Don't overwrite it
-please :)
-
-## Pre-requisites
-
-Install the following tools:
-
-- You will need `node`, `npm` and `yarn`
-- Git CLI or a client
-- AWS CLI installed and configured - [install](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) [configure](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) You will need an `AWS Access Key ID`, `AWS Secret Access Key` and set `eu-west-1` as the region and `json` as the output format.
-
-- Amplify CLI - `npm i -g @aws-amplify/cli`
-- The following command line tools: `jq` - [install](https://stedolan.github.io/jq/)
+See the [wiki](https://github.com/bgap/anyupp/wiki).
 
 ## Configuring/building the project
 
@@ -42,30 +20,8 @@ Use the `build` build targets for projects requiring build/code generation.
 
 **the whole project**
 
-At this point we use [hygen](https://www.hygen.io/) to generate those project files
-that contains app names or stage names in theit content and cannot be parametrized
-by any other ways.
-
-```
- yarn hygen project configure --app=my-app-name
-```
-
-Mind, that the app names must be concsistent througout the project, for example:
-
-```
- yarn hygen project configure --app=anyupp-backend
-```
-
-Here, `anyupp-backend` is the name of both the crud and anyupp apis, etc.
-
 The `tools/build-workspace.sh` script supports this part, so it generates the project
 for you
-
-TRICK: to force overwrite files:
-
-```
-HYGEN_OVERWRITE=1 yarn hygen project configure --app anyupp-zsolt
-```
 
 **the graphql schemas**
 
@@ -74,14 +30,14 @@ HYGEN_OVERWRITE=1 yarn hygen project configure --app anyupp-zsolt
 Whenever the anyupp-gql schema changes, you must execute the code generation phase for the
 clients.
 
-`nx build-schema crud-backend --app=anyupp-backend --stage=dev`
+`nx build-schema crud-backend --env=dev`
 
 The command copies the crud-api schema from github to the configured crud-api project (managed by Amplify)
 and generates client-side code to the `crud-gql/api` project. It does not deploy the backend!
 
 **the configs (and secrets)**
 
-`nx config shared-config --app=APPNAME --stage=dev` :exclamation: use your own app name
+`nx config shared-config --env=ENVNAME` :exclamation: use your own app name
 
 Always add the parameters, there are no defaults supported!
 
@@ -94,12 +50,6 @@ Execute this command when:
 The command fetches the config parameters and writes them into files in
 `libs/shared/config`. You need AWS credentials set in your environment with the
 appropriate access!
-
-You also need to add the AWS account number to the `AWS_ACCOUNT` environment variable,
-in order to run the docker (CI) based commands locally. You can obtain your account number
-like this:
-
-`export AWS_ACCOUNT=$(aws sts get-caller-identity --query Account --output text)`
 
 **IMPORTANT**
 
@@ -125,38 +75,38 @@ some samples, see the build targets belonging to the examples in the
 
 ### Build the crud (amplify) app
 
-`nx build-schema crud-backend --app=APPNAME --stage=dev`
+`nx build-schema crud-backend --env=ENVNAME`
 
-The command builds the _current_ configured app / stage.
+The command builds the _current_ configured app / stage environment.
 
 **IMPORTANT**: the build overwrites the schema with the current github schema!
 
 Deploy the current app/stage:
 
-`nx deploy crud-backend --app=APPNAME --stage=dev`
+`nx deploy crud-backend --env=ENVNAME`
 
 To build the admin site for a given configuration:
 
 Building the stack:
 
-`nx build anyupp-backend --app=APPNAME --stage=dev` :exclamation: use your own app name
+`nx build anyupp-backend --env=ENVNAME` :exclamation: use your own app name
 
 Deploying the stack:
 
-`nx deploy anyupp-backend --app=APPNAME --stage=dev` :exclamation: use your own app name
+`nx deploy anyupp-backend --env=ENVNAME` :exclamation: use your own app name
 
 ## Deleting the stack
 
-Destroy the admin amplify app:
+Destroy the admin amplify app environment:
 
-`nx remove crud-backend --app=APPNAME --stage=dev`
+`nx remove crud-backend --env=ENVNAME`
 
 **WARNING**: the command destroys the amplify app that is currently pulled! Both the local
 and the backend resources so be careful.
 
 Then, remove the CDK stack:
 
-`nx remove anyupp-backend --stage=dev`
+`nx remove anyupp-backend`
 
 **WARNING** it removes the given stage of the app currently set in `sst.json`.
 
@@ -199,7 +149,7 @@ https://temp-mail.org/hu/
 
 ### Create a new admin user
 
-`sh ./tools/create-admin-user.sh CDK-BACKEND-APPNAME STAGE USERNAME PASSWORD`
+`sh ./tools/create-admin-user.sh CDK-BACKEND-ENVNAME STAGE USERNAME PASSWORD`
 
 Example:
 
@@ -397,8 +347,8 @@ The generator will collect the new resolver's name
    `yarn ts-node ./tools/fetch-configuration.ts anyupp-backend dev-petrot`
 
 3. Build & deploy
-   nx build anyupp-backend --app=APPNAME --stage=dev
-   nx deploy anyupp-backend --app=APPNAME --stage=dev
+   nx build anyupp-backend --env=ENVNAME
+   nx deploy anyupp-backend --env=ENVNAME
 
 ### Amplify - Admin
 
@@ -413,18 +363,18 @@ You need to upload some keys to the secretmanager and some paramaters to the par
 ### Mobile app parameters
 
 Parameters that are required in the parameter store for the mobile app are the followings:
-`'{STAGE}-{APPNAME}-Region',` - Server region, eg eu-west-1
-`'{STAGE}-{APPNAME}-IdentityPoolId',` - Federated identity pool ID connected with the userpool
-`'{STAGE}-{APPNAME}-consumerUserPoolId',` - User pool ID for the mobile app
-`'{STAGE}-{APPNAME}-ConsumerUserPoolDomain',` - The domain of the User pool of the mobile app
-`'{STAGE}-{APPNAME}-ConsumerNativeUserPoolClientId',` - The client id of the userpool used for the mobile app
-`'{STAGE}-{APPNAME}-AnyuppGraphqlApiUrl',` - Amplify GraphQL API http endpoint (start with https://)
-`'{STAGE}-{APPNAME}-AnyuppGraphqlApiKey',` - Amplify GraphQL API key
-`'{STAGE}-{APPNAME}-GraphqlAdminApiUrl',` - Admin GraphQL API http endpoint (start with https://)
-`'{STAGE}-{APPNAME}-GraphqlAdminApiKey',` - Admin GraphQL API key
-`'{STAGE}-{APPNAME}-StripePublishableKey',` - The publishable key for the Stripe API
-`'{STAGE}-{APPNAME}-SlackErrorWebhookUrl',` - Catcher Slack error reporter web hook url
-`'{STAGE}-{APPNAME}-SlackErrorChannel',` - Catcher Slack error reporter channel name
+`'{STAGE}-{ENVNAME}-Region',` - Server region, eg eu-west-1
+`'{STAGE}-{ENVNAME}-IdentityPoolId',` - Federated identity pool ID connected with the userpool
+`'{STAGE}-{ENVNAME}-consumerUserPoolId',` - User pool ID for the mobile app
+`'{STAGE}-{ENVNAME}-ConsumerUserPoolDomain',` - The domain of the User pool of the mobile app
+`'{STAGE}-{ENVNAME}-ConsumerNativeUserPoolClientId',` - The client id of the userpool used for the mobile app
+`'{STAGE}-{ENVNAME}-AnyuppGraphqlApiUrl',` - Amplify GraphQL API http endpoint (start with https://)
+`'{STAGE}-{ENVNAME}-AnyuppGraphqlApiKey',` - Amplify GraphQL API key
+`'{STAGE}-{ENVNAME}-GraphqlAdminApiUrl',` - Admin GraphQL API http endpoint (start with https://)
+`'{STAGE}-{ENVNAME}-GraphqlAdminApiKey',` - Admin GraphQL API key
+`'{STAGE}-{ENVNAME}-StripePublishableKey',` - The publishable key for the Stripe API
+`'{STAGE}-{ENVNAME}-SlackErrorWebhookUrl',` - Catcher Slack error reporter web hook url
+`'{STAGE}-{ENVNAME}-SlackErrorChannel',` - Catcher Slack error reporter channel name
 
 ### Mobile app secrets
 
@@ -455,7 +405,7 @@ You must convert it to base64 format and paste it to the secretmanager `anyupp-d
 
 You must configure the mobile app environment, before you build the app (Android, ios).
 To do this, run the following command:
-`nx config shared-config --app=anyupp-backend --stage=dev`
+`nx config shared-config --env=anyupp-backend `
 
 Build APK for all the the system, splitted APKs by platform: "x86", "armeabi-v7a", "arm64-v8a"
 `nx buildApk anyupp-mobile`
@@ -465,7 +415,7 @@ Build IOS app
 
 **Deploy to App Center**
 
-`nx publish-appcenter anyupp-mobile --stage=dev --platform=android`
+`nx publish-appcenter anyupp-mobile --platform=android`
 
 - stage is `dev`, `qa`, `prod`
 - platform is `android`, `ios`
@@ -479,7 +429,7 @@ publish!
 
 ### Reconfig the whole workspace
 
-`./tools/build-workspace.sh APPNAME STAGE`
+`./tools/build-workspace.sh ENVNAME STAGE`
 Example using the dev stack
 `./tools/build-workspace.sh anyupp-backend dev`
 

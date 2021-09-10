@@ -1,9 +1,6 @@
----
-to: apps/crud-backend/.graphqlconfig.yml
----
 projects:
   main:
-    schemaPath: amplify/backend/api/<%= h.changeCase.lower(h.changeCase.camelCase(app)) %>/build/schema.graphql
+    schemaPath: amplify/backend/api/anyuppbackend/build/schema.graphql
     includes:
       - ../../libs/crud-gql/api/src/lib/generated/graphql/**/*.ts
     excludes:
@@ -16,6 +13,18 @@ projects:
         region: eu-west-1
         apiId: null
         maxDepth: 6
+  anyuppbackend:
+    schemaPath: >-
+      home/molnarzs/ActualProjects/bgap/anyupp/libs/crud-gql/api/src/lib/generated/graphql/schema.json
+    includes:
+      - src/graphql/**/*.js
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: javascript
+        generatedFileName: ''
+        docsFilePath: src/graphql
 extensions:
   amplify:
     version: 3

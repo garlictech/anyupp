@@ -39,9 +39,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
               },
             },
             build: {
-              commands: [
-                `apps/cicd/scripts/pr-build.sh ${utils.appConfig.name} ${stage} $CI`,
-              ],
+              commands: [`apps/cicd/scripts/pr-build.sh ${stage} $CI`],
             },
           },
           env: {

@@ -326,9 +326,7 @@ export const createCommonDevPipeline = (
         commands: ['apps/cicd/scripts/stage-install.sh'],
       },
       build: {
-        commands: [
-          `apps/cicd/scripts/dev-build.sh ${utils.appConfig.name} ${stage} $CI`,
-        ],
+        commands: [`apps/cicd/scripts/dev-build.sh ${stage} $CI`],
       },
       post_build: {
         commands: [

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-STAGE=$1
+ENVNAME=$1
 BUCKET_NAME=$2
 
-./apps/cicd/scripts/common-post_build.sh $STAGE $BUCKET_NAME
+./apps/cicd/scripts/common-post_build.sh $ENVNAME $BUCKET_NAME

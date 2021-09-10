@@ -16,9 +16,7 @@ export class ProdBuildPipelineStack extends sst.Stack {
           },
         },
         build: {
-          commands: [
-            `apps/cicd/scripts/prod-build.sh ${utils.appConfig.name} ${stage} $CI`,
-          ],
+          commands: [`apps/cicd/scripts/prod-build.sh ${stage} $CI`],
         },
         post_build: {
           commands: [

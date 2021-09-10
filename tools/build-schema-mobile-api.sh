@@ -2,16 +2,16 @@
 set -e
 IFS='|'
 
-STAGE=$1
+ENVNAME=$1
 MODE=$2
-echo STAGE=$STAGE
+echo ENVNAME=$ENVNAME
 
 if [[ $MODE = 'ci' ]]
 then
   echo RUnning in CI mode
 fi
 
-APPID=$(amplify env get --name ${STAGE} --json | jq -r '.awscloudformation.AmplifyAppId')
+APPID=$(amplify env get --name ${ENVNAME} --json | jq -r '.awscloudformation.AmplifyAppId')
 echo APPID=$APPID
 
 APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
@@ -22,20 +22,11 @@ cd ../..
 echo 'Copy ANYUPP schema...'
 echo '====================='
 cp libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql apps/anyupp-mobile/graphql/anyupp-api-schema.graphql
-# ln -s libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql apps/anyupp-mobile/graphql/anyupp-api-schema.graphql 
 echo 'Done.'
-
-# echo 'Print crud-backend app directory...'
-# echo '==================================='
-# ls -R apps/crud-backend | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-
-# echo 'Print crud-backend app files, searching for schema.graphql...'
-# echo '============================================================='
-# find apps/crud-backend/amplify/backend/api -name *.graphql
 
 echo 'Copy and merge CRUD schema...'
 echo '=============================='
-cat apps/crud-backend/amplify/backend/api/${APINAME}/build/schema.graphql libs/gql-sdk/src/schema/aws.graphql > apps/anyupp-mobile/graphql/crud-api-schema.graphql
+cat apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql libs/gql-sdk/src/schema/aws.graphql > apps/anyupp-mobile/graphql/crud-api-schema.graphql
 echo 'Done.'
 
 echo 'Generating Dart models from schema...'
@@ -53,8 +44,3 @@ fi
 
 echo 'Done.'
 
-#echo 'Removing temporary schema files...'
-#echo '===================================='
-#rm apps/anyupp-mobile/graphql/anyupp-api-schema.graphql
-#rm apps/anyupp-mobile/graphql/crud-api-schema.graphql
-#echo 'Done.'

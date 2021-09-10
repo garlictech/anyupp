@@ -662,7 +662,6 @@ enum PosType {
   rkeeper
 }
 
-# TODO: use to store User META in the near future
 ### User
 type User
   @model

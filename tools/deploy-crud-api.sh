@@ -4,12 +4,12 @@ IFS='|'
 
 export AWS_PAGER=""
 
-APPNAME=$1
-STAGE=$2
+ENVNAME=$1
+APPNAME=${ENVNAME}-anyupp-backend
 
 amplify push --yes
 
-APPID=$(amplify env get --name ${STAGE} --json | \
+APPID=$(amplify env get --name ${ENVNAME} --json | \
   jq -r '.awscloudformation.AmplifyAppId')
 
 APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
@@ -31,7 +31,7 @@ X=$(aws ssm put-parameter \
   --type String \
   --overwrite \
   --value ${APPID} \
-  --name "/${STAGE}-${APPNAME}/generated/CrudApiAppId")
+  --name "/${APPNAME}/generated/CrudApiAppId")
 
 rm -f libs/crud-gql/api/src/lib/generated/api.ts
 yarn graphql-codegen --config tools/graphql-codegen-crud.yml
