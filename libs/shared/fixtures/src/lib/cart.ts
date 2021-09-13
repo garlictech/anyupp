@@ -71,6 +71,7 @@ const cart_01: RequiredId<CrudApi.CreateCartInput> = {
     table: 'TABLE',
   },
   items: [getOrderItem()],
+  servingMode: CrudApi.ServingMode.takeaway,
 };
 export const cartFixture = {
   cartId_NotExisting,

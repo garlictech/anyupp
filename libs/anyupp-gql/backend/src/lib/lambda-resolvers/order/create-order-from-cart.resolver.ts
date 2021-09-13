@@ -96,6 +96,8 @@ export const createOrderFromCart =
           paymentMode: props.cart.paymentMode!, // see missingParametersCheck above
           items: props.items,
           place: props.cart.place,
+          orderMode: props.orderMode,
+          servingMode: props.servingMode,
         }),
       })),
       switchMap(props =>
@@ -119,6 +121,8 @@ const toOrderInputFormat = ({
   paymentMode,
   items,
   place,
+  orderMode,
+  servingMode,
 }: {
   userId: string;
   unitId: string;
@@ -126,6 +130,8 @@ const toOrderInputFormat = ({
   paymentMode: CrudApi.PaymentMode;
   items: CrudApi.OrderItemInput[];
   place: CrudApi.Place | null | undefined;
+  orderMode: CrudApi.OrderMode;
+  servingMode: CrudApi.ServingMode;
 }): CrudApi.CreateOrderInput => {
   return {
     userId,
@@ -143,6 +149,8 @@ const toOrderInputFormat = ({
     transactionStatus: PaymentStatus.waiting_for_payment,
     // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to placed
     // status: CrudApi.OrderStatus.NONE,
+    orderMode,
+    servingMode,
   };
 };
 

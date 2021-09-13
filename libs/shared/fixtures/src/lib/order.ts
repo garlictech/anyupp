@@ -96,6 +96,8 @@ const orderInputBase = {
     table: '01',
     seat: '01',
   },
+  orderMode: CrudApi.OrderMode.instant,
+  servingMode: CrudApi.ServingMode.inplace,
 };
 
 const cardPayment = {

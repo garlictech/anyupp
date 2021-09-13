@@ -528,6 +528,7 @@ export const createTestUnitProduct =
       laneId: 'lane_01',
       isVisible: true,
       takeaway: false,
+      supportedServingModes: [CrudApi.ServingMode.takeaway],
       position: productIdx,
       variants: [
         {
@@ -597,6 +598,8 @@ export const createTestOrder =
         method: CrudApi.PaymentMethod.inapp,
       },
       takeAway: false,
+      orderMode: CrudApi.OrderMode.pickup,
+      servingMode: CrudApi.ServingMode.takeaway,
       archived: false,
       orderNum: '007007',
       statusLog: [

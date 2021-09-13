@@ -58,6 +58,8 @@ const generatedProductBase: CrudApi.CreateGeneratedProductInput = {
     CrudApi.Allergen.soya,
     CrudApi.Allergen.peanut,
   ],
+  supportedServingModes: [CrudApi.ServingMode.inplace],
+  takeawayTax: 2,
 };
 
 const generatedDrinkProduct: CrudApi.GeneratedProduct = {

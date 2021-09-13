@@ -152,6 +152,9 @@ export const toCreateGeneratedProductInputType = ({
       }),
     ),
     variants: product.variants.map(toGeneratedProductVariantInputType),
+    // TODO implement the new properties
+    supportedServingModes: [CrudApi.ServingMode.inplace],
+    takeawayTax: product.tax,
   };
 };
 

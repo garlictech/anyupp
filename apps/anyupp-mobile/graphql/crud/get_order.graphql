@@ -87,5 +87,7 @@ query GetOrder($orderId: ID!) {
     unitId
     updatedAt
     userId
+    orderMode
+    servingMode
   }
 }

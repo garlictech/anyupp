@@ -106,6 +106,7 @@ const unitProductBase: Omit<
   laneId: 'laneId_',
   position: 1,
   variants: [getUnitProductVariant(1), getUnitProductVariant(2)],
+  supportedServingModes: [CrudApi.ServingMode.takeaway],
 };
 
 export const productFixture = {
