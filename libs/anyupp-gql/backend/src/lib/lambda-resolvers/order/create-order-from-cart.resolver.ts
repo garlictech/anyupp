@@ -96,8 +96,9 @@ export const createOrderFromCart =
           paymentMode: props.cart.paymentMode!, // see missingParametersCheck above
           items: props.items,
           place: props.cart.place,
-          orderMode: props.orderMode,
-          servingMode: props.servingMode,
+          // TODO implement the functionality
+          orderMode: CrudApi.OrderMode.pickup,
+          servingMode: CrudApi.ServingMode.inplace,
         }),
       })),
       switchMap(props =>
