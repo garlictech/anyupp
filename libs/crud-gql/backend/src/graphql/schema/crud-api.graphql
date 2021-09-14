@@ -257,6 +257,16 @@ type OrderItem {
   configSets: [OrderItemConfigSet!]
 }
 
+enum ServingMode {
+  inPlace
+  takeAway
+}
+
+enum OrderMode {
+  instant
+  pickup
+}
+
 ### Order
 type Order
   @model
@@ -272,13 +282,15 @@ type Order
   statusLog: [StatusLog!]!
   archived: Boolean!
   sumPriceShown: PriceShown!
-  takeAway: Boolean!
+  takeAway: Boolean! @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
   unpayCategory: UnpayCategory
+  orderMode: OrderMode!
+  servingMode: ServingMode!
 }
 
 enum PaymentStatus {
@@ -445,7 +457,7 @@ type GroupProduct
   groupId: ID!
   isVisible: Boolean!
   tax: Int!
-  # takeawayTax: Int
+  takeawayTax: Int
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
 }
@@ -460,11 +472,12 @@ type UnitProduct
   groupId: ID!
   unitId: ID!
   isVisible: Boolean!
-  takeaway: Boolean!
+  takeaway: Boolean! @deprecated(reason: "Use `supportedServingModes`.")
   laneId: ID
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
+  supportedServingModes: [ServingMode!]!
 }
 
 type ProductVariant {
@@ -521,12 +534,13 @@ type GeneratedProduct
   description: LocalizedItem
   productType: String!
   tax: Int!
-  # takeawayTax: Int!
+  takeawayTax: Int!
   position: Int!
   image: String
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
+  supportedServingModes: [ServingMode!]!
 }
 
 type GeneratedProductVariant {
@@ -572,6 +586,8 @@ type Unit
   merchantId: String
   timeZone: String
   pos: Pos
+  supportedServingModes: [ServingMode!]!
+  supportedOrderModes: [OrderMode!]!
 }
 
 type DateIntervalOpen {
@@ -684,10 +700,11 @@ type Cart
   id: ID!
   userId: ID!
   unitId: ID!
-  takeAway: Boolean!
+  takeAway: Boolean! @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!
+  servingMode: ServingMode!
 }
 
 type Transaction

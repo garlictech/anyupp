@@ -105,10 +105,11 @@ type UnitProduct @aws_cognito_user_pools {
   groupId: ID!
   unitId: ID!
   isVisible: Boolean!
-  takeaway: Boolean!
+  takeaway: Boolean! @deprecated(reason: "Use `supportedServingModes`.")
   laneId: ID
   position: Int!
   variants: [ProductVariant]
+  supportedServingModes: [ServingMode!]!
 }
 
 type ProductVariant @aws_cognito_user_pools {
@@ -146,6 +147,7 @@ input CreateUnitProductInput { # TODO: delete the whole CreateUnitProduct mutati
   laneId: ID
   position: Int!
   variants: [ProductVariantInput]
+  supportedServingModes: [ServingMode!]
 }
 
 input ProductVariantInput {
@@ -295,6 +297,17 @@ type OpeningHoursByDate @aws_cognito_user_pools {
   to: Float
 }
 
+# TODO remove duplication. This enum can also be found in teh CRUD api.
+enum ServingMode {
+  inPlace
+  takeAway
+}
+
+enum OrderMode {
+  instant
+  pickup
+}
+
 type GeoUnit @aws_cognito_user_pools {
   id: ID!
   groupId: ID!
@@ -312,6 +325,8 @@ type GeoUnit @aws_cognito_user_pools {
       reason: "The new and better openingHoursNext7 field should be used instead of this static string"
     )
   openingHoursNext7: [OpeningHoursByDate!]!
+  supportedServingModes: [ServingMode!]!
+  supportedOrderModes: [OrderMode!]!
 }
 type GeoUnitList @aws_cognito_user_pools {
   items: [GeoUnit]

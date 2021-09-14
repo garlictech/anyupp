@@ -174,7 +174,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
         ),
       ));
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(StripeException.CODE, result.errors!);
+        throw GraphQLException.fromGraphQLError(StripeException.CODE, result.errors);
       }
 
       return StripePaymentMethod.fromJson(result.data!.createStripeCard.toJson());
@@ -193,7 +193,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
         ),
       ));
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(StripeException.CODE, result.errors!);
+        throw GraphQLException.fromGraphQLError(StripeException.CODE, result.errors);
       }
 
       return !result.hasErrors;
@@ -213,7 +213,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
         ),
       ));
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(StripeException.CODE, result.errors!);
+        throw GraphQLException.fromGraphQLError(StripeException.CODE, result.errors);
       }
       return StripePaymentMethod.fromJson(result.data!.updateMyStripeCard.toJson());
     } on Exception catch (e) {

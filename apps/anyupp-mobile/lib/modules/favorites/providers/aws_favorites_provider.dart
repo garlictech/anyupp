@@ -166,7 +166,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       )));
 
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors!);
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
 
       if (result.data?.createFavoriteProduct == null) {

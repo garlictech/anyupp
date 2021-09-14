@@ -87,6 +87,8 @@ const toGeoUnit = ({
   isAcceptingOrders: unit.isAcceptingOrders,
   openingHours: '09:00-22:00',
   openingHoursNext7: getUnitOpeningHoursAtTime(unit),
+  supportedOrderModes: unit.supportedOrderModes,
+  supportedServingModes: unit.supportedServingModes,
 });
 
 /*const getOpeningOursForToday = (openingHours: IWeeklySchedule): string => {

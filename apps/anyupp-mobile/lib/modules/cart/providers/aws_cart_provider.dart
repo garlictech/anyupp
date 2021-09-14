@@ -128,7 +128,7 @@ class AwsCartProvider implements ICartProvider {
           fetchPolicy: FetchPolicy.networkOnly);
       if (result.hasErrors) {
         print('AwsOrderProvider._getCartFromBackEnd().error()=${result.errors}');
-        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors!);
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
 
       // print('AwsOrderProvider._getCartFromBackEnd().result()=$result');

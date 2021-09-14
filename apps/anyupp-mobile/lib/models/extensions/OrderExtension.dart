@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 extension OrderExtension on Order {
   String getFormattedDate() {
+    print('OrderExtension.getFormattedDate.createdAt()=$createdAt');
     if (createdAt == null) {
       return '';
     }

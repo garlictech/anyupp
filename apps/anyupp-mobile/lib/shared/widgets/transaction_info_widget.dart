@@ -18,17 +18,14 @@ class TransactionInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('TransactionInfoWidget.transaction=$transactionItem');
     bool showInvoice = false;
     if (transactionItem.invoice?.pdfUrl != null) {
       showInvoice = true;
     } else if (transactionItem.receipt?.pdfData != null) {
       showInvoice = false;
     }
-    if (showInvoice) {
-      return buildInfo(context, true);
-    } else {
-      return buildInfo(context, false);
-    }
+    return buildInfo(context, showInvoice);
   }
 
   createAndOpenPdf(String? baseString) async {

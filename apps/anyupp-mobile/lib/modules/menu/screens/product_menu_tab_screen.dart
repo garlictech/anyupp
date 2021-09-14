@@ -31,32 +31,37 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
   void initState() {
     super.initState();
     _pageSize = getIt<AppConstants>().paginationSize;
-    getIt<ProductListBloc>()
-        .add(LoadProductList(unitId: widget.unit.id!, categoryId: widget.categoryId, nextToken: _nextToken));
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-      key: PageStorageKey(widget.categoryId),
-      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.015),
-      child: BlocBuilder<ProductListBloc, ProductListState>(builder: (context, state) {
-        if (state is ProductListLoading) {
-          return CenterLoadingWidget();
-        }
-
-        if (state is ProductListLoaded) {
-          var items = state.products.data;
-          _nextToken = state.products.nextToken;
-          if (items == null || items.isEmpty) {
-            return _buildEmptyList(context);
+    return BlocProvider(
+      create: (BuildContext context) {
+        var bloc = getIt<ProductListBloc>();
+        bloc.add(LoadProductList(unitId: widget.unit.id!, categoryId: widget.categoryId, nextToken: _nextToken));
+        return bloc;
+      },
+      child: Container(
+        key: PageStorageKey(widget.categoryId),
+        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.015),
+        child: BlocBuilder<ProductListBloc, ProductListState>(builder: (context, state) {
+          if (state is ProductListLoading) {
+            return CenterLoadingWidget();
           }
-          return _buildList(widget.unit, items);
-        }
 
-        return CenterLoadingWidget();
-      }),
+          if (state is ProductListLoaded) {
+            var items = state.products.data;
+            _nextToken = state.products.nextToken;
+            if (items == null || items.isEmpty) {
+              return _buildEmptyList(context);
+            }
+            return _buildList(widget.unit, items);
+          }
+
+          return CenterLoadingWidget();
+        }),
+      ),
     );
   }
 

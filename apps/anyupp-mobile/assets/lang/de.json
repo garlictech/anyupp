@@ -56,10 +56,10 @@
       "dialogPasswordRefreshedTitle": "Password updated'",
       "dialogPasswordRefreshedMessage": "Your password has been updated, you can sign in now.",
       "closeButton": "Close",
-      "setMailTo": "We have sent a code by email",
+      "setMailTo": "We have sent the activation email",
       "checkInbox": "Check your inbox!",
       "enterToConfirm": "Enter it below to confirm your account.",
-      "codeNotReceived": "Didn't receive a code?",
+      "codeNotReceived": "Didn't receive a link?",
       "resendCode": "Resend it",
       "verificationCode": "Verification Code",
       "confirmAccount": "Confirm Account",
@@ -162,20 +162,27 @@
       "processing": "PROCESSING",
       "ready": "READY",
       "paid": "PAID",
-      "rejected": "REJECTED"
+      "rejected": "REJECTED",
+      "served": "SERVED"
     },
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
     "simplepay": "Pay with SimplePay",
-    "stripepay": "Pay with Stripe"
+    "stripepay": "Pay with Stripe",
+    "loadMore": "Load more..."
+  },
+  "notifications": {
+    "messageFrom": "Message from AnyUpp!",
+    "orderProcessing": "Your order is being processed.",
+    "orderReady": "Your order is ready!"
   },
   "payment": {
     "title": "PAY",
     "choose": "Please select a payment method",
     "method": {
-      "cash": "Cash at register",
-      "creditCard": "Credit card at register",
-      "inAppPayment": "Pay by Card via Stripe (preferred)"
+      "cash": "Cash at my table to my server",
+      "creditCard": "Credit card at my table to my server + SZÉP card",
+      "inAppPayment": "Online Card payment via Stripe (preferred)"
     },
     "sendOrder": "PLACE ORDER",
     "fillInvoice": "FILL INVOICE FORM",
@@ -194,7 +201,7 @@
         "country": "Country",
         "zip": "Zip Code",
         "city": "City",
-        "street address": "Street address",
+        "street_address": "Street address",
         "invoice_email": "Invoice Email",
         "invoiceAddress": "Use previous address",
         "show": "Show"
@@ -239,7 +246,19 @@
       "title": "Pay with Stripe",
       "add_card_tooltip": "Add new card",
       "save_card": "Save card for later use",
-      "payment_success": "Payment success!"
+      "payment_success": "Payment success!",
+      "new_card": "New Card",
+      "saved_cards": "Saved Cards",
+      "no_payment_methods": "No payment methods saved..."
+    },
+    "manageCard": {
+      "card_will_delete": "This card will be deleted",
+      "are_you_sure": "Are you sure?",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "add_card": "Add New Card",
+      "card_added": "Card added successfully!",
+      "success": "Success!"
     }
   },
   "selectUnit": {
@@ -266,6 +285,18 @@
     "qrGeneralError": {
       "title": "Something went wrong",
       "description": "Something went wrong while searching for restaurants. :("
+    },
+    "opened": "Opened",
+    "closed": "Closed",
+    "opens": "opens next",
+    "weekdays": {
+      "monday": "monday",
+      "tuesday": "tuesday",
+      "wednesday": "wednesday",
+      "thursday": "thursday",
+      "friday": "friday",
+      "saturday": "saturday",
+      "sunday": "sunday"
     }
   },
   "qrScan": {
@@ -306,7 +337,7 @@
     "changeLocation": "Change location"
   },
   "about": {
-    "description": "    Hogy miért AnyUpp, hadd legyen ez még kicsit titok... Nagyon sok funkcióval érkezünk majd még, amiből rá fogsz jönni, hogy ki az Any és miért épp Upp. :)\n\n    Jártál már úgy, hogy integettél a pincérnek, de sehogy sem kereste a szemkontaktust? Vagy vártad a számlát, de nem sikerült kihozni senkinek? Vagy úgy vagy vele - most Covid idején - hogy inkább nem fognád meg az étlapot, nem fizetnél készpénzzel, és nem ütnéd be a PIN kódod egy terminálba? Na, ezekre mind jó az AnyUpp. Töltsd le, válaszd ki a hozzád legközelebbi éttermet, ahol tudsz vele rendelni és fizetni, és próbáld ki! Ennyi.\n\n    Ez most a CYBERG AnyUpp appjának a teszt időszaka. Jelenleg egy étteremben futunk, Budapesten a Corvin sétányon a KAJAHU-ban. Gyere és próbáld ki!\n\n    Az asztalokon QR kódot találsz, ha beolvasod, mi tudjuk hol ülsz, és odavisszük a rendelésed. Nem kell várnod, nem kell szólnod senkihez, csak megrendeled a burgered vagy pizzád, dobsz mellé egy italt vagy desszertet, és már visszük is. Egyszerűen hangzik, nem? Tényleg az. Ha akarod, bedobhatod a kedvencek közé, amit ettél, és legközelebb már nem kell a menüből sem kikeresned.\n\n    Kész vagy, megetted, fizetnél? Ne várj a pincérre! Fizess az app-ban bankkártyával, SimplePay-jel, ahogy kényelmes, aztán fogd magad és sétálj ki! Sosem volt még könnyebb és gyorsabb.\n\n    Nyugi, mi is tudjuk, hogy ez még nem a jövő. De menő, nem? Sok izgi dolog jön még. Lesz egy szuper ajánló, látod majd, hogy a többieknek mi a kedvence, akár ismerkedhetsz is nálunk, meg olcsóbban is kajálhatsz, ha sokszor betérsz hozzánk. Ja, és nem csak hozzánk. Az a terv, hogy egyre több helyen jelenünk majd meg az app-pal, így előbb utóbb bárhol (ANYwhere, hm?) belefuthatsz. Adj egy kis időt, teszteld addig, és ha bármi tetszik vagy nem, szólj, írj, mi meg fixáljuk, addoljuk, bővítjük.\n\n    Frankó lesz. Ha már most tetszik, kérjük add tovább! Kösz.",
+    "description": "    Hogy miért AnyUpp, hadd legyen ez még kicsit titok... Nagyon sok funkcióval érkezünk majd még, amiből rá fogsz jönni, hogy ki az Any és miért épp Upp. :)\n\n    Jártál már úgy, hogy integettél a pincérnek, de sehogy sem kereste a szemkontaktust? Vagy vártad a számlát, de nem sikerült kihozni senkinek? Vagy úgy vagy vele - most Covid idején - hogy inkább nem fognád meg az étlapot, nem fizetnél készpénzzel, és nem ütnéd be a PIN kódod egy terminálba? Na, ezekre mind jó az AnyUpp. Töltsd le, válaszd ki a hozzád legközelebbi éttermet, ahol tudsz vele rendelni és fizetni, és próbáld ki! Ennyi.\n\n    Ez most a CYBERG AnyUpp appjának a teszt időszaka. Jelenleg egy étteremben futunk, Budapesten a Corvin sétányon a KAJAHU-ban. Gyere és próbáld ki!\n\n    Az asztalokon QR kódot találsz, ha beolvasod, mi tudjuk hol ülsz, és odavisszük a rendelésed. Nem kell várnod, nem kell szólnod senkihez, csak megrendeled a burgered vagy pizzád, dobsz mellé egy italt vagy desszertet, és már visszük is. Egyszerűen hangzik, nem? Tényleg az. Ha akarod, bedobhatod a kedvencek közé, amit ettél, és legközelebb már nem kell a menüből sem kikeresned.\n\n    Fizetnél? Ne várj a pincérre! Fizess az app-ban bankkártyával, Stripe-pal, ahogy kényelmes, aztán fogyaszd rendelésed, érezd jól magad, és rendelj újra, ameddig jól esik! Sosem volt még könnyebb és gyorsabb.\n\n    Nyugi, mi is tudjuk, hogy ez még nem a jövő. De menő, nem? Sok izgi dolog jön még. Lesz egy szuper ajánló, látod majd, hogy a többieknek mi a kedvence, akár ismerkedhetsz is nálunk, meg olcsóbban is kajálhatsz, ha sokszor betérsz hozzánk. Ja, és nem csak hozzánk. Az a terv, hogy egyre több helyen jelenünk majd meg az app-pal, így előbb utóbb bárhol (ANYwhere, hm?) belefuthatsz. Adj egy kis időt, teszteld addig, és ha bármi tetszik vagy nem, szólj, írj, mi meg fixáljuk, addoljuk, bővítjük.\n\n    Frankó lesz. Ha már most tetszik, kérjük add tovább! Kösz.",
     "licences": "Licences",
     "version": "Version"
   },
@@ -439,6 +470,10 @@
       "title": "Sign up error",
       "description": "Password did not conform with policy"
     },
+    "USER_ALREADY_EXISTS": {
+      "title": "User already exists",
+      "description": "This email address is already registered."
+    },
     "INVALID_CONFIRMATION_CODE": {
       "title": "Sign up error",
       "description": "The given confirmation code is invalid, try to resend it"
@@ -457,7 +492,15 @@
     },
     "LIMIT_EXCEEDED": {
       "title": "Sign up error",
-      "description": "Resed limit exceeded."
+      "description": "Resend limit exceeded."
+    },
+    "INTERNAL_SERVER_ERROR": {
+      "title": "Internal Server Error",
+      "description": "Something went wrong."
+    },
+    "ERROR_UNIT_NOT_ACCEPTING_ORDERS": {
+      "title": "Unit is closed",
+      "description": "Unit is not accepting orders right now. Try it later!"
     }
   }
 }

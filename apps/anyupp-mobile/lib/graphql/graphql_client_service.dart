@@ -85,10 +85,12 @@ class GraphQLClientService {
 
     link = Link.split((request) => request.isSubscription, wsLink, link);
 
-    ValueNotifier<GraphQLClient> amplifyClient = ValueNotifier(GraphQLClient(
-      cache: GraphQLCache(),
-      link: link,
-    ));
+    ValueNotifier<GraphQLClient> amplifyClient = ValueNotifier(
+      GraphQLClient(
+        cache: GraphQLCache(),
+        link: link,
+      ),
+    );
 
     return amplifyClient;
   }

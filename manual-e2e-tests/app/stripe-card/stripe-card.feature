@@ -10,7 +10,7 @@ Feature: Stripe Card
     And the "Menu" option is selected on the bottom navigator
 
   Scenario: Add and delete a new credit card
-    When I tap the "Profile" icon in the dashboard
+    When I tap the "Profile" icon
     Then there is the profile screen
     When I tap the "Saved cards" option
     Then there is a loading screen
@@ -63,6 +63,7 @@ Feature: Stripe Card
     And the banner on the "Orders" icon is "1"
     And the "Orders" page is selected on the top navigator
     And there is "1" order in the list
+    And I should see the date of the created order
     Then in the app the order should be in "PLACED" state
     When the admin set the state of order to "PROCESSING"
     Then in the app the order should be in "PROCESSING" state
@@ -77,7 +78,7 @@ Feature: Stripe Card
     When I swipe to the "History" tab
     Then I should see the "SERVED" label on the paid order
     And I should see "Load more..." at the bottom of the orders
-    # Scenario: second order with stripe
+    # Scenario: second order with the saved card
     When I tap the "Menu" icon from the bottom navigation bar
     And I tap the "FANTA #2" card under "Test product category #1 name" category
     And I tap the "Extra comp set" button
@@ -105,6 +106,7 @@ Feature: Stripe Card
     And the banner on the "Orders" icon is "2"
     And the "Orders" page is selected on the top navigator
     And there is an order in the list
+    And I should see the date of the created order
     Then in the app the order should be in "PLACED" state
     When the admin set the state of order to "PROCESSING"
     Then in the app the order should be in "PROCESSING" state
@@ -119,6 +121,14 @@ Feature: Stripe Card
     When I swipe to the "History" tab
     Then I should see the "SERVED" label on the paid order
     And I should see "Load more..." at the bottom of the orders
+    When I tap the "Profile" icon
+    And I tap the "Transactions" option
+    And I should see the latest order
+    And I tap its "Show" text
+    Then I sgould see the price "298 HUF"
+    Then I should see the receipt of the order
+    When I tap the "Done" text
+    Then I should be on the "Transactions" list
 
   Scenario: Pay without saving the card and use the VAT form
     When I tap the "FANTA #2" card under "Test product category #1 name" category
@@ -163,7 +173,7 @@ Feature: Stripe Card
     When the admin set the state of order to "PROCESSING"
     Then in the app the order should be in "PROCESSING" state
     And I tap the "Show" text
-    And I tap the "Megtekintés" text
+    When I tap the "Megnézem" text
     Then I should see the receipt of the order
     When I tap the back arrow
     Then I should see my order on the "Orders" tab
@@ -174,3 +184,13 @@ Feature: Stripe Card
     When I tap the "History" tab
     Then I should see the "SERVED" label on the paid order
     And I should see "Load more..." at the bottom of the orders
+    When I tap the "Profile" icon
+    And I tap the "Transactions" option
+    And I should see the latest order
+    And I tap the "Show" text
+    Then I sgould see the price "298 HUF"
+    When I tap the "Megnézem" text
+    Then I sgould see the price "298 HUF"
+    Then I should see the receipt of the order
+    When I tap the back arrow
+    Then I should be on the "Transactions" list

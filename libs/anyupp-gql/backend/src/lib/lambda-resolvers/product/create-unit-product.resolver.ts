@@ -8,6 +8,13 @@ import * as CrudApi from '@bgap/crud-gql/api';
 export const createUnitProduct =
   (input: AnyuppApi.CreateUnitProductInput) =>
   (deps: ProductResolverDeps): Observable<CrudApi.UnitProduct> =>
-    defer(() => deps.crudSdk.CreateUnitProduct({ input })).pipe(
-      switchMap(validateUnitProduct),
-    );
+    defer(() =>
+      deps.crudSdk.CreateUnitProduct({
+        input: {
+          ...input,
+          supportedServingModes: input.supportedServingModes ?? [
+            CrudApi.ServingMode.inplace,
+          ],
+        },
+      }),
+    ).pipe(switchMap(validateUnitProduct));
