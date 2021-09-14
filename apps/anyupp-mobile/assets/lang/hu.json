@@ -149,8 +149,8 @@
     "noFavoritesButton": "ÉTLAP FELFEDEZÉSE"
   },
   "orders": {
-    "tabCurrentOrder": "Rendelések",
-    "tabOrderHistory": "Történet",
+    "tabCurrentOrder": "Folyamatban",
+    "tabOrderHistory": "Lezárt",
     "noActiveOrder": "Nincs teljesítésre váró rendelésed.",
     "noActiveOrderDesc": "Találj kedvedre való ételeket, italokat az Étlap fül alatt.",
     "noActiveOrderButton": "ÉTLAP FELFEDEZÉSE",
@@ -181,7 +181,7 @@
     "choose": "Melyik fizetési módot választod?",
     "method": {
       "cash": "Pincérnél készpénzzel",
-      "creditCard": "Pincérnél kártyával",
+      "creditCard": "Pincérnél kártyával + SZÉP kártya",
       "inAppPayment": "Kártyás fizetés Stripe-pal (ajánlott)"
     },
     "sendOrder": "RENDELÉS",
@@ -337,7 +337,7 @@
     "changeLocation": "Helyszín váltása"
   },
   "about": {
-    "description": "    Hogy miért AnyUpp, hadd legyen ez még kicsit titok... Nagyon sok funkcióval érkezünk majd még, amiből rá fogsz jönni, hogy ki az Any és miért épp Upp. :)\n\n    Jártál már úgy, hogy integettél a pincérnek, de sehogy sem kereste a szemkontaktust? Vagy vártad a számlát, de nem sikerült kihozni senkinek? Vagy úgy vagy vele - most Covid idején - hogy inkább nem fognád meg az étlapot, nem fizetnél készpénzzel, és nem ütnéd be a PIN kódod egy terminálba? Na, ezekre mind jó az AnyUpp. Töltsd le, válaszd ki a hozzád legközelebbi éttermet, ahol tudsz vele rendelni és fizetni, és próbáld ki! Ennyi.\n\n    Ez most a CYBERG AnyUpp appjának a teszt időszaka. Jelenleg egy étteremben futunk, Budapesten a Corvin sétányon a KAJAHU-ban. Gyere és próbáld ki!\n\n    Az asztalokon QR kódot találsz, ha beolvasod, mi tudjuk hol ülsz, és odavisszük a rendelésed. Nem kell várnod, nem kell szólnod senkihez, csak megrendeled a burgered vagy pizzád, dobsz mellé egy italt vagy desszertet, és már visszük is. Egyszerűen hangzik, nem? Tényleg az. Ha akarod, bedobhatod a kedvencek közé, amit ettél, és legközelebb már nem kell a menüből sem kikeresned.\n\n    Kész vagy, megetted, fizetnél? Ne várj a pincérre! Fizess az app-ban bankkártyával, SimplePay-jel, ahogy kényelmes, aztán fogd magad és sétálj ki! Sosem volt még könnyebb és gyorsabb.\n\n    Nyugi, mi is tudjuk, hogy ez még nem a jövő. De menő, nem? Sok izgi dolog jön még. Lesz egy szuper ajánló, látod majd, hogy a többieknek mi a kedvence, akár ismerkedhetsz is nálunk, meg olcsóbban is kajálhatsz, ha sokszor betérsz hozzánk. Ja, és nem csak hozzánk. Az a terv, hogy egyre több helyen jelenünk majd meg az app-pal, így előbb utóbb bárhol (ANYwhere, hm?) belefuthatsz. Adj egy kis időt, teszteld addig, és ha bármi tetszik vagy nem, szólj, írj, mi meg fixáljuk, addoljuk, bővítjük.\n\n    Frankó lesz. Ha már most tetszik, kérjük add tovább! Kösz.",
+    "description": "    Hogy miért AnyUpp, hadd legyen ez még kicsit titok... Nagyon sok funkcióval érkezünk majd még, amiből rá fogsz jönni, hogy ki az Any és miért épp Upp. :)\n\n    Jártál már úgy, hogy integettél a pincérnek, de sehogy sem kereste a szemkontaktust? Vagy vártad a számlát, de nem sikerült kihozni senkinek? Vagy úgy vagy vele - most Covid idején - hogy inkább nem fognád meg az étlapot, nem fizetnél készpénzzel, és nem ütnéd be a PIN kódod egy terminálba? Na, ezekre mind jó az AnyUpp. Töltsd le, válaszd ki a hozzád legközelebbi éttermet, ahol tudsz vele rendelni és fizetni, és próbáld ki! Ennyi.\n\n    Ez most a CYBERG AnyUpp appjának a teszt időszaka. Jelenleg egy étteremben futunk, Budapesten a Corvin sétányon a KAJAHU-ban. Gyere és próbáld ki!\n\n    Az asztalokon QR kódot találsz, ha beolvasod, mi tudjuk hol ülsz, és odavisszük a rendelésed. Nem kell várnod, nem kell szólnod senkihez, csak megrendeled a burgered vagy pizzád, dobsz mellé egy italt vagy desszertet, és már visszük is. Egyszerűen hangzik, nem? Tényleg az. Ha akarod, bedobhatod a kedvencek közé, amit ettél, és legközelebb már nem kell a menüből sem kikeresned.\n\n    Fizetnél? Ne várj a pincérre! Fizess az app-ban bankkártyával, Stripe-pal, ahogy kényelmes, aztán fogyaszd rendelésed, érezd jól magad, és rendelj újra, ameddig jól esik! Sosem volt még könnyebb és gyorsabb.\n\n    Nyugi, mi is tudjuk, hogy ez még nem a jövő. De menő, nem? Sok izgi dolog jön még. Lesz egy szuper ajánló, látod majd, hogy a többieknek mi a kedvence, akár ismerkedhetsz is nálunk, meg olcsóbban is kajálhatsz, ha sokszor betérsz hozzánk. Ja, és nem csak hozzánk. Az a terv, hogy egyre több helyen jelenünk majd meg az app-pal, így előbb utóbb bárhol (ANYwhere, hm?) belefuthatsz. Adj egy kis időt, teszteld addig, és ha bármi tetszik vagy nem, szólj, írj, mi meg fixáljuk, addoljuk, bővítjük.\n\n    Frankó lesz. Ha már most tetszik, kérjük add tovább! Kösz.",
     "licences": "Licences",
     "version": "Verzió"
   },
@@ -471,8 +471,8 @@
       "description": "Nem megfelelő jelszót adtál meg. A jelszó ne hasonlítson az email címedre, felhasználónevedre és ne tartalmazzon könnyen kitalálható karaktersorozatot!"
     },
     "USER_ALREADY_EXISTS": {
-      "title": "Már létező felhasználó",
-      "description": "Ezzel az email-el már regisztráltak."
+      "title": "Hoppá! Ezzel az email címmel már regisztrálva vagy.",
+      "description": "Lehetséges, hogy egy másik bejelentkezési móddal regisztráltál az alkalmazásunkba?"
     },
     "INVALID_CONFIRMATION_CODE": {
       "title": "Regisztrációs hiba",

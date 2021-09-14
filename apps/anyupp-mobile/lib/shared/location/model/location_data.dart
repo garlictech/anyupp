@@ -1,18 +1,21 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class GeolocationData {
-  String status;
-  String? country;
-  String? countryCode;
-  String? region;
-  String? regionName;
-  String? city;
-  String? zip;
-  double lat;
-  double lon;
-  String? timezone;
-  String? isp;
-  String? org;
-  String? as;
-  String? query;
+  final String status;
+  final String? country;
+  final String? countryCode;
+  final String? region;
+  final String? regionName;
+  final String? city;
+  final String? zip;
+  final double lat;
+  final double lon;
+  final String? timezone;
+  final String? isp;
+  final String? org;
+  final String? as;
+  final String? query;
   GeolocationData({
     required this.status,
     this.country,

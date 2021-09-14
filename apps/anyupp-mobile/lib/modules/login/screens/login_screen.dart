@@ -623,7 +623,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               _webViewController.complete(webViewController);
             },
             navigationDelegate: (NavigationRequest request) {
-              print('SocialLoginScreen.navigationDelegate().request=$request');
+              print('LoginScreen.navigationDelegate().request=$request');
               Uri uri = Uri.parse(request.url);
               String? error = uri.queryParameters['error_description'];
               if (request.url.startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
@@ -636,9 +636,22 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 return NavigationDecision.prevent;
               }
               if (error != null) {
+                print('LoginScreen.error()=$error');
                 setState(() {
-                  getIt<ExceptionBloc>().add(ShowException(
-                      LoginException(code: LoginException.CODE, subCode: LoginException.CODE, message: error)));
+                  if (error.contains('UserAlreadyExists')) {
+                    getIt<ExceptionBloc>().add(ShowException(LoginException(
+                      code: LoginException.CODE,
+                      subCode: LoginException.USER_ALREADY_EXISTS,
+                      message: error,
+                    )));
+                  } else {
+                    getIt<ExceptionBloc>().add(ShowException(LoginException(
+                      code: LoginException.CODE,
+                      subCode: LoginException.CODE,
+                      message: error,
+                    )));
+                  }
+
                   getIt<LoginBloc>().add(ResetLogin());
                   isLoading = true;
                 });

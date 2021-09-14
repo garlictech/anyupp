@@ -32,7 +32,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           14.0,
         ),
-        border: Border.all(width: 1.5, color: theme.border2),
+        border: Border.all(width: 1.5, color: theme.border),
         color: theme.background,
       ),
       child: Container(
@@ -46,7 +46,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
             // status == OrderStatus.ready ? _buildPayButtonWidget(context) : _buildTotalPrice(context, order),
             _buildTotalPrice(context, order),
             ..._buildOrderItemList(context, order),
-            if (order.transaction != null) TransactionInfoWidget(order.transaction!),
+            if (order.transaction?.receipt != null || order.transaction?.invoice != null)
+              TransactionInfoWidget(order.transaction!),
             _buildPayButtonIfNeeded(context, order),
           ],
         ),

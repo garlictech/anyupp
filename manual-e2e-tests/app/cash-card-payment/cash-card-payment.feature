@@ -11,6 +11,8 @@ Feature: Cash and card payment
     When I tap the "Késdobáló #111" unit in the list
     Then there is the dashboard screen
     And the "Menu" option is selected on the bottom navigator
+    Then I should see "HAMBURGER #1" with picture
+    And I should see "FANTA #2" with picture
 
   Scenario: Pay successfully with cash or card
     # about the #1592 issue

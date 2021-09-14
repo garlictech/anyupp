@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    isProd = AppConfig.Stage == "prod";
+    isProd = AppConfig.Stage == "prod"; // Ez igy ok! Nem kell az isDev
     super.initState();
     init();
   }
@@ -143,8 +143,6 @@ class _MyAppState extends State<MyApp> {
                     indicatorColor: Colors.black,
                     primarySwatch: Colors.red,
                     primaryColor: Colors.black,
-                    accentColor: Colors.white,
-                    buttonColor: Colors.black,
                     hoverColor: Color(0xFFFFDB87),
                     highlightColor: Colors.white,
                     primaryColorLight: Color(0xFFFFDB87),
