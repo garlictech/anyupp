@@ -53,7 +53,7 @@ Widget buildProductItem(
         ),
         border: Border.all(
           width: 1,
-          color: theme.border2,
+          color: theme.border,
         ),
         color: theme.background,
       ),

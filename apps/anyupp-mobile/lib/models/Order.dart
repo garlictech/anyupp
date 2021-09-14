@@ -90,7 +90,7 @@ class Order {
       'place': place?.toJson(),
       'paymentIntention': paymentIntention,
       'statusLog': statusLog.map((x) => x.toJson()).toList(),
-      'created': createdAt,
+      'createdAt': createdAt,
       'archived': archived,
       'transaction': transaction?.toJson(),
       'transactionStatus': transactionStatus,
@@ -111,7 +111,7 @@ class Order {
       place: map['place'] != null ? Place.fromJson(map['place']) : null,
       paymentIntention: map['paymentIntention'],
       statusLog: List<StatusLog>.from(map['statusLog']?.map((x) => StatusLog.fromJson(x))),
-      createdAt: map['created'],
+      createdAt: map['createdAt'],
       archived: map['archived'],
       transaction: map['transaction'] != null ? Transaction.fromJson(map['transaction']) : null,
       transactionStatus: enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values),
@@ -121,7 +121,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, takeAway: $takeAway, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, created: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
+    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, takeAway: $takeAway, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
   }
 
   @override

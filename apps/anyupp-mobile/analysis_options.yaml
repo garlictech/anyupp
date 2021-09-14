@@ -10,3 +10,5 @@ analyzer:
 linter:
   rules:
     - camel_case_types
+    - unnecessary_null_checks
+    - avoid_equals_and_hash_code_on_mutable_classes

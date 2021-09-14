@@ -18,11 +18,8 @@ import 'product_menu_tab_screen.dart';
 class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (BuildContext context) => getIt<ProductCategoriesBloc>()),
-        BlocProvider(create: (BuildContext context) => getIt<ProductListBloc>()),
-      ],
+    return BlocProvider(
+      create: (BuildContext context) => getIt<ProductCategoriesBloc>(),
       child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, UnitSelectState unitState) {
           if (unitState is UnitSelected) {
@@ -82,10 +79,6 @@ class Menu extends StatelessWidget {
       backgroundColor: theme.background,
       actions: [
         IconButton(
-          // icon: Icon(
-          //   Icons.code,
-          //   color: theme(context).indicator,
-          // ),
           icon: SvgPicture.asset(
             'assets/icons/qr_code_scanner.svg',
             color: theme.indicator,

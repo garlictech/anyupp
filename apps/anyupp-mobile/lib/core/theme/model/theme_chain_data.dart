@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fa_prev/models.dart';
 
+@immutable
 class ThemeChainData {
   final Color background;
   final Color background2;
@@ -26,7 +27,7 @@ class ThemeChainData {
     this.images,
   });
 
-  Map<int, Color> color = {
+  final Map<int, Color> color = {
     50: Color.fromRGBO(136, 14, 79, .1),
     100: Color.fromRGBO(136, 14, 79, .2),
     200: Color.fromRGBO(136, 14, 79, .3),
@@ -45,8 +46,6 @@ class ThemeChainData {
         indicatorColor: MaterialColor(indicator.value, color),
         primarySwatch: MaterialColor(highlight.value, color),
         primaryColor: Colors.black,
-        accentColor: Colors.white,
-        buttonColor: Colors.black,
         hoverColor: Color(0xFFFFDB87),
         highlightColor: Colors.white,
         primaryColorLight: Color(0xFFFFDB87),

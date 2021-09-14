@@ -24,6 +24,7 @@ class AwsProductProvider implements IProductProvider {
 
       if (result.hasErrors) {
         print('***** getProductCategoryList().error=${result.errors}');
+        // var error = result.errors![0];
         throw GraphQLException.fromGraphQLError(GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
 

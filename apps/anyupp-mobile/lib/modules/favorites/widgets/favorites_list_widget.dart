@@ -46,16 +46,6 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
                 pageIndex: 0,
               ),
             ),
-            // onTap: () {
-            //   showNotification(
-            //     context,
-            //     transEx(context, "notifications.messageFrom"),
-            //     transEx(context, "notifications.orderReady"),
-            //     MainNavigation(
-            //       pageIndex: 2,
-            //     ),
-            //   );
-            // },
           );
         }
       }

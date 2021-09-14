@@ -1,4 +1,3 @@
-import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
@@ -10,6 +9,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
+import 'package:fa_prev/shared/utils/stage_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,16 +17,29 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  late ScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: theme.background,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: theme.background,
         centerTitle: false,
-        elevation: 0.0,
+        elevation: 5.0,
         // Only dev and qa builds are show the table and seat in the top right corner
         title: (true)
             ? FutureBuilder<Place?>(
@@ -39,7 +52,7 @@ class CartScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          trans(context, 'main.menu.cart'),
+                          trans('main.menu.cart'),
                           style: GoogleFonts.poppins(
                             color: theme.text,
                             fontSize: 22.0,
@@ -84,7 +97,7 @@ class CartScreen extends StatelessWidget {
                   }
 
                   return Text(
-                    trans(context, 'main.menu.cart'),
+                    trans('main.menu.cart'),
                     style: GoogleFonts.poppins(
                       color: theme.text,
                       fontSize: 22.0,
@@ -95,7 +108,7 @@ class CartScreen extends StatelessWidget {
               )
             // ignore: dead_code
             : Text(
-                trans(context, 'main.menu.cart'),
+                trans('main.menu.cart'),
                 style: GoogleFonts.poppins(
                   color: theme.text,
                   fontSize: 22.0,
@@ -129,7 +142,7 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = false;
-    if (cart.place == null || (cart.place?.seat == "00" && cart.place?.table == "00") && AppConfig.Stage != "dev") {
+    if (cart.place == null || (cart.place?.seat == "00" && cart.place?.table == "00") && isDev) {
       showQrCodeScan = true;
     }
 
@@ -159,34 +172,58 @@ class CartScreen extends StatelessWidget {
         Expanded(
           flex: 10,
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
+            //margin: EdgeInsets.symmetric(horizontal: 15),
+            padding: EdgeInsets.only(left: 15, right: 2), // EdgeInsets.symmetric(horizontal: 15),
             child: AnimationLimiter(
-              child: ListView.separated(
-                separatorBuilder: (context, index) => Divider(
-                  color: theme.disabled.withOpacity(0.3),
+              child: RawScrollbar(
+                controller: _controller,
+                thumbColor: theme.text.withOpacity(0.2),
+                radius: Radius.circular(20),
+                isAlwaysShown: true,
+                thickness: 4,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => Divider(
+                    color: theme.disabled.withOpacity(0.3),
+                  ),
+                  controller: _controller,
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
+                  itemCount: cart.items.length,
+                  itemBuilder: (context, position) {
+                    final OrderItem order = cart.items[position];
+                    return AnimationConfiguration.staggeredList(
+                      position: position,
+                      duration: const Duration(milliseconds: 375),
+                      child: _buildCartItem(context, unit, order),
+                    );
+                  },
                 ),
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
-                itemCount: cart.items.length,
-                itemBuilder: (context, position) {
-                  final OrderItem order = cart.items[position];
-                  return AnimationConfiguration.staggeredList(
-                    position: position,
-                    duration: const Duration(milliseconds: 375),
-                    child: _buildCartItem(context, unit, order),
-                  );
-                },
               ),
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(left: 30, top: 5, right: 15, bottom: 10),
-          child: cartAllergens.keys.toList().isNotEmpty
-              ? AllergensWidget(allergens: cartAllergens.values.toList())
-              : Container(),
-        ),
-
+        cartAllergens.keys.toList().isNotEmpty
+            ? Column(
+                children: [
+                  SizedBox(
+                    height: 2.0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            theme.text.withOpacity(0.4),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  AllergensWidget(allergens: cartAllergens.values.toList()),
+                ],
+              )
+            : Container(),
         // TOTAL
         Container(
           height: 94,
@@ -202,7 +239,7 @@ class CartScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        trans(context, 'cart.totalCost'),
+                        trans('cart.totalCost'),
                         style: GoogleFonts.poppins(
                           color: theme.text,
                           fontSize: 22,
@@ -268,68 +305,21 @@ class CartScreen extends StatelessWidget {
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(
-        child: CartListItemWidget(
-          unit: unit,
-          order: order,
+        child: Container(
+          margin: EdgeInsets.only(right: 4.0),
+          child: CartListItemWidget(
+            unit: unit,
+            order: order,
+          ),
         ),
-        // child: Dismissible(
-        //   key: Key(order.id.toString()),
-        //   child: CartListItemWidget(
-        //     unit: unit,
-        //     order: order,
-        //   ),
-        //   onDismissed: (direction) {
-        //     BlocProvider.of<CartBloc>(context).add(RemoveOrderFromCartAction(unit.chainId, unit.id, order));
-        //   },
-        //   // Setting the Dismissible background (appears on swipping)
-        //   background: Container(color: Colors.redAccent),
-        // ),
       ),
     );
   }
 
-// In case of empty cart
   Widget _emptyCart(BuildContext context) {
     return EmptyWidget(
       messageKey: 'cart.emptyCartLine1',
       descriptionKey: 'cart.emptyCartLine2',
     );
-    // return Container(
-    //   child: Center(
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       crossAxisAlignment: CrossAxisAlignment.center,
-    //       children: <Widget>[
-    //         Image.asset(
-    //           'assets/images/no-items-in-cart-icon.png',
-    //           width: 128.0,
-    //           fit: BoxFit.fitWidth,
-    //         ),
-    //         SizedBox(
-    //           height: 60.0,
-    //         ),
-    //         Text(
-    //           trans(context, 'cart.emptyCartLine1'),
-    //           style: GoogleFonts.poppins(
-    //             color: theme.text,
-    //             fontSize: 18.0,
-    //             fontWeight: FontWeight.bold,
-    //           ),
-    //         ),
-    //         SizedBox(
-    //           height: 6.0,
-    //         ),
-    //         Text(
-    //           trans(context, 'cart.emptyCartLine2'),
-    //           style: GoogleFonts.poppins(
-    //             color: theme.text,
-    //             fontSize: 14.0,
-    //             fontWeight: FontWeight.normal,
-    //           ),
-    //         )
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 }

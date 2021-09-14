@@ -118,7 +118,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
             appBar: _pageOptions![_selectedIndex].showAppBar
                 ? AppBar(
                     title: Text(_pageOptions![_selectedIndex].appBarText,
-                        style: TextStyle(color: Theme.of(context).accentColor)),
+                        style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                     centerTitle: false,
                     leading: Container(),
                   )
@@ -140,7 +140,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   content: Text(
                     trans('common.exit'),
                     style: TextStyle(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                   behavior: SnackBarBehavior.floating,
