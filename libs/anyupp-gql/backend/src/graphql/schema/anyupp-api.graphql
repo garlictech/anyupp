@@ -147,7 +147,7 @@ input CreateUnitProductInput { # TODO: delete the whole CreateUnitProduct mutati
   laneId: ID
   position: Int!
   variants: [ProductVariantInput]
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
 }
 
 input ProductVariantInput {
