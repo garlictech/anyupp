@@ -13,7 +13,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
-  getOrdersByUser,
+  getActiveOrdersByUser,
   getTableOrders,
   getTableSeatOrders,
   ordersSelectors,
@@ -21,9 +21,9 @@ import {
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import {
   fabricCanvas,
+  FLOOR_MAP_STATUS_COLORS,
   floorMapActions,
   floorMapSelectors,
-  FLOOR_MAP_STATUS_COLORS,
   getObjectById,
   getStatusBgColor,
   getTableIds,
@@ -126,7 +126,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         if (this.unit?.floorMap?.objects) {
           const tableIds = getTableIds(this.unit.floorMap);
           const tableSeatIds = getTableSeatIds(this.unit.floorMap);
-          const ordersByUser = getOrdersByUser(orders);
+          const ordersByUser = getActiveOrdersByUser(orders);
 
           const _allTableSeatOrders = getTableSeatOrders(
             tableSeatIds,
