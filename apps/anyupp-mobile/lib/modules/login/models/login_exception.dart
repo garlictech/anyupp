@@ -40,6 +40,8 @@ class LoginException extends AppException {
 
   static const USER_NOT_LOGGED_IN = 'USER_NOT_LOGGED_IN';
 
+  static const USER_ALREADY_EXISTS = 'USER_ALREADY_EXISTS';
+
   LoginException({
     code,
     subCode,

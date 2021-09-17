@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/utils/stage_utils.dart';
 import 'package:fa_prev/shared/widgets/common_error_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:catcher/catcher.dart';
@@ -18,6 +18,9 @@ class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {
       final code = event.exception.code;
       final subCode = event.exception.subCode;
       var details;
+      print('ExceptionBloc.ShowException.exception=${event.exception}');
+      print('ExceptionBloc.ShowException.code=$code');
+      print('ExceptionBloc.ShowException.subCode=$subCode');
 
       if (event.exception.details is List) {
         details = event.exception.details;
@@ -30,7 +33,7 @@ class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {
                 'error.title'),
             transEx(Catcher.navigatorKey!.currentContext!, 'error.$subCode.description', details,
                 'error.$code.description', 'error.description'),
-            exceptionDetails: ['dev', 'qa'].contains(AppConfig.Stage) ? event.exception.toString() : null);
+            exceptionDetails: isDev ? event.exception.toString() : null);
       }
     }
   }

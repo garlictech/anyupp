@@ -8,14 +8,10 @@ import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../fixtures.dart';
 import '../graphql/graphql_dummy.dart';
 
 void main() {
-  const String unitId = 'seeded_unit_c1_g1_1_id_MOBIL';
-  const String testUsername = 'testuser+monad';
-  const String testUserEmail = 'testuser+monad@anyupp.com';
-  const String testUserPassword = 'Hideghegy12_';
-
   const int dummy_order_count = 13;
   const int dummy_order_history_count = 12;
   const int dummy_page_size = 3;
@@ -34,8 +30,14 @@ void main() {
     setUpAll(() async {
       EquatableConfig.stringify = true;
       await initDependencyInjection();
-      AppConstants constants = getIt<AppConstants>();
 
+      _controller = BehaviorSubject();
+      expect(_controller, isNotNull);
+
+      _repository = getIt<OrderRepository>();
+      expect(_repository, isNotNull);
+
+      AppConstants constants = getIt<AppConstants>();
       await getIt.unregister<AppConstants>(instance: constants);
       getIt.registerLazySingleton<AppConstants>(() => AppConstants(
             paginationSize: dummy_page_size,
@@ -50,12 +52,6 @@ void main() {
       );
       expect(response, isNotNull);
       expect(response.user, isNotNull);
-
-      _repository = getIt<OrderRepository>();
-      expect(_repository, isNotNull);
-
-      _controller = BehaviorSubject();
-      expect(_controller, isNotNull);
 
       await cleanUpOrders();
 

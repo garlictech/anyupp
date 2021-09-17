@@ -100,12 +100,12 @@ class AwsAuthProvider implements IAuthProvider {
       }
       // print('\t attr[${a.userAttributeKey}]=${a.value}');
       if (a.name != null && a.name == 'email') {
-        email = a.value!;
+        email = a.value;
         // name = email.split('@').first;
       }
 
       if (a.name != null && a.name == 'phone_number') {
-        phone = a.value!;
+        phone = a.value;
       }
     }
     if (name == null && email != null) {

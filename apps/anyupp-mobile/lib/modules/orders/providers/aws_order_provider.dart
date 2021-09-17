@@ -103,7 +103,7 @@ class AwsOrderProvider implements IOrdersProvider {
       ));
 
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_QUERY_EXCEPTION, result.errors!);
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
 
       if (result.data?.getOrder == null) {

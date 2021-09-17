@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
@@ -43,32 +45,84 @@ class DioTokenInterceptor extends InterceptorsWrapper {
     int responseCode = dioError.response?.statusCode ?? 0;
     String? oldAccessToken = _prefs.getString('cognito_accesstoken');
     if (oldAccessToken != null && responseCode == 401) {
-      _dio.interceptors.requestLock.lock();
-      _dio.interceptors.responseLock.lock();
-
-      String? refreshToken = _prefs.getString('cognito_refreshtoken');
-      if (refreshToken == null) {
-        super.onError(dioError, handler);
-        return;
-      }
-      print('==>Refresh token=' + refreshToken);
-
-      await _provider.getAuthenticatedUserProfile();
-
-      RequestOptions options = dioError.response!.requestOptions;
-      options.headers.addAll({'requiresToken': true});
-      _dio.interceptors.requestLock.unlock();
-      _dio.interceptors.responseLock.unlock();
-      await _dio.request(options.path, data: options);
+      _handleTokenRefresh(dioError, handler);
     } else if (dioError.message.contains("Failed host lookup")) {
-      NetworkStatusBloc networkStatusBloc = getIt<NetworkStatusBloc>();
-      var status = networkStatusBloc.getLastConnectivityResult();
-      if (status != null) {
-        networkStatusBloc.add((NetworkConnectionChangedEvent(status, false, true, false)));
-      }
-      super.onError(dioError, handler);
+      _handleNetworkError(dioError, handler);
+    } else if (dioError.type == DioErrorType.response) {
+      _handleRetriableError(dioError, handler);
     } else {
       super.onError(dioError, handler);
     }
+  }
+
+  _handleRetriableError(DioError dioError, ErrorInterceptorHandler handler) async {
+    print('_handleRetriableError()=$dioError');
+    bool isRetriable = dioError.response?.data?['error']?['retryable'] == true ||
+        dioError.response?.data?['error']?['originalResponse']?['retryable'] == true;
+    print('_handleRetriableError().isRetriable=$isRetriable');
+    if (isRetriable) {
+      int retryCount = dioError.requestOptions.headers['retryCount'] ?? 1;
+      print('_handleRetriableError().retryCount=$retryCount');
+      if (retryCount == 0) {
+        super.onError(dioError, handler);
+        return;
+      }
+
+      _dio.interceptors.requestLock.lock();
+      _dio.interceptors.responseLock.lock();
+
+      double r = dioError.response?.data?['error']?['retryDelay'] ??
+          dioError.response?.data?['error']?['originalResponse']?['retryDelay'] ??
+          0;
+      int retryDelay = (r * 1000).toInt();
+      print('_handleRetriableError().retryDelay=$retryDelay');
+      if (retryDelay != 0) {
+        print('_handleRetriableError().waiting $retryDelay ms...');
+        await Future<void>.delayed(Duration(
+          milliseconds: retryDelay,
+        ));
+      }
+
+      RequestOptions options = dioError.response!.requestOptions;
+      options.headers.addAll({'retryCount': max(retryCount - 1, 0)});
+      _dio.interceptors.requestLock.unlock();
+      _dio.interceptors.responseLock.unlock();
+
+      print('_handleRetriableError().start HTTP call...');
+      await _dio
+          .fetch<void>(dioError.requestOptions)
+          .then((value) => handler.resolve(value), onError: (e) => handler.reject(e));
+      return;
+    }
+
+    super.onError(dioError, handler);
+  }
+
+  void _handleNetworkError(DioError dioError, ErrorInterceptorHandler handler) async {
+    NetworkStatusBloc networkStatusBloc = getIt<NetworkStatusBloc>();
+    var status = networkStatusBloc.getLastConnectivityResult();
+    if (status != null) {
+      networkStatusBloc.add((NetworkConnectionChangedEvent(status, false, true, false)));
+    }
+    super.onError(dioError, handler);
+  }
+
+  void _handleTokenRefresh(DioError dioError, ErrorInterceptorHandler handler) async {
+    _dio.interceptors.requestLock.lock();
+    _dio.interceptors.responseLock.lock();
+
+    String? refreshToken = _prefs.getString('cognito_refreshtoken');
+    if (refreshToken == null) {
+      return super.onError(dioError, handler);
+    }
+    print('==>Refresh token=' + refreshToken);
+
+    await _provider.getAuthenticatedUserProfile();
+
+    RequestOptions options = dioError.response!.requestOptions;
+    options.headers.addAll({'requiresToken': true});
+    _dio.interceptors.requestLock.unlock();
+    _dio.interceptors.responseLock.unlock();
+    await _dio.request(options.path, data: options);
   }
 }

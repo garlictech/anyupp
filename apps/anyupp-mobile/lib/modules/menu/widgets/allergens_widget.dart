@@ -27,7 +27,12 @@ class AllergensWidget extends StatelessWidget {
     List<Widget> allergenGrids = [];
     for (String allergen in allergens) {
       allergenGrids.add(Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: EdgeInsets.only(
+          top: 4.0,
+          bottom: 4.0,
+          left: 2.0,
+          right: 2.0,
+        ), //const EdgeInsets.all(4.0),
         child: Container(
           height: size,
           width: size,
@@ -51,38 +56,45 @@ class AllergensWidget extends StatelessWidget {
     }
     return GestureDetector(
       onTap: () => Nav.to(AllergenDetailsScreen()),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (showHeader)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                children: [
-                  Text(trans(context, "allergens.title"),
-                      style: GoogleFonts.poppins(
-                        color: theme.highlight,
-                        fontWeight: FontWeight.normal,
-                        fontSize: fontSize,
-                      )),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Icon(
-                    Icons.info,
-                    color: theme.highlight,
-                  )
-                ],
+      child: Container(
+        color: theme.background.withOpacity(0.2),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (showHeader)
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0, bottom: 8.0, top: 4.0),
+                child: Row(
+                  children: [
+                    Text(trans(context, "allergens.title"),
+                        style: GoogleFonts.poppins(
+                          color: theme.highlight,
+                          fontWeight: FontWeight.normal,
+                          fontSize: fontSize,
+                        )),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Icon(
+                      Icons.info,
+                      color: theme.highlight,
+                    )
+                  ],
+                ),
               ),
-            ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: getAllergenGrids(context),
-            ),
-          )
-        ],
+            Container(
+              padding: const EdgeInsets.only(left: 12.0, bottom: 8.0),
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: getAllergenGrids(context),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

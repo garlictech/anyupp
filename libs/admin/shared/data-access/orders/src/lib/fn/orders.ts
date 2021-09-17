@@ -113,42 +113,53 @@ export const getLowestStatus = (
   return SORTED_ORDER_STATUSES[Math.min(...statusIndices)];
 };
 
-export const getOrdersByUser = (
+export const getActiveOrdersByUser = (
   orders: CrudApi.Order[],
 ): IFloorMapUserOrderObjects => {
   const ordersByUser: IFloorMapUserOrderObjects = {};
 
-  orders.forEach((order: CrudApi.Order): void => {
-    if (!ordersByUser[order.userId]) {
-      ordersByUser[order.userId] = {
-        userId: order.userId,
-        orders: [{ ...order }],
-        lastOrder: { ...order },
-        hasPaymentIntention:
-          (order.paymentMode.type === CrudApi.PaymentType.card ||
+  orders
+    // Filter payed/failed served orders - these orders have been archived on another device
+    .filter(
+      o =>
+        !(
+          CrudApi.currentStatus(o.statusLog) === CrudApi.OrderStatus.served &&
+          (o.transactionStatus === CrudApi.PaymentStatus.success ||
+            o.transactionStatus === CrudApi.PaymentStatus.failed)
+        ),
+    )
+    .forEach((order: CrudApi.Order): void => {
+      if (!ordersByUser[order.userId]) {
+        ordersByUser[order.userId] = {
+          userId: order.userId,
+          orders: [{ ...order }],
+          lastOrder: { ...order },
+          hasPaymentIntention:
+            (order.paymentMode.type === CrudApi.PaymentType.card ||
+              order.paymentMode.type === CrudApi.PaymentType.cash) &&
+            order.transactionStatus ===
+              CrudApi.PaymentStatus.waiting_for_payment,
+          lowestStatus: currentStatus(order.statusLog),
+        };
+      } else {
+        ordersByUser[order.userId].orders.push({ ...order });
+        ordersByUser[order.userId].hasPaymentIntention =
+          ordersByUser[order.userId].hasPaymentIntention ||
+          ((order.paymentMode.type === CrudApi.PaymentType.card ||
             order.paymentMode.type === CrudApi.PaymentType.cash) &&
-          order.transactionStatus === CrudApi.PaymentStatus.waiting_for_payment,
-        lowestStatus: currentStatus(order.statusLog),
-      };
-    } else {
-      ordersByUser[order.userId].orders.push({ ...order });
-      ordersByUser[order.userId].hasPaymentIntention =
-        ordersByUser[order.userId].hasPaymentIntention ||
-        ((order.paymentMode.type === CrudApi.PaymentType.card ||
-          order.paymentMode.type === CrudApi.PaymentType.cash) &&
-          order.transactionStatus ===
-            CrudApi.PaymentStatus.waiting_for_payment);
+            order.transactionStatus ===
+              CrudApi.PaymentStatus.waiting_for_payment);
 
-      if (order.createdAt > ordersByUser[order.userId].lastOrder.createdAt) {
-        ordersByUser[order.userId].lastOrder = { ...order };
+        if (order.createdAt > ordersByUser[order.userId].lastOrder.createdAt) {
+          ordersByUser[order.userId].lastOrder = { ...order };
+        }
+
+        ordersByUser[order.userId].lowestStatus = getLowestStatus([
+          ordersByUser[order.userId].lowestStatus,
+          currentStatus(order.statusLog),
+        ]);
       }
-
-      ordersByUser[order.userId].lowestStatus = getLowestStatus([
-        ordersByUser[order.userId].lowestStatus,
-        currentStatus(order.statusLog),
-      ]);
-    }
-  });
+    });
 
   return ordersByUser;
 };

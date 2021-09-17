@@ -1,8 +1,11 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class Country {
-  String name;
-  String flag;
-  String code;
-  String dialCode;
+  final String name;
+  final String flag;
+  final String code;
+  final String dialCode;
 
   Country({
     required this.name,
