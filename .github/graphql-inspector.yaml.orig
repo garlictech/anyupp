@@ -1,10 +1,10 @@
 branch: 'dev'
 <<<<<<< HEAD
 schema: '.github/graphql-inspector-artifacts/schema.graphql'
-||||||| parent of 3cb2d33f (chore(all): test graphql inspector with multiple schemas)
-schema: 'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql'
-=======
+||||||| parent of e6188e34 (chore(all): revert 'te'st graphql inspector with multiple schemas)
 schema: 
   - 'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql'
   - 'libs/crud-gql/backend/src/graphql/schema/crud-api.graphql'
->>>>>>> 3cb2d33f (chore(all): test graphql inspector with multiple schemas)
+=======
+schema: 'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql'
+>>>>>>> e6188e34 (chore(all): revert 'te'st graphql inspector with multiple schemas)
