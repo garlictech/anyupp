@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-APPNAME=$1
+ENVNAME=$1
 CI=$2
 
 ./tools/build-workspace.sh $ENVNAME $CI
