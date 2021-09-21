@@ -114,7 +114,9 @@ class Order {
       createdAt: map['createdAt'],
       archived: map['archived'],
       transaction: map['transaction'] != null ? Transaction.fromJson(map['transaction']) : null,
-      transactionStatus: enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values),
+      transactionStatus: map['transactionStatus'] != null
+          ? enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values)
+          : null,
       transactionId: map['transactionId'],
     );
   }
