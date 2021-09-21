@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test dynamodb utils createUpdateParams tests 1`] = `
+Object {
+  "ExpressionAttributeNames": Object {
+    "#prop1": "prop1",
+    "#prop2": "prop2",
+    "#prop3": "prop3",
+    "#prop4": "prop4",
+  },
+  "ExpressionAttributeValues": Object {
+    ":prop1": "prop1",
+    ":prop2": 2,
+    ":prop3": true,
+    ":prop4": Object {
+      "embeddedProp": "embeddedProp",
+    },
+  },
+  "Key": Object {
+    "id": Object {
+      "S": "THE_KEY",
+    },
+  },
+  "TableName": "tablename",
+  "UpdateExpression": "set #prop1 = :prop1, #prop2 = :prop2, #prop3 = :prop3, #prop4 = :prop4",
+}
+`;
