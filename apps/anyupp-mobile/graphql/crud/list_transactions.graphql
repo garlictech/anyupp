@@ -1,7 +1,6 @@
 query ListTransactions($userId: ID!, $nextToken: String, $limit: Int) {
   searchTransactions(
     filter: { userId: { eq: $userId } }
-    sort: { field: createdAt, direction: desc }
     nextToken: $nextToken
     limit: $limit
   ) {

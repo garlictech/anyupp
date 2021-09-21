@@ -45,7 +45,7 @@ class AwsOrderSubscription {
   }
 
   Future<void> _startListSubscription({
-    required StreamController<List<Order>?> controller
+    required StreamController<List<Order>?> controller,
   }) async {
     try {
       // ArtemisClient client = await GQL.crud;

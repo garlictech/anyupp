@@ -142,7 +142,7 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = false;
-    if ((cart.place == null || (cart.place?.seat == "00" && cart.place?.table == "00")) && !isDev) {
+    if (cart.place == null || (cart.place?.seat == "00" && cart.place?.table == "00") && isDev) {
       showQrCodeScan = true;
     }
 

@@ -1,102 +1,20 @@
 query GetOrder($orderId: ID!) {
   getOrder(id: $orderId) {
+    transactionId
+    createdAt
     id
-    unitId
-    userId
-    archived
+    orderNum
     paymentIntention
-    takeAway
     paymentMode {
       caption
-      type
       method
-    }
-    place {
-      seat
-      table
-    }
-    statusLog {
-      status
-      ts
-      userId
-    }
-    sumPriceShown {
-      currency
-      pricePerUnit
-      priceSum
-      tax
-      taxSum
-    }
-    transaction {
-      createdAt
-      currency
-      externalTransactionId
-      id
-      invoice {
-        city
-        country
-        createdAt
-        customerName
-        email
-        externalInvoiceId
-        id
-        orderId
-        pdfUrl
-        postalCode
-        status
-        streetAddress
-        taxNumber
-        transactionId
-        userId
-        updatedAt
-      }
-      invoiceId
-      orderId
-      receipt {
-        createdAt
-        email
-        externalReceiptId
-        id
-        orderId
-        pdfData
-        status
-        transactionId
-        updatedAt
-        userId
-      }
-      receiptId
-      status
-      total
       type
-      updatedAt
-      user {
-        createdAt
-        email
-        id
-        invoiceAddress {
-          city
-          country
-          customerName
-          email
-          postalCode
-          streetAddress
-          taxNumber
-        }
-        name
-        phone
-        profileImage
-        stripeCustomerId
-        updatedAt
-      }
-      userId
     }
     items {
-      productId
-      productName {
-        de
-        en
-        hu
-      }
+      allergens
+      created
+      image
+      laneId
       priceShown {
         currency
         pricePerUnit
@@ -110,18 +28,6 @@ query GetOrder($orderId: ID!) {
         priceSum
         tax
         taxSum
-      }
-      quantity
-      statusLog {
-        status
-        ts
-        userId
-      }
-      variantId
-      variantName {
-        de
-        en
-        hu
       }
       configSets {
         items {
@@ -142,15 +48,44 @@ query GetOrder($orderId: ID!) {
         productSetId
         type
       }
-      allergens
-      image
-      laneId
-      created
+      productId
+      productName {
+        de
+        en
+        hu
+      }
+      quantity
+      statusLog {
+        status
+        ts
+        userId
+      }
+      variantId
+      variantName {
+        de
+        en
+        hu
+      }
     }
-    createdAt
-    orderNum
-    transactionId
-    transactionStatus
+    place {
+      seat
+      table
+    }
+    statusLog {
+      status
+      ts
+      userId
+    }
+    sumPriceShown {
+      currency
+      pricePerUnit
+      priceSum
+      tax
+      taxSum
+    }
+    takeAway
+    unitId
     updatedAt
+    userId
   }
 }
