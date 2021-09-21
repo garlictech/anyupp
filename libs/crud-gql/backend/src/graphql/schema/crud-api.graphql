@@ -765,6 +765,13 @@ type Receipt
   status: ReceiptStatus!
 }
 
+type Mutation {
+  updateRkeeperServerPassword(unitId: ID!, password: String!): Boolean
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "anyuppCrudCustomResolvers-${env}")
+}
+
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser
     @aws_subscribe(mutations: ["updateAdminUser"])
