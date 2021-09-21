@@ -1,2 +1,2 @@
 branch: 'dev'
-schema: '.github/graphql-inspector-test/schema.graphql'
+schema: '.github/graphql-inspector-artifacts/schema.graphql'
