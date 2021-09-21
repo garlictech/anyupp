@@ -88,6 +88,7 @@ void main() {
           nextToken: nextToken,
           controller: _controller,
         );
+        expect(orders, isNotNull);
         print('TEST[$i].orders.length=${orders?.length}');
         nextToken = _repository.orderListNextToken;
         print('TEST[$i].nextToken=$nextToken');

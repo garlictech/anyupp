@@ -187,6 +187,12 @@
     "sendOrder": "PLACE ORDER",
     "fillInvoice": "FILL INVOICE FORM",
     "orderPlaced": "Order successfully received.",
+    "status": {
+      "waiting_for_payment": "Waiting for payment",
+      "success": "Success",
+      "failed": "Failed",
+      "-": "Unknown"
+    },
     "paymentInfo": {
       "simplePay": {
         "prefix": "By selecting this payment method I indicate that I agree to the contents of the following documents.",
@@ -357,7 +363,13 @@
       "status": "Status",
       "paymentMethod": "Payment Method",
       "noTransactions": "No Transactions",
-      "details": "Details"
+      "details": "Details",
+      "type": {
+        "card": "Card",
+        "stripe": "Stripe",
+        "cash": "Cash",
+        "-": "Unknown"
+      }
     }
   },
   "affiliate": {
