@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -21,10 +22,17 @@ void main() {
     late StreamController<List<Order>> _controller;
 
     cleanUpOrders() async {
-      List<bool> deleteResults = await deleteAllOrders(testUsername, unitId, false);
-      print('***** Deleting Orders results=${deleteResults}');
-      deleteResults = await deleteAllOrders(testUsername, unitId, true);
-      print('***** Deleting Order Histories results=${deleteResults}');
+      List<bool> deleteResults = await deleteAllOrders(testUsername, unitId);
+      print('***** Deleting all orders results=${deleteResults}');
+    }
+
+    void _checkOrdersSortOrder(List<Order> orders) {
+      expect(orders, isNotNull);
+      for (int i = 0; i < orders.length - 1; i++) {
+        DateTime date1 = fromGraphQLAWSDateTimeToDartDateTime(orders[i].createdAt!);
+        DateTime date2 = fromGraphQLAWSDateTimeToDartDateTime(orders[i + 1].createdAt!);
+        expect(date1.millisecondsSinceEpoch, greaterThanOrEqualTo(date2.millisecondsSinceEpoch));
+      }
     }
 
     setUpAll(() async {
@@ -88,12 +96,15 @@ void main() {
           nextToken: nextToken,
           controller: _controller,
         );
+        expect(orders, isNotNull);
         print('TEST[$i].orders.length=${orders?.length}');
         nextToken = _repository.orderListNextToken;
         print('TEST[$i].nextToken=$nextToken');
         if (orders!.length == dummy_page_size) {
+          _checkOrdersSortOrder(orders);
           expect(orders.length, dummy_page_size);
         } else if (orders.isNotEmpty) {
+          _checkOrdersSortOrder(orders);
           expect(orders, isNotNull);
           expect(orders.length, remainingCount);
           expect(nextToken, isNotNull);
@@ -120,12 +131,15 @@ void main() {
           nextToken: nextToken,
           controller: _controller,
         );
+        expect(histories, isNotNull);
         print('HISTORY TEST[$i].orders.length=${histories?.length}');
         nextToken = _repository.orderHistoryListNextToken;
         print('HISTORY TEST[$i].nextToken=$nextToken');
         if (histories!.length == dummy_page_size) {
+          _checkOrdersSortOrder(histories);
           expect(histories.length, dummy_page_size);
         } else if (histories.isNotEmpty) {
+          _checkOrdersSortOrder(histories);
           expect(histories, isNotNull);
           expect(histories.length, remainingCount);
           expect(nextToken, isNotNull);

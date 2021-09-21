@@ -123,7 +123,7 @@ class AwsOrderHistorySubscription {
   }
 
   Future<List<Order>?> _getList() async {
-    // print('_getOrderList.variables=$variables');
+    print('_getOrderHistoryList().userId=$userId, unitId=$unitId');
     try {
       var result = await GQL.amplify.execute(SearchOrderHistoryQuery(
           variables: SearchOrderHistoryArguments(
@@ -133,8 +133,8 @@ class AwsOrderHistorySubscription {
         nextToken: _nextToken,
       )));
 
-      // print('_getOrderList().result.data=${result.data}');
-      // print('_getOrderList().result.exception=${result.exception}');
+      // print('_getOrderHistoryList().result.data=${result.data}');
+      // print('_getOrderHistoryList().result.exception=${result.exception}');
       if (result.data?.searchOrders == null) {
         _nextToken = null;
         _totalCount = 0;
