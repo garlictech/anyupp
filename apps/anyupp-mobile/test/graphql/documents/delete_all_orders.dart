@@ -3,8 +3,9 @@ import 'package:fa_prev/graphql/graphql.dart';
 import '../generated/crud-api.dart';
 import 'list_all_orders.dart';
 
-Future<List<bool>> deleteAllOrders(String userId, String unitId, bool archived) async {
-  List<String> orderIdList = await listAllDummyOrders(userId, unitId, archived);
+Future<List<bool>> deleteAllOrders(String userId, String unitId) async {
+  print('deleteAllOrders().userId=$userId, unitId=$unitId');
+  List<String> orderIdList = await listAllDummyOrders(userId, unitId);
   return await _deleteDummyOrders(orderIdList);
 }
 

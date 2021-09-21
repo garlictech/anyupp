@@ -44,9 +44,7 @@ class AwsOrderSubscription {
     // print('**** startOrderSubscription.end()');
   }
 
-  Future<void> _startListSubscription({
-    required StreamController<List<Order>?> controller,
-  }) async {
+  Future<void> _startListSubscription({required StreamController<List<Order>?> controller}) async {
     try {
       // ArtemisClient client = await GQL.crud;
       var client = await GQL.amplify.client;
@@ -123,7 +121,7 @@ class AwsOrderSubscription {
   }
 
   Future<List<Order>?> _getList() async {
-    // print('_getOrderList.variables=$variables');
+    print('_getOrderList().userId=$userId, unitId=$unitId');
     try {
       var result = await GQL.amplify.execute(SearchOrdersQuery(
           variables: SearchOrdersArguments(
@@ -134,7 +132,7 @@ class AwsOrderSubscription {
       )));
 
       // print('_getOrderList().result.data=${result.data}');
-      // print('_getOrderList().result.exception=${result.exception}');
+      // print('_getOrderList().result.errors=${result.errors}');
       if (result.data == null) {
         _nextToken = null;
         _totalCount = 0;
@@ -142,7 +140,7 @@ class AwsOrderSubscription {
       }
 
       var items = result.data!.searchOrders!.items;
-      // print('***** _getOrderList().items=$items');
+      print('***** _getOrderList().items=$items');
       if (items == null || items.isEmpty) {
         _nextToken = null;
         _totalCount = 0;
