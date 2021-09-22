@@ -1,17 +1,17 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { createUpdateParams } from '@bgap/shared/utils';
 import { flow, pipe } from 'fp-ts/lib/function';
-import { from } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
-import AWS from 'aws-sdk';
+import { from, Observable } from 'rxjs';
+import { mapTo, tap } from 'rxjs/operators';
+import { DynamoDB } from 'aws-sdk';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import * as R from 'ramda';
 
-const docClient = new AWS.DynamoDB.DocumentClient();
-
-interface UnitResolverDeps {
-  hashGenerator: (arg: string) => string;
+export interface UnitResolverDeps {
+  hashGenerator: (arg: string) => Promise<string>;
+  uuidGenerator: () => string;
   tableName: string;
+  docClient: DynamoDB.DocumentClient;
 }
 
 const hashPasswords =
@@ -25,7 +25,7 @@ const hashPasswords =
             R.over(
               lens,
               (password?) =>
-                password ? deps.hashGenerator(password) : undefined,
+                R.isNil(password) ? password : deps.hashGenerator(password),
               item,
             ),
           input,
@@ -33,22 +33,28 @@ const hashPasswords =
         ),
     );
 
-export const createUnitResolver = (deps: UnitResolverDeps) =>
-  flow(
-    hashPasswords(deps),
-    Item => ({
-      TableName: tableConfig.Unit.TableName,
-      Item,
-    }),
-    params => from(docClient.put(params).promise()),
-    mapTo(true),
-  );
+export const createUnitResolver =
+  (deps: UnitResolverDeps) =>
+  (item: CrudApi.CreateUnitInput): Observable<boolean> =>
+    pipe(
+      {
+        ...item,
+        id: item.id || deps.uuidGenerator(),
+      },
+      item => (item.pos?.rkeeper ? hashPasswords(deps)(item) : item),
+      Item => ({
+        TableName: tableConfig.Unit.TableName,
+        Item,
+      }),
+      params => from(deps.docClient.put(params).promise()),
+      mapTo(true),
+    );
 
-export const UpdateUnitResolver =
+export const updateUnitResolver =
   (deps: UnitResolverDeps) => (input: CrudApi.UpdateUnitInput) =>
     pipe(
       hashPasswords(deps)(input),
-      R.curry(createUpdateParams)(deps.tableName)(input.id),
-      item => from(docClient.update(item).promise()),
+      item => createUpdateParams(deps.tableName, input.id, item),
+      item => from(deps.docClient.update(item).promise()),
       mapTo(true),
     );

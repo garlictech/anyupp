@@ -3,10 +3,25 @@ import { App, Stack } from '@serverless-stack/resources';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam';
 import { tableConfig } from '@bgap/crud-gql/backend';
+import { secretsManagerArns } from '@bgap/anyupp-backend-lib';
+import * as sm from '@aws-cdk/aws-secretsmanager';
 
 export class AnyuppCrudInfra extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
+
+    const secretsManagerArn =
+      secretsManagerArns[scope.stage] || secretsManagerArns.dev;
+
+    const secretsManager = sm.Secret.fromSecretAttributes(
+      this,
+      'CrudInfraSecrets',
+      {
+        secretArn: secretsManagerArn,
+      },
+    );
+
+    const saltSecret = secretsManager.secretValueFromJson('salt').toString();
 
     const resolverLambda = new lambda.Function(this, 'CustomResolvers', {
       runtime: lambda.Runtime.NODEJS_14_X,
@@ -16,6 +31,9 @@ export class AnyuppCrudInfra extends Stack {
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/custom-resolvers.zip'),
       ),
+      environment: {
+        SALT: saltSecret,
+      },
     });
 
     if (resolverLambda.role) {
