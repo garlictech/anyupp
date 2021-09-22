@@ -1,49 +1,39 @@
-import { getAllPaginatedData } from '@bgap/gql-sdk';
-import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  validateChainProduct,
-  validateGroupProduct,
-  validateProductComponentList,
-  validateProductComponentSetList,
-  validateUnitProductList,
-} from '@bgap/shared/data-validators';
-import {
-  ProductComponentMap,
-  ProductComponentSetMap,
-  ProductWithPrices,
-} from '@bgap/shared/types';
-import {
-  filterNullish,
-  filterNullishGraphqlListWithDefault,
-  getNoProductInUnitgError,
-} from '@bgap/shared/utils';
-import { combineLatest, from, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, mergeMap, switchMap, toArray } from 'rxjs/operators';
-import { getTimezoneFromLocation } from '../../utils';
+import { pipeDebug } from '@bgap/shared/utils';
+import { combineLatest, of } from 'rxjs';
+import { map, mapTo, switchMap } from 'rxjs/operators';
 import { deleteGeneratedProductsForAUnitFromDb } from '../product';
 import { reGenerateActiveProductCategoriesForAUnit } from '../product-category';
-import {
-  calculateActualPricesAndCheckActivity,
-  toCreateGeneratedProductInputType,
-} from '../product/calculate-product';
+import { toCreateGeneratedProductInputType } from '../product/calculate-product';
 import { createGeneratedProductsInDb } from '../product/generated-product';
-import { mergeAllProductLayers, MergedProduct } from '../product/merge-product';
-import { UnitsResolverDeps } from './utils';
+import {
+  calculateAndFilterNotActiveProducts,
+  getMergedProductsFromUnitProducts,
+  getProductComponentMap,
+  getProductComponentSetMap,
+  getTimezoneForUnit,
+  listUnitProductsForAUnit,
+} from './regenerate-unit-data-utils';
+import { RegenerateUnitDataHandler, UnitsResolverDeps } from './utils';
 
 export const regenerateUnitData =
-  (unitId: string) =>
-  (deps: UnitsResolverDeps): Observable<boolean> => {
+  (deps: UnitsResolverDeps): RegenerateUnitDataHandler =>
+  (unitId: string) => {
+    console.log(
+      '### ~ file: REGENERATE-unit-data.resolver.ts 02 ~ line 36 ~ unitId',
+      unitId,
+    );
+
     // Clear previously generated products for the given UNIT
     return of(unitId).pipe(
-      switchMap(deleteGeneratedProductsForAUnitFromDb(deps)),
+      switchMap(deleteGeneratedProductsForAUnitFromDb(deps.crudSdk)),
       mapTo(unitId),
       switchMap(listUnitProductsForAUnit(deps)),
       switchMap(getMergedProductsFromUnitProducts(deps)),
       switchMap(mergedProducts =>
         combineLatest([
-          getTimezoneForUnit(unitId)(deps),
-          getProductComponentSetMap(mergedProducts[0].chainId)(deps), // all the unitProduct for the same unit has the same chainID
-          getProductComponentMap(mergedProducts[0].chainId)(deps), // all the unitProduct for the same unit has the same chainID
+          getTimezoneForUnit(deps)(unitId),
+          getProductComponentSetMap(deps)(mergedProducts[0].chainId), // all the unitProduct for the same unit has the same chainID
+          getProductComponentMap(deps)(mergedProducts[0].chainId), // all the unitProduct for the same unit has the same chainID
         ]).pipe(
           map(
             ([unitTimeZone, productComponentSetMap, productComponentMap]) => ({
@@ -82,116 +72,7 @@ export const regenerateUnitData =
         reGenerateActiveProductCategoriesForAUnit(deps)({
           unitId,
           generatedProducts: props.generatedProducts,
-        }),
-      ),
-    );
-  };
-
-const calculateAndFilterNotActiveProducts = (
-  inTimeZone: string,
-  mergedProducts: Array<MergedProduct>,
-) =>
-  mergedProducts.reduce((prev, curr) => {
-    const mergedProduct = calculateActualPricesAndCheckActivity({
-      product: curr,
-      atTimeISO: new Date().toISOString(),
-      inTimeZone,
-    });
-    if (mergedProduct === undefined) {
-      return prev;
-    }
-    return [...prev, mergedProduct];
-  }, <ProductWithPrices[]>[]);
-
-const listUnitProductsForAUnit =
-  (deps: UnitsResolverDeps) => (unitId: string) => {
-    const input: CrudApi.SearchUnitProductsQueryVariables = {
-      filter: { unitId: { eq: unitId } },
-    };
-    const throwOnEmptyList = (items: CrudApi.UnitProduct[]) =>
-      items.length > 0 ? of(items) : throwError(getNoProductInUnitgError());
-
-    return getAllPaginatedData(deps.crudSdk.SearchUnitProducts, {
-      query: input,
-      options: { fetchPolicy: 'no-cache' },
-    }).pipe(
-      switchMap(validateUnitProductList),
-      filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
-      switchMap(throwOnEmptyList),
-    );
-  };
-
-const get3LayerFromAUnitProduct =
-  (unitProduct: CrudApi.UnitProduct) =>
-  (
-    deps: UnitsResolverDeps,
-  ): Observable<{
-    chainProduct: CrudApi.ChainProduct;
-    groupProduct: CrudApi.GroupProduct;
-    unitProduct: CrudApi.UnitProduct;
-  }> => {
-    return from(
-      deps.crudSdk.GetGroupProduct({ id: unitProduct.parentId }),
-    ).pipe(
-      switchMap(validateGroupProduct),
-      switchMap(groupProduct =>
-        from(deps.crudSdk.GetChainProduct({ id: groupProduct.parentId })).pipe(
-          switchMap(validateChainProduct),
-          map(chainProduct => ({ unitProduct, groupProduct, chainProduct })),
-        ),
-      ),
-    );
-  };
-
-const getMergedProductsFromUnitProducts =
-  (deps: UnitsResolverDeps) => (unitProducts: Array<CrudApi.UnitProduct>) =>
-    from(unitProducts).pipe(
-      mergeMap(unitProduct => get3LayerFromAUnitProduct(unitProduct)(deps), 2),
-      map(productLayers => mergeAllProductLayers(productLayers)),
-      toArray(),
-    );
-
-const getTimezoneForUnit =
-  (unitId: string) =>
-  (deps: UnitsResolverDeps): Observable<string> =>
-    from(deps.crudSdk.GetUnit({ id: unitId })).pipe(
-      map(unit => unit?.address?.location),
-      filterNullish(),
-      map(getTimezoneFromLocation),
-    );
-
-const getProductComponentSetMap =
-  (chainId: string) =>
-  (deps: UnitsResolverDeps): Observable<ProductComponentSetMap> => {
-    const input: CrudApi.SearchProductComponentSetsQueryVariables = {
-      filter: { chainId: { eq: chainId } },
-    };
-
-    return getAllPaginatedData(deps.crudSdk.SearchProductComponentSets, {
-      query: input,
-      options: { fetchPolicy: 'no-cache' },
-    }).pipe(
-      switchMap(validateProductComponentSetList),
-      filterNullishGraphqlListWithDefault<CrudApi.ProductComponentSet>([]),
-      map(prodCompSets =>
-        prodCompSets.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {}),
-      ),
-    );
-  };
-const getProductComponentMap =
-  (chainId: string) =>
-  (deps: UnitsResolverDeps): Observable<ProductComponentMap> => {
-    const input: CrudApi.SearchProductComponentsQueryVariables = {
-      filter: { chainId: { eq: chainId } },
-    };
-    return getAllPaginatedData(deps.crudSdk.SearchProductComponents, {
-      query: input,
-      options: { fetchPolicy: 'no-cache' },
-    }).pipe(
-      switchMap(validateProductComponentList),
-      filterNullishGraphqlListWithDefault<CrudApi.ProductComponent>([]),
-      map(prodComps =>
-        prodComps.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {}),
+        }).pipe(pipeDebug('### REGENERATE-result')),
       ),
     );
   };

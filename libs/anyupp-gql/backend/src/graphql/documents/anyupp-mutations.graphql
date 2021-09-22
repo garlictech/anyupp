@@ -72,6 +72,149 @@ mutation CreateUnitProduct($input: CreateUnitProductInput!) {
   }
 }
 
+mutation UpdateUnitProduct($input: UpdateUnitProductInput!) {
+  updateUnitProduct(input: $input) {
+    chainId
+    groupId
+    isVisible
+    id
+    laneId
+    parentId
+    position
+    takeaway
+    unitId
+    variants {
+      availabilities {
+        dayFrom
+        dayTo
+        price
+        timeFrom
+        timeTo
+        type
+      }
+      id
+      isAvailable
+      variantName {
+        de
+        hu
+        en
+      }
+      refGroupPrice
+      price
+      position
+      pack {
+        size
+        unit
+      }
+    }
+  }
+}
+
+mutation DeleteUnitProduct($id: ID!) {
+  deleteUnitProduct(id: $id)
+}
+
+mutation UpdateChainProduct($input: UpdateChainProductInput!) {
+  updateChainProduct(input: $input) {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+      }
+      position
+    }
+  }
+}
+
+mutation UpdateGroupProduct($input: UpdateGroupProductInput!) {
+  updateGroupProduct(input: $input) {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+      }
+      position
+    }
+  }
+}
+
 mutation RegenerateUnitData($input: RegenerateUnitDataInput!) {
   regenerateUnitData(input: $input)
 }

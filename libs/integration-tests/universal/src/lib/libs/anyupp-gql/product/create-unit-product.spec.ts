@@ -1,30 +1,39 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { AnyuppSdk, getAnyuppSdkPublic } from '@bgap/anyupp-gql/api';
+import { productRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
   productFixture,
   testAdminUsername,
   testAdminUserPassword,
+  testIdPrefix,
 } from '@bgap/shared/fixtures';
-import { combineLatest, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { RequiredId } from '@bgap/shared/types';
+import { Auth } from 'aws-amplify';
+import { combineLatest, defer, iif, of } from 'rxjs';
+import { delay, switchMap } from 'rxjs/operators';
 import {
   createAuthenticatedAnyuppSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
 import { deleteTestUnitProduct } from '../../../seeds/unit-product';
-import { Auth } from 'aws-amplify';
+import { getUnitProduct } from './utils';
 
-const input: AnyuppApi.CreateUnitProductMutationVariables = {
-  input: productFixture.unitProductBase,
-} as any;
+const DYNAMODB_OPERATION_DELAY = 3000;
+const TEST_NAME = 'CREATE_UNIT_PROD_';
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 
+const unitProduct: RequiredId<AnyuppApi.CreateUnitProductInput> = {
+  ...productFixture.unitProductInputBase,
+  id: `${testIdPrefix}${TEST_NAME}unitProduct_01`,
+  unitId: 'UNIT_ID_TO_CRUD',
+};
 describe('CreateUnitProduct tests', () => {
   let publicAnyuppSdk: AnyuppSdk;
   let authAnyuppSdk: AnyuppSdk;
-  let publicCrudSdk: CrudApi.CrudSdk;
-  let iamCrudSdk: CrudApi.CrudSdk;
+  const iamCrudSdk: CrudApi.CrudSdk = createIamCrudSdk();
+
+  const cleanup = deleteTestUnitProduct(unitProduct.id, iamCrudSdk);
 
   beforeAll(async () => {
     publicAnyuppSdk = getAnyuppSdkPublic();
@@ -34,16 +43,16 @@ describe('CreateUnitProduct tests', () => {
     )
       .toPromise()
       .then(x => x.authAnyuppSdk);
-    publicCrudSdk = CrudApi.getCrudSdkPublic();
-    iamCrudSdk = createIamCrudSdk();
-  });
+    await cleanup.toPromise();
+  }, 10000);
 
   afterAll(async () => {
+    await cleanup.toPromise();
     await Auth.signOut();
-  });
+  }, 10000);
 
   it('should require authentication to access', done => {
-    publicAnyuppSdk.CreateUnitProduct(input).subscribe({
+    publicAnyuppSdk.CreateUnitProduct({ input: unitProduct }).subscribe({
       error(e) {
         expect(e).toMatchSnapshot();
         done();
@@ -52,60 +61,68 @@ describe('CreateUnitProduct tests', () => {
   }, 25000);
 
   describe('with authenticated user', () => {
-    // let authenticatedApsyncGraphQLClient;
     beforeAll(async () => {
       await combineLatest([
         // CleanUP
-        deleteTestUnitProduct(input.input.id, iamCrudSdk),
-      ])
-        // .pipe(
-        //   switchMap(() =>
-        //     // Seeding
-        //     // combineLatest([
-        //       // createTestCart(),
-        //       // createTestCart({
-        //       //   id: cartWithNotExistingUNIT,
-        //       //   unitId: unitSeed.unitId_NotExisting,
-        //       // }),
-        //     // ]),
-        //   ),
-        // )
-        .toPromise();
+        deleteTestUnitProduct(unitProduct.id, iamCrudSdk),
+      ]).toPromise();
     });
 
-    // PROBABLY THIS FEATURE WON'T BE USED !!!
-    it.skip('should create unitProduct in the database', done => {
-      authAnyuppSdk
-        .CreateUnitProduct(input)
-        // from(productRequestHandler.createUnitProduct(crudGraphqlClient)(input))
+    it('should throw in case of an invalid input', done => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const input: any = { foo: 'NOT A VALID INPUT' };
+      iif(
+        () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+        defer(() =>
+          productRequestHandler({
+            crudSdk: iamCrudSdk,
+            regenerateUnitDataHandler: jest.fn(),
+          }).createUnitProduct({ input }),
+        ),
+        authAnyuppSdk.CreateUnitProduct({ input }),
+      ).subscribe({
+        next() {
+          console.error(`${TEST_NAME}Test ERROR`, 'SHOULD NOT SUCCEED');
+        },
+        error(err) {
+          expect(err).toMatchSnapshot();
+          done();
+        },
+      });
+    }, 15000);
+
+    it('should create unitProduct in the database', done => {
+      const regenMockHandler = jest.fn().mockReturnValue(of(true));
+
+      defer(() =>
+        productRequestHandler({
+          crudSdk: iamCrudSdk,
+          regenerateUnitDataHandler: regenMockHandler,
+        }).createUnitProduct({ input: unitProduct }),
+      )
         .pipe(
-          // pipeDebug('### UNITPRODUCT CREATE RESULT'),
-          switchMap(product => getUnitProduct(publicCrudSdk, product.id)),
+          delay(DYNAMODB_OPERATION_DELAY),
+          switchMap(product => getUnitProduct(iamCrudSdk, product.id)),
         )
         .subscribe({
           next(result) {
-            // console.log(
-            //   '### ~ file: create-unit-product.spec.ts ~ line 69 ~ next ~ result',
-            //   JSON.stringify(result, undefined, 2),
-            // );
             const { createdAt, updatedAt, ...product } = result;
             expect(createdAt).not.toBeUndefined();
             expect(updatedAt).not.toBeUndefined();
             expect(product).toMatchSnapshot();
 
+            // Regeneration check
+            expect(regenMockHandler).toBeCalled();
+            expect(regenMockHandler).toHaveBeenNthCalledWith(
+              1,
+              unitProduct.unitId,
+            );
             done();
+          },
+          error(err) {
+            console.error(`${TEST_NAME}Test ERROR`, err);
           },
         });
     }, 25000);
   });
 });
-
-const getUnitProduct = (sdk: CrudApi.CrudSdk, productId: string) => {
-  return sdk.GetUnitProduct({ id: productId }).pipe(
-    switchMap(validateUnitProduct),
-    catchError(err => {
-      console.error(err);
-      return throwError('Unit is missing');
-    }),
-  );
-};

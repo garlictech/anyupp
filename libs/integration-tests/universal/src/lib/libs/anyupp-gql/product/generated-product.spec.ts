@@ -46,12 +46,10 @@ const productIds = [...Array(PRODUCT_NUM_FOR_BATCH_CRUD).keys()]
   .map(id => `${testIdPrefix}${TEST_NAME}ID_${id}`);
 
 describe('GenerateProduct tests', () => {
-  const deps = {
-    crudSdk: createIamCrudSdk(),
-  };
+  const crudSdk = createIamCrudSdk();
 
   it('should NOT the deleteGeneratedProductsForAUnit complete the stream without any item to delete', done => {
-    deleteGeneratedProductsForAUnitFromDb(deps)(
+    deleteGeneratedProductsForAUnitFromDb(crudSdk)(
       'WONT_BE_THERE_ANY_GENERATED_PROD_WITH_THIS_UNITID_FOR_SURE',
     ).subscribe({
       next() {
@@ -66,13 +64,14 @@ describe('GenerateProduct tests', () => {
       of('cleanup').pipe(
         // CleanUP
         switchMap(() =>
-          deleteTestGeneratedProduct(
-            unit02_generatedProduct_01.id,
-            deps.crudSdk,
-          ),
+          deleteTestGeneratedProduct(unit02_generatedProduct_01.id, crudSdk),
         ),
-        switchMap(() => deleteGeneratedProductsForAUnitFromDb(deps)(unitId_01)),
-        switchMap(() => deleteGeneratedProductsForAUnitFromDb(deps)(unitId_03)),
+        switchMap(() =>
+          deleteGeneratedProductsForAUnitFromDb(crudSdk)(unitId_01),
+        ),
+        switchMap(() =>
+          deleteGeneratedProductsForAUnitFromDb(crudSdk)(unitId_03),
+        ),
       );
 
     beforeAll(async () => {
@@ -82,10 +81,7 @@ describe('GenerateProduct tests', () => {
           // Seeding
           switchMap(() => {
             return combineLatest([
-              createTestGeneratedProduct(
-                unit02_generatedProduct_01,
-                deps.crudSdk,
-              ),
+              createTestGeneratedProduct(unit02_generatedProduct_01, crudSdk),
             ]);
           }),
           delay(DYNAMODB_OPERATION_DELAY),
@@ -109,7 +105,7 @@ describe('GenerateProduct tests', () => {
             ]),
           ),
           delay(DYNAMODB_OPERATION_DELAY),
-          switchMap(() => listGeneratedProductsForUnits(deps)([unitId_03])),
+          switchMap(() => listGeneratedProductsForUnits(crudSdk)([unitId_03])),
           tap({
             next(result) {
               expect(getSortedIds(result)).toEqual([
@@ -121,13 +117,13 @@ describe('GenerateProduct tests', () => {
           delay(DYNAMODB_OPERATION_DELAY),
           // DELETE
           switchMap(() =>
-            deleteGeneratedProductsForAUnitFromDb(deps)(
+            deleteGeneratedProductsForAUnitFromDb(crudSdk)(
               unit03_generatedProduct_01.unitId,
             ),
           ),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
-            listGeneratedProductsForUnits(deps)([unitId_02, unitId_03]),
+            listGeneratedProductsForUnits(crudSdk)([unitId_02, unitId_03]),
           ),
           tap({
             next(result) {
@@ -174,7 +170,7 @@ describe('GenerateProduct tests', () => {
           }),
           // bigger delay, to let elastic search index the new items
           delay(10000),
-          switchMap(() => listGeneratedProductsForUnits(deps)([unitId_01])),
+          switchMap(() => listGeneratedProductsForUnits(crudSdk)([unitId_01])),
           tap({
             next(result) {
               expect(getSortedIds(result)).toEqual(productIds);
@@ -184,11 +180,11 @@ describe('GenerateProduct tests', () => {
           delay(DYNAMODB_OPERATION_DELAY),
           // DELETE
           switchMap(() =>
-            deleteGeneratedProductsForAUnitFromDb(deps)(unitId_01),
+            deleteGeneratedProductsForAUnitFromDb(crudSdk)(unitId_01),
           ),
           delay(DYNAMODB_OPERATION_DELAY),
           switchMap(() =>
-            listGeneratedProductsForUnits(deps)([unitId_01, unitId_02]),
+            listGeneratedProductsForUnits(crudSdk)([unitId_01, unitId_02]),
           ),
           tap({
             // should delete all the generatedProducts for the unit01
