@@ -18,7 +18,10 @@ class TransactionInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('TransactionInfoWidget.transaction=$transactionItem');
+    if (transactionItem.receipt == null && transactionItem.invoice == null) {
+      return Container();
+    }
+
     bool showInvoice = false;
     if (transactionItem.invoice?.pdfUrl != null) {
       showInvoice = true;

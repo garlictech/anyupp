@@ -61,7 +61,7 @@ export const createInvoice =
 
     // OrderItems
     const items = order.items.map(orderItem => {
-      let label = orderItem.productName.hu; // Should use the language input param (Covered by #750)
+      let label = orderItem.productName.hu;
       if (!label) {
         label = orderItem.productName.en;
         if (!label) {
@@ -73,7 +73,7 @@ export const createInvoice =
       return new Szamlazz.Item({
         label,
         quantity: orderItem.quantity,
-        unit: 'db', // Should be translated it in the future (Covered by #751)
+        unit: 'db',
         vat: orderItem.sumPriceShown.tax, // can be a number or a special string
         grossUnitPrice: orderItem.sumPriceShown.pricePerUnit, // calculates gross and net values from per item net
       });
@@ -91,10 +91,6 @@ export const createInvoice =
       paid: true,
       comment: transaction.externalTransactionId,
     });
-    // console.debug(
-    //   '### ~ file: invoice.ts ~ line 72 ~ invoice',
-    //   JSON.stringify(invoice, undefined, 2),
-    // );
 
     try {
       return await szamlazzClient.issueInvoice(invoice);

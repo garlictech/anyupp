@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpdateUnitProduct tests should throw because of the missing GroupProduct - ANYUPP_API CALL 1`] = `[Error: GraphQL error: GroupProduct Object Validation Error (JOI): "value" must be of type object]`;
+
+exports[`UpdateUnitProduct tests should throw in case of an invalid input 1`] = `[Error: GraphQL error: The variables input contains a field name 'foo' that is not defined for input object type 'UpdateUnitProductInput' ]`;
+
+exports[`UpdateUnitProduct tests should update the unitProduct in the database and call the regeneration logic - LOCAL test: POSITION SHOULD BE 10 1`] = `
+Object {
+  "chainId": "chainId_",
+  "configSets": null,
+  "groupId": "groupId_",
+  "id": "test_UPDATE_UNIT_PROD_unitProduct_01",
+  "isVisible": true,
+  "laneId": "laneId_",
+  "parentId": "parentId_",
+  "position": 10,
+  "takeaway": true,
+  "unitId": "UNIT_ID_TO_CRUD",
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 1.5,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "test_UnitProductVariant_id_1",
+      "isAvailable": true,
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT_UNIT",
+      },
+      "position": 1,
+      "price": 30,
+      "refGroupPrice": 30,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_1",
+        "hu": null,
+      },
+    },
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 3,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "test_UnitProductVariant_id_2",
+      "isAvailable": true,
+      "pack": Object {
+        "size": 2,
+        "unit": "UNIT_UNIT",
+      },
+      "position": 2,
+      "price": 60,
+      "refGroupPrice": 60,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_2",
+        "hu": null,
+      },
+    },
+  ],
+}
+`;

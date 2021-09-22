@@ -1,2 +1,2 @@
 branch: 'dev'
-schema: 'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql'
+schema: '.github/graphql-inspector-artifacts/schema.graphql'

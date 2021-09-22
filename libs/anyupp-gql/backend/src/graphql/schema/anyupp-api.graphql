@@ -1,79 +1,3 @@
-### COMMON
-# TODO: extraxt these because the admin-api also contains these
-type Location @aws_cognito_user_pools {
-  lat: Float!
-  lng: Float!
-}
-
-input LocationInput {
-  lat: Float!
-  lng: Float!
-}
-
-type Address @aws_cognito_user_pools {
-  address: String!
-  city: String!
-  country: String!
-  title: String!
-  postalCode: String!
-  location: Location!
-}
-
-type LocalizedItem @aws_cognito_user_pools {
-  en: String
-  de: String
-  hu: String
-}
-
-type PaymentMode @aws_cognito_user_pools {
-  type: PaymentType!
-  caption: String
-  method: PaymentMethod!
-}
-
-enum PaymentMethod {
-  cash
-  card
-  inapp
-}
-
-enum PaymentType {
-  card
-  cash
-  simple
-  stripe
-  applepay
-  googlepay
-}
-
-type ChainStyle @aws_cognito_user_pools {
-  colors: ChainStyleColors!
-  images: ChainStyleImages
-}
-
-type ChainStyleColors @aws_cognito_user_pools {
-  backgroundLight: String!
-  backgroundDark: String!
-  borderLight: String!
-  borderDark: String!
-  disabled: String!
-  highlight: String!
-  indicator: String!
-  textLight: String!
-  textDark: String!
-}
-
-type ChainStyleImages @aws_cognito_user_pools {
-  header: String
-  logo: String
-}
-
-input LocalizedItemInput {
-  en: String
-  de: String
-  hu: String
-}
-
 ### ADMIN_USER
 input CreateAdminUserInput {
   email: String!
@@ -243,6 +167,7 @@ type StripeCard @aws_cognito_user_pools {
   billing_details: BillingDetails
 }
 
+# Rename to UserInvoiceAddressInput and relocate it in the shared.graphql (issue: #1736)
 input UserInvoiceAddress {
   customerName: String!
   taxNumber: String!
@@ -353,8 +278,16 @@ type Mutation {
     @aws_cognito_user_pools
 
   # Product
+  updateChainProduct(input: UpdateChainProductInput!): ChainProduct!
+    @aws_cognito_user_pools
+  updateGroupProduct(input: UpdateGroupProductInput!): GroupProduct!
+    @aws_cognito_user_pools
   createUnitProduct(input: CreateUnitProductInput!): UnitProduct!
     @aws_cognito_user_pools
+  updateUnitProduct(input: UpdateUnitProductInput!): UnitProduct!
+    @aws_cognito_user_pools
+  deleteUnitProduct(id: ID!): Boolean! @aws_cognito_user_pools
+
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
     @aws_cognito_user_pools

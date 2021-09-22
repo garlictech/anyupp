@@ -1,0 +1,292 @@
+### Location
+type Location @aws_cognito_user_pools {
+  lat: Float!
+  lng: Float!
+}
+input LocationInput {
+  lat: Float!
+  lng: Float!
+}
+
+### LocalizedItem
+type LocalizedItem @aws_cognito_user_pools {
+  en: String
+  de: String
+  hu: String
+}
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
+}
+
+type Address @aws_cognito_user_pools {
+  address: String!
+  city: String!
+  country: String!
+  title: String!
+  postalCode: String!
+  location: Location!
+}
+
+### Payment
+type PaymentMode @aws_cognito_user_pools {
+  type: PaymentType!
+  caption: String
+  method: PaymentMethod!
+}
+
+enum PaymentMethod {
+  cash
+  card
+  inapp
+}
+
+enum PaymentType {
+  card
+  cash
+  simple
+  stripe
+  applepay
+  googlepay
+}
+
+### ChainStyle
+type ChainStyle @aws_cognito_user_pools {
+  colors: ChainStyleColors!
+  images: ChainStyleImages
+}
+
+type ChainStyleColors @aws_cognito_user_pools {
+  backgroundLight: String!
+  backgroundDark: String!
+  borderLight: String!
+  borderDark: String!
+  disabled: String!
+  highlight: String!
+  indicator: String!
+  textLight: String!
+  textDark: String!
+}
+
+type ChainStyleImages @aws_cognito_user_pools {
+  header: String
+  logo: String
+}
+
+### ChainProduct
+type ChainProduct
+  @aws_cognito_user_pools
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productCategoryId: ID!
+  productType: String!
+  isVisible: Boolean!
+  image: String
+  variants: [ProductVariant]
+  allergens: [Allergen]
+  configSets: [ProductConfigSet]
+}
+input UpdateChainProductInput {
+  id: ID!
+  chainId: ID
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  productCategoryId: ID
+  productType: String
+  isVisible: Boolean
+  image: String
+  variants: [ProductVariantInput]
+  allergens: [Allergen]
+  configSets: [ProductConfigSetInput]
+}
+
+enum Allergen {
+  celery
+  crustaceans
+  egg
+  fish
+  gluten
+  lupin
+  milk
+  molluscs
+  mustard
+  peanut
+  sesame
+  soya
+  sulphites
+  treenuts
+}
+
+### GroupProduct
+type GroupProduct
+  @aws_cognito_user_pools
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent chainProduct ID
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean!
+  tax: Int!
+  # takeawayTax: Int
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+}
+input UpdateGroupProductInput {
+  id: ID!
+  parentId: ID
+  chainId: ID
+  groupId: ID
+  isVisible: Boolean
+  tax: Int
+  variants: [ProductVariantInput]
+  configSets: [ProductConfigSetInput]
+}
+
+### UnitProduct
+type UnitProduct
+  @aws_cognito_user_pools
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+}
+input CreateUnitProductInput {
+  id: ID # <== NOT REQUIRED
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariantInput]
+  configSets: [ProductConfigSetInput]
+}
+input UpdateUnitProductInput {
+  id: ID! # <== REQUIRED
+  parentId: ID
+  chainId: ID
+  groupId: ID
+  unitId: ID
+  isVisible: Boolean
+  takeaway: Boolean
+  laneId: ID
+  position: Int
+  variants: [ProductVariantInput]
+  configSets: [ProductConfigSetInput]
+}
+
+### ProductConfigSet
+type ProductConfigComponent @aws_cognito_user_pools {
+  productComponentId: ID!
+  refGroupPrice: Float!
+  price: Float!
+  position: Int!
+}
+input ProductConfigComponentInput {
+  productComponentId: ID!
+  refGroupPrice: Float!
+  price: Float!
+  position: Int!
+}
+
+type ProductConfigSet @aws_cognito_user_pools {
+  productSetId: ID!
+  items: [ProductConfigComponent!]!
+  position: Int!
+}
+input ProductConfigSetInput {
+  productSetId: ID!
+  items: [ProductConfigComponentInput!]!
+  position: Int!
+}
+
+### ProductVariant
+type ProductVariant @aws_cognito_user_pools {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  position: Int!
+}
+input ProductVariantInput {
+  id: ID!
+  variantName: LocalizedItemInput!
+  pack: ProductVariantPackInput
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [AvailabilityInput]
+  position: Int!
+}
+
+### ProductVariantPack
+type ProductVariantPack @aws_cognito_user_pools {
+  size: Float!
+  unit: String!
+}
+input ProductVariantPackInput {
+  size: Float!
+  unit: String!
+}
+
+### Availability
+type Availability @aws_cognito_user_pools {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+input AvailabilityInput {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+
+### UserInvoiceAddress
+# Re enable (issue: #1736)
+# type UserInvoiceAddress {
+#   customerName: String!
+#   taxNumber: String!
+#   country: String!
+#   city: String!
+#   streetAddress: String!
+#   postalCode: String!
+#   email: String
+# }
+# input UserInvoiceAddressInput {
+#   customerName: String!
+#   taxNumber: String!
+#   country: String!
+#   city: String!
+#   streetAddress: String!
+#   postalCode: String!
+#   email: String
+# }

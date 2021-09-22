@@ -16,7 +16,7 @@ import {
   createIamCrudSdk,
 } from '../../../../api-clients';
 
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = true;
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = true; // SHOULD STAY to LOCAL CODE test because the userName generator works only locally
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: 'eu-west-1',
@@ -49,7 +49,8 @@ describe('Admin user creation/deletion', () => {
             sdk.DeleteAdminUser({ userName }),
           ).pipe(
             catchError((err: Error) => {
-              console.log('***', err);
+              // console.log('***', err);
+              console.log('DEL - OK');
               if (err.message.includes('User does not exist')) {
                 return of({});
               }
@@ -69,6 +70,7 @@ describe('Admin user creation/deletion', () => {
               ).pipe(
                 catchError(err => {
                   expect(err).toMatchSnapshot('Invalid phone number error');
+                  console.log('INVALID PHONE - OK');
                   return of({});
                 }),
               );
@@ -87,6 +89,7 @@ describe('Admin user creation/deletion', () => {
               ).pipe(
                 catchError(err => {
                   expect(err).toMatchSnapshot('Malformed email error');
+                  console.log('INVALID MAIL - OK');
                   return of({});
                 }),
               );
@@ -104,8 +107,16 @@ describe('Admin user creation/deletion', () => {
                 sdk.CreateAdminUser({ input }),
               ).pipe(
                 catchError(err => {
-                  console.error('SHOULD NOT THROW', err);
+                  console.error(
+                    'SHOULD NOT THROW - successful-create-step',
+                    err,
+                  );
                   return throwError(err);
+                }),
+                tap({
+                  next() {
+                    console.log('SUCCESFULL CREATE - OK');
+                  },
                 }),
               );
             }),
@@ -125,6 +136,7 @@ describe('Admin user creation/deletion', () => {
                   expect(err).toMatchSnapshot(
                     'Should not create existing user',
                   );
+                  console.log('EXISTING USER - OK');
                   return of({});
                 }),
               );
@@ -137,10 +149,13 @@ describe('Admin user creation/deletion', () => {
                 sdk.DeleteAdminUser({ userName }),
               ),
             ),
-            tap(result => expect(result).toMatchSnapshot('Cleanup')),
+            tap(result => {
+              expect(result).toMatchSnapshot('Cleanup');
+              console.log('CLEANUP - OK');
+            }),
           ),
         ),
       )
       .subscribe(() => done());
-  }, 20000);
+  }, 25000);
 });

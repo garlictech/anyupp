@@ -4,47 +4,71 @@ exports[`CreateUnitProduct tests should require authentication to access 1`] = `
 
 exports[`CreateUnitProduct tests with authenticated user should create unitProduct in the database 1`] = `
 Object {
-  "__typename": "UnitProduct",
-  "chainId": "chain_1_id",
-  "groupId": "group_c1_1_id",
-  "id": "unit_product_1_id",
+  "chainId": "chainId_",
+  "configSets": null,
+  "groupId": "groupId_",
+  "id": "test_CREATE_UNIT_PROD_unitProduct_01",
   "isVisible": true,
-  "laneId": null,
-  "parentId": "PARENT_ID",
-  "position": 0,
-  "takeaway": false,
-  "unitId": "unit_c1_g1_1_id",
+  "laneId": "laneId_",
+  "parentId": "parentId_",
+  "position": 1,
+  "takeaway": true,
+  "unitId": "UNIT_ID_TO_CRUD",
   "variants": Array [
     Object {
-      "__typename": "ProductVariant",
       "availabilities": Array [
         Object {
-          "__typename": "Availability",
           "dayFrom": "",
           "dayTo": "",
-          "price": 60,
+          "price": 1.5,
           "timeFrom": "",
           "timeTo": "",
           "type": "A",
         },
       ],
-      "id": "VARIANT_ID",
+      "id": "test_UnitProductVariant_id_1",
       "isAvailable": true,
       "pack": Object {
-        "__typename": "ProductVariantPack",
-        "size": 2,
-        "unit": "dl",
+        "size": 1,
+        "unit": "UNIT_UNIT",
       },
       "position": 1,
-      "price": 11,
-      "refGroupPrice": null,
+      "price": 30,
+      "refGroupPrice": 30,
       "variantName": Object {
-        "__typename": "LocalizedItem",
         "de": null,
-        "en": "glass",
-        "hu": "pohár",
+        "en": "VARIANT_NAME_1",
+        "hu": null,
+      },
+    },
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 3,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "test_UnitProductVariant_id_2",
+      "isAvailable": true,
+      "pack": Object {
+        "size": 2,
+        "unit": "UNIT_UNIT",
+      },
+      "position": 2,
+      "price": 60,
+      "refGroupPrice": 60,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_2",
+        "hu": null,
       },
     },
   ],
 }
 `;
+
+exports[`CreateUnitProduct tests with authenticated user should throw in case of an invalid input 1`] = `[Error: GraphQL error: The variables input contains a field name 'foo' that is not defined for input object type 'CreateUnitProductInput' ]`;

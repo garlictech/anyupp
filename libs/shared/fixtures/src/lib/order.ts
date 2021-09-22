@@ -121,14 +121,14 @@ const stripePayment = {
   },
 };
 
+const getOrderStatusLogItem = (status: CrudApi.OrderStatus) => ({
+  userId: 'test-alice',
+  status,
+  ts: 1627909024677,
+});
+
 const getOrderStatusLog = (status: CrudApi.OrderStatus) => ({
-  statusLog: [
-    {
-      userId: 'test-alice',
-      status,
-      ts: 1627909024677,
-    },
-  ],
+  statusLog: [getOrderStatusLogItem(status)],
 });
 
 const waitingTransaction = {
@@ -188,6 +188,20 @@ const activeSuccessCashOrderInput: CrudApi.CreateOrderInput = {
   ...cashPayment,
   ...successfullTransaction,
   ...getOrderStatusLog(CrudApi.OrderStatus.placed),
+};
+
+const activeServedSuccessCardOrderInput: CrudApi.CreateOrderInput = {
+  ...activeOrderInputBase,
+  ...cardPayment,
+  ...successfullTransaction,
+  ...getOrderStatusLog(CrudApi.OrderStatus.served),
+};
+
+const activeServedSuccessCashOrderInput: CrudApi.CreateOrderInput = {
+  ...activeOrderInputBase,
+  ...cashPayment,
+  ...successfullTransaction,
+  ...getOrderStatusLog(CrudApi.OrderStatus.served),
 };
 
 const activeSuccessStripeOrderInput: CrudApi.CreateOrderInput = {
@@ -356,6 +370,7 @@ export const orderFixture = {
   cashPayment,
 
   // Status
+  getOrderStatusLogItem,
   getOrderStatusLog,
 
   // Transaction
@@ -370,6 +385,8 @@ export const orderFixture = {
   activeSuccessCardOrderInput,
   activeSuccessCashOrderInput,
   activeSuccessStripeOrderInput,
+  activeServedSuccessCardOrderInput,
+  activeServedSuccessCashOrderInput,
 
   historySuccessCardOrderInput,
   historySuccessCashOrderInput,

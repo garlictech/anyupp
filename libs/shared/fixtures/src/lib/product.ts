@@ -69,7 +69,10 @@ const getUnitProductVariant = (
   position: idx,
 });
 
-const chainProductBase: RequiredId<CrudApi.CreateChainProductInput> = {
+const chainProductInputBase: Omit<
+  RequiredId<CrudApi.CreateChainProductInput>,
+  'variants'
+> & { variants: CrudApi.ProductVariantInput[] } = {
   id: `${testIdPrefix}chainProduct_id_`,
   chainId: 'chainId_',
   name: { en: 'CHAIN_PRODUCT' },
@@ -82,7 +85,10 @@ const chainProductBase: RequiredId<CrudApi.CreateChainProductInput> = {
   allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
 };
 
-const groupProductBase: RequiredId<CrudApi.CreateGroupProductInput> = {
+const groupProductInputBase: Omit<
+  RequiredId<CrudApi.CreateGroupProductInput>,
+  'variants'
+> & { variants: CrudApi.ProductVariantInput[] } = {
   id: `${testIdPrefix}generatedProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',
@@ -92,7 +98,7 @@ const groupProductBase: RequiredId<CrudApi.CreateGroupProductInput> = {
   variants: [getGroupProductVariant(1), getGroupProductVariant(2)],
 };
 
-const unitProductBase: Omit<
+const unitProductInputBase: Omit<
   RequiredId<CrudApi.CreateUnitProductInput>,
   'variants'
 > & { variants: CrudApi.ProductVariantInput[] } = {
@@ -109,10 +115,35 @@ const unitProductBase: Omit<
   supportedServingModes: [CrudApi.ServingMode.takeaway],
 };
 
+const chainProductBase: Omit<RequiredId<CrudApi.ChainProduct>, 'variants'> & {
+  variants: CrudApi.ProductVariant[];
+} = {
+  ...chainProductInputBase,
+  createdAt: '2021-08-17T15:13:47.532Z',
+  updatedAt: '2021-08-17T15:14:05.132Z',
+};
+const groupProductBase: Omit<RequiredId<CrudApi.GroupProduct>, 'variants'> & {
+  variants: CrudApi.ProductVariant[];
+} = {
+  ...groupProductInputBase,
+  createdAt: '2021-08-17T15:13:47.532Z',
+  updatedAt: '2021-08-17T15:14:05.132Z',
+};
+const unitProductBase: Omit<RequiredId<CrudApi.UnitProduct>, 'variants'> & {
+  variants: CrudApi.ProductVariant[];
+} = {
+  ...unitProductInputBase,
+  createdAt: '2021-08-17T15:13:47.532Z',
+  updatedAt: '2021-08-17T15:14:05.132Z',
+};
+
 export const productFixture = {
   chainProductBase,
   groupProductBase,
   unitProductBase,
+  chainProductInputBase,
+  groupProductInputBase,
+  unitProductInputBase,
   unitProductId_seeded_id_01,
   unitProductId_seeded_id_02,
 };

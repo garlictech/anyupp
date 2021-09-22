@@ -1,18 +1,3 @@
-import { pipe } from 'fp-ts/lib/function';
-import * as fp from 'lodash/fp';
-import * as R from 'ramda';
-import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  delay,
-  map,
-  switchMap,
-  takeLast,
-  tap,
-  toArray,
-} from 'rxjs/operators';
-
 import {
   createAdminUser as resolverCreateAdminUser,
   ResolverErrorCode,
@@ -30,7 +15,20 @@ import {
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { EProductType } from '@bgap/shared/types';
-
+import { pipe } from 'fp-ts/lib/function';
+import * as fp from 'lodash/fp';
+import * as R from 'ramda';
+import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  delay,
+  map,
+  switchMap,
+  takeLast,
+  tap,
+  toArray,
+} from 'rxjs/operators';
 import {
   createAdminUser,
   createComponentSets,

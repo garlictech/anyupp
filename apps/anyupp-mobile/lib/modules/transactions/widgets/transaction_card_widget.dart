@@ -141,7 +141,7 @@ class TransactionCard extends StatelessWidget {
                 ),
               ),
               Text(
-                enumToString(transaction.status) ?? '-',
+                trans(context, "payment.status.${enumToString(transaction.status) ?? '-'}"),
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: theme.text,
@@ -164,7 +164,7 @@ class TransactionCard extends StatelessWidget {
                 ),
               ),
               Text(
-                transaction.type!,
+                trans(context, "profile.transactions.type.${transaction.type ?? '-'}"),
                 style: GoogleFonts.poppins(
                   fontSize: 14,
                   color: theme.text,

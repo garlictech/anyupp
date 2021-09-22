@@ -2,3 +2,13 @@
 . "$(dirname "$0")/_/husky.sh"
 
 yarn pretty-quick --staged
+
+# merge graphql schemas for GraphQL Inspector
+
+echo "Creating graphql schema for graphql inspection..."
+cat \
+  libs/gql-sdk/src/schema/aws.graphql \
+  libs/gql-sdk/src/schema/shared.graphql \
+  libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql \
+  libs/crud-gql/backend/src/graphql/schema/crud-api.graphql \
+  > .github/graphql-inspector-artifacts/schema.graphql

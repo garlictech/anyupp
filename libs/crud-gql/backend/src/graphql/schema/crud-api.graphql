@@ -1,23 +1,3 @@
-type Address {
-  address: String!
-  city: String!
-  country: String!
-  title: String!
-  postalCode: String!
-  location: Location!
-}
-
-type Location {
-  lat: Float!
-  lng: Float!
-}
-
-type LocalizedItem {
-  en: String
-  de: String
-  hu: String
-}
-
 ### AdminUser
 
 type AdminUser
@@ -175,28 +155,6 @@ type Chain
   phone: String
 }
 
-type ChainStyle {
-  colors: ChainStyleColors!
-  images: ChainStyleImages
-}
-
-type ChainStyleColors {
-  backgroundLight: String!
-  backgroundDark: String!
-  borderLight: String!
-  borderDark: String!
-  disabled: String!
-  highlight: String!
-  indicator: String!
-  textLight: String!
-  textDark: String!
-}
-
-type ChainStyleImages {
-  header: String
-  logo: String
-}
-
 ### Group
 type Group
   @model
@@ -322,21 +280,6 @@ enum OrderStatus {
   rejected
 }
 
-enum PaymentMethod {
-  cash
-  card
-  inapp
-}
-
-enum PaymentType {
-  card
-  cash
-  simple
-  stripe
-  applepay
-  googlepay
-}
-
 type Place {
   seat: String!
   table: String!
@@ -379,20 +322,6 @@ type ProductComponentSet
   description: String!
   items: [ID!]! # ProductComponent ID
   maxSelection: Int # On extras
-}
-
-### ProductConfigSet
-type ProductConfigComponent {
-  productComponentId: ID!
-  refGroupPrice: Float!
-  price: Float!
-  position: Int!
-}
-
-type ProductConfigSet {
-  productSetId: ID!
-  items: [ProductConfigComponent!]!
-  position: Int!
 }
 
 type GeneratedProductConfigComponent {
@@ -615,12 +544,6 @@ type WeeklySchedule {
   sat: DateInterval
   sun: DateInterval
   custom: [CustomDailySchedule]
-}
-
-type PaymentMode {
-  type: PaymentType!
-  caption: String
-  method: PaymentMethod!
 }
 
 type FloorMapData {
