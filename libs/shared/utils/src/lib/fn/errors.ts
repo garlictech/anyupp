@@ -9,8 +9,14 @@ export const getUnitIsNotAcceptingOrdersError = () =>
 
 export const getCartIsMissingError = () => 'Cart is missing';
 
-export const getNoProductInUnitgError = () =>
+export const getNoProductInUnitError = () =>
   JSON.stringify({
     message: 'There is no product in this unit',
     code: 'ERROR_NO_PRODUCT_IN_UNIT',
   });
+
+// export const getNoUnitgError = () =>
+//   JSON.stringify({
+//     message: 'The selected unit is not exists in the database',
+//     code: 'ERROR_UNKNOWN_UNIT',
+//   });

@@ -1,13 +1,13 @@
-import { DocumentNode } from 'graphql';
-import AWSAppSyncClient from 'aws-appsync/lib';
 import {
   MutationOptions,
   QueryOptions,
   SubscriptionOptions,
 } from 'apollo-client';
+import AWSAppSyncClient from 'aws-appsync/lib';
+import { DocumentNode } from 'graphql';
+import * as fp from 'lodash/fp';
 import { defer, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as fp from 'lodash/fp';
 import { fromApolloSubscription } from './utils';
 
 const validDocDefOps = ['mutation', 'query', 'subscription'];
@@ -118,6 +118,7 @@ export const getSdkRequester =
               query: doc,
               variables,
               ...options,
+              fetchPolicy: options?.fetchPolicy || 'no-cache',
             }),
           ),
         ).pipe(map(processResponse));
@@ -128,7 +129,7 @@ export const getSdkRequester =
             .subscribe({
               query: doc,
               variables,
-              fetchPolicy: options?.fetchPolicy,
+              fetchPolicy: options?.fetchPolicy || 'no-cache',
             })
             .map(processResponse),
         );

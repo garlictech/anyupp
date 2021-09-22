@@ -134,7 +134,7 @@ const handleInvoice =
         user,
         transaction,
         order,
-        language: Szamlazz.Language.Hungarian, // get the user's preferred language (Covered by #747)
+        language: Szamlazz.Language.Hungarian,
       });
 
       const invoiceData: Szamlazz.SendRequestResponse =
