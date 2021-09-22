@@ -1,7 +1,8 @@
+import * as CrudApi from '@bgap/crud-gql/api';
 import * as Joi from 'joi';
 import { validateGqlList, validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { getUpdateSchema } from './utils';
 
 export const allergenListSchema = Joi.array().items(Joi.string());
 
@@ -40,6 +41,14 @@ export const groupProductSchema: Joi.SchemaMap<CrudApi.GroupProduct> = {
 export const { validate: validateGroupProduct, isType: isGroupProduct } =
   validateSchema<CrudApi.GroupProduct>(groupProductSchema, 'GroupProduct');
 
+export const {
+  validate: validateGroupProductList,
+  isType: isGroupProductList,
+} = validateGqlList<CrudApi.GroupProduct>(
+  groupProductSchema,
+  'GroupProductList',
+);
+
 export const unitProductSchema: Joi.SchemaMap<CrudApi.UnitProduct> = {
   id: Joi.string().required(),
   parentId: Joi.string().required(),
@@ -61,6 +70,20 @@ export const { validate: validateUnitProduct, isType: isUnitProduct } =
 
 export const { validate: validateUnitProductList, isType: isUnitProductList } =
   validateGqlList<CrudApi.UnitProduct>(unitProductSchema, 'UnitProductList');
+
+export const createUnitProductSchema: Joi.SchemaMap<CrudApi.UnitProduct> = {
+  ...unitProductSchema,
+  id: Joi.string().allow(null, ''),
+  createdAt: null,
+  updatedAt: null,
+};
+
+export const updateChainProductSchema: Joi.ObjectSchema<CrudApi.ChainProduct> =
+  getUpdateSchema(chainProductSchema);
+export const updateGroupProductSchema: Joi.ObjectSchema<CrudApi.GroupProduct> =
+  getUpdateSchema(groupProductSchema);
+export const updateUnitProductSchema: Joi.ObjectSchema<CrudApi.UnitProduct> =
+  getUpdateSchema(unitProductSchema);
 
 export const generatedProductSchema: Joi.SchemaMap<CrudApi.GeneratedProduct> = {
   id: Joi.string().required(),

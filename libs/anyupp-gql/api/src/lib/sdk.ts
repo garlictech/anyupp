@@ -1,6 +1,6 @@
-import { getSdk } from './generated/anyupp-api';
 import { getSdkRequester, SdkMethodMapper } from '@bgap/gql-sdk';
 import { flow } from 'fp-ts/lib/function';
+import { getSdk } from './generated/anyupp-api';
 
 export const getSdkAnyupp = flow(getSdkRequester, getSdk);
 

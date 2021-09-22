@@ -1,17 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreateUnitProduct tests should require authentication to access 1`] = `[Error: GraphQL error: Not Authorized to access createUnitProduct on type Mutation]`;
+exports[`UpdateUnitProduct tests should throw because of the missing GroupProduct - ANYUPP_API CALL 1`] = `[Error: GraphQL error: GroupProduct Object Validation Error (JOI): "value" must be of type object]`;
 
-exports[`CreateUnitProduct tests with authenticated user should create unitProduct in the database 1`] = `
+exports[`UpdateUnitProduct tests should throw in case of an invalid input 1`] = `[Error: GraphQL error: The variables input contains a field name 'foo' that is not defined for input object type 'UpdateUnitProductInput' ]`;
+
+exports[`UpdateUnitProduct tests should update the unitProduct in the database and call the regeneration logic - LOCAL test: POSITION SHOULD BE 10 1`] = `
 Object {
   "chainId": "chainId_",
   "configSets": null,
   "groupId": "groupId_",
-  "id": "test_CREATE_UNIT_PROD_unitProduct_01",
+  "id": "test_UPDATE_UNIT_PROD_unitProduct_01",
   "isVisible": true,
   "laneId": "laneId_",
   "parentId": "parentId_",
-  "position": 1,
+  "position": 10,
   "takeaway": true,
   "unitId": "UNIT_ID_TO_CRUD",
   "variants": Array [
@@ -70,5 +72,3 @@ Object {
   ],
 }
 `;
-
-exports[`CreateUnitProduct tests with authenticated user should throw in case of an invalid input 1`] = `[Error: GraphQL error: The variables input contains a field name 'foo' that is not defined for input object type 'CreateUnitProductInput' ]`;

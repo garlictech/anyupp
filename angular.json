@@ -1166,11 +1166,8 @@
         "build-schema": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [
-              {
-                "command": "yarn graphql-codegen --config tools/graphql-codegen-anyupp.yml"
-              }
-            ]
+            "cwd": "apps/crud-backend",
+            "commands": ["../../tools/build-schema-anyupp-api.sh {args.stage}"]
           },
           "outputs": ["libs/anyupp-gql/api/src/lib/generated"]
         }

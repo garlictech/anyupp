@@ -5,6 +5,7 @@ import {
   createSzamlazzClient,
   orderRequestHandler,
   productRequestHandler,
+  regenerateUnitData,
   stripeRequestHandler,
   unitRequestHandler,
   userRequestHandler,
@@ -70,6 +71,7 @@ export const handler: Handler<AnyuppRequest, unknown> = (
 
   const productRequestHandlers = productRequestHandler({
     crudSdk,
+    regenerateUnitDataHandler: regenerateUnitData({ crudSdk }),
   });
 
   const stripeRequestHandlers = stripeRequestHandler({
@@ -97,6 +99,10 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     getUnitsNearLocation: unitRequestHandlers.getUnitsNearLocation,
     regenerateUnitData: unitRequestHandlers.regenerateUnitData,
     createUnitProduct: productRequestHandlers.createUnitProduct,
+    updateUnitProduct: productRequestHandlers.updateUnitProduct,
+    deleteUnitProduct: productRequestHandlers.deleteUnitProduct,
+    updateChainProduct: productRequestHandlers.updateChainProduct,
+    updateGroupProduct: productRequestHandlers.updateGroupProduct,
     createAnonymUser: userRequestHandlers.createAnonymUser,
   };
 

@@ -1,10 +1,10 @@
-import * as Joi from 'joi';
-import { switchMap } from 'rxjs/operators';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { locationSchema, validateSchema } from '@bgap/shared/data-validators';
+import * as Joi from 'joi';
+import { switchMap } from 'rxjs/operators';
 import { getUnitsInRadius } from './get-units-in-radius.resolver';
-import { UnitsResolverDeps } from './utils';
 import { regenerateUnitData } from './regenerate-unit-data.resolver';
+import { UnitsResolverDeps } from './utils';
 
 export const unitRequestHandler = (deps: UnitsResolverDeps) => ({
   getUnitsNearLocation: (
@@ -24,7 +24,7 @@ export const unitRequestHandler = (deps: UnitsResolverDeps) => ({
     //   .pipe(
     //     switchMap(() =>
 
-    regenerateUnitData(requestPayload.input.id)(deps).toPromise(),
+    regenerateUnitData(deps)(requestPayload.input.id).toPromise(),
 });
 
 const getUnitsInRadiusInputSchema: Joi.SchemaMap<AnyuppApi.GetUnitsNearLocationInput> =
