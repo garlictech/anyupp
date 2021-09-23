@@ -17,7 +17,7 @@ export class StorageService {
     return key;
   }
 
-  public removeFile(key: string): Promise<void> {
+  public removeFile(key: string): Promise<unknown> {
     return Storage.remove(key);
   }
 }
