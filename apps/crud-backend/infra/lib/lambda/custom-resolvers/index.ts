@@ -15,8 +15,7 @@ const salt = process.env.SALT || '';
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-const hashGenerator = async (password: string) =>
-  await bcrypt.hash(password, salt);
+const hashGenerator = (password: string) => bcrypt.hashSync(password, salt);
 
 const uuidGenerator = uuidV1;
 

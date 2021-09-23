@@ -1,14 +1,13 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { createUpdateParams } from '@bgap/shared/utils';
-import { flow, pipe } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/lib/function';
 import { from, Observable } from 'rxjs';
-import { mapTo, tap } from 'rxjs/operators';
+import { mapTo } from 'rxjs/operators';
 import { DynamoDB } from 'aws-sdk';
-import { tableConfig } from '@bgap/crud-gql/backend';
 import * as R from 'ramda';
 
 export interface UnitResolverDeps {
-  hashGenerator: (arg: string) => Promise<string>;
+  hashGenerator: (arg: string) => string;
   uuidGenerator: () => string;
   tableName: string;
   docClient: DynamoDB.DocumentClient;
@@ -43,7 +42,7 @@ export const createUnitResolver =
       },
       item => (item.pos?.rkeeper ? hashPasswords(deps)(item) : item),
       Item => ({
-        TableName: tableConfig.Unit.TableName,
+        TableName: deps.tableName,
         Item,
       }),
       params => from(deps.docClient.put(params).promise()),
@@ -53,7 +52,7 @@ export const createUnitResolver =
 export const updateUnitResolver =
   (deps: UnitResolverDeps) => (input: CrudApi.UpdateUnitInput) =>
     pipe(
-      hashPasswords(deps)(input),
+      input.pos?.rkeeper ? hashPasswords(deps)(input) : input,
       item => createUpdateParams(deps.tableName, input.id, item),
       item => from(deps.docClient.update(item).promise()),
       mapTo(true),
