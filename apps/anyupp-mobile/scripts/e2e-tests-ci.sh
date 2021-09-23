@@ -3,7 +3,7 @@ set -e
 
 echo
 echo "************************************************************************"
-echo "* Executing integration tests in headless mode."
+echo "* Executing e2e tests in headless mode."
 echo "* Use this script in docker/ci environments."
 echo "* For the environment, see the" 
 echo "* 'apps/cicd/docker/Dockerfile.flutter' file."
@@ -32,7 +32,7 @@ flutter doctor
 
 echo
 echo "************************************************************************"
-echo " Executing the integration tests..."
+echo " Executing the e2e tests..."
 echo "************************************************************************"
 echo
-flutter test --timeout "300s" ./integration_test/start_app_test.dart
+flutter test --timeout "300s" ./e2e/start_app_test.dart

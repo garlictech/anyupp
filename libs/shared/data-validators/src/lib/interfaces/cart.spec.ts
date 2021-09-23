@@ -1,4 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
+import { EProductType } from '@bgap/shared/types';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { isCart, validateCart } from './cart';
 
@@ -41,6 +42,7 @@ const cart: CrudApi.Cart = {
       variantId: 'VARIANTID',
       variantName: { en: 'EN' },
       laneId: 'LANEID',
+      productType: EProductType.DRINK,
     },
   ],
   createdAt: 'CREATEDAT',
@@ -69,6 +71,7 @@ Object {
       "productName": Object {
         "en": "EN",
       },
+      "productType": "drink",
       "quantity": 100,
       "statusLog": Array [
         Object {

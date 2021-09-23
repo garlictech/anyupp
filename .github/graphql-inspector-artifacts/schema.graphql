@@ -714,6 +714,7 @@ type OrderItem {
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
+  productType: String!
 }
 
 ### Order
