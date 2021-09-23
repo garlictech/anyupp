@@ -537,6 +537,8 @@ type Transaction
   invoice: Invoice @connection(fields: ["invoiceId"])
   receiptId: ID
   receipt: Receipt @connection(fields: ["receiptId"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type UserInvoiceAddress {
