@@ -1,7 +1,9 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { missingParametersCheck } from '@bgap/shared/utils';
-import { OrderResolverDeps } from './utils';
+import { validateSchema } from '@bgap/shared/data-validators';
+import Joi from 'joi';
+import { switchMap } from 'rxjs/operators';
 import { createOrderFromCart } from './create-order-from-cart.resolver';
+import { OrderResolverDeps } from './utils';
 
 interface WithAuthenticatedUser {
   userId: string;
@@ -9,21 +11,27 @@ interface WithAuthenticatedUser {
 export type CreateOrderFromCartRequest = WithAuthenticatedUser &
   AnyuppApi.MutationCreateOrderFromCartArgs;
 
-export const orderRequestHandler = (deps: OrderResolverDeps) => ({
-  createOrderFromCart: (requestPayload: CreateOrderFromCartRequest) => {
-    missingParametersCheck<CreateOrderFromCartRequest>(requestPayload, [
-      'userId',
-      'input',
-    ]);
-    // TODO use validator instead
-    missingParametersCheck<AnyuppApi.CreateOrderFromCartInput>(
-      requestPayload.input,
-      ['id'],
-    );
+const { validate: validateCreateOrderFromCartRequest } =
+  validateSchema<AnyuppApi.CreateOrderFromCartMutationVariables>(
+    {
+      userId: Joi.string().required(),
+      input: Joi.object({
+        id: Joi.string().required(),
+      }).required(),
+    },
+    'CreateOrderFromCartRequest',
+  );
 
-    return createOrderFromCart(
-      requestPayload.userId,
-      requestPayload.input.id,
-    )(deps).toPromise();
-  },
+export const orderRequestHandler = (deps: OrderResolverDeps) => ({
+  createOrderFromCart: (requestPayload: CreateOrderFromCartRequest) =>
+    validateCreateOrderFromCartRequest(requestPayload)
+      .pipe(
+        switchMap(() =>
+          createOrderFromCart(
+            requestPayload.userId,
+            requestPayload.input.id,
+          )(deps),
+        ),
+      )
+      .toPromise(),
 });

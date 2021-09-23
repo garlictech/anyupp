@@ -1,7 +1,5 @@
 Feature: Cash and card payment
 
-  Using the VAT form
-
   Background: Login to the App and select a Unit
     Given I am on the login screen
     And the language is set to EN
@@ -15,7 +13,6 @@ Feature: Cash and card payment
     And I should see "FANTA #2" with picture
 
   Scenario: Pay successfully with cash or card
-    # about the #1592 issue
     Then I should see "HAMBURGER #1" with picture
     And I should see "FANTA #2" with picture
     When I tap the "FANTA #2" card under "Test product category #1 name" category
@@ -26,11 +23,12 @@ Feature: Cash and card payment
     And the qr code reader opens the camera
     And I read a seat qr code
     Then I should see the "Finding your seat..." and the "Connected to" loading screens
+    And I get the text message "New table reserved!"
     And there is the "Cart" screen
     When I tap the button with the arrow
     Then there is a bottom dialog
-    When I tap the option "Credit card at register"
-    Then the option "Credit card at register" is highlighted
+    When I tap the option "Credit card at my table to my server + SZÉP card"
+    Then the option "Credit card at my table to my server + SZÉP card" is highlighted
     When I click the button next to "I want a VAT invoice"
     And I tap the "FILL INVOICE FORM" button
     Then I should see "Invoice info" page
@@ -50,15 +48,18 @@ Feature: Cash and card payment
     When the admin set the state of order to "SUCCESS"
     Then in the app the order should be in "PLACED" state
     When the admin set the state of order to "PROCESSING"
+    Then I get the text message "Message from AnyUpp! Your order is being processed."
     Then in the app the order should be in "PROCESSING" state
     When the admin set the state of order to "READY"
+    Then I get the text messsage "Message from AnyUpp! Your order is ready!"
     Then in the app the order should be in "READY" state
     When the admin set the state of order to "SERVED"
     Then I should see the text "No active order placed yet"
     When I tap the "History" tab
     Then I should see the "SERVED" label on the paid order
+    And I should see the date of the created order
     And I should see "Load more..." at the bottom of the list
-    # next order, with VAT and set the language to HU, to get the notification messages
+    # next order, with VAT and set the language to HU
     When I tap the "Profile" menu
     And I tap the "Settings" tab
     And I tap the "Language" tab
@@ -89,14 +90,16 @@ Feature: Cash and card payment
     When the admin set the state of order to "SIKERES"
     Then in the app the order should be in "BEADVA" state
     When the admin set the state of order to "PROCESSING"
-    Then I get the text message "Rendelésed már készítjük."
+    Then I get the text message "Üzenet az AnyUpp-tól! Rendelésed már készítjük."
     And in the app the order should be in "KÉSZÜL" state
     When the admin set the state of order to "READY"
-    Then I get the text message "Rendelésed elkészült. Felszolgálása folyamatban."
+    Then I get the text message "Üzenet az AnyUpp-tól! Rendelésed elkészült. Felszolgálása folyamatban."
+    And in the app the order should be in "KÉSZ" state
     When the admin set the state of order to "SERVED"
     Then I should see the text "Nincs teljesítésre váró rendelésed."
     When I tap the "Történet" tab
     Then I should see the "FELSZOLGÁLVA" label on the paid order
+    And I should see the date of the created order
     And I should see "Még több betöltése..." at the bottom of the list
 
   Scenario: Failed payment with cash or card
@@ -111,8 +114,8 @@ Feature: Cash and card payment
     And there is the "Cart" screen
     When I tap the button with the arrow
     Then there is a bottom dialog
-    When I tap the option "Credit card at register"
-    Then the option "Credit card at register" is highlighted
+    When I tap the option "Credit card at my table to my server + SZÉP card"
+    Then the option "Credit card at my table to my server + SZÉP card" is highlighted
     And I tap the "PLACE ORDER" button
     Then I wait around 10 secs
     And the "Orders" option is selected on the bottom navigator
@@ -125,4 +128,5 @@ Feature: Cash and card payment
     Then I should see the text "No active order placed yet"
     When I tap the "History" tab
     Then I should see the "REJECTED" label on the unpaid order
+    And I should see the date of the created order
     And I should see "Load more..." at the bottom of the list

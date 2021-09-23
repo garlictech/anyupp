@@ -15,6 +15,7 @@ class OrderItem {
   final LocalizedItem variantName;
   final String? image;
   final List<String>? allergens;
+  final String productType;
   final List<OrderItemConfigSet>? configSets;
   final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>? selectedConfigMap;
 
@@ -28,6 +29,7 @@ class OrderItem {
     required this.quantity,
     required this.statusLog,
     required this.variantName,
+    required this.productType,
     this.image,
     this.allergens,
     this.configSets,
@@ -46,6 +48,7 @@ class OrderItem {
     LocalizedItem? variantName,
     String? image,
     List<String>? allergens,
+    String? productType,
     List<OrderItemConfigSet>? configSets,
     Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>? selectedConfigMap,
   }) {
@@ -61,6 +64,7 @@ class OrderItem {
       variantName: variantName ?? this.variantName,
       image: image ?? this.image,
       allergens: allergens ?? this.allergens,
+      productType: productType ?? this.productType,
       configSets: configSets ?? this.configSets,
       selectedConfigMap: selectedConfigMap ?? this.selectedConfigMap,
     );
@@ -79,6 +83,7 @@ class OrderItem {
       'variantName': variantName.toJson(),
       'image': image,
       'allergens': allergens,
+      'productType': productType,
       'configSets': configSets?.map((x) => x.toJson()).toList(),
     };
   }
@@ -96,6 +101,7 @@ class OrderItem {
       variantName: LocalizedItem.fromJson(map['variantName']),
       image: map['image'],
       allergens: map['allergens'] != null ? List<String>.from(map['allergens']) : null,
+      productType: map['productType'],
       configSets: map['configSets'] != null
           ? List<OrderItemConfigSet>.from(map['configSets']?.map((x) => OrderItemConfigSet.fromJson(x)))
           : null,
@@ -126,6 +132,7 @@ class OrderItem {
         listEquals(other.statusLog, statusLog) &&
         other.variantName == variantName &&
         other.image == image &&
+        other.productType == productType &&
         listEquals(other.allergens, allergens) &&
         listEquals(other.configSets, configSets) &&
         DeepCollectionEquality().equals(selectedConfigMap, other.selectedConfigMap);
@@ -144,6 +151,7 @@ class OrderItem {
         variantName.hashCode ^
         image.hashCode ^
         allergens.hashCode ^
+        productType.hashCode ^
         configSets.hashCode;
   }
 

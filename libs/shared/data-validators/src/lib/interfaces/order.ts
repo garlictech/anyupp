@@ -4,6 +4,7 @@ import { paymentStatusSchema, unpayCategorySchema } from '../enums/enums';
 import { validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
 import { paymentModeSchema } from './payment';
+import { chainProductSchema } from './product';
 
 export const priceShownSchema: Joi.SchemaMap<CrudApi.PriceShown> = {
   currency: Joi.string().required(),
@@ -29,6 +30,7 @@ export const orderItemSchema: Joi.SchemaMap<CrudApi.OrderItem> = {
   image: Joi.string().allow(null, ''),
   allergens: Joi.array().items(Joi.string()).allow(null),
   configSets: Joi.array().allow(null),
+  productType: chainProductSchema.productType,
 };
 
 export const placeSchema: Joi.SchemaMap<CrudApi.Place> = {

@@ -11,7 +11,8 @@ npx cowsay "TESTING $ENVNAME..."
 
 yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover
 yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover
-#yarn nx run anyupp-mobile:integration-test-ci
+yarn nx integration-test-ci anyupp-mobile
+#yarn nx run anyupp-mobile:e2e-test-ci
 yarn deleteAllTableData
 yarn seed
 yarn nx e2e-remote admin-e2e --headless --baseUrl=$ADMIN_SITE_URL

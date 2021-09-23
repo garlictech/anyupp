@@ -9,7 +9,7 @@ excludes="--exclude=anyupp-mobile"
 yarn nx format:check --affected
 yarn nx affected:lint --base=${ENVNAME} ${excludes}
 yarn nx affected:test --base=${ENVNAME} ${excludes} --exclude="integration-tests-angular" --exclude="integration-tests-universal" ${excludes} --codeCoverage --coverageReporters=clover
-yarn nx test-ci anyupp-mobile
+yarn nx unit-test-ci anyupp-mobile
 yarn nx lint-ci anyupp-mobile
 yarn nx buildApk-ci anyupp-mobile
 npx cowsay "YOUR PR IS SUPERCOOL!!!"

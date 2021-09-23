@@ -57,6 +57,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
           taxSum: 0,
         ),
         allergens: widget.product.allergens,
+        productType: widget.product.productType,
         productName: widget.product.name,
         variantName: widget.variant.variantName,
         statusLog: [

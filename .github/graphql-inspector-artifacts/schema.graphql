@@ -714,6 +714,7 @@ type OrderItem {
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
+  productType: String!
 }
 
 ### Order
@@ -1137,6 +1138,8 @@ type Transaction
   invoice: Invoice @connection(fields: ["invoiceId"])
   receiptId: ID
   receipt: Receipt @connection(fields: ["receiptId"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type UserInvoiceAddress {

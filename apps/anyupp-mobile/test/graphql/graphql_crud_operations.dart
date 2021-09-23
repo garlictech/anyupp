@@ -56,6 +56,7 @@ Future<String?> createDummyOrder(String userId, String unitId, bool archived, in
                 ts: DateTime.now().millisecond.toDouble(),
               ),
             ],
+            productType: 'FOOD',
             productName: LocalizedItemInput(
               hu: 'DUMMY_PRODUCT_$orderNum',
               de: 'DUMMY_PRODUCT_$orderNum',
