@@ -15,8 +15,8 @@ class CartRepository implements ICartProvider {
 
   Cart? get cart => _cartProvider.cart;
 
-  Future<Cart?> addProductToCart(GeoUnit unit, OrderItem item) async {
-    Cart? _cart = await _cartProvider.getCurrentCart(unit.id!);
+  Future<Cart?> addProductToCart(String unitId, OrderItem item) async {
+    Cart? _cart = await _cartProvider.getCurrentCart(unitId);
     User? user = await _authProvider.getAuthenticatedUserProfile();
     if (user == null) {
       throw LoginException(
@@ -28,7 +28,7 @@ class CartRepository implements ICartProvider {
     if (_cart == null || _cart.items.isEmpty) {
       _cart = Cart(
         userId: user.id,
-        unitId: unit.id!,
+        unitId: unitId,
         takeAway: false,
         paymentMode: PaymentMode(
           caption: 'inapp',
@@ -57,7 +57,7 @@ class CartRepository implements ICartProvider {
       _cart = _cart.copyWith(items: items);
     }
 
-    await _cartProvider.updateCart(unit.id!, _cart);
+    await _cartProvider.updateCart(unitId, _cart);
     return _cart;
   }
 
@@ -88,19 +88,6 @@ class CartRepository implements ICartProvider {
       }
     }
 
-    await _cartProvider.updateCart(unitId, _cart);
-    return _cart;
-  }
-
-  Future<Cart?> removeOrderFromCart(String unitId, OrderItem order) async {
-    Cart? _cart = await _cartProvider.getCurrentCart(unitId);
-    if (_cart == null) {
-      return null;
-    }
-
-    List<OrderItem> items = List<OrderItem>.from(_cart.items);
-    items.removeWhere((o) => o.id == order.id);
-    _cart = _cart.copyWith(items: items);
     await _cartProvider.updateCart(unitId, _cart);
     return _cart;
   }

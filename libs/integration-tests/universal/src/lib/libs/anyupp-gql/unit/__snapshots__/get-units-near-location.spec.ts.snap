@@ -63,5 +63,13 @@ Object {
     },
     "images": null,
   },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
 }
 `;

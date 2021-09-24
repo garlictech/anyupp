@@ -23,6 +23,10 @@ Array [
     "position": 1,
     "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
+    "supportedServingModes": Array [
+      "inPlace",
+    ],
+    "takeawayTax": 1,
     "tax": 1,
     "unitId": "test_REGEN_UNIT_ID_01",
     "variants": Array [
@@ -207,6 +211,10 @@ Array [
     "position": 1,
     "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
+    "supportedServingModes": Array [
+      "inPlace",
+    ],
+    "takeawayTax": 1,
     "tax": 1,
     "unitId": "test_REGEN_UNIT_ID_01",
     "variants": Array [
@@ -289,6 +297,10 @@ Array [
     "position": 1,
     "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
+    "supportedServingModes": Array [
+      "inPlace",
+    ],
+    "takeawayTax": 1,
     "tax": 1,
     "unitId": "test_REGEN_UNIT_ID_01",
     "variants": Array [
@@ -374,6 +386,10 @@ Array [
     "position": 1,
     "productCategoryId": "productCategoryId_",
     "productType": "PRODUCT_TYPE",
+    "supportedServingModes": Array [
+      "inPlace",
+    ],
+    "takeawayTax": 2,
     "tax": 1,
     "unitId": "test_REGEN_UNIT_ID_02",
     "variants": Array [

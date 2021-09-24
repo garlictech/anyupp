@@ -133,10 +133,13 @@ const getOrderItems =
   (deps: OrderResolverDeps): Observable<CrudApi.OrderItemInput[]> => {
     return combineLatest(
       cartItems.map(cartItem =>
+        // Get Lane from UnitProduct
         getUnitProduct(cartItem.productId)(deps).pipe(
           switchMap(unitProduct =>
+            // Get tax from GroupProduct
             getGroupProduct(unitProduct.parentId)(deps).pipe(
               switchMap(groupProduct =>
+                // Get productType from ChainProduct
                 getChainProduct(groupProduct.parentId)(deps).pipe(
                   map(chainProduct =>
                     convertCartOrderItemToOrderItem({

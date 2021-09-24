@@ -28,7 +28,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       if (action is AddProductToCartAction) {
         yield CartLoadingState();
         // _currentCart.addProductToCart(action.product, action.variant);
-        Cart? cart = await _cartRepository.addProductToCart(action.unit, action.order);
+        Cart? cart = await _cartRepository.addProductToCart(action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 
@@ -42,12 +42,6 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
         yield CartLoadingState();
         Cart? cart = await _cartRepository.clearPlaceInCart(action.unit);
         await clearPlacePref();
-        yield CurrentCartState(cart);
-      }
-
-      if (action is RemoveOrderFromCartAction) {
-        yield CartLoadingState();
-        Cart? cart = await _cartRepository.removeOrderFromCart(action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 

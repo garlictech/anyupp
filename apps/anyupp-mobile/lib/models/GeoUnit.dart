@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 class GeoUnit {
-  final String? id;
+  final String id;
   final String groupId;
   final String chainId;
   final String name;
@@ -17,7 +17,7 @@ class GeoUnit {
   final bool isAcceptingOrders;
   final List<OpeningHours> openingHoursNext7;
   GeoUnit({
-    this.id,
+    required this.id,
     required this.groupId,
     required this.chainId,
     required this.name,

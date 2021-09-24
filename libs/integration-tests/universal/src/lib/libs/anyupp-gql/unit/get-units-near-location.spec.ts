@@ -193,6 +193,12 @@ describe('GetUnitsNearLocation tests', () => {
           expect(foundItems[1].distance).toEqual(74);
           expect(foundItems[2].distance).toEqual(153);
           expect(foundItems[0].openingHoursNext7).toHaveLength(7);
+          expect(foundItems[0].supportedOrderModes).toEqual(
+            unit_03.supportedOrderModes,
+          );
+          expect(foundItems[0].supportedServingModes).toEqual(
+            unit_03.supportedServingModes,
+          );
 
           expect(foundItems[0]).toMatchSnapshot({
             openingHoursNext7: expect.any(Array),

@@ -1,6 +1,5 @@
-import * as Joi from 'joi';
-
 import * as CrudApi from '@bgap/crud-gql/api';
+import * as Joi from 'joi';
 
 export const paymentMethodSchema = Joi.string().valid(
   CrudApi.PaymentMethod.card,
@@ -39,4 +38,14 @@ export const unpayCategorySchema = Joi.string().valid(
 export const posTypeSchema = Joi.string().valid(
   CrudApi.PosType.anyupp,
   CrudApi.PosType.rkeeper,
+);
+
+export const servingModeSchema = Joi.string().valid(
+  CrudApi.ServingMode.inplace,
+  CrudApi.ServingMode.takeaway,
+);
+
+export const orderModeSchema = Joi.string().valid(
+  CrudApi.OrderMode.instant,
+  CrudApi.OrderMode.pickup,
 );

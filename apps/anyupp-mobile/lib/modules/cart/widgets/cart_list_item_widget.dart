@@ -206,11 +206,11 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
   }
 
   void _addOrder() {
-    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(widget.unit, widget.order));
+    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(widget.unit.id, widget.order));
   }
 
   void _removeOrder() {
-    BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(widget.unit.id!, widget.order));
+    BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(widget.unit.id, widget.order));
   }
 
   double getTotalPriceOfOrederItem(OrderItem item) {

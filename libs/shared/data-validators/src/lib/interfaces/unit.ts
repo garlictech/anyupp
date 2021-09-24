@@ -1,6 +1,10 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as Joi from 'joi';
-import { posTypeSchema } from '../enums/enums';
+import {
+  orderModeSchema,
+  posTypeSchema,
+  servingModeSchema,
+} from '../enums/enums';
 import { validateGqlList, validateSchema } from '../validator/validate';
 import { addressInfoSchema } from './address';
 import { contactSchema } from './contact';
@@ -80,6 +84,8 @@ export const unitSchema: Joi.SchemaMap<CrudApi.Unit> = {
   ...contactSchema,
   ...addressInfoSchema,
   pos: pos.allow(null),
+  supportedServingModes: Joi.array().items(servingModeSchema),
+  supportedOrderModes: Joi.array().items(orderModeSchema),
 };
 
 export const { validate: validateUnit, isType: isUnit } =

@@ -1,5 +1,5 @@
-import * as CrudApi from '../generated/api';
 import { pipe } from 'fp-ts/function';
+import * as CrudApi from '../generated/api';
 
 // Copypasted, as importing from @bgap/shared/utils results in an ugly
 // circular dependency. shared types import types from crud api 🤷
@@ -81,10 +81,15 @@ export const calculateTaxSumFromBrutto = ({
   brutto: number;
 }): number => (tax / 100 / (1 + tax / 100)) * brutto;
 
+/**
+ * With quantity multiplication
+ */
 const calculateItemPriceSumWithConfigSets = (item: CrudApi.OrderItem): number =>
-  item.priceShown.pricePerUnit * item.quantity +
-  sumItemConfigSetPrices(item) * item.quantity;
+  calculateItemUnitPriceWithConfigSets(item) * item.quantity;
 
+/**
+ * WithOUT quantity multiplication
+ */
 const calculateItemUnitPriceWithConfigSets = (
   item: CrudApi.OrderItem,
 ): number => item.priceShown.pricePerUnit + sumItemConfigSetPrices(item);

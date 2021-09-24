@@ -37,7 +37,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
       );
     }
     BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
-      widget.unit,
+      widget.unit.id,
       OrderItem(
         productId: widget.product.id,
         variantId: widget.variant.id!,

@@ -71,7 +71,7 @@ import {
 } from '../../../seeds/unit-product';
 import { getSortedProductCatIds } from '../test-utils/test-utils';
 
-const DYNAMODB_OPERATION_DELAY = 4000;
+const DYNAMODB_OPERATION_DELAY = 5000;
 const TEST_NAME = 'REGEN_';
 const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 

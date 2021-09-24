@@ -20,13 +20,13 @@ class GetCurrentCartAction extends BaseCartAction {
 }
 
 class AddProductToCartAction extends BaseCartAction {
-  final GeoUnit unit;
+  final String unitId;
   final OrderItem order;
 
-  const AddProductToCartAction(this.unit, this.order);
+  const AddProductToCartAction(this.unitId, this.order);
 
   @override
-  List<Object?> get props => [unit, order];
+  List<Object?> get props => [unitId, order];
 }
 
 class RemoveProductFromCartAction extends BaseCartAction {
@@ -49,16 +49,6 @@ class UpdateProductInCartAction extends BaseCartAction {
 
   @override
   List<Object?> get props => [unitId, product, variant, quantity];
-}
-
-class RemoveOrderFromCartAction extends BaseCartAction {
-  final OrderItem order;
-  final String unitId;
-
-  const RemoveOrderFromCartAction(this.unitId, this.order);
-
-  @override
-  List<Object?> get props => [unitId, order];
 }
 
 class ClearCartAction extends BaseCartAction {

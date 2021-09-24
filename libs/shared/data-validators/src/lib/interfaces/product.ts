@@ -1,5 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as Joi from 'joi';
+import { servingModeSchema } from '../enums/enums';
 import { validateGqlList, validateSchema } from '../validator/validate';
 import { localizedItemSchema } from './localized-item';
 import { getUpdateSchema } from './utils';
@@ -32,6 +33,7 @@ export const groupProductSchema: Joi.SchemaMap<CrudApi.GroupProduct> = {
   groupId: Joi.string().required(),
   isVisible: Joi.boolean().required(),
   tax: Joi.number().required(),
+  takeawayTax: Joi.number().allow(null),
   variants: Joi.array().allow(null), // use an exact schema ProductVariant (Covered by #784)
   configSets: Joi.array().allow(null), // use an exact schema ProductConfigSet (Covered by #784)
   createdAt: Joi.string().required(),
@@ -61,6 +63,7 @@ export const unitProductSchema: Joi.SchemaMap<CrudApi.UnitProduct> = {
   configSets: Joi.array().allow(null), // use an exact schema ProductConfigSet (Covered by #784)
   laneId: Joi.string().allow(null, ''),
   takeaway: Joi.boolean().allow(null),
+  supportedServingModes: Joi.array().items(servingModeSchema).required(),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };
@@ -95,9 +98,11 @@ export const generatedProductSchema: Joi.SchemaMap<CrudApi.GeneratedProduct> = {
   image: chainProductSchema.image,
   allergens: chainProductSchema.allergens,
   tax: groupProductSchema.tax,
+  takeawayTax: groupProductSchema.takeawayTax,
   position: unitProductSchema.position,
   variants: Joi.array().required(), // use an exact schema GeneratedProductVariant (Covered by #784)
   configSets: Joi.array().allow(null), // use an exact schema GeneratedProductConfigSet (Covered by #784)
+  supportedServingModes: unitProductSchema.supportedServingModes,
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
 };

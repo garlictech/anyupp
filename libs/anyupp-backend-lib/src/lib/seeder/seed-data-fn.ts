@@ -158,6 +158,14 @@ export const createTestUnit =
       chainId: generateChainId(chainIdx),
       name: `Késdobáló #${chainIdx}${groupIdx}${unitIdx}`,
       timeZone: 'Europe/Budapest',
+      supportedServingModes:
+        unitIdx % 2 === 1
+          ? unitFixture.unitBase.supportedServingModes
+          : [CrudApi.ServingMode.inplace],
+      supportedOrderModes:
+        unitIdx % 2 === 1
+          ? unitFixture.unitBase.supportedOrderModes
+          : [CrudApi.OrderMode.instant],
       lanes: [
         {
           color: '#e72222',

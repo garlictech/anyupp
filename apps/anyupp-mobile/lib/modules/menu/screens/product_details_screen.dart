@@ -295,7 +295,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ],
                 ),
                 onPressed: () async {
-                  BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(state.unit, state.orderItem));
+                  BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(state.unit.id, state.orderItem));
                 },
               ));
         } else {
