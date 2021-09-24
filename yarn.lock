@@ -7182,10 +7182,10 @@
     "@angular-devkit/schematics" "12.2.6"
     jsonc-parser "3.0.0"
 
-"@serverless-stack/cli@0.43.3":
-  version "0.43.3"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.43.3.tgz#44fdad3368fde3465cf9b8fc99870bdb0d5d6d0f"
-  integrity sha512-7RVTJB50zi3hwUMQCtp1F/meG2HEPFWVgTqHM/MSQ3vIhMSKVgq06IY6RLYlNZy1HBu2ZhjcqSsnwqo9WwRryQ==
+"@serverless-stack/cli@0.43.4":
+  version "0.43.4"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.43.4.tgz#61a01302d2fd76bbf9ea9682567bb2c58ff4ffed"
+  integrity sha512-QNSKqelsuPyj7GNe8Z3jxxrQyber0OMDZ938SYf3NY/3319f3OEowTJtPulNth3j2CBYrHfe9yEl8maSjdH7pw==
   dependencies:
     "@aws-cdk/aws-apigatewayv2" "1.114.0"
     "@aws-cdk/aws-dynamodb" "1.114.0"
@@ -7197,8 +7197,8 @@
     "@babel/eslint-plugin" "^7.11.3"
     "@babel/plugin-proposal-class-properties" "^7.10.4"
     "@babel/preset-env" "^7.10.4"
-    "@serverless-stack/core" "^0.43.3"
-    "@serverless-stack/resources" "^0.43.3"
+    "@serverless-stack/core" "^0.43.4"
+    "@serverless-stack/resources" "^0.43.4"
     "@types/jest" "^26.0.7"
     "@types/node" "^14.0.27"
     "@typescript-eslint/eslint-plugin" "^4.15.1"
@@ -7241,10 +7241,36 @@
     fs-extra "^9.0.1"
     log4js "^6.3.0"
 
+"@serverless-stack/core@^0.43.4":
+  version "0.43.4"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.43.4.tgz#9a3b0ed62379b9bbee1a1e02235259733750c26f"
+  integrity sha512-7pvYyKmTFKqI19i1d5ER3rgfGTxdJTjaPW8OgW3pYKG9z1Xk25JeJgNkSrQLElx1OvN5VCYPxr5KTkRPt+g8nA==
+  dependencies:
+    aws-cdk "1.114.0"
+    aws-sdk "^2.761.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    dotenv "^10.0.0"
+    dotenv-expand "^5.1.0"
+    fs-extra "^9.0.1"
+    log4js "^6.3.0"
+
 "@serverless-stack/nextjs-core@^0.1.8":
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/@serverless-stack/nextjs-core/-/nextjs-core-0.1.8.tgz#4e139b04dcb19b91224213c9273b51926e937032"
   integrity sha512-nBFVIEmFsJgEZ2SaKZz5P9Sqwc9r8nkcmH/ozjikL3QJJ18Z4okcRCDwrXmmjd8VpGLr+R2V9dBM06w8OMgw9w==
+  dependencies:
+    "@hapi/accept" "^5.0.1"
+    cookie "^0.4.1"
+    jsonwebtoken "^8.5.1"
+    next "^11.1.2"
+    path-to-regexp "^6.1.0"
+    regex-parser "^2.2.10"
+
+"@serverless-stack/nextjs-core@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/nextjs-core/-/nextjs-core-0.1.9.tgz#ca480e8081df5d262ed5f61ef44584e130198e17"
+  integrity sha512-MhQu+aIMVcdEGcx9bjG5Md0oziiinkv1VNOKWLN8o6h1JKG4VMlX8ku0wqtRgyOcK0JcSGYiF08PONLuVvmbQA==
   dependencies:
     "@hapi/accept" "^5.0.1"
     cookie "^0.4.1"
@@ -7274,7 +7300,28 @@
     path-to-regexp "^6.1.0"
     send "^0.17.1"
 
-"@serverless-stack/resources@0.43.3", "@serverless-stack/resources@^0.43.3":
+"@serverless-stack/nextjs-lambda@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/nextjs-lambda/-/nextjs-lambda-0.1.9.tgz#a405ceac6261e16be3d60daa63042506ed98bb94"
+  integrity sha512-j34XEUqk8uyrHa0GOO+TOfMOyqwxEdvQFItrmLMFOCXWulcZ8IeTYuYi41AgodLGrhZ9zaCkOCveohM3o9Sp/Q==
+  dependencies:
+    "@aws-sdk/client-s3" "^3.30.0"
+    "@aws-sdk/client-sqs" "^3.30.0"
+    "@hapi/accept" "^5.0.2"
+    "@serverless-stack/nextjs-core" "^0.1.9"
+    "@vercel/nft" "^0.13.1"
+    execa "^5.0.1"
+    fast-glob "^3.2.7"
+    fresh "^0.5.2"
+    fs-extra "^9.1.0"
+    get-stream "^6.0.0"
+    is-animated "^2.0.1"
+    node-fetch "^2.6.1"
+    normalize-path "^3.0.0"
+    path-to-regexp "^6.1.0"
+    send "^0.17.1"
+
+"@serverless-stack/resources@0.43.3":
   version "0.43.3"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.43.3.tgz#0040c7ca8bb565d7282ad92a1ad95e27bfab1632"
   integrity sha512-FVqhLCeoZ6YPnf5gH3s8Hjwhj9dlPR9T3YIUQNI0NRi5cieieg7fX7uxFSHcZwvE11auQPfbbEqnMZyD1TI7/Q==
@@ -7319,6 +7366,65 @@
     "@graphql-tools/merge" "^6.2.14"
     "@serverless-stack/core" "^0.43.3"
     "@serverless-stack/nextjs-lambda" "^0.1.8"
+    "@types/jest" "^26.0.7"
+    archiver "^5.3.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    esbuild "^0.12.20"
+    eslint "^7.16.0"
+    fs-extra "^9.0.1"
+    glob "^7.1.7"
+    graphql "^15.5.1"
+    jest "^26.1.0"
+    ts-jest "^26.1.4"
+    typescript "^4.2.3"
+    zip-local "^0.3.4"
+
+"@serverless-stack/resources@^0.43.4":
+  version "0.43.4"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.43.4.tgz#487f67969b0650a0b66cc5c67161f17a14de6243"
+  integrity sha512-fbEZqoDxvxqaPM9mlgZ1IVcrbEO8yJaMNkkZU2rh0SyGJxWlqRtU1s0C5IWtHejTVvLFxvEJTSmvOB9igySX9g==
+  dependencies:
+    "@aws-cdk/aws-apigateway" "1.114.0"
+    "@aws-cdk/aws-apigatewayv2" "1.114.0"
+    "@aws-cdk/aws-apigatewayv2-authorizers" "1.114.0"
+    "@aws-cdk/aws-apigatewayv2-integrations" "1.114.0"
+    "@aws-cdk/aws-appsync" "1.114.0"
+    "@aws-cdk/aws-autoscaling" "1.114.0"
+    "@aws-cdk/aws-certificatemanager" "1.114.0"
+    "@aws-cdk/aws-cloudfront" "1.114.0"
+    "@aws-cdk/aws-cloudfront-origins" "1.114.0"
+    "@aws-cdk/aws-cognito" "1.114.0"
+    "@aws-cdk/aws-dynamodb" "1.114.0"
+    "@aws-cdk/aws-ec2" "1.114.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.114.0"
+    "@aws-cdk/aws-events" "1.114.0"
+    "@aws-cdk/aws-events-targets" "1.114.0"
+    "@aws-cdk/aws-iam" "1.114.0"
+    "@aws-cdk/aws-kinesis" "1.114.0"
+    "@aws-cdk/aws-lambda" "1.114.0"
+    "@aws-cdk/aws-lambda-event-sources" "1.114.0"
+    "@aws-cdk/aws-lambda-nodejs" "1.114.0"
+    "@aws-cdk/aws-logs" "1.114.0"
+    "@aws-cdk/aws-rds" "1.114.0"
+    "@aws-cdk/aws-route53" "1.114.0"
+    "@aws-cdk/aws-route53-patterns" "1.114.0"
+    "@aws-cdk/aws-route53-targets" "1.114.0"
+    "@aws-cdk/aws-s3" "1.114.0"
+    "@aws-cdk/aws-s3-assets" "1.114.0"
+    "@aws-cdk/aws-s3-notifications" "1.114.0"
+    "@aws-cdk/aws-secretsmanager" "1.114.0"
+    "@aws-cdk/aws-sns" "1.114.0"
+    "@aws-cdk/aws-sns-subscriptions" "1.114.0"
+    "@aws-cdk/aws-sqs" "1.114.0"
+    "@aws-cdk/aws-ssm" "1.114.0"
+    "@aws-cdk/core" "1.114.0"
+    "@aws-cdk/cx-api" "1.114.0"
+    "@aws-cdk/lambda-layer-awscli" "1.114.0"
+    "@graphql-tools/load-files" "^6.3.2"
+    "@graphql-tools/merge" "^6.2.14"
+    "@serverless-stack/core" "^0.43.4"
+    "@serverless-stack/nextjs-lambda" "^0.1.9"
     "@types/jest" "^26.0.7"
     archiver "^5.3.0"
     chalk "^4.1.0"
