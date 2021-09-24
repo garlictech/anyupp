@@ -213,16 +213,7 @@ type OrderItem {
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
-}
-
-enum ServingMode {
-  inPlace
-  takeAway
-}
-
-enum OrderMode {
-  instant
-  pickup
+  productType: String!
 }
 
 ### Order
@@ -339,100 +330,6 @@ type GeneratedProductConfigSet {
   type: String!
   maxSelection: Int
   items: [GeneratedProductConfigComponent!]!
-}
-
-### Product
-type ChainProduct
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-  id: ID!
-  chainId: ID!
-  name: LocalizedItem!
-  description: LocalizedItem
-  productCategoryId: ID!
-  productType: String!
-  isVisible: Boolean!
-  image: String
-  variants: [ProductVariant]
-  allergens: [Allergen]
-  configSets: [ProductConfigSet]
-}
-
-enum Allergen {
-  celery
-  crustaceans
-  egg
-  fish
-  gluten
-  lupin
-  milk
-  molluscs
-  mustard
-  peanut
-  sesame
-  soya
-  sulphites
-  treenuts
-}
-
-type GroupProduct
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-  id: ID!
-  parentId: ID! # parent chainProduct ID
-  chainId: ID!
-  groupId: ID!
-  isVisible: Boolean!
-  tax: Int!
-  takeawayTax: Int
-  variants: [ProductVariant]
-  configSets: [ProductConfigSet]
-}
-
-type UnitProduct
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-  id: ID!
-  parentId: ID! # parent groupProduct ID
-  chainId: ID!
-  groupId: ID!
-  unitId: ID!
-  isVisible: Boolean!
-  takeaway: Boolean! @deprecated(reason: "Use `supportedServingModes`.")
-  laneId: ID
-  position: Int!
-  variants: [ProductVariant]
-  configSets: [ProductConfigSet]
-  supportedServingModes: [ServingMode!]!
-}
-
-type ProductVariant {
-  id: ID!
-  variantName: LocalizedItem!
-  pack: ProductVariantPack
-  refGroupPrice: Float
-  isAvailable: Boolean!
-  price: Float!
-  availabilities: [Availability]
-  # availableFrom: String
-  position: Int!
-}
-
-type ProductVariantPack {
-  size: Float!
-  unit: String!
-}
-
-type Availability {
-  type: String!
-  dayFrom: String
-  dayTo: String
-  timeFrom: String
-  timeTo: String
-  price: Float!
 }
 
 type GeneratedProductCategory
@@ -647,6 +544,8 @@ type Transaction
   invoice: Invoice @connection(fields: ["invoiceId"])
   receiptId: ID
   receipt: Receipt @connection(fields: ["receiptId"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type UserInvoiceAddress {

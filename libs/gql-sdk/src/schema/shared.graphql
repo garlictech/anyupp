@@ -123,6 +123,16 @@ enum Allergen {
   treenuts
 }
 
+enum ServingMode {
+  inPlace
+  takeAway
+}
+
+enum OrderMode {
+  instant
+  pickup
+}
+
 ### GroupProduct
 type GroupProduct
   @aws_cognito_user_pools
@@ -135,7 +145,7 @@ type GroupProduct
   groupId: ID!
   isVisible: Boolean!
   tax: Int!
-  # takeawayTax: Int
+  takeawayTax: Int
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
 }
@@ -146,6 +156,7 @@ input UpdateGroupProductInput {
   groupId: ID
   isVisible: Boolean
   tax: Int
+  takeawayTax: Int
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
 }
@@ -162,11 +173,12 @@ type UnitProduct
   groupId: ID!
   unitId: ID!
   isVisible: Boolean!
-  takeaway: Boolean!
+  takeaway: Boolean! @deprecated(reason: "Use `supportedServingModes`.")
   laneId: ID
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
+  supportedServingModes: [ServingMode!]!
 }
 input CreateUnitProductInput {
   id: ID # <== NOT REQUIRED
@@ -180,6 +192,7 @@ input CreateUnitProductInput {
   position: Int!
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
+  supportedServingModes: [ServingMode!]!
 }
 input UpdateUnitProductInput {
   id: ID! # <== REQUIRED
@@ -193,6 +206,7 @@ input UpdateUnitProductInput {
   position: Int
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
+  supportedServingModes: [ServingMode!]
 }
 
 ### ProductConfigSet

@@ -145,6 +145,7 @@ query GetOrder($orderId: ID!) {
       allergens
       image
       laneId
+      productType
       created
     }
     createdAt

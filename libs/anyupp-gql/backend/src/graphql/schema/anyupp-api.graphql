@@ -15,90 +15,6 @@ input RegenerateUnitDataInput {
   id: ID!
 }
 
-# input PlaceInput {
-#   seat: String!
-#   table: String!
-# }
-
-### UNIT_PRODUCT
-
-type UnitProduct @aws_cognito_user_pools {
-  id: ID!
-  parentId: ID!
-  chainId: ID!
-  groupId: ID!
-  unitId: ID!
-  isVisible: Boolean!
-  takeaway: Boolean! @deprecated(reason: "Use `supportedServingModes`.")
-  laneId: ID
-  position: Int!
-  variants: [ProductVariant]
-  supportedServingModes: [ServingMode!]!
-}
-
-type ProductVariant @aws_cognito_user_pools {
-  id: ID!
-  variantName: LocalizedItem!
-  pack: ProductVariantPack
-  refGroupPrice: Float
-  isAvailable: Boolean!
-  price: Float!
-  availabilities: [Availability]
-  position: Int!
-}
-
-type ProductVariantPack @aws_cognito_user_pools {
-  size: Float!
-  unit: String!
-}
-
-type Availability @aws_cognito_user_pools {
-  type: String!
-  dayFrom: String
-  dayTo: String
-  timeFrom: String
-  timeTo: String
-  price: Float!
-}
-input CreateUnitProductInput { # TODO: delete the whole CreateUnitProduct mutation because we would use stream later probably and this whole endpoint is NOT used at all
-  id: ID!
-  parentId: ID! # parent groupProduct ID
-  chainId: ID!
-  groupId: ID!
-  unitId: ID!
-  isVisible: Boolean!
-  takeaway: Boolean!
-  laneId: ID
-  position: Int!
-  variants: [ProductVariantInput]
-  supportedServingModes: [ServingMode!]
-}
-
-input ProductVariantInput {
-  id: ID!
-  variantName: LocalizedItemInput!
-  pack: ProductVariantPackInput
-  refGroupPrice: Float
-  isAvailable: Boolean!
-  price: Float!
-  availabilities: [AvailabilityInput]
-  position: Int!
-}
-
-input ProductVariantPackInput {
-  size: Float!
-  unit: String!
-}
-
-input AvailabilityInput {
-  type: String!
-  dayFrom: String
-  dayTo: String
-  timeFrom: String
-  timeTo: String
-  price: Float!
-}
-
 type CreateAnonymUserOutput {
   username: String!
   pwd: String!
@@ -220,17 +136,6 @@ type OpeningHoursByDate @aws_cognito_user_pools {
   closed: Boolean!
   from: Float
   to: Float
-}
-
-# TODO remove duplication. This enum can also be found in teh CRUD api.
-enum ServingMode {
-  inPlace
-  takeAway
-}
-
-enum OrderMode {
-  instant
-  pickup
 }
 
 type GeoUnit @aws_cognito_user_pools {

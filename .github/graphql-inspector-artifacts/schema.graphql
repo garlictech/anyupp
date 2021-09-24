@@ -124,6 +124,16 @@ enum Allergen {
   treenuts
 }
 
+enum ServingMode {
+  inPlace
+  takeAway
+}
+
+enum OrderMode {
+  instant
+  pickup
+}
+
 ### GroupProduct
 type GroupProduct
   @aws_cognito_user_pools
@@ -136,7 +146,7 @@ type GroupProduct
   groupId: ID!
   isVisible: Boolean!
   tax: Int!
-  # takeawayTax: Int
+  takeawayTax: Int
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
 }
@@ -147,6 +157,7 @@ input UpdateGroupProductInput {
   groupId: ID
   isVisible: Boolean
   tax: Int
+  takeawayTax: Int
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
 }
@@ -163,11 +174,12 @@ type UnitProduct
   groupId: ID!
   unitId: ID!
   isVisible: Boolean!
-  takeaway: Boolean!
+  takeaway: Boolean! @deprecated(reason: "Use `supportedServingModes`.")
   laneId: ID
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
+  supportedServingModes: [ServingMode!]!
 }
 input CreateUnitProductInput {
   id: ID # <== NOT REQUIRED
@@ -181,6 +193,7 @@ input CreateUnitProductInput {
   position: Int!
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
+  supportedServingModes: [ServingMode!]!
 }
 input UpdateUnitProductInput {
   id: ID! # <== REQUIRED
@@ -194,6 +207,7 @@ input UpdateUnitProductInput {
   position: Int
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
+  supportedServingModes: [ServingMode!]
 }
 
 ### ProductConfigSet
@@ -448,6 +462,8 @@ type GeoUnit @aws_cognito_user_pools {
       reason: "The new and better openingHoursNext7 field should be used instead of this static string"
     )
   openingHoursNext7: [OpeningHoursByDate!]!
+  supportedServingModes: [ServingMode!]!
+  supportedOrderModes: [OrderMode!]!
 }
 type GeoUnitList @aws_cognito_user_pools {
   items: [GeoUnit]
@@ -714,6 +730,7 @@ type OrderItem {
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
+  productType: String!
 }
 
 ### Order
@@ -731,13 +748,15 @@ type Order
   statusLog: [StatusLog!]!
   archived: Boolean!
   sumPriceShown: PriceShown!
-  takeAway: Boolean!
+  takeAway: Boolean! @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
   unpayCategory: UnpayCategory
+  orderMode: OrderMode!
+  servingMode: ServingMode!
 }
 
 enum PaymentStatus {
@@ -858,12 +877,13 @@ type GeneratedProduct
   description: LocalizedItem
   productType: String!
   tax: Int!
-  # takeawayTax: Int!
+  takeawayTax: Int!
   position: Int!
   image: String
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
+  supportedServingModes: [ServingMode!]!
 }
 
 type GeneratedProductVariant {
@@ -909,6 +929,8 @@ type Unit
   merchantId: String
   timeZone: String
   pos: Pos
+  supportedServingModes: [ServingMode!]!
+  supportedOrderModes: [OrderMode!]!
 }
 
 type DateIntervalOpen {
@@ -1015,10 +1037,11 @@ type Cart
   id: ID!
   userId: ID!
   unitId: ID!
-  takeAway: Boolean!
+  takeAway: Boolean! @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!
+  servingMode: ServingMode!
 }
 
 type Transaction
@@ -1038,6 +1061,8 @@ type Transaction
   invoice: Invoice @connection(fields: ["invoiceId"])
   receiptId: ID
   receipt: Receipt @connection(fields: ["receiptId"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type UserInvoiceAddress {

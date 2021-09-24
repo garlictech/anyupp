@@ -651,6 +651,7 @@ export const createTestOrder =
           laneId: 'lane_01',
           image: 'https://picsum.photos/100',
           statusLog: [],
+          productType: EProductType.DRINK,
         },
       ],
     };

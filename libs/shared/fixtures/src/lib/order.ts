@@ -1,5 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-
+import { EProductType } from '@bgap/shared/types';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { unitFixture } from './unit';
 
@@ -69,6 +69,7 @@ const orderItemInputBase = (productName: string) => ({
       productSetId: `${testIdPrefix}product_component_set_id`,
     },
   ],
+  productType: EProductType.DRINK,
 });
 
 const orderInputBase = {

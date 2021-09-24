@@ -147,6 +147,7 @@ subscription OnOrderHistoryChanged($userId: String, $unitId: String) {
       image
       laneId
       created
+      productType
     }
     transactionId
     transactionStatus

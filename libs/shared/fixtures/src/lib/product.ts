@@ -100,8 +100,11 @@ const groupProductInputBase: Omit<
 
 const unitProductInputBase: Omit<
   RequiredId<CrudApi.CreateUnitProductInput>,
-  'variants'
-> & { variants: CrudApi.ProductVariantInput[] } = {
+  'variants' | 'supportedServingModes'
+> & {
+  variants: CrudApi.ProductVariantInput[];
+  supportedServingModes: CrudApi.ServingMode[];
+} = {
   id: `${testIdPrefix}chainProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',

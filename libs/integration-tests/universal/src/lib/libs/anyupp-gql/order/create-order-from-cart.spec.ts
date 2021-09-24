@@ -10,7 +10,7 @@ import {
   testIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { RequiredId } from '@bgap/shared/types';
+import { EProductType, RequiredId } from '@bgap/shared/types';
 import { filterNullish, toFixed2Number } from '@bgap/shared/utils';
 import { combineLatest, defer, iif } from 'rxjs';
 import { delay, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
@@ -196,11 +196,16 @@ describe('CreatCartFromOrder mutation test', () => {
               `${cart_01.place?.table}${cart_01.place?.seat}01`,
             );
             expect(order.archived).toEqual(false);
+            // Items cheks
             expect(order.items[0]).not.toBeNull();
+            // allergens
             expect(order.items[0].allergens).not.toBeNull();
             expect(order.items[0].allergens).toEqual(
               cart_01.items[0].allergens,
             );
+            // ProductType
+            expect(order.items[0].productType).not.toBeNull();
+            expect(order.items[0].productType).toEqual(EProductType.FOOD);
 
             // The item.priceShown should NOT contain the configSetPrices
             const priceShownBasicWithoutConfigSet = {
@@ -328,6 +333,32 @@ describe('CreatCartFromOrder mutation test', () => {
       },
     });
   }, 15000);
+
+  it('should fail without an authenticated userId', done => {
+    defer(() =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      orderRequestHandler(orderDeps).createOrderFromCart({} as any),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
+  });
+  it('should fail without an id in input', done => {
+    defer(() =>
+      orderRequestHandler(orderDeps).createOrderFromCart({
+        userId: 'FOO',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        input: {} as any,
+      }),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
+  });
 
   it('should fail without a unit', done => {
     const cartId = cart_04_different_unit.id;

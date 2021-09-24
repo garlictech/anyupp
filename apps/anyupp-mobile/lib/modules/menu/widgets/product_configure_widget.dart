@@ -68,6 +68,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           taxSum: 0,
         ),
         allergens: widget.product.allergens,
+        productType: widget.product.productType,
         productName: widget.product.name,
         variantName: _productVariant!.variantName,
         // generatedProductConfigSet: widget.product.,
