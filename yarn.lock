@@ -7227,20 +7227,6 @@
     ws "^7.4.0"
     yargs "^15.4.1"
 
-"@serverless-stack/core@^0.43.3":
-  version "0.43.3"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.43.3.tgz#f2002fc4912b797bc861a2c38f0ef334e3640fd4"
-  integrity sha512-r29O2HHZFdXrYgEMXr79URI/1022RcoEAeCwjaOiVJbgo/XI3gb+7G/iY9UBruH2bgucQ5kfKdJKLDgSGvFbTw==
-  dependencies:
-    aws-cdk "1.114.0"
-    aws-sdk "^2.761.0"
-    chalk "^4.1.0"
-    cross-spawn "^7.0.3"
-    dotenv "^10.0.0"
-    dotenv-expand "^5.1.0"
-    fs-extra "^9.0.1"
-    log4js "^6.3.0"
-
 "@serverless-stack/core@^0.43.4":
   version "0.43.4"
   resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.43.4.tgz#9a3b0ed62379b9bbee1a1e02235259733750c26f"
@@ -7255,17 +7241,19 @@
     fs-extra "^9.0.1"
     log4js "^6.3.0"
 
-"@serverless-stack/nextjs-core@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/nextjs-core/-/nextjs-core-0.1.8.tgz#4e139b04dcb19b91224213c9273b51926e937032"
-  integrity sha512-nBFVIEmFsJgEZ2SaKZz5P9Sqwc9r8nkcmH/ozjikL3QJJ18Z4okcRCDwrXmmjd8VpGLr+R2V9dBM06w8OMgw9w==
+"@serverless-stack/core@^0.43.7":
+  version "0.43.7"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.43.7.tgz#47ec87a1774e5753c22ee8da75852c977a47133f"
+  integrity sha512-xqzI9GZjvfFmWQIha9a3y6LvzXWxclEC8idIu6PAiJqiHDCED3GkdmyJPK2cMnlM2Uv9vi5EJ8qGZ8pjudkSQA==
   dependencies:
-    "@hapi/accept" "^5.0.1"
-    cookie "^0.4.1"
-    jsonwebtoken "^8.5.1"
-    next "^11.1.2"
-    path-to-regexp "^6.1.0"
-    regex-parser "^2.2.10"
+    aws-cdk "1.114.0"
+    aws-sdk "^2.761.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    dotenv "^10.0.0"
+    dotenv-expand "^5.1.0"
+    fs-extra "^9.0.1"
+    log4js "^6.3.0"
 
 "@serverless-stack/nextjs-core@^0.1.9":
   version "0.1.9"
@@ -7278,27 +7266,6 @@
     next "^11.1.2"
     path-to-regexp "^6.1.0"
     regex-parser "^2.2.10"
-
-"@serverless-stack/nextjs-lambda@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/nextjs-lambda/-/nextjs-lambda-0.1.8.tgz#15a61f9c6fae5892e23f7cf90095f3805af94ada"
-  integrity sha512-J9l88Zpg3EZ68lPTotrExkILBf7WuHqWAcfiVbn4huqohTmZCXpT/wijRv3Vka6tKBIu+7agk5KOAnxg8ASuJw==
-  dependencies:
-    "@aws-sdk/client-s3" "^3.30.0"
-    "@aws-sdk/client-sqs" "^3.30.0"
-    "@hapi/accept" "^5.0.2"
-    "@serverless-stack/nextjs-core" "^0.1.8"
-    "@vercel/nft" "^0.13.1"
-    execa "^5.0.1"
-    fast-glob "^3.2.7"
-    fresh "^0.5.2"
-    fs-extra "^9.1.0"
-    get-stream "^6.0.0"
-    is-animated "^2.0.1"
-    node-fetch "^2.6.1"
-    normalize-path "^3.0.0"
-    path-to-regexp "^6.1.0"
-    send "^0.17.1"
 
 "@serverless-stack/nextjs-lambda@^0.1.9":
   version "0.1.9"
@@ -7321,10 +7288,10 @@
     path-to-regexp "^6.1.0"
     send "^0.17.1"
 
-"@serverless-stack/resources@0.43.3":
-  version "0.43.3"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.43.3.tgz#0040c7ca8bb565d7282ad92a1ad95e27bfab1632"
-  integrity sha512-FVqhLCeoZ6YPnf5gH3s8Hjwhj9dlPR9T3YIUQNI0NRi5cieieg7fX7uxFSHcZwvE11auQPfbbEqnMZyD1TI7/Q==
+"@serverless-stack/resources@0.43.7":
+  version "0.43.7"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.43.7.tgz#f83ca757bcfa99c109b25387a4f4b175b2fd2ca9"
+  integrity sha512-bVDM6JNNkB3heGTUjFHv5DpvW/zAWeAnT5xgfd0X9lwShxU9UsP7PJVV/HGJpZsiWaQPwhtxwk15pe4iLsq9cA==
   dependencies:
     "@aws-cdk/aws-apigateway" "1.114.0"
     "@aws-cdk/aws-apigatewayv2" "1.114.0"
@@ -7364,8 +7331,8 @@
     "@aws-cdk/lambda-layer-awscli" "1.114.0"
     "@graphql-tools/load-files" "^6.3.2"
     "@graphql-tools/merge" "^6.2.14"
-    "@serverless-stack/core" "^0.43.3"
-    "@serverless-stack/nextjs-lambda" "^0.1.8"
+    "@serverless-stack/core" "^0.43.7"
+    "@serverless-stack/nextjs-lambda" "^0.1.9"
     "@types/jest" "^26.0.7"
     archiver "^5.3.0"
     chalk "^4.1.0"
