@@ -5186,7 +5186,7 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.6", "@babel/runtime@^7.5.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.14.6", "@babel/runtime@^7.5.4", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.6":
   version "7.15.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.15.4.tgz#fd17d16bfdf878e6dd02d19753a39fa8a8d9c84a"
   integrity sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==
@@ -7149,12 +7149,12 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@redux-offline/redux-offline@2.5.2-native.3":
-  version "2.5.2-native.3"
-  resolved "https://registry.yarnpkg.com/@redux-offline/redux-offline/-/redux-offline-2.5.2-native.3.tgz#f444484ab8c7dad7533d0585a67cb4325f1d959f"
-  integrity sha512-xo1M4wFJDJjANn9w6faru0/8rerd28vQpbNTbEe7DX57RyRqSGsDilb0temH/kAg3GheQTlO59ipRum2bcmXvw==
+"@redux-offline/redux-offline@2.6.0-native.1":
+  version "2.6.0-native.1"
+  resolved "https://registry.yarnpkg.com/@redux-offline/redux-offline/-/redux-offline-2.6.0-native.1.tgz#93a735ea05f5d72e0616e569e62ee00eec76a386"
+  integrity sha512-yGq7xhpfW2X5D1Xo4AdIzOGNbHGi8fcXEX9SSL07RvCnxEON8lpWFiiY4hI42mQlYzgzQlaaHnp1LyfCYPhMHA==
   dependencies:
-    "@babel/runtime" "^7.5.5"
+    "@babel/runtime" "^7.9.6"
     redux-persist "^4.6.0"
 
 "@samverschueren/stream-to-observable@^0.3.0":
@@ -9856,10 +9856,10 @@ aws-appsync-auth-link@^2.0.5:
     aws-sdk "^2.814.0"
     debug "2.6.9"
 
-aws-appsync-subscription-link@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/aws-appsync-subscription-link/-/aws-appsync-subscription-link-2.2.3.tgz#53a68bdfc3a9384f43772ba6d685808bdc26fcaf"
-  integrity sha512-6gyT4gTUcjXlX5d/84Fax0hgF4W5BWzUfA3u9hjLlXBlfaTnS4XYobnrauCXnlwysMms969SzALorPJ08dolLA==
+aws-appsync-subscription-link@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/aws-appsync-subscription-link/-/aws-appsync-subscription-link-2.2.4.tgz#bb7aef43d2b1c394f47004c1a9eab00cb1e3d12a"
+  integrity sha512-Ph/U6st76mujQH7rppmuez+4NYhy7SS39sxVNrWefNMnnS109yDz6SPgqdnL/xFfE5ClZ7XUm6cJJbYjHJk5IA==
   dependencies:
     apollo-link "1.2.5"
     apollo-link-context "1.0.11"
@@ -9869,12 +9869,12 @@ aws-appsync-subscription-link@^2.2.3:
     debug "2.6.9"
     url "^0.11.0"
 
-aws-appsync@4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/aws-appsync/-/aws-appsync-4.1.1.tgz#f82aeeef973bb6b97fc87aeafe18bc60301c34d3"
-  integrity sha512-aGJIwG3Mt0eYIIIvZnTDY1xg6472Cq0k3QW0NDzr0inuUwajgMnPSq0BsQ9R3ubhtCljzsxgvBdJctQQVSPlyA==
+aws-appsync@4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/aws-appsync/-/aws-appsync-4.1.2.tgz#bea9dcc2dce9ee4b7a4ca5a9e93ab989e2930803"
+  integrity sha512-tFF2gfJW/DAekWUmj8EKaZCkM80En1Db+kbHkvtztCK9XNy3Z+/lI2NRLPLybHOjFQLKxp0FxrV4GiWR+UItFg==
   dependencies:
-    "@redux-offline/redux-offline" "2.5.2-native.3"
+    "@redux-offline/redux-offline" "2.6.0-native.1"
     apollo-cache-inmemory "1.3.12"
     apollo-client "2.4.6"
     apollo-link "1.2.5"
@@ -9882,7 +9882,7 @@ aws-appsync@4.1.1:
     apollo-link-http "1.5.8"
     apollo-link-retry "2.2.7"
     aws-appsync-auth-link "^2.0.5"
-    aws-appsync-subscription-link "^2.2.3"
+    aws-appsync-subscription-link "^2.2.4"
     aws-sdk "^2.814.0"
     debug "2.6.9"
     graphql "0.13.0"
