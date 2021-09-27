@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UpdateUnitProduct tests should throw because of the missing GroupProduct - ANYUPP_API CALL 1`] = `[Error: GraphQL error: GroupProduct Object Validation Error (JOI): "value" must be of type object]`;
+exports[`UpdateUnitProduct tests should throw because of the missing GroupProduct - ANYUPP_API CALL 1`] = `[Error: GraphQL error: Unexpected empty value]`;
 
 exports[`UpdateUnitProduct tests should throw in case of an invalid input 1`] = `[Error: GraphQL error: The variables input contains a field name 'foo' that is not defined for input object type 'UpdateUnitProductInput' ]`;
 

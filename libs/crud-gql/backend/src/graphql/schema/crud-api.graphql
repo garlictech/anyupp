@@ -213,7 +213,7 @@ type OrderItem {
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
-  productType: String!
+  productType: String # TODO: Make the OrderItem.productType REQUIRED in the next release
 }
 
 ### Order

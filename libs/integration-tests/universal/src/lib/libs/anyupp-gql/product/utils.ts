@@ -1,15 +1,11 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  validateChainProduct,
-  validateGroupProduct,
-  validateUnitProduct,
-} from '@bgap/shared/data-validators';
 import { throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 export const getChainProduct = (sdk: CrudApi.CrudSdk, productId: string) => {
   return sdk.GetChainProduct({ id: productId }).pipe(
-    switchMap(validateChainProduct),
+    throwIfEmptyValue<CrudApi.ChainProduct>(),
     catchError(err => {
       console.error(err);
       return throwError('ChainProdcuct is missing');
@@ -19,7 +15,7 @@ export const getChainProduct = (sdk: CrudApi.CrudSdk, productId: string) => {
 
 export const getGroupProduct = (sdk: CrudApi.CrudSdk, productId: string) => {
   return sdk.GetGroupProduct({ id: productId }).pipe(
-    switchMap(validateGroupProduct),
+    throwIfEmptyValue<CrudApi.GroupProduct>(),
     catchError(err => {
       console.error(err);
       return throwError('GroupProdcuct is missing');
@@ -29,7 +25,7 @@ export const getGroupProduct = (sdk: CrudApi.CrudSdk, productId: string) => {
 
 export const getUnitProduct = (sdk: CrudApi.CrudSdk, productId: string) => {
   return sdk.GetUnitProduct({ id: productId }).pipe(
-    switchMap(validateUnitProduct),
+    throwIfEmptyValue<CrudApi.UnitProduct>(),
     catchError(err => {
       console.error(err);
       return throwError('UnitProdcuct is missing');

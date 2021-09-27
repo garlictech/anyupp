@@ -55,7 +55,7 @@ const getOrderItem = (
     },
   ],
   allergens: [CrudApi.Allergen.treenuts],
-  productType: EProductType.DRINK,
+  productType: EProductType.FOOD,
 });
 // const cart_01: Required<CrudApi.CreateCartInput> = {
 const cart_01: RequiredId<CrudApi.CreateCartInput> = {

@@ -1,11 +1,7 @@
+import { throwIfEmptyValue } from '@bgap/shared/utils';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Maybe } from '@bgap/crud-gql/api';
-import {
-  validateChain,
-  validateGetGroupCurrency,
-  validateUnitList,
-} from '@bgap/shared/data-validators';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import * as geolib from 'geolib';
 import { combineLatest, EMPTY, Observable, of } from 'rxjs';
@@ -18,12 +14,9 @@ type ListResponse<T> = {
   nextToken?: string;
 };
 
-// TODO: add GEO_SEARCH
-// TODO handle nextToken in the list!
 export const getUnitsInRadius =
   (location: CrudApi.LocationInput) =>
   (deps: UnitsResolverDeps): Observable<ListResponse<AnyuppApi.GeoUnit>> => {
-    // TODO: use geoSearch for the units
     return listActiveUnits()(deps).pipe(
       filterNullishGraphqlListWithDefault<CrudApi.Unit>([]),
       map(units => filterOutNotOpenUnits({ units })),
@@ -100,19 +93,17 @@ const toGeoUnit = ({
 };
 */
 const listActiveUnits = () => (deps: UnitsResolverDeps) =>
-  deps.crudSdk
-    .ListUnits(
-      { filter: { isActive: { eq: true } } },
-      { fetchPolicy: 'no-cache' },
-    )
-    .pipe(/* pipeDebug(`### listActiveUnits`),  */ switchMap(validateUnitList));
+  deps.crudSdk.ListUnits(
+    { filter: { isActive: { eq: true } } },
+    { fetchPolicy: 'no-cache' },
+  );
 
 const getGroupCurrency =
   (id: string) =>
   (deps: UnitsResolverDeps): Observable<string> =>
     deps.crudSdk.GetGroupCurrency({ id }, { fetchPolicy: 'no-cache' }).pipe(
       // pipeDebug(`### getGroupCurrency by groupId: ${id}`),
-      switchMap(validateGetGroupCurrency),
+      throwIfEmptyValue<{ currency: string }>(),
       map(currency => currency.currency),
     );
 
@@ -121,6 +112,4 @@ const getChain =
   (deps: UnitsResolverDeps): Observable<CrudApi.Chain> =>
     deps.crudSdk
       .GetChain({ id }, { fetchPolicy: 'no-cache' })
-      .pipe(
-        /* pipeDebug(`### getChain by id: ${id}`), */ switchMap(validateChain),
-      );
+      .pipe(throwIfEmptyValue<CrudApi.Chain>());

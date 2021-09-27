@@ -414,7 +414,6 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
   }
 
   void _selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit) {
-    // unit.place = Place('00', '00');
     getIt<CartBloc>().add(ClearPlaceInCart(unit));
     getIt<UnitSelectBloc>().add(SelectUnit(unit));
     Nav.reset(MainNavigation());

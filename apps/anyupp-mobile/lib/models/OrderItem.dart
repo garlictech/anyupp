@@ -96,7 +96,7 @@ class OrderItem {
       variantName: LocalizedItem.fromJson(map['variantName']),
       image: map['image'],
       allergens: map['allergens'] != null ? List<String>.from(map['allergens']) : null,
-      productType: map['productType'],
+      productType: map['productType'] ?? '',
       configSets: map['configSets'] != null
           ? List<OrderItemConfigSet>.from(map['configSets']?.map((x) => OrderItemConfigSet.fromJson(x)))
           : null,
