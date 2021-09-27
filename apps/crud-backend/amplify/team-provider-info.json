@@ -9,8 +9,7 @@
       "UnauthRoleName": "amplify-anyuppbackend-zsoltstack-144903-unauthRole",
       "StackName": "amplify-anyuppbackend-zsoltstack-144903",
       "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-zsoltstack-144903/78afa580-116c-11ec-ba6f-02fd14221977",
-      "AmplifyAppId": "d1smguwwq7uajn",
-      "AuthTriggerTemplateURL": ""
+      "AmplifyAppId": "d1smguwwq7uajn"
     },
     "categories": {
       "auth": {

@@ -1,13 +1,8 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
-import {
-  validateGroupProductList,
-  validateUnitProductList,
-} from '@bgap/shared/data-validators';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { RegenerateUnitDataHandler } from '../unit/utils';
 
 export interface ProductResolverDeps {
@@ -29,10 +24,7 @@ export const listGroupProductsForChainProductParent =
     return getAllPaginatedData(crudSdk.SearchGroupProducts, {
       query: input,
       options: { fetchPolicy: 'no-cache' },
-    }).pipe(
-      switchMap(validateGroupProductList),
-      filterNullishGraphqlListWithDefault<CrudApi.GroupProduct>([]),
-    );
+    }).pipe(filterNullishGraphqlListWithDefault<CrudApi.GroupProduct>([]));
   };
 
 export const listUnitProductsForGroupProductParents =
@@ -45,8 +37,5 @@ export const listUnitProductsForGroupProductParents =
     return getAllPaginatedData(crudSdk.SearchUnitProducts, {
       query: input,
       options: { fetchPolicy: 'no-cache' },
-    }).pipe(
-      switchMap(validateUnitProductList),
-      filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
-    );
+    }).pipe(filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]));
   };

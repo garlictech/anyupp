@@ -1,6 +1,5 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { validateChainProduct } from '@bgap/shared/data-validators';
 import { defer, from, Observable, pipe } from 'rxjs';
 import {
   concatMap,
@@ -17,6 +16,7 @@ import {
   listUnitProductsForGroupProductParents,
   ProductResolverDeps,
 } from './utils';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 const ELASTICSEARCH_OPERATION_DELAY = 3000;
 
@@ -25,7 +25,7 @@ const collectGroupProductIds = (groupProducts: CrudApi.GroupProduct[]) =>
 
 const callRegenerateOnChainProductPipe = (deps: ProductResolverDeps) =>
   pipe(
-    switchMap(validateChainProduct),
+    throwIfEmptyValue<CrudApi.ChainProduct>(),
     switchMap(chainProduct =>
       listGroupProductsForChainProductParent(deps.crudSdk)(
         chainProduct.id,

@@ -1,3 +1,4 @@
+import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { Auth } from '@aws-amplify/auth';
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 import {
@@ -7,7 +8,6 @@ import {
   unitRequestHandler,
 } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { validateUnitProduct } from '@bgap/shared/data-validators';
 import {
   chainFixture,
   generatedProductFixture,
@@ -21,7 +21,7 @@ import {
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
-import { filterNullish, getSortedIds, sortById } from '@bgap/shared/utils';
+import { getSortedIds, sortById } from '@bgap/shared/utils';
 import {
   combineLatest,
   concat,
@@ -33,7 +33,6 @@ import {
 } from 'rxjs';
 import {
   catchError,
-  defaultIfEmpty,
   delay,
   map,
   switchMap,
@@ -602,11 +601,5 @@ const listProductsForUnits = (
   };
   return sdk
     .ListUnitProducts(input, { fetchPolicy: 'no-cache' })
-    .pipe(
-      filterNullish(),
-      map(x => x.items),
-      filterNullish(),
-      switchMap(items => combineLatest(items.map(x => validateUnitProduct(x)))),
-    )
-    .pipe(defaultIfEmpty([] as CrudApi.UnitProduct[]));
+    .pipe(filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]));
 };

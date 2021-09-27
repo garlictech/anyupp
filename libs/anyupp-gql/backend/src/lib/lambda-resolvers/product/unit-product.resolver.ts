@@ -1,15 +1,15 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { validateUnitProduct } from '@bgap/shared/data-validators';
 import { defer, Observable, pipe } from 'rxjs';
 import { delay, mapTo, switchMap } from 'rxjs/operators';
 import { ProductResolverDeps } from './utils';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 const ELASTICSEARCH_OPERATION_DELAY = 3000;
 
 const callRegenerateOnUnitProductPipe = (deps: ProductResolverDeps) =>
   pipe(
-    switchMap(validateUnitProduct),
+    throwIfEmptyValue<CrudApi.UnitProduct>(),
     switchMap(unitProduct =>
       deps
         .regenerateUnitDataHandler(unitProduct.unitId)

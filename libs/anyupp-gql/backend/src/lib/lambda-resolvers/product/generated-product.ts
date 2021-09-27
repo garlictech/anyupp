@@ -1,7 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
-import { validateGeneratedProductList } from '@bgap/shared/data-validators';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { iif, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -41,8 +40,5 @@ export const listGeneratedProductsForUnits =
     return getAllPaginatedData(crudSdk.SearchGeneratedProducts, {
       query: input,
       options: { fetchPolicy: 'no-cache' },
-    }).pipe(
-      switchMap(validateGeneratedProductList),
-      filterNullishGraphqlListWithDefault<CrudApi.GeneratedProduct>([]),
-    );
+    }).pipe(filterNullishGraphqlListWithDefault<CrudApi.GeneratedProduct>([]));
   };

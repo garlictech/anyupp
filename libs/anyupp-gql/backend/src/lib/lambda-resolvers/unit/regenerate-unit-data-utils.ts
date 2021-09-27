@@ -1,14 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import {
-  validateChainProduct,
-  validateGroupProduct,
-  validateProductComponentList,
-  validateProductComponentSetList,
-  validateUnit,
-  validateUnitProductList,
-} from '@bgap/shared/data-validators';
-import {
   ProductComponentMap,
   ProductComponentSetMap,
   ProductWithPrices,
@@ -16,6 +8,7 @@ import {
 import {
   filterNullishGraphqlListWithDefault,
   getNoProductInUnitError,
+  throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import { from, Observable, of, throwError } from 'rxjs';
 import { map, mergeMap, switchMap, toArray } from 'rxjs/operators';
@@ -52,7 +45,6 @@ export const listUnitProductsForAUnit =
       query: input,
       options: { fetchPolicy: 'no-cache' },
     }).pipe(
-      switchMap(validateUnitProductList),
       filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
       switchMap(throwOnEmptyList),
     );
@@ -70,10 +62,10 @@ export const get3LayerFromAUnitProduct =
     return from(
       deps.crudSdk.GetGroupProduct({ id: unitProduct.parentId }),
     ).pipe(
-      switchMap(validateGroupProduct),
+      throwIfEmptyValue<CrudApi.GroupProduct>(),
       switchMap(groupProduct =>
         from(deps.crudSdk.GetChainProduct({ id: groupProduct.parentId })).pipe(
-          switchMap(validateChainProduct),
+          throwIfEmptyValue<CrudApi.ChainProduct>(),
           map(chainProduct => ({ unitProduct, groupProduct, chainProduct })),
         ),
       ),
@@ -92,7 +84,8 @@ export const getTimezoneForUnit =
   (deps: UnitsResolverDeps) =>
   (unitId: string): Observable<string> =>
     from(deps.crudSdk.GetUnit({ id: unitId })).pipe(
-      switchMap(validateUnit),
+      throwIfEmptyValue<CrudApi.Unit>(),
+
       map(unit => unit.address.location),
       map(getTimezoneFromLocation),
     );
@@ -108,7 +101,6 @@ export const getProductComponentSetMap =
       query: input,
       options: { fetchPolicy: 'no-cache' },
     }).pipe(
-      switchMap(validateProductComponentSetList),
       filterNullishGraphqlListWithDefault<CrudApi.ProductComponentSet>([]),
       map(prodCompSets =>
         prodCompSets.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {}),
@@ -125,7 +117,6 @@ export const getProductComponentMap =
       query: input,
       options: { fetchPolicy: 'no-cache' },
     }).pipe(
-      switchMap(validateProductComponentList),
       filterNullishGraphqlListWithDefault<CrudApi.ProductComponent>([]),
       map(prodComps =>
         prodComps.reduce((prev, curr) => ({ ...prev, [curr.id]: curr }), {}),

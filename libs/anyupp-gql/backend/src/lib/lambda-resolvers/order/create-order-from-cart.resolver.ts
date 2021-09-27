@@ -7,18 +7,10 @@ import {
 } from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import {
-  validateCart,
-  validateChainProduct,
-  validateGetGroupCurrency,
-  validateGroupProduct,
-  validateOrder,
-  validateUnit,
-  validateUnitProduct,
-} from '@bgap/shared/data-validators';
-import {
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
   missingParametersError,
+  throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
 import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
@@ -29,17 +21,13 @@ import { OrderResolverDeps } from './utils';
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
 const getUnitProduct = (productId: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetUnitProduct({ id: productId })).pipe(
-    switchMap(validateUnitProduct),
-  );
+  from(deps.crudSdk.GetUnitProduct({ id: productId }));
+
 const getGroupProduct = (productId: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetGroupProduct({ id: productId })).pipe(
-    switchMap(validateGroupProduct),
-  );
+  from(deps.crudSdk.GetGroupProduct({ id: productId }));
+
 const getChainProduct = (productId: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetChainProduct({ id: productId })).pipe(
-    switchMap(validateChainProduct),
-  );
+  from(deps.crudSdk.GetChainProduct({ id: productId }));
 
 const toOrderInputFormat = ({
   userId,
@@ -128,10 +116,13 @@ const getOrderItems =
     return combineLatest(
       cartItems.map(cartItem =>
         getUnitProduct(cartItem.productId)(deps).pipe(
+          throwIfEmptyValue<CrudApi.UnitProduct>(),
           switchMap(unitProduct =>
             getGroupProduct(unitProduct.parentId)(deps).pipe(
+              throwIfEmptyValue<CrudApi.GroupProduct>(),
               switchMap(groupProduct =>
                 getChainProduct(groupProduct.parentId)(deps).pipe(
+                  throwIfEmptyValue<CrudApi.ChainProduct>(),
                   map(chainProduct =>
                     convertCartOrderItemToOrderItem({
                       userId,
@@ -164,22 +155,18 @@ const createStatusLog = (
 // };
 const createOrderInDb =
   (input: CrudApi.CreateOrderInput) => (deps: OrderResolverDeps) =>
-    from(deps.crudSdk.CreateOrder({ input })).pipe(switchMap(validateOrder));
+    from(deps.crudSdk.CreateOrder({ input }));
 
 const getUnit = (id: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetUnit({ id }, { fetchPolicy: 'no-cache' })).pipe(
-    switchMap(validateUnit),
-  );
+  from(deps.crudSdk.GetUnit({ id }, { fetchPolicy: 'no-cache' }));
 
 const getCart = (id: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetCart({ id }, { fetchPolicy: 'no-cache' })).pipe(
-    switchMap(validateCart),
-  );
+  from(deps.crudSdk.GetCart({ id }, { fetchPolicy: 'no-cache' }));
 
 const getGroupCurrency = (id: string) => (deps: OrderResolverDeps) =>
   from(deps.crudSdk.GetGroupCurrency({ id }, { fetchPolicy: 'no-cache' })).pipe(
-    switchMap(validateGetGroupCurrency),
-    map(x => x.currency),
+    map(x => x?.currency),
+    throwIfEmptyValue<string>(),
   );
 
 const getNextOrderNum =
@@ -211,6 +198,7 @@ export const createOrderFromCart =
         getCart(cartId)(deps).pipe(
           // CART.USERID CHECK
           // pipeDebug('### CART'),
+          throwIfEmptyValue<CrudApi.Cart>(),
           switchMap(cart =>
             cart.userId === userId
               ? of(cart)
@@ -230,7 +218,7 @@ export const createOrderFromCart =
           map(unit => ({ cart, unit })),
           // UNIT.IsAcceptingOrders CHECK
           switchMap(props =>
-            props.unit.isAcceptingOrders
+            props?.unit?.isAcceptingOrders
               ? of(props)
               : throwError(getUnitIsNotAcceptingOrdersError()),
           ),
@@ -246,10 +234,16 @@ export const createOrderFromCart =
         ),
       ),
       switchMap(props =>
+        props?.unit && props?.cart
+          ? of(props as { unit: CrudApi.Unit; cart: CrudApi.Cart })
+          : throwError('Wrong data'),
+      ),
+      switchMap(props =>
         getGroupCurrency(props.unit.groupId)(deps).pipe(
           map(currency => ({ ...props, currency })),
         ),
       ),
+
       switchMap(props =>
         getNextOrderNum(UNIT_TABLE_NAME)({
           unitId: props.unit.id,
@@ -277,7 +271,7 @@ export const createOrderFromCart =
       })),
       switchMap(props =>
         createOrderInDb(props.orderInput)(deps).pipe(
-          map(x => ({ ...props, orderId: x.id as string })),
+          map(x => ({ ...props, orderId: x?.id })),
         ),
       ),
       // Remove the cart from the db after the order has been created successfully

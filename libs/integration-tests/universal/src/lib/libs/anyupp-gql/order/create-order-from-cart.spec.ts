@@ -1,7 +1,6 @@
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { validateOrder } from '@bgap/shared/data-validators';
 import {
   cartFixture,
   groupFixture,
@@ -11,7 +10,11 @@ import {
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { EProductType, RequiredId } from '@bgap/shared/types';
-import { filterNullish, toFixed2Number } from '@bgap/shared/utils';
+import {
+  filterNullish,
+  toFixed2Number,
+  throwIfEmptyValue,
+} from '@bgap/shared/utils';
 import { combineLatest, defer, iif } from 'rxjs';
 import { delay, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 import {
@@ -290,6 +293,7 @@ describe('CreatCartFromOrder mutation test', () => {
           );
         }),
         delay(1000),
+        throwIfEmptyValue(),
         switchMap(newOrderId =>
           combineLatest([
             getOrder(orderDeps.crudSdk, newOrderId),
@@ -407,7 +411,7 @@ describe('CreatCartFromOrder mutation test', () => {
 const getOrder = (crudSdk: CrudApi.CrudSdk, id: string) => {
   return crudSdk
     .GetOrder({ id }, { fetchPolicy: 'no-cache' })
-    .pipe(switchMap(validateOrder));
+    .pipe(throwIfEmptyValue<CrudApi.Order>());
 };
 
 const getCart = (crudSdk: CrudApi.CrudSdk, id: string) => {

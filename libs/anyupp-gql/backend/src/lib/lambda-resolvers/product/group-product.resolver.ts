@@ -1,7 +1,6 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { validateGroupProduct } from '@bgap/shared/data-validators';
-import { defer, from, Observable, pipe } from 'rxjs';
+import { defer, from, Observable, pipe, UnaryFunction } from 'rxjs';
 import {
   concatMap,
   defaultIfEmpty,
@@ -16,12 +15,17 @@ import {
   listUnitProductsForGroupProductParents,
   ProductResolverDeps,
 } from './utils';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 const ELASTICSEARCH_OPERATION_DELAY = 3000;
 
-const callRegenerateOnGroupProductPipe = (deps: ProductResolverDeps) =>
+const callRegenerateOnGroupProductPipe = (
+  deps: ProductResolverDeps,
+): UnaryFunction<
+  Observable<CrudApi.GroupProduct>,
+  Observable<CrudApi.GroupProduct>
+> =>
   pipe(
-    switchMap(validateGroupProduct),
     switchMap(groupProduct =>
       listUnitProductsForGroupProductParents(deps.crudSdk)([
         groupProduct.id,
@@ -42,6 +46,7 @@ export const updateGroupProduct =
     input: AnyuppApi.UpdateGroupProductInput,
   ): Observable<CrudApi.GroupProduct> =>
     defer(() => deps.crudSdk.UpdateGroupProduct({ input })).pipe(
+      throwIfEmptyValue<CrudApi.GroupProduct>(),
       delay(ELASTICSEARCH_OPERATION_DELAY),
       callRegenerateOnGroupProductPipe(deps),
     );
