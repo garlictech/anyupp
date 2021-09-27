@@ -362,6 +362,7 @@ const convertInputToOrder = (
 export const orderFixture = {
   order_seeded_01_id,
   orderInputBase,
+  orderItemInputBase,
 
   // Payment
   cardPayment,
