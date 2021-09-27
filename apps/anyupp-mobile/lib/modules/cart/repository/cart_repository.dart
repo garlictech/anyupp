@@ -35,7 +35,7 @@ class CartRepository implements ICartProvider {
           method: PaymentMethod.inapp,
           type: PaymentType.stripe,
         ),
-        place: await getPlacePref() ?? Place(seat: '00', table: '00'),
+        place: await getPlacePref() ?? Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
         items: [
           item.copyWith(quantity: 0),
         ],

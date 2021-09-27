@@ -10,7 +10,7 @@ import {
 } from '@bgap/shared/fixtures';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import * as fp from 'lodash/fp';
-import { combineLatest, defer, from, iif } from 'rxjs';
+import { combineLatest, from } from 'rxjs';
 import { map, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 import {
   createAuthenticatedAnyuppSdk,
@@ -21,8 +21,6 @@ import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 
 const TEST_NAME = 'GEOUNIT_';
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
-
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
 const distanceLoc_02 = { location: { lat: 47.490471, lng: 19.048001 } }; // distance from userLoc: 0.153.. km
@@ -165,16 +163,12 @@ describe('GetUnitsNearLocation tests', () => {
     }, 15000);
   });
 
-  // TODO: create test with A NOT ACTIVE CHAIN
   it('should return all the units in geoUnitsFormat ordered by distance', done => {
     const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
-    iif(
-      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-      defer(() => unitRequestHandler({ crudSdk }).getUnitsNearLocation(input)),
-      authAnyuppSdk.GetUnitsNearLocation(input),
-    )
+    authAnyuppSdk
+      .GetUnitsNearLocation(input)
       .pipe(
         filterNullish(),
         map(result => result.items),

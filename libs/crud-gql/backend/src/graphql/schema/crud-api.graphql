@@ -213,7 +213,7 @@ type OrderItem {
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
-  productType: String!
+  productType: String # TODO: Make the OrderItem.productType REQUIRED in the next release
 }
 
 ### Order
@@ -482,9 +482,9 @@ type Pos {
 type RKeeper {
   endpointUri: String!
   rkeeperUsername: String!
-  rkeeperPassword: String! @function(name: "anyuppCrudCustomResolvers-${env}")
+  rkeeperPassword: String!
   anyuppUsername: String!
-  anyuppPassword: String! @function(name: "anyuppCrudCustomResolvers-${env}")
+  anyuppPassword: String!
   restaurantId: String!
 }
 
@@ -596,6 +596,13 @@ type Receipt
   email: String
   pdfData: String
   status: ReceiptStatus!
+}
+
+type Mutation {
+  updateRkeeperServerPassword(unitId: ID!, password: String!): Boolean
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "anyuppCrudCustomResolvers-${env}")
 }
 
 type Subscription {

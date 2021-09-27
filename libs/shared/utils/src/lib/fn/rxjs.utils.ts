@@ -47,21 +47,6 @@ export function filterNullishWithDefault<T>(
   );
 }
 
-export function filterNullishGraphqlListWithDefault<T>(
-  defaultValue: T[],
-): UnaryFunction<
-  Observable<{ items: T[] | null | undefined; nextToken?: string }>,
-  Observable<T[]>
-> {
-  return pipe(
-    filterNullishWithDefault<{ items: T[] | null | undefined }>({
-      items: defaultValue,
-    }),
-    map(listResult => listResult.items),
-    filterNullishWithDefault<T[]>(defaultValue),
-  );
-}
-
 export function filterNullishElements<T>(): UnaryFunction<
   Observable<Array<T | null | undefined> | null | undefined>,
   Observable<T[]>
@@ -72,6 +57,31 @@ export function filterNullishElements<T>(): UnaryFunction<
       Array<T | null | undefined>,
       T[]
     >,
+  );
+}
+
+export function filterNullishGraphqlListWithDefault<T>(
+  defaultValue: T[],
+): UnaryFunction<
+  Observable<
+    | {
+        items?: Array<T | null | undefined> | null;
+        nextToken?: string | null;
+      }
+    | null
+    | undefined
+  >,
+  Observable<T[]>
+> {
+  return pipe(
+    filterNullishWithDefault<{
+      items?: Array<T | null | undefined> | null;
+    }>({
+      items: defaultValue,
+    }),
+    map(listResult => listResult.items),
+    filterNullishWithDefault<Array<T | null | undefined>>(defaultValue),
+    filterNullishElements<T>(),
   );
 }
 
