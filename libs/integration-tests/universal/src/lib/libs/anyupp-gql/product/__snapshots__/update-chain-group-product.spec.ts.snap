@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Update Chain and Group product tests ChainProduct Update should throw in case of an invalid input 1`] = `[Error: GraphQL error: The variables input contains a field name 'foo' that is not defined for input object type 'UpdateChainProductInput' ]`;
+
+exports[`Update Chain and Group product tests ChainProduct Update should update the chainProduct in the database and call the regenereation logic for every unit: description SHOULD BE UPDATED_DESCRIPTION 1`] = `
+Object {
+  "allergens": Array [
+    "egg",
+    "gluten",
+  ],
+  "chainId": "chainId_",
+  "configSets": null,
+  "description": Object {
+    "de": null,
+    "en": "UPDATED_DESCRIPTION",
+    "hu": null,
+  },
+  "id": "test_UPDATE_CHAIN_GROUP_PROD_chainProduct_01",
+  "image": "IMAGE",
+  "isVisible": true,
+  "name": Object {
+    "de": null,
+    "en": "CHAIN_PRODUCT",
+    "hu": null,
+  },
+  "productCategoryId": "productCategoryId_",
+  "productType": "PRODUCT_TYPE",
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 0.5,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "test_ChainProductVariant_id_1",
+      "isAvailable": true,
+      "pack": Object {
+        "size": 1,
+        "unit": "CHAIN_UNIT",
+      },
+      "position": 1,
+      "price": 10,
+      "refGroupPrice": 10,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_1",
+        "hu": null,
+      },
+    },
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 1,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "test_ChainProductVariant_id_2",
+      "isAvailable": true,
+      "pack": Object {
+        "size": 2,
+        "unit": "CHAIN_UNIT",
+      },
+      "position": 2,
+      "price": 20,
+      "refGroupPrice": 20,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_2",
+        "hu": null,
+      },
+    },
+  ],
+}
+`;
+
+exports[`Update Chain and Group product tests GroupProduct Update should throw in case of an invalid input 1`] = `[Error: GraphQL error: The variables input contains a field name 'foo' that is not defined for input object type 'UpdateGroupProductInput' ]`;
+
+exports[`Update Chain and Group product tests GroupProduct Update should update the groupProduct in the database and call the regenereation logic for every unit: TAX SHOULD BE 999 1`] = `
+Object {
+  "chainId": "chainId_",
+  "configSets": null,
+  "groupId": "groupId_",
+  "id": "test_UPDATE_CHAIN_GROUP_PROD_groupProduct_01",
+  "isVisible": true,
+  "parentId": "test_UPDATE_CHAIN_GROUP_PROD_chainProduct_01",
+  "tax": 999,
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 1,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "test_GroupProductVariant_id_1",
+      "isAvailable": true,
+      "pack": Object {
+        "size": 1,
+        "unit": "GROUP_UNIT",
+      },
+      "position": 1,
+      "price": 20,
+      "refGroupPrice": 20,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_1",
+        "hu": null,
+      },
+    },
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 2,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "test_GroupProductVariant_id_2",
+      "isAvailable": true,
+      "pack": Object {
+        "size": 2,
+        "unit": "GROUP_UNIT",
+      },
+      "position": 2,
+      "price": 40,
+      "refGroupPrice": 40,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_2",
+        "hu": null,
+      },
+    },
+  ],
+}
+`;

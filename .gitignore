@@ -51,6 +51,7 @@ cyreport
 cdk.out
 
 /libs/anyupp-gql/api/src/lib/generated
+/libs/anyupp-gql/backend/src/graphql/schema/generated
 /libs/crud-gql/api/src/lib/generated/
 
 #amplify

@@ -1,15 +1,31 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { createUnitProduct } from './create-unit-product.resolver';
+import { updateChainProduct } from './chain-product.resolver';
+import { updateGroupProduct } from './group-product.resolver';
+import {
+  createUnitProduct,
+  deleteUnitProduct,
+  updateUnitProduct,
+} from './unit-product.resolver';
 import { ProductResolverDeps } from './utils';
 
-// interface WithAuthenticatedUser {
-//   userId: string;
-// }
-export type CreateUnitProductRequest /* WithAuthenticatedUser & */ =
-  AnyuppApi.CreateUnitProductInput;
-
+// HANDLER
 export const productRequestHandler = (deps: ProductResolverDeps) => ({
-  createUnitProduct: (requestPayload: CreateUnitProductRequest) => {
-    return createUnitProduct(requestPayload)(deps).toPromise();
-  },
+  // CHAIN PRODUCT
+  updateChainProduct: (
+    requestPayload: AnyuppApi.UpdateChainProductMutationVariables,
+  ) => updateChainProduct(deps)(requestPayload.input).toPromise(),
+  // GROUP PRODUCT
+  updateGroupProduct: (
+    requestPayload: AnyuppApi.UpdateGroupProductMutationVariables,
+  ) => updateGroupProduct(deps)(requestPayload.input).toPromise(),
+  // UNIT PRODUCT
+  createUnitProduct: (
+    requestPayload: AnyuppApi.CreateUnitProductMutationVariables,
+  ) => createUnitProduct(deps)(requestPayload.input).toPromise(),
+  updateUnitProduct: (
+    requestPayload: AnyuppApi.UpdateUnitProductMutationVariables,
+  ) => updateUnitProduct(deps)(requestPayload.input).toPromise(),
+  deleteUnitProduct: (
+    requestPayload: AnyuppApi.DeleteUnitProductMutationVariables,
+  ) => deleteUnitProduct(deps)(requestPayload.id).toPromise(),
 });

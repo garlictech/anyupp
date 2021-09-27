@@ -34,7 +34,7 @@ Feature: Dashboard
     When I click on the "PROCESSING" button next to the product name
     Then I should see the buttons in "READY"
     When I click on the "READY" button next to the product name
-    Then I should not see the order on the "Active orders" tab
+    Then I should NOT see the order on the "Active orders" tab
     When I click on the "Orders history" icon with title
     Then I should see the served order selected
     Then I should see the "Hamburger #1 (glass)" product with "ROOM TEMPERATURE"
@@ -51,6 +51,7 @@ Feature: Dashboard
     Given I have a cash/card "NONE" order with 1 "Fanta #2" product
     When I click on the "Manual payments" icon with title
     And I scroll down on the list
+    Then I should see the order selection with dark grey color
     Then I should see an order with an id starts with "#"
     And I should see the time of the created order
     When I click on the order with "298 Ft"
@@ -67,7 +68,7 @@ Feature: Dashboard
     When I click on the "PROCESSING" button next to the product name
     Then I should see the buttons in "READY"
     When I click on the "READY" button next to the product name
-    Then I should not see the order on the "Active orders" tab
+    Then I should NOT see the order on the "Active orders" tab
     When I click on the "Orders history" tab
     Then I should see the served order selected
     Then I should see the "Fanta #2 (glass)" product with "ROOM TEMPERATURE"
@@ -79,11 +80,15 @@ Feature: Dashboard
     When I click on the "LIST ALL" button
     Then I should see the "Product mix" dialog with the "Fanta #2"
     And I click on the close button
+    When I click on the "EXPORT" button
+    Then the xlsx file is downloaded with the name "Késdobáló #111"
 
   Scenario: Floormap status updates
     Given I have created a cash/card order
     When I click on the "Floormap" icon with title
     Then I should see the unit floormap
+    When I click on the table with number "01"
+    Then I should see all the seeded orders
     And I should see "red" seat with "0201" id on the floormap
     Then I should see "red" border with "0201" id on the floormap
     When I click on the red seat with number "02"
@@ -147,10 +152,10 @@ Feature: Dashboard
     When I click on the yellow recall button
     Then I should see "Are you sure you recall the archived order?" text
     When I click on the "OK" button
-    Then I should not see the served order in "Orders History"
+    Then I should NOT see the served order in "Orders History"
     When I click on the "Active orders" icon with title
     Then the "Placed orders" icon is selected
-    When I click ont the order with purple color
+    When I click on the order with purple color
     Then I should see the product in "SERVED"
     And I should see the order in "READY"
     When I click on the "READY" button
@@ -158,7 +163,7 @@ Feature: Dashboard
     When I click on the "SUCCESS" button
     Then I should see a dialog with "Are you sure you set the transaction status to 'success'?" text
     When I click on the "OK" button
-    Then I should not see the order on the "Active orders" tab
+    Then I should NOT see the order on the "Active orders" tab
 
   Scenario: about the #1165 issue (failed payment cash/card)
     Given I have a cash/card "NONE" order with 1 "Fanta #2" product
@@ -183,12 +188,13 @@ Feature: Dashboard
     Then I should see 10 options on the list
     When I click on the "Staff meal" option
     And I click on the "OK" button
-    Then I should not see the order on the "Active orders" tab
+    Then I should NOT see the order on the "Active orders" tab
     And I click on the "Orders history" tab
     Then I should see the served order selected
     And I should see the "Fanta #2 (glass)" product with "ROOM TEMPERATURE"
     And I should see the red badge with "Failed (Staff meal)" caption
     And I should see the green badge with "served" caption
+
   Scenario: Report export feature
     When I click on the "Reports" icon with title
     Then I should see "Product mix" table

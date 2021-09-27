@@ -1,14 +1,24 @@
 scalar AWSDateTime
-### COMMON
-# TODO: extraxt these because the admin-api also contains these
+### Location
 type Location @aws_cognito_user_pools {
   lat: Float!
   lng: Float!
 }
-
 input LocationInput {
   lat: Float!
   lng: Float!
+}
+
+### LocalizedItem
+type LocalizedItem @aws_cognito_user_pools {
+  en: String
+  de: String
+  hu: String
+}
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
 }
 
 type Address @aws_cognito_user_pools {
@@ -20,12 +30,7 @@ type Address @aws_cognito_user_pools {
   location: Location!
 }
 
-type LocalizedItem @aws_cognito_user_pools {
-  en: String
-  de: String
-  hu: String
-}
-
+### Payment
 type PaymentMode @aws_cognito_user_pools {
   type: PaymentType!
   caption: String
@@ -47,6 +52,7 @@ enum PaymentType {
   googlepay
 }
 
+### ChainStyle
 type ChainStyle @aws_cognito_user_pools {
   colors: ChainStyleColors!
   images: ChainStyleImages
@@ -69,12 +75,222 @@ type ChainStyleImages @aws_cognito_user_pools {
   logo: String
 }
 
-input LocalizedItemInput {
-  en: String
-  de: String
-  hu: String
+### ChainProduct
+type ChainProduct
+  @aws_cognito_user_pools
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productCategoryId: ID!
+  productType: String!
+  isVisible: Boolean!
+  image: String
+  variants: [ProductVariant]
+  allergens: [Allergen]
+  configSets: [ProductConfigSet]
+}
+input UpdateChainProductInput {
+  id: ID!
+  chainId: ID
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  productCategoryId: ID
+  productType: String
+  isVisible: Boolean
+  image: String
+  variants: [ProductVariantInput]
+  allergens: [Allergen]
+  configSets: [ProductConfigSetInput]
 }
 
+enum Allergen {
+  celery
+  crustaceans
+  egg
+  fish
+  gluten
+  lupin
+  milk
+  molluscs
+  mustard
+  peanut
+  sesame
+  soya
+  sulphites
+  treenuts
+}
+
+### GroupProduct
+type GroupProduct
+  @aws_cognito_user_pools
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent chainProduct ID
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean!
+  tax: Int!
+  # takeawayTax: Int
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+}
+input UpdateGroupProductInput {
+  id: ID!
+  parentId: ID
+  chainId: ID
+  groupId: ID
+  isVisible: Boolean
+  tax: Int
+  variants: [ProductVariantInput]
+  configSets: [ProductConfigSetInput]
+}
+
+### UnitProduct
+type UnitProduct
+  @aws_cognito_user_pools
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+}
+input CreateUnitProductInput {
+  id: ID # <== NOT REQUIRED
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariantInput]
+  configSets: [ProductConfigSetInput]
+}
+input UpdateUnitProductInput {
+  id: ID! # <== REQUIRED
+  parentId: ID
+  chainId: ID
+  groupId: ID
+  unitId: ID
+  isVisible: Boolean
+  takeaway: Boolean
+  laneId: ID
+  position: Int
+  variants: [ProductVariantInput]
+  configSets: [ProductConfigSetInput]
+}
+
+### ProductConfigSet
+type ProductConfigComponent @aws_cognito_user_pools {
+  productComponentId: ID!
+  refGroupPrice: Float!
+  price: Float!
+  position: Int!
+}
+input ProductConfigComponentInput {
+  productComponentId: ID!
+  refGroupPrice: Float!
+  price: Float!
+  position: Int!
+}
+
+type ProductConfigSet @aws_cognito_user_pools {
+  productSetId: ID!
+  items: [ProductConfigComponent!]!
+  position: Int!
+}
+input ProductConfigSetInput {
+  productSetId: ID!
+  items: [ProductConfigComponentInput!]!
+  position: Int!
+}
+
+### ProductVariant
+type ProductVariant @aws_cognito_user_pools {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  position: Int!
+}
+input ProductVariantInput {
+  id: ID!
+  variantName: LocalizedItemInput!
+  pack: ProductVariantPackInput
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [AvailabilityInput]
+  position: Int!
+}
+
+### ProductVariantPack
+type ProductVariantPack @aws_cognito_user_pools {
+  size: Float!
+  unit: String!
+}
+input ProductVariantPackInput {
+  size: Float!
+  unit: String!
+}
+
+### Availability
+type Availability @aws_cognito_user_pools {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+input AvailabilityInput {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+
+### UserInvoiceAddress
+# Re enable (issue: #1736)
+# type UserInvoiceAddress {
+#   customerName: String!
+#   taxNumber: String!
+#   country: String!
+#   city: String!
+#   streetAddress: String!
+#   postalCode: String!
+#   email: String
+# }
+# input UserInvoiceAddressInput {
+#   customerName: String!
+#   taxNumber: String!
+#   country: String!
+#   city: String!
+#   streetAddress: String!
+#   postalCode: String!
+#   email: String
+# }
 ### ADMIN_USER
 input CreateAdminUserInput {
   email: String!
@@ -90,88 +306,6 @@ input CreateOrderFromCartInput {
 ## UNIT
 input RegenerateUnitDataInput {
   id: ID!
-}
-
-# input PlaceInput {
-#   seat: String!
-#   table: String!
-# }
-
-### UNIT_PRODUCT
-
-type UnitProduct @aws_cognito_user_pools {
-  id: ID!
-  parentId: ID!
-  chainId: ID!
-  groupId: ID!
-  unitId: ID!
-  isVisible: Boolean!
-  takeaway: Boolean!
-  laneId: ID
-  position: Int!
-  variants: [ProductVariant]
-}
-
-type ProductVariant @aws_cognito_user_pools {
-  id: ID!
-  variantName: LocalizedItem!
-  pack: ProductVariantPack
-  refGroupPrice: Float
-  isAvailable: Boolean!
-  price: Float!
-  availabilities: [Availability]
-  position: Int!
-}
-
-type ProductVariantPack @aws_cognito_user_pools {
-  size: Float!
-  unit: String!
-}
-
-type Availability @aws_cognito_user_pools {
-  type: String!
-  dayFrom: String
-  dayTo: String
-  timeFrom: String
-  timeTo: String
-  price: Float!
-}
-input CreateUnitProductInput { # TODO: delete the whole CreateUnitProduct mutation because we would use stream later probably and this whole endpoint is NOT used at all
-  id: ID!
-  parentId: ID! # parent groupProduct ID
-  chainId: ID!
-  groupId: ID!
-  unitId: ID!
-  isVisible: Boolean!
-  takeaway: Boolean!
-  laneId: ID
-  position: Int!
-  variants: [ProductVariantInput]
-}
-
-input ProductVariantInput {
-  id: ID!
-  variantName: LocalizedItemInput!
-  pack: ProductVariantPackInput
-  refGroupPrice: Float
-  isAvailable: Boolean!
-  price: Float!
-  availabilities: [AvailabilityInput]
-  position: Int!
-}
-
-input ProductVariantPackInput {
-  size: Float!
-  unit: String!
-}
-
-input AvailabilityInput {
-  type: String!
-  dayFrom: String
-  dayTo: String
-  timeFrom: String
-  timeTo: String
-  price: Float!
 }
 
 type CreateAnonymUserOutput {
@@ -242,6 +376,7 @@ type StripeCard @aws_cognito_user_pools {
   billing_details: BillingDetails
 }
 
+# Rename to UserInvoiceAddressInput and relocate it in the shared.graphql (issue: #1736)
 input UserInvoiceAddress {
   customerName: String!
   taxNumber: String!
@@ -339,8 +474,16 @@ type Mutation {
     @aws_cognito_user_pools
 
   # Product
+  updateChainProduct(input: UpdateChainProductInput!): ChainProduct!
+    @aws_cognito_user_pools
+  updateGroupProduct(input: UpdateGroupProductInput!): GroupProduct!
+    @aws_cognito_user_pools
   createUnitProduct(input: CreateUnitProductInput!): UnitProduct!
     @aws_cognito_user_pools
+  updateUnitProduct(input: UpdateUnitProductInput!): UnitProduct!
+    @aws_cognito_user_pools
+  deleteUnitProduct(id: ID!): Boolean! @aws_cognito_user_pools
+
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
     @aws_cognito_user_pools
@@ -356,6 +499,1152 @@ type Mutation {
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean!
     @aws_cognito_user_pools
 }
+### AdminUser
+
+type AdminUser
+  @model
+  @searchable
+  @auth(rules: [{ allow: private, provider: iam }, { allow: private }]) {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String!
+  profileImage: String
+  settings: AdminUserSettings
+  roleContexts: [AdminRoleContext]
+    @connection(keyName: "byAdminUser", fields: ["id"])
+}
+
+type AdminUserSettings {
+  selectedChainId: String
+  selectedGroupId: String
+  selectedUnitId: String
+  selectedProductCategoryId: String
+  selectedLanguage: String
+  selectedHistoryDate: Int
+}
+
+###
+# Create a join model and disable queries as you don't need them
+# and can query through Post.editors and AdminUser.roleContexts
+type AdminRoleContext
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
+  @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
+  id: ID!
+  roleContextId: ID!
+  adminUserId: ID!
+  roleContext: RoleContext! @connection(fields: ["roleContextId"])
+}
+
+### RoleContext
+
+enum Role {
+  superuser
+  chainadmin
+  groupadmin
+  unitadmin
+  staff
+  inactive
+}
+
+type RoleContext
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  contextId: ID! # Readable short id
+  role: Role!
+  name: LocalizedItem
+  chainId: String
+  groupId: String
+  unitId: String
+}
+
+### Stripe
+
+# STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
+
+# https://stripe.com/docs/api/cards/object?lang=node
+# Card brand
+# enum CardBrand {
+#   amex
+#   diners
+#   discover
+#   jcb
+#   mastercard
+#   unionpay
+#   visa
+#   unknown
+# }
+
+# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
+# Card funding type
+# enum CardFundingType {
+#   credit
+#   debit
+#   prepaid
+#   unknown
+# }
+
+# enum StripPaymentMethodType {
+#   alipay
+#   au_becs_debit
+#   bacs_debit
+#   bancontact
+#   card
+#   eps
+#   fpx
+#   giropay
+#   grabpay
+#   ideal
+#   oxxo
+#   p24
+#   sepa_debit
+#   sofort
+# }
+
+# type CardChecks {
+#   address_line1_check: String
+#   address_postal_code_check: String
+#   cvc_check: String
+# }
+
+# https://stripe.com/docs/api/metadata?lang=node
+# Updateable Stripe objects
+# type StripeMetadata {
+#   key: String!
+#   value: String!
+# }
+
+# type StripeCard @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+#   brand: CardBrand
+#   checks: CardChecks
+#   country: String
+#   last4: String
+#   exp_month: Int
+#   exp_year: Int
+#   fingerprint: String
+#   funding: CardFundingType
+#   three_d_secure: String
+#   # wallet: String # to do
+#   # IMPLEMENTED INTERFACES
+#   id: ID!
+#   object: String!
+#   metadata: [StripeMetadata!]!
+# }
+
+# type StartStripePaymentOutput {
+#   clientSecret: String!
+#   status: String!
+# }
+
+### Chain
+type Chain
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  name: String!
+  description: LocalizedItem
+  style: ChainStyle!
+  isActive: Boolean
+  address: Address
+  email: String
+  phone: String
+}
+
+### Group
+type Group
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  name: String!
+  description: LocalizedItem
+  currency: String!
+  address: Address
+  email: String
+  phone: String
+}
+
+### OrderItem
+type StatusLog {
+  userId: ID!
+  status: OrderStatus!
+  ts: Float!
+}
+
+type PriceShown {
+  currency: String!
+  pricePerUnit: Float!
+  priceSum: Float!
+  tax: Int!
+  taxSum: Float!
+}
+
+type OrderItemConfigComponent {
+  productComponentId: ID!
+  price: Float!
+  name: LocalizedItem!
+  allergens: [Allergen]
+}
+
+type OrderItemConfigSet {
+  productSetId: ID!
+  name: LocalizedItem!
+  type: String!
+  items: [OrderItemConfigComponent!]!
+}
+
+type OrderItem {
+  productId: ID!
+  variantId: ID!
+  created: Float
+  productName: LocalizedItem!
+  image: String
+  sumPriceShown: PriceShown!
+  priceShown: PriceShown!
+  quantity: Int!
+  statusLog: [StatusLog!]!
+  variantName: LocalizedItem!
+  laneId: ID
+  allergens: [Allergen]
+  configSets: [OrderItemConfigSet!]
+  productType: String # TODO: Make the OrderItem.productType REQUIRED in the next release
+}
+
+### Order
+type Order
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  createdAt: AWSDateTime!
+  userId: ID!
+  unitId: ID!
+  orderNum: String!
+  items: [OrderItem!]!
+  paymentMode: PaymentMode!
+  statusLog: [StatusLog!]!
+  archived: Boolean!
+  sumPriceShown: PriceShown!
+  takeAway: Boolean!
+  place: Place
+  paymentIntention: Float
+  transactionStatus: PaymentStatus
+  transactionId: ID
+  transaction: Transaction @connection(fields: ["transactionId"])
+  unpayCategory: UnpayCategory
+}
+
+enum PaymentStatus {
+  waiting_for_payment
+  success
+  failed
+}
+
+enum UnpayCategory {
+  staff_meal
+  manager_meal
+  marketing_promo
+  error_cooked
+  error_no_cooked
+  payment_mode_change
+  other
+  delivery
+  coupon
+  event
+}
+
+enum OrderStatus {
+  none
+  placed
+  processing
+  ready
+  served
+  failed
+  rejected
+}
+
+type Place {
+  seat: String!
+  table: String!
+}
+
+### ProductCategory
+type ProductCategory
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  description: LocalizedItem
+  image: String
+  name: LocalizedItem!
+  position: Int!
+}
+
+### ProductComponent
+type ProductComponent
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  name: LocalizedItem!
+  description: String
+  allergens: [Allergen]
+}
+
+### ProductComponent
+type ProductComponentSet
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  type: String!
+  name: LocalizedItem!
+  description: String!
+  items: [ID!]! # ProductComponent ID
+  maxSelection: Int # On extras
+}
+
+type GeneratedProductConfigComponent {
+  productComponentId: ID!
+  price: Float!
+  position: Int!
+  name: LocalizedItem!
+  allergens: [Allergen]
+}
+
+type GeneratedProductConfigSet {
+  productSetId: ID!
+  name: LocalizedItem!
+  position: Int!
+  type: String!
+  maxSelection: Int
+  items: [GeneratedProductConfigComponent!]!
+}
+
+type GeneratedProductCategory
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "productCategoriesByUnit", fields: ["unitId"]) {
+  id: ID!
+<<<<<<< HEAD
+  chainId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productCategoryId: ID!
+  productType: String!
+  isVisible: Boolean!
+  image: String
+  variants: [ProductVariant]
+  allergens: [Allergen]
+  configSets: [ProductConfigSet]
+}
+
+enum Allergen {
+  celery
+  crustaceans
+  egg
+  fish
+  gluten
+  lupin
+  milk
+  molluscs
+  mustard
+  peanut
+  sesame
+  soya
+  sulphites
+  treenuts
+}
+
+type GroupProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent chainProduct ID
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean!
+  tax: Int!
+  # takeawayTax: Int
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+}
+
+type UnitProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+}
+
+type ProductVariant {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  # availableFrom: String
+  position: Int!
+}
+
+type ProductVariantPack {
+  size: Float!
+  unit: String!
+}
+
+type Availability {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+
+type GeneratedProductCategory
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "productCategoriesByUnit", fields: ["unitId"]) {
+  id: ID!
+  unitId: ID!
+  productNum: Int!
+  productCategoryId: ID!
+  productCategory: ProductCategory! @connection(fields: ["productCategoryId"])
+}
+
+type GeneratedProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "productsByUnit", fields: ["unitId"])
+  @key(
+    name: "productsByUnitAndCategory"
+    fields: ["unitId", "productCategoryId"]
+  ) {
+  id: ID!
+  unitId: ID!
+  productCategoryId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productType: String!
+  tax: Int!
+  # takeawayTax: Int!
+  position: Int!
+  image: String
+  variants: [GeneratedProductVariant!]!
+  allergens: [Allergen]
+  configSets: [GeneratedProductConfigSet]
+}
+
+type GeneratedProductVariant {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  price: Float!
+  position: Int!
+}
+
+type FavoriteProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  product: GeneratedProduct! @connection
+}
+
+### Unit
+type Unit
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  lastOrderNum: Int
+  isActive: Boolean!
+  isAcceptingOrders: Boolean!
+  name: String!
+  description: LocalizedItem
+  address: Address!
+  email: String
+  phone: String
+  paymentModes: [PaymentMode]
+  floorMap: FloorMapData
+  lanes: [Lane]
+  open: DateIntervalOpen
+  openingHours: WeeklySchedule
+  merchantId: String
+  timeZone: String
+  pos: Pos
+}
+
+type DateIntervalOpen {
+  from: String
+  to: String
+}
+
+type DateInterval {
+  from: String!
+  to: String!
+}
+
+type CustomDailySchedule {
+  date: String!
+  from: String!
+  to: String!
+}
+
+type WeeklySchedule {
+  mon: DateInterval
+  tue: DateInterval
+  wed: DateInterval
+  thu: DateInterval
+  fri: DateInterval
+  sat: DateInterval
+  sun: DateInterval
+  custom: [CustomDailySchedule]
+}
+
+type PaymentMode {
+  type: PaymentType!
+  caption: String
+  method: PaymentMethod!
+}
+
+type FloorMapData {
+  w: Int!
+  h: Int!
+  objects: [FloorMapDataObject!]
+}
+
+type FloorMapDataObject {
+  id: ID!
+  t: UnitMapObjectType! # Type
+  c: String # Caption
+  w: Int # Width
+  h: Int #  Height
+  r: Int # Radius
+  a: Int # Angle
+  x: Int!
+  y: Int!
+  tID: String # Table ID
+  sID: String # Seat Id
+}
+
+enum UnitMapObjectType {
+  table_r
+  table_c
+  seat_r
+  seat_c
+  counter
+  wall
+  label
+}
+
+type Lane {
+  id: ID!
+  name: String!
+  color: String!
+}
+
+type Pos {
+  type: PosType!
+  rkeeper: RKeeper
+}
+
+type RKeeper {
+  endpointUri: String!
+  rkeeperUsername: String!
+  rkeeperPassword: String!
+  anyuppUsername: String!
+  anyuppPassword: String!
+  restaurantId: String!
+}
+
+enum PosType {
+  anyupp
+  rkeeper
+}
+
+### User
+type User
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  stripeCustomerId: String
+  invoiceAddress: UserInvoiceAddress
+}
+
+### Cart
+type Cart
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  takeAway: Boolean!
+  place: Place
+  paymentMode: PaymentMode
+  items: [OrderItem!]!
+}
+
+type Transaction
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  user: User! @connection(fields: ["userId"])
+  orderId: ID!
+  type: String
+  total: Float
+  currency: String
+  status: PaymentStatus
+  externalTransactionId: String
+  invoiceId: ID
+  invoice: Invoice @connection(fields: ["invoiceId"])
+  receiptId: ID
+  receipt: Receipt @connection(fields: ["receiptId"])
+}
+
+type UserInvoiceAddress {
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+}
+
+enum InvoiceStatus {
+  waiting
+  success
+  failed
+}
+
+enum ReceiptStatus {
+  waiting
+  success
+  failed
+}
+
+type Invoice
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  orderId: ID!
+  transactionId: ID!
+  externalInvoiceId: String
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+  pdfUrl: String
+  status: InvoiceStatus!
+}
+
+type Receipt
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  orderId: ID!
+  transactionId: ID!
+  externalReceiptId: String
+  email: String
+  pdfData: String
+  status: ReceiptStatus!
+}
+
+type Mutation {
+  updateRkeeperServerPassword(unitId: ID!, password: String!): Boolean
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "anyuppCrudCustomResolvers-${env}")
+||||||| 6272a269
+  chainId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productCategoryId: ID!
+  productType: String!
+  isVisible: Boolean!
+  image: String
+  variants: [ProductVariant]
+  allergens: [Allergen]
+  configSets: [ProductConfigSet]
+}
+
+enum Allergen {
+  celery
+  crustaceans
+  egg
+  fish
+  gluten
+  lupin
+  milk
+  molluscs
+  mustard
+  peanut
+  sesame
+  soya
+  sulphites
+  treenuts
+}
+
+type GroupProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent chainProduct ID
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean!
+  tax: Int!
+  # takeawayTax: Int
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+}
+
+type UnitProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean!
+  laneId: ID
+  position: Int!
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+}
+
+type ProductVariant {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  # availableFrom: String
+  position: Int!
+}
+
+type ProductVariantPack {
+  size: Float!
+  unit: String!
+}
+
+type Availability {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+
+type GeneratedProductCategory
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "productCategoriesByUnit", fields: ["unitId"]) {
+  id: ID!
+  unitId: ID!
+  productNum: Int!
+  productCategoryId: ID!
+  productCategory: ProductCategory! @connection(fields: ["productCategoryId"])
+}
+
+type GeneratedProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "productsByUnit", fields: ["unitId"])
+  @key(
+    name: "productsByUnitAndCategory"
+    fields: ["unitId", "productCategoryId"]
+  ) {
+  id: ID!
+  unitId: ID!
+  productCategoryId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productType: String!
+  tax: Int!
+  # takeawayTax: Int!
+  position: Int!
+  image: String
+  variants: [GeneratedProductVariant!]!
+  allergens: [Allergen]
+  configSets: [GeneratedProductConfigSet]
+}
+
+type GeneratedProductVariant {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  price: Float!
+  position: Int!
+}
+
+type FavoriteProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  product: GeneratedProduct! @connection
+}
+
+### Unit
+type Unit
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  lastOrderNum: Int
+  isActive: Boolean!
+  isAcceptingOrders: Boolean!
+  name: String!
+  description: LocalizedItem
+  address: Address!
+  email: String
+  phone: String
+  paymentModes: [PaymentMode]
+  floorMap: FloorMapData
+  lanes: [Lane]
+  open: DateIntervalOpen
+  openingHours: WeeklySchedule
+  merchantId: String
+  timeZone: String
+  pos: Pos
+}
+
+type DateIntervalOpen {
+  from: String
+  to: String
+}
+
+type DateInterval {
+  from: String!
+  to: String!
+}
+
+type CustomDailySchedule {
+  date: String!
+  from: String!
+  to: String!
+}
+
+type WeeklySchedule {
+  mon: DateInterval
+  tue: DateInterval
+  wed: DateInterval
+  thu: DateInterval
+  fri: DateInterval
+  sat: DateInterval
+  sun: DateInterval
+  custom: [CustomDailySchedule]
+}
+
+type PaymentMode {
+  type: PaymentType!
+  caption: String
+  method: PaymentMethod!
+}
+
+type FloorMapData {
+  w: Int!
+  h: Int!
+  objects: [FloorMapDataObject!]
+}
+
+type FloorMapDataObject {
+  id: ID!
+  t: UnitMapObjectType! # Type
+  c: String # Caption
+  w: Int # Width
+  h: Int #  Height
+  r: Int # Radius
+  a: Int # Angle
+  x: Int!
+  y: Int!
+  tID: String # Table ID
+  sID: String # Seat Id
+}
+
+enum UnitMapObjectType {
+  table_r
+  table_c
+  seat_r
+  seat_c
+  counter
+  wall
+  label
+}
+
+type Lane {
+  id: ID!
+  name: String!
+  color: String!
+}
+
+type Pos {
+  type: PosType!
+  rkeeper: RKeeper
+}
+
+type RKeeper {
+  endpointUri: String!
+  rkeeperUsername: String!
+  rkeeperPassword: String!
+  anyuppUsername: String!
+  anyuppPassword: String!
+  restaurantId: String!
+}
+
+enum PosType {
+  anyupp
+  rkeeper
+}
+
+### User
+type User
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  stripeCustomerId: String
+  invoiceAddress: UserInvoiceAddress
+}
+
+### Cart
+type Cart
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  takeAway: Boolean!
+  place: Place
+  paymentMode: PaymentMode
+  items: [OrderItem!]!
+}
+
+type Transaction
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  user: User! @connection(fields: ["userId"])
+  orderId: ID!
+  type: String
+  total: Float
+  currency: String
+  status: PaymentStatus
+  externalTransactionId: String
+  invoiceId: ID
+  invoice: Invoice @connection(fields: ["invoiceId"])
+  receiptId: ID
+  receipt: Receipt @connection(fields: ["receiptId"])
+}
+
+type UserInvoiceAddress {
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+}
+
+enum InvoiceStatus {
+  waiting
+  success
+  failed
+}
+
+enum ReceiptStatus {
+  waiting
+  success
+  failed
+}
+
+type Invoice
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  orderId: ID!
+  transactionId: ID!
+  externalInvoiceId: String
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+  pdfUrl: String
+  status: InvoiceStatus!
+}
+
+type Receipt
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  orderId: ID!
+  transactionId: ID!
+  externalReceiptId: String
+  email: String
+  pdfData: String
+  status: ReceiptStatus!
+}
+
+type Subscription {
+  onAdminUserChange(id: ID!): AdminUser
+    @aws_subscribe(mutations: ["updateAdminUser"])
+    @aws_cognito_user_pools
+  onAdminUsersChange: AdminUser
+    @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
+    @aws_cognito_user_pools
+  onRoleContextsChange: RoleContext
+    @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
+    @aws_cognito_user_pools
+  onAdminRoleContextsChange: AdminRoleContext
+    @aws_subscribe(
+      mutations: [
+        "createAdminRoleContext"
+        "updateAdminRoleContext"
+        "deleteAdminRoleContext"
+      ]
+    )
+    @aws_cognito_user_pools
+  onChainsChange: Chain
+    @aws_subscribe(mutations: ["createChain", "updateChain"])
+    @aws_cognito_user_pools
+  onGroupsChange: Group
+    @aws_subscribe(mutations: ["createGroup", "updateGroup"])
+    @aws_cognito_user_pools
+  onUnitsChange: Unit
+    @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+    @aws_cognito_user_pools
+  # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
+  onProductCategoriesChange: ProductCategory
+    @aws_subscribe(
+      mutations: ["createProductCategory", "updateProductCategory"]
+    )
+    @aws_cognito_user_pools
+  onProductComponentsChange: ProductComponent
+    @aws_subscribe(
+      mutations: ["createProductComponent", "updateProductComponent"]
+    )
+    @aws_cognito_user_pools
+  onProductComponentSetsChange: ProductComponentSet
+    @aws_subscribe(
+      mutations: ["createProductComponentSet", "updateProductComponentSet"]
+    )
+    @aws_cognito_user_pools
+  onChainProductChange: ChainProduct
+    @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
+    @aws_cognito_user_pools
+  onGroupProductChange: GroupProduct
+    @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
+    @aws_cognito_user_pools
+  onUnitProductChange: UnitProduct
+    @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+    @aws_cognito_user_pools
+  onGeneratedProductChange: GeneratedProduct
+    @aws_subscribe(
+      mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
+    )
+    @aws_cognito_user_pools
+  onOrdersChange: Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onOrdersDelete: Order
+    @aws_subscribe(mutations: ["deleteOrder"])
+    @aws_cognito_user_pools
+
+  # Added for the Mobile Application
+  onProductChanged(unitId: String): GeneratedProduct
+    @aws_subscribe(
+      mutations: [
+        "createGeneratedProduct"
+        "updateGeneratedProduct"
+        "deleteGeneratedProduct"
+      ]
+    )
+    @aws_cognito_user_pools
+  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onUnitOrdersChange(unitId: String, archived: Boolean): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+}
+scalar AWSDateTime
 type Address {
   address: String!
   city: String!
@@ -1121,13 +2410,268 @@ type Receipt
   email: String
   pdfData: String
   status: ReceiptStatus!
+=======
+  unitId: ID!
+  productNum: Int!
+  productCategoryId: ID!
+  productCategory: ProductCategory! @connection(fields: ["productCategoryId"])
 }
 
-type Mutation {
-  updateRkeeperServerPassword(unitId: ID!, password: String!): Boolean
-    @aws_iam
-    @aws_cognito_user_pools
-    @function(name: "anyuppCrudCustomResolvers-${env}")
+type GeneratedProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "productsByUnit", fields: ["unitId"])
+  @key(
+    name: "productsByUnitAndCategory"
+    fields: ["unitId", "productCategoryId"]
+  ) {
+  id: ID!
+  unitId: ID!
+  productCategoryId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productType: String!
+  tax: Int!
+  # takeawayTax: Int!
+  position: Int!
+  image: String
+  variants: [GeneratedProductVariant!]!
+  allergens: [Allergen]
+  configSets: [GeneratedProductConfigSet]
+}
+
+type GeneratedProductVariant {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  price: Float!
+  position: Int!
+}
+
+type FavoriteProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+  @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  product: GeneratedProduct! @connection
+}
+
+### Unit
+type Unit
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  lastOrderNum: Int
+  isActive: Boolean!
+  isAcceptingOrders: Boolean!
+  name: String!
+  description: LocalizedItem
+  address: Address!
+  email: String
+  phone: String
+  paymentModes: [PaymentMode]
+  floorMap: FloorMapData
+  lanes: [Lane]
+  open: DateIntervalOpen
+  openingHours: WeeklySchedule
+  merchantId: String
+  timeZone: String
+  pos: Pos
+}
+
+type DateIntervalOpen {
+  from: String
+  to: String
+}
+
+type DateInterval {
+  from: String!
+  to: String!
+}
+
+type CustomDailySchedule {
+  date: String!
+  from: String!
+  to: String!
+}
+
+type WeeklySchedule {
+  mon: DateInterval
+  tue: DateInterval
+  wed: DateInterval
+  thu: DateInterval
+  fri: DateInterval
+  sat: DateInterval
+  sun: DateInterval
+  custom: [CustomDailySchedule]
+}
+
+type FloorMapData {
+  w: Int!
+  h: Int!
+  objects: [FloorMapDataObject!]
+}
+
+type FloorMapDataObject {
+  id: ID!
+  t: UnitMapObjectType! # Type
+  c: String # Caption
+  w: Int # Width
+  h: Int #  Height
+  r: Int # Radius
+  a: Int # Angle
+  x: Int!
+  y: Int!
+  tID: String # Table ID
+  sID: String # Seat Id
+}
+
+enum UnitMapObjectType {
+  table_r
+  table_c
+  seat_r
+  seat_c
+  counter
+  wall
+  label
+}
+
+type Lane {
+  id: ID!
+  name: String!
+  color: String!
+}
+
+type Pos {
+  type: PosType!
+  rkeeper: RKeeper
+}
+
+type RKeeper {
+  endpointUri: String!
+  rkeeperUsername: String!
+  rkeeperPassword: String!
+  anyuppUsername: String!
+  anyuppPassword: String!
+  restaurantId: String!
+}
+
+enum PosType {
+  anyupp
+  rkeeper
+}
+
+### User
+type User
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  stripeCustomerId: String
+  invoiceAddress: UserInvoiceAddress
+}
+
+### Cart
+type Cart
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  unitId: ID!
+  takeAway: Boolean!
+  place: Place
+  paymentMode: PaymentMode
+  items: [OrderItem!]!
+}
+
+type Transaction
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  user: User! @connection(fields: ["userId"])
+  orderId: ID!
+  type: String
+  total: Float
+  currency: String
+  status: PaymentStatus
+  externalTransactionId: String
+  invoiceId: ID
+  invoice: Invoice @connection(fields: ["invoiceId"])
+  receiptId: ID
+  receipt: Receipt @connection(fields: ["receiptId"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type UserInvoiceAddress {
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+}
+
+enum InvoiceStatus {
+  waiting
+  success
+  failed
+}
+
+enum ReceiptStatus {
+  waiting
+  success
+  failed
+}
+
+type Invoice
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  orderId: ID!
+  transactionId: ID!
+  externalInvoiceId: String
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+  pdfUrl: String
+  status: InvoiceStatus!
+}
+
+type Receipt
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  userId: ID!
+  orderId: ID!
+  transactionId: ID!
+  externalReceiptId: String
+  email: String
+  pdfData: String
+  status: ReceiptStatus!
+>>>>>>> dev
 }
 
 type Subscription {

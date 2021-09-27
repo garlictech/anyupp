@@ -21,12 +21,17 @@ cd ../..
 
 echo 'Copy ANYUPP schema...'
 echo '====================='
-cp libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql apps/anyupp-mobile/graphql/anyupp-api-schema.graphql
+cp \
+  libs/anyupp-gql/backend/src/graphql/schema/generated/schema.graphql \
+  apps/anyupp-mobile/graphql/anyupp-api-schema.graphql
 echo 'Done.'
 
 echo 'Copy and merge CRUD schema...'
 echo '=============================='
-cat apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql libs/gql-sdk/src/schema/aws.graphql > apps/anyupp-mobile/graphql/crud-api-schema.graphql
+cat \
+  apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql \
+  libs/gql-sdk/src/schema/aws.graphql \
+  > apps/anyupp-mobile/graphql/crud-api-schema.graphql
 echo 'Done.'
 
 echo 'Generating Dart models from schema...'

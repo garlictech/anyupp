@@ -161,6 +161,7 @@ query SearchOrders(
         image
         laneId
         created
+        productType
       }
       createdAt
       orderNum

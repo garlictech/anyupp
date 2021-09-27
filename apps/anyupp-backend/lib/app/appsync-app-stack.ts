@@ -1,5 +1,5 @@
-import path from 'path';
 import * as appsync from '@aws-cdk/aws-appsync';
+import { FieldLogLevel } from '@aws-cdk/aws-appsync';
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as iam from '@aws-cdk/aws-iam';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -14,13 +14,12 @@ import {
   createUnitResolvers,
   createUserResolvers,
 } from '@bgap/anyupp-gql/backend';
+import { tableConfig } from '@bgap/crud-gql/backend';
 import * as sst from '@serverless-stack/resources';
-
+import path from 'path';
 import { commonLambdaProps } from './lambda-common';
 import { PROJECT_ROOT } from './settings';
 import { getFQParamName } from './utils';
-import { tableConfig } from '@bgap/crud-gql/backend';
-import { FieldLogLevel } from '@aws-cdk/aws-appsync';
 
 export interface AppsyncAppStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
@@ -47,7 +46,7 @@ export class AppsyncAppStack extends sst.Stack {
       name: app.logicalPrefixedName('anyupp-appsync-api'),
       schema: appsync.Schema.fromAsset(
         PROJECT_ROOT +
-          'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql',
+          'libs/anyupp-gql/backend/src/graphql/schema/generated/schema.graphql',
       ),
       authorizationConfig: {
         defaultAuthorization: {

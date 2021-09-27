@@ -2,6 +2,10 @@
 
 exports[`CreatCartFromOrder mutation test should fail in case the cart is not the user's 1`] = `[Error: GraphQL error: Cart is missing]`;
 
-exports[`CreatCartFromOrder mutation test should fail without a cart 1`] = `[Error: GraphQL error: Cart Object Validation Error (JOI): "value" must be of type object]`;
+exports[`CreatCartFromOrder mutation test should fail without a cart 1`] = `[Error: GraphQL error: Unexpected empty value]`;
 
-exports[`CreatCartFromOrder mutation test should fail without a unit 1`] = `[Error: GraphQL error: Unit Object Validation Error (JOI): "value" must be of type object]`;
+exports[`CreatCartFromOrder mutation test should fail without a unit 1`] = `[Error: GraphQL error: {"message":"Unit is not accepting orders right now. Try it later!","code":"ERROR_UNIT_NOT_ACCEPTING_ORDERS"}]`;
+
+exports[`CreatCartFromOrder mutation test should fail without an authenticated userId 1`] = `"CreateOrderFromCartRequest Object Validation Error (JOI): \\"userId\\" is required, \\"input\\" is required"`;
+
+exports[`CreatCartFromOrder mutation test should fail without an id in input 1`] = `"CreateOrderFromCartRequest Object Validation Error (JOI): \\"input.id\\" is required"`;

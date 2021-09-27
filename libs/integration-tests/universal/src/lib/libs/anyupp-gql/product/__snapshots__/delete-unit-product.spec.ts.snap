@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeleteUnitProduct tests should delete the unitProduct from the database 1`] = `"UnitProdcuct is missing"`;
