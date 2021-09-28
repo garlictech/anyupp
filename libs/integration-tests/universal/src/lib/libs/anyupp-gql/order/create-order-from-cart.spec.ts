@@ -38,7 +38,7 @@ import {
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
 
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = true;
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 const TEST_NAME = 'ORDER_';
 const DYNAMODB_OPERATION_DELAY = 3000;
 
