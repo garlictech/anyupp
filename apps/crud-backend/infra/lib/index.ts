@@ -25,11 +25,14 @@ export class AnyuppCrudInfra extends Stack {
 
     const resolverLambda = new lambda.Function(this, 'CustomResolvers', {
       runtime: lambda.Runtime.NODEJS_14_X,
-      functionName: 'anyuppCrudCustomResolvers-' + scope.stage,
+      functionName: `${scope.stage}-anyupp-crud-resolvers`,
       // It must be relative to the serverless.yml file
-      handler: 'lib/lambda/custom-resolvers/index.handler',
+      handler: 'lib/lambda/appsync-lambda/index.handler',
       code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/custom-resolvers.zip'),
+        path.join(
+          __dirname,
+          '../../../../anyupp-backend/.serverless/appsync-lambda.zip',
+        ),
       ),
       environment: {
         SALT: saltSecret,

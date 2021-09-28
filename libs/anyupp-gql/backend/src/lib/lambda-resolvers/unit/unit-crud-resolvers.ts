@@ -3,18 +3,11 @@ import { createUpdateParams } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
 import { from, Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
-import { DynamoDB } from 'aws-sdk';
 import * as R from 'ramda';
-
-export interface UnitResolverDeps {
-  hashGenerator: (arg: string) => string;
-  uuidGenerator: () => string;
-  tableName: string;
-  docClient: DynamoDB.DocumentClient;
-}
+import { UnitsResolverDeps } from './utils';
 
 const hashPasswords =
-  (deps: UnitResolverDeps) => (input: { pos?: CrudApi.Maybe<CrudApi.Pos> }) =>
+  (deps: UnitsResolverDeps) => (input: { pos?: CrudApi.Maybe<CrudApi.Pos> }) =>
     pipe(
       ['rkeeperPassword', 'anyuppPassword'],
       R.map((prop: string) => R.lensPath(['pos', 'rkeeper', prop])),
@@ -33,7 +26,7 @@ const hashPasswords =
     );
 
 export const createUnitResolver =
-  (deps: UnitResolverDeps) =>
+  (deps: UnitsResolverDeps) =>
   (item: CrudApi.CreateUnitInput): Observable<boolean> =>
     pipe(
       {
@@ -50,7 +43,7 @@ export const createUnitResolver =
     );
 
 export const updateUnitResolver =
-  (deps: UnitResolverDeps) => (input: CrudApi.UpdateUnitInput) =>
+  (deps: UnitsResolverDeps) => (input: CrudApi.UpdateUnitInput) =>
     pipe(
       input.pos?.rkeeper ? hashPasswords(deps)(input) : input,
       item => createUpdateParams(deps.tableName, input.id, item),

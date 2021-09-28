@@ -387,7 +387,7 @@ type FavoriteProduct
 
 ### Unit
 type Unit
-  @model
+  @model(mutations: { delete: "deleteUnit" })
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
@@ -598,11 +598,61 @@ type Receipt
   status: ReceiptStatus!
 }
 
+# Duplications!!!
+input CreateUnitInput {
+  id: ID
+  groupId: ID!
+  chainId: ID!
+  lastOrderNum: Int
+  isActive: Boolean!
+  isAcceptingOrders: Boolean!
+  name: String!
+  description: LocalizedItemInput
+  address: AddressInput!
+  email: String
+  phone: String
+  paymentModes: [PaymentModeInput]
+  floorMap: FloorMapDataInput
+  lanes: [LaneInput]
+  open: DateIntervalOpenInput
+  openingHours: WeeklyScheduleInput
+  merchantId: String
+  timeZone: String
+  pos: PosInput
+}
+
+input UpdateUnitInput {
+  id: ID!
+  groupId: ID
+  chainId: ID
+  lastOrderNum: Int
+  isActive: Boolean
+  isAcceptingOrders: Boolean
+  name: String
+  description: LocalizedItemInput
+  address: AddressInput
+  email: String
+  phone: String
+  paymentModes: [PaymentModeInput]
+  floorMap: FloorMapDataInput
+  lanes: [LaneInput]
+  open: DateIntervalOpenInput
+  openingHours: WeeklyScheduleInput
+  merchantId: String
+  timeZone: String
+  pos: PosInput
+}
+
 type Mutation {
-  updateRkeeperServerPassword(unitId: ID!, password: String!): Boolean
+  createUnit(input: CreateUnitInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "anyuppCrudCustomResolvers-${env}")
+    @function(name: "${env}-anyupp-crud-resolvers")
+
+  updateUnit(input: UpdateUnitInput!): Unit
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-crud-resolvers")
 }
 
 type Subscription {
