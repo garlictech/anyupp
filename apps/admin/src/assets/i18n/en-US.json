@@ -233,7 +233,8 @@
     "productType": {
       "drink": "Drink",
       "food": "Food",
-      "other": "Other"
+      "other": "Other",
+      "unknown": "Unknown type"
     },
     "takeaway": "Takeaway"
   },

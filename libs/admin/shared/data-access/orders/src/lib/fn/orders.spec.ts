@@ -1,5 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { orderFixture as ofx } from '@bgap/shared/fixtures';
+import { orderFixture, testIdPrefix, unitFixture } from '@bgap/shared/fixtures';
 import { IFloorMapUserOrderObjects } from '@bgap/shared/types';
 
 import {
@@ -8,22 +8,36 @@ import {
   getLowestStatus,
   getNextOrderItemStatus,
   getNextOrderStatus,
+  getOrderLaneColor,
+  getOrderStatusByItemsStatus,
   getStatusColor,
+  getTableOrders,
 } from './orders';
+
+const orders = [
+  orderFixture.convertInputToOrder(orderFixture.activeWaitingCardOrderInput),
+  orderFixture.convertInputToOrder(orderFixture.activeWaitingCashOrderInput),
+  orderFixture.convertInputToOrder(
+    orderFixture.activeServedSuccessCardOrderInput,
+  ),
+  orderFixture.convertInputToOrder(
+    orderFixture.activeServedSuccessCashOrderInput,
+  ),
+];
 
 describe('Orders pure function tests', () => {
   describe('currentStatus', () => {
     it('should get current status', () => {
       expect(
         currentStatus([
-          ofx.getOrderStatusLogItem(CrudApi.OrderStatus.placed),
-          ofx.getOrderStatusLogItem(CrudApi.OrderStatus.served),
+          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.placed),
+          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.served),
         ]),
       ).toMatchInlineSnapshot(`"served"`);
       expect(
         currentStatus([
-          ofx.getOrderStatusLogItem(CrudApi.OrderStatus.ready),
-          ofx.getOrderStatusLogItem(CrudApi.OrderStatus.rejected),
+          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.ready),
+          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.rejected),
         ]),
       ).toMatchInlineSnapshot(`"rejected"`);
     });
@@ -74,7 +88,23 @@ describe('Orders pure function tests', () => {
     });
   });
 
-  // describe.skip('getOrderLaneColor', () => {});
+  describe('getOrderLaneColor', () => {
+    const unit: CrudApi.Unit = {
+      ...unitFixture.unit_01,
+      createdAt: '2021-08-02T01:54:11.843Z',
+      updatedAt: '2021-08-02T01:54:11.843Z',
+    };
+    const orderItem = {
+      ...orderFixture.orderItemInputBase('Fanta'),
+      productId: `${testIdPrefix}unit_product_fanta`,
+    };
+
+    it('should get order lane color', () => {
+      expect(getOrderLaneColor(orderItem, unit)).toMatchInlineSnapshot(
+        `"#e72222"`,
+      );
+    });
+  });
 
   describe('getStatusColor', () => {
     it('should get status color', () => {
@@ -128,12 +158,6 @@ describe('Orders pure function tests', () => {
 
   describe('getActiveOrdersByUser', () => {
     it('should get active orders by user', () => {
-      const orders = [
-        ofx.convertInputToOrder(ofx.activeWaitingCardOrderInput),
-        ofx.convertInputToOrder(ofx.activeWaitingCashOrderInput),
-        ofx.convertInputToOrder(ofx.activeServedSuccessCardOrderInput),
-        ofx.convertInputToOrder(ofx.activeServedSuccessCashOrderInput),
-      ];
       const result: IFloorMapUserOrderObjects = getActiveOrdersByUser(orders);
 
       expect(orders.length).toBe(4);
@@ -155,6 +179,69 @@ describe('Orders pure function tests', () => {
           "waiting_for_payment",
         ]
       `);
+    });
+  });
+
+  describe('getTableOrders', () => {
+    const activeOrders = getActiveOrdersByUser(orders);
+
+    it('should get table orders from empty table list', () => {
+      expect(
+        Object.values(getTableOrders([], activeOrders)),
+      ).toMatchInlineSnapshot(`Array []`);
+    });
+
+    it('should get table order from an existing table', () => {
+      expect(
+        getTableOrders(['01'], activeOrders)['01'].userOrders?.[0]?.orders
+          ?.length,
+      ).toBe(2);
+    });
+  });
+
+  describe('getTableSeatOrders', () => {
+    const activeOrders = getActiveOrdersByUser(orders);
+
+    it('should get table seat orders from empty table list', () => {
+      expect(
+        Object.values(getTableOrders([], activeOrders)),
+      ).toMatchInlineSnapshot(`Array []`);
+    });
+
+    it('should get table seat order from an existing table', () => {
+      expect(
+        getTableOrders(['01'], activeOrders)['01'].userOrders?.[0]?.orders
+          ?.length,
+      ).toBe(2);
+    });
+  });
+
+  describe('getOrderStatusByItemsStatus', () => {
+    const order = orders[0];
+
+    it('should get order status by item status', () => {
+      expect(getOrderStatusByItemsStatus(order)).toMatchInlineSnapshot(
+        `"placed"`,
+      );
+
+      order.items = [
+        {
+          ...order.items[0],
+          statusLog: [
+            orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.served),
+          ],
+        },
+        {
+          ...order.items[1],
+          statusLog: [
+            orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.processing),
+          ],
+        },
+      ];
+
+      expect(getOrderStatusByItemsStatus(order)).toMatchInlineSnapshot(
+        `"processing"`,
+      );
     });
   });
 });

@@ -34,15 +34,15 @@
   <nb-card-body class="p-2 overflow-hidden">
     <ng-container *ngFor="let product of productMixListData">
       <div class="row fw-bold">
-        <div class="col-9">{{ product.name | localize }}</div>
-        <div class="col-2">
+        <div class="col-7">{{ product.name | localize }}</div>
+        <div class="col-2 text-end">
           {{ 'products.productType.' + product.productType | translate }}
         </div>
-        <div class="col-1 text-end">{{ product.quantity }}</div>
+        <div class="col-3 text-end">{{ product.quantity }}</div>
       </div>
       <div class="row" *ngFor="let variant of product.variants || []">
-        <div class="col-10">{{ variant.name | localize }}</div>
-        <div class="col-1 col-offset-1 text-end">{{ variant.quantity }}</div>
+        <div class="col-9">{{ variant.name | localize }}</div>
+        <div class="col-2 col-offset-1 text-end">{{ variant.quantity }}</div>
       </div>
       <div class="row" *ngFor="let component of product.components || []">
         <div class="col-9">{{ component.name | localize }}</div>

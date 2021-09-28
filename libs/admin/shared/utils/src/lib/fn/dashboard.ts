@@ -3,7 +3,6 @@ import { DateTime } from 'luxon';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EProductType,
-  IKeyValueObject,
   IOrderAmount,
   IOrderAmounts,
   IProducMixObject,
@@ -12,6 +11,8 @@ import {
   UnpayCategoryStatObj,
   UnpayCategoryStatObjItem,
 } from '@bgap/shared/types';
+
+const UNKNOWN_PRODUCT_TYPE = 'unknown';
 
 export const calculatePaymentMethodSums = (
   paymentMethods: CrudApi.PaymentMethod[],
@@ -68,7 +69,6 @@ export const getDailyOrdersSum = (
 
 export const hourlyBreakdownOrderAmounts = (
   timeZone: string,
-  products: CrudApi.GeneratedProduct[],
   orders: CrudApi.Order[],
 ): IOrderAmount => {
   const amounts: IOrderAmount = {
@@ -79,24 +79,15 @@ export const hourlyBreakdownOrderAmounts = (
     sum: new Array(24).fill(0),
   };
 
-  const productTypeMap: IKeyValueObject = {};
-  products
-    .filter(p => !!p.id)
-    .forEach(p => {
-      productTypeMap[p.id] = p.productType;
-    });
-
   orders.forEach(o => {
     if (o.createdAt) {
       const date: DateTime = DateTime.fromISO(o.createdAt, { zone: timeZone });
 
-      o.items
-        ?.filter(i => productTypeMap[i.productId])
-        .forEach((i: CrudApi.OrderItem) => {
-          amounts[<EProductType>productTypeMap[i.productId]][date.hour] +=
-            i.priceShown.priceSum;
-          amounts['sum'][date.hour] += i.priceShown.priceSum;
-        });
+      o.items?.forEach((i: CrudApi.OrderItem) => {
+        amounts[i.productType || UNKNOWN_PRODUCT_TYPE][date.hour] +=
+          i.priceShown.priceSum;
+        amounts['sum'][date.hour] += i.priceShown.priceSum;
+      });
 
       amounts['ordersCount'][date.hour] += 1;
     }
@@ -105,24 +96,16 @@ export const hourlyBreakdownOrderAmounts = (
   return amounts;
 };
 
-export const dailySalesPerTypeOrderAmounts = (
-  products: CrudApi.GeneratedProduct[],
-  orders: CrudApi.Order[],
-) => {
+export const dailySalesPerTypeOrderAmounts = (orders: CrudApi.Order[]) => {
   const amounts: IOrderAmounts = {
     [EProductType.DRINK]: 0,
     [EProductType.FOOD]: 0,
     [EProductType.OTHER]: 0,
   };
 
-  const productTypeMap: IKeyValueObject = {};
-  products.forEach(p => {
-    productTypeMap[p.id] = p.productType;
-  });
-
   orders.forEach(o => {
     o.items.forEach(i => {
-      amounts[<EProductType>productTypeMap[i.productId]] +=
+      amounts[i.productType || UNKNOWN_PRODUCT_TYPE] +=
         i.sumPriceShown.priceSum;
     });
   });
@@ -146,23 +129,15 @@ export const dailySalesPerPaymentMethodOrderAmounts = (
   return amounts;
 };
 
-export const calculateProductMix = (
-  orders: CrudApi.Order[],
-  products: CrudApi.GeneratedProduct[],
-) => {
+export const calculateProductMix = (orders: CrudApi.Order[]) => {
   const productMix: IProducMixObject = {};
-
-  const productTypeMap: IKeyValueObject = {};
-  products.forEach(p => {
-    productTypeMap[p.id] = p.productType;
-  });
 
   orders.forEach(order => {
     order.items.forEach(orderItem => {
       if (!productMix[orderItem.productId]) {
         productMix[orderItem.productId] = {
           productId: orderItem.productId,
-          productType: productTypeMap[orderItem.productId],
+          productType: orderItem.productType || UNKNOWN_PRODUCT_TYPE,
           quantity: 0,
           name: orderItem.productName,
           variants: {},

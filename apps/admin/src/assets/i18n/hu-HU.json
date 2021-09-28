@@ -233,7 +233,8 @@
     "productType": {
       "drink": "Ital",
       "food": "Étel",
-      "other": "Egyéb"
+      "other": "Egyéb",
+      "unknown": "Ismeretlen típus"
     },
     "takeaway": "Elvitelre"
   },
