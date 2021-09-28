@@ -151,6 +151,10 @@ Object {
   "position": 1,
   "productCategoryId": "PROD_CAT_ID",
   "productType": "drink",
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "takeawayTax": 11,
   "tax": 11,
   "unitId": "UNIT_ID",
   "variants": Array [
