@@ -54,9 +54,7 @@ const toOrderInputFormat = ({
     archived: false,
     orderNum,
     paymentMode,
-    // created: DateTime.utc().toMillis(),
     items,
-    // TODO: do we need this?? statusLog: createStatusLog(userId),
     statusLog: createStatusLog(userId),
     sumPriceShown: calculateOrderSumPriceRounded(items),
     place,
@@ -108,15 +106,25 @@ const convertCartOrderItemToOrderItem = ({
   };
 };
 
+const getTax = (
+  takeaway: boolean,
+  groupProduct: CrudApi.GroupProduct,
+): number =>
+  takeaway && groupProduct.takeawayTax
+    ? groupProduct.takeawayTax
+    : groupProduct.tax;
+
 const getOrderItems =
   ({
     userId,
     cartItems,
     currency,
+    takeaway,
   }: {
     userId: string;
     cartItems: CrudApi.OrderItem[];
     currency: string;
+    takeaway: boolean;
   }) =>
   (deps: OrderResolverDeps): Observable<CrudApi.OrderItemInput[]> => {
     return combineLatest(
@@ -135,7 +143,7 @@ const getOrderItems =
                       cartItem,
                       currency,
                       laneId: unitProduct.laneId,
-                      tax: groupProduct.tax,
+                      tax: getTax(takeaway, groupProduct),
                       productType: chainProduct.productType,
                     }),
                   ),
@@ -196,6 +204,9 @@ const getNextOrderNum =
       map(num => (place ? `${place.table}${place.seat}${num}` : num)),
     );
   };
+
+const isTakeawayCart = (cart: CrudApi.Cart) =>
+  cart.servingMode === CrudApi.ServingMode.takeaway;
 
 export const createOrderFromCart =
   (userId: string, cartId: string) => (deps: OrderResolverDeps) => {
@@ -260,6 +271,7 @@ export const createOrderFromCart =
           userId,
           currency: props.currency,
           cartItems: props.cart.items,
+          takeaway: isTakeawayCart(props.cart),
         })(deps).pipe(map(items => ({ ...props, items }))),
       ),
       map(props => ({
@@ -272,9 +284,8 @@ export const createOrderFromCart =
           paymentMode: props.cart.paymentMode!, // see missingParametersCheck above
           items: props.items,
           place: props.cart.place,
-          // TODO implement the functionality
-          orderMode: CrudApi.OrderMode.pickup,
-          servingMode: CrudApi.ServingMode.inplace,
+          orderMode: CrudApi.OrderMode.instant, // Currenty this is a FIXED value
+          servingMode: props.cart.servingMode || CrudApi.ServingMode.inplace, // should NOT use default Serving mode if ALL the carts have servingMode fields (when it will be required in the schema) (handled in #1835)
         }),
       })),
       switchMap(props =>

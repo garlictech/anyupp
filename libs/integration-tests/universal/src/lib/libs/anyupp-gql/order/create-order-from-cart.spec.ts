@@ -4,6 +4,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import {
   cartFixture,
   groupFixture,
+  productFixture,
   testAdminUsername,
   testAdminUserPassword,
   testIdPrefix,
@@ -22,10 +23,48 @@ import {
   createIamCrudSdk,
 } from '../../../../api-clients';
 import { createTestCart, deleteTestCart } from '../../../seeds/cart';
+import {
+  createTestChainProduct,
+  deleteTestChainProduct,
+} from '../../../seeds/chain-product';
 import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
+import {
+  createTestGroupProduct,
+  deleteTestGroupProduct,
+} from '../../../seeds/group-product';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
+import {
+  createTestUnitProduct,
+  deleteTestUnitProduct,
+} from '../../../seeds/unit-product';
 
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = true;
+const TEST_NAME = 'ORDER_';
+const DYNAMODB_OPERATION_DELAY = 3000;
+
+// PRODUCTS to create
+const chainProduct_01: RequiredId<CrudApi.CreateChainProductInput> = {
+  ...productFixture.chainProductInputBase,
+  id: `${testIdPrefix}${TEST_NAME}chainProduct_01`,
+};
+const groupProduct_01: RequiredId<CrudApi.CreateGroupProductInput> = {
+  ...productFixture.groupProductInputBase,
+  id: `${testIdPrefix}${TEST_NAME}groupProduct_01`,
+  parentId: chainProduct_01.id,
+  takeawayTax: 53,
+};
+const unitProduct_01: RequiredId<CrudApi.CreateUnitProductInput> = {
+  // const unitProduct_0101: Omit<
+  //   CrudApi.CreateUnitProductInput,
+  //   'id' | 'configSets'
+  // > & { id: string; configSets: CrudApi.ProductConfigSetInput[] } = {
+  ...productFixture.unitProductInputBase,
+  id: `${testIdPrefix}${TEST_NAME}unitProduct_01`,
+  parentId: groupProduct_01.id,
+  // unitId: unitId_01_to_regen,
+  // chainId: chainId_01_seeded,
+  // configSets: [prodConfigSet_01, prodConfigSet_02],
+};
 
 const orderItemConfigSet_01: CrudApi.OrderItemConfigSetInput = {
   productSetId: 'PRODUCTSET_ID_01',
@@ -116,6 +155,13 @@ const cart_04_different_unit: RequiredId<CrudApi.CreateCartInput> = {
   unitId: 'DIFFERENT_UNITID',
   userId: 'WILL BE THE AUTHENTICATED USERID',
 };
+const cart_05_takeaway: RequiredId<CrudApi.CreateCartInput> = {
+  ...cartFixture.cart_01,
+  id: `${testIdPrefix}cart_5_id`,
+  unitId: unitFixture.unit_01.id,
+  servingMode: CrudApi.ServingMode.takeaway,
+  items: [{ ...cartFixture.getOrderItem(), productId: unitProduct_01.id }],
+};
 
 describe('CreatCartFromOrder mutation test', () => {
   let authAnyuppSdk: AnyuppSdk;
@@ -132,8 +178,12 @@ describe('CreatCartFromOrder mutation test', () => {
       deleteTestCart(cart_02.id, orderDeps.crudSdk),
       deleteTestCart(cart_03_different_user.id, orderDeps.crudSdk),
       deleteTestCart(cart_04_different_unit.id, orderDeps.crudSdk),
+      deleteTestCart(cart_05_takeaway.id, orderDeps.crudSdk),
       deleteTestUnit(unitFixture.unit_01.id, orderDeps.crudSdk),
       deleteTestGroup(groupFixture.group_01.id, orderDeps.crudSdk),
+      deleteTestUnitProduct(unitProduct_01.id, orderDeps.crudSdk),
+      deleteTestGroupProduct(groupProduct_01.id, orderDeps.crudSdk),
+      deleteTestChainProduct(chainProduct_01.id, orderDeps.crudSdk),
     ]);
 
   beforeAll(done => {
@@ -145,6 +195,7 @@ describe('CreatCartFromOrder mutation test', () => {
           cart_01.userId = authenticatedUserId;
           cart_02.userId = authenticatedUserId;
           cart_04_different_unit.userId = authenticatedUserId;
+          cart_05_takeaway.userId = authenticatedUserId;
         }),
         switchMap(cleanup),
         switchMap(() =>
@@ -152,13 +203,17 @@ describe('CreatCartFromOrder mutation test', () => {
           combineLatest([
             createTestGroup(groupFixture.group_01, orderDeps.crudSdk),
             createTestUnit(unitFixture.unit_01, orderDeps.crudSdk),
+            createTestChainProduct(chainProduct_01, orderDeps.crudSdk),
+            createTestGroupProduct(groupProduct_01, orderDeps.crudSdk),
+            createTestUnitProduct(unitProduct_01, orderDeps.crudSdk),
             createTestCart(cart_01, orderDeps.crudSdk),
             createTestCart(cart_02, orderDeps.crudSdk),
             createTestCart(cart_03_different_user, orderDeps.crudSdk),
             createTestCart(cart_04_different_unit, orderDeps.crudSdk),
+            createTestCart(cart_05_takeaway, orderDeps.crudSdk),
           ]),
         ),
-        delay(3000),
+        delay(DYNAMODB_OPERATION_DELAY),
       )
       .subscribe(() => done());
   }, 25000);
@@ -166,6 +221,96 @@ describe('CreatCartFromOrder mutation test', () => {
   afterAll(async () => {
     await cleanup().toPromise();
   });
+
+  it("should fail in case the cart is not the user's", done => {
+    const cartId = cart_03_different_user.id;
+    const userId = 'DIFFERENT_USER';
+    const input = { id: cartId };
+    iif(
+      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+      defer(() =>
+        orderRequestHandler(orderDeps).createOrderFromCart({
+          userId,
+          input,
+        }),
+      ),
+      authAnyuppSdk.CreateOrderFromCart({ input }),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
+  }, 15000);
+
+  it('should fail without an authenticated userId', done => {
+    defer(() =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      orderRequestHandler(orderDeps).createOrderFromCart({} as any),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
+  });
+  it('should fail without an id in input', done => {
+    defer(() =>
+      orderRequestHandler(orderDeps).createOrderFromCart({
+        userId: 'FOO',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        input: {} as any,
+      }),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
+  });
+
+  it('should fail without a unit', done => {
+    const cartId = cart_04_different_unit.id;
+    const userId = cart_04_different_unit.userId;
+    const input = { id: cartId };
+
+    iif(
+      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+      defer(() =>
+        orderRequestHandler(orderDeps).createOrderFromCart({
+          userId,
+          input,
+        }),
+      ),
+      authAnyuppSdk.CreateOrderFromCart({ input }),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
+  }, 15000);
+
+  it('should fail without a cart', done => {
+    const input = { id: cartFixture.cartId_NotExisting };
+    const userId = 'NOT_IMPORTANT';
+
+    iif(
+      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+      defer(() =>
+        orderRequestHandler(orderDeps).createOrderFromCart({
+          userId,
+          input,
+        }),
+      ),
+      authAnyuppSdk.CreateOrderFromCart({ input }),
+    ).subscribe({
+      error(e) {
+        expect(e).toMatchSnapshot();
+        done();
+      },
+    });
+  }, 15000);
 
   it('should create an order from a valid cart', done => {
     const userId = cart_01.userId;
@@ -183,7 +328,7 @@ describe('CreatCartFromOrder mutation test', () => {
       .pipe(
         // check order has been truly created
         filterNullish<string>(),
-        delay(1000),
+        delay(DYNAMODB_OPERATION_DELAY),
         switchMap(newOrderId =>
           combineLatest([
             getOrder(orderDeps.crudSdk, newOrderId),
@@ -199,6 +344,10 @@ describe('CreatCartFromOrder mutation test', () => {
               `${cart_01.place?.table}${cart_01.place?.seat}01`,
             );
             expect(order.archived).toEqual(false);
+            // Serving and OrderMode checks
+            expect(order.orderMode).toEqual(CrudApi.OrderMode.instant);
+            expect(order.servingMode).toEqual(CrudApi.ServingMode.inplace);
+
             // Items cheks
             expect(order.items[0]).not.toBeNull();
             // allergens
@@ -317,95 +466,55 @@ describe('CreatCartFromOrder mutation test', () => {
       .subscribe();
   }, 30000);
 
-  it("should fail in case the cart is not the user's", done => {
-    const cartId = cart_03_different_user.id;
-    const userId = 'DIFFERENT_USER';
-    const input = { id: cartId };
-    iif(
-      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-      defer(() =>
-        orderRequestHandler(orderDeps).createOrderFromCart({
-          userId,
-          input,
-        }),
-      ),
-      authAnyuppSdk.CreateOrderFromCart({ input }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  }, 15000);
-
-  it('should fail without an authenticated userId', done => {
-    defer(() =>
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      orderRequestHandler(orderDeps).createOrderFromCart({} as any),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  });
-  it('should fail without an id in input', done => {
-    defer(() =>
-      orderRequestHandler(orderDeps).createOrderFromCart({
-        userId: 'FOO',
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        input: {} as any,
-      }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  });
-
-  it('should fail without a unit', done => {
-    const cartId = cart_04_different_unit.id;
-    const userId = cart_04_different_unit.userId;
-    const input = { id: cartId };
+  it('should create a takeaway order from a takeaway cart', done => {
+    const theCart = cart_05_takeaway;
+    const userId = theCart.userId;
+    const unitId = theCart.unitId;
+    const input = { id: theCart.id };
 
     iif(
       () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+      // To Debug use direct handler call
       defer(() =>
-        orderRequestHandler(orderDeps).createOrderFromCart({
-          userId,
-          input,
-        }),
+        orderRequestHandler(orderDeps).createOrderFromCart({ userId, input }),
       ),
       authAnyuppSdk.CreateOrderFromCart({ input }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  }, 15000);
+    )
+      .pipe(
+        // check order has been truly created
+        filterNullish<string>(),
+        delay(DYNAMODB_OPERATION_DELAY),
+        switchMap(newOrderId =>
+          combineLatest([
+            getOrder(orderDeps.crudSdk, newOrderId),
+            getCart(orderDeps.crudSdk, theCart.id),
+          ]),
+        ),
 
-  it('should fail without a cart', done => {
-    const input = { id: cartFixture.cartId_NotExisting };
-    const userId = 'NOT_IMPORTANT';
+        tap({
+          next([order, cart]) {
+            expect(order).not.toBeNull();
+            expect(order.userId).toEqual(userId);
+            expect(order.unitId).toEqual(unitId);
 
-    iif(
-      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-      defer(() =>
-        orderRequestHandler(orderDeps).createOrderFromCart({
-          userId,
-          input,
+            // Serving and OrderMode checks
+            expect(order.orderMode).toEqual(CrudApi.OrderMode.instant);
+            expect(order.servingMode).toEqual(CrudApi.ServingMode.takeaway);
+            // Items cheks
+            expect(order.items[0]).not.toBeNull();
+            expect(order.items[0].priceShown.tax).toEqual(
+              groupProduct_01.takeawayTax,
+            );
+
+            // Cart should be deleted
+            expect(cart).toBeNull();
+            done();
+          },
         }),
-      ),
-      authAnyuppSdk.CreateOrderFromCart({ input }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  }, 15000);
+        throwIfEmpty(),
+      )
+      .subscribe();
+  }, 30000);
 });
 
 const getOrder = (crudSdk: CrudApi.CrudSdk, id: string) => {

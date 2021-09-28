@@ -524,7 +524,7 @@ type Cart
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!
-  servingMode: ServingMode!
+  servingMode: ServingMode # Make the Cart.servingMode REQUIRED in the next release (handled in #1835 issue)
 }
 
 type Transaction
