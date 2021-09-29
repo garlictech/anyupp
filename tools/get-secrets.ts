@@ -6,8 +6,9 @@ import * as fs from 'fs';
 
 const project = 'anyupp';
 const environment = process.argv[2];
-const secretEnvironment =
-  environment in ['dev', 'qa', 'staging', 'prod'] ? environment : 'dev';
+const secretEnvironment = ['dev', 'qa', 'staging', 'prod'].includes(environment)
+  ? environment
+  : 'dev';
 
 const secretName = `${project}-${secretEnvironment}-secrets`;
 const targetDir = `${__dirname}/../libs/shared/config/src/lib/generated`;
