@@ -4,7 +4,6 @@ import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ConfirmSignUpWidget extends StatefulWidget {
   @override
@@ -66,10 +65,12 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CenterLoadingWidget(),
+          CenterLoadingWidget(
+            backgroundColor: Colors.white,
+          ),
           Text(
             message,
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16.0,
               fontWeight: FontWeight.w500,
               color: Color(0xFF3C2F2F),
@@ -92,7 +93,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                 child: Text(
                   trans('login.email.dialogEmailSentTitle'),
                   textAlign: TextAlign.left,
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF3C2F2F),
@@ -108,7 +109,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                         Text(
                           trans('login.email.setMailTo'),
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
+                          style: Fonts.satoshi(
                             fontSize: 18.0,
                           ),
                         ),
@@ -123,9 +124,9 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                           child: Text(
                             trans('login.email.signIn'),
                             textAlign: TextAlign.start,
-                            style: GoogleFonts.poppins(
+                            style: Fonts.satoshi(
                               fontSize: 18,
-                              color: theme.highlight,
+                              color: theme.primary,
                               fontWeight: FontWeight.normal,
                               decoration: TextDecoration.underline,
                             ),
@@ -145,7 +146,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                         children: [
                           TextSpan(
                             text: trans('login.email.codeNotReceived') + ' ',
-                            style: GoogleFonts.poppins(
+                            style: Fonts.satoshi(
                               fontSize: 14.0,
                               color: Color(0x993C2F2F),
                             ),
@@ -160,9 +161,9 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                       child: Text(
                         trans('login.email.resendCode'),
                         textAlign: TextAlign.start,
-                        style: GoogleFonts.poppins(
+                        style: Fonts.satoshi(
                           fontSize: 14,
-                          color: theme.highlight,
+                          color: theme.primary,
                           fontWeight: FontWeight.normal,
                           decoration: TextDecoration.underline,
                         ),
@@ -191,7 +192,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                 child: Text(
                   trans('login.email.dialogConfirmedTitle'),
                   textAlign: TextAlign.left,
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF3C2F2F),
@@ -207,7 +208,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                         Text(
                           trans('login.email.dialogConfirmedMessage'),
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
+                          style: Fonts.satoshi(
                             fontSize: 18.0,
                           ),
                         ),
@@ -222,9 +223,9 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                           child: Text(
                             trans('login.email.signIn'),
                             textAlign: TextAlign.start,
-                            style: GoogleFonts.poppins(
+                            style: Fonts.satoshi(
                               fontSize: 18,
-                              color: theme.highlight,
+                              color: theme.primary,
                               fontWeight: FontWeight.normal,
                               decoration: TextDecoration.underline,
                             ),

@@ -29,16 +29,23 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
-      if (state is UnitSelected) {
-        return TabBarWidget(
-          OrderStatusScreen(unit: state.unit),
-          OrderHistoryScreen(unit: state.unit),
-          trans('orders.tabCurrentOrder'),
-          trans('orders.tabOrderHistory'),
-        );
-      }
-      return CenterLoadingWidget();
-    });
+    return Scaffold(
+      // The appBar head text
+      backgroundColor: theme.secondary12,
+      body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+        builder: (context, state) {
+          if (state is UnitSelected) {
+            return TabBarWidget(
+              OrderStatusScreen(unit: state.unit),
+              OrderHistoryScreen(unit: state.unit),
+              trans('orders.tabCurrentOrder'),
+              trans('orders.tabOrderHistory'),
+              showBackButton: false,
+            );
+          }
+          return CenterLoadingWidget();
+        },
+      ),
+    );
   }
 }

@@ -52,13 +52,7 @@ class UpdateProductInCartAction extends BaseCartAction {
 }
 
 class ClearCartAction extends BaseCartAction {
-  final User user;
-  final GeoUnit unit;
-
-  const ClearCartAction(this.user, this.unit);
-
-  @override
-  List<Object?> get props => [unit, user];
+  const ClearCartAction();
 }
 
 class ClearPlaceInCart extends BaseCartAction {

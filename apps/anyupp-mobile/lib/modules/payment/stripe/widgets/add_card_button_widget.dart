@@ -1,7 +1,6 @@
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AddCardButtonWidget extends StatelessWidget {
   final Function _startStripePayment;
@@ -18,14 +17,14 @@ class AddCardButtonWidget extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            primary: theme.indicator,
+            primary: theme.primary,
           ),
           onPressed: () => _startStripePayment(),
           child: Text(
             trans(context, 'payment.manageCard.add_card'),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16,
-              color: theme.text2,
+              color: theme.secondary0,
               fontWeight: FontWeight.w500,
             ),
           ),

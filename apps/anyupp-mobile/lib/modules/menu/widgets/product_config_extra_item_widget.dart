@@ -1,11 +1,9 @@
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:flutter/material.dart';
-import 'package:expandable/expandable.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:flutter/material.dart';
 
 class ProductConfigExtrasItemWidget extends StatefulWidget {
   final GeneratedProductConfigSet extraSet;
@@ -26,36 +24,57 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        bottom: 16,
+      // margin: EdgeInsets.only(bottom: 16.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            16.0,
+          ),
+        ),
+        color: theme.secondary0,
       ),
-      child: ExpandablePanel(
-        header: Text(
-          getLocalizedText(context, widget.extraSet.name),
-          style: GoogleFonts.poppins(
-            color: theme.text,
-            fontSize: 20.0,
-          ),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(
+          top: 12.0,
+          // left: 16.0,
+          bottom: 12.0,
+          // right: 16.0,
         ),
-        collapsed: Text(
-          '[$_selectedExtraCount/${widget.extraSet.maxSelection ?? 1}] ' + _getSelectedExtraNames(context),
-          //'$_selectedExtraCount/${widget.extraSet.maxSelection ?? 1}',
-          // getDetailsTextFromModifierSet(context, extraSet),
-          style: GoogleFonts.poppins(
-            color: theme.text,
-            fontSize: 16.0,
-          ),
-        ),
-        expanded: Column(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '$_selectedExtraCount/${widget.extraSet.maxSelection ?? 1}',
-              // getDetailsTextFromModifierSet(context, extraSet),
-              style: GoogleFonts.poppins(
-                color: theme.text,
-                fontSize: 16.0,
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
               ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    getLocalizedText(context, widget.extraSet.name),
+                    style: Fonts.satoshi(
+                      color: theme.primary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    '$_selectedExtraCount/${widget.extraSet.maxSelection ?? 1}', // + _getSelectedExtraNames(context),
+                    //'$_selectedExtraCount/${widget.extraSet.maxSelection ?? 1}',
+                    // getDetailsTextFromModifierSet(context, extraSet),
+                    style: Fonts.satoshi(
+                      color: theme.secondary40,
+                      fontSize: 14.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              color: theme.secondary16,
             ),
             ..._buildSingleExtraList(context, widget.extraSet.items, widget.extraSet),
           ],
@@ -70,98 +89,142 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
     components.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
     components.forEach((extra) {
       bool isSelected = _selectedExtras['${extra.productComponentId}'] ?? false;
+      bool last = false;
 
-      widgets.add(InkWell(
-        onTap: !isSelected && !_canSelectExtra
-            ? null
-            : () {
-                setState(() {
-                  _selectedExtras['${extra.productComponentId}'] = !isSelected;
-                });
-                _updateSelectedCount(productSet);
-                widget.onExtraSelected(productSet.productSetId, extra.productComponentId, !isSelected);
-              },
-        child: Container(
-          child: Row(
+      widgets.add(
+        InkWell(
+          onTap: !isSelected && !_canSelectExtra
+              ? null
+              : () {
+                  setState(() {
+                    _selectedExtras['${extra.productComponentId}'] = !isSelected;
+                  });
+                  _updateSelectedCount(productSet);
+                  widget.onExtraSelected(productSet.productSetId, extra.productComponentId, !isSelected);
+                },
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Switch(
-                activeColor: theme.indicator,
-                activeTrackColor: theme.indicator,
-                // inactiveThumbColor: theme.highlight.withOpacity(0.2),
-
-                // inactiveTrackColor: theme.highlight.withOpacity(0.76),
-                value: isSelected,
-                onChanged: !isSelected && !_canSelectExtra
-                    ? null
-                    : (value) {
-                        setState(() {
-                          _selectedExtras['${extra.productComponentId}'] = value;
-                        });
-                        _updateSelectedCount(productSet);
-                        widget.onExtraSelected(productSet.productSetId, extra.productComponentId, value);
-                      },
-              ),
-              Expanded(
-                flex: 10,
-                child: AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 500),
-                  style: _getExtrasFontStyleByIsSelected(isSelected),
-                  child: AutoSizeText(
-                    getLocalizedText(context, extra.name),
-                    maxLines: 1,
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      getLocalizedText(context, extra.name),
+                      style: Fonts.satoshi(
+                        color: theme.secondary,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '+' + formatCurrency(extra.price, widget.unit.currency),
+                          style: Fonts.satoshi(
+                            color: theme.primary,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Checkbox(
+                          shape: CircleBorder(),
+                          value: _selectedExtras['${extra.productComponentId}'] ?? false,
+                          activeColor: theme.primary,
+                          fillColor: MaterialStateColor.resolveWith((states) {
+                            if (states.isEmpty) {
+                              return theme.secondary16;
+                            }
+                            var state = states.first;
+                            switch (state) {
+                              case MaterialState.selected:
+                                return theme.primary;
+                              default:
+                                return _canSelectExtra ? theme.secondary16 : theme.secondary12;
+                            }
+                          }),
+                          onChanged: !isSelected && !_canSelectExtra
+                              ? null
+                              : (value) {
+                                  setState(() {
+                                    _selectedExtras['${extra.productComponentId}'] = value ?? false;
+                                  });
+                                  _updateSelectedCount(productSet);
+                                  widget.onExtraSelected(
+                                      productSet.productSetId, extra.productComponentId, value ?? false);
+                                },
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              //Spacer(),
-              Expanded(
-                flex: 2,
-                child: AnimatedDefaultTextStyle(
-                  duration: const Duration(milliseconds: 300),
-                  style: _getExtrasFontStyleByIsSelected(isSelected),
-                  child: AutoSizeText(
-                    formatCurrencyWithSignal(extra.price, widget.unit.currency),
-                    maxLines: 1,
-                  ),
-                ),
-              ),
+              if (!last)
+                Divider(
+                  height: 1,
+                  color: theme.secondary12,
+                )
             ],
           ),
+          //   child: Container(
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.start,
+          //       children: [
+          //         Expanded(
+          //           flex: 10,
+          //           child: AnimatedDefaultTextStyle(
+          //             duration: const Duration(milliseconds: 500),
+          //             style: _getExtrasFontStyleByIsSelected(isSelected),
+          //             child: AutoSizeText(
+          //               getLocalizedText(context, extra.name),
+          //               style: Fonts.satoshi(
+          //                 fontSize: 16.0,
+          //                 fontWeight: FontWeight.w400,
+          //                 color: theme.secondary,
+          //               ),
+          //               maxLines: 1,
+          //             ),
+          //           ),
+          //         ),
+          //         Expanded(
+          //           flex: 2,
+          //           child: AnimatedDefaultTextStyle(
+          //             duration: const Duration(milliseconds: 300),
+          //             style: _getExtrasFontStyleByIsSelected(isSelected),
+          //             child: AutoSizeText(
+          //               formatCurrencyWithSignal(extra.price, widget.unit.currency),
+          //               maxLines: 1,
+          //             ),
+          //           ),
+          //         ),
+          //         Switch(
+          //           activeColor: theme.primary,
+          //           focusColor: theme.secondary0,
+          //           hoverColor: theme.secondary0,
+          //           inactiveTrackColor: theme.secondary64,
+          //           value: isSelected,
+          //           onChanged: !isSelected && !_canSelectExtra
+          //               ? null
+          //               : (value) {
+          //                   setState(() {
+          //                     _selectedExtras['${extra.productComponentId}'] = value;
+          //                   });
+          //                   _updateSelectedCount(productSet);
+          //                   widget.onExtraSelected(productSet.productSetId, extra.productComponentId, value);
+          //                 },
+          //         ),
+
+          //         //Spacer(),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ),
-      ));
+      );
     });
 
     return widgets;
-  }
-
-  String _getSelectedExtraNames(BuildContext context) {
-    StringBuffer sb = StringBuffer();
-    _selectedExtras.forEach((key, value) {
-      if (value == true) {
-        GeneratedProductConfigComponent? component = getComponentByIdFromSet(key, widget.extraSet);
-        if (component != null) {
-          sb.write(getLocalizedText(context, component.name));
-          sb.write(',');
-        }
-      }
-    });
-    String text = sb.toString();
-    if (text.isNotEmpty) {
-      text = text.substring(0, text.length - 1);
-    }
-    return text;
-  }
-
-  TextStyle _getExtrasFontStyleByIsSelected(bool isSelected) {
-    return isSelected
-        ? GoogleFonts.poppins(
-            color: theme.highlight,
-            fontSize: 18.0,
-          )
-        : GoogleFonts.poppins(
-            color: theme.text.withOpacity(_canSelectExtra ? 0.76 : 0.3),
-            fontSize: 17,
-          );
   }
 
   Future<void> _updateSelectedCount(GeneratedProductConfigSet productSet) async {

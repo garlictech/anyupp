@@ -19,12 +19,12 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
   ProductCategoriesBloc(this._unitSelectBloc, this._productRepository) : super(ProductCategoriesLoading()) {
     if (_unitSelectBloc.state is UnitSelected) {
       add(LoadProductCategories(
-        (_unitSelectBloc.state as UnitSelected).unit.id!,
+        (_unitSelectBloc.state as UnitSelected).unit.id,
       ));
     }
     _unitSelectSubscription = _unitSelectBloc.stream.asBroadcastStream().listen((state) {
       if (state is UnitSelected) {
-        add(LoadProductCategories(state.unit.id!));
+        add(LoadProductCategories(state.unit.id));
       }
     });
   }

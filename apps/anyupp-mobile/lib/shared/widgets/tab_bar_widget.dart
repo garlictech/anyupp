@@ -1,8 +1,8 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class TabBarWidget extends StatefulWidget {
   final Widget firstPage;
@@ -11,9 +11,10 @@ class TabBarWidget extends StatefulWidget {
   final String secondPageText;
   final int tabIndex;
   final Function? onTabChanged;
+  final bool showBackButton;
 
   const TabBarWidget(this.firstPage, this.secondPage, this.firstPageText, this.secondPageText,
-      {this.tabIndex = 0, this.onTabChanged});
+      {this.tabIndex = 0, this.showBackButton = true, this.onTabChanged});
 
   @override
   _TabBarWidgetState createState() => _TabBarWidgetState();
@@ -42,7 +43,29 @@ class _TabBarWidgetState extends State<TabBarWidget> with SingleTickerProviderSt
       // The appBar head text
       appBar: AppBar(
         elevation: 2.0,
-        backgroundColor: theme.background2,
+        backgroundColor: theme.secondary12,
+        leading: widget.showBackButton
+            ? Container(
+                padding: EdgeInsets.only(
+                  left: 8.0,
+                  top: 4.0,
+                  bottom: 4.0,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      width: 1,
+                      color: theme.secondary40.withOpacity(0.4),
+                    ),
+                  ),
+                  child: BackButton(
+                    onPressed: () => Nav.pop(),
+                    color: theme.secondary,
+                  ),
+                ),
+              )
+            : null,
         flexibleSpace: Padding(
           padding: const EdgeInsets.only(bottom: 6.0),
           child: Column(
@@ -53,13 +76,13 @@ class _TabBarWidgetState extends State<TabBarWidget> with SingleTickerProviderSt
                   isScrollable: false,
                   indicatorColor: Colors.transparent,
                   indicatorSize: TabBarIndicatorSize.tab,
-                  indicator: CircleTabIndicator(color: theme.highlight, radius: 3),
-                  labelColor: theme.highlight,
-                  labelStyle: GoogleFonts.poppins(
+                  indicator: CircleTabIndicator(color: theme.primary, radius: 3),
+                  labelColor: theme.primary,
+                  labelStyle: Fonts.satoshi(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w600,
                   ),
-                  unselectedLabelColor: theme.disabled.withOpacity(0.4),
+                  unselectedLabelColor: theme.secondary64.withOpacity(0.4),
                   tabs: [
                     Tab(text: widget.firstPageText),
                     Tab(text: widget.secondPageText),

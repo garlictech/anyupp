@@ -16,6 +16,7 @@ query ListFavoriteProducts(
       product {
         id
         image
+        supportedServingModes
         description {
           de
           en

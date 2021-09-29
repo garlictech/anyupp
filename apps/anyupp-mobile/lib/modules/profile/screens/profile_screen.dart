@@ -9,7 +9,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import 'about_app_screen.dart';
@@ -26,7 +26,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       // The appBar head text
       // appBar:null
-      backgroundColor: theme.background2,
+      backgroundColor: theme.secondary12,
       body: StreamBuilder<User?>(
           stream: getIt<AuthRepository>()
               .getAuthenticatedUserProfileStream(), // a previously-obtained Future<String> or null
@@ -46,7 +46,7 @@ class _ProfileState extends State<Profile> {
         // User profile pic
         Container(
           // padding: EdgeInsets.only(top: 30.0),
-          color: theme.background2,
+          color: theme.secondary12,
           child: Column(
             children: [
               Container(
@@ -68,10 +68,10 @@ class _ProfileState extends State<Profile> {
                 child: Text(
                   user.name ?? '-',
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w600,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                 ),
               ),
@@ -92,7 +92,7 @@ class _ProfileState extends State<Profile> {
           topLeft: Radius.circular(22.0),
           topRight: Radius.circular(22.0),
         ),
-        color: theme.background,
+        color: theme.secondary0,
       ),
       child: Column(
         children: [

@@ -2,8 +2,10 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/screens.dart';
+import 'package:fa_prev/modules/selectunit/selectunit.dart';
+import 'package:fa_prev/modules/takeaway/bloc/takeaway_bloc.dart';
+import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -11,7 +13,7 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 import 'flutter_qr_code_scanner.dart';
 
@@ -36,7 +38,9 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
           if (userSnapshot.hasData) {
             return buildPage(context, userSnapshot.data!);
           }
-          return CenterLoadingWidget();
+          return CenterLoadingWidget(
+            backgroundColor: Colors.white,
+          );
         });
   }
 
@@ -104,7 +108,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
             ),
             child: Text(
               trans('selectUnit.welcome', [user.name ?? trans('selectUnit.unknown')]),
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 fontSize: 14.0,
                 color: Color(0xFF3C2F2F),
               ),
@@ -180,7 +184,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               child: Text(
                 trans('selectUnit.findNearest'),
                 textAlign: TextAlign.start,
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w500,
                   color: const Color(0xFF3C2F2F),
@@ -207,7 +211,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                   children: [
                     Text(
                       trans('selectUnit.checkAllOnMap'),
-                      style: GoogleFonts.poppins(
+                      style: Fonts.satoshi(
                         fontSize: 14,
                         color: Color(0xFF3C2F2F),
                         fontWeight: FontWeight.w500,
@@ -228,8 +232,8 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
     final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
     return InkWell(
-      highlightColor: theme.indicator.withAlpha(128),
-      hoverColor: theme.indicator.withAlpha(128),
+      highlightColor: theme.primary.withAlpha(128),
+      hoverColor: theme.primary.withAlpha(128),
       onTap: () => Nav.to(QRCodeScannerScreen()),
       // onTap: () => navigateTo(
       //             context,
@@ -258,7 +262,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               child: Text(
                 trans('selectUnit.scanQR'),
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF3C2F2F),
@@ -295,12 +299,14 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
       return Container(
         padding: EdgeInsets.all(0.0),
         height: 138,
-        child: CenterLoadingWidget(color: Color(0xFF857C18)),
+        child: CenterLoadingWidget(
+          backgroundColor: Colors.white,
+          color: Color(0xFF857C18),
+        ),
       );
     });
   }
 
-// TODO: couldn't be the select_unit_map.dart/_buildUnitCardItem used?
   Widget _buildUnitList(BuildContext context, List<GeoUnit> units) {
     return Container(
       padding: EdgeInsets.all(0.0),
@@ -310,110 +316,33 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
         scrollDirection: Axis.horizontal,
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          return InkWell(
-            key: const Key('unit-widget'),
+          return UnitCardWidget(
+            unit: units[index],
             onTap: () => _selectUnitAndGoToMenuScreen(context, units[index]),
-            child: Container(
-              width: MediaQuery.of(context).size.width / (3 / 2),
-              margin: EdgeInsets.only(
-                left: 4.0,
-                right: 4.0,
-              ),
-              padding: EdgeInsets.only(
-                top: 22.0,
-                bottom: 10.0,
-                left: 18.0,
-                right: 18.0,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(
-                  width: 1.5,
-                  color: Color(0xFFE7E5D0),
-                ),
-              ),
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      units[index].name,
-                      maxLines: 2,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF3C2F2F),
-                      ),
-                    ),
-                    Text(
-                      units[index].address.address,
-                      maxLines: 2,
-                      style: GoogleFonts.poppins(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFF3C2F2F),
-                      ),
-                    ),
-                    FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(
-                        GeoUnitUtils.isClosed(units[index])
-                            ? GeoUnitUtils.getClosedText(
-                                units[index],
-                                transEx(context, "selectUnit.closed"),
-                                transEx(context, "selectUnit.opens"),
-                                transEx(context,
-                                    "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(units[index])?.getDayString()}"),
-                              )
-                            : transEx(context, "selectUnit.opened") +
-                                ": " +
-                                transEx(context, GeoUnitUtils.getOpenedHour(units[index])!.getOpenRangeString()!),
-                        style: GoogleFonts.poppins(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF3C2F2F),
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 4.0,
-                            bottom: 4.0,
-                            left: 8.0,
-                            right: 8.0,
-                          ),
-                          margin: EdgeInsets.only(top: 10.0),
-                          height: 25.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.0),
-                            color: const Color(0xFF30BF60),
-                          ),
-                          child: Center(
-                              child: Text(
-                            (units[index].distance / 1000).toStringAsFixed(3) + ' km',
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              color: const Color(0xffffffff),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
           );
         },
       ),
     );
   }
 
-  void _selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit) {
+  void _selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit) async {
+    // unit.place = Place('00', '00');
+
+    if (unit.supportedServingModes.length == 1) {
+      return _selectServingModeAndGo(unit.supportedServingModes[0], unit);
+    }
+
+    var selectedMethodPos = await showSelectServingModeSheet(context);
+    print('_selectUnitAndGoToMenuScreen().selectedMethodPos=$selectedMethodPos');
+    if (selectedMethodPos != null) {
+      return _selectServingModeAndGo(selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway, unit);
+    } else {
+      getIt<TakeAwayBloc>().add(ResetServingMode());
+    }
+  }
+
+  void _selectServingModeAndGo(ServingMode servingMode, GeoUnit unit) {
+    getIt<TakeAwayBloc>().add(SetServingMode(servingMode));
     getIt<CartBloc>().add(ClearPlaceInCart(unit));
     getIt<UnitSelectBloc>().add(SelectUnit(unit));
     Nav.reset(MainNavigation());

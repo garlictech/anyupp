@@ -50,6 +50,7 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
       child: LayoutBuilder(
         builder: (_, constrains) {
           return Container(
+            color: theme.secondary0,
             height: constrains.maxHeight,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -106,7 +107,11 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
         // print('SelectStripePaymentMethodWidget.state=$state');
         if (state is StripePaymentMethodsList) {
           if (state.data == null || (state.data != null && state.data!.isEmpty)) {
-            return SingleChildScrollView(child: NoPaymentMethodsWidget());
+            return Container(
+              child: EmptyWidget(
+                messageKey: 'orders.noOrderHistory',
+              ),
+            );
           }
           return StripePaymentMethodListWidget(
             methods: state.data ?? [],
@@ -127,7 +132,10 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
         if (state is StripePaymentLoading) {
           return CenterLoadingWidget();
         }
-        return NoPaymentMethodsWidget();
+        //return NoPaymentMethodsWidget();
+        return EmptyWidget(
+          messageKey: 'orders.noOrderHistory',
+        );
       },
     );
   }

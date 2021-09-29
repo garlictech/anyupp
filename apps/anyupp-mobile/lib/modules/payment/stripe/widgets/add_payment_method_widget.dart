@@ -2,6 +2,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/payment/stripe/widgets/add_card_button_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/utils/form_style_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,20 +22,16 @@ class _StripeAddPaymentMethodWidgetState extends State<StripeAddPaymentMethodWid
   _StripeAddPaymentMethodWidgetState();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocListener<StripePaymentBloc, StripePaymentState>(
-        listener: (BuildContext context, StripePaymentState state) {},
-        child: BlocBuilder<StripePaymentBloc, StripePaymentState>(builder: (context, StripePaymentState state) {
-          if (state is StripePaymentLoading) {
-            return _buildLoadingWidget(context);
-          }
-          return Column(
+    return BlocListener<StripePaymentBloc, StripePaymentState>(
+      listener: (BuildContext context, StripePaymentState state) {},
+      child: BlocBuilder<StripePaymentBloc, StripePaymentState>(builder: (context, StripePaymentState state) {
+        if (state is StripePaymentLoading) {
+          return _buildLoadingWidget(context);
+        }
+        return Container(
+          color: theme.secondary,
+          child: Column(
             children: [
               Expanded(child: _buildAddCardForm(context)),
               AddCardButtonWidget(() async {
@@ -48,9 +45,9 @@ class _StripeAddPaymentMethodWidgetState extends State<StripeAddPaymentMethodWid
                 }
               })
             ],
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 
@@ -60,17 +57,20 @@ class _StripeAddPaymentMethodWidgetState extends State<StripeAddPaymentMethodWid
       formKey: _formKey,
       displayAnimatedCard: true,
       cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
-      cardNumberDecoration: InputDecoration(
+      cardNumberDecoration: createFormFieldDecoration(
+        theme: theme,
         labelText: trans('payment.cardFields.card_number.label'),
         hintText: trans('payment.cardFields.card_number.hint'),
       ),
       cardExpiryErrorText: trans('payment.cardFields.expiry.validationError'),
-      cardExpiryDecoration: InputDecoration(
+      cardExpiryDecoration: createFormFieldDecoration(
+        theme: theme,
         labelText: trans('payment.cardFields.expiry.label'),
         hintText: trans('payment.cardFields.expiry.hint'),
       ),
       cardCvcErrorText: trans('payment.cardFields.cvc.validationError'),
-      cardCvcDecoration: InputDecoration(
+      cardCvcDecoration: createFormFieldDecoration(
+        theme: theme,
         labelText: trans('payment.cardFields.cvc.label'),
         hintText: trans('payment.cardFields.cvc.hint'),
       ),

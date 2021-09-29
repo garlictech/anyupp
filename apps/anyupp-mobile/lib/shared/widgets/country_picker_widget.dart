@@ -1,7 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/shared/utils/form_style_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 Widget customCountryPickerWidget(
   ThemeChainData theme,
@@ -18,70 +18,96 @@ Widget customCountryPickerWidget(
         borderRadius: BorderRadius.circular(12.0),
         border: Border.all(
           width: 1,
-          color: Colors.grey,
+          color: theme.secondary64,
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 16.0),
+        padding: const EdgeInsets.only(
+          top: 7.0,
+          bottom: 7.0,
+          left: 16.0,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               labelKey,
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF3C2F2F),
+                color: theme.secondary40,
               ),
             ),
             CountryCodePicker(
-              textStyle: GoogleFonts.poppins(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF3C2F2F),
+              // barrierColor: theme.secondary,
+              closeIcon: Icon(
+                Icons.close,
+                color: theme.secondary,
               ),
-              dialogTextStyle: GoogleFonts.poppins(
+              textStyle: Fonts.satoshi(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w400,
-                color: Color(0xFF3C2F2F),
+                color: theme.secondary,
+              ),
+              dialogTextStyle: Fonts.satoshi(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
+                color: theme.secondary,
               ),
               boxDecoration: BoxDecoration(
-                color: theme.background,
+                color: theme.secondary0,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16.0),
                   topRight: Radius.circular(16.0),
                 ),
               ),
-              searchDecoration: InputDecoration(
-                alignLabelWithHint: true,
-                contentPadding: const EdgeInsets.only(
-                  left: 16.0,
-                  right: 16.0,
-                  top: 8.0,
-                  bottom: 8.0,
-                ),
-                focusColor: Color(0xffe7e5d0),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                  borderSide: BorderSide(
-                    color: Color(0xffe7e5d0),
-                    width: 1.0,
-                  ),
-                ),
+              searchStyle: Fonts.satoshi(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
+                color: theme.secondary0,
+              ),
+              searchDecoration: createFormFieldDecoration(
+                labelText: labelKey,
+                hintText: '',
+                theme: theme,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.0),
                   borderSide: BorderSide(
-                    color: Color(0xffe7e5d0),
+                    color: theme.secondary64,
                     width: 1.0,
                   ),
                 ),
-                labelText: labelKey,
-                labelStyle: GoogleFonts.poppins(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xFF3C2F2F),
-                ),
               ),
+              // searchDecoration: InputDecoration(
+              //   alignLabelWithHint: true,
+              //   contentPadding: const EdgeInsets.only(
+              //     left: 16.0,
+              //     right: 16.0,
+              //     top: 8.0,
+              //     bottom: 8.0,
+              //   ),
+              //   focusColor: theme.secondary,
+              //   focusedBorder: OutlineInputBorder(
+              //     borderRadius: BorderRadius.circular(12.0),
+              //     borderSide: BorderSide(
+              //       color: theme.secondary64,
+              //       width: 1.0,
+              //     ),
+              //   ),
+              //   border: OutlineInputBorder(
+              //     borderRadius: BorderRadius.circular(12.0),
+              //     borderSide: BorderSide(
+              //       color: theme.secondary64,
+              //       width: 1.0,
+              //     ),
+              //   ),
+              //   labelText: labelKey,
+              //   labelStyle: Fonts.satoshi(
+              //     fontSize: 16.0,
+              //     fontWeight: FontWeight.w400,
+              //     color: theme.secondary40,
+              //   ),
+              // ),
               padding: EdgeInsets.all(0.0),
               onInit: (CountryCode? code) => nameController.text = code?.name ?? '',
               //alignLeft: true,

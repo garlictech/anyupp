@@ -1,7 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class BottomBarItem extends StatelessWidget {
   final String text;
@@ -18,20 +17,20 @@ class BottomBarItem extends StatelessWidget {
         ? Badge(
             elevation: 3.0,
             //padding: EdgeInsets.only(left: 10.0),
-            position: BadgePosition.topEnd(top: 0.0, end: 0.0),
+            position: BadgePosition.topEnd(top: 4.0, end: 4.0),
             animationType: BadgeAnimationType.fade,
             animationDuration: const Duration(milliseconds: 500),
             badgeContent: Padding(
               padding: const EdgeInsets.all(0.0),
               child: Text(
                 ' $badge ',
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 14.0,
-                  color: theme.text2,
+                  color: theme.secondary0,
                 ),
               ),
             ),
-            badgeColor: theme.highlight,
+            badgeColor: theme.primary,
             child: _buildIconAndText(),
           )
         : _buildIconAndText();
@@ -39,7 +38,18 @@ class BottomBarItem extends StatelessWidget {
 
   Widget _buildIconAndText() {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      decoration: selected
+          ? BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  //                    <--- top side
+                  color: theme.primary,
+                  width: 3.0,
+                ),
+              ),
+            )
+          : null,
       child: Stack(
         children: [
           Wrap(
@@ -49,25 +59,25 @@ class BottomBarItem extends StatelessWidget {
             children: [
               selected
                   ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: theme.indicator.withOpacity(0.2),
-                      ),
+                      // decoration: BoxDecoration(
+                      //   borderRadius: BorderRadius.circular(10),
+                      //   color: theme.primary.withOpacity(0.2),
+                      // ),
                       child: IconButton(
                         icon: Icon(icon),
-                        color: theme.indicator,
+                        color: theme.primary,
                         onPressed: onTapped,
                       ),
                     )
                   : IconButton(
                       icon: Icon(icon),
-                      color: selected ? theme.indicator : theme.disabled.withOpacity(0.4), //theme.indicator,
+                      color: selected ? theme.primary : theme.secondary64,
                       onPressed: onTapped,
                     ),
               Text(
                 text,
-                style: GoogleFonts.poppins(
-                  color: selected ? theme.indicator : theme.disabled.withOpacity(0.4),
+                style: Fonts.satoshi(
+                  color: selected ? theme.primary : theme.secondary64,
                   fontSize: 12.0,
                   fontWeight: FontWeight.normal,
                 ),

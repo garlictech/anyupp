@@ -1,6 +1,5 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 Widget createOptionMenu(String text, GestureTapCallback onTap, bool divider) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
@@ -18,10 +17,10 @@ Widget createOptionMenu(String text, GestureTapCallback onTap, bool divider) {
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
                     Text(
                       text,
-                      style: GoogleFonts.poppins(
+                      style: Fonts.satoshi(
                         fontSize: 14.0,
                         fontWeight: FontWeight.w500,
-                        color: theme.text,
+                        color: theme.secondary,
                       ),
                     ),
                     Icon(
