@@ -1,5 +1,3 @@
-### AdminUser
-
 type AdminUser
   @model
   @searchable
@@ -390,7 +388,15 @@ type FavoriteProduct
 
 ### Unit
 type Unit
-  @model
+  @model(
+    mutations: {
+      create: "createUnit_v2"
+      update: "updateUnit_v2"
+      delete: "deleteUnit"
+    }
+
+    queries: { get: "getUnit_v2", list: "listUnits_v2" }
+  )
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
