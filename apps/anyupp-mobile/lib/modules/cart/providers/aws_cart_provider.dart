@@ -54,6 +54,7 @@ class AwsCartProvider implements ICartProvider {
   @override
   Future<void> clearCart() async {
     if (_cart != null && _cart?.id != null) {
+      await _deleteCartFromBackend(_cart!.id!);
       _cart = null;
       _cartController.add(null);
     }
@@ -218,10 +219,12 @@ class AwsCartProvider implements ICartProvider {
       if (cart.id != null) 'id': cart.id,
       'unitId': cart.unitId,
       'userId': cart.userId,
+      'servingMode': enumToString(cart.servingMode),
       'items': cart.items.map((item) {
         return {
           'productId': item.productId,
           'variantId': item.variantId,
+          'productType': 'FOOD',
           'created': DateTime.now().millisecondsSinceEpoch.toInt(),
           'productName': {
             'en': item.productName.en,
@@ -296,7 +299,7 @@ class AwsCartProvider implements ICartProvider {
               'method': enumToString(cart.paymentMode!.method),
             }
           : null,
-      'takeAway': cart.takeAway,
+      'takeAway': false,
       'place': cart.place != null
           ? {
               'table': cart.place!.table,

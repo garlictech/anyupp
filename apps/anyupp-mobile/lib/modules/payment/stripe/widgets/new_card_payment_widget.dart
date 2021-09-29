@@ -5,10 +5,10 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/payment/stripe/widgets/payment_button_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/utils/form_style_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:lottie/lottie.dart';
 
 class NewCardPaymentWidget extends StatefulWidget {
@@ -44,26 +44,29 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
       displayAnimatedCard: true,
       formKey: _formKey,
       cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
-      cardNumberDecoration: InputDecoration(
+      cardNumberDecoration: createFormFieldDecoration(
+        theme: theme,
         labelText: trans('payment.cardFields.card_number.label'),
         hintText: trans('payment.cardFields.card_number.hint'),
       ),
       cardExpiryErrorText: trans('payment.cardFields.expiry.validationError'),
-      cardExpiryDecoration: InputDecoration(
+      cardExpiryDecoration: createFormFieldDecoration(
+        theme: theme,
         labelText: trans('payment.cardFields.expiry.label'),
         hintText: trans('payment.cardFields.expiry.hint'),
       ),
       cardCvcErrorText: trans('payment.cardFields.cvc.validationError'),
-      cardCvcDecoration: InputDecoration(
+      cardCvcDecoration: createFormFieldDecoration(
+        theme: theme,
         labelText: trans('payment.cardFields.cvc.label'),
         hintText: trans('payment.cardFields.cvc.hint'),
       ),
       displayPostalCode: false,
     );
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: theme.background,
-      statusBarIconBrightness: Brightness.dark,
-    ));
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarColor: theme.secondary0,
+    //   statusBarIconBrightness: Brightness.dark,
+    // ));
 
     return BlocBuilder<StripePaymentBloc, StripePaymentState>(
       builder: (context, StripePaymentState state) {
@@ -87,40 +90,59 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
     }
     Widget child = SingleChildScrollView(
       physics: BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          this._form,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Checkbox(
-                activeColor: theme.border2,
-                checkColor: theme.highlight,
-                value: _saveCard,
-                onChanged: (value) {
-                  setState(() {
-                    _saveCard = value == null ? false : value;
-                  });
-                },
-              ),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _saveCard = !_saveCard;
-                  });
-                },
-                child: Text(
-                  trans('payment.stripe.save_card'),
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    color: theme.text,
-                    fontWeight: FontWeight.w500,
+      child: Container(
+        color: theme.secondary0,
+        child: Column(
+          children: [
+            this._form,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Checkbox(
+                  activeColor: theme.primary,
+                  // focusColor: theme.secondary,
+                  hoverColor: theme.secondary0,
+                  //         inactiveTrackColor: theme.secondary64,
+                  // activeColor: theme.secondary40,
+                  checkColor: theme.secondary0,
+                  fillColor: MaterialStateColor.resolveWith((states) {
+                    if (states.isEmpty) {
+                      return theme.secondary;
+                    }
+                    var state = states.first;
+                    switch (state) {
+                      case MaterialState.selected:
+                        return theme.primary;
+                      default:
+                        return theme.secondary;
+                    }
+                  }),
+                  value: _saveCard,
+                  onChanged: (value) {
+                    setState(() {
+                      _saveCard = value == null ? false : value;
+                    });
+                  },
+                ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _saveCard = !_saveCard;
+                    });
+                  },
+                  child: Text(
+                    trans('payment.stripe.save_card'),
+                    style: Fonts.satoshi(
+                      fontSize: 16,
+                      color: theme.secondary,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
 

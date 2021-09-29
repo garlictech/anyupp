@@ -6,7 +6,6 @@ import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class EmailRegisterDialogContentWidget extends StatefulWidget {
   @override
@@ -56,10 +55,12 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CenterLoadingWidget(),
+          CenterLoadingWidget(
+            backgroundColor: Colors.white,
+          ),
           Text(
             message,
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16.0,
               fontWeight: FontWeight.w500,
               color: Color(0xFF3C2F2F),
@@ -124,9 +125,9 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
                       child: Text(
                         trans('login.email.linkSignIn'),
                         textAlign: TextAlign.start,
-                        style: GoogleFonts.poppins(
+                        style: Fonts.satoshi(
                           fontSize: 14,
-                          color: theme.highlight,
+                          color: theme.primary,
                           fontWeight: FontWeight.normal,
                           decoration: TextDecoration.underline,
                         ),
@@ -150,8 +151,8 @@ class _EmailRegisterDialogContentWidgetState extends State<EmailRegisterDialogCo
                         child: Text(
                           //transEx(context, 'payment.sendOrder'),
                           trans('login.email.buttonRegister'),
-                          style: GoogleFonts.poppins(
-                            color: theme.text2,
+                          style: Fonts.satoshi(
+                            color: theme.secondary0,
                             fontSize: 20.0,
                             fontWeight: FontWeight.normal,
                           ),

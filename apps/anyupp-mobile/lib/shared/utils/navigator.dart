@@ -26,9 +26,9 @@ class Nav {
     );
   }
 
-  static void pop() {
+  static void pop<T>([T? result]) {
     if (Catcher.navigatorKey!.currentState!.canPop()) {
-      Catcher.navigatorKey!.currentState!.pop();
+      Catcher.navigatorKey!.currentState!.pop(result);
     }
   }
 

@@ -25,32 +25,35 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
   @override
   void initState() {
     super.initState();
-    getIt<OrderBloc>().add(StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id!));
+    getIt<OrderBloc>().add(StartGetOrderListSubscription(widget.unit.chainId, widget.unit.id));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<OrderBloc, BaseOrderState>(builder: (context, state) {
-      // print('***** OrderScreen.bloc.state=$state');
-      if (state is NoOrdersLoaded) {
-        return _noOrder();
-      }
-
-      if (state is OrdersLoadedState) {
-        if (state.orders == null || (state.orders != null && state.orders!.isEmpty)) {
+    return Container(
+      color: theme.secondary0,
+      child: BlocBuilder<OrderBloc, BaseOrderState>(builder: (context, state) {
+        // print('***** OrderScreen.bloc.state=$state');
+        if (state is NoOrdersLoaded) {
           return _noOrder();
         }
-        _orderNotificationService.checkIfShowOrderStatusNotification(context, state.orders!);
-        return _buildOrderList(state.orders!);
-      } else if (state is OrderLoadError) {
-        return CommonErrorWidget(
-          error: state.message!,
-          description: state.details,
-        );
-      }
 
-      return CenterLoadingWidget();
-    });
+        if (state is OrdersLoadedState) {
+          if (state.orders == null || (state.orders != null && state.orders!.isEmpty)) {
+            return _noOrder();
+          }
+          _orderNotificationService.checkIfShowOrderStatusNotification(context, state.orders!);
+          return _buildOrderList(state.orders!);
+        } else if (state is OrderLoadError) {
+          return CommonErrorWidget(
+            error: state.message!,
+            description: state.details,
+          );
+        }
+
+        return CenterLoadingWidget();
+      }),
+    );
   }
 
   Widget _buildOrderList(List<Order> list) {
@@ -94,29 +97,5 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
         ),
       ),
     );
-    // return Column(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   crossAxisAlignment: CrossAxisAlignment.center,
-    //   children: <Widget>[
-    //     // Display cart icon
-    //     Image.asset(
-    //       'assets/images/no-items-in-cart-icon.png',
-    //       width: 128.0,
-    //       fit: BoxFit.fitWidth,
-    //     ),
-    //     SizedBox(
-    //       height: 60.0,
-    //     ),
-    //     Center(
-
-    //         // Display message to the user
-    //         child: Text(
-    //       trans('orders.noActiveOrder'),
-    //       style: TextStyle(
-    //         fontSize: 15.0,
-    //       ),
-    //     ))
-    //   ],
-    // );
   }
 }

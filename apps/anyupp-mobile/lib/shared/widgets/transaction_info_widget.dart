@@ -7,7 +7,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -51,9 +51,9 @@ class TransactionInfoWidget extends StatelessWidget {
             isInvoice
                 ? trans(context, 'payment.paymentInfo.invoicing.invoice_info')
                 : trans(context, 'payment.paymentInfo.invoicing.receipt_info'),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 14,
-              color: theme.text,
+              color: theme.secondary,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -63,9 +63,9 @@ class TransactionInfoWidget extends StatelessWidget {
                 : createAndOpenPdf(transactionItem.receipt?.pdfData),
             child: Text(
               trans(context, 'payment.paymentInfo.invoicing.show'),
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 fontSize: 14,
-                color: theme.highlight,
+                color: theme.primary,
               ),
             ),
           ),

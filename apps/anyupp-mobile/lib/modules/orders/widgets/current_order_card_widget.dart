@@ -5,7 +5,6 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'order_simple_list_item_widget.dart';
@@ -32,8 +31,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           14.0,
         ),
-        border: Border.all(width: 1.5, color: theme.border),
-        color: theme.background,
+        border: Border.all(width: 1.5, color: theme.secondary16),
+        color: theme.secondary0,
       ),
       child: Container(
         padding: EdgeInsets.all(0.0),
@@ -75,7 +74,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: theme.indicator,
+          primary: theme.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -93,7 +92,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
           topLeft: Radius.circular(12.0),
           topRight: Radius.circular(12.0),
         ),
-        color: theme.background2,
+        color: theme.secondary12,
       ),
       padding: EdgeInsets.only(
         top: 14.0,
@@ -106,16 +105,16 @@ class CurrentOrderCardWidget extends StatelessWidget {
         children: [
           Text(
             '${order.orderNum}',
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 12,
-              color: theme.text,
+              color: theme.secondary,
             ),
           ),
           Text(
             order.getFormattedDate(),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 12,
-              color: theme.text,
+              color: theme.secondary,
             ),
           ),
         ],
@@ -147,23 +146,23 @@ class CurrentOrderCardWidget extends StatelessWidget {
         left: 20.0,
         right: 20.0,
       ),
-      color: theme.background2,
+      color: theme.secondary12,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             trans(context, 'orders.totalCost'),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16,
-              color: theme.text,
+              color: theme.secondary,
               fontWeight: FontWeight.w700,
             ),
           ),
           Text(
             formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown.currency),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16,
-              color: theme.text,
+              color: theme.secondary,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -174,7 +173,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
 
   Widget _buildDivider(BuildContext context) {
     return Divider(
-      color: theme.disabled.withOpacity(0.4),
+      color: theme.secondary64.withOpacity(0.4),
       height: 2.0,
     );
   }

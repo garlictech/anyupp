@@ -123,7 +123,16 @@
     "totalCost": "Fizetendő:",
     "emptyCartLine1": "A kosarad még üres.",
     "emptyCartLine2": "Válogass kedvedre az aktuális kínálatunkból!",
-    "addToCart": "Kosárhoz Adás"
+    "addToCart": "Kosárhoz Adás",
+    "pay": "FIZETEK",
+    "myCart": "KOSARAM",
+    "deleteCart": "Kosár törlése",
+    "deleteCartTitle": "Biztosan törlöd a kosarad?",
+    "deleteCartMessage": "A művelettel minden kosárban lévő terméket eltávolítasz a kosaradból.",
+    "deleteCartAccept": "Törlés",
+    "deleteCartCancel": "Mégsem",
+    "takeAway": "elvitel",
+    "inPlace": "helyben"
   },
   "allergens": {
     "title": "Allergének",
@@ -265,6 +274,26 @@
       "add_card": "Kártya hozzáadása",
       "card_added": "Kártya sikeresen hozzáadva!",
       "success": "Siker!"
+    }
+  },
+  "servingModeSheet": {
+    "title": "Kérjük válassz",
+    "inPlace": {
+      "title": "Helyben fogyasztás",
+      "description": "Fogyaszd el helyben a kedvenceidet."
+    },
+    "takeAway": {
+      "title": "Elvitel",
+      "description": "Kérd elvitelre kedvenceidet."
+    },
+    "dialog": {
+      "title": {
+        "takeaway": "Biztosan váltani szeretnél helyben fogyasztásra?",
+        "inplace": "Biztosan váltani szeretnél elviteles módra?"
+      },
+      "description": "A művelettel törlésre kerül a jelenlegi kosarad tartalma, és sajnos újra ki kell majd választanod minden rendelni kívánt terméket.",
+      "cancel": "Mégsem",
+      "ok": "Igen"
     }
   },
   "selectUnit": {

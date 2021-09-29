@@ -7,7 +7,6 @@ import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AddVariantWidget extends StatefulWidget {
   final GeoUnit unit;
@@ -87,8 +86,8 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
               child: Text(
                 formatCurrency(widget.variant.price, widget.unit.currency),
                 textAlign: TextAlign.right,
-                style: GoogleFonts.poppins(
-                  color: theme.highlight,
+                style: Fonts.satoshi(
+                  color: theme.primary,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -104,8 +103,8 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  backgroundColor: theme.indicator,
-                  primary: theme.text2,
+                  backgroundColor: theme.primary,
+                  primary: theme.secondary0,
                 ),
                 onPressed: () {
                   _addOrder(); // TODO
@@ -133,8 +132,8 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
                     key: ValueKey<String>('${widget.variant.id}-$variantCountInCart'),
                     softWrap: false,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      color: theme.text2,
+                    style: Fonts.satoshi(
+                      color: theme.secondary0,
                       fontSize: variantCountInCart == 0 ? 32.0 : 24.0,
                       fontWeight: FontWeight.w400,
                     ),

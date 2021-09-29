@@ -1,19 +1,23 @@
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/favorites/favorites.dart';
+
 class FavoriteIconWidget extends StatefulWidget {
   const FavoriteIconWidget({
+    Key? key,
     required this.theme,
-    required this.unit,
     required this.product,
-  });
+    required this.unit,
+    this.iconSize = 24.0,
+  }) : super(key: key);
 
   final ThemeChainData theme;
   final GeneratedProduct product;
   final GeoUnit unit;
+  final double iconSize;
 
   @override
   _FavoriteIconWidgetState createState() => _FavoriteIconWidgetState();
@@ -27,7 +31,7 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
     super.initState();
 
     BlocProvider.of<FavoritesBloc>(context).add(CheckProductIsFavorite(
-      widget.unit.id!,
+      widget.unit.id,
       widget.product.id,
     ));
   }
@@ -53,9 +57,10 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
         },
         child: IconButton(
           key: ValueKey<String>('$_isFavorite'),
+          iconSize: widget.iconSize,
           icon: Icon(
             _isFavorite == true ? Icons.favorite : Icons.favorite_border,
-            color: widget.theme.text,
+            color: widget.theme.secondary,
           ),
           onPressed: () => _addRemoveFavorite(context, widget.product),
         ),
@@ -65,7 +70,7 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
 
   void _addRemoveFavorite(BuildContext context, GeneratedProduct product) {
     BlocProvider.of<FavoritesBloc>(context).add(AddOrRemoveFavoriteProduct(
-      widget.unit.id!,
+      widget.unit.id,
       product.productCategoryId,
       product.id,
     ));

@@ -12,6 +12,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -218,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 //   child: Text(
                 //       '${_backgroundImageScaleAnimation.value.toStringAsFixed(2)}, H:$height h:$_bottomWidgetHeight',
                 //       //h0: $_bottomWidgetHeight h1:${_bottomKey?.currentContext?.findRenderObject()?.paintBounds?.height}',
-                //       style: GoogleFonts.poppins(
+                //       style: Fonts.satoshi(
                 //         color: Colors.white,
                 //       )),
                 // ),
@@ -336,7 +337,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               ),
               child: Text(
                 trans('login.welcome'),
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 36.0,
                   color: Color(0xFFFFFFFF),
                   fontWeight: FontWeight.w600,
@@ -356,7 +357,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     TextButton(
                       child: Text(
                         trans('login.join'),
-                        style: GoogleFonts.poppins(
+                        style: Fonts.satoshi(
                           fontSize: 16.0,
                           color: const Color(0xffffffff),
                         ),
@@ -408,7 +409,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                           padding: _showLogin ? const EdgeInsets.all(0.0) : const EdgeInsets.only(top: 28.0),
                           child: Text(
                             trans('login.continueWith'),
-                            style: GoogleFonts.poppins(
+                            style: Fonts.satoshi(
                               fontSize: 14.0,
                               fontWeight: FontWeight.w600,
                               color: Color(0x993C2F2F),
@@ -442,7 +443,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 //: Colors.blueAccent,
                                 onPressed: () => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
-                                    style: GoogleFonts.poppins(
+                                    style: Fonts.satoshi(
                                       fontSize: 14.0,
                                       color: Color(0x993C2F2F),
                                     )))),
@@ -454,14 +455,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               children: [
                                 TextSpan(
                                   text: trans('tos.acceptionPrefix') + ' ',
-                                  style: GoogleFonts.poppins(
+                                  style: Fonts.satoshi(
                                     fontSize: 14.0,
                                     color: Color(0x993C2F2F),
                                   ),
                                 ),
                                 TextSpan(
                                   text: trans('tos.aszf'),
-                                  style: GoogleFonts.poppins(
+                                  style: Fonts.satoshi(
                                     fontSize: 14.0,
                                     decoration: TextDecoration.underline,
                                     color: Color(0x993C2F2F),
@@ -502,7 +503,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             _createSocialButtonWidget('facebook', LoginMethod.FACEBOOK),
             // if (snapshot.data == true) // has Apple Login
             _createSocialButtonWidget('apple', LoginMethod.APPLE),
-            _createSocialButtonWidget('email', LoginMethod.EMAIL, iconColor: theme.indicator),
+            _createSocialButtonWidget('email', LoginMethod.EMAIL, iconColor: theme.primary),
             // _createSocialButtonWidget('phone', LoginMethod.PHONE),
           ],
         ),
@@ -580,7 +581,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 width: 1,
-                color: theme.border2,
+                color: theme.secondary40,
               ),
             ),
             child: BackButton(
@@ -590,18 +591,18 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   isLoading = true;
                 });
               },
-              color: theme.text,
+              color: theme.secondary,
             ),
           ),
         ),
         elevation: 0.0,
         iconTheme: IconThemeData(
-          color: theme.text, //change your color here
+          color: theme.secondary, //change your color here
         ),
-        backgroundColor: theme.background,
+        backgroundColor: theme.secondary0,
         title: Text(
           trans("login.email.signIn"),
-          style: GoogleFonts.poppins(
+          style: Fonts.satoshi(
             color: Colors.black,
           ),
           //getLocalizedText(context, widget.item.name),
