@@ -462,8 +462,8 @@ type GeoUnit @aws_cognito_user_pools {
       reason: "The new and better openingHoursNext7 field should be used instead of this static string"
     )
   openingHoursNext7: [OpeningHoursByDate!]!
-  supportedServingModes: [ServingMode!]!
-  supportedOrderModes: [OrderMode!]!
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
 }
 type GeoUnitList @aws_cognito_user_pools {
   items: [GeoUnit]
@@ -755,8 +755,8 @@ type Order
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
   unpayCategory: UnpayCategory
-  orderMode: OrderMode!
-  servingMode: ServingMode!
+  orderMode: OrderMode
+  servingMode: ServingMode
 }
 
 enum PaymentStatus {
@@ -830,6 +830,7 @@ type ProductComponentSet
   description: String!
   items: [ID!]! # ProductComponent ID
   maxSelection: Int # On extras
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductConfigComponent {
@@ -847,6 +848,7 @@ type GeneratedProductConfigSet {
   type: String!
   maxSelection: Int
   items: [GeneratedProductConfigComponent!]!
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductCategory
@@ -883,7 +885,7 @@ type GeneratedProduct
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductVariant {
@@ -929,8 +931,8 @@ type Unit
   merchantId: String
   timeZone: String
   pos: Pos
-  supportedServingModes: [ServingMode!]!
-  supportedOrderModes: [OrderMode!]!
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
 }
 
 type DateIntervalOpen {
