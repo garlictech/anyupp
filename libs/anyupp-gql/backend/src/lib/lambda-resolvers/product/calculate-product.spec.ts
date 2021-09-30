@@ -102,6 +102,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
       items: ['PRODUCT_COMPONENT_ID_01', 'PRODUCT_COMPONENT_ID_02'],
+      supportedServingModes: [CrudApi.ServingMode.inplace],
     },
   };
   const timezone01 = 'Europe/London';

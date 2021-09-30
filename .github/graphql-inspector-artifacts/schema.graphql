@@ -179,7 +179,7 @@ type UnitProduct
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
 }
 input CreateUnitProductInput {
   id: ID # <== NOT REQUIRED
@@ -193,7 +193,7 @@ input CreateUnitProductInput {
   position: Int!
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
 }
 input UpdateUnitProductInput {
   id: ID! # <== REQUIRED
