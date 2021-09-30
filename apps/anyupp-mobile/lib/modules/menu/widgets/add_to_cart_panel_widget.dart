@@ -123,29 +123,31 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
               ],
             ),
           ),
-          Container(
-            height: 56.0,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: theme.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    trans("cart.addToCart").toUpperCase(),
-                    style: Fonts.satoshi(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w700,
-                      color: theme.secondary0,
-                    ),
+          SafeArea(
+            child: Container(
+              height: 56.0,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: theme.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      trans("cart.addToCart").toUpperCase(),
+                      style: Fonts.satoshi(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w700,
+                        color: theme.secondary0,
+                      ),
+                    ),
+                  ],
+                ),
+                onPressed: () => widget.onAddToCartPressed(state, _quantity),
               ),
-              onPressed: () => widget.onAddToCartPressed(state, _quantity),
             ),
           ),
         ],
