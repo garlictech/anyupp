@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnyuppSdkService {
-  public sdk: AnyuppApi.AnyuppSdk;
+  public sdk: CrudApi.CrudSdk;
 
   constructor() {
-    this.sdk = AnyuppApi.getAnyuppSdkForUserPool();
+    this.sdk = CrudApi.getCrudSdkForUserPool();
   }
 }

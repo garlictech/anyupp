@@ -1,4 +1,4 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as fp from 'lodash/fp';
 import { from } from 'rxjs';
@@ -6,7 +6,7 @@ import { filter, map, mapTo, switchMap } from 'rxjs/operators';
 import { AdminUserResolverDeps } from './utils';
 
 export const deleteAdminUser =
-  (params: AnyuppApi.DeleteAdminUserMutationVariables) =>
+  (params: CrudApi.DeleteAdminUserMutationVariables) =>
   (deps: AdminUserResolverDeps) => {
     console.debug('deleteAdminUser Resolver parameters: ', params);
 
@@ -14,7 +14,7 @@ export const deleteAdminUser =
       deps.cognitoidentityserviceprovider
         .adminGetUser({
           UserPoolId: deps.userPoolId,
-          Username: params.userName,
+          Username: params.input.id,
         })
         .promise(),
     )

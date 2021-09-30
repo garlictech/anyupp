@@ -1,4 +1,4 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   testAdminUsername,
   testAdminUserPassword,
@@ -8,7 +8,7 @@ import { delay, switchMap, tap } from 'rxjs/operators';
 import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 
 describe('Stripe Payment Method CRUD tests', () => {
-  let authAnyuppSdk: AnyuppApi.AnyuppSdk;
+  let authAnyuppSdk: CrudApi.AnyuppSdk;
   let paymentMethodIds: string[];
   let initialPaymentMethodCount: number;
   let tempPaymentMethodId: string;

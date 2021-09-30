@@ -1,4 +1,4 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { locationSchema, validateSchema } from '@bgap/shared/data-validators';
 import * as Joi from 'joi';
 import { switchMap } from 'rxjs/operators';
@@ -8,7 +8,7 @@ import { UnitsResolverDeps } from './utils';
 
 export const unitRequestHandler = (deps: UnitsResolverDeps) => ({
   getUnitsNearLocation: (
-    requestPayload: AnyuppApi.GetUnitsNearLocationQueryVariables,
+    requestPayload: CrudApi.GetUnitsNearLocationQueryVariables,
   ) =>
     validatGetUnitsNearLocationInput(requestPayload)
       .pipe(
@@ -17,7 +17,7 @@ export const unitRequestHandler = (deps: UnitsResolverDeps) => ({
       .toPromise(),
 
   regenerateUnitData: (
-    requestPayload: AnyuppApi.MutationRegenerateUnitDataArgs,
+    requestPayload: CrudApi.MutationRegenerateUnitDataArgs,
   ) =>
     // TODO: validate input
     // return validatGetUnitsNearLocationInput(requestPayload)
@@ -27,18 +27,18 @@ export const unitRequestHandler = (deps: UnitsResolverDeps) => ({
     regenerateUnitData(deps)(requestPayload.input.id).toPromise(),
 });
 
-const getUnitsInRadiusInputSchema: Joi.SchemaMap<AnyuppApi.GetUnitsNearLocationInput> =
+const getUnitsInRadiusInputSchema: Joi.SchemaMap<CrudApi.GetUnitsNearLocationInput> =
   {
     location: Joi.object(locationSchema).required(),
   };
 
-const getUnitsInRadiusQuerySchema: Joi.SchemaMap<AnyuppApi.GetUnitsNearLocationQueryVariables> =
+const getUnitsInRadiusQuerySchema: Joi.SchemaMap<CrudApi.GetUnitsNearLocationQueryVariables> =
   {
     input: Joi.object(getUnitsInRadiusInputSchema).required(),
   };
 
 const { validate: validatGetUnitsNearLocationInput } =
-  validateSchema<AnyuppApi.GetUnitsNearLocationQueryVariables>(
+  validateSchema<CrudApi.GetUnitsNearLocationQueryVariables>(
     getUnitsInRadiusQuerySchema,
     'GetUnitsNearLocationQueryVariables',
   );

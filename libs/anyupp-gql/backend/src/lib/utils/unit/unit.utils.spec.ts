@@ -1,4 +1,4 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { unitFixture } from '@bgap/shared/fixtures';
 import { DateTime } from 'luxon';
@@ -484,7 +484,7 @@ describe('Unit utils', () => {
       //     to: 1626134400000,
       //   },
       // }
-      const openingHours_closed: AnyuppApi.OpeningHoursByDate = {
+      const openingHours_closed: CrudApi.OpeningHoursByDate = {
         closed: true,
         date: 'NOT IMPORTANT',
       };
@@ -496,7 +496,7 @@ describe('Unit utils', () => {
       ).toEqual(false);
     });
     it('should return FALSE in case the given time is outside the given openingHours', () => {
-      const openingHours_open: AnyuppApi.OpeningHoursByDate = {
+      const openingHours_open: CrudApi.OpeningHoursByDate = {
         date: '2021-07-12',
         from: DateTime.fromISO('2021-07-12T12:00', {
           zone: timezoneBudapest,
@@ -517,7 +517,7 @@ describe('Unit utils', () => {
       ).toEqual(false);
     });
     it('should return TRUE in case the given time is in the openingHours input', () => {
-      const openingHours_open: AnyuppApi.OpeningHoursByDate = {
+      const openingHours_open: CrudApi.OpeningHoursByDate = {
         date: '2021-07-12',
         from: DateTime.fromISO('2021-07-12T12:00', {
           zone: timezoneBudapest,

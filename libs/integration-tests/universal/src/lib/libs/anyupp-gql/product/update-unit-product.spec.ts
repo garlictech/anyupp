@@ -1,6 +1,6 @@
 import { Auth } from '@aws-amplify/auth';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { AnyuppSdk } from '@bgap/crud-gql/api';
 import { productRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
@@ -26,7 +26,7 @@ const DYNAMODB_OPERATION_DELAY = 3000;
 const TEST_NAME = 'UPDATE_UNIT_PROD_';
 const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 
-const unitProduct: RequiredId<AnyuppApi.CreateUnitProductInput> = {
+const unitProduct: RequiredId<CrudApi.CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}${TEST_NAME}unitProduct_01`,
   unitId: 'UNIT_ID_TO_CRUD',
@@ -87,7 +87,7 @@ describe('UpdateUnitProduct tests', () => {
   }, 15000);
 
   it('should throw because of the missing GroupProduct - ANYUPP_API CALL', done => {
-    const input: AnyuppApi.UpdateUnitProductInput = {
+    const input: CrudApi.UpdateUnitProductInput = {
       id: unitProduct.id,
       position: 10,
     };
@@ -111,7 +111,7 @@ describe('UpdateUnitProduct tests', () => {
 
   it('should update the unitProduct in the database and call the regeneration logic - LOCAL test', done => {
     const regenMockHandler = jest.fn().mockReturnValue(of(true));
-    const input: AnyuppApi.UpdateUnitProductInput = {
+    const input: CrudApi.UpdateUnitProductInput = {
       id: unitProduct.id,
       position: 10,
     };

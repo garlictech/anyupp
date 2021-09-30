@@ -1,13 +1,13 @@
 import { Observable } from 'rxjs';
 import { v1 as uuidV1 } from 'uuid';
 
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { createConfirmedUserInCognito, UserResolverDeps } from './utils';
 
 export const createAnonymUser = (
   deps: UserResolverDeps,
-): Observable<AnyuppApi.CreateAnonymUserOutput> => {
+): Observable<CrudApi.CreateAnonymUserOutput> => {
   const generatedId = uuidV1();
   const email = `anonymuser+${generatedId}@anyupp.com`;
   const password = uuidV1() + 'UPPERCASE';

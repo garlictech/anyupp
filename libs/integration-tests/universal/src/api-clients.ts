@@ -2,7 +2,7 @@ import {
   AnyuppSdk,
   getAnyuppSdkForIAM,
   getAnyuppSdkForUserPool,
-} from '@bgap/anyupp-gql/api';
+} from '@bgap/crud-gql/api';
 import {
   awsConfig,
   getCrudSdkForIAM,

@@ -1,4 +1,3 @@
-import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import * as awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
@@ -29,7 +28,6 @@ export const createStripeWebhookExpressApp = (
 
   const deps: StripeResolverDeps = {
     crudSdk: getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey),
-    anyuppSdk: getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey),
     szamlazzClient,
     stripeClient,
   };

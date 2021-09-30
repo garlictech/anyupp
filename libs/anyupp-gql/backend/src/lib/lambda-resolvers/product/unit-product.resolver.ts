@@ -1,4 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { defer, Observable, pipe } from 'rxjs';
 import { delay, mapTo, switchMap } from 'rxjs/operators';
@@ -19,7 +18,7 @@ const callRegenerateOnUnitProductPipe = (deps: ProductResolverDeps) =>
 
 export const createUnitProduct =
   (deps: ProductResolverDeps) =>
-  (input: AnyuppApi.CreateUnitProductInput): Observable<CrudApi.UnitProduct> =>
+  (input: CrudApi.CreateUnitProductInput): Observable<CrudApi.UnitProduct> =>
     defer(() => deps.crudSdk.CreateUnitProduct({ input })).pipe(
       delay(ELASTICSEARCH_OPERATION_DELAY),
       callRegenerateOnUnitProductPipe(deps),
@@ -27,7 +26,7 @@ export const createUnitProduct =
 
 export const updateUnitProduct =
   (deps: ProductResolverDeps) =>
-  (input: AnyuppApi.UpdateUnitProductInput): Observable<CrudApi.UnitProduct> =>
+  (input: CrudApi.UpdateUnitProductInput): Observable<CrudApi.UnitProduct> =>
     defer(() => deps.crudSdk.UpdateUnitProduct({ input })).pipe(
       delay(ELASTICSEARCH_OPERATION_DELAY),
       callRegenerateOnUnitProductPipe(deps),
@@ -35,7 +34,7 @@ export const updateUnitProduct =
 
 export const deleteUnitProduct =
   (deps: ProductResolverDeps) =>
-  (id: AnyuppApi.Scalars['ID']): Observable<boolean> =>
+  (id: CrudApi.Scalars['ID']): Observable<boolean> =>
     defer(() => deps.crudSdk.DeleteUnitProduct({ input: { id } })).pipe(
       delay(ELASTICSEARCH_OPERATION_DELAY),
       callRegenerateOnUnitProductPipe(deps),

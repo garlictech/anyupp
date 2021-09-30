@@ -1,4 +1,4 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import {
   chainFixture,
@@ -64,7 +64,7 @@ describe('GetUnitsNearLocation tests', () => {
       deleteTestChain(chainFixture.chain_01.id, crudSdk),
     ]);
 
-  let authAnyuppSdk: AnyuppApi.AnyuppSdk;
+  let authAnyuppSdk: CrudApi.AnyuppSdk;
 
   beforeAll(done => {
     createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
@@ -94,7 +94,7 @@ describe('GetUnitsNearLocation tests', () => {
 
   describe('input validation', () => {
     it('should throw without an input', done => {
-      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {} as any;
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {} as any;
       from(
         unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),
       ).subscribe({
@@ -106,7 +106,7 @@ describe('GetUnitsNearLocation tests', () => {
     }, 15000);
 
     it('should throw without a location input', done => {
-      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
         input: {},
       } as any;
       from(
@@ -120,7 +120,7 @@ describe('GetUnitsNearLocation tests', () => {
     }, 15000);
 
     it('should throw without a lat arg in the location input', done => {
-      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lat: 12 } },
       } as any;
 
@@ -135,7 +135,7 @@ describe('GetUnitsNearLocation tests', () => {
     }, 15000);
 
     it('should throw without a lng arg in the location input', done => {
-      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: '12' } },
       } as any;
       from(
@@ -149,7 +149,7 @@ describe('GetUnitsNearLocation tests', () => {
     }, 15000);
 
     it('should throw without valid location input', done => {
-      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: 230.0, lat: -100 } },
       };
 
@@ -164,7 +164,7 @@ describe('GetUnitsNearLocation tests', () => {
   });
 
   it('should return all the units in geoUnitsFormat ordered by distance', done => {
-    const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
+    const input: CrudApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
     authAnyuppSdk

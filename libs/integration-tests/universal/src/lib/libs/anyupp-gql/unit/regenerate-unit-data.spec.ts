@@ -1,6 +1,6 @@
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { Auth } from '@aws-amplify/auth';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import { AnyuppSdk } from '@bgap/crud-gql/api';
 import {
   deleteGeneratedProductCategoriesForAUnit,
   listGeneratedProductCategoriesForUnits,

@@ -1,5 +1,5 @@
 // import { missingParametersCheck } from '@bgap/shared/utils';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createStripeCard } from './handlers/create-stripe-card';
 import { deleteStripeCard } from './handlers/delete-stripe-card';
 import { listStripeCards } from './handlers/list-stripe-cards';
@@ -12,16 +12,16 @@ interface WithCognitoUser {
 }
 
 type StartStripePaymentRequest = WithCognitoUser &
-  AnyuppApi.MutationStartStripePaymentArgs;
+  CrudApi.MutationStartStripePaymentArgs;
 
 type CreateStripeCardRequest = WithCognitoUser &
-  AnyuppApi.MutationCreateStripeCardArgs;
+  CrudApi.MutationCreateStripeCardArgs;
 
 type DeleteStripeCardRequest = WithCognitoUser &
-  AnyuppApi.MutationDeleteMyStripeCardArgs;
+  CrudApi.MutationDeleteMyStripeCardArgs;
 
 type UpdateStripeCardRequest = WithCognitoUser &
-  AnyuppApi.MutationUpdateMyStripeCardArgs;
+  CrudApi.MutationUpdateMyStripeCardArgs;
 
 export type ListStripeCardsRequest = WithCognitoUser;
 

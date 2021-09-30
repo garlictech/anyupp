@@ -1,4 +1,4 @@
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import { AnyuppSdk } from '@bgap/crud-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {

@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { tableConfig } from '@bgap/crud-gql/backend';
-import { getAnyuppSdkForIAM } from '@bgap/anyupp-gql/api';
+import { getAnyuppSdkForIAM } from '@bgap/crud-gql/api';
 import {
   adminRequestHandler,
   createStripeClient,

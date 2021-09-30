@@ -1,5 +1,5 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { AnyuppSdk, getAnyuppSdkPublic } from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { AnyuppSdk, getAnyuppSdkPublic } from '@bgap/crud-gql/api';
 import { productRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
@@ -23,7 +23,7 @@ const DYNAMODB_OPERATION_DELAY = 3000;
 const TEST_NAME = 'CREATE_UNIT_PROD_';
 const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 
-const unitProduct: RequiredId<AnyuppApi.CreateUnitProductInput> = {
+const unitProduct: RequiredId<CrudApi.CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}${TEST_NAME}unitProduct_01`,
   unitId: 'UNIT_ID_TO_CRUD',

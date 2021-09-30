@@ -1,5 +1,4 @@
 import { throwIfEmptyValue } from '@bgap/shared/utils';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Maybe } from '@bgap/crud-gql/api';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
@@ -16,7 +15,7 @@ type ListResponse<T> = {
 
 export const getUnitsInRadius =
   (location: CrudApi.LocationInput) =>
-  (deps: UnitsResolverDeps): Observable<ListResponse<AnyuppApi.GeoUnit>> => {
+  (deps: UnitsResolverDeps): Observable<ListResponse<CrudApi.GeoUnit>> => {
     return listActiveUnits()(deps).pipe(
       filterNullishGraphqlListWithDefault<CrudApi.Unit>([]),
       map(units => filterOutNotOpenUnits({ units })),
@@ -39,7 +38,7 @@ export const getUnitsInRadius =
                   paymentModes: unit.paymentModes ? [...unit.paymentModes] : [],
                 }),
               ),
-              defaultIfEmpty({} as AnyuppApi.GeoUnit),
+              defaultIfEmpty({} as CrudApi.GeoUnit),
             ),
           ),
         ),
@@ -63,11 +62,11 @@ const toGeoUnit = ({
 }: {
   unit: CrudApi.Unit;
   currency: string;
-  inputLocation: AnyuppApi.LocationInput;
+  inputLocation: CrudApi.LocationInput;
   chainStyle: CrudApi.ChainStyle;
   //openingHours: IWeeklySchedule;
   paymentModes?: Maybe<CrudApi.PaymentMode>[];
-}): AnyuppApi.GeoUnit => ({
+}): CrudApi.GeoUnit => ({
   id: unit.id,
   groupId: unit.groupId,
   chainId: unit.chainId,

@@ -1,4 +1,4 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { validateSchema } from '@bgap/shared/data-validators';
 import Joi from 'joi';
 import { switchMap } from 'rxjs/operators';
@@ -9,10 +9,10 @@ interface WithAuthenticatedUser {
   userId: string;
 }
 export type CreateOrderFromCartRequest = WithAuthenticatedUser &
-  AnyuppApi.MutationCreateOrderFromCartArgs;
+  CrudApi.MutationCreateOrderFromCartArgs;
 
 const { validate: validateCreateOrderFromCartRequest } =
-  validateSchema<AnyuppApi.CreateOrderFromCartMutationVariables>(
+  validateSchema<CrudApi.CreateOrderFromCartMutationVariables>(
     {
       userId: Joi.string().required(),
       input: Joi.object({

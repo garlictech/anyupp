@@ -1,4 +1,4 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { filterNullish } from '@bgap/shared/utils';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as E from 'fp-ts/lib/Either';
@@ -16,7 +16,7 @@ import { ResolverErrorCode } from '../../utils/errors';
 import { AdminUserResolverDeps } from './utils';
 
 export const createAdminUser =
-  (vars: AnyuppApi.CreateAdminUserMutationVariables) =>
+  (vars: CrudApi.CreateAdminUserMutationVariables) =>
   (deps: AdminUserResolverDeps) => {
     console.debug('createAdminUser Resolver parameters: ', vars);
     const newUsername = deps.userNameGenerator();

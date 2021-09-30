@@ -1,4 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { defer, from, Observable, pipe, UnaryFunction } from 'rxjs';
 import {
@@ -42,9 +41,7 @@ const callRegenerateOnGroupProductPipe = (
 
 export const updateGroupProduct =
   (deps: ProductResolverDeps) =>
-  (
-    input: AnyuppApi.UpdateGroupProductInput,
-  ): Observable<CrudApi.GroupProduct> =>
+  (input: CrudApi.UpdateGroupProductInput): Observable<CrudApi.GroupProduct> =>
     defer(() => deps.crudSdk.UpdateGroupProduct({ input })).pipe(
       throwIfEmptyValue<CrudApi.GroupProduct>(),
       delay(ELASTICSEARCH_OPERATION_DELAY),

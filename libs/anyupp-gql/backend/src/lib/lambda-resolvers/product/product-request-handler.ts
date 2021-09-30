@@ -1,4 +1,4 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { updateChainProduct } from './chain-product.resolver';
 import { updateGroupProduct } from './group-product.resolver';
 import {
@@ -12,20 +12,20 @@ import { ProductResolverDeps } from './utils';
 export const productRequestHandler = (deps: ProductResolverDeps) => ({
   // CHAIN PRODUCT
   updateChainProduct: (
-    requestPayload: AnyuppApi.UpdateChainProductMutationVariables,
+    requestPayload: CrudApi.UpdateChainProductMutationVariables,
   ) => updateChainProduct(deps)(requestPayload.input).toPromise(),
   // GROUP PRODUCT
   updateGroupProduct: (
-    requestPayload: AnyuppApi.UpdateGroupProductMutationVariables,
+    requestPayload: CrudApi.UpdateGroupProductMutationVariables,
   ) => updateGroupProduct(deps)(requestPayload.input).toPromise(),
   // UNIT PRODUCT
   createUnitProduct: (
-    requestPayload: AnyuppApi.CreateUnitProductMutationVariables,
+    requestPayload: CrudApi.CreateUnitProductMutationVariables,
   ) => createUnitProduct(deps)(requestPayload.input).toPromise(),
   updateUnitProduct: (
-    requestPayload: AnyuppApi.UpdateUnitProductMutationVariables,
+    requestPayload: CrudApi.UpdateUnitProductMutationVariables,
   ) => updateUnitProduct(deps)(requestPayload.input).toPromise(),
   deleteUnitProduct: (
-    requestPayload: AnyuppApi.DeleteUnitProductMutationVariables,
-  ) => deleteUnitProduct(deps)(requestPayload.id).toPromise(),
+    requestPayload: CrudApi.DeleteUnitProductMutationVariables,
+  ) => deleteUnitProduct(deps)(requestPayload.input.id).toPromise(),
 });

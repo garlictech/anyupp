@@ -1,4 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { createInvoice } from './stripe-graphql-crud';
 import { StripeResolverDeps } from './stripe.utils';
@@ -8,7 +7,7 @@ export const createInvoiceAndConnectTransaction =
     orderId: string,
     userId: string,
     transactionId: string,
-    invoiceAddress: AnyuppApi.UserInvoiceAddress,
+    invoiceAddress: CrudApi.UserInvoiceAddress,
     status: CrudApi.InvoiceStatus,
   ) =>
   async (deps: StripeResolverDeps) => {
@@ -69,7 +68,7 @@ const createInvoiceMutationVariables = (
   orderId: string,
   userId: string,
   transactionId: string,
-  invoiceAddress: AnyuppApi.UserInvoiceAddress,
+  invoiceAddress: CrudApi.UserInvoiceAddress,
   status: CrudApi.InvoiceStatus,
 ): CrudApi.CreateInvoiceMutationVariables => {
   return {

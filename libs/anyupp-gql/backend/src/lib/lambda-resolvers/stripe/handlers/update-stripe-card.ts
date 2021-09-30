@@ -1,11 +1,11 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { mapPaymentMethodToCard, StripeResolverDeps } from '../stripe.utils';
 import { loadAndConnectUserForStripe } from './common-stripe';
 import Stripe from 'stripe';
 
 export const updateStripeCard =
-  (userId: string, input: AnyuppApi.StripeCardUpdateInput) =>
-  async (deps: StripeResolverDeps): Promise<AnyuppApi.StripeCard> => {
+  (userId: string, input: CrudApi.StripeCardUpdateInput) =>
+  async (deps: StripeResolverDeps): Promise<CrudApi.StripeCard> => {
     console.debug('updateStripeCard().start()');
 
     const user = await loadAndConnectUserForStripe(userId)(deps);

@@ -1,4 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { defer, from, Observable, pipe } from 'rxjs';
 import {
@@ -46,9 +45,7 @@ const callRegenerateOnChainProductPipe = (deps: ProductResolverDeps) =>
 
 export const updateChainProduct =
   (deps: ProductResolverDeps) =>
-  (
-    input: AnyuppApi.UpdateChainProductInput,
-  ): Observable<CrudApi.ChainProduct> =>
+  (input: CrudApi.UpdateChainProductInput): Observable<CrudApi.ChainProduct> =>
     defer(() => deps.crudSdk.UpdateChainProduct({ input })).pipe(
       delay(ELASTICSEARCH_OPERATION_DELAY),
       callRegenerateOnChainProductPipe(deps),

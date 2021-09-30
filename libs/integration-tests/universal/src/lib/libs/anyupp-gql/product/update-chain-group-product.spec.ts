@@ -1,5 +1,5 @@
 import Auth from '@aws-amplify/auth';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   productFixture,
@@ -88,7 +88,7 @@ const unitProduct_u02_gp01_03: RequiredId<CrudApi.CreateUnitProductInput> = {
 };
 
 describe('Update Chain and Group product tests', () => {
-  let authAnyuppSdk: AnyuppApi.AnyuppSdk;
+  let authAnyuppSdk: CrudApi.AnyuppSdk;
 
   const iamCrudSdk = createIamCrudSdk();
 
@@ -170,7 +170,7 @@ describe('Update Chain and Group product tests', () => {
 
     it('should update the groupProduct in the database and call the regenereation logic for every unit', done => {
       const regenMockHandler = jest.fn().mockReturnValue(of(true));
-      const input: AnyuppApi.UpdateGroupProductInput = {
+      const input: CrudApi.UpdateGroupProductInput = {
         id: groupProduct_01.id,
         tax: 999,
       };
@@ -215,7 +215,7 @@ describe('Update Chain and Group product tests', () => {
 
     it('should NOT fail in case there is no extended UnitProduct for the given GroupProduct', done => {
       const regenMockHandler = jest.fn().mockReturnValue(of(true));
-      const input: AnyuppApi.UpdateGroupProductInput = {
+      const input: CrudApi.UpdateGroupProductInput = {
         id: groupProduct_03_WITH_NO_CHILD.id,
       };
 
@@ -271,7 +271,7 @@ describe('Update Chain and Group product tests', () => {
 
     it('should update the chainProduct in the database and call the regenereation logic for every unit', done => {
       const regenMockHandler = jest.fn().mockReturnValue(of(true));
-      const input: AnyuppApi.UpdateChainProductInput = {
+      const input: CrudApi.UpdateChainProductInput = {
         id: chainProduct_01.id,
         description: { en: 'UPDATED_DESCRIPTION' },
       };
@@ -321,7 +321,7 @@ describe('Update Chain and Group product tests', () => {
 
     it('should NOT fail in case there is no extended UnitProduct for the given ChainProduct', done => {
       const regenMockHandler = jest.fn().mockReturnValue(of(true));
-      const input: AnyuppApi.UpdateChainProductInput = {
+      const input: CrudApi.UpdateChainProductInput = {
         id: chainProduct_02_WITH_NO_CHILD.id,
       };
 
