@@ -1,3 +1,4 @@
+import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   createAdminUser as resolverCreateAdminUser,
   ResolverErrorCode,
@@ -15,6 +16,7 @@ import {
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { EProductType } from '@bgap/shared/types';
+import { DynamoDB } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import * as R from 'ramda';
@@ -247,7 +249,13 @@ const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
   of('start').pipe(
     switchMap(() =>
       defer(() =>
-        unitRequestHandler({ crudSdk: deps.crudSdk }).regenerateUnitData({
+        unitRequestHandler({
+          crudSdk: deps.crudSdk,
+          hashGenerator: (password: string) => `HASHED ${password}`,
+          uuidGenerator: () => unitFixture.unitId_seeded_01,
+          docClient: new DynamoDB.DocumentClient(),
+          tableName: tableConfig.Unit.TableName,
+        }).regenerateUnitData({
           input: { id: unitFixture.unitId_seeded_01 },
         }),
       ),

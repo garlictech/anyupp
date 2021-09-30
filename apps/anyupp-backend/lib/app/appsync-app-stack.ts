@@ -30,6 +30,7 @@ export interface AppsyncAppStackProps extends sst.StackProps {
   szamlazzhuAgentKey: string;
   apiAccessKeyId: string;
   apiSecretAccessKey: string;
+  salt: string;
 }
 
 export class AppsyncAppStack extends sst.Stack {
@@ -76,11 +77,11 @@ export class AppsyncAppStack extends sst.Stack {
       },
     });
 
-    this.createDatasources(props);
+    this.createDatasources(props, scope.stage);
 
     if (!this.lambdaDs) {
       throw new Error(
-        'MAke sure that teh lambda data source exists before using it!',
+        'Make sure that the lambda data source exists before using it!',
       );
     }
 
@@ -117,7 +118,7 @@ export class AppsyncAppStack extends sst.Stack {
     });
   }
 
-  private createDatasources(props: AppsyncAppStackProps) {
+  private createDatasources(props: AppsyncAppStackProps, scope: string) {
     // NO DATA SOURCE
     new appsync.NoneDataSource(this, 'NoneDataSource', {
       api: this.api,
@@ -130,6 +131,7 @@ export class AppsyncAppStack extends sst.Stack {
     const apiLambda = new lambda.Function(this, 'AppsyncLambda', {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
+      functionName: `${scope}-anyupp-appsync-resolvers`,
       handler: 'lib/lambda/appsync-lambda/index.handler',
       timeout: cdk.Duration.seconds(30),
       memorySize: 512,
@@ -144,6 +146,7 @@ export class AppsyncAppStack extends sst.Stack {
         SZAMLAZZ_HU_AGENT_KEY: props.szamlazzhuAgentKey,
         API_ACCESS_KEY_ID: props.apiAccessKeyId,
         API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
+        SALT: props.salt,
       },
     });
 

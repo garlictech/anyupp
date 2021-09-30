@@ -1,4 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
@@ -16,7 +15,6 @@ import { catchError, switchMap } from 'rxjs/operators';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
-  anyuppSdk: AnyuppApi.AnyuppSdk;
   userPoolId: string;
   consumerUserPoolId: string;
   cognitoidentityserviceprovider: CognitoIdentityServiceProvider;

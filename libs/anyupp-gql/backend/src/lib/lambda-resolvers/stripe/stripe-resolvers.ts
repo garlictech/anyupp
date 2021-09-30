@@ -16,8 +16,9 @@ export const createStripeResolvers = ({
         "version" : "2017-02-28",
         "operation" : "Invoke",
         "payload": {
-          "handler": "startStripePayment",
-          "payload": {
+          "fieldName": "startStripePayment",
+          "typeName": "Mutation",
+          "arguments": {
             "userId": ${getAuthenticatedUserIdFromContextIdentity},
             "input": $util.toJson($ctx.arguments.input)
           }
@@ -37,8 +38,9 @@ export const createStripeResolvers = ({
         "version" : "2017-02-28",
         "operation" : "Invoke",
         "payload": {
-          "handler": "listStripeCards",
-          "payload": {
+          "fieldName": "listStripeCards",
+          "typeName": "Query",
+          "arguments": {
             "userId": ${getAuthenticatedUserIdFromContextIdentity},
             "input": $util.toJson($ctx.arguments.input)
           }
@@ -57,7 +59,7 @@ export const createStripeResolvers = ({
         "version" : "2017-02-28",
         "operation" : "Invoke",
         "payload": {
-          "handler": "createStripeCard",
+          "fieldName": "createStripeCard",
           "payload": {
             "userId": ${getAuthenticatedUserIdFromContextIdentity},
             "input": $util.toJson($ctx.arguments.input)
@@ -77,7 +79,7 @@ export const createStripeResolvers = ({
         "version" : "2017-02-28",
         "operation" : "Invoke",
         "payload": {
-          "handler": "deleteMyStripeCard",
+          "fieldName": "deleteMyStripeCard",
           "payload": {
             "userId": ${getAuthenticatedUserIdFromContextIdentity},
             "input": $util.toJson($ctx.arguments.input)
@@ -97,7 +99,7 @@ export const createStripeResolvers = ({
         "version" : "2017-02-28",
         "operation" : "Invoke",
         "payload": {
-          "handler": "updateMyStripeCard",
+          "fieldName": "updateMyStripeCard",
           "payload": {
             "userId": ${getAuthenticatedUserIdFromContextIdentity},
             "input": $util.toJson($ctx.arguments.input)

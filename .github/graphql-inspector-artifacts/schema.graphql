@@ -1004,9 +1004,9 @@ type Pos {
 type RKeeper {
   endpointUri: String!
   rkeeperUsername: String!
-  rkeeperPassword: String!
+  rkeeperPassword: String! @function(name: "anyuppCrudCustomResolvers-${env}")
   anyuppUsername: String!
-  anyuppPassword: String!
+  anyuppPassword: String! @function(name: "anyuppCrudCustomResolvers-${env}")
   restaurantId: String!
 }
 

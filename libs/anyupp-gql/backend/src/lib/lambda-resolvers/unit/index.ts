@@ -3,3 +3,4 @@ export { regenerateUnitData } from './regenerate-unit-data.resolver';
 export { unitRequestHandler } from './unit-request-handler';
 export { createUnitResolvers } from './unit-resolvers';
 export { UnitsResolverDeps } from './utils';
+export { createUnitResolver, updateUnitResolver } from './unit-crud-resolvers';

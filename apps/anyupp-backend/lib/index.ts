@@ -44,6 +44,7 @@ export class AnyUppStack extends Stack {
       apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
       apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
       szamlazzhuAgentKey: secretsManagerStack.szamlazzhuAgentKey,
+      salt: secretsManagerStack.salt,
     });
 
     new StripeStack(scope, 'stripe', {

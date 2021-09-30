@@ -15,9 +15,9 @@ export const createAdminUserResolvers = ({
       "version" : "2017-02-28",
       "operation" : "Invoke",
       "payload": {
-
-        "handler": "${fieldName}",
-        "payload": $util.toJson($ctx.arguments)
+        "typeName": "Mutation",
+        "fieldName": "${fieldName}",
+        "arguments": $util.toJson($ctx.arguments)
       }
     }
     `,

@@ -1,4 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { findLast } from 'lodash/fp';
 import { DateTime } from 'luxon';
@@ -47,7 +46,7 @@ export const isTimeInOpeningHours = ({
   openingHours,
 }: {
   atUtcTime: DateTime;
-  openingHours: AnyuppApi.OpeningHoursByDate;
+  openingHours: CrudApi.OpeningHoursByDate;
 }): boolean => {
   const atTimeMillis = atUtcTime.toMillis();
 
@@ -119,13 +118,13 @@ export const getWeekDayNameFromDate = (
 export const getOpeningHoursAtDate = (
   dateString: string,
   unit: CrudApi.Unit,
-): AnyuppApi.OpeningHoursByDate => {
+): CrudApi.OpeningHoursByDate => {
   const unitTimeZone = getUnitTimeZone(unit);
   // Creating the date in the unit's timezone
   const date: DateTime = DateTime.fromISO(dateString, { zone: unitTimeZone });
   const weekDayName = getWeekDayNameFromDate(date);
 
-  const closedResponse: AnyuppApi.OpeningHoursByDate = {
+  const closedResponse: CrudApi.OpeningHoursByDate = {
     date: date.toFormat(dateFormat),
     closed: true,
   };
@@ -185,7 +184,7 @@ export const getOpeningHoursAtDate = (
 export const getUnitOpeningHoursAtTime = (
   unit: CrudApi.Unit,
   time: DateTime = DateTime.utc(),
-): Array<AnyuppApi.OpeningHoursByDate> => {
+): Array<CrudApi.OpeningHoursByDate> => {
   const yesterday = time.minus({ days: 1 });
   const today = time;
   const openingHoursYesterday = getOpeningHoursAtDate(
@@ -208,7 +207,7 @@ export const getUnitOpeningHoursAtTime = (
   });
 
   let firstActiveDate;
-  let actualOpeningHours: AnyuppApi.OpeningHoursByDate;
+  let actualOpeningHours: CrudApi.OpeningHoursByDate;
 
   if (isYesterdayOpeningHoursStillActive) {
     firstActiveDate = yesterday;

@@ -1,0 +1,318 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test custom CRUD resolvers createUnitResolver tests: ERROR 1`] = `[ResourceNotFoundException: Requested resource not found]`;
+
+exports[`Test custom CRUD resolvers createUnitResolver tests: ERROR 2`] = `"ERROR"`;
+
+exports[`Test custom CRUD resolvers createUnitResolver tests: PUT CALL 1`] = `
+Array [
+  Array [
+    Object {
+      "Item": Object {
+        "address": Object {
+          "address": "Ág u. 1.",
+          "city": "Budapest",
+          "country": "Magyarország",
+          "location": Object {
+            "lat": 47,
+            "lng": 19,
+          },
+          "postalCode": "1021",
+          "title": "HQ",
+        },
+        "chainId": "CHAINID",
+        "description": Object {
+          "en": "Test unit #test_unit_1_id description",
+          "hu": "Teszt unit #test_unit_1_id leírás",
+        },
+        "groupId": "GROUPID",
+        "id": "THE_UUID",
+        "isAcceptingOrders": true,
+        "isActive": true,
+        "lanes": Array [
+          Object {
+            "color": "#e72222",
+            "id": "lane_01",
+            "name": "bár",
+          },
+          Object {
+            "color": "#e123ef",
+            "id": "lane_02",
+            "name": "konyha",
+          },
+        ],
+        "name": "Késdobáló S",
+        "open": Object {
+          "from": "1970-01-01",
+        },
+        "paymentModes": Array [
+          Object {
+            "method": "cash",
+            "type": "cash",
+          },
+          Object {
+            "method": "card",
+            "type": "card",
+          },
+          Object {
+            "method": "inapp",
+            "type": "stripe",
+          },
+        ],
+      },
+      "TableName": "UNIT_TABLE_NAME",
+    },
+  ],
+]
+`;
+
+exports[`Test custom CRUD resolvers createUnitResolver tests: PUT CALL 2`] = `
+Array [
+  Array [
+    Object {
+      "Item": Object {
+        "address": Object {
+          "address": "Ág u. 1.",
+          "city": "Budapest",
+          "country": "Magyarország",
+          "location": Object {
+            "lat": 47,
+            "lng": 19,
+          },
+          "postalCode": "1021",
+          "title": "HQ",
+        },
+        "chainId": "CHAINID",
+        "description": Object {
+          "en": "Test unit #test_unit_1_id description",
+          "hu": "Teszt unit #test_unit_1_id leírás",
+        },
+        "groupId": "GROUPID",
+        "id": "THE_UUID",
+        "isAcceptingOrders": true,
+        "isActive": true,
+        "lanes": Array [
+          Object {
+            "color": "#e72222",
+            "id": "lane_01",
+            "name": "bár",
+          },
+          Object {
+            "color": "#e123ef",
+            "id": "lane_02",
+            "name": "konyha",
+          },
+        ],
+        "name": "Késdobáló S",
+        "open": Object {
+          "from": "1970-01-01",
+        },
+        "paymentModes": Array [
+          Object {
+            "method": "cash",
+            "type": "cash",
+          },
+          Object {
+            "method": "card",
+            "type": "card",
+          },
+          Object {
+            "method": "inapp",
+            "type": "stripe",
+          },
+        ],
+        "pos": Object {
+          "rkeeper": Object {
+            "anyuppPassword": "HASHED PASSWORD2",
+            "anyuppUsername": "ANYUPPUSERNAME",
+            "endpointUri": "ENDPOINT",
+            "restaurantId": "RESTAURANTID",
+            "rkeeperPassword": "HASHED PASSWORD",
+            "rkeeperUsername": "USERNAME",
+          },
+          "type": "rkeeper",
+        },
+      },
+      "TableName": "UNIT_TABLE_NAME",
+    },
+  ],
+]
+`;
+
+exports[`Test custom CRUD resolvers updateUnitResolver tests: ERROR 1`] = `[ResourceNotFoundException: Requested resource not found]`;
+
+exports[`Test custom CRUD resolvers updateUnitResolver tests: ERROR 2`] = `"ERROR"`;
+
+exports[`Test custom CRUD resolvers updateUnitResolver tests: UPDATE CALL 1`] = `
+Array [
+  Array [
+    Object {
+      "ExpressionAttributeNames": Object {
+        "#address": "address",
+        "#chainId": "chainId",
+        "#description": "description",
+        "#groupId": "groupId",
+        "#id": "id",
+        "#isAcceptingOrders": "isAcceptingOrders",
+        "#isActive": "isActive",
+        "#lanes": "lanes",
+        "#name": "name",
+        "#open": "open",
+        "#paymentModes": "paymentModes",
+      },
+      "ExpressionAttributeValues": Object {
+        ":address": Object {
+          "address": "Ág u. 1.",
+          "city": "Budapest",
+          "country": "Magyarország",
+          "location": Object {
+            "lat": 47,
+            "lng": 19,
+          },
+          "postalCode": "1021",
+          "title": "HQ",
+        },
+        ":chainId": "CHAINID",
+        ":description": Object {
+          "en": "Test unit #test_unit_1_id description",
+          "hu": "Teszt unit #test_unit_1_id leírás",
+        },
+        ":groupId": "GROUPID",
+        ":id": "THE_ID",
+        ":isAcceptingOrders": true,
+        ":isActive": true,
+        ":lanes": Array [
+          Object {
+            "color": "#e72222",
+            "id": "lane_01",
+            "name": "bár",
+          },
+          Object {
+            "color": "#e123ef",
+            "id": "lane_02",
+            "name": "konyha",
+          },
+        ],
+        ":name": "Késdobáló S",
+        ":open": Object {
+          "from": "1970-01-01",
+        },
+        ":paymentModes": Array [
+          Object {
+            "method": "cash",
+            "type": "cash",
+          },
+          Object {
+            "method": "card",
+            "type": "card",
+          },
+          Object {
+            "method": "inapp",
+            "type": "stripe",
+          },
+        ],
+      },
+      "Key": Object {
+        "id": Object {
+          "S": "THE_ID",
+        },
+      },
+      "TableName": "UNIT_TABLE_NAME",
+      "UpdateExpression": "set #isActive = :isActive, #isAcceptingOrders = :isAcceptingOrders, #name = :name, #address = :address, #description = :description, #paymentModes = :paymentModes, #lanes = :lanes, #open = :open, #chainId = :chainId, #groupId = :groupId, #id = :id",
+    },
+  ],
+]
+`;
+
+exports[`Test custom CRUD resolvers updateUnitResolver tests: UPDATE CALL 2`] = `
+Array [
+  Array [
+    Object {
+      "ExpressionAttributeNames": Object {
+        "#address": "address",
+        "#chainId": "chainId",
+        "#description": "description",
+        "#groupId": "groupId",
+        "#id": "id",
+        "#isAcceptingOrders": "isAcceptingOrders",
+        "#isActive": "isActive",
+        "#lanes": "lanes",
+        "#name": "name",
+        "#open": "open",
+        "#paymentModes": "paymentModes",
+        "#pos": "pos",
+      },
+      "ExpressionAttributeValues": Object {
+        ":address": Object {
+          "address": "Ág u. 1.",
+          "city": "Budapest",
+          "country": "Magyarország",
+          "location": Object {
+            "lat": 47,
+            "lng": 19,
+          },
+          "postalCode": "1021",
+          "title": "HQ",
+        },
+        ":chainId": "CHAINID",
+        ":description": Object {
+          "en": "Test unit #test_unit_1_id description",
+          "hu": "Teszt unit #test_unit_1_id leírás",
+        },
+        ":groupId": "GROUPID",
+        ":id": "THE_ID",
+        ":isAcceptingOrders": true,
+        ":isActive": true,
+        ":lanes": Array [
+          Object {
+            "color": "#e72222",
+            "id": "lane_01",
+            "name": "bár",
+          },
+          Object {
+            "color": "#e123ef",
+            "id": "lane_02",
+            "name": "konyha",
+          },
+        ],
+        ":name": "Késdobáló S",
+        ":open": Object {
+          "from": "1970-01-01",
+        },
+        ":paymentModes": Array [
+          Object {
+            "method": "cash",
+            "type": "cash",
+          },
+          Object {
+            "method": "card",
+            "type": "card",
+          },
+          Object {
+            "method": "inapp",
+            "type": "stripe",
+          },
+        ],
+        ":pos": Object {
+          "rkeeper": Object {
+            "anyuppPassword": "HASHED PASSWORD2",
+            "anyuppUsername": "ANYUPPUSERNAME",
+            "endpointUri": "ENDPOINT",
+            "restaurantId": "RESTAURANTID",
+            "rkeeperPassword": "HASHED PASSWORD",
+            "rkeeperUsername": "USERNAME",
+          },
+          "type": "rkeeper",
+        },
+      },
+      "Key": Object {
+        "id": Object {
+          "S": "THE_ID",
+        },
+      },
+      "TableName": "UNIT_TABLE_NAME",
+      "UpdateExpression": "set #isActive = :isActive, #isAcceptingOrders = :isAcceptingOrders, #name = :name, #address = :address, #description = :description, #paymentModes = :paymentModes, #lanes = :lanes, #open = :open, #chainId = :chainId, #groupId = :groupId, #pos = :pos, #id = :id",
+    },
+  ],
+]
+`;

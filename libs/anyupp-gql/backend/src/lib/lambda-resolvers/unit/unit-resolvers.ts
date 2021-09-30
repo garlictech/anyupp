@@ -14,10 +14,9 @@ export const createUnitResolvers = ({
         "version" : "2017-02-28",
         "operation" : "Invoke",
         "payload": {
-          "handler": "getUnitsNearLocation",
-          "payload": {
-            "input": $util.toJson($ctx.arguments.input)
-          }
+          "typeName": "Query",
+          "fieldName": "getUnitsNearLocation",
+          "arguments": $util.toJson($ctx.arguments.input)
         }
       }
       `,
@@ -32,10 +31,9 @@ export const createUnitResolvers = ({
         "version" : "2017-02-28",
         "operation" : "Invoke",
         "payload": {
-          "handler": "regenerateUnitData",
-          "payload": {
-            "input": $util.toJson($ctx.arguments.input)
-          }
+          "typeName": "Mutation",
+          "fieldName": "regenerateUnitData",
+          "arguments": $util.toJson($ctx.arguments.input)
         }
       }
       `,
