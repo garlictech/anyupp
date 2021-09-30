@@ -6,6 +6,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:flutter_svg/svg.dart';
 
 class UnitCardWidget extends StatelessWidget {
   final GeoUnit unit;
@@ -75,12 +76,15 @@ class UnitCardWidget extends StatelessWidget {
                               unit,
                               transEx(context, "selectUnit.closed"),
                               transEx(context, "selectUnit.opens"),
-                              transEx(
-                                  context, "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
+                              transEx(context,
+                                  "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
                             )
                           : transEx(context, "selectUnit.opened") +
                               ": " +
-                              transEx(context, GeoUnitUtils.getOpenedHour(unit)!.getOpenRangeString()!),
+                              transEx(
+                                  context,
+                                  GeoUnitUtils.getOpenedHour(unit)!
+                                      .getOpenRangeString()!),
                       style: Fonts.satoshi(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w400,
@@ -126,14 +130,14 @@ class UnitCardWidget extends StatelessWidget {
                 children: [
                   if (unit.supportedServingModes.contains(ServingMode.inPlace))
                     BorderedWidget(
-                      width: 32.0,
-                      height: 32.0,
-                      child: Icon(
-                        Icons.restaurant_menu,
-                        color: theme.secondary,
-                        size: 18.0,
-                      ),
-                    ),
+                        width: 32.0,
+                        height: 32.0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: SvgPicture.asset(
+                            'assets/icons/restaurant_menu_black.svg',
+                          ),
+                        )),
                   if (unit.supportedServingModes.contains(ServingMode.takeAway))
                     SizedBox(
                       width: 4.0,
