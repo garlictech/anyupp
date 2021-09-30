@@ -8,9 +8,13 @@ import {
   testIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
+import {
+  defaultSupportedOrderModes,
+  defaultSupportedServingModes,
+} from '@bgap/shared/types';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import * as fp from 'lodash/fp';
-import { combineLatest, from } from 'rxjs';
+import { combineLatest, defer, from, iif } from 'rxjs';
 import { map, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 import {
   createAuthenticatedAnyuppSdk,
@@ -21,6 +25,8 @@ import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 
 const TEST_NAME = 'GEOUNIT_';
+const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
+
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
 const distanceLoc_02 = { location: { lat: 47.490471, lng: 19.048001 } }; // distance from userLoc: 0.153.. km
@@ -49,6 +55,8 @@ const unit_03 = {
   ...unitFixture.unit_01,
   id: `${testIdPrefix}unit_03`,
   address: fp.mergeAll([unitFixture.unit_01.address, userLoc]),
+  supportedServingModes: null,
+  supportedOrderModes: null,
 };
 
 describe('GetUnitsNearLocation tests', () => {
@@ -167,8 +175,11 @@ describe('GetUnitsNearLocation tests', () => {
     const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
-    authAnyuppSdk
-      .GetUnitsNearLocation(input)
+    iif(
+      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+      defer(() => unitRequestHandler({ crudSdk }).getUnitsNearLocation(input)),
+      authAnyuppSdk.GetUnitsNearLocation(input),
+    )
       .pipe(
         filterNullish(),
         map(result => result.items),
@@ -187,11 +198,18 @@ describe('GetUnitsNearLocation tests', () => {
           expect(foundItems[1].distance).toEqual(74);
           expect(foundItems[2].distance).toEqual(153);
           expect(foundItems[0].openingHoursNext7).toHaveLength(7);
+          expect(foundItems[1].supportedOrderModes).toEqual(
+            unit_01.supportedOrderModes,
+          );
+          expect(foundItems[1].supportedServingModes).toEqual(
+            unit_01.supportedServingModes,
+          );
+          // check the default values logic
           expect(foundItems[0].supportedOrderModes).toEqual(
-            unit_03.supportedOrderModes,
+            defaultSupportedOrderModes,
           );
           expect(foundItems[0].supportedServingModes).toEqual(
-            unit_03.supportedServingModes,
+            defaultSupportedServingModes,
           );
 
           expect(foundItems[0]).toMatchSnapshot({

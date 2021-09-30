@@ -1,4 +1,3 @@
-import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { Auth } from '@aws-amplify/auth';
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 import {
@@ -20,8 +19,16 @@ import {
   testIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
-import { getSortedIds, sortById } from '@bgap/shared/utils';
+import {
+  defaultSupportedServingModes,
+  EProductComponentSetType,
+  RequiredId,
+} from '@bgap/shared/types';
+import {
+  filterNullishGraphqlListWithDefault,
+  getSortedIds,
+  sortById,
+} from '@bgap/shared/utils';
 import {
   combineLatest,
   concat,
@@ -501,43 +508,45 @@ describe('RegenerateUnitData mutation tests', () => {
               prodComponentMap[
                 productToCheck.configSets[0].items[1].productComponentId
               ];
-            const expectedGeneratedProductConfigComponentSet_01 = {
-              // comes from the ConfigSet that is stored in the product
-              position: productToCheck.configSets[0].position,
-              // comes from the productComponentSet itself (referenced by productSetId)
-              productSetId: expectedCompSet_01.id,
-              name: {
-                ...expectedCompSet_01.name,
-              },
-              type: expectedCompSet_01.type,
-              maxSelection: expectedCompSet_01.maxSelection,
-              items: [
-                {
-                  // comes from the ConfigComponent that is stored in the product's config set
-                  productComponentId:
-                    productToCheck.configSets[0].items[0].productComponentId,
-                  price: productToCheck.configSets[0].items[0].price,
-                  position: productToCheck.configSets[0].items[0].position,
-                  // comes from the productComponent itself (referenced by productComponentId)
-                  name: {
-                    ...expectedComp_0_0.name,
-                  },
-                  allergens: expectedComp_0_0.allergens,
+            const expectedGeneratedProductConfigComponentSet_01: CrudApi.GeneratedProductConfigSet =
+              {
+                // comes from the ConfigSet that is stored in the product
+                position: productToCheck.configSets[0].position,
+                // comes from the productComponentSet itself (referenced by productSetId)
+                productSetId: expectedCompSet_01.id,
+                name: {
+                  ...expectedCompSet_01.name,
                 },
-                {
-                  // comes from the ConfigComponent that is stored in the product's config set
-                  productComponentId:
-                    productToCheck.configSets[0].items[1].productComponentId,
-                  price: productToCheck.configSets[0].items[1].price,
-                  position: productToCheck.configSets[0].items[1].position,
-                  // comes from the productComponent itself (referenced by productComponentId)
-                  name: {
-                    ...expectedComp_0_1.name,
+                type: expectedCompSet_01.type,
+                maxSelection: expectedCompSet_01.maxSelection,
+                supportedServingModes: defaultSupportedServingModes,
+                items: [
+                  {
+                    // comes from the ConfigComponent that is stored in the product's config set
+                    productComponentId:
+                      productToCheck.configSets[0].items[0].productComponentId,
+                    price: productToCheck.configSets[0].items[0].price,
+                    position: productToCheck.configSets[0].items[0].position,
+                    // comes from the productComponent itself (referenced by productComponentId)
+                    name: {
+                      ...expectedComp_0_0.name,
+                    },
+                    allergens: expectedComp_0_0.allergens,
                   },
-                  allergens: expectedComp_0_1.allergens,
-                },
-              ],
-            };
+                  {
+                    // comes from the ConfigComponent that is stored in the product's config set
+                    productComponentId:
+                      productToCheck.configSets[0].items[1].productComponentId,
+                    price: productToCheck.configSets[0].items[1].price,
+                    position: productToCheck.configSets[0].items[1].position,
+                    // comes from the productComponent itself (referenced by productComponentId)
+                    name: {
+                      ...expectedComp_0_1.name,
+                    },
+                    allergens: expectedComp_0_1.allergens,
+                  },
+                ],
+              };
             expect(aGeneratedProduct.configSets[0]).toEqual(
               expectedGeneratedProductConfigComponentSet_01,
             );
