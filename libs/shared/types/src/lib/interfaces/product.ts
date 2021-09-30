@@ -11,9 +11,12 @@ export interface IProductOrderChangeEvent {
   productId: string;
 }
 
+export type MergedProduct = CrudApi.ChainProduct &
+  CrudApi.GroupProduct &
+  CrudApi.UnitProduct;
 export type ProductVariantWithPrice = Omit<CrudApi.ProductVariant, 'price'> &
   Required<Pick<CrudApi.ProductVariant, 'price'>>;
-export type ProductWithPrices = Omit<Product, 'variants'> & {
+export type MergedProductWithPrices = Omit<MergedProduct, 'variants'> & {
   variants: ProductVariantWithPrice[];
 };
 export interface ProductComponentSetMap {

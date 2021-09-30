@@ -155,8 +155,8 @@ type GeoUnit @aws_cognito_user_pools {
       reason: "The new and better openingHoursNext7 field should be used instead of this static string"
     )
   openingHoursNext7: [OpeningHoursByDate!]!
-  supportedServingModes: [ServingMode!]
-  supportedOrderModes: [OrderMode!]
+  supportedServingModes: [ServingMode!]!
+  supportedOrderModes: [OrderMode!]!
 }
 type GeoUnitList @aws_cognito_user_pools {
   items: [GeoUnit]
