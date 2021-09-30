@@ -1,4 +1,5 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as R from 'ramda';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
@@ -366,6 +367,32 @@ export const createTestUnit =
     return deleteCreate(
       () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
       () => deps.crudSdk.CreateUnit({ input }),
+    );
+  };
+
+export const createTestUnitsForOrderHandling =
+  () => (deps: SeederDependencies) => {
+    console.debug('createTestUnitForOrderhandling', {});
+
+    return pipe(
+      [
+        unitFixture.unitInstantInplace,
+        unitFixture.unitInstantTakeaway,
+        unitFixture.unitPickupInplace,
+        unitFixture.unitPickupTakeaway,
+      ],
+      R.map(unit => ({
+        ...unit,
+        groupId: generateGroupId(1, 1),
+        chainId: generateChainId(1),
+      })),
+      R.map(input =>
+        deleteCreate(
+          () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
+          () => deps.crudSdk.CreateUnit({ input }),
+        ),
+      ),
+      combineLatest,
     );
   };
 
