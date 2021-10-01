@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
+
 import { EDashboardTicketListType } from '@bgap/shared/types';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { currentStatus as currentStatusFn } from '@bgap/crud-gql/api';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,6 +18,7 @@ export class OrderTicketListItemComponent {
 
   public currentStatus = currentStatusFn;
   public readyCount = 0;
+  public EServingMode = CrudApi.ServingMode;
 
   /*
   ngOnChanges(): void {

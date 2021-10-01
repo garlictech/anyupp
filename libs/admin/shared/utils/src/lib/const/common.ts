@@ -92,6 +92,16 @@ export const PAYMENT_MODES: PaymentMode[] = [
   },
 ];
 
+export const SERVING_MODES = [
+  CrudApi.ServingMode.inplace,
+  CrudApi.ServingMode.takeaway,
+];
+
+export const ORDER_MODES = [
+  CrudApi.OrderMode.instant,
+  CrudApi.OrderMode.pickup,
+];
+
 export const DEFAULT_LANE_COLOR = '#5B7AFF';
 
 export const ALLERGENS: IAllergen[] = [

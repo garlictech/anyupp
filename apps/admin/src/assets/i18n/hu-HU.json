@@ -33,6 +33,7 @@
     "unit": "Unit",
     "currency": "Pénznem",
     "taxPercent": "Adó (%)",
+    "takeawayTaxPercent": "Adó elvitelre (%)",
     "date": "Dátum",
     "from": "-tól",
     "to": "-ig",
@@ -86,6 +87,16 @@
       "applepay": "Apple Pay",
       "stripe": "Stripe",
       "simple": "Simple"
+    },
+    "servingModes": {
+      "title": "Felszolgálási mód",
+      "inPlace": "helyi",
+      "takeAway": "elvitel"
+    },
+    "orderModes": {
+      "title": "Megrendelési mód",
+      "instant": "instant",
+      "pickup": "pickup"
     },
     "transactionStatus": {
       "SUCCESS": "Sikeres",
@@ -392,7 +403,7 @@
     "superuser": "Superuser",
     "chainadmin": "Chain adminisztrátor",
     "groupadmin": "Group adminisztrátor",
-    "unitAdmin": "Unit adminisztrátor",
+    "unitadmin": "Unit adminisztrátor",
     "staff": "Személyzet",
     "inactive": "Inaktív",
     "addChain": "Chain hozzáadása",

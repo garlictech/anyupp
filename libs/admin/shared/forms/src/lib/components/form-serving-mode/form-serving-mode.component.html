@@ -1,0 +1,18 @@
+<fieldset class="form">
+  <legend class="label">
+    {{ 'common.servingModes.title' | translate }}
+  </legend>
+
+  <div>
+    <nb-checkbox
+      class="me-5 mb-3"
+      [checked]="servingModeIsChecked(servingMode)"
+      (checkedChange)="toggleServingMode(servingMode)"
+      *ngFor="let servingMode of servingModes"
+    >
+      <label class="caption">
+        {{ 'common.servingModes.' + servingMode | translate }}</label
+      >
+    </nb-checkbox>
+  </div>
+</fieldset>

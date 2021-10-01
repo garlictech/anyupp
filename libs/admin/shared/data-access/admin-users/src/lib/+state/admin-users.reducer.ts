@@ -17,10 +17,10 @@ export interface AdminUsersPartialState {
 
 export const adminUsersAdapter = createEntityAdapter<CrudApi.AdminUser>();
 
-export const initialState = adminUsersAdapter.getInitialState({});
+export const initialAdminUserState = adminUsersAdapter.getInitialState({});
 
 const reducer = createReducer(
-  initialState,
+  initialAdminUserState,
   on(AdminUsersActions.init, state => ({
     ...state,
     error: null,

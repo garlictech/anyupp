@@ -13,6 +13,7 @@ export interface ILaneOrderItem extends CrudApi.OrderItem {
   laneColor?: string;
   image?: string | null;
   place?: CrudApi.Place;
+  servingMode?: CrudApi.ServingMode;
   currentStatus?: CrudApi.OrderStatus;
 }
 

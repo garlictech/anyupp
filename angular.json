@@ -926,6 +926,28 @@
         }
       }
     },
+    "admin-shared-fixtures": {
+      "projectType": "library",
+      "root": "libs/admin/shared/fixtures",
+      "sourceRoot": "libs/admin/shared/fixtures/src",
+      "prefix": "bgap",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/fixtures"],
+          "options": {
+            "jestConfig": "libs/admin/shared/fixtures/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/fixtures/src/**/*.ts"]
+          }
+        }
+      }
+    },
     "admin-shared-floor-map": {
       "projectType": "library",
       "root": "libs/admin/shared/floor-map",
@@ -1874,10 +1896,12 @@
       }
     },
     "@nrwl/angular:application": {
+      "linter": "eslint",
       "unitTestRunner": "jest",
       "e2eTestRunner": "cypress"
     },
     "@nrwl/angular:library": {
+      "linter": "eslint",
       "unitTestRunner": "jest"
     },
     "@nrwl/angular:component": {

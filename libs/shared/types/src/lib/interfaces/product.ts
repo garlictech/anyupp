@@ -50,5 +50,8 @@ export interface Product {
   image?: Maybe<Scalars['String']>;
   allergens?: Maybe<Array<Maybe<CrudApi.Allergen>>>;
   tax?: Scalars['Int'];
+  takeawayTax?: Maybe<Scalars['Int']>;
   chainProduct?: Maybe<CrudApi.ChainProduct>;
+  supportedServingModes?: Maybe<Array<Maybe<CrudApi.ServingMode>>>;
+  supportedOrderModes?: Maybe<Array<Maybe<CrudApi.OrderMode>>>;
 }

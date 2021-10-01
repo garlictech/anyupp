@@ -12,14 +12,14 @@ export interface IFloorMapPartialState {
   readonly [FLOOR_MAP_FEATURE_KEY]: IFloorMapState;
 }
 
-export const initialState: IFloorMapState = {
+export const initialFloorMapState: IFloorMapState = {
   initialized: false,
 };
 
 const reducer = createReducer(
-  initialState,
+  initialFloorMapState,
   on(FloorMapActions.resetFloorMap, () => ({
-    ...initialState,
+    ...initialFloorMapState,
   })),
   on(FloorMapActions.floorMapInitialized, (state, { initialized }) => ({
     ...state,

@@ -28,7 +28,7 @@ export interface DashboardPartialState {
   readonly [DASHBOARD_FEATURE_KEY]: DashboardState;
 }
 
-export const initialState: DashboardState = {
+export const initialDashboardState: DashboardState = {
   settings: {
     listMode: EDashboardListMode.current,
     size: EDashboardSize.NORMAL,
@@ -41,9 +41,9 @@ export const initialState: DashboardState = {
 };
 
 const reducer = createReducer(
-  initialState,
+  initialDashboardState,
   on(DashboardActions.resetDashboard, () => ({
-    ...initialState,
+    ...initialDashboardState,
   })),
   on(DashboardActions.setSelectedOrderId, (state, { orderId }) => ({
     ...state,

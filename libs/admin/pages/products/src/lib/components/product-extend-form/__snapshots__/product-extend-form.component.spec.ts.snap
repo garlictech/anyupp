@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductExtendFormComponent Group Form should create empty group product form 1`] = `
+Object {
+  "configSets": Array [],
+  "isVisible": true,
+  "takeawayTax": "",
+  "tax": "",
+  "variants": Array [],
+}
+`;
+
+exports[`ProductExtendFormComponent Unit Form should create empty unit product form 1`] = `
+Object {
+  "configSets": Array [],
+  "isVisible": true,
+  "laneId": "",
+  "supportedServingModes": Array [],
+  "variants": Array [],
+}
+`;
