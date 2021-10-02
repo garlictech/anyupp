@@ -7361,6 +7361,21 @@
     log4js "^6.3.0"
     typescript "^4.4.3"
 
+"@serverless-stack/core@^0.44.1":
+  version "0.44.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.44.1.tgz#857acce32de8ea70c8d5e178dfa33a04a307f729"
+  integrity sha512-Xy4ZDaacIBJ/lnXJHjBFMLutN1meGtVWNavLtzQRLNxTtU4peXy7HrQnJaY3Kl4VrHIUuu8fl32gdsI0fcPWoQ==
+  dependencies:
+    aws-cdk "1.124.0"
+    aws-sdk "^2.761.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    dotenv "^10.0.0"
+    dotenv-expand "^5.1.0"
+    fs-extra "^9.0.1"
+    log4js "^6.3.0"
+    typescript "^4.4.3"
+
 "@serverless-stack/nextjs-core@^0.1.9":
   version "0.1.9"
   resolved "https://registry.yarnpkg.com/@serverless-stack/nextjs-core/-/nextjs-core-0.1.9.tgz#ca480e8081df5d262ed5f61ef44584e130198e17"
@@ -7394,7 +7409,67 @@
     path-to-regexp "^6.1.0"
     send "^0.17.1"
 
-"@serverless-stack/resources@0.44.0", "@serverless-stack/resources@^0.44.0":
+"@serverless-stack/resources@0.44.1":
+  version "0.44.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.44.1.tgz#6e2a443bbb1ad9eea4bd29c039db363d60ee8547"
+  integrity sha512-9KRtraGbK0UhBlswRcRFNvALw1uMXLNIS0+71Tg9EH4tDPbi4cuqDWGFyVoi4u14lADUmxgUQFaxapVjssN85Q==
+  dependencies:
+    "@aws-cdk/aws-apigateway" "1.124.0"
+    "@aws-cdk/aws-apigatewayv2" "1.124.0"
+    "@aws-cdk/aws-apigatewayv2-authorizers" "1.124.0"
+    "@aws-cdk/aws-apigatewayv2-integrations" "1.124.0"
+    "@aws-cdk/aws-appsync" "1.124.0"
+    "@aws-cdk/aws-autoscaling" "1.124.0"
+    "@aws-cdk/aws-certificatemanager" "1.124.0"
+    "@aws-cdk/aws-cloudfront" "1.124.0"
+    "@aws-cdk/aws-cloudfront-origins" "1.124.0"
+    "@aws-cdk/aws-cognito" "1.124.0"
+    "@aws-cdk/aws-dynamodb" "1.124.0"
+    "@aws-cdk/aws-ec2" "1.124.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.124.0"
+    "@aws-cdk/aws-events" "1.124.0"
+    "@aws-cdk/aws-events-targets" "1.124.0"
+    "@aws-cdk/aws-iam" "1.124.0"
+    "@aws-cdk/aws-kinesis" "1.124.0"
+    "@aws-cdk/aws-lambda" "1.124.0"
+    "@aws-cdk/aws-lambda-event-sources" "1.124.0"
+    "@aws-cdk/aws-lambda-nodejs" "1.124.0"
+    "@aws-cdk/aws-logs" "1.124.0"
+    "@aws-cdk/aws-rds" "1.124.0"
+    "@aws-cdk/aws-route53" "1.124.0"
+    "@aws-cdk/aws-route53-patterns" "1.124.0"
+    "@aws-cdk/aws-route53-targets" "1.124.0"
+    "@aws-cdk/aws-s3" "1.124.0"
+    "@aws-cdk/aws-s3-assets" "1.124.0"
+    "@aws-cdk/aws-s3-notifications" "1.124.0"
+    "@aws-cdk/aws-secretsmanager" "1.124.0"
+    "@aws-cdk/aws-sns" "1.124.0"
+    "@aws-cdk/aws-sns-subscriptions" "1.124.0"
+    "@aws-cdk/aws-sqs" "1.124.0"
+    "@aws-cdk/aws-ssm" "1.124.0"
+    "@aws-cdk/core" "1.124.0"
+    "@aws-cdk/cx-api" "1.124.0"
+    "@aws-cdk/lambda-layer-awscli" "1.124.0"
+    "@graphql-tools/load-files" "^6.3.2"
+    "@graphql-tools/merge" "^6.2.14"
+    "@serverless-stack/core" "^0.44.1"
+    "@serverless-stack/nextjs-lambda" "^0.1.9"
+    "@types/jest" "^26.0.7"
+    archiver "^5.3.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    crypto "^1.0.1"
+    esbuild "^0.12.20"
+    eslint "^7.16.0"
+    fs-extra "^9.0.1"
+    glob "^7.1.7"
+    graphql "^15.5.1"
+    jest "^26.1.0"
+    ts-jest "^26.1.4"
+    typescript "^4.4.3"
+    zip-local "^0.3.4"
+
+"@serverless-stack/resources@^0.44.0":
   version "0.44.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.44.0.tgz#ded7d654ec37947982966220ff59ca0af3050a0e"
   integrity sha512-KfwnnDwjf31jp7E37BxDVrDdclIR6O7+9uxVqwIU0yx6OjF7qqwrgxbIB7tFDonYHdYQeD2XrM7fXWvr1DR7CA==
@@ -12424,6 +12499,11 @@ crypto-random-string@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-2.0.0.tgz#ef2a7a966ec11083388369baa02ebead229b30d5"
   integrity sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
+
+crypto@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/crypto/-/crypto-1.0.1.tgz#2af1b7cad8175d24c8a1b0778255794a21803037"
+  integrity sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==
 
 css-blank-pseudo@^0.1.4:
   version "0.1.4"
