@@ -10151,7 +10151,7 @@ aws-sdk@*, aws-sdk@^2.761.0, aws-sdk@^2.814.0, aws-sdk@^2.834.0, aws-sdk@^2.848.
     uuid "3.3.2"
     xml2js "0.4.19"
 
-aws-sdk@2.997.0, aws-sdk@^2.997.0:
+aws-sdk@2.997.0:
   version "2.997.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.997.0.tgz#8598a5dd7bc6b6833a2fc3d737fba89020a79418"
   integrity sha512-PiuDmC5hN+FsyLvl7GsZAnS6hQpo1pP+Ax2u8gyL19QlbBLwlhsFQF29vPcYatyv6WUxr51o6uymJdPxQg6uEA==
@@ -10170,6 +10170,21 @@ aws-sdk@^2.979.0:
   version "2.996.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.996.0.tgz#0cee788fba00df15685f0dc27989824f06b97abc"
   integrity sha512-LZcus/r/36lwmGhRcwwllzQUucZ6sozDt3r78lXqdaQzZNbv44K44nXsqCPH2UpTcznrVUSJOW+o5s8yEbKFzg==
+  dependencies:
+    buffer "4.9.2"
+    events "1.1.1"
+    ieee754 "1.1.13"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.3.2"
+    xml2js "0.4.19"
+
+aws-sdk@^2.998.0:
+  version "2.999.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.999.0.tgz#2d71882fd9ba31c12a4281ae45ffe2b857f4307e"
+  integrity sha512-OcnD7m+HCZv2qDzmS7TgABGf26mVPfIyah0Dgz7hHAxBtx78qFWi/s9U6BDxVBKWLg7OKWVHf0opiMG4ujteqg==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -23774,10 +23789,10 @@ serverless-webpack@^5.3.1:
   optionalDependencies:
     ts-node ">= 8.3.0"
 
-serverless@2.60.1:
-  version "2.60.1"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-2.60.1.tgz#527d84dd1c5a208a3fe9515eff52ccb6731df7ff"
-  integrity sha512-kyZvLSp3AJiCYhmduV/8MALprS7sRof4xJR9Oehg/isMUpcALxRer9pEyBBb/WEo0Vj4TUo2rwVl44mI2daN2A==
+serverless@2.60.3:
+  version "2.60.3"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-2.60.3.tgz#271d2d8d080da23a639e3b16ff72eeedcaaf8034"
+  integrity sha512-YlMVUc0O9ZbOXDSE1zAqudw3ryB3JvSiHpxpiliYin09MrmYa2scLNx+zBPU42zihz+UMdA3Kt1NGaa5yQucJg==
   dependencies:
     "@serverless/cli" "^1.5.2"
     "@serverless/components" "^3.17.1"
@@ -23787,7 +23802,7 @@ serverless@2.60.1:
     ajv "^6.12.6"
     ajv-keywords "^3.5.2"
     archiver "^5.3.0"
-    aws-sdk "^2.997.0"
+    aws-sdk "^2.998.0"
     bluebird "^3.7.2"
     boxen "^5.1.2"
     cachedir "^2.3.0"
@@ -23826,7 +23841,7 @@ serverless@2.60.1:
     promise-queue "^2.2.5"
     replaceall "^0.1.6"
     semver "^7.3.5"
-    signal-exit "^3.0.4"
+    signal-exit "^3.0.5"
     strip-ansi "^6.0.1"
     tabtab "^3.0.2"
     tar "^6.1.11"
@@ -23968,10 +23983,15 @@ side-channel@^1.0.4:
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
 
-signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3, signal-exit@^3.0.4:
+signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.4.tgz#366a4684d175b9cab2081e3681fda3747b6c51d7"
   integrity sha512-rqYhcAnZ6d/vTPGghdrw7iumdcbXpsk1b8IG/rz+VWV51DM0p7XCtMoJ3qhPLIbp3tvyt3pKRbaaEMZYpHto8Q==
+
+signal-exit@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.5.tgz#9e3e8cc0c75a99472b44321033a7702e7738252f"
+  integrity sha512-KWcOiKeQj6ZyXx7zq4YxSMgHRlod4czeBQZrPb8OKcohcqAXShm7E20kEMle9WBt26hFcAf0qLOcp5zmY7kOqQ==
 
 signedsource@^1.0.0:
   version "1.0.0"
