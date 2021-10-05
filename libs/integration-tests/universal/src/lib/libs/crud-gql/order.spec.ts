@@ -1,119 +1,247 @@
-import { getDayIntervals, timezoneBudapest } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { getAllPaginatedData } from '@bgap/gql-sdk';
+import { orderFixture, testIdPrefix, unitFixture } from '@bgap/shared/fixtures';
+import { IFloorMapUserOrderObjects } from '@bgap/shared/types';
+
 import {
-  orderFixture as ofx,
-  transactionFixture as tfx,
-  unitFixture,
-} from '@bgap/shared/fixtures';
-import { IDateIntervals } from '@bgap/shared/types';
-import { of } from 'rxjs';
-import { delay, map, switchMap } from 'rxjs/operators';
+  currentStatus,
+  getActiveOrdersByUser,
+  getLowestStatus,
+  getNextOrderItemStatus,
+  getNextOrderStatus,
+  getOrderLaneColor,
+  getOrderStatusByItemsStatus,
+  getStatusColor,
+  getTableOrders,
+} from './orders';
 
-const TEST_NAME = 'ORDER_';
+const orders = [
+  orderFixture.convertInputToOrder(orderFixture.activeWaitingCardOrderInput),
+  orderFixture.convertInputToOrder(orderFixture.activeWaitingCashOrderInput),
+  orderFixture.convertInputToOrder(
+    orderFixture.activeServedSuccessCardOrderInput,
+  ),
+  orderFixture.convertInputToOrder(
+    orderFixture.activeServedSuccessCashOrderInput,
+  ),
+];
 
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
-
-describe('SearchOrders function', () => {
-  let crudSdk: CrudApi.CrudSdk;
-  const orderId = 'int_test_order_id_1';
-  const transactionId = 'int_test_transaction_id_1';
-
-  const cleanup = async () => {
-    await crudSdk
-      .DeleteOrder({
-        input: {
-          id: orderId,
-        },
-      })
-      .toPromise();
-
-    await crudSdk
-      .DeleteTransaction({
-        input: {
-          id: transactionId,
-        },
-      })
-      .toPromise();
-  };
-
-  beforeAll(async () => {
-    crudSdk = CrudApi.getCrudSdkForIAM(accessKeyId, secretAccessKey);
-
-    await cleanup();
+describe('Orders pure function tests', () => {
+  describe('currentStatus', () => {
+    it('should get current status', () => {
+      expect(
+        currentStatus([
+          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.placed),
+          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.served),
+        ]),
+      ).toMatchInlineSnapshot(`"served"`);
+      expect(
+        currentStatus([
+          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.ready),
+          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.rejected),
+        ]),
+      ).toMatchInlineSnapshot(`"rejected"`);
+    });
   });
 
-  afterAll(async () => {
-    await cleanup();
+  describe('getNextOrderStatus', () => {
+    it('should get next order status', () => {
+      expect(
+        getNextOrderStatus(CrudApi.OrderStatus.none),
+      ).toMatchInlineSnapshot(`"placed"`);
+      expect(
+        getNextOrderStatus(CrudApi.OrderStatus.placed),
+      ).toMatchInlineSnapshot(`"processing"`);
+      expect(
+        getNextOrderStatus(CrudApi.OrderStatus.processing),
+      ).toMatchInlineSnapshot(`"ready"`);
+      expect(
+        getNextOrderStatus(CrudApi.OrderStatus.ready),
+      ).toMatchInlineSnapshot(`"served"`);
+    });
   });
 
-  test('Pagination should return with new archived orders', done => {
-    const isoDate = new Date().toISOString();
-    const dayIntervals: IDateIntervals = getDayIntervals(
-      isoDate,
-      timezoneBudapest,
-    );
-    const searchParams = {
-      query: {
-        filter: {
-          unitId: { eq: unitFixture.unitId_seeded_01 },
-          archived: { eq: true },
-          createdAt: {
-            gte: new Date(dayIntervals.from).toISOString(),
-            lte: new Date(dayIntervals.to).toISOString(),
-          },
-        },
-      },
-      options: { fetchPolicy: 'no-cache' },
+  describe('getNextOrderItemStatus', () => {
+    it('should get next order item status', () => {
+      expect(
+        getNextOrderItemStatus(CrudApi.OrderStatus.placed),
+      ).toMatchInlineSnapshot(`"processing"`);
+      expect(
+        getNextOrderItemStatus(CrudApi.OrderStatus.processing),
+      ).toMatchInlineSnapshot(`"ready"`);
+      expect(
+        getNextOrderItemStatus(CrudApi.OrderStatus.ready),
+      ).toMatchInlineSnapshot(`"served"`);
+    });
+  });
+
+  describe('getPrevOrderItemStatus', () => {
+    it('should get prev order item status', () => {
+      expect(
+        getNextOrderItemStatus(CrudApi.OrderStatus.served),
+      ).toMatchInlineSnapshot(`undefined`);
+      expect(
+        getNextOrderItemStatus(CrudApi.OrderStatus.ready),
+      ).toMatchInlineSnapshot(`"served"`);
+      expect(
+        getNextOrderItemStatus(CrudApi.OrderStatus.processing),
+      ).toMatchInlineSnapshot(`"ready"`);
+    });
+  });
+
+  describe('getOrderLaneColor', () => {
+    const unit: CrudApi.Unit = {
+      ...unitFixture.unit_01,
+      createdAt: '2021-08-02T01:54:11.843Z',
+      updatedAt: '2021-08-02T01:54:11.843Z',
     };
-    let ordersCount = -1;
+    const orderItem = {
+      ...orderFixture.orderItemInputBase('Fanta'),
+      productId: `${testIdPrefix}unit_product_fanta`,
+    };
 
-    // Get initial list
-    of('test')
-      .pipe(
-        // delay(5000),
-        switchMap(() =>
-          getAllPaginatedData(crudSdk.SearchOrders, searchParams),
+    it('should get order lane color', () => {
+      expect(getOrderLaneColor(orderItem, unit)).toMatchInlineSnapshot(
+        `"#e72222"`,
+      );
+    });
+  });
+
+  describe('getStatusColor', () => {
+    it('should get status color', () => {
+      expect(getStatusColor(CrudApi.OrderStatus.none)).toMatchInlineSnapshot(
+        `"danger"`,
+      );
+      expect(getStatusColor(CrudApi.OrderStatus.placed)).toMatchInlineSnapshot(
+        `"warning"`,
+      );
+      expect(
+        getStatusColor(CrudApi.OrderStatus.processing),
+      ).toMatchInlineSnapshot(`"primary"`);
+      expect(getStatusColor(CrudApi.OrderStatus.ready)).toMatchInlineSnapshot(
+        `"info"`,
+      );
+      expect(getStatusColor(CrudApi.OrderStatus.served)).toMatchInlineSnapshot(
+        `"success"`,
+      );
+      expect(getStatusColor(CrudApi.OrderStatus.failed)).toMatchInlineSnapshot(
+        `"danger"`,
+      );
+      expect(
+        getStatusColor(CrudApi.OrderStatus.rejected),
+      ).toMatchInlineSnapshot(`"danger"`);
+    });
+  });
+
+  describe('getLowestStatus', () => {
+    it('should get lowest status', () => {
+      expect(
+        getLowestStatus([
+          CrudApi.OrderStatus.placed,
+          CrudApi.OrderStatus.processing,
+          CrudApi.OrderStatus.ready,
+          CrudApi.OrderStatus.served,
+        ]),
+      ).toMatchInlineSnapshot(`"placed"`);
+
+      expect(
+        getLowestStatus([
+          CrudApi.OrderStatus.ready,
+          CrudApi.OrderStatus.served,
+        ]),
+      ).toMatchInlineSnapshot(`"ready"`);
+
+      expect(
+        getLowestStatus([CrudApi.OrderStatus.served]),
+      ).toMatchInlineSnapshot(`"served"`);
+    });
+  });
+
+  describe('getActiveOrdersByUser', () => {
+    it('should get active orders by user', () => {
+      const result: IFloorMapUserOrderObjects = getActiveOrdersByUser(orders);
+
+      expect(orders.length).toBe(4);
+      expect(result['test-monad'].orders.length).toBe(2);
+      expect(
+        result['test-monad'].orders.map(o =>
+          CrudApi.currentStatus(o.statusLog),
         ),
-        map(orderList => {
-          ordersCount = orderList.items.length;
-          expect(orderList.items.length).toBeGreaterThanOrEqual(0);
-        }),
-        switchMap(() =>
-          crudSdk.CreateTransaction({
-            input: {
-              ...tfx.successCardTransactionInput,
-              id: transactionId,
-              orderId,
-            },
-          }),
-        ),
-        switchMap(() =>
-          crudSdk.CreateOrder({
-            input: {
-              ...ofx.historySuccessCardOrderInput,
-              id: orderId,
-              transactionId,
-            },
-          }),
-        ),
-        delay(5000),
-        switchMap(() =>
-          getAllPaginatedData(crudSdk.SearchOrders, searchParams).pipe(
-            map(orderList => {
-              expect(orderList.items.length).toBe(ordersCount + 1);
-            }),
-          ),
-        ),
-      )
-      .subscribe({
-        next() {
-          done();
+      ).toMatchInlineSnapshot(`
+        Array [
+          "none",
+          "none",
+        ]
+      `);
+      expect(result['test-monad'].orders.map(o => o.transactionStatus))
+        .toMatchInlineSnapshot(`
+        Array [
+          "waiting_for_payment",
+          "waiting_for_payment",
+        ]
+      `);
+    });
+  });
+
+  describe('getTableOrders', () => {
+    const activeOrders = getActiveOrdersByUser(orders);
+
+    it('should get table orders from empty table list', () => {
+      expect(
+        Object.values(getTableOrders([], activeOrders)),
+      ).toMatchInlineSnapshot(`Array []`);
+    });
+
+    it('should get table order from an existing table', () => {
+      expect(
+        getTableOrders(['01'], activeOrders)['01'].userOrders?.[0]?.orders
+          ?.length,
+      ).toBe(2);
+    });
+  });
+
+  describe('getTableSeatOrders', () => {
+    const activeOrders = getActiveOrdersByUser(orders);
+
+    it('should get table seat orders from empty table list', () => {
+      expect(
+        Object.values(getTableOrders([], activeOrders)),
+      ).toMatchInlineSnapshot(`Array []`);
+    });
+
+    it('should get table seat order from an existing table', () => {
+      expect(
+        getTableOrders(['01'], activeOrders)['01'].userOrders?.[0]?.orders
+          ?.length,
+      ).toBe(2);
+    });
+  });
+
+  describe('getOrderStatusByItemsStatus', () => {
+    const order = orders[0];
+
+    it('should get order status by item status', () => {
+      expect(getOrderStatusByItemsStatus(order)).toMatchInlineSnapshot(
+        `"placed"`,
+      );
+
+      order.items = [
+        {
+          ...order.items[0],
+          statusLog: [
+            orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.served),
+          ],
         },
-        error(err) {
-          console.error(`${TEST_NAME}Test ERROR`, err);
+        {
+          ...order.items[1],
+          statusLog: [
+            orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.processing),
+          ],
         },
-      });
-  }, 20000);
+      ];
+
+      expect(getOrderStatusByItemsStatus(order)).toMatchInlineSnapshot(
+        `"processing"`,
+      );
+    });
+  });
 });
