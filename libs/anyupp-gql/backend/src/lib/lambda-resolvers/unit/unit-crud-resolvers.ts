@@ -1,3 +1,6 @@
+import bcrypt from 'bcryptjs';
+import { v1 as uuidV1 } from 'uuid';
+import { tableConfig } from '@bgap/crud-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { createUpdateParams } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
@@ -5,6 +8,7 @@ import { from, Observable } from 'rxjs';
 import { mapTo } from 'rxjs/operators';
 import * as R from 'ramda';
 import { UnitsResolverDeps } from './utils';
+import { DynamoDB } from 'aws-sdk';
 
 const hashPasswords =
   (deps: UnitsResolverDeps) => (input: { pos?: CrudApi.Maybe<CrudApi.Pos> }) =>
@@ -50,3 +54,15 @@ export const updateUnitResolver =
       item => from(deps.docClient.update(item).promise()),
       mapTo(true),
     );
+
+export const createUnitsDeps = (): UnitsResolverDeps => ({
+  docClient: new DynamoDB.DocumentClient(),
+  hashGenerator: (password: string) =>
+    bcrypt.hashSync(password, process.env.SALT || ''),
+  uuidGenerator: uuidV1,
+  tableName: tableConfig.Unit.TableName,
+  crudSdk: CrudApi.getCrudSdkForIAM(
+    process.env.API_ACCESS_KEY_ID || '',
+    process.env.API_SECRET_ACCESS_KEY || '',
+  ),
+});

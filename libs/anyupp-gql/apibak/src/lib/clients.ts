@@ -16,7 +16,7 @@ export const appsyncConfig = {
 const createSdk = (gqlClient: GraphqlApiClient) =>
   getSdkAnyupp(gqlClient._client) as unknown as AnyuppSdk;
 
-export const getAnyuppSdkForIAM = (
+export const getCrudSdkForIAM = (
   awsAccesskeyId: string,
   awsSecretAccessKey: string,
 ) =>

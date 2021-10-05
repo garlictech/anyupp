@@ -1,7 +1,8 @@
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { Auth } from '@aws-amplify/auth';
-import { AnyuppSdk } from '@bgap/crud-gql/api';
+import { CrudSdk } from '@bgap/crud-gql/api';
 import {
+  createUnitsDeps,
   deleteGeneratedProductCategoriesForAUnit,
   listGeneratedProductCategoriesForUnits,
   listGeneratedProductsForUnits,
@@ -22,17 +23,8 @@ import {
 } from '@bgap/shared/fixtures';
 import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
 import { getSortedIds, sortById } from '@bgap/shared/utils';
+import { combineLatest, concat, defer, iif, Observable, of } from 'rxjs';
 import {
-  combineLatest,
-  concat,
-  defer,
-  iif,
-  Observable,
-  of,
-  throwError,
-} from 'rxjs';
-import {
-  catchError,
   delay,
   map,
   switchMap,
@@ -42,7 +34,7 @@ import {
   toArray,
 } from 'rxjs/operators';
 import {
-  createAuthenticatedAnyuppSdk,
+  createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
 import {
@@ -77,6 +69,7 @@ const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 const chainId_01_seeded = productComponentSetFixture.seededProdComp_01.chainId;
 const unitId_01_to_regen = `${testIdPrefix}${TEST_NAME}UNIT_ID_01`;
 const unitId_02 = `${testIdPrefix}${TEST_NAME}UNIT_ID_02`;
+const unitsDeps = createUnitsDeps();
 
 // UNIT
 const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
@@ -249,7 +242,7 @@ const unit02_generatedProduct_01 = {
 
 describe('RegenerateUnitData mutation tests', () => {
   const iamCrudSdk = createIamCrudSdk();
-  let authAnyuppSdk: AnyuppSdk;
+  let authCrudSdk: CrudSdk;
 
   const cleanup = concat(
     // CleanUP
@@ -287,11 +280,10 @@ describe('RegenerateUnitData mutation tests', () => {
   ).pipe(toArray());
 
   beforeAll(async () => {
-    await createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
-      .toPromise()
-      .then(x => {
-        authAnyuppSdk = x.authAnyuppSdk;
-      });
+    authCrudSdk = await createAuthenticatedCrudSdk(
+      testAdminUsername,
+      testAdminUserPassword,
+    ).toPromise();
 
     await cleanup
       .pipe(
@@ -331,10 +323,6 @@ describe('RegenerateUnitData mutation tests', () => {
           ),
         ),
         takeLast(1),
-        catchError(err => {
-          console.error('BEFORE HOOK ERROR');
-          return throwError(err);
-        }),
       )
       .toPromise();
   }, 25000);
@@ -353,11 +341,11 @@ describe('RegenerateUnitData mutation tests', () => {
           iif(
             () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
             defer(() =>
-              unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
+              unitRequestHandler(unitsDeps).regenerateUnitData({
                 input,
               }),
             ),
-            authAnyuppSdk.RegenerateUnitData({ input }),
+            authCrudSdk.RegenerateUnitData({ input }),
           ),
         ),
       )
@@ -413,21 +401,17 @@ describe('RegenerateUnitData mutation tests', () => {
             );
           },
         }),
-        catchError(err => {
-          console.error('START STATE CHECK ERROR');
-          return throwError(err);
-        }),
 
         // PHASE 1: EXECUTE THE LOGIC - check generated products
         switchMap(() =>
           iif(
             () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
             defer(() =>
-              unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
+              unitRequestHandler(unitsDeps).regenerateUnitData({
                 input,
               }),
             ),
-            authAnyuppSdk.RegenerateUnitData({ input }),
+            authCrudSdk.RegenerateUnitData({ input }),
           ),
         ),
 

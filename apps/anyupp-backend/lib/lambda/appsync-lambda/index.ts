@@ -1,6 +1,3 @@
-import bcrypt from 'bcryptjs';
-import { tableConfig } from '@bgap/crud-gql/backend';
-import { getAnyuppSdkForIAM } from '@bgap/crud-gql/api';
 import {
   adminRequestHandler,
   createStripeClient,
@@ -11,16 +8,15 @@ import {
   stripeRequestHandler,
   unitRequestHandler,
   userRequestHandler,
-  UnitsResolverDeps,
   createUnitResolver,
   updateUnitResolver,
+  createUnitsDeps,
 } from '@bgap/anyupp-gql/backend';
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
 import { Context, Handler } from 'aws-lambda';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { v1 as uuidV1 } from 'uuid';
-import { DynamoDB } from 'aws-sdk';
 
 export interface AnyuppRequest {
   typeName: string;
@@ -45,20 +41,14 @@ const userPoolId = process.env.userPoolId || '';
 const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
 const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
-const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const szamlazzClient = createSzamlazzClient(process.env.SZAMLAZZ_HU_AGENT_KEY);
 const stripeClient = createStripeClient(process.env.STRIPE_SECRET_KEY);
+const unitsDeps = createUnitsDeps();
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: process.env.AWS_REGION || '',
 });
-
-const salt = process.env.SALT || '';
-const docClient = new DynamoDB.DocumentClient();
-const hashGenerator = (password: string) => bcrypt.hashSync(password, salt);
-
-const uuidGenerator = uuidV1;
 
 export const handler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
@@ -77,14 +67,6 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     crudSdk,
   });
 
-  const unitsDeps: UnitsResolverDeps = {
-    hashGenerator,
-    uuidGenerator,
-    tableName: tableConfig.Unit.TableName,
-    docClient,
-    crudSdk,
-  };
-
   const unitRequestHandlers = unitRequestHandler(unitsDeps);
 
   const productRequestHandlers = productRequestHandler({
@@ -94,13 +76,12 @@ export const handler: Handler<AnyuppRequest, unknown> = (
 
   const stripeRequestHandlers = stripeRequestHandler({
     crudSdk,
-    anyuppSdk,
     szamlazzClient,
     stripeClient,
   });
 
   const userRequestHandlers = userRequestHandler({
-    anyuppSdk,
+    crudSdk,
     consumerUserPoolId,
     cognitoidentityserviceprovider,
   });

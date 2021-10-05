@@ -14,7 +14,7 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
 
 describe('Anonym user creation', () => {
   const deps: UserResolverDeps = {
-    anyuppSdk: CrudApi.getAnyuppSdkPublic(),
+    crudSdk: CrudApi.getAnyuppSdkPublic(),
     consumerUserPoolId: config.ConsumerUserPoolId,
     cognitoidentityserviceprovider,
   };

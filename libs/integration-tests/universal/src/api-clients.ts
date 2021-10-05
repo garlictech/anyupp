@@ -1,6 +1,6 @@
 import {
   AnyuppSdk,
-  getAnyuppSdkForIAM,
+  getCrudSdkForIAM,
   getAnyuppSdkForUserPool,
 } from '@bgap/crud-gql/api';
 import {
@@ -60,7 +60,7 @@ export const createIamCrudSdk = () =>
   );
 
 export const createIamAnyuppSdk = () =>
-  getAnyuppSdkForIAM(
+  getCrudSdkForIAM(
     process.env.AWS_ACCESS_KEY_ID || '',
     process.env.AWS_SECRET_ACCESS_KEY || '',
   );

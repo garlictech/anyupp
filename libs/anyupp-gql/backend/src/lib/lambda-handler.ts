@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { tableConfig } from '@bgap/crud-gql/backend';
-import { getAnyuppSdkForIAM } from '@bgap/crud-gql/api';
+import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import {
   adminRequestHandler,
   createStripeClient,
@@ -45,7 +45,7 @@ const userPoolId = process.env.userPoolId || '';
 const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
 const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
-const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
+const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const szamlazzClient = createSzamlazzClient(process.env.SZAMLAZZ_HU_AGENT_KEY);
 const stripeClient = createStripeClient(process.env.STRIPE_SECRET_KEY);
 
@@ -94,13 +94,13 @@ export const handler: Handler<AnyuppRequest, unknown> = (
 
   const stripeRequestHandlers = stripeRequestHandler({
     crudSdk,
-    anyuppSdk,
+    crudSdk,
     szamlazzClient,
     stripeClient,
   });
 
   const userRequestHandlers = userRequestHandler({
-    anyuppSdk,
+    crudSdk,
     consumerUserPoolId,
     cognitoidentityserviceprovider,
   });

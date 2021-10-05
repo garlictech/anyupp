@@ -23,10 +23,7 @@ import { productComponentSetsActions } from '@bgap/admin/shared/data-access/prod
 import { productComponentsActions } from '@bgap/admin/shared/data-access/product-components';
 import { productsActions } from '@bgap/admin/shared/data-access/products';
 import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
-import {
-  AnyuppSdkService,
-  CrudSdkService,
-} from '@bgap/admin/shared/data-access/sdk';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
 import { catchGqlError, DEFAULT_LANG } from '@bgap/admin/shared/utils';
@@ -49,7 +46,6 @@ export class DataService {
     private _store: Store,
     private _translateService: TranslateService,
     private _crudSdk: CrudSdkService,
-    private _anyuppSdk: AnyuppSdkService,
     private _logger: NGXLogger,
   ) {}
 
@@ -469,7 +465,7 @@ export class DataService {
   }
 
   public regenerateUnitData$(unitId: string) {
-    return this._anyuppSdk.sdk.RegenerateUnitData({ input: { id: unitId } });
+    return this._crudSdk.sdk.RegenerateUnitData({ input: { id: unitId } });
   }
 
   public updateAdminUserSettings$(

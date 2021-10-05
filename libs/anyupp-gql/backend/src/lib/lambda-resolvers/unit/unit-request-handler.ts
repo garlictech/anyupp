@@ -18,13 +18,7 @@ export const unitRequestHandler = (deps: UnitsResolverDeps) => ({
 
   regenerateUnitData: (
     requestPayload: CrudApi.MutationRegenerateUnitDataArgs,
-  ) =>
-    // TODO: validate input
-    // return validatGetUnitsNearLocationInput(requestPayload)
-    //   .pipe(
-    //     switchMap(() =>
-
-    regenerateUnitData(deps)(requestPayload.input.id).toPromise(),
+  ) => regenerateUnitData(deps)(requestPayload.input.id).toPromise(),
 });
 
 const getUnitsInRadiusInputSchema: Joi.SchemaMap<CrudApi.GetUnitsNearLocationInput> =
