@@ -16,10 +16,12 @@ export interface ChainsPartialState {
 export const chainsAdapter: EntityAdapter<CrudApi.Chain> =
   createEntityAdapter<CrudApi.Chain>();
 
-export const initialState: ChainsState = chainsAdapter.getInitialState({});
+export const initialChainsState: ChainsState = chainsAdapter.getInitialState(
+  {},
+);
 
 const reducer = createReducer(
-  initialState,
+  initialChainsState,
   on(ChainsActions.init, state => ({ ...state, error: null })),
   on(ChainsActions.upsertChains, (state, { chains }) =>
     chainsAdapter.upsertMany(chains, state),

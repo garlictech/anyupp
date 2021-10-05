@@ -1,5 +1,9 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
+import {
+  defaultSupportedServingModes,
+  EProductComponentSetType,
+  RequiredId,
+} from '@bgap/shared/types';
 import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 
@@ -259,6 +263,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
     name: seededProdCompSet_01.name,
     type: seededProdCompSet_01.type,
     maxSelection: seededProdCompSet_01.maxSelection,
+    supportedServingModes: defaultSupportedServingModes,
     items: [
       {
         // unitConfigSets[0].items[0] == seededProdComp_01
@@ -285,6 +290,7 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
     name: seededProdCompSet_02.name,
     type: seededProdCompSet_02.type,
     maxSelection: seededProdCompSet_02.maxSelection,
+    supportedServingModes: defaultSupportedServingModes,
     items: [
       {
         // unitConfigSets[1].items[0] == seededProdComp_01

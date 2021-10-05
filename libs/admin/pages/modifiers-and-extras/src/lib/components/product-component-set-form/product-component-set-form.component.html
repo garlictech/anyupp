@@ -20,11 +20,7 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form
-      [formGroup]="dialogForm!"
-      (ngSubmit)="submit()"
-      [autocomplete]="false"
-    >
+    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" autocomplete="off">
       <div class="row">
         <div class="col-md-6">
           <bgap-form-select
@@ -71,6 +67,12 @@
         [control]="dialogForm.get('description')! | asFormControl"
         inputId="description"
       ></bgap-form-text-input>
+
+      <bgap-form-serving-mode
+        [control]="dialogForm.get('supportedServingModes')! | asFormControl"
+        [servingModes]="servingModes"
+      >
+      </bgap-form-serving-mode>
 
       <fieldset class="form mb-4">
         <legend class="label">
@@ -186,5 +188,6 @@
         </button>
       </div>
     </form>
+    <pre>{{ dialogForm.value | json }}</pre>
   </nb-card-body>
 </nb-card>

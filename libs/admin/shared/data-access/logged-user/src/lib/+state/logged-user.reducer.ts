@@ -16,12 +16,12 @@ export interface LoggedUserPartialState {
   readonly [LOGGED_USER_FEATURE_KEY]: ILoggedUserState;
 }
 
-export const initialState: ILoggedUserState = {};
+export const initialLoggedUserState: ILoggedUserState = {};
 
 const reducer = createReducer(
-  initialState,
+  initialLoggedUserState,
   on(LoggedUserActions.resetLoggedUser, () => ({
-    ...initialState,
+    ...initialLoggedUserState,
   })),
   on(LoggedUserActions.loadLoggedUserSuccess, (state, { loggedUser }) => ({
     ...state,

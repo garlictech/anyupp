@@ -848,7 +848,7 @@ type GeneratedProductConfigSet {
   type: String!
   maxSelection: Int
   items: [GeneratedProductConfigComponent!]!
-  supportedServingModes: [ServingMode!]
+  supportedServingModes: [ServingMode!]!
 }
 
 type GeneratedProductCategory

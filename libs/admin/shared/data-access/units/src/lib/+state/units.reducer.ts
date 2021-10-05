@@ -17,10 +17,10 @@ export interface UnitsPartialState {
 export const unitsAdapter: EntityAdapter<CrudApi.Unit> =
   createEntityAdapter<CrudApi.Unit>();
 
-export const initialState: UnitsState = unitsAdapter.getInitialState({});
+export const initialUnitsState: UnitsState = unitsAdapter.getInitialState({});
 
 const reducer = createReducer(
-  initialState,
+  initialUnitsState,
   on(UnitsActions.init, state => ({ ...state, error: null })),
   on(UnitsActions.upsertUnits, (state, { units }) =>
     unitsAdapter.upsertMany(units, state),

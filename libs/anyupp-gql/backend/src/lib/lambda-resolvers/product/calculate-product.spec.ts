@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
+  defaultSupportedServingModes,
   EProductType,
   EVariantAvailabilityType,
-  Product,
+  MergedProduct,
   ProductComponentMap,
   ProductComponentSetMap,
 } from '@bgap/shared/types';
@@ -13,12 +14,15 @@ import {
 } from './calculate-product';
 
 describe('calculatePricesAndCheckActivity method', () => {
-  const baseProduct: Product & { unitId: string } = {
+  const baseProduct: MergedProduct = {
     id: 'PRODUCT_ID',
     chainId: 'CHAIN_ID',
     groupId: 'GROUP_ID',
     unitId: 'UNIT_ID',
+    parentId: 'PARENT_ID',
+    takeaway: true,
     tax: 11,
+    takeawayTax: 23,
     name: { en: 'NAME' },
     description: { en: 'DESCRIPTION' },
     image: 'IMG',
@@ -29,6 +33,10 @@ describe('calculatePricesAndCheckActivity method', () => {
     position: 1,
     isVisible: true,
     allergens: [CrudApi.Allergen.peanut, CrudApi.Allergen.egg],
+    supportedServingModes: [
+      CrudApi.ServingMode.inplace,
+      CrudApi.ServingMode.takeaway,
+    ],
     variants: [
       {
         id: `VARIANT_ID_01`,
@@ -101,6 +109,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       maxSelection: 1,
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
+      supportedServingModes: defaultSupportedServingModes,
       items: ['PRODUCT_COMPONENT_ID_01', 'PRODUCT_COMPONENT_ID_02'],
       supportedServingModes: [CrudApi.ServingMode.inplace],
     },
@@ -129,7 +138,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       ...baseProduct.variants[0],
       position: 100,
     };
-    const product: Product = {
+    const product: MergedProduct = {
       ...baseProduct,
       variants: [
         baseProduct.variants[0],
@@ -279,7 +288,7 @@ describe('calculatePricesAndCheckActivity method', () => {
         position: 1,
         refGroupPrice: 0,
       };
-      const minimalProductWithSingleActiveVariant: Product = {
+      const minimalProductWithSingleActiveVariant: Partial<MergedProduct> = {
         id: 'PROD_ID',
         isVisible: true,
         name: { en: 'prodName' },
@@ -341,7 +350,7 @@ describe('calculatePricesAndCheckActivity method', () => {
           },
         ];
         const result = calculateActualPricesAndCheckActivity({
-          product: input,
+          product: input as any,
           atTimeISO: new Date().toISOString(),
           inTimeZone: timezone01,
         });

@@ -94,7 +94,8 @@ const groupProductInputBase: Omit<
   chainId: 'chainId_',
   groupId: 'groupId_',
   isVisible: true,
-  tax: 1,
+  tax: 27,
+  takeawayTax: 12,
   variants: [getGroupProductVariant(1), getGroupProductVariant(2)],
 };
 

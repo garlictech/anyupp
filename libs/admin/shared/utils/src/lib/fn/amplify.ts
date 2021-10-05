@@ -15,6 +15,7 @@ export const clearDbProperties = <T>(value: T) =>
 
 export const catchGqlError = (store: Store) =>
   catchError((err: Record<string, unknown>) => {
+    console.error('ERROR', err);
     store.dispatch(appCoreActions.gqlFailure({ error: err }));
 
     return EMPTY;
