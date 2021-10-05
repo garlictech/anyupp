@@ -28,7 +28,7 @@ Array [
       "hu": "Hamburger",
     },
     "productId": "test_unit_product_hamburger",
-    "productType": "food",
+    "productType": "drink",
     "quantity": 5,
     "variants": Array [
       Object {
@@ -97,7 +97,7 @@ Array [
       "hu": "Hamburger",
     },
     "productId": "test_unit_product_hamburger",
-    "productType": "food",
+    "productType": "drink",
     "quantity": 115,
     "variants": Array [
       Object {
@@ -186,24 +186,24 @@ Object {
 
 exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate 1 item 1`] = `
 Object {
-  "drink": 1491,
-  "food": 1491,
+  "drink": 2982,
+  "food": 0,
   "other": 0,
 }
 `;
 
 exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate failed history items 1`] = `
 Object {
-  "drink": 29820,
-  "food": 29820,
+  "drink": 59640,
+  "food": 0,
   "other": 0,
 }
 `;
 
 exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate success history items 1`] = `
 Object {
-  "drink": 4473,
-  "food": 4473,
+  "drink": 8946,
+  "food": 0,
   "other": 0,
 }
 `;
@@ -220,7 +220,7 @@ Object {
     0,
     0,
     0,
-    1500,
+    3000,
     0,
     0,
     0,
@@ -246,7 +246,7 @@ Object {
     0,
     0,
     0,
-    1500,
+    0,
     0,
     0,
     0,
@@ -355,7 +355,7 @@ Object {
     0,
     0,
     0,
-    30000,
+    60000,
     0,
     0,
     0,
@@ -381,7 +381,7 @@ Object {
     0,
     0,
     0,
-    30000,
+    0,
     0,
     0,
     0,
@@ -490,7 +490,7 @@ Object {
     0,
     0,
     0,
-    4500,
+    9000,
     0,
     0,
     0,
@@ -516,7 +516,7 @@ Object {
     0,
     0,
     0,
-    4500,
+    0,
     0,
     0,
     0,

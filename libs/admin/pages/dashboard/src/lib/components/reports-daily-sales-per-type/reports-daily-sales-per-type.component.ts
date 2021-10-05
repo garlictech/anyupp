@@ -1,5 +1,5 @@
 import * as Chart from 'chart.js';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Context } from 'vm';
 
 import {
@@ -12,13 +12,11 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { dailySalesPerTypeOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductType } from '@bgap/shared/types';
 import { reducer } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 import { ReportsService } from '../../services/reports.service';
@@ -40,7 +38,6 @@ export class ReportsDailySalesPerTypeComponent
   private _chart!: Chart;
 
   constructor(
-    private _store: Store,
     private _translateService: TranslateService,
     private _reportsService: ReportsService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -61,23 +58,18 @@ export class ReportsDailySalesPerTypeComponent
     );
 
     if (this.orders$) {
-      combineLatest([
-        this._store.pipe(select(productsSelectors.getAllGeneratedProducts)),
-        this.orders$,
-      ])
-        .pipe(untilDestroyed(this))
-        .subscribe(([products, orders]) => {
-          const amounts = dailySalesPerTypeOrderAmounts(products, orders);
-          (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
-            amounts[EProductType.FOOD],
-            amounts[EProductType.DRINK],
-            amounts[EProductType.OTHER],
-          ];
+      this.orders$.pipe(untilDestroyed(this)).subscribe(orders => {
+        const amounts = dailySalesPerTypeOrderAmounts(orders);
+        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
+          amounts[EProductType.FOOD],
+          amounts[EProductType.DRINK],
+          amounts[EProductType.OTHER],
+        ];
 
-          this._chart.update();
+        this._chart.update();
 
-          this._changeDetectorRef.detectChanges();
-        });
+        this._changeDetectorRef.detectChanges();
+      });
     }
 
     this._translateService.onLangChange

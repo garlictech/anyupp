@@ -3,3 +3,29 @@ query GetGroupCurrency($id: ID!) {
     currency
   }
 }
+
+query SearchReportOrders(
+  $filter: SearchableOrderFilterInput
+  $sort: SearchableOrderSortInput
+  $limit: Int
+  $nextToken: String
+  $from: Int
+) {
+  searchOrders(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      createdAt
+      userId
+      sumPriceShown {
+        currency
+        priceSum
+      }
+    }
+    nextToken
+  }
+}
