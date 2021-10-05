@@ -105,6 +105,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
     // The main scaffold for the whole application
     return SafeArea(
+      top: false,
+      bottom: false,
       child: NetworkConnectionWrapperWidget(
         child: Scaffold(
           // Depending on the boolean showAppBar, you can control the appearance of the appBar
@@ -156,29 +158,35 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
               // child: _pages[_selectedIndex],
             ),
           ),
-          bottomNavigationBar: BottomAppBar(
-            // shape: AutomaticNotchedShape(
-            //   StadiumBorder(),
-            //   // RoundedRectangleBorder(
-            //   //   borderRadius: BorderRadius.all(Radius.circular(25)),
-            //   // ),
-            // ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                _createBottomBarIconWithText(0, Icons.fastfood, 'main.bottomTitles.menu'),
-                // _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
-                // SizedBox(
-                //   width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
+          bottomNavigationBar: Material(
+            elevation: 8.0,
+            child: Container(
+              child: BottomAppBar(
+               // elevation: 0.0,
+                // shape: AutomaticNotchedShape(
+                //   StadiumBorder(),
+                //   // RoundedRectangleBorder(
+                //   //   borderRadius: BorderRadius.all(Radius.circular(25)),
+                //   // ),
                 // ),
-                _createOrdersBottomBarIconWithTextAndBadge(),
-                _createBottomBarIconWithText(3, Icons.account_circle, 'main.bottomTitles.profile'),
-              ],
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    _createBottomBarIconWithText(0, Icons.fastfood, 'main.bottomTitles.menu'),
+                    // _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
+                    // SizedBox(
+                    //   width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
+                    // ),
+                    _createOrdersBottomBarIconWithTextAndBadge(),
+                    _createBottomBarIconWithText(3, Icons.account_circle, 'main.bottomTitles.profile'),
+                  ],
+                ),
+                // shape: CircularNotchedRectangle(),
+                color: theme.secondary0,
+                // elevation: 18.0,
+              ),
             ),
-            // shape: CircularNotchedRectangle(),
-            color: theme.secondary0,
-            // elevation: 18.0,
           ),
         ),
       ),

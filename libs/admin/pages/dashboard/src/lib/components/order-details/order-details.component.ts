@@ -19,7 +19,6 @@ import {
 } from '@bgap/admin/shared/data-access/dashboard';
 import { OrderService } from '@bgap/admin/shared/data-access/order';
 import {
-  currentStatus as currentStatusFn,
   getNextOrderStatus,
   getStatusColor,
 } from '@bgap/admin/shared/data-access/orders';
@@ -34,7 +33,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { OrderPrintComponent } from '../order-print/order-print.component';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { adminUserRoleIsAtLeast } from '@bgap/crud-gql/api';
+import {
+  adminUserRoleIsAtLeast,
+  currentStatus as currentStatusFn,
+} from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -55,6 +57,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   public workingOrderStatus: boolean;
   public allowRecallHistoryOrder = false;
   public currentStatus = currentStatusFn;
+  public EServingMode = CrudApi.ServingMode;
 
   constructor(
     private _store: Store,

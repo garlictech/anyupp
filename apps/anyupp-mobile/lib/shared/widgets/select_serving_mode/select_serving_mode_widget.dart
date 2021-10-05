@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SelectServingModeWidget extends StatefulWidget {
   final int initialPosition;
@@ -16,7 +17,8 @@ class SelectServingModeWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SelectServingModeWidgetState createState() => _SelectServingModeWidgetState();
+  _SelectServingModeWidgetState createState() =>
+      _SelectServingModeWidgetState();
 }
 
 class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
@@ -59,7 +61,14 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
             child: _buildServingOptionWidget(
               context,
               pos: 0,
-              icon: Icons.restaurant_menu,
+              icon: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: SvgPicture.asset(
+                  'assets/icons/restaurant_menu_black.svg',
+                  color: theme.secondary,
+                  height: 22.0,
+                ),
+              ),
               titleKey: trans('servingModeSheet.inPlace.title'),
               descriptionKey: trans('servingModeSheet.inPlace.description'),
               selected: true,
@@ -75,7 +84,11 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
             child: _buildServingOptionWidget(
               context,
               pos: 1,
-              icon: Icons.directions_walk,
+              icon: Icon(
+                Icons.directions_walk,
+                color: theme.secondary,
+                size: 22.0,
+              ),
               titleKey: trans('servingModeSheet.takeAway.title'),
               descriptionKey: trans('servingModeSheet.takeAway.description'),
               selected: false,
@@ -89,7 +102,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
   Widget _buildServingOptionWidget(
     BuildContext context, {
     required int pos,
-    required IconData icon,
+    required Widget icon,
     required String titleKey,
     required String descriptionKey,
     required bool selected,
@@ -107,15 +120,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          BorderedWidget(
-            width: 40.0,
-            height: 40.0,
-            child: Icon(
-              icon,
-              color: theme.secondary,
-              size: 22.0,
-            ),
-          ),
+          BorderedWidget(width: 40.0, height: 40.0, child: icon),
           SizedBox(
             width: 12.0,
           ),

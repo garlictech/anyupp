@@ -367,6 +367,32 @@ export const createTestUnit =
     );
   };
 
+export const createTestUnitsForOrderHandling =
+  () => (deps: SeederDependencies) => {
+    console.debug('createTestUnitForOrderhandling', {});
+
+    return pipe(
+      [
+        unitFixture.unitInstantInplace,
+        unitFixture.unitInstantTakeaway,
+        unitFixture.unitPickupInplace,
+        unitFixture.unitPickupTakeaway,
+      ],
+      R.map(unit => ({
+        ...unit,
+        groupId: generateGroupId(1, 1),
+        chainId: generateChainId(1),
+      })),
+      R.map(input =>
+        deleteCreate(
+          () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
+          () => deps.crudSdk.CreateUnit({ input }),
+        ),
+      ),
+      combineLatest,
+    );
+  };
+
 export const createTestProductCategory =
   (chainIdx: number, productCategoryId: number) =>
   (deps: SeederDependencies) => {

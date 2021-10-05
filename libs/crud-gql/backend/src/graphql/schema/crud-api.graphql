@@ -646,8 +646,8 @@ type Order
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
   unpayCategory: UnpayCategory
-  orderMode: OrderMode!
-  servingMode: ServingMode!
+  orderMode: OrderMode
+  servingMode: ServingMode
 }
 
 enum PaymentStatus {
@@ -721,6 +721,7 @@ type ProductComponentSet
   description: String!
   items: [ID!]! # ProductComponent ID
   maxSelection: Int # On extras
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductConfigComponent {
@@ -738,6 +739,7 @@ type GeneratedProductConfigSet {
   type: String!
   maxSelection: Int
   items: [GeneratedProductConfigComponent!]!
+  supportedServingModes: [ServingMode!]!
 }
 
 type GeneratedProductCategory
@@ -820,8 +822,8 @@ type Unit
   merchantId: String
   timeZone: String
   pos: Pos
-  supportedServingModes: [ServingMode!]!
-  supportedOrderModes: [OrderMode!]!
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
 }
 
 type DateInterval {

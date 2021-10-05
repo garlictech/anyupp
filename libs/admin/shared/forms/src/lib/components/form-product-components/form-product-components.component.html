@@ -50,6 +50,17 @@
           <div class="float-start">
             <div class="subtitle-2">
               {{ componentSetInfo.name | localize }}
+
+              <img
+                class="serving-mode"
+                *ngIf="hasServingMode(componentSetInfo, eServingMode.inplace)"
+                src="assets/images/serving_modes/in_place.svg"
+              />
+              <img
+                class="serving-mode"
+                *ngIf="hasServingMode(componentSetInfo, eServingMode.takeaway)"
+                src="assets/images/serving_modes/takeaway.svg"
+              />
             </div>
           </div>
 

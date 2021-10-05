@@ -31,12 +31,14 @@ import { FormsService } from '../../services/forms/forms.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-product-components',
   templateUrl: './form-product-components.component.html',
+  styleUrls: ['./form-product-components.component.scss'],
 })
 export class FormProductComponentsComponent implements OnInit, OnDestroy {
   @Input() componentFormArray!: FormArray;
   @Input() productLevel!: EProductLevel;
   @Input() currency?: string;
   public eProductLevel = EProductLevel;
+  public eServingMode = CrudApi.ServingMode;
 
   public componentSetForm!: FormGroup;
   public productComponentSetOptions: IKeyValue[] = [];
@@ -184,5 +186,12 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
           })`,
         }),
       );
+  }
+
+  public hasServingMode(
+    compSet: CrudApi.ProductComponentSet,
+    servingMode: CrudApi.ServingMode,
+  ) {
+    return (compSet.supportedServingModes || []).includes(servingMode);
   }
 }

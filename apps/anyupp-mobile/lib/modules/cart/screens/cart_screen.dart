@@ -68,16 +68,25 @@ class _CartScreenState extends State<CartScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          state.servingMode == ServingMode.takeAway ? Icons.directions_walk : Icons.restaurant_menu,
-                          color: theme.secondary,
-                          size: 20.0,
-                        ),
+                        state.servingMode == ServingMode.takeAway
+                            ? Icon(
+                                Icons.directions_walk,
+                                color: theme.secondary,
+                                size: 20.0,
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: SvgPicture.asset(
+                                  'assets/icons/restaurant_menu_black.svg',
+                                ),
+                              ),
                         SizedBox(
                           width: 4.0,
                         ),
                         Text(
-                          state.servingMode == ServingMode.takeAway ? trans('cart.takeAway') : trans('cart.inPlace'),
+                          state.servingMode == ServingMode.takeAway
+                              ? trans('cart.takeAway')
+                              : trans('cart.inPlace'),
                           style: Fonts.satoshi(
                             fontSize: 14.0,
                             color: theme.secondary,
@@ -96,7 +105,8 @@ class _CartScreenState extends State<CartScreen> {
         title: (true)
             ? FutureBuilder<Place?>(
                 future: getPlacePref(),
-                builder: (BuildContext context, AsyncSnapshot<Place?> placeSnapshot) {
+                builder: (BuildContext context,
+                    AsyncSnapshot<Place?> placeSnapshot) {
                   // print('placeSnapshot=$placeSnapshot');
 
                   if (placeSnapshot.hasData) {
@@ -172,12 +182,16 @@ class _CartScreenState extends State<CartScreen> {
         builder: (context, state) {
           if (state is UnitSelected) {
             return StreamBuilder<Cart?>(
-              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
+              stream:
+                  getIt<CartRepository>().getCurrentCartStream(state.unit.id),
               builder: (context, AsyncSnapshot<Cart?> snapshot) {
                 // print('CartScreen.snapshot=$snapshot');
-                if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                  if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
-                    return _buildCartListAndTotal(context, state.unit, snapshot.data!);
+                if (snapshot.connectionState != ConnectionState.waiting ||
+                    snapshot.hasData) {
+                  if (snapshot.data != null &&
+                      snapshot.data?.items.isNotEmpty == true) {
+                    return _buildCartListAndTotal(
+                        context, state.unit, snapshot.data!);
                   }
                   return _emptyCart(context);
                 }
@@ -220,7 +234,8 @@ class _CartScreenState extends State<CartScreen> {
           flex: 10,
           child: Container(
             //margin: EdgeInsets.symmetric(horizontal: 15),
-            padding: EdgeInsets.only(left: 15, right: 2), // EdgeInsets.symmetric(horizontal: 15),
+            padding: EdgeInsets.only(
+                left: 15, right: 2), // EdgeInsets.symmetric(horizontal: 15),
             child: AnimationLimiter(
               child: RawScrollbar(
                 controller: _controller,
@@ -256,9 +271,12 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildPaymentButtonPanel(BuildContext context, GeoUnit unit, Cart cart) {
+  Widget _buildPaymentButtonPanel(
+      BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = true;
-    if ((cart.place == null || (cart.place?.seat == "00" && cart.place?.table == "00")) && isDev) {
+    if ((cart.place == null ||
+            (cart.place?.seat == "00" && cart.place?.table == "00")) &&
+        isDev) {
       showQrCodeScan = false;
     }
     return Column(

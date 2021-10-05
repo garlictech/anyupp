@@ -45,18 +45,21 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
   }
 
   Widget buildPage(BuildContext context, User user) {
-    return SafeArea(
-      child: Scaffold(
-        key: const Key('unitselect-screen'),
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _buildUserInfoRow(context, user),
-              _buildPage(context),
-            ],
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          key: const Key('unitselect-screen'),
+          backgroundColor: Colors.white,
+          body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                _buildUserInfoRow(context, user),
+                _buildPage(context),
+              ],
+            ),
           ),
         ),
       ),

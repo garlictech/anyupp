@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
@@ -90,19 +91,19 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           double height = 0.0;
           switch (state.ui) {
             case LoginFormUI.SHOW_PASSWORD_CONFIRM:
-              height = 290.0;
+              height += 290.0;
               break;
             case LoginFormUI.SHOW_LOGIN_WITH_PASSWORD:
-              height = 235.0;
+              height += 235.0;
               break;
             case LoginFormUI.SHOW_REGISTRATION:
-              height = 290.0;
+              height += 290.0;
               break;
             case LoginFormUI.SHOW_FORGOT_PASSWORD:
-              height = 180.0;
+              height += 180.0;
               break;
             case LoginFormUI.SHOW_CONFIRM_SIGNUP:
-              height = 235.0;
+              height += 235.0;
               break;
           }
           setState(() {
@@ -140,22 +141,20 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   }
 
   Widget _buildLoadingScreen() {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Stack(
-          children: [
-            // BACKGROUND IMAGE
-            Positioned(
-              top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-              left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-              bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-              right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-              child: _buildBackground(context),
-            ),
-            CenterLoadingWidget(),
-          ],
-        ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          // BACKGROUND IMAGE
+          Positioned(
+            top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+            left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+            bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+            right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+            child: _buildBackground(context),
+          ),
+          CenterLoadingWidget(),
+        ],
       ),
     );
   }
@@ -181,6 +180,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   Widget _buildAnimation(BuildContext context, Widget? child) {
     final height = MediaQuery.of(context).size.height;
     final statusBarHeight = MediaQuery.of(context).padding.top;
+    final bottomBarHeight = MediaQuery.of(context).padding.bottom;
     final iOS = Theme.of(context).platform == TargetPlatform.iOS;
     //print('**** isIOS=$iOS');
 
@@ -202,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           child: SingleChildScrollView(
             child: Stack(
               children: [
-                Container(height: height - statusBarHeight),
+                Container(height: iOS ? height  : height - statusBarHeight ),
                 // BACKGROUND IMAGE
                 Positioned(
                   top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
@@ -472,17 +472,19 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                       launch('https://www.anyupp.com/privacy/');
                                     },
                                 ),
+                                
                               ],
                             ),
                           ),
-                        )
+                        ),
+                         SizedBox(height: iOS ? 8 : 0,)
                       ],
                     ))),
-            if (iOS == true)
-              Container(
-                color: Colors.white,
-                height: 8.0,
-              ),
+            // if (iOS == true)
+            //   Container(
+            //     color: Colors.white,
+            //     height: 8.0,
+            //   ),
           ],
         ),
       ),

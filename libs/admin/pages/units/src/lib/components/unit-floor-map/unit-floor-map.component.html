@@ -13,11 +13,7 @@
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <form
-      [formGroup]="dialogForm!"
-      (ngSubmit)="submit()"
-      [autocomplete]="false"
-    >
+    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" autocomplete="off">
       <bgap-floor-map-editor
         [editMode]="true"
         [floorMap]="unit.floorMap"
@@ -37,7 +33,7 @@
       </div>
     </form>
 
-    <!--form [formGroup]="rawForm" (ngSubmit)="submitRaw()" [autocomplete]="false">
+    <!--form [formGroup]="rawForm" (ngSubmit)="submitRaw()" autocomplete="off">
       <textarea class="w-100" height="100" [formControl]="rawForm.controls['floorMap']"></textarea>
 
       <div class="mt-20">
