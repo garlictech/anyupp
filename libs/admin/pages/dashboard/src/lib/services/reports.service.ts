@@ -475,7 +475,6 @@ export class ReportsService {
       bookType: 'xlsx',
       type: 'array',
     });
-
     const EXCEL_TYPE =
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const EXCEL_EXTENSION = '.xlsx';
