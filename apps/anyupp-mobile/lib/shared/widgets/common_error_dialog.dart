@@ -3,7 +3,7 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:fa_prev/shared/nav.dart';
 import 'common_error_widget.dart';
 
@@ -20,7 +20,7 @@ showErrorDialog(BuildContext context, String error, String description,
           borderRadius: BorderRadius.circular(12.0),
         ),
         elevation: 0.0,
-        backgroundColor: theme.background,
+        backgroundColor: theme.secondary0,
         child: Container(
           padding: EdgeInsets.all(8.0),
           height: 480.0,
@@ -43,7 +43,7 @@ showErrorDialog(BuildContext context, String error, String description,
                   borderRadius: BorderRadius.all(Radius.zero),
                   border: Border.all(
                     width: 1.5,
-                    color: theme.border,
+                    color: theme.secondary16,
                   ),
                 ),
                 child: TextButton(
@@ -59,9 +59,9 @@ showErrorDialog(BuildContext context, String error, String description,
                         },
                   child: Text(
                     transEx(context, 'common.close'),
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 14.0,
-                      color: theme.text,
+                      color: theme.secondary,
                     ),
                   ),
                 ),

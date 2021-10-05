@@ -47,7 +47,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     return Scaffold(
       appBar: appBar(theme, onBackButtonPressed: () => Nav.pop(), title: trans('profile.menu.transactions')),
       // The appBar head text
-      backgroundColor: theme.background,
+      backgroundColor: theme.secondary0,
       body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, state) {
           if (state is UnitSelected) {

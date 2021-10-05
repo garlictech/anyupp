@@ -14,6 +14,9 @@ Object {
   "laneId": "laneId_",
   "parentId": "parentId_",
   "position": 10,
+  "supportedServingModes": Array [
+    "takeAway",
+  ],
   "takeaway": true,
   "unitId": "UNIT_ID_TO_CRUD",
   "variants": Array [

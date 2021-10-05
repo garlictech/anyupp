@@ -75,6 +75,8 @@ dependencies:
   upgrader: ^3.3.1
   carousel_slider: ^4.0.0
   artemis: ^7.1.1-beta.1
+  tinycolor2: ^2.0.0
+  simple_tooltip: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -121,3 +123,17 @@ flutter:
     - assets/flags/
     - assets/allergens/
     - assets/fonts/
+
+  fonts:
+    - family: Satoshi
+      fonts:
+        - asset: assets/fonts/Satoshi-Light.otf
+          weight: 300
+        - asset: assets/fonts/Satoshi-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Satoshi-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Satoshi-Black.otf
+          weight: 600
+        - asset: assets/fonts/Satoshi-Bold.otf
+          weight: 700

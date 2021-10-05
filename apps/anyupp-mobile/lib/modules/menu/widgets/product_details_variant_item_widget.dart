@@ -2,7 +2,6 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ProductDetailVariantItemWidget extends StatelessWidget {
   final GeoUnit unit;
@@ -22,10 +21,10 @@ class ProductDetailVariantItemWidget extends StatelessWidget {
       //height: 76,
       margin: EdgeInsets.only(top: 10, bottom: 10),
       decoration: BoxDecoration(
-        color: theme.background2,
+        color: theme.secondary12,
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(5, 0, 0, 0),
+            color: !theme.light ? Color.fromARGB(5, 0, 0, 0) : Color.fromARGB(5, 255, 255, 255),
             offset: Offset(0, 0),
             blurRadius: 20,
           ),
@@ -52,8 +51,8 @@ class ProductDetailVariantItemWidget extends StatelessWidget {
                         textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        style: GoogleFonts.poppins(
-                          color: theme.text,
+                        style: Fonts.satoshi(
+                          color: theme.secondary,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
@@ -64,8 +63,8 @@ class ProductDetailVariantItemWidget extends StatelessWidget {
                           child: Text(
                             '${variant.pack!.size} ${variant.pack!.unit}',
                             textAlign: TextAlign.left,
-                            style: GoogleFonts.poppins(
-                              color: theme.highlight,
+                            style: Fonts.satoshi(
+                              color: theme.primary,
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),

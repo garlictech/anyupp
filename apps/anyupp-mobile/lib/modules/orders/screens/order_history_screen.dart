@@ -8,7 +8,6 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
   final GeoUnit unit;
@@ -26,7 +25,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   @override
   void initState() {
     super.initState();
-    getIt<OrderHistoryBloc>().add(StartGetOrderHistoryListSubscription(widget.unit.id!));
+    getIt<OrderHistoryBloc>().add(StartGetOrderHistoryListSubscription(widget.unit.id));
   }
 
   @override
@@ -113,18 +112,18 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               padding: EdgeInsets.all(0),
               shape: CircleBorder(
                 side: BorderSide(
-                  color: theme.border2.withOpacity(0.4),
+                  color: theme.secondary40.withOpacity(0.4),
                 ),
               ),
               backgroundColor: Colors.transparent,
-              primary: theme.text,
+              primary: theme.secondary,
             ),
-            onPressed: () => getIt<OrderHistoryBloc>().add(LoadMoreOrderHistory(widget.unit.id!, _nextToken)),
+            onPressed: () => getIt<OrderHistoryBloc>().add(LoadMoreOrderHistory(widget.unit.id, _nextToken)),
             child: Text(
               trans('orders.loadMore'),
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
-                color: theme.text.withOpacity(0.3),
+              style: Fonts.satoshi(
+                color: theme.secondary.withOpacity(0.3),
                 fontSize: 20,
               ),
             ),
@@ -145,30 +144,5 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
         ),
       ),
     );
-    // return Column(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   crossAxisAlignment: CrossAxisAlignment.center,
-    //   children: <Widget>[
-    //     // Display cart icon
-    //     Image.asset(
-    //       'assets/images/no-items-in-cart-icon.png',
-    //       width: 128.0,
-    //       fit: BoxFit.fitWidth,
-    //     ),
-    //     SizedBox(
-    //       height: 60.0,
-    //     ),
-    //     Center(
-
-    //         // Display message to the user
-    //         child: Text(
-    //       trans('orders.noOrderHistory'),
-    //       style: TextStyle(
-    //         fontSize: 15.0,
-    //         color: theme.text,
-    //       ),
-    //     ))
-    //   ],
-    // );
   }
 }

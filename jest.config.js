@@ -80,5 +80,6 @@ module.exports = {
     '<rootDir>/libs/admin/shared/data-access/order',
     '<rootDir>/libs/admin/shared/data-access/sdk',
     '<rootDir>/libs/rkeeper-api',
+    '<rootDir>/libs/admin/shared/fixtures',
   ],
 };

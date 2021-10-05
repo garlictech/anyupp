@@ -13,7 +13,7 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SelectUnitByLocationScreen extends StatefulWidget {
@@ -54,18 +54,18 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       width: 1,
-                      color: theme.highlight.withOpacity(0.2), // Color(0x33857C18),
+                      color: theme.primary.withOpacity(0.2), // Color(0x33857C18),
                     ),
-                    color: theme.background, // Colors.white,
+                    color: theme.secondary0, // Colors.white,
                   ),
                   child: BackButton(
-                    color: theme.highlight,
+                    color: theme.primary,
                   ),
                 ),
               ),
               elevation: 0.0,
               iconTheme: IconThemeData(
-                color: theme.highlight, //change your color here
+                color: theme.primary, //change your color here
               ),
               backgroundColor: Colors.transparent,
             ),
@@ -102,7 +102,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                       topLeft: Radius.circular(20.0),
                       topRight: Radius.circular(20.0),
                     ),
-                    color: theme.background,
+                    color: theme.secondary0,
                   ),
                   child: _buildUnitList(scrollController)),
               Positioned(
@@ -119,11 +119,13 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                       child: Icon(
                         Icons.my_location,
                         size: 32.0,
+                        color: theme.primary,
                       ),
-                      foregroundColor: theme.highlight, //Color(0xFF857C18),
+                      foregroundColor: theme.primary, //Color(0xFF857C18),
+                      backgroundColor: theme.secondary0.withOpacity(0.7),
                       shape: CircleBorder(
                         side: BorderSide(
-                          color: theme.highlight.withOpacity(0.2), //Color(0xFFE7E5D0),
+                          color: theme.primary.withOpacity(0.2), //Color(0xFFE7E5D0),
                           width: 1.0,
                         ),
                       ),
@@ -187,7 +189,10 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                   },
                 );
               }
-              return CenterLoadingWidget(color: Color(0xFF857C18));
+              return CenterLoadingWidget(
+                backgroundColor: Colors.white,
+                color: Color(0xFF857C18),
+              );
             }),
           ),
         ),
@@ -215,7 +220,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
           borderRadius: BorderRadius.circular(14.0),
           border: Border.all(
             width: 1.5,
-            color: theme.border, //const Color(0xffe7e5d0),
+            color: theme.secondary16, //const Color(0xffe7e5d0),
           ),
         ),
         child: Column(
@@ -239,9 +244,9 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                 children: [
                   Text(
                     unit.name,
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 18,
-                      color: theme.text, //const Color(0xff3c2f2f),
+                      color: theme.secondary, //const Color(0xff3c2f2f),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -256,9 +261,9 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                         : transEx(context, "selectUnit.opened") +
                             ": " +
                             transEx(context, GeoUnitUtils.getOpenedHour(unit)!.getOpenRangeString()!),
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 14,
-                      color: theme.text, //const Color(0xff3c2f2f),
+                      color: theme.secondary, //const Color(0xff3c2f2f),
                     ),
                   ),
                 ],
@@ -282,15 +287,15 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6.0),
                       color: highlight
-                          ? theme.indicator
-                          : theme.highlight, //const Color(0xFF1E6F4A) : const Color(0xff857c18),
+                          ? theme.primary
+                          : theme.primary, //const Color(0xFF1E6F4A) : const Color(0xff857c18),
                     ),
                     child: Center(
                       child: Text(
                         (unit.distance / 1000).toStringAsFixed(3) + ' km',
-                        style: GoogleFonts.poppins(
+                        style: Fonts.satoshi(
                           fontSize: 14,
-                          color: theme.text2, //const Color(0xffffffff),
+                          color: theme.secondary0, //const Color(0xffffffff),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -299,9 +304,9 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                   Text(
                     // unit.openingHours ??
                     '',
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 14,
-                      color: theme.text, //const Color(0xff3c2f2f),
+                      color: theme.secondary, //const Color(0xff3c2f2f),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -378,7 +383,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
   void _createUnitsMarker(List<GeoUnit> units) {
     Map<MarkerId, Marker> unitMarkers = <MarkerId, Marker>{};
     for (GeoUnit unit in units) {
-      final MarkerId markerId = MarkerId(unit.id!);
+      final MarkerId markerId = MarkerId(unit.id);
 
       unitMarkers[markerId] = Marker(
         markerId: markerId,

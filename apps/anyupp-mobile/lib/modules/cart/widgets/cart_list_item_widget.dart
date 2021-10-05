@@ -1,15 +1,12 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
-import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import 'package:fa_prev/modules/cart/cart.dart';
 
 // Represents one row (one sandwich) in cart page
 class CartListItemWidget extends StatefulWidget {
@@ -24,9 +21,7 @@ class CartListItemWidget extends StatefulWidget {
 class _CartListItemWidgetState extends State<CartListItemWidget> {
   Widget build(BuildContext context) {
     return Container(
-      //  height: 110,
       child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             flex: 2,
@@ -51,102 +46,87 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
               // fit: StackFit.passthrough,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.all(0.0),
+                  margin: EdgeInsets.only(right: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        getLocalizedText(context, widget.order.productName).toUpperCase(),
+                        getLocalizedText(context, widget.order.productName), // .toUpperCase(),
                         textAlign: TextAlign.left,
-                        style: GoogleFonts.poppins(
-                          color: theme.text,
+                        style: Fonts.satoshi(
+                          color: theme.secondary,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
                       ),
                       Text(
-                        "x${widget.order.quantity}  -  ${getLocalizedText(context, widget.order.variantName)}",
+                        "${getLocalizedText(context, widget.order.variantName)}",
                         textAlign: TextAlign.left,
-                        style: GoogleFonts.poppins(
-                          color: theme.text,
+                        style: Fonts.satoshi(
+                          color: theme.secondary,
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
                         ),
                       ),
-                      ...getExtraNames(context),
+                      ..._getExtraNames(context),
                       // getOrderItemAllergenWidget(),
                       SizedBox(
                         height: 16,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 2),
-                            child: Text(
-                              formatCurrency(getTotalPriceOfOrederItem(widget.order), widget.unit.currency),
-                              textAlign: TextAlign.left,
-                              style: GoogleFonts.poppins(
-                                color: theme.highlight,
+                          RichText(
+                            text: TextSpan(
+                              text: '${widget.order.quantity}',
+                              style: Fonts.satoshi(
+                                color: theme.primary,
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                               ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: ' x ',
+                                  style: Fonts.satoshi(
+                                    color: theme.secondary40,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: formatCurrency(widget.order.getPrice(), widget.unit.currency),
+                                  style: Fonts.satoshi(
+                                    color: theme.primary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Spacer(),
-                          Container(
+                          BorderedWidget(
                             width: 40,
                             height: 40,
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.all(0),
-                                shape: CircleBorder(
-                                  side: BorderSide(
-                                    color: theme.border2.withOpacity(0.4),
-                                  ),
-                                ),
-                                backgroundColor: Colors.transparent,
-                                primary: theme.text,
-                              ),
-                              onPressed: () => _removeOrder(),
-                              child: Text(
-                                '-',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(
-                                  color: theme.text,
-                                  fontSize: 26,
-                                ),
-                              ),
+                            borderColor: theme.secondary16,
+                            child: Icon(
+                              Icons.remove,
+                              color: theme.secondary,
                             ),
+                            onPressed: () => _removeOrder(),
                           ),
                           SizedBox(
                             width: 16,
                           ),
-                          Container(
+                          BorderedWidget(
                             width: 40,
                             height: 40,
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.all(0),
-                                shape: CircleBorder(
-                                  side: BorderSide(
-                                    color: theme.border2.withOpacity(0.4),
-                                  ),
-                                ),
-                                backgroundColor: Colors.transparent,
-                                primary: theme.text,
-                              ),
-                              onPressed: () => _addOrder(),
-                              child: Text(
-                                '+',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(
-                                  color: theme.text,
-                                  fontSize: 26,
-                                ),
-                              ),
+                            borderColor: theme.secondary16,
+                            child: Icon(
+                              Icons.add,
+                              color: theme.secondary,
                             ),
-                          )
+                            onPressed: () => _addOrder(),
+                          ),
                         ],
                       ),
                     ],
@@ -160,16 +140,16 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
     );
   }
 
-  List<Widget> getExtraNames(BuildContext context) {
+  List<Widget> _getExtraNames(BuildContext context) {
     List<Widget> children = [];
     if (widget.order.selectedConfigMap != null) {
       widget.order.selectedConfigMap!.forEach((key, value) {
         for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
           children.add(Text(
-            getLocalizedText(context, generatedProductConfigComponent.name),
+            '+${getLocalizedText(context, generatedProductConfigComponent.name)}',
             textAlign: TextAlign.left,
-            style: GoogleFonts.poppins(
-              color: theme.text,
+            style: Fonts.satoshi(
+              color: theme.secondary,
               fontWeight: FontWeight.normal,
               fontSize: 14,
             ),
@@ -183,38 +163,11 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
     return children;
   }
 
-  Widget getOrderItemAllergenWidget() {
-    List<String> allergens = widget.order.allergens ?? [];
-    if (widget.order.selectedConfigMap != null) {
-      widget.order.selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
-          if (generatedProductConfigComponent.allergens != null) {
-            for (Allergen allergen in generatedProductConfigComponent.allergens!) {
-              String temp = allergen.toString().split(".").last;
-              if (!allergens.contains(temp)) {
-                allergens.add(temp);
-              }
-            }
-          }
-        }
-      });
-    }
-
-    return AllergensWidget(
-      allergens: allergens,
-    );
-  }
-
   void _addOrder() {
-    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(widget.unit, widget.order));
+    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(widget.unit.id, widget.order));
   }
 
   void _removeOrder() {
-    BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(widget.unit.id!, widget.order));
-  }
-
-  double getTotalPriceOfOrederItem(OrderItem item) {
-    return item.quantity * item.getPrice();
-    //return item.quantity * item...price;
+    BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(widget.unit.id, widget.order));
   }
 }

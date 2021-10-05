@@ -5,7 +5,6 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PaymentButtonWidget extends StatelessWidget {
   final Function _startStripePayment;
@@ -28,7 +27,7 @@ class PaymentButtonWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                primary: theme.indicator,
+                primary: theme.primary,
               ),
               onPressed: isLoading ? null : () => _startStripePayment(),
               child: isLoading
@@ -37,9 +36,9 @@ class PaymentButtonWidget extends StatelessWidget {
                     )
                   : Text(
                       trans(context, 'orders.stripepay'),
-                      style: GoogleFonts.poppins(
+                      style: Fonts.satoshi(
                         fontSize: 16,
-                        color: theme.text2,
+                        color: theme.secondary0,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

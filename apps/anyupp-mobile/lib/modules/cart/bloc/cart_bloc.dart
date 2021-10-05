@@ -3,6 +3,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:flutter/services.dart';
@@ -13,8 +14,13 @@ import 'package:fa_prev/modules/cart/cart.dart';
 class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
   CartRepository _cartRepository;
   OrderRepository _orderRepository;
+  TakeAwayBloc _takeAwayBloc;
 
-  CartBloc(this._cartRepository, this._orderRepository) : super(EmptyCartState());
+  CartBloc(
+    this._cartRepository,
+    this._orderRepository,
+    this._takeAwayBloc,
+  ) : super(EmptyCartState());
 
   @override
   Stream<BaseCartState> mapEventToState(BaseCartAction action) async* {
@@ -27,9 +33,14 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
 
       if (action is AddProductToCartAction) {
         yield CartLoadingState();
-        // _currentCart.addProductToCart(action.product, action.variant);
-        Cart? cart = await _cartRepository.addProductToCart(action.unit, action.order);
-        yield CurrentCartState(cart);
+        TakeAwayState takeAwayState = _takeAwayBloc.state;
+
+        assert(takeAwayState is ServingModeSelectedState == true);
+
+        if (takeAwayState is ServingModeSelectedState) {
+          Cart? cart = await _cartRepository.addProductToCart(action.unitId, action.order, takeAwayState.servingMode);
+          yield CurrentCartState(cart);
+        }
       }
 
       if (action is RemoveProductFromCartAction) {
@@ -42,12 +53,6 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
         yield CartLoadingState();
         Cart? cart = await _cartRepository.clearPlaceInCart(action.unit);
         await clearPlacePref();
-        yield CurrentCartState(cart);
-      }
-
-      if (action is RemoveOrderFromCartAction) {
-        yield CartLoadingState();
-        Cart? cart = await _cartRepository.removeOrderFromCart(action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 

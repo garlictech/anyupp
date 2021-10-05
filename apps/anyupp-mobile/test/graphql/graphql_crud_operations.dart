@@ -8,6 +8,8 @@ Future<String?> createDummyOrder(String userId, String unitId, bool archived, in
         variables: CreateOrderArguments(
       input: CreateOrderInput(
         takeAway: false,
+        servingMode: ServingMode.inPlace,
+        orderMode: OrderMode.instant,
         unitId: unitId,
         userId: userId,
         orderNum: 'ORDER_$orderNum',

@@ -117,6 +117,9 @@
       "@bgap/admin/shared/data-access/users": [
         "libs/admin/shared/data-access/users/src/index.ts"
       ],
+      "@bgap/admin/shared/fixtures": [
+        "libs/admin/shared/fixtures/src/index.ts"
+      ],
       "@bgap/admin/shared/floor-map": [
         "libs/admin/shared/floor-map/src/index.ts"
       ],

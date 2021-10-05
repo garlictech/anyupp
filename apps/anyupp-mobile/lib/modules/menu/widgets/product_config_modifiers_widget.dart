@@ -2,11 +2,9 @@ import 'package:expandable/expandable.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 typedef OnModifiersSelected = void Function(Map<String, String> selectedModifiers);
 
@@ -54,6 +52,7 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: _buildModifiers(context, widget.product.configSets),
     );
   }
@@ -62,66 +61,74 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
     List<Widget> widgets = [];
     sets?.forEach((modifier) {
       if (modifier.type == ConfigType.MODIFIER) {
-        widgets.add(Container(
-          padding: EdgeInsets.only(bottom: 16),
-          child: ExpandablePanel(
-            controller: _expandableModifierController[modifier.productSetId],
-            header: Text(
-              getLocalizedText(context, modifier.name),
-              style: GoogleFonts.poppins(
-                color: theme.text,
-                fontSize: 20.0,
-              ),
-            ),
-            collapsed: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  getLocalizedText(
-                    context,
-                    getComponentByIdFromSet(_selectedModifier[modifier.productSetId]!, modifier)!.name,
-                  ),
-                  softWrap: true,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.poppins(
-                    color: theme.text,
-                    fontSize: 16.0,
-                  ),
-                ),
-              ],
-            ),
-            expanded: _buildModifiersList(context, modifier.productSetId, modifier.items),
-          ),
-        ));
+        widgets.add(_buildSingleModifier(modifier));
       }
     });
 
     return widgets;
   }
 
-  Widget _buildModifiersList(BuildContext context, String productSetId, List<GeneratedProductConfigComponent> items) {
-    List<Widget> widgets = [];
-    for (int i = 0; i < items.length; i++) {
-      widgets.add(_buildModifierListItem(context, items[i], productSetId, items[i].productComponentId));
-    }
+  Widget _buildSingleModifier(GeneratedProductConfigSet modifier) {
     return Container(
+      margin: EdgeInsets.only(bottom: 16.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          14.0,
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            16.0,
+          ),
         ),
-        border: Border.all(width: 1.5, color: theme.border2),
-        color: theme.background,
+        color: theme.secondary0,
       ),
-      child: Column(
-        children: [...widgets],
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(
+          top: 12.0,
+          // left: 16.0,
+          bottom: 12.0,
+          // right: 16.0,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Text(
+                getLocalizedText(context, modifier.name),
+                style: Fonts.satoshi(
+                  color: theme.primary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            Divider(
+              color: theme.secondary16,
+            ),
+            ..._buildModifiersList(context, modifier.productSetId, modifier.items),
+          ],
+        ),
       ),
     );
   }
 
+  List<Widget> _buildModifiersList(
+      BuildContext context, String productSetId, List<GeneratedProductConfigComponent> items) {
+    List<Widget> widgets = [];
+    for (int i = 0; i < items.length; i++) {
+      widgets.add(
+          _buildModifierListItem(context, items[i], productSetId, items[i].productComponentId, i == items.length - 1));
+    }
+    return widgets;
+  }
+
   Widget _buildModifierListItem(
-      BuildContext context, GeneratedProductConfigComponent item, String productSetId, String value) {
+    BuildContext context,
+    GeneratedProductConfigComponent item,
+    String productSetId,
+    String value,
+    bool last,
+  ) {
     Set<String> allergenNames = {};
     if (item.allergens != null) {
       for (Allergen allergen in item.allergens!) {
@@ -130,11 +137,10 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
     }
 
     return Container(
-      padding: EdgeInsets.all(8.0),
       child: InkWell(
-        hoverColor: theme.indicator,
-        focusColor: theme.indicator,
-        // enableFeedback: true,
+        hoverColor: theme.primary,
+        focusColor: theme.primary,
+        enableFeedback: true,
         onTap: () {
           setState(() {
             _selectedModifier[productSetId] = value;
@@ -142,62 +148,68 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
           widget.onModifiersSelected(_selectedModifier);
           _expandableModifierController[productSetId]?.toggle();
         },
-        child: Row(
-          //crossAxisAlignment: CrossAxisAlignment.center,
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 2,
-              child: Radio<String>(
-                groupValue: _selectedModifier[productSetId],
-                value: value,
-                activeColor: theme.indicator,
-                // focusColor: theme.indicator,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    setState(() {
-                      _selectedModifier[productSetId] = value;
-                    });
-                    widget.onModifiersSelected(_selectedModifier);
-                    _expandableModifierController[productSetId]?.toggle();
-                  }
-                },
-              ),
-            ),
-            Expanded(
-              flex: 10,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.start,
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     getLocalizedText(context, item.name),
-                    style: GoogleFonts.poppins(
-                      color: theme.text,
-                      //fontSize: 20.0,
+                    style: Fonts.satoshi(
+                      color: theme.secondary,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  AllergensWidget(
-                    allergens: allergenNames.toList(),
-                    showHeader: false,
-                    //size: 30.0,
-                    //fontSize: 10.0,
-                    iconBorderRadius: 10.0,
+                  Row(
+                    children: [
+                      Text(
+                        '+' + formatCurrency(item.price, widget.unit.currency),
+                        style: Fonts.satoshi(
+                          color: theme.primary,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Radio<String>(
+                        groupValue: _selectedModifier[productSetId],
+                        value: value,
+                        activeColor: theme.primary,
+                        fillColor: MaterialStateColor.resolveWith((states) {
+                          if (states.isEmpty) {
+                            return theme.secondary16;
+                          }
+                          var state = states.first;
+                          switch (state) {
+                            case MaterialState.selected:
+                              return theme.primary;
+                            default:
+                              return theme.secondary16;
+                          }
+                        }),
+                        onChanged: (String? value) {
+                          if (value != null) {
+                            setState(() {
+                              _selectedModifier[productSetId] = value;
+                            });
+                            widget.onModifiersSelected(_selectedModifier);
+                            _expandableModifierController[productSetId]?.toggle();
+                          }
+                        },
+                      ),
+                    ],
                   ),
-                  //buildAllergensListWidget(context, modifier),
                 ],
               ),
             ),
-            // Spacer(),
-            Expanded(
-              flex: 2,
-              child: Container(
-                child: Text(
-                  formatCurrency(item.price, widget.unit.currency),
-                  //getModifierItemsTotalPrice(modifier, widget.unit.currency),
-                ),
-              ),
-            ),
+            if (!last)
+              Divider(
+                height: 1,
+                color: theme.secondary12,
+              )
           ],
         ),
       ),

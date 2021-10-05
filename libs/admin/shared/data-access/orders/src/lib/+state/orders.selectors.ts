@@ -1,4 +1,3 @@
-import { currentStatus as currentStatusFn } from '../fn';
 import { ILaneOrderItem } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
@@ -9,6 +8,7 @@ import {
   ORDERS_FEATURE_KEY,
 } from './orders.reducer';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { currentStatus } from '@bgap/crud-gql/api';
 
 export const getOrdersState =
   createFeatureSelector<IOrdersState>(ORDERS_FEATURE_KEY);
@@ -67,11 +67,12 @@ export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) => {
           )
           .filter(
             (orderItem: CrudApi.OrderItem): boolean =>
-              currentStatusFn(orderItem.statusLog) === status,
+              currentStatus(orderItem.statusLog) === status,
           )
           .map((orderItem: CrudApi.OrderItem) => ({
             ...orderItem,
             orderId: order.id,
+            // servingMode: order.supportedServingModes,
             userId: order.userId,
             place: order.place,
             currentStatus: status,

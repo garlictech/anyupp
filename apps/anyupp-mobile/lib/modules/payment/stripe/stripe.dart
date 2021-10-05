@@ -12,7 +12,6 @@ export 'widgets/add_card_button_widget.dart';
 export 'widgets/add_payment_method_widget.dart';
 export 'widgets/card_form.dart';
 export 'widgets/new_card_payment_widget.dart';
-export 'widgets/no_payment_method_widget.dart';
 export 'widgets/payment_button_widget.dart';
 export 'widgets/payment_method_card.dart';
 export 'widgets/payment_method_list_widget.dart';

@@ -1,9 +1,10 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import {
+  MergedProduct,
+  MergedProductWithPrices,
   ProductComponentMap,
   ProductComponentSetMap,
-  ProductWithPrices,
 } from '@bgap/shared/types';
 import {
   filterNullishGraphqlListWithDefault,
@@ -14,7 +15,7 @@ import { from, Observable, of, throwError } from 'rxjs';
 import { map, mergeMap, switchMap, toArray } from 'rxjs/operators';
 import { getTimezoneFromLocation } from '../../utils';
 import { calculateActualPricesAndCheckActivity } from '../product/calculate-product';
-import { mergeAllProductLayers, MergedProduct } from '../product/merge-product';
+import { mergeAllProductLayers } from '../product/merge-product';
 import { UnitsResolverDeps } from './utils';
 
 export const calculateAndFilterNotActiveProducts = (
@@ -31,7 +32,7 @@ export const calculateAndFilterNotActiveProducts = (
       return prev;
     }
     return [...prev, mergedProduct];
-  }, <ProductWithPrices[]>[]);
+  }, <MergedProductWithPrices[]>[]);
 
 export const listUnitProductsForAUnit =
   (deps: UnitsResolverDeps) => (unitId: string) => {

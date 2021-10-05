@@ -1,6 +1,6 @@
 import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/locale.dart';
 
@@ -55,8 +55,8 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
 
   Widget _buildStepper(BuildContext context, int progressPosition) {
     List<Widget> steppers = [];
-    Color iconColor = theme.indicator;
-    Color lineColor = theme.disabled.withOpacity(0.3);
+    Color iconColor = theme.primary;
+    Color lineColor = theme.secondary64.withOpacity(0.3);
 
     switch (progressPosition) {
       case 0:
@@ -98,9 +98,10 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
       labels.add(
         Text(
           trans('orders.status.${statusList[i]}'),
-          style: GoogleFonts.poppins(
+          style: Fonts.satoshi(
             fontSize: 14.0,
             fontWeight: FontWeight.bold,
+            color: theme.secondary,
           ),
         ),
       );

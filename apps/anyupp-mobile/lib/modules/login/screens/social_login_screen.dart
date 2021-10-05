@@ -7,7 +7,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -124,7 +124,7 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
             Text(
               _error!,
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 color: Colors.red,
               ),
             ),
@@ -139,8 +139,8 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
                 trans('login.email.buttonLogin'),
                 softWrap: false,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  color: theme.text2,
+                style: Fonts.satoshi(
+                  color: theme.secondary0,
                   fontSize: 18.0,
                   fontWeight: FontWeight.normal,
                 ),

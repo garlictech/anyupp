@@ -180,3 +180,9 @@ export const makeId = (length: number): string => {
 
   return result;
 };
+
+export const optionalValueValidator: ValidatorFn = (control: AbstractControl) =>
+  !control.value || !!control.value ? null : { err: true };
+
+export const notEmptyArray: ValidatorFn = (control: AbstractControl) =>
+  control.value.length > 0 ? null : { err: true };

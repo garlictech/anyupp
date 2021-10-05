@@ -3,7 +3,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:fa_prev/shared/locale.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -19,7 +19,7 @@ showSimpleDialog(BuildContext context) {
                 borderRadius: BorderRadius.circular(12.0),
               ),
               elevation: 0.0,
-              backgroundColor: theme.background,
+              backgroundColor: theme.secondary0,
               child: Container(
                 padding: EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
@@ -47,7 +47,7 @@ Container createOkButton(ThemeChainData theme, BuildContext context) {
       borderRadius: BorderRadius.all(Radius.zero),
       border: Border.all(
         width: 1.5,
-        color: theme.border,
+        color: theme.secondary16,
       ),
     ),
     child: TextButton(
@@ -58,9 +58,9 @@ Container createOkButton(ThemeChainData theme, BuildContext context) {
       onPressed: () => Nav.pop(),
       child: Text(
         transEx(context, 'common.close'),
-        style: GoogleFonts.poppins(
+        style: Fonts.satoshi(
           fontSize: 14.0,
-          color: theme.text,
+          color: theme.secondary,
         ),
       ),
     ),
@@ -82,21 +82,21 @@ Widget createContent(ThemeChainData theme, BuildContext context) {
       children: [
         TextSpan(
           text: transEx(context, 'dataTransfer.title') + '\n\n',
-          style: GoogleFonts.poppins(
+          style: Fonts.satoshi(
             fontSize: 18.0,
             color: Colors.black,
           ),
         ),
         TextSpan(
           text: transEx(context, 'dataTransfer.content', unitParams) + '\n',
-          style: GoogleFonts.poppins(
+          style: Fonts.satoshi(
             fontSize: 14.0,
             color: Color(0x993C2F2F),
           ),
         ),
         TextSpan(
           text: 'http://simplepay.hu/vasarlo-aff',
-          style: GoogleFonts.poppins(
+          style: Fonts.satoshi(
             fontSize: 14.0,
             color: Colors.red,
           ),

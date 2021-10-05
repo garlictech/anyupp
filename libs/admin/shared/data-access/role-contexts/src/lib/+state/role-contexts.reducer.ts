@@ -17,11 +17,11 @@ export interface RoleContextsPartialState {
 export const roleContextsAdapter: EntityAdapter<CrudApi.RoleContext> =
   createEntityAdapter<CrudApi.RoleContext>();
 
-export const initialState: IRoleContextsState =
+export const initialRoleContextState: IRoleContextsState =
   roleContextsAdapter.getInitialState({});
 
 const reducer = createReducer(
-  initialState,
+  initialRoleContextState,
   on(RoleContextsActions.init, state => ({
     ...state,
 

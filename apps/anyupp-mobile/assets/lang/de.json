@@ -123,7 +123,16 @@
     "totalCost": "Total cost",
     "emptyCartLine1": "Your cart is empty",
     "emptyCartLine2": "Add some products to your cart.",
-    "addToCart": "Add To Cart"
+    "addToCart": "Add To Cart",
+    "pay": "PAY",
+    "myCart": "MY CART",
+    "deleteCart": "Delete cart",
+    "deleteCartTitle": "Are you sure you want to delete your cart?",
+    "deleteCartMessage": "This will remove all items in your cart from your cart.",
+    "deleteCartAccept": "Delete",
+    "deleteCartCancel": "Cancel",
+    "takeAway": "takeaway",
+    "inPlace": "in place"
   },
   "allergens": {
     "title": "Allergens",
@@ -187,6 +196,12 @@
     "sendOrder": "PLACE ORDER",
     "fillInvoice": "FILL INVOICE FORM",
     "orderPlaced": "Order successfully received.",
+    "status": {
+      "waiting_for_payment": "Waiting for payment",
+      "success": "Success",
+      "failed": "Failed",
+      "-": "Unknown"
+    },
     "paymentInfo": {
       "simplePay": {
         "prefix": "By selecting this payment method I indicate that I agree to the contents of the following documents.",
@@ -259,6 +274,26 @@
       "add_card": "Add New Card",
       "card_added": "Card added successfully!",
       "success": "Success!"
+    }
+  },
+  "servingModeSheet": {
+    "title": "Please select",
+    "inPlace": {
+      "title": "In place",
+      "description": "Eat your favorites locally."
+    },
+    "takeAway": {
+      "title": "Take away",
+      "description": "Ask for your favorites to take away."
+    },
+    "dialog": {
+      "title": {
+        "takeaway": "Are you sure you want to switch to local consumption?",
+        "inplace": "Are you sure you want to switch to takeaway?"
+      },
+      "description": "This action will delete the contents of your current cart, and unfortunately you will have to re-select each item you wish to order.",
+      "cancel": "Cancel",
+      "ok": "Yes"
     }
   },
   "selectUnit": {
@@ -357,7 +392,13 @@
       "status": "Status",
       "paymentMethod": "Payment Method",
       "noTransactions": "No Transactions",
-      "details": "Details"
+      "details": "Details",
+      "type": {
+        "card": "Card",
+        "stripe": "Stripe",
+        "cash": "Cash",
+        "-": "Unknown"
+      }
     }
   },
   "affiliate": {
@@ -471,8 +512,8 @@
       "description": "Password did not conform with policy"
     },
     "USER_ALREADY_EXISTS": {
-      "title": "User already exists",
-      "description": "This email address is already registered."
+      "title": "Oops! You are already registered with this email address.",
+      "description": "You may have registered with our application using a different login method. Try to remember how you used to log in with this email address, and if you have it, try it! If not, try logging in with a different email address. :)"
     },
     "INVALID_CONFIRMATION_CODE": {
       "title": "Sign up error",
