@@ -1,37 +1,38 @@
-import { Maybe } from '@bgap/crud-gql/api';
 import { combineLatest } from 'rxjs';
 
-import { getCognitoUsersStream } from './cognito-utils';
+import { Maybe } from '@bgap/crud-gql/api';
+
+import { cognitoUsersStream$ } from './cognito-utils';
 import { ReportDeps, ReportOrderData, ReportUserData } from './interfaces';
 import {
   calculateReport,
-  endOfToday,
+  endOfDay,
   fourWeeksAgo,
   getOrdersFromDateInterval,
   saveExcelReport,
   startOfThisYear,
 } from './report-utils';
+import { uploadReport } from './slack-utils';
 
 export const createReport = (deps: ReportDeps) => (testDone: () => void) => {
-  const cognitoUsers$ = getCognitoUsersStream(deps);
   const thisYearOrderList$ = getOrdersFromDateInterval(
     deps,
     startOfThisYear(deps.reportDate),
-    endOfToday(deps.reportDate),
+    endOfDay(deps.reportDate),
   );
   const fourWeeksOrderList$ = getOrdersFromDateInterval(
     deps,
     fourWeeksAgo(deps.reportDate),
-    endOfToday(deps.reportDate),
+    endOfDay(deps.reportDate),
   );
 
   // Execute the calculations
   combineLatest([
-    cognitoUsers$,
+    cognitoUsersStream$(deps),
     thisYearOrderList$,
     fourWeeksOrderList$,
   ]).subscribe(
-    ([users, thisYearOrderList, fourWeeksOrderList]: [
+    async ([users, thisYearOrderList, fourWeeksOrderList]: [
       ReportUserData[],
       Maybe<ReportOrderData>[],
       Maybe<ReportOrderData>[],
@@ -43,7 +44,15 @@ export const createReport = (deps: ReportDeps) => (testDone: () => void) => {
         users,
       );
 
-      saveExcelReport(report, deps.xlsPath);
+      saveExcelReport(report, deps.reportFile);
+
+      try {
+        const slackResponse = await uploadReport(deps)();
+        console.log('slackResponse data: ', slackResponse?.data);
+      } catch (err) {
+        console.error('Slack API error: ', err);
+      }
+
       testDone();
     },
   );

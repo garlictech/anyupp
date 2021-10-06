@@ -4,8 +4,9 @@ export interface ReportDeps {
   region: string;
   userPoolId: string;
   crudSdk: CrudApi.CrudSdk;
-  xlsPath: string;
+  reportFile: string;
   reportDate: string;
+  slackBotToken: string;
 }
 
 export interface ReportUserData {
