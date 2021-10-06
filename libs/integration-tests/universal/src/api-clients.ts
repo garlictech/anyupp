@@ -1,8 +1,8 @@
 import {
   AnyuppSdk,
-  getCrudSdkForIAM,
+  getAnyuppSdkForIAM,
   getAnyuppSdkForUserPool,
-} from '@bgap/crud-gql/api';
+} from '@bgap/anyupp-gql/api';
 import {
   awsConfig,
   getCrudSdkForIAM,
@@ -16,7 +16,6 @@ interface AuthenticatdGraphQLClientWithUserId {
   userAttributes: {
     id: string;
     email: string;
-    // ???
   };
   authAnyuppSdk: AnyuppSdk;
 }
@@ -60,7 +59,7 @@ export const createIamCrudSdk = () =>
   );
 
 export const createIamAnyuppSdk = () =>
-  getCrudSdkForIAM(
+  getAnyuppSdkForIAM(
     process.env.AWS_ACCESS_KEY_ID || '',
     process.env.AWS_SECRET_ACCESS_KEY || '',
   );

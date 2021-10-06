@@ -108,12 +108,7 @@ describe('SearchOrders function', () => {
         ),
       )
       .subscribe({
-        next() {
-          done();
-        },
-        error(err) {
-          console.error(`${TEST_NAME}Test ERROR`, err);
-        },
+        next: done,
       });
   }, 20000);
 });

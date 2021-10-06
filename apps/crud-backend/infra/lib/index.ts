@@ -1,3 +1,4 @@
+import * as cdk from '@aws-cdk/core';
 import path from 'path';
 import { App, Stack } from '@serverless-stack/resources';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -37,6 +38,7 @@ export class AnyuppCrudInfra extends Stack {
       environment: {
         SALT: saltSecret,
       },
+      timeout: cdk.Duration.seconds(30),
     });
 
     if (resolverLambda.role) {

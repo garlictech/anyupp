@@ -54,16 +54,9 @@ const groupProduct_01: RequiredId<CrudApi.CreateGroupProductInput> = {
   takeawayTax: 53,
 };
 const unitProduct_01: RequiredId<CrudApi.CreateUnitProductInput> = {
-  // const unitProduct_0101: Omit<
-  //   CrudApi.CreateUnitProductInput,
-  //   'id' | 'configSets'
-  // > & { id: string; configSets: CrudApi.ProductConfigSetInput[] } = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}${TEST_NAME}unitProduct_01`,
   parentId: groupProduct_01.id,
-  // unitId: unitId_01_to_regen,
-  // chainId: chainId_01_seeded,
-  // configSets: [prodConfigSet_01, prodConfigSet_02],
 };
 
 const orderItemConfigSet_01: CrudApi.OrderItemConfigSetInput = {

@@ -7,7 +7,8 @@ APPNAME=anyuppbackend
 
 echo 'Copy and merge CRUD schema...'
 echo '=============================='
-cp ../../libs/crud-gql/backend/src/graphql/schema/crud-api.graphql amplify/backend/api/$APPNAME/schema.graphql
+cp ../../libs/crud-gql/backend/src/graphql/schema/crud-api.graphql \
+  amplify/backend/api/$APPNAME/schema.graphql
 
 echo
 echo 'Compile schema with amplify'

@@ -67,6 +67,7 @@ const userData = pipe(
 );
 
 const password = testAdminUserPassword;
+const docClient = new DynamoDB.DocumentClient();
 
 export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
@@ -90,6 +91,8 @@ export const seedAdminUser = (deps: SeederDependencies) =>
               })({
                 ...deps,
                 userNameGenerator: () => username,
+                docClient,
+                adminUserTableName: tableConfig.AdminUser.TableName,
               }),
             ),
           ),

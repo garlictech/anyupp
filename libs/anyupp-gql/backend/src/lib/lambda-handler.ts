@@ -1,26 +1,24 @@
 import bcrypt from 'bcryptjs';
 import { tableConfig } from '@bgap/crud-gql/backend';
-import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
-import {
-  adminRequestHandler,
-  createStripeClient,
-  createSzamlazzClient,
-  orderRequestHandler,
-  productRequestHandler,
-  regenerateUnitData,
-  stripeRequestHandler,
-  unitRequestHandler,
-  userRequestHandler,
-  UnitsResolverDeps,
-  createUnitResolver,
-  updateUnitResolver,
-} from '@bgap/anyupp-gql/backend';
-import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
+import { getCrudSdkForIAM, regenerateUnitData } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
 import { Context, Handler } from 'aws-lambda';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { v1 as uuidV1 } from 'uuid';
 import { DynamoDB } from 'aws-sdk';
+import {
+  createSzamlazzClient,
+  createStripeClient,
+  adminRequestHandler,
+  orderRequestHandler,
+  UnitsResolverDeps,
+  unitRequestHandler,
+  productRequestHandler,
+  stripeRequestHandler,
+  userRequestHandler,
+  createUnitResolver,
+  updateUnitResolver,
+} from '..';
 
 export interface AnyuppRequest {
   typeName: string;
@@ -68,9 +66,10 @@ export const handler: Handler<AnyuppRequest, unknown> = (
 
   const adminUserRequestHandlers = adminRequestHandler({
     userPoolId,
-    crudSdk,
     cognitoidentityserviceprovider,
     userNameGenerator: uuidV1,
+    docClient,
+    adminUserTableName: tableConfig.AdminUser.TableName,
   });
 
   const orderRequestHandlers = orderRequestHandler({
@@ -93,7 +92,6 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   });
 
   const stripeRequestHandlers = stripeRequestHandler({
-    crudSdk,
     crudSdk,
     szamlazzClient,
     stripeClient,

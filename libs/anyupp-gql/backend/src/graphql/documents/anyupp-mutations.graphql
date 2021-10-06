@@ -27,11 +27,15 @@ mutation CreateOrderFromCart($input: CreateOrderFromCartInput!) {
   createOrderFromCart(input: $input)
 }
 mutation CreateAdminUser($input: CreateAdminUserInput!) {
-  createAdminUser(input: $input)
+  createAdminUser(input: $input) {
+    id
+  }
 }
 
-mutation DeleteAdminUser($userName: String!) {
-  deleteAdminUser(userName: $userName)
+mutation DeleteAdminUser($input: DeleteAdminUserInput!) {
+  deleteAdminUser(input: $input) {
+    id
+  }
 }
 
 mutation CreateUnitProduct($input: CreateUnitProductInput!) {

@@ -1,4 +1,3 @@
-import { throwIfEmptyValue } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Maybe } from '@bgap/crud-gql/api';
 import {

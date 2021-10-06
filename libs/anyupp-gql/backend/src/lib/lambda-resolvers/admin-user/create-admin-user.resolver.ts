@@ -7,17 +7,20 @@ import { defer, from, of, throwError } from 'rxjs';
 import {
   catchError,
   map,
-  mapTo,
   switchMap,
   switchMapTo,
+  tap,
   throwIfEmpty,
 } from 'rxjs/operators';
 import { ResolverErrorCode } from '../../utils/errors';
 import { AdminUserResolverDeps } from './utils';
+import * as R from 'ramda';
 
 export const createAdminUser =
   (vars: CrudApi.CreateAdminUserMutationVariables) =>
-  (deps: AdminUserResolverDeps) => {
+  (
+    deps: AdminUserResolverDeps,
+  ): ReturnType<CrudApi.CrudSdk['CreateAdminUser']> => {
     console.debug('createAdminUser Resolver parameters: ', vars);
     const newUsername = deps.userNameGenerator();
 
@@ -32,7 +35,6 @@ export const createAdminUser =
         defer(() =>
           from(deps.cognitoidentityserviceprovider.listUsers(params).promise()),
         ),
-      filterNullish(),
       map(
         flow(
           result => result?.Users,
@@ -82,52 +84,27 @@ export const createAdminUser =
       ),
       switchMap(res => (E.isLeft(res) ? throwError(res.left) : of(res.right))),
       switchMap(params =>
-        defer(() =>
-          from(
-            deps.cognitoidentityserviceprovider
-              .adminCreateUser(params)
-              .promise(),
-          ),
+        from(
+          deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),
         ),
       ),
       filterNullish(),
       switchMap(() =>
-        deps.crudSdk
-          .CreateAdminUser({
-            input: {
-              name: vars.input.name,
-              id: newUsername,
-              email: vars.input.email,
-              phone: vars.input.phone,
-            },
-          })
-          .pipe(
-            catchError(err =>
-              defer(() =>
-                from(
-                  deps.cognitoidentityserviceprovider
-                    .adminDeleteUser({
-                      UserPoolId: deps.userPoolId,
-                      Username: newUsername,
-                    })
-                    .promise(),
-                ),
-              ).pipe(
-                switchMapTo(
-                  throwError({
-                    code: ResolverErrorCode.UnknownError,
-                    message: JSON.stringify(err, null, 2),
-                  }),
-                ),
-              ),
-            ),
-          ),
+        from(
+          deps.docClient
+            .put({
+              Item: {
+                name: vars.input.name,
+                id: newUsername,
+                email: vars.input.email,
+                phone: vars.input.phone,
+              },
+              TableName: deps.adminUserTableName,
+            })
+            .promise(),
+        ),
       ),
-      mapTo(newUsername),
-      throwIfEmpty(() => 'UnkownCognitoError'),
-      catchError(err => {
-        console.error('ERROR:', JSON.stringify(err, null, 2));
-        return throwError(err);
-      }),
-    ).toPromise();
+      map(x => x?.Attributes as CrudApi.AdminUser),
+      throwIfEmpty(),
+    );
   };

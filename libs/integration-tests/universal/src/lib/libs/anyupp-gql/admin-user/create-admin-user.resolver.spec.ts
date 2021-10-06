@@ -8,154 +8,157 @@ import {
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
-import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { defer, iif, of, throwError } from 'rxjs';
+import { CognitoIdentityServiceProvider, DynamoDB } from 'aws-sdk';
+import { of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import {
   createAuthenticatedAnyuppSdk,
+  createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
+import { tableConfig } from '@bgap/crud-gql/backend';
+import { CrudSdk } from '@bgap/crud-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = true; // SHOULD STAY to LOCAL CODE test because the userName generator works only locally
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: 'eu-west-1',
 });
 
-const email = 'foobar@anyupp.com';
+const email = 'anonyuser+foobar@anyupp.com';
 const userName = 'int-test-user-name';
 const phone = '+1234567892';
 const staticUserNameGenerator = () => userName;
+const docClient = new DynamoDB.DocumentClient();
 
 describe('Admin user creation/deletion', () => {
-  const authAnyuppSdk = createAuthenticatedAnyuppSdk(
-    testAdminUsername,
-    testAdminUserPassword,
-  );
   const deps: AdminUserResolverDeps = {
     userPoolId: awsConfig.aws_user_pools_id,
-    crudSdk: createIamCrudSdk(),
     cognitoidentityserviceprovider,
     userNameGenerator: staticUserNameGenerator,
+    docClient,
+    adminUserTableName: tableConfig.AdminUser.TableName,
   };
 
-  test('Admin user should be created/deleted', done => {
-    authAnyuppSdk
+  const testLogic = ({
+    deleteOp,
+    createOp,
+  }: {
+    deleteOp: CrudSdk['DeleteAdminUser'] | AnyuppSdk['DeleteAdminUser'];
+    createOp: CrudSdk['CreateAdminUser'] | AnyuppSdk['CreateAdminUser'];
+  }) =>
+    deleteOp({ input: { id: userName } }).pipe(
+      // yes, we can get anything here
+      catchError((err: any) =>
+        err?.code === 'UserNotFoundException' ? of({}) : throwError(err),
+      ),
+      // ERROR - Invalid phoneNumber
+      switchMap(() =>
+        createOp({
+          input: {
+            email: 'NOT_VALID_EMAIL',
+            name: 'Mekk elek',
+            phone: 'NOT_VALID_PHONE_NUMBER',
+          },
+        }).pipe(
+          catchError(err => {
+            expect(err).toMatchSnapshot('Invalid phone number error');
+            return of({});
+          }),
+        ),
+      ),
+      // ERROR - Invalid mail
+      switchMap(() =>
+        createOp({
+          input: {
+            email: 'NOT_VALID_EMAIL',
+            name: 'Mekk elek',
+            phone,
+          },
+        }).pipe(
+          catchError(err => {
+            expect(err).toMatchSnapshot('Malformed email error');
+            return of({});
+          }),
+        ),
+      ),
+      // SUCCESSFULL CREATE
+      switchMap(() =>
+        createOp({
+          input: {
+            email,
+            name: 'Mekk Elek',
+            phone,
+          },
+        }).pipe(
+          catchError(err => {
+            console.error('SHOULD NOT THROW - successful-create-step', err);
+            return throwError(err);
+          }),
+        ),
+      ),
+      // ERROR - Existing user
+      switchMap(() =>
+        createOp({
+          input: {
+            email,
+            name: 'Mekk Elek',
+            phone,
+          },
+        }).pipe(
+          catchError(err => {
+            expect(err).toMatchSnapshot('Should not create existing user');
+            return of({});
+          }),
+        ),
+      ),
+      // Cleanup
+      switchMap(() => deleteOp({ input: { id: userName } })),
+      tap(result => {
+        expect(result).toMatchSnapshot('Cleanup');
+      }),
+    );
+
+  test('Admin user should be created/deleted with resolver code', done => {
+    testLogic({
+      createOp: (x: CrudApi.CreateAdminUserMutationVariables) =>
+        createAdminUser(x)(deps),
+      deleteOp: x => deleteAdminUser(x)(deps),
+    }).subscribe(() => done());
+  }, 15000);
+
+  test('Admin user should be created/deleted with authenticated API call', done => {
+    createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
       .pipe(
-        switchMap(({ authAnyuppSdk: sdk }) =>
-          iif(
-            () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-            defer(() => deleteAdminUser({ userName })(deps)),
-            sdk.DeleteAdminUser({ userName }),
-          ).pipe(
-            catchError((err: Error) => {
-              // console.log('***', err);
-              console.log('DEL - OK');
-              if (err.message.includes('User does not exist')) {
-                return of({});
-              }
-              return throwError(err);
-            }),
-            // ERROR - Invalid phoneNumber
-            switchMap(() => {
-              const input = {
-                email: 'NOT_VALID_EMAIL',
-                name: 'Mekk elek',
-                phone: 'NOT_VALID_PHONE_NUMBER',
-              };
-              return iif(
-                () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-                defer(() => createAdminUser({ input })(deps)),
-                sdk.CreateAdminUser({ input }),
-              ).pipe(
-                catchError(err => {
-                  expect(err).toMatchSnapshot('Invalid phone number error');
-                  console.log('INVALID PHONE - OK');
-                  return of({});
-                }),
-              );
-            }),
-            // ERROR - Invalid mail
-            switchMap(() => {
-              const input = {
-                email: 'NOT_VALID_EMAIL',
-                name: 'Mekk elek',
-                phone,
-              };
-              return iif(
-                () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-                defer(() => createAdminUser({ input })(deps)),
-                sdk.CreateAdminUser({ input }),
-              ).pipe(
-                catchError(err => {
-                  expect(err).toMatchSnapshot('Malformed email error');
-                  console.log('INVALID MAIL - OK');
-                  return of({});
-                }),
-              );
-            }),
-            // SUCCESSFULL CREATE
-            switchMap(() => {
-              const input = {
-                email,
-                name: 'Mekk Elek',
-                phone,
-              };
-              return iif(
-                () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-                defer(() => createAdminUser({ input })(deps)),
-                sdk.CreateAdminUser({ input }),
-              ).pipe(
-                catchError(err => {
-                  console.error(
-                    'SHOULD NOT THROW - successful-create-step',
-                    err,
-                  );
-                  return throwError(err);
-                }),
-                tap({
-                  next() {
-                    console.log('SUCCESFULL CREATE - OK');
-                  },
-                }),
-              );
-            }),
-            // ERROR - Existing user
-            switchMap(() => {
-              const input = {
-                email,
-                name: 'Mekk Elek',
-                phone,
-              };
-              return iif(
-                () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-                defer(() => createAdminUser({ input })(deps)),
-                sdk.CreateAdminUser({ input }),
-              ).pipe(
-                catchError(err => {
-                  expect(err).toMatchSnapshot(
-                    'Should not create existing user',
-                  );
-                  console.log('EXISTING USER - OK');
-                  return of({});
-                }),
-              );
-            }),
-            // Cleanup
-            switchMap(() =>
-              iif(
-                () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-                defer(() => deleteAdminUser({ userName })(deps)),
-                sdk.DeleteAdminUser({ userName }),
-              ),
-            ),
-            tap(result => {
-              expect(result).toMatchSnapshot('Cleanup');
-              console.log('CLEANUP - OK');
-            }),
-          ),
+        switchMap(sdk =>
+          testLogic({
+            createOp: sdk.CreateAdminUser,
+            deleteOp: sdk.DeleteAdminUser,
+          }),
         ),
       )
       .subscribe(() => done());
+  }, 25000);
+
+  test('Admin user should be created/deleted with authenticated "old" API call', done => {
+    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
+      .pipe(
+        switchMap(sdk =>
+          testLogic({
+            createOp: sdk.authAnyuppSdk.CreateAdminUser,
+            deleteOp: sdk.authAnyuppSdk.DeleteAdminUser,
+          }),
+        ),
+      )
+      .subscribe(() => done());
+  }, 25000);
+
+  test.only('Admin user should be created/deleted with IAM API call', done => {
+    const sdk = createIamCrudSdk();
+    testLogic({
+      createOp: sdk.CreateAdminUser,
+      deleteOp: sdk.DeleteAdminUser,
+    }).subscribe(() => done());
   }, 25000);
 });

@@ -17,6 +17,8 @@ import { config } from '@bgap/shared/config';
 import { Context, Handler } from 'aws-lambda';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { v1 as uuidV1 } from 'uuid';
+import { tableConfig } from '@bgap/crud-gql/backend';
+import { DynamoDB } from 'aws-sdk';
 
 export interface AnyuppRequest {
   typeName: string;
@@ -44,6 +46,7 @@ const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const szamlazzClient = createSzamlazzClient(process.env.SZAMLAZZ_HU_AGENT_KEY);
 const stripeClient = createStripeClient(process.env.STRIPE_SECRET_KEY);
 const unitsDeps = createUnitsDeps();
+const docClient = new DynamoDB.DocumentClient();
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -58,9 +61,10 @@ export const handler: Handler<AnyuppRequest, unknown> = (
 
   const adminUserRequestHandlers = adminRequestHandler({
     userPoolId,
-    crudSdk,
     cognitoidentityserviceprovider,
     userNameGenerator: uuidV1,
+    docClient,
+    adminUserTableName: tableConfig.AdminUser.TableName,
   });
 
   const orderRequestHandlers = orderRequestHandler({
