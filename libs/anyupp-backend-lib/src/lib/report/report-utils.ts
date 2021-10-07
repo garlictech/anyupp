@@ -49,8 +49,8 @@ export const fourWeeksAgo = (today: string): number =>
     .startOf('day')
     .valueOf();
 
-export const endOfToday = (today: string): number =>
-  DateTime.fromISO(new Date(today).toISOString(), {
+export const endOfDay = (day: string): number =>
+  DateTime.fromISO(new Date(day).toISOString(), {
     zone: timezoneBudapest,
   })
     .endOf('day')

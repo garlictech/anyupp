@@ -7,7 +7,8 @@ import {
   thisYearOrdersFixture,
 } from './fixtures';
 
-const reportDate = new Date().toLocaleDateString('hu');
+// Must have 'YYYY-MM-DD' format!
+const reportDate = new Date().toISOString().substr(0, 10); // '2021-09-26'
 
 describe('Report', () => {
   describe('Calculation logic', () => {
@@ -39,8 +40,9 @@ describe('Report', () => {
         'your_prod_awsAccesskeyId',
         'your_prod_awsSecretAccessKey',
       ),
-      xlsPath: './weeklyReport.xlsx',
+      reportFile: `./weeklyReport-${reportDate}.xlsx`,
       reportDate,
+      slackBotToken: 'slack_bot_token',
     };
 
     createReport(deps)(done);

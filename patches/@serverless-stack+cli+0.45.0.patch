@@ -1,16 +1,8 @@
 diff --git a/node_modules/@serverless-stack/cli/bin/scripts.js b/node_modules/@serverless-stack/cli/bin/scripts.js
-index 677beea..da4c5c1 100755
+index c218515..0888467 100755
 --- a/node_modules/@serverless-stack/cli/bin/scripts.js
 +++ b/node_modules/@serverless-stack/cli/bin/scripts.js
-@@ -15,6 +15,7 @@ require("source-map-support").install();
- 
- const path = require("path");
- const fs = require("fs-extra");
-+const fp = require('lodash/fp');
- const yargs = require("yargs");
- const chalk = require("chalk");
- const spawn = require("cross-spawn");
-@@ -414,8 +415,18 @@ async function run() {
+@@ -435,8 +435,18 @@ async function run() {
  
        // Prepare app
        prepareCdk(argv, cliInfo, config)
