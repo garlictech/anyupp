@@ -13,45 +13,45 @@ Feature: Cash and card payment
     And I should see "FANTA #2" with picture
 
   Scenario: Pay successfully with cash or card
-    Then I should see "HAMBURGER #1" with picture
-    And I should see "FANTA #2" with picture
     When I tap the "FANTA #2" card under "Test product category #1 name" category
-    And I tap the "Add To Cart" button
+    And I tap the "Add To Cart (298Ft)" button
     Then The shop cart icon banner should show "1"
     When I tap the cart icon
     And I tap the qr code icon
     And the qr code reader opens the camera
     And I read a seat qr code
     Then I should see the "Finding your seat..." and the "Connected to" loading screens
-    And I get the text message "New table reserved!"
+    And I get the text message "New Table Reserved!"
     And there is the "Cart" screen
+    And I should see "Total cost 298 Ft" text
     When I tap the button with the arrow
-    Then there is a bottom dialog
+    Then there is a payment dialog
     When I tap the option "Credit card at my table to my server + SZÉP card"
     Then the option "Credit card at my table to my server + SZÉP card" is highlighted
+    And there is a "PLACE ORDER" button
     When I click the button next to "I want a VAT invoice"
     And I tap the "FILL INVOICE FORM" button
-    Then I should see "Invoice info" page
+    Then I should see "Invoice info" text on the dialog
     When I fill out the "Name/Company name" input with "E2E test Company"
     And I fill out the "Tax ID Number" input with "1234567890"
-    Then the "Country" button should contain "Hungary"
+    Then the "Country" field should contain "Magyarország"
     When I fill out the "Zip code" input with "1234"
     And I fill out the "City" input with "Nekeresd"
     And I fill out the "Street address" input with "Test street"
     And I fill out the "Invoice email" input with "testuser+test@anyupp.com"
     And I tap the "PLACE ORDER" button
     Then I wait around 10 secs
-    And the "Orders" option is selected on the bottom navigator
+    And the "Orders" option is selected on the top/bottom navigator
     And the banner on the "Orders" icon is "1"
-    And the "Orders" page is selected on the top navigator
     And the state of the order is "WAITING"
+    And I should see "Total cost 298 Ft" text
     When the admin set the state of order to "SUCCESS"
     Then in the app the order should be in "PLACED" state
     When the admin set the state of order to "PROCESSING"
     Then I get the text message "Message from AnyUpp! Your order is being processed."
     Then in the app the order should be in "PROCESSING" state
     When the admin set the state of order to "READY"
-    Then I get the text messsage "Message from AnyUpp! Your order is ready!"
+    Then I get the text message "Message from AnyUpp! Your order is ready!"
     Then in the app the order should be in "READY" state
     When the admin set the state of order to "SERVED"
     Then I should see the text "No active order placed yet"
@@ -68,7 +68,7 @@ Feature: Cash and card payment
     Then I should see the tabs in HU language
     When I tap the "Étlap" icon from the bottom navigation bar
     And I tap the "FANTA #2" card under "Teszt termék kategória #1 név" category
-    And I tap the "Kosárhoz adás" button
+    And I tap the "Kosárhoz adás (298Ft)" button
     Then The shop cart icon banner should show "1"
     When I tap the cart icon
     Then there is the "Kosár" screen
@@ -83,9 +83,8 @@ Feature: Cash and card payment
     And I should see the form filled with the previous datas
     When I tap the "RENDELÉS" button
     Then I wait around 10 secs
-    And the "Rendelések" option is selected on the bottom navigator
+    And the "Rendelések" option is selected on the top/bottom navigator
     And the banner on the "Rendelések" icon is "2"
-    And the "Rendelések" page is selected on the top navigator
     And the state of the order is "VÁR"
     When the admin set the state of order to "SIKERES"
     Then in the app the order should be in "BEADVA" state
@@ -104,7 +103,7 @@ Feature: Cash and card payment
 
   Scenario: Failed payment with cash or card
     When I tap the "FANTA #2" card under "Test product category #1 name" category
-    And I tap the "Add To Cart" button
+    And I tap the "Add To Cart (298Ft)" button
     Then The shop cart icon banner should show "1"
     When I tap the cart icon
     When I tap the qr code icon
@@ -118,9 +117,8 @@ Feature: Cash and card payment
     Then the option "Credit card at my table to my server + SZÉP card" is highlighted
     And I tap the "PLACE ORDER" button
     Then I wait around 10 secs
-    And the "Orders" option is selected on the bottom navigator
+    And the "Orders" option is selected on the top/bottom navigator
     And the banner on the "Orders" icon is "1"
-    And the "Orders" page is selected on the top navigator
     And the state of the order is "WAITING"
     When the admin set the state of order to "FAILED"
     And the admin confirms with "Payment mode change"

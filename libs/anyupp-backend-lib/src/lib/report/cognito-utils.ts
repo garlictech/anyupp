@@ -6,9 +6,9 @@ import { defer, EMPTY, from } from 'rxjs';
 import { expand, map, reduce, shareReplay } from 'rxjs/operators';
 
 import { ReportDeps, ReportUserData } from './interfaces';
-import { fourWeeksAgo, startOfThisYear } from './report-utils';
+import { fourWeeksAgo, startOfThisYear, endOfDay } from './report-utils';
 
-export const getCognitoUsersStream = (deps: ReportDeps) => {
+export const cognitoUsersStream$ = (deps: ReportDeps) => {
   const cisp = new CognitoIdentityServiceProvider({
     apiVersion: '2016-04-18',
     region: deps.region,
@@ -24,6 +24,7 @@ export const getCognitoUsersStream = (deps: ReportDeps) => {
   const usersCreatedFrom = new Date(
     Math.min(startOfThisYear(deps.reportDate), fourWeeksAgo(deps.reportDate)),
   ).getTime();
+  const usersCreatedTo = new Date(endOfDay(deps.reportDate)).getTime();
 
   const getCognitoPage = (PaginationToken?: string) =>
     defer(() => from(cisp.listUsers({ ...params, PaginationToken }).promise()));
@@ -37,6 +38,7 @@ export const getCognitoUsersStream = (deps: ReportDeps) => {
         .filter(
           u =>
             (u.UserCreateDate?.getTime() || 0) >= usersCreatedFrom &&
+            (u.UserCreateDate?.getTime() || 0) <= usersCreatedTo &&
             u.Username &&
             u.Attributes?.[0]?.Value,
         )
@@ -47,7 +49,6 @@ export const getCognitoUsersStream = (deps: ReportDeps) => {
         })),
     ),
     filterNullish<ReportUserData[]>(),
-    // concatMap(x => from(x)),
     reduce(
       (acc: ReportUserData[], res: ReportUserData[]) => acc.concat(res),
       [],

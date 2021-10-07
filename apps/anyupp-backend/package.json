@@ -8,25 +8,25 @@
     "remove": "sst remove"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.124.0",
+    "@aws-cdk/assert": "1.125.0",
     "@types/aws-serverless-express": "3.3.5"
   },
   "dependencies": {
-    "@aws-cdk/aws-amplify": "1.124.0",
-    "@aws-cdk/aws-apigateway": "1.124.0",
-    "@aws-cdk/aws-appsync": "1.124.0",
-    "@aws-cdk/aws-cognito": "1.124.0",
-    "@aws-cdk/aws-iam": "1.124.0",
-    "@aws-cdk/aws-lambda": "1.124.0",
-    "@aws-cdk/core": "1.124.0",
-    "@aws-cdk/aws-cloudfront": "1.124.0",
-    "@aws-cdk/aws-dynamodb": "1.124.0",
-    "@aws-cdk/aws-route53": "1.124.0",
-    "@aws-cdk/aws-route53-targets": "1.124.0",
-    "@aws-cdk/aws-certificatemanager": "1.124.0",
-    "@aws-cdk/aws-s3": "1.124.0",
-    "@aws-cdk/aws-ssm": "1.124.0",
-    "@aws-cdk/aws-s3-deployment": "1.124.0",
-    "@aws-cdk/custom-resources": "1.124.0"
+    "@aws-cdk/aws-amplify": "1.125.0",
+    "@aws-cdk/aws-apigateway": "1.125.0",
+    "@aws-cdk/aws-appsync": "1.125.0",
+    "@aws-cdk/aws-cognito": "1.125.0",
+    "@aws-cdk/aws-iam": "1.125.0",
+    "@aws-cdk/aws-lambda": "1.125.0",
+    "@aws-cdk/core": "1.125.0",
+    "@aws-cdk/aws-cloudfront": "1.125.0",
+    "@aws-cdk/aws-dynamodb": "1.125.0",
+    "@aws-cdk/aws-route53": "1.125.0",
+    "@aws-cdk/aws-route53-targets": "1.125.0",
+    "@aws-cdk/aws-certificatemanager": "1.125.0",
+    "@aws-cdk/aws-s3": "1.125.0",
+    "@aws-cdk/aws-ssm": "1.125.0",
+    "@aws-cdk/aws-s3-deployment": "1.125.0",
+    "@aws-cdk/custom-resources": "1.125.0"
   }
 }

@@ -23,7 +23,8 @@ Feature: Dashboard
     Then I should see at least 20 orders as I scrolling up on the list
 
   Scenario: Get the order to History from Active orders (stripe)
-    Given I have an inapp "PLACED" order with 1 "Hamburger #1" product
+    Given I create a "Hamburger #1" cash/card order with "ROOM TEMPERATURE" component
+    And the order is in "PLACED" state
     Then I should see the order id starts with "#"
     And I should see the time of the created order
     When I click on the order with "148 Ft"
@@ -31,6 +32,14 @@ Feature: Dashboard
     Then I should see the green badge with "Success" caption
     When I click on the "PLACED" button next to the product name
     Then I should see the buttons in "PROCESSING"
+    When I click on the "Lanes" icon
+    And I click on the "bár" checkbox
+    Then I should see the "Hamburger #1" in "Processing"
+    And I should see "CLASSIC" text
+    And I should see "ROOM TEMPERATURE" text
+    When I click on the "Active orders" icon
+    And the "Placed orders" icon is selected
+    When I click on the order with "148 Ft"
     When I click on the "PROCESSING" button next to the product name
     Then I should see the buttons in "READY"
     When I click on the "READY" button next to the product name
@@ -48,9 +57,10 @@ Feature: Dashboard
     And I click on the close button
 
   Scenario: Get the order to History from Active orders (cash/card)
-    Given I have a cash/card "NONE" order with 1 "Fanta #2" product
+    Given I create a "Fanta #2" cash/card order with "ROOM TEMPERATURE" component
+    And the order is in "NONE" state
     When I click on the "Manual payments" icon with title
-    And I scroll down on the list
+    And I scroll down to the bottom of the list
     Then I should see the order selection with dark grey color
     Then I should see an order with an id starts with "#"
     And I should see the time of the created order
@@ -198,8 +208,9 @@ Feature: Dashboard
   Scenario: Report export feature
     When I click on the "Reports" icon with title
     Then I should see "Product mix" table
-    When I click on the "Export" button
-    Then I should download the product mix export file
+    When I click on the "LIST ALL" button
+    When I click on the "EXPORT" button
+    Then the xlsx file is downloaded with the name "Késdobáló #111"
 
 #  Scenario: Reports feature
 #    When I click on the "Reports" icon with title

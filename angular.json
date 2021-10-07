@@ -48,7 +48,8 @@
               "ulid",
               "zen-observable",
               "@aws-amplify/core",
-              "@aws-amplify/auth"
+              "@aws-amplify/auth",
+              "xlsx"
             ],
             "scripts": [],
             "vendorChunk": true,
