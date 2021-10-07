@@ -8710,10 +8710,10 @@
     resolve-from "^5.0.0"
     rollup-pluginutils "^2.8.2"
 
-"@vvo/tzdb@6.21.0":
-  version "6.21.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.21.0.tgz#22b17dc390ca9ab622ca089e518ffae83375976f"
-  integrity sha512-yW6tRzUihnW2we3yvsTmb9+iDHawkiABl1uaFVorrGwy4K5WAoPWGnNBR7o0uIRNqqitXGEFm66voXOlLYvR+g==
+"@vvo/tzdb@6.26.0":
+  version "6.26.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.26.0.tgz#e00749ea075cb58b04190b80dbc0a2a988f88325"
+  integrity sha512-i9vUOdHWKkiIF/MvKR217gTGTsEoscZIZvPmu4QnLqJtHYbRdGDEbDbGKLFmIsmvU4ou4yVC8pch9Mix/bIVig==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
@@ -12848,10 +12848,10 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-cypress-cucumber-preprocessor@4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-4.2.0.tgz#9b41b7e58940e5fdb478cd41434c93ed62bd397b"
-  integrity sha512-iVm+gUROvg8lDIFStP4/B+0xHAwj6c6HCoUtkZqq8Ee/tcqe2Vlhz1eAq2Q5+tzmCk2/CIh06suvqB+RQpjWBw==
+cypress-cucumber-preprocessor@4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-4.3.0.tgz#657d98904f7ba84df929aeb55ac4e4b981e79261"
+  integrity sha512-/jgkC5BN6NrSQSMDaxxDzq9hIbhhtVcQg4u7soW3rJn57vFhIAs1x38N0kYgv7+JZ0UafDdVM7FllUSHhjM9KQ==
   dependencies:
     "@cypress/browserify-preprocessor" "^3.0.1"
     chai "^4.2.0"
@@ -20008,10 +20008,10 @@ mochawesome-report-generator@5.2.0, mochawesome-report-generator@^5.2.0:
     validator "^10.11.0"
     yargs "^13.2.2"
 
-mochawesome@6.3.0:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/mochawesome/-/mochawesome-6.3.0.tgz#23e326268cf971f504d74f1afba9253a36c5b2e1"
-  integrity sha512-+ZtlqntK3NOre6MJqe1mtr0EIB0JppHytDC3dKFpFs7JycRxGofk/ATwnScHcrvUWT3633oCzNLlPvzOdwrseg==
+mochawesome@6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/mochawesome/-/mochawesome-6.3.1.tgz#9dc1e73165f4686a6f29c382d36b8cf3cd6a6e9c"
+  integrity sha512-G2J7Le8ap+0222otJQEUVFs7RYzphiIk21NzaBZE2dbyHJ2+9aai+V2cV7lreEKigDpwQ+SXeiiBH9KQlrkaAQ==
   dependencies:
     chalk "^4.1.0"
     diff "^5.0.0"
