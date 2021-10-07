@@ -80,21 +80,20 @@ export const seedAdminUser = (deps: SeederDependencies) =>
           return of({});
         }),
         switchMap(() =>
-          defer(() =>
-            from(
-              resolverCreateAdminUser({
-                input: {
-                  name: username,
-                  phone,
-                  email,
-                },
-              })({
-                ...deps,
-                userNameGenerator: () => username,
-                docClient,
-                adminUserTableName: tableConfig.AdminUser.TableName,
-              }),
-            ),
+          from(
+            resolverCreateAdminUser({
+              input: {
+                name: username,
+                phone,
+                email,
+                id: username,
+              },
+            })({
+              ...deps,
+              userNameGenerator: () => username,
+              docClient,
+              adminUserTableName: tableConfig.AdminUser.TableName,
+            }),
           ),
         ),
         catchError(err => {
@@ -116,39 +115,40 @@ export const seedAdminUser = (deps: SeederDependencies) =>
           Password: password,
           Permanent: true,
         })),
-
-        fp.map(params => [
+        fp.map(params =>
           defer(() =>
-            deps.cognitoidentityserviceprovider
-              .adminSetUserPassword(params)
-              .promise(),
-          ).pipe(tap(() => console.log('USER PASSWORD SET', params))),
-
-          defer(() =>
-            deps.cognitoidentityserviceprovider
-              .adminUpdateUserAttributes({
-                UserPoolId: deps.userPoolId,
-                Username: params.Username,
-                UserAttributes: [
-                  {
-                    Name: 'email_verified',
-                    Value: 'true',
-                  },
-                  {
-                    Name: 'phone_number_verified',
-                    Value: 'true',
-                  },
-                ],
-              })
-              .promise(),
-          ).pipe(
-            tap(() => console.log('USER EMAIL AND PHONE VERIFIED', params)),
+            from(
+              deps.cognitoidentityserviceprovider
+                .adminUpdateUserAttributes({
+                  UserPoolId: deps.userPoolId,
+                  Username: params.Username,
+                  UserAttributes: [
+                    {
+                      Name: 'email_verified',
+                      Value: 'true',
+                    },
+                    {
+                      Name: 'phone_number_verified',
+                      Value: 'true',
+                    },
+                  ],
+                })
+                .promise(),
+            ).pipe(
+              switchMap(() =>
+                from(
+                  deps.cognitoidentityserviceprovider
+                    .adminSetUserPassword(params)
+                    .promise(),
+                ).pipe(tap(() => console.log('USER PASSWORD SET', params))),
+              ),
+            ),
           ),
-        ]),
-        fp.flatten,
+        ),
         combineLatest,
       ),
     ),
+    tap(console.warn),
     switchMap(() =>
       pipe(
         userData.map(({ username, email }) =>
@@ -259,7 +259,7 @@ export const seedBusinessData = (deps: SeederDependencies) =>
 const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
   of('start').pipe(
     switchMap(() =>
-      defer(() =>
+      from(
         unitRequestHandler({
           crudSdk: deps.crudSdk,
           hashGenerator: (password: string) => `HASHED ${password}`,
@@ -368,7 +368,7 @@ const seedConsumerUser = (deps: SeederDependencies, userData: ConsumerUser) => {
       Permanent: true,
     })),
     switchMap(params =>
-      defer(() =>
+      from(
         deps.cognitoidentityserviceprovider
           .adminSetUserPassword(params)
           .promise(),
@@ -385,8 +385,9 @@ const seedConsumerUser = (deps: SeederDependencies, userData: ConsumerUser) => {
 };
 
 export const seedAll = (deps: SeederDependencies) =>
-  seedAdminUser(deps).pipe(
-    switchMap(() =>
+  seedAdminUser(deps)
+    .pipe
+    /*switchMap(() =>
       seedConsumerUser(deps, {
         username: 'test-monad',
         email: 'testuser+monad@anyupp.com',
@@ -436,6 +437,5 @@ export const seedAll = (deps: SeederDependencies) =>
       ),
     ),
     delay(5000),
-    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
-    catchError(() => of(true)),
-  );
+    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),*/
+    ();

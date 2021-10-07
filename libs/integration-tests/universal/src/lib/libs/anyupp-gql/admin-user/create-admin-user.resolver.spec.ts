@@ -40,18 +40,42 @@ describe('Admin user creation/deletion', () => {
     docClient,
     adminUserTableName: tableConfig.AdminUser.TableName,
   };
+  const localErrorChecker = (label: string) =>
+    catchError(err => {
+      expect(err).toMatchSnapshot(label);
+      return of({});
+    });
+
+  const remoteErrorChecker = (label: string) =>
+    catchError(err => {
+      expect(err).toMatchSnapshot(
+        {
+          time: expect.any(String),
+          requestId: expect.any(String),
+          retryDelay: expect.any(Number),
+        },
+        label,
+      );
+      return of({});
+    });
 
   const testLogic = ({
+    label,
     deleteOp,
     createOp,
+    errorChecker,
   }: {
+    label: string;
     deleteOp: CrudSdk['DeleteAdminUser'] | AnyuppSdk['DeleteAdminUser'];
     createOp: CrudSdk['CreateAdminUser'] | AnyuppSdk['CreateAdminUser'];
+    errorChecker: Function;
   }) =>
     deleteOp({ input: { id: userName } }).pipe(
       // yes, we can get anything here
       catchError((err: any) =>
-        err?.code === 'UserNotFoundException' ? of({}) : throwError(err),
+        JSON.stringify(err).includes('User does not exist')
+          ? of({})
+          : throwError(err),
       ),
       // ERROR - Invalid phoneNumber
       switchMap(() =>
@@ -61,12 +85,7 @@ describe('Admin user creation/deletion', () => {
             name: 'Mekk elek',
             phone: 'NOT_VALID_PHONE_NUMBER',
           },
-        }).pipe(
-          catchError(err => {
-            expect(err).toMatchSnapshot('Invalid phone number error');
-            return of({});
-          }),
-        ),
+        }).pipe(errorChecker(label + ': Malformed phone number')),
       ),
       // ERROR - Invalid mail
       switchMap(() =>
@@ -76,12 +95,7 @@ describe('Admin user creation/deletion', () => {
             name: 'Mekk elek',
             phone,
           },
-        }).pipe(
-          catchError(err => {
-            expect(err).toMatchSnapshot('Malformed email error');
-            return of({});
-          }),
-        ),
+        }).pipe(errorChecker(label + ': Malformed email')),
       ),
       // SUCCESSFULL CREATE
       switchMap(() =>
@@ -90,10 +104,14 @@ describe('Admin user creation/deletion', () => {
             email,
             name: 'Mekk Elek',
             phone,
+            id: userName,
           },
         }).pipe(
           catchError(err => {
-            console.error('SHOULD NOT THROW - successful-create-step', err);
+            console.error(
+              'SHOULD NOT THROW - successful-create-step',
+              JSON.stringify(err, null, 2),
+            );
             return throwError(err);
           }),
         ),
@@ -105,10 +123,13 @@ describe('Admin user creation/deletion', () => {
             email,
             name: 'Mekk Elek',
             phone,
+            id: userName,
           },
         }).pipe(
           catchError(err => {
-            expect(err).toMatchSnapshot('Should not create existing user');
+            expect(err).toMatchSnapshot(
+              label + ': Should not create existing user',
+            );
             return of({});
           }),
         ),
@@ -116,25 +137,29 @@ describe('Admin user creation/deletion', () => {
       // Cleanup
       switchMap(() => deleteOp({ input: { id: userName } })),
       tap(result => {
-        expect(result).toMatchSnapshot('Cleanup');
+        expect(result).toMatchSnapshot(label + ': Cleanup');
       }),
     );
 
   test('Admin user should be created/deleted with resolver code', done => {
     testLogic({
+      label: 'RESOLVER CODE',
       createOp: (x: CrudApi.CreateAdminUserMutationVariables) =>
         createAdminUser(x)(deps),
       deleteOp: x => deleteAdminUser(x)(deps),
+      errorChecker: localErrorChecker,
     }).subscribe(() => done());
   }, 15000);
 
-  test('Admin user should be created/deleted with authenticated API call', done => {
+  test.only('Admin user should be created/deleted with authenticated API call', done => {
     createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
       .pipe(
         switchMap(sdk =>
           testLogic({
+            label: 'Auth CRUD api call',
             createOp: sdk.CreateAdminUser,
             deleteOp: sdk.DeleteAdminUser,
+            errorChecker: remoteErrorChecker,
           }),
         ),
       )
@@ -146,19 +171,23 @@ describe('Admin user creation/deletion', () => {
       .pipe(
         switchMap(sdk =>
           testLogic({
+            label: 'OLD API CALL',
             createOp: sdk.authAnyuppSdk.CreateAdminUser,
             deleteOp: sdk.authAnyuppSdk.DeleteAdminUser,
+            errorChecker: remoteErrorChecker,
           }),
         ),
       )
       .subscribe(() => done());
   }, 25000);
 
-  test.only('Admin user should be created/deleted with IAM API call', done => {
+  test('Admin user should be created/deleted with IAM API call', done => {
     const sdk = createIamCrudSdk();
     testLogic({
+      label: 'IAM API call',
       createOp: sdk.CreateAdminUser,
       deleteOp: sdk.DeleteAdminUser,
+      errorChecker: localErrorChecker,
     }).subscribe(() => done());
   }, 25000);
 });

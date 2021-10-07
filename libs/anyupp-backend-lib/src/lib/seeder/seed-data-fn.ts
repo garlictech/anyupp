@@ -132,7 +132,7 @@ export const createAdminUser =
       id: adminUserId,
       name: 'John Doe',
       email,
-      phone: '123123213',
+      phone: '+123123213',
       profileImage:
         'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
     };

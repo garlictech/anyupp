@@ -1,11 +1,11 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as fp from 'lodash/fp';
-import { defer, from } from 'rxjs';
+import { from, throwError } from 'rxjs';
 import {
+  catchError,
   filter,
   map,
-  mapTo,
   switchMap,
   tap,
   throwIfEmpty,
@@ -19,15 +19,13 @@ export const deleteAdminUser =
   ): ReturnType<CrudApi.CrudSdk['DeleteAdminUser']> => {
     console.debug('deleteAdminUser Resolver parameters: ', params);
 
-    return defer(() =>
-      from(
-        deps.cognitoidentityserviceprovider
-          .adminGetUser({
-            UserPoolId: deps.userPoolId,
-            Username: params.input.id,
-          })
-          .promise(),
-      ),
+    return from(
+      deps.cognitoidentityserviceprovider
+        .adminGetUser({
+          UserPoolId: deps.userPoolId,
+          Username: params.input.id,
+        })
+        .promise(),
     ).pipe(
       map(
         (user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>

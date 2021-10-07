@@ -22,7 +22,7 @@ export const createAdminUser =
     deps: AdminUserResolverDeps,
   ): ReturnType<CrudApi.CrudSdk['CreateAdminUser']> => {
     console.debug('createAdminUser Resolver parameters: ', vars);
-    const newUsername = deps.userNameGenerator();
+    const newUsername = vars.input.id ?? deps.userNameGenerator();
 
     return pipe(
       {
@@ -82,7 +82,11 @@ export const createAdminUser =
           ),
         ),
       ),
-      switchMap(res => (E.isLeft(res) ? throwError(res.left) : of(res.right))),
+      switchMap(res =>
+        E.isLeft(res)
+          ? throwError(JSON.stringify(res.left, null, 2))
+          : of(res.right),
+      ),
       switchMap(params =>
         from(
           deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),

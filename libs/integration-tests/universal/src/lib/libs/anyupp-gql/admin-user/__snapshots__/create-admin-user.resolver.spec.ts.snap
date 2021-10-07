@@ -1,14 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: Cleanup 1`] = `undefined`;
+exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Cleanup 1`] = `null`;
 
-exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: Invalid phone number error 1`] = `[InvalidParameterException: Invalid phone number format.]`;
+exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Malformed email 1`] = `[Error: GraphQL error: Invalid email address format.]`;
 
-exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: Malformed email error 1`] = `[InvalidParameterException: Invalid email address format.]`;
+exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Malformed phone number 1`] = `[Error: GraphQL error: Invalid phone number format.]`;
 
-exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: Should not create existing user 1`] = `
-Object {
+exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Should not create existing user 1`] = `
+[Error: GraphQL error: {
   "code": "UserAlreadyExists",
-  "message": "User already exists",
-}
+  "message": "User already exists"
+}]
+`;
+
+exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: RESOLVER CODE: Cleanup 1`] = `undefined`;
+
+exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: RESOLVER CODE: Malformed email 1`] = `[InvalidParameterException: Invalid email address format.]`;
+
+exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: RESOLVER CODE: Malformed phone number 1`] = `[InvalidParameterException: Invalid phone number format.]`;
+
+exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: RESOLVER CODE: Should not create existing user 1`] = `
+"{
+  \\"code\\": \\"UserAlreadyExists\\",
+  \\"message\\": \\"User already exists\\"
+}"
 `;

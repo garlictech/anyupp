@@ -19,6 +19,7 @@ import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityservi
 import { v1 as uuidV1 } from 'uuid';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { DynamoDB } from 'aws-sdk';
+import { Observable } from 'rxjs';
 
 export interface AnyuppRequest {
   typeName: string;
@@ -117,16 +118,15 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     },
   };
 
-  // We don't care the erorr content for the moment
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleError = (error: any) => {
-    throw error?.message ?? error;
-  };
+  const op = resolverMap[event.typeName]?.[event.fieldName]?.(event.arguments);
 
-  return (
-    resolverMap[event.typeName]
-      ?.[event.fieldName]?.(event.arguments)
-      ?.catch(handleError) ??
-    Promise.reject('Unknown graphql field in the appsync-lambda handler')
-  );
+  if (op === undefined) {
+    return Promise.reject(
+      'Unknown graphql field in the appsync-lambda handler',
+    );
+  } else if (op.toPromise === 'function') {
+    return op.toPromise();
+  } else {
+    return op;
+  }
 };

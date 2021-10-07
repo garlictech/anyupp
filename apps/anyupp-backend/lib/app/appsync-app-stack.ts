@@ -131,7 +131,7 @@ export class AppsyncAppStack extends sst.Stack {
     const apiLambda = new lambda.Function(this, 'AppsyncLambda', {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
-      functionName: `${scope}-anyupp-appsync-resolvers`,
+      functionName: `${scope}-anyupp-graphql-resolvers`,
       handler: 'lib/lambda/appsync-lambda/index.handler',
       timeout: cdk.Duration.seconds(30),
       memorySize: 512,
@@ -183,6 +183,7 @@ export class AppsyncAppStack extends sst.Stack {
             tableConfig.GeneratedProduct.TableArn,
             tableConfig.GeneratedProductCategory.TableArn,
             tableConfig.Unit.TableArn,
+            tableConfig.AdminUser.TableArn,
           ],
         }),
       );
