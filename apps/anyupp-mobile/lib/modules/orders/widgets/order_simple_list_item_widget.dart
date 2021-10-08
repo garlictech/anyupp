@@ -3,7 +3,6 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OrderSimpleListItemWidget extends StatelessWidget {
   final OrderItem orderItem;
@@ -31,17 +30,17 @@ class OrderSimpleListItemWidget extends StatelessWidget {
               children: [
                 Text(
                   getLocalizedText(context, orderItem.productName),
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 14,
-                    color: theme.text,
+                    color: theme.secondary,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
                   '${getLocalizedText(context, orderItem.variantName)} x ${orderItem.quantity}',
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 14,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                 ),
                 ...getExtraNames(context)
@@ -50,9 +49,9 @@ class OrderSimpleListItemWidget extends StatelessWidget {
           ),
           Text(
             formatCurrency(orderItem.sumPriceShown.priceSum, orderItem.priceShown.currency),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 14,
-              color: theme.text,
+              color: theme.secondary,
             ),
           ),
         ],
@@ -68,8 +67,8 @@ class OrderSimpleListItemWidget extends StatelessWidget {
           children.add(Text(
             getLocalizedText(context, generatedProductConfigComponent.name),
             textAlign: TextAlign.left,
-            style: GoogleFonts.poppins(
-              color: theme.text,
+            style: Fonts.satoshi(
+              color: theme.secondary,
               fontWeight: FontWeight.normal,
               fontSize: 14,
             ),

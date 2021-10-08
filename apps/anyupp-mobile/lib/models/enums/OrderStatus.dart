@@ -4,6 +4,5 @@ enum OrderStatus {
   processing,
   ready,
   served,
-  failed,
   rejected,
 }

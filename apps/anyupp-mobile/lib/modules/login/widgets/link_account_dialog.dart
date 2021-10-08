@@ -1,7 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/login/login.dart';
 
@@ -13,7 +13,7 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
     barrierDismissible: false,
     builder: (BuildContext context) {
       return Dialog(
-        backgroundColor: theme.background,
+        backgroundColor: theme.secondary0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ), //this right here
@@ -27,17 +27,17 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
               children: [
                 Text(
                   transEx(context, 'login.accountLink.title'),
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 20.0,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                 ),
                 Text(
                   transEx(context, 'login.accountLink.description'),
                   textAlign: TextAlign.justify,
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 12.0,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                 ),
                 Padding(
@@ -47,9 +47,9 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
                 Text(
                   transEx(context, 'login.accountLink.selectAccount'),
                   textAlign: TextAlign.left,
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 16.0,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                 ),
                 ListView.builder(
@@ -58,21 +58,18 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
                   itemBuilder: (context, index) {
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: theme.indicator,
+                        primary: theme.primary,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        // TODO removed
-                        // getIt<LoginBloc>().add(LinkLoginWithProvider(
-                        //   state.existingProviderList[index],
-                        //   state.newProviderCredentials,
-                        // ));
                       },
                       child: Text(
-                        transEx(context, 'login.accountLink.linkWith',
-                            [LoginMethodUtils.methodToString(state.existingProviderList[index])]),
-                        // 'Link with ${LoginMethodUtils.methodToString(state.existingProviderList[index])}',
-                        style: TextStyle(color: theme.text2),
+                        transEx(
+                          context,
+                          'login.accountLink.linkWith',
+                          [LoginMethodUtils.methodToString(state.existingProviderList[index])],
+                        ),
+                        style: TextStyle(color: theme.secondary0),
                       ),
                     );
                   },
@@ -82,7 +79,7 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
                   width: 320.0,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: theme.disabled,
+                      primary: theme.secondary64,
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -90,7 +87,7 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
                     },
                     child: Text(
                       transEx(context, 'login.accountLink.cancelLogin'),
-                      style: TextStyle(color: theme.text2),
+                      style: TextStyle(color: theme.secondary0),
                     ),
                   ),
                 )
@@ -111,7 +108,7 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
     barrierDismissible: false,
     builder: (BuildContext context) {
       return Dialog(
-        backgroundColor: theme.background,
+        backgroundColor: theme.secondary0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
@@ -125,17 +122,17 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
               children: [
                 Text(
                   transEx(context, 'login.accountUnlink.title'),
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 20.0,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                 ),
                 Text(
                   transEx(context, 'login.accountUnlink.description'),
                   textAlign: TextAlign.justify,
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 12.0,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                 ),
                 Padding(
@@ -148,22 +145,22 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: theme.disabled,
+                        primary: theme.secondary64,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
                       },
                       child: Text(
                         transEx(context, 'login.accountUnlink.cancel'),
-                        style: GoogleFonts.poppins(
+                        style: Fonts.satoshi(
                           fontSize: 12.0,
-                          color: theme.text2,
+                          color: theme.secondary0,
                         ),
                       ),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: theme.indicator,
+                        primary: theme.primary,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -171,9 +168,9 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
                       },
                       child: Text(
                         transEx(context, 'login.accountUnlink.unlink', [LoginMethodUtils.methodToString(method)]),
-                        style: GoogleFonts.poppins(
+                        style: Fonts.satoshi(
                           fontSize: 12.0,
-                          color: theme.text2,
+                          color: theme.secondary0,
                         ),
                       ),
                     ),

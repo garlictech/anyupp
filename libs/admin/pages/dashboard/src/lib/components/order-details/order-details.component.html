@@ -1,6 +1,12 @@
 <div class="p-2">
   <strong>#{{ order.orderNum }}</strong>
 
+  <nb-icon
+    icon="car-outline"
+    class="ms-2"
+    *ngIf="order.servingMode === EServingMode.takeaway"
+  ></nb-icon>
+
   <button
     nbSpinnerStatus="control"
     nbButton

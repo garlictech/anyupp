@@ -1,4 +1,5 @@
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as R from 'ramda';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
@@ -158,6 +159,14 @@ export const createTestUnit =
       chainId: generateChainId(chainIdx),
       name: `Késdobáló #${chainIdx}${groupIdx}${unitIdx}`,
       timeZone: 'Europe/Budapest',
+      supportedServingModes:
+        unitIdx % 2 === 1
+          ? unitFixture.unitBase.supportedServingModes
+          : [CrudApi.ServingMode.inplace],
+      supportedOrderModes:
+        unitIdx % 2 === 1
+          ? unitFixture.unitBase.supportedOrderModes
+          : [CrudApi.OrderMode.instant],
       lanes: [
         {
           color: '#e72222',
@@ -361,6 +370,32 @@ export const createTestUnit =
     );
   };
 
+export const createTestUnitsForOrderHandling =
+  () => (deps: SeederDependencies) => {
+    console.debug('createTestUnitForOrderhandling', {});
+
+    return pipe(
+      [
+        unitFixture.unitInstantInplace,
+        unitFixture.unitInstantTakeaway,
+        unitFixture.unitPickupInplace,
+        unitFixture.unitPickupTakeaway,
+      ],
+      R.map(unit => ({
+        ...unit,
+        groupId: generateGroupId(1, 1),
+        chainId: generateChainId(1),
+      })),
+      R.map(input =>
+        deleteCreate(
+          () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
+          () => deps.crudSdk.CreateUnit({ input }),
+        ),
+      ),
+      combineLatest,
+    );
+  };
+
 export const createTestProductCategory =
   (chainIdx: number, productCategoryId: number) =>
   (deps: SeederDependencies) => {
@@ -528,6 +563,7 @@ export const createTestUnitProduct =
       laneId: 'lane_01',
       isVisible: true,
       takeaway: false,
+      supportedServingModes: [CrudApi.ServingMode.takeaway],
       position: productIdx,
       variants: [
         {
@@ -597,6 +633,8 @@ export const createTestOrder =
         method: CrudApi.PaymentMethod.inapp,
       },
       takeAway: false,
+      orderMode: CrudApi.OrderMode.pickup,
+      servingMode: CrudApi.ServingMode.takeaway,
       archived: false,
       orderNum: '007007',
       statusLog: [

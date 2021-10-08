@@ -33,6 +33,7 @@
     "unit": "Unit",
     "currency": "Currency",
     "taxPercent": "Tax (%)",
+    "takeawayTaxPercent": "Takeaway tax (%)",
     "from": "From",
     "to": "To",
     "date": "Date",
@@ -86,6 +87,16 @@
       "applepay": "Apple Pay",
       "stripe": "Stripe",
       "simple": "Simple"
+    },
+    "servingModes": {
+      "title": "Serving modes",
+      "inPlace": "In place",
+      "takeAway": "Take away"
+    },
+    "orderModes": {
+      "title": "Order modes",
+      "instant": "instant",
+      "pickup": "pickup"
     },
     "transactionStatus": {
       "SUCCESS": "Success",
@@ -233,7 +244,8 @@
     "productType": {
       "drink": "Drink",
       "food": "Food",
-      "other": "Other"
+      "other": "Other",
+      "unknown": "Unknown type"
     },
     "takeaway": "Takeaway"
   },
@@ -391,7 +403,7 @@
     "superuser": "Superuser",
     "chainadmin": "Chain admin",
     "groupadmin": "Group admin",
-    "unitAdmin": "Unit admin",
+    "unitadmin": "Unit admin",
     "staff": "Staff",
     "inactive": "Inactive",
     "addChain": "Add chain",

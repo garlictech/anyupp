@@ -1,5 +1,5 @@
 import * as fp from 'lodash/fp';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import {
@@ -9,12 +9,11 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { catchGqlError, EToasterType } from '@bgap/admin/shared/utils';
+import { EToasterType, SERVING_MODES } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, IKeyValue, Product } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
@@ -40,14 +39,14 @@ export class ProductExtendFormComponent
   public currency!: string;
   public productCategories$: Observable<CrudApi.ProductCategory[]>;
   public unitLanes: IKeyValue[] = [];
+  public servingModes = SERVING_MODES;
 
-  private _selectedChainId?: string;
-  private _selectedGroupId?: string;
-  private _selectedUnitId?: string;
+  private _selectedChainId = '';
+  private _selectedGroupId = '';
+  private _selectedUnitId = '';
 
   constructor(
     protected _injector: Injector,
-    private _crudSdk: CrudSdkService,
     private _store: Store,
     private _productFormService: ProductFormService,
   ) {
@@ -72,15 +71,14 @@ export class ProductExtendFormComponent
 
     this._store
       .pipe(select(unitsSelectors.getSelectedUnit), filterNullish(), take(1))
-      .subscribe(
-        unit =>
-          (this.unitLanes = unit.lanes
-            ? unit.lanes.map(lane => ({
-                key: lane?.id || '',
-                value: lane?.name,
-              }))
-            : []),
-      );
+      .subscribe((unit: CrudApi.Unit) => {
+        this.unitLanes = unit.lanes
+          ? unit.lanes.map(lane => ({
+              key: lane?.id || '',
+              value: lane?.name,
+            }))
+          : [];
+      });
   }
 
   ngOnInit(): void {
@@ -94,7 +92,7 @@ export class ProductExtendFormComponent
       );
 
       this._productFormService.patchExtendedProductVariants(
-        this.product,
+        this.product.variants || [],
         this.dialogForm?.controls.variants as FormArray,
       );
 
@@ -104,79 +102,78 @@ export class ProductExtendFormComponent
       );
     } else {
       this.dialogForm.controls.isVisible.patchValue(true);
-
-      if (this.productLevel === EProductLevel.UNIT) {
-        this.dialogForm.controls.takeaway.patchValue(false);
-      }
     }
   }
 
   public submit() {
+    this._save().subscribe(() => {
+      this._successAndClose(this.editing ? 'update' : 'inert');
+    });
+  }
+
+  private _save() {
+    if (!this.product) {
+      throw new Error('HANDLE ME: product cannot be undefined');
+    }
+
     if (this.dialogForm?.valid) {
-      const value = { ...this.dialogForm?.value };
-
-      if (!this.product) {
-        throw new Error('HANDLE ME: product cannot be undefined');
-      }
-
       if (this.editing) {
+        const value = { ...this.dialogForm?.value };
+
+        if (!value.takeawayTax) {
+          delete value.takeawayTax;
+        }
+
+        // Handle deprecated field
+        if (this.productLevel === EProductLevel.UNIT) {
+          value.takeaway = (
+            <string[]>value.supportedServingModes || []
+          ).includes(CrudApi.ServingMode.takeaway);
+        }
+
         const input = {
-          input: {
-            id: this.product.id,
-            ...value,
-          },
+          ...value,
+          id: this.product.id,
         };
 
-        if (!input) {
-          throw new Error('HANDLE ME: input cannot be undefined');
-        }
-
         if (this.productLevel === EProductLevel.GROUP) {
-          this._crudSdk.sdk
-            .UpdateGroupProduct(input)
-            .pipe(catchGqlError(this._store))
-            .subscribe(() => {
-              this._successAndClose('update ');
-            });
+          return this._productFormService.updateGroupProduct(input);
         } else {
-          this._crudSdk.sdk
-            .UpdateUnitProduct(input)
-            .pipe(catchGqlError(this._store))
-            .subscribe(() => {
-              this._successAndClose('update');
-            });
+          return this._productFormService.updateUnitProduct(input);
         }
       } else {
-        // Save the extended product id
-        value.parentId = this.product.id;
-        value.chainId = this._selectedChainId;
-        value.groupId = this._selectedGroupId;
+        const value = {
+          ...this.dialogForm?.value,
+          parentId: this.product.id,
+          chainId: this._selectedChainId,
+          groupId: this._selectedGroupId,
+        };
+
+        if (!value.takeawayTax) {
+          delete value.takeawayTax;
+        }
+
         if (this.productLevel === EProductLevel.UNIT) {
           value.unitId = this._selectedUnitId;
           value.position = 0;
+
+          // Handle deprecated field
+          value.takeaway = (
+            <string[]>value.supportedServingModes || []
+          ).includes(CrudApi.ServingMode.takeaway);
         }
 
-        const input = {
-          input: value,
-        };
+        const input = { ...value };
 
         if (this.productLevel === EProductLevel.GROUP) {
-          this._crudSdk.sdk
-            .CreateGroupProduct(input)
-            .pipe(catchGqlError(this._store))
-            .subscribe(() => {
-              this._successAndClose('insert');
-            });
+          return this._productFormService.createGroupProduct(input);
         } else {
-          this._crudSdk.sdk
-            .CreateUnitProduct(input)
-            .pipe(catchGqlError(this._store))
-            .subscribe(() => {
-              this._successAndClose('insert');
-            });
+          return this._productFormService.createUnitProduct(input);
         }
       }
     }
+
+    return of('Invalid');
   }
 
   private _successAndClose(key: string) {

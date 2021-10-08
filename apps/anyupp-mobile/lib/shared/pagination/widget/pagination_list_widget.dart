@@ -62,7 +62,7 @@ class _PaginationListWidgetState<T> extends State<PaginationListWidget> {
           }
           return AnimationConfiguration.staggeredList(
             position: position,
-            duration: const Duration(milliseconds: 375),
+            duration: const Duration(milliseconds: 200),
             child: SlideAnimation(
               horizontalOffset: 100.0,
               child: FadeInAnimation(

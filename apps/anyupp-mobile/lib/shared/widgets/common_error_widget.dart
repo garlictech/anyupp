@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 
 class CommonErrorWidget extends StatelessWidget {
   final String error;
@@ -28,7 +28,7 @@ class CommonErrorWidget extends StatelessWidget {
             Text(
               error,
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w400,
                 color: Colors.red,
@@ -41,7 +41,7 @@ class CommonErrorWidget extends StatelessWidget {
               Text(
                 description!,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w400,
                   color: Colors.grey,
@@ -51,7 +51,7 @@ class CommonErrorWidget extends StatelessWidget {
               Text(
                 errorDetails!,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w300,
                   color: Colors.grey.withOpacity(0.7),

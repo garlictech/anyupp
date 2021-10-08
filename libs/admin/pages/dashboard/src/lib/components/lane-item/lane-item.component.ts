@@ -12,7 +12,6 @@ import {
 } from '@angular/core';
 import { OrderService } from '@bgap/admin/shared/data-access/order';
 import {
-  currentStatus as currentStatusFn,
   getNextOrderStatus,
   getOrderLaneColor,
   getPrevOrderItemStatus,
@@ -22,6 +21,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { ENebularButtonSize, ILaneOrderItem } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import { currentStatus as currentStatusFn } from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -37,6 +37,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
 
   public currentStatus = currentStatusFn;
   public EOrderStatus = CrudApi.OrderStatus;
+  public EServingMode = CrudApi.ServingMode;
   public processingTimer = 0;
 
   constructor(

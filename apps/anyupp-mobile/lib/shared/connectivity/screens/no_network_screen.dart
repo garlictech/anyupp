@@ -1,6 +1,5 @@
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class NoNetworkScreen extends StatelessWidget {
   @override
@@ -8,7 +7,7 @@ class NoNetworkScreen extends StatelessWidget {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        backgroundColor: theme.background,
+        backgroundColor: theme.secondary0,
         body: Container(
           padding: EdgeInsets.all(
             12.0,
@@ -21,17 +20,17 @@ class NoNetworkScreen extends StatelessWidget {
                 Icon(
                   Icons.cloud_off,
                   size: 64.0,
-                  color: theme.highlight,
+                  color: theme.primary,
                 ),
                 SizedBox(
                   height: 16.0,
                 ),
                 Text(
                   'No internet connection!',
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                 ),
                 SizedBox(
@@ -39,9 +38,9 @@ class NoNetworkScreen extends StatelessWidget {
                 ),
                 Text(
                   'Make sure that Wi-Fi or mobil data is turned on, and wait unitl this window disappears.',
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 11.0,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                   textAlign: TextAlign.center,
                 ),

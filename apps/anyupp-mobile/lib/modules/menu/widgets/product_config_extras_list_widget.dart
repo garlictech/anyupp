@@ -1,6 +1,8 @@
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:flutter/material.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 typedef OnExtraSetItemSelected = void Function(String extraSetId, String extraComponentId, bool selected);
 
@@ -22,9 +24,11 @@ class _ProductConfigExtrasWidgetState extends State<ProductConfigExtrasWidget> {
   }
 
   Widget _buildExtraSets(BuildContext context, List<GeneratedProductConfigSet>? extras) {
+    ServingMode? mode = takeAwayMode;
+
     List<Widget> widgets = [];
     for (int i = 0; extras != null && i < extras.length; i++) {
-      if (extras[i].type == ConfigType.EXTRA) {
+      if (extras[i].type == ConfigType.EXTRA && extras[i].supportedServingModes.contains(mode)) {
         widgets.add(ProductConfigExtrasItemWidget(
           extraSet: extras[i],
           unit: widget.unit,

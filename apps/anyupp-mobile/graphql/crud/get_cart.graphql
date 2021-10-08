@@ -68,9 +68,9 @@ query GetCurrentCart($userId: ID!, $unitId: ID!) {
         seat
         table
       }
-      takeAway
       unitId
       userId
+      servingMode
     }
   }
 }

@@ -16,10 +16,10 @@ export interface IUsersPartialState {
 
 export const usersAdapter: EntityAdapter<IUser> = createEntityAdapter<IUser>();
 
-export const initialState: IUsersState = usersAdapter.getInitialState({});
+export const initialUsersState: IUsersState = usersAdapter.getInitialState({});
 
 const reducer = createReducer(
-  initialState,
+  initialUsersState,
   on(UsersActions.init, state => ({ ...state, error: null })),
   on(UsersActions.upsertUser, (state, { user }) =>
     usersAdapter.upsertOne(user, state),

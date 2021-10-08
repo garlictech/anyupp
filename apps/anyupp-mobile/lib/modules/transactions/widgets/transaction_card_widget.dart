@@ -9,7 +9,6 @@ import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets/transaction_info_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class TransactionCard extends StatelessWidget {
@@ -33,9 +32,9 @@ class TransactionCard extends StatelessWidget {
         ),
         border: Border.all(
           width: 1.5,
-          color: theme.border2,
+          color: theme.secondary12,
         ),
-        color: theme.background,
+        color: theme.secondary0,
       ),
       child: Container(
         padding: EdgeInsets.all(0.0),
@@ -55,7 +54,7 @@ class TransactionCard extends StatelessWidget {
 
   Widget _buildDivider(BuildContext context) {
     return Divider(
-      color: theme.disabled.withOpacity(0.4),
+      color: theme.secondary64.withOpacity(0.4),
       height: 1.5,
     );
   }
@@ -70,7 +69,7 @@ class TransactionCard extends StatelessWidget {
               topLeft: Radius.circular(14.0),
               topRight: Radius.circular(14.0),
             ),
-            color: theme.background2),
+            color: theme.secondary12),
         padding: EdgeInsets.only(
           top: 14.0,
           bottom: 14.0,
@@ -86,16 +85,16 @@ class TransactionCard extends StatelessWidget {
               ),
               child: Text(
                 dateTime == null ? '-' : formatter.format(dateTime.toLocal()),
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 12,
-                  color: theme.text,
+                  color: theme.secondary,
                 ),
               ),
             ),
             GestureDetector(
               onTap: () {
                 getIt<OrderBloc>().add(LoadOrderDetail(orderId: transaction.orderId));
-                Nav.to(OrderDetailsScreen());
+                Nav.to(OrderDetailsScreenOld());
               },
               child: RichText(
                 textAlign: TextAlign.center,
@@ -103,7 +102,7 @@ class TransactionCard extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: trans(context, 'profile.transactions.details') + ' ',
-                      style: GoogleFonts.poppins(
+                      style: Fonts.satoshi(
                         fontSize: 14.0,
                         color: Color(0x993C2F2F),
                       ),
@@ -134,17 +133,17 @@ class TransactionCard extends StatelessWidget {
             children: [
               Text(
                 trans(context, 'profile.transactions.status'),
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 14,
-                  color: theme.text,
+                  color: theme.secondary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               Text(
-                trans(context, "payment.status.${enumToString(transaction.status) ?? '-'}"),
-                style: GoogleFonts.poppins(
+                enumToString(transaction.status) ?? '-',
+                style: Fonts.satoshi(
                   fontSize: 14,
-                  color: theme.text,
+                  color: theme.secondary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -158,16 +157,16 @@ class TransactionCard extends StatelessWidget {
             children: [
               Text(
                 trans(context, 'profile.transactions.paymentMethod'),
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 14,
-                  color: theme.text,
+                  color: theme.secondary,
                 ),
               ),
               Text(
-                trans(context, "profile.transactions.type.${transaction.type ?? '-'}"),
-                style: GoogleFonts.poppins(
+                transaction.type!,
+                style: Fonts.satoshi(
                   fontSize: 14,
-                  color: theme.text,
+                  color: theme.secondary,
                 ),
               ),
             ],
@@ -184,7 +183,7 @@ class TransactionCard extends StatelessWidget {
           bottomLeft: Radius.circular(14.0),
           bottomRight: Radius.circular(14.0),
         ),
-        color: theme.background2,
+        color: theme.secondary12,
       ),
       padding: EdgeInsets.only(
         top: 12.0,
@@ -197,17 +196,17 @@ class TransactionCard extends StatelessWidget {
         children: [
           Text(
             trans(context, 'orders.totalCost'),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16,
-              color: theme.text,
+              color: theme.secondary,
               fontWeight: FontWeight.w700,
             ),
           ),
           Text(
             formatCurrency(transaction.total, transaction.currency ?? 'ft'),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16,
-              color: theme.text,
+              color: theme.secondary,
               fontWeight: FontWeight.w500,
             ),
           ),

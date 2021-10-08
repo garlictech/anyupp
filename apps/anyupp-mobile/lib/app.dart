@@ -1,23 +1,23 @@
 import 'dart:async';
-
 import 'dart:io';
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
-import 'package:fa_prev/core/units/bloc/units_bloc.dart';
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/modules/takeaway/takeaway.dart';
+import 'package:fa_prev/shared/auth.dart';
+import 'package:fa_prev/shared/connectivity.dart';
+import 'package:fa_prev/shared/exception.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/user-details/user_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:in_app_update/in_app_update.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/connectivity.dart';
-import 'package:fa_prev/shared/exception.dart';
-import 'package:fa_prev/shared/locale.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -31,7 +31,6 @@ import 'modules/payment/stripe/stripe.dart';
 import 'modules/screens.dart';
 import 'modules/transactions/bloc/transactions_bloc.dart';
 import 'shared/utils/deeplink_utils.dart';
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -128,6 +127,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<MainNavigationBloc>(create: (BuildContext context) => getIt<MainNavigationBloc>()),
         BlocProvider<ConfigsetBloc>(create: (BuildContext context) => getIt<ConfigsetBloc>()),
         BlocProvider<UserDetailsBloc>(create: (BuildContext context) => getIt<UserDetailsBloc>()),
+        BlocProvider<TakeAwayBloc>(create: (BuildContext context) => getIt<TakeAwayBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, LocaleState localeState) {
@@ -136,9 +136,10 @@ class _MyAppState extends State<MyApp> {
             builder: (context, state) {
               ThemeData themeData;
               if (state is ThemeState) {
-                themeData = state.theme.getThemeData();
+                themeData = getThemeData(state.theme);
               } else {
                 themeData = ThemeData(
+                    fontFamily: 'Satoshi',
                     visualDensity: VisualDensity.adaptivePlatformDensity,
                     indicatorColor: Colors.black,
                     primarySwatch: Colors.red,

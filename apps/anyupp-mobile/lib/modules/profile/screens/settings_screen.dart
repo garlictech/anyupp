@@ -3,14 +3,13 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: theme.background,
+        backgroundColor: theme.secondary0,
         leading: Container(
           padding: EdgeInsets.only(
             left: 8.0,
@@ -22,33 +21,27 @@ class SettingsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 width: 1,
-                color: theme.highlight.withOpacity(0.2), // Color(0x33857C18),
+                color: theme.secondary.withOpacity(0.2),
               ),
-              color: theme.background, // Colors.white,
+              color: theme.secondary0,
             ),
             child: BackButton(
-              color: theme.highlight,
+              color: theme.secondary,
             ),
           ),
         ),
         title: Text(
           trans(context, 'profile.menu.settings'),
-          style: GoogleFonts.poppins(
+          style: Fonts.satoshi(
             fontSize: 18.0,
-            color: theme.text,
+            color: theme.secondary,
             fontWeight: FontWeight.w400,
           ),
         ),
         centerTitle: true,
       ),
       body: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(22.0),
-            topRight: Radius.circular(22.0),
-          ),
-          color: theme.background,
-        ),
+        color: theme.secondary0,
         child: Column(
           children: [
             SizedBox(

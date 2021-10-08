@@ -194,7 +194,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print('********* SignUpBloc.Exception()=$se');
       getIt<ExceptionBloc>().add(ShowException(se));
       if (se.subCode == SignUpException.INVALID_CONFIRMATION_CODE || se.subCode == SignUpException.LIMIT_ECXEEDED) {
-        getIt<LoginBloc>().add(SignUpConfirm(se.message!)); // TODO ez mi? ez tuti nem jó... ?!
+        getIt<LoginBloc>().add(SignUpConfirm(se.message!));
       }
     } on Exception catch (e) {
       print('********* LoginBloc.Exception()=$e');

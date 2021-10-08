@@ -6,44 +6,46 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:fa_prev/shared/nav.dart';
 
 // Representing each sandwich in menu list (Menu page)
 class ProductMenuItem extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  final String heroPrefix;
 
   ProductMenuItem({
     required this.item,
-    required this.heroPrefix,
     required this.unit,
   });
 
   Widget build(BuildContext context) {
-    return buildProductItem(context, this.unit, this.item, this.heroPrefix, theme);
+    return buildProductItem(context, this.unit, this.item, theme);
   }
 }
 
-Widget buildProductItem(
-    BuildContext context, GeoUnit unit, GeneratedProduct item, String heroPrefix, ThemeChainData theme) {
+Widget buildProductItem(BuildContext context, GeoUnit unit, GeneratedProduct item, ThemeChainData theme) {
   // Defining the dimensions and shadow of each sandwich in menu list (Menu page)
   final double heightContainer = 130;
   final double widthContainer = 130;
 
   return InkWell(
-    focusColor: theme.indicator,
+    focusColor: theme.primary,
+    highlightColor: theme.secondary40,
     onTap: () {
-      Nav.to(ProductDetailsScreen(
-        unit: unit,
-        item: item,
-        heroId: '${heroPrefix}_${item.id}',
-      ));
+      Nav.to(
+        ProductDetailsScreen(
+          unit: unit,
+          item: item,
+        ),
+        duration: Duration(milliseconds: 400),
+        animationType: NavAnim.SLIDEIN_DOWN,
+      );
     },
     child: Container(
       margin: const EdgeInsets.only(
-        top: 16.0,
+        top: 8.0,
+        bottom: 8.0,
         left: 12.0,
         right: 12.0,
       ),
@@ -53,17 +55,19 @@ Widget buildProductItem(
         ),
         border: Border.all(
           width: 1,
-          color: theme.border,
+          color: theme.secondary0,
         ),
-        color: theme.background,
+        color: theme.secondary0,
       ),
       child: Container(
         padding: EdgeInsets.all(8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Hero(
-              tag: '${heroPrefix}_${item.id}',
+            ClipRRect(
+              borderRadius: BorderRadius.circular(
+                8.0,
+              ),
               child: ImageWidget(
                 url: item.image,
                 width: widthContainer,
@@ -76,13 +80,13 @@ Widget buildProductItem(
                     ),
                     border: Border.all(
                       width: 1.5,
-                      color: theme.border.withOpacity(0.4),
+                      color: theme.secondary16.withOpacity(0.4),
                     ),
                   ),
                   width: widthContainer,
                   height: heightContainer,
                   child: CircularProgressIndicator(
-                    backgroundColor: theme.background2,
+                    backgroundColor: theme.secondary12,
                   ),
                 ),
                 errorWidget: Container(
@@ -93,7 +97,7 @@ Widget buildProductItem(
                     ),
                     border: Border.all(
                       width: 1.5,
-                      color: theme.border.withOpacity(0.4),
+                      color: theme.secondary16.withOpacity(0.4),
                     ),
                   ),
                   child: Icon(
@@ -109,40 +113,37 @@ Widget buildProductItem(
                 padding: EdgeInsets.only(left: 8, top: 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(
                         bottom: 3.0,
                       ),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              getLocalizedText(context, item.name).toUpperCase(),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: GoogleFonts.poppins(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: theme.text,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    _buildVariantsInfo(context, theme, item.variants, unit.currency),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 12.0,
-                      ),
                       child: Text(
-                        item.description == null ? '' : getLocalizedText(context, item.description!),
-                        style: GoogleFonts.poppins(
-                          fontSize: 11.0,
-                          color: theme.text,
+                        getLocalizedText(context, item.name),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: Fonts.satoshi(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w700,
+                          color: theme.secondary,
                         ),
                       ),
+                    ),
+                    Text(
+                      item.description == null ? '' : getLocalizedText(context, item.description!),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Fonts.satoshi(
+                        fontSize: 14.0,
+                        color: theme.secondary,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 20.0,
+                      ),
+                      child: _buildVariantsInfo(context, theme, item.variants, unit.currency),
                     ),
                   ],
                 ),
@@ -162,19 +163,19 @@ Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme, List<Produ
   if (prices.first == prices.last) {
     return Text(
       formatCurrency(prices.first, currency),
-      style: GoogleFonts.poppins(
+      style: Fonts.satoshi(
         fontSize: 14.0,
-        fontWeight: FontWeight.w600,
-        color: theme.highlight,
+        fontWeight: FontWeight.w700,
+        color: theme.primary,
       ),
     );
   } else {
     return Text(
-      '${formatCurrency(prices.first, currency)}-${formatCurrency(prices.last, currency)}',
-      style: GoogleFonts.poppins(
+      '${formatCurrency(prices.first, currency)} - ${formatCurrency(prices.last, currency)}',
+      style: Fonts.satoshi(
         fontSize: 14.0,
-        fontWeight: FontWeight.w600,
-        color: theme.highlight,
+        fontWeight: FontWeight.w700,
+        color: theme.primary,
       ),
     );
   }

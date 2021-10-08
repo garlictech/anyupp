@@ -1,0 +1,18 @@
+<fieldset class="form">
+  <legend class="label">
+    {{ 'common.orderModes.title' | translate }}
+  </legend>
+
+  <div>
+    <nb-checkbox
+      class="me-5 mb-3"
+      [checked]="orderModeIsChecked(orderMode)"
+      (checkedChange)="toggleOrderMode(orderMode)"
+      *ngFor="let orderMode of orderModes"
+    >
+      <label class="caption">
+        {{ 'common.orderModes.' + orderMode | translate }}</label
+      >
+    </nb-checkbox>
+  </div>
+</fieldset>

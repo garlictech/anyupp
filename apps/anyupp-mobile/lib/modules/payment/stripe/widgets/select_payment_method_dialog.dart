@@ -20,7 +20,7 @@ showSelectStripePaymentDialog(BuildContext context, {OnPaymentMethodSelected? on
           borderRadius: BorderRadius.circular(12.0),
         ),
         elevation: 0.0,
-        backgroundColor: theme.background,
+        backgroundColor: theme.secondary0,
         insetPadding: EdgeInsets.only(left: 8.0, right: 8.0),
         child: SelectStripePaymentMethodWidget(
           onItemSelected: (StripePaymentMethod method) {

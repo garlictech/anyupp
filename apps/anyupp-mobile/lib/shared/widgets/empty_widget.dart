@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:fa_prev/core/theme/theme.dart';
 
 typedef OnEmptyWidgetButtonTap = void Function();
@@ -25,6 +25,7 @@ class EmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: theme.secondary0,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -43,6 +44,7 @@ class EmptyWidget extends StatelessWidget {
           icon!,
           width: 104.0,
           fit: BoxFit.fitWidth,
+          color: theme.secondary,
         ),
       );
       widgets.add(
@@ -55,8 +57,8 @@ class EmptyWidget extends StatelessWidget {
     if (messageKey != null) {
       widgets.add(Text(
         trans(context, messageKey!),
-        style: GoogleFonts.poppins(
-          color: theme.text,
+        style: Fonts.satoshi(
+          color: theme.secondary,
           fontSize: 16.0,
           fontWeight: FontWeight.w600,
         ),
@@ -69,8 +71,8 @@ class EmptyWidget extends StatelessWidget {
       ));
       widgets.add(Text(
         trans(context, descriptionKey!),
-        style: GoogleFonts.poppins(
-          color: theme.text,
+        style: Fonts.satoshi(
+          color: theme.secondary,
           fontSize: 12.0,
           fontWeight: FontWeight.normal,
         ),
@@ -83,7 +85,7 @@ class EmptyWidget extends StatelessWidget {
       ));
       widgets.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: theme.indicator,
+          primary: theme.primary,
           padding: EdgeInsets.only(
             top: 16,
             bottom: 16,
@@ -96,9 +98,9 @@ class EmptyWidget extends StatelessWidget {
         ),
         child: Text(
           trans(context, buttonTextKey!),
-          style: GoogleFonts.poppins(
+          style: Fonts.satoshi(
             fontSize: 16,
-            color: theme.text2,
+            color: theme.secondary0,
             fontWeight: FontWeight.normal,
           ),
         ),

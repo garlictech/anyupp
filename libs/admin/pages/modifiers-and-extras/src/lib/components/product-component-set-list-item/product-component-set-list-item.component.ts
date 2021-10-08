@@ -24,5 +24,6 @@ export class ProductComponentSetListItemComponent {
     dialog.componentRef.instance.productComponentSet = fp.cloneDeep(
       this.productComponentSet,
     );
+    dialog.componentRef.instance.editing = true;
   }
 }

@@ -3,24 +3,27 @@ import 'package:fa_prev/core/theme/theme.dart';
 
 class CenterLoadingWidget extends StatelessWidget {
   final Color? color;
+  final Color? backgroundColor;
   final double size;
   final double strokeWidth;
 
-  const CenterLoadingWidget({this.color, this.size = 32.0, this.strokeWidth = 4.0});
+  const CenterLoadingWidget({this.color, this.backgroundColor, this.size = 32.0, this.strokeWidth = 4.0});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+        // color: backgroundColor ?? theme.secondary0,
+        color: Colors.transparent,
         child: Center(
-      child: Container(
-        width: size,
-        height: size,
-        child: CircularProgressIndicator(
-          backgroundColor: color ?? theme.indicator,
-          strokeWidth: strokeWidth,
-          color: theme.background2,
-        ),
-      ),
-    ));
+          child: Container(
+            width: size,
+            height: size,
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.transparent,
+              strokeWidth: strokeWidth,
+              color: color ?? theme.primary,
+            ),
+          ),
+        ));
   }
 }

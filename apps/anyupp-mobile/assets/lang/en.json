@@ -123,7 +123,16 @@
     "totalCost": "Total cost",
     "emptyCartLine1": "Your cart is empty",
     "emptyCartLine2": "Add some products to your cart.",
-    "addToCart": "Add To Cart"
+    "addToCart": "Add To Cart",
+    "pay": "PAY",
+    "myCart": "MY CART",
+    "deleteCart": "Delete cart",
+    "deleteCartTitle": "Are you sure you want to delete your cart?",
+    "deleteCartMessage": "This will remove all items in your cart from your cart.",
+    "deleteCartAccept": "Delete",
+    "deleteCartCancel": "Cancel",
+    "takeAway": "takeaway",
+    "inPlace": "in place"
   },
   "allergens": {
     "title": "Allergens",
@@ -149,13 +158,19 @@
     "noFavoritesButton": "DISCOVER MENU"
   },
   "orders": {
-    "tabCurrentOrder": "Orders",
-    "tabOrderHistory": "History",
+    "titleCurrentOrder": "Current orders",
+    "titleOrderHistory": "Order history",
     "noActiveOrder": "No active order placed yet",
     "noActiveOrderDesc": "Find the food and drinks you like under the Menu tab.",
     "noActiveOrderButton": "DISCOVER MENU",
     "totalCost": "TOTAL COST",
     "noOrderHistory": "No order history yet",
+    "details": {
+      "orderState": "Order status",
+      "orderDetails": "Order details",
+      "paymentDetails": "Payment details",
+      "otherDetails": "More details"
+    },
     "status": {
       "none": "WAITING",
       "placed": "PLACED",
@@ -169,7 +184,87 @@
     "waiting": "Please wait for the waiter.",
     "simplepay": "Pay with SimplePay",
     "stripepay": "Pay with Stripe",
-    "loadMore": "Load more..."
+    "loadMore": "Load more...",
+    "infos": {
+      "titles": {
+        "0": "Order mode",
+        "1": "Payment mode",
+        "2": "Place",
+        "3": "Order Num",
+        "4": "Order Time",
+        "5": "Order Date"
+      },
+      "values": {
+        "takeAway": "Takeaway",
+        "inPlace": "In place",
+        "card": "Card",
+        "cash": "Cash",
+        "inapp": "In app"
+      },
+      "status": {
+        "none": {
+          "title": "Processing",
+          "titleShort": "Processing",
+          "description": "Your order is being processed. Should any problems arise, our colleagues will contact you."
+        },
+        "placed": {
+          "title": "Processed",
+          "titleShort": "Processed",
+          "description": "Your order has been processed. All is well."
+        },
+        "processing": {
+          "title": "Your order is being processed",
+          "titleShort": "Under construction",
+          "description": "Your order has been processed. Everything is fine."
+        },
+        "ready": {
+          "title": "Done",
+          "titleShort": "Done",
+          "description": "Your order is complete, we will serve you soon."
+        },
+        "rejected": {
+          "title": "Deleted",
+          "titleShort": "Deleted",
+          "description": "Your order has been canceled. Our colleague will contact you shortly for further action."
+        },
+        "served": {
+          "title": "Served",
+          "titleShort": "Served",
+          "description": "Your order is complete, we will serve you soon."
+        }
+      },
+      "timeline": {
+        "none": {
+          "finished": "We have received your order.",
+          "waiting": "We have received your order."
+        },
+        "placed": {
+          "finished": "Your order has been confirmed, everything is fine!",
+          "waiting": "Your order is being confirmed."
+        },
+        "processing": {
+          "finished": "Your order is complete, we will serve / pick you up soon.",
+          "waiting": "We are just making the ordered items."
+        },
+        "ready": {
+          "finished": "Your order has been served / received.",
+          "waiting": "Your order is being served / can be received."
+        },
+        "rejected": {
+          "finished": "Your order has been rejected. Please check with the restaurant staff.",
+          "waiting": "Your order has been rejected. Please check with the restaurant staff."
+        },
+        "served": {
+          "finished": "Your order has been served / received.",
+          "waiting": "Your order is being served / can be received."
+        }
+      }
+    },
+    "paymentDetails": {
+      "card": "Card payment at the waiter.",
+      "cash": "Cash payment at the waiter.",
+      "inapp": "Stripe online payment"
+    }
   },
   "notifications": {
     "messageFrom": "Message from AnyUpp!",
@@ -210,7 +305,9 @@
         "street_address": "Street address",
         "invoice_email": "Invoice Email",
         "invoiceAddress": "Use previous address",
-        "show": "Show"
+        "show": "Show",
+        "downloadReceipt": "DOWNLOAD RECEIPT",
+        "downloadInvoice": "DOWNLOAD INVOICE"
       }
     },
     "simplePayStatus": {
@@ -265,6 +362,26 @@
       "add_card": "Add New Card",
       "card_added": "Card added successfully!",
       "success": "Success!"
+    }
+  },
+  "servingModeSheet": {
+    "title": "Please select",
+    "inPlace": {
+      "title": "In place",
+      "description": "Eat your favorites locally."
+    },
+    "takeAway": {
+      "title": "Take away",
+      "description": "Ask for your favorites to take away."
+    },
+    "dialog": {
+      "title": {
+        "takeaway": "Are you sure you want to switch to local consumption?",
+        "inplace": "Are you sure you want to switch to takeaway?"
+      },
+      "description": "This action will delete the contents of your current cart, and unfortunately you will have to re-select each item you wish to order.",
+      "cancel": "Cancel",
+      "ok": "Yes"
     }
   },
   "selectUnit": {

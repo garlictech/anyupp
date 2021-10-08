@@ -2,7 +2,6 @@ import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:fa_prev/shared/nav.dart';
 import 'common_error_widget.dart';
@@ -15,6 +14,7 @@ Future showConfirmDialog(
   required String confirmText,
   VoidCallback? onCancel,
   VoidCallback? onConfirm,
+  Widget? child,
 }) async {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
@@ -26,7 +26,7 @@ Future showConfirmDialog(
         borderRadius: BorderRadius.circular(12.0),
       ),
       elevation: 0.0,
-      backgroundColor: theme.background,
+      backgroundColor: theme.secondary0,
       child: Container(
         padding: EdgeInsets.all(8.0),
         height: 480.0,
@@ -35,10 +35,11 @@ Future showConfirmDialog(
           children: [
             Container(
               padding: EdgeInsets.only(top: 12.0),
-              child: CommonErrorWidget(
-                error: title,
-                description: message,
-              ),
+              child: child ??
+                  CommonErrorWidget(
+                    error: title,
+                    description: message,
+                  ),
             ),
             Container(
               //height: 57.0,
@@ -48,7 +49,7 @@ Future showConfirmDialog(
                 borderRadius: BorderRadius.all(Radius.zero),
                 border: Border.all(
                   width: 1.5,
-                  color: theme.border,
+                  color: theme.secondary16,
                 ),
               ),
               child: Row(
@@ -67,9 +68,9 @@ Future showConfirmDialog(
                           },
                     child: Text(
                       cancelText,
-                      style: GoogleFonts.poppins(
+                      style: Fonts.satoshi(
                         fontSize: 14.0,
-                        color: theme.text,
+                        color: theme.secondary,
                       ),
                     ),
                   ),
@@ -86,9 +87,9 @@ Future showConfirmDialog(
                           },
                     child: Text(
                       confirmText,
-                      style: GoogleFonts.poppins(
+                      style: Fonts.satoshi(
                         fontSize: 14.0,
-                        color: theme.text,
+                        color: theme.secondary,
                       ),
                     ),
                   )

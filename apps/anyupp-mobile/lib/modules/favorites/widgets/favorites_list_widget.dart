@@ -1,7 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,7 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
   @override
   void initState() {
     super.initState();
-    getIt<FavoritesBloc>().add(ListFavoriteProducts(unitId: widget.unit.id!));
+    getIt<FavoritesBloc>().add(ListFavoriteProducts(unitId: widget.unit.id));
   }
 
   @override
@@ -41,11 +40,11 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
             messageKey: 'favorites.noFavorites',
             descriptionKey: 'favorites.noFavoritesDesc',
             buttonTextKey: 'favorites.noFavoritesButton',
-            onTap: () => getIt<MainNavigationBloc>().add(
-              DoMainNavigation(
-                pageIndex: 0,
-              ),
-            ),
+            // onTap: () => getIt<MainNavigationBloc>().add(
+            //   DoMainNavigation(
+            //     pageIndex: 0,
+            //   ),
+            // ),
           );
         }
       }
@@ -62,14 +61,13 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
         itemBuilder: (context, position) {
           return AnimationConfiguration.staggeredList(
             position: position,
-            duration: const Duration(milliseconds: 375),
+            duration: const Duration(milliseconds: 200),
             child: SlideAnimation(
               horizontalOffset: 100.0,
               child: FadeInAnimation(
                 child: ProductMenuItem(
                   unit: unit,
                   item: list[position].product,
-                  heroPrefix: 'favorites',
                 ),
               ),
             ),

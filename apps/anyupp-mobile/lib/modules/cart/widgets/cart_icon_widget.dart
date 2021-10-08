@@ -32,7 +32,7 @@ class _CartIconWidgetState extends State<CartIconWidget> {
       builder: (context, state) {
         if (state is UnitSelected) {
           return StreamBuilder<Cart?>(
-            stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id!),
+            stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
             builder: (context, AsyncSnapshot<Cart?> snapshot) {
               if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                 if (snapshot.data != null) {
@@ -41,7 +41,7 @@ class _CartIconWidgetState extends State<CartIconWidget> {
                 return getCartIcon(0);
               }
               return CenterLoadingWidget(
-                color: theme.highlight,
+                color: theme.primary,
                 size: 20.0,
                 strokeWidth: 2.0,
               );
@@ -49,7 +49,7 @@ class _CartIconWidgetState extends State<CartIconWidget> {
           );
         }
         return CenterLoadingWidget(
-          color: theme.highlight,
+          color: theme.primary,
           size: 20.0,
           strokeWidth: 2.0,
         );
