@@ -106,6 +106,11 @@ const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   open: {
     from: '1970-01-01',
   },
+  supportedOrderModes: [CrudApi.OrderMode.pickup, CrudApi.OrderMode.instant],
+  supportedServingModes: [
+    CrudApi.ServingMode.inplace,
+    CrudApi.ServingMode.takeaway,
+  ],
 };
 
 const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
@@ -113,6 +118,38 @@ const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
   id: unitId_01,
   groupId: groupFixture.group_01.id,
   chainId: chainFixture.chain_01.id,
+};
+
+const unitInstantTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
+  ...unit_01,
+  id: 'unit-it',
+  name: `Instant Takeaway Kocsma`,
+  supportedOrderModes: [CrudApi.OrderMode.instant],
+  supportedServingModes: [CrudApi.ServingMode.takeaway],
+};
+
+const unitPickupTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
+  ...unit_01,
+  id: 'unit-pt',
+  name: `Pickup Takeaway Kifőzde`,
+  supportedOrderModes: [CrudApi.OrderMode.pickup],
+  supportedServingModes: [CrudApi.ServingMode.takeaway],
+};
+
+const unitInstantInplace: RequiredId<CrudApi.CreateUnitInput> = {
+  ...unit_01,
+  id: 'unit-ii',
+  name: `Instant Inplace Csárda`,
+  supportedOrderModes: [CrudApi.OrderMode.instant],
+  supportedServingModes: [CrudApi.ServingMode.inplace],
+};
+
+const unitPickupInplace: RequiredId<CrudApi.CreateUnitInput> = {
+  ...unit_01,
+  id: 'unit-pi',
+  name: `Pickup Inplace Resztoran`,
+  supportedOrderModes: [CrudApi.OrderMode.pickup],
+  supportedServingModes: [CrudApi.ServingMode.inplace],
 };
 
 export const unitFixture = {
@@ -123,4 +160,8 @@ export const unitFixture = {
   unitId_seeded_01,
   unitId_seeded_02,
   unitId_seeded_03,
+  unitInstantInplace,
+  unitInstantTakeaway,
+  unitPickupInplace,
+  unitPickupTakeaway,
 };

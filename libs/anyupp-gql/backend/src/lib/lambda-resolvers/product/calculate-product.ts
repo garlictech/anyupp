@@ -1,26 +1,25 @@
-import { DateTime } from 'luxon';
-
 import * as CrudApi from '@bgap/crud-gql/api';
+import { Maybe } from '@bgap/crud-gql/api';
 import {
-  Product,
+  defaultSupportedServingModes,
+  MergedProduct,
+  MergedProductWithPrices,
   ProductComponentMap,
   ProductComponentSetMap,
   ProductVariantWithPrice,
-  ProductWithPrices,
 } from '@bgap/shared/types';
-
+import { DateTime } from 'luxon';
 import { calculatePriceFromAvailabilities } from './calculate-price';
-import { Maybe } from '@bgap/crud-gql/api';
 
 export const calculateActualPricesAndCheckActivity = ({
   product,
   atTimeISO,
   inTimeZone,
 }: {
-  product: Product;
+  product: MergedProduct;
   atTimeISO: string;
   inTimeZone: string;
-}): ProductWithPrices | undefined => {
+}): MergedProductWithPrices | undefined => {
   if (!isProductVisibleAndHasAnyAvailableVariant(product)) {
     return undefined;
   }
@@ -45,7 +44,9 @@ export const calculateActualPricesAndCheckActivity = ({
   };
 };
 
-export const isProductVisibleAndHasAnyAvailableVariant = (product: Product) => {
+export const isProductVisibleAndHasAnyAvailableVariant = (
+  product: MergedProduct,
+) => {
   if (!product.variants) {
     throw new Error('HANDLE ME: product.variants cannot be nullish');
   }
@@ -115,7 +116,7 @@ export const toCreateGeneratedProductInputType = ({
   productComponentMap,
   productConfigSets,
 }: {
-  product: ProductWithPrices;
+  product: MergedProductWithPrices;
   unitId: string;
   productComponentSetMap: ProductComponentSetMap;
   productComponentMap: ProductComponentMap;
@@ -133,6 +134,7 @@ export const toCreateGeneratedProductInputType = ({
   ) {
     throw new Error("HANDLE ME: undefined's must be handled");
   }
+
   return {
     id: product.id,
     unitId,
@@ -152,6 +154,11 @@ export const toCreateGeneratedProductInputType = ({
       }),
     ),
     variants: product.variants.map(toGeneratedProductVariantInputType),
+    supportedServingModes:
+      product.supportedServingModes && product.supportedServingModes.length > 0
+        ? product.supportedServingModes
+        : defaultSupportedServingModes,
+    takeawayTax: product.takeawayTax || product.tax,
   };
 };
 
@@ -182,6 +189,11 @@ const toGeneratedProductConfigSetInput = ({
     name: productComponentSet.name,
     type: productComponentSet.type,
     maxSelection: productComponentSet.maxSelection,
+    supportedServingModes:
+      productComponentSet.supportedServingModes &&
+      productComponentSet.supportedServingModes.length > 0
+        ? productComponentSet.supportedServingModes
+        : defaultSupportedServingModes,
     items: productConfigSet.items.map(confComponent => {
       const productComponent =
         productComponentMap[confComponent.productComponentId];

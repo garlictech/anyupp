@@ -1,15 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models/Transaction.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
+import 'package:fa_prev/shared/utils/pdf_utils.dart';
 import 'package:fa_prev/shared/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TransactionInfoWidget extends StatelessWidget {
@@ -31,16 +26,6 @@ class TransactionInfoWidget extends StatelessWidget {
     return buildInfo(context, showInvoice);
   }
 
-  createAndOpenPdf(String? baseString) async {
-    if (baseString != null) {
-      var bytes = base64Decode(baseString.replaceAll('\n', ''));
-      final output = await getTemporaryDirectory();
-      final file = File("${output.path}/temp.pdf");
-      await file.writeAsBytes(bytes.buffer.asUint8List());
-      await OpenFile.open("${output.path}/temp.pdf");
-    }
-  }
-
   Widget buildInfo(BuildContext context, bool isInvoice) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -51,9 +36,9 @@ class TransactionInfoWidget extends StatelessWidget {
             isInvoice
                 ? trans(context, 'payment.paymentInfo.invoicing.invoice_info')
                 : trans(context, 'payment.paymentInfo.invoicing.receipt_info'),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 14,
-              color: theme.text,
+              color: theme.secondary,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -63,9 +48,9 @@ class TransactionInfoWidget extends StatelessWidget {
                 : createAndOpenPdf(transactionItem.receipt?.pdfData),
             child: Text(
               trans(context, 'payment.paymentInfo.invoicing.show'),
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 fontSize: 14,
-                color: theme.highlight,
+                color: theme.primary,
               ),
             ),
           ),

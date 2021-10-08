@@ -20,7 +20,7 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
+    <form [formGroup]="dialogForm" (ngSubmit)="submit()" autocomplete="off">
       <bgap-form-text-input
         caption="common.nameHU"
         type="text"

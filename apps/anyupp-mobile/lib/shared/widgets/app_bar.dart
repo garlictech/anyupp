@@ -1,6 +1,6 @@
 import 'package:fa_prev/core/theme/model/theme_chain_data.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 
 AppBar appBar(
   ThemeChainData theme, {
@@ -19,24 +19,24 @@ AppBar appBar(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               width: 1,
-              color: theme.border2,
+              color: theme.secondary40,
             ),
           ),
           child: BackButton(
             onPressed: () => onBackButtonPressed(),
-            color: theme.text,
+            color: theme.secondary,
           ),
         ),
       ),
       elevation: 0.0,
       iconTheme: IconThemeData(
-        color: theme.text, //change your color here
+        color: theme.secondary, //change your color here
       ),
-      backgroundColor: theme.background,
+      backgroundColor: theme.secondary0,
       title: title != null
           ? Text(
               title,
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 color: Colors.black,
               ),
               //getLocalizedText(context, widget.item.name),

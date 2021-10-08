@@ -17,10 +17,12 @@ export interface GroupsPartialState {
 export const groupsAdapter: EntityAdapter<CrudApi.Group> =
   createEntityAdapter<CrudApi.Group>();
 
-export const initialState: GroupsState = groupsAdapter.getInitialState({});
+export const initialGroupsState: GroupsState = groupsAdapter.getInitialState(
+  {},
+);
 
 const reducer = createReducer(
-  initialState,
+  initialGroupsState,
   on(GroupsActions.init, state => ({ ...state, error: null })),
   on(GroupsActions.upsertGroups, (state, { groups }) =>
     groupsAdapter.upsertMany(groups, state),

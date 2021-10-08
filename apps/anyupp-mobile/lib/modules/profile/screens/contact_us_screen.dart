@@ -1,14 +1,13 @@
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ContactUsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: theme.background,
+        backgroundColor: theme.secondary0,
         leading: Container(
           padding: EdgeInsets.only(
             left: 8.0,
@@ -20,20 +19,20 @@ class ContactUsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
                 width: 1,
-                color: theme.highlight.withOpacity(0.2), // Color(0x33857C18),
+                color: theme.primary.withOpacity(0.2), // Color(0x33857C18),
               ),
-              color: theme.background, // Colors.white,
+              color: theme.secondary0, // Colors.white,
             ),
             child: BackButton(
-              color: theme.highlight,
+              color: theme.primary,
             ),
           ),
         ),
         title: Text(
           trans(context, 'profile.menu.contact'),
-          style: GoogleFonts.poppins(
+          style: Fonts.satoshi(
             fontSize: 18.0,
-            color: theme.text,
+            color: theme.secondary,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -54,9 +53,9 @@ class ContactUsScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 25.0),
                 child: Text(
                   "We're Happy to Help You!",
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 22.0,
-                    color: theme.text,
+                    color: theme.secondary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -67,9 +66,9 @@ class ContactUsScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 15.0, right: 20.0, left: 20.0),
                 child: Text(
                   "If you have any complain about \nour services contact me ",
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 18.0,
-                    color: theme.text,
+                    color: theme.secondary,
                     fontWeight: FontWeight.w400,
                   ),
                   textAlign: TextAlign.center,

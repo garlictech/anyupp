@@ -100,11 +100,11 @@ const unitProductsReducer = createReducer(
 export const generatedProductsAdapter: EntityAdapter<CrudApi.GeneratedProduct> =
   createEntityAdapter<CrudApi.GeneratedProduct>();
 
-export const initialGeneratedUnitProductState =
+export const initialGeneratedProductState =
   generatedProductsAdapter.getInitialState({});
 
 const generatedProductsReducer = createReducer(
-  initialGeneratedUnitProductState,
+  initialGeneratedProductState,
   on(ProductsActions.upsertGeneratedProducts, (state, { products }) =>
     generatedProductsAdapter.upsertMany(products, state),
   ),

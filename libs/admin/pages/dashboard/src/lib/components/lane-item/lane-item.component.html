@@ -3,7 +3,11 @@
     class="table-seat font-larger"
     [ngStyle]="{ backgroundColor: orderItem.laneColor! }"
   >
-    {{ orderItem.place!.table! }}<br />{{ orderItem.place!.seat! }}
+    {{ orderItem.place!.table! }}<br />{{ orderItem.place!.seat! }}<br />
+
+    <div *ngIf="orderItem.servingMode === EServingMode.takeaway">
+      <nb-icon class="takeaway" icon="car-outline"></nb-icon>
+    </div>
   </div>
   <div class="row w-100 p-0 m-0 ms-2 float-right">
     <div

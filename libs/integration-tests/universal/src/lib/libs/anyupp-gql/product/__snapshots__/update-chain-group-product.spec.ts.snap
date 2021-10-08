@@ -92,6 +92,7 @@ Object {
   "id": "test_UPDATE_CHAIN_GROUP_PROD_groupProduct_01",
   "isVisible": true,
   "parentId": "test_UPDATE_CHAIN_GROUP_PROD_chainProduct_01",
+  "takeawayTax": null,
   "tax": 999,
   "variants": Array [
     Object {

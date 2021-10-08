@@ -8,17 +8,27 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { FormsService } from '@bgap/admin/shared/forms';
-import { multiLangValidator } from '@bgap/admin/shared/utils';
+import {
+  catchGqlError,
+  multiLangValidator,
+  notEmptyArray,
+  optionalValueValidator,
+} from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, Product } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
+import { Store } from '@ngrx/store';
+import { Maybe } from '@bgap/crud-gql/api';
 
 @Injectable({ providedIn: 'root' })
 export class ProductFormService {
   constructor(
     private _formBuilder: FormBuilder,
     private _formsService: FormsService,
+    private _crudSdk: CrudSdkService,
+    private _store: Store,
   ) {}
 
   public createProductFormGroup() {
@@ -58,12 +68,16 @@ export class ProductFormService {
 
     if (productLevel === EProductLevel.GROUP) {
       dialogForm.addControl('tax', new FormControl('', Validators.required));
+      dialogForm.addControl(
+        'takeawayTax',
+        new FormControl('', optionalValueValidator),
+      );
     }
     if (productLevel === EProductLevel.UNIT) {
       dialogForm.addControl('laneId', new FormControl(''));
       dialogForm.addControl(
-        'takeaway',
-        new FormControl(false, Validators.required),
+        'supportedServingModes',
+        new FormControl([], { validators: notEmptyArray }),
       );
     }
 
@@ -84,11 +98,11 @@ export class ProductFormService {
   }
 
   public patchExtendedProductVariants(
-    product: Product,
+    productVariants: Maybe<CrudApi.ProductVariant>[],
     variants: FormArray,
   ): void {
     pipe(
-      [...(product.variants || [])],
+      [...(productVariants || [])],
       fp.filter<CrudApi.ProductVariant>(x => !!x),
       x => x.sort(customNumberCompare('position')),
       fp.forEach<CrudApi.ProductVariant>(variant => {
@@ -129,5 +143,29 @@ export class ProductFormService {
 
       configSets.push(configSetGroup);
     });
+  }
+
+  public updateGroupProduct(input: CrudApi.UpdateGroupProductInput) {
+    return this._crudSdk.sdk
+      .UpdateGroupProduct({ input })
+      .pipe(catchGqlError(this._store));
+  }
+
+  public updateUnitProduct(input: CrudApi.UpdateUnitProductInput) {
+    return this._crudSdk.sdk
+      .UpdateUnitProduct({ input })
+      .pipe(catchGqlError(this._store));
+  }
+
+  public createGroupProduct(input: CrudApi.CreateGroupProductInput) {
+    return this._crudSdk.sdk
+      .CreateGroupProduct({ input })
+      .pipe(catchGqlError(this._store));
+  }
+
+  public createUnitProduct(input: CrudApi.CreateUnitProductInput) {
+    return this._crudSdk.sdk
+      .CreateUnitProduct({ input })
+      .pipe(catchGqlError(this._store));
   }
 }

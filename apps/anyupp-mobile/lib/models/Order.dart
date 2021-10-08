@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart' hide PaymentStatus;
 
 @immutable
 class Order {
@@ -10,7 +11,6 @@ class Order {
   final List<OrderItem> items;
   final PaymentMode paymentMode;
   final PriceShown sumPriceShown;
-  final bool takeAway;
   final Place? place;
   final double? paymentIntention;
   final List<StatusLog> statusLog;
@@ -19,6 +19,9 @@ class Order {
   final Transaction? transaction;
   final PaymentStatus? transactionStatus;
   final String? transactionId;
+  final ServingMode? servingMode;
+  final OrderMode? orderMode;
+
   Order({
     required this.id,
     required this.orderNum,
@@ -27,7 +30,6 @@ class Order {
     required this.items,
     required this.paymentMode,
     required this.sumPriceShown,
-    required this.takeAway,
     this.place,
     this.paymentIntention,
     required this.statusLog,
@@ -36,6 +38,8 @@ class Order {
     this.transaction,
     this.transactionStatus,
     this.transactionId,
+    this.servingMode,
+    this.orderMode,
   });
   // final UnpayCategory? unpayCategory;
 
@@ -47,7 +51,6 @@ class Order {
     List<OrderItem>? items,
     PaymentMode? paymentMode,
     PriceShown? sumPriceShown,
-    bool? takeAway,
     Place? place,
     double? paymentIntention,
     List<StatusLog>? statusLog,
@@ -56,6 +59,8 @@ class Order {
     Transaction? transaction,
     PaymentStatus? transactionStatus,
     String? transactionId,
+    ServingMode? servingMode,
+    OrderMode? orderMode,
   }) {
     return Order(
       id: id ?? this.id,
@@ -65,7 +70,6 @@ class Order {
       items: items ?? this.items,
       paymentMode: paymentMode ?? this.paymentMode,
       sumPriceShown: sumPriceShown ?? this.sumPriceShown,
-      takeAway: takeAway ?? this.takeAway,
       place: place ?? this.place,
       paymentIntention: paymentIntention ?? this.paymentIntention,
       statusLog: statusLog ?? this.statusLog,
@@ -74,6 +78,8 @@ class Order {
       transaction: transaction ?? this.transaction,
       transactionStatus: transactionStatus ?? this.transactionStatus,
       transactionId: transactionId ?? this.transactionId,
+      servingMode: servingMode ?? this.servingMode,
+      orderMode: orderMode ?? this.orderMode,
     );
   }
 
@@ -86,7 +92,6 @@ class Order {
       'items': items.map((x) => x.toJson()).toList(),
       'paymentMode': paymentMode.toJson(),
       'sumPriceShown': sumPriceShown.toJson(),
-      'takeAway': takeAway,
       'place': place?.toJson(),
       'paymentIntention': paymentIntention,
       'statusLog': statusLog.map((x) => x.toJson()).toList(),
@@ -95,6 +100,8 @@ class Order {
       'transaction': transaction?.toJson(),
       'transactionStatus': transactionStatus,
       'transactionId': transactionId,
+      'servingMode': enumToString(servingMode),
+      'orderMode': enumToString(orderMode),
     };
   }
 
@@ -107,7 +114,6 @@ class Order {
       items: List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
       paymentMode: PaymentMode.fromJson(map['paymentMode']),
       sumPriceShown: PriceShown.fromJson(map['sumPriceShown']),
-      takeAway: map['takeAway'],
       place: map['place'] != null ? Place.fromJson(map['place']) : null,
       paymentIntention: map['paymentIntention'],
       statusLog: List<StatusLog>.from(map['statusLog']?.map((x) => StatusLog.fromJson(x))),
@@ -118,12 +124,14 @@ class Order {
           ? enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values)
           : null,
       transactionId: map['transactionId'],
+      orderMode: enumFromStringNull(map['orderMode'], OrderMode.values, OrderMode.instant),
+      servingMode: enumFromStringNull(map['servingMode'], ServingMode.values, ServingMode.inPlace),
     );
   }
 
   @override
   String toString() {
-    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, takeAway: $takeAway, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
+    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, orderMode: $orderMode, servingMode: $servingMode, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
   }
 
   @override
@@ -138,7 +146,6 @@ class Order {
         listEquals(other.items, items) &&
         other.paymentMode == paymentMode &&
         other.sumPriceShown == sumPriceShown &&
-        other.takeAway == takeAway &&
         other.place == place &&
         other.paymentIntention == paymentIntention &&
         listEquals(other.statusLog, statusLog) &&
@@ -146,7 +153,9 @@ class Order {
         other.archived == archived &&
         other.transaction == transaction &&
         other.transactionStatus == transactionStatus &&
-        other.transactionId == transactionId;
+        other.transactionId == transactionId &&
+        other.servingMode == servingMode &&
+        other.orderMode == orderMode;
   }
 
   @override
@@ -158,7 +167,6 @@ class Order {
         items.hashCode ^
         paymentMode.hashCode ^
         sumPriceShown.hashCode ^
-        takeAway.hashCode ^
         place.hashCode ^
         paymentIntention.hashCode ^
         statusLog.hashCode ^
@@ -166,6 +174,8 @@ class Order {
         archived.hashCode ^
         transaction.hashCode ^
         transactionStatus.hashCode ^
-        transactionId.hashCode;
+        transactionId.hashCode ^
+        orderMode.hashCode ^
+        servingMode.hashCode;
   }
 }

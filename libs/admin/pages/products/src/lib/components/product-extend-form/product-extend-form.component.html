@@ -18,7 +18,7 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm" (ngSubmit)="submit()" [autocomplete]="false">
+    <form [formGroup]="dialogForm" (ngSubmit)="submit()" autocomplete="off">
       <fieldset class="form">
         <legend class="label">{{ 'products.basicInfo' | translate }}</legend>
 
@@ -38,6 +38,14 @@
               inputId="tax"
             ></bgap-form-text-input>
           </div>
+          <div class="col-3" *ngIf="productLevel === eProductLevel.GROUP">
+            <bgap-form-text-input
+              caption="common.takeawayTaxPercent"
+              type="number"
+              [control]="dialogForm.get('takeawayTax')! | asFormControl"
+              inputId="takeawayTax"
+            ></bgap-form-text-input>
+          </div>
           <div class="col-3" *ngIf="productLevel === eProductLevel.UNIT">
             <bgap-form-select
               [control]="dialogForm.get('laneId')! | asFormControl"
@@ -49,13 +57,6 @@
             >
             </bgap-form-select>
           </div>
-          <div class="col-3 pt-4" *ngIf="productLevel === eProductLevel.UNIT">
-            <bgap-form-checkbox
-              caption="products.takeaway"
-              [control]="dialogForm.get('takeaway')! | asFormControl"
-              inputId="takeaway"
-            ></bgap-form-checkbox>
-          </div>
           <div class="col-3 pt-4">
             <bgap-form-checkbox
               caption="products.isVisible"
@@ -65,6 +66,12 @@
           </div>
         </div>
       </fieldset>
+
+      <bgap-form-serving-mode
+        *ngIf="productLevel === eProductLevel.UNIT"
+        [control]="dialogForm.get('supportedServingModes')! | asFormControl"
+        [servingModes]="servingModes"
+      ></bgap-form-serving-mode>
 
       <bgap-form-product-variants
         [productLevel]="productLevel"

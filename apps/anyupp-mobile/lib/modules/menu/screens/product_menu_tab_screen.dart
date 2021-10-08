@@ -2,12 +2,14 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/modules/takeaway/bloc/takeaway_bloc.dart';
+import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class ProductMenuTabScreen extends StatefulWidget {
   final GeoUnit unit;
@@ -39,10 +41,11 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     return BlocProvider(
       create: (BuildContext context) {
         var bloc = getIt<ProductListBloc>();
-        bloc.add(LoadProductList(unitId: widget.unit.id!, categoryId: widget.categoryId, nextToken: _nextToken));
+        bloc.add(LoadProductList(unitId: widget.unit.id, categoryId: widget.categoryId, nextToken: _nextToken));
         return bloc;
       },
       child: Container(
+        color: theme.secondary12.withOpacity(0.5),
         key: PageStorageKey(widget.categoryId),
         padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.015),
         child: BlocBuilder<ProductListBloc, ProductListState>(builder: (context, state) {
@@ -66,37 +69,56 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
   }
 
   Widget _buildList(GeoUnit unit, List<GeneratedProduct> list) {
-    return AnimationLimiter(
-      child: ListView.builder(
-        itemCount: list.length,
-        scrollDirection: Axis.vertical,
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (context, position) {
-          if (position == list.length - 1 && list.length % _pageSize == 0 && _nextToken != null) {
-            getIt<ProductListBloc>().add(LoadProductList(
-              unitId: widget.unit.id!,
-              categoryId: widget.categoryId,
-              nextToken: _nextToken,
-            ));
-          }
+    return BlocBuilder<TakeAwayBloc, TakeAwayState>(builder: (context, state) {
+      ServingMode? mode;
+      if (state is ServingModeSelectedState) {
+        mode = state.servingMode;
+      }
+      // print('_buildList.servingMode=$mode');
 
-          return AnimationConfiguration.staggeredList(
-            position: position,
-            duration: const Duration(milliseconds: 375),
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: FadeInAnimation(
-                child: ProductMenuItem(
-                  unit: unit,
-                  item: list[position],
-                  heroPrefix: 'menu',
+      return AnimationLimiter(
+        child: ListView.builder(
+          itemCount: list.length + 1,
+          scrollDirection: Axis.vertical,
+          physics: BouncingScrollPhysics(),
+          itemBuilder: (context, position) {
+            if (position == list.length) {
+              return Container(
+                height: 80,
+                color: theme.secondary12,
+              );
+            }
+
+            // print('list[$position].supportedServingModes=${list[position].supportedServingModes}');
+            if (mode != null && !list[position].supportedServingModes.contains(mode)) {
+              return Container();
+            }
+
+            if (position == list.length - 1 && list.length % _pageSize == 0 && _nextToken != null) {
+              getIt<ProductListBloc>().add(LoadProductList(
+                unitId: widget.unit.id,
+                categoryId: widget.categoryId,
+                nextToken: _nextToken,
+              ));
+            }
+
+            return AnimationConfiguration.staggeredList(
+              position: position,
+              duration: const Duration(milliseconds: 200),
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: ProductMenuItem(
+                    unit: unit,
+                    item: list[position],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
-      ),
-    );
+            );
+          },
+        ),
+      );
+    });
   }
 
   Widget _buildEmptyList(BuildContext context) {
@@ -110,8 +132,8 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
             // Display message to the user
             child: Text(
           trans('main.categoryEmpty'),
-          style: GoogleFonts.poppins(
-            color: theme.text,
+          style: Fonts.satoshi(
+            color: theme.secondary,
             fontWeight: FontWeight.normal,
             fontSize: 14,
           ),

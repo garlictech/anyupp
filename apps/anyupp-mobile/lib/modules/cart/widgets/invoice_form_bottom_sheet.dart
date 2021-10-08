@@ -16,7 +16,6 @@ import 'package:fa_prev/shared/widgets/country_picker_widget.dart';
 import 'package:fa_prev/shared/widgets/custom_text_form_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void showInvoiceFormBottomSheet(BuildContext context, String? orderId, PaymentMode paymentMode) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
@@ -32,7 +31,7 @@ void showInvoiceFormBottomSheet(BuildContext context, String? orderId, PaymentMo
     enableDrag: true,
     isScrollControlled: true,
     elevation: 4.0,
-    backgroundColor: theme.background,
+    backgroundColor: theme.secondary0,
     builder: (context) {
       return Padding(
         padding: MediaQuery.of(context).viewInsets,
@@ -119,81 +118,84 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
       taxFieldValidator = requiredValidator(context);
     }
     return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        // alignment: WrapAlignment.start,
-        // direction: Axis.horizontal,
-        // crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                FocusScope.of(context).unfocus();
-              });
-            },
-            child: LayoutBuilder(
-              builder: (context, constrains) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          color: theme.background,
-                          width: constrains.maxWidth - 32,
-                          height: 60,
+      child: Container(
+        color: theme.secondary0,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          // alignment: WrapAlignment.start,
+          // direction: Axis.horizontal,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  FocusScope.of(context).unfocus();
+                });
+              },
+              child: LayoutBuilder(
+                builder: (context, constrains) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            color: theme.secondary0,
+                            width: constrains.maxWidth - 32,
+                            height: 60,
 
-                          // padding: const EdgeInsets.symmetric(
-                          //   vertical: 19.0,
-                          // ),
-                          child: Center(
-                            child: Text(
-                              trans('payment.paymentInfo.invoicing.invoice_info'),
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: theme.text,
-                                fontWeight: FontWeight.w500,
+                            // padding: const EdgeInsets.symmetric(
+                            //   vertical: 19.0,
+                            // ),
+                            child: Center(
+                              child: Text(
+                                trans('payment.paymentInfo.invoicing.invoice_info'),
+                                style: Fonts.satoshi(
+                                  fontSize: 16,
+                                  color: theme.secondary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
-                        ),
-                        Positioned(
-                            right: -5,
-                            top: 10,
-                            child: GestureDetector(
-                              onTap: () => Nav.pop(),
-                              child: Icon(Icons.close),
-                            ))
-                      ],
-                    ),
-                    BlocListener<UserDetailsBloc, UserDetailsState>(
-                      listener: (BuildContext context, UserDetailsState state) {
-                        if (state is UserDetailsLoaded) {
-                          User user = state.userDetails;
-                          if (user.invoiceAddress != null) {
-                            _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress!.customerName);
-                            _setTextFieldValue(_cityController, user.invoiceAddress!.city);
-                            _setTextFieldValue(_emailController, user.invoiceAddress?.email ?? user.email!);
-                            _setTextFieldValue(_zipController, user.invoiceAddress!.postalCode);
-                            _setTextFieldValue(_streetController, user.invoiceAddress!.streetAddress);
-                            _setTextFieldValue(_taxNumberController, user.invoiceAddress!.taxNumber);
+                          Positioned(
+                              right: -5,
+                              top: 10,
+                              child: GestureDetector(
+                                onTap: () => Nav.pop(),
+                                child: Icon(Icons.close),
+                              ))
+                        ],
+                      ),
+                      BlocListener<UserDetailsBloc, UserDetailsState>(
+                        listener: (BuildContext context, UserDetailsState state) {
+                          if (state is UserDetailsLoaded) {
+                            User user = state.userDetails;
+                            if (user.invoiceAddress != null) {
+                              _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress!.customerName);
+                              _setTextFieldValue(_cityController, user.invoiceAddress!.city);
+                              _setTextFieldValue(_emailController, user.invoiceAddress?.email ?? user.email!);
+                              _setTextFieldValue(_zipController, user.invoiceAddress!.postalCode);
+                              _setTextFieldValue(_streetController, user.invoiceAddress!.streetAddress);
+                              _setTextFieldValue(_taxNumberController, user.invoiceAddress!.taxNumber);
+                            }
+                            setState(() {
+                              _userProfile = state.userDetails;
+                            });
                           }
-                          setState(() {
-                            _userProfile = state.userDetails;
-                          });
-                        }
-                      },
-                      child: Container(),
-                    ),
-                  ],
-                );
-              },
+                        },
+                        child: Container(),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
-          _buildInvoiceForm(context),
-          _buildSendCartButton(context, unit),
-        ],
+            _buildInvoiceForm(context),
+            _buildSendCartButton(context, unit),
+          ],
+        ),
       ),
     );
   }
@@ -202,6 +204,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
     print('_buildInvoiceForm()=${_userProfile?.email}');
 
     return Container(
+      color: theme.secondary0,
       padding: EdgeInsets.symmetric(
         horizontal: 14.0,
       ),
@@ -213,6 +216,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
           children: [
             customTextFormWidget(
               context,
+              theme,
               trans('payment.paymentInfo.invoicing.name_or_company'),
               _nameOrCompanyController,
               TextInputType.text,
@@ -221,6 +225,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
             ),
             customTextFormWidget(
               context,
+              theme,
               trans('payment.paymentInfo.invoicing.tax_id'),
               _taxNumberController,
               TextInputType.number,
@@ -231,6 +236,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                 _countryController, _countryCodeController),
             customTextFormWidget(
               context,
+              theme,
               trans('payment.paymentInfo.invoicing.zip'),
               _zipController,
               TextInputType.number,
@@ -239,6 +245,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
             ),
             customTextFormWidget(
               context,
+              theme,
               trans('payment.paymentInfo.invoicing.city'),
               _cityController,
               TextInputType.text,
@@ -247,6 +254,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
             ),
             customTextFormWidget(
               context,
+              theme,
               trans('payment.paymentInfo.invoicing.street_address'),
               _streetController,
               TextInputType.text,
@@ -255,6 +263,7 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
             ),
             customTextFormWidget(
               context,
+              theme,
               trans('payment.paymentInfo.invoicing.invoice_email'),
               _emailController,
               TextInputType.emailAddress,
@@ -282,22 +291,22 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
         width: double.infinity,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: theme.indicator,
+              primary: theme.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
             child: loading
                 ? CenterLoadingWidget(
-                    color: theme.highlight,
+                    color: theme.secondary0,
                     size: 20.0,
                     strokeWidth: 2.0,
                   )
                 : Text(
                     trans('payment.sendOrder'),
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 18,
-                      color: theme.text2,
+                      color: theme.secondary0,
                       fontWeight: FontWeight.w700,
                     ),
                   ),

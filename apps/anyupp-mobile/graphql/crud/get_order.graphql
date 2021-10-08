@@ -5,6 +5,8 @@ query GetOrder($orderId: ID!) {
     userId
     archived
     paymentIntention
+    orderMode
+    servingMode
     takeAway
     paymentMode {
       caption

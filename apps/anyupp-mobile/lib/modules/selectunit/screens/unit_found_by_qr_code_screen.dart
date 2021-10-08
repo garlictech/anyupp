@@ -11,7 +11,6 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class UnitFoundByQRCodeScreen extends StatefulWidget {
   final String unitId;
@@ -127,7 +126,7 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                 Text(
                   trans('selectUnit.findingSeat'),
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF3C2F2F),
@@ -136,7 +135,8 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: CenterLoadingWidget(
-                    color: theme.highlight,
+                    backgroundColor: Colors.white,
+                    color: theme.primary,
                     size: 20,
                     strokeWidth: 2.0,
                   ),
@@ -170,7 +170,7 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
             child: Text(
               trans('selectUnit.qrConnected'),
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 fontSize: 14.0,
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF3C2F2F),
@@ -182,7 +182,7 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
             child: Text(
               trans('selectUnit.chair', [widget.place.seat, widget.place.table]),
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF3C2F2F),

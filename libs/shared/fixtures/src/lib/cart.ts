@@ -57,7 +57,6 @@ const getOrderItem = (
   allergens: [CrudApi.Allergen.treenuts],
   productType: EProductType.FOOD,
 });
-// const cart_01: Required<CrudApi.CreateCartInput> = {
 const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   id: cartId_01,
   userId: userId_01,
@@ -72,6 +71,7 @@ const cart_01: RequiredId<CrudApi.CreateCartInput> = {
     table: 'TABLE',
   },
   items: [getOrderItem()],
+  // servingMode: CrudApi.ServingMode.inplace, CURRENTLY this attribute is OPTIONAL so the logic should work without it TOO (handled in #1835)
 };
 export const cartFixture = {
   cartId_NotExisting,

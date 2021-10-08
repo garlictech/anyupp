@@ -36,7 +36,7 @@ class PaymentMethodCardWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         width: 2,
-                        color: theme.indicator,
+                        color: theme.primary,
                       ),
                     )
                   : null,
@@ -52,8 +52,12 @@ class PaymentMethodCardWidget extends StatelessWidget {
                     bankName: method.name ?? '-',
                     cardHolderName: ' ', //method.brand,
                     cvv: '',
-                    frontBackground: isVisa ? CardBackgrounds.black : CardBackgrounds.white,
-                    frontTextColor: isVisa ? Colors.white : Colors.black,
+                    frontBackground: Container(
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      color: theme.secondary0,
+                    ),
+                    frontTextColor: theme.secondary,
                     backBackground: isVisa ? CardBackgrounds.white : CardBackgrounds.black,
                     showBackSide: false,
                     showShadow: true,

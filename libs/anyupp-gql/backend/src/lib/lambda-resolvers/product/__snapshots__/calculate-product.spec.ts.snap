@@ -38,9 +38,16 @@ Object {
   "name": Object {
     "en": "NAME",
   },
+  "parentId": "PARENT_ID",
   "position": 1,
   "productCategoryId": "PROD_CAT_ID",
   "productType": "drink",
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "takeaway": true,
+  "takeawayTax": 23,
   "tax": 11,
   "unitId": "UNIT_ID",
   "updatedAt": "13",
@@ -137,6 +144,9 @@ Object {
       },
       "position": 1,
       "productSetId": "PROUDCT_SET_01",
+      "supportedServingModes": Array [
+        "inPlace",
+      ],
       "type": "PRODUCT_COMP_SET_TYPE",
     },
   ],
@@ -151,6 +161,11 @@ Object {
   "position": 1,
   "productCategoryId": "PROD_CAT_ID",
   "productType": "drink",
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "takeawayTax": 23,
   "tax": 11,
   "unitId": "UNIT_ID",
   "variants": Array [

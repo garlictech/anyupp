@@ -20,7 +20,6 @@ query SearchOrders(
       userId
       archived
       paymentIntention
-      takeAway
       paymentMode {
         caption
         type
