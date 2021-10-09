@@ -68,6 +68,10 @@ export const createAdminUser =
                   Value: 'true',
                 },
                 {
+                  Name: 'phone_number_verified',
+                  Value: 'true',
+                },
+                {
                   Name: 'phone_number',
                   Value: vars.input.phone,
                 },
@@ -92,7 +96,6 @@ export const createAdminUser =
           deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),
         ),
       ),
-      filterNullish(),
       switchMap(() =>
         from(
           deps.docClient
@@ -102,6 +105,9 @@ export const createAdminUser =
                 id: newUsername,
                 email: vars.input.email,
                 phone: vars.input.phone,
+                profileImage: vars.input.profileImage,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
               },
               TableName: deps.adminUserTableName,
             })

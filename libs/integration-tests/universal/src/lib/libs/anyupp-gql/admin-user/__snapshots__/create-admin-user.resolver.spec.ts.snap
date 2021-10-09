@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Cleanup 1`] = `null`;
-
 exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Malformed email 1`] = `[Error: GraphQL error: Invalid email address format.]`;
 
 exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Malformed phone number 1`] = `[Error: GraphQL error: Invalid phone number format.]`;
@@ -24,4 +22,21 @@ exports[`Admin user creation/deletion Admin user should be created/deleted with 
   \\"code\\": \\"UserAlreadyExists\\",
   \\"message\\": \\"User already exists\\"
 }"
+`;
+
+exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: RESOLVER CODE: read back 1`] = `
+Object {
+  "createdAt": Any<String>,
+  "email": "anonyuser+foobar@anyupp.com",
+  "id": "int-test-user-name",
+  "name": "Mekk Elek",
+  "phone": "+1234567892",
+  "profileImage": null,
+  "roleContexts": Object {
+    "items": Array [],
+    "nextToken": null,
+  },
+  "settings": null,
+  "updatedAt": Any<String>,
+}
 `;

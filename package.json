@@ -207,7 +207,6 @@
   },
   "resolutions": {
     "graphql": "15.6.1",
-    "typescript": "4.3.5",
-    "aws-sdk": "2.1002.0"
+    "typescript": "4.3.5"
   }
 }

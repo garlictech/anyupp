@@ -11,6 +11,7 @@ import {
 import { Auth } from 'aws-amplify';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { getCognitoUsername } from '@bgap/shared/fixtures';
 
 interface AuthenticatdGraphQLClientWithUserId {
   userAttributes: {
@@ -33,7 +34,9 @@ export const createAuthenticatedCrudSdk = (
   password: string,
 ) => {
   authConfig();
-  return from(Auth.signIn(userName, password)).pipe(map(getCrudSdkForUserPool));
+  return from(Auth.signIn(getCognitoUsername(userName), password)).pipe(
+    map(getCrudSdkForUserPool),
+  );
 };
 
 export const createAuthenticatedAnyuppSdk = (
@@ -41,7 +44,7 @@ export const createAuthenticatedAnyuppSdk = (
   password: string,
 ): Observable<AuthenticatdGraphQLClientWithUserId> => {
   authConfig();
-  return from(Auth.signIn(`testuser+${userName}`, password)).pipe(
+  return from(Auth.signIn(`test+${userName}`, password)).pipe(
     map(user => ({
       userAttributes: {
         id: user.signInUserSession?.idToken?.payload?.['cognito:username'], // The Username is the new userId

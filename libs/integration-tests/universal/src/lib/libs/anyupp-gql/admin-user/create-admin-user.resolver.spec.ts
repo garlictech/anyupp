@@ -63,11 +63,13 @@ describe('Admin user creation/deletion', () => {
     label,
     deleteOp,
     createOp,
+    getOp,
     errorChecker,
   }: {
     label: string;
     deleteOp: CrudSdk['DeleteAdminUser'] | AnyuppSdk['DeleteAdminUser'];
     createOp: CrudSdk['CreateAdminUser'] | AnyuppSdk['CreateAdminUser'];
+    getOp: CrudSdk['GetAdminUser'];
     errorChecker: Function;
   }) =>
     deleteOp({ input: { id: userName } }).pipe(
@@ -134,6 +136,16 @@ describe('Admin user creation/deletion', () => {
           }),
         ),
       ),
+      switchMap(() => getOp({ id: userName })),
+      tap(res =>
+        expect(res).toMatchSnapshot(
+          {
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
+          },
+          label + ': read back',
+        ),
+      ),
       // Cleanup
       switchMap(() => deleteOp({ input: { id: userName } })),
       tap(result => {
@@ -142,16 +154,18 @@ describe('Admin user creation/deletion', () => {
     );
 
   test('Admin user should be created/deleted with resolver code', done => {
+    const sdk = createIamCrudSdk();
     testLogic({
       label: 'RESOLVER CODE',
       createOp: (x: CrudApi.CreateAdminUserMutationVariables) =>
         createAdminUser(x)(deps),
       deleteOp: x => deleteAdminUser(x)(deps),
+      getOp: sdk.GetAdminUser,
       errorChecker: localErrorChecker,
     }).subscribe(() => done());
   }, 15000);
 
-  test.only('Admin user should be created/deleted with authenticated API call', done => {
+  test('Admin user should be created/deleted with authenticated API call', done => {
     createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
       .pipe(
         switchMap(sdk =>
@@ -159,6 +173,7 @@ describe('Admin user creation/deletion', () => {
             label: 'Auth CRUD api call',
             createOp: sdk.CreateAdminUser,
             deleteOp: sdk.DeleteAdminUser,
+            getOp: sdk.GetAdminUser,
             errorChecker: remoteErrorChecker,
           }),
         ),
@@ -174,6 +189,7 @@ describe('Admin user creation/deletion', () => {
             label: 'OLD API CALL',
             createOp: sdk.authAnyuppSdk.CreateAdminUser,
             deleteOp: sdk.authAnyuppSdk.DeleteAdminUser,
+            getOp: _x => of('NOT TESTED HERE' as any),
             errorChecker: remoteErrorChecker,
           }),
         ),
@@ -187,6 +203,7 @@ describe('Admin user creation/deletion', () => {
       label: 'IAM API call',
       createOp: sdk.CreateAdminUser,
       deleteOp: sdk.DeleteAdminUser,
+      getOp: sdk.GetAdminUser,
       errorChecker: localErrorChecker,
     }).subscribe(() => done());
   }, 25000);

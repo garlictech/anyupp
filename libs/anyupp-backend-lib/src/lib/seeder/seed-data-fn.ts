@@ -77,7 +77,7 @@ export const createConsumerUser = () => (deps: SeederDependencies) => {
   const input: CrudApi.CreateUserInput = {
     id: 'test-alice',
     name: 'Mekk Elek',
-    email: 'testuser+alice@anyupp.com',
+    email: 'test+alice@anyupp.com',
     phone: '1234',
   };
   return deleteCreate(

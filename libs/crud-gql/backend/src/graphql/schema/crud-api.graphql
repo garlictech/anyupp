@@ -1227,11 +1227,13 @@ type Mutation {
     @function(name: "${env}-anyupp-graphql-resolvers")
 
   createAdminUser(input: CreateAdminUserInput!): AdminUser
-    @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+    @aws_iam
+    @aws_cognito_user_pools
     @function(name: "${env}-anyupp-graphql-resolvers")
 
   deleteAdminUser(input: DeleteAdminUserInput!): AdminUser
-    @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
+    @aws_iam
+    @aws_cognito_user_pools
     @function(name: "${env}-anyupp-graphql-resolvers")
 
   # User

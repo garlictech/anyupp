@@ -67,101 +67,30 @@ const userData = pipe(
 );
 
 const password = testAdminUserPassword;
-const docClient = new DynamoDB.DocumentClient();
 
 export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
-    userData.map(({ email, username, phone }) =>
-      deps.crudSdk.DeleteAdminUser({ input: { id: username } }).pipe(
-        catchError(err => {
-          console.warn(
-            `Temporarily ignored error during admin user deletion: ${err}`,
-          );
-          return of({});
-        }),
+    userData.map(({ email, username }) =>
+      createAdminUser(
+        username,
+        email,
+      )(deps).pipe(
         switchMap(() =>
           from(
-            resolverCreateAdminUser({
-              input: {
-                name: username,
-                phone,
-                email,
-                id: username,
-              },
-            })({
-              ...deps,
-              userNameGenerator: () => username,
-              docClient,
-              adminUserTableName: tableConfig.AdminUser.TableName,
-            }),
+            deps.cognitoidentityserviceprovider
+              .adminSetUserPassword({
+                UserPoolId: deps.userPoolId,
+                Username: username,
+                Password: password,
+                Permanent: true,
+              })
+              .promise(),
           ),
         ),
-        catchError(err => {
-          if (err.code === ResolverErrorCode.UserAlreadyExists) {
-            console.warn(`${email} user already exists, no problem...`);
-            return of({});
-          }
-
-          return throwError(err);
-        }),
+        tap(() => console.log('USER PASSWORD SET', username)),
       ),
     ),
     combineLatest,
-    switchMap(() =>
-      pipe(
-        userData.map(({ username }) => ({
-          UserPoolId: deps.userPoolId,
-          Username: username,
-          Password: password,
-          Permanent: true,
-        })),
-        fp.map(params =>
-          defer(() =>
-            from(
-              deps.cognitoidentityserviceprovider
-                .adminUpdateUserAttributes({
-                  UserPoolId: deps.userPoolId,
-                  Username: params.Username,
-                  UserAttributes: [
-                    {
-                      Name: 'email_verified',
-                      Value: 'true',
-                    },
-                    {
-                      Name: 'phone_number_verified',
-                      Value: 'true',
-                    },
-                  ],
-                })
-                .promise(),
-            ).pipe(
-              switchMap(() =>
-                from(
-                  deps.cognitoidentityserviceprovider
-                    .adminSetUserPassword(params)
-                    .promise(),
-                ).pipe(tap(() => console.log('USER PASSWORD SET', params))),
-              ),
-            ),
-          ),
-        ),
-        combineLatest,
-      ),
-    ),
-    tap(console.warn),
-    switchMap(() =>
-      pipe(
-        userData.map(({ username, email }) =>
-          createAdminUser(
-            username,
-            email,
-          )(deps).pipe(
-            tap(() => console.log('USER CREATED in DB', username, email)),
-          ),
-        ),
-        combineLatest,
-      ),
-    ),
   );
 
 export const seedBusinessData = (deps: SeederDependencies) =>
@@ -390,7 +319,7 @@ export const seedAll = (deps: SeederDependencies) =>
     /*switchMap(() =>
       seedConsumerUser(deps, {
         username: 'test-monad',
-        email: 'testuser+monad@anyupp.com',
+        email: 'test+monad@anyupp.com',
         emailVerified: 'true',
         name: 'Gombóc Artúr',
       }),
@@ -398,7 +327,7 @@ export const seedAll = (deps: SeederDependencies) =>
     switchMap(() =>
       seedConsumerUser(deps, {
         username: 'test-alice',
-        email: 'testuser+alice@anyupp.com',
+        email: 'test+alice@anyupp.com',
         emailVerified: 'true',
         name: 'Mekk Elek',
       }),
