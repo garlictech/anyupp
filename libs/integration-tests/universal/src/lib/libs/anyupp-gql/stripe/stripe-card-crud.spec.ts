@@ -8,7 +8,7 @@ import { delay, switchMap, tap } from 'rxjs/operators';
 import { createAuthenticatedAnyuppSdk } from '../../../../api-clients';
 
 describe('Stripe Payment Method CRUD tests', () => {
-  let authAnyuppSdk: CrudApi.AnyuppSdk;
+  let authAnyuppSdk: AnyuppApi.AnyuppSdk;
   let paymentMethodIds: string[];
   let initialPaymentMethodCount: number;
   let tempPaymentMethodId: string;

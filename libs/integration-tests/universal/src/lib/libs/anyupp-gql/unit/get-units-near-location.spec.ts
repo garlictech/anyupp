@@ -72,7 +72,7 @@ describe('GetUnitsNearLocation tests', () => {
       deleteTestChain(chainFixture.chain_01.id, crudSdk),
     ]);
 
-  let authAnyuppSdk: CrudApi.AnyuppSdk;
+  let authAnyuppSdk: AnyuppApi.AnyuppSdk;
 
   beforeAll(done => {
     createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)

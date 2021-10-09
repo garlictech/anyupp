@@ -88,7 +88,7 @@ const unitProduct_u02_gp01_03: RequiredId<CrudApi.CreateUnitProductInput> = {
 };
 
 describe('Update Chain and Group product tests', () => {
-  let authAnyuppSdk: CrudApi.AnyuppSdk;
+  let authAnyuppSdk: AnyuppApi.AnyuppSdk;
 
   const iamCrudSdk = createIamCrudSdk();
 

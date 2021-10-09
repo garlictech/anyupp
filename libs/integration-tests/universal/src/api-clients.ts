@@ -44,7 +44,7 @@ export const createAuthenticatedAnyuppSdk = (
   password: string,
 ): Observable<AuthenticatdGraphQLClientWithUserId> => {
   authConfig();
-  return from(Auth.signIn(`test+${userName}`, password)).pipe(
+  return from(Auth.signIn(`testuser+${userName}`, password)).pipe(
     map(user => ({
       userAttributes: {
         id: user.signInUserSession?.idToken?.payload?.['cognito:username'], // The Username is the new userId

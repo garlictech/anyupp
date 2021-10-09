@@ -1,6 +1,6 @@
 import { Auth } from '@aws-amplify/auth';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { AnyuppSdk } from '@bgap/crud-gql/api';
+import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 import { productRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {

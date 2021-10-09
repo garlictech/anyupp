@@ -5,6 +5,7 @@ import {
 } from '@bgap/anyupp-gql/backend';
 import { awsConfig } from '@bgap/crud-gql/api';
 import {
+  getCognitoUsername,
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
@@ -26,9 +27,9 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   region: 'eu-west-1',
 });
 
-const email = 'anonyuser+foobar@anyupp.com';
+const email = 'anonymuser+foobar@anyupp.com';
 const userName = 'int-test-user-name';
-const phone = '+1234567892';
+const phone = '+6834832765328';
 const staticUserNameGenerator = () => userName;
 const docClient = new DynamoDB.DocumentClient();
 
@@ -40,22 +41,10 @@ describe('Admin user creation/deletion', () => {
     docClient,
     adminUserTableName: tableConfig.AdminUser.TableName,
   };
-  const localErrorChecker = (label: string) =>
+
+  const errorChecker = (label: string) =>
     catchError(err => {
       expect(err).toMatchSnapshot(label);
-      return of({});
-    });
-
-  const remoteErrorChecker = (label: string) =>
-    catchError(err => {
-      expect(err).toMatchSnapshot(
-        {
-          time: expect.any(String),
-          requestId: expect.any(String),
-          retryDelay: expect.any(Number),
-        },
-        label,
-      );
       return of({});
     });
 
@@ -64,13 +53,11 @@ describe('Admin user creation/deletion', () => {
     deleteOp,
     createOp,
     getOp,
-    errorChecker,
   }: {
     label: string;
     deleteOp: CrudSdk['DeleteAdminUser'] | AnyuppSdk['DeleteAdminUser'];
     createOp: CrudSdk['CreateAdminUser'] | AnyuppSdk['CreateAdminUser'];
     getOp: CrudSdk['GetAdminUser'];
-    errorChecker: Function;
   }) =>
     deleteOp({ input: { id: userName } }).pipe(
       // yes, we can get anything here
@@ -161,7 +148,6 @@ describe('Admin user creation/deletion', () => {
         createAdminUser(x)(deps),
       deleteOp: x => deleteAdminUser(x)(deps),
       getOp: sdk.GetAdminUser,
-      errorChecker: localErrorChecker,
     }).subscribe(() => done());
   }, 15000);
 
@@ -174,23 +160,6 @@ describe('Admin user creation/deletion', () => {
             createOp: sdk.CreateAdminUser,
             deleteOp: sdk.DeleteAdminUser,
             getOp: sdk.GetAdminUser,
-            errorChecker: remoteErrorChecker,
-          }),
-        ),
-      )
-      .subscribe(() => done());
-  }, 25000);
-
-  test('Admin user should be created/deleted with authenticated "old" API call', done => {
-    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
-      .pipe(
-        switchMap(sdk =>
-          testLogic({
-            label: 'OLD API CALL',
-            createOp: sdk.authAnyuppSdk.CreateAdminUser,
-            deleteOp: sdk.authAnyuppSdk.DeleteAdminUser,
-            getOp: _x => of('NOT TESTED HERE' as any),
-            errorChecker: remoteErrorChecker,
           }),
         ),
       )
@@ -204,7 +173,6 @@ describe('Admin user creation/deletion', () => {
       createOp: sdk.CreateAdminUser,
       deleteOp: sdk.DeleteAdminUser,
       getOp: sdk.GetAdminUser,
-      errorChecker: localErrorChecker,
     }).subscribe(() => done());
   }, 25000);
 });

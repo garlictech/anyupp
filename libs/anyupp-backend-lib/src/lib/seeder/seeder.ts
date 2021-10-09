@@ -70,10 +70,11 @@ const password = testAdminUserPassword;
 
 export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
-    userData.map(({ email, username }) =>
+    userData.map(({ email, username, phone }) =>
       createAdminUser(
         username,
         email,
+        phone,
       )(deps).pipe(
         switchMap(() =>
           from(
@@ -319,7 +320,7 @@ export const seedAll = (deps: SeederDependencies) =>
     /*switchMap(() =>
       seedConsumerUser(deps, {
         username: 'test-monad',
-        email: 'test+monad@anyupp.com',
+        email: 'testuser+monad@anyupp.com',
         emailVerified: 'true',
         name: 'Gombóc Artúr',
       }),
@@ -327,7 +328,7 @@ export const seedAll = (deps: SeederDependencies) =>
     switchMap(() =>
       seedConsumerUser(deps, {
         username: 'test-alice',
-        email: 'test+alice@anyupp.com',
+        email: 'testuser+alice@anyupp.com',
         emailVerified: 'true',
         name: 'Mekk Elek',
       }),

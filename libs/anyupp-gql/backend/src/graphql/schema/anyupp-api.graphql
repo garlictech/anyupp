@@ -359,17 +359,6 @@ input AvailabilityInput {
 #   postalCode: String!
 #   email: String
 # }
-### ADMIN_USER
-input CreateAdminUserInput {
-  email: String!
-  phone: String!
-  name: String!
-}
-
-input DeleteAdminUserInput {
-  id: ID!
-}
-
 ### ORDER
 input CreateOrderFromCartInput {
   id: ID!
@@ -538,11 +527,6 @@ type Query {
 
 ### MUTATION
 type Mutation {
-  # AdminUser
-  createAdminUser(input: CreateAdminUserInput!): AdminUser
-    @aws_cognito_user_pools
-  deleteAdminUser(input: DeleteAdminUserInput!): AdminUser
-    @aws_cognito_user_pools
   # User
   createAnonymUser: CreateAnonymUserOutput! # public endpoint
   # Order

@@ -77,7 +77,7 @@ export const createConsumerUser = () => (deps: SeederDependencies) => {
   const input: CrudApi.CreateUserInput = {
     id: 'test-alice',
     name: 'Mekk Elek',
-    email: 'test+alice@anyupp.com',
+    email: 'testuser+alice@anyupp.com',
     phone: '1234',
   };
   return deleteCreate(
@@ -123,16 +123,17 @@ export const createTestGroup =
   };
 
 export const createAdminUser =
-  (adminUserId: string, email: string) => (deps: SeederDependencies) => {
+  (adminUserId: string, email: string, phone: string) =>
+  (deps: SeederDependencies) => {
     console.debug('createAdminUser', {
       adminUserId,
       email,
     });
     const input: DeletableInput<CrudApi.CreateAdminUserInput> = {
       id: adminUserId,
-      name: 'John Doe',
+      name: adminUserId,
       email,
-      phone: '+123123213',
+      phone,
       profileImage:
         'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
     };
