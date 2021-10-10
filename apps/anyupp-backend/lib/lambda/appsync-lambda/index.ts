@@ -19,7 +19,6 @@ import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityservi
 import { v1 as uuidV1 } from 'uuid';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { DynamoDB } from 'aws-sdk';
-import { Observable } from 'rxjs';
 
 export interface AnyuppRequest {
   typeName: string;
@@ -77,6 +76,10 @@ export const handler: Handler<AnyuppRequest, unknown> = (
   const productRequestHandlers = productRequestHandler({
     crudSdk,
     regenerateUnitDataHandler: regenerateUnitData(unitsDeps),
+    unitProductTableName: tableConfig.UnitProduct.TableName,
+    chainProductTableName: tableConfig.ChainProduct.TableName,
+    groupProductTableName: tableConfig.GroupProduct.TableName,
+    docClient,
   });
 
   const stripeRequestHandlers = stripeRequestHandler({

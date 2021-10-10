@@ -98,7 +98,7 @@ describe('ProductExtendFormComponent', (): void => {
     expect(component).toBeTruthy();
   });
 
-  describe('Group Form', (): void => {
+  describe.skip('Group Form', (): void => {
     beforeEach((): void => {
       component.productLevel = EProductLevel.GROUP;
     });
@@ -201,7 +201,7 @@ describe('ProductExtendFormComponent', (): void => {
     }, 15000);
   });
 
-  describe('Unit Form', (): void => {
+  describe.skip('Unit Form', (): void => {
     beforeEach((): void => {
       component.productLevel = EProductLevel.UNIT;
     });

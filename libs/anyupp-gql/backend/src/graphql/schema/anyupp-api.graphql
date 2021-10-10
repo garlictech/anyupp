@@ -533,21 +533,6 @@ type Mutation {
   createOrderFromCart(input: CreateOrderFromCartInput!): ID!
     @aws_cognito_user_pools
 
-  # Product
-  updateChainProduct(input: UpdateChainProductInput!): ChainProduct!
-    @aws_cognito_user_pools
-  updateGroupProduct(input: UpdateGroupProductInput!): GroupProduct!
-    @aws_cognito_user_pools
-  createUnitProduct(input: CreateUnitProductInput!): UnitProduct!
-    @aws_cognito_user_pools
-  updateUnitProduct(input: UpdateUnitProductInput!): UnitProduct!
-    @aws_cognito_user_pools
-  deleteUnitProduct(id: ID!): Boolean! @aws_cognito_user_pools
-
-  # Unit
-  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
-    @aws_cognito_user_pools
-
   # Stripe
   startStripePayment(
     input: StartStripePaymentInput!

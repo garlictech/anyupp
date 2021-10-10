@@ -15,7 +15,8 @@ import {
   listUnitProductsForGroupProductParents,
   ProductResolverDeps,
 } from './utils';
-import { throwIfEmptyValue } from '@bgap/shared/utils';
+import { throwIfEmptyValue, createUpdateParams } from '@bgap/shared/utils';
+import { pipe as fpPipe } from 'fp-ts/lib/function';
 
 const ELASTICSEARCH_OPERATION_DELAY = 3000;
 
@@ -46,7 +47,16 @@ const callRegenerateOnChainProductPipe = (deps: ProductResolverDeps) =>
 export const updateChainProduct =
   (deps: ProductResolverDeps) =>
   (input: CrudApi.UpdateChainProductInput): Observable<CrudApi.ChainProduct> =>
-    defer(() => deps.crudSdk.UpdateChainProduct({ input })).pipe(
+    defer(() =>
+      fpPipe(
+        createUpdateParams(deps.chainProductTableName, input.id, {
+          ...input,
+          updatedAt: new Date().toISOString(),
+        }),
+        params => from(deps.docClient.update(params).promise()),
+      ),
+    ).pipe(
+      map(res => res.Attributes as CrudApi.ChainProduct),
       delay(ELASTICSEARCH_OPERATION_DELAY),
       callRegenerateOnChainProductPipe(deps),
     );

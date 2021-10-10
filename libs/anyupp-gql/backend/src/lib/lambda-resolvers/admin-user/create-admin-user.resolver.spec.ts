@@ -8,10 +8,6 @@ const userName = 'GENERATED_USERNAME';
 
 const goodDeps: AdminUserResolverDeps = {
   userPoolId: 'USER_POOL_ID',
-  crudSdk: {
-    CreateAdminUser: jest.fn().mockReturnValue(of(userName)),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any,
   cognitoidentityserviceprovider: {
     listUsers: jest
       .fn()
@@ -27,6 +23,12 @@ const goodDeps: AdminUserResolverDeps = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any,
   userNameGenerator: jest.fn().mockReturnValue(userName),
+  adminUserTableName: 'ADMIN_USER_TABLE',
+  docClient: {
+    put: jest
+      .fn()
+      .mockReturnValue({ promise: () => Promise.resolve('PUT RETURNED') }),
+  } as any,
 };
 
 const createGoodResolverCall = (deps: AdminUserResolverDeps) =>
@@ -50,9 +52,9 @@ test('Handle the good case', done => {
         .calls[0],
     ).toMatchSnapshot('listUsers parameters');
 
-    expect(
-      (goodDeps.crudSdk.CreateAdminUser as jest.Mock).mock.calls[0],
-    ).toMatchSnapshot('CreateAdminUser parameters');
+    expect((goodDeps.docClient.put as jest.Mock).mock.calls[0]).toMatchSnapshot(
+      'CreateAdminUser parameters',
+    );
 
     expect(res).toMatchSnapshot();
     done();
@@ -157,9 +159,9 @@ const CrudsdkCreateUserCaseDeps = (
   result: Observable<unknown>,
 ): AdminUserResolverDeps => ({
   ...goodDeps,
-  crudSdk: {
-    ...goodDeps.crudSdk,
-    CreateAdminUser: jest.fn().mockReturnValue(result),
+  docClient: {
+    ...goodDeps.docClient,
+    put: jest.fn().mockReturnValue(result),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any,
 });

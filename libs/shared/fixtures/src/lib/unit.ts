@@ -105,6 +105,7 @@ const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   ],
   open: {
     from: '1970-01-01',
+    to: '1970-01-01',
   },
   supportedOrderModes: [CrudApi.OrderMode.pickup, CrudApi.OrderMode.instant],
   supportedServingModes: [

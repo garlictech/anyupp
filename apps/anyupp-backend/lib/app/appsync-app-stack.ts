@@ -7,9 +7,7 @@ import * as sm from '@aws-cdk/aws-secretsmanager';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
 import {
-  createAdminUserResolvers,
   createOrderResolvers,
-  createProductResolvers,
   createStripeResolvers,
   createUnitResolvers,
   createUserResolvers,
@@ -87,9 +85,7 @@ export class AppsyncAppStack extends sst.Stack {
 
     const commonResolverInputs = { lambdaDs: this.lambdaDs };
     createOrderResolvers(commonResolverInputs);
-    createAdminUserResolvers(commonResolverInputs);
     createUnitResolvers(commonResolverInputs);
-    createProductResolvers(commonResolverInputs);
     createStripeResolvers(commonResolverInputs);
     createUserResolvers(commonResolverInputs);
 
@@ -184,6 +180,9 @@ export class AppsyncAppStack extends sst.Stack {
             tableConfig.GeneratedProductCategory.TableArn,
             tableConfig.Unit.TableArn,
             tableConfig.AdminUser.TableArn,
+            tableConfig.UnitProduct.TableArn,
+            tableConfig.GroupProduct.TableArn,
+            tableConfig.ChainProduct.TableArn,
           ],
         }),
       );

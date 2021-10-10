@@ -22,21 +22,4 @@ export const createUnitResolvers = ({
       `,
     ),
   });
-  lambdaDs.createResolver({
-    typeName: 'Mutation',
-    fieldName: 'regenerateUnitData',
-    requestMappingTemplate: MappingTemplate.fromString(
-      `
-      {
-        "version" : "2017-02-28",
-        "operation" : "Invoke",
-        "payload": {
-          "typeName": "Mutation",
-          "fieldName": "regenerateUnitData",
-          "arguments": $util.toJson($ctx.arguments.input)
-        }
-      }
-      `,
-    ),
-  });
 };

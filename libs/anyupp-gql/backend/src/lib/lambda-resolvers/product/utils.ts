@@ -2,12 +2,17 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { Observable } from 'rxjs';
 import { RegenerateUnitDataHandler } from '../unit/utils';
 
 export interface ProductResolverDeps {
   crudSdk: CrudSdk;
   regenerateUnitDataHandler: RegenerateUnitDataHandler;
+  unitProductTableName: string;
+  chainProductTableName: string;
+  groupProductTableName: string;
+  docClient: DocumentClient;
 }
 
 export const getUnitIdsFromUnitProductList = (

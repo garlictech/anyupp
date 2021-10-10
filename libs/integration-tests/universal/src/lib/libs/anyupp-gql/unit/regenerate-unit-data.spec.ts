@@ -39,6 +39,7 @@ import {
   tap,
   toArray,
 } from 'rxjs/operators';
+import { combineLatest, concat, defer, iif, Observable, of } from 'rxjs';
 import {
   createAuthenticatedCrudSdk,
   createIamCrudSdk,
@@ -262,7 +263,7 @@ describe('RegenerateUnitData mutation tests', () => {
     deleteTestProductComponentSet(prodCompSet_01.id, iamCrudSdk),
     deleteTestProductComponentSet(prodCompSet_02.id, iamCrudSdk),
     deleteTestUnitProduct(unitProduct_0101.id, iamCrudSdk),
-    deleteTestUnitProduct(unitProduct_0102.id, iamCrudSdk),
+    /*deleteTestUnitProduct(unitProduct_0102.id, iamCrudSdk),
     deleteTestUnitProduct(unitProduct_0201_DIFFERENTUNIT.id, iamCrudSdk),
     deleteTestUnitProduct(unitProduct_0104_NEW.id, iamCrudSdk),
     deleteTestGroupProduct(groupProduct_01.id, iamCrudSdk),
@@ -283,6 +284,7 @@ describe('RegenerateUnitData mutation tests', () => {
     deleteTestGeneratedProduct(unit02_generatedProduct_01.id, iamCrudSdk),
     deleteTestGeneratedProduct(unitProduct_0104_NEW.id, iamCrudSdk),
     deleteTestUnit(unitId_01_to_regen, iamCrudSdk),
+    */
   ).pipe(toArray());
 
   beforeAll(async () => {
@@ -294,7 +296,7 @@ describe('RegenerateUnitData mutation tests', () => {
     await cleanup
       .pipe(
         takeLast(1),
-        switchMap(() =>
+        /*switchMap(() =>
           // Seeding
           concat(
             createTestUnit(unit_01, iamCrudSdk),
@@ -326,8 +328,9 @@ describe('RegenerateUnitData mutation tests', () => {
             ),
             createTestGeneratedProduct(unit02_generatedProduct_01, iamCrudSdk),
             iamCrudSdk.CreateProductCategory({ input: productCategory_01 }),
+          
           ),
-        ),
+        ),*/
         takeLast(1),
       )
       .toPromise();
@@ -338,7 +341,7 @@ describe('RegenerateUnitData mutation tests', () => {
     await Auth.signOut();
   }, 15000);
 
-  it('should return helpful error message in case the unit has no items', done => {
+  it.only('should return helpful error message in case the unit has no items', done => {
     const input = { id: 'EMPTY UNIT' };
 
     of('start')
