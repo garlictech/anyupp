@@ -114,7 +114,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
                 return AnimationConfiguration.staggeredList(
                   position: position,
-                  duration: const Duration(milliseconds: 375),
+                  duration: const Duration(milliseconds: 200),
                   child: SlideAnimation(
                     verticalOffset: 50.0,
                     child: FadeInAnimation(

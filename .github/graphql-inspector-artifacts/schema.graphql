@@ -462,8 +462,8 @@ type GeoUnit @aws_cognito_user_pools {
       reason: "The new and better openingHoursNext7 field should be used instead of this static string"
     )
   openingHoursNext7: [OpeningHoursByDate!]!
-  supportedServingModes: [ServingMode!]
-  supportedOrderModes: [OrderMode!]
+  supportedServingModes: [ServingMode!]!
+  supportedOrderModes: [OrderMode!]!
 }
 type GeoUnitList @aws_cognito_user_pools {
   items: [GeoUnit]
@@ -857,100 +857,6 @@ type GeneratedProductCategory
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
   @key(name: "productCategoriesByUnit", fields: ["unitId"]) {
   id: ID!
-<<<<<<< HEAD
-  chainId: ID!
-  name: LocalizedItem!
-  description: LocalizedItem
-  productCategoryId: ID!
-  productType: String!
-  isVisible: Boolean!
-  image: String
-  variants: [ProductVariant]
-  allergens: [Allergen]
-  configSets: [ProductConfigSet]
-}
-
-enum Allergen {
-  celery
-  crustaceans
-  egg
-  fish
-  gluten
-  lupin
-  milk
-  molluscs
-  mustard
-  peanut
-  sesame
-  soya
-  sulphites
-  treenuts
-}
-
-type GroupProduct
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-  id: ID!
-  parentId: ID! # parent chainProduct ID
-  chainId: ID!
-  groupId: ID!
-  isVisible: Boolean!
-  tax: Int!
-  # takeawayTax: Int
-  variants: [ProductVariant]
-  configSets: [ProductConfigSet]
-}
-
-type UnitProduct
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-  id: ID!
-  parentId: ID! # parent groupProduct ID
-  chainId: ID!
-  groupId: ID!
-  unitId: ID!
-  isVisible: Boolean!
-  takeaway: Boolean!
-  laneId: ID
-  position: Int!
-  variants: [ProductVariant]
-  configSets: [ProductConfigSet]
-}
-
-type ProductVariant {
-  id: ID!
-  variantName: LocalizedItem!
-  pack: ProductVariantPack
-  refGroupPrice: Float
-  isAvailable: Boolean!
-  price: Float!
-  availabilities: [Availability]
-  # availableFrom: String
-  position: Int!
-}
-
-type ProductVariantPack {
-  size: Float!
-  unit: String!
-}
-
-type Availability {
-  type: String!
-  dayFrom: String
-  dayTo: String
-  timeFrom: String
-  timeTo: String
-  price: Float!
-}
-
-type GeneratedProductCategory
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "productCategoriesByUnit", fields: ["unitId"]) {
-  id: ID!
   unitId: ID!
   productNum: Int!
   productCategoryId: ID!
@@ -973,12 +879,13 @@ type GeneratedProduct
   description: LocalizedItem
   productType: String!
   tax: Int!
-  # takeawayTax: Int!
+  takeawayTax: Int!
   position: Int!
   image: String
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
+  supportedServingModes: [ServingMode!]!
 }
 
 type GeneratedProductVariant {
@@ -1024,6 +931,8 @@ type Unit
   merchantId: String
   timeZone: String
   pos: Pos
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
 }
 
 type DateIntervalOpen {
@@ -1136,10 +1045,11 @@ type Cart
   id: ID!
   userId: ID!
   unitId: ID!
-  takeAway: Boolean!
+  takeAway: Boolean! @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!
+  servingMode: ServingMode # Make the Cart.servingMode REQUIRED in the next release (handled in #1835 issue)
 }
 
 type Transaction
@@ -2695,7 +2605,6 @@ type Receipt
   email: String
   pdfData: String
   status: ReceiptStatus!
->>>>>>> dev
 }
 
 type Subscription {

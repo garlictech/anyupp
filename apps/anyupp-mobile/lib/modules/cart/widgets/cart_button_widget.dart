@@ -10,13 +10,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class CartButtonWidget extends StatefulWidget {
   final AnimationController controller;
 
-  const CartButtonWidget({Key? key, required this.controller}) : super(key: key);
+  const CartButtonWidget({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   _CartButtonWidgetState createState() => _CartButtonWidgetState();
 }
 
-class _CartButtonWidgetState extends State<CartButtonWidget> with SingleTickerProviderStateMixin {
+class _CartButtonWidgetState extends State<CartButtonWidget>
+    with SingleTickerProviderStateMixin {
   late Animation<Offset> _offset;
 
   @override
@@ -44,9 +46,12 @@ class _CartButtonWidgetState extends State<CartButtonWidget> with SingleTickerPr
             stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
             builder: (context, AsyncSnapshot<Cart?> snapshot) {
               // print('CartScreen.snapshot=$snapshot');
-              if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
-                  return _buildPaymentButton(context, state.unit, snapshot.data!);
+              if (snapshot.connectionState != ConnectionState.waiting ||
+                  snapshot.hasData) {
+                if (snapshot.data != null &&
+                    snapshot.data?.items.isNotEmpty == true) {
+                  return _buildPaymentButton(
+                      context, state.unit, snapshot.data!);
                 }
                 return Container();
               }
@@ -76,7 +81,10 @@ class _CartButtonWidgetState extends State<CartButtonWidget> with SingleTickerPr
           horizontal: 24.0,
         ),
         child: ElevatedButton(
-          onPressed: () => Nav.to(CartScreen()),
+          onPressed: () => Nav.to(
+            CartScreen(),
+            animationType: NavAnim.SLIDEIN_DOWN,
+          ),
           style: ElevatedButton.styleFrom(
             primary: theme.primary,
             shape: RoundedRectangleBorder(

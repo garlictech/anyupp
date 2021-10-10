@@ -1,4 +1,4 @@
-import { productComponentSetFixture } from 'libs/shared/fixtures/src';
+import { productComponentSetFixture } from '@bgap/shared/fixtures';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import { productFixture } from '@bgap/shared/fixtures';

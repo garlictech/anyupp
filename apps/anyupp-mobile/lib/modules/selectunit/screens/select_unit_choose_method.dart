@@ -1,11 +1,8 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/modules/takeaway/bloc/takeaway_bloc.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -13,16 +10,17 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 import 'flutter_qr_code_scanner.dart';
 
 class SelectUnitChooseMethodScreen extends StatefulWidget {
   @override
-  _SelectUnitChooseMethodScreenState createState() => _SelectUnitChooseMethodScreenState();
+  _SelectUnitChooseMethodScreenState createState() =>
+      _SelectUnitChooseMethodScreenState();
 }
 
-class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScreen> {
+class _SelectUnitChooseMethodScreenState
+    extends State<SelectUnitChooseMethodScreen> {
   @override
   void initState() {
     super.initState();
@@ -110,7 +108,8 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               left: 12.0,
             ),
             child: Text(
-              trans('selectUnit.welcome', [user.name ?? trans('selectUnit.unknown')]),
+              trans('selectUnit.welcome',
+                  [user.name ?? trans('selectUnit.unknown')]),
               style: Fonts.satoshi(
                 fontSize: 14.0,
                 color: Color(0xFF3C2F2F),
@@ -321,33 +320,10 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
         itemBuilder: (context, index) {
           return UnitCardWidget(
             unit: units[index],
-            onTap: () => _selectUnitAndGoToMenuScreen(context, units[index]),
+            onTap: () => selectUnitAndGoToMenuScreen(context, units[index]),
           );
         },
       ),
     );
-  }
-
-  void _selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit) async {
-    // unit.place = Place('00', '00');
-
-    if (unit.supportedServingModes.length == 1) {
-      return _selectServingModeAndGo(unit.supportedServingModes[0], unit);
-    }
-
-    var selectedMethodPos = await showSelectServingModeSheet(context);
-    print('_selectUnitAndGoToMenuScreen().selectedMethodPos=$selectedMethodPos');
-    if (selectedMethodPos != null) {
-      return _selectServingModeAndGo(selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway, unit);
-    } else {
-      getIt<TakeAwayBloc>().add(ResetServingMode());
-    }
-  }
-
-  void _selectServingModeAndGo(ServingMode servingMode, GeoUnit unit) {
-    getIt<TakeAwayBloc>().add(SetServingMode(servingMode));
-    getIt<CartBloc>().add(ClearPlaceInCart(unit));
-    getIt<UnitSelectBloc>().add(SelectUnit(unit));
-    Nav.reset(MainNavigation());
   }
 }

@@ -14,9 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final GeoUnit unit;
-  final String heroId;
   final GeneratedProduct item;
-  ProductDetailsScreen({required this.item, required this.heroId, required this.unit});
+  ProductDetailsScreen({required this.item, required this.unit});
 
   @override
   _ProductDetailsScreenState createState() => _ProductDetailsScreenState();
@@ -37,7 +36,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
     // ));
 
     return NetworkConnectionWrapperWidget(
-      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
+      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+          builder: (context, state) {
         if (state is UnitSelected) {
           return _buildMain(context, state.unit);
         }
@@ -48,45 +48,47 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
   }
 
   Widget _buildMain(BuildContext context, GeoUnit unit) {
-    return Scaffold(
-      key: _key,
-      // backgroundColor: theme.secondary12,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.only(
-              top: 8.0,
-              bottom: 8.0,
-              left: 15.0,
-            ),
-            child: BackButtonWidget(
-              color: theme.secondary,
-            ),
-          ),
-          elevation: 0.0,
-          iconTheme: IconThemeData(
-            color: theme.secondary, //change your color here
-          ),
-          backgroundColor: Colors.transparent,
-          actions: <Widget>[
-            Padding(
+    return SafeArea(
+      child: Scaffold(
+        key: _key,
+        // backgroundColor: theme.secondary12,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+            leading: Padding(
               padding: const EdgeInsets.only(
                 top: 8.0,
                 bottom: 8.0,
-                right: 15.0,
+                left: 15.0,
               ),
-              child: BorderedWidget(
-                width: 40,
-                child: FavoriteIconWidget(
-                  theme: theme,
-                  product: widget.item,
-                  unit: unit,
-                  iconSize: 24,
-                ),
+              child: BackButtonWidget(
+                color: theme.secondary,
               ),
             ),
-          ]),
-      body: buildDetailsScreen(context, unit),
+            elevation: 0.0,
+            iconTheme: IconThemeData(
+              color: theme.secondary, //change your color here
+            ),
+            backgroundColor: Colors.transparent,
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 8.0,
+                  bottom: 8.0,
+                  right: 15.0,
+                ),
+                child: BorderedWidget(
+                  width: 40,
+                  child: FavoriteIconWidget(
+                    theme: theme,
+                    product: widget.item,
+                    unit: unit,
+                    iconSize: 24,
+                  ),
+                ),
+              ),
+            ]),
+        body: buildDetailsScreen(context, unit),
+      ),
     );
   }
 
@@ -113,49 +115,62 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                       Container(
                         color: theme.secondary0,
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(
                                 8.0,
                               ),
-                              child: ImageWidget(
-                                url: widget.item.image,
-                                width: MediaQuery.of(context).size.width / 2.5,
-                                placeholder: Container(
-                                  padding: EdgeInsets.all(50.0),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(14.0),
-                                    ),
-                                    border: Border.all(
-                                      width: 1.5,
-                                      color: theme.secondary16.withOpacity(0.4),
-                                    ),
+                              child: InkWell(
+                                onTap: () => Nav.to(
+                                  ProductImageDetailsScreen(
+                                    product: widget.item,
                                   ),
-                                  // width: widthContainer,
-                                  // height: heightContainer,
-                                  child: CircularProgressIndicator(
-                                    backgroundColor: theme.secondary12,
-                                  ),
+                                  animationType: NavAnim.SLIDEIN_DOWN,
+                                  duration: Duration(milliseconds: 200),
                                 ),
-                                errorWidget: Container(
-                                  padding: EdgeInsets.all(50.0),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(14.0),
+                                child: ImageWidget(
+                                  url: widget.item.image,
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.5,
+                                  placeholder: Container(
+                                    padding: EdgeInsets.all(50.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(14.0),
+                                      ),
+                                      border: Border.all(
+                                        width: 1.5,
+                                        color:
+                                            theme.secondary16.withOpacity(0.4),
+                                      ),
                                     ),
-                                    border: Border.all(
-                                      width: 1.5,
-                                      color: theme.secondary16.withOpacity(0.4),
+                                    // width: widthContainer,
+                                    // height: heightContainer,
+                                    child: CircularProgressIndicator(
+                                      backgroundColor: theme.secondary12,
                                     ),
                                   ),
-                                  child: Icon(
-                                    Icons.error,
-                                    color: Colors.red,
-                                    size: 32.0,
+                                  errorWidget: Container(
+                                    padding: EdgeInsets.all(50.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(14.0),
+                                      ),
+                                      border: Border.all(
+                                        width: 1.5,
+                                        color:
+                                            theme.secondary16.withOpacity(0.4),
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Icons.error,
+                                      color: Colors.red,
+                                      size: 32.0,
+                                    ),
                                   ),
+                                  fit: BoxFit.contain,
                                 ),
-                                fit: BoxFit.contain,
                               ),
                             ),
                             Align(
@@ -193,7 +208,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                                 child: Text(
                                   widget.item.description == null
                                       ? ''
-                                      : getLocalizedText(context, widget.item.description!),
+                                      : getLocalizedText(
+                                          context, widget.item.description!),
                                   textAlign: TextAlign.left,
                                   style: Fonts.satoshi(
                                     color: theme.secondary,
@@ -207,9 +223,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                         ),
                       ),
                       StreamBuilder<Cart?>(
-                        stream: getIt<CartRepository>().getCurrentCartStream(unit.id),
+                        stream: getIt<CartRepository>()
+                            .getCurrentCartStream(unit.id),
                         builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                          if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                          if (snapshot.connectionState !=
+                                  ConnectionState.waiting ||
+                              snapshot.hasData) {
                             //return _buildVariantsList(snapshot.data, widget.item.variants);
                             return ProductDetailVariantListWidget(
                               cart: snapshot.data,
@@ -226,10 +245,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
               ),
             ),
           ),
-          (widget.item.configSets == null || (widget.item.configSets != null && widget.item.configSets!.isEmpty))
+          (widget.item.configSets == null ||
+                  (widget.item.configSets != null &&
+                      widget.item.configSets!.isEmpty))
               ? Container()
               : AddToCartPanelWidget(
-                  onAddToCartPressed: (state, quantity) => _addOrderItemToCart(state, quantity),
+                  onAddToCartPressed: (state, quantity) =>
+                      _addOrderItemToCart(state, quantity),
                 )
         ],
       ),
@@ -240,7 +262,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
     print('_addOrderItemToCart().quantity=$quantity');
     var orderItem = state.orderItem.copyWith(quantity: quantity);
     print('_addOrderItemToCart().orderItem.quantity=$quantity');
-    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(state.unit.id, orderItem));
+    BlocProvider.of<CartBloc>(context)
+        .add(AddProductToCartAction(state.unit.id, orderItem));
     Nav.pop();
   }
 
@@ -249,7 +272,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
       var variant = widget.item.variants[0];
       double size = variant.pack?.size ?? 0;
       bool isInteger = size == size.toInt().toDouble();
-      String sizeText = isInteger ? size.toInt().toString() : size.toStringAsFixed(1);
+      String sizeText =
+          isInteger ? size.toInt().toString() : size.toStringAsFixed(1);
       return '${getLocalizedText(context, widget.item.name)} - ${getLocalizedText(context, variant.variantName)} - ${sizeText} ${variant.pack?.unit ?? ""}';
     }
     return getLocalizedText(context, widget.item.name);

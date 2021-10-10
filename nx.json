@@ -130,7 +130,7 @@
       "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-floor-map": {
-      "tags": ["type:website", "platform:angular"]
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-forms": {
       "tags": ["type:utils", "platform:angular"]

@@ -79,17 +79,12 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
     } on GraphQLException catch (e) {
       print('CartBloc.ExceptionBloc.GraphQLException=$e');
       getIt<ExceptionBloc>().add(ShowException(e));
-      yield CartErrorState(code: e.code, message: e.message);
     } on PlatformException catch (e) {
       print('CartBloc.ExceptionBloc.PlatformException=$e');
       getIt<ExceptionBloc>().add(ShowException(CartException.fromPlatformException(e)));
-      yield CartErrorState(code: e.code, message: e.message);
-      // TODO: we don't use thie serror state
-      // TODO: we don't use cart states either but a live stream in the cartScreen
     } on Exception catch (e) {
       print('CartBloc.ExceptionBloc.Exception=$e');
       getIt<ExceptionBloc>().add(ShowException(CartException.fromException(CartException.UNKNOWN_ERROR, e)));
-      yield CartErrorState(code: CartException.UNKNOWN_ERROR, message: e.toString());
     }
   }
 }

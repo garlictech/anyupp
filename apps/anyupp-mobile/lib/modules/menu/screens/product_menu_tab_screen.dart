@@ -41,14 +41,19 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     return BlocProvider(
       create: (BuildContext context) {
         var bloc = getIt<ProductListBloc>();
-        bloc.add(LoadProductList(unitId: widget.unit.id, categoryId: widget.categoryId, nextToken: _nextToken));
+        bloc.add(LoadProductList(
+            unitId: widget.unit.id,
+            categoryId: widget.categoryId,
+            nextToken: _nextToken));
         return bloc;
       },
       child: Container(
         color: theme.secondary12.withOpacity(0.5),
         key: PageStorageKey(widget.categoryId),
-        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.015),
-        child: BlocBuilder<ProductListBloc, ProductListState>(builder: (context, state) {
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.015),
+        child: BlocBuilder<ProductListBloc, ProductListState>(
+            builder: (context, state) {
           if (state is ProductListLoading) {
             return CenterLoadingWidget();
           }
@@ -74,7 +79,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
       if (state is ServingModeSelectedState) {
         mode = state.servingMode;
       }
-      print('_buildList.servingMode=$mode');
+      // print('_buildList.servingMode=$mode');
 
       return AnimationLimiter(
         child: ListView.builder(
@@ -89,12 +94,15 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
               );
             }
 
-            print('list[$position].supportedServingModes=${list[position].supportedServingModes}');
-            if (mode != null && !list[position].supportedServingModes.contains(mode)) {
+            // print('list[$position].supportedServingModes=${list[position].supportedServingModes}');
+            if (mode != null &&
+                !list[position].supportedServingModes.contains(mode)) {
               return Container();
             }
 
-            if (position == list.length - 1 && list.length % _pageSize == 0 && _nextToken != null) {
+            if (position == list.length - 1 &&
+                list.length % _pageSize == 0 &&
+                _nextToken != null) {
               getIt<ProductListBloc>().add(LoadProductList(
                 unitId: widget.unit.id,
                 categoryId: widget.categoryId,
@@ -104,14 +112,13 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
 
             return AnimationConfiguration.staggeredList(
               position: position,
-              duration: const Duration(milliseconds: 375),
+              duration: const Duration(milliseconds: 200),
               child: SlideAnimation(
                 verticalOffset: 50.0,
                 child: FadeInAnimation(
                   child: ProductMenuItem(
                     unit: unit,
                     item: list[position],
-                    heroPrefix: 'menu',
                   ),
                 ),
               ),

@@ -32,11 +32,16 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                 right: 12,
               ),
               //width: 100,
-              child: ImageWidget(
-                url: this.widget.order.image,
-                placeholder: CircularProgressIndicator(),
-                errorWidget: Icon(Icons.error),
-                fit: BoxFit.cover,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  8.0,
+                ),
+                child: ImageWidget(
+                  url: this.widget.order.image,
+                  placeholder: CircularProgressIndicator(),
+                  errorWidget: Icon(Icons.error),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),

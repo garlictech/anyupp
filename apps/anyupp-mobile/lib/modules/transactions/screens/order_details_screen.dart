@@ -10,8 +10,7 @@ import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
-  OrderDetailsScreen();
+class OrderDetailsScreenOld extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -69,7 +69,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
                   height: 22.0,
                 ),
               ),
-              titleKey: trans('servingModeSheet.inPlace.title'),
+              title: trans('servingModeSheet.inPlace.title'),
               descriptionKey: trans('servingModeSheet.inPlace.description'),
               selected: true,
             ),
@@ -84,12 +84,11 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
             child: _buildServingOptionWidget(
               context,
               pos: 1,
-              icon: Icon(
-                Icons.directions_walk,
+              icon: SvgPicture.asset(
+                "assets/icons/bag.svg",
                 color: theme.secondary,
-                size: 22.0,
               ),
-              titleKey: trans('servingModeSheet.takeAway.title'),
+              title: trans('servingModeSheet.takeAway.title'),
               descriptionKey: trans('servingModeSheet.takeAway.description'),
               selected: false,
             ),
@@ -103,7 +102,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
     BuildContext context, {
     required int pos,
     required Widget icon,
-    required String titleKey,
+    required String title,
     required String descriptionKey,
     required bool selected,
   }) {
@@ -129,7 +128,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                trans(titleKey),
+                title,
                 style: Fonts.satoshi(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w700,
@@ -137,7 +136,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
                 ),
               ),
               Text(
-                'Fogyaszd el helyben a kedvenceidet.',
+                descriptionKey,
                 style: Fonts.satoshi(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w400,

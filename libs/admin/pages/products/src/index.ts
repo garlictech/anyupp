@@ -1,3 +1,3 @@
-import { AdminPagesProductsModule } from './lib/admin-pages-products.module';
+export { AdminPagesProductsModule } from './lib/admin-pages-products.module';
 
-export { AdminPagesProductsModule };
+export { ProductExtendFormComponent } from './lib/components/product-extend-form/product-extend-form.component';

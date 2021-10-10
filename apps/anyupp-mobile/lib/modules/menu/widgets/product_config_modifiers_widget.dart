@@ -2,11 +2,14 @@ import 'package:expandable/expandable.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart' hide Allergen;
 
-typedef OnModifiersSelected = void Function(Map<String, String> selectedModifiers);
+typedef OnModifiersSelected = void Function(
+    Map<String, String> selectedModifiers);
 
 class ProductConfigModifiersWidget extends StatefulWidget {
   final GeneratedProduct product;
@@ -20,10 +23,12 @@ class ProductConfigModifiersWidget extends StatefulWidget {
   });
 
   @override
-  _ProductConfigModifiersWidgetState createState() => _ProductConfigModifiersWidgetState();
+  _ProductConfigModifiersWidgetState createState() =>
+      _ProductConfigModifiersWidgetState();
 }
 
-class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWidget> {
+class _ProductConfigModifiersWidgetState
+    extends State<ProductConfigModifiersWidget> {
   Map<String, ExpandableController> _expandableModifierController = {};
   Map<String, String> _selectedModifier = {};
 
@@ -35,17 +40,23 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
   }
 
   void _initDefaultSelections() {
+    ServingMode? mode = takeAwayMode;
+
     widget.product.configSets?.forEach((modifier) {
-      if (modifier.type == ConfigType.MODIFIER) {
-        _selectedModifier[modifier.productSetId] = modifier.items.first.productComponentId;
-        _expandableModifierController[modifier.productSetId] = ExpandableController(initialExpanded: false);
+      if (modifier.type == ConfigType.MODIFIER &&
+          modifier.supportedServingModes.contains(mode)) {
+        _selectedModifier[modifier.productSetId] =
+            modifier.items.first.productComponentId;
+        _expandableModifierController[modifier.productSetId] =
+            ExpandableController(initialExpanded: false);
       }
     });
   }
 
   @override
   void dispose() {
-    _expandableModifierController.values.map((expendableController) => expendableController.dispose());
+    _expandableModifierController.values
+        .map((expendableController) => expendableController.dispose());
     super.dispose();
   }
 
@@ -57,10 +68,13 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
     );
   }
 
-  List<Widget> _buildModifiers(BuildContext context, List<GeneratedProductConfigSet>? sets) {
+  List<Widget> _buildModifiers(
+      BuildContext context, List<GeneratedProductConfigSet>? sets) {
     List<Widget> widgets = [];
+    ServingMode? mode = takeAwayMode;
     sets?.forEach((modifier) {
-      if (modifier.type == ConfigType.MODIFIER) {
+      if (modifier.type == ConfigType.MODIFIER &&
+          modifier.supportedServingModes.contains(mode)) {
         widgets.add(_buildSingleModifier(modifier));
       }
     });
@@ -105,19 +119,20 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
             Divider(
               color: theme.secondary16,
             ),
-            ..._buildModifiersList(context, modifier.productSetId, modifier.items),
+            ..._buildModifiersList(
+                context, modifier.productSetId, modifier.items),
           ],
         ),
       ),
     );
   }
 
-  List<Widget> _buildModifiersList(
-      BuildContext context, String productSetId, List<GeneratedProductConfigComponent> items) {
+  List<Widget> _buildModifiersList(BuildContext context, String productSetId,
+      List<GeneratedProductConfigComponent> items) {
     List<Widget> widgets = [];
     for (int i = 0; i < items.length; i++) {
-      widgets.add(
-          _buildModifierListItem(context, items[i], productSetId, items[i].productComponentId, i == items.length - 1));
+      widgets.add(_buildModifierListItem(context, items[i], productSetId,
+          items[i].productComponentId, i == items.length - 1));
     }
     return widgets;
   }
@@ -167,7 +182,8 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
                   Row(
                     children: [
                       Text(
-                        '+' + formatCurrency(item.price, widget.unit.currency),
+                        (item.price > 0 ? '+' : '') +
+                            formatCurrency(item.price, widget.unit.currency),
                         style: Fonts.satoshi(
                           color: theme.primary,
                           fontSize: 16.0,
@@ -196,7 +212,8 @@ class _ProductConfigModifiersWidgetState extends State<ProductConfigModifiersWid
                               _selectedModifier[productSetId] = value;
                             });
                             widget.onModifiersSelected(_selectedModifier);
-                            _expandableModifierController[productSetId]?.toggle();
+                            _expandableModifierController[productSetId]
+                                ?.toggle();
                           }
                         },
                       ),

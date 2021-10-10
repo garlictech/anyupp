@@ -158,8 +158,8 @@
     "noFavoritesButton": "DISCOVER MENU"
   },
   "orders": {
-    "tabCurrentOrder": "Orders",
-    "tabOrderHistory": "History",
+    "titleCurrentOrder": "Current orders",
+    "titleOrderHistory": "Order history",
     "noActiveOrder": "No active order placed yet",
     "noActiveOrderDesc": "Find the food and drinks you like under the Menu tab.",
     "noActiveOrderButton": "DISCOVER MENU",
@@ -178,7 +178,56 @@
     "waiting": "Please wait for the waiter.",
     "simplepay": "Pay with SimplePay",
     "stripepay": "Pay with Stripe",
-    "loadMore": "Load more..."
+    "loadMore": "Load more...",
+    "infos": {
+      "titles": {
+        "0": "Order mode",
+        "1": "Payment mode",
+        "2": "Place",
+        "3": "Order Num",
+        "4": "Order Date",
+        "5": "State"
+      },
+      "values": {
+        "takeAway": "Takeaway",
+        "inPlace": "In place",
+        "card": "Card",
+        "cash": "Cash",
+        "inapp": "In app"
+      },
+      "status": {
+        "none": {
+          "title": "Processing",
+          "titleShort": "Processing",
+          "description": "Your order is being processed. Should any problems arise, our colleagues will contact you."
+        },
+        "placed": {
+          "title": "Processed",
+          "titleShort": "Processed",
+          "description": "Your order has been processed. All is well."
+        },
+        "processing": {
+          "title": "Your order is being processed",
+          "titleShort": "Under construction",
+          "description": "Your order has been processed. Everything is fine."
+        },
+        "ready": {
+          "title": "Done",
+          "titleShort": "Done",
+          "description": "Your order is complete, we will serve you soon."
+        },
+        "rejected": {
+          "title": "Deleted",
+          "titleShort": "Deleted",
+          "description": "Your order has been canceled. Our colleague will contact you shortly for further action."
+        },
+        "served": {
+          "title": "Served",
+          "titleShort": "Served",
+          "description": "Your order is complete, we will serve you soon."
+        }
+      }
+    }
   },
   "notifications": {
     "messageFrom": "Message from AnyUpp!",
