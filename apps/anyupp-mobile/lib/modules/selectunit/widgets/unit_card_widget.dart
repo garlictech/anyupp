@@ -144,14 +144,14 @@ class UnitCardWidget extends StatelessWidget {
                     ),
                   if (unit.supportedServingModes.contains(ServingMode.takeAway))
                     BorderedWidget(
-                      width: 32.0,
-                      height: 32.0,
-                      child: Icon(
-                        Icons.directions_walk,
-                        color: theme.secondary,
-                        size: 18.0,
-                      ),
-                    ),
+                        width: 32.0,
+                        height: 32.0,
+                        child: SvgPicture.asset(
+                          "assets/icons/bag.svg",
+                          color: theme.secondary,
+                          width: 18.0,
+                          height: 18.0,
+                        )),
                 ],
               ),
             ),

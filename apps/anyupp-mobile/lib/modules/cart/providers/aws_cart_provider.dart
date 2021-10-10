@@ -35,6 +35,11 @@ class AwsCartProvider implements ICartProvider {
       )));
 
       // print('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
+
+      if (result.hasErrors) {
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+      }
+
       String? id;
       if (result.data != null && result.data?.createOrderFromCart != null) {
         id = result.data!.createOrderFromCart;
@@ -42,7 +47,7 @@ class AwsCartProvider implements ICartProvider {
       }
       await clearCart();
       if (id == null) {
-        throw CartException(code: CartException.UNKNOWN_ERROR, message: 'Generated order is is null!');
+        throw CartException(code: CartException.UNKNOWN_ERROR, message: 'Generated order is null!');
       }
       return id;
     } on Exception catch (e) {

@@ -39,14 +39,6 @@ class UnlinkAccountsWidget extends StatelessWidget {
                       LoginMethod.FACEBOOK,
                       methodSnapshot.data!.contains(LoginMethod.FACEBOOK),
                     ),
-                    // TODO PHONE
-                    // _createLinkedSocialButtonWidget(
-                    //   context,
-                    //   'phone',
-                    //   LoginMethod.PHONE,
-                    //   methodSnapshot.data.contains(LoginMethod.PHONE),
-                    // ),
-
                     _createLinkedSocialButtonWidget(
                       context,
                       'apple',

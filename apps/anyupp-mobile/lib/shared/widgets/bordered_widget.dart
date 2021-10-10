@@ -14,6 +14,7 @@ class BorderedWidget extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color? borderColor;
   final Color? color;
+  final double borderWidth;
   const BorderedWidget({
     Key? key,
     required this.child,
@@ -23,6 +24,7 @@ class BorderedWidget extends StatelessWidget {
     this.onPressed,
     this.borderColor,
     this.color,
+    this.borderWidth = 1.0,
   }) : super(key: key);
 
   @override
@@ -40,7 +42,7 @@ class BorderedWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            width: 1,
+            width: borderWidth,
             color: borderColor ?? theme.secondary40,
           ),
         ),
@@ -61,7 +63,7 @@ class BorderedWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(width ?? 40),
           border: Border.all(
-            width: 1,
+            width: borderWidth,
             color: borderColor ?? theme.secondary16,
           ),
           color: color ?? theme.secondary0,

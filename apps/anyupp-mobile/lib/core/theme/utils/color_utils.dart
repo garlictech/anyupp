@@ -51,9 +51,16 @@ ThemeData getThemeData(ThemeChainData theme) {
     primaryColorLight: Color(0xFFFFDB87),
     backgroundColor: Color(0xFFFFDB87),
     bottomAppBarColor: Color(0xFF176E49),
+    // buttonTheme: ButtonThemeData(
+    //   buttonColor: theme.primary,
+    //   disabledColor: Colors.transparent,
+    //   splashColor: theme.secondary,
+    // ),
     appBarTheme: AppBarTheme(
       color: theme.secondary0,
-      systemOverlayStyle: theme.primary.isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      systemOverlayStyle: theme.primary.isLight
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
     ),
   );
 }
@@ -61,11 +68,8 @@ ThemeData getThemeData(ThemeChainData theme) {
 ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
   print('***** unitThemeToThemeChainData().unit=${unit.id}');
   try {
-    // var primary = TinyColor.fromString(unit.style.colors.indicator).color;
-    // var secondary = TinyColor.fromString(unit.style.colors.textDark).color;
-    // TODO visszatenni!
-    var primary = Color(0xFF30BF60);
-    var secondary = Color(0xFF373737);
+    var primary = TinyColor.fromString(unit.style.colors.indicator).color;
+    var secondary = TinyColor.fromString(unit.style.colors.textDark).color;
 
     var secondary64 = _col(secondary, 64);
     var secondary40 = _col(secondary, 40);
@@ -130,7 +134,8 @@ Color _col(Color color, int percent) {
 }
 
 void setToolbarTheme(ThemeChainData theme) {
-  print('setToolbarTheme.color=${theme.secondary0}, isDark=${theme.secondary0.isDark}');
+  print(
+      'setToolbarTheme.color=${theme.secondary0}, isDark=${theme.secondary0.isDark}');
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
   //   statusBarColor: theme.secondary,
   //   statusBarBrightness: Brightness.light,

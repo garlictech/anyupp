@@ -13,21 +13,19 @@ import 'package:fa_prev/shared/nav.dart';
 class ProductMenuItem extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  final String heroPrefix;
 
   ProductMenuItem({
     required this.item,
-    required this.heroPrefix,
     required this.unit,
   });
 
   Widget build(BuildContext context) {
-    return buildProductItem(context, this.unit, this.item, this.heroPrefix, theme);
+    return buildProductItem(context, this.unit, this.item, theme);
   }
 }
 
-Widget buildProductItem(
-    BuildContext context, GeoUnit unit, GeneratedProduct item, String heroPrefix, ThemeChainData theme) {
+Widget buildProductItem(BuildContext context, GeoUnit unit,
+    GeneratedProduct item, ThemeChainData theme) {
   // Defining the dimensions and shadow of each sandwich in menu list (Menu page)
   final double heightContainer = 130;
   final double widthContainer = 130;
@@ -40,7 +38,6 @@ Widget buildProductItem(
         ProductDetailsScreen(
           unit: unit,
           item: item,
-          heroId: '${heroPrefix}_${item.id}',
         ),
         duration: Duration(milliseconds: 400),
         animationType: NavAnim.SLIDEIN_DOWN,
@@ -59,7 +56,7 @@ Widget buildProductItem(
         ),
         border: Border.all(
           width: 1,
-          color: theme.secondary16,
+          color: theme.secondary0,
         ),
         color: theme.secondary0,
       ),
@@ -68,32 +65,41 @@ Widget buildProductItem(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            ImageWidget(
-              url: item.image,
-              width: widthContainer,
-              height: heightContainer,
-              placeholder: Container(
-                padding: EdgeInsets.all(50.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(14.0),
-                  ),
-                  border: Border.all(
-                    width: 1.5,
-                    color: theme.secondary16.withOpacity(0.4),
-                  ),
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(
+                8.0,
+              ),
+              child: ImageWidget(
+                url: item.image,
                 width: widthContainer,
                 height: heightContainer,
-                child: CircularProgressIndicator(
-                  backgroundColor: theme.secondary12,
+                placeholder: Container(
+                  padding: EdgeInsets.all(50.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(14.0),
+                    ),
+                    border: Border.all(
+                      width: 1.5,
+                      color: theme.secondary16.withOpacity(0.4),
+                    ),
+                  ),
+                  width: widthContainer,
+                  height: heightContainer,
+                  child: CircularProgressIndicator(
+                    backgroundColor: theme.secondary12,
+                  ),
                 ),
-              ),
-              errorWidget: Container(
-                padding: EdgeInsets.all(50.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(14.0),
+                errorWidget: Container(
+                  padding: EdgeInsets.all(50.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(14.0),
+                    ),
+                    border: Border.all(
+                      width: 1.5,
+                      color: theme.secondary16.withOpacity(0.4),
+                    ),
                   ),
                   border: Border.all(
                     width: 1.5,
@@ -130,9 +136,9 @@ Widget buildProductItem(
                       ),
                     ),
                     Text(
-                      item.description == null ? '' : getLocalizedText(context, item.description!),
-                      // TODO kiszedni
-                      // 'Klasszikus amerikai vegyes saláta BBQ öntettel, friss és zöld paradicsommal és sajtszósszal.',
+                      item.description == null
+                          ? ''
+                          : getLocalizedText(context, item.description!),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Fonts.satoshi(
@@ -144,7 +150,8 @@ Widget buildProductItem(
                       padding: const EdgeInsets.only(
                         top: 20.0,
                       ),
-                      child: _buildVariantsInfo(context, theme, item.variants, unit.currency),
+                      child: _buildVariantsInfo(
+                          context, theme, item.variants, unit.currency),
                     ),
                   ],
                 ),
@@ -157,7 +164,8 @@ Widget buildProductItem(
   );
 }
 
-Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme, List<ProductVariant> variants, String currency) {
+Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme,
+    List<ProductVariant> variants, String currency) {
   final prices = variants.map((variant) => variant.price).toList();
   prices.sort();
 

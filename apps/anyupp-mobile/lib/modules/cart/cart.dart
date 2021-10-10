@@ -11,5 +11,4 @@ export 'screens/cart_screen.dart';
 export 'widgets/cart_button_widget.dart';
 export 'widgets/cart_icon_widget.dart';
 export 'widgets/cart_list_item_widget.dart';
-export 'widgets/data_transfer_dialog.dart';
 export 'widgets/payment_method_bottom_sheet.dart';

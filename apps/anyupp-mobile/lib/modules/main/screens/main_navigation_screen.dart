@@ -19,7 +19,8 @@ class MainNavigation extends StatefulWidget {
   _MainNavigationState createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
+class _MainNavigationState extends State<MainNavigation>
+    with SingleTickerProviderStateMixin {
   List<MainPageOptions>? _pageOptions;
 
   // --- For bottom animation bar
@@ -113,7 +114,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           appBar: _pageOptions![_selectedIndex].showAppBar
               ? AppBar(
                   title: Text(_pageOptions![_selectedIndex].appBarText,
-                      style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary)),
                   centerTitle: false,
                   leading: Container(),
                 )
@@ -124,7 +126,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           body: BlocListener<MainNavigationBloc, MainNavigationState>(
             listener: (BuildContext context, MainNavigationState state) {
               if (state is MainNavaigationNeed) {
-                print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                print(
+                    '******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
                 _navigateToPage(state.pageIndex);
               }
             },
@@ -162,7 +165,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
             elevation: 8.0,
             child: Container(
               child: BottomAppBar(
-               // elevation: 0.0,
+                // elevation: 0.0,
                 // shape: AutomaticNotchedShape(
                 //   StadiumBorder(),
                 //   // RoundedRectangleBorder(
@@ -173,13 +176,15 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _createBottomBarIconWithText(0, Icons.fastfood, 'main.bottomTitles.menu'),
+                    _createBottomBarIconWithText(
+                        0, Icons.fastfood, 'main.bottomTitles.menu'),
                     // _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
                     // SizedBox(
                     //   width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
                     // ),
                     _createOrdersBottomBarIconWithTextAndBadge(),
-                    _createBottomBarIconWithText(3, Icons.account_circle, 'main.bottomTitles.profile'),
+                    _createBottomBarIconWithText(
+                        3, Icons.account_circle, 'main.bottomTitles.profile'),
                   ],
                 ),
                 // shape: CircularNotchedRectangle(),
@@ -205,11 +210,15 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
         }
       },
       child: _createBottomBarIconWithText(
-          2, Icons.receipt, 'main.bottomTitles.orders', _orderCount > 0 ? _orderCount.toString() : null),
+          2,
+          Icons.receipt,
+          'main.bottomTitles.orders',
+          _orderCount > 0 ? _orderCount.toString() : null),
     );
   }
 
-  Widget _createBottomBarIconWithText(int index, IconData icon, String textKey, [String? badge]) {
+  Widget _createBottomBarIconWithText(int index, IconData icon, String textKey,
+      [String? badge]) {
     return BottomBarItem(
       icon: icon,
       text: trans(textKey),
@@ -220,6 +229,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   }
 
   void _navigateToPage(int index) {
+    if (_selectedIndex == index) return;
+    print('_navigateToPage.index=$index');
     if (index == 0) {
       _animationController.forward();
     } else {

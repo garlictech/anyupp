@@ -19,7 +19,8 @@ class Order {
   final Transaction? transaction;
   final PaymentStatus? transactionStatus;
   final String? transactionId;
-  final ServingMode servingMode;
+  final ServingMode? servingMode;
+  final OrderMode? orderMode;
 
   Order({
     required this.id,
@@ -37,7 +38,8 @@ class Order {
     this.transaction,
     this.transactionStatus,
     this.transactionId,
-    required this.servingMode,
+    this.servingMode,
+    this.orderMode,
   });
   // final UnpayCategory? unpayCategory;
 
@@ -58,6 +60,7 @@ class Order {
     PaymentStatus? transactionStatus,
     String? transactionId,
     ServingMode? servingMode,
+    OrderMode? orderMode,
   }) {
     return Order(
       id: id ?? this.id,
@@ -76,6 +79,7 @@ class Order {
       transactionStatus: transactionStatus ?? this.transactionStatus,
       transactionId: transactionId ?? this.transactionId,
       servingMode: servingMode ?? this.servingMode,
+      orderMode: orderMode ?? this.orderMode,
     );
   }
 
@@ -97,6 +101,7 @@ class Order {
       'transactionStatus': transactionStatus,
       'transactionId': transactionId,
       'servingMode': enumToString(servingMode),
+      'orderMode': enumToString(orderMode),
     };
   }
 
@@ -106,26 +111,34 @@ class Order {
       orderNum: map['orderNum'],
       userId: map['userId'],
       unitId: map['unitId'],
-      items: List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
+      items:
+          List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
       paymentMode: PaymentMode.fromJson(map['paymentMode']),
       sumPriceShown: PriceShown.fromJson(map['sumPriceShown']),
       place: map['place'] != null ? Place.fromJson(map['place']) : null,
       paymentIntention: map['paymentIntention'],
-      statusLog: List<StatusLog>.from(map['statusLog']?.map((x) => StatusLog.fromJson(x))),
+      statusLog: List<StatusLog>.from(
+          map['statusLog']?.map((x) => StatusLog.fromJson(x))),
       createdAt: map['createdAt'],
       archived: map['archived'],
-      transaction: map['transaction'] != null ? Transaction.fromJson(map['transaction']) : null,
+      transaction: map['transaction'] != null
+          ? Transaction.fromJson(map['transaction'])
+          : null,
       transactionStatus: map['transactionStatus'] != null
-          ? enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values)
+          ? enumFromString<PaymentStatus>(
+              map['transactionStatus'], PaymentStatus.values)
           : null,
       transactionId: map['transactionId'],
-      servingMode: enumFromString(map['servingMode'], ServingMode.values),
+      orderMode: enumFromStringNull(
+          map['orderMode'], OrderMode.values, OrderMode.instant),
+      servingMode: enumFromStringNull(
+          map['servingMode'], ServingMode.values, ServingMode.inPlace),
     );
   }
 
   @override
   String toString() {
-    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, servingMode: $servingMode, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
+    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, orderMode: $orderMode, servingMode: $servingMode, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
   }
 
   @override
@@ -148,7 +161,8 @@ class Order {
         other.transaction == transaction &&
         other.transactionStatus == transactionStatus &&
         other.transactionId == transactionId &&
-        other.servingMode == servingMode;
+        other.servingMode == servingMode &&
+        other.orderMode == orderMode;
   }
 
   @override
@@ -168,6 +182,7 @@ class Order {
         transaction.hashCode ^
         transactionStatus.hashCode ^
         transactionId.hashCode ^
+        orderMode.hashCode ^
         servingMode.hashCode;
   }
 }

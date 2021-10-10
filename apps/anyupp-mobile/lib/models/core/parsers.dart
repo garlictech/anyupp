@@ -3,13 +3,16 @@ String? enumToString<T>(T o) => o != null ? o.toString().split('.').last : null;
 // only to be used internally by amplify-flutter library
 // T? enumFromString<T>(String key, List<T> values) =>
 //     values.firstWhere((v) => key == enumToString(v), orElse: () => null);
-T? enumFromStringNull<T>(String key, List<T> values) {
+T? enumFromStringNull<T>(String? key, List<T> values, [T? defaultValue]) {
+  if (key == null) {
+    return defaultValue;
+  }
   int index = values.indexWhere((v) => key == enumToString(v));
   if (index >= 0) {
     return values[index];
   }
 
-  return null;
+  return defaultValue;
   // T? result = values.firstWhere((v) => key == enumToString(v), orElse: () => null);
 }
 

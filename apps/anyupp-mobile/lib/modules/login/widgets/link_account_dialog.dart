@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/login/login.dart';
 
-void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking state) {
+void showSelectAccountToLinkDialog(
+    BuildContext context, NeedAccountLinking state) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   showDialog(
@@ -62,16 +63,16 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        // TODO removed
-                        // getIt<LoginBloc>().add(LinkLoginWithProvider(
-                        //   state.existingProviderList[index],
-                        //   state.newProviderCredentials,
-                        // ));
                       },
                       child: Text(
-                        transEx(context, 'login.accountLink.linkWith',
-                            [LoginMethodUtils.methodToString(state.existingProviderList[index])]),
-                        // 'Link with ${LoginMethodUtils.methodToString(state.existingProviderList[index])}',
+                        transEx(
+                          context,
+                          'login.accountLink.linkWith',
+                          [
+                            LoginMethodUtils.methodToString(
+                                state.existingProviderList[index])
+                          ],
+                        ),
                         style: TextStyle(color: theme.secondary0),
                       ),
                     );
@@ -167,10 +168,12 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        getIt<LoginBloc>().add(UnlinkCurrentAccountFromProvider(method));
+                        getIt<LoginBloc>()
+                            .add(UnlinkCurrentAccountFromProvider(method));
                       },
                       child: Text(
-                        transEx(context, 'login.accountUnlink.unlink', [LoginMethodUtils.methodToString(method)]),
+                        transEx(context, 'login.accountUnlink.unlink',
+                            [LoginMethodUtils.methodToString(method)]),
                         style: Fonts.satoshi(
                           fontSize: 12.0,
                           color: theme.secondary0,

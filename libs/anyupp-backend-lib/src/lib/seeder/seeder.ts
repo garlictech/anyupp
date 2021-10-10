@@ -115,10 +115,6 @@ export const seedBusinessData = (deps: SeederDependencies) =>
           createTestUnit(1, 1, 1)(deps).pipe(ce('### Unit SEED 01')),
           createTestUnit(1, 1, 2)(deps).pipe(ce('### Unit SEED 02')),
           createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
-          createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
-          createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
-          createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
-          createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
           createTestUnitsForOrderHandling()(deps).pipe(
             ce('### Order handling units'),
           ),

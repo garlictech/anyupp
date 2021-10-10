@@ -46,18 +46,18 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     GeoUnit? unit = _unit;
     if (unit != null) {
       bool? showed = preferences.getBool('TOOLTIP_${unit.id}');
-      print('_checkNeedToShowTooltip.showed=$showed');
+      // print('_checkNeedToShowTooltip.showed=$showed');
       if (showed == null || showed == false) {
         await preferences.setBool('TOOLTIP_${unit.id}', true);
       }
       setState(() {
         _showTooltip = showed == null || showed == false;
-        print('_checkNeedToShowTooltip._showTooltip=$_showTooltip');
+        // print('_checkNeedToShowTooltip._showTooltip=$_showTooltip');
       });
     } else {
       setState(() {
         _showTooltip = false;
-        print('_checkNeedToShowTooltip._showTooltip=$_showTooltip');
+        // print('_checkNeedToShowTooltip._showTooltip=$_showTooltip');
       });
     }
   }
@@ -187,10 +187,10 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                             key: ValueKey<ServingMode>(state.servingMode),
                             width: 40.0,
                             child: state.servingMode == ServingMode.takeAway
-                                ? Icon(
-                                    Icons.directions_walk,
+                                ? SvgPicture.asset(
+                                    "assets/icons/bag.svg",
                                     color: theme.secondary,
-                                    size: 20.0,
+                                    height: 20.0,
                                   )
                                 : Padding(
                                     padding: const EdgeInsets.all(6.0),
@@ -305,7 +305,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                   unselectedLabelStyle: Fonts.satoshi(
                     fontSize: 14.0,
                   ),
-                  padding: EdgeInsets.zero,
+                  // padding: EdgeInsets.zero,
                   tabs: _getTabBarTitles(context, productCategories),
                 ),
               )
@@ -403,8 +403,8 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
             transEx(
               context,
               servingMode == ServingMode.takeAway
-                  ? 'servingModeSheet.dialog.title.takeaway'
-                  : 'servingModeSheet.dialog.title.inplace',
+                  ? 'servingModeSheet.dialog.title.inplace'
+                  : 'servingModeSheet.dialog.title.takeaway',
             ),
             style: Fonts.satoshi(
               fontSize: 17,

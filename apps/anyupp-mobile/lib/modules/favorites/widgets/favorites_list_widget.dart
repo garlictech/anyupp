@@ -61,14 +61,13 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
         itemBuilder: (context, position) {
           return AnimationConfiguration.staggeredList(
             position: position,
-            duration: const Duration(milliseconds: 375),
+            duration: const Duration(milliseconds: 200),
             child: SlideAnimation(
               horizontalOffset: 100.0,
               child: FadeInAnimation(
                 child: ProductMenuItem(
                   unit: unit,
                   item: list[position].product,
-                  heroPrefix: 'favorites',
                 ),
               ),
             ),

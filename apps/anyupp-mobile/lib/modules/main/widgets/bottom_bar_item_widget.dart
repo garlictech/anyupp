@@ -9,7 +9,12 @@ class BottomBarItem extends StatelessWidget {
   final String? badge;
   final VoidCallback? onTapped;
 
-  const BottomBarItem({required this.text, required this.icon, this.selected = false, this.badge, this.onTapped});
+  const BottomBarItem(
+      {required this.text,
+      required this.icon,
+      this.selected = false,
+      this.badge,
+      this.onTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -17,20 +22,24 @@ class BottomBarItem extends StatelessWidget {
         ? Badge(
             elevation: 3.0,
             //padding: EdgeInsets.only(left: 10.0),
-            position: BadgePosition.topEnd(top: 4.0, end: 4.0),
+            position: BadgePosition.topEnd(top: 12.0, end: 24.0),
             animationType: BadgeAnimationType.fade,
             animationDuration: const Duration(milliseconds: 500),
             badgeContent: Padding(
               padding: const EdgeInsets.all(0.0),
-              child: Text(
-                ' $badge ',
-                style: Fonts.satoshi(
-                  fontSize: 14.0,
-                  color: theme.secondary0,
-                ),
+              child: SizedBox(
+                width: 3.0,
+                height: 3.0,
               ),
+              // child: Text(
+              //   ' $badge ',
+              //   style: Fonts.satoshi(
+              //     fontSize: 14.0,
+              //     color: theme.secondary0,
+              //   ),
+              // ),
             ),
-            badgeColor: theme.primary,
+            badgeColor: Color(0xFFE74C3C), // theme.primary,
             child: _buildIconAndText(),
           )
         : _buildIconAndText();
@@ -43,13 +52,19 @@ class BottomBarItem extends StatelessWidget {
           ? BoxDecoration(
               border: Border(
                 top: BorderSide(
-                  //                    <--- top side
                   color: theme.primary,
-                  width: 3.0,
+                  width: 2.0,
                 ),
               ),
             )
-          : null,
+          : BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: theme.secondary0,
+                  width: 2.0,
+                ),
+              ),
+            ),
       child: Stack(
         children: [
           Wrap(

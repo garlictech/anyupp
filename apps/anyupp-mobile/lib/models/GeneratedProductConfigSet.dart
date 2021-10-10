@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 @immutable
 class GeneratedProductConfigSet {
@@ -11,6 +12,7 @@ class GeneratedProductConfigSet {
   final String type;
   final int? maxSelection;
   final List<GeneratedProductConfigComponent> items;
+  final List<ServingMode> supportedServingModes;
 
   GeneratedProductConfigSet({
     required this.productSetId,
@@ -20,6 +22,7 @@ class GeneratedProductConfigSet {
     required this.type,
     this.maxSelection,
     required this.items,
+    required this.supportedServingModes,
   });
 
   GeneratedProductConfigSet copyWith({
@@ -30,6 +33,7 @@ class GeneratedProductConfigSet {
     String? type,
     int? maxSelection,
     List<GeneratedProductConfigComponent>? items,
+    List<ServingMode>? supportedServingModes,
   }) {
     return GeneratedProductConfigSet(
       productSetId: productSetId ?? this.productSetId,
@@ -39,6 +43,7 @@ class GeneratedProductConfigSet {
       type: type ?? this.type,
       maxSelection: maxSelection ?? this.maxSelection,
       items: items ?? this.items,
+      supportedServingModes: supportedServingModes ?? this.supportedServingModes,
     );
   }
 
@@ -51,6 +56,7 @@ class GeneratedProductConfigSet {
       'type': type,
       'maxSelection': maxSelection,
       'items': items.map((x) => x.toJson()).toList(),
+      'supportedServingModes': supportedServingModes.map((x) => enumToString(x)).toList(),
     };
   }
 
@@ -64,12 +70,22 @@ class GeneratedProductConfigSet {
       maxSelection: map['maxSelection'],
       items: List<GeneratedProductConfigComponent>.from(
           map['items']?.map((x) => GeneratedProductConfigComponent.fromJson(x))),
+      supportedServingModes: map['supportedServingModes'] != null
+          ? List<ServingMode>.from(
+              map['supportedServingModes']?.map(
+                (x) => enumFromString(
+                  x,
+                  ServingMode.values,
+                ),
+              ),
+            )
+          : [ServingMode.inPlace, ServingMode.takeAway],
     );
   }
 
   @override
   String toString() {
-    return 'GeneratedProductConfigSet(productSetId: $productSetId, name: $name, description: $description, position: $position, type: $type, maxSelection: $maxSelection, items: $items)';
+    return 'GeneratedProductConfigSet(productSetId: $productSetId, name: $name, supportedServingModes: $supportedServingModes, description: $description, position: $position, type: $type, maxSelection: $maxSelection, items: $items)';
   }
 
   @override
@@ -83,7 +99,8 @@ class GeneratedProductConfigSet {
         other.position == position &&
         other.type == type &&
         other.maxSelection == maxSelection &&
-        listEquals(other.items, items);
+        listEquals(other.items, items) &&
+        listEquals(other.supportedServingModes, supportedServingModes);
   }
 
   @override
@@ -94,6 +111,7 @@ class GeneratedProductConfigSet {
         position.hashCode ^
         type.hashCode ^
         maxSelection.hashCode ^
-        items.hashCode;
+        items.hashCode ^
+        supportedServingModes.hashCode;
   }
 }

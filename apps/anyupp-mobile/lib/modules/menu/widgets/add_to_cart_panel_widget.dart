@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +33,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
         if (state is ConfigsetUpdated) {
           return _buildAddToCartPanel(context, state);
         } else {
-          return Container();
+          return SizedBox();
         }
       },
     );
@@ -39,6 +41,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
 
   Widget _buildAddToCartPanel(BuildContext context, ConfigsetUpdated state) {
     // print('_buildAddToCartPanel()=$state');
+    String price = formatCurrency(state.totalPrice, state.unit.currency);
     return Container(
       padding: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -80,34 +83,33 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
                     left: 35,
                     right: 35,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '$_quantity',
-                        style: Fonts.satoshi(
-                          color: theme.primary,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w700,
-                        ),
+                  child: RichText(
+                    text: TextSpan(
+                      text: '$_quantity',
+                      style: Fonts.satoshi(
+                        color: theme.primary,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w700,
                       ),
-                      Text(
-                        '  x  ',
-                        style: Fonts.satoshi(
-                          color: theme.secondary40,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w700,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: ' x ',
+                          style: Fonts.satoshi(
+                            color: theme.secondary40,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '${state.totalPrice}',
-                        style: Fonts.satoshi(
-                          color: theme.primary,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w700,
+                        TextSpan(
+                          text: price,
+                          style: Fonts.satoshi(
+                            color: theme.primary,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 BorderedWidget(
@@ -123,33 +125,19 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
               ],
             ),
           ),
-          SafeArea(
-            child: Container(
-              height: 56.0,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: theme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+          Platform.isIOS
+              ? SafeArea(
+                  child: AddToCartPanelButtonWidget(
+                    widget: widget,
+                    quantity: _quantity,
+                    state: state,
                   ),
+                )
+              : AddToCartPanelButtonWidget(
+                  widget: widget,
+                  quantity: _quantity,
+                  state: state,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      trans("cart.addToCart").toUpperCase(),
-                      style: Fonts.satoshi(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w700,
-                        color: theme.secondary0,
-                      ),
-                    ),
-                  ],
-                ),
-                onPressed: () => widget.onAddToCartPressed(state, _quantity),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -167,5 +155,48 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
     setState(() {
       _quantity = max(_quantity - 1, 1);
     });
+  }
+}
+
+class AddToCartPanelButtonWidget extends StatelessWidget {
+  const AddToCartPanelButtonWidget({
+    Key? key,
+    required this.widget,
+    required int quantity,
+    required this.state,
+  })  : _quantity = quantity,
+        super(key: key);
+
+  final AddToCartPanelWidget widget;
+  final ConfigsetUpdated state;
+  final int _quantity;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 56.0,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: theme.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              trans(context, "cart.addToCart").toUpperCase(),
+              style: Fonts.satoshi(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w700,
+                color: theme.secondary0,
+              ),
+            ),
+          ],
+        ),
+        onPressed: () => widget.onAddToCartPressed(state, _quantity),
+      ),
+    );
   }
 }

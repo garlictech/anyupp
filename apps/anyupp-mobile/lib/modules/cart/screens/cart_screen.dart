@@ -69,10 +69,9 @@ class _CartScreenState extends State<CartScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         state.servingMode == ServingMode.takeAway
-                            ? Icon(
-                                Icons.directions_walk,
+                            ? SvgPicture.asset(
+                                "assets/icons/bag.svg",
                                 color: theme.secondary,
-                                size: 20.0,
                               )
                             : Padding(
                                 padding: const EdgeInsets.all(6.0),
@@ -255,7 +254,7 @@ class _CartScreenState extends State<CartScreen> {
                     final OrderItem order = cart.items[position];
                     return AnimationConfiguration.staggeredList(
                       position: position,
-                      duration: const Duration(milliseconds: 375),
+                      duration: const Duration(milliseconds: 200),
                       child: _buildCartItem(context, unit, order),
                     );
                   },

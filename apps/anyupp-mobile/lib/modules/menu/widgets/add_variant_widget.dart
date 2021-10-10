@@ -107,17 +107,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
                   primary: theme.secondary0,
                 ),
                 onPressed: () {
-                  _addOrder(); // TODO
-                  // Nav.to(
-                  //   ProductConfiguratorScreen(
-                  //     cart: widget.cart,
-                  //     product: widget.product,
-                  //     variant: widget.variant,
-                  //     unit: widget.unit,
-                  //   ),
-                  //duration: Duration(milliseconds: 100),
-                  //animationType: NavAnim.SLIDEIN_DOWN,
-                  // );
+                  _addOrder();
                 },
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
