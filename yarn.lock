@@ -200,10 +200,10 @@
   dependencies:
     tslib "^2.2.0"
 
-"@angular/cdk@12.2.9":
-  version "12.2.9"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-12.2.9.tgz#f39e4d7cdb3568ad8e1d412e3500772e2d4c605c"
-  integrity sha512-9Wgj69iGAZ4teQqW/zPbVg2RGna+m9i3v0zkWGx/+Uo95rikJCUZBQM4bfeOe+bSJrS77jV5EisBWG7ayNUSzQ==
+"@angular/cdk@12.2.8":
+  version "12.2.8"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-12.2.8.tgz#ee83f6378b659ce24a6be13a9ce8c9793201e6f5"
+  integrity sha512-M0Y61o0yEVLMg+DSNsaDgiOifAV6OdumTgt2/kNoSuauPRWS0bkZJE58k3LR+cPi1Cho3UXELMKMOXZN9AhofA==
   dependencies:
     tslib "^2.2.0"
   optionalDependencies:
@@ -292,10 +292,10 @@
   dependencies:
     tslib "^2.2.0"
 
-"@angular/google-maps@12.2.9":
-  version "12.2.9"
-  resolved "https://registry.yarnpkg.com/@angular/google-maps/-/google-maps-12.2.9.tgz#2c4a083f97fc577bd2310558d1d7676a04720b63"
-  integrity sha512-LdnBDz1M+8sUV6RdpsIuKESdyOnt/djxi34drziTBvlua8eZz8mmXKCdZj4xcu8KD9Mhh0wS4OnGgx4/+kr1mw==
+"@angular/google-maps@12.2.8":
+  version "12.2.8"
+  resolved "https://registry.yarnpkg.com/@angular/google-maps/-/google-maps-12.2.8.tgz#b33fa2a46be9fc567023f69fa42b370eb72c103e"
+  integrity sha512-Mkvpm6lv2ZFj2f2T9JDN2jStp247SS3hYO7wqk2I6CQGTy7gJm796Awfar+h5fu4iAqH91RFY25YOKCXZnEBGA==
   dependencies:
     "@types/googlemaps" "^3.43.1"
     tslib "^2.2.0"
@@ -8117,10 +8117,15 @@
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.50.tgz#117540e026d64e1846093abbd5adc7e27fda7bcb"
   integrity sha512-VMhZMMQgV1zsR+lX/0IBfAk+8Eb7dPVMWiQGFAt3qjo5x7Ml6b77jUo0e1C3ToD+XRDXqtrfw+6AB0uUsPEr3Q==
 
-"@types/aws-lambda@*", "@types/aws-lambda@8.10.83":
+"@types/aws-lambda@*":
   version "8.10.83"
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.83.tgz#66db06cedb7476e860e8655e4387fd2e4385433a"
   integrity sha512-7YsLv/B8rF7K7jYAGmYBxLq3QU+hQV7qNJBMcSCmJCTcXuzoTKGBX8d4v9CsVs0SOKBSAErXG7rtk8jVxiP30g==
+
+"@types/aws-lambda@8.10.84":
+  version "8.10.84"
+  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.84.tgz#b1f391ceeb6908b28d8416d93f27afe8d1348d4e"
+  integrity sha512-5V78eLtmN0d4RA14hKDwcsMQRl3JotQJlhGFDBo/jdE2TyDFRaYwB/UmMUC4SzhSvRGn+YMkh7jGPnXi8COAng==
 
 "@types/aws-serverless-express@3.3.5":
   version "3.3.5"
