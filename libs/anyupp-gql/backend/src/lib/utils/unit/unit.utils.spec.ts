@@ -1,5 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { unitFixture } from '@bgap/shared/fixtures';
 import { DateTime } from 'luxon';
 import {
@@ -54,7 +53,7 @@ describe('Unit utils', () => {
       const openUnit_03_openStarted: CrudApi.Unit = {
         ...unitBase,
         id: 'openUnit_03_openStarted',
-        open: { to: '2100-01-01' },
+        open: { to: '2100-01-01', from: '2100-01-01' },
       };
       const openUnit_04_allways: CrudApi.Unit = {
         ...unitBase,
@@ -94,12 +93,7 @@ describe('Unit utils', () => {
             closedUnit_02_afterTo,
           ],
         }).map(pluckId),
-      ).toEqual([
-        openUnit_01_openEnded.id,
-        openUnit_02_inInterval.id,
-        openUnit_03_openStarted.id,
-        openUnit_04_allways.id,
-      ]);
+      ).toMatchSnapshot();
     });
 
     describe("using the unit's timezone", () => {

@@ -1,66 +1,3 @@
-type AdminUser @aws_cognito_user_pools @aws_iam {
-  id: ID!
-  name: String!
-  email: String!
-  phone: String!
-  profileImage: String
-  settings: AdminUserSettings
-  roleContexts: [AdminRoleContext]
-}
-
-type AdminUserSettings {
-  selectedChainId: String
-  selectedGroupId: String
-  selectedUnitId: String
-  selectedProductCategoryId: String
-  selectedLanguage: String
-  selectedHistoryDate: Int
-}
-
-input UpdateAdminUserInput {
-  id: ID!
-  name: String
-  email: String
-  phone: String
-  profileImage: String
-  settings: AdminUserSettingsInput
-}
-
-input AdminUserSettingsInput {
-  selectedChainId: String
-  selectedGroupId: String
-  selectedUnitId: String
-  selectedProductCategoryId: String
-  selectedLanguage: String
-  selectedHistoryDate: Int
-}
-
-type AdminRoleContext @aws_cognito_user_pools @aws_iam {
-  id: ID!
-  roleContextId: ID!
-  adminUserId: ID!
-  roleContext: RoleContext! @connection(fields: ["roleContextId"])
-}
-
-enum Role {
-  superuser
-  chainadmin
-  groupadmin
-  unitadmin
-  staff
-  inactive
-}
-
-type RoleContext @aws_cognito_user_pools @aws_iam {
-  id: ID!
-  contextId: ID! # Readable short id
-  role: Role!
-  name: LocalizedItem
-  chainId: String
-  groupId: String
-  unitId: String
-}
-
 ### Location
 type Location @aws_cognito_user_pools {
   lat: Float!
@@ -193,77 +130,6 @@ enum OrderMode {
   pickup
 }
 
-### GroupProduct
-type GroupProduct @aws_cognito_user_pools {
-  id: ID!
-  parentId: ID! # parent chainProduct ID
-  chainId: ID!
-  groupId: ID!
-  isVisible: Boolean!
-  tax: Int!
-  takeawayTax: Int
-  variants: [ProductVariant]
-  configSets: [ProductConfigSet]
-}
-
-input UpdateGroupProductInput {
-  id: ID!
-  parentId: ID
-  chainId: ID
-  groupId: ID
-  isVisible: Boolean
-  tax: Int
-  takeawayTax: Int
-  variants: [ProductVariantInput]
-  configSets: [ProductConfigSetInput]
-}
-
-### UnitProduct
-type UnitProduct @aws_cognito_user_pools {
-  id: ID!
-  parentId: ID! # parent groupProduct ID
-  chainId: ID!
-  groupId: ID!
-  unitId: ID!
-  isVisible: Boolean!
-  takeaway: Boolean! @deprecated(reason: "Use `supportedServingModes`.")
-  laneId: ID
-  position: Int!
-  variants: [ProductVariant]
-  configSets: [ProductConfigSet]
-  supportedServingModes: [ServingMode!]
-}
-
-input CreateUnitProductInput {
-  id: ID # <== NOT REQUIRED
-  parentId: ID! # parent groupProduct ID
-  chainId: ID!
-  groupId: ID!
-  unitId: ID!
-  isVisible: Boolean!
-  takeaway: Boolean!
-  laneId: ID
-  position: Int!
-  variants: [ProductVariantInput]
-  configSets: [ProductConfigSetInput]
-  supportedServingModes: [ServingMode!]
-}
-
-input UpdateUnitProductInput {
-  id: ID! # <== REQUIRED
-  parentId: ID
-  chainId: ID
-  groupId: ID
-  unitId: ID
-  isVisible: Boolean
-  takeaway: Boolean
-  laneId: ID
-  position: Int
-  variants: [ProductVariantInput]
-  configSets: [ProductConfigSetInput]
-  supportedServingModes: [ServingMode!]
-}
-
 ### ProductConfigSet
 type ProductConfigComponent @aws_cognito_user_pools {
   productComponentId: ID!
@@ -339,26 +205,6 @@ input AvailabilityInput {
   price: Float!
 }
 
-### UserInvoiceAddress
-# Re enable (issue: #1736)
-# type UserInvoiceAddress {
-#   customerName: String!
-#   taxNumber: String!
-#   country: String!
-#   city: String!
-#   streetAddress: String!
-#   postalCode: String!
-#   email: String
-# }
-# input UserInvoiceAddressInput {
-#   customerName: String!
-#   taxNumber: String!
-#   country: String!
-#   city: String!
-#   streetAddress: String!
-#   postalCode: String!
-#   email: String
-# }
 ### ORDER
 input CreateOrderFromCartInput {
   id: ID!
@@ -512,6 +358,7 @@ type GeoUnit @aws_cognito_user_pools {
   supportedServingModes: [ServingMode!]!
   supportedOrderModes: [OrderMode!]!
 }
+
 type GeoUnitList @aws_cognito_user_pools {
   items: [GeoUnit]
 }
@@ -531,6 +378,9 @@ type Mutation {
   createAnonymUser: CreateAnonymUserOutput! # public endpoint
   # Order
   createOrderFromCart(input: CreateOrderFromCartInput!): ID!
+    @aws_cognito_user_pools
+
+  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
     @aws_cognito_user_pools
 
   # Stripe

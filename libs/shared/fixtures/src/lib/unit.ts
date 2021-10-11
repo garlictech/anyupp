@@ -58,7 +58,7 @@ const openingHours: CrudApi.WeeklySchedule = {
   ],
 };
 
-const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
+const unitBase = {
   isActive: true,
   isAcceptingOrders: true,
   name: `Késdobáló S`,
@@ -114,11 +114,13 @@ const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   ],
 };
 
-const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
+const unit_01: CrudApi.Unit = {
   ...unitBase,
   id: unitId_01,
   groupId: groupFixture.group_01.id,
   chainId: chainFixture.chain_01.id,
+  createdAt: '2021-08-02T01:54:11.843Z',
+  updatedAt: '2021-08-02T01:54:11.843Z',
 };
 
 const unitInstantTakeaway: RequiredId<CrudApi.CreateUnitInput> = {

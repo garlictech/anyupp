@@ -1,6 +1,7 @@
 import { createAdminUser } from './create-admin-user.resolver';
-import { defer, from, Observable, of, throwError } from 'rxjs';
+import { defer, from, of } from 'rxjs';
 import { AdminUserResolverDeps } from './utils';
+import { catchError } from 'rxjs/operators';
 
 // We use any-s to mock teh system partially
 
@@ -25,9 +26,9 @@ const goodDeps: AdminUserResolverDeps = {
   userNameGenerator: jest.fn().mockReturnValue(userName),
   adminUserTableName: 'ADMIN_USER_TABLE',
   docClient: {
-    put: jest
-      .fn()
-      .mockReturnValue({ promise: () => Promise.resolve('PUT RETURNED') }),
+    put: jest.fn().mockReturnValue({
+      promise: () => Promise.resolve({ Attributes: 'PUT RETURNED' }),
+    }),
   } as any,
 };
 
@@ -52,7 +53,15 @@ test('Handle the good case', done => {
         .calls[0],
     ).toMatchSnapshot('listUsers parameters');
 
-    expect((goodDeps.docClient.put as jest.Mock).mock.calls[0]).toMatchSnapshot(
+    expect(
+      (goodDeps.docClient.put as jest.Mock).mock.calls[0][0],
+    ).toMatchSnapshot(
+      {
+        Item: {
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        },
+      },
       'CreateAdminUser parameters',
     );
 
@@ -89,7 +98,7 @@ test('Handle listUser returns bad data', done => {
   const deps = listUserCaseDeps(Promise.resolve(undefined));
 
   createGoodResolverCall(deps).subscribe({
-    error: res => {
+    next: res => {
       expect(res).toMatchSnapshot();
       done();
     },
@@ -148,7 +157,7 @@ test('Handle adminCreateUser bad data', done => {
   const deps = adminCreateUserCaseDeps(Promise.resolve(undefined));
 
   createGoodResolverCall(deps).subscribe({
-    error: res => {
+    next: res => {
       expect(res).toMatchSnapshot();
       done();
     },
@@ -156,29 +165,22 @@ test('Handle adminCreateUser bad data', done => {
 });
 
 const CrudsdkCreateUserCaseDeps = (
-  result: Observable<unknown>,
+  result: Promise<unknown>,
 ): AdminUserResolverDeps => ({
   ...goodDeps,
   docClient: {
     ...goodDeps.docClient,
-    put: jest.fn().mockReturnValue(result),
+    put: jest.fn().mockReturnValue({ promise: () => result }),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any,
 });
 
 test('Handle crudSdk.CreateAdminUser error', done => {
-  const deps = CrudsdkCreateUserCaseDeps(
-    throwError('crudSdk.CreateAdminUser ERROR'),
-  );
+  const deps = CrudsdkCreateUserCaseDeps(Promise.reject('dynamodb PUT ERROR'));
 
   createGoodResolverCall(deps).subscribe({
-    error: res => {
-      expect(
-        (goodDeps.cognitoidentityserviceprovider.adminDeleteUser as jest.Mock)
-          .mock.calls[0],
-      ).toMatchSnapshot('adminDeleteUser parameters');
-
-      expect(res).toMatchSnapshot('result');
+    error: err => {
+      expect(err).toMatchSnapshot();
       done();
     },
   });

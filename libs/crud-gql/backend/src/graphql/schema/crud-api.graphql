@@ -817,13 +817,18 @@ type Unit
   paymentModes: [PaymentMode]
   floorMap: FloorMapData
   lanes: [Lane]
-  open: DateInterval
+  open: DateIntervalOpen
   openingHours: WeeklySchedule
   merchantId: String
   timeZone: String
   pos: Pos
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+}
+
+type DateIntervalOpen {
+  from: String
+  to: String
 }
 
 type DateInterval {

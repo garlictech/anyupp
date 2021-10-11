@@ -14,7 +14,7 @@ yarn nx build-schema anyupp-gql-api
 yarn nx build-schema crud-backend --env=$ENVNAME
 
 # Added mobile schema generation here
-yarn nx build-schema anyupp-mobile --env=$ENVNAME --mode=$MODE
+#yarn nx build-schema anyupp-mobile --env=$ENVNAME --mode=$MODE
 
 if [ $ENVNAME = 'dev' ]; then
   yarn nx build admin --skip-nx-cache
