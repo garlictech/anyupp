@@ -83,8 +83,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     } else {
       MainNavigationState navState = getIt<MainNavigationBloc>().state;
       if (navState is MainNavaigationNeed) {
-        // print('***** MainNaevigationScreen.didChangeDependencies().toPage=${navState.pageIndex}');
-
         _navigateToPage(navState.pageIndex);
       }
     }
@@ -220,13 +218,13 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   }
 
   void _navigateToPage(int index) {
-    if (_selectedIndex == index) return;
-    print('_navigateToPage.index=$index');
+    // print('MainNavigationScreen._navigateToPage.index=$index, _selectedIndex=$_selectedIndex');
     if (index == 0) {
       _animationController.forward();
     } else {
       _animationController.reverse();
     }
+    if (_selectedIndex == index) return;
 
     if (index == 2) {
       _pages[2] = OrdersScreen(
