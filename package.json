@@ -49,7 +49,7 @@
     "@angular/platform-browser": "12.2.9",
     "@angular/platform-browser-dynamic": "12.2.9",
     "@angular/router": "12.2.9",
-    "@aws-amplify/ui-angular": "1.0.27",
+    "@aws-amplify/ui-angular": "1.0.29",
     "@nebular/eva-icons": "8.0.0",
     "@nebular/theme": "8.0.0",
     "@ngneat/until-destroy": "8.1.4",
