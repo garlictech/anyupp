@@ -229,7 +229,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                 showBorder: false,
                 color: theme.secondary,
                 icon: Icons.chevron_left,
-                onPressed: () => Nav.reset(OnBoarding()),
+                onPressed: () => _resetPlaceAndGoToUnitSelection(_unit),
               ),
               // if (theme.images?.header != null)
               ImageWidget(
@@ -346,8 +346,13 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: _createAppBar(context, []),
         backgroundColor: theme.secondary0,
-        body: EmptyWidget(
-          messageKey: 'main.noCategories',
+        body: Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 8.0),
+            child: EmptyWidget(
+              messageKey: 'main.noCategories',
+            ),
+          ),
         ),
       ),
     );
@@ -441,5 +446,12 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
         );
       },
     );
+  }
+
+  void _resetPlaceAndGoToUnitSelection(GeoUnit? unit) {
+    if (unit != null) {
+      getIt<CartBloc>().add(ClearPlaceInCart(unit));
+    }
+    Nav.reset(OnBoarding());
   }
 }

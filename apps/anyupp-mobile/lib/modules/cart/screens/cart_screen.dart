@@ -8,7 +8,6 @@ import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
-import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:fa_prev/shared/utils/stage_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,19 +17,8 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart' hide Allergen;
 
-class CartScreen extends StatefulWidget {
-  @override
-  State<CartScreen> createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  late ScrollController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = ScrollController();
-  }
+class CartScreen extends StatelessWidget {
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +71,9 @@ class _CartScreenState extends State<CartScreen> {
                           width: 4.0,
                         ),
                         Text(
-                          state.servingMode == ServingMode.takeAway ? trans('cart.takeAway') : trans('cart.inPlace'),
+                          state.servingMode == ServingMode.takeAway
+                              ? trans(context, 'cart.takeAway')
+                              : trans(context, 'cart.inPlace'),
                           style: Fonts.satoshi(
                             fontSize: 14.0,
                             color: theme.secondary,
@@ -99,18 +89,29 @@ class _CartScreenState extends State<CartScreen> {
           }),
         ],
         // Only dev and qa builds are show the table and seat in the top right corner
-        title: (true)
-            ? FutureBuilder<Place?>(
-                future: getPlacePref(),
-                builder: (BuildContext context, AsyncSnapshot<Place?> placeSnapshot) {
+        title: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+          builder: (context, state) {
+            if (state is UnitSelected) {
+              return StreamBuilder<Cart?>(
+                stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
+                builder: (context, AsyncSnapshot<Cart?> snapshot) {
                   // print('placeSnapshot=$placeSnapshot');
 
-                  if (placeSnapshot.hasData) {
+                  if (snapshot.hasData) {
+                    bool show = snapshot.data?.place?.seat != null &&
+                        snapshot.data?.place?.seat != EMPTY_SEAT &&
+                        snapshot.data?.place?.table != null &&
+                        snapshot.data?.place?.table != EMPTY_TABLE;
+
+                    if (!show) {
+                      return Container();
+                    }
+
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          trans('main.menu.cart'),
+                          trans(context, 'main.menu.cart'),
                           style: Fonts.satoshi(
                             color: theme.secondary,
                             fontSize: 16.0,
@@ -127,7 +128,7 @@ class _CartScreenState extends State<CartScreen> {
                               color: theme.primary,
                             ),
                             Text(
-                              ' ${placeSnapshot.data?.table}',
+                              ' ${snapshot.data?.place?.table ?? "-"}',
                               style: Fonts.satoshi(
                                 color: theme.secondary,
                                 fontSize: 14.0,
@@ -141,7 +142,7 @@ class _CartScreenState extends State<CartScreen> {
                               color: theme.primary,
                             ),
                             Text(
-                              '${placeSnapshot.data?.seat}',
+                              '${snapshot.data?.place?.seat ?? "-"}',
                               style: Fonts.satoshi(
                                 color: theme.secondary,
                                 fontSize: 14.0,
@@ -154,25 +155,22 @@ class _CartScreenState extends State<CartScreen> {
                     );
                   }
 
-                  return Text(
-                    trans('main.menu.cart'),
-                    style: Fonts.satoshi(
-                      color: theme.secondary,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  );
+                  return Container();
                 },
-              )
-            // ignore: dead_code
-            : Text(
-                trans('main.menu.cart'),
-                style: Fonts.satoshi(
-                  color: theme.secondary,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              );
+              // ignore: dead_code
+              // : Text(
+              //     trans(context, 'main.menu.cart'),
+              //     style: Fonts.satoshi(
+              //       color: theme.secondary,
+              //       fontSize: 16.0,
+              //       fontWeight: FontWeight.w400,
+              //     ),
+              //   ),
+            }
+            return Container();
+          },
+        ),
       ),
       body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, state) {
@@ -263,9 +261,9 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _buildPaymentButtonPanel(BuildContext context, GeoUnit unit, Cart cart) {
-    bool showQrCodeScan = true;
-    if ((cart.place == null || (cart.place?.seat == "00" && cart.place?.table == "00")) && isDev) {
-      showQrCodeScan = false;
+    bool showQrCodeScan = false;
+    if ((cart.place == null || (cart.place?.seat == "00" && cart.place?.table == "00")) && !isDev) {
+      showQrCodeScan = true;
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -295,8 +293,8 @@ class _CartScreenState extends State<CartScreen> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      //trans("cart.addToCart").toUpperCase(),
-                      '${trans("cart.pay")} (${formatCurrency(cart.totalPrice, unit.currency)})',
+                      //trans(context, "cart.addToCart").toUpperCase(),
+                      '${trans(context, "cart.pay")} (${formatCurrency(cart.totalPrice, unit.currency)})',
                       style: Fonts.satoshi(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w700,
@@ -335,7 +333,7 @@ class _CartScreenState extends State<CartScreen> {
           child: TextButton(
             onPressed: () => _deleteCartConfirmation(context),
             child: Text(
-              trans('cart.deleteCart'),
+              trans(context, 'cart.deleteCart'),
               style: Fonts.satoshi(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,

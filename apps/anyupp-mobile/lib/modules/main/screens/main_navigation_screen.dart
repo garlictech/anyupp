@@ -132,9 +132,14 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                 duration: Duration(seconds: 1),
                 content: Text(
                   trans('common.exit'),
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                  textAlign: TextAlign.center,
+                  style: Fonts.satoshi(
+                    fontSize: 16.0,
+                    color: theme.secondary0,
                   ),
+                  // style: TextStyle(
+                  //   color: Theme.of(context).colorScheme.secondary,
+                  // ),
                 ),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Color(0xAA880000),
