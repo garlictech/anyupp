@@ -10,7 +10,7 @@ Then('the {string} title is displayed', (title: string) => {
 });
 
 Then('I should see {string} text', (text: string) => {
-  cy.contains(text, { matchCase: false }).should('be.visible');
+  cy.contains(text, { matchCase: false }).scrollIntoView().should('be.visible');
 });
 
 Then('I should see the {fixture} fixture', (fixture: string) => {
