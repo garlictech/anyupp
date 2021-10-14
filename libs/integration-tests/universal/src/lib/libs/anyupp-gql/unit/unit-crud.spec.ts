@@ -1,3 +1,6 @@
+import { filterNullish } from '@bgap/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
+import bcrypt from 'bcryptjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { unitFixture } from '@bgap/shared/fixtures';
 import { createIamCrudSdk } from '../../../../api-clients';
@@ -5,7 +8,6 @@ import {
   anyuppResolverHandler,
   createUnitResolver,
   createUnitsDeps,
-  unitRequestHandler,
   updateUnitResolver,
 } from '@bgap/anyupp-gql/backend';
 
@@ -95,5 +97,84 @@ describe('Test unit CRUD operations', () => {
       () => {},
     );
     expect(res).toMatchSnapshot();
+  });
+
+  test('The resolver must hash the rkeeper passwords', done => {
+    crudSdk
+      .DeleteUnit({ input: { id: unitFixture.createRkeeperUnit.id } })
+      .pipe(
+        switchMap(() =>
+          crudSdk.CreateUnit({ input: unitFixture.createRkeeperUnit }),
+        ),
+        tap(x => expect(x).toMatchSnapshot('CREATE')),
+        switchMap(() =>
+          crudSdk.GetUnit({ id: unitFixture.createRkeeperUnit.id }),
+        ),
+        filterNullish<CrudApi.Unit>(),
+        tap(async (x: CrudApi.Unit) => {
+          expect(x).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
+            'READ',
+          );
+
+          expect(
+            await bcrypt.compare(
+              x?.pos?.rkeeper?.rkeeperPassword as string,
+              unitFixture.createRkeeperUnit.pos!.rkeeper!.rkeeperPassword!,
+            ),
+          ).toEqual(true);
+
+          expect(
+            await bcrypt.compare(
+              x?.pos?.rkeeper?.anyuppPassword as string,
+              unitFixture.createRkeeperUnit.pos!.rkeeper!.anyuppPassword!,
+            ),
+          ).toEqual(true);
+        }),
+        switchMap(() =>
+          crudSdk.UpdateUnit({
+            input: {
+              id: unitFixture.createRkeeperUnit.id,
+              pos: {
+                // This is a fixture, so we set it so
+                ...unitFixture.createRkeeperUnit.pos!,
+                rkeeper: {
+                  // This is a fixture, so we set it so
+                  ...unitFixture.createRkeeperUnit.pos!.rkeeper!,
+                  rkeeperPassword: 'UPDATED_RKEEPER_PASSWORD',
+                  anyuppPassword: 'UPDATED_ANYUPP_PASSWORD',
+                },
+              },
+            },
+          }),
+        ),
+        filterNullish<CrudApi.Unit>(),
+        tap(async (x: CrudApi.Unit) => {
+          expect(x).toMatchSnapshot('UPDATE');
+          expect(
+            await bcrypt.compare(
+              'UPDATED_RKEEPER_PASSWORD',
+              x?.pos?.rkeeper?.anyuppPassword as string,
+            ),
+          ).toEqual(true);
+
+          expect(
+            await bcrypt.compare(
+              'UPDATED_ANYUPP_PASSWORD',
+              unitFixture.createRkeeperUnit.pos!.rkeeper!.anyuppPassword!,
+            ),
+          ).toEqual(true);
+        }),
+        switchMap(() =>
+          crudSdk.DeleteUnit({ input: { id: unitFixture.createUnit_01.id } }),
+        ),
+        tap(x => expect(x).toMatchSnapshot('DELETE')),
+        switchMap(() => crudSdk.GetUnit({ id: unitFixture.createUnit_01.id })),
+        tap(x => expect(x).toMatchSnapshot('RE-READ')),
+      )
+      .subscribe(() => done());
   });
 });

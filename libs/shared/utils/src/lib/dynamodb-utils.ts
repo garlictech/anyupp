@@ -4,10 +4,10 @@ import * as R from 'ramda';
 
 // Creates a dynamodb update expression for Document Client.
 // Assumes, that the key name is id...
-export const createUpdateParams = (
+export const createUpdateParams = <T>(
   TableName: string,
   id: string,
-  item: Record<string, unknown>,
+  item: T,
 ): DocumentClient.UpdateItemInput =>
   pipe(item, R.omit(['id']), (newItem: Record<string, unknown>) => ({
     TableName,

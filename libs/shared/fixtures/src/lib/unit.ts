@@ -130,6 +130,22 @@ const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
   chainId: chainFixture.chain_01.id,
 };
 
+const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
+  ...createUnit_01,
+  id: 'rkeeper-unit',
+  pos: {
+    type: CrudApi.PosType.rkeeper,
+    rkeeper: {
+      endpointUri: 'ENDPOINT_URI',
+      rkeeperUsername: 'RKEEPER_USERNAME',
+      rkeeperPassword: 'RKEEPER_PASSWORD',
+      anyuppUsername: 'ANYUPP_USERNAME',
+      anyuppPassword: 'ANYUPP_PASSWORD',
+      restaurantId: 'RESTAURANT_ID',
+    },
+  },
+};
+
 const unitInstantTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
   ...unit_01,
   id: 'unit-it',
@@ -167,6 +183,7 @@ export const unitFixture = {
   unitBase,
   unit_01,
   createUnit_01,
+  createRkeeperUnit,
   unitId_NotExisting,
   unitId_seeded_01,
   unitId_seeded_02,

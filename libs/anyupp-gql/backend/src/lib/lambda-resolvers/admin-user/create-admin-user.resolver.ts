@@ -3,7 +3,7 @@ import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as E from 'fp-ts/lib/Either';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { defer, from, of, throwError } from 'rxjs';
-import { map, switchMap, throwIfEmpty } from 'rxjs/operators';
+import { map, mapTo, switchMap, throwIfEmpty } from 'rxjs/operators';
 import { ResolverErrorCode } from '../../utils/errors';
 import { AdminUserResolverDeps } from './utils';
 
@@ -87,25 +87,25 @@ export const createAdminUser =
           deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),
         ),
       ),
-      switchMap(() =>
-        from(
-          deps.docClient
-            .put({
-              Item: {
-                name: vars.input.name,
-                id: newUsername,
-                email: vars.input.email,
-                phone: vars.input.phone,
-                profileImage: vars.input.profileImage,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-              },
-              TableName: deps.adminUserTableName,
-            })
-            .promise(),
+      switchMap(
+        flow(
+          () => ({
+            name: vars.input.name,
+            id: newUsername,
+            email: vars.input.email,
+            phone: vars.input.phone,
+            profileImage: vars.input.profileImage,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          }),
+          (adminUser: CrudApi.AdminUser) => ({
+            Item: adminUser,
+            TableName: deps.adminUserTableName,
+          }),
+          params =>
+            from(deps.docClient.put(params).promise()).pipe(mapTo(params.Item)),
         ),
       ),
-      map(x => x?.Attributes as CrudApi.AdminUser),
       throwIfEmpty(),
     );
   };

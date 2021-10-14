@@ -10,8 +10,9 @@ import * as R from 'ramda';
 import { UnitsResolverDeps } from './utils';
 import { DynamoDB } from 'aws-sdk';
 
-const hashPasswords =
-  (deps: UnitsResolverDeps) => (input: { pos?: CrudApi.Maybe<CrudApi.Pos> }) =>
+export const hashPasswords =
+  (hashGenerator: UnitsResolverDeps['hashGenerator']) =>
+  <T extends { pos?: CrudApi.Maybe<CrudApi.Pos> }>(input: T): T =>
     pipe(
       ['rkeeperPassword', 'anyuppPassword'],
       R.map((prop: string) => R.lensPath(['pos', 'rkeeper', prop])),
@@ -21,7 +22,7 @@ const hashPasswords =
             R.over(
               lens,
               (password?) =>
-                R.isNil(password) ? password : deps.hashGenerator(password),
+                R.isNil(password) ? password : hashGenerator(password),
               item,
             ),
           input,
@@ -30,7 +31,10 @@ const hashPasswords =
     );
 
 export const createUnitResolver =
-  (deps: UnitsResolverDeps) => (args: CrudApi.MutationCreateUnitArgs) =>
+  (deps: UnitsResolverDeps) =>
+  (
+    args: CrudApi.MutationCreateUnitArgs,
+  ): ReturnType<CrudApi.CrudSdk['CreateUnit']> =>
     pipe(
       args.input,
       item => ({
@@ -39,20 +43,27 @@ export const createUnitResolver =
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }),
-      item => (item.pos?.rkeeper ? hashPasswords(deps)(item) : item),
-      Item => ({
+      (item: CrudApi.CreateUnitInput) =>
+        item.pos?.rkeeper ? hashPasswords(deps.hashGenerator)(item) : item,
+      (Item: CrudApi.CreateUnitInput) => ({
         TableName: deps.tableName,
         Item,
       }),
-      params => from(deps.docClient.put(params).promise()),
-      map(res => res?.Attributes as CrudApi.Unit),
+      params =>
+        from(deps.docClient.put(params).promise()).pipe(
+          map(() => params.Item as CrudApi.Unit),
+        ),
     );
 
 export const updateUnitResolver =
-  (deps: UnitsResolverDeps) => (args: CrudApi.MutationUpdateUnitArgs) =>
+  (deps: UnitsResolverDeps) =>
+  (
+    args: CrudApi.MutationUpdateUnitArgs,
+  ): ReturnType<CrudApi.CrudSdk['UpdateUnit']> =>
     pipe(
       args.input,
-      input => (input.pos?.rkeeper ? hashPasswords(deps)(input) : input),
+      input =>
+        input.pos?.rkeeper ? hashPasswords(deps.hashGenerator)(input) : input,
       item => createUpdateParams(deps.tableName, args.input.id, item),
       item => ({
         ...item,
