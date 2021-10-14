@@ -7513,10 +7513,10 @@
     "@angular-devkit/schematics" "12.2.6"
     jsonc-parser "3.0.0"
 
-"@serverless-stack/cli@0.46.0":
-  version "0.46.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.46.0.tgz#98af3c47e85a4e26e9a8255edef9576396656091"
-  integrity sha512-t5vtUEVVBQ2Rc2HX/goFQSNuexR5V8MvW0FJR5fqS9hhGJFnVS+SKngE4CDm3+zX6GyPmwX3+7+GM2TFCpjY9g==
+"@serverless-stack/cli@0.46.1":
+  version "0.46.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.46.1.tgz#bad98270dc5dd41e19985eccd6ea193e292e3582"
+  integrity sha512-rYwpHkscKDDArlujhAL5tRe6KeKTGbXu10MRASG48cntKEBQjs6hrv+/5Pwjf0XHqWqNU8Z9IjQ03uaFMQATOQ==
   dependencies:
     "@aws-cdk/aws-apigatewayv2" "1.126.0"
     "@aws-cdk/aws-dynamodb" "1.126.0"
@@ -7528,8 +7528,8 @@
     "@babel/eslint-plugin" "^7.11.3"
     "@babel/plugin-proposal-class-properties" "^7.10.4"
     "@babel/preset-env" "^7.10.4"
-    "@serverless-stack/core" "^0.46.0"
-    "@serverless-stack/resources" "^0.46.0"
+    "@serverless-stack/core" "^0.46.1"
+    "@serverless-stack/resources" "^0.46.1"
     "@types/jest" "^26.0.7"
     "@types/node" "^14.0.27"
     "@typescript-eslint/eslint-plugin" "^4.15.1"
@@ -7562,6 +7562,21 @@
   version "0.46.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.46.0.tgz#ef46b9c89bb1317a3ca6a9c38d91da5a01d65046"
   integrity sha512-gMa5xlmdiTavC8pKMLSWA3R85rjo+zxZBYS53zmHmCZ/HFaGL25ZyEvqJjBBFe6PfqYdfP+Eep+QYLyf1J5UdQ==
+  dependencies:
+    aws-cdk "1.126.0"
+    aws-sdk "^2.761.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    dotenv "^10.0.0"
+    dotenv-expand "^5.1.0"
+    fs-extra "^9.0.1"
+    log4js "^6.3.0"
+    typescript "^4.4.3"
+
+"@serverless-stack/core@^0.46.1":
+  version "0.46.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.46.1.tgz#a498e8aa1c5e0e17522556d2a175341265f919da"
+  integrity sha512-HcK/b2WCHpARU7lBK73CBfBQSoiuxvxerOarbdW0fe3feCprMZzFJPrIEarNNpykqio7hldO2qgumOgGX7OiEA==
   dependencies:
     aws-cdk "1.126.0"
     aws-sdk "^2.761.0"
@@ -7606,7 +7621,7 @@
     path-to-regexp "^6.1.0"
     send "^0.17.1"
 
-"@serverless-stack/resources@0.46.0", "@serverless-stack/resources@^0.46.0":
+"@serverless-stack/resources@0.46.0":
   version "0.46.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.46.0.tgz#bfa452e71b084f56360b2cb8872eb52be2d97529"
   integrity sha512-gux5XB+KDwgytF84TdGII/I+kZxSjf+00GgmXyJU655xyUCjnFv3UuWeXsgEe2A/HC9n4O5fB8At+xGJZcP0ug==
@@ -7650,6 +7665,65 @@
     "@graphql-tools/load-files" "^6.3.2"
     "@graphql-tools/merge" "^6.2.14"
     "@serverless-stack/core" "^0.46.0"
+    "@serverless-stack/nextjs-lambda" "^0.1.9"
+    "@types/jest" "^26.0.7"
+    archiver "^5.3.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    esbuild "^0.12.20"
+    eslint "^7.16.0"
+    fs-extra "^9.0.1"
+    glob "^7.1.7"
+    graphql "^15.5.1"
+    jest "^26.1.0"
+    ts-jest "^26.1.4"
+    typescript "^4.4.3"
+    zip-local "^0.3.4"
+
+"@serverless-stack/resources@^0.46.1":
+  version "0.46.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.46.1.tgz#b0b47dc3e4de7ca61f5015476aa81683dcaafc36"
+  integrity sha512-oQ7g1JYP+jfnGI1ntrItQuo90oyJFCJukDmGpWOKgxudn38iJwLtimifuEnGjQLI2/JhpYEMTcQ/XQ1/0xJF4Q==
+  dependencies:
+    "@aws-cdk/aws-apigateway" "1.126.0"
+    "@aws-cdk/aws-apigatewayv2" "1.126.0"
+    "@aws-cdk/aws-apigatewayv2-authorizers" "1.126.0"
+    "@aws-cdk/aws-apigatewayv2-integrations" "1.126.0"
+    "@aws-cdk/aws-appsync" "1.126.0"
+    "@aws-cdk/aws-autoscaling" "1.126.0"
+    "@aws-cdk/aws-certificatemanager" "1.126.0"
+    "@aws-cdk/aws-cloudfront" "1.126.0"
+    "@aws-cdk/aws-cloudfront-origins" "1.126.0"
+    "@aws-cdk/aws-cognito" "1.126.0"
+    "@aws-cdk/aws-dynamodb" "1.126.0"
+    "@aws-cdk/aws-ec2" "1.126.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.126.0"
+    "@aws-cdk/aws-events" "1.126.0"
+    "@aws-cdk/aws-events-targets" "1.126.0"
+    "@aws-cdk/aws-iam" "1.126.0"
+    "@aws-cdk/aws-kinesis" "1.126.0"
+    "@aws-cdk/aws-lambda" "1.126.0"
+    "@aws-cdk/aws-lambda-event-sources" "1.126.0"
+    "@aws-cdk/aws-lambda-nodejs" "1.126.0"
+    "@aws-cdk/aws-logs" "1.126.0"
+    "@aws-cdk/aws-rds" "1.126.0"
+    "@aws-cdk/aws-route53" "1.126.0"
+    "@aws-cdk/aws-route53-patterns" "1.126.0"
+    "@aws-cdk/aws-route53-targets" "1.126.0"
+    "@aws-cdk/aws-s3" "1.126.0"
+    "@aws-cdk/aws-s3-assets" "1.126.0"
+    "@aws-cdk/aws-s3-notifications" "1.126.0"
+    "@aws-cdk/aws-secretsmanager" "1.126.0"
+    "@aws-cdk/aws-sns" "1.126.0"
+    "@aws-cdk/aws-sns-subscriptions" "1.126.0"
+    "@aws-cdk/aws-sqs" "1.126.0"
+    "@aws-cdk/aws-ssm" "1.126.0"
+    "@aws-cdk/core" "1.126.0"
+    "@aws-cdk/cx-api" "1.126.0"
+    "@aws-cdk/lambda-layer-awscli" "1.126.0"
+    "@graphql-tools/load-files" "^6.3.2"
+    "@graphql-tools/merge" "^6.2.14"
+    "@serverless-stack/core" "^0.46.1"
     "@serverless-stack/nextjs-lambda" "^0.1.9"
     "@types/jest" "^26.0.7"
     archiver "^5.3.0"
