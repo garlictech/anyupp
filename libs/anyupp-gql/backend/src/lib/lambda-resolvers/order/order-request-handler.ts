@@ -11,27 +11,10 @@ interface WithAuthenticatedUser {
 export type CreateOrderFromCartRequest = WithAuthenticatedUser &
   CrudApi.MutationCreateOrderFromCartArgs;
 
-const { validate: validateCreateOrderFromCartRequest } =
-  validateSchema<CrudApi.CreateOrderFromCartMutationVariables>(
-    {
-      userId: Joi.string().required(),
-      input: Joi.object({
-        id: Joi.string().required(),
-      }).required(),
-    },
-    'CreateOrderFromCartRequest',
-  );
-
 export const orderRequestHandler = (deps: OrderResolverDeps) => ({
   createOrderFromCart: (requestPayload: CreateOrderFromCartRequest) =>
-    validateCreateOrderFromCartRequest(requestPayload)
-      .pipe(
-        switchMap(() =>
-          createOrderFromCart(
-            requestPayload.userId,
-            requestPayload.input.id,
-          )(deps),
-        ),
-      )
-      .toPromise(),
+    createOrderFromCart(
+      requestPayload?.userId,
+      requestPayload?.input?.id,
+    )(deps).toPromise(),
 });

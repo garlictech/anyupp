@@ -17,10 +17,9 @@ Object {
     },
   },
   "Key": Object {
-    "id": Object {
-      "S": "THE_KEY",
-    },
+    "id": "THE_KEY",
   },
+  "ReturnValues": "ALL_NEW",
   "TableName": "tablename",
   "UpdateExpression": "set #prop1 = :prop1, #prop2 = :prop2, #prop3 = :prop3, #prop4 = :prop4",
 }

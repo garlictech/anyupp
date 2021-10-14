@@ -14,7 +14,7 @@ import {
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
 import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
+import { map, mapTo, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { incrementOrderNum } from '../../database';
 import { OrderResolverDeps } from './utils';
 
@@ -209,26 +209,21 @@ const isTakeawayCart = (cart: CrudApi.Cart) =>
   cart.servingMode === CrudApi.ServingMode.takeaway;
 
 export const createOrderFromCart =
-  (userId: string, cartId: string) => (deps: OrderResolverDeps) => {
-    return of('START').pipe(
-      switchMap(() =>
-        getCart(cartId)(deps).pipe(
-          // CART.USERID CHECK
-          // pipeDebug('### CART'),
-          throwIfEmptyValue<CrudApi.Cart>(),
-          switchMap(cart =>
-            cart.userId === userId
-              ? of(cart)
-              : throwError(getCartIsMissingError()),
-          ),
-          // CART.PaymentMode CHECK
-          switchMap(cart =>
-            cart.paymentMode !== undefined
-              ? of(cart)
-              : throwError(missingParametersError('cart.paymentMode')),
-          ),
-        ),
+  (userId: string, cartId: string) =>
+  (deps: OrderResolverDeps): Observable<string | undefined> => {
+    // split a long stream to help the type checker
+    const calc1 = getCart(cartId)(deps).pipe(
+      tap(x => console.warn('******11', x)),
+      throwIfEmptyValue<CrudApi.Cart>(),
+      switchMap(cart =>
+        cart.userId === userId ? of(cart) : throwError(getCartIsMissingError()),
       ),
+      switchMap(cart =>
+        cart.paymentMode !== undefined
+          ? of(cart)
+          : throwError(missingParametersError('cart.paymentMode')),
+      ),
+      tap(x => console.warn('******112', x)),
       switchMap(cart =>
         // create catchError and custom error (Covered by #744)
         getUnit(cart.unitId)(deps).pipe(
@@ -266,6 +261,9 @@ export const createOrderFromCart =
           place: props.cart.place,
         }).pipe(map(orderNum => ({ ...props, orderNum }))),
       ),
+    );
+
+    return calc1.pipe(
       switchMap(props =>
         getOrderItems({
           userId,
@@ -280,8 +278,7 @@ export const createOrderFromCart =
           userId,
           unitId: props.cart.unitId,
           orderNum: props.orderNum,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          paymentMode: props.cart.paymentMode!, // see missingParametersCheck above
+          paymentMode: props.cart.paymentMode!,
           items: props.items,
           place: props.cart.place,
           orderMode: CrudApi.OrderMode.instant, // Currenty this is a FIXED value

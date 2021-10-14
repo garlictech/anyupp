@@ -8,9 +8,6 @@ mutation StartStripePayment($input: StartStripePaymentInput!) {
 mutation CreateOrderFromCart($input: CreateOrderFromCartInput!) {
   createOrderFromCart(input: $input)
 }
-mutation RegenerateUnitData($input: RegenerateUnitDataInput!) {
-  regenerateUnitData(input: $input)
-}
 
 mutation CreateAnonymUser {
   createAnonymUser {

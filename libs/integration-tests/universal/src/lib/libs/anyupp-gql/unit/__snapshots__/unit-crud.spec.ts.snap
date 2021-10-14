@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test unit CRUD operations The resolver handlers must work 1`] = `
+Object {
+  "email": "NEW EMAIL",
+  "id": "test_unit_1_id",
+}
+`;

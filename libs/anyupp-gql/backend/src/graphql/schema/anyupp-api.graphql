@@ -380,9 +380,6 @@ type Mutation {
   createOrderFromCart(input: CreateOrderFromCartInput!): ID!
     @aws_cognito_user_pools
 
-  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
-    @aws_cognito_user_pools
-
   # Stripe
   startStripePayment(
     input: StartStripePaymentInput!

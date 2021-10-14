@@ -3,7 +3,7 @@ import { defer, from, of } from 'rxjs';
 import { AdminUserResolverDeps } from './utils';
 import { catchError } from 'rxjs/operators';
 
-// We use any-s to mock teh system partially
+// We use any-s to mock the system partially
 
 const userName = 'GENERATED_USERNAME';
 

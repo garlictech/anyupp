@@ -1,21 +1,32 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { defer, from, Observable, pipe } from 'rxjs';
-import { delay, map, mapTo, switchMap } from 'rxjs/operators';
+import { defer, from, iif, Observable, of } from 'rxjs';
+import { delay, map, mapTo, switchMap, tap } from 'rxjs/operators';
 import { ProductResolverDeps } from './utils';
-import { throwIfEmptyValue, createUpdateParams } from '@bgap/shared/utils';
+import { createUpdateParams } from '@bgap/shared/utils';
 import { pipe as fpPipe } from 'fp-ts/lib/function';
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import { regenerateUnitData } from '../unit';
 
 const ELASTICSEARCH_OPERATION_DELAY = 3000;
 
-const callRegenerateOnUnitProductPipe = (deps: ProductResolverDeps) =>
-  pipe(
-    throwIfEmptyValue<CrudApi.UnitProduct>(),
-    switchMap(unitProduct =>
-      deps
-        .regenerateUnitDataHandler(unitProduct.unitId)
-        .pipe(mapTo(unitProduct)),
-    ),
-  );
+const postprocessUnit =
+  (deps: ProductResolverDeps) =>
+  (dynamoDbResult?: { Attributes?: DocumentClient.AttributeMap }) =>
+    fpPipe(
+      of(dynamoDbResult),
+      map(res => res?.Attributes as CrudApi.UnitProduct),
+      switchMap(res =>
+        iif(
+          () => !!res,
+          of(res).pipe(
+            delay(ELASTICSEARCH_OPERATION_DELAY),
+            switchMap(() => regenerateUnitData(deps.unitsDeps)(res.unitId)),
+            mapTo(res),
+          ),
+          of(res),
+        ),
+      ),
+    );
 
 export const createUnitProduct =
   (deps: ProductResolverDeps) =>
@@ -33,11 +44,7 @@ export const createUnitProduct =
           })
           .promise(),
       ),
-    ).pipe(
-      map(res => res.Attributes as CrudApi.UnitProduct),
-      delay(ELASTICSEARCH_OPERATION_DELAY),
-      callRegenerateOnUnitProductPipe(deps),
-    );
+    ).pipe(switchMap(postprocessUnit(deps)));
 
 export const updateUnitProduct =
   (deps: ProductResolverDeps) =>
@@ -50,16 +57,12 @@ export const updateUnitProduct =
         }),
         params => from(deps.docClient.update(params).promise()),
       ),
-    ).pipe(
-      map(res => res.Attributes as CrudApi.UnitProduct),
-      delay(ELASTICSEARCH_OPERATION_DELAY),
-      callRegenerateOnUnitProductPipe(deps),
-    );
+    ).pipe(switchMap(postprocessUnit(deps)));
 
 export const deleteUnitProduct =
   (deps: ProductResolverDeps) =>
-  (id: CrudApi.Scalars['ID']): Observable<CrudApi.UnitProduct> =>
-    defer(() =>
+  (id: CrudApi.Scalars['ID']): Observable<CrudApi.UnitProduct> => {
+    return defer(() =>
       from(
         deps.docClient
           .delete({
@@ -70,8 +73,5 @@ export const deleteUnitProduct =
           })
           .promise(),
       ),
-    ).pipe(
-      map(res => res.Attributes as CrudApi.UnitProduct),
-      delay(ELASTICSEARCH_OPERATION_DELAY),
-      callRegenerateOnUnitProductPipe(deps),
-    );
+    ).pipe(switchMap(postprocessUnit(deps)));
+  };

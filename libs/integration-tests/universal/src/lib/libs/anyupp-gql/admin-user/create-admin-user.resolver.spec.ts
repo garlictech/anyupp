@@ -55,8 +55,8 @@ describe('Admin user creation/deletion', () => {
     getOp,
   }: {
     label: string;
-    deleteOp: CrudSdk['DeleteAdminUser'] | AnyuppSdk['DeleteAdminUser'];
-    createOp: CrudSdk['CreateAdminUser'] | AnyuppSdk['CreateAdminUser'];
+    deleteOp: CrudSdk['DeleteAdminUser'];
+    createOp: CrudSdk['CreateAdminUser'];
     getOp: CrudSdk['GetAdminUser'];
   }) =>
     deleteOp({ input: { id: userName } }).pipe(

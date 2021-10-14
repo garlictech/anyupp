@@ -1,24 +1,25 @@
-import bcrypt from 'bcryptjs';
-import { tableConfig } from '@bgap/crud-gql/backend';
-import { getCrudSdkForIAM, regenerateUnitData } from '@bgap/crud-gql/api';
+import {
+  adminRequestHandler,
+  createStripeClient,
+  createSzamlazzClient,
+  orderRequestHandler,
+  productRequestHandler,
+  stripeRequestHandler,
+  unitRequestHandler,
+  userRequestHandler,
+  createUnitResolver,
+  updateUnitResolver,
+  createUnitsDeps,
+} from '@bgap/anyupp-gql/backend';
+import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
 import { Context, Handler } from 'aws-lambda';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { v1 as uuidV1 } from 'uuid';
+import { tableConfig } from '@bgap/crud-gql/backend';
 import { DynamoDB } from 'aws-sdk';
-import {
-  createSzamlazzClient,
-  createStripeClient,
-  adminRequestHandler,
-  orderRequestHandler,
-  UnitsResolverDeps,
-  unitRequestHandler,
-  productRequestHandler,
-  stripeRequestHandler,
-  userRequestHandler,
-  createUnitResolver,
-  updateUnitResolver,
-} from '..';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 export interface AnyuppRequest {
   typeName: string;
@@ -27,13 +28,13 @@ export interface AnyuppRequest {
 }
 
 if (!process.env.STRIPE_SECRET_KEY) {
-  throw Error(
+  console.warn(
     'Stripe secret key not found in lambda environment. Add itt with the name STRIPE_SECRET_KEY',
   );
 }
 
 if (!process.env.SZAMLAZZ_HU_AGENT_KEY) {
-  throw Error(
+  console.warn(
     'SzamlazzHu agent key not found in lambda environment. Add itt with the name SZAMLAZZ_HU_AGENT_KEY',
   );
 }
@@ -43,22 +44,21 @@ const userPoolId = process.env.userPoolId || '';
 const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
 const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
-const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
-const szamlazzClient = createSzamlazzClient(process.env.SZAMLAZZ_HU_AGENT_KEY);
-const stripeClient = createStripeClient(process.env.STRIPE_SECRET_KEY);
+const szamlazzClient = createSzamlazzClient(
+  process.env.SZAMLAZZ_HU_AGENT_KEY || 'unknown key',
+);
+const stripeClient = createStripeClient(
+  process.env.STRIPE_SECRET_KEY || 'unknown key',
+);
+const unitsDeps = createUnitsDeps();
+const docClient = new DynamoDB.DocumentClient();
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: process.env.AWS_REGION || '',
 });
 
-const salt = process.env.SALT || '';
-const docClient = new DynamoDB.DocumentClient();
-const hashGenerator = (password: string) => bcrypt.hashSync(password, salt);
-
-const uuidGenerator = uuidV1;
-
-export const handler: Handler<AnyuppRequest, unknown> = (
+export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
   _context: Context,
 ): Promise<unknown> => {
@@ -76,19 +76,15 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     crudSdk,
   });
 
-  const unitsDeps: UnitsResolverDeps = {
-    hashGenerator,
-    uuidGenerator,
-    tableName: tableConfig.Unit.TableName,
-    docClient,
-    crudSdk,
-  };
-
   const unitRequestHandlers = unitRequestHandler(unitsDeps);
 
   const productRequestHandlers = productRequestHandler({
     crudSdk,
-    regenerateUnitDataHandler: regenerateUnitData(unitsDeps),
+    unitsDeps,
+    unitProductTableName: tableConfig.UnitProduct.TableName,
+    chainProductTableName: tableConfig.ChainProduct.TableName,
+    groupProductTableName: tableConfig.GroupProduct.TableName,
+    docClient,
   });
 
   const stripeRequestHandlers = stripeRequestHandler({
@@ -130,16 +126,16 @@ export const handler: Handler<AnyuppRequest, unknown> = (
     },
   };
 
-  // We don't care the erorr content for the moment
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleError = (error: any) => {
-    throw error?.message ?? error;
-  };
+  const op = resolverMap[event.typeName]?.[event.fieldName]?.(event.arguments);
 
-  return (
-    resolverMap[event.typeName]
-      ?.[event.fieldName]?.(event.arguments)
-      ?.catch(handleError) ??
-    Promise.reject('Unknown graphql field in the appsync-lambda handler')
-  );
+  if (op === undefined) {
+    return Promise.reject(
+      'Unknown graphql field in the appsync-lambda handler',
+    );
+  } else if (op instanceof Observable) {
+    return op.pipe(tap(x => console.warn('RETURN', x))).toPromise();
+  } else {
+    console.warn('RETURN DDD');
+    return op;
+  }
 };

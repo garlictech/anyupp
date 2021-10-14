@@ -1,20 +1,11 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { filterNullish } from '@bgap/shared/utils';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as E from 'fp-ts/lib/Either';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { defer, from, of, throwError } from 'rxjs';
-import {
-  catchError,
-  map,
-  switchMap,
-  switchMapTo,
-  tap,
-  throwIfEmpty,
-} from 'rxjs/operators';
+import { map, switchMap, throwIfEmpty } from 'rxjs/operators';
 import { ResolverErrorCode } from '../../utils/errors';
 import { AdminUserResolverDeps } from './utils';
-import * as R from 'ramda';
 
 export const createAdminUser =
   (vars: CrudApi.CreateAdminUserMutationVariables) =>

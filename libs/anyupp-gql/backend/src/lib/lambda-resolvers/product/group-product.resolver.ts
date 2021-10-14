@@ -16,6 +16,7 @@ import {
 } from './utils';
 import { throwIfEmptyValue, createUpdateParams } from '@bgap/shared/utils';
 import { pipe as fpPipe } from 'fp-ts/lib/function';
+import { regenerateUnitData } from '../unit';
 
 const ELASTICSEARCH_OPERATION_DELAY = 3000;
 
@@ -32,7 +33,7 @@ const callRegenerateOnGroupProductPipe = (
       ]).pipe(
         map(getUnitIdsFromUnitProductList),
         switchMap(unitIds => from(unitIds)),
-        concatMap(unitId => deps.regenerateUnitDataHandler(unitId)), // concatMap will wait all the regen calls to finish
+        concatMap(unitId => regenerateUnitData(deps.unitsDeps)(unitId)), // concatMap will wait all the regen calls to finish
         takeLast(1),
         mapTo(groupProduct),
         defaultIfEmpty(groupProduct),

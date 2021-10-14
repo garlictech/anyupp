@@ -123,6 +123,13 @@ const unit_01: CrudApi.Unit = {
   updatedAt: '2021-08-02T01:54:11.843Z',
 };
 
+const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
+  ...unitBase,
+  id: unitId_01,
+  groupId: groupFixture.group_01.id,
+  chainId: chainFixture.chain_01.id,
+};
+
 const unitInstantTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
   ...unit_01,
   id: 'unit-it',
@@ -159,6 +166,7 @@ export const unitFixture = {
   openingHours,
   unitBase,
   unit_01,
+  createUnit_01,
   unitId_NotExisting,
   unitId_seeded_01,
   unitId_seeded_02,

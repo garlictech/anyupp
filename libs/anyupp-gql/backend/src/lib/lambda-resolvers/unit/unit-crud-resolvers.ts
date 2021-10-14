@@ -5,7 +5,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { createUpdateParams } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
 import { from, Observable } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { map, mapTo, tap } from 'rxjs/operators';
 import * as R from 'ramda';
 import { UnitsResolverDeps } from './utils';
 import { DynamoDB } from 'aws-sdk';
@@ -30,29 +30,36 @@ const hashPasswords =
     );
 
 export const createUnitResolver =
-  (deps: UnitsResolverDeps) =>
-  (item: CrudApi.CreateUnitInput): Observable<boolean> =>
+  (deps: UnitsResolverDeps) => (args: CrudApi.MutationCreateUnitArgs) =>
     pipe(
-      {
+      args.input,
+      item => ({
         ...item,
         id: item.id || deps.uuidGenerator(),
-      },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }),
       item => (item.pos?.rkeeper ? hashPasswords(deps)(item) : item),
       Item => ({
         TableName: deps.tableName,
         Item,
       }),
       params => from(deps.docClient.put(params).promise()),
-      mapTo(true),
+      map(res => res?.Attributes as CrudApi.Unit),
     );
 
 export const updateUnitResolver =
-  (deps: UnitsResolverDeps) => (input: CrudApi.UpdateUnitInput) =>
+  (deps: UnitsResolverDeps) => (args: CrudApi.MutationUpdateUnitArgs) =>
     pipe(
-      input.pos?.rkeeper ? hashPasswords(deps)(input) : input,
-      item => createUpdateParams(deps.tableName, input.id, item),
+      args.input,
+      input => (input.pos?.rkeeper ? hashPasswords(deps)(input) : input),
+      item => createUpdateParams(deps.tableName, args.input.id, item),
+      item => ({
+        ...item,
+        updatedAt: new Date().toISOString(),
+      }),
       item => from(deps.docClient.update(item).promise()),
-      mapTo(true),
+      map(res => res?.Attributes as CrudApi.Unit),
     );
 
 export const createUnitsDeps = (): UnitsResolverDeps => ({
