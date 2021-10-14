@@ -34,25 +34,27 @@ Feature: Stripe Card
 
   Scenario: Pay with a new card then pay with the saved card
     When I tap the "FANTA #2" card under "Test product category #1 name" category
-    Then there is the product details screen
-    And I should see "(298Ft)" text
+    Then I should see "Fanta #2 description" text
+    And I should see "Add To Cart (298Ft)" text
     When I tap the "Extra comp set" button
     And I select the "CLASSIC" modifier
-    Then I should see "(296Ft)" text
-    When I tap the "Add To Cart" button
+    Then I should see "Add To Cart (296Ft)" text
+    When I tap the "Add To Cart (296Ft)" button
     Then the shop cart icon banner should show "1"
-    When I tap the cart icon
+    When I tap the "cart" icon
     Then there is the "Cart" screen
-    When I tap the qr code icon
+    When I tap the "qr code" icon
     And the qr code reader opens the camera
     And I read a seat qr code
     Then I should see the "Finding your seat..." and the "Connected to" loading screens
+    And I get the text message "New Table Reserved!"
     And there is the "Cart" screen
     And I should see the selected table and seat at the top right corner
-    And I should see "CLASSIC" text below the product
+    And I should see "CLASSIC" text
+    Then I should see "x1 - glass" text
     And I should see "Total cost 296 Ft" text
     When I tap the button with the arrow
-    Then there is a bottom dialog
+    Then there is a payment dialog
     When I tap the option "Online Card payment via Stripe (preferred)"
     Then the option "Online Card payment via Stripe (preferred)" is highlighted
     When I tap the "PLACE ORDER" button
@@ -65,11 +67,11 @@ Feature: Stripe Card
     And I tap the button "Pay with Stripe"
     Then there is a loading screen
     And I get the text message "Payment success!"
-    And the "Orders" option is selected on the bottom navigator
+    And the "Orders" option is selected on the top/bottom navigator
     And the banner on the "Orders" icon is "1"
-    And the "Orders" page is selected on the top navigator
-    And there is "1" order in the list
     And I should see the date of the created order
+    And I should see the id with 6 numbers
+    And I should see "Total cost 296 Ft" text
     Then in the app the order should be in "PLACED" state
     When the admin set the state of order to "PROCESSING"
     Then I get the text message "Message from AnyUpp! Your order is being processed."
@@ -95,12 +97,12 @@ Feature: Stripe Card
     And I select the "FRENCH FRIES" modifier
     And I tap the "Add To Cart (298Ft)" button
     Then the cart icon banner should show "1"
-    When I tap the cart icon
+    When I tap the "cart" icon
     Then there is the "Cart" screen
     And I should see "FRENCH FRIES" text below the product
     And I should see the selected table and seat at the top right corner
     When I tap the button with the arrow
-    Then there is a bottom dialog
+    Then there is a payment dialog
     When I the the option "Pay by Card via Stripe (preferred)"
     Then the option "Pay by Card via Stripe (preferred)" is highlighted
     When I tap the "PLACE ORDER" button
@@ -113,11 +115,11 @@ Feature: Stripe Card
     And I tap the button "Pay with Stripe"
     Then There is a loading screen
     And I get the text message "Payment success!"
-    And the "Orders" option is selected on the bottom navigator
+    And the "Orders" option is selected on the top/bottom navigator
     And the banner on the "Orders" icon is "2"
-    And the "Orders" page is selected on the top navigator
-    And there is an order in the list
     And I should see the date of the created order
+    And I should see the id with 6 numbers
+    And I should see "Total cost 298 Ft" text
     Then in the app the order should be in "PLACED" state
     When the admin set the state of order to "PROCESSING"
     Then I get the text message "Message from AnyUpp! Your order is being processed."
@@ -138,10 +140,10 @@ Feature: Stripe Card
     And I should see "Load more..." at the bottom of the orders
     When I tap the "Profile" icon
     And I tap the "Transactions" option
-    And I should see the latest order
-    And I tap its "Show" text
+    Then I should see the latest order
+    When I tap the "Show" text
     Then I should see the receipt of the order
-    Then I should see "298 HUF" text
+    And I should see "298 HUF" text
     When I tap the "Done" text
     Then I should be on the "Transactions" list
 
@@ -158,16 +160,16 @@ Feature: Stripe Card
     And I select the "KLASSZIKUS" modifier
     And I tap the "Kosárhoz Adás (298Ft)" button
     Then the shop cart icon banner should show "1"
-    When I tap the cart icon
+    When I tap the "cart" icon
     Then there is the "Kosár" screen
-    When I tap the qr code icon
+    When I tap the "qr code" icon
     And the qr code reader opens the camera
     And I read a seat qr code
     Then I should see the "Finding your seat..." and the "Connected to" loading screens
     And there is the "Cart" screen
     And I should see the selected table and seat at the top right corner
     When I tap the button with the arrow
-    Then there is a bottom dialog
+    Then there is a payment dialog
     When I tap the option "Kártyás fizetés Stripe-pal (ajánlott)"
     Then the option "Kártyás fizetés Stripe-pal (ajánlott)" is highlighted
     When I click the button next to "I want a VAT invoice"
@@ -188,10 +190,11 @@ Feature: Stripe Card
     When I tap the button "Fizetés Stripe-pal"
     Then there is a loading screen
     And I should get the "Sikeres fizetés!" message
-    And the "Rendelések" option is selected on the bottom navigator
+    And the "Rendelések" option is selected on the top/bottom navigator
     And the banner on the "Rendelések" icon is "1"
-    And the "Rendelések" page is selected on the top navigator
     And I should see the date of the created order
+    And I should see the id with 6 numbers
+    And I should see "Összesen 298 Ft" text
     Then in the app the order should be in "BEADVA" state
     When the admin set the state of order to "PROCESSING"
     Then in the app the order should be in "KÉSZÜL" state

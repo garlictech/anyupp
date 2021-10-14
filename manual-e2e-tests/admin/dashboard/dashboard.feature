@@ -25,9 +25,10 @@ Feature: Dashboard
   Scenario: Get the order to History from Active orders (stripe)
     Given I create a "Hamburger #1" cash/card order with "ROOM TEMPERATURE" component
     And the order is in "PLACED" state
-    Then I should see the order id starts with "#"
+    Then I should see a 6 number id with "#"
     And I should see the time of the created order
-    When I click on the order with "148 Ft"
+    And I should see the price of the order
+    When I click on the order with the id
     Then I should see the deatils of order
     Then I should see the green badge with "Success" caption
     When I click on the "PLACED" button next to the product name
@@ -62,9 +63,10 @@ Feature: Dashboard
     When I click on the "Manual payments" icon with title
     And I scroll down to the bottom of the list
     Then I should see the order selection with dark grey color
-    Then I should see an order with an id starts with "#"
+    Then I should see a 6 number id with "#"
     And I should see the time of the created order
-    When I click on the order with "298 Ft"
+    And I should see the price of the order
+    When I click on the order with the id
     Then I should see the deatils of order
     When I click on the "SUCCESS" button
     Then I should see a dialog with "Are you sure you set the transaction status to 'success'?" text
