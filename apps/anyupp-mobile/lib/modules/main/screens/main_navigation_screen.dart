@@ -94,7 +94,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     // --- This little trick need to prevent the statusbar color change back to main screen statusbar color
     var route = ModalRoute.of(context);
     if (route != null && route.isCurrent) {
-      setToolbarTheme(theme);
+      // setToolbarTheme(theme);
       // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       //   statusBarColor: _pageOptions![_selectedIndex].systemBarColor,
       //   statusBarIconBrightness: Brightness.dark,
@@ -236,6 +236,15 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
         key: UniqueKey(),
       );
     }
+
+    if (index == 0 || index == 4) {
+      // Menu + Cart
+      setToolbarThemeV1(theme);
+    } else {
+      // Profile + Orders
+      setToolbarThemeV2(theme);
+    }
+
     setState(() {
       _selectedIndex = index;
     });

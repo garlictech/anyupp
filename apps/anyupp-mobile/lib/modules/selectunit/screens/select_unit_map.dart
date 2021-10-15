@@ -29,6 +29,12 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
   final LatLng _center = const LatLng(47.4744579, 19.0754983);
 
   @override
+  void initState() {
+    super.initState();
+    setToolbarThemeV1(theme);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return NetworkConnectionWrapperWidget(
       child: BlocListener<UnitsBloc, UnitsState>(
@@ -383,11 +389,13 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
         // tilt: 59.440717697143555,
         zoom: 14.0);
 
-    _createUserMarker(
-      userCurrentLocation,
-      trans('selectUnitMap.userMarker.title'),
-      trans('selectUnitMap.userMarker.description'),
-    );
+    if (mounted) {
+      _createUserMarker(
+        userCurrentLocation,
+        trans('selectUnitMap.userMarker.title'),
+        trans('selectUnitMap.userMarker.description'),
+      );
+    }
     if (mounted) {
       await _mapController.animateCamera(CameraUpdate.newCameraPosition(position));
     }

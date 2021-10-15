@@ -23,12 +23,13 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: theme.secondary0,
-      extendBodyBehindAppBar: true,
+      // backgroundColor: theme.secondary0,
+      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: theme.secondary0,
         centerTitle: true,
-        elevation: 1.0,
+        elevation: 3.0,
+        shadowColor: theme.secondary.withOpacity(0.1),
         leading: Padding(
           padding: const EdgeInsets.only(
             top: 8.0,

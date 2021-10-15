@@ -18,6 +18,8 @@ class OrderDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    setToolbarThemeV2(theme);
+
     return Scaffold(
       // extendBodyBehindAppBar: true,
       appBar: AppBar(

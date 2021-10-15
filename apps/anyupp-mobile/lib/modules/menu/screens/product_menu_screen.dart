@@ -244,57 +244,66 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
 
         // centerTitle: true,
         bottom: productCategories.isNotEmpty
-            ? ColoredTabBar(
-                color: theme.secondary0,
-                tabBar: TabBar(
-                  physics: BouncingScrollPhysics(),
-                  controller: _tabController,
-                  isScrollable: true, // productCategories.length > 2,
-                  // indicatorColor: Colors.red,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  // indicatorWeight: 2.0,
-                  // automaticIndicatorColorAdjustment: true,
-                  // enableFeedback: true,
-                  // overlayColor: MaterialStateColor.resolveWith((states) {
-                  //   print('MaterialStateColor.resolveWith=$states');
-                  //   if (states.isEmpty) {
-                  //     return theme.secondary16;
-                  //   }
-                  //   var state = states.first;
-                  //   switch (state) {
-                  //     case MaterialState.selected:
-                  //       return theme.primary;
-                  //     default:
-                  //       return theme.secondary16;
-                  //   }
-                  // }),
-                  indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      56.0,
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(40.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: double.infinity,
+                    child: ColoredTabBar(
+                      color: theme.secondary0,
+                      tabBar: TabBar(
+                        physics: BouncingScrollPhysics(),
+                        controller: _tabController,
+                        isScrollable: true, // productCategories.length > 2,
+                        // indicatorColor: Colors.red,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        // indicatorWeight: 2.0,
+                        // automaticIndicatorColorAdjustment: true,
+                        // enableFeedback: true,
+                        // overlayColor: MaterialStateColor.resolveWith((states) {
+                        //   print('MaterialStateColor.resolveWith=$states');
+                        //   if (states.isEmpty) {
+                        //     return theme.secondary16;
+                        //   }
+                        //   var state = states.first;
+                        //   switch (state) {
+                        //     case MaterialState.selected:
+                        //       return theme.primary;
+                        //     default:
+                        //       return theme.secondary16;
+                        //   }
+                        // }),
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            56.0,
+                          ),
+                          color: theme.primary,
+                        ),
+                        labelColor: theme.secondary0,
+                        labelStyle: Fonts.satoshi(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        labelPadding: EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          top: 6.0,
+                          bottom: 6.0,
+                        ),
+                        indicatorPadding: EdgeInsets.only(
+                          bottom: 12.0,
+                          top: 12.0,
+                        ),
+                        unselectedLabelColor: theme.secondary, //theme.secondary64.withOpacity(0.4),
+                        unselectedLabelStyle: Fonts.satoshi(
+                          fontSize: 14.0,
+                        ),
+                        // padding: EdgeInsets.zero,
+                        tabs: _getTabBarTitles(context, productCategories),
+                      ),
                     ),
-                    color: theme.primary,
                   ),
-                  labelColor: theme.secondary0,
-                  labelStyle: Fonts.satoshi(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  labelPadding: EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    top: 6.0,
-                    bottom: 6.0,
-                  ),
-                  indicatorPadding: EdgeInsets.only(
-                    bottom: 12.0,
-                    top: 12.0,
-                  ),
-                  unselectedLabelColor: theme.secondary, //theme.secondary64.withOpacity(0.4),
-                  unselectedLabelStyle: Fonts.satoshi(
-                    fontSize: 14.0,
-                  ),
-                  // padding: EdgeInsets.zero,
-                  tabs: _getTabBarTitles(context, productCategories),
                 ),
               )
             : null,

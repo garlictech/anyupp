@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/Place.dart';
 import 'package:fa_prev/modules/screens.dart';
@@ -53,6 +54,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     //setFlashState();
     _switchAnimationState(AnimationState.search);
     super.initState();
+    setToolbarThemeV1(theme);
   }
 
   Future<void> setFlashState() async {

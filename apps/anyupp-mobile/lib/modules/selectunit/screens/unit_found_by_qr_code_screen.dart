@@ -34,6 +34,7 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
   @override
   void initState() {
     super.initState();
+    setToolbarThemeV1(theme);
 
     print('*** _UnitFoundByQRCodeScreenState.initState()');
     getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());

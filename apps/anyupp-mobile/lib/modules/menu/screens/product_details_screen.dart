@@ -23,63 +23,57 @@ class ProductDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   statusBarColor: theme.secondary0,
-    //   statusBarIconBrightness: Brightness.dark,
-    // ));
-
     return NetworkConnectionWrapperWidget(
-      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
-        if (state is UnitSelected) {
-          return SafeArea(
-            child: Scaffold(
-              key: _key,
-              // backgroundColor: theme.secondary12,
-              extendBodyBehindAppBar: true,
-              appBar: AppBar(
-                  leading: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 8.0,
-                      bottom: 8.0,
-                      left: 15.0,
-                    ),
-                    child: BackButtonWidget(
-                      color: theme.secondary,
+      child: SafeArea(
+        child: Scaffold(
+          key: _key,
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+              leading: Padding(
+                padding: const EdgeInsets.only(
+                  top: 8.0,
+                  bottom: 8.0,
+                  left: 15.0,
+                ),
+                child: BackButtonWidget(
+                  color: theme.secondary,
+                ),
+              ),
+              elevation: 0.0,
+              iconTheme: IconThemeData(
+                color: theme.secondary, //change your color here
+              ),
+              backgroundColor: theme.secondary0.withOpacity(0.0),
+              actions: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 8.0,
+                    bottom: 8.0,
+                    right: 15.0,
+                  ),
+                  child: BorderedWidget(
+                    width: 40,
+                    child: FavoriteIconWidget(
+                      theme: theme,
+                      product: item,
+                      unit: unit,
+                      iconSize: 24,
                     ),
                   ),
-                  elevation: 0.0,
-                  iconTheme: IconThemeData(
-                    color: theme.secondary, //change your color here
-                  ),
-                  backgroundColor: Colors.transparent,
-                  actions: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8.0,
-                        bottom: 8.0,
-                        right: 15.0,
-                      ),
-                      child: BorderedWidget(
-                        width: 40,
-                        child: FavoriteIconWidget(
-                          theme: theme,
-                          product: item,
-                          unit: unit,
-                          iconSize: 24,
-                        ),
-                      ),
-                    ),
-                  ]),
-              body: ProductDetailsWidget(
+                ),
+              ]),
+          body: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
+            if (state is UnitSelected) {
+              return ProductDetailsWidget(
                 item: item,
                 unit: unit,
-              ),
-            ),
-          );
-        }
+              );
+            }
 
-        return CenterLoadingWidget();
-      }),
+            return CenterLoadingWidget();
+          }),
+        ),
+      ),
     );
   }
 }
@@ -92,6 +86,7 @@ class ProductDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       color: theme.secondary12,
       // margin: EdgeInsets.only(top: 16.0),
       child: Column(
