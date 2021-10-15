@@ -7,8 +7,8 @@ Feature: Cash and card payment
     Then there is a loading screen
     And there is the unit selection screen
     When I tap the "Késdobáló #111" unit in the list
-    Then there is the dashboard screen
-    And the "Menu" option is selected on the bottom navigator
+    And I tap the "In place" button
+    Then there is the "Menu" screen
     Then I should see "HAMBURGER #1" with picture
     And I should see "FANTA #2" with picture
 
@@ -75,33 +75,31 @@ Feature: Cash and card payment
     And I should see "Késdobáló #111" text
     When I tap the "back arrow" button
     And the admin set the state of order to "SUCCESS"
-    Then I should see the order in "Processed"
-    When I tap on the order with "596 Ft"
+    When I tap on the order with "Processed"
     And the "Your order has been confirmed, everything is fine!" state is checked
-    When the admin set the state of order to "PROCESSING"
+    When I tap the "back arrow" button
+    And the admin set the state of order to "PROCESSING"
     Then I get the text message "Message from AnyUpp! Your order is being processed."
-    When I tap the "back arrow" button
-    Then I should see the order in "Processing"
-    When I tap on the order with "596 Ft"
+    When I tap on the order with "Processing"
     And the "We are just making the ordered items." state is checked
-    When the admin set the state of order to "READY"
+    When I tap the "back arrow" button
+    And the admin set the state of order to "READY"
     Then I get the text message "Message from AnyUpp! Your order is ready!"
-    When I tap the "back arrow" button
-    Then I should see the order in "Done"
-    When I tap on the order with "596 Ft"
+    When I tap on the order with "Done"
     And the "Your order is being served / can be received." state is checked
-    When the admin set the state of order to "SERVED"
     When I tap the "back arrow" button
-    Then I should see "Order history" text
-    Then I should see "Served" text
+    When the admin set the state of order to "SERVED"
+    Then I should see "No active order placed yet" text
+    And I should see "Order history" text
+    And I should see "Served" text
     # Scenario: next order, with VAT and set the language to HU
-    When I tap the "Profile" menu
+    When I tap the "Profile" button
     And I tap the "Settings" tab
     And I tap the "Language" tab
     And I tap the "Hungarian" tab
     And I tap the back arrow 2 times
     Then I should see the tabs in HU language
-    When I tap the "Étlap" icon from the bottom navigation bar
+    When I tap the "Étlap" button
     And I tap the "FANTA #2" card under "Teszt termék kategória #1 név" category
     And I select the "FRENCH FRIES" modifier under the "Módosító komponens set"
     Then I should see "1 x 298 Ft" text
@@ -120,7 +118,7 @@ Feature: Cash and card payment
     And I should see the form filled with the previous datas
     When I tap the "RENDELÉS" button
     Then I wait around 10 secs
-    Then there is the "Kosár" screen
+    And there is the "Kosár" screen
     And I should see "A kosarad még üres." text
     When I tap the "close" button
     And the "Rendelések" option is higlighted
@@ -136,19 +134,19 @@ Feature: Cash and card payment
     And the admin set the state of order to "SUCCESS"
     When I tap on the order with "Feldolgozva"
     And the "Rendelésed megerősítésre került, minden rendben!" state is checked
-    When the admin set the state of order to "PROCESSING"
-    Then I get the text message "Message from AnyUpp! Your order is being processed."
     When I tap the "back arrow" button
+    When the admin set the state of order to "PROCESSING"
+    Then I get the text message "Üzenet az AnyUpp-tól! Rendelésed már készítjük."
     When I tap on the order with "Készül a rendelésed"
     And the "Éppen készítjük a megrendelt tételeket." state is highlighted
+    When I tap the "back arrow" button
     When the admin set the state of order to "READY"
     Then I get the text message "Message from AnyUpp! Your order is ready!"
-    When I tap the "back arrow" button
     When I tap on the order with "Elkészült"
     Then the "Rendelésed elkészült, hamarosan felszolgáljuk neked/átveheted." state is checked
     Then the "Rendelésed felszolgálás alatt van/átvehető." state is highlighted
-    When the admin set the state of order to "SERVED"
     When I tap the "back arrow" button
+    When the admin set the state of order to "SERVED"
     Then I should see "Korábbi rendelések" text
     When I tap on the order with "Felszolgálva"
     Then the "Rendelésed felszolgálásra/átvételre került." state is checked
