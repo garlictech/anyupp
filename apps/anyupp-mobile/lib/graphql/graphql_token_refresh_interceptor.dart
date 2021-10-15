@@ -12,17 +12,15 @@ import 'utils/http_utils.dart';
 class DioTokenInterceptor extends InterceptorsWrapper {
   final Dio _dio;
   final IAuthProvider _provider;
-  late SharedPreferences _prefs;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  DioTokenInterceptor(this._dio, this._provider) {
-    SharedPreferences.getInstance().then((preferences) => _prefs = preferences);
-  }
+  DioTokenInterceptor(this._dio, this._provider);
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     if (options.headers.containsKey('requirestoken')) {
       options.headers.remove('requirestoken');
-      String? accessToken = _prefs.getString('cognito_accesstoken');
+      String? accessToken = (await _prefs).getString('cognito_accesstoken');
       print('accessToken: $accessToken');
       options.headers.addAll({'Authorization': 'Bearer $accessToken'});
     }
@@ -33,7 +31,7 @@ class DioTokenInterceptor extends InterceptorsWrapper {
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
     if (response.data['token'] != null) {
       // print('SAVING TOKENS!');
-      await setTokenPreferences(response, _prefs);
+      await setTokenPreferences(response, (await _prefs));
       // print('TOKENS SAVED!');
     }
     super.onResponse(response, handler);
@@ -43,7 +41,7 @@ class DioTokenInterceptor extends InterceptorsWrapper {
   void onError(DioError dioError, ErrorInterceptorHandler handler) async {
     debugError(dioError);
     int responseCode = dioError.response?.statusCode ?? 0;
-    String? oldAccessToken = _prefs.getString('cognito_accesstoken');
+    String? oldAccessToken = (await _prefs).getString('cognito_accesstoken');
     if (oldAccessToken != null && responseCode == 401) {
       _handleTokenRefresh(dioError, handler);
     } else if (dioError.message.contains("Failed host lookup")) {
@@ -111,7 +109,7 @@ class DioTokenInterceptor extends InterceptorsWrapper {
     _dio.interceptors.requestLock.lock();
     _dio.interceptors.responseLock.lock();
 
-    String? refreshToken = _prefs.getString('cognito_refreshtoken');
+    String? refreshToken = (await _prefs).getString('cognito_refreshtoken');
     if (refreshToken == null) {
       return super.onError(dioError, handler);
     }

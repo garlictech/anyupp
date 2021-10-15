@@ -45,7 +45,7 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: BlocListener<UnitsBloc, UnitsState>(
-          listener: (BuildContext context, UnitsState state) {
+          listener: (BuildContext context, UnitsState state) async {
             if (state is UnitsLoaded) {
               print('***************** UNITS LOADED=${state.units}');
               int index = state.units.indexWhere((GeoUnit unit) => unit.id == widget.unitId);
@@ -53,17 +53,19 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
               if (unit != null) {
                 // unit = unit.copyWith(place: widget.place);
                 // print('***************** UNITS FOUND=$unit');
-                setPlacePref(widget.place);
+                await setPlacePref(widget.place);
                 _flipCardState.currentState?.toggleCard();
                 showNotification(context, trans('selectUnit.tableReserved.title'),
                     trans('selectUnit.tableReserved.description', [widget.place.table, widget.place.seat]), null);
                 getIt<UnitSelectBloc>().add(SelectUnit(unit));
                 getIt<CartBloc>().add(UpdatePlaceInCartAction(unit, widget.place));
-                Future.delayed(Duration(
+                await Future.delayed(Duration(
                   milliseconds: 1000,
-                )).then((value) => Nav.reset(MainNavigation(
-                      pageIndex: widget.navigateToCart ? 4 : 0,
-                    )));
+                ));
+                Nav.pop();
+                // Nav.reset(MainNavigation(
+                //   pageIndex: widget.navigateToCart ? 4 : 0,
+                // ));
               } else {
                 showErrorDialog(
                     context, trans('selectUnit.qrCodeError.title'), trans('selectUnit.qrCodeError.description'),

@@ -276,7 +276,8 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
         final Place place = Place(table: table, seat: seat);
         // print('***** BARCODE.UNIT=$unitId, TABLE=$table, SEAT=$seat');
         // showNotification(context, 'New Seat Reserved', 'Seat $seat reversed at Table $table', null);
-        Nav.reset(UnitFoundByQRCodeScreen(
+        Nav.pop();
+        Nav.to(UnitFoundByQRCodeScreen(
           place: place,
           unitId: unitId,
           navigateToCart: widget.navigateToCart,

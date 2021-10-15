@@ -92,6 +92,9 @@ Feature: Whole product feature
     Then The "Variant name (HU)" input should contain "test chain e2eUpdated variant HU"
     When I click on the close button
     Then The dialog should NOT exist
+    And I should see "test chain e2eUpdated product" text
+    And I should see "test chain e2eUpdated description" text
+  # And I should see allergen icons
 
   Scenario: Add new group product
     When I click on the "Group products" text
@@ -150,7 +153,8 @@ Feature: Whole product feature
     And On the active tab I click the extend button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Extend product" text on the dialog
     When I click the lane selector to set "konyha"
-    And I click on the "Takeaway" checkbox
+    And I click on the "Take away" checkbox
+    And I click on the "In place" checkbox
     # Variant prefill text
     And The "Variant name (HU)" input should contain "test group e2eUpdated variant HU"
     And The "Variant name (EN)" input should contain "test group e2eUpdated variant EN"
@@ -190,7 +194,7 @@ Feature: Whole product feature
     And I should see "test chain e2eUpdated product" text on the dialog
     And The "Variant name (HU)" input should contain "test unit variant 1"
     When I click the lane selector to set "bár"
-    And I click on the "Takeaway" checkbox
+    And I click on the "Take away" checkbox
     And I click on the "Is visible" checkbox
     And I fill out the "Variant name (HU)" input with "test unit e2eUpdated variant HU"
     And I fill out the "Variant name (EN)" input with "test unit e2eUpdated variant EN"

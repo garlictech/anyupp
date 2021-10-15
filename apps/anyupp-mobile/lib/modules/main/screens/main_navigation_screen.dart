@@ -84,8 +84,6 @@ class _MainNavigationState extends State<MainNavigation>
     } else {
       MainNavigationState navState = getIt<MainNavigationBloc>().state;
       if (navState is MainNavaigationNeed) {
-        // print('***** MainNaevigationScreen.didChangeDependencies().toPage=${navState.pageIndex}');
-
         _navigateToPage(navState.pageIndex);
       }
     }
@@ -137,9 +135,14 @@ class _MainNavigationState extends State<MainNavigation>
                 duration: Duration(seconds: 1),
                 content: Text(
                   trans('common.exit'),
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                  textAlign: TextAlign.center,
+                  style: Fonts.satoshi(
+                    fontSize: 16.0,
+                    color: theme.secondary0,
                   ),
+                  // style: TextStyle(
+                  //   color: Theme.of(context).colorScheme.secondary,
+                  // ),
                 ),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Color(0xAA880000),
@@ -229,13 +232,13 @@ class _MainNavigationState extends State<MainNavigation>
   }
 
   void _navigateToPage(int index) {
-    if (_selectedIndex == index) return;
-    print('_navigateToPage.index=$index');
+    // print('MainNavigationScreen._navigateToPage.index=$index, _selectedIndex=$_selectedIndex');
     if (index == 0) {
       _animationController.forward();
     } else {
       _animationController.reverse();
     }
+    if (_selectedIndex == index) return;
 
     if (index == 2) {
       _pages[2] = OrdersScreen(
