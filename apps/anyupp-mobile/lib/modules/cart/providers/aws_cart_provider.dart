@@ -186,7 +186,7 @@ class AwsCartProvider implements ICartProvider {
   }
 
   Future<bool> _updateCartOnBackend(Cart cart) async {
-    print('******** UPDATING CART IN BACKEND=${cart.paymentMode}');
+    print('******** UPDATING CART IN BACKEND');
     try {
       var result = await GQL.amplify.execute(UpdateCartMutation(
           variables: UpdateCartArguments(

@@ -87,7 +87,6 @@ class GeoUnit {
   }
 
   factory GeoUnit.fromJson(Map<String, dynamic> map) {
-    print('**************** GET UNIT[${map['id']}].paymentModes=${map['paymentModes']}');
     return GeoUnit(
       id: map['id'],
       groupId: map['groupId'],

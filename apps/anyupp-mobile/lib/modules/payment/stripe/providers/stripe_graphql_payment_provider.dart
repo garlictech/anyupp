@@ -7,7 +7,6 @@ import 'package:stripe_sdk/stripe_sdk.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart' hide PaymentMethod;
 
 import 'stripe_payment_provider_interface.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   final Stripe _stripe;
@@ -124,8 +123,8 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       ),
     ));
 
-    if (result.hasErrors) {
-      throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+    if (result.data == null || result.data?.startStripePayment == null) {
+      return;
     }
 
     String clientSecret = result.data!.startStripePayment.clientSecret;

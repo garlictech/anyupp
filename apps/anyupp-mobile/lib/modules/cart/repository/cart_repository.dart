@@ -6,7 +6,7 @@ import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart' hide PaymentMethod, PaymentType;
 
 class CartRepository implements ICartProvider {
   final IAuthProvider _authProvider;
@@ -31,11 +31,11 @@ class CartRepository implements ICartProvider {
         userId: user.id,
         unitId: unitId,
         servingMode: servingMode,
-        // paymentMode: PaymentMode(
-        //   caption: 'inapp',
-        //   method: PaymentMethod.inapp,
-        //   type: PaymentType.stripe,
-        // ),
+        paymentMode: PaymentMode(
+          caption: 'inapp',
+          method: PaymentMethod.inapp,
+          type: PaymentType.stripe,
+        ),
         place: await getPlacePref() ?? Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
         items: [
           item.copyWith(quantity: 0),
