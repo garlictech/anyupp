@@ -12,7 +12,7 @@ test('hashPasswords', () => {
   ).toMatchSnapshot('VALID PASSWORDS');
 });
 
-test('createUnitresolver', async () => {
+test('createUnitResolver', async () => {
   const deps: UnitsResolverDeps = {
     crudSdk: undefined as any,
     hashGenerator: param => `${param} HASHED`,
