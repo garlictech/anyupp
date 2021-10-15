@@ -134,9 +134,10 @@ Color _col(Color color, int percent) {
 void setToolbarTheme(ThemeChainData theme) {
   print('setToolbarTheme.color=${theme.secondary0}, isDark=${theme.secondary0.isDark}');
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-  //   statusBarColor: theme.secondary,
-  //   statusBarBrightness: Brightness.light,
-  //   systemNavigationBarColor: theme.secondary,
-  //   statusBarIconBrightness: Brightness.light, // theme.secondary0.isDark ? Brightness.dark : Brightness.light,
+  //   statusBarColor: theme.secondary12,
+  //   statusBarIconBrightness: Brightness.dark,
+  //   systemNavigationBarColor: theme.secondary0,
+  //   systemNavigationBarDividerColor: theme.primary,
+  //   systemNavigationBarIconBrightness: Brightness.dark,
   // ));
 }

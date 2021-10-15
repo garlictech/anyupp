@@ -1,8 +1,8 @@
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
+import 'package:fa_prev/graphql/generated/anyupp-api.dart' hide PaymentMethod;
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/providers/external_payment_provider_interface.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:stripe_sdk/stripe_sdk_ui.dart';
+import 'package:stripe_sdk/stripe_sdk_ui.dart' show StripeCard;
 
 class StripePaymentRepository implements IStripePaymentProvider, IExternalPaymentProvider {
   final IStripePaymentProvider _stripePaymentProvider;
