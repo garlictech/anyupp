@@ -110,6 +110,7 @@
       "profile": "Profile",
       "cart": "Cart"
     },
+    "tooltip": "You can switch between\n ordering methods at any time.",
     "bottomTitles": {
       "menu": "Menu",
       "favorites": "Favorites",
