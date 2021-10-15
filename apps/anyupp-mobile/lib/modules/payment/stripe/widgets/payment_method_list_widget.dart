@@ -32,7 +32,6 @@ class StripePaymentMethodListWidget extends StatelessWidget {
               enableInfiniteScroll: false,
               initialPage: selected,
               autoPlay: false,
-              scrollPhysics: BouncingScrollPhysics(),
             ),
             itemBuilder: (context, index, position) {
               return PaymentMethodCardWidget(
