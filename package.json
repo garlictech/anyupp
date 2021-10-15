@@ -104,7 +104,7 @@
     "rxjs": "6.6.7",
     "serverless-offline": "8.2.0",
     "serverless-offline-multi": "1.2.0",
-    "stripe": "8.181.0",
+    "stripe": "8.182.0",
     "szamlazz.js": "git+https://github.com/bgap/szamlazz.js.git#5.1.1",
     "tslib": "2.3.1",
     "uuid": "8.3.2",
