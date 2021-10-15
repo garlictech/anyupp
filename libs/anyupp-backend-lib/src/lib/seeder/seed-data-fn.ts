@@ -152,7 +152,7 @@ export const createTestUnit =
       unitIdx,
     });
     const input: CrudApi.CreateUnitInput = {
-      ...unitFixture.unitBase,
+      ...R.omit(['createdAt', 'updatedAt'], unitFixture.unitBase),
       id: generateUnitId(chainIdx, groupIdx, unitIdx),
       groupId: generateGroupId(chainIdx, groupIdx),
       chainId: generateChainId(chainIdx),
@@ -381,7 +381,7 @@ export const createTestUnitsForOrderHandling =
         unitFixture.unitPickupTakeaway,
       ],
       R.map(unit => ({
-        ...unit,
+        ...R.omit(['createdAt', 'updatedAt'], unit),
         groupId: generateGroupId(1, 1),
         chainId: generateChainId(1),
       })),

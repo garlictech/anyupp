@@ -1,6 +1,6 @@
 import { pipeDebug } from '@bgap/shared/utils';
 import { combineLatest, of } from 'rxjs';
-import { map, mapTo, switchMap } from 'rxjs/operators';
+import { map, mapTo, switchMap, tap } from 'rxjs/operators';
 import { deleteGeneratedProductsForAUnitFromDb } from '../product';
 import { reGenerateActiveProductCategoriesForAUnit } from '../product-category';
 import { toCreateGeneratedProductInputType } from '../product/calculate-product';
@@ -24,8 +24,7 @@ export const regenerateUnitData =
     );
 
     // Clear previously generated products for the given UNIT
-    return of(unitId).pipe(
-      switchMap(deleteGeneratedProductsForAUnitFromDb(deps.crudSdk)),
+    return deleteGeneratedProductsForAUnitFromDb(deps.crudSdk)(unitId).pipe(
       mapTo(unitId),
       switchMap(listUnitProductsForAUnit(deps)),
       switchMap(getMergedProductsFromUnitProducts(deps)),

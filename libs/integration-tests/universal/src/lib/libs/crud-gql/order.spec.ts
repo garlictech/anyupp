@@ -76,7 +76,6 @@ describe('SearchOrders function', () => {
           ordersCount = orderList.items.length;
           expect(orderList.items.length).toBeGreaterThanOrEqual(0);
         }),
-        tap(console.warn),
         switchMap(() =>
           crudSdk.CreateTransaction({
             input: {

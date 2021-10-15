@@ -3,7 +3,6 @@ import {
   createStripeClient,
   createSzamlazzClient,
   orderRequestHandler,
-  productRequestHandler,
   stripeRequestHandler,
   unitRequestHandler,
   userRequestHandler,
@@ -18,25 +17,15 @@ import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityservi
 import { v1 as uuidV1 } from 'uuid';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { DynamoDB } from 'aws-sdk';
-import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 export interface AnyuppRequest {
   typeName: string;
   fieldName: string;
+  identity?: {
+    username?: string;
+  };
   arguments: unknown;
-}
-
-if (!process.env.STRIPE_SECRET_KEY) {
-  console.warn(
-    'Stripe secret key not found in lambda environment. Add itt with the name STRIPE_SECRET_KEY',
-  );
-}
-
-if (!process.env.SZAMLAZZ_HU_AGENT_KEY) {
-  console.warn(
-    'SzamlazzHu agent key not found in lambda environment. Add itt with the name SZAMLAZZ_HU_AGENT_KEY',
-  );
 }
 
 const consumerUserPoolId = config.ConsumerUserPoolId;
@@ -44,12 +33,6 @@ const userPoolId = process.env.userPoolId || '';
 const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
 const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
-const szamlazzClient = createSzamlazzClient(
-  process.env.SZAMLAZZ_HU_AGENT_KEY || 'unknown key',
-);
-const stripeClient = createStripeClient(
-  process.env.STRIPE_SECRET_KEY || 'unknown key',
-);
 const unitsDeps = createUnitsDeps();
 const docClient = new DynamoDB.DocumentClient();
 
@@ -63,6 +46,12 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
   _context: Context,
 ): Promise<unknown> => {
   console.debug('### Appsync Lambda handler ~ event:AnyuppRequest', event);
+  const szamlazzClient = createSzamlazzClient(
+    process.env.SZAMLAZZ_HU_AGENT_KEY || 'unknown key',
+  );
+  const stripeClient = createStripeClient(
+    process.env.STRIPE_SECRET_KEY || 'unknown key',
+  );
 
   const adminUserRequestHandlers = adminRequestHandler({
     userPoolId,
@@ -74,18 +63,10 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
 
   const orderRequestHandlers = orderRequestHandler({
     crudSdk,
+    userId: event.identity?.username || '',
   });
 
   const unitRequestHandlers = unitRequestHandler(unitsDeps);
-
-  const productRequestHandlers = productRequestHandler({
-    crudSdk,
-    unitsDeps,
-    unitProductTableName: tableConfig.UnitProduct.TableName,
-    chainProductTableName: tableConfig.ChainProduct.TableName,
-    groupProductTableName: tableConfig.GroupProduct.TableName,
-    docClient,
-  });
 
   const stripeRequestHandlers = stripeRequestHandler({
     crudSdk,
@@ -111,11 +92,6 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       deleteAdminUser: adminUserRequestHandlers.deleteAdminUser,
       createOrderFromCart: orderRequestHandlers.createOrderFromCart,
       regenerateUnitData: unitRequestHandlers.regenerateUnitData,
-      createUnitProduct: productRequestHandlers.createUnitProduct,
-      updateUnitProduct: productRequestHandlers.updateUnitProduct,
-      deleteUnitProduct: productRequestHandlers.deleteUnitProduct,
-      updateChainProduct: productRequestHandlers.updateChainProduct,
-      updateGroupProduct: productRequestHandlers.updateGroupProduct,
       createAnonymUser: userRequestHandlers.createAnonymUser,
       createUnit: createUnitResolver(unitsDeps),
       updateUnit: updateUnitResolver(unitsDeps),
@@ -133,9 +109,8 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       'Unknown graphql field in the appsync-lambda handler',
     );
   } else if (op instanceof Observable) {
-    return op.pipe(tap(x => console.warn('RETURN', x))).toPromise();
+    return op.toPromise();
   } else {
-    console.warn('RETURN DDD');
     return op;
   }
 };

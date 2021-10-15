@@ -311,9 +311,8 @@ const seedConsumerUser = (deps: SeederDependencies, userData: ConsumerUser) => {
 };
 
 export const seedAll = (deps: SeederDependencies) =>
-  seedAdminUser(deps)
-    .pipe
-    /*switchMap(() =>
+  seedAdminUser(deps).pipe(
+    switchMap(() =>
       seedConsumerUser(deps, {
         username: 'test-monad',
         email: 'testuser+monad@anyupp.com',
@@ -363,5 +362,5 @@ export const seedAll = (deps: SeederDependencies) =>
       ),
     ),
     delay(5000),
-    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),*/
-    ();
+    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
+  );

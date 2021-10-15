@@ -17,8 +17,10 @@ export const createOrderResolvers = ({
         "payload": {
           "typeName": "Mutation",
           "fieldName": "createOrderFromCart",
+          "identity": {
+            "username": ${getAuthenticatedUserIdFromContextIdentity}
+          },
           "arguments": {
-            "userId": ${getAuthenticatedUserIdFromContextIdentity},
             "input": $util.toJson($ctx.arguments.input)
           }
         }

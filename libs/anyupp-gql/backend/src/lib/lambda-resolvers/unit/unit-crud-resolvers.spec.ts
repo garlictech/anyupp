@@ -29,5 +29,8 @@ test('createUnitResolver', async () => {
     await createUnitResolver(deps)({
       input: unitFixture.createRkeeperUnit,
     }).toPromise(),
-  ).toMatchSnapshot();
+  ).toMatchSnapshot({
+    createdAt: expect.any(String),
+    updatedAt: expect.any(String),
+  });
 });
