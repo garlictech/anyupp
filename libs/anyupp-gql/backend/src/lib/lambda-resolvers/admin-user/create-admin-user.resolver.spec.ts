@@ -65,7 +65,13 @@ test('Handle the good case', done => {
       'CreateAdminUser parameters',
     );
 
-    expect(res).toMatchSnapshot();
+    expect(res).toMatchSnapshot(
+      {
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      },
+      'RESULT',
+    );
     done();
   });
 });
@@ -99,7 +105,10 @@ test('Handle listUser returns bad data', done => {
 
   createGoodResolverCall(deps).subscribe({
     next: res => {
-      expect(res).toMatchSnapshot();
+      expect(res).toMatchSnapshot({
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
       done();
     },
   });
@@ -158,7 +167,10 @@ test('Handle adminCreateUser bad data', done => {
 
   createGoodResolverCall(deps).subscribe({
     next: res => {
-      expect(res).toMatchSnapshot();
+      expect(res).toMatchSnapshot({
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      });
       done();
     },
   });

@@ -1,6 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { createInvoice } from './stripe-graphql-crud';
-import { StripeResolverDeps } from './stripe.utils';
+import { StripeResolverDeps, StripeResolverDepsUnauth } from './stripe.utils';
 
 export const createInvoiceAndConnectTransaction =
   (
@@ -40,7 +40,7 @@ export const createReceiptAndConnectTransaction =
     receiptId: string | undefined,
     recepitPdf: string | undefined,
   ) =>
-  async (deps: StripeResolverDeps) => {
+  async (deps: StripeResolverDepsUnauth) => {
     console.debug('createReceiptAndConnectTransaction().orderId=' + orderId);
 
     const createReceiptVars = createReceiptMutationVariables(
@@ -123,7 +123,7 @@ const updateTransactionInvoiceId =
   };
 
 const updateTransactionReceiptId =
-  (id: string, receiptId: string) => (deps: StripeResolverDeps) => {
+  (id: string, receiptId: string) => (deps: StripeResolverDepsUnauth) => {
     const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
       input: {
         id,

@@ -246,14 +246,14 @@ enum CardFundingType {
 # https://stripe.com/docs/api/metadata?lang=node
 # Updateable Stripe objects
 
-type BillingDetails {
+type BillingDetails @aws_cognito_user_pools {
   email: String
   name: String
   phone: String
   address: BillingAddress
 }
 
-type BillingAddress {
+type BillingAddress @aws_cognito_user_pools {
   city: String
   country: String
   line1: String
@@ -262,7 +262,7 @@ type BillingAddress {
   state: String
 }
 
-type CardChecks {
+type CardChecks @aws_cognito_user_pools {
   address_line1_check: String
   address_postal_code_check: String
   cvc_check: String

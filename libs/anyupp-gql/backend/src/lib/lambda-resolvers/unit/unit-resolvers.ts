@@ -16,7 +16,7 @@ export const createUnitResolvers = ({
         "payload": {
           "typeName": "Query",
           "fieldName": "getUnitsNearLocation",
-          "arguments": $util.toJson($ctx.arguments.input)
+          "arguments": $util.toJson($ctx.arguments)
         }
       }
       `,

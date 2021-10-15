@@ -10,7 +10,7 @@ export const loadAndConnectUserForStripe =
     invoiceAddress: CrudApi.UserInvoiceAddress | undefined | null = undefined,
   ) =>
   async (deps: StripeResolverDeps) => {
-    let user = await loadUser(userId)(deps);
+    let user = await loadUser()(deps);
     console.debug('loadAndConnectUserForStripe().user.id=' + user?.id);
 
     if (!user) {

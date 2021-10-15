@@ -4,8 +4,9 @@ import { loadAndConnectUserForStripe } from './common-stripe';
 import Stripe from 'stripe';
 
 export const createStripeCard =
-  (userId: string, input: CrudApi.StripeCardCreateInput) =>
+  (input: CrudApi.StripeCardCreateInput) =>
   async (deps: StripeResolverDeps): Promise<CrudApi.StripeCard> => {
+    const userId = deps.userId;
     console.debug('**** createStripeCard().start()');
 
     const user = await loadAndConnectUserForStripe(userId)(deps);

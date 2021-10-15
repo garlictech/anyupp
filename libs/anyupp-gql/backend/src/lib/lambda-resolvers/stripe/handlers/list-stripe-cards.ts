@@ -6,9 +6,10 @@ import {
 } from './common-stripe';
 
 export const listStripeCards =
-  (userId: string) =>
+  () =>
   async (deps: StripeResolverDeps): Promise<CrudApi.StripeCard[]> => {
     // 1. get userId
+    const userId = deps.userId;
     console.debug('listStripeCards().start().userId=' + userId);
 
     // 2. get User from DynamoDB

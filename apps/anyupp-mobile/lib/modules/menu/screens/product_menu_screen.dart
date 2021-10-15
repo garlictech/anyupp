@@ -148,20 +148,17 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                     animationDuration: Duration(milliseconds: 0),
                     show: _showTooltip && _supportedServiceModeCount > 1,
                     tooltipDirection: TooltipDirection.down,
-                    // minWidth: double.infinity,
-                    minWidth: MediaQuery.of(context).size.width,
                     hideOnTooltipTap: true,
                     arrowTipDistance: 4.0,
-                    // targetCenter: Offset(-1, 0),
                     borderRadius: 8.0,
                     backgroundColor: theme.secondary,
                     borderColor: theme.secondary.withOpacity(0.2),
                     ballonPadding: EdgeInsets.zero,
                     content: Container(
-                      // width: double.infinity,
                       child: Text(
-                        'Bármikor válthatsz a rendelési módok között.',
+                        trans('main.tooltip'),
                         softWrap: true,
+                        textAlign: TextAlign.center,
                         style: Fonts.satoshi(
                           fontSize: 14.0,
                           fontWeight: FontWeight.w400,

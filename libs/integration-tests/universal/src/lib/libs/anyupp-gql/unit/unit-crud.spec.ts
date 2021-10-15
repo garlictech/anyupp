@@ -21,7 +21,15 @@ describe('Test unit CRUD operations', () => {
         switchMap(() =>
           crudSdk.CreateUnit({ input: unitFixture.createUnit_01 }),
         ),
-        tap(x => expect(x).toMatchSnapshot('CREATE')),
+        tap(x =>
+          expect(x).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
+            'CREATE',
+          ),
+        ),
         switchMap(() => crudSdk.GetUnit({ id: unitFixture.createUnit_01.id })),
         tap(x =>
           expect(x).toMatchSnapshot(
@@ -37,11 +45,27 @@ describe('Test unit CRUD operations', () => {
             input: { id: unitFixture.createUnit_01.id, email: 'NEW EMAIL' },
           }),
         ),
-        tap(x => expect(x).toMatchSnapshot('UPDATE')),
+        tap(x =>
+          expect(x).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
+            'UPDATE',
+          ),
+        ),
         switchMap(() =>
           crudSdk.DeleteUnit({ input: { id: unitFixture.createUnit_01.id } }),
         ),
-        tap(x => expect(x).toMatchSnapshot('DELETE')),
+        tap(x =>
+          expect(x).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
+            'DELETE',
+          ),
+        ),
         switchMap(() => crudSdk.GetUnit({ id: unitFixture.createUnit_01.id })),
         tap(x => expect(x).toMatchSnapshot('RE-READ')),
       )
@@ -57,7 +81,15 @@ describe('Test unit CRUD operations', () => {
         switchMap(() =>
           createUnitResolver(unitsDeps)({ input: unitFixture.createUnit_01 }),
         ),
-        tap(x => expect(x).toMatchSnapshot('CREATE')),
+        tap(x =>
+          expect(x).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
+            'CREATE',
+          ),
+        ),
         switchMap(() => crudSdk.GetUnit({ id: unitFixture.createUnit_01.id })),
         tap(x =>
           expect(x).toMatchSnapshot(
@@ -73,11 +105,27 @@ describe('Test unit CRUD operations', () => {
             input: { id: unitFixture.createUnit_01.id, email: 'NEW EMAIL' },
           }),
         ),
-        tap(x => expect(x).toMatchSnapshot('UPDATE')),
+        tap(x =>
+          expect(x).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
+            'UPDATE',
+          ),
+        ),
         switchMap(() =>
           crudSdk.DeleteUnit({ input: { id: unitFixture.createUnit_01.id } }),
         ),
-        tap(x => expect(x).toMatchSnapshot('DELETE')),
+        tap(x =>
+          expect(x).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
+            'DELETE',
+          ),
+        ),
         switchMap(() => crudSdk.GetUnit({ id: unitFixture.createUnit_01.id })),
         tap(x => expect(x).toMatchSnapshot('RE-READ')),
       )
@@ -96,7 +144,10 @@ describe('Test unit CRUD operations', () => {
       {} as any,
       () => {},
     );
-    expect(res).toMatchSnapshot();
+    expect(res).toMatchSnapshot({
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+    });
   });
 
   test('The resolver must hash the rkeeper passwords', done => {
@@ -106,7 +157,15 @@ describe('Test unit CRUD operations', () => {
         switchMap(() =>
           crudSdk.CreateUnit({ input: unitFixture.createRkeeperUnit }),
         ),
-        tap(x => expect(x).toMatchSnapshot('CREATE')),
+        tap(x =>
+          expect(x).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
+            'CREATE',
+          ),
+        ),
         switchMap(() =>
           crudSdk.GetUnit({ id: unitFixture.createRkeeperUnit.id }),
         ),
@@ -153,7 +212,13 @@ describe('Test unit CRUD operations', () => {
         ),
         filterNullish<CrudApi.Unit>(),
         tap(async (x: CrudApi.Unit) => {
-          expect(x).toMatchSnapshot('UPDATE');
+          expect(x).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
+            'UPDATE',
+          );
           expect(
             await bcrypt.compare(
               'UPDATED_RKEEPER_PASSWORD',
@@ -171,7 +236,15 @@ describe('Test unit CRUD operations', () => {
         switchMap(() =>
           crudSdk.DeleteUnit({ input: { id: unitFixture.createUnit_01.id } }),
         ),
-        tap(x => expect(x).toMatchSnapshot('DELETE')),
+        tap(x =>
+          expect(x).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            },
+            'DELETE',
+          ),
+        ),
         switchMap(() => crudSdk.GetUnit({ id: unitFixture.createUnit_01.id })),
         tap(x => expect(x).toMatchSnapshot('RE-READ')),
       )

@@ -13,10 +13,11 @@ import { createInvoiceAndConnectTransaction } from '../invoice-receipt.utils';
 
 // START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node (Covered by #804)
 export const startStripePayment =
-  (userId: string, input: CrudApi.StartStripePaymentInput) =>
+  (input: CrudApi.StartStripePaymentInput) =>
   async (
     deps: StripeResolverDeps,
   ): Promise<CrudApi.StartStripePaymentOutput> => {
+    const userId = deps.userId;
     console.debug('startStripePayment().start()');
 
     // 1. Get parameters, orderId and payment method
@@ -200,7 +201,6 @@ export const startStripePayment =
       // 10. Update ORDER STATUS
       order = await updateOrderState(
         order.id,
-        userId,
         undefined, // use undefined to prevend graphql api to override this field
         transaction.id,
         // it should be undefined because we don't want to overwrite the field with GraphQL API.
@@ -266,7 +266,6 @@ export const startStripePayment =
       // 8. Update order
       order = await updateOrderState(
         order.id,
-        userId,
         undefined, // use undefined to prevend graphql api to override this field
         transaction.id,
         // it should be undefined because we don't want to overwrite the field with GraphQL API.

@@ -10,9 +10,14 @@ import {
 } from '@bgap/shared/utils';
 import * as geolib from 'geolib';
 import { combineLatest, EMPTY, Observable, of } from 'rxjs';
-import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
+import {
+  catchError,
+  defaultIfEmpty,
+  map,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 import { filterOutNotOpenUnits, getUnitOpeningHoursAtTime } from '../../utils';
-import { UnitsResolverDeps } from './utils';
 
 type ListResponse<T> = {
   items: Array<T>;
@@ -21,17 +26,18 @@ type ListResponse<T> = {
 
 export const getUnitsInRadius =
   (location: CrudApi.LocationInput) =>
-  (deps: UnitsResolverDeps): Observable<ListResponse<CrudApi.GeoUnit>> => {
-    return listActiveUnits()(deps).pipe(
+  (crudSdk: CrudApi.CrudSdk): Observable<ListResponse<CrudApi.GeoUnit>> => {
+    return listActiveUnits()(crudSdk).pipe(
+      catchError(err => of(err)),
       filterNullishGraphqlListWithDefault<CrudApi.Unit>([]),
       map(units => filterOutNotOpenUnits({ units })),
       switchMap(units =>
         combineLatest(
           units.map(unit =>
-            getChain(unit.chainId)(deps).pipe(
+            getChain(unit.chainId)(crudSdk).pipe(
               switchMap(chain => (chain.isActive ? of(chain) : EMPTY)),
               switchMap(chain =>
-                getGroupCurrency(unit.groupId)(deps).pipe(
+                getGroupCurrency(unit.groupId)(crudSdk).pipe(
                   map(currency => ({ chain, currency })),
                 ),
               ),
@@ -103,16 +109,16 @@ const toGeoUnit = ({
   return '09:00 - 22:00';
 };
 */
-const listActiveUnits = () => (deps: UnitsResolverDeps) =>
-  deps.crudSdk.ListUnits(
+const listActiveUnits = () => (crudSdk: CrudApi.CrudSdk) =>
+  crudSdk.ListUnits(
     { filter: { isActive: { eq: true } } },
     { fetchPolicy: 'no-cache' },
   );
 
 const getGroupCurrency =
   (id: string) =>
-  (deps: UnitsResolverDeps): Observable<string> =>
-    deps.crudSdk.GetGroupCurrency({ id }, { fetchPolicy: 'no-cache' }).pipe(
+  (crudSdk: CrudApi.CrudSdk): Observable<string> =>
+    crudSdk.GetGroupCurrency({ id }, { fetchPolicy: 'no-cache' }).pipe(
       // pipeDebug(`### getGroupCurrency by groupId: ${id}`),
       throwIfEmptyValue<{ currency: string }>(),
       map(currency => currency.currency),
@@ -120,7 +126,7 @@ const getGroupCurrency =
 
 const getChain =
   (id: string) =>
-  (deps: UnitsResolverDeps): Observable<CrudApi.Chain> =>
-    deps.crudSdk
+  (crudSdk: CrudApi.CrudSdk): Observable<CrudApi.Chain> =>
+    crudSdk
       .GetChain({ id }, { fetchPolicy: 'no-cache' })
       .pipe(throwIfEmptyValue<CrudApi.Chain>());

@@ -8,66 +8,321 @@ exports[`GetUnitsNearLocation tests input validation should throw without a loca
 
 exports[`GetUnitsNearLocation tests input validation should throw without an input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input\\" is required"`;
 
-exports[`GetUnitsNearLocation tests input validation should throw without valid location input 1`] = `[Error: GraphQL error: GetUnitsNearLocationQueryVariables Object Validation Error (JOI): "input.location.lat" must be greater than or equal to -90, "input.location.lng" must be less than or equal to 180]`;
+exports[`GetUnitsNearLocation tests input validation should throw without valid location input: NEW API 1`] = `[Error: GraphQL error: GetUnitsNearLocationQueryVariables Object Validation Error (JOI): "input.location.lat" must be greater than or equal to -90, "input.location.lng" must be less than or equal to 180]`;
 
-exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance 1`] = `
-Object {
-  "address": Object {
-    "address": "Ág u. 1.",
-    "city": "Budapest",
-    "country": "Magyarország",
-    "location": Object {
-      "lat": 47.48992,
-      "lng": 19.046135,
+exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance - using API 1`] = `
+Array [
+  Object {
+    "address": Object {
+      "address": "Ág u. 1.",
+      "city": "Budapest",
+      "country": "Magyarország",
+      "location": Object {
+        "lat": 47.490471,
+        "lng": 19.048001,
+      },
+      "postalCode": "1021",
+      "title": "HQ",
     },
-    "postalCode": "1021",
-    "title": "HQ",
+    "chainId": "test_chain_1_id",
+    "currency": "EUR",
+    "distance": 153,
+    "groupId": "test_group_1_id",
+    "id": "test_unit_02",
+    "isAcceptingOrders": true,
+    "name": "Késdobáló S",
+    "openingHours": "09:00-22:00",
+    "openingHoursNext7": Array [
+      Object {
+        "closed": true,
+        "date": "2021-10-18",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-19",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-20",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-21",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-22",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-23",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-24",
+        "from": null,
+        "to": null,
+      },
+    ],
+    "paymentModes": Array [
+      Object {
+        "caption": null,
+        "method": "cash",
+        "type": "cash",
+      },
+      Object {
+        "caption": null,
+        "method": "card",
+        "type": "card",
+      },
+      Object {
+        "caption": null,
+        "method": "inapp",
+        "type": "stripe",
+      },
+    ],
+    "style": Object {
+      "colors": Object {
+        "backgroundDark": "#d6dde0",
+        "backgroundLight": "#ffffff",
+        "borderDark": "#c3cacd",
+        "borderLight": "#e7e5d0",
+        "disabled": "#303030",
+        "highlight": "#a8692a",
+        "indicator": "#30bf60",
+        "textDark": "#303030",
+        "textLight": "#ffffff",
+      },
+      "images": null,
+    },
+    "supportedOrderModes": Array [
+      "pickup",
+      "instant",
+    ],
+    "supportedServingModes": Array [
+      "inPlace",
+      "takeAway",
+    ],
   },
-  "chainId": "test_chain_1_id",
-  "currency": "EUR",
-  "distance": 0,
-  "groupId": "test_group_1_id",
-  "id": "test_unit_03",
-  "isAcceptingOrders": true,
-  "name": "Késdobáló S",
-  "openingHours": "09:00-22:00",
-  "openingHoursNext7": Any<Array>,
-  "paymentModes": Array [
-    Object {
-      "caption": null,
-      "method": "cash",
-      "type": "cash",
-    },
-    Object {
-      "caption": null,
-      "method": "card",
-      "type": "card",
-    },
-    Object {
-      "caption": null,
-      "method": "inapp",
-      "type": "stripe",
-    },
-  ],
-  "style": Object {
-    "colors": Object {
-      "backgroundDark": "#d6dde0",
-      "backgroundLight": "#ffffff",
-      "borderDark": "#c3cacd",
-      "borderLight": "#e7e5d0",
-      "disabled": "#303030",
-      "highlight": "#a8692a",
-      "indicator": "#30bf60",
-      "textDark": "#303030",
-      "textLight": "#ffffff",
-    },
-    "images": null,
-  },
-  "supportedOrderModes": Array [
-    "instant",
-  ],
-  "supportedServingModes": Array [
-    "inPlace",
-  ],
-}
+]
 `;
+
+exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance - using API: OLD API 1`] = `[Error: GraphQL error: GetUnitsNearLocationQueryVariables Object Validation Error (JOI): "input.location.lat" must be greater than or equal to -90, "input.location.lng" must be less than or equal to 180]`;
+
+exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance - using old API 1`] = `
+Array [
+  Object {
+    "address": Object {
+      "address": "Ág u. 1.",
+      "city": "Budapest",
+      "country": "Magyarország",
+      "location": Object {
+        "lat": 47.490471,
+        "lng": 19.048001,
+      },
+      "postalCode": "1021",
+      "title": "HQ",
+    },
+    "chainId": "test_chain_1_id",
+    "currency": "EUR",
+    "distance": 153,
+    "groupId": "test_group_1_id",
+    "id": "test_unit_02",
+    "isAcceptingOrders": true,
+    "name": "Késdobáló S",
+    "openingHours": "09:00-22:00",
+    "openingHoursNext7": Array [
+      Object {
+        "closed": true,
+        "date": "2021-10-18",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-19",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-20",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-21",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-22",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-23",
+        "from": null,
+        "to": null,
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-24",
+        "from": null,
+        "to": null,
+      },
+    ],
+    "paymentModes": Array [
+      Object {
+        "caption": null,
+        "method": "cash",
+        "type": "cash",
+      },
+      Object {
+        "caption": null,
+        "method": "card",
+        "type": "card",
+      },
+      Object {
+        "caption": null,
+        "method": "inapp",
+        "type": "stripe",
+      },
+    ],
+    "style": Object {
+      "colors": Object {
+        "backgroundDark": "#d6dde0",
+        "backgroundLight": "#ffffff",
+        "borderDark": "#c3cacd",
+        "borderLight": "#e7e5d0",
+        "disabled": "#303030",
+        "highlight": "#a8692a",
+        "indicator": "#30bf60",
+        "textDark": "#303030",
+        "textLight": "#ffffff",
+      },
+      "images": null,
+    },
+    "supportedOrderModes": Array [
+      "pickup",
+      "instant",
+    ],
+    "supportedServingModes": Array [
+      "inPlace",
+      "takeAway",
+    ],
+  },
+]
+`;
+
+exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance - using resolver 1`] = `
+Array [
+  Object {
+    "address": Object {
+      "address": "Ág u. 1.",
+      "city": "Budapest",
+      "country": "Magyarország",
+      "location": Object {
+        "lat": 47.490471,
+        "lng": 19.048001,
+      },
+      "postalCode": "1021",
+      "title": "HQ",
+    },
+    "chainId": "test_chain_1_id",
+    "currency": "EUR",
+    "distance": 153,
+    "groupId": "test_group_1_id",
+    "id": "test_unit_02",
+    "isAcceptingOrders": true,
+    "name": "Késdobáló S",
+    "openingHours": "09:00-22:00",
+    "openingHoursNext7": Array [
+      Object {
+        "closed": true,
+        "date": "2021-10-18",
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-19",
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-20",
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-21",
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-22",
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-23",
+      },
+      Object {
+        "closed": true,
+        "date": "2021-10-24",
+      },
+    ],
+    "paymentModes": Array [
+      Object {
+        "caption": null,
+        "method": "cash",
+        "type": "cash",
+      },
+      Object {
+        "caption": null,
+        "method": "card",
+        "type": "card",
+      },
+      Object {
+        "caption": null,
+        "method": "inapp",
+        "type": "stripe",
+      },
+    ],
+    "style": Object {
+      "colors": Object {
+        "backgroundDark": "#d6dde0",
+        "backgroundLight": "#ffffff",
+        "borderDark": "#c3cacd",
+        "borderLight": "#e7e5d0",
+        "disabled": "#303030",
+        "highlight": "#a8692a",
+        "indicator": "#30bf60",
+        "textDark": "#303030",
+        "textLight": "#ffffff",
+      },
+      "images": null,
+    },
+    "supportedOrderModes": Array [
+      "pickup",
+      "instant",
+    ],
+    "supportedServingModes": Array [
+      "inPlace",
+      "takeAway",
+    ],
+  },
+]
+`;
+
+exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance - using resolver: OLD API 1`] = `[Error: GraphQL error: GetUnitsNearLocationQueryVariables Object Validation Error (JOI): "input.location.lat" must be greater than or equal to -90, "input.location.lng" must be less than or equal to 180]`;

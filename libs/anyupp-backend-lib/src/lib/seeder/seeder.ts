@@ -1,9 +1,4 @@
-import { tableConfig } from '@bgap/crud-gql/backend';
-import {
-  createAdminUser as resolverCreateAdminUser,
-  ResolverErrorCode,
-  unitRequestHandler,
-} from '@bgap/anyupp-gql/backend';
+import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   getCognitoUsername,
@@ -16,11 +11,10 @@ import {
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { EProductType } from '@bgap/shared/types';
-import { DynamoDB } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import * as R from 'ramda';
-import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
+import { combineLatest, concat, defer, from, of } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -186,13 +180,7 @@ const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
   of('start').pipe(
     switchMap(() =>
       from(
-        unitRequestHandler({
-          crudSdk: deps.crudSdk,
-          hashGenerator: (password: string) => `HASHED ${password}`,
-          uuidGenerator: () => unitFixture.unitId_seeded_01,
-          docClient: new DynamoDB.DocumentClient(),
-          tableName: tableConfig.Unit.TableName,
-        }).regenerateUnitData({
+        unitRequestHandler(deps.crudSdk).regenerateUnitData({
           input: { id: unitFixture.unitId_seeded_01 },
         }),
       ),
@@ -311,9 +299,8 @@ const seedConsumerUser = (deps: SeederDependencies, userData: ConsumerUser) => {
 };
 
 export const seedAll = (deps: SeederDependencies) =>
-  seedAdminUser(deps)
-    .pipe
-    /*switchMap(() =>
+  seedAdminUser(deps).pipe(
+    switchMap(() =>
       seedConsumerUser(deps, {
         username: 'test-monad',
         email: 'testuser+monad@anyupp.com',
@@ -363,5 +350,5 @@ export const seedAll = (deps: SeederDependencies) =>
       ),
     ),
     delay(5000),
-    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),*/
-    ();
+    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
+  );

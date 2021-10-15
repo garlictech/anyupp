@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createUnitresolver 1`] = `
+exports[`createUnitResolver 1`] = `
 Object {
   "address": Object {
     "address": "Ág u. 1.",
@@ -14,7 +14,7 @@ Object {
     "title": "HQ",
   },
   "chainId": "test_chain_1_id",
-  "createdAt": "2021-10-14T22:06:29.937Z",
+  "createdAt": Any<String>,
   "description": Object {
     "en": "Test unit #test_unit_1_id description",
     "hu": "Teszt unit #test_unit_1_id leírás",
@@ -73,7 +73,7 @@ Object {
     "inPlace",
     "takeAway",
   ],
-  "updatedAt": "2021-10-14T22:06:29.937Z",
+  "updatedAt": Any<String>,
 }
 `;
 

@@ -26,18 +26,17 @@ type UpdateStripeCardRequest = WithCognitoUser &
 export type ListStripeCardsRequest = WithCognitoUser;
 
 export const stripeRequestHandler = (deps: StripeResolverDeps) => ({
-  listStripeCards: (requestPayload: ListStripeCardsRequest) =>
-    listStripeCards(requestPayload.userId)(deps),
+  listStripeCards: () => listStripeCards()(deps),
 
   createStripeCard: (requestPayload: CreateStripeCardRequest) =>
-    createStripeCard(requestPayload.userId, requestPayload.input)(deps),
+    createStripeCard(requestPayload.input)(deps),
 
   deleteStripeCard: (requestPayload: DeleteStripeCardRequest) =>
-    deleteStripeCard(requestPayload.userId, requestPayload.input)(deps),
+    deleteStripeCard(requestPayload.input)(deps),
 
   updateStripeCard: (requestPayload: UpdateStripeCardRequest) =>
-    updateStripeCard(requestPayload.userId, requestPayload.input)(deps),
+    updateStripeCard(requestPayload.input)(deps),
 
   startStripePayment: (requestPayload: StartStripePaymentRequest) =>
-    startStripePayment(requestPayload.userId, requestPayload.input)(deps),
+    startStripePayment(requestPayload.input)(deps),
 });

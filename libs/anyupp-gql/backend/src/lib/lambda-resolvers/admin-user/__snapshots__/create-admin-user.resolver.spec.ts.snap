@@ -1,12 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Handle adminCreateUser bad data 1`] = `"PUT RETURNED"`;
+exports[`Handle adminCreateUser bad data 1`] = `
+Object {
+  "createdAt": Any<String>,
+  "email": "a@a.hu",
+  "id": "GENERATED_USERNAME",
+  "name": "Test Elek",
+  "phone": "+123456789",
+  "profileImage": undefined,
+  "updatedAt": Any<String>,
+}
+`;
 
 exports[`Handle adminCreateUser unknown error 1`] = `[Error: UNKNOWN ADMINCREATEUSER ERROR]`;
 
 exports[`Handle crudSdk.CreateAdminUser error 1`] = `"dynamodb PUT ERROR"`;
 
-exports[`Handle listUser returns bad data 1`] = `"PUT RETURNED"`;
+exports[`Handle listUser returns bad data 1`] = `
+Object {
+  "createdAt": Any<String>,
+  "email": "a@a.hu",
+  "id": "GENERATED_USERNAME",
+  "name": "Test Elek",
+  "phone": "+123456789",
+  "profileImage": undefined,
+  "updatedAt": Any<String>,
+}
+`;
 
 exports[`Handle listUser unknown error 1`] = `[Error: UNKNOWN LISTUSERS ERROR]`;
 
@@ -16,8 +36,6 @@ exports[`Handle multiple users found error 1`] = `
   \\"message\\": \\"Something bad happened, more users found with the provided data\\"
 }"
 `;
-
-exports[`Handle the good case 1`] = `"PUT RETURNED"`;
 
 exports[`Handle the good case: CreateAdminUser parameters 1`] = `
 Object {
@@ -31,6 +49,18 @@ Object {
     "updatedAt": Any<String>,
   },
   "TableName": "ADMIN_USER_TABLE",
+}
+`;
+
+exports[`Handle the good case: RESULT 1`] = `
+Object {
+  "createdAt": Any<String>,
+  "email": "a@a.hu",
+  "id": "GENERATED_USERNAME",
+  "name": "Test Elek",
+  "phone": "+123456789",
+  "profileImage": undefined,
+  "updatedAt": Any<String>,
 }
 `;
 

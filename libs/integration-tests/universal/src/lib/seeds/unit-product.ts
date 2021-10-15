@@ -2,20 +2,20 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { defer, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { resultTap } from './seed.util';
-import {
-  productRequestHandler,
-  ProductResolverDeps,
-} from '@bgap/anyupp-gql/backend';
 
 export const createTestUnitProduct = (
   input: CrudApi.CreateUnitProductInput,
-  deps: ProductResolverDeps,
+  crudSdk: CrudApi.CrudSdk,
 ) =>
-  defer(() => productRequestHandler(deps).createUnitProduct({ input })).pipe(
+  defer(() => crudSdk.CreateUnitProduct({ input })).pipe(
     resultTap('UNIT PRODUCT create', input.id!),
   );
 
-export const deleteTestUnitProduct = (id: string, deps: ProductResolverDeps) =>
-  defer(() =>
-    productRequestHandler(deps).deleteUnitProduct({ input: { id } }),
-  ).pipe(resultTap('UNIT PRODUCT delete', id));
+export const deleteTestUnitProduct = (
+  id: string,
+
+  crudSdk: CrudApi.CrudSdk,
+) =>
+  defer(() => crudSdk.DeleteUnitProduct({ input: { id } })).pipe(
+    resultTap('UNIT PRODUCT delete', id),
+  );

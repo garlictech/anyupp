@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`processProducts good case 1`] = `
+Array [
+  Object {
+    "active": 0,
+    "code": 3,
+    "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+    "id": 1000114,
+    "modischeme": 0,
+    "modiweight": 0,
+    "name": "Pr\\\\u00F3ba ital",
+    "price": 50000,
+    "type": "dish",
+  },
+]
+`;

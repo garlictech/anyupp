@@ -4,10 +4,14 @@ import { toFixed0Number, toFixed2Number } from '@bgap/shared/utils';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import * as Szamlazz from 'szamlazz.js';
 
-export interface StripeResolverDeps {
+export interface StripeResolverDepsUnauth {
   crudSdk: CrudSdk;
   szamlazzClient: Szamlazz.Client;
   stripeClient: Stripe;
+}
+
+export interface StripeResolverDeps extends StripeResolverDepsUnauth {
+  userId: string;
 }
 
 export const mapPaymentMethodToCard = (

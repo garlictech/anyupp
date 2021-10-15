@@ -16,7 +16,7 @@ import {
   updateOrderState,
   updateTransactionState,
 } from './stripe-graphql-crud';
-import { StripeResolverDeps } from './stripe.utils';
+import { StripeResolverDepsUnauth } from './stripe.utils';
 
 export const createStripeWebhookExpressApp = (
   szamlazzClient: Szamlazz.Client,
@@ -26,11 +26,12 @@ export const createStripeWebhookExpressApp = (
   const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
   const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
 
-  const deps: StripeResolverDeps = {
+  const deps: StripeResolverDepsUnauth = {
     crudSdk: getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey),
     szamlazzClient,
     stripeClient,
   };
+
   const app = express();
 
   //app.use(bodyParser.json())
@@ -106,7 +107,8 @@ export const createStripeWebhookExpressApp = (
 };
 
 const handleInvoice =
-  (transaction: CrudApi.Transaction) => async (deps: StripeResolverDeps) => {
+  (transaction: CrudApi.Transaction) =>
+  async (deps: StripeResolverDepsUnauth) => {
     if (!transaction.invoice) {
       throw Error(
         'The transaction with id=' +
@@ -115,7 +117,7 @@ const handleInvoice =
       );
     }
 
-    const user = await loadUser(transaction.userId)(deps);
+    const user = await loadUser()({ ...deps, userId: transaction.userId });
     if (!user) {
       throw Error('The user with id=' + transaction.userId + ' is missing!');
     }
@@ -173,9 +175,10 @@ const handleInvoice =
   };
 
 const handleReceipt =
-  (transaction: CrudApi.Transaction) => async (deps: StripeResolverDeps) => {
+  (transaction: CrudApi.Transaction) =>
+  async (deps: StripeResolverDepsUnauth) => {
     console.debug('***** handleReceipt().transaction=' + transaction?.id);
-    const user = await loadUser(transaction.userId)(deps);
+    const user = await loadUser()({ ...deps, userId: transaction.userId });
     console.debug('***** handleReceipt().user loaded=' + user?.id);
     if (!user?.email) {
       console.warn('We will create a Receipt without valid email address!');
@@ -233,7 +236,7 @@ const handleReceipt =
   };
 
 const handleSuccessTransaction =
-  (externalTransactionId: string) => async (deps: StripeResolverDeps) => {
+  (externalTransactionId: string) => async (deps: StripeResolverDepsUnauth) => {
     console.debug(
       '***** handleSuccessTransaction().id=' + externalTransactionId,
     );
@@ -247,11 +250,10 @@ const handleSuccessTransaction =
       )(deps);
       await updateOrderState(
         transaction.orderId,
-        transaction.userId,
         CrudApi.OrderStatus.placed,
         transaction.id,
         CrudApi.PaymentStatus.success,
-      )(deps);
+      )({ ...deps, userId: transaction.userId });
       // console.debug('***** handleSuccessTransaction().success()');
       if (transaction.invoiceId) {
         await handleInvoice(transaction)(deps);
@@ -267,7 +269,7 @@ const handleSuccessTransaction =
   };
 
 const handleFailedTransaction =
-  (externalTransactionId: string) => async (deps: StripeResolverDeps) => {
+  (externalTransactionId: string) => async (deps: StripeResolverDepsUnauth) => {
     console.debug(
       '***** handleFailedTransaction().id=' + externalTransactionId,
     );
@@ -282,10 +284,9 @@ const handleFailedTransaction =
       console.debug('***** handleFailedTransaction().success()');
       await updateOrderState(
         transaction.orderId,
-        transaction.userId,
         undefined, // Do nothing with order state if transaction failed
         transaction.id,
         CrudApi.PaymentStatus.failed,
-      )(deps);
+      )({ ...deps, userId: transaction.userId });
     }
   };
