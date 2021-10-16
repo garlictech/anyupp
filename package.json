@@ -142,7 +142,7 @@
     "@nrwl/workspace": "12.10.0",
     "@nxrocks/nx-flutter": "3.0.0",
     "@serverless-stack/cli": "0.47.0",
-    "@serverless-stack/resources": "0.46.1",
+    "@serverless-stack/resources": "0.47.0",
     "@testing-library/cypress": "8.0.1",
     "@types/aws-lambda": "8.10.84",
     "@types/aws-serverless-express": "3.3.5",
