@@ -109,7 +109,7 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
           if (state.data == null || (state.data != null && state.data!.isEmpty)) {
             return Container(
               child: EmptyWidget(
-                messageKey: 'orders.noOrderHistory',
+                messageKey: 'payment.method.noPaymentMethod',
               ),
             );
           }
@@ -134,7 +134,7 @@ class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMet
         }
         //return NoPaymentMethodsWidget();
         return EmptyWidget(
-          messageKey: 'orders.noOrderHistory',
+          messageKey: 'payment.method.noPaymentMethod',
         );
       },
     );

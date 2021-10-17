@@ -30,16 +30,16 @@ class _StripeAddPaymentMethodWidgetState extends State<StripeAddPaymentMethodWid
           return _buildLoadingWidget(context);
         }
         return Container(
-          color: theme.secondary,
+          // color: theme.secondary,
           child: Column(
             children: [
               Expanded(child: _buildAddCardForm(context)),
               AddCardButtonWidget(() async {
                 if (_formKey.currentState != null && _formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  print('saving card=$_cardData');
-                  print('saving card=${_cardData.cvc}');
-                  print('saving card=${_cardData.number}');
+                  // print('saving card=$_cardData');
+                  // print('saving card=${_cardData.cvc}');
+                  // print('saving card=${_cardData.number}');
                   getIt<StripePaymentBloc>().add(CreateStripeCardEvent(_cardData, ''));
                   // Nav.pop();
                 }

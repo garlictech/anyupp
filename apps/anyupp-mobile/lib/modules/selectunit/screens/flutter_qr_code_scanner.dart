@@ -262,6 +262,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     });
     controller.scannedDataStream.listen((scanData) {
       final Uri uri = Uri.parse(scanData.code);
+      print('********* BARCODE FOUND.uri=$uri');
       // print('********* BARCODE FOUND.uri.scheme=${uri.scheme}');
       // print('********* BARCODE FOUND.uri.path=${uri.path}');
       // print('********* BARCODE FOUND.uri.query=${uri.query}');

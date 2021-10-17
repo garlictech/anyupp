@@ -277,7 +277,8 @@
     "method": {
       "cash": "Pincérnél készpénzzel",
       "creditCard": "Pincérnél kártyával + SZÉP kártya",
-      "inAppPayment": "Kártyás fizetés Stripe-pal (ajánlott)"
+      "inAppPayment": "Kártyás fizetés Stripe-pal (ajánlott)",
+      "noPaymentMethod": "Még nincs mentett kártyát."
     },
     "sendOrder": "RENDELÉS",
     "fillInvoice": "SZÁMLAADATOK MEGADÁSA",

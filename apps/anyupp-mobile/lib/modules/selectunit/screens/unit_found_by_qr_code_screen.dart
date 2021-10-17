@@ -36,7 +36,7 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
     super.initState();
     setToolbarThemeV1(theme);
 
-    print('*** _UnitFoundByQRCodeScreenState.initState()');
+    print('*** _UnitFoundByQRCodeScreenState.initState().navigateToCart=${widget.navigateToCart}');
     getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
   }
 
@@ -63,10 +63,10 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                 await Future.delayed(Duration(
                   milliseconds: 1000,
                 ));
-                Nav.pop();
-                // Nav.reset(MainNavigation(
-                //   pageIndex: widget.navigateToCart ? 4 : 0,
-                // ));
+                // Nav.pop();
+                Nav.reset(MainNavigation(
+                  pageIndex: widget.navigateToCart ? 4 : 0,
+                ));
               } else {
                 showErrorDialog(
                     context, trans('selectUnit.qrCodeError.title'), trans('selectUnit.qrCodeError.description'),
