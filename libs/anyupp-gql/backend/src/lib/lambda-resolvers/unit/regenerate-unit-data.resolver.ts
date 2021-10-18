@@ -1,10 +1,22 @@
 import { pipeDebug } from '@bgap/shared/utils';
-import { combineLatest, of } from 'rxjs';
-import { map, mapTo, switchMap, tap } from 'rxjs/operators';
-import { deleteGeneratedProductsForAUnitFromDb } from '../product';
+import { combineLatest, from, merge } from 'rxjs';
+import {
+  delayWhen,
+  map,
+  mapTo,
+  shareReplay,
+  switchMap,
+  concatMap,
+  takeLast,
+  tap,
+} from 'rxjs/operators';
 import { reGenerateActiveProductCategoriesForAUnit } from '../product-category';
 import { toCreateGeneratedProductInputType } from '../product/calculate-product';
-import { createGeneratedProductsInDb } from '../product/generated-product';
+import {
+  createGeneratedProductsInDb,
+  deleteGeneratedProductsItemsFromDb,
+  listGeneratedProductsForUnits,
+} from '../product/generated-product';
 import {
   calculateAndFilterNotActiveProducts,
   getMergedProductsFromUnitProducts,
@@ -13,7 +25,7 @@ import {
   getTimezoneForUnit,
   listUnitProductsForAUnit,
 } from './regenerate-unit-data-utils';
-import { RegenerateUnitDataHandler, UnitsResolverDeps } from './utils';
+import { RegenerateUnitDataHandler } from './utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 
 export const regenerateUnitData =
@@ -25,9 +37,8 @@ export const regenerateUnitData =
     );
 
     // Clear previously generated products for the given UNIT
-    return deleteGeneratedProductsForAUnitFromDb(crudSdk)(unitId).pipe(
-      mapTo(unitId),
-      switchMap(listUnitProductsForAUnit(crudSdk)),
+    const calc1 = listUnitProductsForAUnit(crudSdk)(unitId).pipe(
+      tap(x => console.warn('*****listUnitProductsForAUnit on op', x)),
       switchMap(getMergedProductsFromUnitProducts(crudSdk)),
       switchMap(mergedProducts =>
         combineLatest([
@@ -53,6 +64,9 @@ export const regenerateUnitData =
           props.mergedProducts,
         ),
       })),
+    );
+
+    const regenerate$ = calc1.pipe(
       map(props => ({
         ...props,
         generatedProducts: props.products.map(product =>
@@ -74,5 +88,20 @@ export const regenerateUnitData =
           generatedProducts: props.generatedProducts,
         }).pipe(pipeDebug('### REGENERATE-result')),
       ),
+      shareReplay(1),
+    );
+
+    const deleteOldGenProds$ = listGeneratedProductsForUnits(crudSdk)([
+      unitId,
+    ]).pipe(
+      tap(x => console.warn('eleteOldGenProds$', x)),
+      delayWhen(() => regenerate$),
+      tap(x => console.warn('eleteOldGenProds$ 2', x)),
+      switchMap(deleteGeneratedProductsItemsFromDb),
+    );
+
+    return merge(regenerate$, deleteOldGenProds$).pipe(
+      takeLast(1),
+      mapTo(true),
     );
   };

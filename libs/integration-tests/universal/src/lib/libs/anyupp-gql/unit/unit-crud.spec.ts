@@ -1,7 +1,7 @@
 import { filterNullish } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import bcrypt from 'bcryptjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap, delay, take } from 'rxjs/operators';
 import { unitFixture } from '@bgap/shared/fixtures';
 import { createIamCrudSdk } from '../../../../api-clients';
 import {
@@ -10,17 +10,22 @@ import {
   createUnitsDeps,
   updateUnitResolver,
 } from '@bgap/anyupp-gql/backend';
+import { of } from 'rxjs';
 
 describe('Test unit CRUD operations', () => {
   const crudSdk = createIamCrudSdk();
 
-  test.only('Unit shoud be able to CRUD', done => {
+  afterEach(done => {
     crudSdk
       .DeleteUnit({ input: { id: unitFixture.createUnit_01.id } })
+      .pipe(catchError(of), delay(1000), take(1))
+      .subscribe(() => done());
+  });
+
+  test('Unit shoud be able to CRUD on server', done => {
+    crudSdk
+      .CreateUnit({ input: unitFixture.createUnit_01 })
       .pipe(
-        switchMap(() =>
-          crudSdk.CreateUnit({ input: unitFixture.createUnit_01 }),
-        ),
         tap(x =>
           expect(x).toMatchSnapshot(
             {
@@ -144,52 +149,46 @@ describe('Test unit CRUD operations', () => {
       {} as any,
       () => {},
     );
-    expect(res).toMatchSnapshot({
-      createdAt: expect.any(String),
-      updatedAt: expect.any(String),
-    });
+    expect(res).toMatchSnapshot();
   });
 
   test('The resolver must hash the rkeeper passwords', done => {
+    const matcher = {
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+      pos: {
+        rkeeper: {
+          anyuppPassword: expect.any(String),
+          rkeeperPassword: expect.any(String),
+        },
+      },
+    };
+
     crudSdk
       .DeleteUnit({ input: { id: unitFixture.createRkeeperUnit.id } })
       .pipe(
         switchMap(() =>
           crudSdk.CreateUnit({ input: unitFixture.createRkeeperUnit }),
         ),
-        tap(x =>
-          expect(x).toMatchSnapshot(
-            {
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            },
-            'CREATE',
-          ),
-        ),
+        tap(x => expect(x).toMatchSnapshot(matcher, 'CREATE')),
         switchMap(() =>
           crudSdk.GetUnit({ id: unitFixture.createRkeeperUnit.id }),
         ),
         filterNullish<CrudApi.Unit>(),
         tap(async (x: CrudApi.Unit) => {
-          expect(x).toMatchSnapshot(
-            {
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            },
-            'READ',
-          );
+          expect(x).toMatchSnapshot(matcher, 'READ');
 
           expect(
             await bcrypt.compare(
-              x?.pos?.rkeeper?.rkeeperPassword as string,
               unitFixture.createRkeeperUnit.pos!.rkeeper!.rkeeperPassword!,
+              x?.pos?.rkeeper?.rkeeperPassword as string,
             ),
           ).toEqual(true);
 
           expect(
             await bcrypt.compare(
-              x?.pos?.rkeeper?.anyuppPassword as string,
               unitFixture.createRkeeperUnit.pos!.rkeeper!.anyuppPassword!,
+              x?.pos?.rkeeper?.anyuppPassword as string,
             ),
           ).toEqual(true);
         }),
@@ -212,42 +211,30 @@ describe('Test unit CRUD operations', () => {
         ),
         filterNullish<CrudApi.Unit>(),
         tap(async (x: CrudApi.Unit) => {
-          expect(x).toMatchSnapshot(
-            {
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            },
-            'UPDATE',
-          );
+          expect(x).toMatchSnapshot(matcher, 'UPDATE');
           expect(
             await bcrypt.compare(
               'UPDATED_RKEEPER_PASSWORD',
-              x?.pos?.rkeeper?.anyuppPassword as string,
+              x?.pos?.rkeeper?.rkeeperPassword as string,
             ),
           ).toEqual(true);
 
           expect(
             await bcrypt.compare(
               'UPDATED_ANYUPP_PASSWORD',
-              unitFixture.createRkeeperUnit.pos!.rkeeper!.anyuppPassword!,
+              x?.pos?.rkeeper?.anyuppPassword as string,
             ),
           ).toEqual(true);
         }),
         switchMap(() =>
-          crudSdk.DeleteUnit({ input: { id: unitFixture.createUnit_01.id } }),
+          crudSdk.DeleteUnit({
+            input: { id: unitFixture.createRkeeperUnit.id },
+          }),
         ),
-        tap(x =>
-          expect(x).toMatchSnapshot(
-            {
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            },
-            'DELETE',
-          ),
-        ),
+        tap(x => expect(x).toMatchSnapshot(matcher, 'DELETE')),
         switchMap(() => crudSdk.GetUnit({ id: unitFixture.createUnit_01.id })),
         tap(x => expect(x).toMatchSnapshot('RE-READ')),
       )
       .subscribe(() => done());
-  });
+  }, 10000);
 });

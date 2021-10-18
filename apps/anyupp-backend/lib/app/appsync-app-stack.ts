@@ -28,7 +28,6 @@ export interface AppsyncAppStackProps extends sst.StackProps {
   szamlazzhuAgentKey: string;
   apiAccessKeyId: string;
   apiSecretAccessKey: string;
-  salt: string;
 }
 
 export class AppsyncAppStack extends sst.Stack {
@@ -142,13 +141,11 @@ export class AppsyncAppStack extends sst.Stack {
         SZAMLAZZ_HU_AGENT_KEY: props.szamlazzhuAgentKey,
         API_ACCESS_KEY_ID: props.apiAccessKeyId,
         API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
-        SALT: props.salt,
       },
     });
 
     if (apiLambda.role) {
       apiLambda.role.addToPrincipalPolicy(
-        // TODO: replace this de  cated function usage
         new iam.PolicyStatement({
           actions: [
             'cognito-idp:AdminCreateUser',

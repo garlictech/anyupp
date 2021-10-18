@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Dish validator: BAD CASE 1`] = `"Dish Object Validation Error (JOI): \\"price\\" must be a positive number, \\"name\\" is required"`;
+
+exports[`Dish validator: GOOD CASE 1`] = `
+Object {
+  "active": 0,
+  "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+  "id": 1000114,
+  "name": "Próba ital",
+  "price": 50000,
+}
+`;
+
+exports[`Dish validator: NORMALIZE 1`] = `
+Object {
+  "active": 0,
+  "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+  "id": "1000114",
+  "name": "Próba ital",
+  "price": 50000,
+}
+`;
+
 exports[`processProducts good case 1`] = `
 Array [
   Object {

@@ -16,7 +16,8 @@ export const deleteGeneratedProductsForAUnitFromDb =
       ),
     );
   };
-const deleteGeneratedProductsItemsFromDb = (
+
+export const deleteGeneratedProductsItemsFromDb = (
   items: CrudApi.GeneratedProduct[],
 ) => deleteItems(TABLE_NAME)(items);
 

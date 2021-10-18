@@ -7,7 +7,361 @@ Object {
 }
 `;
 
-exports[`Test unit CRUD operations Unit shoud be able to CRUD: CREATE 1`] = `
+exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: CREATE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "rkeeper-unit",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "1970-01-01",
+  },
+  "openingHours": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": Any<String>,
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "ENDPOINT_URI",
+      "restaurantId": "RESTAURANT_ID",
+      "rkeeperPassword": Any<String>,
+      "rkeeperUsername": "RKEEPER_USERNAME",
+    },
+    "type": "rkeeper",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: DELETE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "rkeeper-unit",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "1970-01-01",
+  },
+  "openingHours": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": Any<String>,
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "ENDPOINT_URI",
+      "restaurantId": "RESTAURANT_ID",
+      "rkeeperPassword": Any<String>,
+      "rkeeperUsername": "RKEEPER_USERNAME",
+    },
+    "type": "rkeeper",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: RE-READ 1`] = `null`;
+
+exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: READ 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "rkeeper-unit",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "1970-01-01",
+  },
+  "openingHours": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": Any<String>,
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "ENDPOINT_URI",
+      "restaurantId": "RESTAURANT_ID",
+      "rkeeperPassword": Any<String>,
+      "rkeeperUsername": "RKEEPER_USERNAME",
+    },
+    "type": "rkeeper",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: UPDATE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "rkeeper-unit",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "1970-01-01",
+  },
+  "openingHours": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": Any<String>,
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "ENDPOINT_URI",
+      "restaurantId": "RESTAURANT_ID",
+      "rkeeperPassword": Any<String>,
+      "rkeeperUsername": "RKEEPER_USERNAME",
+    },
+    "type": "rkeeper",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: CREATE 1`] = `
 Object {
   "address": Object {
     "address": "Ág u. 1.",
@@ -85,7 +439,7 @@ Object {
 }
 `;
 
-exports[`Test unit CRUD operations Unit shoud be able to CRUD: DELETE 1`] = `
+exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: DELETE 1`] = `
 Object {
   "address": Object {
     "address": "Ág u. 1.",
@@ -163,9 +517,9 @@ Object {
 }
 `;
 
-exports[`Test unit CRUD operations Unit shoud be able to CRUD: RE-READ 1`] = `null`;
+exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: RE-READ 1`] = `null`;
 
-exports[`Test unit CRUD operations Unit shoud be able to CRUD: READ 1`] = `
+exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: READ 1`] = `
 Object {
   "address": Object {
     "address": "Ág u. 1.",
@@ -243,7 +597,7 @@ Object {
 }
 `;
 
-exports[`Test unit CRUD operations Unit shoud be able to CRUD: UPDATE 1`] = `
+exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: UPDATE 1`] = `
 Object {
   "address": Object {
     "address": "Ág u. 1.",
@@ -317,6 +671,297 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: CREATE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "1970-01-01",
+  },
+  "paymentModes": Array [
+    Object {
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: DELETE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": "NEW EMAIL",
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "1970-01-01",
+  },
+  "openingHours": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": null,
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: RE-READ 1`] = `null`;
+
+exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: READ 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "1970-01-01",
+  },
+  "openingHours": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": null,
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: UPDATE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": "NEW EMAIL",
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "1970-01-01",
+  },
+  "paymentModes": Array [
+    Object {
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
   "updatedAt": Any<String>,
 }
 `;

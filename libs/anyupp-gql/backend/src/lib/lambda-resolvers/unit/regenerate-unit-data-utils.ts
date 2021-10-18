@@ -12,7 +12,7 @@ import {
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import { from, Observable, of, throwError } from 'rxjs';
-import { map, mergeMap, switchMap, toArray } from 'rxjs/operators';
+import { map, mergeMap, switchMap, toArray, tap } from 'rxjs/operators';
 import { getTimezoneFromLocation } from '../../utils';
 import { calculateActualPricesAndCheckActivity } from '../product/calculate-product';
 import { mergeAllProductLayers } from '../product/merge-product';
@@ -45,6 +45,7 @@ export const listUnitProductsForAUnit =
       query: input,
       options: { fetchPolicy: 'no-cache' },
     }).pipe(
+      tap(x => console.log('**** listUnitProductsForAUnit', x)),
       filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
       switchMap(throwOnEmptyList),
     );

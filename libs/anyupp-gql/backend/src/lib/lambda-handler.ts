@@ -33,7 +33,7 @@ const userPoolId = process.env.userPoolId || '';
 const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
 const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
-const unitsDeps = createUnitsDeps();
+const unitsDeps = createUnitsDeps(crudSdk);
 const docClient = new DynamoDB.DocumentClient();
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({

@@ -52,6 +52,7 @@ const toBatchPutParam = (item: any): WriteRequest => ({
 /** Returns all the results in a single emission */
 const executeBatchWrite =
   (tablename: string) => (writeRequests: WriteRequest[]) => {
+    console.warn('batchwrite1', tablename);
     return from(writeRequests).pipe(
       // SPLIT the operations into fix sized chunks
       bufferCount(DYNAMODB_BATCH_WRITE_ITEM_COUNT),

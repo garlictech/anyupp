@@ -26364,6 +26364,11 @@ undefsafe@^2.0.2:
   dependencies:
     debug "^2.2.0"
 
+unescape-unicode@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/unescape-unicode/-/unescape-unicode-0.2.0.tgz#e70c8c99171d3ed6e4f08c220d3ac09b4639b07d"
+  integrity sha512-bcocfvlPFiZiFJBbImE16g1GTwMDKGSnz40Dlm6FzsZe7Fob7QA8iqIFwKesaub3L/MQ/U8KNIjyRbFWx4J8ug==
+
 unfetch@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-4.2.0.tgz#7e21b0ef7d363d8d9af0fb929a5555f6ef97a3be"

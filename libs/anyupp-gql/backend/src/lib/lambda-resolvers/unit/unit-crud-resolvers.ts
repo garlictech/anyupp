@@ -73,14 +73,17 @@ export const updateUnitResolver =
       map(res => res?.Attributes as CrudApi.Unit),
     );
 
-export const createUnitsDeps = (): UnitsResolverDeps => ({
+export const createUnitsDeps = (
+  crudSdk?: CrudApi.CrudSdk,
+): UnitsResolverDeps => ({
   docClient: new DynamoDB.DocumentClient(),
-  hashGenerator: (password: string) =>
-    bcrypt.hashSync(password, process.env.SALT || ''),
+  hashGenerator: (password: string) => bcrypt.hashSync(password, 10),
   uuidGenerator: uuidV1,
   tableName: tableConfig.Unit.TableName,
-  crudSdk: CrudApi.getCrudSdkForIAM(
-    process.env.API_ACCESS_KEY_ID || '',
-    process.env.API_SECRET_ACCESS_KEY || '',
-  ),
+  crudSdk:
+    crudSdk ||
+    CrudApi.getCrudSdkForIAM(
+      process.env.API_ACCESS_KEY_ID || '',
+      process.env.API_SECRET_ACCESS_KEY || '',
+    ),
 });

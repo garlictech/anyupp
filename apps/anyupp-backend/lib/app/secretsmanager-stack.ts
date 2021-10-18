@@ -14,7 +14,6 @@ export class SecretsManagerStack extends sst.Stack {
   public apiAccessKeyId: string;
   public apiSecretAccessKey: string;
   public secretsManager: sm.ISecret;
-  public salt: string;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
@@ -73,8 +72,6 @@ export class SecretsManagerStack extends sst.Stack {
     this.apiSecretAccessKey = this.secretsManager
       .secretValueFromJson('apiSecretAccessKey')
       .toString();
-
-    this.salt = this.secretsManager.secretValueFromJson('salt').toString();
 
     new CfnOutput(this, 'SecretsManager', {
       value: this.secretsManager.secretArn,
