@@ -136,6 +136,7 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => StripePaymentBloc(getIt<StripePaymentRepository>(), getIt<CartRepository>()));
   getIt.registerLazySingleton(() => OrderBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => OrderCounterBloc(getIt<OrderRepository>()));
+  getIt.registerLazySingleton(() => OrderRefreshBloc());
   getIt.registerLazySingleton(() => OrderHistoryBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => MainNavigationBloc());
   getIt.registerLazySingleton(() => ConfigsetBloc());

@@ -2,101 +2,124 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/pdf_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
+class OrderDetailsScreen extends StatefulWidget {
   final Order order;
   final GeoUnit unit;
 
   const OrderDetailsScreen({Key? key, required this.order, required this.unit}) : super(key: key);
 
   @override
+  State<OrderDetailsScreen> createState() => _OrderDetailsScreenState(order);
+}
+
+class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+  late Order _order;
+
+  _OrderDetailsScreenState(Order order) {
+    _order = order;
+  }
+
+  @override
   Widget build(BuildContext context) {
     setToolbarThemeV2(theme);
 
-    return Scaffold(
-      // extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(
-            top: 8.0,
-            bottom: 8.0,
-            left: 15.0,
+    return BlocListener<OrderRefreshBloc, OrderRefreshState>(
+      listener: (context, state) {
+        print('******* OrderDetailsScreen().listener.state=$state');
+        if (state is OrderRefreshed) {
+          setState(() {
+            _order = state.order;
+          });
+        }
+      },
+      child: Scaffold(
+        // extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(
+              top: 8.0,
+              bottom: 8.0,
+              left: 15.0,
+            ),
+            child: BackButtonWidget(
+              color: theme.secondary,
+              icon: Icons.arrow_back,
+            ),
           ),
-          child: BackButtonWidget(
-            color: theme.secondary,
-            icon: Icons.arrow_back,
+          centerTitle: true,
+          title: Text(
+            dateWithDayFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(_order.createdAt!)),
+            style: Fonts.satoshi(
+              fontSize: 16.0,
+              color: theme.secondary,
+              fontWeight: FontWeight.w700,
+            ),
           ),
-        ),
-        centerTitle: true,
-        title: Text(
-          dateWithDayFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!)),
-          style: Fonts.satoshi(
-            fontSize: 16.0,
-            color: theme.secondary,
-            fontWeight: FontWeight.w700,
+          elevation: 3.0,
+          shadowColor: theme.secondary0.withOpacity(0.3),
+          iconTheme: IconThemeData(
+            color: theme.secondary, //change your color here
           ),
+          backgroundColor: theme.secondary0,
+          // actions: <Widget>[
+          //   Padding(
+          //     padding: const EdgeInsets.only(
+          //       top: 8.0,
+          //       bottom: 8.0,
+          //       right: 15.0,
+          //     ),
+          //     child: BorderedWidget(
+          //       width: 40,
+          //       child: Icon(
+          //         Icons.help,
+          //         color: theme.secondary,
+          //       ),
+          //     ),
+          //   ),
+          // ],
         ),
-        elevation: 3.0,
-        shadowColor: theme.secondary0.withOpacity(0.3),
-        iconTheme: IconThemeData(
-          color: theme.secondary, //change your color here
-        ),
-        backgroundColor: theme.secondary0,
-        // actions: <Widget>[
-        //   Padding(
-        //     padding: const EdgeInsets.only(
-        //       top: 8.0,
-        //       bottom: 8.0,
-        //       right: 15.0,
-        //     ),
-        //     child: BorderedWidget(
-        //       width: 40,
-        //       child: Icon(
-        //         Icons.help,
-        //         color: theme.secondary,
-        //       ),
-        //     ),
-        //   ),
-        // ],
-      ),
-      body: Container(
-        color: theme.secondary0,
-        padding: EdgeInsets.only(top: 16.0),
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: OrderStatusTimelineWidget(
-                  status: order.statusLog[order.statusLog.length - 1],
+        body: Container(
+          color: theme.secondary0,
+          padding: EdgeInsets.only(top: 16.0),
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: OrderStatusTimelineWidget(
+                    status: _order.statusLog[_order.statusLog.length - 1],
+                  ),
                 ),
-              ),
-              OrderDetailsInfoTextWidget(
-                order: order,
-                unit: unit,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: OrderDetailsPaymentInfoWidget(
-                  order: order,
+                OrderDetailsInfoTextWidget(
+                  order: _order,
+                  unit: widget.unit,
                 ),
-              ),
-              SizedBox(
-                height: 48.0,
-              ),
-              OrderDetailsInfoTable(
-                order: order,
-                unit: unit,
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: OrderDetailsPaymentInfoWidget(
+                    order: _order,
+                  ),
+                ),
+                SizedBox(
+                  height: 48.0,
+                ),
+                OrderDetailsInfoTable(
+                  order: _order,
+                  unit: widget.unit,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -449,7 +472,7 @@ class OrderStatusTimelineWidget extends StatelessWidget {
 
   List<OrderStatusTimelineData> _calculateTimelineData(BuildContext context) {
     List<OrderStatusTimelineData> results = [];
-    OrderStatus orderStatus = enumFromString(status.status, OrderStatus.values);
+    OrderStatus orderStatus = status.status;
     // print('_calculateTimelineData.state=$orderStatus');
     // orderStatus = OrderStatus.rejected;
 

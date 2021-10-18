@@ -70,7 +70,7 @@ class CurrentOrderCardWidgetOld extends StatelessWidget {
   Widget _buildPayButtonIfNeeded(BuildContext context, Order order) {
     StatusLog status = order.statusLog[order.statusLog.length - 1];
     // print('_buildPayButtonIfNeeded().status=$status, payment=${order.paymentMode}');
-    bool needButton = (status.status == 'none' && order.paymentMode.method == PaymentMethod.inapp);
+    bool needButton = (status.status == OrderStatus.none && order.paymentMode.method == PaymentMethod.inapp);
 
     if (!needButton) {
       return Container();

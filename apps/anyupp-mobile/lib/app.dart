@@ -113,6 +113,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (BuildContext context) => getIt<LocaleBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<ExceptionBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<OrderBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<OrderRefreshBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<OrderHistoryBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<OrderCounterBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<StripePaymentBloc>()),

@@ -2,12 +2,13 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fa_prev/modules/orders/orders.dart';
 
-import '../../../shared/widgets/transaction_info_widget.dart';
 import 'order_simple_list_item_widget.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class OrderHistoryCard extends StatelessWidget {
   final Order order;
@@ -58,13 +59,13 @@ class OrderHistoryCard extends StatelessWidget {
   }
 
   Widget _buildOrderHeader(BuildContext context) {
-    String status = order.statusLog[order.statusLog.length - 1].status;
+    OrderStatus status = order.statusLog[order.statusLog.length - 1].status;
 
     return ClipRect(
       child: Banner(
-        message: trans(context, 'orders.status.$status'),
+        message: trans(context, 'orders.status.${enumToString(status)!}'),
         location: BannerLocation.topEnd,
-        color: status == 'REJECTED' ? Colors.red : Colors.green,
+        color: status == OrderStatus.rejected ? Colors.red : Colors.green,
         textStyle: Fonts.satoshi(
           color: Colors.white,
           fontSize: 8.0,
