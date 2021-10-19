@@ -187,12 +187,11 @@
     "loadMore": "Még több betöltése...",
     "infos": {
       "titles": {
-        "0": "Rendelési mód",
-        "1": "Fizetési mód",
-        "2": "Vendéglátóhely",
-        "3": "Rendelési szám",
-        "4": "Rendelési időpont",
-        "5": "Rendelési dátum"
+        "0": "Vendéglátóhely",
+        "1": "Rendelés módja",
+        "2": "Rendelési szám",
+        "3": "Rendelési dátuma",
+        "4": "Rendelési időpontja"
       },
       "values": {
         "takeAway": "Elvitel",

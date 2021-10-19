@@ -769,7 +769,7 @@ class OrderDetailsInfoTable extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true,
             primary: false,
-            itemCount: 4,
+            itemCount: 5,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return OrderDetailsInfoTableItem(
@@ -805,27 +805,35 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
     switch (pos) {
       case 0:
         return OrderDetailsInfoTableItemData(
-          icon: Icons.shopping_bag_outlined,
-          title: trans(context, 'orders.infos.titles.2'),
+          icon: Icons.location_on_rounded,
+          title: trans(context, 'orders.infos.titles.0'),
           value: unit.name,
         );
       case 1:
         return OrderDetailsInfoTableItemData(
-          icon: Icons.receipt_long_outlined,
-          title: trans(context, 'orders.infos.titles.3'),
-          value: '#${order.orderNum}',
+          icon: order.servingMode == ServingMode.takeAway ? Icons.arrow_left : Icons.arrow_right,
+          title: trans(context, 'orders.infos.titles.1'),
+          value: order.servingMode == ServingMode.takeAway
+              ? trans(context, 'cart.takeAway').capitalize()
+              : trans(context, 'cart.inPlace').capitalize(),
         );
       case 2:
+        return OrderDetailsInfoTableItemData(
+          icon: Icons.receipt_long_rounded,
+          title: trans(context, 'orders.infos.titles.2'),
+          value: '#${order.orderNum}',
+        );
+      case 3:
         var createdAt = dateFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!));
         return OrderDetailsInfoTableItemData(
           icon: Icons.event,
-          title: trans(context, 'orders.infos.titles.5'),
+          title: trans(context, 'orders.infos.titles.3'),
           value: createdAt,
         );
-      case 3:
+      case 4:
         var createdAt = timeFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!));
         return OrderDetailsInfoTableItemData(
-          icon: Icons.schedule_outlined,
+          icon: Icons.schedule_rounded,
           title: trans(context, 'orders.infos.titles.4'),
           value: createdAt,
         );
@@ -855,15 +863,7 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
               children: [
                 Container(
                   padding: EdgeInsets.all(8.0),
-                  child: data.icon == Icons.shopping_bag_outlined
-                      ? SvgPicture.asset(
-                          "assets/icons/bag.svg",
-                          color: theme.secondary,
-                        )
-                      : Icon(
-                          data.icon,
-                          color: theme.secondary,
-                        ),
+                  child: _getIcon(data),
                 ),
                 Text(
                   data.title,
@@ -889,6 +889,34 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _getIcon(OrderDetailsInfoTableItemData data) {
+    if (data.icon == Icons.shopping_bag_outlined) {
+      return SvgPicture.asset(
+        "assets/icons/bag.svg",
+        color: theme.secondary,
+      );
+    }
+
+    if (data.icon == Icons.arrow_left) {
+      return SvgPicture.asset(
+        "assets/icons/bag.svg",
+        color: theme.secondary,
+      );
+    }
+
+    if (data.icon == Icons.arrow_right) {
+      return SvgPicture.asset(
+        'assets/icons/restaurant_menu_black.svg',
+        color: theme.secondary,
+      );
+    }
+
+    return Icon(
+      data.icon,
+      color: theme.secondary,
     );
   }
 }

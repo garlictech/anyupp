@@ -8,6 +8,7 @@ import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CurrentOrderCardWidget extends StatelessWidget {
   final Order order;
@@ -118,13 +119,33 @@ class CurrentOrderCardWidget extends StatelessWidget {
                 margin: EdgeInsets.only(
                   right: 16.0,
                 ),
-                child: Text(
-                  formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency),
-                  style: Fonts.satoshi(
-                    fontSize: 16.0,
-                    color: theme.secondary,
-                    fontWeight: FontWeight.w700,
-                  ),
+                child: Column(
+                  children: [
+                    order.servingMode == ServingMode.takeAway
+                        ? SvgPicture.asset(
+                            "assets/icons/bag.svg",
+                            color: theme.secondary,
+                            width: 24.0,
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: SvgPicture.asset(
+                              'assets/icons/restaurant_menu_black.svg',
+                              width: 24.0,
+                            ),
+                          ),
+                    SizedBox(
+                      height: 4.0,
+                    ),
+                    Text(
+                      formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency),
+                      style: Fonts.satoshi(
+                        fontSize: 16.0,
+                        color: theme.secondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
