@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart' hide PaymentStatus;
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 @immutable
 class Order {
@@ -124,8 +124,8 @@ class Order {
           ? enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values)
           : null,
       transactionId: map['transactionId'],
-      orderMode: enumFromStringNull(map['orderMode'], OrderMode.values, OrderMode.instant),
-      servingMode: enumFromStringNull(map['servingMode'], ServingMode.values, ServingMode.inPlace),
+      orderMode: enumFromString(map['orderMode'], OrderMode.values),
+      servingMode: enumFromString(map['servingMode'], ServingMode.values),
     );
   }
 

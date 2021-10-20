@@ -6,8 +6,8 @@ Feature: Transaction History
     Then there is a loading screen
     And there is the unit selection screen
     When I tap the "Késdobáló #111" unit in the list
-    Then there is the dashboard screen
-    And the "Menu" option is selected on the bottom navigator
+    And I tap the "In place" button
+    Then there is the "Menu" screen
     Given I have three order historys at unit "Késdobáló #111"
 
   Scenario: Transaction history listing

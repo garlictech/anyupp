@@ -7,6 +7,7 @@ import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,8 +84,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     } else {
       MainNavigationState navState = getIt<MainNavigationBloc>().state;
       if (navState is MainNavaigationNeed) {
-        // print('***** MainNaevigationScreen.didChangeDependencies().toPage=${navState.pageIndex}');
-
         _navigateToPage(navState.pageIndex);
       }
     }
@@ -96,7 +95,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     // --- This little trick need to prevent the statusbar color change back to main screen statusbar color
     var route = ModalRoute.of(context);
     if (route != null && route.isCurrent) {
-      setToolbarTheme(theme);
+      // setToolbarTheme(theme);
       // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       //   statusBarColor: _pageOptions![_selectedIndex].systemBarColor,
       //   statusBarIconBrightness: Brightness.dark,
@@ -134,9 +133,14 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                 duration: Duration(seconds: 1),
                 content: Text(
                   trans('common.exit'),
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
+                  textAlign: TextAlign.center,
+                  style: Fonts.satoshi(
+                    fontSize: 16.0,
+                    color: theme.secondary0,
                   ),
+                  // style: TextStyle(
+                  //   color: Theme.of(context).colorScheme.secondary,
+                  // ),
                 ),
                 behavior: SnackBarBehavior.floating,
                 backgroundColor: Color(0xAA880000),
@@ -220,19 +224,33 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   }
 
   void _navigateToPage(int index) {
-    if (_selectedIndex == index) return;
-    print('_navigateToPage.index=$index');
+    // print('MainNavigationScreen._navigateToPage.index=$index, _selectedIndex=$_selectedIndex');
     if (index == 0) {
       _animationController.forward();
     } else {
       _animationController.reverse();
     }
+    if (_selectedIndex == index) return;
 
     if (index == 2) {
       _pages[2] = OrdersScreen(
         key: UniqueKey(),
       );
     }
+
+    if (index == 0 || index == 4) {
+      // Menu + Cart
+      setToolbarThemeV1(theme);
+    } else {
+      // Profile + Orders
+      setToolbarThemeV2(theme);
+    }
+
+    if (index == 4) {
+      index = 0;
+      Future.delayed(Duration(seconds: 1)).then((value) => Nav.to(CartScreen()));
+    }
+
     setState(() {
       _selectedIndex = index;
     });

@@ -126,7 +126,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
             ),
           ),
           Platform.isIOS
-              ? SafeArea(
+              ? Container(
                   child: AddToCartPanelButtonWidget(
                     widget: widget,
                     quantity: _quantity,

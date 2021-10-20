@@ -108,7 +108,7 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
   Widget _noOrder() {
     return Container(
       width: double.infinity,
-      height: 150,
+      height: 165,
       margin: EdgeInsets.all(
         16.0,
       ),

@@ -143,20 +143,17 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                     animationDuration: Duration(milliseconds: 0),
                     show: _showTooltip && _supportedServiceModeCount > 1,
                     tooltipDirection: TooltipDirection.down,
-                    // minWidth: double.infinity,
-                    minWidth: MediaQuery.of(context).size.width,
                     hideOnTooltipTap: true,
                     arrowTipDistance: 4.0,
-                    // targetCenter: Offset(-1, 0),
                     borderRadius: 8.0,
                     backgroundColor: theme.secondary,
                     borderColor: theme.secondary.withOpacity(0.2),
                     ballonPadding: EdgeInsets.zero,
                     content: Container(
-                      // width: double.infinity,
                       child: Text(
-                        'Bármikor válthatsz a rendelési módok között.',
+                        trans('main.tooltip'),
                         softWrap: true,
+                        textAlign: TextAlign.center,
                         style: Fonts.satoshi(
                           fontSize: 14.0,
                           fontWeight: FontWeight.w400,
@@ -229,7 +226,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                 showBorder: false,
                 color: theme.secondary,
                 icon: Icons.chevron_left,
-                onPressed: () => Nav.reset(OnBoarding()),
+                onPressed: () => _resetPlaceAndGoToUnitSelection(_unit),
               ),
               // if (theme.images?.header != null)
               ImageWidget(
@@ -247,57 +244,66 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
 
         // centerTitle: true,
         bottom: productCategories.isNotEmpty
-            ? ColoredTabBar(
-                color: theme.secondary0,
-                tabBar: TabBar(
-                  physics: BouncingScrollPhysics(),
-                  controller: _tabController,
-                  isScrollable: true, // productCategories.length > 2,
-                  // indicatorColor: Colors.red,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  // indicatorWeight: 2.0,
-                  // automaticIndicatorColorAdjustment: true,
-                  // enableFeedback: true,
-                  // overlayColor: MaterialStateColor.resolveWith((states) {
-                  //   print('MaterialStateColor.resolveWith=$states');
-                  //   if (states.isEmpty) {
-                  //     return theme.secondary16;
-                  //   }
-                  //   var state = states.first;
-                  //   switch (state) {
-                  //     case MaterialState.selected:
-                  //       return theme.primary;
-                  //     default:
-                  //       return theme.secondary16;
-                  //   }
-                  // }),
-                  indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      56.0,
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(40.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    width: double.infinity,
+                    child: ColoredTabBar(
+                      color: theme.secondary0,
+                      tabBar: TabBar(
+                        physics: BouncingScrollPhysics(),
+                        controller: _tabController,
+                        isScrollable: true, // productCategories.length > 2,
+                        // indicatorColor: Colors.red,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        // indicatorWeight: 2.0,
+                        // automaticIndicatorColorAdjustment: true,
+                        // enableFeedback: true,
+                        // overlayColor: MaterialStateColor.resolveWith((states) {
+                        //   print('MaterialStateColor.resolveWith=$states');
+                        //   if (states.isEmpty) {
+                        //     return theme.secondary16;
+                        //   }
+                        //   var state = states.first;
+                        //   switch (state) {
+                        //     case MaterialState.selected:
+                        //       return theme.primary;
+                        //     default:
+                        //       return theme.secondary16;
+                        //   }
+                        // }),
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            56.0,
+                          ),
+                          color: theme.primary,
+                        ),
+                        labelColor: theme.secondary0,
+                        labelStyle: Fonts.satoshi(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        labelPadding: EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          top: 6.0,
+                          bottom: 6.0,
+                        ),
+                        indicatorPadding: EdgeInsets.only(
+                          bottom: 12.0,
+                          top: 12.0,
+                        ),
+                        unselectedLabelColor: theme.secondary, //theme.secondary64.withOpacity(0.4),
+                        unselectedLabelStyle: Fonts.satoshi(
+                          fontSize: 14.0,
+                        ),
+                        // padding: EdgeInsets.zero,
+                        tabs: _getTabBarTitles(context, productCategories),
+                      ),
                     ),
-                    color: theme.primary,
                   ),
-                  labelColor: theme.secondary0,
-                  labelStyle: Fonts.satoshi(
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  labelPadding: EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    top: 6.0,
-                    bottom: 6.0,
-                  ),
-                  indicatorPadding: EdgeInsets.only(
-                    bottom: 12.0,
-                    top: 12.0,
-                  ),
-                  unselectedLabelColor: theme.secondary, //theme.secondary64.withOpacity(0.4),
-                  unselectedLabelStyle: Fonts.satoshi(
-                    fontSize: 14.0,
-                  ),
-                  // padding: EdgeInsets.zero,
-                  tabs: _getTabBarTitles(context, productCategories),
                 ),
               )
             : null,
@@ -346,8 +352,13 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: _createAppBar(context, []),
         backgroundColor: theme.secondary0,
-        body: EmptyWidget(
-          messageKey: 'main.noCategories',
+        body: Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 8.0),
+            child: EmptyWidget(
+              messageKey: 'main.noCategories',
+            ),
+          ),
         ),
       ),
     );
@@ -441,5 +452,12 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
         );
       },
     );
+  }
+
+  void _resetPlaceAndGoToUnitSelection(GeoUnit? unit) {
+    if (unit != null) {
+      getIt<CartBloc>().add(ClearPlaceInCart(unit));
+    }
+    Nav.reset(OnBoarding());
   }
 }

@@ -1,10 +1,13 @@
 import 'package:flutter/foundation.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
+
+import 'core/parsers.dart';
 
 @immutable
 class StatusLog {
   final String? id;
   final String userId;
-  final String status;
+  final OrderStatus status;
   final double ts;
 
   StatusLog({
@@ -17,7 +20,7 @@ class StatusLog {
   StatusLog copyWith({
     String? id,
     String? userId,
-    String? status,
+    OrderStatus? status,
     double? ts,
   }) {
     return StatusLog(
@@ -41,7 +44,7 @@ class StatusLog {
     return StatusLog(
       id: map['id'],
       userId: map['userId'],
-      status: map['status'],
+      status: enumFromString<OrderStatus>(map['status'], OrderStatus.values),
       ts: map['ts'],
     );
   }

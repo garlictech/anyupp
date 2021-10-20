@@ -57,6 +57,7 @@ class EmptyWidget extends StatelessWidget {
     if (messageKey != null) {
       widgets.add(Text(
         trans(context, messageKey!),
+        textAlign: TextAlign.center,
         style: Fonts.satoshi(
           color: theme.secondary,
           fontSize: 16.0,

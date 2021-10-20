@@ -14,11 +14,12 @@ class EmptyCartState extends BaseCartState {
 
 class CartLoadingState extends BaseCartState {
   final String? message;
+  final String? productId;
 
-  const CartLoadingState({this.message});
+  const CartLoadingState({this.message, this.productId});
 
   @override
-  List<Object?> get props => [message];
+  List<Object?> get props => [message, productId];
 }
 
 class CurrentCartState extends BaseCartState {

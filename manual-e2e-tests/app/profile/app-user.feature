@@ -16,4 +16,4 @@ Feature: Registrate an app user
     And I fill out the "Email" input with ""
     And I fill out the "Password" input with "Abc12345"
     And I tap the "Log in" button
-    Then I should see the Unit selector screen
+    Then there is the "Unit selector" screen

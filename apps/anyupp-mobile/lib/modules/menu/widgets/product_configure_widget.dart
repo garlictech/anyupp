@@ -10,6 +10,7 @@ import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class ProductConfiguratorWidget extends StatefulWidget {
   final GeoUnit unit;
@@ -75,7 +76,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
         statusLog: [
           StatusLog(
             userId: user!.id,
-            status: 'CART',
+            status: OrderStatus.none,
             ts: 0,
           ),
         ],

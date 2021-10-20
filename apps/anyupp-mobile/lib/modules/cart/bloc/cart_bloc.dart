@@ -32,7 +32,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       }
 
       if (action is AddProductToCartAction) {
-        yield CartLoadingState();
+        yield CartLoadingState(message: 'add', productId: action.order.productId);
         TakeAwayState takeAwayState = _takeAwayBloc.state;
 
         assert(takeAwayState is ServingModeSelectedState == true);
@@ -44,7 +44,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       }
 
       if (action is RemoveProductFromCartAction) {
-        yield CartLoadingState();
+        yield CartLoadingState(message: 'remove', productId: action.order.productId);
         Cart? cart = await _cartRepository.removeProductFromCart(action.unitId, action.order);
         yield CurrentCartState(cart);
       }

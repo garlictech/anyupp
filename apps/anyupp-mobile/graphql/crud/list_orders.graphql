@@ -19,6 +19,8 @@ query SearchOrders(
       unitId
       userId
       archived
+      servingMode
+      orderMode
       paymentIntention
       paymentMode {
         caption

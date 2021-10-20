@@ -7,6 +7,7 @@ import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class AddVariantWidget extends StatefulWidget {
   final GeoUnit unit;
@@ -62,7 +63,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
         statusLog: [
           StatusLog(
             userId: user.id,
-            status: 'CART',
+            status: OrderStatus.none,
             ts: 0,
           ),
         ],

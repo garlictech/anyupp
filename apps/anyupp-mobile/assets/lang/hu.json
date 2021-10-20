@@ -110,6 +110,7 @@
       "profile": "Profil",
       "cart": "Kosár"
     },
+    "tooltip": "Bármikor válthatsz a rendelési módok között.",
     "bottomTitles": {
       "menu": "Étlap",
       "favorites": "Kedvencek",
@@ -186,12 +187,11 @@
     "loadMore": "Még több betöltése...",
     "infos": {
       "titles": {
-        "0": "Rendelési mód",
-        "1": "Fizetési mód",
-        "2": "Vendéglátóhely",
-        "3": "Rendelési szám",
-        "4": "Rendelési időpont",
-        "5": "Rendelési dátum"
+        "0": "Vendéglátóhely",
+        "1": "Rendelés módja",
+        "2": "Rendelési szám",
+        "3": "Rendelési dátuma",
+        "4": "Rendelési időpontja"
       },
       "values": {
         "takeAway": "Elvitel",
@@ -276,7 +276,8 @@
     "method": {
       "cash": "Pincérnél készpénzzel",
       "creditCard": "Pincérnél kártyával + SZÉP kártya",
-      "inAppPayment": "Kártyás fizetés Stripe-pal (ajánlott)"
+      "inAppPayment": "Kártyás fizetés Stripe-pal (ajánlott)",
+      "noPaymentMethod": "Még nincs mentett kártyát."
     },
     "sendOrder": "RENDELÉS",
     "fillInvoice": "SZÁMLAADATOK MEGADÁSA",

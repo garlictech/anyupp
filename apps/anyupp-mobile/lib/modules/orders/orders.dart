@@ -7,6 +7,7 @@ export 'bloc/order_history_state.dart';
 export 'bloc/order_counter_bloc.dart';
 export 'bloc/order_counter_event.dart';
 export 'bloc/order_counter_state.dart';
+export 'bloc/order_refresh_bloc.dart';
 export 'providers/aws_order_provider.dart';
 export 'providers/order_provider_interface.dart';
 export 'repository/order_repository.dart';

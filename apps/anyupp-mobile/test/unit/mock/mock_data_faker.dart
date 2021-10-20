@@ -1,5 +1,6 @@
 import 'package:fa_prev/models.dart';
 import 'package:faker/faker.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class MockGenerator {
   static final faker = Faker();
