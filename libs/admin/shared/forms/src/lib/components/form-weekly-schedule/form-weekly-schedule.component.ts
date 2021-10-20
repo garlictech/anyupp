@@ -5,6 +5,7 @@ import {
   Input,
 } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
+
 import { FormsService } from '../../services/forms/forms.service';
 
 @Component({
@@ -29,5 +30,9 @@ export class FormWeeklyScheduleComponent {
     );
 
     this._changeDetectorRef.detectChanges();
+  }
+
+  public removeCustomDate(idx: number): void {
+    (<FormArray>this.scheduleControl.get('custom')).removeAt(idx);
   }
 }

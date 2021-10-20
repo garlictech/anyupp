@@ -22,6 +22,7 @@ import {
   addressFormGroup,
   catchGqlError,
   contactFormGroup,
+  dailyScheduleBothEmptyOrProperlyFilledValidator,
   EToasterType,
   multiLangValidator,
   notEmptyArray,
@@ -29,7 +30,6 @@ import {
   PAYMENT_MODES,
   SERVING_MODES,
   TIME_FORMAT_PATTERN,
-  unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
@@ -73,6 +73,10 @@ export class UnitFormComponent
   ) {
     super(_injector);
 
+    const dayValidators = {
+      validators: [dailyScheduleBothEmptyOrProperlyFilledValidator],
+    };
+
     this.dialogForm = this._formBuilder.group({
       groupId: ['', [Validators.required]],
       chainId: ['', [Validators.required]],
@@ -103,40 +107,58 @@ export class UnitFormComponent
         from: [''],
         to: [''],
       }),
-      openingHours: this._formBuilder.group(
-        {
-          mon: this._formBuilder.group({
+      openingHours: this._formBuilder.group({
+        mon: this._formBuilder.group(
+          {
             from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
             to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          tue: this._formBuilder.group({
+          },
+          dayValidators,
+        ),
+        tue: this._formBuilder.group(
+          {
             from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
             to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          wed: this._formBuilder.group({
+          },
+          dayValidators,
+        ),
+        wed: this._formBuilder.group(
+          {
             from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
             to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          thu: this._formBuilder.group({
+          },
+          dayValidators,
+        ),
+        thu: this._formBuilder.group(
+          {
             from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
             to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          fri: this._formBuilder.group({
+          },
+          dayValidators,
+        ),
+        fri: this._formBuilder.group(
+          {
             from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
             to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          sat: this._formBuilder.group({
+          },
+          dayValidators,
+        ),
+        sat: this._formBuilder.group(
+          {
             from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
             to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          sun: this._formBuilder.group({
+          },
+          dayValidators,
+        ),
+        sun: this._formBuilder.group(
+          {
             from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
             to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          custom: this._formBuilder.array([]),
-        },
-        { validators: unitOpeningHoursValidator },
-      ),
+          },
+          dayValidators,
+        ),
+        custom: this._formBuilder.array([]),
+      }),
       lanes: this._formBuilder.array([]),
     });
   }
