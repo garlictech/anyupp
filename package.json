@@ -137,7 +137,7 @@
     "@nrwl/eslint-plugin-nx": "12.10.0",
     "@nrwl/jest": "12.10.0",
     "@nrwl/node": "12.10.0",
-    "@nrwl/nx-cloud": "12.3.14",
+    "@nrwl/nx-cloud": "12.5.0",
     "@nrwl/tao": "12.10.0",
     "@nrwl/workspace": "12.10.0",
     "@nxrocks/nx-flutter": "3.0.0",
