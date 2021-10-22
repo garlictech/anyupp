@@ -1,7 +1,5 @@
 import { CrudSdk } from '@bgap/crud-gql/api';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 import {
-  createUnitsDeps,
   deleteGeneratedProductCategoriesForAUnit,
   listGeneratedProductCategoriesForUnits,
   listGeneratedProductsForUnits,
@@ -30,18 +28,9 @@ import {
   getSortedIds,
   sortById,
 } from '@bgap/shared/utils';
+import { delay, map, switchMap, take, tap, toArray } from 'rxjs/operators';
+import { combineLatest, concat, Observable, of } from 'rxjs';
 import {
-  delay,
-  map,
-  switchMap,
-  take,
-  takeLast,
-  tap,
-  toArray,
-} from 'rxjs/operators';
-import { combineLatest, concat, defer, iif, Observable, of } from 'rxjs';
-import {
-  createAuthenticatedAnyuppSdk,
   createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
@@ -72,7 +61,6 @@ import { getSortedProductCatIds } from '../test-utils/test-utils';
 
 const DYNAMODB_OPERATION_DELAY = 5000;
 const TEST_NAME = 'REGEN_';
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 
 const chainId_01_seeded = productComponentSetFixture.seededProdComp_01.chainId;
 const unitId_01_to_regen = `${testIdPrefix}${TEST_NAME}UNIT_ID_01`;
@@ -408,11 +396,9 @@ describe('RegenerateUnitData mutation tests', () => {
         },
       }),
 
-      tap(x => console.warn('*******0')),
       // PHASE 1: EXECUTE THE LOGIC - check generated products
       switchMap(() => op({ input })),
       // ASSERTIONS
-      tap(x => console.warn('*******01')),
       delay(DYNAMODB_OPERATION_DELAY),
       switchMap(() =>
         listGeneratedProductsForUnits(iamCrudSdk)([
@@ -420,7 +406,6 @@ describe('RegenerateUnitData mutation tests', () => {
           unitId_02,
         ]),
       ),
-      tap(x => console.warn('*******1')),
       tap({
         next(result) {
           const expectedGeneratedIds = [
@@ -428,12 +413,10 @@ describe('RegenerateUnitData mutation tests', () => {
             unitProduct_0104_NEW.id,
             unitProduct_0101.id,
             unitProduct_0102.id,
-          ];
-          const ids = result.map(x => x.id);
+          ].sort();
 
-          expectedGeneratedIds.forEach(id => {
-            expect(ids).toContainEqual(id);
-          });
+          const ids = result.map(x => x.id).sort();
+          expect(expectedGeneratedIds).toEqual(ids);
 
           expect(
             result
@@ -449,7 +432,6 @@ describe('RegenerateUnitData mutation tests', () => {
     );
 
     return calc1.pipe(
-      tap(x => console.warn('*******1')),
       // PHASE 2: Check a single generated Item with the config sets
       tap({
         next(result) {
@@ -531,7 +513,6 @@ describe('RegenerateUnitData mutation tests', () => {
         },
       }),
 
-      tap(x => console.warn('*******3')),
       // PHASE 3: Check the generated PRODUCT CATEGORIES
       switchMap(() =>
         listGeneratedProductCategoriesForUnits({ crudSdk: iamCrudSdk })([
@@ -563,7 +544,7 @@ describe('RegenerateUnitData mutation tests', () => {
     );
   };
 
-  it.only('should regenerate all the generated products for the unit with direct resolver', done => {
+  it('should regenerate all the generated products for the unit with direct resolver', done => {
     testLogic(unitRequestHandler(iamCrudSdk).regenerateUnitData).subscribe(() =>
       done(),
     );

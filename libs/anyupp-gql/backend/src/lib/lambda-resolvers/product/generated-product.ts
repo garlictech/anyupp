@@ -12,14 +12,15 @@ export const deleteGeneratedProductsForAUnitFromDb =
   (crudSdk: CrudApi.CrudSdk) => (unitId: string) => {
     return listGeneratedProductsForUnits(crudSdk)([unitId]).pipe(
       switchMap(items =>
-        items.length > 0 ? deleteGeneratedProductsItemsFromDb(items) : of([]),
+        items.length > 0
+          ? deleteGeneratedProductsItemsFromDb(items.map(item => item.id))
+          : of([]),
       ),
     );
   };
 
-export const deleteGeneratedProductsItemsFromDb = (
-  items: CrudApi.GeneratedProduct[],
-) => deleteItems(TABLE_NAME)(items);
+export const deleteGeneratedProductsItemsFromDb = (itemIds: string[]) =>
+  deleteItems(TABLE_NAME)(itemIds.map(id => ({ id })));
 
 export const createGeneratedProductsInDb = (
   products: CrudApi.CreateGeneratedProductInput[],

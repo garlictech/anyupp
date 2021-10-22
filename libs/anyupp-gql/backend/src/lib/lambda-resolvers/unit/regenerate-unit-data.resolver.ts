@@ -1,14 +1,6 @@
 import { pipeDebug } from '@bgap/shared/utils';
-import { combineLatest, merge } from 'rxjs';
-import {
-  delayWhen,
-  map,
-  mapTo,
-  shareReplay,
-  switchMap,
-  takeLast,
-  tap,
-} from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map, mapTo, shareReplay, switchMap, takeLast } from 'rxjs/operators';
 import { reGenerateActiveProductCategoriesForAUnit } from '../product-category';
 import { toCreateGeneratedProductInputType } from '../product/calculate-product';
 import {
@@ -26,6 +18,7 @@ import {
 } from './regenerate-unit-data-utils';
 import { RegenerateUnitDataHandler } from './utils';
 import * as CrudApi from '@bgap/crud-gql/api';
+import * as R from 'ramda';
 
 export const regenerateUnitData =
   (crudSdk: CrudApi.CrudSdk): RegenerateUnitDataHandler =>
@@ -37,7 +30,6 @@ export const regenerateUnitData =
 
     // Clear previously generated products for the given UNIT
     const calc1 = listUnitProductsForAUnit(crudSdk)(unitId).pipe(
-      tap(x => console.warn('*****listUnitProductsForAUnit on op', x)),
       switchMap(getMergedProductsFromUnitProducts(crudSdk)),
       switchMap(mergedProducts =>
         combineLatest([
@@ -90,16 +82,17 @@ export const regenerateUnitData =
       shareReplay(1),
     );
 
-    const deleteOldGenProds$ = listGeneratedProductsForUnits(crudSdk)([
-      unitId,
-    ]).pipe(
-      tap(x => console.warn('eleteOldGenProds$', x)),
-      delayWhen(() => regenerate$),
-      tap(x => console.warn('eleteOldGenProds$ 2', x)),
-      switchMap(deleteGeneratedProductsItemsFromDb),
+    const listOriginalGeneratedProducts$ = listGeneratedProductsForUnits(
+      crudSdk,
+    )([unitId]).pipe(
+      map(generatedProducts => generatedProducts.map(prop => prop.id)),
     );
 
-    return merge(regenerate$, deleteOldGenProds$).pipe(
+    return combineLatest(listOriginalGeneratedProducts$, regenerate$).pipe(
+      map(([originalProducts, newProducts]) =>
+        R.difference(originalProducts, newProducts),
+      ),
+      switchMap(deleteGeneratedProductsItemsFromDb),
       takeLast(1),
       mapTo(true),
     );
