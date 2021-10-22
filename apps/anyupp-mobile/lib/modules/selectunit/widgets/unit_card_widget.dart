@@ -76,15 +76,12 @@ class UnitCardWidget extends StatelessWidget {
                               unit,
                               transEx(context, "selectUnit.closed"),
                               transEx(context, "selectUnit.opens"),
-                              transEx(context,
-                                  "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
+                              transEx(
+                                  context, "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
                             )
                           : transEx(context, "selectUnit.opened") +
                               ": " +
-                              transEx(
-                                  context,
-                                  GeoUnitUtils.getOpenedHour(unit)!
-                                      .getOpenRangeString()!),
+                              transEx(context, GeoUnitUtils.getOpenedHour(unit)!.getOpenRangeString()!),
                       style: Fonts.satoshi(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w400,

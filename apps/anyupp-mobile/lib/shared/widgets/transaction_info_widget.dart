@@ -13,8 +13,7 @@ class TransactionInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (transactionItem.receipt?.pdfData == null &&
-        transactionItem.invoice?.pdfUrl == null) {
+    if (transactionItem.receipt?.pdfData == null && transactionItem.invoice?.pdfUrl == null) {
       return Container();
     }
 

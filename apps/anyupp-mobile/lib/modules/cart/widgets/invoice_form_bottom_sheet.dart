@@ -18,8 +18,7 @@ import 'package:fa_prev/shared/widgets/custom_text_form_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void showInvoiceFormBottomSheet(
-    BuildContext context, String? orderId, PaymentMode paymentMode) {
+void showInvoiceFormBottomSheet(BuildContext context, String? orderId, PaymentMode paymentMode) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   showModalBottomSheet(
@@ -48,12 +47,10 @@ class InvoiceFormBottomSheetWidget extends StatefulWidget {
   final PaymentMode paymentMode;
   InvoiceFormBottomSheetWidget(this.orderId, this.paymentMode);
   @override
-  _InvoiceFormBottomSheetWidgetState createState() =>
-      _InvoiceFormBottomSheetWidgetState();
+  _InvoiceFormBottomSheetWidgetState createState() => _InvoiceFormBottomSheetWidgetState();
 }
 
-class _InvoiceFormBottomSheetWidgetState
-    extends State<InvoiceFormBottomSheetWidget> {
+class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWidget> {
   final profileFormKey = GlobalKey<FormState>();
   final _nameOrCompanyController = TextEditingController();
   final _emailController = TextEditingController();
@@ -153,8 +150,7 @@ class _InvoiceFormBottomSheetWidgetState
                             // ),
                             child: Center(
                               child: Text(
-                                trans(
-                                    'payment.paymentInfo.invoicing.invoice_info'),
+                                trans('payment.paymentInfo.invoicing.invoice_info'),
                                 style: Fonts.satoshi(
                                   fontSize: 16,
                                   color: theme.secondary,
@@ -174,23 +170,16 @@ class _InvoiceFormBottomSheetWidgetState
                         ],
                       ),
                       BlocListener<UserDetailsBloc, UserDetailsState>(
-                        listener:
-                            (BuildContext context, UserDetailsState state) {
+                        listener: (BuildContext context, UserDetailsState state) {
                           if (state is UserDetailsLoaded) {
                             User user = state.userDetails;
                             if (user.invoiceAddress != null) {
-                              _setTextFieldValue(_nameOrCompanyController,
-                                  user.invoiceAddress!.customerName);
-                              _setTextFieldValue(
-                                  _cityController, user.invoiceAddress!.city);
-                              _setTextFieldValue(_emailController,
-                                  user.invoiceAddress?.email ?? user.email!);
-                              _setTextFieldValue(_zipController,
-                                  user.invoiceAddress!.postalCode);
-                              _setTextFieldValue(_streetController,
-                                  user.invoiceAddress!.streetAddress);
-                              _setTextFieldValue(_taxNumberController,
-                                  user.invoiceAddress!.taxNumber);
+                              _setTextFieldValue(_nameOrCompanyController, user.invoiceAddress!.customerName);
+                              _setTextFieldValue(_cityController, user.invoiceAddress!.city);
+                              _setTextFieldValue(_emailController, user.invoiceAddress?.email ?? user.email!);
+                              _setTextFieldValue(_zipController, user.invoiceAddress!.postalCode);
+                              _setTextFieldValue(_streetController, user.invoiceAddress!.streetAddress);
+                              _setTextFieldValue(_taxNumberController, user.invoiceAddress!.taxNumber);
                             }
                             setState(() {
                               _userProfile = state.userDetails;
@@ -244,12 +233,8 @@ class _InvoiceFormBottomSheetWidgetState
               false,
               taxFieldValidator,
             ),
-            customCountryPickerWidget(
-                theme,
-                context,
-                trans('payment.paymentInfo.invoicing.country'),
-                _countryController,
-                _countryCodeController),
+            customCountryPickerWidget(theme, context, trans('payment.paymentInfo.invoicing.country'),
+                _countryController, _countryCodeController),
             customTextFormWidget(
               context,
               theme,
@@ -330,8 +315,7 @@ class _InvoiceFormBottomSheetWidgetState
                 // (_selectedPaymentMethod != PAYMENT_UNKNOWN)
                 //?
                 () {
-              final formValid =
-                  profileFormKey.currentState?.validate() ?? false;
+              final formValid = profileFormKey.currentState?.validate() ?? false;
               if (formValid) {
                 // BlocProvider.of<CartBloc>(context).add(AddInvoiceInfo(
                 //     InvoiceInfo(

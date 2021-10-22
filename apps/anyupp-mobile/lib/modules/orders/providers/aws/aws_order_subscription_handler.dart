@@ -10,8 +10,7 @@ import 'package:fa_prev/modules/orders/orders.dart';
 // const REPEAT_TIMEOUT_MS = 120000;
 
 class AwsOrderSubscription {
-  StreamSubscription<GraphQLResponse<OnOrderChanged$Subscription>>?
-      _listSubscription;
+  StreamSubscription<GraphQLResponse<OnOrderChanged$Subscription>>? _listSubscription;
   List<Order>? _items;
   String? _nextToken;
   int _totalCount = 0;
@@ -46,8 +45,7 @@ class AwsOrderSubscription {
     // print('**** startOrderSubscription.end()');
   }
 
-  Future<void> _startListSubscription(
-      {required StreamController<List<Order>?> controller}) async {
+  Future<void> _startListSubscription({required StreamController<List<Order>?> controller}) async {
     try {
       // ArtemisClient client = await GQL.crud;
       var client = await GQL.amplify.client;

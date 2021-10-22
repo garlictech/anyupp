@@ -14,8 +14,7 @@ class FavoritesListWidget extends StatefulWidget {
   final GeoUnit unit;
   final ServingMode mode;
 
-  FavoritesListWidget({Key? key, required this.unit, required this.mode})
-      : super(key: key);
+  FavoritesListWidget({Key? key, required this.unit, required this.mode}) : super(key: key);
 
   @override
   _FavoritesListWidgetState createState() => _FavoritesListWidgetState();
@@ -49,8 +48,7 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
           ));
         }
       },
-      child:
-          BlocBuilder<FavoritesBloc, FavoritesState>(builder: (context, state) {
+      child: BlocBuilder<FavoritesBloc, FavoritesState>(builder: (context, state) {
         if (state is FavoriteListLoaded) {
           if (state.favorites != null && state.favorites!.isNotEmpty) {
             return _buildList(unit, state.favorites!);

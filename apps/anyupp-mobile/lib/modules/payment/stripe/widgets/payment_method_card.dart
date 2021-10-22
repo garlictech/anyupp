@@ -58,8 +58,7 @@ class PaymentMethodCardWidget extends StatelessWidget {
                     backBackground: CardBackgrounds.white,
                     showBackSide: false,
                     showShadow: true,
-                    cardType: _getCardTypeFromString(method
-                        .brand!), // isVisa ? CardType.visa : CardType.masterCard,
+                    cardType: _getCardTypeFromString(method.brand!), // isVisa ? CardType.visa : CardType.masterCard,
                   ),
                   SizedBox(
                     height: 20,
@@ -74,11 +73,9 @@ class PaymentMethodCardWidget extends StatelessWidget {
               child: GestureDetector(
                 onTap: () async {
                   await showConfirmDialog(context,
-                      onConfirm: () => getIt<StripePaymentBloc>()
-                          .add(DeleteStripeCardEvent(method.id!)),
+                      onConfirm: () => getIt<StripePaymentBloc>().add(DeleteStripeCardEvent(method.id!)),
                       title: trans(context, "payment.manageCard.are_you_sure"),
-                      message:
-                          trans(context, "payment.manageCard.card_will_delete"),
+                      message: trans(context, "payment.manageCard.card_will_delete"),
                       cancelText: trans(context, "payment.manageCard.cancel"),
                       confirmText: trans(context, "payment.manageCard.delete"));
                 },
@@ -102,16 +99,13 @@ class PaymentMethodCardWidget extends StatelessWidget {
 
   String _getExpirityDateString(StripePaymentMethod payment) {
     String year = payment.expYear.toString().substring(2);
-    String month =
-        payment.expMonth < 10 ? '0${payment.expMonth}' : '${payment.expMonth}';
+    String month = payment.expMonth < 10 ? '0${payment.expMonth}' : '${payment.expMonth}';
     return '$year/$month';
   }
 
   CardType _getCardTypeFromString(String cardType) {
     return CardType.values.firstWhere(
-        (element) =>
-            'CardType.${cardType}'.toLowerCase() ==
-            element.toString().toLowerCase(),
+        (element) => 'CardType.${cardType}'.toLowerCase() == element.toString().toLowerCase(),
         orElse: () => CardType.other);
   }
 }

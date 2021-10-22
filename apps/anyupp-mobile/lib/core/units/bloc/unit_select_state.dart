@@ -17,6 +17,5 @@ class UnitSelected extends UnitSelectState {
   List<Object?> get props => [unit];
 
   @override
-  String toString() =>
-      'UnitSelected { unitId: $unit.id, groupId: $unit.groupId, chainId: $unit.chainId }';
+  String toString() => 'UnitSelected { unitId: $unit.id, groupId: $unit.groupId, chainId: $unit.chainId }';
 }

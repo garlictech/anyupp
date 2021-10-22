@@ -25,10 +25,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
     var state = getIt<UnitSelectBloc>().state;
     if (state is UnitSelected) {
       GeoUnit unit = state.unit;
-      getIt<OrderBloc>()
-          .add(StartGetOrderListSubscription(unit.chainId, unit.id));
-      getIt<OrderHistoryBloc>()
-          .add(StartGetOrderHistoryListSubscription(unit.id));
+      getIt<OrderBloc>().add(StartGetOrderListSubscription(unit.chainId, unit.id));
+      getIt<OrderHistoryBloc>().add(StartGetOrderHistoryListSubscription(unit.id));
     }
   }
 
@@ -53,8 +51,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ),
             BlocListener<OrderHistoryBloc, BaseOrderHistoryState>(
               listener: (context, state) {
-                if (state is NoOrderHistoryLoaded ||
-                    state is OrderHistoryLoadedState) {
+                if (state is NoOrderHistoryLoaded || state is OrderHistoryLoadedState) {
                   setState(() {
                     _orderHistoryLoaded = true;
                   });

@@ -24,8 +24,7 @@ class ProductMenuItem extends StatelessWidget {
   }
 }
 
-Widget buildProductItem(BuildContext context, GeoUnit unit,
-    GeneratedProduct item, ThemeChainData theme) {
+Widget buildProductItem(BuildContext context, GeoUnit unit, GeneratedProduct item, ThemeChainData theme) {
   // Defining the dimensions and shadow of each sandwich in menu list (Menu page)
   final double heightContainer = 130;
   final double widthContainer = 130;
@@ -132,9 +131,7 @@ Widget buildProductItem(BuildContext context, GeoUnit unit,
                       ),
                     ),
                     Text(
-                      item.description == null
-                          ? ''
-                          : getLocalizedText(context, item.description!),
+                      item.description == null ? '' : getLocalizedText(context, item.description!),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Fonts.satoshi(
@@ -146,8 +143,7 @@ Widget buildProductItem(BuildContext context, GeoUnit unit,
                       padding: const EdgeInsets.only(
                         top: 20.0,
                       ),
-                      child: _buildVariantsInfo(
-                          context, theme, item.variants, unit.currency),
+                      child: _buildVariantsInfo(context, theme, item.variants, unit.currency),
                     ),
                   ],
                 ),
@@ -160,8 +156,7 @@ Widget buildProductItem(BuildContext context, GeoUnit unit,
   );
 }
 
-Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme,
-    List<ProductVariant> variants, String currency) {
+Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme, List<ProductVariant> variants, String currency) {
   final prices = variants.map((variant) => variant.price).toList();
   prices.sort();
 

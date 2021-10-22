@@ -37,8 +37,7 @@ class QRCodeScannerScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _QRCodeScannerScreenState();
 }
 
-class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
-    with TickerProviderStateMixin {
+class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerProviderStateMixin {
   Barcode? result;
   late QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -115,9 +114,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
         rectangle: Rectangle(
           width: widget.validRectangle.width,
           height: widget.validRectangle.height,
-          color: newState == AnimationState.endSearch
-              ? Colors.transparent
-              : Colors.white,
+          color: newState == AnimationState.endSearch ? Colors.transparent : Colors.white,
         ),
         animation: Tween<double>(
           begin: begin,
@@ -169,13 +166,10 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
               constraints: const BoxConstraints.expand(),
               child: CustomPaint(
                 painter: WindowPainter(
-                  windowSize: Size(widget.validRectangle.width,
-                      widget.validRectangle.height),
+                  windowSize: Size(widget.validRectangle.width, widget.validRectangle.height),
                   outerFrameColor: widget.frameColor,
                   closeWindow: _closeWindow,
-                  innerFrameColor: _currentState == AnimationState.endSearch
-                      ? Colors.transparent
-                      : kShrineFrameBrown,
+                  innerFrameColor: _currentState == AnimationState.endSearch ? Colors.transparent : kShrineFrameBrown,
                 ),
               ),
             ),

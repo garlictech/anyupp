@@ -43,8 +43,7 @@ class OrderHistoryCard extends StatelessWidget {
             _buildOrderHeader(context),
             _buildDivider(context),
             ..._buildOrderItemList(context),
-            if (order.transaction != null)
-              TransactionInfoWidget(order.transaction!),
+            if (order.transaction != null) TransactionInfoWidget(order.transaction!),
             _buildFooter(context),
           ],
         ),
@@ -164,8 +163,7 @@ class OrderHistoryCard extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(order.sumPriceShown.priceSum,
-                order.items[0].priceShown.currency),
+            formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown.currency),
             style: Fonts.satoshi(
               fontSize: 16,
               color: theme.secondary,

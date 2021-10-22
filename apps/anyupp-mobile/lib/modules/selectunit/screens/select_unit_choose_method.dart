@@ -15,12 +15,10 @@ import 'flutter_qr_code_scanner.dart';
 
 class SelectUnitChooseMethodScreen extends StatefulWidget {
   @override
-  _SelectUnitChooseMethodScreenState createState() =>
-      _SelectUnitChooseMethodScreenState();
+  _SelectUnitChooseMethodScreenState createState() => _SelectUnitChooseMethodScreenState();
 }
 
-class _SelectUnitChooseMethodScreenState
-    extends State<SelectUnitChooseMethodScreen> {
+class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScreen> {
   @override
   void initState() {
     super.initState();
@@ -109,8 +107,7 @@ class _SelectUnitChooseMethodScreenState
               left: 12.0,
             ),
             child: Text(
-              trans('selectUnit.welcome',
-                  [user.name ?? trans('selectUnit.unknown')]),
+              trans('selectUnit.welcome', [user.name ?? trans('selectUnit.unknown')]),
               style: Fonts.satoshi(
                 fontSize: 14.0,
                 color: Color(0xFF3C2F2F),

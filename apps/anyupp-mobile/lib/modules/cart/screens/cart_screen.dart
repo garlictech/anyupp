@@ -104,8 +104,7 @@ class CartScreen extends StatelessWidget {
             builder: (context, state) {
               if (state is UnitSelected) {
                 return StreamBuilder<Cart?>(
-                  stream: getIt<CartRepository>()
-                      .getCurrentCartStream(state.unit.id),
+                  stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
                   builder: (context, AsyncSnapshot<Cart?> snapshot) {
                     // print('placeSnapshot=');
 
@@ -189,16 +188,12 @@ class CartScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is UnitSelected) {
               return StreamBuilder<Cart?>(
-                stream:
-                    getIt<CartRepository>().getCurrentCartStream(state.unit.id),
+                stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
                 builder: (context, AsyncSnapshot<Cart?> snapshot) {
                   // print('CartScreen.snapshot=');
-                  if (snapshot.connectionState != ConnectionState.waiting ||
-                      snapshot.hasData) {
-                    if (snapshot.data != null &&
-                        snapshot.data?.items.isNotEmpty == true) {
-                      return _buildCartListAndTotal(
-                          context, state.unit, snapshot.data!);
+                  if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                    if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
+                      return _buildCartListAndTotal(context, state.unit, snapshot.data!);
                     }
                     return _emptyCart(context);
                   }
@@ -242,8 +237,7 @@ class CartScreen extends StatelessWidget {
           flex: 10,
           child: Container(
             //margin: EdgeInsets.symmetric(horizontal: 15),
-            padding: EdgeInsets.only(
-                left: 15, right: 2), // EdgeInsets.symmetric(horizontal: 15),
+            padding: EdgeInsets.only(left: 15, right: 2), // EdgeInsets.symmetric(horizontal: 15),
             child: AnimationLimiter(
               child: RawScrollbar(
                 controller: _controller,
@@ -279,11 +273,9 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentButtonPanel(
-      BuildContext context, GeoUnit unit, Cart cart) {
+  Widget _buildPaymentButtonPanel(BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = false;
-    if (cart.place == null ||
-        (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE)) {
+    if (cart.place == null || (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE)) {
       showQrCodeScan = true;
     }
     // print('_buildPaymentButtonPanel().showQrCodeScan=$showQrCodeScan');

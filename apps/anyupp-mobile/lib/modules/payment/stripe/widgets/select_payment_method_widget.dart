@@ -25,12 +25,10 @@ class SelectStripePaymentMethodWidget extends StatefulWidget {
   });
 
   @override
-  _SelectStripePaymentMethodWidgetState createState() =>
-      _SelectStripePaymentMethodWidgetState();
+  _SelectStripePaymentMethodWidgetState createState() => _SelectStripePaymentMethodWidgetState();
 }
 
-class _SelectStripePaymentMethodWidgetState
-    extends State<SelectStripePaymentMethodWidget> {
+class _SelectStripePaymentMethodWidgetState extends State<SelectStripePaymentMethodWidget> {
   @override
   void initState() {
     super.initState();
@@ -48,8 +46,7 @@ class _SelectStripePaymentMethodWidgetState
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height *
-          0.76, // 76 percent of the screen height
+      height: MediaQuery.of(context).size.height * 0.76, // 76 percent of the screen height
       child: LayoutBuilder(
         builder: (_, constrains) {
           return Container(
@@ -59,8 +56,7 @@ class _SelectStripePaymentMethodWidgetState
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Expanded(
-                    child: Center(child: _buildPaymentMethodList(context))),
+                Expanded(child: Center(child: _buildPaymentMethodList(context))),
                 SizedBox(height: 8),
                 widget.showPaymentButton ? buildPaymentButton() : Container()
               ],
@@ -89,8 +85,7 @@ class _SelectStripePaymentMethodWidgetState
           if (state is StripePaymentMethodsList) {
             if (state.data != null && state.data!.isNotEmpty) {
               return PaymentButtonWidget(() {
-                getIt<StripePaymentBloc>()
-                    .add(StartStripePaymentWithExistingCardEvent(
+                getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
                   orderId: widget.orderId,
                   paymentMethodId: state.data![selectedItem].id!,
                   invoiceAddress: widget.userInvoiceAddress,
@@ -111,8 +106,7 @@ class _SelectStripePaymentMethodWidgetState
       builder: (context, StripePaymentState state) {
         // print('SelectStripePaymentMethodWidget.state=$state');
         if (state is StripePaymentMethodsList) {
-          if (state.data == null ||
-              (state.data != null && state.data!.isEmpty)) {
+          if (state.data == null || (state.data != null && state.data!.isEmpty)) {
             return Container(
               child: EmptyWidget(
                 messageKey: 'payment.method.noPaymentMethod',
@@ -133,8 +127,7 @@ class _SelectStripePaymentMethodWidgetState
           );
         }
         if (state is StripeError) {
-          return CommonErrorWidget(
-              error: state.code, description: state.message);
+          return CommonErrorWidget(error: state.code, description: state.message);
         }
         if (state is StripePaymentLoading) {
           return CenterLoadingWidget();

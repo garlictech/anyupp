@@ -60,9 +60,7 @@ class TransactionCard extends StatelessWidget {
   }
 
   Widget _buildTransactionHeader(BuildContext context) {
-    DateTime? dateTime = transaction.createdAt != null
-        ? parser.parseUTC(transaction.createdAt!)
-        : null;
+    DateTime? dateTime = transaction.createdAt != null ? parser.parseUTC(transaction.createdAt!) : null;
 
     return ClipRect(
       child: Container(
@@ -95,8 +93,7 @@ class TransactionCard extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                getIt<OrderBloc>()
-                    .add(LoadOrderDetail(orderId: transaction.orderId));
+                getIt<OrderBloc>().add(LoadOrderDetail(orderId: transaction.orderId));
                 Nav.to(OrderDetailsScreenOld());
               },
               child: RichText(
@@ -104,8 +101,7 @@ class TransactionCard extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text:
-                          trans(context, 'profile.transactions.details') + ' ',
+                      text: trans(context, 'profile.transactions.details') + ' ',
                       style: Fonts.satoshi(
                         fontSize: 14.0,
                         color: Color(0x993C2F2F),

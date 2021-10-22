@@ -17,8 +17,7 @@ class SelectServingModeWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SelectServingModeWidgetState createState() =>
-      _SelectServingModeWidgetState();
+  _SelectServingModeWidgetState createState() => _SelectServingModeWidgetState();
 }
 
 class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {

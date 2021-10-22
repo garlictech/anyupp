@@ -58,11 +58,7 @@ class StatusLog {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is StatusLog &&
-        other.id == id &&
-        other.userId == userId &&
-        other.status == status &&
-        other.ts == ts;
+    return other is StatusLog && other.id == id && other.userId == userId && other.status == status && other.ts == ts;
   }
 
   @override

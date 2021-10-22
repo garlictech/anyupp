@@ -11,14 +11,12 @@ class FavoritesRepository implements IFavoritesProvider {
   FavoritesRepository(this._provider);
 
   @override
-  Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId,
-      [ServingMode? servingMode, String? nextToken]) {
+  Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId, [ServingMode? servingMode, String? nextToken]) {
     return _provider.getFavoritesList(unitId, servingMode, nextToken);
   }
 
   @override
-  Future<bool> addOrRemoveFavoriteProduct(
-      String unitId, String categoryId, String productId) async {
+  Future<bool> addOrRemoveFavoriteProduct(String unitId, String categoryId, String productId) async {
     return _provider.addOrRemoveFavoriteProduct(unitId, categoryId, productId);
   }
 

@@ -94,12 +94,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
                   children: [
                     Text(
                       order.archived
-                          ? dateFormatter.format(
-                              fromGraphQLAWSDateTimeToDartDateTime(
-                                  order.createdAt!))
-                          : dateWithDayFormatter.format(
-                              fromGraphQLAWSDateTimeToDartDateTime(
-                                  order.createdAt!)),
+                          ? dateFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!))
+                          : dateWithDayFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!)),
                       style: Fonts.satoshi(
                         fontSize: 16.0,
                         color: theme.secondary,
@@ -107,8 +103,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      trans(context,
-                          'orders.infos.status.${enumToString(status)!}.title'),
+                      trans(context, 'orders.infos.status.${enumToString(status)!}.title'),
                       style: Fonts.satoshi(
                         fontSize: 14.0,
                         color: theme.secondary,
@@ -143,8 +138,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
                       height: 4.0,
                     ),
                     Text(
-                      formatCurrency(order.sumPriceShown.priceSum,
-                          order.sumPriceShown.currency),
+                      formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency),
                       style: Fonts.satoshi(
                         fontSize: 16.0,
                         color: theme.secondary,

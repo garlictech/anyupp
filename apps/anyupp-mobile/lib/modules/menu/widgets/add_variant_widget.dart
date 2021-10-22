@@ -74,8 +74,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final int variantCountInCart =
-        widget.cart?.variantCount(widget.product, widget.variant) ?? 0;
+    final int variantCountInCart = widget.cart?.variantCount(widget.product, widget.variant) ?? 0;
     return Container(
       child: Align(
         alignment: Alignment.centerRight,
@@ -113,8 +112,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
                 },
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  transitionBuilder:
-                      (Widget child, Animation<double> animation) {
+                  transitionBuilder: (Widget child, Animation<double> animation) {
                     return ScaleTransition(
                       child: child,
                       scale: animation,
@@ -122,8 +120,7 @@ class _AddVariantWidgetState extends State<AddVariantWidget> {
                   },
                   child: Text(
                     variantCountInCart == 0 ? '+' : 'x$variantCountInCart',
-                    key: ValueKey<String>(
-                        '${widget.variant.id}-$variantCountInCart'),
+                    key: ValueKey<String>('${widget.variant.id}-$variantCountInCart'),
                     softWrap: false,
                     textAlign: TextAlign.center,
                     style: Fonts.satoshi(

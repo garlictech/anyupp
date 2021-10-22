@@ -69,15 +69,12 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
       child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, UnitSelectState unitState) {
           if (unitState is UnitSelected) {
-            return BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(
-                builder: (context, state) {
+            return BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(builder: (context, state) {
               // print('Menu.ProductCategoriesBloc.state=$state');
               if (state is ProductCategoriesLoaded) {
                 // print('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
-                if (state.productCategories?.data != null &&
-                    state.productCategories!.data!.isNotEmpty) {
-                  return _buildTabBar(context, unitState.unit,
-                      state.productCategories?.data ?? []);
+                if (state.productCategories?.data != null && state.productCategories!.data!.isNotEmpty) {
+                  return _buildTabBar(context, unitState.unit, state.productCategories?.data ?? []);
                 } else {
                   return _noCategoriesWidget(context);
                 }
@@ -101,8 +98,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     ));
   }
 
-  Widget _buildTabBar(BuildContext context, GeoUnit unit,
-      List<ProductCategory> productCategories) {
+  Widget _buildTabBar(BuildContext context, GeoUnit unit, List<ProductCategory> productCategories) {
     _tabController = TabController(
       length: productCategories.length + 1,
       vsync: this,
@@ -126,8 +122,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     );
   }
 
-  PreferredSize _createAppBar(
-      BuildContext context, List<ProductCategory> productCategories) {
+  PreferredSize _createAppBar(BuildContext context, List<ProductCategory> productCategories) {
     return PreferredSize(
       preferredSize: Size.fromHeight(115.0), // here the desired height
       child: AppBar(
@@ -167,13 +162,11 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    child: BlocBuilder<TakeAwayBloc, TakeAwayState>(
-                        builder: (context, state) {
+                    child: BlocBuilder<TakeAwayBloc, TakeAwayState>(builder: (context, state) {
                       if (state is ServingModeSelectedState) {
                         return AnimatedSwitcher(
                           duration: const Duration(milliseconds: 500),
-                          transitionBuilder:
-                              (Widget child, Animation<double> animation) {
+                          transitionBuilder: (Widget child, Animation<double> animation) {
                             return FadeTransition(
                               child: child,
                               opacity: animation,
@@ -196,8 +189,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                                       height: 20.0,
                                     ),
                                   ),
-                            onPressed: () =>
-                                _selectServingMode(context, state.servingMode),
+                            onPressed: () => _selectServingMode(context, state.servingMode),
                           ),
                         );
                       }
@@ -303,8 +295,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                           bottom: 12.0,
                           top: 12.0,
                         ),
-                        unselectedLabelColor: theme
-                            .secondary, //theme.secondary64.withOpacity(0.4),
+                        unselectedLabelColor: theme.secondary, //theme.secondary64.withOpacity(0.4),
                         unselectedLabelStyle: Fonts.satoshi(
                           fontSize: 14.0,
                         ),
@@ -320,8 +311,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     );
   }
 
-  List<Widget> _getTabBarPages(
-      GeoUnit unit, List<ProductCategory> productCategories) {
+  List<Widget> _getTabBarPages(GeoUnit unit, List<ProductCategory> productCategories) {
     List<Widget> results = [
       FavoritesScreen(),
     ];
@@ -334,8 +324,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     return results;
   }
 
-  List<Widget> _getTabBarTitles(
-      BuildContext context, List<ProductCategory> productCategories) {
+  List<Widget> _getTabBarTitles(BuildContext context, List<ProductCategory> productCategories) {
     List<Widget> results = [
       Tab(
         text: trans(
@@ -400,8 +389,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
       initialPosition: current == ServingMode.inPlace ? 0 : 1,
     );
     if (selectedMethodPos != null) {
-      _deleteCartConfirmation(context,
-          selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway);
+      _deleteCartConfirmation(context, selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway);
     }
   }
 

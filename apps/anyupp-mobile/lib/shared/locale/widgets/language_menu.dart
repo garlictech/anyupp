@@ -12,11 +12,7 @@ class LangChoice {
   final String country;
   final Widget flag;
 
-  LangChoice(
-      {required this.title,
-      required this.language,
-      required this.country,
-      required this.flag});
+  LangChoice({required this.title, required this.language, required this.country, required this.flag});
 }
 
 class LanguageMenu extends StatefulWidget {
@@ -96,8 +92,7 @@ class _LanguageMenuState extends State<LanguageMenu> {
                     var choice = languageOptions[position];
                     return InkWell(
                       onTap: () {
-                        getIt<LocaleBloc>().add(
-                            SetLocale(Locale(choice.language, choice.country)));
+                        getIt<LocaleBloc>().add(SetLocale(Locale(choice.language, choice.country)));
                       },
                       child: AnimationConfiguration.staggeredList(
                         position: position,
@@ -108,12 +103,10 @@ class _LanguageMenuState extends State<LanguageMenu> {
                             child: Container(
                               height: 50,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .center, //Center Row contents horizontally,
+                                mainAxisAlignment: MainAxisAlignment.center, //Center Row contents horizontally,
                                 children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 0, right: 10.0),
+                                    padding: const EdgeInsets.only(left: 0, right: 10.0),
                                     child: choice.flag,
                                   ),
                                   Text(
@@ -132,8 +125,7 @@ class _LanguageMenuState extends State<LanguageMenu> {
                       ),
                     );
                   },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
+                  separatorBuilder: (BuildContext context, int index) => const Divider(),
                 ),
               )
             ],

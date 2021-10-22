@@ -54,8 +54,7 @@ class Transaction {
       currency: currency ?? this.currency,
       total: total ?? this.total,
       type: type ?? this.type,
-      externalTransactionId:
-          externalTransactionId ?? this.externalTransactionId,
+      externalTransactionId: externalTransactionId ?? this.externalTransactionId,
       receipt: receipt ?? this.receipt,
       invoice: invoice ?? this.invoice,
       createdAt: createdAt ?? this.createdAt,

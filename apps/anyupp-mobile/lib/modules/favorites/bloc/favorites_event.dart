@@ -16,8 +16,7 @@ class AddOrRemoveFavoriteProduct extends FavoritesEvent {
   final categoryId;
   final String productId;
 
-  const AddOrRemoveFavoriteProduct(
-      this.unitId, this.categoryId, this.productId);
+  const AddOrRemoveFavoriteProduct(this.unitId, this.categoryId, this.productId);
 }
 
 class ListFavoriteProducts extends FavoritesEvent {

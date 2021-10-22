@@ -60,8 +60,7 @@ ThemeData getThemeData(BuildContext context, ThemeChainData theme) {
     //   disabledColor: Colors.transparent,
     //   splashColor: theme.secondary,
     // ),
-    brightness: Brightness
-        .light, //theme.secondary0.isLight ? Brightness.dark : Brightness.light,
+    brightness: Brightness.light, //theme.secondary0.isLight ? Brightness.dark : Brightness.light,
     // scaffoldBackgroundColor: theme.secondary12,
     // appBarTheme: Theme.of(context).appBarTheme.copyWith(
     //       // color: theme.secondary,
@@ -184,8 +183,7 @@ void setToolbarColor({
       statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
       systemNavigationBarColor: systemNavigationBarColor,
       systemNavigationBarDividerColor: systemNavigationBarDividerColor,
-      systemNavigationBarIconBrightness:
-          isLight ? Brightness.dark : Brightness.light,
+      systemNavigationBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
       // systemNavigationBarContrastEnforced: false,
     ));
   }

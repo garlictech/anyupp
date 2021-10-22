@@ -111,22 +111,17 @@ class Order {
       orderNum: map['orderNum'],
       userId: map['userId'],
       unitId: map['unitId'],
-      items:
-          List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
+      items: List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
       paymentMode: PaymentMode.fromJson(map['paymentMode']),
       sumPriceShown: PriceShown.fromJson(map['sumPriceShown']),
       place: map['place'] != null ? Place.fromJson(map['place']) : null,
       paymentIntention: map['paymentIntention'],
-      statusLog: List<StatusLog>.from(
-          map['statusLog']?.map((x) => StatusLog.fromJson(x))),
+      statusLog: List<StatusLog>.from(map['statusLog']?.map((x) => StatusLog.fromJson(x))),
       createdAt: map['createdAt'],
       archived: map['archived'],
-      transaction: map['transaction'] != null
-          ? Transaction.fromJson(map['transaction'])
-          : null,
+      transaction: map['transaction'] != null ? Transaction.fromJson(map['transaction']) : null,
       transactionStatus: map['transactionStatus'] != null
-          ? enumFromString<PaymentStatus>(
-              map['transactionStatus'], PaymentStatus.values)
+          ? enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values)
           : null,
       transactionId: map['transactionId'],
       orderMode: enumFromString(map['orderMode'], OrderMode.values),

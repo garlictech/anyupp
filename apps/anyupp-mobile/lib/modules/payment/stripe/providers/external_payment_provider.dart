@@ -11,15 +11,12 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
   ExternalPaymentProvider(this._cartProvider);
 
   @override
-  Future<void> startExternalPayment(Cart cart, PaymentMode paymentMode,
-      UserInvoiceAddress? invoiceAddress) async {
-    print(
-        'startExternalPayment().start().orderMethod=$paymentMode, cart=${cart.id}');
+  Future<void> startExternalPayment(Cart cart, PaymentMode paymentMode, UserInvoiceAddress? invoiceAddress) async {
+    print('startExternalPayment().start().orderMethod=$paymentMode, cart=${cart.id}');
     await _cartProvider.setPaymentMode(cart.unitId, paymentMode);
 
-    PaymentMethod method = PaymentMethod.values.firstWhere(
-        (m) => stringFromEnum(m) == stringFromEnum(paymentMode.method),
-        orElse: () => PaymentMethod.cash);
+    PaymentMethod method = PaymentMethod.values
+        .firstWhere((m) => stringFromEnum(m) == stringFromEnum(paymentMode.method), orElse: () => PaymentMethod.cash);
 
     String orderId = await _cartProvider.createAndSendOrderFromCart();
     print('startExternalPayment().orderId=$orderId');
@@ -35,8 +32,7 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
       )));
 
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(
-            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
 
       print('startExternalPayment().result=$result}');
@@ -48,14 +44,12 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
   }
 
   @override
-  Future<void> startOrderExternalPayment(String orderId,
-      PaymentMode paymentMode, UserInvoiceAddress? invoiceAddress) async {
-    print(
-        'startOrderExternalPayment().orderId=$orderId, orderMethod=$paymentMode, invoice=$invoiceAddress');
+  Future<void> startOrderExternalPayment(
+      String orderId, PaymentMode paymentMode, UserInvoiceAddress? invoiceAddress) async {
+    print('startOrderExternalPayment().orderId=$orderId, orderMethod=$paymentMode, invoice=$invoiceAddress');
     try {
-      PaymentMethod method = PaymentMethod.values.firstWhere(
-          (m) => stringFromEnum(m) == stringFromEnum(paymentMode.method),
-          orElse: () => PaymentMethod.cash);
+      PaymentMethod method = PaymentMethod.values
+          .firstWhere((m) => stringFromEnum(m) == stringFromEnum(paymentMode.method), orElse: () => PaymentMethod.cash);
       print('startOrderExternalPayment().method=$method');
 
       var result = await GQL.backend.execute(StartPaymentMutation(
@@ -68,8 +62,7 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
       )));
       print('startOrderExternalPayment().result=$result}');
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(
-            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
       await Future.delayed(Duration(seconds: 2));
       return;

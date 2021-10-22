@@ -97,8 +97,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> checkForAndroidUpdates() async {
     try {
       AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
-      if (appUpdateInfo.updateAvailability ==
-          UpdateAvailability.updateAvailable) {
+      if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
         await InAppUpdate.performImmediateUpdate();
       }
     } catch (e) {
@@ -114,41 +113,26 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (BuildContext context) => getIt<LocaleBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<ExceptionBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<OrderBloc>()),
-        BlocProvider(
-            create: (BuildContext context) => getIt<OrderRefreshBloc>()),
-        BlocProvider(
-            create: (BuildContext context) => getIt<OrderHistoryBloc>()),
-        BlocProvider(
-            create: (BuildContext context) => getIt<OrderCounterBloc>()),
-        BlocProvider(
-            create: (BuildContext context) => getIt<StripePaymentBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<OrderRefreshBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<OrderHistoryBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<OrderCounterBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<StripePaymentBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<CartBloc>()),
-        BlocProvider(
-            create: (BuildContext context) => getIt<NetworkStatusBloc>()),
+        BlocProvider(create: (BuildContext context) => getIt<NetworkStatusBloc>()),
         BlocProvider<UnitsBloc>(create: (context) => getIt<UnitsBloc>()),
-        BlocProvider<UnitSelectBloc>(
-            create: (context) => getIt<UnitSelectBloc>()),
-        BlocProvider<FavoritesBloc>(
-            create: (context) => getIt<FavoritesBloc>()),
-        BlocProvider<TransactionsBloc>(
-            create: (context) => getIt<TransactionsBloc>()),
-        BlocProvider<LoginBloc>(
-            create: (BuildContext context) => getIt<LoginBloc>()),
-        BlocProvider<ThemeBloc>(
-            create: (BuildContext context) => getIt<ThemeBloc>()),
-        BlocProvider<MainNavigationBloc>(
-            create: (BuildContext context) => getIt<MainNavigationBloc>()),
-        BlocProvider<ConfigsetBloc>(
-            create: (BuildContext context) => getIt<ConfigsetBloc>()),
-        BlocProvider<UserDetailsBloc>(
-            create: (BuildContext context) => getIt<UserDetailsBloc>()),
-        BlocProvider<TakeAwayBloc>(
-            create: (BuildContext context) => getIt<TakeAwayBloc>()),
+        BlocProvider<UnitSelectBloc>(create: (context) => getIt<UnitSelectBloc>()),
+        BlocProvider<FavoritesBloc>(create: (context) => getIt<FavoritesBloc>()),
+        BlocProvider<TransactionsBloc>(create: (context) => getIt<TransactionsBloc>()),
+        BlocProvider<LoginBloc>(create: (BuildContext context) => getIt<LoginBloc>()),
+        BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
+        BlocProvider<MainNavigationBloc>(create: (BuildContext context) => getIt<MainNavigationBloc>()),
+        BlocProvider<ConfigsetBloc>(create: (BuildContext context) => getIt<ConfigsetBloc>()),
+        BlocProvider<UserDetailsBloc>(create: (BuildContext context) => getIt<UserDetailsBloc>()),
+        BlocProvider<TakeAwayBloc>(create: (BuildContext context) => getIt<TakeAwayBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, LocaleState localeState) {
-          var locale =
-              (localeState is LocaleSelected) ? localeState.locale : null;
+          var locale = (localeState is LocaleSelected) ? localeState.locale : null;
 
           return MaterialApp(
             themeMode: ThemeMode.light,
@@ -169,10 +153,7 @@ class _MyAppState extends State<MyApp> {
             },
 
             // The first app page
-            home: isProd
-                ? UpgradeAlert(
-                    showIgnore: false, showLater: false, child: OnBoarding())
-                : OnBoarding(),
+            home: isProd ? UpgradeAlert(showIgnore: false, showLater: false, child: OnBoarding()) : OnBoarding(),
 
             // To hide the debug mark (in debugging and development modes)
             debugShowCheckedModeBanner: false,
@@ -189,8 +170,7 @@ class _MyAppState extends State<MyApp> {
               //const FallbackCupertinoLocalisationsDelegate(),
             ],
             supportedLocales: SupportedLocales.locales,
-            localeListResolutionCallback: (List<Locale>? userPreferredlocales,
-                Iterable<Locale> appSupportedLocales) {
+            localeListResolutionCallback: (List<Locale>? userPreferredlocales, Iterable<Locale> appSupportedLocales) {
               // userPreferredlocales: comes from the phone settings in the same order
               // appSupportedLocales: comes from the supportedLocales parameter what was defined up ahead
 

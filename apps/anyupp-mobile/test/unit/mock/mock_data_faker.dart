@@ -5,8 +5,7 @@ import 'package:fa_prev/graphql/generated/crud-api.dart';
 class MockGenerator {
   static final faker = Faker();
 
-  static List<Transaction> generateTransactions(
-      {required int count, String? userId, String? orderId}) {
+  static List<Transaction> generateTransactions({required int count, String? userId, String? orderId}) {
     var results = <Transaction>[];
     for (int i = 0; i < count; i++) {
       results.add(
@@ -44,8 +43,7 @@ class MockGenerator {
     );
   }
 
-  static Invoice generateInvoice(
-      {String? userId, String? transactionId, String? orderId}) {
+  static Invoice generateInvoice({String? userId, String? transactionId, String? orderId}) {
     return Invoice(
       id: faker.guid.guid(),
       orderId: orderId ?? faker.guid.guid(),
@@ -65,8 +63,7 @@ class MockGenerator {
     );
   }
 
-  static Receipt generateReceipt(
-      {String? userId, String? transactionId, String? orderId}) {
+  static Receipt generateReceipt({String? userId, String? transactionId, String? orderId}) {
     return Receipt(
       id: faker.guid.guid(),
       orderId: orderId ?? faker.guid.guid(),

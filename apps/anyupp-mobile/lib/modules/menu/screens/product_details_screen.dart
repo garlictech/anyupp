@@ -17,8 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProductDetailsScreen extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  ProductDetailsScreen({Key? key, required this.item, required this.unit})
-      : super(key: key);
+  ProductDetailsScreen({Key? key, required this.item, required this.unit}) : super(key: key);
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
@@ -63,8 +62,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   ),
                 ),
               ]),
-          body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-              builder: (context, state) {
+          body: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
             if (state is UnitSelected) {
               return ProductDetailsWidget(
                 item: item,
@@ -83,8 +81,7 @@ class ProductDetailsScreen extends StatelessWidget {
 class ProductDetailsWidget extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  const ProductDetailsWidget({Key? key, required this.unit, required this.item})
-      : super(key: key);
+  const ProductDetailsWidget({Key? key, required this.unit, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +124,7 @@ class ProductDetailsWidget extends StatelessWidget {
                                 ),
                                 child: ImageWidget(
                                   url: item.image,
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.5,
+                                  width: MediaQuery.of(context).size.width / 2.5,
                                   placeholder: Container(
                                     padding: EdgeInsets.all(50.0),
                                     decoration: BoxDecoration(
@@ -137,8 +133,7 @@ class ProductDetailsWidget extends StatelessWidget {
                                       ),
                                       border: Border.all(
                                         width: 1.5,
-                                        color:
-                                            theme.secondary16.withOpacity(0.4),
+                                        color: theme.secondary16.withOpacity(0.4),
                                       ),
                                     ),
                                     // width: widthContainer,
@@ -155,8 +150,7 @@ class ProductDetailsWidget extends StatelessWidget {
                                       ),
                                       border: Border.all(
                                         width: 1.5,
-                                        color:
-                                            theme.secondary16.withOpacity(0.4),
+                                        color: theme.secondary16.withOpacity(0.4),
                                       ),
                                     ),
                                     child: Icon(
@@ -202,10 +196,7 @@ class ProductDetailsWidget extends StatelessWidget {
                                   bottom: 16.0,
                                 ),
                                 child: Text(
-                                  item.description == null
-                                      ? ''
-                                      : getLocalizedText(
-                                          context, item.description!),
+                                  item.description == null ? '' : getLocalizedText(context, item.description!),
                                   textAlign: TextAlign.left,
                                   style: Fonts.satoshi(
                                     color: theme.secondary,
@@ -219,12 +210,9 @@ class ProductDetailsWidget extends StatelessWidget {
                         ),
                       ),
                       StreamBuilder<Cart?>(
-                        stream: getIt<CartRepository>()
-                            .getCurrentCartStream(unit.id),
+                        stream: getIt<CartRepository>().getCurrentCartStream(unit.id),
                         builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                          if (snapshot.connectionState !=
-                                  ConnectionState.waiting ||
-                              snapshot.hasData) {
+                          if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
                             //return _buildVariantsList(snapshot.data, item.variants);
                             return ProductDetailVariantListWidget(
                               cart: snapshot.data,
@@ -241,25 +229,21 @@ class ProductDetailsWidget extends StatelessWidget {
               ),
             ),
           ),
-          (item.configSets == null ||
-                  (item.configSets != null && item.configSets!.isEmpty))
+          (item.configSets == null || (item.configSets != null && item.configSets!.isEmpty))
               ? Container()
               : AddToCartPanelWidget(
-                  onAddToCartPressed: (state, quantity) =>
-                      _addOrderItemToCart(context, state, quantity),
+                  onAddToCartPressed: (state, quantity) => _addOrderItemToCart(context, state, quantity),
                 )
         ],
       ),
     );
   }
 
-  void _addOrderItemToCart(
-      BuildContext context, ConfigsetUpdated state, int quantity) {
+  void _addOrderItemToCart(BuildContext context, ConfigsetUpdated state, int quantity) {
     print('_addOrderItemToCart().quantity=$quantity');
     var orderItem = state.orderItem.copyWith(quantity: quantity);
     print('_addOrderItemToCart().orderItem.quantity=$quantity');
-    BlocProvider.of<CartBloc>(context)
-        .add(AddProductToCartAction(state.unit.id, orderItem));
+    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(state.unit.id, orderItem));
     Nav.pop();
     getIt<MainNavigationBloc>().add(
       DoMainNavigation(
@@ -273,8 +257,7 @@ class ProductDetailsWidget extends StatelessWidget {
       var variant = item.variants[0];
       double size = variant.pack?.size ?? 0;
       bool isInteger = size == size.toInt().toDouble();
-      String sizeText =
-          isInteger ? size.toInt().toString() : size.toStringAsFixed(1);
+      String sizeText = isInteger ? size.toInt().toString() : size.toStringAsFixed(1);
       return '${getLocalizedText(context, item.name)} - ${getLocalizedText(context, variant.variantName)} - ${sizeText} ${variant.pack?.unit ?? ""}';
     }
     return getLocalizedText(context, item.name);
