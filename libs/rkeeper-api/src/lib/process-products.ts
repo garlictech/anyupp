@@ -1,10 +1,6 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as Joi from 'joi';
-import * as E from 'fp-ts/lib/Either';
-import * as R from 'ramda';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { from, Observable, of, throwError } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
 import { validateSchema } from '@bgap/shared/data-validators';
 
 export interface ProductUpdateCommands {
@@ -41,7 +37,7 @@ export const normalizeDish = (dish: Dish) => ({
   name: decodeURIComponent(dish.name),
 });
 
-const searchExternalProduct =
+/*const searchExternalProduct =
   (sdk: CrudApi.CrudSdk) => (guid: string, id: string) =>
     sdk.SearchChainProducts({
       filter: {
@@ -52,7 +48,7 @@ const searchExternalProduct =
     });
 
 //const itemUpdater = (sdk: CrudApi.CrudSdk) => (item: CrudApi.ChainProduct, externalData: any) =>
-/*
+
 const handleUpdateChainProduct = (sdk: CrudApi.CrudSdk) => (dishData: any) => pipe( 
   !R.isEmpty(dishData?.guid) && !R.isEmpty(dishData?.id) ? of(dishData) 
   : throwError("Bad data, no id and/or guid"),
@@ -60,6 +56,7 @@ const handleUpdateChainProduct = (sdk: CrudApi.CrudSdk) => (dishData: any) => pi
   map(res => res?.items?.[0])
 )
 */
-
+// any as this is the raw data from the net that we validate.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const processProducts = (productJson: any) =>
   pipe([productJson?.data?.dishes?.[0]]);

@@ -2,8 +2,8 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
-import { iif, Observable, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { createItems, deleteItems } from '../../database';
 
 const TABLE_NAME = tableConfig.GeneratedProduct.TableName;

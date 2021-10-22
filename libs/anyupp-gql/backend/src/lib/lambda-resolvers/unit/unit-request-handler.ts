@@ -1,10 +1,9 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { locationSchema, validateSchema } from '@bgap/shared/data-validators';
 import * as Joi from 'joi';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { getUnitsInRadius } from './get-units-in-radius.resolver';
 import { regenerateUnitData } from './regenerate-unit-data.resolver';
-import { UnitsResolverDeps } from './utils';
 
 const getUnitsInRadiusInputSchema: Joi.SchemaMap<CrudApi.GetUnitsNearLocationInput> =
   {

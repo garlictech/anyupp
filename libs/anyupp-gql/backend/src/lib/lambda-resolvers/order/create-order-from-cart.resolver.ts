@@ -274,7 +274,7 @@ export const createOrderFromCart =
           userId: deps.userId,
           unitId: props.cart.unitId,
           orderNum: props.orderNum,
-          paymentMode: props.cart.paymentMode!,
+          paymentMode: props.cart.paymentMode as CrudApi.PaymentMode,
           items: props.items,
           place: props.cart.place,
           orderMode: CrudApi.OrderMode.instant, // Currenty this is a FIXED value

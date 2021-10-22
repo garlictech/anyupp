@@ -1,9 +1,5 @@
 import { unitFixture } from '@bgap/shared/fixtures';
-import {
-  createUnitResolver,
-  hashPasswords,
-  updateUnitResolver,
-} from './unit-crud-resolvers';
+import { createUnitResolver, hashPasswords } from './unit-crud-resolvers';
 import { UnitsResolverDeps } from './utils';
 
 test('hashPasswords', () => {

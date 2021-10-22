@@ -1,15 +1,3 @@
-import {
-  adminRequestHandler,
-  createStripeClient,
-  createSzamlazzClient,
-  orderRequestHandler,
-  stripeRequestHandler,
-  unitRequestHandler,
-  userRequestHandler,
-  createUnitResolver,
-  updateUnitResolver,
-  createUnitsDeps,
-} from '@bgap/anyupp-gql/backend';
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
 import { Context, Handler } from 'aws-lambda';
@@ -18,6 +6,20 @@ import { v1 as uuidV1 } from 'uuid';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { DynamoDB } from 'aws-sdk';
 import { Observable } from 'rxjs';
+import {
+  createUnitResolver,
+  createUnitsDeps,
+  unitRequestHandler,
+  updateUnitResolver,
+} from './lambda-resolvers/unit';
+import { createSzamlazzClient } from './szamlazzhu';
+import {
+  createStripeClient,
+  stripeRequestHandler,
+} from './lambda-resolvers/stripe';
+import { adminRequestHandler } from './lambda-resolvers/admin-user';
+import { orderRequestHandler } from './lambda-resolvers/order/order-request-handler';
+import { userRequestHandler } from './lambda-resolvers/user';
 
 export interface AnyuppRequest {
   typeName: string;

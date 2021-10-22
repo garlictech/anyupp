@@ -10,13 +10,7 @@ import {
 } from '@bgap/shared/utils';
 import * as geolib from 'geolib';
 import { combineLatest, EMPTY, Observable, of } from 'rxjs';
-import {
-  catchError,
-  defaultIfEmpty,
-  map,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+import { catchError, defaultIfEmpty, map, switchMap } from 'rxjs/operators';
 import { filterOutNotOpenUnits, getUnitOpeningHoursAtTime } from '../../utils';
 
 type ListResponse<T> = {

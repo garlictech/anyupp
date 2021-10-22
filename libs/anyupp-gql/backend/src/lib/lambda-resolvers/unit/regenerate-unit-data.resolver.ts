@@ -1,12 +1,11 @@
 import { pipeDebug } from '@bgap/shared/utils';
-import { combineLatest, from, merge } from 'rxjs';
+import { combineLatest, merge } from 'rxjs';
 import {
   delayWhen,
   map,
   mapTo,
   shareReplay,
   switchMap,
-  concatMap,
   takeLast,
   tap,
 } from 'rxjs/operators';

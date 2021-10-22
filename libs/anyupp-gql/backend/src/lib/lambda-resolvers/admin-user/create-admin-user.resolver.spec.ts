@@ -1,7 +1,6 @@
 import { createAdminUser } from './create-admin-user.resolver';
-import { defer, from, of } from 'rxjs';
+import { defer, from } from 'rxjs';
 import { AdminUserResolverDeps } from './utils';
-import { catchError } from 'rxjs/operators';
 
 // We use any-s to mock the system partially
 
@@ -29,6 +28,8 @@ const goodDeps: AdminUserResolverDeps = {
     put: jest.fn().mockReturnValue({
       promise: () => Promise.resolve({ Attributes: 'PUT RETURNED' }),
     }),
+    // this is a mock only, we don't care about other properties
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any,
 };
 

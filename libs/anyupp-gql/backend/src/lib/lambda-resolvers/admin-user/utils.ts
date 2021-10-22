@@ -1,7 +1,7 @@
 import { CognitoIdentityServiceProvider, DynamoDB } from 'aws-sdk';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { from } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 export interface AdminUserResolverDeps {
   userPoolId: string;

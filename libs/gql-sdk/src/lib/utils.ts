@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { EMPTY, Observable, Observer } from 'rxjs';
-import { expand, map, reduce, takeLast, tap } from 'rxjs/operators';
+import { expand, map, reduce, takeLast } from 'rxjs/operators';
 import { flow } from 'fp-ts/lib/function';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

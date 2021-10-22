@@ -1,15 +1,8 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as fp from 'lodash/fp';
-import { from, throwError } from 'rxjs';
-import {
-  catchError,
-  filter,
-  map,
-  switchMap,
-  tap,
-  throwIfEmpty,
-} from 'rxjs/operators';
+import { from } from 'rxjs';
+import { filter, map, switchMap, throwIfEmpty } from 'rxjs/operators';
 import { AdminUserResolverDeps, deleteAdminUserFromTable } from './utils';
 
 export const deleteAdminUser =
