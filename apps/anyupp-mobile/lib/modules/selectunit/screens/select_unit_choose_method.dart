@@ -26,6 +26,7 @@ class _SelectUnitChooseMethodScreenState
     super.initState();
     print('_SelectUnitChooseMethodScreenState.initState()');
     getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+    setToolbarThemeV1(theme);
   }
 
   @override

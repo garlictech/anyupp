@@ -32,20 +32,24 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       }
 
       if (action is AddProductToCartAction) {
-        yield CartLoadingState();
+        yield CartLoadingState(
+            message: 'add', productId: action.order.productId);
         TakeAwayState takeAwayState = _takeAwayBloc.state;
 
         assert(takeAwayState is ServingModeSelectedState == true);
 
         if (takeAwayState is ServingModeSelectedState) {
-          Cart? cart = await _cartRepository.addProductToCart(action.unitId, action.order, takeAwayState.servingMode);
+          Cart? cart = await _cartRepository.addProductToCart(
+              action.unitId, action.order, takeAwayState.servingMode);
           yield CurrentCartState(cart);
         }
       }
 
       if (action is RemoveProductFromCartAction) {
-        yield CartLoadingState();
-        Cart? cart = await _cartRepository.removeProductFromCart(action.unitId, action.order);
+        yield CartLoadingState(
+            message: 'remove', productId: action.order.productId);
+        Cart? cart = await _cartRepository.removeProductFromCart(
+            action.unitId, action.order);
         yield CurrentCartState(cart);
       }
 
@@ -64,7 +68,8 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
 
       if (action is UpdatePlaceInCartAction) {
         yield CartLoadingState();
-        Cart? cart = await _cartRepository.updatePlaceInCart(action.unit, action.place);
+        Cart? cart =
+            await _cartRepository.updatePlaceInCart(action.unit, action.place);
         yield CurrentCartState(cart);
       }
 
@@ -81,10 +86,12 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       getIt<ExceptionBloc>().add(ShowException(e));
     } on PlatformException catch (e) {
       print('CartBloc.ExceptionBloc.PlatformException=$e');
-      getIt<ExceptionBloc>().add(ShowException(CartException.fromPlatformException(e)));
+      getIt<ExceptionBloc>()
+          .add(ShowException(CartException.fromPlatformException(e)));
     } on Exception catch (e) {
       print('CartBloc.ExceptionBloc.Exception=$e');
-      getIt<ExceptionBloc>().add(ShowException(CartException.fromException(CartException.UNKNOWN_ERROR, e)));
+      getIt<ExceptionBloc>().add(ShowException(
+          CartException.fromException(CartException.UNKNOWN_ERROR, e)));
     }
   }
 }

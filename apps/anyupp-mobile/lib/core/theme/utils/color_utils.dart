@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
@@ -40,28 +42,39 @@ final Map<int, Color> _color = {
   900: Color.fromRGBO(136, 14, 79, 1),
 };
 
-ThemeData getThemeData(ThemeChainData theme) {
+ThemeData getThemeData(BuildContext context, ThemeChainData theme) {
+  print('***** getThemeData.light=${theme.secondary0.isLight}');
   return ThemeData(
+    fontFamily: 'Satoshi',
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    indicatorColor: MaterialColor(theme.primary.value, _color),
+    // indicatorColor: MaterialColor(theme.primary.value, _color),
     primarySwatch: MaterialColor(theme.primary.value, _color),
-    primaryColor: Colors.black,
-    hoverColor: Color(0xFFFFDB87),
-    highlightColor: Colors.white,
-    primaryColorLight: Color(0xFFFFDB87),
-    backgroundColor: Color(0xFFFFDB87),
-    bottomAppBarColor: Color(0xFF176E49),
+    primaryColor: theme.primary,
+    // hoverColor: Color(0xFFFFDB87),
+    // highlightColor: Colors.white,
+    // primaryColorLight: Color(0xFFFFDB87),
+    // backgroundColor: Color(0xFFFFDB87),
+    // bottomAppBarColor: Color(0xFF176E49),
     // buttonTheme: ButtonThemeData(
     //   buttonColor: theme.primary,
     //   disabledColor: Colors.transparent,
     //   splashColor: theme.secondary,
     // ),
-    appBarTheme: AppBarTheme(
-      color: theme.secondary0,
-      systemOverlayStyle: theme.primary.isLight
-          ? SystemUiOverlayStyle.light
-          : SystemUiOverlayStyle.dark,
-    ),
+    brightness: Brightness
+        .light, //theme.secondary0.isLight ? Brightness.dark : Brightness.light,
+    // scaffoldBackgroundColor: theme.secondary12,
+    // appBarTheme: Theme.of(context).appBarTheme.copyWith(
+    //       // color: theme.secondary,
+    //       systemOverlayStyle: SystemUiOverlayStyle(
+    //         statusBarBrightness: Brightness.dark,
+    //         statusBarIconBrightness: Brightness.dark,
+    //         statusBarColor: theme.secondary,
+    //       ),
+    //     ),
+    // appBarTheme: AppBarTheme(
+    //   color: theme.secondary0,
+    //   systemOverlayStyle: theme.secondary0.isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+    // ),
   );
 }
 
@@ -133,13 +146,47 @@ Color _col(Color color, int percent) {
   }
 }
 
+void setToolbarThemeV1(ThemeChainData theme) {
+  print('setToolbarThemeV1()');
+  setToolbarColor(
+    statusBarColor: theme.secondary0,
+    systemNavigationBarColor: theme.secondary0,
+    systemNavigationBarDividerColor: theme.secondary12,
+  );
+}
+
+void setToolbarThemeV2(ThemeChainData theme) {
+  print('setToolbarThemeV2()');
+  setToolbarColor(
+    statusBarColor: theme.secondary12,
+    systemNavigationBarColor: theme.secondary12,
+    systemNavigationBarDividerColor: theme.secondary12,
+  );
+}
+
 void setToolbarTheme(ThemeChainData theme) {
-  print(
-      'setToolbarTheme.color=${theme.secondary0}, isDark=${theme.secondary0.isDark}');
-  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-  //   statusBarColor: theme.secondary,
-  //   statusBarBrightness: Brightness.light,
-  //   systemNavigationBarColor: theme.secondary,
-  //   statusBarIconBrightness: Brightness.light, // theme.secondary0.isDark ? Brightness.dark : Brightness.light,
-  // ));
+  setToolbarColor(
+    statusBarColor: theme.secondary0,
+    systemNavigationBarColor: theme.secondary0,
+    systemNavigationBarDividerColor: theme.secondary12,
+  );
+}
+
+void setToolbarColor({
+  required Color statusBarColor,
+  required Color systemNavigationBarColor,
+  required Color systemNavigationBarDividerColor,
+}) {
+  if (Platform.isAndroid) {
+    bool isLight = statusBarColor.isLight;
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: statusBarColor,
+      statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
+      systemNavigationBarColor: systemNavigationBarColor,
+      systemNavigationBarDividerColor: systemNavigationBarDividerColor,
+      systemNavigationBarIconBrightness:
+          isLight ? Brightness.dark : Brightness.light,
+      // systemNavigationBarContrastEnforced: false,
+    ));
+  }
 }

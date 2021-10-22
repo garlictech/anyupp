@@ -5,11 +5,13 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/orders/orders.dart';
 
 // const REPEAT_TIMEOUT_MS = 120000;
 
 class AwsOrderSubscription {
-  StreamSubscription<GraphQLResponse<OnOrderChanged$Subscription>>? _listSubscription;
+  StreamSubscription<GraphQLResponse<OnOrderChanged$Subscription>>?
+      _listSubscription;
   List<Order>? _items;
   String? _nextToken;
   int _totalCount = 0;
@@ -44,7 +46,8 @@ class AwsOrderSubscription {
     // print('**** startOrderSubscription.end()');
   }
 
-  Future<void> _startListSubscription({required StreamController<List<Order>?> controller}) async {
+  Future<void> _startListSubscription(
+      {required StreamController<List<Order>?> controller}) async {
     try {
       // ArtemisClient client = await GQL.crud;
       var client = await GQL.amplify.client;
@@ -64,6 +67,7 @@ class AwsOrderSubscription {
         // print('**** startOrderSubscription.onData.hasException=${result.hasException}');
         if (!result.hasErrors) {
           Order item = Order.fromJson(result.data!.onOrderChanged!.toJson());
+          getIt<OrderRefreshBloc>().add(RefreshOrder(item));
           // print('**** startOrderSubscription.onData.archived=${item.toJson()["archived"]}');
           // print('**** startOrderSubscription.onData.item=${item.toJson()}');
           // print('**** startOrderSubscription.onData.item=$item');

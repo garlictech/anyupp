@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -69,7 +70,7 @@ class CurrentOrderCardWidgetOld extends StatelessWidget {
   Widget _buildPayButtonIfNeeded(BuildContext context, Order order) {
     StatusLog status = order.statusLog[order.statusLog.length - 1];
     // print('_buildPayButtonIfNeeded().status=$status, payment=${order.paymentMode}');
-    bool needButton = (status.status == 'none' && order.paymentMode.method == PaymentMethod.inapp);
+    bool needButton = (status.status == OrderStatus.none && order.paymentMode.method == PaymentMethod.inapp);
 
     if (!needButton) {
       return Container();

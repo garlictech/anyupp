@@ -188,12 +188,11 @@
     "loadMore": "Load more...",
     "infos": {
       "titles": {
-        "0": "Order mode",
-        "1": "Payment mode",
-        "2": "Place",
-        "3": "Order Num",
-        "4": "Order Time",
-        "5": "Order Date"
+        "0": "Place",
+        "1": "Order mode",
+        "2": "Order num",
+        "3": "Order date",
+        "4": "Order time"
       },
       "values": {
         "takeAway": "Takeaway",
@@ -278,7 +277,8 @@
     "method": {
       "cash": "Cash at my table to my server",
       "creditCard": "Credit card at my table to my server + SZÉP card",
-      "inAppPayment": "Online Card payment via Stripe (preferred)"
+      "inAppPayment": "Online Card payment via Stripe (preferred)",
+      "noPaymentMethod": "No cards saved yet."
     },
     "sendOrder": "PLACE ORDER",
     "fillInvoice": "FILL INVOICE FORM",

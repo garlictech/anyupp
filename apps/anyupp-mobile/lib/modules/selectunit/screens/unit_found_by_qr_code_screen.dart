@@ -25,7 +25,8 @@ class UnitFoundByQRCodeScreen extends StatefulWidget {
   });
 
   @override
-  _UnitFoundByQRCodeScreenState createState() => _UnitFoundByQRCodeScreenState();
+  _UnitFoundByQRCodeScreenState createState() =>
+      _UnitFoundByQRCodeScreenState();
 }
 
 class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
@@ -34,8 +35,10 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
   @override
   void initState() {
     super.initState();
+    setToolbarThemeV1(theme);
 
-    print('*** _UnitFoundByQRCodeScreenState.initState()');
+    print(
+        '*** _UnitFoundByQRCodeScreenState.initState().navigateToCart=${widget.navigateToCart}');
     getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
   }
 
@@ -48,38 +51,45 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
           listener: (BuildContext context, UnitsState state) async {
             if (state is UnitsLoaded) {
               print('***************** UNITS LOADED=${state.units}');
-              int index = state.units.indexWhere((GeoUnit unit) => unit.id == widget.unitId);
+              int index = state.units
+                  .indexWhere((GeoUnit unit) => unit.id == widget.unitId);
               GeoUnit? unit = index >= 0 ? state.units[index] : null;
               if (unit != null) {
                 // unit = unit.copyWith(place: widget.place);
                 // print('***************** UNITS FOUND=$unit');
                 await setPlacePref(widget.place);
                 _flipCardState.currentState?.toggleCard();
-                showNotification(context, trans('selectUnit.tableReserved.title'),
-                    trans('selectUnit.tableReserved.description', [widget.place.table, widget.place.seat]), null);
+                showNotification(
+                    context,
+                    trans('selectUnit.tableReserved.title'),
+                    trans('selectUnit.tableReserved.description',
+                        [widget.place.table, widget.place.seat]),
+                    null);
                 getIt<UnitSelectBloc>().add(SelectUnit(unit));
-                getIt<CartBloc>().add(UpdatePlaceInCartAction(unit, widget.place));
+                getIt<CartBloc>()
+                    .add(UpdatePlaceInCartAction(unit, widget.place));
                 await Future.delayed(Duration(
                   milliseconds: 1000,
                 ));
-                Nav.pop();
-                // Nav.reset(MainNavigation(
-                //   pageIndex: widget.navigateToCart ? 4 : 0,
-                // ));
+                // Nav.pop();
+                Nav.reset(MainNavigation(
+                  pageIndex: widget.navigateToCart ? 4 : 0,
+                ));
               } else {
-                showErrorDialog(
-                    context, trans('selectUnit.qrCodeError.title'), trans('selectUnit.qrCodeError.description'),
+                showErrorDialog(context, trans('selectUnit.qrCodeError.title'),
+                    trans('selectUnit.qrCodeError.description'),
                     onClose: () => Nav.reset(SelectUnitChooseMethodScreen()));
               }
             }
             if (state is UnitsNotLoaded) {
               //showErrorDialog(context, trans('selectUnit.qrUnitsError.title'), trans('selectUnit.qrUnitsError.description'), () =>
-              showErrorDialog(context, state.reasonCode, state.reasonMessage ?? '',
+              showErrorDialog(
+                  context, state.reasonCode, state.reasonMessage ?? '',
                   onClose: () => Nav.reset(SelectUnitChooseMethodScreen()));
             }
             if (state is UnitsNoNearUnit) {
-              showErrorDialog(
-                  context, trans('selectUnit.qrGeneralError.title'), trans('selectUnit.qrGeneralError.description'),
+              showErrorDialog(context, trans('selectUnit.qrGeneralError.title'),
+                  trans('selectUnit.qrGeneralError.description'),
                   onClose: () => Nav.reset(SelectUnitChooseMethodScreen()));
             }
           },
@@ -182,7 +192,8 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
           Padding(
             padding: const EdgeInsets.only(bottom: 30.0),
             child: Text(
-              trans('selectUnit.chair', [widget.place.seat, widget.place.table]),
+              trans(
+                  'selectUnit.chair', [widget.place.seat, widget.place.table]),
               textAlign: TextAlign.center,
               style: Fonts.satoshi(
                 fontSize: 18.0,

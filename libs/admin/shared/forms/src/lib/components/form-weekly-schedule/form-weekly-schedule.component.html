@@ -107,6 +107,18 @@
             id="customDayTo"
           />
         </td>
+
+        <td class="col-2 col-md-2 ps-3">
+          <button
+            nbButton
+            status="danger"
+            size="tiny"
+            shape="round"
+            (click)="removeCustomDate(i)"
+          >
+            <nb-icon icon="trash-2-outline"></nb-icon>
+          </button>
+        </td>
       </tr>
     </table>
   </div>

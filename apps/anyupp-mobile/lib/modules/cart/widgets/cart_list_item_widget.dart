@@ -56,7 +56,8 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        getLocalizedText(context, widget.order.productName), // .toUpperCase(),
+                        getLocalizedText(context,
+                            widget.order.productName), // .toUpperCase(),
                         textAlign: TextAlign.left,
                         style: Fonts.satoshi(
                           color: theme.secondary,
@@ -98,7 +99,8 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: formatCurrency(widget.order.getPrice(), widget.unit.currency),
+                                  text: formatCurrency(widget.order.getPrice(),
+                                      widget.unit.currency),
                                   style: Fonts.satoshi(
                                     color: theme.primary,
                                     fontSize: 16,
@@ -109,28 +111,59 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                             ),
                           ),
                           Spacer(),
-                          BorderedWidget(
-                            width: 40,
-                            height: 40,
-                            borderColor: theme.secondary16,
-                            child: Icon(
-                              Icons.remove,
-                              color: theme.secondary,
-                            ),
-                            onPressed: () => _removeOrder(),
-                          ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          BorderedWidget(
-                            width: 40,
-                            height: 40,
-                            borderColor: theme.secondary16,
-                            child: Icon(
-                              Icons.add,
-                              color: theme.secondary,
-                            ),
-                            onPressed: () => _addOrder(),
+                          BlocBuilder<CartBloc, BaseCartState>(
+                            builder: (context, state) {
+                              bool showAddLoading = state is CartLoadingState &&
+                                  state.message == 'add' &&
+                                  state.productId == widget.order.productId;
+                              bool showRemoveLoading =
+                                  state is CartLoadingState &&
+                                      state.message == 'remove' &&
+                                      state.productId == widget.order.productId;
+                              bool diasbleTap =
+                                  showAddLoading || showRemoveLoading;
+
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  BorderedWidget(
+                                    width: 40,
+                                    height: 40,
+                                    borderColor: theme.secondary16,
+                                    child: showRemoveLoading
+                                        ? CenterLoadingWidget(
+                                            size: 16,
+                                            strokeWidth: 1.0,
+                                          )
+                                        : Icon(
+                                            Icons.remove,
+                                            color: theme.secondary,
+                                          ),
+                                    onPressed: () =>
+                                        diasbleTap ? null : _removeOrder(),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  BorderedWidget(
+                                    width: 40,
+                                    height: 40,
+                                    borderColor: theme.secondary16,
+                                    child: showAddLoading
+                                        ? CenterLoadingWidget(
+                                            size: 16,
+                                            strokeWidth: 1.0,
+                                          )
+                                        : Icon(
+                                            Icons.add,
+                                            color: theme.secondary,
+                                          ),
+                                    onPressed: () =>
+                                        diasbleTap ? null : _addOrder(),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -149,7 +182,8 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
     List<Widget> children = [];
     if (widget.order.selectedConfigMap != null) {
       widget.order.selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+        for (GeneratedProductConfigComponent generatedProductConfigComponent
+            in value) {
           children.add(Text(
             '+${getLocalizedText(context, generatedProductConfigComponent.name)}',
             textAlign: TextAlign.left,
@@ -169,10 +203,15 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
   }
 
   void _addOrder() {
-    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(widget.unit.id, widget.order));
+    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
+        widget.unit.id,
+        widget.order.copyWith(
+          quantity: 1,
+        )));
   }
 
   void _removeOrder() {
-    BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(widget.unit.id, widget.order));
+    BlocProvider.of<CartBloc>(context)
+        .add(RemoveProductFromCartAction(widget.unit.id, widget.order));
   }
 }

@@ -19,7 +19,7 @@ When('I click on the {string} text', (text: string) => {
 When(
   'I click the edit button in the listitem with {string} content',
   (name: string) => {
-    getListItemThatContains(name).findByTitle('Edit').click();
+    getListItemThatContains(name).scrollIntoView().findByTitle('Edit').click();
   },
 );
 

@@ -10,30 +10,32 @@ Feature: Allergens info link
     Then there is a loading screen
     And there is the unit selection screen
     When I tap the "Késdobáló #111" unit in the list
-    Then there is the dashboard screen
-    And the "Menu" option is selected on the bottom navigator
+    And I tap the "In place" button
+    Then there is the "Menu" screen
     When I tap the "WATER" card under "Test product category #1 name" category
     Then there is the product details screen
+    And I should see "1 x 100 Ft" text
     And I should NOT see any allergens info link
-    When I tap the "Add To Cart (100Ft)" button
-    Then The shop cart icon banner should show "1"
-    When I tap the cart icon
+    When I tap the "Add To Cart" button
+    Then there is the "Menu" screen
+    When I tap the "MY CART (100 Ft)" button
     Then there is the "Cart" screen
     And I should see the added "WATER"
     And I should NOT see any allergens info link
     When I tap the minus button
     Then I should see "Your cart is empty Add some products to your cart." text
-    When I tap the "Menu" icon
-    When I tap the "FANTA #2" card under "Test product category #1 name" category
+    When I tap the "close" button
+    And I tap the "FANTA #2" card under "Test product category #1 name" category
     Then there is the product details screen
     And I should see "Allergens" info link
     When I tap on the "Allergens" text
     Then I should see allergen icons from 1-14
     And as I scroll down I should see the description
     When I tap the back arrow
-    And I tap the "Add To Cart (298Ft)" button
-    Then The shop cart icon banner should show "1"
-    When I tap the cart icon
+    Then I should see "1 x 298 Ft" text
+    When I tap the "Add To Cart" button
+    Then there is the "Menu" screen
+    When I tap the "PAY (100 Ft)" button
     Then there is the "Cart" screen
     And I should see the added "FANTA #2"
     And I should see "Allergens" info link

@@ -26,7 +26,8 @@ class AwsCartProvider implements ICartProvider {
     print('AwsOrderProvider.createAndSendOrderFromCart()=${_cart?.id}');
     try {
       if (_cart == null || _cart?.id == null) {
-        throw CartException(code: CartException.UNKNOWN_ERROR, message: 'Cart is null.');
+        throw CartException(
+            code: CartException.UNKNOWN_ERROR, message: 'Cart is null.');
       }
 
       var result = await GQL.backend.execute(CreateOrderFromCartMutation(
@@ -37,7 +38,8 @@ class AwsCartProvider implements ICartProvider {
       // print('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
 
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
 
       String? id;
@@ -47,7 +49,9 @@ class AwsCartProvider implements ICartProvider {
       }
       await clearCart();
       if (id == null) {
-        throw CartException(code: CartException.UNKNOWN_ERROR, message: 'Generated order is null!');
+        throw CartException(
+            code: CartException.UNKNOWN_ERROR,
+            message: 'Generated order is null!');
       }
       return id;
     } on Exception catch (e) {
@@ -133,8 +137,10 @@ class AwsCartProvider implements ICartProvider {
           ),
           fetchPolicy: FetchPolicy.networkOnly);
       if (result.hasErrors) {
-        print('AwsOrderProvider._getCartFromBackEnd().error()=${result.errors}');
-        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+        print(
+            'AwsOrderProvider._getCartFromBackEnd().error()=${result.errors}');
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
 
       // print('AwsOrderProvider._getCartFromBackEnd().result()=$result');
@@ -186,11 +192,12 @@ class AwsCartProvider implements ICartProvider {
   }
 
   Future<bool> _updateCartOnBackend(Cart cart) async {
-    print('******** UPDATING CART IN BACKEND');
+    print('******** UPDATING CART IN BACKEND=${cart.paymentMode}');
     try {
       var result = await GQL.amplify.execute(UpdateCartMutation(
           variables: UpdateCartArguments(
-        updateCartInput: UpdateCartInput.fromJson(_getCartMutationVariablesFromCart(cart)),
+        updateCartInput:
+            UpdateCartInput.fromJson(_getCartMutationVariablesFromCart(cart)),
       )));
 
       // print('******** UPDATING CART IN BACKEND.result.data=${result.data}');
@@ -266,7 +273,9 @@ class AwsCartProvider implements ICartProvider {
             'hu': item.variantName.hu,
           },
           'configSets': item.selectedConfigMap != null
-              ? item.selectedConfigMap?.keys.toList().map((GeneratedProductConfigSet generatedProductConfigSet) {
+              ? item.selectedConfigMap?.keys
+                  .toList()
+                  .map((GeneratedProductConfigSet generatedProductConfigSet) {
                   return {
                     "name": {
                       'en': generatedProductConfigSet.name.en,
@@ -277,13 +286,17 @@ class AwsCartProvider implements ICartProvider {
                     "type": generatedProductConfigSet.type,
                     "items": item.selectedConfigMap != null
                         ? item.selectedConfigMap![generatedProductConfigSet]
-                            ?.map((GeneratedProductConfigComponent generatedProductConfigComponent) {
+                            ?.map((GeneratedProductConfigComponent
+                                generatedProductConfigComponent) {
                             return {
-                              "allergens": generatedProductConfigComponent.allergens
+                              "allergens": generatedProductConfigComponent
+                                  .allergens
                                   ?.map((e) => e.toString().split(".").last)
                                   .toList(),
                               "price": generatedProductConfigComponent.price,
-                              "productComponentId": generatedProductConfigComponent.productComponentId,
+                              "productComponentId":
+                                  generatedProductConfigComponent
+                                      .productComponentId,
                               "name": {
                                 'en': generatedProductConfigComponent.name.en,
                                 'de': generatedProductConfigComponent.name.de,

@@ -3,6 +3,7 @@ import { v1 as uuidV1 } from 'uuid';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
+  dailyScheduleBothEmptyOrProperlyFilledValidator,
   makeId,
   multiLangValidator,
   productAvailabilityValidator,
@@ -55,14 +56,16 @@ export class FormsService {
     );
 
   public createCustomDailyScheduleFormGroup = (): FormGroup =>
-    this._formBuilder.group({
-      date: ['', [Validators.required]],
-      from: [
-        '',
-        [Validators.required, Validators.pattern(TIME_FORMAT_PATTERN)],
-      ],
-      to: ['', [Validators.required, Validators.pattern(TIME_FORMAT_PATTERN)]],
-    });
+    this._formBuilder.group(
+      {
+        date: ['', [Validators.required]],
+        from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
+        to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
+      },
+      {
+        validators: [dailyScheduleBothEmptyOrProperlyFilledValidator],
+      },
+    );
 
   public createLaneFormGroup = (): FormGroup =>
     this._formBuilder.group({

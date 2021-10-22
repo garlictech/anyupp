@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/Place.dart';
 import 'package:fa_prev/modules/screens.dart';
@@ -36,7 +37,8 @@ class QRCodeScannerScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _QRCodeScannerScreenState();
 }
 
-class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerProviderStateMixin {
+class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
+    with TickerProviderStateMixin {
   Barcode? result;
   late QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -53,6 +55,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     //setFlashState();
     _switchAnimationState(AnimationState.search);
     super.initState();
+    setToolbarThemeV1(theme);
   }
 
   Future<void> setFlashState() async {
@@ -112,7 +115,9 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
         rectangle: Rectangle(
           width: widget.validRectangle.width,
           height: widget.validRectangle.height,
-          color: newState == AnimationState.endSearch ? Colors.transparent : Colors.white,
+          color: newState == AnimationState.endSearch
+              ? Colors.transparent
+              : Colors.white,
         ),
         animation: Tween<double>(
           begin: begin,
@@ -164,10 +169,13 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
               constraints: const BoxConstraints.expand(),
               child: CustomPaint(
                 painter: WindowPainter(
-                  windowSize: Size(widget.validRectangle.width, widget.validRectangle.height),
+                  windowSize: Size(widget.validRectangle.width,
+                      widget.validRectangle.height),
                   outerFrameColor: widget.frameColor,
                   closeWindow: _closeWindow,
-                  innerFrameColor: _currentState == AnimationState.endSearch ? Colors.transparent : kShrineFrameBrown,
+                  innerFrameColor: _currentState == AnimationState.endSearch
+                      ? Colors.transparent
+                      : kShrineFrameBrown,
                 ),
               ),
             ),
@@ -260,6 +268,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     });
     controller.scannedDataStream.listen((scanData) {
       final Uri uri = Uri.parse(scanData.code);
+      print('********* BARCODE FOUND.uri=$uri');
       // print('********* BARCODE FOUND.uri.scheme=${uri.scheme}');
       // print('********* BARCODE FOUND.uri.path=${uri.path}');
       // print('********* BARCODE FOUND.uri.query=${uri.query}');

@@ -1,5 +1,6 @@
 import { isNumber, omit } from 'lodash/fp';
 import { DateTime } from 'luxon';
+
 import {
   AbstractControl,
   FormBuilder,
@@ -7,11 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  EVariantAvailabilityType,
-  ICustomDailySchedule,
-  IDateIntervals,
-} from '@bgap/shared/types';
+import { EVariantAvailabilityType, IDateIntervals } from '@bgap/shared/types';
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 
@@ -130,28 +127,17 @@ export const productAvailabilityValidator: ValidatorFn = (
   return null;
 };
 
-export const unitOpeningHoursValidator: ValidatorFn = (
+export const dailyScheduleBothEmptyOrProperlyFilledValidator: ValidatorFn = (
   control: AbstractControl,
 ) => {
-  let error = null;
+  const from = control.get('from')?.value;
+  const to = control.get('to')?.value;
 
-  Object.keys(control.value).forEach((d: string): void => {
-    if (d === 'custom') {
-      control.value[d].forEach((day: ICustomDailySchedule): void => {
-        if (day.date && day.from && day.to && day.from >= day.to) {
-          error = { timeInterval: true };
-        }
-      });
-    } else {
-      const day = control.value[d];
-
-      if (day.from && day.to && day.from >= day.to) {
-        error = { timeInterval: true };
-      }
-    }
-  });
-
-  return error;
+  return (!!from && !!to) || (!from && !to)
+    ? control.get('from')?.valid && control.get('to')?.valid
+      ? null
+      : { timeFormat: true }
+    : { missingIntervall: true };
 };
 
 export const getDayIntervals = (

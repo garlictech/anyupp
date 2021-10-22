@@ -97,7 +97,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> checkForAndroidUpdates() async {
     try {
       AppUpdateInfo appUpdateInfo = await InAppUpdate.checkForUpdate();
-      if (appUpdateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+      if (appUpdateInfo.updateAvailability ==
+          UpdateAvailability.updateAvailable) {
         await InAppUpdate.performImmediateUpdate();
       }
     } catch (e) {
@@ -113,99 +114,101 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (BuildContext context) => getIt<LocaleBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<ExceptionBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<OrderBloc>()),
-        BlocProvider(create: (BuildContext context) => getIt<OrderHistoryBloc>()),
-        BlocProvider(create: (BuildContext context) => getIt<OrderCounterBloc>()),
-        BlocProvider(create: (BuildContext context) => getIt<StripePaymentBloc>()),
+        BlocProvider(
+            create: (BuildContext context) => getIt<OrderRefreshBloc>()),
+        BlocProvider(
+            create: (BuildContext context) => getIt<OrderHistoryBloc>()),
+        BlocProvider(
+            create: (BuildContext context) => getIt<OrderCounterBloc>()),
+        BlocProvider(
+            create: (BuildContext context) => getIt<StripePaymentBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<CartBloc>()),
-        BlocProvider(create: (BuildContext context) => getIt<NetworkStatusBloc>()),
+        BlocProvider(
+            create: (BuildContext context) => getIt<NetworkStatusBloc>()),
         BlocProvider<UnitsBloc>(create: (context) => getIt<UnitsBloc>()),
-        BlocProvider<UnitSelectBloc>(create: (context) => getIt<UnitSelectBloc>()),
-        BlocProvider<FavoritesBloc>(create: (context) => getIt<FavoritesBloc>()),
-        BlocProvider<TransactionsBloc>(create: (context) => getIt<TransactionsBloc>()),
-        BlocProvider<LoginBloc>(create: (BuildContext context) => getIt<LoginBloc>()),
-        BlocProvider<ThemeBloc>(create: (BuildContext context) => getIt<ThemeBloc>()),
-        BlocProvider<MainNavigationBloc>(create: (BuildContext context) => getIt<MainNavigationBloc>()),
-        BlocProvider<ConfigsetBloc>(create: (BuildContext context) => getIt<ConfigsetBloc>()),
-        BlocProvider<UserDetailsBloc>(create: (BuildContext context) => getIt<UserDetailsBloc>()),
-        BlocProvider<TakeAwayBloc>(create: (BuildContext context) => getIt<TakeAwayBloc>()),
+        BlocProvider<UnitSelectBloc>(
+            create: (context) => getIt<UnitSelectBloc>()),
+        BlocProvider<FavoritesBloc>(
+            create: (context) => getIt<FavoritesBloc>()),
+        BlocProvider<TransactionsBloc>(
+            create: (context) => getIt<TransactionsBloc>()),
+        BlocProvider<LoginBloc>(
+            create: (BuildContext context) => getIt<LoginBloc>()),
+        BlocProvider<ThemeBloc>(
+            create: (BuildContext context) => getIt<ThemeBloc>()),
+        BlocProvider<MainNavigationBloc>(
+            create: (BuildContext context) => getIt<MainNavigationBloc>()),
+        BlocProvider<ConfigsetBloc>(
+            create: (BuildContext context) => getIt<ConfigsetBloc>()),
+        BlocProvider<UserDetailsBloc>(
+            create: (BuildContext context) => getIt<UserDetailsBloc>()),
+        BlocProvider<TakeAwayBloc>(
+            create: (BuildContext context) => getIt<TakeAwayBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, LocaleState localeState) {
-          var locale = (localeState is LocaleSelected) ? localeState.locale : null;
-          return BlocBuilder<ThemeBloc, ThemeState>(
-            builder: (context, state) {
-              ThemeData themeData;
-              if (state is ThemeState) {
-                themeData = getThemeData(state.theme);
-              } else {
-                themeData = ThemeData(
-                    fontFamily: 'Satoshi',
-                    visualDensity: VisualDensity.adaptivePlatformDensity,
-                    indicatorColor: Colors.black,
-                    primarySwatch: Colors.red,
-                    primaryColor: Colors.black,
-                    hoverColor: Color(0xFFFFDB87),
-                    highlightColor: Colors.white,
-                    primaryColorLight: Color(0xFFFFDB87),
-                    backgroundColor: Color(0xFFFFDB87),
-                    bottomAppBarColor: Color(0xFF176E49));
-              }
+          var locale =
+              (localeState is LocaleSelected) ? localeState.locale : null;
 
-              return MaterialApp(
-                title: 'AnyUpp',
-                key: const Key('anyupp-main-app'),
+          return MaterialApp(
+            themeMode: ThemeMode.light,
+            title: 'AnyUpp',
+            key: const Key('anyupp-main-app'),
 
-                /// Catcher init STEP 3. Add navigator key from Catcher. It will be used to navigate user to report page or to show dialog.
-                navigatorKey: Catcher.navigatorKey,
-                theme: themeData,
+            /// Catcher init STEP 3. Add navigator key from Catcher. It will be used to navigate user to report page or to show dialog.
+            navigatorKey: Catcher.navigatorKey,
+            theme: ThemeData(
+              primaryColor: Colors.green,
+            ),
 
-                builder: (context, child) {
-                  return MediaQuery(
-                    child: child ?? Container(),
-                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                  );
-                },
+            builder: (context, child) {
+              return MediaQuery(
+                child: child ?? Container(),
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              );
+            },
 
-                // The first app page
-                home: isProd ? UpgradeAlert(showIgnore: false, showLater: false, child: OnBoarding()) : OnBoarding(),
+            // The first app page
+            home: isProd
+                ? UpgradeAlert(
+                    showIgnore: false, showLater: false, child: OnBoarding())
+                : OnBoarding(),
 
-                // To hide the debug mark (in debugging and development modes)
-                debugShowCheckedModeBanner: false,
+            // To hide the debug mark (in debugging and development modes)
+            debugShowCheckedModeBanner: false,
 
-                //
-                // Localization >>>
-                //
-                locale: locale,
-                localizationsDelegates: [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  AppLocalizations.delegate,
-                  //const FallbackCupertinoLocalisationsDelegate(),
-                ],
-                supportedLocales: SupportedLocales.locales,
-                localeListResolutionCallback:
-                    (List<Locale>? userPreferredlocales, Iterable<Locale> appSupportedLocales) {
-                  // userPreferredlocales: comes from the phone settings in the same order
-                  // appSupportedLocales: comes from the supportedLocales parameter what was defined up ahead
+            //
+            // Localization >>>
+            //
+            locale: locale,
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              AppLocalizations.delegate,
+              //const FallbackCupertinoLocalisationsDelegate(),
+            ],
+            supportedLocales: SupportedLocales.locales,
+            localeListResolutionCallback: (List<Locale>? userPreferredlocales,
+                Iterable<Locale> appSupportedLocales) {
+              // userPreferredlocales: comes from the phone settings in the same order
+              // appSupportedLocales: comes from the supportedLocales parameter what was defined up ahead
 
-                  // Try to find a userPreferred Local what is supported by the APP
-                  if (userPreferredlocales != null) {
-                    for (Locale locale in userPreferredlocales) {
-                      for (Locale supportedLocale in appSupportedLocales) {
-                        if (supportedLocale.languageCode == locale.languageCode &&
-                            supportedLocale.countryCode == locale.countryCode) {
-                          // Return the first userPreferred Local what is supported by the APP
-                          return supportedLocale;
-                        }
-                      }
+              // Try to find a userPreferred Local what is supported by the APP
+              if (userPreferredlocales != null) {
+                for (Locale locale in userPreferredlocales) {
+                  for (Locale supportedLocale in appSupportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode &&
+                        supportedLocale.countryCode == locale.countryCode) {
+                      // Return the first userPreferred Local what is supported by the APP
+                      return supportedLocale;
                     }
                   }
+                }
+              }
 
-                  // OR return the first if there isn't any supported local in the user's locale list
-                  return appSupportedLocales.first;
-                },
-              );
+              // OR return the first if there isn't any supported local in the user's locale list
+              return appSupportedLocales.first;
             },
           );
         },

@@ -6,7 +6,7 @@ import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart' hide PaymentMethod, PaymentType;
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class CartRepository implements ICartProvider {
   final IAuthProvider _authProvider;
@@ -16,7 +16,8 @@ class CartRepository implements ICartProvider {
 
   Cart? get cart => _cartProvider.cart;
 
-  Future<Cart?> addProductToCart(String unitId, OrderItem item, ServingMode servingMode) async {
+  Future<Cart?> addProductToCart(
+      String unitId, OrderItem item, ServingMode servingMode) async {
     Cart? _cart = await _cartProvider.getCurrentCart(unitId);
     User? user = await _authProvider.getAuthenticatedUserProfile();
     if (user == null) {
@@ -31,12 +32,13 @@ class CartRepository implements ICartProvider {
         userId: user.id,
         unitId: unitId,
         servingMode: servingMode,
-        paymentMode: PaymentMode(
-          caption: 'inapp',
-          method: PaymentMethod.inapp,
-          type: PaymentType.stripe,
-        ),
-        place: await getPlacePref() ?? Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
+        // paymentMode: PaymentMode(
+        //   caption: 'inapp',
+        //   method: PaymentMethod.inapp,
+        //   type: PaymentType.stripe,
+        // ),
+        place:
+            await getPlacePref() ?? Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
         items: [
           item.copyWith(quantity: 0),
         ],
@@ -46,9 +48,11 @@ class CartRepository implements ICartProvider {
     int index = _cart.items.indexWhere((order) =>
         order.productId == item.productId &&
         order.variantId == item.variantId &&
-        DeepCollectionEquality().equals(order.getConfigIdMap(), item.getConfigIdMap()));
+        DeepCollectionEquality()
+            .equals(order.getConfigIdMap(), item.getConfigIdMap()));
     if (index != -1) {
-      OrderItem existingOrder = _cart.items[index].copyWith(quantity: _cart.items[index].quantity + item.quantity);
+      OrderItem existingOrder = _cart.items[index]
+          .copyWith(quantity: _cart.items[index].quantity + item.quantity);
       List<OrderItem> items = List<OrderItem>.from(_cart.items);
       items[index] = existingOrder;
       _cart = _cart.copyWith(items: items);
@@ -72,15 +76,18 @@ class CartRepository implements ICartProvider {
     int index = _cart.items.indexWhere((order) =>
         order.productId == item.productId &&
         order.variantId == item.variantId &&
-        DeepCollectionEquality().equals(order.getConfigIdMap(), item.getConfigIdMap()));
+        DeepCollectionEquality()
+            .equals(order.getConfigIdMap(), item.getConfigIdMap()));
     if (index != -1) {
-      OrderItem existingOrder = _cart.items[index].copyWith(quantity: _cart.items[index].quantity - 1);
+      OrderItem existingOrder = _cart.items[index]
+          .copyWith(quantity: _cart.items[index].quantity - 1);
       if (existingOrder.quantity <= 0) {
         List<OrderItem> items = List<OrderItem>.from(_cart.items);
         items.removeWhere((order) =>
             order.productId == item.productId &&
             order.variantId == item.variantId &&
-            DeepCollectionEquality().equals(order.getConfigIdMap(), item.getConfigIdMap()));
+            DeepCollectionEquality()
+                .equals(order.getConfigIdMap(), item.getConfigIdMap()));
         _cart = _cart.copyWith(items: items);
       } else {
         List<OrderItem> items = List<OrderItem>.from(_cart.items);

@@ -7,7 +7,7 @@ T? enumFromStringNull<T>(String? key, List<T> values, [T? defaultValue]) {
   if (key == null) {
     return defaultValue;
   }
-  int index = values.indexWhere((v) => key == enumToString(v));
+  int index = values.indexWhere((v) => _removeWhiteSpaces(key) == _removeWhiteSpaces(enumToString(v)));
   if (index >= 0) {
     return values[index];
   }
@@ -18,6 +18,10 @@ T? enumFromStringNull<T>(String? key, List<T> values, [T? defaultValue]) {
 
 T enumFromString<T>(String key, List<T> values) {
   // print('***** enumFromString($key)=$values');
-  int index = values.indexWhere((v) => key == enumToString(v));
+  int index = values.indexWhere((v) => _removeWhiteSpaces(key) == _removeWhiteSpaces(enumToString(v)));
   return values[index];
+}
+
+String? _removeWhiteSpaces(String? s) {
+  return s == null ? s : s.replaceAll('_', '').toLowerCase();
 }

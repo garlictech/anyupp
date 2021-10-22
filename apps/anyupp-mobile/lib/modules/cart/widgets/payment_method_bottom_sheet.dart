@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/widgets/invoice_form_bottom_sheet.dart';
@@ -38,51 +39,6 @@ Future showSelectPaymentMethodBottomSheet(BuildContext context,
   );
 }
 
-class BottomSheetPaymentMethods {
-  static const int PAYMENT_UNKNOWN = -1;
-  static const int PAYMENT_INAPP = 0;
-  static const int PAYMENT_CASH = 1;
-  static const int PAYMENT_CARD = 2;
-
-  static PaymentMode getPaymentModeFromSelection(int? selectedMethod) {
-    switch (selectedMethod) {
-      case BottomSheetPaymentMethods.PAYMENT_CASH:
-        return PaymentMode(
-            method: PaymentMethod.cash,
-            type: PaymentType.cash,
-            caption: 'cash');
-      case BottomSheetPaymentMethods.PAYMENT_CARD:
-        return PaymentMode(
-            method: PaymentMethod.card,
-            type: PaymentType.card,
-            caption: 'card');
-      case BottomSheetPaymentMethods.PAYMENT_INAPP:
-        return PaymentMode(
-            method: PaymentMethod.inapp,
-            type: PaymentType.stripe,
-            caption: 'stripe');
-      default:
-        return PaymentMode(
-            method: PaymentMethod.cash,
-            type: PaymentType.cash,
-            caption: 'cash');
-    }
-  }
-
-  static String getPaymentMethodNameFromNumberValue(int? selectedMethod) {
-    switch (selectedMethod) {
-      case PAYMENT_INAPP:
-        return 'inapp';
-      case PAYMENT_CASH:
-        return 'cash';
-      case PAYMENT_CARD:
-        return 'card';
-      default:
-        return 'unknown';
-    }
-  }
-}
-
 class PaymentMethodSelectionBottomSheetWidget extends StatefulWidget {
   final String? orderId;
 
@@ -97,7 +53,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState
     extends State<PaymentMethodSelectionBottomSheetWidget> {
   bool _wantsInvoce = false;
 
-  int? _selectedPaymentMethod = BottomSheetPaymentMethods.PAYMENT_UNKNOWN;
+  PaymentMethod? _selectedPaymentMethod;
 
   @override
   Widget build(BuildContext context) {
@@ -127,6 +83,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState
   }
 
   Widget _buildPaymentMethodList(BuildContext context, GeoUnit unit) {
+    // print('_buildPaymentMethodList().unit.paymentModes=${unit.id}: ${unit.paymentModes}');
     List<PaymentMethod> methods = [];
     if (unit.paymentModes != null) {
       for (PaymentMode? paymentMode in unit.paymentModes!) {
@@ -184,7 +141,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState
                     context,
                     trans('payment.method.inAppPayment'),
                     "assets/icons/stripe_logo_icon.svg",
-                    BottomSheetPaymentMethods.PAYMENT_INAPP,
+                    PaymentMethod.inapp,
                   ),
                 if (unit.paymentModes != null &&
                     methods.contains(PaymentMethod.cash))
@@ -192,14 +149,14 @@ class _PaymentMethodSelectionBottomSheetWidgetState
                       context,
                       trans('payment.method.cash'),
                       "assets/icons/cash_on_delivery_icon.svg",
-                      BottomSheetPaymentMethods.PAYMENT_CASH),
+                      PaymentMethod.cash),
                 if (unit.paymentModes != null &&
                     methods.contains(PaymentMethod.card))
                   _buildSelectPaymentMethodBottomSheetRadioItem(
                       context,
                       trans('payment.method.creditCard'),
                       "assets/icons/credit_card_icon.svg",
-                      BottomSheetPaymentMethods.PAYMENT_CARD),
+                      PaymentMethod.card),
                 Padding(
                   padding: const EdgeInsets.all(14),
                   child: Row(
@@ -287,21 +244,18 @@ class _PaymentMethodSelectionBottomSheetWidgetState
                 ),
               ),
               child: buttonChild,
-              onPressed: (_selectedPaymentMethod !=
-                      BottomSheetPaymentMethods.PAYMENT_UNKNOWN)
+              onPressed: (_selectedPaymentMethod != null)
                   ? () async {
                       if (!loading) {
                         // getIt<CartBloc>().add(SetPaymentMode(unit.id, mode));
                         print('_selectedPaymentMethod=$_selectedPaymentMethod');
-                        if (_selectedPaymentMethod ==
-                            BottomSheetPaymentMethods.PAYMENT_INAPP) {
+                        if (_selectedPaymentMethod == PaymentMethod.inapp) {
                           if (_wantsInvoce) {
                             showInvoiceFormBottomSheet(
                                 context,
                                 widget.orderId,
-                                BottomSheetPaymentMethods
-                                    .getPaymentModeFromSelection(
-                                        _selectedPaymentMethod));
+                                _getPaymentModeFromSelection(
+                                    _selectedPaymentMethod));
                           } else {
                             Nav.pop();
                             Nav.to(StripePaymentScreen(
@@ -313,17 +267,15 @@ class _PaymentMethodSelectionBottomSheetWidgetState
                             showInvoiceFormBottomSheet(
                                 context,
                                 widget.orderId,
-                                BottomSheetPaymentMethods
-                                    .getPaymentModeFromSelection(
-                                        _selectedPaymentMethod));
+                                _getPaymentModeFromSelection(
+                                    _selectedPaymentMethod));
                           } else {
                             getIt<StripePaymentBloc>()
                                 .add(StartExternalPaymentEvent(
                               // cart: widget.cart,
                               orderId: widget.orderId,
-                              paymentMode: BottomSheetPaymentMethods
-                                  .getPaymentModeFromSelection(
-                                      _selectedPaymentMethod),
+                              paymentMode: _getPaymentModeFromSelection(
+                                  _selectedPaymentMethod),
                             ));
                           }
                         }
@@ -341,7 +293,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState
     BuildContext context,
     String title,
     String icon,
-    int value,
+    PaymentMethod value,
   ) {
     final isSelected = _selectedPaymentMethod == value;
     return InkWell(
@@ -402,10 +354,10 @@ class _PaymentMethodSelectionBottomSheetWidgetState
                     ),
                     child: Transform.scale(
                       scale: 1.5,
-                      child: Radio<int>(
+                      child: Radio<PaymentMethod>(
                         value: value,
                         groupValue: _selectedPaymentMethod,
-                        onChanged: (int? value) {
+                        onChanged: (PaymentMethod? value) {
                           setState(() {
                             _selectedPaymentMethod = value;
                           });
@@ -422,5 +374,31 @@ class _PaymentMethodSelectionBottomSheetWidgetState
         ),
       ),
     );
+  }
+
+  static PaymentMode _getPaymentModeFromSelection(
+      PaymentMethod? selectedMethod) {
+    switch (selectedMethod) {
+      case PaymentMethod.cash:
+        return PaymentMode(
+            method: PaymentMethod.cash,
+            type: PaymentType.cash,
+            caption: 'cash');
+      case PaymentMethod.card:
+        return PaymentMode(
+            method: PaymentMethod.card,
+            type: PaymentType.card,
+            caption: 'card');
+      case PaymentMethod.inapp:
+        return PaymentMode(
+            method: PaymentMethod.inapp,
+            type: PaymentType.stripe,
+            caption: 'stripe');
+      default:
+        return PaymentMode(
+            method: PaymentMethod.cash,
+            type: PaymentType.cash,
+            caption: 'cash');
+    }
   }
 }

@@ -5,9 +5,11 @@ final timeFormatter = DateFormat('HH:mm:ss');
 final dateTimeFormatter = DateFormat('yyyy.MM.dd HH:mm');
 final dateWithDayFormatter = DateFormat('EEEE HH:mm');
 
-DateTime fromGraphQLAWSDateTimeToDartDateTime(String date) => DateTime.parse(date);
-String fromDartDateTimeToGraphQLAWSDateTime(DateTime date) => dateFormatter.format(date);
+DateTime fromGraphQLAWSDateTimeToDartDateTime(String date) =>
+    DateTime.parse(date).toLocal();
+String fromDartDateTimeToGraphQLAWSDateTime(DateTime date) =>
+    dateFormatter.format(date);
 DateTime? fromGraphQLAWSDateTimeNullableToDartDateTimeNullable(String? date) =>
-    date == null ? null : DateTime.parse(date);
+    date == null ? null : DateTime.parse(date).toLocal();
 String? fromDartDateTimeNullableToGraphQLAWSDateTimeNullable(DateTime? date) =>
     date == null ? null : dateFormatter.format(date);

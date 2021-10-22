@@ -4,14 +4,17 @@ import 'package:fa_prev/shared/utils/local_notifications_util.dart';
 import 'package:fa_prev/shared/utils/order_status_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class OrderNotificationService {
-  void checkIfShowOrderStatusNotification(BuildContext context, List<Order> orders) async {
+  void checkIfShowOrderStatusNotification(
+      BuildContext context, List<Order> orders) async {
     orders.forEach((order) async {
-      String currentStatus = order.statusLog[order.statusLog.length - 1].status;
+      OrderStatus currentStatus =
+          order.statusLog[order.statusLog.length - 1].status;
       // print('***** checkIfShowOrderStatusNotification()=${order.id}, status=$currentStatus');
 
-      String? previousStatus = await getOrderStatusPref(order.id);
+      OrderStatus? previousStatus = await getOrderStatusPref(order.id);
       // print('***** checkIfShowOrderStatusNotification()=$previousStatus');
 
       if (previousStatus == null || previousStatus != currentStatus) {
@@ -19,8 +22,10 @@ class OrderNotificationService {
       }
 
       if (previousStatus != null) {
-        if (currentStatus == 'processing' && previousStatus == 'placed') {
-          print('***** checkIfShowOrderStatusNotification().showProcessingNotif()');
+        if (currentStatus == OrderStatus.processing &&
+            previousStatus == OrderStatus.placed) {
+          print(
+              '***** checkIfShowOrderStatusNotification().showProcessingNotif()');
           showNotification(
             context,
             transEx(context, "notifications.messageFrom"),
@@ -31,8 +36,10 @@ class OrderNotificationService {
           );
         }
 
-        if (currentStatus == 'ready' && previousStatus == 'processing') {
-          print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMode}');
+        if (currentStatus == OrderStatus.ready &&
+            previousStatus == OrderStatus.processing) {
+          print(
+              '***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMode}');
 
           showNotification(
             context,

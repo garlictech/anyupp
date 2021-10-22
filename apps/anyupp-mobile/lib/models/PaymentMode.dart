@@ -1,4 +1,4 @@
-// import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 
 import 'package:flutter/foundation.dart';
@@ -31,7 +31,8 @@ class PaymentMode {
       type: type ?? this.type,
       caption: caption ?? this.caption,
       method: method ?? this.method,
-      geoUnitPaymentModesId: geoUnitPaymentModesId ?? this.geoUnitPaymentModesId,
+      geoUnitPaymentModesId:
+          geoUnitPaymentModesId ?? this.geoUnitPaymentModesId,
     );
   }
 
@@ -74,6 +75,10 @@ class PaymentMode {
 
   @override
   int get hashCode {
-    return id.hashCode ^ type.hashCode ^ caption.hashCode ^ method.hashCode ^ geoUnitPaymentModesId.hashCode;
+    return id.hashCode ^
+        type.hashCode ^
+        caption.hashCode ^
+        method.hashCode ^
+        geoUnitPaymentModesId.hashCode;
   }
 }

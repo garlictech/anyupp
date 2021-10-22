@@ -12,7 +12,11 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
   Stream<FavoritesState> mapEventToState(FavoritesEvent event) async* {
     if (event is ListFavoriteProducts) {
       yield FavoritesLoading();
-      var response = await _favoritesRepository.getFavoritesList(event.unitId);
+      var response = await _favoritesRepository.getFavoritesList(
+        event.unitId,
+        event.servingMode,
+        event.nextToken,
+      );
       yield FavoriteListLoaded(response.data);
       return;
     }

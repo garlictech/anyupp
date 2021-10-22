@@ -1,3 +1,5 @@
+import 'package:fa_prev/graphql/generated/crud-api.dart';
+
 abstract class FavoritesEvent {
   const FavoritesEvent();
 }
@@ -14,12 +16,18 @@ class AddOrRemoveFavoriteProduct extends FavoritesEvent {
   final categoryId;
   final String productId;
 
-  const AddOrRemoveFavoriteProduct(this.unitId, this.categoryId, this.productId);
+  const AddOrRemoveFavoriteProduct(
+      this.unitId, this.categoryId, this.productId);
 }
 
 class ListFavoriteProducts extends FavoritesEvent {
   final String unitId;
+  final ServingMode servingMode;
   final String? nextToken;
 
-  ListFavoriteProducts({required this.unitId, this.nextToken});
+  ListFavoriteProducts({
+    required this.unitId,
+    required this.servingMode,
+    this.nextToken,
+  });
 }
