@@ -19,13 +19,6 @@ echo APINAME=$APINAME
 
 cd ../..
 
-echo 'Copy ANYUPP schema...'
-echo '====================='
-cp \
-  libs/anyupp-gql/backend/src/graphql/schema/generated/schema.graphql \
-  apps/anyupp-mobile/graphql/anyupp-api-schema.graphql
-echo 'Done.'
-
 echo 'Copy and merge CRUD schema...'
 echo '=============================='
 cat \
