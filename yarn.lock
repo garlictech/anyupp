@@ -8371,10 +8371,10 @@
     node-addon-api "3.2.1"
     node-gyp "8.1.0"
 
-"@serverless-stack/cli@0.48.0":
-  version "0.48.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.48.0.tgz#c6fb29bda4ccb92b92eba1d410c0caeb65b935c1"
-  integrity sha512-eU3lShMxsQJomna5XpFYl0G8VihDOAQeHl8/Cod4NNbnvTs5Hqnak/H/aa27NOqFJLRD4Uco2tsSxpCsANJIPw==
+"@serverless-stack/cli@0.49.1":
+  version "0.49.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.49.1.tgz#0ebd321a1ee5a3b56e41252bd843ca40e8682872"
+  integrity sha512-QPnEWka9LppR6Ifac2SwtxBqm/lwbJH7PJh+jRlJGZ/D6ippHUcwzvkt08UaNayAL08JziYdqkmgHJondOVDcw==
   dependencies:
     "@aws-cdk/aws-apigatewayv2" "1.126.0"
     "@aws-cdk/aws-dynamodb" "1.126.0"
@@ -8387,9 +8387,9 @@
     "@babel/plugin-proposal-class-properties" "^7.10.4"
     "@babel/preset-env" "^7.10.4"
     "@serverless-stack/aws-lambda-ric" "^2.0.4"
-    "@serverless-stack/core" "^0.48.0"
-    "@serverless-stack/resources" "^0.48.0"
-    "@types/jest" "^26.0.7"
+    "@serverless-stack/core" "^0.49.1"
+    "@serverless-stack/resources" "^0.49.1"
+    "@types/jest" "^27.0.2"
     "@types/node" "^14.0.27"
     "@typescript-eslint/eslint-plugin" "^4.15.1"
     "@typescript-eslint/parser" "^4.15.1"
@@ -8402,13 +8402,14 @@
     cross-spawn "^7.0.3"
     detect-port-alt "^1.1.6"
     esbuild "^0.12.20"
+    esbuild-runner "^2.2.1"
     eslint "^7.16.0"
-    eslint-config-serverless-stack "^0.48.0"
+    eslint-config-serverless-stack "^0.49.1"
     express "^4.17.1"
     fast-safe-stringify "^2.0.6"
     fs-extra "^9.0.1"
     is-root "^2.1.0"
-    jest "^26.1.0"
+    jest "^27.3.1"
     node-fetch "^2.6.1"
     promise.allsettled "^1.0.2"
     prompts "^2.4.1"
@@ -8422,6 +8423,22 @@
   version "0.48.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.48.0.tgz#693b357059c16c87c846fe739a10f6e49ed1e86a"
   integrity sha512-8jHVdSYrseiANeETVGk0cJcsl+IrW4G5Twy4i5YDm5OQ47P84g5B33guhTLIZZTzwG+kbEH0C8a7M+Zm1YtwVw==
+  dependencies:
+    aws-cdk "1.126.0"
+    aws-sdk "^2.761.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    dotenv "^10.0.0"
+    dotenv-expand "^5.1.0"
+    express "^4.17.1"
+    fs-extra "^9.0.1"
+    log4js "^6.3.0"
+    typescript "^4.4.3"
+
+"@serverless-stack/core@^0.49.1":
+  version "0.49.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.49.1.tgz#97e56ebf54b1a32abfe43c112f81c90b09a9d0f1"
+  integrity sha512-6XTsaIdakvMaXFtyjC9HyfjfSeMP5fCC752L2EGkFU9nTBZCnwwGnTWKspy2Do6ORn1zRlMs7FD2SjTuWgMnfg==
   dependencies:
     aws-cdk "1.126.0"
     aws-sdk "^2.761.0"
@@ -8467,7 +8484,7 @@
     path-to-regexp "^6.1.0"
     send "^0.17.1"
 
-"@serverless-stack/resources@0.48.0", "@serverless-stack/resources@^0.48.0":
+"@serverless-stack/resources@0.48.0":
   version "0.48.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.48.0.tgz#164e447db0a2b808da94b3d22fd3ca7d8005b202"
   integrity sha512-t4a1ckPuDJaF9KCJ6iI+BQsWfPjferLsIzQUgTT6xD9fsTDcSsIPwLuBs2lGpjLWbI0rksVthViYh6y9DZhJpQ==
@@ -8511,6 +8528,65 @@
     "@graphql-tools/load-files" "^6.3.2"
     "@graphql-tools/merge" "^6.2.14"
     "@serverless-stack/core" "^0.48.0"
+    "@serverless-stack/nextjs-lambda" "^0.1.9"
+    "@types/jest" "^26.0.7"
+    archiver "^5.3.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    esbuild "^0.12.20"
+    eslint "^7.16.0"
+    fs-extra "^9.0.1"
+    glob "^7.1.7"
+    graphql "^15.5.1"
+    jest "^26.1.0"
+    ts-jest "^26.1.4"
+    typescript "^4.4.3"
+    zip-local "^0.3.4"
+
+"@serverless-stack/resources@^0.49.1":
+  version "0.49.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.49.1.tgz#28b0f62d77728fc983317f9a846b3b804d05269c"
+  integrity sha512-CVXXyuy/4/tnlhmQTZrwIJpp92iqGp2/MPkwBNtJnWZMN84pKiwk2c19ngcA8IyN8N/egRB3BGd1lhIs8Q5eLw==
+  dependencies:
+    "@aws-cdk/aws-apigateway" "1.126.0"
+    "@aws-cdk/aws-apigatewayv2" "1.126.0"
+    "@aws-cdk/aws-apigatewayv2-authorizers" "1.126.0"
+    "@aws-cdk/aws-apigatewayv2-integrations" "1.126.0"
+    "@aws-cdk/aws-appsync" "1.126.0"
+    "@aws-cdk/aws-autoscaling" "1.126.0"
+    "@aws-cdk/aws-certificatemanager" "1.126.0"
+    "@aws-cdk/aws-cloudfront" "1.126.0"
+    "@aws-cdk/aws-cloudfront-origins" "1.126.0"
+    "@aws-cdk/aws-cognito" "1.126.0"
+    "@aws-cdk/aws-dynamodb" "1.126.0"
+    "@aws-cdk/aws-ec2" "1.126.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.126.0"
+    "@aws-cdk/aws-events" "1.126.0"
+    "@aws-cdk/aws-events-targets" "1.126.0"
+    "@aws-cdk/aws-iam" "1.126.0"
+    "@aws-cdk/aws-kinesis" "1.126.0"
+    "@aws-cdk/aws-lambda" "1.126.0"
+    "@aws-cdk/aws-lambda-event-sources" "1.126.0"
+    "@aws-cdk/aws-lambda-nodejs" "1.126.0"
+    "@aws-cdk/aws-logs" "1.126.0"
+    "@aws-cdk/aws-rds" "1.126.0"
+    "@aws-cdk/aws-route53" "1.126.0"
+    "@aws-cdk/aws-route53-patterns" "1.126.0"
+    "@aws-cdk/aws-route53-targets" "1.126.0"
+    "@aws-cdk/aws-s3" "1.126.0"
+    "@aws-cdk/aws-s3-assets" "1.126.0"
+    "@aws-cdk/aws-s3-notifications" "1.126.0"
+    "@aws-cdk/aws-secretsmanager" "1.126.0"
+    "@aws-cdk/aws-sns" "1.126.0"
+    "@aws-cdk/aws-sns-subscriptions" "1.126.0"
+    "@aws-cdk/aws-sqs" "1.126.0"
+    "@aws-cdk/aws-ssm" "1.126.0"
+    "@aws-cdk/core" "1.126.0"
+    "@aws-cdk/cx-api" "1.126.0"
+    "@aws-cdk/lambda-layer-awscli" "1.126.0"
+    "@graphql-tools/load-files" "^6.3.2"
+    "@graphql-tools/merge" "^6.2.14"
+    "@serverless-stack/core" "^0.49.1"
     "@serverless-stack/nextjs-lambda" "^0.1.9"
     "@types/jest" "^26.0.7"
     archiver "^5.3.0"
@@ -9223,7 +9299,7 @@
   dependencies:
     "@types/jasmine" "*"
 
-"@types/jest@27.0.2":
+"@types/jest@27.0.2", "@types/jest@^27.0.2":
   version "27.0.2"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-27.0.2.tgz#ac383c4d4aaddd29bbf2b916d8d105c304a5fcd7"
   integrity sha512-4dRxkS/AFX0c5XW6IPMNOydLn2tEhNhJV7DnYK+0bjoJZ+QTmfucBlihX7aoEsh/ocYtkLC73UbnBXBXIxsULA==
@@ -15034,6 +15110,14 @@ esbuild-openbsd-64@0.13.4:
   resolved "https://registry.yarnpkg.com/esbuild-openbsd-64/-/esbuild-openbsd-64-0.13.4.tgz#1c8122101898c52a20c8786935cf3eb7a19b83b4"
   integrity sha512-xEkI1o5HYxDzbv9jSox0EsDxpwraG09SRiKKv0W8pH6O3bt+zPSlnoK7+I7Q69tkvONkpIq5n2o+c55uq0X7cw==
 
+esbuild-runner@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/esbuild-runner/-/esbuild-runner-2.2.1.tgz#3866fca62cbf9645e939b43a0c65446f9a53064f"
+  integrity sha512-VP0VfJJZiZ3cKzdOH59ZceDxx/GzBKra7tiGM8MfFMLv6CR1/cpsvtQ3IsJI3pz7HyeYxtbPyecj3fHwR+3XcQ==
+  dependencies:
+    source-map-support "0.5.19"
+    tslib "2.3.1"
+
 esbuild-sunos-64@0.13.4:
   version "0.13.4"
   resolved "https://registry.yarnpkg.com/esbuild-sunos-64/-/esbuild-sunos-64-0.13.4.tgz#4ec95faa14a60f295fe485bebffefff408739337"
@@ -15145,10 +15229,10 @@ eslint-config-prettier@8.3.0:
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
   integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
 
-eslint-config-serverless-stack@^0.48.0:
-  version "0.48.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.48.0.tgz#1953235e21bd9b27ed15ee87d81c0b8c5183dc64"
-  integrity sha512-1yC3H1TK3VRA8V7xsEQRYgEY7XesyyySGEH/ymleekuoG+z5QpiA9Qdh5qp2kRsv25zTqrCGb+BPuBiG53jbgg==
+eslint-config-serverless-stack@^0.49.1:
+  version "0.49.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.49.1.tgz#768493c96fc84ca1ed72fcc6c98054275570f5bd"
+  integrity sha512-S36LrFSr2V1T6UBDm5WRkaj7OfGCcBtb+zyR/Ar8tHUbtZRxSQJdkhjNIHcUfbaADjOSEAE6kGIzqSQDKs5N1w==
   dependencies:
     "@babel/eslint-parser" "^7.11.3"
     "@babel/plugin-proposal-class-properties" "^7.10.4"
@@ -19814,7 +19898,7 @@ jest-worker@^27.3.1:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
-jest@27.3.1:
+jest@27.3.1, jest@^27.3.1:
   version "27.3.1"
   resolved "https://registry.yarnpkg.com/jest/-/jest-27.3.1.tgz#b5bab64e8f56b6f7e275ba1836898b0d9f1e5c8a"
   integrity sha512-U2AX0AgQGd5EzMsiZpYt8HyZ+nSVIh5ujQ9CPp9EQZJMjXIiSZpJNweZl0swatKRoqHWgGKM3zaSwm4Zaz87ng==
