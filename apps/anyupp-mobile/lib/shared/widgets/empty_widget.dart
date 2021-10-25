@@ -94,7 +94,7 @@ class EmptyWidget extends StatelessWidget {
             right: 24,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(40),
           ),
         ),
         child: Text(

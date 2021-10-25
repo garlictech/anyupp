@@ -218,7 +218,7 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
                   primary: theme.primary,
                   // shadowColor: null,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(40),
                   ),
                 ),
                 child: Text(

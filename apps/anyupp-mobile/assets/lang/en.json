@@ -490,8 +490,9 @@
       }
     }
   },
-  "affiliate": {
-    "advertisement": "Advertisement"
+  "product": {
+    "notTakeAway": "Only in place",
+    "notInPlace": "Only for takeaway"
   },
   "validators": {
     "required": "this field is required",

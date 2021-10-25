@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/pagination/pagination.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class FavoritesRepository implements IFavoritesProvider {
   final IFavoritesProvider _provider;
@@ -11,8 +10,8 @@ class FavoritesRepository implements IFavoritesProvider {
   FavoritesRepository(this._provider);
 
   @override
-  Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId, [ServingMode? servingMode, String? nextToken]) {
-    return _provider.getFavoritesList(unitId, servingMode, nextToken);
+  Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId, [String? nextToken]) {
+    return _provider.getFavoritesList(unitId, nextToken);
   }
 
   @override

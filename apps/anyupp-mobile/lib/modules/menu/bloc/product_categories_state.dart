@@ -11,8 +11,8 @@ class NoProductCategoriesLoaded extends ProductCategoriesState {}
 class ProductCategoriesLoading extends ProductCategoriesState {}
 
 class ProductCategoriesLoaded extends ProductCategoriesState {
-  final PageResponse<ProductCategory>? productCategories;
-  const ProductCategoriesLoaded(this.productCategories);
+  final List<ProductCategory>? productCategories;
+  ProductCategoriesLoaded(this.productCategories);
 
   @override
   List<Object?> get props => [productCategories];

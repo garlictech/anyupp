@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart' hide Allergen;
 
 class CartScreen extends StatelessWidget {
   final ScrollController _controller = ScrollController();
@@ -56,43 +55,8 @@ class CartScreen extends StatelessWidget {
               if (state is ServingModeSelectedState) {
                 return Container(
                   margin: EdgeInsets.only(top: 12.0, bottom: 12.0, right: 16.0),
-                  child: BorderedWidget(
-                    onPressed: null,
-                    borderColor: theme.secondary12,
-                    color: theme.secondary12,
-                    // width: 40.0,
-                    height: 30,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          state.servingMode == ServingMode.takeAway
-                              ? SvgPicture.asset(
-                                  "assets/icons/bag.svg",
-                                  color: theme.secondary,
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/restaurant_menu_black.svg',
-                                  ),
-                                ),
-                          SizedBox(
-                            width: 4.0,
-                          ),
-                          Text(
-                            state.servingMode == ServingMode.takeAway
-                                ? trans(context, 'cart.takeAway')
-                                : trans(context, 'cart.inPlace'),
-                            style: Fonts.satoshi(
-                              fontSize: 14.0,
-                              color: theme.secondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  child: TakeawayStatusWidget(
+                    servingMode: state.servingMode,
                   ),
                 );
               }
@@ -275,7 +239,7 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildPaymentButtonPanel(BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = false;
-    if (cart.place == null || (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE)) {
+    if (cart.place == null || (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE) && false) {
       showQrCodeScan = true;
     }
     // print('_buildPaymentButtonPanel().showQrCodeScan=$showQrCodeScan');
@@ -297,7 +261,7 @@ class CartScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               primary: theme.primary,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(40),
               ),
             ),
             child: Stack(

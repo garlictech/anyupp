@@ -90,9 +90,12 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
             }
 
             // print('list[$position].supportedServingModes=${list[position].supportedServingModes}');
-            if (mode != null && !list[position].supportedServingModes.contains(mode)) {
-              return Container();
-            }
+            // if (mode != null && !list[position].supportedServingModes.contains(mode)) {
+            //   return Container();
+            // }
+            bool isAvailableInThisServingMode = mode != null && list[position].supportedServingModes.contains(mode);
+            // print(
+            //     'isAvailableInThisServingMode[$mode]=$isAvailableInThisServingMode, items=${list[position].supportedServingModes}');
 
             if (position == list.length - 1 && list.length % _pageSize == 0 && _nextToken != null) {
               getIt<ProductListBloc>().add(LoadProductList(
@@ -109,8 +112,11 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
                 verticalOffset: 50.0,
                 child: FadeInAnimation(
                   child: ProductMenuItem(
+                    displayState:
+                        isAvailableInThisServingMode ? ProducItemDisplayState.NORMAL : ProducItemDisplayState.DISABLED,
                     unit: unit,
                     item: list[position],
+                    servingMode: mode,
                   ),
                 ),
               ),

@@ -229,7 +229,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
   }
 
   Widget _buildQRCodeCard(BuildContext context) {
-    final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
+    // final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
     return InkWell(
       highlightColor: theme.primary.withAlpha(128),

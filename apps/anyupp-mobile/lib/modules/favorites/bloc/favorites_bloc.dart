@@ -14,7 +14,6 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
       yield FavoritesLoading();
       var response = await _favoritesRepository.getFavoritesList(
         event.unitId,
-        event.servingMode,
         event.nextToken,
       );
       yield FavoriteListLoaded(response.data);

@@ -83,7 +83,7 @@ class _CartButtonWidgetState extends State<CartButtonWidget> with SingleTickerPr
           style: ElevatedButton.styleFrom(
             primary: theme.primary,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(40),
             ),
           ),
           child: Stack(

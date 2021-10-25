@@ -112,12 +112,9 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
       margin: EdgeInsets.all(
         16.0,
       ),
-      // padding: EdgeInsets.all(16.0),
-      // color: theme.primary,
-      // height: 200,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
-          Radius.circular(8.0),
+          Radius.circular(16.0),
         ),
         boxShadow: [
           BoxShadow(
@@ -198,7 +195,7 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
+                      borderRadius: BorderRadius.circular(36.0),
                     ),
                     primary: theme.secondary0,
                   ),

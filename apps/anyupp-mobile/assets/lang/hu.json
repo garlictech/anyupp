@@ -489,8 +489,9 @@
       }
     }
   },
-  "affiliate": {
-    "advertisement": "Hirdetés"
+  "product": {
+    "notTakeAway": "Csak helyben",
+    "notInPlace": "Csak elvitelre"
   },
   "validators": {
     "required": "Ez a mező szükséges",

@@ -130,69 +130,73 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<UserDetailsBloc>(create: (BuildContext context) => getIt<UserDetailsBloc>()),
         BlocProvider<TakeAwayBloc>(create: (BuildContext context) => getIt<TakeAwayBloc>()),
       ],
-      child: BlocBuilder<LocaleBloc, LocaleState>(
-        builder: (context, LocaleState localeState) {
-          var locale = (localeState is LocaleSelected) ? localeState.locale : null;
+      child: BlocBuilder<LocaleBloc, LocaleState>(builder: (context, LocaleState localeState) {
+        var locale = (localeState is LocaleSelected) ? localeState.locale : null;
+        return BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (context, state) {
+            ThemeData themeData;
+            if (state is ThemeState) {
+              themeData = getThemeData(context, state.theme);
+            } else {
+              themeData = getThemeData(context, ThemeAnyUpp());
+            }
+            return MaterialApp(
+              themeMode: Platform.isIOS ? ThemeMode.light : null,
+              title: 'AnyUpp',
+              key: const Key('anyupp-main-app'),
 
-          return MaterialApp(
-            themeMode: ThemeMode.light,
-            title: 'AnyUpp',
-            key: const Key('anyupp-main-app'),
+              /// Catcher init STEP 3. Add navigator key from Catcher. It will be used to navigate user to report page or to show dialog.
+              navigatorKey: Catcher.navigatorKey,
+              theme: themeData,
+              builder: (context, child) {
+                return MediaQuery(
+                  child: child ?? Container(),
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                );
+              },
 
-            /// Catcher init STEP 3. Add navigator key from Catcher. It will be used to navigate user to report page or to show dialog.
-            navigatorKey: Catcher.navigatorKey,
-            theme: ThemeData(
-              primaryColor: Colors.green,
-            ),
+              // The first app page
+              home: isProd ? UpgradeAlert(showIgnore: false, showLater: false, child: OnBoarding()) : OnBoarding(),
 
-            builder: (context, child) {
-              return MediaQuery(
-                child: child ?? Container(),
-                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-              );
-            },
+              // To hide the debug mark (in debugging and development modes)
+              debugShowCheckedModeBanner: false,
 
-            // The first app page
-            home: isProd ? UpgradeAlert(showIgnore: false, showLater: false, child: OnBoarding()) : OnBoarding(),
+              //
+              // Localization >>>
+              //
+              locale: locale,
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                AppLocalizations.delegate,
+                //const FallbackCupertinoLocalisationsDelegate(),
+              ],
+              supportedLocales: SupportedLocales.locales,
+              localeListResolutionCallback: (List<Locale>? userPreferredlocales, Iterable<Locale> appSupportedLocales) {
+                // userPreferredlocales: comes from the phone settings in the same order
+                // appSupportedLocales: comes from the supportedLocales parameter what was defined up ahead
 
-            // To hide the debug mark (in debugging and development modes)
-            debugShowCheckedModeBanner: false,
-
-            //
-            // Localization >>>
-            //
-            locale: locale,
-            localizationsDelegates: [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              AppLocalizations.delegate,
-              //const FallbackCupertinoLocalisationsDelegate(),
-            ],
-            supportedLocales: SupportedLocales.locales,
-            localeListResolutionCallback: (List<Locale>? userPreferredlocales, Iterable<Locale> appSupportedLocales) {
-              // userPreferredlocales: comes from the phone settings in the same order
-              // appSupportedLocales: comes from the supportedLocales parameter what was defined up ahead
-
-              // Try to find a userPreferred Local what is supported by the APP
-              if (userPreferredlocales != null) {
-                for (Locale locale in userPreferredlocales) {
-                  for (Locale supportedLocale in appSupportedLocales) {
-                    if (supportedLocale.languageCode == locale.languageCode &&
-                        supportedLocale.countryCode == locale.countryCode) {
-                      // Return the first userPreferred Local what is supported by the APP
-                      return supportedLocale;
+                // Try to find a userPreferred Local what is supported by the APP
+                if (userPreferredlocales != null) {
+                  for (Locale locale in userPreferredlocales) {
+                    for (Locale supportedLocale in appSupportedLocales) {
+                      if (supportedLocale.languageCode == locale.languageCode &&
+                          supportedLocale.countryCode == locale.countryCode) {
+                        // Return the first userPreferred Local what is supported by the APP
+                        return supportedLocale;
+                      }
                     }
                   }
                 }
-              }
 
-              // OR return the first if there isn't any supported local in the user's locale list
-              return appSupportedLocales.first;
-            },
-          );
-        },
-      ),
+                // OR return the first if there isn't any supported local in the user's locale list
+                return appSupportedLocales.first;
+              },
+            );
+          },
+        );
+      }),
     );
   }
 }

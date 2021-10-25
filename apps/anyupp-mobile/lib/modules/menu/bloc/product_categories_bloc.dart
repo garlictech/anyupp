@@ -3,9 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
 
 part 'product_categories_event.dart';
 part 'product_categories_state.dart';
@@ -13,6 +12,8 @@ part 'product_categories_state.dart';
 class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategoriesState> {
   final UnitSelectBloc _unitSelectBloc;
   final ProductRepository _productRepository;
+
+  List<ProductCategory>? _categories;
 
   late StreamSubscription _unitSelectSubscription;
 
@@ -36,11 +37,8 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
     if (event is LoadProductCategories) {
       yield ProductCategoriesLoading();
       var response = await _productRepository.getProductCategoryList(event.unitId);
-      print('********* ProductCategoriesBloc.ProductCategoriesLoaded=$response');
-      yield ProductCategoriesLoaded(response);
-    }
-    if (event is ProductCategoriesUpdated) {
-      yield ProductCategoriesLoaded(event.productCategories);
+      _categories = response.data;
+      yield ProductCategoriesLoaded(_categories);
     }
   }
 

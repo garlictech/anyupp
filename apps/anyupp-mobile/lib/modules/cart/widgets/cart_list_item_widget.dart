@@ -22,31 +22,36 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
   Widget build(BuildContext context) {
     return Container(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 2,
-            child: Container(
-              padding: EdgeInsets.only(
-                top: 8,
-                left: 0,
-                right: 12,
+          Container(
+            padding: EdgeInsets.only(
+              top: 8,
+              left: 0,
+              right: 12,
+            ),
+            //width: 100,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                8.0,
               ),
-              //width: 100,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  8.0,
-                ),
-                child: ImageWidget(
-                  url: this.widget.order.image,
-                  placeholder: CircularProgressIndicator(),
-                  errorWidget: Icon(Icons.error),
-                  fit: BoxFit.cover,
-                ),
+              // child: ProductImageWidget(
+              //   url: this.widget.order.image!,
+              //   width: 130,
+              //   height: 130,
+              //   fit: BoxFit.cover,
+              // ),
+              child: ImageWidget(
+                url: this.widget.order.image,
+                placeholder: CircularProgressIndicator(),
+                errorWidget: Icon(Icons.error),
+                fit: BoxFit.cover,
+                width: 130,
+                height: 130,
               ),
             ),
           ),
           Expanded(
-            flex: 3,
             child: Column(
               // fit: StackFit.passthrough,
               children: <Widget>[
@@ -79,6 +84,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                         height: 16,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           RichText(
                             text: TextSpan(
@@ -108,7 +114,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                               ],
                             ),
                           ),
-                          Spacer(),
+                          // Spacer(),
                           BlocBuilder<CartBloc, BaseCartState>(
                             builder: (context, state) {
                               bool showAddLoading = state is CartLoadingState &&

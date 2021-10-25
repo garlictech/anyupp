@@ -61,8 +61,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   }
 
   @override
-  Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId,
-      [ServingMode? servingMode, String? nextToken]) async {
+  Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId, [String? nextToken]) async {
     print('_getFavorites().unitId=$unitId');
     try {
       User? user = await _authProvider.getAuthenticatedUserProfile();
@@ -82,15 +81,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       do {
         response = await _getNextPage(user.id, unitId, _token);
         if (response.data != null) {
-          if (servingMode != null) {
-            favorites.addAll(response.data!
-                .where(
-                  (element) => element.product.supportedServingModes.contains(servingMode),
-                )
-                .toList());
-          } else {
-            favorites.addAll(response.data!);
-          }
+          favorites.addAll(response.data!);
         }
         _token = response.nextToken;
       } while (response.nextToken != null);

@@ -73,8 +73,8 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
               // print('Menu.ProductCategoriesBloc.state=$state');
               if (state is ProductCategoriesLoaded) {
                 // print('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
-                if (state.productCategories?.data != null && state.productCategories!.data!.isNotEmpty) {
-                  return _buildTabBar(context, unitState.unit, state.productCategories?.data ?? []);
+                if (state.productCategories != null && state.productCategories!.isNotEmpty) {
+                  return _buildTabBar(context, unitState.unit, state.productCategories!);
                 } else {
                   return _noCategoriesWidget(context);
                 }
@@ -388,7 +388,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
       context,
       initialPosition: current == ServingMode.inPlace ? 0 : 1,
     );
-    if (selectedMethodPos != null) {
+    if (selectedMethodPos != null && (current == ServingMode.inPlace ? 0 : 1) != selectedMethodPos) {
       _deleteCartConfirmation(context, selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway);
     }
   }

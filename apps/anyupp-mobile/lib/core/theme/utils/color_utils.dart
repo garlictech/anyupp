@@ -146,7 +146,7 @@ Color _col(Color color, int percent) {
 }
 
 void setToolbarThemeV1(ThemeChainData theme) {
-  print('setToolbarThemeV1()');
+  // print('setToolbarThemeV1()');
   setToolbarColor(
     statusBarColor: theme.secondary0,
     systemNavigationBarColor: theme.secondary0,
@@ -155,7 +155,7 @@ void setToolbarThemeV1(ThemeChainData theme) {
 }
 
 void setToolbarThemeV2(ThemeChainData theme) {
-  print('setToolbarThemeV2()');
+  // print('setToolbarThemeV2()');
   setToolbarColor(
     statusBarColor: theme.secondary12,
     systemNavigationBarColor: theme.secondary12,

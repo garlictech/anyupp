@@ -10,13 +10,18 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class AddToCartPanelWidget extends StatefulWidget {
-  final Function(ConfigsetUpdated state, int quantity) onAddToCartPressed;
+  final Function(ConfigsetUpdated state, int quantity)? onAddToCartPressed;
+  final ProducItemDisplayState displayState;
+  final ServingMode? servingMode;
 
   const AddToCartPanelWidget({
     Key? key,
-    required this.onAddToCartPressed,
+    this.onAddToCartPressed,
+    this.displayState = ProducItemDisplayState.NORMAL,
+    this.servingMode,
   }) : super(key: key);
 
   @override
@@ -65,68 +70,13 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
               top: 16.0,
               bottom: 16.0,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                BorderedWidget(
-                  width: 40,
-                  height: 40,
-                  borderColor: theme.secondary16,
-                  child: Icon(
-                    Icons.remove,
-                    color: _quantity > 1 ? theme.secondary : theme.secondary16,
-                  ),
-                  onPressed: () => _decQuantity(),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    left: 35,
-                    right: 35,
-                  ),
-                  child: RichText(
-                    text: TextSpan(
-                      text: '$_quantity',
-                      style: Fonts.satoshi(
-                        color: theme.primary,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: ' x ',
-                          style: Fonts.satoshi(
-                            color: theme.secondary40,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        TextSpan(
-                          text: price,
-                          style: Fonts.satoshi(
-                            color: theme.primary,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                BorderedWidget(
-                  width: 40,
-                  height: 40,
-                  borderColor: theme.secondary16,
-                  child: Icon(
-                    Icons.add,
-                    color: theme.secondary,
-                  ),
-                  onPressed: () => _incQuantity(),
-                ),
-              ],
-            ),
+            child: widget.displayState == ProducItemDisplayState.NORMAL
+                ? _buildButtonRow(price)
+                : _buildNotAvailableInfo(),
           ),
           Platform.isIOS
               ? Container(
+                  margin: EdgeInsets.only(bottom: 20.0),
                   child: AddToCartPanelButtonWidget(
                     widget: widget,
                     quantity: _quantity,
@@ -140,6 +90,80 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
                 ),
         ],
       ),
+    );
+  }
+
+  Widget _buildNotAvailableInfo() {
+    return Text(
+      widget.servingMode == ServingMode.takeAway ? trans('product.notTakeAway') : trans('product.notInPlace'),
+      style: Fonts.satoshi(
+        fontSize: 14.0,
+        fontWeight: FontWeight.w700,
+        color:
+            widget.displayState == ProducItemDisplayState.DISABLED ? theme.secondary.withOpacity(0.5) : theme.secondary,
+      ),
+    );
+  }
+
+  Widget _buildButtonRow(String price) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        BorderedWidget(
+          width: 40,
+          height: 40,
+          borderColor: theme.secondary16,
+          child: Icon(
+            Icons.remove,
+            color: _quantity > 1 ? theme.secondary : theme.secondary16,
+          ),
+          onPressed: () => _decQuantity(),
+        ),
+        Container(
+          margin: EdgeInsets.only(
+            left: 35,
+            right: 35,
+          ),
+          child: RichText(
+            text: TextSpan(
+              text: '$_quantity',
+              style: Fonts.satoshi(
+                color: theme.primary,
+                fontSize: 16.0,
+                fontWeight: FontWeight.w700,
+              ),
+              children: <TextSpan>[
+                TextSpan(
+                  text: ' x ',
+                  style: Fonts.satoshi(
+                    color: theme.secondary40,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                TextSpan(
+                  text: price,
+                  style: Fonts.satoshi(
+                    color: theme.primary,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        BorderedWidget(
+          width: 40,
+          height: 40,
+          borderColor: theme.secondary16,
+          child: Icon(
+            Icons.add,
+            color: theme.secondary,
+          ),
+          onPressed: () => _incQuantity(),
+        ),
+      ],
     );
   }
 
@@ -179,7 +203,9 @@ class AddToCartPanelButtonWidget extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           primary: theme.primary,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(
+              40,
+            ),
           ),
         ),
         child: Row(
@@ -195,7 +221,9 @@ class AddToCartPanelButtonWidget extends StatelessWidget {
             ),
           ],
         ),
-        onPressed: () => widget.onAddToCartPressed(state, _quantity),
+        onPressed: widget.onAddToCartPressed != null && widget.displayState == ProducItemDisplayState.NORMAL
+            ? () => widget.onAddToCartPressed!(state, _quantity)
+            : null,
       ),
     );
   }
