@@ -138,6 +138,11 @@ describe('Admin user creation/deletion', () => {
       tap(result => {
         expect(result).toMatchSnapshot(label + ': Cleanup');
       }),
+      // try deleting a nonexisting user
+      switchMap(() => deleteOp({ input: { id: 'NONEXISTING-USER' } })),
+      tap(result => {
+        expect(result).toMatchSnapshot(label + ': Deleting nonexisting user');
+      }),
     );
 
   test('Admin user should be created/deleted with resolver code', done => {

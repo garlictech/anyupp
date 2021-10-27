@@ -50,7 +50,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "openingHours": null,
   "paymentModes": Array [
@@ -138,7 +138,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "openingHours": null,
   "paymentModes": Array [
@@ -228,7 +228,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "openingHours": null,
   "paymentModes": Array [
@@ -316,7 +316,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "openingHours": null,
   "paymentModes": Array [
@@ -404,7 +404,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "openingHours": null,
   "paymentModes": Array [
@@ -482,7 +482,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "openingHours": null,
   "paymentModes": Array [
@@ -562,7 +562,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "openingHours": null,
   "paymentModes": Array [
@@ -640,7 +640,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "openingHours": null,
   "paymentModes": Array [
@@ -713,7 +713,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "paymentModes": Array [
     Object {
@@ -784,7 +784,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "openingHours": null,
   "paymentModes": Array [
@@ -864,7 +864,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "openingHours": null,
   "paymentModes": Array [
@@ -938,7 +938,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "paymentModes": Array [
     Object {

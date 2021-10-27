@@ -6,7 +6,7 @@ Object {
   "email": "a@a.hu",
   "id": "TEST_ADMIN_USER",
   "name": "NAME",
-  "phone": "phone",
+  "phone": "+6234567892",
   "profileImage": null,
   "roleContexts": Object {
     "items": Array [],
@@ -17,22 +17,7 @@ Object {
 }
 `;
 
-exports[`CRUD sdk test An arbitrary CRUD: DELETE 1`] = `
-Object {
-  "createdAt": Any<String>,
-  "email": "a@a.hu",
-  "id": "TEST_ADMIN_USER",
-  "name": "UPDATED_USER",
-  "phone": "phone",
-  "profileImage": null,
-  "roleContexts": Object {
-    "items": Array [],
-    "nextToken": null,
-  },
-  "settings": null,
-  "updatedAt": Any<String>,
-}
-`;
+exports[`CRUD sdk test An arbitrary CRUD: DELETE 1`] = `null`;
 
 exports[`CRUD sdk test An arbitrary CRUD: READ 1`] = `
 Object {
@@ -40,7 +25,7 @@ Object {
   "email": "a@a.hu",
   "id": "TEST_ADMIN_USER",
   "name": "NAME",
-  "phone": "phone",
+  "phone": "+6234567892",
   "profileImage": null,
   "roleContexts": Object {
     "items": Array [],
@@ -61,7 +46,7 @@ Object {
   "email": "a@a.hu",
   "id": "TEST_ADMIN_USER",
   "name": "UPDATED_USER",
-  "phone": "phone",
+  "phone": "+6234567892",
   "profileImage": null,
   "roleContexts": Object {
     "items": Array [],
@@ -78,7 +63,7 @@ Object {
   "email": "a@a.hu",
   "id": "ADMIN_USERCRUD_SDK_ID",
   "name": "NAME2",
-  "phone": "phone",
+  "phone": "+6234567890",
   "profileImage": null,
   "roleContexts": Object {
     "items": Array [],
@@ -95,7 +80,7 @@ Object {
   "email": "a@a.hu",
   "id": "ADMIN_USERCRUD_SDK_ID",
   "name": "NAME2",
-  "phone": "phone",
+  "phone": "+6234567890",
   "profileImage": null,
   "roleContexts": Object {
     "items": Array [],

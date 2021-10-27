@@ -1,7 +1,7 @@
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
 import { Context, Handler } from 'aws-lambda';
-import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { v1 as uuidV1 } from 'uuid';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { DynamoDB } from 'aws-sdk';

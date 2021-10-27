@@ -105,7 +105,7 @@ const unitBase = {
   ],
   open: {
     from: '1970-01-01',
-    to: '1970-01-01',
+    to: '2970-01-01',
   },
   supportedOrderModes: [CrudApi.OrderMode.pickup, CrudApi.OrderMode.instant],
   supportedServingModes: [
@@ -133,6 +133,7 @@ const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
 const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
   ...createUnit_01,
   id: 'rkeeper-unit',
+  externalRestaurantId: 'restaurantid',
   pos: {
     type: CrudApi.PosType.rkeeper,
     rkeeper: {
@@ -141,7 +142,6 @@ const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
       rkeeperPassword: 'RKEEPER_PASSWORD',
       anyuppUsername: 'ANYUPP_USERNAME',
       anyuppPassword: 'ANYUPP_PASSWORD',
-      restaurantId: 'RESTAURANT_ID',
     },
   },
 };

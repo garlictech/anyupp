@@ -1,15 +1,11 @@
+import * as fixtures from './fixtures';
 import {
+  externalProductIdMaker,
   normalizeDish,
-  processProducts,
+  processDishes,
   validateDish,
 } from './process-products';
-import * as cartJson from './cart-fixture.json';
-import { tap, switchMap, catchError, take } from 'rxjs/operators';
-import { of } from 'rxjs';
-
-test('processProducts good case', () => {
-  expect(processProducts(cartJson)).toMatchSnapshot();
-});
+import { tap, take } from 'rxjs/operators';
 
 const dishFixture = {
   type: 'dish',
@@ -23,22 +19,53 @@ const dishFixture = {
   name: 'Pr\u00F3ba ital',
 };
 
-test('Dish validator', done => {
+test('Dish validator - good case', done => {
   validateDish(dishFixture)
     .pipe(
       tap(res => expect(res).toMatchSnapshot('GOOD CASE')),
       tap(res => expect(normalizeDish(res)).toMatchSnapshot('NORMALIZE')),
-      switchMap(() =>
-        validateDish({
-          ...dishFixture,
-          price: -1,
-          id: '2232',
-          name: undefined,
-        }),
-      ),
-      catchError(of),
-      tap(res => expect(res).toMatchSnapshot('BAD CASE')),
       take(1),
     )
     .subscribe(() => done());
+});
+
+test('Dish validator - bad case', done => {
+  validateDish({
+    ...dishFixture,
+    price: -1,
+    id: '2232',
+    name: undefined,
+  }).subscribe({
+    error: err => {
+      expect(err).toMatchSnapshot();
+      done();
+    },
+  });
+});
+
+test('externalProductIdMaker test', () => {
+  expect(externalProductIdMaker('GUID')).toMatchSnapshot();
+});
+
+test('processDishes items with equal ids', done => {
+  processDishes({ data: { dishes: [dishFixture, dishFixture] } })
+    .pipe(tap(result => expect(result).toMatchSnapshot()))
+    .subscribe(() => done());
+});
+
+test('processDishes items with different ids', done => {
+  processDishes({
+    data: { dishes: [dishFixture, { ...dishFixture, id: 21312321 }] },
+  })
+    .pipe(tap(result => expect(result).toMatchSnapshot()))
+    .subscribe(() => done());
+});
+
+test('processDishes must work on the fixture', done => {
+  processDishes(fixtures.rawData).subscribe({
+    next: result => {
+      expect(result).toMatchSnapshot();
+      done();
+    },
+  });
 });

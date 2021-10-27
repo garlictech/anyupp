@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dish validator: BAD CASE 1`] = `"Dish Object Validation Error (JOI): \\"price\\" must be a positive number, \\"name\\" is required"`;
+exports[`Dish validator - bad case 1`] = `"Dish Object Validation Error (JOI): \\"price\\" must be a positive number, \\"name\\" is required"`;
 
-exports[`Dish validator: GOOD CASE 1`] = `
+exports[`Dish validator - good case: GOOD CASE 1`] = `
 Object {
   "active": 0,
   "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
@@ -12,28 +12,64 @@ Object {
 }
 `;
 
-exports[`Dish validator: NORMALIZE 1`] = `
+exports[`Dish validator - good case: NORMALIZE 1`] = `
 Object {
   "active": 0,
   "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
   "id": "1000114",
   "name": "Próba ital",
-  "price": 50000,
+  "price": 500,
 }
 `;
 
-exports[`processProducts good case 1`] = `
+exports[`externalProductIdMaker test 1`] = `"GUID"`;
+
+exports[`processDishes items with different ids 1`] = `
 Array [
   Object {
     "active": 0,
-    "code": 3,
     "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
-    "id": 1000114,
-    "modischeme": 0,
-    "modiweight": 0,
-    "name": "Pr\\\\u00F3ba ital",
-    "price": 50000,
-    "type": "dish",
+    "id": "1000114",
+    "name": "Próba ital",
+    "price": 500,
+  },
+  Object {
+    "active": 0,
+    "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+    "id": "21312321",
+    "name": "Próba ital",
+    "price": 500,
+  },
+]
+`;
+
+exports[`processDishes items with equal ids 1`] = `
+Array [
+  Object {
+    "active": 0,
+    "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+    "id": "1000114",
+    "name": "Próba ital",
+    "price": 500,
+  },
+]
+`;
+
+exports[`processDishes must work on the fixture 1`] = `
+Array [
+  Object {
+    "active": 0,
+    "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+    "id": "1000114",
+    "name": "Próba ital",
+    "price": 500,
+  },
+  Object {
+    "active": 0,
+    "guid": "5b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+    "id": "1000115",
+    "name": "Próba kaja",
+    "price": 600,
   },
 ]
 `;

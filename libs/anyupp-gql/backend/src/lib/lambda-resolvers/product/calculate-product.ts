@@ -50,7 +50,6 @@ export const isProductVisibleAndHasAnyAvailableVariant = (
   if (!product.variants) {
     throw new Error('HANDLE ME: product.variants cannot be nullish');
   }
-
   return product.isVisible && !!isAnyVariantAvailable(product.variants);
 };
 

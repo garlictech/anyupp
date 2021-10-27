@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - not not existing unit 1`] = `[Error: Cannot find unit belonging to external unit id NOT EXISTING RESTAURANT]`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case 1`] = `
+Object {
+  "allergens": null,
+  "configSets": null,
+  "createdAt": Any<String>,
+  "description": null,
+  "id": Any<String>,
+  "image": "",
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "Próba kaja",
+  },
+  "position": -1,
+  "productCategoryId": "default-product-category",
+  "productType": "dish",
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "takeawayTax": -1,
+  "tax": -1,
+  "unitId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
+  "updatedAt": Any<String>,
+  "variants": Array [
+    Object {
+      "id": "id",
+      "pack": Object {
+        "size": 1,
+        "unit": "zsák",
+      },
+      "position": -1,
+      "price": 600,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "Próba kaja",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case 2`] = `
+Object {
+  "allergens": null,
+  "configSets": null,
+  "createdAt": Any<String>,
+  "description": null,
+  "id": Any<String>,
+  "image": "",
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "Próba ital",
+  },
+  "position": -1,
+  "productCategoryId": "default-product-category",
+  "productType": "dish",
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "takeawayTax": -1,
+  "tax": -1,
+  "unitId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
+  "updatedAt": Any<String>,
+  "variants": Array [
+    Object {
+      "id": "id",
+      "pack": Object {
+        "size": 1,
+        "unit": "zsák",
+      },
+      "position": -1,
+      "price": 500,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "Próba ital",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality createDefaultProductCategory 1`] = `
+Array [
+  Object {
+    "allergens": null,
+    "configSets": null,
+    "createdAt": "2021-11-01T14:46:20.126Z",
+    "description": null,
+    "id": "3fffc20b-8409-4c8a-aefd-c4b61f1b89ac",
+    "image": "",
+    "name": Object {
+      "de": null,
+      "en": null,
+      "hu": "Próba kaja",
+    },
+    "position": -1,
+    "productCategoryId": "default-product-category",
+    "productType": "dish",
+    "supportedServingModes": Array [
+      "inPlace",
+    ],
+    "takeawayTax": -1,
+    "tax": -1,
+    "unitId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
+    "updatedAt": "2021-11-01T14:46:20.128Z",
+    "variants": Array [
+      Object {
+        "id": "id",
+        "pack": Object {
+          "size": 1,
+          "unit": "zsák",
+        },
+        "position": -1,
+        "price": 600,
+        "variantName": Object {
+          "de": null,
+          "en": null,
+          "hu": "Próba kaja",
+        },
+      },
+    ],
+  },
+  Object {
+    "allergens": null,
+    "configSets": null,
+    "createdAt": "2021-11-01T14:46:20.129Z",
+    "description": null,
+    "id": "25de8000-d226-4382-8a05-da2d1a0c256f",
+    "image": "",
+    "name": Object {
+      "de": null,
+      "en": null,
+      "hu": "Próba ital",
+    },
+    "position": -1,
+    "productCategoryId": "default-product-category",
+    "productType": "dish",
+    "supportedServingModes": Array [
+      "inPlace",
+    ],
+    "takeawayTax": -1,
+    "tax": -1,
+    "unitId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
+    "updatedAt": "2021-11-01T14:46:20.129Z",
+    "variants": Array [
+      Object {
+        "id": "id",
+        "pack": Object {
+          "size": 1,
+          "unit": "zsák",
+        },
+        "position": -1,
+        "price": 500,
+        "variantName": Object {
+          "de": null,
+          "en": null,
+          "hu": "Próba ital",
+        },
+      },
+    ],
+  },
+]
+`;
+
+exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - existing restaurant 1`] = `
+Object {
+  "chainId": "test_chain_1_id",
+  "groupId": "test_group_1_id",
+  "unitId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
+}
+`;
+
+exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - not existing restaurant 1`] = `[Error: Cannot find unit belonging to external unit id NOT EXISTING RESTO\`]`;

@@ -15,7 +15,7 @@ const adminUserInput: RequiredId<CrudApi.CreateAdminUserInput> = {
   id: 'int-test-user-name',
   email: 'foobar@anyupp.com',
   name: 'int-test-user-name',
-  phone: '+1234567892',
+  phone: '+8234567892',
 };
 const suRoleContextInput: RequiredId<CrudApi.CreateRoleContextInput> = {
   id: `${testIdPrefix}${TEST_NAME}_role_context_01`,
@@ -70,7 +70,7 @@ describe('adminRoleContext test', () => {
       ),
     );
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     await cleanup()
       .pipe(
         // Seeding

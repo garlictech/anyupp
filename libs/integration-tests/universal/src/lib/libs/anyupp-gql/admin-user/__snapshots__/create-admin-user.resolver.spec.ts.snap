@@ -2,6 +2,8 @@
 
 exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Cleanup 1`] = `null`;
 
+exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Deleting nonexisting user 1`] = `null`;
+
 exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Malformed email 1`] = `[Error: GraphQL error: Invalid email address format.]`;
 
 exports[`Admin user creation/deletion Admin user should be created/deleted with IAM API call: IAM API call: Malformed phone number 1`] = `[Error: GraphQL error: Invalid phone number format.]`;
@@ -32,6 +34,8 @@ Object {
 
 exports[`Admin user creation/deletion Admin user should be created/deleted with authenticated API call: Auth CRUD api call: Cleanup 1`] = `null`;
 
+exports[`Admin user creation/deletion Admin user should be created/deleted with authenticated API call: Auth CRUD api call: Deleting nonexisting user 1`] = `null`;
+
 exports[`Admin user creation/deletion Admin user should be created/deleted with authenticated API call: Auth CRUD api call: Malformed email 1`] = `[Error: GraphQL error: Invalid email address format.]`;
 
 exports[`Admin user creation/deletion Admin user should be created/deleted with authenticated API call: Auth CRUD api call: Malformed phone number 1`] = `[Error: GraphQL error: Invalid phone number format.]`;
@@ -61,6 +65,8 @@ Object {
 `;
 
 exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: RESOLVER CODE: Cleanup 1`] = `undefined`;
+
+exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: RESOLVER CODE: Deleting nonexisting user 1`] = `null`;
 
 exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: RESOLVER CODE: Malformed email 1`] = `[InvalidParameterException: Invalid email address format.]`;
 
