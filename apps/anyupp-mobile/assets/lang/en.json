@@ -118,7 +118,12 @@
       "profile": "Profile"
     },
     "categoryEmpty": "This category is currently empty.",
-    "noCategories": "This unit has no products yet."
+    "noCategories": "This unit has no products yet.",
+    "category": {
+      "emptyTakeaway": "Sorry, this product category is not available in takeaway mode.",
+      "emptyInPlace": "Sorry, this product category is not available in in place mode.",
+      "emptyHint": "Look around the other categories."
+    }
   },
   "cart": {
     "totalCost": "Total cost",
