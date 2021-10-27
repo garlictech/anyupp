@@ -17,11 +17,7 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form
-      [formGroup]="dialogForm!"
-      (ngSubmit)="submit()"
-      [autocomplete]="false"
-    >
+    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" autocomplete="off">
       <div class="row">
         <div class="col-md-6">
           <bgap-form-select

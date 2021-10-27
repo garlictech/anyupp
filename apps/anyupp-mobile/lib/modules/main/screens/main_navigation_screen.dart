@@ -7,10 +7,9 @@ import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/nav.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MainNavigation extends StatefulWidget {
   final int pageIndex;
@@ -27,8 +26,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   // --- For bottom animation bar
   int _selectedIndex = 0;
   late AnimationController _animationController;
-  late Animation<double> animation;
-  late CurvedAnimation curve;
 
   // Caching pages
   List<Widget> _pages = [
@@ -47,30 +44,9 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     // getIt<AffiliateBloc>().add(StartAdvertisement());
 
     _animationController = AnimationController(
-      duration: Duration(seconds: 1),
+      duration: Duration(milliseconds: 200),
       vsync: this,
     );
-    curve = CurvedAnimation(
-      parent: _animationController,
-      curve: Interval(
-        0.5,
-        1.0,
-        curve: Curves.fastOutSlowIn,
-      ),
-    );
-    animation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(curve);
-
-    if (widget.animateCartIcon == false) {
-      _animationController.forward();
-    } else {
-      Future.delayed(
-        Duration(seconds: 2),
-        () => _animationController.forward(),
-      );
-    }
   }
 
   @override
@@ -78,19 +54,36 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     super.didChangeDependencies();
     if (_pageOptions == null) {
       _pageOptions = [
-        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.menu'), systemBarColor: theme.background),
-        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.favorites'), systemBarColor: theme.background2),
         MainPageOptions(
-            showAppBar: false, appBarText: trans('main.menu.orderStatus'), systemBarColor: theme.background2),
-        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.profile'), systemBarColor: theme.background2),
-        MainPageOptions(showAppBar: false, appBarText: trans('main.menu.cart'), systemBarColor: theme.background),
+          showAppBar: false,
+          appBarText: trans('main.menu.menu'),
+          systemBarColor: theme.secondary0,
+        ),
+        MainPageOptions(
+          showAppBar: false,
+          appBarText: trans('main.menu.favorites'),
+          systemBarColor: theme.secondary12,
+        ),
+        MainPageOptions(
+          showAppBar: false,
+          appBarText: trans('main.menu.orderStatus'),
+          systemBarColor: theme.secondary12,
+        ),
+        MainPageOptions(
+          showAppBar: false,
+          appBarText: trans('main.menu.profile'),
+          systemBarColor: theme.secondary12,
+        ),
+        MainPageOptions(
+          showAppBar: false,
+          appBarText: trans('main.menu.cart'),
+          systemBarColor: theme.secondary0,
+        ),
       ];
       _navigateToPage(widget.pageIndex);
     } else {
       MainNavigationState navState = getIt<MainNavigationBloc>().state;
       if (navState is MainNavaigationNeed) {
-        // print('***** MainNaevigationScreen.didChangeDependencies().toPage=${navState.pageIndex}');
-
         _navigateToPage(navState.pageIndex);
       }
     }
@@ -102,103 +95,106 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     // --- This little trick need to prevent the statusbar color change back to main screen statusbar color
     var route = ModalRoute.of(context);
     if (route != null && route.isCurrent) {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: _pageOptions![_selectedIndex].systemBarColor,
-        statusBarIconBrightness: Brightness.dark,
-      ));
+      // setToolbarTheme(theme);
+      // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      //   statusBarColor: _pageOptions![_selectedIndex].systemBarColor,
+      //   statusBarIconBrightness: Brightness.dark,
+      // ));
     }
 
     // The main scaffold for the whole application
-    return BlocBuilder<ThemeBloc, ThemeState>(builder: (context, ThemeState themeState) {
-      var theme = themeState.theme;
-      return SafeArea(
-        child: NetworkConnectionWrapperWidget(
-          child: Scaffold(
-            // Depending on the boolean showAppBar, you can control the appearance of the appBar
-            appBar: _pageOptions![_selectedIndex].showAppBar
-                ? AppBar(
-                    title: Text(_pageOptions![_selectedIndex].appBarText,
-                        style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
-                    centerTitle: false,
-                    leading: Container(),
-                  )
-                : null,
+    return SafeArea(
+      top: false,
+      bottom: false,
+      child: NetworkConnectionWrapperWidget(
+        child: Scaffold(
+          // Depending on the boolean showAppBar, you can control the appearance of the appBar
+          appBar: _pageOptions![_selectedIndex].showAppBar
+              ? AppBar(
+                  title: Text(_pageOptions![_selectedIndex].appBarText,
+                      style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+                  centerTitle: false,
+                  leading: Container(),
+                )
+              : null,
 
-            // Opening the selected page
-            // body: pages[_selectedIndex],
-            body: BlocListener<MainNavigationBloc, MainNavigationState>(
-              listener: (BuildContext context, MainNavigationState state) {
-                if (state is MainNavaigationNeed) {
-                  print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
-                  _navigateToPage(state.pageIndex);
-                }
-              },
-              child: DoubleBackToCloseApp(
-                snackBar: SnackBar(
-                  elevation: 8,
-                  duration: Duration(seconds: 1),
-                  content: Text(
-                    trans('common.exit'),
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
+          // Opening the selected page
+          // body: pages[_selectedIndex],
+          body: BlocListener<MainNavigationBloc, MainNavigationState>(
+            listener: (BuildContext context, MainNavigationState state) {
+              if (state is MainNavaigationNeed) {
+                print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                _navigateToPage(state.pageIndex);
+              }
+            },
+            child: DoubleBackToCloseApp(
+              snackBar: SnackBar(
+                elevation: 8,
+                duration: Duration(seconds: 1),
+                content: Text(
+                  trans('common.exit'),
+                  textAlign: TextAlign.center,
+                  style: Fonts.satoshi(
+                    fontSize: 16.0,
+                    color: theme.secondary0,
                   ),
-                  behavior: SnackBarBehavior.floating,
-                  backgroundColor: Color(0xAA880000),
+                  // style: TextStyle(
+                  //   color: Theme.of(context).colorScheme.secondary,
+                  // ),
                 ),
-                child: IndexedStack(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Color(0xAA880000),
+              ),
+              child: Stack(children: [
+                IndexedStack(
                   index: _selectedIndex,
                   children: _pages,
                 ),
-                // child: _pages[_selectedIndex],
-              ),
-            ),
-            floatingActionButton: ScaleTransition(
-              scale: animation,
-              child: FloatingActionButton(
-                heroTag: null,
-                elevation: 8,
-                backgroundColor: theme.indicator,
-                child: CartIconWidget(
-                  color: theme.text2,
-                  badgeColor: theme.indicator,
-                  badgeStyle: GoogleFonts.poppins(
-                    fontSize: 12.0,
-                    color: theme.text2,
+                Positioned(
+                  bottom: 12,
+                  left: 0,
+                  right: 0,
+                  child: CartButtonWidget(
+                    controller: _animationController,
                   ),
-                  onTapped: () {
-                    _navigateToPage(4);
-                  },
                 ),
-                onPressed: () {
-                  // _onItemTapped(2);
-                },
-              ),
+              ]),
+              // child: _pages[_selectedIndex],
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: BottomAppBar(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  _createBottomBarIconWithText(0, Icons.restaurant, 'main.bottomTitles.menu'),
-                  _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
-                  SizedBox(
-                    width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
-                  ),
-                  _createOrdersBottomBarIconWithTextAndBadge(),
-                  _createBottomBarIconWithText(3, Icons.person, 'main.bottomTitles.profile'),
-                ],
+          ),
+          bottomNavigationBar: Material(
+            elevation: 8.0,
+            child: Container(
+              child: BottomAppBar(
+                // elevation: 0.0,
+                // shape: AutomaticNotchedShape(
+                //   StadiumBorder(),
+                //   // RoundedRectangleBorder(
+                //   //   borderRadius: BorderRadius.all(Radius.circular(25)),
+                //   // ),
+                // ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    _createBottomBarIconWithText(0, Icons.fastfood, 'main.bottomTitles.menu'),
+                    // _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
+                    // SizedBox(
+                    //   width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
+                    // ),
+                    _createOrdersBottomBarIconWithTextAndBadge(),
+                    _createBottomBarIconWithText(3, Icons.account_circle, 'main.bottomTitles.profile'),
+                  ],
+                ),
+                // shape: CircularNotchedRectangle(),
+                color: theme.secondary0,
+                // elevation: 18.0,
               ),
-              shape: CircularNotchedRectangle(),
-              color: theme.background,
-              notchMargin: 4.0,
-              elevation: 18.0,
             ),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 
   int _orderCount = 0;
@@ -215,50 +211,6 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       child: _createBottomBarIconWithText(
           2, Icons.receipt, 'main.bottomTitles.orders', _orderCount > 0 ? _orderCount.toString() : null),
     );
-
-    // return BlocListener<OrderBloc, BaseOrderState>(
-    //   listener: (BuildContext context, BaseOrderState state) {
-    //     if (state is OrdersLoadedState) {
-    //       setState(() {
-    //         _orderCount = state.totalCount;
-    //       });
-    //     }
-
-    //     if (state is NoOrdersLoaded) {
-    //       setState(() {
-    //         _orderCount = 0;
-    //       });
-    //     }
-    //   },
-    //   child: _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders',
-    //       _orderCount != null && _orderCount > 0 ? _orderCount.toString() : null),
-    // );
-
-    // return BlocBuilder<OrderBloc, BaseOrderState>(builder: (context, state) {
-    //   if (state is OrdersLoadedState) {
-    //     int orderCount = state.totalCount;
-    //     return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders',
-    //         orderCount != null && orderCount > 0 ? orderCount.toString() : null);
-    //   }
-    //   return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders');
-    // });
-    // return BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
-    //   if (state is UnitSelected) {
-    //     final GeoUnit unit = state.unit;
-    //     return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders');
-    //     // return StreamBuilder<List<Order>>(
-    //     //     stream: getIt<OrderRepository>().getCurrentOrders(unit.id),
-    //     //     builder: (context, AsyncSnapshot<List<Order>> orderState) {
-    //     //       print('_createOrdersBottomBarIconWithTextAndBadge.state=${orderState.data}');
-    //     //       int orderCount = orderState?.data?.length ?? 0;
-    //     //       // int orderCount =  getIt<OrderRepository>().orderListTotalCount;
-    //     //       return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders',
-    //     //           orderCount != null && orderCount > 0 ? orderCount.toString() : null);
-    //     //     });
-    //   } else {
-    //     return _createBottomBarIconWithText(2, Icons.receipt, 'main.bottomTitles.orders');
-    //   }
-    // });
   }
 
   Widget _createBottomBarIconWithText(int index, IconData icon, String textKey, [String? badge]) {
@@ -272,11 +224,33 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   }
 
   void _navigateToPage(int index) {
+    // print('MainNavigationScreen._navigateToPage.index=$index, _selectedIndex=$_selectedIndex');
+    if (index == 0) {
+      _animationController.forward();
+    } else {
+      _animationController.reverse();
+    }
+    if (_selectedIndex == index) return;
+
     if (index == 2) {
       _pages[2] = OrdersScreen(
         key: UniqueKey(),
       );
     }
+
+    if (index == 0 || index == 4) {
+      // Menu + Cart
+      setToolbarThemeV1(theme);
+    } else {
+      // Profile + Orders
+      setToolbarThemeV2(theme);
+    }
+
+    if (index == 4) {
+      index = 0;
+      Future.delayed(Duration(seconds: 1)).then((value) => Nav.to(CartScreen()));
+    }
+
     setState(() {
       _selectedIndex = index;
     });

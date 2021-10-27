@@ -11,7 +11,6 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class UnitFoundByQRCodeScreen extends StatefulWidget {
   final String unitId;
@@ -35,8 +34,9 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
   @override
   void initState() {
     super.initState();
+    setToolbarThemeV1(theme);
 
-    print('*** _UnitFoundByQRCodeScreenState.initState()');
+    print('*** _UnitFoundByQRCodeScreenState.initState().navigateToCart=${widget.navigateToCart}');
     getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
   }
 
@@ -46,7 +46,7 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: BlocListener<UnitsBloc, UnitsState>(
-          listener: (BuildContext context, UnitsState state) {
+          listener: (BuildContext context, UnitsState state) async {
             if (state is UnitsLoaded) {
               print('***************** UNITS LOADED=${state.units}');
               int index = state.units.indexWhere((GeoUnit unit) => unit.id == widget.unitId);
@@ -54,17 +54,19 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
               if (unit != null) {
                 // unit = unit.copyWith(place: widget.place);
                 // print('***************** UNITS FOUND=$unit');
-                setPlacePref(widget.place);
+                await setPlacePref(widget.place);
                 _flipCardState.currentState?.toggleCard();
                 showNotification(context, trans('selectUnit.tableReserved.title'),
                     trans('selectUnit.tableReserved.description', [widget.place.table, widget.place.seat]), null);
                 getIt<UnitSelectBloc>().add(SelectUnit(unit));
                 getIt<CartBloc>().add(UpdatePlaceInCartAction(unit, widget.place));
-                Future.delayed(Duration(
+                await Future.delayed(Duration(
                   milliseconds: 1000,
-                )).then((value) => Nav.reset(MainNavigation(
-                      pageIndex: widget.navigateToCart ? 4 : 0,
-                    )));
+                ));
+                // Nav.pop();
+                Nav.reset(MainNavigation(
+                  pageIndex: widget.navigateToCart ? 4 : 0,
+                ));
               } else {
                 showErrorDialog(
                     context, trans('selectUnit.qrCodeError.title'), trans('selectUnit.qrCodeError.description'),
@@ -127,7 +129,7 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                 Text(
                   trans('selectUnit.findingSeat'),
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF3C2F2F),
@@ -136,7 +138,8 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: CenterLoadingWidget(
-                    color: theme.highlight,
+                    backgroundColor: Colors.white,
+                    color: theme.primary,
                     size: 20,
                     strokeWidth: 2.0,
                   ),
@@ -170,7 +173,7 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
             child: Text(
               trans('selectUnit.qrConnected'),
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 fontSize: 14.0,
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF3C2F2F),
@@ -182,7 +185,7 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
             child: Text(
               trans('selectUnit.chair', [widget.place.seat, widget.place.table]),
               textAlign: TextAlign.center,
-              style: GoogleFonts.poppins(
+              style: Fonts.satoshi(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF3C2F2F),

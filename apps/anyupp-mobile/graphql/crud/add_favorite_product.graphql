@@ -28,6 +28,7 @@ mutation CreateFavoriteProduct($userId: ID!, $unitId: ID!, $productId: ID!) {
       allergens
       unitId
       productCategoryId
+      supportedServingModes
       configSets {
         type
         productSetId

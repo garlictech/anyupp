@@ -19,8 +19,9 @@ query SearchOrderHistory(
       unitId
       userId
       archived
+      servingMode
+      orderMode
       paymentIntention
-      takeAway
       paymentMode {
         caption
         type

@@ -23,9 +23,6 @@ class PaymentMethodCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isVisa = method.brand == 'visa';
-
-    //   padding: EdgeInsets.all(3.0),
     return Wrap(
       children: [
         Stack(
@@ -36,7 +33,7 @@ class PaymentMethodCardWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         width: 2,
-                        color: theme.indicator,
+                        color: theme.primary,
                       ),
                     )
                   : null,
@@ -49,12 +46,16 @@ class PaymentMethodCardWidget extends StatelessWidget {
                   CreditCard(
                     cardNumber: '**** **** **** ${method.last4}',
                     cardExpiry: _getExpirityDateString(method),
-                    bankName: method.name ?? '-',
+                    bankName: '',
                     cardHolderName: ' ', //method.brand,
                     cvv: '',
-                    frontBackground: isVisa ? CardBackgrounds.black : CardBackgrounds.white,
-                    frontTextColor: isVisa ? Colors.white : Colors.black,
-                    backBackground: isVisa ? CardBackgrounds.white : CardBackgrounds.black,
+                    frontBackground: Container(
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      color: theme.secondary0,
+                    ),
+                    frontTextColor: theme.secondary,
+                    backBackground: CardBackgrounds.white,
                     showBackSide: false,
                     showShadow: true,
                     cardType: _getCardTypeFromString(method.brand!), // isVisa ? CardType.visa : CardType.masterCard,
@@ -83,7 +84,8 @@ class PaymentMethodCardWidget extends StatelessWidget {
                     width: 40,
                     child: Icon(
                       Icons.delete,
-                      color: isVisa ? Colors.white : Colors.black,
+                      color: theme.secondary,
+                      // color: isVisa ? Colors.white : Colors.black,
                     )),
               ),
             ),

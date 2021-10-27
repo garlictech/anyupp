@@ -9,17 +9,15 @@ import 'package:fa_prev/shared/widgets/app_bar.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
-  OrderDetailsScreen();
+class OrderDetailsScreenOld extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
             appBar(theme, onBackButtonPressed: () => Nav.pop(), title: trans(context, 'profile.transactions.details')),
         // The appBar head text
-        backgroundColor: theme.background,
+        backgroundColor: theme.secondary0,
         body: BlocBuilder<OrderBloc, BaseOrderState>(
           builder: (context, state) {
             if (state is OrderDetailLoadedState) {
@@ -47,9 +45,9 @@ class OrderDetailsScreen extends StatelessWidget {
               ),
               border: Border.all(
                 width: 1.5,
-                color: theme.border2,
+                color: theme.secondary40,
               ),
-              color: theme.background,
+              color: theme.secondary0,
             ),
             child: Container(
               padding: EdgeInsets.all(0.0),
@@ -72,7 +70,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
   Widget _buildDivider(BuildContext context) {
     return Divider(
-      color: theme.disabled.withOpacity(0.4),
+      color: theme.secondary64.withOpacity(0.4),
       height: 1.5,
     );
   }
@@ -85,7 +83,7 @@ class OrderDetailsScreen extends StatelessWidget {
               topLeft: Radius.circular(14.0),
               topRight: Radius.circular(14.0),
             ),
-            color: theme.background2),
+            color: theme.secondary12),
         padding: EdgeInsets.only(
           top: 14.0,
           bottom: 14.0,
@@ -101,9 +99,9 @@ class OrderDetailsScreen extends StatelessWidget {
               ),
               child: Text(
                 order.getFormattedDate(),
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 12,
-                  color: theme.text,
+                  color: theme.secondary,
                 ),
               ),
             ),
@@ -113,7 +111,7 @@ class OrderDetailsScreen extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: order.orderNum,
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 14.0,
                       color: Color(0x993C2F2F),
                     ),
@@ -141,9 +139,9 @@ class OrderDetailsScreen extends StatelessWidget {
                 flex: 5,
                 child: AutoSizeText(
                   getLocalizedText(context, item.productName),
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     //fontSize: 14,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                   maxLines: 1,
                 ),
@@ -155,9 +153,9 @@ class OrderDetailsScreen extends StatelessWidget {
                 flex: 1,
                 child: AutoSizeText(
                   formatCurrency(item.sumPriceShown.priceSum, item.priceShown.currency),
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     //fontSize: 14,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                   maxLines: 1,
                 ),
@@ -186,7 +184,7 @@ class OrderDetailsScreen extends StatelessWidget {
           bottomLeft: Radius.circular(14.0),
           bottomRight: Radius.circular(14.0),
         ),
-        color: theme.background2,
+        color: theme.secondary12,
       ),
       padding: EdgeInsets.only(
         top: 12.0,
@@ -199,17 +197,17 @@ class OrderDetailsScreen extends StatelessWidget {
         children: [
           Text(
             trans(context, 'orders.totalCost'),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16,
-              color: theme.text,
+              color: theme.secondary,
               fontWeight: FontWeight.w700,
             ),
           ),
           Text(
             formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16,
-              color: theme.text,
+              color: theme.secondary,
               fontWeight: FontWeight.w500,
             ),
           ),

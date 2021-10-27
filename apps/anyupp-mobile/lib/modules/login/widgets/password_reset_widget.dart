@@ -5,7 +5,6 @@ import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PasswordResetDialogContentWidget extends StatefulWidget {
   @override
@@ -50,10 +49,12 @@ class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogCo
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CenterLoadingWidget(),
+          CenterLoadingWidget(
+            backgroundColor: Colors.white,
+          ),
           Text(
             message,
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16.0,
               fontWeight: FontWeight.w500,
               color: Color(0xFF3C2F2F),
@@ -77,7 +78,7 @@ class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogCo
                 child: Text(
                   trans('login.email.dialogPasswordRefreshedTitle'),
                   textAlign: TextAlign.left,
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF3C2F2F),
@@ -90,7 +91,7 @@ class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogCo
                   child: Text(
                     trans('login.email.dialogPasswordRefreshedMessage'),
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 18.0,
                     ),
                   )),
@@ -102,9 +103,9 @@ class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogCo
                 child: Text(
                   trans('login.email.signIn'),
                   textAlign: TextAlign.start,
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 18,
-                    color: theme.highlight,
+                    color: theme.primary,
                     fontWeight: FontWeight.normal,
                     decoration: TextDecoration.underline,
                   ),
@@ -119,90 +120,88 @@ class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogCo
   }
 
   Widget _buildRegistrationForm(BuildContext context, String userName) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Stack(
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 8.0, left: 12.0, right: 12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    LoginFormUtils.buildTextField(
-                      context,
-                      trans('login.email.verificationCode'),
-                      _codeController,
-                      TextInputType.emailAddress,
-                      false,
-                      LoginFormUtils.confirmCodeValidator(context),
-                    ),
-                    LoginFormUtils.buildTextField(
-                      context,
-                      trans('login.email.passwordFieldLabel'),
-                      _password1Controller,
-                      TextInputType.text,
-                      true,
-                      LoginFormUtils.passwordValidator(context),
-                    ),
-                    LoginFormUtils.buildTextField(
-                      context,
-                      trans('login.email.password2FieldLabel'),
-                      _password2Controller,
-                      TextInputType.text,
-                      true,
-                      LoginFormUtils.passwordValidator(context),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        getIt<LoginBloc>().add(
-                            ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
-                      },
-                      child: Text(
-                        trans('login.email.linkSignIn'),
-                        textAlign: TextAlign.start,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: theme.highlight,
-                          fontWeight: FontWeight.normal,
-                          decoration: TextDecoration.underline,
-                        ),
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 8.0, left: 12.0, right: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  LoginFormUtils.buildTextField(
+                    context,
+                    trans('login.email.verificationCode'),
+                    _codeController,
+                    TextInputType.emailAddress,
+                    false,
+                    LoginFormUtils.confirmCodeValidator(context),
+                  ),
+                  LoginFormUtils.buildTextField(
+                    context,
+                    trans('login.email.passwordFieldLabel'),
+                    _password1Controller,
+                    TextInputType.text,
+                    true,
+                    LoginFormUtils.passwordValidator(context),
+                  ),
+                  LoginFormUtils.buildTextField(
+                    context,
+                    trans('login.email.password2FieldLabel'),
+                    _password2Controller,
+                    TextInputType.text,
+                    true,
+                    LoginFormUtils.passwordValidator(context),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      getIt<LoginBloc>().add(
+                          ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
+                    },
+                    child: Text(
+                      trans('login.email.linkSignIn'),
+                      textAlign: TextAlign.start,
+                      style: Fonts.satoshi(
+                        fontSize: 14,
+                        color: theme.primary,
+                        fontWeight: FontWeight.normal,
+                        decoration: TextDecoration.underline,
                       ),
                     ),
-                    SizedBox(
-                      height: 8.0,
-                    ),
+                  ),
+                  SizedBox(
+                    height: 8.0,
+                  ),
 
-                    // Buttons
-                    SizedBox(
-                      width: double.infinity,
-                      height: 52.0,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF30BF60),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
+                  // Buttons
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52.0,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF30BF60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
-                        child: Text(
-                          //transEx(context, 'payment.sendOrder'),
-                          trans('login.email.buttonPasswordReset'),
-                          style: GoogleFonts.poppins(
-                            color: theme.text2,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        onPressed: () => _sendRegistrationRequest(userName),
                       ),
+                      child: Text(
+                        //transEx(context, 'payment.sendOrder'),
+                        trans('login.email.buttonPasswordReset'),
+                        style: Fonts.satoshi(
+                          color: theme.secondary0,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      onPressed: () => _sendRegistrationRequest(userName),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              // _buildCloseButton(context),
-            ],
-          ),
+            ),
+            // _buildCloseButton(context),
+          ],
         ),
       ),
     );

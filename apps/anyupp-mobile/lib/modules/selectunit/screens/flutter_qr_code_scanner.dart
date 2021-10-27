@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/Place.dart';
 import 'package:fa_prev/modules/screens.dart';
@@ -53,6 +54,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     //setFlashState();
     _switchAnimationState(AnimationState.search);
     super.initState();
+    setToolbarThemeV1(theme);
   }
 
   Future<void> setFlashState() async {
@@ -260,6 +262,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     });
     controller.scannedDataStream.listen((scanData) {
       final Uri uri = Uri.parse(scanData.code);
+      print('********* BARCODE FOUND.uri=$uri');
       // print('********* BARCODE FOUND.uri.scheme=${uri.scheme}');
       // print('********* BARCODE FOUND.uri.path=${uri.path}');
       // print('********* BARCODE FOUND.uri.query=${uri.query}');
@@ -276,7 +279,8 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
         final Place place = Place(table: table, seat: seat);
         // print('***** BARCODE.UNIT=$unitId, TABLE=$table, SEAT=$seat');
         // showNotification(context, 'New Seat Reserved', 'Seat $seat reversed at Table $table', null);
-        Nav.reset(UnitFoundByQRCodeScreen(
+        Nav.pop();
+        Nav.to(UnitFoundByQRCodeScreen(
           place: place,
           unitId: unitId,
           navigateToCart: widget.navigateToCart,

@@ -21,5 +21,8 @@ class ListFavoriteProducts extends FavoritesEvent {
   final String unitId;
   final String? nextToken;
 
-  ListFavoriteProducts({required this.unitId, this.nextToken});
+  ListFavoriteProducts({
+    required this.unitId,
+    this.nextToken,
+  });
 }

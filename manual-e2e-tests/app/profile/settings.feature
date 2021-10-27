@@ -6,11 +6,11 @@ Feature: Set the language
     Then there is a loading screen
     And there is the unit selection screen
     When I tap the "Késdobáló #111" unit in the list
-    Then there is the dashboard screen
-    And the "Menu" option is selected on the bottom navigator
+    And I tap the "In place" button
+    Then there is the "Menu" screen
 
   Scenario: Set the language to HU then set it back to EN
-    When I tap the "Profile" menu
+    When I tap the "Profile" button
     Then I should see the "Settings" tab
     When I tap the "Settings" tab
     And I tap the "Language" tab

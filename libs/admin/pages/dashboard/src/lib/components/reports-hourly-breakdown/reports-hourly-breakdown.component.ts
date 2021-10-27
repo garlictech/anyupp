@@ -12,12 +12,10 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { hourlyBreakdownOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductType, IOrderAmount } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 import { ReportsService } from '../../services/reports.service';
@@ -41,7 +39,6 @@ export class ReportsHourlyBreakdownComponent
   private _amounts: IOrderAmount = {};
 
   constructor(
-    private _store: Store,
     private _translateService: TranslateService,
     private _reportsService: ReportsService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -65,16 +62,11 @@ export class ReportsHourlyBreakdownComponent
     );
 
     if (this.selectedUnit$ && this.orders$) {
-      combineLatest([
-        this.selectedUnit$,
-        this._store.select(productsSelectors.getAllGeneratedProducts),
-        this.orders$,
-      ])
+      combineLatest([this.selectedUnit$, this.orders$])
         .pipe(untilDestroyed(this))
-        .subscribe(([unit, products, orders]): void => {
+        .subscribe(([unit, orders]): void => {
           this._amounts = hourlyBreakdownOrderAmounts(
             unit.timeZone || 'Europe/Budapest',
-            products,
             orders,
           );
 

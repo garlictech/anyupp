@@ -110,6 +110,7 @@
       "profile": "Profil",
       "cart": "Kosár"
     },
+    "tooltip": "Bármikor válthatsz a rendelési módok között.",
     "bottomTitles": {
       "menu": "Étlap",
       "favorites": "Kedvencek",
@@ -117,13 +118,27 @@
       "profile": "Profil"
     },
     "categoryEmpty": "A választott kategória jelenleg üres.",
-    "noCategories": "A választott üzlet még nem rendelkezik elérhető termékekkel."
+    "noCategories": "A választott üzlet még nem rendelkezik elérhető termékekkel.",
+    "category": {
+      "emptyTakeaway": "Sajnos elviteles módban nem elérhető ez a termékkategória.",
+      "emptyInPlace": "Sajnos helyben fogyasztásra nem elérhető ez a termékkategória.",
+      "emptyHint": "Nézz körül a többi kategóriában."
+    }
   },
   "cart": {
     "totalCost": "Fizetendő:",
     "emptyCartLine1": "A kosarad még üres.",
     "emptyCartLine2": "Válogass kedvedre az aktuális kínálatunkból!",
-    "addToCart": "Kosárhoz Adás"
+    "addToCart": "Kosárhoz Adás",
+    "pay": "FIZETEK",
+    "myCart": "KOSARAM",
+    "deleteCart": "Kosár törlése",
+    "deleteCartTitle": "Biztosan törlöd a kosarad?",
+    "deleteCartMessage": "A művelettel minden kosárban lévő terméket eltávolítasz a kosaradból.",
+    "deleteCartAccept": "Törlés",
+    "deleteCartCancel": "Mégsem",
+    "takeAway": "elvitel",
+    "inPlace": "helyben"
   },
   "allergens": {
     "title": "Allergének",
@@ -146,22 +161,27 @@
   "favorites": {
     "noFavorites": "Még nem adtál hozzá kedvenc tételt.",
     "noFavoritesDesc": "Találj kedvedre való ételeket, italokat az Étlap fül alatt.",
-    "noFavoritesButton": "ÉTLAP FELFEDEZÉSE"
+    "noFavoritesButton": "Étlap felfedezése"
   },
   "orders": {
-    "tabCurrentOrder": "Folyamatban",
-    "tabOrderHistory": "Lezárt",
+    "titleCurrentOrder": "Folyamatban lévő rendelések",
+    "titleOrderHistory": "Korábbi rendelések",
     "noActiveOrder": "Nincs teljesítésre váró rendelésed.",
-    "noActiveOrderDesc": "Találj kedvedre való ételeket, italokat az Étlap fül alatt.",
-    "noActiveOrderButton": "ÉTLAP FELFEDEZÉSE",
+    "noActiveOrderDesc": "Rendelj néhány kattintással!",
+    "noActiveOrderButton": "Étlap felfedezése",
     "totalCost": "ÖSSZESEN",
     "noOrderHistory": "Még nincs rendeléstörténeted",
+    "details": {
+      "orderState": "Rendelés állapota",
+      "orderDetails": "Rendelés részletei",
+      "paymentDetails": "Fizetés részletei",
+      "otherDetails": "További részletek"
+    },
     "status": {
       "none": "VÁR",
       "placed": "BEADVA",
       "processing": "KÉSZÜL",
       "ready": "KÉSZ",
-      "paid": "FIZETVE",
       "rejected": "TÖRÖLVE",
       "served": "FELSZOLGÁLVA"
     },
@@ -169,7 +189,86 @@
     "waiting": "Kérjük, várj a pincérre!",
     "simplepay": "Fizetés SimplePay-jel",
     "stripepay": "Fizetés Stripe-pal",
-    "loadMore": "Még több betöltése..."
+    "loadMore": "Még több betöltése...",
+    "infos": {
+      "titles": {
+        "0": "Vendéglátóhely",
+        "1": "Rendelés módja",
+        "2": "Rendelési szám",
+        "3": "Rendelési dátuma",
+        "4": "Rendelési időpontja"
+      },
+      "values": {
+        "takeAway": "Elvitel",
+        "inPlace": "Helyben",
+        "card": "Bankkártya",
+        "cash": "Készpénz",
+        "inapp": "Alkalmazásban"
+      },
+      "status": {
+        "none": {
+          "title": "Feldolgozás alatt",
+          "titleShort": "Feldolgozás alatt",
+          "description": "Rendelésed feldolgozás alatt áll. Ha bármi probléma felmerülne, kollégáink keresni fognak."
+        },
+        "placed": {
+          "title": "Feldolgozva",
+          "titleShort": "Feldolgozva",
+          "description": "Rendelésed feldolgozásra került. Minden rendben."
+        },
+        "processing": {
+          "title": "Készül a rendelésed",
+          "titleShort": "Készül",
+          "description": "Rendelésed feldolgozásra került. Minden rendben."
+        },
+        "ready": {
+          "title": "Elkészült",
+          "titleShort": "Elkészült",
+          "description": "Rendelésed elkészült, hamarosan felszolgáljuk neked. "
+        },
+        "rejected": {
+          "title": "Törölve",
+          "titleShort": "Törölve",
+          "description": "Rendelésed törlésre került. A további teendőkkel kapcsolatban kollégánk hamarosan felkeres téged."
+        },
+        "served": {
+          "title": "Felszolgálva",
+          "titleShort": "Felszolgálva",
+          "description": "Rendelésed elkészült, hamarosan felszolgáljuk neked. "
+        }
+      },
+      "timeline": {
+        "none": {
+          "finished": "A rendelésedet megkaptuk.",
+          "waiting": "A rendelésedet megkaptuk."
+        },
+        "placed": {
+          "finished": "Rendelésedet megerősítésre került, minden rendben!",
+          "waiting": "Rendelésedet megerősítésre kerül."
+        },
+        "processing": {
+          "finished": "Rendelésed elkészült, hamarosan felszolgáljuk neked/átveheted.",
+          "waiting": "Éppen készítjük a megrendelt tételeket."
+        },
+        "ready": {
+          "finished": "Rendelésed felszolgálásra/átvételre került.",
+          "waiting": "Rendelésed felszolgálás alatt van/átvehető."
+        },
+        "rejected": {
+          "finished": "Rendelésedet elutasításra került. Kérjük egyeztess a vendéglátóhely személyzetével.",
+          "waiting": "Rendelésedet elutasításra került. Kérjük egyeztess a vendéglátóhely személyzetével."
+        },
+        "served": {
+          "finished": "Rendelésed felszolgálásra/átvételre került.",
+          "waiting": "Rendelésed felszolgálás alatt van/átvehető."
+        }
+      }
+    },
+    "paymentDetails": {
+      "card": "Kártyás fizetés a pincérnél.",
+      "cash": "Készpénzes fizetés a pincérnél.",
+      "inapp": "Stripe online fizetés"
+    }
   },
   "notifications": {
     "messageFrom": "Üzenet az AnyUpp-tól!",
@@ -182,7 +281,8 @@
     "method": {
       "cash": "Pincérnél készpénzzel",
       "creditCard": "Pincérnél kártyával + SZÉP kártya",
-      "inAppPayment": "Kártyás fizetés Stripe-pal (ajánlott)"
+      "inAppPayment": "Kártyás fizetés Stripe-pal (ajánlott)",
+      "noPaymentMethod": "Még nincs mentett kártyát."
     },
     "sendOrder": "RENDELÉS",
     "fillInvoice": "SZÁMLAADATOK MEGADÁSA",
@@ -210,7 +310,9 @@
         "street_address": "Utca cím",
         "invoice_email": "Számla email",
         "invoiceAddress": "Előző számlázási cím használata",
-        "show": "Megtekintés"
+        "show": "Megtekintés",
+        "downloadReceipt": "NYUGTA LETÖLTÉSE",
+        "downloadInvoice": "SZÁMLA LETÖLTÉSE"
       }
     },
     "simplePayStatus": {
@@ -265,6 +367,26 @@
       "add_card": "Kártya hozzáadása",
       "card_added": "Kártya sikeresen hozzáadva!",
       "success": "Siker!"
+    }
+  },
+  "servingModeSheet": {
+    "title": "Kérjük válassz",
+    "inPlace": {
+      "title": "Helyben fogyasztás",
+      "description": "Fogyaszd el helyben a kedvenceidet."
+    },
+    "takeAway": {
+      "title": "Elvitel",
+      "description": "Kérd elvitelre kedvenceidet."
+    },
+    "dialog": {
+      "title": {
+        "takeaway": "Biztosan váltani szeretnél helyben fogyasztásra?",
+        "inplace": "Biztosan váltani szeretnél elviteles módra?"
+      },
+      "description": "A művelettel törlésre kerül a jelenlegi kosarad tartalma, és sajnos újra ki kell majd választanod minden rendelni kívánt terméket.",
+      "cancel": "Mégsem",
+      "ok": "Igen"
     }
   },
   "selectUnit": {
@@ -372,8 +494,9 @@
       }
     }
   },
-  "affiliate": {
-    "advertisement": "Hirdetés"
+  "product": {
+    "notTakeAway": "Csak helyben",
+    "notInPlace": "Csak elvitelre"
   },
   "validators": {
     "required": "Ez a mező szükséges",

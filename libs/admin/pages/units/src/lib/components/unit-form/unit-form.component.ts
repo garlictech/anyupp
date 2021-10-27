@@ -24,12 +24,19 @@ import {
   contactFormGroup,
   EToasterType,
   multiLangValidator,
+  notEmptyArray,
+  ORDER_MODES,
   PAYMENT_MODES,
+  SERVING_MODES,
   TIME_FORMAT_PATTERN,
   unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IKeyValue } from '@bgap/shared/types';
+import {
+  defaultOrderMode,
+  defaultServingMode,
+  IKeyValue,
+} from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -48,6 +55,8 @@ export class UnitFormComponent
 {
   public unit!: CrudApi.Unit;
   public paymentModes = PAYMENT_MODES;
+  public servingModes = SERVING_MODES;
+  public orderModes = ORDER_MODES;
   public groupOptions: IKeyValue[] = [];
   public timeZoneOptions: IKeyValue[] = [];
 
@@ -79,6 +88,11 @@ export class UnitFormComponent
       ),
       timeZone: [''],
       paymentModes: [[]],
+      supportedServingModes: [
+        [defaultServingMode],
+        { validators: notEmptyArray },
+      ],
+      supportedOrderModes: [[defaultOrderMode], { validators: notEmptyArray }],
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder, true),
       pos: this._formBuilder.group({

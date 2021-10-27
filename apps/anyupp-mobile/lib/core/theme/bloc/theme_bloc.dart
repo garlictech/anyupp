@@ -1,16 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:catcher/core/catcher.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/utils/color.dart';
 
 part 'theme_event.dart';
 part 'theme_state.dart';
-
 // !!! THEME_ANY_UPP is the DEFAULT theme
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
@@ -19,6 +15,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   ThemeBloc(this._unitSelectBloc) : super(ThemeState(theme: ThemeAnyUpp())) {
     _unitSelectSubscription = _unitSelectBloc.stream.asBroadcastStream().listen((unitSelectedState) {
+      print('****** ThemeBloc._unitSelectSubscription=$unitSelectedState');
       if (unitSelectedState is UnitSelected) {
         add(ThemeSelected(theme: unitThemeToThemeChainData(unitSelectedState.unit)));
       }
@@ -36,25 +33,5 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   Future<void> close() {
     _unitSelectSubscription.cancel();
     return super.close();
-  }
-}
-
-ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
-  try {
-    return ThemeChainData(
-      background: HexColor.fromHex(unit.style.colors.backgroundLight),
-      background2: HexColor.fromHex(unit.style.colors.backgroundDark),
-      text: HexColor.fromHex(unit.style.colors.textDark),
-      text2: HexColor.fromHex(unit.style.colors.textLight),
-      indicator: HexColor.fromHex(unit.style.colors.indicator),
-      highlight: HexColor.fromHex(unit.style.colors.highlight),
-      disabled: HexColor.fromHex(unit.style.colors.disabled),
-      border: HexColor.fromHex(unit.style.colors.borderDark),
-      border2: HexColor.fromHex(unit.style.colors.borderLight),
-      images: unit.style.images,
-    );
-  } catch (error, stackTrace) {
-    Catcher.reportCheckedError(error, stackTrace);
-    return ThemeAnyUpp();
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 
 import 'success_animation_widget.dart';
 
@@ -30,7 +30,7 @@ showSuccessDialog(BuildContext context, String title, String message, [VoidCallb
                     Text(
                       title,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
+                      style: Fonts.satoshi(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
                         color: Colors.green,

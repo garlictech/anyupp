@@ -5,8 +5,6 @@ import 'package:fa_prev/modules/menu/widgets/allergen_grid_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AllergenDetailsScreen extends StatefulWidget {
   @override
@@ -23,10 +21,10 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: theme.background,
-      statusBarIconBrightness: Brightness.dark,
-    ));
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //   statusBarColor: theme.secondary0,
+    //   statusBarIconBrightness: Brightness.dark,
+    // ));
 
     return _buildMain(context);
   }
@@ -36,7 +34,7 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
   ) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: theme.background,
+        backgroundColor: theme.secondary0,
         appBar: AppBar(
           leading: Container(
             padding: EdgeInsets.only(
@@ -49,24 +47,24 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   width: 1,
-                  color: theme.border2,
+                  color: theme.secondary40,
                 ),
               ),
               child: BackButton(
                 onPressed: () => Nav.pop(),
-                color: theme.text,
+                color: theme.secondary,
               ),
             ),
           ),
           elevation: 0.0,
           iconTheme: IconThemeData(
-            color: theme.text, //change your color here
+            color: theme.secondary, //change your color here
           ),
-          backgroundColor: theme.background,
+          backgroundColor: theme.secondary0,
           title: Text(
             trans("allergens.title"),
-            style: GoogleFonts.poppins(
-              color: Colors.black,
+            style: Fonts.satoshi(
+              color: theme.secondary,
             ),
             //getLocalizedText(context, widget.item.name),
           ),
@@ -90,9 +88,9 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 8),
                   child: Text(
                     trans("allergens.disclaimer"),
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 14,
-                      color: Color(0xFF3C2F2F),
+                      color: theme.secondary,
                       fontWeight: FontWeight.w500,
                     ),
                     textAlign: TextAlign.justify,
@@ -119,13 +117,14 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
         delegate: SliverChildBuilderDelegate((context, index) {
           String allergenName = allergens.keys.toList()[index];
           int allergenIndex = allergens[allergenName]!;
-          return allergenGridWidget(
-              allergen: trans("allergens.$allergenName"),
-              index: allergenIndex,
-              assetPath: "assets/allergens/$allergenName.svg",
-              showName: true,
-              themeColor: theme.background,
-              fontSize: 20);
+          return AllergenGridWidget(
+            allergen: trans("allergens.$allergenName"),
+            index: allergenIndex,
+            assetPath: "assets/allergens/$allergenName.svg",
+            showName: true,
+            fontSize: 14.0,
+            iconSize: 48.0,
+          );
         }, childCount: allergens.keys.length));
   }
 }

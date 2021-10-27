@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:fa_prev/core/theme/theme.dart';
 
 typedef OnEmptyWidgetButtonTap = void Function();
@@ -12,6 +12,10 @@ class EmptyWidget extends StatelessWidget {
   final OnEmptyWidgetButtonTap? onTap;
   final String? buttonTextKey;
   final String? icon;
+  final double iconSize;
+  final double textFontSize;
+  final double descriptionFontSize;
+  final double horizontalPadding;
 
   const EmptyWidget({
     Key? key,
@@ -20,11 +24,17 @@ class EmptyWidget extends StatelessWidget {
     this.onTap,
     this.buttonTextKey,
     this.icon = 'assets/icons/empty-box.svg',
+    this.iconSize = 104.0,
+    this.textFontSize = 16.0,
+    this.descriptionFontSize = 12.0,
+    this.horizontalPadding = 0.0,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: theme.secondary0,
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -36,18 +46,27 @@ class EmptyWidget extends StatelessWidget {
   }
 
   List<Widget> _buildWidgetColumn(BuildContext context) {
+    bool isSvg = icon?.endsWith('svg') ?? false;
     var widgets = <Widget>[];
     if (icon != null) {
       widgets.add(
-        SvgPicture.asset(
-          icon!,
-          width: 104.0,
-          fit: BoxFit.fitWidth,
-        ),
+        isSvg
+            ? SvgPicture.asset(
+                icon!,
+                width: iconSize,
+                fit: BoxFit.fitWidth,
+                color: theme.secondary,
+              )
+            : Image.asset(
+                icon!,
+                width: iconSize,
+                fit: BoxFit.fitWidth,
+                // color: theme.secondary,
+              ),
       );
       widgets.add(
         SizedBox(
-          height: 32.0,
+          height: 24.0,
         ),
       );
     }
@@ -55,9 +74,10 @@ class EmptyWidget extends StatelessWidget {
     if (messageKey != null) {
       widgets.add(Text(
         trans(context, messageKey!),
-        style: GoogleFonts.poppins(
-          color: theme.text,
-          fontSize: 16.0,
+        textAlign: TextAlign.center,
+        style: Fonts.satoshi(
+          color: theme.secondary,
+          fontSize: textFontSize,
           fontWeight: FontWeight.w600,
         ),
       ));
@@ -65,13 +85,13 @@ class EmptyWidget extends StatelessWidget {
 
     if (descriptionKey != null) {
       widgets.add(SizedBox(
-        height: 4.0,
+        height: 8.0,
       ));
       widgets.add(Text(
         trans(context, descriptionKey!),
-        style: GoogleFonts.poppins(
-          color: theme.text,
-          fontSize: 12.0,
+        style: Fonts.satoshi(
+          color: theme.secondary,
+          fontSize: descriptionFontSize,
           fontWeight: FontWeight.normal,
         ),
       ));
@@ -83,7 +103,7 @@ class EmptyWidget extends StatelessWidget {
       ));
       widgets.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: theme.indicator,
+          primary: theme.primary,
           padding: EdgeInsets.only(
             top: 16,
             bottom: 16,
@@ -91,14 +111,14 @@ class EmptyWidget extends StatelessWidget {
             right: 24,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(40),
           ),
         ),
         child: Text(
           trans(context, buttonTextKey!),
-          style: GoogleFonts.poppins(
+          style: Fonts.satoshi(
             fontSize: 16,
-            color: theme.text2,
+            color: theme.secondary0,
             fontWeight: FontWeight.normal,
           ),
         ),

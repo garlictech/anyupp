@@ -26,7 +26,11 @@ class _StripePaymentMethodsScreenState extends State<StripePaymentMethodsScreen>
     return BlocListener<StripePaymentBloc, StripePaymentState>(
       listener: (context, state) {
         if (state is StripeCardCreated) {
-          showSuccessDialog(context, trans("payment.manageCard.success"), trans("payment.manageCard.card_added"));
+          showSuccessDialog(
+            context,
+            trans("payment.manageCard.success"),
+            trans("payment.manageCard.card_added"),
+          );
           getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
         }
         if (state is StripeError) {

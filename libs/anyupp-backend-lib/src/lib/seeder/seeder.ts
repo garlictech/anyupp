@@ -43,6 +43,7 @@ import {
   createTestRoleContext,
   createTestUnit,
   createTestUnitProduct,
+  createTestUnitsForOrderHandling,
   SeederDependencies,
 } from './seed-data-fn';
 
@@ -179,6 +180,9 @@ export const seedBusinessData = (deps: SeederDependencies) =>
           createTestUnit(1, 1, 1)(deps).pipe(ce('### Unit SEED 01')),
           createTestUnit(1, 1, 2)(deps).pipe(ce('### Unit SEED 02')),
           createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
+          createTestUnitsForOrderHandling()(deps).pipe(
+            ce('### Order handling units'),
+          ),
           createTestProductCategory(1, 1)(deps).pipe(ce('### ProdCat SEED 01')),
           createTestProductCategory(1, 2)(deps).pipe(ce('### ProdCat SEED 02')),
           createComponentSets(deps).pipe(ce('### ComponentSets')),

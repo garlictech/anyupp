@@ -1,8 +1,14 @@
-import { throwIfEmptyValue } from '@bgap/shared/utils';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Maybe } from '@bgap/crud-gql/api';
-import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
+import {
+  defaultSupportedOrderModes,
+  defaultSupportedServingModes,
+} from '@bgap/shared/types';
+import {
+  filterNullishGraphqlListWithDefault,
+  throwIfEmptyValue,
+} from '@bgap/shared/utils';
 import * as geolib from 'geolib';
 import { combineLatest, EMPTY, Observable, of } from 'rxjs';
 import { defaultIfEmpty, map, switchMap } from 'rxjs/operators';
@@ -80,6 +86,14 @@ const toGeoUnit = ({
   isAcceptingOrders: unit.isAcceptingOrders,
   openingHours: '09:00-22:00',
   openingHoursNext7: getUnitOpeningHoursAtTime(unit),
+  supportedOrderModes:
+    unit.supportedOrderModes && unit.supportedOrderModes.length > 0
+      ? unit.supportedOrderModes
+      : defaultSupportedOrderModes,
+  supportedServingModes:
+    unit.supportedServingModes && unit.supportedServingModes.length > 0
+      ? unit.supportedServingModes
+      : defaultSupportedServingModes,
 });
 
 /*const getOpeningOursForToday = (openingHours: IWeeklySchedule): string => {

@@ -5,7 +5,8 @@ subscription OnOrderChanged($userId: String, $unitId: String) {
     unitId
     userId
     paymentIntention
-    takeAway
+    orderMode
+    servingMode
     archived
     paymentMode {
       caption

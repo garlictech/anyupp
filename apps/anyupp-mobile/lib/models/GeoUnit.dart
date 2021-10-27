@@ -2,10 +2,11 @@ import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
 
 import 'package:flutter/foundation.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 @immutable
 class GeoUnit {
-  final String? id;
+  final String id;
   final String groupId;
   final String chainId;
   final String name;
@@ -16,8 +17,11 @@ class GeoUnit {
   final String currency;
   final bool isAcceptingOrders;
   final List<OpeningHours> openingHoursNext7;
+  final List<ServingMode> supportedServingModes;
+  final List<OrderMode> supportedOrderModes;
+
   GeoUnit({
-    this.id,
+    required this.id,
     required this.groupId,
     required this.chainId,
     required this.name,
@@ -28,6 +32,8 @@ class GeoUnit {
     required this.currency,
     required this.isAcceptingOrders,
     required this.openingHoursNext7,
+    required this.supportedServingModes,
+    required this.supportedOrderModes,
   });
 
   GeoUnit copyWith({
@@ -42,6 +48,8 @@ class GeoUnit {
     String? currency,
     bool? isAcceptingOrders,
     List<OpeningHours>? openingHoursNext7,
+    List<ServingMode>? supportedServingModes,
+    List<OrderMode>? supportedOrderModes,
   }) {
     return GeoUnit(
       id: id ?? this.id,
@@ -55,6 +63,8 @@ class GeoUnit {
       currency: currency ?? this.currency,
       isAcceptingOrders: isAcceptingOrders ?? this.isAcceptingOrders,
       openingHoursNext7: openingHoursNext7 ?? this.openingHoursNext7,
+      supportedServingModes: supportedServingModes ?? this.supportedServingModes,
+      supportedOrderModes: supportedOrderModes ?? this.supportedOrderModes,
     );
   }
 
@@ -71,6 +81,8 @@ class GeoUnit {
       'currency': currency,
       'isAcceptingOrders': isAcceptingOrders,
       'openingHoursNext7': openingHoursNext7.map((x) => x.toJson()).toList(),
+      'supportedServingModes': supportedServingModes.map((x) => enumToString(x)).toList(),
+      'supportedOrderModes': supportedOrderModes.map((x) => enumToString(x)).toList(),
     };
   }
 
@@ -87,12 +99,16 @@ class GeoUnit {
       currency: map['currency'],
       isAcceptingOrders: map['isAcceptingOrders'],
       openingHoursNext7: List<OpeningHours>.from(map['openingHoursNext7']?.map((x) => OpeningHours.fromJson(x))),
+      supportedServingModes:
+          List<ServingMode>.from(map['supportedServingModes']?.map((x) => enumFromString(x, ServingMode.values))),
+      supportedOrderModes:
+          List<OrderMode>.from(map['supportedOrderModes']?.map((x) => enumFromString(x, OrderMode.values))),
     );
   }
 
   @override
   String toString() {
-    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7)';
+    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
   }
 
   @override
@@ -111,7 +127,9 @@ class GeoUnit {
         other.distance == distance &&
         other.currency == currency &&
         other.isAcceptingOrders == isAcceptingOrders &&
-        listEquals(other.openingHoursNext7, openingHoursNext7);
+        listEquals(other.openingHoursNext7, openingHoursNext7) &&
+        listEquals(other.supportedServingModes, supportedServingModes) &&
+        listEquals(other.supportedOrderModes, supportedOrderModes);
   }
 
   @override
@@ -126,6 +144,8 @@ class GeoUnit {
         distance.hashCode ^
         currency.hashCode ^
         isAcceptingOrders.hashCode ^
+        supportedServingModes.hashCode ^
+        supportedOrderModes.hashCode ^
         openingHoursNext7.hashCode;
   }
 }

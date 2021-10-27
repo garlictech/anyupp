@@ -39,14 +39,6 @@ class UnlinkAccountsWidget extends StatelessWidget {
                       LoginMethod.FACEBOOK,
                       methodSnapshot.data!.contains(LoginMethod.FACEBOOK),
                     ),
-                    // TODO PHONE
-                    // _createLinkedSocialButtonWidget(
-                    //   context,
-                    //   'phone',
-                    //   LoginMethod.PHONE,
-                    //   methodSnapshot.data.contains(LoginMethod.PHONE),
-                    // ),
-
                     _createLinkedSocialButtonWidget(
                       context,
                       'apple',
@@ -74,10 +66,10 @@ class UnlinkAccountsWidget extends StatelessWidget {
         position: BadgePosition.topEnd(),
         badgeContent: Icon(
           linked ? Icons.check : Icons.add,
-          color: theme.text2,
+          color: theme.secondary0,
           size: 16.0,
         ),
-        badgeColor: linked ? theme.indicator : theme.highlight,
+        badgeColor: linked ? theme.primary : theme.primary,
         child: _createSocialButtonWidget(context, icon, method, linked),
       ),
     );
@@ -86,9 +78,9 @@ class UnlinkAccountsWidget extends StatelessWidget {
   Widget _createSocialButtonWidget(BuildContext context, String icon, LoginMethod method, bool linked) {
     return SocialLoginButtonWidget(
       providerIcon: icon,
-      iconColor: theme.indicator,
+      iconColor: theme.primary,
       method: method,
-      borderColor: theme.border,
+      borderColor: theme.secondary16,
       size: 60.0,
       iconSize: 32.0,
       onTap: !linked

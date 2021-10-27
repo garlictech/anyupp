@@ -62,7 +62,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
 
   @override
   Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId, [String? nextToken]) async {
-    // print('_getFavorites().unitId=$unitId');
+    print('_getFavorites().unitId=$unitId');
     try {
       User? user = await _authProvider.getAuthenticatedUserProfile();
       if (user == null) {

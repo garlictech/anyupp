@@ -2,13 +2,13 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:fa_prev/modules/orders/orders.dart';
 
-import '../../../shared/widgets/transaction_info_widget.dart';
 import 'order_simple_list_item_widget.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class OrderHistoryCard extends StatelessWidget {
   final Order order;
@@ -31,9 +31,9 @@ class OrderHistoryCard extends StatelessWidget {
         ),
         border: Border.all(
           width: 1.5,
-          color: theme.border2,
+          color: theme.secondary40,
         ),
-        color: theme.background,
+        color: theme.secondary0,
       ),
       child: Container(
         padding: EdgeInsets.all(0.0),
@@ -53,20 +53,20 @@ class OrderHistoryCard extends StatelessWidget {
 
   Widget _buildDivider(BuildContext context) {
     return Divider(
-      color: theme.disabled.withOpacity(0.4),
+      color: theme.secondary64.withOpacity(0.4),
       height: 1.5,
     );
   }
 
   Widget _buildOrderHeader(BuildContext context) {
-    String status = order.statusLog[order.statusLog.length - 1].status;
+    OrderStatus status = order.statusLog[order.statusLog.length - 1].status;
 
     return ClipRect(
       child: Banner(
-        message: trans(context, 'orders.status.$status'),
+        message: trans(context, 'orders.status.${enumToString(status)!}'),
         location: BannerLocation.topEnd,
-        color: status == 'REJECTED' ? Colors.red : Colors.green,
-        textStyle: GoogleFonts.poppins(
+        color: status == OrderStatus.rejected ? Colors.red : Colors.green,
+        textStyle: Fonts.satoshi(
           color: Colors.white,
           fontSize: 8.0,
         ),
@@ -76,7 +76,7 @@ class OrderHistoryCard extends StatelessWidget {
                 topLeft: Radius.circular(14.0),
                 topRight: Radius.circular(14.0),
               ),
-              color: theme.background2),
+              color: theme.secondary12),
           padding: EdgeInsets.only(
             top: 14.0,
             bottom: 14.0,
@@ -88,9 +88,9 @@ class OrderHistoryCard extends StatelessWidget {
             children: [
               Text(
                 '${order.orderNum}',
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 12,
-                  color: theme.text,
+                  color: theme.secondary,
                 ),
               ),
               Padding(
@@ -99,9 +99,9 @@ class OrderHistoryCard extends StatelessWidget {
                 ),
                 child: Text(
                   order.getFormattedDate(),
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 12,
-                    color: theme.text,
+                    color: theme.secondary,
                   ),
                 ),
               ),
@@ -143,7 +143,7 @@ class OrderHistoryCard extends StatelessWidget {
           bottomLeft: Radius.circular(14.0),
           bottomRight: Radius.circular(14.0),
         ),
-        color: theme.background2,
+        color: theme.secondary12,
       ),
       padding: EdgeInsets.only(
         top: 12.0,
@@ -156,17 +156,17 @@ class OrderHistoryCard extends StatelessWidget {
         children: [
           Text(
             trans(context, 'orders.totalCost'),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16,
-              color: theme.text,
+              color: theme.secondary,
               fontWeight: FontWeight.w700,
             ),
           ),
           Text(
             formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown.currency),
-            style: GoogleFonts.poppins(
+            style: Fonts.satoshi(
               fontSize: 16,
-              color: theme.text,
+              color: theme.secondary,
               fontWeight: FontWeight.w500,
             ),
           ),

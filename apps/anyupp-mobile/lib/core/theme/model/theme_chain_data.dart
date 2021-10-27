@@ -3,115 +3,83 @@ import 'package:fa_prev/models.dart';
 
 @immutable
 class ThemeChainData {
-  final Color background;
-  final Color background2;
-  final Color text;
-  final Color text2;
-  final Color indicator;
-  final Color highlight;
-  final Color disabled;
-  final Color border;
-  final Color border2;
+  final Color secondary0;
+  final Color secondary12;
+  final Color secondary;
+  final Color primary;
+  final Color secondary64;
+  final Color secondary16;
+  final Color secondary40;
+  final bool light;
   final ChainStyleImages? images;
 
   ThemeChainData({
-    required this.background,
-    required this.background2,
-    required this.text,
-    required this.text2,
-    required this.indicator,
-    required this.highlight,
-    required this.disabled,
-    required this.border,
-    required this.border2,
+    required this.secondary0,
+    required this.secondary12,
+    required this.secondary,
+    required this.primary,
+    required this.secondary64,
+    required this.secondary16,
+    required this.secondary40,
+    required this.light,
     this.images,
   });
 
-  final Map<int, Color> color = {
-    50: Color.fromRGBO(136, 14, 79, .1),
-    100: Color.fromRGBO(136, 14, 79, .2),
-    200: Color.fromRGBO(136, 14, 79, .3),
-    300: Color.fromRGBO(136, 14, 79, .4),
-    400: Color.fromRGBO(136, 14, 79, .5),
-    500: Color.fromRGBO(136, 14, 79, .6),
-    600: Color.fromRGBO(136, 14, 79, .7),
-    700: Color.fromRGBO(136, 14, 79, .8),
-    800: Color.fromRGBO(136, 14, 79, .9),
-    900: Color.fromRGBO(136, 14, 79, 1),
-  };
-
-  ThemeData getThemeData() {
-    return ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        indicatorColor: MaterialColor(indicator.value, color),
-        primarySwatch: MaterialColor(highlight.value, color),
-        primaryColor: Colors.black,
-        hoverColor: Color(0xFFFFDB87),
-        highlightColor: Colors.white,
-        primaryColorLight: Color(0xFFFFDB87),
-        backgroundColor: Color(0xFFFFDB87),
-        bottomAppBarColor: Color(0xFF176E49));
-  }
-
   ThemeChainData copyWith({
-    Color? background,
-    Color? background2,
-    Color? text,
-    Color? text2,
-    Color? indicator,
-    Color? highlight,
-    Color? disabled,
-    Color? border,
-    Color? border2,
+    Color? secondary0,
+    Color? secondary12,
+    Color? secondary,
+    Color? primary,
+    Color? secondary64,
+    Color? secondary16,
+    Color? secondary40,
+    bool? light,
     ChainStyleImages? images,
   }) {
     return ThemeChainData(
-      background: background ?? this.background,
-      background2: background2 ?? this.background2,
-      text: text ?? this.text,
-      text2: text2 ?? this.text2,
-      indicator: indicator ?? this.indicator,
-      highlight: highlight ?? this.highlight,
-      disabled: disabled ?? this.disabled,
-      border: border ?? this.border,
-      border2: border2 ?? this.border2,
+      secondary0: secondary0 ?? this.secondary0,
+      secondary12: secondary12 ?? this.secondary12,
+      secondary: secondary ?? this.secondary,
+      primary: primary ?? this.primary,
+      secondary64: secondary64 ?? this.secondary64,
+      secondary16: secondary16 ?? this.secondary16,
+      secondary40: secondary40 ?? this.secondary40,
+      light: light ?? this.light,
       images: images ?? this.images,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'background': background.value,
-      'background2': background2.value,
-      'text': text.value,
-      'text2': text2.value,
-      'indicator': indicator.value,
-      'highlight': highlight.value,
-      'disabled': disabled.value,
-      'border': border.value,
-      'border2': border2.value,
+      'secondary0': secondary0.value,
+      'secondary12': secondary12.value,
+      'secondary': secondary.value,
+      'primary': primary.value,
+      'secondary64': secondary64.value,
+      'secondary16': secondary16.value,
+      'secondary40': secondary40.value,
+      'light': light,
       'images': images?.toJson(),
     };
   }
 
   factory ThemeChainData.fromJson(Map<String, dynamic> map) {
     return ThemeChainData(
-      background: Color(map['background']),
-      background2: Color(map['background2']),
-      text: Color(map['text']),
-      text2: Color(map['text2']),
-      indicator: Color(map['indicator']),
-      highlight: Color(map['highlight']),
-      disabled: Color(map['disabled']),
-      border: Color(map['border']),
-      border2: Color(map['border2']),
+      secondary0: Color(map['secondary0']),
+      secondary12: Color(map['secondary12']),
+      secondary: Color(map['secondary']),
+      primary: Color(map['primary']),
+      secondary64: Color(map['secondary64']),
+      secondary16: Color(map['secondary16']),
+      secondary40: Color(map['secondary40']),
+      light: map['light'] ?? true,
       images: ChainStyleImages.fromJson(map['images']),
     );
   }
 
   @override
   String toString() {
-    return 'ThemeChainData(background: $background, background2: $background2, text: $text, text2: $text2, indicator: $indicator, highlight: $highlight, disabled: $disabled, border: $border, border2: $border2, images: $images)';
+    return 'ThemeChainData(secondary0: $secondary0, secondary12: $secondary12, secondary: $secondary, primary: $primary, secondary64: $secondary64, secondary16: $secondary16, secondary40: $secondary40, light: $light, images: $images)';
   }
 
   @override
@@ -119,29 +87,27 @@ class ThemeChainData {
     if (identical(this, other)) return true;
 
     return other is ThemeChainData &&
-        other.background == background &&
-        other.background2 == background2 &&
-        other.text == text &&
-        other.text2 == text2 &&
-        other.indicator == indicator &&
-        other.highlight == highlight &&
-        other.disabled == disabled &&
-        other.border == border &&
-        other.border2 == border2 &&
+        other.secondary0 == secondary0 &&
+        other.secondary12 == secondary12 &&
+        other.secondary == secondary &&
+        other.primary == primary &&
+        other.secondary64 == secondary64 &&
+        other.secondary16 == secondary16 &&
+        other.secondary40 == secondary40 &&
+        other.light == light &&
         other.images == images;
   }
 
   @override
   int get hashCode {
-    return background.hashCode ^
-        background2.hashCode ^
-        text.hashCode ^
-        text2.hashCode ^
-        indicator.hashCode ^
-        highlight.hashCode ^
-        disabled.hashCode ^
-        border.hashCode ^
-        border2.hashCode ^
+    return secondary0.hashCode ^
+        secondary12.hashCode ^
+        secondary.hashCode ^
+        primary.hashCode ^
+        secondary64.hashCode ^
+        secondary16.hashCode ^
+        secondary40.hashCode ^
+        light.hashCode ^
         images.hashCode;
   }
 }

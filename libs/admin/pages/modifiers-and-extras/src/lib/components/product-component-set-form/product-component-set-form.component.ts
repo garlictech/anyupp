@@ -1,7 +1,6 @@
-import { combineLatest } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,6 +13,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   catchGqlError,
@@ -22,8 +22,12 @@ import {
   getProductComponentOptions,
   maxSelectionValidator,
   multiLangValidator,
+  notEmptyArray,
+  SERVING_MODES,
 } from '@bgap/admin/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
+  defaultServingMode,
   EProductComponentSetType,
   IKeyValue,
   IKeyValueObject,
@@ -31,7 +35,6 @@ import {
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -50,6 +53,8 @@ export class ProductComponentSetFormComponent
   public productComponentOptions: IKeyValue[] = [];
   public productComponentObject: IKeyValueObject = {};
   public eProductComponentSetType = EProductComponentSetType;
+  public servingModes = SERVING_MODES;
+  public editing = false;
 
   constructor(
     protected _injector: Injector,
@@ -73,6 +78,7 @@ export class ProductComponentSetFormComponent
           { validators: multiLangValidator },
         ),
         description: ['', [Validators.required]],
+        supportedServingModes: [[defaultServingMode], [notEmptyArray]],
         items: [[]],
       },
       { validators: maxSelectionValidator },
@@ -178,6 +184,12 @@ export class ProductComponentSetFormComponent
   }
 
   public submit() {
+    this._save().subscribe(() => {
+      this._successAndClose(this.editing ? 'update' : 'inert');
+    });
+  }
+
+  private _save() {
     if (this.dialogForm?.valid) {
       const value = this.dialogForm.value;
 
@@ -186,36 +198,30 @@ export class ProductComponentSetFormComponent
       }
 
       if (this.productComponentSet?.id) {
-        this._crudSdk.sdk
+        return this._crudSdk.sdk
           .UpdateProductComponentSet({
             input: {
               id: this.productComponentSet.id,
               ...value,
             },
           })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful',
-            );
-
-            this.close();
-          });
+          .pipe(catchGqlError(this._store));
       } else {
-        this._crudSdk.sdk
+        return this._crudSdk.sdk
           .CreateProductComponentSet({ input: value })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
-            this.close();
-          });
+          .pipe(catchGqlError(this._store));
       }
     }
+
+    return of('Invalid');
+  }
+
+  private _successAndClose(key: string) {
+    this._toasterService.show(
+      EToasterType.SUCCESS,
+      '',
+      `common.${key}Successful`,
+    );
+    this.close();
   }
 }

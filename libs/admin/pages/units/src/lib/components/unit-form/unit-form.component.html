@@ -15,11 +15,7 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form
-      [formGroup]="dialogForm!"
-      (ngSubmit)="submit()"
-      [autocomplete]="false"
-    >
+    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" autocomplete="off">
       <div class="row">
         <div class="col-md-6">
           <bgap-form-text-input
@@ -118,15 +114,29 @@
           {{ 'common.paymentModes.title' | translate }}
         </legend>
 
-        <nb-checkbox
-          class="me-5 mb-3"
-          [checked]="paymentModeIsChecked(paymentMode)"
-          (checkedChange)="togglePaymentMode(paymentMode)"
-          *ngFor="let paymentMode of paymentModes"
-        >
-          <label class="caption"> {{ paymentMode.caption! | translate }}</label>
-        </nb-checkbox>
+        <div>
+          <nb-checkbox
+            class="me-5 mb-3"
+            [checked]="paymentModeIsChecked(paymentMode)"
+            (checkedChange)="togglePaymentMode(paymentMode)"
+            *ngFor="let paymentMode of paymentModes"
+          >
+            <label class="caption">
+              {{ paymentMode.caption! | translate }}</label
+            >
+          </nb-checkbox>
+        </div>
       </fieldset>
+
+      <bgap-form-order-mode
+        [control]="dialogForm.get('supportedOrderModes')! | asFormControl"
+        [orderModes]="orderModes"
+      ></bgap-form-order-mode>
+
+      <bgap-form-serving-mode
+        [control]="dialogForm.get('supportedServingModes')! | asFormControl"
+        [servingModes]="servingModes"
+      ></bgap-form-serving-mode>
 
       <bgap-form-contact-group
         [contactFormGroup]="dialogForm | asFormGroup"

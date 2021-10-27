@@ -1,7 +1,7 @@
 import 'package:fa_prev/shared/locale/extensions/locale_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:fa_prev/core/theme/theme.dart';
 
 class LoginFormUtils {
   static const double TEXTFIELD_HEIGHT = 60.0;
@@ -27,7 +27,7 @@ class LoginFormUtils {
         keyboardType: inputType,
         textInputAction: TextInputAction.next,
         cursorColor: Color(0xFF3C2F2F),
-        style: GoogleFonts.poppins(
+        style: Fonts.satoshi(
           fontSize: 16.0,
           fontWeight: FontWeight.w400,
           color: Color(0xFF3C2F2F),
@@ -56,13 +56,13 @@ class LoginFormUtils {
             ),
           ),
           labelText: labelKey,
-          labelStyle: GoogleFonts.poppins(
+          labelStyle: Fonts.satoshi(
             fontSize: 16.0,
             fontWeight: FontWeight.w400,
             color: Color(0xFF3C2F2F),
           ),
           // helperText: 'You will receive an email with the login link...',
-          // helperStyle: GoogleFonts.poppins(
+          // helperStyle: Fonts.satoshi(
           //   fontSize: 13.0,
           //   fontWeight: FontWeight.w400,
           //   color: Color(0xFF3C2F2F).withOpacity(0.5),

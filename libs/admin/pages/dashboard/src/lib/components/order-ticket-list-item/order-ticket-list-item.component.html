@@ -24,8 +24,15 @@
   </div>
 
   <ng-container *ngIf="showMarkers">
-    <div class="float-right ml-2" *ngIf="order.userId === selectedOrderUserId">
+    <div class="float-right ms-2" *ngIf="order.userId === selectedOrderUserId">
       <nb-icon class="smaller-icon" icon="person-outline"></nb-icon>
+    </div>
+
+    <div
+      class="float-right ms-2"
+      *ngIf="order.servingMode === EServingMode.takeaway"
+    >
+      <nb-icon class="smaller-icon" icon="car-outline"></nb-icon>
     </div>
 
     <div class="float-right" *ngIf="(order?.paymentIntention || 0) > 0">

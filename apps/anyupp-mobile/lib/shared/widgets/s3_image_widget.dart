@@ -3,7 +3,6 @@ import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class S3ImageWidget extends StatefulWidget {
   final String bucketImageKey;
@@ -58,7 +57,7 @@ class _S3ImageWidgetState extends State<S3ImageWidget> {
       width: widget.width,
       height: widget.height,
       child: CenterLoadingWidget(
-        color: theme.highlight,
+        color: theme.primary,
       ),
     );
   }
@@ -70,8 +69,8 @@ class _S3ImageWidgetState extends State<S3ImageWidget> {
       child: Center(
         child: Text(
           error,
-          style: GoogleFonts.poppins(
-            color: theme.text,
+          style: Fonts.satoshi(
+            color: theme.secondary,
             fontSize: 16.0,
           ),
         ),
@@ -89,36 +88,5 @@ class _S3ImageWidgetState extends State<S3ImageWidget> {
     setState(() {
       _imageUrl = url; //.split('?')[0];
     });
-
-    // try {
-    //   print('_getBucketUrlWithKey.key=${widget.bucketImageKey}');
-    //   String imagePath = (await getTemporaryDirectory()).path;
-    //   File imageFile = File('$imagePath/${widget.bucketImageKey}');
-    //   print('_getBucketUrlWithKey.path=$imageFile');
-    //   print('_getBucketUrlWithKey.exists=${await imageFile.exists()}');
-
-    //   S3GetUrlOptions options = S3GetUrlOptions(accessLevel: StorageAccessLevel.guest, expires: 10000);
-    //   GetUrlResult result = await Amplify.Storage.getUrl(key: widget.bucketImageKey, options: options);
-    //   print('_getBucketUrlWithKey.url=${result.url}');
-
-    //   // DownloadFileOptions dOptions = DownloadFileOptions(
-    //   //   accessLevel: StorageAccessLevel.guest,
-    //   // );
-    //   // DownloadFileResult downloadResult = await Amplify.Storage.downloadFile(
-    //   //   key: widget.bucketImageKey,
-    //   //   local: imageFile,
-    //   //   options: dOptions,
-    //   // );
-    //   // print('_getBucketUrlWithKey.downloadResult=$downloadResult');
-
-    //   setState(() {
-    //     _imageUrl = result.url; //.split('?')[0];
-    //   });
-    // } catch (e) {
-    //   print('_getBucketUrlWithKey.error: $e');
-    //   setState(() {
-    //     _error = e.toString();
-    //   });
-    // }
   }
 }

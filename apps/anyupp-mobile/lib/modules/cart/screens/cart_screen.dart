@@ -3,149 +3,177 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
+import 'package:fa_prev/modules/main/main.dart';
+import 'package:fa_prev/modules/payment/payment.dart';
 import 'package:fa_prev/modules/selectunit/screens/flutter_qr_code_scanner.dart';
+import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
-import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:fa_prev/shared/utils/stage_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class CartScreen extends StatefulWidget {
-  @override
-  State<CartScreen> createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  late ScrollController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = ScrollController();
-  }
+class CartScreen extends StatelessWidget {
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: theme.background,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: theme.background,
-        centerTitle: false,
-        elevation: 5.0,
-        // Only dev and qa builds are show the table and seat in the top right corner
-        title: (true)
-            ? FutureBuilder<Place?>(
-                future: getPlacePref(),
-                builder: (BuildContext context, AsyncSnapshot<Place?> placeSnapshot) {
-                  // print('placeSnapshot=$placeSnapshot');
+    return BlocListener<StripePaymentBloc, StripePaymentState>(
+      listener: (context, state) {
+        if (state is StripeOperationSuccess || state is StripeError) {
+          // Go to Orders when payment finished
+          Future.delayed(Duration(milliseconds: 500)).then((value) {
+            getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+            Nav.pop();
+          });
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: theme.secondary0,
+          centerTitle: true,
+          elevation: 3.0,
+          shadowColor: theme.secondary.withOpacity(0.1),
+          leading: Padding(
+            padding: const EdgeInsets.only(
+              top: 8.0,
+              bottom: 8.0,
+              left: 15.0,
+            ),
+            child: BackButtonWidget(
+              color: theme.secondary,
+              showBorder: false,
+            ),
+          ),
+          actions: [
+            BlocBuilder<TakeAwayBloc, TakeAwayState>(builder: (context, state) {
+              if (state is ServingModeSelectedState) {
+                return Container(
+                  margin: EdgeInsets.only(top: 12.0, bottom: 12.0, right: 16.0),
+                  child: TakeawayStatusWidget(
+                    servingMode: state.servingMode,
+                  ),
+                );
+              }
+              return Container();
+            }),
+          ],
+          // Only dev and qa builds are show the table and seat in the top right corner
+          title: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+            builder: (context, state) {
+              if (state is UnitSelected) {
+                return StreamBuilder<Cart?>(
+                  stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
+                  builder: (context, AsyncSnapshot<Cart?> snapshot) {
+                    // print('placeSnapshot=');
 
-                  if (placeSnapshot.hasData) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          trans('main.menu.cart'),
-                          style: GoogleFonts.poppins(
-                            color: theme.text,
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.w600,
+                    if (snapshot.hasData) {
+                      bool show = snapshot.data?.place?.seat != null &&
+                          snapshot.data?.place?.seat != EMPTY_SEAT &&
+                          snapshot.data?.place?.table != null &&
+                          snapshot.data?.place?.table != EMPTY_TABLE &&
+                          isDev;
+
+                      if (!show) {
+                        return Container();
+                      }
+
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            trans(context, 'main.menu.cart'),
+                            style: Fonts.satoshi(
+                              color: theme.secondary,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/table-icon.svg',
-                              width: 20,
-                              height: 20,
-                              color: theme.indicator,
-                            ),
-                            Text(
-                              ' ${placeSnapshot.data?.table}',
-                              style: GoogleFonts.poppins(
-                                color: theme.text,
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/table-icon.svg',
+                                width: 20,
+                                height: 20,
+                                color: theme.primary,
                               ),
-                            ),
-                            SvgPicture.asset(
-                              'assets/icons/chair-icon.svg',
-                              width: 20,
-                              height: 20,
-                              color: theme.indicator,
-                            ),
-                            Text(
-                              '${placeSnapshot.data?.seat}',
-                              style: GoogleFonts.poppins(
-                                color: theme.text,
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w400,
+                              Text(
+                                ' ${snapshot.data?.place?.table ?? "-"}',
+                                style: Fonts.satoshi(
+                                  color: theme.secondary,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            )
-                          ],
-                        ),
-                      ],
-                    );
+                              SvgPicture.asset(
+                                'assets/icons/chair-icon.svg',
+                                width: 20,
+                                height: 20,
+                                color: theme.primary,
+                              ),
+                              Text(
+                                '${snapshot.data?.place?.seat ?? "-"}',
+                                style: Fonts.satoshi(
+                                  color: theme.secondary,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      );
+                    }
+
+                    return Container();
+                  },
+                );
+                // ignore: dead_code
+                // : Text(
+                //     trans(context, 'main.menu.cart'),
+                //     style: Fonts.satoshi(
+                //       color: theme.secondary,
+                //       fontSize: 16.0,
+                //       fontWeight: FontWeight.w400,
+                //     ),
+                //   ),
+              }
+              return Container();
+            },
+          ),
+        ),
+        body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+          builder: (context, state) {
+            if (state is UnitSelected) {
+              return StreamBuilder<Cart?>(
+                stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
+                builder: (context, AsyncSnapshot<Cart?> snapshot) {
+                  // print('CartScreen.snapshot=');
+                  if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                    if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
+                      return _buildCartListAndTotal(context, state.unit, snapshot.data!);
+                    }
+                    return _emptyCart(context);
                   }
 
-                  return Text(
-                    trans('main.menu.cart'),
-                    style: GoogleFonts.poppins(
-                      color: theme.text,
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  );
+                  return CenterLoadingWidget();
                 },
-              )
-            // ignore: dead_code
-            : Text(
-                trans('main.menu.cart'),
-                style: GoogleFonts.poppins(
-                  color: theme.text,
-                  fontSize: 22.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-      ),
-      body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-        builder: (context, state) {
-          if (state is UnitSelected) {
-            return StreamBuilder<Cart?>(
-              stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id!),
-              builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                // print('CartScreen.snapshot=$snapshot');
-                if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                  if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
-                    return _buildCartListAndTotal(context, state.unit, snapshot.data!);
-                  }
-                  return _emptyCart(context);
-                }
-
-                return CenterLoadingWidget();
-              },
-            );
-          }
-          return CenterLoadingWidget();
-        },
+              );
+            }
+            return CenterLoadingWidget();
+          },
+        ),
       ),
     );
   }
 
   Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
-    bool showQrCodeScan = false;
-    if ((cart.place == null || (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE)) && !isDev) {
-      showQrCodeScan = true;
-    }
-
     Map<int, String> cartAllergens = {};
     for (OrderItem item in cart.items) {
       if (item.allergens != null) {
@@ -177,13 +205,13 @@ class _CartScreenState extends State<CartScreen> {
             child: AnimationLimiter(
               child: RawScrollbar(
                 controller: _controller,
-                thumbColor: theme.text.withOpacity(0.2),
+                thumbColor: theme.secondary.withOpacity(0.2),
                 radius: Radius.circular(20),
                 isAlwaysShown: true,
                 thickness: 4,
                 child: ListView.separated(
                   separatorBuilder: (context, index) => Divider(
-                    color: theme.disabled.withOpacity(0.3),
+                    color: theme.secondary64.withOpacity(0.3),
                   ),
                   controller: _controller,
                   shrinkWrap: true,
@@ -193,7 +221,7 @@ class _CartScreenState extends State<CartScreen> {
                     final OrderItem order = cart.items[position];
                     return AnimationConfiguration.staggeredList(
                       position: position,
-                      duration: const Duration(milliseconds: 375),
+                      duration: const Duration(milliseconds: 200),
                       child: _buildCartItem(context, unit, order),
                     );
                   },
@@ -202,101 +230,152 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
         ),
-        cartAllergens.keys.toList().isNotEmpty
-            ? Column(
-                children: [
-                  SizedBox(
-                    height: 2.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            theme.text.withOpacity(0.4),
-                            Colors.transparent,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  AllergensWidget(allergens: cartAllergens.values.toList()),
-                ],
-              )
-            : Container(),
+        _buildPaymentButtonPanel(context, unit, cart),
         // TOTAL
-        Container(
-          height: 94,
-          padding: EdgeInsets.only(left: 30, top: 20, right: 15, bottom: 15),
-          decoration: BoxDecoration(color: theme.background2),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    //crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        trans('cart.totalCost'),
-                        style: GoogleFonts.poppins(
-                          color: theme.text,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      // Display the overall cart price
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          formatCurrency(cart.totalPrice, unit.currency),
-                          style: GoogleFonts.poppins(
-                            color: theme.text,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+        //_buildTotal(context, unit, cart)
+      ],
+    );
+  }
 
-              // NAVIGATE TO PAYMENT BUTTON
-              Container(
-                width: 46,
-                height: 46,
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.all(0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+  Widget _buildPaymentButtonPanel(BuildContext context, GeoUnit unit, Cart cart) {
+    bool showQrCodeScan = false;
+    if (cart.place == null || (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE) && false) {
+      showQrCodeScan = true;
+    }
+    // print('_buildPaymentButtonPanel().showQrCodeScan=$showQrCodeScan');
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          height: 56.0,
+          width: double.infinity,
+          margin: EdgeInsets.symmetric(
+            horizontal: 16.0,
+          ),
+          child: ElevatedButton(
+            onPressed: () => showQrCodeScan
+                ? Nav.to(QRCodeScannerScreen(
+                    navigateToCart: true,
+                  ))
+                : showSelectPaymentMethodBottomSheet(context),
+            style: ElevatedButton.styleFrom(
+              primary: theme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40),
+              ),
+            ),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      //trans(context, "cart.addToCart").toUpperCase(),
+                      '${trans(context, "cart.pay")} (${formatCurrency(cart.totalPrice, unit.currency)})',
+                      style: Fonts.satoshi(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w700,
+                        color: theme.secondary0,
+                      ),
                     ),
-                    backgroundColor: theme.indicator,
-                    primary: theme.text2,
                   ),
-                  onPressed: () => showQrCodeScan
-                      ? Nav.to(QRCodeScannerScreen(
-                          navigateToCart: true,
-                        ))
-                      : showSelectPaymentMethodBottomSheet(context),
-                  child: showQrCodeScan
-                      ? SvgPicture.asset(
-                          'assets/icons/qr_code_scanner.svg',
-                          color: theme.text2,
-                        )
-                      : Icon(
-                          Icons.arrow_forward,
-                          color: theme.text2,
-                          // size: 35,
-                        ),
                 ),
-              )
-            ],
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: showQrCodeScan
+                        ? SvgPicture.asset(
+                            'assets/icons/qr_code_scanner.svg',
+                            color: theme.secondary0,
+                          )
+                        : Icon(
+                            Icons.arrow_forward,
+                            color: theme.secondary0,
+                          ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        // DELETE CART BUTTON
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.only(
+            left: 16.0,
+            right: 16.0,
+            top: 12.0,
+            bottom: 12.0,
+          ),
+          child: TextButton(
+            onPressed: () => _deleteCartConfirmation(context),
+            child: Text(
+              trans(context, 'cart.deleteCart'),
+              style: Fonts.satoshi(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: theme.secondary64,
+              ),
+            ),
           ),
         )
       ],
+    );
+  }
+
+  void _deleteCartConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            transEx(context, 'cart.deleteCartTitle'),
+            style: Fonts.satoshi(
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+              color: theme.secondary,
+            ),
+          ),
+          content: Text(
+            transEx(context, 'cart.deleteCartMessage'),
+            style: Fonts.satoshi(
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+              color: theme.secondary,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text(
+                transEx(context, 'cart.deleteCartCancel'),
+                style: Fonts.satoshi(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w400,
+                  color: theme.secondary,
+                ),
+              ),
+              onPressed: () {
+                Nav.pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                transEx(context, 'cart.deleteCartAccept'),
+                style: Fonts.satoshi(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  color: theme.primary,
+                ),
+              ),
+              onPressed: () async {
+                Nav.reset(MainNavigation());
+                getIt<CartBloc>().add(ClearCartAction());
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

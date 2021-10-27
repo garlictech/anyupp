@@ -1,11 +1,7 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  orderFixture as ofx,
-  generatedProductFixture as gpfx,
-  testIdPrefix,
-} from '@bgap/shared/fixtures';
-import { timezoneBudapest } from '../const';
+import { orderFixture as ofx } from '@bgap/shared/fixtures';
 
+import { timezoneBudapest } from '../const';
 import {
   calculatePaymentMethodSums,
   calculateProductMix,
@@ -16,17 +12,6 @@ import {
   hourlyBreakdownOrderAmounts,
   unpayCategoryTableData,
 } from './dashboard';
-
-const products: CrudApi.GeneratedProduct[] = [
-  {
-    ...gpfx.generatedDrinkProduct,
-    id: `${testIdPrefix}unit_product_fanta`,
-  },
-  {
-    ...gpfx.generatedFoodProduct,
-    id: `${testIdPrefix}unit_product_hamburger`,
-  },
-];
 
 const singleOrder = [ofx.convertInputToOrder(ofx.historySuccessCardOrderInput)];
 const successHistoryOrders = [
@@ -110,11 +95,7 @@ describe('Dashboard pure function tests', () => {
 
   describe('hourlyBreakdownOrderAmounts', () => {
     it('should calculate 1 item', () => {
-      const result = hourlyBreakdownOrderAmounts(
-        timezoneBudapest,
-        products,
-        singleOrder,
-      );
+      const result = hourlyBreakdownOrderAmounts(timezoneBudapest, singleOrder);
 
       expect(result).toMatchSnapshot();
     });
@@ -122,7 +103,6 @@ describe('Dashboard pure function tests', () => {
     it('should calculate success history items', () => {
       const result = hourlyBreakdownOrderAmounts(
         timezoneBudapest,
-        products,
         successHistoryOrders,
       );
 
@@ -132,7 +112,6 @@ describe('Dashboard pure function tests', () => {
     it('should calculate failed history items', () => {
       const result = hourlyBreakdownOrderAmounts(
         timezoneBudapest,
-        products,
         failedHistoryOrders,
       );
 
@@ -142,25 +121,19 @@ describe('Dashboard pure function tests', () => {
 
   describe('dailySalesPerTypeOrderAmounts', () => {
     it('should calculate 1 item', () => {
-      const result = dailySalesPerTypeOrderAmounts(products, singleOrder);
+      const result = dailySalesPerTypeOrderAmounts(singleOrder);
 
       expect(result).toMatchSnapshot();
     });
 
     it('should calculate success history items', () => {
-      const result = dailySalesPerTypeOrderAmounts(
-        products,
-        successHistoryOrders,
-      );
+      const result = dailySalesPerTypeOrderAmounts(successHistoryOrders);
 
       expect(result).toMatchSnapshot();
     });
 
     it('should calculate failed history items', () => {
-      const result = dailySalesPerTypeOrderAmounts(
-        products,
-        failedHistoryOrders,
-      );
+      const result = dailySalesPerTypeOrderAmounts(failedHistoryOrders);
 
       expect(result).toMatchSnapshot();
     });
@@ -190,16 +163,16 @@ describe('Dashboard pure function tests', () => {
 
   describe('calculateProductMix', () => {
     it('should calculate 1 item', () => {
-      const result = calculateProductMix(singleOrder, products);
+      const result = calculateProductMix(singleOrder);
 
       expect(result).toMatchSnapshot();
     });
 
     it('should calculate lots of order items', () => {
-      const result = calculateProductMix(
-        [...successHistoryOrders, ...failedHistoryOrders],
-        products,
-      );
+      const result = calculateProductMix([
+        ...successHistoryOrders,
+        ...failedHistoryOrders,
+      ]);
 
       expect(result).toMatchSnapshot();
     });

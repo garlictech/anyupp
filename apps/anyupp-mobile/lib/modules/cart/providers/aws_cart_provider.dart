@@ -35,6 +35,11 @@ class AwsCartProvider implements ICartProvider {
       )));
 
       // print('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
+
+      if (result.hasErrors) {
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+      }
+
       String? id;
       if (result.data != null && result.data?.createOrderFromCart != null) {
         id = result.data!.createOrderFromCart;
@@ -42,7 +47,7 @@ class AwsCartProvider implements ICartProvider {
       }
       await clearCart();
       if (id == null) {
-        throw CartException(code: CartException.UNKNOWN_ERROR, message: 'Generated order is is null!');
+        throw CartException(code: CartException.UNKNOWN_ERROR, message: 'Generated order is null!');
       }
       return id;
     } on Exception catch (e) {
@@ -54,6 +59,7 @@ class AwsCartProvider implements ICartProvider {
   @override
   Future<void> clearCart() async {
     if (_cart != null && _cart?.id != null) {
+      await _deleteCartFromBackend(_cart!.id!);
       _cart = null;
       _cartController.add(null);
     }
@@ -180,7 +186,7 @@ class AwsCartProvider implements ICartProvider {
   }
 
   Future<bool> _updateCartOnBackend(Cart cart) async {
-    print('******** UPDATING CART IN BACKEND');
+    print('******** UPDATING CART IN BACKEND=${cart.paymentMode}');
     try {
       var result = await GQL.amplify.execute(UpdateCartMutation(
           variables: UpdateCartArguments(
@@ -218,10 +224,12 @@ class AwsCartProvider implements ICartProvider {
       if (cart.id != null) 'id': cart.id,
       'unitId': cart.unitId,
       'userId': cart.userId,
+      'servingMode': enumToString(cart.servingMode),
       'items': cart.items.map((item) {
         return {
           'productId': item.productId,
           'variantId': item.variantId,
+          'productType': 'FOOD',
           'created': DateTime.now().millisecondsSinceEpoch.toInt(),
           'productName': {
             'en': item.productName.en,
@@ -296,7 +304,7 @@ class AwsCartProvider implements ICartProvider {
               'method': enumToString(cart.paymentMode!.method),
             }
           : null,
-      'takeAway': cart.takeAway,
+      'takeAway': false,
       'place': cart.place != null
           ? {
               'table': cart.place!.table,

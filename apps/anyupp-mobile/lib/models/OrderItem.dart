@@ -4,7 +4,6 @@ import 'package:collection/collection.dart';
 
 @immutable
 class OrderItem {
-  final String? id;
   final String productId;
   final String variantId;
   final LocalizedItem productName;
@@ -20,7 +19,6 @@ class OrderItem {
   final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>? selectedConfigMap;
 
   OrderItem({
-    this.id,
     required this.productId,
     required this.variantId,
     required this.productName,
@@ -53,7 +51,6 @@ class OrderItem {
     Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>? selectedConfigMap,
   }) {
     return OrderItem(
-      id: id ?? this.id,
       productId: productId ?? this.productId,
       variantId: variantId ?? this.variantId,
       productName: productName ?? this.productName,
@@ -72,7 +69,6 @@ class OrderItem {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'productId': productId,
       'variantId': variantId,
       'productName': productName.toJson(),
@@ -90,7 +86,6 @@ class OrderItem {
 
   factory OrderItem.fromJson(Map<String, dynamic> map) {
     return OrderItem(
-      id: map['id'],
       productId: map['productId'],
       variantId: map['variantId'],
       productName: LocalizedItem.fromJson(map['productName']),
@@ -114,7 +109,7 @@ class OrderItem {
 
   @override
   String toString() {
-    return 'OrderItem(id: $id, productId: $productId, variantId: $variantId, productName: $productName, priceShown: $priceShown, sumPriceShown: $sumPriceShown, quantity: $quantity, statusLog: $statusLog, variantName: $variantName, image: $image, allergens: $allergens, configSets: $configSets)';
+    return 'OrderItem( productId: $productId, variantId: $variantId, productName: $productName, priceShown: $priceShown, sumPriceShown: $sumPriceShown, quantity: $quantity, statusLog: $statusLog, variantName: $variantName, image: $image, allergens: $allergens, configSets: $configSets)';
   }
 
   @override
@@ -122,7 +117,6 @@ class OrderItem {
     if (identical(this, other)) return true;
 
     return other is OrderItem &&
-        other.id == id &&
         other.productId == productId &&
         other.variantId == variantId &&
         other.productName == productName &&
@@ -140,8 +134,7 @@ class OrderItem {
 
   @override
   int get hashCode {
-    return id.hashCode ^
-        productId.hashCode ^
+    return productId.hashCode ^
         variantId.hashCode ^
         productName.hashCode ^
         priceShown.hashCode ^

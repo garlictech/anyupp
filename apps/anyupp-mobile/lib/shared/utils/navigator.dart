@@ -7,7 +7,7 @@ enum NavAnim {
 }
 
 class Nav {
-  static const Duration _DEFAULT_ANIM_DURATION = Duration(milliseconds: 750);
+  static const Duration _DEFAULT_ANIM_DURATION = Duration(milliseconds: 200);
 
   static void to(Widget page, {Duration duration = _DEFAULT_ANIM_DURATION, NavAnim animationType = NavAnim.FADE_IN}) {
     Catcher.navigatorKey!.currentState!.push(_createRoute(page, duration, animationType));
@@ -26,9 +26,9 @@ class Nav {
     );
   }
 
-  static void pop() {
+  static void pop<T>([T? result]) {
     if (Catcher.navigatorKey!.currentState!.canPop()) {
-      Catcher.navigatorKey!.currentState!.pop();
+      Catcher.navigatorKey!.currentState!.pop(result);
     }
   }
 

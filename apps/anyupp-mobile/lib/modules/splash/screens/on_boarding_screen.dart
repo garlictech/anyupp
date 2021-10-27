@@ -22,7 +22,7 @@ class _OnBoardingState extends State<OnBoarding> {
         stream: _authRepository
             .getAuthenticatedUserProfileStream()
             .map((event) => event == null ? 'NOT_AUTHENTICATED' : "AUTHENTICATED")
-            .delay(Duration(seconds: 2)), // TODO ki lehet venni...
+            .delay(Duration(milliseconds: 100)),
         builder: (context, snapshot) {
           // print('***** OnBoarding().state = ${snapshot?.data}, hasData = ${snapshot.hasData}');
           if (snapshot.hasData) {

@@ -19,7 +19,7 @@ class AuthBloc extends Bloc<BaseAuthEvent, BaseAuthState> {
       },
       onError: (error, stackTrace) {
         Catcher.reportCheckedError(error, stackTrace);
-        add(AuthErrorEvent('AUTH_ERROR', error.message)); // TODO: messare or subCode ??
+        add(AuthErrorEvent('AUTH_ERROR', error.message));
       },
     );
   }

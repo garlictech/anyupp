@@ -12,6 +12,11 @@ class LocationRepository {
       print("***** LocationRepository.getUserCurrentLocation.start().isLocationEnabled=$isLocationEnabled");
       if (isLocationEnabled) {
         try {
+          // Position? lastPosition = await Geolocator.getLastKnownPosition();
+          // if (lastPosition != null) {
+          //   return LatLng(lastPosition.latitude, lastPosition.longitude);
+          // }
+
           Position position = await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.best, timeLimit: Duration(seconds: 20));
           // print("***** location.getCurrentPosition().position=$position");

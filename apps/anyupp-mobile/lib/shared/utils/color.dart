@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+@Deprecated('Use library (tinycolors2) instead')
 extension HexColor on Color {
   /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
   static Color fromHex(String hexString) {

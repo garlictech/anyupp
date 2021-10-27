@@ -6,7 +6,7 @@ class Receipt {
   final String userId;
   final String orderId;
   final String transactionId;
-  // final String externalReceiptId; // TODO ez nem kell?
+  final String? externalReceiptId;
   final String? email;
   final String? pdfData;
   final String status;
@@ -17,9 +17,10 @@ class Receipt {
     required this.userId,
     required this.orderId,
     required this.transactionId,
+    required this.status,
+    this.externalReceiptId,
     this.email,
     this.pdfData,
-    required this.status,
     this.updatedAt,
     this.createdAt,
   });
@@ -32,6 +33,7 @@ class Receipt {
     String? email,
     String? pdfData,
     String? status,
+    String? externalReceiptId,
     String? updatedAt,
     String? createdAt,
   }) {
@@ -43,6 +45,7 @@ class Receipt {
       email: email ?? this.email,
       pdfData: pdfData ?? this.pdfData,
       status: status ?? this.status,
+      externalReceiptId: externalReceiptId ?? this.externalReceiptId,
       updatedAt: updatedAt ?? this.updatedAt,
       createdAt: createdAt ?? this.createdAt,
     );
@@ -57,6 +60,7 @@ class Receipt {
       'email': email,
       'pdfData': pdfData,
       'status': status,
+      'externalReceiptId': externalReceiptId,
       'updatedAt': updatedAt,
       'createdAt': createdAt,
     };
@@ -71,6 +75,7 @@ class Receipt {
       email: map['email'],
       pdfData: map['pdfData'],
       status: map['status'],
+      externalReceiptId: map['externalReceiptId'],
       updatedAt: map['updatedAt'],
       createdAt: map['createdAt'],
     );
@@ -78,7 +83,7 @@ class Receipt {
 
   @override
   String toString() {
-    return 'Receipt(id: $id, userId: $userId, orderId: $orderId, transactionId: $transactionId, email: $email, pdfData: $pdfData, status: $status, updatedAt: $updatedAt, createdAt: $createdAt)';
+    return 'Receipt(id: $id, userId: $userId, orderId: $orderId, externalReceiptId: $externalReceiptId, transactionId: $transactionId, email: $email, pdfData: $pdfData, status: $status, updatedAt: $updatedAt, createdAt: $createdAt)';
   }
 
   @override
@@ -94,6 +99,7 @@ class Receipt {
         other.pdfData == pdfData &&
         other.status == status &&
         other.updatedAt == updatedAt &&
+        other.externalReceiptId == externalReceiptId &&
         other.createdAt == createdAt;
   }
 
@@ -107,6 +113,7 @@ class Receipt {
         pdfData.hashCode ^
         status.hashCode ^
         updatedAt.hashCode ^
+        externalReceiptId.hashCode ^
         createdAt.hashCode;
   }
 }

@@ -14,7 +14,7 @@ class UnitSelected extends UnitSelectState {
   const UnitSelected(this.unit);
 
   @override
-  List<Object?> get props => [unit.chainId, unit.groupId, unit.id];
+  List<Object?> get props => [unit];
 
   @override
   String toString() => 'UnitSelected { unitId: $unit.id, groupId: $unit.groupId, chainId: $unit.chainId }';

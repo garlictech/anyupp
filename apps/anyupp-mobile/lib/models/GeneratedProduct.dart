@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
-
 import 'package:flutter/foundation.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 @immutable
 class GeneratedProduct {
@@ -15,8 +15,10 @@ class GeneratedProduct {
   final int position;
   final String? image;
   final List<ProductVariant> variants;
-  final List<String>? allergens; // TODO ez miert String? Allergen kene
+  final List<String>? allergens;
   final List<GeneratedProductConfigSet>? configSets;
+  final List<ServingMode> supportedServingModes;
+
   GeneratedProduct({
     required this.id,
     required this.unitId,
@@ -30,6 +32,7 @@ class GeneratedProduct {
     required this.variants,
     this.allergens,
     this.configSets,
+    required this.supportedServingModes,
   });
 
   GeneratedProduct copyWith({
@@ -45,6 +48,7 @@ class GeneratedProduct {
     List<ProductVariant>? variants,
     List<String>? allergens,
     List<GeneratedProductConfigSet>? configSets,
+    List<ServingMode>? supportedServingModes,
   }) {
     return GeneratedProduct(
       id: id ?? this.id,
@@ -59,6 +63,7 @@ class GeneratedProduct {
       variants: variants ?? this.variants,
       allergens: allergens ?? this.allergens,
       configSets: configSets ?? this.configSets,
+      supportedServingModes: supportedServingModes ?? this.supportedServingModes,
     );
   }
 
@@ -76,6 +81,7 @@ class GeneratedProduct {
       'variants': variants.map((x) => x.toJson()).toList(),
       'allergens': allergens?.map((x) => enumToString(x)).toList(),
       'configSets': configSets?.map((x) => x.toJson()).toList(),
+      'supportedServingModes': supportedServingModes.map((x) => enumToString(x)).toList(),
     };
   }
 
@@ -95,12 +101,22 @@ class GeneratedProduct {
       configSets: map['configSets'] != null
           ? List<GeneratedProductConfigSet>.from(map['configSets']?.map((x) => GeneratedProductConfigSet?.fromJson(x)))
           : null,
+      supportedServingModes: map['supportedServingModes'] != null
+          ? List<ServingMode>.from(
+              map['supportedServingModes']?.map(
+                (x) => enumFromString(
+                  x,
+                  ServingMode.values,
+                ),
+              ),
+            )
+          : [],
     );
   }
 
   @override
   String toString() {
-    return 'GeneratedProduct(id: $id, unitId: $unitId, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets)';
+    return 'GeneratedProduct(id: $id, unitId: $unitId, supportedServingModes: $supportedServingModes, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets)';
   }
 
   @override
@@ -120,7 +136,8 @@ class GeneratedProduct {
         other.image == image &&
         listEquals(other.variants, variants) &&
         listEquals(other.allergens, allergens) &&
-        listEquals(other.configSets, configSets);
+        listEquals(other.configSets, configSets) &&
+        listEquals(other.supportedServingModes, supportedServingModes);
   }
 
   @override
@@ -136,6 +153,7 @@ class GeneratedProduct {
         image.hashCode ^
         variants.hashCode ^
         allergens.hashCode ^
-        configSets.hashCode;
+        configSets.hashCode ^
+        supportedServingModes.hashCode;
   }
 }

@@ -5,14 +5,13 @@ import 'package:fa_prev/core/theme/theme.dart';
 class ThemeChainCoffeeshop extends ThemeChainData {
   ThemeChainCoffeeshop()
       : super(
-          background: Color(0xFFFFFFFF),
-          background2: Color(0xFFF3F2E7),
-          text: Color(0xFF303030),
-          text2: Color(0xFFFFFFFF),
-          indicator: Color(0xFF1E6F4A),
-          highlight: Color(0xFF857C18),
-          disabled: Color(0x663C2F2F),
-          border: Color(0xFFE7E5D0),
-          border2: Color(0xFFE7E5D0),
+          light: true,
+          secondary0: Color(0xFFFFFFFF),
+          secondary12: Color(0xFFF3F2E7),
+          secondary: Color(0xFF303030),
+          primary: Color(0xFF1E6F4A),
+          secondary64: Color(0x663C2F2F),
+          secondary16: Color(0xFFE7E5D0),
+          secondary40: Color(0xFFE7E5D0),
         );
 }

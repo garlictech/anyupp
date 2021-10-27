@@ -12,6 +12,11 @@ class ColoredTabBar extends Container implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+        // height: 50,
+        padding: EdgeInsets.only(
+          left: 16.0,
+          right: 8.0,
+        ),
         color: color,
         child: tabBar,
       );

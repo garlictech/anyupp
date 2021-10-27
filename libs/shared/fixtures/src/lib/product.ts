@@ -94,14 +94,18 @@ const groupProductInputBase: Omit<
   chainId: 'chainId_',
   groupId: 'groupId_',
   isVisible: true,
-  tax: 1,
+  tax: 27,
+  takeawayTax: 12,
   variants: [getGroupProductVariant(1), getGroupProductVariant(2)],
 };
 
 const unitProductInputBase: Omit<
   RequiredId<CrudApi.CreateUnitProductInput>,
-  'variants'
-> & { variants: CrudApi.ProductVariantInput[] } = {
+  'variants' | 'supportedServingModes'
+> & {
+  variants: CrudApi.ProductVariantInput[];
+  supportedServingModes: CrudApi.ServingMode[];
+} = {
   id: `${testIdPrefix}chainProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',
@@ -112,6 +116,7 @@ const unitProductInputBase: Omit<
   laneId: 'laneId_',
   position: 1,
   variants: [getUnitProductVariant(1), getUnitProductVariant(2)],
+  supportedServingModes: [CrudApi.ServingMode.takeaway],
 };
 
 const chainProductBase: Omit<RequiredId<CrudApi.ChainProduct>, 'variants'> & {

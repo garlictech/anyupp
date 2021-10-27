@@ -18,10 +18,11 @@ export interface ProductCategoriesPartialState {
 export const productCategoriesAdapter: EntityAdapter<CrudApi.ProductCategory> =
   createEntityAdapter<CrudApi.ProductCategory>();
 
-export const initialState = productCategoriesAdapter.getInitialState({});
+export const initialProductCategoryState =
+  productCategoriesAdapter.getInitialState({});
 
 const reducer = createReducer(
-  initialState,
+  initialProductCategoryState,
   on(ProductCategoriesActions.init, state => ({
     ...state,
     error: null,

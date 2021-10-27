@@ -16,3 +16,9 @@ extension TranslateStatelessWidgetExtension on StatelessWidget {
 String transEx(BuildContext context, String key, [List<dynamic>? params, String? fallbackKey1, String? fallbackKey2]) {
   return AppLocalizations.of(context)!.trans(key, params, fallbackKey1, fallbackKey2);
 }
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1)}";
+  }
+}

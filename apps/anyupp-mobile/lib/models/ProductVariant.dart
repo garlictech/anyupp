@@ -8,8 +8,6 @@ class ProductVariant {
   final ProductVariantPack? pack;
   final double price;
   final int position;
-  // final List<Availability> availabilities; // TODO ez nem kell?
-  // final String generatedProductVariantsId; // TODO ez mi?
 
   ProductVariant({
     this.id,

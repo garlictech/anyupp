@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { mergeAllProductLayers } from './merge-product';
 import { productFixture } from '@bgap/shared/fixtures';
+import { mergeAllProductLayers } from './merge-product';
 
 describe('Merge product layers', () => {
   const cpb = productFixture.chainProductBase;
@@ -12,7 +12,6 @@ describe('Merge product layers', () => {
   // });
 
   describe('isVisible', () => {
-    // TODO fix this test
     it('should be true if every product is visible', () => {
       const chainProduct: any = { ...cpb, isVisible: true };
       const groupProduct: any = { ...gpb, isVisible: true };
@@ -22,7 +21,6 @@ describe('Merge product layers', () => {
       ).toHaveProperty('isVisible', true);
     });
 
-    // TODO fix this test
     it('should be FALSE if any product is NOT visible', () => {
       expect(
         mergeAllProductLayers({

@@ -13,10 +13,10 @@ export interface LoggedUserPartialState {
   readonly [APP_CORE_FEATURE_KEY]: IAppCoreState;
 }
 
-export const initialState: IAppCoreState = {};
+export const initialAppCoreState: IAppCoreState = {};
 
 const reducer = createReducer(
-  initialState,
+  initialAppCoreState,
   on(
     appCoreActions.setLoginContextFailure,
     (state, { loginContextFailure }) => ({ ...state, loginContextFailure }),

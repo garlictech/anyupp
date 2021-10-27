@@ -8,7 +8,7 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:fa_prev/shared/nav.dart';
 
 void showLocationSelectionBottomSheet(BuildContext context) {
@@ -25,7 +25,7 @@ void showLocationSelectionBottomSheet(BuildContext context) {
     enableDrag: true,
     isScrollControlled: true,
     elevation: 4.0,
-    backgroundColor: theme.background,
+    backgroundColor: theme.secondary0,
     builder: (context) {
       return _buildBottomSheetContent(context, theme);
     },
@@ -50,7 +50,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
               child: Center(
                 child: Text(
                   transEx(context, 'location.title'),
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 16,
                     color: const Color(0xff3c2f2f),
                     fontWeight: FontWeight.w500,
@@ -73,18 +73,18 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                 children: [
                   Text(
                     '${unit.name}',
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 20,
-                      color: theme.text,
+                      color: theme.secondary,
                       fontWeight: FontWeight.w700,
                     ),
                     textAlign: TextAlign.left,
                   ),
                   Text(
                     '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 14,
-                      color: theme.text,
+                      color: theme.secondary,
                     ),
                   ),
                   SizedBox(
@@ -99,14 +99,14 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6.0),
-                      color: theme.highlight,
+                      color: theme.primary,
                     ),
                     child: Center(
                       child: Text(
                         '${(unit.distance / 1000).toStringAsFixed(3)} km',
-                        style: GoogleFonts.poppins(
+                        style: Fonts.satoshi(
                           fontSize: 14,
-                          color: theme.text2,
+                          color: theme.secondary0,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -137,9 +137,9 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                         transEx(context, GeoUnitUtils.getOpenedHour(unit)?.getOpenRangeString() ?? ''),
 
                 //'Nyitva: 09:00 - 22:00',
-                style: GoogleFonts.poppins(
+                style: Fonts.satoshi(
                   fontSize: 16,
-                  color: theme.text,
+                  color: theme.secondary,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -158,16 +158,16 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: theme.indicator,
+                  primary: theme.primary,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(40),
                   ),
                 ),
                 child: Text(
                   transEx(context, 'location.changeLocation'),
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 18,
-                    color: theme.text2,
+                    color: theme.secondary0,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

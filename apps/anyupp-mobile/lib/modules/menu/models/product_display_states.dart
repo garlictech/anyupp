@@ -1,0 +1,4 @@
+enum ProducItemDisplayState {
+  NORMAL,
+  DISABLED,
+}

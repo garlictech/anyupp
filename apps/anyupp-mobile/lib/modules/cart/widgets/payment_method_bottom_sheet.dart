@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/widgets/invoice_form_bottom_sheet.dart';
@@ -10,12 +13,9 @@ import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 Future showSelectPaymentMethodBottomSheet(BuildContext context, [String? orderId]) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
@@ -31,46 +31,13 @@ Future showSelectPaymentMethodBottomSheet(BuildContext context, [String? orderId
     enableDrag: true,
     isScrollControlled: true,
     elevation: 4.0,
-    backgroundColor: theme.background,
+    backgroundColor: theme.secondary0,
     builder: (context) {
       return PaymentMethodSelectionBottomSheetWidget(
         orderId: orderId,
       );
     },
   );
-}
-
-class BottomSheetPaymentMethods {
-  static const int PAYMENT_UNKNOWN = -1;
-  static const int PAYMENT_INAPP = 0;
-  static const int PAYMENT_CASH = 1;
-  static const int PAYMENT_CARD = 2;
-
-  static PaymentMode getPaymentModeFromSelection(int? selectedMethod) {
-    switch (selectedMethod) {
-      case BottomSheetPaymentMethods.PAYMENT_CASH:
-        return PaymentMode(method: PaymentMethod.cash, type: PaymentType.cash, caption: 'cash');
-      case BottomSheetPaymentMethods.PAYMENT_CARD:
-        return PaymentMode(method: PaymentMethod.card, type: PaymentType.card, caption: 'card');
-      case BottomSheetPaymentMethods.PAYMENT_INAPP:
-        return PaymentMode(method: PaymentMethod.inapp, type: PaymentType.stripe, caption: 'stripe');
-      default:
-        return PaymentMode(method: PaymentMethod.cash, type: PaymentType.cash, caption: 'cash');
-    }
-  }
-
-  static String getPaymentMethodNameFromNumberValue(int? selectedMethod) {
-    switch (selectedMethod) {
-      case PAYMENT_INAPP:
-        return 'inapp';
-      case PAYMENT_CASH:
-        return 'cash';
-      case PAYMENT_CARD:
-        return 'card';
-      default:
-        return 'unknown';
-    }
-  }
 }
 
 class PaymentMethodSelectionBottomSheetWidget extends StatefulWidget {
@@ -85,7 +52,7 @@ class PaymentMethodSelectionBottomSheetWidget extends StatefulWidget {
 class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodSelectionBottomSheetWidget> {
   bool _wantsInvoce = false;
 
-  int? _selectedPaymentMethod = BottomSheetPaymentMethods.PAYMENT_UNKNOWN;
+  PaymentMethod? _selectedPaymentMethod;
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +82,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
   }
 
   Widget _buildPaymentMethodList(BuildContext context, GeoUnit unit) {
+    // print('_buildPaymentMethodList().unit.paymentModes=${unit.id}: ${unit.paymentModes}');
     List<PaymentMethod> methods = [];
     if (unit.paymentModes != null) {
       for (PaymentMode? paymentMode in unit.paymentModes!) {
@@ -126,77 +94,93 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
 
     print('_buildPaymentMethodList().methods=$methods');
 
-    return Wrap(
-      alignment: WrapAlignment.start,
-      direction: Axis.horizontal,
-      // crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.only(
-            top: 19.0,
-          ),
-          child: Center(
-            child: Text(
-              trans('payment.choose'),
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                color: theme.text,
-                fontWeight: FontWeight.w500,
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.secondary0,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+        border: Border.all(
+          width: 1.5,
+          color: theme.secondary16,
+        ),
+      ),
+      child: Wrap(
+        alignment: WrapAlignment.start,
+        direction: Axis.horizontal,
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.only(
+              top: 19.0,
+            ),
+            child: Center(
+              child: Text(
+                trans('payment.choose'),
+                style: Fonts.satoshi(
+                  fontSize: 16,
+                  color: theme.secondary,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
-        ),
-        Container(
-          padding: EdgeInsets.only(
-            top: 18.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (unit.paymentModes != null && methods.contains(PaymentMethod.inapp))
-                _buildSelectPaymentMethodBottomSheetRadioItem(
+          Container(
+            padding: EdgeInsets.only(
+              top: 18.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (unit.paymentModes != null && methods.contains(PaymentMethod.inapp))
+                  _buildSelectPaymentMethodBottomSheetRadioItem(
                     context,
                     trans('payment.method.inAppPayment'),
                     "assets/icons/stripe_logo_icon.svg",
-                    BottomSheetPaymentMethods.PAYMENT_INAPP,
-                    createSimplePaymentInfo()),
-              if (unit.paymentModes != null && methods.contains(PaymentMethod.cash))
-                _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.cash'),
-                    "assets/icons/cash_on_delivery_icon.svg", BottomSheetPaymentMethods.PAYMENT_CASH),
-              if (unit.paymentModes != null && methods.contains(PaymentMethod.card))
-                _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.creditCard'),
-                    "assets/icons/credit_card_icon.svg", BottomSheetPaymentMethods.PAYMENT_CARD),
-              Padding(
-                padding: const EdgeInsets.all(14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      trans('payment.paymentInfo.invoicing.want_invoice'),
-                      style: GoogleFonts.poppins(
-                        fontSize: 16,
-                        color: theme.text,
-                        fontWeight: FontWeight.w500,
+                    PaymentMethod.inapp,
+                  ),
+                if (unit.paymentModes != null && methods.contains(PaymentMethod.cash))
+                  _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.cash'),
+                      "assets/icons/cash_on_delivery_icon.svg", PaymentMethod.cash),
+                if (unit.paymentModes != null && methods.contains(PaymentMethod.card))
+                  _buildSelectPaymentMethodBottomSheetRadioItem(context, trans('payment.method.creditCard'),
+                      "assets/icons/credit_card_icon.svg", PaymentMethod.card),
+                Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        trans('payment.paymentInfo.invoicing.want_invoice'),
+                        style: Fonts.satoshi(
+                          fontSize: 16,
+                          color: theme.secondary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Switch(
-                        activeColor: theme.highlight,
-                        value: _wantsInvoce,
-                        onChanged: (value) {
-                          setState(() {
-                            this._wantsInvoce = value;
-                          });
-                        })
-                  ],
-                ),
-              )
-            ],
+                      Switch(
+                          activeColor: theme.primary,
+                          focusColor: theme.secondary0,
+                          hoverColor: theme.secondary0,
+                          inactiveTrackColor: theme.secondary64,
+                          value: _wantsInvoce,
+                          onChanged: (value) {
+                            setState(() {
+                              this._wantsInvoce = value;
+                            });
+                          })
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-        _buildSendCartButton(context, unit),
-      ],
+          _buildSendCartButton(context, unit),
+        ],
+      ),
     );
   }
 
@@ -218,15 +202,15 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           bool loading = state is StripePaymentLoading;
           Widget buttonChild = loading
               ? CenterLoadingWidget(
-                  color: theme.highlight,
+                  color: theme.secondary0,
                   size: 20.0,
                   strokeWidth: 2.0,
                 )
               : Text(
                   _wantsInvoce ? trans('payment.fillInvoice') : trans('payment.sendOrder'),
-                  style: GoogleFonts.poppins(
+                  style: Fonts.satoshi(
                     fontSize: 18,
-                    color: theme.text2,
+                    color: theme.secondary0,
                     fontWeight: FontWeight.w700,
                   ),
                 );
@@ -239,24 +223,25 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
               right: 14.0,
               bottom: 14.0,
             ),
+            margin: EdgeInsets.only(bottom: Platform.isIOS ? 20 : 0),
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: theme.indicator,
+                primary: theme.primary,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(40),
                 ),
               ),
               child: buttonChild,
-              onPressed: (_selectedPaymentMethod != BottomSheetPaymentMethods.PAYMENT_UNKNOWN)
+              onPressed: (_selectedPaymentMethod != null)
                   ? () async {
                       if (!loading) {
                         // getIt<CartBloc>().add(SetPaymentMode(unit.id, mode));
                         print('_selectedPaymentMethod=$_selectedPaymentMethod');
-                        if (_selectedPaymentMethod == BottomSheetPaymentMethods.PAYMENT_INAPP) {
+                        if (_selectedPaymentMethod == PaymentMethod.inapp) {
                           if (_wantsInvoce) {
-                            showInvoiceFormBottomSheet(context, widget.orderId,
-                                BottomSheetPaymentMethods.getPaymentModeFromSelection(_selectedPaymentMethod));
+                            showInvoiceFormBottomSheet(
+                                context, widget.orderId, _getPaymentModeFromSelection(_selectedPaymentMethod));
                           } else {
                             Nav.pop();
                             Nav.to(StripePaymentScreen(
@@ -265,14 +250,13 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                           }
                         } else {
                           if (_wantsInvoce) {
-                            showInvoiceFormBottomSheet(context, widget.orderId,
-                                BottomSheetPaymentMethods.getPaymentModeFromSelection(_selectedPaymentMethod));
+                            showInvoiceFormBottomSheet(
+                                context, widget.orderId, _getPaymentModeFromSelection(_selectedPaymentMethod));
                           } else {
                             getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
                               // cart: widget.cart,
                               orderId: widget.orderId,
-                              paymentMode:
-                                  BottomSheetPaymentMethods.getPaymentModeFromSelection(_selectedPaymentMethod),
+                              paymentMode: _getPaymentModeFromSelection(_selectedPaymentMethod),
                             ));
                           }
                         }
@@ -286,8 +270,12 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
     );
   }
 
-  Widget _buildSelectPaymentMethodBottomSheetRadioItem(BuildContext context, String title, String icon, int value,
-      [Widget? info]) {
+  Widget _buildSelectPaymentMethodBottomSheetRadioItem(
+    BuildContext context,
+    String title,
+    String icon,
+    PaymentMethod value,
+  ) {
     final isSelected = _selectedPaymentMethod == value;
     return InkWell(
       onTap: () {
@@ -305,7 +293,7 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
           borderRadius: BorderRadius.circular(14.0),
           border: Border.all(
             width: 1.5,
-            color: isSelected ? theme.indicator : theme.border,
+            color: isSelected ? theme.primary : theme.secondary16,
           ),
         ),
         child: Column(
@@ -329,16 +317,16 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                 Expanded(
                   child: Text(
                     '$title',
-                    style: GoogleFonts.poppins(
+                    style: Fonts.satoshi(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w600,
-                      color: theme.text,
+                      color: theme.secondary,
                     ),
                   ),
                 ),
                 Theme(
                   data: Theme.of(context).copyWith(
-                    unselectedWidgetColor: theme.border, // Radio disabled color
+                    unselectedWidgetColor: theme.secondary16, // Radio disabled color
                   ),
                   child: Container(
                     padding: EdgeInsets.only(
@@ -346,15 +334,15 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
                     ),
                     child: Transform.scale(
                       scale: 1.5,
-                      child: Radio<int>(
+                      child: Radio<PaymentMethod>(
                         value: value,
                         groupValue: _selectedPaymentMethod,
-                        onChanged: (int? value) {
+                        onChanged: (PaymentMethod? value) {
                           setState(() {
                             _selectedPaymentMethod = value;
                           });
                         },
-                        activeColor: theme.indicator, // Radio selected color
+                        activeColor: theme.primary, // Radio selected color
                       ),
                     ),
                   ),
@@ -368,56 +356,16 @@ class _PaymentMethodSelectionBottomSheetWidgetState extends State<PaymentMethodS
     );
   }
 
-  Widget createSimplePaymentInfo() {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: trans('payment.paymentInfo.simplePay.prefix') + '\n',
-            style: GoogleFonts.poppins(
-              fontSize: 12.0,
-              color: theme.text,
-            ),
-          ),
-          TextSpan(
-            text: trans('payment.paymentInfo.simplePay.paymentInfo'),
-            style: GoogleFonts.poppins(
-              fontSize: 12.0,
-              decoration: TextDecoration.underline,
-              color: theme.text,
-            ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                launch(getPaymentInfoLink(context));
-              },
-          ),
-          TextSpan(
-              text: ', ',
-              style: GoogleFonts.poppins(
-                fontSize: 12.0,
-                color: theme.text,
-              )),
-          TextSpan(
-            text: trans('dataTransfer.title'),
-            style: GoogleFonts.poppins(
-              fontSize: 12.0,
-              decoration: TextDecoration.underline,
-              color: theme.text,
-            ),
-            recognizer: TapGestureRecognizer()..onTap = () => showSimpleDialog(context),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-String getPaymentInfoLink(BuildContext context) {
-  switch (Localizations.localeOf(context).languageCode) {
-    case 'hu':
-      return 'http://simplepartner.hu/PaymentService/Fizetesi_tajekoztato.pdf';
-    default:
-      return 'http://simplepartner.hu/PaymentService/Payment_information.pdf';
+  static PaymentMode _getPaymentModeFromSelection(PaymentMethod? selectedMethod) {
+    switch (selectedMethod) {
+      case PaymentMethod.cash:
+        return PaymentMode(method: PaymentMethod.cash, type: PaymentType.cash, caption: 'cash');
+      case PaymentMethod.card:
+        return PaymentMode(method: PaymentMethod.card, type: PaymentType.card, caption: 'card');
+      case PaymentMethod.inapp:
+        return PaymentMode(method: PaymentMethod.inapp, type: PaymentType.stripe, caption: 'stripe');
+      default:
+        return PaymentMode(method: PaymentMethod.cash, type: PaymentType.cash, caption: 'cash');
+    }
   }
 }

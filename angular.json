@@ -48,7 +48,8 @@
               "ulid",
               "zen-observable",
               "@aws-amplify/core",
-              "@aws-amplify/auth"
+              "@aws-amplify/auth",
+              "xlsx"
             ],
             "scripts": [],
             "vendorChunk": true,
@@ -922,6 +923,28 @@
           "options": {
             "jestConfig": "libs/admin/shared/data-access/users/jest.config.js",
             "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "admin-shared-fixtures": {
+      "projectType": "library",
+      "root": "libs/admin/shared/fixtures",
+      "sourceRoot": "libs/admin/shared/fixtures/src",
+      "prefix": "bgap",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/fixtures"],
+          "options": {
+            "jestConfig": "libs/admin/shared/fixtures/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/shared/fixtures/src/**/*.ts"]
           }
         }
       }
@@ -1874,10 +1897,12 @@
       }
     },
     "@nrwl/angular:application": {
+      "linter": "eslint",
       "unitTestRunner": "jest",
       "e2eTestRunner": "cypress"
     },
     "@nrwl/angular:library": {
+      "linter": "eslint",
       "unitTestRunner": "jest"
     },
     "@nrwl/angular:component": {
