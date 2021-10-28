@@ -231,13 +231,15 @@ type Order
   statusLog: [StatusLog!]!
   archived: Boolean!
   sumPriceShown: PriceShown!
-  takeAway: Boolean!
+  takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
   transactionId: ID
   transaction: Transaction @connection(fields: ["transactionId"])
   unpayCategory: UnpayCategory
+  orderMode: OrderMode
+  servingMode: ServingMode
 }
 
 enum PaymentStatus {
@@ -311,6 +313,7 @@ type ProductComponentSet
   description: String!
   items: [ID!]! # ProductComponent ID
   maxSelection: Int # On extras
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductConfigComponent {
@@ -328,6 +331,7 @@ type GeneratedProductConfigSet {
   type: String!
   maxSelection: Int
   items: [GeneratedProductConfigComponent!]!
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductCategory
@@ -358,12 +362,13 @@ type GeneratedProduct
   description: LocalizedItem
   productType: String!
   tax: Int!
-  # takeawayTax: Int!
+  takeawayTax: Int
   position: Int!
   image: String
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductVariant {
@@ -409,6 +414,8 @@ type Unit
   merchantId: String
   timeZone: String
   pos: Pos
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
 }
 
 type DateIntervalOpen {
@@ -515,10 +522,11 @@ type Cart
   id: ID!
   userId: ID!
   unitId: ID!
-  takeAway: Boolean!
+  takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!
+  servingMode: ServingMode # Make the Cart.servingMode REQUIRED in the next release (handled in #1835 issue)
 }
 
 type Transaction
@@ -805,6 +813,16 @@ enum Allergen {
   treenuts
 }
 
+enum ServingMode {
+  inPlace
+  takeAway
+}
+
+enum OrderMode {
+  instant
+  pickup
+}
+
 ### GroupProduct
 type GroupProduct
   @aws_cognito_user_pools
@@ -817,7 +835,7 @@ type GroupProduct
   groupId: ID!
   isVisible: Boolean!
   tax: Int!
-  # takeawayTax: Int
+  takeawayTax: Int
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
 }
@@ -828,6 +846,7 @@ input UpdateGroupProductInput {
   groupId: ID
   isVisible: Boolean
   tax: Int
+  takeawayTax: Int
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
 }
@@ -844,11 +863,12 @@ type UnitProduct
   groupId: ID!
   unitId: ID!
   isVisible: Boolean!
-  takeaway: Boolean!
+  takeaway: Boolean! @deprecated(reason: "Use `supportedServingModes`.")
   laneId: ID
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
+  supportedServingModes: [ServingMode!]
 }
 input CreateUnitProductInput {
   id: ID # <== NOT REQUIRED
@@ -862,6 +882,7 @@ input CreateUnitProductInput {
   position: Int!
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
+  supportedServingModes: [ServingMode!]
 }
 input UpdateUnitProductInput {
   id: ID! # <== REQUIRED
@@ -875,6 +896,7 @@ input UpdateUnitProductInput {
   position: Int
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
+  supportedServingModes: [ServingMode!]
 }
 
 ### ProductConfigSet

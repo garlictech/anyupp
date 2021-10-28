@@ -150,7 +150,7 @@ type GeoUnit @aws_cognito_user_pools {
   currency: String!
   isAcceptingOrders: Boolean!
   # isCurrentlyOpen: Boolean!
-  openingHours: String!
+  openingHours: String
     @deprecated(
       reason: "The new and better openingHoursNext7 field should be used instead of this static string"
     )
