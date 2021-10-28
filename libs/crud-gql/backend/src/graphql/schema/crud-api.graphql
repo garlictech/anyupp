@@ -331,7 +331,7 @@ type GeneratedProductConfigSet {
   type: String!
   maxSelection: Int
   items: [GeneratedProductConfigComponent!]!
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductCategory
@@ -368,7 +368,7 @@ type GeneratedProduct
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductVariant {
