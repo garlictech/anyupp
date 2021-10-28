@@ -36,13 +36,14 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
             return _buildList(widget.unit, state.favorites!);
           } else {
             return EmptyWidget(
-              icon: 'assets/icons/empty-category.png',
               messageKey: 'favorites.noFavorites',
               descriptionKey: 'favorites.noFavoritesDesc',
-              textFontSize: 18.0,
-              descriptionFontSize: 14.0,
-              horizontalPadding: 32.0,
-              iconSize: 32.0,
+              buttonTextKey: 'favorites.noFavoritesButton',
+              // onTap: () => getIt<MainNavigationBloc>().add(
+              //   DoMainNavigation(
+              //     pageIndex: 0,
+              //   ),
+              // ),
             );
           }
         }

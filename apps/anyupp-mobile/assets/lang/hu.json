@@ -118,12 +118,7 @@
       "profile": "Profil"
     },
     "categoryEmpty": "A választott kategória jelenleg üres.",
-    "noCategories": "A választott üzlet még nem rendelkezik elérhető termékekkel.",
-    "category": {
-      "emptyTakeaway": "Sajnos elviteles módban nem elérhető ez a termékkategória.",
-      "emptyInPlace": "Sajnos helyben fogyasztásra nem elérhető ez a termékkategória.",
-      "emptyHint": "Nézz körül a többi kategóriában."
-    }
+    "noCategories": "A választott üzlet még nem rendelkezik elérhető termékekkel."
   },
   "cart": {
     "totalCost": "Fizetendő:",

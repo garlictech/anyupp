@@ -12,10 +12,6 @@ class EmptyWidget extends StatelessWidget {
   final OnEmptyWidgetButtonTap? onTap;
   final String? buttonTextKey;
   final String? icon;
-  final double iconSize;
-  final double textFontSize;
-  final double descriptionFontSize;
-  final double horizontalPadding;
 
   const EmptyWidget({
     Key? key,
@@ -24,17 +20,12 @@ class EmptyWidget extends StatelessWidget {
     this.onTap,
     this.buttonTextKey,
     this.icon = 'assets/icons/empty-box.svg',
-    this.iconSize = 104.0,
-    this.textFontSize = 16.0,
-    this.descriptionFontSize = 12.0,
-    this.horizontalPadding = 0.0,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: theme.secondary0,
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -46,27 +37,19 @@ class EmptyWidget extends StatelessWidget {
   }
 
   List<Widget> _buildWidgetColumn(BuildContext context) {
-    bool isSvg = icon?.endsWith('svg') ?? false;
     var widgets = <Widget>[];
     if (icon != null) {
       widgets.add(
-        isSvg
-            ? SvgPicture.asset(
-                icon!,
-                width: iconSize,
-                fit: BoxFit.fitWidth,
-                color: theme.secondary,
-              )
-            : Image.asset(
-                icon!,
-                width: iconSize,
-                fit: BoxFit.fitWidth,
-                // color: theme.secondary,
-              ),
+        SvgPicture.asset(
+          icon!,
+          width: 104.0,
+          fit: BoxFit.fitWidth,
+          color: theme.secondary,
+        ),
       );
       widgets.add(
         SizedBox(
-          height: 24.0,
+          height: 32.0,
         ),
       );
     }
@@ -77,7 +60,7 @@ class EmptyWidget extends StatelessWidget {
         textAlign: TextAlign.center,
         style: Fonts.satoshi(
           color: theme.secondary,
-          fontSize: textFontSize,
+          fontSize: 16.0,
           fontWeight: FontWeight.w600,
         ),
       ));
@@ -85,13 +68,13 @@ class EmptyWidget extends StatelessWidget {
 
     if (descriptionKey != null) {
       widgets.add(SizedBox(
-        height: 8.0,
+        height: 4.0,
       ));
       widgets.add(Text(
         trans(context, descriptionKey!),
         style: Fonts.satoshi(
           color: theme.secondary,
-          fontSize: descriptionFontSize,
+          fontSize: 12.0,
           fontWeight: FontWeight.normal,
         ),
       ));
