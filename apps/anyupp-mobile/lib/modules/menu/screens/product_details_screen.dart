@@ -220,26 +220,36 @@ class ProductDetailsWidget extends StatelessWidget {
                           },
                         ),
                       if (displayState == ProducItemDisplayState.DISABLED)
-                        _buildAllergensListWidget(
-                          context,
-                          item.allergens!,
+                        Container(
+                          color: theme.secondary12,
+                          child: _buildAllergensListWidget(
+                            context,
+                            item.allergens!,
+                          ),
                         ),
+                      if (displayState == ProducItemDisplayState.DISABLED ||
+                          item.configSets == null ||
+                          (item.configSets != null && item.configSets!.isEmpty))
+                        Container(
+                          height: MediaQuery.of(context).size.height / 5,
+                          color: theme.secondary12,
+                        )
                     ],
                   ),
                 ),
               ),
             ),
           ),
-          (item.configSets == null || (item.configSets != null && item.configSets!.isEmpty))
-              ? Container()
-              : Container(
-                  color: theme.secondary12,
-                  child: AddToCartPanelWidget(
-                    displayState: displayState,
-                    servingMode: servingMode,
-                    onAddToCartPressed: (state, quantity) => _addOrderItemToCart(context, state, quantity),
-                  ),
-                )
+          // (item.configSets == null || (item.configSets != null && item.configSets!.isEmpty))
+          //     ? Container()
+          Container(
+            color: theme.secondary12,
+            child: AddToCartPanelWidget(
+              displayState: displayState,
+              servingMode: servingMode,
+              onAddToCartPressed: (state, quantity) => _addOrderItemToCart(context, state, quantity),
+            ),
+          )
         ],
       ),
     );
@@ -304,7 +314,8 @@ class _ProductDetailsImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ImageWidget(
       url: url,
-      width: MediaQuery.of(context).size.width / 2.5,
+      // width: MediaQuery.of(context).size.width / 2.5,
+      height: MediaQuery.of(context).size.width / 2,
       placeholder: Container(
         padding: EdgeInsets.all(50.0),
         decoration: BoxDecoration(

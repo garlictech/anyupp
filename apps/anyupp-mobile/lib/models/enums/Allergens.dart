@@ -1,19 +1,19 @@
-enum Allergen {
-  celery,
-  crustaceans,
-  egg,
-  fish,
-  gluten,
-  lupin,
-  milk,
-  molluscs,
-  mustard,
-  peanut,
-  sesame,
-  soya,
-  sulphites,
-  treenuts,
-}
+// enum Allergen {
+//   celery,
+//   crustaceans,
+//   egg,
+//   fish,
+//   gluten,
+//   lupin,
+//   milk,
+//   molluscs,
+//   mustard,
+//   peanut,
+//   sesame,
+//   soya,
+//   sulphites,
+//   treenuts,
+// }
 
 const Map<String, int> allergenMap = {
   'gluten': 1,

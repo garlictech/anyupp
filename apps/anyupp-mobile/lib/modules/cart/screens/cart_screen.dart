@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/main/main.dart';
@@ -80,7 +81,14 @@ class CartScreen extends StatelessWidget {
                           isDev;
 
                       if (!show) {
-                        return Container();
+                        return Text(
+                          trans(context, 'main.menu.cart'),
+                          style: Fonts.satoshi(
+                            color: theme.secondary,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
                       }
 
                       return Row(

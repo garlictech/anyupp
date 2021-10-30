@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:faker/faker.dart' hide Address;
 
 class MockGenerator {
   static final faker = Faker();
+  static final Random rnd = Random();
 
   static List<Transaction> generateTransactions({required int count, String? userId, String? orderId}) {
     var results = <Transaction>[];
@@ -218,5 +221,135 @@ class MockGenerator {
           OrderMode.instant,
           OrderMode.pickup,
         ]);
+  }
+
+  static GeneratedProduct generateProduct({
+    required String name,
+    List<ServingMode> servingModes = const [ServingMode.inPlace, ServingMode.takeAway],
+    int variantCount = 3,
+    int configSetCount = 1,
+  }) {
+    assert(variantCount >= 1);
+    List<ProductVariant> variants = [];
+    for (int i = 0; i < variantCount; i++) {
+      variants.add(
+        generateProductVariant(
+          name: 'VARIANT_$i',
+          price: 100.0 * (i + 1),
+          position: i,
+        ),
+      );
+    }
+
+    List<GeneratedProductConfigSet> configSets = [];
+    for (int i = 0; i < configSetCount; i++) {
+      configSets.add(generateProductConfigSet(
+        name: '${name}_config_$i',
+        position: i,
+      ));
+    }
+    return GeneratedProduct(
+      id: faker.guid.guid(),
+      unitId: faker.guid.guid(),
+      productCategoryId: faker.guid.guid(),
+      allergens: generateAllergeens(3).map((e) => enumToString(e)!).toList(),
+      image: 'https://via.placeholder.com/150',
+      description: LocalizedItem(
+        en: '${name}_description',
+        de: '${name}_description',
+        hu: '${name}_description',
+      ),
+      name: LocalizedItem(
+        en: name,
+        de: name,
+        hu: name,
+      ),
+      productType: 'FAKE_PRODUCT_TYPE',
+      tax: 10,
+      position: 0,
+      variants: variants,
+      supportedServingModes: servingModes,
+      configSets: configSets,
+    );
+  }
+
+  static ProductVariant generateProductVariant({
+    required String name,
+    required double price,
+    required int position,
+    ProductVariantPack? pack,
+  }) {
+    return ProductVariant(
+      id: faker.guid.guid(),
+      variantName: LocalizedItem(
+        en: name,
+        de: name,
+        hu: name,
+      ),
+      price: price,
+      position: position,
+      pack: pack,
+    );
+  }
+
+  static GeneratedProductConfigSet generateProductConfigSet({
+    required String name,
+    required int position,
+    List<ServingMode> servingModes = const [
+      ServingMode.inPlace,
+      ServingMode.takeAway,
+    ],
+    int itemCount = 3,
+  }) {
+    List<GeneratedProductConfigComponent> items = [];
+    for (int i = 0; i < itemCount; i++) {
+      items.add(generateProductConfigComponent(
+        position: i,
+        name: '${name}_$i',
+        price: (i + 1) * 100,
+      ));
+    }
+    return GeneratedProductConfigSet(
+      productSetId: faker.guid.guid(),
+      name: LocalizedItem(
+        de: name,
+        hu: name,
+        en: name,
+      ),
+      type: 'FAKE_CONFIG_TYPE',
+      items: items,
+      supportedServingModes: servingModes,
+      description: 'Description of $name',
+      position: position,
+      maxSelection: itemCount,
+    );
+  }
+
+  static GeneratedProductConfigComponent generateProductConfigComponent({
+    required String name,
+    required double price,
+    required int position,
+    int allergensCount = 2,
+  }) {
+    List<Allergen> allergeens = generateAllergeens(allergensCount);
+    return GeneratedProductConfigComponent(
+      productComponentId: faker.guid.guid(),
+      price: price,
+      position: position,
+      name: LocalizedItem(
+        de: name,
+        hu: name,
+        en: name,
+      ),
+      allergens: allergeens,
+    );
+  }
+
+  static List<Allergen> generateAllergeens(int count) {
+    List<Allergen> allergeens = [];
+    for (int i = 0; i < count; i++) {
+      allergeens.add(Allergen.values[rnd.nextInt(Allergen.values.length - 1)]);
+    }
+    return allergeens;
   }
 }
