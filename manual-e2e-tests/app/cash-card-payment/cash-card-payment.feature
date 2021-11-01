@@ -5,16 +5,22 @@ Feature: Cash and card payment
     And the language is set to EN
     When I tap the text "Continue anonymously"
     Then there is a loading screen
+    # Then I should see "Allow AnyUpp to access this device's location?" text
+    # When I tap the "While using the app" text
+    # Android
+    # Then I should see "Allow "AnyUpp" to use your location?" text
+    # When I tap the "Allow While Using App" text
+    # iOS
     And there is the unit selection screen
     When I tap the "Késdobáló #111" unit in the list
-    And I tap the "In place" button
+    And I tap the "Take away" button
     Then there is the "Menu" screen
+    When I tap the "You can switch between ordering methods at any time." text
     Then I should see "HAMBURGER #1" with picture
     And I should see "FANTA #2" with picture
 
   Scenario: Pay successfully with cash or card
-    This is a 2 in 1 scenario. Text updates appear only in the first scenario.
-    When I tap the "Bármikor válthatsz a rendelési módok között." text
+    #This is a 2 in 1 scenario. Text updates appear only in the first scenario.
     And I tap the "FANTA #2" card under "Test product category #1 name" category
     Then I should see "Fanta #2 description" text
     When I select the "FRENCH FRIES" modifier under the "Modifier comp set"
@@ -31,7 +37,7 @@ Feature: Cash and card payment
     Then I should see the "Finding your seat..." and the "Connected to" loading screens
     And I get the text message "New Table Reserved!"
     And there is the "Cart" screen
-    And I should see the selected table and seat on the top
+    # And I should see the selected table and seat on the top
     And I should see "FRENCH FRIES" text
     Then I should see "2 x 298 Ft" text
     When I tap the "plus" button
@@ -39,9 +45,8 @@ Feature: Cash and card payment
     And I should see "PAY (895 Ft)" text
     When I tap the "minus" button
     Then I should see "2 x 298 Ft" text
-    And I should see "PAY (596 Ft)" text
     When I tap the "PAY (595 Ft)" button
-    Then there is a payment dialog
+    Then there is a payment dialog with "Please select a payment method" text
     When I tap the option "Credit card at my table to my server + SZÉP card"
     Then the option "Credit card at my table to my server + SZÉP card" is highlighted
     And I should see "PLACE ORDER" text
@@ -57,9 +62,6 @@ Feature: Cash and card payment
     And I fill out the "Invoice email" input with "testuser+test@anyupp.com"
     And I tap the "PLACE ORDER" button
     Then I wait around 10 secs
-    And there is the "Cart" screen
-    And I should see "Your cart is empty" text
-    When I tap the "close" button
     And the "Orders" option is higlighted
     Then I should see "Current orders" text
     And I should see the date/time of the created order
@@ -70,8 +72,8 @@ Feature: Cash and card payment
     And I should see the "FRENCH FRIES" text
     And I should see "Total cost 596 Ft" text
     When I scroll down to the bottom
-    And I should see "Order Num" with 6 numbers
     And I should see "More details" text
+    And I should see "Order num" with 6 numbers
     And I should see "Késdobáló #111" text
     When I tap the "back arrow" button
     And the admin set the state of order to "SUCCESS"
@@ -118,9 +120,6 @@ Feature: Cash and card payment
     And I should see the form filled with the previous datas
     When I tap the "RENDELÉS" button
     Then I wait around 10 secs
-    And there is the "Kosár" screen
-    And I should see "A kosarad még üres." text
-    When I tap the "close" button
     And the "Rendelések" option is higlighted
     Then I should see "Folyamatban lévő rendelések" text
     And I should see the date/time of the created order
@@ -170,9 +169,6 @@ Feature: Cash and card payment
     Then the option "Credit card at my table to my server + SZÉP card" is highlighted
     And I tap the "PLACE ORDER" button
     Then I wait around 10 secs
-    Then there is the "Cart" screen
-    And I should see "Your cart is empty" text
-    When I tap the "close" button
     And the "Orders" option is higlighted
     And I should see the date of the created order
     When I tap on the order with "Processing"

@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/lib/option';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import { flow, pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
@@ -33,6 +34,26 @@ import {
 // make sure that everything gets (re)indexed
 const ES_DELAY = 5000; //ms
 
+const normalizeCommon = (data: Modifier | Dish) => ({
+  ...data,
+  id: data.id.toString(),
+  name: (() => {
+    try {
+      return decodeURIComponent(escape(data.name));
+    } catch (_err) {
+      return data.name;
+    }
+  })(),
+  price: data.price / 100,
+});
+
+const commonSchema = {
+  price: Joi.number().integer().required(),
+  active: Joi.number(),
+  id: Joi.number().required(),
+  name: Joi.string().required(),
+};
+
 export interface ProductUpdateCommands {
   chain: CrudApi.UpdateChainProductInput;
   unit: CrudApi.UpdateUnitProductInput;
@@ -45,14 +66,13 @@ export interface Dish {
   id: string;
   guid: string;
   name: string;
+  modischeme?: number;
 }
 
 const dishSchema = {
-  price: Joi.number().integer().required(),
-  active: Joi.number(),
-  id: Joi.number().required(),
+  ...commonSchema,
   guid: Joi.string().required(),
-  name: Joi.string().required(),
+  modischeme: Joi.number().integer(),
 };
 
 export const { validate: validateDish, isType: isDish } = validateSchema<Dish>(
@@ -61,18 +81,7 @@ export const { validate: validateDish, isType: isDish } = validateSchema<Dish>(
   true,
 );
 
-export const normalizeDish = (dish: Dish) => ({
-  ...dish,
-  id: dish.id.toString(),
-  name: (() => {
-    try {
-      return decodeURIComponent(escape(dish.name));
-    } catch (_err) {
-      return dish.name;
-    }
-  })(),
-  price: dish.price / 100,
-});
+export const normalizeDish = (dish: Dish) => normalizeCommon(dish); // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const processDishes = (rawData: any) =>
@@ -312,6 +321,24 @@ export const createDefaultProductCategory =
         mapTo(true),
       );
 
+export interface Modifier {
+  price: number;
+  active: boolean;
+  id: string;
+  name: string;
+  takeaway: boolean;
+}
+
+const modifierSchema = {
+  ...commonSchema,
+};
+
+export const { validate: validateModifier, isType: isModifier } =
+  validateSchema<Dish>(modifierSchema, 'Modifier', true);
+
+export const normalizeModifier = (modifier: Modifier) =>
+  normalizeCommon(modifier);
+
 export const handleRkeeperProducts =
   (sdk: CrudApi.CrudSdk) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -349,6 +376,15 @@ export const handleRkeeperProducts =
         ),
       ),
     );
+
+export interface ProcessModifiersOfDishDeps {
+  modifierGroups: Record<string, Modifier[]>;
+}
+
+export const processModifiersOfDish =
+  (deps: ProcessModifiersOfDishDeps) => (dish: Dish) =>
+    O.from;
+pipe(dish.modischeme ? deps.modifierGroups[dish.modischeme] : null);
 
 // process modifiers
 //

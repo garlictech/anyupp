@@ -2,12 +2,20 @@ Feature: Stripe Card
 
   Background: Login to the App and select a Unit
     Given I am on the login screen
+    And the language is set to EN
     When I tap the text "Continue anonymously"
     Then there is a loading screen
+    # Then I should see "Allow AnyUpp to access this device's location?" text
+    # When I tap the "While using the app" text
+    # Android
+    # Then I should see "Allow "AnyUpp" to use your location?" text
+    # When I tap the "Allow While Using App" text
+    # iOS
     And there is the unit selection screen
     When I tap the "Késdobáló #111" unit in the list
-    And I tap the "In place" button
+    And I tap the "Take away" button
     Then there is the "Menu" screen
+    When I tap the "You can switch between ordering methods at any time." text
 
   Scenario: Add and delete a new credit card
     When I tap the "Profile" icon
@@ -70,10 +78,7 @@ Feature: Stripe Card
     And I tap the button "Pay with Stripe"
     Then there is a loading screen
     And I get the text message "Payment success!"
-    And there is the "Cart" screen
-    And I should see "Your cart is empty" text
-    When I tap the "close" button
-    Then the "Orders" option is higlighted
+    And the "Orders" option is higlighted
     And I should see "Current orders" text
     And I should see the date of the created order
     When I tap on the order with "593 Ft"
@@ -133,10 +138,7 @@ Feature: Stripe Card
     And I tap the button "Pay with Stripe"
     Then there is a loading screen
     And I get the text message "Payment success!"
-    And there is the "Cart" screen
-    And I should see "Your cart is empty" text
-    When I tap the "close" button
-    Then the "Orders" option is higlighted
+    And the "Orders" option is higlighted
     And I should see "Current orders" text
     And I should see the date of the created order
     And I should see "298 Ft" text
@@ -215,9 +217,6 @@ Feature: Stripe Card
     When I tap the button "Fizetés Stripe-pal"
     Then there is a loading screen
     And I should get the "Sikeres fizetés!" message
-    And there is the "Kosár" screen
-    And I should see "A kosarad még üres." text
-    When I tap the "close" button
     And the "Rendelések" option is higlighted
     Then I should see "Folyamatban lévő rendelések" text
     And I should see the date/time of the created order
