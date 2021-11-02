@@ -1,7 +1,8 @@
-import * as O from 'fp-ts/lib/option';
+import * as OO from 'fp-ts-rxjs/ObservableOption';
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import { flow, pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
+import * as O from 'fp-ts/lib/Option';
 import * as Joi from 'joi';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { validateSchema } from '@bgap/shared/data-validators';
@@ -16,6 +17,7 @@ import {
   catchError,
   delay,
   mapTo,
+  shareReplay,
 } from 'rxjs/operators';
 import {
   combineLatest,
@@ -27,6 +29,7 @@ import {
   UnaryFunction,
 } from 'rxjs';
 import {
+  filterNullishElements,
   filterNullishGraphqlListWithDefault,
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
@@ -34,16 +37,19 @@ import {
 // make sure that everything gets (re)indexed
 const ES_DELAY = 5000; //ms
 
+const decodeName = (name: string) => {
+  {
+    try {
+      return decodeURIComponent(escape(name));
+    } catch (_err) {
+      return name;
+    }
+  }
+};
+
 const normalizeCommon = (data: Modifier | Dish) => ({
   ...data,
-  id: data.id.toString(),
-  name: (() => {
-    try {
-      return decodeURIComponent(escape(data.name));
-    } catch (_err) {
-      return data.name;
-    }
-  })(),
+  name: decodeName(data.name),
   price: data.price / 100,
 });
 
@@ -63,7 +69,7 @@ export interface ProductUpdateCommands {
 export interface Dish {
   price: number;
   active: boolean;
-  id: string;
+  id: number;
   guid: string;
   name: string;
   modischeme?: number;
@@ -81,10 +87,13 @@ export const { validate: validateDish, isType: isDish } = validateSchema<Dish>(
   true,
 );
 
-export const normalizeDish = (dish: Dish) => normalizeCommon(dish); // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const normalizeDish = (dish: Dish): Dish => ({
+  ...normalizeCommon(dish),
+  guid: dish.guid,
+});
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const processDishes = (rawData: any) =>
+export const processDishes = (rawData: any): Observable<Dish[]> =>
   pipe(
     rawData?.data?.dishes,
     R.uniqWith((a, b) => a.id === b.id),
@@ -132,7 +141,7 @@ const getFirstFoundItem = <T>(): UnaryFunction<
         console.warn('Found multiple unit products with the same clientid!');
       }
     }),
-    map(items => items[0] ?? null),
+    map(items => items?.[0] ?? null),
   );
 
 export const searchExternalUnitProduct =
@@ -143,7 +152,7 @@ export const searchExternalUnitProduct =
     sdk
       .SearchUnitProducts({
         filter: {
-          clientSideId: {
+          externalId: {
             eq: externalProductIdMaker(rkeeperProductGuid),
           },
         },
@@ -161,7 +170,7 @@ export const getBusinessEntityInfo =
   (externalRestaurantId: string): Observable<RKeeperBusinessEntityInfo> =>
     sdk
       .SearchUnits({
-        filter: { externalRestaurantId: { eq: externalRestaurantId } },
+        filter: { externalId: { eq: externalRestaurantId } },
       })
       .pipe(
         getFirstFoundItem(),
@@ -177,7 +186,11 @@ export const getBusinessEntityInfo =
 
 export const createRkeeperProduct =
   (sdk: CrudApi.CrudSdk) =>
-  (businessEntity: RKeeperBusinessEntityInfo, dish: Dish) =>
+  (
+    businessEntity: RKeeperBusinessEntityInfo,
+    dish: Dish,
+    configSets: CrudApi.ProductConfigSet[],
+  ) =>
     sdk
       .CreateChainProduct({
         input: {
@@ -201,6 +214,7 @@ export const createRkeeperProduct =
               position: -1,
             },
           ],
+          configSets,
         },
       })
       .pipe(
@@ -239,7 +253,7 @@ export const createRkeeperProduct =
               isVisible: dish.active,
               position: -1,
               supportedServingModes: [CrudApi.ServingMode.inplace],
-              clientSideId: externalProductIdMaker(dish.guid),
+              externalId: externalProductIdMaker(dish.guid),
               variants: [
                 {
                   id: 'id',
@@ -269,11 +283,16 @@ export const createRkeeperProduct =
 
 export const updateRkeeperProduct =
   (sdk: CrudApi.CrudSdk) =>
-  (dish: Dish, foundUnitProduct: CrudApi.UnitProduct) =>
+  (
+    dish: Dish,
+    foundUnitProduct: CrudApi.UnitProduct,
+    configSets: CrudApi.ProductConfigSet[],
+  ) =>
     sdk.UpdateUnitProduct({
       input: {
         id: foundUnitProduct.id,
         isVisible: dish.active,
+        configSets,
         variants: [
           {
             ...(foundUnitProduct?.variants?.[0] ?? {}),
@@ -324,9 +343,8 @@ export const createDefaultProductCategory =
 export interface Modifier {
   price: number;
   active: boolean;
-  id: string;
+  id: number;
   name: string;
-  takeaway: boolean;
 }
 
 const modifierSchema = {
@@ -334,10 +352,10 @@ const modifierSchema = {
 };
 
 export const { validate: validateModifier, isType: isModifier } =
-  validateSchema<Dish>(modifierSchema, 'Modifier', true);
+  validateSchema<Modifier>(modifierSchema, 'Modifier', true);
 
 export const normalizeModifier = (modifier: Modifier) =>
-  normalizeCommon(modifier);
+  normalizeCommon(modifier) as Modifier;
 
 export const handleRkeeperProducts =
   (sdk: CrudApi.CrudSdk) =>
@@ -355,11 +373,24 @@ export const handleRkeeperProducts =
           switchMap(() => from(dishes)),
           mergeMap(
             dish =>
-              searchExternalUnitProduct(sdk)(dish.guid).pipe(
-                switchMap(unitProduct =>
+              combineLatest(
+                resolveComponentSets(
+                  sdk,
+                  businessEntityInfo.chainId,
+                  rawData,
+                )(dish).pipe(
+                  map(O.getOrElse(() => [] as CrudApi.ProductConfigSet[])),
+                ),
+                searchExternalUnitProduct(sdk)(dish.guid),
+              ).pipe(
+                switchMap(([configSets, unitProduct]) =>
                   unitProduct === null
-                    ? createRkeeperProduct(sdk)(businessEntityInfo, dish)
-                    : updateRkeeperProduct(sdk)(dish, unitProduct),
+                    ? createRkeeperProduct(sdk)(
+                        businessEntityInfo,
+                        dish,
+                        configSets,
+                      )
+                    : updateRkeeperProduct(sdk)(dish, unitProduct, configSets),
                 ),
               ),
             100,
@@ -377,19 +408,195 @@ export const handleRkeeperProducts =
       ),
     );
 
-export interface ProcessModifiersOfDishDeps {
-  modifierGroups: Record<string, Modifier[]>;
+export const upsertComponent =
+  (sdk: CrudApi.CrudSdk, chainId: string) =>
+  (modifier: Modifier): Observable<CrudApi.ProductConfigComponent> =>
+    sdk
+      .SearchProductComponents({
+        filter: {
+          externalId: { eq: modifier.id.toString() },
+        },
+      })
+      .pipe(
+        getFirstFoundItem<CrudApi.ProductComponent>(),
+        switchMap(component =>
+          component === null
+            ? sdk.CreateProductComponent({
+                input: {
+                  chainId,
+                  name: { hu: modifier.name },
+                  externalId: modifier.id.toString(),
+                },
+              })
+            : sdk.UpdateProductComponent({
+                input: {
+                  id: component.id,
+                  name: {
+                    hu: modifier.name,
+                  },
+                },
+              }),
+        ),
+        throwIfEmptyValue(),
+        map(component => ({
+          productComponentId: component.id,
+          refGroupPrice: modifier.price,
+          price: modifier.price,
+          position: -1,
+        })),
+      );
+
+export const modifierUpdater =
+  (sdk: CrudApi.CrudSdk, chainId: string) =>
+  (modifier: Modifier): Observable<CrudApi.ProductConfigComponent> =>
+    R.memoizeWith(
+      () => modifier.id.toString(),
+      () => pipe(upsertComponent(sdk, chainId)(modifier), shareReplay(1)),
+    )();
+
+export interface ModifierGroup {
+  id: number;
+  name: string;
+  modifiers: Modifier[];
 }
 
-export const processModifiersOfDish =
-  (deps: ProcessModifiersOfDishDeps) => (dish: Dish) =>
-    O.from;
-pipe(dish.modischeme ? deps.modifierGroups[dish.modischeme] : null);
+const modifierGroupSchema = {
+  id: Joi.number().required(),
+  name: Joi.string().required(),
+  modifiers: Joi.array().required().items(modifierSchema),
+};
 
-// process modifiers
-//
-// 1. menj végig a dish-eken. Vedd ki a modischema-ből a hozzá tartozó modifyer groupot.
-// 2. A modifuerekből csinálj create v update (validátorokkal) operátorokat. Hajtsd őket végre.
-// 3. Cachel-d be az eredményt, a cache: modi id => anyupp id.
-// 4. A cache-ből próbáld venni az id-ket, ha nincs id, akkro jòn a végrehajtás.
-// 5. Add hozzá a modifyereket a productokhoz.
+export const { validate: validateModifierGroup, isType: isModifierGroup } =
+  validateSchema<ModifierGroup>(modifierGroupSchema, 'ModifierGroup', true);
+
+export const normalizeModifierGroup = (modifierGroup: ModifierGroup) => ({
+  ...modifierGroup,
+  name: decodeName(modifierGroup.name),
+  modifiers: modifierGroup.modifiers.map(normalizeModifier),
+});
+
+export const upsertConfigSets =
+  (sdk: CrudApi.CrudSdk, chainId: string) =>
+  (modifierGroups: ModifierGroup[]): Observable<CrudApi.ProductConfigSet[]> =>
+    combineLatest(
+      modifierGroups.map(modifierGroup =>
+        R.memoizeWith(
+          () => modifierGroup.id.toString(),
+          () =>
+            pipe(
+              modifierGroup.modifiers.map(modifierUpdater(sdk, chainId)),
+              res => combineLatest(res),
+              filterNullishElements(),
+              switchMap(components =>
+                sdk
+                  .SearchProductComponentSets({
+                    filter: {
+                      externalId: { eq: modifierGroup.id.toString() },
+                    },
+                  })
+                  .pipe(
+                    getFirstFoundItem(),
+                    switchMap(componentSet =>
+                      componentSet === null
+                        ? sdk.CreateProductComponentSet({
+                            input: {
+                              externalId: modifierGroup.id.toString(),
+                              chainId,
+                              type: 'rkeeper',
+                              name: {
+                                hu: modifierGroup.name,
+                              },
+                              description: 'describe me',
+                              items: components.map(c => c.productComponentId),
+                            },
+                          })
+                        : sdk.UpdateProductComponentSet({
+                            input: {
+                              id: componentSet.id,
+                              name: {
+                                hu: modifierGroup.name,
+                              },
+                              items: components.map(c => c.productComponentId),
+                            },
+                          }),
+                    ),
+                    throwIfEmptyValue(),
+                    map(componentSet => ({
+                      productSetId: componentSet.id,
+                      items: components,
+                      position: -1,
+                    })),
+                  ),
+              ),
+              shareReplay(1),
+            ),
+        )(),
+      ),
+    );
+
+export const resolveComponentSets =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+
+    (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
+    (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
+      R.memoizeWith(
+        () => (dish.modischeme ?? -1).toString(),
+        () =>
+          pipe(
+            rawData?.data?.modifiers,
+            O.fromPredicate(
+              () => !!rawData?.data?.modifiers && !!dish.modischeme,
+            ),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            O.map(R.find((item: any) => item?.id === dish.modischeme)),
+            O.chain(O.fromNullable),
+            O.chain(modischema => O.fromNullable(modischema.group)),
+            O.map(group =>
+              pipe(
+                group,
+                R.map(
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (modifierGroupItem: any): ModifierGroup => ({
+                    id: modifierGroupItem.id,
+                    name: modifierGroupItem.name,
+                    modifiers: modifierGroupItem?.modi?.map(
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      (modifier: any) => ({
+                        price: modifier?.[0]?.price,
+                        name: modifier.name,
+                        active: modifier.active,
+                        id: modifier.id,
+                      }),
+                    ),
+                  }),
+                ),
+              ),
+            ),
+            OO.fromOption,
+            OO.chain(group =>
+              pipe(
+                combineLatest(
+                  group.map(item =>
+                    validateModifierGroup(item).pipe(
+                      map(normalizeModifierGroup),
+                    ),
+                  ),
+                ),
+                switchMap(upsertConfigSets(sdk, chainId)),
+                catchError(err => {
+                  console.warn(
+                    `Found an invalid record: ${JSON.stringify(
+                      group,
+                      null,
+                      2,
+                    )}. The problem: (${JSON.stringify(err, null, 2)})`,
+                  );
+                  return of(null);
+                }),
+                OO.fromObservable,
+              ),
+            ),
+            OO.chain(x => (x ? OO.some(x) : OO.none)),
+          ),
+      )();

@@ -81,7 +81,7 @@ type ChainProduct
   variants: [ProductVariant]
   allergens: [Allergen]
   configSets: [ProductConfigSet]
-  clientSideId: String
+  externalId: String
   dirty: Boolean
 }
 
@@ -127,7 +127,7 @@ type GroupProduct
   takeawayTax: Int
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  clientSideId: String
+  externalId: String
   dirty: Boolean
 }
 
@@ -149,11 +149,10 @@ type UnitProduct
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
   supportedServingModes: [ServingMode!]!
-  clientSideId: String
+  externalId: String
   dirty: Boolean
 }
 
-### ProductConfigSet
 type ProductConfigComponent @aws_cognito_user_pools {
   productComponentId: ID!
   refGroupPrice: Float!
@@ -633,6 +632,7 @@ type ProductComponent
   name: LocalizedItem!
   description: String
   allergens: [Allergen]
+  externalId: String
 }
 
 ### ProductComponent
@@ -641,6 +641,7 @@ type ProductComponentSet
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
+  externalId: String
   chainId: ID!
   type: String!
   name: LocalizedItem!
@@ -748,7 +749,7 @@ type Unit
   merchantId: String
   timeZone: String
   pos: Pos
-  externalRestaurantId: String
+  externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
 }
@@ -1085,7 +1086,7 @@ input CreateUnitInput {
   merchantId: String
   timeZone: String
   pos: PosInput
-  externalRestaurantId: String
+  externalId: String
   supportedServingModes: [ServingMode!]!
   supportedOrderModes: [OrderMode!]!
 }
