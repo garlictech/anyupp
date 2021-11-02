@@ -144,7 +144,7 @@
     "@serverless-stack/cli": "0.50.2",
     "@serverless-stack/resources": "0.50.1",
     "@testing-library/cypress": "8.0.1",
-    "@types/aws-lambda": "8.10.84",
+    "@types/aws-lambda": "8.10.85",
     "@types/aws-serverless-express": "3.3.5",
     "@types/chart.js": "2.9.34",
     "@types/cli-progress": "3.9.2",
