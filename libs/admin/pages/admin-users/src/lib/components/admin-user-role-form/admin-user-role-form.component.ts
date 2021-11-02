@@ -1,3 +1,5 @@
+import { combineLatest } from 'rxjs';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,16 +10,14 @@ import {
 import { Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import { roleContextsSelectors } from '@bgap/admin/shared/data-access/role-contexts';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { catchGqlError, EToasterType } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { IKeyValue } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -35,8 +35,6 @@ export class AdminUserRoleFormComponent
   public roleContextOptions: IKeyValue[] = [];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private _store: Store,
     protected _injector: Injector,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -97,9 +95,7 @@ export class AdminUserRoleFormComponent
                 })
                 .pipe(catchGqlError(this._store))
                 .subscribe(() => {
-                  this._toasterService.show(
-                    EToasterType.SUCCESS,
-                    '',
+                  this._toasterService.showSimpleSuccess(
                     'common.updateSuccessful',
                   );
 
@@ -133,11 +129,7 @@ export class AdminUserRoleFormComponent
         .subscribe(() => {
           this.dialogForm.patchValue({ roleContextId: '' });
 
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
+          this._toasterService.showSimpleSuccess('common.insertSuccessful');
 
           this._changeDetectorRef.detectChanges();
         });

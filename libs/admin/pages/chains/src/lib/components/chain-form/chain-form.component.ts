@@ -1,6 +1,4 @@
 import { cloneDeep } from 'lodash/fp';
-import { EMPTY } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -9,21 +7,16 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
+import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  addressFormGroup,
-  addressIsEmpty,
-  catchGqlError,
-  contactFormGroup,
-  EToasterType,
-  multiLangValidator,
-} from '@bgap/admin/shared/utils';
+import { addressIsEmpty } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType } from '@bgap/shared/types';
-import { cleanObject, filterNullish } from '@bgap/shared/utils';
-import { Store } from '@ngrx/store';
+import { cleanObject } from '@bgap/shared/utils';
+
+import { ChainFormService } from '../../services/chain-form.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,43 +33,13 @@ export class ChainFormComponent
 
   constructor(
     protected _injector: Injector,
-    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
+    private _chainFormService: ChainFormService,
   ) {
     super(_injector);
 
-    this.dialogForm = this._formBuilder.group({
-      name: ['', [Validators.required]],
-      description: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      isActive: ['', [Validators.required]],
-      ...contactFormGroup(),
-      ...addressFormGroup(this._formBuilder),
-      style: this._formBuilder.group({
-        colors: this._formBuilder.group({
-          backgroundLight: ['#ffffff', [Validators.required]],
-          backgroundDark: ['#ffffff', [Validators.required]],
-          textDark: ['#ffffff', [Validators.required]],
-          textLight: ['#ffffff', [Validators.required]],
-          borderDark: ['#ffffff', [Validators.required]],
-          borderLight: ['#ffffff', [Validators.required]],
-          indicator: ['#ffffff', [Validators.required]],
-          highlight: ['#ffffff', [Validators.required]],
-          disabled: ['#ffffff', [Validators.required]],
-        }),
-        images: this._formBuilder.group({
-          logo: [''],
-          header: [''],
-        }),
-      }),
-    });
+    this.dialogForm = this._chainFormService.createChainFormGroup();
   }
 
   get logoImage() {
@@ -106,35 +69,20 @@ export class ChainFormComponent
       }
 
       if (this.chain?.id) {
-        this._crudSdk.sdk
-          .UpdateChain({
-            input: {
-              id: this.chain.id,
+        this._store.dispatch(
+          chainsActions.updateChain({
+            formValue: {
               ...value,
+              id: this.chain?.id,
             },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful',
-            );
-
-            this.close();
-          });
+          }),
+        );
       } else {
-        this._crudSdk.sdk
-          .CreateChain({ input: value })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
-            this.close();
-          });
+        this._store.dispatch(
+          chainsActions.createChain({
+            formValue: value,
+          }),
+        );
       }
     }
   }
@@ -145,19 +93,15 @@ export class ChainFormComponent
     )).setValue(image);
 
     if (this.chain?.id) {
-      this.updateImageStyles(image, param).subscribe(() => {
-        this._toasterService.show(
-          EToasterType.SUCCESS,
-          '',
-          'common.imageUploadSuccess',
-        );
-      });
-    } else {
-      this._toasterService.show(
-        EToasterType.SUCCESS,
-        '',
-        'common.imageUploadSuccess',
+      this._store.dispatch(
+        chainsActions.updateChainImageStyles({
+          chainId: this.chain?.id,
+          image,
+          param,
+        }),
       );
+    } else {
+      this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
     }
   };
 
@@ -167,53 +111,14 @@ export class ChainFormComponent
     )).setValue('');
 
     if (this.chain?.id) {
-      this.updateImageStyles(null, param).subscribe();
-    } else {
-      this._toasterService.show(
-        EToasterType.SUCCESS,
-        '',
-        'common.imageRemoveSuccess',
+      this._store.dispatch(
+        chainsActions.updateChainImageStyles({
+          chainId: this.chain?.id,
+          param,
+        }),
       );
+    } else {
+      this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
     }
   };
-
-  private updateImageStyles(image: string | null, param: string) {
-    if (this.chain?.id) {
-      return this._crudSdk.sdk
-        .GetChain({
-          id: this.chain?.id,
-        })
-        .pipe(
-          filterNullish(),
-          switchMap(data => {
-            const _data: CrudApi.Chain = cloneDeep(data);
-            const chainStyleImagesRecord: Record<
-              string,
-              keyof CrudApi.ChainStyleImages
-            > = {
-              header: 'header',
-              logo: 'logo',
-            };
-
-            if (!_data.style.images) {
-              _data.style.images = {};
-            }
-
-            if (chainStyleImagesRecord[param]) {
-              _data.style.images[chainStyleImagesRecord[param]] = image;
-            }
-
-            return this._crudSdk.sdk.UpdateChain({
-              input: {
-                id: _data.id,
-                style: _data.style,
-              },
-            });
-          }),
-          catchGqlError(this._store),
-        );
-    } else {
-      return EMPTY;
-    }
-  }
 }

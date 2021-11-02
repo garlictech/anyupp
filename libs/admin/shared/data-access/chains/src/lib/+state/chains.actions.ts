@@ -9,3 +9,18 @@ export const upsertChains = createAction(
 );
 
 export const resetChains = createAction('[Chains] Reset chains');
+
+export const createChain = createAction(
+  '[Chains] Create chain',
+  props<{ formValue: CrudApi.CreateChainInput }>(),
+);
+
+export const updateChain = createAction(
+  '[Chains] Update chain',
+  props<{ formValue: CrudApi.UpdateChainInput }>(),
+);
+
+export const updateChainImageStyles = createAction(
+  '[Chains] Update chain image styles',
+  props<{ chainId: string; image?: string; param: string }>(),
+);

@@ -13,7 +13,7 @@ import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import { catchGqlError } from '@bgap/admin/shared/utils';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, IProductOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare, filterNullish } from '@bgap/shared/utils';

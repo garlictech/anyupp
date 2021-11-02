@@ -159,6 +159,28 @@
             >
             </bgap-form-color-picker>
           </div>
+
+          <div class="col-6 col-md-3">
+            <bgap-form-color-picker
+              [control]="
+                dialogForm.get('style')!.get('colors')!.get('primary')!
+                  | asFormControl
+              "
+              [caption]="'chains.style.colors.primary'"
+            >
+            </bgap-form-color-picker>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <bgap-form-color-picker
+              [control]="
+                dialogForm.get('style')!.get('colors')!.get('secondary')!
+                  | asFormControl
+              "
+              [caption]="'chains.style.colors.secondary'"
+            >
+            </bgap-form-color-picker>
+          </div>
         </div>
 
         <div class="row">

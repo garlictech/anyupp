@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormGroup, Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
@@ -20,9 +21,7 @@ import {
 } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
-  catchGqlError,
   contactFormGroup,
-  EToasterType,
   multiLangValidator,
   notEmptyArray,
   ORDER_MODES,
@@ -40,7 +39,7 @@ import {
 import { cleanObject } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { select } from '@ngrx/store';
 import { timeZonesNames } from '@vvo/tzdb';
 
 @UntilDestroy()
@@ -65,7 +64,6 @@ export class UnitFormComponent
 
   constructor(
     protected _injector: Injector,
-    private _store: Store,
     private _formsService: FormsService,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -284,11 +282,7 @@ export class UnitFormComponent
         })
         .pipe(catchGqlError(this._store))
         .subscribe(() => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
+          this._toasterService.showSimpleSuccess('common.updateSuccessful');
 
           this.close();
         });
@@ -302,11 +296,7 @@ export class UnitFormComponent
         })
         .pipe(catchGqlError(this._store))
         .subscribe(() => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.insertSuccessful',
-          );
+          this._toasterService.showSimpleSuccess('common.insertSuccessful');
           this.close();
         });
     }

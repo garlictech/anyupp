@@ -8,7 +8,7 @@ import {
   testIdPrefix,
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
-import { productRequestHandler } from 'libs/anyupp-gql/backend/src';
+import { productRequestHandler } from '@bgap/anyupp-gql/backend';
 import { combineLatest, concat, defer, iif, of, throwError } from 'rxjs';
 import {
   catchError,

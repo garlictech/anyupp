@@ -6,20 +6,16 @@ import {
   OnInit,
 } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import {
   AnyuppSdkService,
   CrudSdkService,
 } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  catchGqlError,
-  contactFormGroup,
-  EToasterType,
-} from '@bgap/admin/shared/utils';
+import { contactFormGroup } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
-import { Store } from '@ngrx/store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,7 +32,6 @@ export class AdminUserFormComponent
 
   constructor(
     protected _injector: Injector,
-    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
     private _anyuppSdk: AnyuppSdkService,
@@ -74,11 +69,7 @@ export class AdminUserFormComponent
           })
           .pipe(catchGqlError(this._store))
           .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful',
-            );
+            this._toasterService.showSimpleSuccess('common.updateSuccessful');
 
             this.close();
           });
@@ -93,11 +84,7 @@ export class AdminUserFormComponent
           })
           .pipe(catchGqlError(this._store))
           .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
+            this._toasterService.showSimpleSuccess('common.insertSuccessful');
 
             this.close();
           });
@@ -118,18 +105,10 @@ export class AdminUserFormComponent
         })
         .pipe(catchGqlError(this._store))
         .subscribe(() => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageUploadSuccess',
-          );
+          this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
         });
     } else {
-      this._toasterService.show(
-        EToasterType.SUCCESS,
-        '',
-        'common.imageUploadSuccess',
-      );
+      this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
     }
   };
 
@@ -150,18 +129,10 @@ export class AdminUserFormComponent
         })
         .pipe(catchGqlError(this._store))
         .subscribe(() => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.imageRemoveSuccess',
-          );
+          this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
         });
     } else {
-      this._toasterService.show(
-        EToasterType.SUCCESS,
-        '',
-        'common.imageRemoveSuccess',
-      );
+      this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
     }
 
     this._changeDetectorRef.detectChanges();

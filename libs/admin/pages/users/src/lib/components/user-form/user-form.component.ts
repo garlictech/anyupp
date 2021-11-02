@@ -52,9 +52,8 @@ export class UserFormComponent
       if (this.user?.id) {
         this._dataService.updateUser(this.user.id, this.dialogForm?.value).then(
           (): void => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
+            this._toasterService.showSimpleSuccess(
+
               'common.updateSuccessful'
             );
             this.close();
@@ -74,10 +73,8 @@ export class UserFormComponent
                     .sendPasswordResetEmail(this.dialogForm?.value.email)
                     .then(
                       (): void => {
-                        this._toasterService.show(
-                          EToasterType.SUCCESS,
-                          '',
-                          'common.insertSuccessful'
+                        this._toasterService.showSimpleSuccess(
+                           'common.insertSuccessful'
                         );
                         this.close();
                       },
@@ -107,10 +104,10 @@ export class UserFormComponent
     // Update existing user's image
     if (this.user?.id) {
       this._dataService.updateUserProfileImagePath(this.user.id, imagePath).then((): void => {
-        this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
+        this._toasterService.showSimpleSuccess(  'common.imageUploadSuccess');
       });
     } else {
-      this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageUploadSuccess');
+      this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
     }
   };
 
@@ -121,10 +118,10 @@ export class UserFormComponent
     // Update existing user's image
     if (this.user?.id) {
       this._dataService.updateUserProfileImagePath(this.user.id, null).then((): void => {
-        this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
+        this._toasterService.showSimpleSuccess( 'common.imageRemoveSuccess');
       });
     } else {
-      this._toasterService.show(EToasterType.SUCCESS, '', 'common.imageRemoveSuccess');
+      this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
     }
   };
   */

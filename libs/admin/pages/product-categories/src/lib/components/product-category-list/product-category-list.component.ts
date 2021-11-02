@@ -7,11 +7,8 @@ import {
 } from '@angular/core';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import {
-  catchGqlError,
-  EToasterType,
-  ToasterService,
-} from '@bgap/admin/shared/utils';
+import { ToasterService } from '@bgap/admin/shared/utils';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
@@ -93,11 +90,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
             })
             .pipe(catchGqlError(this._store))
             .subscribe(() => {
-              this._toasterService.show(
-                EToasterType.SUCCESS,
-                '',
-                'common.insertSuccessful',
-              );
+              this._toasterService.showSimpleSuccess('common.insertSuccessful');
             });
         },
       );

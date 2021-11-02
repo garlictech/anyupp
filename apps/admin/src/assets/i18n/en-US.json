@@ -172,15 +172,17 @@
     "style": {
       "style": "Style",
       "colors": {
-        "textDark": "Text (dark)",
+        "textDark": "Text (dark) - Secondary",
         "textLight": "Text (light)",
         "backgroundDark": "Background (dark)",
         "backgroundLight": "Background (light)",
         "borderDark": "Border (dark)",
         "borderLight": "Border (light)",
         "highlight": "Highlight",
-        "indicator": "Indicator",
-        "disabled": "Disabled"
+        "indicator": "Indicator - Primary",
+        "disabled": "Disabled",
+        "primary": "Primary",
+        "secondary": "Secondary"
       },
       "images": {
         "logo": "Logo",

@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChainFormService #createChainFormGroup should create chain form 1`] = `
+Object {
+  "address": Object {
+    "address": "",
+    "city": "",
+    "country": "",
+    "location": Object {
+      "lat": 0,
+      "lng": 0,
+    },
+    "postalCode": "",
+    "title": "",
+  },
+  "description": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+  "email": "",
+  "isActive": "",
+  "name": "",
+  "phone": "",
+  "style": Object {
+    "colors": Object {
+      "backgroundDark": "#ffffff",
+      "backgroundLight": "#ffffff",
+      "borderDark": "#ffffff",
+      "borderLight": "#ffffff",
+      "disabled": "#ffffff",
+      "highlight": "#ffffff",
+      "indicator": "#ffffff",
+      "primary": "#ffffff",
+      "secondary": "#ffffff",
+      "textDark": "#ffffff",
+      "textLight": "#ffffff",
+    },
+    "images": Object {
+      "header": "",
+      "logo": "",
+    },
+  },
+}
+`;

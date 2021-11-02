@@ -10,14 +10,11 @@ import {
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  catchGqlError,
-  EToasterType,
-  multiLangValidator,
-} from '@bgap/admin/shared/utils';
+import { multiLangValidator } from '@bgap/admin/shared/utils';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType } from '@bgap/shared/types';
-import { select, Store } from '@ngrx/store';
+import { select } from '@ngrx/store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,7 +32,6 @@ export class ProductCategoryFormComponent
 
   constructor(
     protected _injector: Injector,
-    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
   ) {
@@ -98,11 +94,7 @@ export class ProductCategoryFormComponent
           })
           .pipe(catchGqlError(this._store))
           .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful',
-            );
+            this._toasterService.showSimpleSuccess('common.updateSuccessful');
 
             this.close();
           });
@@ -111,11 +103,7 @@ export class ProductCategoryFormComponent
           .CreateProductCategory({ input: value })
           .pipe(catchGqlError(this._store))
           .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
+            this._toasterService.showSimpleSuccess('common.insertSuccessful');
             this.close();
           });
       }
@@ -127,18 +115,10 @@ export class ProductCategoryFormComponent
 
     if (this.productCategory?.id) {
       this.updateImageStyles(this.productCategory.id, image).subscribe(() => {
-        this._toasterService.show(
-          EToasterType.SUCCESS,
-          '',
-          'common.imageUploadSuccess',
-        );
+        this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
       });
     } else {
-      this._toasterService.show(
-        EToasterType.SUCCESS,
-        '',
-        'common.imageUploadSuccess',
-      );
+      this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
     }
   };
 
@@ -147,18 +127,10 @@ export class ProductCategoryFormComponent
 
     if (this.productCategory?.id) {
       this.updateImageStyles(this.productCategory.id, null).subscribe(() => {
-        this._toasterService.show(
-          EToasterType.SUCCESS,
-          '',
-          'common.imageUploadSuccess',
-        );
+        this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
       });
     } else {
-      this._toasterService.show(
-        EToasterType.SUCCESS,
-        '',
-        'common.imageRemoveSuccess',
-      );
+      this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
     }
   };
 
