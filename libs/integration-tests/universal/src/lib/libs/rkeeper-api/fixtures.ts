@@ -86,25 +86,25 @@ export const rkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
   id: unitId,
   groupId,
   chainId,
-  externalRestaurantId: 'EXTERNAL-RESTAURANT-ID',
+  externalId: 'EXTERNAL-RESTAURANT-ID',
 };
 
 export const rkeeperUnitProduct: RequiredId<CrudApi.CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}-unitproduct`,
-  clientSideId: rkeeperProductGuid,
+  externalId: rkeeperProductGuid,
 };
 
 export const rkeeperUnitProduct2: RequiredId<CrudApi.CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}-unitproduct2`,
-  clientSideId: rkeeperProductGuid + '2',
+  externalId: rkeeperProductGuid + '2',
 };
 
 export const processedDish: Dish = {
   price: 50000,
   active: true,
-  id: '1000114',
+  id: 1000114,
   guid: '4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68',
   name: 'Próba ital',
 };

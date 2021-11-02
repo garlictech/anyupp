@@ -133,7 +133,7 @@ const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
 const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
   ...createUnit_01,
   id: 'rkeeper-unit',
-  externalRestaurantId: 'restaurantid',
+  externalId: 'restaurantid',
   pos: {
     type: CrudApi.PosType.rkeeper,
     rkeeper: {

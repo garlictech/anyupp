@@ -166,6 +166,7 @@ describe('Test the rkeeper api basic functionality', () => {
     createRkeeperProduct(crudSdk)(
       fixtures.businessEntity,
       fixtures.processedDish,
+      [],
     )
       .pipe(
         delay(ES_DELAY),
@@ -191,6 +192,7 @@ describe('Test the rkeeper api basic functionality', () => {
           updateRkeeperProduct(crudSdk)(
             { ...fixtures.processedDish, name: 'NEW NAME', price: 1000000 },
             unitProduct,
+            [],
           ),
         ),
         tap(res =>
@@ -211,7 +213,7 @@ describe('Test the rkeeper api basic functionality', () => {
 
   test('getBusinessEntityInfo - existing restaurant', done => {
     getBusinessEntityInfo(crudSdk)(
-      fixtures.rkeeperUnit.externalRestaurantId ?? 'something is wrong',
+      fixtures.rkeeperUnit.externalId ?? 'something is wrong',
     ).subscribe({
       next: result => {
         expect(result).toMatchSnapshot();
@@ -234,7 +236,7 @@ describe('Test the rkeeper api basic functionality', () => {
 
   test('Test full rkeeper product handling - the use case', done => {
     handleRkeeperProducts(crudSdk)(
-      fixtures.rkeeperUnit?.externalRestaurantId ?? 'Something is wrong',
+      fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
       fixtures.rawData,
     )
       .pipe(
@@ -263,7 +265,7 @@ describe('Test the rkeeper api basic functionality', () => {
     );
 
     handleRkeeperProducts(crudSdk)(
-      fixtures.rkeeperUnit?.externalRestaurantId ?? 'Something is wrong',
+      fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
       rawData,
     ).subscribe({
       next: result => {
@@ -275,7 +277,7 @@ describe('Test the rkeeper api basic functionality', () => {
 
   test('createDefaultProductCategory', done => {
     getBusinessEntityInfo(crudSdk)(
-      fixtures.rkeeperUnit?.externalRestaurantId ?? 'Something is wrong',
+      fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
     )
       .pipe(
         switchMap(businessEntityInfo =>

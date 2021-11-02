@@ -1,26 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dish validator - bad case 1`] = `"Dish Object Validation Error (JOI): \\"price\\" must be a positive number, \\"name\\" is required"`;
+exports[`Dish validator - bad case 1`] = `"Dish Object Validation Error (JOI): \\"name\\" is required"`;
 
-exports[`Dish validator - good case: GOOD CASE 1`] = `
-Object {
-  "active": 0,
-  "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
-  "id": 1000114,
-  "name": "Próba ital",
-  "price": 50000,
-}
-`;
+exports[`ModifierGroup validator - bad case 1`] = `"ModifierGroup Object Validation Error (JOI): \\"name\\" is required, \\"modifiers[0].price\\" is required, \\"modifiers[1].name\\" is required"`;
 
-exports[`Dish validator - good case: NORMALIZE 1`] = `
-Object {
-  "active": 0,
-  "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
-  "id": "1000114",
-  "name": "Próba ital",
-  "price": 500,
-}
-`;
+exports[`decodeName 1`] = `"Saját pohár"`;
 
 exports[`externalProductIdMaker test 1`] = `"GUID"`;
 
@@ -29,14 +13,16 @@ Array [
   Object {
     "active": 0,
     "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
-    "id": "1000114",
+    "id": 1000114,
+    "modischeme": 0,
     "name": "Próba ital",
     "price": 500,
   },
   Object {
     "active": 0,
     "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
-    "id": "21312321",
+    "id": 21312321,
+    "modischeme": 0,
     "name": "Próba ital",
     "price": 500,
   },
@@ -48,7 +34,8 @@ Array [
   Object {
     "active": 0,
     "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
-    "id": "1000114",
+    "id": 1000114,
+    "modischeme": 0,
     "name": "Próba ital",
     "price": 500,
   },
@@ -60,16 +47,1009 @@ Array [
   Object {
     "active": 0,
     "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
-    "id": "1000114",
+    "id": 1000114,
+    "modischeme": 0,
     "name": "Próba ital",
     "price": 500,
   },
   Object {
     "active": 0,
     "guid": "5b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
-    "id": "1000115",
+    "id": 1000115,
+    "modischeme": 0,
     "name": "Próba kaja",
     "price": 600,
   },
 ]
+`;
+
+exports[`resolveComponentSets: CreateProductComponent calls (CreateProductComponent fails) 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017196",
+        "name": Object {
+          "hu": "Tej sima (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017195",
+        "name": Object {
+          "hu": "Kókuszital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017194",
+        "name": Object {
+          "hu": "Laktózmentes tej (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017193",
+        "name": Object {
+          "hu": "Mandulaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017192",
+        "name": Object {
+          "hu": "Szójaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017191",
+        "name": Object {
+          "hu": "Zabital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1011504",
+        "name": Object {
+          "hu": "Papírpohár 2dl",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1011517",
+        "name": Object {
+          "hu": "Saját pohár",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: CreateProductComponent calls (SearchProductComponentSet fails) 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017196",
+        "name": Object {
+          "hu": "Tej sima (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017195",
+        "name": Object {
+          "hu": "Kókuszital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017194",
+        "name": Object {
+          "hu": "Laktózmentes tej (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017193",
+        "name": Object {
+          "hu": "Mandulaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017192",
+        "name": Object {
+          "hu": "Szójaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017191",
+        "name": Object {
+          "hu": "Zabital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1011504",
+        "name": Object {
+          "hu": "Papírpohár 2dl",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1011517",
+        "name": Object {
+          "hu": "Saját pohár",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: CreateProductComponent calls (create new components) 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017196",
+        "name": Object {
+          "hu": "Tej sima (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017195",
+        "name": Object {
+          "hu": "Kókuszital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017194",
+        "name": Object {
+          "hu": "Laktózmentes tej (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017193",
+        "name": Object {
+          "hu": "Mandulaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017192",
+        "name": Object {
+          "hu": "Szójaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1017191",
+        "name": Object {
+          "hu": "Zabital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1011504",
+        "name": Object {
+          "hu": "Papírpohár 2dl",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "externalId": "1011517",
+        "name": Object {
+          "hu": "Saját pohár",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: CreateProductComponent calls (update old components) 1`] = `Array []`;
+
+exports[`resolveComponentSets: CreateProductComponentSet calls (CreateProductComponent fails) 1`] = `Array []`;
+
+exports[`resolveComponentSets: CreateProductComponentSet calls (SearchProductComponentSet fails) 1`] = `Array []`;
+
+exports[`resolveComponentSets: CreateProductComponentSet calls (create new components) 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "description": "describe me",
+        "externalId": "1017198",
+        "items": Array [
+          "NEW PRODUCT COMPONENT ID",
+          "NEW PRODUCT COMPONENT ID",
+          "NEW PRODUCT COMPONENT ID",
+          "NEW PRODUCT COMPONENT ID",
+          "NEW PRODUCT COMPONENT ID",
+          "NEW PRODUCT COMPONENT ID",
+        ],
+        "name": Object {
+          "hu": "Tejek 90ml",
+        },
+        "type": "rkeeper",
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINID",
+        "description": "describe me",
+        "externalId": "1017199",
+        "items": Array [
+          "NEW PRODUCT COMPONENT ID",
+          "NEW PRODUCT COMPONENT ID",
+        ],
+        "name": Object {
+          "hu": "2dl papírpohár",
+        },
+        "type": "rkeeper",
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: CreateProductComponentSet calls (update old components) 1`] = `Array []`;
+
+exports[`resolveComponentSets: SearchProductComponentSets calls (CreateProductComponent fails) 1`] = `Array []`;
+
+exports[`resolveComponentSets: SearchProductComponentSets calls (SearchProductComponentSet fails) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017198",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017199",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: SearchProductComponentSets calls (create new components) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017198",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017199",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: SearchProductComponentSets calls (update old components) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017198",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017199",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: SearchProductComponents calls (CreateProductComponent fails) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017196",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017195",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017194",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017193",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017192",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017191",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1011504",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1011517",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: SearchProductComponents calls (SearchProductComponentSet fails) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017196",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017195",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017194",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017193",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017192",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017191",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1011504",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1011517",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: SearchProductComponents calls (create new components) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017196",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017195",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017194",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017193",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017192",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017191",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1011504",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1011517",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: SearchProductComponents calls (update old components) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017196",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017195",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017194",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017193",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017192",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1017191",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1011504",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "1011517",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: UpdateProductComponent calls (CreateProductComponent fails) 1`] = `Array []`;
+
+exports[`resolveComponentSets: UpdateProductComponent calls (SearchProductComponentSet fails) 1`] = `Array []`;
+
+exports[`resolveComponentSets: UpdateProductComponent calls (create new components) 1`] = `Array []`;
+
+exports[`resolveComponentSets: UpdateProductComponent calls (update old components) 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Tej sima (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Kókuszital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Laktózmentes tej (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Mandulaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Szójaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Zabital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Papírpohár 2dl",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Saját pohár",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: UpdateProductComponentSet calls (CreateProductComponent fails) 1`] = `Array []`;
+
+exports[`resolveComponentSets: UpdateProductComponentSet calls (SearchProductComponentSet fails) 1`] = `Array []`;
+
+exports[`resolveComponentSets: UpdateProductComponentSet calls (create new components) 1`] = `Array []`;
+
+exports[`resolveComponentSets: UpdateProductComponentSet calls (update old components) 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT SET ID",
+        "items": Array [
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+        ],
+        "name": Object {
+          "hu": "Tejek 90ml",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT SET ID",
+        "items": Array [
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+        ],
+        "name": Object {
+          "hu": "2dl papírpohár",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`resolveComponentSets: the sets (CreateProductComponent fails)  1`] = `
+Object {
+  "_tag": "None",
+}
+`;
+
+exports[`resolveComponentSets: the sets (SearchProductComponentSet fails)  1`] = `
+Object {
+  "_tag": "None",
+}
+`;
+
+exports[`resolveComponentSets: the sets (create new components)  1`] = `
+Object {
+  "_tag": "Some",
+  "value": Array [
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 50,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 50,
+        },
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+  ],
+}
+`;
+
+exports[`resolveComponentSets: the sets (update old components)  1`] = `
+Object {
+  "_tag": "Some",
+  "value": Array [
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+      ],
+      "position": -1,
+      "productSetId": "THE NEW PRODUCT COMPONENT SET ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 50,
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 50,
+        },
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+      ],
+      "position": -1,
+      "productSetId": "THE NEW PRODUCT COMPONENT SET ID",
+    },
+  ],
+}
 `;
