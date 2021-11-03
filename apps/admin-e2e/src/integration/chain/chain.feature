@@ -19,7 +19,7 @@ Feature: Create a new Chain
     And I fill out the "Description (EN)" input with "test description"
     And I fill out the "Description (DE)" input with "test description"
     And I fill out the "Email" input with a fixture adminEmail
-    Then I should see 9 color picker with "#ffffff"
+    Then I should see 11 color picker with "#ffffff"
     When I click on the "Background (light)" picker fill out with "#fff9f0"
     And I fill out the "Phone" input with "1234567890"
     And I click on the "Background (dark)" picker fill out with "#d6d8e0"
@@ -35,6 +35,8 @@ Feature: Create a new Chain
     And I fill out the "Address" input with "Kis u. 45."
     And I click on the "Indicator" picker fill out with "#3097bf"
     And I click on the "Disabled" picker fill out with "#303030"
+    And I click on the "Primary" picker fill out with "#404040"
+    And I click on the "Secondary" picker fill out with "#505050"
     And I click on the "Locate on map" button
     And I click on the "Submit" button
     Then I should see "test chain e2e" text
@@ -65,6 +67,8 @@ Feature: Create a new Chain
     And I fill out the "Address" input with "Kis u. 45e2eUpdated."
     And I click on the "Indicator" picker fill out with "#30bf60"
     And I click on the "Disabled" picker fill out with "#303030"
+    And I click on the "Primary" picker fill out with "#404040"
+    And I click on the "Secondary" picker fill out with "#505050"
     And I click on the "Locate on map" button
     And I click on the "Submit" button
     Then I should see "test e2eUpdated chain" text
