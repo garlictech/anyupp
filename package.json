@@ -90,7 +90,7 @@
     "geo-tz": "6.0.1",
     "geolib": "3.3.3",
     "graphql": "15.7.2",
-    "graphql-subscriptions": "1.2.1",
+    "graphql-subscriptions": "2.0.0",
     "graphql-tag": "2.12.5",
     "graphql-tools": "8.2.0",
     "isomorphic-fetch": "3.0.0",
