@@ -1,14 +1,374 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Dish validator - bad case 1`] = `"Dish Object Validation Error (JOI): \\"name\\" is required"`;
+exports[`Process rkeeper products tests Dish validator - bad case 1`] = `"Dish Object Validation Error (JOI): \\"name\\" is required"`;
 
-exports[`ModifierGroup validator - bad case 1`] = `"ModifierGroup Object Validation Error (JOI): \\"name\\" is required, \\"modifiers[0].price\\" is required, \\"modifiers[1].name\\" is required"`;
+exports[`Process rkeeper products tests Dish validator - good case: GOOD CASE 1`] = `
+Object {
+  "active": 0,
+  "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+  "id": 1000114,
+  "modischeme": 0,
+  "name": "Próba ital",
+  "price": 50000,
+}
+`;
 
-exports[`decodeName 1`] = `"Saját pohár"`;
+exports[`Process rkeeper products tests Dish validator - good case: NORMALIZE 1`] = `
+Object {
+  "active": 0,
+  "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+  "id": 1000114,
+  "modischeme": 0,
+  "name": "Próba ital",
+  "price": 500,
+}
+`;
 
-exports[`externalProductIdMaker test 1`] = `"GUID"`;
+exports[`Process rkeeper products tests ModifierGroup validator - bad case 1`] = `"ModifierGroup Object Validation Error (JOI): \\"name\\" is required, \\"modifiers[0].price\\" is required, \\"modifiers[1].name\\" is required"`;
 
-exports[`processDishes items with different ids 1`] = `
+exports[`Process rkeeper products tests ModifyerGroup validator - good case: GOOD CASE 1`] = `
+Object {
+  "id": 1017199,
+  "modifiers": Array [
+    Object {
+      "active": 1,
+      "id": 1011504,
+      "name": "Papírpohár 2dl",
+      "price": 5000,
+    },
+    Object {
+      "active": 1,
+      "id": 1011517,
+      "name": "Saját pohár",
+      "price": 0,
+    },
+  ],
+  "name": "2dl papírpohár",
+}
+`;
+
+exports[`Process rkeeper products tests ModifyerGroup validator - good case: NORMALIZE 1`] = `
+Object {
+  "id": 1017199,
+  "modifiers": Array [
+    Object {
+      "active": 1,
+      "id": 1011504,
+      "name": "Papírpohár 2dl",
+      "price": 50,
+    },
+    Object {
+      "active": 1,
+      "id": 1011517,
+      "name": "Saját pohár",
+      "price": 0,
+    },
+  ],
+  "name": "2dl papírpohár",
+}
+`;
+
+exports[`Process rkeeper products tests Test active modifier cases: CreateProductComponent calls 1`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: CreateProductComponent calls 2`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: CreateProductComponent calls 3`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: CreateProductComponent calls 4`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: CreateProductComponentSet calls 1`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: CreateProductComponentSet calls 2`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: CreateProductComponentSet calls 3`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: CreateProductComponentSet calls 4`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: SearchProductComponentSets calls 1`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: SearchProductComponentSets calls 2`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: SearchProductComponentSets calls 3`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: SearchProductComponentSets calls 4`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: SearchProductComponents calls 1`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: SearchProductComponents calls 2`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: SearchProductComponents calls 3`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: SearchProductComponents calls 4`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: UpdateProductComponent calls 1`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: UpdateProductComponent calls 2`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: UpdateProductComponent calls 3`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: UpdateProductComponent calls 4`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: UpdateProductComponentSet calls 1`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: UpdateProductComponentSet calls 2`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: UpdateProductComponentSet calls 3`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: UpdateProductComponentSet calls 4`] = `Array []`;
+
+exports[`Process rkeeper products tests Test active modifier cases: the sets  1`] = `
+Object {
+  "_tag": "Some",
+  "value": Array [
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 50,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 50,
+        },
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+  ],
+}
+`;
+
+exports[`Process rkeeper products tests Test active modifier cases: the sets  2`] = `
+Object {
+  "_tag": "Some",
+  "value": Array [
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 50,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 50,
+        },
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+  ],
+}
+`;
+
+exports[`Process rkeeper products tests Test active modifier cases: the sets  3`] = `
+Object {
+  "_tag": "Some",
+  "value": Array [
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 50,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 50,
+        },
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+  ],
+}
+`;
+
+exports[`Process rkeeper products tests Test active modifier cases: the sets  4`] = `
+Object {
+  "_tag": "Some",
+  "value": Array [
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 50,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 50,
+        },
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+  ],
+}
+`;
+
+exports[`Process rkeeper products tests decodeName 1`] = `"Saját pohár"`;
+
+exports[`Process rkeeper products tests externalProductIdMaker test 1`] = `"GUID"`;
+
+exports[`Process rkeeper products tests processDishes items with different ids 1`] = `
 Array [
   Object {
     "active": 0,
@@ -29,7 +389,7 @@ Array [
 ]
 `;
 
-exports[`processDishes items with equal ids 1`] = `
+exports[`Process rkeeper products tests processDishes items with equal ids 1`] = `
 Array [
   Object {
     "active": 0,
@@ -42,18 +402,18 @@ Array [
 ]
 `;
 
-exports[`processDishes must work on the fixture 1`] = `
+exports[`Process rkeeper products tests processDishes must work on the fixture 1`] = `
 Array [
   Object {
-    "active": 0,
+    "active": 1,
     "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
     "id": 1000114,
     "modischeme": 0,
-    "name": "Próba ital",
+    "name": "próba ital",
     "price": 500,
   },
   Object {
-    "active": 0,
+    "active": 1,
     "guid": "5b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
     "id": 1000115,
     "modischeme": 0,
@@ -63,7 +423,11 @@ Array [
 ]
 `;
 
-exports[`resolveComponentSets: CreateProductComponent calls (CreateProductComponent fails) 1`] = `
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponent calls (CreateProductComponent fails) 1`] = `Array []`;
+
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponent calls (SearchProductComponentSet fails) 1`] = `Array []`;
+
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponent calls (create new components) 1`] = `
 Array [
   Array [
     Object {
@@ -113,17 +477,6 @@ Array [
     Object {
       "input": Object {
         "chainId": "CHAINID",
-        "externalId": "1017192",
-        "name": Object {
-          "hu": "Szójaital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
         "externalId": "1017191",
         "name": Object {
           "hu": "Zabital (90ml)",
@@ -156,199 +509,13 @@ Array [
 ]
 `;
 
-exports[`resolveComponentSets: CreateProductComponent calls (SearchProductComponentSet fails) 1`] = `
-Array [
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017196",
-        "name": Object {
-          "hu": "Tej sima (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017195",
-        "name": Object {
-          "hu": "Kókuszital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017194",
-        "name": Object {
-          "hu": "Laktózmentes tej (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017193",
-        "name": Object {
-          "hu": "Mandulaital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017192",
-        "name": Object {
-          "hu": "Szójaital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017191",
-        "name": Object {
-          "hu": "Zabital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1011504",
-        "name": Object {
-          "hu": "Papírpohár 2dl",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1011517",
-        "name": Object {
-          "hu": "Saját pohár",
-        },
-      },
-    },
-  ],
-]
-`;
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponent calls (update old components) 1`] = `Array []`;
 
-exports[`resolveComponentSets: CreateProductComponent calls (create new components) 1`] = `
-Array [
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017196",
-        "name": Object {
-          "hu": "Tej sima (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017195",
-        "name": Object {
-          "hu": "Kókuszital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017194",
-        "name": Object {
-          "hu": "Laktózmentes tej (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017193",
-        "name": Object {
-          "hu": "Mandulaital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017192",
-        "name": Object {
-          "hu": "Szójaital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1017191",
-        "name": Object {
-          "hu": "Zabital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1011504",
-        "name": Object {
-          "hu": "Papírpohár 2dl",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "chainId": "CHAINID",
-        "externalId": "1011517",
-        "name": Object {
-          "hu": "Saját pohár",
-        },
-      },
-    },
-  ],
-]
-`;
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponentSet calls (CreateProductComponent fails) 1`] = `Array []`;
 
-exports[`resolveComponentSets: CreateProductComponent calls (update old components) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponentSet calls (SearchProductComponentSet fails) 1`] = `Array []`;
 
-exports[`resolveComponentSets: CreateProductComponentSet calls (CreateProductComponent fails) 1`] = `Array []`;
-
-exports[`resolveComponentSets: CreateProductComponentSet calls (SearchProductComponentSet fails) 1`] = `Array []`;
-
-exports[`resolveComponentSets: CreateProductComponentSet calls (create new components) 1`] = `
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponentSet calls (create new components) 1`] = `
 Array [
   Array [
     Object {
@@ -357,7 +524,6 @@ Array [
         "description": "describe me",
         "externalId": "1017198",
         "items": Array [
-          "NEW PRODUCT COMPONENT ID",
           "NEW PRODUCT COMPONENT ID",
           "NEW PRODUCT COMPONENT ID",
           "NEW PRODUCT COMPONENT ID",
@@ -391,11 +557,13 @@ Array [
 ]
 `;
 
-exports[`resolveComponentSets: CreateProductComponentSet calls (update old components) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponentSet calls (update old components) 1`] = `Array []`;
 
-exports[`resolveComponentSets: SearchProductComponentSets calls (CreateProductComponent fails) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponentSets calls (CreateProductComponent fails) 1`] = `Array []`;
 
-exports[`resolveComponentSets: SearchProductComponentSets calls (SearchProductComponentSet fails) 1`] = `
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponentSets calls (SearchProductComponentSet fails) 1`] = `Array []`;
+
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponentSets calls (create new components) 1`] = `
 Array [
   Array [
     Object {
@@ -418,53 +586,13 @@ Array [
 ]
 `;
 
-exports[`resolveComponentSets: SearchProductComponentSets calls (create new components) 1`] = `
-Array [
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017198",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017199",
-        },
-      },
-    },
-  ],
-]
-`;
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponentSets calls (update old components) 1`] = `Array []`;
 
-exports[`resolveComponentSets: SearchProductComponentSets calls (update old components) 1`] = `
-Array [
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017198",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017199",
-        },
-      },
-    },
-  ],
-]
-`;
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (CreateProductComponent fails) 1`] = `Array []`;
 
-exports[`resolveComponentSets: SearchProductComponents calls (CreateProductComponent fails) 1`] = `
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (SearchProductComponentSet fails) 1`] = `Array []`;
+
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (create new components) 1`] = `
 Array [
   Array [
     Object {
@@ -506,15 +634,6 @@ Array [
     Object {
       "filter": Object {
         "externalId": Object {
-          "eq": "1017192",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
           "eq": "1017191",
         },
       },
@@ -541,384 +660,25 @@ Array [
 ]
 `;
 
-exports[`resolveComponentSets: SearchProductComponents calls (SearchProductComponentSet fails) 1`] = `
-Array [
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017196",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017195",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017194",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017193",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017192",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017191",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1011504",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1011517",
-        },
-      },
-    },
-  ],
-]
-`;
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (update old components) 1`] = `Array []`;
 
-exports[`resolveComponentSets: SearchProductComponents calls (create new components) 1`] = `
-Array [
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017196",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017195",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017194",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017193",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017192",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017191",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1011504",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1011517",
-        },
-      },
-    },
-  ],
-]
-`;
+exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponent calls (CreateProductComponent fails) 1`] = `Array []`;
 
-exports[`resolveComponentSets: SearchProductComponents calls (update old components) 1`] = `
-Array [
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017196",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017195",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017194",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017193",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017192",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1017191",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1011504",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "filter": Object {
-        "externalId": Object {
-          "eq": "1011517",
-        },
-      },
-    },
-  ],
-]
-`;
+exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponent calls (SearchProductComponentSet fails) 1`] = `Array []`;
 
-exports[`resolveComponentSets: UpdateProductComponent calls (CreateProductComponent fails) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponent calls (create new components) 1`] = `Array []`;
 
-exports[`resolveComponentSets: UpdateProductComponent calls (SearchProductComponentSet fails) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponent calls (update old components) 1`] = `Array []`;
 
-exports[`resolveComponentSets: UpdateProductComponent calls (create new components) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponentSet calls (CreateProductComponent fails) 1`] = `Array []`;
 
-exports[`resolveComponentSets: UpdateProductComponent calls (update old components) 1`] = `
-Array [
-  Array [
-    Object {
-      "input": Object {
-        "id": "THE OLD PRODUCT COMPONENT ID",
-        "name": Object {
-          "hu": "Tej sima (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "id": "THE OLD PRODUCT COMPONENT ID",
-        "name": Object {
-          "hu": "Kókuszital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "id": "THE OLD PRODUCT COMPONENT ID",
-        "name": Object {
-          "hu": "Laktózmentes tej (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "id": "THE OLD PRODUCT COMPONENT ID",
-        "name": Object {
-          "hu": "Mandulaital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "id": "THE OLD PRODUCT COMPONENT ID",
-        "name": Object {
-          "hu": "Szójaital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "id": "THE OLD PRODUCT COMPONENT ID",
-        "name": Object {
-          "hu": "Zabital (90ml)",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "id": "THE OLD PRODUCT COMPONENT ID",
-        "name": Object {
-          "hu": "Papírpohár 2dl",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "id": "THE OLD PRODUCT COMPONENT ID",
-        "name": Object {
-          "hu": "Saját pohár",
-        },
-      },
-    },
-  ],
-]
-`;
+exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponentSet calls (SearchProductComponentSet fails) 1`] = `Array []`;
 
-exports[`resolveComponentSets: UpdateProductComponentSet calls (CreateProductComponent fails) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponentSet calls (create new components) 1`] = `Array []`;
 
-exports[`resolveComponentSets: UpdateProductComponentSet calls (SearchProductComponentSet fails) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponentSet calls (update old components) 1`] = `Array []`;
 
-exports[`resolveComponentSets: UpdateProductComponentSet calls (create new components) 1`] = `Array []`;
-
-exports[`resolveComponentSets: UpdateProductComponentSet calls (update old components) 1`] = `
-Array [
-  Array [
-    Object {
-      "input": Object {
-        "id": "THE OLD PRODUCT COMPONENT SET ID",
-        "items": Array [
-          "THE NEW PRODUCT COMPONENT ID",
-          "THE NEW PRODUCT COMPONENT ID",
-          "THE NEW PRODUCT COMPONENT ID",
-          "THE NEW PRODUCT COMPONENT ID",
-          "THE NEW PRODUCT COMPONENT ID",
-          "THE NEW PRODUCT COMPONENT ID",
-        ],
-        "name": Object {
-          "hu": "Tejek 90ml",
-        },
-      },
-    },
-  ],
-  Array [
-    Object {
-      "input": Object {
-        "id": "THE OLD PRODUCT COMPONENT SET ID",
-        "items": Array [
-          "THE NEW PRODUCT COMPONENT ID",
-          "THE NEW PRODUCT COMPONENT ID",
-        ],
-        "name": Object {
-          "hu": "2dl papírpohár",
-        },
-      },
-    },
-  ],
-]
-`;
-
-exports[`resolveComponentSets: the sets (CreateProductComponent fails)  1`] = `
-Object {
-  "_tag": "None",
-}
-`;
-
-exports[`resolveComponentSets: the sets (SearchProductComponentSet fails)  1`] = `
-Object {
-  "_tag": "None",
-}
-`;
-
-exports[`resolveComponentSets: the sets (create new components)  1`] = `
+exports[`Process rkeeper products tests resolveComponentSets: the sets (CreateProductComponent fails)  1`] = `
 Object {
   "_tag": "Some",
   "value": Array [
@@ -929,12 +689,6 @@ Object {
           "price": 0,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 0,
-        },
-        Object {
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
         },
         Object {
           "position": -1,
@@ -986,7 +740,7 @@ Object {
 }
 `;
 
-exports[`resolveComponentSets: the sets (update old components)  1`] = `
+exports[`Process rkeeper products tests resolveComponentSets: the sets (SearchProductComponentSet fails)  1`] = `
 Object {
   "_tag": "Some",
   "value": Array [
@@ -995,60 +749,178 @@ Object {
         Object {
           "position": -1,
           "price": 0,
-          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 0,
         },
         Object {
           "position": -1,
           "price": 100,
-          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 100,
         },
         Object {
           "position": -1,
           "price": 100,
-          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 100,
         },
         Object {
           "position": -1,
           "price": 100,
-          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 100,
         },
         Object {
           "position": -1,
           "price": 100,
-          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "position": -1,
-          "price": 100,
-          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 100,
         },
       ],
       "position": -1,
-      "productSetId": "THE NEW PRODUCT COMPONENT SET ID",
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
     },
     Object {
       "items": Array [
         Object {
           "position": -1,
           "price": 50,
-          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 50,
         },
         Object {
           "position": -1,
           "price": 0,
-          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 0,
         },
       ],
       "position": -1,
-      "productSetId": "THE NEW PRODUCT COMPONENT SET ID",
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+  ],
+}
+`;
+
+exports[`Process rkeeper products tests resolveComponentSets: the sets (create new components)  1`] = `
+Object {
+  "_tag": "Some",
+  "value": Array [
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 50,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 50,
+        },
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+  ],
+}
+`;
+
+exports[`Process rkeeper products tests resolveComponentSets: the sets (update old components)  1`] = `
+Object {
+  "_tag": "Some",
+  "value": Array [
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "position": -1,
+          "price": 100,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 100,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "position": -1,
+          "price": 50,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 50,
+        },
+        Object {
+          "position": -1,
+          "price": 0,
+          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "refGroupPrice": 0,
+        },
+      ],
+      "position": -1,
+      "productSetId": "NEW PRODUCT COMPONENT SET ID",
     },
   ],
 }

@@ -3,22 +3,13 @@ import * as R from 'ramda';
 import { combineLatest, of, throwError } from 'rxjs';
 import * as CrudSdk from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
-import {
-  map,
-  mergeMap,
-  switchMap,
-  toArray,
-  tap,
-  delay,
-  shareReplay,
-} from 'rxjs/operators';
-import { v1 as uuid } from 'uuid';
+import { map, switchMap, tap, delay, shareReplay } from 'rxjs/operators';
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
 const DYNAMODB_OPERATION_DELAY = 1000;
 
-describe.skip('Test paginated graphql lists', () => {
+describe('Test paginated graphql lists', () => {
   const crudSdk = CrudSdk.getCrudSdkForIAM(accessKeyId, secretAccessKey);
   const testId = 'pagination-test-guy';
 

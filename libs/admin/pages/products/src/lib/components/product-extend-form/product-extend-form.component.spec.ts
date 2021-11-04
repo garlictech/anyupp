@@ -171,9 +171,11 @@ describe('ProductExtendFormComponent', (): void => {
         )
         .pipe(
           tap(createdProductData => {
-            component.product!.id = (<CrudApi.GroupProduct>(
-              createdProductData
-            )).id;
+            component?.product
+              ? (component.product.id = (<CrudApi.GroupProduct>(
+                  createdProductData
+                )).id)
+              : null;
           }),
           // Save the modified form
           switchMap(() => component['_save']()),

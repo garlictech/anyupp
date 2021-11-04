@@ -1,14 +1,7 @@
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { combineLatest, defer, from } from 'rxjs';
-import {
-  concatMap,
-  delay,
-  switchMap,
-  take,
-  tap,
-  toArray,
-} from 'rxjs/operators';
+import { concatMap, delay, switchMap, tap, toArray } from 'rxjs/operators';
 import * as cliProgress from 'cli-progress';
 import AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';

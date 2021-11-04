@@ -19,6 +19,7 @@ Object {
     "en": "Test unit #test_unit_1_id description",
     "hu": "Teszt unit #test_unit_1_id leírás",
   },
+  "externalId": "restaurantid",
   "groupId": "test_group_1_id",
   "id": "rkeeper-unit",
   "isAcceptingOrders": true,
@@ -38,7 +39,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "paymentModes": Array [
     Object {
@@ -59,7 +60,6 @@ Object {
       "anyuppPassword": "ANYUPP_PASSWORD HASHED",
       "anyuppUsername": "ANYUPP_USERNAME",
       "endpointUri": "ENDPOINT_URI",
-      "restaurantId": "RESTAURANT_ID",
       "rkeeperPassword": "RKEEPER_PASSWORD HASHED",
       "rkeeperUsername": "RKEEPER_USERNAME",
     },
@@ -95,6 +95,7 @@ Object {
     "en": "Test unit #test_unit_1_id description",
     "hu": "Teszt unit #test_unit_1_id leírás",
   },
+  "externalId": "restaurantid",
   "groupId": "test_group_1_id",
   "id": "rkeeper-unit",
   "isAcceptingOrders": true,
@@ -114,7 +115,7 @@ Object {
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
-    "to": "1970-01-01",
+    "to": "2970-01-01",
   },
   "paymentModes": Array [
     Object {
@@ -135,7 +136,6 @@ Object {
       "anyuppPassword": "ANYUPP_PASSWORD HASHED",
       "anyuppUsername": "ANYUPP_USERNAME",
       "endpointUri": "ENDPOINT_URI",
-      "restaurantId": "RESTAURANT_ID",
       "rkeeperPassword": "RKEEPER_PASSWORD HASHED",
       "rkeeperUsername": "RKEEPER_USERNAME",
     },

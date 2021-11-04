@@ -3,11 +3,23 @@ export const dish = {
   modiweight: 0,
   price: 50000,
   modischeme: 0,
-  active: 0,
+  active: 1,
   id: 1000114,
   guid: '4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68',
   code: 3,
-  name: 'Pr\u00F3ba ital',
+  name: 'pr\u00f3ba ital',
+};
+
+export const inactiveDish = {
+  type: 'dish',
+  modiweight: 0,
+  price: 50000,
+  modischeme: 0,
+  active: 0,
+  id: 11000114,
+  guid: '44b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68',
+  code: 3,
+  name: 'pr\u00f3ba ital inactive',
 };
 
 export const dish2 = {
@@ -15,7 +27,7 @@ export const dish2 = {
   modiweight: 0,
   price: 60000,
   modischeme: 0,
-  active: 0,
+  active: 1,
   id: 1000115,
   guid: '5b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68',
   code: 3,
@@ -123,7 +135,7 @@ export const modifier = {
           maxOneDish: 1,
           price: 10000,
           weight: 1,
-          active: 1,
+          active: 0,
           id: 1017192,
           name: 'Sz\u00F3jaital (90ml)',
         },
@@ -259,6 +271,271 @@ export const rawData = {
   data: {
     dishes: [dish, dish2, duplicatedDish, badDish, badDish2],
   },
+};
+
+export const fullInactiveModifierGroup = {
+  pid: 0,
+  group: [
+    {
+      useDownLimit: 1,
+      downLimit: 1,
+      defaultModifier: 0,
+      modi: [
+        {
+          maxOneDish: 1,
+          price: 0,
+          weight: 1,
+          active: 1,
+          id: 1017196,
+          name: 'Tej sima (90ml)',
+        },
+        {
+          maxOneDish: 1,
+          price: 10000,
+          weight: 1,
+          active: 1,
+          id: 1017195,
+          name: 'K\u00F3kuszital (90ml)',
+        },
+      ],
+      replaceDefModifier: 0,
+      useUpLimit: 1,
+      upLimit: 1,
+      active: 0,
+      id: 1017198,
+      name: 'Tejek 90ml',
+    },
+    {
+      useDownLimit: 1,
+      downLimit: 1,
+      defaultModifier: 1011504,
+      modi: [
+        {
+          maxOneDish: 1,
+          price: 5000,
+          weight: 1,
+          active: 1,
+          id: 1011504,
+          name: 'Pap\u00EDrpoh\u00E1r 2dl',
+        },
+        {
+          maxOneDish: 1,
+          price: 0,
+          weight: 0,
+          active: 1,
+          id: 1011517,
+          name: 'Saj\u00E1t poh\u00E1r',
+        },
+      ],
+      replaceDefModifier: 1,
+      useUpLimit: 1,
+      upLimit: 1,
+      active: 0,
+      id: 1017199,
+      name: '2dl pap\u00EDrpoh\u00E1r',
+    },
+  ],
+  item: [],
+  active: 1,
+  id: 1017197,
+  code: 70,
+};
+
+export const partiallyInactiveModifierGroup = {
+  pid: 0,
+  group: [
+    {
+      useDownLimit: 1,
+      downLimit: 1,
+      defaultModifier: 0,
+      modi: [
+        {
+          maxOneDish: 1,
+          price: 0,
+          weight: 1,
+          active: 1,
+          id: 1017196,
+          name: 'Tej sima (90ml)',
+        },
+        {
+          maxOneDish: 1,
+          price: 10000,
+          weight: 1,
+          active: 1,
+          id: 1017195,
+          name: 'K\u00F3kuszital (90ml)',
+        },
+      ],
+      replaceDefModifier: 0,
+      useUpLimit: 1,
+      upLimit: 1,
+      active: 1,
+      id: 1017198,
+      name: 'Tejek 90ml',
+    },
+    {
+      useDownLimit: 1,
+      downLimit: 1,
+      defaultModifier: 1011504,
+      modi: [
+        {
+          maxOneDish: 1,
+          price: 5000,
+          weight: 1,
+          active: 1,
+          id: 1011504,
+          name: 'Pap\u00EDrpoh\u00E1r 2dl',
+        },
+        {
+          maxOneDish: 1,
+          price: 0,
+          weight: 0,
+          active: 1,
+          id: 1011517,
+          name: 'Saj\u00E1t poh\u00E1r',
+        },
+      ],
+      replaceDefModifier: 1,
+      useUpLimit: 1,
+      upLimit: 1,
+      active: 0,
+      id: 1017199,
+      name: '2dl pap\u00EDrpoh\u00E1r',
+    },
+  ],
+  item: [],
+  active: 1,
+  id: 1017197,
+  code: 70,
+};
+
+export const modifierGroupAllInactiveItems = {
+  pid: 0,
+  group: [
+    {
+      useDownLimit: 1,
+      downLimit: 1,
+      defaultModifier: 0,
+      modi: [
+        {
+          maxOneDish: 1,
+          price: 0,
+          weight: 1,
+          active: 0,
+          id: 1017196,
+          name: 'Tej sima (90ml)',
+        },
+        {
+          maxOneDish: 1,
+          price: 10000,
+          weight: 1,
+          active: 0,
+          id: 1017195,
+          name: 'K\u00F3kuszital (90ml)',
+        },
+      ],
+      replaceDefModifier: 0,
+      useUpLimit: 1,
+      upLimit: 1,
+      active: 0,
+      id: 1017198,
+      name: 'Tejek 90ml',
+    },
+  ],
+  item: [],
+  active: 1,
+  id: 1017197,
+  code: 70,
+};
+
+export const modifierGroupPartiallyInactiveItems = {
+  pid: 0,
+  group: [
+    {
+      useDownLimit: 1,
+      downLimit: 1,
+      defaultModifier: 0,
+      modi: [
+        {
+          maxOneDish: 1,
+          price: 0,
+          weight: 1,
+          active: 1,
+          id: 1017196,
+          name: 'Tej sima (90ml)',
+        },
+        {
+          maxOneDish: 1,
+          price: 10000,
+          weight: 1,
+          active: 0,
+          id: 1017195,
+          name: 'K\u00F3kuszital (90ml)',
+        },
+      ],
+      replaceDefModifier: 0,
+      useUpLimit: 1,
+      upLimit: 1,
+      active: 0,
+      id: 1017198,
+      name: 'Tejek 90ml',
+    },
+  ],
+  item: [],
+  active: 1,
+  id: 1017197,
+  code: 70,
+};
+
+export const inactiveModifierGroupActiveItems = {
+  pid: 0,
+  group: [
+    {
+      useDownLimit: 1,
+      downLimit: 1,
+      defaultModifier: 0,
+      modi: [
+        {
+          maxOneDish: 1,
+          price: 0,
+          weight: 1,
+          active: 1,
+          id: 1017196,
+          name: 'Tej sima (90ml)',
+        },
+        {
+          maxOneDish: 1,
+          price: 10000,
+          weight: 1,
+          active: 1,
+          id: 1017195,
+          name: 'K\u00F3kuszital (90ml)',
+        },
+      ],
+      replaceDefModifier: 0,
+      useUpLimit: 1,
+      upLimit: 1,
+      active: 0,
+      id: 1017198,
+      name: 'Tejek 90ml',
+    },
+  ],
+  item: [],
+  active: 0,
+  id: 1017197,
+  code: 70,
+};
+
+export const dishWithInactiveModifierGroups = {
+  type: 'dish',
+  modiweight: 0,
+  price: 70000,
+  modischeme: 1017197,
+  active: 1,
+  id: 1008660,
+  guid: '82874f87-92e4-4e0e-a122-d1be34b6f7b4',
+  code: 1414,
+  name: 'TA Kiot\u00F3i Szilv\u00E1s Kr\u00E9mk\u00E1v\u00E9',
 };
 
 export const rawDataWithModifiers = {

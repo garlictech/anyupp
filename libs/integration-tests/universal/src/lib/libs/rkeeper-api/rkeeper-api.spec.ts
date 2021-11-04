@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import * as fs from 'fs';
 import request from 'supertest';
 import { config } from '@bgap/shared/config';
@@ -5,7 +6,6 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { createIamCrudSdk } from '../../../api-clients';
 import {
   mergeMap,
-  shareReplay,
   switchMap,
   delay,
   tap,
@@ -22,23 +22,21 @@ import {
   getBusinessEntityInfo,
   handleRkeeperProducts,
   createDefaultProductCategory,
+  defaultProductCategoryId,
 } from '@bgap/rkeeper-api';
 import { from, Observable, combineLatest } from 'rxjs';
-import { ES_DELAY, DYNAMO_DELAY } from '../../../utils';
+import { ES_DELAY, maskV4UuidIds } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
 import * as fixtures from './fixtures';
-import {
-  deleteGeneratedProductsForAUnitFromDb,
-  listGeneratedProductsForUnits,
-} from '@bgap/anyupp-gql/backend';
+import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/anyupp-gql/backend';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();
 
-  const dirtyItemDeleter = <Y extends { id: string }>(
-    searchOp: (x: { filter: { dirty: { eq: boolean } } }) => Observable<
+  const testItemDeleter = <Y extends { id: string }, FILTER>(
+    searchOp: (x: { filter: FILTER }) => Observable<
       | {
           items?: CrudApi.Maybe<Array<CrudApi.Maybe<Y>>>;
         }
@@ -46,9 +44,10 @@ describe('Test the rkeeper api basic functionality', () => {
       | null
     >,
     deleteOp: (x: { input: { id: string } }) => any,
+    filter: FILTER,
   ) =>
     getAllPaginatedData(searchOp, {
-      query: { filter: { dirty: { eq: true } } },
+      query: { filter },
     }).pipe(
       filterNullishGraphqlListWithDefault<Y>([]),
       tap(items => console.log(`Found ${items.length} items do delete`)),
@@ -61,10 +60,43 @@ describe('Test the rkeeper api basic functionality', () => {
       toArray(),
     );
 
+  const dirtyItemDeleter = <Y extends { id: string }>(
+    searchOp: (x: { filter: { dirty: { eq: boolean } } }) => Observable<
+      | {
+          items?: CrudApi.Maybe<Array<CrudApi.Maybe<Y>>>;
+        }
+      | undefined
+      | null
+    >,
+    deleteOp: (x: { input: { id: string } }) => any,
+  ) => testItemDeleter(searchOp, deleteOp, { dirty: { eq: true } });
+
+  const chainDataDeleter = <Y extends { id: string }>(
+    searchOp: (x: { filter: { chainId: { eq: string } } }) => Observable<
+      | {
+          items?: CrudApi.Maybe<Array<CrudApi.Maybe<Y>>>;
+        }
+      | undefined
+      | null
+    >,
+    deleteOp: (x: { input: { id: string } }) => any,
+    chainId: string,
+  ) => testItemDeleter(searchOp, deleteOp, { chainId: { eq: chainId } });
+
   const cleanup$ = combineLatest(
     dirtyItemDeleter(crudSdk.SearchUnitProducts, crudSdk.DeleteUnitProduct),
     dirtyItemDeleter(crudSdk.SearchGroupProducts, crudSdk.DeleteGroupProduct),
     dirtyItemDeleter(crudSdk.SearchChainProducts, crudSdk.DeleteChainProduct),
+    chainDataDeleter(
+      crudSdk.SearchProductComponents,
+      crudSdk.DeleteProductComponent,
+      fixtures.rkeeperUnit.chainId,
+    ),
+    chainDataDeleter(
+      crudSdk.SearchProductComponentSets,
+      crudSdk.DeleteProductComponentSet,
+      fixtures.rkeeperUnit.chainId,
+    ),
   ).pipe(
     switchMap(() =>
       from([fixtures.rkeeperUnitProduct, fixtures.rkeeperUnitProduct2]),
@@ -77,7 +109,7 @@ describe('Test the rkeeper api basic functionality', () => {
       100,
     ),
     count(),
-    tap(num => console.log(`${num} deleted products`)),
+    tap(num => console.log(`${num} deleted items`)),
     switchMap(() =>
       combineLatest(
         crudSdk.DeleteUnit({ input: { id: fixtures.rkeeperUnit.id } }),
@@ -86,9 +118,12 @@ describe('Test the rkeeper api basic functionality', () => {
         deleteGeneratedProductsForAUnitFromDb(crudSdk)(''),
       ),
     ),
+    tap(result => console.log(`${result} deleted items`)),
   );
 
   beforeEach(done => {
+    jest.resetModules();
+
     cleanup$
       .pipe(
         delay(ES_DELAY),
@@ -235,6 +270,68 @@ describe('Test the rkeeper api basic functionality', () => {
   }, 15000);
 
   test('Test full rkeeper product handling - the use case', done => {
+    const basicMatcher = {
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+    };
+
+    const createMatcher =
+      (matcher: Record<string, unknown>) =>
+      (label: string) =>
+      (result: any[]) =>
+        pipe(
+          result,
+          maskV4UuidIds,
+          R.sortBy(JSON.stringify),
+          R.forEach(res => expect(res).toMatchSnapshot(matcher, label)),
+        );
+
+    const checkMatches = createMatcher(basicMatcher);
+
+    const sortConfigSets = <
+      T extends {
+        items?: CrudApi.Maybe<
+          CrudApi.GeneratedProductConfigSet | CrudApi.ProductConfigSet
+        >;
+      },
+    >(
+      sets: CrudApi.Maybe<T>[],
+    ) =>
+      pipe(
+        sets,
+        R.map(configSet => ({
+          ...configSet,
+          items: !!configSet?.items
+            ? pipe(
+                configSet?.items ?? [],
+                R.reject(R.isNil),
+                R.sortBy(JSON.stringify),
+              )
+            : R.identity,
+        })),
+        R.sortBy(JSON.stringify),
+      );
+
+    const processProducts = <
+      K,
+      T extends {
+        configSets?: CrudApi.Maybe<CrudApi.Maybe<K>[]>;
+      },
+    >(
+      products: T[],
+    ) =>
+      pipe(
+        products,
+        maskV4UuidIds,
+        R.map(product => ({
+          ...product,
+          configSets: !!product.configSets
+            ? sortConfigSets(product.configSets)
+            : product.configSets,
+        })),
+        R.sortBy(JSON.stringify),
+      );
+
     handleRkeeperProducts(crudSdk)(
       fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
       fixtures.rawData,
@@ -242,24 +339,63 @@ describe('Test the rkeeper api basic functionality', () => {
       .pipe(
         delay(ES_DELAY),
         switchMap(() =>
-          listGeneratedProductsForUnits(crudSdk)([fixtures.rkeeperUnit.id]),
+          crudSdk.SearchGeneratedProducts({
+            filter: { unitId: { eq: fixtures.rkeeperUnit.id } },
+          }),
         ),
+        filterNullishGraphqlListWithDefault<CrudApi.GeneratedProduct>([]),
+        map(res =>
+          processProducts<
+            CrudApi.GeneratedProductConfigSet,
+            CrudApi.GeneratedProduct
+          >(res),
+        ),
+        tap(checkMatches('Generated products')),
+        switchMap(() =>
+          crudSdk.SearchUnitProducts({
+            filter: { unitId: { eq: fixtures.rkeeperUnit.id } },
+          }),
+        ),
+        filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
+        map(res =>
+          processProducts<CrudApi.ProductConfigSet, CrudApi.UnitProduct>(res),
+        ),
+        tap(checkMatches('Unit products')),
+        switchMap(() =>
+          crudSdk.SearchGroupProducts({
+            filter: { groupId: { eq: fixtures.rkeeperUnit.groupId } },
+          }),
+        ),
+        filterNullishGraphqlListWithDefault<CrudApi.GroupProduct>([]),
+        tap(checkMatches('Group products')),
+        switchMap(() =>
+          crudSdk.SearchChainProducts({
+            filter: { chainId: { eq: fixtures.rkeeperUnit.chainId } },
+          }),
+        ),
+        filterNullishGraphqlListWithDefault<CrudApi.ChainProduct>([]),
+        tap(checkMatches('Chain products')),
+        switchMap(() =>
+          crudSdk.SearchProductComponents({
+            filter: { chainId: { eq: fixtures.rkeeperUnit.chainId } },
+          }),
+        ),
+        filterNullishGraphqlListWithDefault<CrudApi.ProductComponent>([]),
+        tap(checkMatches('Product components')),
+        switchMap(() =>
+          crudSdk.SearchProductComponentSets({
+            filter: { chainId: { eq: fixtures.rkeeperUnit.chainId } },
+          }),
+        ),
+        filterNullishGraphqlListWithDefault<CrudApi.ProductComponentSet>([]),
+        tap(checkMatches('Product component sets')),
       )
       .subscribe({
-        next: result => {
-          result.forEach(res =>
-            expect(res).toMatchSnapshot({
-              id: expect.any(String),
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            }),
-          );
-          done();
-        },
+        next: () => done(),
       });
-  }, 25000);
+  }, 35000);
 
-  test.only('Test full rkeeper product handling - the use case with lots of records', done => {
+  test.skip('Test full rkeeper product handling - the use case with lots of records', done => {
     const rawData = JSON.parse(
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
@@ -289,6 +425,12 @@ describe('Test the rkeeper api basic functionality', () => {
             tap(res =>
               expect(res).toMatchSnapshot('product category recreated'),
             ),
+            switchMap(() =>
+              crudSdk.GetProductCategory({
+                id: defaultProductCategoryId,
+              }),
+            ),
+            tap(res => expect(res).toMatchSnapshot('product category data')),
           ),
         ),
       )
