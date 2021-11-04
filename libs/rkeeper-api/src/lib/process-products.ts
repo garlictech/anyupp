@@ -485,7 +485,6 @@ export const upsertConfigSets =
           () =>
             pipe(
               modifierGroup.modifiers.map(modifierUpdater(sdk, chainId)),
-              R.tap(x => console.warn('******2', x)),
               res => combineLatest(res),
               filterNullishElements(),
               switchMap(components =>
@@ -584,7 +583,6 @@ export const resolveComponentSets =
                   ),
                 ),
                 switchMap(upsertConfigSets(sdk, chainId)),
-                tap(x => console.warn('******1', x)),
                 catchError(err => {
                   console.warn(
                     `Found an invalid record: ${JSON.stringify(
