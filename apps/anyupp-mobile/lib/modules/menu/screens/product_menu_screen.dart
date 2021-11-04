@@ -381,6 +381,9 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   }
 
   void _selectServingMode(BuildContext context, ServingMode current) async {
+    setState(() {
+      _showTooltip = false;
+    });
     if (_supportedServiceModeCount < 2) {
       return;
     }

@@ -247,7 +247,7 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildPaymentButtonPanel(BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = false;
-    if (cart.place == null || (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE) && false) {
+    if (cart.place == null || (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE)) {
       showQrCodeScan = true;
     }
     // print('_buildPaymentButtonPanel().showQrCodeScan=$showQrCodeScan');
