@@ -86,9 +86,7 @@ export const getTimezoneForUnit =
   (unitId: string): Observable<string> =>
     from(deps.crudSdk.GetUnit({ id: unitId })).pipe(
       throwIfEmptyValue<CrudApi.Unit>(),
-
-      map(unit => unit.address.location),
-      map(getTimezoneFromLocation),
+      map(unit => unit.timeZone || 'Europe/Budapest'),
     );
 
 export const getProductComponentSetMap =

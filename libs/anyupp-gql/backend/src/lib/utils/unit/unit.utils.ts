@@ -2,12 +2,11 @@ import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { findLast } from 'lodash/fp';
 import { DateTime } from 'luxon';
-import { getTimezoneFromLocation } from '../date.utils';
 
 const dateFormat = 'y-MM-dd';
 
 export const getUnitTimeZone = (unit: CrudApi.Unit): string =>
-  getTimezoneFromLocation(unit.address.location);
+  unit.timeZone || 'Europe/Budapest';
 
 export const filterOutNotOpenUnits = ({
   units,
