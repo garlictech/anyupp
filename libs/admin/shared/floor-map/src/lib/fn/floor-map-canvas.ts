@@ -16,7 +16,14 @@ export const initCanvas = (editMode: boolean): void => {
     fabricCanvas.__eventListeners = {};
   }
 
-  fabricCanvas = new fabric.Canvas('canvas');
+  fabricCanvas = new fabric.Canvas('fabricCanvas');
+
+  // Save fabricCanvas to the canvas element for allow testing
+  const fabricCanvasEl: any = document.getElementById('fabricCanvas');
+  if (fabricCanvasEl) {
+    fabricCanvasEl.fabricCanvas = fabricCanvas;
+  }
+
   fabricCanvas.backgroundColor = FLOOR_MAP_config.backgroundColor;
   fabricCanvas.selection = false; // Disable group selection
 

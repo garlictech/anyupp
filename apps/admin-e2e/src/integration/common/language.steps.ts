@@ -6,7 +6,9 @@ Then('I set the language to EN', () => {
     'de-DE': 'Englisch',
     'hu-HU': 'Angol',
   };
-  cy.findByTestId('languageMenu', { timeout: 20000 }).should('be.visible');
+  cy.findByTestId('languageMenu', { timeout: 20000 })
+    .scrollIntoView()
+    .should('be.visible');
   cy.getLocalStorage('selectedLanguage').then(selectedLanguage => {
     cy.findByTestId('languageMenu').click();
     const desiredLangText = selectedLanguage

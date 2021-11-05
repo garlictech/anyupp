@@ -3,10 +3,13 @@ export const getDialog = () => cy.get('nb-dialog-container');
 export const getActiveTab = () => cy.get('nb-tab.content-active');
 
 export const getListItemThatContains = (value: string) =>
-  cy.contains('nb-list-item', value).should('be.visible');
+  cy.contains('nb-list-item', value).scrollIntoView().should('be.visible');
 
 export const getListItemFromActiveTabThatContains = (value: string) =>
-  getActiveTab().contains('nb-list-item', value).should('be.visible');
+  getActiveTab()
+    .contains('nb-list-item', value)
+    .scrollIntoView()
+    .should('be.visible');
 
 export const moveDownShouldWork = (listItemElementName: string) =>
   cy
@@ -15,7 +18,7 @@ export const moveDownShouldWork = (listItemElementName: string) =>
     .then($listItem => {
       getListItemTitle($listItem).then(firstItemTitle => {
         cy.wrap($listItem).findAllByTitle('Move down').click();
-        getSuccessToastr().should('be.visible');
+        getSuccessToastr().scrollIntoView().should('be.visible');
         getSuccessToastr().should('not.exist');
         cy.get(listItemElementName)
           .eq(1)
@@ -29,7 +32,7 @@ export const moveUpShouldWork = (listItemElementName: string) =>
     .then($listItem => {
       getListItemTitle($listItem).then(seconditemTitle => {
         cy.wrap($listItem).findAllByTitle('Move up').click();
-        getSuccessToastr().should('be.visible');
+        getSuccessToastr().scrollIntoView().should('be.visible');
         getSuccessToastr().should('not.exist');
         cy.get(listItemElementName)
           .eq(0)

@@ -61,6 +61,8 @@ const chainInput: CrudApi.CreateChainInput = {
       borderLight: '#e7e5d0',
       borderDark: '#c3cacd',
       textLight: '#ffffff',
+      primary: '#30bf60', // indicator
+      secondary: '#303030', // textDark
     },
   },
 };

@@ -97,3 +97,7 @@ When('I click the category selector to set {string}', (value: string) => {
   cy.get('bgap-active-product-category-selector').click();
   cy.findAllByText(value).last().click();
 });
+
+When('I click the {string} button', (value: string) => {
+  cy.findAllByTestId(value).last().click();
+});

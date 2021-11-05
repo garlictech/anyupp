@@ -42,5 +42,5 @@ When(
 );
 
 Then('I should see {string} text on the dialog', (text: string) => {
-  getDialog().contains(text).should('be.visible');
+  getDialog().contains(text).scrollIntoView().should('be.visible');
 });
