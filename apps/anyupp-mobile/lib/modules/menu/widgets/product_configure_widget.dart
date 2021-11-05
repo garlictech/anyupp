@@ -152,6 +152,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   Widget _buildAllergensListWidget(BuildContext context) {
+    if (_allergeens.isEmpty) {
+      return Container();
+    }
     return Container(
       margin: EdgeInsets.only(top: 16.0),
       decoration: BoxDecoration(

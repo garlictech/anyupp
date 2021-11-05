@@ -9,11 +9,13 @@ import 'package:flutter_svg/svg.dart';
 class SelectServingModeWidget extends StatefulWidget {
   final int initialPosition;
   final void Function(int)? onSelected;
+  final bool useTheme;
 
   const SelectServingModeWidget({
     Key? key,
     this.onSelected,
     this.initialPosition = 0,
+    this.useTheme = true,
   }) : super(key: key);
 
   @override
@@ -43,13 +45,13 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
               style: Fonts.satoshi(
                 fontSize: 16.0,
                 fontWeight: FontWeight.normal,
-                color: theme.secondary,
+                color: widget.useTheme ? theme.secondary : Color(0xFF373737),
               ),
             ),
           ),
           Divider(
             height: 1,
-            color: theme.secondary16,
+            color: widget.useTheme ? theme.secondary16 : Color(0xFFF0F0F0),
           ),
           Container(
             margin: EdgeInsets.only(
@@ -64,7 +66,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
                 padding: const EdgeInsets.all(6.0),
                 child: SvgPicture.asset(
                   'assets/icons/restaurant_menu_black.svg',
-                  color: theme.secondary,
+                  color: widget.useTheme ? theme.secondary : Color(0xFF373737),
                   height: 22.0,
                 ),
               ),
@@ -85,7 +87,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
               pos: 1,
               icon: SvgPicture.asset(
                 "assets/icons/bag.svg",
-                color: theme.secondary,
+                color: widget.useTheme ? theme.secondary : Color(0xFF373737),
               ),
               title: trans('servingModeSheet.takeAway.title'),
               descriptionKey: trans('servingModeSheet.takeAway.description'),
@@ -118,7 +120,13 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          BorderedWidget(width: 40.0, height: 40.0, child: icon),
+          BorderedWidget(
+            width: 40.0,
+            height: 40.0,
+            color: widget.useTheme ? null : Colors.white,
+            borderColor: widget.useTheme ? null : Color(0xFFF0F0F0),
+            child: icon,
+          ),
           SizedBox(
             width: 12.0,
           ),
@@ -131,7 +139,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
                 style: Fonts.satoshi(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w700,
-                  color: theme.secondary,
+                  color: widget.useTheme ? theme.secondary : Color(0xFF373737),
                 ),
               ),
               Text(
@@ -139,7 +147,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
                 style: Fonts.satoshi(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w400,
-                  color: theme.secondary40,
+                  color: widget.useTheme ? theme.secondary40 : Color(0xFFAFAFAF),
                 ),
               ),
             ],
@@ -147,17 +155,17 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
           Spacer(),
           Checkbox(
             shape: CircleBorder(),
-            activeColor: theme.primary,
+            activeColor: widget.useTheme ? theme.primary : Color(0xFF30BF60),
             fillColor: MaterialStateColor.resolveWith((states) {
               if (states.isEmpty) {
-                return theme.secondary0;
+                return widget.useTheme ? theme.secondary0 : Colors.white;
               }
               var state = states.first;
               switch (state) {
                 case MaterialState.selected:
-                  return theme.primary;
+                  return widget.useTheme ? theme.primary : Color(0xFF30BF60);
                 default:
-                  return theme.secondary0;
+                  return widget.useTheme ? theme.secondary0 : Colors.white;
               }
             }),
             value: _selectedPosition == pos,

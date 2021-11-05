@@ -256,6 +256,10 @@ class ProductDetailsWidget extends StatelessWidget {
   }
 
   Widget _buildAllergensListWidget(BuildContext context, List<String> allergeens) {
+    if (allergeens.isEmpty) {
+      return Container();
+    }
+
     return Container(
       margin: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
