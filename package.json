@@ -71,7 +71,7 @@
     "apollo-server-fastify": "3.5.0",
     "aws-amplify": "4.3.4",
     "aws-appsync": "4.1.4",
-    "aws-lambda": "1.0.6",
+    "aws-lambda": "1.0.7",
     "aws-lambda-fastify": "1.7.1",
     "aws-sdk": "2.1023.0",
     "aws-serverless-express": "3.4.0",
