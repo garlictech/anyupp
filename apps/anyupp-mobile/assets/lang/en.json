@@ -10,7 +10,7 @@
   },
   "locale": {
     "EN": "English",
-    "DE": "German",
+    "DE": "Deutsch",
     "HU": "Magyar"
   },
   "login": {
@@ -156,7 +156,7 @@
     "soya": "Soya",
     "sulphites": "Sulphites",
     "treenuts": "Treenuts",
-    "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out Kajahu Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
+    "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out {{0}} Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
   },
   "favorites": {
     "noFavorites": "You have not added any favorite items yet.",
@@ -382,10 +382,10 @@
     },
     "dialog": {
       "title": {
-        "takeaway": "Are you sure you want to switch to local consumption?",
-        "inplace": "Are you sure you want to switch to takeaway?"
+        "takeaway": "Are you sure you want to switch to in place order mode?",
+        "inplace": "Are you sure you want to switch to takeaway order mode?"
       },
-      "description": "This action will delete the contents of your current cart, and unfortunately you will have to re-select each item you wish to order.",
+      "description": "If your cart is not empty this action will delete the contents of your current cart, and you will have to re-select each previously added item you wish to order.",
       "cancel": "Cancel",
       "ok": "Yes"
     }
@@ -466,7 +466,7 @@
     "changeLocation": "Change location"
   },
   "about": {
-    "description": "    Hogy miért AnyUpp, hadd legyen ez még kicsit titok... Nagyon sok funkcióval érkezünk majd még, amiből rá fogsz jönni, hogy ki az Any és miért épp Upp. :)\n\n    Jártál már úgy, hogy integettél a pincérnek, de sehogy sem kereste a szemkontaktust? Vagy vártad a számlát, de nem sikerült kihozni senkinek? Vagy úgy vagy vele - most Covid idején - hogy inkább nem fognád meg az étlapot, nem fizetnél készpénzzel, és nem ütnéd be a PIN kódod egy terminálba? Na, ezekre mind jó az AnyUpp. Töltsd le, válaszd ki a hozzád legközelebbi éttermet, ahol tudsz vele rendelni és fizetni, és próbáld ki! Ennyi.\n\n    Ez most a CYBERG AnyUpp appjának a teszt időszaka. Jelenleg egy étteremben futunk, Budapesten a Corvin sétányon a KAJAHU-ban. Gyere és próbáld ki!\n\n    Az asztalokon QR kódot találsz, ha beolvasod, mi tudjuk hol ülsz, és odavisszük a rendelésed. Nem kell várnod, nem kell szólnod senkihez, csak megrendeled a burgered vagy pizzád, dobsz mellé egy italt vagy desszertet, és már visszük is. Egyszerűen hangzik, nem? Tényleg az. Ha akarod, bedobhatod a kedvencek közé, amit ettél, és legközelebb már nem kell a menüből sem kikeresned.\n\n    Fizetnél? Ne várj a pincérre! Fizess az app-ban bankkártyával, Stripe-pal, ahogy kényelmes, aztán fogyaszd rendelésed, érezd jól magad, és rendelj újra, ameddig jól esik! Sosem volt még könnyebb és gyorsabb.\n\n    Nyugi, mi is tudjuk, hogy ez még nem a jövő. De menő, nem? Sok izgi dolog jön még. Lesz egy szuper ajánló, látod majd, hogy a többieknek mi a kedvence, akár ismerkedhetsz is nálunk, meg olcsóbban is kajálhatsz, ha sokszor betérsz hozzánk. Ja, és nem csak hozzánk. Az a terv, hogy egyre több helyen jelenünk majd meg az app-pal, így előbb utóbb bárhol (ANYwhere, hm?) belefuthatsz. Adj egy kis időt, teszteld addig, és ha bármi tetszik vagy nem, szólj, írj, mi meg fixáljuk, addoljuk, bővítjük.\n\n    Frankó lesz. Ha már most tetszik, kérjük add tovább! Kösz.",
+    "description": "    Why AnyUpp? Let us keep the secret for a while, but for sure we are bringing a lot of new functions which will explain the Any, and the Upp :-) \n\n I guess we all know the situation: you are waving the waiter or waitress and he/she does not even get the eye contact…does the situation sound familiar to you?\n Waiting for the bill, you really want to pay but there is no one bringing it? Or simply, Covid times have made your precautious and you would rather not touch the menu, nor the cash, and simply do not wish to type your PIN with your fingers...\n\n Goods news, all year fears are wiped off by AnyUpp! And it has more to offer than that. Just check out how it works. \n\n Download the app, choose the restaurant closest to you, order and pay. That's all.\n\n Now  AnyUpp by CYBERG is in the test period, available in a couple of restaurants such as our first one: KAJAHU at Corvin Promenade. Come and visit us! Just read the QR code on the table and we will know where you are sitting.\n No need to wait, to speak. Just order your burger or salad, drop them into your basket optionally along with a dessert or drink- whatever your choice is- and we’ll soon serve your ordered items.\n Sounds pretty easy, doesn’t it?\n It is really. You may tick your favs, next time you do not even need to check the menu.\n How yould you like to pay? We offer a growing set of payment options from cash to secure and easy online payments so that you can chose the one most suitable for your needs.\n Restaurant meal has NEVER been easier and faster.\n\n Sure, this is not the future, but pretty cool, isn’t it?\n There are more exciting things to come.\n There will be offers for you, you will see others’ favs, you can meet new people if you wish.\n The more you come the less you pay.\n By the way, this will not only be true about our place. Frequent guests will get discount at other places, too.\n We are planning to introduce our app at many places, you may meet AnyUpp…. anywhere (just a hint for you, guys)\n Test the app and give us some time to fix, to add, or whatever it takes to make the best. We are honoured  by your comments.\n It will rule, for sure.\n If you already like it, just spread the news. :-)",
     "licences": "Licences",
     "version": "Version"
   },
