@@ -95,7 +95,7 @@
     "graphql-tools": "8.2.0",
     "isomorphic-fetch": "3.0.0",
     "lodash-es": "4.17.21",
-    "luxon": "2.0.2",
+    "luxon": "2.1.0",
     "ngx-color-picker": "11.0.0",
     "ngx-logger": "4.3.3",
     "print-js": "1.6.0",
