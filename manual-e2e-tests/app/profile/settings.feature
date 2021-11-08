@@ -1,6 +1,6 @@
 Feature: Set the language and switch between in place and takeaway modes
 
-  Background: Login
+  Scenario: Set the language to HU then set it back to EN
     Given I am on the login screen
     When I tap the text "Continue anonymously"
     Then there is a loading screen
@@ -16,8 +16,6 @@ Feature: Set the language and switch between in place and takeaway modes
     Then there is the "Menu" screen
     When I tap the "You can switch between ordering methods at any time." text
     Then I should see "Sorry, this product category is not available in in place mode." text
-
-  Scenario: Set the language to HU then set it back to EN
     When I tap the "Profile" button
     Then I should see the "Settings" tab
     When I tap the "Settings" tab

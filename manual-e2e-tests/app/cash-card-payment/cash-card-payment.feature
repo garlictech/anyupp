@@ -20,7 +20,8 @@ Feature: Cash and card payment
     And I should see "FANTA #2" with picture
 
   Scenario: Pay successfully with cash or card
-    #This is a 2 in 1 scenario. Text updates appear only in the first scenario.
+    #This is a 2 in 1 scenario.
+    # from order details
     And I tap the "FANTA #2" card under "Test product category #1 name" category
     Then I should see "Fanta #2 description" text
     When I select the "FRENCH FRIES" modifier under the "Modifier comp set"
@@ -31,28 +32,26 @@ Feature: Cash and card payment
     Then I should see the "Menu" is selected
     When I tap the "MY CART (596 Ft)" button
     Then there is the "Cart" screen
-    When I tap the "PAY (595 Ft)" button
+    And I should see "FRENCH FRIES" text
+    When I tap the "PAY (596 Ft)" button
     Then the qr code reader opens the camera
     When I read a seat qr code
     Then I should see the "Finding your seat..." and the "Connected to" loading screens
     And I get the text message "New Table Reserved!"
     And there is the "Cart" screen
-    # And I should see the selected table and seat on the top
-    And I should see "FRENCH FRIES" text
     Then I should see "2 x 298 Ft" text
     When I tap the "plus" button
     Then I should see "3 x 298 Ft" text
     And I should see "PAY (895 Ft)" text
     When I tap the "minus" button
     Then I should see "2 x 298 Ft" text
-    When I tap the "PAY (595 Ft)" button
+    When I tap the "PAY (596 Ft)" button
     Then there is a payment dialog with "Please select a payment method" text
     When I tap the option "Credit card at my table to my server + SZÉP card"
-    Then the option "Credit card at my table to my server + SZÉP card" is highlighted
     And I should see "PLACE ORDER" text
     When I click the button next to "I want a VAT invoice"
     And I tap the "FILL INVOICE FORM" button
-    Then I should see "Invoice info" text on the dialog
+    Then I should see "Invoice Info" text on the dialog
     When I fill out the "Name/Company name" input with "E2E test Company"
     And I fill out the "Tax ID Number" input with "1234567890"
     Then the "Country" field should contain "Magyarország"
@@ -64,8 +63,10 @@ Feature: Cash and card payment
     Then I wait around 10 secs
     And the "Orders" option is higlighted
     Then I should see "Current orders" text
+    And I should see "takeaway" on the order card
+    And I should see "596 Ft" on the order card
     And I should see the date/time of the created order
-    When I tap on the order with "596 Ft"
+    When I tap on the order with "Processing"
     Then I should see "Order status" text
     And the "We have received your order" state is checked
     And I should see the "Order details" text
@@ -75,46 +76,40 @@ Feature: Cash and card payment
     And I should see "More details" text
     And I should see "Order num" with 6 numbers
     And I should see "Késdobáló #111" text
-    When I tap the "back arrow" button
     And the admin set the state of order to "SUCCESS"
-    When I tap on the order with "Processed"
     And the "Your order has been confirmed, everything is fine!" state is checked
-    When I tap the "back arrow" button
     And the admin set the state of order to "PROCESSING"
     Then I get the text message "Message from AnyUpp! Your order is being processed."
-    When I tap on the order with "Processing"
-    And the "We are just making the ordered items." state is checked
-    When I tap the "back arrow" button
+    And the "We are just making the ordered items." state is highlighted
     And the admin set the state of order to "READY"
     Then I get the text message "Message from AnyUpp! Your order is ready!"
-    When I tap on the order with "Done"
-    And the "Your order is being served / can be received." state is checked
-    When I tap the "back arrow" button
+    And the "Your order is complete, we will serve / pick you up soon." state is checked
+    And the "Your order is being served / can be received." state is higlighted
     When the admin set the state of order to "SERVED"
+    Then the "Your order is being served / received." state is checked
+    When I tap on the "back arrow" button
     Then I should see "No active order placed yet" text
     And I should see "Order history" text
-    And I should see "Served" text
-    # Scenario: next order, with VAT and set the language to HU
+    And I should see "Served" on the order card
+    # Scenario: next order, with VAT and in HU, from order list
     When I tap the "Profile" button
     And I tap the "Settings" tab
     And I tap the "Language" tab
-    And I tap the "Hungarian" tab
+    And I tap the "Magyar" tab
     And I tap the back arrow 2 times
     Then I should see the tabs in HU language
     When I tap the "Étlap" button
     And I tap the "FANTA #2" card under "Teszt termék kategória #1 név" category
-    And I select the "FRENCH FRIES" modifier under the "Módosító komponens set"
+    And I select the "HASÁBBURGONYA" modifier under the "Módosító komponens set"
     Then I should see "1 x 298 Ft" text
     When I tap the "KOSÁRHOZ ADÁS" button
     Then there is the "Étlap" screen
     When I tap the "KOSARAM (298 Ft)" button
     Then there is the "Kosár" screen
-    And I should see the selected table and seat on the top
     When I tap the "FIZETEK (298 Ft)"
-    Then there is a payment dialog
+    Then there is a payment dialog with "Melyik fizetési módot választod?" text
     When I tap the option "Pincérnél készpénzzel"
-    Then the option "Pincérnél készpénzzel" is highlighted
-    When I click the button next to "Áfás számlát kérek"
+    And I click the button next to "Áfás számlát kérek"
     And I tap the "SZÁMLAADATOK MEGADÁSA" button
     Then I should see "Számlázási adatok" page
     And I should see the form filled with the previous datas
@@ -122,29 +117,21 @@ Feature: Cash and card payment
     Then I wait around 10 secs
     And the "Rendelések" option is higlighted
     Then I should see "Folyamatban lévő rendelések" text
+    And I should see "298 Ft" on the order card
+    And I should see "elvitel" on the order card
     And I should see the date/time of the created order
-    And I should see "Feldolgozás alatt" text
-    When I tap on the order with "298 Ft"
+    When I tap on the order with "Feldolgozás alatt"
     And the "A rendelésedet megkaptuk." state is checked
     And I should see "ÖSSZESEN 298 Ft" text
-    When I scroll down to the bottom
-    Then I should see "Rendelés szám" with 6 numbers
     When I tap the "back arrow" button
     And the admin set the state of order to "SUCCESS"
-    When I tap on the order with "Feldolgozva"
-    And the "Rendelésed megerősítésre került, minden rendben!" state is checked
-    When I tap the "back arrow" button
+    Then I should see "Feldolgozva" on the order card
     When the admin set the state of order to "PROCESSING"
     Then I get the text message "Üzenet az AnyUpp-tól! Rendelésed már készítjük."
-    When I tap on the order with "Készül a rendelésed"
-    And the "Éppen készítjük a megrendelt tételeket." state is highlighted
-    When I tap the "back arrow" button
+    And I should see "Készül a rendelésed" on the order card
     When the admin set the state of order to "READY"
-    Then I get the text message "Message from AnyUpp! Your order is ready!"
-    When I tap on the order with "Elkészült"
-    Then the "Rendelésed elkészült, hamarosan felszolgáljuk neked/átveheted." state is checked
-    Then the "Rendelésed felszolgálás alatt van/átvehető." state is highlighted
-    When I tap the "back arrow" button
+    Then I get the text message "Üzenet az AnyUpp-tól! Felszolgálása folyamatban."
+    And I should see "Elkészült" on the order card
     When the admin set the state of order to "SERVED"
     Then I should see "Korábbi rendelések" text
     When I tap on the order with "Felszolgálva"
@@ -163,7 +150,7 @@ Feature: Cash and card payment
     And I get the text message "New Table Reserved!"
     And there is the "Cart" screen
     And I should see the selected table and seat on the top
-    When I tap the "PAY (596 Ft)" button
+    When I tap the "PAY (298 Ft)" button
     Then there is a payment dialog
     When I tap the option "Credit card at my table to my server + SZÉP card"
     Then the option "Credit card at my table to my server + SZÉP card" is highlighted
