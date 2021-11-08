@@ -27,7 +27,7 @@ else
 fi
 
 if [ $PLATFORM = 'android' ]; then
-  appImagePath=${CODEBUILD_SRC_DIR:-$PWD}/apps/anyupp-mobile/build/app/outputs/flutter-apk/app-release.apk
+  appImagePath=${CODEBUILD_SRC_DIR:-$PWD}/apps/anyupp-mobile/build/app/outputs/bundle/app-release.aab
 else
   echo "Unsupported platform: ${PLATFORM}"
   exit 1
