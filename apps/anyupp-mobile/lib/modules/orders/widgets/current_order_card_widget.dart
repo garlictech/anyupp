@@ -24,8 +24,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
     OrderStatus.placed: Icons.assignment_turned_in,
     OrderStatus.processing: Icons.history_toggle_off_outlined,
     OrderStatus.ready: Icons.schedule_outlined,
-    OrderStatus.served: Icons.check_circle_rounded,
-    OrderStatus.rejected: Icons.delete_forever,
+    OrderStatus.served: Icons.check,
+    OrderStatus.rejected: Icons.close,
   };
 
   @override
@@ -70,7 +70,11 @@ class CurrentOrderCardWidget extends StatelessWidget {
                   height: 24.0,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: order.archived ? theme.secondary16 : theme.secondary0,
+                    color: order.archived
+                        ? status == OrderStatus.rejected
+                            ? theme.secondary16
+                            : theme.secondary40
+                        : theme.secondary0,
                     border: order.archived
                         ? null
                         : Border.all(
@@ -82,7 +86,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
                     child: Icon(
                       _ICONMAP[status],
                       size: 16.0,
-                      color: order.archived ? theme.secondary : theme.primary,
+                      color: order.archived ? theme.secondary0 : theme.primary,
                     ),
                   ),
                 ),
@@ -100,7 +104,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
                       Text(
                         order.archived
                             ? dateFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!))
-                            : dateWithDayFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!)),
+                            : formatOrderDate(context, fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!)),
                         style: Fonts.satoshi(
                           fontSize: 16.0,
                           color: theme.secondary,

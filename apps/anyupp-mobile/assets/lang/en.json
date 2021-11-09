@@ -6,6 +6,7 @@
     "close": "Close",
     "select": "Select",
     "ok": "Ok",
+    "today": "Today",
     "exit": "Tap back again to exit app."
   },
   "locale": {
@@ -108,7 +109,7 @@
       "favorites": "Favorites",
       "orderStatus": "Order status",
       "profile": "Profile",
-      "cart": "Cart"
+      "cart": "CART"
     },
     "tooltip": "You can switch between\n ordering methods at any time.",
     "bottomTitles": {

@@ -17,7 +17,7 @@ class ProductConfigExtrasItemWidget extends StatefulWidget {
 }
 
 class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemWidget> {
-  Map<String, bool> _selectedExtras = {};
+  Map<String, String?> _selectedExtras = {};
   int _selectedExtraCount = 0;
   bool _canSelectExtra = true;
 
@@ -88,7 +88,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
     List<Widget> widgets = [];
     components.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
     components.forEach((extra) {
-      bool isSelected = _selectedExtras['${extra.productComponentId}'] ?? false;
+      bool isSelected = _selectedExtras['${extra.productComponentId}'] != null;
       bool last = false;
 
       widgets.add(
@@ -97,7 +97,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
               ? null
               : () {
                   setState(() {
-                    _selectedExtras['${extra.productComponentId}'] = !isSelected;
+                    _selectedExtras['${extra.productComponentId}'] = isSelected ? null : extra.productComponentId;
                   });
                   _updateSelectedCount(productSet);
                   widget.onExtraSelected(productSet.productSetId, extra.productComponentId, !isSelected);
@@ -128,32 +128,36 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        Checkbox(
-                          shape: CircleBorder(),
-                          value: _selectedExtras['${extra.productComponentId}'] ?? false,
-                          activeColor: theme.primary,
-                          fillColor: MaterialStateColor.resolveWith((states) {
-                            if (states.isEmpty) {
-                              return theme.secondary16;
-                            }
-                            var state = states.first;
-                            switch (state) {
-                              case MaterialState.selected:
-                                return theme.primary;
-                              default:
-                                return _canSelectExtra ? theme.secondary16 : theme.secondary12;
-                            }
-                          }),
-                          onChanged: !isSelected && !_canSelectExtra
-                              ? null
-                              : (value) {
-                                  setState(() {
-                                    _selectedExtras['${extra.productComponentId}'] = value ?? false;
-                                  });
-                                  _updateSelectedCount(productSet);
-                                  widget.onExtraSelected(
-                                      productSet.productSetId, extra.productComponentId, value ?? false);
-                                },
+                        AbsorbPointer(
+                          absorbing: true,
+                          child: Radio<String?>(
+                            groupValue: extra.productComponentId,
+                            value: _selectedExtras['${extra.productComponentId}'],
+                            activeColor: theme.primary,
+                            fillColor: MaterialStateColor.resolveWith((states) {
+                              if (states.isEmpty) {
+                                return theme.secondary16;
+                              }
+                              var state = states.first;
+                              switch (state) {
+                                case MaterialState.selected:
+                                  return theme.primary;
+                                default:
+                                  return _canSelectExtra ? theme.secondary16 : theme.secondary12;
+                              }
+                            }),
+                            onChanged: !isSelected && !_canSelectExtra
+                                ? null
+                                : (value) {
+                                    setState(() {
+                                      _selectedExtras['${extra.productComponentId}'] =
+                                          value == null ? extra.productComponentId : null;
+                                    });
+                                    _updateSelectedCount(productSet);
+                                    widget.onExtraSelected(productSet.productSetId, extra.productComponentId,
+                                        _selectedExtras['${extra.productComponentId}'] != null);
+                                  },
+                          ),
                         ),
                       ],
                     ),
@@ -167,59 +171,6 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
                 )
             ],
           ),
-          //   child: Container(
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.start,
-          //       children: [
-          //         Expanded(
-          //           flex: 10,
-          //           child: AnimatedDefaultTextStyle(
-          //             duration: const Duration(milliseconds: 500),
-          //             style: _getExtrasFontStyleByIsSelected(isSelected),
-          //             child: AutoSizeText(
-          //               getLocalizedText(context, extra.name),
-          //               style: Fonts.satoshi(
-          //                 fontSize: 16.0,
-          //                 fontWeight: FontWeight.w400,
-          //                 color: theme.secondary,
-          //               ),
-          //               maxLines: 1,
-          //             ),
-          //           ),
-          //         ),
-          //         Expanded(
-          //           flex: 2,
-          //           child: AnimatedDefaultTextStyle(
-          //             duration: const Duration(milliseconds: 300),
-          //             style: _getExtrasFontStyleByIsSelected(isSelected),
-          //             child: AutoSizeText(
-          //               formatCurrencyWithSignal(extra.price, widget.unit.currency),
-          //               maxLines: 1,
-          //             ),
-          //           ),
-          //         ),
-          //         Switch(
-          //           activeColor: theme.primary,
-          //           focusColor: theme.secondary0,
-          //           hoverColor: theme.secondary0,
-          //           inactiveTrackColor: theme.secondary64,
-          //           value: isSelected,
-          //           onChanged: !isSelected && !_canSelectExtra
-          //               ? null
-          //               : (value) {
-          //                   setState(() {
-          //                     _selectedExtras['${extra.productComponentId}'] = value;
-          //                   });
-          //                   _updateSelectedCount(productSet);
-          //                   widget.onExtraSelected(productSet.productSetId, extra.productComponentId, value);
-          //                 },
-          //         ),
-
-          //         //Spacer(),
-          //       ],
-          //     ),
-          //   ),
-          // ),
         ),
       );
     });
@@ -229,7 +180,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
 
   Future<void> _updateSelectedCount(GeneratedProductConfigSet productSet) async {
     int selectedCount = 0;
-    _selectedExtras.forEach((key, value) => value ? ++selectedCount : selectedCount);
+    _selectedExtras.forEach((key, value) => value != null ? ++selectedCount : selectedCount);
     setState(() {
       _canSelectExtra = selectedCount < (widget.extraSet.maxSelection ?? 0);
       _selectedExtraCount = selectedCount;
