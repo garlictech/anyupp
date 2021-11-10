@@ -244,8 +244,8 @@
           "waiting": "A rendelésedet megkaptuk."
         },
         "placed": {
-          "finished": "Rendelésedet megerősítésre került, minden rendben!",
-          "waiting": "Rendelésedet megerősítésre kerül."
+          "finished": "Rendelésed megerősítésre került, minden rendben!",
+          "waiting": "Rendelésed megerősítésre kerül."
         },
         "processing": {
           "finished": "Rendelésed elkészült, hamarosan felszolgáljuk neked/átveheted.",
