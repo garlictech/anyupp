@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { chainsActions } from '@bgap/admin/shared/data-access/chains';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { addressIsEmpty } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -34,7 +33,6 @@ export class ChainFormComponent
   constructor(
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _crudSdk: CrudSdkService,
     private _chainFormService: ChainFormService,
   ) {
     super(_injector);
@@ -53,8 +51,32 @@ export class ChainFormComponent
   ngOnInit(): void {
     if (this.chain) {
       this.dialogForm.patchValue(cleanObject(this.chain));
+
+      // Color migration
+      this.dialogForm.patchValue({
+        style: {
+          colors: {
+            primary:
+              this.dialogForm.value.style?.colors?.primary ||
+              this.dialogForm.value.style?.colors?.indicator ||
+              '#30bf60',
+            secondary:
+              this.dialogForm.value.style?.colors?.secondary ||
+              this.dialogForm.value.style?.colors?.textDark ||
+              '#303030',
+          },
+        },
+      });
     } else {
-      this.dialogForm.controls.isActive.patchValue(false);
+      this.dialogForm.patchValue({
+        isActive: false,
+        style: {
+          colors: {
+            primary: '#30bf60',
+            secondary: '#303030',
+          },
+        },
+      });
     }
 
     this._changeDetectorRef.detectChanges();

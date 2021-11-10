@@ -173,14 +173,14 @@
     "style": {
       "style": "Style",
       "colors": {
-        "textDark": "Text (dark) - Secondary",
+        "textDark": "Text (dark) - Sec",
         "textLight": "Text (light)",
         "backgroundDark": "Background (dark)",
         "backgroundLight": "Background (light)",
         "borderDark": "Border (dark)",
         "borderLight": "Border (light)",
         "highlight": "Highlight",
-        "indicator": "Indicator - Primary",
+        "indicator": "Indicator - Pri",
         "disabled": "Disabled",
         "primary": "Primary",
         "secondary": "Secondary"

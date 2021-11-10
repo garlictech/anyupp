@@ -173,14 +173,14 @@
     "style": {
       "style": "Stílus",
       "colors": {
-        "textDark": "Szöveg (sötét) - Másodlagos",
+        "textDark": "Szöveg (sötét) - M.",
         "textLight": "Szöveg (világos)",
         "backgroundDark": "Háttér (sötét)",
         "backgroundLight": "Háttér (világos)",
         "borderDark": "Keret (sötét)",
         "borderLight": "Keret (világos)",
         "highlight": "Kiemelés",
-        "indicator": "Indikátor - Elsődleges",
+        "indicator": "Indikátor - E.",
         "disabled": "Inaktív",
         "primary": "Elsődleges",
         "secondary": "Másodlagos"
