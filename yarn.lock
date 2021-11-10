@@ -9865,10 +9865,10 @@
     resolve-from "^5.0.0"
     rollup-pluginutils "^2.8.2"
 
-"@vvo/tzdb@6.30.0":
-  version "6.30.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.30.0.tgz#82e12c17298b7af4f8343acd8acf03ea64507cf1"
-  integrity sha512-sU5GbSVdcpGQIsTRGiyBgqdYcWp3HGaTOY44ETc1kVJtQPuQ1W76I+2c3lbQdLMiWUm3DTWgHwmCNt64X6l+HQ==
+"@vvo/tzdb@6.31.0":
+  version "6.31.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.31.0.tgz#63ad5449c48b79247dc9b6d485a5cc1d9294d175"
+  integrity sha512-CbpYwd4eNl8hJFaDJcG/IaYlPiJx8S5G3deWcwYJcmIJEAs/6UyuQUkgug+bz+ComtFATuSoATm4oYXfj4FUFg==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
