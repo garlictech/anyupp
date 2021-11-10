@@ -58,7 +58,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           ),
           centerTitle: true,
           title: Text(
-            dateWithDayFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(_order.createdAt!)),
+            formatOrderDate(context, fromGraphQLAWSDateTimeToDartDateTime(_order.createdAt!)),
             style: Fonts.satoshi(
               fontSize: 16.0,
               color: theme.secondary,
@@ -852,40 +852,54 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
 
     return Container(
       // color: theme.secondary,
+      padding: EdgeInsets.only(
+        top: 8.0,
+      ),
 
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
         children: [
-          Flexible(
-            flex: 12,
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(8.0),
-                  child: _getIcon(data),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                flex: 12,
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: _getIcon(data),
+                    ),
+                    Text(
+                      data.title,
+                      style: Fonts.satoshi(
+                        fontSize: 14,
+                        color: theme.secondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  data.title,
+              ),
+              Flexible(
+                flex: 7,
+                child: Text(
+                  data.value,
                   style: Fonts.satoshi(
-                    fontSize: 12,
-                    color: theme.secondary,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    color: theme.secondary64,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-              ],
-            ),
-          ),
-          Flexible(
-            flex: 7,
-            child: Text(
-              data.value,
-              style: Fonts.satoshi(
-                fontSize: 12,
-                color: theme.secondary,
-                fontWeight: FontWeight.w400,
               ),
-            ),
+            ],
+          ),
+          SizedBox(
+            height: 8.0,
+          ),
+          Divider(
+            color: theme.secondary16,
+            height: 1.0,
           ),
         ],
       ),

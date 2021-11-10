@@ -156,26 +156,29 @@ class CartScreen extends StatelessWidget {
             },
           ),
         ),
-        body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-          builder: (context, state) {
-            if (state is UnitSelected) {
-              return StreamBuilder<Cart?>(
-                stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
-                builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                  // print('CartScreen.snapshot=');
-                  if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                    if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
-                      return _buildCartListAndTotal(context, state.unit, snapshot.data!);
+        body: Container(
+          color: theme.secondary0,
+          child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+            builder: (context, state) {
+              if (state is UnitSelected) {
+                return StreamBuilder<Cart?>(
+                  stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
+                  builder: (context, AsyncSnapshot<Cart?> snapshot) {
+                    // print('CartScreen.snapshot=');
+                    if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                      if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
+                        return _buildCartListAndTotal(context, state.unit, snapshot.data!);
+                      }
+                      return _emptyCart(context);
                     }
-                    return _emptyCart(context);
-                  }
 
-                  return CenterLoadingWidget();
-                },
-              );
-            }
-            return CenterLoadingWidget();
-          },
+                    return CenterLoadingWidget();
+                  },
+                );
+              }
+              return CenterLoadingWidget();
+            },
+          ),
         ),
       ),
     );
@@ -209,7 +212,7 @@ class CartScreen extends StatelessWidget {
           flex: 10,
           child: Container(
             //margin: EdgeInsets.symmetric(horizontal: 15),
-            padding: EdgeInsets.only(left: 15, right: 2), // EdgeInsets.symmetric(horizontal: 15),
+            // padding: EdgeInsets.only(left: 15, right: 2), // EdgeInsets.symmetric(horizontal: 15),
             child: AnimationLimiter(
               child: RawScrollbar(
                 controller: _controller,

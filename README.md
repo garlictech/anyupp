@@ -410,6 +410,9 @@ To do this, run the following command:
 Build APK for all the the system, splitted APKs by platform: "x86", "armeabi-v7a", "arm64-v8a"
 `nx buildApk anyupp-mobile`
 
+Build AppBundle for all the the systems in Android for Google Play Store comaptibility
+`nx buildAppbundle anyupp-mobile`
+
 Build IOS app
 `nx buildIos anyupp-mobile`
 

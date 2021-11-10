@@ -9,6 +9,6 @@ yarn nx deploy crud-backend --env=${ENVNAME}
 yarn nx deploy anyupp-backend --env=${ENVNAME}
 yarn deleteAllTableData
 yarn seed
-yarn nx buildApk-ci anyupp-mobile
+yarn nx buildAppbundle-ci anyupp-mobile
 
 npx cowsay "PROJECT BUILD OK!!!"

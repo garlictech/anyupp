@@ -2,8 +2,8 @@ import 'package:intl/intl.dart';
 
 final dateFormatter = DateFormat('yyyy.MM.dd');
 final timeFormatter = DateFormat('HH:mm:ss');
+final timeShortFormatter = DateFormat('HH:mm');
 final dateTimeFormatter = DateFormat('yyyy.MM.dd HH:mm');
-final dateWithDayFormatter = DateFormat('EEEE HH:mm');
 
 DateTime fromGraphQLAWSDateTimeToDartDateTime(String date) => DateTime.parse(date).toLocal();
 String fromDartDateTimeToGraphQLAWSDateTime(DateTime date) => dateFormatter.format(date);
