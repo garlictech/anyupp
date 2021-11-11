@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
@@ -289,12 +291,13 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
           right: 14.0,
           bottom: 14.0,
         ),
+        margin: EdgeInsets.only(bottom: Platform.isIOS ? 20 : 0),
         width: double.infinity,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: theme.primary,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(40),
               ),
             ),
             child: loading

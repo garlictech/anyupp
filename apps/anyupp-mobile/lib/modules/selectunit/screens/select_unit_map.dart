@@ -31,7 +31,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
   @override
   void initState() {
     super.initState();
-    setToolbarThemeV1(theme);
+    setToolbarThemeV1(ThemeAnyUpp());
   }
 
   @override
@@ -60,18 +60,18 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       width: 1,
-                      color: theme.primary.withOpacity(0.2), // Color(0x33857C18),
+                      color: Color(0xFF30BF60).withOpacity(0.2), //theme.primary.withOpacity(0.2), // Color(0x33857C18),
                     ),
-                    color: theme.secondary0, // Colors.white,
+                    color: Colors.white, // theme.secondary0, // Colors.white,
                   ),
                   child: BackButton(
-                    color: theme.primary,
+                    color: Color(0xFF30BF60), // theme.primary,
                   ),
                 ),
               ),
               elevation: 0.0,
               iconTheme: IconThemeData(
-                color: theme.primary, //change your color here
+                color: Color(0xFF30BF60), // theme.primary, //change your color here
               ),
               backgroundColor: Colors.transparent,
             ),
@@ -108,7 +108,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                       topLeft: Radius.circular(20.0),
                       topRight: Radius.circular(20.0),
                     ),
-                    color: theme.secondary0,
+                    color: Colors.white, // theme.secondary0,
                   ),
                   child: _buildUnitList(scrollController)),
               Positioned(
@@ -125,13 +125,13 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                       child: Icon(
                         Icons.my_location,
                         size: 32.0,
-                        color: theme.primary,
+                        color: Color(0xFF30BF60),
                       ),
-                      foregroundColor: theme.primary, //Color(0xFF857C18),
-                      backgroundColor: theme.secondary0.withOpacity(0.7),
+                      foregroundColor: Color(0xFF30BF60), //Color(0xFF857C18),
+                      backgroundColor: Color(0xFFFFFFFF).withOpacity(0.7),
                       shape: CircleBorder(
                         side: BorderSide(
-                          color: theme.primary.withOpacity(0.2), //Color(0xFFE7E5D0),
+                          color: Color(0xFFFFFFFF).withOpacity(0.2), //Color(0xFFE7E5D0),
                           width: 1.0,
                         ),
                       ),
@@ -226,7 +226,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
           borderRadius: BorderRadius.circular(14.0),
           border: Border.all(
             width: 1.5,
-            color: theme.secondary16, //const Color(0xffe7e5d0),
+            color: const Color(0xFFE7E5D0),
           ),
         ),
         child: Stack(
@@ -254,7 +254,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                         unit.name,
                         style: Fonts.satoshi(
                           fontSize: 18,
-                          color: theme.secondary, //const Color(0xff3c2f2f),
+                          color: const Color(0xFF303030),
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -272,7 +272,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                                 transEx(context, GeoUnitUtils.getOpenedHour(unit)!.getOpenRangeString()!),
                         style: Fonts.satoshi(
                           fontSize: 14,
-                          color: theme.secondary, //const Color(0xff3c2f2f),
+                          color: const Color(0xFF303030),
                         ),
                       ),
                     ],
@@ -296,15 +296,15 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6.0),
                           color: highlight
-                              ? theme.primary
-                              : theme.primary, //const Color(0xFF1E6F4A) : const Color(0xff857c18),
+                              ? Color(0xFF30BF60)
+                              : Color(0xFF30BF60), //const Color(0xFF1E6F4A) : const Color(0xff857c18),
                         ),
                         child: Center(
                           child: Text(
                             (unit.distance / 1000).toStringAsFixed(3) + ' km',
                             style: Fonts.satoshi(
                               fontSize: 14,
-                              color: theme.secondary0, //const Color(0xffffffff),
+                              color: Color(0xFFFFFFFF), //const Color(0xffffffff),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -315,7 +315,7 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                         '',
                         style: Fonts.satoshi(
                           fontSize: 14,
-                          color: theme.secondary, //const Color(0xff3c2f2f),
+                          color: Color(0xFF303030), //const Color(0xff3c2f2f),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -334,6 +334,8 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     BorderedWidget(
                         width: 32.0,
                         height: 32.0,
+                        borderColor: Color(0xFFF0F0F0),
+                        color: Color(0xFFFFFFFF),
                         child: Padding(
                           padding: const EdgeInsets.all(6.0),
                           child: SvgPicture.asset(
@@ -348,9 +350,11 @@ class _SelectUnitByLocationScreenState extends State<SelectUnitByLocationScreen>
                     BorderedWidget(
                         width: 32.0,
                         height: 32.0,
+                        borderColor: Color(0xFFF0F0F0),
+                        color: Color(0xFFFFFFFF),
                         child: SvgPicture.asset(
                           "assets/icons/bag.svg",
-                          color: theme.secondary,
+                          color: Color(0xFF303030),
                           width: 18.0,
                           height: 18.0,
                         )),

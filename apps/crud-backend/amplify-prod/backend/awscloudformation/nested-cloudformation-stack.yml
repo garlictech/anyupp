@@ -113,7 +113,7 @@
                   'authRoleName': 'prod-anyupp-backend-cogni-CognitoDefaultAuthentica-1EA8UY14ZVCOR',
                   'unauthRoleName': 'prod-anyupp-backend-cogni-CognitoDefaultUnauthenti-92QNVXAU9TFC',
                   'S3DeploymentBucket': 'amplify-anyuppbackend-prod-132227-deployment',
-                  'S3DeploymentRootKey': 'amplify-appsync-files/4a99c3391574bb244a7310075e93f2de6f79f665',
+                  'S3DeploymentRootKey': 'amplify-appsync-files/7128293acafff883bb7f8eecce2bd73538cc6d54',
                   'env': 'prod',
                 },
             },

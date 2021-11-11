@@ -6,11 +6,12 @@
     "close": "Bezár",
     "select": "Kiválaszt",
     "ok": "Rendben",
-    "exit": "Nyomd meg még egyszer a vissza gombot a kilépéshez..."
+    "exit": "Nyomd meg még egyszer a vissza gombot a kilépéshez...",
+    "today": "Ma"
   },
   "locale": {
     "EN": "English",
-    "DE": "German",
+    "DE": "Deutsch",
     "HU": "Magyar"
   },
   "login": {
@@ -108,7 +109,7 @@
       "favorites": "Kedvencek",
       "orderStatus": "Rendeléseim",
       "profile": "Profil",
-      "cart": "Kosár"
+      "cart": "KOSÁR"
     },
     "tooltip": "Bármikor válthatsz a rendelési módok között.",
     "bottomTitles": {
@@ -118,7 +119,12 @@
       "profile": "Profil"
     },
     "categoryEmpty": "A választott kategória jelenleg üres.",
-    "noCategories": "A választott üzlet még nem rendelkezik elérhető termékekkel."
+    "noCategories": "A választott üzlet még nem rendelkezik elérhető termékekkel.",
+    "category": {
+      "emptyTakeaway": "Sajnos elviteles módban nem elérhető ez a termékkategória.",
+      "emptyInPlace": "Sajnos helyben fogyasztásra nem elérhető ez a termékkategória.",
+      "emptyHint": "Nézz körül a többi kategóriában."
+    }
   },
   "cart": {
     "totalCost": "Fizetendő:",
@@ -151,7 +157,7 @@
     "soya": "Szója",
     "sulphites": "Szulfitok",
     "treenuts": "Diófélék",
-    "disclaimer": "Ételeink leírása nem minden esetben teljeskörű, ételérzékenység esetén kérdezze a Kajahu Csapatát vagy kérje allergén 1 összetevőket bemutató táblázatunkat. Teljesen allergén mentes környezetet vagy termékeket nem tudunk biztosítani."
+    "disclaimer": "Ételeink leírása nem minden esetben teljeskörű, ételérzékenység esetén kérdezze a {{0}} Csapatát vagy kérje allergén 1 összetevőket bemutató táblázatunkat. Teljesen allergén mentes környezetet vagy termékeket nem tudunk biztosítani."
   },
   "favorites": {
     "noFavorites": "Még nem adtál hozzá kedvenc tételt.",
@@ -238,8 +244,8 @@
           "waiting": "A rendelésedet megkaptuk."
         },
         "placed": {
-          "finished": "Rendelésedet megerősítésre került, minden rendben!",
-          "waiting": "Rendelésedet megerősítésre kerül."
+          "finished": "Rendelésed megerősítésre került, minden rendben!",
+          "waiting": "Rendelésed megerősítésre kerül."
         },
         "processing": {
           "finished": "Rendelésed elkészült, hamarosan felszolgáljuk neked/átveheted.",
@@ -250,8 +256,8 @@
           "waiting": "Rendelésed felszolgálás alatt van/átvehető."
         },
         "rejected": {
-          "finished": "Rendelésedet elutasításra került. Kérjük egyeztess a vendéglátóhely személyzetével.",
-          "waiting": "Rendelésedet elutasításra került. Kérjük egyeztess a vendéglátóhely személyzetével."
+          "finished": "Rendelésed elutasításra került. Kérjük egyeztess a vendéglátóhely személyzetével.",
+          "waiting": "Rendelésed elutasításra került. Kérjük egyeztess a vendéglátóhely személyzetével."
         },
         "served": {
           "finished": "Rendelésed felszolgálásra/átvételre került.",
@@ -277,7 +283,7 @@
       "cash": "Pincérnél készpénzzel",
       "creditCard": "Pincérnél kártyával + SZÉP kártya",
       "inAppPayment": "Kártyás fizetés Stripe-pal (ajánlott)",
-      "noPaymentMethod": "Még nincs mentett kártyát."
+      "noPaymentMethod": "Még nincs mentett kártyád."
     },
     "sendOrder": "RENDELÉS",
     "fillInvoice": "SZÁMLAADATOK MEGADÁSA",
@@ -489,8 +495,9 @@
       }
     }
   },
-  "affiliate": {
-    "advertisement": "Hirdetés"
+  "product": {
+    "notTakeAway": "Csak helyben",
+    "notInPlace": "Csak elvitelre"
   },
   "validators": {
     "required": "Ez a mező szükséges",

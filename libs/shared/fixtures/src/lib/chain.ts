@@ -37,6 +37,8 @@ const chainBase: CrudApi.CreateChainInput = {
       indicator: '#30bf60',
       textDark: '#303030',
       textLight: '#ffffff',
+      primary: '#30bf60', // indicator
+      secondary: '#303030', // textDark
     },
   },
 };

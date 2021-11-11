@@ -7,13 +7,16 @@ export const APP_CORE_FEATURE_KEY = 'appCore';
 
 export interface IAppCoreState {
   loginContextFailure?: boolean;
+  closableDialog: boolean;
 }
 
 export interface LoggedUserPartialState {
   readonly [APP_CORE_FEATURE_KEY]: IAppCoreState;
 }
 
-export const initialAppCoreState: IAppCoreState = {};
+export const initialAppCoreState: IAppCoreState = {
+  closableDialog: false,
+};
 
 const reducer = createReducer(
   initialAppCoreState,
@@ -21,6 +24,10 @@ const reducer = createReducer(
     appCoreActions.setLoginContextFailure,
     (state, { loginContextFailure }) => ({ ...state, loginContextFailure }),
   ),
+  on(appCoreActions.setClosableDialog, (state, { closableDialog }) => ({
+    ...state,
+    closableDialog,
+  })),
 );
 
 export function appCoreReducer(

@@ -3,12 +3,12 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/screens.dart';
+import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CurrentOrderCardWidget extends StatelessWidget {
   final Order order;
@@ -24,8 +24,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
     OrderStatus.placed: Icons.assignment_turned_in,
     OrderStatus.processing: Icons.history_toggle_off_outlined,
     OrderStatus.ready: Icons.schedule_outlined,
-    OrderStatus.served: Icons.check_circle_rounded,
-    OrderStatus.rejected: Icons.delete_forever,
+    OrderStatus.served: Icons.check,
+    OrderStatus.rejected: Icons.close,
   };
 
   @override
@@ -55,100 +55,104 @@ class CurrentOrderCardWidget extends StatelessWidget {
         ),
         child: Container(
           padding: EdgeInsets.all(0.0),
-          child: Row(
-            children: [
-              // Icon
-              Container(
-                margin: EdgeInsets.only(
-                  left: 16.0,
-                  top: 18.0,
-                  bottom: 18.0,
-                ),
-                width: 40.0,
-                height: 40.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: order.archived ? theme.secondary16 : theme.secondary0,
-                  border: order.archived
-                      ? null
-                      : Border.all(
-                          color: theme.primary,
-                          width: 2.0,
-                        ),
-                ),
-                child: Center(
-                  child: Icon(
-                    _ICONMAP[status],
-                    color: order.archived ? theme.secondary : theme.primary,
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Icon
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 16.0,
+                    top: 26.0,
+                    bottom: 18.0,
+                  ),
+                  width: 24.0,
+                  height: 24.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: order.archived
+                        ? status == OrderStatus.rejected
+                            ? theme.secondary16
+                            : theme.secondary40
+                        : theme.secondary0,
+                    border: order.archived
+                        ? null
+                        : Border.all(
+                            color: theme.primary,
+                            width: 2.0,
+                          ),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      _ICONMAP[status],
+                      size: 16.0,
+                      color: order.archived ? theme.secondary0 : theme.primary,
+                    ),
                   ),
                 ),
-              ),
-              // Date and state text
-              Container(
-                margin: EdgeInsets.only(
-                  left: 12.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      order.archived
-                          ? dateFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!))
-                          : dateWithDayFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!)),
-                      style: Fonts.satoshi(
-                        fontSize: 16.0,
-                        color: theme.secondary,
-                        fontWeight: FontWeight.w700,
+                // Date and state text
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 12.0,
+                    top: 16.0,
+                    bottom: 16.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        order.archived
+                            ? dateFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!))
+                            : formatOrderDate(context, fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!)),
+                        style: Fonts.satoshi(
+                          fontSize: 16.0,
+                          color: theme.secondary,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    Text(
-                      trans(context, 'orders.infos.status.${enumToString(status)!}.title'),
-                      style: Fonts.satoshi(
-                        fontSize: 14.0,
-                        color: theme.secondary,
-                        fontWeight: FontWeight.w400,
+                      Text(
+                        trans(context, 'orders.infos.status.${enumToString(status)!}.title'),
+                        style: Fonts.satoshi(
+                          fontSize: 14.0,
+                          color: theme.secondary,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              // Price string
-              Spacer(),
-              Container(
-                margin: EdgeInsets.only(
-                  right: 16.0,
-                ),
-                child: Column(
-                  children: [
-                    order.servingMode == ServingMode.takeAway
-                        ? SvgPicture.asset(
-                            "assets/icons/bag.svg",
-                            color: theme.secondary,
-                            width: 24.0,
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: SvgPicture.asset(
-                              'assets/icons/restaurant_menu_black.svg',
-                              width: 24.0,
+                      if (!order.archived)
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 10.0,
                             ),
-                          ),
-                    SizedBox(
-                      height: 4.0,
-                    ),
-                    Text(
-                      formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency),
-                      style: Fonts.satoshi(
-                        fontSize: 16.0,
-                        color: theme.secondary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
+                            TakeawayStatusWidget(
+                              servingMode: order.servingMode ?? ServingMode.inPlace,
+                              padding: 4.0,
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                // Price string
+                Spacer(),
+                Container(
+                  margin: EdgeInsets.only(
+                    right: 16.0,
+                    top: 28.0,
+                  ),
+                  // color: theme.secondary,
+                  child: Text(
+                    formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency),
+                    style: Fonts.satoshi(
+                      fontSize: 16.0,
+                      color: theme.secondary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

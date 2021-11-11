@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/main/main.dart';
@@ -17,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart' hide Allergen;
 
 class CartScreen extends StatelessWidget {
   final ScrollController _controller = ScrollController();
@@ -56,43 +56,8 @@ class CartScreen extends StatelessWidget {
               if (state is ServingModeSelectedState) {
                 return Container(
                   margin: EdgeInsets.only(top: 12.0, bottom: 12.0, right: 16.0),
-                  child: BorderedWidget(
-                    onPressed: null,
-                    borderColor: theme.secondary12,
-                    color: theme.secondary12,
-                    // width: 40.0,
-                    height: 30,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          state.servingMode == ServingMode.takeAway
-                              ? SvgPicture.asset(
-                                  "assets/icons/bag.svg",
-                                  color: theme.secondary,
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: SvgPicture.asset(
-                                    'assets/icons/restaurant_menu_black.svg',
-                                  ),
-                                ),
-                          SizedBox(
-                            width: 4.0,
-                          ),
-                          Text(
-                            state.servingMode == ServingMode.takeAway
-                                ? trans(context, 'cart.takeAway')
-                                : trans(context, 'cart.inPlace'),
-                            style: Fonts.satoshi(
-                              fontSize: 14.0,
-                              color: theme.secondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  child: TakeawayStatusWidget(
+                    servingMode: state.servingMode,
                   ),
                 );
               }
@@ -116,7 +81,14 @@ class CartScreen extends StatelessWidget {
                           isDev;
 
                       if (!show) {
-                        return Container();
+                        return Text(
+                          trans(context, 'main.menu.cart'),
+                          style: Fonts.satoshi(
+                            color: theme.secondary,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        );
                       }
 
                       return Row(
@@ -184,26 +156,29 @@ class CartScreen extends StatelessWidget {
             },
           ),
         ),
-        body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-          builder: (context, state) {
-            if (state is UnitSelected) {
-              return StreamBuilder<Cart?>(
-                stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
-                builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                  // print('CartScreen.snapshot=');
-                  if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                    if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
-                      return _buildCartListAndTotal(context, state.unit, snapshot.data!);
+        body: Container(
+          color: theme.secondary0,
+          child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+            builder: (context, state) {
+              if (state is UnitSelected) {
+                return StreamBuilder<Cart?>(
+                  stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
+                  builder: (context, AsyncSnapshot<Cart?> snapshot) {
+                    // print('CartScreen.snapshot=');
+                    if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                      if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
+                        return _buildCartListAndTotal(context, state.unit, snapshot.data!);
+                      }
+                      return _emptyCart(context);
                     }
-                    return _emptyCart(context);
-                  }
 
-                  return CenterLoadingWidget();
-                },
-              );
-            }
-            return CenterLoadingWidget();
-          },
+                    return CenterLoadingWidget();
+                  },
+                );
+              }
+              return CenterLoadingWidget();
+            },
+          ),
         ),
       ),
     );
@@ -237,7 +212,7 @@ class CartScreen extends StatelessWidget {
           flex: 10,
           child: Container(
             //margin: EdgeInsets.symmetric(horizontal: 15),
-            padding: EdgeInsets.only(left: 15, right: 2), // EdgeInsets.symmetric(horizontal: 15),
+            // padding: EdgeInsets.only(left: 15, right: 2), // EdgeInsets.symmetric(horizontal: 15),
             child: AnimationLimiter(
               child: RawScrollbar(
                 controller: _controller,
@@ -297,7 +272,7 @@ class CartScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               primary: theme.primary,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(40),
               ),
             ),
             child: Stack(

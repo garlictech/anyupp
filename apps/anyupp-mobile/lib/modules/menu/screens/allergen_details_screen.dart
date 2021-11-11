@@ -4,7 +4,9 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/widgets/allergen_grid_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AllergenDetailsScreen extends StatefulWidget {
   @override
@@ -69,12 +71,19 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
             //getLocalizedText(context, widget.item.name),
           ),
         ),
-        body: buildDetailsScreen(context),
+        body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+          builder: (context, state) {
+            if (state is UnitSelected) {
+              return buildDetailsScreen(context, state.unit);
+            }
+            return CenterLoadingWidget();
+          },
+        ),
       ),
     );
   }
 
-  Widget buildDetailsScreen(BuildContext context) {
+  Widget buildDetailsScreen(BuildContext context, GeoUnit unit) {
     return Padding(
       padding: const EdgeInsets.all(14.0),
       child: CustomScrollView(
@@ -87,7 +96,7 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 8),
                   child: Text(
-                    trans("allergens.disclaimer"),
+                    trans("allergens.disclaimer", [unit.name]),
                     style: Fonts.satoshi(
                       fontSize: 14,
                       color: theme.secondary,

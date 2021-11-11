@@ -65,6 +65,7 @@
         <div class="row">
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
+              [disabled]="true"
               [control]="
                 dialogForm.get('style')!.get('colors')!.get('backgroundLight')!
                   | asFormControl
@@ -75,6 +76,7 @@
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
+              [disabled]="true"
               [caption]="'chains.style.colors.backgroundDark'"
               [control]="
                 dialogForm.get('style')!.get('colors')!.get('backgroundDark')!
@@ -85,6 +87,7 @@
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
+              [disabled]="true"
               [control]="
                 dialogForm.get('style')!.get('colors')!.get('textLight')!
                   | asFormControl
@@ -95,6 +98,7 @@
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
+              [disabled]="true"
               [control]="
                 dialogForm.get('style')!.get('colors')!.get('textDark')!
                   | asFormControl
@@ -108,6 +112,7 @@
         <div class="row">
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
+              [disabled]="true"
               [control]="
                 dialogForm.get('style')!.get('colors')!.get('borderLight')!
                   | asFormControl
@@ -118,6 +123,7 @@
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
+              [disabled]="true"
               [control]="
                 dialogForm.get('style')!.get('colors')!.get('borderDark')!
                   | asFormControl
@@ -128,6 +134,7 @@
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
+              [disabled]="true"
               [control]="
                 dialogForm.get('style')!.get('colors')!.get('highlight')!
                   | asFormControl
@@ -138,6 +145,7 @@
           </div>
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
+              [disabled]="true"
               [control]="
                 dialogForm.get('style')!.get('colors')!.get('indicator')!
                   | asFormControl
@@ -151,11 +159,34 @@
         <div class="row">
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
+              [disabled]="true"
               [control]="
                 dialogForm.get('style')!.get('colors')!.get('disabled')!
                   | asFormControl
               "
               [caption]="'chains.style.colors.disabled'"
+            >
+            </bgap-form-color-picker>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <bgap-form-color-picker
+              [control]="
+                dialogForm.get('style')!.get('colors')!.get('primary')!
+                  | asFormControl
+              "
+              [caption]="'chains.style.colors.primary'"
+            >
+            </bgap-form-color-picker>
+          </div>
+
+          <div class="col-6 col-md-3">
+            <bgap-form-color-picker
+              [control]="
+                dialogForm.get('style')!.get('colors')!.get('secondary')!
+                  | asFormControl
+              "
+              [caption]="'chains.style.colors.secondary'"
             >
             </bgap-form-color-picker>
           </div>

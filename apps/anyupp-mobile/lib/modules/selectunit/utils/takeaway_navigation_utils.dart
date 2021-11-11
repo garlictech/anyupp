@@ -15,7 +15,7 @@ void selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit) async {
     return _selectServingModeAndGo(unit.supportedServingModes[0], unit);
   }
 
-  var selectedMethodPos = await showSelectServingModeSheet(context);
+  var selectedMethodPos = await showSelectServingModeSheet(context, useTheme: false);
   print('_selectUnitAndGoToMenuScreen().selectedMethodPos=$selectedMethodPos');
   if (selectedMethodPos != null) {
     return _selectServingModeAndGo(selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway, unit);

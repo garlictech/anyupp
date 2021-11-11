@@ -6,7 +6,7 @@ import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart' hide Allergen;
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 typedef OnModifiersSelected = void Function(Map<String, String> selectedModifiers);
 

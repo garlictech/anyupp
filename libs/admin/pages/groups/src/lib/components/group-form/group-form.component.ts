@@ -17,16 +17,15 @@ import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
   addressIsEmpty,
-  catchGqlError,
   contactFormGroup,
-  EToasterType,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { IKeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { select } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
@@ -44,7 +43,6 @@ export class GroupFormComponent
 
   constructor(
     protected _injector: Injector,
-    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
   ) {
@@ -126,11 +124,7 @@ export class GroupFormComponent
           })
           .pipe(catchGqlError(this._store))
           .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful',
-            );
+            this._toasterService.showSimpleSuccess('common.updateSuccessful');
 
             this.close();
           });
@@ -139,11 +133,7 @@ export class GroupFormComponent
           .CreateGroup({ input: value })
           .pipe(catchGqlError(this._store))
           .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
+            this._toasterService.showSimpleSuccess('common.insertSuccessful');
             this.close();
           });
       }

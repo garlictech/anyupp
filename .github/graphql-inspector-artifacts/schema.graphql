@@ -59,15 +59,17 @@ type ChainStyle @aws_cognito_user_pools {
 }
 
 type ChainStyleColors @aws_cognito_user_pools {
-  backgroundLight: String!
-  backgroundDark: String!
-  borderLight: String!
-  borderDark: String!
-  disabled: String!
-  highlight: String!
-  indicator: String!
-  textLight: String!
-  textDark: String!
+  backgroundLight: String @deprecated(reason: "Unused.")
+  backgroundDark: String @deprecated(reason: "Unused.")
+  borderLight: String @deprecated(reason: "Unused.")
+  borderDark: String @deprecated(reason: "Unused.")
+  disabled: String @deprecated(reason: "Unused.")
+  highlight: String @deprecated(reason: "Unused.")
+  indicator: String @deprecated(reason: "Use `primary`.")
+  textLight: String @deprecated(reason: "Unused.")
+  textDark: String @deprecated(reason: "Use `secondary`.")
+  primary: String
+  secondary: String
 }
 
 type ChainStyleImages @aws_cognito_user_pools {
@@ -457,7 +459,7 @@ type GeoUnit @aws_cognito_user_pools {
   currency: String!
   isAcceptingOrders: Boolean!
   # isCurrentlyOpen: Boolean!
-  openingHours: String!
+  openingHours: String
     @deprecated(
       reason: "The new and better openingHoursNext7 field should be used instead of this static string"
     )
@@ -748,7 +750,7 @@ type Order
   statusLog: [StatusLog!]!
   archived: Boolean!
   sumPriceShown: PriceShown!
-  takeAway: Boolean! @deprecated(reason: "Use `servingMode`.")
+  takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
@@ -848,7 +850,7 @@ type GeneratedProductConfigSet {
   type: String!
   maxSelection: Int
   items: [GeneratedProductConfigComponent!]!
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductCategory
@@ -879,13 +881,13 @@ type GeneratedProduct
   description: LocalizedItem
   productType: String!
   tax: Int!
-  takeawayTax: Int!
+  takeawayTax: Int
   position: Int!
   image: String
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductVariant {
@@ -1039,7 +1041,7 @@ type Cart
   id: ID!
   userId: ID!
   unitId: ID!
-  takeAway: Boolean! @deprecated(reason: "Use `servingMode`.")
+  takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!

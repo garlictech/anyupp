@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,10 +31,10 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
   void initState() {
     super.initState();
 
-    BlocProvider.of<FavoritesBloc>(context).add(CheckProductIsFavorite(
-      widget.unit.id,
-      widget.product.id,
-    ));
+    getIt.get<FavoritesBloc>().add(CheckProductIsFavorite(
+          widget.unit.id,
+          widget.product.id,
+        ));
   }
 
   @override

@@ -13,15 +13,12 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  catchGqlError,
-  EToasterType,
-  multiLangValidator,
-} from '@bgap/admin/shared/utils';
+import { multiLangValidator } from '@bgap/admin/shared/utils';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import { IKeyValue, IRoleContext } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
 @UntilDestroy()
@@ -47,7 +44,6 @@ export class RoleContextFormComponent
 
   constructor(
     protected _injector: Injector,
-    private _store: Store,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
@@ -214,11 +210,7 @@ export class RoleContextFormComponent
           })
           .pipe(catchGqlError(this._store))
           .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.updateSuccessful',
-            );
+            this._toasterService.showSimpleSuccess('common.updateSuccessful');
 
             this.close();
           });
@@ -232,11 +224,7 @@ export class RoleContextFormComponent
           })
           .pipe(catchGqlError(this._store))
           .subscribe(() => {
-            this._toasterService.show(
-              EToasterType.SUCCESS,
-              '',
-              'common.insertSuccessful',
-            );
+            this._toasterService.showSimpleSuccess('common.insertSuccessful');
             this.close();
           });
       }

@@ -217,7 +217,10 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Icon(Icons.navigate_next),
+                    Icon(
+                      Icons.navigate_next,
+                      color: Color(0xFF9F6C36),
+                    ),
                   ],
                 ),
               ),
@@ -229,11 +232,11 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
   }
 
   Widget _buildQRCodeCard(BuildContext context) {
-    final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
+    // final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
     return InkWell(
-      highlightColor: theme.primary.withAlpha(128),
-      hoverColor: theme.primary.withAlpha(128),
+      highlightColor: Color(0xFF30BF60).withAlpha(128),
+      hoverColor: Color(0xFF30BF60).withAlpha(128),
       onTap: () => Nav.to(QRCodeScannerScreen()),
       // onTap: () => navigateTo(
       //             context,

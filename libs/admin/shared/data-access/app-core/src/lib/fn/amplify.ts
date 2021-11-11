@@ -2,8 +2,8 @@ import * as fp from 'lodash/fp';
 import { EMPTY } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { appCoreActions } from '@bgap/admin/shared/data-access/app-core';
 import { Store } from '@ngrx/store';
+import { gqlFailure } from '../+state/app-core.actions';
 
 export const fpMerge = (
   original: Record<string, unknown>,
@@ -16,7 +16,7 @@ export const clearDbProperties = <T>(value: T) =>
 export const catchGqlError = (store: Store) =>
   catchError((err: Record<string, unknown>) => {
     console.error('ERROR', err);
-    store.dispatch(appCoreActions.gqlFailure({ error: err }));
+    store.dispatch(gqlFailure({ error: err }));
 
     return EMPTY;
   });

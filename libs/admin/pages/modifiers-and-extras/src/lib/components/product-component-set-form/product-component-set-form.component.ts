@@ -16,8 +16,6 @@ import { productComponentsSelectors } from '@bgap/admin/shared/data-access/produ
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
-  catchGqlError,
-  EToasterType,
   getProductComponentObject,
   getProductComponentOptions,
   maxSelectionValidator,
@@ -25,6 +23,7 @@ import {
   notEmptyArray,
   SERVING_MODES,
 } from '@bgap/admin/shared/utils';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   defaultServingMode,
@@ -34,7 +33,7 @@ import {
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { select } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
@@ -59,7 +58,6 @@ export class ProductComponentSetFormComponent
   constructor(
     protected _injector: Injector,
     private _crudSdk: CrudSdkService,
-    private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
@@ -217,11 +215,7 @@ export class ProductComponentSetFormComponent
   }
 
   private _successAndClose(key: string) {
-    this._toasterService.show(
-      EToasterType.SUCCESS,
-      '',
-      `common.${key}Successful`,
-    );
+    this._toasterService.showSimpleSuccess(`common.${key}Successful`);
     this.close();
   }
 }

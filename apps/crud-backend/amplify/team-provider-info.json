@@ -236,6 +236,11 @@
           "unauthRoleArn": "arn:aws:iam::568276182587:role/staging-anyupp-backend-co-CognitoDefaultUnauthenti-J19BOJXM4LV5",
           "unauthRoleName": "staging-anyupp-backend-co-CognitoDefaultUnauthenti-J19BOJXM4LV5"
         }
+      },
+      "api": {
+        "anyuppbackend": {
+          "ElasticSearchInstanceType": "t2.medium.elasticsearch"
+        }
       }
     }
   }

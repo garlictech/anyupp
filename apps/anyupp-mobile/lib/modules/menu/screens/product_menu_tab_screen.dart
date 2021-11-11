@@ -75,6 +75,18 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
         mode = state.servingMode;
       }
       // print('_buildList.servingMode=$mode');
+      bool hasItems = _hasServingModeProducts(list, mode);
+      if (!hasItems) {
+        return EmptyWidget(
+          icon: 'assets/icons/empty-category.png',
+          messageKey: mode == ServingMode.takeAway ? 'main.category.emptyTakeaway' : 'main.category.emptyInPlace',
+          descriptionKey: 'main.category.emptyHint',
+          textFontSize: 18.0,
+          descriptionFontSize: 14.0,
+          horizontalPadding: 32.0,
+          iconSize: 32.0,
+        );
+      }
 
       return AnimationLimiter(
         child: ListView.builder(
@@ -93,6 +105,9 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
             if (mode != null && !list[position].supportedServingModes.contains(mode)) {
               return Container();
             }
+            bool isAvailableInThisServingMode = mode != null && list[position].supportedServingModes.contains(mode);
+            // print(
+            //     'isAvailableInThisServingMode[$mode]=$isAvailableInThisServingMode, items=${list[position].supportedServingModes}');
 
             if (position == list.length - 1 && list.length % _pageSize == 0 && _nextToken != null) {
               getIt<ProductListBloc>().add(LoadProductList(
@@ -109,8 +124,11 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
                 verticalOffset: 50.0,
                 child: FadeInAnimation(
                   child: ProductMenuItem(
+                    displayState:
+                        isAvailableInThisServingMode ? ProducItemDisplayState.NORMAL : ProducItemDisplayState.DISABLED,
                     unit: unit,
                     item: list[position],
+                    servingMode: mode,
                   ),
                 ),
               ),
@@ -119,6 +137,13 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
         ),
       );
     });
+  }
+
+  bool _hasServingModeProducts(List<GeneratedProduct> list, ServingMode? mode) {
+    if (mode == null) {
+      return list.isNotEmpty;
+    }
+    return list.indexWhere((product) => product.supportedServingModes.contains(mode)) != -1;
   }
 
   Widget _buildEmptyList(BuildContext context) {

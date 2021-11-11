@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { appCoreActions } from '@bgap/admin/shared/data-access/app-core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { EToasterType, ToasterService } from '@bgap/admin/shared/utils';
+import { ToasterService } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 import { Store } from '@ngrx/store';
@@ -65,9 +65,7 @@ export class UnitListItemComponent {
             const _err = jsonParsedOrNull(err.graphQLErrors?.[0]?.message);
 
             if (_err?.code === 'ERROR_NO_PRODUCT_IN_UNIT') {
-              this._toasterService.show(
-                EToasterType.DANGER,
-                '',
+              this._toasterService.showSimpleDanger(
                 'errors.ERROR_NO_PRODUCT_IN_UNIT',
               );
             } else {
@@ -81,11 +79,7 @@ export class UnitListItemComponent {
           }),
         )
         .subscribe(() => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
+          this._toasterService.showSimpleSuccess('common.updateSuccessful');
 
           this.workingGenerateStatus = false;
           this._changeDetectorRef.detectChanges();

@@ -20,155 +20,173 @@ class CartListItemWidget extends StatefulWidget {
 
 class _CartListItemWidgetState extends State<CartListItemWidget> {
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Container(
-              padding: EdgeInsets.only(
-                top: 8,
-                left: 0,
-                right: 12,
-              ),
-              //width: 100,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  8.0,
+    return Stack(
+      children: [
+        Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.only(
+                  top: 8,
+                  // bottom: 8.0,
+                  left: 16,
+                  right: 16,
                 ),
-                child: ImageWidget(
-                  url: this.widget.order.image,
-                  placeholder: CircularProgressIndicator(),
-                  errorWidget: Icon(Icons.error),
-                  fit: BoxFit.cover,
+                //width: 100,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                    8.0,
+                  ),
+                  // child: ProductImageWidget(
+                  //   url: this.widget.order.image!,
+                  //   width: 130,
+                  //   height: 130,
+                  //   fit: BoxFit.cover,
+                  // ),
+                  child: ImageWidget(
+                    url: this.widget.order.image,
+                    placeholder: CircularProgressIndicator(),
+                    errorWidget: Icon(Icons.error),
+                    fit: BoxFit.cover,
+                    width: 112,
+                    height: 112,
+                  ),
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Column(
-              // fit: StackFit.passthrough,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        getLocalizedText(context, widget.order.productName), // .toUpperCase(),
-                        textAlign: TextAlign.left,
-                        style: Fonts.satoshi(
-                          color: theme.secondary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        "${getLocalizedText(context, widget.order.variantName)}",
-                        textAlign: TextAlign.left,
-                        style: Fonts.satoshi(
-                          color: theme.secondary,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14,
-                        ),
-                      ),
-                      ..._getExtraNames(context),
-                      // getOrderItemAllergenWidget(),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Row(
+              Expanded(
+                child: Column(
+                  // fit: StackFit.passthrough,
+                  children: <Widget>[
+                    Container(
+                      // width: double.infinity,
+                      margin: EdgeInsets.only(right: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          RichText(
-                            text: TextSpan(
-                              text: '${widget.order.quantity}',
-                              style: Fonts.satoshi(
-                                color: theme.primary,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: ' x ',
-                                  style: Fonts.satoshi(
-                                    color: theme.secondary40,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: formatCurrency(widget.order.getPrice(), widget.unit.currency),
-                                  style: Fonts.satoshi(
-                                    color: theme.primary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ],
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            getLocalizedText(context, widget.order.productName), // .toUpperCase(),
+                            textAlign: TextAlign.left,
+                            style: Fonts.satoshi(
+                              color: theme.secondary,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
                             ),
                           ),
-                          Spacer(),
-                          BlocBuilder<CartBloc, BaseCartState>(
-                            builder: (context, state) {
-                              bool showAddLoading = state is CartLoadingState &&
-                                  state.message == 'add' &&
-                                  state.productId == widget.order.productId;
-                              bool showRemoveLoading = state is CartLoadingState &&
-                                  state.message == 'remove' &&
-                                  state.productId == widget.order.productId;
-                              bool diasbleTap = showAddLoading || showRemoveLoading;
-
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  BorderedWidget(
-                                    width: 40,
-                                    height: 40,
-                                    borderColor: theme.secondary16,
-                                    child: showRemoveLoading
-                                        ? CenterLoadingWidget(
-                                            size: 16,
-                                            strokeWidth: 1.0,
-                                          )
-                                        : Icon(
-                                            Icons.remove,
-                                            color: theme.secondary,
-                                          ),
-                                    onPressed: () => diasbleTap ? null : _removeOrder(),
+                          Text(
+                            "${getLocalizedText(context, widget.order.variantName)}",
+                            textAlign: TextAlign.left,
+                            style: Fonts.satoshi(
+                              color: theme.secondary,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 14,
+                            ),
+                          ),
+                          ..._getExtraNames(context),
+                          // getOrderItemAllergenWidget(),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text: '${widget.order.quantity}',
+                                  style: Fonts.satoshi(
+                                    color: theme.primary,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
                                   ),
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                  BorderedWidget(
-                                    width: 40,
-                                    height: 40,
-                                    borderColor: theme.secondary16,
-                                    child: showAddLoading
-                                        ? CenterLoadingWidget(
-                                            size: 16,
-                                            strokeWidth: 1.0,
-                                          )
-                                        : Icon(
-                                            Icons.add,
-                                            color: theme.secondary,
-                                          ),
-                                    onPressed: () => diasbleTap ? null : _addOrder(),
-                                  ),
-                                ],
-                              );
-                            },
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: ' x ',
+                                      style: Fonts.satoshi(
+                                        color: theme.secondary40,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: formatCurrency(widget.order.getPrice(), widget.unit.currency),
+                                      style: Fonts.satoshi(
+                                        color: theme.primary,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // Spacer(),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          bottom: 0.0,
+          right: 16.0,
+          child: BlocBuilder<CartBloc, BaseCartState>(
+            builder: (context, state) {
+              bool showAddLoading =
+                  state is CartLoadingState && state.message == 'add' && state.productId == widget.order.productId;
+              bool showRemoveLoading =
+                  state is CartLoadingState && state.message == 'remove' && state.productId == widget.order.productId;
+              bool diasbleTap = showAddLoading || showRemoveLoading;
+
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  BorderedWidget(
+                    width: 40,
+                    height: 40,
+                    borderColor: theme.secondary16,
+                    child: showRemoveLoading
+                        ? CenterLoadingWidget(
+                            size: 16,
+                            strokeWidth: 1.0,
+                          )
+                        : Icon(
+                            Icons.remove,
+                            color: theme.secondary,
+                          ),
+                    onPressed: () => diasbleTap ? null : _removeOrder(),
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  BorderedWidget(
+                    width: 40,
+                    height: 40,
+                    borderColor: theme.secondary16,
+                    child: showAddLoading
+                        ? CenterLoadingWidget(
+                            size: 16,
+                            strokeWidth: 1.0,
+                          )
+                        : Icon(
+                            Icons.add,
+                            color: theme.secondary,
+                          ),
+                    onPressed: () => diasbleTap ? null : _addOrder(),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -178,7 +196,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
       widget.order.selectedConfigMap!.forEach((key, value) {
         for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
           children.add(Text(
-            '+${getLocalizedText(context, generatedProductConfigComponent.name)}',
+            '+ ${getLocalizedText(context, generatedProductConfigComponent.name)}',
             textAlign: TextAlign.left,
             style: Fonts.satoshi(
               color: theme.secondary,

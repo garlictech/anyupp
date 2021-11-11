@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
@@ -17,62 +18,83 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProductDetailsScreen extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  ProductDetailsScreen({Key? key, required this.item, required this.unit}) : super(key: key);
+  final ProducItemDisplayState displayState;
+  final ServingMode? servingMode;
+
+  ProductDetailsScreen({
+    Key? key,
+    required this.item,
+    required this.unit,
+    this.displayState = ProducItemDisplayState.NORMAL,
+    this.servingMode,
+  }) : super(key: key);
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return NetworkConnectionWrapperWidget(
-      child: SafeArea(
-        child: Scaffold(
-          key: _key,
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-              leading: Padding(
-                padding: const EdgeInsets.only(
-                  top: 8.0,
-                  bottom: 8.0,
-                  left: 15.0,
+      child: Scaffold(
+        key: _key,
+        backgroundColor: theme.secondary0,
+        appBar: null,
+        body: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, unitState) {
+          if (unitState is UnitSelected) {
+            return Stack(
+              children: [
+                ProductDetailsWidget(
+                  item: item,
+                  unit: unit,
+                  displayState: displayState,
+                  servingMode: servingMode,
                 ),
-                child: BackButtonWidget(
-                  color: theme.secondary,
-                ),
-              ),
-              elevation: 0.0,
-              iconTheme: IconThemeData(
-                color: theme.secondary, //change your color here
-              ),
-              backgroundColor: theme.secondary0.withOpacity(0.0),
-              actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 8.0,
-                    bottom: 8.0,
-                    right: 15.0,
-                  ),
-                  child: BorderedWidget(
-                    width: 40,
-                    child: FavoriteIconWidget(
-                      theme: theme,
-                      product: item,
-                      unit: unit,
-                      iconSize: 24,
+                Positioned(
+                  // alignment: Alignment.topCenter,
+                  left: 0,
+                  top: kTextTabBarHeight,
+                  right: 0,
+                  child: Container(
+                    height: 55.0,
+                    // color: Colors.red,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 8.0,
+                            bottom: 8.0,
+                            left: 15.0,
+                          ),
+                          child: BackButtonWidget(
+                            color: theme.secondary,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 8.0,
+                            bottom: 8.0,
+                            right: 15.0,
+                          ),
+                          child: BorderedWidget(
+                            width: 40,
+                            child: FavoriteIconWidget(
+                              theme: theme,
+                              product: item,
+                              unit: unit,
+                              iconSize: 24,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ]),
-          body: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, state) {
-            if (state is UnitSelected) {
-              return ProductDetailsWidget(
-                item: item,
-                unit: unit,
-              );
-            }
+                )
+              ],
+            );
+          }
 
-            return CenterLoadingWidget();
-          }),
-        ),
+          return CenterLoadingWidget();
+        }),
       ),
     );
   }
@@ -81,14 +103,23 @@ class ProductDetailsScreen extends StatelessWidget {
 class ProductDetailsWidget extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  const ProductDetailsWidget({Key? key, required this.unit, required this.item}) : super(key: key);
+  final ProducItemDisplayState displayState;
+  final ServingMode? servingMode;
+
+  const ProductDetailsWidget({
+    Key? key,
+    required this.unit,
+    required this.item,
+    required this.displayState,
+    this.servingMode,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-      color: theme.secondary12,
-      // margin: EdgeInsets.only(top: 16.0),
+      padding: EdgeInsets.only(top: kToolbarHeight),
+      color: theme.secondary0,
+      margin: EdgeInsets.only(top: 16.0),
       child: Column(
         children: [
           Expanded(
@@ -101,8 +132,8 @@ class ProductDetailsWidget extends StatelessWidget {
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Container(
-                  color: theme.secondary0,
-                  padding: EdgeInsets.only(top: 16.0),
+                  // color: theme.secondary0,
+                  // padding: EdgeInsets.only(top: 16.0),
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -122,44 +153,8 @@ class ProductDetailsWidget extends StatelessWidget {
                                   animationType: NavAnim.SLIDEIN_DOWN,
                                   duration: Duration(milliseconds: 200),
                                 ),
-                                child: ImageWidget(
-                                  url: item.image,
-                                  width: MediaQuery.of(context).size.width / 2.5,
-                                  placeholder: Container(
-                                    padding: EdgeInsets.all(50.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(14.0),
-                                      ),
-                                      border: Border.all(
-                                        width: 1.5,
-                                        color: theme.secondary16.withOpacity(0.4),
-                                      ),
-                                    ),
-                                    // width: widthContainer,
-                                    // height: heightContainer,
-                                    child: CircularProgressIndicator(
-                                      backgroundColor: theme.secondary12,
-                                    ),
-                                  ),
-                                  errorWidget: Container(
-                                    padding: EdgeInsets.all(50.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(14.0),
-                                      ),
-                                      border: Border.all(
-                                        width: 1.5,
-                                        color: theme.secondary16.withOpacity(0.4),
-                                      ),
-                                    ),
-                                    child: Icon(
-                                      Icons.error,
-                                      color: Colors.red,
-                                      size: 32.0,
-                                    ),
-                                  ),
-                                  fit: BoxFit.contain,
+                                child: _ProductDetailsImageWidget(
+                                  url: item.image!,
                                 ),
                               ),
                             ),
@@ -209,32 +204,83 @@ class ProductDetailsWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      StreamBuilder<Cart?>(
-                        stream: getIt<CartRepository>().getCurrentCartStream(unit.id),
-                        builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                          if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                            //return _buildVariantsList(snapshot.data, item.variants);
-                            return ProductDetailVariantListWidget(
-                              cart: snapshot.data,
-                              product: item,
-                              unit: unit,
-                            );
-                          }
-                          return CenterLoadingWidget();
-                        },
-                      ),
+                      if (displayState == ProducItemDisplayState.NORMAL)
+                        StreamBuilder<Cart?>(
+                          stream: getIt<CartRepository>().getCurrentCartStream(unit.id),
+                          builder: (context, AsyncSnapshot<Cart?> snapshot) {
+                            if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                              //return _buildVariantsList(snapshot.data, item.variants);
+                              return ProductDetailVariantListWidget(
+                                cart: snapshot.data,
+                                product: item,
+                                unit: unit,
+                              );
+                            }
+                            return CenterLoadingWidget();
+                          },
+                        ),
+                      if (displayState == ProducItemDisplayState.DISABLED)
+                        Container(
+                          color: theme.secondary12,
+                          child: _buildAllergensListWidget(
+                            context,
+                            item.allergens!,
+                          ),
+                        ),
+                      if (displayState == ProducItemDisplayState.DISABLED ||
+                          item.configSets == null ||
+                          (item.configSets != null && item.configSets!.isEmpty))
+                        Container(
+                          height: MediaQuery.of(context).size.height / 5,
+                          color: theme.secondary12,
+                        )
                     ],
                   ),
                 ),
               ),
             ),
           ),
-          (item.configSets == null || (item.configSets != null && item.configSets!.isEmpty))
-              ? Container()
-              : AddToCartPanelWidget(
-                  onAddToCartPressed: (state, quantity) => _addOrderItemToCart(context, state, quantity),
-                )
+          // (item.configSets == null || (item.configSets != null && item.configSets!.isEmpty))
+          //     ? Container()
+          Container(
+            color: theme.secondary12,
+            child: AddToCartPanelWidget(
+              displayState: displayState,
+              servingMode: servingMode,
+              onAddToCartPressed: (state, quantity) => _addOrderItemToCart(context, state, quantity),
+            ),
+          )
         ],
+      ),
+    );
+  }
+
+  Widget _buildAllergensListWidget(BuildContext context, List<String> allergeens) {
+    if (allergeens.isEmpty) {
+      return Container();
+    }
+
+    return Container(
+      margin: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(
+            16.0,
+          ),
+        ),
+        color: theme.secondary0,
+      ),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.only(
+          top: 12.0,
+          // left: 16.0,
+          bottom: 12.0,
+          // right: 16.0,
+        ),
+        child: AllergensWidget(
+          allergens: allergeens.toList(),
+        ),
       ),
     );
   }
@@ -261,5 +307,54 @@ class ProductDetailsWidget extends StatelessWidget {
       return '${getLocalizedText(context, item.name)} - ${getLocalizedText(context, variant.variantName)} - ${sizeText} ${variant.pack?.unit ?? ""}';
     }
     return getLocalizedText(context, item.name);
+  }
+}
+
+class _ProductDetailsImageWidget extends StatelessWidget {
+  final String url;
+
+  const _ProductDetailsImageWidget({Key? key, required this.url}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return ImageWidget(
+      url: url,
+      // width: MediaQuery.of(context).size.width / 2.5,
+      height: MediaQuery.of(context).size.width / 2,
+      placeholder: Container(
+        padding: EdgeInsets.all(50.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(14.0),
+          ),
+          border: Border.all(
+            width: 1.5,
+            color: theme.secondary16.withOpacity(0.4),
+          ),
+        ),
+        // width: widthContainer,
+        // height: heightContainer,
+        child: CircularProgressIndicator(
+          backgroundColor: theme.secondary12,
+        ),
+      ),
+      errorWidget: Container(
+        padding: EdgeInsets.all(50.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(14.0),
+          ),
+          border: Border.all(
+            width: 1.5,
+            color: theme.secondary16.withOpacity(0.4),
+          ),
+        ),
+        child: Icon(
+          Icons.error,
+          color: Colors.red,
+          size: 32.0,
+        ),
+      ),
+      fit: BoxFit.contain,
+    );
   }
 }

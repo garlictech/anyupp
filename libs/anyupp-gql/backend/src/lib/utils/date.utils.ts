@@ -30,6 +30,7 @@ export const getSeasonalAvailabilityFromTime = (
   DateTime.fromISO(`${availability.dayFrom}T${availability.timeFrom}`, {
     zone: inTimeZone,
   });
+
 export const getSeasonalAvailabilityToTime = (
   availability: CrudApi.Availability,
   inTimeZone: string,

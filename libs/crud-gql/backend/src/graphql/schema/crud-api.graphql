@@ -231,7 +231,7 @@ type Order
   statusLog: [StatusLog!]!
   archived: Boolean!
   sumPriceShown: PriceShown!
-  takeAway: Boolean! @deprecated(reason: "Use `servingMode`.")
+  takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
@@ -331,7 +331,7 @@ type GeneratedProductConfigSet {
   type: String!
   maxSelection: Int
   items: [GeneratedProductConfigComponent!]!
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductCategory
@@ -362,13 +362,13 @@ type GeneratedProduct
   description: LocalizedItem
   productType: String!
   tax: Int!
-  takeawayTax: Int!
+  takeawayTax: Int
   position: Int!
   image: String
   variants: [GeneratedProductVariant!]!
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
 }
 
 type GeneratedProductVariant {
@@ -522,7 +522,7 @@ type Cart
   id: ID!
   userId: ID!
   unitId: ID!
-  takeAway: Boolean! @deprecated(reason: "Use `servingMode`.")
+  takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!

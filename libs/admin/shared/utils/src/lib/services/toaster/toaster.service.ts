@@ -24,4 +24,12 @@ export class ToasterService {
       config,
     );
   }
+
+  public showSimpleSuccess(title: string) {
+    this.show(EToasterType.SUCCESS, '', title);
+  }
+
+  public showSimpleDanger(title: string) {
+    this.show(EToasterType.DANGER, '', title);
+  }
 }

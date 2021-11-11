@@ -9,3 +9,8 @@ export const getLoginContextFailure = createSelector(
   getAppCoreState,
   (state: IAppCoreState) => state.loginContextFailure,
 );
+
+export const getClosableDialog = createSelector(
+  getAppCoreState,
+  (state: IAppCoreState) => state.closableDialog,
+);

@@ -29,7 +29,8 @@ import {
 } from '@bgap/admin/shared/data-access/sdk';
 import { unitsActions } from '@bgap/admin/shared/data-access/units';
 import { usersActions } from '@bgap/admin/shared/data-access/users';
-import { catchGqlError, DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';

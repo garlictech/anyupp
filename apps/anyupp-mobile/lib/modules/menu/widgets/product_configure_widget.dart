@@ -31,6 +31,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
 
   @override
   void initState() {
+    print('******* ProductConfiguratorWidget.initState().widget=${widget.product}');
     _productVariant = widget.product.variants.first;
     widget.product.configSets?.forEach((element) {
       _selectedModifiers[element.productSetId] = element.items.first.productComponentId;
@@ -151,6 +152,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   Widget _buildAllergensListWidget(BuildContext context) {
+    if (_allergeens.isEmpty) {
+      return Container();
+    }
     return Container(
       margin: EdgeInsets.only(top: 16.0),
       decoration: BoxDecoration(

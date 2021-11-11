@@ -160,7 +160,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                 style: ElevatedButton.styleFrom(
                   primary: theme.primary,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(40),
                   ),
                 ),
                 child: Text(

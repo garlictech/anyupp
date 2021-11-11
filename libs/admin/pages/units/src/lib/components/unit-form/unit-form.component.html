@@ -16,6 +16,15 @@
   </nb-card-header>
   <nb-card-body>
     <form [formGroup]="dialogForm!" (ngSubmit)="submit()" autocomplete="off">
+      <div class="row" *ngIf="unit">
+        <div class="col-md-12">
+          <bgap-form-static-text
+            caption="common.id"
+            [value]="unit.id"
+            inputId="unitId"
+          ></bgap-form-static-text>
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-6">
           <bgap-form-text-input

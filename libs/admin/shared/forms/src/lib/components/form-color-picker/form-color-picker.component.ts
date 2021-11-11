@@ -16,6 +16,7 @@ import { FormControl } from '@angular/forms';
 export class FormColorPickerComponent implements OnInit {
   @Input() control!: FormControl;
   @Input() caption = ''; // Language key!!!
+  @Input() disabled = false;
   public color = '';
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}

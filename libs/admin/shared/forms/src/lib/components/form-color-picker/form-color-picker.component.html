@@ -4,6 +4,7 @@
     type="button"
     class="color-picker-input"
     [value]="color"
+    [disabled]="disabled"
     [(colorPicker)]="color"
     [style.background]="color"
     (colorPickerChange)="onChange($event)"

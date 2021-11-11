@@ -129,6 +129,8 @@ class UnitCardWidget extends StatelessWidget {
                     BorderedWidget(
                         width: 32.0,
                         height: 32.0,
+                        borderColor: Color(0xFFF0F0F0),
+                        color: Color(0xFFFFFFFF),
                         child: Padding(
                           padding: const EdgeInsets.all(6.0),
                           child: SvgPicture.asset(
@@ -143,9 +145,11 @@ class UnitCardWidget extends StatelessWidget {
                     BorderedWidget(
                         width: 32.0,
                         height: 32.0,
+                        borderColor: Color(0xFFF0F0F0),
+                        color: Color(0xFFFFFFFF),
                         child: SvgPicture.asset(
                           "assets/icons/bag.svg",
-                          color: theme.secondary,
+                          // color: theme.secondary,
                           width: 18.0,
                           height: 18.0,
                         )),

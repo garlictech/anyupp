@@ -1,3 +1,6 @@
+import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
+import 'package:fa_prev/shared/locale/extensions/locale_extension.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // ignore: non_constant_identifier_names
@@ -36,4 +39,13 @@ NumberFormat getNumberFormatter(String currency) {
     default:
       return NumberFormat.currency(locale: 'en_US', symbol: currency, decimalDigits: 2);
   }
+}
+
+String formatOrderDate(BuildContext context, DateTime date) {
+  final now = DateTime.now();
+  bool isToday = date.difference(now).inDays == 0;
+  if (isToday) {
+    return "${transEx(context, 'common.today')}, ${timeShortFormatter.format(date)}";
+  }
+  return dateTimeFormatter.format(date);
 }

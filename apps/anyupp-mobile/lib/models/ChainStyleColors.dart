@@ -3,27 +3,31 @@ import 'package:flutter/foundation.dart';
 @immutable
 class ChainStyleColors {
   final String? id;
-  final String backgroundLight;
-  final String backgroundDark;
-  final String borderLight;
-  final String borderDark;
-  final String disabled;
-  final String highlight;
-  final String indicator;
-  final String textLight;
-  final String textDark;
+  final String? backgroundLight;
+  final String? backgroundDark;
+  final String? borderLight;
+  final String? borderDark;
+  final String? disabled;
+  final String? highlight;
+  final String? indicator;
+  final String? textLight;
+  final String? textDark;
+  final String? primary;
+  final String? secondary;
 
   ChainStyleColors({
     this.id,
-    required this.backgroundLight,
-    required this.backgroundDark,
-    required this.borderLight,
-    required this.borderDark,
-    required this.disabled,
-    required this.highlight,
-    required this.indicator,
-    required this.textLight,
-    required this.textDark,
+    this.backgroundLight,
+    this.backgroundDark,
+    this.borderLight,
+    this.borderDark,
+    this.disabled,
+    this.highlight,
+    this.indicator,
+    this.textLight,
+    this.textDark,
+    this.primary,
+    this.secondary,
   });
 
   ChainStyleColors copyWith({
@@ -37,6 +41,8 @@ class ChainStyleColors {
     String? indicator,
     String? textLight,
     String? textDark,
+    String? primary,
+    String? secondary,
   }) {
     return ChainStyleColors(
       id: id ?? this.id,
@@ -49,6 +55,8 @@ class ChainStyleColors {
       indicator: indicator ?? this.indicator,
       textLight: textLight ?? this.textLight,
       textDark: textDark ?? this.textDark,
+      primary: primary ?? this.primary,
+      secondary: secondary ?? this.secondary,
     );
   }
 
@@ -64,6 +72,8 @@ class ChainStyleColors {
       'indicator': indicator,
       'textLight': textLight,
       'textDark': textDark,
+      'primary': primary,
+      'secondary': secondary,
     };
   }
 
@@ -79,12 +89,14 @@ class ChainStyleColors {
       indicator: map['indicator'],
       textLight: map['textLight'],
       textDark: map['textDark'],
+      primary: map['primary'],
+      secondary: map['secondary'],
     );
   }
 
   @override
   String toString() {
-    return 'ChainStyleColors(id: $id, backgroundLight: $backgroundLight, backgroundDark: $backgroundDark, borderLight: $borderLight, borderDark: $borderDark, disabled: $disabled, highlight: $highlight, indicator: $indicator, textLight: $textLight, textDark: $textDark)';
+    return 'ChainStyleColors(id: $id, primary: $primary, secondary: $secondary, backgroundLight: $backgroundLight, backgroundDark: $backgroundDark, borderLight: $borderLight, borderDark: $borderDark, disabled: $disabled, highlight: $highlight, indicator: $indicator, textLight: $textLight, textDark: $textDark)';
   }
 
   @override
@@ -101,7 +113,9 @@ class ChainStyleColors {
         other.highlight == highlight &&
         other.indicator == indicator &&
         other.textLight == textLight &&
-        other.textDark == textDark;
+        other.textDark == textDark &&
+        other.primary == primary &&
+        other.secondary == secondary;
   }
 
   @override
@@ -115,6 +129,8 @@ class ChainStyleColors {
         highlight.hashCode ^
         indicator.hashCode ^
         textLight.hashCode ^
-        textDark.hashCode;
+        textDark.hashCode ^
+        primary.hashCode ^
+        secondary.hashCode;
   }
 }

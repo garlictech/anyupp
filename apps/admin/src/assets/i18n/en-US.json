@@ -5,6 +5,7 @@
     "nameEN": "Name (EN)",
     "nameDE": "Name (DE)",
     "nameHU": "Name (HU)",
+    "id": "ID",
     "edit": "Edit",
     "color": "Color",
     "description": "Description",
@@ -172,15 +173,17 @@
     "style": {
       "style": "Style",
       "colors": {
-        "textDark": "Text (dark)",
+        "textDark": "Text (dark) - Sec",
         "textLight": "Text (light)",
         "backgroundDark": "Background (dark)",
         "backgroundLight": "Background (light)",
         "borderDark": "Border (dark)",
         "borderLight": "Border (light)",
         "highlight": "Highlight",
-        "indicator": "Indicator",
-        "disabled": "Disabled"
+        "indicator": "Indicator - Pri",
+        "disabled": "Disabled",
+        "primary": "Primary",
+        "secondary": "Secondary"
       },
       "images": {
         "logo": "Logo",

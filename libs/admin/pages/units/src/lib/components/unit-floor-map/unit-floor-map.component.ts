@@ -7,9 +7,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import * as floorMapLib from '@bgap/admin/shared/floor-map';
-import { EToasterType } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { Store } from '@ngrx/store';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,13 +22,9 @@ export class UnitFloorMapComponent
   public unit!: CrudApi.Unit;
   public rawForm!: FormGroup;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _store: Store;
-
   constructor(protected _injector: Injector) {
     super(_injector);
 
-    this._store = this._injector.get(Store);
     this._store.dispatch(floorMapLib.floorMapActions.resetFloorMap());
   }
 
@@ -52,11 +46,7 @@ export class UnitFloorMapComponent
       .toPromise()
       .then(
         (): void => {
-          this._toasterService.show(
-            EToasterType.SUCCESS,
-            '',
-            'common.updateSuccessful',
-          );
+          this._toasterService.showSimpleSuccess('common.updateSuccessful');
           this.close();
         },
         err => {
@@ -69,7 +59,7 @@ export class UnitFloorMapComponent
   public submitRaw(): void {
     this._dataService.updateUnit(this.unit.id, { floorMap: JSON.parse(this.rawForm.value.floorMap) }).then(
       (): void => {
-        this._toasterService.show(EToasterType.SUCCESS, '', 'common.updateSuccessful');
+        this._toasterService.showSimpleSuccess('common.updateSuccessful');
         this.close();
       },
       (err) => {

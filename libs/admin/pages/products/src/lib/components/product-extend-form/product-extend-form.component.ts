@@ -13,12 +13,12 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { EToasterType, SERVING_MODES } from '@bgap/admin/shared/utils';
+import { SERVING_MODES } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, IKeyValue, Product } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { select } from '@ngrx/store';
 
 import { ProductFormService } from '../../services/product-form/product-form.service';
 
@@ -47,7 +47,6 @@ export class ProductExtendFormComponent
 
   constructor(
     protected _injector: Injector,
-    private _store: Store,
     private _productFormService: ProductFormService,
   ) {
     super(_injector);
@@ -177,11 +176,7 @@ export class ProductExtendFormComponent
   }
 
   private _successAndClose(key: string) {
-    this._toasterService.show(
-      EToasterType.SUCCESS,
-      '',
-      `common.${key}Successful`,
-    );
+    this._toasterService.showSimpleSuccess(`common.${key}Successful`);
     this.close();
   }
 }

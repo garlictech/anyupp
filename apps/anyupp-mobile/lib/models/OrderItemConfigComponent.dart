@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 @immutable
 class OrderItemConfigComponent {
@@ -33,7 +34,7 @@ class OrderItemConfigComponent {
       'productComponentId': productComponentId,
       'price': price,
       'name': name.toJson(),
-      'allergens': allergens?.map((x) => x.toString()).toList(),
+      'allergens': allergens?.map((x) => enumToString(x)).toList(),
     };
   }
 

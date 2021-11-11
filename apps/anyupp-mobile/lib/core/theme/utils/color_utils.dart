@@ -47,47 +47,28 @@ ThemeData getThemeData(BuildContext context, ThemeChainData theme) {
   return ThemeData(
     fontFamily: 'Satoshi',
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    // indicatorColor: MaterialColor(theme.primary.value, _color),
     primarySwatch: MaterialColor(theme.primary.value, _color),
     primaryColor: theme.primary,
-    // hoverColor: Color(0xFFFFDB87),
-    // highlightColor: Colors.white,
-    // primaryColorLight: Color(0xFFFFDB87),
-    // backgroundColor: Color(0xFFFFDB87),
-    // bottomAppBarColor: Color(0xFF176E49),
-    // buttonTheme: ButtonThemeData(
-    //   buttonColor: theme.primary,
-    //   disabledColor: Colors.transparent,
-    //   splashColor: theme.secondary,
-    // ),
-    brightness: Brightness.light, //theme.secondary0.isLight ? Brightness.dark : Brightness.light,
-    // scaffoldBackgroundColor: theme.secondary12,
-    // appBarTheme: Theme.of(context).appBarTheme.copyWith(
-    //       // color: theme.secondary,
-    //       systemOverlayStyle: SystemUiOverlayStyle(
-    //         statusBarBrightness: Brightness.dark,
-    //         statusBarIconBrightness: Brightness.dark,
-    //         statusBarColor: theme.secondary,
-    //       ),
-    //     ),
-    // appBarTheme: AppBarTheme(
-    //   color: theme.secondary0,
-    //   systemOverlayStyle: theme.secondary0.isLight ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
-    // ),
+    brightness: Brightness.light,
   );
 }
 
 ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
-  print('***** unitThemeToThemeChainData().unit=${unit.id}');
+  print('***** unitThemeToThemeChainData().unit=${unit.style.colors}');
   try {
-    var primary = TinyColor.fromString(unit.style.colors.indicator).color;
-    var secondary = TinyColor.fromString(unit.style.colors.textDark).color;
+    var primary = TinyColor.fromString(
+      unit.style.colors.primary ?? unit.style.colors.indicator ?? '#30BF60',
+    ).color;
+    var secondary = TinyColor.fromString(
+      unit.style.colors.secondary ?? unit.style.colors.textDark ?? '#303030',
+    ).color;
 
     var secondary64 = _col(secondary, 64);
     var secondary40 = _col(secondary, 40);
     var secondary16 = _col(secondary, 16);
     var secondary12 = _col(secondary, 7);
     var secondary0 = _col(secondary, 0);
+
     // print('**** COLORS:');
     print('\tfinal primary = $primary;');
     print('\tfinal secondary=$secondary;');
@@ -146,7 +127,7 @@ Color _col(Color color, int percent) {
 }
 
 void setToolbarThemeV1(ThemeChainData theme) {
-  print('setToolbarThemeV1()');
+  // print('setToolbarThemeV1()');
   setToolbarColor(
     statusBarColor: theme.secondary0,
     systemNavigationBarColor: theme.secondary0,
@@ -155,7 +136,7 @@ void setToolbarThemeV1(ThemeChainData theme) {
 }
 
 void setToolbarThemeV2(ThemeChainData theme) {
-  print('setToolbarThemeV2()');
+  // print('setToolbarThemeV2()');
   setToolbarColor(
     statusBarColor: theme.secondary12,
     systemNavigationBarColor: theme.secondary12,

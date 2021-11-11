@@ -56,6 +56,9 @@ export const createTableRect = (
 
   return new fabric.Group([bg, caption], {
     type: CrudApi.UnitMapObjectType.table_r,
+    data: {
+      tID: rawObject.tID,
+    },
     ..._ital(rawObject),
     ..._commonGroupOptions(),
   });
@@ -81,6 +84,9 @@ export const createTableCircle = (
     top: rawObject.y,
     id: rawObject.id,
     type: CrudApi.UnitMapObjectType.table_c,
+    data: {
+      tID: rawObject.tID,
+    },
     ..._commonGroupOptions(),
   });
   group.setControlsVisibility(FLOOR_MAP_CIRCLE_CONTROLS);
@@ -103,6 +109,10 @@ export const createSeatRect = (
 
   return new fabric.Group([bg, caption], {
     type: CrudApi.UnitMapObjectType.seat_r,
+    data: {
+      tID: rawObject.tID,
+      sID: rawObject.sID,
+    },
     ..._ital(rawObject),
     ..._commonGroupOptions(),
   });
@@ -128,6 +138,10 @@ export const createSeatCircle = (
     top: rawObject.y,
     id: rawObject.id,
     type: CrudApi.UnitMapObjectType.seat_c,
+    data: {
+      tID: rawObject.tID,
+      sID: rawObject.sID,
+    },
     ..._commonGroupOptions(),
   });
   group.setControlsVisibility(FLOOR_MAP_CIRCLE_CONTROLS);

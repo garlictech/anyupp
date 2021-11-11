@@ -5,6 +5,7 @@
     "nameEN": "Név (EN)",
     "nameDE": "Név (DE)",
     "nameHU": "Név (HU)",
+    "id": "ID",
     "edit": "Szerkesztés",
     "color": "Szín",
     "description": "Leírás",
@@ -172,15 +173,17 @@
     "style": {
       "style": "Stílus",
       "colors": {
-        "textDark": "Szöveg (sötét)",
+        "textDark": "Szöveg (sötét) - M.",
         "textLight": "Szöveg (világos)",
         "backgroundDark": "Háttér (sötét)",
         "backgroundLight": "Háttér (világos)",
         "borderDark": "Keret (sötét)",
         "borderLight": "Keret (világos)",
         "highlight": "Kiemelés",
-        "indicator": "Indikátor",
-        "disabled": "Inaktív"
+        "indicator": "Indikátor - E.",
+        "disabled": "Inaktív",
+        "primary": "Elsődleges",
+        "secondary": "Másodlagos"
       },
       "images": {
         "logo": "Logo",
