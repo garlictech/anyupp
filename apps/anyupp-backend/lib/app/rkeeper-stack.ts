@@ -6,6 +6,9 @@ import { commonLambdaProps } from './lambda-common';
 import * as ssm from '@aws-cdk/aws-ssm';
 import { getFQParamName } from './utils';
 import path from 'path';
+import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
+import * as ecs from '@aws-cdk/aws-ecs';
+import * as ec2 from '@aws-cdk/aws-ec2';
 
 export class RKeeperStack extends sst.Stack {
   constructor(scope: sst.App, id: string) {
@@ -39,7 +42,7 @@ export class RKeeperStack extends sst.Stack {
     new cdk.CfnOutput(this, 'RKeeperWebhookEndpoint', {
       value: api.url,
     });
-    /*
+
     const asset = new DockerImageAsset(this, 'AnyuppRKeeperBuildImage', {
       directory: path.join('lib/app/docker/rkeeper-products'),
     });
@@ -69,7 +72,5 @@ export class RKeeperStack extends sst.Stack {
       cluster,
       taskDefinition,
     });
-
-    */
   }
 }
