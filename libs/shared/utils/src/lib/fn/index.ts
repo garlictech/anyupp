@@ -1,3 +1,4 @@
+export * from './date';
 export * from './errors';
 export * from './graphql.utils';
 export * from './number.utils';

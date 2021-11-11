@@ -1,4 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
+import { timezoneBudapest, timezoneLondon } from '@bgap/shared/utils';
 import { unitFixture } from '@bgap/shared/fixtures';
 import { DateTime } from 'luxon';
 import {
@@ -11,9 +12,6 @@ import {
 
 // USE THIS TIMESTAMP converter to check the timestamps if it is needed https://www.epochconverter.com/#tools
 // it can handle timezones too
-
-const timezoneLondon = 'Europe/London';
-const timezoneBudapest = 'Europe/Budapest';
 
 const unitBase: CrudApi.Unit = {
   ...unitFixture.unitBase,

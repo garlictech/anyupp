@@ -2,9 +2,9 @@ import { DateTime } from 'luxon';
 import { map, shareReplay } from 'rxjs/operators';
 import * as XLSX from 'xlsx';
 
-import { timezoneBudapest } from '@bgap/admin/shared/utils';
 import { Maybe } from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
+import { timezoneBudapest } from '@bgap/shared/utils';
 
 import {
   ReportData,

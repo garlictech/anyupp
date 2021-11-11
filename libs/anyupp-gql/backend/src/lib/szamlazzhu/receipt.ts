@@ -94,7 +94,8 @@ export const createReceiptSzamlazzHu =
 
     try {
       return await szamlazzClient.issueReceipt(receipt);
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error(error.message, error.code); // handle errors
       throw error;
     }

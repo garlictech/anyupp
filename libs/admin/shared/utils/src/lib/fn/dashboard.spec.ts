@@ -1,7 +1,7 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { orderFixture as ofx } from '@bgap/shared/fixtures';
 
-import { timezoneBudapest } from '../const';
+import { timezoneBudapest } from '@bgap/shared/utils';
 import {
   calculatePaymentMethodSums,
   calculateProductMix,
