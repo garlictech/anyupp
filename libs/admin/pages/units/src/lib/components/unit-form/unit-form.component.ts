@@ -22,6 +22,7 @@ import {
 import {
   addressFormGroup,
   contactFormGroup,
+  dailyScheduleBothEmptyOrProperlyFilledValidator,
   multiLangValidator,
   notEmptyArray,
   ORDER_MODES,

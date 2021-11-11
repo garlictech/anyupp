@@ -49,15 +49,17 @@ type ChainStyle @aws_cognito_user_pools {
 }
 
 type ChainStyleColors @aws_cognito_user_pools {
-  backgroundLight: String!
-  backgroundDark: String!
-  borderLight: String!
-  borderDark: String!
-  disabled: String!
-  highlight: String!
-  indicator: String!
-  textLight: String!
-  textDark: String!
+  backgroundLight: String @deprecated(reason: "Unused.")
+  backgroundDark: String @deprecated(reason: "Unused.")
+  borderLight: String @deprecated(reason: "Unused.")
+  borderDark: String @deprecated(reason: "Unused.")
+  disabled: String @deprecated(reason: "Unused.")
+  highlight: String @deprecated(reason: "Unused.")
+  indicator: String @deprecated(reason: "Use `primary`.")
+  textLight: String @deprecated(reason: "Unused.")
+  textDark: String @deprecated(reason: "Use `secondary`.")
+  primary: String
+  secondary: String
 }
 
 type ChainStyleImages {
@@ -148,7 +150,7 @@ type UnitProduct
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-  supportedServingModes: [ServingMode!]!
+  supportedServingModes: [ServingMode!]
   externalId: String
   dirty: Boolean
 }
@@ -858,13 +860,13 @@ type GeoUnit @aws_cognito_user_pools {
   currency: String!
   isAcceptingOrders: Boolean!
   # isCurrentlyOpen: Boolean!
-  openingHours: String!
+  openingHours: String
     @deprecated(
       reason: "The new and better openingHoursNext7 field should be used instead of this static string"
     )
   openingHoursNext7: [OpeningHoursByDate!]!
-  supportedServingModes: [ServingMode!]!
-  supportedOrderModes: [OrderMode!]!
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
 }
 
 input GetUnitsNearLocationInput {
@@ -1087,8 +1089,8 @@ input CreateUnitInput {
   timeZone: String
   pos: PosInput
   externalId: String
-  supportedServingModes: [ServingMode!]!
-  supportedOrderModes: [OrderMode!]!
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
 }
 
 input UpdateUnitInput {
