@@ -240,7 +240,8 @@
       },
       "api": {
         "anyuppbackend": {
-          "ElasticSearchInstanceType": "t2.medium.elasticsearch"
+          "ElasticSearchInstanceType": "t2.medium.elasticsearch",
+          "ElasticSearchInstanceCount": 2
         }
       }
     }
