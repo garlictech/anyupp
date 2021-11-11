@@ -21,191 +21,57 @@
       }
     }
   },
-  "projects": {
-    "admin": {
-      "tags": ["type:website", "platform:angular"],
-      "implicitDependencies": ["anyupp-backend"]
+  "cli": {
+    "defaultCollection": "@nrwl/angular",
+    "packageManager": "yarn"
+  },
+  "defaultProject": "admin",
+  "generators": {
+    "@nrwl/workspace": {
+      "library": {
+        "linter": "eslint"
+      }
     },
-    "admin-e2e": {
-      "tags": ["type:utils", "platform:angular"],
-      "implicitDependencies": ["admin"]
+    "@nrwl/cypress": {
+      "cypress-project": {
+        "linter": "eslint"
+      }
     },
-    "admin-pages-admin-users": {
-      "tags": ["type:utils", "platform:angular"]
+    "@nrwl/node": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      }
     },
-    "admin-pages-auth": {
-      "tags": ["type:website", "platform:angular"]
+    "@nrwl/nest": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      }
     },
-    "admin-pages-chains": {
-      "tags": ["type:website", "platform:angular"]
+    "@nrwl/express": {
+      "application": {
+        "linter": "eslint"
+      },
+      "library": {
+        "linter": "eslint"
+      }
     },
-    "admin-pages-dashboard": {
-      "tags": ["type:website", "platform:angular"]
+    "@nrwl/angular:application": {
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
     },
-    "admin-pages-groups": {
-      "tags": ["type:website", "platform:angular"]
+    "@nrwl/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
     },
-    "admin-pages-modifiers-and-extras": {
-      "tags": ["type:website", "platform:angular"]
-    },
-    "admin-pages-product-categories": {
-      "tags": ["type:website", "platform:angular"]
-    },
-    "admin-pages-products": {
-      "tags": ["type:website", "platform:angular"]
-    },
-    "admin-pages-role-contexts": {
-      "tags": ["type:website", "platform:angular"]
-    },
-    "admin-pages-units": {
-      "tags": ["type:website", "platform:angular"]
-    },
-    "admin-pages-users": {
-      "tags": ["type:website", "platform:angular"]
-    },
-    "admin-shared-components": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-config": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-admin-users": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-app-core": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-auth": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-chains": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-dashboard": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-data": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-groups": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-logged-user": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-order": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-orders": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-product-categories": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-product-component-sets": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-product-components": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-products": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-role-contexts": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-sdk": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-storage": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-units": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-data-access-users": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-fixtures": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-floor-map": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-forms": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-pipes": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-shared-utils": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-ui-core": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "admin-ui-theme": {
-      "tags": ["type:utils", "platform:angular"]
-    },
-    "anyupp-backend": {
-      "tags": ["type:backend", "platform:nodejs"]
-    },
-    "anyupp-backend-lib": {
-      "tags": ["type:backend", "platform:nodejs"]
-    },
-    "anyupp-gql-api": {
-      "tags": ["type:utils", "platform:universal"]
-    },
-    "anyupp-gql-backend": {
-      "tags": ["type:backend", "platform:nodejs"]
-    },
-    "anyupp-mobile": {
-      "tags": ["type:application", "platform:flutter"]
-    },
-    "cicd": {
-      "tags": ["type:backend", "platform:nodejs"]
-    },
-    "crud-backend": {
-      "tags": ["type:backend", "platform:nodejs"]
-    },
-    "crud-gql-api": {
-      "tags": ["type:utils", "platform:universal"]
-    },
-    "crud-gql-backend": {
-      "tags": ["type:backend", "platform:nodejs"]
-    },
-    "gql-sdk": {
-      "tags": ["type:utils", "platform:universal"]
-    },
-    "integration-tests-angular": {
-      "tags": ["type:integration-tests", "platform:angular"]
-    },
-    "integration-tests-universal": {
-      "tags": ["type:integration-tests", "platform:universal"]
-    },
-    "rkeeper-api": {
-      "tags": ["type:backend", "platform:nodejs"]
-    },
-    "shared-config": {
-      "tags": ["type:utils", "platform:universal"]
-    },
-    "shared-data-validators": {
-      "tags": ["type:utils", "platform:universal"]
-    },
-    "shared-fixtures": {
-      "tags": ["type:utils", "platform:universal"]
-    },
-    "shared-graphql-api-client": {
-      "tags": ["type:utils", "platform:universal"]
-    },
-    "shared-secrets": {
-      "tags": ["type:utils", "platform:universal"]
-    },
-    "shared-types": {
-      "tags": ["type:utils", "platform:universal"]
-    },
-    "shared-utils": {
-      "tags": ["type:utils", "platform:universal"]
+    "@nrwl/angular:component": {
+      "style": "scss"
     }
   }
 }
