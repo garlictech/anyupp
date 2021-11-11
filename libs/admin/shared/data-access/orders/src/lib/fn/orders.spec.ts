@@ -89,11 +89,8 @@ describe('Orders pure function tests', () => {
   });
 
   describe('getOrderLaneColor', () => {
-    const unit: CrudApi.Unit = {
-      ...unitFixture.unit_01,
-      createdAt: '2021-08-02T01:54:11.843Z',
-      updatedAt: '2021-08-02T01:54:11.843Z',
-    };
+    const unit: CrudApi.Unit = unitFixture.unit_01;
+
     const orderItem = {
       ...orderFixture.orderItemInputBase('Fanta'),
       productId: `${testIdPrefix}unit_product_fanta`,

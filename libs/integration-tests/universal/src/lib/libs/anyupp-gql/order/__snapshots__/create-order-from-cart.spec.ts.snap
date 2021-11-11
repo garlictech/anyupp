@@ -1,11 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreatCartFromOrder mutation test should fail in case the cart is not the user's 1`] = `[Error: GraphQL error: Cart is missing]`;
+exports[`CreatCartFromOrder mutation test Test resolver functions should fail in case the cart is not the user's 1`] = `"Cart is missing"`;
 
-exports[`CreatCartFromOrder mutation test should fail without a cart 1`] = `[Error: GraphQL error: Unexpected empty value]`;
+exports[`CreatCartFromOrder mutation test Test resolver functions should fail without a cart 1`] = `[Error: Unexpected empty value]`;
 
-exports[`CreatCartFromOrder mutation test should fail without a unit 1`] = `[Error: GraphQL error: {"message":"Unit is not accepting orders right now. Try it later!","code":"ERROR_UNIT_NOT_ACCEPTING_ORDERS"}]`;
+exports[`CreatCartFromOrder mutation test Test resolver functions should fail without a unit 1`] = `"{\\"message\\":\\"Unit is not accepting orders right now. Try it later!\\",\\"code\\":\\"ERROR_UNIT_NOT_ACCEPTING_ORDERS\\"}"`;
 
-exports[`CreatCartFromOrder mutation test should fail without an authenticated userId 1`] = `"CreateOrderFromCartRequest Object Validation Error (JOI): \\"userId\\" is required, \\"input\\" is required"`;
+exports[`CreatCartFromOrder mutation test Test resolver functions should fail without an id in input 1`] = `[Error: GraphQL error: Variable 'id' has coerced Null value for NonNull type 'ID!']`;
 
-exports[`CreatCartFromOrder mutation test should fail without an id in input 1`] = `"CreateOrderFromCartRequest Object Validation Error (JOI): \\"input.id\\" is required"`;
+exports[`CreatCartFromOrder mutation test Test resolvers on server should fail in case the cart is not the user's 1`] = `[Error: GraphQL error: Cart is missing]`;
+
+exports[`CreatCartFromOrder mutation test Test resolvers on server should fail without a cart 1`] = `[Error: GraphQL error: Unexpected empty value]`;
+
+exports[`CreatCartFromOrder mutation test Test resolvers on server should fail without a unit 1`] = `[Error: GraphQL error: {"message":"Unit is not accepting orders right now. Try it later!","code":"ERROR_UNIT_NOT_ACCEPTING_ORDERS"}]`;

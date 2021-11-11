@@ -1,25 +1,19 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { filterNullish } from '@bgap/shared/utils';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as E from 'fp-ts/lib/Either';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { defer, from, of, throwError } from 'rxjs';
-import {
-  catchError,
-  map,
-  mapTo,
-  switchMap,
-  switchMapTo,
-  throwIfEmpty,
-} from 'rxjs/operators';
+import { map, mapTo, switchMap, throwIfEmpty } from 'rxjs/operators';
 import { ResolverErrorCode } from '../../utils/errors';
 import { AdminUserResolverDeps } from './utils';
 
 export const createAdminUser =
-  (vars: AnyuppApi.CreateAdminUserMutationVariables) =>
-  (deps: AdminUserResolverDeps) => {
+  (vars: CrudApi.CreateAdminUserMutationVariables) =>
+  (
+    deps: AdminUserResolverDeps,
+  ): ReturnType<CrudApi.CrudSdk['CreateAdminUser']> => {
     console.debug('createAdminUser Resolver parameters: ', vars);
-    const newUsername = deps.userNameGenerator();
+    const newUsername = vars.input.id ?? deps.userNameGenerator();
 
     return pipe(
       {
@@ -32,7 +26,6 @@ export const createAdminUser =
         defer(() =>
           from(deps.cognitoidentityserviceprovider.listUsers(params).promise()),
         ),
-      filterNullish(),
       map(
         flow(
           result => result?.Users,
@@ -66,6 +59,10 @@ export const createAdminUser =
                   Value: 'true',
                 },
                 {
+                  Name: 'phone_number_verified',
+                  Value: 'true',
+                },
+                {
                   Name: 'phone_number',
                   Value: vars.input.phone,
                 },
@@ -80,54 +77,35 @@ export const createAdminUser =
           ),
         ),
       ),
-      switchMap(res => (E.isLeft(res) ? throwError(res.left) : of(res.right))),
+      switchMap(res =>
+        E.isLeft(res)
+          ? throwError(JSON.stringify(res.left, null, 2))
+          : of(res.right),
+      ),
       switchMap(params =>
-        defer(() =>
-          from(
-            deps.cognitoidentityserviceprovider
-              .adminCreateUser(params)
-              .promise(),
-          ),
+        from(
+          deps.cognitoidentityserviceprovider.adminCreateUser(params).promise(),
         ),
       ),
-      filterNullish(),
-      switchMap(() =>
-        deps.crudSdk
-          .CreateAdminUser({
-            input: {
-              name: vars.input.name,
-              id: newUsername,
-              email: vars.input.email,
-              phone: vars.input.phone,
-            },
-          })
-          .pipe(
-            catchError(err =>
-              defer(() =>
-                from(
-                  deps.cognitoidentityserviceprovider
-                    .adminDeleteUser({
-                      UserPoolId: deps.userPoolId,
-                      Username: newUsername,
-                    })
-                    .promise(),
-                ),
-              ).pipe(
-                switchMapTo(
-                  throwError({
-                    code: ResolverErrorCode.UnknownError,
-                    message: JSON.stringify(err, null, 2),
-                  }),
-                ),
-              ),
-            ),
-          ),
+      switchMap(
+        flow(
+          () => ({
+            name: vars.input.name,
+            id: newUsername,
+            email: vars.input.email,
+            phone: vars.input.phone,
+            profileImage: vars.input.profileImage,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          }),
+          (adminUser: CrudApi.AdminUser) => ({
+            Item: adminUser,
+            TableName: deps.adminUserTableName,
+          }),
+          params =>
+            from(deps.docClient.put(params).promise()).pipe(mapTo(params.Item)),
+        ),
       ),
-      mapTo(newUsername),
-      throwIfEmpty(() => 'UnkownCognitoError'),
-      catchError(err => {
-        console.error('ERROR:', JSON.stringify(err, null, 2));
-        return throwError(err);
-      }),
-    ).toPromise();
+      throwIfEmpty(),
+    );
   };

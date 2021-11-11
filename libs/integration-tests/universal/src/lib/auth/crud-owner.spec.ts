@@ -36,7 +36,6 @@ describe.skip('CRUD ownership tests', () => {
 
   it('It should not access own data of AdminUser without signin', done => {
     publicSdk.GetUser({ id: adminUserId }).subscribe({
-      next: x => console.warn(x),
       error(e) {
         expect(e).toMatchSnapshot();
         done();
@@ -61,7 +60,6 @@ describe.skip('CRUD ownership tests', () => {
         ),
       )
       .subscribe({
-        next: x => console.warn(x),
         error(e) {
           expect(e).toMatchSnapshot();
           done();

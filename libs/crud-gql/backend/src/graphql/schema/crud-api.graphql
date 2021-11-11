@@ -1,7 +1,314 @@
-### AdminUser
+### Location
+type Location @aws_cognito_user_pools {
+  lat: Float!
+  lng: Float!
+}
 
-type AdminUser
+### LocalizedItem
+type LocalizedItem @aws_cognito_user_pools {
+  en: String
+  de: String
+  hu: String
+}
+
+type Address @aws_cognito_user_pools {
+  address: String!
+  city: String!
+  country: String!
+  title: String!
+  postalCode: String!
+  location: Location!
+}
+
+### Payment
+type PaymentMode @aws_cognito_user_pools {
+  type: PaymentType!
+  caption: String
+  method: PaymentMethod!
+}
+
+enum PaymentMethod {
+  cash
+  card
+  inapp
+}
+
+enum PaymentType {
+  card
+  cash
+  simple
+  stripe
+  applepay
+  googlepay
+}
+
+### ChainStyle
+type ChainStyle @aws_cognito_user_pools {
+  colors: ChainStyleColors!
+  images: ChainStyleImages
+}
+
+type ChainStyleColors @aws_cognito_user_pools {
+  backgroundLight: String!
+  backgroundDark: String!
+  borderLight: String!
+  borderDark: String!
+  disabled: String!
+  highlight: String!
+  indicator: String!
+  textLight: String!
+  textDark: String!
+}
+
+type ChainStyleImages {
+  header: String
+  logo: String
+}
+
+### ChainProduct
+type ChainProduct
   @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productCategoryId: ID!
+  productType: String!
+  isVisible: Boolean!
+  image: String
+  variants: [ProductVariant]
+  allergens: [Allergen]
+  configSets: [ProductConfigSet]
+  externalId: String
+  dirty: Boolean
+}
+
+enum Allergen {
+  celery
+  crustaceans
+  egg
+  fish
+  gluten
+  lupin
+  milk
+  molluscs
+  mustard
+  peanut
+  sesame
+  soya
+  sulphites
+  treenuts
+}
+
+enum ServingMode {
+  inPlace
+  takeAway
+}
+
+enum OrderMode {
+  instant
+  pickup
+}
+
+### GroupProduct
+type GroupProduct
+  @aws_cognito_user_pools
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent chainProduct ID
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean!
+  tax: Int!
+  takeawayTax: Int
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+  externalId: String
+  dirty: Boolean
+}
+
+### UnitProduct
+type UnitProduct
+  @aws_cognito_user_pools
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
+  laneId: ID
+  position: Int!
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+  supportedServingModes: [ServingMode!]!
+  externalId: String
+  dirty: Boolean
+}
+
+type ProductConfigComponent @aws_cognito_user_pools {
+  productComponentId: ID!
+  refGroupPrice: Float!
+  price: Float!
+  position: Int!
+}
+
+type ProductConfigSet @aws_cognito_user_pools {
+  productSetId: ID!
+  items: [ProductConfigComponent!]!
+  position: Int!
+}
+
+### ProductVariant
+type ProductVariant @aws_cognito_user_pools {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  position: Int!
+}
+
+### ProductVariantPack
+type ProductVariantPack @aws_cognito_user_pools {
+  size: Float!
+  unit: String!
+}
+input ProductVariantPackInput {
+  size: Float!
+  unit: String!
+}
+
+### Availability
+type Availability @aws_cognito_user_pools {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+input AvailabilityInput {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+
+### Stripe card
+type CardChecks @aws_cognito_user_pools {
+  address_line1_check: String
+  address_postal_code_check: String
+  cvc_check: String
+}
+
+# https://stripe.com/docs/api/cards/object?lang=node
+enum CardBrand {
+  amex
+  diners
+  discover
+  jcb
+  mastercard
+  unionpay
+  visa
+  unknown
+}
+
+# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
+enum CardFundingType {
+  credit
+  debit
+  prepaid
+  unknown
+}
+
+type BillingDetails @aws_cognito_user_pools {
+  email: String
+  name: String
+  phone: String
+  address: BillingAddress
+}
+
+type BillingAddress @aws_cognito_user_pools {
+  city: String
+  country: String
+  line1: String
+  line2: String
+  postal_code: String
+  state: String
+}
+
+type StripeCard @aws_cognito_user_pools {
+  id: String!
+  name: String
+  brand: CardBrand
+  checks: CardChecks
+  country: String
+  last4: String
+  exp_month: Int
+  exp_year: Int
+  fingerprint: String
+  funding: CardFundingType
+  three_d_secure: String
+  billing_details: BillingDetails
+}
+
+input UserInvoiceAddressInput {
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+}
+
+input StartStripePaymentInput {
+  orderId: ID!
+  paymentMethod: PaymentMethod!
+  savePaymentMethod: Boolean!
+  paymentMethodId: String
+  invoiceAddress: UserInvoiceAddressInput
+}
+
+type StartStripePaymentOutput @aws_cognito_user_pools {
+  clientSecret: String!
+  status: String!
+}
+
+input StripeCardCreateInput {
+  card_number: String!
+  exp_month: Int!
+  exp_year: Int!
+  cvc: String!
+  default_for_currency: Boolean
+  name: String!
+}
+
+input StripeCardUpdateInput {
+  paymentMethodId: String!
+  default_for_currency: Boolean
+  name: String
+}
+
+input StripeCardDeleteInput {
+  paymentMethodId: String!
+}
+
+### AdminUser
+type AdminUser
+  @model(mutations: { delete: null, create: null, update: "updateAdminUser" })
   @searchable
   @auth(rules: [{ allow: private, provider: iam }, { allow: private }]) {
   id: ID!
@@ -23,6 +330,32 @@ type AdminUserSettings {
   selectedHistoryDate: Int
 }
 
+input UpdateAdminUserInput {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  settings: AdminUserSettingsInput
+}
+
+input AdminUserSettingsInput {
+  selectedChainId: String
+  selectedGroupId: String
+  selectedUnitId: String
+  selectedProductCategoryId: String
+  selectedLanguage: String
+  selectedHistoryDate: Int
+}
+
+input CreateAdminUserInput {
+  id: ID
+  name: String!
+  email: String!
+  phone: String!
+  profileImage: String
+  settings: AdminUserSettingsInput
+}
 ###
 # Create a join model and disable queries as you don't need them
 # and can query through Post.editors and AdminUser.roleContexts
@@ -299,6 +632,7 @@ type ProductComponent
   name: LocalizedItem!
   description: String
   allergens: [Allergen]
+  externalId: String
 }
 
 ### ProductComponent
@@ -307,6 +641,7 @@ type ProductComponentSet
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
+  externalId: String
   chainId: ID!
   type: String!
   name: LocalizedItem!
@@ -392,7 +727,7 @@ type FavoriteProduct
 
 ### Unit
 type Unit
-  @model
+  @model(mutations: { delete: "deleteUnit" })
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
@@ -414,6 +749,7 @@ type Unit
   merchantId: String
   timeZone: String
   pos: Pos
+  externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
 }
@@ -492,12 +828,47 @@ type RKeeper {
   rkeeperPassword: String!
   anyuppUsername: String!
   anyuppPassword: String!
-  restaurantId: String!
 }
 
 enum PosType {
   anyupp
   rkeeper
+}
+
+type GeoUnitList @aws_cognito_user_pools {
+  items: [GeoUnit]
+}
+
+type OpeningHoursByDate @aws_cognito_user_pools {
+  date: String!
+  closed: Boolean!
+  from: Float
+  to: Float
+}
+
+type GeoUnit @aws_cognito_user_pools {
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  name: String!
+  address: Address!
+  style: ChainStyle!
+  paymentModes: [PaymentMode]
+  distance: Int!
+  currency: String!
+  isAcceptingOrders: Boolean!
+  # isCurrentlyOpen: Boolean!
+  openingHours: String!
+    @deprecated(
+      reason: "The new and better openingHoursNext7 field should be used instead of this static string"
+    )
+  openingHoursNext7: [OpeningHoursByDate!]!
+  supportedServingModes: [ServingMode!]!
+  supportedOrderModes: [OrderMode!]!
+}
+
+input GetUnitsNearLocationInput {
+  location: LocationInput!
 }
 
 ### User
@@ -604,6 +975,236 @@ type Receipt
   email: String
   pdfData: String
   status: ReceiptStatus!
+}
+
+# Duplications, copied from the generated schema.
+# See: https://github.com/aws-amplify/amplify-cli/issues/1361
+input LocationInput {
+  lat: Float!
+  lng: Float!
+}
+
+input AddressInput {
+  address: String!
+  city: String!
+  country: String!
+  title: String!
+  postalCode: String!
+  location: LocationInput!
+}
+
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
+}
+
+input LaneInput {
+  id: ID!
+  name: String!
+  color: String!
+}
+
+input PaymentModeInput {
+  type: PaymentType!
+  caption: String
+  method: PaymentMethod!
+}
+
+input FloorMapDataInput {
+  w: Int!
+  h: Int!
+  objects: [FloorMapDataObjectInput!]
+}
+
+input FloorMapDataObjectInput {
+  id: ID!
+  t: UnitMapObjectType!
+  c: String
+  w: Int
+  h: Int
+  r: Int
+  a: Int
+  x: Int!
+  y: Int!
+  tID: String
+  sID: String
+}
+
+input DateIntervalInput {
+  from: String
+  to: String
+}
+
+input CustomDailyScheduleInput {
+  date: String!
+  from: String!
+  to: String!
+}
+
+input WeeklyScheduleInput {
+  mon: DateIntervalInput
+  tue: DateIntervalInput
+  wed: DateIntervalInput
+  thu: DateIntervalInput
+  fri: DateIntervalInput
+  sat: DateIntervalInput
+  sun: DateIntervalInput
+  custom: [CustomDailyScheduleInput]
+}
+
+input PosInput {
+  type: PosType!
+  rkeeper: RKeeperInput
+}
+
+input RKeeperInput {
+  endpointUri: String!
+  rkeeperUsername: String!
+  rkeeperPassword: String!
+  anyuppUsername: String!
+  anyuppPassword: String!
+}
+
+input CreateUnitInput {
+  id: ID
+  groupId: ID!
+  chainId: ID!
+  lastOrderNum: Int
+  isActive: Boolean!
+  isAcceptingOrders: Boolean!
+  name: String!
+  description: LocalizedItemInput
+  address: AddressInput!
+  email: String
+  phone: String
+  paymentModes: [PaymentModeInput]
+  floorMap: FloorMapDataInput
+  lanes: [LaneInput]
+  open: DateIntervalInput
+  openingHours: WeeklyScheduleInput
+  merchantId: String
+  timeZone: String
+  pos: PosInput
+  externalId: String
+  supportedServingModes: [ServingMode!]!
+  supportedOrderModes: [OrderMode!]!
+}
+
+input UpdateUnitInput {
+  id: ID!
+  groupId: ID
+  chainId: ID
+  lastOrderNum: Int
+  isActive: Boolean
+  isAcceptingOrders: Boolean
+  name: String
+  description: LocalizedItemInput
+  address: AddressInput
+  email: String
+  phone: String
+  paymentModes: [PaymentModeInput]
+  floorMap: FloorMapDataInput
+  lanes: [LaneInput]
+  open: DateIntervalInput
+  openingHours: WeeklyScheduleInput
+  merchantId: String
+  timeZone: String
+  pos: PosInput
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
+}
+
+type CreateAnonymUserOutput {
+  username: String!
+  pwd: String!
+}
+
+input CreateOrderFromCartInput {
+  id: ID!
+}
+
+## UNIT
+input RegenerateUnitDataInput {
+  id: ID!
+}
+
+input DeleteAdminUserInput {
+  id: ID!
+}
+
+input DeleteUnitProductInput {
+  id: ID!
+}
+
+type Query {
+  listStripeCards: [StripeCard]
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+}
+
+type Mutation {
+  createUnit(input: CreateUnitInput!): Unit
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  updateUnit(input: UpdateUnitInput!): Unit
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  createAdminUser(input: CreateAdminUserInput!): AdminUser
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  deleteAdminUser(input: DeleteAdminUserInput!): AdminUser
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  # User
+  createAnonymUser: CreateAnonymUserOutput  # public endpoint
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  # Order
+  createOrderFromCart(input: CreateOrderFromCartInput!): ID
+    @function(name: "${env}-anyupp-graphql-resolvers")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  # Unit
+  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
+    @function(name: "${env}-anyupp-graphql-resolvers")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  # Stripe
+  startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  createStripeCard(input: StripeCardCreateInput!): StripeCard
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
+    @function(name: "${env}-anyupp-graphql-resolvers")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
 }
 
 type Subscription {

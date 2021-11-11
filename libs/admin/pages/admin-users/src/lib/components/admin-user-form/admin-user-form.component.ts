@@ -7,10 +7,7 @@ import {
 } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
-import {
-  AnyuppSdkService,
-  CrudSdkService,
-} from '@bgap/admin/shared/data-access/sdk';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { contactFormGroup } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -34,7 +31,6 @@ export class AdminUserFormComponent
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
     private _crudSdk: CrudSdkService,
-    private _anyuppSdk: AnyuppSdkService,
   ) {
     super(_injector);
 
@@ -78,7 +74,7 @@ export class AdminUserFormComponent
         const email = this.dialogForm.controls['email'].value;
         const phone = this.dialogForm.controls['phone'].value;
 
-        this._anyuppSdk.sdk
+        this._crudSdk.sdk
           .CreateAdminUser({
             input: { email, name, phone },
           })

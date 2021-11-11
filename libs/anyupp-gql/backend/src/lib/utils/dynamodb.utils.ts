@@ -9,7 +9,7 @@
 //   "UnprocessedItems": {}
 // See https://medium.com/@ravishivt/batch-processing-with-rxjs-6408b0761f39
 // See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-dynamodb/classes/batchwriteitemcommand.html
-import AWS from 'aws-sdk';
+import * as AWS from 'aws-sdk';
 import { DocumentClient, WriteRequest } from 'aws-sdk/clients/dynamodb';
 import { awsConfig } from '@bgap/crud-gql/api';
 import * as fp from 'lodash/fp';

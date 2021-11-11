@@ -11,12 +11,12 @@ import {
 import { Auth } from 'aws-amplify';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { getCognitoUsername } from '@bgap/shared/fixtures';
 
 interface AuthenticatdGraphQLClientWithUserId {
   userAttributes: {
     id: string;
     email: string;
-    // ???
   };
   authAnyuppSdk: AnyuppSdk;
 }
@@ -34,7 +34,9 @@ export const createAuthenticatedCrudSdk = (
   password: string,
 ) => {
   authConfig();
-  return from(Auth.signIn(userName, password)).pipe(map(getCrudSdkForUserPool));
+  return from(Auth.signIn(getCognitoUsername(userName), password)).pipe(
+    map(getCrudSdkForUserPool),
+  );
 };
 
 export const createAuthenticatedAnyuppSdk = (

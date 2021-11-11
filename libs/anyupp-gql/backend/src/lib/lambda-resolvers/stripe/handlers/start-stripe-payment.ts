@@ -1,4 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
 import {
@@ -14,10 +13,11 @@ import { createInvoiceAndConnectTransaction } from '../invoice-receipt.utils';
 
 // START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node (Covered by #804)
 export const startStripePayment =
-  (userId: string, input: AnyuppApi.StartStripePaymentInput) =>
+  (input: CrudApi.StartStripePaymentInput) =>
   async (
     deps: StripeResolverDeps,
-  ): Promise<AnyuppApi.StartStripePaymentOutput> => {
+  ): Promise<CrudApi.StartStripePaymentOutput> => {
+    const userId = deps.userId;
     console.debug('startStripePayment().start()');
 
     // 1. Get parameters, orderId and payment method
@@ -39,7 +39,7 @@ export const startStripePayment =
         savePaymentMethod,
     );
 
-    if (paymentMethod == AnyuppApi.PaymentMethod.inapp && !paymentMethodId) {
+    if (paymentMethod == CrudApi.PaymentMethod.inapp && !paymentMethodId) {
       throw Error(
         'Payment method is missing from request when payment mode is INAPP!',
       );
@@ -75,7 +75,7 @@ export const startStripePayment =
     }
 
     // 3. Load User
-    const createStripeCustomer = paymentMethod == AnyuppApi.PaymentMethod.inapp;
+    const createStripeCustomer = paymentMethod == CrudApi.PaymentMethod.inapp;
     const user = await loadAndConnectUserForStripe(
       userId,
       createStripeCustomer,
@@ -90,7 +90,7 @@ export const startStripePayment =
     }
 
     if (
-      paymentMethod == AnyuppApi.PaymentMethod.inapp &&
+      paymentMethod == CrudApi.PaymentMethod.inapp &&
       !user.stripeCustomerId
     ) {
       throw Error(
@@ -107,7 +107,7 @@ export const startStripePayment =
     }
 
     // 5. Handle INAPP payment
-    if (paymentMethod == AnyuppApi.PaymentMethod.inapp) {
+    if (paymentMethod == CrudApi.PaymentMethod.inapp) {
       if (!paymentMethodId) {
         throw Error(
           'Payment method is missing from request when payment mode is INAPP!',
@@ -201,7 +201,6 @@ export const startStripePayment =
       // 10. Update ORDER STATUS
       order = await updateOrderState(
         order.id,
-        userId,
         undefined, // use undefined to prevend graphql api to override this field
         transaction.id,
         // it should be undefined because we don't want to overwrite the field with GraphQL API.
@@ -267,7 +266,6 @@ export const startStripePayment =
       // 8. Update order
       order = await updateOrderState(
         order.id,
-        userId,
         undefined, // use undefined to prevend graphql api to override this field
         transaction.id,
         // it should be undefined because we don't want to overwrite the field with GraphQL API.

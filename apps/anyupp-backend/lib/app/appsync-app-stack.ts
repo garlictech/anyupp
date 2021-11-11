@@ -7,9 +7,7 @@ import * as sm from '@aws-cdk/aws-secretsmanager';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
 import {
-  createAdminUserResolvers,
   createOrderResolvers,
-  createProductResolvers,
   createStripeResolvers,
   createUnitResolvers,
   createUserResolvers,
@@ -46,7 +44,7 @@ export class AppsyncAppStack extends sst.Stack {
       name: app.logicalPrefixedName('anyupp-appsync-api'),
       schema: appsync.Schema.fromAsset(
         PROJECT_ROOT +
-          'libs/anyupp-gql/backend/src/graphql/schema/generated/schema.graphql',
+          'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql',
       ),
       authorizationConfig: {
         defaultAuthorization: {
@@ -76,19 +74,17 @@ export class AppsyncAppStack extends sst.Stack {
       },
     });
 
-    this.createDatasources(props);
+    this.createDatasources(props, scope.stage);
 
     if (!this.lambdaDs) {
       throw new Error(
-        'MAke sure that teh lambda data source exists before using it!',
+        'Make sure that the lambda data source exists before using it!',
       );
     }
 
     const commonResolverInputs = { lambdaDs: this.lambdaDs };
     createOrderResolvers(commonResolverInputs);
-    createAdminUserResolvers(commonResolverInputs);
     createUnitResolvers(commonResolverInputs);
-    createProductResolvers(commonResolverInputs);
     createStripeResolvers(commonResolverInputs);
     createUserResolvers(commonResolverInputs);
 
@@ -117,7 +113,7 @@ export class AppsyncAppStack extends sst.Stack {
     });
   }
 
-  private createDatasources(props: AppsyncAppStackProps) {
+  private createDatasources(props: AppsyncAppStackProps, scope: string) {
     // NO DATA SOURCE
     new appsync.NoneDataSource(this, 'NoneDataSource', {
       api: this.api,
@@ -130,6 +126,7 @@ export class AppsyncAppStack extends sst.Stack {
     const apiLambda = new lambda.Function(this, 'AppsyncLambda', {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
+      functionName: `${scope}-anyupp-graphql-resolvers`,
       handler: 'lib/lambda/appsync-lambda/index.handler',
       timeout: cdk.Duration.seconds(30),
       memorySize: 512,
@@ -149,7 +146,6 @@ export class AppsyncAppStack extends sst.Stack {
 
     if (apiLambda.role) {
       apiLambda.role.addToPrincipalPolicy(
-        // TODO: replace this de  cated function usage
         new iam.PolicyStatement({
           actions: [
             'cognito-idp:AdminCreateUser',
@@ -180,6 +176,10 @@ export class AppsyncAppStack extends sst.Stack {
             tableConfig.GeneratedProduct.TableArn,
             tableConfig.GeneratedProductCategory.TableArn,
             tableConfig.Unit.TableArn,
+            tableConfig.AdminUser.TableArn,
+            tableConfig.UnitProduct.TableArn,
+            tableConfig.GroupProduct.TableArn,
+            tableConfig.ChainProduct.TableArn,
           ],
         }),
       );

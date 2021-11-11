@@ -20,12 +20,6 @@ targets:
               output: lib/graphql/generated/crud-api.dart
               naming_scheme: pathedWithTypes
 
-            # Schema mapping for ANYUPP
-            - schema: graphql/anyupp-api-schema.graphql
-              queries_glob: graphql/anyupp/**.graphql
-              output: lib/graphql/generated/anyupp-api.dart
-              naming_scheme: pathedWithTypes
-
             # Schema mapping for Flutter tests
             - schema: graphql/crud-api-schema.graphql
               queries_glob: graphql/test/**.graphql

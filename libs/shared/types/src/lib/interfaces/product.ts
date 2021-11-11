@@ -35,7 +35,7 @@ export interface Product {
   groupId?: Scalars['ID'];
   unitId?: Scalars['ID'];
   isVisible: Scalars['Boolean'];
-  takeaway?: Scalars['Boolean'];
+  takeaway?: Maybe<Scalars['Boolean']>;
   laneId?: Maybe<Scalars['ID']>;
   position?: Scalars['Int'];
   variants?: Maybe<Array<Maybe<CrudApi.ProductVariant>>>;

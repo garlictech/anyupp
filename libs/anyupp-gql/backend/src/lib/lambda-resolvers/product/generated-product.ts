@@ -2,7 +2,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
-import { iif, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { createItems, deleteItems } from '../../database';
 
@@ -12,17 +12,15 @@ export const deleteGeneratedProductsForAUnitFromDb =
   (crudSdk: CrudApi.CrudSdk) => (unitId: string) => {
     return listGeneratedProductsForUnits(crudSdk)([unitId]).pipe(
       switchMap(items =>
-        iif(
-          () => items.length > 0,
-          deleteGeneratedProductsItemsFromDb(items),
-          of([]),
-        ),
+        items.length > 0
+          ? deleteGeneratedProductsItemsFromDb(items.map(item => item.id))
+          : of([]),
       ),
     );
   };
-const deleteGeneratedProductsItemsFromDb = (
-  items: CrudApi.GeneratedProduct[],
-) => deleteItems(TABLE_NAME)(items);
+
+export const deleteGeneratedProductsItemsFromDb = (itemIds: string[]) =>
+  deleteItems(TABLE_NAME)(itemIds.map(id => ({ id })));
 
 export const createGeneratedProductsInDb = (
   products: CrudApi.CreateGeneratedProductInput[],

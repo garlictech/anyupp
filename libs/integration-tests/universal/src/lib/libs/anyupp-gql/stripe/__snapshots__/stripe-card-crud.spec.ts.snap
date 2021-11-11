@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Stripe Payment Method CRUD tests Stripe Card CRUD should list, create, update and delete Stripe cards: card1 1`] = `
+exports[`Stripe Payment Method CRUD tests Stripe Card CRUD should list, create, update and delete Stripe cards with old server: card1 1`] = `
 Object {
   "brand": "visa",
   "country": "US",
@@ -15,9 +15,51 @@ Object {
 }
 `;
 
-exports[`Stripe Payment Method CRUD tests Stripe Card CRUD should list, create, update and delete Stripe cards: card2 1`] = `
+exports[`Stripe Payment Method CRUD tests Stripe Card CRUD should list, create, update and delete Stripe cards with old server: card2 1`] = `
 Object {
   "brand": "visa",
+  "country": "US",
+  "exp_month": 12,
+  "exp_year": 2025,
+  "fingerprint": null,
+  "funding": "credit",
+  "id": "test_payment_method_id",
+  "last4": "4242",
+  "name": "Test Card #2",
+  "three_d_secure": null,
+}
+`;
+
+exports[`Stripe Payment Method CRUD tests Stripe Card CRUD should list, create, update and delete Stripe cards: card1 1`] = `
+Object {
+  "billing_details": null,
+  "brand": "visa",
+  "checks": Object {
+    "address_line1_check": null,
+    "address_postal_code_check": null,
+    "cvc_check": "unchecked",
+  },
+  "country": "US",
+  "exp_month": 12,
+  "exp_year": 2025,
+  "fingerprint": null,
+  "funding": "credit",
+  "id": "test_payment_method_id",
+  "last4": "4242",
+  "name": "Test Card #1",
+  "three_d_secure": null,
+}
+`;
+
+exports[`Stripe Payment Method CRUD tests Stripe Card CRUD should list, create, update and delete Stripe cards: card2 1`] = `
+Object {
+  "billing_details": null,
+  "brand": "visa",
+  "checks": Object {
+    "address_line1_check": null,
+    "address_postal_code_check": null,
+    "cvc_check": "pass",
+  },
   "country": "US",
   "exp_month": 12,
   "exp_year": 2025,

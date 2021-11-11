@@ -184,7 +184,7 @@
       "tags": ["type:integration-tests", "platform:universal"]
     },
     "rkeeper-api": {
-      "tags": []
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "shared-config": {
       "tags": ["type:utils", "platform:universal"]

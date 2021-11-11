@@ -1,0 +1,33 @@
+diff --git a/node_modules/@serverless-stack/cli/bin/scripts.js b/node_modules/@serverless-stack/cli/bin/scripts.js
+index e5d30be..8e23316 100755
+--- a/node_modules/@serverless-stack/cli/bin/scripts.js
++++ b/node_modules/@serverless-stack/cli/bin/scripts.js
+@@ -15,6 +15,7 @@ require("source-map-support").install();
+ 
+ const path = require("path");
+ const fs = require("fs-extra");
++const fp = require('lodash/fp');
+ const yargs = require("yargs");
+ const chalk = require("chalk");
+ const spawn = require("cross-spawn");
+@@ -440,8 +441,18 @@ async function run() {
+ 
+       // Prepare app
+       prepareCdk(argv, cliInfo, config)
+-        .then(() => internals[script](argv, config, cliInfo))
+-        .catch((e) => exitWithMessage(e.message));
++        .then(() => {
++          const res = internals[script](argv, config, cliInfo);
++          res.then(
++            fp.flow(
++              fp.map('status'),
++              fp.indexOf('failed'),
++              fp.tap(found => process.exit(found >= 0)),
++            ),
++          );
++          return res;
++        })
++        .catch(e => exitWithMessage(e.message));
+ 
+       break;
+     }

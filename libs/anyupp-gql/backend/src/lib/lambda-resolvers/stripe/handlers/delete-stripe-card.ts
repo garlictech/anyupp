@@ -1,13 +1,14 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { loadUser } from '../stripe-graphql-crud';
 import { StripeResolverDeps } from '../stripe.utils';
 
 export const deleteStripeCard =
-  (userId: string, input: AnyuppApi.StripeCardDeleteInput) =>
+  (input: CrudApi.StripeCardDeleteInput) =>
   async (deps: StripeResolverDeps): Promise<boolean> => {
+    const userId = deps.userId;
     console.debug('**** deleteStripeCard().start()');
 
-    const user = await loadUser(userId)(deps);
+    const user = await loadUser()(deps);
     console.debug('**** deleteStripeCard().user=' + user?.id);
     if (!user) {
       throw Error('User not found with id=' + userId);

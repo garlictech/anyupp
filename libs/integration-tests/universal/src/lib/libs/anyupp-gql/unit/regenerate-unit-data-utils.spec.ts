@@ -13,9 +13,7 @@ describe('RegenerateUnitData Utils tests', () => {
 
   describe('getProductComponentSetMap function', () => {
     it('should still emit an empty object in case there is NO data in the DB', done => {
-      getProductComponentSetMap({
-        crudSdk: iamCrudSdk,
-      })('NOT_EXISTING_CHAIN_ID').subscribe({
+      getProductComponentSetMap(iamCrudSdk)('NOT_EXISTING_CHAIN_ID').subscribe({
         next(result) {
           expect(result).toEqual({});
           done();
@@ -29,9 +27,7 @@ describe('RegenerateUnitData Utils tests', () => {
 
   describe('getProductComponentMap function', () => {
     it('should still emit an empty object in case there is NO data in the DB', done => {
-      getProductComponentMap({
-        crudSdk: iamCrudSdk,
-      })('NOT_EXISTING_CHAIN_ID').subscribe({
+      getProductComponentMap(iamCrudSdk)('NOT_EXISTING_CHAIN_ID').subscribe({
         next(result) {
           expect(result).toEqual({});
           done();
@@ -45,9 +41,7 @@ describe('RegenerateUnitData Utils tests', () => {
 
   describe('listUnitProductsForAUnit function', () => {
     it('should throw in case there are NO unitProducts in the DB', done => {
-      listUnitProductsForAUnit({
-        crudSdk: iamCrudSdk,
-      })('NOT_EXISTING_UNIT_ID').subscribe({
+      listUnitProductsForAUnit(iamCrudSdk)('NOT_EXISTING_UNIT_ID').subscribe({
         next() {
           console.error(`${TEST_NAME}Test ERROR`, 'SHOULD NOT SUCCEED');
         },
@@ -61,9 +55,7 @@ describe('RegenerateUnitData Utils tests', () => {
 
   describe('getTimezoneForUnit function', () => {
     it('should throw in case there are NO unit in the DB', done => {
-      getTimezoneForUnit({
-        crudSdk: iamCrudSdk,
-      })('NOT_EXISTING_UNIT_ID').subscribe({
+      getTimezoneForUnit(iamCrudSdk)('NOT_EXISTING_UNIT_ID').subscribe({
         next() {
           console.error(`${TEST_NAME}Test ERROR`, 'SHOULD NOT SUCCEED');
         },

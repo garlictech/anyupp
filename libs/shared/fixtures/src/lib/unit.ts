@@ -58,7 +58,7 @@ const openingHours: CrudApi.WeeklySchedule = {
   ],
 };
 
-const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
+const unitBase = {
   isActive: true,
   isAcceptingOrders: true,
   name: `Késdobáló S`,
@@ -105,6 +105,7 @@ const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   ],
   open: {
     from: '1970-01-01',
+    to: '2970-01-01',
   },
   supportedOrderModes: [CrudApi.OrderMode.pickup, CrudApi.OrderMode.instant],
   supportedServingModes: [
@@ -113,11 +114,36 @@ const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   ],
 };
 
-const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
+const unit_01: CrudApi.Unit = {
   ...unitBase,
   id: unitId_01,
   groupId: groupFixture.group_01.id,
   chainId: chainFixture.chain_01.id,
+  createdAt: '2021-08-02T01:54:11.843Z',
+  updatedAt: '2021-08-02T01:54:11.843Z',
+};
+
+const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
+  ...unitBase,
+  id: unitId_01,
+  groupId: groupFixture.group_01.id,
+  chainId: chainFixture.chain_01.id,
+};
+
+const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
+  ...createUnit_01,
+  id: 'rkeeper-unit',
+  externalId: 'restaurantid',
+  pos: {
+    type: CrudApi.PosType.rkeeper,
+    rkeeper: {
+      endpointUri: 'ENDPOINT_URI',
+      rkeeperUsername: 'RKEEPER_USERNAME',
+      rkeeperPassword: 'RKEEPER_PASSWORD',
+      anyuppUsername: 'ANYUPP_USERNAME',
+      anyuppPassword: 'ANYUPP_PASSWORD',
+    },
+  },
 };
 
 const unitInstantTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
@@ -156,6 +182,8 @@ export const unitFixture = {
   openingHours,
   unitBase,
   unit_01,
+  createUnit_01,
+  createRkeeperUnit,
   unitId_NotExisting,
   unitId_seeded_01,
   unitId_seeded_02,

@@ -179,7 +179,7 @@ const unitInput: CrudApi.CreateUnitInput = {
 
 const awsAccesskeyId = process.env.AWS_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
-// const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
+// const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const crudSdk = CrudApi.getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const adminUserPoolId = awsConfig.aws_user_pools_id;
 const adminUserPoolClientId = awsConfig.aws_user_pools_web_client_id;

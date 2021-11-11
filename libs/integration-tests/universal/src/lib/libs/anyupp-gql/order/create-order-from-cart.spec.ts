@@ -1,4 +1,5 @@
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import { getCognitoUsername } from '@bgap/shared/fixtures';
+import { CrudSdk } from '@bgap/crud-gql/api';
 import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
@@ -16,10 +17,11 @@ import {
   throwIfEmptyValue,
   toFixed2Number,
 } from '@bgap/shared/utils';
-import { combineLatest, defer, iif } from 'rxjs';
+import { combineLatest, defer } from 'rxjs';
 import { delay, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
 import {
   createAuthenticatedAnyuppSdk,
+  createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
 import { createTestCart, deleteTestCart } from '../../../seeds/cart';
@@ -37,10 +39,20 @@ import {
   createTestUnitProduct,
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
+import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 const TEST_NAME = 'ORDER_';
 const DYNAMODB_OPERATION_DELAY = 3000;
+
+const getOrder = (crudSdk: CrudApi.CrudSdk, id: string) => {
+  return crudSdk
+    .GetOrder({ id }, { fetchPolicy: 'no-cache' })
+    .pipe(throwIfEmptyValue<CrudApi.Order>());
+};
+
+const getCart = (crudSdk: CrudApi.CrudSdk, id: string) => {
+  return crudSdk.GetCart({ id }, { fetchPolicy: 'no-cache' });
+};
 
 // PRODUCTS to create
 const chainProduct_01: RequiredId<CrudApi.CreateChainProductInput> = {
@@ -54,16 +66,9 @@ const groupProduct_01: RequiredId<CrudApi.CreateGroupProductInput> = {
   takeawayTax: 53,
 };
 const unitProduct_01: RequiredId<CrudApi.CreateUnitProductInput> = {
-  // const unitProduct_0101: Omit<
-  //   CrudApi.CreateUnitProductInput,
-  //   'id' | 'configSets'
-  // > & { id: string; configSets: CrudApi.ProductConfigSetInput[] } = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}${TEST_NAME}unitProduct_01`,
   parentId: groupProduct_01.id,
-  // unitId: unitId_01_to_regen,
-  // chainId: chainId_01_seeded,
-  // configSets: [prodConfigSet_01, prodConfigSet_02],
 };
 
 const orderItemConfigSet_01: CrudApi.OrderItemConfigSetInput = {
@@ -164,53 +169,63 @@ const cart_05_takeaway: RequiredId<CrudApi.CreateCartInput> = {
 };
 
 describe('CreatCartFromOrder mutation test', () => {
-  let authAnyuppSdk: AnyuppSdk;
-  let authenticatedUserId: string;
-
-  const orderDeps = {
-    crudSdk: createIamCrudSdk(),
-  };
+  let authAnyuppSdk: CrudSdk;
+  let authOldAnyuppSdk: AnyuppSdk;
+  let authenticatedUserId = getCognitoUsername(testAdminUsername);
+  const crudSdk = createIamCrudSdk();
 
   const cleanup = () =>
     combineLatest([
       // CleanUP
-      deleteTestCart(cart_01.id, orderDeps.crudSdk),
-      deleteTestCart(cart_02.id, orderDeps.crudSdk),
-      deleteTestCart(cart_03_different_user.id, orderDeps.crudSdk),
-      deleteTestCart(cart_04_different_unit.id, orderDeps.crudSdk),
-      deleteTestCart(cart_05_takeaway.id, orderDeps.crudSdk),
-      deleteTestUnit(unitFixture.unit_01.id, orderDeps.crudSdk),
-      deleteTestGroup(groupFixture.group_01.id, orderDeps.crudSdk),
-      deleteTestUnitProduct(unitProduct_01.id, orderDeps.crudSdk),
-      deleteTestGroupProduct(groupProduct_01.id, orderDeps.crudSdk),
-      deleteTestChainProduct(chainProduct_01.id, orderDeps.crudSdk),
+      deleteTestCart(cart_01.id, crudSdk),
+      deleteTestCart(cart_02.id, crudSdk),
+      deleteTestCart(cart_03_different_user.id, crudSdk),
+      deleteTestCart(cart_04_different_unit.id, crudSdk),
+      deleteTestCart(cart_05_takeaway.id, crudSdk),
+      deleteTestUnit(unitFixture.unit_01.id, crudSdk),
+      deleteTestGroup(groupFixture.group_01.id, crudSdk),
+      deleteTestUnitProduct(unitProduct_01.id, crudSdk),
+      deleteTestGroupProduct(groupProduct_01.id, crudSdk),
+      deleteTestChainProduct(chainProduct_01.id, crudSdk),
     ]);
 
   beforeAll(done => {
-    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
+    createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
       .pipe(
         tap(x => {
-          authAnyuppSdk = x.authAnyuppSdk;
-          authenticatedUserId = x.userAttributes.id;
+          authAnyuppSdk = x;
           cart_01.userId = authenticatedUserId;
           cart_02.userId = authenticatedUserId;
           cart_04_different_unit.userId = authenticatedUserId;
           cart_05_takeaway.userId = authenticatedUserId;
         }),
-        switchMap(cleanup),
+        switchMap(() =>
+          createAuthenticatedAnyuppSdk(
+            testAdminUsername,
+            testAdminUserPassword,
+          ),
+        ),
+        tap(sdk => (authOldAnyuppSdk = sdk.authAnyuppSdk)),
+      )
+      .subscribe(() => done());
+  });
+
+  beforeEach(done => {
+    cleanup()
+      .pipe(
         switchMap(() =>
           // Seeding
           combineLatest([
-            createTestGroup(groupFixture.group_01, orderDeps.crudSdk),
-            createTestUnit(unitFixture.unit_01, orderDeps.crudSdk),
-            createTestChainProduct(chainProduct_01, orderDeps.crudSdk),
-            createTestGroupProduct(groupProduct_01, orderDeps.crudSdk),
-            createTestUnitProduct(unitProduct_01, orderDeps.crudSdk),
-            createTestCart(cart_01, orderDeps.crudSdk),
-            createTestCart(cart_02, orderDeps.crudSdk),
-            createTestCart(cart_03_different_user, orderDeps.crudSdk),
-            createTestCart(cart_04_different_unit, orderDeps.crudSdk),
-            createTestCart(cart_05_takeaway, orderDeps.crudSdk),
+            createTestGroup(groupFixture.group_01, crudSdk),
+            createTestUnit(unitFixture.createUnit_01, crudSdk),
+            createTestChainProduct(chainProduct_01, crudSdk),
+            createTestGroupProduct(groupProduct_01, crudSdk),
+            createTestUnitProduct(unitProduct_01, crudSdk),
+            createTestCart(cart_01, crudSdk),
+            createTestCart(cart_02, crudSdk),
+            createTestCart(cart_03_different_user, crudSdk),
+            createTestCart(cart_04_different_unit, crudSdk),
+            createTestCart(cart_05_takeaway, crudSdk),
           ]),
         ),
         delay(DYNAMODB_OPERATION_DELAY),
@@ -222,117 +237,89 @@ describe('CreatCartFromOrder mutation test', () => {
     await cleanup().toPromise();
   });
 
-  it("should fail in case the cart is not the user's", done => {
-    const cartId = cart_03_different_user.id;
-    const userId = 'DIFFERENT_USER';
-    const input = { id: cartId };
-    iif(
-      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+  describe('Test resolver functions', () => {
+    it("should fail in case the cart is not the user's", done => {
+      const cartId = cart_03_different_user.id;
+      const userId = 'DIFFERENT_USER';
+      const input = { id: cartId };
+
       defer(() =>
-        orderRequestHandler(orderDeps).createOrderFromCart({
-          userId,
+        orderRequestHandler({ crudSdk, userId }).createOrderFromCart({
           input,
         }),
-      ),
-      authAnyuppSdk.CreateOrderFromCart({ input }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  }, 15000);
+      ).subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
+    }, 15000);
 
-  it('should fail without an authenticated userId', done => {
-    defer(() =>
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      orderRequestHandler(orderDeps).createOrderFromCart({} as any),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  });
-  it('should fail without an id in input', done => {
-    defer(() =>
-      orderRequestHandler(orderDeps).createOrderFromCart({
-        userId: 'FOO',
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        input: {} as any,
-      }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  });
-
-  it('should fail without a unit', done => {
-    const cartId = cart_04_different_unit.id;
-    const userId = cart_04_different_unit.userId;
-    const input = { id: cartId };
-
-    iif(
-      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
+    it('should fail without an id in input', done => {
       defer(() =>
-        orderRequestHandler(orderDeps).createOrderFromCart({
-          userId,
+        orderRequestHandler({ crudSdk, userId: 'FOO' }).createOrderFromCart({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          input: {} as any,
+        }),
+      ).subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
+    });
+
+    it('should fail without a unit', done => {
+      const cartId = cart_04_different_unit.id;
+      const userId = cart_04_different_unit.userId;
+      const input = { id: cartId };
+
+      defer(() =>
+        orderRequestHandler({ crudSdk, userId }).createOrderFromCart({
           input,
         }),
-      ),
-      authAnyuppSdk.CreateOrderFromCart({ input }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  }, 15000);
+      ).subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
+    }, 15000);
 
-  it('should fail without a cart', done => {
-    const input = { id: cartFixture.cartId_NotExisting };
-    const userId = 'NOT_IMPORTANT';
+    it('should fail without a cart', done => {
+      const input = { id: cartFixture.cartId_NotExisting };
+      const userId = 'NOT_IMPORTANT';
 
-    iif(
-      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
       defer(() =>
-        orderRequestHandler(orderDeps).createOrderFromCart({
-          userId,
+        orderRequestHandler({ crudSdk, userId }).createOrderFromCart({
           input,
         }),
-      ),
-      authAnyuppSdk.CreateOrderFromCart({ input }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  }, 15000);
+      ).subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
+    }, 15000);
 
-  it('should create an order from a valid cart', done => {
-    const userId = cart_01.userId;
-    const unitId = cart_01.unitId;
-    const input = { id: cart_01.id };
+    const testLogic = (
+      op: (
+        input: CrudApi.CreateOrderFromCartInput,
+      ) => ReturnType<CrudApi.CrudSdk['CreateOrderFromCart']>,
+      userId: string,
+    ) => {
+      const unitId = cart_01.unitId;
+      const input = { id: cart_01.id };
 
-    iif(
-      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-      // To Debug use direct handler call
-      defer(() =>
-        orderRequestHandler(orderDeps).createOrderFromCart({ userId, input }),
-      ),
-      authAnyuppSdk.CreateOrderFromCart({ input }),
-    )
-      .pipe(
+      // Cut the long stream to cope with the max 9 op limit
+      const calc1 = op(input).pipe(
         // check order has been truly created
         filterNullish<string>(),
         delay(DYNAMODB_OPERATION_DELAY),
         switchMap(newOrderId =>
           combineLatest([
-            getOrder(orderDeps.crudSdk, newOrderId),
-            getCart(orderDeps.crudSdk, cart_01.id),
+            getOrder(crudSdk, newOrderId),
+            getCart(crudSdk, cart_01.id),
           ]),
         ),
         tap({
@@ -426,27 +413,20 @@ describe('CreatCartFromOrder mutation test', () => {
             expect(cart).toBeNull();
           },
         }),
-        // *********************************
-        // Secound ORDER with 02 as orderNum
+      );
+      // *********************************
+      // Secound ORDER with 02 as orderNum
+      return calc1.pipe(
         switchMap(() => {
           const input = { id: cart_02.id };
-          return iif(
-            () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-            defer(() =>
-              orderRequestHandler(orderDeps).createOrderFromCart({
-                userId,
-                input,
-              }),
-            ),
-            authAnyuppSdk.CreateOrderFromCart({ input }),
-          );
+          return op(input);
         }),
         delay(1000),
-        throwIfEmptyValue(),
+        throwIfEmptyValue<string>(),
         switchMap(newOrderId =>
           combineLatest([
-            getOrder(orderDeps.crudSdk, newOrderId),
-            getCart(orderDeps.crudSdk, cart_02.id),
+            getOrder(crudSdk, newOrderId).pipe(),
+            getCart(crudSdk, cart_02.id).pipe(),
           ]),
         ),
         tap({
@@ -458,71 +438,306 @@ describe('CreatCartFromOrder mutation test', () => {
 
             // Cart should be deleted
             expect(cart).toBeNull();
-            done();
           },
         }),
         throwIfEmpty(),
-      )
-      .subscribe();
-  }, 30000);
+      );
+    };
 
-  it('should create a takeaway order from a takeaway cart', done => {
-    const theCart = cart_05_takeaway;
-    const userId = theCart.userId;
-    const unitId = theCart.unitId;
-    const input = { id: theCart.id };
+    it('should create an order from a valid cart with resolver function', done => {
+      const userId = cart_01.userId;
 
-    iif(
-      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-      // To Debug use direct handler call
+      testLogic(
+        input =>
+          defer(() =>
+            orderRequestHandler({ crudSdk, userId }).createOrderFromCart({
+              input,
+            }),
+          ),
+        userId,
+      ).subscribe(() => done());
+    }, 30000);
+
+    it('should create an order from a valid cart with server', done => {
+      const userId = cart_01.userId;
+
+      testLogic(
+        input => authAnyuppSdk.CreateOrderFromCart({ input }),
+        userId,
+      ).subscribe(() => done());
+    }, 30000);
+
+    it('should create an order from a valid cart with old API server', done => {
+      const userId = cart_01.userId;
+
+      testLogic(
+        input => authOldAnyuppSdk.CreateOrderFromCart({ input }),
+        userId,
+      ).subscribe(() => done());
+    }, 30000);
+
+    it('should create a takeaway order from a takeaway cart', done => {
+      const theCart = cart_05_takeaway;
+      const userId = theCart.userId;
+      const unitId = theCart.unitId;
+      const input = { id: theCart.id };
+
       defer(() =>
-        orderRequestHandler(orderDeps).createOrderFromCart({ userId, input }),
-      ),
-      authAnyuppSdk.CreateOrderFromCart({ input }),
-    )
-      .pipe(
-        // check order has been truly created
-        filterNullish<string>(),
-        delay(DYNAMODB_OPERATION_DELAY),
-        switchMap(newOrderId =>
-          combineLatest([
-            getOrder(orderDeps.crudSdk, newOrderId),
-            getCart(orderDeps.crudSdk, theCart.id),
-          ]),
-        ),
-
-        tap({
-          next([order, cart]) {
-            expect(order).not.toBeNull();
-            expect(order.userId).toEqual(userId);
-            expect(order.unitId).toEqual(unitId);
-
-            // Serving and OrderMode checks
-            expect(order.orderMode).toEqual(CrudApi.OrderMode.instant);
-            expect(order.servingMode).toEqual(CrudApi.ServingMode.takeaway);
-            // Items cheks
-            expect(order.items[0]).not.toBeNull();
-            expect(order.items[0].priceShown.tax).toEqual(
-              groupProduct_01.takeawayTax,
-            );
-
-            // Cart should be deleted
-            expect(cart).toBeNull();
-            done();
-          },
-        }),
-        throwIfEmpty(),
+        orderRequestHandler({ crudSdk, userId }).createOrderFromCart({ input }),
       )
-      .subscribe();
-  }, 30000);
+        .pipe(
+          // check order has been truly created
+          filterNullish<string>(),
+          delay(DYNAMODB_OPERATION_DELAY),
+          switchMap(newOrderId =>
+            combineLatest([
+              getOrder(crudSdk, newOrderId),
+              getCart(crudSdk, theCart.id),
+            ]),
+          ),
+
+          tap({
+            next([order, cart]) {
+              expect(order).not.toBeNull();
+              expect(order.userId).toEqual(userId);
+              expect(order.unitId).toEqual(unitId);
+
+              // Serving and OrderMode checks
+              expect(order.orderMode).toEqual(CrudApi.OrderMode.instant);
+              expect(order.servingMode).toEqual(CrudApi.ServingMode.takeaway);
+              // Items cheks
+              expect(order.items[0]).not.toBeNull();
+              expect(order.items[0].priceShown.tax).toEqual(
+                groupProduct_01.takeawayTax,
+              );
+
+              // Cart should be deleted
+              expect(cart).toBeNull();
+              done();
+            },
+          }),
+          throwIfEmpty(),
+        )
+        .subscribe();
+    }, 30000);
+  });
+
+  describe('Test resolvers on server', () => {
+    it("should fail in case the cart is not the user's", done => {
+      const cartId = cart_03_different_user.id;
+      const input = { id: cartId };
+      authAnyuppSdk.CreateOrderFromCart({ input }).subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
+    }, 15000);
+
+    it('should fail without a unit', done => {
+      const cartId = cart_04_different_unit.id;
+      const input = { id: cartId };
+
+      authAnyuppSdk.CreateOrderFromCart({ input }).subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
+    }, 15000);
+
+    it('should fail without a cart', done => {
+      const input = { id: cartFixture.cartId_NotExisting };
+
+      authAnyuppSdk.CreateOrderFromCart({ input }).subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot();
+          done();
+        },
+      });
+    }, 15000);
+
+    it('should create an order from a valid cart', done => {
+      const userId = cart_01.userId;
+      const unitId = cart_01.unitId;
+      const input = { id: cart_01.id };
+
+      authAnyuppSdk
+        .CreateOrderFromCart({ input })
+        .pipe(
+          // check order has been truly created
+          filterNullish<string>(),
+          delay(DYNAMODB_OPERATION_DELAY),
+          switchMap(newOrderId =>
+            combineLatest([
+              getOrder(crudSdk, newOrderId),
+              getCart(crudSdk, cart_01.id),
+            ]),
+          ),
+          tap({
+            next([order, cart]) {
+              expect(order).not.toBeNull();
+              expect(order.userId).toEqual(userId);
+              expect(order.unitId).toEqual(unitId);
+              expect(order.orderNum).toEqual(
+                `${cart_01.place?.table}${cart_01.place?.seat}01`,
+              );
+              expect(order.archived).toEqual(false);
+              // Serving and OrderMode checks
+              expect(order.orderMode).toEqual(CrudApi.OrderMode.instant);
+              expect(order.servingMode).toEqual(CrudApi.ServingMode.inplace);
+
+              // Items cheks
+              expect(order.items[0]).not.toBeNull();
+              // allergens
+              expect(order.items[0].allergens).not.toBeNull();
+              expect(order.items[0].allergens).toEqual(
+                cart_01.items[0].allergens,
+              );
+              // ProductType
+              expect(order.items[0].productType).not.toBeNull();
+              expect(order.items[0].productType).toEqual(EProductType.FOOD);
+
+              // The item.priceShown should NOT contain the configSetPrices
+              const priceShownBasicWithoutConfigSet = {
+                currency: 'EUR',
+                pricePerUnit: 1,
+                priceSum: toFixed2Number(orderItemPrice_01),
+                tax: 27,
+                taxSum: toFixed2Number(orderItemTax_01),
+              };
+              expect(order.items[0].priceShown).toEqual(
+                priceShownBasicWithoutConfigSet,
+              );
+              expect(order.items[1].priceShown).toEqual(
+                priceShownBasicWithoutConfigSet,
+              );
+              expect(order.items[2].priceShown).toEqual(
+                priceShownBasicWithoutConfigSet,
+              );
+
+              // SumPriceShown contains the configSets too
+              expect(order.items[0].sumPriceShown).toEqual(
+                priceShownBasicWithoutConfigSet, // the item 0 has no config sets
+              );
+              expect(order.items[1].sumPriceShown).toEqual({
+                currency: 'EUR',
+                pricePerUnit: toFixed2Number(orderItemPricePerUnit_02),
+                priceSum: toFixed2Number(orderItemPrice_02),
+                tax: 27,
+                taxSum: toFixed2Number(orderItemTax_02),
+              });
+              expect(order.items[2].sumPriceShown).toEqual({
+                currency: 'EUR',
+                pricePerUnit: toFixed2Number(orderItemPricePerUnit_03),
+                priceSum: toFixed2Number(orderItemPrice_03),
+                tax: 27,
+                taxSum: toFixed2Number(orderItemTax_03),
+              });
+
+              // expect(
+              //   order.items[0].allergens?.sort(
+              //     (a, b) => (a && b && a > b ? 1 : -1), // using sort it will be in the same order all the time
+              //   ),
+              // ).toMatchSnapshot(
+              //   'Should contain all the allergens without duplication',
+              // );
+
+              // The 2nd item has a configSet
+              expect(order.items[1].configSets).not.toBeNull();
+              // That is the same as it was in the CART
+              expect(order.items[1].configSets).toEqual(
+                cart_01.items[1].configSets,
+              );
+              expect(order.sumPriceShown).toEqual({
+                currency: 'EUR',
+                pricePerUnit: 0,
+                priceSum: toFixed2Number(
+                  orderItemPrice_01 + orderItemPrice_02 + orderItemPrice_03,
+                ),
+                tax: 0,
+                taxSum: toFixed2Number(
+                  orderItemTax_01 + orderItemTax_02 + orderItemTax_03,
+                ),
+              });
+
+              // Cart should be deleted
+              expect(cart).toBeNull();
+            },
+          }),
+          // *********************************
+          // Secound ORDER with 02 as orderNum
+          switchMap(() => {
+            const input = { id: cart_02.id };
+            return authAnyuppSdk.CreateOrderFromCart({ input });
+          }),
+          delay(1000),
+          throwIfEmptyValue(),
+          switchMap(newOrderId =>
+            combineLatest([
+              getOrder(crudSdk, newOrderId),
+              getCart(crudSdk, cart_02.id),
+            ]),
+          ),
+          tap({
+            next([order, cart]) {
+              expect(order).not.toBeNull();
+              expect(order?.orderNum).toEqual(
+                `${cart_02.place?.table}${cart_02.place?.seat}02`,
+              );
+
+              // Cart should be deleted
+              expect(cart).toBeNull();
+              done();
+            },
+          }),
+          throwIfEmpty(),
+        )
+        .subscribe();
+    }, 30000);
+
+    it('should create a takeaway order from a takeaway cart', done => {
+      const theCart = cart_05_takeaway;
+      const userId = theCart.userId;
+      const unitId = theCart.unitId;
+      const input = { id: theCart.id };
+
+      authAnyuppSdk
+        .CreateOrderFromCart({ input })
+        .pipe(
+          // check order has been truly created
+          filterNullish<string>(),
+          delay(DYNAMODB_OPERATION_DELAY),
+          switchMap(newOrderId =>
+            combineLatest([
+              getOrder(crudSdk, newOrderId),
+              getCart(crudSdk, theCart.id),
+            ]),
+          ),
+
+          tap({
+            next([order, cart]) {
+              expect(order).not.toBeNull();
+              expect(order.userId).toEqual(userId);
+              expect(order.unitId).toEqual(unitId);
+
+              // Serving and OrderMode checks
+              expect(order.orderMode).toEqual(CrudApi.OrderMode.instant);
+              expect(order.servingMode).toEqual(CrudApi.ServingMode.takeaway);
+              // Items cheks
+              expect(order.items[0]).not.toBeNull();
+              expect(order.items[0].priceShown.tax).toEqual(
+                groupProduct_01.takeawayTax,
+              );
+
+              // Cart should be deleted
+              expect(cart).toBeNull();
+              done();
+            },
+          }),
+          throwIfEmpty(),
+        )
+        .subscribe();
+    }, 30000);
+  });
 });
-
-const getOrder = (crudSdk: CrudApi.CrudSdk, id: string) => {
-  return crudSdk
-    .GetOrder({ id }, { fetchPolicy: 'no-cache' })
-    .pipe(throwIfEmptyValue<CrudApi.Order>());
-};
-
-const getCart = (crudSdk: CrudApi.CrudSdk, id: string) => {
-  return crudSdk.GetCart({ id }, { fetchPolicy: 'no-cache' });
-};

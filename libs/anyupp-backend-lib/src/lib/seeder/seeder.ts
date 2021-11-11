@@ -1,8 +1,4 @@
-import {
-  createAdminUser as resolverCreateAdminUser,
-  ResolverErrorCode,
-  unitRequestHandler,
-} from '@bgap/anyupp-gql/backend';
+import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   getCognitoUsername,
@@ -18,7 +14,7 @@ import { EProductType } from '@bgap/shared/types';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import * as R from 'ramda';
-import { combineLatest, concat, defer, from, of, throwError } from 'rxjs';
+import { combineLatest, concat, defer, from, of } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -69,94 +65,27 @@ const password = testAdminUserPassword;
 export const seedAdminUser = (deps: SeederDependencies) =>
   pipe(
     userData.map(({ email, username, phone }) =>
-      deps.crudSdk.DeleteAdminUser({ input: { id: username } }).pipe(
-        catchError(err => {
-          console.warn(
-            `Temporarily ignored error during admin user deletion: ${err}`,
-          );
-          return of({});
-        }),
+      createAdminUser(
+        username,
+        email,
+        phone,
+      )(deps).pipe(
         switchMap(() =>
-          defer(() =>
-            from(
-              resolverCreateAdminUser({
-                input: {
-                  name: username,
-                  phone,
-                  email,
-                },
-              })({
-                ...deps,
-                userNameGenerator: () => username,
-              }),
-            ),
+          from(
+            deps.cognitoidentityserviceprovider
+              .adminSetUserPassword({
+                UserPoolId: deps.userPoolId,
+                Username: username,
+                Password: password,
+                Permanent: true,
+              })
+              .promise(),
           ),
         ),
-        catchError(err => {
-          if (err.code === ResolverErrorCode.UserAlreadyExists) {
-            console.warn(`${email} user already exists, no problem...`);
-            return of({});
-          }
-
-          return throwError(err);
-        }),
+        tap(() => console.log('USER PASSWORD SET', username)),
       ),
     ),
     combineLatest,
-    switchMap(() =>
-      pipe(
-        userData.map(({ username }) => ({
-          UserPoolId: deps.userPoolId,
-          Username: username,
-          Password: password,
-          Permanent: true,
-        })),
-
-        fp.map(params => [
-          defer(() =>
-            deps.cognitoidentityserviceprovider
-              .adminSetUserPassword(params)
-              .promise(),
-          ).pipe(tap(() => console.log('USER PASSWORD SET', params))),
-
-          defer(() =>
-            deps.cognitoidentityserviceprovider
-              .adminUpdateUserAttributes({
-                UserPoolId: deps.userPoolId,
-                Username: params.Username,
-                UserAttributes: [
-                  {
-                    Name: 'email_verified',
-                    Value: 'true',
-                  },
-                  {
-                    Name: 'phone_number_verified',
-                    Value: 'true',
-                  },
-                ],
-              })
-              .promise(),
-          ).pipe(
-            tap(() => console.log('USER EMAIL AND PHONE VERIFIED', params)),
-          ),
-        ]),
-        fp.flatten,
-        combineLatest,
-      ),
-    ),
-    switchMap(() =>
-      pipe(
-        userData.map(({ username, email }) =>
-          createAdminUser(
-            username,
-            email,
-          )(deps).pipe(
-            tap(() => console.log('USER CREATED in DB', username, email)),
-          ),
-        ),
-        combineLatest,
-      ),
-    ),
   );
 
 export const seedBusinessData = (deps: SeederDependencies) =>
@@ -250,8 +179,8 @@ export const seedBusinessData = (deps: SeederDependencies) =>
 const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
   of('start').pipe(
     switchMap(() =>
-      defer(() =>
-        unitRequestHandler({ crudSdk: deps.crudSdk }).regenerateUnitData({
+      from(
+        unitRequestHandler(deps.crudSdk).regenerateUnitData({
           input: { id: unitFixture.unitId_seeded_01 },
         }),
       ),
@@ -353,7 +282,7 @@ const seedConsumerUser = (deps: SeederDependencies, userData: ConsumerUser) => {
       Permanent: true,
     })),
     switchMap(params =>
-      defer(() =>
+      from(
         deps.cognitoidentityserviceprovider
           .adminSetUserPassword(params)
           .promise(),
@@ -422,5 +351,4 @@ export const seedAll = (deps: SeederDependencies) =>
     ),
     delay(5000),
     switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
-    catchError(() => of(true)),
   );

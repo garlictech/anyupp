@@ -16,7 +16,6 @@ import { map, mergeMap, switchMap, toArray } from 'rxjs/operators';
 import { getTimezoneFromLocation } from '../../utils';
 import { calculateActualPricesAndCheckActivity } from '../product/calculate-product';
 import { mergeAllProductLayers } from '../product/merge-product';
-import { UnitsResolverDeps } from './utils';
 
 export const calculateAndFilterNotActiveProducts = (
   inTimeZone: string,
@@ -35,14 +34,14 @@ export const calculateAndFilterNotActiveProducts = (
   }, <MergedProductWithPrices[]>[]);
 
 export const listUnitProductsForAUnit =
-  (deps: UnitsResolverDeps) => (unitId: string) => {
+  (crudSdk: CrudApi.CrudSdk) => (unitId: string) => {
     const input: CrudApi.SearchUnitProductsQueryVariables = {
       filter: { unitId: { eq: unitId } },
     };
     const throwOnEmptyList = (items: CrudApi.UnitProduct[]) =>
       items.length > 0 ? of(items) : throwError(getNoProductInUnitError());
 
-    return getAllPaginatedData(deps.crudSdk.SearchUnitProducts, {
+    return getAllPaginatedData(crudSdk.SearchUnitProducts, {
       query: input,
       options: { fetchPolicy: 'no-cache' },
     }).pipe(
@@ -54,18 +53,16 @@ export const listUnitProductsForAUnit =
 export const get3LayerFromAUnitProduct =
   (unitProduct: CrudApi.UnitProduct) =>
   (
-    deps: UnitsResolverDeps,
+    crudSdk: CrudApi.CrudSdk,
   ): Observable<{
     chainProduct: CrudApi.ChainProduct;
     groupProduct: CrudApi.GroupProduct;
     unitProduct: CrudApi.UnitProduct;
   }> => {
-    return from(
-      deps.crudSdk.GetGroupProduct({ id: unitProduct.parentId }),
-    ).pipe(
+    return from(crudSdk.GetGroupProduct({ id: unitProduct.parentId })).pipe(
       throwIfEmptyValue<CrudApi.GroupProduct>(),
       switchMap(groupProduct =>
-        from(deps.crudSdk.GetChainProduct({ id: groupProduct.parentId })).pipe(
+        from(crudSdk.GetChainProduct({ id: groupProduct.parentId })).pipe(
           throwIfEmptyValue<CrudApi.ChainProduct>(),
           map(chainProduct => ({ unitProduct, groupProduct, chainProduct })),
         ),
@@ -74,29 +71,32 @@ export const get3LayerFromAUnitProduct =
   };
 
 export const getMergedProductsFromUnitProducts =
-  (deps: UnitsResolverDeps) => (unitProducts: Array<CrudApi.UnitProduct>) =>
+  (crudSdk: CrudApi.CrudSdk) => (unitProducts: Array<CrudApi.UnitProduct>) =>
     from(unitProducts).pipe(
-      mergeMap(unitProduct => get3LayerFromAUnitProduct(unitProduct)(deps), 2),
+      mergeMap(
+        unitProduct => get3LayerFromAUnitProduct(unitProduct)(crudSdk),
+        2,
+      ),
       map(productLayers => mergeAllProductLayers(productLayers)),
       toArray(),
     );
 
 export const getTimezoneForUnit =
-  (deps: UnitsResolverDeps) =>
+  (crudSdk: CrudApi.CrudSdk) =>
   (unitId: string): Observable<string> =>
-    from(deps.crudSdk.GetUnit({ id: unitId })).pipe(
+    from(crudSdk.GetUnit({ id: unitId })).pipe(
       throwIfEmptyValue<CrudApi.Unit>(),
       map(unit => unit.timeZone || 'Europe/Budapest'),
     );
 
 export const getProductComponentSetMap =
-  (deps: UnitsResolverDeps) =>
+  (crudSdk: CrudApi.CrudSdk) =>
   (chainId: string): Observable<ProductComponentSetMap> => {
     const input: CrudApi.SearchProductComponentSetsQueryVariables = {
       filter: { chainId: { eq: chainId } },
     };
 
-    return getAllPaginatedData(deps.crudSdk.SearchProductComponentSets, {
+    return getAllPaginatedData(crudSdk.SearchProductComponentSets, {
       query: input,
       options: { fetchPolicy: 'no-cache' },
     }).pipe(
@@ -107,12 +107,12 @@ export const getProductComponentSetMap =
     );
   };
 export const getProductComponentMap =
-  (deps: UnitsResolverDeps) =>
+  (crudSdk: CrudApi.CrudSdk) =>
   (chainId: string): Observable<ProductComponentMap> => {
     const input: CrudApi.SearchProductComponentsQueryVariables = {
       filter: { chainId: { eq: chainId } },
     };
-    return getAllPaginatedData(deps.crudSdk.SearchProductComponents, {
+    return getAllPaginatedData(crudSdk.SearchProductComponents, {
       query: input,
       options: { fetchPolicy: 'no-cache' },
     }).pipe(

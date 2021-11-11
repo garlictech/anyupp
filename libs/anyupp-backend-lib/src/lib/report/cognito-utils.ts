@@ -4,7 +4,6 @@ import CognitoIdentityServiceProvider, {
 import { filterNullish } from '@bgap/shared/utils';
 import { defer, EMPTY, from } from 'rxjs';
 import { expand, map, reduce, shareReplay } from 'rxjs/operators';
-
 import { ReportDeps, ReportUserData } from './interfaces';
 import { fourWeeksAgo, startOfThisYear, endOfDay } from './report-utils';
 

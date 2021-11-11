@@ -1,4 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { unitFixture } from '@bgap/shared/fixtures';
 import { DateTime } from 'luxon';
@@ -54,7 +53,7 @@ describe('Unit utils', () => {
       const openUnit_03_openStarted: CrudApi.Unit = {
         ...unitBase,
         id: 'openUnit_03_openStarted',
-        open: { to: '2100-01-01' },
+        open: { to: '2100-01-01', from: '2100-01-01' },
       };
       const openUnit_04_allways: CrudApi.Unit = {
         ...unitBase,
@@ -94,12 +93,7 @@ describe('Unit utils', () => {
             closedUnit_02_afterTo,
           ],
         }).map(pluckId),
-      ).toEqual([
-        openUnit_01_openEnded.id,
-        openUnit_02_inInterval.id,
-        openUnit_03_openStarted.id,
-        openUnit_04_allways.id,
-      ]);
+      ).toMatchSnapshot();
     });
 
     describe("using the unit's timezone", () => {
@@ -484,7 +478,7 @@ describe('Unit utils', () => {
       //     to: 1626134400000,
       //   },
       // }
-      const openingHours_closed: AnyuppApi.OpeningHoursByDate = {
+      const openingHours_closed: CrudApi.OpeningHoursByDate = {
         closed: true,
         date: 'NOT IMPORTANT',
       };
@@ -496,7 +490,7 @@ describe('Unit utils', () => {
       ).toEqual(false);
     });
     it('should return FALSE in case the given time is outside the given openingHours', () => {
-      const openingHours_open: AnyuppApi.OpeningHoursByDate = {
+      const openingHours_open: CrudApi.OpeningHoursByDate = {
         date: '2021-07-12',
         from: DateTime.fromISO('2021-07-12T12:00', {
           zone: timezoneBudapest,
@@ -517,7 +511,7 @@ describe('Unit utils', () => {
       ).toEqual(false);
     });
     it('should return TRUE in case the given time is in the openingHours input', () => {
-      const openingHours_open: AnyuppApi.OpeningHoursByDate = {
+      const openingHours_open: CrudApi.OpeningHoursByDate = {
         date: '2021-07-12',
         from: DateTime.fromISO('2021-07-12T12:00', {
           zone: timezoneBudapest,

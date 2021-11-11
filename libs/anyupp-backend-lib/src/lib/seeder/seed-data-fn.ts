@@ -1,5 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import * as R from 'ramda';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
@@ -14,10 +12,10 @@ import { pipe } from 'fp-ts/lib/function';
 import { DateTime } from 'luxon';
 import { combineLatest, concat, Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
+import * as R from 'ramda';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
-  anyuppSdk: AnyuppApi.AnyuppSdk;
   userPoolId: string;
   consumerUserPoolId: string;
   cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
@@ -125,16 +123,17 @@ export const createTestGroup =
   };
 
 export const createAdminUser =
-  (adminUserId: string, email: string) => (deps: SeederDependencies) => {
+  (adminUserId: string, email: string, phone: string) =>
+  (deps: SeederDependencies) => {
     console.debug('createAdminUser', {
       adminUserId,
       email,
     });
     const input: DeletableInput<CrudApi.CreateAdminUserInput> = {
       id: adminUserId,
-      name: 'John Doe',
+      name: adminUserId,
       email,
-      phone: '123123213',
+      phone,
       profileImage:
         'https://ocdn.eu/pulscms-transforms/1/-rxktkpTURBXy9jMzIxNGM4NWI2NmEzYTAzMjkwMTQ1NGMwZmQ1MDE3ZS5wbmeSlQMAAM0DFM0Bu5UCzQSwAMLD',
     };
@@ -153,7 +152,7 @@ export const createTestUnit =
       unitIdx,
     });
     const input: CrudApi.CreateUnitInput = {
-      ...unitFixture.unitBase,
+      ...R.omit(['createdAt', 'updatedAt'], unitFixture.unitBase),
       id: generateUnitId(chainIdx, groupIdx, unitIdx),
       groupId: generateGroupId(chainIdx, groupIdx),
       chainId: generateChainId(chainIdx),
@@ -382,7 +381,7 @@ export const createTestUnitsForOrderHandling =
         unitFixture.unitPickupTakeaway,
       ],
       R.map(unit => ({
-        ...unit,
+        ...R.omit(['createdAt', 'updatedAt'], unit),
         groupId: generateGroupId(1, 1),
         chainId: generateChainId(1),
       })),

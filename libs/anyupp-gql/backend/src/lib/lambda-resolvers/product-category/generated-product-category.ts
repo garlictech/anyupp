@@ -1,7 +1,10 @@
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
-import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
+import {
+  filterNullishElements,
+  filterNullishGraphqlListWithDefault,
+} from '@bgap/shared/utils';
 import { iif, Observable, of } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 import { createItems, deleteItems } from '../../database';
@@ -19,11 +22,7 @@ export const reGenerateActiveProductCategoriesForAUnit =
   }: {
     unitId: string;
     generatedProducts: Array<CrudApi.CreateGeneratedProductInput>;
-  }) => {
-    // if (!generatedProducts) {
-    //   return of(true);
-    // }
-
+  }): Observable<string[]> => {
     return of(unitId).pipe(
       switchMap(deleteGeneratedProductCategoriesForAUnit(deps)),
       mapTo(generatedProducts),
@@ -35,9 +34,10 @@ export const reGenerateActiveProductCategoriesForAUnit =
             map(productCategoryMap => ({ productCategoryMap, unitId })),
             map(fromProductCategoryMapToGeneratedProductCategoryInput),
             switchMap(createGeneratedProductCategoriesInDb),
-            mapTo(true),
+            map(() => generatedProducts.map(prop => prop.id)),
+            filterNullishElements(),
           ),
-          of(true),
+          of([]),
         ),
       ),
     );

@@ -12,7 +12,7 @@ const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 const TEST_NAME = 'DYNAMO_DB_TEST_';
 
 const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
-  ...unitFixture.unit_01,
+  ...unitFixture.createUnit_01,
   id: `${testIdPrefix}unit_${TEST_NAME}_id`,
   lastOrderNum: undefined,
 };

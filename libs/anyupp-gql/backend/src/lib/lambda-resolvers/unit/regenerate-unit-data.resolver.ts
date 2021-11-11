@@ -1,10 +1,13 @@
 import { pipeDebug } from '@bgap/shared/utils';
-import { combineLatest, of } from 'rxjs';
-import { map, mapTo, switchMap } from 'rxjs/operators';
-import { deleteGeneratedProductsForAUnitFromDb } from '../product';
+import { combineLatest } from 'rxjs';
+import { map, mapTo, shareReplay, switchMap, takeLast } from 'rxjs/operators';
 import { reGenerateActiveProductCategoriesForAUnit } from '../product-category';
 import { toCreateGeneratedProductInputType } from '../product/calculate-product';
-import { createGeneratedProductsInDb } from '../product/generated-product';
+import {
+  createGeneratedProductsInDb,
+  deleteGeneratedProductsItemsFromDb,
+  listGeneratedProductsForUnits,
+} from '../product/generated-product';
 import {
   calculateAndFilterNotActiveProducts,
   getMergedProductsFromUnitProducts,
@@ -13,10 +16,12 @@ import {
   getTimezoneForUnit,
   listUnitProductsForAUnit,
 } from './regenerate-unit-data-utils';
-import { RegenerateUnitDataHandler, UnitsResolverDeps } from './utils';
+import { RegenerateUnitDataHandler } from './utils';
+import * as CrudApi from '@bgap/crud-gql/api';
+import * as R from 'ramda';
 
 export const regenerateUnitData =
-  (deps: UnitsResolverDeps): RegenerateUnitDataHandler =>
+  (crudSdk: CrudApi.CrudSdk): RegenerateUnitDataHandler =>
   (unitId: string) => {
     console.log(
       '### ~ file: REGENERATE-unit-data.resolver.ts 02 ~ line 36 ~ unitId',
@@ -24,16 +29,13 @@ export const regenerateUnitData =
     );
 
     // Clear previously generated products for the given UNIT
-    return of(unitId).pipe(
-      switchMap(deleteGeneratedProductsForAUnitFromDb(deps.crudSdk)),
-      mapTo(unitId),
-      switchMap(listUnitProductsForAUnit(deps)),
-      switchMap(getMergedProductsFromUnitProducts(deps)),
+    const calc1 = listUnitProductsForAUnit(crudSdk)(unitId).pipe(
+      switchMap(getMergedProductsFromUnitProducts(crudSdk)),
       switchMap(mergedProducts =>
         combineLatest([
-          getTimezoneForUnit(deps)(unitId),
-          getProductComponentSetMap(deps)(mergedProducts[0].chainId), // all the unitProduct for the same unit has the same chainID
-          getProductComponentMap(deps)(mergedProducts[0].chainId), // all the unitProduct for the same unit has the same chainID
+          getTimezoneForUnit(crudSdk)(unitId),
+          getProductComponentSetMap(crudSdk)(mergedProducts[0].chainId), // all the unitProduct for the same unit has the same chainID
+          getProductComponentMap(crudSdk)(mergedProducts[0].chainId), // all the unitProduct for the same unit has the same chainID
         ]).pipe(
           map(
             ([unitTimeZone, productComponentSetMap, productComponentMap]) => ({
@@ -53,6 +55,9 @@ export const regenerateUnitData =
           props.mergedProducts,
         ),
       })),
+    );
+
+    const regenerate$ = calc1.pipe(
       map(props => ({
         ...props,
         generatedProducts: props.products.map(product =>
@@ -69,10 +74,26 @@ export const regenerateUnitData =
         createGeneratedProductsInDb(props.generatedProducts).pipe(mapTo(props)),
       ),
       switchMap(props =>
-        reGenerateActiveProductCategoriesForAUnit(deps)({
+        reGenerateActiveProductCategoriesForAUnit({ crudSdk })({
           unitId,
           generatedProducts: props.generatedProducts,
         }).pipe(pipeDebug('### REGENERATE-result')),
       ),
+      shareReplay(1),
+    );
+
+    const listOriginalGeneratedProducts$ = listGeneratedProductsForUnits(
+      crudSdk,
+    )([unitId]).pipe(
+      map(generatedProducts => generatedProducts.map(prop => prop.id)),
+    );
+
+    return combineLatest(listOriginalGeneratedProducts$, regenerate$).pipe(
+      map(([originalProducts, newProducts]) =>
+        R.difference(originalProducts, newProducts),
+      ),
+      switchMap(deleteGeneratedProductsItemsFromDb),
+      takeLast(1),
+      mapTo(true),
     );
   };

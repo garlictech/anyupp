@@ -88,6 +88,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
+      externalId: 'EXTERNAL_ID',
     },
     PRODUCT_COMPONENT_ID_02: {
       id: 'PRODUCT_COMPONENT_ID_02',
@@ -97,6 +98,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
+      externalId: 'EXTERNAL_ID',
     },
   };
   const prodComponentSetMap: ProductComponentSetMap = {
@@ -111,6 +113,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       updatedAt: 'UPDATED_AT',
       supportedServingModes: defaultSupportedServingModes,
       items: ['PRODUCT_COMPONENT_ID_01', 'PRODUCT_COMPONENT_ID_02'],
+      externalId: 'EXTERNAL_ID',
     },
   };
   const timezone01 = 'Europe/London';

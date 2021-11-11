@@ -209,25 +209,25 @@ const isTakeawayCart = (cart: CrudApi.Cart) =>
   cart.servingMode === CrudApi.ServingMode.takeaway;
 
 export const createOrderFromCart =
-  (userId: string, cartId: string) => (deps: OrderResolverDeps) => {
-    return of('START').pipe(
-      switchMap(() =>
-        getCart(cartId)(deps).pipe(
-          // CART.USERID CHECK
-          // pipeDebug('### CART'),
-          throwIfEmptyValue<CrudApi.Cart>(),
-          switchMap(cart =>
-            cart.userId === userId
-              ? of(cart)
-              : throwError(getCartIsMissingError()),
-          ),
-          // CART.PaymentMode CHECK
-          switchMap(cart =>
-            cart.paymentMode !== undefined
-              ? of(cart)
-              : throwError(missingParametersError('cart.paymentMode')),
-          ),
-        ),
+  (cartId: string) =>
+  (
+    deps: OrderResolverDeps,
+  ): ReturnType<CrudApi.CrudSdk['CreateOrderFromCart']> => {
+    console.debug(
+      `Handling createOrderFromCart: cartId=${cartId}, userId=${deps.userId}`,
+    );
+    // split a long stream to help the type checker
+    const calc1 = getCart(cartId)(deps).pipe(
+      throwIfEmptyValue<CrudApi.Cart>(),
+      switchMap(cart =>
+        cart.userId === deps.userId
+          ? of(cart)
+          : throwError(getCartIsMissingError()),
+      ),
+      switchMap(cart =>
+        cart.paymentMode !== undefined
+          ? of(cart)
+          : throwError(missingParametersError('cart.paymentMode')),
       ),
       switchMap(cart =>
         // create catchError and custom error (Covered by #744)
@@ -239,15 +239,6 @@ export const createOrderFromCart =
               ? of(props)
               : throwError(getUnitIsNotAcceptingOrdersError()),
           ),
-          // Re enable this (Covered by #746)
-          // INSPECTIONS
-          //     // if (
-          //     //   !userLocation ||
-          //     //   distanceBetweenLocationsInMeters(userLocation, unit.address.location) >
-          //     //     USER_UNIT_DISTANCE_THRESHOLD_IN_METER
-          //     // ) {
-          //     //   console.log('###: User is too far from the UNIT error should be thrown');
-          //     // }
         ),
       ),
       switchMap(props =>
@@ -266,9 +257,12 @@ export const createOrderFromCart =
           place: props.cart.place,
         }).pipe(map(orderNum => ({ ...props, orderNum }))),
       ),
+    );
+
+    return calc1.pipe(
       switchMap(props =>
         getOrderItems({
-          userId,
+          userId: deps.userId,
           currency: props.currency,
           cartItems: props.cart.items,
           takeaway: isTakeawayCart(props.cart),
@@ -277,11 +271,10 @@ export const createOrderFromCart =
       map(props => ({
         ...props,
         orderInput: toOrderInputFormat({
-          userId,
+          userId: deps.userId,
           unitId: props.cart.unitId,
           orderNum: props.orderNum,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          paymentMode: props.cart.paymentMode!, // see missingParametersCheck above
+          paymentMode: props.cart.paymentMode as CrudApi.PaymentMode,
           items: props.items,
           place: props.cart.place,
           orderMode: CrudApi.OrderMode.instant, // Currenty this is a FIXED value
@@ -290,14 +283,12 @@ export const createOrderFromCart =
       })),
       switchMap(props =>
         createOrderInDb(props.orderInput)(deps).pipe(
-          map(x => ({ ...props, orderId: x?.id })),
+          switchMap(item =>
+            deps.crudSdk
+              .DeleteCart({ input: { id: props.cart.id } })
+              .pipe(mapTo(item?.id)),
+          ),
         ),
-      ),
-      // Remove the cart from the db after the order has been created successfully
-      switchMap(props =>
-        deps.crudSdk
-          .DeleteCart({ input: { id: props.cart.id } })
-          .pipe(mapTo(props.orderId)),
       ),
     );
   };

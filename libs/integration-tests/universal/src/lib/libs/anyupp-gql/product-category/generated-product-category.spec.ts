@@ -138,7 +138,7 @@ describe('GenerateProductCategory tests', () => {
         ),
       );
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       await cleanup()
         .pipe(
           delay(DYNAMODB_OPERATION_DELAY),
@@ -173,6 +173,7 @@ describe('GenerateProductCategory tests', () => {
         )
         .toPromise();
     }, 25000);
+
     afterAll(() => cleanup().toPromise(), 15000);
 
     const startStateCheck = () =>
