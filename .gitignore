@@ -79,3 +79,5 @@ apps/crud-backend/home/
 apps/crud-backend/src/
 
 weeklyReport.xlsx
+
+.angular/

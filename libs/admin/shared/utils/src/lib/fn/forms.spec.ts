@@ -1,10 +1,10 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TIME_FORMAT_PATTERN } from '../const';
 import {
   timezoneBudapest,
   timezoneLondon,
   timezoneUSCentral,
-  TIME_FORMAT_PATTERN,
-} from '../const';
+} from '@bgap/shared/utils';
 import {
   dailyScheduleBothEmptyOrProperlyFilledValidator,
   getDayIntervals,
