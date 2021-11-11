@@ -92,10 +92,5 @@ export const createInvoice =
       comment: transaction.externalTransactionId,
     });
 
-    try {
-      return await szamlazzClient.issueInvoice(invoice);
-    } catch (error) {
-      console.error(error.message, error.code); // handle errors
-      throw error;
-    }
+    return await szamlazzClient.issueInvoice(invoice);
   };
