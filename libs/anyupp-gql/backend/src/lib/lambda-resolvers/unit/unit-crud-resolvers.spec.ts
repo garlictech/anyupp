@@ -10,6 +10,7 @@ test('hashPasswords', () => {
 
 test('createUnitResolver', async () => {
   const deps: UnitsResolverDeps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     crudSdk: undefined as any,
     hashGenerator: param => `${param} HASHED`,
     uuidGenerator: () => 'UUID',
@@ -18,6 +19,7 @@ test('createUnitResolver', async () => {
       put: jest.fn().mockReturnValue({
         promise: () => Promise.resolve('RESULT'),
       }),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
   };
 
