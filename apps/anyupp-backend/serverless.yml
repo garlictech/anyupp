@@ -56,3 +56,6 @@ functions:
 
   rkeeper-webhook:
     handler: lib/lambda/rkeeper-webhook/index.handler
+
+  rkeeper-product-processor:
+    handler: lib/lambda/rkeeper-product-processor/index.handler

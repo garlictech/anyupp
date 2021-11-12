@@ -1,3 +1,4 @@
+import { ECS } from 'aws-sdk';
 import * as R from 'ramda';
 import * as fs from 'fs';
 import request from 'supertest';
@@ -23,6 +24,7 @@ import {
   handleRkeeperProducts,
   createDefaultProductCategory,
   defaultProductCategoryId,
+  handleProducts,
 } from '@bgap/rkeeper-api';
 import { from, Observable, combineLatest } from 'rxjs';
 import { ES_DELAY, maskV4UuidIds } from '../../../utils';
@@ -31,6 +33,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as fixtures from './fixtures';
 import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/anyupp-gql/backend';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
+import { stackConfig } from '@bgap/shared/config';
 
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();
@@ -409,6 +412,31 @@ describe('Test the rkeeper api basic functionality', () => {
         done();
       },
     });
+  }, 120000);
+
+  test.only('Test the product handling logic in fargate', done => {
+    const deps = {
+      ecs: new ECS({ apiVersion: '2014-11-13' }),
+      RKeeperProcessProductSubnet:
+        stackConfig['dev-anyupp-backend-rkeeper'].RKeeperProcessProductSubnet,
+      RKeeperProcessProductTaskArn:
+        stackConfig['dev-anyupp-backend-rkeeper'].RKeeperProcessProductTaskArn,
+      RKeeperProcessProductSecurityGroup:
+        stackConfig['dev-anyupp-backend-rkeeper']
+          .RKeeperProcessProductSecurityGroup,
+    };
+
+    handleProducts(deps)(fixtures.rkeeperUnit.id, fixtures.rawData)
+      .pipe(
+        //delay(30000),
+        switchMap(() =>
+          crudSdk.SearchGeneratedProducts({
+            filter: { unitId: { eq: fixtures.rkeeperUnit.id } },
+          }),
+        ),
+        tap(result => expect(result?.items?.length).toMatchSnapshot()),
+      )
+      .subscribe(() => done());
   }, 120000);
 
   test('createDefaultProductCategory', done => {

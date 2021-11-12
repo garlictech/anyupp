@@ -176,7 +176,9 @@
           },
           "outputs": ["coverage/apps/admin"]
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"],
+      "implicitDependencies": ["anyupp-backend"]
     },
     "admin-e2e": {
       "root": "apps/admin-e2e",
@@ -209,7 +211,9 @@
             "lintFilePatterns": ["apps/admin-e2e/**/*.{js,ts}"]
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"],
+      "implicitDependencies": ["admin"]
     },
     "admin-pages-admin-users": {
       "projectType": "library",
@@ -231,7 +235,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-pages-auth": {
       "projectType": "library",
@@ -253,7 +258,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-chains": {
       "projectType": "library",
@@ -275,7 +281,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-dashboard": {
       "projectType": "library",
@@ -297,7 +304,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-groups": {
       "projectType": "library",
@@ -319,7 +327,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-modifiers-and-extras": {
       "projectType": "library",
@@ -343,7 +352,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-product-categories": {
       "projectType": "library",
@@ -365,7 +375,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-products": {
       "projectType": "library",
@@ -387,7 +398,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-role-contexts": {
       "projectType": "library",
@@ -409,7 +421,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-units": {
       "projectType": "library",
@@ -431,7 +444,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-users": {
       "projectType": "library",
@@ -453,7 +467,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-shared-components": {
       "projectType": "library",
@@ -475,7 +490,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-config": {
       "root": "libs/admin/shared/config",
@@ -496,7 +512,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-admin-users": {
       "root": "libs/admin/shared/data-access/admin-users",
@@ -519,7 +536,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-app-core": {
       "projectType": "library",
@@ -543,7 +561,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-auth": {
       "root": "libs/admin/shared/data-access/auth",
@@ -564,7 +583,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-chains": {
       "root": "libs/admin/shared/data-access/chains",
@@ -585,7 +605,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-dashboard": {
       "root": "libs/admin/shared/data-access/dashboard",
@@ -608,7 +629,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-data": {
       "root": "libs/admin/shared/data-access/data",
@@ -629,7 +651,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-groups": {
       "root": "libs/admin/shared/data-access/groups",
@@ -650,7 +673,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-logged-user": {
       "projectType": "library",
@@ -674,7 +698,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-order": {
       "root": "libs/admin/shared/data-access/order",
@@ -695,7 +720,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-orders": {
       "projectType": "library",
@@ -717,7 +743,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-product-categories": {
       "root": "libs/admin/shared/data-access/product-categories",
@@ -742,7 +769,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-product-component-sets": {
       "projectType": "library",
@@ -768,7 +796,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-product-components": {
       "projectType": "library",
@@ -794,7 +823,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-products": {
       "root": "libs/admin/shared/data-access/products",
@@ -817,7 +847,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-role-contexts": {
       "projectType": "library",
@@ -839,7 +870,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-sdk": {
       "root": "libs/admin/shared/data-access/sdk",
@@ -860,7 +892,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-storage": {
       "root": "libs/admin/shared/data-access/storage",
@@ -883,7 +916,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-units": {
       "root": "libs/admin/shared/data-access/units",
@@ -904,7 +938,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-data-access-users": {
       "root": "libs/admin/shared/data-access/users",
@@ -925,7 +960,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-fixtures": {
       "projectType": "library",
@@ -947,7 +983,8 @@
             "lintFilePatterns": ["libs/admin/shared/fixtures/src/**/*.ts"]
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-floor-map": {
       "projectType": "library",
@@ -969,7 +1006,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-forms": {
       "projectType": "library",
@@ -991,7 +1029,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-pipes": {
       "projectType": "library",
@@ -1013,7 +1052,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-shared-utils": {
       "root": "libs/admin/shared/utils",
@@ -1034,7 +1074,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-ui-core": {
       "projectType": "library",
@@ -1056,7 +1097,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "admin-ui-theme": {
       "projectType": "library",
@@ -1078,7 +1120,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:angular"]
     },
     "anyupp-backend": {
       "root": "apps/anyupp-backend",
@@ -1109,7 +1152,7 @@
             "parallel": false,
             "commands": [
               {
-                "command": "yarn sst deploy --stage='{args.env}'"
+                "command": "yarn sst deploy --stage='{args.env}' --outputs-file ../../libs/shared/config/src/lib/generated/stack-config.json"
               },
               {
                 "command": "cd ../.. && yarn ts-node ./tools/fetch-configuration.ts '{args.env}'"
@@ -1144,7 +1187,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "anyupp-backend-lib": {
       "root": "libs/anyupp-backend-lib",
@@ -1165,7 +1209,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "anyupp-gql-api": {
       "root": "libs/anyupp-gql/api",
@@ -1194,7 +1239,8 @@
           },
           "outputs": ["libs/anyupp-gql/api/src/lib/generated"]
         }
-      }
+      },
+      "tags": ["type:utils", "platform:universal"]
     },
     "anyupp-gql-backend": {
       "root": "libs/anyupp-gql/backend",
@@ -1215,7 +1261,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "anyupp-mobile": {
       "projectType": "application",
@@ -1452,7 +1499,8 @@
             "cwd": "apps/anyupp-mobile"
           }
         }
-      }
+      },
+      "tags": ["type:application", "platform:flutter"]
     },
     "cicd": {
       "root": "apps/cicd",
@@ -1510,7 +1558,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "crud-backend": {
       "root": "apps/crud-backend",
@@ -1580,7 +1629,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "crud-gql-api": {
       "root": "libs/crud-gql/api",
@@ -1601,7 +1651,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:universal"]
     },
     "crud-gql-backend": {
       "root": "libs/crud-gql/backend",
@@ -1622,7 +1673,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "gql-sdk": {
       "root": "libs/gql-sdk",
@@ -1643,7 +1695,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:universal"]
     },
     "integration-tests-angular": {
       "projectType": "library",
@@ -1667,7 +1720,8 @@
             "forceExit": true
           }
         }
-      }
+      },
+      "tags": ["type:integration-tests", "platform:angular"]
     },
     "integration-tests-universal": {
       "root": "libs/integration-tests/universal",
@@ -1684,7 +1738,8 @@
             "forceExit": true
           }
         }
-      }
+      },
+      "tags": ["type:integration-tests", "platform:universal"]
     },
     "rkeeper-api": {
       "root": "libs/rkeeper-api",
@@ -1705,7 +1760,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "shared-config": {
       "root": "libs/shared/config",
@@ -1735,7 +1791,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:universal"]
     },
     "shared-data-validators": {
       "root": "libs/shared/data-validators",
@@ -1756,7 +1813,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:universal"]
     },
     "shared-fixtures": {
       "root": "libs/shared/fixtures",
@@ -1777,7 +1835,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:universal"]
     },
     "shared-graphql-api-client": {
       "root": "libs/shared/graphql/api-client",
@@ -1798,7 +1857,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:universal"]
     },
     "shared-secrets": {
       "root": "libs/shared/secrets",
@@ -1819,7 +1879,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:universal"]
     },
     "shared-types": {
       "root": "libs/shared/types",
@@ -1840,7 +1901,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:universal"]
     },
     "shared-utils": {
       "root": "libs/shared/utils",
@@ -1861,60 +1923,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:utils", "platform:universal"]
     }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/angular",
-    "packageManager": "yarn"
-  },
-  "schematics": {
-    "@nrwl/workspace": {
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/cypress": {
-      "cypress-project": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/node": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/nest": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/express": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/angular:application": {
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress"
-    },
-    "@nrwl/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nrwl/angular:component": {
-      "style": "scss"
-    }
-  },
-  "defaultProject": "admin"
+  }
 }

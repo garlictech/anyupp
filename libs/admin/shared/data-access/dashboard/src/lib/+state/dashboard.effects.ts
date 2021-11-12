@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { OrderService } from '@bgap/admin/shared/data-access/order';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
-import { timezoneBudapest } from '@bgap/admin/shared/utils';
+import { timezoneBudapest } from '@bgap/shared/utils';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { fetch } from '@nrwl/angular';

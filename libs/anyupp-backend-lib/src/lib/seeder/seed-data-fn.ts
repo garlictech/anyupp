@@ -896,3 +896,48 @@ export const createComponentSets = (deps: SeederDependencies) => {
     ),
   );
 };
+
+export const seedRKeeperUnit = (deps: SeederDependencies) =>
+  combineLatest(
+    deleteCreate(
+      () => deps.crudSdk.DeleteUnit({ input: { id: 'seeded-rkeeper-unit' } }),
+      () =>
+        deps.crudSdk.CreateUnit({
+          input: {
+            ...unitFixture.createRkeeperUnit,
+            id: 'seeded-rkeeper-unit',
+            name: `Test RKEEPER unit`,
+            supportedOrderModes: [CrudApi.OrderMode.pickup],
+            supportedServingModes: [CrudApi.ServingMode.takeaway],
+            externalId: 'external-id',
+            groupId: 'seeded-rkeeper-group',
+            chainId: 'seeded-rkeeper-chain',
+          },
+        }),
+    ),
+
+    deleteCreate(
+      () => deps.crudSdk.DeleteGroup({ input: { id: 'seeded-rkeeper-group' } }),
+      () =>
+        deps.crudSdk.CreateGroup({
+          input: {
+            ...groupFixture.group_01,
+            id: 'seeded-rkeeper-group',
+            name: 'Test RKEEPER Group',
+            chainId: 'seeded-rkeeper-chain',
+          },
+        }),
+    ),
+
+    deleteCreate(
+      () => deps.crudSdk.DeleteChain({ input: { id: 'seeded-rkeeper-chain' } }),
+      () =>
+        deps.crudSdk.CreateChain({
+          input: {
+            ...chainFixture.chain_01,
+            id: 'seeded-rkeeper-chain',
+            name: 'Test RKEEPER Chain',
+          },
+        }),
+    ),
+  );

@@ -25,6 +25,7 @@ node_modules
 !.vscode/extensions.json
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage
@@ -78,3 +79,5 @@ apps/crud-backend/home/
 apps/crud-backend/src/
 
 weeklyReport.xlsx
+
+.angular/

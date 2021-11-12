@@ -1,7 +1,9 @@
-import { LaunchType } from '@aws-cdk/aws-ecs';
 import awsLambdaFastify from 'aws-lambda-fastify';
 import { ECS } from 'aws-sdk';
 import fastify from 'fastify';
+import { handleProducts } from '@bgap/rkeeper-api';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 const app = fastify({
   logger: true,
@@ -9,50 +11,31 @@ const app = fastify({
 
 const ecs = new ECS({ apiVersion: '2014-11-13' });
 
-app.post('/', async (_request, reply) => {
-  const params = {
-    launchType: LaunchType.FARGATE,
-    networkConfiguration: {
-      awsvpcConfiguration: {
-        subnets: [process.env.RKeeperProcessProductSubnet || ''],
-        securityGroups: [process.env.RKeeperProcessProductSecurityGroup || ''],
-      },
-    },
-    taskDefinition: process.env.RKeeperProcessProductTaskArn || '',
-  };
+app.route({
+  method: 'POST',
+  url: '/wp-json/ucsdp/v1/push/dishes/',
+  preHandler: async (request, reply) => {},
+  handler: async (request, reply) => {
+    const deps = {
+      ecs,
+      RKeeperProcessProductSubnet:
+        process.env.RKeeperProcessProductSubnet || '',
+      RKeeperProcessProductSecurityGroup:
+        process.env.RKeeperProcessProductSecurityGroup || '',
+      RKeeperProcessProductTaskArn:
+        process.env.RKeeperProcessProductTaskArn || '',
+    };
 
-  console.log('PARAMS: ', params);
-
-  ecs.runTask(params, (_err, data) => {
-    console.log('****', _err, data);
-    return reply.send(data);
-  });
+    await handleProducts(deps)('seeded-rkeeper-unit', request.body)
+      .pipe(
+        tap(() => reply.send({ success: true })),
+        catchError(err => {
+          reply.send({ error: err });
+          return throwError(err);
+        }),
+      )
+      .toPromise();
+  },
 });
 
-const RKeeperProcessProductSecurityGroup = 'sg-0bd21afb7c8a2565f';
-const RKeeperProcessProductSubnet = 'subnet-074ccac7d8246a233';
-const RKeeperProcessProductTaskArn =
-  'arn:aws:ecs:eu-west-1:568276182587:task-definition/zsoltstackanyuppbackendrkeeperAnyuppRKeeperTaskDefBAE1C0E2:1';
-
-export const launchFargateTask = () => {
-  const params = {
-    launchType: LaunchType.FARGATE,
-    networkConfiguration: {
-      awsvpcConfiguration: {
-        subnets: [RKeeperProcessProductSubnet || ''],
-        securityGroups: [RKeeperProcessProductSecurityGroup || ''],
-      },
-    },
-    taskDefinition: RKeeperProcessProductTaskArn || '',
-  };
-
-  console.log('PARAMS: ', params);
-
-  ecs.runTask(params, (_err, data) => {
-    console.log('****', _err, data);
-  });
-};
-
 export const handler = awsLambdaFastify(app);
-
-launchFargateTask();

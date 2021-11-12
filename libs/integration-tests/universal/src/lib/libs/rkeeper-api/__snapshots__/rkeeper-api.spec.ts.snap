@@ -1460,6 +1460,8 @@ Object {
 }
 `;
 
+exports[`Test the rkeeper api basic functionality Test the product handling logic in fargate 1`] = `0`;
+
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category created 1`] = `true`;
 
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category data 1`] = `

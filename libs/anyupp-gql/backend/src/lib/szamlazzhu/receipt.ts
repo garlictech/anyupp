@@ -92,10 +92,5 @@ export const createReceiptSzamlazzHu =
       JSON.stringify(receipt, undefined, 2),
     );
 
-    try {
-      return await szamlazzClient.issueReceipt(receipt);
-    } catch (error) {
-      console.error(error.message, error.code); // handle errors
-      throw error;
-    }
+    return await szamlazzClient.issueReceipt(receipt);
   };

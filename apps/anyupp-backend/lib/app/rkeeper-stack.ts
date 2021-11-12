@@ -12,12 +12,18 @@ import * as ecs from '@aws-cdk/aws-ecs';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
 
+export interface RKeeperStackProps extends sst.StackProps {
+  apiAccessKeyId: string;
+  apiSecretAccessKey: string;
+}
+
 export class RKeeperStack extends sst.Stack {
-  constructor(scope: sst.App, id: string) {
+  constructor(scope: sst.App, id: string, props: RKeeperStackProps) {
     super(scope, id);
 
     const asset = new DockerImageAsset(this, 'AnyuppRKeeperBuildImage', {
-      directory: path.join('lib/app/docker/rkeeper-products'),
+      directory: path.join(__dirname, '..', '..'),
+      file: 'Dockerfile.process-products',
     });
 
     const vpc = new ec2.Vpc(this, 'AnyuppRKeeperVpc', {
@@ -89,7 +95,7 @@ export class RKeeperStack extends sst.Stack {
     if (rkeeperLambda.role) {
       rkeeperLambda.role.addToPrincipalPolicy(
         new iam.PolicyStatement({
-          actions: ['ecr:*', 'ecs:*'],
+          actions: ['ecr:*', 'ecs:*', 'iam:*'],
           resources: ['*'],
         }),
       );
@@ -112,6 +118,18 @@ export class RKeeperStack extends sst.Stack {
 
     new cdk.CfnOutput(this, 'RKeeperWebhookEndpoint', {
       value: api.url,
+    });
+
+    new cdk.CfnOutput(this, 'RKeeperProcessProductTaskArn', {
+      value: taskDefinition.taskDefinitionArn,
+    });
+
+    new cdk.CfnOutput(this, 'RKeeperProcessProductSecurityGroup', {
+      value: vpc.vpcDefaultSecurityGroup,
+    });
+
+    new cdk.CfnOutput(this, 'RKeeperProcessProductSubnet', {
+      value: vpc.publicSubnets[0].subnetId,
     });
   }
 }
