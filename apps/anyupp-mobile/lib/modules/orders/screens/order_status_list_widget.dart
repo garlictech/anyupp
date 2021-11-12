@@ -26,13 +26,13 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<OrderBloc, BaseOrderState>(
       builder: (context, state) {
-        // print('***** OrderScreen.bloc.state=$state');
         // state = NoOrdersLoaded();
         if (state is NoOrdersLoaded) {
           return _noOrder();
         }
 
         if (state is OrdersLoadedState) {
+          print('***** OrderStatusListWidget.bloc.state=OrdersLoadedState, length=${state.orders?.length}');
           if (state.orders == null || (state.orders != null && state.orders!.isEmpty)) {
             return _noOrder();
           }

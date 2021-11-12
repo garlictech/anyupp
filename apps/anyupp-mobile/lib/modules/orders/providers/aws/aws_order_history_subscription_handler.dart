@@ -61,7 +61,7 @@ class AwsOrderHistorySubscription {
         client: client,
       )
           .listen((result) async {
-        print('**** startListSubscription().onData=${result.data}');
+        print('**** startOrderHistoryListSubscription().onData=${result.data}');
         // print(jsonEncode(result.data));
         // print('**** startOrderSubscription.onData.hasException=${result.hasException}');
         if (!result.hasErrors) {

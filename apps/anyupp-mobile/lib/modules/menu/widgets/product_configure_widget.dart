@@ -15,8 +15,13 @@ import 'package:fa_prev/graphql/generated/crud-api.dart';
 class ProductConfiguratorWidget extends StatefulWidget {
   final GeoUnit unit;
   final GeneratedProduct product;
+  final ServingMode? servingMode;
 
-  const ProductConfiguratorWidget({required this.unit, required this.product});
+  const ProductConfiguratorWidget({
+    required this.unit,
+    required this.product,
+    required this.servingMode,
+  });
 
   @override
   _ProductConfiguratorWidgetState createState() => _ProductConfiguratorWidgetState();
@@ -381,7 +386,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               ),
               child: Center(
                 child: Text(
-                  variant.pack != null ? '${variant.pack!.size} ${variant.pack!.unit}' : '',
+                  variant.pack != null ? '${_formatPack(variant.pack!.size)} ${variant.pack!.unit}' : '',
+                  textAlign: TextAlign.center,
                   style: Fonts.satoshi(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w700,
@@ -415,5 +421,13 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
         )
       ],
     );
+  }
+
+  String _formatPack(double pack) {
+    String s = pack.toStringAsFixed(1);
+    if (s.endsWith('.0')) {
+      return s.substring(0, s.length - 2);
+    }
+    return s;
   }
 }
