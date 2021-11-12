@@ -1,2 +1,2 @@
 branch: 'dev'
-schema: 'apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql'
+schema: '.github/graphql-inspector-artifacts/schema.graphql'
