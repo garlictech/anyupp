@@ -13,7 +13,6 @@ import {
 } from '@bgap/shared/utils';
 import { from, Observable, of, throwError } from 'rxjs';
 import { map, mergeMap, switchMap, toArray } from 'rxjs/operators';
-import { getTimezoneFromLocation } from '../../utils';
 import { calculateActualPricesAndCheckActivity } from '../product/calculate-product';
 import { mergeAllProductLayers } from '../product/merge-product';
 
