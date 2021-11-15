@@ -142,7 +142,7 @@
     "@nxrocks/nx-flutter": "3.0.0",
     "@serverless-stack/cli": "0.50.3",
     "@serverless-stack/resources": "0.50.3",
-    "@vvo/tzdb": "6.32.0",
+    "@vvo/tzdb": "6.33.0",
     "geo-tz": "6.0.1",
     "@testing-library/cypress": "8.0.2",
     "@types/aws-lambda": "8.10.85",
