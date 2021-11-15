@@ -9,6 +9,7 @@ export interface HandleProductsDeps {
   RKeeperProcessProductSubnet: string;
   RKeeperProcessProductSecurityGroup: string;
   RKeeperProcessProductTaskArn: string;
+  containerName: string;
 }
 
 export const handleProducts =
@@ -26,6 +27,7 @@ export const handleProducts =
         overrides: {
           containerOverrides: [
             {
+              name: deps.containerName,
               environment: [
                 {
                   name: 'unitId',

@@ -65,9 +65,12 @@ export class RKeeperStack extends sst.Stack {
       streamPrefix: 'AnyuppRKeeperProducts',
     });
 
+    const containerName = 'anyupp-rkeeper-process-products';
+
     taskDefinition.addContainer('AnyuppRKeeperContainer', {
       image: ecs.ContainerImage.fromDockerImageAsset(asset),
       logging: logDriver,
+      containerName,
     });
 
     new ecs.FargateService(this, 'AnyuppRKeeperService', {
@@ -130,6 +133,10 @@ export class RKeeperStack extends sst.Stack {
 
     new cdk.CfnOutput(this, 'RKeeperProcessProductSubnet', {
       value: vpc.publicSubnets[0].subnetId,
+    });
+
+    new cdk.CfnOutput(this, 'RKeeperProcessProductContainerName', {
+      value: containerName,
     });
   }
 }

@@ -4,6 +4,7 @@ import fastify from 'fastify';
 import { handleProducts } from '@bgap/rkeeper-api';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { stackConfig } from '@bgap/shared/config';
 
 const app = fastify({
   logger: true,
@@ -24,6 +25,7 @@ app.route({
         process.env.RKeeperProcessProductSecurityGroup || '',
       RKeeperProcessProductTaskArn:
         process.env.RKeeperProcessProductTaskArn || '',
+      containerName: '',
     };
 
     await handleProducts(deps)('seeded-rkeeper-unit', request.body)
