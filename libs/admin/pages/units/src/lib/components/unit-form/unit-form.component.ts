@@ -34,7 +34,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import {
   defaultOrderMode,
   defaultServingMode,
-  IKeyValue,
+  KeyValue,
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
@@ -56,8 +56,8 @@ export class UnitFormComponent
   public paymentModes = PAYMENT_MODES;
   public servingModes = SERVING_MODES;
   public orderModes = ORDER_MODES;
-  public groupOptions: IKeyValue[] = [];
-  public timeZoneOptions: IKeyValue[] = [];
+  public groupOptions: KeyValue[] = [];
+  public timeZoneOptions: KeyValue[] = [];
 
   private _groups: CrudApi.Group[] = [];
   private _isInitiallyRkeeper = false;
@@ -235,7 +235,7 @@ export class UnitFormComponent
         this._groups = groups;
 
         this.groupOptions = this._groups.map(
-          (group: CrudApi.Group): IKeyValue => ({
+          (group: CrudApi.Group): KeyValue => ({
             key: group.id,
             value: group.name,
           }),

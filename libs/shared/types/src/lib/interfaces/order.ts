@@ -1,12 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 
-export interface IStatusLog {
-  userId: string;
-  status: CrudApi.OrderStatus;
-  ts?: number; // after objectToArray(statusLog, 'ts')
-}
-
-export interface ILaneOrderItem extends CrudApi.OrderItem {
+export interface LaneOrderItem extends CrudApi.OrderItem {
   orderId?: string;
   userId?: string;
   idx?: number;
@@ -17,59 +11,59 @@ export interface ILaneOrderItem extends CrudApi.OrderItem {
   currentStatus?: CrudApi.OrderStatus;
 }
 
-export interface IOrders {
+export interface Orders {
   [key: string]: CrudApi.Order;
 }
 
-export interface IDateIntervals {
+export interface DateIntervals {
   from: number;
   to: number;
 }
 
-export interface IOrderAmounts {
+export interface OrderAmounts {
   [id: string]: number;
 }
 
-export interface IOrderSum {
+export interface OrderSum {
   selected?: number;
   currency?: string;
   all?: number;
 }
 
-export interface IOrderAmount {
+export interface OrderAmount {
   [key: string]: number[];
 }
 
-export interface IProducMixObjectInfo {
+export interface ProducMixObjectInfo {
   variantId?: string;
   componentId?: string;
   quantity: number;
   name: CrudApi.LocalizedItem;
 }
 
-export interface IProducMixObjectItem extends IProducMixObjectInfo {
+export interface ProducMixObjectItem extends ProducMixObjectInfo {
   productId: string;
   productType: string;
   variants: {
-    [variantId: string]: IProducMixObjectInfo;
+    [variantId: string]: ProducMixObjectInfo;
   };
   components: {
-    [variantId: string]: IProducMixObjectInfo;
+    [variantId: string]: ProducMixObjectInfo;
   };
 }
 
-export interface IProducMixArrayItem extends IProducMixObjectInfo {
+export interface ProducMixArrayItem extends ProducMixObjectInfo {
   productId: string;
   productType: string;
-  variants: IProducMixObjectInfo[];
-  components: IProducMixObjectInfo[];
+  variants: ProducMixObjectInfo[];
+  components: ProducMixObjectInfo[];
 }
 
-export interface IProducMixObject {
-  [productId: string]: IProducMixObjectItem;
+export interface ProducMixObject {
+  [productId: string]: ProducMixObjectItem;
 }
 
-export interface ICurrencyValue {
+export interface CurrencyValue {
   value: number;
   currency: string;
 }

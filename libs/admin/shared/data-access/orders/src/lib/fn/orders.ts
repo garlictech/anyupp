@@ -1,10 +1,10 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import {
-  IFloorMapOrderObjects,
-  IFloorMapUserOrderObjects,
-  IFloorMapUserOrders,
-  ILaneOrderItem,
+  FloorMapOrderObjects,
+  FloorMapUserOrderObjects,
+  FloorMapUserOrders,
+  LaneOrderItem,
 } from '@bgap/shared/types';
 
 export const currentStatus = (
@@ -65,7 +65,7 @@ export const getPrevOrderItemStatus = (
 };
 
 export const getOrderLaneColor = (
-  orderItem: ILaneOrderItem,
+  orderItem: LaneOrderItem,
   unit: CrudApi.Unit,
 ): string => {
   return unit?.lanes && orderItem.laneId
@@ -115,8 +115,8 @@ export const getLowestStatus = (
 
 export const getActiveOrdersByUser = (
   orders: CrudApi.Order[],
-): IFloorMapUserOrderObjects => {
-  const ordersByUser: IFloorMapUserOrderObjects = {};
+): FloorMapUserOrderObjects => {
+  const ordersByUser: FloorMapUserOrderObjects = {};
 
   orders
     // Filter payed/failed served orders - these orders have been archived on another device
@@ -166,13 +166,13 @@ export const getActiveOrdersByUser = (
 
 export const getTableOrders = (
   tableIds: string[],
-  ordersByUser: IFloorMapUserOrderObjects,
-): IFloorMapOrderObjects => {
-  const tableOrders: IFloorMapOrderObjects = {};
+  ordersByUser: FloorMapUserOrderObjects,
+): FloorMapOrderObjects => {
+  const tableOrders: FloorMapOrderObjects = {};
 
   tableIds.forEach((tsID: string): void => {
     const userOrders = Object.values(ordersByUser).filter(
-      (userOrder: IFloorMapUserOrders): boolean =>
+      (userOrder: FloorMapUserOrders): boolean =>
         userOrder.lastOrder.place?.table === tsID,
     );
 
@@ -187,13 +187,13 @@ export const getTableOrders = (
 
 export const getTableSeatOrders = (
   tableSeatIds: string[],
-  ordersByUser: IFloorMapUserOrderObjects,
-): IFloorMapOrderObjects => {
-  const tableSeatOrders: IFloorMapOrderObjects = {};
+  ordersByUser: FloorMapUserOrderObjects,
+): FloorMapOrderObjects => {
+  const tableSeatOrders: FloorMapOrderObjects = {};
 
   tableSeatIds.forEach((tsID: string): void => {
     const userOrders = Object.values(ordersByUser).filter(
-      (userOrder: IFloorMapUserOrders): boolean =>
+      (userOrder: FloorMapUserOrders): boolean =>
         `${userOrder.lastOrder.place?.table || ''}.${
           userOrder.lastOrder.place?.seat || ''
         }` === tsID,

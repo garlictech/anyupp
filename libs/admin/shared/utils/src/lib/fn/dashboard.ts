@@ -3,10 +3,10 @@ import { DateTime } from 'luxon';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EProductType,
-  IOrderAmount,
-  IOrderAmounts,
-  IProducMixObject,
-  IProducMixObjectInfo,
+  OrderAmount,
+  OrderAmounts,
+  ProducMixObject,
+  ProducMixObjectInfo,
   UnpayCategoryMethodStatObjItem,
   UnpayCategoryStatObj,
   UnpayCategoryStatObjItem,
@@ -70,8 +70,8 @@ export const getDailyOrdersSum = (
 export const hourlyBreakdownOrderAmounts = (
   timeZone: string,
   orders: CrudApi.Order[],
-): IOrderAmount => {
-  const amounts: IOrderAmount = {
+): OrderAmount => {
+  const amounts: OrderAmount = {
     [EProductType.DRINK]: new Array(24).fill(0),
     [EProductType.FOOD]: new Array(24).fill(0),
     [EProductType.OTHER]: new Array(24).fill(0),
@@ -97,7 +97,7 @@ export const hourlyBreakdownOrderAmounts = (
 };
 
 export const dailySalesPerTypeOrderAmounts = (orders: CrudApi.Order[]) => {
-  const amounts: IOrderAmounts = {
+  const amounts: OrderAmounts = {
     [EProductType.DRINK]: 0,
     [EProductType.FOOD]: 0,
     [EProductType.OTHER]: 0,
@@ -116,7 +116,7 @@ export const dailySalesPerTypeOrderAmounts = (orders: CrudApi.Order[]) => {
 export const dailySalesPerPaymentMethodOrderAmounts = (
   orders: CrudApi.Order[],
 ) => {
-  const amounts: IOrderAmounts = {
+  const amounts: OrderAmounts = {
     [CrudApi.PaymentMethod.card]: 0,
     [CrudApi.PaymentMethod.cash]: 0,
     [CrudApi.PaymentMethod.inapp]: 0,
@@ -130,7 +130,7 @@ export const dailySalesPerPaymentMethodOrderAmounts = (
 };
 
 export const calculateProductMix = (orders: CrudApi.Order[]) => {
-  const productMix: IProducMixObject = {};
+  const productMix: ProducMixObject = {};
 
   orders.forEach(order => {
     order.items.forEach(orderItem => {
@@ -192,7 +192,7 @@ export const calculateProductMix = (orders: CrudApi.Order[]) => {
     });
   });
 
-  const sorter = (a: IProducMixObjectInfo, b: IProducMixObjectInfo) =>
+  const sorter = (a: ProducMixObjectInfo, b: ProducMixObjectInfo) =>
     a.quantity > b.quantity ? -1 : 1;
 
   return Object.values(productMix)

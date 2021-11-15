@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { usersSelectors } from '@bgap/admin/shared/data-access/users';
-import { IUser } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -16,7 +16,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
   templateUrl: './user-list.component.html',
 })
 export class UserListComponent implements OnDestroy {
-  public users$: Observable<IUser[]>;
+  public users$: Observable<CrudApi.User[]>;
 
   constructor(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

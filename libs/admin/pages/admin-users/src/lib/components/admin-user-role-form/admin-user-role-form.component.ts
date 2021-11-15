@@ -15,7 +15,7 @@ import { roleContextsSelectors } from '@bgap/admin/shared/data-access/role-conte
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IKeyValue } from '@bgap/shared/types';
+import { KeyValue } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -32,7 +32,7 @@ export class AdminUserRoleFormComponent
 {
   public adminUserId = '';
   public adminUser?: CrudApi.AdminUser;
-  public roleContextOptions: IKeyValue[] = [];
+  public roleContextOptions: KeyValue[] = [];
 
   constructor(
     protected _injector: Injector,
@@ -66,7 +66,7 @@ export class AdminUserRoleFormComponent
           this.roleContextOptions = roleContexts
             .filter(c => !contextIds.includes(c.id))
             .map(
-              (roleContext): IKeyValue => ({
+              (roleContext): KeyValue => ({
                 key: roleContext.id,
                 value: roleContext.name,
               }),

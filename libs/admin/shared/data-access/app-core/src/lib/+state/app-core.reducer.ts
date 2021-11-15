@@ -5,16 +5,16 @@ import * as appCoreActions from './app-core.actions';
 
 export const APP_CORE_FEATURE_KEY = 'appCore';
 
-export interface IAppCoreState {
+export interface AppCoreState {
   loginContextFailure?: boolean;
   closableDialog: boolean;
 }
 
 export interface LoggedUserPartialState {
-  readonly [APP_CORE_FEATURE_KEY]: IAppCoreState;
+  readonly [APP_CORE_FEATURE_KEY]: AppCoreState;
 }
 
-export const initialAppCoreState: IAppCoreState = {
+export const initialAppCoreState: AppCoreState = {
   closableDialog: false,
 };
 
@@ -31,7 +31,7 @@ const reducer = createReducer(
 );
 
 export function appCoreReducer(
-  state: IAppCoreState | undefined,
+  state: AppCoreState | undefined,
   action: Action,
 ) {
   return reducer(state, action);

@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EVariantAvailabilityType, IDateIntervals } from '@bgap/shared/types';
+import { EVariantAvailabilityType, DateIntervals } from '@bgap/shared/types';
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 
@@ -143,7 +143,7 @@ export const dailyScheduleBothEmptyOrProperlyFilledValidator: ValidatorFn = (
 export const getDayIntervals = (
   dateValue: string | number,
   timeZone: string,
-): IDateIntervals => {
+): DateIntervals => {
   const date: DateTime = DateTime.fromISO(new Date(dateValue).toISOString(), {
     zone: timeZone,
   });

@@ -22,7 +22,7 @@ import {
 } from '@bgap/admin/shared/utils';
 import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IKeyValue } from '@bgap/shared/types';
+import { KeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
@@ -38,8 +38,8 @@ export class GroupFormComponent
   implements OnInit, OnDestroy
 {
   public group!: CrudApi.Group;
-  public chainOptions: IKeyValue[] = [];
-  public currencyOptions: IKeyValue[] = [];
+  public chainOptions: KeyValue[] = [];
+  public currencyOptions: KeyValue[] = [];
 
   constructor(
     protected _injector: Injector,
@@ -83,7 +83,7 @@ export class GroupFormComponent
       .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
       .subscribe((chains: CrudApi.Chain[]): void => {
         this.chainOptions = chains.map(
-          (chain): IKeyValue => ({
+          (chain): KeyValue => ({
             key: chain.id,
             value: chain.name,
           }),
@@ -93,7 +93,7 @@ export class GroupFormComponent
       });
 
     this.currencyOptions = ['EUR', 'HUF'].map(
-      (currency): IKeyValue => ({
+      (currency): KeyValue => ({
         key: currency,
         value: currency,
       }),

@@ -2,7 +2,7 @@ import { fabric } from 'fabric';
 import * as CrudApi from '@bgap/crud-gql/api';
 
 import { customStringCompare } from '@bgap/shared/utils';
-import { IFabricGroup, IFabricObjectProperties } from '@bgap/shared/types';
+import { FabricGroup, FabricObjectProperties } from '@bgap/shared/types';
 
 import { fabricCanvas } from './floor-map-canvas';
 import {
@@ -179,13 +179,13 @@ export const setRawDataField = (
 };
 
 export const getRawDataField = (
-  obj: IFabricGroup,
+  obj: FabricGroup,
   key: keyof CrudApi.FloorMapDataObject,
 ): string | number =>
   mapRawData?.objects?.find(o => o.id === obj.id)?.[key] || '';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const _getObjectProperties = (obj: any): IFabricObjectProperties => ({
+const _getObjectProperties = (obj: any): FabricObjectProperties => ({
   id: obj.id,
   type: obj.type,
   width: getObjectBg(obj)?.width || 0,
@@ -199,7 +199,7 @@ const _getObjectProperties = (obj: any): IFabricObjectProperties => ({
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const updateObjectMapRawData = (e: any): void => {
-  const objectProperties: IFabricObjectProperties = _getObjectProperties(
+  const objectProperties: FabricObjectProperties = _getObjectProperties(
     e.target,
   );
 

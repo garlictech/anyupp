@@ -1,10 +1,10 @@
-export interface IConfirmButton {
+export interface ConfirmButton {
   label: string;
   callback(params?: unknown): void;
   status: string;
 }
 
-export interface IConfirmOptions {
+export interface ConfirmOptions {
   message: string;
-  buttons: IConfirmButton[];
+  buttons: ConfirmButton[];
 }

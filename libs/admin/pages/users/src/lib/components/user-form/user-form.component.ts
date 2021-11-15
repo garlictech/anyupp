@@ -8,7 +8,7 @@ import {
 import { Validators } from '@angular/forms';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { contactFormGroup } from '@bgap/admin/shared/utils';
-import { IUser } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,7 +19,7 @@ export class UserFormComponent
   extends AbstractFormDialogComponent
   implements OnInit
 {
-  public user: IUser | undefined;
+  public user: CrudApi.User | undefined;
 
   constructor(
     protected _injector: Injector,

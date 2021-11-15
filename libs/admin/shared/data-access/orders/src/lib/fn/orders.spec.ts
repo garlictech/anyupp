@@ -1,6 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { orderFixture, testIdPrefix, unitFixture } from '@bgap/shared/fixtures';
-import { IFloorMapUserOrderObjects } from '@bgap/shared/types';
+import { FloorMapUserOrderObjects } from '@bgap/shared/types';
 
 import {
   currentStatus,
@@ -155,7 +155,7 @@ describe('Orders pure function tests', () => {
 
   describe('getActiveOrdersByUser', () => {
     it('should get active orders by user', () => {
-      const result: IFloorMapUserOrderObjects = getActiveOrdersByUser(orders);
+      const result: FloorMapUserOrderObjects = getActiveOrdersByUser(orders);
 
       expect(orders.length).toBe(4);
       expect(result['test-monad'].orders.length).toBe(2);

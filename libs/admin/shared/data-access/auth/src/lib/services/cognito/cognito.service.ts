@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
-import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
+import { AuthenticatedCognitoUser } from '@bgap/shared/types';
 import { bindNodeCallback, from, merge, Observable, of } from 'rxjs';
 import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
 
@@ -81,7 +81,7 @@ export class CognitoService {
     );
   }
 
-  public getAuth(): Observable<IAuthenticatedCognitoUser | undefined> {
+  public getAuth(): Observable<AuthenticatedCognitoUser | undefined> {
     return from(Auth.currentAuthenticatedUser()).pipe(
       map((auth: CognitoUser) => {
         const token = auth?.getSignInUserSession()?.getIdToken();

@@ -5,7 +5,7 @@ import {
   Input,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IKeyValue } from '@bgap/shared/types';
+import { KeyValue } from '@bgap/shared/types';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,7 +14,7 @@ import { IKeyValue } from '@bgap/shared/types';
 })
 export class FormRadioGroupComponent {
   @Input() caption = ''; // Language key!!!
-  @Input() options: IKeyValue[] = [];
+  @Input() options: KeyValue[] = [];
   @Input() control!: FormControl;
   @Input() localize?: boolean;
   @Input() horizontal? = true;

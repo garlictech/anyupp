@@ -14,18 +14,18 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { multiLangValidator } from '@bgap/admin/shared/utils';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
-import { IKeyValue } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { KeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 
 @UntilDestroy()
 @Component({
@@ -38,7 +38,7 @@ export class ProductComponentFormComponent
   implements OnInit, OnDestroy
 {
   public productComponent!: CrudApi.ProductComponent;
-  public chainOptions: IKeyValue[] = [];
+  public chainOptions: KeyValue[] = [];
 
   private _productComponents: CrudApi.ProductComponent[] = [];
 
@@ -92,7 +92,7 @@ export class ProductComponentFormComponent
       .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
       .subscribe((chains: CrudApi.Chain[]): void => {
         this.chainOptions = chains.map(
-          (chain): IKeyValue => ({
+          (chain): KeyValue => ({
             key: chain.id,
             value: chain.name,
           }),

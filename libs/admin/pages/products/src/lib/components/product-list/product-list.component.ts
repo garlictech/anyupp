@@ -15,7 +15,11 @@ import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user'
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductLevel, IProductOrderChangeEvent } from '@bgap/shared/types';
+import {
+  EProductLevel,
+  Product,
+  ProductOrderChangeEvent,
+} from '@bgap/shared/types';
 import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
 import {
   NbDialogService,
@@ -37,10 +41,10 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild('tabset') tabsetEl!: NbTabsetComponent;
 
-  public chainProducts$: Observable<CrudApi.ChainProduct[]>;
-  public groupProducts$: Observable<CrudApi.GroupProduct[]>;
-  public pendingGroupProducts: CrudApi.ChainProduct[] = [];
-  public pendingUnitProducts: CrudApi.GroupProduct[] = [];
+  public chainProducts$: Observable<Product[]>;
+  public groupProducts$: Observable<Product[]>;
+  public pendingGroupProducts: Product[] = [];
+  public pendingUnitProducts: Product[] = [];
   public groupCurrency = '';
   public unitProducts: CrudApi.UnitProduct[] = [];
   public eProductLevel = EProductLevel;
@@ -163,7 +167,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }
 
-  public unitProductPositionChange($event: IProductOrderChangeEvent) {
+  public unitProductPositionChange($event: ProductOrderChangeEvent) {
     if (this._loggedUser?.settings?.selectedUnitId) {
       const idx = this._sortedUnitProductIds.indexOf($event.productId);
 

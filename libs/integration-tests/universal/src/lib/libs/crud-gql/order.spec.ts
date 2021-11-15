@@ -8,8 +8,12 @@ import {
   transactionFixture as tfx,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { IDateIntervals } from '@bgap/shared/types';
-import { delay, map, switchMap, tap } from 'rxjs/operators';
+
+import { DateIntervals } from '@bgap/shared/types';
+import { of } from 'rxjs';
+import { delay, map, switchMap } from 'rxjs/operators';
+
+const TEST_NAME = 'ORDER_';
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
@@ -67,7 +71,7 @@ describe('SearchOrders function', () => {
     ) => ReturnType<CrudApi.CrudSdk['CreateOrder']>,
   ) => {
     const isoDate = new Date().toISOString();
-    const dayIntervals: IDateIntervals = getDayIntervals(
+    const dayIntervals: DateIntervals = getDayIntervals(
       isoDate,
       timezoneBudapest,
     );

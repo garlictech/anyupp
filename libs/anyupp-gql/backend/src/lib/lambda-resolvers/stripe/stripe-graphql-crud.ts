@@ -7,7 +7,7 @@ import { StripeResolverDeps, StripeResolverDepsUnauth } from './stripe.utils';
  * @param crudGraphqlClient CRUD GraphQL client
  * @param userId the ID of the user (in the cognito user pool)
  * @param stripeCustomerId (optional) the ID of the same user in the Stripe backend
- * @returns an instance of IUser interface, filled with the created user's data
+ * @returns an instance of User interface, filled with the created user's data
  */
 export const createUser =
   (stripeCustomerId: string | undefined) => (deps: StripeResolverDeps) => {
@@ -26,7 +26,7 @@ export const createUser =
  * @param crudGraphqlClient CRUD GraphQL client
  * @param userId the ID of the user (in the cognito user pool)
  * @param stripeCustomerId (optional) the ID of the same user in the Stripe backend
- * @returns an instance of IUser interface, filled with the updated user's data
+ * @returns an instance of User interface, filled with the updated user's data
  */
 export const updateUser =
   (stripeCustomerId: string | undefined) => (deps: StripeResolverDeps) => {
@@ -44,7 +44,7 @@ export const updateUser =
  * Load a signle User from CRUD GraphQL endpoint by it's ID
  * @param crudGraphqlClient CRUD GraphQL client
  * @param orderId the ID of the User to be loaded
- * @returns an instance of IUser interface, filled with the loaded user's data
+ * @returns an instance of User interface, filled with the loaded user's data
  */
 export const loadUser = () => (deps: StripeResolverDeps) => {
   const getUserVars: CrudApi.GetUserQueryVariables = {

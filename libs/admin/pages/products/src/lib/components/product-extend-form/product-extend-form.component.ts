@@ -15,7 +15,7 @@ import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { SERVING_MODES } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductLevel, IKeyValue, Product } from '@bgap/shared/types';
+import { EProductLevel, KeyValue, Product } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
@@ -38,7 +38,7 @@ export class ProductExtendFormComponent
   public editing = false;
   public currency!: string;
   public productCategories$: Observable<CrudApi.ProductCategory[]>;
-  public unitLanes: IKeyValue[] = [];
+  public unitLanes: KeyValue[] = [];
   public servingModes = SERVING_MODES;
 
   private _selectedChainId = '';

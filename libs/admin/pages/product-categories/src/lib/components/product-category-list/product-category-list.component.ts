@@ -10,7 +10,7 @@ import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { ToasterService } from '@bgap/admin/shared/utils';
 import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
+import { ProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -61,7 +61,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
     this._nbDialogService.open(ProductCategoryFormComponent);
   }
 
-  public positionChange($event: IProductCategoryOrderChangeEvent): void {
+  public positionChange($event: ProductCategoryOrderChangeEvent): void {
     const idx = this._sortedProductCategoryIds.indexOf(
       $event.productCategoryId,
     );

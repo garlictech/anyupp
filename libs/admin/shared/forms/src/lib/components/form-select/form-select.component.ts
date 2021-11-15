@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IKeyValue } from '@bgap/shared/types';
+import { KeyValue } from '@bgap/shared/types';
 import { NbComponentSize } from '@nebular/theme';
 
 @Component({
@@ -17,7 +17,7 @@ import { NbComponentSize } from '@nebular/theme';
 })
 export class FormSelectComponent {
   @Input() caption = ''; // Language key!!!
-  @Input() options: IKeyValue[] = [];
+  @Input() options: KeyValue[] = [];
   @Input() control!: FormControl;
   @Input() forceShowEmptyOption?: boolean;
   @Input() localize?: boolean;

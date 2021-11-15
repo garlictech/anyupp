@@ -1,6 +1,6 @@
-import { EProductType, IKeyValue } from '@bgap/shared/types';
+import { EProductType, KeyValue } from '@bgap/shared/types';
 
-export const PRODUCT_TYPES: IKeyValue[] = [
+export const PRODUCT_TYPES: KeyValue[] = [
   {
     key: EProductType.DRINK,
     value: 'products.productType.drink',

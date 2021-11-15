@@ -1,4 +1,4 @@
-import { IUser } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
 
@@ -6,17 +6,18 @@ import * as UsersActions from './users.actions';
 
 export const USERS_FEATURE_KEY = 'users';
 
-export interface IUsersState extends EntityState<IUser> {
+export interface UsersState extends EntityState<CrudApi.User> {
   error?: string | null; // last known error (if any)
 }
 
-export interface IUsersPartialState {
-  readonly [USERS_FEATURE_KEY]: IUsersState;
+export interface UsersPartialState {
+  readonly [USERS_FEATURE_KEY]: UsersState;
 }
 
-export const usersAdapter: EntityAdapter<IUser> = createEntityAdapter<IUser>();
+export const usersAdapter: EntityAdapter<CrudApi.User> =
+  createEntityAdapter<CrudApi.User>();
 
-export const initialUsersState: IUsersState = usersAdapter.getInitialState({});
+export const initialUsersState: UsersState = usersAdapter.getInitialState({});
 
 const reducer = createReducer(
   initialUsersState,
@@ -27,6 +28,6 @@ const reducer = createReducer(
   on(UsersActions.resetUsers, state => usersAdapter.removeAll(state)),
 );
 
-export function usersReducer(state: IUsersState | undefined, action: Action) {
+export function usersReducer(state: UsersState | undefined, action: Action) {
   return reducer(state, action);
 }

@@ -10,7 +10,7 @@ import {
 import { appCoreActions } from '@bgap/admin/shared/data-access/app-core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IAuthenticatedCognitoUser } from '@bgap/shared/types';
+import { AuthenticatedCognitoUser } from '@bgap/shared/types';
 import { Store } from '@ngrx/store';
 
 import { CognitoService } from '../cognito/cognito.service';
@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivateChild {
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
     return this._cognitoService.getAuth().pipe(
-      map((cognitoUser: IAuthenticatedCognitoUser | undefined) => {
+      map((cognitoUser: AuthenticatedCognitoUser | undefined) => {
         if (!cognitoUser) {
           this._dataService.destroyDataConnection();
           this._ngZone.run(() => {

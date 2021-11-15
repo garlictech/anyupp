@@ -18,7 +18,7 @@ import {
 } from '@bgap/admin/shared/data-access/orders';
 import { productsSelectors } from '@bgap/admin/shared/data-access/products';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { ENebularButtonSize, ILaneOrderItem } from '@bgap/shared/types';
+import { ENebularButtonSize, LaneOrderItem } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { currentStatus as currentStatusFn } from '@bgap/crud-gql/api';
@@ -31,7 +31,7 @@ import { currentStatus as currentStatusFn } from '@bgap/crud-gql/api';
   styleUrls: ['./lane-item.component.scss'],
 })
 export class LaneItemComponent implements OnInit, OnDestroy {
-  @Input() orderItem!: ILaneOrderItem;
+  @Input() orderItem!: LaneOrderItem;
   @Input() buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   @Input() unit?: CrudApi.Unit;
 

@@ -11,7 +11,7 @@ import {
 import {
   dashboardActions,
   dashboardSelectors,
-  IDashboardSettings,
+  DashboardSettings,
 } from '@bgap/admin/shared/data-access/dashboard';
 import {
   currentStatus as currentStatusFn,
@@ -36,7 +36,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class OrderTicketListComponent implements OnInit, OnDestroy {
   public selectedOrder?: CrudApi.Order;
-  public dashboardSettings!: IDashboardSettings;
+  public dashboardSettings!: DashboardSettings;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
   public EDashboardTicketListType = EDashboardTicketListType;
@@ -96,7 +96,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
 
     this._store
       .pipe(select(dashboardSelectors.getSettings), untilDestroyed(this))
-      .subscribe((dashboardSettings: IDashboardSettings): void => {
+      .subscribe((dashboardSettings: DashboardSettings): void => {
         this.dashboardSettings = dashboardSettings;
 
         this.buttonSize =

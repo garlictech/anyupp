@@ -6,18 +6,18 @@ import * as RoleContextsActions from './role-contexts.actions';
 
 export const ROLE_CONTEXTS_FEATURE_KEY = 'roleContexts';
 
-export interface IRoleContextsState extends EntityState<CrudApi.RoleContext> {
+export interface RoleContextsState extends EntityState<CrudApi.RoleContext> {
   error?: string | null; // last known error (if any)
 }
 
 export interface RoleContextsPartialState {
-  readonly [ROLE_CONTEXTS_FEATURE_KEY]: IRoleContextsState;
+  readonly [ROLE_CONTEXTS_FEATURE_KEY]: RoleContextsState;
 }
 
 export const roleContextsAdapter: EntityAdapter<CrudApi.RoleContext> =
   createEntityAdapter<CrudApi.RoleContext>();
 
-export const initialRoleContextState: IRoleContextsState =
+export const initialRoleContextState: RoleContextsState =
   roleContextsAdapter.getInitialState({});
 
 const reducer = createReducer(
@@ -36,7 +36,7 @@ const reducer = createReducer(
 );
 
 export function roleContextsReducer(
-  state: IRoleContextsState | undefined,
+  state: RoleContextsState | undefined,
   action: Action,
 ) {
   return reducer(state, action);

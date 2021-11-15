@@ -92,5 +92,11 @@ export const createReceiptSzamlazzHu =
       JSON.stringify(receipt, undefined, 2),
     );
 
-    return await szamlazzClient.issueReceipt(receipt);
+    try {
+      return await szamlazzClient.issueReceipt(receipt);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(error.message, error.code); // handle errors
+      throw error;
+    }
   };

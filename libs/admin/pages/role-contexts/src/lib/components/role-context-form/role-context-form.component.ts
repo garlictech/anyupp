@@ -15,7 +15,7 @@ import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { multiLangValidator } from '@bgap/admin/shared/utils';
 import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
-import { IKeyValue, IRoleContext } from '@bgap/shared/types';
+import { KeyValue } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
@@ -33,10 +33,10 @@ export class RoleContextFormComponent
   implements OnInit
 {
   public roleContext?: CrudApi.RoleContext;
-  public roleOptions: IKeyValue[];
-  public chainOptions: IKeyValue[] = [];
-  public groupOptions: IKeyValue[] = [];
-  public unitOptions: IKeyValue[] = [];
+  public roleOptions: KeyValue[];
+  public chainOptions: KeyValue[] = [];
+  public groupOptions: KeyValue[] = [];
+  public unitOptions: KeyValue[] = [];
   public eAdminRole = CrudApi.Role;
   public chainDisabled = true;
   public groupDisabled = true;
@@ -51,7 +51,7 @@ export class RoleContextFormComponent
     super(_injector);
 
     this.roleOptions = Object.keys(CrudApi.Role).map(
-      (key): IKeyValue => ({
+      (key): KeyValue => ({
         key: CrudApi.Role[<keyof typeof CrudApi.Role>key].toString(),
         value: this._translateService.instant(
           `roles.${CrudApi.Role[<keyof typeof CrudApi.Role>key]}`,
@@ -101,7 +101,7 @@ export class RoleContextFormComponent
 
     this.dialogForm.valueChanges
       .pipe(startWith(this.dialogForm.value), pairwise(), untilDestroyed(this))
-      .subscribe(([prev, next]: [IRoleContext, IRoleContext]) => {
+      .subscribe(([prev, next]: [CrudApi.RoleContext, CrudApi.RoleContext]) => {
         this._refreshDisabledFields(next.role);
 
         if (prev.role !== next.role) {
@@ -118,7 +118,7 @@ export class RoleContextFormComponent
             unitId: undefined,
           });
 
-          this._refreshGroupOptionsByChainId(next.chainId);
+          this._refreshGroupOptionsByChainId(next.chainId || '');
         }
 
         if (prev.groupId !== next.groupId) {

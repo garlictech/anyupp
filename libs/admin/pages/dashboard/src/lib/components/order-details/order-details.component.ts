@@ -15,7 +15,7 @@ import {
 } from '@bgap/admin/shared/components';
 import {
   dashboardSelectors,
-  IDashboardSettings,
+  DashboardSettings,
 } from '@bgap/admin/shared/data-access/dashboard';
 import { OrderService } from '@bgap/admin/shared/data-access/order';
 import {
@@ -49,7 +49,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   @Input() order!: CrudApi.Order;
   @Input() unit?: CrudApi.Unit;
   @Input() allowPrintOrder = false;
-  public dashboardSettings!: IDashboardSettings;
+  public dashboardSettings!: DashboardSettings;
   public EDashboardListMode = EDashboardListMode;
   public EOrderStatus = CrudApi.OrderStatus;
   public EPaymentStatus = CrudApi.PaymentStatus;
@@ -71,7 +71,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._store
       .pipe(select(dashboardSelectors.getSettings), untilDestroyed(this))
-      .subscribe((dashboardSettings: IDashboardSettings): void => {
+      .subscribe((dashboardSettings: DashboardSettings): void => {
         this.dashboardSettings = dashboardSettings;
 
         this.buttonSize =

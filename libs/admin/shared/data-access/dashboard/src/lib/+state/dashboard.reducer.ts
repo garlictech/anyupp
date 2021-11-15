@@ -9,7 +9,7 @@ import * as DashboardActions from './dashboard.actions';
 
 export const DASHBOARD_FEATURE_KEY = 'dashboard';
 
-export interface IDashboardSettings {
+export interface DashboardSettings {
   listMode: EDashboardListMode;
   size: EDashboardSize;
   orderEditing: boolean;
@@ -21,7 +21,7 @@ export interface IDashboardSettings {
 
 export interface DashboardState {
   selectedOrderId?: string;
-  settings: IDashboardSettings;
+  settings: DashboardSettings;
 }
 
 export interface DashboardPartialState {

@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 
 import { ElementRef, Injectable } from '@angular/core';
 import { CurrencyFormatterPipe, LocalizePipe } from '@bgap/admin/shared/pipes';
-import { IProducMixArrayItem } from '@bgap/shared/types';
+import { ProducMixArrayItem } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -421,7 +421,7 @@ export class ReportsService {
   public exportProductMix(
     unitName: string,
     date: Date,
-    data: IProducMixArrayItem[],
+    data: ProducMixArrayItem[],
   ) {
     const arr: (string | number)[][] = [
       ['Név', 'Típus', 'Komponens', 'Variáns', 'Termék'],
