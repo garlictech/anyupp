@@ -1,4 +1,3 @@
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/models.dart';
 
 User MOCK_USER([String? id]) => User(

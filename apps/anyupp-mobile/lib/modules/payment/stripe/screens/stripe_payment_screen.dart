@@ -1,5 +1,5 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/graphql/generated/anyupp-api.dart' hide PaymentMethod;
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/main/bloc/main_navigation_bloc.dart';
 import 'package:fa_prev/modules/main/bloc/main_navigation_event.dart';
 import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_bloc.dart';

@@ -30,7 +30,6 @@
 .pub/
 /build/
 .fvm/
-pubspec.lock
 .gradle
 
 # Web related

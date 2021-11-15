@@ -122,7 +122,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
 
     List<FavoriteProduct> favorites = [];
     for (int i = 0; i < items.length; i++) {
-      favorites.add(FavoriteProduct.fromJson(items[i]!.toJson()));
+      favorites.add(FavoriteProduct.fromJson(items[i].toJson()));
     }
     // print('***** getFavoritesList().favorites=$favorites');
     return PageResponse(

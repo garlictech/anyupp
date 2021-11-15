@@ -13,8 +13,6 @@ import 'graphql_token_refresh_interceptor.dart';
 class GraphQLClientService {
   final String amplifyApiUrl;
   final String amplifyApiKey;
-  final String graphqlApiUrl;
-  final String graphqlApiKey;
   final IAuthProvider authProvider;
 
   final _dio = Dio();
@@ -23,8 +21,6 @@ class GraphQLClientService {
     required this.authProvider,
     required this.amplifyApiUrl,
     required this.amplifyApiKey,
-    required this.graphqlApiUrl,
-    required this.graphqlApiKey,
   }) {
     _dio.interceptors.add(DioTokenInterceptor(_dio, this.authProvider));
   }
@@ -105,12 +101,12 @@ class GraphQLClientService {
     if (accessToken != null) {
       headers = {
         'Authorization': accessToken,
-        'host': Uri.parse(graphqlApiUrl).host,
+        'host': Uri.parse(amplifyApiUrl).host,
       };
     } else {
       headers = {
-        'x-api-key': graphqlApiKey,
-        'host': Uri.parse(graphqlApiUrl).host,
+        'x-api-key': amplifyApiKey,
+        'host': Uri.parse(amplifyApiUrl).host,
       };
     }
 

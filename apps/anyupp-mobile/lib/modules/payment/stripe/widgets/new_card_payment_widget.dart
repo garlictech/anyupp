@@ -1,6 +1,5 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/payment/stripe/widgets/payment_button_widget.dart';
@@ -8,7 +7,6 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/form_style_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:lottie/lottie.dart';
 
 class NewCardPaymentWidget extends StatefulWidget {

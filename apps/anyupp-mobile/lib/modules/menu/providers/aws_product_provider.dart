@@ -41,7 +41,7 @@ class AwsProductProvider implements IProductProvider {
       List<ProductCategory> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
-          results.add(GeneratedProductCategory.fromJson(items[i]!.toJson()).productCategory);
+          results.add(GeneratedProductCategory.fromJson(items[i].toJson()).productCategory);
         }
       }
       print('***** getProductCategoryList().results=${results.length}');
@@ -87,7 +87,7 @@ class AwsProductProvider implements IProductProvider {
       List<GeneratedProduct> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
-          GeneratedProduct product = GeneratedProduct.fromJson(items[i]!.toJson());
+          GeneratedProduct product = GeneratedProduct.fromJson(items[i].toJson());
           results.add(product);
         }
       }
