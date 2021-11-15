@@ -3,7 +3,7 @@ mutation StartPayment(
   $paymentMethod: PaymentMethod!
   $paymentMethodId: String!
   $savePaymentMethod: Boolean!
-  $invoiceAddress: UserInvoiceAddress
+  $invoiceAddress: UserInvoiceAddressInput
 ) {
   startStripePayment(
     input: {

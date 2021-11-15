@@ -1,5 +1,6 @@
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:flutter/foundation.dart';
+
+import 'UserInvoiceAddress.dart';
 
 @immutable
 class User {

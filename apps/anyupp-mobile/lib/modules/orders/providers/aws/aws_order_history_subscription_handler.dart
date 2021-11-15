@@ -61,7 +61,7 @@ class AwsOrderHistorySubscription {
         client: client,
       )
           .listen((result) async {
-        print('**** startListSubscription().onData=${result.data}');
+        print('**** startOrderHistoryListSubscription().onData=${result.data}');
         // print(jsonEncode(result.data));
         // print('**** startOrderSubscription.onData.hasException=${result.hasException}');
         if (!result.hasErrors) {
@@ -143,7 +143,7 @@ class AwsOrderHistorySubscription {
 
       var items = result.data!.searchOrders!.items;
       // print('***** _getOrderList().items=$items');
-      if (items == null || items.isEmpty) {
+      if (items.isEmpty) {
         _nextToken = null;
         _totalCount = 0;
         return [];
@@ -156,7 +156,7 @@ class AwsOrderHistorySubscription {
 
       List<Order> results = [];
       for (int i = 0; i < items.length; i++) {
-        results.add(Order.fromJson(items[i]!.toJson()));
+        results.add(Order.fromJson(items[i].toJson()));
       }
 
       print('***** _getOrderList().results.length=${results.length}');

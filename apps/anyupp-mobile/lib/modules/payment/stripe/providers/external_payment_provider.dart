@@ -1,4 +1,4 @@
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -28,7 +28,7 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
         paymentMethod: method,
         paymentMethodId: stringFromEnum(paymentMode.method),
         savePaymentMethod: false,
-        invoiceAddress: invoiceAddress,
+        invoiceAddress: invoiceAddress != null ? UserInvoiceAddressInput.fromJson(invoiceAddress.toJson()) : null,
       )));
 
       if (result.hasErrors) {
@@ -58,7 +58,7 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
         paymentMethod: method,
         paymentMethodId: stringFromEnum(paymentMode.method),
         savePaymentMethod: false,
-        invoiceAddress: invoiceAddress,
+        invoiceAddress: invoiceAddress != null ? UserInvoiceAddressInput.fromJson(invoiceAddress.toJson()) : null,
       )));
       print('startOrderExternalPayment().result=$result}');
       if (result.hasErrors) {

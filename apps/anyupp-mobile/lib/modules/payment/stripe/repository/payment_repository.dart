@@ -1,4 +1,3 @@
-import 'package:fa_prev/graphql/generated/anyupp-api.dart' hide PaymentMethod;
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/providers/external_payment_provider_interface.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';

@@ -1,3 +1,4 @@
+import * as s3 from '@aws-cdk/aws-s3';
 import * as logs from '@aws-cdk/aws-logs';
 import * as sst from '@serverless-stack/resources';
 import * as cdk from '@aws-cdk/core';
@@ -32,6 +33,7 @@ export class RKeeperStack extends sst.Stack {
 
     const cluster = new ecs.Cluster(this, 'AnyuppRKeeperCluster', {
       vpc: vpc,
+      enableFargateCapacityProviders: true,
     });
 
     // Task Role
@@ -71,6 +73,10 @@ export class RKeeperStack extends sst.Stack {
       image: ecs.ContainerImage.fromDockerImageAsset(asset),
       logging: logDriver,
       containerName,
+      environment: {
+        unitId: 'unitId',
+        rawData: 'rawData',
+      },
     });
 
     new ecs.FargateService(this, 'AnyuppRKeeperService', {
@@ -84,7 +90,7 @@ export class RKeeperStack extends sst.Stack {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
       handler: 'lib/lambda/rkeeper-webhook/index.handler',
-      timeout: cdk.Duration.seconds(30),
+      timeout: cdk.Duration.seconds(120),
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/rkeeper-webhook.zip'),
       ),
@@ -92,6 +98,9 @@ export class RKeeperStack extends sst.Stack {
         RKeeperProcessProductTaskArn: taskDefinition.taskDefinitionArn,
         RKeeperProcessProductSecurityGroup: vpc.vpcDefaultSecurityGroup,
         RKeeperProcessProductSubnet: vpc.publicSubnets[0].subnetId,
+        containerName,
+        API_ACCESS_KEY_ID: props.apiAccessKeyId,
+        API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
       },
     });
 

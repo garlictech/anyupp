@@ -110,8 +110,6 @@ void _initRepositories() {
 void _initServices() {
   getIt.registerLazySingleton<GraphQLClientService>(() => GraphQLClientService(
         authProvider: getIt<IAuthProvider>(),
-        graphqlApiUrl: AppConfig.AnyuppGraphqlApiUrl,
-        graphqlApiKey: AppConfig.AnyuppGraphqlApiKey,
         amplifyApiUrl: AppConfig.CrudGraphqlApiUrl,
         amplifyApiKey: AppConfig.CrudGraphqlApiKey,
       ));

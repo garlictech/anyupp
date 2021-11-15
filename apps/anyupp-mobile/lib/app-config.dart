@@ -9,10 +9,6 @@ class AppConfig {
 
   static String get StripePublishableKey => _config['StripePublishableKey'];
 
-  static String get AnyuppGraphqlApiUrl => _config['AnyuppGraphqlApiUrl'];
-
-  static String get AnyuppGraphqlApiKey => _config['AnyuppGraphqlApiKey'];
-
   static String get CrudGraphqlApiUrl => _config['CrudGraphqlApiUrl'];
 
   static String get CrudGraphqlApiKey => _config['CrudGraphqlApiKey'];

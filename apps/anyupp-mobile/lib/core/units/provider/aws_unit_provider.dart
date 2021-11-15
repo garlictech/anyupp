@@ -1,5 +1,5 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/anyupp-api.graphql.dart';
+import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -15,9 +15,13 @@ class AwsUnitProvider implements IUnitProvider {
           lng: location.longitude,
         ),
       ));
-      // print('***** searchUnitsNearLocation().result=$result');
-      // print('***** searchUnitsNearLocation().result.data=${result.data}');
-      // print('***** searchUnitsNearLocation().result.errors=${result.errors}');
+      print('***** searchUnitsNearLocation().result=$result');
+      print('***** searchUnitsNearLocation().result.data=${result.data}');
+      print('***** searchUnitsNearLocation().result.errors=${result.errors}');
+
+      if (result.hasErrors) {
+        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+      }
 
       if (result.data == null || result.data?.getUnitsNearLocation == null) {
         return [];

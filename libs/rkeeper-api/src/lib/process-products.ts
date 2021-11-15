@@ -445,6 +445,7 @@ export const upsertComponent =
           refGroupPrice: modifier.price,
           price: modifier.price,
           position: -1,
+          externalId: component.externalId,
         })),
       );
 
@@ -619,10 +620,9 @@ const resolveComponentSetsHelper = R.memoizeWith(
     ),
 );
 
+// eslint-disable @typescript-eslint/no-explicit-any
 export const resolveComponentSets =
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-
-    (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
-    (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
-      resolveComponentSetsHelper(sdk, chainId, rawData, dish);
+  (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
+  (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
+    resolveComponentSetsHelper(sdk, chainId, rawData, dish);
+// eslint-enable @typescript-eslint/no-explicit-any

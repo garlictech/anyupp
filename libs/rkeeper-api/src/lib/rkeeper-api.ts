@@ -3,6 +3,7 @@ import { AWSError, ECS } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import { bindNodeCallback } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import * as R from 'ramda';
 
 export interface HandleProductsDeps {
   ecs: ECS;
@@ -28,6 +29,7 @@ export const handleProducts =
           containerOverrides: [
             {
               name: deps.containerName,
+              command: 'ls',
               environment: [
                 {
                   name: 'unitId',
@@ -42,8 +44,8 @@ export const handleProducts =
           ],
         },
       },
-
-      params =>
+      R.tap(console.warn),
+      (params: ECS.Types.RunTaskRequest) =>
         bindNodeCallback(
           (
             p: ECS.Types.RunTaskRequest,

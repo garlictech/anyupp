@@ -145,6 +145,7 @@
     "@testing-library/cypress": "8.0.1",
     "@types/aws-lambda": "8.10.85",
     "@types/aws-serverless-express": "3.3.5",
+    "@types/axios": "^0.14.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/chart.js": "2.9.34",
     "@types/cli-progress": "3.9.2",

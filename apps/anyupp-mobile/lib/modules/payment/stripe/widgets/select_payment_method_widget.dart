@@ -1,15 +1,14 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/main/bloc/main_navigation_bloc.dart';
 import 'package:fa_prev/modules/main/bloc/main_navigation_event.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/modules/payment/stripe/widgets/payment_button_widget.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/shared/locale.dart';
 
 class SelectStripePaymentMethodWidget extends StatefulWidget {
   final bool showPaymentButton;

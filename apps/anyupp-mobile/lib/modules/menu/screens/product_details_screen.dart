@@ -214,6 +214,7 @@ class ProductDetailsWidget extends StatelessWidget {
                                 cart: snapshot.data,
                                 product: item,
                                 unit: unit,
+                                servingMode: servingMode,
                               );
                             }
                             return CenterLoadingWidget();

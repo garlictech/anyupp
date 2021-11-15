@@ -57,6 +57,7 @@ query ListProducts(
           hu
         }
         maxSelection
+        supportedServingModes
         items {
           allergens
           name {

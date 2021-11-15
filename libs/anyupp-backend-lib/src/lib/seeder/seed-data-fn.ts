@@ -900,43 +900,53 @@ export const createComponentSets = (deps: SeederDependencies) => {
 export const seedRKeeperUnit = (deps: SeederDependencies) =>
   combineLatest(
     deleteCreate(
-      () => deps.crudSdk.DeleteUnit({ input: { id: 'seeded-rkeeper-unit' } }),
+      () => deps.crudSdk.DeleteUnit({ input: { id: 'frei-rkeeper-unit' } }),
       () =>
         deps.crudSdk.CreateUnit({
           input: {
             ...unitFixture.createRkeeperUnit,
-            id: 'seeded-rkeeper-unit',
-            name: `Test RKEEPER unit`,
+            id: 'frei-rkeeper-unit',
+            name: `Frei RKEEPER unit`,
             supportedOrderModes: [CrudApi.OrderMode.pickup],
             supportedServingModes: [CrudApi.ServingMode.takeaway],
-            externalId: 'external-id',
-            groupId: 'seeded-rkeeper-group',
-            chainId: 'seeded-rkeeper-chain',
+            externalId: '109150009',
+            groupId: 'frei-rkeeper-group',
+            chainId: 'frei-rkeeper-chain',
+            pos: {
+              type: CrudApi.PosType.rkeeper,
+              rkeeper: {
+                endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
+                rkeeperUsername: '781_55_69_939',
+                rkeeperPassword: '3943200386403faebf5f80191f5c1c',
+                anyuppPassword: 'foobar',
+                anyuppUsername: 'foobar',
+              },
+            },
           },
         }),
     ),
 
     deleteCreate(
-      () => deps.crudSdk.DeleteGroup({ input: { id: 'seeded-rkeeper-group' } }),
+      () => deps.crudSdk.DeleteGroup({ input: { id: 'frei-rkeeper-group' } }),
       () =>
         deps.crudSdk.CreateGroup({
           input: {
             ...groupFixture.group_01,
-            id: 'seeded-rkeeper-group',
-            name: 'Test RKEEPER Group',
-            chainId: 'seeded-rkeeper-chain',
+            id: 'frei-rkeeper-group',
+            name: 'Frei RKEEPER Group',
+            chainId: 'frei-rkeeper-chain',
           },
         }),
     ),
 
     deleteCreate(
-      () => deps.crudSdk.DeleteChain({ input: { id: 'seeded-rkeeper-chain' } }),
+      () => deps.crudSdk.DeleteChain({ input: { id: 'frei-rkeeper-chain' } }),
       () =>
         deps.crudSdk.CreateChain({
           input: {
             ...chainFixture.chain_01,
-            id: 'seeded-rkeeper-chain',
-            name: 'Test RKEEPER Chain',
+            id: 'frei-rkeeper-chain',
+            name: 'Frei RKEEPER Chain',
           },
         }),
     ),

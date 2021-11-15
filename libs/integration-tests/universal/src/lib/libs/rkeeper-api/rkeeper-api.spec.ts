@@ -33,7 +33,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as fixtures from './fixtures';
 import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/anyupp-gql/backend';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
-import { stackConfig } from '@bgap/shared/config';
+import * as stackConfig from '../../generated/stack-config.json';
 
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();
@@ -414,16 +414,19 @@ describe('Test the rkeeper api basic functionality', () => {
     });
   }, 120000);
 
-  test.only('Test the product handling logic in fargate', done => {
+  test('Test the product handling logic in fargate', done => {
     const deps = {
       ecs: new ECS({ apiVersion: '2014-11-13' }),
       RKeeperProcessProductSubnet:
-        stackConfig['dev-anyupp-backend-rkeeper'].RKeeperProcessProductSubnet,
+        stackConfig['anyupp-backend-rkeeper'].RKeeperProcessProductSubnet,
       RKeeperProcessProductTaskArn:
-        stackConfig['dev-anyupp-backend-rkeeper'].RKeeperProcessProductTaskArn,
+        stackConfig['anyupp-backend-rkeeper'].RKeeperProcessProductTaskArn,
       RKeeperProcessProductSecurityGroup:
-        stackConfig['dev-anyupp-backend-rkeeper']
+        stackConfig['anyupp-backend-rkeeper']
           .RKeeperProcessProductSecurityGroup,
+      containerName:
+        stackConfig['anyupp-backend-rkeeper']
+          .RKeeperProcessProductContainerName,
     };
 
     handleProducts(deps)(fixtures.rkeeperUnit.id, fixtures.rawData)
@@ -464,4 +467,11 @@ describe('Test the rkeeper api basic functionality', () => {
       )
       .subscribe(() => done());
   }, 15000);
+
+  test.only('It should be able to send a POST to the webhook', done => {
+    request(config.RKeeperWebhookEndpoint)
+      .post('/wp-json/ucsdp/v1/push/dishes/')
+      .send(fixtures.rawData)
+      .expect(200, done);
+  }, 20000);
 });

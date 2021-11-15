@@ -160,6 +160,7 @@ type ProductConfigComponent @aws_cognito_user_pools {
   refGroupPrice: Float!
   price: Float!
   position: Int!
+  externalId: String
 }
 
 type ProductConfigSet @aws_cognito_user_pools {
@@ -549,6 +550,7 @@ type OrderItem {
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
   productType: String # TODO: Make the OrderItem.productType REQUIRED in the next release
+  externalId: String
 }
 
 ### Order

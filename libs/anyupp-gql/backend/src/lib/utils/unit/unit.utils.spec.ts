@@ -102,22 +102,26 @@ describe('Unit utils', () => {
         id: 'unit_0405_inLondon',
         address: addressInLondon,
         open: open_0405,
+        timeZone: timezoneLondon,
       };
       const unit_0506_inLondon: CrudApi.Unit = {
         ...unitBase,
         id: 'unit_0506_inLondon',
         address: addressInLondon,
         open: open_0506,
+        timeZone: timezoneLondon,
       };
       const unit_0405_inBudapest: CrudApi.Unit = {
         ...unitBase,
         id: 'unit_0405_inBudapest',
         open: open_0405,
+        timeZone: timezoneBudapest,
       };
       const unit_0506_inBudapest: CrudApi.Unit = {
         ...unitBase,
         id: 'unit_0506_inBudapest',
         open: open_0506,
+        timeZone: timezoneBudapest,
       };
       const units = [
         unit_0405_inLondon,
@@ -273,10 +277,12 @@ describe('Unit utils', () => {
           to: '19:00',
         },
       },
+      timeZone: timezoneBudapest,
     };
     const unit_inLondon: CrudApi.Unit = {
       ...unit_inBudapest,
       address: addressInLondon,
+      timeZone: timezoneLondon,
     };
     it('should return the opening hours for the given day with the Unit in Budapest', () => {
       const tuesday = '2021-07-13';

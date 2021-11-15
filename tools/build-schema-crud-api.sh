@@ -22,3 +22,8 @@ echo '=============================='
 yarn graphql-codegen --config tools/graphql-codegen-crud.yml
 echo 'Done.'
 
+echo "Preparing schema for graphql schema checker..."
+cat ../../libs/gql-sdk/src/schema/aws.graphql \
+  ../../apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql \
+  > ../../.github/graphql-inspector-artifacts/schema.graphql
+

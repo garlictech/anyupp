@@ -440,6 +440,7 @@ type OrderItem @aws_api_key @aws_iam @aws_cognito_user_pools {
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
   productType: String
+  externalId: String
 }
 
 type Order @aws_iam @aws_cognito_user_pools {
@@ -1820,6 +1821,7 @@ input OrderItemInput {
   allergens: [Allergen]
   configSets: [OrderItemConfigSetInput!]
   productType: String
+  externalId: String
 }
 
 input PriceShownInput {

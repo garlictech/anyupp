@@ -23,14 +23,14 @@ Future<List<String>> _listAllDummyOrdersNotArchived(String userId, String unitId
     }
 
     var items = result.data!.searchOrders!.items;
-    if (items == null || items.isEmpty) {
+    if (items.isEmpty) {
       print('***** listAllDummyOrders.results=0');
       return [];
     }
 
     List<String> results = [];
     for (int i = 0; i < items.length; i++) {
-      String item = items[i]!.id;
+      String item = items[i].id;
       results.add(item);
     }
 
@@ -58,14 +58,14 @@ Future<List<String>> _listAllDummyOrdersArchived(String userId, String unitId) a
     }
 
     var items = result.data!.searchOrders!.items;
-    if (items == null || items.isEmpty) {
+    if (items.isEmpty) {
       print('***** listAllDummyOrders.results=0');
       return [];
     }
 
     List<String> results = [];
     for (int i = 0; i < items.length; i++) {
-      String item = items[i]!.id;
+      String item = items[i].id;
       results.add(item);
     }
 

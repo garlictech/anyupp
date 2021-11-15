@@ -1,5 +1,5 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
@@ -59,8 +59,8 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       // print('signInAnonymously.response().exception=${result.exception}');
       // print('signInAnonymously.response().data=${jsonEncode(result.data)}');
 
-      String? email = result.data?.createAnonymUser.username;
-      String? pwd = result.data?.createAnonymUser.pwd;
+      String? email = result.data?.createAnonymUser?.username;
+      String? pwd = result.data?.createAnonymUser?.pwd;
       if (email != null && pwd != null) {
         return loginWithEmailAndPassword(email, pwd, isAnonymus: true);
       }

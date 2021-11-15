@@ -3,4 +3,7 @@ FROM node:14-alpine
 COPY .serverless/rkeeper-product-processor.zip /
 RUN unzip /rkeeper-product-processor.zip
 
+ENV unitId="unitId"
+ENV rawData="rawData"
+
 ENTRYPOINT node /lib/lambda/rkeeper-product-processor/index.js
