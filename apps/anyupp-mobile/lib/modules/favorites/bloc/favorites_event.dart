@@ -26,3 +26,5 @@ class ListFavoriteProducts extends FavoritesEvent {
     this.nextToken,
   });
 }
+
+class ResetFavoritesList extends FavoritesEvent {}

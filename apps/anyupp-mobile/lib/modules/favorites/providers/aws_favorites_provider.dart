@@ -179,4 +179,9 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       rethrow;
     }
   }
+
+  @override
+  void resetFavoritesList() {
+    _favorites = null;
+  }
 }
