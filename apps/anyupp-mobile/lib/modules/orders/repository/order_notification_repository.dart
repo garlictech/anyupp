@@ -7,8 +7,14 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class OrderNotificationService {
+  OrderStatus? _lastStatus;
+  String? _lastId;
+
   void checkIfShowOrderStatusNotification(BuildContext context, List<Order> orders) async {
     orders.forEach((order) async {
+      if (order.archived) {
+        return;
+      }
       OrderStatus currentStatus = order.statusLog[order.statusLog.length - 1].status;
       // print('***** checkIfShowOrderStatusNotification()=${order.id}, status=$currentStatus');
 
@@ -21,7 +27,11 @@ class OrderNotificationService {
 
       if (previousStatus != null) {
         if (currentStatus == OrderStatus.processing && previousStatus == OrderStatus.placed) {
-          print('***** checkIfShowOrderStatusNotification().showProcessingNotif()');
+          // print('***** checkIfShowOrderStatusNotification().showProcessingNotif()');
+          if (!_checkNeedNotification(order.id, currentStatus)) {
+            return;
+          }
+
           showNotification(
             context,
             transEx(context, "notifications.messageFrom"),
@@ -30,11 +40,14 @@ class OrderNotificationService {
               pageIndex: 2,
             ),
           );
+          return;
         }
 
         if (currentStatus == OrderStatus.ready && previousStatus == OrderStatus.processing) {
-          print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMode}');
-
+          // print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMode}');
+          if (!_checkNeedNotification(order.id, currentStatus)) {
+            return;
+          }
           showNotification(
             context,
             transEx(context, "notifications.messageFrom"),
@@ -46,5 +59,14 @@ class OrderNotificationService {
         }
       }
     });
+  }
+
+  bool _checkNeedNotification(String id, OrderStatus currentStatus) {
+    if (id == _lastId && currentStatus == _lastStatus) {
+      return false;
+    }
+    _lastId = id;
+    _lastStatus = currentStatus;
+    return true;
   }
 }

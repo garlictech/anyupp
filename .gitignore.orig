@@ -78,6 +78,13 @@ amplifytools.xcconfig
 apps/crud-backend/home/
 apps/crud-backend/src/
 
+<<<<<<< HEAD
 weeklyReport.xlsx
 
 .angular/
+||||||| 5f29956e
+weeklyReport.xlsx
+=======
+weeklyReport.xlsx
+.angular
+>>>>>>> qa

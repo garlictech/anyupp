@@ -79,7 +79,7 @@ class GeneratedProductConfigSet {
                 ),
               ),
             )
-          : [ServingMode.inPlace, ServingMode.takeAway],
+          : [],
     );
   }
 
