@@ -144,7 +144,7 @@
     "@serverless-stack/resources": "0.50.3",
     "@vvo/tzdb": "6.32.0",
     "geo-tz": "6.0.1",
-    "@testing-library/cypress": "8.0.1",
+    "@testing-library/cypress": "8.0.2",
     "@types/aws-lambda": "8.10.85",
     "@types/aws-serverless-express": "3.3.5",
     "@types/bcryptjs": "^2.4.2",
