@@ -119,6 +119,7 @@ export const processDishes = (rawData: any): Observable<Dish[]> =>
         R.map(normalizeDish),
       ),
     ),
+    tap(() => console.warn('DISHES PROCESSED')),
   );
 
 export const externalProductIdMaker = (guid: string) => guid;
@@ -170,9 +171,10 @@ export const getBusinessEntityInfo =
   (externalRestaurantId: string): Observable<RKeeperBusinessEntityInfo> =>
     sdk
       .SearchUnits({
-        filter: { externalId: { eq: externalRestaurantId } },
+        filter: { externalId: { eq: '109150009' } },
       })
       .pipe(
+        tap(x => console.warn(x)),
         getFirstFoundItem(),
         throwIfEmptyValue(
           `Cannot find unit belonging to external unit id ${externalRestaurantId}`,
@@ -365,6 +367,7 @@ export const handleRkeeperProducts =
       getBusinessEntityInfo(sdk)(externalRestaurantId),
       processDishes(rawData),
     ).pipe(
+      tap(() => console.warn('DISHES PROCESSED')),
       switchMap(([businessEntityInfo, dishes]) =>
         createDefaultProductCategory(sdk)(businessEntityInfo).pipe(
           tap(() =>
@@ -445,7 +448,6 @@ export const upsertComponent =
           refGroupPrice: modifier.price,
           price: modifier.price,
           position: -1,
-          externalId: component.externalId,
         })),
       );
 

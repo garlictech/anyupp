@@ -1,5 +1,3 @@
-import * as s3 from '@aws-cdk/aws-s3';
-import * as logs from '@aws-cdk/aws-logs';
 import * as sst from '@serverless-stack/resources';
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -8,8 +6,6 @@ import { commonLambdaProps } from './lambda-common';
 import * as ssm from '@aws-cdk/aws-ssm';
 import { getFQParamName } from './utils';
 import path from 'path';
-import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
-import * as ecs from '@aws-cdk/aws-ecs';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
 
@@ -21,21 +17,10 @@ export interface RKeeperStackProps extends sst.StackProps {
 export class RKeeperStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: RKeeperStackProps) {
     super(scope, id);
-
-    const asset = new DockerImageAsset(this, 'AnyuppRKeeperBuildImage', {
-      directory: path.join(__dirname, '..', '..'),
-      file: 'Dockerfile.process-products',
-    });
-
     const vpc = new ec2.Vpc(this, 'AnyuppRKeeperVpc', {
       maxAzs: 3,
     });
-
-    const cluster = new ecs.Cluster(this, 'AnyuppRKeeperCluster', {
-      vpc: vpc,
-      enableFargateCapacityProviders: true,
-    });
-
+    //
     // Task Role
     const taskRole = new iam.Role(this, 'ecsTaskExecutionRole', {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
@@ -47,60 +32,26 @@ export class RKeeperStack extends sst.Stack {
       ),
     );
 
-    const taskDefinition = new ecs.FargateTaskDefinition(
-      this,
-      'AnyuppRKeeperTaskDef',
-      {
-        memoryLimitMiB: 512,
-        cpu: 256,
-        taskRole,
-      },
+    taskRole.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName(
+        'AmazonEC2ContainerRegistryFullAccess',
+      ),
     );
-
-    const logGroup = new logs.LogGroup(this, 'AnyuppRKeeperLogGroup', {
-      logGroupName: '/ecs/AnyuppRKeeperProducts',
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
-
-    const logDriver = new ecs.AwsLogDriver({
-      logGroup,
-      streamPrefix: 'AnyuppRKeeperProducts',
-    });
-
-    const containerName = 'anyupp-rkeeper-process-products';
-
-    taskDefinition.addContainer('AnyuppRKeeperContainer', {
-      image: ecs.ContainerImage.fromDockerImageAsset(asset),
-      logging: logDriver,
-      containerName,
-      environment: {
-        unitId: 'unitId',
-        rawData: 'rawData',
-      },
-    });
-
-    new ecs.FargateService(this, 'AnyuppRKeeperService', {
-      cluster,
-      taskDefinition,
-      desiredCount: 1,
-      serviceName: 'anyupp-rkeeper-process-products',
-    });
 
     const rkeeperLambda = new lambda.Function(this, 'RKeeperWebhookLambda', {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
       handler: 'lib/lambda/rkeeper-webhook/index.handler',
-      timeout: cdk.Duration.seconds(120),
+      timeout: cdk.Duration.seconds(20),
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/rkeeper-webhook.zip'),
       ),
       environment: {
-        RKeeperProcessProductTaskArn: taskDefinition.taskDefinitionArn,
         RKeeperProcessProductSecurityGroup: vpc.vpcDefaultSecurityGroup,
         RKeeperProcessProductSubnet: vpc.publicSubnets[0].subnetId,
-        containerName,
-        API_ACCESS_KEY_ID: props.apiAccessKeyId,
-        API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
+        taskRoleArn: taskRole.roleArn,
+        API_ACCESS_KEY_ID: 'AKIAYIT7GMY52O6ZISHP',
+        API_SECRET_ACCESS_KEY: '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',
       },
     });
 
@@ -132,10 +83,6 @@ export class RKeeperStack extends sst.Stack {
       value: api.url,
     });
 
-    new cdk.CfnOutput(this, 'RKeeperProcessProductTaskArn', {
-      value: taskDefinition.taskDefinitionArn,
-    });
-
     new cdk.CfnOutput(this, 'RKeeperProcessProductSecurityGroup', {
       value: vpc.vpcDefaultSecurityGroup,
     });
@@ -144,8 +91,8 @@ export class RKeeperStack extends sst.Stack {
       value: vpc.publicSubnets[0].subnetId,
     });
 
-    new cdk.CfnOutput(this, 'RKeeperProcessProductContainerName', {
-      value: containerName,
+    new cdk.CfnOutput(this, 'RKeeperProcessProductTaskRoleArn', {
+      value: taskRole.roleArn,
     });
   }
 }

@@ -125,7 +125,7 @@ describe('Test the rkeeper api basic functionality', () => {
   );
 
   beforeEach(done => {
-    jest.resetModules();
+    /*    jest.resetModules();
 
     cleanup$
       .pipe(
@@ -144,7 +144,8 @@ describe('Test the rkeeper api basic functionality', () => {
         ),
         delay(ES_DELAY),
       )
-      .subscribe(() => done());
+      .subscribe(() => done());*/
+    done();
   }, 65000);
 
   afterAll(done => {
@@ -306,7 +307,9 @@ describe('Test the rkeeper api basic functionality', () => {
           ...configSet,
           items: !!configSet?.items
             ? pipe(
-                configSet?.items ?? [],
+                (configSet?.items ?? []) as CrudApi.Maybe<
+                  CrudApi.ProductConfigSet | CrudApi.GeneratedProductConfigSet
+                >[],
                 R.reject(R.isNil),
                 R.sortBy(JSON.stringify),
               )
@@ -398,13 +401,16 @@ describe('Test the rkeeper api basic functionality', () => {
       });
   }, 35000);
 
-  test.skip('Test full rkeeper product handling - the use case with lots of records', done => {
+  test.only('Test full rkeeper product handling - the use case with lots of records', done => {
     const rawData = JSON.parse(
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
+    console.log('RAWDATA READ');
+
     handleRkeeperProducts(crudSdk)(
-      fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
+      '109150001',
+      //fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
       rawData,
     ).subscribe({
       next: result => {
@@ -412,24 +418,24 @@ describe('Test the rkeeper api basic functionality', () => {
         done();
       },
     });
-  }, 120000);
+  }, 720000);
 
   test('Test the product handling logic in fargate', done => {
     const deps = {
       ecs: new ECS({ apiVersion: '2014-11-13' }),
       RKeeperProcessProductSubnet:
         stackConfig['anyupp-backend-rkeeper'].RKeeperProcessProductSubnet,
-      RKeeperProcessProductTaskArn:
-        stackConfig['anyupp-backend-rkeeper'].RKeeperProcessProductTaskArn,
       RKeeperProcessProductSecurityGroup:
         stackConfig['anyupp-backend-rkeeper']
           .RKeeperProcessProductSecurityGroup,
-      containerName:
-        stackConfig['anyupp-backend-rkeeper']
-          .RKeeperProcessProductContainerName,
+      taskRoleArn:
+        'arn:aws:iam::568276182587:role/dev-anyupp-backend-rkeepe-ecsTaskExecutionRole34F5-1I8EG8F8IQRC0',
+      API_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || '',
+      API_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || '',
+      AWS_REGION: process.env.AWS_REGION || '',
     };
 
-    handleProducts(deps)(fixtures.rkeeperUnit.id, fixtures.rawData)
+    handleProducts(deps)('yellow-rkeeper-unit', fixtures.rawData)
       .pipe(
         //delay(30000),
         switchMap(() =>
@@ -440,7 +446,7 @@ describe('Test the rkeeper api basic functionality', () => {
         tap(result => expect(result?.items?.length).toMatchSnapshot()),
       )
       .subscribe(() => done());
-  }, 120000);
+  }, 20000);
 
   test('createDefaultProductCategory', done => {
     getBusinessEntityInfo(crudSdk)(
@@ -468,7 +474,7 @@ describe('Test the rkeeper api basic functionality', () => {
       .subscribe(() => done());
   }, 15000);
 
-  test.only('It should be able to send a POST to the webhook', done => {
+  test('It should be able to send a POST to the webhook', done => {
     request(config.RKeeperWebhookEndpoint)
       .post('/wp-json/ucsdp/v1/push/dishes/')
       .send(fixtures.rawData)

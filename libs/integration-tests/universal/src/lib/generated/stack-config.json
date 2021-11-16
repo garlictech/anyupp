@@ -48,10 +48,9 @@
   },
 "anyupp-backend-rkeeper": {
     "RKeeperWebhookEndpointCBC72BD4": "https://jbfg9gbq29.execute-api.eu-west-1.amazonaws.com/dev/",
-    "RKeeperProcessProductSecurityGroup": "sg-0d5ac986f16f74ca9",
-    "RKeeperProcessProductTaskArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/devanyuppbackendrkeeperAnyuppRKeeperTaskDefCFB0A214:22",
-    "RKeeperProcessProductSubnet": "subnet-0f45576fd0ac7eefa",
-    "RKeeperProcessProductContainerName": "anyupp-rkeeper-process-products",
+    "RKeeperProcessProductSecurityGroup": "sg-07882a258d484e7f7",
+    "RKeeperProcessProductSubnet": "subnet-0851ae7dd86295476",
+    "RKeeperProcessProductTaskRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-rkeepe-ecsTaskExecutionRole34F5-1I8EG8F8IQRC0",
     "RKeeperWebhookEndpoint": "https://jbfg9gbq29.execute-api.eu-west-1.amazonaws.com/dev/"
   }
 }

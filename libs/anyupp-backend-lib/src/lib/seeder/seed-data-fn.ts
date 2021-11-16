@@ -900,18 +900,18 @@ export const createComponentSets = (deps: SeederDependencies) => {
 export const seedRKeeperUnit = (deps: SeederDependencies) =>
   combineLatest(
     deleteCreate(
-      () => deps.crudSdk.DeleteUnit({ input: { id: 'frei-rkeeper-unit' } }),
+      () => deps.crudSdk.DeleteUnit({ input: { id: 'yellow-rkeeper-unit' } }),
       () =>
         deps.crudSdk.CreateUnit({
           input: {
             ...unitFixture.createRkeeperUnit,
-            id: 'frei-rkeeper-unit',
-            name: `Frei RKEEPER unit`,
+            id: 'yellow-rkeeper-unit',
+            name: `yellow RKEEPER unit`,
             supportedOrderModes: [CrudApi.OrderMode.pickup],
             supportedServingModes: [CrudApi.ServingMode.takeaway],
             externalId: '109150009',
-            groupId: 'frei-rkeeper-group',
-            chainId: 'frei-rkeeper-chain',
+            groupId: 'yellow-rkeeper-group',
+            chainId: 'yellow-rkeeper-chain',
             pos: {
               type: CrudApi.PosType.rkeeper,
               rkeeper: {
@@ -927,26 +927,26 @@ export const seedRKeeperUnit = (deps: SeederDependencies) =>
     ),
 
     deleteCreate(
-      () => deps.crudSdk.DeleteGroup({ input: { id: 'frei-rkeeper-group' } }),
+      () => deps.crudSdk.DeleteGroup({ input: { id: 'yellow-rkeeper-group' } }),
       () =>
         deps.crudSdk.CreateGroup({
           input: {
             ...groupFixture.group_01,
-            id: 'frei-rkeeper-group',
-            name: 'Frei RKEEPER Group',
-            chainId: 'frei-rkeeper-chain',
+            id: 'yellow-rkeeper-group',
+            name: 'yellow RKEEPER Group',
+            chainId: 'yellow-rkeeper-chain',
           },
         }),
     ),
 
     deleteCreate(
-      () => deps.crudSdk.DeleteChain({ input: { id: 'frei-rkeeper-chain' } }),
+      () => deps.crudSdk.DeleteChain({ input: { id: 'yellow-rkeeper-chain' } }),
       () =>
         deps.crudSdk.CreateChain({
           input: {
             ...chainFixture.chain_01,
-            id: 'frei-rkeeper-chain',
-            name: 'Frei RKEEPER Chain',
+            id: 'yellow-rkeeper-chain',
+            name: 'yellow RKEEPER Chain',
           },
         }),
     ),

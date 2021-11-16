@@ -14,7 +14,7 @@ import {
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
 import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
+import { map, mapTo, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { incrementOrderNum } from '../../database';
 import { OrderResolverDeps } from './utils';
 import { sendRkeeperOrder } from '@bgap/rkeeper-api';
@@ -289,14 +289,13 @@ export const createOrderFromCart =
       switchMap(props =>
         createOrderInDb(props.orderInput)(deps).pipe(
           switchMap(item =>
-            deps.crudSdk.DeleteCart({ input: { id: props.cart.id } }),
+            combineLatest(
+              deps.crudSdk.DeleteCart({ input: { id: props.cart.id } }),
+              props.unit.pos?.type === CrudApi.PosType.rkeeper
+                ? sendRkeeperOrder(props.unit, props.orderInput)
+                : of({}),
+            ).pipe(mapTo(item?.id)),
           ),
-          switchMap(() =>
-            props.unit.pos?.type === CrudApi.PosType.rkeeper
-              ? sendRkeeperOrder(props.unit, props.orderInput)
-              : of({}),
-          ),
-          mapTo(props.cart.id),
         ),
       ),
     );
