@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IKeyValue } from '@bgap/shared/types';
+import { KeyValue } from '@bgap/shared/types';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { FormsService } from '../../services/forms/forms.service';
@@ -23,7 +23,7 @@ export class FormUnitPosComponent implements OnInit {
   @Input() posFormGroup!: FormGroup;
 
   public ePosType = CrudApi.PosType;
-  public posTypeOptions: IKeyValue[] = [
+  public posTypeOptions: KeyValue[] = [
     {
       key: CrudApi.PosType.anyupp,
       value: 'AnyUPP',

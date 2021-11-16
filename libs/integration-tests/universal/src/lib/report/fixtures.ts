@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-import { timezoneBudapest } from '@bgap/admin/shared/utils';
+import { timezoneBudapest } from '@bgap/shared/utils';
 
 const dateAgo = (days: number) =>
   DateTime.fromISO(new Date().toISOString(), {

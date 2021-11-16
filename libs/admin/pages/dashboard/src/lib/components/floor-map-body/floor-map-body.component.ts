@@ -34,7 +34,7 @@ import {
   setBorder,
 } from '@bgap/admin/shared/floor-map';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IFloorMapOrderObjects, IFloorMapOrders } from '@bgap/shared/types';
+import { FloorMapOrderObjects, FloorMapOrders } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -52,9 +52,9 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
   public unit?: CrudApi.Unit;
 
-  private _allTableSeatOrders$: BehaviorSubject<IFloorMapOrderObjects> =
+  private _allTableSeatOrders$: BehaviorSubject<FloorMapOrderObjects> =
     new BehaviorSubject({});
-  private _allTableOrders$: BehaviorSubject<IFloorMapOrderObjects> =
+  private _allTableOrders$: BehaviorSubject<FloorMapOrderObjects> =
     new BehaviorSubject({});
 
   constructor(
@@ -141,7 +141,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           // Refresh seat color and border
           // tableOrders contains ALL seats!
           Object.values(_allTableSeatOrders).forEach(
-            (tableSeatOrder: IFloorMapOrders): void => {
+            (tableSeatOrder: FloorMapOrders): void => {
               const rawObj: CrudApi.FloorMapDataObject | undefined = (
                 <CrudApi.FloorMapDataObject[]>this.unit?.floorMap?.objects || []
               ).find(

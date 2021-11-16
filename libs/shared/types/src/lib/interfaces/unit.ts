@@ -1,4 +1,4 @@
-export interface IDetailedLane {
+export interface DetailedLane {
   id?: string;
   name: string;
   color: string;

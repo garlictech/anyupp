@@ -70,7 +70,7 @@ const toGeoUnit = ({
   currency: string;
   inputLocation: CrudApi.LocationInput;
   chainStyle: CrudApi.ChainStyle;
-  //openingHours: IWeeklySchedule;
+  //openingHours: WeeklySchedule;
   paymentModes?: Maybe<CrudApi.PaymentMode>[];
 }): CrudApi.GeoUnit => ({
   id: unit.id,
@@ -95,7 +95,7 @@ const toGeoUnit = ({
       : defaultSupportedServingModes,
 });
 
-/*const getOpeningOursForToday = (openingHours: IWeeklySchedule): string => {
+/*const getOpeningOursForToday = (openingHours: WeeklySchedule): string => {
   console.log(
     '### ~ file: get-units-in-radius.resolver.ts ~ line 118 ~ TODO: use real opening hours insted of the fix one',
     openingHours,

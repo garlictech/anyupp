@@ -28,8 +28,8 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import {
   defaultServingMode,
   EProductComponentSetType,
-  IKeyValue,
-  IKeyValueObject,
+  KeyValue,
+  KeyValueObject,
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -47,10 +47,10 @@ export class ProductComponentSetFormComponent
 {
   public componentForm!: FormGroup;
   public productComponentSet!: CrudApi.ProductComponentSet;
-  public chainOptions: IKeyValue[] = [];
-  public typeOptions: IKeyValue[] = [];
-  public productComponentOptions: IKeyValue[] = [];
-  public productComponentObject: IKeyValueObject = {};
+  public chainOptions: KeyValue[] = [];
+  public typeOptions: KeyValue[] = [];
+  public productComponentOptions: KeyValue[] = [];
+  public productComponentObject: KeyValueObject = {};
   public eProductComponentSetType = EProductComponentSetType;
   public servingModes = SERVING_MODES;
   public editing = false;
@@ -116,7 +116,7 @@ export class ProductComponentSetFormComponent
       .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
       .subscribe((chains: CrudApi.Chain[]): void => {
         this.chainOptions = chains.map(
-          (chain): IKeyValue => ({
+          (chain): KeyValue => ({
             key: chain.id,
             value: chain.name,
           }),

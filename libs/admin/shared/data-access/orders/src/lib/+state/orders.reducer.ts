@@ -12,17 +12,17 @@ import * as OrdersActions from './orders.actions';
 
 export const ORDERS_FEATURE_KEY = 'orders';
 
-export interface IOrderEntityState extends EntityState<CrudApi.Order> {
+export interface OrderEntityState extends EntityState<CrudApi.Order> {
   error?: string | null; // last known error (if any)
 }
 
-export interface IOrdersState {
-  active: IOrderEntityState;
-  history: IOrderEntityState;
+export interface OrdersState {
+  active: OrderEntityState;
+  history: OrderEntityState;
 }
 
 export interface OrdersPartialState {
-  readonly [ORDERS_FEATURE_KEY]: IOrdersState;
+  readonly [ORDERS_FEATURE_KEY]: OrdersState;
 }
 
 //
@@ -32,7 +32,7 @@ export interface OrdersPartialState {
 export const activeOrdersAdapter: EntityAdapter<CrudApi.Order> =
   createEntityAdapter<CrudApi.Order>();
 
-export const initialActiveOrdersState: IOrderEntityState =
+export const initialActiveOrdersState: OrderEntityState =
   activeOrdersAdapter.getInitialState({});
 
 const activeOrdersReducer = createReducer(
@@ -56,7 +56,7 @@ const activeOrdersReducer = createReducer(
 export const historyOrdersAdapter: EntityAdapter<CrudApi.Order> =
   createEntityAdapter<CrudApi.Order>();
 
-export const initialHistoryOrdersState: IOrderEntityState =
+export const initialHistoryOrdersState: OrderEntityState =
   historyOrdersAdapter.getInitialState({});
 
 const historyOrdersReducer = createReducer(
@@ -75,13 +75,13 @@ const historyOrdersReducer = createReducer(
   ),
 );
 
-const reducerMap: ActionReducerMap<IOrdersState> = {
+const reducerMap: ActionReducerMap<OrdersState> = {
   active: activeOrdersReducer,
   history: historyOrdersReducer,
 };
 
 const combinedReducer = combineReducers(reducerMap);
 
-export function ordersReducer(state: IOrdersState | undefined, action: Action) {
+export function ordersReducer(state: OrdersState | undefined, action: Action) {
   return combinedReducer(state, action);
 }

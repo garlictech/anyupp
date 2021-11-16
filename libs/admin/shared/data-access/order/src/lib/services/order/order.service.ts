@@ -13,7 +13,7 @@ import {
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { getDayIntervals } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IDateIntervals } from '@bgap/shared/types';
+import { DateIntervals } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
 
 @Injectable({
@@ -320,7 +320,7 @@ export class OrderService {
     historyDate: string | number,
     timeZone: string,
   ) {
-    const dayIntervals: IDateIntervals = getDayIntervals(historyDate, timeZone);
+    const dayIntervals: DateIntervals = getDayIntervals(historyDate, timeZone);
 
     this._crudSdk.doListQuery(
       ordersActions.resetHistoryOrders(),

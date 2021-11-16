@@ -8,7 +8,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   DASHBOARD_FEATURE_KEY,
   DashboardState,
-  IDashboardSettings,
+  DashboardSettings,
 } from './dashboard.reducer';
 import * as CrudApi from '@bgap/crud-gql/api';
 
@@ -48,7 +48,7 @@ export const getSelectedHistoryOrder = () => {
 
 export const getSettings = createSelector(
   getDashboardState,
-  (state: DashboardState): IDashboardSettings => state.settings,
+  (state: DashboardState): DashboardSettings => state.settings,
 );
 
 export const getSelectedOrderId = createSelector(

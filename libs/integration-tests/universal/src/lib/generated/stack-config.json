@@ -49,7 +49,7 @@
 "anyupp-backend-rkeeper": {
     "RKeeperWebhookEndpointCBC72BD4": "https://jbfg9gbq29.execute-api.eu-west-1.amazonaws.com/dev/",
     "RKeeperProcessProductSecurityGroup": "sg-0d5ac986f16f74ca9",
-    "RKeeperProcessProductTaskArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/devanyuppbackendrkeeperAnyuppRKeeperTaskDefCFB0A214:21",
+    "RKeeperProcessProductTaskArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/devanyuppbackendrkeeperAnyuppRKeeperTaskDefCFB0A214:22",
     "RKeeperProcessProductSubnet": "subnet-0f45576fd0ac7eefa",
     "RKeeperProcessProductContainerName": "anyupp-rkeeper-process-products",
     "RKeeperWebhookEndpoint": "https://jbfg9gbq29.execute-api.eu-west-1.amazonaws.com/dev/"

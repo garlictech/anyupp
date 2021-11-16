@@ -19,7 +19,7 @@ import {
 import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
 import { LocalizePipe } from '@bgap/admin/shared/pipes';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductLevel, IKeyValue } from '@bgap/shared/types';
+import { EProductLevel, KeyValue } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -41,7 +41,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
   public eServingMode = CrudApi.ServingMode;
 
   public componentSetForm!: FormGroup;
-  public productComponentSetOptions: IKeyValue[] = [];
+  public productComponentSetOptions: KeyValue[] = [];
 
   private _productComponentSets: CrudApi.ProductComponentSet[] = [];
 
@@ -179,7 +179,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
         productComponentSet => !(items || []).includes(productComponentSet.id),
       )
       .map(
-        (productComponentSet): IKeyValue => ({
+        (productComponentSet): KeyValue => ({
           key: productComponentSet.id,
           value: `${this._localizePipe.transform(productComponentSet.name)} (${
             productComponentSet.description

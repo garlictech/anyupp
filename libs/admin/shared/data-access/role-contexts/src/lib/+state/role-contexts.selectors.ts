@@ -1,11 +1,11 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   ROLE_CONTEXTS_FEATURE_KEY,
-  IRoleContextsState,
+  RoleContextsState,
   roleContextsAdapter,
 } from './role-contexts.reducer';
 
-export const getRoleContextsState = createFeatureSelector<IRoleContextsState>(
+export const getRoleContextsState = createFeatureSelector<RoleContextsState>(
   ROLE_CONTEXTS_FEATURE_KEY,
 );
 
@@ -13,15 +13,15 @@ const { selectAll, selectEntities } = roleContextsAdapter.getSelectors();
 
 export const getRoleContextsError = createSelector(
   getRoleContextsState,
-  (state: IRoleContextsState) => state.error,
+  (state: RoleContextsState) => state.error,
 );
 
 export const getAllRoleContexts = createSelector(
   getRoleContextsState,
-  (state: IRoleContextsState) => selectAll(state),
+  (state: RoleContextsState) => selectAll(state),
 );
 
 export const getRoleContextsEntities = createSelector(
   getRoleContextsState,
-  (state: IRoleContextsState) => selectEntities(state),
+  (state: RoleContextsState) => selectEntities(state),
 );

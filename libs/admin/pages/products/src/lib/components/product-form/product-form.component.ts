@@ -19,7 +19,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EImageType,
   EProductLevel,
-  IKeyValue,
+  KeyValue,
   Product,
 } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
@@ -42,8 +42,8 @@ export class ProductFormComponent
   public eImageType = EImageType;
   public product?: Product;
   public productLevel!: EProductLevel;
-  public productCategories$: Observable<IKeyValue[]>;
-  public productTypes: IKeyValue[] = PRODUCT_TYPES;
+  public productCategories$: Observable<KeyValue[]>;
+  public productTypes: KeyValue[] = PRODUCT_TYPES;
 
   private _selectedChainId = '';
   private _selectedProductCategoryId = '';
@@ -74,7 +74,7 @@ export class ProductFormComponent
       select(productCategoriesSelectors.getAllProductCategories),
       map((productCategories: CrudApi.ProductCategory[]) =>
         productCategories.map(
-          (productCategory): IKeyValue => ({
+          (productCategory): KeyValue => ({
             key: productCategory.id,
             value: productCategory.name,
           }),

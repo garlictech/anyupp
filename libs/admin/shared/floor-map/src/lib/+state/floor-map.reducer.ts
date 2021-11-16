@@ -4,15 +4,15 @@ import * as FloorMapActions from './floor-map.actions';
 
 export const FLOOR_MAP_FEATURE_KEY = 'floorMap';
 
-export interface IFloorMapState {
+export interface FloorMapState {
   initialized: boolean;
 }
 
-export interface IFloorMapPartialState {
-  readonly [FLOOR_MAP_FEATURE_KEY]: IFloorMapState;
+export interface FloorMapPartialState {
+  readonly [FLOOR_MAP_FEATURE_KEY]: FloorMapState;
 }
 
-export const initialFloorMapState: IFloorMapState = {
+export const initialFloorMapState: FloorMapState = {
   initialized: false,
 };
 
@@ -28,7 +28,7 @@ const reducer = createReducer(
 );
 
 export function floorMapReducer(
-  state: IFloorMapState | undefined,
+  state: FloorMapState | undefined,
   action: Action,
 ) {
   return reducer(state, action);

@@ -1,29 +1,31 @@
-import { IUser } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { IUsersState, USERS_FEATURE_KEY, usersAdapter } from './users.reducer';
+import { UsersState, USERS_FEATURE_KEY, usersAdapter } from './users.reducer';
 
 export const getUsersState =
-  createFeatureSelector<IUsersState>(USERS_FEATURE_KEY);
+  createFeatureSelector<UsersState>(USERS_FEATURE_KEY);
 
 const { selectAll, selectEntities } = usersAdapter.getSelectors();
 
 export const getUsersError = createSelector(
   getUsersState,
-  (state: IUsersState) => state.error,
+  (state: UsersState) => state.error,
 );
 
-export const getAllUsers = createSelector(getUsersState, (state: IUsersState) =>
+export const getAllUsers = createSelector(getUsersState, (state: UsersState) =>
   selectAll(state),
 );
 
 export const getUsersEntities = createSelector(
   getUsersState,
-  (state: IUsersState) => selectEntities(state),
+  (state: UsersState) => selectEntities(state),
 );
 
 export const getUserById = (id: string) => {
-  return createSelector(getAllUsers, (users: IUser[]): IUser | undefined =>
-    users.find((user): boolean => user.id === id),
+  return createSelector(
+    getAllUsers,
+    (users: CrudApi.User[]): CrudApi.User | undefined =>
+      users.find((user): boolean => user.id === id),
   );
 };

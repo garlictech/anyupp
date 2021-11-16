@@ -6,17 +6,17 @@ import * as LoggedUserActions from './logged-user.actions';
 
 export const LOGGED_USER_FEATURE_KEY = 'loggedUser';
 
-export interface ILoggedUserState {
+export interface LoggedUserState {
   loggedUser?: CrudApi.AdminUser;
   currentContextRole?: CrudApi.Role;
   role?: CrudApi.Role; // Filled from token
 }
 
 export interface LoggedUserPartialState {
-  readonly [LOGGED_USER_FEATURE_KEY]: ILoggedUserState;
+  readonly [LOGGED_USER_FEATURE_KEY]: LoggedUserState;
 }
 
-export const initialLoggedUserState: ILoggedUserState = {};
+export const initialLoggedUserState: LoggedUserState = {};
 
 const reducer = createReducer(
   initialLoggedUserState,
@@ -41,7 +41,7 @@ const reducer = createReducer(
 );
 
 export function loggedUserReducer(
-  state: ILoggedUserState | undefined,
+  state: LoggedUserState | undefined,
   action: Action,
 ) {
   return reducer(state, action);

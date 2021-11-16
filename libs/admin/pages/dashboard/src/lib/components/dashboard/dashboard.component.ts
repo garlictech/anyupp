@@ -13,7 +13,7 @@ import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import {
   dashboardActions,
   dashboardSelectors,
-  IDashboardSettings,
+  DashboardSettings,
 } from '@bgap/admin/shared/data-access/dashboard';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
@@ -37,7 +37,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public EDashboardListMode = EDashboardListMode;
-  public dashboardSettings!: IDashboardSettings;
+  public dashboardSettings!: DashboardSettings;
   public resized: boolean;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public selectedUnit?: CrudApi.Unit;
@@ -58,7 +58,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._store
       .pipe(select(dashboardSelectors.getSettings), untilDestroyed(this))
-      .subscribe((dashboardSettings: IDashboardSettings): void => {
+      .subscribe((dashboardSettings: DashboardSettings): void => {
         this.dashboardSettings = dashboardSettings;
 
         this.resized = this.dashboardSettings.size === EDashboardSize.LARGER;

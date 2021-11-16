@@ -1,17 +1,17 @@
-import { ILaneOrderItem } from '@bgap/shared/types';
+import { LaneOrderItem } from '@bgap/shared/types';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import {
   activeOrdersAdapter,
   historyOrdersAdapter,
-  IOrdersState,
+  OrdersState,
   ORDERS_FEATURE_KEY,
 } from './orders.reducer';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { currentStatus } from '@bgap/crud-gql/api';
 
 export const getOrdersState =
-  createFeatureSelector<IOrdersState>(ORDERS_FEATURE_KEY);
+  createFeatureSelector<OrdersState>(ORDERS_FEATURE_KEY);
 
 // ACTIVE
 
@@ -60,7 +60,7 @@ export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) => {
         ...order.items
           // use "map" first for the correct idx!!!
           .map(
-            (orderItem: CrudApi.OrderItem, idx: number): ILaneOrderItem => ({
+            (orderItem: CrudApi.OrderItem, idx: number): LaneOrderItem => ({
               ...orderItem,
               idx,
             }),
