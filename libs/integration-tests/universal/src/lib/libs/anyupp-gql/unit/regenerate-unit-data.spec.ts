@@ -299,7 +299,9 @@ describe('RegenerateUnitData mutation tests', () => {
       .then(x => {
         authAnyuppSdk = x.authAnyuppSdk;
       });
+  });
 
+  beforeEach(async () => {
     await cleanup
       .pipe(
         takeLast(1),
@@ -338,6 +340,7 @@ describe('RegenerateUnitData mutation tests', () => {
           ),
         ),
         takeLast(1),
+        delay(DYNAMODB_OPERATION_DELAY),
         catchError(err => {
           console.error('BEFORE HOOK ERROR');
           return throwError(err);
