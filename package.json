@@ -152,7 +152,7 @@
     "@types/chart.js": "2.9.34",
     "@types/cli-progress": "3.9.2",
     "@types/cypress-cucumber-preprocessor": "4.0.1",
-    "@types/fabric": "4.5.4",
+    "@types/fabric": "4.5.5",
     "@types/googlemaps": "3.43.3",
     "@types/jasmine": "3.10.2",
     "@types/jasminewd2": "2.0.10",
