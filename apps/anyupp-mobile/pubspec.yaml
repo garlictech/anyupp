@@ -37,7 +37,7 @@ dependencies:
   connectivity: ^3.0.6
   country_code_picker: ^2.0.2
   cupertino_icons: ^1.0.3
-  dio: ^4.0.0
+  dio: 4.0.1
   double_back_to_close_app: ^2.0.1
   equatable: ^2.0.3
   expandable: ^5.0.1

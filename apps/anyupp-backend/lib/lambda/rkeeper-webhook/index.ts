@@ -1,6 +1,8 @@
 import awsLambdaFastify from 'aws-lambda-fastify';
 import { ECS } from 'aws-sdk';
 import fastify from 'fastify';
+import { handleProducts } from '@bgap/rkeeper-api';
+import { tap } from 'rxjs/operators';
 
 const app = fastify({
   logger: true,
@@ -23,37 +25,13 @@ app.route({
       API_SECRET_ACCESS_KEY: process.env.API_SECRET_ACCESS_KEY || '',
       AWS_REGION: process.env.AWS_REGION || '',
     };
-    console.log(JSON.stringify(request.body, null, 2));
 
-    /*await handleProducts(deps)('yellow-rkeeper-unit', request.body)
-      .pipe(
-        tap(res => reply.send({ success: res })),
-        tap(res => console.log('RESULT', res)),
-        catchError(err => {
-          reply.send({ error: err });
-          return throwError(err);
-        }),
-      )
-      .toPromise();*/
-    /*    const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
-    const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
-    const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
-    console.log('*****', JSON.stringify(request.body, null, 2));
-    try {
-      await handleRkeeperProducts(crudSdk)('frei-rkeeper-unit', request.body)
-        .pipe(
-          tap(() => reply.send({ success: true })),
-          tap(x => console.log('RESULT', x)),
-          catchError(err => {
-            reply.send({ error: err });
-            return throwError(err);
-          }),
-        )
-        .toPromise();
-    } catch (err) {
-      console.log('ERR', err);
-      reply.send({ error: err });
-    }*/
+    // Place it in the URL
+    const externalUnitId = '109150009';
+
+    await handleProducts(deps)(externalUnitId, request.body)
+      .pipe(tap(res => reply.send({ success: res })))
+      .toPromise();
   },
 });
 

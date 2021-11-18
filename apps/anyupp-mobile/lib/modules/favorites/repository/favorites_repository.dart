@@ -26,4 +26,9 @@ class FavoritesRepository implements IFavoritesProvider {
 
   @override
   List<FavoriteProduct>? get favorites => _provider.favorites;
+
+  @override
+  void resetFavoritesList() {
+    _provider.resetFavoritesList();
+  }
 }

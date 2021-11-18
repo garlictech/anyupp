@@ -14,7 +14,7 @@ import {
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
 import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { incrementOrderNum } from '../../database';
 import { OrderResolverDeps } from './utils';
 import { sendRkeeperOrder } from '@bgap/rkeeper-api';

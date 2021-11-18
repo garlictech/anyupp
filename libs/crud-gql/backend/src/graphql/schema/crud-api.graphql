@@ -637,6 +637,7 @@ type ProductComponent
   description: String
   allergens: [Allergen]
   externalId: String
+  dirty: Boolean
 }
 
 ### ProductComponent
@@ -653,6 +654,7 @@ type ProductComponentSet
   items: [ID!]! # ProductComponent ID
   maxSelection: Int # On extras
   supportedServingModes: [ServingMode!]
+  dirty: Boolean
 }
 
 type GeneratedProductConfigComponent {
@@ -1175,6 +1177,7 @@ type Mutation {
   # User
   createAnonymUser: CreateAnonymUserOutput  # public endpoint
     @aws_iam
+    @aws_api_key
     @function(name: "${env}-anyupp-graphql-resolvers")
 
   # Order

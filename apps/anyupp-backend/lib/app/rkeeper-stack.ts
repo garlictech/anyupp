@@ -50,8 +50,8 @@ export class RKeeperStack extends sst.Stack {
         RKeeperProcessProductSecurityGroup: vpc.vpcDefaultSecurityGroup,
         RKeeperProcessProductSubnet: vpc.publicSubnets[0].subnetId,
         taskRoleArn: taskRole.roleArn,
-        API_ACCESS_KEY_ID: 'AKIAYIT7GMY52O6ZISHP',
-        API_SECRET_ACCESS_KEY: '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',
+        API_ACCESS_KEY_ID: props.apiAccessKeyId,
+        API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
       },
     });
 

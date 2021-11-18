@@ -10,6 +10,11 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
 
   @override
   Stream<FavoritesState> mapEventToState(FavoritesEvent event) async* {
+    if (event is ResetFavoritesList) {
+      _favoritesRepository.resetFavoritesList();
+      yield FavoritesNotLoaded();
+    }
+
     if (event is ListFavoriteProducts) {
       yield FavoritesLoading();
       var response = await _favoritesRepository.getFavoritesList(

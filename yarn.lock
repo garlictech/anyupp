@@ -520,17 +520,17 @@
     events "^3.1.0"
     sinon "^7.5.0"
 
-"@aws-amplify/ui-angular@1.0.33":
-  version "1.0.33"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/ui-angular/-/ui-angular-1.0.33.tgz#bd60f47b457f9dcb276417bbdec18fca098bee3e"
-  integrity sha512-jLImQp1+KlXtnIPmQkdFwT7XKIJD4H3LMA1yxmeHS96LMrrlg0R3IdraP6Y5a6kRiotUKuQSvLIXemNTO/GKig==
+"@aws-amplify/ui-angular@1.0.34":
+  version "1.0.34"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/ui-angular/-/ui-angular-1.0.34.tgz#792d7cc9390849bca91c1d0c802ae4bae2700746"
+  integrity sha512-VCXUNdxoH4Rai5mUqAXEScBGi3nEPDyu2Qx/XzwYOtwnKiuxZR9dzQCXupXVnY3iKd7cmZeoHBInDVdnEs64mg==
   dependencies:
-    "@aws-amplify/ui-components" "1.9.4"
+    "@aws-amplify/ui-components" "1.9.5"
 
-"@aws-amplify/ui-components@1.9.4":
-  version "1.9.4"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/ui-components/-/ui-components-1.9.4.tgz#74e8d4515c13ca1c8a3e0ade9cdd6b44b60d9485"
-  integrity sha512-0T0WvUMEYOW4T++NR8NlFLHz2Rdpx/vS/DRogcDzmhGdjYAi88y26wmiHmrCU/THncgPjrRX20P4xATVzElU0Q==
+"@aws-amplify/ui-components@1.9.5":
+  version "1.9.5"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/ui-components/-/ui-components-1.9.5.tgz#66738b9d696178ca0557d0250d46c02b69f42d8d"
+  integrity sha512-PMc4F3yvB/9CM26FNuaG4YM+WSOYxLtvfN8ul0W6Ioy4EvGB77CC275MHqHb57uKhw0+Tr0nJtcXYjldmtqbmg==
   dependencies:
     qrcode "^1.4.4"
     uuid "^8.2.0"
@@ -8112,10 +8112,10 @@
   resolved "https://registry.yarnpkg.com/@types/fabric/-/fabric-4.5.4.tgz#2da26e492c5a369383c920224d66646433a6ea63"
   integrity sha512-hu+VbP50FAtxy9e+ZBx+xwKclREtxg1hlFV3ID+YArLA9sfUG3QOGXT/862z0cq/DRWfyWOj8nPh5wRspaQUkg==
 
-"@types/file-saver@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.3.tgz#b734c4f5a04d20615eaed3dc106e2ab321082009"
-  integrity sha512-MBIou8pd/41jkff7s97B47bc9+p0BszqqDJsO51yDm49uUxeKzrfuNl5fSLC6BpLEWKA8zlwyqALVmXrFwoBHQ==
+"@types/file-saver@2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.4.tgz#aaf9b96296150d737b2fefa535ced05ed8013d84"
+  integrity sha512-sPZYQEIF/SOnLAvaz9lTuydniP+afBMtElRTdYkeV1QtEgvtJ7qolCPjly6O32QI8CbEmP5O/fztMXEDWfEcrg==
 
 "@types/glob@^7.1.1":
   version "7.2.0"

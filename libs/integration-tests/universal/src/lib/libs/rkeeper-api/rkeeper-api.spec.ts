@@ -26,7 +26,7 @@ import {
   defaultProductCategoryId,
   handleProducts,
 } from '@bgap/rkeeper-api';
-import { from, Observable, combineLatest } from 'rxjs';
+import { from, Observable, combineLatest, of } from 'rxjs';
 import { ES_DELAY, maskV4UuidIds } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
@@ -125,10 +125,12 @@ describe('Test the rkeeper api basic functionality', () => {
   );
 
   beforeEach(done => {
-    /*    jest.resetModules();
+    jest.resetModules();
 
-    cleanup$
+    of(1)
       .pipe(
+        delay(ES_DELAY),
+        switchMap(() => cleanup$),
         delay(ES_DELAY),
         switchMapTo(
           from([fixtures.rkeeperUnitProduct, fixtures.rkeeperUnitProduct2]),
@@ -144,17 +146,12 @@ describe('Test the rkeeper api basic functionality', () => {
         ),
         delay(ES_DELAY),
       )
-      .subscribe(() => done());*/
-    done();
+      .subscribe(() => done());
   }, 65000);
 
   afterAll(done => {
     cleanup$.subscribe(() => done());
   }, 30000);
-
-  test('It should be able to send a POST to the webhook', done => {
-    request(config.RKeeperWebhookEndpoint).post('/').expect(200, done);
-  });
 
   test('It shouls be able to search for external product', done => {
     searchExternalUnitProduct(crudSdk)(fixtures.rkeeperProductGuid)
@@ -401,18 +398,15 @@ describe('Test the rkeeper api basic functionality', () => {
       });
   }, 35000);
 
-  test.only('Test full rkeeper product handling - the use case with lots of records', done => {
+  // We skip this extremely long-running test by default
+  test.skip('Test full rkeeper product handling - the use case with lots of records', done => {
     const rawData = JSON.parse(
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
     console.log('RAWDATA READ');
 
-    handleRkeeperProducts(crudSdk)(
-      '109150001',
-      //fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
-      rawData,
-    ).subscribe({
+    handleRkeeperProducts(crudSdk)('109150001', rawData).subscribe({
       next: result => {
         expect(result).toMatchSnapshot();
         done();
@@ -420,7 +414,8 @@ describe('Test the rkeeper api basic functionality', () => {
     });
   }, 720000);
 
-  test('Test the product handling logic in fargate', done => {
+  // We skip this extremely long-running test by default
+  test.skip('Test the product handling logic in fargate', done => {
     const deps = {
       ecs: new ECS({ apiVersion: '2014-11-13' }),
       RKeeperProcessProductSubnet:
@@ -435,9 +430,13 @@ describe('Test the rkeeper api basic functionality', () => {
       AWS_REGION: process.env.AWS_REGION || '',
     };
 
-    handleProducts(deps)('yellow-rkeeper-unit', fixtures.rawData)
+    handleProducts(deps)(
+      fixtures.rkeeperUnit.externalId || 'DEFINE ME',
+      fixtures.rawData,
+    )
       .pipe(
-        //delay(30000),
+        // Let the fargate provision its task
+        delay(10000),
         switchMap(() =>
           crudSdk.SearchGeneratedProducts({
             filter: { unitId: { eq: fixtures.rkeeperUnit.id } },
@@ -473,11 +472,4 @@ describe('Test the rkeeper api basic functionality', () => {
       )
       .subscribe(() => done());
   }, 15000);
-
-  test('It should be able to send a POST to the webhook', done => {
-    request(config.RKeeperWebhookEndpoint)
-      .post('/wp-json/ucsdp/v1/push/dishes/')
-      .send(fixtures.rawData)
-      .expect(200, done);
-  }, 20000);
 });

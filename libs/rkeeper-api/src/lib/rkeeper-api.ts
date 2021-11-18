@@ -16,6 +16,7 @@ export interface HandleProductsDeps {
 }
 
 export const handleProducts =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (deps: HandleProductsDeps) => (unitId: string, rawData: any) =>
     pipe(
       {

@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -28,5 +29,6 @@ void _selectServingModeAndGo(ServingMode servingMode, GeoUnit unit) {
   getIt<TakeAwayBloc>().add(SetServingMode(servingMode));
   getIt<CartBloc>().add(ClearPlaceInCart(unit));
   getIt<UnitSelectBloc>().add(SelectUnit(unit));
+  getIt<FavoritesBloc>().add(ResetFavoritesList());
   Nav.reset(MainNavigation());
 }

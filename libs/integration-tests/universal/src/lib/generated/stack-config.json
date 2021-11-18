@@ -1,10 +1,10 @@
 {
 "anyupp-backend-sites": {
-    "AdminSiteDomainA75B4E32": "dev-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionDomainNameA4A4FE5B": "d3ggyobbn7gtc6.cloudfront.net",
-    "AdminSiteEAA17C78": "https://dev-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionIdB4DE25AB": "E3HOYNBRB7VSSC",
-    "AdminBucketCA57896C": "dev-admin-anyupp-backend.anyupp.com"
+    "AdminSiteDomainA75B4E32": "zsoltstack-admin-anyupp-backend.anyupp.com",
+    "AdminDistributionDomainNameA4A4FE5B": "d3h613edq0zrod.cloudfront.net",
+    "AdminSiteEAA17C78": "https://zsoltstack-admin-anyupp-backend.anyupp.com",
+    "AdminDistributionIdB4DE25AB": "E3RSD0TU2DM7L9",
+    "AdminBucketCA57896C": "zsoltstack-admin-anyupp-backend.anyupp.com"
   },
 "anyupp-backend-SecretsManagerStack": {
     "SecretsManager": "arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k"
@@ -24,33 +24,33 @@
     "ExportsOutputRefappleKeyIdParamParameter800CDADF": "8W2A8ZDZH8"
   },
 "anyupp-backend-cognito": {
-    "ConsumerUserPoolId": "eu-west-1_1F07iaAeK",
-    "ExportsOutputFnGetAttConsumerUserPool8E205565ArnDB4DF030": "arn:aws:cognito-idp:eu-west-1:568276182587:userpool/eu-west-1_1F07iaAeK",
-    "AdminUserPoolId": "eu-west-1_nxCUiB15F",
-    "AdminWebUserPoolClientId": "6cqc14r34g3r95tmsr1d4jpth6",
-    "ExportsOutputFnGetAttAdminUserPoolD0AF18CFArnBE306E57": "arn:aws:cognito-idp:eu-west-1:568276182587:userpool/eu-west-1_nxCUiB15F",
-    "ConsumerNativeUserPoolClientId": "4cho14fb8mmcn7sm620bkhk0rn",
-    "AdminUserPoolDomain": "https://dev-anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
-    "ConsumerWebUserPoolClientId": "14plg8c4aeaut90b06sog6ei6v",
-    "ConsumerUserPoolDomain": "https://dev-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
-    "ExportsOutputRefAdminUserPoolD0AF18CF79276EF5": "eu-west-1_nxCUiB15F",
-    "IdentityPoolId": "eu-west-1:f1849bd6-4a16-4c17-8830-3a3cf7696cf7",
-    "AdminNativeUserPoolClientId": "2ihp27fno2bb6e8pfltrigi9pm",
-    "ExportsOutputRefConsumerUserPool8E205565D1A7E55F": "eu-west-1_1F07iaAeK"
+    "ConsumerUserPoolId": "eu-west-1_tg5p5wvti",
+    "ExportsOutputFnGetAttConsumerUserPool8E205565ArnDB4DF030": "arn:aws:cognito-idp:eu-west-1:568276182587:userpool/eu-west-1_tg5p5wvti",
+    "AdminUserPoolId": "eu-west-1_TS9FvMIBU",
+    "AdminWebUserPoolClientId": "5vgtp0ddifiiam8smkbrs9m6gh",
+    "ExportsOutputFnGetAttAdminUserPoolD0AF18CFArnBE306E57": "arn:aws:cognito-idp:eu-west-1:568276182587:userpool/eu-west-1_TS9FvMIBU",
+    "ConsumerNativeUserPoolClientId": "1mqlpl1pqtbrof4i3bocts93d2",
+    "AdminUserPoolDomain": "https://zsoltstack-anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
+    "ConsumerWebUserPoolClientId": "jpiccuq4cjn3k61bs36p9v8os",
+    "ConsumerUserPoolDomain": "https://zsoltstack-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
+    "ExportsOutputRefAdminUserPoolD0AF18CF79276EF5": "eu-west-1_TS9FvMIBU",
+    "IdentityPoolId": "eu-west-1:93748706-01c5-4022-9739-d6e34f69918b",
+    "AdminNativeUserPoolClientId": "51511bpmskqta1vg3ljontij0i",
+    "ExportsOutputRefConsumerUserPool8E205565D1A7E55F": "eu-west-1_tg5p5wvti"
   },
 "anyupp-backend-appsync": {
-    "AnyuppGraphqlApiUrl": "https://oxsw3gwc6rferj6p3y5xntb44q.appsync-api.eu-west-1.amazonaws.com/graphql",
-    "AnyuppGraphqlApiKey": "da2-pjt2l7f4pvcmblacoab5nzydau"
+    "AnyuppGraphqlApiUrl": "https://amfey6ae3fbldhj6wmckt5plg4.appsync-api.eu-west-1.amazonaws.com/graphql",
+    "AnyuppGraphqlApiKey": "da2-6bm7lzkauffzjgpb2cwg544epq"
   },
 "anyupp-backend-stripe": {
-    "StripeWebhookEndpointE83D65EB": "https://tj3pj8w1s9.execute-api.eu-west-1.amazonaws.com/dev/",
-    "StripeWebhookEndpoint": "https://tj3pj8w1s9.execute-api.eu-west-1.amazonaws.com/dev/"
+    "StripeWebhookEndpointE83D65EB": "https://4ty9141c4c.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
+    "StripeWebhookEndpoint": "https://4ty9141c4c.execute-api.eu-west-1.amazonaws.com/zsoltstack/"
   },
 "anyupp-backend-rkeeper": {
-    "RKeeperWebhookEndpointCBC72BD4": "https://jbfg9gbq29.execute-api.eu-west-1.amazonaws.com/dev/",
-    "RKeeperProcessProductSecurityGroup": "sg-07882a258d484e7f7",
-    "RKeeperProcessProductSubnet": "subnet-0851ae7dd86295476",
-    "RKeeperProcessProductTaskRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-rkeepe-ecsTaskExecutionRole34F5-1I8EG8F8IQRC0",
-    "RKeeperWebhookEndpoint": "https://jbfg9gbq29.execute-api.eu-west-1.amazonaws.com/dev/"
+    "RKeeperWebhookEndpointCBC72BD4": "https://m312ffw6x6.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
+    "RKeeperProcessProductSecurityGroup": "sg-0e9bc3890b3ad4635",
+    "RKeeperProcessProductSubnet": "subnet-0ab5e7f5adce17e5f",
+    "RKeeperProcessProductTaskRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-ecsTaskExecutionRole34F5-14614TNMVYYHS",
+    "RKeeperWebhookEndpoint": "https://m312ffw6x6.execute-api.eu-west-1.amazonaws.com/zsoltstack/"
   }
 }
