@@ -149,6 +149,7 @@ type ProductConfigComponent @aws_cognito_user_pools @aws_api_key @aws_iam {
   refGroupPrice: Float!
   price: Float!
   position: Int!
+  externalId: String
 }
 
 type ProductConfigSet @aws_cognito_user_pools @aws_api_key @aws_iam {
@@ -440,6 +441,7 @@ type OrderItem @aws_api_key @aws_iam @aws_cognito_user_pools {
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
   productType: String
+  externalId: String
 }
 
 type Order @aws_iam @aws_cognito_user_pools {
@@ -517,6 +519,7 @@ type ProductComponent @aws_iam @aws_cognito_user_pools {
   description: String
   allergens: [Allergen]
   externalId: String
+  dirty: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -531,6 +534,7 @@ type ProductComponentSet @aws_iam @aws_cognito_user_pools {
   items: [ID!]!
   maxSelection: Int
   supportedServingModes: [ServingMode!]
+  dirty: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1066,7 +1070,7 @@ type Mutation {
   updateUnit(input: UpdateUnitInput!): Unit @aws_iam @aws_cognito_user_pools
   createAdminUser(input: CreateAdminUserInput!): AdminUser @aws_iam @aws_cognito_user_pools
   deleteAdminUser(input: DeleteAdminUserInput!): AdminUser @aws_iam @aws_cognito_user_pools
-  createAnonymUser: CreateAnonymUserOutput @aws_iam
+  createAnonymUser: CreateAnonymUserOutput @aws_iam @aws_api_key
   createOrderFromCart(input: CreateOrderFromCartInput!): ID @aws_iam @aws_cognito_user_pools
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_iam @aws_cognito_user_pools
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
@@ -1237,6 +1241,7 @@ input ProductConfigComponentInput {
   refGroupPrice: Float!
   price: Float!
   position: Int!
+  externalId: String
 }
 
 enum ModelSortDirection {
@@ -1820,6 +1825,7 @@ input OrderItemInput {
   allergens: [Allergen]
   configSets: [OrderItemConfigSetInput!]
   productType: String
+  externalId: String
 }
 
 input PriceShownInput {
@@ -2020,6 +2026,7 @@ input ModelProductComponentFilterInput {
   description: ModelStringInput
   allergens: ModelAllergenListInput
   externalId: ModelStringInput
+  dirty: ModelBooleanInput
   and: [ModelProductComponentFilterInput]
   or: [ModelProductComponentFilterInput]
   not: ModelProductComponentFilterInput
@@ -2032,6 +2039,7 @@ input CreateProductComponentInput {
   description: String
   allergens: [Allergen]
   externalId: String
+  dirty: Boolean
 }
 
 input UpdateProductComponentInput {
@@ -2041,6 +2049,7 @@ input UpdateProductComponentInput {
   description: String
   allergens: [Allergen]
   externalId: String
+  dirty: Boolean
 }
 
 input DeleteProductComponentInput {
@@ -2052,6 +2061,7 @@ input ModelProductComponentConditionInput {
   description: ModelStringInput
   allergens: ModelAllergenListInput
   externalId: ModelStringInput
+  dirty: ModelBooleanInput
   and: [ModelProductComponentConditionInput]
   or: [ModelProductComponentConditionInput]
   not: ModelProductComponentConditionInput
@@ -2071,6 +2081,7 @@ input ModelProductComponentSetFilterInput {
   items: ModelIDInput
   maxSelection: ModelIntInput
   supportedServingModes: ModelServingModeListInput
+  dirty: ModelBooleanInput
   and: [ModelProductComponentSetFilterInput]
   or: [ModelProductComponentSetFilterInput]
   not: ModelProductComponentSetFilterInput
@@ -2086,6 +2097,7 @@ input CreateProductComponentSetInput {
   items: [ID!]!
   maxSelection: Int
   supportedServingModes: [ServingMode!]
+  dirty: Boolean
 }
 
 input UpdateProductComponentSetInput {
@@ -2098,6 +2110,7 @@ input UpdateProductComponentSetInput {
   items: [ID!]
   maxSelection: Int
   supportedServingModes: [ServingMode!]
+  dirty: Boolean
 }
 
 input DeleteProductComponentSetInput {
@@ -2112,6 +2125,7 @@ input ModelProductComponentSetConditionInput {
   items: ModelIDInput
   maxSelection: ModelIntInput
   supportedServingModes: ModelServingModeListInput
+  dirty: ModelBooleanInput
   and: [ModelProductComponentSetConditionInput]
   or: [ModelProductComponentSetConditionInput]
   not: ModelProductComponentSetConditionInput
@@ -3096,6 +3110,7 @@ input SearchableProductComponentFilterInput {
   chainId: SearchableIDFilterInput
   description: SearchableStringFilterInput
   externalId: SearchableStringFilterInput
+  dirty: SearchableBooleanFilterInput
   and: [SearchableProductComponentFilterInput]
   or: [SearchableProductComponentFilterInput]
   not: SearchableProductComponentFilterInput
@@ -3106,6 +3121,7 @@ enum SearchableProductComponentSortableFields {
   chainId
   description
   externalId
+  dirty
 }
 
 input SearchableProductComponentSortInput {
@@ -3127,6 +3143,7 @@ input SearchableProductComponentSetFilterInput {
   description: SearchableStringFilterInput
   items: SearchableIDFilterInput
   maxSelection: SearchableIntFilterInput
+  dirty: SearchableBooleanFilterInput
   and: [SearchableProductComponentSetFilterInput]
   or: [SearchableProductComponentSetFilterInput]
   not: SearchableProductComponentSetFilterInput
@@ -3140,6 +3157,7 @@ enum SearchableProductComponentSetSortableFields {
   description
   items
   maxSelection
+  dirty
 }
 
 input SearchableProductComponentSetSortInput {

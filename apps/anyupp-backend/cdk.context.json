@@ -2,5 +2,10 @@
   "hosted-zone:account=568276182587:domainName=anyupp.com:region=eu-west-1": {
     "Id": "/hostedzone/Z07724744XHDX57X0R8H",
     "Name": "anyupp.com."
-  }
+  },
+  "availability-zones:account=568276182587:region=eu-west-1": [
+    "eu-west-1a",
+    "eu-west-1b",
+    "eu-west-1c"
+  ]
 }

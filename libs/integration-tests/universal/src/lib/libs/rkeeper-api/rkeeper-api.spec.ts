@@ -1,3 +1,4 @@
+import { ECS } from 'aws-sdk';
 import * as R from 'ramda';
 import * as fs from 'fs';
 import request from 'supertest';
@@ -23,14 +24,16 @@ import {
   handleRkeeperProducts,
   createDefaultProductCategory,
   defaultProductCategoryId,
+  handleProducts,
 } from '@bgap/rkeeper-api';
-import { from, Observable, combineLatest } from 'rxjs';
+import { from, Observable, combineLatest, of } from 'rxjs';
 import { ES_DELAY, maskV4UuidIds } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
 import * as fixtures from './fixtures';
 import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/anyupp-gql/backend';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
+import * as stackConfig from '../../generated/stack-config.json';
 
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();
@@ -124,8 +127,10 @@ describe('Test the rkeeper api basic functionality', () => {
   beforeEach(done => {
     jest.resetModules();
 
-    cleanup$
+    of(1)
       .pipe(
+        delay(ES_DELAY),
+        switchMap(() => cleanup$),
         delay(ES_DELAY),
         switchMapTo(
           from([fixtures.rkeeperUnitProduct, fixtures.rkeeperUnitProduct2]),
@@ -147,10 +152,6 @@ describe('Test the rkeeper api basic functionality', () => {
   afterAll(done => {
     cleanup$.subscribe(() => done());
   }, 30000);
-
-  test('It should be able to send a POST to the webhook', done => {
-    request(config.RKeeperWebhookEndpoint).post('/').expect(200, done);
-  });
 
   test('It shouls be able to search for external product', done => {
     searchExternalUnitProduct(crudSdk)(fixtures.rkeeperProductGuid)
@@ -303,7 +304,9 @@ describe('Test the rkeeper api basic functionality', () => {
           ...configSet,
           items: !!configSet?.items
             ? pipe(
-                configSet?.items ?? [],
+                (configSet?.items ?? []) as CrudApi.Maybe<
+                  CrudApi.ProductConfigSet | CrudApi.GeneratedProductConfigSet
+                >[],
                 R.reject(R.isNil),
                 R.sortBy(JSON.stringify),
               )
@@ -395,21 +398,54 @@ describe('Test the rkeeper api basic functionality', () => {
       });
   }, 35000);
 
+  // We skip this extremely long-running test by default
   test.skip('Test full rkeeper product handling - the use case with lots of records', done => {
     const rawData = JSON.parse(
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
-    handleRkeeperProducts(crudSdk)(
-      fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
-      rawData,
-    ).subscribe({
+    console.log('RAWDATA READ');
+
+    handleRkeeperProducts(crudSdk)('109150001', rawData).subscribe({
       next: result => {
         expect(result).toMatchSnapshot();
         done();
       },
     });
-  }, 120000);
+  }, 720000);
+
+  // We skip this extremely long-running test by default
+  test.skip('Test the product handling logic in fargate', done => {
+    const deps = {
+      ecs: new ECS({ apiVersion: '2014-11-13' }),
+      RKeeperProcessProductSubnet:
+        stackConfig['anyupp-backend-rkeeper'].RKeeperProcessProductSubnet,
+      RKeeperProcessProductSecurityGroup:
+        stackConfig['anyupp-backend-rkeeper']
+          .RKeeperProcessProductSecurityGroup,
+      taskRoleArn:
+        'arn:aws:iam::568276182587:role/dev-anyupp-backend-rkeepe-ecsTaskExecutionRole34F5-1I8EG8F8IQRC0',
+      API_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || '',
+      API_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || '',
+      AWS_REGION: process.env.AWS_REGION || '',
+    };
+
+    handleProducts(deps)(
+      fixtures.rkeeperUnit.externalId || 'DEFINE ME',
+      fixtures.rawData,
+    )
+      .pipe(
+        // Let the fargate provision its task
+        delay(10000),
+        switchMap(() =>
+          crudSdk.SearchGeneratedProducts({
+            filter: { unitId: { eq: fixtures.rkeeperUnit.id } },
+          }),
+        ),
+        tap(result => expect(result?.items?.length).toMatchSnapshot()),
+      )
+      .subscribe(() => done());
+  }, 20000);
 
   test('createDefaultProductCategory', done => {
     getBusinessEntityInfo(crudSdk)(

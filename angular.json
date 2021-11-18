@@ -1152,10 +1152,7 @@
             "parallel": false,
             "commands": [
               {
-                "command": "yarn sst deploy --stage='{args.env}'"
-              },
-              {
-                "command": "cd ../.. && yarn ts-node ./tools/fetch-configuration.ts '{args.env}'"
+                "command": "../../tools/deploy-anyupp-backend.sh '{args.env}'"
               }
             ]
           }

@@ -14,7 +14,7 @@ export const hashPasswords =
   (hashGenerator: UnitsResolverDeps['hashGenerator']) =>
   <T extends { pos?: CrudApi.Maybe<CrudApi.Pos> }>(input: T): T =>
     pipe(
-      ['rkeeperPassword', 'anyuppPassword'],
+      ['anyuppPassword'],
       R.map((prop: string) => R.lensPath(['pos', 'rkeeper', prop])),
       lenses =>
         R.reduce(

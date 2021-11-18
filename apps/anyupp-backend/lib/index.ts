@@ -58,7 +58,10 @@ export class AnyUppStack extends Stack {
       consumerUserPoolId: cognitoStack.consumerUserPool.userPoolId,
     });
 
-    new RKeeperStack(scope, 'rkeeper');
+    new RKeeperStack(scope, 'rkeeper', {
+      apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
+      apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
+    });
 
     if (scope.stage === 'dev' || scope.stage === 'qa') {
       new SeederStack(scope, 'seeder', {

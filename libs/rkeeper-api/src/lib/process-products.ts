@@ -1,5 +1,4 @@
 import * as OO from 'fp-ts-rxjs/ObservableOption';
-import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import { flow, pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
 import * as O from 'fp-ts/lib/Option';
@@ -119,6 +118,7 @@ export const processDishes = (rawData: any): Observable<Dish[]> =>
         R.map(normalizeDish),
       ),
     ),
+    tap(() => console.warn('DISHES PROCESSED')),
   );
 
 export const externalProductIdMaker = (guid: string) => guid;
@@ -173,6 +173,7 @@ export const getBusinessEntityInfo =
         filter: { externalId: { eq: externalRestaurantId } },
       })
       .pipe(
+        tap(x => console.warn(x)),
         getFirstFoundItem(),
         throwIfEmptyValue(
           `Cannot find unit belonging to external unit id ${externalRestaurantId}`,
@@ -365,6 +366,7 @@ export const handleRkeeperProducts =
       getBusinessEntityInfo(sdk)(externalRestaurantId),
       processDishes(rawData),
     ).pipe(
+      tap(() => console.warn('DISHES PROCESSED')),
       switchMap(([businessEntityInfo, dishes]) =>
         createDefaultProductCategory(sdk)(businessEntityInfo).pipe(
           tap(() =>
@@ -402,7 +404,7 @@ export const handleRkeeperProducts =
           tap(i => console.log(i + ' Product processed')),
           delay(ES_DELAY),
           switchMap(() =>
-            unitRequestHandler(sdk).regenerateUnitData({
+            sdk.RegenerateUnitData({
               input: { id: businessEntityInfo.unitId },
             }),
           ),
@@ -428,6 +430,7 @@ export const upsertComponent =
                   chainId,
                   name: { hu: modifier.name },
                   externalId: modifier.id.toString(),
+                  dirty: true,
                 },
               })
             : sdk.UpdateProductComponent({
@@ -445,6 +448,7 @@ export const upsertComponent =
           refGroupPrice: modifier.price,
           price: modifier.price,
           position: -1,
+          externalId: component.externalId,
         })),
       );
 
@@ -512,6 +516,7 @@ const upsertConfigSetsHelper = R.memoizeWith(
                       },
                       description: 'describe me',
                       items: components.map(c => c.productComponentId),
+                      dirty: true,
                     },
                   })
                 : sdk.UpdateProductComponentSet({
@@ -619,9 +624,11 @@ const resolveComponentSetsHelper = R.memoizeWith(
     ),
 );
 
-// eslint-disable @typescript-eslint/no-explicit-any
 export const resolveComponentSets =
-  (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
-  (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
-    resolveComponentSetsHelper(sdk, chainId, rawData, dish);
-// eslint-enable @typescript-eslint/no-explicit-any
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+
+
+    (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
+      resolveComponentSetsHelper(sdk, chainId, rawData, dish);

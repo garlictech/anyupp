@@ -17,6 +17,7 @@ import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { incrementOrderNum } from '../../database';
 import { OrderResolverDeps } from './utils';
+import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
@@ -74,6 +75,7 @@ const convertCartOrderItemToOrderItem = ({
   laneId,
   tax,
   productType,
+  externalId,
 }: {
   userId: string;
   cartItem: CrudApi.OrderItem;
@@ -81,6 +83,7 @@ const convertCartOrderItemToOrderItem = ({
   laneId: string | null | undefined;
   tax: number;
   productType: string;
+  externalId?: CrudApi.Maybe<string>;
 }): CrudApi.OrderItemInput => {
   const orderItemWithCorrectTaxAndCurrency: CrudApi.OrderItem = {
     ...cartItem,
@@ -103,6 +106,7 @@ const convertCartOrderItemToOrderItem = ({
     allergens: cartItem.allergens,
     configSets: cartItem.configSets,
     productType,
+    externalId,
   };
 };
 
@@ -145,6 +149,7 @@ const getOrderItems =
                       laneId: unitProduct.laneId,
                       tax: getTax(takeaway, groupProduct),
                       productType: chainProduct.productType,
+                      externalId: unitProduct.externalId,
                     }),
                   ),
                 ),
@@ -284,9 +289,12 @@ export const createOrderFromCart =
       switchMap(props =>
         createOrderInDb(props.orderInput)(deps).pipe(
           switchMap(item =>
-            deps.crudSdk
-              .DeleteCart({ input: { id: props.cart.id } })
-              .pipe(mapTo(item?.id)),
+            combineLatest(
+              deps.crudSdk.DeleteCart({ input: { id: props.cart.id } }),
+              props.unit.pos?.type === CrudApi.PosType.rkeeper
+                ? sendRkeeperOrder(props.unit, props.orderInput)
+                : of({}),
+            ).pipe(mapTo(item?.id)),
           ),
         ),
       ),

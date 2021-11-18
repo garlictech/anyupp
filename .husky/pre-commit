@@ -3,9 +3,3 @@
 
 yarn pretty-quick --staged
 
-#echo "handling graphql schema..."
-#cat libs/gql-sdk/src/schema/aws.graphql apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql > .github/graphql-inspector-artifacts/schema.graphql
-
-#git add .
-#git commit --amend --no-edit --no-verify
-#echo "handling graphql schema finished"
