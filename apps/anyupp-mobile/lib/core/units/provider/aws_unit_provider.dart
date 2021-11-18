@@ -9,7 +9,7 @@ class AwsUnitProvider implements IUnitProvider {
   Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
     print('***** searchUnitsNearLocation().start(): lat=${location.latitude} lng:${location.longitude}');
     try {
-      var result = await GQL.backend.execute(GetUnitsNearLocationQuery(
+      var result = await GQL.amplify.execute(GetUnitsNearLocationQuery(
         variables: GetUnitsNearLocationArguments(
           lat: location.latitude,
           lng: location.longitude,

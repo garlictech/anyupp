@@ -22,7 +22,7 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
     print('startExternalPayment().orderId=$orderId');
 
     try {
-      var result = await GQL.backend.execute(StartPaymentMutation(
+      var result = await GQL.amplify.execute(StartPaymentMutation(
           variables: StartPaymentArguments(
         orderId: orderId,
         paymentMethod: method,
@@ -52,7 +52,7 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
           .firstWhere((m) => stringFromEnum(m) == stringFromEnum(paymentMode.method), orElse: () => PaymentMethod.cash);
       print('startOrderExternalPayment().method=$method');
 
-      var result = await GQL.backend.execute(StartPaymentMutation(
+      var result = await GQL.amplify.execute(StartPaymentMutation(
           variables: StartPaymentArguments(
         orderId: orderId,
         paymentMethod: method,

@@ -55,9 +55,15 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
   @override
   Future<ProviderLoginResponse> signInAnonymously() async {
     try {
-      var result = await GQL.backend.execute(CreateAnonymUserMutation(), useApi: true);
-      // print('signInAnonymously.response().exception=${result.exception}');
-      // print('signInAnonymously.response().data=${jsonEncode(result.data)}');
+      var result = await GQL.amplify.execute(CreateAnonymUserMutation(), useApi: true);
+
+      if (result.hasErrors) {
+        print('signInAnonymously.response().exception=${result.errors}');
+        throw GraphQLException.fromGraphQLError(
+          GraphQLException.CODE_MUTATION_EXCEPTION,
+          result.errors,
+        );
+      }
 
       String? email = result.data?.createAnonymUser?.username;
       String? pwd = result.data?.createAnonymUser?.pwd;
@@ -68,6 +74,8 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
         code: LoginException.INVALID_CREDENTIALS,
         message: 'signInAnonymously(): Username or password is null',
       );
+    } on LoginException {
+      rethrow;
     } on Exception catch (e) {
       print('signInAnonymously.exception=$e');
       throw LoginException(

@@ -59,17 +59,11 @@ abstract class _BaseGraphQLWrapper {
 
 class GQL {
   static _BaseGraphQLWrapper amplify = AmplifyApi();
-  static _BaseGraphQLWrapper backend = BackendApi();
+  // static _BaseGraphQLWrapper backend = BackendApi();
 }
 
 class AmplifyApi extends _BaseGraphQLWrapper {
   @override
   Future<ValueNotifier<GraphQLClient>> _getClient({bool useApi = false}) async =>
-      getIt<GraphQLClientService>().getCrudClient();
-}
-
-class BackendApi extends _BaseGraphQLWrapper {
-  @override
-  Future<ValueNotifier<GraphQLClient>> _getClient({bool useApi = false}) async =>
-      getIt<GraphQLClientService>().getAnyuppClient(useApi: useApi);
+      getIt<GraphQLClientService>().getCrudClient(useApi: useApi);
 }

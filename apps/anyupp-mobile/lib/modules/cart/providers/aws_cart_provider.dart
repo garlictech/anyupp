@@ -28,7 +28,7 @@ class AwsCartProvider implements ICartProvider {
         throw CartException(code: CartException.UNKNOWN_ERROR, message: 'Cart is null.');
       }
 
-      var result = await GQL.backend.execute(CreateOrderFromCartMutation(
+      var result = await GQL.amplify.execute(CreateOrderFromCartMutation(
           variables: CreateOrderFromCartArguments(
         cartId: _cart!.id!,
       )));

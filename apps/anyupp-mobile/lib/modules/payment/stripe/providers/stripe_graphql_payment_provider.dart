@@ -19,7 +19,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   Future<List<StripePaymentMethod>> getPaymentMethods() async {
     print('getPaymentMethods().start()');
     try {
-      var result = await GQL.backend.execute(
+      var result = await GQL.amplify.execute(
         api.ListStripePaymentMethodsQuery(),
       );
 
@@ -61,7 +61,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   @override
   Future<void> startOrderStripePaymentWithExistingCard(
       String orderId, String paymentMethodId, UserInvoiceAddress? invoiceAddress) async {
-    var result = await GQL.backend.execute(api.StartPaymentMutation(
+    var result = await GQL.amplify.execute(api.StartPaymentMutation(
       variables: api.StartPaymentArguments(
         orderId: orderId,
         paymentMethod: api.PaymentMethod.inapp,
@@ -117,7 +117,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     String paymentMethodId = paymentMethod['id'];
     print('startStripePaymentWithNewCard().paymentMethodId=$paymentMethodId');
 
-    var result = await GQL.backend.execute(api.StartPaymentMutation(
+    var result = await GQL.amplify.execute(api.StartPaymentMutation(
       variables: api.StartPaymentArguments(
         orderId: orderId,
         paymentMethod: api.PaymentMethod.inapp,
@@ -168,7 +168,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   @override
   Future<StripePaymentMethod> createStripeCard(StripeCard card, String? name) async {
     try {
-      var result = await GQL.backend.execute(api.CreateStripeCardMutation(
+      var result = await GQL.amplify.execute(api.CreateStripeCardMutation(
         variables: api.CreateStripeCardArguments(
           card: api.StripeCardCreateInput(
             cardNumber: card.number!,
@@ -194,7 +194,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   @override
   Future<bool> deleteStripeCard(String cardId) async {
     try {
-      var result = await GQL.backend.execute(api.DeleteStripeCardMutation(
+      var result = await GQL.amplify.execute(api.DeleteStripeCardMutation(
         variables: api.DeleteStripeCardArguments(
           paymentMethodId: cardId,
         ),
@@ -213,7 +213,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   @override
   Future<StripePaymentMethod> updateStripeCard(String cardId, String name) async {
     try {
-      var result = await GQL.backend.execute(api.UpdateStripeCardMutation(
+      var result = await GQL.amplify.execute(api.UpdateStripeCardMutation(
         variables: api.UpdateStripeCardArguments(
           paymentMethodId: cardId,
           name: name,

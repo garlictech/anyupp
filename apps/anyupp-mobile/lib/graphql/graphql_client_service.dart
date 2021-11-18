@@ -25,9 +25,12 @@ class GraphQLClientService {
     _dio.interceptors.add(DioTokenInterceptor(_dio, this.authProvider));
   }
 
-  Future<ValueNotifier<GraphQLClient>> getCrudClient({bool force = false}) async {
+  Future<ValueNotifier<GraphQLClient>> getCrudClient({bool useApi = false}) async {
+    if (useApi == true) {
+      return getCrudClientWithApiKey(useApi: useApi);
+    }
     String? accessToken = await authProvider.getAccessToken();
-    // print('GraphQLClientService.getAmplifyClient.accessToken=$accessToken');
+    print('GraphQLClientService.getAmplifyClient.accessToken=$accessToken');
 
     // accessToken = null;
 
@@ -91,7 +94,8 @@ class GraphQLClientService {
     return amplifyClient;
   }
 
-  Future<ValueNotifier<GraphQLClient>> getAnyuppClient({bool useApi = false}) async {
+  Future<ValueNotifier<GraphQLClient>> getCrudClientWithApiKey({bool useApi = false}) async {
+    print('GraphQLClientService.getCrudClientWithApiKey().useApi=$useApi');
     String? accessToken = useApi ? null : await authProvider.getAccessToken();
     // print('GraphQLClientService.getGraphQLClient.accessToken=$accessToken');
 
@@ -118,15 +122,17 @@ class GraphQLClientService {
       ),
     ]);
 
-    final AuthLink authLink = AuthLink(
-      getToken: () => accessToken, //accessToken != null ? 'Bearer $accessToken' : null,
-    );
+    print('GraphQLClientService.getCrudClientWithApiKey().headers=$headers');
+
+    // final AuthLink authLink = AuthLink(
+    //   getToken: () => accessToken, //accessToken != null ? 'Bearer $accessToken' : null,
+    // );
 
     // final Link _link = _httpLink;
-    Link link = authLink.concat(httpLink);
+    // Link link = authLink.concat(httpLink);
     ValueNotifier<GraphQLClient> graphqlClient = ValueNotifier(GraphQLClient(
       cache: GraphQLCache(),
-      link: link,
+      link: httpLink,
     ));
 
     return graphqlClient;
