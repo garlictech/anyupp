@@ -9,4 +9,6 @@ abstract class IFavoritesProvider {
   Future<bool> checkIfProductIsFavorite(String unitId, String productId);
 
   List<FavoriteProduct>? get favorites;
+
+  void resetFavoritesList();
 }
