@@ -89,6 +89,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
       externalId: 'EXTERNAL_ID',
+      dirty: false,
     },
     PRODUCT_COMPONENT_ID_02: {
       id: 'PRODUCT_COMPONENT_ID_02',
@@ -99,6 +100,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
       externalId: 'EXTERNAL_ID',
+      dirty: false,
     },
   };
   const prodComponentSetMap: ProductComponentSetMap = {
@@ -114,6 +116,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       supportedServingModes: defaultSupportedServingModes,
       items: ['PRODUCT_COMPONENT_ID_01', 'PRODUCT_COMPONENT_ID_02'],
       externalId: 'EXTERNAL_ID',
+      dirty: false,
     },
   };
   const timezone01 = 'Europe/London';

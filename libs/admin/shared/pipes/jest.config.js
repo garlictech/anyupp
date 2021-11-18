@@ -16,5 +16,9 @@ module.exports = {
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
-  transform: { '^.+\\.(ts|js|html)$': 'jest-preset-angular' },
+  transform: { '^.+\\.(ts|js|html|mjs)$': 'jest-preset-angular' },
+  transformIgnorePatterns: [
+    'node_modules/(?!@angular)',
+    'node_modules/(?!.*\\.mjs$)',
+  ],
 };
