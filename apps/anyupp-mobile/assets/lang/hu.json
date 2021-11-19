@@ -445,7 +445,9 @@
         "cancel": "Tiltás",
         "confirm": "Újrakérés"
       }
-    }
+    },
+    "info": "A rendelés véglegesítéséhez olvasd be a QR kódot az asztalodon.",
+    "infoDesc": "Tartsd a kódot a négyzeten belülre a kapcsolódáshoz."
   },
   "selectUnitMap": {
     "noNearUnits": "Sajnos nem találunk a közeledben választható üzletet",

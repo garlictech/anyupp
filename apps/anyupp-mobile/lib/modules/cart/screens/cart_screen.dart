@@ -267,6 +267,7 @@ class CartScreen extends StatelessWidget {
             onPressed: () => showQrCodeScan
                 ? Nav.to(QRCodeScannerScreen(
                     navigateToCart: true,
+                    loadUnits: true,
                   ))
                 : showSelectPaymentMethodBottomSheet(context),
             style: ElevatedButton.styleFrom(

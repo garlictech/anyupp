@@ -200,7 +200,10 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                 Container(
                   margin: EdgeInsets.only(left: 4.0),
                   child: BorderedWidget(
-                    onPressed: () => Nav.to(QRCodeScannerScreen()),
+                    onPressed: () => Nav.to(QRCodeScannerScreen(
+                      navigateToCart: true,
+                      loadUnits: true,
+                    )),
                     width: 40.0,
                     child: Padding(
                       padding: const EdgeInsets.all(6.0),

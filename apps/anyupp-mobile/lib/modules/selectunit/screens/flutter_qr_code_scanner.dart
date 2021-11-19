@@ -13,6 +13,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/deeplink_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -23,11 +24,12 @@ class QRCodeScannerScreen extends StatefulWidget {
   final double traceMultiplier;
   final Rectangle validRectangle;
 
-  // TODO navigation hack, should replace with navigation bloc
   final bool navigateToCart;
+  final bool loadUnits;
 
   QRCodeScannerScreen({
     this.navigateToCart = false,
+    this.loadUnits = true,
     this.frameColor = kShrineScrim,
     this.traceMultiplier = 1.2,
     this.validRectangle = const Rectangle(width: 150, height: 150),
@@ -43,16 +45,8 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   bool flashState = false;
 
-  AnimationController? _animationController;
-  bool _closeWindow = false;
-  AnimationState _currentState = AnimationState.search;
-  CustomPainter? _animationPainter;
-  int animationStart = DateTime.now().millisecondsSinceEpoch;
-
   @override
   void initState() {
-    //setFlashState();
-    _switchAnimationState(AnimationState.search);
     super.initState();
     setToolbarThemeV1(theme);
   }
@@ -62,88 +56,6 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     setState(() {});
   }
 
-  void _initAnimation(Duration duration) {
-    setState(() {
-      _animationPainter = null;
-    });
-
-    _animationController?.dispose();
-    _animationController = AnimationController(duration: duration, vsync: this);
-  }
-
-  void _switchAnimationState(AnimationState newState) {
-    if (newState == AnimationState.search) {
-      _initAnimation(const Duration(milliseconds: 750));
-
-      _animationPainter = RectangleOutlinePainter(
-        animation: RectangleTween(
-          Rectangle(
-            width: widget.validRectangle.width,
-            height: widget.validRectangle.height,
-            color: Colors.white,
-          ),
-          Rectangle(
-            width: widget.validRectangle.width * widget.traceMultiplier,
-            height: widget.validRectangle.height * widget.traceMultiplier,
-            color: Colors.transparent,
-          ),
-        ).animate(_animationController!),
-      );
-
-      _animationController!.addStatusListener((AnimationStatus status) {
-        if (status == AnimationStatus.completed) {
-          Future<void>.delayed(const Duration(milliseconds: 1600), () {
-            if (_currentState == AnimationState.search) {
-              _animationController!.forward(from: 0);
-            }
-          });
-        }
-      });
-    } else if (newState == AnimationState.barcodeNear ||
-        newState == AnimationState.barcodeFound ||
-        newState == AnimationState.endSearch) {
-      double? begin;
-      if (_currentState == AnimationState.barcodeNear) {
-        begin = lerpDouble(0.0, 0.5, _animationController!.value);
-      } else if (_currentState == AnimationState.search) {
-        _initAnimation(const Duration(milliseconds: 500));
-        begin = 0.0;
-      }
-
-      _animationPainter = RectangleTracePainter(
-        rectangle: Rectangle(
-          width: widget.validRectangle.width,
-          height: widget.validRectangle.height,
-          color: newState == AnimationState.endSearch ? Colors.transparent : Colors.white,
-        ),
-        animation: Tween<double>(
-          begin: begin,
-          end: newState == AnimationState.barcodeNear ? 0.5 : 1.0,
-        ).animate(_animationController!),
-      );
-
-      if (newState == AnimationState.barcodeFound) {
-        _animationController!.addStatusListener((AnimationStatus status) {
-          if (status == AnimationStatus.completed) {
-            Future<void>.delayed(const Duration(milliseconds: 300), () {
-              if (_currentState != AnimationState.endSearch) {
-                _switchAnimationState(AnimationState.endSearch);
-                setState(() {});
-                // _showBottomSheet();
-              }
-            });
-          }
-        });
-      }
-    }
-
-    _currentState = newState;
-    if (newState != AnimationState.endSearch) {
-      _animationController!.forward(from: 0);
-      animationStart = DateTime.now().millisecondsSinceEpoch;
-    }
-  }
-
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
@@ -151,99 +63,89 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     super.reassemble();
     if (Platform.isAndroid) {
       controller.pauseCamera();
+    } else if (Platform.isIOS) {
+      controller.resumeCamera();
     }
-    controller.resumeCamera();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: theme.secondary0,
+          leading: BackButtonWidget(
+            color: theme.secondary,
+            showBorder: false,
+            iconSize: 24.0,
+          ),
+        ),
         body: Stack(
           children: <Widget>[
             _buildQrView(context),
-            Container(
-              constraints: const BoxConstraints.expand(),
-              child: CustomPaint(
-                painter: WindowPainter(
-                  windowSize: Size(widget.validRectangle.width, widget.validRectangle.height),
-                  outerFrameColor: widget.frameColor,
-                  closeWindow: _closeWindow,
-                  innerFrameColor: _currentState == AnimationState.endSearch ? Colors.transparent : kShrineFrameBrown,
-                ),
-              ),
-            ),
             Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              child: Container(
-                height: 56,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: const <Color>[Colors.black87, Colors.transparent],
-                  ),
+              right: 0.0,
+              top: 0.0,
+              child: IconButton(
+                icon: Icon(
+                  flashState ? Icons.flash_off : Icons.flash_on,
+                  color: Colors.white,
                 ),
+                onPressed: () async {
+                  await controller.toggleFlash();
+                  await setFlashState();
+                  setState(() {});
+                },
               ),
             ),
             Positioned(
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
-              height: 56,
+              // height: 56,
               child: Container(
-                color: kShrinePink50,
-                child: Center(
-                  child: Text(
-                    trans('qrScan.pointCamera'),
-                    style: Theme.of(context).textTheme.button,
-                  ),
+                color: theme.secondary0,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32.0,
+                        vertical: 16.0,
+                      ),
+                      child: Text(
+                        trans('qrScan.info'),
+                        textAlign: TextAlign.center,
+                        style: Fonts.satoshi(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 32.0,
+                        left: 64.0,
+                        right: 64.0,
+                      ),
+                      child: Text(
+                        trans('qrScan.infoDesc'),
+                        textAlign: TextAlign.center,
+                        style: Fonts.satoshi(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Container(
-              constraints: const BoxConstraints.expand(),
-              child: CustomPaint(
-                painter: _animationPainter,
-              ),
-            ),
-            AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.close, color: Colors.white),
-                onPressed: () => Nav.pop(),
-              ),
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    flashState ? Icons.flash_off : Icons.flash_on,
-                    color: Colors.white,
-                  ),
-                  onPressed: () async {
-                    await controller.toggleFlash();
-                    await setFlashState();
-                    setState(() {});
-                  },
-                ),
-                // IconButton(
-                //   icon: const Icon(
-                //     Icons.help_outline,
-                //     color: Colors.white,
-                //   ),
-                //   onPressed: () {
-                //     Nav.pop();
-                //     Nav.to(UnitFoundByQRCodeScreen(
-                //       place: Place(seat: '1', table: '2'),
-                //       unitId: 'seeded_unit_c1_g1_1_id',
-                //       navigateToCart: true,
-                //     ));
-                //   },
-                // ),
-              ],
-            ),
+            // Container(
+            //   constraints: const BoxConstraints.expand(),
+            //   child: CustomPaint(
+            //     painter: _animationPainter,
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -254,12 +156,17 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
-      overlay: QrScannerOverlayShape(
-          //borderColor: kShrineFrameBrown,
-          borderRadius: 0,
-          borderLength: 0,
-          borderWidth: 0,
-          cutOutSize: widget.validRectangle.height),
+      overlay: QrScannerOverlayShapeExt(
+        borderColor: theme.secondary16,
+        borderRadius: 16.0,
+        borderLength: 52,
+        borderWidth: 4,
+        borderPadding: 20,
+        cutOutSize: widget.validRectangle.height,
+        // cutOutBottomOffset: 16.0,
+
+        overlayColor: Colors.black.withOpacity(0.7),
+      ),
     );
   }
 
@@ -291,6 +198,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
           place: place,
           unitId: unitId,
           navigateToCart: widget.navigateToCart,
+          loadUnits: widget.loadUnits,
         ));
         controller.dispose();
       }
@@ -302,8 +210,8 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
 
   @override
   void dispose() {
-    _currentState = AnimationState.endSearch;
-    _animationController?.dispose();
+    // _currentState = AnimationState.endSearch;
+    // _animationController?.dispose();
     controller.dispose();
     super.dispose();
   }

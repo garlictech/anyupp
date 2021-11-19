@@ -24,9 +24,17 @@ void selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit, [bool dismi
   }
 }
 
-void _selectServingModeAndGo(ServingMode servingMode, GeoUnit unit) {
+void _selectServingModeAndGo(ServingMode servingMode, GeoUnit unit) async {
+  var _repo = getIt<CartRepository>();
+  Cart? _cart = await _repo.getCurrentCart(unit.id);
+  if (_cart != null && _cart.servingMode != servingMode) {
+    print('selectUnitAndGoToMenuScreen().DELETE CART!!!!');
+    getIt<CartBloc>().add(ClearCartAction());
+  } else {
+    getIt<CartBloc>().add(ClearPlaceInCart(unit));
+  }
+
   getIt<TakeAwayBloc>().add(SetServingMode(servingMode));
-  getIt<CartBloc>().add(ClearPlaceInCart(unit));
   getIt<UnitSelectBloc>().add(SelectUnit(unit));
   Nav.reset(MainNavigation());
 }

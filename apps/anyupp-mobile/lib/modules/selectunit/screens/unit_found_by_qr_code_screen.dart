@@ -17,11 +17,13 @@ class UnitFoundByQRCodeScreen extends StatefulWidget {
   final String unitId;
   final Place place;
   final bool navigateToCart;
+  final bool loadUnits;
 
   UnitFoundByQRCodeScreen({
     required this.unitId,
     required this.place,
     this.navigateToCart = false,
+    this.loadUnits = true,
   });
 
   @override
@@ -31,15 +33,16 @@ class UnitFoundByQRCodeScreen extends StatefulWidget {
 class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
   final GlobalKey<FlipCardState> _flipCardState = GlobalKey<FlipCardState>();
 
-  bool _loaded = false;
-
   @override
   void initState() {
     super.initState();
     setToolbarThemeV1(theme);
 
     // print('*** _UnitFoundByQRCodeScreenState.initState().navigateToCart=${widget.navigateToCart}');
-    getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+    // _loaded = false;
+    if (widget.loadUnits) {
+      getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+    }
   }
 
   @override
@@ -49,10 +52,11 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
         backgroundColor: Colors.white,
         body: BlocListener<UnitsBloc, UnitsState>(
           listener: (BuildContext context, UnitsState state) async {
-            if (!widget.navigateToCart && _loaded) {
-              return;
-            }
-            _loaded = true;
+            // if (!widget.navigateToCart && _loaded) {
+            //   print('***************** UnitFoundByQRCodeScreen.ALREADY LOADED!!!');
+            //   return;
+            // }
+            // _loaded = true;
             if (state is UnitsLoaded) {
               print('***************** UNITS LOADED=${state.units}');
               int index = state.units.indexWhere((GeoUnit unit) => unit.id == widget.unitId);
