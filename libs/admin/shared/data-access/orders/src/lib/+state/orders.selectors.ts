@@ -72,7 +72,7 @@ export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) => {
           .map((orderItem: CrudApi.OrderItem) => ({
             ...orderItem,
             orderId: order.id,
-            // servingMode: order.supportedServingModes,
+            servingMode: order.servingMode,
             userId: order.userId,
             place: order.place,
             currentStatus: status,

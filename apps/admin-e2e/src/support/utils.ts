@@ -18,7 +18,7 @@ export const moveDownShouldWork = (listItemElementName: string) =>
     .then($listItem => {
       getListItemTitle($listItem).then(firstItemTitle => {
         cy.wrap($listItem).findAllByTitle('Move down').click();
-        getSuccessToastr().scrollIntoView().should('be.visible');
+        getSuccessToastr().should('be.visible');
         getSuccessToastr().should('not.exist');
         cy.get(listItemElementName)
           .eq(1)
@@ -32,7 +32,7 @@ export const moveUpShouldWork = (listItemElementName: string) =>
     .then($listItem => {
       getListItemTitle($listItem).then(seconditemTitle => {
         cy.wrap($listItem).findAllByTitle('Move up').click();
-        getSuccessToastr().scrollIntoView().should('be.visible');
+        getSuccessToastr().should('be.visible');
         getSuccessToastr().should('not.exist');
         cy.get(listItemElementName)
           .eq(0)
