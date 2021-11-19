@@ -238,13 +238,6 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
       highlightColor: Color(0xFF30BF60).withAlpha(128),
       hoverColor: Color(0xFF30BF60).withAlpha(128),
       onTap: () => Nav.to(QRCodeScannerScreen()),
-      // onTap: () => navigateTo(
-      //             context,
-      //             (_, __, ___) => UnitFoundByQRCodeScreen(
-      //                   place: Place('1', '2'),
-      //                   unitId: '-MGMw7p0gQsX31ZLZOkK',
-      //                   navigateToCart: false,
-      //                 )),
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(

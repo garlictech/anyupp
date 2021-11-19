@@ -146,7 +146,7 @@ class AwsCartProvider implements ICartProvider {
       // print('AwsOrderProvider._getCartFromBackEnd().items.length=${items?.length}');
       if (items != null && items.isNotEmpty) {
         // print('json[items] is List=${items[0]['items'] is List}');
-        Cart cart = Cart.fromJson(items[0]!.toJson());
+        Cart cart = Cart.fromJson(items[0].toJson());
         // print('AwsOrderProvider._getCartFromBackEnd().cart=$cart');
         // print('AwsOrderProvider._getCartFromBackEnd().items=${cart.items}');
         return cart;

@@ -497,7 +497,8 @@
   },
   "product": {
     "notTakeAway": "Csak helyben",
-    "notInPlace": "Csak elvitelre"
+    "notInPlace": "Csak elvitelre",
+    "size": "Méret:"
   },
   "validators": {
     "required": "Ez a mező szükséges",

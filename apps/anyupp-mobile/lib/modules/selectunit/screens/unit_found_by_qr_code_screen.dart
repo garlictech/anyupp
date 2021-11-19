@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/selectunit/selectunit.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/models.dart';
@@ -15,7 +16,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 class UnitFoundByQRCodeScreen extends StatefulWidget {
   final String unitId;
   final Place place;
-  // TODO navigation hack, should replace with navigation bloc
   final bool navigateToCart;
 
   UnitFoundByQRCodeScreen({
@@ -31,12 +31,14 @@ class UnitFoundByQRCodeScreen extends StatefulWidget {
 class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
   final GlobalKey<FlipCardState> _flipCardState = GlobalKey<FlipCardState>();
 
+  bool _loaded = false;
+
   @override
   void initState() {
     super.initState();
     setToolbarThemeV1(theme);
 
-    print('*** _UnitFoundByQRCodeScreenState.initState().navigateToCart=${widget.navigateToCart}');
+    // print('*** _UnitFoundByQRCodeScreenState.initState().navigateToCart=${widget.navigateToCart}');
     getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
   }
 
@@ -47,6 +49,10 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
         backgroundColor: Colors.white,
         body: BlocListener<UnitsBloc, UnitsState>(
           listener: (BuildContext context, UnitsState state) async {
+            if (!widget.navigateToCart && _loaded) {
+              return;
+            }
+            _loaded = true;
             if (state is UnitsLoaded) {
               print('***************** UNITS LOADED=${state.units}');
               int index = state.units.indexWhere((GeoUnit unit) => unit.id == widget.unitId);
@@ -63,10 +69,14 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                 await Future.delayed(Duration(
                   milliseconds: 1000,
                 ));
-                // Nav.pop();
-                Nav.reset(MainNavigation(
-                  pageIndex: widget.navigateToCart ? 4 : 0,
-                ));
+                if (widget.navigateToCart) {
+                  // await showSelectServingModeSheet(context);
+                  Nav.reset(MainNavigation(
+                      // pageIndex: widget.navigateToCart ? 4 : 0,
+                      ));
+                } else {
+                  selectUnitAndGoToMenuScreen(context, unit, false);
+                }
               } else {
                 showErrorDialog(
                     context, trans('selectUnit.qrCodeError.title'), trans('selectUnit.qrCodeError.description'),

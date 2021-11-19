@@ -36,7 +36,7 @@ class ProductDetailsScreen extends StatelessWidget {
     return NetworkConnectionWrapperWidget(
       child: Scaffold(
         key: _key,
-        backgroundColor: theme.secondary0,
+        backgroundColor: theme.secondary12,
         appBar: null,
         body: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, unitState) {
           if (unitState is UnitSelected) {
@@ -51,7 +51,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 Positioned(
                   // alignment: Alignment.topCenter,
                   left: 0,
-                  top: kTextTabBarHeight,
+                  top: 32, // kTextTabBarHeight, //32.0,
                   right: 0,
                   child: Container(
                     height: 55.0,
@@ -81,7 +81,7 @@ class ProductDetailsScreen extends StatelessWidget {
                               theme: theme,
                               product: item,
                               unit: unit,
-                              iconSize: 24,
+                              iconSize: 22,
                             ),
                           ),
                         ),
@@ -116,143 +116,153 @@ class ProductDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: kToolbarHeight),
-      color: theme.secondary0,
-      margin: EdgeInsets.only(top: 16.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: RawScrollbar(
-              // controller: _controller,
-              thumbColor: theme.secondary.withOpacity(0.2),
-              radius: Radius.circular(20),
-              isAlwaysShown: true,
-              thickness: 4,
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Container(
-                  // color: theme.secondary0,
-                  // padding: EdgeInsets.only(top: 16.0),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        color: theme.secondary0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                8.0,
+    return Column(
+      children: [
+        Expanded(
+          child: RawScrollbar(
+            // controller: _controller,
+            thumbColor: theme.secondary.withOpacity(0.2),
+            radius: Radius.circular(20),
+            isAlwaysShown: true,
+            thickness: 4,
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Container(
+                color: theme.secondary0,
+                padding: EdgeInsets.only(top: kToolbarHeight),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      color: theme.secondary0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                              8.0,
+                            ),
+                            child: InkWell(
+                              onTap: () => Nav.to(
+                                ProductImageDetailsScreen(
+                                  product: item,
+                                ),
+                                animationType: NavAnim.SLIDEIN_DOWN,
+                                duration: Duration(milliseconds: 200),
                               ),
-                              child: InkWell(
-                                onTap: () => Nav.to(
-                                  ProductImageDetailsScreen(
-                                    product: item,
-                                  ),
-                                  animationType: NavAnim.SLIDEIN_DOWN,
-                                  duration: Duration(milliseconds: 200),
-                                ),
-                                child: _ProductDetailsImageWidget(
-                                  url: item.image!,
-                                ),
+                              child: _ProductDetailsImageWidget(
+                                url: item.image!,
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 16.0,
-                                  top: 16.0,
-                                  //bottom: 16.0,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16.0,
+                                top: 16.0,
+                                //bottom: 16.0,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _getProductNameWithInfo(context),
+                                    textAlign: TextAlign.left,
+                                    style: Fonts.satoshi(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: theme.secondary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16.0,
+                                top: 16.0,
+                                bottom: 16.0,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.description == null ? '' : getLocalizedText(context, item.description!),
+                                    textAlign: TextAlign.left,
+                                    style: Fonts.satoshi(
+                                      color: theme.secondary,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  if (item.variants.length == 1)
                                     Text(
-                                      _getProductNameWithInfo(context),
+                                      _getProductPackInfo(context),
                                       textAlign: TextAlign.left,
                                       style: Fonts.satoshi(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold,
                                         color: theme.secondary,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 14,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                ],
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 16.0,
-                                  top: 16.0,
-                                  bottom: 16.0,
-                                ),
-                                child: Text(
-                                  item.description == null ? '' : getLocalizedText(context, item.description!),
-                                  textAlign: TextAlign.left,
-                                  style: Fonts.satoshi(
-                                    color: theme.secondary,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (displayState == ProducItemDisplayState.NORMAL)
+                      StreamBuilder<Cart?>(
+                        stream: getIt<CartRepository>().getCurrentCartStream(unit.id),
+                        builder: (context, AsyncSnapshot<Cart?> snapshot) {
+                          if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                            //return _buildVariantsList(snapshot.data, item.variants);
+                            return ProductDetailVariantListWidget(
+                              cart: snapshot.data,
+                              product: item,
+                              unit: unit,
+                              servingMode: servingMode,
+                            );
+                          }
+                          return CenterLoadingWidget();
+                        },
+                      ),
+                    if (displayState == ProducItemDisplayState.DISABLED)
+                      Container(
+                        color: theme.secondary12,
+                        child: _buildAllergensListWidget(
+                          context,
+                          item.allergens!,
                         ),
                       ),
-                      if (displayState == ProducItemDisplayState.NORMAL)
-                        StreamBuilder<Cart?>(
-                          stream: getIt<CartRepository>().getCurrentCartStream(unit.id),
-                          builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                            if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                              //return _buildVariantsList(snapshot.data, item.variants);
-                              return ProductDetailVariantListWidget(
-                                cart: snapshot.data,
-                                product: item,
-                                unit: unit,
-                                servingMode: servingMode,
-                              );
-                            }
-                            return CenterLoadingWidget();
-                          },
-                        ),
-                      if (displayState == ProducItemDisplayState.DISABLED)
-                        Container(
-                          color: theme.secondary12,
-                          child: _buildAllergensListWidget(
-                            context,
-                            item.allergens!,
-                          ),
-                        ),
-                      if (displayState == ProducItemDisplayState.DISABLED ||
-                          item.configSets == null ||
-                          (item.configSets != null && item.configSets!.isEmpty))
-                        Container(
-                          height: MediaQuery.of(context).size.height / 5,
-                          color: theme.secondary12,
-                        )
-                    ],
-                  ),
+                    if (displayState == ProducItemDisplayState.DISABLED ||
+                        item.configSets == null ||
+                        (item.configSets != null && item.configSets!.isEmpty))
+                      Container(
+                        height: MediaQuery.of(context).size.height / 5,
+                        color: theme.secondary12,
+                      )
+                  ],
                 ),
               ),
             ),
           ),
-          // (item.configSets == null || (item.configSets != null && item.configSets!.isEmpty))
-          //     ? Container()
-          Container(
-            color: theme.secondary12,
-            child: AddToCartPanelWidget(
-              displayState: displayState,
-              servingMode: servingMode,
-              onAddToCartPressed: (state, quantity) => _addOrderItemToCart(context, state, quantity),
-            ),
-          )
-        ],
-      ),
+        ),
+        // (item.configSets == null || (item.configSets != null && item.configSets!.isEmpty))
+        //     ? Container()
+        Container(
+          color: theme.secondary12,
+          child: AddToCartPanelWidget(
+            displayState: displayState,
+            servingMode: servingMode,
+            onAddToCartPressed: (state, quantity) => _addOrderItemToCart(context, state, quantity),
+          ),
+        )
+      ],
     );
   }
 
@@ -299,14 +309,19 @@ class ProductDetailsWidget extends StatelessWidget {
     );
   }
 
-  String _getProductNameWithInfo(BuildContext context) {
+  String _getProductPackInfo(BuildContext context) {
     if (item.variants.length == 1) {
       var variant = item.variants[0];
       double size = variant.pack?.size ?? 0;
       bool isInteger = size == size.toInt().toDouble();
       String sizeText = isInteger ? size.toInt().toString() : size.toStringAsFixed(1);
-      return '${getLocalizedText(context, item.name)} - ${getLocalizedText(context, variant.variantName)} - ${sizeText} ${variant.pack?.unit ?? ""}';
+
+      return '\n${trans(context, 'product.size')} ${sizeText} ${variant.pack?.unit ?? ""} / ${getLocalizedText(context, variant.variantName)}';
     }
+    return '';
+  }
+
+  String _getProductNameWithInfo(BuildContext context) {
     return getLocalizedText(context, item.name);
   }
 }

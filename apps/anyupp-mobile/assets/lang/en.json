@@ -498,7 +498,8 @@
   },
   "product": {
     "notTakeAway": "Only in place",
-    "notInPlace": "Only for takeaway"
+    "notInPlace": "Only for takeaway",
+    "size": "Size:"
   },
   "validators": {
     "required": "this field is required",

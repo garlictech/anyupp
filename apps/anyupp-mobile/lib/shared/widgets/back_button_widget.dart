@@ -12,7 +12,7 @@ class BackButtonWidget extends StatelessWidget {
     Key? key,
     this.color,
     this.onPressed,
-    this.iconSize = 24.0,
+    this.iconSize = 22.0,
     this.showBorder = true,
     this.icon = Icons.close,
   }) : super(key: key);
@@ -22,13 +22,17 @@ class BackButtonWidget extends StatelessWidget {
     return showBorder
         ? BorderedWidget(
             width: 40,
-            child: IconButton(
-              iconSize: iconSize,
-              icon: Icon(
-                icon,
-                color: color,
+            height: 40,
+            child: Container(
+              margin: EdgeInsets.only(bottom: 2),
+              child: IconButton(
+                iconSize: iconSize,
+                icon: Icon(
+                  icon,
+                  color: color,
+                ),
+                onPressed: onPressed ?? () => Navigator.maybePop(context),
               ),
-              onPressed: onPressed ?? () => Navigator.maybePop(context),
             ))
         : Container(
             width: 40,

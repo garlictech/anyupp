@@ -85,6 +85,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
           descriptionFontSize: 14.0,
           horizontalPadding: 32.0,
           iconSize: 32.0,
+          background: Colors.transparent,
         );
       }
 
@@ -102,9 +103,9 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
             }
 
             // print('list[$position].supportedServingModes=${list[position].supportedServingModes}');
-            if (mode != null && !list[position].supportedServingModes.contains(mode)) {
-              return Container();
-            }
+            // if (mode != null && !list[position].supportedServingModes.contains(mode)) {
+            //   return Container();
+            // }
             bool isAvailableInThisServingMode = mode != null && list[position].supportedServingModes.contains(mode);
             // print(
             //     'isAvailableInThisServingMode[$mode]=$isAvailableInThisServingMode, items=${list[position].supportedServingModes}');

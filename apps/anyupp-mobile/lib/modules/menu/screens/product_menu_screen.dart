@@ -202,11 +202,18 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                   child: BorderedWidget(
                     onPressed: () => Nav.to(QRCodeScannerScreen()),
                     width: 40.0,
-                    child: Icon(
-                      Icons.link,
-                      color: theme.secondary,
-                      size: 20.0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: SvgPicture.asset(
+                        'assets/icons/qr_code_scanner_2.svg',
+                        height: 20.0,
+                      ),
                     ),
+                    // child: Icon(
+                    //   Icons.link,
+                    //   color: theme.secondary,
+                    //   size: 20.0,
+                    // ),
                   ),
                 ),
               ],
@@ -357,6 +364,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
             margin: EdgeInsets.symmetric(horizontal: 8.0),
             child: EmptyWidget(
               messageKey: 'main.noCategories',
+              background: Colors.transparent,
             ),
           ),
         ),

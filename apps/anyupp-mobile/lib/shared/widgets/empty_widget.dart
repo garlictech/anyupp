@@ -12,6 +12,7 @@ class EmptyWidget extends StatelessWidget {
   final OnEmptyWidgetButtonTap? onTap;
   final String? buttonTextKey;
   final String? icon;
+  final Color? background;
   final double iconSize;
   final double textFontSize;
   final double descriptionFontSize;
@@ -28,12 +29,13 @@ class EmptyWidget extends StatelessWidget {
     this.textFontSize = 16.0,
     this.descriptionFontSize = 12.0,
     this.horizontalPadding = 0.0,
+    this.background,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: theme.secondary0,
+      color: background ?? theme.secondary0,
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Center(
         child: Column(

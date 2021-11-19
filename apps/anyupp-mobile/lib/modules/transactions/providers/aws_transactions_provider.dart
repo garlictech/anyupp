@@ -38,7 +38,7 @@ class AwsTransactionsProvider implements ITransactionProvider {
       var items = result.data?.searchTransactions?.items ?? [];
       List<Transaction> transactions = [];
       for (int i = 0; i < items.length; i++) {
-        transactions.add(Transaction.fromJson(items[i]!.toJson()));
+        transactions.add(Transaction.fromJson(items[i].toJson()));
       }
 
       return PageResponse(

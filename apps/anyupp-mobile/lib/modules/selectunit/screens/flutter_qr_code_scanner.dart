@@ -228,13 +228,20 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
                     setState(() {});
                   },
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.help_outline,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {},
-                ),
+                // IconButton(
+                //   icon: const Icon(
+                //     Icons.help_outline,
+                //     color: Colors.white,
+                //   ),
+                //   onPressed: () {
+                //     Nav.pop();
+                //     Nav.to(UnitFoundByQRCodeScreen(
+                //       place: Place(seat: '1', table: '2'),
+                //       unitId: 'seeded_unit_c1_g1_1_id',
+                //       navigateToCart: true,
+                //     ));
+                //   },
+                // ),
               ],
             ),
           ],

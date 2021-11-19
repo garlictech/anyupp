@@ -3,11 +3,13 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 
-Future<int?> showSelectServingModeSheet(BuildContext context, {int initialPosition = 0, bool useTheme = true}) async {
+Future<int?> showSelectServingModeSheet(BuildContext context,
+    {int initialPosition = 0, bool useTheme = true, bool dismissable = true}) async {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   return await showModalBottomSheet(
     context: context,
+    isDismissible: dismissable,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(16.0),
