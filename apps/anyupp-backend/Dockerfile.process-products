@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:16-alpine
 
 COPY .serverless/rkeeper-product-processor.zip /
 RUN unzip /rkeeper-product-processor.zip
