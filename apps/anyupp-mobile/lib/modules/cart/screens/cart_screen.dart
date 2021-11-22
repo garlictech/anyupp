@@ -54,10 +54,24 @@ class CartScreen extends StatelessWidget {
           actions: [
             BlocBuilder<TakeAwayBloc, TakeAwayState>(builder: (context, state) {
               if (state is ServingModeSelectedState) {
+                Cart? cart = getIt.get<CartRepository>().cart;
+
                 return Container(
                   margin: EdgeInsets.only(top: 12.0, bottom: 12.0, right: 16.0),
-                  child: TakeawayStatusWidget(
-                    servingMode: state.servingMode,
+                  child: InkWell(
+                    onTap: () async {
+                      await showSelectServingModeSheetWithDeleteConfirm(
+                        context,
+                        cart,
+                        state.servingMode,
+                        initialPosition: state.servingMode == ServingMode.inPlace ? 0 : 1,
+                        pop: true,
+                      );
+                      // Nav.pop();
+                    },
+                    child: TakeawayStatusWidget(
+                      servingMode: state.servingMode,
+                    ),
                   ),
                 );
               }

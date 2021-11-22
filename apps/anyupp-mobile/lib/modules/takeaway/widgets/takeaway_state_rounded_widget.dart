@@ -41,6 +41,7 @@ class TakeawayStatusWidget extends StatelessWidget {
                     'assets/icons/restaurant_menu_black.svg',
                     width: iconSize,
                     height: iconSize,
+                    color: theme.secondary,
                   ),
             SizedBox(
               width: 4.0,
