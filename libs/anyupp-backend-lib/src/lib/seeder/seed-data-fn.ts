@@ -909,7 +909,7 @@ export const seedRKeeperUnit = (deps: SeederDependencies) =>
             name: `yellow RKEEPER unit`,
             supportedOrderModes: [CrudApi.OrderMode.pickup],
             supportedServingModes: [CrudApi.ServingMode.takeaway],
-            externalId: '109150009',
+            externalId: '109150001',
             groupId: 'yellow-rkeeper-group',
             chainId: 'yellow-rkeeper-chain',
             pos: {
