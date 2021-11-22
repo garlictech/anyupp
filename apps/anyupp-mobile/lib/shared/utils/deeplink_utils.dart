@@ -98,6 +98,7 @@ Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
   return UnitFoundByQRCodeScreen(
     place: place,
     unitId: unitId,
+    loadUnits: false,
   );
 }
 

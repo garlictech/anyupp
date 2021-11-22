@@ -66,6 +66,23 @@ class WindowPainter extends CustomPainter {
     if (closeWindow) {
       canvas.drawRect(windowRect, paint);
     }
+
+    // RRect cross = RRect.fromRectAndRadius(windowRect.inflate(32.0), Radius.circular(32.0));
+    // final Paint crossPaint = Paint()
+    //   ..color = Colors.grey
+    //   ..style = PaintingStyle.stroke
+    //   ..strokeCap = StrokeCap.round
+    //   ..strokeWidth = 16.0
+    //   ..strokeJoin = StrokeJoin.round
+    //   ..strokeWidth = 4;
+    // canvas.drawRRect(cross, crossPaint);
+
+    // canvas.drawRect(
+    //     windowRect,
+    //     Paint()
+    //       ..color = innerFrameColor
+    //       ..style = PaintingStyle.stroke
+    //       ..strokeWidth = innerFrameStrokeWidth);
   }
 
   @override
@@ -196,6 +213,13 @@ class RectangleTracePainter extends CustomPainter {
       Offset(rect.left + widthProportion, rect.top),
       paint,
     );
+
+    // final Paint outerPaint = Paint()
+    //   ..strokeWidth = 4
+    //   ..color = Colors.red;
+
+    // Rect outerRect = rect.inflate(1.3);
+    // canvas.drawRect(outerRect, outerPaint);
   }
 
   @override

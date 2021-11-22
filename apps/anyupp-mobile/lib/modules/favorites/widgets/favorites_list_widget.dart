@@ -43,6 +43,7 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
               descriptionFontSize: 14.0,
               horizontalPadding: 32.0,
               iconSize: 32.0,
+              background: Colors.transparent,
             );
           }
         }

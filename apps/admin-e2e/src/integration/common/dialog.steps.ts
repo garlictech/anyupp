@@ -10,6 +10,6 @@ Then('The dialog should NOT exist', () => {
 });
 
 Then('I should see a success toastr', () => {
-  getSuccessToastr().scrollIntoView().should('be.visible');
+  getSuccessToastr().should('be.visible');
   getSuccessToastr().should('not.exist');
 });

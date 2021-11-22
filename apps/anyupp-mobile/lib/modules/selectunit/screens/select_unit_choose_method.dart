@@ -237,14 +237,9 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
     return InkWell(
       highlightColor: Color(0xFF30BF60).withAlpha(128),
       hoverColor: Color(0xFF30BF60).withAlpha(128),
-      onTap: () => Nav.to(QRCodeScannerScreen()),
-      // onTap: () => navigateTo(
-      //             context,
-      //             (_, __, ___) => UnitFoundByQRCodeScreen(
-      //                   place: Place('1', '2'),
-      //                   unitId: '-MGMw7p0gQsX31ZLZOkK',
-      //                   navigateToCart: false,
-      //                 )),
+      onTap: () => Nav.to(QRCodeScannerScreen(
+        loadUnits: true,
+      )),
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(

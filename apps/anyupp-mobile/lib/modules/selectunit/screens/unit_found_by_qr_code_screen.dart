@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/selectunit/selectunit.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/models.dart';
@@ -15,13 +16,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 class UnitFoundByQRCodeScreen extends StatefulWidget {
   final String unitId;
   final Place place;
-  // TODO navigation hack, should replace with navigation bloc
   final bool navigateToCart;
+  final bool loadUnits;
 
   UnitFoundByQRCodeScreen({
     required this.unitId,
     required this.place,
     this.navigateToCart = false,
+    this.loadUnits = true,
   });
 
   @override
@@ -36,8 +38,11 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
     super.initState();
     setToolbarThemeV1(theme);
 
-    print('*** _UnitFoundByQRCodeScreenState.initState().navigateToCart=${widget.navigateToCart}');
-    getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+    // print('*** _UnitFoundByQRCodeScreenState.initState().navigateToCart=${widget.navigateToCart}');
+    // _loaded = false;
+    if (widget.loadUnits) {
+      getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+    }
   }
 
   @override
@@ -47,6 +52,11 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
         backgroundColor: Colors.white,
         body: BlocListener<UnitsBloc, UnitsState>(
           listener: (BuildContext context, UnitsState state) async {
+            // if (!widget.navigateToCart && _loaded) {
+            //   print('***************** UnitFoundByQRCodeScreen.ALREADY LOADED!!!');
+            //   return;
+            // }
+            // _loaded = true;
             if (state is UnitsLoaded) {
               print('***************** UNITS LOADED=${state.units}');
               int index = state.units.indexWhere((GeoUnit unit) => unit.id == widget.unitId);
@@ -63,10 +73,14 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                 await Future.delayed(Duration(
                   milliseconds: 1000,
                 ));
-                // Nav.pop();
-                Nav.reset(MainNavigation(
-                  pageIndex: widget.navigateToCart ? 4 : 0,
-                ));
+                if (widget.navigateToCart) {
+                  // await showSelectServingModeSheet(context);
+                  Nav.reset(MainNavigation(
+                      // pageIndex: widget.navigateToCart ? 4 : 0,
+                      ));
+                } else {
+                  selectUnitAndGoToMenuScreen(context, unit, false);
+                }
               } else {
                 showErrorDialog(
                     context, trans('selectUnit.qrCodeError.title'), trans('selectUnit.qrCodeError.description'),

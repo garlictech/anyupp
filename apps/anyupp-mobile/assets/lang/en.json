@@ -446,7 +446,9 @@
         "cancel": "Deny",
         "confirm": "Retry"
       }
-    }
+    },
+    "info": "Scan the QR code on your table to finalize your order.",
+    "infoDesc": "Keep the code inside the box to connect."
   },
   "selectUnitMap": {
     "noNearUnits": "No Near Unit",
@@ -498,7 +500,8 @@
   },
   "product": {
     "notTakeAway": "Only in place",
-    "notInPlace": "Only for takeaway"
+    "notInPlace": "Only for takeaway",
+    "size": "Size:"
   },
   "validators": {
     "required": "this field is required",
