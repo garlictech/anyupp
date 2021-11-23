@@ -73,7 +73,7 @@
     "aws-appsync": "4.1.4",
     "aws-lambda": "1.0.7",
     "aws-lambda-fastify": "1.7.1",
-    "aws-sdk": "2.1032.0",
+    "aws-sdk": "2.1034.0",
     "aws-serverless-express": "3.4.0",
     "bcryptjs": "2.4.3",
     "bootstrap": "5.1.3",
