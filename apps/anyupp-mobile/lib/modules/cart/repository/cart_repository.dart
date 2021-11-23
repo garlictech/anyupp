@@ -31,11 +31,6 @@ class CartRepository implements ICartProvider {
         userId: user.id,
         unitId: unitId,
         servingMode: servingMode,
-        // paymentMode: PaymentMode(
-        //   caption: 'inapp',
-        //   method: PaymentMethod.inapp,
-        //   type: PaymentType.stripe,
-        // ),
         place: await getPlacePref() ?? Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
         items: [
           item.copyWith(quantity: 0),
@@ -98,6 +93,7 @@ class CartRepository implements ICartProvider {
     if (_cart == null || _cart.items.isEmpty) {
       return null;
     }
+    await setPlacePref(place);
     _cart = _cart.copyWith(place: place);
     await _cartProvider.updateCart(unit.id, _cart);
     return _cart;
@@ -124,6 +120,7 @@ class CartRepository implements ICartProvider {
     Cart? cart = await getCurrentCart(unit.id);
     if (cart != null) {
       cart = cart.copyWith(place: Place(seat: EMPTY_SEAT, table: EMPTY_TABLE));
+      await clearPlacePref();
       await _cartProvider.updateCart(unit.id, cart);
     }
     return cart;
