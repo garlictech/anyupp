@@ -124,8 +124,8 @@ class Order {
           ? enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values)
           : null,
       transactionId: map['transactionId'],
-      orderMode: enumFromString(map['orderMode'], OrderMode.values),
-      servingMode: enumFromString(map['servingMode'], ServingMode.values),
+      orderMode: enumFromStringNull(map['orderMode'], OrderMode.values, OrderMode.instant),
+      servingMode: enumFromStringNull(map['servingMode'], ServingMode.values, ServingMode.inPlace),
     );
   }
 

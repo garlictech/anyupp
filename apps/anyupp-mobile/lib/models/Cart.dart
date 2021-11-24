@@ -63,7 +63,9 @@ class Cart {
       place: map['place'] != null ? Place.fromJson(map['place']) : null,
       paymentMode: map['paymentMode'] != null ? PaymentMode.fromJson(map['paymentMode']) : null,
       items: List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
-      servingMode: enumFromString<ServingMode>(map['servingMode'], ServingMode.values),
+      servingMode: map['servingMode'] != null
+          ? enumFromString<ServingMode>(map['servingMode'], ServingMode.values)
+          : ServingMode.takeAway,
     );
   }
 

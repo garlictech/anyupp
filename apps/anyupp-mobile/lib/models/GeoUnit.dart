@@ -98,11 +98,15 @@ class GeoUnit {
       distance: map['distance'],
       currency: map['currency'],
       isAcceptingOrders: map['isAcceptingOrders'],
-      openingHoursNext7: List<OpeningHours>.from(map['openingHoursNext7']?.map((x) => OpeningHours.fromJson(x))),
-      supportedServingModes:
-          List<ServingMode>.from(map['supportedServingModes']?.map((x) => enumFromString(x, ServingMode.values))),
-      supportedOrderModes:
-          List<OrderMode>.from(map['supportedOrderModes']?.map((x) => enumFromString(x, OrderMode.values))),
+      openingHoursNext7: map['openingHoursNext7'] != null
+          ? List<OpeningHours>.from(map['openingHoursNext7']?.map((x) => OpeningHours.fromJson(x)))
+          : [],
+      supportedServingModes: map['supportedServingModes'] != null
+          ? List<ServingMode>.from(map['supportedServingModes']?.map((x) => enumFromString(x, ServingMode.values)))
+          : [ServingMode.inPlace],
+      supportedOrderModes: map['supportedOrderModes'] != null
+          ? List<OrderMode>.from(map['supportedOrderModes']?.map((x) => enumFromString(x, OrderMode.values)))
+          : [OrderMode.instant],
     );
   }
 

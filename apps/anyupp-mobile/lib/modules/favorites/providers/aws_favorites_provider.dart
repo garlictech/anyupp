@@ -73,7 +73,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
         );
       }
 
-      var favorites = <FavoriteProduct>[];
+      _favorites = [];
       PageResponse<FavoriteProduct>? response;
       var _token = nextToken;
 
@@ -81,14 +81,14 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       do {
         response = await _getNextPage(user.id, unitId, _token);
         if (response.data != null) {
-          favorites.addAll(response.data!);
+          _favorites!.addAll(response.data!);
         }
         _token = response.nextToken;
       } while (response.nextToken != null);
 
       return PageResponse(
         data: favorites,
-        totalCount: favorites.length,
+        totalCount: _favorites!.length,
         nextToken: null,
       );
     } on Exception catch (e) {

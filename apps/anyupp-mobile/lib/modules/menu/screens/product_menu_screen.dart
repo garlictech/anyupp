@@ -187,6 +187,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                                     child: SvgPicture.asset(
                                       'assets/icons/restaurant_menu_black.svg',
                                       height: 20.0,
+                                      color: theme.secondary,
                                     ),
                                   ),
                             onPressed: () => _selectServingMode(context, state.servingMode),
@@ -210,6 +211,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                       child: SvgPicture.asset(
                         'assets/icons/qr_code_scanner_2.svg',
                         height: 20.0,
+                        color: theme.secondary,
                       ),
                     ),
                     // child: Icon(
@@ -392,79 +394,21 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   }
 
   void _selectServingMode(BuildContext context, ServingMode current) async {
+    print('_selectServingMode.current=$current');
+    Cart? cart = getIt.get<CartRepository>().cart;
+    print('_selectServingMode.cart=$cart');
+
     setState(() {
       _showTooltip = false;
     });
     if (_supportedServiceModeCount < 2) {
       return;
     }
-    var selectedMethodPos = await showSelectServingModeSheet(
+    await showSelectServingModeSheetWithDeleteConfirm(
       context,
+      cart,
+      current,
       initialPosition: current == ServingMode.inPlace ? 0 : 1,
-    );
-    if (selectedMethodPos != null && (current == ServingMode.inPlace ? 0 : 1) != selectedMethodPos) {
-      _deleteCartConfirmation(context, selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway);
-    }
-  }
-
-  void _deleteCartConfirmation(BuildContext context, ServingMode servingMode) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            transEx(
-              context,
-              servingMode == ServingMode.takeAway
-                  ? 'servingModeSheet.dialog.title.inplace'
-                  : 'servingModeSheet.dialog.title.takeaway',
-            ),
-            style: Fonts.satoshi(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-              color: theme.secondary,
-            ),
-          ),
-          content: Text(
-            transEx(context, 'servingModeSheet.dialog.description'),
-            style: Fonts.satoshi(
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-              color: theme.secondary,
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: Text(
-                transEx(context, 'servingModeSheet.dialog.cancel'),
-                style: Fonts.satoshi(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                  color: theme.secondary,
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: Text(
-                transEx(context, 'servingModeSheet.dialog.ok'),
-                style: Fonts.satoshi(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
-                  color: theme.primary,
-                ),
-              ),
-              onPressed: () async {
-                Nav.pop();
-                getIt<CartBloc>().add(ClearCartAction());
-                getIt<TakeAwayBloc>().add(SetServingMode(servingMode));
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 
