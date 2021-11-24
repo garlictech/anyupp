@@ -133,6 +133,7 @@ export class ProductExtendFormComponent
         const input = {
           ...value,
           id: this.product.id,
+          dirty: this.product.dirty ? false : undefined,
         };
 
         if (this.productLevel === EProductLevel.GROUP) {

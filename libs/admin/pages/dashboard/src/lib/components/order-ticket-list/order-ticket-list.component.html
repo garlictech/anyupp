@@ -54,18 +54,22 @@
     </nb-actions>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <nb-list-item
-      *ngFor="let order of filteredOrders; trackBy: trackByFn"
-      (click)="selectOrder(order)"
-      [ngClass]="{ selectedOrder: order.id === selectedOrder?.id }"
-    >
-      <bgap-order-ticket-list-item
-        class="w-100"
-        [order]="order"
-        [showMarkers]="true"
-        [selectedOrderUserId]="selectedOrder?.userId"
-        [ticketListType]="dashboardSettings?.ticketListType"
-      ></bgap-order-ticket-list-item>
-    </nb-list-item>
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+      <nb-list>
+        <nb-list-item
+          *cdkVirtualFor="let order of filteredOrders; trackBy: trackByFn"
+          (click)="selectOrder(order)"
+          [ngClass]="{ selectedOrder: order.id === selectedOrder?.id }"
+        >
+          <bgap-order-ticket-list-item
+            class="w-100"
+            [order]="order"
+            [showMarkers]="true"
+            [selectedOrderUserId]="selectedOrder?.userId"
+            [ticketListType]="dashboardSettings?.ticketListType"
+          ></bgap-order-ticket-list-item>
+        </nb-list-item>
+      </nb-list>
+    </cdk-virtual-scroll-viewport>
   </nb-card-body>
 </nb-card>

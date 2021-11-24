@@ -32,4 +32,6 @@ export interface ProductComponentMap {
 export interface Product
   extends Partial<CrudApi.ChainProduct>,
     Partial<CrudApi.GroupProduct>,
-    Partial<CrudApi.UnitProduct> {}
+    Partial<CrudApi.UnitProduct> {
+  pending?: boolean;
+}

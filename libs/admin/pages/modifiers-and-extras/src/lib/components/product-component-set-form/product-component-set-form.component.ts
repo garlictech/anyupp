@@ -199,8 +199,9 @@ export class ProductComponentSetFormComponent
         return this._crudSdk.sdk
           .UpdateProductComponentSet({
             input: {
-              id: this.productComponentSet.id,
               ...value,
+              id: this.productComponentSet.id,
+              dirty: this.productComponentSet.dirty ? false : undefined,
             },
           })
           .pipe(catchGqlError(this._store));

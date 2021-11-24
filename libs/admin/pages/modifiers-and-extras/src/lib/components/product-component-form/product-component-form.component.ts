@@ -128,8 +128,9 @@ export class ProductComponentFormComponent
         this._crudSdk.sdk
           .UpdateProductComponent({
             input: {
-              id: this.productComponent.id,
               ...this.dialogForm.value,
+              id: this.productComponent.id,
+              dirty: this.productComponent.dirty ? false : undefined,
             },
           })
           .pipe(catchGqlError(this._store))

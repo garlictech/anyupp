@@ -13,7 +13,7 @@
 ></bgap-colorized-lane-icon>
 
 <ng-container *ngIf="hasRoleToEdit">
-  <div *ngIf="!pending">
+  <div *ngIf="!product?.pending">
     <button
       nbButton
       shape="round"
@@ -25,7 +25,13 @@
       <nb-icon icon="edit-outline"></nb-icon>
     </button>
 
-    <ng-container *ngIf="productLevel === EProductLevel.UNIT">
+    <ng-container
+      *ngIf="
+        productLevel === EProductLevel.UNIT &&
+        !product?.pending &&
+        !product?.dirty
+      "
+    >
       <button
         [hidden]="isLast"
         nbButton
@@ -49,10 +55,14 @@
         <nb-icon icon="chevron-up"></nb-icon>
       </button>
     </ng-container>
+
+    <div class="dirty-block" *ngIf="product?.dirty">
+      <nb-badge text="DIRTY" status="danger" position="top right"></nb-badge>
+    </div>
   </div>
 
   <button
-    *ngIf="pending"
+    *ngIf="product?.pending"
     nbButton
     status="danger"
     shape="round"
@@ -70,6 +80,7 @@
 <bgap-allergens
   class="ms-5 d-inline-block"
   [allergens]="product?.allergens || []"
+  *ngIf="(product?.allergens || []).length > 0"
 ></bgap-allergens>
 
 <div class="clearfix"></div>

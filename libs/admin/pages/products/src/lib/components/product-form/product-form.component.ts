@@ -125,8 +125,9 @@ export class ProductFormComponent
         this._crudSdk.sdk
           .UpdateChainProduct({
             input: {
-              id: this.product.id,
               ...value,
+              id: this.product.id,
+              dirty: this.product.dirty ? false : undefined,
             },
           })
           .pipe(catchGqlError(this._store))

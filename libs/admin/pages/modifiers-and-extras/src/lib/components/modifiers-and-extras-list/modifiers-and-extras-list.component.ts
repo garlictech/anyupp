@@ -1,9 +1,9 @@
-import { Observable } from 'rxjs';
-
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   OnDestroy,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
@@ -32,27 +32,48 @@ enum EModExtTab {
   templateUrl: './modifiers-and-extras-list.component.html',
   styleUrls: ['./modifiers-and-extras-list.component.scss'],
 })
-export class ModifiersAndExtrasListComponent implements OnDestroy {
+export class ModifiersAndExtrasListComponent implements OnInit, OnDestroy {
   @ViewChild('tabset') tabsetEl!: NbTabsetComponent;
 
   public eModExtTab = EModExtTab;
   public selectedTab: EModExtTab = EModExtTab.PRODUCT_COMPONENTS;
-  public productComponents$: Observable<CrudApi.ProductComponent[]>;
-  public productComponentSets$: Observable<CrudApi.ProductComponentSet[]>;
+  public productComponents: CrudApi.ProductComponent[] = [];
+  public productComponentSets: CrudApi.ProductComponentSet[] = [];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _nbDialogService: NbDialogService,
-  ) {
-    this.productComponents$ = this._store.pipe(
-      select(productComponentsSelectors.getAllProductComponents),
-      untilDestroyed(this),
-    );
-    this.productComponentSets$ = this._store.pipe(
-      select(productComponentSetsSelectors.getAllProductComponentSets),
-      untilDestroyed(this),
-    );
+    private _changeDetectorRef: ChangeDetectorRef,
+  ) {}
+
+  get dirtyProductComponentCount() {
+    return this.productComponents.filter(p => p.dirty).length;
+  }
+
+  get dirtyProductComponentSetCount() {
+    return this.productComponentSets.filter(p => p.dirty).length;
+  }
+
+  ngOnInit() {
+    this._store
+      .pipe(
+        select(productComponentsSelectors.getAllProductComponents),
+        untilDestroyed(this),
+      )
+      .subscribe((productComponents: CrudApi.ProductComponent[]) => {
+        this.productComponents = productComponents;
+        this._changeDetectorRef.detectChanges();
+      });
+
+    this._store
+      .pipe(
+        select(productComponentSetsSelectors.getAllProductComponentSets),
+        untilDestroyed(this),
+      )
+      .subscribe((productComponentSets: CrudApi.ProductComponentSet[]) => {
+        this.productComponentSets = productComponentSets;
+        this._changeDetectorRef.detectChanges();
+      });
   }
 
   ngOnDestroy(): void {
@@ -61,6 +82,9 @@ export class ModifiersAndExtrasListComponent implements OnDestroy {
 
   public selectTab($event: NbTabComponent): void {
     this.selectedTab = <EModExtTab>$event.tabId;
+
+    // Trigger an event to fix CdkVirtualScroll height
+    window.dispatchEvent(new Event('resize'));
   }
 
   public addItem(): void {

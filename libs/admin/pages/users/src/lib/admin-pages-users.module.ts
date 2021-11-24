@@ -1,3 +1,4 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -33,6 +34,7 @@ const NB_MODULES = [
   declarations: [UserListComponent, UserListItemComponent, UserFormComponent],
   imports: [
     CommonModule,
+    ScrollingModule,
     TranslateModule,
     AdminSharedFormsModule,
     FormsModule,

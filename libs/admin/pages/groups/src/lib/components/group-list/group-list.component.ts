@@ -1,10 +1,10 @@
-import { Observable } from 'rxjs';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
 import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
+import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -19,24 +19,21 @@ import { GroupFormComponent } from '../group-form/group-form.component';
 })
 export class GroupListComponent implements OnDestroy {
   public groups$: Observable<CrudApi.Group[]>;
-  public chains$: Observable<CrudApi.Chain[]>;
-  public selectedChainId$: Observable<string | undefined | null>;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _nbDialogService: NbDialogService,
   ) {
-    this.groups$ = this._store.pipe(
-      select(groupsSelectors.getAllGroups),
-      untilDestroyed(this),
-    );
-    this.chains$ = this._store.pipe(
-      select(chainsSelectors.getAllChains),
-      untilDestroyed(this),
-    );
-    this.selectedChainId$ = this._store.pipe(
-      select(loggedUserSelectors.getSelectedChainId),
+    this.groups$ = combineLatest([
+      this._store.pipe(select(groupsSelectors.getAllGroups)),
+      this._store.pipe(select(loggedUserSelectors.getSelectedChainId)),
+    ]).pipe(
+      map(
+        ([groups, selectedChainId]: [
+          CrudApi.Group[],
+          string | null | undefined,
+        ]) => groups.filter(g => g.chainId === selectedChainId),
+      ),
       untilDestroyed(this),
     );
   }

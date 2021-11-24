@@ -16,43 +16,45 @@
       }}</nb-option>
     </nb-select>
 
-    <ng-container *ngFor="let product of generatedUnitProducts">
-      <nb-list-item
-        class="d-block"
-        *ngIf="product.productCategoryId === selectedProductCategoryId"
-      >
-        <div class="w-100">
-          <img class="product-image float-start" [src]="product.image" />
-          <div class="p-2 font-larger float-start">
-            {{ product.name | localize }}
-          </div>
-        </div>
-
-        <div class="clearfix"></div>
-
-        <div class="row" *ngFor="let variant of product.variants">
-          <div class="caption col-5 pt-2 m-auto font-larger">
-            {{ variant.variantName || {} | localize }}
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+      <ng-container *cdkVirtualFor="let product of generatedUnitProducts">
+        <nb-list-item
+          class="d-block"
+          *ngIf="product.productCategoryId === selectedProductCategoryId"
+        >
+          <div class="w-100">
+            <img class="product-image float-start" [src]="product.image" />
+            <div class="p-2 font-larger float-start">
+              {{ product.name | localize }}
+            </div>
           </div>
 
-          <div class="caption col-4 pt-2 m-auto font-larger">
-            {{ variant.price || 0 | currencyFormatter: groupCurrency }}
-          </div>
+          <div class="clearfix"></div>
 
-          <div class="col-3 pt-2">
-            <button
-              nbButton
-              class="ms-3"
-              status="success"
-              [size]="buttonSize"
-              shape="round"
-              (click)="addProductVariant(product, variant.id || '')"
-            >
-              <nb-icon icon="plus-outline"></nb-icon>
-            </button>
+          <div class="row" *ngFor="let variant of product.variants">
+            <div class="caption col-5 pt-2 m-auto font-larger">
+              {{ variant.variantName || {} | localize }}
+            </div>
+
+            <div class="caption col-4 pt-2 m-auto font-larger">
+              {{ variant.price || 0 | currencyFormatter: groupCurrency }}
+            </div>
+
+            <div class="col-3 pt-2">
+              <button
+                nbButton
+                class="ms-3"
+                status="success"
+                [size]="buttonSize"
+                shape="round"
+                (click)="addProductVariant(product, variant.id || '')"
+              >
+                <nb-icon icon="plus-outline"></nb-icon>
+              </button>
+            </div>
           </div>
-        </div>
-      </nb-list-item>
-    </ng-container>
+        </nb-list-item>
+      </ng-container>
+    </cdk-virtual-scroll-viewport>
   </nb-card-body>
 </nb-card>

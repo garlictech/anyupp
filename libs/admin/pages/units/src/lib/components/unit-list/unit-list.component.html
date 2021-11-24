@@ -17,10 +17,15 @@
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <ng-container *ngFor="let unit of units">
-      <nb-list-item *ngIf="unit._group?.chainId === (selectedChainId$ | async)">
-        <bgap-unit-list-item class="w-100" [unit]="unit"></bgap-unit-list-item>
-      </nb-list-item>
-    </ng-container>
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+      <nb-list>
+        <nb-list-item *cdkVirtualFor="let unit of units">
+          <bgap-unit-list-item
+            class="w-100"
+            [unit]="unit"
+          ></bgap-unit-list-item>
+        </nb-list-item>
+      </nb-list>
+    </cdk-virtual-scroll-viewport>
   </nb-card-body>
 </nb-card>

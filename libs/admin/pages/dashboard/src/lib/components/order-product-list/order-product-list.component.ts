@@ -78,13 +78,10 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
         this.generatedUnitProducts = generatedUnitProducts;
 
         this.productCategories = productCategories.filter(
-          (category: ProductCategory): boolean => {
-            return (
-              this.generatedUnitProducts.filter(
-                p => p.productCategoryId === category.id,
-              ).length > 0
-            );
-          },
+          (category: ProductCategory) =>
+            this.generatedUnitProducts.filter(
+              p => p.productCategoryId === category.id,
+            ).length > 0,
         );
 
         this.selectedProductCategoryId = this.productCategories?.[0]?.id;

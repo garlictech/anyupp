@@ -1,7 +1,7 @@
 import { AdminSharedComponentsModule } from '@bgap/admin/shared/components';
 import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -37,6 +37,7 @@ const NB_MODULES = [
   imports: [
     CommonModule,
     TranslateModule,
+    ScrollingModule,
     AdminSharedComponentsModule,
     AdminSharedFormsModule,
     AdminSharedPipesModule,
