@@ -1276,7 +1276,7 @@
         "lint-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter analyze",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter analyze",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1308,7 +1308,7 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub get",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub get",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1324,7 +1324,7 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build  ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub run build_runner build --delete-conflicting-outputs",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build  ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub run build_runner build --delete-conflicting-outputs",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1345,7 +1345,7 @@
         "unit-test-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/unit",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/unit",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1359,7 +1359,7 @@
         "integration-test-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/integration_test",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/integration_test",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1373,7 +1373,7 @@
         "e2e-test-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter scripts/e2e-tests-ci.sh",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter scripts/e2e-tests-ci.sh",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1436,7 +1436,7 @@
         "buildApk-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build apk",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build apk",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1457,7 +1457,7 @@
         "buildAppbundle-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build appbundle",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build appbundle",
             "cwd": "apps/anyupp-mobile"
           }
         },

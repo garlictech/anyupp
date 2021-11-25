@@ -404,9 +404,10 @@ describe('Test the rkeeper api basic functionality', () => {
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
-    console.log('RAWDATA READ');
-
-    handleRkeeperProducts(crudSdk)('109150001', rawData).subscribe({
+    handleRkeeperProducts(crudSdk)(
+      fixtures.realTestExternalId,
+      rawData,
+    ).subscribe({
       next: result => {
         expect(result).toMatchSnapshot();
         done();
@@ -415,7 +416,7 @@ describe('Test the rkeeper api basic functionality', () => {
   }, 720000);
 
   // We skip this extremely long-running test by default
-  test.skip('Test the product handling logic in fargate', done => {
+  test.only('Test the product handling logic in fargate', done => {
     const deps = {
       ecs: new ECS({ apiVersion: '2014-11-13' }),
       RKeeperProcessProductSubnet:
@@ -430,10 +431,7 @@ describe('Test the rkeeper api basic functionality', () => {
       AWS_REGION: process.env.AWS_REGION || '',
     };
 
-    handleProducts(deps)(
-      fixtures.rkeeperUnit.externalId || 'DEFINE ME',
-      fixtures.rawData,
-    )
+    handleProducts(deps)(fixtures.realTestExternalId, fixtures.rawData)
       .pipe(
         // Let the fargate provision its task
         delay(10000),

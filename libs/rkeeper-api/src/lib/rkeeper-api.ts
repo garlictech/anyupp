@@ -62,7 +62,7 @@ export const handleProducts =
           },
         ],
       },
-      R.tap(() => console.error(deps.taskRoleArn)),
+      R.tap(() => console.log('Task arrived for unit ', unitId)),
       params =>
         bindNodeCallback(
           (

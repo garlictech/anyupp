@@ -79,3 +79,5 @@ export const createGroup: RequiredId<CrudApi.CreateGroupInput> = {
   id: groupId,
   chainId,
 };
+
+export const realTestExternalId = '109150001';
