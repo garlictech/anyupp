@@ -102,7 +102,7 @@
     "ramda": "0.27.1",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.7",
-    "serverless-offline": "8.3.0",
+    "serverless-offline": "8.3.1",
     "serverless-offline-multi": "1.2.0",
     "stripe": "8.191.0",
     "szamlazz.js": "git+https://github.com/bgap/szamlazz.js.git#5.1.1",
