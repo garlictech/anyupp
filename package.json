@@ -69,7 +69,7 @@
     "apollo-link-error": "1.1.13",
     "apollo-server-express": "3.5.0",
     "apollo-server-fastify": "3.5.0",
-    "aws-amplify": "4.3.6",
+    "aws-amplify": "4.3.8",
     "aws-appsync": "4.1.4",
     "aws-lambda": "1.0.7",
     "aws-lambda-fastify": "1.7.1",
