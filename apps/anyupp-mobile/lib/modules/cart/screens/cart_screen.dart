@@ -19,6 +19,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'select_payment_method_screen.dart';
+
 class CartScreen extends StatelessWidget {
   final ScrollController _controller = ScrollController();
 
@@ -272,7 +274,10 @@ class CartScreen extends StatelessWidget {
                     navigateToCart: true,
                     loadUnits: true,
                   ))
-                : showSelectPaymentMethodBottomSheet(context),
+                : Nav.to(
+                    SelectPaymentMethodScreen(),
+                    animationType: NavAnim.SLIDEIN_DOWN,
+                  ),
             style: ElevatedButton.styleFrom(
               primary: theme.primary,
               shape: RoundedRectangleBorder(

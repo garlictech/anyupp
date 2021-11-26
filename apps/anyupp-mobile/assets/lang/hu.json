@@ -5,7 +5,7 @@
     "piece": "db",
     "close": "Bezár",
     "select": "Kiválaszt",
-    "ok": "Rendben",
+    "ok": "OK",
     "exit": "Nyomd meg még egyszer a vissza gombot a kilépéshez...",
     "today": "Ma"
   },
@@ -280,12 +280,16 @@
     "title": "FIZETÉSI MÓD",
     "choose": "Melyik fizetési módot választod?",
     "method": {
-      "cash": "Pincérnél készpénzzel",
-      "creditCard": "Pincérnél kártyával + SZÉP kártya",
-      "inAppPayment": "Kártyás fizetés Stripe-pal (ajánlott)",
-      "noPaymentMethod": "Még nincs mentett kártyád."
+      "inAppPayment": "Bankkártyás fizetés",
+      "inAppPaymentDesc": "Online",
+      "cash": "Készpénz",
+      "cashDesc": "Pincérnél fizetek",
+      "creditCard": "Kártya, SZÉP kártya",
+      "creditCardDesc": "Pincérnél fizetek",
+      "noPaymentMethod": "Még nincs mentett kártyád.",
+      "addNewCard": "Új kártya hozzáadása"
     },
-    "sendOrder": "RENDELÉS",
+    "sendOrder": "MEGRENDELÉS",
     "fillInvoice": "SZÁMLAADATOK MEGADÁSA",
     "orderPlaced": "Köszönjük, átvettük a rendelésed!",
     "status": {
@@ -300,6 +304,7 @@
         "paymentInfo": "SimplePay vásárlói tájékoztató"
       },
       "invoicing": {
+        "title": "ÁFÁ-S SZÁMLA",
         "want_invoice": "Áfás számlát kérek",
         "invoice_info": "Számlázási Adatok",
         "receipt_info": "Nyugta Adatok",
@@ -313,7 +318,9 @@
         "invoiceAddress": "Előző számlázási cím használata",
         "show": "Megtekintés",
         "downloadReceipt": "NYUGTA LETÖLTÉSE",
-        "downloadInvoice": "SZÁMLA LETÖLTÉSE"
+        "downloadInvoice": "SZÁMLA LETÖLTÉSE",
+        "save": "MENTÉS",
+        "warning": "A pirossal jelölt adatok kitöltése kötelező"
       }
     },
     "simplePayStatus": {
@@ -334,6 +341,16 @@
         "description": "SimplePay tranzakció azonosító: {{0}}"
       }
     },
+    "newCard": {
+      "title": "Új kártya hozzáadása",
+      "hint": {
+        "card_number": "xxxx xxxx xxxx xxxx",
+        "expiry": "HH/ÉÉ",
+        "cvc": "CVV"
+      },
+      "saveCard": "KÁRTYA MENTÉSE",
+      "warning": "A megadott kártya adatok érvénytelenek. Kérjük, ellenőrizd az adatokat!"
+    },
     "cardFields": {
       "card_number": {
         "label": "Kártyaszám",
@@ -342,12 +359,12 @@
       },
       "expiry": {
         "label": "Lejárati dátum",
-        "hint": "MM/YY",
+        "hint": "HH/ÉÉ",
         "validationError": "Hibás lejárati dátum!"
       },
       "cvc": {
-        "label": "CVC kód",
-        "hint": "XXX",
+        "label": "CVV kód",
+        "hint": "CVV",
         "validationError": "Hibás CVC kód"
       }
     },
