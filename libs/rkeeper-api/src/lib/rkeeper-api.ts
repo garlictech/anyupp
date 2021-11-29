@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { bindNodeCallback, of, throwError } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import * as R from 'ramda';
+import * as cdk from '@aws-cdk/core';
 
 export interface HandleProductsDeps {
   ecs: ECS;
@@ -55,7 +56,7 @@ export const handleProducts =
               options: {
                 'awslogs-create-group': 'true',
                 'awslogs-region': deps.AWS_REGION || '',
-                'awslogs-group': '/ecs/products',
+                'awslogs-group': cdk.Fn.importValue('RkeeperLogGroup'),
                 'awslogs-stream-prefix': 'xxx',
               },
             },
