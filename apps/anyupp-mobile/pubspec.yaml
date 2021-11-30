@@ -47,7 +47,7 @@ dependencies:
   flutter_staggered_animations: ^1.0.0
   flutter_svg: ^0.23.0
   form_field_validator: ^1.1.0
-  geolocator: ^7.1.0
+  geolocator: ^8.0.0
   get_it: ^7.1.3
   google_fonts: ^2.1.0
   google_maps_flutter: ^2.0.6
