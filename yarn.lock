@@ -8543,10 +8543,10 @@
     resolve-from "^5.0.0"
     rollup-pluginutils "^2.8.2"
 
-"@vvo/tzdb@6.33.0":
-  version "6.33.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.33.0.tgz#4286db94d195c2468fb939b186c31bec41fdf745"
-  integrity sha512-fD2nNcZofI7y1cyV0Lk+KumKMNtTAkpIhL5yoKrDEzrEmhljfUp8t6ileZ4TGQyyaSzZna5ctSMtEgEBBaw/Ug==
+"@vvo/tzdb@6.34.0":
+  version "6.34.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.34.0.tgz#db8ff192ca2b1e70e6c313caac7f0f0df6b244f0"
+  integrity sha512-i7a1RssKzms3WKVVXlDrPyV8WdweZaWEgNad+aD6+F8l159bePeliFV0JsZJ9r3we9OiGCZETEM1MmqmZ6yRGQ==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
