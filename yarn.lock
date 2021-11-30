@@ -9790,7 +9790,22 @@ aws-lambda@1.0.7:
     js-yaml "^3.14.1"
     watchpack "^2.0.0-beta.10"
 
-aws-sdk@2.1036.0, aws-sdk@^2.1036.0:
+aws-sdk@2.1039.0:
+  version "2.1039.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1039.0.tgz#537d81e75da37addfe2fd6597bfae75c486551ba"
+  integrity sha512-vrWWUNkRp+psMj56tKhTSKAXtROz2ccQ0NamMt/OS8jEt54ZIhjMeJDkbRucMEPQCeWR8Ma2g6ITmZPVDwUYaw==
+  dependencies:
+    buffer "4.9.2"
+    events "1.1.1"
+    ieee754 "1.1.13"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.3.2"
+    xml2js "0.4.19"
+
+aws-sdk@^2.1036.0:
   version "2.1036.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1036.0.tgz#47f0d0a38b5bfbd4a7a382a6756a6aa7af627aad"
   integrity sha512-K0f4uXL32ZdoPmWiuSQEAC5ae5v7gNmhjzoEB7VonE5E8l2umWsoU0Ahm8WPr14LgsvtkeyBuqBjphbxLz6hIw==
