@@ -12,6 +12,7 @@ export class ParamsStack extends sst.Stack {
   public appleTeamId: string;
   public appleKeyId: string;
   public appleServiceId: string;
+  public slackChannel: string;
 
   constructor(scope: sst.App, id: string) {
     super(scope, id);
@@ -107,6 +108,19 @@ export class ParamsStack extends sst.Stack {
     new CfnOutput(this, 'appleServiceIdOutput', {
       value: this.appleServiceId,
       exportName: app.logicalPrefixedName('appleServiceId'),
+    });
+
+    this.slackChannel = ssm.StringParameter.fromStringParameterAttributes(
+      this,
+      'slackChannelParam',
+      {
+        parameterName: `/${app.stage}-${rootAppName}/slackChannel`,
+      },
+    ).stringValue;
+
+    new CfnOutput(this, 'slackChannelOutput', {
+      value: this.appleServiceId,
+      exportName: app.logicalPrefixedName('slackChannel'),
     });
   }
 }

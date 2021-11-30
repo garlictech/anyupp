@@ -1,0 +1,33 @@
+FROM node:12-alpine
+
+RUN mkdir /build
+COPY libs build/libs
+WORKDIR /build
+RUN apk add --update --no-cache \
+    git \
+    make \
+    g++ \
+    jpeg-dev \
+    cairo-dev \
+    giflib-dev \
+    pango-dev \
+    libtool \
+    autoconf \
+    automake \
+    curl \
+    py3-pip && pip install awscli
+
+
+RUN curl -sL https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip \
+    && unzip awscliv2.zip \
+    && aws/install 
+    
+COPY apps/cicd/package.json /build/cicd/package.json 
+COPY apps/anyupp-backend/package.json /build/anyupp-backend/package.json 
+COPY package.json yarn.lock patches /build/
+COPY jest.config.js jest.preset.js  tsconfig.base.json /build/
+COPY apps/anyupp-backend/lib/reports-docker/generate-report.sh /build/
+
+RUN chmod +x generate.sh
+RUN yarn --frozen-lockfile
+CMD [ "./generate.sh" ]

@@ -16,3 +16,4 @@ linter:
     - camel_case_types
     - unnecessary_null_checks
     - avoid_equals_and_hash_code_on_mutable_classes
+    - unnecessary_raw_strings

@@ -8,6 +8,7 @@ import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SeederStack } from './app/seeder-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
+import { FargateStack } from './app/fargate-stack';
 
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
@@ -20,6 +21,12 @@ export class AnyUppStack extends Stack {
     );
 
     const paramsStack = new ParamsStack(scope, 'ParamsStack');
+
+    new FargateStack(scope, 'fargate', {
+      reportAccessKeyId: secretsManagerStack.reportAccessKeyID,
+      reportSecretAccessKey: secretsManagerStack.reportSecretAccessKey,
+      slackChannel: paramsStack.slackChannel,
+    });
 
     const cognitoStack = new CognitoStack(scope, 'cognito', {
       adminSiteUrl: sites.adminSiteUrl,
