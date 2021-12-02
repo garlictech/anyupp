@@ -6,19 +6,10 @@ import {
   FloorMapUserOrders,
   LaneOrderItem,
 } from '@bgap/shared/types';
-
-export const currentStatus = (
-  status: CrudApi.StatusLog[],
-): CrudApi.OrderStatus => {
-  if (!status || status.length === 0) {
-    return CrudApi.OrderStatus.none;
-  }
-  const lastElement = status[status.length - 1];
-  return lastElement?.status || CrudApi.OrderStatus.none;
-};
+import { currentStatus } from '@bgap/crud-gql/api';
 
 export const getNextOrderStatus = (
-  currStatus: CrudApi.OrderStatus,
+  currStatus?: CrudApi.OrderStatus,
 ): CrudApi.OrderStatus | undefined => {
   switch (currStatus) {
     case CrudApi.OrderStatus.none:
@@ -50,7 +41,7 @@ export const getNextOrderItemStatus = (
 };
 
 export const getPrevOrderItemStatus = (
-  currStatus: CrudApi.OrderStatus,
+  currStatus?: CrudApi.OrderStatus,
 ): CrudApi.OrderStatus | undefined => {
   switch (currStatus) {
     case CrudApi.OrderStatus.served:
@@ -95,24 +86,6 @@ export const getStatusColor = (status: CrudApi.OrderStatus): string => {
   }
 };
 
-export const getLowestStatus = (
-  statuses: CrudApi.OrderStatus[],
-): CrudApi.OrderStatus => {
-  const SORTED_ORDER_STATUSES = [
-    CrudApi.OrderStatus.none,
-    CrudApi.OrderStatus.placed,
-    CrudApi.OrderStatus.processing,
-    CrudApi.OrderStatus.ready,
-    CrudApi.OrderStatus.served,
-  ];
-
-  const statusIndices: number[] = statuses
-    .map((s: CrudApi.OrderStatus): number => SORTED_ORDER_STATUSES.indexOf(s))
-    .filter((idx: number): boolean => idx >= 0);
-
-  return SORTED_ORDER_STATUSES[Math.min(...statusIndices)];
-};
-
 export const getActiveOrdersByUser = (
   orders: CrudApi.Order[],
 ): FloorMapUserOrderObjects => {
@@ -150,11 +123,7 @@ export const getActiveOrdersByUser = (
             order.transactionStatus ===
               CrudApi.PaymentStatus.waiting_for_payment);
 
-        if (order.createdAt > ordersByUser[order.userId].lastOrder.createdAt) {
-          ordersByUser[order.userId].lastOrder = { ...order };
-        }
-
-        ordersByUser[order.userId].lowestStatus = getLowestStatus([
+        ordersByUser[order.userId].lowestStatus = CrudApi.getLowestStatus([
           ordersByUser[order.userId].lowestStatus,
           currentStatus(order.statusLog),
         ]);
@@ -205,35 +174,11 @@ export const getTableSeatOrders = (
       hasPaymentIntention: userOrders
         .map((o): boolean => o.hasPaymentIntention)
         .some((i): boolean => !!i),
-      lowestStatus: getLowestStatus(
+      lowestStatus: CrudApi.getLowestStatus(
         userOrders.map((o): CrudApi.OrderStatus => o.lowestStatus),
       ),
     };
   });
 
   return tableSeatOrders;
-};
-
-export const getOrderStatusByItemsStatus = (order: CrudApi.Order) => {
-  const itemsUniqueStatus = [
-    ...new Set(order.items.map(i => currentStatus(i.statusLog))),
-  ];
-
-  if (itemsUniqueStatus.every(i => i === CrudApi.OrderStatus.served)) {
-    return CrudApi.OrderStatus.served;
-  } else if (getLowestStatus(itemsUniqueStatus) === CrudApi.OrderStatus.ready) {
-    return CrudApi.OrderStatus.ready;
-  } else if (
-    itemsUniqueStatus.some(i =>
-      [
-        CrudApi.OrderStatus.processing,
-        CrudApi.OrderStatus.ready,
-        CrudApi.OrderStatus.served,
-      ].includes(i),
-    )
-  ) {
-    return CrudApi.OrderStatus.processing;
-  } else {
-    return CrudApi.OrderStatus.placed;
-  }
 };

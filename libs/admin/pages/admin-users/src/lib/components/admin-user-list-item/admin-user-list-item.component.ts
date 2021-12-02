@@ -64,9 +64,6 @@ export class AdminUserListItemComponent {
         },
         {
           label: 'common.cancel',
-          callback: () => {
-
-          },
           status: 'basic',
         },
       ],

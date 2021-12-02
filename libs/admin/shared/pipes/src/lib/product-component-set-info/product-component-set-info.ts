@@ -11,7 +11,6 @@ import { Store } from '@ngrx/store';
   name: 'productComponentSetInfo',
 })
 export class ProductComponentSetInfoPipe implements PipeTransform {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store) {}
 
   transform(componentSetId: string): Observable<CrudApi.ProductComponentSet> {

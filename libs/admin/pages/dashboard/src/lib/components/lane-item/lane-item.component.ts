@@ -21,7 +21,6 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { ENebularButtonSize, LaneOrderItem } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { currentStatus as currentStatusFn } from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -35,13 +34,10 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   @Input() buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   @Input() unit?: CrudApi.Unit;
 
-  public currentStatus = currentStatusFn;
-  public EOrderStatus = CrudApi.OrderStatus;
   public EServingMode = CrudApi.ServingMode;
   public processingTimer = 0;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _orderService: OrderService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -99,47 +95,39 @@ export class LaneItemComponent implements OnInit, OnDestroy {
     return this.orderItem.currentStatus === CrudApi.OrderStatus[status];
   }
 
-  public moveForward(): void {
-    const nextStatus = this.orderItem?.currentStatus
-      ? getNextOrderStatus(this.orderItem?.currentStatus)
-      : undefined;
+  public async moveForward(): Promise<void> {
+    const nextStatus = getNextOrderStatus(this.orderItem?.currentStatus);
 
     if (
       nextStatus &&
       !isNaN(Number(this.orderItem.idx)) &&
       this.orderItem.orderId
     ) {
-      this._orderService
-        .updateOrderItemStatus(
+      await this._orderService
+        .updateOrderItemStatus$(
           this.orderItem.orderId,
           nextStatus,
           Number(this.orderItem.idx),
         )
-        .subscribe();
+        .toPromise();
     }
-
-    this._changeDetectorRef.detectChanges();
   }
 
-  public moveBack(): void {
-    const prevStatus = this.orderItem?.currentStatus
-      ? getPrevOrderItemStatus(this.orderItem?.currentStatus)
-      : undefined;
+  public async moveBack(): Promise<void> {
+    const prevStatus = getPrevOrderItemStatus(this.orderItem?.currentStatus);
 
     if (
       prevStatus &&
       !isNaN(Number(this.orderItem.idx)) &&
       this.orderItem.orderId
     ) {
-      this._orderService
-        .updateOrderItemStatus(
+      await this._orderService
+        .updateOrderItemStatus$(
           this.orderItem.orderId,
           prevStatus,
           Number(this.orderItem.idx),
         )
-        .subscribe();
+        .toPromise();
     }
-
-    this._changeDetectorRef.detectChanges();
   }
 }

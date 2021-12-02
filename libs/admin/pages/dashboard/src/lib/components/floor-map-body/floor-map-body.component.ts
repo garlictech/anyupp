@@ -58,7 +58,6 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
     new BehaviorSubject({});
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,

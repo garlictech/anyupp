@@ -125,11 +125,11 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
             .statusLog,
         ) === CrudApi.OrderStatus.REJECTED
       ) {
-        this._orderService.updateOrderItemStatus(
+        await this._orderService.updateOrderItemStatus$(
           (<CrudApi.Order>this.selectedOrder).id,
           CrudApi.OrderStatus.placed,
           <number>existingVariantOrderIdx,
-        ).subscribe();
+        ).toPromise();
       }
     } else {
       this._orderService.addProductVariant(
