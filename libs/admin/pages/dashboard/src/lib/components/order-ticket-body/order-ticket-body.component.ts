@@ -46,7 +46,6 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   public activeOrdersCount = 0;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,

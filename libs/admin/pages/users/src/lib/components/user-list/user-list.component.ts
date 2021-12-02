@@ -19,7 +19,6 @@ export class UserListComponent implements OnDestroy {
   public users$: Observable<CrudApi.User[]>;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _nbDialogService: NbDialogService,
   ) {

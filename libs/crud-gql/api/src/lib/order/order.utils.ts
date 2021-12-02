@@ -25,6 +25,50 @@ export const currentStatus = (
   return lastElement?.status || CrudApi.OrderStatus.none;
 };
 
+export const getLowestStatus = (
+  statuses: CrudApi.OrderStatus[],
+): CrudApi.OrderStatus => {
+  const SORTED_ORDER_STATUSES = [
+    CrudApi.OrderStatus.none,
+    CrudApi.OrderStatus.placed,
+    CrudApi.OrderStatus.processing,
+    CrudApi.OrderStatus.ready,
+    CrudApi.OrderStatus.served,
+  ];
+
+  const statusIndices: number[] = statuses
+    .map((s: CrudApi.OrderStatus): number => SORTED_ORDER_STATUSES.indexOf(s))
+    .filter((idx: number): boolean => idx >= 0);
+
+  return SORTED_ORDER_STATUSES[Math.min(...statusIndices)];
+};
+
+export const getOrderStatusByItemsStatus = (
+  orderItems: CrudApi.OrderItem[],
+) => {
+  const itemsUniqueStatus = [
+    ...new Set(orderItems.map(i => currentStatus(i.statusLog))),
+  ];
+
+  if (itemsUniqueStatus.every(i => i === CrudApi.OrderStatus.served)) {
+    return CrudApi.OrderStatus.served;
+  } else if (getLowestStatus(itemsUniqueStatus) === CrudApi.OrderStatus.ready) {
+    return CrudApi.OrderStatus.ready;
+  } else if (
+    itemsUniqueStatus.some(i =>
+      [
+        CrudApi.OrderStatus.processing,
+        CrudApi.OrderStatus.ready,
+        CrudApi.OrderStatus.served,
+      ].includes(i),
+    )
+  ) {
+    return CrudApi.OrderStatus.processing;
+  } else {
+    return CrudApi.OrderStatus.placed;
+  }
+};
+
 export const UNPAY_INCOME_CATEGORIES_ARR = [
   CrudApi.UnpayCategory.delivery,
   CrudApi.UnpayCategory.coupon,

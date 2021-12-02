@@ -274,9 +274,6 @@ export class UnitFormComponent
             },
             {
               label: 'common.cancel',
-              callback: () => {
-                /* */
-              },
               status: 'basic',
             },
           ],

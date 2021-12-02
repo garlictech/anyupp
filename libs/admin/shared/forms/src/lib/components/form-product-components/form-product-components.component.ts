@@ -46,7 +46,6 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
   private _productComponentSets: CrudApi.ProductComponentSet[] = [];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _formBuilder: FormBuilder,
     private _formsService: FormsService,

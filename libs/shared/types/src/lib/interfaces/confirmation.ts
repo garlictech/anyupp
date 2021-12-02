@@ -1,6 +1,6 @@
 export interface ConfirmButton {
   label: string;
-  callback(params?: unknown): void;
+  callback?(params?: unknown): void;
   status: string;
 }
 

@@ -30,7 +30,6 @@ export class ActiveProductCategorySelectorComponent
   private _loggedUser!: CrudApi.AdminUser;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _dataService: DataService,
     private _changeDetectorRef: ChangeDetectorRef,

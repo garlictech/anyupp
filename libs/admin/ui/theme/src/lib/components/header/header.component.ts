@@ -180,9 +180,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {
-            /**/
-          },
           status: 'basic',
         },
       ],
