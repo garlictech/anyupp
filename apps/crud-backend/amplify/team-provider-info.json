@@ -154,5 +154,35 @@
         }
       }
     }
+  },
+  "petrot": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-petrot-21418-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-petrot-21418-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-petrot-21418-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-petrot-21418-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-petrot-21418-unauthRole",
+      "StackName": "amplify-anyuppbackend-petrot-21418",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-petrot-21418/741c1340-530d-11ec-a3fb-02acc477374b",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_z3hT7G8m1",
+          "userPoolName": "petrot-anyupp-backend-admin-user-pool",
+          "webClientId": "20qu0b43j5tfh51k9i9br2k7re",
+          "nativeClientId": "4d712sd9njp25oiknbvfm7jup6",
+          "identityPoolId": "eu-west-1:cf906a8a-f1d8-4e74-893c-ed80b3c413e8",
+          "identityPoolName": "IdentityPool_l8JakBoPgWtS",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/petrot-anyupp-backend-cog-CognitoDefaultAuthentica-9Y4DRB63QHF7",
+          "authRoleName": "petrot-anyupp-backend-cog-CognitoDefaultAuthentica-9Y4DRB63QHF7",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/petrot-anyupp-backend-cog-CognitoDefaultUnauthenti-A18WU5ZIQECU",
+          "unauthRoleName": "petrot-anyupp-backend-cog-CognitoDefaultUnauthenti-A18WU5ZIQECU"
+        }
+      }
+    }
   }
 }
