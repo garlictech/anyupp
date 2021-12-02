@@ -13,10 +13,7 @@ import {
   dashboardSelectors,
   DashboardSettings,
 } from '@bgap/admin/shared/data-access/dashboard';
-import {
-  currentStatus as currentStatusFn,
-  ordersSelectors,
-} from '@bgap/admin/shared/data-access/orders';
+import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardSize,
@@ -52,7 +49,6 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
   private _orders: CrudApi.Order[] = [];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
@@ -121,7 +117,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
             CrudApi.OrderStatus.served,
             CrudApi.OrderStatus.none,
             CrudApi.OrderStatus.rejected,
-          ].includes(currentStatusFn(o.statusLog)),
+          ].includes(CrudApi.currentStatus(o.statusLog)),
       ),
     ];
   }
@@ -137,7 +133,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
             o.paymentMode.method === CrudApi.PaymentMethod.cash) &&
           o.transaction?.status !== CrudApi.PaymentStatus.success &&
           o.transaction?.status !== CrudApi.PaymentStatus.failed &&
-          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.rejected,
+          CrudApi.currentStatus(o.statusLog) !== CrudApi.OrderStatus.rejected,
       ),
     ];
   }
@@ -148,7 +144,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     this.problematicOrders = [
       ...this._orders.filter(
         (o: CrudApi.Order): boolean =>
-          currentStatusFn(o.statusLog) === CrudApi.OrderStatus.none &&
+          CrudApi.currentStatus(o.statusLog) === CrudApi.OrderStatus.none &&
           o.transaction?.status !== CrudApi.PaymentStatus.success,
       ),
     ];

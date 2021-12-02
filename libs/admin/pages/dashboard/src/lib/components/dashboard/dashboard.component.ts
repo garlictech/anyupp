@@ -45,7 +45,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public time?: string;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _dataService: DataService,
     private _nbDialogService: NbDialogService,
@@ -158,9 +157,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {
-            /**/
-          },
           status: 'basic',
         },
       ],

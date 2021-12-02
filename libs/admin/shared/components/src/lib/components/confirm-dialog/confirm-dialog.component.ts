@@ -24,7 +24,7 @@ export class ConfirmDialogComponent implements OnInit {
     this._changeDetectorRef.detectChanges();
   }
 
-  public click(callbackFn: () => void): void {
+  public click(callbackFn?: () => void): void {
     if (callbackFn) {
       callbackFn();
     }

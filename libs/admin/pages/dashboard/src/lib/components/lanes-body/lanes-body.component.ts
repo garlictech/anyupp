@@ -50,7 +50,6 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
   public DEFAULT_LANE_COLOR = DEFAULT_LANE_COLOR;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,

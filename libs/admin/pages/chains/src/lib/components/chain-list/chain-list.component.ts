@@ -20,7 +20,6 @@ export class ChainListComponent implements OnDestroy {
   public chains$: Observable<CrudApi.Chain[]>;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _nbDialogService: NbDialogService,
   ) {
