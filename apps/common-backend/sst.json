@@ -1,0 +1,6 @@
+{
+  "name": "common-backend",
+  "type": "@serverless-stack/resources",
+  "region": "eu-west-1",
+  "lint": false
+}

@@ -1,6 +1,10 @@
 import * as ssm from '@aws-cdk/aws-ssm';
 import { CfnOutput } from '@aws-cdk/core';
 import * as sst from '@serverless-stack/resources';
+import {
+  anyuppVpcSecurityGroupParamName,
+  anyuppVpcIdParamName,
+} from '@bgap/backend/shared/utils';
 
 const rootAppName = 'anyupp-backend';
 
@@ -13,6 +17,8 @@ export class ParamsStack extends sst.Stack {
   public appleKeyId: string;
   public appleServiceId: string;
   public slackChannel: string;
+  public vpcId: string;
+  public securityGroupId: string;
 
   constructor(scope: sst.App, id: string) {
     super(scope, id);
@@ -121,6 +127,29 @@ export class ParamsStack extends sst.Stack {
     new CfnOutput(this, 'slackChannelOutput', {
       value: this.appleServiceId,
       exportName: app.logicalPrefixedName('slackChannel'),
+    });
+
+    this.vpcId = ssm.StringParameter.valueFromLookup(
+      this,
+      anyuppVpcIdParamName,
+    );
+
+    new CfnOutput(this, 'vpcIdOutput', {
+      value: this.vpcId,
+      exportName: app.logicalPrefixedName('vpcId'),
+    });
+
+    this.securityGroupId = ssm.StringParameter.fromStringParameterAttributes(
+      this,
+      'AnyuppSecurityGroupName',
+      {
+        parameterName: anyuppVpcSecurityGroupParamName,
+      },
+    ).stringValue;
+
+    new CfnOutput(this, 'securityGroupId', {
+      value: this.securityGroupId,
+      exportName: app.logicalPrefixedName('securityGroupId'),
     });
   }
 }

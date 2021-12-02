@@ -8,11 +8,14 @@ import path from 'path';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
 import * as eventTargets from '@aws-cdk/aws-events-targets';
+import { anyuppFargateClusterName } from '@bgap/backend/shared/utils';
 
 export interface FargateStackProps extends sst.StackProps {
   reportAccessKeyId: string;
   reportSecretAccessKey: string;
   slackChannel: string;
+  vpc: ec2.IVpc;
+  securityGroup: ec2.ISecurityGroup;
 }
 
 export class FargateStack extends sst.Stack {
@@ -35,17 +38,6 @@ export class FargateStack extends sst.Stack {
         'service-role/AmazonECSTaskExecutionRolePolicy',
       ),
     );
-
-    //vpc
-    const vpc = new ec2.Vpc(this, 'AnyuppVpc', {
-      maxAzs: 3,
-    });
-
-    //cluster
-    const cluster = new ecs.Cluster(this, 'AnyuppCluster', {
-      vpc: vpc,
-    });
-
     //log setting
     const logGroup = new logs.LogGroup(this, 'AnyuppRKeeperLogGroup', {
       logGroupName: '/ecs/products',
@@ -75,6 +67,11 @@ export class FargateStack extends sst.Stack {
     });
 
     //services
+    const cluster = ecs.Cluster.fromClusterAttributes(this, 'FargateCluster', {
+      clusterName: anyuppFargateClusterName,
+      vpc: props.vpc,
+      securityGroups: [props.securityGroup],
+    });
 
     const taskDefinition = reportTaskDefinition;
     const role = taskRole;
