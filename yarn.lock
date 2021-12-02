@@ -6599,10 +6599,12 @@
   resolved "https://registry.yarnpkg.com/@napi-rs/triples/-/triples-1.0.3.tgz#76d6d0c3f4d16013c61e45dfca5ff1e6c31ae53c"
   integrity sha512-jDJTpta+P4p1NZTFVLHJ/TLFVYVcOqv6l8xwOeBKNPMgY/zDYH/YH7SJbvrr/h1RcS9GzbPcLKGzpuK9cV56UA==
 
-"@nebular/eva-icons@8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@nebular/eva-icons/-/eva-icons-8.0.0.tgz#186bfda564be9521b0584eb23a09e4a1be036bb9"
-  integrity sha512-eUNEQJP5w+XiAW1FyEVneno0qiNKoDZlobkglhdvVR1u7e3D4a5IxwnaKK0Izl/6j6eSs/qoBuzrBkJ4alaNjw==
+"@nebular/eva-icons@9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@nebular/eva-icons/-/eva-icons-9.0.0.tgz#92bc67c6c0c67c25024af096c8e1d992979835c1"
+  integrity sha512-qdnCp/+pcpqVQR77USqveAJODYoRBCM28QLSF0znkyL1yLieDvWhJv99C5/GnHGmGp1KibltJ4uVhSNRr90umw==
+  dependencies:
+    tslib "^2.3.0"
 
 "@nebular/theme@8.0.0":
   version "8.0.0"
