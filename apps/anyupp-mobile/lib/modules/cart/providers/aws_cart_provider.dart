@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:fa_prev/graphql/generated/anyupp-api.graphql.dart';
+import 'package:fa_prev/graphql/generated/anyupp-api.graphql.dart'
+    hide ServingMode;
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
@@ -22,11 +23,18 @@ class AwsCartProvider implements ICartProvider {
   Cart? get cart => _cart;
 
   @override
+  void resetCartInMemory() {
+    _cart = null;
+    _cartController.add(null);
+  }
+
+  @override
   Future<String> createAndSendOrderFromCart() async {
-    print('AwsOrderProvider.createAndSendOrderFromCart()=${_cart?.id}');
+    print('AwsCartProvider.createAndSendOrderFromCart()=${_cart?.id}');
     try {
       if (_cart == null || _cart?.id == null) {
-        throw CartException(code: CartException.UNKNOWN_ERROR, message: 'Cart is null.');
+        throw CartException(
+            code: CartException.UNKNOWN_ERROR, message: 'Cart is null.');
       }
 
       var result = await GQL.backend.execute(CreateOrderFromCartMutation(
@@ -37,21 +45,24 @@ class AwsCartProvider implements ICartProvider {
       // print('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
 
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
 
       String? id;
       if (result.data != null && result.data?.createOrderFromCart != null) {
         id = result.data!.createOrderFromCart;
-        print('AwsOrderProvider.createAndSendOrderFromCart().id=$id');
+        print('AwsCartProvider.createAndSendOrderFromCart().id=$id');
       }
       await clearCart();
       if (id == null) {
-        throw CartException(code: CartException.UNKNOWN_ERROR, message: 'Generated order is null!');
+        throw CartException(
+            code: CartException.UNKNOWN_ERROR,
+            message: 'Generated order is null!');
       }
       return id;
     } on Exception catch (e) {
-      print('AwsOrderProvider.createAndSendOrderFromCart.Exception: $e');
+      print('AwsCartProvider.createAndSendOrderFromCart.Exception: $e');
       rethrow;
     }
   }
@@ -67,7 +78,9 @@ class AwsCartProvider implements ICartProvider {
 
   @override
   Future<Cart?> getCurrentCart(String unitId) async {
-    _cart = await _getCartFromBackEnd(unitId);
+    if (_cart == null || _cart?.unitId != unitId) {
+      _cart = await _getCartFromBackEnd(unitId);
+    }
     _cartController.add(_cart);
     return _cart;
   }
@@ -79,9 +92,9 @@ class AwsCartProvider implements ICartProvider {
   }
 
   Future<Cart?> setPaymentMode(String unitId, PaymentMode mode) async {
-    print('CartProvider.setPaymentMode()=$mode');
+    print('AwsCartProvider.setPaymentMode()=$mode');
     Cart? _cart = await getCurrentCart(unitId);
-    print('CartProvider.setPaymentMode().cart=${_cart?.id}');
+    // print('AwsCartProvider.setPaymentMode().cart=${_cart?.id}');
     if (_cart != null) {
       _cart = _cart.copyWith(paymentMode: mode);
       await updateCart(unitId, _cart);
@@ -89,10 +102,22 @@ class AwsCartProvider implements ICartProvider {
     return _cart;
   }
 
+  Future<Cart?> setServingMode(String unitId, ServingMode mode) async {
+    print('AwsCartProvider.setServingMode()=$mode');
+    Cart? _cart = await getCurrentCart(unitId);
+    // print('AwsCartProvider.setServingMode().cart=${_cart?.id}');
+    if (_cart != null) {
+      _cart = _cart.copyWith(servingMode: mode);
+      await updateCart(unitId, _cart);
+    }
+    return _cart;
+  }
+
   @override
   Future<void> updateCart(String unitId, Cart? cart) async {
-    print('updateCart=${cart?.id}');
+    print('AwsCartProvider.updateCart.id=${cart?.id}');
     bool delete = cart != null && cart.items.isEmpty;
+    // print('AwsCartProvider.updateCart.delete=$delete');
     if (delete) {
       await _deleteCartFromBackend(cart.id!);
       _cart = null;
@@ -101,6 +126,7 @@ class AwsCartProvider implements ICartProvider {
     }
 
     bool newCart = _cart == null || _cart?.id == null;
+    // print('AwsCartProvider.updateCart.newCart=$newCart');
     if (cart != null) {
       if (newCart) {
         _cart = cart;
@@ -122,7 +148,8 @@ class AwsCartProvider implements ICartProvider {
         message: 'User not logged in. getAuthenticatedUserProfile() is null',
       );
     }
-    // print('CartProvider._getCartFromBackEnd().unit=$unitId, user=${user.id}');
+    // print(
+    //     'AwsCartProvider._getCartFromBackEnd().unit=$unitId, user=${user.id}');
     try {
       var result = await GQL.amplify.execute(
           GetCurrentCartQuery(
@@ -133,34 +160,33 @@ class AwsCartProvider implements ICartProvider {
           ),
           fetchPolicy: FetchPolicy.networkOnly);
       if (result.hasErrors) {
-        print('AwsOrderProvider._getCartFromBackEnd().error()=${result.errors}');
-        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+        print('AwsCartProvider._getCartFromBackEnd().error()=${result.errors}');
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
 
-      // print('AwsOrderProvider._getCartFromBackEnd().result()=$result');
+      // print('AwsCartProvider._getCartFromBackEnd().result=${result.data}');
       if (result.data == null || result.data?.listCarts == null) {
         return null;
       }
 
       var items = result.data?.listCarts?.items;
-      // print('AwsOrderProvider._getCartFromBackEnd().items.length=${items?.length}');
       if (items != null && items.isNotEmpty) {
         // print('json[items] is List=${items[0]['items'] is List}');
         Cart cart = Cart.fromJson(items[0].toJson());
-        // print('AwsOrderProvider._getCartFromBackEnd().cart=$cart');
-        // print('AwsOrderProvider._getCartFromBackEnd().items=${cart.items}');
+        // print('AwsCartProvider._getCartFromBackEnd().id=${cart.id}');
         return cart;
       }
 
       return null;
     } on Exception catch (e) {
-      print('CartProvider._getCartFromBackEnd.Exception: $e');
+      print('AwsCartProvider._getCartFromBackEnd.Exception: $e');
       rethrow;
     }
   }
 
   Future<bool> _saveCartToBackend(Cart cart) async {
-    // print('******** CREATING CART IN BACKEND');
+    print('AwsCartProvider.CREATING CART IN BACKEND');
     try {
       var result = await GQL.amplify.execute(CreateCartMutation(
         variables: CreateCartArguments(
@@ -170,27 +196,30 @@ class AwsCartProvider implements ICartProvider {
         ),
       ));
       // print('******** CREATING CART IN BACKEND.result.data=${result.data}');
-      // print('******** CREATING CART IN BACKEND.result.errors=${result.errors}');
+      // print(
+      //     'AwsCartProvider.CREATING CART IN BACKEND.result.errors=${result.errors}');
 
       String? id = result.data?.createCart?.id;
-      print('CartProvider._saveCartToBackend().id=$id');
-      if (id != null && _cart != null) {
-        _cart = _cart!.copyWith(id: id);
+      // print('AwsCartProvider._saveCartToBackend().id=$id');
+      if (id != null) {
+        _cart = cart.copyWith(id: id);
+        _cartController.add(_cart);
       }
 
       return !result.hasErrors;
     } on Exception catch (e) {
-      print('CartProvider._saveCartToBackend.Exception: $e');
+      print('AwsCartProvider._saveCartToBackend.Exception: $e');
       rethrow;
     }
   }
 
   Future<bool> _updateCartOnBackend(Cart cart) async {
-    print('******** UPDATING CART IN BACKEND=${cart.paymentMode}');
+    print('AwsCartProvider.UPDATING CART IN BACKEND.cart=${cart.id}');
     try {
       var result = await GQL.amplify.execute(UpdateCartMutation(
           variables: UpdateCartArguments(
-        updateCartInput: UpdateCartInput.fromJson(_getCartMutationVariablesFromCart(cart)),
+        updateCartInput:
+            UpdateCartInput.fromJson(_getCartMutationVariablesFromCart(cart)),
       )));
 
       // print('******** UPDATING CART IN BACKEND.result.data=${result.data}');
@@ -198,13 +227,13 @@ class AwsCartProvider implements ICartProvider {
 
       return !result.hasErrors;
     } on Exception catch (e) {
-      print('CartProvider._updateCartOnBackend.Exception: $e');
+      print('AwsCartProvider._updateCartOnBackend.Exception: $e');
       rethrow;
     }
   }
 
   Future<bool> _deleteCartFromBackend(String cartId) async {
-    print('******** DELETING CART IN BACKEND=$cartId');
+    print('AwsCartProvider.DELETING CART IN BACKEND=$cartId');
     try {
       var result = await GQL.amplify.execute(DeleteCartMutation(
         variables: DeleteCartArguments(cartId: cartId),
@@ -212,7 +241,7 @@ class AwsCartProvider implements ICartProvider {
 
       return !result.hasErrors;
     } on Exception catch (e) {
-      print('AwsOrderProvider._deleteCartFromBackend.Exception: $e');
+      print('AwsCartProvider._deleteCartFromBackend.Exception: $e');
       rethrow;
     }
   }
@@ -266,7 +295,9 @@ class AwsCartProvider implements ICartProvider {
             'hu': item.variantName.hu,
           },
           'configSets': item.selectedConfigMap != null
-              ? item.selectedConfigMap?.keys.toList().map((GeneratedProductConfigSet generatedProductConfigSet) {
+              ? item.selectedConfigMap?.keys
+                  .toList()
+                  .map((GeneratedProductConfigSet generatedProductConfigSet) {
                   return {
                     "name": {
                       'en': generatedProductConfigSet.name.en,
@@ -277,13 +308,17 @@ class AwsCartProvider implements ICartProvider {
                     "type": generatedProductConfigSet.type,
                     "items": item.selectedConfigMap != null
                         ? item.selectedConfigMap![generatedProductConfigSet]
-                            ?.map((GeneratedProductConfigComponent generatedProductConfigComponent) {
+                            ?.map((GeneratedProductConfigComponent
+                                generatedProductConfigComponent) {
                             return {
-                              "allergens": generatedProductConfigComponent.allergens
+                              "allergens": generatedProductConfigComponent
+                                  .allergens
                                   ?.map((e) => e.toString().split(".").last)
                                   .toList(),
                               "price": generatedProductConfigComponent.price,
-                              "productComponentId": generatedProductConfigComponent.productComponentId,
+                              "productComponentId":
+                                  generatedProductConfigComponent
+                                      .productComponentId,
                               "name": {
                                 'en': generatedProductConfigComponent.name.en,
                                 'de': generatedProductConfigComponent.name.de,

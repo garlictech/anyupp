@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
@@ -15,14 +16,16 @@ import 'flutter_qr_code_scanner.dart';
 
 class SelectUnitChooseMethodScreen extends StatefulWidget {
   @override
-  _SelectUnitChooseMethodScreenState createState() => _SelectUnitChooseMethodScreenState();
+  _SelectUnitChooseMethodScreenState createState() =>
+      _SelectUnitChooseMethodScreenState();
 }
 
-class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScreen> {
+class _SelectUnitChooseMethodScreenState
+    extends State<SelectUnitChooseMethodScreen> {
   @override
   void initState() {
     super.initState();
-    print('_SelectUnitChooseMethodScreenState.initState()');
+    getIt<CartBloc>().add(ResetCartInMemory());
     getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
     setToolbarThemeV1(theme);
   }
@@ -33,37 +36,154 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
         future: getIt<AuthRepository>().getAuthenticatedUserProfile(),
         builder: (BuildContext context, AsyncSnapshot<User?> userSnapshot) {
           if (userSnapshot.hasData) {
-            return buildPage(context, userSnapshot.data!);
+            return Container(
+              color: Colors.white,
+              child: SafeArea(
+                child: Scaffold(
+                  key: const Key('unitselect-screen'),
+                  backgroundColor: Colors.white,
+                  body: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SelectUnitUserInfoRowWidget(user: userSnapshot.data!),
+                        const SelectUnitMainContentWidget(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
           }
           return CenterLoadingWidget(
             backgroundColor: Colors.white,
           );
         });
   }
+}
 
-  Widget buildPage(BuildContext context, User user) {
-    return Container(
-      color: Colors.white,
-      child: SafeArea(
-        child: Scaffold(
-          key: const Key('unitselect-screen'),
-          backgroundColor: Colors.white,
-          body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                _buildUserInfoRow(context, user),
-                _buildPage(context),
-              ],
+class SelectUnitMainContentWidget extends StatelessWidget {
+  const SelectUnitMainContentWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            // --- Scan QR Code card
+            const SelectUnitQRCardWidget(),
+            // --- Nearest place list
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.only(
+                top: 35.0,
+                bottom: 12.0,
+              ),
+              child: Text(
+                trans(context, 'selectUnit.findNearest'),
+                textAlign: TextAlign.start,
+                style: Fonts.satoshi(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xFF3C2F2F),
+                ),
+              ),
             ),
-          ),
+            BlocBuilder<UnitsBloc, UnitsState>(builder: (context, state) {
+              // print('*********** _buildUnitListBloc().BlocBuilder.state=$state');
+              if (state is UnitsNoNearUnit) {
+                return Container(
+                  padding: EdgeInsets.all(0.0),
+                  height: 138,
+                  child: Center(
+                      child: Text(trans(context, 'selectUnitMap.noNearUnits'))),
+                );
+              }
+              if (state is UnitsNotLoaded) {
+                return Container(
+                  padding: EdgeInsets.all(0.0),
+                  height: 138,
+                  child: Center(
+                      child: Text(trans(context, 'selectUnitMap.notLoaded'))),
+                );
+              }
+              if (state is UnitsLoaded) {
+                return Container(
+                  padding: EdgeInsets.all(0.0),
+                  height: 138,
+                  child: ListView.builder(
+                    itemCount: state.units.length,
+                    scrollDirection: Axis.horizontal,
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return UnitCardWidget(
+                        unit: state.units[index],
+                        onTap: () => selectUnitAndGoToMenuScreen(
+                            context, state.units[index]),
+                      );
+                    },
+                  ),
+                );
+              }
+              return Container(
+                padding: EdgeInsets.all(0.0),
+                height: 138,
+                child: CenterLoadingWidget(
+                  backgroundColor: Colors.white,
+                  color: Color(0xFF857C18),
+                ),
+              );
+            }),
+
+            // --- Bottom button ('Check them all on the map')
+            Container(
+              width: double.infinity,
+              height: 52.0,
+              margin: EdgeInsets.only(top: 16.0),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Color(0xFFF3F2E7),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                ),
+                onPressed: () => Nav.to(SelectUnitByLocationScreen()),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      trans(context, 'selectUnit.checkAllOnMap'),
+                      style: Fonts.satoshi(
+                        fontSize: 14,
+                        color: Color(0xFF3C2F2F),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Icon(
+                      Icons.navigate_next,
+                      color: Color(0xFF9F6C36),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildUserInfoRow(BuildContext context, User user) {
+class SelectUnitUserInfoRowWidget extends StatelessWidget {
+  final User user;
+  const SelectUnitUserInfoRowWidget({Key? key, required this.user})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(14.0),
       child: Row(
@@ -107,7 +227,8 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
               left: 12.0,
             ),
             child: Text(
-              trans('selectUnit.welcome', [user.name ?? trans('selectUnit.unknown')]),
+              trans(context, 'selectUnit.welcome',
+                  [user.name ?? trans(context, 'selectUnit.unknown')]),
               style: Fonts.satoshi(
                 fontSize: 14.0,
                 color: Color(0xFF3C2F2F),
@@ -165,79 +286,18 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
       ),
     );
   }
+}
 
-  Widget _buildPage(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            // --- Scan QR Code card
-            _buildQRCodeCard(context),
-            // --- Nearest place list
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(
-                top: 35.0,
-                bottom: 12.0,
-              ),
-              child: Text(
-                trans('selectUnit.findNearest'),
-                textAlign: TextAlign.start,
-                style: Fonts.satoshi(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xFF3C2F2F),
-                ),
-              ),
-            ),
-            _buildUnitListBloc(context),
+class SelectUnitQRCardWidget extends StatelessWidget {
+  const SelectUnitQRCardWidget({Key? key}) : super(key: key);
 
-            // --- Bottom button ('Check them all on the map')
-            Container(
-              width: double.infinity,
-              height: 52.0,
-              margin: EdgeInsets.only(top: 16.0),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Color(0xFFF3F2E7),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                ),
-                onPressed: () => Nav.to(SelectUnitByLocationScreen()),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      trans('selectUnit.checkAllOnMap'),
-                      style: Fonts.satoshi(
-                        fontSize: 14,
-                        color: Color(0xFF3C2F2F),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Icon(
-                      Icons.navigate_next,
-                      color: Color(0xFF9F6C36),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildQRCodeCard(BuildContext context) {
-    // final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
-
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
       highlightColor: Color(0xFF30BF60).withAlpha(128),
       hoverColor: Color(0xFF30BF60).withAlpha(128),
       onTap: () => Nav.to(QRCodeScannerScreen(
+        // navigateToCart: true,
         loadUnits: true,
       )),
       child: Container(
@@ -258,7 +318,7 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
             Padding(
               padding: const EdgeInsets.only(top: 25.0, bottom: 30.0),
               child: Text(
-                trans('selectUnit.scanQR'),
+                trans(context, 'selectUnit.scanQR'),
                 textAlign: TextAlign.center,
                 style: Fonts.satoshi(
                   fontSize: 16.0,
@@ -269,56 +329,6 @@ class _SelectUnitChooseMethodScreenState extends State<SelectUnitChooseMethodScr
             )
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildUnitListBloc(BuildContext context) {
-    // print('*********** _buildUnitListBloc()');
-    return BlocBuilder<UnitsBloc, UnitsState>(builder: (context, state) {
-      // print('*********** _buildUnitListBloc().BlocBuilder.state=$state');
-      if (state is UnitsNoNearUnit) {
-        return Container(
-          padding: EdgeInsets.all(0.0),
-          height: 138,
-          child: Center(child: Text(trans('selectUnitMap.noNearUnits'))),
-        );
-      }
-      if (state is UnitsNotLoaded) {
-        return Container(
-          padding: EdgeInsets.all(0.0),
-          height: 138,
-          child: Center(child: Text(trans('selectUnitMap.notLoaded'))),
-        );
-      }
-      if (state is UnitsLoaded) {
-        return _buildUnitList(context, state.units);
-      }
-      return Container(
-        padding: EdgeInsets.all(0.0),
-        height: 138,
-        child: CenterLoadingWidget(
-          backgroundColor: Colors.white,
-          color: Color(0xFF857C18),
-        ),
-      );
-    });
-  }
-
-  Widget _buildUnitList(BuildContext context, List<GeoUnit> units) {
-    return Container(
-      padding: EdgeInsets.all(0.0),
-      height: 138,
-      child: ListView.builder(
-        itemCount: units.length,
-        scrollDirection: Axis.horizontal,
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (context, index) {
-          return UnitCardWidget(
-            unit: units[index],
-            onTap: () => selectUnitAndGoToMenuScreen(context, units[index]),
-          );
-        },
       ),
     );
   }

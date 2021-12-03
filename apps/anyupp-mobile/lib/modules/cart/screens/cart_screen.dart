@@ -64,7 +64,8 @@ class CartScreen extends StatelessWidget {
                         context,
                         cart,
                         state.servingMode,
-                        initialPosition: state.servingMode == ServingMode.inPlace ? 0 : 1,
+                        initialPosition:
+                            state.servingMode == ServingMode.inPlace ? 0 : 1,
                         pop: true,
                       );
                       // Nav.pop();
@@ -83,16 +84,12 @@ class CartScreen extends StatelessWidget {
             builder: (context, state) {
               if (state is UnitSelected) {
                 return StreamBuilder<Cart?>(
-                  stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
+                  stream: getIt<CartRepository>()
+                      .getCurrentCartStream(state.unit.id),
                   builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                    // print('placeSnapshot=');
-
+                    Place? place = snapshot.data?.place;
                     if (snapshot.hasData) {
-                      bool show = snapshot.data?.place?.seat != null &&
-                          snapshot.data?.place?.seat != EMPTY_SEAT &&
-                          snapshot.data?.place?.table != null &&
-                          snapshot.data?.place?.table != EMPTY_TABLE &&
-                          isDev;
+                      bool show = place?.isNotEmpty == true && isDev;
 
                       if (!show) {
                         return Text(
@@ -167,11 +164,14 @@ class CartScreen extends StatelessWidget {
             builder: (context, state) {
               if (state is UnitSelected) {
                 return StreamBuilder<Cart?>(
-                  stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
+                  stream: getIt<CartRepository>()
+                      .getCurrentCartStream(state.unit.id),
                   builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                    if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
-                      if (snapshot.data != null && snapshot.data?.items.isNotEmpty == true) {
-                        return _buildCartListAndTotal(context, state.unit, snapshot.data!);
+                    if (snapshot.connectionState != ConnectionState.waiting ||
+                        snapshot.hasData) {
+                      if (snapshot.data?.items.isNotEmpty == true) {
+                        return _buildCartListAndTotal(
+                            context, state.unit, snapshot.data!);
                       }
                       return _emptyCart(context);
                     }
@@ -252,9 +252,11 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentButtonPanel(BuildContext context, GeoUnit unit, Cart cart) {
+  Widget _buildPaymentButtonPanel(
+      BuildContext context, GeoUnit unit, Cart cart) {
     bool showQrCodeScan = false;
-    if (cart.place == null || (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE)) {
+    if (cart.place == null ||
+        (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE)) {
       showQrCodeScan = true;
     }
     return Column(

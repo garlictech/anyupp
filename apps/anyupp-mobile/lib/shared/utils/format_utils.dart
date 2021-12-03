@@ -16,7 +16,8 @@ String ellapsedTimeToStringDescription(DateTime date) {
     return '${difference.inHours} hour' + (difference.inHours > 1 ? 's' : '');
   }
   if (difference.inMinutes > 0) {
-    return '${difference.inMinutes} min' + (difference.inMinutes > 1 ? 's' : '');
+    return '${difference.inMinutes} min' +
+        (difference.inMinutes > 1 ? 's' : '');
   }
   return '${difference.inSeconds} sec';
 }
@@ -31,13 +32,17 @@ String formatCurrency(dynamic number, String currency) {
 NumberFormat getNumberFormatter(String currency) {
   switch (currency.toLowerCase()) {
     case 'eur':
-      return NumberFormat.currency(locale: 'en_US', symbol: '€', decimalDigits: 2); // €1,000.11
+      return NumberFormat.currency(
+          locale: 'en_US', symbol: '€', decimalDigits: 2); // €1,000.11
     case 'usd':
-      return NumberFormat.currency(locale: 'en_US', symbol: '\$', decimalDigits: 2); // $1,000.11
+      return NumberFormat.currency(
+          locale: 'en_US', symbol: '\$', decimalDigits: 2); // $1,000.11
     case 'huf':
-      return NumberFormat.currency(locale: 'hu_HU', symbol: 'Ft', decimalDigits: 0); // 1 000,11 Ft
+      return NumberFormat.currency(
+          locale: 'hu_HU', symbol: 'Ft', decimalDigits: 0); // 1 000,11 Ft
     default:
-      return NumberFormat.currency(locale: 'en_US', symbol: currency, decimalDigits: 2);
+      return NumberFormat.currency(
+          locale: 'en_US', symbol: currency, decimalDigits: 2);
   }
 }
 
@@ -48,4 +53,15 @@ String formatOrderDate(BuildContext context, DateTime date) {
     return "${transEx(context, 'common.today')}, ${timeShortFormatter.format(date)}";
   }
   return dateTimeFormatter.format(date);
+}
+
+String formatPackNumber(double pack) {
+  String s = pack.toStringAsFixed(2);
+  if (s.endsWith('0')) {
+    s = s.substring(0, s.length - 1);
+  }
+  if (s.endsWith('.0')) {
+    s = s.substring(0, s.length - 2);
+  }
+  return s;
 }
