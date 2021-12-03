@@ -201,7 +201,8 @@
   },
   "workspaces": [
     "apps/cicd",
-    "apps/anyupp-backend"
+    "apps/anyupp-backend",
+    "apps/common-backend"
   ],
   "commitlint": {
     "extends": [

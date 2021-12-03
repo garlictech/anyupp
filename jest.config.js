@@ -81,5 +81,7 @@ module.exports = {
     '<rootDir>/libs/admin/shared/data-access/sdk',
     '<rootDir>/libs/rkeeper-api',
     '<rootDir>/libs/admin/shared/fixtures',
+    '<rootDir>/apps/common-backend',
+    '<rootDir>/libs/backend/shared/utils',
   ],
 };

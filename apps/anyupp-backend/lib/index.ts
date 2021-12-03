@@ -1,3 +1,4 @@
+import * as ec2 from '@aws-cdk/aws-ec2';
 import { App, Stack } from '@serverless-stack/resources';
 import { AppsyncAppStack } from './app/appsync-app-stack';
 import { CognitoStack } from './app/cognito-stack';
@@ -8,7 +9,6 @@ import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SeederStack } from './app/seeder-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
-import { FargateStack } from './app/fargate-stack';
 
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
@@ -22,12 +22,24 @@ export class AnyUppStack extends Stack {
 
     const paramsStack = new ParamsStack(scope, 'ParamsStack');
 
-    new FargateStack(scope, 'fargate', {
+    const vpc = ec2.Vpc.fromLookup(this, 'AnyuppVpc', {
+      vpcId: paramsStack.vpcId,
+    });
+
+    ec2.SecurityGroup.fromSecurityGroupId(
+      this,
+      'AnyuppDefaultSecurityGroupId',
+      paramsStack.securityGroupId,
+    );
+
+    /*    new FargateStack(scope, 'fargate', {
       reportAccessKeyId: secretsManagerStack.reportAccessKeyID,
       reportSecretAccessKey: secretsManagerStack.reportSecretAccessKey,
       slackChannel: paramsStack.slackChannel,
+      vpc,
+      securityGroup,
     });
-
+*/
     const cognitoStack = new CognitoStack(scope, 'cognito', {
       adminSiteUrl: sites.adminSiteUrl,
       googleClientId: paramsStack.googleClientId,
@@ -68,6 +80,8 @@ export class AnyUppStack extends Stack {
     new RKeeperStack(scope, 'rkeeper', {
       apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
       apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
+      vpc,
+      securityGroupId: paramsStack.securityGroupId,
     });
 
     if (scope.stage === 'dev' || scope.stage === 'qa') {

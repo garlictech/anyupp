@@ -1,7 +1,6 @@
-FROM node:12-alpine
+FROM node:14-alpine
 
 RUN mkdir /build
-COPY libs build/libs
 WORKDIR /build
 RUN apk add --update --no-cache \
     git \
@@ -15,13 +14,14 @@ RUN apk add --update --no-cache \
     autoconf \
     automake \
     curl \
-    py3-pip && pip install awscli
+    py3-pip && pip3 install awscli
 
 
 RUN curl -sL https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip \
     && unzip awscliv2.zip \
     && aws/install 
     
+COPY libs build/libs
 COPY apps/cicd/package.json /build/cicd/package.json 
 COPY apps/anyupp-backend/package.json /build/anyupp-backend/package.json 
 COPY package.json yarn.lock patches /build/

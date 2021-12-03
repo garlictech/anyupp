@@ -4,22 +4,21 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import { commonLambdaProps } from './lambda-common';
 import * as ssm from '@aws-cdk/aws-ssm';
-import { getFQParamName } from './utils';
+import { getFQParamName } from '@bgap/backend/shared/utils';
 import path from 'path';
-import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
+import * as ec2 from '@aws-cdk/aws-ec2';
 
 export interface RKeeperStackProps extends sst.StackProps {
   apiAccessKeyId: string;
   apiSecretAccessKey: string;
+  vpc: ec2.IVpc;
+  securityGroupId: string;
 }
 
 export class RKeeperStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: RKeeperStackProps) {
     super(scope, id);
-    const vpc = new ec2.Vpc(this, 'AnyuppRKeeperVpc', {
-      maxAzs: 3,
-    });
     //
     // Task Role
     const taskRole = new iam.Role(this, 'ecsTaskExecutionRole', {
@@ -47,12 +46,13 @@ export class RKeeperStack extends sst.Stack {
         path.join(__dirname, '../../.serverless/rkeeper-webhook.zip'),
       ),
       environment: {
-        RKeeperProcessProductSecurityGroup: vpc.vpcDefaultSecurityGroup,
-        RKeeperProcessProductSubnet: vpc.publicSubnets[0].subnetId,
+        RKeeperProcessProductSecurityGroup: props.securityGroupId,
+        RKeeperProcessProductSubnet: props.vpc.publicSubnets[0].subnetId,
         taskRoleArn: taskRole.roleArn,
         API_ACCESS_KEY_ID: props.apiAccessKeyId,
         API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
       },
+      vpc: props.vpc,
     });
 
     if (rkeeperLambda.role) {
@@ -81,14 +81,6 @@ export class RKeeperStack extends sst.Stack {
 
     new cdk.CfnOutput(this, 'RKeeperWebhookEndpoint', {
       value: api.url,
-    });
-
-    new cdk.CfnOutput(this, 'RKeeperProcessProductSecurityGroup', {
-      value: vpc.vpcDefaultSecurityGroup,
-    });
-
-    new cdk.CfnOutput(this, 'RKeeperProcessProductSubnet', {
-      value: vpc.publicSubnets[0].subnetId,
     });
 
     new cdk.CfnOutput(this, 'RKeeperProcessProductTaskRoleArn', {
