@@ -16,7 +16,8 @@ class CartRepository implements ICartProvider {
 
   Cart? get cart => _cartProvider.cart;
 
-  Future<Cart?> addProductToCart(String unitId, OrderItem item, ServingMode servingMode) async {
+  Future<Cart?> addProductToCart(
+      String unitId, OrderItem item, ServingMode servingMode) async {
     Cart? _cart = await _cartProvider.getCurrentCart(unitId);
     User? user = await _authProvider.getAuthenticatedUserProfile();
     if (user == null) {
@@ -31,7 +32,8 @@ class CartRepository implements ICartProvider {
         userId: user.id,
         unitId: unitId,
         servingMode: servingMode,
-        place: await getPlacePref() ?? Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
+        place: await getPlacePref(unitId) ??
+            Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
         items: [
           item.copyWith(quantity: 0),
         ],
@@ -41,9 +43,11 @@ class CartRepository implements ICartProvider {
     int index = _cart.items.indexWhere((order) =>
         order.productId == item.productId &&
         order.variantId == item.variantId &&
-        DeepCollectionEquality().equals(order.getConfigIdMap(), item.getConfigIdMap()));
+        DeepCollectionEquality()
+            .equals(order.getConfigIdMap(), item.getConfigIdMap()));
     if (index != -1) {
-      OrderItem existingOrder = _cart.items[index].copyWith(quantity: _cart.items[index].quantity + item.quantity);
+      OrderItem existingOrder = _cart.items[index]
+          .copyWith(quantity: _cart.items[index].quantity + item.quantity);
       List<OrderItem> items = List<OrderItem>.from(_cart.items);
       items[index] = existingOrder;
       _cart = _cart.copyWith(items: items);
@@ -67,15 +71,18 @@ class CartRepository implements ICartProvider {
     int index = _cart.items.indexWhere((order) =>
         order.productId == item.productId &&
         order.variantId == item.variantId &&
-        DeepCollectionEquality().equals(order.getConfigIdMap(), item.getConfigIdMap()));
+        DeepCollectionEquality()
+            .equals(order.getConfigIdMap(), item.getConfigIdMap()));
     if (index != -1) {
-      OrderItem existingOrder = _cart.items[index].copyWith(quantity: _cart.items[index].quantity - 1);
+      OrderItem existingOrder = _cart.items[index]
+          .copyWith(quantity: _cart.items[index].quantity - 1);
       if (existingOrder.quantity <= 0) {
         List<OrderItem> items = List<OrderItem>.from(_cart.items);
         items.removeWhere((order) =>
             order.productId == item.productId &&
             order.variantId == item.variantId &&
-            DeepCollectionEquality().equals(order.getConfigIdMap(), item.getConfigIdMap()));
+            DeepCollectionEquality()
+                .equals(order.getConfigIdMap(), item.getConfigIdMap()));
         _cart = _cart.copyWith(items: items);
       } else {
         List<OrderItem> items = List<OrderItem>.from(_cart.items);
@@ -93,7 +100,7 @@ class CartRepository implements ICartProvider {
     if (_cart == null || _cart.items.isEmpty) {
       return null;
     }
-    await setPlacePref(place);
+    // await setPlacePref(place);
     _cart = _cart.copyWith(place: place);
     await _cartProvider.updateCart(unit.id, _cart);
     return _cart;
@@ -112,6 +119,7 @@ class CartRepository implements ICartProvider {
   // }
 
   Future<Cart?> clearCart() async {
+    print('CartRepository.clearCart()');
     await _cartProvider.clearCart();
     return null;
   }
@@ -120,7 +128,7 @@ class CartRepository implements ICartProvider {
     Cart? cart = await getCurrentCart(unit.id);
     if (cart != null) {
       cart = cart.copyWith(place: Place(seat: EMPTY_SEAT, table: EMPTY_TABLE));
-      await clearPlacePref();
+      await clearPlacePref(unit.id);
       await _cartProvider.updateCart(unit.id, cart);
     }
     return cart;
@@ -139,5 +147,15 @@ class CartRepository implements ICartProvider {
   @override
   Future<void> updateCart(String unitId, Cart? cart) {
     return _cartProvider.updateCart(unitId, cart);
+  }
+
+  @override
+  Future<Cart?> setServingMode(String unitId, ServingMode mode) {
+    return _cartProvider.setServingMode(unitId, mode);
+  }
+
+  @override
+  void resetCartInMemory() {
+    return _cartProvider.resetCartInMemory();
   }
 }

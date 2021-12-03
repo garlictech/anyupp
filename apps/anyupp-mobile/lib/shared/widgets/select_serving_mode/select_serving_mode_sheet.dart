@@ -10,7 +10,9 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 Future<int?> showSelectServingModeSheet(BuildContext context,
-    {int initialPosition = 0, bool useTheme = true, bool dismissable = true}) async {
+    {int initialPosition = 0,
+    bool useTheme = true,
+    bool dismissable = true}) async {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   return await showModalBottomSheet(
@@ -37,9 +39,15 @@ Future<int?> showSelectServingModeSheet(BuildContext context,
   );
 }
 
-Future<void> showSelectServingModeSheetWithDeleteConfirm(BuildContext context, Cart? cart, ServingMode current,
-    {int initialPosition = 0, bool useTheme = true, bool dismissable = true, bool pop = false}) async {
+Future<int?> showSelectServingModeSheetWithDeleteConfirm(
+    BuildContext context, Cart? cart, ServingMode current,
+    {int initialPosition = 0,
+    bool useTheme = true,
+    bool dismissable = true,
+    bool pop = false}) async {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
+  print(
+      'showSelectServingModeSheetWithDeleteConfirm().cart=${cart?.id}, current=$current');
 
   int? selectedMethodPos = await showModalBottomSheet(
     context: context,
@@ -63,25 +71,36 @@ Future<void> showSelectServingModeSheetWithDeleteConfirm(BuildContext context, C
           });
     },
   );
+  if (selectedMethodPos == null) {
+    return null;
+  }
 
-  ServingMode mode = selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway;
+  ServingMode mode =
+      selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway;
 
-  if (cart != null) {
-    if (selectedMethodPos != null && (current == ServingMode.inPlace ? 0 : 1) != selectedMethodPos) {
-      bool? deleted = await _showdeleteCartConfirmation(context, mode);
-      // print('showSelectServingModeSheetWithDeleteConfirm.deleted=$deleted');
-      if (deleted == true && pop) {
-        Nav.pop();
-      }
+  if (cart != null &&
+      (current == ServingMode.inPlace ? 0 : 1) != selectedMethodPos) {
+    bool? deleted = await _showdeleteCartConfirmation(context, mode);
+    print('showSelectServingModeSheetWithDeleteConfirm.deleted=$deleted');
+    if (deleted == true && pop) {
+      Nav.pop();
     }
-  } else {
-    // print('showSelectServingModeSheetWithDeleteConfirm.mode=$mode');
+    if (deleted != true) {
+      return null;
+    }
+    return selectedMethodPos;
+  }
+
+  if ((current == ServingMode.inPlace ? 0 : 1) != selectedMethodPos) {
+    print('showSelectServingModeSheetWithDeleteConfirm.mode=$mode');
     getIt<TakeAwayBloc>().add(SetServingMode(mode));
   }
+  return selectedMethodPos;
 }
 
-Future<bool?> _showdeleteCartConfirmation(BuildContext context, ServingMode servingMode) async {
-  // print('_showdeleteCartConfirmation().start().mode=$servingMode');
+Future<bool?> _showdeleteCartConfirmation(
+    BuildContext context, ServingMode servingMode) async {
+  print('_showdeleteCartConfirmation().start().mode=$servingMode');
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   return showDialog<bool>(

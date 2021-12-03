@@ -1,4 +1,5 @@
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 abstract class ICartProvider {
   Cart? get cart;
@@ -13,5 +14,9 @@ abstract class ICartProvider {
 
   Future<Cart?> setPaymentMode(String unitId, PaymentMode mode);
 
+  Future<Cart?> setServingMode(String unitId, ServingMode mode);
+
   Future<String> createAndSendOrderFromCart();
+
+  void resetCartInMemory();
 }
