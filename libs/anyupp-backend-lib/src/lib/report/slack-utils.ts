@@ -11,7 +11,7 @@ export const uploadReport = (deps: ReportDeps) => () => {
   bodyFormData.append('title', `Weekly report (${deps.reportDate})`);
   bodyFormData.append('filename', deps.reportFile.split('/').pop() || '');
   bodyFormData.append('filetype', 'auto');
-  bodyFormData.append('channels', 'anyupp-reports');
+  bodyFormData.append('channels', deps.slackChannel);
   bodyFormData.append('file', fs.createReadStream(deps.reportFile));
 
   return axios({

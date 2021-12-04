@@ -1,7 +1,5 @@
 import { combineLatest } from 'rxjs';
-
 import { Maybe } from '@bgap/crud-gql/api';
-
 import { cognitoUsersStream$ } from './cognito-utils';
 import { ReportDeps, ReportOrderData, ReportUserData } from './interfaces';
 import {
@@ -13,8 +11,9 @@ import {
   startOfThisYear,
 } from './report-utils';
 import { uploadReport } from './slack-utils';
+import { tap } from 'rxjs/operators';
 
-export const createReport = (deps: ReportDeps) => (testDone: () => void) => {
+export const createReport = (deps: ReportDeps) => {
   const thisYearOrderList$ = getOrdersFromDateInterval(
     deps,
     startOfThisYear(deps.reportDate),
@@ -27,33 +26,33 @@ export const createReport = (deps: ReportDeps) => (testDone: () => void) => {
   );
 
   // Execute the calculations
-  combineLatest([
+  return combineLatest([
     cognitoUsersStream$(deps),
     thisYearOrderList$,
     fourWeeksOrderList$,
-  ]).subscribe(
-    async ([users, thisYearOrderList, fourWeeksOrderList]: [
-      ReportUserData[],
-      Maybe<ReportOrderData>[],
-      Maybe<ReportOrderData>[],
-    ]) => {
-      const report = calculateReport(
-        deps.reportDate,
-        thisYearOrderList,
-        fourWeeksOrderList,
-        users,
-      );
+  ]).pipe(
+    tap(
+      async ([users, thisYearOrderList, fourWeeksOrderList]: [
+        ReportUserData[],
+        Maybe<ReportOrderData>[],
+        Maybe<ReportOrderData>[],
+      ]) => {
+        const report = calculateReport(
+          deps.reportDate,
+          thisYearOrderList,
+          fourWeeksOrderList,
+          users,
+        );
 
-      saveExcelReport(report, deps.reportFile);
+        saveExcelReport(report, deps.reportFile);
 
-      try {
-        const slackResponse = await uploadReport(deps)();
-        console.log('slackResponse data: ', slackResponse?.data);
-      } catch (err) {
-        console.error('Slack API error: ', err);
-      }
-
-      testDone();
-    },
+        try {
+          const slackResponse = await uploadReport(deps)();
+          console.log('slackResponse data: ', slackResponse?.data);
+        } catch (err) {
+          console.error('Slack API error: ', err);
+        }
+      },
+    ),
   );
 };

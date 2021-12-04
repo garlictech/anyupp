@@ -16,6 +16,7 @@ export class SecretsManagerStack extends sst.Stack {
   public secretsManager: sm.ISecret;
   public reportAccessKeyID: string;
   public reportSecretAccessKey: string;
+  public slackBotToken: string;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
@@ -81,6 +82,10 @@ export class SecretsManagerStack extends sst.Stack {
 
     this.reportSecretAccessKey = this.secretsManager
       .secretValueFromJson('reportSecretAccessKey')
+      .toString();
+
+    this.slackBotToken = this.secretsManager
+      .secretValueFromJson('slackBotToken')
       .toString();
 
     new CfnOutput(this, 'SecretsManager', {

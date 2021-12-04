@@ -7,6 +7,7 @@ export interface ReportDeps {
   reportFile: string;
   reportDate: string;
   slackBotToken: string;
+  slackChannel: string;
 }
 
 export interface ReportUserData {

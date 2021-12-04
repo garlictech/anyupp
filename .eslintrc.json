@@ -58,6 +58,20 @@
                 ]
               },
               {
+                "sourceTag": "layer:entities",
+                "onlyDependOnLibsWithTags": [
+                  "layer:entities"
+                ]
+              },
+              {
+                "sourceTag": "layer:repositories",
+                "onlyDependOnLibsWithTags": [
+                  "layer:entities",
+                  "layer:utils",
+                  "layer:repositories"
+                ]
+              },
+              {
                 "sourceTag": "type:feature",
                 "onlyDependOnLibsWithTags": [
                   "layer:utils"
@@ -68,7 +82,18 @@
                 "onlyDependOnLibsWithTags": [
                   "type:feature",
                   "layer:utils",
+                  "layer:entities",
+                  "layer:providers",
                   "type:backend"
+                ]
+              },
+              {
+                "sourceTag": "layer:app-logic",
+                "onlyDependOnLibsWithTags": [
+                  "layer:utils",
+                  "layer:entities",
+                  "layer:providers",
+                  "layer:app-logic"
                 ]
               },
               {

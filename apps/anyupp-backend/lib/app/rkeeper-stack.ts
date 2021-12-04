@@ -1,3 +1,4 @@
+import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 import * as sst from '@serverless-stack/resources';
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -19,8 +20,7 @@ export interface RKeeperStackProps extends sst.StackProps {
 export class RKeeperStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: RKeeperStackProps) {
     super(scope, id);
-    //
-    // Task Role
+
     const taskRole = new iam.Role(this, 'ecsTaskExecutionRole', {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
     });
@@ -37,6 +37,15 @@ export class RKeeperStack extends sst.Stack {
       ),
     );
 
+    const productDockerImage = new DockerImageAsset(
+      this,
+      'RKeeperProductProcessor',
+      {
+        directory: path.join(__dirname, '..', '..'),
+        file: 'Dockerfile.process-products',
+      },
+    );
+
     const rkeeperLambda = new lambda.Function(this, 'RKeeperWebhookLambda', {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
@@ -49,6 +58,7 @@ export class RKeeperStack extends sst.Stack {
         RKeeperProcessProductSecurityGroup: props.securityGroupId,
         RKeeperProcessProductSubnet: props.vpc.publicSubnets[0].subnetId,
         taskRoleArn: taskRole.roleArn,
+        dockerImageUri: productDockerImage.imageUri,
         API_ACCESS_KEY_ID: props.apiAccessKeyId,
         API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
       },
@@ -81,10 +91,6 @@ export class RKeeperStack extends sst.Stack {
 
     new cdk.CfnOutput(this, 'RKeeperWebhookEndpoint', {
       value: api.url,
-    });
-
-    new cdk.CfnOutput(this, 'RKeeperProcessProductTaskRoleArn', {
-      value: taskRole.roleArn,
     });
   }
 }

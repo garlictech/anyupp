@@ -59,3 +59,6 @@ functions:
 
   rkeeper-product-processor:
     handler: lib/lambda/rkeeper-product-processor/index.handler
+
+  report-generator:
+    handler: lib/lambda/report-generator/index.handler

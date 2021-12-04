@@ -4,13 +4,14 @@ import { pipe } from 'fp-ts/lib/function';
 import { bindNodeCallback, of, throwError } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import * as R from 'ramda';
-import * as cdk from '@aws-cdk/core';
 
 export interface HandleProductsDeps {
   ecs: ECS;
   RKeeperProcessProductSubnet: string;
   RKeeperProcessProductSecurityGroup: string;
   taskRoleArn: string;
+  logGroupName: string;
+  dockerImageUri: string;
   API_ACCESS_KEY_ID: string;
   API_SECRET_ACCESS_KEY: string;
   AWS_REGION: string;
@@ -30,8 +31,7 @@ export const handleProducts =
         memory: '512',
         containerDefinitions: [
           {
-            image:
-              '568276182587.dkr.ecr.eu-west-1.amazonaws.com/rkeeper-products',
+            image: deps.dockerImageUri,
             name: 'anyupp-rkeeper-process-products',
             environment: [
               {
@@ -56,8 +56,8 @@ export const handleProducts =
               options: {
                 'awslogs-create-group': 'true',
                 'awslogs-region': deps.AWS_REGION || '',
-                'awslogs-group': cdk.Fn.importValue('RkeeperLogGroup'),
-                'awslogs-stream-prefix': 'xxx',
+                'awslogs-group': 'AnyuppRKeeperLogGroup',
+                'awslogs-stream-prefix': 'rkeeper',
               },
             },
           },

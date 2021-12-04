@@ -212,7 +212,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"],
+      "tags": ["platform:angular"],
       "implicitDependencies": ["admin"]
     },
     "admin-pages-admin-users": {
@@ -236,7 +236,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-pages-auth": {
       "projectType": "library",
@@ -491,7 +491,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-config": {
       "root": "libs/admin/shared/config",
@@ -537,7 +537,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-app-core": {
       "projectType": "library",
@@ -562,7 +562,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-auth": {
       "root": "libs/admin/shared/data-access/auth",
@@ -584,7 +584,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-chains": {
       "root": "libs/admin/shared/data-access/chains",
@@ -606,7 +606,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-dashboard": {
       "root": "libs/admin/shared/data-access/dashboard",
@@ -630,7 +630,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-data": {
       "root": "libs/admin/shared/data-access/data",
@@ -652,7 +652,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-groups": {
       "root": "libs/admin/shared/data-access/groups",
@@ -674,7 +674,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-logged-user": {
       "projectType": "library",
@@ -699,7 +699,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-order": {
       "root": "libs/admin/shared/data-access/order",
@@ -721,7 +721,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-orders": {
       "projectType": "library",
@@ -744,7 +744,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-product-categories": {
       "root": "libs/admin/shared/data-access/product-categories",
@@ -770,7 +770,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-product-component-sets": {
       "projectType": "library",
@@ -797,7 +797,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-product-components": {
       "projectType": "library",
@@ -824,7 +824,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-products": {
       "root": "libs/admin/shared/data-access/products",
@@ -848,7 +848,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-role-contexts": {
       "projectType": "library",
@@ -871,7 +871,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-sdk": {
       "root": "libs/admin/shared/data-access/sdk",
@@ -893,7 +893,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-storage": {
       "root": "libs/admin/shared/data-access/storage",
@@ -917,7 +917,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-units": {
       "root": "libs/admin/shared/data-access/units",
@@ -939,7 +939,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-users": {
       "root": "libs/admin/shared/data-access/users",
@@ -961,7 +961,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-fixtures": {
       "projectType": "library",
@@ -984,7 +984,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-floor-map": {
       "projectType": "library",
@@ -1007,7 +1007,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-forms": {
       "projectType": "library",
@@ -1030,7 +1030,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-pipes": {
       "projectType": "library",
@@ -1053,7 +1053,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-shared-utils": {
       "root": "libs/admin/shared/utils",
@@ -1075,7 +1075,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-ui-core": {
       "projectType": "library",
@@ -1098,7 +1098,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "admin-ui-theme": {
       "projectType": "library",
@@ -1121,7 +1121,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:angular"]
+      "tags": ["platform:angular"]
     },
     "anyupp-backend": {
       "root": "apps/anyupp-backend",
@@ -1185,7 +1185,7 @@
           }
         }
       },
-      "tags": ["type:backend", "platform:nodejs"]
+      "tags": ["platform:nodejs"]
     },
     "anyupp-backend-lib": {
       "root": "libs/anyupp-backend-lib",
@@ -1207,7 +1207,7 @@
           }
         }
       },
-      "tags": ["type:backend", "platform:nodejs"]
+      "tags": ["platform:nodejs"]
     },
     "anyupp-gql-api": {
       "root": "libs/anyupp-gql/api",
@@ -1237,7 +1237,7 @@
           "outputs": ["libs/anyupp-gql/api/src/lib/generated"]
         }
       },
-      "tags": ["layer:utils", "platform:nodejs"]
+      "tags": ["platform:nodejs"]
     },
     "anyupp-gql-backend": {
       "root": "libs/anyupp-gql/backend",
@@ -1259,7 +1259,7 @@
           }
         }
       },
-      "tags": ["type:backend", "platform:nodejs"]
+      "tags": ["platform:nodejs"]
     },
     "anyupp-mobile": {
       "projectType": "application",
@@ -1732,7 +1732,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:nodejs"]
+      "tags": ["platform:nodejs"]
     },
     "crud-gql-backend": {
       "root": "libs/crud-gql/backend",
@@ -1841,7 +1841,7 @@
           }
         }
       },
-      "tags": ["type:backend", "platform:nodejs"]
+      "tags": ["platform:nodejs"]
     },
     "shared-config": {
       "root": "libs/shared/config",
@@ -1894,7 +1894,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:nodejs"]
+      "tags": ["platform:nodejs"]
     },
     "shared-fixtures": {
       "root": "libs/shared/fixtures",
@@ -1916,7 +1916,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:nodejs"]
+      "tags": ["platform:nodejs"]
     },
     "shared-graphql-api-client": {
       "root": "libs/shared/graphql/api-client",
@@ -1982,7 +1982,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:nodejs"]
+      "tags": ["platform:nodejs"]
     },
     "shared-utils": {
       "root": "libs/shared/utils",
@@ -2004,7 +2004,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:nodejs"]
+      "tags": ["platform:nodejs"]
     }
   }
 }
