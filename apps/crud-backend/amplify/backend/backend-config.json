@@ -1,6 +1,6 @@
 {
   "auth": {
-    "anyuppbackend498dda93": {
+    "anyuppbackendf9d68153": {
       "service": "Cognito",
       "serviceType": "imported",
       "providerPlugin": "awscloudformation",

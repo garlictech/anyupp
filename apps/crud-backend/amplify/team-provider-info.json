@@ -73,18 +73,18 @@
     },
     "categories": {
       "auth": {
-        "anyuppbackend498dda93": {
-          "userPoolId": "eu-west-1_nxCUiB15F",
+        "anyuppbackendf9d68153": {
+          "userPoolId": "eu-west-1_9vsYLhNMi",
           "userPoolName": "dev-anyupp-backend-admin-user-pool",
-          "webClientId": "6cqc14r34g3r95tmsr1d4jpth6",
-          "nativeClientId": "2ihp27fno2bb6e8pfltrigi9pm",
-          "identityPoolId": "eu-west-1:f1849bd6-4a16-4c17-8830-3a3cf7696cf7",
-          "identityPoolName": "IdentityPool_1jqMTas01WVI",
+          "webClientId": "2kvkunpanm48ep3c2g2t1igulb",
+          "nativeClientId": "11u02ek00vr4j06qlejdc4fi4u",
+          "identityPoolId": "eu-west-1:c82aa92c-61fb-4ab8-9512-1edc1654b1ae",
+          "identityPoolName": "IdentityPool_dpObsmtNLlcC",
           "allowUnauthenticatedIdentities": true,
-          "authRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultAuthentica-NZQEGA56BJ2",
-          "authRoleName": "dev-anyupp-backend-cognit-CognitoDefaultAuthentica-NZQEGA56BJ2",
-          "unauthRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-16U0PCP5OYX0A",
-          "unauthRoleName": "dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-16U0PCP5OYX0A"
+          "authRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultAuthentica-1TUEDLKLJJEL9",
+          "authRoleName": "dev-anyupp-backend-cognit-CognitoDefaultAuthentica-1TUEDLKLJJEL9",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-8EDLGOOVN7WC",
+          "unauthRoleName": "dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-8EDLGOOVN7WC"
         }
       }
     }
