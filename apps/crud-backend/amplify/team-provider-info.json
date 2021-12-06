@@ -13,7 +13,7 @@
     },
     "categories": {
       "auth": {
-        "anyuppbackend498dda93": {
+        "anyuppbackendf9d68153": {
           "userPoolId": "eu-west-1_KiJIWEnaC",
           "userPoolName": "zsoltstack-anyupp-backend-admin-user-pool",
           "webClientId": "3le3ch085avbfm8ih7ltinmt2g",
@@ -25,7 +25,8 @@
           "authRoleName": "zsoltstack-anyupp-backend-CognitoDefaultAuthentica-1OXWUKCFJNDOZ",
           "unauthRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-CognitoDefaultUnauthenti-1JE6ETHYUJLXC",
           "unauthRoleName": "zsoltstack-anyupp-backend-CognitoDefaultUnauthenti-1JE6ETHYUJLXC"
-        }
+        },
+        "anyuppbackend498dda93": {}
       }
     }
   },
