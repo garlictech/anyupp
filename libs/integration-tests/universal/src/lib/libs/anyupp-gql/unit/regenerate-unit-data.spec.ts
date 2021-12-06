@@ -62,7 +62,7 @@ import { getSortedProductCatIds } from '../test-utils/test-utils';
 const DYNAMODB_OPERATION_DELAY = 5000;
 const TEST_NAME = 'REGEN_';
 
-const chainId_01_seeded = productComponentSetFixture.seededProdComp_01.chainId;
+const chainId_01_seeded = productComponentSetFixture.seededProdComp_11.chainId;
 const unitId_01_to_regen = `${testIdPrefix}${TEST_NAME}UNIT_ID_01`;
 const unitId_02 = `${testIdPrefix}${TEST_NAME}UNIT_ID_02`;
 
@@ -76,15 +76,15 @@ const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
 
 // CONFIG SETS/COMPONENTS to create
 const prodComponent_01: RequiredId<CrudApi.CreateProductComponentInput> = {
-  ...productComponentSetFixture.seededProdComp_01,
+  ...productComponentSetFixture.seededProdComp_11,
   id: `${testIdPrefix}${TEST_NAME}prodComp_01`,
 };
 const prodComponent_02: RequiredId<CrudApi.CreateProductComponentInput> = {
-  ...productComponentSetFixture.seededProdComp_02,
+  ...productComponentSetFixture.seededProdComp_21,
   id: `${testIdPrefix}${TEST_NAME}prodComp_02`,
 };
 const prodComponent_03: RequiredId<CrudApi.CreateProductComponentInput> = {
-  ...productComponentSetFixture.seededProdComp_03,
+  ...productComponentSetFixture.seededProdComp_31,
   id: `${testIdPrefix}${TEST_NAME}prodComp_03`,
 };
 

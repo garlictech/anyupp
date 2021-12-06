@@ -1,23 +1,20 @@
 import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import {
   getCognitoUsername,
   orderFixture,
   otherAdminUsernames,
-  seededIdPrefix,
   testAdminUsername,
   testAdminUserPassword,
   transactionFixture,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { EProductType } from '@bgap/shared/types';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import * as R from 'ramda';
+
 import { combineLatest, concat, defer, from, of } from 'rxjs';
 import {
   catchError,
-  concatMap,
   delay,
   map,
   switchMap,
@@ -26,19 +23,22 @@ import {
   toArray,
 } from 'rxjs/operators';
 import {
+  createChainProductsFromSnapshot,
+  createGroupProductsFromSnapshot,
+  createTestProductCategoryFromFixtures,
+  createUnitProductsFromSnapshot,
+  placeOrderToSeat,
+  seedLotsOfOrders,
+} from '.';
+import {
   createAdminUser,
   createComponentSets,
   createConsumerUser,
   createTestAdminRoleContext,
   createTestChain,
-  createTestChainProduct,
   createTestGroup,
-  createTestGroupProduct,
-  createTestOrder,
-  createTestProductCategory,
   createTestRoleContext,
   createTestUnit,
-  createTestUnitProduct,
   createTestUnitsForOrderHandling,
   SeederDependencies,
   seedRKeeperUnit,
@@ -113,64 +113,11 @@ export const seedBusinessData = (deps: SeederDependencies) =>
           createTestUnitsForOrderHandling()(deps).pipe(
             ce('### Order handling units'),
           ),
-          createTestProductCategory(1, 1)(deps).pipe(ce('### ProdCat SEED 01')),
-          createTestProductCategory(1, 2)(deps).pipe(ce('### ProdCat SEED 02')),
+          createTestProductCategoryFromFixtures()(deps),
           createComponentSets(deps).pipe(ce('### ComponentSets')),
-          createTestChainProduct(
-            1,
-            1,
-            1,
-            'Hamburger',
-            EProductType.FOOD,
-          )(deps).pipe(ce('### ChainProduct SEED 01')),
-          createTestChainProduct(
-            1,
-            1,
-            2,
-            'Fanta',
-            EProductType.DRINK,
-          )(deps).pipe(ce('### ChainProduct SEED 02')),
-          createTestChainProduct(
-            1,
-            2,
-            3,
-            'Hamburger',
-            EProductType.FOOD,
-          )(deps).pipe(ce('### ChainProduct SEED 03')),
-          createTestGroupProduct(
-            1,
-            1,
-            1,
-            1,
-          )(deps).pipe(ce('### GroupProd SEED 01')),
-          createTestGroupProduct(
-            1,
-            1,
-            2,
-            2,
-          )(deps).pipe(ce('### GroupProd SEED 02')),
-          createTestUnitProduct(
-            1,
-            1,
-            1,
-            1,
-            1,
-          )(deps).pipe(ce('### UnitProd SEED 01')),
-          createTestUnitProduct(
-            1,
-            1,
-            1,
-            2,
-            2,
-          )(deps).pipe(ce('### UnitProd SEED 02')),
-          createTestOrder({
-            chainIdx: 1,
-            groupIdx: 1,
-            unitIdx: 1,
-            productIdx: 1,
-            userIdx: 1,
-            orderIdx: 1,
-          })(deps),
+          createChainProductsFromSnapshot(deps).pipe(ce('### Chain products')),
+          createGroupProductsFromSnapshot(deps).pipe(ce('### Group products')),
+          createUnitProductsFromSnapshot(deps).pipe(ce('### Unit products')),
         ),
       ),
       toArray(),
@@ -187,57 +134,6 @@ const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
       ),
     ),
   );
-
-interface BulkOrderInput {
-  order: CrudApi.CreateOrderInput;
-  transaction: CrudApi.CreateTransactionInput;
-}
-
-const seedLotsOfOrders = (
-  deps: SeederDependencies,
-  idxBase: number,
-  range: number,
-  orderInput: CrudApi.CreateOrderInput,
-  transactionInput: CrudApi.CreateTransactionInput,
-) => {
-  console.debug(`Creating a lot of test orders (${range}).`);
-
-  return pipe(
-    R.range(1, range + 1),
-    R.map((index): BulkOrderInput => {
-      const orderId = `${seededIdPrefix}order_id_${idxBase + index}`;
-      const transactionId = `${seededIdPrefix}transaction_id_${
-        idxBase + index
-      }`;
-
-      return {
-        order: {
-          ...orderInput,
-          id: orderId,
-          transactionId,
-          orderNum: index.toString().padStart(6, '0'),
-        },
-        transaction: {
-          ...transactionInput,
-          id: transactionId,
-          orderId,
-        },
-      };
-    }),
-    x => from(x),
-  ).pipe(
-    concatMap((input: BulkOrderInput) =>
-      of('magic').pipe(
-        switchMap(() =>
-          deps.crudSdk.CreateTransaction({ input: input.transaction }),
-        ),
-        switchMap(() => deps.crudSdk.CreateOrder({ input: input.order })),
-      ),
-    ),
-    toArray(),
-    tap(objects => console.debug(`Created ${objects?.length} test orders.`)),
-  );
-};
 
 interface ConsumerUser {
   username: string;
@@ -324,7 +220,7 @@ export const seedAll = (deps: SeederDependencies) =>
       seedLotsOfOrders(
         deps,
         0,
-        10,
+        5,
         orderFixture.activeWaitingCardOrderInput,
         transactionFixture.waitingCardTransactionInput,
       ),
@@ -332,9 +228,39 @@ export const seedAll = (deps: SeederDependencies) =>
     switchMap(() =>
       seedLotsOfOrders(
         deps,
+        5,
+        5,
+        placeOrderToSeat(
+          orderFixture.activeSuccessPlacedCashOrderInput,
+          '01',
+          '02',
+        ),
+        transactionFixture.waitingCashTransactionInput,
+      ),
+    ),
+    switchMap(() =>
+      seedLotsOfOrders(
+        deps,
         10,
-        10,
-        orderFixture.activeWaitingCashOrderInput,
+        5,
+        placeOrderToSeat(
+          orderFixture.activeSuccessPlacedCashOrderInput,
+          '01',
+          '02',
+        ),
+        transactionFixture.waitingCashTransactionInput,
+      ),
+    ),
+    switchMap(() =>
+      seedLotsOfOrders(
+        deps,
+        15,
+        5,
+        placeOrderToSeat(
+          orderFixture.activeSuccessPlacedCashOrderInput,
+          '01',
+          '03',
+        ),
         transactionFixture.waitingCashTransactionInput,
       ),
     ),

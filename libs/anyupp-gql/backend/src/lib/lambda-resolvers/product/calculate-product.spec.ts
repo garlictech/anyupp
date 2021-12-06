@@ -63,13 +63,13 @@ describe('calculatePricesAndCheckActivity method', () => {
         productSetId: 'PROUDCT_SET_01',
         items: [
           {
-            productComponentId: 'PRODUCT_COMPONENT_ID_01',
+            productComponentId: 'PRODUCT_COMPONENT_ID_11',
             refGroupPrice: 1,
             price: 1,
             position: 1,
           },
           {
-            productComponentId: 'PRODUCT_COMPONENT_ID_02',
+            productComponentId: 'PRODUCT_COMPONENT_ID_21',
             refGroupPrice: 2,
             price: 2,
             position: 2,
@@ -80,8 +80,8 @@ describe('calculatePricesAndCheckActivity method', () => {
     ],
   };
   const prodComponentMap: ProductComponentMap = {
-    PRODUCT_COMPONENT_ID_01: {
-      id: 'PRODUCT_COMPONENT_ID_01',
+    PRODUCT_COMPONENT_ID_11: {
+      id: 'PRODUCT_COMPONENT_ID_11',
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_NAME' },
       description: 'PRODUCT_COMP_DESC',
@@ -91,8 +91,8 @@ describe('calculatePricesAndCheckActivity method', () => {
       externalId: 'EXTERNAL_ID',
       dirty: false,
     },
-    PRODUCT_COMPONENT_ID_02: {
-      id: 'PRODUCT_COMPONENT_ID_02',
+    PRODUCT_COMPONENT_ID_21: {
+      id: 'PRODUCT_COMPONENT_ID_21',
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_NAME' },
       description: 'PRODUCT_COMP_DESC',
@@ -114,7 +114,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
       supportedServingModes: defaultSupportedServingModes,
-      items: ['PRODUCT_COMPONENT_ID_01', 'PRODUCT_COMPONENT_ID_02'],
+      items: ['PRODUCT_COMPONENT_ID_11', 'PRODUCT_COMPONENT_ID_21'],
       externalId: 'EXTERNAL_ID',
       dirty: false,
     },

@@ -2,17 +2,20 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
   groupFixture,
+  productCategoryFixture,
   productComponentSetFixture,
+  productSnapshotFixture,
   seededIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { EProductType } from '@bgap/shared/types';
+import { EProductType, RequiredId } from '@bgap/shared/types';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import { DateTime } from 'luxon';
-import { combineLatest, concat, Observable, of } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { combineLatest, concat, from, Observable, of } from 'rxjs';
+import { catchError, concatMap, switchMap, tap, toArray } from 'rxjs/operators';
 import * as R from 'ramda';
+import { seedUtils } from './utils';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
@@ -22,42 +25,6 @@ export interface SeederDependencies {
 }
 
 export type DeletableInput<T> = Omit<T, 'id'> & { id: string };
-
-const generateChainId = (idx: number) => `${seededIdPrefix}chain_${idx}_id`;
-const generateGroupId = (chainIdx: number, idx: number) =>
-  `${seededIdPrefix}group_c${chainIdx}_${idx}_id`;
-const generateUnitId = (chainIdx: number, groupIdx: number, idx: number) =>
-  `${seededIdPrefix}unit_c${chainIdx}_g${groupIdx}_${idx}_id`;
-const generateProductCategoryId = (chainIdx: number, idx: number) =>
-  `${seededIdPrefix}product_category_c${chainIdx}_${idx}_id`;
-const generateChainProductId = (chainIdx: number, idx: number) =>
-  `${seededIdPrefix}chain_product_c${chainIdx}_${idx}_id`;
-const generateGroupProductId = (
-  chainIdx: number,
-  groupIdx: number,
-  idx: number,
-) => `${seededIdPrefix}group_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
-const generateUnitProductId = (
-  chainIdx: number,
-  groupIdx: number,
-  idx: number,
-) => `${seededIdPrefix}unit_product_c${chainIdx}_g${groupIdx}_${idx}_id`;
-const generateVariantId = (
-  chainIdx: number,
-  productId: number,
-  idx: number,
-  type: string,
-) =>
-  `${seededIdPrefix}${type}_product_variant_c${chainIdx}_p${productId}_${idx}_id`;
-const generateOrderId = (idx: number) => `${seededIdPrefix}order_${idx}_id`;
-const generateUserId = (idx: number) => `${seededIdPrefix}user_${idx}_id`;
-const generateRoleContextId = (idx: number, role: CrudApi.Role) =>
-  `${seededIdPrefix}role_context_${idx}_${role}_id`;
-const generateAdminRoleContextId = (
-  idx: number,
-  role: CrudApi.Role,
-  username: string,
-) => `${seededIdPrefix}admin_role_context_${idx}_${role}_${username}_id`;
 
 const deleteCreate = <T, K>(
   deleteOperation: () => Observable<T>,
@@ -93,7 +60,7 @@ export const createTestChain =
     });
     const input: CrudApi.CreateChainInput = {
       ...chainFixture.chainBase,
-      id: generateChainId(chainIdx),
+      id: seedUtils.generateChainId(chainIdx),
       name: `Rab lánc #${chainIdx}`,
     };
     return deleteCreate(
@@ -110,8 +77,8 @@ export const createTestGroup =
     });
     const input: CrudApi.CreateGroupInput = {
       ...groupFixture.groupBase,
-      id: generateGroupId(chainIdx, groupIdx),
-      chainId: generateChainId(chainIdx),
+      id: seedUtils.generateGroupId(chainIdx, groupIdx),
+      chainId: seedUtils.generateChainId(chainIdx),
       name: `Nagy csoport #${groupIdx}`,
       // currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
       currency: 'HUF',
@@ -153,9 +120,9 @@ export const createTestUnit =
     });
     const input: CrudApi.CreateUnitInput = {
       ...R.omit(['createdAt', 'updatedAt'], unitFixture.unitBase),
-      id: generateUnitId(chainIdx, groupIdx, unitIdx),
-      groupId: generateGroupId(chainIdx, groupIdx),
-      chainId: generateChainId(chainIdx),
+      id: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
+      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
+      chainId: seedUtils.generateChainId(chainIdx),
       name: `Késdobáló #${chainIdx}${groupIdx}${unitIdx}`,
       timeZone: 'Europe/Budapest',
       supportedServingModes:
@@ -382,8 +349,8 @@ export const createTestUnitsForOrderHandling =
       ],
       R.map(unit => ({
         ...R.omit(['createdAt', 'updatedAt'], unit),
-        groupId: generateGroupId(1, 1),
-        chainId: generateChainId(1),
+        groupId: seedUtils.generateGroupId(1, 1),
+        chainId: seedUtils.generateChainId(1),
       })),
       R.map(input =>
         deleteCreate(
@@ -402,15 +369,16 @@ export const createTestProductCategory =
       chainIdx,
       productCategoryId,
     });
+
     const input: DeletableInput<CrudApi.CreateProductCategoryInput> = {
-      id: generateProductCategoryId(chainIdx, productCategoryId),
-      chainId: generateChainId(chainIdx),
+      id: seedUtils.generateProductCategoryId(chainIdx, productCategoryId),
+      chainId: seedUtils.generateChainId(chainIdx),
       name: {
-        hu: `Teszt termék kategória #${productCategoryId} név`,
-        en: `Test product category #${productCategoryId} name`,
+        hu: `Teszt termék kategória #${productCategoryId}`,
+        en: `Test product category #${productCategoryId}`,
       },
       description: {
-        hu: `Teszt product kategória #${productCategoryId} leírás`,
+        hu: `Teszt termék kategória #${productCategoryId} leírása`,
         en: `Test product category #${productCategoryId} description`,
       },
       position: productCategoryId,
@@ -423,6 +391,107 @@ export const createTestProductCategory =
       () => deps.crudSdk.CreateProductCategory({ input }),
     );
   };
+
+export const createTestProductCategoryFromFixtures =
+  () => (deps: SeederDependencies) => {
+    console.debug('createTestProductCategoryFromFixtures');
+
+    return deleteCreate(
+      () =>
+        deps.crudSdk.DeleteProductCategory({
+          input: { id: productCategoryFixture.seededProductCategory_01.id },
+        }),
+      () =>
+        deps.crudSdk.CreateProductCategory({
+          input: productCategoryFixture.seededProductCategory_01,
+        }),
+    ).pipe(
+      switchMap(() =>
+        deleteCreate(
+          () =>
+            deps.crudSdk.DeleteProductCategory({
+              input: { id: productCategoryFixture.seededProductCategory_02.id },
+            }),
+          () =>
+            deps.crudSdk.CreateProductCategory({
+              input: productCategoryFixture.seededProductCategory_02,
+            }),
+        ),
+      ),
+      switchMap(() =>
+        deleteCreate(
+          () =>
+            deps.crudSdk.DeleteProductCategory({
+              input: { id: productCategoryFixture.seededProductCategory_03.id },
+            }),
+          () =>
+            deps.crudSdk.CreateProductCategory({
+              input: productCategoryFixture.seededProductCategory_03,
+            }),
+        ),
+      ),
+    );
+  };
+
+export const createChainProductsFromSnapshot = (deps: SeederDependencies) => {
+  const deleteCreateChainProduct = (input: CrudApi.CreateChainProductInput) =>
+    deleteCreate(
+      () => deps.crudSdk.DeleteChainProduct({ input: { id: input.id ?? '' } }),
+      () => deps.crudSdk.CreateChainProduct({ input }),
+    );
+
+  return combineLatest([
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_1),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_2),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_3),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_4),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_5),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_6),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_7),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_8),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_9),
+  ]);
+};
+
+export const createGroupProductsFromSnapshot = (deps: SeederDependencies) => {
+  const deleteCreateGroupProduct = (input: CrudApi.CreateGroupProductInput) =>
+    deleteCreate(
+      () => deps.crudSdk.DeleteGroupProduct({ input: { id: input.id ?? '' } }),
+      () => deps.crudSdk.CreateGroupProduct({ input }),
+    );
+
+  return combineLatest([
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_1),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_2),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_3),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_4),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_5),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_6),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_7),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_8),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_9),
+  ]);
+};
+
+export const createUnitProductsFromSnapshot = (deps: SeederDependencies) => {
+  const deleteCreateUnitProduct = (input: CrudApi.CreateUnitProductInput) =>
+    deleteCreate(
+      () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id ?? '' } }),
+      () => deps.crudSdk.CreateUnitProduct({ input }),
+    );
+
+  return combineLatest([
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_1),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_2),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_3),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_4),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_5),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_6),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_7),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_8),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_9),
+  ]);
+};
 
 export const createTestChainProduct =
   (
@@ -441,8 +510,8 @@ export const createTestChainProduct =
       productType,
     });
     const input: DeletableInput<CrudApi.CreateChainProductInput> = {
-      id: generateChainProductId(chainIdx, productIdx),
-      chainId: generateChainId(chainIdx),
+      id: seedUtils.generateChainProductId(chainIdx, productIdx),
+      chainId: seedUtils.generateChainId(chainIdx),
       name: {
         hu: `${productName} #${productIdx}`,
         en: `${productName} #${productIdx}`,
@@ -451,7 +520,7 @@ export const createTestChainProduct =
         hu: `${productName} #${productIdx} leírás`,
         en: `${productName} #${productIdx} description`,
       },
-      productCategoryId: generateProductCategoryId(
+      productCategoryId: seedUtils.generateProductCategoryId(
         chainIdx,
         productCategoryIdx,
       ),
@@ -459,7 +528,7 @@ export const createTestChainProduct =
       isVisible: true,
       variants: [
         {
-          id: generateVariantId(chainIdx, productIdx, 1, 'chain'),
+          id: seedUtils.generateVariantId(chainIdx, productIdx, 1, 'chain'),
           isAvailable: true,
           position: 10,
           price: 11,
@@ -503,15 +572,15 @@ export const createTestGroupProduct =
       productIdx,
     });
     const input: DeletableInput<CrudApi.CreateGroupProductInput> = {
-      id: generateGroupProductId(chainIdx, groupIdx, productIdx),
-      parentId: generateChainProductId(chainIdx, chainProductIdx),
-      chainId: generateChainId(chainIdx),
-      groupId: generateGroupId(chainIdx, groupIdx),
+      id: seedUtils.generateGroupProductId(chainIdx, groupIdx, productIdx),
+      parentId: seedUtils.generateChainProductId(chainIdx, chainProductIdx),
+      chainId: seedUtils.generateChainId(chainIdx),
+      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
       isVisible: true,
       tax: 27,
       variants: [
         {
-          id: generateVariantId(chainIdx, productIdx, 1, 'group'),
+          id: seedUtils.generateVariantId(chainIdx, productIdx, 1, 'group'),
           isAvailable: true,
           price: 11,
           position: 10,
@@ -554,11 +623,15 @@ export const createTestUnitProduct =
       productIdx,
     });
     const input: DeletableInput<CrudApi.CreateUnitProductInput> = {
-      id: generateUnitProductId(chainIdx, groupIdx, productIdx),
-      parentId: generateGroupProductId(chainIdx, groupIdx, groupProductIdx),
-      chainId: generateChainId(chainIdx),
-      groupId: generateGroupId(chainIdx, groupIdx),
-      unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+      id: seedUtils.generateUnitProductId(chainIdx, groupIdx, productIdx),
+      parentId: seedUtils.generateGroupProductId(
+        chainIdx,
+        groupIdx,
+        groupProductIdx,
+      ),
+      chainId: seedUtils.generateChainId(chainIdx),
+      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
+      unitId: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
       laneId: 'lane_01',
       isVisible: true,
       takeaway: false,
@@ -566,7 +639,7 @@ export const createTestUnitProduct =
       position: productIdx,
       variants: [
         {
-          id: generateVariantId(chainIdx, productIdx, 1, 'unit'),
+          id: seedUtils.generateVariantId(chainIdx, productIdx, 1, 'unit'),
           isAvailable: true,
           price: 150,
           position: 1,
@@ -624,9 +697,9 @@ export const createTestOrder =
       orderIdx,
     });
     const input: DeletableInput<CrudApi.CreateOrderInput> = {
-      id: generateOrderId(orderIdx),
-      userId: generateUserId(userIdx),
-      unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+      id: seedUtils.generateOrderId(orderIdx),
+      userId: seedUtils.generateUserId(userIdx),
+      unitId: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
       paymentMode: {
         type: CrudApi.PaymentType.stripe,
         method: CrudApi.PaymentMethod.inapp,
@@ -675,9 +748,18 @@ export const createTestOrder =
             tax: 27, // empty
             taxSum: 149, // empty
           },
-          productId: generateUnitProductId(chainIdx, groupIdx, productIdx),
+          productId: seedUtils.generateUnitProductId(
+            chainIdx,
+            groupIdx,
+            productIdx,
+          ),
           quantity: 2,
-          variantId: generateVariantId(chainIdx, productIdx, 1, 'unit'),
+          variantId: seedUtils.generateVariantId(
+            chainIdx,
+            productIdx,
+            1,
+            'unit',
+          ),
           variantName: {
             en: 'glass',
             hu: 'pohár',
@@ -711,7 +793,10 @@ export const createTestRoleContext =
     });
 
     const superuserInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-      id: generateRoleContextId(roleContextIdx, CrudApi.Role.superuser),
+      id: seedUtils.generateRoleContextId(
+        roleContextIdx,
+        CrudApi.Role.superuser,
+      ),
       name: {
         hu: `Test superuser role context #${roleContextIdx}`,
         en: `Test superuser role context #${roleContextIdx}`,
@@ -720,52 +805,55 @@ export const createTestRoleContext =
       contextId: 'SU_CTX_ID',
     };
     const chainadminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-      id: generateRoleContextId(roleContextIdx, CrudApi.Role.chainadmin),
+      id: seedUtils.generateRoleContextId(
+        roleContextIdx,
+        CrudApi.Role.chainadmin,
+      ),
       name: {
         hu: `Test chainadmin role context #${roleContextIdx}`,
         en: `Test chainadmin role context #${roleContextIdx}`,
       },
       role: CrudApi.Role.chainadmin,
       contextId: 'CA_CTX_ID',
-      chainId: generateChainId(chainIdx),
+      chainId: seedUtils.generateChainId(chainIdx),
     };
     const r3 = CrudApi.Role.groupadmin;
     const groupadminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-      id: generateRoleContextId(roleContextIdx, r3),
+      id: seedUtils.generateRoleContextId(roleContextIdx, r3),
       name: {
         hu: `Test groupadmin role context #${roleContextIdx}`,
         en: `Test groupadmin role context #${roleContextIdx}`,
       },
       role: r3,
       contextId: 'GA_CTX_ID',
-      chainId: generateChainId(chainIdx),
-      groupId: generateGroupId(chainIdx, groupIdx),
+      chainId: seedUtils.generateChainId(chainIdx),
+      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
     };
     const r4 = CrudApi.Role.unitadmin;
     const unitAdminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-      id: generateRoleContextId(roleContextIdx, r4),
+      id: seedUtils.generateRoleContextId(roleContextIdx, r4),
       name: {
         hu: `Test unitadmin role context #${roleContextIdx}`,
         en: `Test unitadmin role context #${roleContextIdx}`,
       },
       role: r4,
       contextId: 'UA_CTX_ID',
-      chainId: generateChainId(chainIdx),
-      groupId: generateGroupId(chainIdx, groupIdx),
-      unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+      chainId: seedUtils.generateChainId(chainIdx),
+      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
+      unitId: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
     };
     const r5 = CrudApi.Role.staff;
     const staffInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-      id: generateRoleContextId(roleContextIdx, r5),
+      id: seedUtils.generateRoleContextId(roleContextIdx, r5),
       name: {
         hu: `Test staff role context #${roleContextIdx}`,
         en: `Test staff role context #${roleContextIdx}`,
       },
       role: r5,
       contextId: 'STF_CTX_ID',
-      chainId: generateChainId(chainIdx),
-      groupId: generateGroupId(chainIdx, groupIdx),
-      unitId: generateUnitId(chainIdx, groupIdx, unitIdx),
+      chainId: seedUtils.generateChainId(chainIdx),
+      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
+      unitId: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
     };
 
     const handleRoleContext = <INPUT extends CrudApi.CreateRoleContextInput>(
@@ -796,25 +884,25 @@ export const createTestAdminRoleContext =
       adminUserId,
     });
     const superuserInput: CrudApi.CreateAdminRoleContextInput = {
-      id: generateAdminRoleContextId(
+      id: seedUtils.generateAdminRoleContextId(
         adminRoleContextIdx,
         CrudApi.Role.superuser,
         adminUserId,
       ),
       adminUserId,
-      roleContextId: generateRoleContextId(
+      roleContextId: seedUtils.generateRoleContextId(
         roleContextIdx,
         CrudApi.Role.superuser,
       ),
     };
     const chainadminInput: CrudApi.CreateAdminRoleContextInput = {
-      id: generateAdminRoleContextId(
+      id: seedUtils.generateAdminRoleContextId(
         adminRoleContextIdx,
         CrudApi.Role.chainadmin,
         adminUserId,
       ),
       adminUserId,
-      roleContextId: generateRoleContextId(
+      roleContextId: seedUtils.generateRoleContextId(
         roleContextIdx,
         CrudApi.Role.chainadmin,
       ),
@@ -836,62 +924,81 @@ export const createTestAdminRoleContext =
 
 export const createComponentSets = (deps: SeederDependencies) => {
   console.debug('createComponentSets - 3 components and 2 component sets');
-  return deleteCreate(
-    () =>
-      deps.crudSdk.DeleteProductComponent({
-        input: { id: productComponentSetFixture.seededProdComp_01.id },
-      }),
-    () =>
-      deps.crudSdk.CreateProductComponent({
-        input: productComponentSetFixture.seededProdComp_01,
-      }),
+
+  const deleteCreateProductComponent = (
+    comp: RequiredId<CrudApi.CreateProductComponentInput>,
+  ) =>
+    deleteCreate(
+      () =>
+        deps.crudSdk.DeleteProductComponent({
+          input: { id: comp.id },
+        }),
+      () =>
+        deps.crudSdk.CreateProductComponent({
+          input: comp,
+        }),
+    );
+
+  const deleteCreateProductComponentSet = (
+    compSet: RequiredId<CrudApi.CreateProductComponentSetInput>,
+  ) =>
+    deleteCreate(
+      () =>
+        deps.crudSdk.DeleteProductComponentSet({
+          input: { id: compSet.id },
+        }),
+      () =>
+        deps.crudSdk.CreateProductComponentSet({
+          input: compSet,
+        }),
+    );
+
+  return deleteCreateProductComponent(
+    productComponentSetFixture.seededProdComp_11,
   ).pipe(
     switchMap(() =>
-      deleteCreate(
-        () =>
-          deps.crudSdk.DeleteProductComponent({
-            input: { id: productComponentSetFixture.seededProdComp_02.id },
-          }),
-        () =>
-          deps.crudSdk.CreateProductComponent({
-            input: productComponentSetFixture.seededProdComp_02,
-          }),
+      deleteCreateProductComponent(
+        productComponentSetFixture.seededProdComp_12,
       ),
     ),
     switchMap(() =>
-      deleteCreate(
-        () =>
-          deps.crudSdk.DeleteProductComponent({
-            input: { id: productComponentSetFixture.seededProdComp_03.id },
-          }),
-        () =>
-          deps.crudSdk.CreateProductComponent({
-            input: productComponentSetFixture.seededProdComp_03,
-          }),
+      deleteCreateProductComponent(
+        productComponentSetFixture.seededProdComp_21,
       ),
     ),
     switchMap(() =>
-      deleteCreate(
-        () =>
-          deps.crudSdk.DeleteProductComponentSet({
-            input: { id: productComponentSetFixture.seededProdCompSet_01.id },
-          }),
-        () =>
-          deps.crudSdk.CreateProductComponentSet({
-            input: productComponentSetFixture.seededProdCompSet_01,
-          }),
+      deleteCreateProductComponent(
+        productComponentSetFixture.seededProdComp_22,
       ),
     ),
     switchMap(() =>
-      deleteCreate(
-        () =>
-          deps.crudSdk.DeleteProductComponentSet({
-            input: { id: productComponentSetFixture.seededProdCompSet_02.id },
-          }),
-        () =>
-          deps.crudSdk.CreateProductComponentSet({
-            input: productComponentSetFixture.seededProdCompSet_02,
-          }),
+      deleteCreateProductComponent(
+        productComponentSetFixture.seededProdComp_31,
+      ),
+    ),
+    switchMap(() =>
+      deleteCreateProductComponent(
+        productComponentSetFixture.seededProdComp_32,
+      ),
+    ),
+    switchMap(() =>
+      deleteCreateProductComponent(
+        productComponentSetFixture.seededProdComp_33,
+      ),
+    ),
+    switchMap(() =>
+      deleteCreateProductComponentSet(
+        productComponentSetFixture.seededProdCompSet_01,
+      ),
+    ),
+    switchMap(() =>
+      deleteCreateProductComponentSet(
+        productComponentSetFixture.seededProdCompSet_02,
+      ),
+    ),
+    switchMap(() =>
+      deleteCreateProductComponentSet(
+        productComponentSetFixture.seededProdCompSet_03,
       ),
     ),
   );
@@ -951,3 +1058,68 @@ export const seedRKeeperUnit = (deps: SeederDependencies) =>
         }),
     ),
   );
+
+export const placeOrderToSeat = (
+  orderInput: CrudApi.CreateOrderInput,
+  table: string,
+  seat: string,
+) => ({
+  ...orderInput,
+  place: {
+    table,
+    seat,
+  },
+});
+
+interface BulkOrderInput {
+  order: CrudApi.CreateOrderInput;
+  transaction: CrudApi.CreateTransactionInput;
+}
+
+export const seedLotsOfOrders = (
+  deps: SeederDependencies,
+  idxBase: number,
+  range: number,
+  orderInput: CrudApi.CreateOrderInput,
+  transactionInput: CrudApi.CreateTransactionInput,
+) => {
+  console.debug(`Creating a lot of test orders (${range}).`);
+
+  return pipe(
+    R.range(1, range + 1),
+    R.map((index): BulkOrderInput => {
+      const orderId = `${seededIdPrefix}order_id_${idxBase + index}`;
+      const userId = `${seededIdPrefix}user_id_${idxBase + index}`;
+      const transactionId = `${seededIdPrefix}transaction_id_${
+        idxBase + index
+      }`;
+
+      return {
+        order: {
+          ...orderInput,
+          id: orderId,
+          transactionId,
+          userId,
+          orderNum: index.toString().padStart(6, '0'),
+        },
+        transaction: {
+          ...transactionInput,
+          id: transactionId,
+          orderId,
+        },
+      };
+    }),
+    x => from(x),
+  ).pipe(
+    concatMap((input: BulkOrderInput) =>
+      of('magic').pipe(
+        switchMap(() =>
+          deps.crudSdk.CreateTransaction({ input: input.transaction }),
+        ),
+        switchMap(() => deps.crudSdk.CreateOrder({ input: input.order })),
+      ),
+    ),
+    toArray(),
+    tap(objects => console.debug(`Created ${objects?.length} test orders.`)),
+  );
+};

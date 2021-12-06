@@ -23,22 +23,22 @@ Array [
       },
     ],
     "name": Object {
-      "de": null,
+      "de": "Hamburger",
       "en": "Hamburger",
       "hu": "Hamburger",
     },
-    "productId": "test_unit_product_hamburger",
+    "productId": "seeded_chain_product_c1_1_id",
     "productType": "drink",
     "quantity": 5,
     "variants": Array [
       Object {
         "name": Object {
-          "de": null,
-          "en": "glass",
-          "hu": "pohár",
+          "de": "normal",
+          "en": "normal",
+          "hu": "normál",
         },
         "quantity": 5,
-        "variantId": "test_variant_id",
+        "variantId": "seeded_chain_product_variant_c1_p1_1_id",
       },
     ],
   },
@@ -55,22 +55,54 @@ Array [
       },
     ],
     "name": Object {
-      "de": null,
-      "en": "Fanta",
-      "hu": "Fanta",
+      "de": "Fishburger",
+      "en": "Fishburger",
+      "hu": "Halburger",
     },
-    "productId": "test_unit_product_fanta",
+    "productId": "seeded_chain_product_c1_2_id",
     "productType": "drink",
     "quantity": 5,
     "variants": Array [
       Object {
         "name": Object {
-          "de": null,
-          "en": "glass",
-          "hu": "pohár",
+          "de": "normal",
+          "en": "normal",
+          "hu": "normál",
         },
         "quantity": 5,
-        "variantId": "test_variant_id",
+        "variantId": "16853de0-528d-11ec-90c0-fdfe82b3802d",
+      },
+    ],
+  },
+  Object {
+    "components": Array [
+      Object {
+        "componentId": "test_product_component_id",
+        "name": Object {
+          "de": "Room temperature",
+          "en": "Room temperature",
+          "hu": "Szobahőmérsékletű",
+        },
+        "quantity": 5,
+      },
+    ],
+    "name": Object {
+      "de": "Sajtburger",
+      "en": "Sajtburger",
+      "hu": "Sajtburger",
+    },
+    "productId": "seeded_chain_product_c1_3_id",
+    "productType": "drink",
+    "quantity": 5,
+    "variants": Array [
+      Object {
+        "name": Object {
+          "de": "normal",
+          "en": "normal",
+          "hu": "normál",
+        },
+        "quantity": 5,
+        "variantId": "d22dee40-528b-11ec-afe3-15e1afd659e2",
       },
     ],
   },
@@ -92,22 +124,22 @@ Array [
       },
     ],
     "name": Object {
-      "de": null,
+      "de": "Hamburger",
       "en": "Hamburger",
       "hu": "Hamburger",
     },
-    "productId": "test_unit_product_hamburger",
+    "productId": "seeded_chain_product_c1_1_id",
     "productType": "drink",
     "quantity": 115,
     "variants": Array [
       Object {
         "name": Object {
-          "de": null,
-          "en": "glass",
-          "hu": "pohár",
+          "de": "normal",
+          "en": "normal",
+          "hu": "normál",
         },
         "quantity": 115,
-        "variantId": "test_variant_id",
+        "variantId": "seeded_chain_product_variant_c1_p1_1_id",
       },
     ],
   },
@@ -124,22 +156,54 @@ Array [
       },
     ],
     "name": Object {
-      "de": null,
-      "en": "Fanta",
-      "hu": "Fanta",
+      "de": "Fishburger",
+      "en": "Fishburger",
+      "hu": "Halburger",
     },
-    "productId": "test_unit_product_fanta",
+    "productId": "seeded_chain_product_c1_2_id",
     "productType": "drink",
     "quantity": 115,
     "variants": Array [
       Object {
         "name": Object {
-          "de": null,
-          "en": "glass",
-          "hu": "pohár",
+          "de": "normal",
+          "en": "normal",
+          "hu": "normál",
         },
         "quantity": 115,
-        "variantId": "test_variant_id",
+        "variantId": "16853de0-528d-11ec-90c0-fdfe82b3802d",
+      },
+    ],
+  },
+  Object {
+    "components": Array [
+      Object {
+        "componentId": "test_product_component_id",
+        "name": Object {
+          "de": "Room temperature",
+          "en": "Room temperature",
+          "hu": "Szobahőmérsékletű",
+        },
+        "quantity": 115,
+      },
+    ],
+    "name": Object {
+      "de": "Sajtburger",
+      "en": "Sajtburger",
+      "hu": "Sajtburger",
+    },
+    "productId": "seeded_chain_product_c1_3_id",
+    "productType": "drink",
+    "quantity": 115,
+    "variants": Array [
+      Object {
+        "name": Object {
+          "de": "normal",
+          "en": "normal",
+          "hu": "normál",
+        },
+        "quantity": 115,
+        "variantId": "d22dee40-528b-11ec-afe3-15e1afd659e2",
       },
     ],
   },
@@ -186,7 +250,7 @@ Object {
 
 exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate 1 item 1`] = `
 Object {
-  "drink": 2982,
+  "drink": 4473,
   "food": 0,
   "other": 0,
 }
@@ -194,7 +258,7 @@ Object {
 
 exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate failed history items 1`] = `
 Object {
-  "drink": 59640,
+  "drink": 89460,
   "food": 0,
   "other": 0,
 }
@@ -202,7 +266,7 @@ Object {
 
 exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate success history items 1`] = `
 Object {
-  "drink": 8946,
+  "drink": 13419,
   "food": 0,
   "other": 0,
 }
@@ -220,7 +284,7 @@ Object {
     0,
     0,
     0,
-    3000,
+    4500,
     0,
     0,
     0,
@@ -324,7 +388,7 @@ Object {
     0,
     0,
     0,
-    3000,
+    4500,
     0,
     0,
     0,
@@ -355,7 +419,7 @@ Object {
     0,
     0,
     0,
-    60000,
+    90000,
     0,
     0,
     0,
@@ -459,7 +523,7 @@ Object {
     0,
     0,
     0,
-    60000,
+    90000,
     0,
     0,
     0,
@@ -490,7 +554,7 @@ Object {
     0,
     0,
     0,
-    9000,
+    13500,
     0,
     0,
     0,
@@ -594,7 +658,7 @@ Object {
     0,
     0,
     0,
-    9000,
+    13500,
     0,
     0,
     0,

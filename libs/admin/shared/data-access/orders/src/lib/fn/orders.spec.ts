@@ -1,5 +1,9 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { orderFixture, testIdPrefix, unitFixture } from '@bgap/shared/fixtures';
+import {
+  orderFixture,
+  productSnapshotFixture,
+  unitFixture,
+} from '@bgap/shared/fixtures';
 import { FloorMapUserOrderObjects } from '@bgap/shared/types';
 
 import {
@@ -72,8 +76,8 @@ describe('Orders pure function tests', () => {
     const unit: CrudApi.Unit = unitFixture.unit_01;
 
     const orderItem = {
-      ...orderFixture.orderItemInputBase('Fanta'),
-      productId: `${testIdPrefix}unit_product_fanta`,
+      ...orderFixture.orderItemInputBase(productSnapshotFixture.chainProduct_1),
+      productId: productSnapshotFixture.chainProduct_1.id,
     };
 
     it('should get order lane color', () => {
