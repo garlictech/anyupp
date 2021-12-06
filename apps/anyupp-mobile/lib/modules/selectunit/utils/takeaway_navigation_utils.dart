@@ -27,6 +27,7 @@ Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
       cart,
       unit.supportedServingModes[0],
       unit,
+      deletePlace: deletePlace,
     );
     return null;
   }
@@ -41,9 +42,11 @@ Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
   print('_selectUnitAndGoToMenuScreen().selectedMethodPos=$selectedMethodPos');
   if (selectedMethodPos != null) {
     _selectServingModeAndGo(
-        cart,
-        selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway,
-        unit);
+      cart,
+      selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway,
+      unit,
+      deletePlace: deletePlace,
+    );
     return selectedMethodPos;
   } else {
     getIt<TakeAwayBloc>().add(ResetServingMode());
@@ -51,14 +54,17 @@ Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
   return selectedMethodPos;
 }
 
-void _selectServingModeAndGo(
-    Cart? cart, ServingMode servingMode, GeoUnit unit) async {
+void _selectServingModeAndGo(Cart? cart, ServingMode servingMode, GeoUnit unit,
+    {bool deletePlace = false}) async {
   // if (cart != null && cart.servingMode != servingMode) {
   //   print('selectUnitAndGoToMenuScreen().DELETE CART!!!!');
   //   getIt<CartBloc>().add(ClearCartAction());
   // }
   if (cart != null) {
     getIt<CartBloc>().add(SetCartServingMode(unit.id, servingMode));
+    if (deletePlace == true) {
+      getIt<CartBloc>().add(ClearPlaceInCart(unit));
+    }
   }
 
   getIt<UnitSelectBloc>().add(SelectUnit(unit));

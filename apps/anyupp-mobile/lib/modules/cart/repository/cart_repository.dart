@@ -125,6 +125,7 @@ class CartRepository implements ICartProvider {
   }
 
   Future<Cart?> clearPlaceInCart(GeoUnit unit) async {
+    // print('CartRepository.clearPlaceInCart()=${unit.id}');
     Cart? cart = await getCurrentCart(unit.id);
     if (cart != null) {
       cart = cart.copyWith(place: Place(seat: EMPTY_SEAT, table: EMPTY_TABLE));
