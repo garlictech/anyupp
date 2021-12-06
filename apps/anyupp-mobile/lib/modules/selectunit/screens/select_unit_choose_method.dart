@@ -122,7 +122,8 @@ class SelectUnitMainContentWidget extends StatelessWidget {
                       return UnitCardWidget(
                         unit: state.units[index],
                         onTap: () => selectUnitAndGoToMenuScreen(
-                            context, state.units[index]),
+                            context, state.units[index],
+                            deletePlace: true),
                       );
                     },
                   ),

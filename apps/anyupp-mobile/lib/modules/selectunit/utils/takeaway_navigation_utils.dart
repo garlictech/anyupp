@@ -4,13 +4,16 @@ import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
-    [bool dismissable = true]) async {
-  // unit.place = Place('00', '00');
+    {bool dismissable = true, bool deletePlace = false}) async {
+  if (deletePlace) {
+    await clearPlacePref(unit.id);
+  }
   print('selectUnitAndGoToMenuScreen=${unit.id}');
   print(
       'selectUnitAndGoToMenuScreen.servingModes=${unit.supportedServingModes}');
