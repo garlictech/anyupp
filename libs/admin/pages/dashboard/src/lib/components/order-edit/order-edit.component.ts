@@ -30,7 +30,6 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   public paymentMethods: IPaymentMethodKV[] = [];
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
-  public currentStatus = CrudApi.currentStatus;
 
   constructor(
     private _store: Store,
@@ -117,7 +116,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     status: keyof typeof CrudApi.OrderStatus,
   ): boolean {
     return (
-      this.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
+      CrudApi.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
     );
   }
 }

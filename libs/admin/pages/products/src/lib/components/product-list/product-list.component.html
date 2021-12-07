@@ -5,6 +5,15 @@
     </div>
 
     <div class="float-right">
+      <input
+        nbInput
+        type="text"
+        fieldSize="small"
+        shape="round"
+        [formControl]="searchControl"
+        [attr.data-testid]="'productSearchInput'"
+        [placeholder]="'common.search' | translate"
+      />
       <bgap-active-product-category-selector
         class="float-right"
       ></bgap-active-product-category-selector>

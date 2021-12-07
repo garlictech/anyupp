@@ -15,7 +15,7 @@ import {
   ExtendedGroupProduct,
   ExtendedUnitProduct,
 } from '@bgap/admin/shared/data-access/products';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, ProductOrderChangeEvent } from '@bgap/shared/types';
 import {
@@ -28,6 +28,7 @@ import { select, Store } from '@ngrx/store';
 
 import { ProductListService } from '../../services/product-list.service';
 import { ProductFormComponent } from '../product-form/product-form.component';
+import { FormControl } from '@angular/forms';
 
 type GroupTabProducts = (ExtendedGroupProduct | CrudApi.ChainProduct) & {
   pending?: boolean;
@@ -53,17 +54,17 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
   public loggedUser$: Observable<CrudApi.AdminUser | undefined>;
-
+  public searchControl: FormControl;
   private _sortedUnitProductIds: string[] = [];
 
   constructor(
     private _store: Store,
     private _nbDialogService: NbDialogService,
-    private _crudSdk: CrudSdkService,
     private _productListService: ProductListService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.selectedProductLevel = EProductLevel.CHAIN;
+    this.searchControl = new FormControl('');
 
     this.loggedUser$ = this._store
       .select(loggedUserSelectors.getLoggedUser)
@@ -96,7 +97,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
 
     this._productListService
-      .chainProducts$()
+      .chainProducts$(this.searchControl.valueChanges)
       .pipe(untilDestroyed(this))
       .subscribe((chainProducts: CrudApi.ChainProduct[]) => {
         this.chainProducts = chainProducts;
@@ -104,7 +105,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
 
     this._productListService
-      .groupProducts$()
+      .groupProducts$(this.searchControl.valueChanges)
       .pipe(untilDestroyed(this))
       .subscribe((groupTabProducts: GroupTabProducts[]) => {
         this.groupTabProducts = groupTabProducts;
@@ -112,7 +113,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
 
     this._productListService
-      .unitProducts$()
+      .unitProducts$(this.searchControl.valueChanges)
       .pipe(untilDestroyed(this))
       .subscribe((unitTabProducts: UnitTabProducts[]) => {
         this.unitTabProducts = unitTabProducts;
