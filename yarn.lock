@@ -8562,10 +8562,10 @@
     resolve-from "^5.0.0"
     rollup-pluginutils "^2.8.2"
 
-"@vvo/tzdb@6.35.0":
-  version "6.35.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.35.0.tgz#0b50493cb809f3eb0f635d432cd2acdc7ad75b72"
-  integrity sha512-leN0YmA9+N7ZotdAGp/MzLcAippUpC6Occ/P4hG6BAn4rDXJ4NMf/yiD2K8RyV41I1zK0EMVxo3ca1WrCq4J5g==
+"@vvo/tzdb@6.36.0":
+  version "6.36.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.36.0.tgz#da5c120d52d9acd36d9f8b5be633f5086a998000"
+  integrity sha512-t+Hs4PJJLiWYZcf5+19VDEHnSO1KVJ6qp7SmRfYWpuHLCWcSvCeaZGSeEjprEYIW4+2vOqGTmSUZaRzySIVq+A==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
