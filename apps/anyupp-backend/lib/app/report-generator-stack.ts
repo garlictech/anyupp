@@ -25,7 +25,7 @@ export class ReportGeneratorStack extends sst.Stack {
   ) {
     super(scope, id);
 
-    const taskRole = new iam.Role(this, 'ecsTaskExecutionRole', {
+    const taskRole = new iam.Role(this, 'ReportGeneratorECSTaskExecutionRole', {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
     });
 

@@ -14,5 +14,5 @@ yarn sst deploy --stage=$ENVNAME --outputs-file ../../$STACKCONFIG_FILE
 # Process stack-config: remove stage label
 cd ../..
 echo "Creating stack config for testing ($STACKCONFIG_FILE)"
-sed -i "s/^  \"${ENVNAME}\-anyupp\-backend/\"anyupp-backend/g" $STACKCONFIG_FILE
+sed -i "s/^  \"${ENVNAME}\-common\-backend/\"common-backend/g" $STACKCONFIG_FILE
 

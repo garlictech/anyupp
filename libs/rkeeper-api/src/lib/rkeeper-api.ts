@@ -1,20 +1,15 @@
+import { anyuppFargateClusterName } from '@bgap/backend/shared/utils';
 import { LaunchType } from '@aws-cdk/aws-ecs';
 import { AWSError, ECS } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
-import { bindNodeCallback, of, throwError } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-import * as R from 'ramda';
+import { bindNodeCallback } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 export interface HandleProductsDeps {
   ecs: ECS;
   RKeeperProcessProductSubnet: string;
   RKeeperProcessProductSecurityGroup: string;
-  taskRoleArn: string;
-  logGroupName: string;
-  dockerImageUri: string;
-  API_ACCESS_KEY_ID: string;
-  API_SECRET_ACCESS_KEY: string;
-  AWS_REGION: string;
+  taskDefinitionArn: string;
 }
 
 export const handleProducts =
@@ -22,65 +17,6 @@ export const handleProducts =
   (deps: HandleProductsDeps) => (unitId: string, rawData: any) =>
     pipe(
       {
-        taskRoleArn: deps.taskRoleArn,
-        executionRoleArn: deps.taskRoleArn,
-        family: 'fargate-task-definition',
-        networkMode: 'awsvpc',
-        requiresCompatibilities: ['FARGATE'],
-        cpu: '256',
-        memory: '512',
-        containerDefinitions: [
-          {
-            image: deps.dockerImageUri,
-            name: 'anyupp-rkeeper-process-products',
-            environment: [
-              {
-                name: 'unitId',
-                value: unitId,
-              },
-              {
-                name: 'rawData',
-                value: JSON.stringify(rawData),
-              },
-              {
-                name: 'AWS_ACCESS_KEY_ID',
-                value: deps.API_ACCESS_KEY_ID,
-              },
-              {
-                name: 'AWS_SECRET_ACCESS_KEY',
-                value: deps.API_SECRET_ACCESS_KEY,
-              },
-            ],
-            logConfiguration: {
-              logDriver: 'awslogs',
-              options: {
-                'awslogs-create-group': 'true',
-                'awslogs-region': deps.AWS_REGION || '',
-                'awslogs-group': 'AnyuppRKeeperLogGroup',
-                'awslogs-stream-prefix': 'rkeeper',
-              },
-            },
-          },
-        ],
-      },
-      R.tap(() => console.error(deps.taskRoleArn)),
-      params =>
-        bindNodeCallback(
-          (
-            p: ECS.Types.RegisterTaskDefinitionRequest,
-            callback: (
-              err: AWSError,
-              data: ECS.Types.RegisterTaskDefinitionResponse,
-            ) => void,
-          ) => deps.ecs.registerTaskDefinition(p, callback),
-        )(params),
-      tap(x => console.warn(JSON.stringify(x, null, 2))),
-      switchMap(taskDefinition =>
-        taskDefinition?.taskDefinition?.taskDefinitionArn
-          ? of(taskDefinition?.taskDefinition.taskDefinitionArn)
-          : throwError('Wrong task definition'),
-      ),
-      map(taskDefinitionArn => ({
         launchType: LaunchType.FARGATE,
         networkConfiguration: {
           awsvpcConfiguration: {
@@ -88,16 +24,34 @@ export const handleProducts =
             securityGroups: [deps.RKeeperProcessProductSecurityGroup],
           },
         },
-        taskDefinition: taskDefinitionArn,
-      })),
-      switchMap((params: ECS.Types.RunTaskRequest) =>
+        taskDefinition: deps.taskDefinitionArn,
+        cluster: anyuppFargateClusterName,
+        overrides: {
+          containerOverrides: [
+            {
+              name: 'DefaultContainer',
+              environment: [
+                {
+                  name: 'unitId',
+                  value: unitId,
+                },
+                {
+                  name: 'rawData',
+                  value: JSON.stringify(rawData),
+                },
+              ],
+            },
+          ],
+        },
+        //  })),
+      },
+      params =>
         bindNodeCallback(
           (
             p: ECS.Types.RunTaskRequest,
             callback: (err: AWSError, data: ECS.Types.RunTaskResponse) => void,
           ) => deps.ecs.runTask(p, callback),
         )(params),
-      ),
       tap(result =>
         console.log(
           'Task submission result: ',

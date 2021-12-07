@@ -34,6 +34,7 @@ import * as fixtures from './fixtures';
 import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/anyupp-gql/backend';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import * as stackConfig from '../../generated/stack-config.json';
+import * as commonStackConfig from '../../generated/common-stack-config.json';
 
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();
@@ -404,8 +405,6 @@ describe('Test the rkeeper api basic functionality', () => {
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
-    console.log('RAWDATA READ');
-
     handleRkeeperProducts(crudSdk)('109150001', rawData).subscribe({
       next: result => {
         expect(result).toMatchSnapshot();
@@ -419,21 +418,14 @@ describe('Test the rkeeper api basic functionality', () => {
     const deps = {
       ecs: new ECS({ apiVersion: '2014-11-13' }),
       RKeeperProcessProductSubnet:
-        stackConfig['anyupp-backend-rkeeper'].RKeeperProcessProductSubnet,
+        commonStackConfig['common-backend-anyupp'].AnyuppVpcSubnetOutput,
       RKeeperProcessProductSecurityGroup:
-        stackConfig['anyupp-backend-rkeeper']
-          .RKeeperProcessProductSecurityGroup,
-      taskRoleArn:
-        'arn:aws:iam::568276182587:role/dev-anyupp-backend-rkeepe-ecsTaskExecutionRole34F5-1I8EG8F8IQRC0',
-      API_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || '',
-      API_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || '',
-      AWS_REGION: process.env.AWS_REGION || '',
+        commonStackConfig['common-backend-anyupp'].AnyuppVpcSecurityGroupOutput,
+      taskDefinitionArn:
+        stackConfig['anyupp-backend-rkeeper'].RKeeperTaskDefinitionArn,
     };
 
-    handleProducts(deps)(
-      fixtures.rkeeperUnit.externalId || 'DEFINE ME',
-      fixtures.rawData,
-    )
+    handleProducts(deps)('109150001', fixtures.rawData)
       .pipe(
         // Let the fargate provision its task
         delay(10000),

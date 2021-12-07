@@ -45,7 +45,7 @@ export class AnyuppCommonStack extends Stack {
     });
 
     new cdk.CfnOutput(this, 'AnyuppVpcSubnetOutput', {
-      value: vpc.publicSubnets[0].subnetId,
+      value: vpc.privateSubnets[0].subnetId,
     });
 
     new cdk.CfnOutput(this, 'AnyuppVpcIdOutput', {

@@ -24,12 +24,7 @@ app.route({
         process.env.RKeeperProcessProductSubnet || '',
       RKeeperProcessProductSecurityGroup:
         process.env.RKeeperProcessProductSecurityGroup || '',
-      taskRoleArn: process.env.taskRoleArn || '',
-      logGroupName: process.env.logGroupName || '',
-      dockerImageUri: process.env.dockerImageUri || '',
-      API_ACCESS_KEY_ID: process.env.API_ACCESS_KEY_ID || '',
-      API_SECRET_ACCESS_KEY: process.env.API_SECRET_ACCESS_KEY || '',
-      AWS_REGION: process.env.AWS_REGION || '',
+      taskDefinitionArn: process.env.taskDefinitionArn || '',
     };
 
     // Place it in the URL
