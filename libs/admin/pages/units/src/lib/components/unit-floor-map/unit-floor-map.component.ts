@@ -5,8 +5,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import * as floorMapLib from '@bgap/admin/shared/floor-map';
+import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
 
 @Component({

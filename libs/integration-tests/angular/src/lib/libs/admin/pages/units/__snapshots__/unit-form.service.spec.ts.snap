@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnitFormService #createUnitFormGroup should create unit form 1`] = `
+Object {
+  "address": Object {
+    "address": "",
+    "city": "",
+    "country": "",
+    "location": Object {
+      "lat": 0,
+      "lng": 0,
+    },
+    "postalCode": "",
+    "title": "",
+  },
+  "chainId": "",
+  "description": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+  "email": "",
+  "groupId": "",
+  "isActive": "",
+  "lanes": Array [],
+  "name": "",
+  "open": Object {
+    "from": "",
+    "to": "",
+  },
+  "openingHours": Object {
+    "custom": Array [],
+    "fri": Object {
+      "from": "",
+      "to": "",
+    },
+    "mon": Object {
+      "from": "",
+      "to": "",
+    },
+    "sat": Object {
+      "from": "",
+      "to": "",
+    },
+    "sun": Object {
+      "from": "",
+      "to": "",
+    },
+    "thu": Object {
+      "from": "",
+      "to": "",
+    },
+    "tue": Object {
+      "from": "",
+      "to": "",
+    },
+    "wed": Object {
+      "from": "",
+      "to": "",
+    },
+  },
+  "paymentModes": Array [],
+  "phone": "",
+  "pos": Object {
+    "type": "anyupp",
+  },
+  "supportedOrderModes": Array [
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "timeZone": "",
+}
+`;

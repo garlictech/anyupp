@@ -15,7 +15,6 @@ import {
   ExtendedGroupProduct,
   ExtendedUnitProduct,
 } from '@bgap/admin/shared/data-access/products';
-
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, ProductOrderChangeEvent } from '@bgap/shared/types';
 import {

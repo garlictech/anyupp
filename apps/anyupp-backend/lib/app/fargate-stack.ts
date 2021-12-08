@@ -16,8 +16,8 @@ export class FargateStack extends sst.Stack {
 
     this.cluster = ecs.Cluster.fromClusterAttributes(this, 'FargateCluster', {
       clusterName: anyuppFargateClusterName,
-      vpc: props.vpc,
-      securityGroups: [props.securityGroup],
+      vpc: this.props.vpc,
+      securityGroups: [this.props.securityGroup],
     });
   }
 }

@@ -1,3 +1,4 @@
+/*
 import { productComponentSetFixture } from '@bgap/shared/fixtures';
 
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -149,6 +150,7 @@ const prodConfigSet_03: CrudApi.ProductConfigSetInput = {
   ],
 };
 
+
 export const unitProductFixture = {
   ...productFixture.unitProductBase,
   id: UNIT_PRODUCT_ID_01,
@@ -172,3 +174,4 @@ export const chainProductFixture = {
   chainId: CHAIN_ID_01,
   configSets: [prodConfigSet_01, prodConfigSet_02, prodConfigSet_03],
 };
+*/
