@@ -8,7 +8,6 @@ import {
   ORDERS_FEATURE_KEY,
 } from './orders.reducer';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { currentStatus } from '@bgap/crud-gql/api';
 
 export const getOrdersState =
   createFeatureSelector<OrdersState>(ORDERS_FEATURE_KEY);
@@ -67,7 +66,7 @@ export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) => {
           )
           .filter(
             (orderItem: CrudApi.OrderItem): boolean =>
-              currentStatus(orderItem.statusLog) === status,
+              CrudApi.currentStatus(orderItem.statusLog) === status,
           )
           .map((orderItem: CrudApi.OrderItem) => ({
             ...orderItem,

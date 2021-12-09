@@ -10,12 +10,13 @@ import {
 } from '@angular/forms';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { FormsService } from '@bgap/admin/shared/forms';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import {
   multiLangValidator,
   notEmptyArray,
   optionalValueValidator,
 } from '@bgap/admin/shared/utils';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
+
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, Product } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';

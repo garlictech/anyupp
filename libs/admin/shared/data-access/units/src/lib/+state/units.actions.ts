@@ -9,3 +9,13 @@ export const upsertUnits = createAction(
 );
 
 export const resetUnits = createAction('[Units] Reset units');
+
+export const createUnit = createAction(
+  '[Units] Create unit',
+  props<{ formValue: CrudApi.CreateUnitInput }>(),
+);
+
+export const updateUnit = createAction(
+  '[Units] Update unit',
+  props<{ formValue: CrudApi.UpdateUnitInput }>(),
+);

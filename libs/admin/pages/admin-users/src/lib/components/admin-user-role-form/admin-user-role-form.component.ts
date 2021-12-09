@@ -107,9 +107,6 @@ export class AdminUserRoleFormComponent
         },
         {
           label: 'common.cancel',
-          callback: (): void => {
-            /**/
-          },
           status: 'basic',
         },
       ],

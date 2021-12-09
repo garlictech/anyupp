@@ -551,6 +551,7 @@ type OrderItem {
   configSets: [OrderItemConfigSet!]
   productType: String # TODO: Make the OrderItem.productType REQUIRED in the next release
   externalId: String
+  appliedServiceFee: PriceShown
 }
 
 ### Order
@@ -1236,38 +1237,38 @@ type Subscription {
   onChainsChange: Chain
     @aws_subscribe(mutations: ["createChain", "updateChain"])
     @aws_cognito_user_pools
-  onGroupsChange: Group
+  onGroupsChange(chainId: ID!): Group
     @aws_subscribe(mutations: ["createGroup", "updateGroup"])
     @aws_cognito_user_pools
-  onUnitsChange: Unit
+  onUnitsChange(groupId: ID!): Unit
     @aws_subscribe(mutations: ["createUnit", "updateUnit"])
     @aws_cognito_user_pools
   # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
-  onProductCategoriesChange: ProductCategory
+  onProductCategoriesChange(chainId: ID!): ProductCategory
     @aws_subscribe(
       mutations: ["createProductCategory", "updateProductCategory"]
     )
     @aws_cognito_user_pools
-  onProductComponentsChange: ProductComponent
+  onProductComponentsChange(chainId: ID!): ProductComponent
     @aws_subscribe(
       mutations: ["createProductComponent", "updateProductComponent"]
     )
     @aws_cognito_user_pools
-  onProductComponentSetsChange: ProductComponentSet
+  onProductComponentSetsChange(chainId: ID!): ProductComponentSet
     @aws_subscribe(
       mutations: ["createProductComponentSet", "updateProductComponentSet"]
     )
     @aws_cognito_user_pools
-  onChainProductChange: ChainProduct
+  onChainProductChange(chainId: ID!): ChainProduct
     @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
     @aws_cognito_user_pools
-  onGroupProductChange: GroupProduct
+  onGroupProductChange(groupId: ID!): GroupProduct
     @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
     @aws_cognito_user_pools
-  onUnitProductChange: UnitProduct
+  onUnitProductChange(unitId: ID!): UnitProduct
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
     @aws_cognito_user_pools
-  onGeneratedProductChange: GeneratedProduct
+  onGeneratedProductChange(unitId: ID!): GeneratedProduct
     @aws_subscribe(
       mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
     )

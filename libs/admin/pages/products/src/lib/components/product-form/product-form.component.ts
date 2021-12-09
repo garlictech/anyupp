@@ -1,4 +1,4 @@
-import * as fp from 'lodash/fp';
+import { get, omit } from 'lodash/fp';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
@@ -10,11 +10,11 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EImageType,
@@ -85,13 +85,13 @@ export class ProductFormComponent
   }
 
   get productImage(): string {
-    return fp.get('image', this.product) ?? '';
+    return get('image', this.product) ?? '';
   }
 
   ngOnInit(): void {
     if (this.product) {
       this.dialogForm.patchValue(
-        fp.omit(['variants', 'configSets'], cleanObject(this.product)),
+        omit(['variants', 'configSets'], cleanObject(this.product)),
       );
 
       this._productFormService.patchProductVariants(

@@ -20,6 +20,7 @@ GoogleApiKey
 GoogleClientId
 MailtrapApiKey
 StripePublishableKey
+slackChannel
 "
 
 CRUD_PARAMS="

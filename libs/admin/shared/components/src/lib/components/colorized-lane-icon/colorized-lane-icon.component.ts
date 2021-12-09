@@ -23,7 +23,6 @@ export class ColorizedLaneIconComponent implements OnInit {
   public laneColor: string;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {

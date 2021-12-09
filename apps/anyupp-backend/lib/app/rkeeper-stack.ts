@@ -1,28 +1,28 @@
+import * as ecs from '@aws-cdk/aws-ecs';
+import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 import * as sst from '@serverless-stack/resources';
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import { commonLambdaProps } from './lambda-common';
 import * as ssm from '@aws-cdk/aws-ssm';
-import { getFQParamName } from './utils';
+import { getFQParamName } from '@bgap/backend/shared/utils';
 import path from 'path';
-import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
+import * as ec2 from '@aws-cdk/aws-ec2';
 
 export interface RKeeperStackProps extends sst.StackProps {
   apiAccessKeyId: string;
   apiSecretAccessKey: string;
+  vpc: ec2.IVpc;
+  securityGroupId: string;
 }
 
 export class RKeeperStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: RKeeperStackProps) {
     super(scope, id);
-    const vpc = new ec2.Vpc(this, 'AnyuppRKeeperVpc', {
-      maxAzs: 3,
-    });
-    //
-    // Task Role
-    const taskRole = new iam.Role(this, 'ecsTaskExecutionRole', {
+
+    const taskRole = new iam.Role(this, 'RkeeperECSTaskExecutionRole', {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
     });
 
@@ -38,6 +38,40 @@ export class RKeeperStack extends sst.Stack {
       ),
     );
 
+    const menusyncDockerAsset = new DockerImageAsset(
+      this,
+      'RKeepermenusyncProcessor',
+      {
+        directory: path.join(__dirname, '..', '..'),
+        file: 'Dockerfile.process-products',
+      },
+    );
+
+    const menusyncTaskDefinition = new ecs.FargateTaskDefinition(
+      this,
+      'AnyuppRkeeperMenusyncTaskDef',
+      {
+        memoryLimitMiB: 512,
+        cpu: 256,
+        taskRole,
+      },
+    );
+
+    const dockerImage =
+      ecs.ContainerImage.fromDockerImageAsset(menusyncDockerAsset);
+
+    menusyncTaskDefinition.addContainer('DefaultContainer', {
+      image: dockerImage,
+      environment: {
+        API_ACCESS_KEY_ID: props.apiAccessKeyId,
+        API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
+      },
+      logging: ecs.LogDriver.awsLogs({
+        streamPrefix: 'anyupp-process-menusyncs',
+        logRetention: 7,
+      }),
+    });
+
     const rkeeperLambda = new lambda.Function(this, 'RKeeperWebhookLambda', {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
@@ -47,12 +81,10 @@ export class RKeeperStack extends sst.Stack {
         path.join(__dirname, '../../.serverless/rkeeper-webhook.zip'),
       ),
       environment: {
-        RKeeperProcessProductSecurityGroup: vpc.vpcDefaultSecurityGroup,
-        RKeeperProcessProductSubnet: vpc.publicSubnets[0].subnetId,
-        taskRoleArn: taskRole.roleArn,
         API_ACCESS_KEY_ID: props.apiAccessKeyId,
         API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
       },
+      vpc: props.vpc,
     });
 
     if (rkeeperLambda.role) {
@@ -83,16 +115,12 @@ export class RKeeperStack extends sst.Stack {
       value: api.url,
     });
 
-    new cdk.CfnOutput(this, 'RKeeperProcessProductSecurityGroup', {
-      value: vpc.vpcDefaultSecurityGroup,
-    });
-
-    new cdk.CfnOutput(this, 'RKeeperProcessProductSubnet', {
-      value: vpc.publicSubnets[0].subnetId,
-    });
-
-    new cdk.CfnOutput(this, 'RKeeperProcessProductTaskRoleArn', {
+    new cdk.CfnOutput(this, 'RKeeperTaskRoleArn', {
       value: taskRole.roleArn,
+    });
+
+    new cdk.CfnOutput(this, 'RKeeperTaskDefinitionArn', {
+      value: menusyncTaskDefinition.taskDefinitionArn,
     });
   }
 }

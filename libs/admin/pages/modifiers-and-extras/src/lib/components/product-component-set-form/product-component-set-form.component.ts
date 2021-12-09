@@ -183,7 +183,7 @@ export class ProductComponentSetFormComponent
 
   public submit() {
     this._save().subscribe(() => {
-      this._successAndClose(this.editing ? 'update' : 'inert');
+      this._successAndClose(this.editing ? 'update' : 'insert');
     });
   }
 

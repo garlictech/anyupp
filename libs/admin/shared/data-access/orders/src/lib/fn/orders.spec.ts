@@ -1,15 +1,16 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { orderFixture, testIdPrefix, unitFixture } from '@bgap/shared/fixtures';
+import {
+  orderFixture,
+  productSnapshotFixture,
+  unitFixture,
+} from '@bgap/shared/fixtures';
 import { FloorMapUserOrderObjects } from '@bgap/shared/types';
 
 import {
-  currentStatus,
   getActiveOrdersByUser,
-  getLowestStatus,
   getNextOrderItemStatus,
   getNextOrderStatus,
   getOrderLaneColor,
-  getOrderStatusByItemsStatus,
   getStatusColor,
   getTableOrders,
 } from './orders';
@@ -26,23 +27,6 @@ const orders = [
 ];
 
 describe('Orders pure function tests', () => {
-  describe('currentStatus', () => {
-    it('should get current status', () => {
-      expect(
-        currentStatus([
-          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.placed),
-          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.served),
-        ]),
-      ).toMatchInlineSnapshot(`"served"`);
-      expect(
-        currentStatus([
-          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.ready),
-          orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.rejected),
-        ]),
-      ).toMatchInlineSnapshot(`"rejected"`);
-    });
-  });
-
   describe('getNextOrderStatus', () => {
     it('should get next order status', () => {
       expect(
@@ -92,8 +76,8 @@ describe('Orders pure function tests', () => {
     const unit: CrudApi.Unit = unitFixture.unit_01;
 
     const orderItem = {
-      ...orderFixture.orderItemInputBase('Fanta'),
-      productId: `${testIdPrefix}unit_product_fanta`,
+      ...orderFixture.orderItemInputBase(productSnapshotFixture.chainProduct_1),
+      productId: productSnapshotFixture.chainProduct_1.id,
     };
 
     it('should get order lane color', () => {
@@ -126,30 +110,6 @@ describe('Orders pure function tests', () => {
       expect(
         getStatusColor(CrudApi.OrderStatus.rejected),
       ).toMatchInlineSnapshot(`"danger"`);
-    });
-  });
-
-  describe('getLowestStatus', () => {
-    it('should get lowest status', () => {
-      expect(
-        getLowestStatus([
-          CrudApi.OrderStatus.placed,
-          CrudApi.OrderStatus.processing,
-          CrudApi.OrderStatus.ready,
-          CrudApi.OrderStatus.served,
-        ]),
-      ).toMatchInlineSnapshot(`"placed"`);
-
-      expect(
-        getLowestStatus([
-          CrudApi.OrderStatus.ready,
-          CrudApi.OrderStatus.served,
-        ]),
-      ).toMatchInlineSnapshot(`"ready"`);
-
-      expect(
-        getLowestStatus([CrudApi.OrderStatus.served]),
-      ).toMatchInlineSnapshot(`"served"`);
     });
   });
 
@@ -210,35 +170,6 @@ describe('Orders pure function tests', () => {
         getTableOrders(['01'], activeOrders)['01'].userOrders?.[0]?.orders
           ?.length,
       ).toBe(2);
-    });
-  });
-
-  describe('getOrderStatusByItemsStatus', () => {
-    const order = orders[0];
-
-    it('should get order status by item status', () => {
-      expect(getOrderStatusByItemsStatus(order)).toMatchInlineSnapshot(
-        `"placed"`,
-      );
-
-      order.items = [
-        {
-          ...order.items[0],
-          statusLog: [
-            orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.served),
-          ],
-        },
-        {
-          ...order.items[1],
-          statusLog: [
-            orderFixture.getOrderStatusLogItem(CrudApi.OrderStatus.processing),
-          ],
-        },
-      ];
-
-      expect(getOrderStatusByItemsStatus(order)).toMatchInlineSnapshot(
-        `"processing"`,
-      );
     });
   });
 });

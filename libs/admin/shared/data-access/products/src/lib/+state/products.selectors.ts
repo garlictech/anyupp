@@ -86,6 +86,7 @@ export const getPendingGroupProductsOfSelectedCategory = () =>
         return (
           !found &&
           !!productCategoryId &&
+          !chainProduct.dirty &&
           chainProduct.productCategoryId === productCategoryId
         );
       }),
@@ -155,6 +156,7 @@ export const getPendingUnitProductsOfSelectedCategory = () =>
         return (
           !found &&
           !!productCategoryId &&
+          !groupProduct.dirty &&
           groupProduct.productCategoryId === productCategoryId
         );
       }),

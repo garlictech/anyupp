@@ -110,7 +110,8 @@
     "receipt": "nyugta",
     "invoice": "számla",
     "timeZone": "Időzóna",
-    "resetPassword": "Új jelszó"
+    "resetPassword": "Új jelszó",
+    "search": "Keresés"
   },
   "menu": {
     "dashboard": "Vezérlőpult",

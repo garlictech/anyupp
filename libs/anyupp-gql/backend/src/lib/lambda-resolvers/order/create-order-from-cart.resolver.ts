@@ -6,6 +6,7 @@ import {
   PaymentStatus,
 } from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
+import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 import {
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
@@ -17,7 +18,6 @@ import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { incrementOrderNum } from '../../database';
 import { OrderResolverDeps } from './utils';
-import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 

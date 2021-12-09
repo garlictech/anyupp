@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { KeyValue } from '@bgap/shared/types';
 
@@ -19,6 +14,4 @@ export class FormRadioGroupComponent {
   @Input() localize?: boolean;
   @Input() horizontal? = true;
   @Input() inputId = '';
-
-  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 }

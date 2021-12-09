@@ -28,9 +28,9 @@ const reducer = createReducer(
     error: null,
   })),
   on(
-    ProductCategoriesActions.upsertProductCategorys,
-    (state, { productCategorys }) =>
-      productCategoriesAdapter.upsertMany(productCategorys, state),
+    ProductCategoriesActions.upsertProductCategories,
+    (state, { productCategories }) =>
+      productCategoriesAdapter.upsertMany(productCategories, state),
   ),
   on(ProductCategoriesActions.resetProductCategories, state =>
     productCategoriesAdapter.removeAll(state),
