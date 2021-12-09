@@ -86,8 +86,11 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                       // pageIndex: widget.navigateToCart ? 4 : 0,
                       ));
                 } else {
-                  int? selected =
-                      await selectUnitAndGoToMenuScreen(context, unit, false);
+                  int? selected = await selectUnitAndGoToMenuScreen(
+                    context,
+                    unit,
+                    dismissable: false,
+                  );
                   if (selected == null) {
                     Nav.reset(SelectUnitChooseMethodScreen());
                   }

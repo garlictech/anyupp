@@ -1,0 +1,7 @@
+{
+"common-backend-anyupp": {
+    "AnyuppVpcSecurityGroupOutput": "sg-067322e2345a84f7e",
+    "AnyuppVpcSubnetOutput": "subnet-0794d43e0b3d21433",
+    "AnyuppVpcIdOutput": "vpc-0880d26d0165c9f7f"
+  }
+}
