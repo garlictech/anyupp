@@ -83,5 +83,9 @@ module.exports = {
     '<rootDir>/libs/admin/shared/fixtures',
     '<rootDir>/apps/common-backend',
     '<rootDir>/libs/backend/shared/utils',
+    '<rootDir>/libs/backend/orders',
+    '<rootDir>/libs/backend/units',
+    '<rootDir>/libs/backend/products',
+    '<rootDir>/libs/backend/product-categories',
   ],
 };

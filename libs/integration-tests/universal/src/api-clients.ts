@@ -10,7 +10,7 @@ import {
 } from '@bgap/crud-gql/api';
 import { Auth } from 'aws-amplify';
 import { from, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { getCognitoUsername } from '@bgap/shared/fixtures';
 
 interface AuthenticatdGraphQLClientWithUserId {

@@ -1,4 +1,6 @@
+import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import * as route53 from '@aws-cdk/aws-route53';
 import { App, Stack } from '@serverless-stack/resources';
 import { AppsyncAppStack } from './app/appsync-app-stack';
 import { CognitoStack } from './app/cognito-stack';
@@ -15,7 +17,6 @@ import { StripeStack } from './app/stripe-stack';
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
-    const sites = new SiteStack(scope, 'sites', {});
 
     const secretsManagerStack = new SecretsManagerStack(
       scope,
@@ -33,6 +34,28 @@ export class AnyUppStack extends Stack {
       'AnyuppDefaultSecurityGroupId',
       paramsStack.securityGroupId,
     );
+
+    const rootDomain = 'anyupp.com';
+
+    const zone = route53.HostedZone.fromLookup(this, 'AnyuppHostedZone', {
+      domainName: rootDomain,
+    });
+
+    const certificateArn =
+      scope.stage === 'prod'
+        ? 'arn:aws:acm:us-east-1:486782650003:certificate/d743bb2d-00a2-49b4-82c5-f1b46baaa0e9'
+        : 'arn:aws:acm:us-east-1:568276182587:certificate/b669ca50-875b-4e03-99e3-2983e07d7088';
+
+    const certificate = acm.Certificate.fromCertificateArn(
+      this,
+      'AnyuppCertificate',
+      certificateArn,
+    );
+
+    const sites = new SiteStack(scope, 'sites', {
+      rootDomain,
+      certificateArn,
+    });
 
     const cognitoStack = new CognitoStack(scope, 'cognito', {
       adminSiteUrl: sites.adminSiteUrl,
@@ -80,6 +103,9 @@ export class AnyUppStack extends Stack {
       szamlazzhuAgentKey: secretsManagerStack.szamlazzhuAgentKey,
       apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
       apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
+      zone,
+      certificate,
+      rootDomain,
     });
 
     new ConfiguratorStack(scope, 'configurator', {
@@ -91,6 +117,9 @@ export class AnyUppStack extends Stack {
       apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
       vpc,
       securityGroupId: paramsStack.securityGroupId,
+      zone,
+      certificate,
+      rootDomain,
     });
 
     if (scope.stage === 'dev' || scope.stage === 'qa') {

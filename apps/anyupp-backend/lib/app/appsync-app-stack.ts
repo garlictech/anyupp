@@ -7,17 +7,17 @@ import * as sm from '@aws-cdk/aws-secretsmanager';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
 import {
-  createOrderResolvers,
   createStripeResolvers,
-  createUnitResolvers,
   createUserResolvers,
 } from '@bgap/anyupp-gql/backend';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import * as sst from '@serverless-stack/resources';
+import { createOrderResolvers } from '@bgap/backend/orders';
 import path from 'path';
 import { commonLambdaProps } from './lambda-common';
 import { PROJECT_ROOT } from './settings';
 import { getFQParamName } from './utils';
+import { createUnitResolvers } from '@bgap/backend/units';
 
 export interface AppsyncAppStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;

@@ -1,6 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import {
   chainFixture,
   groupFixture,
@@ -25,6 +24,7 @@ import {
 import { createTestChain, deleteTestChain } from '../../../seeds/chain';
 import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
+import { unitRequestHandler } from '@bgap/backend/units';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km

@@ -1,6 +1,6 @@
 import { pipe, flow } from 'fp-ts/lib/function';
 import * as R from 'ramda';
-import { combineLatest, of, throwError } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import * as CrudSdk from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { map, switchMap, tap, delay, shareReplay } from 'rxjs/operators';

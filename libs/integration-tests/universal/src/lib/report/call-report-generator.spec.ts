@@ -43,8 +43,9 @@ describe('Report', () => {
       reportFile: `./weeklyReport-${reportDate}.xlsx`,
       reportDate,
       slackBotToken: 'slack_bot_token',
+      slackChannel: 'slack_channel',
     };
 
-    createReport(deps)(done);
+    createReport(deps).subscribe(() => done());
   }, 125000);
 });

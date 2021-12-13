@@ -1,13 +1,6 @@
-export * from './lib/database';
 export * from './lib/lambda-resolvers/admin-user';
-export { orderRequestHandler } from './lib/lambda-resolvers/order/order-request-handler';
-export { createOrderResolvers } from './lib/lambda-resolvers/order/order-resolvers';
-export * from './lib/lambda-resolvers/product';
-export * from './lib/lambda-resolvers/product-category';
 export * from './lib/lambda-resolvers/stripe';
-export * from './lib/lambda-resolvers/unit';
 export * from './lib/lambda-resolvers/user';
-export * from './lib/lambda-resolvers/order/utils';
 export * from './lib/szamlazzhu';
 export * from './lib/utils/errors';
 export { vtl };

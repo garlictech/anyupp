@@ -58,8 +58,8 @@ export const rkeeperUnitProduct2: RequiredId<CrudApi.CreateUnitProductInput> = {
 export const processedDish: Dish = {
   price: 50000,
   active: true,
-  id: 1000114,
-  guid: '4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68',
+  id: 9991000114,
+  guid: '999e3ab3-86a0-48d9-a9a9-f4e0c9fbce68',
   name: 'Próba ital',
 };
 
@@ -79,3 +79,5 @@ export const createGroup: RequiredId<CrudApi.CreateGroupInput> = {
   id: groupId,
   chainId,
 };
+
+export const realTestExternalId = '109150001';

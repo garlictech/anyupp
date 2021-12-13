@@ -1,6 +1,5 @@
 import { getCognitoUsername } from '@bgap/shared/fixtures';
 import { CrudSdk } from '@bgap/crud-gql/api';
-import { orderRequestHandler } from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   cartFixture,
@@ -40,6 +39,7 @@ import {
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
+import { orderRequestHandler } from '@bgap/backend/orders';
 
 const TEST_NAME = 'ORDER_';
 const DYNAMODB_OPERATION_DELAY = 3000;
@@ -228,7 +228,7 @@ describe('CreatCartFromOrder mutation test', () => {
             createTestCart(cart_05_takeaway, crudSdk),
           ]),
         ),
-        delay(DYNAMODB_OPERATION_DELAY),
+        delay(5000),
       )
       .subscribe(() => done());
   }, 25000);
@@ -444,7 +444,7 @@ describe('CreatCartFromOrder mutation test', () => {
       );
     };
 
-    it('should create an order from a valid cart with resolver function', done => {
+    it.only('should create an order from a valid cart with resolver function', done => {
       const userId = cart_01.userId;
 
       testLogic(

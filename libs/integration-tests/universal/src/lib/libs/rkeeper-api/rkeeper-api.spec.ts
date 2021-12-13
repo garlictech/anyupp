@@ -1,8 +1,6 @@
 import { ECS } from 'aws-sdk';
 import * as R from 'ramda';
 import * as fs from 'fs';
-import request from 'supertest';
-import { config } from '@bgap/shared/config';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { createIamCrudSdk } from '../../../api-clients';
 import {
@@ -27,11 +25,11 @@ import {
   handleProducts,
 } from '@bgap/rkeeper-api';
 import { from, Observable, combineLatest, of } from 'rxjs';
-import { ES_DELAY, maskV4UuidIds } from '../../../utils';
+import { ES_DELAY, maskV4UuidIds, dateMatcher } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
 import * as fixtures from './fixtures';
-import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/anyupp-gql/backend';
+import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/backend/products';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import * as stackConfig from '../../generated/stack-config.json';
 import * as commonStackConfig from '../../generated/common-stack-config.json';
@@ -109,6 +107,17 @@ describe('Test the rkeeper api basic functionality', () => {
       item =>
         crudSdk.DeleteUnitProduct({
           input: { id: item.id },
+        }),
+      100,
+    ),
+    mergeMap(
+      item =>
+        crudSdk.DeleteProductCategory({
+          input: {
+            id: defaultProductCategoryId({
+              chainId: fixtures.rkeeperUnit.chainId,
+            }),
+          },
         }),
       100,
     ),
@@ -272,11 +281,6 @@ describe('Test the rkeeper api basic functionality', () => {
   }, 15000);
 
   test('Test full rkeeper product handling - the use case', done => {
-    const basicMatcher = {
-      createdAt: expect.any(String),
-      updatedAt: expect.any(String),
-    };
-
     const createMatcher =
       (matcher: Record<string, unknown>) =>
       (label: string) =>
@@ -288,7 +292,7 @@ describe('Test the rkeeper api basic functionality', () => {
           R.forEach(res => expect(res).toMatchSnapshot(matcher, label)),
         );
 
-    const checkMatches = createMatcher(basicMatcher);
+    const checkMatches = createMatcher(dateMatcher);
 
     const sortConfigSets = <
       T extends {
@@ -405,7 +409,10 @@ describe('Test the rkeeper api basic functionality', () => {
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
-    handleRkeeperProducts(crudSdk)('109150001', rawData).subscribe({
+    handleRkeeperProducts(crudSdk)(
+      fixtures.realTestExternalId,
+      rawData,
+    ).subscribe({
       next: result => {
         expect(result).toMatchSnapshot();
         done();
@@ -414,7 +421,7 @@ describe('Test the rkeeper api basic functionality', () => {
   }, 720000);
 
   // We skip this extremely long-running test by default
-  test.skip('Test the product handling logic in fargate', done => {
+  test('Test the product handling logic in fargate', done => {
     const deps = {
       ecs: new ECS({ apiVersion: '2014-11-13' }),
       RKeeperProcessProductSubnet:
@@ -425,7 +432,7 @@ describe('Test the rkeeper api basic functionality', () => {
         stackConfig['anyupp-backend-rkeeper'].RKeeperTaskDefinitionArn,
     };
 
-    handleProducts(deps)('109150001', fixtures.rawData)
+    handleProducts(deps)(fixtures.realTestExternalId, fixtures.rawData)
       .pipe(
         // Let the fargate provision its task
         delay(10000),
@@ -455,10 +462,12 @@ describe('Test the rkeeper api basic functionality', () => {
             ),
             switchMap(() =>
               crudSdk.GetProductCategory({
-                id: defaultProductCategoryId,
+                id: defaultProductCategoryId(businessEntityInfo),
               }),
             ),
-            tap(res => expect(res).toMatchSnapshot('product category data')),
+            tap(res =>
+              expect(res).toMatchSnapshot(dateMatcher, 'product category data'),
+            ),
           ),
         ),
       )

@@ -134,7 +134,13 @@
       "@bgap/anyupp-gql/api": ["libs/anyupp-gql/api/src/index.ts"],
       "@bgap/anyupp-gql/backend": ["libs/anyupp-gql/backend/src/index.ts"],
       "@bgap/api/data-access": ["libs/api/data-access/src/index.ts"],
+      "@bgap/backend/orders": ["libs/backend/orders/src/index.ts"],
+      "@bgap/backend/product-categories": [
+        "libs/backend/product-categories/src/index.ts"
+      ],
+      "@bgap/backend/products": ["libs/backend/products/src/index.ts"],
       "@bgap/backend/shared/utils": ["libs/backend/shared/utils/src/index.ts"],
+      "@bgap/backend/units": ["libs/backend/units/src/index.ts"],
       "@bgap/crud-gql/api": ["libs/crud-gql/api/src/index.ts"],
       "@bgap/crud-gql/backend": ["libs/crud-gql/backend/src/index.ts"],
       "@bgap/gql-sdk": ["libs/gql-sdk/src/index.ts"],

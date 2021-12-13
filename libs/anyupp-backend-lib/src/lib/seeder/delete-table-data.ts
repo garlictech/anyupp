@@ -2,17 +2,15 @@ import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 import { combineLatest, defer, from } from 'rxjs';
 import { concatMap, delay, switchMap, tap, toArray } from 'rxjs/operators';
-
-import AWS from 'aws-sdk';
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import { DynamoDB } from 'aws-sdk';
 import { tableConfig } from '@bgap/crud-gql/backend';
 
-const docClient = new AWS.DynamoDB.DocumentClient();
+const docClient = new DynamoDB.DocumentClient();
 
 // BAsed on https://stackoverflow.com/questions/51110377/delete-all-items-in-dynamodb-using-lambda
 const getAllRecords = async (tableName: string) => {
   console.log(`Getting all records in table ${tableName}`);
-  const params: DocumentClient.ScanInput = {
+  const params: DynamoDB.DocumentClient.ScanInput = {
     TableName: tableName,
   };
 
@@ -32,7 +30,7 @@ const getAllRecords = async (tableName: string) => {
 };
 
 const deleteItem = (table: string, id: string) => {
-  const params: DocumentClient.DeleteItemInput = {
+  const params: DynamoDB.DocumentClient.DeleteItemInput = {
     TableName: table,
     Key: {
       id: id,

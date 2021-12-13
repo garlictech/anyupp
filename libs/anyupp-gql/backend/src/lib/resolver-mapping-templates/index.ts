@@ -6,4 +6,3 @@ export * from './common-list-response-mapping-template';
 export * from './common-response-mapping-template';
 export * from './common-response-mappint-template-with-error-passthrough';
 export * from './common-update-request-mapping-template';
-export * from './get-authenticated-userid';

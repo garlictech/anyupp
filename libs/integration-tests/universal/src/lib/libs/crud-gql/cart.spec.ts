@@ -1,7 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   cartFixture,
-  getCognitoUsername,
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';

@@ -12,5 +12,5 @@ export class RkeeperInfoBlockComponent {
   @Input() unitID?: string;
   @Input() pos?: CrudApi.Pos | undefined | null;
 
-  public webHookUrl = config.RKeeperWebhookEndpoint;
+  public webHookUrl = config.RkeeperWebhookEndpoint;
 }

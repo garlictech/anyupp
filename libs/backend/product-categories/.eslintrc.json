@@ -1,0 +1,23 @@
+{
+  "extends": [
+    "../../../.eslintrc.json"
+  ],
+  "ignorePatterns": [
+    "!**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "parserOptions": {
+        "project": [
+          "libs/backend/product-categories/tsconfig.*?.json"
+        ]
+      }
+    }
+  ]
+}

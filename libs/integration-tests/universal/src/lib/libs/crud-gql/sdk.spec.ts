@@ -1,11 +1,8 @@
 import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import {
-  getCognitoUsername,
-  productFixture,
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
-import { Auth } from 'aws-amplify';
 import { interval, of } from 'rxjs';
 import {
   catchError,

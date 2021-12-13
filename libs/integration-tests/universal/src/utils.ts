@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import { pipe } from 'fp-ts/lib/function';
+import { expect } from '@jest/globals';
 
 export const ES_DELAY = 3000; //ms
 export const DYNAMO_DELAY = 1000; //ms
@@ -15,3 +16,8 @@ export const maskV4UuidIds = <T>(data: T) =>
     ),
     (d: string) => JSON.parse(d) as T,
   );
+
+export const dateMatcher = {
+  createdAt: expect.any(String),
+  updatedAt: expect.any(String),
+};
