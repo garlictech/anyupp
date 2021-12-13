@@ -30,23 +30,23 @@ Feature: Takeaway settings on admin
     And I click on the "Products" text
     Then the "Products" title is displayed
     When I click on the "Group products" text
-    When I click the category selector to set "Test product category #1 name"
+    When I click the category selector to set "Hamburgers"
     Then I should see "Fanta #2" text
-    And On the active tab I click the edit button in the listitem with "Fanta #2" content
+    And On the active tab I click the edit button in the listitem with "Sajtburger" content
     Then I should see "Edit product" text on the dialog
     When I fill out the "tax(%)" input with "28"
     And I fill out the "takeaway tax(%)" input with "27"
     And I click on the "Submit" button
     Then I should see a success toastr
-    And On the active tab I click the edit button in the listitem with "Fanta #2" content
+    And On the active tab I click the edit button in the listitem with "Sajtburger" content
     Then The "tax(%)" input should contain "28"
     Then The "takeaway tax(%)" input should contain "27"
     When I click on the close button
     Then The dialog should NOT exist
     When I click on the "Unit products" text
-    When I click the category selector to set "Test product category #1 name"
-    Then I should see "Fanta #2" text
-    When On the active tab I click the edit button in the listitem with "Fanta #2" content
+    When I click the category selector to set "Hamburgers"
+    Then I should see "Sajtburger" text
+    When On the active tab I click the edit button in the listitem with "Sajtburger" content
     Then I should see "Edit product" text on the dialog
     And I should see "Serving modes" text
     When I click on the "In place" checkbox
@@ -91,14 +91,14 @@ Feature: Takeaway settings on admin
     When I click on the menu icon
     And I click on the "Products" text
     And I click on the "Unit products" text
-    And I click the category selector to set "Test product category #1 name"
-    Then I should see "Fanta #2" text
-    And On the active tab I click the edit button in the listitem with "Fanta #2" content
+    And I click the category selector to set "Hamburgers"
+    Then I should see "Sajtburger" text
+    And On the active tab I click the edit button in the listitem with "Sajtburger" content
     Then I should see "Edit product" text on the dialog
-    And I should see "Fanta #2" text on the dialog
+    And I should see "Sajtburger" text on the dialog
     And I select the "test extra" in the modifier selector
     And I click on the "Add" button
     And I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist
-    And I should see "Fanta #2" text
+    And I should see "Sajtburger" text
