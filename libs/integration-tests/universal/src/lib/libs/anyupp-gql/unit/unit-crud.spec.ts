@@ -4,13 +4,13 @@ import bcrypt from 'bcryptjs';
 import { catchError, switchMap, tap, delay, take } from 'rxjs/operators';
 import { unitFixture } from '@bgap/shared/fixtures';
 import { createIamCrudSdk } from '../../../../api-clients';
+import { anyuppResolverHandler } from '@bgap/anyupp-gql/backend';
+import { of } from 'rxjs';
 import {
-  anyuppResolverHandler,
   createUnitResolver,
   createUnitsDeps,
   updateUnitResolver,
-} from '@bgap/anyupp-gql/backend';
-import { of } from 'rxjs';
+} from '@bgap/backend/units';
 
 describe('Test unit CRUD operations', () => {
   const crudSdk = createIamCrudSdk();

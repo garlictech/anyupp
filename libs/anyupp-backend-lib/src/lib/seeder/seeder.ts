@@ -1,5 +1,3 @@
-import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
-
 import {
   getCognitoUsername,
   orderFixture,
@@ -127,11 +125,9 @@ export const seedBusinessData = (deps: SeederDependencies) =>
 const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
   of('start').pipe(
     switchMap(() =>
-      from(
-        unitRequestHandler(deps.crudSdk).regenerateUnitData({
-          input: { id: unitFixture.unitId_seeded_01 },
-        }),
-      ),
+      deps.crudSdk.RegenerateUnitData({
+        input: { id: unitFixture.unitId_seeded_01 },
+      }),
     ),
   );
 

@@ -11,14 +11,14 @@ import {
   createUnitsDeps,
   unitRequestHandler,
   updateUnitResolver,
-} from './lambda-resolvers/unit';
+} from '@bgap/backend/units';
 import { createSzamlazzClient } from './szamlazzhu';
 import {
   createStripeClient,
   stripeRequestHandler,
 } from './lambda-resolvers/stripe';
 import { adminRequestHandler } from './lambda-resolvers/admin-user';
-import { orderRequestHandler } from './lambda-resolvers/order/order-request-handler';
+import { orderRequestHandler } from '@bgap/backend/orders';
 import { userRequestHandler } from './lambda-resolvers/user';
 
 export interface AnyuppRequest {

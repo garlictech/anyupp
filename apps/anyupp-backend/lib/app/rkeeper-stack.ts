@@ -1,3 +1,5 @@
+import * as route53 from '@aws-cdk/aws-route53';
+import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as ecs from '@aws-cdk/aws-ecs';
 import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 import * as sst from '@serverless-stack/resources';
@@ -5,23 +7,24 @@ import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as apigateway from '@aws-cdk/aws-apigateway';
 import { commonLambdaProps } from './lambda-common';
-import * as ssm from '@aws-cdk/aws-ssm';
-import { getFQParamName } from '@bgap/backend/shared/utils';
 import path from 'path';
 import * as iam from '@aws-cdk/aws-iam';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import { createApiDomainName } from './utils';
 
 export interface RKeeperStackProps extends sst.StackProps {
   apiAccessKeyId: string;
   apiSecretAccessKey: string;
   vpc: ec2.IVpc;
   securityGroupId: string;
+  rootDomain: string;
+  certificate: acm.ICertificate;
+  zone: route53.IHostedZone;
 }
 
 export class RKeeperStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: RKeeperStackProps) {
     super(scope, id);
-
     const taskRole = new iam.Role(this, 'RkeeperECSTaskExecutionRole', {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
     });
@@ -96,24 +99,25 @@ export class RKeeperStack extends sst.Stack {
       );
     }
 
+    const apiName = 'rkeeper-webhook';
+
     const api = new apigateway.LambdaRestApi(this, 'RKeeperWebhook', {
       handler: rkeeperLambda,
+      proxy: true,
+      restApiName: apiName,
       deployOptions: {
         stageName: scope.stage,
       },
-      proxy: true,
     });
 
-    new ssm.StringParameter(this, 'RKeeperWebhookEndpointParam', {
-      allowedPattern: '.*',
-      description: 'Webhook for RKeeper',
-      parameterName: getFQParamName(scope, 'RKeeperWebhookEndpoint'),
-      stringValue: api.url,
-    });
-
-    new cdk.CfnOutput(this, 'RKeeperWebhookEndpoint', {
-      value: api.url,
-    });
+    createApiDomainName(
+      this,
+      apiName,
+      api,
+      props.zone,
+      props.rootDomain,
+      props.certificate,
+    );
 
     new cdk.CfnOutput(this, 'RKeeperTaskRoleArn', {
       value: taskRole.roleArn,

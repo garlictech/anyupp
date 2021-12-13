@@ -1,5 +1,22 @@
 {
   "extends": "../../../.eslintrc.json",
-  "ignorePatterns": ["!**/*"],
-  "rules": {}
+  "ignorePatterns": [
+    "!**/*"
+  ],
+  "rules": {},
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "parserOptions": {
+        "project": [
+          "libs/anyupp-gql/api/tsconfig.*?.json"
+        ]
+      }
+    }
+  ]
 }

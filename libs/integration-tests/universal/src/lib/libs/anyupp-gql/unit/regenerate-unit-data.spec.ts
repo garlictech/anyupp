@@ -1,10 +1,4 @@
 import { CrudSdk } from '@bgap/crud-gql/api';
-import {
-  deleteGeneratedProductCategoriesForAUnit,
-  listGeneratedProductCategoriesForUnits,
-  listGeneratedProductsForUnits,
-  unitRequestHandler,
-} from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
@@ -58,6 +52,12 @@ import {
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
 import { getSortedProductCatIds } from '../test-utils/test-utils';
+import {
+  deleteGeneratedProductCategoriesForAUnit,
+  listGeneratedProductCategoriesForUnits,
+} from '@bgap/backend/product-categories';
+import { unitRequestHandler } from '@bgap/backend/units';
+import { listGeneratedProductsForUnits } from '@bgap/backend/products';
 
 const DYNAMODB_OPERATION_DELAY = 5000;
 const TEST_NAME = 'REGEN_';

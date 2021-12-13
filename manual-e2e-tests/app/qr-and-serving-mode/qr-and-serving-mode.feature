@@ -142,6 +142,27 @@ Feature: QR code and serving mode change
         Then I should see "current orders" text
         And my cart should be empty
 
+    Scenario: Serving mode change on the cart screen
+        Given I am on the login screen
+        And the language is set to EN
+        When I tap the text "Continue anonymously"
+        Then there is a loading screen
+        And there is the "Unit selector" screen
+        When I tap the "Késdobáló #111" unit in the list
+        And I tap the "Take away" button
+        Then there is the "Menu" screen
+        When I tap the "Sajtburger" card under "Hamburgers" category
+        And I tap the "Add To Cart" button
+        And I tap the "MY CART (1700 Ft)" button
+        Then there is the "Cart" screen
+        When I tap on the "in place" button
+        Then I should see "Please select" dialog
+        When I tap on the "Take away" button
+        Then I should see "Are you sure you want to switch to take away order mode?" dialog
+        When I tap on the "Yes" button
+        Then I should see the "Menu" screen
+        And my cart should be deleted
+
 
 
 

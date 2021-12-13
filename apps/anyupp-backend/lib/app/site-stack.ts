@@ -5,7 +5,10 @@ import { PROJECT_ROOT } from './settings';
 import { getFQParamName } from './utils';
 import { WebsiteConstruct } from './website-construct';
 
-export type SiteStackProps = sst.StackProps;
+export interface SiteStackProps extends sst.StackProps {
+  rootDomain: string;
+  certificateArn: string;
+}
 
 export class SiteStack extends sst.Stack {
   public adminSiteUrl: string;
@@ -15,10 +18,11 @@ export class SiteStack extends sst.Stack {
     const app = this.node.root as sst.App;
 
     const adminSite = new WebsiteConstruct(this, 'Admin', {
-      domainName: 'anyupp.com',
+      domainName: props.rootDomain,
       siteSubDomain:
         app.stage === 'prod' ? 'admin2' : `${app.stage}-admin-${app.name}`,
       distDir: path.join(PROJECT_ROOT, '/dist/apps/admin'),
+      certificateArn: props.certificateArn,
     });
 
     this.adminSiteUrl = adminSite.websiteUrl;

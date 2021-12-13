@@ -1232,7 +1232,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "type:backend"]
     },
     "anyupp-gql-api": {
       "root": "libs/anyupp-gql/api",
@@ -1524,6 +1524,75 @@
       },
       "tags": ["type:application", "platform:flutter"]
     },
+    "backend-orders": {
+      "root": "libs/backend/orders",
+      "sourceRoot": "libs/backend/orders/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/orders/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/orders"],
+          "options": {
+            "jestConfig": "libs/backend/orders/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "backend-product-categories": {
+      "root": "libs/backend/product-categories",
+      "sourceRoot": "libs/backend/product-categories/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/product-categories/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/product-categories"],
+          "options": {
+            "jestConfig": "libs/backend/product-categories/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "backend-products": {
+      "root": "libs/backend/products",
+      "sourceRoot": "libs/backend/products/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/products/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/products"],
+          "options": {
+            "jestConfig": "libs/backend/products/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
+    },
     "backend-shared-utils": {
       "root": "libs/backend/shared/utils",
       "sourceRoot": "libs/backend/shared/utils/src",
@@ -1546,6 +1615,29 @@
         }
       },
       "tags": ["platform:nodejs", "layer:utils"]
+    },
+    "backend-units": {
+      "root": "libs/backend/units",
+      "sourceRoot": "libs/backend/units/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/units/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/units"],
+          "options": {
+            "jestConfig": "libs/backend/units/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "cicd": {
       "root": "apps/cicd",
@@ -1757,7 +1849,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "layer:utils"]
     },
     "crud-gql-backend": {
       "root": "libs/crud-gql/backend",
@@ -1809,12 +1901,6 @@
       "sourceRoot": "libs/integration-tests/angular/src",
       "prefix": "bgap",
       "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/integration-tests/angular/**/*.ts"]
-          }
-        },
         "test": {
           "builder": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/integration-tests/angular"],
@@ -1866,7 +1952,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "shared-config": {
       "root": "libs/shared/config",
@@ -1919,7 +2005,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "layer:utils"]
     },
     "shared-fixtures": {
       "root": "libs/shared/fixtures",
@@ -1941,7 +2027,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "layer:utils"]
     },
     "shared-graphql-api-client": {
       "root": "libs/shared/graphql/api-client",
@@ -2007,7 +2093,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "layer:utils"]
     },
     "shared-utils": {
       "root": "libs/shared/utils",
@@ -2029,7 +2115,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "layer:utils"]
     }
   }
 }

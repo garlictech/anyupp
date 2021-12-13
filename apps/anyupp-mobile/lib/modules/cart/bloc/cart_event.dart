@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/InvoiceInfo.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 @immutable
 abstract class BaseCartAction extends Equatable {
@@ -45,7 +46,8 @@ class UpdateProductInCartAction extends BaseCartAction {
   final ProductVariant variant;
   final int quantity;
 
-  const UpdateProductInCartAction(this.unitId, this.product, this.variant, this.quantity);
+  const UpdateProductInCartAction(
+      this.unitId, this.product, this.variant, this.quantity);
 
   @override
   List<Object?> get props => [unitId, product, variant, quantity];
@@ -92,3 +94,15 @@ class AddInvoiceInfo extends BaseCartAction {
   @override
   List<Object?> get props => [invoiceInfo];
 }
+
+class SetCartServingMode extends BaseCartAction {
+  final ServingMode mode;
+  final String unitId;
+
+  const SetCartServingMode(this.unitId, this.mode);
+
+  @override
+  List<Object?> get props => [unitId, mode];
+}
+
+class ResetCartInMemory extends BaseCartAction {}

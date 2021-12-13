@@ -5,7 +5,6 @@ import {
 } from '@bgap/anyupp-gql/backend';
 import { awsConfig } from '@bgap/crud-gql/api';
 import {
-  getCognitoUsername,
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
@@ -13,14 +12,12 @@ import { CognitoIdentityServiceProvider, DynamoDB } from 'aws-sdk';
 import { of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import {
-  createAuthenticatedAnyuppSdk,
   createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',

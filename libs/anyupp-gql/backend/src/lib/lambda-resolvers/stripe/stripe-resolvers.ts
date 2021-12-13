@@ -1,5 +1,5 @@
 import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync';
-import { getAuthenticatedUserIdFromContextIdentity } from '../../resolver-mapping-templates';
+import { getAuthenticatedUserIdFromContextIdentity } from '@bgap/anyupp-backend-lib';
 
 export const createStripeResolvers = ({
   lambdaDs,

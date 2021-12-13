@@ -435,7 +435,7 @@ Array [
   Object {
     "active": 1,
     "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
-    "id": 1000114,
+    "id": 9991000114,
     "modischeme": 0,
     "name": "próba ital",
     "price": 500,
@@ -443,7 +443,7 @@ Array [
   Object {
     "active": 1,
     "guid": "5b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
-    "id": 1000115,
+    "id": 9991000115,
     "modischeme": 0,
     "name": "Próba kaja",
     "price": 600,
@@ -462,7 +462,7 @@ Array [
       "input": Object {
         "chainId": "CHAINID",
         "dirty": true,
-        "externalId": "1017196",
+        "externalId": "9991017196",
         "name": Object {
           "hu": "Tej sima (90ml)",
         },
@@ -474,7 +474,7 @@ Array [
       "input": Object {
         "chainId": "CHAINID",
         "dirty": true,
-        "externalId": "1017195",
+        "externalId": "9991017195",
         "name": Object {
           "hu": "Kókuszital (90ml)",
         },
@@ -486,7 +486,7 @@ Array [
       "input": Object {
         "chainId": "CHAINID",
         "dirty": true,
-        "externalId": "1017194",
+        "externalId": "9991017194",
         "name": Object {
           "hu": "Laktózmentes tej (90ml)",
         },
@@ -498,7 +498,7 @@ Array [
       "input": Object {
         "chainId": "CHAINID",
         "dirty": true,
-        "externalId": "1017193",
+        "externalId": "9991017193",
         "name": Object {
           "hu": "Mandulaital (90ml)",
         },
@@ -510,7 +510,7 @@ Array [
       "input": Object {
         "chainId": "CHAINID",
         "dirty": true,
-        "externalId": "1017191",
+        "externalId": "9991017191",
         "name": Object {
           "hu": "Zabital (90ml)",
         },
@@ -522,7 +522,7 @@ Array [
       "input": Object {
         "chainId": "CHAINID",
         "dirty": true,
-        "externalId": "1011504",
+        "externalId": "9991011504",
         "name": Object {
           "hu": "Papírpohár 2dl",
         },
@@ -534,7 +534,7 @@ Array [
       "input": Object {
         "chainId": "CHAINID",
         "dirty": true,
-        "externalId": "1011517",
+        "externalId": "9991011517",
         "name": Object {
           "hu": "Saját pohár",
         },
@@ -558,7 +558,7 @@ Array [
         "chainId": "CHAINID",
         "description": "describe me",
         "dirty": true,
-        "externalId": "1017198",
+        "externalId": "9991017198",
         "items": Array [
           "NEW PRODUCT COMPONENT ID",
           "NEW PRODUCT COMPONENT ID",
@@ -579,7 +579,7 @@ Array [
         "chainId": "CHAINID",
         "description": "describe me",
         "dirty": true,
-        "externalId": "1017199",
+        "externalId": "9991017199",
         "items": Array [
           "NEW PRODUCT COMPONENT ID",
           "NEW PRODUCT COMPONENT ID",
@@ -606,7 +606,7 @@ Array [
     Object {
       "filter": Object {
         "externalId": Object {
-          "eq": "1017198",
+          "eq": "9991017198",
         },
       },
     },
@@ -615,7 +615,7 @@ Array [
     Object {
       "filter": Object {
         "externalId": Object {
-          "eq": "1017199",
+          "eq": "9991017199",
         },
       },
     },
@@ -635,7 +635,7 @@ Array [
     Object {
       "filter": Object {
         "externalId": Object {
-          "eq": "1017196",
+          "eq": "9991017196",
         },
       },
     },
@@ -644,7 +644,7 @@ Array [
     Object {
       "filter": Object {
         "externalId": Object {
-          "eq": "1017195",
+          "eq": "9991017195",
         },
       },
     },
@@ -653,7 +653,7 @@ Array [
     Object {
       "filter": Object {
         "externalId": Object {
-          "eq": "1017194",
+          "eq": "9991017194",
         },
       },
     },
@@ -662,7 +662,7 @@ Array [
     Object {
       "filter": Object {
         "externalId": Object {
-          "eq": "1017193",
+          "eq": "9991017193",
         },
       },
     },
@@ -671,7 +671,7 @@ Array [
     Object {
       "filter": Object {
         "externalId": Object {
-          "eq": "1017191",
+          "eq": "9991017191",
         },
       },
     },
@@ -680,7 +680,7 @@ Array [
     Object {
       "filter": Object {
         "externalId": Object {
-          "eq": "1011504",
+          "eq": "9991011504",
         },
       },
     },
@@ -689,7 +689,7 @@ Array [
     Object {
       "filter": Object {
         "externalId": Object {
-          "eq": "1011517",
+          "eq": "9991011517",
         },
       },
     },

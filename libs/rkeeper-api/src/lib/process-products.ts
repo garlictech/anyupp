@@ -32,6 +32,7 @@ import {
   filterNullishGraphqlListWithDefault,
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
+import { regenerateUnitData } from '@bgap/backend/units';
 
 // make sure that everything gets (re)indexed
 const ES_DELAY = 5000; //ms
@@ -173,7 +174,6 @@ export const getBusinessEntityInfo =
         filter: { externalId: { eq: externalRestaurantId } },
       })
       .pipe(
-        tap(x => console.warn(x)),
         getFirstFoundItem(),
         throwIfEmptyValue(
           `Cannot find unit belonging to external unit id ${externalRestaurantId}`,
@@ -195,7 +195,7 @@ export const createRkeeperProduct =
     sdk
       .CreateChainProduct({
         input: {
-          productCategoryId: defaultProductCategoryId,
+          productCategoryId: defaultProductCategoryId(businessEntity),
           chainId: businessEntity.chainId,
           name: {
             hu: dish.name,
@@ -316,14 +316,16 @@ export const updateRkeeperProduct =
     });
 
 // This is a placeholder product category
-export const defaultProductCategoryId = 'default-product-category';
+export const defaultProductCategoryId = (businessEntityInfo: {
+  chainId: string;
+}) => `default-product-category-${businessEntityInfo.chainId}`;
 
 export const createDefaultProductCategory =
   (sdk: CrudApi.CrudSdk) => (businessEntityInfo: RKeeperBusinessEntityInfo) =>
     sdk
       .CreateProductCategory({
         input: {
-          id: defaultProductCategoryId,
+          id: defaultProductCategoryId(businessEntityInfo),
           chainId: businessEntityInfo.chainId,
           name: {
             en: 'Default category',
@@ -403,11 +405,7 @@ export const handleRkeeperProducts =
           count(),
           tap(i => console.log(i + ' Product processed')),
           delay(ES_DELAY),
-          switchMap(() =>
-            sdk.RegenerateUnitData({
-              input: { id: businessEntityInfo.unitId },
-            }),
-          ),
+          switchMap(() => regenerateUnitData(sdk)(businessEntityInfo.unitId)),
         ),
       ),
     );
@@ -530,6 +528,9 @@ const upsertConfigSetsHelper = R.memoizeWith(
                   }),
             ),
             throwIfEmptyValue(),
+            tap(x =>
+              console.warn('***** COMPONENT SET', JSON.stringify(x, null)),
+            ),
             map(componentSet => ({
               productSetId: componentSet.id,
               items: components,

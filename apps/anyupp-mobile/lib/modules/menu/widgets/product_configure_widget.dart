@@ -24,7 +24,8 @@ class ProductConfiguratorWidget extends StatefulWidget {
   });
 
   @override
-  _ProductConfiguratorWidgetState createState() => _ProductConfiguratorWidgetState();
+  _ProductConfiguratorWidgetState createState() =>
+      _ProductConfiguratorWidgetState();
 }
 
 class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
@@ -36,10 +37,14 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
 
   @override
   void initState() {
-    print('******* ProductConfiguratorWidget.initState().widget=${widget.product}');
+    print(
+        '******* ProductConfiguratorWidget.initState().widget=${widget.product}');
     _productVariant = widget.product.variants.first;
     widget.product.configSets?.forEach((element) {
-      _selectedModifiers[element.productSetId] = element.items.first.productComponentId;
+      if (element.items.isNotEmpty) {
+        _selectedModifiers[element.productSetId] =
+            element.items.first.productComponentId;
+      }
     });
     _calculateTotalPrice();
     super.initState();
@@ -48,8 +53,10 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   Future<void> setButton() async {
     OrderItem? orderItem = await getOrderItem();
     if (orderItem != null) {
-      BlocProvider.of<ConfigsetBloc>(context)
-          .add(ConfigsetUpdatedEvent(orderItem: orderItem, unit: widget.unit, totalPrice: _modifierTotalPrice));
+      BlocProvider.of<ConfigsetBloc>(context).add(ConfigsetUpdatedEvent(
+          orderItem: orderItem,
+          unit: widget.unit,
+          totalPrice: _modifierTotalPrice));
     }
   }
 
@@ -135,7 +142,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
                 product: widget.product,
                 unit: widget.unit,
                 onExtraSelected: (setId, componentId, selected) {
-                  print('onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
+                  print(
+                      'onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
                   setState(() {
                     if (_selectedExtras[setId] == null) {
                       _selectedExtras[setId] = {};
@@ -185,21 +193,29 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     );
   }
 
-  Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> getSelectedComponentMap() {
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> selectedConfigMap = {};
+  Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+      getSelectedComponentMap() {
+    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+        selectedConfigMap = {};
     _selectedModifiers.forEach((key, value) {
-      GeneratedProductConfigSet? modifier = getModifierConfigSetById(key, widget.product.configSets ?? []);
+      GeneratedProductConfigSet? modifier =
+          getModifierConfigSetById(key, widget.product.configSets ?? []);
       if (modifier != null) {
-        GeneratedProductConfigComponent? component = getComponentByIdFromSet(value, modifier);
+        GeneratedProductConfigComponent? component =
+            getComponentByIdFromSet(value, modifier, widget.servingMode);
         selectedConfigMap[modifier] = component == null ? [] : [component];
       }
     });
     _selectedExtras.forEach((key, value) {
-      GeneratedProductConfigSet? modifier = getExtraConfigSetById(key, widget.product.configSets ?? []);
+      GeneratedProductConfigSet? modifier =
+          getExtraConfigSetById(key, widget.product.configSets ?? []);
       value.forEach((extra, isAdded) {
         if (isAdded) {
-          GeneratedProductConfigComponent? component = getComponentByIdFromSet(extra, modifier);
-          if (selectedConfigMap[modifier] == null && modifier != null && component != null) {
+          GeneratedProductConfigComponent? component =
+              getComponentByIdFromSet(extra, modifier, widget.servingMode);
+          if (selectedConfigMap[modifier] == null &&
+              modifier != null &&
+              component != null) {
             selectedConfigMap[modifier] = [component];
           } else {
             if (modifier != null) {
@@ -220,38 +236,41 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   void _calculateTotalPrice() {
-    // print('_calculateTotalPrice.modifierPos=$_selectedModifiers  ,extras=${_selectedExtras}');
-    double price = _productVariant?.price ?? 0;
+    print(
+        '_calculateTotalPrice.modifierPos=$_selectedModifiers  ,extras=${_selectedExtras}');
+    print('_calculateTotalPrice.servingMode=${widget.servingMode}');
 
     Set<String> allergeens = {};
-    if (widget.product.allergens != null && widget.product.allergens!.isNotEmpty) {
+    if (widget.product.allergens != null &&
+        widget.product.allergens!.isNotEmpty) {
       allergeens.addAll(widget.product.allergens!);
     }
     //--- calculate modifier price
     _selectedModifiers.forEach((key, value) {
-      GeneratedProductConfigSet? modifier = getModifierConfigSetById(key, widget.product.configSets ?? []);
-      // print('_calculateTotalPrice.modifier=${modifier?.name?.hu}');
-      GeneratedProductConfigComponent? component = getComponentByIdFromSet(value, modifier);
-      // print('_calculateTotalPrice.component=${component?.name?.hu}: ${component?.price}');
-      price += component?.price ?? 0;
+      GeneratedProductConfigSet? modifier =
+          getModifierConfigSetById(key, widget.product.configSets ?? []);
+      GeneratedProductConfigComponent? component =
+          getComponentByIdFromSet(value, modifier, widget.servingMode);
 
       if (component != null) {
-        component.allergens?.forEach((allergen) => allergeens.add(allergen.toString().split('.')[1]));
+        component.allergens?.forEach(
+            (allergen) => allergeens.add(allergen.toString().split('.')[1]));
       }
     });
 
     _selectedExtras.forEach((setId, setMap) {
       setMap.forEach((componentId, selected) {
         if (selected == true) {
-          GeneratedProductConfigComponent? component = getExtraComponentByIdAndSetId(
+          GeneratedProductConfigComponent? component =
+              getExtraComponentByIdAndSetId(
             setId,
             componentId,
             widget.product.configSets ?? [],
+            widget.servingMode,
           );
           if (component != null) {
-            component.allergens?.forEach((allergen) => allergeens.add(allergen.toString().split('.')[1]));
-            // allergeens.addAll(component.allergens.map((allergen) => allergen.toString().split('.')[1]));
-            price += component.price;
+            component.allergens?.forEach((allergen) =>
+                allergeens.add(allergen.toString().split('.')[1]));
           }
         }
       });
@@ -259,7 +278,13 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     print('_calculateTotalPrice.allergeens=$allergeens');
 
     _allergeens = allergeens;
-    _modifierTotalPrice = price;
+    _modifierTotalPrice = calculateTotalPrice(
+      widget.product,
+      widget.servingMode,
+      _productVariant,
+      _selectedExtras,
+      _selectedModifiers,
+    );
     setButton();
   }
 
@@ -378,7 +403,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               height: 110.0,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: selected ? theme.primary.withOpacity(0.24) : theme.secondary12,
+                color: selected
+                    ? theme.primary.withOpacity(0.24)
+                    : theme.secondary12,
                 border: Border.all(
                   color: selected ? theme.primary : theme.secondary16,
                   width: 4.0,
@@ -386,7 +413,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               ),
               child: Center(
                 child: Text(
-                  variant.pack != null ? '${_formatPack(variant.pack!.size)} ${variant.pack!.unit}' : '',
+                  variant.pack != null
+                      ? '${formatPackNumber(variant.pack!.size)} ${variant.pack!.unit}'
+                      : '',
                   textAlign: TextAlign.center,
                   style: Fonts.satoshi(
                     fontSize: 18.0,
@@ -421,13 +450,5 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
         )
       ],
     );
-  }
-
-  String _formatPack(double pack) {
-    String s = pack.toStringAsFixed(1);
-    if (s.endsWith('.0')) {
-      return s.substring(0, s.length - 2);
-    }
-    return s;
   }
 }

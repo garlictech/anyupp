@@ -11,6 +11,7 @@ import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +39,8 @@ class ProductDetailsScreen extends StatelessWidget {
         key: _key,
         backgroundColor: theme.secondary12,
         appBar: null,
-        body: BlocBuilder<UnitSelectBloc, UnitSelectState>(builder: (context, unitState) {
+        body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+            builder: (context, unitState) {
           if (unitState is UnitSelected) {
             return Stack(
               children: [
@@ -190,7 +192,10 @@ class ProductDetailsWidget extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    item.description == null ? '' : getLocalizedText(context, item.description!),
+                                    item.description == null
+                                        ? ''
+                                        : getLocalizedText(
+                                            context, item.description!),
                                     textAlign: TextAlign.left,
                                     style: Fonts.satoshi(
                                       color: theme.secondary,
@@ -217,9 +222,12 @@ class ProductDetailsWidget extends StatelessWidget {
                     ),
                     if (displayState == ProducItemDisplayState.NORMAL)
                       StreamBuilder<Cart?>(
-                        stream: getIt<CartRepository>().getCurrentCartStream(unit.id),
+                        stream: getIt<CartRepository>()
+                            .getCurrentCartStream(unit.id),
                         builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                          if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+                          if (snapshot.connectionState !=
+                                  ConnectionState.waiting ||
+                              snapshot.hasData) {
                             //return _buildVariantsList(snapshot.data, item.variants);
                             return ProductDetailVariantListWidget(
                               cart: snapshot.data,
@@ -259,14 +267,16 @@ class ProductDetailsWidget extends StatelessWidget {
           child: AddToCartPanelWidget(
             displayState: displayState,
             servingMode: servingMode,
-            onAddToCartPressed: (state, quantity) => _addOrderItemToCart(context, state, quantity),
+            onAddToCartPressed: (state, quantity) =>
+                _addOrderItemToCart(context, state, quantity),
           ),
         )
       ],
     );
   }
 
-  Widget _buildAllergensListWidget(BuildContext context, List<String> allergeens) {
+  Widget _buildAllergensListWidget(
+      BuildContext context, List<String> allergeens) {
     if (allergeens.isEmpty) {
       return Container();
     }
@@ -296,11 +306,13 @@ class ProductDetailsWidget extends StatelessWidget {
     );
   }
 
-  void _addOrderItemToCart(BuildContext context, ConfigsetUpdated state, int quantity) {
+  void _addOrderItemToCart(
+      BuildContext context, ConfigsetUpdated state, int quantity) {
     print('_addOrderItemToCart().quantity=$quantity');
     var orderItem = state.orderItem.copyWith(quantity: quantity);
     print('_addOrderItemToCart().orderItem.quantity=$quantity');
-    BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(state.unit.id, orderItem));
+    BlocProvider.of<CartBloc>(context)
+        .add(AddProductToCartAction(state.unit.id, orderItem));
     Nav.pop();
     getIt<MainNavigationBloc>().add(
       DoMainNavigation(
@@ -313,9 +325,7 @@ class ProductDetailsWidget extends StatelessWidget {
     if (item.variants.length == 1) {
       var variant = item.variants[0];
       double size = variant.pack?.size ?? 0;
-      bool isInteger = size == size.toInt().toDouble();
-      String sizeText = isInteger ? size.toInt().toString() : size.toStringAsFixed(1);
-
+      String sizeText = formatPackNumber(size);
       return '\n${trans(context, 'product.size')} ${sizeText} ${variant.pack?.unit ?? ""} / ${getLocalizedText(context, variant.variantName)}';
     }
     return '';
@@ -329,7 +339,8 @@ class ProductDetailsWidget extends StatelessWidget {
 class _ProductDetailsImageWidget extends StatelessWidget {
   final String url;
 
-  const _ProductDetailsImageWidget({Key? key, required this.url}) : super(key: key);
+  const _ProductDetailsImageWidget({Key? key, required this.url})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ImageWidget(

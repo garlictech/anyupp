@@ -3,7 +3,7 @@ import {
   getProductComponentSetMap,
   getTimezoneForUnit,
   listUnitProductsForAUnit,
-} from '@bgap/anyupp-gql/backend';
+} from '@bgap/backend/units';
 import { createIamCrudSdk } from '../../../../api-clients';
 
 const TEST_NAME = 'REGEN_UTILS';

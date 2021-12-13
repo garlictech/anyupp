@@ -1,7 +1,6 @@
 import { getDayIntervals } from '@bgap/admin/shared/utils';
 import { timezoneBudapest } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import {
   orderFixture as ofx,
@@ -10,20 +9,13 @@ import {
 } from '@bgap/shared/fixtures';
 
 import { DateIntervals } from '@bgap/shared/types';
-import { of } from 'rxjs';
 import { delay, map, switchMap } from 'rxjs/operators';
-
-const TEST_NAME = 'ORDER_';
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
 
 describe('SearchOrders function', () => {
   let crudSdk: CrudApi.CrudSdk = CrudApi.getCrudSdkForIAM(
-    accessKeyId,
-    secretAccessKey,
-  );
-  let anyuppSdk: AnyuppApi.AnyuppSdk = AnyuppApi.getAnyuppSdkForIAM(
     accessKeyId,
     secretAccessKey,
   );

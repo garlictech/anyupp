@@ -11,6 +11,7 @@ export interface WebsiteProps extends sst.StackProps {
   domainName: string;
   siteSubDomain: string;
   distDir: string;
+  certificateArn: string;
 }
 
 export class WebsiteConstruct extends Construct {
@@ -19,11 +20,6 @@ export class WebsiteConstruct extends Construct {
   constructor(scope: Construct, id: string, props: WebsiteProps) {
     super(scope, id);
     const app = this.node.root as sst.App;
-
-    const certificateArn =
-      app.stage === 'prod'
-        ? 'arn:aws:acm:us-east-1:486782650003:certificate/d743bb2d-00a2-49b4-82c5-f1b46baaa0e9'
-        : 'arn:aws:acm:us-east-1:568276182587:certificate/b669ca50-875b-4e03-99e3-2983e07d7088';
 
     const siteDomain = props.siteSubDomain + '.' + props.domainName;
 
@@ -46,7 +42,7 @@ export class WebsiteConstruct extends Construct {
       'SiteDistribution',
       {
         aliasConfiguration: {
-          acmCertRef: certificateArn,
+          acmCertRef: props.certificateArn,
           names: [siteDomain],
           sslMethod: cloudfront.SSLMethod.SNI,
           securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,

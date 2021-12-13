@@ -1,5 +1,25 @@
 {
   "extends": "../../.eslintrc.json",
-  "ignorePatterns": ["!**/*", ".build", ".serverless", "cdk.out"],
-  "rules": {}
+  "ignorePatterns": [
+    "!**/*",
+    ".build",
+    ".serverless",
+    "cdk.out"
+  ],
+  "rules": {},
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "parserOptions": {
+        "project": [
+          "apps/anyupp-backend/tsconfig.json"
+        ]
+      }
+    }
+  ]
 }

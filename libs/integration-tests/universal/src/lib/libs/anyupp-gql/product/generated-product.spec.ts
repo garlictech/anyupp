@@ -1,10 +1,10 @@
+import { generatedProductFixture, testIdPrefix } from '@bgap/shared/fixtures';
+import { getSortedIds } from '@bgap/shared/utils';
 import {
   createGeneratedProductsInDb,
   deleteGeneratedProductsForAUnitFromDb,
   listGeneratedProductsForUnits,
-} from '@bgap/anyupp-gql/backend';
-import { generatedProductFixture, testIdPrefix } from '@bgap/shared/fixtures';
-import { getSortedIds } from '@bgap/shared/utils';
+} from '@bgap/backend/products';
 import { combineLatest, of } from 'rxjs';
 import { delay, scan, switchMap, tap } from 'rxjs/operators';
 import { createIamCrudSdk } from '../../../../api-clients';
