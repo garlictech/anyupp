@@ -8,6 +8,7 @@ class ProductVariant {
   final ProductVariantPack? pack;
   final double price;
   final int position;
+  final double? packagingFee;
 
   ProductVariant({
     this.id,
@@ -15,6 +16,7 @@ class ProductVariant {
     this.pack,
     required this.price,
     required this.position,
+    this.packagingFee,
   });
 
   ProductVariant copyWith({
@@ -23,6 +25,7 @@ class ProductVariant {
     ProductVariantPack? pack,
     double? price,
     int? position,
+    double? packagingFee,
   }) {
     return ProductVariant(
       id: id ?? this.id,
@@ -30,6 +33,7 @@ class ProductVariant {
       pack: pack ?? this.pack,
       price: price ?? this.price,
       position: position ?? this.position,
+      packagingFee: packagingFee ?? this.packagingFee,
     );
   }
 
@@ -40,6 +44,7 @@ class ProductVariant {
       'pack': pack?.toJson(),
       'price': price,
       'position': position,
+      'packagingFee': packagingFee,
     };
   }
 
@@ -47,15 +52,17 @@ class ProductVariant {
     return ProductVariant(
       id: map['id'],
       variantName: LocalizedItem.fromJson(map['variantName']),
-      pack: map['pack'] != null ? ProductVariantPack.fromJson(map['pack']) : null,
+      pack:
+          map['pack'] != null ? ProductVariantPack.fromJson(map['pack']) : null,
       price: map['price'],
       position: map['position'],
+      packagingFee: map['packagingFee'],
     );
   }
 
   @override
   String toString() {
-    return 'ProductVariant(id: $id, variantName: $variantName, pack: $pack, price: $price, position: $position)';
+    return 'ProductVariant(id: $id, variantName: $variantName, packagingFee: $packagingFee, pack: $pack, price: $price, position: $position)';
   }
 
   @override
@@ -67,11 +74,17 @@ class ProductVariant {
         other.variantName == variantName &&
         other.pack == pack &&
         other.price == price &&
-        other.position == position;
+        other.position == position &&
+        other.packagingFee == packagingFee;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ variantName.hashCode ^ pack.hashCode ^ price.hashCode ^ position.hashCode;
+    return id.hashCode ^
+        variantName.hashCode ^
+        pack.hashCode ^
+        price.hashCode ^
+        position.hashCode ^
+        packagingFee.hashCode;
   }
 }

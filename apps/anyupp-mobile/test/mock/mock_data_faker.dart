@@ -2,13 +2,15 @@ import 'dart:math';
 
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:faker/faker.dart' hide Address;
 
 class MockGenerator {
   static final faker = Faker();
   static final Random rnd = Random();
 
-  static List<Transaction> generateTransactions({required int count, String? userId, String? orderId}) {
+  static List<Transaction> generateTransactions(
+      {required int count, String? userId, String? orderId}) {
     var results = <Transaction>[];
     for (int i = 0; i < count; i++) {
       results.add(
@@ -46,7 +48,8 @@ class MockGenerator {
     );
   }
 
-  static Invoice generateInvoice({String? userId, String? transactionId, String? orderId}) {
+  static Invoice generateInvoice(
+      {String? userId, String? transactionId, String? orderId}) {
     return Invoice(
       id: faker.guid.guid(),
       orderId: orderId ?? faker.guid.guid(),
@@ -66,7 +69,8 @@ class MockGenerator {
     );
   }
 
-  static Receipt generateReceipt({String? userId, String? transactionId, String? orderId}) {
+  static Receipt generateReceipt(
+      {String? userId, String? transactionId, String? orderId}) {
     return Receipt(
       id: faker.guid.guid(),
       orderId: orderId ?? faker.guid.guid(),
@@ -131,49 +135,111 @@ class MockGenerator {
   }
 
   static OrderItem generateOrderItem({
-    required String productId,
+    String? productId,
     required String name,
     required String variantName,
     required double price,
     required OrderStatus status,
     int quantity = 1,
+    double packagingFee = 0.0,
   }) {
     return OrderItem(
-      productId: productId,
-      variantId: faker.guid.guid(),
-      productName: LocalizedItem(
-        en: name,
+        productId: productId ?? faker.guid.guid(),
+        variantId: faker.guid.guid(),
+        productName: LocalizedItem(
+          en: name,
+          hu: name,
+          de: name,
+        ),
+        priceShown: PriceShown(
+          currency: 'HUF',
+          pricePerUnit: price,
+          priceSum: price * quantity,
+          tax: 0,
+          taxSum: 0,
+        ),
+        sumPriceShown: PriceShown(
+          currency: 'HUF',
+          pricePerUnit: price,
+          priceSum: price * quantity,
+          tax: 0,
+          taxSum: 0,
+        ),
+        quantity: quantity,
+        statusLog: [
+          StatusLog(
+            userId: 'DUMMY_USER_ID',
+            status: status,
+            ts: DateTime.now().millisecond.toDouble(),
+          )
+        ],
+        variantName: LocalizedItem(
+          en: variantName,
+          hu: variantName,
+          de: variantName,
+        ),
+        productType: 'TEST',
+        packagingFee: packagingFee);
+  }
+
+  static GeneratedProductConfigSet generateEmptyProductConfigSet({
+    required String name,
+    String? productSetId,
+    List<ServingMode> supportedServingModes = const [
+      ServingMode.inPlace,
+      ServingMode.takeAway,
+    ],
+    String type = ConfigType.MODIFIER,
+    String? description,
+    int maxSelection = 1,
+    int position = 0,
+  }) {
+    return GeneratedProductConfigSet(
+      name: LocalizedItem(
         hu: name,
         de: name,
+        en: name,
       ),
-      priceShown: PriceShown(
-        currency: 'HUF',
-        pricePerUnit: price,
-        priceSum: price * quantity,
-        tax: 0,
-        taxSum: 0,
+      items: [],
+      supportedServingModes: supportedServingModes,
+      type: type,
+      productSetId: productSetId ?? faker.guid.guid(),
+      description: description,
+      maxSelection: maxSelection,
+      position: position,
+    );
+  }
+
+  static OrderItemConfigSet generateEmptyOrderItemConfigSet({
+    String? productSetId,
+    required String name,
+    String type = ConfigType.MODIFIER,
+  }) {
+    return OrderItemConfigSet(
+      name: LocalizedItem(
+        hu: name,
+        de: name,
+        en: name,
       ),
-      sumPriceShown: PriceShown(
-        currency: 'HUF',
-        pricePerUnit: price,
-        priceSum: price * quantity,
-        tax: 0,
-        taxSum: 0,
+      productSetId: productSetId ?? faker.guid.guid(),
+      type: type,
+      items: [],
+    );
+  }
+
+  static OrderItemConfigComponent generateOrderItemConfigComponent({
+    String? productComponentId,
+    required String name,
+    double? price = 0.0,
+  }) {
+    return OrderItemConfigComponent(
+      name: LocalizedItem(
+        hu: name,
+        de: name,
+        en: name,
       ),
-      quantity: quantity,
-      statusLog: [
-        StatusLog(
-          userId: 'DUMMY_USER_ID',
-          status: status,
-          ts: DateTime.now().millisecond.toDouble(),
-        )
-      ],
-      variantName: LocalizedItem(
-        en: variantName,
-        hu: variantName,
-        de: variantName,
-      ),
-      productType: 'TEST',
+      productComponentId: productComponentId ?? faker.guid.guid(),
+      price: price ?? 0.0,
     );
   }
 
@@ -182,53 +248,58 @@ class MockGenerator {
     required String currency,
   }) {
     return GeoUnit(
-        id: faker.guid.guid(),
-        groupId: faker.guid.guid(),
-        chainId: faker.guid.guid(),
-        name: name,
-        address: Address(
-          address: 'Test Street',
-          city: 'Budapest',
-          country: 'Hungary',
-          title: 'Test Address',
-          postalCode: '1000',
-          location: Location(
-            lat: 0,
-            lng: 0,
-          ),
+      id: faker.guid.guid(),
+      groupId: faker.guid.guid(),
+      chainId: faker.guid.guid(),
+      name: name,
+      address: Address(
+        address: 'Test Street',
+        city: 'Budapest',
+        country: 'Hungary',
+        title: 'Test Address',
+        postalCode: '1000',
+        location: Location(
+          lat: 0,
+          lng: 0,
         ),
-        style: ChainStyle(
-          colors: ChainStyleColors(
-            backgroundLight: '#ffffff',
-            backgroundDark: '#ffffff',
-            borderLight: '#ffffff',
-            borderDark: '#ffffff',
-            disabled: '#ffffff',
-            highlight: '#ffffff',
-            indicator: '#ffffff',
-            textLight: '#ffffff',
-            textDark: '#ffffff',
-            primary: '#ffffff',
-            secondary: '#ffffff',
-          ),
+      ),
+      style: ChainStyle(
+        colors: ChainStyleColors(
+          backgroundLight: '#ffffff',
+          backgroundDark: '#ffffff',
+          borderLight: '#ffffff',
+          borderDark: '#ffffff',
+          disabled: '#ffffff',
+          highlight: '#ffffff',
+          indicator: '#ffffff',
+          textLight: '#ffffff',
+          textDark: '#ffffff',
+          primary: '#ffffff',
+          secondary: '#ffffff',
         ),
-        distance: 0,
-        currency: currency,
-        isAcceptingOrders: true,
-        openingHoursNext7: [],
-        supportedServingModes: [
-          ServingMode.inPlace,
-          ServingMode.takeAway,
-        ],
-        supportedOrderModes: [
-          OrderMode.instant,
-          OrderMode.pickup,
-        ]);
+      ),
+      distance: 0,
+      currency: currency,
+      isAcceptingOrders: true,
+      openingHoursNext7: [],
+      supportedServingModes: [
+        ServingMode.inPlace,
+        ServingMode.takeAway,
+      ],
+      supportedOrderModes: [
+        OrderMode.instant,
+        OrderMode.pickup,
+      ],
+      packagingTax: 5.0,
+    );
   }
 
   static GeneratedProduct generateProduct({
     required String name,
-    List<ServingMode> servingModes = const [ServingMode.inPlace, ServingMode.takeAway],
+    List<ServingMode> servingModes = const [
+      ServingMode.inPlace,
+      ServingMode.takeAway
+    ],
     int variantCount = 3,
     int configSetCount = 1,
   }) {
@@ -331,8 +402,9 @@ class MockGenerator {
   static GeneratedProductConfigComponent generateProductConfigComponent({
     required String name,
     required double price,
-    required int position,
+    int position = 0,
     int allergensCount = 2,
+    double packagingFee = 0.0,
   }) {
     List<Allergen> allergeens = generateAllergeens(allergensCount);
     return GeneratedProductConfigComponent(
@@ -345,6 +417,7 @@ class MockGenerator {
         en: name,
       ),
       allergens: allergeens,
+      packagingFee: packagingFee,
     );
   }
 
@@ -354,5 +427,18 @@ class MockGenerator {
       allergeens.add(Allergen.values[rnd.nextInt(Allergen.values.length - 1)]);
     }
     return allergeens;
+  }
+
+  static Cart generateBasicCart({
+    String? userId,
+    String? unitId,
+    ServingMode servingMode = ServingMode.inPlace,
+  }) {
+    return Cart(
+      userId: userId ?? faker.guid.guid(),
+      unitId: unitId ?? faker.guid.guid(),
+      items: [],
+      servingMode: servingMode,
+    );
   }
 }

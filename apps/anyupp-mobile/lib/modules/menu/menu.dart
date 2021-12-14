@@ -15,7 +15,6 @@ export 'screens/product_menu_tab_screen.dart';
 export 'screens/utils/product_config_ui_utils.dart';
 export 'utils/geounit_utils.dart';
 export 'widgets/add_to_cart_panel_widget.dart';
-export 'widgets/add_variant_widget.dart';
 export 'widgets/allergen_grid_widget.dart';
 export 'widgets/allergens_widget.dart';
 export 'widgets/colored_tabbar_widget.dart';

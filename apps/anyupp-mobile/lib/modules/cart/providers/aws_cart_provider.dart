@@ -157,7 +157,8 @@ class AwsCartProvider implements ICartProvider {
           ),
           fetchPolicy: FetchPolicy.networkOnly);
       if (result.hasErrors) {
-        print('AwsCartProvider._getCartFromBackEnd().error()=${result.errors}');
+        print(
+            'AwsOrderProvider._getCartFromBackEnd().error()=${result.errors}');
         throw GraphQLException.fromGraphQLError(
             GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
@@ -255,6 +256,7 @@ class AwsCartProvider implements ICartProvider {
         return {
           'productId': item.productId,
           'variantId': item.variantId,
+          'packagingFee': item.packagingFee,
           'productType': 'FOOD',
           'created': DateTime.now().millisecondsSinceEpoch.toInt(),
           'productName': {
@@ -291,42 +293,34 @@ class AwsCartProvider implements ICartProvider {
             'de': item.variantName.de,
             'hu': item.variantName.hu,
           },
-          'configSets': item.selectedConfigMap != null
-              ? item.selectedConfigMap?.keys
-                  .toList()
-                  .map((GeneratedProductConfigSet generatedProductConfigSet) {
-                  return {
-                    "name": {
-                      'en': generatedProductConfigSet.name.en,
-                      'de': generatedProductConfigSet.name.de,
-                      'hu': generatedProductConfigSet.name.hu,
-                    },
-                    "productSetId": generatedProductConfigSet.productSetId,
-                    "type": generatedProductConfigSet.type,
-                    "items": item.selectedConfigMap != null
-                        ? item.selectedConfigMap![generatedProductConfigSet]
-                            ?.map((GeneratedProductConfigComponent
-                                generatedProductConfigComponent) {
-                            return {
-                              "allergens": generatedProductConfigComponent
-                                  .allergens
-                                  ?.map((e) => e.toString().split(".").last)
-                                  .toList(),
-                              "price": generatedProductConfigComponent.price,
-                              "productComponentId":
-                                  generatedProductConfigComponent
-                                      .productComponentId,
-                              "name": {
-                                'en': generatedProductConfigComponent.name.en,
-                                'de': generatedProductConfigComponent.name.de,
-                                'hu': generatedProductConfigComponent.name.hu,
-                              },
-                            };
-                          }).toList()
-                        : null
-                  };
-                }).toList()
-              : null,
+          'configSets': item.selectedConfigMap?.keys.map((configSet) {
+            return {
+              "name": {
+                'en': configSet.name.en,
+                'de': configSet.name.de,
+                'hu': configSet.name.hu,
+              },
+              "productSetId": configSet.productSetId,
+              "type": configSet.type,
+              "items": item.selectedConfigMap != null
+                  ? item.selectedConfigMap![configSet]?.map((configComponent) {
+                      return {
+                        "allergens": configComponent.allergens
+                            ?.map((e) => e.toString().split(".").last)
+                            .toList(),
+                        "price": configComponent.price,
+                        "productComponentId":
+                            configComponent.productComponentId,
+                        "name": {
+                          'en': configComponent.name.en,
+                          'de': configComponent.name.de,
+                          'hu': configComponent.name.hu,
+                        },
+                      };
+                    }).toList()
+                  : null
+            };
+          }).toList(),
         };
       }).toList(),
       'paymentMode': cart.paymentMode != null
