@@ -169,6 +169,10 @@ query SearchOrders(
       transactionId
       transactionStatus
       updatedAt
+      packaging {
+        fee
+        tax
+      }
     }
     nextToken
     total

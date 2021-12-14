@@ -535,6 +535,11 @@ type OrderItemConfigSet {
   items: [OrderItemConfigComponent!]!
 }
 
+type Packaging {
+  fee: Float!
+  tax: Float!
+}
+
 type OrderItem {
   productId: ID!
   variantId: ID!
@@ -552,6 +557,7 @@ type OrderItem {
   productType: String # TODO: Make the OrderItem.productType REQUIRED in the next release
   externalId: String
   appliedServiceFee: PriceShown
+  packagingFee: Float
 }
 
 ### Order
@@ -578,6 +584,7 @@ type Order
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
+  packaging: Packaging
 }
 
 enum PaymentStatus {
@@ -661,6 +668,7 @@ type ProductComponentSet
 type GeneratedProductConfigComponent {
   productComponentId: ID!
   price: Float!
+  packagingFee: Float
   position: Int!
   name: LocalizedItem!
   allergens: [Allergen]
@@ -718,6 +726,7 @@ type GeneratedProductVariant {
   variantName: LocalizedItem!
   pack: ProductVariantPack
   price: Float!
+  packagingFee: Float
   position: Int!
 }
 

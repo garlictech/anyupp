@@ -40,7 +40,8 @@ class AuthRepository implements IAuthProvider {
   }
 
   @override
-  Future<User?> loginWithCognitoSession(CognitoUserSession session, String username) {
+  Future<User?> loginWithCognitoSession(
+      CognitoUserSession session, String username) {
     return _authProvider.loginWithCognitoSession(session, username);
   }
 }

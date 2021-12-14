@@ -139,7 +139,8 @@
     "deleteCartAccept": "Törlés",
     "deleteCartCancel": "Mégsem",
     "takeAway": "elvitel",
-    "inPlace": "helyben"
+    "inPlace": "helyben",
+    "packagingFee": "Csomagolási díj"
   },
   "allergens": {
     "title": "Allergének",

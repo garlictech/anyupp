@@ -3,7 +3,7 @@ import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tinycolor2/tinycolor2.dart';
-import '../widget/mock/mock_data_faker.dart';
+import '../mock/mock_data_faker.dart';
 
 void main() {
   String getHtmlHexColorStringFromColor(Color color) {
@@ -27,11 +27,14 @@ void main() {
       );
       expect(_theme, isNotNull);
 
-      _unit = MockGenerator.generateUnit(name: 'TEST Theme Unit', currency: 'huf');
+      _unit =
+          MockGenerator.generateUnit(name: 'TEST Theme Unit', currency: 'huf');
       expect(_unit, isNotNull);
     });
 
-    test('Test Anyupp theme with primary and secondary colors, other colors null', () async {
+    test(
+        'Test Anyupp theme with primary and secondary colors, other colors null',
+        () async {
       expect(_theme, isNotNull);
       expect(_unit, isNotNull);
 
@@ -51,7 +54,9 @@ void main() {
       expect(generated.secondary, equals(_theme.secondary));
     });
 
-    test('Test Anyupp theme without primary and secondary colors, fallback old colors', () async {
+    test(
+        'Test Anyupp theme without primary and secondary colors, fallback old colors',
+        () async {
       expect(_theme, isNotNull);
       expect(_unit, isNotNull);
 
@@ -71,7 +76,8 @@ void main() {
       expect(generated.secondary, equals(_theme.secondary));
     });
 
-    test('Test Anyupp theme without any colors, fallback to default colors', () async {
+    test('Test Anyupp theme without any colors, fallback to default colors',
+        () async {
       expect(_theme, isNotNull);
       expect(_unit, isNotNull);
 

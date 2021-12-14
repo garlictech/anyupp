@@ -191,6 +191,7 @@ class CartScreen extends StatelessWidget {
   }
 
   Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
+    // print('_buildCartListAndTotal()=${cart.servingMode}');
     Map<int, String> cartAllergens = {};
     for (OrderItem item in cart.items) {
       if (item.allergens != null) {
@@ -211,6 +212,9 @@ class CartScreen extends StatelessWidget {
         });
       }
     }
+
+    bool isTakeAway = cart.servingMode == ServingMode.takeAway;
+
     return Column(
       children: <Widget>[
         // LIST
@@ -233,13 +237,21 @@ class CartScreen extends StatelessWidget {
                   controller: _controller,
                   shrinkWrap: true,
                   physics: BouncingScrollPhysics(),
-                  itemCount: cart.items.length,
+                  itemCount: cart.items.length + (isTakeAway ? 1 : 0),
                   itemBuilder: (context, position) {
+                    if (isTakeAway && position == cart.items.length) {
+                      return AnimationConfiguration.staggeredList(
+                          position: position,
+                          duration: const Duration(milliseconds: 200),
+                          child: _buildPackagingFeeItem(context, cart, unit));
+                    }
+
                     final OrderItem order = cart.items[position];
                     return AnimationConfiguration.staggeredList(
                       position: position,
                       duration: const Duration(milliseconds: 200),
-                      child: _buildCartItem(context, unit, order),
+                      child: _buildCartItem(
+                          context, unit, order, cart.servingMode),
                     );
                   },
                 ),
@@ -295,6 +307,7 @@ class CartScreen extends StatelessWidget {
                     child: Text(
                       //trans(context, "cart.addToCart").toUpperCase(),
                       '${trans(context, "cart.pay")} (${formatCurrency(cart.totalPrice, unit.currency)})',
+                      key: const Key('cart-totalprice-text'),
                       style: Fonts.satoshi(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w700,
@@ -401,7 +414,78 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, GeoUnit unit, OrderItem order) {
+  Widget _buildPackagingFeeItem(BuildContext context, Cart cart, GeoUnit unit) {
+    return SlideAnimation(
+      verticalOffset: 50.0,
+      child: FadeInAnimation(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                top: 8,
+                // bottom: 8.0,
+                left: 16,
+                right: 16,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 112,
+                    height: 88,
+                    margin: EdgeInsets.only(right: 16.0),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'assets/icons/takeaway-fee.svg',
+                        color: theme.secondary,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            trans(context, 'cart.packagingFee'),
+                            textAlign: TextAlign.left,
+                            style: Fonts.satoshi(
+                              color: theme.secondary,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          formatCurrency(cart.packaginFee, unit.currency),
+                          key: const Key('cart-packagingfee-text'),
+                          style: Fonts.satoshi(
+                            color: theme.primary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              height: 1.0,
+              color: theme.secondary16,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCartItem(BuildContext context, GeoUnit unit, OrderItem order,
+      ServingMode servingMode) {
     // print('_buildCartItem()=$order');
     return SlideAnimation(
       verticalOffset: 50.0,
@@ -411,6 +495,7 @@ class CartScreen extends StatelessWidget {
           child: CartListItemWidget(
             unit: unit,
             order: order,
+            servingMode: servingMode,
           ),
         ),
       ),

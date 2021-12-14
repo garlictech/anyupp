@@ -6,21 +6,26 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AwsUnitProvider implements IUnitProvider {
   @override
-  Future<List<GeoUnit>> searchUnitsNearLocation(LatLng location, int radius) async {
-    print('***** searchUnitsNearLocation().start(): lat=${location.latitude} lng:${location.longitude}');
+  Future<List<GeoUnit>> searchUnitsNearLocation(
+      LatLng location, int radius) async {
+    print(
+        '***** searchUnitsNearLocation().start(): lat=${location.latitude} lng:${location.longitude}');
     try {
-      var result = await GQL.amplify.execute(GetUnitsNearLocationQuery(
-        variables: GetUnitsNearLocationArguments(
-          lat: location.latitude,
-          lng: location.longitude,
+      var result = await GQL.amplify.execute(
+        GetUnitsNearLocationQuery(
+          variables: GetUnitsNearLocationArguments(
+            lat: location.latitude,
+            lng: location.longitude,
+          ),
         ),
-      ));
-      print('***** searchUnitsNearLocation().result=$result');
-      print('***** searchUnitsNearLocation().result.data=${result.data}');
-      print('***** searchUnitsNearLocation().result.errors=${result.errors}');
+      );
+      // print('***** searchUnitsNearLocation().result=$result');
+      // print('***** searchUnitsNearLocation().result.data=${result.data}');
+      // print('***** searchUnitsNearLocation().result.errors=${result.errors}');
 
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
 
       if (result.data == null || result.data?.getUnitsNearLocation == null) {

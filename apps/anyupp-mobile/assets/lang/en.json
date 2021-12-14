@@ -139,7 +139,8 @@
     "deleteCartAccept": "Delete",
     "deleteCartCancel": "Cancel",
     "takeAway": "takeaway",
-    "inPlace": "in place"
+    "inPlace": "in place",
+    "packagingFee": "Packaging fee"
   },
   "allergens": {
     "title": "Allergens",

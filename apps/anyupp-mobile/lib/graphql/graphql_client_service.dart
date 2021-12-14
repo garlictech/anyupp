@@ -25,12 +25,13 @@ class GraphQLClientService {
     _dio.interceptors.add(DioTokenInterceptor(_dio, this.authProvider));
   }
 
-  Future<ValueNotifier<GraphQLClient>> getCrudClient({bool useApi = false}) async {
+  Future<ValueNotifier<GraphQLClient>> getCrudClient(
+      {bool useApi = false}) async {
     if (useApi == true) {
       return getCrudClientWithApiKey(useApi: useApi);
     }
     String? accessToken = await authProvider.getAccessToken();
-    print('GraphQLClientService.getAmplifyClient.accessToken=$accessToken');
+    // print('GraphQLClientService.getAmplifyClient.accessToken=$accessToken');
 
     // accessToken = null;
 
@@ -63,24 +64,28 @@ class GraphQLClientService {
     // );
 
     final AuthLink authLink = AuthLink(
-      getToken: () => accessToken, //accessToken != null ? 'Bearer $accessToken' : null,
+      getToken: () =>
+          accessToken, //accessToken != null ? 'Bearer $accessToken' : null,
     );
 
     // final Link _link = _httpLink;
     Link link = authLink.concat(httpLink);
-    String graphqlWsApiUrl =
-        amplifyApiUrl.replaceFirst('https:', 'wss:').replaceFirst('appsync-api', 'appsync-realtime-api');
+    String graphqlWsApiUrl = amplifyApiUrl
+        .replaceFirst('https:', 'wss:')
+        .replaceFirst('appsync-api', 'appsync-realtime-api');
     // print('GraphQLClientService.websocket=$graphqlWsApiUrl');
 
-    final wsLink = WebSocketLink('$graphqlWsApiUrl?header=$encodedHeader&payload=e30=',
-        config: SocketClientConfig(
-          initialPayload: headers,
-          serializer: AppSyncRequest(authHeader: headers),
-          autoReconnect: true,
-          delayBetweenReconnectionAttempts: Duration(seconds: 5), // Default 5
-          inactivityTimeout: Duration(minutes: 30), // Default 30 seconds
-          queryAndMutationTimeout: Duration(seconds: 30), // Default 10
-        ));
+    final wsLink =
+        WebSocketLink('$graphqlWsApiUrl?header=$encodedHeader&payload=e30=',
+            config: SocketClientConfig(
+              initialPayload: headers,
+              serializer: AppSyncRequest(authHeader: headers),
+              autoReconnect: true,
+              delayBetweenReconnectionAttempts:
+                  Duration(seconds: 5), // Default 5
+              inactivityTimeout: Duration(minutes: 30), // Default 30 seconds
+              queryAndMutationTimeout: Duration(seconds: 30), // Default 10
+            ));
 
     link = Link.split((request) => request.isSubscription, wsLink, link);
 
@@ -94,7 +99,8 @@ class GraphQLClientService {
     return amplifyClient;
   }
 
-  Future<ValueNotifier<GraphQLClient>> getCrudClientWithApiKey({bool useApi = false}) async {
+  Future<ValueNotifier<GraphQLClient>> getCrudClientWithApiKey(
+      {bool useApi = false}) async {
     print('GraphQLClientService.getCrudClientWithApiKey().useApi=$useApi');
     String? accessToken = useApi ? null : await authProvider.getAccessToken();
     // print('GraphQLClientService.getGraphQLClient.accessToken=$accessToken');
