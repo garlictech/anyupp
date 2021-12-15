@@ -121,7 +121,7 @@
     "@angular/cli": "13.0.4",
     "@angular/compiler-cli": "13.0.3",
     "@angular/language-service": "13.0.3",
-    "@babel/core": "7.16.0",
+    "@babel/core": "7.16.5",
     "@commitlint/cli": "15.0.0",
     "@commitlint/config-conventional": "15.0.0",
     "@graphql-codegen/cli": "2.2.0",
