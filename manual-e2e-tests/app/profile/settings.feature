@@ -15,7 +15,7 @@ Feature: Set the language and switch between in place and takeaway modes
     And I tap the "In place" button
     Then there is the "Menu" screen
     When I tap the "You can switch between ordering methods at any time." text
-    Then I should see "Sorry, this product category is not available in in place mode." text
+    Then I should see "Hamburgers" product category
     When I tap the "Profile" button
     Then I should see the "Settings" tab
     When I tap the "Settings" tab
@@ -32,7 +32,8 @@ Feature: Set the language and switch between in place and takeaway modes
     And I tap the "Take away" icon
     When I tap the "Are you sure you want to switch to takeaway?" text
     And I tap the "Yes" button
-    Then I should see "HAMBURGER #1" with picture
-    And I should see "FANTA #2" with picture
+    Then I should see "Sajtburger" with picture
+    And I should see "Fishburger" with picture
+    And I should see "Hamburger" with picture
     When I tap the "Favorites" button
     Then I should see "You have not added any favorite items yet." text

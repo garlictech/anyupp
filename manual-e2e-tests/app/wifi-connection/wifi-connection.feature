@@ -10,11 +10,13 @@ Feature: Handle the wifi connection
     And I tap the "Take away" button
     Then there is the "Menu" screen
     When I tap the "You can switch between ordering methods at any time." text
-    Then I should see "HAMBURGER #1" with picture
-    And I should see "FANTA #2" with picture
+    Then I should see "Sajtburger" with picture
+    And I should see "Fishburger" with picture
+    And I should see "Hamburger" with picture
     When I turn OFF the wifi
     Then I should see the "No internet connection!" text
     When I turn ON the wifi
     Then there is the "Menu" screen
-    Then I should see "HAMBURGER #1" with picture
-    And I should see "FANTA #2" with picture
+    Then I should see "Sajtburger" with picture
+    And I should see "Fishburger" with picture
+    And I should see "Hamburger" with picture

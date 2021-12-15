@@ -11,7 +11,7 @@ Feature: Whole product feature
     Then the "Products" title is displayed
 
   Scenario: Add new chain product
-    When I click the category selector to set "Test product category #1 name"
+    When I click the category selector to set "Hamburgers"
     And I click on the button with title "Add product"
     Then The dialog should be visible
     And I should see "New product" text on the dialog
@@ -21,7 +21,7 @@ Feature: Whole product feature
     And I fill out the "Description (HU)" input with "test chain description"
     And I fill out the "Description (EN)" input with "test chain description"
     And I fill out the "Description (DE)" input with "test chain description"
-    Then I select the "Test product category #1 name" in the category selector
+    Then I select the "Hamburgers" in the category selector
     And I select the "Drink" in the product type selector
     When I click on the "Add variant" button
     And I fill out the "Variant name (HU)" input with "test chain variant 1"
@@ -43,9 +43,9 @@ Feature: Whole product feature
     And I click on the "12. Sesame" checkbox
     And I click on the "13. Lupin" checkbox
     And I click on the "14. Molluscs" checkbox
-    And I select the "Extra comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_01_id)" in the modifier selector
+    And I select the "Garnish (Köret módosító készlet)" in the modifier selector
     And I click on the "Add" button
-    And I select the "Modifier comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_02_id)" in the modifier selector
+    And I select the "Decoration (Szolíd elegnacia)" in the modifier selector
     And I click on the "Add" button
     And I click on the "Submit" button
     Then I should see a success toastr
@@ -55,7 +55,7 @@ Feature: Whole product feature
 
   Scenario: Update chain product
     And I should see "Chain products" text
-    When I click the category selector to set "Test product category #1 name"
+    When I click the category selector to set "Hamburgers"
     Then On the active tab I should see "test chain product" text
     When On the active tab I click the edit button in the listitem with "test chain product" content
     Then The dialog should be visible
@@ -68,7 +68,7 @@ Feature: Whole product feature
     And I fill out the "Description (HU)" input with "test chain e2eUpdated description"
     And I fill out the "Description (EN)" input with "test chain e2eUpdated description"
     And I fill out the "Description (DE)" input with "test chain e2eUpdated description"
-    Then The category selector should contain "Test product category #1 name"
+    Then The category selector should contain "Hamburgers"
     And I select the "Other" in the product type selector
     And I fill out the "Variant name (HU)" input with "test chain e2eUpdated variant HU"
     And I fill out the "Variant name (EN)" input with "test chain e2eUpdated variant EN"
@@ -98,7 +98,7 @@ Feature: Whole product feature
 
   Scenario: Add new group product
     When I click on the "Group products" text
-    And I click the category selector to set "Test product category #1 name"
+    And I click the category selector to set "Hamburgers"
     Then On the active tab I should see "test chain e2eUpdated product" text
     When On the active tab I click the extend button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Extend product" text on the dialog
@@ -124,7 +124,7 @@ Feature: Whole product feature
 
   Scenario: Update group product
     When I click on the "Group products" text
-    When I click the category selector to set "Test product category #1 name"
+    When I click the category selector to set "Hamburgers"
     And On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Edit product" text on the dialog
     And I should see "test chain e2eUpdated product" text on the dialog
@@ -149,7 +149,7 @@ Feature: Whole product feature
 
   Scenario: Add new unit product
     When I click on the "Unit products" text
-    And I click the category selector to set "Test product category #1 name"
+    And I click the category selector to set "Hamburgers"
     And On the active tab I click the extend button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Extend product" text on the dialog
     When I click the lane selector to set "konyha"
@@ -188,7 +188,7 @@ Feature: Whole product feature
 
   Scenario: Update unit product
     When I click on the "Unit products" text
-    When I click the category selector to set "Test product category #1 name"
+    When I click the category selector to set "Hamburgers"
     And On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Edit product" text on the dialog
     And I should see "test chain e2eUpdated product" text on the dialog
