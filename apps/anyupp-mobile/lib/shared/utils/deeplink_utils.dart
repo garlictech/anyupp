@@ -11,10 +11,13 @@ class DeeplinkType {
   static const QR = 'QR';
   static const TRANSACTION_BACK = 'TRANSACTION_BACK';
   static const VERIFY_EMAIL = "VERIFY_EMAIL";
+  static const COGNITO_CODE = "COGNITO_CODE";
 }
 
 final regAlphaNumericSeatOrTable = RegExp(r'^[a-zA-Z0-9]{1,16}$');
 final regTransactionId = RegExp(r'^[a-zA-Z0-9_-]{21}$'); // NanoId uuid
+
+int relaunchCount = 1;
 
 Future<bool> handleUrl(Uri uri) async {
   print('***** handleUrl()=$uri');
@@ -23,23 +26,51 @@ Future<bool> handleUrl(Uri uri) async {
       return await handleUrlQR(uri);
     case DeeplinkType.VERIFY_EMAIL:
       return await handleVerifyEmail(uri);
+    case DeeplinkType.COGNITO_CODE:
+      {
+        if (browser.isOpened()) {
+          print('closing browser!');
+          await browser.close();
+        }
+        var code = uri.queryParameters['code'];
+        print('handling cognito code: $code');
+        if (code == null) {
+          String? error = uri.queryParameters['error_description'];
+          if (error != null &&
+              error.contains('UserAlreadyExists') &&
+              relaunchCount > 0) {
+            relaunchCount--;
+            reLaunchURL();
+            return true;
+          }
+          return false;
+        }
+        await Future.delayed(Duration(seconds: 2));
+        getIt<LoginBloc>().add(CompleteLoginWithMethod(code));
+
+        return true;
+      }
+
     default:
       return false;
   }
 }
 
 bool isValidUrl(Uri? uri) {
-  print('***** isValidUrl().uri=$uri');
+  // print('***** isValidUrl().uri=$uri');
   if (uri == null) {
     return false;
   }
 
-  return uri.scheme == 'https' && uri.port == 443;
+  return (uri.scheme == 'https' && uri.port == 443) || uri.scheme == 'anyupp';
 }
 
 String? getDeeplinkType(Uri uri) {
   if (!isValidUrl(uri)) {
     return null;
+  }
+  if (uri.scheme == 'anyupp') {
+    return DeeplinkType.COGNITO_CODE;
   }
   if (isValidQRUrl(uri)) {
     return DeeplinkType.QR;
@@ -94,7 +125,8 @@ Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
   final table = uri.pathSegments[1];
   final seat = uri.pathSegments[2];
   final Place place = Place(table: table, seat: seat);
-  print('***** getNavigationPageByUrlFromQRDeeplink().unitId=$unitId, table=$table, seat=$seat');
+  print(
+      '***** getNavigationPageByUrlFromQRDeeplink().unitId=$unitId, table=$table, seat=$seat');
   return UnitFoundByQRCodeScreen(
     place: place,
     unitId: unitId,
