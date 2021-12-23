@@ -6863,10 +6863,10 @@
     node-addon-api "3.2.1"
     node-gyp "8.1.0"
 
-"@serverless-stack/cli@0.53.4":
-  version "0.53.4"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.53.4.tgz#4369387dd15141969cc703757ef0f53ade2825fa"
-  integrity sha512-RZnOxxEZpn2m1ntVYXV1x67NAz8R0B04oFzFSB58/8zRbqgnz4aghbnvCQVyF3NwSsQrASdgjEm7RB746ACesw==
+"@serverless-stack/cli@0.54.4":
+  version "0.54.4"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.54.4.tgz#c97438231d018bb8f84dd2327a0e7a510f14df6a"
+  integrity sha512-Hi069iZGECCI2Qxr3h++DW/S88SE2zb42HCIXzY3cFe2V3byNSYU6vot3FMIrT00eJmBXGAJatTT4PPbaUXzmQ==
   dependencies:
     "@aws-cdk/aws-apigatewayv2" "1.132.0"
     "@aws-cdk/aws-dynamodb" "1.132.0"
@@ -6879,8 +6879,8 @@
     "@babel/plugin-proposal-class-properties" "^7.10.4"
     "@babel/preset-env" "^7.10.4"
     "@serverless-stack/aws-lambda-ric" "^2.0.8"
-    "@serverless-stack/core" "^0.53.4"
-    "@serverless-stack/resources" "^0.53.4"
+    "@serverless-stack/core" "^0.54.4"
+    "@serverless-stack/resources" "^0.54.4"
     "@types/jest" "^27.0.2"
     "@types/node" "^14.0.27"
     "@typescript-eslint/eslint-plugin" "^4.15.1"
@@ -6897,7 +6897,7 @@
     esbuild "^0.12.20"
     esbuild-runner "^2.2.1"
     eslint "^7.16.0"
-    eslint-config-serverless-stack "^0.53.4"
+    eslint-config-serverless-stack "^0.54.4"
     express "^4.17.1"
     fast-safe-stringify "^2.0.6"
     fs-extra "^9.0.1"
@@ -6908,6 +6908,7 @@
     open "^8.4.0"
     promise.allsettled "^1.0.2"
     prompts "^2.4.1"
+    remeda "^0.0.32"
     source-map-support "^0.5.19"
     ts-jest "^26.1.4"
     typescript "^4.4.3"
@@ -6932,6 +6933,31 @@
     stun "^2.1.0"
     typescript "^4.4.3"
     uuid "^8.3.2"
+
+"@serverless-stack/core@^0.54.4":
+  version "0.54.4"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.54.4.tgz#4e0c47802955f5867fbbc73de056b217ff8ce64f"
+  integrity sha512-Ef8nLP9xbsCWj6J8EIuaiMQD1WhKkPuBYnrs84zafpMaO6lS2SCsfMqfFPNxXvT+yvJ92NdwjZUvH4r7m7LxFQ==
+  dependencies:
+    "@types/picomatch" "^2.3.0"
+    aws-cdk "1.132.0"
+    aws-sdk "^2.761.0"
+    chalk "^4.1.0"
+    chokidar "^3.5.2"
+    cross-spawn "^7.0.3"
+    dataloader "^2.0.0"
+    dotenv "^10.0.0"
+    dotenv-expand "^5.1.0"
+    express "^4.17.1"
+    fs-extra "^9.0.1"
+    js-yaml "^4.1.0"
+    log4js "^6.3.0"
+    picomatch "^2.3.0"
+    remeda "^0.0.32"
+    stun "^2.1.0"
+    typescript "^4.4.3"
+    uuid "^8.3.2"
+    xstate "^4.26.1"
 
 "@serverless-stack/nextjs-core@^0.1.9":
   version "0.1.9"
@@ -6966,7 +6992,7 @@
     path-to-regexp "^6.1.0"
     send "^0.17.1"
 
-"@serverless-stack/resources@0.53.4", "@serverless-stack/resources@^0.53.4":
+"@serverless-stack/resources@0.53.4":
   version "0.53.4"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.53.4.tgz#0ef9d7296c76622f88773f81ac89d7bfcb96a490"
   integrity sha512-X1gIuuUbgQlVJNklXMvCIZOUhaPqnarxIxlG9PxPcq4urDC3FQFnc2Emhf2OPT2vgy61z4DVOxlE2Ik58rWHtQ==
@@ -7010,6 +7036,65 @@
     "@graphql-tools/load-files" "^6.3.2"
     "@graphql-tools/merge" "^6.2.14"
     "@serverless-stack/core" "^0.53.4"
+    "@serverless-stack/nextjs-lambda" "^0.1.9"
+    "@types/jest" "^26.0.7"
+    archiver "^5.3.0"
+    chalk "^4.1.0"
+    cross-spawn "^7.0.3"
+    esbuild "^0.12.20"
+    eslint "^7.16.0"
+    fs-extra "^9.0.1"
+    glob "^7.1.7"
+    graphql "^15.5.1"
+    jest "^26.1.0"
+    ts-jest "^26.1.4"
+    typescript "^4.4.3"
+    zip-local "^0.3.4"
+
+"@serverless-stack/resources@^0.54.4":
+  version "0.54.4"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.54.4.tgz#6795a023656e64932abf1392edcd6cb8963cf22d"
+  integrity sha512-V9uell5zCJiYXs5O+//Y2iv4aglYMxkbk15e0K/GkwdI+jCz0V7Ij0mdWlEljVcdpxJTzYvFibdRXshpQDpzCw==
+  dependencies:
+    "@aws-cdk/aws-apigateway" "1.132.0"
+    "@aws-cdk/aws-apigatewayv2" "1.132.0"
+    "@aws-cdk/aws-apigatewayv2-authorizers" "1.132.0"
+    "@aws-cdk/aws-apigatewayv2-integrations" "1.132.0"
+    "@aws-cdk/aws-appsync" "1.132.0"
+    "@aws-cdk/aws-autoscaling" "1.132.0"
+    "@aws-cdk/aws-certificatemanager" "1.132.0"
+    "@aws-cdk/aws-cloudfront" "1.132.0"
+    "@aws-cdk/aws-cloudfront-origins" "1.132.0"
+    "@aws-cdk/aws-cognito" "1.132.0"
+    "@aws-cdk/aws-dynamodb" "1.132.0"
+    "@aws-cdk/aws-ec2" "1.132.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.132.0"
+    "@aws-cdk/aws-events" "1.132.0"
+    "@aws-cdk/aws-events-targets" "1.132.0"
+    "@aws-cdk/aws-iam" "1.132.0"
+    "@aws-cdk/aws-kinesis" "1.132.0"
+    "@aws-cdk/aws-lambda" "1.132.0"
+    "@aws-cdk/aws-lambda-event-sources" "1.132.0"
+    "@aws-cdk/aws-lambda-nodejs" "1.132.0"
+    "@aws-cdk/aws-logs" "1.132.0"
+    "@aws-cdk/aws-rds" "1.132.0"
+    "@aws-cdk/aws-route53" "1.132.0"
+    "@aws-cdk/aws-route53-patterns" "1.132.0"
+    "@aws-cdk/aws-route53-targets" "1.132.0"
+    "@aws-cdk/aws-s3" "1.132.0"
+    "@aws-cdk/aws-s3-assets" "1.132.0"
+    "@aws-cdk/aws-s3-notifications" "1.132.0"
+    "@aws-cdk/aws-secretsmanager" "1.132.0"
+    "@aws-cdk/aws-sns" "1.132.0"
+    "@aws-cdk/aws-sns-subscriptions" "1.132.0"
+    "@aws-cdk/aws-sqs" "1.132.0"
+    "@aws-cdk/aws-ssm" "1.132.0"
+    "@aws-cdk/core" "1.132.0"
+    "@aws-cdk/cx-api" "1.132.0"
+    "@aws-cdk/lambda-layer-awscli" "1.132.0"
+    "@graphql-tools/load-files" "^6.3.2"
+    "@graphql-tools/merge" "^6.2.14"
+    "@serverless-stack/core" "^0.54.4"
     "@serverless-stack/nextjs-lambda" "^0.1.9"
     "@types/jest" "^26.0.7"
     archiver "^5.3.0"
@@ -7866,7 +7951,7 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.2.tgz#a4c07d47ff737e8ee7e586fe636ff0e1ddff070a"
   integrity sha512-JepeIUPFDARgIs0zD/SKPgFsJEAF0X5/qO80llx59gOxFTboS9Amv3S+QfB7lqBId5sFXJ99BN0J6zFRvL9dDA==
 
-"@types/node@14.18.2":
+"@types/node@14.18.2", "@types/node@^14.0.27", "@types/node@^14.14.10", "@types/node@^14.14.31":
   version "14.18.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.2.tgz#00fe4d1686d5f6cf3a2f2e9a0eef42594d06abfc"
   integrity sha512-fqtSN5xn/bBzDxMT77C1rJg6CsH/R49E7qsGuvdPJa20HtV5zSTuLJPNfnlyVH3wauKnkHdLggTVkOW/xP9oQg==
@@ -7875,11 +7960,6 @@
   version "10.17.60"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.60.tgz#35f3d6213daed95da7f0f73e75bcc6980e90597b"
   integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
-
-"@types/node@^14.0.27", "@types/node@^14.14.10", "@types/node@^14.14.31":
-  version "14.18.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.2.tgz#00fe4d1686d5f6cf3a2f2e9a0eef42594d06abfc"
-  integrity sha512-fqtSN5xn/bBzDxMT77C1rJg6CsH/R49E7qsGuvdPJa20HtV5zSTuLJPNfnlyVH3wauKnkHdLggTVkOW/xP9oQg==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
@@ -7890,6 +7970,11 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
+
+"@types/picomatch@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@types/picomatch/-/picomatch-2.3.0.tgz#75db5e75a713c5a83d5b76780c3da84a82806003"
+  integrity sha512-O397rnSS9iQI4OirieAtsDqvCj4+3eY1J+EPdNTKuHuRWIfUoGyzX294o8C4KJYaLqgSrd2o60c5EqCU8Zv02g==
 
 "@types/prettier@^2.0.0", "@types/prettier@^2.1.5":
   version "2.4.2"
@@ -12615,7 +12700,7 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-dataloader@2.0.0:
+dataloader@2.0.0, dataloader@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-2.0.0.tgz#41eaf123db115987e21ca93c005cd7753c55fe6f"
   integrity sha512-YzhyDAwA4TaQIhM5go+vCLmU0UikghC/t9DTQYZR2M/UvZ1MdOhPezSDZcjj9uqQJOMqjLcpWtyW2iNINdlatQ==
@@ -13912,10 +13997,10 @@ eslint-config-prettier@8.3.0:
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
   integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
 
-eslint-config-serverless-stack@^0.53.4:
-  version "0.53.4"
-  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.53.4.tgz#d730ac7d2963ba2e16e7e1edb1eb0b46ef54d2a2"
-  integrity sha512-xd/INUE7uNXDLhhnN5tQqZClbsphMa8LIQidUzV6p9PxAtSe+rBLzU3MMBBAGzafwz/sb6/6dHmmLE17OowBAQ==
+eslint-config-serverless-stack@^0.54.4:
+  version "0.54.4"
+  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.54.4.tgz#d20cff2a2d0046fd9e592508bc469f220b229f6e"
+  integrity sha512-ttxw7JbnqwGaRTMo+8MXf4YddHia5/w/Qo25MXC7atM4uGbk8rDtKbbQFO0lIHebGG7Up5soC+C2b/227iNfbw==
   dependencies:
     "@babel/eslint-parser" "^7.11.3"
     "@babel/plugin-proposal-class-properties" "^7.10.4"
@@ -21372,7 +21457,7 @@ picocolors@^1.0.0:
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.0.0.tgz#cb5bdc74ff3f51892236eaf79d68bc44564ab81c"
   integrity sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==
 
-picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
+picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3, picomatch@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.0.tgz#f1f061de8f6a4bf022892e2d128234fb98302972"
   integrity sha512-lY1Q/PiJGC2zOv/z391WOTD+Z02bCgsFfvxoXXf6h7kv9o+WmsmzYqrAwY63sNgOxE4xEdq0WyUnXfKeBrSvYw==
@@ -22781,6 +22866,11 @@ relay-runtime@12.0.0:
     "@babel/runtime" "^7.0.0"
     fbjs "^3.0.0"
     invariant "^2.2.4"
+
+remeda@^0.0.32:
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/remeda/-/remeda-0.0.32.tgz#668e5d3b8a5c9edb1a19f33d5df805dd1e7d299c"
+  integrity sha512-FEdl8ONpqY7AvvMHG5WYdomc0mGf2khHPUDu6QvNkOq4Wjkw5BvzWM4QyksAQ/US1sFIIRG8TVBn6iJx6HbRrA==
 
 remedial@^1.0.7:
   version "1.0.8"
@@ -26750,6 +26840,11 @@ xss@^1.0.8:
   dependencies:
     commander "^2.20.3"
     cssfilter "0.0.10"
+
+xstate@^4.26.1:
+  version "4.26.1"
+  resolved "https://registry.yarnpkg.com/xstate/-/xstate-4.26.1.tgz#4fc1afd153f88cf302a9ee2b758f6629e6a829b6"
+  integrity sha512-JLofAEnN26l/1vbODgsDa+Phqa61PwDlxWu8+2pK+YbXf+y9pQSDLRvcYH2H1kkeUBA5fGp+xFL/zfE8jNMw4g==
 
 xtend@^4.0.0, xtend@^4.0.1, xtend@^4.0.2, xtend@~4.0.1:
   version "4.0.2"
