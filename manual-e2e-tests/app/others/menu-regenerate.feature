@@ -1,7 +1,7 @@
 Feature: Update menu and see the changes in the app
 
   Scenario: Admin set the product to inactive
-    Given the admin set the "FANTA #2" product to INACTIVE
+    Given the admin set the "Sajtburger" product to INACTIVE
     And the admin pushes the "Regenerate menu" button
     Given I am on the login screen
     And the language is set to EN
@@ -12,9 +12,10 @@ Feature: Update menu and see the changes in the app
     And I tap the "Take away" button
     Then there is the "Menu" screen
     When I tap the "You can switch between ordering methods at any time." text
-    Then I should see "HAMBURGER #1" with picture
-    And I should NOT see "FANTA #2" with picture
-    When the admin set the "FANTA #2" product to ACTIVE
+    Then I should see "Fishburger" with picture
+    And I should see "Hamburger" with picture
+    And I should NOT see "Sajtburger"
+    When the admin set the "Sajtburger" product to ACTIVE
     And the app user closes the App
     And the app user opens the App
     Then there is the unit selection screen
@@ -22,12 +23,14 @@ Feature: Update menu and see the changes in the app
     And I tap the on "Take away" button
     Then there is the "Menu" screen
     When I tap the "You can switch between ordering methods at any time." text
-    Then I should see "HAMBURGER #1" with picture
-    And I should see "FANTA #2" with picture
+    Then I should see "Sajtburger" with picture
+    And I should see "Fishburger" with picture
+    And I should see "Hamburger" with picture
 
   Scenario: Admin set all the products to inactive
-    Given the admin set the "HAMBURGER #1" product to INACTIVE
-    Given the admin set the "FANTA #2" product to INACTIVE
+    Given the admin set the "Fishburger" product to INACTIVE
+    Given the admin set the "Sajtburger" product to INACTIVE
+    Given the admin set the "Hamburger" product to INACTIVE
     And the admin pushes the "Regenerate menu" button
     Given I am on the login screen
     And the language is set to EN
@@ -38,9 +41,12 @@ Feature: Update menu and see the changes in the app
     And I tap the "Take away" button
     Then there is the "Menu" screen
     When I tap the "You can switch between ordering methods at any time." text
-    Then I should see "..." text
-    When the admin set the "HAMBURGER #1" product to ACTIVE
-    When the admin set the "FANTA #2" product to ACTIVE
+    Then I should see "Non-alcoholic drink" product category
+    And I should see "Beers" product category
+    And I should NOT see "Hamburgers" product category
+    When the admin set the "Sajtburger" product to ACTIVE
+    When the admin set the "Fishburger" product to ACTIVE
+    When the admin set the "Hamburger" product to ACTIVE
     And the anyupp user closes the App
     And the anyupp user opens the App
     Then there is the unit selection screen
@@ -48,11 +54,13 @@ Feature: Update menu and see the changes in the app
     And I tap the on "Take away" button
     Then there is the "Menu" screen
     When I tap the "You can switch between ordering methods at any time." text
-    Then I should see "HAMBURGER #1" with picture
-    And I should see "FANTA #2" with picture
+    Then I should see "Hamburgers" product category
+    And I should see "Sajtburger" with picture
+    And I should see "Fishburger" with picture
+    And I should see "Hamburger" with picture
 
   Scenario: Admin adds a new product
-    Given the admin adds "Cola" product under the "Test product category #1 name" category
+    Given the admin adds "Vegaburger" product under the "Hamburgers" category
     And the admin pushes the "Regenerate menu" button
     Given I am on the login screen
     And the language is set to EN
@@ -63,12 +71,11 @@ Feature: Update menu and see the changes in the app
     And I tap the "Take away" button
     Then there is the "Menu" screen
     When I tap the "You can switch between ordering methods at any time." text
-    Then I should see "HAMBURGER #1" with picture
-    And I should see "FANTA #2" with picture
-    And I should see "Cola" with picture
+    Then I should see "Sajtburger" with picture
+    And I should see "Vegaburger" with picture
 
   Scenario: Admin modifies the price of a product
-    Given the admin sets the "FANTA #2" price to "320 Ft"
+    Given the admin sets the "Sajtburger" price to "2000 Ft"
     And the admin pushes the "Regenerate menu" button
     Given I am on the login screen
     And the language is set to EN
@@ -79,7 +86,8 @@ Feature: Update menu and see the changes in the app
     And I tap the "Take away" button
     Then there is the "Menu" screen
     When I tap the "You can switch between ordering methods at any time." text
-    Then I should see "HAMBURGER #1" with picture
-    And I should see "FANTA #2" with picture
-    And I tap on the "FANTA #2" product
-    And I should see "1 x 320 Ft" text
+    Then I should see "Sajtburger" with picture
+    And I should see "Fishburger" with picture
+    And I should see "Hamburger" with picture
+    And I tap on the "Sajtburger" product
+    And I should see "1 x 2000 Ft" text

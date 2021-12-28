@@ -13,7 +13,7 @@ Feature: Authentication
     And I click the "sign in" text
     Then I should be on the dashboard page
     Then I set the language to EN
-    Then I should see "John Doe" text
+    Then I should see "testuser+monad" text
     And the "Dashboard" title is displayed
     When I click on the profile button
     And I click on the "Log out" title

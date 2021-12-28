@@ -4,11 +4,11 @@ class LoginMethodUtils {
   static String methodToString(LoginMethod method) {
     switch (method) {
       case LoginMethod.APPLE:
-        return 'apple.com';
+        return 'SignInWithApple';
       case LoginMethod.FACEBOOK:
-        return 'facebook.com';
+        return 'Facebook';
       case LoginMethod.GOOGLE:
-        return 'google.com';
+        return 'Google';
       default:
         return method.toString();
     }

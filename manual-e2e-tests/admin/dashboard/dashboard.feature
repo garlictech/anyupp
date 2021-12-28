@@ -23,7 +23,7 @@ Feature: Dashboard
     Then I should see at least 20 orders as I scrolling up on the list
 
   Scenario: Get the order to History from Active orders (stripe)
-    Given I create a "Hamburger #1" cash/card order with "ROOM TEMPERATURE" component
+    Given I create a "Hamburger" cash/card order with "Rice" component
     And the order is in "PLACED" state
     Then I should see a 6 number id with "#"
     And I should see the time of the created order
@@ -35,30 +35,30 @@ Feature: Dashboard
     Then I should see the buttons in "PROCESSING"
     When I click on the "Lanes" icon
     And I click on the "bár" checkbox
-    Then I should see the "Hamburger #1" in "Processing"
-    And I should see "CLASSIC" text
-    And I should see "ROOM TEMPERATURE" text
+    Then I should see the "Hamburger" in "Processing"
+    And I should see "normal" text
+    And I should see "Room temperature" text
     When I click on the "Active orders" icon
     And the "Placed orders" icon is selected
-    When I click on the order with "148 Ft"
+    When I click on the order with "2982 Ft"
     When I click on the "PROCESSING" button next to the product name
     Then I should see the buttons in "READY"
     When I click on the "READY" button next to the product name
     Then I should NOT see the order on the "Active orders" tab
     When I click on the "Orders history" icon with title
     Then I should see the served order selected
-    Then I should see the "Hamburger #1 (glass)" product with "ROOM TEMPERATURE"
+    Then I should see the "Hamburger (normal)" product with "Room temperature"
     Then I should see the green badge with "Success" caption
     When I click on the "Reports" icon with title
-    Then I should see "148 Ft" on the "Orders amount" card
+    Then I should see "2982 Ft" on the "Orders amount" card
     When I scroll down to see the "Product mix"
-    Then there is "Hamburger #1" product with number "1" in the row
+    Then there is "Hamburger" product with number "1" in the row
     When I click on the "LIST ALL" button
-    Then I should see the "Product mix" dialog with the "Hamburger #1"
+    Then I should see the "Product mix" dialog with the "Hamburger"
     And I click on the close button
 
   Scenario: Get the order to History from Active orders (cash/card)
-    Given I create a "Fanta #2" cash/card order with "ROOM TEMPERATURE" component
+    Given I create a "Hamburger" cash/card order with "Rice" component
     And the order is in "NONE" state
     When I click on the "Manual payments" icon with title
     And I scroll down to the bottom of the list
@@ -76,21 +76,21 @@ Feature: Dashboard
     When I click on the "PLACED" button next to the product name
     Then I should see the buttons in "PROCESSING"
     When I reload the admin page
-    And I click on the order with "298 Ft"
+    And I click on the order with "2982 Ft"
     When I click on the "PROCESSING" button next to the product name
     Then I should see the buttons in "READY"
     When I click on the "READY" button next to the product name
     Then I should NOT see the order on the "Active orders" tab
     When I click on the "Orders history" tab
     Then I should see the served order selected
-    Then I should see the "Fanta #2 (glass)" product with "ROOM TEMPERATURE"
+    Then I should see the "Hamburger (normal)" product with "Room temperature"
     Then I should see the green badge with "Success" caption
     When I click on the "Reports" icon with title
-    Then I should see "298 Ft" on the "Orders amount" card
+    Then I should see "2982 Ft" on the "Orders amount" card
     When I scroll down to see the "Product mix"
-    Then there is "Fanta #2" product with number "1" in the row
+    Then there is "Hamburger" product with number "1" in the row
     When I click on the "LIST ALL" button
-    Then I should see the "Product mix" dialog with the "Fanta #2"
+    Then I should see the "Product mix" dialog with the "Hamburger"
     And I click on the close button
     When I click on the "EXPORT" button
     Then the xlsx file is downloaded with the name "Késdobáló #111"

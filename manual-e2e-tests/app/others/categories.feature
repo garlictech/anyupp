@@ -20,5 +20,6 @@ Feature: Inactive products
     When I tap the "back arrow" button
     Then I should be on the unit selection screen
     When I tap the "Késdobáló #111" unit in the list
-    Then I should see "HAMBURGER #1" with picture
-    And I should see "FANTA #2" with picture
+    Then I should see "Sajtburger" with picture
+    And I should see "Fishburger" with picture
+    And I should see "Hamburger" with picture

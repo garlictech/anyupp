@@ -31,21 +31,24 @@ class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   Future<String?> get email => _emailLoginProvider.email;
 
   @override
-  Future<ProviderLoginResponse> loginWithEmailAndPassword(String email, String password) {
+  Future<ProviderLoginResponse> loginWithEmailAndPassword(
+      String email, String password) {
     return _emailLoginProvider.loginWithEmailAndPassword(email, password);
   }
 
   @override
-  Future<String> registerUserWithEmailAndPassword(String userEmail, String? userPhone, String email, String password) {
-    return _emailLoginProvider.registerUserWithEmailAndPassword(userEmail, userPhone, email, password);
+  Future<String> registerUserWithEmailAndPassword(
+      String userEmail, String? userPhone, String email, String password) {
+    return _emailLoginProvider.registerUserWithEmailAndPassword(
+        userEmail, userPhone, email, password);
   }
 
   /// Logout the user from the backend and all Social platforms
   Future<void> logout() async {
     await Future.wait([
       (await SharedPreferences.getInstance()).clear(),
-      _commonLoginProvider.logoutFromBackend(),
       _socialLoginProvider.logout(),
+      _commonLoginProvider.logoutFromBackend(),
     ]);
   }
 
@@ -65,7 +68,8 @@ class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   }
 
   @override
-  Future<bool> confirmPassword(String userName, String code, String newPassword) {
+  Future<bool> confirmPassword(
+      String userName, String code, String newPassword) {
     return _emailLoginProvider.confirmPassword(userName, code, newPassword);
   }
 
