@@ -144,7 +144,7 @@
     "packagingFee": "Csomagolási díj"
   },
   "allergens": {
-    "title": "Allergének",
+    "title": "ALLERGÉNEK",
     "celery": "Zeller",
     "crustaceans": "Rákfélék",
     "egg": "Tojás",
@@ -159,6 +159,7 @@
     "soya": "Szója",
     "sulphites": "Szulfitok",
     "treenuts": "Diófélék",
+    "disclaimerTitle": "Kiegészítő információ",
     "disclaimer": "Ételeink leírása nem minden esetben teljeskörű, ételérzékenység esetén kérdezze a {{0}} Csapatát vagy kérje allergén 1 összetevőket bemutató táblázatunkat. Teljesen allergén mentes környezetet vagy termékeket nem tudunk biztosítani."
   },
   "favorites": {
@@ -287,8 +288,14 @@
     "orderReady": "Rendelésed elkészült. Felszolgálása folyamatban."
   },
   "payment": {
-    "title": "FIZETÉSI MÓD",
+    "title": "FIZETÉSI MÓDOK",
     "choose": "Melyik fizetési módot választod?",
+    "delete": {
+      "title": "Törlöd a bankkártyát?",
+      "description": "A művelettel törlöd a bankkártyát a fizetési módok közül.",
+      "ok": "Törlés",
+      "cancel": "Mégsem"
+    },
     "method": {
       "inAppPayment": "Bankkártyás fizetés",
       "inAppPaymentDesc": "Online",
@@ -495,24 +502,31 @@
     "changeLocation": "Helyszín váltása"
   },
   "about": {
-    "description": "    Hogy miért AnyUpp, hadd legyen ez még kicsit titok... Nagyon sok funkcióval érkezünk majd még, amiből rá fogsz jönni, hogy ki az Any és miért épp Upp. :)\n\n    Jártál már úgy, hogy integettél a pincérnek, de sehogy sem kereste a szemkontaktust? Vagy vártad a számlát, de nem sikerült kihozni senkinek? Vagy úgy vagy vele - most Covid idején - hogy inkább nem fognád meg az étlapot, nem fizetnél készpénzzel, és nem ütnéd be a PIN kódod egy terminálba? Na, ezekre mind jó az AnyUpp. Töltsd le, válaszd ki a hozzád legközelebbi éttermet, ahol tudsz vele rendelni és fizetni, és próbáld ki! Ennyi.\n\n    Ez most a CYBERG AnyUpp appjának a teszt időszaka. Jelenleg egy étteremben futunk, Budapesten a Corvin sétányon a KAJAHU-ban. Gyere és próbáld ki!\n\n    Az asztalokon QR kódot találsz, ha beolvasod, mi tudjuk hol ülsz, és odavisszük a rendelésed. Nem kell várnod, nem kell szólnod senkihez, csak megrendeled a burgered vagy pizzád, dobsz mellé egy italt vagy desszertet, és már visszük is. Egyszerűen hangzik, nem? Tényleg az. Ha akarod, bedobhatod a kedvencek közé, amit ettél, és legközelebb már nem kell a menüből sem kikeresned.\n\n    Fizetnél? Ne várj a pincérre! Fizess az app-ban bankkártyával, Stripe-pal, ahogy kényelmes, aztán fogyaszd rendelésed, érezd jól magad, és rendelj újra, ameddig jól esik! Sosem volt még könnyebb és gyorsabb.\n\n    Nyugi, mi is tudjuk, hogy ez még nem a jövő. De menő, nem? Sok izgi dolog jön még. Lesz egy szuper ajánló, látod majd, hogy a többieknek mi a kedvence, akár ismerkedhetsz is nálunk, meg olcsóbban is kajálhatsz, ha sokszor betérsz hozzánk. Ja, és nem csak hozzánk. Az a terv, hogy egyre több helyen jelenünk majd meg az app-pal, így előbb utóbb bárhol (ANYwhere, hm?) belefuthatsz. Adj egy kis időt, teszteld addig, és ha bármi tetszik vagy nem, szólj, írj, mi meg fixáljuk, addoljuk, bővítjük.\n\n    Frankó lesz. Ha már most tetszik, kérjük add tovább! Kösz.",
+    "title": "NÉVJEGY",
+    "description": "Jártál már úgy, hogy integettél a pincérnek, de nem kereste a szemkontaktust? Vagy vártad a számlát, de nem hozta senki? Nem akarsz készpénzzel bajlódni, sőt a bankkártyád sincs kéznél?\n\nNa, ezekre mind jó az AnyUpp!\n\nOlvas be az asztalon található QR kódot\n1. Töltsd le az alkalmazást, vagy frissíts az elérhető új verzióra\n2. Böngészd a menüt és rendelj kedvedre\n3. Egyszerűen hangzik, nem? Tényleg az.\n\nFizethetsz az app-ban, vagy - ahol lehetőség van rá – rendezheted a számlád a pincérnél is. Sosem volt még könnyebb és gyorsabb!\n\nHa valami nem ok, csak üzenj és fixáljuk. Ha tetszik, küldj egy ötöst az AppStore-ban vagy a GooglePlay-en, és gyere máskor is!\n\nKeresd az AnyUpp-ot a kedvenc vendéglátóhelyeiden!",
     "licences": "Licences",
     "version": "Verzió"
   },
   "profile": {
     "menu": {
+      "section1": "Fiók",
       "contact": "Kapcsolat",
-      "transactions": "Tranzakciók",
-      "about": "Rólunk",
-      "cards": "Mentett kártyák",
-      "logout": "Kijelentkezés",
-      "settings": "Beállítások",
-      "regulations": "Szabályzatok",
+      "transactions": "Vásárlások",
+      "paymentMethods": "Fizetési módok",
+      "allergens": "Allergének",
+      "section2": "Beállítások",
       "language": "Nyelv",
-      "payment": "Fizetés és számlaadatok"
+      "security": "Biztonság & jelszó",
+      "privacy": "Felhasználási feltételek",
+      "about": "Névjegy",
+      "logout": "Kijelentkezés"
+    },
+    "language": {
+      "title": "NYELV",
+      "save": "MÓDOSÍTÁSOK MENTÉSE"
     },
     "transactions": {
-      "status": "Státusz",
+      "title": "VÁSÁRLÁSOK",
       "paymentMethod": "Vásárlás módja",
       "noTransactions": "Nincsenek tranzakciók",
       "details": "Részletek",
@@ -521,7 +535,20 @@
         "stripe": "Stripe",
         "cash": "Készpénzes",
         "-": "Ismeretlen"
+      },
+      "status": {
+        "waitingForPayment": "Fizetésre vár",
+        "success": "Felszolgálva",
+        "failed": "Törölve"
       }
+    },
+    "edit": {
+      "title": "PROFIL ADATOK",
+      "firstName": "Vezetéknév",
+      "lastName": "Keresztnév",
+      "email": "E-mail cím",
+      "nickName": "Becenév",
+      "save": "PROFIL MENTÉSE"
     }
   },
   "product": {

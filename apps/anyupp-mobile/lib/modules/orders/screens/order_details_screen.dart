@@ -16,7 +16,8 @@ class OrderDetailsScreen extends StatefulWidget {
   final Order order;
   final GeoUnit unit;
 
-  const OrderDetailsScreen({Key? key, required this.order, required this.unit}) : super(key: key);
+  const OrderDetailsScreen({Key? key, required this.order, required this.unit})
+      : super(key: key);
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState(order);
@@ -58,7 +59,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           ),
           centerTitle: true,
           title: Text(
-            formatOrderDate(context, fromGraphQLAWSDateTimeToDartDateTime(_order.createdAt!)),
+            formatOrderDate(context,
+                fromGraphQLAWSDateTimeToDartDateTime(_order.createdAt!)),
             style: Fonts.satoshi(
               fontSize: 16.0,
               color: theme.secondary,
@@ -130,24 +132,28 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 class OrderDetailsPaymentInfoWidget extends StatelessWidget {
   final Order order;
 
-  const OrderDetailsPaymentInfoWidget({Key? key, required this.order}) : super(key: key);
+  const OrderDetailsPaymentInfoWidget({Key? key, required this.order})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     IconData icon = Icons.payments_rounded;
     String date = '';
-    if (order.paymentMode.method == PaymentMethod.inapp || order.paymentMode.method == PaymentMethod.card) {
+    if (order.paymentMode.method == PaymentMethod.inapp ||
+        order.paymentMode.method == PaymentMethod.card) {
       icon = Icons.credit_card_outlined;
       // if (order.transaction?.createdAt != null) {
       //   date = dateTimeFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.transaction!.createdAt!));
       // }
     }
-    print('orderdetauils.order.transaction?.createdAt=${order.transaction?.createdAt}');
+    // print('orderdetauils.order.transaction?.createdAt=${order.transaction?.createdAt}');
     if (order.transaction?.createdAt != null) {
-      date = dateTimeFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.transaction!.createdAt!));
+      date = dateTimeFormatter.format(
+          fromGraphQLAWSDateTimeToDartDateTime(order.transaction!.createdAt!));
     }
 
-    bool showButton = order.transaction?.receipt?.pdfData != null || order.transaction?.invoice?.pdfUrl != null;
+    bool showButton = order.transaction?.receipt?.pdfData != null ||
+        order.transaction?.invoice?.pdfUrl != null;
     bool isInvoice = order.transaction?.invoice?.pdfUrl != null;
 
     // showButton = true;
@@ -182,7 +188,8 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
                     width: 18.0,
                   ),
                   Text(
-                    trans(context, 'orders.paymentDetails.${enumToString(order.paymentMode.method)}'),
+                    trans(context,
+                        'orders.paymentDetails.${enumToString(order.paymentMode.method)}'),
                     style: Fonts.satoshi(
                       color: theme.secondary,
                       fontWeight: FontWeight.w400,
@@ -245,7 +252,9 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
   final Order order;
   final GeoUnit unit;
 
-  const OrderDetailsInfoTextWidget({Key? key, required this.order, required this.unit}) : super(key: key);
+  const OrderDetailsInfoTextWidget(
+      {Key? key, required this.order, required this.unit})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -318,7 +327,8 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown.currency),
+                    formatCurrency(order.sumPriceShown.priceSum,
+                        order.items[0].priceShown.currency),
                     style: Fonts.satoshi(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,
@@ -338,7 +348,9 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
   final OrderItem item;
   final GeoUnit unit;
 
-  const OrderDetailsInfoTextItemWidget({Key? key, required this.item, required this.unit}) : super(key: key);
+  const OrderDetailsInfoTextItemWidget(
+      {Key? key, required this.item, required this.unit})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -426,8 +438,10 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
     List<String> extraNames = [];
     if (item.selectedConfigMap != null) {
       item.selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
-          extraNames.add(getLocalizedText(context, generatedProductConfigComponent.name));
+        for (GeneratedProductConfigComponent generatedProductConfigComponent
+            in value) {
+          extraNames.add(
+              getLocalizedText(context, generatedProductConfigComponent.name));
         }
       });
     }
@@ -468,7 +482,8 @@ class OrderStatusTimelineData {
 class OrderStatusTimelineWidget extends StatelessWidget {
   final StatusLog status;
 
-  const OrderStatusTimelineWidget({Key? key, required this.status}) : super(key: key);
+  const OrderStatusTimelineWidget({Key? key, required this.status})
+      : super(key: key);
 
   List<OrderStatusTimelineData> _calculateTimelineData(BuildContext context) {
     List<OrderStatusTimelineData> results = [];
@@ -662,7 +677,8 @@ class OrderStatusTimelineWidget extends StatelessWidget {
 class OrderStatusTimelineItemWidget extends StatelessWidget {
   final OrderStatusTimelineData data;
 
-  const OrderStatusTimelineItemWidget({Key? key, required this.data}) : super(key: key);
+  const OrderStatusTimelineItemWidget({Key? key, required this.data})
+      : super(key: key);
 
   IconData get iconFromType {
     switch (data.icon) {
@@ -790,7 +806,8 @@ class OrderDetailsInfoTableItemData {
   final String title;
   final String value;
 
-  const OrderDetailsInfoTableItemData({required this.icon, required this.title, required this.value});
+  const OrderDetailsInfoTableItemData(
+      {required this.icon, required this.title, required this.value});
 }
 
 class OrderDetailsInfoTableItem extends StatelessWidget {
@@ -798,7 +815,8 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
   final Order order;
   final GeoUnit unit;
 
-  const OrderDetailsInfoTableItem({Key? key, required this.pos, required this.order, required this.unit})
+  const OrderDetailsInfoTableItem(
+      {Key? key, required this.pos, required this.order, required this.unit})
       : super(key: key);
 
   OrderDetailsInfoTableItemData _generateItemData(BuildContext context) {
@@ -811,7 +829,9 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
         );
       case 1:
         return OrderDetailsInfoTableItemData(
-          icon: order.servingMode == ServingMode.takeAway ? Icons.arrow_left : Icons.arrow_right,
+          icon: order.servingMode == ServingMode.takeAway
+              ? Icons.arrow_left
+              : Icons.arrow_right,
           title: trans(context, 'orders.infos.titles.1'),
           value: order.servingMode == ServingMode.takeAway
               ? trans(context, 'cart.takeAway').capitalize()
@@ -824,14 +844,16 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
           value: '#${order.orderNum}',
         );
       case 3:
-        var createdAt = dateFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!));
+        var createdAt = dateFormatter
+            .format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!));
         return OrderDetailsInfoTableItemData(
           icon: Icons.event,
           title: trans(context, 'orders.infos.titles.3'),
           value: createdAt,
         );
       case 4:
-        var createdAt = timeFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!));
+        var createdAt = timeFormatter
+            .format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!));
         return OrderDetailsInfoTableItemData(
           icon: Icons.schedule_rounded,
           title: trans(context, 'orders.infos.titles.4'),
