@@ -5,7 +5,6 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
@@ -19,8 +18,6 @@ import 'package:mocktail/mocktail.dart';
 
 import '../unit/mock/mock_auth_provider.dart';
 import '../mock/mock_data_faker.dart';
-import 'mock/mock_theme_bloc.dart';
-import 'mock/mock_unit_select_bloc.dart';
 import 'mock/mocks.dart';
 
 GeoUnit _unit = MockGenerator.generateUnit(

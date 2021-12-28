@@ -13,7 +13,6 @@ import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/user-details/user_details.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -21,8 +20,6 @@ import 'package:in_app_update/in_app_update.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:upgrader/upgrader.dart';
 
-import 'core/dependency_indjection/dependency_injection.dart';
-import 'core/theme/theme.dart';
 import 'modules/cart/cart.dart';
 import 'modules/favorites/favorites.dart';
 import 'modules/main/main.dart';

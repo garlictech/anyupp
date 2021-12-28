@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -66,7 +65,9 @@ class QrScannerOverlayShapeExt extends QrScannerOverlayShape {
     final borderWidthSize = width / 2;
     final height = rect.height;
     final borderOffset = borderWidth / 2;
-    final _borderLength = borderLength > cutOutSize / 2 + borderWidth * 2 ? borderWidthSize / 2 : borderLength;
+    final _borderLength = borderLength > cutOutSize / 2 + borderWidth * 2
+        ? borderWidthSize / 2
+        : borderLength;
     final _cutOutSize = cutOutSize < width ? cutOutSize : width - borderOffset;
 
     final backgroundPaint = Paint()
@@ -85,7 +86,11 @@ class QrScannerOverlayShapeExt extends QrScannerOverlayShape {
 
     final cutOutRect2 = Rect.fromLTWH(
       rect.left + width / 2 - _cutOutSize / 2 + borderOffset,
-      -cutOutBottomOffset + rect.top + height / 2 - _cutOutSize / 2 + borderOffset,
+      -cutOutBottomOffset +
+          rect.top +
+          height / 2 -
+          _cutOutSize / 2 +
+          borderOffset,
       _cutOutSize - borderOffset * 2,
       _cutOutSize - borderOffset * 2,
     );

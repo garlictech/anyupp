@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/Place.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/modules/selectunit/widgets/barcode_scanner_widgets.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/deeplink_utils.dart';

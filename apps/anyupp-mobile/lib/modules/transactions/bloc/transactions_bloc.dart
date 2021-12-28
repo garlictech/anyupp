@@ -2,12 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/transactions/repository/transactions_repository.dart';
+import 'package:fa_prev/modules/transactions/transactions.dart';
 import 'package:fa_prev/shared/exception.dart';
-
-import '../transactions.dart';
-import 'transactions_event.dart';
-import 'transactions_state.dart';
 
 class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
   final TransactionsRepository _transactionsRepository;

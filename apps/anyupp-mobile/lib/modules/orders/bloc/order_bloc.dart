@@ -7,9 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'order_event.dart';
-import 'order_state.dart';
-
 class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
   final OrderRepository _repository;
 

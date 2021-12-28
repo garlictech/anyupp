@@ -1,11 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 
 import 'package:fa_prev/modules/cart/cart.dart';
 
@@ -34,7 +32,8 @@ class _CartIconWidgetState extends State<CartIconWidget> {
           return StreamBuilder<Cart?>(
             stream: getIt<CartRepository>().getCurrentCartStream(state.unit.id),
             builder: (context, AsyncSnapshot<Cart?> snapshot) {
-              if (snapshot.connectionState != ConnectionState.waiting || snapshot.hasData) {
+              if (snapshot.connectionState != ConnectionState.waiting ||
+                  snapshot.hasData) {
                 if (snapshot.data != null) {
                   return getCartIcon(snapshot.data!.totalCount);
                 }

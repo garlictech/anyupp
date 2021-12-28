@@ -1,10 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/bloc/configset_bloc.dart';
-import 'package:fa_prev/modules/menu/bloc/configset_event.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';

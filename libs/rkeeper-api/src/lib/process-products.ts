@@ -17,6 +17,8 @@ import {
   delay,
   mapTo,
   shareReplay,
+  filter,
+  take,
 } from 'rxjs/operators';
 import {
   combineLatest,
@@ -35,7 +37,7 @@ import {
 import { regenerateUnitData } from '@bgap/backend/units';
 
 // make sure that everything gets (re)indexed
-const ES_DELAY = 5000; //ms
+export const ES_DELAY = 5000; //ms
 
 export const decodeName = (name: string) => {
   {
@@ -112,6 +114,13 @@ export const processDishes = (rawData: any): Observable<Dish[]> =>
         }),
       ),
     ),
+    // --------------------------------------------------
+    // This is a development time optimization.
+    // Remove it from PROD!!!
+    //  --------------------------------------------------
+    filter(dish => !!dish?.active),
+    take(20),
+    // - OPTIMIZATION END -------------------------------------------------
     toArray(),
     map(
       flow(
@@ -362,8 +371,9 @@ export const normalizeModifier = (modifier: Modifier) =>
 
 export const handleRkeeperProducts =
   (sdk: CrudApi.CrudSdk) =>
+  (externalRestaurantId: string) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (externalRestaurantId: string, rawData: any): Observable<boolean> =>
+  (rawData: any): Observable<boolean> =>
     combineLatest(
       getBusinessEntityInfo(sdk)(externalRestaurantId),
       processDishes(rawData),
@@ -626,10 +636,9 @@ const resolveComponentSetsHelper = R.memoizeWith(
 );
 
 export const resolveComponentSets =
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
 
     (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
       resolveComponentSetsHelper(sdk, chainId, rawData, dish);

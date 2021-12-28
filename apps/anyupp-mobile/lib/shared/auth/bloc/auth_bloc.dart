@@ -4,9 +4,6 @@ import 'package:catcher/catcher.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'auth_event.dart';
-import 'auth_state.dart';
-
 class AuthBloc extends Bloc<BaseAuthEvent, BaseAuthState> {
   final AuthRepository _authRepository;
 

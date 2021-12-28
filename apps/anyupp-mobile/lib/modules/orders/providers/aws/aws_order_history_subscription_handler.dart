@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:artemis/artemis.dart';
-import 'package:fa_prev/core/app-constants.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';

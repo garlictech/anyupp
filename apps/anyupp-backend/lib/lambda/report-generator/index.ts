@@ -1,4 +1,4 @@
-import { createReport } from '@bgap/anyupp-backend-lib';
+import { createReport } from '@bgap/backend/reports';
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 
 const reportDate = new Date().toISOString().substr(0, 10);

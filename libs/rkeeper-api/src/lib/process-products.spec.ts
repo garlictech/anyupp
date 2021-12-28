@@ -17,7 +17,7 @@ const dishFixture = {
   modiweight: 0,
   price: 50000,
   modischeme: 0,
-  active: 0,
+  active: 1,
   id: 1000114,
   guid: '4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68',
   code: 3,

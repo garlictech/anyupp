@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:fa_prev/shared/connectivity.dart';
-import 'package:fa_prev/shared/connectivity/bloc/network_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {

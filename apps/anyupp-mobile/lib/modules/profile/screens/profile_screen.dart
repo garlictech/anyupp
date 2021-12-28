@@ -1,5 +1,4 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/screens.dart';
@@ -11,9 +10,6 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:url_launcher/url_launcher.dart';
-
-import 'about_app_screen.dart';
-import 'settings_screen.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -55,7 +51,9 @@ class _ProfileState extends State<Profile> {
                 height: 70.0,
                 child: CircleAvatar(
                   radius: 30.0,
-                  backgroundImage: (user.profileImage != null) ? NetworkImage(user.profileImage!) : null,
+                  backgroundImage: (user.profileImage != null)
+                      ? NetworkImage(user.profileImage!)
+                      : null,
                   backgroundColor: Colors.transparent,
                 ),
               ),
@@ -99,12 +97,18 @@ class _ProfileState extends State<Profile> {
           SizedBox(
             height: 20.0,
           ),
-          createOptionMenu(trans('profile.menu.about'), () => Nav.to(AboutApp()), true),
-          createOptionMenu(trans('profile.menu.settings'), () => Nav.to(SettingsScreen()), true),
-          createOptionMenu(trans('profile.menu.transactions'), () => Nav.to(TransactionsScreen()), true),
-          createOptionMenu(trans('profile.menu.cards'), () => Nav.to(StripePaymentMethodsScreen()), true),
-          createOptionMenu(trans('profile.menu.regulations'), () => launch('https://www.anyupp.com/privacy/'), true),
-          createOptionMenu(trans('profile.menu.logout'), () => showConfirmLogoutDialog(context), false),
+          createOptionMenu(
+              trans('profile.menu.about'), () => Nav.to(AboutApp()), true),
+          createOptionMenu(trans('profile.menu.settings'),
+              () => Nav.to(SettingsScreen()), true),
+          createOptionMenu(trans('profile.menu.transactions'),
+              () => Nav.to(TransactionsScreen()), true),
+          createOptionMenu(trans('profile.menu.cards'),
+              () => Nav.to(StripePaymentMethodsScreen()), true),
+          createOptionMenu(trans('profile.menu.regulations'),
+              () => launch('https://www.anyupp.com/privacy/'), true),
+          createOptionMenu(trans('profile.menu.logout'),
+              () => showConfirmLogoutDialog(context), false),
         ],
       ),
     );

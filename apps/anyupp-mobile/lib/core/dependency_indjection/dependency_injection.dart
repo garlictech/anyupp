@@ -1,6 +1,5 @@
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';

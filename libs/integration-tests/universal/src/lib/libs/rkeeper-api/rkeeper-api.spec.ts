@@ -8,8 +8,8 @@ import {
   switchMap,
   delay,
   tap,
-  switchMapTo,
-  takeLast,
+  //switchMapTo,
+  //takeLast,
   toArray,
   map,
   count,
@@ -23,6 +23,7 @@ import {
   createDefaultProductCategory,
   defaultProductCategoryId,
   handleProducts,
+  menusyncHandler,
 } from '@bgap/rkeeper-api';
 import { from, Observable, combineLatest, of } from 'rxjs';
 import { ES_DELAY, maskV4UuidIds, dateMatcher } from '../../../utils';
@@ -33,6 +34,7 @@ import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/backend/products';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import * as stackConfig from '../../generated/stack-config.json';
 import * as commonStackConfig from '../../generated/common-stack-config.json';
+import { v1 as uuidV1 } from 'uuid';
 
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();
@@ -111,7 +113,7 @@ describe('Test the rkeeper api basic functionality', () => {
       100,
     ),
     mergeMap(
-      item =>
+      () =>
         crudSdk.DeleteProductCategory({
           input: {
             id: defaultProductCategoryId({
@@ -138,8 +140,8 @@ describe('Test the rkeeper api basic functionality', () => {
     jest.resetModules();
 
     of(1)
-      .pipe(
-        delay(ES_DELAY),
+      .pipe
+      /*    delay(ES_DELAY),
         switchMap(() => cleanup$),
         delay(ES_DELAY),
         switchMapTo(
@@ -154,8 +156,8 @@ describe('Test the rkeeper api basic functionality', () => {
             crudSdk.CreateChain({ input: fixtures.createChain }),
           ),
         ),
-        delay(ES_DELAY),
-      )
+        delay(ES_DELAY),*/
+      ()
       .subscribe(() => done());
   }, 65000);
 
@@ -269,8 +271,7 @@ describe('Test the rkeeper api basic functionality', () => {
   });
 
   test('Test full rkeeper product handling - not not existing unit', done => {
-    handleRkeeperProducts(crudSdk)(
-      'NOT EXISTING RESTAURANT',
+    handleRkeeperProducts(crudSdk)('NOT EXISTING RESTAURANT')(
       fixtures.rawData,
     ).subscribe({
       error: err => {
@@ -342,8 +343,7 @@ describe('Test the rkeeper api basic functionality', () => {
 
     handleRkeeperProducts(crudSdk)(
       fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
-      fixtures.rawData,
-    )
+    )(fixtures.rawData)
       .pipe(
         delay(ES_DELAY),
         switchMap(() =>
@@ -409,8 +409,7 @@ describe('Test the rkeeper api basic functionality', () => {
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
-    handleRkeeperProducts(crudSdk)(
-      fixtures.realTestExternalId,
+    handleRkeeperProducts(crudSdk)(fixtures.realTestExternalId)(
       rawData,
     ).subscribe({
       next: result => {
@@ -419,6 +418,21 @@ describe('Test the rkeeper api basic functionality', () => {
       },
     });
   }, 720000);
+
+  // We skip this extremely long-running test by default
+  test.skip('Test the menusync handler', async () => {
+    const rawData = JSON.parse(
+      fs.readFileSync(__dirname + '/menu-data.json').toString(),
+    );
+
+    await menusyncHandler(
+      {
+        params: { externalUnitId: fixtures.realTestExternalId },
+        body: rawData,
+      } as any,
+      { send: () => {} } as any,
+    );
+  }, 10000);
 
   // We skip this extremely long-running test by default
   test('Test the product handling logic in fargate', done => {
@@ -430,9 +444,15 @@ describe('Test the rkeeper api basic functionality', () => {
         commonStackConfig['common-backend-anyupp'].AnyuppVpcSecurityGroupOutput,
       taskDefinitionArn:
         stackConfig['anyupp-backend-rkeeper'].RKeeperTaskDefinitionArn,
+      bucketName: stackConfig['anyupp-backend-rkeeper'].RKeeperTaskBucketName,
+      uuidGenerator: uuidV1,
     };
 
-    handleProducts(deps)(fixtures.realTestExternalId, fixtures.rawData)
+    const rawData = JSON.parse(
+      fs.readFileSync(__dirname + '/menu-data.json').toString(),
+    );
+
+    handleProducts(deps)(fixtures.realTestExternalId, rawData)
       .pipe(
         // Let the fargate provision its task
         delay(10000),
@@ -443,7 +463,7 @@ describe('Test the rkeeper api basic functionality', () => {
         ),
         tap(result => expect(result?.items?.length).toMatchSnapshot()),
       )
-      .subscribe(() => done());
+      .subscribe(() => done(), console.error);
   }, 20000);
 
   test('createDefaultProductCategory', done => {

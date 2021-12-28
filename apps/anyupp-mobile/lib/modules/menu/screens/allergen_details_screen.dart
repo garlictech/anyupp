@@ -1,5 +1,4 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/widgets/allergen_grid_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -94,7 +93,8 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 8),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 30, horizontal: 8),
                   child: Text(
                     trans("allergens.disclaimer", [unit.name]),
                     style: Fonts.satoshi(

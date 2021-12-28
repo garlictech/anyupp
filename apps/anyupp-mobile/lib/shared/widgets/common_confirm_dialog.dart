@@ -3,7 +3,6 @@ import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 Future showConfirmDialog(
   BuildContext context, {

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/bloc/cart_event.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';

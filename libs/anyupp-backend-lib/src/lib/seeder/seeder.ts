@@ -39,7 +39,8 @@ import {
   createTestUnit,
   createTestUnitsForOrderHandling,
   SeederDependencies,
-  seedRKeeperUnit,
+  seedYellowRKeeperUnit,
+  seedSportbarRKeeperUnit,
 } from './seed-data-fn';
 
 const ce = (tag: string) =>
@@ -272,7 +273,8 @@ export const seedAll = (deps: SeederDependencies) =>
         ),
       ),
     ),
-    switchMap(() => seedRKeeperUnit(deps)),
+    switchMap(() => seedYellowRKeeperUnit(deps)),
+    switchMap(() => seedSportbarRKeeperUnit(deps)),
     delay(5000),
     switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
   );
