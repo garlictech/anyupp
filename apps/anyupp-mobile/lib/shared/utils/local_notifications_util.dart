@@ -32,7 +32,8 @@ class Locally {
   /// initializationSettingAndroid
   /// initializationSettingIos;
   /// initializationSetting;
-  FlutterLocalNotificationsPlugin localNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin localNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
   var initializationSettingAndroid;
   var initializationSettingIos;
   var initializationSetting;
@@ -73,25 +74,28 @@ class Locally {
     /// initializationSetting declared above is here assigned
     /// to InitializationSetting, which comes from flutter_local_notification
     /// package.
-    initializationSetting =
-        InitializationSettings(android: initializationSettingAndroid, iOS: initializationSettingIos);
+    initializationSetting = InitializationSettings(
+        android: initializationSettingAndroid, iOS: initializationSettingIos);
 
     /// localNotificationPlugin is initialized here finally
-    await localNotificationsPlugin.initialize(initializationSetting, onSelectNotification: onSelectNotification);
+    await localNotificationsPlugin.initialize(initializationSetting,
+        onSelectNotification: onSelectNotification);
   }
 
   /// requestPermission()
   /// for IOS developers only
   Future requestPermission() async {
     await localNotificationsPlugin
-        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
           alert: true,
           badge: false,
           sound: true,
         );
     await localNotificationsPlugin
-        .resolvePlatformSpecificImplementation<MacOSFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<
+            MacOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
           alert: true,
           badge: false,
@@ -118,7 +122,8 @@ class Locally {
   /// it required for IOS initialization
   /// it takes in id, title, body and payload
   Future<void> onDidReceiveNotification(id, title, body, payload) async {
-    print('***** onDidReceiveNotification().id=$id, title=$title, payload=$payload');
+    print(
+        '***** onDidReceiveNotification().id=$id, title=$title, payload=$payload');
     await showDialog(
       context: context,
       builder: (context) {
@@ -165,15 +170,21 @@ class Locally {
       this.title = title;
       this.message = message;
 
-      var androidPlatformChannelSpecifics = AndroidNotificationDetails(channelID, channelName, channelDescription,
-          importance: importance, priority: priority, ticker: ticker);
+      var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+          channelID, channelName,
+          channelDescription: channelDescription,
+          importance: importance,
+          priority: priority,
+          ticker: ticker);
 
       var iosPlatformChannelSpecifics = IOSNotificationDetails();
 
-      var platformChannelSpecifics =
-          NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iosPlatformChannelSpecifics);
+      var platformChannelSpecifics = NotificationDetails(
+          android: androidPlatformChannelSpecifics,
+          iOS: iosPlatformChannelSpecifics);
 
-      await localNotificationsPlugin.show(0, title, message, platformChannelSpecifics, payload: payload);
+      await localNotificationsPlugin
+          .show(0, title, message, platformChannelSpecifics, payload: payload);
     }
   }
 
@@ -213,7 +224,8 @@ class Locally {
 
 Locally? _locally;
 
-void showNotification(BuildContext context, String title, String message, Widget? navigateToPage) {
+void showNotification(BuildContext context, String title, String message,
+    Widget? navigateToPage) {
   print('showNotification().title=$title, mmessage=$message');
   if (_locally == null) {
     _locally = Locally(

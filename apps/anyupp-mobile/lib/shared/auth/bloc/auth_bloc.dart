@@ -13,7 +13,8 @@ class AuthBloc extends Bloc<BaseAuthEvent, BaseAuthState> {
   late StreamSubscription _authSubscription;
 
   AuthBloc(this._authRepository) : super(InitialAuthState()) {
-    _authSubscription = _authRepository.getAuthenticatedUserProfileStream().listen(
+    _authSubscription =
+        _authRepository.getAuthenticatedUserProfileStream().listen(
       (user) {
         add(AuthStateChangedEvent(true));
       },
@@ -22,16 +23,12 @@ class AuthBloc extends Bloc<BaseAuthEvent, BaseAuthState> {
         add(AuthErrorEvent('AUTH_ERROR', error.message));
       },
     );
-  }
-
-  @override
-  Stream<BaseAuthState> mapEventToState(BaseAuthEvent event) async* {
-    if (event is AuthStateChangedEvent) {
-      yield AuthStateChanged(event.authenticated);
-    }
-    if (event is AuthErrorEvent) {
-      yield AuthError(event.code, event.message);
-    }
+    on<AuthStateChangedEvent>(
+      (event, emit) => emit(AuthStateChanged(event.authenticated)),
+    );
+    on<AuthErrorEvent>(
+      (event, emit) => emit(AuthError(event.code, event.message)),
+    );
   }
 
   @override

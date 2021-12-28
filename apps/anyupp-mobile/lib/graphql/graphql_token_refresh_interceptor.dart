@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils/http_utils.dart';
 
-class DioTokenInterceptor extends InterceptorsWrapper {
+class DioTokenInterceptor extends QueuedInterceptorsWrapper {
   final Dio _dio;
   final IAuthProvider _provider;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -17,7 +17,8 @@ class DioTokenInterceptor extends InterceptorsWrapper {
   DioTokenInterceptor(this._dio, this._provider);
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     if (options.headers.containsKey('requirestoken')) {
       options.headers.remove('requirestoken');
       String? accessToken = (await _prefs).getString('cognito_accesstoken');
@@ -53,10 +54,13 @@ class DioTokenInterceptor extends InterceptorsWrapper {
     }
   }
 
-  _handleRetriableError(DioError dioError, ErrorInterceptorHandler handler) async {
+  _handleRetriableError(
+      DioError dioError, ErrorInterceptorHandler handler) async {
     print('_handleRetriableError()=$dioError');
-    bool isRetriable = dioError.response?.data?['error']?['retryable'] == true ||
-        dioError.response?.data?['error']?['originalResponse']?['retryable'] == true;
+    bool isRetriable = dioError.response?.data?['error']?['retryable'] ==
+            true ||
+        dioError.response?.data?['error']?['originalResponse']?['retryable'] ==
+            true;
     print('_handleRetriableError().isRetriable=$isRetriable');
     if (isRetriable) {
       int retryCount = dioError.requestOptions.headers['retryCount'] ?? 1;
@@ -66,11 +70,9 @@ class DioTokenInterceptor extends InterceptorsWrapper {
         return;
       }
 
-      _dio.interceptors.requestLock.lock();
-      _dio.interceptors.responseLock.lock();
-
       double r = dioError.response?.data?['error']?['retryDelay'] ??
-          dioError.response?.data?['error']?['originalResponse']?['retryDelay'] ??
+          dioError.response?.data?['error']?['originalResponse']
+              ?['retryDelay'] ??
           0;
       int retryDelay = (r * 1000).toInt();
       print('_handleRetriableError().retryDelay=$retryDelay');
@@ -83,32 +85,30 @@ class DioTokenInterceptor extends InterceptorsWrapper {
 
       RequestOptions options = dioError.response!.requestOptions;
       options.headers.addAll({'retryCount': max(retryCount - 1, 0)});
-      _dio.interceptors.requestLock.unlock();
-      _dio.interceptors.responseLock.unlock();
 
       print('_handleRetriableError().start HTTP call...');
-      await _dio
-          .fetch<void>(dioError.requestOptions)
-          .then((value) => handler.resolve(value), onError: (e) => handler.reject(e));
+      await _dio.fetch<void>(dioError.requestOptions).then(
+          (value) => handler.resolve(value),
+          onError: (e) => handler.reject(e));
       return;
     }
 
     super.onError(dioError, handler);
   }
 
-  void _handleNetworkError(DioError dioError, ErrorInterceptorHandler handler) async {
+  void _handleNetworkError(
+      DioError dioError, ErrorInterceptorHandler handler) async {
     NetworkStatusBloc networkStatusBloc = getIt<NetworkStatusBloc>();
     var status = networkStatusBloc.getLastConnectivityResult();
     if (status != null) {
-      networkStatusBloc.add((NetworkConnectionChangedEvent(status, false, true, false)));
+      networkStatusBloc
+          .add((NetworkConnectionChangedEvent(status, false, true, false)));
     }
     super.onError(dioError, handler);
   }
 
-  void _handleTokenRefresh(DioError dioError, ErrorInterceptorHandler handler) async {
-    _dio.interceptors.requestLock.lock();
-    _dio.interceptors.responseLock.lock();
-
+  void _handleTokenRefresh(
+      DioError dioError, ErrorInterceptorHandler handler) async {
     String? refreshToken = (await _prefs).getString('cognito_refreshtoken');
     if (refreshToken == null) {
       return super.onError(dioError, handler);
@@ -119,8 +119,6 @@ class DioTokenInterceptor extends InterceptorsWrapper {
 
     RequestOptions options = dioError.response!.requestOptions;
     options.headers.addAll({'requiresToken': true});
-    _dio.interceptors.requestLock.unlock();
-    _dio.interceptors.responseLock.unlock();
     await _dio.request(options.path, data: options);
   }
 }

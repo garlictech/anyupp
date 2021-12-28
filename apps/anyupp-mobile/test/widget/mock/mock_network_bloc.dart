@@ -4,7 +4,16 @@ import 'package:connectivity/connectivity.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 
 class MockNetworkStatusBloc extends NetworkStatusBloc {
-  MockNetworkStatusBloc();
+  MockNetworkStatusBloc() {
+    on((event, emit) => emit(
+          NetworkState(
+            ConnectivityResult.wifi,
+            true,
+            false,
+            false,
+          ),
+        ));
+  }
 
   NetworkState get state => NetworkState(
         ConnectivityResult.wifi,
@@ -12,18 +21,6 @@ class MockNetworkStatusBloc extends NetworkStatusBloc {
         false,
         false,
       );
-
-  @override
-  Stream<NetworkState> mapEventToState(NetworkStatusEvent event) async* {
-    if (event is NetworkConnectionChangedEvent) {
-      yield NetworkState(
-        ConnectivityResult.wifi,
-        true,
-        false,
-        false,
-      );
-    }
-  }
 
   @override
   Future<void> close() async {

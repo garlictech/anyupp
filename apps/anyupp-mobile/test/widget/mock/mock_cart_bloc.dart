@@ -12,10 +12,7 @@ class MockCartBloc extends CartBloc {
           MockCartRepository(cart),
           MockOrderRepository(),
           MockTakeAwayBloc(),
-        );
-
-  @override
-  Stream<BaseCartState> mapEventToState(BaseCartAction action) async* {
-    yield stateToSend ?? CurrentCartState(cart);
+        ) {
+    on((event, emit) => emit(stateToSend ?? CurrentCartState(cart)));
   }
 }

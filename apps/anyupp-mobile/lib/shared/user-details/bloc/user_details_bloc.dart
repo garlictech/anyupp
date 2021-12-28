@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/user-details/user_details.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,27 +10,32 @@ import 'user_details_state.dart';
 class UserDetailsBloc extends Bloc<UserDetailsEvent, UserDetailsState> {
   final UserDetailsRepository _userDetailsRepository;
 
-  UserDetailsBloc(this._userDetailsRepository) : super(NoUserDetailsState());
+  UserDetailsBloc(this._userDetailsRepository) : super(NoUserDetailsState()) {
+    on<GetUserDetailsEvent>(_onGetUserDetailsEvent);
+    on<ResetUserDetailsEvent>(_onResetUserDetailsEvent);
+  }
 
-  @override
-  Stream<UserDetailsState> mapEventToState(UserDetailsEvent event) async* {
+  FutureOr<void> _handleError(Exception e, Emitter<UserDetailsState> emit) {
+    emit(UserDetailsLoadingErrorState());
+  }
+
+  FutureOr<void> _onGetUserDetailsEvent(
+      GetUserDetailsEvent event, Emitter<UserDetailsState> emit) async {
+    emit(UserDetailsLoadingState());
     try {
-      if (event is GetUserDetailsEvent) {
-        yield UserDetailsLoadingState();
-        User? user = await _userDetailsRepository.getUserDetails();
-        if (user != null) {
-          yield UserDetailsLoaded(user);
-        } else {
-          yield NoUserDetailsState();
-        }
-      }
-
-      if (event is ResetUserDetailsEvent) {
-        yield NoUserDetailsState();
+      User? user = await _userDetailsRepository.getUserDetails();
+      if (user != null) {
+        emit(UserDetailsLoaded(user));
+      } else {
+        emit(NoUserDetailsState());
       }
     } on Exception catch (e) {
-      print('UserDetailsBloc.error=$e');
-      yield UserDetailsLoadingErrorState();
+      _handleError(e, emit);
     }
+  }
+
+  FutureOr<void> _onResetUserDetailsEvent(
+      ResetUserDetailsEvent event, Emitter<UserDetailsState> emit) {
+    emit(NoUserDetailsState());
   }
 }

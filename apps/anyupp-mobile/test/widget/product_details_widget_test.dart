@@ -95,12 +95,12 @@ class FakeNetworkState extends Fake implements NetworkState {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue<FavoritesState>(FakeFavoritesState());
-    registerFallbackValue<FavoritesEvent>(FakeFavoritesEvent());
-    registerFallbackValue<NetworkState>(FakeNetworkState());
-    registerFallbackValue<NetworkStatusEvent>(FakeNetworkStatusEvent());
-    registerFallbackValue<ConfigsetState>(FakeConfigsetState());
-    registerFallbackValue<ConfigsetEvent>(FakeConfigsetEvent());
+    registerFallbackValue(FakeFavoritesState());
+    registerFallbackValue(FakeFavoritesEvent());
+    registerFallbackValue(FakeNetworkState());
+    registerFallbackValue(FakeNetworkStatusEvent());
+    registerFallbackValue(FakeConfigsetState());
+    registerFallbackValue(FakeConfigsetEvent());
   });
 
   setUp(() {

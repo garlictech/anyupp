@@ -9,21 +9,15 @@ class MockStripePaymentBloc extends StripePaymentBloc {
   final StripePaymentState? initialState;
 
   MockStripePaymentBloc({this.initialState})
-      : super(MockPaymentRepository(), MockCartRepository(null));
+      : super(MockPaymentRepository(), MockCartRepository(null)) {
+    on((event, emit) {
+      emit(StripePaymentLoading());
+      emit(StripePaymentMethodsList(null));
+    });
+  }
 
   StripePaymentState get state => initialState ?? StripePaymentInitialState();
   Stream<StripePaymentState> get stream => Stream.value(
         initialState ?? StripePaymentInitialState(),
       );
-
-  // @override
-  // Future<void> close() async => {};
-
-  @override
-  Stream<StripePaymentState> mapEventToState(StripePaymentEvent event) async* {
-    if (event is PaymentMethodListEvent) {
-      yield StripePaymentLoading();
-      yield StripePaymentMethodsList(null);
-    }
-  }
 }
