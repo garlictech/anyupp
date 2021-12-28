@@ -38,7 +38,7 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
 
         if (takeAwayState is ServingModeSelectedState) {
           Cart? cart = await _cartRepository.addProductToCart(
-              action.unitId, action.order, takeAwayState.servingMode);
+              action.unit, action.order, takeAwayState.servingMode);
           yield CurrentCartState(cart);
         }
       }
@@ -94,14 +94,22 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
     } on GraphQLException catch (e) {
       print('CartBloc.ExceptionBloc.GraphQLException=$e');
       getIt<ExceptionBloc>().add(ShowException(e));
+      yield CartErrorState(code: e.code, message: e.message);
     } on PlatformException catch (e) {
       print('CartBloc.ExceptionBloc.PlatformException=$e');
-      getIt<ExceptionBloc>()
-          .add(ShowException(CartException.fromPlatformException(e)));
+      getIt<ExceptionBloc>().add(
+        ShowException(CartException.fromPlatformException(e)),
+      );
+      yield CartErrorState(code: e.code, message: e.message);
     } on Exception catch (e) {
       print('CartBloc.ExceptionBloc.Exception=$e');
       getIt<ExceptionBloc>().add(ShowException(
-          CartException.fromException(CartException.UNKNOWN_ERROR, e)));
+        CartException.fromException(CartException.UNKNOWN_ERROR, e),
+      ));
+      yield CartErrorState(
+        code: CartException.UNKNOWN_ERROR,
+        message: e.toString(),
+      );
     }
   }
 }

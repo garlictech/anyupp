@@ -1,6 +1,6 @@
 # include: package:effective_dart/analysis_options.yaml
-
 include: package:pedantic/analysis_options.1.8.0.yaml
+# include: package:lints/recommended.yaml
 analyzer:
   exclude:
     [
@@ -11,9 +11,8 @@ analyzer:
     ]
   strong-mode:
     implicit-casts: true
+  errors:
+    unnecessary_import: ignore
+    unnecessary_non_null_assertion: ignore
 linter:
   rules:
-    - camel_case_types
-    - unnecessary_null_checks
-    - avoid_equals_and_hash_code_on_mutable_classes
-    - unnecessary_raw_strings

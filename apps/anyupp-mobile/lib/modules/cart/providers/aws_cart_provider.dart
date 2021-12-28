@@ -157,8 +157,7 @@ class AwsCartProvider implements ICartProvider {
           ),
           fetchPolicy: FetchPolicy.networkOnly);
       if (result.hasErrors) {
-        print(
-            'AwsOrderProvider._getCartFromBackEnd().error()=${result.errors}');
+        print('AwsCartProvider._getCartFromBackEnd().error()=${result.errors}');
         throw GraphQLException.fromGraphQLError(
             GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
@@ -171,7 +170,7 @@ class AwsCartProvider implements ICartProvider {
       var items = result.data?.listCarts?.items;
       if (items != null && items.isNotEmpty) {
         // print('json[items] is List=${items[0]['items'] is List}');
-        Cart cart = Cart.fromJson(items[0].toJson());
+        Cart cart = Cart.fromJson(items[0]!.toJson());
         // print('AwsCartProvider._getCartFromBackEnd().id=${cart.id}');
         return cart;
       }
@@ -212,7 +211,8 @@ class AwsCartProvider implements ICartProvider {
   }
 
   Future<bool> _updateCartOnBackend(Cart cart) async {
-    print('AwsCartProvider.UPDATING CART IN BACKEND.cart=${cart.id}');
+    print(
+        'AwsCartProvider.******** UPDATING CART IN BACKEND.paymentMode=${cart.paymentMode}');
     try {
       var result = await GQL.amplify.execute(UpdateCartMutation(
           variables: UpdateCartArguments(
@@ -231,7 +231,7 @@ class AwsCartProvider implements ICartProvider {
   }
 
   Future<bool> _deleteCartFromBackend(String cartId) async {
-    print('AwsCartProvider.DELETING CART IN BACKEND=$cartId');
+    print('AwsCartProvider.******** DELETING CART IN BACKEND=$cartId');
     try {
       var result = await GQL.amplify.execute(DeleteCartMutation(
         variables: DeleteCartArguments(cartId: cartId),
@@ -252,6 +252,7 @@ class AwsCartProvider implements ICartProvider {
       'unitId': cart.unitId,
       'userId': cart.userId,
       'servingMode': enumToString(cart.servingMode),
+      'orderPolicy': enumToString(cart.orderPolicy),
       'items': cart.items.map((item) {
         return {
           'productId': item.productId,

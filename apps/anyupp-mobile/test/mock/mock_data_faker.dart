@@ -246,6 +246,7 @@ class MockGenerator {
   static GeoUnit generateUnit({
     required String name,
     required String currency,
+    OrderPolicy? orderPolicy = OrderPolicy.full,
   }) {
     return GeoUnit(
       id: faker.guid.guid(),
@@ -290,6 +291,7 @@ class MockGenerator {
         OrderMode.instant,
         OrderMode.pickup,
       ],
+      orderPolicy: OrderPolicy.full,
       packagingTax: 5.0,
     );
   }
@@ -439,6 +441,7 @@ class MockGenerator {
       unitId: unitId ?? faker.guid.guid(),
       items: [],
       servingMode: servingMode,
+      orderPolicy: OrderPolicy.full,
     );
   }
 }

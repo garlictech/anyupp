@@ -5,7 +5,6 @@ import 'package:fa_prev/graphql/exception/graphql_exception.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/shared/exception.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +12,8 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
   final StripePaymentRepository _paymentRepository;
   final CartRepository _cartRepository;
 
-  StripePaymentBloc(this._paymentRepository, this._cartRepository) : super(StripePaymentInitialState());
+  StripePaymentBloc(this._paymentRepository, this._cartRepository)
+      : super(StripePaymentInitialState());
 
   @override
   Stream<StripePaymentState> mapEventToState(StripePaymentEvent event) async* {
@@ -22,7 +22,8 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
       // --- Handle payment method list
       if (event is PaymentMethodListEvent) {
         yield StripePaymentLoading();
-        List<StripePaymentMethod> methods = await _paymentRepository.getPaymentMethods();
+        List<StripePaymentMethod> methods =
+            await _paymentRepository.getPaymentMethods();
         // List<GetCustomerStripeCards$Query$StripeCard> methods = await _paymentRepository.getPaymentMethods();
         yield StripePaymentMethodsList(methods);
       }
@@ -95,7 +96,8 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
       // --- Create card
       if (event is CreateStripeCardEvent) {
         yield StripePaymentLoading();
-        StripePaymentMethod result = await _paymentRepository.createStripeCard(event.stripeCard, event.name);
+        StripePaymentMethod result = await _paymentRepository.createStripeCard(
+            event.stripeCard, event.name);
         print('StripePaymentBloc.CreateStripeCard.result=$result');
         yield StripeCardCreated();
         getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
@@ -104,7 +106,8 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
       // --- Update card
       if (event is UpdateStripeCardEvent) {
         yield StripePaymentLoading();
-        StripePaymentMethod result = await _paymentRepository.updateStripeCard(event.stripeCardId, event.name);
+        StripePaymentMethod result = await _paymentRepository.updateStripeCard(
+            event.stripeCardId, event.name);
         print('StripePaymentBloc.UpdateStripeCard.result=$result');
         yield StripeOperationSuccess();
       }
@@ -112,26 +115,22 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
       // --- Delete card
       if (event is DeleteStripeCardEvent) {
         yield StripePaymentLoading();
-        bool result = await _paymentRepository.deleteStripeCard(event.stripeCardId);
+        bool result =
+            await _paymentRepository.deleteStripeCard(event.stripeCardId);
         print('StripePaymentBloc.DeleteStripeCard.result=$result');
-        //   yield StripeOperationSuccess();
         getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
       }
     } on GraphQLException catch (e) {
       print('********* StripePaymentBloc.ExceptionBloc.GraphQLException=$e');
-      getIt<ExceptionBloc>().add(ShowException(e));
       yield StripeError(e.code, e.message!);
     } on PlatformException catch (pe) {
       print('********* StripePaymentBloc.ExceptionBloc.PlatformException=$pe');
-      getIt<ExceptionBloc>().add(ShowException(StripeException.fromPlatformException(pe)));
       yield StripeError(pe.code, pe.message!);
     } on StripeException catch (le) {
       print('********* StripePaymentBloc.ExceptionBloc.StripeException=$le');
-      getIt<ExceptionBloc>().add(ShowException(le));
       yield StripeError(le.code, le.message!);
     } on Exception catch (e) {
       print('********* StripePaymentBloc.ExceptionBloc.Exception=$e');
-      getIt<ExceptionBloc>().add(ShowException(StripeException.fromException(StripeException.UNKNOWN_ERROR, e)));
       yield StripeError(StripeException.UNKNOWN_ERROR, e.toString());
     }
   }

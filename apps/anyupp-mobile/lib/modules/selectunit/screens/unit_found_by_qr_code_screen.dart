@@ -18,12 +18,14 @@ class UnitFoundByQRCodeScreen extends StatefulWidget {
   final Place place;
   final bool navigateToCart;
   final bool loadUnits;
+  final bool popWhenClose;
 
   UnitFoundByQRCodeScreen({
     required this.unitId,
     required this.place,
     this.navigateToCart = false,
     this.loadUnits = true,
+    this.popWhenClose = false,
   });
 
   @override
@@ -34,13 +36,15 @@ class UnitFoundByQRCodeScreen extends StatefulWidget {
 class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
   final GlobalKey<FlipCardState> _flipCardState = GlobalKey<FlipCardState>();
 
+  bool _showError = false;
+  String? _errorTitle;
+  String? _errorDesc;
+
   @override
   void initState() {
     super.initState();
     setToolbarThemeV1(theme);
 
-    // print('*** _UnitFoundByQRCodeScreenState.initState().navigateToCart=${widget.navigateToCart}');
-    // _loaded = false;
     if (widget.loadUnits) {
       getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
     }
@@ -53,13 +57,8 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
         backgroundColor: Colors.white,
         body: BlocListener<UnitsBloc, UnitsState>(
           listener: (BuildContext context, UnitsState state) async {
-            // if (!widget.navigateToCart && _loaded) {
-            //   print('***************** UnitFoundByQRCodeScreen.ALREADY LOADED!!!');
-            //   return;
-            // }
-            // _loaded = true;
             if (state is UnitsLoaded) {
-              print('***************** UNITS LOADED=${state.units}');
+              print('***************** UNITS LOADED');
               int index = state.units
                   .indexWhere((GeoUnit unit) => unit.id == widget.unitId);
               GeoUnit? unit = index >= 0 ? state.units[index] : null;
@@ -77,9 +76,13 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                 getIt<UnitSelectBloc>().add(SelectUnit(unit));
                 getIt<CartBloc>()
                     .add(UpdatePlaceInCartAction(unit, widget.place));
-                await Future.delayed(Duration(
-                  milliseconds: 1000,
-                ));
+
+                if (widget.popWhenClose) {
+                  Nav.pop<bool>(true);
+                  return;
+                }
+                await Future.delayed(Duration(milliseconds: 1000));
+
                 if (widget.navigateToCart) {
                   // await showSelectServingModeSheet(context);
                   Nav.reset(MainNavigation(
@@ -96,21 +99,35 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
                   }
                 }
               } else {
-                showErrorDialog(context, trans('selectUnit.qrCodeError.title'),
-                    trans('selectUnit.qrCodeError.description'),
-                    onClose: () => Nav.reset(SelectUnitChooseMethodScreen()));
+                setState(() {
+                  _showError = true;
+                  _errorTitle = 'selectUnit.qrCodeError.title';
+                  _errorDesc = 'selectUnit.qrCodeError.description';
+                });
+                // showErrorDialog(context, trans('selectUnit.qrCodeError.title'),
+                //     trans('selectUnit.qrCodeError.description'),
+                //     onClose: () => _handleErrorDialogClose());
               }
             }
             if (state is UnitsNotLoaded) {
-              //showErrorDialog(context, trans('selectUnit.qrUnitsError.title'), trans('selectUnit.qrUnitsError.description'), () =>
-              showErrorDialog(
-                  context, state.reasonCode, state.reasonMessage ?? '',
-                  onClose: () => Nav.reset(SelectUnitChooseMethodScreen()));
+              setState(() {
+                _showError = true;
+                _errorTitle = state.reasonCode;
+                _errorDesc = state.reasonMessage;
+              });
+              // showErrorDialog(
+              //     context, state.reasonCode, state.reasonMessage ?? '',
+              //     onClose: () => _handleErrorDialogClose());
             }
             if (state is UnitsNoNearUnit) {
-              showErrorDialog(context, trans('selectUnit.qrGeneralError.title'),
-                  trans('selectUnit.qrGeneralError.description'),
-                  onClose: () => Nav.reset(SelectUnitChooseMethodScreen()));
+              setState(() {
+                _showError = true;
+                _errorTitle = 'selectUnit.qrGeneralError.title';
+                _errorDesc = 'selectUnit.qrGeneralError.description';
+              });
+              // showErrorDialog(context, trans('selectUnit.qrGeneralError.title'),
+              //     trans('selectUnit.qrGeneralError.description'),
+              //     onClose: () => _handleErrorDialogClose());
             }
           },
           child: Container(
@@ -119,13 +136,25 @@ class _UnitFoundByQRCodeScreenState extends State<UnitFoundByQRCodeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  FlipCard(
-                    key: _flipCardState,
-                    flipOnTouch: false,
-                    direction: FlipDirection.HORIZONTAL,
-                    front: _buildQRCodeCard(context),
-                    back: _buildConnectedToTableCard(context),
-                  ),
+                  _showError == false
+                      ? FlipCard(
+                          key: _flipCardState,
+                          flipOnTouch: false,
+                          direction: FlipDirection.HORIZONTAL,
+                          front: _buildQRCodeCard(context),
+                          back: _buildConnectedToTableCard(context),
+                        )
+                      : CommonErrorWidget(
+                          error: trans(_errorTitle!),
+                          description: trans(_errorDesc!),
+                          onPressed: () {
+                            if (widget.popWhenClose) {
+                              Nav.pop<bool>(false);
+                              return;
+                            }
+                            Nav.reset(SelectUnitChooseMethodScreen());
+                          },
+                        ),
                 ],
               ),
             ),

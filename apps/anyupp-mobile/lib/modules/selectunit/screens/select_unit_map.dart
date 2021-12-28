@@ -460,7 +460,11 @@ class _SelectUnitByLocationScreenState
             snippet:
                 '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
         onTap: () {
-          // TODO _onMarkerTapped(markerId);
+          selectUnitAndGoToMenuScreen(
+            context,
+            unit,
+            deletePlace: true,
+          );
         },
       );
     }

@@ -10,7 +10,8 @@ import 'package:fa_prev/models.dart';
 const REPEAT_TIMEOUT_MS = 120000;
 
 class AwsOrderHistorySubscription {
-  StreamSubscription<GraphQLResponse<OnOrderHistoryChanged$Subscription>>? _listSubscription;
+  StreamSubscription<GraphQLResponse<OnOrderHistoryChanged$Subscription>>?
+      _listSubscription;
   List<Order>? _items;
   String? _nextToken;
   int _totalCount = 0;
@@ -156,7 +157,7 @@ class AwsOrderHistorySubscription {
 
       List<Order> results = [];
       for (int i = 0; i < items.length; i++) {
-        results.add(Order.fromJson(items[i].toJson()));
+        results.add(Order.fromJson(items[i]!.toJson()));
       }
 
       print('***** _getOrderList().results.length=${results.length}');
@@ -167,7 +168,8 @@ class AwsOrderHistorySubscription {
     }
   }
 
-  bool get hasMoreItems => _nextToken != null && _totalCount >= getIt<AppConstants>().paginationSize;
+  bool get hasMoreItems =>
+      _nextToken != null && _totalCount >= getIt<AppConstants>().paginationSize;
 
   int get itemCount => _totalCount;
 

@@ -139,12 +139,7 @@ class _MyAppState extends State<MyApp> {
             (localeState is LocaleSelected) ? localeState.locale : null;
         return BlocBuilder<ThemeBloc, ThemeState>(
           builder: (context, state) {
-            ThemeData themeData;
-            if (state is ThemeState) {
-              themeData = getThemeData(context, state.theme);
-            } else {
-              themeData = getThemeData(context, ThemeAnyUpp());
-            }
+            ThemeData themeData = getThemeData(context, state.theme);
             return MaterialApp(
               themeMode: Platform.isIOS ? ThemeMode.light : null,
               title: 'AnyUpp',
