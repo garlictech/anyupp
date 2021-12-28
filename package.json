@@ -145,7 +145,7 @@
     "@serverless-stack/cli": "0.54.4",
     "@serverless-stack/resources": "0.55.0",
     "@testing-library/cypress": "8.0.2",
-    "@types/aws-lambda": "8.10.88",
+    "@types/aws-lambda": "8.10.89",
     "@types/aws-serverless-express": "3.3.5",
     "@types/axios": "0.14.0",
     "@types/bcryptjs": "2.4.2",
