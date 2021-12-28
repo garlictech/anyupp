@@ -4,7 +4,7 @@ exports[`Process rkeeper products tests Dish validator - bad case 1`] = `"Dish O
 
 exports[`Process rkeeper products tests Dish validator - good case: GOOD CASE 1`] = `
 Object {
-  "active": 0,
+  "active": 1,
   "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
   "id": 1000114,
   "modischeme": 0,
@@ -15,7 +15,7 @@ Object {
 
 exports[`Process rkeeper products tests Dish validator - good case: NORMALIZE 1`] = `
 Object {
-  "active": 0,
+  "active": 1,
   "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
   "id": 1000114,
   "modischeme": 0,
@@ -399,7 +399,7 @@ exports[`Process rkeeper products tests externalProductIdMaker test 1`] = `"GUID
 exports[`Process rkeeper products tests processDishes items with different ids 1`] = `
 Array [
   Object {
-    "active": 0,
+    "active": 1,
     "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
     "id": 1000114,
     "modischeme": 0,
@@ -407,7 +407,7 @@ Array [
     "price": 500,
   },
   Object {
-    "active": 0,
+    "active": 1,
     "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
     "id": 21312321,
     "modischeme": 0,
@@ -420,7 +420,7 @@ Array [
 exports[`Process rkeeper products tests processDishes items with equal ids 1`] = `
 Array [
   Object {
-    "active": 0,
+    "active": 1,
     "guid": "4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
     "id": 1000114,
     "modischeme": 0,

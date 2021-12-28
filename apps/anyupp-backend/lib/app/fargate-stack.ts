@@ -5,7 +5,7 @@ import { anyuppFargateClusterName } from '@bgap/backend/shared/utils';
 
 export interface FargateStackProps extends sst.StackProps {
   vpc: ec2.IVpc;
-  securityGroup: ec2.ISecurityGroup;
+  securityGroupId: ec2.ISecurityGroup;
 }
 
 export class FargateStack extends sst.Stack {
@@ -17,7 +17,7 @@ export class FargateStack extends sst.Stack {
     this.cluster = ecs.Cluster.fromClusterAttributes(this, 'FargateCluster', {
       clusterName: anyuppFargateClusterName,
       vpc: this.props.vpc,
-      securityGroups: [this.props.securityGroup],
+      securityGroups: [this.props.securityGroupId],
     });
   }
 }

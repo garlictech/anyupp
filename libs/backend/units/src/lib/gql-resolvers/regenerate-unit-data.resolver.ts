@@ -1,6 +1,13 @@
 import { pipeDebug } from '@bgap/shared/utils';
 import { combineLatest } from 'rxjs';
-import { map, mapTo, shareReplay, switchMap, takeLast } from 'rxjs/operators';
+import {
+  map,
+  mapTo,
+  tap,
+  shareReplay,
+  switchMap,
+  takeLast,
+} from 'rxjs/operators';
 import { reGenerateActiveProductCategoriesForAUnit } from '@bgap/backend/product-categories';
 import {
   toCreateGeneratedProductInputType,
@@ -30,6 +37,7 @@ export const regenerateUnitData =
     // Clear previously generated products for the given UNIT
     const calc1 = listUnitProductsForAUnit(crudSdk)(unitId).pipe(
       switchMap(getMergedProductsFromUnitProducts(crudSdk)),
+      tap(x => console.warn(x)),
       switchMap(mergedProducts =>
         combineLatest([
           getTimezoneForUnit(crudSdk)(unitId),

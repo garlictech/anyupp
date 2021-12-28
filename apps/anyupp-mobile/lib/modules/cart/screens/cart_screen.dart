@@ -6,14 +6,12 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/payment/payment.dart';
-import 'package:fa_prev/modules/selectunit/screens/flutter_qr_code_scanner.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/utils/stage_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -28,13 +26,13 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<StripePaymentBloc, StripePaymentState>(
       listener: (context, state) {
-        if (state is StripeOperationSuccess || state is StripeError) {
-          // Go to Orders when payment finished
-          Future.delayed(Duration(milliseconds: 500)).then((value) {
-            getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
-            Nav.pop();
-          });
-        }
+        // if (state is StripeOperationSuccess || state is StripeError) {
+        //   // Go to Orders when payment finished
+        //   Future.delayed(Duration(milliseconds: 500)).then((value) {
+        //     getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+        //     Nav.pop();
+        //   });
+        // }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -175,7 +173,10 @@ class CartScreen extends StatelessWidget {
                         return _buildCartListAndTotal(
                             context, state.unit, snapshot.data!);
                       }
-                      return _emptyCart(context);
+                      return EmptyWidget(
+                        messageKey: 'cart.emptyCartLine1',
+                        descriptionKey: 'cart.emptyCartLine2',
+                      );
                     }
 
                     return CenterLoadingWidget();
@@ -267,12 +268,13 @@ class CartScreen extends StatelessWidget {
   }
 
   Widget _buildPaymentButtonPanel(
-      BuildContext context, GeoUnit unit, Cart cart) {
-    bool showQrCodeScan = false;
-    if (cart.place == null ||
-        (cart.place?.seat == EMPTY_SEAT && cart.place?.table == EMPTY_TABLE)) {
-      showQrCodeScan = true;
-    }
+    BuildContext context,
+    GeoUnit unit,
+    Cart cart,
+  ) {
+    bool showQrCodeScan = cart.isPlaceEmpty;
+    // print('_buildPaymentButtonPanel().cart.orderPolicy=${cart.orderPolicy}');
+    // print('_buildPaymentButtonPanel().cart.place.empty=$showQrCodeScan');
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -283,15 +285,8 @@ class CartScreen extends StatelessWidget {
             horizontal: 16.0,
           ),
           child: ElevatedButton(
-            onPressed: () => showQrCodeScan
-                ? Nav.to(QRCodeScannerScreen(
-                    navigateToCart: true,
-                    loadUnits: true,
-                  ))
-                : Nav.to(
-                    SelectPaymentMethodScreen(),
-                    animationType: NavAnim.SLIDEIN_DOWN,
-                  ),
+            onPressed: () =>
+                _handlePaymentButtonPressed(unit, cart, showQrCodeScan),
             style: ElevatedButton.styleFrom(
               primary: theme.primary,
               shape: RoundedRectangleBorder(
@@ -316,10 +311,20 @@ class CartScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                // Positioned.fill(
+                //   child: Align(
+                //     alignment: Alignment.centerRight,
+                //     child: Icon(
+                //       Icons.arrow_forward,
+                //       color: theme.secondary0,
+                //     ),
+                //   ),
+                // )
                 Positioned.fill(
                   child: Align(
                     alignment: Alignment.centerRight,
-                    child: showQrCodeScan
+                    child: cart.isPlaceEmpty &&
+                            cart.orderPolicy == OrderPolicy.placeOnly
                         ? SvgPicture.asset(
                             'assets/icons/qr_code_scanner.svg',
                             color: theme.secondary0,
@@ -329,7 +334,7 @@ class CartScreen extends StatelessWidget {
                             color: theme.secondary0,
                           ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -502,10 +507,42 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _emptyCart(BuildContext context) {
-    return EmptyWidget(
-      messageKey: 'cart.emptyCartLine1',
-      descriptionKey: 'cart.emptyCartLine2',
+  _handlePaymentButtonPressed(
+    GeoUnit unit,
+    Cart cart,
+    bool showQrCodeScan,
+  ) async {
+    // if (showQrCodeScan) {
+    //   bool? success = await Nav.toWithResult<bool>(QRCodeScannerScreen(
+    //     popWhenClose: true,
+    //     loadUnits: true,
+    //   ));
+    //   print('_handlePaymentButtonPressed.result=$success');
+    //   if (success == true) {
+    //     Nav.to(
+    //       SimplifiedPaymentScreen(unit: unit),
+    //       animationType: NavAnim.SLIDEIN_DOWN,
+    //     );
+    //   }
+    // } else {
+    //   Nav.to(
+    //     SimplifiedPaymentScreen(unit: unit),
+    //     animationType: NavAnim.SLIDEIN_DOWN,
+    //   );
+    // }
+    Nav.to(
+      SelectPaymentMethodScreen(
+        cart: cart,
+        unit: unit,
+      ),
+      // unit: unit.copyWith(
+      //   orderPolicy: OrderPolicy.placeOnly,
+      // )),
+      // SimplifiedPaymentScreen(
+      //     unit: unit.copyWith(
+      //   orderPolicy: OrderPolicy.placeOnly,
+      // )),
+      animationType: NavAnim.SLIDEIN_DOWN,
     );
   }
 }

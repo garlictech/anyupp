@@ -2,12 +2,9 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-
-import 'allergen_grid_widget.dart';
 
 class AllergensWidget extends StatelessWidget {
   final List<String> allergens;
@@ -68,7 +65,8 @@ class AllergensWidget extends StatelessWidget {
           children: [
             if (showHeader)
               Padding(
-                padding: const EdgeInsets.only(left: 16.0, bottom: 8.0, top: 4.0, right: 16.0),
+                padding: const EdgeInsets.only(
+                    left: 16.0, bottom: 8.0, top: 4.0, right: 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

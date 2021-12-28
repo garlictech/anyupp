@@ -29,7 +29,7 @@ export class AnyUppStack extends Stack {
       vpcId: paramsStack.vpcId,
     });
 
-    const securityGroup = ec2.SecurityGroup.fromSecurityGroupId(
+    const securityGroupId = ec2.SecurityGroup.fromSecurityGroupId(
       this,
       'AnyuppDefaultSecurityGroupId',
       paramsStack.securityGroupId,
@@ -73,7 +73,7 @@ export class AnyUppStack extends Stack {
 
     const fargateStack = new FargateStack(scope, 'fargate', {
       vpc,
-      securityGroup,
+      securityGroupId,
     });
 
     const appsyncStack = new AppsyncAppStack(scope, 'appsync', {

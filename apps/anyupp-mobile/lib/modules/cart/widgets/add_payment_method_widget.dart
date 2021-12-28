@@ -4,8 +4,6 @@ import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -142,7 +140,8 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                   },
                   validator: (value) {
                     _card.number = value?.replaceAll(' ', '');
-                    print('Validate card: , ${_card.number} = ${_card.validateNumber()}');
+                    print(
+                        'Validate card: , ${_card.number} = ${_card.validateNumber()}');
                     return _card.validateNumber() ? null : '';
                   },
                 ),
@@ -169,7 +168,9 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                         ),
                         onSaved: (value) {
                           print('ExpDate.value=');
-                          if (value == null || value.isEmpty || !value.contains('/')) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              !value.contains('/')) {
                             return;
                           }
                           List<String> expDate = value.split('/');
@@ -181,10 +182,13 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                             _card.expMonth = int.tryParse(expDate[0]);
                             _card.expYear = int.tryParse(expDate[1]);
                           });
-                          print('Card exp date=${_card.expMonth}/${_card.expYear}');
+                          print(
+                              'Card exp date=${_card.expMonth}/${_card.expYear}');
                         },
                         validator: (value) {
-                          if (value == null || value.isEmpty || !value.contains('/')) {
+                          if (value == null ||
+                              value.isEmpty ||
+                              !value.contains('/')) {
                             return '';
                           }
                           List<String> expDate = value.split('/');
@@ -194,7 +198,8 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
 
                           _card.expMonth = int.tryParse(expDate[0]);
                           _card.expYear = int.tryParse(expDate[1]);
-                          print('Validate expdate: , ${_card.expMonth}/${_card.expYear} = ${_card.validateDate()}');
+                          print(
+                              'Validate expdate: , ${_card.expMonth}/${_card.expYear} = ${_card.validateDate()}');
                           return _card.validateDate() ? null : '';
                         },
                       ),
@@ -225,7 +230,8 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                         },
                         validator: (value) {
                           _card.cvc = value;
-                          print('Validate cvc: , ${_card.cvc} = ${_card.validateCVC()}');
+                          print(
+                              'Validate cvc: , ${_card.cvc} = ${_card.validateCVC()}');
                           return _card.validateCVC() ? null : '';
                         },
                       ),

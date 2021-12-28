@@ -7,7 +7,8 @@ Future<List<String>> listAllDummyOrders(String userId, String unitId) async {
   return results;
 }
 
-Future<List<String>> _listAllDummyOrdersNotArchived(String userId, String unitId) async {
+Future<List<String>> _listAllDummyOrdersNotArchived(
+    String userId, String unitId) async {
   try {
     var result = await GQL.amplify.execute(
       SearchOrdersQuery(
@@ -30,7 +31,7 @@ Future<List<String>> _listAllDummyOrdersNotArchived(String userId, String unitId
 
     List<String> results = [];
     for (int i = 0; i < items.length; i++) {
-      String item = items[i].id;
+      String item = items[i]!.id;
       results.add(item);
     }
 
@@ -42,7 +43,8 @@ Future<List<String>> _listAllDummyOrdersNotArchived(String userId, String unitId
   }
 }
 
-Future<List<String>> _listAllDummyOrdersArchived(String userId, String unitId) async {
+Future<List<String>> _listAllDummyOrdersArchived(
+    String userId, String unitId) async {
   try {
     var result = await GQL.amplify.execute(
       SearchOrderHistoryQuery(
@@ -65,7 +67,7 @@ Future<List<String>> _listAllDummyOrdersArchived(String userId, String unitId) a
 
     List<String> results = [];
     for (int i = 0; i < items.length; i++) {
-      String item = items[i].id;
+      String item = items[i]!.id;
       results.add(item);
     }
 

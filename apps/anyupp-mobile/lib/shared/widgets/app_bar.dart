@@ -1,4 +1,3 @@
-import 'package:fa_prev/core/theme/model/theme_chain_data.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 

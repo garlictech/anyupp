@@ -8,14 +8,12 @@ part 'unit_select_event.dart';
 part 'unit_select_state.dart';
 
 class UnitSelectBloc extends Bloc<UnitSelectEvent, UnitSelectState> {
-  UnitSelectBloc() : super(NoUnitSelected());
+  UnitSelectBloc() : super(NoUnitSelected()) {
+    on<SelectUnit>(_onSelectUnit);
+  }
 
-  @override
-  Stream<UnitSelectState> mapEventToState(
-    UnitSelectEvent event,
-  ) async* {
-    if (event is SelectUnit) {
-      yield UnitSelected(event.unit);
-    }
+  FutureOr<void> _onSelectUnit(
+      SelectUnit event, Emitter<UnitSelectState> emit) {
+    emit(UnitSelected(event.unit));
   }
 }

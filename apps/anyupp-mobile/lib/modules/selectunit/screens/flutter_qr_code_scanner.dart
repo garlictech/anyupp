@@ -1,14 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/Place.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/modules/selectunit/screens/unit_found_by_qr_code_screen.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/modules/selectunit/widgets/barcode_scanner_widgets.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/deeplink_utils.dart';
@@ -25,11 +21,13 @@ class QRCodeScannerScreen extends StatefulWidget {
   final Rectangle validRectangle;
 
   final bool navigateToCart;
+  final bool popWhenClose;
   final bool loadUnits;
 
   QRCodeScannerScreen({
     this.navigateToCart = false,
     this.loadUnits = true,
+    this.popWhenClose = false,
     this.frameColor = kShrineScrim,
     this.traceMultiplier = 1.2,
     this.validRectangle = const Rectangle(width: 150, height: 150),
@@ -39,11 +37,16 @@ class QRCodeScannerScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _QRCodeScannerScreenState();
 }
 
-class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerProviderStateMixin {
+class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
+    with TickerProviderStateMixin {
   Barcode? result;
   late QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   bool flashState = false;
+
+  String? _unitId;
+  Place? _place;
+  bool _qr_scan_state = true;
 
   @override
   void initState() {
@@ -72,83 +75,117 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: theme.secondary0,
-          leading: BackButtonWidget(
-            color: theme.secondary,
-            showBorder: false,
-            iconSize: 24.0,
+        appBar: _qr_scan_state == true
+            ? AppBar(
+                backgroundColor: theme.secondary0,
+                leading: BackButtonWidget(
+                  color: theme.secondary,
+                  showBorder: false,
+                  iconSize: 24.0,
+                ),
+                // actions: isDev
+                //     ? [
+                //         IconButton(
+                //           icon: Icon(Icons.qr_code_2),
+                //           onPressed: () async {
+                //             setState(() {
+                //               _unitId = 'seeded_unit_c1_g1_1_id';
+                //               _place = Place(table: '01', seat: '02');
+                //               _qr_scan_state = false;
+                //             });
+                //           },
+                //         ),
+                //       ]
+                //     : null,
+              )
+            : null,
+        body:
+            _qr_scan_state ? _buildQrScanningWidget() : _buildUnitFoundWidget(),
+      ),
+    );
+  }
+
+  Widget _buildUnitFoundWidget() {
+    return Container(
+      child: UnitFoundByQRCodeWidget(
+        place: _place!,
+        unitId: _unitId!,
+        loadUnits: widget.loadUnits,
+        navigateToCart: widget.navigateToCart,
+        popWhenClose: widget.popWhenClose,
+        onQRChecked: (valid) => Nav.pop<bool>(valid),
+      ),
+    );
+  }
+
+  Widget _buildQrScanningWidget() {
+    return Stack(
+      children: <Widget>[
+        _buildQrView(context),
+        Positioned(
+          right: 0.0,
+          top: 0.0,
+          child: IconButton(
+            icon: Icon(
+              flashState ? Icons.flash_off : Icons.flash_on,
+              color: Colors.white,
+            ),
+            onPressed: () async {
+              await controller.toggleFlash();
+              await setFlashState();
+              setState(() {});
+            },
           ),
         ),
-        body: Stack(
-          children: <Widget>[
-            _buildQrView(context),
-            Positioned(
-              right: 0.0,
-              top: 0.0,
-              child: IconButton(
-                icon: Icon(
-                  flashState ? Icons.flash_off : Icons.flash_on,
-                  color: Colors.white,
-                ),
-                onPressed: () async {
-                  await controller.toggleFlash();
-                  await setFlashState();
-                  setState(() {});
-                },
-              ),
-            ),
-            Positioned(
-              left: 0.0,
-              bottom: 0.0,
-              right: 0.0,
-              // height: 56,
-              child: Container(
-                color: theme.secondary0,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32.0,
-                        vertical: 16.0,
-                      ),
-                      child: Text(
-                        trans('qrScan.info'),
-                        textAlign: TextAlign.center,
-                        style: Fonts.satoshi(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+        Positioned(
+          left: 0.0,
+          bottom: 0.0,
+          right: 0.0,
+          // height: 56,
+          child: Container(
+            color: theme.secondary0,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32.0,
+                    vertical: 16.0,
+                  ),
+                  child: Text(
+                    trans('qrScan.info'),
+                    textAlign: TextAlign.center,
+                    style: Fonts.satoshi(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w700,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 32.0,
-                        left: 64.0,
-                        right: 64.0,
-                      ),
-                      child: Text(
-                        trans('qrScan.infoDesc'),
-                        textAlign: TextAlign.center,
-                        style: Fonts.satoshi(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 32.0,
+                    left: 64.0,
+                    right: 64.0,
+                  ),
+                  child: Text(
+                    trans('qrScan.infoDesc'),
+                    textAlign: TextAlign.center,
+                    style: Fonts.satoshi(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            // Container(
-            //   constraints: const BoxConstraints.expand(),
-            //   child: CustomPaint(
-            //     painter: _animationPainter,
-            //   ),
-            // ),
-          ],
+          ),
         ),
-      ),
+        // Container(
+        //   constraints: const BoxConstraints.expand(),
+        //   child: CustomPaint(
+        //     painter: _animationPainter,
+        //   ),
+        // ),
+      ],
     );
   }
 
@@ -174,8 +211,12 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
-      final Uri uri = Uri.parse(scanData.code);
+    controller.scannedDataStream.listen((scanData) async {
+      if (scanData.code == null) {
+        return;
+      }
+
+      final Uri uri = Uri.parse(scanData.code!);
       print('********* BARCODE FOUND.uri=$uri');
       // print('********* BARCODE FOUND.uri.scheme=${uri.scheme}');
       // print('********* BARCODE FOUND.uri.path=${uri.path}');
@@ -193,13 +234,21 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen> with TickerPr
         final Place place = Place(table: table, seat: seat);
         // print('***** BARCODE.UNIT=$unitId, TABLE=$table, SEAT=$seat');
         // showNotification(context, 'New Seat Reserved', 'Seat $seat reversed at Table $table', null);
-        Nav.pop();
-        Nav.to(UnitFoundByQRCodeScreen(
-          place: place,
-          unitId: unitId,
-          navigateToCart: widget.navigateToCart,
-          loadUnits: widget.loadUnits,
-        ));
+
+        setState(() {
+          _unitId = unitId;
+          _place = place;
+          _qr_scan_state = false;
+        });
+
+        // bool? result = await Nav.toWithResult<bool>(UnitFoundByQRCodeScreen(
+        //   place: place,
+        //   unitId: unitId,
+        //   navigateToCart: widget.navigateToCart,
+        //   loadUnits: widget.loadUnits,
+        //   popWhenClose: widget.popWhenClose,
+        // ));
+        // Nav.pop(result);
         controller.dispose();
       }
       setState(() {

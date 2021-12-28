@@ -19,8 +19,11 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   List<FavoriteProduct>? get favorites => _favorites;
 
   @override
-  Future<bool> addOrRemoveFavoriteProduct(String unitId, String categoryId, String productId) async {
-    bool add = _favorites == null || _favorites?.indexWhere((product) => product.product.id == productId) == -1;
+  Future<bool> addOrRemoveFavoriteProduct(
+      String unitId, String categoryId, String productId) async {
+    bool add = _favorites == null ||
+        _favorites?.indexWhere((product) => product.product.id == productId) ==
+            -1;
 
     if (add) {
       FavoriteProduct? added = await _addFavoriteProduct(unitId, productId);
@@ -35,7 +38,8 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       }
       _favorites?.add(added);
     } else {
-      int? index = _favorites?.indexWhere((product) => product.product.id == productId);
+      int? index =
+          _favorites?.indexWhere((product) => product.product.id == productId);
       if (index != null && index >= 0) {
         bool success = await _deleteFavoriteProduct(_favorites![index].id!);
         if (success) {
@@ -57,11 +61,14 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       return false;
     }
 
-    return _favorites!.indexWhere((product) => product.product.id == productId) >= 0;
+    return _favorites!
+            .indexWhere((product) => product.product.id == productId) >=
+        0;
   }
 
   @override
-  Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId, [String? nextToken]) async {
+  Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId,
+      [String? nextToken]) async {
     print('_getFavorites().unitId=$unitId');
     try {
       User? user = await _authProvider.getAuthenticatedUserProfile();
@@ -97,7 +104,8 @@ class AwsFavoritesProvider implements IFavoritesProvider {
     }
   }
 
-  Future<PageResponse<FavoriteProduct>> _getNextPage(String userId, String unitId, String? nextToken) async {
+  Future<PageResponse<FavoriteProduct>> _getNextPage(
+      String userId, String unitId, String? nextToken) async {
     var result = await GQL.amplify.execute(
       ListFavoriteProductsQuery(
           variables: ListFavoriteProductsArguments(
@@ -122,7 +130,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
 
     List<FavoriteProduct> favorites = [];
     for (int i = 0; i < items.length; i++) {
-      favorites.add(FavoriteProduct.fromJson(items[i].toJson()));
+      favorites.add(FavoriteProduct.fromJson(items[i]!.toJson()));
     }
     // print('***** getFavoritesList().favorites=$favorites');
     return PageResponse(
@@ -140,14 +148,16 @@ class AwsFavoritesProvider implements IFavoritesProvider {
         favoriteProductId: favoriteProductId,
       )));
 
-      return result.errors == null || (result.errors != null && result.errors!.isEmpty);
+      return result.errors == null ||
+          (result.errors != null && result.errors!.isEmpty);
     } on Exception catch (e) {
       print('AwsFavoritesProvider._deleteFavoriteProduct.Exception: $e');
       rethrow;
     }
   }
 
-  Future<FavoriteProduct?> _addFavoriteProduct(String unitId, String productId) async {
+  Future<FavoriteProduct?> _addFavoriteProduct(
+      String unitId, String productId) async {
     print('AwsFavoritesProvider._addFavoriteProduct().unit=$unitId');
     try {
       User? user = await _authProvider.getAuthenticatedUserProfile();
@@ -166,14 +176,16 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       )));
 
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
       }
 
       if (result.data?.createFavoriteProduct == null) {
         return null;
       }
 
-      return FavoriteProduct.fromJson(result.data!.createFavoriteProduct!.toJson());
+      return FavoriteProduct.fromJson(
+          result.data!.createFavoriteProduct!.toJson());
     } on Exception catch (e) {
       print('AwsFavoritesProvider._addFavoriteProduct.Exception: $e');
       rethrow;

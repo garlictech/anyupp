@@ -475,6 +475,12 @@ type Order @aws_iam @aws_cognito_user_pools {
   transaction: Transaction @aws_iam @aws_cognito_user_pools
 }
 
+enum OrderPolicy {
+  placeOnly
+  placeWithPaymentType
+  full
+}
+
 enum PaymentStatus {
   waiting_for_payment
   success
@@ -636,6 +642,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -747,6 +754,7 @@ type GeoUnit @aws_cognito_user_pools {
   openingHoursNext7: [OpeningHoursByDate!]!
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
 }
 
 input GetUnitsNearLocationInput {
@@ -774,6 +782,7 @@ type Cart @aws_iam @aws_cognito_user_pools {
   paymentMode: PaymentMode
   items: [OrderItem!]!
   servingMode: ServingMode
+  orderPolicy: OrderPolicy
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2351,6 +2360,11 @@ input ModelOrderModeListInput {
   notContains: OrderMode
 }
 
+input ModelOrderPolicyInput {
+  eq: OrderPolicy
+  ne: OrderPolicy
+}
+
 input ModelUnitFilterInput {
   id: ModelIDInput
   groupId: ModelIDInput
@@ -2366,6 +2380,7 @@ input ModelUnitFilterInput {
   externalId: ModelStringInput
   supportedServingModes: ModelServingModeListInput
   supportedOrderModes: ModelOrderModeListInput
+  orderPolicy: ModelOrderPolicyInput
   and: [ModelUnitFilterInput]
   or: [ModelUnitFilterInput]
   not: ModelUnitFilterInput
@@ -2389,6 +2404,7 @@ input ModelUnitConditionInput {
   externalId: ModelStringInput
   supportedServingModes: ModelServingModeListInput
   supportedOrderModes: ModelOrderModeListInput
+  orderPolicy: ModelOrderPolicyInput
   and: [ModelUnitConditionInput]
   or: [ModelUnitConditionInput]
   not: ModelUnitConditionInput
@@ -2457,6 +2473,7 @@ input ModelCartFilterInput {
   unitId: ModelIDInput
   takeAway: ModelBooleanInput
   servingMode: ModelServingModeInput
+  orderPolicy: ModelOrderPolicyInput
   and: [ModelCartFilterInput]
   or: [ModelCartFilterInput]
   not: ModelCartFilterInput
@@ -2471,6 +2488,7 @@ input CreateCartInput {
   paymentMode: PaymentModeInput
   items: [OrderItemInput!]!
   servingMode: ServingMode
+  orderPolicy: OrderPolicy
 }
 
 input UpdateCartInput {
@@ -2482,6 +2500,7 @@ input UpdateCartInput {
   paymentMode: PaymentModeInput
   items: [OrderItemInput!]
   servingMode: ServingMode
+  orderPolicy: OrderPolicy
 }
 
 input DeleteCartInput {
@@ -2493,6 +2512,7 @@ input ModelCartConditionInput {
   unitId: ModelIDInput
   takeAway: ModelBooleanInput
   servingMode: ModelServingModeInput
+  orderPolicy: ModelOrderPolicyInput
   and: [ModelCartConditionInput]
   or: [ModelCartConditionInput]
   not: ModelCartConditionInput

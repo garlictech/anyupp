@@ -587,6 +587,12 @@ type Order
   packaging: Packaging
 }
 
+enum OrderPolicy {
+  placeOnly
+  placeWithPaymentType
+  full
+}
+
 enum PaymentStatus {
   waiting_for_payment
   success
@@ -768,6 +774,7 @@ type Unit
   externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
 }
 
 type DateIntervalOpen {
@@ -881,6 +888,7 @@ type GeoUnit @aws_cognito_user_pools {
   openingHoursNext7: [OpeningHoursByDate!]!
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
 }
 
 input GetUnitsNearLocationInput {
@@ -914,6 +922,7 @@ type Cart
   paymentMode: PaymentMode
   items: [OrderItem!]!
   servingMode: ServingMode # Make the Cart.servingMode REQUIRED in the next release (handled in #1835 issue)
+  orderPolicy: OrderPolicy
 }
 
 type Transaction

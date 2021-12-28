@@ -19,6 +19,7 @@ class GeoUnit {
   final List<OpeningHours> openingHoursNext7;
   final List<ServingMode> supportedServingModes;
   final List<OrderMode> supportedOrderModes;
+  final OrderPolicy orderPolicy;
   final double packagingTax;
 
   GeoUnit({
@@ -35,6 +36,7 @@ class GeoUnit {
     required this.openingHoursNext7,
     required this.supportedServingModes,
     required this.supportedOrderModes,
+    required this.orderPolicy,
     required this.packagingTax,
   });
 
@@ -52,6 +54,7 @@ class GeoUnit {
     List<OpeningHours>? openingHoursNext7,
     List<ServingMode>? supportedServingModes,
     List<OrderMode>? supportedOrderModes,
+    OrderPolicy? orderPolicy,
     double? packagingTax,
   }) {
     return GeoUnit(
@@ -69,6 +72,7 @@ class GeoUnit {
       supportedServingModes:
           supportedServingModes ?? this.supportedServingModes,
       supportedOrderModes: supportedOrderModes ?? this.supportedOrderModes,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
       packagingTax: packagingTax ?? this.packagingTax,
     );
   }
@@ -90,6 +94,7 @@ class GeoUnit {
           supportedServingModes.map((x) => enumToString(x)).toList(),
       'supportedOrderModes':
           supportedOrderModes.map((x) => enumToString(x)).toList(),
+      'orderPolicy': enumToString(orderPolicy),
       'packagingTax': packagingTax,
     };
   }
@@ -119,13 +124,16 @@ class GeoUnit {
           ? List<OrderMode>.from(map['supportedOrderModes']
               ?.map((x) => enumFromString(x, OrderMode.values)))
           : [OrderMode.instant],
+      orderPolicy: map['orderPolicy'] != null
+          ? enumFromString(map['orderPolicy'], OrderPolicy.values)
+          : OrderPolicy.full, // TODO orderPolicy API mock
       packagingTax: map['packagingTax'] ?? 0,
     );
   }
 
   @override
   String toString() {
-    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
+    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, orderPolicy: $orderPolicy, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
   }
 
   @override

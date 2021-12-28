@@ -16,7 +16,7 @@ class MockCartRepository implements CartRepository {
 
   @override
   Future<Cart?> addProductToCart(
-      String unitId, OrderItem item, ServingMode servingMode) {
+      GeoUnit unit, OrderItem item, ServingMode servingMode) {
     throw UnimplementedError();
   }
 

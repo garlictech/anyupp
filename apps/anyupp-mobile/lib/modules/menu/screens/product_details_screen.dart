@@ -1,6 +1,4 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -312,7 +310,7 @@ class ProductDetailsWidget extends StatelessWidget {
     var orderItem = state.orderItem.copyWith(quantity: quantity);
     print('_addOrderItemToCart().orderItem.quantity=$quantity');
     BlocProvider.of<CartBloc>(context)
-        .add(AddProductToCartAction(state.unit.id, orderItem));
+        .add(AddProductToCartAction(state.unit, orderItem));
     Nav.pop();
     getIt<MainNavigationBloc>().add(
       DoMainNavigation(

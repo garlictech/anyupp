@@ -6,7 +6,7 @@ import {
   PaymentStatus,
 } from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
-import { sendRkeeperOrder } from '@bgap/rkeeper-api';
+//import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 import {
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
@@ -291,9 +291,10 @@ export const createOrderFromCart =
           switchMap(item =>
             combineLatest(
               deps.crudSdk.DeleteCart({ input: { id: props.cart.id } }),
+              /*
               props.unit.pos?.type === CrudApi.PosType.rkeeper
                 ? sendRkeeperOrder(props.unit, props.orderInput)
-                : of({}),
+                : of({}),*/
             ).pipe(mapTo(item?.id)),
           ),
         ),

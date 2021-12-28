@@ -12,6 +12,7 @@ class Cart {
   final PaymentMode? paymentMode;
   final List<OrderItem> items;
   final ServingMode servingMode;
+  final OrderPolicy orderPolicy;
 
   Cart({
     this.id,
@@ -21,6 +22,7 @@ class Cart {
     this.paymentMode,
     required this.items,
     required this.servingMode,
+    required this.orderPolicy,
   });
 
   Cart copyWith({
@@ -31,6 +33,7 @@ class Cart {
     PaymentMode? paymentMode,
     List<OrderItem>? items,
     ServingMode? servingMode,
+    OrderPolicy? orderPolicy,
   }) {
     return Cart(
       id: id ?? this.id,
@@ -40,6 +43,7 @@ class Cart {
       paymentMode: paymentMode ?? this.paymentMode,
       items: items ?? this.items,
       servingMode: servingMode ?? this.servingMode,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
     );
   }
 
@@ -52,6 +56,7 @@ class Cart {
       'paymentMode': paymentMode?.toJson(),
       'items': items.map((x) => x.toJson()).toList(),
       'servingMode': enumToString(servingMode),
+      'orderPolicy': enumToString(orderPolicy),
     };
   }
 
@@ -61,17 +66,23 @@ class Cart {
       userId: map['userId'],
       unitId: map['unitId'],
       place: map['place'] != null ? Place.fromJson(map['place']) : null,
-      paymentMode: map['paymentMode'] != null ? PaymentMode.fromJson(map['paymentMode']) : null,
-      items: List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
+      paymentMode: map['paymentMode'] != null
+          ? PaymentMode.fromJson(map['paymentMode'])
+          : null,
+      items:
+          List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
       servingMode: map['servingMode'] != null
           ? enumFromString<ServingMode>(map['servingMode'], ServingMode.values)
           : ServingMode.inPlace,
+      orderPolicy: map['orderPolicy'] != null
+          ? enumFromString(map['orderPolicy'], OrderPolicy.values)
+          : OrderPolicy.full,
     );
   }
 
   @override
   String toString() {
-    return 'Cart(id: $id, userId: $userId, unitId: $unitId, place: $place, paymentMode: $paymentMode, items: $items, servingMode: $servingMode)';
+    return 'Cart(id: $id, userId: $userId, unitId: $unitId, orderPolicy: $orderPolicy, place: $place, paymentMode: $paymentMode, items: $items, servingMode: $servingMode)';
   }
 
   @override
@@ -86,7 +97,8 @@ class Cart {
         other.paymentMode == paymentMode &&
         listEquals(other.items, items) &&
         other.servingMode == servingMode &&
-        listEquals(other.items, items);
+        listEquals(other.items, items) &&
+        other.orderPolicy == orderPolicy;
   }
 
   @override
@@ -97,6 +109,7 @@ class Cart {
         place.hashCode ^
         paymentMode.hashCode ^
         items.hashCode ^
-        servingMode.hashCode;
+        servingMode.hashCode ^
+        orderPolicy.hashCode;
   }
 }

@@ -1,23 +1,21 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/payment/payment.dart';
 import 'package:fa_prev/modules/takeaway/bloc/takeaway_bloc.dart';
-import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../mock/mock_data_faker.dart';
-import 'mock/mock_theme_bloc.dart';
 import 'mock/mocks.dart';
+import 'utils/boilerplate_app.dart';
+import 'utils/widget_utils.dart';
 
 void main() {
-  setUp(() {
+  setUpAll(() async {
     GoogleFonts.config.allowRuntimeFetching = false;
 
     GeoUnit mockUnit = MockGenerator.generateUnit(
@@ -57,39 +55,10 @@ void main() {
         BlocProvider(create: (_) => getIt<StripePaymentBloc>()),
         BlocProvider(create: (_) => getIt<CartBloc>()),
       ],
-      child: MaterialApp(
-        themeMode: ThemeMode.light,
-        title: 'AnyUpp',
-        key: const Key('anyupp-main-app'),
-        theme: ThemeData(
-          primaryColor: Colors.green,
-        ),
-        home: child,
-        locale: Locale.fromSubtags(countryCode: 'hu', languageCode: 'hu'),
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          AppLocalizations.delegate,
-        ],
-        supportedLocales: SupportedLocales.locales,
+      child: MockMaterialApp(
+        child: child,
       ),
     );
-  }
-
-  void _checkTextValue(String key, String expectedValue) {
-    // Find text widget
-    Finder textFinder = find.byKey(Key(key));
-    expect(textFinder, findsOneWidget);
-
-    // Get the text from the text widget
-    var textWidget = textFinder.evaluate().single.widget as Text;
-    expect(textWidget, isNotNull);
-
-    // print('${textWidget.data?.characters} vs ${expectedValue.characters}');
-    // print('${textWidget.data?.codeUnits} vs ${expectedValue.codeUnits}');
-
-    expect(textWidget.data, equals(expectedValue));
   }
 
   testWidgets('Test Cart Screen', (WidgetTester tester) async {
@@ -110,8 +79,8 @@ void main() {
       await tester.pumpAndSettle(Duration(milliseconds: 1000));
 
       // Character \xa0 is a non-breaking-space
-      _checkTextValue('cart-packagingfee-text', '100\xa0Ft');
-      _checkTextValue('cart-totalprice-text', 'FIZETEK (600\xa0Ft)');
+      checkTextValue('cart-packagingfee-text', '100\xa0Ft');
+      checkTextValue('cart-totalprice-text', 'FIZETEK (600\xa0Ft)');
     });
   });
 }

@@ -26,7 +26,7 @@ const orderItemInputBase = (
     pricePerUnit: 298.2,
   },
   productName: productFixture.name,
-  allergens: productFixture.allergens || [],
+  allergens: productFixture.allergens,
   laneId: `lane_01`,
   priceShown: {
     taxSum: 318.9,
@@ -36,11 +36,15 @@ const orderItemInputBase = (
     pricePerUnit: 300,
   },
   variantId: productFixture.variants?.[0]?.id || '',
-  variantName: productFixture.variants?.[0]?.variantName || {},
+  variantName: productFixture.variants?.[0]?.variantName || {
+    en: 'unused',
+    hu: 'unused',
+    de: 'unused',
+  },
   configSets: [
     {
       name: {
-        de: null,
+        de: null as string | null,
         en: 'Modifier comp set',
         hu: 'Módosító komponens set',
       },

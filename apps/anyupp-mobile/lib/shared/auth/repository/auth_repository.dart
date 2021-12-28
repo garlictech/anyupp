@@ -15,7 +15,6 @@ class AuthRepository implements IAuthProvider {
   }
 
   Stream<User?> getAuthenticatedUserProfileStream() {
-    // TODO: ezt lehet at kene irni, hogy ne null User-t adjon, hanem exception, ha nincs user.
     return _authProvider.getAuthenticatedUserProfileStream();
   }
 

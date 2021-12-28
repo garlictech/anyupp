@@ -1593,6 +1593,29 @@
       },
       "tags": ["type:backend", "platform:nodejs"]
     },
+    "backend-reports": {
+      "root": "libs/backend/reports",
+      "sourceRoot": "libs/backend/reports/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/reports/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/reports"],
+          "options": {
+            "jestConfig": "libs/backend/reports/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
+    },
     "backend-shared-utils": {
       "root": "libs/backend/shared/utils",
       "sourceRoot": "libs/backend/shared/utils/src",

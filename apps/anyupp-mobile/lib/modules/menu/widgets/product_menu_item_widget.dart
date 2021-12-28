@@ -2,7 +2,6 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +77,9 @@ class ProductMenuItem extends StatelessWidget {
                 ),
                 child: displayState == ProducItemDisplayState.DISABLED
                     ? ColorFiltered(
-                        colorFilter: ColorFilter.mode(Colors.black.withOpacity(_disabled_opacity), BlendMode.dstATop),
+                        colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(_disabled_opacity),
+                            BlendMode.dstATop),
                         child: ProductImageWidget(
                           url: item.image!,
                           width: widthContainer,
@@ -109,14 +110,17 @@ class ProductMenuItem extends StatelessWidget {
                           style: Fonts.satoshi(
                             fontSize: 18.0,
                             fontWeight: FontWeight.w700,
-                            color: displayState == ProducItemDisplayState.DISABLED
+                            color: displayState ==
+                                    ProducItemDisplayState.DISABLED
                                 ? theme.secondary.withOpacity(_disabled_opacity)
                                 : theme.secondary,
                           ),
                         ),
                       ),
                       Text(
-                        item.description == null ? '' : getLocalizedText(context, item.description!),
+                        item.description == null
+                            ? ''
+                            : getLocalizedText(context, item.description!),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Fonts.satoshi(
@@ -132,7 +136,8 @@ class ProductMenuItem extends StatelessWidget {
                         ),
                         child: displayState == ProducItemDisplayState.DISABLED
                             ? _buildNotAvailableInfo(context)
-                            : _buildVariantsInfo(context, theme, item.variants, unit.currency),
+                            : _buildVariantsInfo(
+                                context, theme, item.variants, unit.currency),
                       ),
                     ],
                   ),
@@ -160,8 +165,8 @@ class ProductMenuItem extends StatelessWidget {
     );
   }
 
-  Widget _buildVariantsInfo(
-      BuildContext context, ThemeChainData theme, List<ProductVariant> variants, String currency) {
+  Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme,
+      List<ProductVariant> variants, String currency) {
     final prices = variants.map((variant) => variant.price).toList();
     prices.sort();
 

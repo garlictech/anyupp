@@ -34,6 +34,8 @@ extension CartExtension on Cart {
     return index != -1 ? items[index].quantity : 0;
   }
 
+  bool get isPlaceEmpty => place?.isEmpty ?? true;
+
   double get packaginFee {
     if (servingMode != ServingMode.takeAway) {
       return 0.0;
