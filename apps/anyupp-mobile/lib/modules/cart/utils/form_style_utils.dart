@@ -1,8 +1,8 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 
-InputDecoration buildTextFieldDecoration({String? label, Widget? prefixIcon, required BorderRadius border}) {
+InputDecoration buildTextFieldDecoration(
+    {String? label, Widget? prefixIcon, required BorderRadius border}) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   return InputDecoration(

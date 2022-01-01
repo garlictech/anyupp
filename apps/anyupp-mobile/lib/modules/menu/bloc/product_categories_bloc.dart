@@ -9,7 +9,8 @@ import 'package:fa_prev/modules/menu/menu.dart';
 part 'product_categories_event.dart';
 part 'product_categories_state.dart';
 
-class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategoriesState> {
+class ProductCategoriesBloc
+    extends Bloc<ProductCategoriesEvent, ProductCategoriesState> {
   final UnitSelectBloc _unitSelectBloc;
   final ProductRepository _productRepository;
 
@@ -17,13 +18,16 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
 
   late StreamSubscription _unitSelectSubscription;
 
-  ProductCategoriesBloc(this._unitSelectBloc, this._productRepository) : super(ProductCategoriesLoading()) {
+  ProductCategoriesBloc(this._unitSelectBloc, this._productRepository)
+      : super(ProductCategoriesLoading()) {
+    on<LoadProductCategories>(_onLoadProductCategories);
     if (_unitSelectBloc.state is UnitSelected) {
       add(LoadProductCategories(
         (_unitSelectBloc.state as UnitSelected).unit.id,
       ));
     }
-    _unitSelectSubscription = _unitSelectBloc.stream.asBroadcastStream().listen((state) {
+    _unitSelectSubscription =
+        _unitSelectBloc.stream.asBroadcastStream().listen((state) {
       if (state is UnitSelected) {
         add(LoadProductCategories(state.unit.id));
       }
@@ -31,20 +35,17 @@ class ProductCategoriesBloc extends Bloc<ProductCategoriesEvent, ProductCategori
   }
 
   @override
-  Stream<ProductCategoriesState> mapEventToState(
-    ProductCategoriesEvent event,
-  ) async* {
-    if (event is LoadProductCategories) {
-      yield ProductCategoriesLoading();
-      var response = await _productRepository.getProductCategoryList(event.unitId);
-      _categories = response.data;
-      yield ProductCategoriesLoaded(_categories);
-    }
-  }
-
-  @override
   Future<void> close() async {
     await _unitSelectSubscription.cancel();
     return super.close();
+  }
+
+  FutureOr<void> _onLoadProductCategories(
+      LoadProductCategories event, Emitter<ProductCategoriesState> emit) async {
+    emit(ProductCategoriesLoading());
+    var response =
+        await _productRepository.getProductCategoryList(event.unitId);
+    _categories = response.data;
+    emit(ProductCategoriesLoaded(_categories));
   }
 }

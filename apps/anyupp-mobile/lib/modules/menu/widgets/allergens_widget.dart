@@ -1,11 +1,8 @@
+import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/utils/navigator.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/core/theme/theme.dart';
+import 'package:flutter/material.dart';
 
 import 'allergen_grid_widget.dart';
 
@@ -59,62 +56,50 @@ class AllergensWidget extends StatelessWidget {
     if (allergens.isEmpty) {
       return Container();
     }
-    return GestureDetector(
-      onTap: () => Nav.to(AllergenDetailsScreen()),
-      child: Container(
-        color: theme.secondary0.withOpacity(0.2),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (showHeader)
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, bottom: 8.0, top: 4.0, right: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(trans(context, "allergens.title"),
-                        style: Fonts.satoshi(
-                          color: theme.secondary,
-                          fontWeight: FontWeight.w700,
-                          fontSize: fontSize,
-                        )),
-                    Icon(
-                      Icons.info_outline,
-                      color: theme.secondary40,
-                      size: 20.0,
-                    )
-                  ],
-                ),
-              ),
-            if (showHeader)
-              Divider(
-                height: 1,
-                color: theme.secondary16,
-              ),
-            Container(
+    return Container(
+      color: theme.secondary0.withOpacity(0.2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (showHeader)
+            Padding(
               padding: const EdgeInsets.only(
-                left: 16.0,
-                right: 16.0,
-                bottom: 0.0,
-                top: 10.0,
-              ),
-              child: Wrap(
-                alignment: WrapAlignment.start,
-                direction: Axis.horizontal,
-                //mainAxisAlignment: MainAxisAlignment.start,
-                children: _getAllergenGrids(context),
-              ),
-              // child: SingleChildScrollView(
-              //   physics: BouncingScrollPhysics(),
-              //   scrollDirection: Axis.horizontal,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     children: getAllergenGrids(context),
-              //   ),
-              // ),
-            )
-          ],
-        ),
+                  left: 16.0, bottom: 8.0, top: 4.0, right: 16.0),
+              child: Text(trans(context, "allergens.title"),
+                  style: Fonts.satoshi(
+                    color: theme.secondary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: fontSize,
+                  )),
+            ),
+          if (showHeader)
+            Divider(
+              height: 1,
+              color: theme.secondary16,
+            ),
+          Container(
+            padding: const EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              bottom: 0.0,
+              top: 10.0,
+            ),
+            child: Wrap(
+              alignment: WrapAlignment.start,
+              direction: Axis.horizontal,
+              //mainAxisAlignment: MainAxisAlignment.start,
+              children: _getAllergenGrids(context),
+            ),
+            // child: SingleChildScrollView(
+            //   physics: BouncingScrollPhysics(),
+            //   scrollDirection: Axis.horizontal,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.start,
+            //     children: getAllergenGrids(context),
+            //   ),
+            // ),
+          )
+        ],
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -34,14 +33,16 @@ class _OrderHistoryListWidgetState extends State<OrderHistoryListWidget> {
             });
           }
         },
-        child: BlocBuilder<OrderHistoryBloc, BaseOrderHistoryState>(builder: (context, state) {
+        child: BlocBuilder<OrderHistoryBloc, BaseOrderHistoryState>(
+            builder: (context, state) {
           // print('***** OrderHistoryScreen.bloc.state=$state');
           if (state is NoOrderHistoryLoaded) {
             return Container();
           }
 
           if (state is OrderHistoryLoadedState) {
-            if (state.orders == null || (state.orders != null && state.orders!.isEmpty)) {
+            if (state.orders == null ||
+                (state.orders != null && state.orders!.isEmpty)) {
               return Container();
             }
             return _buildList(state.orders!);
@@ -138,7 +139,8 @@ class _OrderHistoryListWidgetState extends State<OrderHistoryListWidget> {
               backgroundColor: Colors.transparent,
               primary: theme.secondary,
             ),
-            onPressed: () => getIt<OrderHistoryBloc>().add(LoadMoreOrderHistory(widget.unit.id, _nextToken)),
+            onPressed: () => getIt<OrderHistoryBloc>()
+                .add(LoadMoreOrderHistory(widget.unit.id, _nextToken)),
             child: Text(
               trans('orders.loadMore'),
               textAlign: TextAlign.center,

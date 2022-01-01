@@ -2,13 +2,10 @@ import 'package:awesome_card/awesome_card.dart';
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_bloc.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets/common_confirm_dialog.dart';
 import 'package:flutter/material.dart';
-
-import 'select_payment_method_dialog.dart';
 
 class PaymentMethodCardWidget extends StatelessWidget {
   final StripePaymentMethod method;
@@ -58,7 +55,8 @@ class PaymentMethodCardWidget extends StatelessWidget {
                     backBackground: CardBackgrounds.white,
                     showBackSide: false,
                     showShadow: true,
-                    cardType: _getCardTypeFromString(method.brand!), // isVisa ? CardType.visa : CardType.masterCard,
+                    cardType: _getCardTypeFromString(method
+                        .brand!), // isVisa ? CardType.visa : CardType.masterCard,
                   ),
                   SizedBox(
                     height: 20,
@@ -73,9 +71,11 @@ class PaymentMethodCardWidget extends StatelessWidget {
               child: GestureDetector(
                 onTap: () async {
                   await showConfirmDialog(context,
-                      onConfirm: () => getIt<StripePaymentBloc>().add(DeleteStripeCardEvent(method.id!)),
+                      onConfirm: () => getIt<StripePaymentBloc>()
+                          .add(DeleteStripeCardEvent(method.id!)),
                       title: trans(context, "payment.manageCard.are_you_sure"),
-                      message: trans(context, "payment.manageCard.card_will_delete"),
+                      message:
+                          trans(context, "payment.manageCard.card_will_delete"),
                       cancelText: trans(context, "payment.manageCard.cancel"),
                       confirmText: trans(context, "payment.manageCard.delete"));
                 },
@@ -99,13 +99,16 @@ class PaymentMethodCardWidget extends StatelessWidget {
 
   String _getExpirityDateString(StripePaymentMethod payment) {
     String year = payment.expYear.toString().substring(2);
-    String month = payment.expMonth < 10 ? '0${payment.expMonth}' : '${payment.expMonth}';
+    String month =
+        payment.expMonth < 10 ? '0${payment.expMonth}' : '${payment.expMonth}';
     return '$year/$month';
   }
 
   CardType _getCardTypeFromString(String cardType) {
     return CardType.values.firstWhere(
-        (element) => 'CardType.${cardType}'.toLowerCase() == element.toString().toLowerCase(),
+        (element) =>
+            'CardType.${cardType}'.toLowerCase() ==
+            element.toString().toLowerCase(),
         orElse: () => CardType.other);
   }
 }

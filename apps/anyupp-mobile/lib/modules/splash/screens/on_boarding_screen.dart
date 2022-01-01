@@ -4,7 +4,6 @@ import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'splash_screen.dart';
 
 class OnBoarding extends StatefulWidget {
   @override
@@ -21,7 +20,8 @@ class _OnBoardingState extends State<OnBoarding> {
       child: StreamBuilder<String>(
         stream: _authRepository
             .getAuthenticatedUserProfileStream()
-            .map((event) => event == null ? 'NOT_AUTHENTICATED' : "AUTHENTICATED")
+            .map((event) =>
+                event == null ? 'NOT_AUTHENTICATED' : "AUTHENTICATED")
             .delay(Duration(milliseconds: 100)),
         builder: (context, snapshot) {
           // print('***** OnBoarding().state = ${snapshot?.data}, hasData = ${snapshot.hasData}');

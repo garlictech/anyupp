@@ -1,6 +1,4 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
@@ -460,7 +458,11 @@ class _SelectUnitByLocationScreenState
             snippet:
                 '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
         onTap: () {
-          // TODO _onMarkerTapped(markerId);
+          selectUnitAndGoToMenuScreen(
+            context,
+            unit,
+            deletePlace: true,
+          );
         },
       );
     }

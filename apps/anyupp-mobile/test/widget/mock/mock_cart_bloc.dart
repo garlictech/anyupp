@@ -5,16 +5,14 @@ import 'mocks.dart';
 
 class MockCartBloc extends CartBloc {
   final Cart cart;
+  final BaseCartState? stateToSend;
 
-  MockCartBloc(this.cart)
+  MockCartBloc(this.cart, {this.stateToSend})
       : super(
           MockCartRepository(cart),
           MockOrderRepository(),
           MockTakeAwayBloc(),
-        );
-
-  @override
-  Stream<BaseCartState> mapEventToState(BaseCartAction action) async* {
-    yield CurrentCartState(cart);
+        ) {
+    on((event, emit) => emit(stateToSend ?? CurrentCartState(cart)));
   }
 }

@@ -16,6 +16,7 @@ export class FormProductAvailabilitiesComponent {
   @Input() currency?: string;
   public EVariantAvailabilityType = EVariantAvailabilityType;
   public iterativeAvailabilities: KeyValue[];
+  public availabilityTypes;
 
   constructor(
     private _formsService: FormsService,
@@ -32,22 +33,21 @@ export class FormProductAvailabilitiesComponent {
         ),
       }),
     );
+    this.availabilityTypes = [
+      {
+        key: EVariantAvailabilityType.ALWAYS,
+        value: this._translateService.instant('products.always'),
+      },
+      {
+        key: EVariantAvailabilityType.WEEKLY,
+        value: this._translateService.instant('products.weekly'),
+      },
+      {
+        key: EVariantAvailabilityType.SEASONAL,
+        value: this._translateService.instant('products.seasonal'),
+      },
+    ];
   }
-
-  public availabilityTypes = [
-    {
-      key: EVariantAvailabilityType.ALWAYS,
-      value: this._translateService.instant('products.always'),
-    },
-    {
-      key: EVariantAvailabilityType.WEEKLY,
-      value: this._translateService.instant('products.weekly'),
-    },
-    {
-      key: EVariantAvailabilityType.SEASONAL,
-      value: this._translateService.instant('products.seasonal'),
-    },
-  ];
 
   public addAvailability(): void {
     (<FormArray>this.availabilityFormArray)?.push(

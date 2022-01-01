@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:fa_prev/models.dart';
+import 'package:flutter/foundation.dart';
 
 @immutable
 class Order {

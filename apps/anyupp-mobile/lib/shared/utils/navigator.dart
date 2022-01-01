@@ -9,17 +9,30 @@ enum NavAnim {
 class Nav {
   static const Duration _DEFAULT_ANIM_DURATION = Duration(milliseconds: 200);
 
-  static void to(Widget page, {Duration duration = _DEFAULT_ANIM_DURATION, NavAnim animationType = NavAnim.FADE_IN}) {
-    Catcher.navigatorKey!.currentState!.push(_createRoute(page, duration, animationType));
+  static void to(Widget page,
+      {Duration duration = _DEFAULT_ANIM_DURATION,
+      NavAnim animationType = NavAnim.FADE_IN}) {
+    Catcher.navigatorKey!.currentState!
+        .push(_createRoute(page, duration, animationType));
+  }
+
+  static Future<T?> toWithResult<T>(Widget page,
+      {Duration duration = _DEFAULT_ANIM_DURATION,
+      NavAnim animationType = NavAnim.FADE_IN}) async {
+    return Catcher.navigatorKey!.currentState!
+        .push<T>(_createRoute<T>(page, duration, animationType));
   }
 
   static void replace(Widget page,
-      {Duration duration = _DEFAULT_ANIM_DURATION, NavAnim animationType = NavAnim.FADE_IN}) {
-    Catcher.navigatorKey!.currentState!.pushReplacement(_createRoute(page, duration, animationType));
+      {Duration duration = _DEFAULT_ANIM_DURATION,
+      NavAnim animationType = NavAnim.FADE_IN}) {
+    Catcher.navigatorKey!.currentState!
+        .pushReplacement(_createRoute(page, duration, animationType));
   }
 
   static void reset(Widget page,
-      {Duration duration = _DEFAULT_ANIM_DURATION, NavAnim animationType = NavAnim.FADE_IN}) {
+      {Duration duration = _DEFAULT_ANIM_DURATION,
+      NavAnim animationType = NavAnim.FADE_IN}) {
     Catcher.navigatorKey!.currentState!.pushAndRemoveUntil(
       _createRoute(page, duration, animationType),
       (Route<dynamic> route) => false,
@@ -32,7 +45,8 @@ class Nav {
     }
   }
 
-  static Route _createRoute(Widget page, Duration duration, NavAnim animationType) {
+  static Route<T> _createRoute<T>(
+      Widget page, Duration duration, NavAnim animationType) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => page,
       transitionDuration: duration,
@@ -50,7 +64,8 @@ class Nav {
     );
   }
 
-  static Widget _createSlideInFromDownAnimation(Animation<double> animation, Widget child) {
+  static Widget _createSlideInFromDownAnimation(
+      Animation<double> animation, Widget child) {
     var begin = Offset(0.0, 1.0);
     var end = Offset.zero;
     var curve = Curves.ease;
@@ -62,7 +77,8 @@ class Nav {
     );
   }
 
-  static Widget _createFadeInAnimation(Animation<double> animation, Widget child) {
+  static Widget _createFadeInAnimation(
+      Animation<double> animation, Widget child) {
     return Opacity(
       opacity: animation.value,
       child: child,

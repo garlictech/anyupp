@@ -20,7 +20,8 @@ class OrderStatusListWidget extends StatefulWidget {
 }
 
 class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
-  OrderNotificationService _orderNotificationService = getIt<OrderNotificationService>();
+  OrderNotificationService _orderNotificationService =
+      getIt<OrderNotificationService>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +34,12 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
 
         if (state is OrdersLoadedState) {
           // print('***** OrderStatusListWidget.bloc.state=OrdersLoadedState, length=${state.orders?.length}');
-          if (state.orders == null || (state.orders != null && state.orders!.isEmpty)) {
+          if (state.orders == null ||
+              (state.orders != null && state.orders!.isEmpty)) {
             return _noOrder();
           }
-          _orderNotificationService.checkIfShowOrderStatusNotification(context, state.orders!);
+          _orderNotificationService.checkIfShowOrderStatusNotification(
+              context, state.orders!);
           return _buildOrderList(state.orders!);
         } else if (state is OrderLoadError) {
           return CommonErrorWidget(
@@ -59,7 +62,7 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
       children: [
         Container(
           margin: EdgeInsets.only(
-            top: 68.0,
+            top: 24.0,
             left: 16.0,
             bottom: 12.0,
           ),
@@ -174,7 +177,8 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  trans('orders.noActiveOrder'), //'Nincs folyamatban lévő rendelésed',
+                  trans(
+                      'orders.noActiveOrder'), //'Nincs folyamatban lévő rendelésed',
                   style: Fonts.satoshi(
                     fontSize: 16.0,
                     color: theme.secondary0,
@@ -182,7 +186,8 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
                   ),
                 ),
                 Text(
-                  trans('orders.noActiveOrderDesc'), // 'Rendelj néhány kattintással!',
+                  trans(
+                      'orders.noActiveOrderDesc'), // 'Rendelj néhány kattintással!',
                   style: Fonts.satoshi(
                     fontSize: 14.0,
                     color: theme.secondary0,

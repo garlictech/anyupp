@@ -43,7 +43,7 @@ final Map<int, Color> _color = {
 };
 
 ThemeData getThemeData(BuildContext context, ThemeChainData theme) {
-  print('***** getThemeData.light=${theme.secondary0.isLight}');
+  // print('***** getThemeData.light=${theme.secondary0.isLight}');
   return ThemeData(
     fontFamily: 'Satoshi',
     visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -164,7 +164,8 @@ void setToolbarColor({
       statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
       systemNavigationBarColor: systemNavigationBarColor,
       systemNavigationBarDividerColor: systemNavigationBarDividerColor,
-      systemNavigationBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
+      systemNavigationBarIconBrightness:
+          isLight ? Brightness.dark : Brightness.light,
       // systemNavigationBarContrastEnforced: false,
     ));
   }

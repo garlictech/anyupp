@@ -80,7 +80,7 @@ const toGeoUnit = ({
   groupId: unit.groupId,
   chainId: unit.chainId,
   name: unit.name,
-  address: unit.address || {},
+  address: unit.address,
   style: chainStyle,
   currency,
   distance: geolib.getDistance(unit.address.location, inputLocation),

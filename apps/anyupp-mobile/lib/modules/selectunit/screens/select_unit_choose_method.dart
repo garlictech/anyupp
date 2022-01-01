@@ -2,7 +2,6 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';

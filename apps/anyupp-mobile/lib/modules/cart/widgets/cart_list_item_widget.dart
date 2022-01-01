@@ -236,7 +236,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
 
   void _addOrder() {
     BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
-        widget.unit.id,
+        widget.unit,
         widget.order.copyWith(
           quantity: 1,
         )));

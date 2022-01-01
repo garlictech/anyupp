@@ -23,7 +23,7 @@
     "removeComments": true,
     "downlevelIteration": true,
     "noUnusedLocals": true,
-    "target": "es2015",
+    "target": "esnext",
     "module": "esnext",
     "typeRoots": ["node_modules/@types"],
     "types": ["node", "jest"],
@@ -139,6 +139,7 @@
         "libs/backend/product-categories/src/index.ts"
       ],
       "@bgap/backend/products": ["libs/backend/products/src/index.ts"],
+      "@bgap/backend/reports": ["libs/backend/reports/src/index.ts"],
       "@bgap/backend/shared/utils": ["libs/backend/shared/utils/src/index.ts"],
       "@bgap/backend/units": ["libs/backend/units/src/index.ts"],
       "@bgap/crud-gql/api": ["libs/crud-gql/api/src/index.ts"],

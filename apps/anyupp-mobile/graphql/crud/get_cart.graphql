@@ -72,6 +72,7 @@ query GetCurrentCart($userId: ID!, $unitId: ID!) {
       unitId
       userId
       servingMode
+      orderPolicy
     }
   }
 }

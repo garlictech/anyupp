@@ -11,17 +11,15 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/user-details/user_details.dart';
 import 'package:fa_prev/shared/widgets.dart';
-import 'package:fa_prev/shared/widgets/country_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<UserInvoiceAddress?> showInvoiceFormBottomSheet(
-    BuildContext context, UserInvoiceAddress? address, PaymentMode paymentMode) async {
+Future<UserInvoiceAddress?> showInvoiceFormBottomSheet(BuildContext context,
+    UserInvoiceAddress? address, PaymentMode paymentMode) async {
   return showModalBottomSheet<UserInvoiceAddress?>(
     context: context,
     enableDrag: true,
     isScrollControlled: true,
-    
     isDismissible: true,
     elevation: 4.0,
     backgroundColor: Colors.transparent,
@@ -43,10 +41,12 @@ class InvoiceFormBottomSheetWidget extends StatefulWidget {
   final PaymentMode paymentMode;
   InvoiceFormBottomSheetWidget(this.address, this.paymentMode);
   @override
-  _InvoiceFormBottomSheetWidgetState createState() => _InvoiceFormBottomSheetWidgetState();
+  _InvoiceFormBottomSheetWidgetState createState() =>
+      _InvoiceFormBottomSheetWidgetState();
 }
 
-class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWidget> {
+class _InvoiceFormBottomSheetWidgetState
+    extends State<InvoiceFormBottomSheetWidget> {
   final profileFormKey = GlobalKey<FormState>();
   final _nameOrCompanyController = TextEditingController();
   final _emailController = TextEditingController();
@@ -70,7 +70,8 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
     });
     super.initState();
     if (widget.address != null) {
-      _setTextFieldValue(_nameOrCompanyController, widget.address!.customerName);
+      _setTextFieldValue(
+          _nameOrCompanyController, widget.address!.customerName);
       _setTextFieldValue(_cityController, widget.address!.city);
       _setTextFieldValue(_emailController, widget.address!.email ?? '');
       _setTextFieldValue(_zipController, widget.address!.postalCode);
@@ -229,7 +230,11 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
             keyboardType: TextInputType.number,
             validator: taxFieldValidator,
           ),
-          customCountryPickerWidget(theme, context, trans('payment.paymentInfo.invoicing.country'), _countryController,
+          customCountryPickerWidget(
+              theme,
+              context,
+              trans('payment.paymentInfo.invoicing.country'),
+              _countryController,
               _countryCodeController),
           FormTextFieldWidget(
             labelKey: 'payment.paymentInfo.invoicing.zip',
@@ -320,7 +325,8 @@ class _InvoiceFormBottomSheetWidgetState extends State<InvoiceFormBottomSheetWid
                     ),
                   ),
             onPressed: () {
-              final formValid = profileFormKey.currentState?.validate() ?? false;
+              final formValid =
+                  profileFormKey.currentState?.validate() ?? false;
               if (formValid) {
                 setState(() {
                   _showErrorMessage = false;

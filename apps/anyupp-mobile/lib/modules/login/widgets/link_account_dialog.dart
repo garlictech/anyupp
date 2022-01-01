@@ -1,11 +1,11 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/login/login.dart';
 
-void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking state) {
+void showSelectAccountToLinkDialog(
+    BuildContext context, NeedAccountLinking state) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   showDialog(
@@ -67,7 +67,10 @@ void showSelectAccountToLinkDialog(BuildContext context, NeedAccountLinking stat
                         transEx(
                           context,
                           'login.accountLink.linkWith',
-                          [LoginMethodUtils.methodToString(state.existingProviderList[index])],
+                          [
+                            LoginMethodUtils.methodToString(
+                                state.existingProviderList[index])
+                          ],
                         ),
                         style: TextStyle(color: theme.secondary0),
                       ),
@@ -164,10 +167,12 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        getIt<LoginBloc>().add(UnlinkCurrentAccountFromProvider(method));
+                        getIt<LoginBloc>()
+                            .add(UnlinkCurrentAccountFromProvider(method));
                       },
                       child: Text(
-                        transEx(context, 'login.accountUnlink.unlink', [LoginMethodUtils.methodToString(method)]),
+                        transEx(context, 'login.accountUnlink.unlink',
+                            [LoginMethodUtils.methodToString(method)]),
                         style: Fonts.satoshi(
                           fontSize: 12.0,
                           color: theme.secondary0,

@@ -1,5 +1,4 @@
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/models/InvoiceInfo.dart';
 import 'dart:async';
 
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -25,7 +24,8 @@ class OrderRepository implements IOrdersProvider {
     await _provider.stopOrderListSubscription();
   }
 
-  Future<void> startOrderHistoryListSubscription(String unitId, StreamController<List<Order>?> controller) async {
+  Future<void> startOrderHistoryListSubscription(
+      String unitId, StreamController<List<Order>?> controller) async {
     await _provider.startOrderHistoryListSubscription(unitId, controller);
   }
 
@@ -54,7 +54,8 @@ class OrderRepository implements IOrdersProvider {
   int get orderListTotalCount => _provider.orderListTotalCount;
 
   @override
-  bool get orderHistoryListHasMoreItems => _provider.orderHistoryListHasMoreItems;
+  bool get orderHistoryListHasMoreItems =>
+      _provider.orderHistoryListHasMoreItems;
 
   @override
   int get orderHistoryListTotalCount => _provider.orderHistoryListTotalCount;
@@ -88,7 +89,8 @@ class OrderRepository implements IOrdersProvider {
   }
 
   @override
-  Future<void> startOrderListSubscription(String unitId, StreamController<List<Order>?> controller) {
+  Future<void> startOrderListSubscription(
+      String unitId, StreamController<List<Order>?> controller) {
     return _provider.startOrderListSubscription(unitId, controller);
   }
 

@@ -7,7 +7,8 @@
     "select": "Select",
     "ok": "OK",
     "today": "Today",
-    "exit": "Tap back again to exit app."
+    "exit": "Tap back again to exit app.",
+    "ok2": "ALL RIGHT"
   },
   "locale": {
     "EN": "English",
@@ -143,7 +144,7 @@
     "packagingFee": "Packaging fee"
   },
   "allergens": {
-    "title": "Allergens",
+    "title": "ALLERGENS",
     "celery": "Celery",
     "crustaceans": "Crustaceans",
     "egg": "Egg",
@@ -178,6 +179,14 @@
       "orderDetails": "Order details",
       "paymentDetails": "Payment details",
       "otherDetails": "More details"
+    },
+    "sendOrderError": {
+      "title": "Order failed.",
+      "description": "An error has occurred, please contact our team for assistance!"
+    },
+    "sendOrderSuccess": {
+      "title": "Successful order!",
+      "description": "The ordered products have been added to your invoice and will be served soon."
     },
     "status": {
       "none": "WAITING",
@@ -281,6 +290,12 @@
   "payment": {
     "title": "PAY",
     "choose": "Please select a payment method",
+    "delete": {
+      "title": "Delete credit card?",
+      "description": "This will delete the credit card from your payment methods.",
+      "reason": "Delete",
+      "cancel": "Cancel"
+    },
     "method": {
       "inAppPayment": "Credit Card Payment",
       "inAppPaymentDesc": "Online",
@@ -493,18 +508,24 @@
   },
   "profile": {
     "menu": {
-      "contact": "Contact Us",
+      "section1": "Account",
+      "contact": "Contact",
       "transactions": "Transactions",
-      "about": "About",
-      "cards": "Saved cards",
-      "logout": "Logout",
-      "settings": "Settings",
-      "regulations": "Regulations",
+      "paymentMethods": "Saved cards",
+      "allergens": "Allergens",
+      "section2": "Settings",
       "language": "Language",
-      "payment": "Payment and invoicing"
+      "security": "Security & Password",
+      "privacy": "Terms of Use",
+      "about": "About",
+      "logout": "Logout"
+    },
+    "language": {
+      "title": "LANGUAGE",
+      "save": "SET LANGUAGE"
     },
     "transactions": {
-      "status": "Status",
+      "title": "TRANSACTIONS",
       "paymentMethod": "Payment Method",
       "noTransactions": "No Transactions",
       "details": "Details",
@@ -513,6 +534,11 @@
         "stripe": "Stripe",
         "cash": "Cash",
         "-": "Unknown"
+      },
+      "status": {
+        "waitingForPayment": "Waiting for payment",
+        "success": "Served",
+        "failed": "Deleted"
       }
     }
   },

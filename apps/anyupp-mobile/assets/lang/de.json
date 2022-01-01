@@ -7,7 +7,8 @@
     "select": "Select",
     "ok": "Ok",
     "today": "Today",
-    "exit": "Tap back again to exit app."
+    "exit": "Tap back again to exit app.",
+    "ok2": "ALL RIGHT"
   },
   "locale": {
     "EN": "English",
@@ -181,6 +182,14 @@
       "paid": "PAID",
       "rejected": "REJECTED",
       "served": "SERVED"
+    },
+    "sendOrderError": {
+      "title": "Order failed.",
+      "description": "An error has occurred, please contact our team for assistance!"
+    },
+    "sendOrderSuccess": {
+      "title": "Successful order!",
+      "description": "The ordered products have been added to your invoice and will be served soon."
     },
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
@@ -472,18 +481,19 @@
   },
   "profile": {
     "menu": {
-      "contact": "Contact Us",
+      "section1": "Account",
+      "contact": "Contact",
       "transactions": "Transactions",
-      "about": "About",
-      "cards": "Saved cards",
-      "logout": "Logout",
-      "settings": "Settings",
-      "regulations": "Regulations",
+      "paymentMethods": "Saved cards",
+      "allergen": "Allergens",
+      "section2": "Settings",
       "language": "Language",
-      "payment": "Payment and invoicing"
+      "security": "Security & Password",
+      "privacy": "Terms of Use",
+      "about": "About",
+      "logout": "Logout"
     },
     "transactions": {
-      "status": "Status",
       "paymentMethod": "Payment Method",
       "noTransactions": "No Transactions",
       "details": "Details",
@@ -492,6 +502,11 @@
         "stripe": "Stripe",
         "cash": "Cash",
         "-": "Unknown"
+      },
+      "status": {
+        "waitingForPayment": "Waiting for payment",
+        "success": "Served",
+        "failed": "Deleted"
       }
     }
   },

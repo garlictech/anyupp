@@ -16,13 +16,15 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   # Name of the SST app that's deploying our infrastructure
   sstApp: anyupp-backend
+
   bundle:
     packager: yarn
     linting: false
     sourcemaps: true
     caching: true
-    concurrency: 1
     esbuild: true
+    concurrency: 1
+    generateStatsFiles: true
 
   offline:
     useChildProcesses: true

@@ -10,7 +10,9 @@ import { commonLambdaProps } from './lambda-common';
 import path from 'path';
 import * as iam from '@aws-cdk/aws-iam';
 import * as ec2 from '@aws-cdk/aws-ec2';
+import * as s3 from '@aws-cdk/aws-s3';
 import { createApiDomainName } from './utils';
+import { tableConfig } from '@bgap/crud-gql/backend';
 
 export interface RKeeperStackProps extends sst.StackProps {
   apiAccessKeyId: string;
@@ -41,6 +43,30 @@ export class RKeeperStack extends sst.Stack {
       ),
     );
 
+    taskRole.addToPrincipalPolicy(
+      new iam.PolicyStatement({
+        actions: [
+          'dynamodb:BatchGetItem',
+          'dynamodb:BatchWriteItem',
+          'dynamodb:PutItem',
+          'dynamodb:DeleteItem',
+          'dynamodb:GetItem',
+          'dynamodb:Scan',
+          'dynamodb:Query',
+          'dynamodb:UpdateItem',
+        ],
+        resources: [
+          tableConfig.GeneratedProduct.TableArn,
+          tableConfig.GeneratedProductCategory.TableArn,
+          tableConfig.Unit.TableArn,
+          tableConfig.AdminUser.TableArn,
+          tableConfig.UnitProduct.TableArn,
+          tableConfig.GroupProduct.TableArn,
+          tableConfig.ChainProduct.TableArn,
+        ],
+      }),
+    );
+
     const menusyncDockerAsset = new DockerImageAsset(
       this,
       'RKeepermenusyncProcessor',
@@ -60,6 +86,14 @@ export class RKeeperStack extends sst.Stack {
       },
     );
 
+    // The s3 bucket passing the menu json to fargate
+    const menuBucket = new s3.Bucket(this, 'AnyuppRkeeperMenuBucket', {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+    });
+
+    menuBucket.grantReadWrite(taskRole);
+
     const dockerImage =
       ecs.ContainerImage.fromDockerImageAsset(menusyncDockerAsset);
 
@@ -68,6 +102,7 @@ export class RKeeperStack extends sst.Stack {
       environment: {
         API_ACCESS_KEY_ID: props.apiAccessKeyId,
         API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
+        BUCKET_NAME: menuBucket.bucketName,
       },
       logging: ecs.LogDriver.awsLogs({
         streamPrefix: 'anyupp-process-menusyncs',
@@ -79,6 +114,7 @@ export class RKeeperStack extends sst.Stack {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
       handler: 'lib/lambda/rkeeper-webhook/index.handler',
+      memorySize: 512,
       timeout: cdk.Duration.seconds(20),
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless/rkeeper-webhook.zip'),
@@ -86,6 +122,10 @@ export class RKeeperStack extends sst.Stack {
       environment: {
         API_ACCESS_KEY_ID: props.apiAccessKeyId,
         API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
+        RKeeperProcessProductSecurityGroup: props.securityGroupId,
+        taskDefinitionArn: menusyncTaskDefinition.taskDefinitionArn,
+        RKeeperProcessProductSubnet: props.vpc.privateSubnets[0].subnetId,
+        BUCKET_NAME: menuBucket.bucketName,
       },
       vpc: props.vpc,
     });
@@ -97,6 +137,20 @@ export class RKeeperStack extends sst.Stack {
           resources: ['*'],
         }),
       );
+
+      rkeeperLambda.role.addManagedPolicy(
+        iam.ManagedPolicy.fromAwsManagedPolicyName(
+          'service-role/AmazonECSTaskExecutionRolePolicy',
+        ),
+      );
+
+      rkeeperLambda.role.addManagedPolicy(
+        iam.ManagedPolicy.fromAwsManagedPolicyName(
+          'AmazonEC2ContainerRegistryFullAccess',
+        ),
+      );
+
+      menuBucket.grantReadWrite(rkeeperLambda.role);
     }
 
     const apiName = 'rkeeper-webhook';
@@ -125,6 +179,10 @@ export class RKeeperStack extends sst.Stack {
 
     new cdk.CfnOutput(this, 'RKeeperTaskDefinitionArn', {
       value: menusyncTaskDefinition.taskDefinitionArn,
+    });
+
+    new cdk.CfnOutput(this, 'RKeeperTaskBucketName', {
+      value: menuBucket.bucketName,
     });
   }
 }
