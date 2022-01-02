@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Calculate packaging fee when all netPackagingFee-s are given 1`] = `4`;
+
+exports[`Calculate packaging fee when no config set packaging fees are given 1`] = `1`;
+
+exports[`Calculate packaging fee when no netPackagingFee-s are given 1`] = `0`;
+
+exports[`Calculate packaging fee when partial config set packaging fees are given 1`] = `1`;

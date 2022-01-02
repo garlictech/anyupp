@@ -18,7 +18,7 @@ class OrderItem {
   final List<OrderItemConfigSet>? configSets;
   final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
       selectedConfigMap;
-  final double? packagingFee;
+  final double? netPackagingFee;
 
   OrderItem({
     required this.productId,
@@ -34,7 +34,7 @@ class OrderItem {
     this.allergens,
     this.configSets,
     this.selectedConfigMap,
-    this.packagingFee,
+    this.netPackagingFee,
   });
 
   OrderItem copyWith({
@@ -53,7 +53,7 @@ class OrderItem {
     List<OrderItemConfigSet>? configSets,
     Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
         selectedConfigMap,
-    double? packagingFee,
+    double? netPackagingFee,
   }) {
     return OrderItem(
       productId: productId ?? this.productId,
@@ -69,7 +69,7 @@ class OrderItem {
       productType: productType ?? this.productType,
       configSets: configSets ?? this.configSets,
       selectedConfigMap: selectedConfigMap ?? this.selectedConfigMap,
-      packagingFee: packagingFee ?? this.packagingFee,
+      netPackagingFee: netPackagingFee ?? this.netPackagingFee,
     );
   }
 
@@ -87,7 +87,7 @@ class OrderItem {
       'allergens': allergens,
       'productType': productType,
       'configSets': configSets?.map((x) => x.toJson()).toList(),
-      'packagingFee': packagingFee,
+      'netPackagingFee': netPackagingFee,
     };
   }
 
@@ -115,13 +115,13 @@ class OrderItem {
               map['configSets']
                   ?.map((x) => GeneratedProductConfigSet.fromJson(x))))
           : null,
-      packagingFee: map['packagingFee'],
+      netPackagingFee: map['netPackagingFee'],
     );
   }
 
   @override
   String toString() {
-    return 'OrderItem( productId: $productId, variantId: $variantId, productName: $productName, priceShown: $priceShown, sumPriceShown: $sumPriceShown, quantity: $quantity, packagingFee: $packagingFee, statusLog: $statusLog, variantName: $variantName, image: $image, allergens: $allergens, configSets: $configSets)';
+    return 'OrderItem( productId: $productId, variantId: $variantId, productName: $productName, priceShown: $priceShown, sumPriceShown: $sumPriceShown, quantity: $quantity, netPackagingFee: $netPackagingFee, statusLog: $statusLog, variantName: $variantName, image: $image, allergens: $allergens, configSets: $configSets)';
   }
 
   @override
@@ -139,7 +139,7 @@ class OrderItem {
         other.variantName == variantName &&
         other.image == image &&
         other.productType == productType &&
-        other.packagingFee == packagingFee &&
+        other.netPackagingFee == netPackagingFee &&
         listEquals(other.allergens, allergens) &&
         listEquals(other.configSets, configSets) &&
         DeepCollectionEquality()
@@ -159,7 +159,7 @@ class OrderItem {
         image.hashCode ^
         allergens.hashCode ^
         productType.hashCode ^
-        packagingFee.hashCode ^
+        netPackagingFee.hashCode ^
         configSets.hashCode;
   }
 

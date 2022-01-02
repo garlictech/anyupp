@@ -36,6 +36,7 @@ Object {
   "name": "Késdobáló S",
   "openingHours": "09:00-22:00",
   "openingHoursNext7": Any<Array>,
+  "orderPolicy": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -53,6 +54,22 @@ Object {
       "type": "stripe",
     },
   ],
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
   "style": Object {
     "colors": Object {
       "backgroundDark": "#d6dde0",
@@ -77,6 +94,14 @@ Object {
     "inPlace",
     "takeAway",
   ],
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
 }
 `;
 
@@ -166,6 +191,7 @@ Object {
   "name": "Késdobáló S",
   "openingHours": "09:00-22:00",
   "openingHoursNext7": Any<Array>,
+  "orderPolicy": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -183,6 +209,22 @@ Object {
       "type": "stripe",
     },
   ],
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
   "style": Object {
     "colors": Object {
       "backgroundDark": "#d6dde0",
@@ -207,5 +249,13 @@ Object {
     "inPlace",
     "takeAway",
   ],
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
 }
 `;

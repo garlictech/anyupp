@@ -12,11 +12,7 @@ import {
   testIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import {
-  defaultSupportedServingModes,
-  EProductComponentSetType,
-  RequiredId,
-} from '@bgap/shared/types';
+import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
 import {
   filterNullishGraphqlListWithDefault,
   getSortedIds,
@@ -58,6 +54,7 @@ import {
 } from '@bgap/backend/product-categories';
 import { unitRequestHandler } from '@bgap/backend/units';
 import { listGeneratedProductsForUnits } from '@bgap/backend/products';
+import { dateMatcher } from '../../../../utils';
 
 const DYNAMODB_OPERATION_DELAY = 5000;
 const TEST_NAME = 'REGEN_';
@@ -103,17 +100,6 @@ const prodCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
     itemIds: [prodComponent_01.id, prodComponent_02.id, prodComponent_03.id],
   }),
   type: EProductComponentSetType.MODIFIER,
-};
-
-// HELPER MAPS
-const prodComponentSetMap = {
-  [prodCompSet_01.id]: prodCompSet_01,
-  [prodCompSet_02.id]: prodCompSet_02,
-};
-const prodComponentMap = {
-  [prodComponent_01.id]: prodComponent_01,
-  [prodComponent_02.id]: prodComponent_02,
-  [prodComponent_03.id]: prodComponent_03,
 };
 
 const prodConfigSet_01: CrudApi.ProductConfigSetInput = {
@@ -442,74 +428,7 @@ describe('RegenerateUnitData mutation tests', () => {
           const aGeneratedProduct = result.find(
             x => x.id === productToCheck.id,
           );
-          expect(aGeneratedProduct).toHaveProperty('allergens');
-          expect(aGeneratedProduct?.configSets).not.toBeNull();
-          if (
-            !aGeneratedProduct ||
-            !aGeneratedProduct.configSets ||
-            !aGeneratedProduct.configSets[0]
-          ) {
-            throw `configSets is missing from the ${productToCheck.id} product`;
-          }
-          expect(aGeneratedProduct.configSets).toHaveLength(2);
-          expect(aGeneratedProduct.configSets[0]).toHaveProperty(
-            'productSetId',
-            prodConfigSet_01.productSetId,
-          );
-          expect(aGeneratedProduct.configSets[0].items).toHaveLength(2);
-
-          const expectedCompSet_01 =
-            prodComponentSetMap[productToCheck.configSets[0].productSetId];
-          const expectedComp_0_0 =
-            prodComponentMap[
-              productToCheck.configSets[0].items[0].productComponentId
-            ];
-          const expectedComp_0_1 =
-            prodComponentMap[
-              productToCheck.configSets[0].items[1].productComponentId
-            ];
-          const expectedGeneratedProductConfigComponentSet_01: CrudApi.GeneratedProductConfigSet =
-            {
-              // comes from the ConfigSet that is stored in the product
-              position: productToCheck.configSets[0].position,
-              // comes from the productComponentSet itself (referenced by productSetId)
-              productSetId: expectedCompSet_01.id,
-              name: {
-                ...expectedCompSet_01.name,
-              },
-              type: expectedCompSet_01.type,
-              maxSelection: expectedCompSet_01.maxSelection,
-              supportedServingModes: defaultSupportedServingModes,
-              items: [
-                {
-                  // comes from the ConfigComponent that is stored in the product's config set
-                  productComponentId:
-                    productToCheck.configSets[0].items[0].productComponentId,
-                  price: productToCheck.configSets[0].items[0].price,
-                  position: productToCheck.configSets[0].items[0].position,
-                  // comes from the productComponent itself (referenced by productComponentId)
-                  name: {
-                    ...expectedComp_0_0.name,
-                  },
-                  allergens: expectedComp_0_0.allergens,
-                },
-                {
-                  // comes from the ConfigComponent that is stored in the product's config set
-                  productComponentId:
-                    productToCheck.configSets[0].items[1].productComponentId,
-                  price: productToCheck.configSets[0].items[1].price,
-                  position: productToCheck.configSets[0].items[1].position,
-                  // comes from the productComponent itself (referenced by productComponentId)
-                  name: {
-                    ...expectedComp_0_1.name,
-                  },
-                  allergens: expectedComp_0_1.allergens,
-                },
-              ],
-            };
-          expect(aGeneratedProduct.configSets[0]).toEqual(
-            expectedGeneratedProductConfigComponentSet_01,
-          );
+          expect(aGeneratedProduct).toMatchSnapshot(dateMatcher);
         },
       }),
 

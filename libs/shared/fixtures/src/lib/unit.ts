@@ -128,6 +128,17 @@ const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
   id: unitId_01,
   groupId: groupFixture.group_01.id,
   chainId: chainFixture.chain_01.id,
+  serviceFeePolicy: {
+    type: CrudApi.ServiceFeeType.applicable,
+    percentage: 10,
+    taxPercentage: 10,
+  },
+  ratingPolicy: {
+    ratings: [{ value: 1 }],
+  },
+  tipPolicy: {
+    percents: [2],
+  },
 };
 
 const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
@@ -137,9 +148,10 @@ const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
   pos: {
     type: CrudApi.PosType.rkeeper,
     rkeeper: {
-      endpointUri: 'ENDPOINT_URI',
-      rkeeperUsername: 'RKEEPER_USERNAME',
-      rkeeperPassword: 'RKEEPER_PASSWORD',
+      // let's use the yellow real rkeeper endpoint
+      endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
+      rkeeperUsername: '781_55_69_939',
+      rkeeperPassword: '3943200386403faebf5f80191f5c1c',
       anyuppUsername: 'ANYUPP_USERNAME',
       anyuppPassword: 'ANYUPP_PASSWORD',
     },

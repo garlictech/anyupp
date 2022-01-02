@@ -43,10 +43,10 @@ extension CartExtension on Cart {
 
     double price = 0.0;
     items.forEach((orderItem) {
-      price += (orderItem.packagingFee ?? 0) * orderItem.quantity;
+      price += (orderItem.netPackagingFee ?? 0) * orderItem.quantity;
       orderItem.selectedConfigMap?.forEach((key, comps) {
         for (int i = 0; i < comps.length; i++) {
-          price += (comps[i].packagingFee ?? 0) * orderItem.quantity;
+          price += (comps[i].netPackagingFee ?? 0) * orderItem.quantity;
         }
       });
     });

@@ -168,9 +168,10 @@ query SearchOrderHistory(
       transactionId
       transactionStatus
       updatedAt
-      packaging {
-        fee
-        tax
+      packagingSum {
+        currency
+        netPrice
+        taxPercentage
       }
     }
     nextToken

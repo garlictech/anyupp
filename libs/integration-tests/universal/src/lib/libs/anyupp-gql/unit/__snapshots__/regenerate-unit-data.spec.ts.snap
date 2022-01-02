@@ -32,6 +32,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -46,6 +47,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -60,6 +62,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -74,6 +77,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -109,6 +113,7 @@ Array [
               "en": "Room temperature",
               "hu": "Szobahőmérsékletű",
             },
+            "netPackagingFee": null,
             "position": 1,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_01",
@@ -120,6 +125,7 @@ Array [
               "en": "Straw",
               "hu": "Szívószál",
             },
+            "netPackagingFee": null,
             "position": 2,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_02",
@@ -153,6 +159,7 @@ Array [
               "en": "Room temperature",
               "hu": "Szobahőmérsékletű",
             },
+            "netPackagingFee": null,
             "position": 1,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_01",
@@ -164,6 +171,7 @@ Array [
               "en": "Straw",
               "hu": "Szívószál",
             },
+            "netPackagingFee": null,
             "position": 2,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_02",
@@ -177,6 +185,7 @@ Array [
               "en": "French fries",
               "hu": "Hasábburgonya",
             },
+            "netPackagingFee": null,
             "position": 3,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_03",
@@ -220,6 +229,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -234,6 +244,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -248,6 +259,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -262,6 +274,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -306,6 +319,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -320,6 +334,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -334,6 +349,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -348,6 +364,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -395,6 +412,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_generatedProductVariant_id_pundefined_1",
+        "netPackagingFee": 1,
         "pack": Object {
           "size": 1,
           "unit": "UNIT",
@@ -409,6 +427,7 @@ Array [
       },
       Object {
         "id": "test_generatedProductVariant_id_pundefined_2",
+        "netPackagingFee": 1,
         "pack": Object {
           "size": 2,
           "unit": "UNIT",
@@ -424,6 +443,208 @@ Array [
     ],
   },
 ]
+`;
+
+exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with API 2`] = `
+Object {
+  "allergens": Array [
+    "egg",
+    "gluten",
+  ],
+  "configSets": Array [
+    Object {
+      "items": Array [
+        Object {
+          "allergens": Array [
+            "egg",
+            "gluten",
+            "milk",
+            "soya",
+            "peanut",
+          ],
+          "name": Object {
+            "de": "Room temperature",
+            "en": "Room temperature",
+            "hu": "Szobahőmérsékletű",
+          },
+          "netPackagingFee": null,
+          "position": 1,
+          "price": 0,
+          "productComponentId": "test_REGEN_prodComp_01",
+        },
+        Object {
+          "allergens": Array [],
+          "name": Object {
+            "de": "Straw",
+            "en": "Straw",
+            "hu": "Szívószál",
+          },
+          "netPackagingFee": null,
+          "position": 2,
+          "price": 0,
+          "productComponentId": "test_REGEN_prodComp_02",
+        },
+      ],
+      "maxSelection": 2,
+      "name": Object {
+        "de": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_01",
+        "en": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_01",
+        "hu": "KOMPONENS_SET_test_REGEN_prodCompSet_01",
+      },
+      "position": 1,
+      "productSetId": "test_REGEN_prodCompSet_01",
+      "supportedServingModes": Array [
+        "inPlace",
+      ],
+      "type": "extras",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "allergens": Array [
+            "egg",
+            "gluten",
+            "milk",
+            "soya",
+            "peanut",
+          ],
+          "name": Object {
+            "de": "Room temperature",
+            "en": "Room temperature",
+            "hu": "Szobahőmérsékletű",
+          },
+          "netPackagingFee": null,
+          "position": 1,
+          "price": 0,
+          "productComponentId": "test_REGEN_prodComp_01",
+        },
+        Object {
+          "allergens": Array [],
+          "name": Object {
+            "de": "Straw",
+            "en": "Straw",
+            "hu": "Szívószál",
+          },
+          "netPackagingFee": null,
+          "position": 2,
+          "price": 0,
+          "productComponentId": "test_REGEN_prodComp_02",
+        },
+        Object {
+          "allergens": Array [
+            "mustard",
+          ],
+          "name": Object {
+            "de": "French fries",
+            "en": "French fries",
+            "hu": "Hasábburgonya",
+          },
+          "netPackagingFee": null,
+          "position": 3,
+          "price": 0,
+          "productComponentId": "test_REGEN_prodComp_03",
+        },
+      ],
+      "maxSelection": 3,
+      "name": Object {
+        "de": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_02",
+        "en": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_02",
+        "hu": "KOMPONENS_SET_test_REGEN_prodCompSet_02",
+      },
+      "position": 2,
+      "productSetId": "test_REGEN_prodCompSet_02",
+      "supportedServingModes": Array [
+        "inPlace",
+      ],
+      "type": "modifier",
+    },
+  ],
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "DESCRIPTION",
+    "hu": null,
+  },
+  "id": "test_REGEN_unitProduct_utest_REGEN_UNIT_ID_01_01",
+  "image": "IMAGE",
+  "name": Object {
+    "de": null,
+    "en": "CHAIN_PRODUCT",
+    "hu": null,
+  },
+  "position": 1,
+  "productCategoryId": "test_REGEN__ProductCategoryId_01",
+  "productType": "PRODUCT_TYPE",
+  "supportedServingModes": Array [
+    "takeAway",
+  ],
+  "takeawayTax": 12,
+  "tax": 27,
+  "unitId": "test_REGEN_UNIT_ID_01",
+  "updatedAt": Any<String>,
+  "variants": Array [
+    Object {
+      "id": "test_GroupProductVariant_id_1",
+      "netPackagingFee": null,
+      "pack": Object {
+        "size": 1,
+        "unit": "GROUP_UNIT",
+      },
+      "position": 1,
+      "price": 1,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_1",
+        "hu": null,
+      },
+    },
+    Object {
+      "id": "test_GroupProductVariant_id_2",
+      "netPackagingFee": null,
+      "pack": Object {
+        "size": 2,
+        "unit": "GROUP_UNIT",
+      },
+      "position": 2,
+      "price": 2,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_2",
+        "hu": null,
+      },
+    },
+    Object {
+      "id": "test_UnitProductVariant_id_1",
+      "netPackagingFee": null,
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT_UNIT",
+      },
+      "position": 1,
+      "price": 1.5,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_1",
+        "hu": null,
+      },
+    },
+    Object {
+      "id": "test_UnitProductVariant_id_2",
+      "netPackagingFee": null,
+      "pack": Object {
+        "size": 2,
+        "unit": "UNIT_UNIT",
+      },
+      "position": 2,
+      "price": 3,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_2",
+        "hu": null,
+      },
+    },
+  ],
+}
 `;
 
 exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with API: A Generated ProductCategory 1`] = `
@@ -487,6 +708,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -501,6 +723,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -515,6 +738,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -529,6 +753,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -564,6 +789,7 @@ Array [
               "en": "Room temperature",
               "hu": "Szobahőmérsékletű",
             },
+            "netPackagingFee": null,
             "position": 1,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_01",
@@ -575,6 +801,7 @@ Array [
               "en": "Straw",
               "hu": "Szívószál",
             },
+            "netPackagingFee": null,
             "position": 2,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_02",
@@ -608,6 +835,7 @@ Array [
               "en": "Room temperature",
               "hu": "Szobahőmérsékletű",
             },
+            "netPackagingFee": null,
             "position": 1,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_01",
@@ -619,6 +847,7 @@ Array [
               "en": "Straw",
               "hu": "Szívószál",
             },
+            "netPackagingFee": null,
             "position": 2,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_02",
@@ -632,6 +861,7 @@ Array [
               "en": "French fries",
               "hu": "Hasábburgonya",
             },
+            "netPackagingFee": null,
             "position": 3,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_03",
@@ -675,6 +905,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -689,6 +920,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -703,6 +935,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -717,6 +950,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -761,6 +995,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -775,6 +1010,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -789,6 +1025,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -803,6 +1040,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
+        "netPackagingFee": null,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -850,6 +1088,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_generatedProductVariant_id_pundefined_1",
+        "netPackagingFee": 1,
         "pack": Object {
           "size": 1,
           "unit": "UNIT",
@@ -864,6 +1103,7 @@ Array [
       },
       Object {
         "id": "test_generatedProductVariant_id_pundefined_2",
+        "netPackagingFee": 1,
         "pack": Object {
           "size": 2,
           "unit": "UNIT",
@@ -879,6 +1119,208 @@ Array [
     ],
   },
 ]
+`;
+
+exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with direct resolver 2`] = `
+Object {
+  "allergens": Array [
+    "egg",
+    "gluten",
+  ],
+  "configSets": Array [
+    Object {
+      "items": Array [
+        Object {
+          "allergens": Array [
+            "egg",
+            "gluten",
+            "milk",
+            "soya",
+            "peanut",
+          ],
+          "name": Object {
+            "de": "Room temperature",
+            "en": "Room temperature",
+            "hu": "Szobahőmérsékletű",
+          },
+          "netPackagingFee": null,
+          "position": 1,
+          "price": 0,
+          "productComponentId": "test_REGEN_prodComp_01",
+        },
+        Object {
+          "allergens": Array [],
+          "name": Object {
+            "de": "Straw",
+            "en": "Straw",
+            "hu": "Szívószál",
+          },
+          "netPackagingFee": null,
+          "position": 2,
+          "price": 0,
+          "productComponentId": "test_REGEN_prodComp_02",
+        },
+      ],
+      "maxSelection": 2,
+      "name": Object {
+        "de": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_01",
+        "en": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_01",
+        "hu": "KOMPONENS_SET_test_REGEN_prodCompSet_01",
+      },
+      "position": 1,
+      "productSetId": "test_REGEN_prodCompSet_01",
+      "supportedServingModes": Array [
+        "inPlace",
+      ],
+      "type": "extras",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "allergens": Array [
+            "egg",
+            "gluten",
+            "milk",
+            "soya",
+            "peanut",
+          ],
+          "name": Object {
+            "de": "Room temperature",
+            "en": "Room temperature",
+            "hu": "Szobahőmérsékletű",
+          },
+          "netPackagingFee": null,
+          "position": 1,
+          "price": 0,
+          "productComponentId": "test_REGEN_prodComp_01",
+        },
+        Object {
+          "allergens": Array [],
+          "name": Object {
+            "de": "Straw",
+            "en": "Straw",
+            "hu": "Szívószál",
+          },
+          "netPackagingFee": null,
+          "position": 2,
+          "price": 0,
+          "productComponentId": "test_REGEN_prodComp_02",
+        },
+        Object {
+          "allergens": Array [
+            "mustard",
+          ],
+          "name": Object {
+            "de": "French fries",
+            "en": "French fries",
+            "hu": "Hasábburgonya",
+          },
+          "netPackagingFee": null,
+          "position": 3,
+          "price": 0,
+          "productComponentId": "test_REGEN_prodComp_03",
+        },
+      ],
+      "maxSelection": 3,
+      "name": Object {
+        "de": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_02",
+        "en": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_02",
+        "hu": "KOMPONENS_SET_test_REGEN_prodCompSet_02",
+      },
+      "position": 2,
+      "productSetId": "test_REGEN_prodCompSet_02",
+      "supportedServingModes": Array [
+        "inPlace",
+      ],
+      "type": "modifier",
+    },
+  ],
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "DESCRIPTION",
+    "hu": null,
+  },
+  "id": "test_REGEN_unitProduct_utest_REGEN_UNIT_ID_01_01",
+  "image": "IMAGE",
+  "name": Object {
+    "de": null,
+    "en": "CHAIN_PRODUCT",
+    "hu": null,
+  },
+  "position": 1,
+  "productCategoryId": "test_REGEN__ProductCategoryId_01",
+  "productType": "PRODUCT_TYPE",
+  "supportedServingModes": Array [
+    "takeAway",
+  ],
+  "takeawayTax": 12,
+  "tax": 27,
+  "unitId": "test_REGEN_UNIT_ID_01",
+  "updatedAt": Any<String>,
+  "variants": Array [
+    Object {
+      "id": "test_GroupProductVariant_id_1",
+      "netPackagingFee": null,
+      "pack": Object {
+        "size": 1,
+        "unit": "GROUP_UNIT",
+      },
+      "position": 1,
+      "price": 1,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_1",
+        "hu": null,
+      },
+    },
+    Object {
+      "id": "test_GroupProductVariant_id_2",
+      "netPackagingFee": null,
+      "pack": Object {
+        "size": 2,
+        "unit": "GROUP_UNIT",
+      },
+      "position": 2,
+      "price": 2,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_2",
+        "hu": null,
+      },
+    },
+    Object {
+      "id": "test_UnitProductVariant_id_1",
+      "netPackagingFee": null,
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT_UNIT",
+      },
+      "position": 1,
+      "price": 1.5,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_1",
+        "hu": null,
+      },
+    },
+    Object {
+      "id": "test_UnitProductVariant_id_2",
+      "netPackagingFee": null,
+      "pack": Object {
+        "size": 2,
+        "unit": "UNIT_UNIT",
+      },
+      "position": 2,
+      "price": 3,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_2",
+        "hu": null,
+      },
+    },
+  ],
+}
 `;
 
 exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with direct resolver: A Generated ProductCategory 1`] = `

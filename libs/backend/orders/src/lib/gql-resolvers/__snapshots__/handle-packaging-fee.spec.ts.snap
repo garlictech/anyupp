@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Adding package fee: GetGeneratedProduct calls (add package fee) 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "PRODUCTID",
+    },
+  ],
+  Array [
+    Object {
+      "id": "OTHER_PRODUCTID",
+    },
+  ],
+]
+`;
+
+exports[`Adding package fee: GetGeneratedProduct calls (packaging fee of variant not given) 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "PRODUCTID3",
+    },
+  ],
+]
+`;
+
+exports[`Adding package fee: add package fee 1`] = `
+Object {
+  "id": "ORDERID",
+  "items": Array [
+    Object {
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "netPackagingFee": 4,
+              "productComponentId": "PRODUCTCOMPONENTID1",
+            },
+          ],
+          "productSetId": "PRODUCTSETID1",
+        },
+      ],
+      "netPackagingFee": 1,
+      "productId": "PRODUCTID",
+      "quantity": 1,
+      "variantId": "VARIANTID",
+    },
+    Object {
+      "configSets": undefined,
+      "netPackagingFee": 2,
+      "productId": "OTHER_PRODUCTID",
+      "quantity": 1,
+      "variantId": "OTHER_VARIANTID",
+    },
+  ],
+  "packagingSum": Object {
+    "currency": "HUF",
+    "netPrice": 7,
+    "taxPercentage": 10,
+  },
+  "sumPriceShown": Object {
+    "currency": "HUF",
+    "priceSum": 107.7,
+    "taxSum": 10.7,
+  },
+}
+`;
+
+exports[`Adding package fee: component not found 1`] = `[Error: Config set not found. productId: PRODUCTID5]`;
+
+exports[`Adding package fee: config set not found 1`] = `[Error: Config set not found. productId: PRODUCTID4]`;
+
+exports[`Adding package fee: no config sets 1`] = `[Error: Config set not found. productId: PRODUCTID6]`;
+
+exports[`Adding package fee: packaging fee of variant not given 1`] = `
+Object {
+  "id": "ORDERID",
+  "items": Array [
+    Object {
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "netPackagingFee": 0,
+              "productComponentId": "PRODUCTCOMPONENTID1",
+            },
+          ],
+          "productSetId": "PRODUCTSETID1",
+        },
+      ],
+      "netPackagingFee": 0,
+      "productId": "PRODUCTID3",
+      "quantity": 1,
+      "variantId": "VARIANTID",
+    },
+    Object {
+      "configSets": undefined,
+      "netPackagingFee": 2,
+      "productId": "OTHER_PRODUCTID",
+      "quantity": 1,
+      "variantId": "OTHER_VARIANTID",
+    },
+  ],
+  "packagingSum": Object {
+    "currency": "HUF",
+    "netPrice": 2,
+    "taxPercentage": 10,
+  },
+  "sumPriceShown": Object {
+    "currency": "HUF",
+    "priceSum": 102.2,
+    "taxSum": 10.2,
+  },
+}
+`;
+
+exports[`Adding package fee: variant not found 1`] = `[Error: Variant not found: VARIANTID]`;

@@ -40,6 +40,18 @@ const unit_01 = {
   ...unitFixture.createUnit_01,
   id: `${testIdPrefix}unit_01`,
   address: fp.mergeAll([unitFixture.unit_01.address, distanceLoc_01]),
+  orderPolicy: CrudApi.OrderPolicy.placeonly,
+  serviceFeePolicy: {
+    type: CrudApi.ServiceFeeType.applicable,
+    percentage: 10,
+    taxPercentage: 20,
+  },
+  ratingPolicy: {
+    ratings: [{ value: 1 }],
+  },
+  tipPolicy: {
+    percents: [2],
+  },
 };
 const unit_02 = {
   ...unitFixture.createUnit_01,

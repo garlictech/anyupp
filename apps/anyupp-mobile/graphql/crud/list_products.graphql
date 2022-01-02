@@ -46,7 +46,7 @@ query ListProducts(
           en
           hu
         }
-        packagingFee
+        netPackagingFee
       }
       configSets {
         type
@@ -68,7 +68,7 @@ query ListProducts(
           }
           position
           price
-          packagingFee
+          netPackagingFee
           productComponentId
         }
       }

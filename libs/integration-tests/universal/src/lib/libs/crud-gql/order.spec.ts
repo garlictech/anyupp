@@ -1,5 +1,4 @@
-import { getDayIntervals } from '@bgap/admin/shared/utils';
-import { timezoneBudapest } from '@bgap/shared/utils';
+import { getDayIntervals, timezoneBudapest } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import {

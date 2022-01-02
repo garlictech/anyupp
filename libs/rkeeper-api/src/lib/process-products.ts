@@ -538,9 +538,6 @@ const upsertConfigSetsHelper = R.memoizeWith(
                   }),
             ),
             throwIfEmptyValue(),
-            tap(x =>
-              console.warn('***** COMPONENT SET', JSON.stringify(x, null)),
-            ),
             map(componentSet => ({
               productSetId: componentSet.id,
               items: components,

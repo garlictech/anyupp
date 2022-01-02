@@ -21,7 +21,7 @@ class Order {
   final String? transactionId;
   final ServingMode? servingMode;
   final OrderMode? orderMode;
-  final Packaging? packaging;
+  final Price? packagingSum;
 
   Order({
     required this.id,
@@ -41,7 +41,7 @@ class Order {
     this.transactionId,
     this.servingMode,
     this.orderMode,
-    this.packaging,
+    this.packagingSum,
   });
   // final UnpayCategory? unpayCategory;
 
@@ -63,7 +63,7 @@ class Order {
     String? transactionId,
     ServingMode? servingMode,
     OrderMode? orderMode,
-    Packaging? packaging,
+    Price? packagingSum,
   }) {
     return Order(
       id: id ?? this.id,
@@ -83,7 +83,7 @@ class Order {
       transactionId: transactionId ?? this.transactionId,
       servingMode: servingMode ?? this.servingMode,
       orderMode: orderMode ?? this.orderMode,
-      packaging: packaging ?? this.packaging,
+      packagingSum: packagingSum ?? this.packagingSum,
     );
   }
 
@@ -106,7 +106,7 @@ class Order {
       'transactionId': transactionId,
       'servingMode': enumToString(servingMode),
       'orderMode': enumToString(orderMode),
-      'packaging': packaging?.toJson(),
+      'packagingSum': packagingSum?.toJson(),
     };
   }
 
@@ -138,8 +138,8 @@ class Order {
           map['orderMode'], OrderMode.values, OrderMode.instant),
       servingMode: enumFromStringNull(
           map['servingMode'], ServingMode.values, ServingMode.inPlace),
-      packaging: map['packaging'] != null
-          ? Packaging.fromJson(map['packaging'])
+      packagingSum: map['packagingSum'] != null
+          ? Price.fromJson(map['packagingSum'])
           : null,
     );
   }

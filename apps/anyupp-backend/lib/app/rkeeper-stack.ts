@@ -1,3 +1,4 @@
+import * as logs from '@aws-cdk/aws-logs';
 import * as route53 from '@aws-cdk/aws-route53';
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as ecs from '@aws-cdk/aws-ecs';
@@ -105,8 +106,10 @@ export class RKeeperStack extends sst.Stack {
         BUCKET_NAME: menuBucket.bucketName,
       },
       logging: ecs.LogDriver.awsLogs({
-        streamPrefix: 'anyupp-process-menusyncs',
-        logRetention: 7,
+        streamPrefix: `rkeeper-menusync-${scope.stage}`,
+        logGroup: new logs.LogGroup(this, 'LogGroup', {
+          retention: 7,
+        }),
       }),
     });
 

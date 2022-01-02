@@ -179,7 +179,7 @@ class MockGenerator {
           de: variantName,
         ),
         productType: 'TEST',
-        packagingFee: packagingFee);
+        netPackagingFee: packagingFee);
   }
 
   static GeneratedProductConfigSet generateEmptyProductConfigSet({
@@ -419,7 +419,7 @@ class MockGenerator {
         en: name,
       ),
       allergens: allergeens,
-      packagingFee: packagingFee,
+      netPackagingFee: packagingFee,
     );
   }
 

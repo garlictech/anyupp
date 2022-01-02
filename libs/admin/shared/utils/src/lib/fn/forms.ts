@@ -1,5 +1,4 @@
 import { isNumber, omit } from 'lodash/fp';
-import { DateTime } from 'luxon';
 
 import {
   AbstractControl,
@@ -8,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EVariantAvailabilityType, DateIntervals } from '@bgap/shared/types';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 
@@ -138,20 +137,6 @@ export const dailyScheduleBothEmptyOrProperlyFilledValidator: ValidatorFn = (
       ? null
       : { timeFormat: true }
     : { missingIntervall: true };
-};
-
-export const getDayIntervals = (
-  dateValue: string | number,
-  timeZone: string,
-): DateIntervals => {
-  const date: DateTime = DateTime.fromISO(new Date(dateValue).toISOString(), {
-    zone: timeZone,
-  });
-
-  return {
-    from: date.startOf('day').valueOf(),
-    to: date.endOf('day').valueOf(),
-  };
 };
 
 export const makeId = (length: number): string => {

@@ -1,6 +1,7 @@
 import * as sst from '@serverless-stack/resources';
 import * as events from '@aws-cdk/aws-events';
 import * as ecs from '@aws-cdk/aws-ecs';
+import * as logs from '@aws-cdk/aws-logs';
 import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 import path from 'path';
 import * as ec2 from '@aws-cdk/aws-ec2';
@@ -74,8 +75,10 @@ export class ReportGeneratorStack extends sst.Stack {
         SLACK_BOT_TOKEN: props.slackBotToken,
       },
       logging: ecs.LogDriver.awsLogs({
-        streamPrefix: 'anyupp-process-products',
-        logRetention: 7,
+        streamPrefix: `report-generator-${scope.stage}`,
+        logGroup: new logs.LogGroup(this, 'LogGroup', {
+          retention: 7,
+        }),
       }),
     });
 

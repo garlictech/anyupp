@@ -48,7 +48,7 @@ mutation CreateFavoriteProduct($userId: ID!, $unitId: ID!, $productId: ID!) {
           }
           position
           price
-          packagingFee
+          netPackagingFee
           productComponentId
         }
       }
@@ -60,7 +60,7 @@ mutation CreateFavoriteProduct($userId: ID!, $unitId: ID!, $productId: ID!) {
         }
         position
         price
-        packagingFee
+        netPackagingFee
         variantName {
           de
           en

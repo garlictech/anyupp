@@ -9,7 +9,7 @@ class GeneratedProductConfigComponent {
   final int? position;
   final LocalizedItem name;
   final List<Allergen>? allergens;
-  final double? packagingFee;
+  final double? netPackagingFee;
 
   GeneratedProductConfigComponent({
     required this.productComponentId,
@@ -17,7 +17,7 @@ class GeneratedProductConfigComponent {
     this.position,
     required this.name,
     this.allergens,
-    this.packagingFee,
+    this.netPackagingFee,
   });
 
   GeneratedProductConfigComponent copyWith({
@@ -26,7 +26,7 @@ class GeneratedProductConfigComponent {
     int? position,
     LocalizedItem? name,
     List<Allergen>? allergens,
-    double? packagingFee,
+    double? netPackagingFee,
   }) {
     return GeneratedProductConfigComponent(
       productComponentId: productComponentId ?? this.productComponentId,
@@ -34,7 +34,7 @@ class GeneratedProductConfigComponent {
       position: position ?? this.position,
       name: name ?? this.name,
       allergens: allergens ?? this.allergens,
-      packagingFee: packagingFee ?? this.packagingFee,
+      netPackagingFee: netPackagingFee ?? this.netPackagingFee,
     );
   }
 
@@ -45,7 +45,7 @@ class GeneratedProductConfigComponent {
       'position': position,
       'name': name.toJson(),
       'allergens': allergens?.map((x) => enumToString(x)).toList(),
-      'packagingFee': packagingFee,
+      'netPackagingFee': netPackagingFee,
     };
   }
 
@@ -54,7 +54,7 @@ class GeneratedProductConfigComponent {
       productComponentId: map['productComponentId'],
       price: map['price'],
       position: map['position'],
-      packagingFee: map['packagingFee'],
+      netPackagingFee: map['netPackagingFee'],
       name: LocalizedItem.fromJson(map['name']),
       allergens: List<Allergen>.from(
           map['allergens']?.map((x) => enumFromString(x, Allergen.values))),
@@ -63,7 +63,7 @@ class GeneratedProductConfigComponent {
 
   @override
   String toString() {
-    return 'GeneratedProductConfigComponent(productComponentId: $productComponentId, price: $price, packagingFee: $packagingFee, position: $position, name: $name, allergens: $allergens)';
+    return 'GeneratedProductConfigComponent(productComponentId: $productComponentId, price: $price, netPackagingFee: $netPackagingFee, position: $position, name: $name, allergens: $allergens)';
   }
 
   @override
@@ -75,7 +75,7 @@ class GeneratedProductConfigComponent {
         other.price == price &&
         other.position == position &&
         other.name == name &&
-        other.packagingFee == packagingFee &&
+        other.netPackagingFee == netPackagingFee &&
         listEquals(other.allergens, allergens);
   }
 
@@ -85,7 +85,7 @@ class GeneratedProductConfigComponent {
         price.hashCode ^
         position.hashCode ^
         name.hashCode ^
-        packagingFee.hashCode ^
+        netPackagingFee.hashCode ^
         allergens.hashCode;
   }
 }

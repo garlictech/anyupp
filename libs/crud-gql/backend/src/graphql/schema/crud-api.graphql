@@ -1,10 +1,8 @@
-### Location
 type Location @aws_cognito_user_pools {
   lat: Float!
   lng: Float!
 }
 
-### LocalizedItem
 type LocalizedItem @aws_cognito_user_pools {
   en: String
   de: String
@@ -20,7 +18,6 @@ type Address @aws_cognito_user_pools {
   location: Location!
 }
 
-### Payment
 type PaymentMode @aws_cognito_user_pools {
   type: PaymentType!
   caption: String
@@ -42,7 +39,6 @@ enum PaymentType {
   googlepay
 }
 
-### ChainStyle
 type ChainStyle @aws_cognito_user_pools {
   colors: ChainStyleColors!
   images: ChainStyleImages
@@ -67,7 +63,6 @@ type ChainStyleImages {
   logo: String
 }
 
-### ChainProduct
 type ChainProduct
   @model
   @searchable
@@ -114,7 +109,24 @@ enum OrderMode {
   pickup
 }
 
-### GroupProduct
+enum ServiceFeeType {
+  noFee
+  included
+  applicable
+}
+
+type ServiceFeePolicy {
+  type: ServiceFeeType!
+  percentage: Float!
+  taxPercentage: Float!
+}
+
+input ServiceFeePolicyInput {
+  type: ServiceFeeType!
+  percentage: Float!
+  taxPercentage: Float!
+}
+
 type GroupProduct
   @aws_cognito_user_pools
   @model
@@ -133,7 +145,6 @@ type GroupProduct
   dirty: Boolean
 }
 
-### UnitProduct
 type UnitProduct
   @aws_cognito_user_pools
   @model
@@ -161,6 +172,7 @@ type ProductConfigComponent @aws_cognito_user_pools {
   price: Float!
   position: Int!
   externalId: String
+  netPackagingFee: Float
 }
 
 type ProductConfigSet @aws_cognito_user_pools {
@@ -169,7 +181,6 @@ type ProductConfigSet @aws_cognito_user_pools {
   position: Int!
 }
 
-### ProductVariant
 type ProductVariant @aws_cognito_user_pools {
   id: ID!
   variantName: LocalizedItem!
@@ -179,9 +190,9 @@ type ProductVariant @aws_cognito_user_pools {
   price: Float!
   availabilities: [Availability]
   position: Int!
+  netPackagingFee: Float
 }
 
-### ProductVariantPack
 type ProductVariantPack @aws_cognito_user_pools {
   size: Float!
   unit: String!
@@ -191,7 +202,6 @@ input ProductVariantPackInput {
   unit: String!
 }
 
-### Availability
 type Availability @aws_cognito_user_pools {
   type: String!
   dayFrom: String
@@ -209,7 +219,6 @@ input AvailabilityInput {
   price: Float!
 }
 
-### Stripe card
 type CardChecks @aws_cognito_user_pools {
   address_line1_check: String
   address_postal_code_check: String
@@ -309,7 +318,6 @@ input StripeCardDeleteInput {
   paymentMethodId: String!
 }
 
-### AdminUser
 type AdminUser
   @model(mutations: { delete: null, create: null, update: "updateAdminUser" })
   @searchable
@@ -359,6 +367,7 @@ input CreateAdminUserInput {
   profileImage: String
   settings: AdminUserSettingsInput
 }
+
 ###
 # Create a join model and disable queries as you don't need them
 # and can query through Post.editors and AdminUser.roleContexts
@@ -373,8 +382,6 @@ type AdminRoleContext
   adminUserId: ID!
   roleContext: RoleContext! @connection(fields: ["roleContextId"])
 }
-
-### RoleContext
 
 enum Role {
   superuser
@@ -398,85 +405,6 @@ type RoleContext
   unitId: String
 }
 
-### Stripe
-
-# STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
-
-# https://stripe.com/docs/api/cards/object?lang=node
-# Card brand
-# enum CardBrand {
-#   amex
-#   diners
-#   discover
-#   jcb
-#   mastercard
-#   unionpay
-#   visa
-#   unknown
-# }
-
-# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
-# Card funding type
-# enum CardFundingType {
-#   credit
-#   debit
-#   prepaid
-#   unknown
-# }
-
-# enum StripPaymentMethodType {
-#   alipay
-#   au_becs_debit
-#   bacs_debit
-#   bancontact
-#   card
-#   eps
-#   fpx
-#   giropay
-#   grabpay
-#   ideal
-#   oxxo
-#   p24
-#   sepa_debit
-#   sofort
-# }
-
-# type CardChecks {
-#   address_line1_check: String
-#   address_postal_code_check: String
-#   cvc_check: String
-# }
-
-# https://stripe.com/docs/api/metadata?lang=node
-# Updateable Stripe objects
-# type StripeMetadata {
-#   key: String!
-#   value: String!
-# }
-
-# type StripeCard @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-#   brand: CardBrand
-#   checks: CardChecks
-#   country: String
-#   last4: String
-#   exp_month: Int
-#   exp_year: Int
-#   fingerprint: String
-#   funding: CardFundingType
-#   three_d_secure: String
-#   # wallet: String # to do
-#   # IMPLEMENTED INTERFACES
-#   id: ID!
-#   object: String!
-#   metadata: [StripeMetadata!]!
-# }
-
-# type StartStripePaymentOutput {
-#   clientSecret: String!
-#   status: String!
-# }
-
-### Chain
 type Chain
   @model
   @searchable
@@ -491,7 +419,6 @@ type Chain
   phone: String
 }
 
-### Group
 type Group
   @model
   @searchable
@@ -506,7 +433,6 @@ type Group
   phone: String
 }
 
-### OrderItem
 type StatusLog {
   userId: ID!
   status: OrderStatus!
@@ -515,10 +441,10 @@ type StatusLog {
 
 type PriceShown {
   currency: String!
-  pricePerUnit: Float!
-  priceSum: Float!
-  tax: Int!
-  taxSum: Float!
+  pricePerUnit: Float! # Gross price!
+  priceSum: Float! # Gross price!
+  tax: Int! # Tax percentage
+  taxSum: Float! # Tax cut in priceSum
 }
 
 type OrderItemConfigComponent {
@@ -526,6 +452,7 @@ type OrderItemConfigComponent {
   price: Float!
   name: LocalizedItem!
   allergens: [Allergen]
+  netPackagingFee: Float
 }
 
 type OrderItemConfigSet {
@@ -535,9 +462,10 @@ type OrderItemConfigSet {
   items: [OrderItemConfigComponent!]!
 }
 
-type Packaging {
-  fee: Float!
-  tax: Float!
+type Price {
+  currency: String!
+  netPrice: Float!
+  taxPercentage: Float!
 }
 
 type OrderItem {
@@ -546,8 +474,6 @@ type OrderItem {
   created: Float
   productName: LocalizedItem!
   image: String
-  sumPriceShown: PriceShown!
-  priceShown: PriceShown!
   quantity: Int!
   statusLog: [StatusLog!]!
   variantName: LocalizedItem!
@@ -556,11 +482,12 @@ type OrderItem {
   configSets: [OrderItemConfigSet!]
   productType: String # TODO: Make the OrderItem.productType REQUIRED in the next release
   externalId: String
-  appliedServiceFee: PriceShown
-  packagingFee: Float
+  netPackagingFee: Float
+  serviceFee: Price
+  priceShown: PriceShown! # Price without config sets
+  sumPriceShown: PriceShown! # Full price with config sets
 }
 
-### Order
 type Order
   @model
   @searchable
@@ -574,7 +501,6 @@ type Order
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
   archived: Boolean!
-  sumPriceShown: PriceShown!
   takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
@@ -584,7 +510,14 @@ type Order
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  packaging: Packaging
+  serviceFee: Price
+  packagingSum: Price
+  sumPriceShown: PriceShown!
+  rating: Int
+  tip: Tip
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
+  tipTransaction: Transaction @connection(fields: ["tipTransactionId"])
 }
 
 enum OrderPolicy {
@@ -627,7 +560,6 @@ type Place {
   table: String!
 }
 
-### ProductCategory
 type ProductCategory
   @model
   @searchable
@@ -640,7 +572,6 @@ type ProductCategory
   position: Int!
 }
 
-### ProductComponent
 type ProductComponent
   @model
   @searchable
@@ -654,7 +585,6 @@ type ProductComponent
   dirty: Boolean
 }
 
-### ProductComponent
 type ProductComponentSet
   @model
   @searchable
@@ -674,10 +604,10 @@ type ProductComponentSet
 type GeneratedProductConfigComponent {
   productComponentId: ID!
   price: Float!
-  packagingFee: Float
   position: Int!
   name: LocalizedItem!
   allergens: [Allergen]
+  netPackagingFee: Float
 }
 
 type GeneratedProductConfigSet {
@@ -732,7 +662,7 @@ type GeneratedProductVariant {
   variantName: LocalizedItem!
   pack: ProductVariantPack
   price: Float!
-  packagingFee: Float
+  netPackagingFee: Float
   position: Int!
 }
 
@@ -747,7 +677,55 @@ type FavoriteProduct
   product: GeneratedProduct! @connection
 }
 
-### Unit
+type Tip {
+  type: TipType!
+  value: Float
+}
+
+enum TipType {
+  none
+  percent
+  amount
+}
+
+type RatingPolicy {
+  title: LocalizedItem
+  description: LocalizedItem
+  ratings: [RatingPolicyItem]!
+}
+
+type RatingPolicyItem {
+  value: Int!
+  text: LocalizedItem
+  icon: String
+}
+
+type TipPolicy {
+  title: LocalizedItem
+  description: LocalizedItem
+  percents: [Float!]!
+  maxOtherAmount: Float
+}
+
+input RatingPolicyInput {
+  title: LocalizedItemInput
+  description: LocalizedItemInput
+  ratings: [RatingPolicyItemInput]!
+}
+
+input RatingPolicyItemInput {
+  value: Int!
+  text: LocalizedItemInput
+  icon: String
+}
+
+input TipPolicyInput {
+  title: LocalizedItemInput
+  description: LocalizedItemInput
+  percents: [Float!]!
+  maxOtherAmount: Float
+}
+
 type Unit
   @model(mutations: { delete: "deleteUnit" })
   @searchable
@@ -775,6 +753,10 @@ type Unit
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  packagingTaxPercentage: Float
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicy: RatingPolicy
+  tipPolicy: TipPolicy
 }
 
 type DateIntervalOpen {
@@ -889,13 +871,15 @@ type GeoUnit @aws_cognito_user_pools {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicy: RatingPolicy
+  tipPolicy: TipPolicy
 }
 
 input GetUnitsNearLocationInput {
   location: LocationInput!
 }
 
-### User
 type User
   @model
   @searchable
@@ -909,7 +893,6 @@ type User
   invoiceAddress: UserInvoiceAddress
 }
 
-### Cart
 type Cart
   @model
   @searchable
@@ -1114,6 +1097,10 @@ input CreateUnitInput {
   externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicy: RatingPolicyInput
+  tipPolicy: TipPolicyInput
 }
 
 input UpdateUnitInput {
@@ -1138,6 +1125,10 @@ input UpdateUnitInput {
   pos: PosInput
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicy: RatingPolicyInput
+  tipPolicy: TipPolicyInput
 }
 
 type CreateAnonymUserOutput {

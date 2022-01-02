@@ -1,3 +1,4 @@
+import { pipe } from 'fp-ts/lib/function';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   calculateOrderItemPriceRounded,
@@ -6,7 +7,7 @@ import {
   PaymentStatus,
 } from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
-//import { sendRkeeperOrder } from '@bgap/rkeeper-api';
+import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 import {
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
@@ -17,18 +18,17 @@ import { DateTime } from 'luxon';
 import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
-import { OrderResolverDeps } from './utils';
+import {
+  getGroupProduct,
+  getUnitProduct,
+  getChainProduct,
+  OrderResolverDeps,
+} from './utils';
+import { addPackagingFeeToOrder } from './handle-packaging-fee';
+import { hasSimplifiedOrder } from './order-resolvers';
+import { addServiceFeeToOrder } from './handle-service-fee';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
-
-const getUnitProduct = (productId: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetUnitProduct({ id: productId }));
-
-const getGroupProduct = (productId: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetGroupProduct({ id: productId }));
-
-const getChainProduct = (productId: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetChainProduct({ id: productId }));
 
 const toOrderInputFormat = ({
   userId,
@@ -49,7 +49,7 @@ const toOrderInputFormat = ({
   orderMode: CrudApi.OrderMode;
   servingMode: CrudApi.ServingMode;
 }): CrudApi.CreateOrderInput => {
-  return {
+  return pipe(calculateOrderSumPriceRounded(items), sumPrice => ({
     userId,
     takeAway: false,
     archived: false,
@@ -57,15 +57,13 @@ const toOrderInputFormat = ({
     paymentMode,
     items,
     statusLog: createStatusLog(userId),
-    sumPriceShown: calculateOrderSumPriceRounded(items),
+    sumPriceShown: sumPrice,
     place,
     unitId,
     transactionStatus: PaymentStatus.waiting_for_payment,
-    // If payment mode is inapp set the state to NONE (because need payment first), otherwise set to placed
-    // status: CrudApi.OrderStatus.NONE,
     orderMode,
     servingMode,
-  };
+  }));
 };
 
 const convertCartOrderItemToOrderItem = ({
@@ -133,14 +131,11 @@ const getOrderItems =
   (deps: OrderResolverDeps): Observable<CrudApi.OrderItemInput[]> => {
     return combineLatest(
       cartItems.map(cartItem =>
-        getUnitProduct(cartItem.productId)(deps).pipe(
-          throwIfEmptyValue<CrudApi.UnitProduct>(),
+        getUnitProduct(deps.crudSdk)(cartItem.productId).pipe(
           switchMap(unitProduct =>
-            getGroupProduct(unitProduct.parentId)(deps).pipe(
-              throwIfEmptyValue<CrudApi.GroupProduct>(),
+            getGroupProduct(deps.crudSdk)(unitProduct.parentId).pipe(
               switchMap(groupProduct =>
-                getChainProduct(groupProduct.parentId)(deps).pipe(
-                  throwIfEmptyValue<CrudApi.ChainProduct>(),
+                getChainProduct(deps.crudSdk)(groupProduct.parentId).pipe(
                   map(chainProduct =>
                     convertCartOrderItemToOrderItem({
                       userId,
@@ -168,10 +163,6 @@ const createStatusLog = (
   { userId, status, ts: DateTime.utc().toMillis() },
 ];
 
-// TODO: get staff id from somewhere
-// const getStaffId = async (unitId: string): Promise<string> => {
-//   return Promise.resolve('staff_ID');
-// };
 const createOrderInDb =
   (input: CrudApi.CreateOrderInput) => (deps: OrderResolverDeps) =>
     from(deps.crudSdk.CreateOrder({ input }));
@@ -185,7 +176,7 @@ const getCart = (id: string) => (deps: OrderResolverDeps) =>
 const getGroupCurrency = (id: string) => (deps: OrderResolverDeps) =>
   from(deps.crudSdk.GetGroupCurrency({ id }, { fetchPolicy: 'no-cache' })).pipe(
     map(x => x?.currency),
-    throwIfEmptyValue<string>(),
+    throwIfEmptyValue<string>(`Group currency is missing for ${id}`),
   );
 
 const getNextOrderNum =
@@ -223,7 +214,7 @@ export const createOrderFromCart =
     );
     // split a long stream to help the type checker
     const calc1 = getCart(cartId)(deps).pipe(
-      throwIfEmptyValue<CrudApi.Cart>(),
+      throwIfEmptyValue<CrudApi.Cart>(`Cart is missing: ${cartId}`),
       switchMap(cart =>
         cart.userId === deps.userId
           ? of(cart)
@@ -238,7 +229,6 @@ export const createOrderFromCart =
         // create catchError and custom error (Covered by #744)
         getUnit(cart.unitId)(deps).pipe(
           map(unit => ({ cart, unit })),
-          // UNIT.IsAcceptingOrders CHECK
           switchMap(props =>
             props?.unit?.isAcceptingOrders
               ? of(props)
@@ -264,7 +254,7 @@ export const createOrderFromCart =
       ),
     );
 
-    return calc1.pipe(
+    const calc2 = calc1.pipe(
       switchMap(props =>
         getOrderItems({
           userId: deps.userId,
@@ -286,18 +276,64 @@ export const createOrderFromCart =
           servingMode: props.cart.servingMode || CrudApi.ServingMode.inplace, // should NOT use default Serving mode if ALL the carts have servingMode fields (when it will be required in the schema) (handled in #1835)
         }),
       })),
+      // Handle packaging fee - only in takeaway mode
+      switchMap(props =>
+        props.cart.servingMode === CrudApi.ServingMode.takeaway
+          ? pipe(
+              addPackagingFeeToOrder(deps.crudSdk)(
+                props.orderInput,
+                props.currency,
+                props.unit.packagingTaxPercentage,
+              ),
+              map(orderInput => ({
+                ...props,
+                orderInput,
+              })),
+            )
+          : of(props),
+      ),
+      // Handle service fee
+      map(props => ({
+        ...props,
+        orderInput: addServiceFeeToOrder(props.orderInput, props.unit),
+      })),
+    );
+
+    return calc2.pipe(
+      // Archive the order immediately if the unit has simplified order policy
+      map(props => ({
+        ...props,
+        orderInput: {
+          ...props.orderInput,
+          archived: hasSimplifiedOrder(props.unit),
+        },
+      })),
+      // Place order into the DB
       switchMap(props =>
         createOrderInDb(props.orderInput)(deps).pipe(
-          switchMap(item =>
-            combineLatest(
-              deps.crudSdk.DeleteCart({ input: { id: props.cart.id } }),
-              /*
-              props.unit.pos?.type === CrudApi.PosType.rkeeper
-                ? sendRkeeperOrder(props.unit, props.orderInput)
-                : of({}),*/
-            ).pipe(mapTo(item?.id)),
-          ),
+          map(newOrder => ({
+            ...props,
+            newOrderId: newOrder?.id,
+          })),
         ),
       ),
+      switchMap(props =>
+        deps.crudSdk
+          .DeleteCart({ input: { id: props.cart.id } })
+          .pipe(mapTo(props)),
+      ),
+      // Push the order to rkeeper if the unit is backed by rkeeper
+      switchMap(props =>
+        (props.unit.pos?.type === CrudApi.PosType.rkeeper
+          ? sendRkeeperOrder(props.unit, props.orderInput)
+          : of({})
+        ).pipe(
+          map(rkeeperResult => ({
+            ...props,
+            rkeeperResult,
+          })),
+        ),
+      ),
+      map(props => props.newOrderId),
     );
   };
