@@ -39,6 +39,7 @@ class AllergenGridWidget extends StatelessWidget {
         if (showName)
           Text(
             '$allergen ($index)',
+            textAlign: TextAlign.center,
             style: Fonts.satoshi(
               fontSize: fontSize,
               color: theme.secondary,

@@ -16,6 +16,7 @@ class FormTextFieldWidget extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
   final FormFieldSetter<String>? onSaved;
+  final bool readOnly;
   const FormTextFieldWidget({
     Key? key,
     required this.labelKey,
@@ -29,6 +30,7 @@ class FormTextFieldWidget extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.onSaved,
+    this.readOnly = false,
   }) : super(key: key);
 
   @override
@@ -36,6 +38,7 @@ class FormTextFieldWidget extends StatelessWidget {
     return TextFormField(
       focusNode: focusNode,
       controller: controller,
+      readOnly: readOnly,
       autofocus: autofocus,
       style: Fonts.satoshi(
         fontSize: 16.0,
