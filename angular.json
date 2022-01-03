@@ -1160,7 +1160,7 @@
             "cwd": "apps/anyupp-backend",
             "parallel": false,
             "commands": [
-              "node --max-old-space-size=4096 ../../node_modules/.bin/sls package --stage='{args.env}'",
+              "node --max-old-space-size=8192 ../../node_modules/.bin/sls package --verbose --stage='{args.env}'",
               "yarn sst cdk synth --stage='{args.env}'"
             ]
           },
