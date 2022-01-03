@@ -6835,10 +6835,10 @@
     webpack-merge "^5.8.0"
     webpack-node-externals "^3.0.0"
 
-"@nrwl/nx-cloud@13.0.1":
-  version "13.0.1"
-  resolved "https://registry.yarnpkg.com/@nrwl/nx-cloud/-/nx-cloud-13.0.1.tgz#4a123c070d73160a12467b0d25146710a675a67c"
-  integrity sha512-xjsGTOoYR8SXdca6qRLrxLa3mySLXFOR9+sVA6+ODVXKYZsKJOoxAJNAQO46Pvi4YtKn2woxFJDFFB/lTFWpqQ==
+"@nrwl/nx-cloud@13.0.2":
+  version "13.0.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/nx-cloud/-/nx-cloud-13.0.2.tgz#eb26949bf0198bd4251f567a8ef95f8f6921d330"
+  integrity sha512-Y29iEks9Yb7VoY1RsuoCGsFtbnWP3J256haqTDx/SMYNYJBuZ0p7Cgg9EBjf5AHusnqT/YxE47iuv6CKNzd7Wg==
   dependencies:
     axios "^0.21.1"
     chalk "4.1.0"
@@ -8507,10 +8507,10 @@
     resolve-from "^5.0.0"
     rollup-pluginutils "^2.8.2"
 
-"@vvo/tzdb@6.41.0":
-  version "6.41.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.41.0.tgz#f86f15fc849a5722ef410b826b37af34c5acbde0"
-  integrity sha512-sbZGXb4gG+/ia1WcoMEmQW0gvpLjZntY35Wcd2U9iQWaJR2TX7bBXTnbpDaoKlWGxswqRgepjlZA7HTBG6WNOA==
+"@vvo/tzdb@6.42.0":
+  version "6.42.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.42.0.tgz#eee311b691d31871252060a9392e67ebc20c4338"
+  integrity sha512-J38PHc+/qJLPzhvn84TIxEcVHuclofqhhsKY/1XtsE7PE961QOlK/QEm+6l9LIP9eVoq2pCX3lxGUNwlg0EmYg==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
