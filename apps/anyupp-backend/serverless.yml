@@ -24,7 +24,6 @@ custom:
     caching: true
     esbuild: true
     concurrency: 1
-    generateStatsFiles: true
 
   offline:
     useChildProcesses: true
