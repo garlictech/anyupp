@@ -12074,7 +12074,12 @@ constants-browserify@1.0.0, constants-browserify@^1.0.0, constants-browserify@~1
   resolved "https://registry.yarnpkg.com/constants-browserify/-/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
   integrity sha1-wguW2MYXdIqvHBYCF2DNJ/y4y3U=
 
-constructs@3.3.177, constructs@^3.3.69:
+constructs@3.3.178:
+  version "3.3.178"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.178.tgz#6ed26d29858fd11c7a2c29fc07db9589b7ecd4ed"
+  integrity sha512-0p/b9U/IBRybg7sTyqmm6e0RdqTHZz7ap8YgTrkKlw5CPXthgUMRLw4ACHPJpZjRWtNxIdEIk4wigTe/Qvsb9w==
+
+constructs@^3.3.69:
   version "3.3.177"
   resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.177.tgz#e0f49f27d99b1864e7b1236e68fc42a60685749b"
   integrity sha512-M0KmQwqp5EBybXDY/8JTJlFLyT3Qoy6Xf67hjuWn2tDAJura91rPz2jhOxCt1C9GlES2dSvyZcLx/H7B0zsGLQ==
