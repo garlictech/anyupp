@@ -48,7 +48,6 @@ cyreport
 /apps/infrastructure/cicd/build
 
 # The config - don't commit!
-/libs/shared/config/src/lib/*/*
 cdk.out
 
 /libs/anyupp-gql/api/src/lib/generated
