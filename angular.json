@@ -1170,9 +1170,8 @@
         "config": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "cwd": "apps/anyupp-backend",
             "parallel": false,
-            "commands": ["../../tools/config-anyupp-backend.sh '{args.env}'"]
+            "commands": ["tools/config-anyupp-backend.sh '{args.env}'"]
           }
         },
         "deploy": {
