@@ -25,7 +25,8 @@ class DioTokenInterceptor extends QueuedInterceptorsWrapper {
       print('accessToken: $accessToken');
       options.headers.addAll({'Authorization': 'Bearer $accessToken'});
     }
-    super.onRequest(options, handler);
+    handler.next(options);
+    // super.onRequest(options, handler);
   }
 
   @override
@@ -35,7 +36,7 @@ class DioTokenInterceptor extends QueuedInterceptorsWrapper {
       await setTokenPreferences(response, (await _prefs));
       // print('TOKENS SAVED!');
     }
-    super.onResponse(response, handler);
+    handler.next(response);
   }
 
   @override
@@ -50,23 +51,26 @@ class DioTokenInterceptor extends QueuedInterceptorsWrapper {
     } else if (dioError.type == DioErrorType.response) {
       _handleRetriableError(dioError, handler);
     } else {
-      super.onError(dioError, handler);
+      handler.reject(dioError);
     }
   }
 
   _handleRetriableError(
       DioError dioError, ErrorInterceptorHandler handler) async {
     print('_handleRetriableError()=$dioError');
+    print('_handleRetriableError().response=${dioError.response}');
+    print('_handleRetriableError().response.data=${dioError.response?.data}');
+    print('_handleRetriableError().headers=${dioError.requestOptions.headers}');
     bool isRetriable = dioError.response?.data?['error']?['retryable'] ==
             true ||
         dioError.response?.data?['error']?['originalResponse']?['retryable'] ==
             true;
     print('_handleRetriableError().isRetriable=$isRetriable');
     if (isRetriable) {
-      int retryCount = dioError.requestOptions.headers['retryCount'] ?? 1;
+      int retryCount = dioError.requestOptions.headers['retryCount'] ?? 0;
       print('_handleRetriableError().retryCount=$retryCount');
       if (retryCount == 0) {
-        super.onError(dioError, handler);
+        handler.reject(dioError);
         return;
       }
 
@@ -83,17 +87,13 @@ class DioTokenInterceptor extends QueuedInterceptorsWrapper {
         ));
       }
 
-      RequestOptions options = dioError.response!.requestOptions;
+      RequestOptions options = dioError.requestOptions;
       options.headers.addAll({'retryCount': max(retryCount - 1, 0)});
-
-      print('_handleRetriableError().start HTTP call...');
-      await _dio.fetch<void>(dioError.requestOptions).then(
-          (value) => handler.resolve(value),
+      await _dio.fetch<void>(options).then((value) => handler.resolve(value),
           onError: (e) => handler.reject(e));
-      return;
+    } else {
+      handler.reject(dioError);
     }
-
-    super.onError(dioError, handler);
   }
 
   void _handleNetworkError(
@@ -104,14 +104,14 @@ class DioTokenInterceptor extends QueuedInterceptorsWrapper {
       networkStatusBloc
           .add((NetworkConnectionChangedEvent(status, false, true, false)));
     }
-    super.onError(dioError, handler);
+    handler.next(dioError);
   }
 
   void _handleTokenRefresh(
       DioError dioError, ErrorInterceptorHandler handler) async {
     String? refreshToken = (await _prefs).getString('cognito_refreshtoken');
     if (refreshToken == null) {
-      return super.onError(dioError, handler);
+      return handler.reject(dioError);
     }
     print('==>Refresh token=' + refreshToken);
 
