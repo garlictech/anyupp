@@ -20,6 +20,7 @@ echo "Creating stack config for testing ($STACKCONFIG_FILE)"
 sed -i "s/^  \"${ENVNAME}\-anyupp\-backend/\"anyupp-backend/g" $STACKCONFIG_FILE
 
 if [ -f $STACKCONFIG_FILE ]; then
-  ln -sf $PWD/$STACKCONFIG_FILE $PWD/libs/shared/config/src/lib/generated/stack-config.json
+  cd libs/shared/config/src/lib/generated
+  ln -sf ../stack-config/${ENVNAME}/stack-config.json .
 fi
 
