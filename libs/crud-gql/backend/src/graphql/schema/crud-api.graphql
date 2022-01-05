@@ -294,6 +294,12 @@ input StartStripePaymentInput {
   invoiceAddress: UserInvoiceAddressInput
 }
 
+input PayTipWithStripeInput {
+  orderId: ID!
+  paymentMethodId: String
+  tip: TipInput!
+}
+
 type StartStripePaymentOutput @aws_cognito_user_pools {
   clientSecret: String!
   status: String!
@@ -679,7 +685,12 @@ type FavoriteProduct
 
 type Tip {
   type: TipType!
-  value: Float
+  value: Float!
+}
+
+input TipInput {
+  type: TipType!
+  value: Float!
 }
 
 enum TipType {
@@ -1204,6 +1215,11 @@ type Mutation {
 
   # Stripe
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
     @function(name: "${env}-anyupp-graphql-resolvers")
