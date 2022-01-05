@@ -19,7 +19,13 @@ yarn ts-node ./tools/fetch-configuration.ts $ENVNAME
 echo "Creating stack config for testing ($STACKCONFIG_FILE)"
 sed -i "s/^  \"${ENVNAME}\-anyupp\-backend/\"anyupp-backend/g" $STACKCONFIG_FILE
 
+echo "1***********************************"
+echo $STACKCONFIG_FILE
+ls -l $STACKCONFIG_FILE
+
 if [ -f $STACKCONFIG_FILE ]; then
   cp $STACKCONFIG_FILE libs/shared/config/src/lib/generated/stack-config.json
 fi
 
+ls -l libs/shared/config/src/lib/generated/stack-config.json
+echo "1***********************************"
