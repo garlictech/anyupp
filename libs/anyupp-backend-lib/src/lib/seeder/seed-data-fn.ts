@@ -1023,8 +1023,8 @@ export const seedSportbarRKeeperUnit = (deps: SeederDependencies) =>
               type: CrudApi.PosType.rkeeper,
               rkeeper: {
                 endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
-                rkeeperUsername: '781_55_69_939',
-                rkeeperPassword: '3943200386403faebf5f80191f5c1c',
+                rkeeperUsername: '795_50_155_539',
+                rkeeperPassword: 'b6302d53085c9486d0f765ec475f18',
                 anyuppPassword: 'foobar',
                 anyuppUsername: 'foobar',
               },
@@ -1080,8 +1080,8 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
               type: CrudApi.PosType.rkeeper,
               rkeeper: {
                 endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
-                rkeeperUsername: '781_55_69_939',
-                rkeeperPassword: '3943200386403faebf5f80191f5c1c',
+                rkeeperUsername: '795_50_155_539',
+                rkeeperPassword: 'b6302d53085c9486d0f765ec475f18',
                 anyuppPassword: 'foobar',
                 anyuppUsername: 'foobar',
               },
