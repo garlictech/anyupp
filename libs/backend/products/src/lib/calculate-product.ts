@@ -10,6 +10,7 @@ import {
 } from '@bgap/shared/types';
 import { DateTime } from 'luxon';
 import { calculatePriceFromAvailabilities } from './calculate-price';
+import * as R from 'ramda';
 
 export const calculateActualPricesAndCheckActivity = ({
   product,
@@ -100,13 +101,15 @@ const toGeneratedProductVariantInputType = (
   if (!variant?.pack) {
     throw new Error('HANDLE ME: variant.pack expected to be an object');
   }
-  return {
-    id: variant.id,
-    variantName: variant.variantName,
-    position: variant.position,
-    pack: { size: variant.pack.size, unit: variant.pack.unit },
-    price: variant.price,
-  };
+
+  return R.pick([
+    'id',
+    'variantName',
+    'position',
+    'pack',
+    'price',
+    'packagingFee',
+  ])(variant);
 };
 
 export const toCreateGeneratedProductInputType = ({

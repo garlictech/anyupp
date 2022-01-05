@@ -9,11 +9,10 @@ import {
   ordersActions,
 } from '@bgap/admin/shared/data-access/orders';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { getDayIntervals } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { DateIntervals } from '@bgap/shared/types';
-import { filterNullish } from '@bgap/shared/utils';
+import { getDayIntervals, filterNullish } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 
 import {

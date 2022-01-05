@@ -109,6 +109,24 @@ enum OrderMode {
   pickup
 }
 
+enum ServiceFeeType {
+  noFee
+  included
+  applicable
+}
+
+type ServiceFeePolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
+  type: ServiceFeeType!
+  percentage: Float!
+  taxPercentage: Float!
+}
+
+input ServiceFeePolicyInput {
+  type: ServiceFeeType!
+  percentage: Float!
+  taxPercentage: Float!
+}
+
 type GroupProduct @aws_cognito_user_pools @aws_iam {
   id: ID!
   parentId: ID!
@@ -150,6 +168,7 @@ type ProductConfigComponent @aws_cognito_user_pools @aws_api_key @aws_iam {
   price: Float!
   position: Int!
   externalId: String
+  netPackagingFee: Float
 }
 
 type ProductConfigSet @aws_cognito_user_pools @aws_api_key @aws_iam {
@@ -167,6 +186,7 @@ type ProductVariant @aws_cognito_user_pools @aws_api_key @aws_iam {
   price: Float!
   availabilities: [Availability]
   position: Int!
+  netPackagingFee: Float
 }
 
 type ProductVariantPack @aws_cognito_user_pools @aws_api_key @aws_iam {
@@ -417,6 +437,7 @@ type OrderItemConfigComponent @aws_api_key @aws_iam @aws_cognito_user_pools {
   price: Float!
   name: LocalizedItem!
   allergens: [Allergen]
+  netPackagingFee: Float
 }
 
 type OrderItemConfigSet @aws_api_key @aws_iam @aws_cognito_user_pools {
@@ -426,9 +447,10 @@ type OrderItemConfigSet @aws_api_key @aws_iam @aws_cognito_user_pools {
   items: [OrderItemConfigComponent!]!
 }
 
-type Packaging @aws_api_key @aws_iam @aws_cognito_user_pools {
-  fee: Float!
-  tax: Float!
+type Price @aws_api_key @aws_iam @aws_cognito_user_pools {
+  currency: String!
+  netPrice: Float!
+  taxPercentage: Float!
 }
 
 type OrderItem @aws_api_key @aws_iam @aws_cognito_user_pools {
@@ -437,8 +459,6 @@ type OrderItem @aws_api_key @aws_iam @aws_cognito_user_pools {
   created: Float
   productName: LocalizedItem!
   image: String
-  sumPriceShown: PriceShown!
-  priceShown: PriceShown!
   quantity: Int!
   statusLog: [StatusLog!]!
   variantName: LocalizedItem!
@@ -447,8 +467,10 @@ type OrderItem @aws_api_key @aws_iam @aws_cognito_user_pools {
   configSets: [OrderItemConfigSet!]
   productType: String
   externalId: String
-  appliedServiceFee: PriceShown
-  packagingFee: Float
+  netPackagingFee: Float
+  serviceFee: Price
+  priceShown: PriceShown!
+  sumPriceShown: PriceShown!
 }
 
 type Order @aws_iam @aws_cognito_user_pools {
@@ -461,7 +483,6 @@ type Order @aws_iam @aws_cognito_user_pools {
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
   archived: Boolean!
-  sumPriceShown: PriceShown!
   takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
@@ -470,9 +491,16 @@ type Order @aws_iam @aws_cognito_user_pools {
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  packaging: Packaging
+  serviceFee: Price
+  packagingSum: Price
+  sumPriceShown: PriceShown!
+  rating: Int
+  tip: Tip
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
   updatedAt: AWSDateTime!
   transaction: Transaction @aws_iam @aws_cognito_user_pools
+  tipTransaction: Transaction @aws_iam @aws_cognito_user_pools
 }
 
 enum OrderPolicy {
@@ -556,10 +584,10 @@ type ProductComponentSet @aws_iam @aws_cognito_user_pools {
 type GeneratedProductConfigComponent @aws_api_key @aws_iam @aws_cognito_user_pools {
   productComponentId: ID!
   price: Float!
-  packagingFee: Float
   position: Int!
   name: LocalizedItem!
   allergens: [Allergen]
+  netPackagingFee: Float
 }
 
 type GeneratedProductConfigSet @aws_api_key @aws_iam @aws_cognito_user_pools {
@@ -606,7 +634,7 @@ type GeneratedProductVariant @aws_api_key @aws_iam @aws_cognito_user_pools {
   variantName: LocalizedItem!
   pack: ProductVariantPack
   price: Float!
-  packagingFee: Float
+  netPackagingFee: Float
   position: Int!
 }
 
@@ -617,6 +645,55 @@ type FavoriteProduct @aws_iam @aws_cognito_user_pools {
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   product: GeneratedProduct! @aws_iam @aws_cognito_user_pools
+}
+
+type Tip @aws_api_key @aws_iam @aws_cognito_user_pools {
+  type: TipType!
+  value: Float
+}
+
+enum TipType {
+  none
+  percent
+  amount
+}
+
+type RatingPolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
+  title: LocalizedItem
+  description: LocalizedItem
+  ratings: [RatingPolicyItem]!
+}
+
+type RatingPolicyItem @aws_api_key @aws_iam @aws_cognito_user_pools {
+  value: Int!
+  text: LocalizedItem
+  icon: String
+}
+
+type TipPolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
+  title: LocalizedItem
+  description: LocalizedItem
+  percents: [Float!]!
+  maxOtherAmount: Float
+}
+
+input RatingPolicyInput {
+  title: LocalizedItemInput
+  description: LocalizedItemInput
+  ratings: [RatingPolicyItemInput]!
+}
+
+input RatingPolicyItemInput {
+  value: Int!
+  text: LocalizedItemInput
+  icon: String
+}
+
+input TipPolicyInput {
+  title: LocalizedItemInput
+  description: LocalizedItemInput
+  percents: [Float!]!
+  maxOtherAmount: Float
 }
 
 type Unit @aws_iam @aws_cognito_user_pools {
@@ -643,6 +720,10 @@ type Unit @aws_iam @aws_cognito_user_pools {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  packagingTaxPercentage: Float
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicy: RatingPolicy
+  tipPolicy: TipPolicy
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -755,6 +836,9 @@ type GeoUnit @aws_cognito_user_pools {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicy: RatingPolicy
+  tipPolicy: TipPolicy
 }
 
 input GetUnitsNearLocationInput {
@@ -969,6 +1053,10 @@ input CreateUnitInput {
   externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicy: RatingPolicyInput
+  tipPolicy: TipPolicyInput
 }
 
 input UpdateUnitInput {
@@ -993,6 +1081,10 @@ input UpdateUnitInput {
   pos: PosInput
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicy: RatingPolicyInput
+  tipPolicy: TipPolicyInput
 }
 
 type CreateAnonymUserOutput {
@@ -1247,6 +1339,7 @@ input ProductVariantInput {
   price: Float!
   availabilities: [AvailabilityInput]
   position: Int!
+  netPackagingFee: Float
 }
 
 input ProductConfigSetInput {
@@ -1261,6 +1354,7 @@ input ProductConfigComponentInput {
   price: Float!
   position: Int!
   externalId: String
+  netPackagingFee: Float
 }
 
 enum ModelSortDirection {
@@ -1269,7 +1363,7 @@ enum ModelSortDirection {
 }
 
 type ModelChainProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [ChainProduct!]!
+  items: [ChainProduct]!
   nextToken: String
 }
 
@@ -1432,7 +1526,7 @@ input ModelChainProductConditionInput {
 }
 
 type ModelGroupProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [GroupProduct!]!
+  items: [GroupProduct]!
   nextToken: String
 }
 
@@ -1498,7 +1592,7 @@ input ModelGroupProductConditionInput {
 }
 
 type ModelUnitProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [UnitProduct!]!
+  items: [UnitProduct]!
   nextToken: String
 }
 
@@ -1579,7 +1673,7 @@ input ModelUnitProductConditionInput {
 }
 
 type ModelAdminUserConnection @aws_iam @aws_cognito_user_pools {
-  items: [AdminUser!]!
+  items: [AdminUser]!
   nextToken: String
 }
 
@@ -1605,7 +1699,7 @@ input ModelAdminUserConditionInput {
 }
 
 type ModelAdminRoleContextConnection @aws_iam @aws_cognito_user_pools {
-  items: [AdminRoleContext!]!
+  items: [AdminRoleContext]!
   nextToken: String
 }
 
@@ -1643,7 +1737,7 @@ input ModelAdminRoleContextConditionInput {
 }
 
 type ModelRoleContextConnection @aws_iam @aws_cognito_user_pools {
-  items: [RoleContext!]!
+  items: [RoleContext]!
   nextToken: String
 }
 
@@ -1724,7 +1818,7 @@ input ChainStyleImagesInput {
 }
 
 type ModelChainConnection @aws_iam @aws_cognito_user_pools {
-  items: [Chain!]!
+  items: [Chain]!
   nextToken: String
 }
 
@@ -1776,7 +1870,7 @@ input ModelChainConditionInput {
 }
 
 type ModelGroupConnection @aws_iam @aws_cognito_user_pools {
-  items: [Group!]!
+  items: [Group]!
   nextToken: String
 }
 
@@ -1835,8 +1929,6 @@ input OrderItemInput {
   created: Float
   productName: LocalizedItemInput!
   image: String
-  sumPriceShown: PriceShownInput!
-  priceShown: PriceShownInput!
   quantity: Int!
   statusLog: [StatusLogInput!]!
   variantName: LocalizedItemInput!
@@ -1845,16 +1937,10 @@ input OrderItemInput {
   configSets: [OrderItemConfigSetInput!]
   productType: String
   externalId: String
-  appliedServiceFee: PriceShownInput
-  packagingFee: Float
-}
-
-input PriceShownInput {
-  currency: String!
-  pricePerUnit: Float!
-  priceSum: Float!
-  tax: Int!
-  taxSum: Float!
+  netPackagingFee: Float
+  serviceFee: PriceInput
+  priceShown: PriceShownInput!
+  sumPriceShown: PriceShownInput!
 }
 
 input StatusLogInput {
@@ -1875,6 +1961,21 @@ input OrderItemConfigComponentInput {
   price: Float!
   name: LocalizedItemInput!
   allergens: [Allergen]
+  netPackagingFee: Float
+}
+
+input PriceInput {
+  currency: String!
+  netPrice: Float!
+  taxPercentage: Float!
+}
+
+input PriceShownInput {
+  currency: String!
+  pricePerUnit: Float!
+  priceSum: Float!
+  tax: Int!
+  taxSum: Float!
 }
 
 input PlaceInput {
@@ -1882,13 +1983,13 @@ input PlaceInput {
   table: String!
 }
 
-input PackagingInput {
-  fee: Float!
-  tax: Float!
+input TipInput {
+  type: TipType!
+  value: Float
 }
 
 type ModelOrderConnection @aws_iam @aws_cognito_user_pools {
-  items: [Order!]!
+  items: [Order]!
   nextToken: String
 }
 
@@ -1926,6 +2027,9 @@ input ModelOrderFilterInput {
   unpayCategory: ModelUnpayCategoryInput
   orderMode: ModelOrderModeInput
   servingMode: ModelServingModeInput
+  rating: ModelIntInput
+  tipTransactionStatus: ModelPaymentStatusInput
+  tipTransactionId: ModelIDInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
@@ -1941,7 +2045,6 @@ input CreateOrderInput {
   paymentMode: PaymentModeInput!
   statusLog: [StatusLogInput!]!
   archived: Boolean!
-  sumPriceShown: PriceShownInput!
   takeAway: Boolean
   place: PlaceInput
   paymentIntention: Float
@@ -1950,7 +2053,13 @@ input CreateOrderInput {
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  packaging: PackagingInput
+  serviceFee: PriceInput
+  packagingSum: PriceInput
+  sumPriceShown: PriceShownInput!
+  rating: Int
+  tip: TipInput
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
 }
 
 input UpdateOrderInput {
@@ -1963,7 +2072,6 @@ input UpdateOrderInput {
   paymentMode: PaymentModeInput
   statusLog: [StatusLogInput!]
   archived: Boolean
-  sumPriceShown: PriceShownInput
   takeAway: Boolean
   place: PlaceInput
   paymentIntention: Float
@@ -1972,7 +2080,13 @@ input UpdateOrderInput {
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  packaging: PackagingInput
+  serviceFee: PriceInput
+  packagingSum: PriceInput
+  sumPriceShown: PriceShownInput
+  rating: Int
+  tip: TipInput
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
 }
 
 input DeleteOrderInput {
@@ -1992,13 +2106,16 @@ input ModelOrderConditionInput {
   unpayCategory: ModelUnpayCategoryInput
   orderMode: ModelOrderModeInput
   servingMode: ModelServingModeInput
+  rating: ModelIntInput
+  tipTransactionStatus: ModelPaymentStatusInput
+  tipTransactionId: ModelIDInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
 }
 
 type ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductCategory!]!
+  items: [ProductCategory]!
   nextToken: String
 }
 
@@ -2044,7 +2161,7 @@ input ModelProductCategoryConditionInput {
 }
 
 type ModelProductComponentConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductComponent!]!
+  items: [ProductComponent]!
   nextToken: String
 }
 
@@ -2096,7 +2213,7 @@ input ModelProductComponentConditionInput {
 }
 
 type ModelProductComponentSetConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductComponentSet!]!
+  items: [ProductComponentSet]!
   nextToken: String
 }
 
@@ -2160,7 +2277,7 @@ input ModelProductComponentSetConditionInput {
 }
 
 type ModelGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools {
-  items: [GeneratedProductCategory!]!
+  items: [GeneratedProductCategory]!
   nextToken: String
 }
 
@@ -2206,7 +2323,7 @@ input GeneratedProductVariantInput {
   variantName: LocalizedItemInput!
   pack: ProductVariantPackInput
   price: Float!
-  packagingFee: Float
+  netPackagingFee: Float
   position: Int!
 }
 
@@ -2223,14 +2340,14 @@ input GeneratedProductConfigSetInput {
 input GeneratedProductConfigComponentInput {
   productComponentId: ID!
   price: Float!
-  packagingFee: Float
   position: Int!
   name: LocalizedItemInput!
   allergens: [Allergen]
+  netPackagingFee: Float
 }
 
 type ModelGeneratedProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [GeneratedProduct!]!
+  items: [GeneratedProduct]!
   nextToken: String
 }
 
@@ -2304,7 +2421,7 @@ input ModelGeneratedProductConditionInput {
 }
 
 type ModelFavoriteProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [FavoriteProduct!]!
+  items: [FavoriteProduct]!
   nextToken: String
 }
 
@@ -2349,7 +2466,7 @@ input DateIntervalOpenInput {
 }
 
 type ModelUnitConnection @aws_iam @aws_cognito_user_pools {
-  items: [Unit!]!
+  items: [Unit]!
   nextToken: String
 }
 
@@ -2381,6 +2498,7 @@ input ModelUnitFilterInput {
   supportedServingModes: ModelServingModeListInput
   supportedOrderModes: ModelOrderModeListInput
   orderPolicy: ModelOrderPolicyInput
+  packagingTaxPercentage: ModelFloatInput
   and: [ModelUnitFilterInput]
   or: [ModelUnitFilterInput]
   not: ModelUnitFilterInput
@@ -2405,13 +2523,14 @@ input ModelUnitConditionInput {
   supportedServingModes: ModelServingModeListInput
   supportedOrderModes: ModelOrderModeListInput
   orderPolicy: ModelOrderPolicyInput
+  packagingTaxPercentage: ModelFloatInput
   and: [ModelUnitConditionInput]
   or: [ModelUnitConditionInput]
   not: ModelUnitConditionInput
 }
 
 type ModelUserConnection @aws_iam @aws_cognito_user_pools {
-  items: [User!]!
+  items: [User]!
   nextToken: String
 }
 
@@ -2463,7 +2582,7 @@ input ModelUserConditionInput {
 }
 
 type ModelCartConnection @aws_iam @aws_cognito_user_pools {
-  items: [Cart!]!
+  items: [Cart]!
   nextToken: String
 }
 
@@ -2519,7 +2638,7 @@ input ModelCartConditionInput {
 }
 
 type ModelTransactionConnection @aws_iam @aws_cognito_user_pools {
-  items: [Transaction!]!
+  items: [Transaction]!
   nextToken: String
 }
 
@@ -2593,7 +2712,7 @@ input ModelTransactionConditionInput {
 }
 
 type ModelInvoiceConnection @aws_iam @aws_cognito_user_pools {
-  items: [Invoice!]!
+  items: [Invoice]!
   nextToken: String
 }
 
@@ -2680,7 +2799,7 @@ input ModelInvoiceConditionInput {
 }
 
 type ModelReceiptConnection @aws_iam @aws_cognito_user_pools {
-  items: [Receipt!]!
+  items: [Receipt]!
   nextToken: String
 }
 
@@ -2847,7 +2966,7 @@ input SearchableChainProductSortInput {
 }
 
 type SearchableChainProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [ChainProduct!]!
+  items: [ChainProduct]!
   nextToken: String
   total: Int
 }
@@ -2885,7 +3004,7 @@ input SearchableGroupProductSortInput {
 }
 
 type SearchableGroupProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [GroupProduct!]!
+  items: [GroupProduct]!
   nextToken: String
   total: Int
 }
@@ -2927,7 +3046,7 @@ input SearchableUnitProductSortInput {
 }
 
 type SearchableUnitProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [UnitProduct!]!
+  items: [UnitProduct]!
   nextToken: String
   total: Int
 }
@@ -2957,7 +3076,7 @@ input SearchableAdminUserSortInput {
 }
 
 type SearchableAdminUserConnection @aws_iam @aws_cognito_user_pools {
-  items: [AdminUser!]!
+  items: [AdminUser]!
   nextToken: String
   total: Int
 }
@@ -2983,7 +3102,7 @@ input SearchableAdminRoleContextSortInput {
 }
 
 type SearchableAdminRoleContextConnection @aws_iam @aws_cognito_user_pools {
-  items: [AdminRoleContext!]!
+  items: [AdminRoleContext]!
   nextToken: String
   total: Int
 }
@@ -3013,7 +3132,7 @@ input SearchableRoleContextSortInput {
 }
 
 type SearchableRoleContextConnection @aws_iam @aws_cognito_user_pools {
-  items: [RoleContext!]!
+  items: [RoleContext]!
   nextToken: String
   total: Int
 }
@@ -3043,7 +3162,7 @@ input SearchableChainSortInput {
 }
 
 type SearchableChainConnection @aws_iam @aws_cognito_user_pools {
-  items: [Chain!]!
+  items: [Chain]!
   nextToken: String
   total: Int
 }
@@ -3075,7 +3194,7 @@ input SearchableGroupSortInput {
 }
 
 type SearchableGroupConnection @aws_iam @aws_cognito_user_pools {
-  items: [Group!]!
+  items: [Group]!
   nextToken: String
   total: Int
 }
@@ -3090,6 +3209,8 @@ input SearchableOrderFilterInput {
   takeAway: SearchableBooleanFilterInput
   paymentIntention: SearchableFloatFilterInput
   transactionId: SearchableIDFilterInput
+  rating: SearchableIntFilterInput
+  tipTransactionId: SearchableIDFilterInput
   and: [SearchableOrderFilterInput]
   or: [SearchableOrderFilterInput]
   not: SearchableOrderFilterInput
@@ -3105,6 +3226,8 @@ enum SearchableOrderSortableFields {
   takeAway
   paymentIntention
   transactionId
+  rating
+  tipTransactionId
 }
 
 input SearchableOrderSortInput {
@@ -3113,7 +3236,7 @@ input SearchableOrderSortInput {
 }
 
 type SearchableOrderConnection @aws_iam @aws_cognito_user_pools {
-  items: [Order!]!
+  items: [Order]!
   nextToken: String
   total: Int
 }
@@ -3141,7 +3264,7 @@ input SearchableProductCategorySortInput {
 }
 
 type SearchableProductCategoryConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductCategory!]!
+  items: [ProductCategory]!
   nextToken: String
   total: Int
 }
@@ -3171,7 +3294,7 @@ input SearchableProductComponentSortInput {
 }
 
 type SearchableProductComponentConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductComponent!]!
+  items: [ProductComponent]!
   nextToken: String
   total: Int
 }
@@ -3207,7 +3330,7 @@ input SearchableProductComponentSetSortInput {
 }
 
 type SearchableProductComponentSetConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductComponentSet!]!
+  items: [ProductComponentSet]!
   nextToken: String
   total: Int
 }
@@ -3235,7 +3358,7 @@ input SearchableGeneratedProductCategorySortInput {
 }
 
 type SearchableGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools {
-  items: [GeneratedProductCategory!]!
+  items: [GeneratedProductCategory]!
   nextToken: String
   total: Int
 }
@@ -3271,7 +3394,7 @@ input SearchableGeneratedProductSortInput {
 }
 
 type SearchableGeneratedProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [GeneratedProduct!]!
+  items: [GeneratedProduct]!
   nextToken: String
   total: Int
 }
@@ -3297,7 +3420,7 @@ input SearchableFavoriteProductSortInput {
 }
 
 type SearchableFavoriteProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [FavoriteProduct!]!
+  items: [FavoriteProduct]!
   nextToken: String
   total: Int
 }
@@ -3315,6 +3438,7 @@ input SearchableUnitFilterInput {
   merchantId: SearchableStringFilterInput
   timeZone: SearchableStringFilterInput
   externalId: SearchableStringFilterInput
+  packagingTaxPercentage: SearchableFloatFilterInput
   and: [SearchableUnitFilterInput]
   or: [SearchableUnitFilterInput]
   not: SearchableUnitFilterInput
@@ -3333,6 +3457,7 @@ enum SearchableUnitSortableFields {
   merchantId
   timeZone
   externalId
+  packagingTaxPercentage
 }
 
 input SearchableUnitSortInput {
@@ -3341,7 +3466,7 @@ input SearchableUnitSortInput {
 }
 
 type SearchableUnitConnection @aws_iam @aws_cognito_user_pools {
-  items: [Unit!]!
+  items: [Unit]!
   nextToken: String
   total: Int
 }
@@ -3373,7 +3498,7 @@ input SearchableUserSortInput {
 }
 
 type SearchableUserConnection @aws_iam @aws_cognito_user_pools {
-  items: [User!]!
+  items: [User]!
   nextToken: String
   total: Int
 }
@@ -3401,7 +3526,7 @@ input SearchableCartSortInput {
 }
 
 type SearchableCartConnection @aws_iam @aws_cognito_user_pools {
-  items: [Cart!]!
+  items: [Cart]!
   nextToken: String
   total: Int
 }
@@ -3443,7 +3568,7 @@ input SearchableTransactionSortInput {
 }
 
 type SearchableTransactionConnection @aws_iam @aws_cognito_user_pools {
-  items: [Transaction!]!
+  items: [Transaction]!
   nextToken: String
   total: Int
 }
@@ -3489,7 +3614,7 @@ input SearchableInvoiceSortInput {
 }
 
 type SearchableInvoiceConnection @aws_iam @aws_cognito_user_pools {
-  items: [Invoice!]!
+  items: [Invoice]!
   nextToken: String
   total: Int
 }
@@ -3523,7 +3648,7 @@ input SearchableReceiptSortInput {
 }
 
 type SearchableReceiptConnection @aws_iam @aws_cognito_user_pools {
-  items: [Receipt!]!
+  items: [Receipt]!
   nextToken: String
   total: Int
 }

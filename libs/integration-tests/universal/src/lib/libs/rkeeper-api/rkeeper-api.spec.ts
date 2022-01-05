@@ -8,8 +8,8 @@ import {
   switchMap,
   delay,
   tap,
-  //switchMapTo,
-  //takeLast,
+  switchMapTo,
+  takeLast,
   toArray,
   map,
   count,
@@ -32,9 +32,8 @@ import { pipe } from 'fp-ts/lib/function';
 import * as fixtures from './fixtures';
 import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/backend/products';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
-import * as stackConfig from '../../generated/stack-config.json';
-import * as commonStackConfig from '../../generated/common-stack-config.json';
 import { v1 as uuidV1 } from 'uuid';
+import { commonStackConfig, anyuppStackConfig } from '@bgap/shared/config';
 
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();
@@ -140,8 +139,8 @@ describe('Test the rkeeper api basic functionality', () => {
     jest.resetModules();
 
     of(1)
-      .pipe
-      /*    delay(ES_DELAY),
+      .pipe(
+        delay(ES_DELAY),
         switchMap(() => cleanup$),
         delay(ES_DELAY),
         switchMapTo(
@@ -156,8 +155,8 @@ describe('Test the rkeeper api basic functionality', () => {
             crudSdk.CreateChain({ input: fixtures.createChain }),
           ),
         ),
-        delay(ES_DELAY),*/
-      ()
+        delay(ES_DELAY),
+      )
       .subscribe(() => done());
   }, 65000);
 
@@ -419,22 +418,22 @@ describe('Test the rkeeper api basic functionality', () => {
     });
   }, 720000);
 
-  // We skip this extremely long-running test by default
-  test.skip('Test the menusync handler', async () => {
+  test('Test the menusync handler', async () => {
     const rawData = JSON.parse(
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
-    await menusyncHandler(
+    const res = await menusyncHandler(
       {
         params: { externalUnitId: fixtures.realTestExternalId },
         body: rawData,
       } as any,
       { send: () => {} } as any,
     );
+
+    expect(res).toMatchSnapshot();
   }, 10000);
 
-  // We skip this extremely long-running test by default
   test('Test the product handling logic in fargate', done => {
     const deps = {
       ecs: new ECS({ apiVersion: '2014-11-13' }),
@@ -443,8 +442,9 @@ describe('Test the rkeeper api basic functionality', () => {
       RKeeperProcessProductSecurityGroup:
         commonStackConfig['common-backend-anyupp'].AnyuppVpcSecurityGroupOutput,
       taskDefinitionArn:
-        stackConfig['anyupp-backend-rkeeper'].RKeeperTaskDefinitionArn,
-      bucketName: stackConfig['anyupp-backend-rkeeper'].RKeeperTaskBucketName,
+        anyuppStackConfig['anyupp-backend-rkeeper'].RKeeperTaskDefinitionArn,
+      bucketName:
+        anyuppStackConfig['anyupp-backend-rkeeper'].RKeeperTaskBucketName,
       uuidGenerator: uuidV1,
     };
 
@@ -453,16 +453,7 @@ describe('Test the rkeeper api basic functionality', () => {
     );
 
     handleProducts(deps)(fixtures.realTestExternalId, rawData)
-      .pipe(
-        // Let the fargate provision its task
-        delay(10000),
-        switchMap(() =>
-          crudSdk.SearchGeneratedProducts({
-            filter: { unitId: { eq: fixtures.rkeeperUnit.id } },
-          }),
-        ),
-        tap(result => expect(result?.items?.length).toMatchSnapshot()),
-      )
+      .pipe(tap(result => expect(result.failures).toMatchSnapshot()))
       .subscribe(() => done(), console.error);
   }, 20000);
 

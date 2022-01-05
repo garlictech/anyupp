@@ -1,5 +1,4 @@
-import { calculateReport, createReport } from '@bgap/anyupp-backend-lib';
-import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
+import { calculateReport } from '@bgap/backend/reports';
 
 import {
   fourWeeksOrdersFixture,
@@ -31,21 +30,4 @@ describe('Report', () => {
       done();
     });
   });
-
-  xit('call the generator', done => {
-    const deps = {
-      region: 'eu-west-1',
-      userPoolId: 'copy from prod-anyupp-backend-consumer-user-pool',
-      crudSdk: getCrudSdkForIAM(
-        'your_prod_awsAccesskeyId',
-        'your_prod_awsSecretAccessKey',
-      ),
-      reportFile: `./weeklyReport-${reportDate}.xlsx`,
-      reportDate,
-      slackBotToken: 'slack_bot_token',
-      slackChannel: 'slack_channel',
-    };
-
-    createReport(deps).subscribe(() => done());
-  }, 125000);
 });

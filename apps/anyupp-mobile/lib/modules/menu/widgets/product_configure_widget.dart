@@ -90,7 +90,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
         ),
       ],
       quantity: 0,
-      packagingFee: _productVariant.packagingFee,
+      netPackagingFee: _productVariant.netPackagingFee,
       selectedConfigMap: getSelectedComponentMap(),
     );
   }

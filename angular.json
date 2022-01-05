@@ -1159,10 +1159,7 @@
           "options": {
             "cwd": "apps/anyupp-backend",
             "parallel": false,
-            "commands": [
-              "yarn sls package --stage='{args.env}'",
-              "yarn sst cdk synth --stage='{args.env}'"
-            ]
+            "commands": ["../../tools/build-anyupp-backend.sh '{args.env}'"]
           },
           "outputs": [
             "apps/anyupp-backend/cdk.out",

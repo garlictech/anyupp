@@ -58,7 +58,7 @@ query GetCurrentCart($userId: ID!, $unitId: ID!) {
         allergens
         image
         productType
-        packagingFee
+        netPackagingFee
       }
       paymentMode {
         caption

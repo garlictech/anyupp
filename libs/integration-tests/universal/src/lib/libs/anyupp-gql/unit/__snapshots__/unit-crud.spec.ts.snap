@@ -54,6 +54,8 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -76,11 +78,27 @@ Object {
     "rkeeper": Object {
       "anyuppPassword": Any<String>,
       "anyuppUsername": "ANYUPP_USERNAME",
-      "endpointUri": "ENDPOINT_URI",
-      "rkeeperPassword": "RKEEPER_PASSWORD",
-      "rkeeperUsername": "RKEEPER_USERNAME",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+      "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
+      "rkeeperUsername": "781_55_69_939",
     },
     "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
   },
   "supportedOrderModes": Array [
     "pickup",
@@ -91,6 +109,14 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -142,6 +168,8 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -164,11 +192,27 @@ Object {
     "rkeeper": Object {
       "anyuppPassword": Any<String>,
       "anyuppUsername": "ANYUPP_USERNAME",
-      "endpointUri": "ENDPOINT_URI",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
       "rkeeperPassword": "UPDATED_RKEEPER_PASSWORD",
-      "rkeeperUsername": "RKEEPER_USERNAME",
+      "rkeeperUsername": "781_55_69_939",
     },
     "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
   },
   "supportedOrderModes": Array [
     "pickup",
@@ -179,6 +223,14 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -232,6 +284,8 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -254,11 +308,27 @@ Object {
     "rkeeper": Object {
       "anyuppPassword": Any<String>,
       "anyuppUsername": "ANYUPP_USERNAME",
-      "endpointUri": "ENDPOINT_URI",
-      "rkeeperPassword": "RKEEPER_PASSWORD",
-      "rkeeperUsername": "RKEEPER_USERNAME",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+      "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
+      "rkeeperUsername": "781_55_69_939",
     },
     "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
   },
   "supportedOrderModes": Array [
     "pickup",
@@ -269,6 +339,14 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -320,6 +398,8 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -342,11 +422,27 @@ Object {
     "rkeeper": Object {
       "anyuppPassword": Any<String>,
       "anyuppUsername": "ANYUPP_USERNAME",
-      "endpointUri": "ENDPOINT_URI",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
       "rkeeperPassword": "UPDATED_RKEEPER_PASSWORD",
-      "rkeeperUsername": "RKEEPER_USERNAME",
+      "rkeeperUsername": "781_55_69_939",
     },
     "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
   },
   "supportedOrderModes": Array [
     "pickup",
@@ -357,6 +453,14 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -408,6 +512,8 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -427,6 +533,22 @@ Object {
   ],
   "phone": null,
   "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -436,6 +558,14 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -487,6 +617,8 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -506,6 +638,22 @@ Object {
   ],
   "phone": null,
   "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -515,6 +663,14 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -568,6 +724,8 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -587,6 +745,22 @@ Object {
   ],
   "phone": null,
   "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -596,6 +770,14 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -647,6 +829,8 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -666,6 +850,22 @@ Object {
   ],
   "phone": null,
   "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -675,6 +875,14 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -733,6 +941,18 @@ Object {
       "type": "stripe",
     },
   ],
+  "ratingPolicy": Object {
+    "ratings": Array [
+      Object {
+        "value": 1,
+      },
+    ],
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -741,6 +961,11 @@ Object {
     "inPlace",
     "takeAway",
   ],
+  "tipPolicy": Object {
+    "percents": Array [
+      2,
+    ],
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -792,6 +1017,8 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -811,6 +1038,22 @@ Object {
   ],
   "phone": null,
   "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -820,6 +1063,14 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -873,6 +1124,8 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -892,6 +1145,22 @@ Object {
   ],
   "phone": null,
   "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -901,6 +1170,14 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -960,6 +1237,18 @@ Object {
       "type": "stripe",
     },
   ],
+  "ratingPolicy": Object {
+    "ratings": Array [
+      Object {
+        "value": 1,
+      },
+    ],
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -968,6 +1257,11 @@ Object {
     "inPlace",
     "takeAway",
   ],
+  "tipPolicy": Object {
+    "percents": Array [
+      2,
+    ],
+  },
   "updatedAt": Any<String>,
 }
 `;

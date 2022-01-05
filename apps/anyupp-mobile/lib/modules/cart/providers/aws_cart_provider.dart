@@ -256,7 +256,7 @@ class AwsCartProvider implements ICartProvider {
         return {
           'productId': item.productId,
           'variantId': item.variantId,
-          'packagingFee': item.packagingFee,
+          'packagingFee': item.netPackagingFee,
           'productType': 'FOOD',
           'created': DateTime.now().millisecondsSinceEpoch.toInt(),
           'productName': {

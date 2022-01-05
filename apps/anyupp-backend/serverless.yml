@@ -9,6 +9,11 @@ plugins:
 
 package:
   individually: true
+  patterns:
+    - '!.build/**'
+    - '!.git/**'
+    - '!.serverless/**'
+    - '!cdk.out/**'
 
 custom:
   # Our stage is based on what is passed in when running serverless
@@ -23,8 +28,6 @@ custom:
     sourcemaps: true
     caching: true
     esbuild: true
-    concurrency: 1
-    generateStatsFiles: true
 
   offline:
     useChildProcesses: true

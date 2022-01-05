@@ -1,2 +1,13 @@
-branch: 'dev'
+notifications:
+  slack: https://hooks.slack.com/services/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
 schema: '.github/graphql-inspector-artifacts/schema.graphql'
+
+env:
+  prod:
+    branch: 'prod'
+  qa:
+    branch: 'qa'
+  staging:
+    branch: 'staging'
+  dev:
+    branch: 'dev'

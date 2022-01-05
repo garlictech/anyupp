@@ -1,5 +1,7 @@
+import * as CrudApi from '@bgap/crud-gql/api';
 import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync';
 import { getAuthenticatedUserIdFromContextIdentity } from '@bgap/anyupp-backend-lib';
+import * as R from 'ramda';
 
 export const createOrderResolvers = ({
   lambdaDs,
@@ -29,3 +31,6 @@ export const createOrderResolvers = ({
     ),
   });
 };
+
+export const hasSimplifiedOrder = (unit: CrudApi.Unit): boolean =>
+  !R.isNil(unit.orderPolicy) && unit.orderPolicy !== CrudApi.OrderPolicy.full;

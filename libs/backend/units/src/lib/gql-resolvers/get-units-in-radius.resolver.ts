@@ -66,14 +66,12 @@ const toGeoUnit = ({
   currency,
   inputLocation,
   chainStyle,
-  //openingHours,
   paymentModes,
 }: {
   unit: CrudApi.Unit;
   currency: string;
   inputLocation: CrudApi.LocationInput;
   chainStyle: CrudApi.ChainStyle;
-  //openingHours: WeeklySchedule;
   paymentModes?: Maybe<CrudApi.PaymentMode>[];
 }): CrudApi.GeoUnit => ({
   id: unit.id,
@@ -81,11 +79,15 @@ const toGeoUnit = ({
   chainId: unit.chainId,
   name: unit.name,
   address: unit.address,
+  isAcceptingOrders: unit.isAcceptingOrders,
+  orderPolicy: unit.orderPolicy,
+  serviceFeePolicy: unit.serviceFeePolicy,
+  ratingPolicy: unit.ratingPolicy,
+  tipPolicy: unit.tipPolicy,
   style: chainStyle,
   currency,
   distance: geolib.getDistance(unit.address.location, inputLocation),
   paymentModes: paymentModes,
-  isAcceptingOrders: unit.isAcceptingOrders,
   openingHours: '09:00-22:00',
   openingHoursNext7: getUnitOpeningHoursAtTime(unit),
   supportedOrderModes:
@@ -98,14 +100,6 @@ const toGeoUnit = ({
       : defaultSupportedServingModes,
 });
 
-/*const getOpeningOursForToday = (openingHours: WeeklySchedule): string => {
-  console.log(
-    '### ~ file: get-units-in-radius.resolver.ts ~ line 118 ~ TODO: use real opening hours insted of the fix one',
-    openingHours,
-  );
-  return '09:00 - 22:00';
-};
-*/
 const listActiveUnits = () => (crudSdk: CrudApi.CrudSdk) =>
   crudSdk.ListUnits(
     { filter: { isActive: { eq: true } } },

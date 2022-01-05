@@ -59,11 +59,23 @@ Object {
     "rkeeper": Object {
       "anyuppPassword": "ANYUPP_PASSWORD HASHED",
       "anyuppUsername": "ANYUPP_USERNAME",
-      "endpointUri": "ENDPOINT_URI",
-      "rkeeperPassword": "RKEEPER_PASSWORD",
-      "rkeeperUsername": "RKEEPER_USERNAME",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+      "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
+      "rkeeperUsername": "781_55_69_939",
     },
     "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "ratings": Array [
+      Object {
+        "value": 1,
+      },
+    ],
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
   },
   "supportedOrderModes": Array [
     "pickup",
@@ -73,6 +85,11 @@ Object {
     "inPlace",
     "takeAway",
   ],
+  "tipPolicy": Object {
+    "percents": Array [
+      2,
+    ],
+  },
   "updatedAt": Any<String>,
 }
 `;
@@ -135,11 +152,23 @@ Object {
     "rkeeper": Object {
       "anyuppPassword": "ANYUPP_PASSWORD HASHED",
       "anyuppUsername": "ANYUPP_USERNAME",
-      "endpointUri": "ENDPOINT_URI",
-      "rkeeperPassword": "RKEEPER_PASSWORD",
-      "rkeeperUsername": "RKEEPER_USERNAME",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+      "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
+      "rkeeperUsername": "781_55_69_939",
     },
     "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "ratings": Array [
+      Object {
+        "value": 1,
+      },
+    ],
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
   },
   "supportedOrderModes": Array [
     "pickup",
@@ -149,5 +178,10 @@ Object {
     "inPlace",
     "takeAway",
   ],
+  "tipPolicy": Object {
+    "percents": Array [
+      2,
+    ],
+  },
 }
 `;
