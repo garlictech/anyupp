@@ -7,7 +7,7 @@ IFS='|'
 
 ENVNAME=$1
 
-STACKCONFIG_FILE=libs/integration-tests/universal/src/lib/generated/common-stack-config.json
+STACKCONFIG_FILE=libs/shared/config/src/lib/common-stack-config.json
 
 yarn sst deploy --stage=$ENVNAME --outputs-file ../../$STACKCONFIG_FILE
 
