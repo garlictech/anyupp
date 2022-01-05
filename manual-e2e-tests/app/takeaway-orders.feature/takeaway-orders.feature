@@ -50,15 +50,18 @@ Feature: Takeaway orders feature
     Then I should see the "Menu screen"
     When I tap on the "MY CART (2000 Ft)" button
     When I tap on the "PAY (2000 Ft)" button
+    When I tap the "PAY (1700 Ft)" button
+    Then I should see the "PAY" screen
+    When I tap on the "Card, SZÉP card" button
+    Then I tap on the "PLACE ORDER" button
     Then the qr code reader opens the camera
     When I read a seat qr code
     Then I should see the "Finding your seat..." and the "Connected to" loading screens
     And I get the text message "New Table Reserved!"
-    And I should see the "Cart" screen
-    When I tap on the "PAY (2000 Ft)" button
-    Then I should see the "PAY" screen
-    When I tap on the option "Card, SZÉP card" button
-    And I should see "PLACE ORDER" text
+    And I should see "Successful order!"
+    When I tap on the "ALL RIGHT" button
+    Then I should see the "Orders" screen
+
 
   Scenario: Create takeaway order
     Given I am on the login screen
@@ -73,12 +76,6 @@ Feature: Takeaway orders feature
     And I tap on the "MY CART (1700 Ft)" button
     Then I should see the cart screen
     When I tap on the "PAY (1700 Ft)" button
-    Then the qr code reader opens the camera
-    When I read a seat qr code
-    Then I should see the "Finding your seat..." and the "Connected to" loading screens
-    And I get the text message "New Table Reserved!"
-    And I should see the "Cart" screen
-    When I tap on the "PAY (1700 Ft)" button
     Then I should see the "PAY" screen
     When I tap on the option "Credit Card Payment" button
     Then I should see "Add new card" screen with a form
@@ -89,8 +86,12 @@ Feature: Takeaway orders feature
     Then I should see the "PAY" screen
     When I tap on the "visa **** 4242" button
     And I tap on the "PLACE ORDER" button
-    Then there is a loading screen
-    And I get the text message "Payment success!"
+    Then the qr code reader opens the camera
+    When I read a seat qr code
+    Then I should see the "Finding your seat..." and the "Connected to" loading screens
+    And I get the text message "New Table Reserved!"
+    And I should see "Successful order!"
+    When I tap on the "ALL RIGHT" button
     And the "Orders" option is higlighted
     And I should see "Current orders" text
     And I should see "takeaway" on the order card
@@ -101,3 +102,35 @@ Feature: Takeaway orders feature
     Then I should see "szamlazz.hu" receipt
     When I tap on the "Done" button
     Then I should see "Order mode" text with "Takeaway" text
+
+  Scenario: Packaging fee
+    Given I am on the login screen
+    When I tap on the text "Continue anonymously"
+    Then there is a loading screen
+    And I should see the "Unit selector" screen
+    When I tap on the "Késdobáló #111" unit in the list
+    And I tap on the "Take away" button
+    Then I should see the "Menu" screen
+    When I tap on the "Sajtburger" button
+    And I tap on the "ADD TO CART" button
+    And I tap on the "MY CART (1700 Ft)" button
+    Then I should see the cart screen
+    And I should see "Sajtburger normal" text
+    And íi should see "Packaging fee 0 Ft" text with "takeaway" icon
+    When I tap on the "PAY (1700 Ft)" button
+    Then I should see the "PAY" screen
+    When I tap on the option "Cash" button
+    And I tap on the "PLACE ORDER" button
+    Then the qr code reader opens the camera
+    When I read a seat qr code
+    Then I should see the "Finding your seat..." and the "Connected to" loading screens
+    And I get the text message "New Table Reserved!"
+    And I should see "Successful order!"
+    When I tap on the "ALL RIGHT" button
+    And the "Orders" option is higlighted
+    And I should see "Current orders" text
+    When I tap on the order with "Processed"
+    Then I should see the "Order status" text
+    And I should see "Order details" text
+    And I should see "Sajtburger" text with "1700 Ft"
+    And I should see "Packaging fee" text with "0 Ft"
