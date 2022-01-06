@@ -1,16 +1,4 @@
 notifications:
   slack: https://hooks.slack.com/services/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
-
-env:
-  prod:
-    branch: 'prod'
-    schema: '.github/graphql-inspector-artifacts/schema.graphql'
-  qa:
-    branch: 'qa'
-    schema: '.github/graphql-inspector-artifacts/schema.graphql'
-  staging:
-    branch: 'staging'
-    schema: '.github/graphql-inspector-artifacts/schema.graphql'
-  dev:
-    branch: 'dev'
-    schema: '.github/graphql-inspector-artifacts/schema.graphql'
+branch: 'dev'
+schema: '.github/graphql-inspector-artifacts/schema.graphql'
