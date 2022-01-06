@@ -1,13 +1,10 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Injector,
   OnInit,
 } from '@angular/core';
-import { Validators } from '@angular/forms';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { contactFormGroup } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 
 @Component({
@@ -21,10 +18,7 @@ export class UserFormComponent
 {
   public user: CrudApi.User | undefined;
 
-  constructor(
-    protected _injector: Injector,
-    private _changeDetectorRef: ChangeDetectorRef,
-  ) {
+  constructor(protected _injector: Injector) {
     super(_injector);
   }
 
@@ -33,6 +27,7 @@ export class UserFormComponent
   }
 
   ngOnInit(): void {
+    /*
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],
       ...contactFormGroup(),
@@ -44,6 +39,7 @@ export class UserFormComponent
     }
 
     this._changeDetectorRef.detectChanges();
+    */
   }
 
   public submit(): void {
@@ -52,10 +48,7 @@ export class UserFormComponent
       if (this.user?.id) {
         this._dataService.updateUser(this.user.id, this.dialogForm?.value).then(
           (): void => {
-            this._toasterService.showSimpleSuccess(
-
-              'common.updateSuccessful'
-            );
+            this._toasterService.showSimpleSuccess('update');
             this.close();
           },
           err => {
@@ -73,9 +66,7 @@ export class UserFormComponent
                     .sendPasswordResetEmail(this.dialogForm?.value.email)
                     .then(
                       (): void => {
-                        this._toasterService.showSimpleSuccess(
-                           'common.insertSuccessful'
-                        );
+                        this._toasterService.showSimpleSuccess('insert');
                         this.close();
                       },
                       err => {
@@ -104,10 +95,10 @@ export class UserFormComponent
     // Update existing user's image
     if (this.user?.id) {
       this._dataService.updateUserProfileImagePath(this.user.id, imagePath).then((): void => {
-        this._toasterService.showSimpleSuccess(  'common.imageUploadSuccess');
+        this._toasterService.showSimpleSuccess('imageUpload');
       });
     } else {
-      this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
+      this._toasterService.showSimpleSuccess('imageUpload');
     }
   };
 
@@ -118,10 +109,10 @@ export class UserFormComponent
     // Update existing user's image
     if (this.user?.id) {
       this._dataService.updateUserProfileImagePath(this.user.id, null).then((): void => {
-        this._toasterService.showSimpleSuccess( 'common.imageRemoveSuccess');
+        this._toasterService.showSimpleSuccess( 'imageRemove');
       });
     } else {
-      this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
+      this._toasterService.showSimpleSuccess('imageRemove');
     }
   };
   */

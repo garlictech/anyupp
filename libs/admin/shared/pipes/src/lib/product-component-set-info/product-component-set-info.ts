@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
+import { productComponentSetsSelectors } from '@bgap/admin/store/product-component-sets';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Store } from '@ngrx/store';
 

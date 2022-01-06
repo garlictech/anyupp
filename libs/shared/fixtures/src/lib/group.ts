@@ -26,7 +26,7 @@ const groupBase: Omit<CrudApi.CreateGroupInput, 'chainId'> = {
     en: `Test group #${groupId_01} description`,
   },
   currency: 'EUR',
-  email: 'test@anyupp.com',
+  email: 'testuser+groupadmin@anyupp.com',
   phone: '36701234123',
 };
 

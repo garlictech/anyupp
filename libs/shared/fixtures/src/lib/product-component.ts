@@ -468,7 +468,8 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
 ];
 
 export const productComponentSetFixture = {
-  base: productComponentSetBase,
+  productComponentBase,
+  productComponentSetBase,
   getProductComponent,
   getComponentSet,
   seededProdComp_11,

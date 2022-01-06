@@ -13,7 +13,7 @@ const TEST_NAME = 'CREATE_ADMIN_ROLE_CONTEXT';
 
 const adminUserInput: RequiredId<CrudApi.CreateAdminUserInput> = {
   id: 'int-test-user-name',
-  email: 'foobar@anyupp.com',
+  email: 'testuser+foobar@anyupp.com',
   name: 'int-test-user-name',
   phone: '+8234567892',
 };

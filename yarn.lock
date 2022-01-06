@@ -10318,10 +10318,10 @@ aws-lambda@1.0.7:
     js-yaml "^3.14.1"
     watchpack "^2.0.0-beta.10"
 
-aws-sdk@2.1050.0:
-  version "2.1050.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1050.0.tgz#172e80839a3c1bed82e7c42db2fbe7d46fbb90ca"
-  integrity sha512-xXY3wAZQyh/d6vk5oClyB3ViFENc1OOrsB/HUu/g+wnMzMLp+ea+OpZwRM5+g90mAiJ1eLOxje0Sgnbe7fP2oA==
+aws-sdk@2.1051.0:
+  version "2.1051.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1051.0.tgz#ce7fc1fd08a984b0710268c5eff707ce32d8fe86"
+  integrity sha512-SqXimyuyANw2fozbyxR8qNZPN9c/tsVkxq812nMVTApym+7t+h/LcWW1rfPm/EzgTEnrPV9v3a25L/8mXvN5Vg==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -12281,10 +12281,10 @@ constants-browserify@1.0.0, constants-browserify@^1.0.0, constants-browserify@~1
   resolved "https://registry.yarnpkg.com/constants-browserify/-/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
   integrity sha1-wguW2MYXdIqvHBYCF2DNJ/y4y3U=
 
-constructs@3.3.180:
-  version "3.3.180"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.180.tgz#39de7df78ab3ee607d38a5ca6a4258ec41f0e6ae"
-  integrity sha512-1tbMkn0txFf/bLYio+tt0dhZYW2yEFjuTDBTftNjJPE9N28hWHPD+Ux6Lj9MqHYupH6mKA9TZ0fitpNqlWK9jw==
+constructs@3.3.181:
+  version "3.3.181"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.181.tgz#94120c2234032d35c1102b551c509eaf41098115"
+  integrity sha512-3lpbB+BaVnegfCg4I2okt/QHl0eKENic6dhYBgYf0mvrjUcbd/sFwHXUrimh41crJ7Gm/ZYvrq/81Bzi7xbcpA==
 
 constructs@^3.3.69:
   version "3.3.177"
@@ -15558,10 +15558,10 @@ fp-ts-rxjs@0.6.15:
   resolved "https://registry.yarnpkg.com/fp-ts-rxjs/-/fp-ts-rxjs-0.6.15.tgz#4c53ecaf5e18a82c94e4a43a4cf8148978ef9e6c"
   integrity sha512-5fD4a/439l0aUkSkPq7xnznXYsD7YwGyYANO3v6dkkZJTta36et3bNJ2tzq28UcVR6bS9nTDbP7kMjgQqFFxYQ==
 
-fp-ts@2.11.5:
-  version "2.11.5"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.11.5.tgz#97cceb26655b1452d7088d6fb0864f84cceffbe4"
-  integrity sha512-OqlwJq1BdpB83BZXTqI+dNcA6uYk6qk4u9Cgnt64Y+XS7dwdbp/mobx8S2KXf2AXH+scNmA/UVK3SEFHR3vHZA==
+fp-ts@2.11.6:
+  version "2.11.6"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.11.6.tgz#fa11c21bb235cfba0dfd4170f88adcd36e02ac9b"
+  integrity sha512-/EDgWhlWXenPvyax2UyKPhdHK+IkVFQZUggby41dCeWgE2F20Z3cx8eWikotwKicfKu7HvZ+tz3xN0vdOGrL6A==
 
 frac@~1.1.2:
   version "1.1.2"

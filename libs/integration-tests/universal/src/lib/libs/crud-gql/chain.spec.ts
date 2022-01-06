@@ -96,7 +96,7 @@ describe('Chain mutations', () => {
           input: {
             // ...input,
             id: response.id,
-            email: 'test-mod@anyupp.com',
+            email: 'testuser+mod@anyupp.com',
             name: `${chainFixture.chainBase.name} modded`,
           },
         }),

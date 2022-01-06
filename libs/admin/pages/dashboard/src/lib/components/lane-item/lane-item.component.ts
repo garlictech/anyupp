@@ -15,8 +15,8 @@ import {
   getNextOrderStatus,
   getOrderLaneColor,
   getPrevOrderItemStatus,
-} from '@bgap/admin/shared/data-access/orders';
-import { productsSelectors } from '@bgap/admin/shared/data-access/products';
+} from '@bgap/admin/store/orders';
+import { productsSelectors } from '@bgap/admin/store/products';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { ENebularButtonSize, LaneOrderItem } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

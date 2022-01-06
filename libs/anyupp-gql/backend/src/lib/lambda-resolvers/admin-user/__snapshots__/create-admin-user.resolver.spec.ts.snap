@@ -3,7 +3,7 @@
 exports[`Handle adminCreateUser bad data 1`] = `
 Object {
   "createdAt": Any<String>,
-  "email": "a@a.hu",
+  "email": "testuser+joe@anyupp.com",
   "id": "GENERATED_USERNAME",
   "name": "Test Elek",
   "phone": "+123456789",
@@ -19,7 +19,7 @@ exports[`Handle crudSdk.CreateAdminUser error 1`] = `"dynamodb PUT ERROR"`;
 exports[`Handle listUser returns bad data 1`] = `
 Object {
   "createdAt": Any<String>,
-  "email": "a@a.hu",
+  "email": "testuser+joe@anyupp.com",
   "id": "GENERATED_USERNAME",
   "name": "Test Elek",
   "phone": "+123456789",
@@ -41,7 +41,7 @@ exports[`Handle the good case: CreateAdminUser parameters 1`] = `
 Object {
   "Item": Object {
     "createdAt": Any<String>,
-    "email": "a@a.hu",
+    "email": "testuser+joe@anyupp.com",
     "id": "GENERATED_USERNAME",
     "name": "Test Elek",
     "phone": "+123456789",
@@ -55,7 +55,7 @@ Object {
 exports[`Handle the good case: RESULT 1`] = `
 Object {
   "createdAt": Any<String>,
-  "email": "a@a.hu",
+  "email": "testuser+joe@anyupp.com",
   "id": "GENERATED_USERNAME",
   "name": "Test Elek",
   "phone": "+123456789",
@@ -73,7 +73,7 @@ Array [
     "UserAttributes": Array [
       Object {
         "Name": "email",
-        "Value": "a@a.hu",
+        "Value": "testuser+joe@anyupp.com",
       },
       Object {
         "Name": "email_verified",
@@ -105,7 +105,7 @@ Array [
       "email",
       "phone_number",
     ],
-    "Filter": "email = \\"a@a.hu\\"",
+    "Filter": "email = \\"testuser+joe@anyupp.com\\"",
     "Limit": 2,
     "UserPoolId": "USER_POOL_ID",
   },

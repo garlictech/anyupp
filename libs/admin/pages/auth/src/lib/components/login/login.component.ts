@@ -5,10 +5,7 @@ import {
   ChangeDetectionStrategy,
   Component,
 } from '@angular/core';
-import {
-  appCoreActions,
-  appCoreSelectors,
-} from '@bgap/admin/shared/data-access/app-core';
+import { appCoreActions, appCoreSelectors } from '@bgap/admin/store/app-core';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { NbToastrService } from '@nebular/theme';
 import { Store } from '@ngrx/store';

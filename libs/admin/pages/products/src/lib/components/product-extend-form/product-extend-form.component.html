@@ -50,12 +50,20 @@
             <bgap-form-select
               [control]="dialogForm.get('laneId')! | asFormControl"
               caption="products.lane"
-              [options]="unitLanes"
+              [options]="(this.unitLanes$ | async) || []"
               [localize]="false"
               [forceShowEmptyOption]="true"
               inputId="laneId"
             >
             </bgap-form-select>
+          </div>
+          <div class="col-3" *ngIf="productLevel === eProductLevel.UNIT">
+            <bgap-form-text-input
+              caption="common.packagingFee"
+              type="number"
+              [control]="dialogForm.get('packagingFee')! | asFormControl"
+              inputId="packagingFee"
+            ></bgap-form-text-input>
           </div>
           <div class="col-3 pt-4">
             <bgap-form-checkbox

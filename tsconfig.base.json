@@ -36,6 +36,34 @@
     "baseUrl": ".",
     "paths": {
       "*": ["*", "types/*"],
+      "@bgap/admin/store/admin-users": [
+        "libs/admin/store/admin-users/src/index.ts"
+      ],
+      "@bgap/admin/store/app-core": ["libs/admin/store/app-core/src/index.ts"],
+      "@bgap/admin/store/chains": ["libs/admin/store/chains/src/index.ts"],
+      "@bgap/admin/store/dashboard": [
+        "libs/admin/store/dashboard/src/index.ts"
+      ],
+      "@bgap/admin/store/groups": ["libs/admin/store/groups/src/index.ts"],
+      "@bgap/admin/store/logged-user": [
+        "libs/admin/store/logged-user/src/index.ts"
+      ],
+      "@bgap/admin/store/orders": ["libs/admin/store/orders/src/index.ts"],
+      "@bgap/admin/store/product-categories": [
+        "libs/admin/store/product-categories/src/index.ts"
+      ],
+      "@bgap/admin/store/product-component-sets": [
+        "libs/admin/store/product-component-sets/src/index.ts"
+      ],
+      "@bgap/admin/store/product-components": [
+        "libs/admin/store/product-components/src/index.ts"
+      ],
+      "@bgap/admin/store/products": ["libs/admin/store/products/src/index.ts"],
+      "@bgap/admin/store/role-contexts": [
+        "libs/admin/store/role-contexts/src/index.ts"
+      ],
+      "@bgap/admin/store/units": ["libs/admin/store/units/src/index.ts"],
+      "@bgap/admin/store/users": ["libs/admin/store/users/src/index.ts"],
       "@bgap/admin/pages/admin-users": [
         "libs/admin/pages/admin-users/src/index.ts"
       ],
@@ -61,62 +89,20 @@
         "libs/admin/shared/components/src/index.ts"
       ],
       "@bgap/admin/shared/config": ["libs/admin/shared/config/src/index.ts"],
-      "@bgap/admin/shared/data-access/admin-users": [
-        "libs/admin/shared/data-access/admin-users/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/app-core": [
-        "libs/admin/shared/data-access/app-core/src/index.ts"
-      ],
       "@bgap/admin/shared/data-access/auth": [
         "libs/admin/shared/data-access/auth/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/chains": [
-        "libs/admin/shared/data-access/chains/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/dashboard": [
-        "libs/admin/shared/data-access/dashboard/src/index.ts"
       ],
       "@bgap/admin/shared/data-access/data": [
         "libs/admin/shared/data-access/data/src/index.ts"
       ],
-      "@bgap/admin/shared/data-access/groups": [
-        "libs/admin/shared/data-access/groups/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/logged-user": [
-        "libs/admin/shared/data-access/logged-user/src/index.ts"
-      ],
       "@bgap/admin/shared/data-access/order": [
         "libs/admin/shared/data-access/order/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/orders": [
-        "libs/admin/shared/data-access/orders/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/product-categories": [
-        "libs/admin/shared/data-access/product-categories/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/product-component-sets": [
-        "libs/admin/shared/data-access/product-component-sets/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/product-components": [
-        "libs/admin/shared/data-access/product-components/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/products": [
-        "libs/admin/shared/data-access/products/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/role-contexts": [
-        "libs/admin/shared/data-access/role-contexts/src/index.ts"
       ],
       "@bgap/admin/shared/data-access/sdk": [
         "libs/admin/shared/data-access/sdk/src/index.ts"
       ],
       "@bgap/admin/shared/data-access/storage": [
         "libs/admin/shared/data-access/storage/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/units": [
-        "libs/admin/shared/data-access/units/src/index.ts"
-      ],
-      "@bgap/admin/shared/data-access/users": [
-        "libs/admin/shared/data-access/users/src/index.ts"
       ],
       "@bgap/admin/shared/fixtures": [
         "libs/admin/shared/fixtures/src/index.ts"

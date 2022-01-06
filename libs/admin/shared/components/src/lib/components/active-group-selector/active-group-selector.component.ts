@@ -9,8 +9,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { groupsSelectors } from '@bgap/admin/store/groups';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

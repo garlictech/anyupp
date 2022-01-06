@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModifiersAndExtrasFormService createProductComponent$ should create product component 1`] = `
+Object {
+  "data": Object {
+    "allergens": Array [
+      "egg",
+      "gluten",
+      "milk",
+      "soya",
+      "peanut",
+    ],
+    "chainId": "chainId",
+    "createdAt": Any<String>,
+    "description": "DESCRIPTION",
+    "dirty": null,
+    "externalId": null,
+    "id": "test_ADMIN_PRODUCT_COMPONENT_IT_COMP_01",
+    "name": Object {
+      "de": "PRODUCT_COMPONENT",
+      "en": "PRODUCT_COMPONENT",
+      "hu": "TERMEK_KOMPONENS",
+    },
+    "updatedAt": Any<String>,
+  },
+  "type": "insert",
+}
+`;
+
+exports[`ModifiersAndExtrasFormService createProductComponentFormGroup should create form group 1`] = `
+Object {
+  "allergens": Array [],
+  "chainId": "",
+  "description": "",
+  "name": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+}
+`;
+
+exports[`ModifiersAndExtrasFormService createProductComponentSet$ should create product component set 1`] = `
+Object {
+  "data": Object {
+    "chainId": "chainId",
+    "createdAt": Any<String>,
+    "description": "DESCRIPTION",
+    "dirty": null,
+    "externalId": null,
+    "id": "test_ADMIN_PRODUCT_COMPONENT_SET_IT_COMP_SET_01",
+    "items": Array [],
+    "maxSelection": 0,
+    "name": Object {
+      "de": "COMPONENT_SET",
+      "en": "COMPONENT_SET",
+      "hu": "KOMPONENS_SET",
+    },
+    "packagingFee": null,
+    "supportedServingModes": null,
+    "type": "extras",
+    "updatedAt": Any<String>,
+  },
+  "type": "insert",
+}
+`;
+
+exports[`ModifiersAndExtrasFormService updateProductComponent$ should update product component 1`] = `
+Object {
+  "data": Object {
+    "allergens": Array [
+      "egg",
+      "gluten",
+      "milk",
+      "soya",
+      "peanut",
+    ],
+    "chainId": "chainId MOD",
+    "createdAt": Any<String>,
+    "description": "DESCRIPTION",
+    "dirty": null,
+    "externalId": null,
+    "id": "test_ADMIN_PRODUCT_COMPONENT_IT_COMP_01",
+    "name": Object {
+      "de": "PRODUCT_COMPONENT",
+      "en": "PRODUCT_COMPONENT",
+      "hu": "TERMEK_KOMPONENS",
+    },
+    "updatedAt": Any<String>,
+  },
+  "type": "update",
+}
+`;
+
+exports[`ModifiersAndExtrasFormService updateProductComponentSet$ should update product component set 1`] = `
+Object {
+  "data": Object {
+    "chainId": "chainId MOD",
+    "createdAt": Any<String>,
+    "description": "DESCRIPTION",
+    "dirty": null,
+    "externalId": null,
+    "id": "test_ADMIN_PRODUCT_COMPONENT_SET_IT_COMP_SET_01",
+    "items": Array [],
+    "maxSelection": 0,
+    "name": Object {
+      "de": "COMPONENT_SET",
+      "en": "COMPONENT_SET",
+      "hu": "KOMPONENS_SET",
+    },
+    "packagingFee": null,
+    "supportedServingModes": null,
+    "type": "extras",
+    "updatedAt": Any<String>,
+  },
+  "type": "update",
+}
+`;

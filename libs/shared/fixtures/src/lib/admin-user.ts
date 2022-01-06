@@ -1,20 +1,22 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 
-export const adminUserFixture: CrudApi.AdminUser = {
-  id: 'admin_user_id',
+const adminUserBase: CrudApi.CreateAdminUserInput = {
   name: 'John Doe',
-  email: 'john.doe@anyupp.com',
+  email: 'testuser+johndoe@anyupp.com',
   phone: '+36123456789',
+};
+
+const adminUser: CrudApi.AdminUser = {
+  ...adminUserBase,
+  id: 'admin_user_id',
   createdAt: '',
   updatedAt: '',
 };
 
-export const getRoleContextItem = (
-  role: CrudApi.Role,
-): CrudApi.AdminRoleContext => ({
+const getRoleContextItem = (role: CrudApi.Role): CrudApi.AdminRoleContext => ({
   id: `${role}_context_id`,
   roleContextId: `${role}_role_context_id`,
-  adminUserId: adminUserFixture.id,
+  adminUserId: adminUser.id,
   createdAt: '',
   updatedAt: '',
   roleContext: {
@@ -25,3 +27,9 @@ export const getRoleContextItem = (
     updatedAt: '',
   },
 });
+
+export const adminUserFixture = {
+  adminUserBase,
+  adminUser,
+  getRoleContextItem,
+};

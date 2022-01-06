@@ -25,8 +25,8 @@ export class ToasterService {
     );
   }
 
-  public showSimpleSuccess(title: string) {
-    this.show(EToasterType.SUCCESS, '', title);
+  public showSimpleSuccess(type: string) {
+    this.show(EToasterType.SUCCESS, '', `common.${type}Success`);
   }
 
   public showSimpleDanger(title: string) {

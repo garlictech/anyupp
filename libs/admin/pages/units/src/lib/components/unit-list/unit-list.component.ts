@@ -7,9 +7,9 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { groupsSelectors } from '@bgap/admin/store/groups';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

@@ -14,9 +14,9 @@ import {
   dashboardActions,
   dashboardSelectors,
   DashboardSettings,
-} from '@bgap/admin/shared/data-access/dashboard';
+} from '@bgap/admin/store/dashboard';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import {
   EDashboardListMode,
   EDashboardSize,

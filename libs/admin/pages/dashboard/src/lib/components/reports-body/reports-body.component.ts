@@ -12,10 +12,10 @@ import { FormControl } from '@angular/forms';
 import {
   dashboardActions,
   dashboardSelectors,
-} from '@bgap/admin/shared/data-access/dashboard';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+} from '@bgap/admin/store/dashboard';
+import { groupsSelectors } from '@bgap/admin/store/groups';
+import { ordersSelectors } from '@bgap/admin/store/orders';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import { calculateProductMix } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { KeyValueObject, ProducMixArrayItem } from '@bgap/shared/types';

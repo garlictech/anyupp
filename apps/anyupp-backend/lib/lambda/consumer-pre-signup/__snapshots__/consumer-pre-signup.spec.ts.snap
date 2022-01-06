@@ -12,7 +12,7 @@ Array [
     "AttributesToGet": Array [
       "email",
     ],
-    "Filter": "email = \\"a@a.hu\\"",
+    "Filter": "email = \\"testuser+joe@anyupp.com\\"",
     "Limit": 2,
     "UserPoolId": "USERPOOL_ID",
   },
@@ -23,7 +23,7 @@ exports[`Handle the good case: result 1`] = `
 Object {
   "request": Object {
     "userAttributes": Object {
-      "email": "a@a.hu",
+      "email": "testuser+joe@anyupp.com",
       "phone_numner": "+123456789",
     },
   },

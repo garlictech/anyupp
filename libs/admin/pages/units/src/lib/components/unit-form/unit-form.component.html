@@ -37,7 +37,7 @@
         <div class="col-md-6">
           <bgap-form-select
             caption="common.group"
-            [options]="groupOptions"
+            [options]="(groupOptions$ | async) || []"
             [control]="dialogForm.get('groupId')! | asFormControl"
             [localize]="false"
             inputId="groupId"
@@ -115,6 +115,17 @@
             [control]="dialogForm.get('isActive')! | asFormControl"
             inputId="isActive"
           ></bgap-form-checkbox>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <bgap-form-text-input
+            caption="common.packagingTax"
+            type="number"
+            [control]="dialogForm.get('packagingTax')! | asFormControl"
+            inputId="packagingTax"
+          ></bgap-form-text-input>
         </div>
       </div>
 

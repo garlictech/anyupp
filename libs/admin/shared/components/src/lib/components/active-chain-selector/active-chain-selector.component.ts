@@ -7,8 +7,8 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { chainsSelectors } from '@bgap/admin/store/chains';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';

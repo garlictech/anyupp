@@ -8,7 +8,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { appCoreActions } from '@bgap/admin/shared/data-access/app-core';
+import { appCoreActions } from '@bgap/admin/store/app-core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { ToasterService } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -79,7 +79,7 @@ export class UnitListItemComponent {
           }),
         )
         .subscribe(() => {
-          this._toasterService.showSimpleSuccess('common.updateSuccessful');
+          this._toasterService.showSimpleSuccess('update');
 
           this.workingGenerateStatus = false;
           this._changeDetectorRef.detectChanges();

@@ -11,8 +11,8 @@ import { FormControl } from '@angular/forms';
 import {
   dashboardActions,
   dashboardSelectors,
-} from '@bgap/admin/shared/data-access/dashboard';
-import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+} from '@bgap/admin/store/dashboard';
+import { ordersSelectors } from '@bgap/admin/store/orders';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import { customDateCompare, filterNullish } from '@bgap/shared/utils';

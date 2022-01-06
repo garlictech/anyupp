@@ -15,13 +15,10 @@ import {
 import {
   dashboardSelectors,
   DashboardSettings,
-} from '@bgap/admin/shared/data-access/dashboard';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+} from '@bgap/admin/store/dashboard';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { OrderService } from '@bgap/admin/shared/data-access/order';
-import {
-  getNextOrderStatus,
-  getStatusColor,
-} from '@bgap/admin/shared/data-access/orders';
+import { getNextOrderStatus, getStatusColor } from '@bgap/admin/store/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardListMode,

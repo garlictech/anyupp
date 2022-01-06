@@ -17,8 +17,8 @@ import {
   getTableOrders,
   getTableSeatOrders,
   ordersSelectors,
-} from '@bgap/admin/shared/data-access/orders';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+} from '@bgap/admin/store/orders';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import {
   fabricCanvas,
   FLOOR_MAP_STATUS_COLORS,

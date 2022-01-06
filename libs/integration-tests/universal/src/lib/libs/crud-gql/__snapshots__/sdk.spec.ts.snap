@@ -3,7 +3,7 @@
 exports[`CRUD sdk test An arbitrary CRUD: CREATE 1`] = `
 Object {
   "createdAt": Any<String>,
-  "email": "a@a.hu",
+  "email": "a1@anyupp.com",
   "id": "TEST_ADMIN_USER",
   "name": "NAME",
   "phone": "+6234567892",
@@ -22,7 +22,7 @@ exports[`CRUD sdk test An arbitrary CRUD: DELETE 1`] = `null`;
 exports[`CRUD sdk test An arbitrary CRUD: READ 1`] = `
 Object {
   "createdAt": Any<String>,
-  "email": "a@a.hu",
+  "email": "a1@anyupp.com",
   "id": "TEST_ADMIN_USER",
   "name": "NAME",
   "phone": "+6234567892",
@@ -43,7 +43,7 @@ exports[`CRUD sdk test An arbitrary CRUD: SHOULD BE NULL 1`] = `null`;
 exports[`CRUD sdk test An arbitrary CRUD: UPDATE 1`] = `
 Object {
   "createdAt": Any<String>,
-  "email": "a@a.hu",
+  "email": "a1@anyupp.com",
   "id": "TEST_ADMIN_USER",
   "name": "UPDATED_USER",
   "phone": "+6234567892",
@@ -60,7 +60,7 @@ Object {
 exports[`CRUD sdk test An arbitrary subscription 1`] = `
 Object {
   "createdAt": Any<String>,
-  "email": "a@a.hu",
+  "email": "a3@anyupp.com",
   "id": "ADMIN_USERCRUD_SDK_ID",
   "name": "NAME2",
   "phone": "+6234567890",
@@ -77,7 +77,7 @@ Object {
 exports[`CRUD sdk test An arbitrary subscription 2`] = `
 Object {
   "createdAt": Any<String>,
-  "email": "a@a.hu",
+  "email": "a3@anyupp.com",
   "id": "ADMIN_USERCRUD_SDK_ID",
   "name": "NAME2",
   "phone": "+6234567890",
