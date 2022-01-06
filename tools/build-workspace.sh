@@ -19,16 +19,12 @@ yarn nx build-schema anyupp-mobile --env=$ENVNAME --mode=$MODE
 
 
 if [ $ENVNAME = 'dev' ]; then
-  yarn nx build common-backend --env=dev --skip-nx-cache
   yarn nx build admin --skip-nx-cache
 elif [ $ENVNAME = 'prod' ]; then
-  yarn nx build common-backend --env=prod --skip-nx-cache
   yarn nx build admin --configuration=production --skip-nx-cache
 elif [ $ENVNAME = 'qa' ] || [ $ENVNAME = 'staging' ]; then
-  yarn nx build common-backend --env=dev --skip-nx-cache
   yarn nx build admin --configuration=$ENVNAME --skip-nx-cache
 else
-  yarn nx build common-backend --env=dev --skip-nx-cache
   yarn nx build admin --skip-nx-cache
 fi
 
