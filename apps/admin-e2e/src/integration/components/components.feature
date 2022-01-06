@@ -29,8 +29,8 @@ Feature: Create and update components
     And I click on the "3. Egg" checkbox
     And I click on the "4. Fish" checkbox
     And I click on the "5. Peanut" checkbox
-    And I click on the "6. Milk" checkbox
-    And I click on the "7. Soya" checkbox
+    And I click on the "6. Soya" checkbox
+    And I click on the "7. Milk" checkbox
     And I click on the "8. Treenuts" checkbox
     And I click on the "9. Sulphites" checkbox
     And I click on the "10. Mustard" checkbox

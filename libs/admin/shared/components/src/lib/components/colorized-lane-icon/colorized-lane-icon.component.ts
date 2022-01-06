@@ -7,7 +7,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';

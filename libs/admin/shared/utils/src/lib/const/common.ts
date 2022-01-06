@@ -126,11 +126,11 @@ export const ALLERGENS: Allergen[] = [
     idx: 5,
   },
   {
-    id: 'milk',
+    id: 'soya',
     idx: 6,
   },
   {
-    id: 'soya',
+    id: 'milk',
     idx: 7,
   },
   {

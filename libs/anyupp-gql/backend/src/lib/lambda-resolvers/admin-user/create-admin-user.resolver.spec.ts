@@ -37,7 +37,11 @@ const createGoodResolverCall = (deps: AdminUserResolverDeps) =>
   defer(() =>
     from(
       createAdminUser({
-        input: { email: 'a@a.hu', name: 'Test Elek', phone: '+123456789' },
+        input: {
+          email: 'testuser+joe@anyupp.com',
+          name: 'Test Elek',
+          phone: '+123456789',
+        },
       })(deps),
     ),
   );

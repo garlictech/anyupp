@@ -6,8 +6,8 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
-import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
+import { productComponentSetsSelectors } from '@bgap/admin/store/product-component-sets';
+import { productComponentsSelectors } from '@bgap/admin/store/product-components';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   NbDialogService,

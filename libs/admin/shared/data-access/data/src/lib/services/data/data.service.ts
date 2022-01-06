@@ -9,25 +9,25 @@ import {
 } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
-import { chainsActions } from '@bgap/admin/shared/data-access/chains';
-import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
-import { groupsActions } from '@bgap/admin/shared/data-access/groups';
+import { adminUsersActions } from '@bgap/admin/store/admin-users';
+import { chainsActions } from '@bgap/admin/store/chains';
+import { dashboardActions } from '@bgap/admin/store/dashboard';
+import { groupsActions } from '@bgap/admin/store/groups';
 import {
   loggedUserActions,
   loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
-import { ordersActions } from '@bgap/admin/shared/data-access/orders';
-import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
-import { productComponentSetsActions } from '@bgap/admin/shared/data-access/product-component-sets';
-import { productComponentsActions } from '@bgap/admin/shared/data-access/product-components';
-import { productsActions } from '@bgap/admin/shared/data-access/products';
-import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
+} from '@bgap/admin/store/logged-user';
+import { ordersActions } from '@bgap/admin/store/orders';
+import { productCategoriesActions } from '@bgap/admin/store/product-categories';
+import { productComponentSetsActions } from '@bgap/admin/store/product-component-sets';
+import { productComponentsActions } from '@bgap/admin/store/product-components';
+import { productsActions } from '@bgap/admin/store/products';
+import { roleContextActions } from '@bgap/admin/store/role-contexts';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { unitsActions } from '@bgap/admin/shared/data-access/units';
-import { usersActions } from '@bgap/admin/shared/data-access/users';
+import { unitsActions } from '@bgap/admin/store/units';
+import { usersActions } from '@bgap/admin/store/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
+import { catchGqlError } from '@bgap/admin/store/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';

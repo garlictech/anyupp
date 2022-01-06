@@ -46,7 +46,7 @@ export class UnitFloorMapComponent
       .toPromise()
       .then(
         (): void => {
-          this._toasterService.showSimpleSuccess('common.updateSuccessful');
+          this._toasterService.showSimpleSuccess('update');
           this.close();
         },
         err => {
@@ -59,7 +59,7 @@ export class UnitFloorMapComponent
   public submitRaw(): void {
     this._dataService.updateUnit(this.unit.id, { floorMap: JSON.parse(this.rawForm.value.floorMap) }).then(
       (): void => {
-        this._toasterService.showSimpleSuccess('common.updateSuccessful');
+        this._toasterService.showSimpleSuccess('update');
         this.close();
       },
       (err) => {

@@ -7,7 +7,7 @@ import {
 } from './fixtures';
 
 // Must have 'YYYY-MM-DD' format!
-const reportDate = new Date().toISOString().substr(0, 10); // '2021-09-26'
+const reportDate = new Date().toISOString().substr(0, 10); // '2021-12-12'; //
 
 describe('Report', () => {
   describe('Calculation logic', () => {

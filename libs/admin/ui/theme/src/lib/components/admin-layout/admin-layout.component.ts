@@ -1,7 +1,7 @@
 import { debounceTime } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
 import {} from '@bgap/shared/types';

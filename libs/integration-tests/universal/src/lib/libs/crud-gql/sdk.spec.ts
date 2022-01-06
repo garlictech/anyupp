@@ -58,7 +58,7 @@ describe('CRUD sdk test', () => {
               id,
               name: 'NAME',
               phone: '+6234567892',
-              email: 'a@a.hu',
+              email: 'testuser+a1@anyupp.com',
             },
           }),
         ),
@@ -104,14 +104,19 @@ describe('CRUD sdk test', () => {
         catchError(() => of(true)),
         switchMap(() =>
           authSdk.CreateAdminUser({
-            input: { id, name: 'NAME', phone: '+6234567890', email: 'a@a.hu' },
+            input: {
+              id,
+              name: 'NAME',
+              phone: '+6234567890',
+              email: 'testuser+a2@anyupp.com',
+            },
           }),
         ),
         switchMapTo(interval(1000)),
         takeUntil(subs$),
         switchMap(() =>
           authSdk.UpdateAdminUser({
-            input: { id, name: 'NAME2', email: 'a@a.hu' },
+            input: { id, name: 'NAME2', email: 'a3@anyupp.com' },
           }),
         ),
       )

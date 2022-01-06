@@ -16,7 +16,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
+import { productComponentSetsSelectors } from '@bgap/admin/store/product-component-sets';
 import { LocalizePipe } from '@bgap/admin/shared/pipes';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, KeyValue } from '@bgap/shared/types';

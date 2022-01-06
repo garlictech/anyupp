@@ -10,6 +10,7 @@ export * from './lib/product';
 export * from './lib/product-category';
 export * from './lib/product-component';
 export * from './lib/product-snapshot';
+export * from './lib/role-context';
 export * from './lib/transaction';
 export * from './lib/unit';
 export * from './lib/user';

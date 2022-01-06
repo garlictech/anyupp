@@ -77,7 +77,7 @@
               >
                 <nb-option value="">-</nb-option>
                 <nb-option
-                  *ngFor="let option of chainOptions"
+                  *ngFor="let option of chainOptions$ | async"
                   [value]="option.key"
                   >{{ option.value }}</nb-option
                 >

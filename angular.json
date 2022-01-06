@@ -515,55 +515,6 @@
       },
       "tags": ["layer:utils", "platform:angular"]
     },
-    "admin-shared-data-access-admin-users": {
-      "root": "libs/admin/shared/data-access/admin-users",
-      "sourceRoot": "libs/admin/shared/data-access/admin-users/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/admin-users/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/admin-users"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/admin-users/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-app-core": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/app-core",
-      "sourceRoot": "libs/admin/shared/data-access/app-core/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/app-core/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/app-core"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/app-core/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
     "admin-shared-data-access-auth": {
       "root": "libs/admin/shared/data-access/auth",
       "sourceRoot": "libs/admin/shared/data-access/auth/src",
@@ -580,52 +531,6 @@
           "outputs": ["coverage/libs/admin/shared/data-access/auth"],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/auth/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-chains": {
-      "root": "libs/admin/shared/data-access/chains",
-      "sourceRoot": "libs/admin/shared/data-access/chains/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/chains/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/chains"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/chains/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-dashboard": {
-      "root": "libs/admin/shared/data-access/dashboard",
-      "sourceRoot": "libs/admin/shared/data-access/dashboard/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/dashboard/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/dashboard"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/dashboard/jest.config.js",
             "passWithNoTests": true
           }
         }
@@ -654,53 +559,6 @@
       },
       "tags": ["platform:angular"]
     },
-    "admin-shared-data-access-groups": {
-      "root": "libs/admin/shared/data-access/groups",
-      "sourceRoot": "libs/admin/shared/data-access/groups/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/groups/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/groups"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/groups/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-logged-user": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/logged-user",
-      "sourceRoot": "libs/admin/shared/data-access/logged-user/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/logged-user/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/logged-user"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/logged-user/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
     "admin-shared-data-access-order": {
       "root": "libs/admin/shared/data-access/order",
       "sourceRoot": "libs/admin/shared/data-access/order/src",
@@ -717,156 +575,6 @@
           "outputs": ["coverage/libs/admin/shared/data-access/order"],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/order/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-orders": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/orders",
-      "sourceRoot": "libs/admin/shared/data-access/orders/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/orders/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/orders"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/orders/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-product-categories": {
-      "root": "libs/admin/shared/data-access/product-categories",
-      "sourceRoot": "libs/admin/shared/data-access/product-categories/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/product-categories/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/admin/shared/data-access/product-categories"
-          ],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/product-categories/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-product-component-sets": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/product-component-sets",
-      "sourceRoot": "libs/admin/shared/data-access/product-component-sets/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/product-components/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/admin/shared/data-access/product-component-sets"
-          ],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/product-component-sets/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-product-components": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/product-components",
-      "sourceRoot": "libs/admin/shared/data-access/product-components/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/product-components/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/admin/shared/data-access/product-components"
-          ],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/product-components/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-products": {
-      "root": "libs/admin/shared/data-access/products",
-      "sourceRoot": "libs/admin/shared/data-access/products/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/products/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/products"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/products/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-role-contexts": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/role-contexts",
-      "sourceRoot": "libs/admin/shared/data-access/role-contexts/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/role-contexts"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/role-contexts/jest.config.js",
             "passWithNoTests": true
           }
         }
@@ -913,50 +621,6 @@
           "outputs": ["coverage/libs/admin/shared/data-access/storage"],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/storage/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-units": {
-      "root": "libs/admin/shared/data-access/units",
-      "sourceRoot": "libs/admin/shared/data-access/units/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/units/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/units"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/units/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
-    "admin-shared-data-access-users": {
-      "root": "libs/admin/shared/data-access/users",
-      "sourceRoot": "libs/admin/shared/data-access/users/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/users/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/users"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/users/jest.config.js",
             "passWithNoTests": true
           }
         }
@@ -1102,6 +766,320 @@
       },
       "tags": ["platform:angular"]
     },
+    "admin-store-admin-users": {
+      "root": "libs/admin/store/admin-users",
+      "sourceRoot": "libs/admin/store/admin-users/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/admin-users/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/admin-users"],
+          "options": {
+            "jestConfig": "libs/admin/store/admin-users/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-app-core": {
+      "projectType": "library",
+      "root": "libs/admin/store/app-core",
+      "sourceRoot": "libs/admin/store/app-core/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/app-core/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/app-core"],
+          "options": {
+            "jestConfig": "libs/admin/store/app-core/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-chains": {
+      "root": "libs/admin/store/chains",
+      "sourceRoot": "libs/admin/store/chains/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/chains/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/chains"],
+          "options": {
+            "jestConfig": "libs/admin/store/chains/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-dashboard": {
+      "root": "libs/admin/store/dashboard",
+      "sourceRoot": "libs/admin/store/dashboard/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/dashboard/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/dashboard"],
+          "options": {
+            "jestConfig": "libs/admin/store/dashboard/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-groups": {
+      "root": "libs/admin/store/groups",
+      "sourceRoot": "libs/admin/store/groups/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/groups/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/groups"],
+          "options": {
+            "jestConfig": "libs/admin/store/groups/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-logged-user": {
+      "projectType": "library",
+      "root": "libs/admin/store/logged-user",
+      "sourceRoot": "libs/admin/store/logged-user/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/logged-user/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/logged-user"],
+          "options": {
+            "jestConfig": "libs/admin/store/logged-user/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-orders": {
+      "projectType": "library",
+      "root": "libs/admin/store/orders",
+      "sourceRoot": "libs/admin/store/orders/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/orders/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/orders"],
+          "options": {
+            "jestConfig": "libs/admin/store/orders/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-product-categories": {
+      "root": "libs/admin/store/product-categories",
+      "sourceRoot": "libs/admin/store/product-categories/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/product-categories/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/product-categories"],
+          "options": {
+            "jestConfig": "libs/admin/store/product-categories/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-product-component-sets": {
+      "projectType": "library",
+      "root": "libs/admin/store/product-component-sets",
+      "sourceRoot": "libs/admin/store/product-component-sets/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/product-components/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/product-component-sets"],
+          "options": {
+            "jestConfig": "libs/admin/store/product-component-sets/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-product-components": {
+      "projectType": "library",
+      "root": "libs/admin/store/product-components",
+      "sourceRoot": "libs/admin/store/product-components/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/product-components/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/product-components"],
+          "options": {
+            "jestConfig": "libs/admin/store/product-components/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-products": {
+      "root": "libs/admin/store/products",
+      "sourceRoot": "libs/admin/store/products/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/products/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/products"],
+          "options": {
+            "jestConfig": "libs/admin/store/products/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-role-contexts": {
+      "projectType": "library",
+      "root": "libs/admin/store/role-contexts",
+      "sourceRoot": "libs/admin/store/role-contexts/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/role-contexts/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/role-contexts"],
+          "options": {
+            "jestConfig": "libs/admin/store/role-contexts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-units": {
+      "root": "libs/admin/store/units",
+      "sourceRoot": "libs/admin/store/units/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/units/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/units"],
+          "options": {
+            "jestConfig": "libs/admin/store/units/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-users": {
+      "root": "libs/admin/store/users",
+      "sourceRoot": "libs/admin/store/users/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/users/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/users"],
+          "options": {
+            "jestConfig": "libs/admin/store/users/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
     "admin-ui-core": {
       "projectType": "library",
       "root": "libs/admin/ui/core",
@@ -1134,7 +1112,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/ui/core/**/*.ts"]
+            "lintFilePatterns": ["libs/admin/ui/theme/**/*.ts"]
           }
         },
         "test": {

@@ -2,8 +2,8 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { groupsSelectors } from '@bgap/admin/store/groups';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

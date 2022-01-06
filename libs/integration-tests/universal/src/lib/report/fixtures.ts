@@ -13,62 +13,62 @@ const dateAgo = (days: number) =>
 export const reportUsersFixture = [
   {
     id: 'anonym_1',
-    email: 'anonymuser+1@anyupp.com',
+    email: 'testuser+anonymuser1@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'anonym_2',
-    email: 'anonymuser+2@anyupp.com',
+    email: 'testuser+anonymuser2@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'anonym_3',
-    email: 'anonymuser+3@anyupp.com',
+    email: 'testuser+anonymuser3@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'email_1',
-    email: 'a@a.hu',
+    email: 'testuser+a1@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'email_2',
-    email: 'b@b.hu',
+    email: 'testuser+a2@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'email_3',
-    email: 'c@c.hu',
+    email: 'testuser+a3@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'facebook_1',
-    email: 'fb1@gmail.com',
+    email: 'testuser+fb1@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'facebook_2',
-    email: 'fb2@gmail.com',
+    email: 'testuser+fb2@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'google_1',
-    email: 'g1@gmail.com',
+    email: 'testuser+g1@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'google_2',
-    email: 'g2@gmail.com',
+    email: 'testuser+g2@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'signinwithapple_1',
-    email: 'apple1@gmail.com',
+    email: 'testuser+apple1@anyupp.com',
     ucd: new Date().getTime(),
   },
   {
     id: 'signinwithapple_2',
-    email: 'apple2@gmail.com',
+    email: 'testuser+apple2@anyupp.com',
     ucd: new Date().getTime(),
   },
 ];

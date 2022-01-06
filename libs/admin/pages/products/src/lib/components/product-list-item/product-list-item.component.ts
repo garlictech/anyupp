@@ -1,23 +1,23 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import * as fp from 'lodash/fp';
+import { Observable } from 'rxjs';
+
 import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
 } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   EProductLevel,
   EVariantAvailabilityType,
   Product,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { UntilDestroy } from '@ngneat/until-destroy';
+
+import { ProductListService } from '../../services/product-list.service';
 import { ProductExtendFormComponent } from '../product-extend-form/product-extend-form.component';
 import { ProductFormComponent } from '../product-form/product-form.component';
 
@@ -28,7 +28,7 @@ import { ProductFormComponent } from '../product-form/product-form.component';
   templateUrl: './product-list-item.component.html',
   styleUrls: ['./product-list-item.component.scss'],
 })
-export class ProductListItemComponent implements OnInit, OnDestroy {
+export class ProductListItemComponent implements OnDestroy {
   @Input() product?: Product;
   @Input() productLevel!: EProductLevel;
   @Input() currency = '';
@@ -36,47 +36,17 @@ export class ProductListItemComponent implements OnInit, OnDestroy {
   @Input() isLast?: boolean;
   @Output() positionChange = new EventEmitter();
 
-  public hasRoleToEdit = false;
+  public hasRoleToEdit$: Observable<boolean>;
   public EProductLevel = EProductLevel;
   public EVariantAvailabilityType = EVariantAvailabilityType;
 
   constructor(
-    private _store: Store,
     private _nbDialogService: NbDialogService,
-  ) {}
-
-  ngOnInit(): void {
-    this._store
-      .pipe(select(loggedUserSelectors.getLoggedUserRole), untilDestroyed(this))
-      .subscribe(role => {
-        this.hasRoleToEdit = true;
-
-        switch (this.productLevel) {
-          case EProductLevel.CHAIN:
-            this.hasRoleToEdit = [
-              CrudApi.Role.superuser,
-              CrudApi.Role.chainadmin,
-            ].includes(role || CrudApi.Role.inactive);
-            break;
-          case EProductLevel.GROUP:
-            this.hasRoleToEdit = [
-              CrudApi.Role.superuser,
-              CrudApi.Role.chainadmin,
-              CrudApi.Role.groupadmin,
-            ].includes(role || CrudApi.Role.inactive);
-            break;
-          case EProductLevel.UNIT:
-            this.hasRoleToEdit = [
-              CrudApi.Role.superuser,
-              CrudApi.Role.chainadmin,
-              CrudApi.Role.groupadmin,
-              CrudApi.Role.unitadmin,
-            ].includes(role || CrudApi.Role.inactive);
-            break;
-          default:
-            break;
-        }
-      });
+    private _productListService: ProductListService,
+  ) {
+    this.hasRoleToEdit$ = this._productListService.hasRoleToEdit$(
+      this.productLevel,
+    );
   }
 
   ngOnDestroy(): void {

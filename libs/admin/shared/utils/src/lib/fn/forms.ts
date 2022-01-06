@@ -46,12 +46,12 @@ export const multiLangValidator: ValidatorFn = (control: AbstractControl) => {
   return hu || en || de ? null : { empty: true };
 };
 
-export const addressIsEmpty = (address: CrudApi.Address) => {
+export const addressIsEmpty = (address?: CrudApi.Address) => {
   const stringFields = omit(['location'], address);
   const allStringsAreEmpty = Object.values(stringFields).every(v => !v);
 
   // 0 or empty string
-  const locationIsEmpty = !address.location?.lat && !address.location?.lng;
+  const locationIsEmpty = !address?.location?.lat && !address?.location?.lng;
 
   return allStringsAreEmpty && locationIsEmpty;
 };

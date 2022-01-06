@@ -1,4 +1,5 @@
-import { omit, pick } from 'lodash/fp';
+import { cloneDeep, omit, pick } from 'lodash/fp';
+import { Observable } from 'rxjs';
 import { delay, take } from 'rxjs/operators';
 
 import {
@@ -11,8 +12,6 @@ import {
 } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
 import {
   AbstractFormDialogComponent,
   FormsService,
@@ -22,11 +21,12 @@ import {
   PAYMENT_MODES,
   SERVING_MODES,
 } from '@bgap/admin/shared/utils';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { KeyValue } from '@bgap/shared/types';
+import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 import { timeZonesNames } from '@vvo/tzdb';
 
@@ -46,11 +46,10 @@ export class UnitFormComponent
   public paymentModes = PAYMENT_MODES;
   public servingModes = SERVING_MODES;
   public orderModes = ORDER_MODES;
-  public groupOptions: KeyValue[] = [];
+  public groupOptions$: Observable<KeyValue[]>;
   public timeZoneOptions: KeyValue[] = [];
 
   private _isInitiallyRkeeper = false;
-  private _groups: CrudApi.Group[] = [];
 
   constructor(
     protected _injector: Injector,
@@ -66,6 +65,8 @@ export class UnitFormComponent
       key: n,
       value: n,
     }));
+
+    this.groupOptions$ = this._unitFormService.getGroupOptions$();
   }
 
   ngOnInit(): void {
@@ -132,24 +133,6 @@ export class UnitFormComponent
 
       this.dialogForm.patchValue({ isActive: false });
     }
-
-    this._store
-      .pipe(
-        select(groupsSelectors.getSelectedChainGroups),
-        untilDestroyed(this),
-      )
-      .subscribe((groups: CrudApi.Group[]): void => {
-        this._groups = groups;
-
-        this.groupOptions = this._groups.map(
-          (group: CrudApi.Group): KeyValue => ({
-            key: group.id,
-            value: group.name,
-          }),
-        );
-
-        this._changeDetectorRef.detectChanges();
-      });
   }
 
   ngOnDestroy(): void {
@@ -170,10 +153,7 @@ export class UnitFormComponent
             {
               label: 'common.ok',
               callback: (): void => {
-                this._unitFormService.saveForm(
-                  this.dialogForm.value,
-                  this.unit.id,
-                );
+                this._saveForm();
               },
               status: 'success',
             },
@@ -184,18 +164,25 @@ export class UnitFormComponent
           ],
         };
       } else {
-        this._unitFormService.saveForm(this.dialogForm.value, this.unit?.id);
+        this._saveForm();
       }
     }
   }
 
-  public paymentModeIsChecked(paymentMode: CrudApi.PaymentMode): boolean {
-    return (
-      (this.dialogForm?.value.paymentModes || [])
-        .map((m: { type: string }) => m.type)
-        .indexOf(paymentMode.type) >= 0
-    );
+  private _saveForm() {
+    this._unitFormService
+      .saveForm$(cloneDeep(this.dialogForm.value), this.unit?.id)
+      .subscribe((response: UpsertResponse<unknown>) => {
+        this._toasterService.showSimpleSuccess(response.type);
+
+        this.close();
+      });
   }
+
+  public paymentModeIsChecked = (paymentMode: CrudApi.PaymentMode) =>
+    (this.dialogForm?.value.paymentModes || [])
+      .map((m: { type: string }) => m.type)
+      .indexOf(paymentMode.type) >= 0;
 
   public togglePaymentMode(paymentMode: CrudApi.PaymentMode): void {
     const paymentModesArr = this.dialogForm?.value.paymentModes;

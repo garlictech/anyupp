@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
+import { catchGqlError } from '@bgap/admin/store/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getCrudSdkForUserPool } from '@bgap/crud-gql/api';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';

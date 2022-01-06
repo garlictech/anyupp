@@ -23,7 +23,7 @@
           <bgap-form-select
             caption="common.chain"
             [localize]="false"
-            [options]="chainOptions"
+            [options]="(chainOptions$ | async) || []"
             [control]="dialogForm.get('chainId')! | asFormControl"
             inputId="chainId"
           ></bgap-form-select>

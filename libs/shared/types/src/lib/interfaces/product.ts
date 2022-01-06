@@ -15,7 +15,9 @@ export type MergedProduct = CrudApi.ChainProduct &
   CrudApi.UnitProduct;
 
 export type ProductVariantWithPrice = Omit<CrudApi.ProductVariant, 'price'> &
-  Required<Pick<CrudApi.ProductVariant, 'price'>>;
+  Required<Pick<CrudApi.ProductVariant, 'price'>> & {
+    packagingFee?: number;
+  };
 
 export type MergedProductWithPrices = Omit<MergedProduct, 'variants'> & {
   variants: ProductVariantWithPrice[];

@@ -6,7 +6,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
+import { dashboardSelectors } from '@bgap/admin/store/dashboard';
 import { OrderService } from '@bgap/admin/shared/data-access/order';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';

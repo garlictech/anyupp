@@ -1,5 +1,3 @@
-import { cloneDeep } from 'lodash/fp';
-
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,11 +6,10 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { chainsActions } from '@bgap/admin/shared/data-access/chains';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { addressIsEmpty } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EImageType } from '@bgap/shared/types';
+import { EImageType, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 
 import { ChainFormService } from '../../services/chain-form.service';
@@ -84,28 +81,21 @@ export class ChainFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      const value = cloneDeep(this.dialogForm.value);
+      this._chainFormService
+        .saveForm$(
+          {
+            ...this.dialogForm.value,
+            address: addressIsEmpty(this.dialogForm.value.address)
+              ? null
+              : this.dialogForm.value.address,
+          },
+          this.chain?.id,
+        )
+        .subscribe((response: UpsertResponse<unknown>) => {
+          this._toasterService.showSimpleSuccess(response.type);
 
-      if (addressIsEmpty(value.address)) {
-        value.address = null;
-      }
-
-      if (this.chain?.id) {
-        this._store.dispatch(
-          chainsActions.updateChain({
-            formValue: {
-              ...value,
-              id: this.chain?.id,
-            },
-          }),
-        );
-      } else {
-        this._store.dispatch(
-          chainsActions.createChain({
-            formValue: value,
-          }),
-        );
-      }
+          this.close();
+        });
     }
   }
 
@@ -115,15 +105,13 @@ export class ChainFormComponent
     )).setValue(image);
 
     if (this.chain?.id) {
-      this._store.dispatch(
-        chainsActions.updateChainImageStyles({
-          chainId: this.chain?.id,
-          image,
-          param,
-        }),
-      );
+      this._chainFormService
+        .updateChainImageStyles$(this.chain?.id, param, image)
+        .subscribe(() => {
+          this._toasterService.showSimpleSuccess('imageUpload');
+        });
     } else {
-      this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
+      this._toasterService.showSimpleSuccess('imageUpload');
     }
   };
 
@@ -133,14 +121,13 @@ export class ChainFormComponent
     )).setValue('');
 
     if (this.chain?.id) {
-      this._store.dispatch(
-        chainsActions.updateChainImageStyles({
-          chainId: this.chain?.id,
-          param,
-        }),
-      );
+      this._chainFormService
+        .updateChainImageStyles$(this.chain?.id, param)
+        .subscribe(() => {
+          this._toasterService.showSimpleSuccess('imageRemove');
+        });
     } else {
-      this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
+      this._toasterService.showSimpleSuccess('imageRemove');
     }
   };
 }

@@ -348,7 +348,7 @@ export const createTestUnitsForOrderHandling =
         unitFixture.unitPickupTakeaway,
       ],
       R.map(unit => ({
-        ...R.omit(['createdAt', 'updatedAt'], unit),
+        ...unit,
         groupId: seedUtils.generateGroupId(1, 1),
         chainId: seedUtils.generateChainId(1),
       })),

@@ -12,7 +12,7 @@
   [laneId]="product?.laneId"
 ></bgap-colorized-lane-icon>
 
-<ng-container *ngIf="hasRoleToEdit">
+<ng-container *ngIf="hasRoleToEdit$ | async">
   <div *ngIf="!product?.pending">
     <button
       nbButton

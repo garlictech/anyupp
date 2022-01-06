@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
+import { chainsSelectors } from '@bgap/admin/store/chains';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

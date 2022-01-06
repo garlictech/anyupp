@@ -1,4 +1,4 @@
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { shareReplay, skipWhile } from 'rxjs/operators';
 
 import {
@@ -9,12 +9,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { groupsSelectors } from '@bgap/admin/store/groups';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import {
   ExtendedGroupProduct,
   ExtendedUnitProduct,
-} from '@bgap/admin/shared/data-access/products';
+} from '@bgap/admin/store/products';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, ProductOrderChangeEvent } from '@bgap/shared/types';
 import {
@@ -93,6 +93,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
       )
       .subscribe((group: CrudApi.Group | undefined): void => {
         this.groupCurrency = group?.currency || '';
+
+        this._changeDetectorRef.detectChanges();
       });
 
     this._productListService
@@ -100,6 +102,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((chainProducts: CrudApi.ChainProduct[]) => {
         this.chainProducts = chainProducts;
+
         this._changeDetectorRef.detectChanges();
       });
 
@@ -108,6 +111,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((groupTabProducts: GroupTabProducts[]) => {
         this.groupTabProducts = groupTabProducts;
+
         this._changeDetectorRef.detectChanges();
       });
 
@@ -142,26 +146,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   public unitProductPositionChange($event: ProductOrderChangeEvent) {
-    const itemIdx = this._sortedUnitProductIds.indexOf($event.productId);
-
-    if (
-      (itemIdx >= 0 &&
-        $event.change === 1 &&
-        itemIdx < this._sortedUnitProductIds.length - 1) ||
-      ($event.change === -1 && itemIdx > 0)
-    ) {
-      const neighbourId = this._sortedUnitProductIds[itemIdx + $event.change];
-
-      combineLatest([
-        this._productListService.updateUnitProductPosition$(
-          $event.productId,
-          itemIdx + 1 + $event.change,
-        ),
-        this._productListService.updateUnitProductPosition$(
-          neighbourId,
-          itemIdx + 1,
-        ),
-      ]).subscribe();
-    }
+    this._productListService
+      .unitProductPositionChange$($event, this._sortedUnitProductIds)
+      .subscribe();
   }
 }

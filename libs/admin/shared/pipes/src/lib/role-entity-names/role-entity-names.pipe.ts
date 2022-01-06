@@ -4,9 +4,9 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { chainsSelectors } from '@bgap/admin/store/chains';
+import { groupsSelectors } from '@bgap/admin/store/groups';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import { Store } from '@ngrx/store';
 
 @Pipe({

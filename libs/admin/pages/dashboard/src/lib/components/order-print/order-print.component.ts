@@ -10,8 +10,8 @@ import {
   OnChanges,
   OnInit,
 } from '@angular/core';
-import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { chainsSelectors } from '@bgap/admin/store/chains';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import { LocalizePipe } from '@bgap/admin/shared/pipes';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { CurrencyValue, KeyValueObject } from '@bgap/shared/types';

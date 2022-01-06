@@ -8,10 +8,6 @@ export interface FloorMapState {
   initialized: boolean;
 }
 
-export interface FloorMapPartialState {
-  readonly [FLOOR_MAP_FEATURE_KEY]: FloorMapState;
-}
-
 export const initialFloorMapState: FloorMapState = {
   initialized: false,
 };

@@ -2,12 +2,9 @@ import { defer, EMPTY, iif, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import {
-  getNextOrderStatus,
-  ordersActions,
-} from '@bgap/admin/shared/data-access/orders';
+import { catchGqlError } from '@bgap/admin/store/app-core';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { getNextOrderStatus, ordersActions } from '@bgap/admin/store/orders';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';

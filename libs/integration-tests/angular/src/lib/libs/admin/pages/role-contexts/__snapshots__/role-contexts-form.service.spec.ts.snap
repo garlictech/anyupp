@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RoleContextsFormService createRoleContext$ should create role context 1`] = `
+Object {
+  "data": Object {
+    "chainId": "test_chain_1_id",
+    "contextId": "CTX_FIXTURE",
+    "createdAt": Any<String>,
+    "groupId": "test_group_1_id",
+    "id": "test_ADMIN_ROLE_CONTEXT_IT_ROLE_CONTEXT_ID_01",
+    "name": Object {
+      "de": "Context Fixture",
+      "en": "Context Fixture",
+      "hu": "Context Fixture",
+    },
+    "role": "superuser",
+    "unitId": "test_unit_1_id",
+    "updatedAt": Any<String>,
+  },
+  "type": "insert",
+}
+`;
+
+exports[`RoleContextsFormService createRoleContextFormGroup should create form group 1`] = `
+Object {
+  "chainId": "",
+  "groupId": "",
+  "name": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+  "role": "inactive",
+  "unitId": "",
+}
+`;
+
+exports[`RoleContextsFormService updateRoleContext$ should update role context 1`] = `
+Object {
+  "data": Object {
+    "chainId": "MOD CHAIN ID",
+    "contextId": "CTX_FIXTURE",
+    "createdAt": Any<String>,
+    "groupId": "MOD GROUP ID",
+    "id": "test_ADMIN_ROLE_CONTEXT_IT_ROLE_CONTEXT_ID_01",
+    "name": Object {
+      "de": "Context Fixture",
+      "en": "Context Fixture",
+      "hu": "Context Fixture",
+    },
+    "role": "superuser",
+    "unitId": "test_unit_1_id",
+    "updatedAt": Any<String>,
+  },
+  "type": "update",
+}
+`;

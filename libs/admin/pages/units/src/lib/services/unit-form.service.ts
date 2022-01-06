@@ -1,8 +1,9 @@
-import { cloneDeep } from 'lodash/fp';
+import { iif } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { unitsActions } from '@bgap/admin/shared/data-access/units';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { FormsService } from '@bgap/admin/shared/forms';
 import {
   addressFormGroup,
@@ -12,9 +13,15 @@ import {
   notEmptyArray,
   TIME_FORMAT_PATTERN,
 } from '@bgap/admin/shared/utils';
+import { catchGqlError } from '@bgap/admin/store/app-core';
+import { groupsSelectors } from '@bgap/admin/store/groups';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { defaultOrderMode, defaultServingMode } from '@bgap/shared/types';
-import { Store } from '@ngrx/store';
+import {
+  defaultOrderMode,
+  defaultServingMode,
+  KeyValue,
+} from '@bgap/shared/types';
+import { select, Store } from '@ngrx/store';
 
 @Injectable({ providedIn: 'root' })
 export class UnitFormService {
@@ -22,6 +29,7 @@ export class UnitFormService {
     private _formBuilder: FormBuilder,
     private _formsService: FormsService,
     private _store: Store,
+    private _crudSdk: CrudSdkService,
   ) {}
 
   public createUnitFormGroup() {
@@ -51,6 +59,7 @@ export class UnitFormService {
         type: [CrudApi.PosType.anyupp],
         rkeeper: this._formsService.createRkeeperFormGroup(),
       }),
+      packagingTax: [''],
       open: this._formBuilder.group({
         from: [''],
         to: [''],
@@ -125,34 +134,52 @@ export class UnitFormService {
     });
   }
 
-  public saveForm(
+  public getGroupOptions$() {
+    return this._store.pipe(
+      select(groupsSelectors.getSelectedChainGroups),
+      map((groups: CrudApi.Group[]) =>
+        groups.map(
+          (group: CrudApi.Group): KeyValue => ({
+            key: group.id,
+            value: group.name,
+          }),
+        ),
+      ),
+    );
+  }
+
+  public saveForm$(
     formValue: CrudApi.CreateUnitInput | CrudApi.UpdateUnitInput,
     unitId?: string,
   ) {
-    const value = cloneDeep(formValue);
-
-    if (value.pos?.type !== CrudApi.PosType.rkeeper) {
-      delete value.pos?.rkeeper;
+    if (formValue.pos?.type !== CrudApi.PosType.rkeeper) {
+      delete formValue.pos?.rkeeper;
     }
 
-    if (unitId) {
-      this._store.dispatch(
-        unitsActions.updateUnit({
-          formValue: <CrudApi.UpdateUnitInput>{
-            ...value,
-            id: unitId,
-          },
-        }),
-      );
-    } else {
-      this._store.dispatch(
-        unitsActions.createUnit({
-          formValue: <CrudApi.CreateUnitInput>{
-            ...value,
-            isAcceptingOrders: false,
-          },
-        }),
-      );
-    }
+    return iif(
+      () => !unitId,
+      this.createUnit$({
+        ...(<CrudApi.CreateUnitInput>formValue),
+        isAcceptingOrders: false,
+      }),
+      this.updateUnit$({
+        ...formValue,
+        id: unitId || '',
+      }),
+    );
+  }
+
+  public createUnit$(input: CrudApi.CreateUnitInput) {
+    return this._crudSdk.sdk.CreateUnit({ input }).pipe(
+      catchGqlError(this._store),
+      map(data => ({ data, type: 'insert' })),
+    );
+  }
+
+  public updateUnit$(input: CrudApi.UpdateUnitInput) {
+    return this._crudSdk.sdk.UpdateUnit({ input }).pipe(
+      catchGqlError(this._store),
+      map(data => ({ data, type: 'update' })),
+    );
   }
 }

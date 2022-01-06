@@ -1,5 +1,7 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { defer } from 'rxjs';
+
+import * as CrudApi from '@bgap/crud-gql/api';
+
 import { resultTap } from './seed.util';
 
 export const createTestUnitProduct = (

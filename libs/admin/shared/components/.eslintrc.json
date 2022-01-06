@@ -1,5 +1,20 @@
 {
   "extends": "../../../../.eslintrc.json",
   "ignorePatterns": ["!**/*"],
-  "rules": {}
+  "rules": {},
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "parserOptions": {
+        "project": [
+          "libs/admin/shared/components/tsconfig.*?.json"
+        ]
+      }
+    }
+  ]
 }

@@ -1,4 +1,3 @@
-import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import {
@@ -8,7 +7,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
+import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { ProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
@@ -62,30 +61,9 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
   }
 
   public positionChange($event: ProductCategoryOrderChangeEvent): void {
-    const itemIdx = this._sortedProductCategoryIds.indexOf(
-      $event.productCategoryId,
-    );
-
-    if (
-      (itemIdx >= 0 &&
-        $event.change === 1 &&
-        itemIdx < this._sortedProductCategoryIds.length - 1) ||
-      ($event.change === -1 && itemIdx > 0)
-    ) {
-      const neighbourId =
-        this._sortedProductCategoryIds[itemIdx + $event.change];
-
-      combineLatest([
-        this._productCategoryListService.updateUnitProductCategoryPosition$(
-          $event.productCategoryId,
-          itemIdx + 1 + $event.change,
-        ),
-        this._productCategoryListService.updateUnitProductCategoryPosition$(
-          neighbourId,
-          itemIdx + 1,
-        ),
-      ]).subscribe();
-    }
+    this._productCategoryListService
+      .positionChange($event, this._sortedProductCategoryIds)
+      .subscribe();
 
     this._changeDetectorRef.detectChanges();
   }

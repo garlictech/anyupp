@@ -62,6 +62,7 @@ const unitBase = {
   isActive: true,
   isAcceptingOrders: true,
   name: `Késdobáló S`,
+  packagingTax: 27,
   address: {
     address: 'Ág u. 1.',
     city: 'Budapest',
@@ -123,6 +124,13 @@ const unit_01: CrudApi.Unit = {
   updatedAt: '2021-08-02T01:54:11.843Z',
 };
 
+const unitInputBase: CrudApi.CreateUnitInput = {
+  ...unitBase,
+  id: unitId_01,
+  groupId: groupFixture.group_01.id,
+  chainId: chainFixture.chain_01.id,
+};
+
 const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
   ...unitBase,
   id: unitId_01,
@@ -159,7 +167,7 @@ const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
 };
 
 const unitInstantTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
-  ...unit_01,
+  ...unitInputBase,
   id: 'unit-it',
   name: `Instant Takeaway Kocsma`,
   supportedOrderModes: [CrudApi.OrderMode.instant],
@@ -167,7 +175,7 @@ const unitInstantTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
 };
 
 const unitPickupTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
-  ...unit_01,
+  ...unitInputBase,
   id: 'unit-pt',
   name: `Pickup Takeaway Kifőzde`,
   supportedOrderModes: [CrudApi.OrderMode.pickup],
@@ -175,7 +183,7 @@ const unitPickupTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
 };
 
 const unitInstantInplace: RequiredId<CrudApi.CreateUnitInput> = {
-  ...unit_01,
+  ...unitInputBase,
   id: 'unit-ii',
   name: `Instant Inplace Csárda`,
   supportedOrderModes: [CrudApi.OrderMode.instant],
@@ -183,7 +191,7 @@ const unitInstantInplace: RequiredId<CrudApi.CreateUnitInput> = {
 };
 
 const unitPickupInplace: RequiredId<CrudApi.CreateUnitInput> = {
-  ...unit_01,
+  ...unitInputBase,
   id: 'unit-pi',
   name: `Pickup Inplace Resztoran`,
   supportedOrderModes: [CrudApi.OrderMode.pickup],
@@ -193,6 +201,7 @@ const unitPickupInplace: RequiredId<CrudApi.CreateUnitInput> = {
 export const unitFixture = {
   openingHours,
   unitBase,
+  unitInputBase,
   unit_01,
   createUnit_01,
   createRkeeperUnit,

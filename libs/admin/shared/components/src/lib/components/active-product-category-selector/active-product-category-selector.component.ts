@@ -7,8 +7,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import * as CrudApi from '@bgap/crud-gql/api';

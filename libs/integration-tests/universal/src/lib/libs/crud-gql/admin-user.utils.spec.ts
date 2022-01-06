@@ -1,11 +1,11 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { adminUserRoleIsAtLeast } from '@bgap/crud-gql/api';
-import { adminUserFixture, getRoleContextItem } from '@bgap/shared/fixtures';
+import { adminUserFixture } from '@bgap/shared/fixtures';
 
 const getAdminUserWithRole = (role: CrudApi.Role): CrudApi.AdminUser => ({
-  ...adminUserFixture,
+  ...adminUserFixture.adminUser,
   roleContexts: {
-    items: [getRoleContextItem(role)],
+    items: [adminUserFixture.getRoleContextItem(role)],
   },
 });
 
@@ -20,14 +20,14 @@ describe('adminUserRoleIsAtLeast function', () => {
   ];
 
   const emptyRoleAdminUser = {
-    ...adminUserFixture,
+    ...adminUserFixture.adminUserBase,
   };
   const mixedRoleAdminUser: CrudApi.AdminUser = {
-    ...adminUserFixture,
+    ...adminUserFixture.adminUser,
     roleContexts: {
       items: [
-        getRoleContextItem(CrudApi.Role.unitadmin),
-        getRoleContextItem(CrudApi.Role.chainadmin),
+        adminUserFixture.getRoleContextItem(CrudApi.Role.unitadmin),
+        adminUserFixture.getRoleContextItem(CrudApi.Role.chainadmin),
       ],
     },
   };
