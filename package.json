@@ -213,6 +213,7 @@
     ]
   },
   "resolutions": {
-    "graphql": "15.8.0"
+    "graphql": "15.8.0",
+    "fsevents": "1.2.13"
   }
 }

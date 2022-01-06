@@ -9,7 +9,7 @@ cd ../..
 
 STACKCONFIG_DIR=libs/shared/config/src/lib/stack-config
 STACKCONFIG_FILE=$STACKCONFIG_DIR/${ENVNAME}/stack-config.json
-mkdir -p `dirname $STACKCONFIG_FILE`
+mkdir -p $(dirname $STACKCONFIG_FILE)
 
 echo $STACKCONFIG_FILE
 
