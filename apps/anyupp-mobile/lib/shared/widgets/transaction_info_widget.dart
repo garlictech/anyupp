@@ -13,7 +13,8 @@ class TransactionInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (transactionItem.receipt?.pdfData == null && transactionItem.invoice?.pdfUrl == null) {
+    if (transactionItem.receipt?.pdfData == null &&
+        transactionItem.invoice?.pdfUrl == null) {
       return Container();
     }
 
@@ -72,7 +73,7 @@ class _PdfWebViewState extends State<PdfWebView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(theme, onBackButtonPressed: () => Nav.pop()),
+      appBar: CustomAppBar(),
       body: WebView(
         initialUrl: widget.url,
         javascriptMode: JavascriptMode.unrestricted,

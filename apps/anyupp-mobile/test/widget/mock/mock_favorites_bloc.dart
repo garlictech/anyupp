@@ -4,28 +4,19 @@ import 'package:mockito/mockito.dart';
 class MockFavoritesRepository extends Mock implements FavoritesRepository {}
 
 class MockFavoritesBloc extends FavoritesBloc {
-  MockFavoritesBloc() : super(MockFavoritesRepository());
-
-  @override
-  Stream<FavoritesState> mapEventToState(FavoritesEvent event) async* {
-    if (event is ListFavoriteProducts) {
-      yield FavoritesLoading();
-      yield FavoriteListLoaded([]);
-      return;
-    }
-
-    if (event is AddOrRemoveFavoriteProduct) {
-      yield FavoritesLoading();
-      yield ProductIsFavorite(true);
-      yield FavoriteListLoaded([]);
-      return;
-    }
-
-    if (event is CheckProductIsFavorite) {
-      yield FavoritesLoading();
-      yield ProductIsFavorite(true);
-      yield FavoriteListLoaded([]);
-      return;
-    }
+  MockFavoritesBloc() : super(MockFavoritesRepository()) {
+    on<ListFavoriteProducts>((event, emit) {
+      emit(FavoritesLoading());
+      emit(FavoriteListLoaded([]));
+    });
+    on<AddOrRemoveFavoriteProduct>((event, emit) {
+      emit(FavoritesLoading());
+      emit(FavoriteListLoaded([]));
+    });
+    on<CheckProductIsFavorite>((event, emit) {
+      emit(FavoritesLoading());
+      emit(ProductIsFavorite(true));
+      emit(FavoriteListLoaded([]));
+    });
   }
 }

@@ -2,18 +2,7 @@ import * as sm from '@aws-cdk/aws-secretsmanager';
 import { CfnOutput } from '@aws-cdk/core';
 import * as sst from '@serverless-stack/resources';
 import { App } from '@serverless-stack/resources';
-
-const secretsManagerArns: Record<string, string> = {
-  dev: 'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k',
-  qa: 'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-qa-secrets-4cFY1U',
-  staging:
-    'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-staging-secrets-4rGQUb',
-  prod: 'arn:aws:secretsmanager:eu-west-1:486782650003:secret:anyupp-prod-secrets-OQjuwn',
-  appleSigninKey:
-    'arn:aws:secretsmanager:eu-west-1:568276182587:secret:apple-signin-private-key-eHFjFn',
-  appleSigninKeyProd:
-    'arn:aws:secretsmanager:eu-west-1:486782650003:secret:apple-signin-private-key-oejVJN',
-};
+import { secretsManagerArns } from '@bgap/anyupp-backend-lib';
 
 export class SecretsManagerStack extends sst.Stack {
   public googleClientSecret: string;
@@ -25,6 +14,9 @@ export class SecretsManagerStack extends sst.Stack {
   public apiAccessKeyId: string;
   public apiSecretAccessKey: string;
   public secretsManager: sm.ISecret;
+  public reportAccessKeyID: string;
+  public reportSecretAccessKey: string;
+  public slackBotToken: string;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
@@ -82,6 +74,18 @@ export class SecretsManagerStack extends sst.Stack {
 
     this.apiSecretAccessKey = this.secretsManager
       .secretValueFromJson('apiSecretAccessKey')
+      .toString();
+
+    this.reportAccessKeyID = this.secretsManager
+      .secretValueFromJson('reportAccessKeyID')
+      .toString();
+
+    this.reportSecretAccessKey = this.secretsManager
+      .secretValueFromJson('reportSecretAccessKey')
+      .toString();
+
+    this.slackBotToken = this.secretsManager
+      .secretValueFromJson('slackBotToken')
       .toString();
 
     new CfnOutput(this, 'SecretsManager', {

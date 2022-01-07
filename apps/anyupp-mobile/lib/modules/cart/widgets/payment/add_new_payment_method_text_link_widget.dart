@@ -1,0 +1,36 @@
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/shared/locale/locale.dart';
+import 'package:flutter/material.dart';
+
+class AddNewPaymentMethodTextLinkWidget extends StatelessWidget {
+  const AddNewPaymentMethodTextLinkWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        showAddPaymentMethodBottomSheet(context);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 16.0,
+          left: 16.0,
+          bottom: 24.0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              trans(context, 'payment.method.addNewCard'),
+              style: Fonts.satoshi(
+                color: theme.primary,
+                fontSize: 16.0,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

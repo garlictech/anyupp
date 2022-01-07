@@ -1,4 +1,4 @@
-import { IAddress } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
@@ -8,5 +8,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   templateUrl: './address.component.html',
 })
 export class AddressComponent {
-  @Input() address?: IAddress | null;
+  @Input() address?: CrudApi.Address | null;
 }

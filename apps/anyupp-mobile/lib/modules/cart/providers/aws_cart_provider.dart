@@ -1,11 +1,7 @@
 import 'dart:async';
-
-import 'package:fa_prev/graphql/generated/anyupp-api.graphql.dart'
-    hide ServingMode;
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/models/Cart.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth.dart';
@@ -37,7 +33,7 @@ class AwsCartProvider implements ICartProvider {
             code: CartException.UNKNOWN_ERROR, message: 'Cart is null.');
       }
 
-      var result = await GQL.backend.execute(CreateOrderFromCartMutation(
+      var result = await GQL.amplify.execute(CreateOrderFromCartMutation(
           variables: CreateOrderFromCartArguments(
         cartId: _cart!.id!,
       )));
@@ -173,7 +169,7 @@ class AwsCartProvider implements ICartProvider {
       var items = result.data?.listCarts?.items;
       if (items != null && items.isNotEmpty) {
         // print('json[items] is List=${items[0]['items'] is List}');
-        Cart cart = Cart.fromJson(items[0].toJson());
+        Cart cart = Cart.fromJson(items[0]!.toJson());
         // print('AwsCartProvider._getCartFromBackEnd().id=${cart.id}');
         return cart;
       }
@@ -214,7 +210,8 @@ class AwsCartProvider implements ICartProvider {
   }
 
   Future<bool> _updateCartOnBackend(Cart cart) async {
-    print('AwsCartProvider.UPDATING CART IN BACKEND.cart=${cart.id}');
+    print(
+        'AwsCartProvider.******** UPDATING CART IN BACKEND.paymentMode=${cart.paymentMode}');
     try {
       var result = await GQL.amplify.execute(UpdateCartMutation(
           variables: UpdateCartArguments(
@@ -233,7 +230,7 @@ class AwsCartProvider implements ICartProvider {
   }
 
   Future<bool> _deleteCartFromBackend(String cartId) async {
-    print('AwsCartProvider.DELETING CART IN BACKEND=$cartId');
+    print('AwsCartProvider.******** DELETING CART IN BACKEND=$cartId');
     try {
       var result = await GQL.amplify.execute(DeleteCartMutation(
         variables: DeleteCartArguments(cartId: cartId),
@@ -254,10 +251,12 @@ class AwsCartProvider implements ICartProvider {
       'unitId': cart.unitId,
       'userId': cart.userId,
       'servingMode': enumToString(cart.servingMode),
+      'orderPolicy': enumToString(cart.orderPolicy),
       'items': cart.items.map((item) {
         return {
           'productId': item.productId,
           'variantId': item.variantId,
+          'packagingFee': item.netPackagingFee,
           'productType': 'FOOD',
           'created': DateTime.now().millisecondsSinceEpoch.toInt(),
           'productName': {
@@ -294,42 +293,34 @@ class AwsCartProvider implements ICartProvider {
             'de': item.variantName.de,
             'hu': item.variantName.hu,
           },
-          'configSets': item.selectedConfigMap != null
-              ? item.selectedConfigMap?.keys
-                  .toList()
-                  .map((GeneratedProductConfigSet generatedProductConfigSet) {
-                  return {
-                    "name": {
-                      'en': generatedProductConfigSet.name.en,
-                      'de': generatedProductConfigSet.name.de,
-                      'hu': generatedProductConfigSet.name.hu,
-                    },
-                    "productSetId": generatedProductConfigSet.productSetId,
-                    "type": generatedProductConfigSet.type,
-                    "items": item.selectedConfigMap != null
-                        ? item.selectedConfigMap![generatedProductConfigSet]
-                            ?.map((GeneratedProductConfigComponent
-                                generatedProductConfigComponent) {
-                            return {
-                              "allergens": generatedProductConfigComponent
-                                  .allergens
-                                  ?.map((e) => e.toString().split(".").last)
-                                  .toList(),
-                              "price": generatedProductConfigComponent.price,
-                              "productComponentId":
-                                  generatedProductConfigComponent
-                                      .productComponentId,
-                              "name": {
-                                'en': generatedProductConfigComponent.name.en,
-                                'de': generatedProductConfigComponent.name.de,
-                                'hu': generatedProductConfigComponent.name.hu,
-                              },
-                            };
-                          }).toList()
-                        : null
-                  };
-                }).toList()
-              : null,
+          'configSets': item.selectedConfigMap?.keys.map((configSet) {
+            return {
+              "name": {
+                'en': configSet.name.en,
+                'de': configSet.name.de,
+                'hu': configSet.name.hu,
+              },
+              "productSetId": configSet.productSetId,
+              "type": configSet.type,
+              "items": item.selectedConfigMap != null
+                  ? item.selectedConfigMap![configSet]?.map((configComponent) {
+                      return {
+                        "allergens": configComponent.allergens
+                            ?.map((e) => e.toString().split(".").last)
+                            .toList(),
+                        "price": configComponent.price,
+                        "productComponentId":
+                            configComponent.productComponentId,
+                        "name": {
+                          'en': configComponent.name.en,
+                          'de': configComponent.name.de,
+                          'hu': configComponent.name.hu,
+                        },
+                      };
+                    }).toList()
+                  : null
+            };
+          }).toList(),
         };
       }).toList(),
       'paymentMode': cart.paymentMode != null

@@ -17,8 +17,8 @@ import {
   getTableOrders,
   getTableSeatOrders,
   ordersSelectors,
-} from '@bgap/admin/shared/data-access/orders';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+} from '@bgap/admin/store/orders';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import {
   fabricCanvas,
   FLOOR_MAP_STATUS_COLORS,
@@ -34,7 +34,7 @@ import {
   setBorder,
 } from '@bgap/admin/shared/floor-map';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IFloorMapOrderObjects, IFloorMapOrders } from '@bgap/shared/types';
+import { FloorMapOrderObjects, FloorMapOrders } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -52,13 +52,12 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
 
   public unit?: CrudApi.Unit;
 
-  private _allTableSeatOrders$: BehaviorSubject<IFloorMapOrderObjects> =
+  private _allTableSeatOrders$: BehaviorSubject<FloorMapOrderObjects> =
     new BehaviorSubject({});
-  private _allTableOrders$: BehaviorSubject<IFloorMapOrderObjects> =
+  private _allTableOrders$: BehaviorSubject<FloorMapOrderObjects> =
     new BehaviorSubject({});
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -141,7 +140,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
           // Refresh seat color and border
           // tableOrders contains ALL seats!
           Object.values(_allTableSeatOrders).forEach(
-            (tableSeatOrder: IFloorMapOrders): void => {
+            (tableSeatOrder: FloorMapOrders): void => {
               const rawObj: CrudApi.FloorMapDataObject | undefined = (
                 <CrudApi.FloorMapDataObject[]>this.unit?.floorMap?.objects || []
               ).find(

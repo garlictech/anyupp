@@ -63,7 +63,8 @@ class GeneratedProduct {
       variants: variants ?? this.variants,
       allergens: allergens ?? this.allergens,
       configSets: configSets ?? this.configSets,
-      supportedServingModes: supportedServingModes ?? this.supportedServingModes,
+      supportedServingModes:
+          supportedServingModes ?? this.supportedServingModes,
     );
   }
 
@@ -81,7 +82,8 @@ class GeneratedProduct {
       'variants': variants.map((x) => x.toJson()).toList(),
       'allergens': allergens?.map((x) => enumToString(x)).toList(),
       'configSets': configSets?.map((x) => x.toJson()).toList(),
-      'supportedServingModes': supportedServingModes.map((x) => enumToString(x)).toList(),
+      'supportedServingModes':
+          supportedServingModes.map((x) => enumToString(x)).toList(),
     };
   }
 
@@ -91,15 +93,21 @@ class GeneratedProduct {
       unitId: map['unitId'],
       productCategoryId: map['productCategoryId'],
       name: LocalizedItem.fromJson(map['name']),
-      description: map['description'] != null ? LocalizedItem.fromJson(map['description']) : null,
+      description: map['description'] != null
+          ? LocalizedItem.fromJson(map['description'])
+          : null,
       productType: map['productType'],
       tax: map['tax'],
       position: map['position'],
       image: map['image'],
-      variants: List<ProductVariant>.from(map['variants']?.map((x) => ProductVariant.fromJson(x))),
-      allergens: map['allergens'] != null ? List<String>.from(map['allergens']?.map((x) => x as String)) : null,
+      variants: List<ProductVariant>.from(
+          map['variants']?.map((x) => ProductVariant.fromJson(x))),
+      allergens: map['allergens'] != null
+          ? List<String>.from(map['allergens']?.map((x) => x as String))
+          : null,
       configSets: map['configSets'] != null
-          ? List<GeneratedProductConfigSet>.from(map['configSets']?.map((x) => GeneratedProductConfigSet?.fromJson(x)))
+          ? List<GeneratedProductConfigSet>.from(map['configSets']
+              ?.map((x) => GeneratedProductConfigSet?.fromJson(x)))
           : null,
       supportedServingModes: map['supportedServingModes'] != null
           ? List<ServingMode>.from(

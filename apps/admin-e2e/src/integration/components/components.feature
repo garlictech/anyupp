@@ -29,8 +29,8 @@ Feature: Create and update components
     And I click on the "3. Egg" checkbox
     And I click on the "4. Fish" checkbox
     And I click on the "5. Peanut" checkbox
-    And I click on the "6. Milk" checkbox
-    And I click on the "7. Soya" checkbox
+    And I click on the "6. Soya" checkbox
+    And I click on the "7. Milk" checkbox
     And I click on the "8. Treenuts" checkbox
     And I click on the "9. Sulphites" checkbox
     And I click on the "10. Mustard" checkbox
@@ -73,7 +73,7 @@ Feature: Create and update components
     And I fill out the "Name (EN)" input with "test extra"
     And I fill out the "Name (DE)" input with "test extra"
     And I fill out the "Description" input with "test description"
-    And I click the component selector to set "CLASSIC"
+    And I click the component selector to set "Cold"
     And I fill out the "Max selection" input with "1"
     And I click on the "Add" button
     When I click on the "Submit" button
@@ -105,7 +105,7 @@ Feature: Create and update components
     And I fill out the "Name (EN)" input with "test modifier"
     And I fill out the "Name (DE)" input with "test modifier"
     And I fill out the "Description" input with "test description"
-    And I click the component selector to set "CLASSIC"
+    And I click the component selector to set "Rice"
     And I click on the "Add" button
     When I click on the "Submit" button
     Then I should see a success toastr
@@ -122,7 +122,7 @@ Feature: Create and update components
     And I fill out the "Name (DE)" input with "test modifier e2eUpdated"
     And I fill out the "Description" input with "test description e2eUpdated"
     And I click on the first "Delete" button
-    And I click the component selector to set "CLASSIC"
+    And I click the component selector to set "Rice"
     And I click on the "Add" button
     When I click on the "Submit" button
     Then I should see a success toastr

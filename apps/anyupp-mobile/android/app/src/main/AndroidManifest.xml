@@ -50,14 +50,11 @@
                 <data android:scheme="https" android:host="qa-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com"/>
                 <data android:scheme="https" android:host="staging-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com"/>
                 <data android:scheme="https" android:host="prod-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com"/>
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="anyupp" android:host="signin" />
+                <data android:scheme="anyupp" android:host="signout" />
                 <data android:scheme="https" android:host="open.anyupp" />
             </intent-filter>
+
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
@@ -66,5 +63,12 @@
             android:name="com.dexterous.flutterlocalnotifications.ForegroundService"        
             android:exported="false"
             android:stopWithTask="false"/>
+
+      
     </application>
+    <queries>
+        <intent>
+            <action android:name="android.support.customtabs.action.CustomTabsService"/>
+        </intent>
+    </queries>
 </manifest>

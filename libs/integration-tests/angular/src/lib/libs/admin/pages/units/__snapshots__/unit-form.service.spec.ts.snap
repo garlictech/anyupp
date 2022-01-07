@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnitFormService createUnit$ should create unit 1`] = `
+Object {
+  "data": Object {
+    "address": Object {
+      "address": "Ág u. 1.",
+      "city": "Budapest",
+      "country": "Magyarország",
+      "location": Object {
+        "lat": 47,
+        "lng": 19,
+      },
+      "postalCode": "1021",
+      "title": "HQ",
+    },
+    "chainId": "test_chain_1_id",
+    "createdAt": Any<String>,
+    "description": Object {
+      "de": null,
+      "en": "Test unit #test_unit_1_id description",
+      "hu": "Teszt unit #test_unit_1_id leírás",
+    },
+    "email": null,
+    "externalId": null,
+    "floorMap": null,
+    "groupId": "test_group_1_id",
+    "id": "test_ADMIN_UNIT_IT_UNIT_ID_01",
+    "isAcceptingOrders": true,
+    "isActive": true,
+    "lanes": Array [
+      Object {
+        "color": "#e72222",
+        "id": "lane_01",
+        "name": "bár",
+      },
+      Object {
+        "color": "#e123ef",
+        "id": "lane_02",
+        "name": "konyha",
+      },
+    ],
+    "lastOrderNum": null,
+    "merchantId": null,
+    "name": "Késdobáló S",
+    "open": Object {
+      "from": "1970-01-01",
+      "to": "2970-01-01",
+    },
+    "openingHours": null,
+    "orderPolicy": null,
+    "packagingTaxPercentage": 27,
+    "paymentModes": Array [
+      Object {
+        "caption": null,
+        "method": "cash",
+        "type": "cash",
+      },
+      Object {
+        "caption": null,
+        "method": "card",
+        "type": "card",
+      },
+      Object {
+        "caption": null,
+        "method": "inapp",
+        "type": "stripe",
+      },
+    ],
+    "phone": null,
+    "pos": null,
+    "ratingPolicy": null,
+    "serviceFeePolicy": null,
+    "supportedOrderModes": Array [
+      "pickup",
+      "instant",
+    ],
+    "supportedServingModes": Array [
+      "inPlace",
+      "takeAway",
+    ],
+    "timeZone": null,
+    "tipPolicy": null,
+    "updatedAt": Any<String>,
+  },
+  "type": "insert",
+}
+`;
+
+exports[`UnitFormService createUnitFormGroup should create form group 1`] = `
+Object {
+  "address": Object {
+    "address": "",
+    "city": "",
+    "country": "",
+    "location": Object {
+      "lat": 0,
+      "lng": 0,
+    },
+    "postalCode": "",
+    "title": "",
+  },
+  "chainId": "",
+  "description": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+  "email": "",
+  "groupId": "",
+  "isActive": "",
+  "lanes": Array [],
+  "name": "",
+  "open": Object {
+    "from": "",
+    "to": "",
+  },
+  "openingHours": Object {
+    "custom": Array [],
+    "fri": Object {
+      "from": "",
+      "to": "",
+    },
+    "mon": Object {
+      "from": "",
+      "to": "",
+    },
+    "sat": Object {
+      "from": "",
+      "to": "",
+    },
+    "sun": Object {
+      "from": "",
+      "to": "",
+    },
+    "thu": Object {
+      "from": "",
+      "to": "",
+    },
+    "tue": Object {
+      "from": "",
+      "to": "",
+    },
+    "wed": Object {
+      "from": "",
+      "to": "",
+    },
+  },
+  "packagingTaxPercentage": "",
+  "paymentModes": Array [],
+  "phone": "",
+  "pos": Object {
+    "type": "anyupp",
+  },
+  "supportedOrderModes": Array [
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "timeZone": "",
+}
+`;
+
+exports[`UnitFormService updateUnit$ should update unit 1`] = `
+Object {
+  "data": Object {
+    "address": Object {
+      "address": "Ág u. 1.",
+      "city": "Budapest",
+      "country": "Magyarország",
+      "location": Object {
+        "lat": 47,
+        "lng": 19,
+      },
+      "postalCode": "1021",
+      "title": "HQ",
+    },
+    "chainId": "test_chain_1_id",
+    "createdAt": Any<String>,
+    "description": Object {
+      "de": null,
+      "en": "Test unit #test_unit_1_id description",
+      "hu": "Teszt unit #test_unit_1_id leírás",
+    },
+    "email": null,
+    "externalId": null,
+    "floorMap": null,
+    "groupId": "test_group_1_id",
+    "id": "test_ADMIN_UNIT_IT_UNIT_ID_01",
+    "isAcceptingOrders": true,
+    "isActive": true,
+    "lanes": Array [
+      Object {
+        "color": "#e72222",
+        "id": "lane_01",
+        "name": "bár",
+      },
+      Object {
+        "color": "#e123ef",
+        "id": "lane_02",
+        "name": "konyha",
+      },
+    ],
+    "lastOrderNum": null,
+    "merchantId": null,
+    "name": "[object Object] MOD",
+    "open": Object {
+      "from": "1970-01-01",
+      "to": "2970-01-01",
+    },
+    "openingHours": null,
+    "orderPolicy": null,
+    "packagingTaxPercentage": 27,
+    "paymentModes": Array [
+      Object {
+        "caption": null,
+        "method": "cash",
+        "type": "cash",
+      },
+      Object {
+        "caption": null,
+        "method": "card",
+        "type": "card",
+      },
+      Object {
+        "caption": null,
+        "method": "inapp",
+        "type": "stripe",
+      },
+    ],
+    "phone": null,
+    "pos": null,
+    "ratingPolicy": null,
+    "serviceFeePolicy": null,
+    "supportedOrderModes": Array [
+      "pickup",
+    ],
+    "supportedServingModes": Array [
+      "takeAway",
+    ],
+    "timeZone": null,
+    "tipPolicy": null,
+    "updatedAt": Any<String>,
+  },
+  "type": "update",
+}
+`;

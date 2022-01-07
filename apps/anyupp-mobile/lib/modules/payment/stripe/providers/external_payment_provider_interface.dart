@@ -1,4 +1,3 @@
-import 'package:fa_prev/graphql/generated/anyupp-api.dart' show UserInvoiceAddress;
 import 'package:fa_prev/models.dart';
 
 abstract class IExternalPaymentProvider {

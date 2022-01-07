@@ -58,10 +58,11 @@ const openingHours: CrudApi.WeeklySchedule = {
   ],
 };
 
-const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
+const unitBase = {
   isActive: true,
   isAcceptingOrders: true,
   name: `Késdobáló S`,
+  packagingTaxPercentage: 27,
   address: {
     address: 'Ág u. 1.',
     city: 'Budapest',
@@ -105,6 +106,7 @@ const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   ],
   open: {
     from: '1970-01-01',
+    to: '2970-01-01',
   },
   supportedOrderModes: [CrudApi.OrderMode.pickup, CrudApi.OrderMode.instant],
   supportedServingModes: [
@@ -113,15 +115,59 @@ const unitBase: Omit<CrudApi.CreateUnitInput, 'chainId' | 'groupId'> = {
   ],
 };
 
-const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
+const unit_01: CrudApi.Unit = {
+  ...unitBase,
+  id: unitId_01,
+  groupId: groupFixture.group_01.id,
+  chainId: chainFixture.chain_01.id,
+  createdAt: '2021-08-02T01:54:11.843Z',
+  updatedAt: '2021-08-02T01:54:11.843Z',
+};
+
+const unitInputBase: CrudApi.CreateUnitInput = {
   ...unitBase,
   id: unitId_01,
   groupId: groupFixture.group_01.id,
   chainId: chainFixture.chain_01.id,
 };
 
+const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
+  ...unitBase,
+  id: unitId_01,
+  groupId: groupFixture.group_01.id,
+  chainId: chainFixture.chain_01.id,
+  serviceFeePolicy: {
+    type: CrudApi.ServiceFeeType.applicable,
+    percentage: 10,
+    taxPercentage: 10,
+  },
+  ratingPolicy: {
+    ratings: [{ value: 1 }],
+  },
+  tipPolicy: {
+    percents: [2],
+  },
+};
+
+const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
+  ...createUnit_01,
+  id: 'rkeeper-unit',
+  externalId: 'restaurantid',
+  pos: {
+    type: CrudApi.PosType.rkeeper,
+    rkeeper: {
+      // let's use the yellow real rkeeper endpoint
+      endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
+      rkeeperUsername: '781_55_69_939',
+      rkeeperPassword: '3943200386403faebf5f80191f5c1c',
+      anyuppUsername: 'ANYUPP_USERNAME',
+      anyuppPassword: 'ANYUPP_PASSWORD',
+    },
+  },
+};
+
 const unitInstantTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
-  ...unit_01,
+  ...unitInputBase,
   id: 'unit-it',
   name: `Instant Takeaway Kocsma`,
   supportedOrderModes: [CrudApi.OrderMode.instant],
@@ -129,7 +175,7 @@ const unitInstantTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
 };
 
 const unitPickupTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
-  ...unit_01,
+  ...unitInputBase,
   id: 'unit-pt',
   name: `Pickup Takeaway Kifőzde`,
   supportedOrderModes: [CrudApi.OrderMode.pickup],
@@ -137,7 +183,7 @@ const unitPickupTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
 };
 
 const unitInstantInplace: RequiredId<CrudApi.CreateUnitInput> = {
-  ...unit_01,
+  ...unitInputBase,
   id: 'unit-ii',
   name: `Instant Inplace Csárda`,
   supportedOrderModes: [CrudApi.OrderMode.instant],
@@ -145,7 +191,7 @@ const unitInstantInplace: RequiredId<CrudApi.CreateUnitInput> = {
 };
 
 const unitPickupInplace: RequiredId<CrudApi.CreateUnitInput> = {
-  ...unit_01,
+  ...unitInputBase,
   id: 'unit-pi',
   name: `Pickup Inplace Resztoran`,
   supportedOrderModes: [CrudApi.OrderMode.pickup],
@@ -155,7 +201,10 @@ const unitPickupInplace: RequiredId<CrudApi.CreateUnitInput> = {
 export const unitFixture = {
   openingHours,
   unitBase,
+  unitInputBase,
   unit_01,
+  createUnit_01,
+  createRkeeperUnit,
   unitId_NotExisting,
   unitId_seeded_01,
   unitId_seeded_02,

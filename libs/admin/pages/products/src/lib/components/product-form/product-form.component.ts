@@ -1,6 +1,6 @@
-import * as fp from 'lodash/fp';
+import { get, omit } from 'lodash/fp';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -10,24 +10,22 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EImageType,
   EProductLevel,
-  IKeyValue,
+  KeyValue,
   Product,
+  UpsertResponse,
 } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
 import { PRODUCT_TYPES } from '../../const';
-import { ProductFormService } from '../../services/product-form/product-form.service';
+import { ProductFormService } from '../../services/product-form.service';
 
 @UntilDestroy()
 @Component({
@@ -42,16 +40,14 @@ export class ProductFormComponent
   public eImageType = EImageType;
   public product?: Product;
   public productLevel!: EProductLevel;
-  public productCategories$: Observable<IKeyValue[]>;
-  public productTypes: IKeyValue[] = PRODUCT_TYPES;
+  public productCategories$: Observable<KeyValue[]>;
+  public productTypes: KeyValue[] = PRODUCT_TYPES;
 
-  private _selectedChainId = '';
-  private _selectedProductCategoryId = '';
+  private _userSettings: CrudApi.AdminUserSettings = {};
 
   constructor(
     protected _injector: Injector,
     private _productFormService: ProductFormService,
-    private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     super(_injector);
@@ -64,50 +60,36 @@ export class ProductFormComponent
         take(1),
         filterNullish(),
       )
-      .subscribe((userSettings: CrudApi.AdminUserSettings): void => {
-        this._selectedChainId = userSettings?.selectedChainId || '';
-        this._selectedProductCategoryId =
-          userSettings?.selectedProductCategoryId || '';
+      .subscribe((userSettings: CrudApi.AdminUserSettings) => {
+        this._userSettings = userSettings;
       });
 
-    this.productCategories$ = this._store.pipe(
-      select(productCategoriesSelectors.getAllProductCategories),
-      map((productCategories: CrudApi.ProductCategory[]) =>
-        productCategories.map(
-          (productCategory): IKeyValue => ({
-            key: productCategory.id,
-            value: productCategory.name,
-          }),
-        ),
-      ),
-      untilDestroyed(this),
-    );
+    this.productCategories$ = this._productFormService.getProductCategories$();
   }
 
   get productImage(): string {
-    return fp.get('image', this.product) ?? '';
+    return get('image', this.product) ?? '';
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.product) {
       this.dialogForm.patchValue(
-        fp.omit(['variants', 'configSets'], cleanObject(this.product)),
+        omit(['variants', 'configSets'], cleanObject(this.product)),
       );
 
       this._productFormService.patchProductVariants(
-        this.product,
+        this.product.variants || [],
         this.dialogForm?.controls.variants as FormArray,
       );
 
       this._productFormService.patchConfigSet(
-        this.product,
+        this.product.configSets || [],
         this.dialogForm?.controls.configSets as FormArray,
       );
     } else {
-      // Patch ProductCategoryID
-      if (this._selectedProductCategoryId) {
+      if (this._userSettings?.selectedProductCategoryId) {
         this.dialogForm.controls.productCategoryId.patchValue(
-          this._selectedProductCategoryId,
+          this._userSettings?.selectedProductCategoryId,
         );
       }
       this.dialogForm.controls.isVisible.patchValue(true);
@@ -116,74 +98,50 @@ export class ProductFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      const value = {
-        ...this.dialogForm?.value,
-        chainId: this._selectedChainId,
-      };
+      this._productFormService
+        .saveChainForm$(
+          {
+            ...this.dialogForm.value,
+            chainId: this._userSettings?.selectedChainId || '',
+          },
+          this.product?.id || undefined,
+          this.product?.dirty || undefined,
+        )
+        .subscribe((response: UpsertResponse<unknown>) => {
+          this._toasterService.showSimpleSuccess(response.type);
 
-      if (this.product?.id) {
-        this._crudSdk.sdk
-          .UpdateChainProduct({
-            input: {
-              id: this.product.id,
-              ...value,
-            },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.updateSuccessful');
-
-            this.close();
-          });
-      } else {
-        this._crudSdk.sdk
-          .CreateChainProduct({ input: value })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.insertSuccessful');
-            this.close();
-          });
-      }
+          this.close();
+        });
     }
   }
 
   public imageUploadCallback = (image: string) => {
     this.dialogForm?.controls.image.setValue(image);
-
-    // Update existing user's image
-    if (this.product?.id) {
-      this.updateImageStyles(this.product?.id, image).subscribe(() => {
-        this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
-      });
-    } else {
-      this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
-    }
-
     this._changeDetectorRef.detectChanges();
+
+    if (this.product?.id) {
+      this._productFormService
+        .updateImageStyles$(this.product?.id, image)
+        .subscribe(() => {
+          this._toasterService.showSimpleSuccess('imageUpload');
+        });
+    } else {
+      this._toasterService.showSimpleSuccess('imageUpload');
+    }
   };
 
   public imageRemoveCallback = () => {
     this.dialogForm?.controls.image.setValue('');
+    this._changeDetectorRef.detectChanges();
 
     if (this.product?.id) {
-      this.updateImageStyles(this.product?.id, null).subscribe(() => {
-        this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
-      });
+      this._productFormService
+        .updateImageStyles$(this.product?.id, null)
+        .subscribe(() => {
+          this._toasterService.showSimpleSuccess('imageRemove');
+        });
     } else {
-      this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
+      this._toasterService.showSimpleSuccess('imageRemove');
     }
-
-    this._changeDetectorRef.detectChanges();
   };
-
-  private updateImageStyles(id: string, image: string | null) {
-    return this._crudSdk.sdk
-      .UpdateChainProduct({
-        input: {
-          id,
-          image,
-        },
-      })
-      .pipe(catchGqlError(this._store));
-  }
 }

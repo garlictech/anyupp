@@ -5,7 +5,6 @@ import 'package:fa_prev/core/units/bloc/unit_select_bloc.dart';
 import 'package:fa_prev/models/GeoUnit.dart';
 import 'package:fa_prev/models/Transaction.dart';
 import 'package:fa_prev/modules/transactions/transactions.dart';
-import 'package:fa_prev/modules/transactions/widgets/transaction_card_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets/app_bar.dart';
@@ -22,15 +21,22 @@ class TransactionsScreen extends StatefulWidget {
 }
 
 class _TransactionsScreenState extends State<TransactionsScreen> {
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
   String? _nextToken;
   late int _pageSize;
+  late GeoUnit unit;
 
   @override
   void initState() {
     super.initState();
     _pageSize = getIt<AppConstants>().paginationSize;
     getIt<TransactionsBloc>().add(LoadTransactions(nextToken: null));
+
+    UnitSelectState state = getIt<UnitSelectBloc>().state;
+    if (state is UnitSelected) {
+      unit = state.unit;
+    }
   }
 
   void _onRefresh() async {
@@ -45,7 +51,10 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(theme, onBackButtonPressed: () => Nav.pop(), title: trans('profile.menu.transactions')),
+      appBar: CustomAppBar(
+        title: trans('profile.transactions.title'),
+        elevation: 4.0,
+      ),
       // The appBar head text
       backgroundColor: theme.secondary0,
       body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
@@ -64,10 +73,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       builder: (context, state) {
         if (state is TransactionsLoadedState) {
           _nextToken = state.response?.nextToken;
-          print('_buildTransactions._nextToken=$_nextToken');
           _refreshController.refreshCompleted();
           return _buildList(state.response?.data ?? []);
-          // }
         }
         return CenterLoadingWidget();
       },
@@ -108,8 +115,11 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               scrollDirection: Axis.vertical,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, position) {
-                if (position == list.length - 1 && list.length % _pageSize == 0 && _nextToken != null) {
-                  getIt<TransactionsBloc>().add(LoadTransactions(nextToken: _nextToken));
+                if (position == list.length - 1 &&
+                    list.length % _pageSize == 0 &&
+                    _nextToken != null) {
+                  getIt<TransactionsBloc>()
+                      .add(LoadTransactions(nextToken: _nextToken));
                 }
 
                 return AnimationConfiguration.staggeredList(
@@ -120,6 +130,10 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     child: FadeInAnimation(
                       child: TransactionCard(
                         transaction: list[position],
+                        onTap: () => Nav.to(TransactionOrderDetailsScreen(
+                          orderId: list[position].orderId,
+                          unit: unit,
+                        )),
                       ),
                     ),
                   ),

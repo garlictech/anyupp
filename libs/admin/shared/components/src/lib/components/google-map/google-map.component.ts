@@ -42,7 +42,7 @@ export class GoogleMapComponent implements OnChanges {
     this._changeDetectorRef.detectChanges();
   }
 
-  public dragEnd($event: google.maps.MouseEvent): void {
+  public dragEnd($event: google.maps.MapMouseEvent): void {
     this.positionChange.emit({
       lat: $event.latLng?.lat(),
       lng: $event.latLng?.lng(),

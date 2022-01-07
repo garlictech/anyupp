@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { LayoutService } from '@bgap/admin/ui/core';
 import {
@@ -180,9 +180,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {
-            /**/
-          },
           status: 'basic',
         },
       ],

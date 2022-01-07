@@ -1,10 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/bloc/configset_bloc.dart';
-import 'package:fa_prev/modules/menu/bloc/configset_event.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
@@ -33,7 +30,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   Map<String, String> _selectedModifiers = {};
   double _modifierTotalPrice = 0.0;
   Set<String> _allergeens = {};
-  late ProductVariant? _productVariant;
+  late ProductVariant _productVariant;
 
   @override
   void initState() {
@@ -62,43 +59,40 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
 
   Future<OrderItem?> getOrderItem() async {
     User? user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
-    if (_productVariant != null) {
-      return OrderItem(
-        productType: 'productType',
-        productId: widget.product.id,
-        variantId: _productVariant!.id!,
-        image: widget.product.image,
-        priceShown: PriceShown(
-          currency: widget.unit.currency,
-          pricePerUnit: _productVariant!.price,
-          priceSum: _productVariant!.price,
-          tax: 0,
-          taxSum: 0,
+    return OrderItem(
+      productType: 'productType',
+      productId: widget.product.id,
+      variantId: _productVariant.id!,
+      image: widget.product.image,
+      priceShown: PriceShown(
+        currency: widget.unit.currency,
+        pricePerUnit: _productVariant.price,
+        priceSum: _productVariant.price,
+        tax: 0,
+        taxSum: 0,
+      ),
+      sumPriceShown: PriceShown(
+        currency: widget.unit.currency,
+        pricePerUnit: _productVariant.price,
+        priceSum: _productVariant.price,
+        tax: 0,
+        taxSum: 0,
+      ),
+      allergens: widget.product.allergens,
+      productName: widget.product.name,
+      variantName: _productVariant.variantName,
+      // generatedProductConfigSet: widget.product.,
+      statusLog: [
+        StatusLog(
+          userId: user!.id,
+          status: OrderStatus.none,
+          ts: 0,
         ),
-        sumPriceShown: PriceShown(
-          currency: widget.unit.currency,
-          pricePerUnit: _productVariant!.price,
-          priceSum: _productVariant!.price,
-          tax: 0,
-          taxSum: 0,
-        ),
-        allergens: widget.product.allergens,
-        productName: widget.product.name,
-        variantName: _productVariant!.variantName,
-        // generatedProductConfigSet: widget.product.,
-        statusLog: [
-          StatusLog(
-            userId: user!.id,
-            status: OrderStatus.none,
-            ts: 0,
-          ),
-        ],
-        quantity: 0,
-        selectedConfigMap: getSelectedComponentMap(),
-      );
-    }
-
-    return null;
+      ],
+      quantity: 0,
+      netPackagingFee: _productVariant.netPackagingFee,
+      selectedConfigMap: getSelectedComponentMap(),
+    );
   }
 
   @override
@@ -379,7 +373,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   Widget _buildVariantItem(ProductVariant variant) {
-    bool selected = variant.id == _productVariant?.id;
+    bool selected = variant.id == _productVariant.id;
     return Column(
       children: [
         InkWell(

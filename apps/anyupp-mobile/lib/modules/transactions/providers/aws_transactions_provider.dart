@@ -12,7 +12,8 @@ class AwsTransactionsProvider implements ITransactionProvider {
 
   AwsTransactionsProvider(this._authProvider);
 
-  Future<PageResponse<Transaction>?> getTransactions({String? nextToken}) async {
+  Future<PageResponse<Transaction>?> getTransactions(
+      {String? nextToken}) async {
     try {
       User? user = await _authProvider.getAuthenticatedUserProfile();
       if (user == null) {
@@ -38,7 +39,7 @@ class AwsTransactionsProvider implements ITransactionProvider {
       var items = result.data?.searchTransactions?.items ?? [];
       List<Transaction> transactions = [];
       for (int i = 0; i < items.length; i++) {
-        transactions.add(Transaction.fromJson(items[i].toJson()));
+        transactions.add(Transaction.fromJson(items[i]!.toJson()));
       }
 
       return PageResponse(

@@ -95,6 +95,7 @@ subscription OnOrderHistoryChanged($userId: String, $unitId: String) {
     }
     items {
       productId
+      netPackagingFee
       productName {
         de
         en
@@ -155,5 +156,10 @@ subscription OnOrderHistoryChanged($userId: String, $unitId: String) {
     transactionStatus
     updatedAt
     createdAt
+    packagingSum {
+      currency
+      netPrice
+      taxPercentage
+    }
   }
 }

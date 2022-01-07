@@ -22,16 +22,16 @@
   <nb-card-body>
     <form [formGroup]="dialogForm!" (ngSubmit)="submit()" autocomplete="off">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <bgap-form-select
             caption="common.chain"
             [localize]="false"
-            [options]="chainOptions"
+            [options]="(chainOptions$ | async) || []"
             [control]="dialogForm.get('chainId')! | asFormControl"
             inputId="chainId"
           ></bgap-form-select>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <bgap-form-select
             caption="common.type"
             [localize]="false"

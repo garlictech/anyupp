@@ -1,56 +1,62 @@
 import { pipe, flow } from 'fp-ts/lib/function';
 import * as R from 'ramda';
-import { from, of, throwError } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import * as CrudSdk from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
-import { map, mergeMap, switchMap, toArray, tap } from 'rxjs/operators';
-import { v1 as uuid } from 'uuid';
+import { map, switchMap, tap, delay, shareReplay } from 'rxjs/operators';
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
+const DYNAMODB_OPERATION_DELAY = 1000;
 
 describe('Test paginated graphql lists', () => {
   const crudSdk = CrudSdk.getCrudSdkForIAM(accessKeyId, secretAccessKey);
-  const testId = uuid();
-  let objectIds: string[];
+  const testId = 'pagination-test-guy';
 
-  beforeAll(async () => {
-    objectIds = await pipe(
-      R.range(1, 5),
-      R.map(
-        (): CrudSdk.CreateAdminUserInput => ({
-          name: testId,
-          email: 'a@a.hu',
-          phone: '00123456789',
+  const objectIds = pipe(
+    R.range(1, 5),
+    R.map(counter => testId + counter),
+  );
+
+  const cleanup = () =>
+    pipe(
+      objectIds,
+      R.map(id =>
+        crudSdk.DeleteAdminUser({
+          input: { id },
         }),
       ),
-      x => from(x),
-    )
-      .pipe(
-        mergeMap(input => crudSdk.CreateAdminUser({ input })),
-        map(output => output?.id),
-        switchMap(id =>
-          id ? of(id) : throwError('Test object cannot be created'),
+      combineLatest,
+    );
+
+  const setup = cleanup().pipe(
+    delay(DYNAMODB_OPERATION_DELAY),
+    switchMap(() =>
+      pipe(
+        R.range(1, 5),
+        R.map(counter =>
+          crudSdk.CreateAdminUser({
+            input: {
+              id: testId + counter,
+              name: testId,
+              email: `testuser+${testId}${counter}@anyupp.com`,
+              phone: `+6923456789${counter}`,
+            },
+          }),
         ),
-        toArray(),
-        map(ids => ids.sort()),
-        tap(objects =>
-          console.debug(`Created ${objects?.length} test objects.`),
-        ),
-      )
-      .toPromise();
+        combineLatest,
+      ),
+    ),
+    tap(() => console.log('SETUP EXECUTED')),
+    shareReplay(1),
+  );
+
+  beforeEach(async () => {
+    await setup.toPromise();
   });
 
   afterAll(async () => {
-    await from(objectIds)
-      .pipe(
-        mergeMap(id => crudSdk.DeleteAdminUser({ input: { id } })),
-        toArray(),
-        tap(objects =>
-          console.debug(`Deleted ${objects?.length} test objects.`),
-        ),
-      )
-      .toPromise();
+    await cleanup().toPromise();
   });
 
   const limitCases = [undefined, null, 1, 2, 3, 4, 5, 100000];
@@ -104,7 +110,7 @@ describe('Test paginated graphql lists', () => {
         ),
       )
       .toPromise();
-  });
+  }, 10000);
 
   test('Pagination must work with missing op parameter', async () => {
     await getAllPaginatedData(crudSdk.ListAdminUsers)
@@ -119,7 +125,7 @@ describe('Test paginated graphql lists', () => {
         ),
       )
       .toPromise();
-  });
+  }, 10000);
 
   test('Pagination should call operation with proper options', () => {
     const operation = jest.fn().mockReturnValue(of({}));
@@ -130,5 +136,5 @@ describe('Test paginated graphql lists', () => {
     });
 
     expect((operation as jest.Mock).mock.calls).toMatchSnapshot();
-  });
+  }, 10000);
 });

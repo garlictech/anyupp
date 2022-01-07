@@ -1,11 +1,4 @@
-import { Auth } from '@aws-amplify/auth';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
-import {
-  deleteGeneratedProductCategoriesForAUnit,
-  listGeneratedProductCategoriesForUnits,
-  listGeneratedProductsForUnits,
-  unitRequestHandler,
-} from '@bgap/anyupp-gql/backend';
+import { CrudSdk } from '@bgap/crud-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
@@ -19,37 +12,16 @@ import {
   testIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import {
-  defaultSupportedServingModes,
-  EProductComponentSetType,
-  RequiredId,
-} from '@bgap/shared/types';
+import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
 import {
   filterNullishGraphqlListWithDefault,
   getSortedIds,
   sortById,
 } from '@bgap/shared/utils';
+import { delay, map, switchMap, take, tap, toArray } from 'rxjs/operators';
+import { combineLatest, concat, Observable, of } from 'rxjs';
 import {
-  combineLatest,
-  concat,
-  defer,
-  iif,
-  Observable,
-  of,
-  throwError,
-} from 'rxjs';
-import {
-  catchError,
-  delay,
-  map,
-  switchMap,
-  take,
-  takeLast,
-  tap,
-  toArray,
-} from 'rxjs/operators';
-import {
-  createAuthenticatedAnyuppSdk,
+  createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
 import {
@@ -76,12 +48,18 @@ import {
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
 import { getSortedProductCatIds } from '../test-utils/test-utils';
+import {
+  deleteGeneratedProductCategoriesForAUnit,
+  listGeneratedProductCategoriesForUnits,
+} from '@bgap/backend/product-categories';
+import { unitRequestHandler } from '@bgap/backend/units';
+import { listGeneratedProductsForUnits } from '@bgap/backend/products';
+import { dateMatcher } from '../../../../utils';
 
 const DYNAMODB_OPERATION_DELAY = 5000;
 const TEST_NAME = 'REGEN_';
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
 
-const chainId_01_seeded = productComponentSetFixture.seededProdComp_01.chainId;
+const chainId_01_seeded = productComponentSetFixture.seededProdComp_11.chainId;
 const unitId_01_to_regen = `${testIdPrefix}${TEST_NAME}UNIT_ID_01`;
 const unitId_02 = `${testIdPrefix}${TEST_NAME}UNIT_ID_02`;
 
@@ -95,15 +73,15 @@ const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
 
 // CONFIG SETS/COMPONENTS to create
 const prodComponent_01: RequiredId<CrudApi.CreateProductComponentInput> = {
-  ...productComponentSetFixture.seededProdComp_01,
+  ...productComponentSetFixture.seededProdComp_11,
   id: `${testIdPrefix}${TEST_NAME}prodComp_01`,
 };
 const prodComponent_02: RequiredId<CrudApi.CreateProductComponentInput> = {
-  ...productComponentSetFixture.seededProdComp_02,
+  ...productComponentSetFixture.seededProdComp_21,
   id: `${testIdPrefix}${TEST_NAME}prodComp_02`,
 };
 const prodComponent_03: RequiredId<CrudApi.CreateProductComponentInput> = {
-  ...productComponentSetFixture.seededProdComp_03,
+  ...productComponentSetFixture.seededProdComp_31,
   id: `${testIdPrefix}${TEST_NAME}prodComp_03`,
 };
 
@@ -122,17 +100,6 @@ const prodCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
     itemIds: [prodComponent_01.id, prodComponent_02.id, prodComponent_03.id],
   }),
   type: EProductComponentSetType.MODIFIER,
-};
-
-// HELPER MAPS
-const prodComponentSetMap = {
-  [prodCompSet_01.id]: prodCompSet_01,
-  [prodCompSet_02.id]: prodCompSet_02,
-};
-const prodComponentMap = {
-  [prodComponent_01.id]: prodComponent_01,
-  [prodComponent_02.id]: prodComponent_02,
-  [prodComponent_03.id]: prodComponent_03,
 };
 
 const prodConfigSet_01: CrudApi.ProductConfigSetInput = {
@@ -256,57 +223,57 @@ const unit02_generatedProduct_01 = {
 
 describe('RegenerateUnitData mutation tests', () => {
   const iamCrudSdk = createIamCrudSdk();
-  let authAnyuppSdk: AnyuppSdk;
+  let authCrudSdk: CrudSdk;
 
-  const cleanup = concat(
-    // CleanUP
-    deleteGeneratedProductCategoriesForAUnit({ crudSdk: iamCrudSdk })(
-      unitId_01_to_regen,
-    ),
-    iamCrudSdk.DeleteProductCategory({ input: { id: productCategory_01.id } }),
-    deleteTestProductComponent(prodComponent_01.id, iamCrudSdk),
-    deleteTestProductComponent(prodComponent_02.id, iamCrudSdk),
-    deleteTestProductComponent(prodComponent_03.id, iamCrudSdk),
-    deleteTestProductComponentSet(prodCompSet_01.id, iamCrudSdk),
-    deleteTestProductComponentSet(prodCompSet_02.id, iamCrudSdk),
-    deleteTestUnitProduct(unitProduct_0101.id, iamCrudSdk),
-    deleteTestUnitProduct(unitProduct_0102.id, iamCrudSdk),
-    deleteTestUnitProduct(unitProduct_0201_DIFFERENTUNIT.id, iamCrudSdk),
-    deleteTestUnitProduct(unitProduct_0104_NEW.id, iamCrudSdk),
-    deleteTestGroupProduct(groupProduct_01.id, iamCrudSdk),
-    deleteTestChainProduct(chainProduct_01.id, iamCrudSdk).pipe(take(1)),
-    // // generated
-    deleteTestGeneratedProduct(
-      generatedProduct_fromUnitProduct_0101.id,
-      iamCrudSdk,
-    ),
-    deleteTestGeneratedProduct(
-      generatedProduct_fromUnitProduct_0102.id,
-      iamCrudSdk,
-    ),
-    deleteTestGeneratedProduct(
-      unit01_generatedProduct_03_WONTBEREGENERATED.id,
-      iamCrudSdk,
-    ),
-    deleteTestGeneratedProduct(unit02_generatedProduct_01.id, iamCrudSdk),
-    deleteTestGeneratedProduct(unitProduct_0104_NEW.id, iamCrudSdk),
-    deleteTestUnit(unitId_01_to_regen, iamCrudSdk),
-  ).pipe(toArray());
+  const cleanup = () =>
+    concat(
+      // CleanUP
+      deleteGeneratedProductCategoriesForAUnit({ crudSdk: iamCrudSdk })(
+        unitId_01_to_regen,
+      ),
+      iamCrudSdk.DeleteProductCategory({
+        input: { id: productCategory_01.id },
+      }),
+      deleteTestProductComponent(prodComponent_01.id, iamCrudSdk),
+      deleteTestProductComponent(prodComponent_02.id, iamCrudSdk),
+      deleteTestProductComponent(prodComponent_03.id, iamCrudSdk),
+      deleteTestProductComponentSet(prodCompSet_01.id, iamCrudSdk),
+      deleteTestProductComponentSet(prodCompSet_02.id, iamCrudSdk),
+      deleteTestUnitProduct(unitProduct_0101.id, iamCrudSdk),
+      deleteTestUnitProduct(unitProduct_0102.id, iamCrudSdk),
+      deleteTestUnitProduct(unitProduct_0201_DIFFERENTUNIT.id, iamCrudSdk),
+      deleteTestUnitProduct(unitProduct_0104_NEW.id, iamCrudSdk),
+      deleteTestGroupProduct(groupProduct_01.id, iamCrudSdk),
+      deleteTestChainProduct(chainProduct_01.id, iamCrudSdk).pipe(take(1)),
+      // // generated
+      deleteTestGeneratedProduct(
+        generatedProduct_fromUnitProduct_0101.id,
+        iamCrudSdk,
+      ),
+      deleteTestGeneratedProduct(
+        generatedProduct_fromUnitProduct_0102.id,
+        iamCrudSdk,
+      ),
+      deleteTestGeneratedProduct(
+        unit01_generatedProduct_03_WONTBEREGENERATED.id,
+        iamCrudSdk,
+      ),
+      deleteTestGeneratedProduct(unit02_generatedProduct_01.id, iamCrudSdk),
+      deleteTestGeneratedProduct(unitProduct_0104_NEW.id, iamCrudSdk),
+      deleteTestUnit(unitId_01_to_regen, iamCrudSdk),
+    ).pipe(toArray());
 
-  beforeAll(async () => {
-    await createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
-      .toPromise()
-      .then(x => {
-        authAnyuppSdk = x.authAnyuppSdk;
-      });
-  });
+  beforeAll(done => {
+    createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
+      .pipe(tap(auth => (authCrudSdk = auth)))
+      .subscribe(() => done());
+  }, 25000);
 
-  beforeEach(async () => {
-    await cleanup
+  beforeEach(done => {
+    cleanup()
       .pipe(
-        takeLast(1),
+        delay(DYNAMODB_OPERATION_DELAY),
         switchMap(() =>
-          // Seeding
           concat(
             createTestUnit(unit_01, iamCrudSdk),
             createTestProductComponent(prodComponent_01, iamCrudSdk),
@@ -339,19 +306,14 @@ describe('RegenerateUnitData mutation tests', () => {
             iamCrudSdk.CreateProductCategory({ input: productCategory_01 }),
           ),
         ),
-        takeLast(1),
         delay(DYNAMODB_OPERATION_DELAY),
-        catchError(err => {
-          console.error('BEFORE HOOK ERROR');
-          return throwError(err);
-        }),
+        toArray(),
       )
-      .toPromise();
+      .subscribe(() => done());
   }, 25000);
 
-  afterAll(async () => {
-    await cleanup.toPromise();
-    await Auth.signOut();
+  afterAll(done => {
+    cleanup().subscribe(() => done());
   }, 15000);
 
   it('should return helpful error message in case the unit has no items', done => {
@@ -360,15 +322,9 @@ describe('RegenerateUnitData mutation tests', () => {
     of('start')
       .pipe(
         switchMap(() =>
-          iif(
-            () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-            defer(() =>
-              unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
-                input,
-              }),
-            ),
-            authAnyuppSdk.RegenerateUnitData({ input }),
-          ),
+          unitRequestHandler(iamCrudSdk).regenerateUnitData({
+            input,
+          }),
         ),
       )
       .subscribe({
@@ -379,228 +335,142 @@ describe('RegenerateUnitData mutation tests', () => {
       });
   });
 
-  it('should regenerate all the generated products for the unit', done => {
+  const testLogic = (
+    op: (
+      input: CrudApi.MutationRegenerateUnitDataArgs,
+    ) => ReturnType<CrudApi.CrudSdk['RegenerateUnitData']>,
+  ) => {
     const input = { id: unitId_01_to_regen };
 
-    combineLatest([
+    const calc1 = combineLatest([
       listGeneratedProductsForUnits(iamCrudSdk)([
         unitId_01_to_regen,
         unitId_02,
       ]),
       listProductsForUnits(iamCrudSdk, [unitId_01_to_regen, unitId_02]),
-    ])
-      .pipe(
-        // PHASE 0: PREPARE - start state check
-        tap({
-          next(result) {
-            const [generatedProducts, unitProducts] = result;
-            const upIds = getSortedIds(unitProducts);
-            const genIds = getSortedIds(generatedProducts);
+    ]).pipe(
+      // PHASE 0: PREPARE - start state check
+      tap({
+        next(result) {
+          const [generatedProducts, unitProducts] = result;
+          const upIds = getSortedIds(unitProducts);
+          const genIds = getSortedIds(generatedProducts);
+          expect(genIds).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);
+          expect(upIds).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);
+          expect(genIds).toContainEqual(unitProduct_0101.id);
+          expect(upIds).toContainEqual(unitProduct_0101.id);
+          expect(genIds).toContainEqual(unitProduct_0102.id);
+          expect(upIds).toContainEqual(unitProduct_0102.id);
+          expect(genIds).toContainEqual(unitProduct_0102.id);
+          expect(upIds).toContainEqual(unitProduct_0102.id);
 
-            expect(genIds).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);
-            expect(upIds).toContainEqual(unitProduct_0201_DIFFERENTUNIT.id);
-            expect(genIds).toContainEqual(unitProduct_0101.id);
-            expect(upIds).toContainEqual(unitProduct_0101.id);
-            expect(genIds).toContainEqual(unitProduct_0102.id);
-            expect(upIds).toContainEqual(unitProduct_0102.id);
-            expect(genIds).toContainEqual(unitProduct_0102.id);
-            expect(upIds).toContainEqual(unitProduct_0102.id);
+          const aGeneratedProduct = generatedProducts.find(
+            x => x.id === unitProduct_0101.id,
+          );
 
-            const aGeneratedProduct = generatedProducts.find(
-              x => x.id === unitProduct_0101.id,
-            );
+          expect(aGeneratedProduct).toHaveProperty('configSets', null);
 
-            expect(aGeneratedProduct).toHaveProperty('configSets', null);
+          //extra
+          expect(genIds).toContainEqual(
+            unit01_generatedProduct_03_WONTBEREGENERATED.id,
+          );
+          expect(genIds).not.toContainEqual(unitProduct_0104_NEW.id);
+          expect(upIds).toContainEqual(unitProduct_0104_NEW.id);
+          expect(upIds).not.toContainEqual(
+            unit01_generatedProduct_03_WONTBEREGENERATED.id,
+          );
+        },
+      }),
 
-            //extra
-            expect(genIds).toContainEqual(
-              unit01_generatedProduct_03_WONTBEREGENERATED.id,
-            );
-            expect(genIds).not.toContainEqual(unitProduct_0104_NEW.id);
-            expect(upIds).toContainEqual(unitProduct_0104_NEW.id);
-            expect(upIds).not.toContainEqual(
-              unit01_generatedProduct_03_WONTBEREGENERATED.id,
-            );
-          },
-        }),
-        catchError(err => {
-          console.error('START STATE CHECK ERROR');
-          return throwError(err);
-        }),
+      // PHASE 1: EXECUTE THE LOGIC - check generated products
+      switchMap(() => op({ input })),
+      // ASSERTIONS
+      delay(DYNAMODB_OPERATION_DELAY),
+      switchMap(() =>
+        listGeneratedProductsForUnits(iamCrudSdk)([
+          unitId_01_to_regen,
+          unitId_02,
+        ]),
+      ),
+      tap({
+        next(result) {
+          const expectedGeneratedIds = [
+            unitProduct_0201_DIFFERENTUNIT.id,
+            unitProduct_0104_NEW.id,
+            unitProduct_0101.id,
+            unitProduct_0102.id,
+          ].sort();
 
-        // PHASE 1: EXECUTE THE LOGIC - check generated products
-        switchMap(() =>
-          iif(
-            () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-            defer(() =>
-              unitRequestHandler({ crudSdk: iamCrudSdk }).regenerateUnitData({
-                input,
-              }),
-            ),
-            authAnyuppSdk.RegenerateUnitData({ input }),
-          ),
-        ),
+          const ids = result.map(x => x.id).sort();
+          expect(expectedGeneratedIds).toEqual(ids);
 
-        // ASSERTIONS
-        delay(DYNAMODB_OPERATION_DELAY),
-        switchMap(() =>
-          listGeneratedProductsForUnits(iamCrudSdk)([
-            unitId_01_to_regen,
-            unitId_02,
-          ]),
-        ),
-        tap({
-          next(result) {
-            const expectedGeneratedIds = [
-              unitProduct_0201_DIFFERENTUNIT.id,
-              unitProduct_0104_NEW.id,
-              unitProduct_0101.id,
-              unitProduct_0102.id,
-            ];
-            const ids = result.map(x => x.id);
+          expect(
+            result
+              .filter(x => expectedGeneratedIds.includes(x.id))
+              .sort((a, b) => (a.id > b.id ? 1 : -1))
+              .map(
+                ({ updatedAt, createdAt, ...fieldToSnapshot }) =>
+                  fieldToSnapshot,
+              ),
+          ).toMatchSnapshot();
+        },
+      }),
+    );
 
-            expectedGeneratedIds.forEach(id => {
-              expect(ids).toContainEqual(id);
-            });
+    return calc1.pipe(
+      // PHASE 2: Check a single generated Item with the config sets
+      tap({
+        next(result) {
+          // Generated CONFIG SET check
+          const productToCheck = unitProduct_0101;
+          console.log(`Check the ${productToCheck.id}'s field`);
 
-            expect(
-              result
-                .filter(x => expectedGeneratedIds.includes(x.id))
-                .sort((a, b) => (a.id > b.id ? 1 : -1))
-                .map(
-                  ({ updatedAt, createdAt, ...fieldToSnapshot }) =>
-                    fieldToSnapshot,
-                ),
-            ).toMatchSnapshot();
-          },
-        }),
+          const aGeneratedProduct = result.find(
+            x => x.id === productToCheck.id,
+          );
+          expect(aGeneratedProduct).toMatchSnapshot(dateMatcher);
+        },
+      }),
 
-        // PHASE 2: Check a single generated Item with the config sets
-        tap({
-          next(result) {
-            // Generated CONFIG SET check
-            const productToCheck = unitProduct_0101;
-            console.log(`Check the ${productToCheck.id}'s field`);
-
-            const aGeneratedProduct = result.find(
-              x => x.id === productToCheck.id,
-            );
-            expect(aGeneratedProduct).toHaveProperty('allergens');
-            expect(aGeneratedProduct?.configSets).not.toBeNull();
-            if (
-              !aGeneratedProduct ||
-              !aGeneratedProduct.configSets ||
-              !aGeneratedProduct.configSets[0]
-            ) {
-              throw `configSets is missing from the ${productToCheck.id} product`;
-            }
-            expect(aGeneratedProduct.configSets).toHaveLength(2);
-            expect(aGeneratedProduct.configSets[0]).toHaveProperty(
-              'productSetId',
-              prodConfigSet_01.productSetId,
-            );
-            expect(aGeneratedProduct.configSets[0].items).toHaveLength(2);
-
-            const expectedCompSet_01 =
-              prodComponentSetMap[productToCheck.configSets[0].productSetId];
-            const expectedComp_0_0 =
-              prodComponentMap[
-                productToCheck.configSets[0].items[0].productComponentId
-              ];
-            const expectedComp_0_1 =
-              prodComponentMap[
-                productToCheck.configSets[0].items[1].productComponentId
-              ];
-            const expectedGeneratedProductConfigComponentSet_01: CrudApi.GeneratedProductConfigSet =
-              {
-                // comes from the ConfigSet that is stored in the product
-                position: productToCheck.configSets[0].position,
-                // comes from the productComponentSet itself (referenced by productSetId)
-                productSetId: expectedCompSet_01.id,
-                name: {
-                  ...expectedCompSet_01.name,
-                },
-                type: expectedCompSet_01.type,
-                maxSelection: expectedCompSet_01.maxSelection,
-                supportedServingModes: defaultSupportedServingModes,
-                items: [
-                  {
-                    // comes from the ConfigComponent that is stored in the product's config set
-                    productComponentId:
-                      productToCheck.configSets[0].items[0].productComponentId,
-                    price: productToCheck.configSets[0].items[0].price,
-                    position: productToCheck.configSets[0].items[0].position,
-                    // comes from the productComponent itself (referenced by productComponentId)
-                    name: {
-                      ...expectedComp_0_0.name,
-                    },
-                    allergens: expectedComp_0_0.allergens,
-                  },
-                  {
-                    // comes from the ConfigComponent that is stored in the product's config set
-                    productComponentId:
-                      productToCheck.configSets[0].items[1].productComponentId,
-                    price: productToCheck.configSets[0].items[1].price,
-                    position: productToCheck.configSets[0].items[1].position,
-                    // comes from the productComponent itself (referenced by productComponentId)
-                    name: {
-                      ...expectedComp_0_1.name,
-                    },
-                    allergens: expectedComp_0_1.allergens,
-                  },
-                ],
-              };
-            expect(aGeneratedProduct.configSets[0]).toEqual(
-              expectedGeneratedProductConfigComponentSet_01,
-            );
-          },
-        }),
-
-        // PHASE 3: Check the generated PRODUCT CATEGORIES
-        switchMap(() =>
-          listGeneratedProductCategoriesForUnits({ crudSdk: iamCrudSdk })([
-            unitId_01_to_regen,
-          ]),
-        ),
-        map(sortById),
-        tap({
-          next(result) {
-            // ONLY THE PRECREATED GENCATEGORY SHOULD EXIST
-            expect(getSortedProductCatIds(result)).toEqual([
-              productCategory_01.id,
-            ]);
-            expect(result[0].productCategoryId).toEqual(productCategory_01.id);
-            expect(result[0].productNum).toEqual(3);
-            expect(result[0]).toMatchSnapshot(
-              {
+      // PHASE 3: Check the generated PRODUCT CATEGORIES
+      switchMap(() =>
+        listGeneratedProductCategoriesForUnits({ crudSdk: iamCrudSdk })([
+          unitId_01_to_regen,
+        ]),
+      ),
+      map(sortById),
+      tap({
+        next(result) {
+          // ONLY THE PRECREATED GENCATEGORY SHOULD EXIST
+          expect(getSortedProductCatIds(result)).toEqual([
+            productCategory_01.id,
+          ]);
+          expect(result[0].productCategoryId).toEqual(productCategory_01.id);
+          expect(result[0].productNum).toEqual(3);
+          expect(result[0]).toMatchSnapshot(
+            {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+              productCategory: {
                 createdAt: expect.any(String),
                 updatedAt: expect.any(String),
-                productCategory: {
-                  createdAt: expect.any(String),
-                  updatedAt: expect.any(String),
-                },
               },
-              'A Generated ProductCategory',
-            );
-          },
-        }),
-      )
-      // execute func
-      .subscribe({
-        next() {
-          done();
+            },
+            'A Generated ProductCategory',
+          );
         },
-        error(err) {
-          console.error(`${TEST_NAME}Test ERROR`, err);
-        },
-      });
+      }),
+    );
+  };
 
-    // TODO: extra test scenario could be
-    // modify unitProduct
-    // modify groupProduct
-    // modify chainProduct
-    // execute func
-    // listGeneratedProductForAUnit -> snapshot
+  it('should regenerate all the generated products for the unit with direct resolver', done => {
+    testLogic(unitRequestHandler(iamCrudSdk).regenerateUnitData).subscribe(() =>
+      done(),
+    );
+  }, 25000);
+
+  it('should regenerate all the generated products for the unit with API', done => {
+    testLogic(authCrudSdk.RegenerateUnitData).subscribe(() => done());
   }, 25000);
 });
 

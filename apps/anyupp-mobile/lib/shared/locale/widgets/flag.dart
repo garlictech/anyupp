@@ -26,8 +26,8 @@ class Flag extends StatelessWidget {
   /// The [country] parameter must not be null.
   Flag(
     this.country, {
-    required this.height,
-    required this.width,
+    this.height = 24.0,
+    this.width = 24.0,
     this.fit = BoxFit.contain,
   });
 

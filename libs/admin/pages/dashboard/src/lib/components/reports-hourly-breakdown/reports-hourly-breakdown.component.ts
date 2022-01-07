@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { hourlyBreakdownOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductType, IOrderAmount } from '@bgap/shared/types';
+import { EProductType, OrderAmount } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -36,7 +36,7 @@ export class ReportsHourlyBreakdownComponent
   @Input() currency = '';
 
   private _chart!: Chart;
-  private _amounts: IOrderAmount = {};
+  private _amounts: OrderAmount = {};
 
   constructor(
     private _translateService: TranslateService,

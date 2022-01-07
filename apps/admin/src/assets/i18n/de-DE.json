@@ -60,8 +60,8 @@
     "submit": "Submit",
     "imageUploadSuccess": "Image uploaded successfully",
     "imageRemoveSuccess": "Image removed successfully",
-    "insertSuccessful": "Insert successful",
-    "updateSuccessful": "Update successful",
+    "insertSuccess": "Insert successful",
+    "updateSuccess": "Update successful",
     "removeSuccessful": "Remove successful",
     "imageUploadError": "Image uploaded error",
     "imageRemoveError": "Image remove error",
@@ -110,7 +110,10 @@
     "receipt": "receipt",
     "invoice": "invoice",
     "timeZone": "Timezone",
-    "resetPassword": "Reset password"
+    "resetPassword": "Reset password",
+    "packagingFee": "Packaging fee",
+    "packagingTax": "Packaging tax",
+    "search": "Search"
   },
   "menu": {
     "dashboard": "Dashboard",

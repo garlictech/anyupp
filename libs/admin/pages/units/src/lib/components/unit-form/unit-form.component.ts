@@ -1,4 +1,5 @@
 import { cloneDeep, omit, pick } from 'lodash/fp';
+import { Observable } from 'rxjs';
 import { delay, take } from 'rxjs/operators';
 
 import {
@@ -9,38 +10,27 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormArray, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import {
   AbstractFormDialogComponent,
   FormsService,
 } from '@bgap/admin/shared/forms';
 import {
-  addressFormGroup,
-  contactFormGroup,
-  multiLangValidator,
-  notEmptyArray,
   ORDER_MODES,
   PAYMENT_MODES,
   SERVING_MODES,
-  TIME_FORMAT_PATTERN,
-  unitOpeningHoursValidator,
 } from '@bgap/admin/shared/utils';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  defaultOrderMode,
-  defaultServingMode,
-  IKeyValue,
-} from '@bgap/shared/types';
+import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 import { timeZonesNames } from '@vvo/tzdb';
+
+import { UnitFormService } from '../../services/unit-form.service';
 
 @UntilDestroy()
 @Component({
@@ -56,10 +46,9 @@ export class UnitFormComponent
   public paymentModes = PAYMENT_MODES;
   public servingModes = SERVING_MODES;
   public orderModes = ORDER_MODES;
-  public groupOptions: IKeyValue[] = [];
-  public timeZoneOptions: IKeyValue[] = [];
+  public groupOptions$: Observable<KeyValue[]>;
+  public timeZoneOptions: KeyValue[] = [];
 
-  private _groups: CrudApi.Group[] = [];
   private _isInitiallyRkeeper = false;
 
   constructor(
@@ -67,76 +56,17 @@ export class UnitFormComponent
     private _formsService: FormsService,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _crudSdk: CrudSdkService,
+    private _unitFormService: UnitFormService,
   ) {
     super(_injector);
 
-    this.dialogForm = this._formBuilder.group({
-      groupId: ['', [Validators.required]],
-      chainId: ['', [Validators.required]],
-      isActive: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      description: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      timeZone: [''],
-      paymentModes: [[]],
-      supportedServingModes: [
-        [defaultServingMode],
-        { validators: notEmptyArray },
-      ],
-      supportedOrderModes: [[defaultOrderMode], { validators: notEmptyArray }],
-      ...contactFormGroup(),
-      ...addressFormGroup(this._formBuilder, true),
-      pos: this._formBuilder.group({
-        type: [CrudApi.PosType.anyupp],
-        rkeeper: this._formsService.createRkeeperFormGroup(),
-      }),
-      open: this._formBuilder.group({
-        from: [''],
-        to: [''],
-      }),
-      openingHours: this._formBuilder.group(
-        {
-          mon: this._formBuilder.group({
-            from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-            to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          tue: this._formBuilder.group({
-            from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-            to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          wed: this._formBuilder.group({
-            from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-            to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          thu: this._formBuilder.group({
-            from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-            to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          fri: this._formBuilder.group({
-            from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-            to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          sat: this._formBuilder.group({
-            from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-            to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          sun: this._formBuilder.group({
-            from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-            to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
-          }),
-          custom: this._formBuilder.array([]),
-        },
-        { validators: unitOpeningHoursValidator },
-      ),
-      lanes: this._formBuilder.array([]),
-    });
+    this.dialogForm = this._unitFormService.createUnitFormGroup();
+    this.timeZoneOptions = timeZonesNames.map(n => ({
+      key: n,
+      value: n,
+    }));
+
+    this.groupOptions$ = this._unitFormService.getGroupOptions$();
   }
 
   ngOnInit(): void {
@@ -203,29 +133,6 @@ export class UnitFormComponent
 
       this.dialogForm.patchValue({ isActive: false });
     }
-
-    this._store
-      .pipe(
-        select(groupsSelectors.getSelectedChainGroups),
-        untilDestroyed(this),
-      )
-      .subscribe((groups: CrudApi.Group[]): void => {
-        this._groups = groups;
-
-        this.groupOptions = this._groups.map(
-          (group: CrudApi.Group): IKeyValue => ({
-            key: group.id,
-            value: group.name,
-          }),
-        );
-
-        this._changeDetectorRef.detectChanges();
-      });
-
-    this.timeZoneOptions = timeZonesNames.map(n => ({
-      key: n,
-      value: n,
-    }));
   }
 
   ngOnDestroy(): void {
@@ -246,69 +153,36 @@ export class UnitFormComponent
             {
               label: 'common.ok',
               callback: (): void => {
-                this._submitForm();
+                this._saveForm();
               },
               status: 'success',
             },
             {
               label: 'common.cancel',
-              callback: () => {
-                /* */
-              },
               status: 'basic',
             },
           ],
         };
       } else {
-        this._submitForm();
+        this._saveForm();
       }
     }
   }
 
-  private _submitForm() {
-    const value = cloneDeep(this.dialogForm?.value);
+  private _saveForm() {
+    this._unitFormService
+      .saveForm$(cloneDeep(this.dialogForm.value), this.unit?.id)
+      .subscribe((response: UpsertResponse<unknown>) => {
+        this._toasterService.showSimpleSuccess(response.type);
 
-    if (value.pos?.type !== CrudApi.PosType.rkeeper) {
-      delete value.pos?.rkeeper;
-    }
-
-    if (this.unit?.id) {
-      this._crudSdk.sdk
-        .UpdateUnit({
-          input: {
-            id: this.unit.id,
-            ...value,
-          },
-        })
-        .pipe(catchGqlError(this._store))
-        .subscribe(() => {
-          this._toasterService.showSimpleSuccess('common.updateSuccessful');
-
-          this.close();
-        });
-    } else {
-      this._crudSdk.sdk
-        .CreateUnit({
-          input: {
-            ...value,
-            isAcceptingOrders: false,
-          },
-        })
-        .pipe(catchGqlError(this._store))
-        .subscribe(() => {
-          this._toasterService.showSimpleSuccess('common.insertSuccessful');
-          this.close();
-        });
-    }
+        this.close();
+      });
   }
 
-  public paymentModeIsChecked(paymentMode: CrudApi.PaymentMode): boolean {
-    return (
-      (this.dialogForm?.value.paymentModes || [])
-        .map((m: { type: string }) => m.type)
-        .indexOf(paymentMode.type) >= 0
-    );
-  }
+  public paymentModeIsChecked = (paymentMode: CrudApi.PaymentMode) =>
+    (this.dialogForm?.value.paymentModes || [])
+      .map((m: { type: string }) => m.type)
+      .indexOf(paymentMode.type) >= 0;
 
   public togglePaymentMode(paymentMode: CrudApi.PaymentMode): void {
     const paymentModesArr = this.dialogForm?.value.paymentModes;

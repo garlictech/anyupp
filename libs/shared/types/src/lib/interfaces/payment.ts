@@ -1,3 +1,3 @@
-export interface IStripePayment {
+export interface StripePayment {
   accountId: string;
 }

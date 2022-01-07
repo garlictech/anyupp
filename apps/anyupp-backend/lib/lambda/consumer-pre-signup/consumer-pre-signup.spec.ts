@@ -19,7 +19,7 @@ const createGoodHandlerCall = (deps: Deps) =>
       handlerFn({
         request: {
           userAttributes: {
-            email: 'a@a.hu',
+            email: 'testuser+joe@anyupp.com',
             phone_numner: '+123456789',
           },
         },

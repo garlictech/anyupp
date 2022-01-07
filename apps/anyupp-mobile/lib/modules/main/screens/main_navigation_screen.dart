@@ -1,6 +1,5 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -20,7 +19,8 @@ class MainNavigation extends StatefulWidget {
   _MainNavigationState createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> with SingleTickerProviderStateMixin {
+class _MainNavigationState extends State<MainNavigation>
+    with SingleTickerProviderStateMixin {
   List<MainPageOptions>? _pageOptions;
 
   // --- For bottom animation bar
@@ -112,7 +112,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           appBar: _pageOptions![_selectedIndex].showAppBar
               ? AppBar(
                   title: Text(_pageOptions![_selectedIndex].appBarText,
-                      style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary)),
                   centerTitle: false,
                   leading: Container(),
                 )
@@ -123,7 +124,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           body: BlocListener<MainNavigationBloc, MainNavigationState>(
             listener: (BuildContext context, MainNavigationState state) {
               if (state is MainNavaigationNeed) {
-                print('******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                print(
+                    '******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
                 _navigateToPage(state.pageIndex);
               }
             },
@@ -177,13 +179,15 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    _createBottomBarIconWithText(0, Icons.fastfood, 'main.bottomTitles.menu'),
+                    _createBottomBarIconWithText(
+                        0, Icons.fastfood, 'main.bottomTitles.menu'),
                     // _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
                     // SizedBox(
                     //   width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
                     // ),
                     _createOrdersBottomBarIconWithTextAndBadge(),
-                    _createBottomBarIconWithText(3, Icons.account_circle, 'main.bottomTitles.profile'),
+                    _createBottomBarIconWithText(
+                        3, Icons.account_circle, 'main.bottomTitles.profile'),
                   ],
                 ),
                 // shape: CircularNotchedRectangle(),
@@ -209,11 +213,15 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
         }
       },
       child: _createBottomBarIconWithText(
-          2, Icons.receipt, 'main.bottomTitles.orders', _orderCount > 0 ? _orderCount.toString() : null),
+          2,
+          Icons.receipt,
+          'main.bottomTitles.orders',
+          _orderCount > 0 ? _orderCount.toString() : null),
     );
   }
 
-  Widget _createBottomBarIconWithText(int index, IconData icon, String textKey, [String? badge]) {
+  Widget _createBottomBarIconWithText(int index, IconData icon, String textKey,
+      [String? badge]) {
     return BottomBarItem(
       icon: icon,
       text: trans(textKey),
@@ -248,7 +256,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
 
     if (index == 4) {
       index = 0;
-      Future.delayed(Duration(seconds: 1)).then((value) => Nav.to(CartScreen()));
+      Future.delayed(Duration(seconds: 1))
+          .then((value) => Nav.to(CartScreen()));
     }
 
     setState(() {

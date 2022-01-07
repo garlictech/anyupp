@@ -1,6 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { PaymentMode } from '@bgap/crud-gql/api';
-import { IAllergen } from '@bgap/shared/types';
+import { Allergen } from '@bgap/shared/types';
 
 export const DEFAULT_LANG = 'en-US';
 
@@ -104,7 +104,7 @@ export const ORDER_MODES = [
 
 export const DEFAULT_LANE_COLOR = '#5B7AFF';
 
-export const ALLERGENS: IAllergen[] = [
+export const ALLERGENS: Allergen[] = [
   {
     id: 'gluten',
     idx: 1,
@@ -126,11 +126,11 @@ export const ALLERGENS: IAllergen[] = [
     idx: 5,
   },
   {
-    id: 'milk',
+    id: 'soya',
     idx: 6,
   },
   {
-    id: 'soya',
+    id: 'milk',
     idx: 7,
   },
   {
@@ -162,7 +162,3 @@ export const ALLERGENS: IAllergen[] = [
     idx: 14,
   },
 ];
-
-export const timezoneBudapest = 'Europe/Budapest';
-export const timezoneLondon = 'Europe/London';
-export const timezoneUSCentral = 'US/Central';

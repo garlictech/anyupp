@@ -60,8 +60,8 @@
     "submit": "Elküld",
     "imageUploadSuccess": "Sikeres képfeltöltés",
     "imageRemoveSuccess": "Sikeres kép törlés",
-    "insertSuccessful": "Sikeres beszúrás",
-    "updateSuccessful": "Sikeres frissítés",
+    "insertSuccess": "Sikeres beszúrás",
+    "updateSuccess": "Sikeres frissítés",
     "removeSuccessful": "Sikeres törlés",
     "imageUploadError": "Sikertelen képfeltöltés",
     "imageRemoveError": "Sikertelen kép törlés",
@@ -110,7 +110,10 @@
     "receipt": "nyugta",
     "invoice": "számla",
     "timeZone": "Időzóna",
-    "resetPassword": "Új jelszó"
+    "resetPassword": "Új jelszó",
+    "packagingFee": "Csomagolási díj",
+    "packagingTax": "Csomagolási adó",
+    "search": "Keresés"
   },
   "menu": {
     "dashboard": "Vezérlőpult",
@@ -250,7 +253,9 @@
       "other": "Egyéb",
       "unknown": "Ismeretlen típus"
     },
-    "takeaway": "Elvitelre"
+    "takeaway": "Elvitelre",
+    "packagingFee": "Csomagolási díj",
+    "packagingTax": "Csomagolási adó"
   },
   "productCategories": {
     "addProductCategory": "Termék kategória hozzáadása",

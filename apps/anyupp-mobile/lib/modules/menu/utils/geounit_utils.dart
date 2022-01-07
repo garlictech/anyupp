@@ -1,5 +1,4 @@
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/models/GeoUnit.dart';
 
 class GeoUnitUtils {
   static bool isClosed(GeoUnit unit) {
@@ -20,7 +19,8 @@ class GeoUnitUtils {
     return null;
   }
 
-  static String getClosedText(GeoUnit unit, String closed, String opens, String day) {
+  static String getClosedText(
+      GeoUnit unit, String closed, String opens, String day) {
     String text = closed;
     OpeningHours? openingHours = getOpenedHour(unit);
     if (openingHours != null) {

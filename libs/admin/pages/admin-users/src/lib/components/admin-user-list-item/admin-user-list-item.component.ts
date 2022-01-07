@@ -47,16 +47,10 @@ export class AdminUserListItemComponent {
           callback: (): void => {
             this._authService.sendPasswordResetEmail(this.adminUser.email || '').then(
               (): void => {
-                this._toasterService.showSimpleSuccess(
-
-                  'auth.reminderSent'
-                );
+                this._toasterService.showSimpleSuccess('auth.reminderSent');
               },
               (): void => {
-                this._toasterService.showSimpleSuccess(
-
-                  'auth.reminderError'
-                );
+                this._toasterService.showSimpleSuccess('auth.reminderError');
               }
             );
           },
@@ -64,9 +58,6 @@ export class AdminUserListItemComponent {
         },
         {
           label: 'common.cancel',
-          callback: () => {
-
-          },
           status: 'basic',
         },
       ],

@@ -16,7 +16,9 @@ class OrderItem {
   final List<String>? allergens;
   final String productType;
   final List<OrderItemConfigSet>? configSets;
-  final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>? selectedConfigMap;
+  final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
+      selectedConfigMap;
+  final double? netPackagingFee;
 
   OrderItem({
     required this.productId,
@@ -32,6 +34,7 @@ class OrderItem {
     this.allergens,
     this.configSets,
     this.selectedConfigMap,
+    this.netPackagingFee,
   });
 
   OrderItem copyWith({
@@ -48,7 +51,9 @@ class OrderItem {
     List<String>? allergens,
     String? productType,
     List<OrderItemConfigSet>? configSets,
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>? selectedConfigMap,
+    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
+        selectedConfigMap,
+    double? netPackagingFee,
   }) {
     return OrderItem(
       productId: productId ?? this.productId,
@@ -64,6 +69,7 @@ class OrderItem {
       productType: productType ?? this.productType,
       configSets: configSets ?? this.configSets,
       selectedConfigMap: selectedConfigMap ?? this.selectedConfigMap,
+      netPackagingFee: netPackagingFee ?? this.netPackagingFee,
     );
   }
 
@@ -81,6 +87,7 @@ class OrderItem {
       'allergens': allergens,
       'productType': productType,
       'configSets': configSets?.map((x) => x.toJson()).toList(),
+      'netPackagingFee': netPackagingFee,
     };
   }
 
@@ -92,24 +99,29 @@ class OrderItem {
       priceShown: PriceShown.fromJson(map['priceShown']),
       sumPriceShown: PriceShown.fromJson(map['sumPriceShown']),
       quantity: map['quantity'],
-      statusLog: List<StatusLog>.from(map['statusLog']?.map((x) => StatusLog.fromJson(x))),
+      statusLog: List<StatusLog>.from(
+          map['statusLog']?.map((x) => StatusLog.fromJson(x))),
       variantName: LocalizedItem.fromJson(map['variantName']),
       image: map['image'],
-      allergens: map['allergens'] != null ? List<String>.from(map['allergens']) : null,
+      allergens:
+          map['allergens'] != null ? List<String>.from(map['allergens']) : null,
       productType: map['productType'] ?? '',
       configSets: map['configSets'] != null
-          ? List<OrderItemConfigSet>.from(map['configSets']?.map((x) => OrderItemConfigSet.fromJson(x)))
+          ? List<OrderItemConfigSet>.from(
+              map['configSets']?.map((x) => OrderItemConfigSet.fromJson(x)))
           : null,
       selectedConfigMap: map['configSets'] != null
           ? getSelectdConfigMap(List<GeneratedProductConfigSet>.from(
-              map['configSets']?.map((x) => GeneratedProductConfigSet.fromJson(x))))
+              map['configSets']
+                  ?.map((x) => GeneratedProductConfigSet.fromJson(x))))
           : null,
+      netPackagingFee: map['netPackagingFee'],
     );
   }
 
   @override
   String toString() {
-    return 'OrderItem( productId: $productId, variantId: $variantId, productName: $productName, priceShown: $priceShown, sumPriceShown: $sumPriceShown, quantity: $quantity, statusLog: $statusLog, variantName: $variantName, image: $image, allergens: $allergens, configSets: $configSets)';
+    return 'OrderItem( productId: $productId, variantId: $variantId, productName: $productName, priceShown: $priceShown, sumPriceShown: $sumPriceShown, quantity: $quantity, netPackagingFee: $netPackagingFee, statusLog: $statusLog, variantName: $variantName, image: $image, allergens: $allergens, configSets: $configSets)';
   }
 
   @override
@@ -127,9 +139,11 @@ class OrderItem {
         other.variantName == variantName &&
         other.image == image &&
         other.productType == productType &&
+        other.netPackagingFee == netPackagingFee &&
         listEquals(other.allergens, allergens) &&
         listEquals(other.configSets, configSets) &&
-        DeepCollectionEquality().equals(selectedConfigMap, other.selectedConfigMap);
+        DeepCollectionEquality()
+            .equals(selectedConfigMap, other.selectedConfigMap);
   }
 
   @override
@@ -145,12 +159,14 @@ class OrderItem {
         image.hashCode ^
         allergens.hashCode ^
         productType.hashCode ^
+        netPackagingFee.hashCode ^
         configSets.hashCode;
   }
 
-  static Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> getSelectdConfigMap(
-      List<GeneratedProductConfigSet> mapList) {
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>> selectedConfigMap = {};
+  static Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+      getSelectdConfigMap(List<GeneratedProductConfigSet> mapList) {
+    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+        selectedConfigMap = {};
     for (GeneratedProductConfigSet temp in mapList) {
       selectedConfigMap[temp] = temp.items;
     }

@@ -16,11 +16,15 @@
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <nb-list-item *ngFor="let adminUser of adminUsers$ | async">
-      <bgap-admin-user-list-item
-        class="w-100"
-        [adminUser]="adminUser"
-      ></bgap-admin-user-list-item>
-    </nb-list-item>
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+      <nb-list>
+        <nb-list-item *cdkVirtualFor="let adminUser of adminUsers$ | async">
+          <bgap-admin-user-list-item
+            class="w-100"
+            [adminUser]="adminUser"
+          ></bgap-admin-user-list-item>
+        </nb-list-item>
+      </nb-list>
+    </cdk-virtual-scroll-viewport>
   </nb-card-body>
 </nb-card>

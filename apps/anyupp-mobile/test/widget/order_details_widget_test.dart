@@ -10,7 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'mock/mock_data_faker.dart';
+import '../mock/mock_data_faker.dart';
 import 'mock/mock_theme_bloc.dart';
 
 void main() {
@@ -24,7 +24,8 @@ void main() {
   Widget _createBoilerPlateApp({required Widget child}) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (BuildContext context) => getIt<OrderRefreshBloc>()),
+        BlocProvider(
+            create: (BuildContext context) => getIt<OrderRefreshBloc>()),
       ],
       child: MaterialApp(
         themeMode: ThemeMode.light,

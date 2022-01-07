@@ -1,5 +1,16 @@
-import { timezoneBudapest, timezoneLondon, timezoneUSCentral } from '../const';
-import { getDayIntervals, makeId } from './forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  getDayIntervals,
+  timezoneBudapest,
+  timezoneLondon,
+  timezoneUSCentral,
+} from '@bgap/shared/utils';
+
+import { TIME_FORMAT_PATTERN } from '../const';
+import {
+  dailyScheduleBothEmptyOrProperlyFilledValidator,
+  makeId,
+} from './forms';
 
 describe('Forms pure function tests', () => {
   describe('getDayIntervals', () => {
@@ -60,6 +71,57 @@ describe('Forms pure function tests', () => {
         const result = makeId(i);
         expect(result).toMatch(regex);
         expect(result).toHaveLength(i);
+      },
+    );
+  });
+});
+
+describe('Form validators', () => {
+  describe('dailyScheduleBothEmptyOrProperlyFilledValidator', () => {
+    const form: FormGroup = new FormGroup(
+      {
+        from: new FormControl('', [Validators.pattern(TIME_FORMAT_PATTERN)]),
+        to: new FormControl('', [Validators.pattern(TIME_FORMAT_PATTERN)]),
+      },
+      { validators: dailyScheduleBothEmptyOrProperlyFilledValidator },
+    );
+
+    const validCases = [
+      ['', ''],
+      ['10:00', '11:00'],
+      ['11:00', '10:00'],
+    ];
+    test.each(validCases)(
+      'should check "%s" values with "%s" values',
+      (from, to) => {
+        form.patchValue({
+          from,
+          to,
+        });
+
+        expect(form.valid).toBeTruthy();
+      },
+    );
+
+    const invalidCases = [
+      ['1', ''],
+      ['10', ''],
+      ['10:', ''],
+      ['10:1', ''],
+      ['', '1'],
+      ['', '10'],
+      ['', '10:'],
+      ['', '10:1'],
+    ];
+    test.each(invalidCases)(
+      'should check "%s" values with "%s" values',
+      (from, to) => {
+        form.patchValue({
+          from,
+          to,
+        });
+
+        expect(form.valid).toBeFalsy();
       },
     );
   });

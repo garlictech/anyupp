@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash/fp';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -5,17 +7,12 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
-import {
-  AnyuppSdkService,
-  CrudSdkService,
-} from '@bgap/admin/shared/data-access/sdk';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { contactFormGroup } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EImageType } from '@bgap/shared/types';
+import { EImageType, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
+
+import { AdminUserFormService } from '../../services/admin-user-form.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,16 +30,11 @@ export class AdminUserFormComponent
   constructor(
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _crudSdk: CrudSdkService,
-    private _anyuppSdk: AnyuppSdkService,
+    private _adminUserFormService: AdminUserFormService,
   ) {
     super(_injector);
 
-    this.dialogForm = this._formBuilder.group({
-      name: ['', [Validators.required]],
-      ...contactFormGroup(true),
-      profileImage: [''], // Just for file upload!!
-    });
+    this.dialogForm = this._adminUserFormService.createAdminUserFormGroup();
   }
 
   get userImage(): string {
@@ -59,36 +51,13 @@ export class AdminUserFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      if (this.adminUser?.id) {
-        this._crudSdk.sdk
-          .UpdateAdminUser({
-            input: {
-              id: this.adminUser.id,
-              ...this.dialogForm.value,
-            },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.updateSuccessful');
+      this._adminUserFormService
+        .saveForm$(cloneDeep(this.dialogForm.value), this.adminUser?.id)
+        .subscribe((response: UpsertResponse<unknown>) => {
+          this._toasterService.showSimpleSuccess(response.type);
 
-            this.close();
-          });
-      } else {
-        const name = this.dialogForm.controls['name'].value;
-        const email = this.dialogForm.controls['email'].value;
-        const phone = this.dialogForm.controls['phone'].value;
-
-        this._anyuppSdk.sdk
-          .CreateAdminUser({
-            input: { email, name, phone },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.insertSuccessful');
-
-            this.close();
-          });
-      }
+          this.close();
+        });
     }
   }
 
@@ -96,19 +65,16 @@ export class AdminUserFormComponent
     this.dialogForm?.controls.profileImage.setValue(image);
 
     if (this.adminUser?.id) {
-      this._crudSdk.sdk
-        .UpdateAdminUser({
-          input: {
-            id: this.adminUser.id,
-            profileImage: image,
-          },
+      this._adminUserFormService
+        .updateAdminUser$({
+          id: this.adminUser.id,
+          profileImage: image,
         })
-        .pipe(catchGqlError(this._store))
         .subscribe(() => {
-          this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
+          this._toasterService.showSimpleSuccess('imageUpload');
         });
     } else {
-      this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
+      this._toasterService.showSimpleSuccess('imageUpload');
     }
   };
 
@@ -119,22 +85,19 @@ export class AdminUserFormComponent
       delete this.adminUser.profileImage;
     }
 
+    this._changeDetectorRef.detectChanges();
+
     if (this.adminUser?.id) {
-      this._crudSdk.sdk
-        .UpdateAdminUser({
-          input: {
-            id: this.adminUser.id,
-            profileImage: null,
-          },
+      this._adminUserFormService
+        .updateAdminUser$({
+          id: this.adminUser.id,
+          profileImage: null,
         })
-        .pipe(catchGqlError(this._store))
         .subscribe(() => {
-          this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
+          this._toasterService.showSimpleSuccess('imageRemove');
         });
     } else {
-      this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
+      this._toasterService.showSimpleSuccess('imageRemove');
     }
-
-    this._changeDetectorRef.detectChanges();
   };
 }

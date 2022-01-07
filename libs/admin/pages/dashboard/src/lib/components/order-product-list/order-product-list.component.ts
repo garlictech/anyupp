@@ -8,10 +8,10 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { productsSelectors } from '@bgap/admin/shared/data-access/products';
+import { dashboardSelectors } from '@bgap/admin/store/dashboard';
+import { groupsSelectors } from '@bgap/admin/store/groups';
+import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
+import { productsSelectors } from '@bgap/admin/store/products';
 import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -78,13 +78,10 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
         this.generatedUnitProducts = generatedUnitProducts;
 
         this.productCategories = productCategories.filter(
-          (category: ProductCategory): boolean => {
-            return (
-              this.generatedUnitProducts.filter(
-                p => p.productCategoryId === category.id,
-              ).length > 0
-            );
-          },
+          (category: ProductCategory) =>
+            this.generatedUnitProducts.filter(
+              p => p.productCategoryId === category.id,
+            ).length > 0,
         );
 
         this.selectedProductCategoryId = this.productCategories?.[0]?.id;
@@ -128,11 +125,11 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
             .statusLog,
         ) === CrudApi.OrderStatus.REJECTED
       ) {
-        this._orderService.updateOrderItemStatus(
+        await this._orderService.updateOrderItemStatus$(
           (<CrudApi.Order>this.selectedOrder).id,
           CrudApi.OrderStatus.placed,
           <number>existingVariantOrderIdx,
-        ).subscribe();
+        ).toPromise();
       }
     } else {
       this._orderService.addProductVariant(

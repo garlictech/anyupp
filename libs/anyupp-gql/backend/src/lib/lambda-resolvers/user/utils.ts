@@ -1,11 +1,11 @@
-import { AnyuppSdk, CreateAnonymUserOutput } from '@bgap/anyupp-gql/api';
+import { CrudSdk, CreateAnonymUserOutput } from '@bgap/crud-gql/api';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { defer, from, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { v1 as uuidV1 } from 'uuid';
 
 export interface UserResolverDeps {
-  anyuppSdk: AnyuppSdk;
+  crudSdk: CrudSdk;
   consumerUserPoolId: string;
   cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
 }

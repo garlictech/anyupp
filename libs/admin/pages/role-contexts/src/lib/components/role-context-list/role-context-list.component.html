@@ -16,11 +16,15 @@
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <nb-list-item *ngFor="let roleContext of roleContexts$ | async">
-      <bgap-role-context-list-item
-        class="w-100"
-        [roleContext]="roleContext"
-      ></bgap-role-context-list-item>
-    </nb-list-item>
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+      <nb-list>
+        <nb-list-item *cdkVirtualFor="let roleContext of roleContexts$ | async">
+          <bgap-role-context-list-item
+            class="w-100"
+            [roleContext]="roleContext"
+          ></bgap-role-context-list-item>
+        </nb-list-item>
+      </nb-list>
+    </cdk-virtual-scroll-viewport>
   </nb-card-body>
 </nb-card>

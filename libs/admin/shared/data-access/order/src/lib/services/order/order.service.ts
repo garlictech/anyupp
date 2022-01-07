@@ -1,27 +1,32 @@
-import { getAllPaginatedData } from '@bgap/gql-sdk';
-import { cloneDeep } from 'lodash/fp';
-import { EMPTY, of } from 'rxjs';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { defer, EMPTY, iif, of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import {
-  currentStatus,
-  getOrderStatusByItemsStatus,
-  ordersActions,
-  ordersSelectors,
-} from '@bgap/admin/shared/data-access/orders';
+import { catchGqlError } from '@bgap/admin/store/app-core';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { getNextOrderStatus, ordersActions } from '@bgap/admin/store/orders';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { getDayIntervals } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IDateIntervals } from '@bgap/shared/types';
+import { getAllPaginatedData } from '@bgap/gql-sdk';
+import { DateIntervals } from '@bgap/shared/types';
+import { getDayIntervals, filterNullish } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
+
+import {
+  archiveOrder,
+  recallOrderFromHistory,
+  updateOrderItemStatus,
+  updateOrderPaymentMode,
+  updateOrderStatus,
+  updateOrderStatusFromNoneToPlaced,
+  updateOrderTransactionStatus,
+} from '@bgap/shared/utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
   private _adminUser?: CrudApi.AdminUser;
-  //private _groupCurrency?: string;
 
   constructor(private _store: Store, private _crudSdk: CrudSdkService) {
     this._store
@@ -29,227 +34,97 @@ export class OrderService {
       .subscribe(adminUser => {
         this._adminUser = adminUser;
       });
-
-    /*
-    this._store
-      .pipe(
-        select(groupsSelectors.getSeletedGroup),
-        skipWhile((group): boolean => !group),
-      )
-      .subscribe((group: CrudApi.Group | undefined): void => {
-        this._groupCurrency = group?.currency;
-      });
-    */
   }
 
-  public updateQuantity(
-    order: CrudApi.Order,
-    idx: number,
-    value: number,
-  ): void {
-    console.error('updateQuantity', order, idx, value);
-    /*
-    order.items[idx].quantity += value;
+  private _getDeps = () => ({
+    crudSdk: this._crudSdk.sdk,
+    timestamp: () => new Date().getTime(),
+  });
 
-    if (order.items[idx].quantity > 0) {
-      order.items[idx].priceShown.priceSum =
-        order.items[idx].quantity * order.items[idx].priceShown.pricePerUnit;
-      order.sumPriceShown.priceSum = 0;
-      order.items.forEach((item: CrudApi.OrderItem): void => {
-        order.sumPriceShown.priceSum += item.priceShown.priceSum;
-      });
-      order.sumPriceShown.taxSum =
-        order.sumPriceShown.priceSum * 0.01 * order.sumPriceShown.tax;
-
-      this._dataService
-        .updateOrderItemQuantityAndPrice(
-          this._adminUser?.settings?.selectedChainId || '',
-          this._adminUser?.settings?.selectedUnitId || '',
-          order.id,
-          idx,
-          order.items[idx],
-        )
-        .then((): void => {
-          if (
-            currentStatus(order.items[idx].statusLog) ===
-            CrudApi.OrderStatus.rejected
-          ) {
-            this.updateOrderItemStatus(
-              order.id,
-              CrudApi.OrderStatus.placed,
-              idx,
-            );
-          }
-        });
+  private _updateOrderStatusFromNoneToPlaced$(orderId: string) {
+    if (this._adminUser?.id) {
+      return updateOrderStatusFromNoneToPlaced(this._getDeps())(
+        orderId,
+        this._adminUser.id,
+      );
+    } else {
+      return EMPTY;
     }
-    */
   }
 
-  public addProductVariant(
+  private _updateOrderTransactionStatus$(
     order: CrudApi.Order,
-    product: CrudApi.GeneratedProduct,
-    variantId: string,
-  ): void {
-    // const now = new Date().getTime();
-    // const tax = parseInt(product.tax || '0', 10);
-    console.error('addProductVariant', order, product, variantId);
-
-    /* TODO variant fix
-    this._dataService.addOrderItem(
-      this._adminUser?.settings?.selectedChainId || '',
-      this._adminUser?.settings?.selectedUnitId || '',
-      order.id,
-      order.items.length,
-      {
-        created: now,
-        priceShown: {
-          currency: this._groupCurrency || '',
-          pricePerUnit: product.variants[variantId].price || 0,
-          priceSum: product.variants[variantId].price || 0,
-          tax,
-          taxSum:
-            ((product.variants[variantId].price || 0) / (100 + tax)) * tax,
-        },
-        productId: product.id,
-        productName: product.name,
-        quantity: 1,
-        statusLog: {
-          [now]: {
-            status: CrudApi.OrderStatus.placed,
-            userId: this._adminUser?.id || '',
-          },
-        },
-        variantId,
-        variantName: product.variants[variantId].variantName,
-      },
-    );*/
+    status: CrudApi.PaymentStatus,
+    unpayCategory?: CrudApi.UnpayCategory,
+  ) {
+    if (order.transactionId) {
+      return updateOrderTransactionStatus(this._getDeps())(
+        order.id,
+        order.transactionId,
+        status,
+        unpayCategory,
+      );
+    } else {
+      return EMPTY;
+    }
   }
 
-  public updateOrderPaymentMode(
-    orderId: string,
-    paymentMode: CrudApi.PaymentMode,
-  ) {
-    return this._crudSdk.doMutation(
-      this._crudSdk.sdk.UpdateOrder({
-        input: {
-          id: orderId,
-          paymentMode,
-        },
+  private _archiveOrder$(orderId: string) {
+    return archiveOrder(this._getDeps())(orderId).pipe(
+      filterNullish(),
+      tap(() => {
+        this._store.dispatch(ordersActions.removeActiveOrder({ orderId }));
       }),
     );
   }
 
-  public updateOrderStatus(order: CrudApi.Order, status: CrudApi.OrderStatus) {
-    if (this._adminUser?.id) {
-      return this._crudSdk.doMutation(
-        this._crudSdk.sdk.UpdateOrder({
-          input: {
-            id: order.id,
-            statusLog: [
-              {
-                status,
-                ts: new Date().getTime(),
-                userId: this._adminUser.id,
-              },
-            ],
-          },
-        }),
-      );
-    } else {
-      return EMPTY;
-    }
-  }
-
-  public updateOrderStatusFromNoneToPlaced(order: CrudApi.Order) {
-    if (this._adminUser?.id) {
-      const userId = this._adminUser?.id;
-      const items = cloneDeep(order.items);
-      items.forEach(item => {
-        // Update only none item status to placed!!!
-        if (currentStatus(item.statusLog) === CrudApi.OrderStatus.none) {
-          item.statusLog.push({
-            status: CrudApi.OrderStatus.placed,
-            ts: new Date().getTime(),
-            userId,
-          });
-        }
-      });
-
-      return this._crudSdk.doMutation(
-        this._crudSdk.sdk.UpdateOrder({
-          input: {
-            id: order.id,
-            items,
-            statusLog: [
-              {
-                status: CrudApi.OrderStatus.placed,
-                ts: new Date().getTime(),
-                userId,
-              },
-            ],
-          },
-        }),
-      );
-    } else {
-      return EMPTY;
-    }
-  }
-
-  public updateOrderItemStatus(
+  public updateOrderPaymentMode$(
     orderId: string,
-    status: CrudApi.OrderStatus,
-    idx: number,
+    paymentMode: CrudApi.PaymentMode,
   ) {
-    return this._store.pipe(
-      select(ordersSelectors.getActiveOrderById(orderId)),
-      take(1),
-      switchMap((order: CrudApi.Order | undefined) => {
-        if (order && this._adminUser?.id) {
-          const _order = cloneDeep(order);
-          _order.items[idx].statusLog.push({
+    return updateOrderPaymentMode(this._getDeps())(orderId, paymentMode);
+  }
+
+  public rejectOrder$(orderId: string) {
+    if (this._adminUser?.id) {
+      return updateOrderStatus(this._getDeps())(
+        orderId,
+        CrudApi.OrderStatus.rejected,
+        this._adminUser.id,
+      ).pipe(switchMap(() => this._archiveOrder$(orderId)));
+    } else {
+      return EMPTY;
+    }
+  }
+
+  public handleOrderStatusChange$(order: CrudApi.Order) {
+    const currentStatus = CrudApi.currentStatus(order.statusLog);
+
+    return iif(
+      () => currentStatus === CrudApi.OrderStatus.none,
+      this._updateOrderStatusFromNoneToPlaced$(order.id),
+      defer(() => {
+        const status = getNextOrderStatus(currentStatus);
+
+        if (status && this._adminUser?.id) {
+          return updateOrderStatus(this._getDeps())(
+            order.id,
             status,
-            ts: new Date().getTime(),
-            userId: this._adminUser.id,
-          });
+            this._adminUser.id,
+          ).pipe(
+            switchMap(() =>
+              iif(
+                () =>
+                  status === CrudApi.OrderStatus.served &&
+                  (order.transaction?.status ===
+                    CrudApi.PaymentStatus.success ||
+                    order.transaction?.status === CrudApi.PaymentStatus.failed),
 
-          const input: CrudApi.UpdateOrderInput = {
-            id: _order.id,
-            items: _order.items,
-          };
-
-          const newOrderStatus = getOrderStatusByItemsStatus(_order);
-
-          if (newOrderStatus) {
-            input.statusLog = [
-              {
-                status: newOrderStatus,
-                ts: new Date().getTime(),
-                userId: this._adminUser.id,
-              },
-            ];
-          }
-
-          return this._crudSdk
-            .doMutation(
-              this._crudSdk.sdk.UpdateOrder({
-                input,
-              }),
-            )
-            .pipe(
-              tap(() => {
-                if (
-                  newOrderStatus === CrudApi.OrderStatus.served &&
-                  (_order.transactionStatus === CrudApi.PaymentStatus.success ||
-                    _order.transactionStatus === CrudApi.PaymentStatus.failed)
-                ) {
-                  this._store.dispatch(
-                    ordersActions.removeActiveOrder({ orderId: _order.id }),
-                  );
-
-                  this.archiveOrder(_order).subscribe();
-                }
-              }),
-            );
+                defer(() => this._archiveOrder$(order.id)),
+                of(true),
+              ),
+            ),
+          );
         } else {
           return EMPTY;
         }
@@ -257,59 +132,92 @@ export class OrderService {
     );
   }
 
-  public updateOrderTransactionStatus(
+  public handleSuccessfulTransactionStatus$(
     order: CrudApi.Order,
-    status: CrudApi.PaymentStatus,
-    unpayCategory?: CrudApi.UnpayCategory,
+    paymentStatus: CrudApi.PaymentStatus,
   ) {
-    if (order.transactionId) {
-      return this._crudSdk
-        .doMutation(
-          this._crudSdk.sdk.UpdateTransaction({
-            input: {
-              id: order.transactionId,
-              status,
-            },
-          }),
-        )
-        .pipe(
-          switchMap(() =>
-            this._crudSdk.doMutation(
-              this._crudSdk.sdk.UpdateOrder({
-                input: {
-                  id: order.id,
-                  transactionStatus: status,
-                  unpayCategory,
-                },
-              }),
-            ),
+    return this._updateOrderTransactionStatus$(order, paymentStatus).pipe(
+      catchGqlError(this._store),
+      switchMap(() => {
+        const currentStatus = CrudApi.currentStatus(order.statusLog);
+
+        return iif(
+          () => currentStatus === CrudApi.OrderStatus.none,
+          defer(() => this._updateOrderStatusFromNoneToPlaced$(order.id)),
+          iif(
+            () => currentStatus === CrudApi.OrderStatus.served,
+            defer(() => this._archiveOrder$(order.id)),
+            of(true),
           ),
         );
+      }),
+    );
+  }
+
+  public handleFailedTransactionStatus$(
+    order: CrudApi.Order,
+    paymentStatus: CrudApi.PaymentStatus,
+    unpayCategory: CrudApi.UnpayCategory,
+  ) {
+    return this._updateOrderTransactionStatus$(
+      order,
+      paymentStatus,
+      unpayCategory,
+    ).pipe(
+      catchGqlError(this._store),
+      switchMap(() => {
+        const currentStatus = CrudApi.currentStatus(order.statusLog);
+
+        return iif(
+          () => currentStatus === CrudApi.OrderStatus.served,
+          defer(() => this._archiveOrder$(order.id)),
+          of(true),
+        );
+      }),
+    );
+  }
+
+  public updateOrderItemStatus$(
+    orderId: string,
+    status: CrudApi.OrderStatus,
+    idx: number,
+  ) {
+    if (this._adminUser?.id) {
+      return updateOrderItemStatus(this._getDeps())(
+        orderId,
+        idx,
+        status,
+        this._adminUser?.id,
+      ).pipe(
+        filterNullish(),
+        switchMap((order: CrudApi.Order) =>
+          iif(
+            () =>
+              CrudApi.currentStatus(order.statusLog) ===
+                CrudApi.OrderStatus.served &&
+              (order.transactionStatus === CrudApi.PaymentStatus.success ||
+                order.transactionStatus === CrudApi.PaymentStatus.failed),
+            defer(() => this._archiveOrder$(order.id)),
+            of(true),
+          ),
+        ),
+      );
     } else {
       return EMPTY;
     }
   }
 
-  public archiveOrder(order: CrudApi.Order) {
+  public recallOrderFromHistory$(orderId: string) {
     if (this._adminUser?.id) {
-      const input: CrudApi.UpdateOrderInput = {
-        id: order.id,
-        archived: true,
-      };
-
-      return this._crudSdk
-        .doMutation(
-          this._crudSdk.sdk.UpdateOrder({
-            input,
-          }),
-        )
-        .pipe(
-          tap(() => {
-            this._store.dispatch(
-              ordersActions.removeActiveOrder({ orderId: order.id }),
-            );
-          }),
-        );
+      return recallOrderFromHistory(this._getDeps())(
+        orderId,
+        this._adminUser?.id,
+      ).pipe(
+        catchGqlError(this._store),
+        tap(() => {
+          this._store.dispatch(ordersActions.removeActiveOrder({ orderId }));
+        }),
+      );
     } else {
       return EMPTY;
     }
@@ -320,7 +228,7 @@ export class OrderService {
     historyDate: string | number,
     timeZone: string,
   ) {
-    const dayIntervals: IDateIntervals = getDayIntervals(historyDate, timeZone);
+    const dayIntervals: DateIntervals = getDayIntervals(historyDate, timeZone);
 
     this._crudSdk.doListQuery(
       ordersActions.resetHistoryOrders(),
@@ -342,61 +250,5 @@ export class OrderService {
           orders,
         }),
     );
-  }
-
-  public recallOrderFromHistory(order: CrudApi.Order) {
-    if (this._adminUser?.id) {
-      const userId = this._adminUser?.id;
-      const items = cloneDeep(order.items);
-      items.forEach(item => {
-        if (currentStatus(item.statusLog) === CrudApi.OrderStatus.none) {
-          item.statusLog.push({
-            status: CrudApi.OrderStatus.ready,
-            ts: new Date().getTime(),
-            userId,
-          });
-        }
-      });
-
-      return this._crudSdk
-        .doMutation(
-          this._crudSdk.sdk.UpdateOrder({
-            input: {
-              id: order.id,
-              archived: false,
-              items,
-              statusLog: [
-                {
-                  status: CrudApi.OrderStatus.ready,
-                  ts: new Date().getTime(),
-                  userId,
-                },
-              ],
-              transactionStatus: CrudApi.PaymentStatus.waiting_for_payment,
-            },
-          }),
-        )
-        .pipe(
-          switchMap(() =>
-            order.transactionId
-              ? this._crudSdk.doMutation(
-                  this._crudSdk.sdk.UpdateTransaction({
-                    input: {
-                      id: order.transactionId,
-                      status: CrudApi.PaymentStatus.waiting_for_payment,
-                    },
-                  }),
-                )
-              : of(undefined),
-          ),
-          tap(() => {
-            this._store.dispatch(
-              ordersActions.removeHistoryOrder({ orderId: order.id }),
-            );
-          }),
-        );
-    } else {
-      return EMPTY;
-    }
   }
 }

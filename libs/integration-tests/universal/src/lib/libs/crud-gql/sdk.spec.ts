@@ -1,7 +1,5 @@
 import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import {
-  getCognitoUsername,
-  productFixture,
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
@@ -19,19 +17,27 @@ import { createAuthenticatedCrudSdk } from '../../../api-clients';
 describe('CRUD sdk test', () => {
   let sdk: CrudSdk;
   let authSdk: CrudSdk;
+  const id = 'TEST_ADMIN_USER';
 
   beforeAll(async () => {
     const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
     const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
     sdk = getCrudSdkForIAM(accessKeyId, secretAccessKey);
     authSdk = await createAuthenticatedCrudSdk(
-      getCognitoUsername(testAdminUsername),
+      testAdminUsername,
       testAdminUserPassword,
     ).toPromise();
   });
 
+  afterAll(async () => {
+    await sdk.DeleteAdminUser({ input: { id } }).toPromise();
+  });
+
+  beforeEach(async () => {
+    await sdk.DeleteAdminUser({ input: { id } }).toPromise();
+  });
+
   test('An arbitrary CRUD', done => {
-    const id = 'TEST_ADMIN_USER';
     const toMatchSnapshot = (x: any, name?: string) =>
       expect(x).toMatchSnapshot(
         {
@@ -41,9 +47,9 @@ describe('CRUD sdk test', () => {
         name,
       );
 
-    of(1)
+    sdk
+      .DeleteAdminUser({ input: { id } })
       .pipe(
-        switchMap(() => sdk.DeleteAdminUser({ input: { id } })),
         switchMap(() => sdk.GetAdminUser({ id }, { fetchPolicy: 'no-cache' })),
         tap(x => expect(x).toMatchSnapshot('SHOULD BE NULL')),
         switchMap(() =>
@@ -51,8 +57,8 @@ describe('CRUD sdk test', () => {
             input: {
               id,
               name: 'NAME',
-              phone: 'phone',
-              email: 'a@a.hu',
+              phone: '+6234567892',
+              email: 'testuser+a1@anyupp.com',
             },
           }),
         ),
@@ -66,7 +72,7 @@ describe('CRUD sdk test', () => {
         ),
         tap(x => toMatchSnapshot(x, 'UPDATE')),
         switchMap(() => sdk.DeleteAdminUser({ input: { id } })),
-        tap(x => toMatchSnapshot(x, 'DELETE')),
+        tap(x => expect(x).toMatchSnapshot('DELETE')),
         switchMap(() => sdk.GetAdminUser({ id }, { fetchPolicy: 'no-cache' })),
         tap(x =>
           expect(x).toMatchSnapshot('READ AFTER DELETE - SHOULD BE NULL'),
@@ -98,14 +104,19 @@ describe('CRUD sdk test', () => {
         catchError(() => of(true)),
         switchMap(() =>
           authSdk.CreateAdminUser({
-            input: { id, name: 'NAME', phone: 'phone', email: 'a@a.hu' },
+            input: {
+              id,
+              name: 'NAME',
+              phone: '+6234567890',
+              email: 'testuser+a2@anyupp.com',
+            },
           }),
         ),
         switchMapTo(interval(1000)),
         takeUntil(subs$),
         switchMap(() =>
           authSdk.UpdateAdminUser({
-            input: { id, name: 'NAME2', email: 'a@a.hu' },
+            input: { id, name: 'NAME2', email: 'a3@anyupp.com' },
           }),
         ),
       )

@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -5,17 +7,15 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { ToasterService } from '@bgap/admin/shared/utils';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
+import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IProductCategoryOrderChangeEvent } from '@bgap/shared/types';
+import { ProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
+
+import { ProductCategoryListService } from '../../services/product-category-list.service';
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
 
 @UntilDestroy()
@@ -31,9 +31,8 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
   constructor(
     private _store: Store,
     private _nbDialogService: NbDialogService,
-    private _crudSdk: CrudSdkService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _toasterService: ToasterService,
+    private _productCategoryListService: ProductCategoryListService,
   ) {}
 
   ngOnInit(): void {
@@ -61,40 +60,10 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
     this._nbDialogService.open(ProductCategoryFormComponent);
   }
 
-  public positionChange($event: IProductCategoryOrderChangeEvent): void {
-    const idx = this._sortedProductCategoryIds.indexOf(
-      $event.productCategoryId,
-    );
-
-    if (
-      (idx >= 0 &&
-        $event.change === 1 &&
-        idx < this._sortedProductCategoryIds.length - 1) ||
-      ($event.change === -1 && idx > 0)
-    ) {
-      this._sortedProductCategoryIds.splice(idx, 1);
-      this._sortedProductCategoryIds.splice(
-        idx + $event.change,
-        0,
-        $event.productCategoryId,
-      );
-
-      this._sortedProductCategoryIds.forEach(
-        (productCategoryId: string, pos: number) => {
-          this._crudSdk.sdk
-            .UpdateProductCategory({
-              input: {
-                id: productCategoryId,
-                position: pos + 1,
-              },
-            })
-            .pipe(catchGqlError(this._store))
-            .subscribe(() => {
-              this._toasterService.showSimpleSuccess('common.insertSuccessful');
-            });
-        },
-      );
-    }
+  public positionChange($event: ProductCategoryOrderChangeEvent): void {
+    this._productCategoryListService
+      .positionChange($event, this._sortedProductCategoryIds)
+      .subscribe();
 
     this._changeDetectorRef.detectChanges();
   }

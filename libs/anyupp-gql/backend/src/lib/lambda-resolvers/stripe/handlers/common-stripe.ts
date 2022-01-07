@@ -1,4 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
 import { loadUser } from '../stripe-graphql-crud';
@@ -8,10 +7,10 @@ export const loadAndConnectUserForStripe =
   (
     userId: string,
     createStripeUser = true,
-    invoiceAddress: AnyuppApi.UserInvoiceAddress | undefined | null = undefined,
+    invoiceAddress: CrudApi.UserInvoiceAddress | undefined | null = undefined,
   ) =>
   async (deps: StripeResolverDeps) => {
-    let user = await loadUser(userId)(deps);
+    let user = await loadUser()(deps);
     console.debug('loadAndConnectUserForStripe().user.id=' + user?.id);
 
     if (!user) {

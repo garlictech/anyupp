@@ -6,9 +6,8 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
+import { dashboardSelectors } from '@bgap/admin/store/dashboard';
 import { OrderService } from '@bgap/admin/shared/data-access/order';
-import { currentStatus as currentStatusFn } from '@bgap/admin/shared/data-access/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -31,10 +30,8 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   public paymentMethods: IPaymentMethodKV[] = [];
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
-  public currentStatus = currentStatusFn;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _orderService: OrderService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -72,37 +69,46 @@ export class OrderEditComponent implements OnInit, OnDestroy {
   }
 
   public removeOrder(): void {
+    // DEPRECATED, NOT USED
     /*
-    this._orderService
-      .updateOrderStatus(fp.cloneDeep(this.order), CrudApi.OrderStatus.rejected)
-      .then(
-        (): void => {
-          this.workingOrderStatus = false;
-        },
-        (err): void => {
-          console.error(err);
-          this.workingOrderStatus = false;
-        },
-      );
-
-    this._store.dispatch(
-      dashboardActions.setOrderEditing({
-        orderEditing: false,
-      }),
-    );
-    */
+    this._store
+      .pipe(
+        select(loggedUserSelectors.getLoggedUser),
+        take(1),
+        filterNullish(),
+        switchMap(adminUser =>
+          this._anyuppSdk.sdk.UpdateOrderStatus({
+            input: {
+              adminUserId: adminUser.id,
+              orderId: this.order.id,
+              status: CrudApi.OrderStatus.rejected,
+            },
+          }),
+        ),
+      )
+      .subscribe(() => {
+        this.workingOrderStatus = false;
+        this._store.dispatch(
+          dashboardActions.setOrderEditing({
+            orderEditing: false,
+          }),
+        );
+      });
+      */
   }
 
-  public removeOrderItem(idx: number): void {
-    this._orderService
-      .updateOrderItemStatus(this.order.id, CrudApi.OrderStatus.rejected, idx)
-      .subscribe();
+  public async removeOrderItem(idx: number): Promise<void> {
+    await this._orderService
+      .updateOrderItemStatus$(this.order.id, CrudApi.OrderStatus.rejected, idx)
+      .toPromise();
   }
 
-  public updateOrderPaymentMethod(paymentMode: CrudApi.PaymentMode): void {
-    this._orderService
-      .updateOrderPaymentMode(this.order.id, paymentMode)
-      .subscribe();
+  public async updateOrderPaymentMethod(
+    paymentMode: CrudApi.PaymentMode,
+  ): Promise<void> {
+    await this._orderService
+      .updateOrderPaymentMode$(this.order.id, paymentMode)
+      .toPromise();
   }
 
   public isCurrentStatus(
@@ -110,7 +116,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     status: keyof typeof CrudApi.OrderStatus,
   ): boolean {
     return (
-      this.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
+      CrudApi.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
     );
   }
 }

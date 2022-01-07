@@ -1,6 +1,10 @@
 <div class="row" *ngFor="let item of itemFormArray | iterableAbstractControls">
   <div
-    class="col-md-6 pt-3"
+    class="col-md-5 pt-3"
+    [ngClass]="{
+      'col-md-10': productLevel === eProductLevel.GROUP,
+      'col-md-6': productLevel === eProductLevel.UNIT
+    }"
     *ngIf="
       item.value.productComponentId | productComponentInfo | async as component
     "
@@ -10,28 +14,40 @@
       <bgap-allergens [allergens]="component.allergens"></bgap-allergens>
     </div>
   </div>
-  <div class="col-md-3">
-    <bgap-form-static-text
-      *ngIf="productLevel === eProductLevel.UNIT"
-      caption="products.refPrice"
-      [value]="item.value.refGroupPrice | currencyFormatter: currency!"
-    ></bgap-form-static-text>
-
+  <div class="col-md-2" *ngIf="productLevel === eProductLevel.GROUP">
     <bgap-form-text-input
-      *ngIf="productLevel === eProductLevel.GROUP"
       caption="products.refPrice"
       type="number"
       [control]="item.get('refGroupPrice')! | asFormControl"
       inputId="refGroupPrice"
     ></bgap-form-text-input>
   </div>
-  <div class="col-md-3">
-    <bgap-form-text-input
-      *ngIf="productLevel === eProductLevel.UNIT"
-      [staticCaption]="('products.price' | translate) + ' (' + currency! + ')'"
-      type="number"
-      [control]="item.get('price')! | asFormControl"
-      inputId="price"
-    ></bgap-form-text-input>
-  </div>
+  <ng-container *ngIf="productLevel === eProductLevel.UNIT">
+    <div class="col-md-2">
+      <bgap-form-static-text
+        caption="products.refPrice"
+        [value]="item.value.refGroupPrice | currencyFormatter: currency!"
+      ></bgap-form-static-text>
+    </div>
+    <div class="col-md-2">
+      <bgap-form-text-input
+        [staticCaption]="
+          ('products.price' | translate) + ' (' + currency! + ')'
+        "
+        type="number"
+        [control]="item.get('price')! | asFormControl"
+        inputId="price"
+      ></bgap-form-text-input>
+    </div>
+    <div class="col-md-2">
+      <bgap-form-text-input
+        [staticCaption]="
+          ('common.packagingFee' | translate) + ' (' + currency! + ')'
+        "
+        type="number"
+        [control]="item.get('netPackagingFee')! | asFormControl"
+        inputId="netPackagingFee"
+      ></bgap-form-text-input>
+    </div>
+  </ng-container>
 </div>

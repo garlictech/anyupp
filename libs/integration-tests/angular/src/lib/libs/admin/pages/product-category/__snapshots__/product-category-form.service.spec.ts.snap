@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductCategoryFormService createGroupFormGroup should create form group 1`] = `
+Object {
+  "description": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+  "image": "",
+  "name": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+}
+`;
+
+exports[`ProductCategoryFormService createProductCategory$ should create product category 1`] = `
+Object {
+  "data": Object {
+    "chainId": "seeded_chain_1_id",
+    "createdAt": Any<String>,
+    "description": Object {
+      "de": null,
+      "en": "DESCRIPTION",
+      "hu": null,
+    },
+    "id": "test_ADMIN_PRODUCT_CATEGORY_IT_PRODUCT_CATEGORY_ID_01",
+    "image": "IMAGE",
+    "name": Object {
+      "de": null,
+      "en": "PRODUCT_CATEGORY",
+      "hu": null,
+    },
+    "position": 0,
+    "updatedAt": Any<String>,
+  },
+  "type": "insert",
+}
+`;
+
+exports[`ProductCategoryFormService updateProductCategory$ should update product category 1`] = `
+Object {
+  "data": Object {
+    "chainId": "seeded_chain_1_id",
+    "createdAt": Any<String>,
+    "description": Object {
+      "de": null,
+      "en": "DESCRIPTION",
+      "hu": null,
+    },
+    "id": "test_ADMIN_PRODUCT_CATEGORY_IT_PRODUCT_CATEGORY_ID_01",
+    "image": "MODDED IMAGE",
+    "name": Object {
+      "de": null,
+      "en": "PRODUCT_CATEGORY",
+      "hu": null,
+    },
+    "position": 33,
+    "updatedAt": Any<String>,
+  },
+  "type": "update",
+}
+`;

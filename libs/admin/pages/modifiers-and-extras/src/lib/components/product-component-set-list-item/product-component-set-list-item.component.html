@@ -16,3 +16,7 @@
 >
   <nb-icon icon="edit-outline"></nb-icon>
 </button>
+
+<div class="dirty-block" *ngIf="productComponentSet?.dirty">
+  <nb-badge text="DIRTY" status="danger" position="top right"></nb-badge>
+</div>

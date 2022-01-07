@@ -5,7 +5,6 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
@@ -18,9 +17,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../unit/mock/mock_auth_provider.dart';
-import 'mock/mock_data_faker.dart';
-import 'mock/mock_theme_bloc.dart';
-import 'mock/mock_unit_select_bloc.dart';
+import '../mock/mock_data_faker.dart';
+import 'mock/mocks.dart';
 
 GeoUnit _unit = MockGenerator.generateUnit(
   name: 'TEST UNIT',
@@ -92,25 +90,14 @@ class FakeNetworkStatusEvent extends Fake implements NetworkStatusEvent {}
 
 class FakeNetworkState extends Fake implements NetworkState {}
 
-class MockTakeAwayBloc extends Fake implements TakeAwayBloc {
-  TakeAwayState get state => ServingModeSelectedState(ServingMode.takeAway);
-  Future<void> close() async => {};
-}
-
-class MockCartRepository extends Fake implements CartRepository {
-  Stream<Cart?> getCurrentCartStream(String unitId) {
-    return Stream.value(null);
-  }
-}
-
 void main() {
   setUpAll(() {
-    registerFallbackValue<FavoritesState>(FakeFavoritesState());
-    registerFallbackValue<FavoritesEvent>(FakeFavoritesEvent());
-    registerFallbackValue<NetworkState>(FakeNetworkState());
-    registerFallbackValue<NetworkStatusEvent>(FakeNetworkStatusEvent());
-    registerFallbackValue<ConfigsetState>(FakeConfigsetState());
-    registerFallbackValue<ConfigsetEvent>(FakeConfigsetEvent());
+    registerFallbackValue(FakeFavoritesState());
+    registerFallbackValue(FakeFavoritesEvent());
+    registerFallbackValue(FakeNetworkState());
+    registerFallbackValue(FakeNetworkStatusEvent());
+    registerFallbackValue(FakeConfigsetState());
+    registerFallbackValue(FakeConfigsetEvent());
   });
 
   setUp(() {
@@ -118,7 +105,7 @@ void main() {
     MockThemeBloc themeBloc = MockThemeBloc();
 
     var mockFavorites = MockFavoritesBloc();
-    var mockCartRepository = MockCartRepository();
+    var mockCartRepository = MockCartRepository(null);
     var mockNetworkBloc = MockNetworkStatusBloc();
 
     getIt.registerSingleton<NetworkStatusBloc>(mockNetworkBloc);
@@ -134,7 +121,8 @@ void main() {
   Widget _createBoilerPlateApp({required Widget child}) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (BuildContext context) => getIt<NetworkStatusBloc>()),
+        BlocProvider(
+            create: (BuildContext context) => getIt<NetworkStatusBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<ThemeBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<UnitSelectBloc>()),
         BlocProvider(create: (BuildContext context) => getIt<FavoritesBloc>()),

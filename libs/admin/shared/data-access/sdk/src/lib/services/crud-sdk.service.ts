@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
+import { catchGqlError } from '@bgap/admin/store/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getCrudSdkForUserPool } from '@bgap/crud-gql/api';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
@@ -91,7 +91,7 @@ import {
   executeQuery,
   executeSubscription,
 } from '@bgap/shared/graphql/api-client';
-import { IAmplifyModel } from '@bgap/shared/types';
+import { AmplifyModel } from '@bgap/shared/types';
 import { removeNestedTypeNameField } from '@bgap/shared/utils';
 
 import { listTypes, queryTypes, subscriptionTypes } from './types';
@@ -194,7 +194,7 @@ export class AmplifyDataService {
       { id },
     ).toPromise();
 
-    const modified = fp.omit(['createdAt', 'updatedAt'], <IAmplifyModel>{
+    const modified = fp.omit(['createdAt', 'updatedAt'], <AmplifyModel>{
       ...updaterFn(
         removeNestedTypeNameField(data?.[<keyof queryTypes>queryName]),
       ),

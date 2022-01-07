@@ -8,12 +8,11 @@
     "types": [],
     "lib": ["dom", "es2018"]
   },
-  "angularCompilerOptions": {
-    "enableResourceInlining": true
-  },
+  "angularCompilerOptions": { "enableResourceInlining": true },
   "exclude": [
     "src/test-setup.ts",
     "**/*.spec.ts",
+    "**/*.test.ts",
     "../../../node_modules",
     "../../../dist"
   ],

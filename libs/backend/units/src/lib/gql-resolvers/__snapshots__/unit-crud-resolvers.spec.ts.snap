@@ -1,0 +1,189 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createUnitResolver 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "externalId": "restaurantid",
+  "groupId": "test_group_1_id",
+  "id": "rkeeper-unit",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "packagingTaxPercentage": 27,
+  "paymentModes": Array [
+    Object {
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": "ANYUPP_PASSWORD HASHED",
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+      "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
+      "rkeeperUsername": "781_55_69_939",
+    },
+    "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "ratings": Array [
+      Object {
+        "value": 1,
+      },
+    ],
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "tipPolicy": Object {
+    "percents": Array [
+      2,
+    ],
+  },
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`hashPasswords: VALID PASSWORDS 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "description": Object {
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "externalId": "restaurantid",
+  "groupId": "test_group_1_id",
+  "id": "rkeeper-unit",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "packagingTaxPercentage": 27,
+  "paymentModes": Array [
+    Object {
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": "ANYUPP_PASSWORD HASHED",
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+      "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
+      "rkeeperUsername": "781_55_69_939",
+    },
+    "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "ratings": Array [
+      Object {
+        "value": 1,
+      },
+    ],
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "tipPolicy": Object {
+    "percents": Array [
+      2,
+    ],
+  },
+}
+`;

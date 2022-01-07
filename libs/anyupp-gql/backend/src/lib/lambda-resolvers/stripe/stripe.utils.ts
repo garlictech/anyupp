@@ -1,20 +1,22 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { Stripe } from 'stripe';
 import { toFixed0Number, toFixed2Number } from '@bgap/shared/utils';
 import { CrudSdk } from '@bgap/crud-gql/api';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 import * as Szamlazz from 'szamlazz.js';
 
-export interface StripeResolverDeps {
+export interface StripeResolverDepsUnauth {
   crudSdk: CrudSdk;
-  anyuppSdk: AnyuppSdk;
   szamlazzClient: Szamlazz.Client;
   stripeClient: Stripe;
 }
 
+export interface StripeResolverDeps extends StripeResolverDepsUnauth {
+  userId: string;
+}
+
 export const mapPaymentMethodToCard = (
   pm: Stripe.PaymentMethod,
-): AnyuppApi.StripeCard => ({
+): CrudApi.StripeCard => ({
   id: pm.id,
   name: pm.metadata?.name,
   country: pm.card?.country,
@@ -30,18 +32,16 @@ export const mapPaymentMethodToCard = (
   funding: convertFunding(pm.card),
 });
 
-export const mapStripeCardToCard = (
-  card: Stripe.Card,
-): AnyuppApi.StripeCard => ({
+export const mapStripeCardToCard = (card: Stripe.Card): CrudApi.StripeCard => ({
   ...card,
   // id: card.id,
   // metadata: convertCardMetadata(card.metadata),
   // object: card.object,
-  // brand: AnyuppApi.CardBrand[card.brand as keyof typeof AnyuppApi.CardBrand],
+  // brand: CrudApi.CardBrand[card.brand as keyof typeof CrudApi.CardBrand],
   // country: card.country,
   // funding:
-  //   AnyuppApi.CardFundingType[
-  //     card.funding as keyof typeof AnyuppApi.CardFundingType
+  //   CrudApi.CardFundingType[
+  //     card.funding as keyof typeof CrudApi.CardFundingType
   //   ],
   brand: convertBrand(card),
   funding: convertFunding(card),
@@ -55,13 +55,13 @@ export const mapStripeCardToCard = (
 
 const convertBrand = (
   card: Stripe.Card | Stripe.PaymentMethod.Card | undefined,
-) => AnyuppApi.CardBrand[card?.brand as keyof typeof AnyuppApi.CardBrand];
+) => CrudApi.CardBrand[card?.brand as keyof typeof CrudApi.CardBrand];
 
 const convertFunding = (
   card: Stripe.Card | Stripe.PaymentMethod.Card | undefined,
 ) =>
-  AnyuppApi.CardFundingType[
-    card?.funding as keyof typeof AnyuppApi.CardFundingType
+  CrudApi.CardFundingType[
+    card?.funding as keyof typeof CrudApi.CardFundingType
   ];
 
 // [key, value] => {key:key, value:value}

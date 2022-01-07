@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:fa_prev/models.dart';
+import 'package:flutter/foundation.dart';
 
 @immutable
 class Order {
@@ -21,6 +21,7 @@ class Order {
   final String? transactionId;
   final ServingMode? servingMode;
   final OrderMode? orderMode;
+  final Price? packagingSum;
 
   Order({
     required this.id,
@@ -40,6 +41,7 @@ class Order {
     this.transactionId,
     this.servingMode,
     this.orderMode,
+    this.packagingSum,
   });
   // final UnpayCategory? unpayCategory;
 
@@ -61,6 +63,7 @@ class Order {
     String? transactionId,
     ServingMode? servingMode,
     OrderMode? orderMode,
+    Price? packagingSum,
   }) {
     return Order(
       id: id ?? this.id,
@@ -80,6 +83,7 @@ class Order {
       transactionId: transactionId ?? this.transactionId,
       servingMode: servingMode ?? this.servingMode,
       orderMode: orderMode ?? this.orderMode,
+      packagingSum: packagingSum ?? this.packagingSum,
     );
   }
 
@@ -102,6 +106,7 @@ class Order {
       'transactionId': transactionId,
       'servingMode': enumToString(servingMode),
       'orderMode': enumToString(orderMode),
+      'packagingSum': packagingSum?.toJson(),
     };
   }
 
@@ -111,21 +116,31 @@ class Order {
       orderNum: map['orderNum'],
       userId: map['userId'],
       unitId: map['unitId'],
-      items: List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
+      items:
+          List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
       paymentMode: PaymentMode.fromJson(map['paymentMode']),
       sumPriceShown: PriceShown.fromJson(map['sumPriceShown']),
       place: map['place'] != null ? Place.fromJson(map['place']) : null,
       paymentIntention: map['paymentIntention'],
-      statusLog: List<StatusLog>.from(map['statusLog']?.map((x) => StatusLog.fromJson(x))),
+      statusLog: List<StatusLog>.from(
+          map['statusLog']?.map((x) => StatusLog.fromJson(x))),
       createdAt: map['createdAt'],
       archived: map['archived'],
-      transaction: map['transaction'] != null ? Transaction.fromJson(map['transaction']) : null,
+      transaction: map['transaction'] != null
+          ? Transaction.fromJson(map['transaction'])
+          : null,
       transactionStatus: map['transactionStatus'] != null
-          ? enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values)
+          ? enumFromString<PaymentStatus>(
+              map['transactionStatus'], PaymentStatus.values)
           : null,
       transactionId: map['transactionId'],
-      orderMode: enumFromStringNull(map['orderMode'], OrderMode.values, OrderMode.instant),
-      servingMode: enumFromStringNull(map['servingMode'], ServingMode.values, ServingMode.inPlace),
+      orderMode: enumFromStringNull(
+          map['orderMode'], OrderMode.values, OrderMode.instant),
+      servingMode: enumFromStringNull(
+          map['servingMode'], ServingMode.values, ServingMode.inPlace),
+      packagingSum: map['packagingSum'] != null
+          ? Price.fromJson(map['packagingSum'])
+          : null,
     );
   }
 

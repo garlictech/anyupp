@@ -21,7 +21,7 @@ class AwsOrderProvider implements IOrdersProvider {
   @override
   Future<void> addInvoiceInfo(InvoiceInfo invoiceInfo) async {
     try {
-      // await GQL.backend.executeMutation(
+      // await GQL.amplify.executeMutation(
       //   mutation: MUTATION_ADD_INVOICE_INFO,
       //   variables: {},
       // );

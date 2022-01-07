@@ -7,17 +7,19 @@ import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityservi
 import chalk from 'chalk';
 import { defer, Observable } from 'rxjs';
 import { map, mapTo, switchMap, tap } from 'rxjs/operators';
-import { createConfirmedUserInCognito } from '../libs/anyupp-gql/backend/src/lib/lambda-resolvers/user/utils';
-import * as CrudApi from '../libs/crud-gql/api/src';
-import { awsConfig } from '../libs/crud-gql/api/src';
+
 import {
   validateChain,
   validateGroup,
   validateUnit,
-} from '../libs/shared/data-validators/src';
+} from '@bgap/shared/data-validators';
+
+import { createConfirmedUserInCognito } from '../libs/anyupp-gql/backend/src/lib/lambda-resolvers/user/utils';
+import * as CrudApi from '../libs/crud-gql/api/src';
 
 const EMAIL = 'anyupp-admin@anyupp.com';
 const PASSWORD = 'Hideghegy12_';
+ł;
 const USER_NAME = 'megafirstsuperuser';
 const CONTEXT = 'SU_CTX_ID';
 const NAME = 'KAJAHU_ADMIN_USER';
@@ -85,7 +87,7 @@ const groupInput: CrudApi.CreateGroupInput = {
     en: 'AnyuUpp R&D Centre',
     hu: 'AnyuUpp R&D Centre',
   },
-  email: 'admin@anyupp.net',
+  email: 'admin@anyupp.com',
   phone: '+36203324200',
   name: 'ANYUPP R&D Centre',
 };
@@ -139,7 +141,7 @@ const unitInput: CrudApi.CreateUnitInput = {
     city: 'Budapest',
     postalCode: '1081',
   },
-  email: 'admin@anyupp.net',
+  email: 'admin@anyupp.com',
   name: 'KAJAHU CORVIN',
   paymentModes: [
     {
@@ -179,7 +181,7 @@ const unitInput: CrudApi.CreateUnitInput = {
 
 const awsAccesskeyId = process.env.AWS_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
-// const anyuppSdk = getAnyuppSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
+// const crudSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const crudSdk = CrudApi.getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 const adminUserPoolId = awsConfig.aws_user_pools_id;
 const adminUserPoolClientId = awsConfig.aws_user_pools_web_client_id;

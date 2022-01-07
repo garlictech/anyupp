@@ -25,7 +25,8 @@ class SocialLoginScreen extends StatefulWidget {
 }
 
 class _SocialLoginScreenState extends State<SocialLoginScreen> {
-  final Completer<WebViewController> _webViewController = Completer<WebViewController>();
+  final Completer<WebViewController> _webViewController =
+      Completer<WebViewController>();
   String? _error;
 
   @override
@@ -53,8 +54,10 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
       },
       navigationDelegate: (NavigationRequest request) {
         print('SocialLoginScreen.navigationDelegate().request=$request');
-        if (request.url.startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
-          var code = request.url.substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
+        if (request.url
+            .startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
+          var code = request.url
+              .substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
           // This is the authorization code!!!
           signUserInWithAuthCode(context, code);
           return NavigationDecision.prevent;
@@ -79,8 +82,10 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     );
-    print('SocialLoginScreen.signUserInWithAuthCode().response=${response.statusCode}');
-    print('SocialLoginScreen.signUserInWithAuthCode().response.body=${response.body}');
+    print(
+        'SocialLoginScreen.signUserInWithAuthCode().response=${response.statusCode}');
+    print(
+        'SocialLoginScreen.signUserInWithAuthCode().response.body=${response.body}');
     if (response.statusCode != 200) {
       setState(() {
         _error = '${response.statusCode}: ${response.body}';
@@ -97,14 +102,18 @@ class _SocialLoginScreenState extends State<SocialLoginScreen> {
       final idToken = CognitoIdToken(tokenData['id_token']);
       final accessToken = CognitoAccessToken(tokenData['access_token']);
       final refreshToken = CognitoRefreshToken(tokenData['refresh_token']);
-      print('SocialLoginScreen.signUserInWithAuthCode().idToken=${idToken.jwtToken}');
-      print('SocialLoginScreen.signUserInWithAuthCode().accessToken=${accessToken.jwtToken}');
-      print('SocialLoginScreen.signUserInWithAuthCode().refreshToken=${refreshToken.token}');
+      print(
+          'SocialLoginScreen.signUserInWithAuthCode().idToken=${idToken.jwtToken}');
+      print(
+          'SocialLoginScreen.signUserInWithAuthCode().accessToken=${accessToken.jwtToken}');
+      print(
+          'SocialLoginScreen.signUserInWithAuthCode().refreshToken=${refreshToken.token}');
       dynamic payload = idToken.decodePayload();
       String username = payload['cognito:username'];
       print('SocialLoginScreen()signUserInWithAuthCode().username=' + username);
 
-      final session = CognitoUserSession(idToken, accessToken, refreshToken: refreshToken);
+      final session =
+          CognitoUserSession(idToken, accessToken, refreshToken: refreshToken);
       AuthRepository repository = getIt<AuthRepository>();
       await repository.loginWithCognitoSession(session, username);
 

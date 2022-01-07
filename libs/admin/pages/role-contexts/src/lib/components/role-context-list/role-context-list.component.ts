@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { roleContextsSelectors } from '@bgap/admin/shared/data-access/role-contexts';
+import { roleContextsSelectors } from '@bgap/admin/store/role-contexts';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';

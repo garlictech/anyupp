@@ -2,13 +2,25 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'admin-shared-utils',
   preset: '../../../../jest.preset.js',
+  setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
-    'ts-jest': { tsconfig: '<rootDir>/tsconfig.spec.json' },
+    'ts-jest': {
+      stringifyContentPathRegex: '\\.(html|svg)$',
+
+      tsconfig: '<rootDir>/tsconfig.spec.json',
+    },
   },
-  testEnvironment: 'node',
+  coverageDirectory: '../../../../coverage/libs/admin/shared/pipes',
+  snapshotSerializers: [
+    'jest-preset-angular/build/serializers/no-ng-attributes',
+    'jest-preset-angular/build/serializers/ng-snapshot',
+    'jest-preset-angular/build/serializers/html-comment',
+  ],
   transform: {
-    '^.+\\.[tj]sx?$': 'ts-jest',
+    '^.+.(ts|mjs|js|html)$': 'jest-preset-angular',
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../../coverage/libs/admin/shared/utils',
+  transformIgnorePatterns: [
+    'node_modules/(?!@angular)',
+    'node_modules/(?!.*\\.mjs$)',
+  ],
 };

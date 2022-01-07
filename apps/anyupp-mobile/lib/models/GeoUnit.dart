@@ -19,6 +19,8 @@ class GeoUnit {
   final List<OpeningHours> openingHoursNext7;
   final List<ServingMode> supportedServingModes;
   final List<OrderMode> supportedOrderModes;
+  final OrderPolicy orderPolicy;
+  final double packagingTax;
 
   GeoUnit({
     required this.id,
@@ -34,6 +36,8 @@ class GeoUnit {
     required this.openingHoursNext7,
     required this.supportedServingModes,
     required this.supportedOrderModes,
+    required this.orderPolicy,
+    required this.packagingTax,
   });
 
   GeoUnit copyWith({
@@ -50,6 +54,8 @@ class GeoUnit {
     List<OpeningHours>? openingHoursNext7,
     List<ServingMode>? supportedServingModes,
     List<OrderMode>? supportedOrderModes,
+    OrderPolicy? orderPolicy,
+    double? packagingTax,
   }) {
     return GeoUnit(
       id: id ?? this.id,
@@ -63,8 +69,11 @@ class GeoUnit {
       currency: currency ?? this.currency,
       isAcceptingOrders: isAcceptingOrders ?? this.isAcceptingOrders,
       openingHoursNext7: openingHoursNext7 ?? this.openingHoursNext7,
-      supportedServingModes: supportedServingModes ?? this.supportedServingModes,
+      supportedServingModes:
+          supportedServingModes ?? this.supportedServingModes,
       supportedOrderModes: supportedOrderModes ?? this.supportedOrderModes,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
+      packagingTax: packagingTax ?? this.packagingTax,
     );
   }
 
@@ -81,8 +90,12 @@ class GeoUnit {
       'currency': currency,
       'isAcceptingOrders': isAcceptingOrders,
       'openingHoursNext7': openingHoursNext7.map((x) => x.toJson()).toList(),
-      'supportedServingModes': supportedServingModes.map((x) => enumToString(x)).toList(),
-      'supportedOrderModes': supportedOrderModes.map((x) => enumToString(x)).toList(),
+      'supportedServingModes':
+          supportedServingModes.map((x) => enumToString(x)).toList(),
+      'supportedOrderModes':
+          supportedOrderModes.map((x) => enumToString(x)).toList(),
+      'orderPolicy': enumToString(orderPolicy),
+      'packagingTax': packagingTax,
     };
   }
 
@@ -94,25 +107,33 @@ class GeoUnit {
       name: map['name'],
       address: Address.fromJson(map['address']),
       style: ChainStyle.fromJson(map['style']),
-      paymentModes: List<PaymentMode?>.from(map['paymentModes']?.map((x) => PaymentMode?.fromJson(x))),
+      paymentModes: List<PaymentMode?>.from(
+          map['paymentModes']?.map((x) => PaymentMode?.fromJson(x))),
       distance: map['distance'],
       currency: map['currency'],
       isAcceptingOrders: map['isAcceptingOrders'],
       openingHoursNext7: map['openingHoursNext7'] != null
-          ? List<OpeningHours>.from(map['openingHoursNext7']?.map((x) => OpeningHours.fromJson(x)))
+          ? List<OpeningHours>.from(
+              map['openingHoursNext7']?.map((x) => OpeningHours.fromJson(x)))
           : [],
       supportedServingModes: map['supportedServingModes'] != null
-          ? List<ServingMode>.from(map['supportedServingModes']?.map((x) => enumFromString(x, ServingMode.values)))
+          ? List<ServingMode>.from(map['supportedServingModes']
+              ?.map((x) => enumFromString(x, ServingMode.values)))
           : [ServingMode.inPlace],
       supportedOrderModes: map['supportedOrderModes'] != null
-          ? List<OrderMode>.from(map['supportedOrderModes']?.map((x) => enumFromString(x, OrderMode.values)))
+          ? List<OrderMode>.from(map['supportedOrderModes']
+              ?.map((x) => enumFromString(x, OrderMode.values)))
           : [OrderMode.instant],
+      orderPolicy: map['orderPolicy'] != null
+          ? enumFromString(map['orderPolicy'], OrderPolicy.values)
+          : OrderPolicy.full, // TODO orderPolicy API mock
+      packagingTax: map['packagingTax'] ?? 0,
     );
   }
 
   @override
   String toString() {
-    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
+    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, orderPolicy: $orderPolicy, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
   }
 
   @override
@@ -133,7 +154,8 @@ class GeoUnit {
         other.isAcceptingOrders == isAcceptingOrders &&
         listEquals(other.openingHoursNext7, openingHoursNext7) &&
         listEquals(other.supportedServingModes, supportedServingModes) &&
-        listEquals(other.supportedOrderModes, supportedOrderModes);
+        listEquals(other.supportedOrderModes, supportedOrderModes) &&
+        other.packagingTax == packagingTax;
   }
 
   @override
@@ -150,6 +172,7 @@ class GeoUnit {
         isAcceptingOrders.hashCode ^
         supportedServingModes.hashCode ^
         supportedOrderModes.hashCode ^
-        openingHoursNext7.hashCode;
+        openingHoursNext7.hashCode ^
+        packagingTax.hashCode;
   }
 }

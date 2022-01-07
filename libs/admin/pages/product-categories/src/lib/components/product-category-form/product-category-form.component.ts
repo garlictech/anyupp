@@ -7,14 +7,13 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { multiLangValidator } from '@bgap/admin/shared/utils';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EImageType } from '@bgap/shared/types';
+import { EImageType, UpsertResponse } from '@bgap/shared/types';
 import { select } from '@ngrx/store';
+
+import { ProductCategoryFormService } from '../../services/product-category-form.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +32,7 @@ export class ProductCategoryFormComponent
   constructor(
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _crudSdk: CrudSdkService,
+    private _productCategoryFormService: ProductCategoryFormService,
   ) {
     super(_injector);
 
@@ -49,25 +48,8 @@ export class ProductCategoryFormComponent
   }
 
   ngOnInit(): void {
-    this.dialogForm = this._formBuilder.group({
-      name: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      description: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      image: [''],
-    });
+    this.dialogForm =
+      this._productCategoryFormService.createProductCategoryFormGroup();
 
     if (this.productCategory) {
       this.dialogForm.patchValue(this.productCategory);
@@ -78,35 +60,20 @@ export class ProductCategoryFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      const value = {
-        ...this.dialogForm?.value,
-        chainId: this._selectedChainId,
-        position: this.productCategory?.position || 0,
-      };
+      this._productCategoryFormService
+        .saveForm$(
+          {
+            ...this.dialogForm.value,
+            chainId: this._selectedChainId,
+            position: this.productCategory?.position || 0,
+          },
+          this.productCategory?.id,
+        )
+        .subscribe((response: UpsertResponse<unknown>) => {
+          this._toasterService.showSimpleSuccess(response.type);
 
-      if (this.productCategory?.id) {
-        this._crudSdk.sdk
-          .UpdateProductCategory({
-            input: {
-              id: this.productCategory.id,
-              ...value,
-            },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.updateSuccessful');
-
-            this.close();
-          });
-      } else {
-        this._crudSdk.sdk
-          .CreateProductCategory({ input: value })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.insertSuccessful');
-            this.close();
-          });
-      }
+          this.close();
+        });
     }
   }
 
@@ -114,11 +81,13 @@ export class ProductCategoryFormComponent
     this.dialogForm?.controls.image.setValue(image);
 
     if (this.productCategory?.id) {
-      this.updateImageStyles(this.productCategory.id, image).subscribe(() => {
-        this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
-      });
+      this._productCategoryFormService
+        .updateImageStyles$(this.productCategory.id, image)
+        .subscribe(() => {
+          this._toasterService.showSimpleSuccess('imageUpload');
+        });
     } else {
-      this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
+      this._toasterService.showSimpleSuccess('imageUpload');
     }
   };
 
@@ -126,22 +95,13 @@ export class ProductCategoryFormComponent
     this.dialogForm?.controls.image.setValue('');
 
     if (this.productCategory?.id) {
-      this.updateImageStyles(this.productCategory.id, null).subscribe(() => {
-        this._toasterService.showSimpleSuccess('common.imageUploadSuccess');
-      });
+      this._productCategoryFormService
+        .updateImageStyles$(this.productCategory.id, null)
+        .subscribe(() => {
+          this._toasterService.showSimpleSuccess('imageUpload');
+        });
     } else {
-      this._toasterService.showSimpleSuccess('common.imageRemoveSuccess');
+      this._toasterService.showSimpleSuccess('imageRemove');
     }
   };
-
-  private updateImageStyles(id: string, image: string | null) {
-    return this._crudSdk.sdk
-      .UpdateProductCategory({
-        input: {
-          id,
-          image,
-        },
-      })
-      .pipe(catchGqlError(this._store));
-  }
 }

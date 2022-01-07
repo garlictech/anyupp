@@ -50,13 +50,14 @@
             <bgap-form-select
               [control]="dialogForm.get('laneId')! | asFormControl"
               caption="products.lane"
-              [options]="unitLanes"
+              [options]="(this.unitLanes$ | async) || []"
               [localize]="false"
               [forceShowEmptyOption]="true"
               inputId="laneId"
             >
             </bgap-form-select>
           </div>
+
           <div class="col-3 pt-4">
             <bgap-form-checkbox
               caption="products.isVisible"

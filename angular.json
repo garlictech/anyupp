@@ -176,7 +176,9 @@
           },
           "outputs": ["coverage/apps/admin"]
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"],
+      "implicitDependencies": ["anyupp-backend"]
     },
     "admin-e2e": {
       "root": "apps/admin-e2e",
@@ -209,7 +211,9 @@
             "lintFilePatterns": ["apps/admin-e2e/**/*.{js,ts}"]
           }
         }
-      }
+      },
+      "tags": ["platform:angular"],
+      "implicitDependencies": ["admin"]
     },
     "admin-pages-admin-users": {
       "projectType": "library",
@@ -231,7 +235,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-pages-auth": {
       "projectType": "library",
@@ -253,7 +258,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-chains": {
       "projectType": "library",
@@ -275,7 +281,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-dashboard": {
       "projectType": "library",
@@ -297,7 +304,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-groups": {
       "projectType": "library",
@@ -319,7 +327,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-modifiers-and-extras": {
       "projectType": "library",
@@ -343,7 +352,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-product-categories": {
       "projectType": "library",
@@ -365,7 +375,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-products": {
       "projectType": "library",
@@ -387,7 +398,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-role-contexts": {
       "projectType": "library",
@@ -409,7 +421,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-units": {
       "projectType": "library",
@@ -431,7 +444,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-pages-users": {
       "projectType": "library",
@@ -453,7 +467,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:website", "platform:angular"]
     },
     "admin-shared-components": {
       "projectType": "library",
@@ -475,7 +490,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-shared-config": {
       "root": "libs/admin/shared/config",
@@ -496,54 +512,8 @@
             "passWithNoTests": true
           }
         }
-      }
-    },
-    "admin-shared-data-access-admin-users": {
-      "root": "libs/admin/shared/data-access/admin-users",
-      "sourceRoot": "libs/admin/shared/data-access/admin-users/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/admin-users/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/admin-users"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/admin-users/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-shared-data-access-app-core": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/app-core",
-      "sourceRoot": "libs/admin/shared/data-access/app-core/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/app-core/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/app-core"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/app-core/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
+      },
+      "tags": ["layer:utils", "platform:angular"]
     },
     "admin-shared-data-access-auth": {
       "root": "libs/admin/shared/data-access/auth",
@@ -564,51 +534,8 @@
             "passWithNoTests": true
           }
         }
-      }
-    },
-    "admin-shared-data-access-chains": {
-      "root": "libs/admin/shared/data-access/chains",
-      "sourceRoot": "libs/admin/shared/data-access/chains/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/chains/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/chains"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/chains/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-shared-data-access-dashboard": {
-      "root": "libs/admin/shared/data-access/dashboard",
-      "sourceRoot": "libs/admin/shared/data-access/dashboard/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/dashboard/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/dashboard"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/dashboard/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-data": {
       "root": "libs/admin/shared/data-access/data",
@@ -629,52 +556,8 @@
             "passWithNoTests": true
           }
         }
-      }
-    },
-    "admin-shared-data-access-groups": {
-      "root": "libs/admin/shared/data-access/groups",
-      "sourceRoot": "libs/admin/shared/data-access/groups/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/groups/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/groups"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/groups/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-shared-data-access-logged-user": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/logged-user",
-      "sourceRoot": "libs/admin/shared/data-access/logged-user/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/logged-user/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/logged-user"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/logged-user/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-order": {
       "root": "libs/admin/shared/data-access/order",
@@ -695,151 +578,8 @@
             "passWithNoTests": true
           }
         }
-      }
-    },
-    "admin-shared-data-access-orders": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/orders",
-      "sourceRoot": "libs/admin/shared/data-access/orders/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/orders/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/orders"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/orders/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-shared-data-access-product-categories": {
-      "root": "libs/admin/shared/data-access/product-categories",
-      "sourceRoot": "libs/admin/shared/data-access/product-categories/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/product-categories/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/admin/shared/data-access/product-categories"
-          ],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/product-categories/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-shared-data-access-product-component-sets": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/product-component-sets",
-      "sourceRoot": "libs/admin/shared/data-access/product-component-sets/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/product-components/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/admin/shared/data-access/product-component-sets"
-          ],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/product-component-sets/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-shared-data-access-product-components": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/product-components",
-      "sourceRoot": "libs/admin/shared/data-access/product-components/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/product-components/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/admin/shared/data-access/product-components"
-          ],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/product-components/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-shared-data-access-products": {
-      "root": "libs/admin/shared/data-access/products",
-      "sourceRoot": "libs/admin/shared/data-access/products/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/admin/shared/data-access/products/**/*.ts"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/products"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/products/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-shared-data-access-role-contexts": {
-      "projectType": "library",
-      "root": "libs/admin/shared/data-access/role-contexts",
-      "sourceRoot": "libs/admin/shared/data-access/role-contexts/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/role-contexts"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/role-contexts/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-sdk": {
       "root": "libs/admin/shared/data-access/sdk",
@@ -860,7 +600,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-shared-data-access-storage": {
       "root": "libs/admin/shared/data-access/storage",
@@ -883,49 +624,8 @@
             "passWithNoTests": true
           }
         }
-      }
-    },
-    "admin-shared-data-access-units": {
-      "root": "libs/admin/shared/data-access/units",
-      "sourceRoot": "libs/admin/shared/data-access/units/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/units/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/units"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/units/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "admin-shared-data-access-users": {
-      "root": "libs/admin/shared/data-access/users",
-      "sourceRoot": "libs/admin/shared/data-access/users/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/users/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/shared/data-access/users"],
-          "options": {
-            "jestConfig": "libs/admin/shared/data-access/users/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-shared-fixtures": {
       "projectType": "library",
@@ -947,7 +647,8 @@
             "lintFilePatterns": ["libs/admin/shared/fixtures/src/**/*.ts"]
           }
         }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-shared-floor-map": {
       "projectType": "library",
@@ -969,7 +670,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-shared-forms": {
       "projectType": "library",
@@ -991,7 +693,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-shared-pipes": {
       "projectType": "library",
@@ -1011,6 +714,32 @@
           "options": {
             "jestConfig": "libs/admin/shared/pipes/jest.config.js",
             "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-shared-types": {
+      "projectType": "library",
+      "root": "libs/admin/shared/types",
+      "sourceRoot": "libs/admin/shared/types/src",
+      "prefix": "bgap",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/types"],
+          "options": {
+            "jestConfig": "libs/admin/shared/types/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/shared/types/src/**/*.ts",
+              "libs/admin/shared/types/src/**/*.html"
+            ]
           }
         }
       }
@@ -1034,7 +763,322 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-admin-users": {
+      "root": "libs/admin/store/admin-users",
+      "sourceRoot": "libs/admin/store/admin-users/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/admin-users/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/admin-users"],
+          "options": {
+            "jestConfig": "libs/admin/store/admin-users/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-app-core": {
+      "projectType": "library",
+      "root": "libs/admin/store/app-core",
+      "sourceRoot": "libs/admin/store/app-core/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/app-core/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/app-core"],
+          "options": {
+            "jestConfig": "libs/admin/store/app-core/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-chains": {
+      "root": "libs/admin/store/chains",
+      "sourceRoot": "libs/admin/store/chains/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/chains/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/chains"],
+          "options": {
+            "jestConfig": "libs/admin/store/chains/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-dashboard": {
+      "root": "libs/admin/store/dashboard",
+      "sourceRoot": "libs/admin/store/dashboard/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/dashboard/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/dashboard"],
+          "options": {
+            "jestConfig": "libs/admin/store/dashboard/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-groups": {
+      "root": "libs/admin/store/groups",
+      "sourceRoot": "libs/admin/store/groups/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/groups/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/groups"],
+          "options": {
+            "jestConfig": "libs/admin/store/groups/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-logged-user": {
+      "projectType": "library",
+      "root": "libs/admin/store/logged-user",
+      "sourceRoot": "libs/admin/store/logged-user/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/logged-user/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/logged-user"],
+          "options": {
+            "jestConfig": "libs/admin/store/logged-user/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-orders": {
+      "projectType": "library",
+      "root": "libs/admin/store/orders",
+      "sourceRoot": "libs/admin/store/orders/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/orders/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/orders"],
+          "options": {
+            "jestConfig": "libs/admin/store/orders/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-product-categories": {
+      "root": "libs/admin/store/product-categories",
+      "sourceRoot": "libs/admin/store/product-categories/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/product-categories/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/product-categories"],
+          "options": {
+            "jestConfig": "libs/admin/store/product-categories/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-product-component-sets": {
+      "projectType": "library",
+      "root": "libs/admin/store/product-component-sets",
+      "sourceRoot": "libs/admin/store/product-component-sets/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/product-components/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/product-component-sets"],
+          "options": {
+            "jestConfig": "libs/admin/store/product-component-sets/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-product-components": {
+      "projectType": "library",
+      "root": "libs/admin/store/product-components",
+      "sourceRoot": "libs/admin/store/product-components/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/product-components/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/product-components"],
+          "options": {
+            "jestConfig": "libs/admin/store/product-components/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-products": {
+      "root": "libs/admin/store/products",
+      "sourceRoot": "libs/admin/store/products/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/products/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/products"],
+          "options": {
+            "jestConfig": "libs/admin/store/products/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-role-contexts": {
+      "projectType": "library",
+      "root": "libs/admin/store/role-contexts",
+      "sourceRoot": "libs/admin/store/role-contexts/src",
+      "prefix": "bgap",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/role-contexts/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/role-contexts"],
+          "options": {
+            "jestConfig": "libs/admin/store/role-contexts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-units": {
+      "root": "libs/admin/store/units",
+      "sourceRoot": "libs/admin/store/units/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/units/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/units"],
+          "options": {
+            "jestConfig": "libs/admin/store/units/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
+    "admin-store-users": {
+      "root": "libs/admin/store/users",
+      "sourceRoot": "libs/admin/store/users/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/admin/store/users/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/store/users"],
+          "options": {
+            "jestConfig": "libs/admin/store/users/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-ui-core": {
       "projectType": "library",
@@ -1056,7 +1100,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-ui-theme": {
       "projectType": "library",
@@ -1067,7 +1112,7 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/admin/ui/core/**/*.ts"]
+            "lintFilePatterns": ["libs/admin/ui/theme/**/*.ts"]
           }
         },
         "test": {
@@ -1078,7 +1123,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "anyupp-backend": {
       "root": "apps/anyupp-backend",
@@ -1091,16 +1137,28 @@
           "options": {
             "cwd": "apps/anyupp-backend",
             "parallel": false,
-            "commands": [
-              "yarn sls package --stage='{args.env}'",
-              "yarn sst cdk synth --stage='{args.env}'"
-            ]
+            "commands": ["../../tools/build-anyupp-backend.sh '{args.env}'"]
+          },
+          "outputs": ["apps/anyupp-backend/.serverless"]
+        },
+        "synth": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/anyupp-backend",
+            "parallel": false,
+            "commands": ["yarn sst cdk synth --stage='{args.env}'"]
           },
           "outputs": [
             "apps/anyupp-backend/cdk.out",
-            "apps/anyupp-backend/.build",
-            "apps/anyupp-backend/.serverless"
+            "apps/anyupp-backend/.build"
           ]
+        },
+        "config": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "parallel": false,
+            "commands": ["tools/config-anyupp-backend.sh '{args.env}'"]
+          }
         },
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
@@ -1109,10 +1167,7 @@
             "parallel": false,
             "commands": [
               {
-                "command": "yarn sst deploy --stage='{args.env}'"
-              },
-              {
-                "command": "cd ../.. && yarn ts-node ./tools/fetch-configuration.ts '{args.env}'"
+                "command": "../../tools/deploy-anyupp-backend.sh '{args.env}'"
               }
             ]
           }
@@ -1144,7 +1199,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:nodejs"]
     },
     "anyupp-backend-lib": {
       "root": "libs/anyupp-backend-lib",
@@ -1165,7 +1221,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:nodejs", "type:backend"]
     },
     "anyupp-gql-api": {
       "root": "libs/anyupp-gql/api",
@@ -1190,11 +1247,12 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/crud-backend",
-            "commands": ["../../tools/build-schema-anyupp-api.sh {args.stage}"]
+            "commands": ["../../tools/build-schema-anyupp-api.sh"]
           },
           "outputs": ["libs/anyupp-gql/api/src/lib/generated"]
         }
-      }
+      },
+      "tags": ["platform:nodejs"]
     },
     "anyupp-gql-backend": {
       "root": "libs/anyupp-gql/backend",
@@ -1215,7 +1273,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:nodejs"]
     },
     "anyupp-mobile": {
       "projectType": "application",
@@ -1232,7 +1291,7 @@
         "lint-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter analyze",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter analyze",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1264,7 +1323,7 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub get",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub get",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1280,7 +1339,7 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build  ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub run build_runner build --delete-conflicting-outputs",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build  ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub run build_runner build --delete-conflicting-outputs",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1301,7 +1360,7 @@
         "unit-test-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/unit",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/unit",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1315,7 +1374,7 @@
         "integration-test-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/integration_test",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/integration_test",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1329,7 +1388,7 @@
         "e2e-test-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter scripts/e2e-tests-ci.sh",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter scripts/e2e-tests-ci.sh",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1392,7 +1451,7 @@
         "buildApk-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build apk",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build apk",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1413,7 +1472,7 @@
         "buildAppbundle-ci": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "command": "docker run --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build appbundle",
+            "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build appbundle",
             "cwd": "apps/anyupp-mobile"
           }
         },
@@ -1452,7 +1511,146 @@
             "cwd": "apps/anyupp-mobile"
           }
         }
-      }
+      },
+      "tags": ["type:application", "platform:flutter"]
+    },
+    "backend-orders": {
+      "root": "libs/backend/orders",
+      "sourceRoot": "libs/backend/orders/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/orders/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/orders"],
+          "options": {
+            "jestConfig": "libs/backend/orders/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "backend-product-categories": {
+      "root": "libs/backend/product-categories",
+      "sourceRoot": "libs/backend/product-categories/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/product-categories/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/product-categories"],
+          "options": {
+            "jestConfig": "libs/backend/product-categories/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "backend-products": {
+      "root": "libs/backend/products",
+      "sourceRoot": "libs/backend/products/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/products/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/products"],
+          "options": {
+            "jestConfig": "libs/backend/products/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "backend-reports": {
+      "root": "libs/backend/reports",
+      "sourceRoot": "libs/backend/reports/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/reports/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/reports"],
+          "options": {
+            "jestConfig": "libs/backend/reports/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "backend-shared-utils": {
+      "root": "libs/backend/shared/utils",
+      "sourceRoot": "libs/backend/shared/utils/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/shared/utils/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/shared/utils"],
+          "options": {
+            "jestConfig": "libs/backend/shared/utils/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:nodejs", "layer:utils"]
+    },
+    "backend-units": {
+      "root": "libs/backend/units",
+      "sourceRoot": "libs/backend/units/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/units/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/units"],
+          "options": {
+            "jestConfig": "libs/backend/units/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "cicd": {
       "root": "apps/cicd",
@@ -1510,7 +1708,64 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
+    },
+    "common-backend": {
+      "root": "apps/common-backend",
+      "sourceRoot": "apps/common-backend/src",
+      "projectType": "application",
+      "architect": {
+        "synth": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/anyupp-backend",
+            "parallel": false,
+            "commands": ["yarn sst cdk synth --stage='{args.env}'"]
+          },
+          "outputs": ["apps/common/cdk.out", "apps/common/.build"]
+        },
+        "deploy": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/common-backend",
+            "parallel": false,
+            "commands": [
+              {
+                "command": "../../tools/deploy-common-backend.sh '{args.env}'"
+              }
+            ]
+          }
+        },
+        "remove": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "cwd": "apps/common-backend",
+            "parallel": false,
+            "commands": [
+              {
+                "command": "yarn sst remove --stage='{args.env}'"
+              }
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/common-backend/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/common-backend"],
+          "options": {
+            "jestConfig": "apps/common-backend/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "crud-backend": {
       "root": "apps/crud-backend",
@@ -1580,7 +1835,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "crud-gql-api": {
       "root": "libs/crud-gql/api",
@@ -1601,7 +1857,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:nodejs", "layer:utils"]
     },
     "crud-gql-backend": {
       "root": "libs/crud-gql/backend",
@@ -1622,7 +1879,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "gql-sdk": {
       "root": "libs/gql-sdk",
@@ -1643,7 +1901,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["layer:utils", "platform:nodejs"]
     },
     "integration-tests-angular": {
       "projectType": "library",
@@ -1651,12 +1910,6 @@
       "sourceRoot": "libs/integration-tests/angular/src",
       "prefix": "bgap",
       "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/integration-tests/angular/**/*.ts"]
-          }
-        },
         "test": {
           "builder": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/integration-tests/angular"],
@@ -1667,7 +1920,8 @@
             "forceExit": true
           }
         }
-      }
+      },
+      "tags": ["type:integration-tests", "platform:angular"]
     },
     "integration-tests-universal": {
       "root": "libs/integration-tests/universal",
@@ -1684,7 +1938,8 @@
             "forceExit": true
           }
         }
-      }
+      },
+      "tags": ["type:integration-tests", "platform:nodejs"]
     },
     "rkeeper-api": {
       "root": "libs/rkeeper-api",
@@ -1705,7 +1960,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
     },
     "shared-config": {
       "root": "libs/shared/config",
@@ -1735,7 +1991,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["layer:utils", "platform:nodejs"]
     },
     "shared-data-validators": {
       "root": "libs/shared/data-validators",
@@ -1756,7 +2013,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:nodejs", "layer:utils"]
     },
     "shared-fixtures": {
       "root": "libs/shared/fixtures",
@@ -1777,7 +2035,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:nodejs", "layer:utils"]
     },
     "shared-graphql-api-client": {
       "root": "libs/shared/graphql/api-client",
@@ -1798,7 +2057,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["layer:utils", "platform:nodejs"]
     },
     "shared-secrets": {
       "root": "libs/shared/secrets",
@@ -1819,7 +2079,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["layer:utils", "platform:nodejs"]
     },
     "shared-types": {
       "root": "libs/shared/types",
@@ -1840,7 +2101,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:nodejs", "layer:utils"]
     },
     "shared-utils": {
       "root": "libs/shared/utils",
@@ -1861,60 +2123,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": ["platform:nodejs", "layer:utils"]
     }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/angular",
-    "packageManager": "yarn"
-  },
-  "schematics": {
-    "@nrwl/workspace": {
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/cypress": {
-      "cypress-project": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/node": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/nest": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/express": {
-      "application": {
-        "linter": "eslint"
-      },
-      "library": {
-        "linter": "eslint"
-      }
-    },
-    "@nrwl/angular:application": {
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress"
-    },
-    "@nrwl/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nrwl/angular:component": {
-      "style": "scss"
-    }
-  },
-  "defaultProject": "admin"
+  }
 }

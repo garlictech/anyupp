@@ -9,6 +9,11 @@ plugins:
 
 package:
   individually: true
+  patterns:
+    - '!.build/**'
+    - '!.git/**'
+    - '!.serverless/**'
+    - '!cdk.out/**'
 
 custom:
   # Our stage is based on what is passed in when running serverless
@@ -16,12 +21,12 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   # Name of the SST app that's deploying our infrastructure
   sstApp: anyupp-backend
+
   bundle:
     packager: yarn
     linting: false
     sourcemaps: true
     caching: true
-    concurrency: 1
     esbuild: true
 
   offline:
@@ -56,3 +61,9 @@ functions:
 
   rkeeper-webhook:
     handler: lib/lambda/rkeeper-webhook/index.handler
+
+  rkeeper-product-processor:
+    handler: lib/lambda/rkeeper-product-processor/index.handler
+
+  report-generator:
+    handler: lib/lambda/report-generator/index.handler

@@ -155,5 +155,10 @@ query GetOrder($orderId: ID!) {
     transactionId
     transactionStatus
     updatedAt
+    packagingSum {
+      currency
+      netPrice
+      taxPercentage
+    }
   }
 }

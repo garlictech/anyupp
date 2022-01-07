@@ -1,5 +1,5 @@
 import { isNumber, omit } from 'lodash/fp';
-import { DateTime } from 'luxon';
+
 import {
   AbstractControl,
   FormBuilder,
@@ -7,11 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  EVariantAvailabilityType,
-  ICustomDailySchedule,
-  IDateIntervals,
-} from '@bgap/shared/types';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
 
@@ -50,12 +46,12 @@ export const multiLangValidator: ValidatorFn = (control: AbstractControl) => {
   return hu || en || de ? null : { empty: true };
 };
 
-export const addressIsEmpty = (address: CrudApi.Address) => {
+export const addressIsEmpty = (address?: CrudApi.Address) => {
   const stringFields = omit(['location'], address);
   const allStringsAreEmpty = Object.values(stringFields).every(v => !v);
 
   // 0 or empty string
-  const locationIsEmpty = !address.location?.lat && !address.location?.lng;
+  const locationIsEmpty = !address?.location?.lat && !address?.location?.lng;
 
   return allStringsAreEmpty && locationIsEmpty;
 };
@@ -130,42 +126,17 @@ export const productAvailabilityValidator: ValidatorFn = (
   return null;
 };
 
-export const unitOpeningHoursValidator: ValidatorFn = (
+export const dailyScheduleBothEmptyOrProperlyFilledValidator: ValidatorFn = (
   control: AbstractControl,
 ) => {
-  let error = null;
+  const from = control.get('from')?.value;
+  const to = control.get('to')?.value;
 
-  Object.keys(control.value).forEach((d: string): void => {
-    if (d === 'custom') {
-      control.value[d].forEach((day: ICustomDailySchedule): void => {
-        if (day.date && day.from && day.to && day.from >= day.to) {
-          error = { timeInterval: true };
-        }
-      });
-    } else {
-      const day = control.value[d];
-
-      if (day.from && day.to && day.from >= day.to) {
-        error = { timeInterval: true };
-      }
-    }
-  });
-
-  return error;
-};
-
-export const getDayIntervals = (
-  dateValue: string | number,
-  timeZone: string,
-): IDateIntervals => {
-  const date: DateTime = DateTime.fromISO(new Date(dateValue).toISOString(), {
-    zone: timeZone,
-  });
-
-  return {
-    from: date.startOf('day').valueOf(),
-    to: date.endOf('day').valueOf(),
-  };
+  return (!!from && !!to) || (!from && !to)
+    ? control.get('from')?.valid && control.get('to')?.valid
+      ? null
+      : { timeFormat: true }
+    : { missingIntervall: true };
 };
 
 export const makeId = (length: number): string => {

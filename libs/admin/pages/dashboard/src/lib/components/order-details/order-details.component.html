@@ -46,14 +46,7 @@
       </div>
     </div>
     <div
-      class="
-        col-1 col-md-1
-        p-2
-        m-auto
-        caption
-        text-end
-        font-weight-bold font-larger
-      "
+      class="col-1 col-md-1 p-2 m-auto caption text-end font-weight-bold font-larger"
     >
       {{ orderItem.quantity }}x
     </div>
@@ -115,6 +108,7 @@
         [size]="buttonSize"
         shape="round"
         (click)="transactionStatusSuccess()"
+        data-testid="transactionSuccessBtn"
       >
         {{ 'common.transactionStatus.SUCCESS' | translate }}
       </button>
@@ -125,6 +119,7 @@
         [size]="buttonSize"
         shape="round"
         (click)="transactionStatusFailed()"
+        data-testid="transactionFailureBtn"
       >
         {{ 'common.transactionStatus.FAILED' | translate }}
       </button>
@@ -180,6 +175,7 @@
       shape="round"
       class="font-larger"
       (click)="updateOrderStatus()"
+      data-testid="orderStatusBtn"
     >
       {{ currentStatus(order.statusLog) }}
     </button>
@@ -192,6 +188,7 @@
       shape="round"
       *ngIf="isListMode('history') && allowRecallHistoryOrder"
       (click)="recallOrderFromHistory(order)"
+      data-testid="orderRecacllBtn"
     >
       <nb-icon icon="arrow-ios-back-outline"></nb-icon>
     </button>
@@ -212,6 +209,7 @@
       shape="round"
       (click)="deleteOrder()"
       *ngIf="currentStatus(order.statusLog) === EOrderStatus.none"
+      data-testid="orderDeleteBtn"
     >
       <nb-icon icon="trash-2-outline"></nb-icon>
       {{ 'orders.deleteOrder' | translate }}

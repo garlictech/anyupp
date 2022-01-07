@@ -9,15 +9,15 @@ import {
 } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
-import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
-import { roleContextsSelectors } from '@bgap/admin/shared/data-access/role-contexts';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+import { adminUsersSelectors } from '@bgap/admin/store/admin-users';
+import { roleContextsSelectors } from '@bgap/admin/store/role-contexts';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IKeyValue } from '@bgap/shared/types';
+import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { AdminUserFormService } from '../../services/admin-user-form.service';
 
 @UntilDestroy()
 @Component({
@@ -32,13 +32,13 @@ export class AdminUserRoleFormComponent
 {
   public adminUserId = '';
   public adminUser?: CrudApi.AdminUser;
-  public roleContextOptions: IKeyValue[] = [];
+  public roleContextOptions: KeyValue[] = [];
 
   constructor(
     protected _injector: Injector,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _crudSdk: CrudSdkService,
+    private _adminUserFormService: AdminUserFormService,
   ) {
     super(_injector);
   }
@@ -65,12 +65,10 @@ export class AdminUserRoleFormComponent
 
           this.roleContextOptions = roleContexts
             .filter(c => !contextIds.includes(c.id))
-            .map(
-              (roleContext): IKeyValue => ({
-                key: roleContext.id,
-                value: roleContext.name,
-              }),
-            );
+            .map(roleContext => ({
+              key: roleContext.id,
+              value: roleContext.name,
+            }));
 
           this._changeDetectorRef.detectChanges();
         }
@@ -87,17 +85,10 @@ export class AdminUserRoleFormComponent
           label: 'common.ok',
           callback: () => {
             if (roleContext?.id) {
-              this._crudSdk.sdk
-                .DeleteAdminRoleContext({
-                  input: {
-                    id: roleContext.id,
-                  },
-                })
-                .pipe(catchGqlError(this._store))
-                .subscribe(() => {
-                  this._toasterService.showSimpleSuccess(
-                    'common.updateSuccessful',
-                  );
+              this._adminUserFormService
+                .deleteAdminRoleContext$(roleContext.id)
+                .subscribe((response: UpsertResponse<unknown>) => {
+                  this._toasterService.showSimpleSuccess(response.type);
 
                   this._changeDetectorRef.detectChanges();
                 });
@@ -107,9 +98,6 @@ export class AdminUserRoleFormComponent
         },
         {
           label: 'common.cancel',
-          callback: (): void => {
-            /**/
-          },
           status: 'basic',
         },
       ],
@@ -118,19 +106,14 @@ export class AdminUserRoleFormComponent
 
   public submit() {
     if (this.dialogForm?.valid && this.adminUser?.id) {
-      this._crudSdk.sdk
-        .CreateAdminRoleContext({
-          input: {
-            ...this.dialogForm?.value,
-            adminUserId: this.adminUser.id,
-          },
+      this._adminUserFormService
+        .createAdminRoleContext$({
+          ...this.dialogForm?.value,
+          adminUserId: this.adminUser.id,
         })
-        .pipe(catchGqlError(this._store))
-        .subscribe(() => {
+        .subscribe((response: UpsertResponse<unknown>) => {
           this.dialogForm.patchValue({ roleContextId: '' });
-
-          this._toasterService.showSimpleSuccess('common.insertSuccessful');
-
+          this._toasterService.showSimpleSuccess(response.type);
           this._changeDetectorRef.detectChanges();
         });
     }

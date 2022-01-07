@@ -1,8 +1,8 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { createAnonymUser, UserResolverDeps } from '@bgap/anyupp-gql/backend';
 import { config } from '@bgap/shared/config';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { from, of } from 'rxjs';
+import { from } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 const TEST_NAME = 'CREATEANONYM_';
@@ -14,23 +14,19 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
 
 describe('Anonym user creation', () => {
   const deps: UserResolverDeps = {
-    anyuppSdk: AnyuppApi.getAnyuppSdkPublic(),
+    crudSdk: CrudApi.getCrudSdkPublic(),
     consumerUserPoolId: config.ConsumerUserPoolId,
     cognitoidentityserviceprovider,
   };
 
   test('Anonym user should be created/deleted', done => {
-    of('BEGINNING_OF_A_BEAUTIFUL_JOURNEY')
+    createAnonymUser(deps)
       .pipe(
-        // CREATE USER
-        // TO debug or development use direct logic call
-        switchMap(() => createAnonymUser(deps)),
-
         // USE this to check the endpoint registration, permissions, etc, the whole endpoint
         // switchMap(() =>
         //   executeMutation(anyuppGraphQLClient)<
-        //     AnyuppApi.CreateAnonymUserMutation
-        //   >(AnyuppApi.CreateAnonymUser).pipe(map(x => x.createAnonymUser)),
+        //     CrudApi.CreateAnonymUserMutation
+        //   >(CrudApi.CreateAnonymUser).pipe(map(x => x.createAnonymUser)),
         // ),
         tap({
           next(result) {

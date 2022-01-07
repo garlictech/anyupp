@@ -1,5 +1,7 @@
 overwrite: true
-schema: libs/anyupp-gql/backend/src/graphql/schema/generated/schema.graphql
+schema:
+  - libs/gql-sdk/src/schema/aws.graphl
+  - libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql
 documents: libs/anyupp-gql/backend/src/graphql/documents/*.graphql
 generates:
   libs/anyupp-gql/api/src/lib/generated/anyupp-api.ts:

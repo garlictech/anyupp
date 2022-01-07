@@ -1,7 +1,331 @@
-### AdminUser
+type Location @aws_cognito_user_pools {
+  lat: Float!
+  lng: Float!
+}
+
+type LocalizedItem @aws_cognito_user_pools {
+  en: String
+  de: String
+  hu: String
+}
+
+type Address @aws_cognito_user_pools {
+  address: String!
+  city: String!
+  country: String!
+  title: String!
+  postalCode: String!
+  location: Location!
+}
+
+type PaymentMode @aws_cognito_user_pools {
+  type: PaymentType!
+  caption: String
+  method: PaymentMethod!
+}
+
+enum PaymentMethod {
+  cash
+  card
+  inapp
+}
+
+enum PaymentType {
+  card
+  cash
+  simple
+  stripe
+  applepay
+  googlepay
+}
+
+type ChainStyle @aws_cognito_user_pools {
+  colors: ChainStyleColors!
+  images: ChainStyleImages
+}
+
+type ChainStyleColors @aws_cognito_user_pools {
+  backgroundLight: String @deprecated(reason: "Unused.")
+  backgroundDark: String @deprecated(reason: "Unused.")
+  borderLight: String @deprecated(reason: "Unused.")
+  borderDark: String @deprecated(reason: "Unused.")
+  disabled: String @deprecated(reason: "Unused.")
+  highlight: String @deprecated(reason: "Unused.")
+  indicator: String @deprecated(reason: "Use `primary`.")
+  textLight: String @deprecated(reason: "Unused.")
+  textDark: String @deprecated(reason: "Use `secondary`.")
+  primary: String
+  secondary: String
+}
+
+type ChainStyleImages {
+  header: String
+  logo: String
+}
+
+type ChainProduct
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  chainId: ID!
+  name: LocalizedItem!
+  description: LocalizedItem
+  productCategoryId: ID!
+  productType: String!
+  isVisible: Boolean!
+  image: String
+  variants: [ProductVariant]
+  allergens: [Allergen]
+  configSets: [ProductConfigSet]
+  externalId: String
+  dirty: Boolean
+}
+
+enum Allergen {
+  celery
+  crustaceans
+  egg
+  fish
+  gluten
+  lupin
+  milk
+  molluscs
+  mustard
+  peanut
+  sesame
+  soya
+  sulphites
+  treenuts
+}
+
+enum ServingMode {
+  inPlace
+  takeAway
+}
+
+enum OrderMode {
+  instant
+  pickup
+}
+
+enum ServiceFeeType {
+  noFee
+  included
+  applicable
+}
+
+type ServiceFeePolicy {
+  type: ServiceFeeType!
+  percentage: Float!
+  taxPercentage: Float!
+}
+
+input ServiceFeePolicyInput {
+  type: ServiceFeeType!
+  percentage: Float!
+  taxPercentage: Float!
+}
+
+type GroupProduct
+  @aws_cognito_user_pools
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent chainProduct ID
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean!
+  tax: Int!
+  takeawayTax: Int
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+  externalId: String
+  dirty: Boolean
+}
+
+type UnitProduct
+  @aws_cognito_user_pools
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  parentId: ID! # parent groupProduct ID
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
+  laneId: ID
+  position: Int!
+  variants: [ProductVariant]
+  configSets: [ProductConfigSet]
+  supportedServingModes: [ServingMode!]
+  externalId: String
+  dirty: Boolean
+}
+
+type ProductConfigComponent @aws_cognito_user_pools {
+  productComponentId: ID!
+  refGroupPrice: Float!
+  price: Float!
+  position: Int!
+  externalId: String
+  netPackagingFee: Float
+}
+
+type ProductConfigSet @aws_cognito_user_pools {
+  productSetId: ID!
+  items: [ProductConfigComponent!]!
+  position: Int!
+}
+
+type ProductVariant @aws_cognito_user_pools {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  position: Int!
+  netPackagingFee: Float
+}
+
+type ProductVariantPack @aws_cognito_user_pools {
+  size: Float!
+  unit: String!
+}
+input ProductVariantPackInput {
+  size: Float!
+  unit: String!
+}
+
+type Availability @aws_cognito_user_pools {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+input AvailabilityInput {
+  type: String!
+  dayFrom: String
+  dayTo: String
+  timeFrom: String
+  timeTo: String
+  price: Float!
+}
+
+type CardChecks @aws_cognito_user_pools {
+  address_line1_check: String
+  address_postal_code_check: String
+  cvc_check: String
+}
+
+# https://stripe.com/docs/api/cards/object?lang=node
+enum CardBrand {
+  amex
+  diners
+  discover
+  jcb
+  mastercard
+  unionpay
+  visa
+  unknown
+}
+
+# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
+enum CardFundingType {
+  credit
+  debit
+  prepaid
+  unknown
+}
+
+type BillingDetails @aws_cognito_user_pools {
+  email: String
+  name: String
+  phone: String
+  address: BillingAddress
+}
+
+type BillingAddress @aws_cognito_user_pools {
+  city: String
+  country: String
+  line1: String
+  line2: String
+  postal_code: String
+  state: String
+}
+
+type StripeCard @aws_cognito_user_pools {
+  id: String!
+  name: String
+  brand: CardBrand
+  checks: CardChecks
+  country: String
+  last4: String
+  exp_month: Int
+  exp_year: Int
+  fingerprint: String
+  funding: CardFundingType
+  three_d_secure: String
+  billing_details: BillingDetails
+}
+
+input UserInvoiceAddressInput {
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+}
+
+input StartStripePaymentInput {
+  orderId: ID!
+  paymentMethod: PaymentMethod!
+  savePaymentMethod: Boolean!
+  paymentMethodId: String
+  invoiceAddress: UserInvoiceAddressInput
+}
+
+input PayTipWithStripeInput {
+  orderId: ID!
+  paymentMethodId: String
+  tip: TipInput!
+}
+
+type StartStripePaymentOutput @aws_cognito_user_pools {
+  clientSecret: String!
+  status: String!
+}
+
+input StripeCardCreateInput {
+  card_number: String!
+  exp_month: Int!
+  exp_year: Int!
+  cvc: String!
+  default_for_currency: Boolean
+  name: String!
+}
+
+input StripeCardUpdateInput {
+  paymentMethodId: String!
+  default_for_currency: Boolean
+  name: String
+}
+
+input StripeCardDeleteInput {
+  paymentMethodId: String!
+}
 
 type AdminUser
-  @model
+  @model(mutations: { delete: null, create: null, update: "updateAdminUser" })
   @searchable
   @auth(rules: [{ allow: private, provider: iam }, { allow: private }]) {
   id: ID!
@@ -23,6 +347,33 @@ type AdminUserSettings {
   selectedHistoryDate: Int
 }
 
+input UpdateAdminUserInput {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  settings: AdminUserSettingsInput
+}
+
+input AdminUserSettingsInput {
+  selectedChainId: String
+  selectedGroupId: String
+  selectedUnitId: String
+  selectedProductCategoryId: String
+  selectedLanguage: String
+  selectedHistoryDate: Int
+}
+
+input CreateAdminUserInput {
+  id: ID
+  name: String!
+  email: String!
+  phone: String!
+  profileImage: String
+  settings: AdminUserSettingsInput
+}
+
 ###
 # Create a join model and disable queries as you don't need them
 # and can query through Post.editors and AdminUser.roleContexts
@@ -37,8 +388,6 @@ type AdminRoleContext
   adminUserId: ID!
   roleContext: RoleContext! @connection(fields: ["roleContextId"])
 }
-
-### RoleContext
 
 enum Role {
   superuser
@@ -62,85 +411,6 @@ type RoleContext
   unitId: String
 }
 
-### Stripe
-
-# STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
-
-# https://stripe.com/docs/api/cards/object?lang=node
-# Card brand
-# enum CardBrand {
-#   amex
-#   diners
-#   discover
-#   jcb
-#   mastercard
-#   unionpay
-#   visa
-#   unknown
-# }
-
-# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
-# Card funding type
-# enum CardFundingType {
-#   credit
-#   debit
-#   prepaid
-#   unknown
-# }
-
-# enum StripPaymentMethodType {
-#   alipay
-#   au_becs_debit
-#   bacs_debit
-#   bancontact
-#   card
-#   eps
-#   fpx
-#   giropay
-#   grabpay
-#   ideal
-#   oxxo
-#   p24
-#   sepa_debit
-#   sofort
-# }
-
-# type CardChecks {
-#   address_line1_check: String
-#   address_postal_code_check: String
-#   cvc_check: String
-# }
-
-# https://stripe.com/docs/api/metadata?lang=node
-# Updateable Stripe objects
-# type StripeMetadata {
-#   key: String!
-#   value: String!
-# }
-
-# type StripeCard @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-#   brand: CardBrand
-#   checks: CardChecks
-#   country: String
-#   last4: String
-#   exp_month: Int
-#   exp_year: Int
-#   fingerprint: String
-#   funding: CardFundingType
-#   three_d_secure: String
-#   # wallet: String # to do
-#   # IMPLEMENTED INTERFACES
-#   id: ID!
-#   object: String!
-#   metadata: [StripeMetadata!]!
-# }
-
-# type StartStripePaymentOutput {
-#   clientSecret: String!
-#   status: String!
-# }
-
-### Chain
 type Chain
   @model
   @searchable
@@ -155,7 +425,6 @@ type Chain
   phone: String
 }
 
-### Group
 type Group
   @model
   @searchable
@@ -170,7 +439,6 @@ type Group
   phone: String
 }
 
-### OrderItem
 type StatusLog {
   userId: ID!
   status: OrderStatus!
@@ -179,10 +447,10 @@ type StatusLog {
 
 type PriceShown {
   currency: String!
-  pricePerUnit: Float!
-  priceSum: Float!
-  tax: Int!
-  taxSum: Float!
+  pricePerUnit: Float! # Gross price!
+  priceSum: Float! # Gross price!
+  tax: Int! # Tax percentage
+  taxSum: Float! # Tax cut in priceSum
 }
 
 type OrderItemConfigComponent {
@@ -190,6 +458,7 @@ type OrderItemConfigComponent {
   price: Float!
   name: LocalizedItem!
   allergens: [Allergen]
+  netPackagingFee: Float
 }
 
 type OrderItemConfigSet {
@@ -199,14 +468,18 @@ type OrderItemConfigSet {
   items: [OrderItemConfigComponent!]!
 }
 
+type Price {
+  currency: String!
+  netPrice: Float!
+  taxPercentage: Float!
+}
+
 type OrderItem {
   productId: ID!
   variantId: ID!
   created: Float
   productName: LocalizedItem!
   image: String
-  sumPriceShown: PriceShown!
-  priceShown: PriceShown!
   quantity: Int!
   statusLog: [StatusLog!]!
   variantName: LocalizedItem!
@@ -214,9 +487,13 @@ type OrderItem {
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
   productType: String # TODO: Make the OrderItem.productType REQUIRED in the next release
+  externalId: String
+  netPackagingFee: Float
+  serviceFee: Price
+  priceShown: PriceShown! # Price without config sets
+  sumPriceShown: PriceShown! # Full price with config sets
 }
 
-### Order
 type Order
   @model
   @searchable
@@ -230,7 +507,6 @@ type Order
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
   archived: Boolean!
-  sumPriceShown: PriceShown!
   takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
@@ -240,6 +516,20 @@ type Order
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
+  serviceFee: Price
+  packagingSum: Price
+  sumPriceShown: PriceShown!
+  rating: Int
+  tip: Tip
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
+  tipTransaction: Transaction @connection(fields: ["tipTransactionId"])
+}
+
+enum OrderPolicy {
+  placeOnly
+  placeWithPaymentType
+  full
 }
 
 enum PaymentStatus {
@@ -276,7 +566,6 @@ type Place {
   table: String!
 }
 
-### ProductCategory
 type ProductCategory
   @model
   @searchable
@@ -289,7 +578,6 @@ type ProductCategory
   position: Int!
 }
 
-### ProductComponent
 type ProductComponent
   @model
   @searchable
@@ -299,14 +587,16 @@ type ProductComponent
   name: LocalizedItem!
   description: String
   allergens: [Allergen]
+  externalId: String
+  dirty: Boolean
 }
 
-### ProductComponent
 type ProductComponentSet
   @model
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
+  externalId: String
   chainId: ID!
   type: String!
   name: LocalizedItem!
@@ -314,6 +604,7 @@ type ProductComponentSet
   items: [ID!]! # ProductComponent ID
   maxSelection: Int # On extras
   supportedServingModes: [ServingMode!]
+  dirty: Boolean
 }
 
 type GeneratedProductConfigComponent {
@@ -322,6 +613,7 @@ type GeneratedProductConfigComponent {
   position: Int!
   name: LocalizedItem!
   allergens: [Allergen]
+  netPackagingFee: Float
 }
 
 type GeneratedProductConfigSet {
@@ -376,6 +668,7 @@ type GeneratedProductVariant {
   variantName: LocalizedItem!
   pack: ProductVariantPack
   price: Float!
+  netPackagingFee: Float
   position: Int!
 }
 
@@ -390,9 +683,62 @@ type FavoriteProduct
   product: GeneratedProduct! @connection
 }
 
-### Unit
+type Tip {
+  type: TipType!
+  value: Float!
+}
+
+input TipInput {
+  type: TipType!
+  value: Float!
+}
+
+enum TipType {
+  none
+  percent
+  amount
+}
+
+type RatingPolicy {
+  title: LocalizedItem
+  description: LocalizedItem
+  ratings: [RatingPolicyItem]!
+}
+
+type RatingPolicyItem {
+  value: Int!
+  text: LocalizedItem
+  icon: String
+}
+
+type TipPolicy {
+  title: LocalizedItem
+  description: LocalizedItem
+  percents: [Float!]!
+  maxOtherAmount: Float
+}
+
+input RatingPolicyInput {
+  title: LocalizedItemInput
+  description: LocalizedItemInput
+  ratings: [RatingPolicyItemInput]!
+}
+
+input RatingPolicyItemInput {
+  value: Int!
+  text: LocalizedItemInput
+  icon: String
+}
+
+input TipPolicyInput {
+  title: LocalizedItemInput
+  description: LocalizedItemInput
+  percents: [Float!]!
+  maxOtherAmount: Float
+}
+
 type Unit
-  @model
+  @model(mutations: { delete: "deleteUnit" })
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
@@ -414,8 +760,14 @@ type Unit
   merchantId: String
   timeZone: String
   pos: Pos
+  externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  packagingTaxPercentage: Float
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicy: RatingPolicy
+  tipPolicy: TipPolicy
 }
 
 type DateIntervalOpen {
@@ -492,7 +844,6 @@ type RKeeper {
   rkeeperPassword: String!
   anyuppUsername: String!
   anyuppPassword: String!
-  restaurantId: String!
 }
 
 enum PosType {
@@ -500,7 +851,46 @@ enum PosType {
   rkeeper
 }
 
-### User
+type GeoUnitList @aws_cognito_user_pools {
+  items: [GeoUnit]
+}
+
+type OpeningHoursByDate @aws_cognito_user_pools {
+  date: String!
+  closed: Boolean!
+  from: Float
+  to: Float
+}
+
+type GeoUnit @aws_cognito_user_pools {
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  name: String!
+  address: Address!
+  style: ChainStyle!
+  paymentModes: [PaymentMode]
+  distance: Int!
+  currency: String!
+  isAcceptingOrders: Boolean!
+  # isCurrentlyOpen: Boolean!
+  openingHours: String
+    @deprecated(
+      reason: "The new and better openingHoursNext7 field should be used instead of this static string"
+    )
+  openingHoursNext7: [OpeningHoursByDate!]!
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicy: RatingPolicy
+  tipPolicy: TipPolicy
+}
+
+input GetUnitsNearLocationInput {
+  location: LocationInput!
+}
+
 type User
   @model
   @searchable
@@ -514,7 +904,6 @@ type User
   invoiceAddress: UserInvoiceAddress
 }
 
-### Cart
 type Cart
   @model
   @searchable
@@ -527,6 +916,7 @@ type Cart
   paymentMode: PaymentMode
   items: [OrderItem!]!
   servingMode: ServingMode # Make the Cart.servingMode REQUIRED in the next release (handled in #1835 issue)
+  orderPolicy: OrderPolicy
 }
 
 type Transaction
@@ -606,6 +996,252 @@ type Receipt
   status: ReceiptStatus!
 }
 
+# Duplications, copied from the generated schema.
+# See: https://github.com/aws-amplify/amplify-cli/issues/1361
+input LocationInput {
+  lat: Float!
+  lng: Float!
+}
+
+input AddressInput {
+  address: String!
+  city: String!
+  country: String!
+  title: String!
+  postalCode: String!
+  location: LocationInput!
+}
+
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
+}
+
+input LaneInput {
+  id: ID!
+  name: String!
+  color: String!
+}
+
+input PaymentModeInput {
+  type: PaymentType!
+  caption: String
+  method: PaymentMethod!
+}
+
+input FloorMapDataInput {
+  w: Int!
+  h: Int!
+  objects: [FloorMapDataObjectInput!]
+}
+
+input FloorMapDataObjectInput {
+  id: ID!
+  t: UnitMapObjectType!
+  c: String
+  w: Int
+  h: Int
+  r: Int
+  a: Int
+  x: Int!
+  y: Int!
+  tID: String
+  sID: String
+}
+
+input DateIntervalInput {
+  from: String
+  to: String
+}
+
+input CustomDailyScheduleInput {
+  date: String!
+  from: String!
+  to: String!
+}
+
+input WeeklyScheduleInput {
+  mon: DateIntervalInput
+  tue: DateIntervalInput
+  wed: DateIntervalInput
+  thu: DateIntervalInput
+  fri: DateIntervalInput
+  sat: DateIntervalInput
+  sun: DateIntervalInput
+  custom: [CustomDailyScheduleInput]
+}
+
+input PosInput {
+  type: PosType!
+  rkeeper: RKeeperInput
+}
+
+input RKeeperInput {
+  endpointUri: String!
+  rkeeperUsername: String!
+  rkeeperPassword: String!
+  anyuppUsername: String!
+  anyuppPassword: String!
+}
+
+input CreateUnitInput {
+  id: ID
+  groupId: ID!
+  chainId: ID!
+  lastOrderNum: Int
+  isActive: Boolean!
+  isAcceptingOrders: Boolean!
+  name: String!
+  description: LocalizedItemInput
+  address: AddressInput!
+  email: String
+  phone: String
+  paymentModes: [PaymentModeInput]
+  floorMap: FloorMapDataInput
+  lanes: [LaneInput]
+  open: DateIntervalInput
+  openingHours: WeeklyScheduleInput
+  merchantId: String
+  timeZone: String
+  pos: PosInput
+  externalId: String
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  packagingTaxPercentage: Float
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicy: RatingPolicyInput
+  tipPolicy: TipPolicyInput
+}
+
+input UpdateUnitInput {
+  id: ID!
+  groupId: ID
+  chainId: ID
+  lastOrderNum: Int
+  isActive: Boolean
+  isAcceptingOrders: Boolean
+  name: String
+  description: LocalizedItemInput
+  address: AddressInput
+  email: String
+  phone: String
+  paymentModes: [PaymentModeInput]
+  floorMap: FloorMapDataInput
+  lanes: [LaneInput]
+  open: DateIntervalInput
+  openingHours: WeeklyScheduleInput
+  merchantId: String
+  timeZone: String
+  pos: PosInput
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  packagingTaxPercentage: Float
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicy: RatingPolicyInput
+  tipPolicy: TipPolicyInput
+}
+
+type CreateAnonymUserOutput {
+  username: String!
+  pwd: String!
+}
+
+input CreateOrderFromCartInput {
+  id: ID!
+}
+
+## UNIT
+input RegenerateUnitDataInput {
+  id: ID!
+}
+
+input DeleteAdminUserInput {
+  id: ID!
+}
+
+input DeleteUnitProductInput {
+  id: ID!
+}
+
+type Query {
+  listStripeCards: [StripeCard]
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+}
+
+type Mutation {
+  createUnit(input: CreateUnitInput!): Unit
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  updateUnit(input: UpdateUnitInput!): Unit
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  createAdminUser(input: CreateAdminUserInput!): AdminUser
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  deleteAdminUser(input: DeleteAdminUserInput!): AdminUser
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  # User
+  createAnonymUser: CreateAnonymUserOutput  # public endpoint
+    @aws_iam
+    @aws_api_key
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  # Order
+  createOrderFromCart(input: CreateOrderFromCartInput!): ID
+    @function(name: "${env}-anyupp-graphql-resolvers")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  # Unit
+  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
+    @function(name: "${env}-anyupp-graphql-resolvers")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  # Stripe
+  startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  createStripeCard(input: StripeCardCreateInput!): StripeCard
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
+    @function(name: "${env}-anyupp-graphql-resolvers")
+    @aws_iam
+    @aws_cognito_user_pools
+
+  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+}
+
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser
     @aws_subscribe(mutations: ["updateAdminUser"])
@@ -628,38 +1264,38 @@ type Subscription {
   onChainsChange: Chain
     @aws_subscribe(mutations: ["createChain", "updateChain"])
     @aws_cognito_user_pools
-  onGroupsChange: Group
+  onGroupsChange(chainId: ID!): Group
     @aws_subscribe(mutations: ["createGroup", "updateGroup"])
     @aws_cognito_user_pools
-  onUnitsChange: Unit
+  onUnitsChange(groupId: ID!): Unit
     @aws_subscribe(mutations: ["createUnit", "updateUnit"])
     @aws_cognito_user_pools
   # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
-  onProductCategoriesChange: ProductCategory
+  onProductCategoriesChange(chainId: ID!): ProductCategory
     @aws_subscribe(
       mutations: ["createProductCategory", "updateProductCategory"]
     )
     @aws_cognito_user_pools
-  onProductComponentsChange: ProductComponent
+  onProductComponentsChange(chainId: ID!): ProductComponent
     @aws_subscribe(
       mutations: ["createProductComponent", "updateProductComponent"]
     )
     @aws_cognito_user_pools
-  onProductComponentSetsChange: ProductComponentSet
+  onProductComponentSetsChange(chainId: ID!): ProductComponentSet
     @aws_subscribe(
       mutations: ["createProductComponentSet", "updateProductComponentSet"]
     )
     @aws_cognito_user_pools
-  onChainProductChange: ChainProduct
+  onChainProductChange(chainId: ID!): ChainProduct
     @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
     @aws_cognito_user_pools
-  onGroupProductChange: GroupProduct
+  onGroupProductChange(groupId: ID!): GroupProduct
     @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
     @aws_cognito_user_pools
-  onUnitProductChange: UnitProduct
+  onUnitProductChange(unitId: ID!): UnitProduct
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
     @aws_cognito_user_pools
-  onGeneratedProductChange: GeneratedProduct
+  onGeneratedProductChange(unitId: ID!): GeneratedProduct
     @aws_subscribe(
       mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
     )

@@ -9,28 +9,25 @@ import {
 } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { adminUsersActions } from '@bgap/admin/shared/data-access/admin-users';
-import { chainsActions } from '@bgap/admin/shared/data-access/chains';
-import { dashboardActions } from '@bgap/admin/shared/data-access/dashboard';
-import { groupsActions } from '@bgap/admin/shared/data-access/groups';
+import { adminUsersActions } from '@bgap/admin/store/admin-users';
+import { chainsActions } from '@bgap/admin/store/chains';
+import { dashboardActions } from '@bgap/admin/store/dashboard';
+import { groupsActions } from '@bgap/admin/store/groups';
 import {
   loggedUserActions,
   loggedUserSelectors,
-} from '@bgap/admin/shared/data-access/logged-user';
-import { ordersActions } from '@bgap/admin/shared/data-access/orders';
-import { productCategoriesActions } from '@bgap/admin/shared/data-access/product-categories';
-import { productComponentSetsActions } from '@bgap/admin/shared/data-access/product-component-sets';
-import { productComponentsActions } from '@bgap/admin/shared/data-access/product-components';
-import { productsActions } from '@bgap/admin/shared/data-access/products';
-import { roleContextActions } from '@bgap/admin/shared/data-access/role-contexts';
-import {
-  AnyuppSdkService,
-  CrudSdkService,
-} from '@bgap/admin/shared/data-access/sdk';
-import { unitsActions } from '@bgap/admin/shared/data-access/units';
-import { usersActions } from '@bgap/admin/shared/data-access/users';
+} from '@bgap/admin/store/logged-user';
+import { ordersActions } from '@bgap/admin/store/orders';
+import { productCategoriesActions } from '@bgap/admin/store/product-categories';
+import { productComponentSetsActions } from '@bgap/admin/store/product-component-sets';
+import { productComponentsActions } from '@bgap/admin/store/product-components';
+import { productsActions } from '@bgap/admin/store/products';
+import { roleContextActions } from '@bgap/admin/store/role-contexts';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+import { unitsActions } from '@bgap/admin/store/units';
+import { usersActions } from '@bgap/admin/store/users';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
+import { catchGqlError } from '@bgap/admin/store/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
@@ -50,7 +47,6 @@ export class DataService {
     private _store: Store,
     private _translateService: TranslateService,
     private _crudSdk: CrudSdkService,
-    private _anyuppSdk: AnyuppSdkService,
     private _logger: NGXLogger,
   ) {}
 
@@ -100,7 +96,6 @@ export class DataService {
         (
           adminUserSettings: CrudApi.AdminUserSettings | undefined | null,
         ): void => {
-          this._logger.log('SETTINGS SUBJECT CHANGED');
           this._settingsChanged$.next(true);
 
           if (adminUserSettings?.selectedChainId) {
@@ -116,12 +111,14 @@ export class DataService {
             this._subscribeToSelectedChainProducts(
               adminUserSettings?.selectedChainId,
             );
+            this._subscribeToGroups(adminUserSettings?.selectedChainId);
           }
 
           if (adminUserSettings?.selectedGroupId) {
             this._subscribeToSelectedGroupProducts(
               adminUserSettings?.selectedGroupId,
             );
+            this._subscribeToUnits(adminUserSettings?.selectedGroupId);
           }
 
           if (adminUserSettings?.selectedUnitId) {
@@ -141,8 +138,6 @@ export class DataService {
     // Lists
     this._subscribeToRoleContext();
     this._subscribeToChains();
-    this._subscribeToGroups();
-    this._subscribeToUnits();
     this._subscribeToAdminUsers();
     this._subscribeToAdminRoleContexts();
 
@@ -204,27 +199,33 @@ export class DataService {
     );
   }
 
-  private _subscribeToGroups(): void {
+  private _subscribeToGroups(chainId: string): void {
     this._logger.log('Subscribe to groups');
     this._crudSdk.doListSubscription(
       groupsActions.resetGroups(),
       getAllPaginatedData(op => this._crudSdk.sdk.ListGroups(op), {
+        query: {
+          filter: { chainId: { eq: chainId } },
+        },
         options: { fetchPolicy: 'no-cache' },
       }),
-      this._crudSdk.sdk.OnGroupsChange(),
+      this._crudSdk.sdk.OnGroupsChange({ chainId }),
       (groups: CrudApi.Group[]) => groupsActions.upsertGroups({ groups }),
       this._destroyConnection$,
     );
   }
 
-  private _subscribeToUnits(): void {
+  private _subscribeToUnits(groupId: string): void {
     this._logger.log('Subscribe to units');
     this._crudSdk.doListSubscription(
       unitsActions.resetUnits(),
       getAllPaginatedData(op => this._crudSdk.sdk.ListUnits(op), {
+        query: {
+          filter: { groupId: { eq: groupId } },
+        },
         options: { fetchPolicy: 'no-cache' },
       }),
-      this._crudSdk.sdk.OnUnitsChange(),
+      this._crudSdk.sdk.OnUnitsChange({ groupId }),
       (units: CrudApi.Unit[]) => unitsActions.upsertUnits({ units }),
       this._destroyConnection$,
     );
@@ -242,9 +243,11 @@ export class DataService {
           fetchPolicy: 'no-cache',
         },
       }),
-      this._crudSdk.sdk.OnProductCategoriesChange(),
-      (productCategorys: CrudApi.ProductCategory[]) =>
-        productCategoriesActions.upsertProductCategorys({ productCategorys }),
+      this._crudSdk.sdk.OnProductCategoriesChange({ chainId }),
+      (productCategories: CrudApi.ProductCategory[]) =>
+        productCategoriesActions.upsertProductCategories({
+          productCategories,
+        }),
       this._settingsChanged$,
     );
   }
@@ -262,7 +265,7 @@ export class DataService {
           fetchPolicy: 'no-cache',
         },
       }),
-      this._crudSdk.sdk.OnProductComponentsChange(),
+      this._crudSdk.sdk.OnProductComponentsChange({ chainId }),
       (productComponents: CrudApi.ProductComponent[]) =>
         productComponentsActions.upsertProductComponents({ productComponents }),
       this._settingsChanged$,
@@ -283,7 +286,7 @@ export class DataService {
           options: { fetchPolicy: 'no-cache' },
         },
       ),
-      this._crudSdk.sdk.OnProductComponentSetsChange(),
+      this._crudSdk.sdk.OnProductComponentSetsChange({ chainId }),
       (productComponentSets: CrudApi.ProductComponentSet[]) =>
         productComponentSetsActions.upsertProductComponentSets({
           productComponentSets,
@@ -303,7 +306,7 @@ export class DataService {
         },
         options: { fetchPolicy: 'no-cache' },
       }),
-      this._crudSdk.sdk.OnChainProductChange(),
+      this._crudSdk.sdk.OnChainProductChange({ chainId }),
       (products: CrudApi.ChainProduct[]) =>
         productsActions.upsertChainsProducts({ products }),
       this._settingsChanged$,
@@ -321,7 +324,7 @@ export class DataService {
         },
         options: { fetchPolicy: 'no-cache' },
       }),
-      this._crudSdk.sdk.OnGroupProductChange(),
+      this._crudSdk.sdk.OnGroupProductChange({ groupId }),
       (products: CrudApi.GroupProduct[]) =>
         productsActions.upsertGroupProducts({ products }),
       this._settingsChanged$,
@@ -339,7 +342,7 @@ export class DataService {
         },
         options: { fetchPolicy: 'no-cache' },
       }),
-      this._crudSdk.sdk.OnUnitProductChange(),
+      this._crudSdk.sdk.OnUnitProductChange({ unitId }),
       (products: CrudApi.UnitProduct[]) =>
         productsActions.upsertUnitProducts({ products }),
       this._settingsChanged$,
@@ -357,7 +360,7 @@ export class DataService {
         },
         options: { fetchPolicy: 'no-cache' },
       }),
-      this._crudSdk.sdk.OnGeneratedProductChange(),
+      this._crudSdk.sdk.OnGeneratedProductChange({ unitId }),
       (products: CrudApi.GeneratedProduct[]) =>
         productsActions.upsertGeneratedProducts({ products }),
       this._settingsChanged$,
@@ -470,7 +473,7 @@ export class DataService {
   }
 
   public regenerateUnitData$(unitId: string) {
-    return this._anyuppSdk.sdk.RegenerateUnitData({ input: { id: unitId } });
+    return this._crudSdk.sdk.RegenerateUnitData({ input: { id: unitId } });
   }
 
   public updateAdminUserSettings$(

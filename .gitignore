@@ -25,6 +25,7 @@ node_modules
 !.vscode/extensions.json
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage
@@ -47,20 +48,26 @@ cyreport
 /apps/infrastructure/cicd/build
 
 # The config - don't commit!
-/libs/shared/config/src/lib/*/*
 cdk.out
 
 /libs/anyupp-gql/api/src/lib/generated
 /libs/anyupp-gql/backend/src/graphql/schema/generated
 /libs/crud-gql/api/src/lib/generated/
+/libs/integration-tests/universal/src/lib/generated
 
-#amplify
+apps/crud-backend/home/
+apps/crud-backend/src/
+
+weeklyReport.xlsx
+
+.angular/
+
+#amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
 amplify/logs
 amplify/mock-data
 amplify/backend/amplify-meta.json
-amplify/backend/awscloudformation
 amplify/backend/.temp
 build/
 dist/
@@ -73,9 +80,5 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
-
-apps/crud-backend/home/
-apps/crud-backend/src/
-
-weeklyReport.xlsx
-.angular
+**.sample
+#amplify-do-not-edit-end

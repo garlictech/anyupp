@@ -1,27 +1,16 @@
 scalar AWSDateTime
-### Location
-type Location @aws_cognito_user_pools {
-  lat: Float!
-  lng: Float!
-}
-input LocationInput {
+type Location @aws_cognito_user_pools @aws_api_key @aws_iam {
   lat: Float!
   lng: Float!
 }
 
-### LocalizedItem
-type LocalizedItem @aws_cognito_user_pools {
-  en: String
-  de: String
-  hu: String
-}
-input LocalizedItemInput {
+type LocalizedItem @aws_cognito_user_pools @aws_api_key @aws_iam {
   en: String
   de: String
   hu: String
 }
 
-type Address @aws_cognito_user_pools {
+type Address @aws_cognito_user_pools @aws_api_key @aws_iam {
   address: String!
   city: String!
   country: String!
@@ -30,8 +19,7 @@ type Address @aws_cognito_user_pools {
   location: Location!
 }
 
-### Payment
-type PaymentMode @aws_cognito_user_pools {
+type PaymentMode @aws_cognito_user_pools @aws_api_key @aws_iam {
   type: PaymentType!
   caption: String
   method: PaymentMethod!
@@ -52,13 +40,12 @@ enum PaymentType {
   googlepay
 }
 
-### ChainStyle
-type ChainStyle @aws_cognito_user_pools {
+type ChainStyle @aws_cognito_user_pools @aws_api_key @aws_iam {
   colors: ChainStyleColors!
   images: ChainStyleImages
 }
 
-type ChainStyleColors @aws_cognito_user_pools {
+type ChainStyleColors @aws_cognito_user_pools @aws_api_key @aws_iam {
   backgroundLight: String @deprecated(reason: "Unused.")
   backgroundDark: String @deprecated(reason: "Unused.")
   borderLight: String @deprecated(reason: "Unused.")
@@ -72,17 +59,12 @@ type ChainStyleColors @aws_cognito_user_pools {
   secondary: String
 }
 
-type ChainStyleImages @aws_cognito_user_pools {
+type ChainStyleImages @aws_api_key @aws_iam @aws_cognito_user_pools {
   header: String
   logo: String
 }
 
-### ChainProduct
-type ChainProduct
-  @aws_cognito_user_pools
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type ChainProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
   chainId: ID!
   name: LocalizedItem!
@@ -94,19 +76,10 @@ type ChainProduct
   variants: [ProductVariant]
   allergens: [Allergen]
   configSets: [ProductConfigSet]
-}
-input UpdateChainProductInput {
-  id: ID!
-  chainId: ID
-  name: LocalizedItemInput
-  description: LocalizedItemInput
-  productCategoryId: ID
-  productType: String
-  isVisible: Boolean
-  image: String
-  variants: [ProductVariantInput]
-  allergens: [Allergen]
-  configSets: [ProductConfigSetInput]
+  externalId: String
+  dirty: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 enum Allergen {
@@ -136,14 +109,27 @@ enum OrderMode {
   pickup
 }
 
-### GroupProduct
-type GroupProduct
-  @aws_cognito_user_pools
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+enum ServiceFeeType {
+  noFee
+  included
+  applicable
+}
+
+type ServiceFeePolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
+  type: ServiceFeeType!
+  percentage: Float!
+  taxPercentage: Float!
+}
+
+input ServiceFeePolicyInput {
+  type: ServiceFeeType!
+  percentage: Float!
+  taxPercentage: Float!
+}
+
+type GroupProduct @aws_cognito_user_pools @aws_iam {
   id: ID!
-  parentId: ID! # parent chainProduct ID
+  parentId: ID!
   chainId: ID!
   groupId: ID!
   isVisible: Boolean!
@@ -151,94 +137,47 @@ type GroupProduct
   takeawayTax: Int
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
-}
-input UpdateGroupProductInput {
-  id: ID!
-  parentId: ID
-  chainId: ID
-  groupId: ID
-  isVisible: Boolean
-  tax: Int
-  takeawayTax: Int
-  variants: [ProductVariantInput]
-  configSets: [ProductConfigSetInput]
+  externalId: String
+  dirty: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-### UnitProduct
-type UnitProduct
-  @aws_cognito_user_pools
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type UnitProduct @aws_cognito_user_pools @aws_iam {
   id: ID!
-  parentId: ID! # parent groupProduct ID
+  parentId: ID!
   chainId: ID!
   groupId: ID!
   unitId: ID!
   isVisible: Boolean!
-  takeaway: Boolean! @deprecated(reason: "Use `supportedServingModes`.")
+  takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
   laneId: ID
   position: Int!
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
   supportedServingModes: [ServingMode!]
-}
-input CreateUnitProductInput {
-  id: ID # <== NOT REQUIRED
-  parentId: ID! # parent groupProduct ID
-  chainId: ID!
-  groupId: ID!
-  unitId: ID!
-  isVisible: Boolean!
-  takeaway: Boolean!
-  laneId: ID
-  position: Int!
-  variants: [ProductVariantInput]
-  configSets: [ProductConfigSetInput]
-  supportedServingModes: [ServingMode!]
-}
-input UpdateUnitProductInput {
-  id: ID! # <== REQUIRED
-  parentId: ID
-  chainId: ID
-  groupId: ID
-  unitId: ID
-  isVisible: Boolean
-  takeaway: Boolean
-  laneId: ID
-  position: Int
-  variants: [ProductVariantInput]
-  configSets: [ProductConfigSetInput]
-  supportedServingModes: [ServingMode!]
+  externalId: String
+  dirty: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-### ProductConfigSet
-type ProductConfigComponent @aws_cognito_user_pools {
+type ProductConfigComponent @aws_cognito_user_pools @aws_api_key @aws_iam {
   productComponentId: ID!
   refGroupPrice: Float!
   price: Float!
   position: Int!
-}
-input ProductConfigComponentInput {
-  productComponentId: ID!
-  refGroupPrice: Float!
-  price: Float!
-  position: Int!
+  externalId: String
+  netPackagingFee: Float
 }
 
-type ProductConfigSet @aws_cognito_user_pools {
+type ProductConfigSet @aws_cognito_user_pools @aws_api_key @aws_iam {
   productSetId: ID!
   items: [ProductConfigComponent!]!
   position: Int!
 }
-input ProductConfigSetInput {
-  productSetId: ID!
-  items: [ProductConfigComponentInput!]!
-  position: Int!
-}
 
-### ProductVariant
-type ProductVariant @aws_cognito_user_pools {
+type ProductVariant @aws_cognito_user_pools @aws_api_key @aws_iam {
   id: ID!
   variantName: LocalizedItem!
   pack: ProductVariantPack
@@ -247,30 +186,20 @@ type ProductVariant @aws_cognito_user_pools {
   price: Float!
   availabilities: [Availability]
   position: Int!
-}
-input ProductVariantInput {
-  id: ID!
-  variantName: LocalizedItemInput!
-  pack: ProductVariantPackInput
-  refGroupPrice: Float
-  isAvailable: Boolean!
-  price: Float!
-  availabilities: [AvailabilityInput]
-  position: Int!
+  netPackagingFee: Float
 }
 
-### ProductVariantPack
-type ProductVariantPack @aws_cognito_user_pools {
+type ProductVariantPack @aws_cognito_user_pools @aws_api_key @aws_iam {
   size: Float!
   unit: String!
 }
+
 input ProductVariantPackInput {
   size: Float!
   unit: String!
 }
 
-### Availability
-type Availability @aws_cognito_user_pools {
+type Availability @aws_cognito_user_pools @aws_api_key @aws_iam {
   type: String!
   dayFrom: String
   dayTo: String
@@ -278,6 +207,7 @@ type Availability @aws_cognito_user_pools {
   timeTo: String
   price: Float!
 }
+
 input AvailabilityInput {
   type: String!
   dayFrom: String
@@ -287,52 +217,12 @@ input AvailabilityInput {
   price: Float!
 }
 
-### UserInvoiceAddress
-# Re enable (issue: #1736)
-# type UserInvoiceAddress {
-#   customerName: String!
-#   taxNumber: String!
-#   country: String!
-#   city: String!
-#   streetAddress: String!
-#   postalCode: String!
-#   email: String
-# }
-# input UserInvoiceAddressInput {
-#   customerName: String!
-#   taxNumber: String!
-#   country: String!
-#   city: String!
-#   streetAddress: String!
-#   postalCode: String!
-#   email: String
-# }
-### ADMIN_USER
-input CreateAdminUserInput {
-  email: String!
-  phone: String!
-  name: String!
+type CardChecks @aws_cognito_user_pools {
+  address_line1_check: String
+  address_postal_code_check: String
+  cvc_check: String
 }
 
-### ORDER
-input CreateOrderFromCartInput {
-  id: ID!
-}
-
-## UNIT
-input RegenerateUnitDataInput {
-  id: ID!
-}
-
-type CreateAnonymUserOutput {
-  username: String!
-  pwd: String!
-}
-
-### STRIPE
-# STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
-
-# https://stripe.com/docs/api/cards/object?lang=node
 enum CardBrand {
   amex
   diners
@@ -344,7 +234,6 @@ enum CardBrand {
   unknown
 }
 
-# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
 enum CardFundingType {
   credit
   debit
@@ -352,29 +241,20 @@ enum CardFundingType {
   unknown
 }
 
-# https://stripe.com/docs/api/metadata?lang=node
-# Updateable Stripe objects
-
-type BillingDetails {
+type BillingDetails @aws_cognito_user_pools {
   email: String
   name: String
   phone: String
   address: BillingAddress
 }
 
-type BillingAddress {
+type BillingAddress @aws_cognito_user_pools {
   city: String
   country: String
   line1: String
   line2: String
   postal_code: String
   state: String
-}
-
-type CardChecks {
-  address_line1_check: String
-  address_postal_code_check: String
-  cvc_check: String
 }
 
 type StripeCard @aws_cognito_user_pools {
@@ -392,8 +272,7 @@ type StripeCard @aws_cognito_user_pools {
   billing_details: BillingDetails
 }
 
-# Rename to UserInvoiceAddressInput and relocate it in the shared.graphql (issue: #1736)
-input UserInvoiceAddress {
+input UserInvoiceAddressInput {
   customerName: String!
   taxNumber: String!
   country: String!
@@ -408,7 +287,13 @@ input StartStripePaymentInput {
   paymentMethod: PaymentMethod!
   savePaymentMethod: Boolean!
   paymentMethodId: String
-  invoiceAddress: UserInvoiceAddress
+  invoiceAddress: UserInvoiceAddressInput
+}
+
+input PayTipWithStripeInput {
+  orderId: ID!
+  paymentMethodId: String
+  tip: TipInput!
 }
 
 type StartStripePaymentOutput @aws_cognito_user_pools {
@@ -435,105 +320,19 @@ input StripeCardDeleteInput {
   paymentMethodId: String!
 }
 
-### UNIT GEO_UNIT
-input GetUnitsNearLocationInput {
-  location: LocationInput!
-}
-
-type OpeningHoursByDate @aws_cognito_user_pools {
-  date: String!
-  closed: Boolean!
-  from: Float
-  to: Float
-}
-
-type GeoUnit @aws_cognito_user_pools {
-  id: ID!
-  groupId: ID!
-  chainId: ID!
-  name: String!
-  address: Address!
-  style: ChainStyle!
-  paymentModes: [PaymentMode]
-  distance: Int!
-  currency: String!
-  isAcceptingOrders: Boolean!
-  # isCurrentlyOpen: Boolean!
-  openingHours: String
-    @deprecated(
-      reason: "The new and better openingHoursNext7 field should be used instead of this static string"
-    )
-  openingHoursNext7: [OpeningHoursByDate!]!
-  supportedServingModes: [ServingMode!]!
-  supportedOrderModes: [OrderMode!]!
-}
-type GeoUnitList @aws_cognito_user_pools {
-  items: [GeoUnit]
-}
-
-### OPERATIONS
-type Query {
-  # Stripe
-  listStripeCards: [StripeCard] @aws_cognito_user_pools
-  # Units
-  getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
-    @aws_cognito_user_pools
-}
-
-### MUTATION
-type Mutation {
-  # AdminUser
-  createAdminUser(input: CreateAdminUserInput!): ID! @aws_cognito_user_pools
-  deleteAdminUser(userName: String!): Boolean! @aws_cognito_user_pools
-  # User
-  createAnonymUser: CreateAnonymUserOutput! # public endpoint
-  # Order
-  createOrderFromCart(input: CreateOrderFromCartInput!): ID!
-    @aws_cognito_user_pools
-
-  # Product
-  updateChainProduct(input: UpdateChainProductInput!): ChainProduct!
-    @aws_cognito_user_pools
-  updateGroupProduct(input: UpdateGroupProductInput!): GroupProduct!
-    @aws_cognito_user_pools
-  createUnitProduct(input: CreateUnitProductInput!): UnitProduct!
-    @aws_cognito_user_pools
-  updateUnitProduct(input: UpdateUnitProductInput!): UnitProduct!
-    @aws_cognito_user_pools
-  deleteUnitProduct(id: ID!): Boolean! @aws_cognito_user_pools
-
-  # Unit
-  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
-    @aws_cognito_user_pools
-
-  # Stripe
-  startStripePayment(
-    input: StartStripePaymentInput!
-  ): StartStripePaymentOutput! @aws_cognito_user_pools
-  createStripeCard(input: StripeCardCreateInput!): StripeCard!
-    @aws_cognito_user_pools
-  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard!
-    @aws_cognito_user_pools
-  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean!
-    @aws_cognito_user_pools
-}
-### AdminUser
-
-type AdminUser
-  @model
-  @searchable
-  @auth(rules: [{ allow: private, provider: iam }, { allow: private }]) {
+type AdminUser @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String!
   email: String!
   phone: String!
   profileImage: String
   settings: AdminUserSettings
-  roleContexts: [AdminRoleContext]
-    @connection(keyName: "byAdminUser", fields: ["id"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  roleContexts(roleContextId: ModelIDKeyConditionInput, filter: ModelAdminRoleContextFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelAdminRoleContextConnection @aws_iam @aws_cognito_user_pools
 }
 
-type AdminUserSettings {
+type AdminUserSettings @aws_api_key @aws_iam @aws_cognito_user_pools {
   selectedChainId: String
   selectedGroupId: String
   selectedUnitId: String
@@ -542,22 +341,41 @@ type AdminUserSettings {
   selectedHistoryDate: Int
 }
 
-###
-# Create a join model and disable queries as you don't need them
-# and can query through Post.editors and AdminUser.roleContexts
-type AdminRoleContext
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
-  @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
+input UpdateAdminUserInput {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  settings: AdminUserSettingsInput
+}
+
+input AdminUserSettingsInput {
+  selectedChainId: String
+  selectedGroupId: String
+  selectedUnitId: String
+  selectedProductCategoryId: String
+  selectedLanguage: String
+  selectedHistoryDate: Int
+}
+
+input CreateAdminUserInput {
+  id: ID
+  name: String!
+  email: String!
+  phone: String!
+  profileImage: String
+  settings: AdminUserSettingsInput
+}
+
+type AdminRoleContext @aws_iam @aws_cognito_user_pools {
   id: ID!
   roleContextId: ID!
   adminUserId: ID!
-  roleContext: RoleContext! @connection(fields: ["roleContextId"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  roleContext: RoleContext! @aws_iam @aws_cognito_user_pools
 }
-
-### RoleContext
 
 enum Role {
   superuser
@@ -568,102 +386,19 @@ enum Role {
   inactive
 }
 
-type RoleContext
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type RoleContext @aws_iam @aws_cognito_user_pools {
   id: ID!
-  contextId: ID! # Readable short id
+  contextId: ID!
   role: Role!
   name: LocalizedItem
   chainId: String
   groupId: String
   unitId: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-### Stripe
-
-# STRIPE schema example https://github.com/jferrettiboke/stripe-graphql/blob/master/generated/schema.graphql
-
-# https://stripe.com/docs/api/cards/object?lang=node
-# Card brand
-# enum CardBrand {
-#   amex
-#   diners
-#   discover
-#   jcb
-#   mastercard
-#   unionpay
-#   visa
-#   unknown
-# }
-
-# https://stripe.com/docs/api/cards/object?lang=node#card_object-funding
-# Card funding type
-# enum CardFundingType {
-#   credit
-#   debit
-#   prepaid
-#   unknown
-# }
-
-# enum StripPaymentMethodType {
-#   alipay
-#   au_becs_debit
-#   bacs_debit
-#   bancontact
-#   card
-#   eps
-#   fpx
-#   giropay
-#   grabpay
-#   ideal
-#   oxxo
-#   p24
-#   sepa_debit
-#   sofort
-# }
-
-# type CardChecks {
-#   address_line1_check: String
-#   address_postal_code_check: String
-#   cvc_check: String
-# }
-
-# https://stripe.com/docs/api/metadata?lang=node
-# Updateable Stripe objects
-# type StripeMetadata {
-#   key: String!
-#   value: String!
-# }
-
-# type StripeCard @model @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-#   brand: CardBrand
-#   checks: CardChecks
-#   country: String
-#   last4: String
-#   exp_month: Int
-#   exp_year: Int
-#   fingerprint: String
-#   funding: CardFundingType
-#   three_d_secure: String
-#   # wallet: String # to do
-#   # IMPLEMENTED INTERFACES
-#   id: ID!
-#   object: String!
-#   metadata: [StripeMetadata!]!
-# }
-
-# type StartStripePaymentOutput {
-#   clientSecret: String!
-#   status: String!
-# }
-
-### Chain
-type Chain
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type Chain @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String!
   description: LocalizedItem
@@ -672,13 +407,11 @@ type Chain
   address: Address
   email: String
   phone: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-### Group
-type Group
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type Group @aws_iam @aws_cognito_user_pools {
   id: ID!
   chainId: ID!
   name: String!
@@ -687,16 +420,17 @@ type Group
   address: Address
   email: String
   phone: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-### OrderItem
-type StatusLog {
+type StatusLog @aws_api_key @aws_iam @aws_cognito_user_pools {
   userId: ID!
   status: OrderStatus!
   ts: Float!
 }
 
-type PriceShown {
+type PriceShown @aws_api_key @aws_iam @aws_cognito_user_pools {
   currency: String!
   pricePerUnit: Float!
   priceSum: Float!
@@ -704,42 +438,48 @@ type PriceShown {
   taxSum: Float!
 }
 
-type OrderItemConfigComponent {
+type OrderItemConfigComponent @aws_api_key @aws_iam @aws_cognito_user_pools {
   productComponentId: ID!
   price: Float!
   name: LocalizedItem!
   allergens: [Allergen]
+  netPackagingFee: Float
 }
 
-type OrderItemConfigSet {
+type OrderItemConfigSet @aws_api_key @aws_iam @aws_cognito_user_pools {
   productSetId: ID!
   name: LocalizedItem!
   type: String!
   items: [OrderItemConfigComponent!]!
 }
 
-type OrderItem {
+type Price @aws_api_key @aws_iam @aws_cognito_user_pools {
+  currency: String!
+  netPrice: Float!
+  taxPercentage: Float!
+}
+
+type OrderItem @aws_api_key @aws_iam @aws_cognito_user_pools {
   productId: ID!
   variantId: ID!
   created: Float
   productName: LocalizedItem!
   image: String
-  sumPriceShown: PriceShown!
-  priceShown: PriceShown!
   quantity: Int!
   statusLog: [StatusLog!]!
   variantName: LocalizedItem!
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
-  productType: String # TODO: Make the OrderItem.productType REQUIRED in the next release
+  productType: String
+  externalId: String
+  netPackagingFee: Float
+  serviceFee: Price
+  priceShown: PriceShown!
+  sumPriceShown: PriceShown!
 }
 
-### Order
-type Order
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type Order @aws_iam @aws_cognito_user_pools {
   id: ID!
   createdAt: AWSDateTime!
   userId: ID!
@@ -749,16 +489,30 @@ type Order
   paymentMode: PaymentMode!
   statusLog: [StatusLog!]!
   archived: Boolean!
-  sumPriceShown: PriceShown!
   takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
   transactionId: ID
-  transaction: Transaction @connection(fields: ["transactionId"])
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
+  serviceFee: Price
+  packagingSum: Price
+  sumPriceShown: PriceShown!
+  rating: Int
+  tip: Tip
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
+  updatedAt: AWSDateTime!
+  transaction: Transaction @aws_iam @aws_cognito_user_pools
+  tipTransaction: Transaction @aws_iam @aws_cognito_user_pools
+}
+
+enum OrderPolicy {
+  placeOnly
+  placeWithPaymentType
+  full
 }
 
 enum PaymentStatus {
@@ -790,60 +544,59 @@ enum OrderStatus {
   rejected
 }
 
-type Place {
+type Place @aws_api_key @aws_iam @aws_cognito_user_pools {
   seat: String!
   table: String!
 }
 
-### ProductCategory
-type ProductCategory
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type ProductCategory @aws_iam @aws_cognito_user_pools {
   id: ID!
   chainId: ID!
   description: LocalizedItem
   image: String
   name: LocalizedItem!
   position: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-### ProductComponent
-type ProductComponent
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type ProductComponent @aws_iam @aws_cognito_user_pools {
   id: ID!
   chainId: ID!
   name: LocalizedItem!
   description: String
   allergens: [Allergen]
+  externalId: String
+  dirty: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-### ProductComponent
-type ProductComponentSet
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type ProductComponentSet @aws_iam @aws_cognito_user_pools {
   id: ID!
+  externalId: String
   chainId: ID!
   type: String!
   name: LocalizedItem!
   description: String!
-  items: [ID!]! # ProductComponent ID
-  maxSelection: Int # On extras
+  items: [ID!]!
+  maxSelection: Int
   supportedServingModes: [ServingMode!]
+  dirty: Boolean
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-type GeneratedProductConfigComponent {
+type GeneratedProductConfigComponent @aws_api_key @aws_iam @aws_cognito_user_pools {
   productComponentId: ID!
   price: Float!
   position: Int!
   name: LocalizedItem!
   allergens: [Allergen]
+  netPackagingFee: Float
 }
 
-type GeneratedProductConfigSet {
+type GeneratedProductConfigSet @aws_api_key @aws_iam @aws_cognito_user_pools {
   productSetId: ID!
   name: LocalizedItem!
   position: Int!
@@ -853,27 +606,17 @@ type GeneratedProductConfigSet {
   supportedServingModes: [ServingMode!]
 }
 
-type GeneratedProductCategory
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "productCategoriesByUnit", fields: ["unitId"]) {
+type GeneratedProductCategory @aws_iam @aws_cognito_user_pools {
   id: ID!
   unitId: ID!
   productNum: Int!
   productCategoryId: ID!
-  productCategory: ProductCategory! @connection(fields: ["productCategoryId"])
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  productCategory: ProductCategory! @aws_iam @aws_cognito_user_pools
 }
 
-type GeneratedProduct
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "productsByUnit", fields: ["unitId"])
-  @key(
-    name: "productsByUnitAndCategory"
-    fields: ["unitId", "productCategoryId"]
-  ) {
+type GeneratedProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
   unitId: ID!
   productCategoryId: ID!
@@ -888,32 +631,83 @@ type GeneratedProduct
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
   supportedServingModes: [ServingMode!]
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-type GeneratedProductVariant {
+type GeneratedProductVariant @aws_api_key @aws_iam @aws_cognito_user_pools {
   id: ID!
   variantName: LocalizedItem!
   pack: ProductVariantPack
   price: Float!
+  netPackagingFee: Float
   position: Int!
 }
 
-type FavoriteProduct
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
+type FavoriteProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
   userId: ID!
   unitId: ID!
-  product: GeneratedProduct! @connection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  product: GeneratedProduct! @aws_iam @aws_cognito_user_pools
 }
 
-### Unit
-type Unit
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type Tip @aws_api_key @aws_iam @aws_cognito_user_pools {
+  type: TipType!
+  value: Float!
+}
+
+input TipInput {
+  type: TipType!
+  value: Float!
+}
+
+enum TipType {
+  none
+  percent
+  amount
+}
+
+type RatingPolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
+  title: LocalizedItem
+  description: LocalizedItem
+  ratings: [RatingPolicyItem]!
+}
+
+type RatingPolicyItem @aws_api_key @aws_iam @aws_cognito_user_pools {
+  value: Int!
+  text: LocalizedItem
+  icon: String
+}
+
+type TipPolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
+  title: LocalizedItem
+  description: LocalizedItem
+  percents: [Float!]!
+  maxOtherAmount: Float
+}
+
+input RatingPolicyInput {
+  title: LocalizedItemInput
+  description: LocalizedItemInput
+  ratings: [RatingPolicyItemInput]!
+}
+
+input RatingPolicyItemInput {
+  value: Int!
+  text: LocalizedItemInput
+  icon: String
+}
+
+input TipPolicyInput {
+  title: LocalizedItemInput
+  description: LocalizedItemInput
+  percents: [Float!]!
+  maxOtherAmount: Float
+}
+
+type Unit @aws_iam @aws_cognito_user_pools {
   id: ID!
   groupId: ID!
   chainId: ID!
@@ -933,27 +727,35 @@ type Unit
   merchantId: String
   timeZone: String
   pos: Pos
+  externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  packagingTaxPercentage: Float
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicy: RatingPolicy
+  tipPolicy: TipPolicy
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-type DateIntervalOpen {
+type DateIntervalOpen @aws_api_key @aws_iam @aws_cognito_user_pools {
   from: String
   to: String
 }
 
-type DateInterval {
+type DateInterval @aws_api_key @aws_iam @aws_cognito_user_pools {
   from: String!
   to: String!
 }
 
-type CustomDailySchedule {
+type CustomDailySchedule @aws_api_key @aws_iam @aws_cognito_user_pools {
   date: String!
   from: String!
   to: String!
 }
 
-type WeeklySchedule {
+type WeeklySchedule @aws_api_key @aws_iam @aws_cognito_user_pools {
   mon: DateInterval
   tue: DateInterval
   wed: DateInterval
@@ -964,24 +766,24 @@ type WeeklySchedule {
   custom: [CustomDailySchedule]
 }
 
-type FloorMapData {
+type FloorMapData @aws_api_key @aws_iam @aws_cognito_user_pools {
   w: Int!
   h: Int!
   objects: [FloorMapDataObject!]
 }
 
-type FloorMapDataObject {
+type FloorMapDataObject @aws_api_key @aws_iam @aws_cognito_user_pools {
   id: ID!
-  t: UnitMapObjectType! # Type
-  c: String # Caption
-  w: Int # Width
-  h: Int #  Height
-  r: Int # Radius
-  a: Int # Angle
+  t: UnitMapObjectType!
+  c: String
+  w: Int
+  h: Int
+  r: Int
+  a: Int
   x: Int!
   y: Int!
-  tID: String # Table ID
-  sID: String # Seat Id
+  tID: String
+  sID: String
 }
 
 enum UnitMapObjectType {
@@ -994,24 +796,23 @@ enum UnitMapObjectType {
   label
 }
 
-type Lane {
+type Lane @aws_api_key @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String!
   color: String!
 }
 
-type Pos {
+type Pos @aws_api_key @aws_iam @aws_cognito_user_pools {
   type: PosType!
   rkeeper: RKeeper
 }
 
-type RKeeper {
+type RKeeper @aws_api_key @aws_iam @aws_cognito_user_pools {
   endpointUri: String!
   rkeeperUsername: String!
   rkeeperPassword: String!
   anyuppUsername: String!
   anyuppPassword: String!
-  restaurantId: String!
 }
 
 enum PosType {
@@ -1019,11 +820,43 @@ enum PosType {
   rkeeper
 }
 
-### User
-type User
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type GeoUnitList @aws_cognito_user_pools {
+  items: [GeoUnit]
+}
+
+type OpeningHoursByDate @aws_cognito_user_pools {
+  date: String!
+  closed: Boolean!
+  from: Float
+  to: Float
+}
+
+type GeoUnit @aws_cognito_user_pools {
+  id: ID!
+  groupId: ID!
+  chainId: ID!
+  name: String!
+  address: Address!
+  style: ChainStyle!
+  paymentModes: [PaymentMode]
+  distance: Int!
+  currency: String!
+  isAcceptingOrders: Boolean!
+  openingHours: String @deprecated(reason: "The new and better openingHoursNext7 field should be used instead of this static string")
+  openingHoursNext7: [OpeningHoursByDate!]!
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicy: RatingPolicy
+  tipPolicy: TipPolicy
+}
+
+input GetUnitsNearLocationInput {
+  location: LocationInput!
+}
+
+type User @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String
   email: String
@@ -1031,13 +864,11 @@ type User
   profileImage: String
   stripeCustomerId: String
   invoiceAddress: UserInvoiceAddress
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-### Cart
-type Cart
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type Cart @aws_iam @aws_cognito_user_pools {
   id: ID!
   userId: ID!
   unitId: ID!
@@ -1045,16 +876,15 @@ type Cart
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!
-  servingMode: ServingMode # Make the Cart.servingMode REQUIRED in the next release (handled in #1835 issue)
+  servingMode: ServingMode
+  orderPolicy: OrderPolicy
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
-type Transaction
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type Transaction @aws_iam @aws_cognito_user_pools {
   id: ID!
   userId: ID!
-  user: User! @connection(fields: ["userId"])
   orderId: ID!
   type: String
   total: Float
@@ -1062,14 +892,15 @@ type Transaction
   status: PaymentStatus
   externalTransactionId: String
   invoiceId: ID
-  invoice: Invoice @connection(fields: ["invoiceId"])
   receiptId: ID
-  receipt: Receipt @connection(fields: ["receiptId"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  user: User! @aws_iam @aws_cognito_user_pools
+  invoice: Invoice @aws_iam @aws_cognito_user_pools
+  receipt: Receipt @aws_iam @aws_cognito_user_pools
 }
 
-type UserInvoiceAddress {
+type UserInvoiceAddress @aws_api_key @aws_iam @aws_cognito_user_pools {
   customerName: String!
   taxNumber: String!
   country: String!
@@ -1091,11 +922,1836 @@ enum ReceiptStatus {
   failed
 }
 
-type Invoice
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type Invoice @aws_iam @aws_cognito_user_pools {
   id: ID!
+  userId: ID!
+  orderId: ID!
+  transactionId: ID!
+  externalInvoiceId: String
+  customerName: String!
+  taxNumber: String!
+  country: String!
+  city: String!
+  streetAddress: String!
+  postalCode: String!
+  email: String
+  pdfUrl: String
+  status: InvoiceStatus!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Receipt @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  userId: ID!
+  orderId: ID!
+  transactionId: ID!
+  externalReceiptId: String
+  email: String
+  pdfData: String
+  status: ReceiptStatus!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+input LocationInput {
+  lat: Float!
+  lng: Float!
+}
+
+input AddressInput {
+  address: String!
+  city: String!
+  country: String!
+  title: String!
+  postalCode: String!
+  location: LocationInput!
+}
+
+input LocalizedItemInput {
+  en: String
+  de: String
+  hu: String
+}
+
+input LaneInput {
+  id: ID!
+  name: String!
+  color: String!
+}
+
+input PaymentModeInput {
+  type: PaymentType!
+  caption: String
+  method: PaymentMethod!
+}
+
+input FloorMapDataInput {
+  w: Int!
+  h: Int!
+  objects: [FloorMapDataObjectInput!]
+}
+
+input FloorMapDataObjectInput {
+  id: ID!
+  t: UnitMapObjectType!
+  c: String
+  w: Int
+  h: Int
+  r: Int
+  a: Int
+  x: Int!
+  y: Int!
+  tID: String
+  sID: String
+}
+
+input DateIntervalInput {
+  from: String
+  to: String
+}
+
+input CustomDailyScheduleInput {
+  date: String!
+  from: String!
+  to: String!
+}
+
+input WeeklyScheduleInput {
+  mon: DateIntervalInput
+  tue: DateIntervalInput
+  wed: DateIntervalInput
+  thu: DateIntervalInput
+  fri: DateIntervalInput
+  sat: DateIntervalInput
+  sun: DateIntervalInput
+  custom: [CustomDailyScheduleInput]
+}
+
+input PosInput {
+  type: PosType!
+  rkeeper: RKeeperInput
+}
+
+input RKeeperInput {
+  endpointUri: String!
+  rkeeperUsername: String!
+  rkeeperPassword: String!
+  anyuppUsername: String!
+  anyuppPassword: String!
+}
+
+input CreateUnitInput {
+  id: ID
+  groupId: ID!
+  chainId: ID!
+  lastOrderNum: Int
+  isActive: Boolean!
+  isAcceptingOrders: Boolean!
+  name: String!
+  description: LocalizedItemInput
+  address: AddressInput!
+  email: String
+  phone: String
+  paymentModes: [PaymentModeInput]
+  floorMap: FloorMapDataInput
+  lanes: [LaneInput]
+  open: DateIntervalInput
+  openingHours: WeeklyScheduleInput
+  merchantId: String
+  timeZone: String
+  pos: PosInput
+  externalId: String
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  packagingTaxPercentage: Float
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicy: RatingPolicyInput
+  tipPolicy: TipPolicyInput
+}
+
+input UpdateUnitInput {
+  id: ID!
+  groupId: ID
+  chainId: ID
+  lastOrderNum: Int
+  isActive: Boolean
+  isAcceptingOrders: Boolean
+  name: String
+  description: LocalizedItemInput
+  address: AddressInput
+  email: String
+  phone: String
+  paymentModes: [PaymentModeInput]
+  floorMap: FloorMapDataInput
+  lanes: [LaneInput]
+  open: DateIntervalInput
+  openingHours: WeeklyScheduleInput
+  merchantId: String
+  timeZone: String
+  pos: PosInput
+  supportedServingModes: [ServingMode!]
+  supportedOrderModes: [OrderMode!]
+  orderPolicy: OrderPolicy
+  packagingTaxPercentage: Float
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicy: RatingPolicyInput
+  tipPolicy: TipPolicyInput
+}
+
+type CreateAnonymUserOutput {
+  username: String!
+  pwd: String!
+}
+
+input CreateOrderFromCartInput {
+  id: ID!
+}
+
+input RegenerateUnitDataInput {
+  id: ID!
+}
+
+input DeleteAdminUserInput {
+  id: ID!
+}
+
+input DeleteUnitProductInput {
+  id: ID!
+}
+
+type Query {
+  listStripeCards: [StripeCard] @aws_cognito_user_pools
+  getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList @aws_cognito_user_pools
+  getChainProduct(id: ID!): ChainProduct @aws_iam @aws_cognito_user_pools
+  listChainProducts(filter: ModelChainProductFilterInput, limit: Int, nextToken: String): ModelChainProductConnection @aws_iam @aws_cognito_user_pools
+  searchChainProducts(filter: SearchableChainProductFilterInput, sort: SearchableChainProductSortInput, limit: Int, nextToken: String, from: Int): SearchableChainProductConnection @aws_iam @aws_cognito_user_pools
+  getGroupProduct(id: ID!): GroupProduct @aws_iam @aws_cognito_user_pools
+  listGroupProducts(filter: ModelGroupProductFilterInput, limit: Int, nextToken: String): ModelGroupProductConnection @aws_iam @aws_cognito_user_pools
+  searchGroupProducts(filter: SearchableGroupProductFilterInput, sort: SearchableGroupProductSortInput, limit: Int, nextToken: String, from: Int): SearchableGroupProductConnection @aws_iam @aws_cognito_user_pools
+  getUnitProduct(id: ID!): UnitProduct @aws_iam @aws_cognito_user_pools
+  listUnitProducts(filter: ModelUnitProductFilterInput, limit: Int, nextToken: String): ModelUnitProductConnection @aws_iam @aws_cognito_user_pools
+  searchUnitProducts(filter: SearchableUnitProductFilterInput, sort: SearchableUnitProductSortInput, limit: Int, nextToken: String, from: Int): SearchableUnitProductConnection @aws_iam @aws_cognito_user_pools
+  getAdminUser(id: ID!): AdminUser @aws_iam @aws_cognito_user_pools
+  listAdminUsers(filter: ModelAdminUserFilterInput, limit: Int, nextToken: String): ModelAdminUserConnection @aws_iam @aws_cognito_user_pools
+  searchAdminUsers(filter: SearchableAdminUserFilterInput, sort: SearchableAdminUserSortInput, limit: Int, nextToken: String, from: Int): SearchableAdminUserConnection @aws_iam @aws_cognito_user_pools
+  getAdminRoleContext(id: ID!): AdminRoleContext @aws_iam @aws_cognito_user_pools
+  listAdminRoleContexts(filter: ModelAdminRoleContextFilterInput, limit: Int, nextToken: String): ModelAdminRoleContextConnection @aws_iam @aws_cognito_user_pools
+  searchAdminRoleContexts(filter: SearchableAdminRoleContextFilterInput, sort: SearchableAdminRoleContextSortInput, limit: Int, nextToken: String, from: Int): SearchableAdminRoleContextConnection @aws_iam @aws_cognito_user_pools
+  getRoleContext(id: ID!): RoleContext @aws_iam @aws_cognito_user_pools
+  listRoleContexts(filter: ModelRoleContextFilterInput, limit: Int, nextToken: String): ModelRoleContextConnection @aws_iam @aws_cognito_user_pools
+  searchRoleContexts(filter: SearchableRoleContextFilterInput, sort: SearchableRoleContextSortInput, limit: Int, nextToken: String, from: Int): SearchableRoleContextConnection @aws_iam @aws_cognito_user_pools
+  getChain(id: ID!): Chain @aws_iam @aws_cognito_user_pools
+  listChains(filter: ModelChainFilterInput, limit: Int, nextToken: String): ModelChainConnection @aws_iam @aws_cognito_user_pools
+  searchChains(filter: SearchableChainFilterInput, sort: SearchableChainSortInput, limit: Int, nextToken: String, from: Int): SearchableChainConnection @aws_iam @aws_cognito_user_pools
+  getGroup(id: ID!): Group @aws_iam @aws_cognito_user_pools
+  listGroups(filter: ModelGroupFilterInput, limit: Int, nextToken: String): ModelGroupConnection @aws_iam @aws_cognito_user_pools
+  searchGroups(filter: SearchableGroupFilterInput, sort: SearchableGroupSortInput, limit: Int, nextToken: String, from: Int): SearchableGroupConnection @aws_iam @aws_cognito_user_pools
+  getOrder(id: ID!): Order @aws_iam @aws_cognito_user_pools
+  listOrders(filter: ModelOrderFilterInput, limit: Int, nextToken: String): ModelOrderConnection @aws_iam @aws_cognito_user_pools
+  searchOrders(filter: SearchableOrderFilterInput, sort: SearchableOrderSortInput, limit: Int, nextToken: String, from: Int): SearchableOrderConnection @aws_iam @aws_cognito_user_pools
+  getProductCategory(id: ID!): ProductCategory @aws_iam @aws_cognito_user_pools
+  listProductCategorys(filter: ModelProductCategoryFilterInput, limit: Int, nextToken: String): ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools
+  searchProductCategorys(filter: SearchableProductCategoryFilterInput, sort: SearchableProductCategorySortInput, limit: Int, nextToken: String, from: Int): SearchableProductCategoryConnection @aws_iam @aws_cognito_user_pools
+  getProductComponent(id: ID!): ProductComponent @aws_iam @aws_cognito_user_pools
+  listProductComponents(filter: ModelProductComponentFilterInput, limit: Int, nextToken: String): ModelProductComponentConnection @aws_iam @aws_cognito_user_pools
+  searchProductComponents(filter: SearchableProductComponentFilterInput, sort: SearchableProductComponentSortInput, limit: Int, nextToken: String, from: Int): SearchableProductComponentConnection @aws_iam @aws_cognito_user_pools
+  getProductComponentSet(id: ID!): ProductComponentSet @aws_iam @aws_cognito_user_pools
+  listProductComponentSets(filter: ModelProductComponentSetFilterInput, limit: Int, nextToken: String): ModelProductComponentSetConnection @aws_iam @aws_cognito_user_pools
+  searchProductComponentSets(filter: SearchableProductComponentSetFilterInput, sort: SearchableProductComponentSetSortInput, limit: Int, nextToken: String, from: Int): SearchableProductComponentSetConnection @aws_iam @aws_cognito_user_pools
+  getGeneratedProductCategory(id: ID!): GeneratedProductCategory @aws_iam @aws_cognito_user_pools
+  listGeneratedProductCategorys(filter: ModelGeneratedProductCategoryFilterInput, limit: Int, nextToken: String): ModelGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools
+  searchGeneratedProductCategorys(filter: SearchableGeneratedProductCategoryFilterInput, sort: SearchableGeneratedProductCategorySortInput, limit: Int, nextToken: String, from: Int): SearchableGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools
+  getGeneratedProduct(id: ID!): GeneratedProduct @aws_iam @aws_cognito_user_pools
+  listGeneratedProducts(filter: ModelGeneratedProductFilterInput, limit: Int, nextToken: String): ModelGeneratedProductConnection @aws_iam @aws_cognito_user_pools
+  searchGeneratedProducts(filter: SearchableGeneratedProductFilterInput, sort: SearchableGeneratedProductSortInput, limit: Int, nextToken: String, from: Int): SearchableGeneratedProductConnection @aws_iam @aws_cognito_user_pools
+  getFavoriteProduct(id: ID!): FavoriteProduct @aws_iam @aws_cognito_user_pools
+  listFavoriteProducts(filter: ModelFavoriteProductFilterInput, limit: Int, nextToken: String): ModelFavoriteProductConnection @aws_iam @aws_cognito_user_pools
+  searchFavoriteProducts(filter: SearchableFavoriteProductFilterInput, sort: SearchableFavoriteProductSortInput, limit: Int, nextToken: String, from: Int): SearchableFavoriteProductConnection @aws_iam @aws_cognito_user_pools
+  getUnit(id: ID!): Unit @aws_iam @aws_cognito_user_pools
+  listUnits(filter: ModelUnitFilterInput, limit: Int, nextToken: String): ModelUnitConnection @aws_iam @aws_cognito_user_pools
+  searchUnits(filter: SearchableUnitFilterInput, sort: SearchableUnitSortInput, limit: Int, nextToken: String, from: Int): SearchableUnitConnection @aws_iam @aws_cognito_user_pools
+  getUser(id: ID!): User @aws_iam @aws_cognito_user_pools
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_iam @aws_cognito_user_pools
+  searchUsers(filter: SearchableUserFilterInput, sort: SearchableUserSortInput, limit: Int, nextToken: String, from: Int): SearchableUserConnection @aws_iam @aws_cognito_user_pools
+  getCart(id: ID!): Cart @aws_iam @aws_cognito_user_pools
+  listCarts(filter: ModelCartFilterInput, limit: Int, nextToken: String): ModelCartConnection @aws_iam @aws_cognito_user_pools
+  searchCarts(filter: SearchableCartFilterInput, sort: SearchableCartSortInput, limit: Int, nextToken: String, from: Int): SearchableCartConnection @aws_iam @aws_cognito_user_pools
+  getTransaction(id: ID!): Transaction @aws_iam @aws_cognito_user_pools
+  listTransactions(filter: ModelTransactionFilterInput, limit: Int, nextToken: String): ModelTransactionConnection @aws_iam @aws_cognito_user_pools
+  searchTransactions(filter: SearchableTransactionFilterInput, sort: SearchableTransactionSortInput, limit: Int, nextToken: String, from: Int): SearchableTransactionConnection @aws_iam @aws_cognito_user_pools
+  getInvoice(id: ID!): Invoice @aws_iam @aws_cognito_user_pools
+  listInvoices(filter: ModelInvoiceFilterInput, limit: Int, nextToken: String): ModelInvoiceConnection @aws_iam @aws_cognito_user_pools
+  searchInvoices(filter: SearchableInvoiceFilterInput, sort: SearchableInvoiceSortInput, limit: Int, nextToken: String, from: Int): SearchableInvoiceConnection @aws_iam @aws_cognito_user_pools
+  getReceipt(id: ID!): Receipt @aws_iam @aws_cognito_user_pools
+  listReceipts(filter: ModelReceiptFilterInput, limit: Int, nextToken: String): ModelReceiptConnection @aws_iam @aws_cognito_user_pools
+  searchReceipts(filter: SearchableReceiptFilterInput, sort: SearchableReceiptSortInput, limit: Int, nextToken: String, from: Int): SearchableReceiptConnection @aws_iam @aws_cognito_user_pools
+}
+
+type Mutation {
+  createUnit(input: CreateUnitInput!): Unit @aws_iam @aws_cognito_user_pools
+  updateUnit(input: UpdateUnitInput!): Unit @aws_iam @aws_cognito_user_pools
+  createAdminUser(input: CreateAdminUserInput!): AdminUser @aws_iam @aws_cognito_user_pools
+  deleteAdminUser(input: DeleteAdminUserInput!): AdminUser @aws_iam @aws_cognito_user_pools
+  createAnonymUser: CreateAnonymUserOutput @aws_iam @aws_api_key
+  createOrderFromCart(input: CreateOrderFromCartInput!): ID @aws_iam @aws_cognito_user_pools
+  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_iam @aws_cognito_user_pools
+  startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
+  payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
+  createStripeCard(input: StripeCardCreateInput!): StripeCard @aws_cognito_user_pools @aws_iam
+  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard @aws_iam @aws_cognito_user_pools
+  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean @aws_cognito_user_pools @aws_iam
+  createChainProduct(input: CreateChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_iam @aws_cognito_user_pools
+  updateChainProduct(input: UpdateChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_iam @aws_cognito_user_pools
+  deleteChainProduct(input: DeleteChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_iam @aws_cognito_user_pools
+  createGroupProduct(input: CreateGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct @aws_iam @aws_cognito_user_pools
+  updateGroupProduct(input: UpdateGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct @aws_iam @aws_cognito_user_pools
+  deleteGroupProduct(input: DeleteGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct @aws_iam @aws_cognito_user_pools
+  createUnitProduct(input: CreateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
+  updateUnitProduct(input: UpdateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
+  deleteUnitProduct(input: DeleteUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
+  updateAdminUser(input: UpdateAdminUserInput!, condition: ModelAdminUserConditionInput): AdminUser @aws_iam @aws_cognito_user_pools
+  createAdminRoleContext(input: CreateAdminRoleContextInput!, condition: ModelAdminRoleContextConditionInput): AdminRoleContext @aws_iam @aws_cognito_user_pools
+  updateAdminRoleContext(input: UpdateAdminRoleContextInput!, condition: ModelAdminRoleContextConditionInput): AdminRoleContext @aws_iam @aws_cognito_user_pools
+  deleteAdminRoleContext(input: DeleteAdminRoleContextInput!, condition: ModelAdminRoleContextConditionInput): AdminRoleContext @aws_iam @aws_cognito_user_pools
+  createRoleContext(input: CreateRoleContextInput!, condition: ModelRoleContextConditionInput): RoleContext @aws_iam @aws_cognito_user_pools
+  updateRoleContext(input: UpdateRoleContextInput!, condition: ModelRoleContextConditionInput): RoleContext @aws_iam @aws_cognito_user_pools
+  deleteRoleContext(input: DeleteRoleContextInput!, condition: ModelRoleContextConditionInput): RoleContext @aws_iam @aws_cognito_user_pools
+  createChain(input: CreateChainInput!, condition: ModelChainConditionInput): Chain @aws_iam @aws_cognito_user_pools
+  updateChain(input: UpdateChainInput!, condition: ModelChainConditionInput): Chain @aws_iam @aws_cognito_user_pools
+  deleteChain(input: DeleteChainInput!, condition: ModelChainConditionInput): Chain @aws_iam @aws_cognito_user_pools
+  createGroup(input: CreateGroupInput!, condition: ModelGroupConditionInput): Group @aws_iam @aws_cognito_user_pools
+  updateGroup(input: UpdateGroupInput!, condition: ModelGroupConditionInput): Group @aws_iam @aws_cognito_user_pools
+  deleteGroup(input: DeleteGroupInput!, condition: ModelGroupConditionInput): Group @aws_iam @aws_cognito_user_pools
+  createOrder(input: CreateOrderInput!, condition: ModelOrderConditionInput): Order @aws_iam @aws_cognito_user_pools
+  updateOrder(input: UpdateOrderInput!, condition: ModelOrderConditionInput): Order @aws_iam @aws_cognito_user_pools
+  deleteOrder(input: DeleteOrderInput!, condition: ModelOrderConditionInput): Order @aws_iam @aws_cognito_user_pools
+  createProductCategory(input: CreateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory @aws_iam @aws_cognito_user_pools
+  updateProductCategory(input: UpdateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory @aws_iam @aws_cognito_user_pools
+  deleteProductCategory(input: DeleteProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory @aws_iam @aws_cognito_user_pools
+  createProductComponent(input: CreateProductComponentInput!, condition: ModelProductComponentConditionInput): ProductComponent @aws_iam @aws_cognito_user_pools
+  updateProductComponent(input: UpdateProductComponentInput!, condition: ModelProductComponentConditionInput): ProductComponent @aws_iam @aws_cognito_user_pools
+  deleteProductComponent(input: DeleteProductComponentInput!, condition: ModelProductComponentConditionInput): ProductComponent @aws_iam @aws_cognito_user_pools
+  createProductComponentSet(input: CreateProductComponentSetInput!, condition: ModelProductComponentSetConditionInput): ProductComponentSet @aws_iam @aws_cognito_user_pools
+  updateProductComponentSet(input: UpdateProductComponentSetInput!, condition: ModelProductComponentSetConditionInput): ProductComponentSet @aws_iam @aws_cognito_user_pools
+  deleteProductComponentSet(input: DeleteProductComponentSetInput!, condition: ModelProductComponentSetConditionInput): ProductComponentSet @aws_iam @aws_cognito_user_pools
+  createGeneratedProductCategory(input: CreateGeneratedProductCategoryInput!, condition: ModelGeneratedProductCategoryConditionInput): GeneratedProductCategory @aws_iam @aws_cognito_user_pools
+  updateGeneratedProductCategory(input: UpdateGeneratedProductCategoryInput!, condition: ModelGeneratedProductCategoryConditionInput): GeneratedProductCategory @aws_iam @aws_cognito_user_pools
+  deleteGeneratedProductCategory(input: DeleteGeneratedProductCategoryInput!, condition: ModelGeneratedProductCategoryConditionInput): GeneratedProductCategory @aws_iam @aws_cognito_user_pools
+  createGeneratedProduct(input: CreateGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct @aws_iam @aws_cognito_user_pools
+  updateGeneratedProduct(input: UpdateGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct @aws_iam @aws_cognito_user_pools
+  deleteGeneratedProduct(input: DeleteGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct @aws_iam @aws_cognito_user_pools
+  createFavoriteProduct(input: CreateFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct @aws_iam @aws_cognito_user_pools
+  updateFavoriteProduct(input: UpdateFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct @aws_iam @aws_cognito_user_pools
+  deleteFavoriteProduct(input: DeleteFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct @aws_iam @aws_cognito_user_pools
+  deleteUnit(input: DeleteUnitInput!, condition: ModelUnitConditionInput): Unit @aws_iam @aws_cognito_user_pools
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User @aws_iam @aws_cognito_user_pools
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User @aws_iam @aws_cognito_user_pools
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User @aws_iam @aws_cognito_user_pools
+  createCart(input: CreateCartInput!, condition: ModelCartConditionInput): Cart @aws_iam @aws_cognito_user_pools
+  updateCart(input: UpdateCartInput!, condition: ModelCartConditionInput): Cart @aws_iam @aws_cognito_user_pools
+  deleteCart(input: DeleteCartInput!, condition: ModelCartConditionInput): Cart @aws_iam @aws_cognito_user_pools
+  createTransaction(input: CreateTransactionInput!, condition: ModelTransactionConditionInput): Transaction @aws_iam @aws_cognito_user_pools
+  updateTransaction(input: UpdateTransactionInput!, condition: ModelTransactionConditionInput): Transaction @aws_iam @aws_cognito_user_pools
+  deleteTransaction(input: DeleteTransactionInput!, condition: ModelTransactionConditionInput): Transaction @aws_iam @aws_cognito_user_pools
+  createInvoice(input: CreateInvoiceInput!, condition: ModelInvoiceConditionInput): Invoice @aws_iam @aws_cognito_user_pools
+  updateInvoice(input: UpdateInvoiceInput!, condition: ModelInvoiceConditionInput): Invoice @aws_iam @aws_cognito_user_pools
+  deleteInvoice(input: DeleteInvoiceInput!, condition: ModelInvoiceConditionInput): Invoice @aws_iam @aws_cognito_user_pools
+  createReceipt(input: CreateReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
+  updateReceipt(input: UpdateReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
+  deleteReceipt(input: DeleteReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
+}
+
+type Subscription {
+  onAdminUserChange(id: ID!): AdminUser @aws_subscribe(mutations: ["updateAdminUser"]) @aws_cognito_user_pools
+  onAdminUsersChange: AdminUser @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"]) @aws_cognito_user_pools
+  onRoleContextsChange: RoleContext @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"]) @aws_cognito_user_pools
+  onAdminRoleContextsChange: AdminRoleContext @aws_subscribe(mutations: ["createAdminRoleContext", "updateAdminRoleContext", "deleteAdminRoleContext"]) @aws_cognito_user_pools
+  onChainsChange: Chain @aws_subscribe(mutations: ["createChain", "updateChain"]) @aws_cognito_user_pools
+  onGroupsChange(chainId: ID!): Group @aws_subscribe(mutations: ["createGroup", "updateGroup"]) @aws_cognito_user_pools
+  onUnitsChange(groupId: ID!): Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"]) @aws_cognito_user_pools
+  onProductCategoriesChange(chainId: ID!): ProductCategory @aws_subscribe(mutations: ["createProductCategory", "updateProductCategory"]) @aws_cognito_user_pools
+  onProductComponentsChange(chainId: ID!): ProductComponent @aws_subscribe(mutations: ["createProductComponent", "updateProductComponent"]) @aws_cognito_user_pools
+  onProductComponentSetsChange(chainId: ID!): ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet", "updateProductComponentSet"]) @aws_cognito_user_pools
+  onChainProductChange(chainId: ID!): ChainProduct @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"]) @aws_cognito_user_pools
+  onGroupProductChange(groupId: ID!): GroupProduct @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"]) @aws_cognito_user_pools
+  onUnitProductChange(unitId: ID!): UnitProduct @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"]) @aws_cognito_user_pools
+  onGeneratedProductChange(unitId: ID!): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct"]) @aws_cognito_user_pools
+  onOrdersChange: Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
+  onOrdersDelete: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_cognito_user_pools
+  onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"]) @aws_cognito_user_pools
+  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
+  onUnitOrdersChange(unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
+  onCreateChainProduct: ChainProduct @aws_subscribe(mutations: ["createChainProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateChainProduct: ChainProduct @aws_subscribe(mutations: ["updateChainProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteChainProduct: ChainProduct @aws_subscribe(mutations: ["deleteChainProduct"]) @aws_iam @aws_cognito_user_pools
+  onCreateGroupProduct: GroupProduct @aws_subscribe(mutations: ["createGroupProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGroupProduct: GroupProduct @aws_subscribe(mutations: ["updateGroupProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGroupProduct: GroupProduct @aws_subscribe(mutations: ["deleteGroupProduct"]) @aws_iam @aws_cognito_user_pools
+  onCreateUnitProduct: UnitProduct @aws_subscribe(mutations: ["createUnitProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUnitProduct: UnitProduct @aws_subscribe(mutations: ["updateUnitProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUnitProduct: UnitProduct @aws_subscribe(mutations: ["deleteUnitProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateAdminUser: AdminUser @aws_subscribe(mutations: ["updateAdminUser"]) @aws_iam @aws_cognito_user_pools
+  onCreateAdminRoleContext: AdminRoleContext @aws_subscribe(mutations: ["createAdminRoleContext"]) @aws_iam @aws_cognito_user_pools
+  onUpdateAdminRoleContext: AdminRoleContext @aws_subscribe(mutations: ["updateAdminRoleContext"]) @aws_iam @aws_cognito_user_pools
+  onDeleteAdminRoleContext: AdminRoleContext @aws_subscribe(mutations: ["deleteAdminRoleContext"]) @aws_iam @aws_cognito_user_pools
+  onCreateRoleContext: RoleContext @aws_subscribe(mutations: ["createRoleContext"]) @aws_iam @aws_cognito_user_pools
+  onUpdateRoleContext: RoleContext @aws_subscribe(mutations: ["updateRoleContext"]) @aws_iam @aws_cognito_user_pools
+  onDeleteRoleContext: RoleContext @aws_subscribe(mutations: ["deleteRoleContext"]) @aws_iam @aws_cognito_user_pools
+  onCreateChain: Chain @aws_subscribe(mutations: ["createChain"]) @aws_iam @aws_cognito_user_pools
+  onUpdateChain: Chain @aws_subscribe(mutations: ["updateChain"]) @aws_iam @aws_cognito_user_pools
+  onDeleteChain: Chain @aws_subscribe(mutations: ["deleteChain"]) @aws_iam @aws_cognito_user_pools
+  onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"]) @aws_iam @aws_cognito_user_pools
+  onCreateOrder: Order @aws_subscribe(mutations: ["createOrder"]) @aws_iam @aws_cognito_user_pools
+  onUpdateOrder: Order @aws_subscribe(mutations: ["updateOrder"]) @aws_iam @aws_cognito_user_pools
+  onDeleteOrder: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_iam @aws_cognito_user_pools
+  onCreateProductCategory: ProductCategory @aws_subscribe(mutations: ["createProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onUpdateProductCategory: ProductCategory @aws_subscribe(mutations: ["updateProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onDeleteProductCategory: ProductCategory @aws_subscribe(mutations: ["deleteProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onCreateProductComponent: ProductComponent @aws_subscribe(mutations: ["createProductComponent"]) @aws_iam @aws_cognito_user_pools
+  onUpdateProductComponent: ProductComponent @aws_subscribe(mutations: ["updateProductComponent"]) @aws_iam @aws_cognito_user_pools
+  onDeleteProductComponent: ProductComponent @aws_subscribe(mutations: ["deleteProductComponent"]) @aws_iam @aws_cognito_user_pools
+  onCreateProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet"]) @aws_iam @aws_cognito_user_pools
+  onUpdateProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["updateProductComponentSet"]) @aws_iam @aws_cognito_user_pools
+  onDeleteProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["deleteProductComponentSet"]) @aws_iam @aws_cognito_user_pools
+  onCreateGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["createGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["updateGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["deleteGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onCreateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["updateGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["deleteGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
+  onCreateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["createFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["updateFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["deleteFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUnit: Unit @aws_subscribe(mutations: ["deleteUnit"]) @aws_iam @aws_cognito_user_pools
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_iam @aws_cognito_user_pools
+  onCreateCart: Cart @aws_subscribe(mutations: ["createCart"]) @aws_iam @aws_cognito_user_pools
+  onUpdateCart: Cart @aws_subscribe(mutations: ["updateCart"]) @aws_iam @aws_cognito_user_pools
+  onDeleteCart: Cart @aws_subscribe(mutations: ["deleteCart"]) @aws_iam @aws_cognito_user_pools
+  onCreateTransaction: Transaction @aws_subscribe(mutations: ["createTransaction"]) @aws_iam @aws_cognito_user_pools
+  onUpdateTransaction: Transaction @aws_subscribe(mutations: ["updateTransaction"]) @aws_iam @aws_cognito_user_pools
+  onDeleteTransaction: Transaction @aws_subscribe(mutations: ["deleteTransaction"]) @aws_iam @aws_cognito_user_pools
+  onCreateInvoice: Invoice @aws_subscribe(mutations: ["createInvoice"]) @aws_iam @aws_cognito_user_pools
+  onUpdateInvoice: Invoice @aws_subscribe(mutations: ["updateInvoice"]) @aws_iam @aws_cognito_user_pools
+  onDeleteInvoice: Invoice @aws_subscribe(mutations: ["deleteInvoice"]) @aws_iam @aws_cognito_user_pools
+  onCreateReceipt: Receipt @aws_subscribe(mutations: ["createReceipt"]) @aws_iam @aws_cognito_user_pools
+  onUpdateReceipt: Receipt @aws_subscribe(mutations: ["updateReceipt"]) @aws_iam @aws_cognito_user_pools
+  onDeleteReceipt: Receipt @aws_subscribe(mutations: ["deleteReceipt"]) @aws_iam @aws_cognito_user_pools
+}
+
+input ProductVariantInput {
+  id: ID!
+  variantName: LocalizedItemInput!
+  pack: ProductVariantPackInput
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [AvailabilityInput]
+  position: Int!
+  netPackagingFee: Float
+}
+
+input ProductConfigSetInput {
+  productSetId: ID!
+  items: [ProductConfigComponentInput!]!
+  position: Int!
+}
+
+input ProductConfigComponentInput {
+  productComponentId: ID!
+  refGroupPrice: Float!
+  price: Float!
+  position: Int!
+  externalId: String
+  netPackagingFee: Float
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelChainProductConnection @aws_iam @aws_cognito_user_pools {
+  items: [ChainProduct]!
+  nextToken: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelAllergenListInput {
+  eq: [Allergen]
+  ne: [Allergen]
+  contains: Allergen
+  notContains: Allergen
+}
+
+input ModelChainProductFilterInput {
+  id: ModelIDInput
+  chainId: ModelIDInput
+  productCategoryId: ModelIDInput
+  productType: ModelStringInput
+  isVisible: ModelBooleanInput
+  image: ModelStringInput
+  allergens: ModelAllergenListInput
+  externalId: ModelStringInput
+  dirty: ModelBooleanInput
+  and: [ModelChainProductFilterInput]
+  or: [ModelChainProductFilterInput]
+  not: ModelChainProductFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input CreateChainProductInput {
+  id: ID
+  chainId: ID!
+  name: LocalizedItemInput!
+  description: LocalizedItemInput
+  productCategoryId: ID!
+  productType: String!
+  isVisible: Boolean!
+  image: String
+  variants: [ProductVariantInput]
+  allergens: [Allergen]
+  configSets: [ProductConfigSetInput]
+  externalId: String
+  dirty: Boolean
+}
+
+input UpdateChainProductInput {
+  id: ID!
+  chainId: ID
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  productCategoryId: ID
+  productType: String
+  isVisible: Boolean
+  image: String
+  variants: [ProductVariantInput]
+  allergens: [Allergen]
+  configSets: [ProductConfigSetInput]
+  externalId: String
+  dirty: Boolean
+}
+
+input DeleteChainProductInput {
+  id: ID!
+}
+
+input ModelChainProductConditionInput {
+  chainId: ModelIDInput
+  productCategoryId: ModelIDInput
+  productType: ModelStringInput
+  isVisible: ModelBooleanInput
+  image: ModelStringInput
+  allergens: ModelAllergenListInput
+  externalId: ModelStringInput
+  dirty: ModelBooleanInput
+  and: [ModelChainProductConditionInput]
+  or: [ModelChainProductConditionInput]
+  not: ModelChainProductConditionInput
+}
+
+type ModelGroupProductConnection @aws_iam @aws_cognito_user_pools {
+  items: [GroupProduct]!
+  nextToken: String
+}
+
+input ModelGroupProductFilterInput {
+  id: ModelIDInput
+  parentId: ModelIDInput
+  chainId: ModelIDInput
+  groupId: ModelIDInput
+  isVisible: ModelBooleanInput
+  tax: ModelIntInput
+  takeawayTax: ModelIntInput
+  externalId: ModelStringInput
+  dirty: ModelBooleanInput
+  and: [ModelGroupProductFilterInput]
+  or: [ModelGroupProductFilterInput]
+  not: ModelGroupProductFilterInput
+}
+
+input CreateGroupProductInput {
+  id: ID
+  parentId: ID!
+  chainId: ID!
+  groupId: ID!
+  isVisible: Boolean!
+  tax: Int!
+  takeawayTax: Int
+  variants: [ProductVariantInput]
+  configSets: [ProductConfigSetInput]
+  externalId: String
+  dirty: Boolean
+}
+
+input UpdateGroupProductInput {
+  id: ID!
+  parentId: ID
+  chainId: ID
+  groupId: ID
+  isVisible: Boolean
+  tax: Int
+  takeawayTax: Int
+  variants: [ProductVariantInput]
+  configSets: [ProductConfigSetInput]
+  externalId: String
+  dirty: Boolean
+}
+
+input DeleteGroupProductInput {
+  id: ID!
+}
+
+input ModelGroupProductConditionInput {
+  parentId: ModelIDInput
+  chainId: ModelIDInput
+  groupId: ModelIDInput
+  isVisible: ModelBooleanInput
+  tax: ModelIntInput
+  takeawayTax: ModelIntInput
+  externalId: ModelStringInput
+  dirty: ModelBooleanInput
+  and: [ModelGroupProductConditionInput]
+  or: [ModelGroupProductConditionInput]
+  not: ModelGroupProductConditionInput
+}
+
+type ModelUnitProductConnection @aws_iam @aws_cognito_user_pools {
+  items: [UnitProduct]!
+  nextToken: String
+}
+
+input ModelServingModeListInput {
+  eq: [ServingMode]
+  ne: [ServingMode]
+  contains: ServingMode
+  notContains: ServingMode
+}
+
+input ModelUnitProductFilterInput {
+  id: ModelIDInput
+  parentId: ModelIDInput
+  chainId: ModelIDInput
+  groupId: ModelIDInput
+  unitId: ModelIDInput
+  isVisible: ModelBooleanInput
+  takeaway: ModelBooleanInput
+  laneId: ModelIDInput
+  position: ModelIntInput
+  supportedServingModes: ModelServingModeListInput
+  externalId: ModelStringInput
+  dirty: ModelBooleanInput
+  and: [ModelUnitProductFilterInput]
+  or: [ModelUnitProductFilterInput]
+  not: ModelUnitProductFilterInput
+}
+
+input CreateUnitProductInput {
+  id: ID
+  parentId: ID!
+  chainId: ID!
+  groupId: ID!
+  unitId: ID!
+  isVisible: Boolean!
+  takeaway: Boolean
+  laneId: ID
+  position: Int!
+  variants: [ProductVariantInput]
+  configSets: [ProductConfigSetInput]
+  supportedServingModes: [ServingMode!]
+  externalId: String
+  dirty: Boolean
+}
+
+input UpdateUnitProductInput {
+  id: ID!
+  parentId: ID
+  chainId: ID
+  groupId: ID
+  unitId: ID
+  isVisible: Boolean
+  takeaway: Boolean
+  laneId: ID
+  position: Int
+  variants: [ProductVariantInput]
+  configSets: [ProductConfigSetInput]
+  supportedServingModes: [ServingMode!]
+  externalId: String
+  dirty: Boolean
+}
+
+input ModelUnitProductConditionInput {
+  parentId: ModelIDInput
+  chainId: ModelIDInput
+  groupId: ModelIDInput
+  unitId: ModelIDInput
+  isVisible: ModelBooleanInput
+  takeaway: ModelBooleanInput
+  laneId: ModelIDInput
+  position: ModelIntInput
+  supportedServingModes: ModelServingModeListInput
+  externalId: ModelStringInput
+  dirty: ModelBooleanInput
+  and: [ModelUnitProductConditionInput]
+  or: [ModelUnitProductConditionInput]
+  not: ModelUnitProductConditionInput
+}
+
+type ModelAdminUserConnection @aws_iam @aws_cognito_user_pools {
+  items: [AdminUser]!
+  nextToken: String
+}
+
+input ModelAdminUserFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  profileImage: ModelStringInput
+  and: [ModelAdminUserFilterInput]
+  or: [ModelAdminUserFilterInput]
+  not: ModelAdminUserFilterInput
+}
+
+input ModelAdminUserConditionInput {
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  profileImage: ModelStringInput
+  and: [ModelAdminUserConditionInput]
+  or: [ModelAdminUserConditionInput]
+  not: ModelAdminUserConditionInput
+}
+
+type ModelAdminRoleContextConnection @aws_iam @aws_cognito_user_pools {
+  items: [AdminRoleContext]!
+  nextToken: String
+}
+
+input ModelAdminRoleContextFilterInput {
+  id: ModelIDInput
+  roleContextId: ModelIDInput
+  adminUserId: ModelIDInput
+  and: [ModelAdminRoleContextFilterInput]
+  or: [ModelAdminRoleContextFilterInput]
+  not: ModelAdminRoleContextFilterInput
+}
+
+input CreateAdminRoleContextInput {
+  id: ID
+  roleContextId: ID!
+  adminUserId: ID!
+}
+
+input UpdateAdminRoleContextInput {
+  id: ID!
+  roleContextId: ID
+  adminUserId: ID
+}
+
+input DeleteAdminRoleContextInput {
+  id: ID!
+}
+
+input ModelAdminRoleContextConditionInput {
+  roleContextId: ModelIDInput
+  adminUserId: ModelIDInput
+  and: [ModelAdminRoleContextConditionInput]
+  or: [ModelAdminRoleContextConditionInput]
+  not: ModelAdminRoleContextConditionInput
+}
+
+type ModelRoleContextConnection @aws_iam @aws_cognito_user_pools {
+  items: [RoleContext]!
+  nextToken: String
+}
+
+input ModelRoleInput {
+  eq: Role
+  ne: Role
+}
+
+input ModelRoleContextFilterInput {
+  id: ModelIDInput
+  contextId: ModelIDInput
+  role: ModelRoleInput
+  chainId: ModelStringInput
+  groupId: ModelStringInput
+  unitId: ModelStringInput
+  and: [ModelRoleContextFilterInput]
+  or: [ModelRoleContextFilterInput]
+  not: ModelRoleContextFilterInput
+}
+
+input CreateRoleContextInput {
+  id: ID
+  contextId: ID!
+  role: Role!
+  name: LocalizedItemInput
+  chainId: String
+  groupId: String
+  unitId: String
+}
+
+input UpdateRoleContextInput {
+  id: ID!
+  contextId: ID
+  role: Role
+  name: LocalizedItemInput
+  chainId: String
+  groupId: String
+  unitId: String
+}
+
+input DeleteRoleContextInput {
+  id: ID!
+}
+
+input ModelRoleContextConditionInput {
+  contextId: ModelIDInput
+  role: ModelRoleInput
+  chainId: ModelStringInput
+  groupId: ModelStringInput
+  unitId: ModelStringInput
+  and: [ModelRoleContextConditionInput]
+  or: [ModelRoleContextConditionInput]
+  not: ModelRoleContextConditionInput
+}
+
+input ChainStyleInput {
+  colors: ChainStyleColorsInput!
+  images: ChainStyleImagesInput
+}
+
+input ChainStyleColorsInput {
+  backgroundLight: String
+  backgroundDark: String
+  borderLight: String
+  borderDark: String
+  disabled: String
+  highlight: String
+  indicator: String
+  textLight: String
+  textDark: String
+  primary: String
+  secondary: String
+}
+
+input ChainStyleImagesInput {
+  header: String
+  logo: String
+}
+
+type ModelChainConnection @aws_iam @aws_cognito_user_pools {
+  items: [Chain]!
+  nextToken: String
+}
+
+input ModelChainFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  isActive: ModelBooleanInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelChainFilterInput]
+  or: [ModelChainFilterInput]
+  not: ModelChainFilterInput
+}
+
+input CreateChainInput {
+  id: ID
+  name: String!
+  description: LocalizedItemInput
+  style: ChainStyleInput!
+  isActive: Boolean
+  address: AddressInput
+  email: String
+  phone: String
+}
+
+input UpdateChainInput {
+  id: ID!
+  name: String
+  description: LocalizedItemInput
+  style: ChainStyleInput
+  isActive: Boolean
+  address: AddressInput
+  email: String
+  phone: String
+}
+
+input DeleteChainInput {
+  id: ID!
+}
+
+input ModelChainConditionInput {
+  name: ModelStringInput
+  isActive: ModelBooleanInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelChainConditionInput]
+  or: [ModelChainConditionInput]
+  not: ModelChainConditionInput
+}
+
+type ModelGroupConnection @aws_iam @aws_cognito_user_pools {
+  items: [Group]!
+  nextToken: String
+}
+
+input ModelGroupFilterInput {
+  id: ModelIDInput
+  chainId: ModelIDInput
+  name: ModelStringInput
+  currency: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelGroupFilterInput]
+  or: [ModelGroupFilterInput]
+  not: ModelGroupFilterInput
+}
+
+input CreateGroupInput {
+  id: ID
+  chainId: ID!
+  name: String!
+  description: LocalizedItemInput
+  currency: String!
+  address: AddressInput
+  email: String
+  phone: String
+}
+
+input UpdateGroupInput {
+  id: ID!
+  chainId: ID
+  name: String
+  description: LocalizedItemInput
+  currency: String
+  address: AddressInput
+  email: String
+  phone: String
+}
+
+input DeleteGroupInput {
+  id: ID!
+}
+
+input ModelGroupConditionInput {
+  chainId: ModelIDInput
+  name: ModelStringInput
+  currency: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  and: [ModelGroupConditionInput]
+  or: [ModelGroupConditionInput]
+  not: ModelGroupConditionInput
+}
+
+input OrderItemInput {
+  productId: ID!
+  variantId: ID!
+  created: Float
+  productName: LocalizedItemInput!
+  image: String
+  quantity: Int!
+  statusLog: [StatusLogInput!]!
+  variantName: LocalizedItemInput!
+  laneId: ID
+  allergens: [Allergen]
+  configSets: [OrderItemConfigSetInput!]
+  productType: String
+  externalId: String
+  netPackagingFee: Float
+  serviceFee: PriceInput
+  priceShown: PriceShownInput!
+  sumPriceShown: PriceShownInput!
+}
+
+input StatusLogInput {
+  userId: ID!
+  status: OrderStatus!
+  ts: Float!
+}
+
+input OrderItemConfigSetInput {
+  productSetId: ID!
+  name: LocalizedItemInput!
+  type: String!
+  items: [OrderItemConfigComponentInput!]!
+}
+
+input OrderItemConfigComponentInput {
+  productComponentId: ID!
+  price: Float!
+  name: LocalizedItemInput!
+  allergens: [Allergen]
+  netPackagingFee: Float
+}
+
+input PriceInput {
+  currency: String!
+  netPrice: Float!
+  taxPercentage: Float!
+}
+
+input PriceShownInput {
+  currency: String!
+  pricePerUnit: Float!
+  priceSum: Float!
+  tax: Int!
+  taxSum: Float!
+}
+
+input PlaceInput {
+  seat: String!
+  table: String!
+}
+
+type ModelOrderConnection @aws_iam @aws_cognito_user_pools {
+  items: [Order]!
+  nextToken: String
+}
+
+input ModelPaymentStatusInput {
+  eq: PaymentStatus
+  ne: PaymentStatus
+}
+
+input ModelUnpayCategoryInput {
+  eq: UnpayCategory
+  ne: UnpayCategory
+}
+
+input ModelOrderModeInput {
+  eq: OrderMode
+  ne: OrderMode
+}
+
+input ModelServingModeInput {
+  eq: ServingMode
+  ne: ServingMode
+}
+
+input ModelOrderFilterInput {
+  id: ModelIDInput
+  createdAt: ModelStringInput
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  orderNum: ModelStringInput
+  archived: ModelBooleanInput
+  takeAway: ModelBooleanInput
+  paymentIntention: ModelFloatInput
+  transactionStatus: ModelPaymentStatusInput
+  transactionId: ModelIDInput
+  unpayCategory: ModelUnpayCategoryInput
+  orderMode: ModelOrderModeInput
+  servingMode: ModelServingModeInput
+  rating: ModelIntInput
+  tipTransactionStatus: ModelPaymentStatusInput
+  tipTransactionId: ModelIDInput
+  and: [ModelOrderFilterInput]
+  or: [ModelOrderFilterInput]
+  not: ModelOrderFilterInput
+}
+
+input CreateOrderInput {
+  id: ID
+  createdAt: AWSDateTime
+  userId: ID!
+  unitId: ID!
+  orderNum: String!
+  items: [OrderItemInput!]!
+  paymentMode: PaymentModeInput!
+  statusLog: [StatusLogInput!]!
+  archived: Boolean!
+  takeAway: Boolean
+  place: PlaceInput
+  paymentIntention: Float
+  transactionStatus: PaymentStatus
+  transactionId: ID
+  unpayCategory: UnpayCategory
+  orderMode: OrderMode
+  servingMode: ServingMode
+  serviceFee: PriceInput
+  packagingSum: PriceInput
+  sumPriceShown: PriceShownInput!
+  rating: Int
+  tip: TipInput
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
+}
+
+input UpdateOrderInput {
+  id: ID!
+  createdAt: AWSDateTime
+  userId: ID
+  unitId: ID
+  orderNum: String
+  items: [OrderItemInput!]
+  paymentMode: PaymentModeInput
+  statusLog: [StatusLogInput!]
+  archived: Boolean
+  takeAway: Boolean
+  place: PlaceInput
+  paymentIntention: Float
+  transactionStatus: PaymentStatus
+  transactionId: ID
+  unpayCategory: UnpayCategory
+  orderMode: OrderMode
+  servingMode: ServingMode
+  serviceFee: PriceInput
+  packagingSum: PriceInput
+  sumPriceShown: PriceShownInput
+  rating: Int
+  tip: TipInput
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
+}
+
+input DeleteOrderInput {
+  id: ID!
+}
+
+input ModelOrderConditionInput {
+  createdAt: ModelStringInput
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  orderNum: ModelStringInput
+  archived: ModelBooleanInput
+  takeAway: ModelBooleanInput
+  paymentIntention: ModelFloatInput
+  transactionStatus: ModelPaymentStatusInput
+  transactionId: ModelIDInput
+  unpayCategory: ModelUnpayCategoryInput
+  orderMode: ModelOrderModeInput
+  servingMode: ModelServingModeInput
+  rating: ModelIntInput
+  tipTransactionStatus: ModelPaymentStatusInput
+  tipTransactionId: ModelIDInput
+  and: [ModelOrderConditionInput]
+  or: [ModelOrderConditionInput]
+  not: ModelOrderConditionInput
+}
+
+type ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools {
+  items: [ProductCategory]!
+  nextToken: String
+}
+
+input ModelProductCategoryFilterInput {
+  id: ModelIDInput
+  chainId: ModelIDInput
+  image: ModelStringInput
+  position: ModelIntInput
+  and: [ModelProductCategoryFilterInput]
+  or: [ModelProductCategoryFilterInput]
+  not: ModelProductCategoryFilterInput
+}
+
+input CreateProductCategoryInput {
+  id: ID
+  chainId: ID!
+  description: LocalizedItemInput
+  image: String
+  name: LocalizedItemInput!
+  position: Int!
+}
+
+input UpdateProductCategoryInput {
+  id: ID!
+  chainId: ID
+  description: LocalizedItemInput
+  image: String
+  name: LocalizedItemInput
+  position: Int
+}
+
+input DeleteProductCategoryInput {
+  id: ID!
+}
+
+input ModelProductCategoryConditionInput {
+  chainId: ModelIDInput
+  image: ModelStringInput
+  position: ModelIntInput
+  and: [ModelProductCategoryConditionInput]
+  or: [ModelProductCategoryConditionInput]
+  not: ModelProductCategoryConditionInput
+}
+
+type ModelProductComponentConnection @aws_iam @aws_cognito_user_pools {
+  items: [ProductComponent]!
+  nextToken: String
+}
+
+input ModelProductComponentFilterInput {
+  id: ModelIDInput
+  chainId: ModelIDInput
+  description: ModelStringInput
+  allergens: ModelAllergenListInput
+  externalId: ModelStringInput
+  dirty: ModelBooleanInput
+  and: [ModelProductComponentFilterInput]
+  or: [ModelProductComponentFilterInput]
+  not: ModelProductComponentFilterInput
+}
+
+input CreateProductComponentInput {
+  id: ID
+  chainId: ID!
+  name: LocalizedItemInput!
+  description: String
+  allergens: [Allergen]
+  externalId: String
+  dirty: Boolean
+}
+
+input UpdateProductComponentInput {
+  id: ID!
+  chainId: ID
+  name: LocalizedItemInput
+  description: String
+  allergens: [Allergen]
+  externalId: String
+  dirty: Boolean
+}
+
+input DeleteProductComponentInput {
+  id: ID!
+}
+
+input ModelProductComponentConditionInput {
+  chainId: ModelIDInput
+  description: ModelStringInput
+  allergens: ModelAllergenListInput
+  externalId: ModelStringInput
+  dirty: ModelBooleanInput
+  and: [ModelProductComponentConditionInput]
+  or: [ModelProductComponentConditionInput]
+  not: ModelProductComponentConditionInput
+}
+
+type ModelProductComponentSetConnection @aws_iam @aws_cognito_user_pools {
+  items: [ProductComponentSet]!
+  nextToken: String
+}
+
+input ModelProductComponentSetFilterInput {
+  id: ModelIDInput
+  externalId: ModelStringInput
+  chainId: ModelIDInput
+  type: ModelStringInput
+  description: ModelStringInput
+  items: ModelIDInput
+  maxSelection: ModelIntInput
+  supportedServingModes: ModelServingModeListInput
+  dirty: ModelBooleanInput
+  and: [ModelProductComponentSetFilterInput]
+  or: [ModelProductComponentSetFilterInput]
+  not: ModelProductComponentSetFilterInput
+}
+
+input CreateProductComponentSetInput {
+  id: ID
+  externalId: String
+  chainId: ID!
+  type: String!
+  name: LocalizedItemInput!
+  description: String!
+  items: [ID!]!
+  maxSelection: Int
+  supportedServingModes: [ServingMode!]
+  dirty: Boolean
+}
+
+input UpdateProductComponentSetInput {
+  id: ID!
+  externalId: String
+  chainId: ID
+  type: String
+  name: LocalizedItemInput
+  description: String
+  items: [ID!]
+  maxSelection: Int
+  supportedServingModes: [ServingMode!]
+  dirty: Boolean
+}
+
+input DeleteProductComponentSetInput {
+  id: ID!
+}
+
+input ModelProductComponentSetConditionInput {
+  externalId: ModelStringInput
+  chainId: ModelIDInput
+  type: ModelStringInput
+  description: ModelStringInput
+  items: ModelIDInput
+  maxSelection: ModelIntInput
+  supportedServingModes: ModelServingModeListInput
+  dirty: ModelBooleanInput
+  and: [ModelProductComponentSetConditionInput]
+  or: [ModelProductComponentSetConditionInput]
+  not: ModelProductComponentSetConditionInput
+}
+
+type ModelGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools {
+  items: [GeneratedProductCategory]!
+  nextToken: String
+}
+
+input ModelGeneratedProductCategoryFilterInput {
+  id: ModelIDInput
+  unitId: ModelIDInput
+  productNum: ModelIntInput
+  productCategoryId: ModelIDInput
+  and: [ModelGeneratedProductCategoryFilterInput]
+  or: [ModelGeneratedProductCategoryFilterInput]
+  not: ModelGeneratedProductCategoryFilterInput
+}
+
+input CreateGeneratedProductCategoryInput {
+  id: ID
+  unitId: ID!
+  productNum: Int!
+  productCategoryId: ID!
+}
+
+input UpdateGeneratedProductCategoryInput {
+  id: ID!
+  unitId: ID
+  productNum: Int
+  productCategoryId: ID
+}
+
+input DeleteGeneratedProductCategoryInput {
+  id: ID!
+}
+
+input ModelGeneratedProductCategoryConditionInput {
+  unitId: ModelIDInput
+  productNum: ModelIntInput
+  productCategoryId: ModelIDInput
+  and: [ModelGeneratedProductCategoryConditionInput]
+  or: [ModelGeneratedProductCategoryConditionInput]
+  not: ModelGeneratedProductCategoryConditionInput
+}
+
+input GeneratedProductVariantInput {
+  id: ID!
+  variantName: LocalizedItemInput!
+  pack: ProductVariantPackInput
+  price: Float!
+  netPackagingFee: Float
+  position: Int!
+}
+
+input GeneratedProductConfigSetInput {
+  productSetId: ID!
+  name: LocalizedItemInput!
+  position: Int!
+  type: String!
+  maxSelection: Int
+  items: [GeneratedProductConfigComponentInput!]!
+  supportedServingModes: [ServingMode!]
+}
+
+input GeneratedProductConfigComponentInput {
+  productComponentId: ID!
+  price: Float!
+  position: Int!
+  name: LocalizedItemInput!
+  allergens: [Allergen]
+  netPackagingFee: Float
+}
+
+type ModelGeneratedProductConnection @aws_iam @aws_cognito_user_pools {
+  items: [GeneratedProduct]!
+  nextToken: String
+}
+
+input ModelGeneratedProductFilterInput {
+  id: ModelIDInput
+  unitId: ModelIDInput
+  productCategoryId: ModelIDInput
+  productType: ModelStringInput
+  tax: ModelIntInput
+  takeawayTax: ModelIntInput
+  position: ModelIntInput
+  image: ModelStringInput
+  allergens: ModelAllergenListInput
+  supportedServingModes: ModelServingModeListInput
+  and: [ModelGeneratedProductFilterInput]
+  or: [ModelGeneratedProductFilterInput]
+  not: ModelGeneratedProductFilterInput
+}
+
+input CreateGeneratedProductInput {
+  id: ID
+  unitId: ID!
+  productCategoryId: ID!
+  name: LocalizedItemInput!
+  description: LocalizedItemInput
+  productType: String!
+  tax: Int!
+  takeawayTax: Int
+  position: Int!
+  image: String
+  variants: [GeneratedProductVariantInput!]!
+  allergens: [Allergen]
+  configSets: [GeneratedProductConfigSetInput]
+  supportedServingModes: [ServingMode!]
+}
+
+input UpdateGeneratedProductInput {
+  id: ID!
+  unitId: ID
+  productCategoryId: ID
+  name: LocalizedItemInput
+  description: LocalizedItemInput
+  productType: String
+  tax: Int
+  takeawayTax: Int
+  position: Int
+  image: String
+  variants: [GeneratedProductVariantInput!]
+  allergens: [Allergen]
+  configSets: [GeneratedProductConfigSetInput]
+  supportedServingModes: [ServingMode!]
+}
+
+input DeleteGeneratedProductInput {
+  id: ID!
+}
+
+input ModelGeneratedProductConditionInput {
+  unitId: ModelIDInput
+  productCategoryId: ModelIDInput
+  productType: ModelStringInput
+  tax: ModelIntInput
+  takeawayTax: ModelIntInput
+  position: ModelIntInput
+  image: ModelStringInput
+  allergens: ModelAllergenListInput
+  supportedServingModes: ModelServingModeListInput
+  and: [ModelGeneratedProductConditionInput]
+  or: [ModelGeneratedProductConditionInput]
+  not: ModelGeneratedProductConditionInput
+}
+
+type ModelFavoriteProductConnection @aws_iam @aws_cognito_user_pools {
+  items: [FavoriteProduct]!
+  nextToken: String
+}
+
+input ModelFavoriteProductFilterInput {
+  id: ModelIDInput
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  and: [ModelFavoriteProductFilterInput]
+  or: [ModelFavoriteProductFilterInput]
+  not: ModelFavoriteProductFilterInput
+}
+
+input CreateFavoriteProductInput {
+  id: ID
+  userId: ID!
+  unitId: ID!
+  favoriteProductProductId: ID!
+}
+
+input UpdateFavoriteProductInput {
+  id: ID!
+  userId: ID
+  unitId: ID
+  favoriteProductProductId: ID
+}
+
+input DeleteFavoriteProductInput {
+  id: ID!
+}
+
+input ModelFavoriteProductConditionInput {
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  and: [ModelFavoriteProductConditionInput]
+  or: [ModelFavoriteProductConditionInput]
+  not: ModelFavoriteProductConditionInput
+}
+
+input DateIntervalOpenInput {
+  from: String
+  to: String
+}
+
+type ModelUnitConnection @aws_iam @aws_cognito_user_pools {
+  items: [Unit]!
+  nextToken: String
+}
+
+input ModelOrderModeListInput {
+  eq: [OrderMode]
+  ne: [OrderMode]
+  contains: OrderMode
+  notContains: OrderMode
+}
+
+input ModelOrderPolicyInput {
+  eq: OrderPolicy
+  ne: OrderPolicy
+}
+
+input ModelUnitFilterInput {
+  id: ModelIDInput
+  groupId: ModelIDInput
+  chainId: ModelIDInput
+  lastOrderNum: ModelIntInput
+  isActive: ModelBooleanInput
+  isAcceptingOrders: ModelBooleanInput
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  merchantId: ModelStringInput
+  timeZone: ModelStringInput
+  externalId: ModelStringInput
+  supportedServingModes: ModelServingModeListInput
+  supportedOrderModes: ModelOrderModeListInput
+  orderPolicy: ModelOrderPolicyInput
+  packagingTaxPercentage: ModelFloatInput
+  and: [ModelUnitFilterInput]
+  or: [ModelUnitFilterInput]
+  not: ModelUnitFilterInput
+}
+
+input DeleteUnitInput {
+  id: ID!
+}
+
+input ModelUnitConditionInput {
+  groupId: ModelIDInput
+  chainId: ModelIDInput
+  lastOrderNum: ModelIntInput
+  isActive: ModelBooleanInput
+  isAcceptingOrders: ModelBooleanInput
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  merchantId: ModelStringInput
+  timeZone: ModelStringInput
+  externalId: ModelStringInput
+  supportedServingModes: ModelServingModeListInput
+  supportedOrderModes: ModelOrderModeListInput
+  orderPolicy: ModelOrderPolicyInput
+  packagingTaxPercentage: ModelFloatInput
+  and: [ModelUnitConditionInput]
+  or: [ModelUnitConditionInput]
+  not: ModelUnitConditionInput
+}
+
+type ModelUserConnection @aws_iam @aws_cognito_user_pools {
+  items: [User]!
+  nextToken: String
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  profileImage: ModelStringInput
+  stripeCustomerId: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  id: ID
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  stripeCustomerId: String
+  invoiceAddress: UserInvoiceAddressInput
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+  email: String
+  phone: String
+  profileImage: String
+  stripeCustomerId: String
+  invoiceAddress: UserInvoiceAddressInput
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+input ModelUserConditionInput {
+  name: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  profileImage: ModelStringInput
+  stripeCustomerId: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+}
+
+type ModelCartConnection @aws_iam @aws_cognito_user_pools {
+  items: [Cart]!
+  nextToken: String
+}
+
+input ModelCartFilterInput {
+  id: ModelIDInput
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  takeAway: ModelBooleanInput
+  servingMode: ModelServingModeInput
+  orderPolicy: ModelOrderPolicyInput
+  and: [ModelCartFilterInput]
+  or: [ModelCartFilterInput]
+  not: ModelCartFilterInput
+}
+
+input CreateCartInput {
+  id: ID
+  userId: ID!
+  unitId: ID!
+  takeAway: Boolean
+  place: PlaceInput
+  paymentMode: PaymentModeInput
+  items: [OrderItemInput!]!
+  servingMode: ServingMode
+  orderPolicy: OrderPolicy
+}
+
+input UpdateCartInput {
+  id: ID!
+  userId: ID
+  unitId: ID
+  takeAway: Boolean
+  place: PlaceInput
+  paymentMode: PaymentModeInput
+  items: [OrderItemInput!]
+  servingMode: ServingMode
+  orderPolicy: OrderPolicy
+}
+
+input DeleteCartInput {
+  id: ID!
+}
+
+input ModelCartConditionInput {
+  userId: ModelIDInput
+  unitId: ModelIDInput
+  takeAway: ModelBooleanInput
+  servingMode: ModelServingModeInput
+  orderPolicy: ModelOrderPolicyInput
+  and: [ModelCartConditionInput]
+  or: [ModelCartConditionInput]
+  not: ModelCartConditionInput
+}
+
+type ModelTransactionConnection @aws_iam @aws_cognito_user_pools {
+  items: [Transaction]!
+  nextToken: String
+}
+
+input ModelTransactionFilterInput {
+  id: ModelIDInput
+  userId: ModelIDInput
+  orderId: ModelIDInput
+  type: ModelStringInput
+  total: ModelFloatInput
+  currency: ModelStringInput
+  status: ModelPaymentStatusInput
+  externalTransactionId: ModelStringInput
+  invoiceId: ModelIDInput
+  receiptId: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelTransactionFilterInput]
+  or: [ModelTransactionFilterInput]
+  not: ModelTransactionFilterInput
+}
+
+input CreateTransactionInput {
+  id: ID
+  userId: ID!
+  orderId: ID!
+  type: String
+  total: Float
+  currency: String
+  status: PaymentStatus
+  externalTransactionId: String
+  invoiceId: ID
+  receiptId: ID
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+input UpdateTransactionInput {
+  id: ID!
+  userId: ID
+  orderId: ID
+  type: String
+  total: Float
+  currency: String
+  status: PaymentStatus
+  externalTransactionId: String
+  invoiceId: ID
+  receiptId: ID
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+input DeleteTransactionInput {
+  id: ID!
+}
+
+input ModelTransactionConditionInput {
+  userId: ModelIDInput
+  orderId: ModelIDInput
+  type: ModelStringInput
+  total: ModelFloatInput
+  currency: ModelStringInput
+  status: ModelPaymentStatusInput
+  externalTransactionId: ModelStringInput
+  invoiceId: ModelIDInput
+  receiptId: ModelIDInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
+  and: [ModelTransactionConditionInput]
+  or: [ModelTransactionConditionInput]
+  not: ModelTransactionConditionInput
+}
+
+type ModelInvoiceConnection @aws_iam @aws_cognito_user_pools {
+  items: [Invoice]!
+  nextToken: String
+}
+
+input ModelInvoiceStatusInput {
+  eq: InvoiceStatus
+  ne: InvoiceStatus
+}
+
+input ModelInvoiceFilterInput {
+  id: ModelIDInput
+  userId: ModelIDInput
+  orderId: ModelIDInput
+  transactionId: ModelIDInput
+  externalInvoiceId: ModelStringInput
+  customerName: ModelStringInput
+  taxNumber: ModelStringInput
+  country: ModelStringInput
+  city: ModelStringInput
+  streetAddress: ModelStringInput
+  postalCode: ModelStringInput
+  email: ModelStringInput
+  pdfUrl: ModelStringInput
+  status: ModelInvoiceStatusInput
+  and: [ModelInvoiceFilterInput]
+  or: [ModelInvoiceFilterInput]
+  not: ModelInvoiceFilterInput
+}
+
+input CreateInvoiceInput {
+  id: ID
   userId: ID!
   orderId: ID!
   transactionId: ID!
@@ -1111,11 +2767,72 @@ type Invoice
   status: InvoiceStatus!
 }
 
-type Receipt
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+input UpdateInvoiceInput {
   id: ID!
+  userId: ID
+  orderId: ID
+  transactionId: ID
+  externalInvoiceId: String
+  customerName: String
+  taxNumber: String
+  country: String
+  city: String
+  streetAddress: String
+  postalCode: String
+  email: String
+  pdfUrl: String
+  status: InvoiceStatus
+}
+
+input DeleteInvoiceInput {
+  id: ID!
+}
+
+input ModelInvoiceConditionInput {
+  userId: ModelIDInput
+  orderId: ModelIDInput
+  transactionId: ModelIDInput
+  externalInvoiceId: ModelStringInput
+  customerName: ModelStringInput
+  taxNumber: ModelStringInput
+  country: ModelStringInput
+  city: ModelStringInput
+  streetAddress: ModelStringInput
+  postalCode: ModelStringInput
+  email: ModelStringInput
+  pdfUrl: ModelStringInput
+  status: ModelInvoiceStatusInput
+  and: [ModelInvoiceConditionInput]
+  or: [ModelInvoiceConditionInput]
+  not: ModelInvoiceConditionInput
+}
+
+type ModelReceiptConnection @aws_iam @aws_cognito_user_pools {
+  items: [Receipt]!
+  nextToken: String
+}
+
+input ModelReceiptStatusInput {
+  eq: ReceiptStatus
+  ne: ReceiptStatus
+}
+
+input ModelReceiptFilterInput {
+  id: ModelIDInput
+  userId: ModelIDInput
+  orderId: ModelIDInput
+  transactionId: ModelIDInput
+  externalReceiptId: ModelStringInput
+  email: ModelStringInput
+  pdfData: ModelStringInput
+  status: ModelReceiptStatusInput
+  and: [ModelReceiptFilterInput]
+  or: [ModelReceiptFilterInput]
+  not: ModelReceiptFilterInput
+}
+
+input CreateReceiptInput {
+  id: ID
   userId: ID!
   orderId: ID!
   transactionId: ID!
@@ -1125,85 +2842,822 @@ type Receipt
   status: ReceiptStatus!
 }
 
-type Subscription {
-  onAdminUserChange(id: ID!): AdminUser
-    @aws_subscribe(mutations: ["updateAdminUser"])
-    @aws_cognito_user_pools
-  onAdminUsersChange: AdminUser
-    @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
-    @aws_cognito_user_pools
-  onRoleContextsChange: RoleContext
-    @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
-    @aws_cognito_user_pools
-  onAdminRoleContextsChange: AdminRoleContext
-    @aws_subscribe(
-      mutations: [
-        "createAdminRoleContext"
-        "updateAdminRoleContext"
-        "deleteAdminRoleContext"
-      ]
-    )
-    @aws_cognito_user_pools
-  onChainsChange: Chain
-    @aws_subscribe(mutations: ["createChain", "updateChain"])
-    @aws_cognito_user_pools
-  onGroupsChange: Group
-    @aws_subscribe(mutations: ["createGroup", "updateGroup"])
-    @aws_cognito_user_pools
-  onUnitsChange: Unit
-    @aws_subscribe(mutations: ["createUnit", "updateUnit"])
-    @aws_cognito_user_pools
-  # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
-  onProductCategoriesChange: ProductCategory
-    @aws_subscribe(
-      mutations: ["createProductCategory", "updateProductCategory"]
-    )
-    @aws_cognito_user_pools
-  onProductComponentsChange: ProductComponent
-    @aws_subscribe(
-      mutations: ["createProductComponent", "updateProductComponent"]
-    )
-    @aws_cognito_user_pools
-  onProductComponentSetsChange: ProductComponentSet
-    @aws_subscribe(
-      mutations: ["createProductComponentSet", "updateProductComponentSet"]
-    )
-    @aws_cognito_user_pools
-  onChainProductChange: ChainProduct
-    @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
-    @aws_cognito_user_pools
-  onGroupProductChange: GroupProduct
-    @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
-    @aws_cognito_user_pools
-  onUnitProductChange: UnitProduct
-    @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
-    @aws_cognito_user_pools
-  onGeneratedProductChange: GeneratedProduct
-    @aws_subscribe(
-      mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
-    )
-    @aws_cognito_user_pools
-  onOrdersChange: Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
-    @aws_cognito_user_pools
-  onOrdersDelete: Order
-    @aws_subscribe(mutations: ["deleteOrder"])
-    @aws_cognito_user_pools
+input UpdateReceiptInput {
+  id: ID!
+  userId: ID
+  orderId: ID
+  transactionId: ID
+  externalReceiptId: String
+  email: String
+  pdfData: String
+  status: ReceiptStatus
+}
 
-  # Added for the Mobile Application
-  onProductChanged(unitId: String): GeneratedProduct
-    @aws_subscribe(
-      mutations: [
-        "createGeneratedProduct"
-        "updateGeneratedProduct"
-        "deleteGeneratedProduct"
-      ]
-    )
-    @aws_cognito_user_pools
-  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
-    @aws_cognito_user_pools
-  onUnitOrdersChange(unitId: String, archived: Boolean): Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
-    @aws_cognito_user_pools
+input DeleteReceiptInput {
+  id: ID!
+}
+
+input ModelReceiptConditionInput {
+  userId: ModelIDInput
+  orderId: ModelIDInput
+  transactionId: ModelIDInput
+  externalReceiptId: ModelStringInput
+  email: ModelStringInput
+  pdfData: ModelStringInput
+  status: ModelReceiptStatusInput
+  and: [ModelReceiptConditionInput]
+  or: [ModelReceiptConditionInput]
+  not: ModelReceiptConditionInput
+}
+
+input ModelIDKeyConditionInput {
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  between: [ID]
+  beginsWith: ID
+}
+
+input SearchableStringFilterInput {
+  ne: String
+  gt: String
+  lt: String
+  gte: String
+  lte: String
+  eq: String
+  match: String
+  matchPhrase: String
+  matchPhrasePrefix: String
+  multiMatch: String
+  exists: Boolean
+  wildcard: String
+  regexp: String
+  range: [String]
+}
+
+input SearchableIntFilterInput {
+  ne: Int
+  gt: Int
+  lt: Int
+  gte: Int
+  lte: Int
+  eq: Int
+  range: [Int]
+}
+
+input SearchableFloatFilterInput {
+  ne: Float
+  gt: Float
+  lt: Float
+  gte: Float
+  lte: Float
+  eq: Float
+  range: [Float]
+}
+
+input SearchableBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input SearchableIDFilterInput {
+  ne: ID
+  gt: ID
+  lt: ID
+  gte: ID
+  lte: ID
+  eq: ID
+  match: ID
+  matchPhrase: ID
+  matchPhrasePrefix: ID
+  multiMatch: ID
+  exists: Boolean
+  wildcard: ID
+  regexp: ID
+  range: [ID]
+}
+
+input SearchableChainProductFilterInput {
+  id: SearchableIDFilterInput
+  chainId: SearchableIDFilterInput
+  productCategoryId: SearchableIDFilterInput
+  productType: SearchableStringFilterInput
+  isVisible: SearchableBooleanFilterInput
+  image: SearchableStringFilterInput
+  externalId: SearchableStringFilterInput
+  dirty: SearchableBooleanFilterInput
+  and: [SearchableChainProductFilterInput]
+  or: [SearchableChainProductFilterInput]
+  not: SearchableChainProductFilterInput
+}
+
+enum SearchableSortDirection {
+  asc
+  desc
+}
+
+enum SearchableChainProductSortableFields {
+  id
+  chainId
+  productCategoryId
+  productType
+  isVisible
+  image
+  externalId
+  dirty
+}
+
+input SearchableChainProductSortInput {
+  field: SearchableChainProductSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableChainProductConnection @aws_iam @aws_cognito_user_pools {
+  items: [ChainProduct]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableGroupProductFilterInput {
+  id: SearchableIDFilterInput
+  parentId: SearchableIDFilterInput
+  chainId: SearchableIDFilterInput
+  groupId: SearchableIDFilterInput
+  isVisible: SearchableBooleanFilterInput
+  tax: SearchableIntFilterInput
+  takeawayTax: SearchableIntFilterInput
+  externalId: SearchableStringFilterInput
+  dirty: SearchableBooleanFilterInput
+  and: [SearchableGroupProductFilterInput]
+  or: [SearchableGroupProductFilterInput]
+  not: SearchableGroupProductFilterInput
+}
+
+enum SearchableGroupProductSortableFields {
+  id
+  parentId
+  chainId
+  groupId
+  isVisible
+  tax
+  takeawayTax
+  externalId
+  dirty
+}
+
+input SearchableGroupProductSortInput {
+  field: SearchableGroupProductSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableGroupProductConnection @aws_iam @aws_cognito_user_pools {
+  items: [GroupProduct]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableUnitProductFilterInput {
+  id: SearchableIDFilterInput
+  parentId: SearchableIDFilterInput
+  chainId: SearchableIDFilterInput
+  groupId: SearchableIDFilterInput
+  unitId: SearchableIDFilterInput
+  isVisible: SearchableBooleanFilterInput
+  takeaway: SearchableBooleanFilterInput
+  laneId: SearchableIDFilterInput
+  position: SearchableIntFilterInput
+  externalId: SearchableStringFilterInput
+  dirty: SearchableBooleanFilterInput
+  and: [SearchableUnitProductFilterInput]
+  or: [SearchableUnitProductFilterInput]
+  not: SearchableUnitProductFilterInput
+}
+
+enum SearchableUnitProductSortableFields {
+  id
+  parentId
+  chainId
+  groupId
+  unitId
+  isVisible
+  takeaway
+  laneId
+  position
+  externalId
+  dirty
+}
+
+input SearchableUnitProductSortInput {
+  field: SearchableUnitProductSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableUnitProductConnection @aws_iam @aws_cognito_user_pools {
+  items: [UnitProduct]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableAdminUserFilterInput {
+  id: SearchableIDFilterInput
+  name: SearchableStringFilterInput
+  email: SearchableStringFilterInput
+  phone: SearchableStringFilterInput
+  profileImage: SearchableStringFilterInput
+  and: [SearchableAdminUserFilterInput]
+  or: [SearchableAdminUserFilterInput]
+  not: SearchableAdminUserFilterInput
+}
+
+enum SearchableAdminUserSortableFields {
+  id
+  name
+  email
+  phone
+  profileImage
+}
+
+input SearchableAdminUserSortInput {
+  field: SearchableAdminUserSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableAdminUserConnection @aws_iam @aws_cognito_user_pools {
+  items: [AdminUser]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableAdminRoleContextFilterInput {
+  id: SearchableIDFilterInput
+  roleContextId: SearchableIDFilterInput
+  adminUserId: SearchableIDFilterInput
+  and: [SearchableAdminRoleContextFilterInput]
+  or: [SearchableAdminRoleContextFilterInput]
+  not: SearchableAdminRoleContextFilterInput
+}
+
+enum SearchableAdminRoleContextSortableFields {
+  id
+  roleContextId
+  adminUserId
+}
+
+input SearchableAdminRoleContextSortInput {
+  field: SearchableAdminRoleContextSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableAdminRoleContextConnection @aws_iam @aws_cognito_user_pools {
+  items: [AdminRoleContext]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableRoleContextFilterInput {
+  id: SearchableIDFilterInput
+  contextId: SearchableIDFilterInput
+  chainId: SearchableStringFilterInput
+  groupId: SearchableStringFilterInput
+  unitId: SearchableStringFilterInput
+  and: [SearchableRoleContextFilterInput]
+  or: [SearchableRoleContextFilterInput]
+  not: SearchableRoleContextFilterInput
+}
+
+enum SearchableRoleContextSortableFields {
+  id
+  contextId
+  chainId
+  groupId
+  unitId
+}
+
+input SearchableRoleContextSortInput {
+  field: SearchableRoleContextSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableRoleContextConnection @aws_iam @aws_cognito_user_pools {
+  items: [RoleContext]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableChainFilterInput {
+  id: SearchableIDFilterInput
+  name: SearchableStringFilterInput
+  isActive: SearchableBooleanFilterInput
+  email: SearchableStringFilterInput
+  phone: SearchableStringFilterInput
+  and: [SearchableChainFilterInput]
+  or: [SearchableChainFilterInput]
+  not: SearchableChainFilterInput
+}
+
+enum SearchableChainSortableFields {
+  id
+  name
+  isActive
+  email
+  phone
+}
+
+input SearchableChainSortInput {
+  field: SearchableChainSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableChainConnection @aws_iam @aws_cognito_user_pools {
+  items: [Chain]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableGroupFilterInput {
+  id: SearchableIDFilterInput
+  chainId: SearchableIDFilterInput
+  name: SearchableStringFilterInput
+  currency: SearchableStringFilterInput
+  email: SearchableStringFilterInput
+  phone: SearchableStringFilterInput
+  and: [SearchableGroupFilterInput]
+  or: [SearchableGroupFilterInput]
+  not: SearchableGroupFilterInput
+}
+
+enum SearchableGroupSortableFields {
+  id
+  chainId
+  name
+  currency
+  email
+  phone
+}
+
+input SearchableGroupSortInput {
+  field: SearchableGroupSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableGroupConnection @aws_iam @aws_cognito_user_pools {
+  items: [Group]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableOrderFilterInput {
+  id: SearchableIDFilterInput
+  createdAt: SearchableStringFilterInput
+  userId: SearchableIDFilterInput
+  unitId: SearchableIDFilterInput
+  orderNum: SearchableStringFilterInput
+  archived: SearchableBooleanFilterInput
+  takeAway: SearchableBooleanFilterInput
+  paymentIntention: SearchableFloatFilterInput
+  transactionId: SearchableIDFilterInput
+  rating: SearchableIntFilterInput
+  tipTransactionId: SearchableIDFilterInput
+  and: [SearchableOrderFilterInput]
+  or: [SearchableOrderFilterInput]
+  not: SearchableOrderFilterInput
+}
+
+enum SearchableOrderSortableFields {
+  id
+  createdAt
+  userId
+  unitId
+  orderNum
+  archived
+  takeAway
+  paymentIntention
+  transactionId
+  rating
+  tipTransactionId
+}
+
+input SearchableOrderSortInput {
+  field: SearchableOrderSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableOrderConnection @aws_iam @aws_cognito_user_pools {
+  items: [Order]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableProductCategoryFilterInput {
+  id: SearchableIDFilterInput
+  chainId: SearchableIDFilterInput
+  image: SearchableStringFilterInput
+  position: SearchableIntFilterInput
+  and: [SearchableProductCategoryFilterInput]
+  or: [SearchableProductCategoryFilterInput]
+  not: SearchableProductCategoryFilterInput
+}
+
+enum SearchableProductCategorySortableFields {
+  id
+  chainId
+  image
+  position
+}
+
+input SearchableProductCategorySortInput {
+  field: SearchableProductCategorySortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableProductCategoryConnection @aws_iam @aws_cognito_user_pools {
+  items: [ProductCategory]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableProductComponentFilterInput {
+  id: SearchableIDFilterInput
+  chainId: SearchableIDFilterInput
+  description: SearchableStringFilterInput
+  externalId: SearchableStringFilterInput
+  dirty: SearchableBooleanFilterInput
+  and: [SearchableProductComponentFilterInput]
+  or: [SearchableProductComponentFilterInput]
+  not: SearchableProductComponentFilterInput
+}
+
+enum SearchableProductComponentSortableFields {
+  id
+  chainId
+  description
+  externalId
+  dirty
+}
+
+input SearchableProductComponentSortInput {
+  field: SearchableProductComponentSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableProductComponentConnection @aws_iam @aws_cognito_user_pools {
+  items: [ProductComponent]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableProductComponentSetFilterInput {
+  id: SearchableIDFilterInput
+  externalId: SearchableStringFilterInput
+  chainId: SearchableIDFilterInput
+  type: SearchableStringFilterInput
+  description: SearchableStringFilterInput
+  items: SearchableIDFilterInput
+  maxSelection: SearchableIntFilterInput
+  dirty: SearchableBooleanFilterInput
+  and: [SearchableProductComponentSetFilterInput]
+  or: [SearchableProductComponentSetFilterInput]
+  not: SearchableProductComponentSetFilterInput
+}
+
+enum SearchableProductComponentSetSortableFields {
+  id
+  externalId
+  chainId
+  type
+  description
+  items
+  maxSelection
+  dirty
+}
+
+input SearchableProductComponentSetSortInput {
+  field: SearchableProductComponentSetSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableProductComponentSetConnection @aws_iam @aws_cognito_user_pools {
+  items: [ProductComponentSet]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableGeneratedProductCategoryFilterInput {
+  id: SearchableIDFilterInput
+  unitId: SearchableIDFilterInput
+  productNum: SearchableIntFilterInput
+  productCategoryId: SearchableIDFilterInput
+  and: [SearchableGeneratedProductCategoryFilterInput]
+  or: [SearchableGeneratedProductCategoryFilterInput]
+  not: SearchableGeneratedProductCategoryFilterInput
+}
+
+enum SearchableGeneratedProductCategorySortableFields {
+  id
+  unitId
+  productNum
+  productCategoryId
+}
+
+input SearchableGeneratedProductCategorySortInput {
+  field: SearchableGeneratedProductCategorySortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools {
+  items: [GeneratedProductCategory]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableGeneratedProductFilterInput {
+  id: SearchableIDFilterInput
+  unitId: SearchableIDFilterInput
+  productCategoryId: SearchableIDFilterInput
+  productType: SearchableStringFilterInput
+  tax: SearchableIntFilterInput
+  takeawayTax: SearchableIntFilterInput
+  position: SearchableIntFilterInput
+  image: SearchableStringFilterInput
+  and: [SearchableGeneratedProductFilterInput]
+  or: [SearchableGeneratedProductFilterInput]
+  not: SearchableGeneratedProductFilterInput
+}
+
+enum SearchableGeneratedProductSortableFields {
+  id
+  unitId
+  productCategoryId
+  productType
+  tax
+  takeawayTax
+  position
+  image
+}
+
+input SearchableGeneratedProductSortInput {
+  field: SearchableGeneratedProductSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableGeneratedProductConnection @aws_iam @aws_cognito_user_pools {
+  items: [GeneratedProduct]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableFavoriteProductFilterInput {
+  id: SearchableIDFilterInput
+  userId: SearchableIDFilterInput
+  unitId: SearchableIDFilterInput
+  and: [SearchableFavoriteProductFilterInput]
+  or: [SearchableFavoriteProductFilterInput]
+  not: SearchableFavoriteProductFilterInput
+}
+
+enum SearchableFavoriteProductSortableFields {
+  id
+  userId
+  unitId
+}
+
+input SearchableFavoriteProductSortInput {
+  field: SearchableFavoriteProductSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableFavoriteProductConnection @aws_iam @aws_cognito_user_pools {
+  items: [FavoriteProduct]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableUnitFilterInput {
+  id: SearchableIDFilterInput
+  groupId: SearchableIDFilterInput
+  chainId: SearchableIDFilterInput
+  lastOrderNum: SearchableIntFilterInput
+  isActive: SearchableBooleanFilterInput
+  isAcceptingOrders: SearchableBooleanFilterInput
+  name: SearchableStringFilterInput
+  email: SearchableStringFilterInput
+  phone: SearchableStringFilterInput
+  merchantId: SearchableStringFilterInput
+  timeZone: SearchableStringFilterInput
+  externalId: SearchableStringFilterInput
+  packagingTaxPercentage: SearchableFloatFilterInput
+  and: [SearchableUnitFilterInput]
+  or: [SearchableUnitFilterInput]
+  not: SearchableUnitFilterInput
+}
+
+enum SearchableUnitSortableFields {
+  id
+  groupId
+  chainId
+  lastOrderNum
+  isActive
+  isAcceptingOrders
+  name
+  email
+  phone
+  merchantId
+  timeZone
+  externalId
+  packagingTaxPercentage
+}
+
+input SearchableUnitSortInput {
+  field: SearchableUnitSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableUnitConnection @aws_iam @aws_cognito_user_pools {
+  items: [Unit]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableUserFilterInput {
+  id: SearchableIDFilterInput
+  name: SearchableStringFilterInput
+  email: SearchableStringFilterInput
+  phone: SearchableStringFilterInput
+  profileImage: SearchableStringFilterInput
+  stripeCustomerId: SearchableStringFilterInput
+  and: [SearchableUserFilterInput]
+  or: [SearchableUserFilterInput]
+  not: SearchableUserFilterInput
+}
+
+enum SearchableUserSortableFields {
+  id
+  name
+  email
+  phone
+  profileImage
+  stripeCustomerId
+}
+
+input SearchableUserSortInput {
+  field: SearchableUserSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableUserConnection @aws_iam @aws_cognito_user_pools {
+  items: [User]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableCartFilterInput {
+  id: SearchableIDFilterInput
+  userId: SearchableIDFilterInput
+  unitId: SearchableIDFilterInput
+  takeAway: SearchableBooleanFilterInput
+  and: [SearchableCartFilterInput]
+  or: [SearchableCartFilterInput]
+  not: SearchableCartFilterInput
+}
+
+enum SearchableCartSortableFields {
+  id
+  userId
+  unitId
+  takeAway
+}
+
+input SearchableCartSortInput {
+  field: SearchableCartSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableCartConnection @aws_iam @aws_cognito_user_pools {
+  items: [Cart]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableTransactionFilterInput {
+  id: SearchableIDFilterInput
+  userId: SearchableIDFilterInput
+  orderId: SearchableIDFilterInput
+  type: SearchableStringFilterInput
+  total: SearchableFloatFilterInput
+  currency: SearchableStringFilterInput
+  externalTransactionId: SearchableStringFilterInput
+  invoiceId: SearchableIDFilterInput
+  receiptId: SearchableIDFilterInput
+  createdAt: SearchableStringFilterInput
+  updatedAt: SearchableStringFilterInput
+  and: [SearchableTransactionFilterInput]
+  or: [SearchableTransactionFilterInput]
+  not: SearchableTransactionFilterInput
+}
+
+enum SearchableTransactionSortableFields {
+  id
+  userId
+  orderId
+  type
+  total
+  currency
+  externalTransactionId
+  invoiceId
+  receiptId
+  createdAt
+  updatedAt
+}
+
+input SearchableTransactionSortInput {
+  field: SearchableTransactionSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableTransactionConnection @aws_iam @aws_cognito_user_pools {
+  items: [Transaction]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableInvoiceFilterInput {
+  id: SearchableIDFilterInput
+  userId: SearchableIDFilterInput
+  orderId: SearchableIDFilterInput
+  transactionId: SearchableIDFilterInput
+  externalInvoiceId: SearchableStringFilterInput
+  customerName: SearchableStringFilterInput
+  taxNumber: SearchableStringFilterInput
+  country: SearchableStringFilterInput
+  city: SearchableStringFilterInput
+  streetAddress: SearchableStringFilterInput
+  postalCode: SearchableStringFilterInput
+  email: SearchableStringFilterInput
+  pdfUrl: SearchableStringFilterInput
+  and: [SearchableInvoiceFilterInput]
+  or: [SearchableInvoiceFilterInput]
+  not: SearchableInvoiceFilterInput
+}
+
+enum SearchableInvoiceSortableFields {
+  id
+  userId
+  orderId
+  transactionId
+  externalInvoiceId
+  customerName
+  taxNumber
+  country
+  city
+  streetAddress
+  postalCode
+  email
+  pdfUrl
+}
+
+input SearchableInvoiceSortInput {
+  field: SearchableInvoiceSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableInvoiceConnection @aws_iam @aws_cognito_user_pools {
+  items: [Invoice]!
+  nextToken: String
+  total: Int
+}
+
+input SearchableReceiptFilterInput {
+  id: SearchableIDFilterInput
+  userId: SearchableIDFilterInput
+  orderId: SearchableIDFilterInput
+  transactionId: SearchableIDFilterInput
+  externalReceiptId: SearchableStringFilterInput
+  email: SearchableStringFilterInput
+  pdfData: SearchableStringFilterInput
+  and: [SearchableReceiptFilterInput]
+  or: [SearchableReceiptFilterInput]
+  not: SearchableReceiptFilterInput
+}
+
+enum SearchableReceiptSortableFields {
+  id
+  userId
+  orderId
+  transactionId
+  externalReceiptId
+  email
+  pdfData
+}
+
+input SearchableReceiptSortInput {
+  field: SearchableReceiptSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableReceiptConnection @aws_iam @aws_cognito_user_pools {
+  items: [Receipt]!
+  nextToken: String
+  total: Int
 }

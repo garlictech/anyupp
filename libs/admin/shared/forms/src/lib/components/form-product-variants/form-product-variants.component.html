@@ -11,12 +11,6 @@
     >
       <!-- ORDER EDIT -->
       <div class="mb-2" *ngIf="productLevel !== eProductLevel.CHAIN">
-        <!--
-        <span *ngIf="variant.value.variantName">{{ variant.value.variantName | localize }}</span>
-        {{ variant.value.pack.size }}
-        {{ variant.value.pack.unit }}
-        -->
-
         <div class="float-right">
           <button
             type="button"
@@ -92,28 +86,40 @@
           ></bgap-form-text-input>
         </div>
 
-        <div class="col-md-4 pt-4">
-          <bgap-form-checkbox
-            caption="products.isAvailable"
-            [control]="variant.get('isAvailable')! | asFormControl"
-            inputId="isAvailable"
-          ></bgap-form-checkbox>
+        <div class="col-md-4">
+          <bgap-form-text-input
+            *ngIf="productLevel === eProductLevel.GROUP"
+            caption="products.refPrice"
+            type="number"
+            [control]="variant.get('refGroupPrice')! | asFormControl"
+            inputId="refGroupPrice"
+          ></bgap-form-text-input>
+
+          <bgap-form-text-input
+            *ngIf="productLevel === eProductLevel.UNIT"
+            [staticCaption]="
+              ('common.packagingFee' | translate) + ' (' + currency! + ')'
+            "
+            type="number"
+            [control]="variant.get('netPackagingFee')! | asFormControl"
+            inputId="netPackagingFee"
+          ></bgap-form-text-input>
         </div>
       </div>
 
       <!-- GROUP & UNIT -->
       <ng-container *ngIf="productLevel !== eProductLevel.CHAIN">
         <div class="row">
-          <div class="col-sm-3">
-            <bgap-form-text-input
-              *ngIf="productLevel === eProductLevel.GROUP"
-              caption="products.refPrice"
-              type="number"
-              [control]="variant.get('refGroupPrice')! | asFormControl"
-              inputId="refGroupPrice"
-            ></bgap-form-text-input>
+          <div class="col-sm-4 pt-3">
+            <bgap-form-checkbox
+              caption="products.isAvailable"
+              [control]="variant.get('isAvailable')! | asFormControl"
+              inputId="isAvailable"
+            ></bgap-form-checkbox>
+          </div>
+
+          <div class="col-sm-4" *ngIf="productLevel === eProductLevel.UNIT">
             <bgap-form-static-text
-              *ngIf="productLevel === eProductLevel.UNIT"
               caption="products.refPrice"
               [value]="
                 variant.value.refGroupPrice | currencyFormatter: currency!

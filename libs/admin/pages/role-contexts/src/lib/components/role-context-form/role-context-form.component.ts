@@ -1,4 +1,7 @@
+import { cloneDeep } from 'lodash/fp';
+import { Observable } from 'rxjs';
 import { pairwise, startWith, take } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,20 +9,17 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { AbstractControl, Validators } from '@angular/forms';
-import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { chainsSelectors } from '@bgap/admin/store/chains';
+import { groupsSelectors } from '@bgap/admin/store/groups';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { multiLangValidator } from '@bgap/admin/shared/utils';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
-import { IKeyValue, IRoleContext } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+
+import { RoleContextsFormService } from '../services/role-contexts-form.service';
 
 @UntilDestroy()
 @Component({
@@ -33,10 +33,10 @@ export class RoleContextFormComponent
   implements OnInit
 {
   public roleContext?: CrudApi.RoleContext;
-  public roleOptions: IKeyValue[];
-  public chainOptions: IKeyValue[] = [];
-  public groupOptions: IKeyValue[] = [];
-  public unitOptions: IKeyValue[] = [];
+  public roleOptions: KeyValue[];
+  public chainOptions$: Observable<KeyValue[]>;
+  public groupOptions: KeyValue[] = [];
+  public unitOptions: KeyValue[] = [];
   public eAdminRole = CrudApi.Role;
   public chainDisabled = true;
   public groupDisabled = true;
@@ -44,40 +44,21 @@ export class RoleContextFormComponent
 
   constructor(
     protected _injector: Injector,
-    private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _crudSdk: CrudSdkService,
+    private _roleContextsFormService: RoleContextsFormService,
   ) {
     super(_injector);
 
-    this.roleOptions = Object.keys(CrudApi.Role).map(
-      (key): IKeyValue => ({
-        key: CrudApi.Role[<keyof typeof CrudApi.Role>key].toString(),
-        value: this._translateService.instant(
-          `roles.${CrudApi.Role[<keyof typeof CrudApi.Role>key]}`,
-        ),
-      }),
+    this.roleOptions = this._roleContextsFormService.getRoleOptions();
+
+    this.chainOptions$ = this._store.select(
+      chainsSelectors.getAllChainOptions(),
     );
   }
 
   ngOnInit(): void {
-    this.dialogForm = this._formBuilder.group(
-      {
-        name: this._formBuilder.group(
-          {
-            hu: [''],
-            en: [''],
-            de: [''],
-          },
-          { validators: multiLangValidator },
-        ),
-        role: [CrudApi.Role.inactive, [Validators.required]],
-        chainId: [''],
-        groupId: [''],
-        unitId: [''],
-      },
-      { validators: this._roleLevelValidator },
-    );
+    this.dialogForm =
+      this._roleContextsFormService.createRoleContextFormGroup();
 
     if (this.roleContext) {
       this.dialogForm.patchValue(cleanObject(this.roleContext));
@@ -88,20 +69,9 @@ export class RoleContextFormComponent
       this._refreshDisabledFields(this.roleContext?.role);
     }
 
-    this._store
-      .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
-      .subscribe((chains: CrudApi.Chain[]) => {
-        this.chainOptions = chains.map(chain => ({
-          key: chain.id,
-          value: chain.name,
-        }));
-
-        this._changeDetectorRef.detectChanges();
-      });
-
     this.dialogForm.valueChanges
       .pipe(startWith(this.dialogForm.value), pairwise(), untilDestroyed(this))
-      .subscribe(([prev, next]: [IRoleContext, IRoleContext]) => {
+      .subscribe(([prev, next]: [CrudApi.RoleContext, CrudApi.RoleContext]) => {
         this._refreshDisabledFields(next.role);
 
         if (prev.role !== next.role) {
@@ -118,7 +88,7 @@ export class RoleContextFormComponent
             unitId: undefined,
           });
 
-          this._refreshGroupOptionsByChainId(next.chainId);
+          this._refreshGroupOptionsByChainId(next.chainId || '');
         }
 
         if (prev.groupId !== next.groupId) {
@@ -159,38 +129,17 @@ export class RoleContextFormComponent
       });
   }
 
-  private _roleLevelValidator = (control: AbstractControl): unknown => {
-    switch (control.value.role) {
-      case CrudApi.Role.inactive:
-      case CrudApi.Role.superuser:
-        return null;
-      case CrudApi.Role.chainadmin:
-        return control.value.chainId ? null : { empty: true };
-      case CrudApi.Role.groupadmin:
-        return control.value.chainId && control.value.groupId
-          ? null
-          : { empty: true };
-      case CrudApi.Role.unitadmin:
-      case CrudApi.Role.staff:
-        return control.value.chainId &&
-          control.value.groupId &&
-          control.value.unitId
-          ? null
-          : { empty: true };
-      default:
-        return null;
-    }
-  };
-
   private _refreshDisabledFields(role: CrudApi.Role) {
     this.chainDisabled = [
       CrudApi.Role.superuser,
       CrudApi.Role.inactive,
       /* + new roles */
     ].includes(role);
+
     this.groupDisabled =
       this.chainDisabled ||
       [CrudApi.Role.chainadmin /* + new roles */].includes(role);
+
     this.unitDisabled =
       this.groupDisabled ||
       [CrudApi.Role.groupadmin /* + new roles */].includes(role);
@@ -200,34 +149,18 @@ export class RoleContextFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      if (this.roleContext?.id) {
-        this._crudSdk.sdk
-          .UpdateRoleContext({
-            input: {
-              id: this.roleContext.id,
-              ...this.dialogForm.value,
-            },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.updateSuccessful');
+      const contextId = Math.random().toString(36).substring(2, 8);
+      this._roleContextsFormService
+        .saveForm$(
+          cloneDeep(this.dialogForm.value),
+          contextId,
+          this.roleContext?.id,
+        )
+        .subscribe((response: UpsertResponse<unknown>) => {
+          this._toasterService.showSimpleSuccess(response.type);
 
-            this.close();
-          });
-      } else {
-        this._crudSdk.sdk
-          .CreateRoleContext({
-            input: {
-              ...this.dialogForm?.value,
-              contextId: Math.random().toString(36).substring(2, 8),
-            },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.insertSuccessful');
-            this.close();
-          });
-      }
+          this.close();
+        });
     }
   }
 }

@@ -1,7 +1,4 @@
-import {
-  appCoreActions,
-  appCoreSelectors,
-} from '@bgap/admin/shared/data-access/app-core';
+import { appCoreActions, appCoreSelectors } from '@bgap/admin/store/app-core';
 
 import {
   ChangeDetectionStrategy,

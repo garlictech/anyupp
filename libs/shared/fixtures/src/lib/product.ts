@@ -26,6 +26,7 @@ const getChainProductVariant = (
   ],
   position: idx,
 });
+
 const getGroupProductVariant = (
   idx: number,
 ): RequiredId<CrudApi.ProductVariantInput> => ({
@@ -47,6 +48,7 @@ const getGroupProductVariant = (
   ],
   position: idx,
 });
+
 const getUnitProductVariant = (
   idx: number,
 ): RequiredId<CrudApi.ProductVariantInput> => ({
@@ -67,6 +69,7 @@ const getUnitProductVariant = (
     },
   ],
   position: idx,
+  netPackagingFee: 1,
 });
 
 const chainProductInputBase: Omit<
@@ -126,6 +129,7 @@ const chainProductBase: Omit<RequiredId<CrudApi.ChainProduct>, 'variants'> & {
   createdAt: '2021-08-17T15:13:47.532Z',
   updatedAt: '2021-08-17T15:14:05.132Z',
 };
+
 const groupProductBase: Omit<RequiredId<CrudApi.GroupProduct>, 'variants'> & {
   variants: CrudApi.ProductVariant[];
 } = {
@@ -133,6 +137,7 @@ const groupProductBase: Omit<RequiredId<CrudApi.GroupProduct>, 'variants'> & {
   createdAt: '2021-08-17T15:13:47.532Z',
   updatedAt: '2021-08-17T15:14:05.132Z',
 };
+
 const unitProductBase: Omit<RequiredId<CrudApi.UnitProduct>, 'variants'> & {
   variants: CrudApi.ProductVariant[];
 } = {

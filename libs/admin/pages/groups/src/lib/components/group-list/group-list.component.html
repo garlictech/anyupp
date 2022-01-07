@@ -16,13 +16,15 @@
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <ng-container *ngFor="let group of groups$ | async">
-      <nb-list-item *ngIf="group.chainId === (selectedChainId$ | async)">
-        <bgap-group-list-item
-          class="w-100"
-          [group]="group"
-        ></bgap-group-list-item>
-      </nb-list-item>
-    </ng-container>
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+      <nb-list>
+        <nb-list-item *cdkVirtualFor="let group of groups$ | async">
+          <bgap-group-list-item
+            class="w-100"
+            [group]="group"
+          ></bgap-group-list-item>
+        </nb-list-item>
+      </nb-list>
+    </cdk-virtual-scroll-viewport>
   </nb-card-body>
 </nb-card>

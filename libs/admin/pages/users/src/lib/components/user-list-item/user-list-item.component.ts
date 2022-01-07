@@ -1,7 +1,7 @@
 import * as fp from 'lodash/fp';
 
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { IUser } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 
 import { UserFormComponent } from '../user-form/user-form.component';
@@ -12,7 +12,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
   templateUrl: './user-list-item.component.html',
 })
 export class UserListItemComponent {
-  @Input() user!: IUser;
+  @Input() user!: CrudApi.User;
 
   constructor(private _nbDialogService: NbDialogService) {}
 

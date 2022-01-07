@@ -1,43 +1,48 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as fp from 'lodash/fp';
-import { from } from 'rxjs';
-import { filter, map, mapTo, switchMap } from 'rxjs/operators';
-import { AdminUserResolverDeps } from './utils';
+import { defer, from, of } from 'rxjs';
+import {
+  filter,
+  map,
+  switchMap,
+  throwIfEmpty,
+  catchError,
+} from 'rxjs/operators';
+import { AdminUserResolverDeps, deleteAdminUserFromTable } from './utils';
 
 export const deleteAdminUser =
-  (params: AnyuppApi.DeleteAdminUserMutationVariables) =>
-  (deps: AdminUserResolverDeps) => {
+  (params: CrudApi.DeleteAdminUserMutationVariables) =>
+  (
+    deps: AdminUserResolverDeps,
+  ): ReturnType<CrudApi.CrudSdk['DeleteAdminUser']> => {
     console.debug('deleteAdminUser Resolver parameters: ', params);
 
-    return from(
+    return defer(() =>
       deps.cognitoidentityserviceprovider
         .adminGetUser({
           UserPoolId: deps.userPoolId,
-          Username: params.userName,
+          Username: params.input.id,
         })
         .promise(),
-    )
-      .pipe(
-        map(
-          (user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
-            user.Username,
+    ).pipe(
+      map(
+        (user: CognitoIdentityServiceProvider.Types.AdminGetUserResponse) =>
+          user.Username,
+      ),
+      filter(fp.negate(fp.isEmpty)),
+      switchMap(username =>
+        from(
+          deps.cognitoidentityserviceprovider
+            .adminDeleteUser({
+              UserPoolId: deps.userPoolId,
+              Username: username,
+            })
+            .promise(),
         ),
-        filter(fp.negate(fp.isEmpty)),
-        switchMap(username =>
-          from(
-            deps.cognitoidentityserviceprovider
-              .adminDeleteUser({
-                UserPoolId: deps.userPoolId,
-                Username: username,
-              })
-              .promise(),
-          ).pipe(mapTo(username)),
-        ),
-        switchMap(username =>
-          deps.crudSdk.DeleteAdminUser({ input: { id: username } }),
-        ),
-        mapTo(true),
-      )
-      .toPromise();
+      ),
+      switchMap(() => deleteAdminUserFromTable(deps)(params.input.id)),
+      throwIfEmpty(),
+      catchError(err => of(err?.code === 'UserNotFoundException' ? null : err)),
+    );
   };

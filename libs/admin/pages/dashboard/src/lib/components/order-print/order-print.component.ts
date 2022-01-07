@@ -10,11 +10,11 @@ import {
   OnChanges,
   OnInit,
 } from '@angular/core';
-import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { chainsSelectors } from '@bgap/admin/store/chains';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import { LocalizePipe } from '@bgap/admin/shared/pipes';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { ICurrencyValue, IKeyValueObject } from '@bgap/shared/types';
+import { CurrencyValue, KeyValueObject } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -33,7 +33,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public now = '';
   public parsedOrders: CrudApi.OrderItem[] = [];
   public parsedVats: CrudApi.PriceShown[] = [];
-  public sum: ICurrencyValue;
+  public sum: CurrencyValue;
   public place?: CrudApi.Place | null;
   public invoiceData?: CrudApi.Invoice;
   public receiptType?: string;
@@ -90,8 +90,8 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     };
     this.now = new Date().toString();
 
-    const variants: IKeyValueObject = {};
-    const vats: IKeyValueObject = {};
+    const variants: KeyValueObject = {};
+    const vats: KeyValueObject = {};
     let lastOrderTime = 0;
 
     this.orders.forEach((order: CrudApi.Order): void => {

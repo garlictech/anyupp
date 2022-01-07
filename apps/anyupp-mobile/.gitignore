@@ -30,7 +30,6 @@
 .pub/
 /build/
 .fvm/
-pubspec.lock
 .gradle
 
 # Web related
@@ -71,6 +70,5 @@ android/key.properties
 lib/awsconfiguration.dart
 
 graphql/crud-api-schema.graphql
-graphql/anyupp-api-schema.graphql
 lib/graphql/generated/**
 test/graphql/generated/**

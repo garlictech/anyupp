@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
+import { productComponentsSelectors } from '@bgap/admin/store/product-components';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Store } from '@ngrx/store';
 
@@ -11,7 +11,6 @@ import { Store } from '@ngrx/store';
   name: 'productComponentInfo',
 })
 export class ProductComponentInfoPipe implements PipeTransform {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store) {}
 
   transform(componentId?: string | null): Observable<CrudApi.ProductComponent> {

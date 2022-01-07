@@ -5,9 +5,10 @@
     "piece": "db",
     "close": "Close",
     "select": "Select",
-    "ok": "Ok",
+    "ok": "OK",
     "today": "Today",
-    "exit": "Tap back again to exit app."
+    "exit": "Tap back again to exit app.",
+    "ok2": "ALL RIGHT"
   },
   "locale": {
     "EN": "English",
@@ -139,10 +140,11 @@
     "deleteCartAccept": "Delete",
     "deleteCartCancel": "Cancel",
     "takeAway": "takeaway",
-    "inPlace": "in place"
+    "inPlace": "in place",
+    "packagingFee": "Packaging fee"
   },
   "allergens": {
-    "title": "Allergens",
+    "title": "ALLERGENS",
     "celery": "Celery",
     "crustaceans": "Crustaceans",
     "egg": "Egg",
@@ -177,6 +179,14 @@
       "orderDetails": "Order details",
       "paymentDetails": "Payment details",
       "otherDetails": "More details"
+    },
+    "sendOrderError": {
+      "title": "Order failed.",
+      "description": "An error has occurred, please contact our team for assistance!"
+    },
+    "sendOrderSuccess": {
+      "title": "Successful order!",
+      "description": "The ordered products have been added to your invoice and will be served soon."
     },
     "status": {
       "none": "WAITING",
@@ -280,11 +290,21 @@
   "payment": {
     "title": "PAY",
     "choose": "Please select a payment method",
+    "delete": {
+      "title": "Delete credit card?",
+      "description": "This will delete the credit card from your payment methods.",
+      "reason": "Delete",
+      "cancel": "Cancel"
+    },
     "method": {
-      "cash": "Cash at my table to my server",
-      "creditCard": "Credit card at my table to my server + SZÉP card",
-      "inAppPayment": "Online Card payment via Stripe (preferred)",
-      "noPaymentMethod": "No cards saved yet."
+      "inAppPayment": "Credit Card Payment",
+      "inAppPaymentDesc": "Online",
+      "cash": "Cash",
+      "cashDesc": "I pay at the waiter",
+      "creditCard": "Card, SZÉP card",
+      "creditCardDesc": "I pay at the waiter",
+      "noPaymentMethod": "You have no saved cards yet.",
+      "addNewCard": "Add new card"
     },
     "sendOrder": "PLACE ORDER",
     "fillInvoice": "FILL INVOICE FORM",
@@ -301,6 +321,7 @@
         "paymentInfo": "Payment information"
       },
       "invoicing": {
+        "title": "VAT INVOICE",
         "want_invoice": "I want a VAT invoice",
         "invoice_info": "Invoice Info",
         "receipt_info": "Receipt Info",
@@ -314,7 +335,9 @@
         "invoiceAddress": "Use previous address",
         "show": "Show",
         "downloadReceipt": "DOWNLOAD RECEIPT",
-        "downloadInvoice": "DOWNLOAD INVOICE"
+        "downloadInvoice": "DOWNLOAD INVOICE",
+        "save": "SAVE",
+        "warning": "Data marked in red is required"
       }
     },
     "simplePayStatus": {
@@ -335,6 +358,16 @@
         "description": "SimplePay transaction ID: {{0}}"
       }
     },
+    "newCard": {
+      "title": "Add new card",
+      "hint": {
+        "card_number": "xxxx xxxx xxxx xxxx",
+        "expiry": "MM/YY",
+        "cvc": "CVV"
+      },
+      "saveCard": "SAVE CARD",
+      "warning": "The card information you entered is invalid. Please check it again!"
+    },
     "cardFields": {
       "card_number": {
         "label": "Card number",
@@ -347,8 +380,8 @@
         "validationError": "Card expirity date invalid"
       },
       "cvc": {
-        "label": "CVC",
-        "hint": "XXX",
+        "label": "CVV",
+        "hint": "CVV",
         "validationError": "Card CVC is invalid"
       }
     },
@@ -475,18 +508,24 @@
   },
   "profile": {
     "menu": {
-      "contact": "Contact Us",
+      "section1": "Account",
+      "contact": "Contact",
       "transactions": "Transactions",
-      "about": "About",
-      "cards": "Saved cards",
-      "logout": "Logout",
-      "settings": "Settings",
-      "regulations": "Regulations",
+      "paymentMethods": "Saved cards",
+      "allergens": "Allergens",
+      "section2": "Settings",
       "language": "Language",
-      "payment": "Payment and invoicing"
+      "security": "Security & Password",
+      "privacy": "Terms of Use",
+      "about": "About",
+      "logout": "Logout"
+    },
+    "language": {
+      "title": "LANGUAGE",
+      "save": "SET LANGUAGE"
     },
     "transactions": {
-      "status": "Status",
+      "title": "TRANSACTIONS",
       "paymentMethod": "Payment Method",
       "noTransactions": "No Transactions",
       "details": "Details",
@@ -495,6 +534,11 @@
         "stripe": "Stripe",
         "cash": "Cash",
         "-": "Unknown"
+      },
+      "status": {
+        "waitingForPayment": "Waiting for payment",
+        "success": "Served",
+        "failed": "Deleted"
       }
     }
   },

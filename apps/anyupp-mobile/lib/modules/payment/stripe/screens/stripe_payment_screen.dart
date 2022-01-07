@@ -1,5 +1,5 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/graphql/generated/anyupp-api.dart' hide PaymentMethod;
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/main/bloc/main_navigation_bloc.dart';
 import 'package:fa_prev/modules/main/bloc/main_navigation_event.dart';
 import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_bloc.dart';
@@ -10,7 +10,6 @@ import 'package:fa_prev/modules/payment/stripe/widgets/select_payment_method_wid
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets.dart';
-import 'package:fa_prev/shared/widgets/tab_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +18,8 @@ class StripePaymentScreen extends StatefulWidget {
   final UserInvoiceAddress? invoiceAddress;
   final int tabIndex;
 
-  const StripePaymentScreen({this.orderId, this.invoiceAddress, this.tabIndex = 0});
+  const StripePaymentScreen(
+      {this.orderId, this.invoiceAddress, this.tabIndex = 0});
 
   @override
   _StripePaymentScreenState createState() => _StripePaymentScreenState();

@@ -11,12 +11,9 @@ import {
 import {
   dashboardActions,
   dashboardSelectors,
-  IDashboardSettings,
-} from '@bgap/admin/shared/data-access/dashboard';
-import {
-  currentStatus as currentStatusFn,
-  ordersSelectors,
-} from '@bgap/admin/shared/data-access/orders';
+  DashboardSettings,
+} from '@bgap/admin/store/dashboard';
+import { ordersSelectors } from '@bgap/admin/store/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardSize,
@@ -36,7 +33,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class OrderTicketListComponent implements OnInit, OnDestroy {
   public selectedOrder?: CrudApi.Order;
-  public dashboardSettings!: IDashboardSettings;
+  public dashboardSettings!: DashboardSettings;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
 
   public EDashboardTicketListType = EDashboardTicketListType;
@@ -52,7 +49,6 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
   private _orders: CrudApi.Order[] = [];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
@@ -96,7 +92,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
 
     this._store
       .pipe(select(dashboardSelectors.getSettings), untilDestroyed(this))
-      .subscribe((dashboardSettings: IDashboardSettings): void => {
+      .subscribe((dashboardSettings: DashboardSettings): void => {
         this.dashboardSettings = dashboardSettings;
 
         this.buttonSize =
@@ -121,7 +117,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
             CrudApi.OrderStatus.served,
             CrudApi.OrderStatus.none,
             CrudApi.OrderStatus.rejected,
-          ].includes(currentStatusFn(o.statusLog)),
+          ].includes(CrudApi.currentStatus(o.statusLog)),
       ),
     ];
   }
@@ -137,7 +133,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
             o.paymentMode.method === CrudApi.PaymentMethod.cash) &&
           o.transaction?.status !== CrudApi.PaymentStatus.success &&
           o.transaction?.status !== CrudApi.PaymentStatus.failed &&
-          currentStatusFn(o.statusLog) !== CrudApi.OrderStatus.rejected,
+          CrudApi.currentStatus(o.statusLog) !== CrudApi.OrderStatus.rejected,
       ),
     ];
   }
@@ -148,7 +144,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     this.problematicOrders = [
       ...this._orders.filter(
         (o: CrudApi.Order): boolean =>
-          currentStatusFn(o.statusLog) === CrudApi.OrderStatus.none &&
+          CrudApi.currentStatus(o.statusLog) === CrudApi.OrderStatus.none &&
           o.transaction?.status !== CrudApi.PaymentStatus.success,
       ),
     ];

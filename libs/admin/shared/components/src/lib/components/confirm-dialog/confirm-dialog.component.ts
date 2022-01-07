@@ -4,7 +4,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { IConfirmOptions } from '@bgap/shared/types';
+import { ConfirmOptions } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({
@@ -13,7 +13,7 @@ import { NbDialogRef } from '@nebular/theme';
   templateUrl: './confirm-dialog.component.html',
 })
 export class ConfirmDialogComponent implements OnInit {
-  public options?: IConfirmOptions;
+  public options?: ConfirmOptions;
 
   constructor(
     private _nbDialogRef: NbDialogRef<unknown>,
@@ -24,7 +24,7 @@ export class ConfirmDialogComponent implements OnInit {
     this._changeDetectorRef.detectChanges();
   }
 
-  public click(callbackFn: () => void): void {
+  public click(callbackFn?: () => void): void {
     if (callbackFn) {
       callbackFn();
     }

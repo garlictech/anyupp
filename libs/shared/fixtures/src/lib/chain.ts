@@ -24,7 +24,7 @@ const chainBase: CrudApi.CreateChainInput = {
     en: `Prisoner chain description`,
   },
   isActive: true,
-  email: 'test@anyupp.com',
+  email: 'testuser+chainadmin@anyupp.com',
   phone: '1234567890',
   style: {
     colors: {

@@ -1,0 +1,1253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test unit CRUD operations The resolver handlers must work 1`] = `
+Object {
+  "email": "NEW EMAIL",
+  "id": "test_unit_1_id",
+}
+`;
+
+exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: CREATE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "externalId": "restaurantid",
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "rkeeper-unit",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": Any<String>,
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+      "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
+      "rkeeperUsername": "781_55_69_939",
+    },
+    "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: DELETE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "externalId": "restaurantid",
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "rkeeper-unit",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": Any<String>,
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+      "rkeeperPassword": "UPDATED_RKEEPER_PASSWORD",
+      "rkeeperUsername": "781_55_69_939",
+    },
+    "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: RE-READ 1`] = `null`;
+exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: READ 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "externalId": "restaurantid",
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "rkeeper-unit",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": Any<String>,
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+      "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
+      "rkeeperUsername": "781_55_69_939",
+    },
+    "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: UPDATE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "externalId": "restaurantid",
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "rkeeper-unit",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": Any<String>,
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+      "rkeeperPassword": "UPDATED_RKEEPER_PASSWORD",
+      "rkeeperUsername": "781_55_69_939",
+    },
+    "type": "rkeeper",
+  },
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: CREATE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "externalId": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: DELETE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": "NEW EMAIL",
+  "externalId": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: RE-READ 1`] = `null`;
+exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: READ 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "externalId": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: UPDATE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": "NEW EMAIL",
+  "externalId": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: CREATE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "paymentModes": Array [
+    Object {
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "ratingPolicy": Object {
+    "ratings": Array [
+      Object {
+        "value": 1,
+      },
+    ],
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "tipPolicy": Object {
+    "percents": Array [
+      2,
+    ],
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: DELETE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": "NEW EMAIL",
+  "externalId": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: RE-READ 1`] = `null`;
+exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: READ 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": null,
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": null,
+  "externalId": null,
+  "floorMap": null,
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "lastOrderNum": null,
+  "merchantId": null,
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "openingHours": null,
+  "orderPolicy": null,
+  "packagingTaxPercentage": null,
+  "paymentModes": Array [
+    Object {
+      "caption": null,
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "caption": null,
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "caption": null,
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "phone": null,
+  "pos": null,
+  "ratingPolicy": Object {
+    "description": null,
+    "ratings": Array [
+      Object {
+        "icon": null,
+        "text": null,
+        "value": 1,
+      },
+    ],
+    "title": null,
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "timeZone": null,
+  "tipPolicy": Object {
+    "description": null,
+    "maxOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
+  "updatedAt": Any<String>,
+}
+`;
+exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: UPDATE 1`] = `
+Object {
+  "address": Object {
+    "address": "Ág u. 1.",
+    "city": "Budapest",
+    "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "1021",
+    "title": "HQ",
+  },
+  "chainId": "test_chain_1_id",
+  "createdAt": Any<String>,
+  "description": Object {
+    "en": "Test unit #test_unit_1_id description",
+    "hu": "Teszt unit #test_unit_1_id leírás",
+  },
+  "email": "NEW EMAIL",
+  "groupId": "test_group_1_id",
+  "id": "test_unit_1_id",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+    Object {
+      "color": "#e123ef",
+      "id": "lane_02",
+      "name": "konyha",
+    },
+  ],
+  "name": "Késdobáló S",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "paymentModes": Array [
+    Object {
+      "method": "cash",
+      "type": "cash",
+    },
+    Object {
+      "method": "card",
+      "type": "card",
+    },
+    Object {
+      "method": "inapp",
+      "type": "stripe",
+    },
+  ],
+  "ratingPolicy": Object {
+    "ratings": Array [
+      Object {
+        "value": 1,
+      },
+    ],
+  },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "taxPercentage": 10,
+    "type": "applicable",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "tipPolicy": Object {
+    "percents": Array [
+      2,
+    ],
+  },
+  "updatedAt": Any<String>,
+}
+`;
