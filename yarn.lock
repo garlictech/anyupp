@@ -8391,7 +8391,7 @@
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-9.0.0.tgz#3205bcd15ada9bc681ac20bef64e9e6df88fd297"
   integrity sha512-scN0hAWyLVAvLR9AyW7HoFF5sJZglyBsbPuHO4fv7JRvfmPBMfp1ozWqOf/e4wwPNxezBZXRfWzMb6iFLgEVRA==
 
-"@types/mochawesome@^6.2.1":
+"@types/mochawesome@6.2.1":
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/@types/mochawesome/-/mochawesome-6.2.1.tgz#4d81b570a44812c216a592b1785d9829c2e96425"
   integrity sha512-AhQdBkT/CBdx3sI9ATeljqa5uJ3dGNKEJnsgzw9IkPeg9d9Lzxsz1eKFnenxq1qQojIW0XkIsCgdheRRXP2SQA==
