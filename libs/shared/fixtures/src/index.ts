@@ -14,3 +14,7 @@ export * from './lib/role-context';
 export * from './lib/transaction';
 export * from './lib/unit';
 export * from './lib/user';
+export * from './lib/utils';
+
+import * as simpleFixtures from './lib/simple-fixtures';
+export { simpleFixtures };

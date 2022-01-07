@@ -10,6 +10,9 @@ import {
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
+  maskAll,
+  maskTimestamp,
+  maskV4UuidIds,
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { filterNullish, throwIfEmptyValue } from '@bgap/shared/utils';
@@ -43,12 +46,7 @@ import {
 } from '../../../seeds/unit-product';
 import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 import { orderRequestHandler } from '@bgap/backend/orders';
-import {
-  dateMatcher,
-  maskAll,
-  maskTimestamp,
-  maskV4UuidIds,
-} from '../../../../utils';
+import { dateMatcher } from '../../../../utils';
 import * as rkeeperApi from '@bgap/rkeeper-api';
 
 // See:https://github.com/aelbore/esbuild-jest/issues/26#issuecomment-968853688

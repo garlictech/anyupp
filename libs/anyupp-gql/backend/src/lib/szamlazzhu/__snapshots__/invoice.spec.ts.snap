@@ -1,0 +1,239 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createInvoice - general case: issueInvoice calls 1`] = `
+Array [
+  Array [
+    Object {
+      "_options": Object {
+        "buyer": Object {
+          "_options": Object {
+            "address": "USER INVOICEADDRESS STREET ADDRESS",
+            "city": "USER INVOICEADDRESS CITY",
+            "country": "USER INVOICEADDRESS COUNTRY",
+            "email": "USER INVOICEADDRESS EMAIL",
+            "name": "USER INVOICEADDRESS CUSTOMERNAME ",
+            "phone": "USER PHONE",
+            "postAddress": Object {},
+            "sendEmail": true,
+            "taxNumber": "USER INVOICEADDRESS TAX NUMBER",
+            "zip": "USER INVOICEADDRESS POSTAL CODE",
+          },
+        },
+        "comment": "TRANSACTION EXTERNAL TRANSACTION ID",
+        "currency": Object {
+          "comment": "Hungarian Forint",
+          "roundPriceExp": 0,
+          "value": "HUF",
+        },
+        "dueDate": "MASKED DATE",
+        "exchangeBank": "",
+        "exchangeRate": 0,
+        "fulfillmentDate": "MASKED DATE",
+        "issueDate": "MASKED DATE",
+        "items": Array [
+          Object {
+            "_options": Object {
+              "grossUnitPrice": 101,
+              "label": "ORDER PRODUCTNAME HU",
+              "quantity": 1,
+              "unit": "db",
+              "vat": 11,
+              "vatValue": 0,
+            },
+          },
+          Object {
+            "_options": Object {
+              "grossUnitPrice": 750,
+              "label": "csomagolás",
+              "quantity": 1,
+              "unit": "db",
+              "vat": 50,
+              "vatValue": 0,
+            },
+          },
+          Object {
+            "_options": Object {
+              "grossUnitPrice": 560,
+              "label": "felszolgálási díj",
+              "quantity": 1,
+              "unit": "db",
+              "vat": 40,
+              "vatValue": 0,
+            },
+          },
+        ],
+        "language": Object {
+          "name": "Hungarian",
+          "value": "hu",
+        },
+        "paid": true,
+        "paymentMethod": Object {
+          "comment": "Stripe",
+          "value": "Stripe",
+        },
+        "prepaymentInvoice": false,
+        "seller": Object {
+          "_options": Object {
+            "bank": Object {},
+            "email": Object {},
+          },
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`createInvoice - general case: the result 1`] = `"SZAMLAZZCLIENT ISSUEINVOICE RESULT"`;
+
+exports[`createInvoice - no packaging: issueInvoice calls 1`] = `
+Array [
+  Array [
+    Object {
+      "_options": Object {
+        "buyer": Object {
+          "_options": Object {
+            "address": "USER INVOICEADDRESS STREET ADDRESS",
+            "city": "USER INVOICEADDRESS CITY",
+            "country": "USER INVOICEADDRESS COUNTRY",
+            "email": "USER INVOICEADDRESS EMAIL",
+            "name": "USER INVOICEADDRESS CUSTOMERNAME ",
+            "phone": "USER PHONE",
+            "postAddress": Object {},
+            "sendEmail": true,
+            "taxNumber": "USER INVOICEADDRESS TAX NUMBER",
+            "zip": "USER INVOICEADDRESS POSTAL CODE",
+          },
+        },
+        "comment": "TRANSACTION EXTERNAL TRANSACTION ID",
+        "currency": Object {
+          "comment": "Hungarian Forint",
+          "roundPriceExp": 0,
+          "value": "HUF",
+        },
+        "dueDate": "MASKED DATE",
+        "exchangeBank": "",
+        "exchangeRate": 0,
+        "fulfillmentDate": "MASKED DATE",
+        "issueDate": "MASKED DATE",
+        "items": Array [
+          Object {
+            "_options": Object {
+              "grossUnitPrice": 101,
+              "label": "ORDER PRODUCTNAME HU",
+              "quantity": 1,
+              "unit": "db",
+              "vat": 11,
+              "vatValue": 0,
+            },
+          },
+          Object {
+            "_options": Object {
+              "grossUnitPrice": 560,
+              "label": "felszolgálási díj",
+              "quantity": 1,
+              "unit": "db",
+              "vat": 40,
+              "vatValue": 0,
+            },
+          },
+        ],
+        "language": Object {
+          "name": "Hungarian",
+          "value": "hu",
+        },
+        "paid": true,
+        "paymentMethod": Object {
+          "comment": "Stripe",
+          "value": "Stripe",
+        },
+        "prepaymentInvoice": false,
+        "seller": Object {
+          "_options": Object {
+            "bank": Object {},
+            "email": Object {},
+          },
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`createInvoice - no packaging: the result 1`] = `"SZAMLAZZCLIENT ISSUEINVOICE RESULT"`;
+
+exports[`createInvoice - no service fee: issueInvoice calls 1`] = `
+Array [
+  Array [
+    Object {
+      "_options": Object {
+        "buyer": Object {
+          "_options": Object {
+            "address": "USER INVOICEADDRESS STREET ADDRESS",
+            "city": "USER INVOICEADDRESS CITY",
+            "country": "USER INVOICEADDRESS COUNTRY",
+            "email": "USER INVOICEADDRESS EMAIL",
+            "name": "USER INVOICEADDRESS CUSTOMERNAME ",
+            "phone": "USER PHONE",
+            "postAddress": Object {},
+            "sendEmail": true,
+            "taxNumber": "USER INVOICEADDRESS TAX NUMBER",
+            "zip": "USER INVOICEADDRESS POSTAL CODE",
+          },
+        },
+        "comment": "TRANSACTION EXTERNAL TRANSACTION ID",
+        "currency": Object {
+          "comment": "Hungarian Forint",
+          "roundPriceExp": 0,
+          "value": "HUF",
+        },
+        "dueDate": "MASKED DATE",
+        "exchangeBank": "",
+        "exchangeRate": 0,
+        "fulfillmentDate": "MASKED DATE",
+        "issueDate": "MASKED DATE",
+        "items": Array [
+          Object {
+            "_options": Object {
+              "grossUnitPrice": 101,
+              "label": "ORDER PRODUCTNAME HU",
+              "quantity": 1,
+              "unit": "db",
+              "vat": 11,
+              "vatValue": 0,
+            },
+          },
+          Object {
+            "_options": Object {
+              "grossUnitPrice": 750,
+              "label": "csomagolás",
+              "quantity": 1,
+              "unit": "db",
+              "vat": 50,
+              "vatValue": 0,
+            },
+          },
+        ],
+        "language": Object {
+          "name": "Hungarian",
+          "value": "hu",
+        },
+        "paid": true,
+        "paymentMethod": Object {
+          "comment": "Stripe",
+          "value": "Stripe",
+        },
+        "prepaymentInvoice": false,
+        "seller": Object {
+          "_options": Object {
+            "bank": Object {},
+            "email": Object {},
+          },
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`createInvoice - no service fee: the result 1`] = `"SZAMLAZZCLIENT ISSUEINVOICE RESULT"`;

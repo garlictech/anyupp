@@ -45,6 +45,6 @@
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-zsoltstack.anyupp.com/zsoltstack",
     "RKeeperTaskBucketName": "zsoltstack-anyupp-backen-anyupprkeepermenubucket4-su94udjcyz4q",
     "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-RkeeperECSTaskExecutionR-OVI8JFRXX361",
-    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/zsoltstackanyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef4E14AAF6:20"
+    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/zsoltstackanyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef4E14AAF6:21"
   }
 }

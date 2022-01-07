@@ -55,7 +55,7 @@ Object {
   },
   "openingHours": null,
   "orderPolicy": null,
-  "packagingTaxPercentage": null,
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -120,6 +120,7 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: DELETE 1`] = `
 Object {
   "address": Object {
@@ -168,7 +169,7 @@ Object {
   },
   "openingHours": null,
   "orderPolicy": null,
-  "packagingTaxPercentage": null,
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -233,7 +234,9 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: RE-READ 1`] = `null`;
+
 exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: READ 1`] = `
 Object {
   "address": Object {
@@ -282,7 +285,7 @@ Object {
   },
   "openingHours": null,
   "orderPolicy": null,
-  "packagingTaxPercentage": null,
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -347,6 +350,7 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: UPDATE 1`] = `
 Object {
   "address": Object {
@@ -395,7 +399,7 @@ Object {
   },
   "openingHours": null,
   "orderPolicy": null,
-  "packagingTaxPercentage": null,
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -460,6 +464,7 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: CREATE 1`] = `
 Object {
   "address": Object {
@@ -508,7 +513,7 @@ Object {
   },
   "openingHours": null,
   "orderPolicy": null,
-  "packagingTaxPercentage": null,
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -564,6 +569,7 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: DELETE 1`] = `
 Object {
   "address": Object {
@@ -612,7 +618,7 @@ Object {
   },
   "openingHours": null,
   "orderPolicy": null,
-  "packagingTaxPercentage": null,
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -668,7 +674,9 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: RE-READ 1`] = `null`;
+
 exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: READ 1`] = `
 Object {
   "address": Object {
@@ -717,7 +725,7 @@ Object {
   },
   "openingHours": null,
   "orderPolicy": null,
-  "packagingTaxPercentage": null,
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -773,6 +781,7 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: UPDATE 1`] = `
 Object {
   "address": Object {
@@ -821,7 +830,7 @@ Object {
   },
   "openingHours": null,
   "orderPolicy": null,
-  "packagingTaxPercentage": null,
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -877,6 +886,7 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: CREATE 1`] = `
 Object {
   "address": Object {
@@ -917,6 +927,7 @@ Object {
     "from": "1970-01-01",
     "to": "2970-01-01",
   },
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "method": "cash",
@@ -959,6 +970,7 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: DELETE 1`] = `
 Object {
   "address": Object {
@@ -1007,7 +1019,7 @@ Object {
   },
   "openingHours": null,
   "orderPolicy": null,
-  "packagingTaxPercentage": null,
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -1063,7 +1075,9 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: RE-READ 1`] = `null`;
+
 exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: READ 1`] = `
 Object {
   "address": Object {
@@ -1112,7 +1126,7 @@ Object {
   },
   "openingHours": null,
   "orderPolicy": null,
-  "packagingTaxPercentage": null,
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -1168,6 +1182,7 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
+
 exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: UPDATE 1`] = `
 Object {
   "address": Object {
@@ -1209,6 +1224,7 @@ Object {
     "from": "1970-01-01",
     "to": "2970-01-01",
   },
+  "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
       "method": "cash",
