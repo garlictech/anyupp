@@ -51,7 +51,6 @@ export class ModifiersAndExtrasFormService {
         chainId: ['', [Validators.required]],
         type: ['', [Validators.required]],
         maxSelection: [''],
-        packagingFee: [''],
         name: this._formBuilder.group(
           {
             hu: ['', [Validators.maxLength(40)]],

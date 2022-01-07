@@ -19,6 +19,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
+import { handleEmptyPackaginFees } from '../fn';
 
 @Injectable({ providedIn: 'root' })
 export class ProductFormService {
@@ -88,12 +89,12 @@ export class ProductFormService {
         this._formBuilder.control('', optionalValueValidator),
       );
     }
+
     if (productLevel === EProductLevel.UNIT) {
       dialogForm.addControl('laneId', this._formBuilder.control(''));
-      dialogForm.addControl('packagingFee', this._formBuilder.control(''));
       dialogForm.addControl(
         'supportedServingModes',
-        this._formBuilder.control('', { validators: notEmptyArray }),
+        this._formBuilder.control([], { validators: notEmptyArray }),
       );
     }
 
@@ -251,8 +252,16 @@ export class ProductFormService {
   ) {
     return iif(
       () => !isEditing,
-      this.createUnitProduct$(createFormValue),
-      this.updateUnitProduct$(updateFormValue),
+      this.createUnitProduct$(
+        <CrudApi.CreateUnitProductInput>(
+          handleEmptyPackaginFees(createFormValue)
+        ),
+      ),
+      this.updateUnitProduct$(
+        <CrudApi.UpdateUnitProductInput>(
+          handleEmptyPackaginFees(updateFormValue)
+        ),
+      ),
     );
   }
 

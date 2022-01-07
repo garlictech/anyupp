@@ -60,7 +60,7 @@ exports[`AdminUserFormService createAdminUser$ should create admin user 1`] = `
 Object {
   "data": Object {
     "createdAt": Any<String>,
-    "email": "john.doe@anyupp.com",
+    "email": "testuser+johndoe@anyupp.com",
     "id": "test_ADMIN_ADMIN_USER_IT_ADMIN_USER_ID_01",
     "name": "John Doe",
     "phone": "+36123456789",
@@ -89,7 +89,7 @@ exports[`AdminUserFormService updateAdminUser$ should update admin user 1`] = `
 Object {
   "data": Object {
     "createdAt": Any<String>,
-    "email": "mickey-mouse@anyupp.com",
+    "email": "testuser+mickey@anyupp.com",
     "id": "test_ADMIN_ADMIN_USER_IT_ADMIN_USER_ID_02",
     "name": "Micky Mouse",
     "phone": "+36123456789",

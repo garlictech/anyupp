@@ -45,12 +45,12 @@ Feature: Whole product feature
     And I click on the "14. Molluscs" checkbox
     And I select the "Garnish (Köret módosító készlet)" in the modifier selector
     And I click on the "Add" button
-    And I select the "Decoration (Szolíd elegnacia)" in the modifier selector
+    And I select the "Decoration (Szolíd elegancia)" in the modifier selector
     And I click on the "Add" button
     And I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist
-    Then I should see "test product" text
+    Then I should see "test chain product" text
 
 
   Scenario: Update chain product
@@ -78,12 +78,12 @@ Feature: Whole product feature
     And I click on the "1. Gluten" checkbox
     And I click on the "3. Egg" checkbox
     And I click on the "5. Peanut" checkbox
-    And I click on the "7. Soya" checkbox
+    And I click on the "6. Soya" checkbox
     And I click on the "9. Sulphites" checkbox
     And I click on the "11. Celery" checkbox
     And I click on the "13. Lupin" checkbox
-    And I click the delete button in the listitem with "Modifier comp set" content
-    And I select the "Modifier comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_02_id)" in the modifier selector
+    And I click the delete button in the listitem with "Decoration" content
+    And I select the "Temperature (Tálalási hőmérséklet)" in the modifier selector
     And I click on the "Add" button
     When I click on the "Submit" button
     Then I should see a success toastr
@@ -115,8 +115,8 @@ Feature: Whole product feature
     And I fill out the "Variant name (DE)" input with "test group variant 1"
     And I fill out the "Pack size" input with "5"
     And I fill out the "Pack unit" input with "dl"
-    And I click the delete button in the listitem with "Extra comp set" content
-    And I select the "Extra comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_01_id)" in the modifier selector
+    And I click the delete button in the listitem with "Garnish" content
+    And I select the "Decoration (Szolíd elegancia)" in the modifier selector
     And I click on the "Add" button
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
@@ -135,8 +135,8 @@ Feature: Whole product feature
     And I fill out the "Variant name (DE)" input with "test group e2eUpdated variant DE"
     And I fill out the "Pack size" input with "500"
     And I fill out the "Pack unit" input with "ml"
-    And I click the delete button in the listitem with "Modifier comp set" content
-    And I select the "Modifier comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_02_id)" in the modifier selector
+    And I click the delete button in the listitem with "Decoration" content
+    And I select the "Garnish (Köret módosító készlet)" in the modifier selector
     And I click on the "Add" button
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
@@ -182,6 +182,7 @@ Feature: Whole product feature
     And I fill out the last "Time from" input with "10:00"
     And I fill out the last "Time to" input with "18:00"
     And I fill out all the "Price (HUF)" input with index multiply by 10
+    And I fill out all the "Packaging fee (HUF)" input with index multiply by 5
     And I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist
@@ -202,7 +203,8 @@ Feature: Whole product feature
     And I fill out the "Pack size" input with "200"
     And I fill out the "Pack unit" input with "ml"
     And I click on the "Is available" checkbox
-    And I fill out all the "Price (HUF)" input with index multiply by 10
+    And I fill out all the "Price (HUF)" input with index multiply by 12
+    And I fill out all the "Packaging fee (HUF)" input with index multiply by 6
     And I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist

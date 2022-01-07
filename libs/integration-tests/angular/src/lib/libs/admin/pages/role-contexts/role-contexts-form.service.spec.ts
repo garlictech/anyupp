@@ -11,6 +11,7 @@ import { UpsertResponse } from '@bgap/shared/types';
 import { StoreModule } from '@ngrx/store';
 
 import { signInToCognito, signOutFromCognito } from '../../shared/helper';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('RoleContextsFormService', () => {
   const roleContextId = `${testIdPrefix}ADMIN_ROLE_CONTEXT_IT_ROLE_CONTEXT_ID_01`;
@@ -33,7 +34,11 @@ describe('RoleContextsFormService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, StoreModule.forRoot({})],
+      imports: [
+        ReactiveFormsModule,
+        StoreModule.forRoot({}),
+        TranslateModule.forRoot(),
+      ],
     });
 
     service = TestBed.inject(RoleContextsFormService);

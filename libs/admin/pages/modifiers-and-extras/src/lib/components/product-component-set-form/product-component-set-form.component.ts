@@ -147,9 +147,6 @@ export class ProductComponentSetFormComponent
               this.dialogForm.value.type === EProductComponentSetType.MODIFIER
                 ? null
                 : this.dialogForm.value.maxSelection,
-            packagingFee: this.dialogForm.value.packagingFee
-              ? this.dialogForm.value.packagingFee
-              : null,
           },
           this.productComponentSet?.id,
           this.productComponentSet?.dirty || undefined,

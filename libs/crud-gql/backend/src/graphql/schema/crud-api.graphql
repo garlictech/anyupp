@@ -1109,6 +1109,7 @@ input CreateUnitInput {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicy: RatingPolicyInput
   tipPolicy: TipPolicyInput
@@ -1137,6 +1138,7 @@ input UpdateUnitInput {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicy: RatingPolicyInput
   tipPolicy: TipPolicyInput

@@ -48,7 +48,8 @@ Object {
       "to": "2970-01-01",
     },
     "openingHours": null,
-    "packagingTax": 27,
+    "orderPolicy": null,
+    "packagingTaxPercentage": 27,
     "paymentModes": Array [
       Object {
         "caption": null,
@@ -68,6 +69,8 @@ Object {
     ],
     "phone": null,
     "pos": null,
+    "ratingPolicy": null,
+    "serviceFeePolicy": null,
     "supportedOrderModes": Array [
       "pickup",
       "instant",
@@ -77,6 +80,7 @@ Object {
       "takeAway",
     ],
     "timeZone": null,
+    "tipPolicy": null,
     "updatedAt": Any<String>,
   },
   "type": "insert",
@@ -142,7 +146,7 @@ Object {
       "to": "",
     },
   },
-  "packagingTax": "",
+  "packagingTaxPercentage": "",
   "paymentModes": Array [],
   "phone": "",
   "pos": Object {
@@ -206,7 +210,8 @@ Object {
       "to": "2970-01-01",
     },
     "openingHours": null,
-    "packagingTax": 27,
+    "orderPolicy": null,
+    "packagingTaxPercentage": 27,
     "paymentModes": Array [
       Object {
         "caption": null,
@@ -226,6 +231,8 @@ Object {
     ],
     "phone": null,
     "pos": null,
+    "ratingPolicy": null,
+    "serviceFeePolicy": null,
     "supportedOrderModes": Array [
       "pickup",
     ],
@@ -233,6 +240,7 @@ Object {
       "takeAway",
     ],
     "timeZone": null,
+    "tipPolicy": null,
     "updatedAt": Any<String>,
   },
   "type": "update",

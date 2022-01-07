@@ -306,6 +306,7 @@ Array [
     ],
     "id": "test_GroupProductVariant_id_1",
     "isAvailable": true,
+    "netPackagingFee": 0,
     "pack": Object {
       "size": 1,
       "unit": "GROUP_UNIT",
@@ -332,6 +333,7 @@ Array [
     ],
     "id": "test_GroupProductVariant_id_2",
     "isAvailable": true,
+    "netPackagingFee": 0,
     "pack": Object {
       "size": 2,
       "unit": "GROUP_UNIT",
@@ -354,6 +356,7 @@ Array [
     "availabilities": Array [],
     "id": "test_ChainProductVariant_id_1",
     "isAvailable": true,
+    "netPackagingFee": 0,
     "pack": Object {
       "size": 1,
       "unit": "CHAIN_UNIT",
@@ -371,6 +374,7 @@ Array [
     "availabilities": Array [],
     "id": "test_ChainProductVariant_id_2",
     "isAvailable": true,
+    "netPackagingFee": 0,
     "pack": Object {
       "size": 2,
       "unit": "CHAIN_UNIT",

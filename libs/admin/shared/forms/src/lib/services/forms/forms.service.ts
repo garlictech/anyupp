@@ -37,6 +37,7 @@ export class FormsService {
       position: [0],
       price: [0],
       refGroupPrice: [0],
+      netPackagingFee: [0],
     };
 
     return this._formBuilder.group(groupConfig);
@@ -87,6 +88,7 @@ export class FormsService {
       position: [0, Validators.required],
       refGroupPrice: [0, Validators.required],
       price: [0, Validators.required],
+      netPackagingFee: [0],
     });
 
   public createRkeeperFormGroup = (): FormGroup =>

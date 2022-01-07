@@ -62,7 +62,7 @@ const unitBase = {
   isActive: true,
   isAcceptingOrders: true,
   name: `Késdobáló S`,
-  packagingTax: 27,
+  packagingTaxPercentage: 27,
   address: {
     address: 'Ág u. 1.',
     city: 'Budapest',

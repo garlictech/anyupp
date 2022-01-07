@@ -6,7 +6,7 @@ Feature: Dashboard
     And I select the "Rab lánc #1" chain in the header menu
     And I select the "Nagy csoport #1" group in the header menu
     And I select the "Késdobáló #111" unit in the header menu
-    Then I should see "John Doe" text
+    Then I should see "testuser+monad" text
     And the "Dashboard" title is displayed
     And I should see "ORDERS ACCEPTED" text
     And the "Active orders" icon is selected

@@ -59,7 +59,7 @@ export class UnitFormService {
         type: [CrudApi.PosType.anyupp],
         rkeeper: this._formsService.createRkeeperFormGroup(),
       }),
-      packagingTax: [''],
+      packagingTaxPercentage: [''],
       open: this._formBuilder.group({
         from: [''],
         to: [''],
@@ -155,6 +155,10 @@ export class UnitFormService {
     if (formValue.pos?.type !== CrudApi.PosType.rkeeper) {
       delete formValue.pos?.rkeeper;
     }
+
+    formValue.packagingTaxPercentage = formValue.packagingTaxPercentage
+      ? formValue.packagingTaxPercentage
+      : 0;
 
     return iif(
       () => !unitId,

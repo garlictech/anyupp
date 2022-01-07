@@ -123,8 +123,10 @@
           <bgap-form-text-input
             caption="common.packagingTax"
             type="number"
-            [control]="dialogForm.get('packagingTax')! | asFormControl"
-            inputId="packagingTax"
+            [control]="
+              dialogForm.get('packagingTaxPercentage')! | asFormControl
+            "
+            inputId="packagingTaxPercentage"
           ></bgap-form-text-input>
         </div>
       </div>
