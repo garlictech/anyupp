@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Unit utils filterOutCurrentlyNotOpenUnits function should filter out the NOT open units simple case with current time 1`] = `
-Array [
-  "openUnit_01_openEnded",
-  "openUnit_02_inInterval",
-  "openUnit_04_allways",
-]
-`;
