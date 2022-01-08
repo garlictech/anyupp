@@ -8,10 +8,6 @@ export const sendRkeeperOrder = (
   orderInput: CrudApi.CreateOrderInput,
 ) =>
   pipe(
-    // get the external id from the init
-    //
-    // minden orderitemre: vedd a productot
-    // a producból vedd  az external id-t
     orderInput.items.map(item => ({
       id: item.externalId,
       type: 'd',

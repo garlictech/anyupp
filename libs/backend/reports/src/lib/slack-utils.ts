@@ -8,7 +8,10 @@ export const uploadReport = (deps: ReportDeps) => () => {
   const bodyFormData = new FormData();
 
   bodyFormData.append('token', deps.slackBotToken);
-  bodyFormData.append('title', `Weekly report (${deps.reportDate})`);
+  bodyFormData.append(
+    'title',
+    `Weekly report (${deps.environment}, ${deps.reportDate})`,
+  );
   bodyFormData.append('filename', deps.reportFile.split('/').pop() || '');
   bodyFormData.append('filetype', 'auto');
   bodyFormData.append('channels', deps.slackChannel);

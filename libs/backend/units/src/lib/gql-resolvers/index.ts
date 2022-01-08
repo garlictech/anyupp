@@ -7,4 +7,5 @@ export {
   createUnitsDeps,
   createUnitResolver,
   updateUnitResolver,
+  updateUnitRKeeperDataResolver,
 } from './unit-crud-resolvers';

@@ -60,7 +60,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     ],
     configSets: [
       {
-        productSetId: 'PROUDCT_SET_01',
+        productSetId: 'PRODUCT_SET_01',
         items: [
           {
             productComponentId: 'PRODUCT_COMPONENT_ID_11',
@@ -104,8 +104,8 @@ describe('calculatePricesAndCheckActivity method', () => {
     },
   };
   const prodComponentSetMap: ProductComponentSetMap = {
-    PROUDCT_SET_01: {
-      id: 'PROUDCT_SET_01',
+    PRODUCT_SET_01: {
+      id: 'PRODUCT_SET_01',
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_SET_NAME' },
       description: 'PRODUCT_COMP_SET_DESC',

@@ -26,7 +26,7 @@ import {
   menusyncHandler,
 } from '@bgap/rkeeper-api';
 import { from, Observable, combineLatest, of } from 'rxjs';
-import { ES_DELAY, maskV4UuidIds, dateMatcher } from '../../../utils';
+import { ES_DELAY, dateMatcher } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
 import * as fixtures from './fixtures';
@@ -34,6 +34,7 @@ import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/backend/products';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { v1 as uuidV1 } from 'uuid';
 import { commonStackConfig, anyuppStackConfig } from '@bgap/shared/config';
+import { maskV4UuidIds } from '@bgap/shared/fixtures';
 
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();

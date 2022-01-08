@@ -24,7 +24,7 @@ Object {
         },
       ],
       "position": 1,
-      "productSetId": "PROUDCT_SET_01",
+      "productSetId": "PRODUCT_SET_01",
     },
   ],
   "createdAt": "12",
@@ -143,7 +143,7 @@ Object {
         "en": "PRODUCT_COMP_SET_NAME",
       },
       "position": 1,
-      "productSetId": "PROUDCT_SET_01",
+      "productSetId": "PRODUCT_SET_01",
       "supportedServingModes": Array [
         "inPlace",
       ],

@@ -32,8 +32,10 @@ const getDepsMock = (): StripeResolverDeps => ({
       }),
     ),
     GetUser: jest.fn().mockReturnValue(
-      of({
+      of<CrudApi.User>({
         id: 'USER_ID',
+        createdAt: 'CREATEDAT',
+        updatedAt: 'UPDATEDAT',
       }),
     ),
     UpdateUser: jest

@@ -1719,11 +1719,14 @@
         "synth": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "cwd": "apps/anyupp-backend",
+            "cwd": "apps/common-backend",
             "parallel": false,
             "commands": ["yarn sst cdk synth --stage='{args.env}'"]
           },
-          "outputs": ["apps/common/cdk.out", "apps/common/.build"]
+          "outputs": [
+            "apps/common-backend/cdk.out",
+            "apps/common-backend/.build"
+          ]
         },
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",

@@ -1,5 +1,5 @@
-import * as Chart from 'chart.js';
-import ChartDataLabels, { Context } from 'chartjs-plugin-datalabels';
+import { Chart } from 'chart.js';
+import DatalabelsPlugin, { Context } from 'chartjs-plugin-datalabels';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 
@@ -7,6 +7,8 @@ import { ElementRef, Injectable } from '@angular/core';
 import { CurrencyFormatterPipe, LocalizePipe } from '@bgap/admin/shared/pipes';
 import { ProducMixArrayItem } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
+
+import { PIE_CHART_DATALABEL_CONFIG, PIE_CHART_DATASET_STYLES } from '../const';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +28,8 @@ export class ReportsService {
     return new Chart(
       <CanvasRenderingContext2D>chart.nativeElement.getContext('2d'),
       {
-        plugins: [ChartDataLabels],
+        type: 'bar',
+        plugins: [DatalabelsPlugin],
         data: {
           labels: Array.from(Array(24).keys()),
           datasets: [
@@ -39,8 +42,10 @@ export class ReportsService {
               data: new Array(24).fill(0),
               backgroundColor: 'rgba(249,94,1, 0.2)',
               borderColor: 'rgba(249,94,1, 0.8)',
+              pointBorderColor: 'rgba(249,94,1, 0.8)',
               borderWidth: 2,
-              yAxisID: 'y-axis-right',
+              yAxisID: 'yAxisRight',
+              tension: 0.5,
             },
             {
               type: 'bar',
@@ -49,7 +54,7 @@ export class ReportsService {
               ),
               data: new Array(24).fill(0),
               backgroundColor: 'rgba(60,186,159, 0.8)',
-              yAxisID: 'y-axis-left',
+              yAxisID: 'yAxisLeft',
             },
             {
               type: 'bar',
@@ -58,7 +63,7 @@ export class ReportsService {
               ),
               data: new Array(24).fill(0),
               backgroundColor: 'rgba(62,149,205,0.8)',
-              yAxisID: 'y-axis-left',
+              yAxisID: 'yAxisLeft',
             },
             {
               type: 'bar',
@@ -67,62 +72,47 @@ export class ReportsService {
               ),
               data: new Array(24).fill(0),
               backgroundColor: 'rgba(142,94,162,0.8)',
-              yAxisID: 'y-axis-left',
+              yAxisID: 'yAxisLeft',
             },
           ],
         },
         options: {
-          legend: {
-            position: 'bottom',
-          },
-          scales: {
-            xAxes: [
-              {
-                stacked: true,
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-            yAxes: [
-              {
-                stacked: true,
-                ticks: {
-                  beginAtZero: true,
-                },
-                position: 'left',
-                id: 'y-axis-left',
-              },
-              {
-                stacked: true,
-                ticks: {
-                  beginAtZero: true,
-                },
-                position: 'right',
-                id: 'y-axis-right',
-              },
-            ],
-          },
           responsive: true,
           maintainAspectRatio: false,
-          tooltips: {
-            callbacks: {
-              label: (tooltipItem, data) => {
-                const label =
-                  (<Chart.ChartDataSets[]>data.datasets)[
-                    tooltipItem.datasetIndex || 0
-                  ].label || '';
-
-                return tooltipItem.datasetIndex === 0
-                  ? ` ${label}: ${tooltipItem.value}`
-                  : ` ${label}: ${this._currencyFormatter.transform(
-                      tooltipItem.value || '',
-                      currency,
-                    )}`;
-              },
+          scales: {
+            x: {
+              stacked: true,
+              beginAtZero: true,
+            },
+            yAxisLeft: {
+              stacked: true,
+              beginAtZero: true,
+              position: 'left',
+            },
+            yAxisRight: {
+              stacked: true,
+              beginAtZero: true,
+              position: 'right',
             },
           },
+
           plugins: {
+            legend: {
+              position: 'bottom',
+            },
+            tooltip: {
+              callbacks: {
+                label: context =>
+                  context.datasetIndex === 0
+                    ? ` ${context.dataset.label}: ${context.formattedValue}`
+                    : ` ${
+                        context.dataset.label
+                      }: ${this._currencyFormatter.transform(
+                        <string>context.raw,
+                        currency,
+                      )}`,
+              },
+            },
             datalabels: {
               color: 'white',
               labels: {
@@ -140,17 +130,14 @@ export class ReportsService {
     );
   }
 
-  public createDayHistoryChart(
-    chart: ElementRef<HTMLCanvasElement>,
-    translateLabelsFn: () => string[],
-  ) {
+  public createDayHistoryChart(chart: ElementRef<HTMLCanvasElement>) {
     return new Chart(
       <CanvasRenderingContext2D>chart.nativeElement.getContext('2d'),
       {
         type: 'bar',
-        plugins: [ChartDataLabels],
+        plugins: [DatalabelsPlugin],
         data: {
-          labels: translateLabelsFn(),
+          labels: this.translatedDayHistoryLabels(),
           datasets: [
             {
               data: [4234, 1456, undefined],
@@ -159,28 +146,22 @@ export class ReportsService {
           ],
         },
         options: {
-          legend: {
-            display: false,
-          },
           responsive: true,
           maintainAspectRatio: false,
-          tooltips: {
-            callbacks: {
-              label: () => {
-                return ''; //tooltipItem.yLabel;
-              },
+          scales: {
+            y: {
+              beginAtZero: true,
             },
           },
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
           plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              callbacks: {
+                label: () => '',
+              },
+            },
             datalabels: {
               color: 'white',
               labels: {
@@ -190,13 +171,6 @@ export class ReportsService {
                   },
                 },
               },
-              /* formatter: (value, ctx) => {
-              console.error('value', value);
-              console.error('ctx', ctx);
-              const label = ctx.chart.data.datasets[ctx.datasetIndex].label;
-
-              return label
-            },*/
             },
           },
         },
@@ -207,104 +181,64 @@ export class ReportsService {
   public createDailySalesPerTypeChart(
     chart: ElementRef<HTMLCanvasElement>,
     currency: string,
-    translateLabelsFn: () => string[],
-    formatterFn: (value: number, ctx: Context) => unknown,
   ) {
     return new Chart(
       <CanvasRenderingContext2D>chart.nativeElement.getContext('2d'),
       {
         type: 'pie',
-        plugins: [ChartDataLabels],
+        plugins: [DatalabelsPlugin],
         data: {
-          labels: translateLabelsFn(),
+          labels: this.translatedProductTypeLabels(),
           datasets: [
             {
-              backgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2'],
+              ...PIE_CHART_DATASET_STYLES,
               data: [0, 0, 0],
             },
           ],
         },
         options: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              generateLabels: chart => {
-                const data = chart.data;
-                if (data.labels?.length && data.datasets?.length) {
-                  return data.labels.map((label, i) => {
-                    const meta = chart.getDatasetMeta(0);
-                    const ds = data.datasets?.[0];
-                    const getValueAtIndexOrDefault =
-                      Chart.helpers.getValueAtIndexOrDefault;
-                    const arcOpts = chart.options?.elements?.arc;
-                    const fill = getValueAtIndexOrDefault(
-                      ds?.backgroundColor,
-                      i,
-                      arcOpts?.backgroundColor,
-                    );
-                    const stroke = getValueAtIndexOrDefault(
-                      ds?.borderColor,
-                      i,
-                      arcOpts?.borderColor,
-                    );
-                    const bw = getValueAtIndexOrDefault(
-                      ds?.borderWidth,
-                      i,
-                      arcOpts?.borderWidth,
-                    );
-
-                    return {
-                      text: `${this._currencyFormatter.transform(
-                        typeof ds?.data?.[i] === 'number'
-                          ? (<number>ds?.data?.[i]).toString()
-                          : '0',
-                        currency,
-                      )} - ${label}`,
-                      fillStyle: fill,
-                      strokeStyle: stroke,
-                      lineWidth: bw,
-                      hidden: meta.data[i].hidden,
-                      index: i,
-                    };
-                  });
-                }
-                return [];
-              },
-            },
-          },
-          tooltips: {
-            callbacks: {
-              label: (tooltipItem, data) => {
-                const label =
-                  (<string[]>data.labels)[tooltipItem.index || 0] || '';
-                const value: number =
-                  <number>(
-                    (<Chart.ChartDataSets[]>(
-                      (<Chart.ChartDataSets[]>data.datasets)[0].data
-                    ))[tooltipItem.index || 0]
-                  ) || 0;
-
-                return ` ${label}: ${this._currencyFormatter.transform(
-                  value,
-                  currency,
-                )}`;
-              },
-            },
-          },
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            datalabels: {
-              color: 'white',
+            legend: {
+              position: 'bottom',
               labels: {
-                title: {
-                  font: {
-                    weight: 'bold',
-                  },
+                generateLabels: chart => {
+                  const data = chart.data;
+
+                  if (data.labels?.length && data.datasets?.length) {
+                    return data.labels.map((label, i) => {
+                      const ds = data.datasets?.[0];
+
+                      return {
+                        text: `${this._currencyFormatter.transform(
+                          typeof ds?.data?.[i] === 'number'
+                            ? (<number>ds?.data?.[i]).toString()
+                            : '0',
+                          currency,
+                        )} - ${label}`,
+                        fillStyle: (<string[]>ds.backgroundColor)?.[i],
+                        lineWidth: 0,
+                        index: i,
+                        datasetIndex: i,
+                      };
+                    });
+                  }
+
+                  return [];
                 },
               },
-              formatter: formatterFn,
             },
+            tooltip: {
+              callbacks: {
+                label: context =>
+                  ` ${context.label}: ${this._currencyFormatter.transform(
+                    context.parsed,
+                    currency,
+                  )}`,
+              },
+            },
+            datalabels: PIE_CHART_DATALABEL_CONFIG,
           },
         },
       },
@@ -314,109 +248,87 @@ export class ReportsService {
   public createDailySalesPerPaymentMethodChart(
     chart: ElementRef<HTMLCanvasElement>,
     currency: string,
-    translateLabelsFn: () => string[],
-    formatterFn: (value: number, ctx: Context) => unknown,
   ) {
     return new Chart(
       <CanvasRenderingContext2D>chart.nativeElement.getContext('2d'),
       {
         type: 'pie',
-        plugins: [ChartDataLabels],
+        plugins: [DatalabelsPlugin],
         data: {
-          labels: translateLabelsFn(),
+          labels: this.translatedPaymentModeLabels(),
           datasets: [
             {
-              backgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2'],
+              ...PIE_CHART_DATASET_STYLES,
               data: [0, 0, 0],
             },
           ],
         },
         options: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              generateLabels: chart => {
-                const data = chart.data;
-                if (data.labels?.length && data.datasets?.length) {
-                  return data.labels.map((label, i) => {
-                    const meta = chart.getDatasetMeta(0);
-                    const ds = data.datasets?.[0];
-                    const getValueAtIndexOrDefault =
-                      Chart.helpers.getValueAtIndexOrDefault;
-                    const arcOpts = chart.options?.elements?.arc;
-                    const fill = getValueAtIndexOrDefault(
-                      ds?.backgroundColor,
-                      i,
-                      arcOpts?.backgroundColor,
-                    );
-                    const stroke = getValueAtIndexOrDefault(
-                      ds?.borderColor,
-                      i,
-                      arcOpts?.borderColor,
-                    );
-                    const bw = getValueAtIndexOrDefault(
-                      ds?.borderWidth,
-                      i,
-                      arcOpts?.borderWidth,
-                    );
-
-                    return {
-                      text: `${this._currencyFormatter.transform(
-                        typeof ds?.data?.[i] === 'number'
-                          ? (<number>ds?.data?.[i]).toString()
-                          : '0',
-                        currency,
-                      )} - ${label}`,
-                      fillStyle: fill,
-                      strokeStyle: stroke,
-                      lineWidth: bw,
-                      hidden: meta.data[i].hidden,
-                      index: i,
-                    };
-                  });
-                }
-                return [];
-              },
-            },
-          },
           responsive: true,
           maintainAspectRatio: false,
-          tooltips: {
-            callbacks: {
-              label: (tooltipItem, data) => {
-                const label =
-                  (<string[]>data.labels)[tooltipItem.index || 0] || '';
-                const value: number =
-                  <number>(
-                    (<Chart.ChartDataSets[]>(
-                      (<Chart.ChartDataSets[]>data.datasets)[0].data
-                    ))[tooltipItem.index || 0]
-                  ) || 0;
-
-                return ` ${label}: ${this._currencyFormatter.transform(
-                  value,
-                  currency,
-                )}`;
-              },
-            },
-          },
           plugins: {
-            datalabels: {
-              color: 'white',
+            legend: {
+              position: 'bottom',
               labels: {
-                title: {
-                  font: {
-                    weight: 'bold',
-                  },
+                generateLabels: chart => {
+                  const data = chart.data;
+
+                  if (data.labels?.length && data.datasets?.length) {
+                    return data.labels.map((label, i) => {
+                      const ds = data.datasets?.[0];
+
+                      return {
+                        text: `${this._currencyFormatter.transform(
+                          typeof ds?.data?.[i] === 'number'
+                            ? (<number>ds?.data?.[i]).toString()
+                            : '0',
+                          currency,
+                        )} - ${label}`,
+                        fillStyle: (<string[]>ds.backgroundColor)?.[i],
+                        lineWidth: 0,
+                        index: i,
+                        datasetIndex: i,
+                      };
+                    });
+                  }
+
+                  return [];
                 },
               },
-              formatter: formatterFn,
             },
+            tooltip: {
+              callbacks: {
+                label: context =>
+                  ` ${context.label}: ${this._currencyFormatter.transform(
+                    context.parsed,
+                    currency,
+                  )}`,
+              },
+            },
+            datalabels: PIE_CHART_DATALABEL_CONFIG,
           },
         },
       },
     );
   }
+
+  public translatedProductTypeLabels = (): string[] => [
+    this._translateService.instant('products.productType.food'),
+    this._translateService.instant('products.productType.drink'),
+    this._translateService.instant('products.productType.other'),
+  ];
+
+  public translatedPaymentModeLabels = (): string[] => [
+    this._translateService.instant('common.paymentModes.card'),
+    this._translateService.instant('common.paymentModes.cash'),
+    this._translateService.instant('common.paymentModes.inapp'),
+  ];
+
+  public translatedDayHistoryLabels = (): string[] => [
+    this._translateService.instant('dashboard.reports.historyToday'),
+    this._translateService.instant('dashboard.reports.history1W'),
+    this._translateService.instant('dashboard.reports.history1Y'),
+  ];
 
   public exportProductMix(
     unitName: string,

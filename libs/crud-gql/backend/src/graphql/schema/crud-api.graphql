@@ -846,6 +846,15 @@ type RKeeper {
   anyuppPassword: String!
 }
 
+input UpdateRKeeperDataInput {
+  unitId: ID!
+  endpointUri: String
+  rkeeperUsername: String
+  rkeeperPassword: String
+  anyuppUsername: String
+  anyuppPassword: String
+}
+
 enum PosType {
   anyupp
   rkeeper
@@ -1134,7 +1143,6 @@ input UpdateUnitInput {
   openingHours: WeeklyScheduleInput
   merchantId: String
   timeZone: String
-  pos: PosInput
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
@@ -1183,6 +1191,11 @@ type Mutation {
     @function(name: "${env}-anyupp-graphql-resolvers")
 
   updateUnit(input: UpdateUnitInput!): Unit
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  updateUnitRKeeperData(input: UpdateRKeeperDataInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
     @function(name: "${env}-anyupp-graphql-resolvers")

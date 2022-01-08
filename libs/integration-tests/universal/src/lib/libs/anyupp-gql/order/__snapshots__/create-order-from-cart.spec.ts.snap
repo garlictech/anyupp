@@ -50,7 +50,7 @@ Array [
       },
       "openingHours": null,
       "orderPolicy": null,
-      "packagingTaxPercentage": null,
+      "packagingTaxPercentage": 27,
       "paymentModes": Array [
         Object {
           "caption": null,
@@ -810,7 +810,7 @@ Object {
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
-    "taxPercentage": 0,
+    "taxPercentage": 27,
   },
   "paymentIntention": null,
   "paymentMode": Object {
@@ -825,7 +825,7 @@ Object {
   "rating": null,
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 2.47,
+    "netPrice": 2.72,
     "taxPercentage": 10,
   },
   "servingMode": "takeAway",
@@ -839,9 +839,9 @@ Object {
   "sumPriceShown": Object {
     "currency": "EUR",
     "pricePerUnit": 0,
-    "priceSum": 27.2,
+    "priceSum": 29.9,
     "tax": 0,
-    "taxSum": 5.96,
+    "taxSum": 8.66,
   },
   "takeAway": false,
   "tip": null,
@@ -1468,7 +1468,7 @@ Object {
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
-    "taxPercentage": 0,
+    "taxPercentage": 27,
   },
   "paymentIntention": null,
   "paymentMode": Object {
@@ -1483,7 +1483,7 @@ Object {
   "rating": null,
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 2.47,
+    "netPrice": 2.72,
     "taxPercentage": 10,
   },
   "servingMode": "takeAway",
@@ -1497,9 +1497,9 @@ Object {
   "sumPriceShown": Object {
     "currency": "EUR",
     "pricePerUnit": 0,
-    "priceSum": 27.2,
+    "priceSum": 29.9,
     "tax": 0,
-    "taxSum": 5.96,
+    "taxSum": 8.66,
   },
   "takeAway": false,
   "tip": null,
@@ -2126,7 +2126,7 @@ Object {
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
-    "taxPercentage": 0,
+    "taxPercentage": 27,
   },
   "paymentIntention": null,
   "paymentMode": Object {
@@ -2141,7 +2141,7 @@ Object {
   "rating": null,
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 2.47,
+    "netPrice": 2.72,
     "taxPercentage": 10,
   },
   "servingMode": "takeAway",
@@ -2155,9 +2155,9 @@ Object {
   "sumPriceShown": Object {
     "currency": "EUR",
     "pricePerUnit": 0,
-    "priceSum": 27.2,
+    "priceSum": 29.9,
     "tax": 0,
-    "taxSum": 5.96,
+    "taxSum": 8.66,
   },
   "takeAway": false,
   "tip": null,

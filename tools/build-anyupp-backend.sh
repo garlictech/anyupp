@@ -3,7 +3,7 @@ set -e
 IFS='|'
 
 ENVNAME=$1
-node --max-old-space-size=8192 ../../node_modules/.bin/sls package --verbose --stage=$ENVNAME
+node --max-old-space-size=8192 ../../node_modules/.bin/sls package --stage=$ENVNAME
 
 cd ../..
 

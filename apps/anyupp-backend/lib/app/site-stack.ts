@@ -1,3 +1,4 @@
+import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as ssm from '@aws-cdk/aws-ssm';
 import * as sst from '@serverless-stack/resources';
 import path from 'path';
@@ -7,7 +8,7 @@ import { WebsiteConstruct } from './website-construct';
 
 export interface SiteStackProps extends sst.StackProps {
   rootDomain: string;
-  certificateArn: string;
+  certificate: acm.ICertificate;
 }
 
 export class SiteStack extends sst.Stack {
@@ -22,7 +23,7 @@ export class SiteStack extends sst.Stack {
       siteSubDomain:
         app.stage === 'prod' ? 'admin2' : `${app.stage}-admin-${app.name}`,
       distDir: path.join(PROJECT_ROOT, '/dist/apps/admin'),
-      certificateArn: props.certificateArn,
+      certificate: props.certificate,
     });
 
     this.adminSiteUrl = adminSite.websiteUrl;

@@ -54,7 +54,7 @@ export class AnyUppStack extends Stack {
 
     const sites = new SiteStack(scope, 'sites', {
       rootDomain,
-      certificateArn,
+      certificate,
     });
 
     const cognitoStack = new CognitoStack(scope, 'cognito', {

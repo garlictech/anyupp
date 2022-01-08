@@ -3,25 +3,25 @@
 exports[`createUnitResolver 1`] = `
 Object {
   "address": Object {
-    "address": "Ág u. 1.",
-    "city": "Budapest",
-    "country": "Magyarország",
+    "address": "UNIT ADDRESS",
+    "city": "UNIT CITY",
+    "country": "UNIT COUNTRY",
     "location": Object {
       "lat": 47,
       "lng": 19,
     },
-    "postalCode": "1021",
-    "title": "HQ",
+    "postalCode": "UNIT POSTAL CODE",
+    "title": "UNTI TITLE",
   },
-  "chainId": "test_chain_1_id",
+  "chainId": "UNIT CHAINID",
   "createdAt": Any<String>,
   "description": Object {
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "de": "UNIT DESCRIPTION DE",
+    "en": "UNIT DESCRIPTION EN",
+    "hu": "UNIT DESCRIPTION HU",
   },
-  "externalId": "restaurantid",
-  "groupId": "test_group_1_id",
-  "id": "rkeeper-unit",
+  "groupId": "UNIT GROUPID",
+  "id": "UNITID",
   "isAcceptingOrders": true,
   "isActive": true,
   "lanes": Array [
@@ -30,54 +30,19 @@ Object {
       "id": "lane_01",
       "name": "bár",
     },
-    Object {
-      "color": "#e123ef",
-      "id": "lane_02",
-      "name": "konyha",
-    },
   ],
-  "name": "Késdobáló S",
+  "name": "UNIT NAME",
   "open": Object {
     "from": "1970-01-01",
     "to": "2970-01-01",
   },
-  "packagingTaxPercentage": 27,
+  "packagingTaxPercentage": 10,
   "paymentModes": Array [
     Object {
       "method": "cash",
       "type": "cash",
     },
-    Object {
-      "method": "card",
-      "type": "card",
-    },
-    Object {
-      "method": "inapp",
-      "type": "stripe",
-    },
   ],
-  "pos": Object {
-    "rkeeper": Object {
-      "anyuppPassword": "ANYUPP_PASSWORD HASHED",
-      "anyuppUsername": "ANYUPP_USERNAME",
-      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
-      "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
-      "rkeeperUsername": "781_55_69_939",
-    },
-    "type": "rkeeper",
-  },
-  "ratingPolicy": Object {
-    "ratings": Array [
-      Object {
-        "value": 1,
-      },
-    ],
-  },
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "taxPercentage": 10,
-    "type": "applicable",
-  },
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -86,11 +51,6 @@ Object {
     "inPlace",
     "takeAway",
   ],
-  "tipPolicy": Object {
-    "percents": Array [
-      2,
-    ],
-  },
   "updatedAt": Any<String>,
 }
 `;
@@ -98,24 +58,25 @@ Object {
 exports[`hashPasswords: VALID PASSWORDS 1`] = `
 Object {
   "address": Object {
-    "address": "Ág u. 1.",
-    "city": "Budapest",
-    "country": "Magyarország",
+    "address": "UNIT ADDRESS",
+    "city": "UNIT CITY",
+    "country": "UNIT COUNTRY",
     "location": Object {
       "lat": 47,
       "lng": 19,
     },
-    "postalCode": "1021",
-    "title": "HQ",
+    "postalCode": "UNIT POSTAL CODE",
+    "title": "UNTI TITLE",
   },
-  "chainId": "test_chain_1_id",
+  "chainId": "UNIT CHAINID",
+  "createdAt": "ORDER CREATEDAT",
   "description": Object {
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "de": "UNIT DESCRIPTION DE",
+    "en": "UNIT DESCRIPTION EN",
+    "hu": "UNIT DESCRIPTION HU",
   },
-  "externalId": "restaurantid",
-  "groupId": "test_group_1_id",
-  "id": "rkeeper-unit",
+  "groupId": "UNIT GROUPID",
+  "id": "UNITID",
   "isAcceptingOrders": true,
   "isActive": true,
   "lanes": Array [
@@ -124,53 +85,28 @@ Object {
       "id": "lane_01",
       "name": "bár",
     },
-    Object {
-      "color": "#e123ef",
-      "id": "lane_02",
-      "name": "konyha",
-    },
   ],
-  "name": "Késdobáló S",
+  "name": "UNIT NAME",
   "open": Object {
     "from": "1970-01-01",
     "to": "2970-01-01",
   },
-  "packagingTaxPercentage": 27,
+  "packagingTaxPercentage": 10,
   "paymentModes": Array [
     Object {
       "method": "cash",
       "type": "cash",
-    },
-    Object {
-      "method": "card",
-      "type": "card",
-    },
-    Object {
-      "method": "inapp",
-      "type": "stripe",
     },
   ],
   "pos": Object {
     "rkeeper": Object {
       "anyuppPassword": "ANYUPP_PASSWORD HASHED",
       "anyuppUsername": "ANYUPP_USERNAME",
-      "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
-      "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
-      "rkeeperUsername": "781_55_69_939",
+      "endpointUri": "RKEEPER ENDPOINT URI",
+      "rkeeperPassword": "RKEEPER_PASSWORD",
+      "rkeeperUsername": "RKEEPER USERNAME",
     },
     "type": "rkeeper",
-  },
-  "ratingPolicy": Object {
-    "ratings": Array [
-      Object {
-        "value": 1,
-      },
-    ],
-  },
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "taxPercentage": 10,
-    "type": "applicable",
   },
   "supportedOrderModes": Array [
     "pickup",
@@ -180,10 +116,135 @@ Object {
     "inPlace",
     "takeAway",
   ],
-  "tipPolicy": Object {
-    "percents": Array [
-      2,
-    ],
-  },
+  "updatedAt": "ORDER UPDATEDAT",
 }
+`;
+
+exports[`updateUnitRKeeperData: anyupp password only: GetUnit 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNITID",
+    },
+  ],
+]
+`;
+
+exports[`updateUnitRKeeperData: anyupp password only: result 1`] = `"UPDATE RESULT"`;
+
+exports[`updateUnitRKeeperData: anyupp password only: update 1`] = `
+Array [
+  Array [
+    Object {
+      "ExpressionAttributeNames": Object {
+        "#pos": "pos",
+      },
+      "ExpressionAttributeValues": Object {
+        ":pos": Object {
+          "rkeeper": Object {
+            "anyuppPassword": "NEW ANYUPP PASSWORD HASHED",
+            "anyuppUsername": "ANYUPP_USERNAME",
+            "endpointUri": "RKEEPER ENDPOINT URI",
+            "rkeeperPassword": "RKEEPER_PASSWORD",
+            "rkeeperUsername": "RKEEPER USERNAME",
+          },
+          "type": "rkeeper",
+        },
+      },
+      "Key": Object {
+        "id": "UNITID",
+      },
+      "ReturnValues": "ALL_NEW",
+      "TableName": "TABLENAME",
+      "UpdateExpression": "set #pos = :pos",
+      "updatedAt": "MASKED DATE",
+    },
+  ],
+]
+`;
+
+exports[`updateUnitRKeeperData: rkeeper password only: GetUnit 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNITID",
+    },
+  ],
+]
+`;
+
+exports[`updateUnitRKeeperData: rkeeper password only: result 1`] = `"UPDATE RESULT"`;
+
+exports[`updateUnitRKeeperData: rkeeper password only: update 1`] = `
+Array [
+  Array [
+    Object {
+      "ExpressionAttributeNames": Object {
+        "#pos": "pos",
+      },
+      "ExpressionAttributeValues": Object {
+        ":pos": Object {
+          "rkeeper": Object {
+            "anyuppPassword": "ANYUPP_PASSWORD",
+            "anyuppUsername": "ANYUPP_USERNAME",
+            "endpointUri": "RKEEPER ENDPOINT URI",
+            "rkeeperPassword": "NEW RKEEPER PASSWORD",
+            "rkeeperUsername": "RKEEPER USERNAME",
+          },
+          "type": "rkeeper",
+        },
+      },
+      "Key": Object {
+        "id": "UNITID",
+      },
+      "ReturnValues": "ALL_NEW",
+      "TableName": "TABLENAME",
+      "UpdateExpression": "set #pos = :pos",
+      "updatedAt": "MASKED DATE",
+    },
+  ],
+]
+`;
+
+exports[`updateUnitRKeeperData: update everything: GetUnit 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNITID",
+    },
+  ],
+]
+`;
+
+exports[`updateUnitRKeeperData: update everything: result 1`] = `"UPDATE RESULT"`;
+
+exports[`updateUnitRKeeperData: update everything: update 1`] = `
+Array [
+  Array [
+    Object {
+      "ExpressionAttributeNames": Object {
+        "#pos": "pos",
+      },
+      "ExpressionAttributeValues": Object {
+        ":pos": Object {
+          "rkeeper": Object {
+            "anyuppPassword": "NEW ANYUPP PASSWORD HASHED",
+            "anyuppUsername": "ANYUPP_USERNAME",
+            "endpointUri": "RKEEPER ENDPOINT URI",
+            "rkeeperPassword": "NEW RKEEPER PASSWORD",
+            "rkeeperUsername": "NEW RKEEPER USERNAME",
+          },
+          "type": "rkeeper",
+        },
+      },
+      "Key": Object {
+        "id": "UNITID",
+      },
+      "ReturnValues": "ALL_NEW",
+      "TableName": "TABLENAME",
+      "UpdateExpression": "set #pos = :pos",
+      "updatedAt": "MASKED DATE",
+    },
+  ],
+]
 `;

@@ -152,14 +152,13 @@ describe('Test unit CRUD operations', () => {
     expect(res).toMatchSnapshot();
   });
 
-  test('The resolver must hash the rkeeper passwords', done => {
+  test('The resolver must hash the anyupp passwords for rkeeper units', done => {
     const matcher = {
       createdAt: expect.any(String),
       updatedAt: expect.any(String),
       pos: {
         rkeeper: {
           anyuppPassword: expect.any(String),
-          //rkeeperPassword: expect.any(String),
         },
       },
     };
@@ -178,13 +177,6 @@ describe('Test unit CRUD operations', () => {
         tap(async (x: CrudApi.Unit) => {
           expect(x).toMatchSnapshot(matcher, 'READ');
 
-          /*expect(
-            await bcrypt.compare(
-              unitFixture.createRkeeperUnit.pos!.rkeeper!.rkeeperPassword!,
-              x?.pos?.rkeeper?.rkeeperPassword as string,
-            ),
-          ).toEqual(true);*/
-
           expect(
             await bcrypt.compare(
               unitFixture.createRkeeperUnit.pos!.rkeeper!.anyuppPassword!,
@@ -193,31 +185,20 @@ describe('Test unit CRUD operations', () => {
           ).toEqual(true);
         }),
         switchMap(() =>
-          crudSdk.UpdateUnit({
+          crudSdk.UpdateUnitRKeeperData({
             input: {
-              id: unitFixture.createRkeeperUnit.id,
-              pos: {
-                // This is a fixture, so we set it so
-                ...unitFixture.createRkeeperUnit.pos!,
-                rkeeper: {
-                  // This is a fixture, so we set it so
-                  ...unitFixture.createRkeeperUnit.pos!.rkeeper!,
-                  rkeeperPassword: 'UPDATED_RKEEPER_PASSWORD',
-                  anyuppPassword: 'UPDATED_ANYUPP_PASSWORD',
-                },
-              },
+              unitId: unitFixture.createRkeeperUnit.id,
+              ...(unitFixture.createRkeeperUnit?.pos?.rkeeper
+                ? unitFixture.createRkeeperUnit.pos.rkeeper
+                : {}),
+              rkeeperPassword: 'UPDATED_RKEEPER_PASSWORD',
+              anyuppPassword: 'UPDATED_ANYUPP_PASSWORD',
             },
           }),
         ),
         filterNullish<CrudApi.Unit>(),
         tap(async (x: CrudApi.Unit) => {
           expect(x).toMatchSnapshot(matcher, 'UPDATE');
-          /*expect(
-            await bcrypt.compare(
-              'UPDATED_RKEEPER_PASSWORD',
-              x?.pos?.rkeeper?.rkeeperPassword as string,
-            ),
-          ).toEqual(true);*/
 
           expect(
             await bcrypt.compare(
