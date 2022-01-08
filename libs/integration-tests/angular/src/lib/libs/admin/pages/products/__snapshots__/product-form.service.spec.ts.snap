@@ -180,8 +180,7 @@ Object {
   "configSets": Array [],
   "isVisible": "",
   "laneId": "",
-  "packagingFee": "",
-  "supportedServingModes": "",
+  "supportedServingModes": Array [],
   "variants": Array [],
 }
 `;
