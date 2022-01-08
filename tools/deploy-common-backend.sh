@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Must be executed from apps/anyupp-backend
+# Must be executed from apps/common-backend
 
 set -e
 IFS='|'
