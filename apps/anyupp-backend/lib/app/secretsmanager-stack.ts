@@ -29,7 +29,7 @@ export class SecretsManagerStack extends sst.Stack {
       this,
       'AnyuppSecrets',
       {
-        secretArn: secretsManagerArn,
+        secretCompleteArn: secretsManagerArn,
       },
     );
 
@@ -37,7 +37,7 @@ export class SecretsManagerStack extends sst.Stack {
       this,
       'AppleSigninKey',
       {
-        secretArn:
+        secretCompleteArn:
           app.stage === 'prod'
             ? secretsManagerArns.appleSigninKeyProd
             : secretsManagerArns.appleSigninKey,

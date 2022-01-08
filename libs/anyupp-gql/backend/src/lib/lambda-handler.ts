@@ -20,6 +20,7 @@ import {
 import { adminRequestHandler } from './lambda-resolvers/admin-user';
 import { orderRequestHandler } from '@bgap/backend/orders';
 import { userRequestHandler } from './lambda-resolvers/user';
+import { updateUnitRKeeperDataResolver } from '@bgap/backend/units';
 
 export interface AnyuppRequest {
   typeName: string;
@@ -99,6 +100,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       createAnonymUser: userRequestHandlers.createAnonymUser,
       createUnit: createUnitResolver(unitsDeps),
       updateUnit: updateUnitResolver(unitsDeps),
+      updateUnitRKeeperData: updateUnitRKeeperDataResolver(unitsDeps),
     },
     Query: {
       listStripeCards: stripeRequestHandlers.listStripeCards,

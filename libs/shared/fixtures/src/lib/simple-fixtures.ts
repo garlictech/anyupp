@@ -151,6 +151,72 @@ const order: CrudApi.Order = {
   },
 };
 
+const unit: CrudApi.Unit = {
+  id: 'UNITID',
+  createdAt: 'ORDER CREATEDAT',
+  updatedAt: 'ORDER UPDATEDAT',
+  chainId: 'UNIT CHAINID',
+  groupId: 'UNIT GROUPID',
+  isActive: true,
+  isAcceptingOrders: true,
+  name: 'UNIT NAME',
+  packagingTaxPercentage: 10,
+  address: {
+    address: 'UNIT ADDRESS',
+    city: 'UNIT CITY',
+    country: 'UNIT COUNTRY',
+    title: 'UNTI TITLE',
+    postalCode: 'UNIT POSTAL CODE',
+    location: {
+      lat: 47,
+      lng: 19,
+    },
+  },
+  description: {
+    hu: `UNIT DESCRIPTION HU`,
+    de: `UNIT DESCRIPTION DE`,
+    en: `UNIT DESCRIPTION EN`,
+  },
+  paymentModes: [
+    {
+      method: CrudApi.PaymentMethod.cash,
+      type: CrudApi.PaymentType.cash,
+    },
+  ],
+  lanes: [
+    {
+      color: '#e72222',
+      id: 'lane_01',
+      name: 'bár',
+    },
+  ],
+  open: {
+    from: '1970-01-01',
+    to: '2970-01-01',
+  },
+  supportedOrderModes: [CrudApi.OrderMode.pickup, CrudApi.OrderMode.instant],
+  supportedServingModes: [
+    CrudApi.ServingMode.inplace,
+    CrudApi.ServingMode.takeaway,
+  ],
+};
+
+const rkeeperUnit: CrudApi.Unit = {
+  ...unit,
+  pos: {
+    type: CrudApi.PosType.rkeeper,
+    rkeeper: {
+      endpointUri: 'RKEEPER ENDPOINT URI',
+      rkeeperUsername: 'RKEEPER USERNAME',
+      rkeeperPassword: 'RKEEPER_PASSWORD',
+      anyuppUsername: 'ANYUPP_USERNAME',
+      anyuppPassword: 'ANYUPP_PASSWORD',
+    },
+  },
+};
+
 export const getUser = () => R.clone(user);
 export const getOrder = () => R.clone(order);
 export const getTransaction = () => R.clone(transaction);
+export const getUnit = () => R.clone(unit);
+export const getRKeeperUnit = () => R.clone(rkeeperUnit);

@@ -152,9 +152,11 @@ export class UnitFormService {
     formValue: CrudApi.CreateUnitInput | CrudApi.UpdateUnitInput,
     unitId?: string,
   ) {
-    if (formValue.pos?.type !== CrudApi.PosType.rkeeper) {
+    // TODO:update rkeeper stuff
+    /*if (formValue.pos?.type !== CrudApi.PosType.rkeeper) {
       delete formValue.pos?.rkeeper;
     }
+    */
 
     formValue.packagingTaxPercentage = formValue.packagingTaxPercentage
       ? formValue.packagingTaxPercentage

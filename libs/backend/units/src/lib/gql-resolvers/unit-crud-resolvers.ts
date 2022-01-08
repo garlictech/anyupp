@@ -2,10 +2,10 @@ import bcrypt from 'bcryptjs';
 import { v1 as uuidV1 } from 'uuid';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { createUpdateParams } from '@bgap/shared/utils';
-import { pipe } from 'fp-ts/lib/function';
+import { createUpdateParams, throwIfEmptyValue } from '@bgap/shared/utils';
+import { pipe, flow } from 'fp-ts/lib/function';
 import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import * as R from 'ramda';
 import { UnitsResolverDeps } from './utils';
 import { DynamoDB } from 'aws-sdk';
@@ -62,8 +62,6 @@ export const updateUnitResolver =
   ): ReturnType<CrudApi.CrudSdk['UpdateUnit']> =>
     pipe(
       args.input,
-      input =>
-        input.pos?.rkeeper ? hashPasswords(deps.hashGenerator)(input) : input,
       item => createUpdateParams(deps.tableName, args.input.id, item),
       item => ({
         ...item,
@@ -71,6 +69,34 @@ export const updateUnitResolver =
       }),
       item => from(deps.docClient.update(item).promise()),
       map(res => res?.Attributes as CrudApi.Unit),
+    );
+
+export const updateUnitRKeeperDataResolver =
+  (deps: UnitsResolverDeps) =>
+  (
+    args: CrudApi.MutationUpdateUnitRKeeperDataArgs,
+  ): ReturnType<CrudApi.CrudSdk['UpdateUnitRKeeperData']> =>
+    pipe(
+      deps.crudSdk.GetUnit({ id: args.input.unitId }),
+      map(unit => unit?.pos?.rkeeper),
+      throwIfEmptyValue('Unit does not exists or it is not an rkeeper unit'),
+      map(rkeeper => ({
+        ...rkeeper,
+        ...flow(R.omit(['unitId']), R.reject(R.isNil))(args.input),
+        anyuppPassword: args.input.anyuppPassword
+          ? deps.hashGenerator(args.input.anyuppPassword)
+          : rkeeper.anyuppPassword,
+      })),
+      map((rkeeper: CrudApi.RKeeperInput) => ({
+        input: {
+          id: args.input.unitId,
+          pos: {
+            type: CrudApi.PosType.rkeeper,
+            rkeeper,
+          },
+        },
+      })),
+      switchMap(updateUnitResolver(deps)),
     );
 
 export const createUnitsDeps = (

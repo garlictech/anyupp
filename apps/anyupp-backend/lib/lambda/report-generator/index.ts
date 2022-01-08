@@ -15,6 +15,7 @@ const deps = {
   reportDate,
   slackBotToken: process.env.SLACK_BOT_TOKEN || '',
   slackChannel: process.env.SLACK_CHANNEL || '',
+  environment,
 };
 
 createReport(deps).subscribe();

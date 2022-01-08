@@ -73,7 +73,7 @@ export class ReportGeneratorStack extends sst.Stack {
         SLACK_CHANNEL: this.props.slackChannel,
         USER_POOL_ID: props.userPoolId,
         SLACK_BOT_TOKEN: props.slackBotToken,
-        ENVIRONMENT: scope.stageName,
+        ENVIRONMENT: scope.stage,
       },
       logging: ecs.LogDriver.awsLogs({
         streamPrefix: `report-generator-${scope.stage}`,

@@ -7,7 +7,7 @@ Object {
 }
 `;
 
-exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: CREATE 1`] = `
+exports[`Test unit CRUD operations The resolver must hash the anyupp passwords for rkeeper units: CREATE 1`] = `
 Object {
   "address": Object {
     "address": "Ág u. 1.",
@@ -121,7 +121,7 @@ Object {
 }
 `;
 
-exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: DELETE 1`] = `
+exports[`Test unit CRUD operations The resolver must hash the anyupp passwords for rkeeper units: DELETE 1`] = `
 Object {
   "address": Object {
     "address": "Ág u. 1.",
@@ -235,9 +235,9 @@ Object {
 }
 `;
 
-exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: RE-READ 1`] = `null`;
+exports[`Test unit CRUD operations The resolver must hash the anyupp passwords for rkeeper units: RE-READ 1`] = `null`;
 
-exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: READ 1`] = `
+exports[`Test unit CRUD operations The resolver must hash the anyupp passwords for rkeeper units: READ 1`] = `
 Object {
   "address": Object {
     "address": "Ág u. 1.",
@@ -351,7 +351,7 @@ Object {
 }
 `;
 
-exports[`Test unit CRUD operations The resolver must hash the rkeeper passwords: UPDATE 1`] = `
+exports[`Test unit CRUD operations The resolver must hash the anyupp passwords for rkeeper units: UPDATE 1`] = `
 Object {
   "address": Object {
     "address": "Ág u. 1.",
