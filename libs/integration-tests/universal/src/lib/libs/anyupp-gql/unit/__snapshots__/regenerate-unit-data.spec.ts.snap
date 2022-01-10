@@ -39,6 +39,7 @@ Array [
         },
         "position": 1,
         "price": 1,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -54,6 +55,7 @@ Array [
         },
         "position": 2,
         "price": 2,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -69,6 +71,7 @@ Array [
         },
         "position": 1,
         "price": 1.5,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -84,6 +87,7 @@ Array [
         },
         "position": 2,
         "price": 3,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -117,6 +121,7 @@ Array [
             "position": 1,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_01",
+            "soldOut": null,
           },
           Object {
             "allergens": Array [],
@@ -129,6 +134,7 @@ Array [
             "position": 2,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_02",
+            "soldOut": null,
           },
         ],
         "maxSelection": 2,
@@ -163,6 +169,7 @@ Array [
             "position": 1,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_01",
+            "soldOut": null,
           },
           Object {
             "allergens": Array [],
@@ -175,6 +182,7 @@ Array [
             "position": 2,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_02",
+            "soldOut": null,
           },
           Object {
             "allergens": Array [
@@ -189,6 +197,7 @@ Array [
             "position": 3,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_03",
+            "soldOut": null,
           },
         ],
         "maxSelection": 3,
@@ -236,6 +245,7 @@ Array [
         },
         "position": 1,
         "price": 1,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -251,6 +261,7 @@ Array [
         },
         "position": 2,
         "price": 2,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -266,6 +277,7 @@ Array [
         },
         "position": 1,
         "price": 1.5,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -281,6 +293,7 @@ Array [
         },
         "position": 2,
         "price": 3,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -326,6 +339,7 @@ Array [
         },
         "position": 1,
         "price": 1,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -341,6 +355,7 @@ Array [
         },
         "position": 2,
         "price": 2,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -356,6 +371,7 @@ Array [
         },
         "position": 1,
         "price": 1.5,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -371,6 +387,7 @@ Array [
         },
         "position": 2,
         "price": 3,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -419,6 +436,7 @@ Array [
         },
         "position": 1,
         "price": 1,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -434,6 +452,7 @@ Array [
         },
         "position": 2,
         "price": 2,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -471,6 +490,7 @@ Object {
           "position": 1,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_01",
+          "soldOut": null,
         },
         Object {
           "allergens": Array [],
@@ -483,6 +503,7 @@ Object {
           "position": 2,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_02",
+          "soldOut": null,
         },
       ],
       "maxSelection": 2,
@@ -517,6 +538,7 @@ Object {
           "position": 1,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_01",
+          "soldOut": null,
         },
         Object {
           "allergens": Array [],
@@ -529,6 +551,7 @@ Object {
           "position": 2,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_02",
+          "soldOut": null,
         },
         Object {
           "allergens": Array [
@@ -543,6 +566,7 @@ Object {
           "position": 3,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_03",
+          "soldOut": null,
         },
       ],
       "maxSelection": 3,
@@ -592,6 +616,7 @@ Object {
       },
       "position": 1,
       "price": 1,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": "VARIANT_NAME_1",
@@ -607,6 +632,7 @@ Object {
       },
       "position": 2,
       "price": 2,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": "VARIANT_NAME_2",
@@ -622,6 +648,7 @@ Object {
       },
       "position": 1,
       "price": 1.5,
+      "soldOut": true,
       "variantName": Object {
         "de": null,
         "en": "VARIANT_NAME_1",
@@ -637,6 +664,7 @@ Object {
       },
       "position": 2,
       "price": 3,
+      "soldOut": true,
       "variantName": Object {
         "de": null,
         "en": "VARIANT_NAME_2",
@@ -715,6 +743,7 @@ Array [
         },
         "position": 1,
         "price": 1,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -730,6 +759,7 @@ Array [
         },
         "position": 2,
         "price": 2,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -745,6 +775,7 @@ Array [
         },
         "position": 1,
         "price": 1.5,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -760,6 +791,7 @@ Array [
         },
         "position": 2,
         "price": 3,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -793,6 +825,7 @@ Array [
             "position": 1,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_01",
+            "soldOut": null,
           },
           Object {
             "allergens": Array [],
@@ -805,6 +838,7 @@ Array [
             "position": 2,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_02",
+            "soldOut": null,
           },
         ],
         "maxSelection": 2,
@@ -839,6 +873,7 @@ Array [
             "position": 1,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_01",
+            "soldOut": null,
           },
           Object {
             "allergens": Array [],
@@ -851,6 +886,7 @@ Array [
             "position": 2,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_02",
+            "soldOut": null,
           },
           Object {
             "allergens": Array [
@@ -865,6 +901,7 @@ Array [
             "position": 3,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_03",
+            "soldOut": null,
           },
         ],
         "maxSelection": 3,
@@ -912,6 +949,7 @@ Array [
         },
         "position": 1,
         "price": 1,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -927,6 +965,7 @@ Array [
         },
         "position": 2,
         "price": 2,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -942,6 +981,7 @@ Array [
         },
         "position": 1,
         "price": 1.5,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -957,6 +997,7 @@ Array [
         },
         "position": 2,
         "price": 3,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -1002,6 +1043,7 @@ Array [
         },
         "position": 1,
         "price": 1,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -1017,6 +1059,7 @@ Array [
         },
         "position": 2,
         "price": 2,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -1032,6 +1075,7 @@ Array [
         },
         "position": 1,
         "price": 1.5,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -1047,6 +1091,7 @@ Array [
         },
         "position": 2,
         "price": 3,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -1095,6 +1140,7 @@ Array [
         },
         "position": 1,
         "price": 1,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -1110,6 +1156,7 @@ Array [
         },
         "position": 2,
         "price": 2,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -1147,6 +1194,7 @@ Object {
           "position": 1,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_01",
+          "soldOut": null,
         },
         Object {
           "allergens": Array [],
@@ -1159,6 +1207,7 @@ Object {
           "position": 2,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_02",
+          "soldOut": null,
         },
       ],
       "maxSelection": 2,
@@ -1193,6 +1242,7 @@ Object {
           "position": 1,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_01",
+          "soldOut": null,
         },
         Object {
           "allergens": Array [],
@@ -1205,6 +1255,7 @@ Object {
           "position": 2,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_02",
+          "soldOut": null,
         },
         Object {
           "allergens": Array [
@@ -1219,6 +1270,7 @@ Object {
           "position": 3,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_03",
+          "soldOut": null,
         },
       ],
       "maxSelection": 3,
@@ -1268,6 +1320,7 @@ Object {
       },
       "position": 1,
       "price": 1,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": "VARIANT_NAME_1",
@@ -1283,6 +1336,7 @@ Object {
       },
       "position": 2,
       "price": 2,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": "VARIANT_NAME_2",
@@ -1298,6 +1352,7 @@ Object {
       },
       "position": 1,
       "price": 1.5,
+      "soldOut": true,
       "variantName": Object {
         "de": null,
         "en": "VARIANT_NAME_1",
@@ -1313,6 +1368,7 @@ Object {
       },
       "position": 2,
       "price": 3,
+      "soldOut": true,
       "variantName": Object {
         "de": null,
         "en": "VARIANT_NAME_2",

@@ -14,13 +14,8 @@ export const payTipWithStripe =
     console.debug('startStripePayment().start()');
 
     // 1. Get parameters, orderId and payment method
-    const { orderId, paymentMethodId } = input;
-    console.debug(
-      'startStripePayment().orderId=' +
-        orderId +
-        ', paymentMethodId=' +
-        paymentMethodId,
-    );
+    const { orderId } = input;
+    console.debug('startStripePayment().orderId=' + orderId);
 
     const order = await loadOrder(orderId)(deps);
 
@@ -29,6 +24,7 @@ export const payTipWithStripe =
     }
 
     const paymentMethod = order?.paymentMode.method;
+    const paymentMethodId = order?.transaction?.paymentMethodId;
 
     if (paymentMethod == CrudApi.PaymentMethod.inapp && !paymentMethodId) {
       throw Error(
@@ -134,6 +130,7 @@ export const payTipWithStripe =
             externalTransactionId: paymentIntent.id,
             total: amount,
             type: 'stripe',
+            paymentMethodId,
           },
         };
 

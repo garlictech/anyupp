@@ -124,6 +124,7 @@ Object {
           "position": 1,
           "price": 1,
           "productComponentId": "PRODUCT_COMPONENT_ID_11",
+          "soldOut": true,
         },
         Object {
           "allergens": Array [
@@ -136,6 +137,7 @@ Object {
           "position": 2,
           "price": 2,
           "productComponentId": "PRODUCT_COMPONENT_ID_21",
+          "soldOut": false,
         },
       ],
       "maxSelection": 1,

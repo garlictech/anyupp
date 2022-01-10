@@ -187,6 +187,7 @@ type ProductVariant @aws_cognito_user_pools @aws_api_key @aws_iam {
   availabilities: [Availability]
   position: Int!
   netPackagingFee: Float
+  soldOut: Boolean
 }
 
 type ProductVariantPack @aws_cognito_user_pools @aws_api_key @aws_iam {
@@ -292,7 +293,6 @@ input StartStripePaymentInput {
 
 input PayTipWithStripeInput {
   orderId: ID!
-  paymentMethodId: String
   tip: TipInput!
 }
 
@@ -568,6 +568,7 @@ type ProductComponent @aws_iam @aws_cognito_user_pools {
   allergens: [Allergen]
   externalId: String
   dirty: Boolean
+  soldOut: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -594,6 +595,7 @@ type GeneratedProductConfigComponent @aws_api_key @aws_iam @aws_cognito_user_poo
   name: LocalizedItem!
   allergens: [Allergen]
   netPackagingFee: Float
+  soldOut: Boolean
 }
 
 type GeneratedProductConfigSet @aws_api_key @aws_iam @aws_cognito_user_pools {
@@ -642,6 +644,7 @@ type GeneratedProductVariant @aws_api_key @aws_iam @aws_cognito_user_pools {
   price: Float!
   netPackagingFee: Float
   position: Int!
+  soldOut: Boolean
 }
 
 type FavoriteProduct @aws_iam @aws_cognito_user_pools {
@@ -667,6 +670,11 @@ enum TipType {
   none
   percent
   amount
+}
+
+enum SoldOutVisibilityPolicy {
+  invisible
+  faded
 }
 
 type RatingPolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
@@ -735,6 +743,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicy: RatingPolicy
   tipPolicy: TipPolicy
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -859,6 +868,7 @@ type GeoUnit @aws_cognito_user_pools {
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicy: RatingPolicy
   tipPolicy: TipPolicy
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
 
 input GetUnitsNearLocationInput {
@@ -904,6 +914,7 @@ type Transaction @aws_iam @aws_cognito_user_pools {
   receiptId: ID
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  paymentMethodId: String
   user: User! @aws_iam @aws_cognito_user_pools
   invoice: Invoice @aws_iam @aws_cognito_user_pools
   receipt: Receipt @aws_iam @aws_cognito_user_pools
@@ -1078,6 +1089,7 @@ input CreateUnitInput {
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicy: RatingPolicyInput
   tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
 
 input UpdateUnitInput {
@@ -1106,6 +1118,7 @@ input UpdateUnitInput {
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicy: RatingPolicyInput
   tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
 
 type CreateAnonymUserOutput {
@@ -1363,6 +1376,7 @@ input ProductVariantInput {
   availabilities: [AvailabilityInput]
   position: Int!
   netPackagingFee: Float
+  soldOut: Boolean
 }
 
 input ProductConfigSetInput {
@@ -2190,6 +2204,7 @@ input ModelProductComponentFilterInput {
   allergens: ModelAllergenListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  soldOut: ModelBooleanInput
   and: [ModelProductComponentFilterInput]
   or: [ModelProductComponentFilterInput]
   not: ModelProductComponentFilterInput
@@ -2203,6 +2218,7 @@ input CreateProductComponentInput {
   allergens: [Allergen]
   externalId: String
   dirty: Boolean
+  soldOut: Boolean
 }
 
 input UpdateProductComponentInput {
@@ -2213,6 +2229,7 @@ input UpdateProductComponentInput {
   allergens: [Allergen]
   externalId: String
   dirty: Boolean
+  soldOut: Boolean
 }
 
 input DeleteProductComponentInput {
@@ -2225,6 +2242,7 @@ input ModelProductComponentConditionInput {
   allergens: ModelAllergenListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  soldOut: ModelBooleanInput
   and: [ModelProductComponentConditionInput]
   or: [ModelProductComponentConditionInput]
   not: ModelProductComponentConditionInput
@@ -2343,6 +2361,7 @@ input GeneratedProductVariantInput {
   price: Float!
   netPackagingFee: Float
   position: Int!
+  soldOut: Boolean
 }
 
 input GeneratedProductConfigSetInput {
@@ -2362,6 +2381,7 @@ input GeneratedProductConfigComponentInput {
   name: LocalizedItemInput!
   allergens: [Allergen]
   netPackagingFee: Float
+  soldOut: Boolean
 }
 
 type ModelGeneratedProductConnection @aws_iam @aws_cognito_user_pools {
@@ -2500,6 +2520,11 @@ input ModelOrderPolicyInput {
   ne: OrderPolicy
 }
 
+input ModelSoldOutVisibilityPolicyInput {
+  eq: SoldOutVisibilityPolicy
+  ne: SoldOutVisibilityPolicy
+}
+
 input ModelUnitFilterInput {
   id: ModelIDInput
   groupId: ModelIDInput
@@ -2517,6 +2542,7 @@ input ModelUnitFilterInput {
   supportedOrderModes: ModelOrderModeListInput
   orderPolicy: ModelOrderPolicyInput
   packagingTaxPercentage: ModelFloatInput
+  soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   and: [ModelUnitFilterInput]
   or: [ModelUnitFilterInput]
   not: ModelUnitFilterInput
@@ -2542,6 +2568,7 @@ input ModelUnitConditionInput {
   supportedOrderModes: ModelOrderModeListInput
   orderPolicy: ModelOrderPolicyInput
   packagingTaxPercentage: ModelFloatInput
+  soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   and: [ModelUnitConditionInput]
   or: [ModelUnitConditionInput]
   not: ModelUnitConditionInput
@@ -2673,6 +2700,7 @@ input ModelTransactionFilterInput {
   receiptId: ModelIDInput
   createdAt: ModelStringInput
   updatedAt: ModelStringInput
+  paymentMethodId: ModelStringInput
   and: [ModelTransactionFilterInput]
   or: [ModelTransactionFilterInput]
   not: ModelTransactionFilterInput
@@ -2691,6 +2719,7 @@ input CreateTransactionInput {
   receiptId: ID
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
+  paymentMethodId: String
 }
 
 input UpdateTransactionInput {
@@ -2706,6 +2735,7 @@ input UpdateTransactionInput {
   receiptId: ID
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
+  paymentMethodId: String
 }
 
 input DeleteTransactionInput {
@@ -2724,6 +2754,7 @@ input ModelTransactionConditionInput {
   receiptId: ModelIDInput
   createdAt: ModelStringInput
   updatedAt: ModelStringInput
+  paymentMethodId: ModelStringInput
   and: [ModelTransactionConditionInput]
   or: [ModelTransactionConditionInput]
   not: ModelTransactionConditionInput
@@ -3293,6 +3324,7 @@ input SearchableProductComponentFilterInput {
   description: SearchableStringFilterInput
   externalId: SearchableStringFilterInput
   dirty: SearchableBooleanFilterInput
+  soldOut: SearchableBooleanFilterInput
   and: [SearchableProductComponentFilterInput]
   or: [SearchableProductComponentFilterInput]
   not: SearchableProductComponentFilterInput
@@ -3304,6 +3336,7 @@ enum SearchableProductComponentSortableFields {
   description
   externalId
   dirty
+  soldOut
 }
 
 input SearchableProductComponentSortInput {
@@ -3561,6 +3594,7 @@ input SearchableTransactionFilterInput {
   receiptId: SearchableIDFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
+  paymentMethodId: SearchableStringFilterInput
   and: [SearchableTransactionFilterInput]
   or: [SearchableTransactionFilterInput]
   not: SearchableTransactionFilterInput
@@ -3578,6 +3612,7 @@ enum SearchableTransactionSortableFields {
   receiptId
   createdAt
   updatedAt
+  paymentMethodId
 }
 
 input SearchableTransactionSortInput {

@@ -173,6 +173,7 @@ export const startStripePayment =
             externalTransactionId: paymentIntent.id,
             total: order.sumPriceShown.priceSum,
             type: 'stripe',
+            paymentMethodId,
           },
         };
       const transaction = await createTransaction(createTransactionVars)(deps);
@@ -230,6 +231,7 @@ export const startStripePayment =
             status: CrudApi.PaymentStatus.waiting_for_payment,
             total: order.sumPriceShown.priceSum,
             type: paymentMethod.toString(),
+            paymentMethodId,
           },
         };
 

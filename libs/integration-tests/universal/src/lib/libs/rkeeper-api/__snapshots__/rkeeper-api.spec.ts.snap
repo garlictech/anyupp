@@ -31,6 +31,7 @@ Array [
         "position": -1,
         "price": 50000,
         "refGroupPrice": null,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": null,
@@ -67,6 +68,7 @@ Array [
         "position": -1,
         "price": 50000,
         "refGroupPrice": null,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": null,
@@ -120,6 +122,7 @@ Array [
         "position": -1,
         "price": 50000,
         "refGroupPrice": null,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": null,
@@ -172,6 +175,7 @@ Object {
       "position": -1,
       "price": 1000000,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -220,6 +224,7 @@ Object {
       "position": -1,
       "price": 600,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -260,6 +265,7 @@ Object {
       "position": -1,
       "price": 700,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -300,6 +306,7 @@ Object {
       "position": -1,
       "price": 700,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -340,6 +347,7 @@ Object {
       "position": -1,
       "price": 500,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -383,6 +391,7 @@ Object {
       },
       "position": -1,
       "price": 600,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -410,6 +419,7 @@ Object {
           "position": -1,
           "price": 0,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -422,6 +432,7 @@ Object {
           "position": -1,
           "price": 50,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
       ],
       "maxSelection": null,
@@ -450,6 +461,7 @@ Object {
           "position": -1,
           "price": 0,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -462,6 +474,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -474,6 +487,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -486,6 +500,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -498,6 +513,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
       ],
       "maxSelection": null,
@@ -543,6 +559,7 @@ Object {
       },
       "position": -1,
       "price": 700,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -570,6 +587,7 @@ Object {
           "position": -1,
           "price": 0,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -582,6 +600,7 @@ Object {
           "position": -1,
           "price": 50,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
       ],
       "maxSelection": null,
@@ -610,6 +629,7 @@ Object {
           "position": -1,
           "price": 0,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -622,6 +642,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -634,6 +655,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -646,6 +668,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -658,6 +681,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
       ],
       "maxSelection": null,
@@ -703,6 +727,7 @@ Object {
       },
       "position": -1,
       "price": 700,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -746,6 +771,7 @@ Object {
       },
       "position": -1,
       "price": 500,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -780,6 +806,7 @@ Object {
       "position": -1,
       "price": 500,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -814,6 +841,7 @@ Object {
       "position": -1,
       "price": 600,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -848,6 +876,7 @@ Object {
       "position": -1,
       "price": 700,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -882,6 +911,7 @@ Object {
       "position": -1,
       "price": 700,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -957,6 +987,7 @@ Object {
     "en": null,
     "hu": "Kókuszital (90ml)",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -975,6 +1006,7 @@ Object {
     "en": null,
     "hu": "Laktózmentes tej (90ml)",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -993,6 +1025,7 @@ Object {
     "en": null,
     "hu": "Mandulaital (90ml)",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1011,6 +1044,7 @@ Object {
     "en": null,
     "hu": "Papírpohár 2dl",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1029,6 +1063,7 @@ Object {
     "en": null,
     "hu": "Saját pohár",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1047,6 +1082,7 @@ Object {
     "en": null,
     "hu": "Tej sima (90ml)",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1065,6 +1101,7 @@ Object {
     "en": null,
     "hu": "Zabital (90ml)",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1110,6 +1147,7 @@ Object {
       "position": -1,
       "price": 600,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -1230,6 +1268,7 @@ Object {
       "position": -1,
       "price": 700,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -1350,6 +1389,7 @@ Object {
       "position": -1,
       "price": 700,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -1401,6 +1441,7 @@ Object {
       "position": -1,
       "price": 500,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,

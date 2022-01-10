@@ -100,6 +100,7 @@ Object {
     "taxPercentage": 10,
     "type": "applicable",
   },
+  "soldOutVisibilityPolicy": null,
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -214,6 +215,7 @@ Object {
     "taxPercentage": 10,
     "type": "applicable",
   },
+  "soldOutVisibilityPolicy": null,
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -330,6 +332,7 @@ Object {
     "taxPercentage": 10,
     "type": "applicable",
   },
+  "soldOutVisibilityPolicy": null,
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -444,6 +447,7 @@ Object {
     "taxPercentage": 10,
     "type": "applicable",
   },
+  "soldOutVisibilityPolicy": null,
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -549,6 +553,7 @@ Object {
     "taxPercentage": 10,
     "type": "applicable",
   },
+  "soldOutVisibilityPolicy": null,
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -654,6 +659,7 @@ Object {
     "taxPercentage": 10,
     "type": "applicable",
   },
+  "soldOutVisibilityPolicy": null,
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -761,6 +767,7 @@ Object {
     "taxPercentage": 10,
     "type": "applicable",
   },
+  "soldOutVisibilityPolicy": null,
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -866,6 +873,7 @@ Object {
     "taxPercentage": 10,
     "type": "applicable",
   },
+  "soldOutVisibilityPolicy": null,
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -1055,6 +1063,7 @@ Object {
     "taxPercentage": 10,
     "type": "applicable",
   },
+  "soldOutVisibilityPolicy": null,
   "supportedOrderModes": Array [
     "pickup",
     "instant",
@@ -1162,6 +1171,7 @@ Object {
     "taxPercentage": 10,
     "type": "applicable",
   },
+  "soldOutVisibilityPolicy": null,
   "supportedOrderModes": Array [
     "pickup",
     "instant",

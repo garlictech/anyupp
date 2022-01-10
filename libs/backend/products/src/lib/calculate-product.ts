@@ -109,6 +109,7 @@ const toGeneratedProductVariantInputType = (
     'pack',
     'price',
     'packagingFee',
+    'soldOut',
   ])(variant);
 };
 
@@ -213,6 +214,7 @@ const toGeneratedProductConfigSetInput = ({
         // comes from the productComponent itself (referenced by productComponentId)
         name: productComponent.name,
         allergens: productComponent.allergens,
+        soldOut: productComponent.soldOut,
       };
       return configComponent;
     }),

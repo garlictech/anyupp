@@ -71,6 +71,7 @@ Object {
     "pos": null,
     "ratingPolicy": null,
     "serviceFeePolicy": null,
+    "soldOutVisibilityPolicy": null,
     "supportedOrderModes": Array [
       "pickup",
       "instant",
@@ -234,6 +235,7 @@ Object {
     "pos": null,
     "ratingPolicy": null,
     "serviceFeePolicy": null,
+    "soldOutVisibilityPolicy": null,
     "supportedOrderModes": Array [
       "pickup",
     ],

@@ -25,19 +25,20 @@ import { createTestChain, deleteTestChain } from '../../../seeds/chain';
 import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { unitRequestHandler } from '@bgap/backend/units';
+import * as R from 'ramda';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
 const distanceLoc_02 = { location: { lat: 47.490471, lng: 19.048001 } }; // distance from userLoc: 0.153.. km
 
 const unitNotActive = {
-  ...unitFixture.createUnit_01,
+  ...R.clone(unitFixture.createUnit_01),
   isActive: false,
   id: `${testIdPrefix}NOT_ACTIVE_UNIT`,
 };
 
 const unit_01 = {
-  ...unitFixture.createUnit_01,
+  ...R.clone(unitFixture.createUnit_01),
   id: `${testIdPrefix}unit_01`,
   address: fp.mergeAll([unitFixture.unit_01.address, distanceLoc_01]),
   orderPolicy: CrudApi.OrderPolicy.placeonly,
@@ -52,9 +53,10 @@ const unit_01 = {
   tipPolicy: {
     percents: [2],
   },
+  soldOutVisibilityPolicy: CrudApi.SoldOutVisibilityPolicy.faded,
 };
 const unit_02 = {
-  ...unitFixture.createUnit_01,
+  ...R.clone(unitFixture.createUnit_01),
   id: `${testIdPrefix}unit_02`,
   address: fp.mergeAll([unitFixture.unit_01.address, distanceLoc_02]),
   open: {
@@ -63,7 +65,7 @@ const unit_02 = {
 };
 
 const unit_03 = {
-  ...unitFixture.createUnit_01,
+  ...R.clone(unitFixture.createUnit_01),
   id: `${testIdPrefix}unit_03`,
   address: fp.mergeAll([unitFixture.unit_01.address, userLoc]),
 };
@@ -236,13 +238,7 @@ describe('GetUnitsNearLocation tests', () => {
         expect(foundItems[1].distance).toEqual(74);
         expect(foundItems[2].distance).toEqual(153);
         expect(foundItems[0].openingHoursNext7).toHaveLength(7);
-        expect(foundItems[1].supportedOrderModes).toEqual(
-          unit_01.supportedOrderModes,
-        );
-        expect(foundItems[1].supportedServingModes).toEqual(
-          unit_01.supportedServingModes,
-        );
-
+        expect(foundItems[1]).toMatchSnapshot('retrieved unit_01');
         expect(foundItems[0]).toMatchSnapshot({
           openingHoursNext7: expect.any(Array),
         });

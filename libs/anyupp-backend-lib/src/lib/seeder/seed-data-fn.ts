@@ -1015,7 +1015,10 @@ export const seedSportbarRKeeperUnit = (deps: SeederDependencies) =>
             id: 'sportbar-rkeeper-unit',
             name: `sportbar RKEEPER unit`,
             supportedOrderModes: [CrudApi.OrderMode.pickup],
-            supportedServingModes: [CrudApi.ServingMode.takeaway],
+            supportedServingModes: [
+              CrudApi.ServingMode.inplace,
+              CrudApi.ServingMode.takeaway,
+            ],
             externalId: '170880001',
             groupId: 'sportbar-rkeeper-group',
             chainId: 'sportbar-rkeeper-chain',

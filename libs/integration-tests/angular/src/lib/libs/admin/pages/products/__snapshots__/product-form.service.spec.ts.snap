@@ -50,6 +50,7 @@ Object {
         "position": 1,
         "price": 10,
         "refGroupPrice": 10,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -77,6 +78,7 @@ Object {
         "position": 2,
         "price": 20,
         "refGroupPrice": 20,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -126,6 +128,7 @@ Object {
         "position": 1,
         "price": 20,
         "refGroupPrice": 20,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -153,6 +156,7 @@ Object {
         "position": 2,
         "price": 40,
         "refGroupPrice": 40,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -249,6 +253,7 @@ Object {
         "position": 1,
         "price": 30,
         "refGroupPrice": 30,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -276,6 +281,7 @@ Object {
         "position": 2,
         "price": 60,
         "refGroupPrice": 60,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -440,6 +446,7 @@ Object {
         "position": 1,
         "price": 10,
         "refGroupPrice": 10,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -467,6 +474,7 @@ Object {
         "position": 2,
         "price": 20,
         "refGroupPrice": 20,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -516,6 +524,7 @@ Object {
         "position": 1,
         "price": 20,
         "refGroupPrice": 20,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -543,6 +552,7 @@ Object {
         "position": 2,
         "price": 40,
         "refGroupPrice": 40,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",
@@ -597,6 +607,7 @@ Object {
         "position": 1,
         "price": 30,
         "refGroupPrice": 30,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_1",
@@ -624,6 +635,7 @@ Object {
         "position": 2,
         "price": 60,
         "refGroupPrice": 60,
+        "soldOut": true,
         "variantName": Object {
           "de": null,
           "en": "VARIANT_NAME_2",

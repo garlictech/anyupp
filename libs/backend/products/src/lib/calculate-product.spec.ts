@@ -90,6 +90,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       updatedAt: 'UPDATED_AT',
       externalId: 'EXTERNAL_ID',
       dirty: false,
+      soldOut: true,
     },
     PRODUCT_COMPONENT_ID_21: {
       id: 'PRODUCT_COMPONENT_ID_21',
@@ -101,6 +102,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       updatedAt: 'UPDATED_AT',
       externalId: 'EXTERNAL_ID',
       dirty: false,
+      soldOut: false,
     },
   };
   const prodComponentSetMap: ProductComponentSetMap = {
