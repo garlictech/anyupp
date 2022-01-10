@@ -62,7 +62,7 @@
     "@ngx-translate/http-loader": "6.0.0",
     "@nrwl/angular": "13.4.3",
     "@types/file-saver": "2.0.4",
-    "@types/luxon": "2.0.8",
+    "@types/luxon": "2.0.9",
     "@types/uuid": "8.3.4",
     "apollo-angular": "2.6.0",
     "apollo-client": "2.6.10",
