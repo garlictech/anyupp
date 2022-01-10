@@ -146,6 +146,7 @@ Object {
       "to": "",
     },
   },
+  "orderPolicy": "full",
   "packagingTaxPercentage": "",
   "paymentModes": Array [],
   "phone": "",
