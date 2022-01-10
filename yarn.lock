@@ -15519,10 +15519,10 @@ fp-ts-rxjs@0.6.15:
   resolved "https://registry.yarnpkg.com/fp-ts-rxjs/-/fp-ts-rxjs-0.6.15.tgz#4c53ecaf5e18a82c94e4a43a4cf8148978ef9e6c"
   integrity sha512-5fD4a/439l0aUkSkPq7xnznXYsD7YwGyYANO3v6dkkZJTta36et3bNJ2tzq28UcVR6bS9nTDbP7kMjgQqFFxYQ==
 
-fp-ts@2.11.6:
-  version "2.11.6"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.11.6.tgz#fa11c21bb235cfba0dfd4170f88adcd36e02ac9b"
-  integrity sha512-/EDgWhlWXenPvyax2UyKPhdHK+IkVFQZUggby41dCeWgE2F20Z3cx8eWikotwKicfKu7HvZ+tz3xN0vdOGrL6A==
+fp-ts@2.11.7:
+  version "2.11.7"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.11.7.tgz#ac05ac9a682bcbde669d34c5d5a16d19bb7a4ab8"
+  integrity sha512-UUpeygu50mV/J96Nk92fzHDznYXJxsO20wrUZGJppja1f8P+fhCaclcqcfubEyrH7XXPsmYn98CJF0BVAEn3ZQ==
 
 frac@~1.1.2:
   version "1.1.2"
