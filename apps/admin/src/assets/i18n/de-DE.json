@@ -99,6 +99,12 @@
       "instant": "instant",
       "pickup": "pickup"
     },
+    "orderPolicy": {
+      "title": "Order policy",
+      "full": "Full",
+      "placeOnly": "Place only",
+      "placeWithPaymentType": "Place with payment type"
+    },
     "transactionStatus": {
       "SUCCESS": "Success",
       "WAITING_FOR_PAYMENT": "Waiting for payment",

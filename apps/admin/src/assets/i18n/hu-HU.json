@@ -99,6 +99,12 @@
       "instant": "instant",
       "pickup": "pickup"
     },
+    "orderPolicy": {
+      "title": "Megrendelési mód",
+      "full": "Full",
+      "placeOnly": "Place only",
+      "placeWithPaymentType": "Place with payment type"
+    },
     "transactionStatus": {
       "SUCCESS": "Sikeres",
       "WAITING_FOR_PAYMENT": "Fizetésre vár",

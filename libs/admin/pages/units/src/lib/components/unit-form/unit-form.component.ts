@@ -31,6 +31,7 @@ import { select } from '@ngrx/store';
 import { timeZonesNames } from '@vvo/tzdb';
 
 import { UnitFormService } from '../../services/unit-form.service';
+import { orderPolicyOptions } from '../../const';
 
 @UntilDestroy()
 @Component({
@@ -48,7 +49,7 @@ export class UnitFormComponent
   public orderModes = ORDER_MODES;
   public groupOptions$: Observable<KeyValue[]>;
   public timeZoneOptions: KeyValue[] = [];
-
+  public orderPolicyOptions: KeyValue[] = orderPolicyOptions;
   private _isInitiallyRkeeper = false;
 
   constructor(

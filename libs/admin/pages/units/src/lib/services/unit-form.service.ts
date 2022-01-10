@@ -53,6 +53,7 @@ export class UnitFormService {
         { validators: notEmptyArray },
       ],
       supportedOrderModes: [[defaultOrderMode], { validators: notEmptyArray }],
+      orderPolicy: [CrudApi.OrderPolicy.full],
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder, true),
       pos: this._formBuilder.group({
