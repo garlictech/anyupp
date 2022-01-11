@@ -1074,8 +1074,14 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
             ...unitFixture.createRkeeperUnit,
             id: 'yellow-rkeeper-unit',
             name: `yellow RKEEPER unit`,
-            supportedOrderModes: [CrudApi.OrderMode.pickup],
-            supportedServingModes: [CrudApi.ServingMode.takeaway],
+            supportedOrderModes: [
+              CrudApi.OrderMode.pickup,
+              CrudApi.OrderMode.instant,
+            ],
+            supportedServingModes: [
+              CrudApi.ServingMode.takeaway,
+              CrudApi.ServingMode.inplace,
+            ],
             externalId: '109150001',
             groupId: 'yellow-rkeeper-group',
             chainId: 'yellow-rkeeper-chain',
