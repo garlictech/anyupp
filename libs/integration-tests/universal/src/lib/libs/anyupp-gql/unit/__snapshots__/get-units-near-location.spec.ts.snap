@@ -127,50 +127,7 @@ Object {
   "isAcceptingOrders": true,
   "name": "Késdobáló S",
   "openingHours": "09:00-22:00",
-  "openingHoursNext7": Array [
-    Object {
-      "closed": true,
-      "date": "2022-01-10",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-11",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-12",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-13",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-14",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-15",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-16",
-      "from": null,
-      "to": null,
-    },
-  ],
+  "openingHoursNext7": Any<Array>,
   "orderPolicy": "placeOnly",
   "paymentModes": Array [
     Object {
@@ -326,50 +283,7 @@ Object {
   "isAcceptingOrders": true,
   "name": "Késdobáló S",
   "openingHours": "09:00-22:00",
-  "openingHoursNext7": Array [
-    Object {
-      "closed": true,
-      "date": "2022-01-10",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-11",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-12",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-13",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-14",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-15",
-      "from": null,
-      "to": null,
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-16",
-      "from": null,
-      "to": null,
-    },
-  ],
+  "openingHoursNext7": Any<Array>,
   "paymentModes": Array [
     Object {
       "caption": null,
@@ -525,36 +439,7 @@ Object {
   "isAcceptingOrders": true,
   "name": "Késdobáló S",
   "openingHours": "09:00-22:00",
-  "openingHoursNext7": Array [
-    Object {
-      "closed": true,
-      "date": "2022-01-10",
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-11",
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-12",
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-13",
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-14",
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-15",
-    },
-    Object {
-      "closed": true,
-      "date": "2022-01-16",
-    },
-  ],
+  "openingHoursNext7": Any<Array>,
   "orderPolicy": "placeOnly",
   "paymentModes": Array [
     Object {
