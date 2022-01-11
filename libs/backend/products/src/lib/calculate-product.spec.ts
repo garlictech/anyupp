@@ -56,6 +56,8 @@ describe('calculatePricesAndCheckActivity method', () => {
           },
         ],
         position: 1,
+        soldOut: false,
+        netPackagingFee: 30,
       },
     ],
     configSets: [
@@ -67,12 +69,14 @@ describe('calculatePricesAndCheckActivity method', () => {
             refGroupPrice: 1,
             price: 1,
             position: 1,
+            netPackagingFee: 30,
           },
           {
             productComponentId: 'PRODUCT_COMPONENT_ID_21',
             refGroupPrice: 2,
             price: 2,
             position: 2,
+            netPackagingFee: 40,
           },
         ],
         position: 1,
