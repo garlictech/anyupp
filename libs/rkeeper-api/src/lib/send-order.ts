@@ -2,6 +2,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { pipe } from 'fp-ts/lib/function';
 import axios from 'axios';
 import { defer, from } from 'rxjs';
+import * as R from 'ramda';
 
 export const sendRkeeperOrder = (
   unit: CrudApi.Unit,
@@ -14,10 +15,13 @@ export const sendRkeeperOrder = (
       qnt: item.quantity * 1000,
     })),
 
+    R.tap(console.warn),
     order => ({
       objectid: unit.externalId,
       order_type: 1,
       pay_type:
+        orderInput.paymentMode.method === CrudApi.PaymentMethod.cash ? 0 : 1,
+      pay_online_type:
         orderInput.paymentMode.method === CrudApi.PaymentMethod.cash ? 0 : 1,
       delivery_time: Date(),
       client: {
@@ -29,18 +33,17 @@ export const sendRkeeperOrder = (
       order,
     }),
 
-    data =>
-      defer(() =>
-        from(
-          axios.request({
-            url: `${unit.pos?.rkeeper?.endpointUri}/postorder/${unit.externalId}`,
-            method: 'post',
-            data,
-            auth: {
-              username: unit.pos?.rkeeper?.rkeeperUsername || '',
-              password: unit.pos?.rkeeper?.rkeeperPassword || '',
-            },
-          }),
-        ),
-      ),
+    R.tap(x => console.warn(JSON.stringify(x, null, 2))),
+    data => ({
+      url: `${unit.pos?.rkeeper?.endpointUri}/postorder/${unit.externalId}`,
+      method: 'post',
+      data,
+      auth: {
+        username: unit.pos?.rkeeper?.rkeeperUsername || '',
+        password: unit.pos?.rkeeper?.rkeeperPassword || '',
+      },
+    }),
+
+    R.tap(console.warn),
+    data => defer(() => from(axios.request(data))),
   );

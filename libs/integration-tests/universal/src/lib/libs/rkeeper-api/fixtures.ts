@@ -43,6 +43,11 @@ export const rkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
   externalId: 'EXTERNAL-RESTAURANT-ID',
 };
 
+export const yellowRestaurantId = '109150001';
+export const rkeeperEndpoint = `https://testendpoint.ucs.hu/wp-json/vendor/v1`;
+export const yellowRkeeperUsername = '795_50_155_539';
+export const yellowRkeeperPassword = 'b6302d53085c9486d0f765ec475f18';
+
 export const rkeeperUnitProduct: RequiredId<CrudApi.CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}-unitproduct`,
@@ -80,4 +85,91 @@ export const createGroup: RequiredId<CrudApi.CreateGroupInput> = {
   chainId,
 };
 
-export const realTestExternalId = '109150001';
+export const rkeeperOrder = {
+  objectid: '109150001',
+  order_type: 1,
+  pay_type: 0,
+  pay_online_type: 0,
+  delivery_time:
+    'Tue Jan 11 2022 09:35:28 GMT+0000 (Coordinated Universal Time)',
+  client: {
+    phone: null,
+    email: null,
+    ln: 'Testln',
+    fn: 'Testfn',
+  },
+  order: [
+    {
+      id: '4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68',
+      type: 'd',
+      qnt: 1000,
+    },
+  ],
+};
+
+export const yellowUnit = {
+  ...rkeeperUnit,
+  externalId: yellowRestaurantId,
+  pos: {
+    ...rkeeperUnit.pos,
+    rkeeper: {
+      ...(rkeeperUnit?.pos?.rkeeper || {}),
+      rkeeperUsername: yellowRkeeperUsername,
+      rkeeperPassword: yellowRkeeperPassword,
+      endpointUri: rkeeperEndpoint,
+    } as CrudApi.RKeeper,
+  },
+} as CrudApi.Unit;
+
+export const orderInput: CrudApi.CreateOrderInput = {
+  userId: 'USER_ID',
+  unitId: yellowUnit.id,
+  items: [
+    {
+      quantity: 5,
+      productId: 'PRODUCT ID',
+      statusLog: [],
+      sumPriceShown: {
+        taxSum: 316.98,
+        currency: 'HUF',
+        tax: 27,
+        priceSum: 1491,
+        pricePerUnit: 298.2,
+      },
+      productName: {
+        hu: 'PRODUCT NAME HU',
+      },
+      priceShown: {
+        taxSum: 318.9,
+        currency: 'HUF',
+        tax: 27,
+        priceSum: 1500,
+        pricePerUnit: 300,
+      },
+      variantId: 'VARIANT ID',
+      variantName: {
+        en: 'VARIANT NAME EN',
+      },
+    },
+  ],
+  sumPriceShown: {
+    taxSum: 633.96,
+    currency: 'HUF',
+    tax: 27,
+    priceSum: 2982,
+    pricePerUnit: 298.2,
+  },
+  place: {
+    table: '01',
+    seat: '01',
+  },
+  orderMode: CrudApi.OrderMode.instant,
+  servingMode: CrudApi.ServingMode.inplace,
+  archived: false,
+  orderNum: 'ORDERNUM',
+  paymentMode: {
+    method: CrudApi.PaymentMethod.cash,
+    type: CrudApi.PaymentType.cash,
+  },
+  statusLog: [],
+};

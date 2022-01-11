@@ -21,14 +21,6 @@ import {
   toArray,
 } from 'rxjs/operators';
 import {
-  createChainProductsFromSnapshot,
-  createGroupProductsFromSnapshot,
-  createTestProductCategoryFromFixtures,
-  createUnitProductsFromSnapshot,
-  placeOrderToSeat,
-  seedLotsOfOrders,
-} from '.';
-import {
   createAdminUser,
   createComponentSets,
   createConsumerUser,
@@ -41,6 +33,12 @@ import {
   SeederDependencies,
   seedYellowRKeeperUnit,
   seedSportbarRKeeperUnit,
+  createChainProductsFromSnapshot,
+  createGroupProductsFromSnapshot,
+  createTestProductCategoryFromFixtures,
+  createUnitProductsFromSnapshot,
+  placeOrderToSeat,
+  seedLotsOfOrders,
 } from './seed-data-fn';
 
 const ce = (tag: string) =>

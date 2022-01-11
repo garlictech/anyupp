@@ -158,8 +158,8 @@ const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
     rkeeper: {
       // let's use the yellow real rkeeper endpoint
       endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
-      rkeeperUsername: '781_55_69_939',
-      rkeeperPassword: '3943200386403faebf5f80191f5c1c',
+      rkeeperUsername: '795_50_155_539',
+      rkeeperPassword: 'b6302d53085c9486d0f765ec475f18',
       anyuppUsername: 'ANYUPP_USERNAME',
       anyuppPassword: 'ANYUPP_PASSWORD',
     },
