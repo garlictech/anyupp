@@ -298,6 +298,7 @@
   "units": {
     "listTitle": "Units",
     "editUnit": "Edit unit",
+    "editUnitPos": "Edit unit POS",
     "newUnit": "New unit",
     "addUnit": "Add unit",
     "open": "Open",
@@ -330,7 +331,8 @@
       "anyuppPassword": "AnyUPP password",
       "restaurantId": "Restaurant ID"
     },
-    "rkeeperDeletionAlert": "AnyUPP POS has been selected. RKeeper data will be deleted."
+    "rkeeperDeletionAlert": "AnyUPP POS has been selected. RKeeper data will be deleted.",
+    "rkeeperPasswordUpdated": "RKeepeR AnyUPP password has been changed. The new password is: <strong>{{anyuppPassword}}</strong>"
   },
   "users": {
     "listTitle": "Users",

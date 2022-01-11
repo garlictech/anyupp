@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   dailyScheduleBothEmptyOrProperlyFilledValidator,
-  makeId,
   multiLangValidator,
   productAvailabilityValidator,
   TIME_FORMAT_PATTERN,
@@ -91,20 +90,19 @@ export class FormsService {
       netPackagingFee: [0],
     });
 
-  public createRkeeperFormGroup = (): FormGroup =>
+  public createRkeeperFormGroup = (addAnyuppPassword: boolean): FormGroup =>
     this._formBuilder.group({
       endpointUri: [{ value: '', disabled: true }, Validators.required],
       rkeeperUsername: [{ value: '', disabled: true }, Validators.required],
       rkeeperPassword: [{ value: '', disabled: true }, Validators.required],
       anyuppUsername: [{ value: '', disabled: true }, Validators.required],
-      anyuppPassword: [
-        { value: '', disabled: true },
-        [Validators.required, Validators.minLength(8)],
-      ],
-      restaurantId: [{ value: '', disabled: true }, Validators.required],
+      ...(addAnyuppPassword
+        ? {
+            anyuppPassword: [
+              { value: '', disabled: true },
+              [Validators.required, Validators.minLength(8)],
+            ],
+          }
+        : {}),
     });
-
-  public generateRkeeperPassword = (rkeeperFormGroup: FormGroup) => {
-    rkeeperFormGroup.controls['anyuppPassword'].patchValue(makeId(8));
-  };
 }

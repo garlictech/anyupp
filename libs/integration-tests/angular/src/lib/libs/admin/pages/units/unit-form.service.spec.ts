@@ -8,9 +8,15 @@ import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { testIdPrefix, unitFixture } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
+import { NbDialogService } from '@nebular/theme';
 import { StoreModule } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 
 import { signInToCognito, signOutFromCognito } from '../../shared/helper';
+import {
+  MockNbDialogService,
+  MockTranslateService,
+} from '../../shared/service-mocks';
 
 describe('UnitFormService', () => {
   const unitId = `${testIdPrefix}ADMIN_UNIT_IT_UNIT_ID_01`;
@@ -33,14 +39,26 @@ describe('UnitFormService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, StoreModule.forRoot({})],
+      providers: [
+        { provide: TranslateService, useClass: MockTranslateService },
+        { provide: NbDialogService, useClass: MockNbDialogService },
+      ],
     });
 
     service = TestBed.inject(UnitFormService);
     crudSdk = TestBed.inject(CrudSdkService);
   });
 
-  it('createUnitFormGroup should create form group', () => {
-    expect(service.createUnitFormGroup().value).toMatchSnapshot();
+  it('createUnitFormGroup should create new form group', () => {
+    expect(service.createUnitFormGroup(false).value).toMatchSnapshot();
+  });
+
+  it('createUnitFormGroup should create update form group', () => {
+    expect(service.createUnitFormGroup(true).value).toMatchSnapshot();
+  });
+
+  it('createUnitFormGroup should create rkeeper form group', () => {
+    expect(service.createUnitRkeeperFormGroup().value).toMatchSnapshot();
   });
 
   it('saveForm$ should call createUnit$ method when id is not specified', done => {
@@ -126,6 +144,113 @@ describe('UnitFormService', () => {
               updatedAt: expect.any(String),
             },
           });
+        }),
+        switchMap(() => cleanup()),
+      )
+      .subscribe(() => {
+        done();
+      });
+  }, 25000);
+
+  it('updateRKeeperData$ should update the RKeepeR POS content', done => {
+    let hashedPassword = '';
+
+    cleanup()
+      .pipe(
+        switchMap(() =>
+          service.createUnit$({
+            ...unitFixture.createRkeeperUnit,
+            id: unitId,
+          }),
+        ),
+        tap(saveResponse => {
+          hashedPassword =
+            (<UpsertResponse<CrudApi.Unit>>saveResponse).data?.pos?.rkeeper
+              ?.anyuppPassword || '';
+        }),
+        catchError(() => cleanup()),
+        switchMap(saveResponse =>
+          (<UpsertResponse<CrudApi.Unit>>saveResponse).data.id
+            ? service.updateRKeeperData$({
+                unitId,
+                rkeeperPassword: 'test-rkeeperPassword',
+                rkeeperUsername: 'test-rkeeperUsername',
+                endpointUri: 'test-endpointUri',
+                anyuppUsername: 'test-anyuppUsername',
+              })
+            : EMPTY,
+        ),
+        catchError(() => cleanup()),
+        tap(updateResponse => {
+          expect(updateResponse).toMatchSnapshot({
+            data: {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+              pos: {
+                rkeeper: {
+                  anyuppPassword: expect.any(String),
+                },
+              },
+            },
+          });
+
+          // anyuppPassword unmodified
+          expect(
+            (<UpsertResponse<CrudApi.Unit>>updateResponse).data?.pos?.rkeeper
+              ?.anyuppPassword,
+          ).toEqual(hashedPassword);
+        }),
+        switchMap(() => cleanup()),
+      )
+      .subscribe(() => {
+        done();
+      });
+  }, 25000);
+
+  it('updateRKeeperData$ should update the RKeepeR AnyUPP password', done => {
+    let hashedPassword = '';
+
+    cleanup()
+      .pipe(
+        switchMap(() =>
+          service.createUnit$({
+            ...unitFixture.createRkeeperUnit,
+            id: unitId,
+          }),
+        ),
+        tap(saveResponse => {
+          hashedPassword =
+            (<UpsertResponse<CrudApi.Unit>>saveResponse).data?.pos?.rkeeper
+              ?.anyuppPassword || '';
+        }),
+        catchError(() => cleanup()),
+        switchMap(saveResponse =>
+          (<UpsertResponse<CrudApi.ChainProduct>>saveResponse).data.id
+            ? service.updateRKeeperData$({
+                unitId,
+                anyuppPassword: 'new-anyuppPassword',
+              })
+            : EMPTY,
+        ),
+        catchError(() => cleanup()),
+        tap(updateResponse => {
+          expect(updateResponse).toMatchSnapshot({
+            data: {
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+              pos: {
+                rkeeper: {
+                  anyuppPassword: expect.any(String),
+                },
+              },
+            },
+          });
+
+          // anyuppPassword changed
+          expect(
+            (<UpsertResponse<CrudApi.Unit>>updateResponse).data?.pos?.rkeeper
+              ?.anyuppPassword,
+          ).not.toEqual(hashedPassword);
         }),
         switchMap(() => cleanup()),
       )

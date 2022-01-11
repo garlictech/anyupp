@@ -25,6 +25,7 @@ import { UnitFloorMapComponent } from './components/unit-floor-map/unit-floor-ma
 import { UnitFormComponent } from './components/unit-form/unit-form.component';
 import { UnitListItemComponent } from './components/unit-list-item/unit-list-item.component';
 import { UnitListComponent } from './components/unit-list/unit-list.component';
+import { UnitRkeeperFormComponent } from './components/unit-rkeeper-form/unit-rkeeper-form.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -44,6 +45,7 @@ const NB_MODULES = [
     UnitListComponent,
     UnitListItemComponent,
     UnitFormComponent,
+    UnitRkeeperFormComponent,
     UnitFloorMapComponent,
   ],
   imports: [

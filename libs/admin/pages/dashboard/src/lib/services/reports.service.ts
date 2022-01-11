@@ -1,4 +1,4 @@
-import { Chart } from 'chart.js';
+import Chart from 'chart.js/auto';
 import DatalabelsPlugin, { Context } from 'chartjs-plugin-datalabels';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
