@@ -505,7 +505,6 @@ test('send order to rkeeper by HTTP post', done => {
   )
     .pipe(
       tap(result => {
-        expect(result?.config.data).toMatchSnapshot('config.data');
         expect(result?.config.auth).toMatchSnapshot('config.auth');
         expect(result?.data.success).toEqual(true);
       }),
@@ -517,7 +516,8 @@ test('send order to rkeeper by sendRkeeperOrder', done => {
   sendRkeeperOrder(fixtures.yellowUnit, fixtures.orderInput)
     .pipe(
       tap(result => {
-        expect(result).toMatchSnapshot();
+        expect(result?.config.auth).toMatchSnapshot('config.auth');
+        expect(result?.data.success).toEqual(true);
       }),
     )
     .subscribe(() => done());

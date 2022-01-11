@@ -10,6 +10,10 @@ import {
   productFixture,
   chainFixture,
   groupFixture,
+  rkeeperEndpoint,
+  yellowRestaurantId,
+  yellowRkeeperUsername,
+  yellowRkeeperPassword,
 } from '@bgap/shared/fixtures';
 
 const testIdPrefix = `rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad`;
@@ -42,11 +46,6 @@ export const rkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
   chainId,
   externalId: 'EXTERNAL-RESTAURANT-ID',
 };
-
-export const yellowRestaurantId = '109150001';
-export const rkeeperEndpoint = `https://testendpoint.ucs.hu/wp-json/vendor/v1`;
-export const yellowRkeeperUsername = '795_50_155_539';
-export const yellowRkeeperPassword = 'b6302d53085c9486d0f765ec475f18';
 
 export const rkeeperUnitProduct: RequiredId<CrudApi.CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
@@ -172,4 +171,11 @@ export const orderInput: CrudApi.CreateOrderInput = {
     type: CrudApi.PaymentType.cash,
   },
   statusLog: [],
+};
+
+export {
+  yellowRestaurantId,
+  yellowRkeeperPassword,
+  yellowRkeeperUsername,
+  rkeeperEndpoint,
 };

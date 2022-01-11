@@ -3,6 +3,11 @@ import { RequiredId } from '@bgap/shared/types';
 import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { groupFixture } from './group';
+import {
+  rkeeperEndpoint,
+  yellowRkeeperPassword,
+  yellowRkeeperUsername,
+} from './rkeeper';
 
 const unitId_01 = `${testIdPrefix}unit_1_id`;
 const unitId_seeded_01 = `${seededIdPrefix}unit_c1_g1_1_id`;
@@ -157,9 +162,9 @@ const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
     type: CrudApi.PosType.rkeeper,
     rkeeper: {
       // let's use the yellow real rkeeper endpoint
-      endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
-      rkeeperUsername: '795_50_155_539',
-      rkeeperPassword: 'b6302d53085c9486d0f765ec475f18',
+      endpointUri: rkeeperEndpoint,
+      rkeeperUsername: yellowRkeeperUsername,
+      rkeeperPassword: yellowRkeeperPassword,
       anyuppUsername: 'ANYUPP_USERNAME',
       anyuppPassword: 'ANYUPP_PASSWORD',
     },

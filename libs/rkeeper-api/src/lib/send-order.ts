@@ -1,8 +1,8 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { pipe } from 'fp-ts/lib/function';
 import axios from 'axios';
+import { Method } from 'axios';
 import { defer, from } from 'rxjs';
-import * as R from 'ramda';
 
 export const sendRkeeperOrder = (
   unit: CrudApi.Unit,
@@ -14,8 +14,6 @@ export const sendRkeeperOrder = (
       type: 'd',
       qnt: item.quantity * 1000,
     })),
-
-    R.tap(console.warn),
     order => ({
       objectid: unit.externalId,
       order_type: 1,
@@ -32,18 +30,14 @@ export const sendRkeeperOrder = (
       },
       order,
     }),
-
-    R.tap(x => console.warn(JSON.stringify(x, null, 2))),
     data => ({
       url: `${unit.pos?.rkeeper?.endpointUri}/postorder/${unit.externalId}`,
-      method: 'post',
+      method: 'post' as Method,
       data,
       auth: {
         username: unit.pos?.rkeeper?.rkeeperUsername || '',
         password: unit.pos?.rkeeper?.rkeeperPassword || '',
       },
     }),
-
-    R.tap(console.warn),
     data => defer(() => from(axios.request(data))),
   );

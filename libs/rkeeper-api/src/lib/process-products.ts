@@ -17,8 +17,6 @@ import {
   delay,
   mapTo,
   shareReplay,
-  filter,
-  take,
 } from 'rxjs/operators';
 import {
   combineLatest,
@@ -114,13 +112,6 @@ export const processDishes = (rawData: any): Observable<Dish[]> =>
         }),
       ),
     ),
-    // --------------------------------------------------
-    // This is a development time optimization.
-    // Remove it from PROD!!!
-    //  --------------------------------------------------
-    filter(dish => !!dish?.active),
-    take(20),
-    // - OPTIMIZATION END -------------------------------------------------
     toArray(),
     map(
       flow(
