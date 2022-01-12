@@ -1,3 +1,5 @@
+import { sendRkeeperOrder } from '@bgap/rkeeper-api';
+import axios from 'axios';
 import { ECS } from 'aws-sdk';
 import * as R from 'ramda';
 import * as fs from 'fs';
@@ -25,7 +27,7 @@ import {
   handleProducts,
   menusyncHandler,
 } from '@bgap/rkeeper-api';
-import { from, Observable, combineLatest, of } from 'rxjs';
+import { from, Observable, combineLatest, of, defer } from 'rxjs';
 import { ES_DELAY, dateMatcher } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
@@ -409,7 +411,7 @@ describe('Test the rkeeper api basic functionality', () => {
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
-    handleRkeeperProducts(crudSdk)(fixtures.realTestExternalId)(
+    handleRkeeperProducts(crudSdk)(fixtures.yellowRestaurantId)(
       rawData,
     ).subscribe({
       next: result => {
@@ -426,7 +428,7 @@ describe('Test the rkeeper api basic functionality', () => {
 
     const res = await menusyncHandler(
       {
-        params: { externalUnitId: fixtures.realTestExternalId },
+        params: { externalUnitId: fixtures.yellowRestaurantId },
         body: rawData,
       } as any,
       { send: () => {} } as any,
@@ -453,7 +455,7 @@ describe('Test the rkeeper api basic functionality', () => {
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
-    handleProducts(deps)(fixtures.realTestExternalId, rawData)
+    handleProducts(deps)(fixtures.yellowRestaurantId, rawData)
       .pipe(tap(result => expect(result.failures).toMatchSnapshot()))
       .subscribe(() => done(), console.error);
   }, 20000);
@@ -486,3 +488,37 @@ describe('Test the rkeeper api basic functionality', () => {
       .subscribe(() => done());
   }, 15000);
 });
+
+test('send order to rkeeper by HTTP post', done => {
+  defer(() =>
+    from(
+      axios.request({
+        url: `${fixtures.rkeeperEndpoint}/postorder/${fixtures.yellowRestaurantId}`,
+        method: 'post',
+        data: fixtures.rkeeperOrder,
+        auth: {
+          username: fixtures.yellowRkeeperUsername,
+          password: fixtures.yellowRkeeperPassword,
+        },
+      }),
+    ),
+  )
+    .pipe(
+      tap(result => {
+        expect(result?.config.auth).toMatchSnapshot('config.auth');
+        expect(result?.data.success).toEqual(true);
+      }),
+    )
+    .subscribe(() => done());
+});
+
+test('send order to rkeeper by sendRkeeperOrder', done => {
+  sendRkeeperOrder(fixtures.yellowUnit, fixtures.orderInput)
+    .pipe(
+      tap(result => {
+        expect(result?.config.auth).toMatchSnapshot('config.auth');
+        expect(result?.data.success).toEqual(true);
+      }),
+    )
+    .subscribe(() => done());
+}, 10000);

@@ -1,4 +1,4 @@
-import { seedAll, SeederDependencies } from '@bgap/anyupp-backend-lib';
+import { seedAll, SeederDependencies } from '@bgap/backend/seeder';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
