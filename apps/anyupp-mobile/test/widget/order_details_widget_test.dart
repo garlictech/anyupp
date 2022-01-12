@@ -2,6 +2,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/bloc/order_refresh_bloc.dart';
+import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
@@ -31,15 +32,20 @@ void main() {
   setUpAll(() {
     GoogleFonts.config.allowRuntimeFetching = false;
     MockThemeBloc themeBloc = MockThemeBloc();
+    RatingBloc ratingBloc = RatingBloc(
+      RatingRepository(MockRatingProvider()),
+      MockOrderRepository(),
+    );
     getIt.registerSingleton(OrderRefreshBloc());
     getIt.registerSingleton<ThemeBloc>(themeBloc);
+    getIt.registerSingleton<RatingBloc>(ratingBloc);
   });
 
   Widget _createBoilerPlateApp({required Widget child}) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-            create: (BuildContext context) => getIt<OrderRefreshBloc>()),
+        BlocProvider(create: (_) => getIt<OrderRefreshBloc>()),
+        BlocProvider(create: (_) => getIt<RatingBloc>()),
       ],
       child: MaterialApp(
         themeMode: ThemeMode.light,
@@ -149,8 +155,8 @@ void main() {
       await tester.runAsync(() async {
         Order order = MockGenerator.generateOrder(
           name: 'TEST_ORDER',
-          method: PaymentMethod.cash,
-          paymentType: PaymentType.cash,
+          method: PaymentMethod.inapp,
+          paymentType: PaymentType.stripe,
           status: OrderStatus.served,
           price: 1000,
         );
@@ -196,10 +202,14 @@ void main() {
       await tester.runAsync(() async {
         Order order = MockGenerator.generateOrder(
           name: 'TEST_ORDER',
-          method: PaymentMethod.cash,
-          paymentType: PaymentType.cash,
+          method: PaymentMethod.inapp,
+          paymentType: PaymentType.stripe,
           status: OrderStatus.served,
           price: 1000,
+        );
+        order = order.copyWith(
+          transaction: MockGenerator.generateTransaction()
+              .copyWith(externalTransactionId: 'STRIPE_PAYMENT_INTENT_ID'),
         );
 
         await tester.pumpWidget(
@@ -215,7 +225,8 @@ void main() {
 
         expect(find.text('TEST_ORDER_I_0'), findsOneWidget);
         expect(find.text('TEST_ORDER_V_0'), findsOneWidget);
-        expect(find.byType(ElevatedButton), findsOneWidget);
+        // Tip button + invoice button
+        expect(find.byType(ElevatedButton), findsNWidgets(2));
       });
     }, skip: false);
   });
@@ -239,15 +250,19 @@ void main() {
       getIt.unregister<UnitSelectBloc>();
     });
 
-    testWidgets('Test Order details widget with rating',
+    testWidgets('Test Order details widget with rating and tiping',
         (WidgetTester tester) async {
       await tester.runAsync(() async {
         Order order = MockGenerator.generateOrder(
           name: 'TEST_ORDER',
-          method: PaymentMethod.cash,
-          paymentType: PaymentType.cash,
+          method: PaymentMethod.inapp,
+          paymentType: PaymentType.stripe,
           status: OrderStatus.served,
           price: 1000,
+        );
+        order = order.copyWith(
+          transaction: MockGenerator.generateTransaction()
+              .copyWith(externalTransactionId: 'STRIPE_PAYMENT_INTENT_ID'),
         );
 
         await tester.pumpWidget(
@@ -263,7 +278,7 @@ void main() {
 
         expect(find.text('TEST_ORDER_I_0'), findsOneWidget);
         expect(find.text('TEST_ORDER_V_0'), findsOneWidget);
-        expect(find.byType(ElevatedButton), findsNWidgets(2));
+        expect(find.byType(ElevatedButton), findsNWidgets(3));
       });
     }, skip: false);
   });
@@ -293,8 +308,8 @@ void main() {
       await tester.runAsync(() async {
         Order order = MockGenerator.generateOrder(
           name: 'TEST_ORDER',
-          method: PaymentMethod.cash,
-          paymentType: PaymentType.cash,
+          method: PaymentMethod.inapp,
+          paymentType: PaymentType.stripe,
           status: OrderStatus.served,
           price: 1000,
         );
@@ -320,6 +335,60 @@ void main() {
         expect(find.text('TEST_ORDER_I_0'), findsOneWidget);
         expect(find.text('TEST_ORDER_V_0'), findsOneWidget);
         expect(find.byType(ElevatedButton), findsNothing);
+      });
+    }, skip: false);
+  });
+
+  group('Order Screen test tip amount info section', () {
+    late GeoUnit _unit;
+
+    setUp(() {
+      _unit = MockGenerator.generateUnit(
+        name: 'TEST UNIT',
+        currency: 'HUF',
+      );
+      _unit = _unit.copyWith(
+        ratingPolicy: _dummyRatingPolicy(),
+        tipPolicy: _dummyTipPolicy(),
+      );
+      getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
+    });
+
+    tearDown(() {
+      getIt.unregister<UnitSelectBloc>();
+    });
+
+    testWidgets('Test Order details widget - display tip amount',
+        (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        Order order = MockGenerator.generateOrder(
+          name: 'TEST_ORDER',
+          method: PaymentMethod.inapp,
+          paymentType: PaymentType.stripe,
+          status: OrderStatus.served,
+          price: 1000,
+        );
+        order = order.copyWith(
+          rating: 1,
+          tip: Tip(
+            TipType.amount,
+            500,
+          ),
+        );
+
+        await tester.pumpWidget(
+          _createBoilerPlateApp(
+            child: OrderDetailsScreen(
+              order: order,
+              unit: _unit,
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        expect(find.byType(OrderDetailsTipAndServingFeeWidget), findsOneWidget);
+        expect(find.text('500\xa0Ft'), findsOneWidget);
       });
     }, skip: false);
   });

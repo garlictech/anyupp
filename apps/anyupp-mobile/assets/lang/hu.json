@@ -141,7 +141,10 @@
     "deleteCartCancel": "Mégsem",
     "takeAway": "elvitel",
     "inPlace": "helyben",
-    "packagingFee": "Csomagolási díj"
+    "packagingFee": "Csomagolási díj",
+    "serviceFee": "Szervízdíj",
+    "hasServiceFee": "Az ár szervízdíjat tartalmaz.",
+    "hasNoServiceFee": "Az ár szervízdíjat nem tartalmaz."
   },
   "allergens": {
     "title": "ALLERGÉNEK",
@@ -175,6 +178,8 @@
     "noActiveOrderButton": "Étlap felfedezése",
     "totalCost": "ÖSSZESEN",
     "noOrderHistory": "Még nincs rendeléstörténeted",
+    "sendRatingButton": "RENDELÉS ÉRTÉKELÉSE",
+    "sendTipButton": "BORRAVALÓ KÜLDÉSE",
     "sendOrderError": {
       "title": "Sikertelen rendelés.",
       "description": "Hiba lépett fel, kérlek fordulj csapatunkhoz segítségért!"
@@ -197,6 +202,10 @@
       "ready": "KÉSZ",
       "rejected": "TÖRÖLVE",
       "served": "FELSZOLGÁLVA"
+    },
+    "statusExt": {
+      "served": "Rendelés teljesítve",
+      "rejected": "Rendelés törölve"
     },
     "pay": "Fizetni szeretnék",
     "tipAmount": "Borravaló összege",

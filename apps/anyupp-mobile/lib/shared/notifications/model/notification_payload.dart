@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:fa_prev/models/core/parsers.dart';
+import 'package:flutter/foundation.dart';
 
 enum NotificationPayloadType {
   RATE_ORDER,
   SHOW_ORDER,
 }
 
+@immutable
 class NotificationPayload {
   final NotificationPayloadType type;
   final String data;

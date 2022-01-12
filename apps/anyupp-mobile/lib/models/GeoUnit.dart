@@ -23,6 +23,7 @@ class GeoUnit {
   final double packagingTax;
   final RatingPolicy? ratingPolicy;
   final TipPolicy? tipPolicy;
+  final ServiceFeePolicy? serviceFeePolicy;
 
   GeoUnit({
     required this.id,
@@ -42,6 +43,7 @@ class GeoUnit {
     required this.packagingTax,
     this.ratingPolicy,
     this.tipPolicy,
+    this.serviceFeePolicy,
   });
 
   GeoUnit copyWith({
@@ -62,6 +64,7 @@ class GeoUnit {
     double? packagingTax,
     RatingPolicy? ratingPolicy,
     TipPolicy? tipPolicy,
+    ServiceFeePolicy? serviceFeePolicy,
   }) {
     return GeoUnit(
       id: id ?? this.id,
@@ -82,6 +85,7 @@ class GeoUnit {
       packagingTax: packagingTax ?? this.packagingTax,
       ratingPolicy: ratingPolicy ?? this.ratingPolicy,
       tipPolicy: tipPolicy ?? this.tipPolicy,
+      serviceFeePolicy: serviceFeePolicy ?? this.serviceFeePolicy,
     );
   }
 
@@ -106,6 +110,7 @@ class GeoUnit {
       'packagingTax': packagingTax,
       'ratingPolicy': ratingPolicy?.toJson(),
       'tipPolicy': tipPolicy?.toJson(),
+      'serviceFeePolicy': serviceFeePolicy?.toJson(),
     };
   }
 
@@ -136,77 +141,23 @@ class GeoUnit {
           : [OrderMode.instant],
       orderPolicy: map['orderPolicy'] != null
           ? enumFromString(map['orderPolicy'], OrderPolicy.values)
-          : OrderPolicy.full, // TODO orderPolicy API mock
+          : Mock.mockOrderPolicy(),
       packagingTax: map['packagingTax'] ?? 0,
       ratingPolicy: map['ratingPolicy'] != null
           ? RatingPolicy.fromJson(map['ratingPolicy'])
-          : RatingPolicy(
-              // TODO ratingPolicy mock
-              title: LocalizedItem(
-                hu: 'Hogy sikerült a rendelésed?',
-                en: 'Hogy sikerült a rendelésed?',
-                de: 'Hogy sikerült a rendelésed?',
-              ),
-              ratings: [
-                RatingPolicyItem(
-                    value: 1,
-                    text: LocalizedItem(
-                      hu: 'Rossz',
-                      en: 'Rossz',
-                    ),
-                    icon: 'rating-1.svg'),
-                RatingPolicyItem(
-                    value: 2,
-                    text: LocalizedItem(
-                      hu: 'Elmegy',
-                      en: 'Elmegy',
-                    ),
-                    icon: 'rating-2.svg'),
-                RatingPolicyItem(
-                    value: 3,
-                    text: LocalizedItem(
-                      hu: 'Megfelelő',
-                      en: 'Megfelelő',
-                    ),
-                    icon: 'rating-3.svg'),
-                RatingPolicyItem(
-                    value: 4,
-                    text: LocalizedItem(
-                      hu: 'Jó',
-                      en: 'Jó',
-                    ),
-                    icon: 'rating-4.svg'),
-                RatingPolicyItem(
-                    value: 5,
-                    text: LocalizedItem(
-                      hu: 'Csodás',
-                      en: 'Csodás',
-                    ),
-                    icon: 'rating-5.svg'),
-              ],
-            ),
+          : Mock.mockRatingPolicy(),
       tipPolicy: map['tipPolicy'] != null
           ? TipPolicy.fromJson(map['tipPolicy'])
-          // : null,
-          : TipPolicy(
-              // TODO tipPolicy mock
-              title: LocalizedItem(
-                hu: 'Szeretnél borravalót adni?',
-                en: 'Szeretnél borravalót adni?',
-              ),
-              description: LocalizedItem(
-                hu: 'A borravaló 100%-t munkatársaink kapják.',
-                en: 'A borravaló 100%-t munkatársaink kapják.',
-              ),
-              percents: [5.0, 10.0, 15.0],
-              maxOtherAmount: 0,
-            ),
+          : Mock.mockTipPolicy(),
+      serviceFeePolicy: map['serviceFeePolicy'] != null
+          ? ServiceFeePolicy.fromJson(map['serviceFeePolicy'])
+          : Mock.mockServiceFeePolicy(),
     );
   }
 
   @override
   String toString() {
-    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, ratingPolicy: $ratingPolicy, tipPolicy: $tipPolicy, orderPolicy: $orderPolicy, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
+    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, serviceFeePolicy: $serviceFeePolicy, ratingPolicy: $ratingPolicy, tipPolicy: $tipPolicy, orderPolicy: $orderPolicy, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
   }
 
   @override
@@ -230,6 +181,7 @@ class GeoUnit {
         listEquals(other.supportedOrderModes, supportedOrderModes) &&
         other.packagingTax == packagingTax &&
         other.ratingPolicy == ratingPolicy &&
+        other.serviceFeePolicy == serviceFeePolicy &&
         other.tipPolicy == tipPolicy;
   }
 
@@ -250,6 +202,7 @@ class GeoUnit {
         openingHoursNext7.hashCode ^
         packagingTax.hashCode ^
         ratingPolicy.hashCode ^
-        tipPolicy.hashCode;
+        tipPolicy.hashCode ^
+        serviceFeePolicy.hashCode;
   }
 }

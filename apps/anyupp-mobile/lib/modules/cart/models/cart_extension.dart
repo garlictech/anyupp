@@ -1,5 +1,6 @@
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 
 extension CartExtension on Cart {
   int get orderCount => items.length;
@@ -25,6 +26,7 @@ extension CartExtension on Cart {
       value += orderPrice;
     });
     value += packaginFee;
+    value += totalServiceFee ?? 0;
     return value;
   }
 
@@ -50,6 +52,30 @@ extension CartExtension on Cart {
         }
       });
     });
+    return price;
+  }
+
+  double? get totalServiceFee {
+    ServiceFeePolicy? policy = currentUnit?.serviceFeePolicy;
+
+    if (policy == null || policy.type == ServiceFeeType.noFee) {
+      return null;
+    }
+
+    double price = 0.0;
+    items.forEach((order) {
+      double orderPrice = order.priceShown.pricePerUnit;
+      if (order.selectedConfigMap != null) {
+        order.selectedConfigMap?.forEach((key, comps) {
+          for (int i = 0; i < comps.length; i++) {
+            orderPrice += comps[i].price;
+          }
+        });
+      }
+      orderPrice *= order.quantity;
+      price += orderPrice;
+    });
+    price = price * (policy.percentage / 100.0);
     return price;
   }
 }

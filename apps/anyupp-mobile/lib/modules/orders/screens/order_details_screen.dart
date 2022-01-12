@@ -221,11 +221,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_unit.ratingPolicy == null && _unit.tipPolicy == null) {
-      return Container();
-    }
-    var status = order.statusLog[order.statusLog.length - 1];
-    if (status.status != OrderStatus.served) {
+    if (!shouldDisplayRating(order, _unit)) {
       return Container();
     }
 
@@ -249,7 +245,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
                 elevation: 0.0,
               ),
               child: Text(
-                trans(context, 'RENDELÉS ÉRTÉKELÉSE'),
+                trans(context, 'orders.sendRatingButton'),
                 style: Fonts.satoshi(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w700,
@@ -282,7 +278,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
                 elevation: 0.0,
               ),
               child: Text(
-                trans(context, 'BORRAVALÓ KÜLDÉSE'),
+                trans(context, 'orders.sendTipButton'),
                 style: Fonts.satoshi(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w700,
@@ -803,9 +799,69 @@ class OrderStatusTimelineWidget extends StatelessWidget {
     return results;
   }
 
+  Widget _buildSimpleRowWidget(BuildContext context) {
+    bool served = status.status == OrderStatus.served;
+
+    return Container(
+      width: double.infinity,
+      // padding: EdgeInsets.only(left: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            trans(context, 'orders.details.orderState'),
+            style: Fonts.satoshi(
+              fontSize: 24.0,
+              fontWeight: FontWeight.w700,
+              color: theme.secondary,
+            ),
+          ),
+          SizedBox(
+            height: 24.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: Icon(
+                  served ? Icons.check_circle_outline : Icons.highlight_off,
+                  color: theme.secondary,
+                ),
+              ),
+              Text(
+                trans(
+                  context,
+                  served
+                      ? 'orders.statusExt.served'
+                      : 'orders.statusExt.rejected',
+                ),
+                style: Fonts.satoshi(
+                  fontSize: 14,
+                  color: theme.secondary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 48.0,
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // IconData icon = Icons.hourglass_bottom_outlined;
+    OrderStatus s = status.status;
+    if (s == OrderStatus.served ||
+        s == OrderStatus.rejected ||
+        s == OrderStatus.failed) {
+      return _buildSimpleRowWidget(context);
+    }
+
     var timelineData = _calculateTimelineData(context);
     return Container(
       width: double.infinity,

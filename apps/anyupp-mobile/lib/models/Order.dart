@@ -29,6 +29,7 @@ class Order {
   final PaymentStatus? tipTransactionStatus;
   final String? tipTransactionId;
   final Transaction? tipTransaction;
+  final Price? serviceFee;
 
   Order({
     required this.id,
@@ -55,6 +56,7 @@ class Order {
     this.tipTransactionStatus,
     this.tipTransactionId,
     this.tipTransaction,
+    this.serviceFee,
   });
   // final UnpayCategory? unpayCategory;
 
@@ -83,6 +85,7 @@ class Order {
     PaymentStatus? tipTransactionStatus,
     String? tipTransactionId,
     Transaction? tipTransaction,
+    Price? serviceFee,
   }) {
     return Order(
       id: id ?? this.id,
@@ -109,6 +112,7 @@ class Order {
       tipTransactionStatus: tipTransactionStatus ?? this.tipTransactionStatus,
       tipTransactionId: tipTransactionId ?? this.tipTransactionId,
       tipTransaction: tipTransaction ?? this.tipTransaction,
+      serviceFee: serviceFee ?? this.serviceFee,
     );
   }
 
@@ -138,6 +142,7 @@ class Order {
       'tipTransactionStatus': tipTransactionStatus,
       'tipTransactionId': tipTransactionId,
       'tipTransaction': tipTransaction?.toJson(),
+      'serviceFee': serviceFee?.toJson(),
     };
   }
 
@@ -181,6 +186,8 @@ class Order {
       tipTransaction: map['tipTransaction'] != null
           ? Transaction.fromJson(map['tipTransaction'])
           : null,
+      serviceFee:
+          map['serviceFee'] != null ? Price.fromJson(map['serviceFee']) : null,
       createdAt: fromGraphQLAWSDateTimeToDartDateTime(map['createdAt']),
       updatedAt: fromGraphQLAWSDateTimeToDartDateTime(map['updatedAt']),
     );
@@ -188,7 +195,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, orderMode: $orderMode, servingMode: $servingMode, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
+    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, serviceFee: $serviceFee, orderMode: $orderMode, servingMode: $servingMode, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
   }
 
   @override
@@ -218,7 +225,8 @@ class Order {
         other.tip == tip &&
         other.tipTransactionStatus == tipTransactionStatus &&
         other.tipTransactionId == tipTransactionId &&
-        other.tipTransaction == tipTransaction;
+        other.tipTransaction == tipTransaction &&
+        other.serviceFee == serviceFee;
   }
 
   @override
@@ -245,6 +253,7 @@ class Order {
         tip.hashCode ^
         tipTransactionStatus.hashCode ^
         tipTransactionId.hashCode ^
-        tipTransaction.hashCode;
+        tipTransaction.hashCode ^
+        serviceFee.hashCode;
   }
 }
