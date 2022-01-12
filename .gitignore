@@ -43,7 +43,7 @@ Thumbs.db
 cyreport
 .setup*.sh
 .build
-.serverless
+.serverless*
 /apps/anyupp-backend/build
 /apps/infrastructure/cicd/build
 

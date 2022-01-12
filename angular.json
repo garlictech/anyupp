@@ -1139,7 +1139,10 @@
             "parallel": false,
             "commands": ["../../tools/build-anyupp-backend.sh '{args.env}'"]
           },
-          "outputs": ["apps/anyupp-backend/.serverless"]
+          "outputs": [
+            "apps/anyupp-backend/.serverless-1",
+            "apps/anyupp-backend/.serverless-2"
+          ]
         },
         "synth": {
           "builder": "@nrwl/workspace:run-commands",

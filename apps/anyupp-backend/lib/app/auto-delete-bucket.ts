@@ -22,7 +22,7 @@ export class AutoDeleteBucket extends Bucket {
       ...commonLambdaProps,
       handler: 'lib/lambda/auto-delete-bucket/index.handler',
       code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/auto-delete-bucket.zip'),
+        path.join(__dirname, '../../.serverless-1/auto-delete-bucket.zip'),
       ),
       lambdaPurpose: 'AutoBucket',
       timeout: Duration.minutes(15),

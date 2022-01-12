@@ -32,7 +32,7 @@ export class AnyuppCrudInfra extends Stack {
       code: lambda.Code.fromAsset(
         path.join(
           __dirname,
-          '../../../../anyupp-backend/.serverless/appsync-lambda.zip',
+          '../../../../anyupp-backend/.serverless-1/appsync-lambda.zip',
         ),
       ),
       environment: {

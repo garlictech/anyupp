@@ -131,7 +131,7 @@ export class AppsyncAppStack extends sst.Stack {
       timeout: cdk.Duration.seconds(30),
       memorySize: 512,
       code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/appsync-lambda.zip'),
+        path.join(__dirname, '../../.serverless-1/appsync-lambda.zip'),
       ),
       environment: {
         userPoolId: props.adminUserPool.userPoolId,

@@ -2,7 +2,7 @@ FROM node:14-alpine
 
 WORKDIR /
 
-COPY .serverless/rkeeper-product-processor.zip /
+COPY .serverless-2/rkeeper-product-processor.zip /
 
 RUN unzip /rkeeper-product-processor.zip \
   && rm rkeeper-product-processor.zip \
