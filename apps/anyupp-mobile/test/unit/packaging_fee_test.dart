@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
@@ -6,7 +7,16 @@ import 'package:flutter_test/flutter_test.dart';
 import '../mock/mock_data_faker.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
+import '../widget/mock/mocks.dart';
+
 void main() {
+  setUpAll(() {
+    // Setup
+    GeoUnit mockUnit =
+        MockGenerator.generateUnit(name: 'Test Unit', currency: 'huf');
+    getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(mockUnit));
+  });
+
   group('Packaging fee calculation tests', () {
     test('Calculate simple packaging fee: product with only one variant',
         () async {

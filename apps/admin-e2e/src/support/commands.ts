@@ -10,14 +10,15 @@
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface Chainable<Subject> {
+  interface Chainable<Subject = string> {
     login(email: string, password: string): void;
   }
 }
 import 'cypress-localstorage-commands';
 //
 // -- This is a parent command --
-Cypress.Commands.add('login', (email, password) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+Cypress.Commands.add(<any>'login', (email, password) => {
   console.log('Custom command example: Login', email, password);
 });
 

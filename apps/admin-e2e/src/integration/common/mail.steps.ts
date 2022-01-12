@@ -1,5 +1,6 @@
 import { mailtrapBox } from '../../support/mailtrap';
 import { When } from 'cypress-cucumber-preprocessor/steps';
+import { MessageBodyType } from 'mailtrap/client/MessageBodyType';
 
 const mtBox = mailtrapBox();
 
@@ -8,7 +9,9 @@ When('I delete all messages from the mailtrap inbox', async () => {
 });
 
 When('I wait for the message', async () => {
-  await mtBox.inbox.waitForMessages(messages => messages.length > 0);
+  await mtBox.inbox.waitForMessages(
+    (messages: unknown[]) => messages.length > 0,
+  );
 });
 
 When('I read and type the temporary password from the email', async () => {
@@ -19,7 +22,7 @@ When('I read and type the temporary password from the email', async () => {
     const txt = await mtBox.client.getMessageBody(
       mtBox.inbox.ID,
       msgID,
-      'html',
+      MessageBodyType.html,
     );
     // Get the last word from the body "The verification code to your new account is 580684"
     //console.error('TXT???', txt);
@@ -27,7 +30,9 @@ When('I read and type the temporary password from the email', async () => {
       .match(/<strong>(.*?)<\/strong>/g)?.[0]
       ?.replace(/<[^>]*>?/gm, '');
 
-    cy.get('#password').last().type(tempPassword);
+    cy.get('#password')
+      .last()
+      .type(tempPassword || '');
   }
 });
 
@@ -39,12 +44,14 @@ When('I read and type the verification code from the email', async () => {
     const txt = await mtBox.client.getMessageBody(
       mtBox.inbox.ID,
       msgID,
-      'html',
+      MessageBodyType.html,
     );
     // Get the last word from the body "The verification code to your new account is 580684"
     const code = txt.split(' ').pop();
 
-    cy.get('#code').last().type(code);
+    cy.get('#code')
+      .last()
+      .type(code || '');
     cy.get('#password').last().type('HarmasHatarHegy12_');
   }
 });

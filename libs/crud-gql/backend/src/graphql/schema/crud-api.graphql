@@ -1155,6 +1155,7 @@ input UpdateUnitInput {
   openingHours: WeeklyScheduleInput
   merchantId: String
   timeZone: String
+  externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
@@ -1185,6 +1186,13 @@ input DeleteAdminUserInput {
 
 input DeleteUnitProductInput {
   id: ID!
+}
+
+## Order
+input RateAndTipOrderInput {
+  orderId: ID!
+  rating: Int
+  tip: TipInput
 }
 
 type Query {
@@ -1234,6 +1242,11 @@ type Mutation {
     @function(name: "${env}-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
+
+  # rateAndTipOrder(input: RateAndTipOrderInput!): Boolean
+  #   @function(name: "${env}-anyupp-graphql-resolvers")
+  #   @aws_iam
+  #   @aws_cognito_user_pools
 
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
@@ -1294,7 +1307,9 @@ type Subscription {
     @aws_subscribe(mutations: ["createGroup", "updateGroup"])
     @aws_cognito_user_pools
   onUnitsChange(groupId: ID!): Unit
-    @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+    @aws_subscribe(
+      mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"]
+    )
     @aws_cognito_user_pools
   # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
   onProductCategoriesChange(chainId: ID!): ProductCategory

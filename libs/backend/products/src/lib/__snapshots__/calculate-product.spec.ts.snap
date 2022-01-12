@@ -11,12 +11,14 @@ Object {
     Object {
       "items": Array [
         Object {
+          "netPackagingFee": 30,
           "position": 1,
           "price": 1,
           "productComponentId": "PRODUCT_COMPONENT_ID_11",
           "refGroupPrice": 1,
         },
         Object {
+          "netPackagingFee": 40,
           "position": 2,
           "price": 2,
           "productComponentId": "PRODUCT_COMPONENT_ID_21",
@@ -65,6 +67,7 @@ Object {
       ],
       "id": "VARIANT_ID_01",
       "isAvailable": true,
+      "netPackagingFee": 30,
       "pack": Object {
         "size": 1,
         "unit": "UNIT",
@@ -72,6 +75,7 @@ Object {
       "position": 1,
       "price": 1.5,
       "refGroupPrice": 1,
+      "soldOut": false,
       "variantName": Object {
         "en": "VARIANT_NAME_01",
       },
@@ -89,6 +93,7 @@ Object {
       ],
       "id": "VARIANT_ID_01",
       "isAvailable": true,
+      "netPackagingFee": 30,
       "pack": Object {
         "size": 1,
         "unit": "UNIT",
@@ -96,6 +101,7 @@ Object {
       "position": 100,
       "price": 1.5,
       "refGroupPrice": 1,
+      "soldOut": false,
       "variantName": Object {
         "en": "VARIANT_NAME_01",
       },
@@ -173,24 +179,28 @@ Object {
   "variants": Array [
     Object {
       "id": "VARIANT_ID_01",
+      "netPackagingFee": 30,
       "pack": Object {
         "size": 1,
         "unit": "UNIT",
       },
       "position": 1,
       "price": 1.5,
+      "soldOut": false,
       "variantName": Object {
         "en": "VARIANT_NAME_01",
       },
     },
     Object {
       "id": "VARIANT_ID_01",
+      "netPackagingFee": 30,
       "pack": Object {
         "size": 1,
         "unit": "UNIT",
       },
       "position": 100,
       "price": 1.5,
+      "soldOut": false,
       "variantName": Object {
         "en": "VARIANT_NAME_01",
       },

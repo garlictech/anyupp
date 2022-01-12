@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:artemis/artemis.dart';
+import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 
 // const REPEAT_TIMEOUT_MS = 120000;
 
@@ -39,6 +41,15 @@ class AwsOrderSubscription {
     print('**** startOrderSubscription.items=${_items?.length}');
     controller.add(_items);
 
+    if (_items != null) {
+      // Schedule notifications if necessary for rating the order
+      getIt.get<RatingOrderNotificationBloc>().add(
+            CheckAndScheduleOrderRatingNotifications(
+              _items!,
+            ),
+          );
+    }
+
     await _startListSubscription(controller: controller);
 
     // Start refresh timer.
@@ -71,6 +82,13 @@ class AwsOrderSubscription {
           // print('**** startOrderSubscription.onData.archived=${item.toJson()["archived"]}');
           // print('**** startOrderSubscription.onData.item=${item.toJson()}');
           // print('**** startOrderSubscription.onData.item=$item');
+
+          // Schedule notifications if necessary for rating the order
+          getIt<OrderNotificationService>().checkIfShowOrderStatusNotification(
+            Catcher.navigatorKey!.currentContext!,
+            [item],
+          );
+
           if (_items == null) {
             _totalCount = 0;
             _nextToken = null;
@@ -135,8 +153,8 @@ class AwsOrderSubscription {
         nextToken: _nextToken,
       )));
 
-      // print('_getOrderList().result.data=${result.data}');
-      // print('_getOrderList().result.errors=${result.errors}');
+      print('_getOrderList().result.data=${result.data}');
+      print('_getOrderList().result.errors=${result.errors}');
       if (result.data == null) {
         _nextToken = null;
         _totalCount = 0;

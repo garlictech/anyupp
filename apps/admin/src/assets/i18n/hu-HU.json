@@ -300,6 +300,7 @@
   "units": {
     "listTitle": "Unitok",
     "editUnit": "Unit szerkesztése",
+    "editUnitPos": "Unit POS szerkesztése",
     "newUnit": "Új unit",
     "addUnit": "Unit hozzáadása",
     "open": "Nyitva",
@@ -332,7 +333,8 @@
       "anyuppPassword": "AnyUPP password",
       "restaurantId": "Restaurant ID"
     },
-    "rkeeperDeletionAlert": "AzAnyUPP POS has been selected. RKeeper data will be deleted."
+    "rkeeperDeletionAlert": "Az AnyUPP POS lett kiválasztva. Az RKeeper adatok el lesznek távolítva.",
+    "rkeeperPasswordUpdated": "Az RKeepeR AnyUPP jelszó megváltozott. Az új jelszó: {{anyuppPassword}}"
   },
   "users": {
     "listTitle": "Felhasználók",

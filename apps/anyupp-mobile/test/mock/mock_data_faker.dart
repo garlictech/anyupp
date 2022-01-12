@@ -130,7 +130,8 @@ class MockGenerator {
         )
       ],
       archived: archived,
-      createdAt: DateTime.now().toIso8601String(),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     );
   }
 

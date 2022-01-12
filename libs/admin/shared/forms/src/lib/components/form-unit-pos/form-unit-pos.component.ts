@@ -2,15 +2,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { KeyValue } from '@bgap/shared/types';
-import { UntilDestroy } from '@ngneat/until-destroy';
-
-import { FormsService } from '../../services/forms/forms.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Component({
@@ -20,7 +20,10 @@ import { FormsService } from '../../services/forms/forms.service';
   templateUrl: './form-unit-pos.component.html',
 })
 export class FormUnitPosComponent implements OnInit {
-  @Input() posFormGroup!: FormGroup;
+  @Input() posFormGroup?: FormGroup;
+  @Input() externalIdControl?: FormControl;
+  @Input() editing = false;
+  @Output() changePasswordEmitter = new EventEmitter();
 
   public ePosType = CrudApi.PosType;
   public posTypeOptions: KeyValue[] = [
@@ -34,37 +37,35 @@ export class FormUnitPosComponent implements OnInit {
     },
   ];
 
-  constructor(
-    private _formsService: FormsService,
-    private _changeDetectorRef: ChangeDetectorRef,
-  ) {}
+  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.posFormGroup.controls['type'].valueChanges.subscribe(newTypeValue => {
-      if (newTypeValue === CrudApi.PosType.rkeeper) {
-        this.posFormGroup.controls['rkeeper'].enable();
+    if (!this.editing) {
+      this.posFormGroup?.controls['type'].valueChanges
+        .pipe(untilDestroyed(this))
+        .subscribe(newTypeValue => {
+          if (newTypeValue === CrudApi.PosType.rkeeper) {
+            this.posFormGroup?.controls['rkeeper'].enable();
 
-        if (!this.posFormGroup.value.rkeeper?.anyuppPassword) {
-          this.generateNewPassword();
+            if (!this.posFormGroup?.value.rkeeper?.anyuppPassword) {
+              this.generateNewPassword();
 
-          (<FormGroup>this.posFormGroup.controls['rkeeper']).controls[
-            'anyuppUsername'
-          ].patchValue('user');
-        }
-      } else {
-        this.posFormGroup.controls['rkeeper'].disable();
-      }
+              (<FormGroup>this.posFormGroup?.controls['rkeeper']).controls[
+                'anyuppUsername'
+              ].patchValue('user');
+            }
+          } else {
+            this.posFormGroup?.controls['rkeeper'].disable();
+            this.externalIdControl?.patchValue(null);
+          }
 
-      // detectChanges not refresh the UI correctly!
-      this._changeDetectorRef.markForCheck();
-    });
+          // detectChanges not refresh the UI correctly!
+          this._changeDetectorRef.markForCheck();
+        });
+    }
   }
 
   public generateNewPassword() {
-    if (this.posFormGroup.controls['rkeeper']) {
-      this._formsService.generateRkeeperPassword(
-        <FormGroup>this.posFormGroup.controls['rkeeper'],
-      );
-    }
+    this.changePasswordEmitter.emit();
   }
 }

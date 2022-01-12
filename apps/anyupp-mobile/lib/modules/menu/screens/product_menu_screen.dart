@@ -8,6 +8,7 @@ import 'package:fa_prev/modules/selectunit/screens/flutter_qr_code_scanner.dart'
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +39,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
 
   Future<void> _checkNeedToShowTooltip() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    GeoUnit? unit = _unit;
+    GeoUnit? unit = currentUnit;
     if (unit != null) {
       bool? showed = preferences.getBool('TOOLTIP_${unit.id}');
       // print('_checkNeedToShowTooltip.showed=$showed');
@@ -241,7 +242,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                 showBorder: false,
                 color: theme.secondary,
                 icon: Icons.chevron_left,
-                onPressed: () => _resetPlaceAndGoToUnitSelection(_unit),
+                onPressed: () => _resetPlaceAndGoToUnitSelection(currentUnit),
               ),
               // if (theme.images?.header != null)
               ImageWidget(
@@ -384,19 +385,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   }
 
   int get _supportedServiceModeCount {
-    var state = getIt<UnitSelectBloc>().state;
-    if (state is UnitSelected) {
-      return state.unit.supportedServingModes.length;
-    }
-    return 0;
-  }
-
-  GeoUnit? get _unit {
-    var state = getIt<UnitSelectBloc>().state;
-    if (state is UnitSelected) {
-      return state.unit;
-    }
-    return null;
+    return currentUnit?.supportedServingModes.length ?? 0;
   }
 
   void _selectServingMode(BuildContext context, ServingMode current) async {

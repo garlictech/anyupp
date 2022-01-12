@@ -36,34 +36,6 @@
     "baseUrl": ".",
     "paths": {
       "*": ["*", "types/*"],
-      "@bgap/admin/store/admin-users": [
-        "libs/admin/store/admin-users/src/index.ts"
-      ],
-      "@bgap/admin/store/app-core": ["libs/admin/store/app-core/src/index.ts"],
-      "@bgap/admin/store/chains": ["libs/admin/store/chains/src/index.ts"],
-      "@bgap/admin/store/dashboard": [
-        "libs/admin/store/dashboard/src/index.ts"
-      ],
-      "@bgap/admin/store/groups": ["libs/admin/store/groups/src/index.ts"],
-      "@bgap/admin/store/logged-user": [
-        "libs/admin/store/logged-user/src/index.ts"
-      ],
-      "@bgap/admin/store/orders": ["libs/admin/store/orders/src/index.ts"],
-      "@bgap/admin/store/product-categories": [
-        "libs/admin/store/product-categories/src/index.ts"
-      ],
-      "@bgap/admin/store/product-component-sets": [
-        "libs/admin/store/product-component-sets/src/index.ts"
-      ],
-      "@bgap/admin/store/product-components": [
-        "libs/admin/store/product-components/src/index.ts"
-      ],
-      "@bgap/admin/store/products": ["libs/admin/store/products/src/index.ts"],
-      "@bgap/admin/store/role-contexts": [
-        "libs/admin/store/role-contexts/src/index.ts"
-      ],
-      "@bgap/admin/store/units": ["libs/admin/store/units/src/index.ts"],
-      "@bgap/admin/store/users": ["libs/admin/store/users/src/index.ts"],
       "@bgap/admin/pages/admin-users": [
         "libs/admin/pages/admin-users/src/index.ts"
       ],
@@ -114,6 +86,34 @@
       "@bgap/admin/shared/pipes": ["libs/admin/shared/pipes/src/index.ts"],
       "@bgap/admin/shared/types": ["libs/admin/shared/types/src/index.ts"],
       "@bgap/admin/shared/utils": ["libs/admin/shared/utils/src/index.ts"],
+      "@bgap/admin/store/admin-users": [
+        "libs/admin/store/admin-users/src/index.ts"
+      ],
+      "@bgap/admin/store/app-core": ["libs/admin/store/app-core/src/index.ts"],
+      "@bgap/admin/store/chains": ["libs/admin/store/chains/src/index.ts"],
+      "@bgap/admin/store/dashboard": [
+        "libs/admin/store/dashboard/src/index.ts"
+      ],
+      "@bgap/admin/store/groups": ["libs/admin/store/groups/src/index.ts"],
+      "@bgap/admin/store/logged-user": [
+        "libs/admin/store/logged-user/src/index.ts"
+      ],
+      "@bgap/admin/store/orders": ["libs/admin/store/orders/src/index.ts"],
+      "@bgap/admin/store/product-categories": [
+        "libs/admin/store/product-categories/src/index.ts"
+      ],
+      "@bgap/admin/store/product-component-sets": [
+        "libs/admin/store/product-component-sets/src/index.ts"
+      ],
+      "@bgap/admin/store/product-components": [
+        "libs/admin/store/product-components/src/index.ts"
+      ],
+      "@bgap/admin/store/products": ["libs/admin/store/products/src/index.ts"],
+      "@bgap/admin/store/role-contexts": [
+        "libs/admin/store/role-contexts/src/index.ts"
+      ],
+      "@bgap/admin/store/units": ["libs/admin/store/units/src/index.ts"],
+      "@bgap/admin/store/users": ["libs/admin/store/users/src/index.ts"],
       "@bgap/admin/ui/core": ["libs/admin/ui/core/src/index.ts"],
       "@bgap/admin/ui/theme": ["libs/admin/ui/theme/src/index.ts"],
       "@bgap/anyupp-backend-lib": ["libs/anyupp-backend-lib/src/index.ts"],
@@ -126,6 +126,7 @@
       ],
       "@bgap/backend/products": ["libs/backend/products/src/index.ts"],
       "@bgap/backend/reports": ["libs/backend/reports/src/index.ts"],
+      "@bgap/backend/seeder": ["libs/backend/seeder/src/index.ts"],
       "@bgap/backend/shared/utils": ["libs/backend/shared/utils/src/index.ts"],
       "@bgap/backend/units": ["libs/backend/units/src/index.ts"],
       "@bgap/crud-gql/api": ["libs/crud-gql/api/src/index.ts"],

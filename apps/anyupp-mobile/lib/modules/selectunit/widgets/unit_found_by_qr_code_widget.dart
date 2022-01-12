@@ -1,11 +1,10 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/utils/local_notifications_util.dart';
+import 'package:fa_prev/shared/notifications/utils/notifications_utils.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -214,7 +213,6 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget> {
       await setPlacePref(unit.id, widget.place);
       _flipCardState.currentState?.toggleCard();
       showNotification(
-          context,
           trans('selectUnit.tableReserved.title'),
           trans('selectUnit.tableReserved.description',
               [widget.place.table, widget.place.seat]),

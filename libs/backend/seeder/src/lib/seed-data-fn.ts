@@ -1,3 +1,4 @@
+import { ES_DELAY, handleRkeeperProducts } from '@bgap/rkeeper-api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
@@ -13,9 +14,18 @@ import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import { DateTime } from 'luxon';
 import { combineLatest, concat, from, Observable, of } from 'rxjs';
-import { catchError, concatMap, switchMap, tap, toArray } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  map,
+  switchMap,
+  tap,
+  toArray,
+  delay,
+} from 'rxjs/operators';
 import * as R from 'ramda';
 import { seedUtils } from './utils';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
@@ -1098,7 +1108,6 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
           },
         }),
     ),
-
     deleteCreate(
       () => deps.crudSdk.DeleteGroup({ input: { id: 'yellow-rkeeper-group' } }),
       () =>
@@ -1111,7 +1120,6 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
           },
         }),
     ),
-
     deleteCreate(
       () => deps.crudSdk.DeleteChain({ input: { id: 'yellow-rkeeper-chain' } }),
       () =>
@@ -1122,6 +1130,32 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
             name: 'yellow RKEEPER Chain',
           },
         }),
+    ),
+  ).pipe(
+    // seed products by triggering menusync
+    map(([unit]) => unit),
+    throwIfEmptyValue(),
+    delay(ES_DELAY),
+    switchMap(unit =>
+      handleRkeeperProducts(deps.crudSdk)(
+        unit.externalId || 'this must be defined',
+      )({
+        data: {
+          dishes: [
+            {
+              type: 'dish',
+              modiweight: 0,
+              price: 50000,
+              modischeme: 0,
+              active: 1,
+              id: 9991000114,
+              guid: '4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68',
+              code: 3,
+              name: 'pr\u00f3ba ital',
+            },
+          ],
+        },
+      }),
     ),
   );
 

@@ -31,6 +31,7 @@ class StatusWidget extends StatelessWidget {
     Color color = buttonColor ?? theme.primary;
 
     return Container(
+      padding: EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -77,7 +78,7 @@ class StatusWidget extends StatelessWidget {
           Container(
             width: double.infinity,
             height: 56,
-            margin: EdgeInsets.all(16.0),
+            // margin: EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: onPressed == null ? () => Nav.pop() : onPressed,
               style: ElevatedButton.styleFrom(

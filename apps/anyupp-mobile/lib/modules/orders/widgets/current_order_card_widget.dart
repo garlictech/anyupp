@@ -103,8 +103,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
                     children: [
                       Text(
                         order.archived
-                            ? dateFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!))
-                            : formatOrderDate(context, fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!)),
+                            ? dateFormatter.format(order.createdAt)
+                            : formatOrderDate(context, order.createdAt),
                         style: Fonts.satoshi(
                           fontSize: 16.0,
                           color: theme.secondary,
@@ -112,7 +112,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        trans(context, 'orders.infos.status.${enumToString(status)!}.title'),
+                        trans(context,
+                            'orders.infos.status.${enumToString(status)!}.title'),
                         style: Fonts.satoshi(
                           fontSize: 14.0,
                           color: theme.secondary,
@@ -126,7 +127,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
                               height: 10.0,
                             ),
                             TakeawayStatusWidget(
-                              servingMode: order.servingMode ?? ServingMode.inPlace,
+                              servingMode:
+                                  order.servingMode ?? ServingMode.inPlace,
                               padding: 4.0,
                             ),
                           ],
@@ -143,7 +145,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
                   ),
                   // color: theme.secondary,
                   child: Text(
-                    formatCurrency(order.sumPriceShown.priceSum, order.sumPriceShown.currency),
+                    formatCurrency(order.sumPriceShown.priceSum,
+                        order.sumPriceShown.currency),
                     style: Fonts.satoshi(
                       fontSize: 16.0,
                       color: theme.secondary,

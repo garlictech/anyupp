@@ -1,7 +1,4 @@
 import 'dart:async';
-
-import 'package:fa_prev/modules/favorites/bloc/favorites_event.dart';
-import 'package:fa_prev/modules/favorites/bloc/favorites_state.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

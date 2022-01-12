@@ -160,5 +160,12 @@ query GetOrder($orderId: ID!) {
       netPrice
       taxPercentage
     }
+    rating
+    tip {
+      type
+      value
+    }
+    tipTransactionId
+    tipTransactionStatus
   }
 }
