@@ -7,6 +7,7 @@ import 'package:fa_prev/models/Transaction.dart';
 import 'package:fa_prev/modules/transactions/transactions.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets/app_bar.dart';
 import 'package:fa_prev/shared/widgets/empty_widget.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
@@ -33,10 +34,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     _pageSize = getIt<AppConstants>().paginationSize;
     getIt<TransactionsBloc>().add(LoadTransactions(nextToken: null));
 
-    UnitSelectState state = getIt<UnitSelectBloc>().state;
-    if (state is UnitSelected) {
-      unit = state.unit;
-    }
+    unit = currentUnit!;
   }
 
   void _onRefresh() async {

@@ -3,7 +3,6 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
-
 import 'allergen_grid_widget.dart';
 
 class AllergensWidget extends StatelessWidget {

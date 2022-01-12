@@ -1,12 +1,14 @@
-import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/pdf_utils.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,15 +36,30 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   Widget build(BuildContext context) {
     setToolbarThemeV2(theme);
 
-    return BlocListener<OrderRefreshBloc, OrderRefreshState>(
-      listener: (context, state) {
-        print('******* OrderDetailsScreen().listener.state=$state');
-        if (state is OrderRefreshed) {
-          setState(() {
-            _order = state.order;
-          });
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<OrderRefreshBloc, OrderRefreshState>(
+          listener: (context, state) {
+            // print('******* OrderDetailsScreen().listener.state=$state');
+            if (state is OrderRefreshed) {
+              setState(() {
+                _order = state.order;
+              });
+            }
+          },
+        ),
+        BlocListener<RatingBloc, RatingState>(
+          listener: (context, state) {
+            // print('******* OrderDetailsScreen().listener.state=$state');
+            if (state is RatingSuccess) {
+              GeoUnit unit = currentUnit!;
+              getIt<OrderBloc>()
+                  .add(StartGetOrderListSubscription(unit.chainId, unit.id));
+              // Nav.pop();
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         // extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -59,8 +76,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           ),
           centerTitle: true,
           title: Text(
-            formatOrderDate(context,
-                fromGraphQLAWSDateTimeToDartDateTime(_order.createdAt!)),
+            formatOrderDate(context, _order.createdAt),
             style: Fonts.satoshi(
               fontSize: 16.0,
               color: theme.secondary,
@@ -73,22 +89,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             color: theme.secondary, //change your color here
           ),
           backgroundColor: theme.secondary0,
-          // actions: <Widget>[
-          //   Padding(
-          //     padding: const EdgeInsets.only(
-          //       top: 8.0,
-          //       bottom: 8.0,
-          //       right: 15.0,
-          //     ),
-          //     child: BorderedWidget(
-          //       width: 40,
-          //       child: Icon(
-          //         Icons.help,
-          //         color: theme.secondary,
-          //       ),
-          //     ),
-          //   ),
-          // ],
         ),
         body: Container(
           color: theme.secondary0,
@@ -103,7 +103,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     status: _order.statusLog[_order.statusLog.length - 1],
                   ),
                 ),
+                OrderDetailsRatingAndTipWidget(order: _order),
                 OrderDetailsInfoTextWidget(
+                  order: _order,
+                  unit: widget.unit,
+                ),
+                OrderDetailsTipAndServingFeeWidget(
                   order: _order,
                   unit: widget.unit,
                 ),
@@ -125,6 +130,168 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class OrderDetailsTipAndServingFeeWidget extends StatelessWidget {
+  final Order order;
+  final GeoUnit unit;
+  OrderDetailsTipAndServingFeeWidget(
+      {Key? key, required this.order, required this.unit});
+
+  @override
+  Widget build(BuildContext context) {
+    if (order.tip == null) {
+      return Container();
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 72.0,
+      ),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            trans(context, 'orders.details.tipDetails'),
+            style: Fonts.satoshi(
+              fontSize: 24.0,
+              fontWeight: FontWeight.w700,
+              color: theme.secondary,
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                flex: 12,
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(right: 16.0),
+                      child: Icon(
+                        Icons.monetization_on,
+                        color: theme.secondary,
+                      ),
+                    ),
+                    Text(
+                      trans(context, 'orders.tipAmount'),
+                      style: Fonts.satoshi(
+                        fontSize: 14,
+                        color: theme.secondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(
+                flex: 7,
+                child: Text(
+                  formatCurrency(order.tip?.value ?? 0, unit.currency),
+                  style: Fonts.satoshi(
+                    fontSize: 14,
+                    color: theme.secondary64,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class OrderDetailsRatingAndTipWidget extends StatelessWidget {
+  final Order order;
+
+  final GeoUnit _unit;
+
+  OrderDetailsRatingAndTipWidget({Key? key, required this.order})
+      : _unit = currentUnit!;
+
+  @override
+  Widget build(BuildContext context) {
+    if (_unit.ratingPolicy == null && _unit.tipPolicy == null) {
+      return Container();
+    }
+    var status = order.statusLog[order.statusLog.length - 1];
+    if (status.status != OrderStatus.served) {
+      return Container();
+    }
+
+    return Column(
+      children: [
+        if (_unit.ratingPolicy != null && order.rating == null)
+          Container(
+            height: 56.0,
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 16.0),
+            child: ElevatedButton(
+              onPressed: () => Nav.to(RatingAndTippingScreen(
+                orderId: order.id,
+                ratingPolicy: _unit.ratingPolicy,
+              )),
+              style: ElevatedButton.styleFrom(
+                primary: lighten(theme.primary, 76),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                elevation: 0.0,
+              ),
+              child: Text(
+                trans(context, 'RENDELÉS ÉRTÉKELÉSE'),
+                style: Fonts.satoshi(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                  color: theme.primary,
+                ),
+              ),
+            ),
+          ),
+        if (_unit.tipPolicy != null &&
+            order.tip == null &&
+            order.transaction?.externalTransactionId != null)
+          Container(
+            height: 56.0,
+            width: double.infinity,
+            margin: EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              top: 12.0,
+            ),
+            child: ElevatedButton(
+              onPressed: () => Nav.to(RatingAndTippingScreen(
+                orderId: order.id,
+                tipPolicy: _unit.tipPolicy,
+              )),
+              style: ElevatedButton.styleFrom(
+                primary: theme.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                elevation: 0.0,
+              ),
+              child: Text(
+                trans(context, 'BORRAVALÓ KÜLDÉSE'),
+                style: Fonts.satoshi(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                  color: theme.secondary0,
+                ),
+              ),
+            ),
+          )
+      ],
     );
   }
 }
@@ -844,16 +1011,14 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
           value: '#${order.orderNum}',
         );
       case 3:
-        var createdAt = dateFormatter
-            .format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!));
+        var createdAt = dateFormatter.format(order.createdAt);
         return OrderDetailsInfoTableItemData(
           icon: Icons.event,
           title: trans(context, 'orders.infos.titles.3'),
           value: createdAt,
         );
       case 4:
-        var createdAt = timeFormatter
-            .format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!));
+        var createdAt = timeFormatter.format(order.createdAt);
         return OrderDetailsInfoTableItemData(
           icon: Icons.schedule_rounded,
           title: trans(context, 'orders.infos.titles.4'),

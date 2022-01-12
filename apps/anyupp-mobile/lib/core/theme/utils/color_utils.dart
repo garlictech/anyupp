@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tinycolor2/tinycolor2.dart';
 
 Color lighten(Color c, int percent) {
@@ -157,16 +154,16 @@ void setToolbarColor({
   required Color systemNavigationBarColor,
   required Color systemNavigationBarDividerColor,
 }) {
-  if (Platform.isAndroid) {
-    bool isLight = statusBarColor.isLight;
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: statusBarColor,
-      statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
-      systemNavigationBarColor: systemNavigationBarColor,
-      systemNavigationBarDividerColor: systemNavigationBarDividerColor,
-      systemNavigationBarIconBrightness:
-          isLight ? Brightness.dark : Brightness.light,
-      // systemNavigationBarContrastEnforced: false,
-    ));
-  }
+  // if (Platform.isAndroid) {
+  //   bool isLight = statusBarColor.isLight;
+  //   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //     statusBarColor: statusBarColor,
+  //     statusBarIconBrightness: isLight ? Brightness.dark : Brightness.light,
+  //     systemNavigationBarColor: systemNavigationBarColor,
+  //     systemNavigationBarDividerColor: systemNavigationBarDividerColor,
+  //     systemNavigationBarIconBrightness:
+  //         isLight ? Brightness.dark : Brightness.light,
+  //     // systemNavigationBarContrastEnforced: false,
+  //   ));
+  // }
 }

@@ -11,6 +11,7 @@ export 'repository/cart_repository.dart';
 export 'screens/cart_screen.dart';
 export 'utils/form_style_utils.dart';
 export 'utils/payment_method_utils.dart';
+export 'widgets/add_invoice_data_sheet.dart';
 export 'widgets/add_invoice_data_widget.dart';
 export 'widgets/add_payment_method_sheet.dart';
 export 'widgets/cart_button_widget.dart';

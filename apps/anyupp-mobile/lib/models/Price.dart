@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -25,7 +24,7 @@ class Price {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'currency': currency,
       'netPrice': netPrice,
@@ -33,17 +32,13 @@ class Price {
     };
   }
 
-  factory Price.fromMap(Map<String, dynamic> map) {
+  factory Price.fromJson(Map<String, dynamic> map) {
     return Price(
       currency: map['currency'] ?? '',
       netPrice: map['netPrice']?.toDouble() ?? 0.0,
       taxPercentage: map['taxPercentage']?.toDouble() ?? 0.0,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Price.fromJson(String source) => Price.fromMap(json.decode(source));
 
   @override
   String toString() =>

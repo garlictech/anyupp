@@ -7,11 +7,13 @@ import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/notifications/notifications.dart';
 import 'package:fa_prev/shared/user-details/user_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -129,6 +131,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<ConfigsetBloc>(create: (_) => getIt<ConfigsetBloc>()),
         BlocProvider<UserDetailsBloc>(create: (_) => getIt<UserDetailsBloc>()),
         BlocProvider<TakeAwayBloc>(create: (_) => getIt<TakeAwayBloc>()),
+        BlocProvider(create: (_) => getIt<RatingBloc>()),
+        BlocProvider(create: (_) => getIt<RatingOrderNotificationBloc>()),
+        BlocProvider(create: (_) => getIt<NotificationsBloc>()),
       ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
           builder: (context, LocaleState localeState) {

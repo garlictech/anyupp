@@ -178,7 +178,8 @@
       "orderState": "Order status",
       "orderDetails": "Order details",
       "paymentDetails": "Payment details",
-      "otherDetails": "More details"
+      "otherDetails": "More details",
+      "tipDetails": "Tip"
     },
     "sendOrderError": {
       "title": "Order failed.",
@@ -197,6 +198,7 @@
       "rejected": "REJECTED",
       "served": "SERVED"
     },
+    "tipAmount": "Tip amount",
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
     "simplepay": "Pay with SimplePay",
@@ -686,5 +688,33 @@
       "title": "Unit is closed",
       "description": "Unit is not accepting orders right now. Try it later!"
     }
+  },
+  "rating": {
+    "question": "How did you like your order?",
+    "send": "READY",
+    "stars": {
+      "1": "Bad",
+      "2": "Going",
+      "3": "Appropriate",
+      "4": "Good",
+      "5": "Wonderful"
+    },
+    "notification": {
+      "title": "Rate order",
+      "message": "Rate your latest order!"
+    }
+  },
+  "tipping": {
+    "question": "Do you want to tip?",
+    "description": "100% of the tips are given to our employees.",
+    "otherAmount": "Other amount",
+    "dialog": {
+      "title": "Unique Tip",
+      "description": "Please enter the amount of tips you want.",
+      "ok": "Done",
+      "cancel": "Cancel",
+      "hint": "Tip amount"
+    },
+    "success": "Thank you for your rating and tip!"
   }
 }

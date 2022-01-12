@@ -1188,6 +1188,13 @@ input DeleteUnitProductInput {
   id: ID!
 }
 
+## Order
+input RateAndTipOrderInput {
+  orderId: ID!
+  rating: Int
+  tip: TipInput
+}
+
 type Query {
   listStripeCards: [StripeCard]
     @aws_cognito_user_pools
@@ -1235,6 +1242,11 @@ type Mutation {
     @function(name: "${env}-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
+
+  # rateAndTipOrder(input: RateAndTipOrderInput!): Boolean
+  #   @function(name: "${env}-anyupp-graphql-resolvers")
+  #   @aws_iam
+  #   @aws_cognito_user_pools
 
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!

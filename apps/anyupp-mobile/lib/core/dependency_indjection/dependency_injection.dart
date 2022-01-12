@@ -8,6 +8,7 @@ import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/modules/transactions/transactions.dart';
 import 'package:fa_prev/shared/auth.dart';
@@ -15,6 +16,7 @@ import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
+import 'package:fa_prev/shared/notifications/notifications.dart';
 import 'package:fa_prev/shared/user-details/user_details.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
@@ -90,6 +92,9 @@ void _initProviders() {
   // User details
   getIt.registerLazySingleton<IUserDetailsProvider>(
       () => AwsUserDetailsProvider(getIt<IAuthProvider>()));
+
+  // Rating and Tip
+  getIt.registerLazySingleton<IRatingProvider>(() => AwsRatingProvider());
 }
 
 void _initRepositories() {
@@ -124,6 +129,10 @@ void _initRepositories() {
 
   getIt.registerLazySingleton<UserDetailsRepository>(
       () => UserDetailsRepository(getIt<IUserDetailsProvider>()));
+
+  // Rating and Tip
+  getIt.registerLazySingleton<RatingRepository>(
+      () => RatingRepository(getIt<IRatingProvider>()));
 }
 
 void _initServices() {
@@ -165,4 +174,16 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => ConfigsetBloc());
   getIt.registerLazySingleton(
       () => UserDetailsBloc(getIt<UserDetailsRepository>()));
+
+  // Rating and Tip
+  getIt.registerLazySingleton(() => RatingBloc(
+        getIt<RatingRepository>(),
+        getIt<OrderRepository>(),
+      ));
+  getIt.registerLazySingleton(() => RatingOrderNotificationBloc(
+        RatingOrderNotificationRepository(),
+      ));
+
+  // Local notifications
+  getIt.registerLazySingleton(() => NotificationsBloc());
 }

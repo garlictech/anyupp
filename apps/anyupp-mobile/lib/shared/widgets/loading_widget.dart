@@ -7,7 +7,13 @@ class CenterLoadingWidget extends StatelessWidget {
   final double size;
   final double strokeWidth;
 
-  const CenterLoadingWidget({this.color, this.backgroundColor, this.size = 32.0, this.strokeWidth = 4.0});
+  const CenterLoadingWidget(
+      {Key? key,
+      this.color,
+      this.backgroundColor,
+      this.size = 32.0,
+      this.strokeWidth = 4.0})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

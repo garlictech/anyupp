@@ -1,4 +1,5 @@
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
 import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
@@ -14,7 +15,8 @@ class Order {
   final Place? place;
   final double? paymentIntention;
   final List<StatusLog> statusLog;
-  final String? createdAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
   final bool archived;
   final Transaction? transaction;
   final PaymentStatus? transactionStatus;
@@ -22,6 +24,11 @@ class Order {
   final ServingMode? servingMode;
   final OrderMode? orderMode;
   final Price? packagingSum;
+  final int? rating;
+  final Tip? tip;
+  final PaymentStatus? tipTransactionStatus;
+  final String? tipTransactionId;
+  final Transaction? tipTransaction;
 
   Order({
     required this.id,
@@ -34,7 +41,8 @@ class Order {
     this.place,
     this.paymentIntention,
     required this.statusLog,
-    this.createdAt,
+    required this.createdAt,
+    required this.updatedAt,
     required this.archived,
     this.transaction,
     this.transactionStatus,
@@ -42,6 +50,11 @@ class Order {
     this.servingMode,
     this.orderMode,
     this.packagingSum,
+    this.rating,
+    this.tip,
+    this.tipTransactionStatus,
+    this.tipTransactionId,
+    this.tipTransaction,
   });
   // final UnpayCategory? unpayCategory;
 
@@ -56,7 +69,8 @@ class Order {
     Place? place,
     double? paymentIntention,
     List<StatusLog>? statusLog,
-    String? created,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     bool? archived,
     Transaction? transaction,
     PaymentStatus? transactionStatus,
@@ -64,6 +78,11 @@ class Order {
     ServingMode? servingMode,
     OrderMode? orderMode,
     Price? packagingSum,
+    int? rating,
+    Tip? tip,
+    PaymentStatus? tipTransactionStatus,
+    String? tipTransactionId,
+    Transaction? tipTransaction,
   }) {
     return Order(
       id: id ?? this.id,
@@ -76,7 +95,8 @@ class Order {
       place: place ?? this.place,
       paymentIntention: paymentIntention ?? this.paymentIntention,
       statusLog: statusLog ?? this.statusLog,
-      createdAt: created ?? this.createdAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
       archived: archived ?? this.archived,
       transaction: transaction ?? this.transaction,
       transactionStatus: transactionStatus ?? this.transactionStatus,
@@ -84,6 +104,11 @@ class Order {
       servingMode: servingMode ?? this.servingMode,
       orderMode: orderMode ?? this.orderMode,
       packagingSum: packagingSum ?? this.packagingSum,
+      rating: rating ?? this.rating,
+      tip: tip ?? this.tip,
+      tipTransactionStatus: tipTransactionStatus ?? this.tipTransactionStatus,
+      tipTransactionId: tipTransactionId ?? this.tipTransactionId,
+      tipTransaction: tipTransaction ?? this.tipTransaction,
     );
   }
 
@@ -100,6 +125,7 @@ class Order {
       'paymentIntention': paymentIntention,
       'statusLog': statusLog.map((x) => x.toJson()).toList(),
       'createdAt': createdAt,
+      'updatedAt': updatedAt,
       'archived': archived,
       'transaction': transaction?.toJson(),
       'transactionStatus': transactionStatus,
@@ -107,6 +133,11 @@ class Order {
       'servingMode': enumToString(servingMode),
       'orderMode': enumToString(orderMode),
       'packagingSum': packagingSum?.toJson(),
+      'rating': rating,
+      'tip': tip?.toJson(),
+      'tipTransactionStatus': tipTransactionStatus,
+      'tipTransactionId': tipTransactionId,
+      'tipTransaction': tipTransaction?.toJson(),
     };
   }
 
@@ -124,7 +155,6 @@ class Order {
       paymentIntention: map['paymentIntention'],
       statusLog: List<StatusLog>.from(
           map['statusLog']?.map((x) => StatusLog.fromJson(x))),
-      createdAt: map['createdAt'],
       archived: map['archived'],
       transaction: map['transaction'] != null
           ? Transaction.fromJson(map['transaction'])
@@ -141,6 +171,18 @@ class Order {
       packagingSum: map['packagingSum'] != null
           ? Price.fromJson(map['packagingSum'])
           : null,
+      rating: map['rating'],
+      tip: map['tip'] != null ? Tip.fromJson(map['tip']) : null,
+      tipTransactionStatus: map['tipTransactionStatus'] != null
+          ? enumFromString<PaymentStatus>(
+              map['tipTransactionStatus'], PaymentStatus.values)
+          : null,
+      tipTransactionId: map['tipTransactionId'],
+      tipTransaction: map['tipTransaction'] != null
+          ? Transaction.fromJson(map['tipTransaction'])
+          : null,
+      createdAt: fromGraphQLAWSDateTimeToDartDateTime(map['createdAt']),
+      updatedAt: fromGraphQLAWSDateTimeToDartDateTime(map['updatedAt']),
     );
   }
 
@@ -165,12 +207,18 @@ class Order {
         other.paymentIntention == paymentIntention &&
         listEquals(other.statusLog, statusLog) &&
         other.createdAt == createdAt &&
+        other.updatedAt == updatedAt &&
         other.archived == archived &&
         other.transaction == transaction &&
         other.transactionStatus == transactionStatus &&
         other.transactionId == transactionId &&
         other.servingMode == servingMode &&
-        other.orderMode == orderMode;
+        other.orderMode == orderMode &&
+        other.rating == rating &&
+        other.tip == tip &&
+        other.tipTransactionStatus == tipTransactionStatus &&
+        other.tipTransactionId == tipTransactionId &&
+        other.tipTransaction == tipTransaction;
   }
 
   @override
@@ -186,11 +234,17 @@ class Order {
         paymentIntention.hashCode ^
         statusLog.hashCode ^
         createdAt.hashCode ^
+        updatedAt.hashCode ^
         archived.hashCode ^
         transaction.hashCode ^
         transactionStatus.hashCode ^
         transactionId.hashCode ^
         orderMode.hashCode ^
-        servingMode.hashCode;
+        servingMode.hashCode ^
+        rating.hashCode ^
+        tip.hashCode ^
+        tipTransactionStatus.hashCode ^
+        tipTransactionId.hashCode ^
+        tipTransaction.hashCode;
   }
 }

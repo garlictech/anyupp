@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -29,9 +28,10 @@ void main() {
     void _checkOrdersSortOrder(List<Order> orders) {
       expect(orders, isNotNull);
       for (int i = 0; i < orders.length - 1; i++) {
-        DateTime date1 = fromGraphQLAWSDateTimeToDartDateTime(orders[i].createdAt!);
-        DateTime date2 = fromGraphQLAWSDateTimeToDartDateTime(orders[i + 1].createdAt!);
-        expect(date1.millisecondsSinceEpoch, greaterThanOrEqualTo(date2.millisecondsSinceEpoch));
+        DateTime date1 = orders[i].createdAt!;
+        DateTime date2 = orders[i + 1].createdAt!;
+        expect(date1.millisecondsSinceEpoch,
+            greaterThanOrEqualTo(date2.millisecondsSinceEpoch));
       }
     }
 
@@ -54,7 +54,8 @@ void main() {
       constants = getIt<AppConstants>();
       print('Pagination size=' + constants.paginationSize.toString());
 
-      ProviderLoginResponse response = await getIt<LoginRepository>().loginWithEmailAndPassword(
+      ProviderLoginResponse response =
+          await getIt<LoginRepository>().loginWithEmailAndPassword(
         testUserEmail,
         testUserPassword,
       );
