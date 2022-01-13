@@ -523,12 +523,11 @@ describe('CreatOrderFromCart mutation test', () => {
     )
       .pipe(
         catchError(err => {
-          console.error('Error in rkeeper test: ', err);
           return of({});
         }),
         tap(() => expect(maskAll(spy.mock.calls)).toMatchSnapshot()),
       )
-      .subscribe(() => done(), console.error);
+      .subscribe(() => done());
   }, 20000);
 
   test('When creating order with simplified flow, the order must be archived', done => {

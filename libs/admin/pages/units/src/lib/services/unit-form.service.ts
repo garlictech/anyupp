@@ -1,5 +1,5 @@
 import { iif } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -9,6 +9,7 @@ import {
   addressFormGroup,
   contactFormGroup,
   dailyScheduleBothEmptyOrProperlyFilledValidator,
+  makeId,
   multiLangValidator,
   notEmptyArray,
   TIME_FORMAT_PATTERN,
@@ -22,6 +23,9 @@ import {
   KeyValue,
 } from '@bgap/shared/types';
 import { select, Store } from '@ngrx/store';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
+import { NbDialogService } from '@nebular/theme';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({ providedIn: 'root' })
 export class UnitFormService {
@@ -30,9 +34,11 @@ export class UnitFormService {
     private _formsService: FormsService,
     private _store: Store,
     private _crudSdk: CrudSdkService,
+    private _nbDialogService: NbDialogService,
+    private _translateService: TranslateService,
   ) {}
 
-  public createUnitFormGroup() {
+  public createUnitFormGroup(isUpdate: boolean) {
     return this._formBuilder.group({
       groupId: ['', [Validators.required]],
       chainId: ['', [Validators.required]],
@@ -53,12 +59,18 @@ export class UnitFormService {
         { validators: notEmptyArray },
       ],
       supportedOrderModes: [[defaultOrderMode], { validators: notEmptyArray }],
+      orderPolicy: [CrudApi.OrderPolicy.full],
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder, true),
-      pos: this._formBuilder.group({
-        type: [CrudApi.PosType.anyupp],
-        rkeeper: this._formsService.createRkeeperFormGroup(),
-      }),
+      ...(isUpdate
+        ? {}
+        : {
+            pos: this._formBuilder.group({
+              type: [CrudApi.PosType.anyupp],
+              rkeeper: this._formsService.createRkeeperFormGroup(true),
+            }),
+            externalId: [''],
+          }),
       packagingTaxPercentage: [''],
       open: this._formBuilder.group({
         from: [''],
@@ -134,6 +146,16 @@ export class UnitFormService {
     });
   }
 
+  public createUnitRkeeperFormGroup() {
+    return this._formBuilder.group({
+      pos: this._formBuilder.group({
+        type: [CrudApi.PosType.anyupp],
+        rkeeper: this._formsService.createRkeeperFormGroup(false),
+      }),
+      externalId: [''],
+    });
+  }
+
   public getGroupOptions$() {
     return this._store.pipe(
       select(groupsSelectors.getSelectedChainGroups),
@@ -175,6 +197,35 @@ export class UnitFormService {
     );
   }
 
+  public updateRkeeperPassword$(unitId: string) {
+    const anyuppPassword = makeId(8);
+
+    return this.updateRKeeperData$({
+      unitId,
+      anyuppPassword,
+    }).pipe(
+      tap(() => {
+        const dialog = this._nbDialogService.open(ConfirmDialogComponent);
+
+        dialog.componentRef.instance.options = {
+          message: this._translateService.instant(
+            'units.rkeeperPasswordUpdated',
+            { anyuppPassword },
+          ),
+          buttons: [
+            {
+              label: 'common.ok',
+              callback: () => {
+                dialog.close();
+              },
+              status: 'success',
+            },
+          ],
+        };
+      }),
+    );
+  }
+
   public createUnit$(input: CrudApi.CreateUnitInput) {
     return this._crudSdk.sdk.CreateUnit({ input }).pipe(
       catchGqlError(this._store),
@@ -184,6 +235,13 @@ export class UnitFormService {
 
   public updateUnit$(input: CrudApi.UpdateUnitInput) {
     return this._crudSdk.sdk.UpdateUnit({ input }).pipe(
+      catchGqlError(this._store),
+      map(data => ({ data, type: 'update' })),
+    );
+  }
+
+  public updateRKeeperData$(input: CrudApi.UpdateRKeeperDataInput) {
+    return this._crudSdk.sdk.UpdateUnitRKeeperData({ input }).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
     );

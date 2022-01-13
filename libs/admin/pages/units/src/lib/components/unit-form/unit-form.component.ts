@@ -10,13 +10,14 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import {
   AbstractFormDialogComponent,
   FormsService,
 } from '@bgap/admin/shared/forms';
 import {
+  makeId,
   ORDER_MODES,
   PAYMENT_MODES,
   SERVING_MODES,
@@ -31,6 +32,7 @@ import { select } from '@ngrx/store';
 import { timeZonesNames } from '@vvo/tzdb';
 
 import { UnitFormService } from '../../services/unit-form.service';
+import { orderPolicyOptions } from '../../const';
 
 @UntilDestroy()
 @Component({
@@ -48,7 +50,7 @@ export class UnitFormComponent
   public orderModes = ORDER_MODES;
   public groupOptions$: Observable<KeyValue[]>;
   public timeZoneOptions: KeyValue[] = [];
-
+  public orderPolicyOptions: KeyValue[] = orderPolicyOptions;
   private _isInitiallyRkeeper = false;
 
   constructor(
@@ -60,7 +62,6 @@ export class UnitFormComponent
   ) {
     super(_injector);
 
-    this.dialogForm = this._unitFormService.createUnitFormGroup();
     this.timeZoneOptions = timeZonesNames.map(n => ({
       key: n,
       value: n,
@@ -70,16 +71,10 @@ export class UnitFormComponent
   }
 
   ngOnInit(): void {
+    this.dialogForm = this._unitFormService.createUnitFormGroup(!!this.unit);
+
     if (this.unit) {
       this.dialogForm.patchValue(cleanObject(omit(['lanes'], this.unit)));
-
-      if (this.unit.pos?.type === CrudApi.PosType.rkeeper) {
-        this._isInitiallyRkeeper = true;
-
-        (<FormGroup>this.dialogForm.controls['pos']).controls[
-          'rkeeper'
-        ].enable();
-      }
 
       // Parse openingHours object to temp array
       const custom = this.unit?.openingHours?.custom;
@@ -197,5 +192,9 @@ export class UnitFormComponent
     }
 
     this.dialogForm?.controls.paymentModes.setValue(paymentModesArr);
+  }
+
+  public generatePassword() {
+    this.dialogForm?.get('pos.rkeeper.anyuppPassword')?.patchValue(makeId(8));
   }
 }

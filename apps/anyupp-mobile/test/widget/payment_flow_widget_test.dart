@@ -1,5 +1,4 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -12,12 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../mock/mock_data_faker.dart';
-import 'mock/mock_theme_bloc.dart';
 import 'mock/mock_user_details_provider.dart';
 import 'mock/mocks.dart';
 import 'utils/boilerplate_app.dart';
+import '../mock/mock_data_faker.dart';
 
 void main() {
   // 1. placeOnly

@@ -1,6 +1,6 @@
 <nb-card *ngIf="options">
   <nb-card-header>{{ 'common.confirm' | translate }}</nb-card-header>
-  <nb-card-body>{{ options.message | translate }}</nb-card-body>
+  <nb-card-body [innerHTML]="options.message | translate"></nb-card-body>
   <nb-card-footer>
     <button
       *ngFor="let button of options.buttons"

@@ -31,6 +31,7 @@ Array [
         "position": -1,
         "price": 50000,
         "refGroupPrice": null,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": null,
@@ -67,6 +68,7 @@ Array [
         "position": -1,
         "price": 50000,
         "refGroupPrice": null,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": null,
@@ -120,6 +122,7 @@ Array [
         "position": -1,
         "price": 50000,
         "refGroupPrice": null,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": null,
@@ -172,6 +175,7 @@ Object {
       "position": -1,
       "price": 1000000,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -220,6 +224,7 @@ Object {
       "position": -1,
       "price": 600,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -260,6 +265,7 @@ Object {
       "position": -1,
       "price": 700,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -300,6 +306,7 @@ Object {
       "position": -1,
       "price": 700,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -311,6 +318,47 @@ Object {
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 4`] = `
+Object {
+  "allergens": null,
+  "chainId": "rkeeper-MASKED ID-chain",
+  "configSets": null,
+  "createdAt": Any<String>,
+  "description": null,
+  "dirty": true,
+  "externalId": null,
+  "id": "MASKED ID",
+  "image": null,
+  "isVisible": true,
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "próba ital inactive",
+  },
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
+  "productType": "dish",
+  "updatedAt": Any<String>,
+  "variants": Array [
+    Object {
+      "availabilities": null,
+      "id": "id",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "pack": null,
+      "position": -1,
+      "price": 500,
+      "refGroupPrice": null,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "foobar",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 5`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -340,6 +388,7 @@ Object {
       "position": -1,
       "price": 500,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -383,6 +432,7 @@ Object {
       },
       "position": -1,
       "price": 600,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -410,6 +460,7 @@ Object {
           "position": -1,
           "price": 0,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -422,6 +473,7 @@ Object {
           "position": -1,
           "price": 50,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
       ],
       "maxSelection": null,
@@ -450,6 +502,7 @@ Object {
           "position": -1,
           "price": 0,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -462,6 +515,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -474,6 +528,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -486,6 +541,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -498,6 +554,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
       ],
       "maxSelection": null,
@@ -543,6 +600,7 @@ Object {
       },
       "position": -1,
       "price": 700,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -570,6 +628,7 @@ Object {
           "position": -1,
           "price": 0,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -582,6 +641,7 @@ Object {
           "position": -1,
           "price": 50,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
       ],
       "maxSelection": null,
@@ -610,6 +670,7 @@ Object {
           "position": -1,
           "price": 0,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -622,6 +683,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -634,6 +696,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -646,6 +709,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
         Object {
           "allergens": null,
@@ -658,6 +722,7 @@ Object {
           "position": -1,
           "price": 100,
           "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
       ],
       "maxSelection": null,
@@ -703,6 +768,7 @@ Object {
       },
       "position": -1,
       "price": 700,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -746,6 +812,7 @@ Object {
       },
       "position": -1,
       "price": 500,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -780,6 +847,7 @@ Object {
       "position": -1,
       "price": 500,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -812,8 +880,9 @@ Object {
       "netPackagingFee": null,
       "pack": null,
       "position": -1,
-      "price": 600,
+      "price": 500,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -846,8 +915,9 @@ Object {
       "netPackagingFee": null,
       "pack": null,
       "position": -1,
-      "price": 700,
+      "price": 600,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -882,6 +952,42 @@ Object {
       "position": -1,
       "price": 700,
       "refGroupPrice": null,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "foobar",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 5`] = `
+Object {
+  "chainId": "rkeeper-MASKED ID-chain",
+  "configSets": null,
+  "createdAt": Any<String>,
+  "dirty": true,
+  "externalId": null,
+  "groupId": "rkeeper-MASKED ID-group",
+  "id": "MASKED ID",
+  "isVisible": true,
+  "parentId": "MASKED ID",
+  "takeawayTax": null,
+  "tax": -1,
+  "updatedAt": Any<String>,
+  "variants": Array [
+    Object {
+      "availabilities": null,
+      "id": "id",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "pack": null,
+      "position": -1,
+      "price": 700,
+      "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -957,6 +1063,7 @@ Object {
     "en": null,
     "hu": "Kókuszital (90ml)",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -975,6 +1082,7 @@ Object {
     "en": null,
     "hu": "Laktózmentes tej (90ml)",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -993,6 +1101,7 @@ Object {
     "en": null,
     "hu": "Mandulaital (90ml)",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1011,6 +1120,7 @@ Object {
     "en": null,
     "hu": "Papírpohár 2dl",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1029,6 +1139,7 @@ Object {
     "en": null,
     "hu": "Saját pohár",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1047,6 +1158,7 @@ Object {
     "en": null,
     "hu": "Tej sima (90ml)",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1065,11 +1177,64 @@ Object {
     "en": null,
     "hu": "Zabital (90ml)",
   },
+  "soldOut": null,
   "updatedAt": Any<String>,
 }
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 1`] = `
+Object {
+  "chainId": "rkeeper-MASKED ID-chain",
+  "configSets": null,
+  "createdAt": Any<String>,
+  "dirty": true,
+  "externalId": "4MASKED ID",
+  "groupId": "rkeeper-MASKED ID-group",
+  "id": "MASKED ID",
+  "isVisible": false,
+  "laneId": null,
+  "parentId": "MASKED ID",
+  "position": -1,
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "takeaway": null,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": Any<String>,
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": null,
+          "dayTo": null,
+          "price": 500,
+          "timeFrom": null,
+          "timeTo": null,
+          "type": "A",
+        },
+      ],
+      "id": "id",
+      "isAvailable": false,
+      "netPackagingFee": null,
+      "pack": Object {
+        "size": 1,
+        "unit": "zsák",
+      },
+      "position": -1,
+      "price": 500,
+      "refGroupPrice": null,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "próba ital inactive",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 2`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": null,
@@ -1110,130 +1275,11 @@ Object {
       "position": -1,
       "price": 600,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
         "hu": "Próba kaja",
-      },
-    },
-  ],
-}
-`;
-
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 2`] = `
-Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "configSets": Array [
-    Object {
-      "items": Array [
-        Object {
-          "externalId": "9991011517",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 0,
-        },
-        Object {
-          "externalId": "9991011504",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 50,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 50,
-        },
-      ],
-      "position": -1,
-      "productSetId": "MASKED ID",
-    },
-    Object {
-      "items": Array [
-        Object {
-          "externalId": "9991017196",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 0,
-        },
-        Object {
-          "externalId": "9991017191",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": "9991017193",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": "9991017194",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": "9991017195",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-      ],
-      "position": -1,
-      "productSetId": "MASKED ID",
-    },
-  ],
-  "createdAt": Any<String>,
-  "dirty": true,
-  "externalId": "MASKED ID",
-  "groupId": "rkeeper-MASKED ID-group",
-  "id": "MASKED ID",
-  "isVisible": true,
-  "laneId": null,
-  "parentId": "MASKED ID",
-  "position": -1,
-  "supportedServingModes": Array [
-    "inPlace",
-  ],
-  "takeaway": null,
-  "unitId": "rkeeper-MASKED ID-unit",
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": Array [
-        Object {
-          "dayFrom": null,
-          "dayTo": null,
-          "price": 700,
-          "timeFrom": null,
-          "timeTo": null,
-          "type": "A",
-        },
-      ],
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": Object {
-        "size": 1,
-        "unit": "zsák",
-      },
-      "position": -1,
-      "price": 700,
-      "refGroupPrice": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "TA KM Kiotói Szilvás Krémkávé",
       },
     },
   ],
@@ -1350,6 +1396,128 @@ Object {
       "position": -1,
       "price": 700,
       "refGroupPrice": null,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "TA KM Kiotói Szilvás Krémkávé",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 4`] = `
+Object {
+  "chainId": "rkeeper-MASKED ID-chain",
+  "configSets": Array [
+    Object {
+      "items": Array [
+        Object {
+          "externalId": "9991011517",
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 0,
+          "productComponentId": "MASKED ID",
+          "refGroupPrice": 0,
+        },
+        Object {
+          "externalId": "9991011504",
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 50,
+          "productComponentId": "MASKED ID",
+          "refGroupPrice": 50,
+        },
+      ],
+      "position": -1,
+      "productSetId": "MASKED ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "externalId": "9991017196",
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 0,
+          "productComponentId": "MASKED ID",
+          "refGroupPrice": 0,
+        },
+        Object {
+          "externalId": "9991017191",
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "externalId": "9991017193",
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "externalId": "9991017194",
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "refGroupPrice": 100,
+        },
+        Object {
+          "externalId": "9991017195",
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "refGroupPrice": 100,
+        },
+      ],
+      "position": -1,
+      "productSetId": "MASKED ID",
+    },
+  ],
+  "createdAt": Any<String>,
+  "dirty": true,
+  "externalId": "MASKED ID",
+  "groupId": "rkeeper-MASKED ID-group",
+  "id": "MASKED ID",
+  "isVisible": true,
+  "laneId": null,
+  "parentId": "MASKED ID",
+  "position": -1,
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "takeaway": null,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": Any<String>,
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": null,
+          "dayTo": null,
+          "price": 700,
+          "timeFrom": null,
+          "timeTo": null,
+          "type": "A",
+        },
+      ],
+      "id": "id",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "pack": Object {
+        "size": 1,
+        "unit": "zsák",
+      },
+      "position": -1,
+      "price": 700,
+      "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -1360,7 +1528,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 4`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 5`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": null,
@@ -1401,6 +1569,7 @@ Object {
       "position": -1,
       "price": 500,
       "refGroupPrice": null,
+      "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
@@ -1445,3 +1614,17 @@ Object {
 `;
 
 exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - not existing restaurant 1`] = `[Error: Cannot find unit belonging to external unit id NOT EXISTING RESTO\`]`;
+
+exports[`send order to rkeeper by HTTP post: config.auth 1`] = `
+Object {
+  "password": "b6302d53085c9486d0f765ec475f18",
+  "username": "795_50_155_539",
+}
+`;
+
+exports[`send order to rkeeper by sendRkeeperOrder: config.auth 1`] = `
+Object {
+  "password": "b6302d53085c9486d0f765ec475f18",
+  "username": "795_50_155_539",
+}
+`;

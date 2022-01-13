@@ -1,6 +1,8 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/utils/local_notifications_util.dart';
+import 'package:fa_prev/shared/notifications/utils/notifications_utils.dart';
 import 'package:fa_prev/shared/utils/order_status_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -10,12 +12,23 @@ class OrderNotificationService {
   OrderStatus? _lastStatus;
   String? _lastId;
 
-  void checkIfShowOrderStatusNotification(BuildContext context, List<Order> orders) async {
+  void checkIfShowOrderStatusNotification(
+    BuildContext context,
+    List<Order> orders,
+  ) async {
+    // Schedule notifications if necessary for rating the order
+    getIt.get<RatingOrderNotificationBloc>().add(
+          CheckAndScheduleOrderRatingNotifications(
+            orders,
+          ),
+        );
+
     orders.forEach((order) async {
       if (order.archived) {
         return;
       }
-      OrderStatus currentStatus = order.statusLog[order.statusLog.length - 1].status;
+      OrderStatus currentStatus =
+          order.statusLog[order.statusLog.length - 1].status;
       // print('***** checkIfShowOrderStatusNotification()=${order.id}, status=$currentStatus');
 
       OrderStatus? previousStatus = await getOrderStatusPref(order.id);
@@ -26,14 +39,14 @@ class OrderNotificationService {
       }
 
       if (previousStatus != null) {
-        if (currentStatus == OrderStatus.processing && previousStatus == OrderStatus.placed) {
+        if (currentStatus == OrderStatus.processing &&
+            previousStatus == OrderStatus.placed) {
           // print('***** checkIfShowOrderStatusNotification().showProcessingNotif()');
           if (!_checkNeedNotification(order.id, currentStatus)) {
             return;
           }
 
           showNotification(
-            context,
             transEx(context, "notifications.messageFrom"),
             transEx(context, "notifications.orderProcessing"),
             MainNavigation(
@@ -43,13 +56,13 @@ class OrderNotificationService {
           return;
         }
 
-        if (currentStatus == OrderStatus.ready && previousStatus == OrderStatus.processing) {
+        if (currentStatus == OrderStatus.ready &&
+            previousStatus == OrderStatus.processing) {
           // print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMode}');
           if (!_checkNeedNotification(order.id, currentStatus)) {
             return;
           }
           showNotification(
-            context,
             transEx(context, "notifications.messageFrom"),
             transEx(context, "notifications.orderReady"),
             MainNavigation(

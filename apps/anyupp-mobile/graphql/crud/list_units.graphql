@@ -1,6 +1,11 @@
 query getUnitsNearLocation($lat: Float!, $lng: Float!) {
   getUnitsNearLocation(input: { location: { lat: $lat, lng: $lng } }) {
     items {
+      serviceFeePolicy {
+        type
+        percentage
+        taxPercentage
+      }
       address {
         address
         city
@@ -52,6 +57,36 @@ query getUnitsNearLocation($lat: Float!, $lng: Float!) {
       supportedServingModes
       supportedOrderModes
       orderPolicy
+      tipPolicy {
+        description {
+          de
+          en
+          hu
+        }
+        maxOtherAmount
+        percents
+        title {
+          de
+          en
+          hu
+        }
+      }
+      ratingPolicy {
+        ratings {
+          value
+          icon
+          text {
+            de
+            en
+            hu
+          }
+        }
+        title {
+          de
+          en
+          hu
+        }
+      }
     }
   }
 }

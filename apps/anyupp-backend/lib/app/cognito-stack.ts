@@ -489,7 +489,7 @@ export class CognitoStack extends Stack {
         // It must be relative to the serverless.yml file
         handler: 'lib/lambda/pre-token-generation/index.handler',
         code: lambda.Code.fromAsset(
-          path.join(__dirname, '../../.serverless/pre-token-generation.zip'),
+          path.join(__dirname, '../../.serverless-1/pre-token-generation.zip'),
         ),
         environment: {
           API_ACCESS_KEY_ID: this.props.apiAccessKeyId,
@@ -519,7 +519,7 @@ export class CognitoStack extends Stack {
         // It must be relative to the serverless.yml file
         handler: 'lib/lambda/consumer-pre-signup/index.handler',
         code: lambda.Code.fromAsset(
-          path.join(__dirname, '../../.serverless/consumer-pre-signup.zip'),
+          path.join(__dirname, '../../.serverless-2/consumer-pre-signup.zip'),
         ),
       },
     );

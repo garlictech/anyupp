@@ -141,7 +141,10 @@
     "deleteCartCancel": "Mégsem",
     "takeAway": "elvitel",
     "inPlace": "helyben",
-    "packagingFee": "Csomagolási díj"
+    "packagingFee": "Csomagolási díj",
+    "serviceFee": "Szervízdíj",
+    "hasServiceFee": "Az ár szervízdíjat tartalmaz.",
+    "hasNoServiceFee": "Az ár szervízdíjat nem tartalmaz."
   },
   "allergens": {
     "title": "ALLERGÉNEK",
@@ -175,6 +178,8 @@
     "noActiveOrderButton": "Étlap felfedezése",
     "totalCost": "ÖSSZESEN",
     "noOrderHistory": "Még nincs rendeléstörténeted",
+    "sendRatingButton": "RENDELÉS ÉRTÉKELÉSE",
+    "sendTipButton": "BORRAVALÓ KÜLDÉSE",
     "sendOrderError": {
       "title": "Sikertelen rendelés.",
       "description": "Hiba lépett fel, kérlek fordulj csapatunkhoz segítségért!"
@@ -187,7 +192,8 @@
       "orderState": "Rendelés állapota",
       "orderDetails": "Rendelés részletei",
       "paymentDetails": "Fizetés részletei",
-      "otherDetails": "További részletek"
+      "otherDetails": "További részletek",
+      "tipDetails": "Borravaló"
     },
     "status": {
       "none": "VÁR",
@@ -197,7 +203,12 @@
       "rejected": "TÖRÖLVE",
       "served": "FELSZOLGÁLVA"
     },
+    "statusExt": {
+      "served": "Rendelés teljesítve",
+      "rejected": "Rendelés törölve"
+    },
     "pay": "Fizetni szeretnék",
+    "tipAmount": "Borravaló összege",
     "waiting": "Kérjük, várj a pincérre!",
     "simplepay": "Fizetés SimplePay-jel",
     "stripepay": "Fizetés Stripe-pal",
@@ -695,5 +706,33 @@
       "title": "Étterem zárva",
       "description": "Az étterem jelenleg nem fogad rendeléseket. Próbáld meg később!"
     }
+  },
+  "rating": {
+    "question": "Hogy sikerült a rendelésed?",
+    "send": "KÉSZ",
+    "stars": {
+      "1": "Rossz",
+      "2": "Elmegy",
+      "3": "Megfelelő",
+      "4": "Jó",
+      "5": "Csodás"
+    },
+    "notification": {
+      "title": "Rendelés értékelése",
+      "message": "Értékeld a legutóbbi megrendelésed!"
+    }
+  },
+  "tipping": {
+    "question": "Szeretnél borravalót adni?",
+    "description": "A borravaló 100%-t munkatársaink kapják.",
+    "otherAmount": "Egyedi összeg",
+    "dialog": {
+      "title": "Egyedi borravaló",
+      "description": "Kérjük add meg, mennyi borravalót szeretnél adni.",
+      "ok": "Kész",
+      "cancel": "Mégsem",
+      "hint": "Borravaló összege (Ft)"
+    },
+    "success": "Köszönjük, az értékelésed és a borravalót megkaptuk!"
   }
 }

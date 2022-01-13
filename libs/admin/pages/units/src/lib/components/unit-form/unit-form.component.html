@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">
           <bgap-form-text-input
             caption="common.name"
             type="text"
@@ -34,13 +34,22 @@
             inputId="name"
           ></bgap-form-text-input>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <bgap-form-select
             caption="common.group"
             [options]="(groupOptions$ | async) || []"
             [control]="dialogForm.get('groupId')! | asFormControl"
             [localize]="false"
             inputId="groupId"
+          ></bgap-form-select>
+        </div>
+        <div class="col-md-3">
+          <bgap-form-select
+            caption="common.orderPolicy.title"
+            [options]="orderPolicyOptions"
+            [control]="dialogForm.get('orderPolicy')! | asFormControl"
+            [localize]="false"
+            inputId="orderPolicy"
           ></bgap-form-select>
         </div>
       </div>
@@ -173,7 +182,11 @@
       ></bgap-form-unit-lanes>
 
       <bgap-form-unit-pos
+        *ngIf="!unit"
         [posFormGroup]="dialogForm.get('pos')! | asFormGroup"
+        [externalIdControl]="dialogForm.get('externalId')! | asFormControl"
+        [editing]="false"
+        (changePasswordEmitter)="generatePassword()"
       ></bgap-form-unit-pos>
 
       <div class="mt-20">

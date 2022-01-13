@@ -26,7 +26,7 @@ export class SeederStack extends sst.Stack {
       handler: 'lib/lambda/stack-seeder/index.handler',
       memorySize: 512,
       code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/stack-seeder.zip'),
+        path.join(__dirname, '../../.serverless-1/stack-seeder.zip'),
       ),
       timeout: Duration.minutes(15),
       environment: {

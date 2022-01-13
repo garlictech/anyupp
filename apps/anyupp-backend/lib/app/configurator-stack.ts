@@ -20,7 +20,7 @@ export class ConfiguratorStack extends sst.Stack {
       ...commonLambdaProps,
       handler: 'lib/lambda/crud-api-updater/index.handler',
       code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/crud-api-updater.zip'),
+        path.join(__dirname, '../../.serverless-2/crud-api-updater.zip'),
       ),
     });
 

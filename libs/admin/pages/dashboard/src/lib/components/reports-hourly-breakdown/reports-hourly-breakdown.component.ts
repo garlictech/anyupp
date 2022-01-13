@@ -1,4 +1,5 @@
-import { Chart, ChartDataset } from 'chart.js';
+import { ChartDataset } from 'chart.js';
+import Chart from 'chart.js/auto';
 import { Context } from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
 

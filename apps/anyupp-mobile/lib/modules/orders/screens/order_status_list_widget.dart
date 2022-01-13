@@ -194,9 +194,10 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                SizedBox(
-                  height: 24.0,
-                ),
+                // SizedBox(
+                //   height: 24.0,
+                // ),
+                Spacer(),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(

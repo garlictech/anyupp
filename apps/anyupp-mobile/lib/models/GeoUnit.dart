@@ -21,6 +21,9 @@ class GeoUnit {
   final List<OrderMode> supportedOrderModes;
   final OrderPolicy orderPolicy;
   final double packagingTax;
+  final RatingPolicy? ratingPolicy;
+  final TipPolicy? tipPolicy;
+  final ServiceFeePolicy? serviceFeePolicy;
 
   GeoUnit({
     required this.id,
@@ -38,6 +41,9 @@ class GeoUnit {
     required this.supportedOrderModes,
     required this.orderPolicy,
     required this.packagingTax,
+    this.ratingPolicy,
+    this.tipPolicy,
+    this.serviceFeePolicy,
   });
 
   GeoUnit copyWith({
@@ -56,6 +62,9 @@ class GeoUnit {
     List<OrderMode>? supportedOrderModes,
     OrderPolicy? orderPolicy,
     double? packagingTax,
+    RatingPolicy? ratingPolicy,
+    TipPolicy? tipPolicy,
+    ServiceFeePolicy? serviceFeePolicy,
   }) {
     return GeoUnit(
       id: id ?? this.id,
@@ -74,6 +83,9 @@ class GeoUnit {
       supportedOrderModes: supportedOrderModes ?? this.supportedOrderModes,
       orderPolicy: orderPolicy ?? this.orderPolicy,
       packagingTax: packagingTax ?? this.packagingTax,
+      ratingPolicy: ratingPolicy ?? this.ratingPolicy,
+      tipPolicy: tipPolicy ?? this.tipPolicy,
+      serviceFeePolicy: serviceFeePolicy ?? this.serviceFeePolicy,
     );
   }
 
@@ -96,6 +108,9 @@ class GeoUnit {
           supportedOrderModes.map((x) => enumToString(x)).toList(),
       'orderPolicy': enumToString(orderPolicy),
       'packagingTax': packagingTax,
+      'ratingPolicy': ratingPolicy?.toJson(),
+      'tipPolicy': tipPolicy?.toJson(),
+      'serviceFeePolicy': serviceFeePolicy?.toJson(),
     };
   }
 
@@ -126,14 +141,23 @@ class GeoUnit {
           : [OrderMode.instant],
       orderPolicy: map['orderPolicy'] != null
           ? enumFromString(map['orderPolicy'], OrderPolicy.values)
-          : OrderPolicy.full, // TODO orderPolicy API mock
+          : Mock.mockOrderPolicy(),
       packagingTax: map['packagingTax'] ?? 0,
+      ratingPolicy: map['ratingPolicy'] != null
+          ? RatingPolicy.fromJson(map['ratingPolicy'])
+          : Mock.mockRatingPolicy(),
+      tipPolicy: map['tipPolicy'] != null
+          ? TipPolicy.fromJson(map['tipPolicy'])
+          : Mock.mockTipPolicy(),
+      serviceFeePolicy: map['serviceFeePolicy'] != null
+          ? ServiceFeePolicy.fromJson(map['serviceFeePolicy'])
+          : Mock.mockServiceFeePolicy(),
     );
   }
 
   @override
   String toString() {
-    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, orderPolicy: $orderPolicy, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
+    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, serviceFeePolicy: $serviceFeePolicy, ratingPolicy: $ratingPolicy, tipPolicy: $tipPolicy, orderPolicy: $orderPolicy, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
   }
 
   @override
@@ -155,7 +179,10 @@ class GeoUnit {
         listEquals(other.openingHoursNext7, openingHoursNext7) &&
         listEquals(other.supportedServingModes, supportedServingModes) &&
         listEquals(other.supportedOrderModes, supportedOrderModes) &&
-        other.packagingTax == packagingTax;
+        other.packagingTax == packagingTax &&
+        other.ratingPolicy == ratingPolicy &&
+        other.serviceFeePolicy == serviceFeePolicy &&
+        other.tipPolicy == tipPolicy;
   }
 
   @override
@@ -173,6 +200,9 @@ class GeoUnit {
         supportedServingModes.hashCode ^
         supportedOrderModes.hashCode ^
         openingHoursNext7.hashCode ^
-        packagingTax.hashCode;
+        packagingTax.hashCode ^
+        ratingPolicy.hashCode ^
+        tipPolicy.hashCode ^
+        serviceFeePolicy.hashCode;
   }
 }

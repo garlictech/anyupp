@@ -19,6 +19,7 @@ export const initCanvas = (editMode: boolean): void => {
   fabricCanvas = new fabric.Canvas('fabricCanvas');
 
   // Save fabricCanvas to the canvas element for allow testing
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const fabricCanvasEl: any = document.getElementById('fabricCanvas');
   if (fabricCanvasEl) {
     fabricCanvasEl.fabricCanvas = fabricCanvas;

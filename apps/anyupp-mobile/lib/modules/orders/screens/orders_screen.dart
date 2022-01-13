@@ -1,6 +1,6 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,9 +22,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   void initState() {
     super.initState();
-    var state = getIt<UnitSelectBloc>().state;
-    if (state is UnitSelected) {
-      GeoUnit unit = state.unit;
+    var unit = currentUnit;
+    if (unit != null) {
       getIt<OrderBloc>()
           .add(StartGetOrderListSubscription(unit.chainId, unit.id));
       getIt<OrderHistoryBloc>()

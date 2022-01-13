@@ -84,6 +84,7 @@ const toGeoUnit = ({
   serviceFeePolicy: unit.serviceFeePolicy,
   ratingPolicy: unit.ratingPolicy,
   tipPolicy: unit.tipPolicy,
+  soldOutVisibilityPolicy: unit.soldOutVisibilityPolicy,
   style: chainStyle,
   currency,
   distance: geolib.getDistance(unit.address.location, inputLocation),

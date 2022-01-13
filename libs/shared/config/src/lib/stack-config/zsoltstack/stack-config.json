@@ -16,9 +16,9 @@
   },
   "anyupp-backend-sites": {
     "AdminSiteDomainA75B4E32": "zsoltstack-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionDomainNameA4A4FE5B": "d1v3rxa4kp68x6.cloudfront.net",
+    "AdminDistributionDomainNameA4A4FE5B": "d1or39cm4yfex3.cloudfront.net",
     "AdminSiteEAA17C78": "https://zsoltstack-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionIdB4DE25AB": "E1C6B9E9UF3TA8",
+    "AdminDistributionIdB4DE25AB": "EO5321TTJIEI2",
     "AdminBucketCA57896C": "zsoltstack-admin-anyupp-backend.anyupp.com"
   },
   "anyupp-backend-cognito": {
@@ -45,6 +45,6 @@
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-zsoltstack.anyupp.com/zsoltstack",
     "RKeeperTaskBucketName": "zsoltstack-anyupp-backen-anyupprkeepermenubucket4-su94udjcyz4q",
     "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-RkeeperECSTaskExecutionR-OVI8JFRXX361",
-    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/zsoltstackanyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef4E14AAF6:27"
+    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/zsoltstackanyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef4E14AAF6:39"
   }
 }

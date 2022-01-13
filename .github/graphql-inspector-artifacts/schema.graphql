@@ -187,6 +187,7 @@ type ProductVariant @aws_cognito_user_pools @aws_api_key @aws_iam {
   availabilities: [Availability]
   position: Int!
   netPackagingFee: Float
+  soldOut: Boolean
 }
 
 type ProductVariantPack @aws_cognito_user_pools @aws_api_key @aws_iam {
@@ -292,7 +293,6 @@ input StartStripePaymentInput {
 
 input PayTipWithStripeInput {
   orderId: ID!
-  paymentMethodId: String
   tip: TipInput!
 }
 
@@ -568,6 +568,7 @@ type ProductComponent @aws_iam @aws_cognito_user_pools {
   allergens: [Allergen]
   externalId: String
   dirty: Boolean
+  soldOut: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -594,6 +595,7 @@ type GeneratedProductConfigComponent @aws_api_key @aws_iam @aws_cognito_user_poo
   name: LocalizedItem!
   allergens: [Allergen]
   netPackagingFee: Float
+  soldOut: Boolean
 }
 
 type GeneratedProductConfigSet @aws_api_key @aws_iam @aws_cognito_user_pools {
@@ -642,6 +644,7 @@ type GeneratedProductVariant @aws_api_key @aws_iam @aws_cognito_user_pools {
   price: Float!
   netPackagingFee: Float
   position: Int!
+  soldOut: Boolean
 }
 
 type FavoriteProduct @aws_iam @aws_cognito_user_pools {
@@ -667,6 +670,11 @@ enum TipType {
   none
   percent
   amount
+}
+
+enum SoldOutVisibilityPolicy {
+  invisible
+  faded
 }
 
 type RatingPolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
@@ -735,6 +743,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicy: RatingPolicy
   tipPolicy: TipPolicy
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -859,6 +868,7 @@ type GeoUnit @aws_cognito_user_pools {
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicy: RatingPolicy
   tipPolicy: TipPolicy
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
 
 input GetUnitsNearLocationInput {
@@ -904,6 +914,7 @@ type Transaction @aws_iam @aws_cognito_user_pools {
   receiptId: ID
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  paymentMethodId: String
   user: User! @aws_iam @aws_cognito_user_pools
   invoice: Invoice @aws_iam @aws_cognito_user_pools
   receipt: Receipt @aws_iam @aws_cognito_user_pools
@@ -1078,6 +1089,7 @@ input CreateUnitInput {
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicy: RatingPolicyInput
   tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
 
 input UpdateUnitInput {
@@ -1099,6 +1111,7 @@ input UpdateUnitInput {
   openingHours: WeeklyScheduleInput
   merchantId: String
   timeZone: String
+  externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
@@ -1106,6 +1119,7 @@ input UpdateUnitInput {
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicy: RatingPolicyInput
   tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
 
 type CreateAnonymUserOutput {
@@ -1127,6 +1141,12 @@ input DeleteAdminUserInput {
 
 input DeleteUnitProductInput {
   id: ID!
+}
+
+input RateAndTipOrderInput {
+  orderId: ID!
+  rating: Int
+  tip: TipInput
 }
 
 type Query {
@@ -1205,6 +1225,7 @@ type Mutation {
   deleteAdminUser(input: DeleteAdminUserInput!): AdminUser @aws_iam @aws_cognito_user_pools
   createAnonymUser: CreateAnonymUserOutput @aws_iam @aws_api_key
   createOrderFromCart(input: CreateOrderFromCartInput!): ID @aws_iam @aws_cognito_user_pools
+  rateAndTipOrder(input: RateAndTipOrderInput!): Boolean @aws_iam @aws_cognito_user_pools
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_iam @aws_cognito_user_pools
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
@@ -1279,7 +1300,7 @@ type Subscription {
   onAdminRoleContextsChange: AdminRoleContext @aws_subscribe(mutations: ["createAdminRoleContext", "updateAdminRoleContext", "deleteAdminRoleContext"]) @aws_cognito_user_pools
   onChainsChange: Chain @aws_subscribe(mutations: ["createChain", "updateChain"]) @aws_cognito_user_pools
   onGroupsChange(chainId: ID!): Group @aws_subscribe(mutations: ["createGroup", "updateGroup"]) @aws_cognito_user_pools
-  onUnitsChange(groupId: ID!): Unit @aws_subscribe(mutations: ["createUnit", "updateUnit"]) @aws_cognito_user_pools
+  onUnitsChange(groupId: ID!): Unit @aws_subscribe(mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"]) @aws_cognito_user_pools
   onProductCategoriesChange(chainId: ID!): ProductCategory @aws_subscribe(mutations: ["createProductCategory", "updateProductCategory"]) @aws_cognito_user_pools
   onProductComponentsChange(chainId: ID!): ProductComponent @aws_subscribe(mutations: ["createProductComponent", "updateProductComponent"]) @aws_cognito_user_pools
   onProductComponentSetsChange(chainId: ID!): ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet", "updateProductComponentSet"]) @aws_cognito_user_pools
@@ -1363,6 +1384,7 @@ input ProductVariantInput {
   availabilities: [AvailabilityInput]
   position: Int!
   netPackagingFee: Float
+  soldOut: Boolean
 }
 
 input ProductConfigSetInput {
@@ -1386,7 +1408,7 @@ enum ModelSortDirection {
 }
 
 type ModelChainProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [ChainProduct]!
+  items: [ChainProduct!]!
   nextToken: String
 }
 
@@ -1549,7 +1571,7 @@ input ModelChainProductConditionInput {
 }
 
 type ModelGroupProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [GroupProduct]!
+  items: [GroupProduct!]!
   nextToken: String
 }
 
@@ -1615,7 +1637,7 @@ input ModelGroupProductConditionInput {
 }
 
 type ModelUnitProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [UnitProduct]!
+  items: [UnitProduct!]!
   nextToken: String
 }
 
@@ -1696,7 +1718,7 @@ input ModelUnitProductConditionInput {
 }
 
 type ModelAdminUserConnection @aws_iam @aws_cognito_user_pools {
-  items: [AdminUser]!
+  items: [AdminUser!]!
   nextToken: String
 }
 
@@ -1722,7 +1744,7 @@ input ModelAdminUserConditionInput {
 }
 
 type ModelAdminRoleContextConnection @aws_iam @aws_cognito_user_pools {
-  items: [AdminRoleContext]!
+  items: [AdminRoleContext!]!
   nextToken: String
 }
 
@@ -1760,7 +1782,7 @@ input ModelAdminRoleContextConditionInput {
 }
 
 type ModelRoleContextConnection @aws_iam @aws_cognito_user_pools {
-  items: [RoleContext]!
+  items: [RoleContext!]!
   nextToken: String
 }
 
@@ -1841,7 +1863,7 @@ input ChainStyleImagesInput {
 }
 
 type ModelChainConnection @aws_iam @aws_cognito_user_pools {
-  items: [Chain]!
+  items: [Chain!]!
   nextToken: String
 }
 
@@ -1893,7 +1915,7 @@ input ModelChainConditionInput {
 }
 
 type ModelGroupConnection @aws_iam @aws_cognito_user_pools {
-  items: [Group]!
+  items: [Group!]!
   nextToken: String
 }
 
@@ -2007,7 +2029,7 @@ input PlaceInput {
 }
 
 type ModelOrderConnection @aws_iam @aws_cognito_user_pools {
-  items: [Order]!
+  items: [Order!]!
   nextToken: String
 }
 
@@ -2133,7 +2155,7 @@ input ModelOrderConditionInput {
 }
 
 type ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductCategory]!
+  items: [ProductCategory!]!
   nextToken: String
 }
 
@@ -2179,7 +2201,7 @@ input ModelProductCategoryConditionInput {
 }
 
 type ModelProductComponentConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductComponent]!
+  items: [ProductComponent!]!
   nextToken: String
 }
 
@@ -2190,6 +2212,7 @@ input ModelProductComponentFilterInput {
   allergens: ModelAllergenListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  soldOut: ModelBooleanInput
   and: [ModelProductComponentFilterInput]
   or: [ModelProductComponentFilterInput]
   not: ModelProductComponentFilterInput
@@ -2203,6 +2226,7 @@ input CreateProductComponentInput {
   allergens: [Allergen]
   externalId: String
   dirty: Boolean
+  soldOut: Boolean
 }
 
 input UpdateProductComponentInput {
@@ -2213,6 +2237,7 @@ input UpdateProductComponentInput {
   allergens: [Allergen]
   externalId: String
   dirty: Boolean
+  soldOut: Boolean
 }
 
 input DeleteProductComponentInput {
@@ -2225,13 +2250,14 @@ input ModelProductComponentConditionInput {
   allergens: ModelAllergenListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  soldOut: ModelBooleanInput
   and: [ModelProductComponentConditionInput]
   or: [ModelProductComponentConditionInput]
   not: ModelProductComponentConditionInput
 }
 
 type ModelProductComponentSetConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductComponentSet]!
+  items: [ProductComponentSet!]!
   nextToken: String
 }
 
@@ -2295,7 +2321,7 @@ input ModelProductComponentSetConditionInput {
 }
 
 type ModelGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools {
-  items: [GeneratedProductCategory]!
+  items: [GeneratedProductCategory!]!
   nextToken: String
 }
 
@@ -2343,6 +2369,7 @@ input GeneratedProductVariantInput {
   price: Float!
   netPackagingFee: Float
   position: Int!
+  soldOut: Boolean
 }
 
 input GeneratedProductConfigSetInput {
@@ -2362,10 +2389,11 @@ input GeneratedProductConfigComponentInput {
   name: LocalizedItemInput!
   allergens: [Allergen]
   netPackagingFee: Float
+  soldOut: Boolean
 }
 
 type ModelGeneratedProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [GeneratedProduct]!
+  items: [GeneratedProduct!]!
   nextToken: String
 }
 
@@ -2439,7 +2467,7 @@ input ModelGeneratedProductConditionInput {
 }
 
 type ModelFavoriteProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [FavoriteProduct]!
+  items: [FavoriteProduct!]!
   nextToken: String
 }
 
@@ -2484,7 +2512,7 @@ input DateIntervalOpenInput {
 }
 
 type ModelUnitConnection @aws_iam @aws_cognito_user_pools {
-  items: [Unit]!
+  items: [Unit!]!
   nextToken: String
 }
 
@@ -2498,6 +2526,11 @@ input ModelOrderModeListInput {
 input ModelOrderPolicyInput {
   eq: OrderPolicy
   ne: OrderPolicy
+}
+
+input ModelSoldOutVisibilityPolicyInput {
+  eq: SoldOutVisibilityPolicy
+  ne: SoldOutVisibilityPolicy
 }
 
 input ModelUnitFilterInput {
@@ -2517,6 +2550,7 @@ input ModelUnitFilterInput {
   supportedOrderModes: ModelOrderModeListInput
   orderPolicy: ModelOrderPolicyInput
   packagingTaxPercentage: ModelFloatInput
+  soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   and: [ModelUnitFilterInput]
   or: [ModelUnitFilterInput]
   not: ModelUnitFilterInput
@@ -2542,13 +2576,14 @@ input ModelUnitConditionInput {
   supportedOrderModes: ModelOrderModeListInput
   orderPolicy: ModelOrderPolicyInput
   packagingTaxPercentage: ModelFloatInput
+  soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   and: [ModelUnitConditionInput]
   or: [ModelUnitConditionInput]
   not: ModelUnitConditionInput
 }
 
 type ModelUserConnection @aws_iam @aws_cognito_user_pools {
-  items: [User]!
+  items: [User!]!
   nextToken: String
 }
 
@@ -2600,7 +2635,7 @@ input ModelUserConditionInput {
 }
 
 type ModelCartConnection @aws_iam @aws_cognito_user_pools {
-  items: [Cart]!
+  items: [Cart!]!
   nextToken: String
 }
 
@@ -2656,7 +2691,7 @@ input ModelCartConditionInput {
 }
 
 type ModelTransactionConnection @aws_iam @aws_cognito_user_pools {
-  items: [Transaction]!
+  items: [Transaction!]!
   nextToken: String
 }
 
@@ -2673,6 +2708,7 @@ input ModelTransactionFilterInput {
   receiptId: ModelIDInput
   createdAt: ModelStringInput
   updatedAt: ModelStringInput
+  paymentMethodId: ModelStringInput
   and: [ModelTransactionFilterInput]
   or: [ModelTransactionFilterInput]
   not: ModelTransactionFilterInput
@@ -2691,6 +2727,7 @@ input CreateTransactionInput {
   receiptId: ID
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
+  paymentMethodId: String
 }
 
 input UpdateTransactionInput {
@@ -2706,6 +2743,7 @@ input UpdateTransactionInput {
   receiptId: ID
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
+  paymentMethodId: String
 }
 
 input DeleteTransactionInput {
@@ -2724,13 +2762,14 @@ input ModelTransactionConditionInput {
   receiptId: ModelIDInput
   createdAt: ModelStringInput
   updatedAt: ModelStringInput
+  paymentMethodId: ModelStringInput
   and: [ModelTransactionConditionInput]
   or: [ModelTransactionConditionInput]
   not: ModelTransactionConditionInput
 }
 
 type ModelInvoiceConnection @aws_iam @aws_cognito_user_pools {
-  items: [Invoice]!
+  items: [Invoice!]!
   nextToken: String
 }
 
@@ -2817,7 +2856,7 @@ input ModelInvoiceConditionInput {
 }
 
 type ModelReceiptConnection @aws_iam @aws_cognito_user_pools {
-  items: [Receipt]!
+  items: [Receipt!]!
   nextToken: String
 }
 
@@ -2984,7 +3023,7 @@ input SearchableChainProductSortInput {
 }
 
 type SearchableChainProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [ChainProduct]!
+  items: [ChainProduct!]!
   nextToken: String
   total: Int
 }
@@ -3022,7 +3061,7 @@ input SearchableGroupProductSortInput {
 }
 
 type SearchableGroupProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [GroupProduct]!
+  items: [GroupProduct!]!
   nextToken: String
   total: Int
 }
@@ -3064,7 +3103,7 @@ input SearchableUnitProductSortInput {
 }
 
 type SearchableUnitProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [UnitProduct]!
+  items: [UnitProduct!]!
   nextToken: String
   total: Int
 }
@@ -3094,7 +3133,7 @@ input SearchableAdminUserSortInput {
 }
 
 type SearchableAdminUserConnection @aws_iam @aws_cognito_user_pools {
-  items: [AdminUser]!
+  items: [AdminUser!]!
   nextToken: String
   total: Int
 }
@@ -3120,7 +3159,7 @@ input SearchableAdminRoleContextSortInput {
 }
 
 type SearchableAdminRoleContextConnection @aws_iam @aws_cognito_user_pools {
-  items: [AdminRoleContext]!
+  items: [AdminRoleContext!]!
   nextToken: String
   total: Int
 }
@@ -3150,7 +3189,7 @@ input SearchableRoleContextSortInput {
 }
 
 type SearchableRoleContextConnection @aws_iam @aws_cognito_user_pools {
-  items: [RoleContext]!
+  items: [RoleContext!]!
   nextToken: String
   total: Int
 }
@@ -3180,7 +3219,7 @@ input SearchableChainSortInput {
 }
 
 type SearchableChainConnection @aws_iam @aws_cognito_user_pools {
-  items: [Chain]!
+  items: [Chain!]!
   nextToken: String
   total: Int
 }
@@ -3212,7 +3251,7 @@ input SearchableGroupSortInput {
 }
 
 type SearchableGroupConnection @aws_iam @aws_cognito_user_pools {
-  items: [Group]!
+  items: [Group!]!
   nextToken: String
   total: Int
 }
@@ -3254,7 +3293,7 @@ input SearchableOrderSortInput {
 }
 
 type SearchableOrderConnection @aws_iam @aws_cognito_user_pools {
-  items: [Order]!
+  items: [Order!]!
   nextToken: String
   total: Int
 }
@@ -3282,7 +3321,7 @@ input SearchableProductCategorySortInput {
 }
 
 type SearchableProductCategoryConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductCategory]!
+  items: [ProductCategory!]!
   nextToken: String
   total: Int
 }
@@ -3293,6 +3332,7 @@ input SearchableProductComponentFilterInput {
   description: SearchableStringFilterInput
   externalId: SearchableStringFilterInput
   dirty: SearchableBooleanFilterInput
+  soldOut: SearchableBooleanFilterInput
   and: [SearchableProductComponentFilterInput]
   or: [SearchableProductComponentFilterInput]
   not: SearchableProductComponentFilterInput
@@ -3304,6 +3344,7 @@ enum SearchableProductComponentSortableFields {
   description
   externalId
   dirty
+  soldOut
 }
 
 input SearchableProductComponentSortInput {
@@ -3312,7 +3353,7 @@ input SearchableProductComponentSortInput {
 }
 
 type SearchableProductComponentConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductComponent]!
+  items: [ProductComponent!]!
   nextToken: String
   total: Int
 }
@@ -3348,7 +3389,7 @@ input SearchableProductComponentSetSortInput {
 }
 
 type SearchableProductComponentSetConnection @aws_iam @aws_cognito_user_pools {
-  items: [ProductComponentSet]!
+  items: [ProductComponentSet!]!
   nextToken: String
   total: Int
 }
@@ -3376,7 +3417,7 @@ input SearchableGeneratedProductCategorySortInput {
 }
 
 type SearchableGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools {
-  items: [GeneratedProductCategory]!
+  items: [GeneratedProductCategory!]!
   nextToken: String
   total: Int
 }
@@ -3412,7 +3453,7 @@ input SearchableGeneratedProductSortInput {
 }
 
 type SearchableGeneratedProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [GeneratedProduct]!
+  items: [GeneratedProduct!]!
   nextToken: String
   total: Int
 }
@@ -3438,7 +3479,7 @@ input SearchableFavoriteProductSortInput {
 }
 
 type SearchableFavoriteProductConnection @aws_iam @aws_cognito_user_pools {
-  items: [FavoriteProduct]!
+  items: [FavoriteProduct!]!
   nextToken: String
   total: Int
 }
@@ -3484,7 +3525,7 @@ input SearchableUnitSortInput {
 }
 
 type SearchableUnitConnection @aws_iam @aws_cognito_user_pools {
-  items: [Unit]!
+  items: [Unit!]!
   nextToken: String
   total: Int
 }
@@ -3516,7 +3557,7 @@ input SearchableUserSortInput {
 }
 
 type SearchableUserConnection @aws_iam @aws_cognito_user_pools {
-  items: [User]!
+  items: [User!]!
   nextToken: String
   total: Int
 }
@@ -3544,7 +3585,7 @@ input SearchableCartSortInput {
 }
 
 type SearchableCartConnection @aws_iam @aws_cognito_user_pools {
-  items: [Cart]!
+  items: [Cart!]!
   nextToken: String
   total: Int
 }
@@ -3561,6 +3602,7 @@ input SearchableTransactionFilterInput {
   receiptId: SearchableIDFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
+  paymentMethodId: SearchableStringFilterInput
   and: [SearchableTransactionFilterInput]
   or: [SearchableTransactionFilterInput]
   not: SearchableTransactionFilterInput
@@ -3578,6 +3620,7 @@ enum SearchableTransactionSortableFields {
   receiptId
   createdAt
   updatedAt
+  paymentMethodId
 }
 
 input SearchableTransactionSortInput {
@@ -3586,7 +3629,7 @@ input SearchableTransactionSortInput {
 }
 
 type SearchableTransactionConnection @aws_iam @aws_cognito_user_pools {
-  items: [Transaction]!
+  items: [Transaction!]!
   nextToken: String
   total: Int
 }
@@ -3632,7 +3675,7 @@ input SearchableInvoiceSortInput {
 }
 
 type SearchableInvoiceConnection @aws_iam @aws_cognito_user_pools {
-  items: [Invoice]!
+  items: [Invoice!]!
   nextToken: String
   total: Int
 }
@@ -3666,7 +3709,7 @@ input SearchableReceiptSortInput {
 }
 
 type SearchableReceiptConnection @aws_iam @aws_cognito_user_pools {
-  items: [Receipt]!
+  items: [Receipt!]!
   nextToken: String
   total: Int
 }

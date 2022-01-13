@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatelessWidget {
+  Profile({Key? key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,7 +169,14 @@ class Profile extends StatelessWidget {
                     separator: false,
                     onTap: () => Nav.to(AboutApp()),
                   ),
-
+                  // if (isDev)
+                  //   ProfileListItemWidget(
+                  //     icon: Icons.notifications,
+                  //     titleKey: 'Notification Test',
+                  //     border: ProfileBorder.BOTTOM,
+                  //     separator: false,
+                  //     onTap: () => _testNotification(context),
+                  //   ),
                   // Logout menu section
                   Padding(
                     padding: const EdgeInsets.only(top: 40.0, bottom: 8.0),
@@ -214,4 +223,25 @@ class Profile extends StatelessWidget {
     }
     return 'A';
   }
+
+  // void _testNotification(BuildContext context) {
+  //   GeoUnit? unit = currentUnit;
+
+  //   getIt.get<NotificationsBloc>().add(
+  //         ScheduleOrderRatingNotification(
+  //           orderId: '76bdd9bf-6abe-46f9-b6ea-17034ebe7eca',
+  //           ratingPolicy: unit?.ratingPolicy,
+  //           tipPolicy: unit?.tipPolicy,
+  //           showDelay: const Duration(seconds: 10),
+  //         ),
+  //       );
+
+  //   // showNotification(
+  //   //   transEx(context, "notifications.messageFrom"),
+  //   //   transEx(context, "notifications.orderProcessing"),
+  //   //   MainNavigation(
+  //   //     pageIndex: 2,
+  //   //   ),
+  //   // );
+  // }
 }

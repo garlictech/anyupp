@@ -1,0 +1,5 @@
+mutation RateOrder($orderId: ID!, $rating: Int) {
+  updateOrder(input: { id: $orderId, rating: $rating }) {
+    id
+  }
+}

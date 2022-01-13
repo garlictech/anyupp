@@ -5,7 +5,7 @@
     "piece": "db",
     "close": "Close",
     "select": "Select",
-    "ok": "Ok",
+    "ok": "OK",
     "today": "Today",
     "exit": "Tap back again to exit app.",
     "ok2": "ALL RIGHT"
@@ -110,8 +110,9 @@
       "favorites": "Favorites",
       "orderStatus": "Order status",
       "profile": "Profile",
-      "cart": "Cart"
+      "cart": "CART"
     },
+    "tooltip": "You can switch between\n ordering methods at any time.",
     "bottomTitles": {
       "menu": "Menu",
       "favorites": "Favorites",
@@ -119,7 +120,12 @@
       "profile": "Profile"
     },
     "categoryEmpty": "This category is currently empty.",
-    "noCategories": "This unit has no products yet."
+    "noCategories": "This unit has no products yet.",
+    "category": {
+      "emptyTakeaway": "Sorry, this product category is not available in takeaway mode.",
+      "emptyInPlace": "Sorry, this product category is not available in in place mode.",
+      "emptyHint": "Look around the other categories."
+    }
   },
   "cart": {
     "totalCost": "Total cost",
@@ -138,7 +144,7 @@
     "packagingFee": "Packaging fee"
   },
   "allergens": {
-    "title": "Allergens",
+    "title": "ALLERGENS",
     "celery": "Celery",
     "crustaceans": "Crustaceans",
     "egg": "Egg",
@@ -153,7 +159,7 @@
     "soya": "Soya",
     "sulphites": "Sulphites",
     "treenuts": "Treenuts",
-    "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out Kajahu Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
+    "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out {{0}} Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
   },
   "favorites": {
     "noFavorites": "You have not added any favorite items yet.",
@@ -174,6 +180,14 @@
       "paymentDetails": "Payment details",
       "otherDetails": "More details"
     },
+    "sendOrderError": {
+      "title": "Order failed.",
+      "description": "An error has occurred, please contact our team for assistance!"
+    },
+    "sendOrderSuccess": {
+      "title": "Successful order!",
+      "description": "The ordered products have been added to your invoice and will be served soon."
+    },
     "status": {
       "none": "WAITING",
       "placed": "PLACED",
@@ -182,14 +196,6 @@
       "paid": "PAID",
       "rejected": "REJECTED",
       "served": "SERVED"
-    },
-    "sendOrderError": {
-      "title": "Order failed.",
-      "description": "An error has occurred, please contact our team for assistance!"
-    },
-    "sendOrderSuccess": {
-      "title": "Successful order!",
-      "description": "The ordered products have been added to your invoice and will be served soon."
     },
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
@@ -284,6 +290,12 @@
   "payment": {
     "title": "PAY",
     "choose": "Please select a payment method",
+    "delete": {
+      "title": "Delete credit card?",
+      "description": "This will delete the credit card from your payment methods.",
+      "reason": "Delete",
+      "cancel": "Cancel"
+    },
     "method": {
       "inAppPayment": "Credit Card Payment",
       "inAppPaymentDesc": "Online",
@@ -291,7 +303,8 @@
       "cashDesc": "I pay at the waiter",
       "creditCard": "Card, SZÉP card",
       "creditCardDesc": "I pay at the waiter",
-      "noPaymentMethod": "You have no saved cards yet."
+      "noPaymentMethod": "You have no saved cards yet.",
+      "addNewCard": "Add new card"
     },
     "sendOrder": "PLACE ORDER",
     "fillInvoice": "FILL INVOICE FORM",
@@ -322,7 +335,9 @@
         "invoiceAddress": "Use previous address",
         "show": "Show",
         "downloadReceipt": "DOWNLOAD RECEIPT",
-        "downloadInvoice": "DOWNLOAD INVOICE"
+        "downloadInvoice": "DOWNLOAD INVOICE",
+        "save": "SAVE",
+        "warning": "Data marked in red is required"
       }
     },
     "simplePayStatus": {
@@ -343,6 +358,16 @@
         "description": "SimplePay transaction ID: {{0}}"
       }
     },
+    "newCard": {
+      "title": "Add new card",
+      "hint": {
+        "card_number": "xxxx xxxx xxxx xxxx",
+        "expiry": "MM/YY",
+        "cvc": "CVV"
+      },
+      "saveCard": "SAVE CARD",
+      "warning": "The card information you entered is invalid. Please check it again!"
+    },
     "cardFields": {
       "card_number": {
         "label": "Card number",
@@ -355,8 +380,8 @@
         "validationError": "Card expirity date invalid"
       },
       "cvc": {
-        "label": "CVC",
-        "hint": "XXX",
+        "label": "CVV",
+        "hint": "CVV",
         "validationError": "Card CVC is invalid"
       }
     },
@@ -454,7 +479,9 @@
         "cancel": "Deny",
         "confirm": "Retry"
       }
-    }
+    },
+    "info": "Scan the QR code on your table to finalize your order.",
+    "infoDesc": "Keep the code inside the box to connect."
   },
   "selectUnitMap": {
     "noNearUnits": "No Near Unit",
@@ -485,7 +512,7 @@
       "contact": "Contact",
       "transactions": "Transactions",
       "paymentMethods": "Saved cards",
-      "allergen": "Allergens",
+      "allergens": "Allergens",
       "section2": "Settings",
       "language": "Language",
       "security": "Security & Password",
@@ -493,7 +520,12 @@
       "about": "About",
       "logout": "Logout"
     },
+    "language": {
+      "title": "LANGUAGE",
+      "save": "SET LANGUAGE"
+    },
     "transactions": {
+      "title": "TRANSACTIONS",
       "paymentMethod": "Payment Method",
       "noTransactions": "No Transactions",
       "details": "Details",
@@ -512,7 +544,8 @@
   },
   "product": {
     "notTakeAway": "Only in place",
-    "notInPlace": "Only for takeaway"
+    "notInPlace": "Only for takeaway",
+    "size": "Size:"
   },
   "validators": {
     "required": "this field is required",
@@ -653,5 +686,33 @@
       "title": "Unit is closed",
       "description": "Unit is not accepting orders right now. Try it later!"
     }
+  },
+  "rating": {
+    "question": "How did you like your order?",
+    "send": "READY",
+    "stars": {
+      "1": "Bad",
+      "2": "Going",
+      "3": "Appropriate",
+      "4": "Good",
+      "5": "Wonderful"
+    },
+    "notification": {
+      "title": "Rate order",
+      "message": "Rate your latest order!"
+    }
+  },
+  "tipping": {
+    "question": "Do you want to tip?",
+    "description": "100% of the tips are given to our employees.",
+    "otherAmount": "Other amount",
+    "dialog": {
+      "title": "Unique Tip",
+      "description": "Please enter the amount of tips you want.",
+      "ok": "Done",
+      "cancel": "Cancel",
+      "hint": "Tip amount"
+    },
+    "success": "Thank you for your rating and tip!"
   }
 }

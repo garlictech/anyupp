@@ -6,7 +6,7 @@ import * as sst from '@serverless-stack/resources';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as targets from '@aws-cdk/aws-route53-targets';
 import * as s3deploy from '@aws-cdk/aws-s3-deployment';
-import { Bucket } from '@aws-cdk/aws-s3';
+import { AutoDeleteBucket } from './auto-delete-bucket';
 
 export interface WebsiteProps extends sst.StackProps {
   domainName: string;
@@ -28,12 +28,13 @@ export class WebsiteConstruct extends Construct {
     new cdk.CfnOutput(this, 'Site', { value: this.websiteUrl });
 
     // Content bucket
-    const siteBucket = new Bucket(this, 'SiteBucket', {
+    const siteBucket = new AutoDeleteBucket(this, 'SiteBucket', {
       bucketName: siteDomain,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
       publicReadAccess: true,
       removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: app.stage !== 'prod',
     });
 
     new cdk.CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
@@ -57,7 +58,7 @@ export class WebsiteConstruct extends Construct {
               domainName: siteBucket.bucketWebsiteDomainName,
               originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
             },
-            behaviors: [{ isDefaultBehavior: true }],
+            behaviors: [{ isDefaultBehavior: true, compress: true }],
           },
         ],
       },

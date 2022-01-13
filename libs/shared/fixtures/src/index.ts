@@ -15,6 +15,7 @@ export * from './lib/transaction';
 export * from './lib/unit';
 export * from './lib/user';
 export * from './lib/utils';
+export * from './lib/rkeeper';
 
 import * as simpleFixtures from './lib/simple-fixtures';
 export { simpleFixtures };

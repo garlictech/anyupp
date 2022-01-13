@@ -70,6 +70,7 @@ const getUnitProductVariant = (
   ],
   position: idx,
   netPackagingFee: 1,
+  soldOut: true,
 });
 
 const chainProductInputBase: Omit<
