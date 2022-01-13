@@ -174,7 +174,10 @@ query SearchOrders(
         netPrice
         taxPercentage
       }
-      rating
+      rating {
+        key
+        value
+      }
       tip {
         type
         value

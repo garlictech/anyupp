@@ -479,6 +479,11 @@ type OrderItem @aws_api_key @aws_iam @aws_cognito_user_pools {
   sumPriceShown: PriceShown!
 }
 
+type OrderRating @aws_api_key @aws_iam @aws_cognito_user_pools {
+  key: String!
+  value: Int!
+}
+
 type Order @aws_iam @aws_cognito_user_pools {
   id: ID!
   createdAt: AWSDateTime!
@@ -500,7 +505,8 @@ type Order @aws_iam @aws_cognito_user_pools {
   serviceFee: Price
   packagingSum: Price
   sumPriceShown: PriceShown!
-  rating: Int
+  rating: OrderRating
+  hasRated: Boolean
   tip: Tip
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
@@ -678,14 +684,15 @@ enum SoldOutVisibilityPolicy {
 }
 
 type RatingPolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
-  title: LocalizedItem
-  description: LocalizedItem
-  ratings: [RatingPolicyItem]!
+  key: String!
+  title: LocalizedItem!
+  description: LocalizedItem!
+  ratings: [RatingPolicyItem!]!
 }
 
 type RatingPolicyItem @aws_api_key @aws_iam @aws_cognito_user_pools {
   value: Int!
-  text: LocalizedItem
+  text: LocalizedItem!
   icon: String
 }
 
@@ -697,14 +704,15 @@ type TipPolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
 }
 
 input RatingPolicyInput {
-  title: LocalizedItemInput
-  description: LocalizedItemInput
-  ratings: [RatingPolicyItemInput]!
+  key: String!
+  title: LocalizedItemInput!
+  description: LocalizedItemInput!
+  ratings: [RatingPolicyItemInput!]!
 }
 
 input RatingPolicyItemInput {
   value: Int!
-  text: LocalizedItemInput
+  text: LocalizedItemInput!
   icon: String
 }
 
@@ -741,7 +749,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   orderPolicy: OrderPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicy
-  ratingPolicy: RatingPolicy
+  ratingPolicy: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   createdAt: AWSDateTime!
@@ -866,7 +874,7 @@ type GeoUnit @aws_cognito_user_pools {
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
   serviceFeePolicy: ServiceFeePolicy
-  ratingPolicy: RatingPolicy
+  ratingPolicy: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
@@ -1087,7 +1095,7 @@ input CreateUnitInput {
   orderPolicy: OrderPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
-  ratingPolicy: RatingPolicyInput
+  ratingPolicy: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
@@ -1117,7 +1125,7 @@ input UpdateUnitInput {
   orderPolicy: OrderPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
-  ratingPolicy: RatingPolicyInput
+  ratingPolicy: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
@@ -1225,7 +1233,6 @@ type Mutation {
   deleteAdminUser(input: DeleteAdminUserInput!): AdminUser @aws_iam @aws_cognito_user_pools
   createAnonymUser: CreateAnonymUserOutput @aws_iam @aws_api_key
   createOrderFromCart(input: CreateOrderFromCartInput!): ID @aws_iam @aws_cognito_user_pools
-  rateAndTipOrder(input: RateAndTipOrderInput!): Boolean @aws_iam @aws_cognito_user_pools
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_iam @aws_cognito_user_pools
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
@@ -2028,6 +2035,11 @@ input PlaceInput {
   table: String!
 }
 
+input OrderRatingInput {
+  key: String!
+  value: Int!
+}
+
 type ModelOrderConnection @aws_iam @aws_cognito_user_pools {
   items: [Order!]!
   nextToken: String
@@ -2067,7 +2079,7 @@ input ModelOrderFilterInput {
   unpayCategory: ModelUnpayCategoryInput
   orderMode: ModelOrderModeInput
   servingMode: ModelServingModeInput
-  rating: ModelIntInput
+  hasRated: ModelBooleanInput
   tipTransactionStatus: ModelPaymentStatusInput
   tipTransactionId: ModelIDInput
   and: [ModelOrderFilterInput]
@@ -2096,7 +2108,8 @@ input CreateOrderInput {
   serviceFee: PriceInput
   packagingSum: PriceInput
   sumPriceShown: PriceShownInput!
-  rating: Int
+  rating: OrderRatingInput
+  hasRated: Boolean
   tip: TipInput
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
@@ -2123,7 +2136,8 @@ input UpdateOrderInput {
   serviceFee: PriceInput
   packagingSum: PriceInput
   sumPriceShown: PriceShownInput
-  rating: Int
+  rating: OrderRatingInput
+  hasRated: Boolean
   tip: TipInput
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
@@ -2146,7 +2160,7 @@ input ModelOrderConditionInput {
   unpayCategory: ModelUnpayCategoryInput
   orderMode: ModelOrderModeInput
   servingMode: ModelServingModeInput
-  rating: ModelIntInput
+  hasRated: ModelBooleanInput
   tipTransactionStatus: ModelPaymentStatusInput
   tipTransactionId: ModelIDInput
   and: [ModelOrderConditionInput]
@@ -3266,7 +3280,7 @@ input SearchableOrderFilterInput {
   takeAway: SearchableBooleanFilterInput
   paymentIntention: SearchableFloatFilterInput
   transactionId: SearchableIDFilterInput
-  rating: SearchableIntFilterInput
+  hasRated: SearchableBooleanFilterInput
   tipTransactionId: SearchableIDFilterInput
   and: [SearchableOrderFilterInput]
   or: [SearchableOrderFilterInput]
@@ -3283,7 +3297,7 @@ enum SearchableOrderSortableFields {
   takeAway
   paymentIntention
   transactionId
-  rating
+  hasRated
   tipTransactionId
 }
 

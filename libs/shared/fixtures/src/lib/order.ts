@@ -89,6 +89,11 @@ const orderInputBase = {
   },
   orderMode: CrudApi.OrderMode.instant,
   servingMode: CrudApi.ServingMode.inplace,
+  hasRated: true,
+  rating: {
+    key: 'RATING KEY',
+    value: 3,
+  },
 };
 
 const cardPayment = {

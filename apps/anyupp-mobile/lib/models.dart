@@ -17,6 +17,7 @@ export 'models/Order.dart';
 export 'models/OrderItem.dart';
 export 'models/OrderItemConfigComponent.dart';
 export 'models/OrderItemConfigSet.dart';
+export 'models/OrderRating.dart';
 export 'models/PaymentMode.dart';
 export 'models/Place.dart';
 export 'models/Price.dart';

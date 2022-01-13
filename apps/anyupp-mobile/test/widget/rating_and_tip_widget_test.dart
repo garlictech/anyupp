@@ -63,6 +63,7 @@ void main() {
               percents: [5, 10, 15],
             ),
             ratingPolicy: RatingPolicy(
+              key: 'TEST_QUESTION',
               ratings: [
                 RatingPolicyItem(value: 1, text: _getText('Egy')),
                 RatingPolicyItem(value: 2, text: _getText('Kettő')),

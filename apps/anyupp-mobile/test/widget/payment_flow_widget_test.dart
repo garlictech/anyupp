@@ -97,7 +97,7 @@ void main() {
         orderPolicy: OrderPolicy.placeOnly,
       );
 
-      getIt.unregister<CartBloc>();
+      await getIt.unregister<CartBloc>();
       getIt.registerSingleton<CartBloc>(MockCartBloc(
         _mockCart,
         stateToSend: EmptyCartState(),
@@ -130,7 +130,7 @@ void main() {
         expect(find.text('Pincérnél fizetek'), findsNothing);
       });
     });
-  });
+  }, skip: false);
 
   group('Simplified Payment flow test: policy: placeWithPaymentType', () {
     setUpAll(() async {
@@ -180,7 +180,7 @@ void main() {
         expect(find.text('MEGRENDELÉS'), findsOneWidget);
       });
     });
-  });
+  }, skip: false);
 
   group('Simplified Payment flow test: policy: full', () {
     setUpAll(() async {
@@ -191,7 +191,12 @@ void main() {
         orderPolicy: OrderPolicy.full,
       );
 
-      getIt.unregister<CartBloc>();
+      await getIt.unregister<StripePaymentBloc>();
+      getIt.registerSingleton<StripePaymentBloc>(MockStripePaymentBloc(
+        initialState: StripePaymentMethodsList([]),
+      ));
+
+      await getIt.unregister<CartBloc>();
       getIt.registerSingleton<CartBloc>(MockCartBloc(
         _mockCart,
         // stateToSend: EmptyCartState(),
@@ -232,7 +237,7 @@ void main() {
         expect(find.text('MEGRENDELÉS'), findsOneWidget);
       });
     });
-  });
+  }, skip: false);
 
   group('Simplified Payment flow test: testing error widget.', () {
     setUpAll(() async {
@@ -243,7 +248,7 @@ void main() {
         orderPolicy: OrderPolicy.placeOnly,
       );
 
-      getIt.unregister<CartBloc>();
+      await getIt.unregister<CartBloc>();
       getIt.registerSingleton<CartBloc>(MockCartBloc(
         _mockCart,
         stateToSend: CartErrorState(
@@ -287,5 +292,5 @@ void main() {
             findsOneWidget);
       });
     });
-  });
+  }, skip: true);
 }

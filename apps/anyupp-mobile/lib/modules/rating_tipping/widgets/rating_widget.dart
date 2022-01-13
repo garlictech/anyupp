@@ -42,7 +42,7 @@ class _RatingWidgetState extends State<RatingWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ...widget.ratingPolicy.ratings
+            ...(widget.ratingPolicy.ratings ?? [])!
                 .map((rating) => RatingIconWidget(
                       icon: rating.icon ?? 'rating-1.svg',
                       titleKey: rating.text != null

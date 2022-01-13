@@ -64,7 +64,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 1,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -80,7 +80,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 1,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -270,7 +270,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 1,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -286,7 +286,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 1,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -364,7 +364,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 1,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -380,7 +380,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 1,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -641,7 +641,7 @@ Object {
     },
     Object {
       "id": "test_UnitProductVariant_id_1",
-      "netPackagingFee": null,
+      "netPackagingFee": 1,
       "pack": Object {
         "size": 1,
         "unit": "UNIT_UNIT",
@@ -657,7 +657,7 @@ Object {
     },
     Object {
       "id": "test_UnitProductVariant_id_2",
-      "netPackagingFee": null,
+      "netPackagingFee": 1,
       "pack": Object {
         "size": 2,
         "unit": "UNIT_UNIT",
