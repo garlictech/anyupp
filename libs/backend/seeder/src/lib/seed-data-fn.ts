@@ -1,4 +1,3 @@
-import { ES_DELAY, handleRkeeperProducts } from '@bgap/rkeeper-api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
@@ -14,18 +13,9 @@ import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import { DateTime } from 'luxon';
 import { combineLatest, concat, from, Observable, of } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  map,
-  switchMap,
-  tap,
-  toArray,
-  delay,
-} from 'rxjs/operators';
+import { catchError, concatMap, switchMap, tap, toArray } from 'rxjs/operators';
 import * as R from 'ramda';
 import { seedUtils } from './utils';
-import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 export interface SeederDependencies {
   crudSdk: CrudApi.CrudSdk;
@@ -1131,9 +1121,10 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
           },
         }),
     ),
-  ).pipe(
+  )
+    .pipe
     // seed products by triggering menusync
-    map(([unit]) => unit),
+    /* map(([unit]) => unit),
     throwIfEmptyValue(),
     delay(ES_DELAY),
     switchMap(unit =>
@@ -1156,8 +1147,8 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
           ],
         },
       }),
-    ),
-  );
+    ),*/
+    ();
 
 export const placeOrderToSeat = (
   orderInput: CrudApi.CreateOrderInput,
