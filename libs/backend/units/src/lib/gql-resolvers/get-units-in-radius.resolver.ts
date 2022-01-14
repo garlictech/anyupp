@@ -82,7 +82,7 @@ const toGeoUnit = ({
   isAcceptingOrders: unit.isAcceptingOrders,
   orderPolicy: unit.orderPolicy,
   serviceFeePolicy: unit.serviceFeePolicy,
-  ratingPolicy: unit.ratingPolicy,
+  ratingPolicies: unit.ratingPolicies,
   tipPolicy: unit.tipPolicy,
   soldOutVisibilityPolicy: unit.soldOutVisibilityPolicy,
   style: chainStyle,

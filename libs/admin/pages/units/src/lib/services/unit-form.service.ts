@@ -2,7 +2,8 @@ import { iif } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { FormsService } from '@bgap/admin/shared/forms';
 import {
@@ -22,10 +23,11 @@ import {
   defaultServingMode,
   KeyValue,
 } from '@bgap/shared/types';
-import { select, Store } from '@ngrx/store';
-import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
+import { cleanObject } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
+import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { Maybe } from '@bgap/crud-gql/api';
 
 @Injectable({ providedIn: 'root' })
 export class UnitFormService {
@@ -72,6 +74,7 @@ export class UnitFormService {
             externalId: [''],
           }),
       packagingTaxPercentage: [''],
+      ratingPolicies: this._formBuilder.array([]),
       open: this._formBuilder.group({
         from: [''],
         to: [''],
@@ -168,6 +171,18 @@ export class UnitFormService {
         ),
       ),
     );
+  }
+
+  public patchRatingPolicies(
+    ratingPolicyValues: Maybe<CrudApi.RatingPolicy>[],
+    ratingPoliciesArray: FormArray,
+  ) {
+    (ratingPolicyValues || []).forEach(ratingPolicyValue => {
+      const ratingPolicyGroup =
+        this._formsService.createRatingPolicyFormGroup();
+      ratingPolicyGroup.patchValue(cleanObject(ratingPolicyValue || {}));
+      ratingPoliciesArray.push(ratingPolicyGroup);
+    });
   }
 
   public saveForm$(

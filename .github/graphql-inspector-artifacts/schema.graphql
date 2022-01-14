@@ -749,7 +749,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   orderPolicy: OrderPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicy
-  ratingPolicy: [RatingPolicy!]
+  ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   createdAt: AWSDateTime!
@@ -874,7 +874,7 @@ type GeoUnit @aws_cognito_user_pools {
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
   serviceFeePolicy: ServiceFeePolicy
-  ratingPolicy: [RatingPolicy!]
+  ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
@@ -1095,7 +1095,7 @@ input CreateUnitInput {
   orderPolicy: OrderPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
-  ratingPolicy: [RatingPolicyInput!]
+  ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
@@ -1125,7 +1125,7 @@ input UpdateUnitInput {
   orderPolicy: OrderPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
-  ratingPolicy: [RatingPolicyInput!]
+  ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }

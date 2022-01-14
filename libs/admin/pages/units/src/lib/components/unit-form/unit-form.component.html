@@ -181,6 +181,12 @@
         [lanesFormArray]="dialogForm.get('lanes')! | asFormArray"
       ></bgap-form-unit-lanes>
 
+      <bgap-form-rating-policy
+        [ratingPoliciesFormArray]="
+          dialogForm.get('ratingPolicies')! | asFormArray
+        "
+      ></bgap-form-rating-policy>
+
       <bgap-form-unit-pos
         *ngIf="!unit"
         [posFormGroup]="dialogForm.get('pos')! | asFormGroup"

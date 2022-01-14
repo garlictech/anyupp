@@ -1026,8 +1026,8 @@ export const seedSportbarRKeeperUnit = (deps: SeederDependencies) =>
               type: CrudApi.PosType.rkeeper,
               rkeeper: {
                 endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
-                rkeeperUsername: '795_50_155_539',
-                rkeeperPassword: 'b6302d53085c9486d0f765ec475f18',
+                rkeeperUsername: '350_55_64_458',
+                rkeeperPassword: 'd192bf79e9cbeb655a8fc60de86322',
                 anyuppPassword: 'foobar',
                 anyuppUsername: 'foobar',
               },

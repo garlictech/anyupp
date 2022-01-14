@@ -76,6 +76,11 @@ export class UnitFormComponent
     if (this.unit) {
       this.dialogForm.patchValue(cleanObject(omit(['lanes'], this.unit)));
 
+      this._unitFormService.patchRatingPolicies(
+        this.unit.ratingPolicies || [],
+        this.dialogForm?.controls.ratingPolicies as FormArray,
+      );
+
       // Parse openingHours object to temp array
       const custom = this.unit?.openingHours?.custom;
 
