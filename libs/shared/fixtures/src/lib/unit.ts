@@ -146,24 +146,16 @@ const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
     percentage: 10,
     taxPercentage: 10,
   },
-  ratingPolicy: [
+  ratingPolicies: [
     {
-      key: 'RATING KEY',
+      key: 'question1',
       title: {
-        en: 'RATING TITLE',
+        en: 'Question',
       },
       description: {
-        en: 'RATING DESCRIPTION',
+        en: 'Desc',
       },
-      ratings: [
-        {
-          value: 1,
-          text: {
-            en: 'RATING ITEM DESC',
-          },
-          icon: 'RATING ITEM ICON',
-        },
-      ],
+      ratings: [{ value: 1, text: { en: 'good' } }],
     },
   ],
   tipPolicy: {

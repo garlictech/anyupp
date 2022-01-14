@@ -69,7 +69,7 @@ Object {
     ],
     "phone": null,
     "pos": null,
-    "ratingPolicy": null,
+    "ratingPolicies": null,
     "serviceFeePolicy": null,
     "soldOutVisibilityPolicy": null,
     "supportedOrderModes": Array [
@@ -155,6 +155,7 @@ Object {
   "pos": Object {
     "type": "anyupp",
   },
+  "ratingPolicies": Array [],
   "supportedOrderModes": Array [
     "instant",
   ],
@@ -237,6 +238,7 @@ Object {
   "packagingTaxPercentage": "",
   "paymentModes": Array [],
   "phone": "",
+  "ratingPolicies": Array [],
   "supportedOrderModes": Array [
     "instant",
   ],
@@ -325,20 +327,20 @@ Object {
       },
       "type": "rkeeper",
     },
-    "ratingPolicy": Array [
+    "ratingPolicies": Array [
       Object {
         "description": Object {
           "de": null,
-          "en": "RATING DESCRIPTION",
+          "en": "Desc",
           "hu": null,
         },
-        "key": "RATING KEY",
+        "key": "question1",
         "ratings": Array [
           Object {
-            "icon": "RATING ITEM ICON",
+            "icon": null,
             "text": Object {
               "de": null,
-              "en": "RATING ITEM DESC",
+              "en": "good",
               "hu": null,
             },
             "value": 1,
@@ -346,7 +348,7 @@ Object {
         ],
         "title": Object {
           "de": null,
-          "en": "RATING TITLE",
+          "en": "Question",
           "hu": null,
         },
       },
@@ -458,20 +460,20 @@ Object {
       },
       "type": "rkeeper",
     },
-    "ratingPolicy": Array [
+    "ratingPolicies": Array [
       Object {
         "description": Object {
           "de": null,
-          "en": "RATING DESCRIPTION",
+          "en": "Desc",
           "hu": null,
         },
-        "key": "RATING KEY",
+        "key": "question1",
         "ratings": Array [
           Object {
-            "icon": "RATING ITEM ICON",
+            "icon": null,
             "text": Object {
               "de": null,
-              "en": "RATING ITEM DESC",
+              "en": "good",
               "hu": null,
             },
             "value": 1,
@@ -479,7 +481,7 @@ Object {
         ],
         "title": Object {
           "de": null,
-          "en": "RATING TITLE",
+          "en": "Question",
           "hu": null,
         },
       },
@@ -582,7 +584,7 @@ Object {
     ],
     "phone": null,
     "pos": null,
-    "ratingPolicy": null,
+    "ratingPolicies": null,
     "serviceFeePolicy": null,
     "soldOutVisibilityPolicy": null,
     "supportedOrderModes": Array [

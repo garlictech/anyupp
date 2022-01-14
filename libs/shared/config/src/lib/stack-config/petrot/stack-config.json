@@ -45,6 +45,6 @@
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-petrot.anyupp.com/petrot",
     "RKeeperTaskBucketName": "petrot-anyupp-backend-rk-anyupprkeepermenubucket4-1gdzck7j8hduy",
     "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/petrot-anyupp-backend-rke-RkeeperECSTaskExecutionR-1X0O0BZP7FQW5",
-    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/petrotanyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef4FF02F82:2"
+    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/petrotanyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef4FF02F82:4"
   }
 }

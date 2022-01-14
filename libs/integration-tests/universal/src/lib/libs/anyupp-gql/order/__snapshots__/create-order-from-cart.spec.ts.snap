@@ -79,30 +79,18 @@ Array [
         },
         "type": "rkeeper",
       },
-      "ratingPolicy": Array [
+      "ratingPolicies": Array [
         Object {
-          "description": Object {
-            "de": null,
-            "en": "RATING DESCRIPTION",
-            "hu": null,
-          },
-          "key": "RATING KEY",
+          "description": null,
+          "key": null,
           "ratings": Array [
             Object {
-              "icon": "RATING ITEM ICON",
-              "text": Object {
-                "de": null,
-                "en": "RATING ITEM DESC",
-                "hu": null,
-              },
+              "icon": null,
+              "text": null,
               "value": 1,
             },
           ],
-          "title": Object {
-            "de": null,
-            "en": "RATING TITLE",
-            "hu": null,
-          },
+          "title": null,
         },
       ],
       "serviceFeePolicy": Object {

@@ -146,10 +146,10 @@ export class ProductFormService {
   }
 
   public patchConfigSet(
-    configsets: Maybe<CrudApi.ProductConfigSet>[],
-    configSets: FormArray,
+    configSetValues: Maybe<CrudApi.ProductConfigSet>[],
+    configSetsArray: FormArray,
   ) {
-    (configsets || []).forEach(configSet => {
+    (configSetValues || []).forEach(configSet => {
       const configSetGroup =
         this._formsService.createProductConfigSetFormGroup();
       configSetGroup.patchValue(cleanObject(fp.omit('items', configSet)));
@@ -164,7 +164,7 @@ export class ProductFormService {
         }
       });
 
-      configSets.push(configSetGroup);
+      configSetsArray.push(configSetGroup);
     });
   }
 
