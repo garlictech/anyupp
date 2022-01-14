@@ -11,8 +11,7 @@
   "storage": {
     "s312921516": {
       "service": "S3",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": []
+      "providerPlugin": "awscloudformation"
     }
   },
   "api": {

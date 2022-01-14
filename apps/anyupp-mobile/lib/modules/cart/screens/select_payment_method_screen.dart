@@ -124,6 +124,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
         listeners: [
           BlocListener<CartBloc, BaseCartState>(
             listener: (BuildContext context, BaseCartState state) {
+              print('********* CartBloc.state=$state');
               if (state is EmptyCartState) {
                 if (_orderPolicy != OrderPolicy.full) {
                   setState(() {

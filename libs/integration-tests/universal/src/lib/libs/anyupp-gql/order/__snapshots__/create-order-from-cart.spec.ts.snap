@@ -79,17 +79,32 @@ Array [
         },
         "type": "rkeeper",
       },
-      "ratingPolicy": Object {
-        "description": null,
-        "ratings": Array [
-          Object {
-            "icon": null,
-            "text": null,
-            "value": 1,
+      "ratingPolicy": Array [
+        Object {
+          "description": Object {
+            "de": null,
+            "en": "RATING DESCRIPTION",
+            "hu": null,
           },
-        ],
-        "title": null,
-      },
+          "key": "RATING KEY",
+          "ratings": Array [
+            Object {
+              "icon": "RATING ITEM ICON",
+              "text": Object {
+                "de": null,
+                "en": "RATING ITEM DESC",
+                "hu": null,
+              },
+              "value": 1,
+            },
+          ],
+          "title": Object {
+            "de": null,
+            "en": "RATING TITLE",
+            "hu": null,
+          },
+        },
+      ],
       "serviceFeePolicy": Object {
         "percentage": 10,
         "taxPercentage": 10,
@@ -211,6 +226,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
     Object {
@@ -535,6 +551,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
     Object {
@@ -869,6 +886,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
     Object {
@@ -1193,6 +1211,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
     Object {
@@ -1527,6 +1546,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
     Object {
@@ -1851,6 +1871,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
     Object {

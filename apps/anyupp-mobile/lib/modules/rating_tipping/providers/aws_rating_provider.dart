@@ -1,52 +1,19 @@
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 
 class AwsRatingProvider implements IRatingProvider {
   @override
-  Future<bool> rateAndTipOrder(String orderId, int? rating,
-      String? paymentMethodId, TipType? tipType, double? tip) async {
-    if (rating == null && tipType == null) {
-      // Nothing can do
-      return true;
-    }
-
-    try {
-      print(
-          'AwsRatingProvider.rateAndTipOrder().orderId=$orderId, rating=$rating, tipType=$tipType, tip=$tip');
-
-      var result = await GQL.amplify.execute(RateAndTipOrderMutation(
-        variables: RateAndTipOrderArguments(
-          orderId: orderId,
-          rating: rating ?? -1,
-          type: tipType ?? TipType.none,
-          value: tip ?? 0.0,
-        ),
-      ));
-
-      if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(
-            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
-      }
-
-      String? id = result.data?.updateOrder?.id;
-      print('AwsRatingProvider.rateAndTipOrder().success=$id');
-      return id != null;
-    } on Exception catch (e) {
-      print('AwsRatingProvider.rateAndTipOrder.Exception: $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<bool> rateOrder(String orderId, int? rating) async {
+  Future<bool> rateOrder(String orderId, OrderRating rating) async {
     try {
       print('AwsRatingProvider.rateOrder().orderId=$orderId, rating=$rating');
 
       var result = await GQL.amplify.execute(RateOrderMutation(
         variables: RateOrderArguments(
           orderId: orderId,
-          rating: rating ?? -1,
+          questionKey: rating.key,
+          rating: rating.value,
         ),
       ));
 

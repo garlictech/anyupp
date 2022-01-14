@@ -320,22 +320,37 @@ Object {
         "anyuppPassword": Any<String>,
         "anyuppUsername": "ANYUPP_USERNAME",
         "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
-        "rkeeperPassword": "3943200386403faebf5f80191f5c1c",
-        "rkeeperUsername": "781_55_69_939",
+        "rkeeperPassword": "b6302d53085c9486d0f765ec475f18",
+        "rkeeperUsername": "795_50_155_539",
       },
       "type": "rkeeper",
     },
-    "ratingPolicy": Object {
-      "description": null,
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": null,
-          "value": 1,
+    "ratingPolicy": Array [
+      Object {
+        "description": Object {
+          "de": null,
+          "en": "RATING DESCRIPTION",
+          "hu": null,
         },
-      ],
-      "title": null,
-    },
+        "key": "RATING KEY",
+        "ratings": Array [
+          Object {
+            "icon": "RATING ITEM ICON",
+            "text": Object {
+              "de": null,
+              "en": "RATING ITEM DESC",
+              "hu": null,
+            },
+            "value": 1,
+          },
+        ],
+        "title": Object {
+          "de": null,
+          "en": "RATING TITLE",
+          "hu": null,
+        },
+      },
+    ],
     "serviceFeePolicy": Object {
       "percentage": 10,
       "taxPercentage": 10,
@@ -443,17 +458,32 @@ Object {
       },
       "type": "rkeeper",
     },
-    "ratingPolicy": Object {
-      "description": null,
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": null,
-          "value": 1,
+    "ratingPolicy": Array [
+      Object {
+        "description": Object {
+          "de": null,
+          "en": "RATING DESCRIPTION",
+          "hu": null,
         },
-      ],
-      "title": null,
-    },
+        "key": "RATING KEY",
+        "ratings": Array [
+          Object {
+            "icon": "RATING ITEM ICON",
+            "text": Object {
+              "de": null,
+              "en": "RATING ITEM DESC",
+              "hu": null,
+            },
+            "value": 1,
+          },
+        ],
+        "title": Object {
+          "de": null,
+          "en": "RATING TITLE",
+          "hu": null,
+        },
+      },
+    ],
     "serviceFeePolicy": Object {
       "percentage": 10,
       "taxPercentage": 10,

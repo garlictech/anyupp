@@ -24,7 +24,7 @@ class Order {
   final ServingMode? servingMode;
   final OrderMode? orderMode;
   final Price? packagingSum;
-  final int? rating;
+  final OrderRating? rating;
   final Tip? tip;
   final PaymentStatus? tipTransactionStatus;
   final String? tipTransactionId;
@@ -80,7 +80,7 @@ class Order {
     ServingMode? servingMode,
     OrderMode? orderMode,
     Price? packagingSum,
-    int? rating,
+    OrderRating? rating,
     Tip? tip,
     PaymentStatus? tipTransactionStatus,
     String? tipTransactionId,
@@ -137,7 +137,7 @@ class Order {
       'servingMode': enumToString(servingMode),
       'orderMode': enumToString(orderMode),
       'packagingSum': packagingSum?.toJson(),
-      'rating': rating,
+      'rating': rating?.toJson(),
       'tip': tip?.toJson(),
       'tipTransactionStatus': tipTransactionStatus,
       'tipTransactionId': tipTransactionId,
@@ -176,7 +176,8 @@ class Order {
       packagingSum: map['packagingSum'] != null
           ? Price.fromJson(map['packagingSum'])
           : null,
-      rating: map['rating'],
+      rating:
+          map['rating'] != null ? OrderRating.fromJson(map['rating']) : null,
       tip: map['tip'] != null ? Tip.fromJson(map['tip']) : null,
       tipTransactionStatus: map['tipTransactionStatus'] != null
           ? enumFromString<PaymentStatus>(

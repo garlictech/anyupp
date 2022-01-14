@@ -15,8 +15,8 @@ import '../mock/mock_data_faker.dart';
 import 'mock/mocks.dart';
 
 void main() {
-  RatingPolicy _dummyRatingPolicy() {
-    return RatingPolicy(ratings: [
+  RatingPolicy _dummyRatingPolicy([String key = 'TEST_KEY']) {
+    return RatingPolicy(key: key, ratings: [
       RatingPolicyItem(value: 1),
       RatingPolicyItem(value: 2),
       RatingPolicyItem(value: 3),
@@ -314,7 +314,10 @@ void main() {
           price: 1000,
         );
         order = order.copyWith(
-          rating: 1,
+          rating: OrderRating(
+            key: 'TETS_QUESTION_1',
+            value: 1,
+          ),
           tip: Tip(
             TipType.none,
             0,
@@ -369,7 +372,10 @@ void main() {
           price: 1000,
         );
         order = order.copyWith(
-          rating: 1,
+          rating: OrderRating(
+            key: 'TETS_QUESTION_1',
+            value: 1,
+          ),
           tip: Tip(
             TipType.amount,
             500,

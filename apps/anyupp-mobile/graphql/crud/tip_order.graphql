@@ -11,11 +11,7 @@ mutation TipOrder(
   $value: Float!
 ) {
   payTipWithStripe(
-    input: {
-      orderId: $orderId
-      paymentMethodId: $paymentMethodId
-      tip: { type: $type, value: $value }
-    }
+    input: { orderId: $orderId, tip: { type: $type, value: $value } }
   ) {
     clientSecret
     status

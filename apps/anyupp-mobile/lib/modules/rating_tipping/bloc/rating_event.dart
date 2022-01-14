@@ -11,32 +11,32 @@ class ResetRating extends RatingEvent {}
 
 class RateAndTipOrder extends RatingEvent {
   final String orderId;
-  final int? rating;
+  final OrderRating rating;
   final TipType? tipType;
   final double? tipValue;
 
   const RateAndTipOrder({
     required this.orderId,
-    this.rating,
+    required this.rating,
     this.tipType,
     this.tipValue,
   });
 
   @override
-  List<Object> get props => [orderId];
+  List<Object> get props => [orderId, rating];
 }
 
 class RateOrder extends RatingEvent {
   final String orderId;
-  final int? rating;
+  final OrderRating rating;
 
   const RateOrder({
     required this.orderId,
-    this.rating,
+    required this.rating,
   });
 
   @override
-  List<Object> get props => [orderId];
+  List<Object> get props => [orderId, rating];
 }
 
 class TipOrder extends RatingEvent {

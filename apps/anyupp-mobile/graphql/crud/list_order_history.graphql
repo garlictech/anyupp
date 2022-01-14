@@ -173,7 +173,10 @@ query SearchOrderHistory(
         netPrice
         taxPercentage
       }
-      rating
+      rating {
+        key
+        value
+      }
       tip {
         type
         value

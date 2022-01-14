@@ -7,51 +7,56 @@ class Mock {
   // Hidden/Private constructor
   Mock._();
 
+  static List<RatingPolicyItem> mockRatingPolicyItems() {
+    return [
+      RatingPolicyItem(
+          value: 1,
+          text: LocalizedItem(
+            hu: 'Rossz',
+            en: 'Rossz',
+          ),
+          icon: 'rating-1.svg'),
+      RatingPolicyItem(
+          value: 2,
+          text: LocalizedItem(
+            hu: 'Elmegy',
+            en: 'Elmegy',
+          ),
+          icon: 'rating-2.svg'),
+      RatingPolicyItem(
+          value: 3,
+          text: LocalizedItem(
+            hu: 'Megfelelő',
+            en: 'Megfelelő',
+          ),
+          icon: 'rating-3.svg'),
+      RatingPolicyItem(
+          value: 4,
+          text: LocalizedItem(
+            hu: 'Jó',
+            en: 'Jó',
+          ),
+          icon: 'rating-4.svg'),
+      RatingPolicyItem(
+          value: 5,
+          text: LocalizedItem(
+            hu: 'Csodás',
+            en: 'Csodás',
+          ),
+          icon: 'rating-5.svg'),
+    ];
+  }
+
   static RatingPolicy? mockRatingPolicy() {
     return _enabled
         ? RatingPolicy(
+            key: '',
             title: LocalizedItem(
               hu: 'Hogy sikerült a rendelésed?',
               en: 'Hogy sikerült a rendelésed?',
               de: 'Hogy sikerült a rendelésed?',
             ),
-            ratings: [
-              RatingPolicyItem(
-                  value: 1,
-                  text: LocalizedItem(
-                    hu: 'Rossz',
-                    en: 'Rossz',
-                  ),
-                  icon: 'rating-1.svg'),
-              RatingPolicyItem(
-                  value: 2,
-                  text: LocalizedItem(
-                    hu: 'Elmegy',
-                    en: 'Elmegy',
-                  ),
-                  icon: 'rating-2.svg'),
-              RatingPolicyItem(
-                  value: 3,
-                  text: LocalizedItem(
-                    hu: 'Megfelelő',
-                    en: 'Megfelelő',
-                  ),
-                  icon: 'rating-3.svg'),
-              RatingPolicyItem(
-                  value: 4,
-                  text: LocalizedItem(
-                    hu: 'Jó',
-                    en: 'Jó',
-                  ),
-                  icon: 'rating-4.svg'),
-              RatingPolicyItem(
-                  value: 5,
-                  text: LocalizedItem(
-                    hu: 'Csodás',
-                    en: 'Csodás',
-                  ),
-                  icon: 'rating-5.svg'),
-            ],
+            ratings: mockRatingPolicyItems(),
           )
         : null;
   }

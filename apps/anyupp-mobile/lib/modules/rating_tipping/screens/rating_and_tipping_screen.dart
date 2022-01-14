@@ -160,7 +160,10 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
       getIt.get<RatingBloc>().add(
             RateAndTipOrder(
               orderId: widget.orderId,
-              rating: _rating,
+              rating: OrderRating(
+                key: widget.ratingPolicy!.key,
+                value: _rating ?? -1,
+              ),
               tipType: _tipType,
               tipValue: _tip,
             ),
@@ -171,7 +174,10 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
       getIt.get<RatingBloc>().add(
             RateOrder(
               orderId: widget.orderId,
-              rating: _rating,
+              rating: OrderRating(
+                key: widget.ratingPolicy!.key,
+                value: _rating ?? -1,
+              ),
             ),
           );
     } else
