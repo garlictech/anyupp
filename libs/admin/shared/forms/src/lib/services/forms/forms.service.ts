@@ -21,9 +21,9 @@ export class FormsService {
       id: [uuidV1()],
       variantName: this._formBuilder.group(
         {
-          hu: ['', Validators.maxLength(40)],
-          en: ['', Validators.maxLength(40)],
-          de: ['', Validators.maxLength(40)],
+          hu: [''],
+          en: [''],
+          de: [''],
         },
         { validators: multiLangValidator },
       ),
@@ -104,5 +104,21 @@ export class FormsService {
             ],
           }
         : {}),
+    });
+
+  public createRatingPolicyFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      key: [''],
+      title: this._formBuilder.group({
+        hu: [''],
+        en: [''],
+        de: [''],
+      }),
+      description: this._formBuilder.group({
+        hu: [''],
+        en: [''],
+        de: [''],
+      }),
+      ratings: this._formBuilder.array([]),
     });
 }

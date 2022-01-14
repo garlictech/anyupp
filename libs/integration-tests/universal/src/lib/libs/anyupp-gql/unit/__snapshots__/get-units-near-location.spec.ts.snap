@@ -54,20 +54,20 @@ Object {
       "type": "stripe",
     },
   ],
-  "ratingPolicy": Array [
+  "ratingPolicies": Array [
     Object {
       "description": Object {
         "de": null,
-        "en": "RATING DESCRIPTION",
+        "en": "Desc",
         "hu": null,
       },
-      "key": "RATING KEY",
+      "key": "question1",
       "ratings": Array [
         Object {
-          "icon": "RATING ITEM ICON",
+          "icon": null,
           "text": Object {
             "de": null,
-            "en": "RATING ITEM DESC",
+            "en": "good",
             "hu": null,
           },
           "value": 1,
@@ -75,7 +75,7 @@ Object {
       ],
       "title": Object {
         "de": null,
-        "en": "RATING TITLE",
+        "en": "Question",
         "hu": null,
       },
     },
@@ -161,20 +161,20 @@ Object {
       "type": "stripe",
     },
   ],
-  "ratingPolicy": Array [
+  "ratingPolicies": Array [
     Object {
       "description": Object {
         "de": null,
-        "en": "RATING DESCRIPTION",
+        "en": "Desc",
         "hu": null,
       },
-      "key": "RATING KEY",
+      "key": "question1",
       "ratings": Array [
         Object {
-          "icon": "RATING ITEM ICON",
+          "icon": null,
           "text": Object {
             "de": null,
-            "en": "RATING ITEM DESC",
+            "en": "good",
             "hu": null,
           },
           "value": 1,
@@ -182,7 +182,7 @@ Object {
       ],
       "title": Object {
         "de": null,
-        "en": "RATING TITLE",
+        "en": "Question",
         "hu": null,
       },
     },
@@ -396,20 +396,20 @@ Object {
       "type": "stripe",
     },
   ],
-  "ratingPolicy": Array [
+  "ratingPolicies": Array [
     Object {
       "description": Object {
         "de": null,
-        "en": "RATING DESCRIPTION",
+        "en": "Desc",
         "hu": null,
       },
-      "key": "RATING KEY",
+      "key": "question1",
       "ratings": Array [
         Object {
-          "icon": "RATING ITEM ICON",
+          "icon": null,
           "text": Object {
             "de": null,
-            "en": "RATING ITEM DESC",
+            "en": "good",
             "hu": null,
           },
           "value": 1,
@@ -417,7 +417,7 @@ Object {
       ],
       "title": Object {
         "de": null,
-        "en": "RATING TITLE",
+        "en": "Question",
         "hu": null,
       },
     },
@@ -503,20 +503,20 @@ Object {
       "type": "stripe",
     },
   ],
-  "ratingPolicy": Array [
+  "ratingPolicies": Array [
     Object {
       "description": Object {
         "de": null,
-        "en": "RATING DESCRIPTION",
+        "en": "Desc",
         "hu": null,
       },
-      "key": "RATING KEY",
+      "key": "question1",
       "ratings": Array [
         Object {
-          "icon": "RATING ITEM ICON",
+          "icon": null,
           "text": Object {
             "de": null,
-            "en": "RATING ITEM DESC",
+            "en": "good",
             "hu": null,
           },
           "value": 1,
@@ -524,7 +524,7 @@ Object {
       ],
       "title": Object {
         "de": null,
-        "en": "RATING TITLE",
+        "en": "Question",
         "hu": null,
       },
     },
