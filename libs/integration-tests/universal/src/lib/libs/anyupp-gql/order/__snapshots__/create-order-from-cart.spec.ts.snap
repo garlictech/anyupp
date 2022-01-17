@@ -81,16 +81,28 @@ Array [
       },
       "ratingPolicies": Array [
         Object {
-          "description": null,
-          "key": null,
+          "description": Object {
+            "de": null,
+            "en": "Desc",
+            "hu": null,
+          },
+          "key": "question1",
           "ratings": Array [
             Object {
               "icon": null,
-              "text": null,
+              "text": Object {
+                "de": null,
+                "en": "good",
+                "hu": null,
+              },
               "value": 1,
             },
           ],
-          "title": null,
+          "title": Object {
+            "de": null,
+            "en": "Question",
+            "hu": null,
+          },
         },
       ],
       "serviceFeePolicy": Object {

@@ -478,7 +478,7 @@ const listProductsForUnits = (
   sdk: CrudApi.CrudSdk,
   unitIds: string[],
 ): Observable<Array<CrudApi.UnitProduct>> => {
-  const input: CrudApi.ListGeneratedProductsQueryVariables = {
+  const input: CrudApi.SearchUnitProductsQueryVariables = {
     filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
   };
   return sdk
