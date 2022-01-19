@@ -204,6 +204,6 @@ describe('GenerateProduct tests', () => {
             console.error(`${TEST_NAME}Test ERROR`, err);
           },
         });
-    }, 25000);
+    }, 50000);
   });
 });
