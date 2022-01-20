@@ -87,7 +87,7 @@ describe('GenerateProduct tests', () => {
           delay(DYNAMODB_OPERATION_DELAY),
         )
         .toPromise();
-    }, 25000);
+    }, 100000);
 
     afterAll(async () => {
       await cleanup().toPromise();
@@ -142,7 +142,7 @@ describe('GenerateProduct tests', () => {
             console.error(`${TEST_NAME}Test ERROR`, err);
           },
         });
-    }, 25000);
+    }, 100000);
 
     it('should be able to create and delete MORE then 25 generated products', done => {
       // using UNIT 01
@@ -204,6 +204,6 @@ describe('GenerateProduct tests', () => {
             console.error(`${TEST_NAME}Test ERROR`, err);
           },
         });
-    }, 50000);
+    }, 100000);
   });
 });
