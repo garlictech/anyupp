@@ -180,10 +180,6 @@ export class RKeeperStack extends sst.Stack {
       value: taskRole.roleArn,
     });
 
-    new cdk.CfnOutput(this, 'RKeeperTaskDefinitionArn', {
-      value: menusyncTaskDefinition.taskDefinitionArn,
-    });
-
     new cdk.CfnOutput(this, 'RKeeperTaskBucketName', {
       value: menuBucket.bucketName,
     });
