@@ -35,7 +35,7 @@
     "seed": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts",
     "deleteAllTableData": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/delete-all-table-data.ts",
     "reindexTables": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/reindex-tables.ts",
-    "unittest": "yarn nx run-many --target=test --all --exclude='integration-tests-angular' --exclude='integration-tests-universal' --exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api"
+    "unittest": "yarn nx run-many --target=test --all --coverage=true --exclude='integration-tests-angular' --exclude='integration-tests-universal' --exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api"
   },
   "private": true,
   "dependencies": {

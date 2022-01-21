@@ -1946,7 +1946,8 @@
             "jestConfig": "libs/integration-tests/angular/jest.config.js",
             "passWithNoTests": true,
             "detectOpenHandles": true,
-            "forceExit": true
+            "forceExit": true,
+            "coverage": true
           }
         }
       },
@@ -1964,7 +1965,8 @@
             "jestConfig": "libs/integration-tests/universal/jest.config.js",
             "passWithNoTests": true,
             "detectOpenHandles": true,
-            "forceExit": true
+            "forceExit": true,
+            "coverage": true
           }
         }
       },
