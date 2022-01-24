@@ -44,7 +44,6 @@
     "RKeeperWebhookEndpointCBC72BD4": "https://q6bb7pplml.execute-api.eu-west-1.amazonaws.com/staging/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-staging.anyupp.com/staging",
     "RKeeperTaskBucketName": "staging-anyupp-backend-r-anyupprkeepermenubucket4-9yqxngmbbz7s",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/staging-anyupp-backend-rk-RkeeperECSTaskExecutionR-QKWPZGPW72MS",
-    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/staginganyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDefC22E810E:1"
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/staging-anyupp-backend-rk-RkeeperECSTaskExecutionR-QKWPZGPW72MS"
   }
 }
