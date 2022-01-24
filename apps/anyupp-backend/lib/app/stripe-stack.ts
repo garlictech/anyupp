@@ -50,6 +50,7 @@ export class StripeStack extends sst.Stack {
     const api = new apigateway.LambdaRestApi(this, 'StripeWebhook', {
       handler: stripeWebhookLambda,
       restApiName: apiName,
+      proxy: true,
       deployOptions: {
         stageName: scope.stage,
       },
