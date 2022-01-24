@@ -35,7 +35,8 @@
     "seed": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts",
     "deleteAllTableData": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/delete-all-table-data.ts",
     "reindexTables": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/reindex-tables.ts",
-    "unittest": "yarn nx run-many --target=test --all --coverage=true --exclude='integration-tests-angular' --exclude='integration-tests-universal' --exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api"
+    "unittest": "yarn nx run-many --target=test --all --exclude='integration-tests-angular' --exclude='integration-tests-universal' --exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api",
+    "alltest": "yarn nx run-many --skip-nx-cache --target=test --all --parallel --coverage=true && node ./tools/coverage-merger.js"
   },
   "private": true,
   "dependencies": {
@@ -180,6 +181,7 @@
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-cypress": "2.12.1",
     "eslint-plugin-unused-imports": "2.0.0",
+    "glob": "^7.2.0",
     "graphql-schema-utilities": "1.1.3",
     "husky": "7.0.4",
     "jest": "27.4.7",

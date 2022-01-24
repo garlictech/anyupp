@@ -7,5 +7,9 @@ module.exports = {
   },
   resolver: '@nrwl/jest/plugins/resolver',
   moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
-  coverageReporters: ['html'],
+  reporters: ['default'],
+  passWithNoTests: true,
+  detectOpenHandles: true,
+  forceExit: true,
+  coverage: true,
 };

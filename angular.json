@@ -1947,7 +1947,7 @@
             "passWithNoTests": true,
             "detectOpenHandles": true,
             "forceExit": true,
-            "coverage": true
+            "coverage": false
           }
         }
       },
@@ -1966,7 +1966,7 @@
             "passWithNoTests": true,
             "detectOpenHandles": true,
             "forceExit": true,
-            "coverage": true
+            "coverage": false
           }
         }
       },

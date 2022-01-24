@@ -1,3 +1,5 @@
+import * as ssm from '@aws-cdk/aws-ssm';
+import { getFQParamName } from './utils';
 import * as logs from '@aws-cdk/aws-logs';
 import * as route53 from '@aws-cdk/aws-route53';
 import * as acm from '@aws-cdk/aws-certificatemanager';
@@ -180,12 +182,15 @@ export class RKeeperStack extends sst.Stack {
       value: taskRole.roleArn,
     });
 
-    new cdk.CfnOutput(this, 'RKeeperTaskDefinitionArn', {
-      value: menusyncTaskDefinition.taskDefinitionArn,
-    });
-
     new cdk.CfnOutput(this, 'RKeeperTaskBucketName', {
       value: menuBucket.bucketName,
+    });
+
+    new ssm.StringParameter(this, 'RkeeperTaskDefinitionArnParam', {
+      allowedPattern: '.*',
+      description: 'The current rkeeper task definition for Fargate',
+      parameterName: getFQParamName(scope, 'RkeeperTaskDefinitionArn'),
+      stringValue: menusyncTaskDefinition.taskDefinitionArn,
     });
   }
 }

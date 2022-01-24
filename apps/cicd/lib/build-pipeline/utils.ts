@@ -47,6 +47,7 @@ export const configurePermissions = (
     'AdminUserPoolId',
     'AdminUserPoolDomain',
     'CrudApiAppId',
+    'RkeeperTaskDefinitionArn',
   ].map(paramName => `/${prefix}/generated/${paramName}`);
 
   const fixParams = [
@@ -324,6 +325,16 @@ export const createCommonDevPipeline = (
           )} ${adminSiteUrl}`,
         ],
       },
+      //reports: {
+      //  cypressReports: {
+      //    files: ['cyreport/cucumber-json/**/*'],
+      //    'file-format': 'CUCUMBERJSON',
+      //  },
+      //  coverage: {
+      //    files: ['coverage/lcov.info'],
+      //    'file-format': 'SIMPLECOV',
+      //  },
+      //},
     },
   });
 };
