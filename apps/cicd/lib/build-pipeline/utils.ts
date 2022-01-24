@@ -47,7 +47,6 @@ export const configurePermissions = (
     'AdminUserPoolId',
     'AdminUserPoolDomain',
     'CrudApiAppId',
-    'RkeeperTaskDefinitionArn',
   ].map(paramName => `/${prefix}/generated/${paramName}`);
 
   const fixParams = [
@@ -84,9 +83,6 @@ export const createBuildProject = (
     buildSpec: codebuild.BuildSpec.fromObject({
       version: '0.2',
       phases: buildProjectPhases,
-      artifacts: {
-        files: ['apps/anyupp-backend/cdk.out/**/*'],
-      },
       reports,
       env: {
         'secrets-manager': {
