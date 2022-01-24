@@ -35,7 +35,11 @@ import * as fixtures from './fixtures';
 import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/backend/products';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { v1 as uuidV1 } from 'uuid';
-import { commonStackConfig, anyuppStackConfig } from '@bgap/shared/config';
+import {
+  config,
+  commonStackConfig,
+  anyuppStackConfig,
+} from '@bgap/shared/config';
 import { maskV4UuidIds } from '@bgap/shared/fixtures';
 
 describe('Test the rkeeper api basic functionality', () => {
@@ -444,8 +448,7 @@ describe('Test the rkeeper api basic functionality', () => {
         commonStackConfig['common-backend-anyupp'].AnyuppVpcSubnetOutput,
       RKeeperProcessProductSecurityGroup:
         commonStackConfig['common-backend-anyupp'].AnyuppVpcSecurityGroupOutput,
-      taskDefinitionArn:
-        anyuppStackConfig['anyupp-backend-rkeeper'].RKeeperTaskDefinitionArn,
+      taskDefinitionArn: config.RkeeperTaskDefinitionArn,
       bucketName:
         anyuppStackConfig['anyupp-backend-rkeeper'].RKeeperTaskBucketName,
       uuidGenerator: uuidV1,

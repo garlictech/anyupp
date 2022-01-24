@@ -91,7 +91,7 @@ describe('GenerateProduct tests', () => {
 
     afterAll(async () => {
       await cleanup().toPromise();
-    });
+    }, 10000);
 
     it('should be able to create and delete all the given products LESS then 25', done => {
       // using UNIT 03

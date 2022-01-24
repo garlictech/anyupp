@@ -9,8 +9,7 @@ ADMIN_SITE_URL=$3
 
 npx cowsay "TESTING $ENVNAME..."
 
-yarn nx test integration-tests-universal --codeCoverage --coverageReporters=clover
-yarn nx test integration-tests-angular --codeCoverage --coverageReporters=clover
+yarn alltest
 yarn nx integration-test-ci anyupp-mobile
 #yarn nx run anyupp-mobile:e2e-test-ci
 yarn deleteAllTableData
