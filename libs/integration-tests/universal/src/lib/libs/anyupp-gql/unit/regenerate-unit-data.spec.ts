@@ -221,7 +221,7 @@ const unit02_generatedProduct_01 = {
   unitId: unitId_02,
 };
 
-describe('RegenerateUnitData mutation tests', () => {
+describe.skip('RegenerateUnitData mutation tests', () => {
   const iamCrudSdk = createIamCrudSdk();
   let authCrudSdk: CrudSdk;
 

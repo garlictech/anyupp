@@ -36,7 +36,7 @@
     "deleteAllTableData": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/delete-all-table-data.ts",
     "reindexTables": "yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/reindex-tables.ts",
     "unittest": "yarn nx run-many --target=test --all --exclude='integration-tests-angular' --exclude='integration-tests-universal' --exclude=shared-config --exclude=anyupp-gql-api --exclude=crud-gql-api",
-    "alltest": "yarn nx run-many --skip-nx-cache --target=test --all --parallel --coverage=true && node ./tools/coverage-merger.js"
+    "alltest": "yarn nx run-many --skip-nx-cache --target=test --all --coverage=true && node ./tools/coverage-merger.js"
   },
   "private": true,
   "dependencies": {
