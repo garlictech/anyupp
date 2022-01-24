@@ -45,7 +45,7 @@ const productIds = [...Array(PRODUCT_NUM_FOR_BATCH_CRUD).keys()]
   .map(id => id.toString().padStart(2, '0'))
   .map(id => `${testIdPrefix}${TEST_NAME}ID_${id}`);
 
-describe('GenerateProduct tests', () => {
+describe.skip('GenerateProduct tests', () => {
   const crudSdk = createIamCrudSdk();
 
   it('should NOT the deleteGeneratedProductsForAUnit complete the stream without any item to delete', done => {
