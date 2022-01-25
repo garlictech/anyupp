@@ -148,3 +148,15 @@ nb-card {
     margin-top: 2px;
   }
 }
+
+button.size-small {
+  nb-icon.material-icons {
+    font-size: 1rem !important;
+  }
+}
+
+button.size-tiny {
+  nb-icon.material-icons {
+    font-size: 0.8rem !important;
+  }
+}

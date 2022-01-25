@@ -9,9 +9,11 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '@bgap/admin/shared/config';
+import { AdminSharedFloorMapModule } from '@bgap/admin/shared/floor-map';
+import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminSharedAdminUsersModule } from '@bgap/admin/store/admin-users';
-import { AdminSharedChainsModule } from '@bgap/admin/store/chains';
 import { AdminSharedAppCoreModule } from '@bgap/admin/store/app-core';
+import { AdminSharedChainsModule } from '@bgap/admin/store/chains';
 import { AdminSharedDashboardModule } from '@bgap/admin/store/dashboard';
 import { AdminSharedGroupsModule } from '@bgap/admin/store/groups';
 import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
@@ -23,8 +25,6 @@ import { AdminSharedProductsModule } from '@bgap/admin/store/products';
 import { AdminSharedRoleContextsModule } from '@bgap/admin/store/role-contexts';
 import { AdminSharedUnitsModule } from '@bgap/admin/store/units';
 import { AdminSharedUsersModule } from '@bgap/admin/store/users';
-import { AdminSharedFloorMapModule } from '@bgap/admin/shared/floor-map';
-import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
 import {
@@ -36,6 +36,7 @@ import {
   NbThemeModule,
   NbToastrModule,
 } from '@nebular/theme';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -44,7 +45,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found.component';
-import { EffectsModule } from '@ngrx/effects';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),

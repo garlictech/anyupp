@@ -31,7 +31,7 @@
           shape="round"
           (click)="removeOrderItem(i)"
         >
-          <nb-icon icon="trash-2-outline"></nb-icon>
+          <nb-icon icon="remove" pack="material-icons"></nb-icon>
         </button>
 
         <button
@@ -43,7 +43,7 @@
           shape="round"
           (click)="updateQuantity(i, -1)"
         >
-          <nb-icon icon="minus-outline"></nb-icon>
+          <nb-icon icon="remove" pack="material-icons"></nb-icon>
         </button>
       </ng-container>
 
@@ -55,7 +55,7 @@
         shape="round"
         (click)="updateQuantity(i, 1)"
       >
-        <nb-icon icon="plus-outline"></nb-icon>
+        <nb-icon icon="add" pack="material-icons"></nb-icon>
       </button>
     </div>
   </ng-container>
@@ -96,7 +96,7 @@
       shape="round"
       (click)="removeOrder()"
     >
-      <nb-icon icon="trash-2-outline"></nb-icon>
+      <nb-icon icon="remove" pack="material-icons"></nb-icon>
     </button>
   </div>
 </div>

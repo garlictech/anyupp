@@ -16,7 +16,7 @@
       class="float-right"
       (click)="close()"
     >
-      <nb-icon icon="close-outline"></nb-icon>
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body>
@@ -143,7 +143,7 @@
                 [title]="'common.delete' | translate"
                 (click)="removeComponentFromList(componentId)"
               >
-                <nb-icon icon="trash-2-outline"></nb-icon>
+                <nb-icon icon="remove" pack="material-icons"></nb-icon>
               </button>
 
               <button
@@ -156,7 +156,7 @@
                 [title]="'common.moveDown' | translate"
                 (click)="move(i, 1)"
               >
-                <nb-icon icon="chevron-down"></nb-icon>
+                <nb-icon icon="expand_more" pack="material-icons"></nb-icon>
               </button>
               <button
                 [hidden]="isFirst"
@@ -168,7 +168,7 @@
                 [title]="'common.moveUp' | translate"
                 (click)="move(i, -1)"
               >
-                <nb-icon icon="chevron-up"></nb-icon>
+                <nb-icon icon="expand_less" pack="material-icons"></nb-icon>
               </button>
             </div>
           </nb-list-item>

@@ -36,11 +36,11 @@
         <button
           nbButton
           status="danger"
-          size="small"
+          size="tiny"
           shape="round"
           (click)="removeAvailability(i)"
         >
-          <nb-icon icon="trash-2-outline"></nb-icon>
+          <nb-icon icon="remove" pack="material-icons"></nb-icon>
         </button>
       </div>
     </div>
@@ -131,6 +131,6 @@
   class="float-right mt-3"
   (click)="addAvailability()"
 >
-  <nb-icon icon="plus-outline"></nb-icon>
+  <nb-icon icon="add" pack="material-icons"></nb-icon>
   {{ 'products.addAvailability' | translate }}
 </button>

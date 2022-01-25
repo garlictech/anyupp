@@ -24,7 +24,8 @@
             "styles": [
               "apps/admin/src/styles.scss",
               "node_modules/@nebular/theme/styles/prebuilt/default.css",
-              "node_modules/bootstrap/dist/css/bootstrap.css"
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/material-design-icons/iconfont/material-icons.css"
             ],
             "allowedCommonJsDependencies": [
               "@angular/common/locales",
@@ -51,7 +52,6 @@
               "@aws-amplify/auth",
               "xlsx"
             ],
-            "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,

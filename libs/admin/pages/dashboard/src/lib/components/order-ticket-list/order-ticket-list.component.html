@@ -2,7 +2,7 @@
   <nb-card-header class="p-1">
     <nb-actions [size]="buttonSize" class="pb-2 pt-2" fullWidth>
       <nb-action
-        icon="clock-outline"
+        [icon]="{ icon: 'schedule', pack: 'material-icons' }"
         [badgeText]="
           (placedOrders.length || 0) > 0 ? placedOrders.length.toString() : ''
         "
@@ -17,7 +17,7 @@
         [title]="'dashboard.actions.placedOrders' | translate"
       ></nb-action>
       <nb-action
-        icon="bell-outline"
+        [icon]="{ icon: 'payment', pack: 'material-icons' }"
         [badgeText]="
           (manualPaymentOrders.length || 0) > 0
             ? manualPaymentOrders.length.toString()
@@ -34,7 +34,7 @@
         [title]="'dashboard.actions.manualOrders' | translate"
       ></nb-action>
       <nb-action
-        icon="alert-circle-outline"
+        [icon]="{ icon: 'report_problem', pack: 'material-icons' }"
         [badgeText]="
           (problematicOrders.length || 0) > 0
             ? problematicOrders.length.toString()

@@ -26,7 +26,10 @@
 
     <nb-actions [size]="buttonSize" class="float-right">
       <nb-action
-        [icon]="resized ? 'minimize-outline' : 'maximize-outline'"
+        [icon]="{
+          icon: resized ? 'zoom_out' : 'zoom_in',
+          pack: 'material-icons'
+        }"
         (click)="toggleResize()"
         [title]="'dashboard.actions.fontSize' | translate"
         data-testid="fontSizeAction"
@@ -37,7 +40,7 @@
             ? 'active'
             : 'inactive'
         "
-        icon="map-outline"
+        [icon]="{ icon: 'map', pack: 'material-icons' }"
         (click)="selectListMode(EDashboardListMode.floormap)"
         [title]="'dashboard.actions.floorMap' | translate"
         data-testid="floorMapAction"
@@ -48,7 +51,7 @@
             ? 'active'
             : 'inactive'
         "
-        icon="swap-outline"
+        [icon]="{ icon: 'swap_horiz', pack: 'material-icons' }"
         (click)="selectListMode(EDashboardListMode.lanes)"
         [title]="'dashboard.actions.lanes' | translate"
         data-testid="lanesAction"
@@ -59,7 +62,7 @@
             ? 'active'
             : 'inactive'
         "
-        icon="clock-outline"
+        [icon]="{ icon: 'schedule', pack: 'material-icons' }"
         (click)="selectListMode(EDashboardListMode.current)"
         [title]="'dashboard.actions.current' | translate"
         data-testid="currentOrdersAction"
@@ -70,7 +73,7 @@
             ? 'active'
             : 'inactive'
         "
-        icon="archive-outline"
+        [icon]="{ icon: 'archive', pack: 'material-icons' }"
         (click)="selectListMode(EDashboardListMode.history)"
         [title]="'dashboard.actions.history' | translate"
         data-testid="historyOrdersAction"
@@ -81,7 +84,7 @@
             ? 'active'
             : 'inactive'
         "
-        icon="pie-chart-outline"
+        [icon]="{ icon: 'pie_chart', pack: 'material-icons' }"
         (click)="selectListMode(EDashboardListMode.reports)"
         [title]="'dashboard.actions.reports' | translate"
         data-testid="reportsAction"

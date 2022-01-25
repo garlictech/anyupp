@@ -22,7 +22,7 @@
             class="float-right me-2"
             (click)="move(i, 1)"
           >
-            <nb-icon icon="chevron-down"></nb-icon>
+            <nb-icon icon="expand_more" pack="material-icons"></nb-icon>
           </button>
           <button
             type="button"
@@ -34,7 +34,7 @@
             class="float-right me-2"
             (click)="move(i, -1)"
           >
-            <nb-icon icon="chevron-up"></nb-icon>
+            <nb-icon icon="expand_less" pack="material-icons"></nb-icon>
           </button>
         </div>
       </div>
@@ -152,7 +152,7 @@
     class="float-right"
     (click)="addVariant()"
   >
-    <nb-icon icon="plus-outline"></nb-icon>
+    <nb-icon icon="add" pack="material-icons"></nb-icon>
     {{ 'products.addVariant' | translate }}
   </button>
 </fieldset>
