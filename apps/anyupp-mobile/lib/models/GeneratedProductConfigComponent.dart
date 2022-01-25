@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:fa_prev/models.dart';
+import 'package:flutter/foundation.dart';
 
 @immutable
 class GeneratedProductConfigComponent {
@@ -10,6 +10,7 @@ class GeneratedProductConfigComponent {
   final LocalizedItem name;
   final List<Allergen>? allergens;
   final double? netPackagingFee;
+  final bool soldOut;
 
   GeneratedProductConfigComponent({
     required this.productComponentId,
@@ -18,6 +19,7 @@ class GeneratedProductConfigComponent {
     required this.name,
     this.allergens,
     this.netPackagingFee,
+    this.soldOut = false,
   });
 
   GeneratedProductConfigComponent copyWith({
@@ -27,6 +29,7 @@ class GeneratedProductConfigComponent {
     LocalizedItem? name,
     List<Allergen>? allergens,
     double? netPackagingFee,
+    bool? soldOut,
   }) {
     return GeneratedProductConfigComponent(
       productComponentId: productComponentId ?? this.productComponentId,
@@ -35,6 +38,7 @@ class GeneratedProductConfigComponent {
       name: name ?? this.name,
       allergens: allergens ?? this.allergens,
       netPackagingFee: netPackagingFee ?? this.netPackagingFee,
+      soldOut: soldOut ?? this.soldOut,
     );
   }
 
@@ -46,6 +50,7 @@ class GeneratedProductConfigComponent {
       'name': name.toJson(),
       'allergens': allergens?.map((x) => enumToString(x)).toList(),
       'netPackagingFee': netPackagingFee,
+      'soldOut': soldOut,
     };
   }
 
@@ -58,12 +63,13 @@ class GeneratedProductConfigComponent {
       name: LocalizedItem.fromJson(map['name']),
       allergens: List<Allergen>.from(
           map['allergens']?.map((x) => enumFromString(x, Allergen.values))),
+      soldOut: map['soldOut'] ?? false,
     );
   }
 
   @override
   String toString() {
-    return 'GeneratedProductConfigComponent(productComponentId: $productComponentId, price: $price, netPackagingFee: $netPackagingFee, position: $position, name: $name, allergens: $allergens)';
+    return 'GeneratedProductConfigComponent(productComponentId: $productComponentId, price: $price, soldOut: $soldOut, netPackagingFee: $netPackagingFee, position: $position, name: $name, allergens: $allergens)';
   }
 
   @override
@@ -76,6 +82,7 @@ class GeneratedProductConfigComponent {
         other.position == position &&
         other.name == name &&
         other.netPackagingFee == netPackagingFee &&
+        other.soldOut == soldOut &&
         listEquals(other.allergens, allergens);
   }
 
@@ -86,6 +93,7 @@ class GeneratedProductConfigComponent {
         position.hashCode ^
         name.hashCode ^
         netPackagingFee.hashCode ^
-        allergens.hashCode;
+        allergens.hashCode ^
+        soldOut.hashCode;
   }
 }

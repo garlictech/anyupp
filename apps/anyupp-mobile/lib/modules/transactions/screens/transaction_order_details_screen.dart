@@ -2,7 +2,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/orders/screens/order_details_screen.dart';
-import 'package:fa_prev/shared/widgets/loading_widget.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,6 +35,10 @@ class _TransactionOrderDetailsScreenState
     return BlocBuilder<OrderBloc, BaseOrderState>(
       builder: (context, state) {
         if (state is OrderDetailLoadedState) {
+          print('Order loaded=$state');
+          if (state.order == null) {
+            return EmptyWidget();
+          }
           return OrderDetailsScreen(
             unit: widget.unit,
             order: state.order!,

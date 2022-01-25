@@ -1,0 +1,21 @@
+mutation RateAndTipOrder(
+  $orderId: ID!
+  $rating: Int
+  $type: TipType!
+  $value: Float
+) {
+  updateOrder(
+    input: {
+      id: $orderId
+      rating: $rating
+      hasRated: true
+      tip: { type: $type, value: $value }
+    }
+  ) {
+    id
+  }
+}
+
+# mutation RateAndTipOrder($rateInput: RateAndTipOrderInput!) {
+#   rateAndTipOrder(input: $rateInput)
+# }

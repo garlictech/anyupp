@@ -25,6 +25,7 @@ class Order {
   final OrderMode? orderMode;
   final Price? packagingSum;
   final OrderRating? rating;
+  final bool? hasRated;
   final Tip? tip;
   final PaymentStatus? tipTransactionStatus;
   final String? tipTransactionId;
@@ -52,6 +53,7 @@ class Order {
     this.orderMode,
     this.packagingSum,
     this.rating,
+    this.hasRated,
     this.tip,
     this.tipTransactionStatus,
     this.tipTransactionId,
@@ -81,6 +83,7 @@ class Order {
     OrderMode? orderMode,
     Price? packagingSum,
     OrderRating? rating,
+    bool? hasRated,
     Tip? tip,
     PaymentStatus? tipTransactionStatus,
     String? tipTransactionId,
@@ -108,6 +111,7 @@ class Order {
       orderMode: orderMode ?? this.orderMode,
       packagingSum: packagingSum ?? this.packagingSum,
       rating: rating ?? this.rating,
+      hasRated: hasRated ?? this.hasRated,
       tip: tip ?? this.tip,
       tipTransactionStatus: tipTransactionStatus ?? this.tipTransactionStatus,
       tipTransactionId: tipTransactionId ?? this.tipTransactionId,
@@ -138,6 +142,7 @@ class Order {
       'orderMode': enumToString(orderMode),
       'packagingSum': packagingSum?.toJson(),
       'rating': rating?.toJson(),
+      'hasRated': hasRated,
       'tip': tip?.toJson(),
       'tipTransactionStatus': tipTransactionStatus,
       'tipTransactionId': tipTransactionId,
@@ -178,6 +183,7 @@ class Order {
           : null,
       rating:
           map['rating'] != null ? OrderRating.fromJson(map['rating']) : null,
+      hasRated: map['hasRated'] ?? false,
       tip: map['tip'] != null ? Tip.fromJson(map['tip']) : null,
       tipTransactionStatus: map['tipTransactionStatus'] != null
           ? enumFromString<PaymentStatus>(
@@ -223,6 +229,7 @@ class Order {
         other.servingMode == servingMode &&
         other.orderMode == orderMode &&
         other.rating == rating &&
+        other.hasRated == hasRated &&
         other.tip == tip &&
         other.tipTransactionStatus == tipTransactionStatus &&
         other.tipTransactionId == tipTransactionId &&
@@ -251,6 +258,7 @@ class Order {
         orderMode.hashCode ^
         servingMode.hashCode ^
         rating.hashCode ^
+        hasRated.hashCode ^
         tip.hashCode ^
         tipTransactionStatus.hashCode ^
         tipTransactionId.hashCode ^

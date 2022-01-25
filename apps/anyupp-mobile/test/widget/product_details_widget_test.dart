@@ -164,7 +164,7 @@ void main() {
           child: ProductDetailsScreen(
             item: product,
             unit: _unit,
-            displayState: ProducItemDisplayState.NORMAL,
+            displayState: ProductItemDisplayState.NORMAL,
             servingMode: ServingMode.takeAway,
           ),
         ),

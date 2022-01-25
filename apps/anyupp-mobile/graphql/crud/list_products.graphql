@@ -70,9 +70,11 @@ query ListProducts(
           price
           netPackagingFee
           productComponentId
+          soldOut
         }
       }
       supportedServingModes
+      soldOut
     }
   }
 }

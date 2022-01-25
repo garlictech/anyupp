@@ -27,6 +27,7 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<OrderBloc, BaseOrderState>(
       builder: (context, state) {
+        print('OrderStatusListWidget().state=$state');
         // state = NoOrdersLoaded();
         if (state is NoOrdersLoaded) {
           return _noOrder();
@@ -42,6 +43,9 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
               context, state.orders!);
           return _buildOrderList(state.orders!);
         } else if (state is OrderLoadError) {
+          // return Container(
+          //   child: Text('ERROR!!!!'),
+          // );
           return CommonErrorWidget(
             error: state.message!,
             description: state.details,

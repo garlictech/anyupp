@@ -109,6 +109,11 @@ enum OrderMode {
   pickup
 }
 
+enum SoldOutVisibilityPolicy {
+  faded
+  invisible
+}
+
 enum ServiceFeeType {
   noFee
   included
@@ -669,6 +674,7 @@ type GeneratedProduct
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
   supportedServingModes: [ServingMode!]
+  soldOut: Boolean
 }
 
 type GeneratedProductVariant {
@@ -706,11 +712,6 @@ enum TipType {
   none
   percent
   amount
-}
-
-enum SoldOutVisibilityPolicy {
-  invisible
-  faded
 }
 
 type RatingPolicy {

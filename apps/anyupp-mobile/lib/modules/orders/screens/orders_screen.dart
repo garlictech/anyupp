@@ -18,6 +18,9 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> {
   bool _ordersLoaded = false;
   bool _orderHistoryLoaded = false;
+  bool _hasErrors = false;
+  String? _error;
+  String? _errorDetails;
 
   @override
   void initState() {
@@ -48,6 +51,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     _ordersLoaded = true;
                   });
                 }
+                if (state is OrderLoadError) {
+                  setState(() {
+                    _hasErrors = true;
+                    _error = state.message;
+                    _errorDetails = state.details;
+                  });
+                }
               },
             ),
             BlocListener<OrderHistoryBloc, BaseOrderHistoryState>(
@@ -56,6 +66,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     state is OrderHistoryLoadedState) {
                   setState(() {
                     _orderHistoryLoaded = true;
+                  });
+                }
+                if (state is OrderLoadHistoryError) {
+                  setState(() {
+                    _hasErrors = true;
+                    _error = state.message;
+                    _errorDetails = state.details;
                   });
                 }
               },
@@ -83,7 +100,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     return CenterLoadingWidget();
                   },
                 )
-              : CenterLoadingWidget(),
+              : _hasErrors
+                  ? CommonErrorWidget(
+                      error: _error!,
+                      errorDetails: _errorDetails,
+                    )
+                  : CenterLoadingWidget(),
         ),
       ),
     );

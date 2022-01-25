@@ -32,6 +32,7 @@ class StatusWidget extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(16.0),
+      // height: 200,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

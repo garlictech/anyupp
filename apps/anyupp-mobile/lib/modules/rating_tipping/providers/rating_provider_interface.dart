@@ -9,7 +9,6 @@ abstract class IRatingProvider {
 
   Future<bool> tipOrder(
     String orderId,
-    String? paymentMethodId,
     TipType? tipType,
     double? tip,
   );

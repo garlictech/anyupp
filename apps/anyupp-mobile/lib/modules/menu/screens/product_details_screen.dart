@@ -17,14 +17,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProductDetailsScreen extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  final ProducItemDisplayState displayState;
+  final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
 
   ProductDetailsScreen({
     Key? key,
     required this.item,
     required this.unit,
-    this.displayState = ProducItemDisplayState.NORMAL,
+    this.displayState = ProductItemDisplayState.NORMAL,
     this.servingMode,
   }) : super(key: key);
 
@@ -103,7 +103,7 @@ class ProductDetailsScreen extends StatelessWidget {
 class ProductDetailsWidget extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  final ProducItemDisplayState displayState;
+  final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
 
   const ProductDetailsWidget({
@@ -218,26 +218,32 @@ class ProductDetailsWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (displayState == ProducItemDisplayState.NORMAL)
-                      StreamBuilder<Cart?>(
-                        stream: getIt<CartRepository>()
-                            .getCurrentCartStream(unit.id),
-                        builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                          if (snapshot.connectionState !=
-                                  ConnectionState.waiting ||
-                              snapshot.hasData) {
-                            //return _buildVariantsList(snapshot.data, item.variants);
-                            return ProductDetailVariantListWidget(
-                              cart: snapshot.data,
-                              product: item,
-                              unit: unit,
-                              servingMode: servingMode,
-                            );
-                          }
-                          return CenterLoadingWidget();
-                        },
+                    if (displayState == ProductItemDisplayState.NORMAL ||
+                        displayState == ProductItemDisplayState.SOLDOUT)
+                      ProductConfiguratorWidget(
+                        product: item,
+                        unit: unit,
+                        servingMode: servingMode,
+                        displayState: displayState,
                       ),
-                    if (displayState == ProducItemDisplayState.DISABLED)
+                    // StreamBuilder<Cart?>(
+                    //   stream: getIt<CartRepository>()
+                    //       .getCurrentCartStream(unit.id),
+                    //   builder: (context, AsyncSnapshot<Cart?> snapshot) {
+                    //     if (snapshot.connectionState !=
+                    //             ConnectionState.waiting ||
+                    //         snapshot.hasData) {
+                    //       return ProductConfiguratorWidget(
+                    //         product: item,
+                    //         unit: unit,
+                    //         servingMode: servingMode,
+                    //         displayState: displayState,
+                    //       );
+                    //     }
+                    //     return CenterLoadingWidget();
+                    //   },
+                    // ),
+                    if (isDisabled)
                       Container(
                         color: theme.secondary12,
                         child: _buildAllergensListWidget(
@@ -245,7 +251,7 @@ class ProductDetailsWidget extends StatelessWidget {
                           item.allergens!,
                         ),
                       ),
-                    if (displayState == ProducItemDisplayState.DISABLED ||
+                    if (isDisabled ||
                         item.configSets == null ||
                         (item.configSets != null && item.configSets!.isEmpty))
                       Container(
@@ -258,8 +264,6 @@ class ProductDetailsWidget extends StatelessWidget {
             ),
           ),
         ),
-        // (item.configSets == null || (item.configSets != null && item.configSets!.isEmpty))
-        //     ? Container()
         Container(
           color: theme.secondary12,
           child: AddToCartPanelWidget(
@@ -333,6 +337,14 @@ class ProductDetailsWidget extends StatelessWidget {
   String _getProductNameWithInfo(BuildContext context) {
     return getLocalizedText(context, item.name);
   }
+
+  bool get isDisabled =>
+      displayState == ProductItemDisplayState.DISABLED ||
+      (displayState == ProductItemDisplayState.SOLDOUT &&
+          unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.faded);
+  bool get isHidden =>
+      displayState == ProductItemDisplayState.SOLDOUT &&
+      unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.invisible;
 }
 
 class _ProductDetailsImageWidget extends StatelessWidget {

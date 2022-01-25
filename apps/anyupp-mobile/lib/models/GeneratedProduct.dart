@@ -18,6 +18,7 @@ class GeneratedProduct {
   final List<String>? allergens;
   final List<GeneratedProductConfigSet>? configSets;
   final List<ServingMode> supportedServingModes;
+  final bool soldOut;
 
   GeneratedProduct({
     required this.id,
@@ -33,6 +34,7 @@ class GeneratedProduct {
     this.allergens,
     this.configSets,
     required this.supportedServingModes,
+    this.soldOut = false,
   });
 
   GeneratedProduct copyWith({
@@ -49,6 +51,7 @@ class GeneratedProduct {
     List<String>? allergens,
     List<GeneratedProductConfigSet>? configSets,
     List<ServingMode>? supportedServingModes,
+    bool? soldOut,
   }) {
     return GeneratedProduct(
       id: id ?? this.id,
@@ -65,6 +68,7 @@ class GeneratedProduct {
       configSets: configSets ?? this.configSets,
       supportedServingModes:
           supportedServingModes ?? this.supportedServingModes,
+      soldOut: soldOut ?? this.soldOut,
     );
   }
 
@@ -84,6 +88,7 @@ class GeneratedProduct {
       'configSets': configSets?.map((x) => x.toJson()).toList(),
       'supportedServingModes':
           supportedServingModes.map((x) => enumToString(x)).toList(),
+      'soldOut': soldOut,
     };
   }
 
@@ -119,12 +124,13 @@ class GeneratedProduct {
               ),
             )
           : [],
+      soldOut: map['soldOut'] ?? false,
     );
   }
 
   @override
   String toString() {
-    return 'GeneratedProduct(id: $id, unitId: $unitId, supportedServingModes: $supportedServingModes, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets)';
+    return 'GeneratedProduct(id: $id, unitId: $unitId, supportedServingModes: $supportedServingModes, soldOut: $soldOut, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets)';
   }
 
   @override
@@ -142,6 +148,7 @@ class GeneratedProduct {
         other.tax == tax &&
         other.position == position &&
         other.image == image &&
+        other.soldOut == soldOut &&
         listEquals(other.variants, variants) &&
         listEquals(other.allergens, allergens) &&
         listEquals(other.configSets, configSets) &&
@@ -162,6 +169,7 @@ class GeneratedProduct {
         variants.hashCode ^
         allergens.hashCode ^
         configSets.hashCode ^
-        supportedServingModes.hashCode;
+        supportedServingModes.hashCode ^
+        soldOut.hashCode;
   }
 }

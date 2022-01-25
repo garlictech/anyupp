@@ -164,6 +164,7 @@ query GetOrder($orderId: ID!) {
       key
       value
     }
+    hasRated
     tip {
       type
       value

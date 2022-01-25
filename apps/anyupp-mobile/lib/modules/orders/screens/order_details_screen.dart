@@ -227,7 +227,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
 
     return Column(
       children: [
-        if (_unit.ratingPolicy != null && order.rating == null)
+        if (_unit.ratingPolicies != null && order.hasRated != true)
           Container(
             height: 56.0,
             width: double.infinity,
@@ -235,7 +235,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => Nav.to(RatingAndTippingScreen(
                 orderId: order.id,
-                ratingPolicy: _unit.ratingPolicy,
+                ratingPolicy: _unit.ratingPolicies![0],
               )),
               style: ElevatedButton.styleFrom(
                 primary: lighten(theme.primary, 76),
@@ -256,7 +256,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
           ),
         if (_unit.tipPolicy != null &&
             order.tip == null &&
-            order.transaction?.externalTransactionId != null)
+            order.transaction?.status == PaymentStatus.success)
           Container(
             height: 56.0,
             width: double.infinity,

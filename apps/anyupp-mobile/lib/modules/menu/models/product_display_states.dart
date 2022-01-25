@@ -1,4 +1,5 @@
-enum ProducItemDisplayState {
+enum ProductItemDisplayState {
   NORMAL,
+  SOLDOUT,
   DISABLED,
 }

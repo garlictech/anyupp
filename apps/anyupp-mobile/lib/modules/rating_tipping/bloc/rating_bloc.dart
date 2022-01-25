@@ -63,12 +63,9 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
     emit(RatingLoading());
     try {
       Order? order = await _orderRepository.getOrder(event.orderId);
-      String? paymentMethodId = order?.transaction?.externalTransactionId;
-      print('_onTipOrder().paymentMethodId=$paymentMethodId');
       // tip order
       bool success = await _repository.tipOrder(
         event.orderId,
-        paymentMethodId,
         event.tipType ?? TipType.none,
         event.tipValue ?? 0.0,
       );

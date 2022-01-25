@@ -564,7 +564,11 @@
   },
   "product": {
     "notTakeAway": "Csak helyben",
+    "notTakeAwaDesc": "A termék csak helyben fogyasztásra elérhető.",
     "notInPlace": "Csak elvitelre",
+    "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
+    "soldOut": "Elfogyott",
+    "soldOutDesc": "A termék sajnos elfogyott",
     "size": "Méret:"
   },
   "validators": {

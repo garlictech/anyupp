@@ -32,8 +32,7 @@ class AwsRatingProvider implements IRatingProvider {
   }
 
   @override
-  Future<bool> tipOrder(String orderId, String? paymentMethodId,
-      TipType? tipType, double? tip) async {
+  Future<bool> tipOrder(String orderId, TipType? tipType, double? tip) async {
     try {
       print(
           'AwsRatingProvider.tipOrder().orderId=$orderId, tipType=$tipType, tip=$tip');
@@ -41,7 +40,6 @@ class AwsRatingProvider implements IRatingProvider {
       var result = await GQL.amplify.execute(TipOrderMutation(
         variables: TipOrderArguments(
           orderId: orderId,
-          paymentMethodId: paymentMethodId,
           type: tipType ?? TipType.none,
           value: tip ?? 0,
         ),

@@ -13,11 +13,13 @@ class ProductConfiguratorWidget extends StatefulWidget {
   final GeoUnit unit;
   final GeneratedProduct product;
   final ServingMode? servingMode;
+  final ProductItemDisplayState displayState;
 
   const ProductConfiguratorWidget({
     required this.unit,
     required this.product,
     required this.servingMode,
+    required this.displayState,
   });
 
   @override
@@ -97,64 +99,75 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
 
   @override
   Widget build(BuildContext context) {
-    List<ProductVariant> variants = widget.product.variants;
-    if (variants.isEmpty) {
-      return Container();
+    if (widget.displayState != ProductItemDisplayState.NORMAL) {
+      return SizedBox();
     }
-    bool buildVariants = widget.product.variants.length > 1;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // _buildTotalSummary(context),
-        Divider(
-          color: theme.secondary12,
-          height: 1,
-        ),
-        if (buildVariants) _buildVariants(variants),
-        Container(
-          // padding: EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // _buildAllergensListWidget(context),
-              ProductConfigModifiersWidget(
-                product: widget.product,
-                unit: widget.unit,
-                onModifiersSelected: (modifiers) async {
-                  this._selectedModifiers = modifiers;
-                  await setButton();
-                  _calculateTotalPrice();
-                  setState(() {});
-                },
-              ),
-              // SizedBox(
-              //   height: 16.0,
-              // ),
-              ProductConfigExtrasWidget(
-                product: widget.product,
-                unit: widget.unit,
-                onExtraSelected: (setId, componentId, selected) {
-                  print(
-                      'onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
-                  setState(() {
-                    if (_selectedExtras[setId] == null) {
-                      _selectedExtras[setId] = {};
-                    }
-                    _selectedExtras[setId]![componentId] = selected;
-                    print('onExtraSelected._selectedExtras=$_selectedExtras');
-                    _calculateTotalPrice();
-                  });
-                },
-              )
-              // _buildExtraSets(context, sets),
-            ],
+    List<ProductVariant> variants = widget.product.variants;
+    bool buildVariants = !widget.product.isAllVariantsSoldOut;
+    if (variants.isEmpty || !buildVariants) {
+      return SizedBox();
+    }
+
+    variants = variants.where((variant) => !variant.soldOut).toList();
+
+    return Container(
+      color: theme.secondary12,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // _buildTotalSummary(context),
+          Divider(
+            color: theme.secondary12,
+            height: 1,
           ),
-        ),
-        _buildAllergensListWidget(context),
-        // _buildTotalButtonWidget(context)
-      ],
+          if (buildVariants) _buildVariants(variants),
+          Container(
+            // padding: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // _buildAllergensListWidget(context),
+                ProductConfigModifiersWidget(
+                  product: widget.product,
+                  unit: widget.unit,
+                  displayState: widget.displayState,
+                  onModifiersSelected: (modifiers) async {
+                    this._selectedModifiers = modifiers;
+                    await setButton();
+                    _calculateTotalPrice();
+                    setState(() {});
+                  },
+                ),
+                // SizedBox(
+                //   height: 16.0,
+                // ),
+                ProductConfigExtrasWidget(
+                  product: widget.product,
+                  unit: widget.unit,
+                  onExtraSelected: (setId, componentId, selected) {
+                    print(
+                        'onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
+                    setState(() {
+                      if (_selectedExtras[setId] == null) {
+                        _selectedExtras[setId] = {};
+                      }
+                      _selectedExtras[setId]![componentId] = selected;
+                      print('onExtraSelected._selectedExtras=$_selectedExtras');
+                      _calculateTotalPrice();
+                    });
+                  },
+                )
+                // _buildExtraSets(context, sets),
+              ],
+            ),
+          ),
+          _buildAllergensListWidget(context),
+          // _buildTotalButtonWidget(context)
+        ],
+      ),
     );
   }
 

@@ -555,7 +555,11 @@
   },
   "product": {
     "notTakeAway": "Only in place",
+    "notTakeAwaDesc": "A termék csak helyben fogyasztásra elérhető.",
     "notInPlace": "Only for takeaway",
+    "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
+    "soldOut": "Elfogyott",
+    "soldOutDesc": "A termék sajnos elfogyott",
     "size": "Size:"
   },
   "validators": {

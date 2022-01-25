@@ -155,6 +155,11 @@ class AwsOrderSubscription {
 
       print('_getOrderList().result.data=${result.data}');
       print('_getOrderList().result.errors=${result.errors}');
+      if (result.hasErrors) {
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+      }
+
       if (result.data == null) {
         _nextToken = null;
         _totalCount = 0;

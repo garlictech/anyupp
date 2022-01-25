@@ -11,8 +11,7 @@ class RatingRepository {
     return _provider.rateOrder(orderId, rating);
   }
 
-  Future<bool> tipOrder(
-      String orderId, String? paymentMethodId, TipType? tipType, double? tip) {
-    return _provider.tipOrder(orderId, paymentMethodId, tipType, tip);
+  Future<bool> tipOrder(String orderId, TipType? tipType, double? tip) {
+    return _provider.tipOrder(orderId, tipType, tip);
   }
 }

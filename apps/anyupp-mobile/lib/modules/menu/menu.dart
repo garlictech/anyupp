@@ -24,6 +24,5 @@ export 'widgets/product_config_extras_list_widget.dart';
 export 'widgets/product_config_modifiers_widget.dart';
 export 'widgets/product_configure_widget.dart';
 export 'widgets/product_details_variant_item_widget.dart';
-export 'widgets/product_details_variants_list_widget.dart';
 export 'widgets/product_image_widget.dart';
 export 'widgets/product_menu_item_widget.dart';

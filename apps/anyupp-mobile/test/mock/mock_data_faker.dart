@@ -366,6 +366,7 @@ class MockGenerator {
       price: price,
       position: position,
       pack: pack,
+      soldOut: false,
     );
   }
 
