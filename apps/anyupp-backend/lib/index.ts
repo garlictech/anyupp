@@ -76,7 +76,7 @@ export class AnyUppStack extends Stack {
       securityGroupId,
     });
 
-    const appsyncStack = new AppsyncAppStack(scope, 'appsync', {
+    new AppsyncAppStack(scope, 'appsync', {
       consumerUserPool: cognitoStack.consumerUserPool,
       adminUserPool: cognitoStack.adminUserPool,
       stripeSecretKey: secretsManagerStack.stripeSecretKey,
