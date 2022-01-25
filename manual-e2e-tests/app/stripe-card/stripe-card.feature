@@ -25,21 +25,23 @@ Feature: Stripe Card
     Then I should see "AnonymUser" text
     When I tap on the "Saved cards" option
     Then there is a loading screen
-    And I should see the "New Card" screen
-    When I fill out the input "Card number" with "4242 4242 4242 4242"
-    And I fill out the input "Expiration Date" with "12/25"
-    And I fill out the "CVC" input with the "111"
-    And I tap on the "Add New Card" button
+    And I should see the "PAY" screen
+    When I tap on the "Add new card" button
+    And I fill out the input "xxxx xxxx xxxx xxxx" with "4242 4242 4242 4242"
+    And I fill out the input "MM/YY" with "12/25"
+    And I fill out the "CVV" input with the "111"
+    And I tap on the "SAVE CARD" button
     Then there is a loading screen
     Then I should see "Card added successfully!" message
     When I discard the dialog
-    Then I should see the "Saved Cards" screen
-    And I should see the added Card with 4444
-    When I tap on the "delete" button
-    Then there is a dialog "Are you sure? This card will be deleted"
+    Then I should see the "PAY" screen
+    And I should see the added card with "visa **** 4242"
+    When I swipe the "visa **** 4242" left
+    And I tap on the "delete" button
+    Then there is a dialog "Delete credit card? This will delete your credit card from your payment methods"
     When I tap on the "Delete" text
     Then there is a loading screen
-    And I should see the "New Card" screen
+    And I should see the "PAY" screen
     When I tap on the "Saved Cards" text
     Then I should see "You have no saved cards yet" text
 
@@ -61,24 +63,22 @@ Feature: Stripe Card
     Then I should see "Are you sure you want to delete your cart?" text
     When I tap on the "Cancel" text
     When I tap on the "PAY (3400 Ft)" button
-    Then the qr code reader opens the camera
-    When I read a seat qr code
-    Then I should see the "Finding your seat..." and the "Connected to" loading screens
-    And I get the text message "New Table Reserved!"
-    Then I should see "2 x 298 Ft" text
-    When I tap on the "PAY (3400 Ft)" button
     Then I should see the "PAY" screen
     When I tap on the option "Credit Card Payment"
     And I should see the "Add new card" screen
-    When I fill out the input "card number" with "4242 4242 4242 4242"
-    And I fill out the input "expiration Date" with "01/23" date
+    When I fill out the input "xxxx xxxx xxxx xxxx" with "4242 4242 4242 4242"
+    And I fill out the input "MM/YY" with "01/23" date
     And I fill out the "CVV" input with the "111"
     And I tap on the "SAVE CARD" button
     Then I should see the "PAY" screen
-    When I tap on the "visa **** 4242" checkbox
-    And I tap on the "PLACE ORDER" button
-    And I get the text message "Payment success!"
-    And the "Orders" option is higlighted
+    When I tap on the "PAY" button
+    Then the qr code reader opens the camera
+    When I read a seat qr code
+    Then I should see the "Finding your seat..." loading screen
+    And I get the text message "New Table Reserved!"
+    And I should see "Successfel order!" text
+    When I tap on the "All right" button
+    Then the "Orders" option is higlighted
     And I should see "Current orders" text
     And I should see "in place" on the order card
     And I should see "3400 Ft" on the order card
@@ -153,7 +153,7 @@ Feature: Stripe Card
     And I tap on the "Settings" tab
     And I tap on the "Language" tab
     And I tap on the "Magyar" tab
-    And I tap on the back arrow 2 times
+    And I tap on the "SET LANGUAGE"  button
     Then I should see the tabs in HU language
     When I tap on the "Étlap" button
     And I tap on the "Hamburgerek" category
@@ -167,16 +167,10 @@ Feature: Stripe Card
     When I tap on the "KOSARAM (3400 Ft)" button
     Then I should see the "Kosár" screen
     When I tap on the "FIZETEK (3400 Ft)"
-    And the qr code reader opens the camera
-    And I read a seat qr code
-    Then I should see the "Finding your seat..." and the "Connected to" loading screens
-    And I get the text message "New Table Reserved!"
-    And I should see the "Kosár" screen
-    When I tap on the "FIZETEK (3400 Ft)"
-    And I should see the "FIZETÉSI MÓD" screen
+    And I should see the "FIZETÉSI MÓDOK" screen
     When I tap on the "visa **** 4242" checkbox
-    When I click the button next to "I want a VAT invoice"
-    Then I should see "Invoice Info" dialog
+    When I click the button next to "Áfás számlát kérek"
+    Then I should see "Számlázási adatok" dialog
     When I fill out the "Név/Cég név" input with "E2E test Company"
     And I fill out the "Adószám" input with "1234567890"
     Then the "Ország" field should contain "Magyarország"
@@ -185,10 +179,13 @@ Feature: Stripe Card
     And I fill out the "Utca cím" input with "Test street"
     And I fill out the "Számla email" input with "testuser+test@anyupp.com"
     And I tap on the "MENTÉS" button
-    Then I should see the "FIZETÉSI MÓD" screen
-    And I tap on the "MEGRENDELÉS" button
-    Then there is a loading screen
-    And I should get the "Sikeres fizetés!" message
+    Then I should see the "FIZETÉSI MÓDOK" screen
+    And the qr code reader opens the camera
+    And I read a seat qr code
+    Then I should see the "Finding your seat..." loading screen
+    And I get the text message "New Table Reserved!"
+    Then I should see "Sikeres rendelés!" text
+    When I tap on the "RENDBEN" button
     And the "Rendelések" option is higlighted
     Then I should see "Folyamatban lévő rendelések" text
     And I should see "helyben" on the order card

@@ -5,12 +5,6 @@ Feature: Cash and card payment
     And the language is set to EN
     When I tap on the "Continue anonymously" text
     Then there is a loading screen
-    # Then I should see "Allow AnyUpp to access this device's location?" text
-    # When I tap on the "While using the app" text
-    # Android
-    # Then I should see "Allow "AnyUpp" to use your location?" text
-    # When I tap on the "Allow While Using App" text
-    # iOS
     And I should see the "Unit selector" screen
     When I tap on the "Késdobáló #111" unit in the list
     And I tap on the "In place" button
@@ -25,7 +19,7 @@ Feature: Cash and card payment
     # from order details
     And I tap on the "Fishburger" card under "Hamburgers" category
     Then I should see "sea fish burger" text
-    When I select the "1 db" option
+    When I select the "1 db double" option
     When I select the "Rice" modifier under the "Garnish"
     Then I should see "1 x 2000 Ft" text
     When I tap on the "plus" button
@@ -36,13 +30,6 @@ Feature: Cash and card payment
     Then I should see the "Cart" screen
     And I should see "in place" text
     And I should see "+ Rice" text
-    When I tap on the "PAY (2000 Ft)" button
-    Then the qr code reader opens the camera
-    When I read a seat qr code
-    Then I should see the "Finding your seat..." and the "Connected to" loading screens
-    And I get the text message "New Table Reserved!"
-    And I should see the "Cart" screen
-    Then I should see "2 x 2000 Ft" text
     When I tap on the "plus" button
     Then I should see "3 x 2000 Ft" text
     And I should see "PAY (6000 Ft)" text
@@ -64,6 +51,12 @@ Feature: Cash and card payment
     Then I should see the "PAY" screen
     And I should see VAT "E2E test Company, 1234, Nekeresd, Test" is checked
     When I tap on the "PLACE ORDER" button
+    Then the qr code reader opens the camera
+    When I read a seat qr code
+    Then I should see the "Finding your seat..." loading screen
+    And I get the text message "New Table Reserved!"
+    And I should see "Succesful order!" text
+    When I tap on the "ALL RIGHT" button
     Then I should see the "Orders" screen
     And I should see "Current orders" text
     And I should see "in place" on the order card
@@ -88,18 +81,17 @@ Feature: Cash and card payment
     And the "Your order is complete, we will serve / pick you up soon." state is checked
     And the "Your order is being served / can be received." state is higlighted
     When the admin set the state of order to "SERVED"
-    Then the "Your order is being served / received." state is checked
+    Then the "Your order has been served / received." state is checked
     When I tap on the "back arrow" button
     Then I should see "No active order placed yet" text
     And I should see "Order history" text
     And I should see "Served" on the order card
     # Scenario: next order, with VAT and in HU, from order list
     When I tap on the "Profile" button
-    And I tap on the "Settings" tab
     And I tap on the "Language" tab
     And I tap on the "Magyar" tab
-    And I tap on the back arrow 2 times
-    Then I should see the tabs in HU language
+    And I tap on the "SET LANGUAGE" button
+    Then I should see the app in HU language
     When I tap on the "Étlap" button
     And I tap on the "Sajtburger" card under "Hamburgerek" category
     And I select the "Rizs" modifier under the "Köret"
@@ -109,14 +101,17 @@ Feature: Cash and card payment
     When I tap on the "KOSARAM (1700 Ft)" button
     Then I should see the "Kosár" screen
     When I tap on the "FIZETEK (1700 Ft)" button
-    Then I should see the "FIZETÉSI MÓD" screen
+    Then I should see the "FIZETÉSI MÓDOK" screen
     When I tap on the option "Készpénz"
     And I tap on the VAT inform under "ÁFÁ-S SZÁMLA"
     Then I should see "Számlázási adatok" page
     And I should see the form filled with the previous datas
     When I tap on the "MENTÉS" button
-    And I tap on the checkbox next to VAT inform
+    And I tap on the checkbox under "ÁFÁ-S SZÁMLA"
     And I tap on the "MEGRENDELÉS" button
+    Then I should see a loading screen
+    And I should see "Sikeres rendelés!" text
+    When I tap on the "RENDBEN" button
     And the "Rendelések" option is higlighted
     Then I should see "Folyamatban lévő rendelések" text
     And I should see "1700 Ft" on the order card
@@ -141,25 +136,22 @@ Feature: Cash and card payment
 
   Scenario: Failed payment with cash or card
     When I tap on the "Non-alcoholic drinks" category
-    And I tap on the "Coca-Cola" card under "Non-alcoholic drinks" category
+    And I tap on the "Coca-Cola" card
     And I tap on the "Add To Cart" button
     Then I should see the "Menu" is selected
     When I tap on the "MY CART (300 Ft)" button
     Then I should see the "Cart" screen
     When I tap on the "PAY (300 Ft)" button
-    Then the qr code reader opens the camera
-    When I tap on the qr code icon
-    Then I should see the "Finding your seat..." and the "Connected to" loading screens
-    And I get the text message "New Table Reserved!"
-    And I should see the "Cart" screen
-    And I should see the selected table and seat on the top
-    When I tap on the "PAY (300 Ft)" button
-    Then there is the "PAY" screen
-    When I tap on the option "Card, SZÉP card"
-    Then the option "Card, SZÉP card" is highlighted
+    Then I should see the "PAY" screen
+    When I tap on the option "Card, SZÉP card" button
     And I tap on the "PLACE ORDER" button
-    Then I wait around 10 secs
-    And the "Orders" option is higlighted
+    Then the qr code reader opens the camera
+    When I read a seat qr code
+    Then I should see the "Finding your seat..." loading screen
+    And I get the text message "New Table Reserved!"
+    And I should see "Successful order!" text
+    When I tap on the "ALL RIGHT" button
+    Then the "Orders" option is higlighted
     And I should see the date of the created order
     When I tap on the order with "Processing"
     Then the "We have received your order." state is checked
@@ -172,4 +164,4 @@ Feature: Cash and card payment
     When I tap on the "back arrow" button
     Then I should see "Order history" text
     When I tap on the order with "Deleted"
-    Then I should see "Your order has been rejected. Please check wirh the restaurant staff." text
+    Then I should see "Your order has been rejected. Please check with the restaurant staff." text

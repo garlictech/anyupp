@@ -31,7 +31,9 @@ Feature: Takeaway settings on admin
     Then the "Products" title is displayed
     When I click on the "Group products" text
     When I click the category selector to set "Hamburgers"
-    Then I should see "Fanta #2" text
+    Then I should see "Sajtburger" text
+    Then I should see "Fishburger" text
+    Then I should see "Hamburger" text
     And On the active tab I click the edit button in the listitem with "Sajtburger" content
     Then I should see "Edit product" text on the dialog
     When I fill out the "tax(%)" input with "28"

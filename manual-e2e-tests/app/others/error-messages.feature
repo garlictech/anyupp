@@ -16,7 +16,7 @@ Feature: Error messages
     When I fill out the "Password" input with "asDF1234"
     And I tap the "Login" button
     Then I should see the "Sign up error Invalid user or password. Try again." message
-    And I tap the "Close" button
+    And I tap the "ALL RIGHT" button
 
   Scenario: When a unit is not accepting orders
     Given the admin set the "ORDERS BLOCKED"
@@ -30,17 +30,13 @@ Feature: Error messages
     When I tap the "MY CART (1700 Ft)" button
     Then there is the "Cart" screen
     When I tap the "PAY (1700 Ft)" button
-    Then the qr code reader opens the camera
-    When I read a seat qr code
-    Then I should see the "Finding your seat..." and the "Connected to" loading screens
-    And I get the text message "New Table Reserved!"
-    And there is the "Cart" screen
-    When I tap the "PAY (1700 Ft)" button
     Then there is the "PAY" screen
     When I tap the option "Card, SZÉP card"
     And I tap the "PLACE ORDER" button
-    Then I should see the "Unit is closed Unit is not aaccepting orders right now. Try it later!" message
-    And I tap the "Close" button
+    Then the qr code reader opens the camera
+    When I read a seat qr code
+    Then I should see the "Order failed. An error has occured, please contact our team for assistance." message
+    And I tap the "ALL RIGHT" button
 
   Scenario: Stripe payment error message
     When I tap the text "Continue anonymously"
@@ -52,12 +48,6 @@ Feature: Error messages
     Then I should see the "Menu" is selected
     When I tap the "MY CART (1700 Ft)" button
     Then there is the "Cart" screen
-    When I tap the "PAY (1700 Ft)" button
-    Then the qr code reader opens the camera
-    When I read a seat qr code
-    Then I should see the "Finding your seat..." and the "Connected to" loading screens
-    And I get the text message "New Table Reserved!"
-    And there is the "Cart" screen
     When I tap the "PAY (1700 Ft)" button
     Then there is the "PAY" screen
     When I tap the option "Credit Card Payment"

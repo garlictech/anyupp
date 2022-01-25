@@ -1,4 +1,4 @@
-Feature: Tipping and user rating
+Feature: Tip and user rating
 
   Background: I have a completed stripe order
     Given the language is set to HU
@@ -10,23 +10,22 @@ Feature: Tipping and user rating
     When I tap the "KOSARAM (1700 Ft)" button
     Then there is the "KOSÁR" screen
     And I tap the "FIZETEK (1700 Ft)" button
-    Then I should see the "FIZETÉSI MÓDOK" screen
+    Then there is the "FIZETÉSI MÓD" screen
     When I tap the option "Bankkártyás fizetés"
     And there is "Új kártya hozzáadása" screen with a form
     When I fill out the input with id "xxxx xxxx xxxx xxxx" with "4242 4242 4242 4242"
     And I fill out the input with id "HH/ÉÉ" with "01/23" date
     And I fill out the "CVV kód" input with the "111"
     And I tap the "KÁRTYA MENTÉSE" button
-    Then I should see the "FIZETÉSI MÓDOK" screen
-    When I tap on the "visa **** 4242" button
+    When I tap on the "visa **** 4242" option
     And I tap on the "MEGRENDELÉS" button
     Then the qr code reader opens the camera
     When I read a seat qr code
-    Then I should see the "Asztal és szék választása..." loading screens
-    And I get the text message "Hely kiválasztva!"
-    And I should see "Sikeres rendelés!" screen
+    Then I should see the "Asztal és szék választása..." loading screen
+    And I get the text message "Hely sikeresen kiválasztva!"
+    Then I should see "Sikeres fizetés!" text
     When I tap on the "RENDBEN" button
-    Then the "Rendelések" option is highlighted
+    Then the "Rendelések" option is higlighted
     And I should see "Folyamatban lévő rendelések" text
     When I tap on the order with "Feldolgozva"
     Then the "Rendelésed megerősítésre kerül." state is checked

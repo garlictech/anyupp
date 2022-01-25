@@ -29,8 +29,8 @@ Feature: Profile menu features
         Then I should see the "Menu" screen
         When I tap on the "Profile" button
         Then I should see "AnonymUser" text
-        And I should see "Regulations" option
-        When I tap on the "Regulations" button
+        And I should see "Terms of use" option
+        When I tap on the "Terms of use" button
         And the app opens the "anyupp.com" webpage
         Then I should see "A CyBERG Corp. Nyrt. adatkezelési tájékoztatója" text
         And I should see a long description
