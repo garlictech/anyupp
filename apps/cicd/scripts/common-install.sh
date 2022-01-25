@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=4096
+sudo /sbin/mkswap /var/swap.1
+sudo chmod 600 /var/swap.1
+sudo chown root:root /var/swap.1
+sudo /sbin/swapon /var/swap.1
+
 echo "********************************"
 echo "Node version:"
 node --version
