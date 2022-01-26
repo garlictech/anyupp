@@ -8591,7 +8591,7 @@
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.4.2.tgz#4c62fae93eb479660c3bd93f9d24d561597a8281"
   integrity sha512-ekoj4qOQYp7CvjX8ZDBgN86w3MqQhLE1hczEJbEIjgFEumDy+na/4AJAbLXfgEWFNB2pKadM5rPFtuSGMWK7xA==
 
-"@types/qrcode@^1.4.2":
+"@types/qrcode@1.4.2":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@types/qrcode/-/qrcode-1.4.2.tgz#7d7142d6fa9921f195db342ed08b539181546c74"
   integrity sha512-7uNT9L4WQTNJejHTSTdaJhfBSCN73xtXaHFyBJ8TSwiLhe4PRuTue7Iph0s2nG9R/ifUaSnGhLUOZavlBEqDWQ==
@@ -19069,14 +19069,7 @@ jsprim@^2.0.2:
     json-schema "0.4.0"
     verror "1.10.0"
 
-jszip@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/jszip/-/jszip-2.6.1.tgz#b88f3a7b2e67a2a048152982c7a3756d9c4828f0"
-  integrity sha1-uI86ey5noqBIFSmCx6N1bZxIKPA=
-  dependencies:
-    pako "~1.0.2"
-
-jszip@^3.7.1:
+jszip@3.7.1, jszip@^3.7.1:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/jszip/-/jszip-3.7.1.tgz#bd63401221c15625a1228c556ca8a68da6fda3d9"
   integrity sha512-ghL0tz1XG9ZEmRMcEN2vt7xabrDdqHHeykgARpmZ0BiIctWxM47Vt63ZO2dnp4QYt/xJVLLy5Zv1l/xRdh2byg==
@@ -19085,6 +19078,13 @@ jszip@^3.7.1:
     pako "~1.0.2"
     readable-stream "~2.3.6"
     set-immediate-shim "~1.0.1"
+
+jszip@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/jszip/-/jszip-2.6.1.tgz#b88f3a7b2e67a2a048152982c7a3756d9c4828f0"
+  integrity sha1-uI86ey5noqBIFSmCx6N1bZxIKPA=
+  dependencies:
+    pako "~1.0.2"
 
 just-extend@^4.0.2:
   version "4.2.1"
@@ -22786,7 +22786,7 @@ qrcode-terminal@^0.12.0:
   resolved "https://registry.yarnpkg.com/qrcode-terminal/-/qrcode-terminal-0.12.0.tgz#bb5b699ef7f9f0505092a3748be4464fe71b5819"
   integrity sha512-EXtzRZmC+YGmGlDFbXKxQiMZNwCLEO6BANKXG4iCtSIM0yqc/pappSx3RIKr4r0uh5JsBckOXeKrB3Iz7mdQpQ==
 
-qrcode@^1.4.4, qrcode@^1.5.0:
+qrcode@1.5.0, qrcode@^1.4.4:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/qrcode/-/qrcode-1.5.0.tgz#95abb8a91fdafd86f8190f2836abbfc500c72d1b"
   integrity sha512-9MgRpgVc+/+47dFvQeD6U2s0Z92EsKzcHogtum4QB+UNd025WOJSHvn/hjk9xmzj7Stj95CyUAs31mrjxliEsQ==
