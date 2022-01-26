@@ -1,6 +1,19 @@
 <nb-card>
   <nb-card-header>
     <div class="float-start">{{ 'units.editFloorMap' | translate }}</div>
+
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="ms-3 qr-button"
+      [disabled]="!unit.floorMap"
+      (click)="printQR()"
+    >
+      QR
+    </button>
+
     <button
       nbButton
       ghost

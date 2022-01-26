@@ -50,7 +50,8 @@
               "zen-observable",
               "@aws-amplify/core",
               "@aws-amplify/auth",
-              "xlsx"
+              "xlsx",
+              "qrcode"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
