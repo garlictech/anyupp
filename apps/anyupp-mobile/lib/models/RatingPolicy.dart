@@ -44,7 +44,9 @@ class RatingPolicy {
         description: map['description'] != null
             ? LocalizedItem.fromJson(map['description'])
             : null,
-        ratings: map['ratings'] != null
+        ratings: map['ratings'] != null &&
+                ((map['ratings'] is List &&
+                    (map['ratings'] as List).isNotEmpty))
             ? List<RatingPolicyItem>.from(
                 map['ratings']?.map((x) => RatingPolicyItem.fromJson(x)))
             : Mock.mockRatingPolicyItems(),

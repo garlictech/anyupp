@@ -76,6 +76,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: theme.secondary0,
         appBar: _qr_scan_state == true
             ? AppBar(
                 backgroundColor: theme.secondary0,
@@ -100,21 +101,16 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
                     : null,
               )
             : null,
-        body:
-            _qr_scan_state ? _buildQrScanningWidget() : _buildUnitFoundWidget(),
-      ),
-    );
-  }
-
-  Widget _buildUnitFoundWidget() {
-    return Container(
-      child: UnitFoundByQRCodeWidget(
-        place: _place!,
-        unitId: _unitId!,
-        loadUnits: widget.loadUnits,
-        navigateToCart: widget.navigateToCart,
-        popWhenClose: widget.popWhenClose,
-        onQRChecked: (valid) => Nav.pop<bool>(valid),
+        body: _qr_scan_state
+            ? _buildQrScanningWidget()
+            : UnitFoundByQRCodeWidget(
+                place: _place!,
+                unitId: _unitId!,
+                loadUnits: widget.loadUnits,
+                navigateToCart: widget.navigateToCart,
+                popWhenClose: widget.popWhenClose,
+                onQRChecked: (valid) => Nav.pop<bool>(valid),
+              ),
       ),
     );
   }

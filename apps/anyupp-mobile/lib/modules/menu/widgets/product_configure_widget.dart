@@ -31,7 +31,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   Map<String, Map<String, bool>> _selectedExtras = {};
   Map<String, String> _selectedModifiers = {};
   double _modifierTotalPrice = 0.0;
-  Set<String> _allergeens = {};
+  Set<Allergen> _allergeens = {};
   late ProductVariant _productVariant;
 
   @override
@@ -91,7 +91,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           ts: 0,
         ),
       ],
-      quantity: 0,
+      quantity: 1,
       netPackagingFee: _productVariant.netPackagingFee,
       selectedConfigMap: getSelectedComponentMap(),
     );
@@ -247,7 +247,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     //     '_calculateTotalPrice.modifierPos=$_selectedModifiers  ,extras=${_selectedExtras}');
     // print('_calculateTotalPrice.servingMode=${widget.servingMode}');
 
-    Set<String> allergeens = {};
+    Set<Allergen> allergeens = {};
     if (widget.product.allergens != null &&
         widget.product.allergens!.isNotEmpty) {
       allergeens.addAll(widget.product.allergens!);
@@ -260,8 +260,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           getComponentByIdFromSet(value, modifier, widget.servingMode);
 
       if (component != null) {
-        component.allergens?.forEach(
-            (allergen) => allergeens.add(allergen.toString().split('.')[1]));
+        component.allergens?.forEach((allergen) => allergeens.add(allergen));
       }
     });
 
@@ -276,8 +275,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
             widget.servingMode,
           );
           if (component != null) {
-            component.allergens?.forEach((allergen) =>
-                allergeens.add(allergen.toString().split('.')[1]));
+            component.allergens
+                ?.forEach((allergen) => allergeens.add(allergen));
           }
         }
       });

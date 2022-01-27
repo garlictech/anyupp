@@ -15,7 +15,7 @@ class GeneratedProduct {
   final int position;
   final String? image;
   final List<ProductVariant> variants;
-  final List<String>? allergens;
+  final List<Allergen>? allergens;
   final List<GeneratedProductConfigSet>? configSets;
   final List<ServingMode> supportedServingModes;
   final bool soldOut;
@@ -48,7 +48,7 @@ class GeneratedProduct {
     int? position,
     String? image,
     List<ProductVariant>? variants,
-    List<String>? allergens,
+    List<Allergen>? allergens,
     List<GeneratedProductConfigSet>? configSets,
     List<ServingMode>? supportedServingModes,
     bool? soldOut,
@@ -84,7 +84,7 @@ class GeneratedProduct {
       'position': position,
       'image': image,
       'variants': variants.map((x) => x.toJson()).toList(),
-      'allergens': allergens?.map((x) => enumToString(x)).toList(),
+      'allergens': allergens,
       'configSets': configSets?.map((x) => x.toJson()).toList(),
       'supportedServingModes':
           supportedServingModes.map((x) => enumToString(x)).toList(),
@@ -108,7 +108,8 @@ class GeneratedProduct {
       variants: List<ProductVariant>.from(
           map['variants']?.map((x) => ProductVariant.fromJson(x))),
       allergens: map['allergens'] != null
-          ? List<String>.from(map['allergens']?.map((x) => x as String))
+          ? List<Allergen>.from(
+              map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
           : null,
       configSets: map['configSets'] != null
           ? List<GeneratedProductConfigSet>.from(map['configSets']

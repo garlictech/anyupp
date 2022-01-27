@@ -72,6 +72,7 @@ query getUnitsNearLocation($lat: Float!, $lng: Float!) {
         }
       }
       ratingPolicies {
+        key
         ratings {
           value
           icon

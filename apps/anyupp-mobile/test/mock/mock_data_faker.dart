@@ -329,7 +329,7 @@ class MockGenerator {
       id: faker.guid.guid(),
       unitId: faker.guid.guid(),
       productCategoryId: faker.guid.guid(),
-      allergens: generateAllergeens(3).map((e) => enumToString(e)!).toList(),
+      allergens: generateAllergeens(3),
       image: 'https://via.placeholder.com/150',
       description: LocalizedItem(
         en: '${name}_description',

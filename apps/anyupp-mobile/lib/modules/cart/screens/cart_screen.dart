@@ -48,7 +48,8 @@ class CartScreen extends StatelessWidget {
             ),
             child: BackButtonWidget(
               color: theme.secondary,
-              showBorder: false,
+              showBorder: true,
+              icon: Icons.arrow_back,
             ),
           ),
           actions: [
@@ -193,10 +194,10 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
     // print('_buildCartListAndTotal()=${cart.servingMode}');
-    Map<int, String> cartAllergens = {};
+    Map<int, Allergen> cartAllergens = {};
     for (OrderItem item in cart.items) {
       if (item.allergens != null) {
-        for (String allergen in item.allergens!) {
+        for (Allergen allergen in item.allergens!) {
           cartAllergens[allergenMap[allergen]!] = allergen;
         }
       }
@@ -205,8 +206,8 @@ class CartScreen extends StatelessWidget {
           for (GeneratedProductConfigComponent component in value) {
             if (component.allergens != null) {
               for (Allergen allergen in component.allergens!) {
-                String temp = allergen.toString().split(".").last;
-                cartAllergens[allergenMap[temp]!] = temp;
+                // String temp = allergen.toString().split(".").last;
+                cartAllergens[allergenMap[allergen]!] = allergen;
               }
             }
           }

@@ -62,6 +62,7 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
               return CommonErrorWidget(
                 error: state.code,
                 description: state.message,
+                showButton: true,
               );
             }
 

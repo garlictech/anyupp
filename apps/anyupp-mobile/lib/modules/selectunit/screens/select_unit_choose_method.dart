@@ -313,7 +313,7 @@ class SelectUnitQRCardWidget extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 35.0),
-              child: SvgPicture.asset('assets/icons/qr-scan.svg'),
+              child: SvgPicture.asset('assets/icons/qr-scan-orig.svg'),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 25.0, bottom: 30.0),

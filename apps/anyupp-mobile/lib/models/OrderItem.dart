@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:fa_prev/models.dart';
 import 'package:collection/collection.dart';
+import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 
 @immutable
 class OrderItem {
@@ -13,7 +14,7 @@ class OrderItem {
   final List<StatusLog> statusLog;
   final LocalizedItem variantName;
   final String? image;
-  final List<String>? allergens;
+  final List<Allergen>? allergens;
   final String productType;
   final List<OrderItemConfigSet>? configSets;
   final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
@@ -50,7 +51,7 @@ class OrderItem {
     List<StatusLog>? statusLog,
     LocalizedItem? variantName,
     String? image,
-    List<String>? allergens,
+    List<Allergen>? allergens,
     String? productType,
     List<OrderItemConfigSet>? configSets,
     Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
@@ -108,8 +109,10 @@ class OrderItem {
           map['statusLog']?.map((x) => StatusLog.fromJson(x))),
       variantName: LocalizedItem.fromJson(map['variantName']),
       image: map['image'],
-      allergens:
-          map['allergens'] != null ? List<String>.from(map['allergens']) : null,
+      allergens: map['allergens'] != null
+          ? List<Allergen>.from(
+              map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
+          : null,
       productType: map['productType'] ?? '',
       configSets: map['configSets'] != null
           ? List<OrderItemConfigSet>.from(

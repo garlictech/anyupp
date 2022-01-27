@@ -13,7 +13,7 @@ class CommonErrorWidget extends StatusWidget {
     this.description,
     this.errorDetails,
     this.onPressed,
-    this.showButton = false,
+    this.showButton = true,
   }) : super(
           icon: 'assets/icons/error-icon.svg',
           message: error,

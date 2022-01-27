@@ -216,17 +216,17 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
         }
       });
 
-      if (widget.servingMode == ServingMode.takeAway) {
-        children.add(Text(
-          '+ ' + trans('cart.packagingFee'),
-          textAlign: TextAlign.left,
-          style: Fonts.satoshi(
-            color: theme.secondary,
-            fontWeight: FontWeight.normal,
-            fontSize: 14,
-          ),
-        ));
-      }
+      // if (widget.servingMode == ServingMode.takeAway) {
+      //   children.add(Text(
+      //     '+ ' + trans('cart.packagingFee'),
+      //     textAlign: TextAlign.left,
+      //     style: Fonts.satoshi(
+      //       color: theme.secondary,
+      //       fontWeight: FontWeight.normal,
+      //       fontSize: 14,
+      //     ),
+      //   ));
+      // }
     } else {
       children.add(Container());
     }

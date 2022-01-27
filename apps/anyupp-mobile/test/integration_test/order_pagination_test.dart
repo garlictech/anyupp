@@ -28,8 +28,8 @@ void main() {
     void _checkOrdersSortOrder(List<Order> orders) {
       expect(orders, isNotNull);
       for (int i = 0; i < orders.length - 1; i++) {
-        DateTime date1 = orders[i].createdAt!;
-        DateTime date2 = orders[i + 1].createdAt!;
+        DateTime date1 = orders[i].createdAt;
+        DateTime date2 = orders[i + 1].createdAt;
         expect(date1.millisecondsSinceEpoch,
             greaterThanOrEqualTo(date2.millisecondsSinceEpoch));
       }

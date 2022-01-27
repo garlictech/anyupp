@@ -18,7 +18,7 @@ void main() {
       _theme = ThemeChainData(
         light: true,
         primary: Color(0xFF30BF60),
-        secondary: Color(0xFF303030),
+        secondary: Color(0xFF373737),
         secondary0: Color(0xFFFFFFFF),
         secondary12: Color(0xfff1f1f1),
         secondary16: Color(0xffdedede),

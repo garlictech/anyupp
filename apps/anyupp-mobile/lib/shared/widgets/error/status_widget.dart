@@ -13,6 +13,7 @@ class StatusWidget extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool? showButton;
   final Color? buttonColor;
+  final bool expanded;
 
   const StatusWidget({
     Key? key,
@@ -24,19 +25,21 @@ class StatusWidget extends StatelessWidget {
     this.onPressed,
     this.showButton = true,
     this.buttonColor,
+    this.expanded = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Color color = buttonColor ?? theme.primary;
+    print('StatusWidget.onPressed=$onPressed');
 
     return Container(
       padding: EdgeInsets.all(16.0),
-      // height: 200,
+      // height: 400,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Spacer(),
+          if (expanded) Spacer(),
           SvgPicture.asset(
             icon,
             width: 80,
@@ -75,29 +78,34 @@ class StatusWidget extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.7),
               ),
             ),
-          Spacer(),
-          Container(
-            width: double.infinity,
-            height: 56,
-            // margin: EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: onPressed == null ? () => Nav.pop() : onPressed,
-              style: ElevatedButton.styleFrom(
-                primary: color,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40),
+          if (showButton == true && !expanded)
+            SizedBox(
+              height: 32.0,
+            ),
+          if (expanded && showButton == true) Spacer(),
+          if (showButton == true)
+            Container(
+              width: double.infinity,
+              height: 56,
+              // margin: EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: onPressed ?? () => Nav.pop(),
+                style: ElevatedButton.styleFrom(
+                  primary: color,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40),
+                  ),
                 ),
-              ),
-              child: Text(
-                trans(context, buttonText),
-                style: Fonts.satoshi(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w700,
-                  color: theme.secondary0,
+                child: Text(
+                  trans(context, buttonText),
+                  style: Fonts.satoshi(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
+                    color: theme.secondary0,
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

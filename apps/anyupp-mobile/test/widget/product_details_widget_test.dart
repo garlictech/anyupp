@@ -150,7 +150,7 @@ void main() {
   }
 
   testWidgets('Test Product Details widget', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = Size(1080, 1920);
+    tester.binding.window.physicalSizeTestValue = Size(1080, 2000);
 
     await tester.runAsync(() async {
       GeneratedProduct product = MockGenerator.generateProduct(

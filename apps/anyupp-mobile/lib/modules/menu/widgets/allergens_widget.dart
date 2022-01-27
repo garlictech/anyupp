@@ -4,9 +4,10 @@ import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
 import 'allergen_grid_widget.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class AllergensWidget extends StatelessWidget {
-  final List<String> allergens;
+  final List<Allergen> allergens;
   final double size;
   final double fontSize;
   final double iconBorderRadius;
@@ -25,7 +26,8 @@ class AllergensWidget extends StatelessWidget {
 
   List<Widget> _getAllergenGrids(BuildContext context) {
     List<Widget> allergenGrids = [];
-    for (String allergen in allergens) {
+    for (Allergen allergen in allergens) {
+      String name = enumToString(allergen) ?? '';
       allergenGrids.add(
         Container(
           // height: size,
@@ -37,9 +39,9 @@ class AllergensWidget extends StatelessWidget {
               right: 16.0,
               left: 16.0),
           child: AllergenGridWidget(
-            allergen: trans(context, "allergens.$allergen"),
+            allergen: trans(context, "allergens.$name"),
             index: allergenMap[allergen]!,
-            assetPath: "assets/allergens/$allergen.svg",
+            assetPath: "assets/allergens/$name.svg",
             iconSize: iconSize,
             fontSize: fontSize,
             showName: showName,
@@ -83,20 +85,17 @@ class AllergensWidget extends StatelessWidget {
               bottom: 0.0,
               top: 10.0,
             ),
-            child: Wrap(
-              alignment: WrapAlignment.start,
-              direction: Axis.horizontal,
-              //mainAxisAlignment: MainAxisAlignment.start,
+            child: GridView(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 0,
+                crossAxisSpacing: 0,
+              ),
               children: _getAllergenGrids(context),
             ),
-            // child: SingleChildScrollView(
-            //   physics: BouncingScrollPhysics(),
-            //   scrollDirection: Axis.horizontal,
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.start,
-            //     children: getAllergenGrids(context),
-            //   ),
-            // ),
           )
         ],
       ),

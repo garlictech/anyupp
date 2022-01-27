@@ -9,6 +9,7 @@ class PaymentSuccessWidget extends StatusWidget {
           icon: 'assets/icons/success_order.svg',
           message: 'orders.sendOrderSuccess.title',
           description: 'orders.sendOrderSuccess.description',
+          expanded: true,
           buttonText: 'common.ok2',
           onPressed: () {
             Nav.pop();

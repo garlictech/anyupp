@@ -443,10 +443,15 @@
     "scanQR": "Click & scan your table to order",
     "qrConnected": "Connected to",
     "chair": "Chair #{{0}} at Table #{{1}}",
-    "findingSeat": "Finding your seat...",
+    "findingSeat": "finding table and chair ...",
+    "findingSeatLoading": "This may take a few seconds. Please do not close this window!",
     "tableReserved": {
       "title": "New Table Reserved!",
       "description": "Seat #{{1}} reversed at Table #{{0}}"
+    },
+    "tableFound": {
+      "title": "Chair: #{{1}}, Table: #{{0}}",
+      "description": "The connection has been made. You can continue the order!"
     },
     "qrCodeError": {
       "title": "QR code invalid!",
