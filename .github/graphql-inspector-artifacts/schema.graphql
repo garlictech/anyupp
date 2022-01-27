@@ -1120,6 +1120,7 @@ input UpdateUnitInput {
   openingHours: WeeklyScheduleInput
   merchantId: String
   timeZone: String
+  pos: PosInput
   externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]

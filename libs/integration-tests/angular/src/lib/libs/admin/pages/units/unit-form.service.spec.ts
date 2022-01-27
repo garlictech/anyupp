@@ -50,15 +50,11 @@ describe('UnitFormService', () => {
   });
 
   it('createUnitFormGroup should create new form group', () => {
-    expect(service.createUnitFormGroup(false).value).toMatchSnapshot();
+    expect(service.createUnitFormGroup().value).toMatchSnapshot();
   });
 
   it('createUnitFormGroup should create update form group', () => {
-    expect(service.createUnitFormGroup(true).value).toMatchSnapshot();
-  });
-
-  it('createUnitFormGroup should create rkeeper form group', () => {
-    expect(service.createUnitRkeeperFormGroup().value).toMatchSnapshot();
+    expect(service.createUnitFormGroup().value).toMatchSnapshot();
   });
 
   it('saveForm$ should call createUnit$ method when id is not specified', done => {
@@ -66,7 +62,7 @@ describe('UnitFormService', () => {
       .spyOn(service, 'createUnit$')
       .mockImplementationOnce(() => of({ data: 'ok', type: 'insert' }));
 
-    service.saveForm$(unitFixture.unitInputBase).subscribe();
+    service.saveForm$(unitFixture.unitInputBase, false).subscribe();
 
     expect(createSpy).toHaveBeenCalledWith({
       ...unitFixture.unitInputBase,
@@ -81,12 +77,15 @@ describe('UnitFormService', () => {
       .spyOn(service, 'updateUnit$')
       .mockImplementationOnce(() => of({ data: 'ok', type: 'update' }));
 
-    service.saveForm$(unitFixture.unitInputBase, unitId).subscribe();
+    service.saveForm$(unitFixture.unitInputBase, false, unitId).subscribe();
 
-    expect(updateSpy).toHaveBeenCalledWith({
-      ...unitFixture.unitInputBase,
-      id: unitId,
-    });
+    expect(updateSpy).toHaveBeenCalledWith(
+      {
+        ...unitFixture.unitInputBase,
+        id: unitId,
+      },
+      false,
+    );
 
     done();
   });
@@ -127,13 +126,16 @@ describe('UnitFormService', () => {
         catchError(() => cleanup()),
         switchMap(saveResponse =>
           (<UpsertResponse<CrudApi.ChainProduct>>saveResponse).data.id
-            ? service.updateUnit$({
-                ...unitFixture.unitInputBase,
-                id: unitId,
-                name: `${unitFixture.unitInputBase} MOD`,
-                supportedOrderModes: [CrudApi.OrderMode.pickup],
-                supportedServingModes: [CrudApi.ServingMode.takeaway],
-              })
+            ? service.updateUnit$(
+                {
+                  ...unitFixture.unitInputBase,
+                  id: unitId,
+                  name: `${unitFixture.unitInputBase} MOD`,
+                  supportedOrderModes: [CrudApi.OrderMode.pickup],
+                  supportedServingModes: [CrudApi.ServingMode.takeaway],
+                },
+                false,
+              )
             : EMPTY,
         ),
         catchError(() => cleanup()),

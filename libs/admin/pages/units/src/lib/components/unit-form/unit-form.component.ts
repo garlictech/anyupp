@@ -51,7 +51,7 @@ export class UnitFormComponent
   public groupOptions$: Observable<KeyValue[]>;
   public timeZoneOptions: KeyValue[] = [];
   public orderPolicyOptions: KeyValue[] = orderPolicyOptions;
-  private _isInitiallyRkeeper = false;
+  public isInitiallyRkeeper = false;
 
   constructor(
     protected _injector: Injector,
@@ -71,10 +71,18 @@ export class UnitFormComponent
   }
 
   ngOnInit(): void {
-    this.dialogForm = this._unitFormService.createUnitFormGroup(!!this.unit);
+    this.dialogForm = this._unitFormService.createUnitFormGroup();
 
     if (this.unit) {
       this.dialogForm.patchValue(cleanObject(omit(['lanes'], this.unit)));
+
+      // Setup RKeeper form for updating
+      if (this.unit.pos?.type === CrudApi.PosType.rkeeper) {
+        this.isInitiallyRkeeper = true;
+
+        this.dialogForm.get('pos.rkeeper')?.enable();
+        this.dialogForm.get('pos.rkeeper.anyuppPassword')?.disable();
+      }
 
       this._unitFormService.patchRatingPolicies(
         this.unit.ratingPolicies || [],
@@ -142,7 +150,7 @@ export class UnitFormComponent
   public submit() {
     if (this.dialogForm?.valid) {
       if (
-        this._isInitiallyRkeeper &&
+        this.isInitiallyRkeeper &&
         this.dialogForm?.value.pos?.type !== CrudApi.PosType.rkeeper
       ) {
         const dialog = this._nbDialogService.open(ConfirmDialogComponent);
@@ -171,7 +179,11 @@ export class UnitFormComponent
 
   private _saveForm() {
     this._unitFormService
-      .saveForm$(cloneDeep(this.dialogForm?.value), this.unit?.id)
+      .saveForm$(
+        cloneDeep(this.dialogForm?.value),
+        this.isInitiallyRkeeper,
+        this.unit?.id,
+      )
       .subscribe((response: UpsertResponse<unknown>) => {
         this._toasterService.showSimpleSuccess(response.type);
 
@@ -200,6 +212,10 @@ export class UnitFormComponent
   }
 
   public generatePassword() {
-    this.dialogForm?.get('pos.rkeeper.anyuppPassword')?.patchValue(makeId(8));
+    if (this.unit && this.isInitiallyRkeeper) {
+      this._unitFormService.updateRkeeperPassword$(this.unit?.id).subscribe();
+    } else {
+      this.dialogForm?.get('pos.rkeeper.anyuppPassword')?.patchValue(makeId(8));
+    }
   }
 }

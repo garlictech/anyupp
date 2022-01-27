@@ -29,18 +29,6 @@
     shape="round"
     size="tiny"
     class="float-right me-2"
-    [title]="'common.edit' | translate"
-    (click)="editRkeeperUnit()"
-    *ngIf="unit?.pos?.type === ePosType.rkeeper"
-  >
-    POS
-  </button>
-
-  <button
-    nbButton
-    shape="round"
-    size="tiny"
-    class="float-right me-2"
     [title]="'units.editFloorMap' | translate"
     (click)="editUnitFloorMap()"
   >

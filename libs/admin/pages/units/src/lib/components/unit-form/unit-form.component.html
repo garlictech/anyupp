@@ -15,7 +15,12 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" autocomplete="off">
+    <form
+      *ngIf="dialogForm"
+      [formGroup]="dialogForm"
+      (ngSubmit)="submit()"
+      autocomplete="off"
+    >
       <div class="row" *ngIf="unit">
         <div class="col-md-12">
           <bgap-form-static-text
@@ -193,10 +198,9 @@
       </bgap-form-tip-policy>
 
       <bgap-form-unit-pos
-        *ngIf="!unit"
         [posFormGroup]="dialogForm?.get('pos') | asFormGroup"
         [externalIdControl]="dialogForm?.get('externalId') | asFormControl"
-        [editing]="false"
+        [rkeeperEdit]="!!unit && isInitiallyRkeeper"
         (changePasswordEmitter)="generatePassword()"
       ></bgap-form-unit-pos>
 

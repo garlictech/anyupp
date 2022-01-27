@@ -180,15 +180,6 @@ Object {
 }
 `;
 
-exports[`UnitFormService createUnitFormGroup should create rkeeper form group 1`] = `
-Object {
-  "externalId": "",
-  "pos": Object {
-    "type": "anyupp",
-  },
-}
-`;
-
 exports[`UnitFormService createUnitFormGroup should create update form group 1`] = `
 Object {
   "address": Object {
@@ -209,6 +200,7 @@ Object {
     "hu": "",
   },
   "email": "",
+  "externalId": "",
   "groupId": "",
   "isActive": "",
   "lanes": Array [],
@@ -252,6 +244,9 @@ Object {
   "packagingTaxPercentage": "",
   "paymentModes": Array [],
   "phone": "",
+  "pos": Object {
+    "type": "anyupp",
+  },
   "ratingPolicies": Array [],
   "supportedOrderModes": Array [
     "instant",
