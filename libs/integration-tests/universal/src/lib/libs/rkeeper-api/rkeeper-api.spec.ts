@@ -450,8 +450,7 @@ describe('Test the rkeeper api basic functionality', () => {
         commonStackConfig['common-backend-anyupp'].AnyuppVpcSecurityGroupOutput,
       taskDefinitionArn: config.RkeeperTaskDefinitionArn,
       bucketName:
-        anyuppStackConfig['petrot-anyupp-backend-rkeeper']
-          .RKeeperTaskBucketName,
+        anyuppStackConfig['anyupp-backend-rkeeper'].RKeeperTaskBucketName,
       uuidGenerator: uuidV1,
     };
 
