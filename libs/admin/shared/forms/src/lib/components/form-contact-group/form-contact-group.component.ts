@@ -15,7 +15,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
   templateUrl: './form-contact-group.component.html',
 })
 export class FormContactGroupComponent {
-  @Input() contactFormGroup!: FormGroup;
+  @Input() contactFormGroup?: FormGroup;
   @Input() showAddressForm?: boolean = true;
 
   constructor(

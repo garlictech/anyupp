@@ -17,20 +17,25 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" autocomplete="off">
+    <form
+      *ngIf="dialogForm"
+      [formGroup]="dialogForm"
+      (ngSubmit)="submit()"
+      autocomplete="off"
+    >
       <div class="row">
         <div class="col-md-9">
           <bgap-form-text-input
             caption="common.name"
             type="text"
-            [control]="dialogForm.controls.name! | asFormControl"
+            [control]="dialogForm?.get('name') | asFormControl"
             inputId="name"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-3 pt-4">
           <bgap-form-checkbox
             caption="common.isActive"
-            [control]="dialogForm.controls.isActive! | asFormControl"
+            [control]="dialogForm?.get('isActive') | asFormControl"
             inputId="isActive"
           ></bgap-form-checkbox>
         </div>
@@ -39,23 +44,24 @@
       <bgap-form-text-input
         caption="common.descriptionHU"
         type="text"
-        [control]="dialogForm.get('description')!.get('hu')! | asFormControl"
+        [control]="dialogForm?.get('description.hu') | asFormControl"
         inputId="descriptionHu"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionEN"
         type="text"
-        [control]="dialogForm.get('description')!.get('en')! | asFormControl"
+        [control]="dialogForm?.get('description.en') | asFormControl"
         inputId="descriptionEn"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionDE"
         type="text"
-        [control]="dialogForm.get('description')!.get('de')! | asFormControl"
+        [control]="dialogForm?.get('description.de') | asFormControl"
         inputId="descriptionDe"
       ></bgap-form-text-input>
 
       <bgap-form-contact-group
+        *ngIf="dialogForm"
         [contactFormGroup]="dialogForm | asFormGroup"
       ></bgap-form-contact-group>
 
@@ -67,8 +73,7 @@
             <bgap-form-color-picker
               [disabled]="true"
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('backgroundLight')!
-                  | asFormControl
+                dialogForm?.get('style.colors.backgroundLight') | asFormControl
               "
               [caption]="'chains.style.colors.backgroundLight'"
             >
@@ -79,8 +84,7 @@
               [disabled]="true"
               [caption]="'chains.style.colors.backgroundDark'"
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('backgroundDark')!
-                  | asFormControl
+                dialogForm?.get('style.colors.backgroundDark') | asFormControl
               "
             >
             </bgap-form-color-picker>
@@ -89,8 +93,7 @@
             <bgap-form-color-picker
               [disabled]="true"
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('textLight')!
-                  | asFormControl
+                dialogForm?.get('style.colors.textLight') | asFormControl
               "
               [caption]="'chains.style.colors.textLight'"
             >
@@ -100,8 +103,7 @@
             <bgap-form-color-picker
               [disabled]="true"
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('textDark')!
-                  | asFormControl
+                dialogForm?.get('style.colors.textDark') | asFormControl
               "
               [caption]="'chains.style.colors.textDark'"
             >
@@ -114,7 +116,7 @@
             <bgap-form-color-picker
               [disabled]="true"
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('borderLight')!
+                dialogForm?.get('style')?.get('colors')?.get('borderLight')!
                   | asFormControl
               "
               [caption]="'chains.style.colors.borderLight'"
@@ -125,7 +127,7 @@
             <bgap-form-color-picker
               [disabled]="true"
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('borderDark')!
+                dialogForm?.get('style')?.get('colors')?.get('borderDark')!
                   | asFormControl
               "
               [caption]="'chains.style.colors.borderDark'"
@@ -136,7 +138,7 @@
             <bgap-form-color-picker
               [disabled]="true"
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('highlight')!
+                dialogForm?.get('style')?.get('colors')?.get('highlight')!
                   | asFormControl
               "
               [caption]="'chains.style.colors.highlight'"
@@ -147,7 +149,7 @@
             <bgap-form-color-picker
               [disabled]="true"
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('indicator')!
+                dialogForm?.get('style')?.get('colors')?.get('indicator')!
                   | asFormControl
               "
               [caption]="'chains.style.colors.indicator'"
@@ -161,7 +163,7 @@
             <bgap-form-color-picker
               [disabled]="true"
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('disabled')!
+                dialogForm?.get('style')?.get('colors')?.get('disabled')!
                   | asFormControl
               "
               [caption]="'chains.style.colors.disabled'"
@@ -172,7 +174,7 @@
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('primary')!
+                dialogForm?.get('style')?.get('colors')?.get('primary')!
                   | asFormControl
               "
               [caption]="'chains.style.colors.primary'"
@@ -183,7 +185,7 @@
           <div class="col-6 col-md-3">
             <bgap-form-color-picker
               [control]="
-                dialogForm.get('style')!.get('colors')!.get('secondary')!
+                dialogForm?.get('style')?.get('colors')?.get('secondary')!
                   | asFormControl
               "
               [caption]="'chains.style.colors.secondary'"

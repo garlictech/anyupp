@@ -121,4 +121,28 @@ export class FormsService {
       }),
       ratings: this._formBuilder.array([]),
     });
+
+  public createTipPolicyFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      title: this._formBuilder.group({
+        hu: [''],
+        en: [''],
+        de: [''],
+      }),
+      description: this._formBuilder.group({
+        hu: [''],
+        en: [''],
+        de: [''],
+      }),
+      percents: [[]],
+      maxOtherAmount: [],
+    });
+
+  public addUnitTipPercent = (caption: string, percents: number[]) =>
+    [...new Set(percents), parseFloat(caption)].sort();
+
+  public removeUnitTipPercent = (caption: string, percents: number[]) => {
+    const removable = parseFloat(caption.replace('%', ''));
+    return percents.filter(v => v !== removable).sort();
+  };
 }

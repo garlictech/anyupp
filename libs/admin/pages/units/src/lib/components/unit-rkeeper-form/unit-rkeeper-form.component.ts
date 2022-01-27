@@ -92,14 +92,14 @@ export class UnitRkeeperFormComponent
     this._unitFormService
       .updateRKeeperData$({
         unitId: this.unit?.id,
-        ...this.dialogForm.value.pos.rkeeper,
+        ...this.dialogForm?.value.pos.rkeeper,
       })
       .pipe(
         switchMap((response: UpsertResponse<unknown>) => {
           if (response.type === 'update') {
             return this._unitFormService.updateUnit$({
               id: this.unit?.id,
-              externalId: this.dialogForm.value.externalId,
+              externalId: this.dialogForm?.value.externalId,
             });
           }
 

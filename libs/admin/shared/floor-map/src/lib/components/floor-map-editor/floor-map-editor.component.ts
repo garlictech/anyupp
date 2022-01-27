@@ -30,8 +30,8 @@ export class FloorMapEditorComponent
 {
   @Input() editMode?: boolean;
   @Input() floorMap?: CrudApi.Maybe<CrudApi.FloorMapData>;
-  public dimensionForm!: FormGroup;
-  public objectForm!: FormGroup;
+  public dimensionForm?: FormGroup;
+  public objectForm?: FormGroup;
   public EUnitMapObjectType = CrudApi.UnitMapObjectType;
 
   constructor(private _store: Store, private _formBuilder: FormBuilder) {}

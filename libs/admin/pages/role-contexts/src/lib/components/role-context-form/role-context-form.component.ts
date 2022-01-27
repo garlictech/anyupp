@@ -75,7 +75,7 @@ export class RoleContextFormComponent
         this._refreshDisabledFields(next.role);
 
         if (prev.role !== next.role) {
-          this.dialogForm.patchValue({
+          this.dialogForm?.patchValue({
             chainId: undefined,
             groupId: undefined,
             unitId: undefined,
@@ -83,7 +83,7 @@ export class RoleContextFormComponent
         }
 
         if (prev.chainId !== next.chainId) {
-          this.dialogForm.patchValue({
+          this.dialogForm?.patchValue({
             groupId: undefined,
             unitId: undefined,
           });
@@ -92,7 +92,7 @@ export class RoleContextFormComponent
         }
 
         if (prev.groupId !== next.groupId) {
-          this.dialogForm.patchValue({
+          this.dialogForm?.patchValue({
             unitId: undefined,
           });
 

@@ -47,25 +47,25 @@ export class ChainFormComponent
 
   ngOnInit(): void {
     if (this.chain) {
-      this.dialogForm.patchValue(cleanObject(this.chain));
+      this.dialogForm?.patchValue(cleanObject(this.chain));
 
       // Color migration
-      this.dialogForm.patchValue({
+      this.dialogForm?.patchValue({
         style: {
           colors: {
             primary:
-              this.dialogForm.value.style?.colors?.primary ||
-              this.dialogForm.value.style?.colors?.indicator ||
+              this.dialogForm?.value.style?.colors?.primary ||
+              this.dialogForm?.value.style?.colors?.indicator ||
               '#30bf60',
             secondary:
-              this.dialogForm.value.style?.colors?.secondary ||
-              this.dialogForm.value.style?.colors?.textDark ||
+              this.dialogForm?.value.style?.colors?.secondary ||
+              this.dialogForm?.value.style?.colors?.textDark ||
               '#303030',
           },
         },
       });
     } else {
-      this.dialogForm.patchValue({
+      this.dialogForm?.patchValue({
         isActive: false,
         style: {
           colors: {
@@ -84,10 +84,10 @@ export class ChainFormComponent
       this._chainFormService
         .saveForm$(
           {
-            ...this.dialogForm.value,
-            address: addressIsEmpty(this.dialogForm.value.address)
+            ...this.dialogForm?.value,
+            address: addressIsEmpty(this.dialogForm?.value.address)
               ? null
-              : this.dialogForm.value.address,
+              : this.dialogForm?.value.address,
           },
           this.chain?.id,
         )
@@ -101,7 +101,7 @@ export class ChainFormComponent
 
   public logoUploadCallback = (image: string, param: string) => {
     (<FormControl>(
-      this.dialogForm.get('style')?.get('images')?.get(param)
+      this.dialogForm?.get('style')?.get('images')?.get(param)
     )).setValue(image);
 
     if (this.chain?.id) {
@@ -117,7 +117,7 @@ export class ChainFormComponent
 
   public logoRemoveCallback = (param: string) => {
     (<FormControl>(
-      this.dialogForm.get('style')?.get('images')?.get(param)
+      this.dialogForm?.get('style')?.get('images')?.get(param)
     )).setValue('');
 
     if (this.chain?.id) {

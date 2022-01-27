@@ -341,6 +341,12 @@
     "ratingPolicies": {
       "title": "Rating policies",
       "ratingPolicy": "Rating policy"
+    },
+    "tipPolicy": {
+      "title": "Tips",
+      "newPercent": "New Percent",
+      "percents": "Percents",
+      "customValue": "Custom value"
     }
   },
   "users": {

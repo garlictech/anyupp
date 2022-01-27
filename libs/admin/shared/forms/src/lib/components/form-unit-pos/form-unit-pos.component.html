@@ -7,7 +7,7 @@
           <bgap-form-radio-group
             caption="common.type"
             [options]="posTypeOptions"
-            [control]="posFormGroup?.get('type')! | asFormControl"
+            [control]="posFormGroup?.get('type') | asFormControl"
             [localize]="false"
             [horizontal]="true"
             inputId="posType"
@@ -23,7 +23,7 @@
             caption="units.rkeeper.endpointUri"
             type="text"
             [control]="
-              posFormGroup?.get('rkeeper')!.get('endpointUri')! | asFormControl
+              posFormGroup?.get('rkeeper')!.get('endpointUri') | asFormControl
             "
             inputId="endpointUri"
           ></bgap-form-text-input>

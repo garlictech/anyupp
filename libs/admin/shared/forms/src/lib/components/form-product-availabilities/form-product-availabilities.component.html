@@ -1,136 +1,138 @@
-<div>
-  <ng-container
-    *ngFor="
-      let availability of availabilityFormArray | iterableAbstractControls;
-      index as i;
-      first as isFirst;
-      last as isLast
-    "
-  >
-    <hr />
-    <div class="row">
-      <div class="col-md-4">
-        <bgap-form-select
-          [control]="availability.get('type')! | asFormControl"
-          caption="common.type"
-          [options]="availabilityTypes"
-          (selectionChange)="onTypeChange($event, i)"
-          [localize]="false"
-          inputId="type"
-        >
-        </bgap-form-select>
-      </div>
-
-      <div class="col-md-4">
-        <bgap-form-text-input
-          [staticCaption]="
-            ('products.price' | translate) + ' (' + currency! + ')'
-          "
-          type="number"
-          [control]="availability.get('price')! | asFormControl"
-          inputId="price"
-        ></bgap-form-text-input>
-      </div>
-
-      <div class="col-md-4 pt-3 text-end">
-        <button
-          nbButton
-          status="danger"
-          size="tiny"
-          shape="round"
-          (click)="removeAvailability(i)"
-        >
-          <nb-icon icon="remove" pack="material-icons"></nb-icon>
-        </button>
-      </div>
-    </div>
-    <div
-      class="row"
-      *ngIf="availability.value.type !== EVariantAvailabilityType.ALWAYS"
+<ng-container *ngIf="availabilityFormArray">
+  <div>
+    <ng-container
+      *ngFor="
+        let availability of availabilityFormArray | iterableAbstractControls;
+        index as i;
+        first as isFirst;
+        last as isLast
+      "
     >
-      <ng-container
-        *ngIf="availability.value.type === EVariantAvailabilityType.WEEKLY"
-      >
+      <hr />
+      <div class="row">
         <div class="col-md-4">
           <bgap-form-select
-            [control]="availability.get('dayFrom')! | asFormControl"
-            caption="products.dayFrom"
-            [options]="iterativeAvailabilities"
+            [control]="availability.get('type') | asFormControl"
+            caption="common.type"
+            [options]="availabilityTypes"
+            (selectionChange)="onTypeChange($event, i)"
             [localize]="false"
-            inputId="dayFrom"
+            inputId="type"
           >
           </bgap-form-select>
         </div>
+
         <div class="col-md-4">
-          <bgap-form-select
-            [control]="availability.get('dayTo')! | asFormControl"
-            caption="products.dayTo"
-            [options]="iterativeAvailabilities"
-            [localize]="false"
-            inputId="dayTo"
+          <bgap-form-text-input
+            [staticCaption]="
+              ('products.price' | translate) + ' (' + currency! + ')'
+            "
+            type="number"
+            [control]="availability.get('price') | asFormControl"
+            inputId="price"
+          ></bgap-form-text-input>
+        </div>
+
+        <div class="col-md-4 pt-3 text-end">
+          <button
+            nbButton
+            status="danger"
+            size="tiny"
+            shape="round"
+            (click)="removeAvailability(i)"
           >
-          </bgap-form-select>
+            <nb-icon icon="remove" pack="material-icons"></nb-icon>
+          </button>
         </div>
-      </ng-container>
-
-      <ng-container
-        *ngIf="availability.value.type === EVariantAvailabilityType.SEASONAL"
+      </div>
+      <div
+        class="row"
+        *ngIf="availability.value.type !== EVariantAvailabilityType.ALWAYS"
       >
-        <div class="col-md-4">
+        <ng-container
+          *ngIf="availability.value.type === EVariantAvailabilityType.WEEKLY"
+        >
+          <div class="col-md-4">
+            <bgap-form-select
+              [control]="availability.get('dayFrom') | asFormControl"
+              caption="products.dayFrom"
+              [options]="iterativeAvailabilities"
+              [localize]="false"
+              inputId="dayFrom"
+            >
+            </bgap-form-select>
+          </div>
+          <div class="col-md-4">
+            <bgap-form-select
+              [control]="availability.get('dayTo') | asFormControl"
+              caption="products.dayTo"
+              [options]="iterativeAvailabilities"
+              [localize]="false"
+              inputId="dayTo"
+            >
+            </bgap-form-select>
+          </div>
+        </ng-container>
+
+        <ng-container
+          *ngIf="availability.value.type === EVariantAvailabilityType.SEASONAL"
+        >
+          <div class="col-md-4">
+            <bgap-form-text-input
+              caption="products.dayFrom"
+              type="date"
+              [control]="availability.get('dayFrom') | asFormControl"
+              inputId="dayFrom"
+            ></bgap-form-text-input>
+          </div>
+          <div class="col-md-4">
+            <bgap-form-text-input
+              caption="products.dayTo"
+              type="date"
+              [control]="availability.get('dayTo') | asFormControl"
+              inputId="dayTo"
+            ></bgap-form-text-input>
+          </div>
+        </ng-container>
+
+        <div class="col-md-2">
           <bgap-form-text-input
-            caption="products.dayFrom"
-            type="date"
-            [control]="availability.get('dayFrom')! | asFormControl"
-            inputId="dayFrom"
+            caption="products.timeFrom"
+            type="text"
+            [control]="availability.get('timeFrom') | asFormControl"
+            inputId="timeFrom"
           ></bgap-form-text-input>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
           <bgap-form-text-input
-            caption="products.dayTo"
-            type="date"
-            [control]="availability.get('dayTo')! | asFormControl"
-            inputId="dayTo"
+            caption="products.timeTo"
+            type="text"
+            [control]="availability.get('timeTo') | asFormControl"
+            inputId="timeTo"
           ></bgap-form-text-input>
+        </div>
+      </div>
+
+      <ng-container *ngIf="availability.errors">
+        <div class="form-error-msg" *ngIf="availability.errors.dayInterval">
+          {{ 'errors.availabilityWeeklyDateInterval' | translate }}
+        </div>
+        <div class="form-error-msg" *ngIf="availability.errors.timeInterval">
+          {{ 'errors.availabilityWeeklyTimeInterval' | translate }}
         </div>
       </ng-container>
-
-      <div class="col-md-2">
-        <bgap-form-text-input
-          caption="products.timeFrom"
-          type="text"
-          [control]="availability.get('timeFrom')! | asFormControl"
-          inputId="timeFrom"
-        ></bgap-form-text-input>
-      </div>
-      <div class="col-md-2">
-        <bgap-form-text-input
-          caption="products.timeTo"
-          type="text"
-          [control]="availability.get('timeTo')! | asFormControl"
-          inputId="timeTo"
-        ></bgap-form-text-input>
-      </div>
-    </div>
-
-    <ng-container *ngIf="availability.errors">
-      <div class="form-error-msg" *ngIf="availability.errors.dayInterval">
-        {{ 'errors.availabilityWeeklyDateInterval' | translate }}
-      </div>
-      <div class="form-error-msg" *ngIf="availability.errors.timeInterval">
-        {{ 'errors.availabilityWeeklyTimeInterval' | translate }}
-      </div>
     </ng-container>
-  </ng-container>
-</div>
+  </div>
 
-<button
-  nbButton
-  type="button"
-  shape="round"
-  size="tiny"
-  class="float-right mt-3"
-  (click)="addAvailability()"
->
-  <nb-icon icon="add" pack="material-icons"></nb-icon>
-  {{ 'products.addAvailability' | translate }}
-</button>
+  <button
+    nbButton
+    type="button"
+    shape="round"
+    size="tiny"
+    class="float-right mt-3"
+    (click)="addAvailability()"
+  >
+    <nb-icon icon="add" pack="material-icons"></nb-icon>
+    {{ 'products.addAvailability' | translate }}
+  </button>
+</ng-container>

@@ -8,11 +8,15 @@
           nbInput
           fieldSize="small"
           [placeholder]="'common.hmPlaceholder' | translate"
-          [formControl]="scheduleControl.get(day)!.get('from')! | asFormControl"
+          *ngIf="
+            scheduleControl?.get(day)?.get('from')
+              | asFormControl as dayFromContol
+          "
+          [formControl]="dayFromContol"
           [status]="
-            scheduleControl.get(day)?.get('from')?.touched &&
-            (scheduleControl.get(day)?.get('from')?.errors?.required ||
-              scheduleControl.get(day)?.get('from')?.invalid)
+            scheduleControl?.get(day)?.get('from')?.touched &&
+            (scheduleControl?.get(day)?.get('from')?.errors?.required ||
+              scheduleControl?.get(day)?.get('from')?.invalid)
               ? 'danger'
               : 'basic'
           "
@@ -25,7 +29,10 @@
           nbInput
           fieldSize="small"
           [placeholder]="'common.hmPlaceholder' | translate"
-          [formControl]="scheduleControl.get(day)!.get('to')! | asFormControl"
+          *ngIf="
+            scheduleControl.get(day)!.get('to') | asFormControl as dayToContol
+          "
+          [formControl]="dayToContol"
           [status]="
             scheduleControl.get(day)?.get('to')?.touched &&
             (scheduleControl.get(day)?.get('to')?.errors?.required ||
@@ -69,7 +76,10 @@
           <input
             nbInput
             fieldSize="small"
-            [formControl]="customDay.get('date')! | asFormControl"
+            *ngIf="
+              customDay?.get('date') | asFormControl as customDayDateControl
+            "
+            [formControl]="customDayDateControl"
             type="date"
             id="customDayDate"
           />
@@ -79,7 +89,10 @@
             nbInput
             fieldSize="small"
             [placeholder]="'common.hmPlaceholder' | translate"
-            [formControl]="customDay.get('from')! | asFormControl"
+            *ngIf="
+              customDay?.get('from') | asFormControl as customDayFromControl
+            "
+            [formControl]="customDayFromControl"
             [status]="
               customDay.get('from')?.touched &&
               (customDay.get('from')?.errors?.required ||
@@ -96,11 +109,12 @@
             nbInput
             fieldSize="small"
             [placeholder]="'common.hmPlaceholder' | translate"
-            [formControl]="customDay.get('to')! | asFormControl"
+            *ngIf="customDay?.get('to') | asFormControl as customDayToControl"
+            [formControl]="customDayToControl"
             [status]="
-              customDay.get('to')?.touched &&
-              (customDay.get('to')?.errors?.required ||
-                customDay.get('to')?.invalid)
+              customDay?.get('to')?.touched &&
+              (customDay?.get('to')?.errors?.required ||
+                customDay?.get('to')?.invalid)
                 ? 'danger'
                 : 'basic'
             "

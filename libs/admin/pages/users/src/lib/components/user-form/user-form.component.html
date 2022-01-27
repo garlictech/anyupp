@@ -19,7 +19,7 @@
       <bgap-form-text-input
         caption="common.name"
         type="text"
-        [control]="dialogForm.get('name')! | asFormControl"
+        [control]="dialogForm?.get('name') | asFormControl"
         inputId="name"
       ></bgap-form-text-input>
 

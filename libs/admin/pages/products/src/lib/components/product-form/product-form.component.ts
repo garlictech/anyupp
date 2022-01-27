@@ -73,7 +73,7 @@ export class ProductFormComponent
 
   ngOnInit() {
     if (this.product) {
-      this.dialogForm.patchValue(
+      this.dialogForm?.patchValue(
         omit(['variants', 'configSets'], cleanObject(this.product)),
       );
 
@@ -88,11 +88,11 @@ export class ProductFormComponent
       );
     } else {
       if (this._userSettings?.selectedProductCategoryId) {
-        this.dialogForm.controls.productCategoryId.patchValue(
+        this.dialogForm?.controls.productCategoryId.patchValue(
           this._userSettings?.selectedProductCategoryId,
         );
       }
-      this.dialogForm.controls.isVisible.patchValue(true);
+      this.dialogForm?.controls.isVisible.patchValue(true);
     }
   }
 

@@ -67,7 +67,7 @@ export class ProductComponentFormComponent
 
   ngOnInit(): void {
     if (this.productComponent) {
-      this.dialogForm.patchValue(cleanObject(this.productComponent));
+      this.dialogForm?.patchValue(cleanObject(this.productComponent));
     } else {
       // Patch ChainId
       this._store

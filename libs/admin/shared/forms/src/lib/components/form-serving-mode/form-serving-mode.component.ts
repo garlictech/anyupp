@@ -8,15 +8,15 @@ import * as CrudApi from '@bgap/crud-gql/api';
   templateUrl: './form-serving-mode.component.html',
 })
 export class FormServingModeComponent {
-  @Input() control!: FormControl;
+  @Input() control?: FormControl | null;
   @Input() servingModes: CrudApi.ServingMode[] = [];
 
   public servingModeIsChecked(servingMode: CrudApi.ServingMode): boolean {
-    return (this.control.value || []).indexOf(servingMode) >= 0;
+    return (this.control?.value || []).indexOf(servingMode) >= 0;
   }
 
   public toggleServingMode = (servingMode: CrudApi.ServingMode): void => {
-    const servingModesArr = this.control.value;
+    const servingModesArr = this.control?.value;
     const idx = servingModesArr.indexOf(servingMode);
 
     if (idx < 0) {
@@ -25,6 +25,6 @@ export class FormServingModeComponent {
       servingModesArr.splice(idx, 1);
     }
 
-    this.control.setValue(servingModesArr);
+    this.control?.setValue(servingModesArr);
   };
 }

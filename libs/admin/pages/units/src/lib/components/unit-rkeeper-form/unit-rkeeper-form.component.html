@@ -17,8 +17,8 @@
   <nb-card-body>
     <form [formGroup]="dialogForm!" (ngSubmit)="submit()" autocomplete="off">
       <bgap-form-unit-pos
-        [posFormGroup]="dialogForm.get('pos')! | asFormGroup"
-        [externalIdControl]="dialogForm.get('externalId')! | asFormControl"
+        [posFormGroup]="dialogForm?.get('pos') | asFormGroup"
+        [externalIdControl]="dialogForm?.get('externalId') | asFormControl"
         [editing]="true"
         (changePasswordEmitter)="updatePassword()"
       ></bgap-form-unit-pos>
@@ -30,7 +30,7 @@
           type="submit"
           fullWidth
           status="primary"
-          [disabled]="dialogForm.invalid"
+          [disabled]="dialogForm?.invalid"
         >
           {{ 'common.submit' | translate }}
         </button>

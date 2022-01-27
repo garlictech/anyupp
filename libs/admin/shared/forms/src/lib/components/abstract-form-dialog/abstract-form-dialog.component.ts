@@ -20,7 +20,7 @@ import { Store } from '@ngrx/store';
   template: '',
 })
 export class AbstractFormDialogComponent implements OnDestroy {
-  public dialogForm!: FormGroup;
+  public dialogForm?: FormGroup;
   protected _dataService: DataService;
   protected _formBuilder: FormBuilder;
   protected _toasterService: ToasterService;

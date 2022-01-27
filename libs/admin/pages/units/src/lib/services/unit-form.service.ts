@@ -75,6 +75,7 @@ export class UnitFormService {
           }),
       packagingTaxPercentage: [''],
       ratingPolicies: this._formBuilder.array([]),
+      tipPolicy: this._formsService.createTipPolicyFormGroup(),
       open: this._formBuilder.group({
         from: [''],
         to: [''],

@@ -343,6 +343,12 @@
     "ratingPolicies": {
       "title": "Értékelések",
       "ratingPolicy": "Értékelés"
+    },
+    "tipPolicy": {
+      "title": "Borravalók",
+      "newPercent": "Új százalék",
+      "percents": "Százalékok",
+      "customValue": "Egyedi érték"
     }
   },
   "users": {

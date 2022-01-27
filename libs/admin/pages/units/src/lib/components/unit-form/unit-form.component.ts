@@ -116,7 +116,7 @@ export class UnitFormComponent
         )
         .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
-            this.dialogForm.patchValue({ chainId: selectedChainId });
+            this.dialogForm?.patchValue({ chainId: selectedChainId });
 
             this._changeDetectorRef.detectChanges();
           }
@@ -127,7 +127,7 @@ export class UnitFormComponent
         .pipe(select(loggedUserSelectors.getSelectedGroupId), take(1))
         .subscribe((selectedGroupId: string | undefined | null): void => {
           if (selectedGroupId) {
-            this.dialogForm.patchValue({ groupId: selectedGroupId });
+            this.dialogForm?.patchValue({ groupId: selectedGroupId });
           }
         });
 
@@ -171,7 +171,7 @@ export class UnitFormComponent
 
   private _saveForm() {
     this._unitFormService
-      .saveForm$(cloneDeep(this.dialogForm.value), this.unit?.id)
+      .saveForm$(cloneDeep(this.dialogForm?.value), this.unit?.id)
       .subscribe((response: UpsertResponse<unknown>) => {
         this._toasterService.showSimpleSuccess(response.type);
 

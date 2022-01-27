@@ -112,7 +112,7 @@ export class AdminUserRoleFormComponent
           adminUserId: this.adminUser.id,
         })
         .subscribe((response: UpsertResponse<unknown>) => {
-          this.dialogForm.patchValue({ roleContextId: '' });
+          this.dialogForm?.patchValue({ roleContextId: '' });
           this._toasterService.showSimpleSuccess(response.type);
           this._changeDetectorRef.detectChanges();
         });

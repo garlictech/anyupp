@@ -10,7 +10,7 @@
         [localize]="false"
         [options]="productComponentSetOptions"
         [control]="
-          componentSetForm.get('productComponentSetId')! | asFormControl
+          componentSetForm?.get('productComponentSetId') | asFormControl
         "
         inputId="productComponentSetId"
       ></bgap-form-select>
@@ -22,14 +22,14 @@
         status="primary"
         (click)="addComponentSetToList()"
         data-testid="addComponentSetButton"
-        [disabled]="componentSetForm.invalid"
+        [disabled]="componentSetForm?.invalid"
       >
         {{ 'common.add' | translate }}
       </button>
     </div>
   </div>
 
-  <div class="mb-3 mt-3">
+  <div class="mb-3 mt-3" *ngIf="componentFormArray">
     <ng-container
       *ngFor="
         let componentSet of (componentFormArray | iterableAbstractControls) ||
@@ -112,7 +112,7 @@
         </div>
 
         <bgap-form-product-component-item
-          [itemFormArray]="componentSet.get('items')! | asFormArray"
+          [itemFormArray]="componentSet?.get('items') | asFormArray"
           [productLevel]="productLevel"
           [currency]="currency"
         ></bgap-form-product-component-item>

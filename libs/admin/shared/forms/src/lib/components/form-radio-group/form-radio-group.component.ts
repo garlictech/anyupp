@@ -10,7 +10,7 @@ import { KeyValue } from '@bgap/shared/types';
 export class FormRadioGroupComponent {
   @Input() caption = ''; // Language key!!!
   @Input() options: KeyValue[] = [];
-  @Input() control!: FormControl;
+  @Input() control?: FormControl | null;
   @Input() localize?: boolean;
   @Input() horizontal? = true;
   @Input() inputId = '';

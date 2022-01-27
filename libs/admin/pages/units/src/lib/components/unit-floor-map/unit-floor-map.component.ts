@@ -24,7 +24,7 @@ export class UnitFloorMapComponent
 {
   @ViewChild('container') container!: ElementRef;
   public unit!: CrudApi.Unit;
-  public rawForm!: FormGroup;
+  public rawForm?: FormGroup;
 
   constructor(
     protected _injector: Injector,

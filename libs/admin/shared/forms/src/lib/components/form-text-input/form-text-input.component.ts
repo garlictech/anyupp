@@ -10,7 +10,9 @@ import { NbComponentSize } from '@nebular/theme';
 export class FormTextInputComponent {
   @Input() caption = ''; // Language key!!!
   @Input() staticCaption?: string; // Language key!!!
-  @Input() control!: FormControl;
+  @Input() prefix?: string;
+  @Input() suffix?: string;
+  @Input() control?: FormControl | null;
   @Input() type!: string;
   @Input() fieldSize: NbComponentSize = 'small';
   @Input() inputId = '';

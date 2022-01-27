@@ -18,7 +18,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-unit-lanes.component.html',
 })
 export class FormUnitLanesComponent implements OnInit {
-  @Input() lanesFormArray!: FormArray;
+  @Input() lanesFormArray?: FormArray;
   public usedLaneIds: string[];
 
   constructor(

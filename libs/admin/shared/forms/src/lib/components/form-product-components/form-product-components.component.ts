@@ -1,4 +1,4 @@
-import { combineLatest } from 'rxjs';
+import { combineLatest, iif, of } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import {
@@ -34,13 +34,13 @@ import { FormsService } from '../../services/forms/forms.service';
   styleUrls: ['./form-product-components.component.scss'],
 })
 export class FormProductComponentsComponent implements OnInit, OnDestroy {
-  @Input() componentFormArray!: FormArray;
+  @Input() componentFormArray?: FormArray;
   @Input() productLevel!: EProductLevel;
   @Input() currency?: string;
   public eProductLevel = EProductLevel;
   public eServingMode = CrudApi.ServingMode;
 
-  public componentSetForm!: FormGroup;
+  public componentSetForm?: FormGroup;
   public productComponentSetOptions: KeyValue[] = [];
 
   private _productComponentSets: CrudApi.ProductComponentSet[] = [];
@@ -62,8 +62,12 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
       this._store.pipe(
         select(productComponentSetsSelectors.getAllProductComponentSets),
       ),
-      this.componentFormArray.valueChanges.pipe(
-        startWith(this.componentFormArray.value || []),
+      iif(
+        () => typeof this.componentFormArray !== 'undefined',
+        this.componentFormArray?.valueChanges.pipe(
+          startWith(this.componentFormArray?.value || []),
+        ),
+        of([]),
       ),
     ])
       .pipe(untilDestroyed(this))
@@ -89,7 +93,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
 
   public addComponentSetToList() {
     const componentSet = this._productComponentSets.find(
-      c => c.id === this.componentSetForm.value.productComponentSetId,
+      c => c.id === this.componentSetForm?.value.productComponentSetId,
     );
 
     if (componentSet) {
@@ -97,7 +101,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
         this._formsService.createProductConfigSetFormGroup();
       componentSetGroup.patchValue({
         productSetId: componentSet.id,
-        position: this.componentFormArray.value.length + 1,
+        position: this.componentFormArray?.value.length + 1,
       });
 
       componentSet.items.forEach((componentId, i) => {
@@ -112,7 +116,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
 
       (<FormArray>this.componentFormArray)?.push(componentSetGroup);
 
-      this.componentSetForm.patchValue({ productComponentSetId: '' });
+      this.componentSetForm?.patchValue({ productComponentSetId: '' });
     }
 
     this._changeDetectorRef.detectChanges();

@@ -8,15 +8,15 @@ import * as CrudApi from '@bgap/crud-gql/api';
   templateUrl: './form-order-mode.component.html',
 })
 export class FormOrderModeComponent {
-  @Input() control!: FormControl;
+  @Input() control?: FormControl | null;
   @Input() orderModes: CrudApi.OrderMode[] = [];
 
   public orderModeIsChecked(orderMode: CrudApi.OrderMode): boolean {
-    return (this.control.value || []).indexOf(orderMode) >= 0;
+    return (this.control?.value || []).indexOf(orderMode) >= 0;
   }
 
   public toggleOrderMode(orderMode: CrudApi.OrderMode): void {
-    const orderModesArr = this.control.value;
+    const orderModesArr = this.control?.value;
     const idx = orderModesArr.indexOf(orderMode);
 
     if (idx < 0) {
@@ -25,6 +25,6 @@ export class FormOrderModeComponent {
       orderModesArr.splice(idx, 1);
     }
 
-    this.control.setValue(orderModesArr);
+    this.control?.setValue(orderModesArr);
   }
 }

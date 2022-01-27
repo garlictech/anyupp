@@ -163,6 +163,20 @@ Object {
     "inPlace",
   ],
   "timeZone": "",
+  "tipPolicy": Object {
+    "description": Object {
+      "de": "",
+      "en": "",
+      "hu": "",
+    },
+    "maxOtherAmount": null,
+    "percents": Array [],
+    "title": Object {
+      "de": "",
+      "en": "",
+      "hu": "",
+    },
+  },
 }
 `;
 
@@ -246,6 +260,20 @@ Object {
     "inPlace",
   ],
   "timeZone": "",
+  "tipPolicy": Object {
+    "description": Object {
+      "de": "",
+      "en": "",
+      "hu": "",
+    },
+    "maxOtherAmount": null,
+    "percents": Array [],
+    "title": Object {
+      "de": "",
+      "en": "",
+      "hu": "",
+    },
+  },
 }
 `;
 

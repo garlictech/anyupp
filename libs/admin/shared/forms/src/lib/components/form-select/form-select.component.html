@@ -6,11 +6,12 @@
     <nb-select
       width="100"
       [size]="size!"
+      *ngIf="control"
       [formControl]="control"
       (selectedChange)="onChange($event)"
       [attr.data-testid]="inputId"
     >
-      <nb-option value="" *ngIf="!control.value || forceShowEmptyOption"
+      <nb-option value="" *ngIf="!control?.value || forceShowEmptyOption"
         >-</nb-option
       >
       <nb-option *ngFor="let option of options" [value]="option.key">{{

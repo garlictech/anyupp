@@ -1,17 +1,17 @@
-<fieldset class="form" [formGroup]="contactFormGroup">
+<fieldset class="form" *ngIf="contactFormGroup" [formGroup]="contactFormGroup">
   <legend class="label">{{ 'common.contact.contact' | translate }}</legend>
 
   <div class="clearfix"></div>
   <bgap-form-text-input
     caption="common.email"
     type="email"
-    [control]="contactFormGroup.get('email')! | asFormControl"
+    [control]="contactFormGroup?.get('email') | asFormControl"
     inputId="email"
   ></bgap-form-text-input>
   <bgap-form-text-input
     caption="common.phone"
     type="text"
-    [control]="contactFormGroup.get('phone')! | asFormControl"
+    [control]="contactFormGroup?.get('phone') | asFormControl"
     inputId="phone"
   ></bgap-form-text-input>
 
@@ -20,37 +20,31 @@
     <bgap-form-text-input
       caption="common.title"
       type="text"
-      [control]="contactFormGroup.get('address')!.get('title')! | asFormControl"
+      [control]="contactFormGroup?.get('address.title') | asFormControl"
       inputId="addressTitle"
     ></bgap-form-text-input>
     <bgap-form-text-input
       caption="common.contact.country"
       type="text"
-      [control]="
-        contactFormGroup.get('address')!.get('country')! | asFormControl
-      "
+      [control]="contactFormGroup?.get('address.country') | asFormControl"
       inputId="addressCountry"
     ></bgap-form-text-input>
     <bgap-form-text-input
       caption="common.contact.postalCode"
       type="text"
-      [control]="
-        contactFormGroup.get('address')!.get('postalCode')! | asFormControl
-      "
+      [control]="contactFormGroup?.get('address.postalCode') | asFormControl"
       inputId="addressPostalCode"
     ></bgap-form-text-input>
     <bgap-form-text-input
       caption="common.contact.city"
       type="text"
-      [control]="contactFormGroup.get('address')!.get('city')! | asFormControl"
+      [control]="contactFormGroup?.get('address.city') | asFormControl"
       inputId="addressCity"
     ></bgap-form-text-input>
     <bgap-form-text-input
       caption="common.contact.address"
       type="text"
-      [control]="
-        contactFormGroup.get('address')!.get('address')! | asFormControl
-      "
+      [control]="contactFormGroup?.get('address.address') | asFormControl"
       inputId="addressAddress"
     ></bgap-form-text-input>
 
@@ -58,21 +52,21 @@
       <div class="col-md-6">
         <bgap-form-static-text
           caption="common.contact.locationLat"
-          [value]="contactFormGroup.value?.address?.location?.lat"
+          [value]="contactFormGroup?.value?.address?.location?.lat"
           inputId="addressLocationLat"
         ></bgap-form-static-text>
       </div>
       <div class="col-md-6">
         <bgap-form-static-text
           caption="common.contact.locationLng"
-          [value]="contactFormGroup.value?.address?.location?.lng"
+          [value]="contactFormGroup?.value?.address?.location?.lng"
           inputId="addressLocationLng"
         ></bgap-form-static-text>
       </div>
     </div>
 
     <bgap-google-map
-      [markerLocation]="contactFormGroup.value.address.location"
+      [markerLocation]="contactFormGroup?.value?.address?.location"
       (positionChange)="markerPositionChange($event)"
     ></bgap-google-map>
 

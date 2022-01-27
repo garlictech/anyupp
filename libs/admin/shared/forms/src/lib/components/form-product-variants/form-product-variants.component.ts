@@ -16,7 +16,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
   templateUrl: './form-product-variants.component.html',
 })
 export class FormProductVariantsComponent {
-  @Input() variantFormArray!: FormArray;
+  @Input() variantFormArray?: FormArray;
   @Input() allowAddVariant: boolean;
   @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
