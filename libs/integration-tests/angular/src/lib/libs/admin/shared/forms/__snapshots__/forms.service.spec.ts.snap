@@ -95,6 +95,7 @@ Object {
 
 exports[`FormsService createRkeeperFormGroup should create form group without anyupp password 1`] = `
 Object {
+  "anyuppPassword": "",
   "anyuppUsername": "",
   "endpointUri": "",
   "rkeeperPassword": "",

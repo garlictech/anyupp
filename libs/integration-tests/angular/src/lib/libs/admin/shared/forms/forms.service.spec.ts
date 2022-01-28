@@ -49,11 +49,11 @@ describe('FormsService', () => {
   });
 
   it('createRkeeperFormGroup should create form group with anyupp password', () => {
-    expect(service.createRkeeperFormGroup(true).value).toMatchSnapshot();
+    expect(service.createRkeeperFormGroup().value).toMatchSnapshot();
   });
 
   it('createRkeeperFormGroup should create form group without anyupp password', () => {
-    expect(service.createRkeeperFormGroup(false).value).toMatchSnapshot();
+    expect(service.createRkeeperFormGroup().value).toMatchSnapshot();
   });
 
   it('createRatingPolicyFormGroup should create form group ', () => {
