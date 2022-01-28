@@ -1,5 +1,5 @@
 import { combineLatest, iif, of } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { startWith, take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -61,6 +61,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
     combineLatest([
       this._store.pipe(
         select(productComponentSetsSelectors.getAllProductComponentSets),
+        take(1),
       ),
       iif(
         () => typeof this.componentFormArray !== 'undefined',

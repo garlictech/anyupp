@@ -21,6 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ChainFormComponent } from './components/chain-form/chain-form.component';
 import { ChainListItemComponent } from './components/chain-list-item/chain-list-item.component';
 import { ChainListComponent } from './components/chain-list/chain-list.component';
+import { StyleColorPreviewComponent } from './components/style-color-preview/style-color-preview.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -38,6 +39,7 @@ const NB_MODULES = [
     ChainListComponent,
     ChainListItemComponent,
     ChainFormComponent,
+    StyleColorPreviewComponent,
   ],
   imports: [
     CommonModule,
