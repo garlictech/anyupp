@@ -7,6 +7,7 @@ class CommonErrorWidget extends StatusWidget {
   final String? errorDetails;
   final VoidCallback? onPressed;
   final bool? showButton;
+  final bool expanded;
 
   CommonErrorWidget({
     required this.error,
@@ -14,6 +15,7 @@ class CommonErrorWidget extends StatusWidget {
     this.errorDetails,
     this.onPressed,
     this.showButton = true,
+    this.expanded = true,
   }) : super(
           icon: 'assets/icons/error-icon.svg',
           message: error,
@@ -23,5 +25,6 @@ class CommonErrorWidget extends StatusWidget {
           onPressed: onPressed,
           showButton: showButton,
           buttonColor: const Color(0xFFE74C3C),
+          expanded: expanded,
         );
 }

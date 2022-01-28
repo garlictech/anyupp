@@ -19,11 +19,9 @@ class AwsUnitProvider implements IUnitProvider {
           ),
         ),
       );
-      // print('***** searchUnitsNearLocation().result=$result');
-      // print('***** searchUnitsNearLocation().result.data=${result.data}');
-      // print('***** searchUnitsNearLocation().result.errors=${result.errors}');
 
       if (result.hasErrors) {
+        print('***** searchUnitsNearLocation().result.errors=${result.errors}');
         throw GraphQLException.fromGraphQLError(
             GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }

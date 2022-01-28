@@ -215,7 +215,9 @@ Array [
 exports[`startStripePayment test: Stripe payment result 1`] = `
 Object {
   "clientSecret": "STRIPE CLIENT SECRET",
+  "paymentMethodId": "PAYMENT_METHOD_ID",
   "status": "processing",
+  "stripeAccount": undefined,
 }
 `;
 
@@ -288,6 +290,7 @@ Array [
         "card",
       ],
     },
+    undefined,
   ],
 ]
 `;

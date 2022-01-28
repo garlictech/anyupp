@@ -44,7 +44,6 @@
     "RKeeperWebhookEndpointCBC72BD4": "https://rml9ah1g71.execute-api.eu-west-1.amazonaws.com/gabor/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-gabor.anyupp.com/gabor",
     "RKeeperTaskBucketName": "gabor-anyupp-backend-rke-anyupprkeepermenubucket4-1kz22ocg9u8fi",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/gabor-anyupp-backend-rkee-RkeeperECSTaskExecutionR-1L957NHJ3BQXX",
-    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/gaboranyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef7467336C:6"
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/gabor-anyupp-backend-rkee-RkeeperECSTaskExecutionR-1L957NHJ3BQXX"
   }
 }

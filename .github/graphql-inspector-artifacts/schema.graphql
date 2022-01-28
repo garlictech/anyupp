@@ -304,6 +304,8 @@ input PayTipWithStripeInput {
 type StartStripePaymentOutput @aws_cognito_user_pools {
   clientSecret: String!
   status: String!
+  paymentMethodId: String
+  stripeAccount: String
 }
 
 input StripeCardCreateInput {
