@@ -7,7 +7,7 @@
   <bgap-contact [contact]="unit"></bgap-contact>
   <bgap-rkeeper-info-block
     *ngIf="unit?.pos?.type === ePosType.rkeeper"
-    [unitID]="unit?.id"
+    [externalId]="unit?.externalId || ''"
     [pos]="unit?.pos"
   ></bgap-rkeeper-info-block>
 </div>

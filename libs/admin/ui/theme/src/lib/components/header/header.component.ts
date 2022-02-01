@@ -114,7 +114,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.loggedUser?.profileImage;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe(adminUser => {

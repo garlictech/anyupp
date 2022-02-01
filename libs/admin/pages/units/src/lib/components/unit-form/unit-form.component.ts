@@ -32,7 +32,7 @@ import { select } from '@ngrx/store';
 import { timeZonesNames } from '@vvo/tzdb';
 
 import { UnitFormService } from '../../services/unit-form.service';
-import { orderPolicyOptions } from '../../const';
+import { orderPolicyOptions, soldOutPolicyOptions } from '../../const';
 
 @UntilDestroy()
 @Component({
@@ -51,6 +51,7 @@ export class UnitFormComponent
   public groupOptions$: Observable<KeyValue[]>;
   public timeZoneOptions: KeyValue[] = [];
   public orderPolicyOptions: KeyValue[] = orderPolicyOptions;
+  public soldOutPolicyOptions: KeyValue[] = soldOutPolicyOptions;
   public isInitiallyRkeeper = false;
 
   constructor(
@@ -70,7 +71,7 @@ export class UnitFormComponent
     this.groupOptions$ = this._unitFormService.getGroupOptions$();
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.dialogForm = this._unitFormService.createUnitFormGroup();
 
     if (this.unit) {

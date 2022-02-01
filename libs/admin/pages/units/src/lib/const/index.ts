@@ -17,3 +17,13 @@ export const orderPolicyOptions = [
     value: `common.orderPolicy.${policy}`,
   }),
 );
+
+export const soldOutPolicyOptions = [
+  CrudApi.SoldOutVisibilityPolicy.faded,
+  CrudApi.SoldOutVisibilityPolicy.invisible,
+].map(
+  (policy): KeyValue => ({
+    key: policy,
+    value: `common.soldOutPolicy.${policy}`,
+  }),
+);

@@ -40,7 +40,7 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
     this.generatedUnitProducts = [];
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(groupsSelectors.getSeletedGroup),

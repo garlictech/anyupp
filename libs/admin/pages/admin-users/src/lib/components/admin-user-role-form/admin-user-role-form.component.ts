@@ -43,7 +43,7 @@ export class AdminUserRoleFormComponent
     super(_injector);
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.dialogForm = this._formBuilder.group({
       roleContextId: ['', [Validators.required]],
     });

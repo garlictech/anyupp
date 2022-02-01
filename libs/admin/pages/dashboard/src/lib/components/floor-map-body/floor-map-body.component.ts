@@ -65,7 +65,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
     this._store.dispatch(floorMapActions.resetFloorMap());
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(unitsSelectors.getSelectedUnit),

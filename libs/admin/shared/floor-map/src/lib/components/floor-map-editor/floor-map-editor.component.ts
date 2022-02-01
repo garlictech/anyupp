@@ -36,7 +36,7 @@ export class FloorMapEditorComponent
 
   constructor(private _store: Store, private _formBuilder: FormBuilder) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     const w = this.floorMap?.w || 800;
     const h = this.floorMap?.h || 300;
 

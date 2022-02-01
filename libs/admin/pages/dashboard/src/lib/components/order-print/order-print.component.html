@@ -113,6 +113,26 @@
           </div>
         </div>
 
+        <div>{{ 'print.serviceFeeDetails' | translate }}:</div>
+
+        <div *ngFor="let serviceFee of parsedServiceFees">
+          <div class="row p-0 m-0">
+            <div class="col-1 p-0 text-end">{{ serviceFee.tax }}%</div>
+            <div class="col-4 p-0 text-end">
+              {{
+                serviceFee.priceSum - serviceFee.taxSum
+                  | currencyFormatter: serviceFee.currency
+              }}
+            </div>
+            <div class="col-3 p-0 text-end">
+              {{ serviceFee.taxSum | currencyFormatter: serviceFee.currency }}
+            </div>
+            <div class="col-4 p-0 text-end">
+              {{ serviceFee.priceSum | currencyFormatter: serviceFee.currency }}
+            </div>
+          </div>
+        </div>
+
         <div class="bottom-border"></div>
 
         <div class="row p-0 m-0 pb-3">
@@ -139,7 +159,7 @@
         </div>
 
         <div class="text-center p-2">
-          <img class="qr" src="/assets/images/anyupp.com.png" />
+          <img class="qr" src="/assets/images/anyupp_dot_com.png" />
         </div>
         <div class="pt-3 text-center">www.kajahu.com | www.anyupp.com</div>
 

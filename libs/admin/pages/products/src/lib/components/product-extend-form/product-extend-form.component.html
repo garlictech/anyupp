@@ -41,6 +41,7 @@
               type="number"
               [control]="dialogForm?.get('tax') | asFormControl"
               inputId="tax"
+              suffix="%"
             ></bgap-form-text-input>
           </div>
           <div class="col-3" *ngIf="productLevel === eProductLevel.GROUP">
@@ -49,6 +50,7 @@
               type="number"
               [control]="dialogForm?.get('takeawayTax') | asFormControl"
               inputId="takeawayTax"
+              suffix="%"
             ></bgap-form-text-input>
           </div>
           <div class="col-3" *ngIf="productLevel === eProductLevel.UNIT">

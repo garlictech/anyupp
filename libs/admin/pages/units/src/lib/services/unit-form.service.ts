@@ -63,6 +63,7 @@ export class UnitFormService {
       ],
       supportedOrderModes: [[defaultOrderMode], { validators: notEmptyArray }],
       orderPolicy: [CrudApi.OrderPolicy.full],
+      soldOutVisibilityPolicy: [CrudApi.SoldOutVisibilityPolicy.faded],
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder, true),
       pos: this._formBuilder.group({
@@ -73,6 +74,7 @@ export class UnitFormService {
       packagingTaxPercentage: [''],
       ratingPolicies: this._formBuilder.array([]),
       tipPolicy: this._formsService.createTipPolicyFormGroup(),
+      serviceFeePolicy: this._formsService.createServiceFeePolicyFormGroup(),
       open: this._formBuilder.group({
         from: [''],
         to: [''],
@@ -178,12 +180,17 @@ export class UnitFormService {
     isInitiallyRkeeper: boolean,
     unitId?: string,
   ) {
+    // Some cleanup
     formValue.packagingTaxPercentage = formValue.packagingTaxPercentage
       ? formValue.packagingTaxPercentage
       : 0;
 
     if (formValue.pos?.type !== CrudApi.PosType.rkeeper) {
       formValue.externalId = null;
+    }
+
+    if (!formValue.serviceFeePolicy?.type) {
+      formValue.serviceFeePolicy = null;
     }
 
     return iif(

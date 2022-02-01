@@ -105,7 +105,7 @@ export class ProductFormComponent
             chainId: this._userSettings?.selectedChainId || '',
           },
           this.product?.id || undefined,
-          this.product?.dirty || undefined,
+          this.product?.dirty ? false : undefined,
         )
         .subscribe((response: UpsertResponse<unknown>) => {
           this._toasterService.showSimpleSuccess(response.type);

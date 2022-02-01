@@ -21,7 +21,7 @@ export class FormColorPickerComponent implements OnInit {
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.color = this.control?.value || '#ffffff';
   }
 

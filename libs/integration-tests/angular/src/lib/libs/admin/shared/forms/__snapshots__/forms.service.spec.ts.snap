@@ -58,6 +58,7 @@ Object {
   "position": 0,
   "price": 0,
   "refGroupPrice": 0,
+  "soldOut": false,
   "variantName": Object {
     "de": "",
     "en": "",
@@ -100,6 +101,14 @@ Object {
   "endpointUri": "",
   "rkeeperPassword": "",
   "rkeeperUsername": "",
+}
+`;
+
+exports[`FormsService createServiceFeePolicyFormGroup should create form group  1`] = `
+Object {
+  "percentage": "",
+  "taxPercentage": "",
+  "type": "",
 }
 `;
 

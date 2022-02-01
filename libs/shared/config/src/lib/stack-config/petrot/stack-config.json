@@ -16,9 +16,9 @@
   },
   "anyupp-backend-sites": {
     "AdminSiteDomainA75B4E32": "petrot-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionDomainNameA4A4FE5B": "d36hxwc8tptg9j.cloudfront.net",
+    "AdminDistributionDomainNameA4A4FE5B": "d1e7435npu98qa.cloudfront.net",
     "AdminSiteEAA17C78": "https://petrot-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionIdB4DE25AB": "E3LE5DG0VCGORY",
+    "AdminDistributionIdB4DE25AB": "E3UU4G7F2T3EKK",
     "AdminBucketCA57896C": "petrot-admin-anyupp-backend.anyupp.com"
   },
   "anyupp-backend-cognito": {
@@ -44,7 +44,6 @@
     "RKeeperWebhookEndpointCBC72BD4": "https://27988pfsz7.execute-api.eu-west-1.amazonaws.com/petrot/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-petrot.anyupp.com/petrot",
     "RKeeperTaskBucketName": "petrot-anyupp-backend-rk-anyupprkeepermenubucket4-1gdzck7j8hduy",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/petrot-anyupp-backend-rke-RkeeperECSTaskExecutionR-1X0O0BZP7FQW5",
-    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/petrotanyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef4FF02F82:4"
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/petrot-anyupp-backend-rke-RkeeperECSTaskExecutionR-1X0O0BZP7FQW5"
   }
 }

@@ -26,7 +26,7 @@ export class UserFormComponent
     return this.user?.profileImage || '';
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     /*
     this.dialogForm = this._formBuilder.group({
       name: ['', [Validators.required]],

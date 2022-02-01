@@ -33,6 +33,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public now = '';
   public parsedOrders: CrudApi.OrderItem[] = [];
   public parsedVats: CrudApi.PriceShown[] = [];
+  public parsedServiceFees: CrudApi.PriceShown[] = [];
   public sum: CurrencyValue;
   public place?: CrudApi.Place | null;
   public invoiceData?: CrudApi.Invoice;
@@ -50,7 +51,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     };
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     combineLatest([
       this._store.pipe(
         select(chainsSelectors.getSeletedChain),
@@ -92,6 +93,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
 
     const variants: KeyValueObject = {};
     const vats: KeyValueObject = {};
+    const serviceFees: KeyValueObject = {};
     let lastOrderTime = 0;
 
     this.orders.forEach((order: CrudApi.Order): void => {
@@ -99,6 +101,8 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         this.place = order.place;
         lastOrderTime = new Date(order.createdAt).getTime();
       }
+
+      console.error('order', order);
 
       order.items.forEach((item: CrudApi.OrderItem): void => {
         // Create unique key from the variant ID and the selected componentIds.
@@ -144,6 +148,23 @@ export class OrderPrintComponent implements OnInit, OnChanges {
           };
         }
 
+        // Collect service fees
+        if (item.serviceFee) {
+          if (serviceFees[item.serviceFee.taxPercentage]) {
+            serviceFees[item.serviceFee.taxPercentage].priceSum +=
+              item.serviceFee.netPrice;
+            serviceFees[item.serviceFee.taxPercentage].taxSum +=
+              item.serviceFee.taxPercentage;
+          } else {
+            serviceFees[item.serviceFee.taxPercentage] = {
+              priceSum: item.serviceFee.netPrice,
+              taxSum: item.serviceFee.taxPercentage,
+              tax: item.serviceFee.taxPercentage,
+              currency: item.serviceFee.currency,
+            };
+          }
+        }
+
         // SUM
         this.sum.value += item.sumPriceShown.priceSum;
         this.sum.currency = item.sumPriceShown.currency;
@@ -169,6 +190,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
 
     this.parsedOrders = Object.values(variants);
     this.parsedVats = Object.values(vats);
+    this.parsedServiceFees = Object.values(serviceFees);
   }
 
   public print(): void {

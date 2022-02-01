@@ -47,7 +47,7 @@ export class ProductCategoryFormComponent
     return this.productCategory?.image || '';
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.dialogForm =
       this._productCategoryFormService.createProductCategoryFormGroup();
 

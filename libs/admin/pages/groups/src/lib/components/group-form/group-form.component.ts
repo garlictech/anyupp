@@ -49,7 +49,7 @@ export class GroupFormComponent
     );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.group) {
       this.dialogForm?.patchValue(cleanObject(this.group));
     } else {

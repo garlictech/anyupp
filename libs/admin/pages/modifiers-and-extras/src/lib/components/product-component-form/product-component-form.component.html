@@ -31,7 +31,13 @@
             inputId="chainId"
           ></bgap-form-select>
         </div>
-        <div class="col-md-6"></div>
+        <div class="col-md-6 pt-3">
+          <bgap-form-checkbox
+            caption="common.soldOutPolicy.soldOut"
+            [control]="dialogForm?.get('soldOut') | asFormControl"
+            inputId="soldOut"
+          ></bgap-form-checkbox>
+        </div>
       </div>
 
       <bgap-form-text-input

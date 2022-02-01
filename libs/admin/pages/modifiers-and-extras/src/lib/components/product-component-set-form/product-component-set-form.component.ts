@@ -74,7 +74,7 @@ export class ProductComponentSetFormComponent
     this.typeOptions = productComponentSetTypeOptions;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.productComponentSet) {
       this.dialogForm?.patchValue(cleanObject(this.productComponentSet));
     } else {

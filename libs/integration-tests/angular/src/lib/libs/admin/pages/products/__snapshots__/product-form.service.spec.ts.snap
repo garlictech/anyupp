@@ -319,6 +319,7 @@ Array [
     "position": 1,
     "price": 20,
     "refGroupPrice": 20,
+    "soldOut": false,
     "variantName": Object {
       "de": "",
       "en": "VARIANT_NAME_1",
@@ -346,6 +347,7 @@ Array [
     "position": 2,
     "price": 40,
     "refGroupPrice": 40,
+    "soldOut": false,
     "variantName": Object {
       "de": "",
       "en": "VARIANT_NAME_2",
@@ -369,6 +371,7 @@ Array [
     "position": 1,
     "price": 10,
     "refGroupPrice": 10,
+    "soldOut": false,
     "variantName": Object {
       "de": "",
       "en": "VARIANT_NAME_1",
@@ -387,6 +390,7 @@ Array [
     "position": 2,
     "price": 20,
     "refGroupPrice": 20,
+    "soldOut": false,
     "variantName": Object {
       "de": "",
       "en": "VARIANT_NAME_2",

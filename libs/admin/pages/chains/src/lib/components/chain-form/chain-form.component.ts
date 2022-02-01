@@ -45,7 +45,7 @@ export class ChainFormComponent
     return this.chain?.style?.images?.header;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.chain) {
       this.dialogForm?.patchValue(cleanObject(this.chain));
 

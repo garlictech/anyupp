@@ -118,15 +118,25 @@
             ></bgap-form-checkbox>
           </div>
 
-          <div class="col-sm-4" *ngIf="productLevel === eProductLevel.UNIT">
-            <bgap-form-static-text
-              caption="products.refPrice"
-              [value]="
-                variant.value.refGroupPrice | currencyFormatter: currency!
-              "
-            >
-            </bgap-form-static-text>
-          </div>
+          <ng-container *ngIf="productLevel === eProductLevel.UNIT">
+            <div class="col-sm-4 pt-3">
+              <bgap-form-checkbox
+                caption="common.soldOutPolicy.soldOut"
+                [control]="variant.get('soldOut') | asFormControl"
+                inputId="soldOut"
+              ></bgap-form-checkbox>
+            </div>
+
+            <div class="col-sm-4">
+              <bgap-form-static-text
+                caption="products.refPrice"
+                [value]="
+                  variant.value.refGroupPrice | currencyFormatter: currency!
+                "
+              >
+              </bgap-form-static-text>
+            </div>
+          </ng-container>
         </div>
 
         <bgap-form-product-availabilities

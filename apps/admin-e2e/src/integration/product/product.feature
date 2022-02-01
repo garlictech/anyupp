@@ -102,7 +102,7 @@ Feature: Whole product feature
     Then On the active tab I should see "test chain e2eUpdated product" text
     When On the active tab I click the extend button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Extend product" text on the dialog
-    When I fill out the "Tax (%)" input with "27"
+    When I fill out the input with testId "tax" with the "27" value
     # Variant prefill text
     And The "Variant name (HU)" input should contain "test chain e2eUpdated variant HU"
     And The "Variant name (EN)" input should contain "test chain e2eUpdated variant EN"
@@ -129,7 +129,7 @@ Feature: Whole product feature
     Then I should see "Edit product" text on the dialog
     And I should see "test chain e2eUpdated product" text on the dialog
     And The "Variant name (HU)" input should contain "test group variant 1"
-    When I fill out the "Tax (%)" input with "27"
+    When I fill out the input with testId "tax" with the "27" value
     And I fill out the "Variant name (HU)" input with "test group e2eUpdated variant HU"
     And I fill out the "Variant name (EN)" input with "test group e2eUpdated variant EN"
     And I fill out the "Variant name (DE)" input with "test group e2eUpdated variant DE"

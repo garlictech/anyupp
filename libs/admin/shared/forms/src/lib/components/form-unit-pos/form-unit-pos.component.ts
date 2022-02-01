@@ -39,7 +39,7 @@ export class FormUnitPosComponent implements OnInit {
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.posFormGroup?.controls['type'].valueChanges
       .pipe(untilDestroyed(this))
       .subscribe(newTypeValue => {

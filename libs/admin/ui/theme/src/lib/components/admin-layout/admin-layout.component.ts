@@ -95,7 +95,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     combineLatest([
       this._store
         .select(loggedUserSelectors.getLoggedUserRole)

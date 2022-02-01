@@ -41,7 +41,7 @@ export class AdminUserFormComponent
     return this.adminUser?.profileImage || '';
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.adminUser) {
       this.dialogForm?.patchValue(cleanObject(this.adminUser));
     }

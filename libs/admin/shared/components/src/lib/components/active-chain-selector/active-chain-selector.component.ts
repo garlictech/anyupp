@@ -43,7 +43,7 @@ export class ActiveChainSelectorComponent implements OnInit, OnDestroy {
     return this._loggedUser?.settings?.selectedChainId;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUser),

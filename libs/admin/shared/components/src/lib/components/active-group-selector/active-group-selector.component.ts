@@ -44,7 +44,7 @@ export class ActiveGroupSelectorComponent implements OnInit, OnDestroy {
     return this._loggedUser?.settings?.selectedGroupId;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUser),

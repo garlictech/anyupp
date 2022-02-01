@@ -29,7 +29,7 @@ export class FormUnitLanesComponent implements OnInit {
     this.usedLaneIds = [];
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(productsSelectors.getUnitProductLaneIds()),

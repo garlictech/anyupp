@@ -111,6 +111,12 @@
       class="ms-1"
       [status]="variant?.isAvailable"
     ></bgap-status-led>
+
+    <bgap-status-led
+      *ngIf="productLevel === EProductLevel.UNIT"
+      class="ms-1"
+      [status]="!variant?.soldOut"
+    ></bgap-status-led>
   </div>
 
   <div class="clearfix"></div>

@@ -36,7 +36,7 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .select(dashboardSelectors.getSelectedHistoryDate)
       .pipe(filterNullish(), take(1), untilDestroyed(this))

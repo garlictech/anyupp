@@ -64,6 +64,10 @@ describe('FormsService', () => {
     expect(service.createTipPolicyFormGroup().value).toMatchSnapshot();
   });
 
+  it('createServiceFeePolicyFormGroup should create form group ', () => {
+    expect(service.createServiceFeePolicyFormGroup().value).toMatchSnapshot();
+  });
+
   it('addUnitTipPercent should add percent value to an array', () => {
     expect(service.addUnitTipPercent('10', [])).toMatchInlineSnapshot(`
       Array [

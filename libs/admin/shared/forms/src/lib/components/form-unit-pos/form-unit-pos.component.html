@@ -3,16 +3,14 @@
   <div>
     <div class="row">
       <div class="col-12">
-        <div class="col-md-6">
-          <bgap-form-radio-group
-            caption="common.type"
-            [options]="posTypeOptions"
-            [control]="posFormGroup?.get('type') | asFormControl"
-            [localize]="false"
-            [horizontal]="true"
-            inputId="posType"
-          ></bgap-form-radio-group>
-        </div>
+        <bgap-form-radio-group
+          caption="common.type"
+          [options]="posTypeOptions"
+          [control]="posFormGroup?.get('type') | asFormControl"
+          [localize]="false"
+          [horizontal]="true"
+          inputId="posType"
+        ></bgap-form-radio-group>
       </div>
     </div>
 

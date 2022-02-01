@@ -27,7 +27,7 @@ export class FloorMapOrdersComponent implements OnInit {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.allOrders$
       .pipe()
       .subscribe((tableOrders: FloorMapOrderObjects): void => {

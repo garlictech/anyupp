@@ -37,6 +37,7 @@ export class FormsService {
       price: [0],
       refGroupPrice: [0],
       netPackagingFee: [0],
+      soldOut: [false],
     };
 
     return this._formBuilder.group(groupConfig);
@@ -141,4 +142,11 @@ export class FormsService {
     const removable = parseFloat(caption.replace('%', ''));
     return percents.filter(v => v !== removable).sort();
   };
+
+  public createServiceFeePolicyFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      type: [{ value: '', disabled: true }, Validators.required],
+      percentage: [{ value: '', disabled: true }, Validators.required],
+      taxPercentage: [{ value: '', disabled: true }, Validators.required],
+    });
 }

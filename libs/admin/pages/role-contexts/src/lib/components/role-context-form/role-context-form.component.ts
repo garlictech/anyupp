@@ -56,7 +56,7 @@ export class RoleContextFormComponent
     );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.dialogForm =
       this._roleContextsFormService.createRoleContextFormGroup();
 

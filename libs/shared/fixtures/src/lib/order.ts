@@ -94,6 +94,11 @@ const orderInputBase = {
     key: 'RATING KEY',
     value: 3,
   },
+  serviceFee: {
+    currency: 'HUF',
+    netPrice: 200,
+    taxPercentage: 27,
+  },
 };
 
 const cardPayment = {

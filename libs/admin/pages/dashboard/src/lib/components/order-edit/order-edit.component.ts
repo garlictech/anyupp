@@ -39,7 +39,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     this.workingOrderStatus = false;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     Object.keys(CrudApi.PaymentMethod).forEach((key: string): void => {
       this.paymentMethods.push({
         key,
