@@ -6825,10 +6825,10 @@
   resolved "https://registry.yarnpkg.com/@napi-rs/triples/-/triples-1.1.0.tgz#88c35b72e79a20b79bb4c9b3e2817241a1c9f4f9"
   integrity sha512-XQr74QaLeMiqhStEhLn1im9EOMnkypp7MZOwQhGzqp2Weu5eQJbpPxWxixxlYRKWPOmJjsk6qYfYH9kq43yc2w==
 
-"@nebular/eva-icons@9.0.0":
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/@nebular/eva-icons/-/eva-icons-9.0.0.tgz#92bc67c6c0c67c25024af096c8e1d992979835c1"
-  integrity sha512-qdnCp/+pcpqVQR77USqveAJODYoRBCM28QLSF0znkyL1yLieDvWhJv99C5/GnHGmGp1KibltJ4uVhSNRr90umw==
+"@nebular/eva-icons@9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@nebular/eva-icons/-/eva-icons-9.0.1.tgz#3023eedb6b79eae2d1c31e9119744d990585892c"
+  integrity sha512-EXGfCZ4t0Z24xjKmLNT1BjxFcUeI3JUNerVaDFZ5vzt4+Ligelt7jLHjOpE3KXoX+FEuqINjihuy3mi+lk2Nhg==
   dependencies:
     tslib "^2.3.0"
 
