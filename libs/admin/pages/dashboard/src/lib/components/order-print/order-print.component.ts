@@ -18,6 +18,11 @@ import { CurrencyValue, KeyValueObject } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+import {
+  summarizeServiceFeeByTax,
+  summarizeVariantsByTax,
+  summarizeVatByTax,
+} from '../../fn';
 
 @UntilDestroy()
 @Component({
@@ -67,7 +72,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
       ([chain, unit]: [
         CrudApi.Chain | undefined,
         CrudApi.Unit | undefined,
-      ]): void => {
+      ]) => {
         this.chain = chain;
         this.unit = unit;
 
@@ -80,95 +85,49 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     this._changeDetectorRef.detectChanges();
   }
 
-  ngOnChanges(): void {
+  ngOnChanges() {
     this._groupOrders();
   }
 
-  private _groupOrders(): void {
+  private _groupOrders() {
     this.sum = {
       value: 0,
       currency: '',
     };
     this.now = new Date().toString();
 
-    const variants: KeyValueObject = {};
+    let variants: KeyValueObject = {};
     const vats: KeyValueObject = {};
     const serviceFees: KeyValueObject = {};
     let lastOrderTime = 0;
 
-    this.orders.forEach((order: CrudApi.Order): void => {
+    this.orders.forEach((order: CrudApi.Order) => {
       if (new Date(order.createdAt).getTime() > lastOrderTime) {
         this.place = order.place;
         lastOrderTime = new Date(order.createdAt).getTime();
       }
 
-      console.error('order', order);
-
-      order.items.forEach((item: CrudApi.OrderItem): void => {
-        // Create unique key from the variant ID and the selected componentIds.
-        const uniqueKey = `${item.variantId}-${(item.configSets || [])
-          .map(set => set.items.map(item => item.productComponentId))
-          .reduce((a, b) => a.concat(b), [])
-          .sort()
-          .join('-')}`;
-
-        // Collect items
-        if (variants[uniqueKey]) {
-          variants[uniqueKey].quantity += item.quantity;
-          variants[uniqueKey].sumPriceShown.priceSum +=
-            item.sumPriceShown.priceSum;
-          variants[uniqueKey].sumPriceShown.taxSum += item.sumPriceShown.taxSum;
-        } else {
-          variants[uniqueKey] = {
-            quantity: item.quantity,
-            productName: { ...item.productName },
-            sumPriceShown: { ...item.sumPriceShown },
-            variantName: { ...item.variantName },
-            configSets: (item.configSets || [])
-              .map(
-                set =>
-                  `<div>${set.items
-                    .map(item => this._localizePipe.transform(item.name))
-                    .join(', ')}</div>`,
-              )
-              .join(''),
-          };
-        }
-
-        // Collect vats
-        if (vats[item.sumPriceShown.tax]) {
-          vats[item.sumPriceShown.tax].priceSum += item.sumPriceShown.priceSum;
-          vats[item.sumPriceShown.tax].taxSum += item.sumPriceShown.taxSum;
-        } else {
-          vats[item.sumPriceShown.tax] = {
-            priceSum: item.sumPriceShown.priceSum,
-            taxSum: item.sumPriceShown.taxSum,
-            tax: item.sumPriceShown.tax,
-            currency: item.sumPriceShown.currency,
-          };
-        }
-
-        // Collect service fees
-        if (item.serviceFee) {
-          if (serviceFees[item.serviceFee.taxPercentage]) {
-            serviceFees[item.serviceFee.taxPercentage].priceSum +=
-              item.serviceFee.netPrice;
-            serviceFees[item.serviceFee.taxPercentage].taxSum +=
-              item.serviceFee.taxPercentage;
-          } else {
-            serviceFees[item.serviceFee.taxPercentage] = {
-              priceSum: item.serviceFee.netPrice,
-              taxSum: item.serviceFee.taxPercentage,
-              tax: item.serviceFee.taxPercentage,
-              currency: item.serviceFee.currency,
-            };
-          }
-        }
+      order.items.forEach((item: CrudApi.OrderItem) => {
+        variants = summarizeVariantsByTax({
+          localizer: value => this._localizePipe.transform(value),
+        })(variants, item);
+        vats[item.sumPriceShown.tax] = summarizeVatByTax(
+          vats,
+          item.sumPriceShown,
+        );
 
         // SUM
         this.sum.value += item.sumPriceShown.priceSum;
         this.sum.currency = item.sumPriceShown.currency;
       });
+
+      if (order.serviceFee) {
+        serviceFees[order.serviceFee.taxPercentage] = summarizeServiceFeeByTax(
+          serviceFees,
+          order.serviceFee,
+        );
+        this.sum.value += serviceFees[order.serviceFee.taxPercentage].priceSum;
+      }
     });
 
     // Find the first invoice/receipt data (cash/card only)
@@ -193,7 +152,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     this.parsedServiceFees = Object.values(serviceFees);
   }
 
-  public print(): void {
+  public print() {
     printJS({
       printable: 'print-content',
       type: 'html',
@@ -204,7 +163,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     });
   }
 
-  public close(): void {
+  public close() {
     this._nbDialogRef.close();
   }
 }

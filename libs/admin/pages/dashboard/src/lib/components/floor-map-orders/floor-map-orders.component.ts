@@ -8,7 +8,9 @@ import {
 } from '@angular/core';
 import { FloorMapOrderObjects, FloorMapOrders } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-floor-map-orders',
@@ -29,7 +31,7 @@ export class FloorMapOrdersComponent implements OnInit {
 
   ngOnInit() {
     this.allOrders$
-      .pipe()
+      .pipe(untilDestroyed(this))
       .subscribe((tableOrders: FloorMapOrderObjects): void => {
         this.tableOrders =
           this.mode === 'table'

@@ -15,7 +15,7 @@ import { productsSelectors } from '@bgap/admin/store/products';
 import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ProductCategory } from '@bgap/crud-gql/api';
 
 @UntilDestroy()
@@ -42,9 +42,10 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._store
+      .select(groupsSelectors.getSeletedGroup)
       .pipe(
-        select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group),
+        untilDestroyed(this),
       )
       .subscribe((group: CrudApi.Group | undefined): void => {
         this.groupCurrency = group?.currency || '';
@@ -53,7 +54,8 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
       });
 
     this._store
-      .pipe(select(dashboardSelectors.getSize), untilDestroyed(this))
+      .select(dashboardSelectors.getSize)
+      .pipe(untilDestroyed(this))
       .subscribe((size: EDashboardSize): void => {
         this.buttonSize =
           size === EDashboardSize.LARGER
@@ -64,14 +66,8 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
       });
 
     combineLatest([
-      this._store.pipe(
-        select(productCategoriesSelectors.getAllProductCategories),
-        untilDestroyed(this),
-      ),
-      this._store.pipe(
-        select(productsSelectors.getAllGeneratedProducts),
-        untilDestroyed(this),
-      ),
+      this._store.select(productCategoriesSelectors.getAllProductCategories),
+      this._store.select(productsSelectors.getAllGeneratedProducts),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([productCategories, generatedUnitProducts]): void => {

@@ -14,6 +14,7 @@ import { NbComponentSize } from '@nebular/theme';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-select',
   templateUrl: './form-select.component.html',
+  styleUrls: ['./form-select.component.scss'],
 })
 export class FormSelectComponent {
   @Input() caption = ''; // Language key!!!

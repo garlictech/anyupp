@@ -29,31 +29,35 @@ export class FormRatingPolicyComponent implements OnInit {
     '',
     Validators.required,
   );
-
   public ratingPolicyOptions$?: Observable<KeyValue[]>;
+  private _ratingDefinitionList = RATING_DEFINITIONS.map(
+    cat => cat.questions,
+  ).reduce((prev, current) => [...prev, ...current]);
 
   constructor(
     private _formsService: FormsService,
     private _changeDetectorRef: ChangeDetectorRef,
-  ) {}
+  ) {
+    console.error('_ratingDefinitionList', this._ratingDefinitionList);
+  }
 
   ngOnInit() {
     this.ratingPolicyOptions$ = this.ratingPoliciesFormArray?.valueChanges.pipe(
       startWith(this.ratingPoliciesFormArray.value || []),
       untilDestroyed(this),
       map((arrayValues: CrudApi.RatingPolicy[]): KeyValue[] =>
-        RATING_DEFINITIONS.filter(
-          p => !arrayValues.map(v => v.key).includes(p.key),
-        ).map(rating => ({
-          key: rating.key,
-          value: rating.title,
-        })),
+        this._ratingDefinitionList
+          .filter(p => !arrayValues.map(v => v.key).includes(p.key))
+          .map(rating => ({
+            key: rating.key,
+            value: rating.title,
+          })),
       ),
     );
   }
 
   public addRatingPolicyToList() {
-    const policy = RATING_DEFINITIONS.find(
+    const policy = this._ratingDefinitionList.find(
       r => r.key === this.ratingPolicyControl.value,
     );
 
