@@ -32,6 +32,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<Logout>(_onLogout);
     on<ResetLogin>(_onResetLogin);
     on<ChangeEmailFormUI>(_onChangeEmailFormUI);
+    on<StartLoginLoading>((event, emit) => emit(LoginInProgress()));
   }
 
   FutureOr<void> _handleError(Exception e, Emitter<LoginState> emit) {
@@ -81,6 +82,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   FutureOr<void> _onCompleteLoginWithMethod(
       CompleteLoginWithMethod event, Emitter<LoginState> emit) async {
     try {
+      emit(LoginInProgress());
       ProviderLoginResponse response =
           await _repository.signUserInWithAuthCode(event.code);
       print('*** LoginBloc().federated.loginResponse=$response');

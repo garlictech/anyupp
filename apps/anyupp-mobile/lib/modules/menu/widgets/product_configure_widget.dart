@@ -328,7 +328,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               left: 16,
             ),
             child: Text(
-              'Válassz méretet',
+              trans('product.selectSize'),
               style: Fonts.satoshi(
                 color: theme.primary,
                 fontSize: 14,

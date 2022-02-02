@@ -5,10 +5,19 @@ String getLocalizedText(BuildContext context, LocalizedItem localizedItem) {
   var locale = Localizations.localeOf(context).languageCode;
   switch (locale) {
     case 'hu':
-      return localizedItem.hu ?? localizedItem.en ?? '-';
+      return _getTextByOrder(localizedItem.hu, localizedItem.en);
     case 'de':
-      return localizedItem.de ?? localizedItem.en ?? '-';
+      return _getTextByOrder(localizedItem.de, localizedItem.en);
     default:
-      return localizedItem.en ?? '-';
+      return _getTextByOrder(localizedItem.en);
   }
 }
+
+String _getTextByOrder(String? primary, [String? fallback]) =>
+    _isNotEmpty(primary)
+        ? primary!
+        : _isNotEmpty(fallback)
+            ? fallback!
+            : '-';
+
+bool _isNotEmpty(String? s) => s?.isNotEmpty == true;

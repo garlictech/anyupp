@@ -44,6 +44,7 @@ class StatusWidget extends StatelessWidget {
             icon,
             width: 80,
             height: 80,
+            color: theme.primary,
           ),
           SizedBox(
             height: 40.0,
@@ -53,6 +54,7 @@ class StatusWidget extends StatelessWidget {
             style: Fonts.satoshi(
               fontSize: 18.0,
               fontWeight: FontWeight.w700,
+              color: theme.secondary,
             ),
           ),
           if (description != null)
@@ -66,6 +68,7 @@ class StatusWidget extends StatelessWidget {
               style: Fonts.satoshi(
                 fontSize: 14.0,
                 fontWeight: FontWeight.w400,
+                color: theme.secondary,
               ),
             ),
           if (details != null)
@@ -75,7 +78,7 @@ class StatusWidget extends StatelessWidget {
               style: Fonts.satoshi(
                 fontSize: 12.0,
                 fontWeight: FontWeight.w300,
-                color: Colors.grey.withOpacity(0.7),
+                color: theme.secondary.withOpacity(0.7),
               ),
             ),
           if (showButton == true && !expanded)

@@ -23,7 +23,6 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 
   static const SIGNIN_CALLBACK = 'anyupp://signin/';
-  // static const SIGNIN_CALLBACK = 'http://localhost:8080/signin/';
   static const SIGNOUT_CALLBACK = 'anyupp://signout/';
 }
 
@@ -119,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen>
               _emailFormHeight = height;
             });
           }
-        })
+        }),
       ],
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (BuildContext context, LoginState state) {
@@ -139,12 +138,29 @@ class _LoginScreenState extends State<LoginScreen>
             return _buildSocialLoginWebView(state.provider);
           }
 
+          if (state is LoginError) {
+            return _buildErrorScreen(state.code, state.message);
+          }
+
           // --- Bottom sheet
           return AnimatedBuilder(
             builder: _buildAnimation,
             animation: _controller,
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildErrorScreen(String code, String? message) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        child: CommonErrorWidget(
+          error: code,
+          description: message ?? '',
+          onPressed: () => getIt<LoginBloc>().add(ResetLogin()),
+        ),
       ),
     );
   }
@@ -533,7 +549,7 @@ class _LoginScreenState extends State<LoginScreen>
             // if (snapshot.data == true) // has Apple Login
             _createSocialButtonWidget('apple', LoginMethod.APPLE),
             _createSocialButtonWidget('email', LoginMethod.EMAIL,
-                iconColor: theme.primary),
+                iconColor: Color(0xFF30BF60)),
             // _createSocialButtonWidget('phone', LoginMethod.PHONE),
           ],
         ),
@@ -593,16 +609,19 @@ class MyChromeSafariBrowser extends ChromeSafariBrowser {
   @override
   void onOpened() {
     print("ChromeSafari browser opened");
+    super.onOpened();
   }
 
   @override
   void onCompletedInitialLoad() {
     print("ChromeSafari browser initial load completed");
+    super.onCompletedInitialLoad();
   }
 
   @override
   void onClosed() {
     print("ChromeSafari browser closed");
+    super.onClosed();
   }
 }
 
@@ -616,6 +635,7 @@ void reLaunchURL() async {
 }
 
 void launchURL(String provider) async {
+  getIt<LoginBloc>().add(StartLoginLoading());
   lastProvider = provider;
   var url = '${AppConfig.UserPoolDomain}/oauth2/authorize?'
       'identity_provider=${provider}&'
@@ -629,7 +649,9 @@ void launchURL(String provider) async {
     await browser.close();
   }
 
+  // browser = MyChromeSafariBrowser();
   try {
+    print('launchURL().start opening().');
     await browser.open(
       url: Uri.parse(url),
       options: ChromeSafariBrowserClassOptions(
@@ -637,6 +659,8 @@ void launchURL(String provider) async {
           addDefaultShareMenuItem: false,
           showTitle: true,
           toolbarBackgroundColor: const Color(0xff30bf60),
+          enableUrlBarHiding: true,
+          keepAliveEnabled: true,
         ),
         ios: IOSSafariOptions(
           barCollapsingEnabled: true,
@@ -644,6 +668,8 @@ void launchURL(String provider) async {
       ),
     );
   } catch (e) {
+    print('launchURL().error=$e');
+
     // An exception is thrown if browser app is not installed on Android device.
     debugPrint(e.toString());
   }

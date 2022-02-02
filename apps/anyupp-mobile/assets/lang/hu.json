@@ -348,7 +348,8 @@
         "downloadReceipt": "NYUGTA LETÖLTÉSE",
         "downloadInvoice": "SZÁMLA LETÖLTÉSE",
         "save": "MENTÉS",
-        "warning": "A pirossal jelölt adatok kitöltése kötelező"
+        "warning": "A pirossal jelölt adatok kitöltése kötelező",
+        "modifyAddress": "Módosítás"
       }
     },
     "simplePayStatus": {
@@ -574,7 +575,8 @@
     "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
     "soldOut": "Elfogyott",
     "soldOutDesc": "A termék sajnos elfogyott",
-    "size": "Méret:"
+    "size": "Méret:",
+    "selectSize": "Válassz méretet"
   },
   "validators": {
     "required": "Ez a mező szükséges",

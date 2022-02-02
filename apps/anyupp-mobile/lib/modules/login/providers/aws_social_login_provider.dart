@@ -50,13 +50,26 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
         'grant_type=authorization_code&'
         'client_id=${AppConfig.UserPoolClientId}&'
         'code=$authCode&'
-        //'scope=openid+profile+aws.cognito.signin.user.admin&'
+        // 'scope=email%20openid%20profile%20aws.cognito.signin.user.admin0&'
         'redirect_uri=${LoginScreen.SIGNIN_CALLBACK}';
+    print('AwsSocialLoginProvider.signUserInWithAuthCode().url=$url');
+    // throw Exception('test');
     final response = await http.post(
       Uri.parse(url),
       body: {},
+      // body: {
+      //   'grant_type': 'authorization_code',
+      //   'client_id': AppConfig.UserPoolClientId,
+      //   'code': authCode,
+      //   'redirect_uri': LoginScreen.SIGNIN_CALLBACK,
+      //   'scope': 'email%20openid%20profile%20aws.cognito.signin.user.admin'
+      // },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
+        // 'grant_type': 'authorization_code',
+        // 'client_id': AppConfig.UserPoolClientId,
+        // 'code': authCode,
+        // 'redirect_uri': LoginScreen.SIGNIN_CALLBACK,
       },
     );
     print(
@@ -65,6 +78,8 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
         'AwsSocialLoginProvider.signUserInWithAuthCode().response.body=${response.body}');
     if (response.statusCode != 200) {
       // await logout();
+      print(
+          'AwsSocialLoginProvider.error.reasonPhrase=${response.reasonPhrase}');
       throw Exception('Received bad status code from Cognito for auth code:' +
           response.statusCode.toString() +
           '; body: ' +

@@ -58,7 +58,7 @@ class PaymentInvoiceFormWidget extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 )
-              : Flexible(
+              : Expanded(
                   child: InkWell(
                     onTap: () async {
                       var newAddress = await showInvoiceFormBottomSheet(
@@ -83,7 +83,10 @@ class PaymentInvoiceFormWidget extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Módosítás',
+                          trans(
+                            context,
+                            'payment.paymentInfo.invoicing.modifyAddress',
+                          ),
                           style: Fonts.satoshi(
                             fontSize: 12.0,
                             color: theme.secondary40,

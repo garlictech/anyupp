@@ -133,13 +133,13 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
                   child: AddToCartPanelButtonWidget(
                     widget: widget,
                     quantity: _quantity,
-                    state: state!,
+                    state: state,
                   ),
                 )
               : AddToCartPanelButtonWidget(
                   widget: widget,
                   quantity: _quantity,
-                  state: state!,
+                  state: state,
                 ),
         ],
       ),

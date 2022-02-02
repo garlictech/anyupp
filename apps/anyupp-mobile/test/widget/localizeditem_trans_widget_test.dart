@@ -127,4 +127,39 @@ void main() {
     expect(deFinder, findsNothing);
     expect(emptyFinder, findsOneWidget);
   }, skip: false);
+
+  testWidgets(
+      'LocalizedItem translation flow test - fallback HU translation to EN with empty string',
+      (WidgetTester tester) async {
+    // Create the widget by telling the tester to build it.
+    await tester.runAsync(() async {
+      await tester.pumpWidget(MaterialApp(
+        locale: Locale.fromSubtags(countryCode: 'hu', languageCode: 'hu'),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          AppLocalizations.delegate,
+        ],
+        supportedLocales: SupportedLocales.locales,
+        home: LocalizationsTestWidget(
+          item: LocalizedItem(
+            hu: '',
+            en: 'Hungarian',
+            de: 'Ungarisch',
+          ),
+        ),
+      ));
+
+      await tester.pumpAndSettle();
+
+      final huFinder = find.text('Magyar');
+      final enFinder = find.text('Hungarian');
+      final deFinder = find.text('Ungarisch');
+
+      expect(huFinder, findsNothing);
+      expect(enFinder, findsOneWidget);
+      expect(deFinder, findsNothing);
+    });
+  }, skip: false);
 }
