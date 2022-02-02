@@ -9128,10 +9128,10 @@
     resolve-from "^5.0.0"
     rollup-pluginutils "^2.8.2"
 
-"@vvo/tzdb@6.44.0":
-  version "6.44.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.44.0.tgz#580673b70104e202e01158af259618bb368b4b72"
-  integrity sha512-VLbQxkfKTLAEQlbfKRE5EXH5QanNFDNXJ4Lxd0FTDYaOD4xFuYJujuAvXq1jvI4Qgb3CGGpyI9s0P1Kem48AAg==
+"@vvo/tzdb@6.45.0":
+  version "6.45.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.45.0.tgz#a69d516583bddeaa1c443ed22faa6e32ec903842"
+  integrity sha512-oJFGDRqoTdJo+rNB1Pe/VzEK7Cn8BVdkQJPfGkE3z0bKV0aH5SKsEY+W9w9/AzXS7iYacwFTGZ2jiRF9LIZ8CA==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
