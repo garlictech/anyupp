@@ -51,7 +51,7 @@
     "@angular/platform-browser-dynamic": "13.2.0",
     "@angular/router": "13.2.0",
     "@aws-amplify/ui-angular": "1.0.35",
-    "@aws-sdk/util-config-provider": "3.47.1",
+    "@aws-sdk/util-config-provider": "3.49.0",
     "@nebular/eva-icons": "9.0.1",
     "@nebular/theme": "8.0.0",
     "@ngneat/until-destroy": "9.0.0",

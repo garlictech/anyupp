@@ -3887,10 +3887,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@aws-sdk/util-config-provider@3.47.1":
-  version "3.47.1"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-config-provider/-/util-config-provider-3.47.1.tgz#dc7388976add2e70d6ea31ab6e812d41ab3baf87"
-  integrity sha512-kBs+YghZaOqChxLZDTR8dw5RQxJ/qF064EjRpC+TdCegLCO2UtZ97RXBvc5mdt94OxXGjGUjDiD/eAlpjjFNXw==
+"@aws-sdk/util-config-provider@3.49.0":
+  version "3.49.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-config-provider/-/util-config-provider-3.49.0.tgz#bfe46ac5559c65fe9443e26d9510abc2584a4d1c"
+  integrity sha512-oVGT9q9UIGdv9Cra4B51QNciWKYQXTlfh8oD2FgLp91NbGTIkQLvK7Pah4TbBoa5+0u/obBI07UwCVn7wphWBQ==
   dependencies:
     tslib "^2.3.0"
 
