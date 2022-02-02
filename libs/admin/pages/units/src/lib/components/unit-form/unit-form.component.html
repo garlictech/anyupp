@@ -181,8 +181,18 @@
         [lanesFormArray]="dialogForm.get('lanes')! | asFormArray"
       ></bgap-form-unit-lanes>
 
+      <bgap-form-rating-policy
+        [ratingPoliciesFormArray]="
+          dialogForm.get('ratingPolicies')! | asFormArray
+        "
+      ></bgap-form-rating-policy>
+
       <bgap-form-unit-pos
+        *ngIf="!unit"
         [posFormGroup]="dialogForm.get('pos')! | asFormGroup"
+        [externalIdControl]="dialogForm.get('externalId')! | asFormControl"
+        [editing]="false"
+        (changePasswordEmitter)="generatePassword()"
       ></bgap-form-unit-pos>
 
       <div class="mt-20">

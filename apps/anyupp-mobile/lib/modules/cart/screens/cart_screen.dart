@@ -214,55 +214,63 @@ class CartScreen extends StatelessWidget {
       }
     }
 
+    int additionalRowCount = 0;
     bool isTakeAway = cart.servingMode == ServingMode.takeAway;
+
+    bool isServiceFee = cart.totalServiceFee != null;
+    additionalRowCount += (isServiceFee ? 1 : 0) + (isTakeAway ? 1 : 0);
+    int serviceFeeRowPos = (isServiceFee ? 1 : 0);
 
     return Column(
       children: <Widget>[
         // LIST
         Expanded(
           flex: 10,
-          child: Container(
-            //margin: EdgeInsets.symmetric(horizontal: 15),
-            // padding: EdgeInsets.only(left: 15, right: 2), // EdgeInsets.symmetric(horizontal: 15),
-            child: AnimationLimiter(
-              child: RawScrollbar(
-                controller: _controller,
-                thumbColor: theme.secondary.withOpacity(0.2),
-                radius: Radius.circular(20),
-                isAlwaysShown: true,
-                thickness: 4,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => Divider(
-                    color: theme.secondary64.withOpacity(0.3),
-                  ),
-                  controller: _controller,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: cart.items.length + (isTakeAway ? 1 : 0),
-                  itemBuilder: (context, position) {
-                    if (isTakeAway && position == cart.items.length) {
-                      return AnimationConfiguration.staggeredList(
-                          position: position,
-                          duration: const Duration(milliseconds: 200),
-                          child: _buildPackagingFeeItem(context, cart, unit));
-                    }
-
-                    final OrderItem order = cart.items[position];
-                    return AnimationConfiguration.staggeredList(
-                      position: position,
-                      duration: const Duration(milliseconds: 200),
-                      child: _buildCartItem(
-                          context, unit, order, cart.servingMode),
-                    );
-                  },
+          child: AnimationLimiter(
+            child: RawScrollbar(
+              controller: _controller,
+              thumbColor: theme.secondary.withOpacity(0.2),
+              radius: Radius.circular(20),
+              isAlwaysShown: true,
+              thickness: 4,
+              child: ListView.separated(
+                separatorBuilder: (context, index) => Divider(
+                  color: theme.secondary64.withOpacity(0.3),
                 ),
+                controller: _controller,
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                itemCount: cart.items.length + additionalRowCount,
+                itemBuilder: (context, position) {
+                  if (isTakeAway && position == cart.items.length) {
+                    return AnimationConfiguration.staggeredList(
+                        position: position,
+                        duration: const Duration(milliseconds: 200),
+                        child: _buildPackagingFeeItem(
+                            context, cart, unit, !isServiceFee));
+                  }
+
+                  if (isServiceFee &&
+                      position == cart.items.length + serviceFeeRowPos) {
+                    return AnimationConfiguration.staggeredList(
+                        position: position,
+                        duration: const Duration(milliseconds: 200),
+                        child: _buildServiceFeeItem(context, cart, unit));
+                  }
+
+                  final OrderItem order = cart.items[position];
+                  return AnimationConfiguration.staggeredList(
+                    position: position,
+                    duration: const Duration(milliseconds: 200),
+                    child:
+                        _buildCartItem(context, unit, order, cart.servingMode),
+                  );
+                },
               ),
             ),
           ),
         ),
         _buildPaymentButtonPanel(context, unit, cart),
-        // TOTAL
-        //_buildTotal(context, unit, cart)
       ],
     );
   }
@@ -311,15 +319,6 @@ class CartScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Positioned.fill(
-                //   child: Align(
-                //     alignment: Alignment.centerRight,
-                //     child: Icon(
-                //       Icons.arrow_forward,
-                //       color: theme.secondary0,
-                //     ),
-                //   ),
-                // )
                 Positioned.fill(
                   child: Align(
                     alignment: Alignment.centerRight,
@@ -419,7 +418,79 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPackagingFeeItem(BuildContext context, Cart cart, GeoUnit unit) {
+  Widget _buildServiceFeeItem(BuildContext context, Cart cart, GeoUnit unit) {
+    return SlideAnimation(
+      verticalOffset: 50.0,
+      child: FadeInAnimation(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                top: 8,
+                // bottom: 8.0,
+                left: 16,
+                right: 16,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 112,
+                    height: 88,
+                    margin: EdgeInsets.only(right: 16.0),
+                    child: Center(
+                      child: Icon(
+                        Icons.room_service,
+                        color: theme.secondary,
+                        size: 32,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          child: Text(
+                            trans(context, 'cart.serviceFee'),
+                            textAlign: TextAlign.left,
+                            style: Fonts.satoshi(
+                              color: theme.secondary,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          formatCurrency(cart.totalServiceFee, unit.currency),
+                          key: const Key('cart-servicefee-text'),
+                          style: Fonts.satoshi(
+                            color: theme.primary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              height: 1.0,
+              color: theme.secondary16,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPackagingFeeItem(BuildContext context, Cart cart, GeoUnit unit,
+      [bool showSeparator = true]) {
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(
@@ -479,10 +550,11 @@ class CartScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(
-              height: 1.0,
-              color: theme.secondary16,
-            )
+            if (showSeparator)
+              Divider(
+                height: 1.0,
+                color: theme.secondary16,
+              )
           ],
         ),
       ),

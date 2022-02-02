@@ -1,8 +1,8 @@
-FROM node:14-alpine
+FROM public.ecr.aws/bitnami/node:14
 
 WORKDIR /
 
-COPY .serverless/report-generator.zip /
+COPY .serverless-2/report-generator.zip /
 
 RUN unzip /report-generator.zip \
   && rm /report-generator.zip \

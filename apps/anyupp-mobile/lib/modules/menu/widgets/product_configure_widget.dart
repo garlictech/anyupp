@@ -34,8 +34,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
 
   @override
   void initState() {
-    print(
-        '******* ProductConfiguratorWidget.initState().widget=${widget.product}');
+    // print(
+    //     '******* ProductConfiguratorWidget.initState().widget=${widget.product}');
     _productVariant = widget.product.variants.first;
     widget.product.configSets?.forEach((element) {
       if (element.items.isNotEmpty) {
@@ -230,9 +230,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   void _calculateTotalPrice() {
-    print(
-        '_calculateTotalPrice.modifierPos=$_selectedModifiers  ,extras=${_selectedExtras}');
-    print('_calculateTotalPrice.servingMode=${widget.servingMode}');
+    // print(
+    //     '_calculateTotalPrice.modifierPos=$_selectedModifiers  ,extras=${_selectedExtras}');
+    // print('_calculateTotalPrice.servingMode=${widget.servingMode}');
 
     Set<String> allergeens = {};
     if (widget.product.allergens != null &&
@@ -269,7 +269,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
         }
       });
     });
-    print('_calculateTotalPrice.allergeens=$allergeens');
+    // print('_calculateTotalPrice.allergeens=$allergeens');
 
     _allergeens = allergeens;
     _modifierTotalPrice = calculateTotalPrice(

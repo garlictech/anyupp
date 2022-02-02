@@ -173,6 +173,16 @@ query SearchOrderHistory(
         netPrice
         taxPercentage
       }
+      rating {
+        key
+        value
+      }
+      tip {
+        type
+        value
+      }
+      tipTransactionId
+      tipTransactionStatus
     }
     nextToken
     total

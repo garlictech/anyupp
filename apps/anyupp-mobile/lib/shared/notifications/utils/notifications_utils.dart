@@ -1,74 +1,65 @@
+import 'dart:convert';
+
+import 'package:catcher/catcher.dart';
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/models/core/parsers.dart';
+import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
+import 'package:fa_prev/modules/transactions/screens/transaction_order_details_screen.dart';
 import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/notifications/notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 /// Locally class created
 class Locally {
+  static final Locally _singleton = Locally._internal();
+
+  factory Locally() {
+    return _singleton;
+  }
+
+  Locally._internal() {
+    _init();
+  }
+
   /// A String title for Notification
   String? title;
 
   /// A String message
   String? message;
 
-  /// Payload for Navigation
-  String payload;
-
   /// App Icon which is required on initialization
-  String appIcon;
+  // String appIcon;
 
   /// Page Route which is also required on Initialization
   Widget? navigatePage;
 
-  /// A context is also required
-  BuildContext context;
-
-  /// IOS Parameters, this is currently not in use but will be implemented in future releases
-  bool iosRequestSoundPermission;
-  bool iosRequestBadgePermission;
-  bool iosRequestAlertPermission;
-
-  /// local notification initialization
-  /// initializationSettingAndroid
-  /// initializationSettingIos;
-  /// initializationSetting;
-  FlutterLocalNotificationsPlugin localNotificationsPlugin =
+  final FlutterLocalNotificationsPlugin localNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   var initializationSettingAndroid;
   var initializationSettingIos;
   var initializationSetting;
 
-  /// Then we create a construct of Locally
-  /// which required a context, pageRoute, appIcon and a payload
-  /// It also received ios Parameters which are still in dev
-  /// Within the construct,
-  /// localNotification settings is initialized with Flutter Local Notification
-  /// Setting declared above
-  Locally({
-    required this.context,
-    this.navigatePage,
-    required this.appIcon,
-    required this.payload,
-    this.iosRequestSoundPermission = false,
-    this.iosRequestBadgePermission = false,
-    this.iosRequestAlertPermission = false,
-  }) {
-    _init();
-  }
-
   Future<void> _init() async {
     // await requestPermission();
 
+    // Init timezones for scheduled notifcations
+    tz.initializeTimeZones();
+
     /// initializationSettingAndroid declared above is assigned
     /// to AndroidInitializationSettings.
-    initializationSettingAndroid = AndroidInitializationSettings(this.appIcon);
+    initializationSettingAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     /// initializationSettingIos declared above is assigned
     /// to IOSInitializationSettings.
     initializationSettingIos = IOSInitializationSettings(
-        requestSoundPermission: iosRequestSoundPermission,
-        requestBadgePermission: iosRequestBadgePermission,
-        requestAlertPermission: iosRequestAlertPermission,
+        requestSoundPermission: true,
+        requestBadgePermission: true,
+        requestAlertPermission: true,
         onDidReceiveLocalNotification: onDidReceiveNotification);
 
     /// initializationSetting declared above is here assigned
@@ -90,7 +81,7 @@ class Locally {
             IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
           alert: true,
-          badge: false,
+          badge: true,
           sound: true,
         );
     await localNotificationsPlugin
@@ -98,7 +89,7 @@ class Locally {
             MacOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
           alert: true,
-          badge: false,
+          badge: true,
           sound: true,
         );
   }
@@ -106,12 +97,44 @@ class Locally {
   /// onSelectNotification
   /// Obtains a string payload
   /// And perform navigation function
-  Future<void> onSelectNotification(String? payload) async {
-    // print('***** onSelectNotification().payload=$payload, page=$navigatePage, context=$context');
+  Future<void> onSelectNotification(String? payloadStr) async {
+    print(
+        'Notification.onSelectNotification().payload=$payloadStr, page=$navigatePage');
     // if (payload != null) {
     //   debugPrint('notification payload: ' + payload);
     // }
     // await Navigator.push(context, pageRoute);
+    if (payloadStr != null) {
+      Map<String, dynamic> json = jsonDecode(payloadStr);
+      NotificationPayloadType? type =
+          enumFromStringNull(json['type'], NotificationPayloadType.values);
+      if (type == NotificationPayloadType.RATE_ORDER) {
+        RateOrderPayload payload = RateOrderPayload.fromJson(json['data']);
+        print('Notification.showRating=$payload');
+
+        Nav.to(RatingAndTippingScreen(
+          orderId: payload.orderId,
+          ratingPolicy: payload.ratingPolicy,
+          tipPolicy: payload.tipPolicy,
+        ));
+      }
+      if (type == NotificationPayloadType.SHOW_ORDER) {
+        ShowOrderPayload payload = ShowOrderPayload.fromJson(json['data']);
+        print('Notification.showOrder=$payload');
+
+        var state = getIt.get<UnitSelectBloc>().state;
+        if (state is UnitSelected) {
+          Nav.to(TransactionOrderDetailsScreen(
+            orderId: payload.orderId,
+            unit: state.unit,
+          ));
+        } else {
+          // No unit selected.
+        }
+      }
+      return;
+    }
+
     if (navigatePage != null) {
       print('***** onSelectNotification().navigateTo=$navigatePage');
       Nav.reset(navigatePage!);
@@ -125,7 +148,7 @@ class Locally {
     print(
         '***** onDidReceiveNotification().id=$id, title=$title, payload=$payload');
     await showDialog(
-      context: context,
+      context: Catcher.navigatorKey!.currentContext!,
       builder: (context) {
         return CupertinoAlertDialog(
           title: title,
@@ -155,37 +178,30 @@ class Locally {
   /// priority
   /// ticker
   Future show(
-      {@required title,
-      @required message,
-      channelName = 'channel Name',
-      channelID = 'channelID',
-      channelDescription = 'channel Description',
+      {required String title,
+      required String message,
+      payload,
+      channelName = 'AnyUppChannelName',
+      channelID = 'AnyUppChannelId',
       importance = Importance.high,
       priority = Priority.high,
       ticker = 'ticker'}) async {
-    if (title == null && message == null) {
-      throw "Missing parameters, title: message";
-    } else {
-      print('Notification.show()');
-      this.title = title;
-      this.message = message;
+    print('Notification.show()');
+    this.title = title;
+    this.message = message;
 
-      var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-          channelID, channelName,
-          channelDescription: channelDescription,
-          importance: importance,
-          priority: priority,
-          ticker: ticker);
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        channelID, channelName,
+        importance: importance, priority: priority, ticker: ticker);
 
-      var iosPlatformChannelSpecifics = IOSNotificationDetails();
+    var iosPlatformChannelSpecifics = IOSNotificationDetails();
 
-      var platformChannelSpecifics = NotificationDetails(
-          android: androidPlatformChannelSpecifics,
-          iOS: iosPlatformChannelSpecifics);
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iosPlatformChannelSpecifics);
 
-      await localNotificationsPlugin
-          .show(0, title, message, platformChannelSpecifics, payload: payload);
-    }
+    await localNotificationsPlugin
+        .show(0, title, message, platformChannelSpecifics, payload: payload);
   }
 
   /// The retrievePendingNotifications return all pending
@@ -222,24 +238,34 @@ class Locally {
   }
 }
 
-Locally? _locally;
+Future<void> scheduleNotification({
+  required String title,
+  required String message,
+  NotificationPayload? payload,
+  Duration showDelay = const Duration(minutes: 10),
+}) async {
+  print('scheduleNotification()=$showDelay');
+  await Locally().localNotificationsPlugin.zonedSchedule(
+        payload.hashCode,
+        title,
+        message,
+        tz.TZDateTime.now(tz.local).add(showDelay),
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            'AnyUppChannelId',
+            'AnyUppChannelName',
+          ),
+          iOS: IOSNotificationDetails(),
+        ),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        payload: payload?.toJson(),
+      );
+}
 
-void showNotification(BuildContext context, String title, String message,
-    Widget? navigateToPage) {
+void showNotification(String title, String message, Widget? navigateToPage) {
   print('showNotification().title=$title, mmessage=$message');
-  if (_locally == null) {
-    _locally = Locally(
-      context: context,
-      payload: '3fa',
-      appIcon: '@mipmap/ic_launcher',
-      iosRequestBadgePermission: false,
-      iosRequestAlertPermission: true,
-      iosRequestSoundPermission: true,
-      navigatePage: navigateToPage,
-    );
-  }
-
-  _locally!.context = context;
-  _locally!.navigatePage = navigateToPage;
-  _locally!.show(title: title, message: message);
+  Locally().navigatePage = navigateToPage;
+  Locally().show(title: title, message: message);
 }

@@ -33,7 +33,7 @@ export class StripeStack extends sst.Stack {
         timeout: cdk.Duration.seconds(30),
         memorySize: 512,
         code: lambda.Code.fromAsset(
-          path.join(__dirname, '../../.serverless/stripe-webhook.zip'),
+          path.join(__dirname, '../../.serverless-1/stripe-webhook.zip'),
         ),
         environment: {
           STRIPE_SECRET_KEY: props.stripeSecretKey,

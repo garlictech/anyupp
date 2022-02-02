@@ -10,13 +10,14 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import {
   AbstractFormDialogComponent,
   FormsService,
 } from '@bgap/admin/shared/forms';
 import {
+  makeId,
   ORDER_MODES,
   PAYMENT_MODES,
   SERVING_MODES,
@@ -61,7 +62,6 @@ export class UnitFormComponent
   ) {
     super(_injector);
 
-    this.dialogForm = this._unitFormService.createUnitFormGroup();
     this.timeZoneOptions = timeZonesNames.map(n => ({
       key: n,
       value: n,
@@ -71,16 +71,15 @@ export class UnitFormComponent
   }
 
   ngOnInit(): void {
+    this.dialogForm = this._unitFormService.createUnitFormGroup(!!this.unit);
+
     if (this.unit) {
       this.dialogForm.patchValue(cleanObject(omit(['lanes'], this.unit)));
 
-      if (this.unit.pos?.type === CrudApi.PosType.rkeeper) {
-        this._isInitiallyRkeeper = true;
-
-        (<FormGroup>this.dialogForm.controls['pos']).controls[
-          'rkeeper'
-        ].enable();
-      }
+      this._unitFormService.patchRatingPolicies(
+        this.unit.ratingPolicies || [],
+        this.dialogForm?.controls.ratingPolicies as FormArray,
+      );
 
       // Parse openingHours object to temp array
       const custom = this.unit?.openingHours?.custom;
@@ -198,5 +197,9 @@ export class UnitFormComponent
     }
 
     this.dialogForm?.controls.paymentModes.setValue(paymentModesArr);
+  }
+
+  public generatePassword() {
+    this.dialogForm?.get('pos.rkeeper.anyuppPassword')?.patchValue(makeId(8));
   }
 }

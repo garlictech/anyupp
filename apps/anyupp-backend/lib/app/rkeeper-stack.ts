@@ -120,7 +120,7 @@ export class RKeeperStack extends sst.Stack {
       memorySize: 512,
       timeout: cdk.Duration.seconds(20),
       code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless/rkeeper-webhook.zip'),
+        path.join(__dirname, '../../.serverless-2/rkeeper-webhook.zip'),
       ),
       environment: {
         API_ACCESS_KEY_ID: props.apiAccessKeyId,

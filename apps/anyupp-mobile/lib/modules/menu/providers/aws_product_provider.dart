@@ -1,9 +1,6 @@
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/GeneratedProductCategory.dart';
-import 'package:fa_prev/models/ProductCategory.dart';
-
-import 'package:fa_prev/models/GeneratedProduct.dart';
 import 'package:fa_prev/shared/pagination/pagination.dart';
 
 import 'product_provider_interface.dart';

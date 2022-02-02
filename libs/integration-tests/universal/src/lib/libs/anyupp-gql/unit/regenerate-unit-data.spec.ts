@@ -54,7 +54,7 @@ import {
 } from '@bgap/backend/product-categories';
 import { unitRequestHandler } from '@bgap/backend/units';
 import { listGeneratedProductsForUnits } from '@bgap/backend/products';
-import { dateMatcher } from '../../../../utils';
+import { dateMatcher, ES_DELAY } from '../../../../utils';
 
 const DYNAMODB_OPERATION_DELAY = 5000;
 const TEST_NAME = 'REGEN_';
@@ -306,7 +306,7 @@ describe('RegenerateUnitData mutation tests', () => {
             iamCrudSdk.CreateProductCategory({ input: productCategory_01 }),
           ),
         ),
-        delay(DYNAMODB_OPERATION_DELAY),
+        delay(ES_DELAY),
         toArray(),
       )
       .subscribe(() => done());
@@ -478,10 +478,10 @@ const listProductsForUnits = (
   sdk: CrudApi.CrudSdk,
   unitIds: string[],
 ): Observable<Array<CrudApi.UnitProduct>> => {
-  const input: CrudApi.ListGeneratedProductsQueryVariables = {
+  const input: CrudApi.SearchUnitProductsQueryVariables = {
     filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
   };
   return sdk
-    .ListUnitProducts(input, { fetchPolicy: 'no-cache' })
+    .SearchUnitProducts(input, { fetchPolicy: 'no-cache' })
     .pipe(filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]));
 };

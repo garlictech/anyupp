@@ -1,0 +1,7 @@
+mutation RateOrder($orderId: ID!, $questionKey: String!, $rating: Int!) {
+  updateOrder(
+    input: { id: $orderId, rating: { key: $questionKey, value: $rating } }
+  ) {
+    id
+  }
+}

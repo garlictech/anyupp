@@ -265,6 +265,7 @@ class ProductDetailsWidget extends StatelessWidget {
           child: AddToCartPanelWidget(
             displayState: displayState,
             servingMode: servingMode,
+            serviceFeePolicy: unit.serviceFeePolicy,
             onAddToCartPressed: (state, quantity) =>
                 _addOrderItemToCart(context, state, quantity),
           ),

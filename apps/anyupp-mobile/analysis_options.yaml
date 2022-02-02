@@ -12,7 +12,7 @@ analyzer:
   strong-mode:
     implicit-casts: true
   errors:
-    unnecessary_import: ignore
+    # unnecessary_import: ignore
     unnecessary_non_null_assertion: ignore
 linter:
   rules:

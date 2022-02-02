@@ -9,6 +9,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/deeplink_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
+import 'package:fa_prev/shared/utils/stage_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -83,20 +84,20 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
                   showBorder: false,
                   iconSize: 24.0,
                 ),
-                // actions: isDev
-                //     ? [
-                //         IconButton(
-                //           icon: Icon(Icons.qr_code_2),
-                //           onPressed: () async {
-                //             setState(() {
-                //               _unitId = 'seeded_unit_c1_g1_1_id';
-                //               _place = Place(table: '01', seat: '02');
-                //               _qr_scan_state = false;
-                //             });
-                //           },
-                //         ),
-                //       ]
-                //     : null,
+                actions: isDev
+                    ? [
+                        IconButton(
+                          icon: Icon(Icons.qr_code_2),
+                          onPressed: () async {
+                            setState(() {
+                              _unitId = 'seeded_unit_c1_g1_1_id';
+                              _place = Place(table: '01', seat: '02');
+                              _qr_scan_state = false;
+                            });
+                          },
+                        ),
+                      ]
+                    : null,
               )
             : null,
         body:

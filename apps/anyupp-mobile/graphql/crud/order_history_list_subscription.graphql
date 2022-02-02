@@ -161,5 +161,15 @@ subscription OnOrderHistoryChanged($userId: String, $unitId: String) {
       netPrice
       taxPercentage
     }
+    rating {
+      key
+      value
+    }
+    tip {
+      type
+      value
+    }
+    tipTransactionId
+    tipTransactionStatus
   }
 }

@@ -494,6 +494,11 @@ type OrderItem {
   sumPriceShown: PriceShown! # Full price with config sets
 }
 
+type OrderRating {
+  key: String!
+  value: Int!
+}
+
 type Order
   @model
   @searchable
@@ -519,7 +524,8 @@ type Order
   serviceFee: Price
   packagingSum: Price
   sumPriceShown: PriceShown!
-  rating: Int
+  rating: OrderRating
+  hasRated: Boolean
   tip: Tip
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
@@ -708,14 +714,15 @@ enum SoldOutVisibilityPolicy {
 }
 
 type RatingPolicy {
-  title: LocalizedItem
-  description: LocalizedItem
-  ratings: [RatingPolicyItem]!
+  key: String!
+  title: LocalizedItem!
+  description: LocalizedItem!
+  ratings: [RatingPolicyItem!]!
 }
 
 type RatingPolicyItem {
   value: Int!
-  text: LocalizedItem
+  text: LocalizedItem!
   icon: String
 }
 
@@ -727,14 +734,15 @@ type TipPolicy {
 }
 
 input RatingPolicyInput {
-  title: LocalizedItemInput
-  description: LocalizedItemInput
-  ratings: [RatingPolicyItemInput]!
+  key: String!
+  title: LocalizedItemInput!
+  description: LocalizedItemInput!
+  ratings: [RatingPolicyItemInput!]!
 }
 
 input RatingPolicyItemInput {
   value: Int!
-  text: LocalizedItemInput
+  text: LocalizedItemInput!
   icon: String
 }
 
@@ -774,7 +782,7 @@ type Unit
   orderPolicy: OrderPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicy
-  ratingPolicy: RatingPolicy
+  ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
@@ -901,7 +909,7 @@ type GeoUnit @aws_cognito_user_pools {
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
   serviceFeePolicy: ServiceFeePolicy
-  ratingPolicy: RatingPolicy
+  ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
@@ -1131,7 +1139,7 @@ input CreateUnitInput {
   orderPolicy: OrderPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
-  ratingPolicy: RatingPolicyInput
+  ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
@@ -1155,12 +1163,13 @@ input UpdateUnitInput {
   openingHours: WeeklyScheduleInput
   merchantId: String
   timeZone: String
+  externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
-  ratingPolicy: RatingPolicyInput
+  ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
@@ -1185,6 +1194,13 @@ input DeleteAdminUserInput {
 
 input DeleteUnitProductInput {
   id: ID!
+}
+
+## Order
+input RateAndTipOrderInput {
+  orderId: ID!
+  rating: Int
+  tip: TipInput
 }
 
 type Query {
@@ -1234,6 +1250,11 @@ type Mutation {
     @function(name: "${env}-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
+
+  # rateAndTipOrder(input: RateAndTipOrderInput!): Boolean
+  #   @function(name: "${env}-anyupp-graphql-resolvers")
+  #   @aws_iam
+  #   @aws_cognito_user_pools
 
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
@@ -1294,7 +1315,9 @@ type Subscription {
     @aws_subscribe(mutations: ["createGroup", "updateGroup"])
     @aws_cognito_user_pools
   onUnitsChange(groupId: ID!): Unit
-    @aws_subscribe(mutations: ["createUnit", "updateUnit"])
+    @aws_subscribe(
+      mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"]
+    )
     @aws_cognito_user_pools
   # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
   onProductCategoriesChange(chainId: ID!): ProductCategory

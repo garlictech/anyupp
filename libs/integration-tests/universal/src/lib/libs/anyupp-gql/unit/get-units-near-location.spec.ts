@@ -47,9 +47,18 @@ const unit_01 = {
     percentage: 10,
     taxPercentage: 20,
   },
-  ratingPolicy: {
-    ratings: [{ value: 1 }],
-  },
+  ratingPolicies: [
+    {
+      key: 'question1',
+      title: {
+        en: 'Question',
+      },
+      description: {
+        en: 'Desc',
+      },
+      ratings: [{ value: 1, text: { en: 'good' } }],
+    },
+  ],
   tipPolicy: {
     percents: [2],
   },

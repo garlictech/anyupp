@@ -45,6 +45,6 @@
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-dev.anyupp.com/dev",
     "RKeeperTaskBucketName": "dev-anyupp-backend-rkeep-anyupprkeepermenubucket4-1epfk17ibuuui",
     "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-rkeepe-RkeeperECSTaskExecutionR-974JEKOLAQKZ",
-    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/devanyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef22359B84:287"
+    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/devanyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef22359B84:331"
   }
 }

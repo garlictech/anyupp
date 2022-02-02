@@ -325,15 +325,5 @@ export const createCommonDevPipeline = (
         ],
       },
     },
-    reports: {
-      cypressReports: {
-        files: ['cyreport/cucumber-json/**/*'],
-        'file-format': 'CUCUMBERJSON',
-      },
-      coverage: {
-        files: ['coverage/**/*'],
-        'file-format': 'CLOVERXML',
-      },
-    },
   });
 };

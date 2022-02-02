@@ -54,17 +54,32 @@ Object {
       "type": "stripe",
     },
   ],
-  "ratingPolicy": Object {
-    "description": null,
-    "ratings": Array [
-      Object {
-        "icon": null,
-        "text": null,
-        "value": 1,
+  "ratingPolicies": Array [
+    Object {
+      "description": Object {
+        "de": null,
+        "en": "Desc",
+        "hu": null,
       },
-    ],
-    "title": null,
-  },
+      "key": "question1",
+      "ratings": Array [
+        Object {
+          "icon": null,
+          "text": Object {
+            "de": null,
+            "en": "good",
+            "hu": null,
+          },
+          "value": 1,
+        },
+      ],
+      "title": Object {
+        "de": null,
+        "en": "Question",
+        "hu": null,
+      },
+    },
+  ],
   "serviceFeePolicy": Object {
     "percentage": 10,
     "taxPercentage": 10,
@@ -146,17 +161,32 @@ Object {
       "type": "stripe",
     },
   ],
-  "ratingPolicy": Object {
-    "description": null,
-    "ratings": Array [
-      Object {
-        "icon": null,
-        "text": null,
-        "value": 1,
+  "ratingPolicies": Array [
+    Object {
+      "description": Object {
+        "de": null,
+        "en": "Desc",
+        "hu": null,
       },
-    ],
-    "title": null,
-  },
+      "key": "question1",
+      "ratings": Array [
+        Object {
+          "icon": null,
+          "text": Object {
+            "de": null,
+            "en": "good",
+            "hu": null,
+          },
+          "value": 1,
+        },
+      ],
+      "title": Object {
+        "de": null,
+        "en": "Question",
+        "hu": null,
+      },
+    },
+  ],
   "serviceFeePolicy": Object {
     "percentage": 10,
     "taxPercentage": 20,
@@ -366,17 +396,32 @@ Object {
       "type": "stripe",
     },
   ],
-  "ratingPolicy": Object {
-    "description": null,
-    "ratings": Array [
-      Object {
-        "icon": null,
-        "text": null,
-        "value": 1,
+  "ratingPolicies": Array [
+    Object {
+      "description": Object {
+        "de": null,
+        "en": "Desc",
+        "hu": null,
       },
-    ],
-    "title": null,
-  },
+      "key": "question1",
+      "ratings": Array [
+        Object {
+          "icon": null,
+          "text": Object {
+            "de": null,
+            "en": "good",
+            "hu": null,
+          },
+          "value": 1,
+        },
+      ],
+      "title": Object {
+        "de": null,
+        "en": "Question",
+        "hu": null,
+      },
+    },
+  ],
   "serviceFeePolicy": Object {
     "percentage": 10,
     "taxPercentage": 10,
@@ -458,17 +503,32 @@ Object {
       "type": "stripe",
     },
   ],
-  "ratingPolicy": Object {
-    "description": null,
-    "ratings": Array [
-      Object {
-        "icon": null,
-        "text": null,
-        "value": 1,
+  "ratingPolicies": Array [
+    Object {
+      "description": Object {
+        "de": null,
+        "en": "Desc",
+        "hu": null,
       },
-    ],
-    "title": null,
-  },
+      "key": "question1",
+      "ratings": Array [
+        Object {
+          "icon": null,
+          "text": Object {
+            "de": null,
+            "en": "good",
+            "hu": null,
+          },
+          "value": 1,
+        },
+      ],
+      "title": Object {
+        "de": null,
+        "en": "Question",
+        "hu": null,
+      },
+    },
+  ],
   "serviceFeePolicy": Object {
     "percentage": 10,
     "taxPercentage": 20,

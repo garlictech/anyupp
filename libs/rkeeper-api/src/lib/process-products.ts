@@ -253,7 +253,7 @@ export const createRkeeperProduct =
               isVisible: dish.active,
               position: -1,
               supportedServingModes: [CrudApi.ServingMode.inplace],
-              externalId: externalProductIdMaker(dish.guid),
+              externalId: externalProductIdMaker(dish.id.toString()),
               variants: [
                 {
                   id: 'id',
@@ -388,7 +388,7 @@ export const handleRkeeperProducts =
                     O.getOrElse<CrudApi.ProductConfigSet[] | null>(() => null),
                   ),
                 ),
-                searchExternalUnitProduct(sdk)(dish.guid),
+                searchExternalUnitProduct(sdk)(dish.id.toString()),
               ).pipe(
                 switchMap(([configSets, unitProduct]) =>
                   unitProduct === null

@@ -30,6 +30,9 @@
     "chain": "Chain",
     "image": "Kép",
     "title": "Cím",
+    "titleEN": "Cím (EN)",
+    "titleDE": "Cím (DE)",
+    "titleHU": "Cím (HU)",
     "group": "Group",
     "unit": "Unit",
     "currency": "Pénznem",
@@ -119,7 +122,9 @@
     "resetPassword": "Új jelszó",
     "packagingFee": "Csomagolási díj",
     "packagingTax": "Csomagolási adó",
-    "search": "Keresés"
+    "search": "Keresés",
+    "value": "Érték",
+    "icon": "Ikon"
   },
   "menu": {
     "dashboard": "Vezérlőpult",
@@ -300,6 +305,7 @@
   "units": {
     "listTitle": "Unitok",
     "editUnit": "Unit szerkesztése",
+    "editUnitPos": "Unit POS szerkesztése",
     "newUnit": "Új unit",
     "addUnit": "Unit hozzáadása",
     "open": "Nyitva",
@@ -332,7 +338,12 @@
       "anyuppPassword": "AnyUPP password",
       "restaurantId": "Restaurant ID"
     },
-    "rkeeperDeletionAlert": "AzAnyUPP POS has been selected. RKeeper data will be deleted."
+    "rkeeperDeletionAlert": "Az AnyUPP POS lett kiválasztva. Az RKeeper adatok el lesznek távolítva.",
+    "rkeeperPasswordUpdated": "Az RKeepeR AnyUPP jelszó megváltozott. Az új jelszó: {{anyuppPassword}}",
+    "ratingPolicies": {
+      "title": "Értékelések",
+      "ratingPolicy": "Értékelés"
+    }
   },
   "users": {
     "listTitle": "Felhasználók",

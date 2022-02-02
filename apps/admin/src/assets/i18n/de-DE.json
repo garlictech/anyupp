@@ -30,6 +30,9 @@
     "chain": "Chain",
     "image": "Image",
     "title": "Title",
+    "titleEN": "Title (EN)",
+    "titleDE": "Title (DE)",
+    "titleHU": "Title (HU)",
     "group": "Group",
     "unit": "Unit",
     "currency": "Currency",
@@ -119,7 +122,9 @@
     "resetPassword": "Reset password",
     "packagingFee": "Packaging fee",
     "packagingTax": "Packaging tax",
-    "search": "Search"
+    "search": "Search",
+    "value": "Value",
+    "icon": "Icon"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -298,6 +303,7 @@
   "units": {
     "listTitle": "Units",
     "editUnit": "Edit unit",
+    "editUnitPos": "Edit unit POS",
     "newUnit": "New unit",
     "addUnit": "Add unit",
     "open": "Open",
@@ -330,7 +336,12 @@
       "anyuppPassword": "AnyUPP password",
       "restaurantId": "Restaurant ID"
     },
-    "rkeeperDeletionAlert": "AnyUPP POS has been selected. RKeeper data will be deleted."
+    "rkeeperDeletionAlert": "AnyUPP POS has been selected. RKeeper data will be deleted.",
+    "rkeeperPasswordUpdated": "RKeepeR AnyUPP password has been changed. The new password is: <strong>{{anyuppPassword}}</strong>",
+    "ratingPolicies": {
+      "title": "Rating policies",
+      "ratingPolicy": "Rating policy"
+    }
   },
   "users": {
     "listTitle": "Users",

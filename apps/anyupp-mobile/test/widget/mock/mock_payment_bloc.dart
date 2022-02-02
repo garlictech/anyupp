@@ -1,9 +1,14 @@
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/payment.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'mocks.dart';
 
-class MockPaymentRepository extends Fake implements StripePaymentRepository {}
+class MockPaymentRepository extends Fake implements StripePaymentRepository {
+  Future<List<StripePaymentMethod>> getPaymentMethods() async {
+    return [];
+  }
+}
 
 class MockStripePaymentBloc extends StripePaymentBloc {
   final StripePaymentState? initialState;

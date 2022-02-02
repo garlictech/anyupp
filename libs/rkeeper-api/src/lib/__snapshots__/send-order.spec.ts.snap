@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Send rkeeper order without modifiers 1`] = `
+Array [
+  Array [
+    Object {
+      "auth": Object {
+        "password": "RKEEPER_PASSWORD",
+        "username": "RKEEPER_USERNAME",
+      },
+      "data": Object {
+        "client": Object {
+          "email": "UNIT_EMAIL",
+          "fn": "Testfn",
+          "ln": "Testln",
+          "phone": "UNIT_PHONE",
+        },
+        "delivery_time": "2022-01-31T23:00:00",
+        "objectid": "UNIT_EXTERNALID",
+        "order": Array [
+          Object {
+            "id": "ITEM_EXTERNAL_ID",
+            "qnt": 5000,
+            "type": "d",
+          },
+        ],
+        "order_type": 1,
+        "pay_online_type": 0,
+        "pay_type": 0,
+      },
+      "method": "post",
+      "url": "undefined/postorder/UNIT_EXTERNALID",
+    },
+  ],
+]
+`;

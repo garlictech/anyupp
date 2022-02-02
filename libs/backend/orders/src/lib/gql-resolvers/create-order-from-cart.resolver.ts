@@ -325,7 +325,7 @@ export const createOrderFromCart =
       // Push the order to rkeeper if the unit is backed by rkeeper
       switchMap(props =>
         (props.unit.pos?.type === CrudApi.PosType.rkeeper
-          ? sendRkeeperOrder(props.unit, props.orderInput)
+          ? sendRkeeperOrder()(props.unit, props.orderInput)
           : of({})
         ).pipe(
           map(rkeeperResult => ({
