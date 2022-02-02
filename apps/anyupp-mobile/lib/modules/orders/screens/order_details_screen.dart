@@ -30,6 +30,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   _OrderDetailsScreenState(Order order) {
     _order = order;
+    print(
+        '**** OrderDetails.constructor.order[${order.id}].hasRated=${order.hasRated}');
   }
 
   @override
@@ -224,6 +226,8 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
     if (!shouldDisplayRating(order, _unit)) {
       return Container();
     }
+    print(
+        '************** OrderDetails.order[${order.id}].hasRated=${order.hasRated}');
 
     return Column(
       children: [
@@ -256,6 +260,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
           ),
         if (_unit.tipPolicy != null &&
             order.tip == null &&
+            order.paymentMode.method == PaymentMethod.inapp &&
             order.transaction?.status == PaymentStatus.success)
           Container(
             height: 56.0,

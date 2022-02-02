@@ -1,9 +1,3 @@
-# mutation TipOrder($orderId: ID!, $type: TipType!, $value: Float) {
-#   updateOrder(input: { id: $orderId, tip: { type: $type, value: $value } }) {
-#     id
-#   }
-# }
-
 mutation TipOrder($orderId: ID!, $type: TipType!, $value: Float!) {
   payTipWithStripe(
     input: { orderId: $orderId, tip: { type: $type, value: $value } }
