@@ -310,6 +310,7 @@ class AwsCartProvider implements ICartProvider {
                         productComponentId: configComponent.productComponentId,
                         netPackagingFee: configComponent.netPackagingFee,
                         allergens: configComponent.allergens,
+                        externalId: configComponent.externalId,
                       );
                     }).toList()
                   : [],
@@ -404,6 +405,7 @@ class AwsCartProvider implements ICartProvider {
                         productComponentId: configComponent.productComponentId,
                         netPackagingFee: configComponent.netPackagingFee,
                         allergens: configComponent.allergens,
+                        externalId: configComponent.externalId,
                       );
                     }).toList()
                   : [],
