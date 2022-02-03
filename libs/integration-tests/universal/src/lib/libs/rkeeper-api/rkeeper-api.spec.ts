@@ -516,7 +516,10 @@ test('send order to rkeeper by HTTP post', done => {
 });
 
 test('send order to rkeeper by sendRkeeperOrder', done => {
-  sendRkeeperOrder(fixtures.yellowUnit, fixtures.orderInput)
+  sendRkeeperOrder({
+    axiosInstance: axios,
+    currentTime: () => new Date('2040.01.01'),
+  })(fixtures.yellowUnit, fixtures.orderInput)
     .pipe(
       tap(result => {
         expect(result?.config.auth).toMatchSnapshot('config.auth');

@@ -4,7 +4,7 @@
   },
   "anyupp-backend-ParamsStack": {
     "appleServiceIdOutput": "net.cyberg.anyupp.cognito",
-    "stripePublishableKeyOutput": "pk_test_51IBipwKBBjcbSqG0xQP8G0OVkSByIgHVFag20akTEE4EA9wkY5X5A2ojlXb6qepNG3Ti3uSksanZV6O8ZHtL5MPi002tFhppdx",
+    "stripePublishableKeyOutput": "pk_test_51KLUGRIeYeqvtwSk7GAFrOhEdhx3mCWcoFXtuWmvboJM0zSGzjzG9vpubF6bzMJo9a7usKbM61TNd6hrq8Ntdtjj003SuLcl0n",
     "googleClientIdOutput": "1016713353610-q3nsj1t1flrjuo33sfakis645gl7ijv3.apps.googleusercontent.com",
     "facebookAppIdOutput": "166876958090898",
     "googleApiKeyOutput": "AIzaSyDGNIG1eIqvKsRoBsQ2T7PVff2d1XUhsVg",
@@ -44,7 +44,6 @@
     "RKeeperWebhookEndpointCBC72BD4": "https://0d7gdz6keh.execute-api.eu-west-1.amazonaws.com/dev/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-dev.anyupp.com/dev",
     "RKeeperTaskBucketName": "dev-anyupp-backend-rkeep-anyupprkeepermenubucket4-1epfk17ibuuui",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-rkeepe-RkeeperECSTaskExecutionR-974JEKOLAQKZ",
-    "RKeeperTaskDefinitionArn": "arn:aws:ecs:eu-west-1:568276182587:task-definition/devanyuppbackendrkeeperAnyuppRkeeperMenusyncTaskDef22359B84:331"
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-rkeepe-RkeeperECSTaskExecutionR-974JEKOLAQKZ"
   }
 }

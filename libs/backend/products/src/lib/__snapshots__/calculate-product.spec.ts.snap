@@ -124,6 +124,7 @@ Object {
             "egg",
             "fish",
           ],
+          "externalId": "EXTERNAL_ID",
           "name": Object {
             "en": "PRODUCT_COMP_NAME",
           },
@@ -137,6 +138,7 @@ Object {
             "egg",
             "fish",
           ],
+          "externalId": "EXTERNAL_ID",
           "name": Object {
             "en": "PRODUCT_COMP_NAME",
           },

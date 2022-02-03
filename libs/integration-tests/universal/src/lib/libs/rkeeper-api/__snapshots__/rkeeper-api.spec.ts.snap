@@ -87,7 +87,7 @@ Array [
     "configSets": Array [],
     "createdAt": Any<String>,
     "dirty": true,
-    "externalId": "999e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+    "externalId": "9991000114",
     "groupId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-group",
     "id": Any<String>,
     "isVisible": true,
@@ -140,7 +140,7 @@ Object {
   "configSets": Array [],
   "createdAt": Any<String>,
   "dirty": true,
-  "externalId": "999e3ab3-86a0-48d9-a9a9-f4e0c9fbce68",
+  "externalId": "9991000114",
   "groupId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-group",
   "id": Any<String>,
   "isVisible": true,
@@ -452,6 +452,7 @@ Object {
       "items": Array [
         Object {
           "allergens": null,
+          "externalId": "9991011517",
           "name": Object {
             "de": null,
             "en": null,
@@ -465,6 +466,7 @@ Object {
         },
         Object {
           "allergens": null,
+          "externalId": "9991011504",
           "name": Object {
             "de": null,
             "en": null,
@@ -494,6 +496,7 @@ Object {
       "items": Array [
         Object {
           "allergens": null,
+          "externalId": "9991017196",
           "name": Object {
             "de": null,
             "en": null,
@@ -507,6 +510,7 @@ Object {
         },
         Object {
           "allergens": null,
+          "externalId": "9991017195",
           "name": Object {
             "de": null,
             "en": null,
@@ -520,6 +524,7 @@ Object {
         },
         Object {
           "allergens": null,
+          "externalId": "9991017194",
           "name": Object {
             "de": null,
             "en": null,
@@ -533,6 +538,7 @@ Object {
         },
         Object {
           "allergens": null,
+          "externalId": "9991017193",
           "name": Object {
             "de": null,
             "en": null,
@@ -546,6 +552,7 @@ Object {
         },
         Object {
           "allergens": null,
+          "externalId": "9991017191",
           "name": Object {
             "de": null,
             "en": null,
@@ -621,6 +628,7 @@ Object {
       "items": Array [
         Object {
           "allergens": null,
+          "externalId": "9991011517",
           "name": Object {
             "de": null,
             "en": null,
@@ -634,6 +642,7 @@ Object {
         },
         Object {
           "allergens": null,
+          "externalId": "9991011504",
           "name": Object {
             "de": null,
             "en": null,
@@ -663,6 +672,7 @@ Object {
       "items": Array [
         Object {
           "allergens": null,
+          "externalId": "9991017196",
           "name": Object {
             "de": null,
             "en": null,
@@ -676,6 +686,7 @@ Object {
         },
         Object {
           "allergens": null,
+          "externalId": "9991017195",
           "name": Object {
             "de": null,
             "en": null,
@@ -689,6 +700,7 @@ Object {
         },
         Object {
           "allergens": null,
+          "externalId": "9991017194",
           "name": Object {
             "de": null,
             "en": null,
@@ -702,6 +714,7 @@ Object {
         },
         Object {
           "allergens": null,
+          "externalId": "9991017193",
           "name": Object {
             "de": null,
             "en": null,
@@ -715,6 +728,7 @@ Object {
         },
         Object {
           "allergens": null,
+          "externalId": "9991017191",
           "name": Object {
             "de": null,
             "en": null,
@@ -1192,7 +1206,7 @@ Object {
   "configSets": null,
   "createdAt": Any<String>,
   "dirty": true,
-  "externalId": "4MASKED ID",
+  "externalId": "99911000114",
   "groupId": "rkeeper-MASKED ID-group",
   "id": "MASKED ID",
   "isVisible": false,
@@ -1244,7 +1258,7 @@ Object {
   "configSets": null,
   "createdAt": Any<String>,
   "dirty": true,
-  "externalId": "MASKED ID",
+  "externalId": "9991000115",
   "groupId": "rkeeper-MASKED ID-group",
   "id": "MASKED ID",
   "isVisible": true,
@@ -1365,7 +1379,7 @@ Object {
   ],
   "createdAt": Any<String>,
   "dirty": true,
-  "externalId": "MASKED ID",
+  "externalId": "9991008661",
   "groupId": "rkeeper-MASKED ID-group",
   "id": "MASKED ID",
   "isVisible": true,
@@ -1486,7 +1500,7 @@ Object {
   ],
   "createdAt": Any<String>,
   "dirty": true,
-  "externalId": "MASKED ID",
+  "externalId": "9991008660",
   "groupId": "rkeeper-MASKED ID-group",
   "id": "MASKED ID",
   "isVisible": true,
@@ -1538,7 +1552,7 @@ Object {
   "configSets": null,
   "createdAt": Any<String>,
   "dirty": true,
-  "externalId": "MASKED ID",
+  "externalId": "9991000114",
   "groupId": "rkeeper-MASKED ID-group",
   "id": "MASKED ID",
   "isVisible": true,
