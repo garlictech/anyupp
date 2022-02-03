@@ -292,6 +292,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -306,6 +307,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -383,6 +385,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -397,6 +400,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -419,6 +423,7 @@ Object {
           "items": Array [
             Object {
               "allergens": null,
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -432,6 +437,7 @@ Object {
               "allergens": Array [
                 "peanut",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -617,6 +623,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -631,6 +638,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -708,6 +716,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -722,6 +731,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -744,6 +754,7 @@ Object {
           "items": Array [
             Object {
               "allergens": null,
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -757,6 +768,7 @@ Object {
               "allergens": Array [
                 "peanut",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -952,6 +964,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -966,6 +979,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1043,6 +1057,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1057,6 +1072,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1079,6 +1095,7 @@ Object {
           "items": Array [
             Object {
               "allergens": null,
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1092,6 +1109,7 @@ Object {
               "allergens": Array [
                 "peanut",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1277,6 +1295,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1291,6 +1310,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1368,6 +1388,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1382,6 +1403,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1404,6 +1426,7 @@ Object {
           "items": Array [
             Object {
               "allergens": null,
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1417,6 +1440,7 @@ Object {
               "allergens": Array [
                 "peanut",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1612,6 +1636,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1626,6 +1651,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1703,6 +1729,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1717,6 +1744,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1739,6 +1767,7 @@ Object {
           "items": Array [
             Object {
               "allergens": null,
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1752,6 +1781,7 @@ Object {
               "allergens": Array [
                 "peanut",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1937,6 +1967,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -1951,6 +1982,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -2028,6 +2060,7 @@ Object {
                 "egg",
                 "fish",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -2042,6 +2075,7 @@ Object {
                 "egg",
                 "gluten",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -2064,6 +2098,7 @@ Object {
           "items": Array [
             Object {
               "allergens": null,
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",
@@ -2077,6 +2112,7 @@ Object {
               "allergens": Array [
                 "peanut",
               ],
+              "externalId": null,
               "name": Object {
                 "de": "DE_NAME",
                 "en": "EN_NAME",

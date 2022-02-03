@@ -511,7 +511,8 @@ describe('CreatOrderFromCart mutation test', () => {
   }, 30000);
 
   test('When creating order from cart, send the order to rkeeper', done => {
-    const spy = jest.spyOn(rkeeperApi, 'sendRkeeperOrder');
+    const fv = jest.fn().mockReturnValue(of({}));
+    jest.spyOn(rkeeperApi, 'sendRkeeperOrder').mockReturnValue(fv);
 
     defer(() =>
       orderRequestHandler({
@@ -525,7 +526,7 @@ describe('CreatOrderFromCart mutation test', () => {
         catchError(err => {
           return of({});
         }),
-        tap(() => expect(maskAll(spy.mock.calls)).toMatchSnapshot()),
+        tap(() => expect(maskAll(fv.mock.calls)).toMatchSnapshot()),
       )
       .subscribe(() => done());
   }, 20000);
