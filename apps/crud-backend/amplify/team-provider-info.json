@@ -14,17 +14,17 @@
     "categories": {
       "auth": {
         "anyuppbackend498dda93": {
-          "userPoolId": "eu-west-1_KiJIWEnaC",
+          "userPoolId": "eu-west-1_Ek2RwsqU1",
           "userPoolName": "zsoltstack-anyupp-backend-admin-user-pool",
-          "webClientId": "3le3ch085avbfm8ih7ltinmt2g",
-          "nativeClientId": "7hiqp478pv1ijn3snia3m56bmq",
-          "identityPoolId": "eu-west-1:a7685623-49c7-40ff-bb3f-50a508162d79",
-          "identityPoolName": "IdentityPool_OQYWTGVrRPtN",
+          "webClientId": "3i5a6rngh4990k28vi2qmf7r7n",
+          "nativeClientId": "4sse3agjs09bnfb0d4o2vr0o8j",
+          "identityPoolId": "eu-west-1:b0fae31a-70fe-401d-acde-5fff7f977667",
+          "identityPoolName": "IdentityPool_KQdIi59bf6qY",
           "allowUnauthenticatedIdentities": true,
-          "authRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-CognitoDefaultAuthentica-1OXWUKCFJNDOZ",
-          "authRoleName": "zsoltstack-anyupp-backend-CognitoDefaultAuthentica-1OXWUKCFJNDOZ",
-          "unauthRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-CognitoDefaultUnauthenti-1JE6ETHYUJLXC",
-          "unauthRoleName": "zsoltstack-anyupp-backend-CognitoDefaultUnauthenti-1JE6ETHYUJLXC"
+          "authRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-CognitoDefaultAuthentica-1BP0J1024NXDD",
+          "authRoleName": "zsoltstack-anyupp-backend-CognitoDefaultAuthentica-1BP0J1024NXDD",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-CognitoDefaultUnauthenti-1H1X1YW6C4BV0",
+          "unauthRoleName": "zsoltstack-anyupp-backend-CognitoDefaultUnauthenti-1H1X1YW6C4BV0"
         }
       }
     }

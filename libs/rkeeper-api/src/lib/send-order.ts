@@ -58,6 +58,11 @@ export const sendRkeeperOrder =
           ln: 'Testln',
           fn: 'Testfn',
         },
+        order_number: orderInput.place
+          ? `${parseInt(orderInput.place?.table)}.${parseInt(
+              orderInput.place?.table,
+            )}`
+          : '',
         order,
       }),
       data => ({
@@ -69,5 +74,11 @@ export const sendRkeeperOrder =
           password: unit.pos?.rkeeper?.rkeeperPassword || '',
         },
       }),
+      R.tap(x =>
+        console.debug(
+          'Order submitted to rkeeper:',
+          JSON.stringify(x, null, 2),
+        ),
+      ),
       data => defer(() => from(deps.axiosInstance.request(data))),
     );

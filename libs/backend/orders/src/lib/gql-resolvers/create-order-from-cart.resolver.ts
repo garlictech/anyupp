@@ -16,7 +16,7 @@ import {
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
 import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
+import { tap, map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
 import {
   getGroupProduct,
@@ -323,6 +323,12 @@ export const createOrderFromCart =
           .pipe(mapTo(props)),
       ),
       // Push the order to rkeeper if the unit is backed by rkeeper
+      tap(x =>
+        console.debug(
+          'Props submitted to rkeeper check:',
+          JSON.stringify(x, null, 2),
+        ),
+      ),
       switchMap(props =>
         (props.unit.pos?.type === CrudApi.PosType.rkeeper
           ? sendRkeeperOrder()(props.unit, props.orderInput)
