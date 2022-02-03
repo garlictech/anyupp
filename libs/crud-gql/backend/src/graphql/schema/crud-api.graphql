@@ -459,6 +459,7 @@ type OrderItemConfigComponent {
   name: LocalizedItem!
   allergens: [Allergen]
   netPackagingFee: Float
+  externalId: String
 }
 
 type OrderItemConfigSet {
@@ -622,6 +623,7 @@ type GeneratedProductConfigComponent {
   allergens: [Allergen]
   netPackagingFee: Float
   soldOut: Boolean
+  externalId: String
 }
 
 type GeneratedProductConfigSet {

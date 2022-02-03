@@ -444,6 +444,7 @@ type OrderItemConfigComponent @aws_api_key @aws_iam @aws_cognito_user_pools {
   name: LocalizedItem!
   allergens: [Allergen]
   netPackagingFee: Float
+  externalId: String
 }
 
 type OrderItemConfigSet @aws_api_key @aws_iam @aws_cognito_user_pools {
@@ -602,6 +603,7 @@ type GeneratedProductConfigComponent @aws_api_key @aws_iam @aws_cognito_user_poo
   allergens: [Allergen]
   netPackagingFee: Float
   soldOut: Boolean
+  externalId: String
 }
 
 type GeneratedProductConfigSet @aws_api_key @aws_iam @aws_cognito_user_pools {
@@ -2014,6 +2016,7 @@ input OrderItemConfigComponentInput {
   name: LocalizedItemInput!
   allergens: [Allergen]
   netPackagingFee: Float
+  externalId: String
 }
 
 input PriceInput {
@@ -2404,6 +2407,7 @@ input GeneratedProductConfigComponentInput {
   allergens: [Allergen]
   netPackagingFee: Float
   soldOut: Boolean
+  externalId: String
 }
 
 type ModelGeneratedProductConnection @aws_iam @aws_cognito_user_pools {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Send rkeeper order without modifiers 1`] = `
+exports[`Convert Anyupp order to rkeeper order 1`] = `
 Array [
   Array [
     Object {
@@ -20,6 +20,18 @@ Array [
         "order": Array [
           Object {
             "id": "ITEM_EXTERNAL_ID",
+            "items": Array [
+              Object {
+                "id": "PRODUCT COMPONENT EXTERNAL ID",
+                "qnt": 1000,
+                "type": "m",
+              },
+              Object {
+                "id": "PRODUCT COMPONENT EXTERNAL ID 2",
+                "qnt": 1000,
+                "type": "m",
+              },
+            ],
             "qnt": 5000,
             "type": "d",
           },
@@ -27,9 +39,10 @@ Array [
         "order_type": 1,
         "pay_online_type": 0,
         "pay_type": 0,
+        "remoteId": "UNIT_EXTERNALID",
       },
       "method": "post",
-      "url": "undefined/postorder/UNIT_EXTERNALID",
+      "url": "https://RKEEPER_ENDPOINT/postorder/UNIT_EXTERNALID",
     },
   ],
 ]

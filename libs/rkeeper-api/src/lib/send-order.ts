@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/lib/function';
 import axios, { AxiosStatic } from 'axios';
 import { Method } from 'axios';
 import { defer, from } from 'rxjs';
+import * as R from 'ramda';
 
 export interface SendRkeeperOrderDeps {
   currentTime: () => Date;
@@ -14,17 +15,37 @@ const defaultDeps: SendRkeeperOrderDeps = {
   axiosInstance: axios,
 };
 
+const processConfigSet = (configSets: CrudApi.OrderItemConfigSetInput[]) =>
+  pipe(
+    configSets.map(configSet => configSet.items),
+    R.flatten,
+    R.map(component => ({
+      id: component.externalId,
+      qnt: 1000,
+      type: 'm',
+    })),
+  );
+
 export const sendRkeeperOrder =
   (deps: SendRkeeperOrderDeps = defaultDeps) =>
   (unit: CrudApi.Unit, orderInput: CrudApi.CreateOrderInput) =>
     pipe(
-      orderInput.items.map(item => ({
-        id: item.externalId,
-        type: 'd',
-        qnt: item.quantity * 1000,
-      })),
+      orderInput.items.map(item =>
+        pipe(
+          {
+            id: item.externalId,
+            type: 'd',
+            qnt: item.quantity * 1000,
+          },
+          rkeeperItem =>
+            item.configSets
+              ? { ...rkeeperItem, items: processConfigSet(item.configSets) }
+              : rkeeperItem,
+        ),
+      ),
       order => ({
         objectid: unit.externalId,
+        remoteId: unit.externalId,
         order_type: 1,
         pay_type:
           orderInput.paymentMode.method === CrudApi.PaymentMethod.cash ? 0 : 1,

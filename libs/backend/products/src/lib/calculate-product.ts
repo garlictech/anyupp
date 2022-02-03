@@ -214,6 +214,7 @@ const toGeneratedProductConfigSetInput = ({
         name: productComponent.name,
         allergens: productComponent.allergens,
         soldOut: productComponent.soldOut,
+        externalId: productComponent.externalId,
       };
       return configComponent;
     }),
