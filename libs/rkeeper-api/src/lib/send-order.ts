@@ -69,5 +69,11 @@ export const sendRkeeperOrder =
           password: unit.pos?.rkeeper?.rkeeperPassword || '',
         },
       }),
+      R.tap(x =>
+        console.debug(
+          'Order submitted to rkeeper:',
+          JSON.stringify(x, null, 2),
+        ),
+      ),
       data => defer(() => from(deps.axiosInstance.request(data))),
     );
