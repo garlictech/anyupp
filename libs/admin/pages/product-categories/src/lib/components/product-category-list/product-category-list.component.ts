@@ -35,7 +35,7 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
     private _productCategoryListService: ProductCategoryListService,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(productCategoriesSelectors.getAllProductCategories),

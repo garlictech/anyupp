@@ -165,6 +165,7 @@ subscription OnOrderHistoryChanged($userId: String, $unitId: String) {
       key
       value
     }
+    hasRated
     tip {
       type
       value

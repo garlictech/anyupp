@@ -1,5 +1,5 @@
-import { iif } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { EMPTY, iif } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
@@ -22,6 +22,7 @@ import {
   defaultOrderMode,
   defaultServingMode,
   KeyValue,
+  UpsertResponse,
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
@@ -40,7 +41,7 @@ export class UnitFormService {
     private _translateService: TranslateService,
   ) {}
 
-  public createUnitFormGroup(isUpdate: boolean) {
+  public createUnitFormGroup() {
     return this._formBuilder.group({
       groupId: ['', [Validators.required]],
       chainId: ['', [Validators.required]],
@@ -62,19 +63,18 @@ export class UnitFormService {
       ],
       supportedOrderModes: [[defaultOrderMode], { validators: notEmptyArray }],
       orderPolicy: [CrudApi.OrderPolicy.full],
+      soldOutVisibilityPolicy: [CrudApi.SoldOutVisibilityPolicy.faded],
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder, true),
-      ...(isUpdate
-        ? {}
-        : {
-            pos: this._formBuilder.group({
-              type: [CrudApi.PosType.anyupp],
-              rkeeper: this._formsService.createRkeeperFormGroup(true),
-            }),
-            externalId: [''],
-          }),
+      pos: this._formBuilder.group({
+        type: [CrudApi.PosType.anyupp],
+        rkeeper: this._formsService.createRkeeperFormGroup(),
+      }),
+      externalId: [''],
       packagingTaxPercentage: [''],
       ratingPolicies: this._formBuilder.array([]),
+      tipPolicy: this._formsService.createTipPolicyFormGroup(),
+      serviceFeePolicy: this._formsService.createServiceFeePolicyFormGroup(),
       open: this._formBuilder.group({
         from: [''],
         to: [''],
@@ -149,16 +149,6 @@ export class UnitFormService {
     });
   }
 
-  public createUnitRkeeperFormGroup() {
-    return this._formBuilder.group({
-      pos: this._formBuilder.group({
-        type: [CrudApi.PosType.anyupp],
-        rkeeper: this._formsService.createRkeeperFormGroup(false),
-      }),
-      externalId: [''],
-    });
-  }
-
   public getGroupOptions$() {
     return this._store.pipe(
       select(groupsSelectors.getSelectedChainGroups),
@@ -187,17 +177,21 @@ export class UnitFormService {
 
   public saveForm$(
     formValue: CrudApi.CreateUnitInput | CrudApi.UpdateUnitInput,
+    isInitiallyRkeeper: boolean,
     unitId?: string,
   ) {
-    // TODO:update rkeeper stuff
-    /*if (formValue.pos?.type !== CrudApi.PosType.rkeeper) {
-      delete formValue.pos?.rkeeper;
-    }
-    */
-
+    // Some cleanup
     formValue.packagingTaxPercentage = formValue.packagingTaxPercentage
       ? formValue.packagingTaxPercentage
       : 0;
+
+    if (formValue.pos?.type !== CrudApi.PosType.rkeeper) {
+      formValue.externalId = null;
+    }
+
+    if (!formValue.serviceFeePolicy?.type) {
+      formValue.serviceFeePolicy = null;
+    }
 
     return iif(
       () => !unitId,
@@ -205,10 +199,13 @@ export class UnitFormService {
         ...(<CrudApi.CreateUnitInput>formValue),
         isAcceptingOrders: false,
       }),
-      this.updateUnit$({
-        ...formValue,
-        id: unitId || '',
-      }),
+      this.updateUnit$(
+        {
+          ...formValue,
+          id: unitId || '',
+        },
+        isInitiallyRkeeper,
+      ),
     );
   }
 
@@ -248,8 +245,34 @@ export class UnitFormService {
     );
   }
 
-  public updateUnit$(input: CrudApi.UpdateUnitInput) {
-    return this._crudSdk.sdk.UpdateUnit({ input }).pipe(
+  public updateUnit$(
+    input: CrudApi.UpdateUnitInput,
+    isInitiallyRkeeper: boolean,
+  ) {
+    return iif(
+      () => isInitiallyRkeeper && input.pos?.type === CrudApi.PosType.rkeeper,
+      // Save the RKeeper Unit data in 2 steps:
+      // 1) update RKeeper data
+      // 2) update the rest of the data
+      this.updateRKeeperData$({
+        unitId: input.id,
+        ...input.pos?.rkeeper,
+      }).pipe(
+        switchMap((response: UpsertResponse<unknown>) => {
+          if (response.type === 'update') {
+            return this._crudSdk.sdk.UpdateUnit({
+              input: {
+                ...input,
+                pos: undefined,
+              },
+            });
+          }
+
+          return EMPTY;
+        }),
+      ),
+      this._crudSdk.sdk.UpdateUnit({ input }),
+    ).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
     );

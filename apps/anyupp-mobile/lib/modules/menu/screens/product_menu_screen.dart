@@ -32,6 +32,12 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   }
 
   @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _checkNeedToShowTooltip();

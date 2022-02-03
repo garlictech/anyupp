@@ -109,6 +109,11 @@ enum OrderMode {
   pickup
 }
 
+enum SoldOutVisibilityPolicy {
+  faded
+  invisible
+}
+
 enum ServiceFeeType {
   noFee
   included
@@ -299,6 +304,8 @@ input PayTipWithStripeInput {
 type StartStripePaymentOutput @aws_cognito_user_pools {
   clientSecret: String!
   status: String!
+  paymentMethodId: String
+  stripeAccount: String
 }
 
 input StripeCardCreateInput {
@@ -641,6 +648,7 @@ type GeneratedProduct @aws_iam @aws_cognito_user_pools {
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSet]
   supportedServingModes: [ServingMode!]
+  soldOut: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -678,11 +686,6 @@ enum TipType {
   none
   percent
   amount
-}
-
-enum SoldOutVisibilityPolicy {
-  invisible
-  faded
 }
 
 type RatingPolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
@@ -1121,6 +1124,7 @@ input UpdateUnitInput {
   openingHours: WeeklyScheduleInput
   merchantId: String
   timeZone: String
+  pos: PosInput
   externalId: String
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
@@ -2426,6 +2430,7 @@ input ModelGeneratedProductFilterInput {
   image: ModelStringInput
   allergens: ModelAllergenListInput
   supportedServingModes: ModelServingModeListInput
+  soldOut: ModelBooleanInput
   and: [ModelGeneratedProductFilterInput]
   or: [ModelGeneratedProductFilterInput]
   not: ModelGeneratedProductFilterInput
@@ -2446,6 +2451,7 @@ input CreateGeneratedProductInput {
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSetInput]
   supportedServingModes: [ServingMode!]
+  soldOut: Boolean
 }
 
 input UpdateGeneratedProductInput {
@@ -2463,6 +2469,7 @@ input UpdateGeneratedProductInput {
   allergens: [Allergen]
   configSets: [GeneratedProductConfigSetInput]
   supportedServingModes: [ServingMode!]
+  soldOut: Boolean
 }
 
 input DeleteGeneratedProductInput {
@@ -2479,6 +2486,7 @@ input ModelGeneratedProductConditionInput {
   image: ModelStringInput
   allergens: ModelAllergenListInput
   supportedServingModes: ModelServingModeListInput
+  soldOut: ModelBooleanInput
   and: [ModelGeneratedProductConditionInput]
   or: [ModelGeneratedProductConditionInput]
   not: ModelGeneratedProductConditionInput
@@ -3449,6 +3457,7 @@ input SearchableGeneratedProductFilterInput {
   takeawayTax: SearchableIntFilterInput
   position: SearchableIntFilterInput
   image: SearchableStringFilterInput
+  soldOut: SearchableBooleanFilterInput
   and: [SearchableGeneratedProductFilterInput]
   or: [SearchableGeneratedProductFilterInput]
   not: SearchableGeneratedProductFilterInput
@@ -3463,6 +3472,7 @@ enum SearchableGeneratedProductSortableFields {
   takeawayTax
   position
   image
+  soldOut
 }
 
 input SearchableGeneratedProductSortInput {

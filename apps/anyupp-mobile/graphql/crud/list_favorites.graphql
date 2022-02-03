@@ -15,24 +15,38 @@ query ListFavoriteProducts(
       userId
       product {
         id
-        image
-        supportedServingModes
-        description {
-          de
-          en
-          hu
-        }
+        unitId
         name {
-          de
           en
+          de
           hu
         }
+        description {
+          en
+          de
+          hu
+        }
+        image
         position
+        productCategoryId
         productType
         tax
         allergens
-        unitId
-        productCategoryId
+        variants {
+          id
+          position
+          price
+          pack {
+            size
+            unit
+          }
+          variantName {
+            de
+            en
+            hu
+          }
+          netPackagingFee
+        }
         configSets {
           type
           productSetId
@@ -43,6 +57,7 @@ query ListFavoriteProducts(
             hu
           }
           maxSelection
+          supportedServingModes
           items {
             allergens
             name {
@@ -52,23 +67,13 @@ query ListFavoriteProducts(
             }
             position
             price
+            netPackagingFee
             productComponentId
+            soldOut
           }
         }
-        variants {
-          id
-          pack {
-            size
-            unit
-          }
-          position
-          price
-          variantName {
-            de
-            en
-            hu
-          }
-        }
+        supportedServingModes
+        soldOut
       }
     }
     nextToken

@@ -415,6 +415,7 @@ Object {
   "position": -1,
   "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
   "productType": "dish",
+  "soldOut": null,
   "supportedServingModes": Array [
     "inPlace",
   ],
@@ -583,6 +584,7 @@ Object {
   "position": -1,
   "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
   "productType": "dish",
+  "soldOut": null,
   "supportedServingModes": Array [
     "inPlace",
   ],
@@ -751,6 +753,7 @@ Object {
   "position": -1,
   "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
   "productType": "dish",
+  "soldOut": null,
   "supportedServingModes": Array [
     "inPlace",
   ],
@@ -795,6 +798,7 @@ Object {
   "position": -1,
   "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
   "productType": "dish",
+  "soldOut": null,
   "supportedServingModes": Array [
     "inPlace",
   ],

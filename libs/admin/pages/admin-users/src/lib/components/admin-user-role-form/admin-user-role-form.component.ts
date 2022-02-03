@@ -43,7 +43,7 @@ export class AdminUserRoleFormComponent
     super(_injector);
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.dialogForm = this._formBuilder.group({
       roleContextId: ['', [Validators.required]],
     });
@@ -112,7 +112,7 @@ export class AdminUserRoleFormComponent
           adminUserId: this.adminUser.id,
         })
         .subscribe((response: UpsertResponse<unknown>) => {
-          this.dialogForm.patchValue({ roleContextId: '' });
+          this.dialogForm?.patchValue({ roleContextId: '' });
           this._toasterService.showSimpleSuccess(response.type);
           this._changeDetectorRef.detectChanges();
         });

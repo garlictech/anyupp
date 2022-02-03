@@ -1,6 +1,19 @@
 <nb-card>
   <nb-card-header>
     <div class="float-start">{{ 'units.editFloorMap' | translate }}</div>
+
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="ms-3 qr-button"
+      [disabled]="!unit.floorMap"
+      (click)="printQR()"
+    >
+      QR
+    </button>
+
     <button
       nbButton
       ghost
@@ -9,7 +22,7 @@
       class="float-right"
       (click)="close()"
     >
-      <nb-icon icon="close-outline"></nb-icon>
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
@@ -26,7 +39,7 @@
           type="submit"
           fullWidth
           status="primary"
-          [disabled]="dialogForm.invalid"
+          [disabled]="dialogForm?.invalid"
         >
           {{ 'common.submit' | translate }}
         </button>

@@ -29,7 +29,7 @@ export class ColorizedLaneIconComponent implements OnInit {
     this.laneColor = DEFAULT_LANE_COLOR;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(unitsSelectors.getSelectedUnit),

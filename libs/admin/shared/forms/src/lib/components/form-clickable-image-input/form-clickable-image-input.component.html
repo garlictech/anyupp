@@ -19,8 +19,8 @@
   }"
   (click)="loadImage()"
 >
-  <nb-icon icon="plus" *ngIf="!image"></nb-icon>
+  <nb-icon icon="add" pack="material-icons" *ngIf="!image"></nb-icon>
   <div class="removeBtn clickable" *ngIf="image" (click)="remove()">
-    <nb-icon icon="minus"></nb-icon>
+    <nb-icon icon="remove" pack="material-icons"></nb-icon>
   </div>
 </div>

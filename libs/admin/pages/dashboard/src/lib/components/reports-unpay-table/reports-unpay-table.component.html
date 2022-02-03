@@ -6,14 +6,22 @@
     <div class="row">
       <div class="col"></div>
       <div class="col text-end">
-        <nb-icon class="smaller-icon" icon="shopping-cart-outline"></nb-icon>
+        <nb-icon
+          class="smaller-icon"
+          icon="shopping-cart"
+          pack="material-icons"
+        ></nb-icon>
       </div>
       <div class="col text-end" *ngFor="let method of paymentMethods">
         {{ 'common.paymentModes.' + method | translate }}
       </div>
       <div class="col text-end">∑</div>
       <div class="col text-end">
-        <nb-icon class="smaller-icon" icon="person-outline"></nb-icon>
+        <nb-icon
+          class="smaller-icon"
+          icon="person"
+          pack="material-icons"
+        ></nb-icon>
       </div>
     </div>
 

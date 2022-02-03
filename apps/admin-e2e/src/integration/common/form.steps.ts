@@ -8,6 +8,13 @@ When(
 );
 
 When(
+  'I fill out the input with testId {string} with the {fixture} value',
+  (id: string, value: string) => {
+    cy.findByTestId(id).type(value, { force: true });
+  },
+);
+
+When(
   'I fill out the last input with id {string} with the {fixture} value',
   (id: string, value: string) => {
     cy.get(`#${id}`).last().type(value, { force: true });

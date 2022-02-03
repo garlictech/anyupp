@@ -84,7 +84,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .length;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(groupsSelectors.getSeletedGroup),

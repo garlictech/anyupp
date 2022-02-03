@@ -19,11 +19,9 @@ class AwsUnitProvider implements IUnitProvider {
           ),
         ),
       );
-      // print('***** searchUnitsNearLocation().result=$result');
-      // print('***** searchUnitsNearLocation().result.data=${result.data}');
-      // print('***** searchUnitsNearLocation().result.errors=${result.errors}');
 
       if (result.hasErrors) {
+        print('***** searchUnitsNearLocation().result.errors=${result.errors}');
         throw GraphQLException.fromGraphQLError(
             GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
@@ -33,13 +31,12 @@ class AwsUnitProvider implements IUnitProvider {
       }
 
       var items = result.data?.getUnitsNearLocation?.items;
-      // print('***** searchUnitsNearLocation().items=$items, length=${items?.length}');
+      print(
+          '***** searchUnitsNearLocation().items=$items, length=${items?.length}');
       List<GeoUnit> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
-          GeoUnit unit = GeoUnit.fromJson(items[i]!.toJson());
-          // print('***** searchUnitsNearLocation().unit[$i]=${unit.name} ${unit.address}');
-          results.add(unit);
+          results.add(GeoUnit.fromJson(items[i]!.toJson()));
         }
       }
       // results.sort((a, b) => a.position.compareTo(b.position));

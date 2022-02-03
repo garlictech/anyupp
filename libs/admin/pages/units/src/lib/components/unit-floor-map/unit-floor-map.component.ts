@@ -1,13 +1,16 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   Injector,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import * as floorMapLib from '@bgap/admin/shared/floor-map';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { QrGeneratorService } from '@bgap/admin/shared/utils';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,16 +22,20 @@ export class UnitFloorMapComponent
   extends AbstractFormDialogComponent
   implements OnInit
 {
+  @ViewChild('container') container!: ElementRef;
   public unit!: CrudApi.Unit;
-  public rawForm!: FormGroup;
+  public rawForm?: FormGroup;
 
-  constructor(protected _injector: Injector) {
+  constructor(
+    protected _injector: Injector,
+    private _qrGeneratorService: QrGeneratorService,
+  ) {
     super(_injector);
 
     this._store.dispatch(floorMapLib.floorMapActions.resetFloorMap());
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.dialogForm = this._formBuilder.group({
       floorMap: [this.unit.floorMap || ''],
     });
@@ -53,6 +60,12 @@ export class UnitFloorMapComponent
           console.error('GROUP UPDATE ERROR', err);
         },
       );
+  }
+
+  public printQR() {
+    if (this.unit.floorMap) {
+      this._qrGeneratorService.printCodes(this.unit);
+    }
   }
 
   /*

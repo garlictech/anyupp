@@ -36,8 +36,8 @@
     "group": "Group",
     "unit": "Unit",
     "currency": "Pénznem",
-    "taxPercent": "Adó (%)",
-    "takeawayTaxPercent": "Adó elvitelre (%)",
+    "taxPercent": "Adó",
+    "takeawayTaxPercent": "Adó elvitelre",
     "date": "Dátum",
     "from": "-tól",
     "to": "-ig",
@@ -112,6 +112,12 @@
       "SUCCESS": "Sikeres",
       "WAITING_FOR_PAYMENT": "Fizetésre vár",
       "FAILED": "Sikertelen"
+    },
+    "soldOutPolicy": {
+      "title": "Készlethiány megjelenítése",
+      "invisible": "Nem látható, ha nincs készletem",
+      "faded": "Halványított, ha nincs készleten",
+      "soldOut": "Nincs készleten"
     },
     "sum": "Összesen",
     "width": "szélesség",
@@ -343,6 +349,21 @@
     "ratingPolicies": {
       "title": "Értékelések",
       "ratingPolicy": "Értékelés"
+    },
+    "tipPolicy": {
+      "title": "Borravalók",
+      "newPercent": "Új százalék",
+      "percents": "Százalékok",
+      "customValue": "Egyedi érték"
+    },
+    "serviceFee": {
+      "title": "Felszolgálási díj",
+      "serviceFeePercent": "Felszolgálási díj",
+      "type": {
+        "noFee": "Nincs felszolgálási díj",
+        "included": "Az árak tartalmazzák a felszolgálási díjat",
+        "applicable": "Az árak nem tartalmazzák a felszolgálási díjat"
+      }
     }
   },
   "users": {
@@ -408,6 +429,7 @@
   "print": {
     "items": "Tételek",
     "vatDetails": "ÁFA részletezés",
+    "serviceFeeDetails": "Felszolgállási díj",
     "selectedPaymentMode": "Választott fizetési mód"
   },
   "auth": {

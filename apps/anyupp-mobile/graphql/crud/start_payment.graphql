@@ -16,5 +16,7 @@ mutation StartPayment(
   ) {
     clientSecret
     status
+    paymentMethodId
+    stripeAccount
   }
 }

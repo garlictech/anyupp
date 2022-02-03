@@ -28,10 +28,6 @@ Future<bool> handleUrl(Uri uri) async {
       return await handleVerifyEmail(uri);
     case DeeplinkType.COGNITO_CODE:
       {
-        if (browser.isOpened()) {
-          print('closing browser!');
-          await browser.close();
-        }
         var code = uri.queryParameters['code'];
         print('handling cognito code: $code');
         if (code == null) {
@@ -40,12 +36,21 @@ Future<bool> handleUrl(Uri uri) async {
               error.contains('UserAlreadyExists') &&
               relaunchCount > 0) {
             relaunchCount--;
+            if (browser.isOpened()) {
+              print('closing browser!');
+              await browser.close();
+            }
+            await Future.delayed(Duration(milliseconds: 500));
             reLaunchURL();
             return true;
           }
           return false;
         }
-        await Future.delayed(Duration(seconds: 2));
+        // if (browser.isOpened()) {
+        //   print('closing browser!');
+        //   await browser.close();
+        // }
+        await Future.delayed(Duration(milliseconds: 2000));
         getIt<LoginBloc>().add(CompleteLoginWithMethod(code));
 
         return true;

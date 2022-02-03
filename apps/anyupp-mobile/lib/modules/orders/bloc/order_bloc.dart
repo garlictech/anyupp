@@ -32,6 +32,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
   }
 
   FutureOr<void> _handleError(Exception e, Emitter<BaseOrderState> emit) {
+    print('_handleError()=$e');
     emit(OrderLoadError('ORDER_BLOC', e.toString(), null));
   }
 

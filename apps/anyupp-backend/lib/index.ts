@@ -10,7 +10,7 @@ import { ParamsStack } from './app/params-stack';
 import { ReportGeneratorStack } from './app/report-generator-stack';
 import { RKeeperStack } from './app/rkeeper-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
-import { SeederStack } from './app/seeder-stack';
+//import { SeederStack } from './app/seeder-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
 
@@ -76,7 +76,7 @@ export class AnyUppStack extends Stack {
       securityGroupId,
     });
 
-    const appsyncStack = new AppsyncAppStack(scope, 'appsync', {
+    new AppsyncAppStack(scope, 'appsync', {
       consumerUserPool: cognitoStack.consumerUserPool,
       adminUserPool: cognitoStack.adminUserPool,
       stripeSecretKey: secretsManagerStack.stripeSecretKey,
@@ -122,7 +122,7 @@ export class AnyUppStack extends Stack {
       rootDomain,
     });
 
-    if (scope.stage === 'dev' || scope.stage === 'qa') {
+    /*if (scope.stage === 'dev' || scope.stage === 'qa') {
       new SeederStack(scope, 'seeder', {
         adminUserPool: cognitoStack.adminUserPool,
         consumerUserPool: cognitoStack.consumerUserPool,
@@ -131,6 +131,7 @@ export class AnyUppStack extends Stack {
         apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
       });
     }
+    */
   }
 }
 

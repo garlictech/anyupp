@@ -44,8 +44,11 @@ class AllergenDetailsScreen extends StatelessWidget {
             ),
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                String allergenName = allergenMap.keys.toList()[index];
-                int allergenIndex = allergenMap[allergenName]!;
+                String allergenName =
+                    enumToString(allergenMap.keys.toList()[index])!;
+
+                int allergenIndex =
+                    allergenMap[allergenMap.keys.toList()[index]]!;
                 return AllergenGridWidget(
                   allergen: trans(context, 'allergens.$allergenName'),
                   index: allergenIndex,

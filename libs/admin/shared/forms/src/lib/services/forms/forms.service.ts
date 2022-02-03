@@ -37,6 +37,7 @@ export class FormsService {
       price: [0],
       refGroupPrice: [0],
       netPackagingFee: [0],
+      soldOut: [false],
     };
 
     return this._formBuilder.group(groupConfig);
@@ -90,20 +91,16 @@ export class FormsService {
       netPackagingFee: [0],
     });
 
-  public createRkeeperFormGroup = (addAnyuppPassword: boolean): FormGroup =>
+  public createRkeeperFormGroup = (): FormGroup =>
     this._formBuilder.group({
       endpointUri: [{ value: '', disabled: true }, Validators.required],
       rkeeperUsername: [{ value: '', disabled: true }, Validators.required],
       rkeeperPassword: [{ value: '', disabled: true }, Validators.required],
       anyuppUsername: [{ value: '', disabled: true }, Validators.required],
-      ...(addAnyuppPassword
-        ? {
-            anyuppPassword: [
-              { value: '', disabled: true },
-              [Validators.required, Validators.minLength(8)],
-            ],
-          }
-        : {}),
+      anyuppPassword: [
+        { value: '', disabled: true },
+        [Validators.required, Validators.minLength(8)],
+      ],
     });
 
   public createRatingPolicyFormGroup = (): FormGroup =>
@@ -120,5 +117,36 @@ export class FormsService {
         de: [''],
       }),
       ratings: this._formBuilder.array([]),
+    });
+
+  public createTipPolicyFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      title: this._formBuilder.group({
+        hu: [''],
+        en: [''],
+        de: [''],
+      }),
+      description: this._formBuilder.group({
+        hu: [''],
+        en: [''],
+        de: [''],
+      }),
+      percents: [[]],
+      maxOtherAmount: [],
+    });
+
+  public addUnitTipPercent = (caption: string, percents: number[]) =>
+    [...new Set(percents), parseFloat(caption)].sort();
+
+  public removeUnitTipPercent = (caption: string, percents: number[]) => {
+    const removable = parseFloat(caption.replace('%', ''));
+    return percents.filter(v => v !== removable).sort();
+  };
+
+  public createServiceFeePolicyFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      type: [{ value: '', disabled: true }, Validators.required],
+      percentage: [{ value: '', disabled: true }, Validators.required],
+      taxPercentage: [{ value: '', disabled: true }, Validators.required],
     });
 }

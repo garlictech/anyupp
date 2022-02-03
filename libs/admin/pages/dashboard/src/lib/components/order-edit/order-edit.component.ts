@@ -39,13 +39,11 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     this.workingOrderStatus = false;
   }
 
-  ngOnInit(): void {
-    Object.keys(CrudApi.PaymentMethod).forEach((key: string): void => {
-      this.paymentMethods.push({
-        key,
-        value: CrudApi.PaymentMethod[<keyof typeof CrudApi.PaymentMethod>key],
-      });
-    });
+  ngOnInit() {
+    this.paymentMethods = Object.keys(CrudApi.PaymentMethod).map(key => ({
+      key,
+      value: CrudApi.PaymentMethod[<keyof typeof CrudApi.PaymentMethod>key],
+    }));
 
     this._store
       .pipe(select(dashboardSelectors.getSize), untilDestroyed(this))

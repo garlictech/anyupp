@@ -9,6 +9,7 @@ class ProductVariant {
   final double price;
   final int position;
   final double? netPackagingFee;
+  final bool soldOut;
 
   ProductVariant({
     this.id,
@@ -17,6 +18,7 @@ class ProductVariant {
     required this.price,
     required this.position,
     this.netPackagingFee,
+    required this.soldOut,
   });
 
   ProductVariant copyWith({
@@ -26,6 +28,7 @@ class ProductVariant {
     double? price,
     int? position,
     double? netPackagingFee,
+    bool? soldOut,
   }) {
     return ProductVariant(
       id: id ?? this.id,
@@ -34,6 +37,7 @@ class ProductVariant {
       price: price ?? this.price,
       position: position ?? this.position,
       netPackagingFee: netPackagingFee ?? this.netPackagingFee,
+      soldOut: soldOut ?? this.soldOut,
     );
   }
 
@@ -45,6 +49,7 @@ class ProductVariant {
       'price': price,
       'position': position,
       'netPackagingFee': netPackagingFee,
+      'soldOut': soldOut,
     };
   }
 
@@ -57,12 +62,13 @@ class ProductVariant {
       price: map['price'],
       position: map['position'],
       netPackagingFee: map['netPackagingFee'],
+      soldOut: map['soldOut'] ?? false,
     );
   }
 
   @override
   String toString() {
-    return 'ProductVariant(id: $id, variantName: $variantName, netPackagingFee: $netPackagingFee, pack: $pack, price: $price, position: $position)';
+    return 'ProductVariant(id: $id, variantName: $variantName, netPackagingFee: $netPackagingFee, pack: $pack, price: $price, soldOut: $soldOut, position: $position)';
   }
 
   @override
@@ -75,7 +81,8 @@ class ProductVariant {
         other.pack == pack &&
         other.price == price &&
         other.position == position &&
-        other.netPackagingFee == netPackagingFee;
+        other.netPackagingFee == netPackagingFee &&
+        other.soldOut == soldOut;
   }
 
   @override
@@ -85,6 +92,7 @@ class ProductVariant {
         pack.hashCode ^
         price.hashCode ^
         position.hashCode ^
-        netPackagingFee.hashCode;
+        netPackagingFee.hashCode ^
+        soldOut.hashCode;
   }
 }

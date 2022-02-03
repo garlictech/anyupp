@@ -10,7 +10,7 @@ import { Allergen } from '@bgap/shared/types';
   styleUrls: ['./form-allergens.component.scss'],
 })
 export class FormAllergensComponent {
-  @Input() control!: FormControl;
+  @Input() control?: FormControl | null;
 
   public allergens = ALLERGENS;
 

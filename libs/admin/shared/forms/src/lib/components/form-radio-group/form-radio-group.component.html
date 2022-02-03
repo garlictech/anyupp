@@ -3,7 +3,11 @@
     <label class="caption">{{ caption | translate }}</label>
   </div>
   <div>
-    <nb-radio-group [formControl]="control" [attr.data-testid]="inputId">
+    <nb-radio-group
+      *ngIf="control as formControl"
+      [formControl]="formControl"
+      [attr.data-testid]="inputId"
+    >
       <nb-radio
         *ngFor="let option of options"
         [value]="option.key"

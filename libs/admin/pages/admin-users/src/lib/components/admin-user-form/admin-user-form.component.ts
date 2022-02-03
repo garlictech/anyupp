@@ -41,9 +41,9 @@ export class AdminUserFormComponent
     return this.adminUser?.profileImage || '';
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.adminUser) {
-      this.dialogForm.patchValue(cleanObject(this.adminUser));
+      this.dialogForm?.patchValue(cleanObject(this.adminUser));
     }
 
     this._changeDetectorRef.detectChanges();
@@ -52,7 +52,7 @@ export class AdminUserFormComponent
   public submit() {
     if (this.dialogForm?.valid) {
       this._adminUserFormService
-        .saveForm$(cloneDeep(this.dialogForm.value), this.adminUser?.id)
+        .saveForm$(cloneDeep(this.dialogForm?.value), this.adminUser?.id)
         .subscribe((response: UpsertResponse<unknown>) => {
           this._toasterService.showSimpleSuccess(response.type);
 

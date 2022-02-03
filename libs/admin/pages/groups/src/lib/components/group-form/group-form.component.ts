@@ -49,9 +49,9 @@ export class GroupFormComponent
     );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.group) {
-      this.dialogForm.patchValue(cleanObject(this.group));
+      this.dialogForm?.patchValue(cleanObject(this.group));
     } else {
       this._store
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))

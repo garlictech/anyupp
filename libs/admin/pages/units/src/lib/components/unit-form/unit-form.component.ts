@@ -32,7 +32,7 @@ import { select } from '@ngrx/store';
 import { timeZonesNames } from '@vvo/tzdb';
 
 import { UnitFormService } from '../../services/unit-form.service';
-import { orderPolicyOptions } from '../../const';
+import { orderPolicyOptions, soldOutPolicyOptions } from '../../const';
 
 @UntilDestroy()
 @Component({
@@ -51,7 +51,8 @@ export class UnitFormComponent
   public groupOptions$: Observable<KeyValue[]>;
   public timeZoneOptions: KeyValue[] = [];
   public orderPolicyOptions: KeyValue[] = orderPolicyOptions;
-  private _isInitiallyRkeeper = false;
+  public soldOutPolicyOptions: KeyValue[] = soldOutPolicyOptions;
+  public isInitiallyRkeeper = false;
 
   constructor(
     protected _injector: Injector,
@@ -70,11 +71,19 @@ export class UnitFormComponent
     this.groupOptions$ = this._unitFormService.getGroupOptions$();
   }
 
-  ngOnInit(): void {
-    this.dialogForm = this._unitFormService.createUnitFormGroup(!!this.unit);
+  ngOnInit() {
+    this.dialogForm = this._unitFormService.createUnitFormGroup();
 
     if (this.unit) {
       this.dialogForm.patchValue(cleanObject(omit(['lanes'], this.unit)));
+
+      // Setup RKeeper form for updating
+      if (this.unit.pos?.type === CrudApi.PosType.rkeeper) {
+        this.isInitiallyRkeeper = true;
+
+        this.dialogForm.get('pos.rkeeper')?.enable();
+        this.dialogForm.get('pos.rkeeper.anyuppPassword')?.disable();
+      }
 
       this._unitFormService.patchRatingPolicies(
         this.unit.ratingPolicies || [],
@@ -116,7 +125,7 @@ export class UnitFormComponent
         )
         .subscribe((selectedChainId: string | undefined | null): void => {
           if (selectedChainId) {
-            this.dialogForm.patchValue({ chainId: selectedChainId });
+            this.dialogForm?.patchValue({ chainId: selectedChainId });
 
             this._changeDetectorRef.detectChanges();
           }
@@ -127,7 +136,7 @@ export class UnitFormComponent
         .pipe(select(loggedUserSelectors.getSelectedGroupId), take(1))
         .subscribe((selectedGroupId: string | undefined | null): void => {
           if (selectedGroupId) {
-            this.dialogForm.patchValue({ groupId: selectedGroupId });
+            this.dialogForm?.patchValue({ groupId: selectedGroupId });
           }
         });
 
@@ -142,7 +151,7 @@ export class UnitFormComponent
   public submit() {
     if (this.dialogForm?.valid) {
       if (
-        this._isInitiallyRkeeper &&
+        this.isInitiallyRkeeper &&
         this.dialogForm?.value.pos?.type !== CrudApi.PosType.rkeeper
       ) {
         const dialog = this._nbDialogService.open(ConfirmDialogComponent);
@@ -171,7 +180,11 @@ export class UnitFormComponent
 
   private _saveForm() {
     this._unitFormService
-      .saveForm$(cloneDeep(this.dialogForm.value), this.unit?.id)
+      .saveForm$(
+        cloneDeep(this.dialogForm?.value),
+        this.isInitiallyRkeeper,
+        this.unit?.id,
+      )
       .subscribe((response: UpsertResponse<unknown>) => {
         this._toasterService.showSimpleSuccess(response.type);
 
@@ -200,6 +213,10 @@ export class UnitFormComponent
   }
 
   public generatePassword() {
-    this.dialogForm?.get('pos.rkeeper.anyuppPassword')?.patchValue(makeId(8));
+    if (this.unit && this.isInitiallyRkeeper) {
+      this._unitFormService.updateRkeeperPassword$(this.unit?.id).subscribe();
+    } else {
+      this.dialogForm?.get('pos.rkeeper.anyuppPassword')?.patchValue(makeId(8));
+    }
   }
 }

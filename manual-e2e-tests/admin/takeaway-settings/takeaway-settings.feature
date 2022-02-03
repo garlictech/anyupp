@@ -31,16 +31,18 @@ Feature: Takeaway settings on admin
     Then the "Products" title is displayed
     When I click on the "Group products" text
     When I click the category selector to set "Hamburgers"
-    Then I should see "Fanta #2" text
+    Then I should see "Sajtburger" text
+    Then I should see "Fishburger" text
+    Then I should see "Hamburger" text
     And On the active tab I click the edit button in the listitem with "Sajtburger" content
     Then I should see "Edit product" text on the dialog
-    When I fill out the "tax(%)" input with "28"
-    And I fill out the "takeaway tax(%)" input with "27"
+    When I fill out the "tax" input with "28"
+    And I fill out the "takeaway tax" input with "27"
     And I click on the "Submit" button
     Then I should see a success toastr
     And On the active tab I click the edit button in the listitem with "Sajtburger" content
-    Then The "tax(%)" input should contain "28"
-    Then The "takeaway tax(%)" input should contain "27"
+    Then The "tax" input should contain "28"
+    Then The "takeaway tax" input should contain "27"
     When I click on the close button
     Then The dialog should NOT exist
     When I click on the "Unit products" text

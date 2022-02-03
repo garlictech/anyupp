@@ -12,12 +12,14 @@ import {
   NbCardModule,
   NbCheckboxModule,
   NbDialogModule,
+  NbFormFieldModule,
   NbIconModule,
   NbInputModule,
   NbLayoutModule,
   NbListModule,
   NbRadioModule,
   NbSelectModule,
+  NbTagModule,
   NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
@@ -42,11 +44,15 @@ import { FormUnitLanesComponent } from './components/form-unit-lanes/form-unit-l
 import { FormUnitPosComponent } from './components/form-unit-pos/form-unit-pos.component';
 import { FormWeeklyScheduleComponent } from './components/form-weekly-schedule/form-weekly-schedule.component';
 import { FormRatingPolicyComponent } from './components/form-rating-policy/form-rating-policy.component';
+import { FormTipPolicyComponent } from './components/form-tip-policy/form-tip-policy.component';
+import { FormUnitServiceFeeComponent } from './components/form-unit-service-fee/form-unit-service-fee.component';
 
 const NB_MODULES = [
   NbIconModule,
   NbEvaIconsModule,
   NbInputModule,
+  NbTagModule,
+  NbFormFieldModule,
   NbButtonModule,
   NbLayoutModule,
   NbCardModule,
@@ -83,6 +89,8 @@ const COMPONENTS = [
   FormServingModeComponent,
   FormOrderModeComponent,
   FormRatingPolicyComponent,
+  FormTipPolicyComponent,
+  FormUnitServiceFeeComponent,
 ];
 
 @NgModule({

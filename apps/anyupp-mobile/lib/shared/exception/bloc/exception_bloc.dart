@@ -1,11 +1,10 @@
 import 'dart:async';
 
+import 'package:catcher/catcher.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/utils/stage_utils.dart';
 import 'package:fa_prev/shared/widgets/common_error_dialog.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:catcher/catcher.dart';
 
 import 'exception_event.dart';
 import 'exception_state.dart';
@@ -24,14 +23,20 @@ class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {
     print('ExceptionBloc.ShowException.code=$code');
     print('ExceptionBloc.ShowException.subCode=$subCode');
 
+    emit(ExceptionShowState(event.exception));
+
+    if (!event.show) {
+      return;
+    }
+
     if (event.exception.details is List) {
       details = event.exception.details;
     }
-    // not needed at the moment: yield NewExceptionArrivedState(event.exception);
+
     if (Catcher.navigatorKey?.currentContext != null) {
-      await Future.delayed(Duration(milliseconds: 300));
+      await Future.delayed(Duration(milliseconds: 1000));
       SchedulerBinding.instance?.addPostFrameCallback((_) async {
-        showErrorDialog(
+        await showErrorDialog(
             Catcher.navigatorKey!.currentContext!,
             transEx(
                 Catcher.navigatorKey!.currentContext!,
@@ -45,7 +50,8 @@ class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {
                 details,
                 'error.$code.description',
                 'error.description'),
-            exceptionDetails: isDev ? event.exception.toString() : null);
+            exceptionDetails:
+                null); //isDev ? event.exception.toString() : null);
       });
     }
   }

@@ -124,7 +124,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
         listeners: [
           BlocListener<CartBloc, BaseCartState>(
             listener: (BuildContext context, BaseCartState state) {
-              print('********* CartBloc.state=$state');
+              print('SelectPaymentMethodScreen.CartBloc.state=$state');
               if (state is EmptyCartState) {
                 if (_orderPolicy != OrderPolicy.full) {
                   setState(() {
@@ -144,6 +144,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
           ),
           BlocListener<StripePaymentBloc, StripePaymentState>(
             listener: (BuildContext context, StripePaymentState state) {
+              print('SelectPaymentMethodScreen.StripePaymentBloc.state=$state');
               if (state is StripeOperationSuccess) {
                 setState(() {
                   _loading = false;

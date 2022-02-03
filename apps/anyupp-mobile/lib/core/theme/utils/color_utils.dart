@@ -57,7 +57,7 @@ ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
       unit.style.colors.primary ?? unit.style.colors.indicator ?? '#30BF60',
     ).color;
     var secondary = TinyColor.fromString(
-      unit.style.colors.secondary ?? unit.style.colors.textDark ?? '#303030',
+      unit.style.colors.secondary ?? unit.style.colors.textDark ?? '#373737',
     ).color;
 
     var secondary64 = _col(secondary, 64);
@@ -66,49 +66,25 @@ ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
     var secondary12 = _col(secondary, 7);
     var secondary0 = _col(secondary, 0);
 
-    // print('**** COLORS:');
-    print('\tfinal primary = $primary;');
-    print('\tfinal secondary=$secondary;');
-    print('\tfinal secondary64=$secondary64;');
-    print('\tfinal secondary40=$secondary40;');
-    print('\tfinal secondary16=$secondary16;');
-    print('\tfinal secondary12=$secondary12;');
-    print('\tfinal secondary0=$secondary0;');
-
-    // print('\t[secondary4]=${_col(secondary, 4)};');
-    // print('\t[secondary5]=${_col(secondary, 5)};');
-    // print('\t[secondary6]=${_col(secondary, 6)};');
-    // print('\t[secondary7]=${_col(secondary, 7)};');
-    // print('\t[secondary8]=${_col(secondary, 8)};');
-    // print('\t[secondary9]=${_col(secondary, 9)};');
-    // print('\t[secondary10]=${_col(secondary, 10)};');
-    // print('\t[secondary11]=${_col(secondary, 11)};');
+    // print('\tfinal primary = $primary;');
+    // print('\tfinal secondary=$secondary;');
+    // print('\tfinal secondary64=$secondary64;');
+    // print('\tfinal secondary40=$secondary40;');
+    // print('\tfinal secondary16=$secondary16;');
+    // print('\tfinal secondary12=$secondary12;');
+    // print('\tfinal secondary0=$secondary0;');
 
     return ThemeChainData(
       light: secondary0.isLight,
       secondary0: secondary0,
       secondary12: secondary12,
       secondary: secondary,
-      // text2: secondary0,
       primary: primary,
-      // highlight: primary,
       secondary64: secondary64,
       secondary16: secondary16,
       secondary40: secondary40,
       images: unit.style.images,
     );
-    // return ThemeChainData(
-    //   background: HexColor.fromHex(unit.style.colors.backgroundLight),
-    //   background2: HexColor.fromHex(unit.style.colors.backgroundDark),
-    //   text: HexColor.fromHex(unit.style.colors.textDark),
-    //   text2: HexColor.fromHex(unit.style.colors.textLight),
-    //   indicator: HexColor.fromHex(unit.style.colors.indicator),
-    //   highlight: HexColor.fromHex(unit.style.colors.highlight),
-    //   disabled: HexColor.fromHex(unit.style.colors.disabled),
-    //   border: HexColor.fromHex(unit.style.colors.borderDark),
-    //   border2: HexColor.fromHex(unit.style.colors.borderLight),
-    //   images: unit.style.images,
-    // );
   } catch (error, stackTrace) {
     Catcher.reportCheckedError(error, stackTrace);
     return ThemeAnyUpp();

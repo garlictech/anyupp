@@ -22,7 +22,7 @@
       [title]="'common.edit' | translate"
       (click)="editProduct()"
     >
-      <nb-icon icon="edit-outline"></nb-icon>
+      <nb-icon icon="edit" pack="material-icons"></nb-icon>
     </button>
 
     <ng-container
@@ -41,7 +41,7 @@
         class="float-right me-2"
         (click)="moveDown()"
       >
-        <nb-icon icon="chevron-down"></nb-icon>
+        <nb-icon icon="expand_more" pack="material-icons"></nb-icon>
       </button>
       <button
         [hidden]="isFirst"
@@ -52,7 +52,7 @@
         class="float-right me-2"
         (click)="moveUp()"
       >
-        <nb-icon icon="chevron-up"></nb-icon>
+        <nb-icon icon="expand_less" pack="material-icons"></nb-icon>
       </button>
     </ng-container>
   </div>
@@ -71,7 +71,7 @@
     (click)="extendProduct()"
     [title]="'products.extendProduct' | translate"
   >
-    <nb-icon icon="download-outline"></nb-icon>
+    <nb-icon icon="file_download" pack="material-icons"></nb-icon>
   </button>
 </ng-container>
 
@@ -110,6 +110,12 @@
     <bgap-status-led
       class="ms-1"
       [status]="variant?.isAvailable"
+    ></bgap-status-led>
+
+    <bgap-status-led
+      *ngIf="productLevel === EProductLevel.UNIT"
+      class="ms-1"
+      [status]="!variant?.soldOut"
     ></bgap-status-led>
   </div>
 

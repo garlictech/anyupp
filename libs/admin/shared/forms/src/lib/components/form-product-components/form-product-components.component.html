@@ -10,7 +10,7 @@
         [localize]="false"
         [options]="productComponentSetOptions"
         [control]="
-          componentSetForm.get('productComponentSetId')! | asFormControl
+          componentSetForm?.get('productComponentSetId') | asFormControl
         "
         inputId="productComponentSetId"
       ></bgap-form-select>
@@ -22,14 +22,14 @@
         status="primary"
         (click)="addComponentSetToList()"
         data-testid="addComponentSetButton"
-        [disabled]="componentSetForm.invalid"
+        [disabled]="componentSetForm?.invalid"
       >
         {{ 'common.add' | translate }}
       </button>
     </div>
   </div>
 
-  <div class="mb-3 mt-3">
+  <div class="mb-3 mt-3" *ngIf="componentFormArray">
     <ng-container
       *ngFor="
         let componentSet of (componentFormArray | iterableAbstractControls) ||
@@ -76,7 +76,7 @@
             (click)="removeComponentSetFromList(i)"
             [attr.data-testid]="'removeComponentSetButton_' + i"
           >
-            <nb-icon icon="trash-2-outline"></nb-icon>
+            <nb-icon icon="remove" pack="material-icons"></nb-icon>
           </button>
 
           <button
@@ -89,7 +89,7 @@
             [title]="'common.moveDown' | translate"
             (click)="move(i, 1)"
           >
-            <nb-icon icon="chevron-down"></nb-icon>
+            <nb-icon icon="expand_more" pack="material-icons"></nb-icon>
           </button>
           <button
             [hidden]="isFirst"
@@ -101,7 +101,7 @@
             [title]="'common.moveUp' | translate"
             (click)="move(i, -1)"
           >
-            <nb-icon icon="chevron-up"></nb-icon>
+            <nb-icon icon="expand_less" pack="material-icons"></nb-icon>
           </button>
         </div>
 
@@ -112,7 +112,7 @@
         </div>
 
         <bgap-form-product-component-item
-          [itemFormArray]="componentSet.get('items')! | asFormArray"
+          [itemFormArray]="componentSet?.get('items') | asFormArray"
           [productLevel]="productLevel"
           [currency]="currency"
         ></bgap-form-product-component-item>

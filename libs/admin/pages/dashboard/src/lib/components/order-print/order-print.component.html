@@ -8,7 +8,7 @@
       class=""
       (click)="print()"
     >
-      <nb-icon icon="printer-outline"></nb-icon>
+      <nb-icon icon="print" pack="material-icons"></nb-icon>
     </button>
 
     <button
@@ -19,7 +19,7 @@
       class="float-right"
       (click)="close()"
     >
-      <nb-icon icon="close-outline"></nb-icon>
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
     </button> </nb-card-header
   ><nb-card-body>
     <div id="preview-content">
@@ -96,11 +96,25 @@
 
         <div class="bottom-border"></div>
 
+        <div>{{ 'print.serviceFeeDetails' | translate }}:</div>
+
+        <div *ngFor="let serviceFee of parsedServiceFees">
+          <div class="row p-0 m-0">
+            <div class="col-8 p-0">{{ serviceFee.tax }}%</div>
+
+            <div class="col-4 p-0 text-end">
+              {{ serviceFee.priceSum | currencyFormatter: serviceFee.currency }}
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-border"></div>
+
         <div>{{ 'print.vatDetails' | translate }}:</div>
 
         <div *ngFor="let vat of parsedVats">
           <div class="row p-0 m-0">
-            <div class="col-1 p-0 text-end">{{ vat.tax }}%</div>
+            <div class="col-1 p-0">{{ vat.tax }}%</div>
             <div class="col-4 p-0 text-end">
               {{ vat.priceSum - vat.taxSum | currencyFormatter: vat.currency }}
             </div>
@@ -109,6 +123,26 @@
             </div>
             <div class="col-4 p-0 text-end">
               {{ vat.priceSum | currencyFormatter: vat.currency }}
+            </div>
+          </div>
+        </div>
+
+        <div>{{ 'print.serviceFeeDetails' | translate }}:</div>
+
+        <div *ngFor="let serviceFee of parsedServiceFees">
+          <div class="row p-0 m-0">
+            <div class="col-1 p-0 text-end">{{ serviceFee.tax }}%</div>
+            <div class="col-4 p-0 text-end">
+              {{
+                serviceFee.priceSum - serviceFee.taxSum
+                  | currencyFormatter: serviceFee.currency
+              }}
+            </div>
+            <div class="col-3 p-0 text-end">
+              {{ serviceFee.taxSum | currencyFormatter: serviceFee.currency }}
+            </div>
+            <div class="col-4 p-0 text-end">
+              {{ serviceFee.priceSum | currencyFormatter: serviceFee.currency }}
             </div>
           </div>
         </div>
@@ -139,7 +173,7 @@
         </div>
 
         <div class="text-center p-2">
-          <img class="qr" src="/assets/images/anyupp.com.png" />
+          <img class="qr" src="/assets/images/anyupp_dot_com.png" />
         </div>
         <div class="pt-3 text-center">www.kajahu.com | www.anyupp.com</div>
 

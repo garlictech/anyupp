@@ -24,7 +24,7 @@ Feature: Favorites in the app
     And I tap on the "close" button
     Then I should see "You have not added any favorite items yet."
 
-  Scenario: When a fav product is only in inplace
+  Scenario: When a favorite product is available only in inplace
     Given the admin sets "Sajtburger" product to only in place mode
     When I tap on the "Sajtburger" card "Hamburgers" category
     When I tap on the "Hearth" icon
@@ -37,3 +37,4 @@ Feature: Favorites in the app
     When I tap on the "Take away" button
     Then I should see the "Sajtburger" card
     And I should see the "Only in place" text
+

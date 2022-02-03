@@ -2,7 +2,7 @@
   <legend class="label">{{ 'units.ratingPolicies.title' | translate }}</legend>
   <div>
     <div class="row">
-      <div class="col-6">
+      <div class="col-12">
         <bgap-form-select
           caption="units.ratingPolicies.ratingPolicy"
           [localize]="true"
@@ -50,7 +50,7 @@
             (click)="removePolicyFromList(i)"
             [attr.data-testid]="'removePolicyButton_' + i"
           >
-            <nb-icon icon="trash-2-outline"></nb-icon>
+            <nb-icon icon="remove" pack="material-icons"></nb-icon>
           </button>
         </div>
       </nb-list-item>

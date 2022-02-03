@@ -16,45 +16,50 @@
       class="float-right"
       (click)="close()"
     >
-      <nb-icon icon="close-outline"></nb-icon>
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm" (ngSubmit)="submit()" autocomplete="off">
+    <form
+      [formGroup]="dialogForm"
+      *ngIf="dialogForm"
+      (ngSubmit)="submit()"
+      autocomplete="off"
+    >
       <bgap-form-text-input
         caption="common.nameHU"
         type="text"
-        [control]="dialogForm.get('name')!.get('hu')! | asFormControl"
+        [control]="dialogForm?.get('name')!.get('hu') | asFormControl"
         inputId="nameHu"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.nameEN"
         type="text"
-        [control]="dialogForm.get('name')!.get('en')! | asFormControl"
+        [control]="dialogForm?.get('name')!.get('en') | asFormControl"
         inputId="nameEn"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.nameDE"
         type="text"
-        [control]="dialogForm.get('name')!.get('de')! | asFormControl"
+        [control]="dialogForm?.get('name')!.get('de') | asFormControl"
         inputId="nameDe"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionHU"
         type="text"
-        [control]="dialogForm.get('description')!.get('hu')! | asFormControl"
+        [control]="dialogForm?.get('description')!.get('hu') | asFormControl"
         inputId="descriptionHu"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionEN"
         type="text"
-        [control]="dialogForm.get('description')!.get('en')! | asFormControl"
+        [control]="dialogForm?.get('description')!.get('en') | asFormControl"
         inputId="descriptionEn"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.descriptionDE"
         type="text"
-        [control]="dialogForm.get('description')!.get('de')! | asFormControl"
+        [control]="dialogForm?.get('description')!.get('de') | asFormControl"
         inputId="descriptionDe"
       ></bgap-form-text-input>
 
@@ -78,7 +83,7 @@
           type="submit"
           fullWidth
           status="primary"
-          [disabled]="dialogForm.invalid"
+          [disabled]="dialogForm?.invalid"
         >
           {{ 'common.submit' | translate }}
         </button>

@@ -6,7 +6,11 @@
     {{ orderItem.place!.table! }}<br />{{ orderItem.place!.seat! }}<br />
 
     <div *ngIf="orderItem.servingMode === EServingMode.takeaway">
-      <nb-icon class="takeaway" icon="car-outline"></nb-icon>
+      <nb-icon
+        class="takeaway"
+        icon="local_shipping"
+        pack="material-icons"
+      ></nb-icon>
     </div>
   </div>
   <div class="title-block row w-100 p-0 m-0 ms-2 float-right">
@@ -57,7 +61,11 @@
         class="font-larger me-2"
         (click)="moveBack()"
       >
-        <nb-icon class="smaller-icon" icon="arrow-left-outline"></nb-icon>
+        <nb-icon
+          class="smaller-icon"
+          icon="arrow_back_ios"
+          pack="material-icons"
+        ></nb-icon>
       </button>
       <button
         *ngIf="isOrderItemStatus('processing') || isOrderItemStatus('placed')"
@@ -68,7 +76,11 @@
         class="font-larger"
         (click)="moveForward()"
       >
-        <nb-icon class="smaller-icon" icon="arrow-right-outline"></nb-icon>
+        <nb-icon
+          class="smaller-icon"
+          icon="arrow_forward_ios"
+          pack="material-icons"
+        ></nb-icon>
       </button>
     </div>
   </div>

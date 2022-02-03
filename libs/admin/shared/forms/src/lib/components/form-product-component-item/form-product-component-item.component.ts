@@ -10,7 +10,7 @@ import { UntilDestroy } from '@ngneat/until-destroy';
   templateUrl: './form-product-component-item.component.html',
 })
 export class FormProductComponentItemComponent {
-  @Input() itemFormArray!: FormArray;
+  @Input() itemFormArray?: FormArray;
   @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
   public eProductLevel = EProductLevel;

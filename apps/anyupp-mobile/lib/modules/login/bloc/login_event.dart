@@ -77,6 +77,10 @@ class ResetLogin extends LoginEvent {
   const ResetLogin();
 }
 
+class StartLoginLoading extends LoginEvent {
+  const StartLoginLoading();
+}
+
 class Logout extends LoginEvent {
   const Logout();
 }
@@ -143,7 +147,10 @@ class RegisterWithEmailAndPassword extends LoginEvent {
   final String password;
 
   const RegisterWithEmailAndPassword(
-      {required this.userEmail, this.userPhone, required this.email, required this.password});
+      {required this.userEmail,
+      this.userPhone,
+      required this.email,
+      required this.password});
 
   @override
   List<Object?> get props => [userEmail, userPhone, email, password];
@@ -163,7 +170,8 @@ class PasswordResetInfoSent extends LoginEvent {
   final String deliveryMedium;
   final String destination;
 
-  const PasswordResetInfoSent(this.userName, this.deliveryMedium, this.destination);
+  const PasswordResetInfoSent(
+      this.userName, this.deliveryMedium, this.destination);
 
   @override
   List<Object?> get props => [userName, deliveryMedium, destination];
@@ -174,7 +182,8 @@ class ConfirmPassword extends LoginEvent {
   final String code;
   final String password;
 
-  const ConfirmPassword({required this.userName, required this.code, required this.password});
+  const ConfirmPassword(
+      {required this.userName, required this.code, required this.password});
 
   @override
   List<Object?> get props => [userName, code, password];

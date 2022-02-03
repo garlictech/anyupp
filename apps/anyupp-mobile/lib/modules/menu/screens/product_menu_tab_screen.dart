@@ -113,8 +113,14 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
             // }
             bool isAvailableInThisServingMode = mode != null &&
                 list[position].supportedServingModes.contains(mode);
-            // print(
-            //     'isAvailableInThisServingMode[$mode]=$isAvailableInThisServingMode, items=${list[position].supportedServingModes}');
+            bool isSoldOut = list[position].isSoldOut;
+            bool isHidden = isSoldOut &&
+                unit.soldOutVisibilityPolicy ==
+                    SoldOutVisibilityPolicy.invisible;
+
+            if (isHidden) {
+              return Container();
+            }
 
             if (position == list.length - 1 &&
                 list.length % _pageSize == 0 &&
@@ -134,11 +140,13 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
                 child: FadeInAnimation(
                   child: ProductMenuItem(
                     displayState: isAvailableInThisServingMode
-                        ? ProducItemDisplayState.NORMAL
-                        : ProducItemDisplayState.DISABLED,
+                        ? isSoldOut
+                            ? ProductItemDisplayState.SOLDOUT
+                            : ProductItemDisplayState.NORMAL
+                        : ProductItemDisplayState.DISABLED,
                     unit: unit,
                     item: list[position],
-                    servingMode: mode,
+                    servingMode: mode ?? ServingMode.inPlace,
                   ),
                 ),
               ),

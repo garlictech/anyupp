@@ -82,7 +82,10 @@ class OrderHistoryBloc
       _orderHistoryController!.stream
           .asBroadcastStream()
           .listen((orderHistoryList) {
-        // print('OrderHistoryBloc.listen=${orderHistoryList?.length}');
+        print('OrderHistoryBloc.listen=${orderHistoryList?.length}');
+        print(
+            'OrderHistoryBloc.listen=${orderHistoryList?.map((order) => order.hasRated)}');
+
         // print('********************* OrderBloc.HISTROY.hashCode=$hashCode');
         // print('********************* OrderBloc.HISTROY.state=${this.state}');
         add(OrderHistoryLoaded(

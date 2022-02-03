@@ -7,7 +7,12 @@ CI=$2
 # This is temporary solution!
 rm -rf apps/crud-backend/amplify
 ./tools/build-workspace.sh $ENVNAME $CI
-yarn nx deploy common-backend --env=${ENVNAME}
+
+
+if [ "$ENVNAME" = "prod" ]; then
+  yarn nx deploy common-backend --env=${ENVNAME}
+fi
+
 yarn nx deploy crud-backend --env=${ENVNAME}
 yarn nx deploy anyupp-backend --env=${ENVNAME}
 yarn nx buildAppbundle-ci anyupp-mobile

@@ -43,7 +43,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.orderItem.productId) {
       this._store
         .pipe(

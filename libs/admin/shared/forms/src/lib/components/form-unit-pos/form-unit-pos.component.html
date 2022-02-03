@@ -1,18 +1,16 @@
 <fieldset class="form">
   <legend class="label">{{ 'units.pos' | translate }}</legend>
   <div>
-    <div class="row" *ngIf="!editing">
+    <div class="row">
       <div class="col-12">
-        <div class="col-md-6">
-          <bgap-form-radio-group
-            caption="common.type"
-            [options]="posTypeOptions"
-            [control]="posFormGroup?.get('type')! | asFormControl"
-            [localize]="false"
-            [horizontal]="true"
-            inputId="posType"
-          ></bgap-form-radio-group>
-        </div>
+        <bgap-form-radio-group
+          caption="common.type"
+          [options]="posTypeOptions"
+          [control]="posFormGroup?.get('type') | asFormControl"
+          [localize]="false"
+          [horizontal]="true"
+          inputId="posType"
+        ></bgap-form-radio-group>
       </div>
     </div>
 
@@ -23,7 +21,7 @@
             caption="units.rkeeper.endpointUri"
             type="text"
             [control]="
-              posFormGroup?.get('rkeeper')!.get('endpointUri')! | asFormControl
+              posFormGroup?.get('rkeeper')!.get('endpointUri') | asFormControl
             "
             inputId="endpointUri"
           ></bgap-form-text-input>
@@ -65,7 +63,7 @@
             inputId="anyuppUsername"
           ></bgap-form-text-input>
         </div>
-        <div class="col-3" *ngIf="!editing">
+        <div class="col-3" *ngIf="!rkeeperEdit">
           <bgap-form-text-input
             caption="units.rkeeper.anyuppPassword"
             type="text"

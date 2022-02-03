@@ -44,7 +44,7 @@ class RatingOrderNotificationBloc
         // print('RatingOrderNotificationBloc.scheduling[$delay]=${order.id}');
         getIt<NotificationsBloc>().add(ScheduleOrderRatingNotification(
           orderId: order.id,
-          ratingPolicy: unit?.ratingPolicy,
+          ratingPolicy: unit?.ratingPolicies![0],
           tipPolicy: unit?.tipPolicy,
           showDelay: delay,
         ));

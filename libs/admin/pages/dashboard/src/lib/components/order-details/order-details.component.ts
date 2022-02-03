@@ -62,7 +62,7 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
     this.workingOrderStatus = false;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(select(dashboardSelectors.getSettings), untilDestroyed(this))
       .subscribe((dashboardSettings: DashboardSettings): void => {

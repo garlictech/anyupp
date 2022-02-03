@@ -64,7 +64,7 @@ Feature: QR code and serving mode change
     When I read the QR code
     Then I should see "Finding your seat..." text
     Then I should see the "Menu" screen
-
+  #nincs már ilyen opció?!
   Scenario: QR reading on the cart screen
     Given I am on the login screen
     And the language is set to EN
@@ -81,6 +81,7 @@ Feature: QR code and serving mode change
     When I tap on the "MY CART (1700 Ft)" button
     Then I should see the "Cart" screen
     When I tap the "Pay (1700 Ft)" button
+    Then I should see the "PAY" screen
     And the app opens my camera
     Then I should see the "Scan the QR codoe on your table to finalize your order." text
     When I read the QR code
@@ -130,16 +131,16 @@ Feature: QR code and serving mode change
     And I tap the "MY CART (1700 Ft)" button
     Then there is the "Cart" screen
     When I tap the "Pay (1700 Ft)" button
-    And the app opens my camera
-    Then I should see the "Scan the QR codoe on your table to finalize your order." text
-    When I read the QR code
-    Then I should see the "Finding your seat..." and the "Connected to" loading screens
-    And I get the text message "New Table Reserved!"
-    And there is the "Cart" screen
-    When I tap the "Pay (1700 Ft)" button
     Then there is the "PAY" screen
     When I tap the "Cash" button
     And I tap the "Place order" button
+    And the app opens my camera
+    Then I should see the "Scan the QR codoe on your table to finalize your order." text
+    When I read the QR code
+    Then I should see the "Finding your seat..." loading screen
+    And I get the text message "New Table Reserved!"
+    And I should see "Successful order!" text
+    When I tap on the "ALL RIGHT" button
     Then I should see "Current orders" text
     And my cart should be empty
 
@@ -156,7 +157,7 @@ Feature: QR code and serving mode change
     And I tap the "Add To Cart" button
     And I tap the "MY CART (1700 Ft)" button
     Then there is the "Cart" screen
-    When I tap on the "in place" button
+    When I tap on the "Mode selector" button
     Then I should see "Please select" dialog
     When I tap on the "Take away" button
     Then I should see "Are you sure you want to switch to take away order mode?" dialog

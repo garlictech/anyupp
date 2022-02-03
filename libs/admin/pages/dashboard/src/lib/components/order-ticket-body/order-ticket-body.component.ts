@@ -51,7 +51,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(select(dashboardSelectors.getSettings), untilDestroyed(this))
       .subscribe((dashboardSettings: DashboardSettings): void => {

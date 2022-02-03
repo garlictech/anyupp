@@ -40,7 +40,7 @@ When(
 );
 
 When('I click on the close button', () => {
-  cy.get('nb-icon[icon="close-outline"]').click();
+  cy.get('nb-icon[icon="close"]').click();
 });
 
 When('I click on the {string} checkbox', (checkboxName: string) => {

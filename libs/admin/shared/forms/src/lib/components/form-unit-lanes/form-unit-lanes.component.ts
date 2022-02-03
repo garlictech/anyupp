@@ -18,7 +18,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-unit-lanes.component.html',
 })
 export class FormUnitLanesComponent implements OnInit {
-  @Input() lanesFormArray!: FormArray;
+  @Input() lanesFormArray?: FormArray;
   public usedLaneIds: string[];
 
   constructor(
@@ -29,7 +29,7 @@ export class FormUnitLanesComponent implements OnInit {
     this.usedLaneIds = [];
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(productsSelectors.getUnitProductLaneIds()),

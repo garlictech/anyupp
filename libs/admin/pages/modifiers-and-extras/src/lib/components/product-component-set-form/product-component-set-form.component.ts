@@ -1,4 +1,4 @@
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, iif, Observable, of } from 'rxjs';
 import { startWith, take } from 'rxjs/operators';
 
 import {
@@ -43,7 +43,7 @@ export class ProductComponentSetFormComponent
   extends AbstractFormDialogComponent
   implements OnInit, OnDestroy
 {
-  public componentForm!: FormGroup;
+  public componentForm?: FormGroup;
   public productComponentSet!: CrudApi.ProductComponentSet;
   public chainOptions$: Observable<KeyValue[]>;
   public typeOptions: KeyValue[] = [];
@@ -74,9 +74,9 @@ export class ProductComponentSetFormComponent
     this.typeOptions = productComponentSetTypeOptions;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.productComponentSet) {
-      this.dialogForm.patchValue(cleanObject(this.productComponentSet));
+      this.dialogForm?.patchValue(cleanObject(this.productComponentSet));
     } else {
       // Patch ChainId
       this._store
@@ -92,8 +92,12 @@ export class ProductComponentSetFormComponent
       this._store.pipe(
         select(productComponentsSelectors.getAllProductComponents),
       ),
-      this.dialogForm.controls['items'].valueChanges.pipe(
-        startWith(this.dialogForm.value.items || []),
+      iif(
+        () => typeof this.dialogForm !== 'undefined',
+        this.dialogForm?.controls['items'].valueChanges.pipe(
+          startWith(this.dialogForm?.value.items || []),
+        ),
+        of([]),
       ),
     ])
       .pipe(untilDestroyed(this))
@@ -115,22 +119,26 @@ export class ProductComponentSetFormComponent
     // untilDestroyed uses it.
   }
 
-  public addComponentToList(): void {
-    this._modifiersAndExtrasFormService.addComponentToList(
-      this.dialogForm,
-      this.componentForm,
-    );
+  public addComponentToList() {
+    if (this.dialogForm && this.componentForm) {
+      this._modifiersAndExtrasFormService.addComponentToList(
+        this.dialogForm,
+        this.componentForm,
+      );
+    }
   }
 
-  public removeComponentFromList(productComponentId: string): void {
-    this._modifiersAndExtrasFormService.removeComponentFromList(
-      this.dialogForm,
-      productComponentId,
-    );
+  public removeComponentFromList(productComponentId: string) {
+    if (this.dialogForm) {
+      this._modifiersAndExtrasFormService.removeComponentFromList(
+        this.dialogForm,
+        productComponentId,
+      );
+    }
   }
 
   public move(idx: number, change: number) {
-    const componentIdsArr: string[] = this.dialogForm.controls['items'].value;
+    const componentIdsArr: string[] = this.dialogForm?.controls['items'].value;
     const itemId = componentIdsArr[idx];
 
     componentIdsArr.splice(idx, 1);

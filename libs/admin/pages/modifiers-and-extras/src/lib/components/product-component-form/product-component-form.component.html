@@ -16,7 +16,7 @@
       class="float-right"
       (click)="close()"
     >
-      <nb-icon icon="close-outline"></nb-icon>
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body>
@@ -27,42 +27,48 @@
             caption="common.chain"
             [localize]="false"
             [options]="(chainOptions$ | async) || []"
-            [control]="dialogForm.get('chainId')! | asFormControl"
+            [control]="dialogForm?.get('chainId') | asFormControl"
             inputId="chainId"
           ></bgap-form-select>
         </div>
-        <div class="col-md-6"></div>
+        <div class="col-md-6 pt-3">
+          <bgap-form-checkbox
+            caption="common.soldOutPolicy.soldOut"
+            [control]="dialogForm?.get('soldOut') | asFormControl"
+            inputId="soldOut"
+          ></bgap-form-checkbox>
+        </div>
       </div>
 
       <bgap-form-text-input
         caption="common.nameHU"
         type="text"
-        [control]="dialogForm.get('name')!.get('hu')! | asFormControl"
+        [control]="dialogForm?.get('name')!.get('hu') | asFormControl"
         inputId="nameHu"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.nameEN"
         type="text"
-        [control]="dialogForm.get('name')!.get('en')! | asFormControl"
+        [control]="dialogForm?.get('name')!.get('en') | asFormControl"
         inputId="nameEn"
       ></bgap-form-text-input>
       <bgap-form-text-input
         caption="common.nameDE"
         type="text"
-        [control]="dialogForm.get('name')!.get('de')! | asFormControl"
+        [control]="dialogForm?.get('name')!.get('de') | asFormControl"
         inputId="nameDe"
       ></bgap-form-text-input>
 
       <bgap-form-text-input
         caption="common.description"
         type="text"
-        [control]="dialogForm.get('description')! | asFormControl"
+        [control]="dialogForm?.get('description') | asFormControl"
         inputId="description"
       ></bgap-form-text-input>
 
       <!-- ALLERGENS -->
       <bgap-form-allergens
-        [control]="dialogForm.get('allergens')! | asFormControl"
+        [control]="dialogForm?.get('allergens') | asFormControl"
       ></bgap-form-allergens>
 
       <div class="mt-20">
@@ -72,7 +78,7 @@
           type="submit"
           fullWidth
           status="primary"
-          [disabled]="dialogForm.invalid"
+          [disabled]="dialogForm?.invalid"
         >
           {{ 'common.submit' | translate }}
         </button>

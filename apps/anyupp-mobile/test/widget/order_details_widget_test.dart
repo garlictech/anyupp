@@ -15,14 +15,16 @@ import '../mock/mock_data_faker.dart';
 import 'mock/mocks.dart';
 
 void main() {
-  RatingPolicy _dummyRatingPolicy([String key = 'TEST_KEY']) {
-    return RatingPolicy(key: key, ratings: [
-      RatingPolicyItem(value: 1),
-      RatingPolicyItem(value: 2),
-      RatingPolicyItem(value: 3),
-      RatingPolicyItem(value: 4),
-      RatingPolicyItem(value: 5),
-    ]);
+  List<RatingPolicy> _dummyRatingPolicy([String key = 'TEST_KEY']) {
+    return [
+      RatingPolicy(key: key, ratings: [
+        RatingPolicyItem(value: 1),
+        RatingPolicyItem(value: 2),
+        RatingPolicyItem(value: 3),
+        RatingPolicyItem(value: 4),
+        RatingPolicyItem(value: 5),
+      ])
+    ];
   }
 
   TipPolicy _dummyTipPolicy() {
@@ -141,7 +143,7 @@ void main() {
         currency: 'HUF',
       );
       _unit = _unit.copyWith(
-        ratingPolicy: _dummyRatingPolicy(),
+        ratingPolicies: _dummyRatingPolicy(),
       );
       getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
     });
@@ -240,7 +242,7 @@ void main() {
         currency: 'HUF',
       );
       _unit = _unit.copyWith(
-        ratingPolicy: _dummyRatingPolicy(),
+        ratingPolicies: _dummyRatingPolicy(),
         tipPolicy: _dummyTipPolicy(),
       );
       getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
@@ -292,7 +294,7 @@ void main() {
         currency: 'HUF',
       );
       _unit = _unit.copyWith(
-        ratingPolicy: _dummyRatingPolicy(),
+        ratingPolicies: _dummyRatingPolicy(),
         tipPolicy: _dummyTipPolicy(),
       );
       getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
@@ -314,6 +316,7 @@ void main() {
           price: 1000,
         );
         order = order.copyWith(
+          hasRated: true,
           rating: OrderRating(
             key: 'TETS_QUESTION_1',
             value: 1,
@@ -351,7 +354,7 @@ void main() {
         currency: 'HUF',
       );
       _unit = _unit.copyWith(
-        ratingPolicy: _dummyRatingPolicy(),
+        ratingPolicies: _dummyRatingPolicy(),
         tipPolicy: _dummyTipPolicy(),
       );
       getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
@@ -372,6 +375,7 @@ void main() {
           price: 1000,
         );
         order = order.copyWith(
+          hasRated: true,
           rating: OrderRating(
             key: 'TETS_QUESTION_1',
             value: 1,

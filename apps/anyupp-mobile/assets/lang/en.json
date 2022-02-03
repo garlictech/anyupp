@@ -8,7 +8,7 @@
     "ok": "OK",
     "today": "Today",
     "exit": "Tap back again to exit app.",
-    "ok2": "ALL RIGHT"
+    "ok2": "OK"
   },
   "locale": {
     "EN": "English",
@@ -348,7 +348,8 @@
         "downloadReceipt": "DOWNLOAD RECEIPT",
         "downloadInvoice": "DOWNLOAD INVOICE",
         "save": "SAVE",
-        "warning": "Data marked in red is required"
+        "warning": "Data marked in red is required",
+        "modifyAddress": "Modify"
       }
     },
     "simplePayStatus": {
@@ -443,10 +444,15 @@
     "scanQR": "Click & scan your table to order",
     "qrConnected": "Connected to",
     "chair": "Chair #{{0}} at Table #{{1}}",
-    "findingSeat": "Finding your seat...",
+    "findingSeat": "finding table and chair ...",
+    "findingSeatLoading": "This may take a few seconds. Please do not close this window!",
     "tableReserved": {
       "title": "New Table Reserved!",
       "description": "Seat #{{1}} reversed at Table #{{0}}"
+    },
+    "tableFound": {
+      "title": "Chair: #{{1}}, Table: #{{0}}",
+      "description": "The connection has been made. You can continue the order!"
     },
     "qrCodeError": {
       "title": "QR code invalid!",
@@ -555,8 +561,13 @@
   },
   "product": {
     "notTakeAway": "Only in place",
+    "notTakeAwaDesc": "A termék csak helyben fogyasztásra elérhető.",
     "notInPlace": "Only for takeaway",
-    "size": "Size:"
+    "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
+    "soldOut": "Elfogyott",
+    "soldOutDesc": "A termék sajnos elfogyott",
+    "size": "Size:",
+    "selectSize": "Choose a size"
   },
   "validators": {
     "required": "this field is required",

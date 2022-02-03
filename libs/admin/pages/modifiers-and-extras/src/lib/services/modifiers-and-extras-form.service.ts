@@ -42,6 +42,7 @@ export class ModifiersAndExtrasFormService {
       ),
       description: [''],
       allergens: [[]],
+      soldOut: [false],
     });
   }
 

@@ -12,8 +12,8 @@ import 'package:fa_prev/shared/nav.dart';
 class ProductMenuItem extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  final ProducItemDisplayState displayState;
-  final ServingMode? servingMode;
+  final ProductItemDisplayState displayState;
+  final ServingMode servingMode;
 
   final double _disabled_opacity = 0.5;
 
@@ -21,7 +21,7 @@ class ProductMenuItem extends StatelessWidget {
     required this.item,
     required this.unit,
     required this.displayState,
-    this.servingMode,
+    required this.servingMode,
   });
 
   @override
@@ -58,11 +58,11 @@ class ProductMenuItem extends StatelessWidget {
           ),
           border: Border.all(
             width: 1,
-            color: displayState == ProducItemDisplayState.DISABLED
+            color: isDisabled
                 ? theme.secondary0.withOpacity(_disabled_opacity)
                 : theme.secondary0,
           ),
-          color: displayState == ProducItemDisplayState.DISABLED
+          color: isDisabled
               ? theme.secondary0.withOpacity(_disabled_opacity)
               : theme.secondary0,
         ),
@@ -75,7 +75,7 @@ class ProductMenuItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                   8.0,
                 ),
-                child: displayState == ProducItemDisplayState.DISABLED
+                child: isDisabled
                     ? ColorFiltered(
                         colorFilter: ColorFilter.mode(
                             Colors.black.withOpacity(_disabled_opacity),
@@ -111,7 +111,7 @@ class ProductMenuItem extends StatelessWidget {
                             fontSize: 18.0,
                             fontWeight: FontWeight.w700,
                             color: displayState ==
-                                    ProducItemDisplayState.DISABLED
+                                    ProductItemDisplayState.DISABLED
                                 ? theme.secondary.withOpacity(_disabled_opacity)
                                 : theme.secondary,
                           ),
@@ -125,7 +125,7 @@ class ProductMenuItem extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Fonts.satoshi(
                           fontSize: 14.0,
-                          color: displayState == ProducItemDisplayState.DISABLED
+                          color: isDisabled
                               ? theme.secondary.withOpacity(_disabled_opacity)
                               : theme.secondary,
                         ),
@@ -134,7 +134,7 @@ class ProductMenuItem extends StatelessWidget {
                         padding: const EdgeInsets.only(
                           top: 20.0,
                         ),
-                        child: displayState == ProducItemDisplayState.DISABLED
+                        child: isDisabled
                             ? _buildNotAvailableInfo(context)
                             : _buildVariantsInfo(
                                 context, theme, item.variants, unit.currency),
@@ -152,13 +152,15 @@ class ProductMenuItem extends StatelessWidget {
 
   Widget _buildNotAvailableInfo(BuildContext context) {
     return Text(
-      servingMode == ServingMode.takeAway
-          ? trans(context, 'product.notTakeAway')
-          : trans(context, 'product.notInPlace'),
+      displayState == ProductItemDisplayState.DISABLED
+          ? servingMode == ServingMode.takeAway
+              ? trans(context, 'product.notTakeAway')
+              : trans(context, 'product.notInPlace')
+          : trans(context, 'product.soldOut'),
       style: Fonts.satoshi(
         fontSize: 14.0,
         fontWeight: FontWeight.w700,
-        color: displayState == ProducItemDisplayState.DISABLED
+        color: isDisabled
             ? theme.primary.withOpacity(_disabled_opacity)
             : theme.primary,
       ),
@@ -176,7 +178,7 @@ class ProductMenuItem extends StatelessWidget {
         style: Fonts.satoshi(
           fontSize: 14.0,
           fontWeight: FontWeight.w700,
-          color: displayState == ProducItemDisplayState.DISABLED
+          color: isDisabled
               ? theme.primary.withOpacity(_disabled_opacity)
               : theme.primary,
         ),
@@ -187,11 +189,18 @@ class ProductMenuItem extends StatelessWidget {
         style: Fonts.satoshi(
           fontSize: 14.0,
           fontWeight: FontWeight.w700,
-          color: displayState == ProducItemDisplayState.DISABLED
+          color: isDisabled
               ? theme.primary.withOpacity(_disabled_opacity)
               : theme.primary,
         ),
       );
     }
   }
+
+  // helpers
+
+  bool get isDisabled =>
+      displayState == ProductItemDisplayState.DISABLED ||
+      displayState == ProductItemDisplayState.SOLDOUT;
+  bool get isSoldOut => displayState == ProductItemDisplayState.SOLDOUT;
 }

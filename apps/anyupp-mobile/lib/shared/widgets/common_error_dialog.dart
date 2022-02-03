@@ -21,13 +21,14 @@ showErrorDialog(BuildContext context, String error, String description,
         backgroundColor: theme.secondary0,
         child: Container(
           padding: EdgeInsets.all(8.0),
-          height: 480.0,
+          // height: 480.0,
           child: Container(
             padding: EdgeInsets.only(top: 12.0),
             child: CommonErrorWidget(
               error: error,
               description: description,
               errorDetails: exceptionDetails,
+              expanded: true,
               onPressed: onClose == null
                   ? () => Nav.pop()
                   : () {

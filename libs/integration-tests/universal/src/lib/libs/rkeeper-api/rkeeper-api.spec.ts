@@ -35,7 +35,11 @@ import * as fixtures from './fixtures';
 import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/backend/products';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { v1 as uuidV1 } from 'uuid';
-import { commonStackConfig, anyuppStackConfig } from '@bgap/shared/config';
+import {
+  config,
+  commonStackConfig,
+  anyuppStackConfig,
+} from '@bgap/shared/config';
 import { maskV4UuidIds } from '@bgap/shared/fixtures';
 
 describe('Test the rkeeper api basic functionality', () => {
@@ -181,7 +185,7 @@ describe('Test the rkeeper api basic functionality', () => {
         ),
       )
       .subscribe(() => done());
-  });
+  }, 100000);
 
   test('Create products by an rkeeper product', done => {
     const matcher = (expectParentId = true) =>
@@ -437,15 +441,14 @@ describe('Test the rkeeper api basic functionality', () => {
     expect(res).toMatchSnapshot();
   }, 10000);
 
-  test('Test the product handling logic in fargate', done => {
+  test.skip('Test the product handling logic in fargate', done => {
     const deps = {
       ecs: new ECS({ apiVersion: '2014-11-13' }),
       RKeeperProcessProductSubnet:
         commonStackConfig['common-backend-anyupp'].AnyuppVpcSubnetOutput,
       RKeeperProcessProductSecurityGroup:
         commonStackConfig['common-backend-anyupp'].AnyuppVpcSecurityGroupOutput,
-      taskDefinitionArn:
-        anyuppStackConfig['anyupp-backend-rkeeper'].RKeeperTaskDefinitionArn,
+      taskDefinitionArn: config.RkeeperTaskDefinitionArn,
       bucketName:
         anyuppStackConfig['anyupp-backend-rkeeper'].RKeeperTaskBucketName,
       uuidGenerator: uuidV1,
@@ -458,7 +461,7 @@ describe('Test the rkeeper api basic functionality', () => {
     handleProducts(deps)(fixtures.yellowRestaurantId, rawData)
       .pipe(tap(result => expect(result.failures).toMatchSnapshot()))
       .subscribe(() => done(), console.error);
-  }, 20000);
+  }, 500000);
 
   test('createDefaultProductCategory', done => {
     getBusinessEntityInfo(crudSdk)(

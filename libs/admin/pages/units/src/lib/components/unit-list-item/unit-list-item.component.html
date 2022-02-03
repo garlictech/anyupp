@@ -7,7 +7,7 @@
   <bgap-contact [contact]="unit"></bgap-contact>
   <bgap-rkeeper-info-block
     *ngIf="unit?.pos?.type === ePosType.rkeeper"
-    [unitID]="unit?.id"
+    [externalId]="unit?.externalId || ''"
     [pos]="unit?.pos"
   ></bgap-rkeeper-info-block>
 </div>
@@ -21,19 +21,7 @@
     [title]="'common.edit' | translate"
     (click)="editUnit()"
   >
-    <nb-icon icon="edit-outline"></nb-icon>
-  </button>
-
-  <button
-    nbButton
-    shape="round"
-    size="tiny"
-    class="float-right me-2"
-    [title]="'common.edit' | translate"
-    (click)="editRkeeperUnit()"
-    *ngIf="unit?.pos?.type === ePosType.rkeeper"
-  >
-    POS
+    <nb-icon icon="edit" pack="material-icons"></nb-icon>
   </button>
 
   <button

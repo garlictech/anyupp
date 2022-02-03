@@ -71,7 +71,7 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .select(dashboardSelectors.getSelectedHistoryDate)
       .pipe(filterNullish(), take(1), untilDestroyed(this))

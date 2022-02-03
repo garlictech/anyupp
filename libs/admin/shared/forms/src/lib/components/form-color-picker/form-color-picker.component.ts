@@ -14,14 +14,14 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./form-color-picker.component.scss'],
 })
 export class FormColorPickerComponent implements OnInit {
-  @Input() control!: FormControl;
+  @Input() control?: FormControl | null;
   @Input() caption = ''; // Language key!!!
   @Input() disabled = false;
   public color = '';
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.color = this.control?.value || '#ffffff';
   }
 

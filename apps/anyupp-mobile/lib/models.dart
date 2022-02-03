@@ -44,4 +44,5 @@ export 'models/extensions/OpeningHoursExtension.dart';
 export 'models/extensions/OrderExtension.dart';
 export 'models/extensions/OrderItemExtension.dart';
 export 'models/extensions/PlaceExtension.dart';
+export 'models/extensions/ProductExtension.dart';
 export 'models/mock/mock_api_values.dart';

@@ -38,7 +38,7 @@ export class UnitListComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     combineLatest([
       this._store.pipe(select(groupsSelectors.getSelectedChainGroups)),
       this._store.pipe(select(unitsSelectors.getSelectedGroupUnits)),

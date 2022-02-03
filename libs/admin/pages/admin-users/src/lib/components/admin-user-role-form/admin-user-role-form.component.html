@@ -11,7 +11,7 @@
       class="float-right"
       (click)="close()"
     >
-      <nb-icon icon="close-outline"></nb-icon>
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body>
@@ -21,7 +21,7 @@
         <div class="row">
           <div class="col-12">
             <bgap-form-select
-              [control]="dialogForm.get('roleContextId')! | asFormControl"
+              [control]="dialogForm?.get('roleContextId') | asFormControl"
               caption="roles.role"
               [options]="roleContextOptions"
               [localize]="true"
@@ -36,7 +36,7 @@
             size="small"
             type="submit"
             status="primary"
-            [disabled]="dialogForm.invalid"
+            [disabled]="dialogForm?.invalid"
           >
             {{ 'common.submit' | translate }}
           </button>
@@ -63,7 +63,7 @@
           [title]="'common.delete' | translate"
           (click)="removeRole(item)"
         >
-          <nb-icon icon="trash-2-outline"></nb-icon>
+          <nb-icon icon="remove" pack="material-icons"></nb-icon>
         </button>
       </div>
     </nb-list-item>

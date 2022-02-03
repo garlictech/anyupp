@@ -80,7 +80,7 @@ export class ProductExtendFormComponent
     );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.dialogForm = this._productFormService.createProductExtendFormGroup(
       this.productLevel,
     );

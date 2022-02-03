@@ -8,6 +8,6 @@ import { FormControl } from '@angular/forms';
 })
 export class FormCheckboxComponent {
   @Input() caption = ''; // Language key!!!
-  @Input() control!: FormControl;
+  @Input() control?: FormControl;
   @Input() inputId = '';
 }

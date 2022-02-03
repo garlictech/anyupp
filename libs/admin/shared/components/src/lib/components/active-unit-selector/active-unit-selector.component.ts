@@ -43,7 +43,7 @@ export class ActiveUnitSelectorComponent implements OnInit, OnDestroy {
     return this._loggedUser?.settings?.selectedUnitId;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUser),

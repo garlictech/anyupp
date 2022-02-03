@@ -36,8 +36,8 @@
     "group": "Group",
     "unit": "Unit",
     "currency": "Currency",
-    "taxPercent": "Tax (%)",
-    "takeawayTaxPercent": "Takeaway tax (%)",
+    "taxPercent": "Tax",
+    "takeawayTaxPercent": "Takeaway tax",
     "from": "From",
     "to": "To",
     "date": "Date",
@@ -112,6 +112,12 @@
       "SUCCESS": "Success",
       "WAITING_FOR_PAYMENT": "Waiting for payment",
       "FAILED": "Failed"
+    },
+    "soldOutPolicy": {
+      "title": "Sold out policy",
+      "invisible": "Not visible if sold out",
+      "faded": "Visible as faded if sold out",
+      "soldOut": "Sold out"
     },
     "sum": "Sum",
     "width": "width",
@@ -341,6 +347,21 @@
     "ratingPolicies": {
       "title": "Rating policies",
       "ratingPolicy": "Rating policy"
+    },
+    "tipPolicy": {
+      "title": "Tips",
+      "newPercent": "New Percent",
+      "percents": "Percents",
+      "customValue": "Custom value"
+    },
+    "serviceFee": {
+      "title": "Service fee",
+      "serviceFeePercent": "Service fee",
+      "type": {
+        "noFee": "No service fee",
+        "included": "Fee included in all prices",
+        "applicable": "Fee not included in prices but applicable"
+      }
     }
   },
   "users": {
@@ -417,6 +438,7 @@
   "print": {
     "items": "Items",
     "vatDetails": "VAT details",
+    "serviceFeeDetails": "Service fee",
     "selectedPaymentMode": "Választott fizetési mód"
   },
   "roles": {

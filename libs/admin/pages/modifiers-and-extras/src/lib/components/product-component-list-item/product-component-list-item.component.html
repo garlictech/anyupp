@@ -1,5 +1,11 @@
 <div class="float-start">
-  <div class="subtitle-2">{{ productComponent.name | localize }}</div>
+  <div class="subtitle-2">
+    {{ productComponent.name | localize }}
+    <bgap-status-led
+      class="ms-1"
+      [status]="!productComponent.soldOut"
+    ></bgap-status-led>
+  </div>
   <div class="caption">{{ productComponent.description }}</div>
   <bgap-allergens [allergens]="productComponent.allergens"></bgap-allergens>
 </div>
@@ -12,7 +18,7 @@
   [title]="'common.edit' | translate"
   (click)="editProductComponent()"
 >
-  <nb-icon icon="edit-outline"></nb-icon>
+  <nb-icon icon="edit" pack="material-icons"></nb-icon>
 </button>
 
 <div class="dirty-block" *ngIf="productComponent?.dirty">

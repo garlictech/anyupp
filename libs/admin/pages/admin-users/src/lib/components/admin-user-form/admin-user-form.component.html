@@ -16,7 +16,7 @@
       class="float-right"
       (click)="close()"
     >
-      <nb-icon icon="close-outline"></nb-icon>
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body>
@@ -43,14 +43,14 @@
           <bgap-form-text-input
             caption="common.name"
             type="text"
-            [control]="dialogForm.get('name')! | asFormControl"
+            [control]="dialogForm?.get('name') | asFormControl"
           ></bgap-form-text-input>
         </div>
         <div class="col-md-4">
           <bgap-form-text-input
             caption="common.phone"
             type="text"
-            [control]="dialogForm.get('phone')! | asFormControl"
+            [control]="dialogForm?.get('phone') | asFormControl"
             inputId="phone"
           ></bgap-form-text-input>
         </div>
@@ -58,7 +58,7 @@
           <bgap-form-text-input
             caption="common.email"
             type="text"
-            [control]="dialogForm.get('email')! | asFormControl"
+            [control]="dialogForm?.get('email') | asFormControl"
             inputId="email"
           ></bgap-form-text-input>
         </div>
@@ -71,7 +71,7 @@
           type="submit"
           fullWidth
           status="primary"
-          [disabled]="dialogForm.invalid"
+          [disabled]="dialogForm?.invalid"
         >
           {{ 'common.submit' | translate }}
         </button>

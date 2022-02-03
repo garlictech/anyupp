@@ -14,11 +14,12 @@ import { NbComponentSize } from '@nebular/theme';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-select',
   templateUrl: './form-select.component.html',
+  styleUrls: ['./form-select.component.scss'],
 })
 export class FormSelectComponent {
   @Input() caption = ''; // Language key!!!
   @Input() options: KeyValue[] = [];
-  @Input() control!: FormControl;
+  @Input() control?: FormControl | null;
   @Input() forceShowEmptyOption?: boolean;
   @Input() localize?: boolean;
   @Input() size: NbComponentSize = 'small';

@@ -11,11 +11,16 @@
       class="float-right"
       (click)="close()"
     >
-      <nb-icon icon="close-outline"></nb-icon>
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm!" (ngSubmit)="submit()" autocomplete="off">
+    <form
+      *ngIf="dialogForm"
+      [formGroup]="dialogForm"
+      (ngSubmit)="submit()"
+      autocomplete="off"
+    >
       <div class="row" *ngIf="unit">
         <div class="col-md-12">
           <bgap-form-static-text
@@ -30,7 +35,7 @@
           <bgap-form-text-input
             caption="common.name"
             type="text"
-            [control]="dialogForm.get('name')! | asFormControl"
+            [control]="dialogForm?.get('name') | asFormControl"
             inputId="name"
           ></bgap-form-text-input>
         </div>
@@ -38,7 +43,7 @@
           <bgap-form-select
             caption="common.group"
             [options]="(groupOptions$ | async) || []"
-            [control]="dialogForm.get('groupId')! | asFormControl"
+            [control]="dialogForm?.get('groupId') | asFormControl"
             [localize]="false"
             inputId="groupId"
           ></bgap-form-select>
@@ -47,7 +52,7 @@
           <bgap-form-select
             caption="common.orderPolicy.title"
             [options]="orderPolicyOptions"
-            [control]="dialogForm.get('orderPolicy')! | asFormControl"
+            [control]="dialogForm?.get('orderPolicy') | asFormControl"
             [localize]="false"
             inputId="orderPolicy"
           ></bgap-form-select>
@@ -59,7 +64,7 @@
             caption="common.descriptionHU"
             type="text"
             [control]="
-              dialogForm.get('description')!.get('hu')! | asFormControl
+              dialogForm?.get('description')!.get('hu') | asFormControl
             "
             inputId="descriptionHu"
           ></bgap-form-text-input>
@@ -71,7 +76,7 @@
             caption="common.descriptionEN"
             type="text"
             [control]="
-              dialogForm.get('description')!.get('en')! | asFormControl
+              dialogForm?.get('description')!.get('en') | asFormControl
             "
             inputId="descriptionEn"
           ></bgap-form-text-input>
@@ -83,7 +88,7 @@
             caption="common.descriptionDE"
             type="text"
             [control]="
-              dialogForm.get('description')!.get('de')! | asFormControl
+              dialogForm?.get('description')!.get('de') | asFormControl
             "
             inputId="descriptionDe"
           ></bgap-form-text-input>
@@ -95,7 +100,7 @@
           <bgap-form-select
             caption="common.timeZone"
             [options]="timeZoneOptions"
-            [control]="dialogForm.get('timeZone')! | asFormControl"
+            [control]="dialogForm?.get('timeZone') | asFormControl"
             [localize]="false"
             inputId="timeZone"
           ></bgap-form-select>
@@ -105,7 +110,7 @@
           <bgap-form-text-input
             caption="units.openFrom"
             type="date"
-            [control]="dialogForm.get('open')!.get('from')! | asFormControl"
+            [control]="dialogForm?.get('open')!.get('from') | asFormControl"
             inputId="openFrom"
           ></bgap-form-text-input>
         </div>
@@ -113,7 +118,7 @@
           <bgap-form-text-input
             caption="units.openTo"
             type="date"
-            [control]="dialogForm.get('open')!.get('to')! | asFormControl"
+            [control]="dialogForm?.get('open')!.get('to') | asFormControl"
             inputId="openTo"
           ></bgap-form-text-input>
         </div>
@@ -121,7 +126,7 @@
         <div class="col-md-2 pt-4">
           <bgap-form-checkbox
             caption="common.isActive"
-            [control]="dialogForm.get('isActive')! | asFormControl"
+            [control]="dialogForm?.get('isActive') | asFormControl"
             inputId="isActive"
           ></bgap-form-checkbox>
         </div>
@@ -129,13 +134,26 @@
 
       <div class="row">
         <div class="col-md-4">
+          <bgap-form-select
+            caption="common.soldOutPolicy.title"
+            [options]="soldOutPolicyOptions"
+            [control]="
+              dialogForm?.get('soldOutVisibilityPolicy') | asFormControl
+            "
+            [localize]="false"
+            inputId="soldOutPolicy"
+          ></bgap-form-select>
+        </div>
+
+        <div class="col-md-3">
           <bgap-form-text-input
             caption="common.packagingTax"
             type="number"
             [control]="
-              dialogForm.get('packagingTaxPercentage')! | asFormControl
+              dialogForm?.get('packagingTaxPercentage') | asFormControl
             "
             inputId="packagingTaxPercentage"
+            suffix="%"
           ></bgap-form-text-input>
         </div>
       </div>
@@ -160,38 +178,49 @@
       </fieldset>
 
       <bgap-form-order-mode
-        [control]="dialogForm.get('supportedOrderModes')! | asFormControl"
+        [control]="dialogForm?.get('supportedOrderModes') | asFormControl"
         [orderModes]="orderModes"
       ></bgap-form-order-mode>
 
       <bgap-form-serving-mode
-        [control]="dialogForm.get('supportedServingModes')! | asFormControl"
+        [control]="dialogForm?.get('supportedServingModes') | asFormControl"
         [servingModes]="servingModes"
       ></bgap-form-serving-mode>
+
+      <bgap-form-unit-service-fee
+        [serviceFeeFormGroup]="
+          dialogForm?.get('serviceFeePolicy') | asFormGroup
+        "
+      >
+      </bgap-form-unit-service-fee>
 
       <bgap-form-contact-group
         [contactFormGroup]="dialogForm | asFormGroup"
       ></bgap-form-contact-group>
 
       <bgap-form-weekly-schedule
-        [scheduleControl]="dialogForm.get('openingHours')! | asFormControl"
+        [scheduleControl]="dialogForm?.get('openingHours') | asFormControl"
       ></bgap-form-weekly-schedule>
 
       <bgap-form-unit-lanes
-        [lanesFormArray]="dialogForm.get('lanes')! | asFormArray"
+        [lanesFormArray]="dialogForm?.get('lanes') | asFormArray"
       ></bgap-form-unit-lanes>
 
       <bgap-form-rating-policy
         [ratingPoliciesFormArray]="
-          dialogForm.get('ratingPolicies')! | asFormArray
+          dialogForm?.get('ratingPolicies') | asFormArray
         "
       ></bgap-form-rating-policy>
 
+      <bgap-form-tip-policy
+        [tipPolicyFormGroup]="dialogForm?.get('tipPolicy') | asFormGroup"
+      >
+      </bgap-form-tip-policy>
+
       <bgap-form-unit-pos
-        *ngIf="!unit"
-        [posFormGroup]="dialogForm.get('pos')! | asFormGroup"
-        [externalIdControl]="dialogForm.get('externalId')! | asFormControl"
-        [editing]="false"
+        [posFormGroup]="dialogForm?.get('pos') | asFormGroup"
+        [externalIdControl]="dialogForm?.get('externalId') | asFormControl"
+        [rkeeperEdit]="!!unit && isInitiallyRkeeper"
         (changePasswordEmitter)="generatePassword()"
       ></bgap-form-unit-pos>
 
@@ -202,7 +231,7 @@
           type="submit"
           fullWidth
           status="primary"
-          [disabled]="dialogForm.invalid"
+          [disabled]="dialogForm?.invalid"
         >
           {{ 'common.submit' | translate }}
         </button>

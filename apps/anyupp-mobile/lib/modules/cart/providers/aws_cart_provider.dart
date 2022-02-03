@@ -186,9 +186,7 @@ class AwsCartProvider implements ICartProvider {
     try {
       var result = await GQL.amplify.execute(CreateCartMutation(
         variables: CreateCartArguments(
-          createCartInput: CreateCartInput.fromJson(
-            _getCartMutationVariablesFromCart(cart),
-          ),
+          createCartInput: _createCartInput(cart),
         ),
       ));
       // print('******** CREATING CART IN BACKEND.result.data=${result.data}');
@@ -215,8 +213,7 @@ class AwsCartProvider implements ICartProvider {
     try {
       var result = await GQL.amplify.execute(UpdateCartMutation(
           variables: UpdateCartArguments(
-        updateCartInput:
-            UpdateCartInput.fromJson(_getCartMutationVariablesFromCart(cart)),
+        updateCartInput: _updateCartInput(cart),
       )));
 
       // print('******** UPDATING CART IN BACKEND.result.data=${result.data}');
@@ -243,100 +240,191 @@ class AwsCartProvider implements ICartProvider {
     }
   }
 
-  Map<String, dynamic> _getCartMutationVariablesFromCart(Cart cart) {
-    // print('_getCartMutationVariablesFromCart().cart=$cart');
-
-    return {
-      if (cart.id != null) 'id': cart.id,
-      'unitId': cart.unitId,
-      'userId': cart.userId,
-      'servingMode': enumToString(cart.servingMode),
-      'orderPolicy': enumToString(cart.orderPolicy),
-      'items': cart.items.map((item) {
-        return {
-          'productId': item.productId,
-          'variantId': item.variantId,
-          'packagingFee': item.netPackagingFee,
-          'productType': 'FOOD',
-          'created': DateTime.now().millisecondsSinceEpoch.toInt(),
-          'productName': {
-            'en': item.productName.en,
-            'de': item.productName.de,
-            'hu': item.productName.hu,
-          },
-          'priceShown': {
-            'currency': item.priceShown.currency,
-            'pricePerUnit': item.priceShown.pricePerUnit,
-            'priceSum': item.priceShown.priceSum,
-            'tax': item.priceShown.tax,
-            'taxSum': item.priceShown.taxSum,
-          },
-          'sumPriceShown': {
-            'currency': item.priceShown.currency,
-            'pricePerUnit': item.getPrice(),
-            'priceSum': item.getPrice() * item.quantity,
-            'tax': item.priceShown.tax,
-            'taxSum': item.priceShown.taxSum,
-          },
-          'statusLog': [
-            {
-              'userId': cart.userId,
-              'status': 'none',
-              'ts': DateTime.now().millisecond,
-            }
+  CreateCartInput _createCartInput(Cart cart) {
+    return CreateCartInput(
+      id: cart.id,
+      unitId: cart.unitId,
+      userId: cart.userId,
+      servingMode: cart.servingMode,
+      orderPolicy: cart.orderPolicy,
+      items: cart.items.map((item) {
+        return OrderItemInput(
+          productId: item.productId,
+          variantId: item.variantId,
+          variantName: LocalizedItemInput(
+            hu: item.variantName.hu,
+            en: item.variantName.en,
+            de: item.variantName.de,
+          ),
+          netPackagingFee: item.netPackagingFee,
+          productType: item.productType,
+          created: DateTime.now().millisecondsSinceEpoch.toDouble(),
+          productName: LocalizedItemInput(
+            hu: item.productName.hu,
+            en: item.productName.en,
+            de: item.productName.de,
+          ),
+          priceShown: PriceShownInput(
+            currency: item.priceShown.currency,
+            pricePerUnit: item.priceShown.pricePerUnit,
+            priceSum: item.priceShown.priceSum,
+            tax: item.priceShown.tax,
+            taxSum: item.priceShown.taxSum,
+          ),
+          quantity: item.quantity,
+          statusLog: [
+            StatusLogInput(
+              status: OrderStatus.none,
+              userId: cart.userId,
+              ts: DateTime.now().millisecond.toDouble(),
+            ),
           ],
-          "allergens": item.allergens,
-          "image": item.image,
-          'quantity': item.quantity,
-          'variantName': {
-            'en': item.variantName.en,
-            'de': item.variantName.de,
-            'hu': item.variantName.hu,
-          },
-          'configSets': item.selectedConfigMap?.keys.map((configSet) {
-            return {
-              "name": {
-                'en': configSet.name.en,
-                'de': configSet.name.de,
-                'hu': configSet.name.hu,
-              },
-              "productSetId": configSet.productSetId,
-              "type": configSet.type,
-              "items": item.selectedConfigMap != null
-                  ? item.selectedConfigMap![configSet]?.map((configComponent) {
-                      return {
-                        "allergens": configComponent.allergens
-                            ?.map((e) => e.toString().split(".").last)
-                            .toList(),
-                        "price": configComponent.price,
-                        "productComponentId":
-                            configComponent.productComponentId,
-                        "name": {
-                          'en': configComponent.name.en,
-                          'de': configComponent.name.de,
-                          'hu': configComponent.name.hu,
-                        },
-                      };
+          sumPriceShown: PriceShownInput(
+            currency: item.priceShown.currency,
+            pricePerUnit: item.getPrice(),
+            priceSum: item.getPrice() * item.quantity,
+            tax: item.priceShown.tax,
+            taxSum: item.priceShown.taxSum,
+          ),
+          allergens: item.allergens,
+          image: item.image,
+          configSets: item.selectedConfigMap?.keys.map((configSet) {
+            return OrderItemConfigSetInput(
+              name: LocalizedItemInput(
+                hu: configSet.name.hu,
+                en: configSet.name.en,
+                de: configSet.name.de,
+              ),
+              productSetId: configSet.productSetId,
+              type: configSet.type,
+              items: item.selectedConfigMap != null &&
+                      item.selectedConfigMap?[configSet] != null
+                  ? item.selectedConfigMap![configSet]!.map((configComponent) {
+                      return OrderItemConfigComponentInput(
+                        name: LocalizedItemInput(
+                          hu: configComponent.name.hu,
+                          en: configComponent.name.en,
+                          de: configComponent.name.de,
+                        ),
+                        price: configComponent.price,
+                        productComponentId: configComponent.productComponentId,
+                        netPackagingFee: configComponent.netPackagingFee,
+                        allergens: configComponent.allergens,
+                      );
                     }).toList()
-                  : null
-            };
+                  : [],
+            );
           }).toList(),
-        };
+        );
       }).toList(),
-      'paymentMode': cart.paymentMode != null
-          ? {
-              'type': enumToString(cart.paymentMode!.type),
-              'caption': cart.paymentMode!.caption,
-              'method': enumToString(cart.paymentMode!.method),
-            }
+      takeAway: false,
+      paymentMode: cart.paymentMode != null
+          ? PaymentModeInput(
+              method: cart.paymentMode!.method,
+              type: cart.paymentMode!.type,
+              caption: cart.paymentMode!.caption,
+            )
           : null,
-      'takeAway': false,
-      'place': cart.place != null
-          ? {
-              'table': cart.place!.table,
-              'seat': cart.place!.seat,
-            }
+      place: cart.place != null
+          ? PlaceInput(
+              table: cart.place!.table ?? '',
+              seat: cart.place!.seat ?? '',
+            )
           : null,
-    };
+    );
+  }
+
+  UpdateCartInput _updateCartInput(Cart cart) {
+    return UpdateCartInput(
+      id: cart.id!,
+      unitId: cart.unitId,
+      userId: cart.userId,
+      servingMode: cart.servingMode,
+      orderPolicy: cart.orderPolicy,
+      items: cart.items.map((item) {
+        return OrderItemInput(
+          productId: item.productId,
+          variantId: item.variantId,
+          variantName: LocalizedItemInput(
+            hu: item.variantName.hu,
+            en: item.variantName.en,
+            de: item.variantName.de,
+          ),
+          netPackagingFee: item.netPackagingFee,
+          productType: item.productType,
+          created: DateTime.now().millisecondsSinceEpoch.toDouble(),
+          productName: LocalizedItemInput(
+            hu: item.productName.hu,
+            en: item.productName.en,
+            de: item.productName.de,
+          ),
+          priceShown: PriceShownInput(
+            currency: item.priceShown.currency,
+            pricePerUnit: item.priceShown.pricePerUnit,
+            priceSum: item.priceShown.priceSum,
+            tax: item.priceShown.tax,
+            taxSum: item.priceShown.taxSum,
+          ),
+          quantity: item.quantity,
+          statusLog: [
+            StatusLogInput(
+              status: OrderStatus.none,
+              userId: cart.userId,
+              ts: DateTime.now().millisecond.toDouble(),
+            ),
+          ],
+          sumPriceShown: PriceShownInput(
+            currency: item.priceShown.currency,
+            pricePerUnit: item.getPrice(),
+            priceSum: item.getPrice() * item.quantity,
+            tax: item.priceShown.tax,
+            taxSum: item.priceShown.taxSum,
+          ),
+          allergens: item.allergens,
+          image: item.image,
+          configSets: item.selectedConfigMap?.keys.map((configSet) {
+            return OrderItemConfigSetInput(
+              name: LocalizedItemInput(
+                hu: configSet.name.hu,
+                en: configSet.name.en,
+                de: configSet.name.de,
+              ),
+              productSetId: configSet.productSetId,
+              type: configSet.type,
+              items: item.selectedConfigMap != null &&
+                      item.selectedConfigMap?[configSet] != null
+                  ? item.selectedConfigMap![configSet]!.map((configComponent) {
+                      return OrderItemConfigComponentInput(
+                        name: LocalizedItemInput(
+                          hu: configComponent.name.hu,
+                          en: configComponent.name.en,
+                          de: configComponent.name.de,
+                        ),
+                        price: configComponent.price,
+                        productComponentId: configComponent.productComponentId,
+                        netPackagingFee: configComponent.netPackagingFee,
+                        allergens: configComponent.allergens,
+                      );
+                    }).toList()
+                  : [],
+            );
+          }).toList(),
+        );
+      }).toList(),
+      takeAway: false,
+      paymentMode: cart.paymentMode != null
+          ? PaymentModeInput(
+              method: cart.paymentMode!.method,
+              type: cart.paymentMode!.type,
+              caption: cart.paymentMode!.caption,
+            )
+          : null,
+      place: cart.place != null
+          ? PlaceInput(
+              table: cart.place!.table ?? '',
+              seat: cart.place!.seat ?? '',
+            )
+          : null,
+    );
   }
 }

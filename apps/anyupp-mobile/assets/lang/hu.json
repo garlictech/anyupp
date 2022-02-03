@@ -348,7 +348,8 @@
         "downloadReceipt": "NYUGTA LETÖLTÉSE",
         "downloadInvoice": "SZÁMLA LETÖLTÉSE",
         "save": "MENTÉS",
-        "warning": "A pirossal jelölt adatok kitöltése kötelező"
+        "warning": "A pirossal jelölt adatok kitöltése kötelező",
+        "modifyAddress": "Módosítás"
       }
     },
     "simplePayStatus": {
@@ -443,10 +444,15 @@
     "scanQR": "Kattints ide és olvasd be a QR kódot az asztalodról!",
     "qrConnected": "Helyválasztás",
     "chair": "szék #{{0}} asztalszám #{{1}}",
-    "findingSeat": "Asztal és szék választása...",
+    "findingSeat": "Asztal és szék kiválasztása...",
+    "findingSeatLoading": "Ez eltarthat néhány másodpercig. Kérjük, ne zárd be az ablakot!",
     "tableReserved": {
       "title": "Hely kiválasztva!",
-      "description": "Hely sikeresen kiválasztva. Asztal: {{0}}, Szék: {{1}}"
+      "description": "Hely sikeresen kiválasztva. Asztal: #{{0}}, Szék: #{{1}}"
+    },
+    "tableFound": {
+      "title": "Szék: #{{1}}, Asztal: #{{0}}",
+      "description": "A kapcsolódás megtörtént. Folytathatod a rendelést!"
     },
     "qrCodeError": {
       "title": "Hibás QR kód",
@@ -564,8 +570,13 @@
   },
   "product": {
     "notTakeAway": "Csak helyben",
+    "notTakeAwaDesc": "A termék csak helyben fogyasztásra elérhető.",
     "notInPlace": "Csak elvitelre",
-    "size": "Méret:"
+    "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
+    "soldOut": "Elfogyott",
+    "soldOutDesc": "A termék sajnos elfogyott",
+    "size": "Méret:",
+    "selectSize": "Válassz méretet"
   },
   "validators": {
     "required": "Ez a mező szükséges",

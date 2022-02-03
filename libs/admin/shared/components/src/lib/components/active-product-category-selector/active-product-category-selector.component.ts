@@ -45,7 +45,7 @@ export class ActiveProductCategorySelectorComponent
     return this._loggedUser?.settings?.selectedProductCategoryId;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUser),

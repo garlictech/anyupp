@@ -12,7 +12,7 @@ import { FormsService } from '../../services/forms/forms.service';
   templateUrl: './form-product-availabilities.component.html',
 })
 export class FormProductAvailabilitiesComponent {
-  @Input() availabilityFormArray!: FormArray;
+  @Input() availabilityFormArray?: FormArray | null;
   @Input() currency?: string;
   public EVariantAvailabilityType = EVariantAvailabilityType;
   public iterativeAvailabilities: KeyValue[];

@@ -37,20 +37,36 @@ class UnitFoundByQRCodeWidget extends StatefulWidget {
       _UnitFoundByQRCodeWidgetState();
 }
 
-class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget> {
+class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<FlipCardState> _flipCardState = GlobalKey<FlipCardState>();
 
   bool _showError = false;
   String? _errorTitle;
   String? _errorDesc;
+  late AnimationController _controller;
+
+  GeoUnit? _selectedUnit;
 
   @override
   void initState() {
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
     super.initState();
 
     if (widget.loadUnits) {
       getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
     }
+
+    _controller.repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -77,32 +93,65 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget> {
         }
       },
       child: Container(
-        padding: EdgeInsets.all(12.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Spacer(),
               _showError == false
-                  ? FlipCard(
-                      key: _flipCardState,
-                      flipOnTouch: false,
-                      direction: FlipDirection.HORIZONTAL,
-                      front: _buildQRCodeCard(context),
-                      back: _buildConnectedToTableCard(context),
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 56.0),
+                      child: FlipCard(
+                        key: _flipCardState,
+                        flipOnTouch: false,
+                        direction: FlipDirection.HORIZONTAL,
+                        front: _buildQRCodeCard(context),
+                        back: _buildConnectedToTableCard(context),
+                      ),
                     )
-                  : Expanded(
-                      child: CommonErrorWidget(
-                        error: trans(_errorTitle!),
-                        description: trans(_errorDesc!),
-                        onPressed: () {
-                          if (widget.popWhenClose) {
-                            Nav.pop<bool>(false);
-                            return;
-                          }
-                          Nav.reset(SelectUnitChooseMethodScreen());
-                        },
+                  : Container(
+                      child: Container(
+                        // color: Colors.red,
+                        child: CommonErrorWidget(
+                          error: trans(_errorTitle!),
+                          description: trans(_errorDesc!),
+                          showButton: true,
+                          onPressed: () {
+                            print('clicked');
+                            if (widget.popWhenClose) {
+                              Nav.pop<bool>(false);
+                              return;
+                            }
+                            Nav.reset(SelectUnitChooseMethodScreen());
+                          },
+                        ),
                       ),
                     ),
+              Spacer(),
+              Container(
+                width: double.infinity,
+                height: 56.0,
+                margin: const EdgeInsets.all(16.0),
+                child: _selectedUnit != null
+                    ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                          ),
+                          primary: theme.primary,
+                        ),
+                        onPressed: () => _continueToUnit(),
+                        child: Text(
+                          trans('common.ok2'),
+                          style: Fonts.satoshi(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: theme.secondary0,
+                          ),
+                        ),
+                      )
+                    : null,
+              )
             ],
           ),
         ),
@@ -111,94 +160,80 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget> {
   }
 
   Widget _buildQRCodeCard(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.0),
-        border: Border.all(
-          width: 1.5,
-          color: Color(0xFFE7E5D0),
-        ),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 25.0),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 25.0),
+          child: RotationTransition(
+            turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
             child: SvgPicture.asset('assets/icons/qr-scan.svg'),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 20.0),
-            child: Column(
-              children: [
-                Text(
-                  trans('selectUnit.findingSeat'),
-                  textAlign: TextAlign.center,
-                  style: Fonts.satoshi(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF3C2F2F),
-                  ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 46.0),
+          child: Column(
+            children: [
+              Text(
+                trans('selectUnit.findingSeat'),
+                textAlign: TextAlign.center,
+                style: Fonts.satoshi(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF373737),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: CenterLoadingWidget(
-                    backgroundColor: Colors.white,
-                    color: theme.primary,
-                    size: 20,
-                    strokeWidth: 2.0,
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+              Text(
+                trans('selectUnit.findingSeatLoading'),
+                textAlign: TextAlign.center,
+                style: Fonts.satoshi(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF373737),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 
   Widget _buildConnectedToTableCard(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.0),
-        border: Border.all(
-          width: 1.5,
-          color: Color(0xFFE7E5D0),
+    return Column(
+      children: [
+        SvgPicture.asset('assets/icons/success_order.svg'),
+        Padding(
+          padding: const EdgeInsets.only(top: 46.0),
+          child: Text(
+            trans('selectUnit.tableFound.title',
+                [widget.place.seat, widget.place.table]),
+            textAlign: TextAlign.center,
+            style: Fonts.satoshi(
+              fontSize: 18.0,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF3C2F2F),
+            ),
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 35.0),
-            child: SvgPicture.asset('assets/icons/link.svg'),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 16.0,
+            bottom: 30.0,
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 25.0),
-            child: Text(
-              trans('selectUnit.qrConnected'),
-              textAlign: TextAlign.center,
-              style: Fonts.satoshi(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF3C2F2F),
-              ),
+          child: Text(
+            trans('selectUnit.tableFound.description'),
+            textAlign: TextAlign.center,
+            style: Fonts.satoshi(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFF373737),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 30.0),
-            child: Text(
-              trans(
-                  'selectUnit.chair', [widget.place.seat, widget.place.table]),
-              textAlign: TextAlign.center,
-              style: Fonts.satoshi(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF3C2F2F),
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -219,28 +254,34 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget> {
           null);
       getIt<UnitSelectBloc>().add(SelectUnit(unit));
       getIt<CartBloc>().add(UpdatePlaceInCartAction(unit, widget.place));
+      setState(() {
+        _selectedUnit = unit;
+      });
+    } else {
+      // Set error
+      setState(() {
+        _showError = true;
+        _errorTitle = 'selectUnit.qrCodeError.title';
+        _errorDesc = 'selectUnit.qrCodeError.description';
+      });
+    }
+  }
 
-      // --- Wait for animation finish
-      await Future.delayed(Duration(milliseconds: 1000));
+  Future<void> _continueToUnit() async {
+    // --- Wait for animation finish
+    // await Future.delayed(Duration(milliseconds: 1000));
 
-      if (widget.popWhenClose && widget.onQRChecked != null) {
-        widget.onQRChecked!(true);
-        return;
-      }
-
-      if (widget.navigateToCart) {
-        Nav.reset(MainNavigation());
-      } else {
-        await selectUnitAndGoToMenuScreen(context, unit, dismissable: false);
-      }
+    if (widget.popWhenClose && widget.onQRChecked != null) {
+      widget.onQRChecked!(true);
       return;
     }
 
-    // Set error
-    setState(() {
-      _showError = true;
-      _errorTitle = 'selectUnit.qrCodeError.title';
-      _errorDesc = 'selectUnit.qrCodeError.description';
-    });
+    if (widget.navigateToCart) {
+      Nav.reset(MainNavigation());
+    } else {
+      await selectUnitAndGoToMenuScreen(context, _selectedUnit!,
+          dismissable: false);
+    }
+    return;
   }
 }

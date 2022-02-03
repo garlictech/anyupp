@@ -1,3 +1,4 @@
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart' as api;
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
@@ -73,24 +74,36 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       ),
     ));
 
-    if (result.data == null || result.data?.startStripePayment == null) {
-      return;
+    if (result.hasErrors) {
+      print('startStripePaymentWithExistingCard.error=${result.errors}');
+      throw GraphQLException.fromGraphQLError(
+          GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
     }
 
-    String? clientSecret = result.data!.startStripePayment?.clientSecret;
-    print('startStripePaymentWithExistingCard.clientSecret=$clientSecret');
+    String? clientSecret = result.data?.startStripePayment?.clientSecret;
+    String? merchantPaymentMethodId =
+        result.data?.startStripePayment?.paymentMethodId;
+    String? stripeAccount = result.data?.startStripePayment?.stripeAccount;
     if (clientSecret == null) {
       throw StripeException(
           code: StripeException.CODE, message: 'Client secret is null!');
     }
 
+    Stripe stripe = Stripe(
+      AppConfig.StripePublishableKey,
+      returnUrlForSca: 'anyupp://stripe',
+      stripeAccount: stripeAccount,
+    );
+
     print('startStripePaymentWithExistingCard.confirmPayment().start()');
-    Map<String, dynamic> paymentResponse = await _stripe
-        .confirmPayment(clientSecret, paymentMethodId: paymentMethodId);
+    Map<String, dynamic> paymentResponse = await stripe.confirmPayment(
+        clientSecret,
+        paymentMethodId: merchantPaymentMethodId ?? paymentMethodId);
     print(
         'startStripePaymentWithExistingCard.confirmPayment().paymentResponse=$paymentResponse');
   }
 
+  @deprecated
   @override
   Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard,
       UserInvoiceAddress? invoiceAddress, bool saveCard) async {

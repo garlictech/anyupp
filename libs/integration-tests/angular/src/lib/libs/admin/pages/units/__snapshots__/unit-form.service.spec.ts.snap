@@ -156,6 +156,7 @@ Object {
     "type": "anyupp",
   },
   "ratingPolicies": Array [],
+  "soldOutVisibilityPolicy": "faded",
   "supportedOrderModes": Array [
     "instant",
   ],
@@ -163,14 +164,19 @@ Object {
     "inPlace",
   ],
   "timeZone": "",
-}
-`;
-
-exports[`UnitFormService createUnitFormGroup should create rkeeper form group 1`] = `
-Object {
-  "externalId": "",
-  "pos": Object {
-    "type": "anyupp",
+  "tipPolicy": Object {
+    "description": Object {
+      "de": "",
+      "en": "",
+      "hu": "",
+    },
+    "maxOtherAmount": null,
+    "percents": Array [],
+    "title": Object {
+      "de": "",
+      "en": "",
+      "hu": "",
+    },
   },
 }
 `;
@@ -195,6 +201,7 @@ Object {
     "hu": "",
   },
   "email": "",
+  "externalId": "",
   "groupId": "",
   "isActive": "",
   "lanes": Array [],
@@ -238,7 +245,11 @@ Object {
   "packagingTaxPercentage": "",
   "paymentModes": Array [],
   "phone": "",
+  "pos": Object {
+    "type": "anyupp",
+  },
   "ratingPolicies": Array [],
+  "soldOutVisibilityPolicy": "faded",
   "supportedOrderModes": Array [
     "instant",
   ],
@@ -246,6 +257,20 @@ Object {
     "inPlace",
   ],
   "timeZone": "",
+  "tipPolicy": Object {
+    "description": Object {
+      "de": "",
+      "en": "",
+      "hu": "",
+    },
+    "maxOtherAmount": null,
+    "percents": Array [],
+    "title": Object {
+      "de": "",
+      "en": "",
+      "hu": "",
+    },
+  },
 }
 `;
 

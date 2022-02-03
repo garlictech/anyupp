@@ -10,16 +10,19 @@ class SelectServingModeWidget extends StatefulWidget {
   final int initialPosition;
   final void Function(int)? onSelected;
   final bool useTheme;
+  final bool dismissable;
 
   const SelectServingModeWidget({
     Key? key,
     this.onSelected,
     this.initialPosition = 0,
     this.useTheme = true,
+    this.dismissable = true,
   }) : super(key: key);
 
   @override
-  _SelectServingModeWidgetState createState() => _SelectServingModeWidgetState();
+  _SelectServingModeWidgetState createState() =>
+      _SelectServingModeWidgetState();
 }
 
 class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
@@ -39,14 +42,39 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
-            child: Text(
-              trans('servingModeSheet.title'),
-              style: Fonts.satoshi(
-                fontSize: 16.0,
-                fontWeight: FontWeight.normal,
-                color: widget.useTheme ? theme.secondary : Color(0xFF373737),
-              ),
+            // margin: EdgeInsets.only(top: 8.0, bottom: 4.0),
+            child: Stack(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (widget.dismissable)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                      child: BackButtonWidget(
+                        // iconSize: 2,
+                        showBorder: false,
+                      ),
+                    ),
+                  ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      trans('servingModeSheet.title'),
+                      style: Fonts.satoshi(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                        color: widget.useTheme
+                            ? theme.secondary
+                            : Color(0xFF373737),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Divider(
@@ -147,7 +175,8 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
                 style: Fonts.satoshi(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w400,
-                  color: widget.useTheme ? theme.secondary40 : Color(0xFFAFAFAF),
+                  color:
+                      widget.useTheme ? theme.secondary40 : Color(0xFFAFAFAF),
                 ),
               ),
             ],

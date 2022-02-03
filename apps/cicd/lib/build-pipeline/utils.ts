@@ -83,9 +83,6 @@ export const createBuildProject = (
     buildSpec: codebuild.BuildSpec.fromObject({
       version: '0.2',
       phases: buildProjectPhases,
-      artifacts: {
-        files: ['apps/anyupp-backend/cdk.out/**/*'],
-      },
       reports,
       env: {
         'secrets-manager': {
@@ -300,16 +297,6 @@ export const createCommonDevPipeline = (
 
   return createPipeline(scope, stage, {
     ...props,
-    finalizationStage: {
-      stageName: 'Finalization',
-      actions: [
-        new codepipeline_actions.CloudFormationDeleteStackAction({
-          actionName: `DeleteSeeder`,
-          stackName: `${utils.projectPrefix(stage)}-seeder`,
-          adminPermissions: true,
-        }),
-      ],
-    },
     buildProjectPhases: {
       install: {
         commands: ['apps/cicd/scripts/stage-install.sh'],
@@ -324,6 +311,16 @@ export const createCommonDevPipeline = (
           )} ${adminSiteUrl}`,
         ],
       },
+      //reports: {
+      //  cypressReports: {
+      //    files: ['cyreport/cucumber-json/**/*'],
+      //    'file-format': 'CUCUMBERJSON',
+      //  },
+      //  coverage: {
+      //    files: ['coverage/lcov.info'],
+      //    'file-format': 'SIMPLECOV',
+      //  },
+      //},
     },
   });
 };

@@ -53,7 +53,7 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     combineLatest([
       this._store.pipe(
         select(ordersSelectors.getAllActiveOrders),
