@@ -314,7 +314,7 @@ describe('Test the rkeeper api basic functionality', () => {
         sets,
         R.map(configSet => ({
           ...configSet,
-          items: !!configSet?.items
+          items: configSet?.items
             ? pipe(
                 (configSet?.items ?? []) as CrudApi.Maybe<
                   CrudApi.ProductConfigSet | CrudApi.GeneratedProductConfigSet
@@ -340,7 +340,7 @@ describe('Test the rkeeper api basic functionality', () => {
         maskV4UuidIds,
         R.map(product => ({
           ...product,
-          configSets: !!product.configSets
+          configSets: product.configSets
             ? sortConfigSets(product.configSets)
             : product.configSets,
         })),
@@ -435,7 +435,11 @@ describe('Test the rkeeper api basic functionality', () => {
         params: { externalUnitId: fixtures.yellowRestaurantId },
         body: rawData,
       } as any,
-      { send: () => {} } as any,
+      {
+        send: () => {
+          /* EMPTY */
+        },
+      } as any,
     );
 
     expect(res).toMatchSnapshot();

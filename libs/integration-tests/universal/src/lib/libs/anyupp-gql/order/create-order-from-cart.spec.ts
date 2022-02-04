@@ -523,7 +523,7 @@ describe('CreatOrderFromCart mutation test', () => {
       }),
     )
       .pipe(
-        catchError(err => {
+        catchError(() => {
           return of({});
         }),
         tap(() => expect(maskAll(fv.mock.calls)).toMatchSnapshot()),

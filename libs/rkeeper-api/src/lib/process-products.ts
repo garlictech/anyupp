@@ -360,6 +360,14 @@ export const { validate: validateModifier, isType: isModifier } =
 export const normalizeModifier = (modifier: Modifier) =>
   normalizeCommon(modifier) as Modifier;
 
+export const resolveComponentSets =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+
+    (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
+    (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
+      resolveComponentSetsHelper(sdk, chainId, rawData, dish);
+
 export const handleRkeeperProducts =
   (sdk: CrudApi.CrudSdk) =>
   (externalRestaurantId: string) =>
@@ -622,11 +630,3 @@ const resolveComponentSetsHelper = R.memoizeWith(
       OO.chain(x => (x ? OO.some(x) : OO.none)),
     ),
 );
-
-export const resolveComponentSets =
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-
-    (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
-    (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
-      resolveComponentSetsHelper(sdk, chainId, rawData, dish);

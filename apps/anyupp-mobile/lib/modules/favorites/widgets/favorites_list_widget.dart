@@ -70,7 +70,7 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
             position: position,
             duration: const Duration(milliseconds: 200),
             child: SlideAnimation(
-              horizontalOffset: 100.0,
+              verticalOffset: 50.0,
               child: FadeInAnimation(
                 child: ProductMenuItem(
                   displayState: isAvailableInThisServingMode
