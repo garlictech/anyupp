@@ -147,7 +147,7 @@ test('Convert Anyupp order to rkeeper order', done => {
     axiosInstance: {
       request: jest.fn().mockReturnValue(Promise.resolve({})),
     },
-    currentTime: () => new Date('2022.02.01'),
+    currentTime: () => new Date('2020-04-13T00:00:00.000+08:00'),
   };
 
   sendRkeeperOrder(deps)(unit, orderInput)
