@@ -1,6 +1,6 @@
 import * as fp from 'lodash/fp';
 import { iif, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -116,43 +116,50 @@ export class ProductExtendFormComponent
         groupId: this._selectedGroupId,
       };
 
-      iif(
-        () => this.productLevel === EProductLevel.UNIT,
-        this._productFormService.saveUnitExtendForm$(
-          {
-            ...this.dialogForm.value,
-            ...parentInfo,
-            unitId: this._selectedUnitId,
-            position: 0,
-            takeaway,
-          },
-          {
-            ...this.dialogForm.value,
-            id: this.product?.id || '',
-            dirty: this.product?.dirty ? false : undefined,
-            takeaway,
-          },
-          this.editing,
-        ),
-        this._productFormService.saveGroupExtendForm$(
-          {
-            ...this.dialogForm.value,
-            ...parentInfo,
-            takeawayTax: this.dialogForm.value.takeawayTax || null, // save or remove
-          },
-          {
-            ...this.dialogForm.value,
-            id: this.product?.id || '',
-            dirty: this.product?.dirty ? false : undefined, // save or leave
-            takeawayTax: this.dialogForm.value.takeawayTax || null, // save or remove
-          },
-          this.editing,
-        ),
-      ).subscribe((response: UpsertResponse<unknown>) => {
-        this._toasterService.showSimpleSuccess(response.type);
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            iif(
+              () => this.productLevel === EProductLevel.UNIT,
+              this._productFormService.saveUnitExtendForm$(
+                {
+                  ...this.dialogForm?.value,
+                  ...parentInfo,
+                  unitId: this._selectedUnitId,
+                  position: 0,
+                  takeaway,
+                },
+                {
+                  ...this.dialogForm?.value,
+                  id: this.product?.id || '',
+                  dirty: this.product?.dirty ? false : undefined,
+                  takeaway,
+                },
+                this.editing,
+              ),
+              this._productFormService.saveGroupExtendForm$(
+                {
+                  ...this.dialogForm?.value,
+                  ...parentInfo,
+                  takeawayTax: this.dialogForm?.value.takeawayTax || null, // save or remove
+                },
+                {
+                  ...this.dialogForm?.value,
+                  id: this.product?.id || '',
+                  dirty: this.product?.dirty ? false : undefined, // save or leave
+                  takeawayTax: this.dialogForm?.value.takeawayTax || null, // save or remove
+                },
+                this.editing,
+              ),
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
+        )
+        .subscribe((response: UpsertResponse<unknown>) => {
+          this._toasterService.showSimpleSuccess(response.type);
 
-        this.close();
-      });
+          this.close();
+        });
     }
   }
 }

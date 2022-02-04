@@ -1,6 +1,6 @@
 import { get, omit } from 'lodash/fp';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -98,14 +98,19 @@ export class ProductFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      this._productFormService
-        .saveChainForm$(
-          {
-            ...this.dialogForm.value,
-            chainId: this._userSettings?.selectedChainId || '',
-          },
-          this.product?.id || undefined,
-          this.product?.dirty ? false : undefined,
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            this._productFormService.saveChainForm$(
+              {
+                ...this.dialogForm?.value,
+                chainId: this._userSettings?.selectedChainId || '',
+              },
+              this.product?.id || undefined,
+              this.product?.dirty ? false : undefined,
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
         )
         .subscribe((response: UpsertResponse<unknown>) => {
           this._toasterService.showSimpleSuccess(response.type);

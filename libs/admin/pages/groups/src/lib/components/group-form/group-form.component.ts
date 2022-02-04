@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -76,15 +76,20 @@ export class GroupFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      this._groupFormService
-        .saveForm$(
-          {
-            ...this.dialogForm.value,
-            address: addressIsEmpty(this.dialogForm.value.address)
-              ? null
-              : this.dialogForm.value.address,
-          },
-          this.group?.id,
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            this._groupFormService.saveForm$(
+              {
+                ...this.dialogForm?.value,
+                address: addressIsEmpty(this.dialogForm?.value.address)
+                  ? null
+                  : this.dialogForm?.value.address,
+              },
+              this.group?.id,
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
         )
         .subscribe((response: UpsertResponse<unknown>) => {
           this._toasterService.showSimpleSuccess(response.type);

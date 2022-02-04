@@ -11,6 +11,7 @@ import { addressIsEmpty } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EImageType, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
+import { switchMap, tap } from 'rxjs/operators';
 
 import { ChainFormService } from '../../services/chain-form.service';
 
@@ -81,15 +82,20 @@ export class ChainFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      this._chainFormService
-        .saveForm$(
-          {
-            ...this.dialogForm?.value,
-            address: addressIsEmpty(this.dialogForm?.value.address)
-              ? null
-              : this.dialogForm?.value.address,
-          },
-          this.chain?.id,
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            this._chainFormService.saveForm$(
+              {
+                ...this.dialogForm?.value,
+                address: addressIsEmpty(this.dialogForm?.value.address)
+                  ? null
+                  : this.dialogForm?.value.address,
+              },
+              this.chain?.id,
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
         )
         .subscribe((response: UpsertResponse<unknown>) => {
           this._toasterService.showSimpleSuccess(response.type);

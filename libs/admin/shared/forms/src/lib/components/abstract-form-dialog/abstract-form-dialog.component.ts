@@ -12,6 +12,7 @@ import { ToasterService } from '@bgap/admin/shared/utils';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
+import { BehaviorSubject, of } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -21,6 +22,9 @@ import { Store } from '@ngrx/store';
 })
 export class AbstractFormDialogComponent implements OnDestroy {
   public dialogForm?: FormGroup;
+  public working$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false,
+  );
   protected _dataService: DataService;
   protected _formBuilder: FormBuilder;
   protected _toasterService: ToasterService;
@@ -54,5 +58,9 @@ export class AbstractFormDialogComponent implements OnDestroy {
 
   public close(): void {
     this._nbDialogRef.close();
+  }
+
+  public setWorking$(working: boolean) {
+    return of(this.working$.next(working));
   }
 }

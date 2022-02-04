@@ -1,12 +1,11 @@
 <div class="p-2">
   <strong>#{{ order.orderNum }}</strong>
 
-  <nb-icon
-    icon="local_shipping"
-    pack="material-icons"
-    class="ms-2"
+  <img
+    class="takeaway-logo"
+    src="assets/images/bag.svg"
     *ngIf="order.servingMode === EServingMode.takeaway"
-  ></nb-icon>
+  />
 
   <button
     nbSpinnerStatus="control"
@@ -191,7 +190,7 @@
       (click)="recallOrderFromHistory(order)"
       data-testid="orderRecacllBtn"
     >
-      <nb-icon icon="arrow_forward_ios" pack="material-icons"></nb-icon>
+      <nb-icon icon="arrow_back_ios" pack="material-icons"></nb-icon>
     </button>
 
     <nb-badge

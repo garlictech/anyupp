@@ -218,6 +218,7 @@ export const seedAll = (deps: SeederDependencies) =>
         5,
         orderFixture.activeWaitingCardOrderInput,
         transactionFixture.waitingCardTransactionInput,
+        transactionFixture.successCardTipTransactionInput,
       ),
     ),
     switchMap(() =>
@@ -231,6 +232,7 @@ export const seedAll = (deps: SeederDependencies) =>
           '02',
         ),
         transactionFixture.waitingCashTransactionInput,
+        transactionFixture.successCardTipTransactionInput,
       ),
     ),
     switchMap(() =>
@@ -244,6 +246,7 @@ export const seedAll = (deps: SeederDependencies) =>
           '02',
         ),
         transactionFixture.waitingCashTransactionInput,
+        transactionFixture.successCardTipTransactionInput,
       ),
     ),
     switchMap(() =>
@@ -257,6 +260,7 @@ export const seedAll = (deps: SeederDependencies) =>
           '03',
         ),
         transactionFixture.waitingCashTransactionInput,
+        transactionFixture.successCardTipTransactionInput,
       ),
     ),
     delay(2000),

@@ -6,11 +6,7 @@
     {{ orderItem.place!.table! }}<br />{{ orderItem.place!.seat! }}<br />
 
     <div *ngIf="orderItem.servingMode === EServingMode.takeaway">
-      <nb-icon
-        class="takeaway"
-        icon="local_shipping"
-        pack="material-icons"
-      ></nb-icon>
+      <img class="takeaway-logo" src="assets/images/bag.svg" />
     </div>
   </div>
   <div class="title-block row w-100 p-0 m-0 ms-2 float-right">

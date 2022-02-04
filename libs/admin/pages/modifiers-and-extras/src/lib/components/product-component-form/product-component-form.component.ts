@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash/fp';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -102,11 +102,16 @@ export class ProductComponentFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      this._modifiersAndExtrasFormService
-        .saveComponentForm$(
-          cloneDeep(this.dialogForm.value),
-          this.productComponent?.id,
-          this.productComponent?.dirty || undefined,
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            this._modifiersAndExtrasFormService.saveComponentForm$(
+              cloneDeep(this.dialogForm?.value),
+              this.productComponent?.id,
+              this.productComponent?.dirty || undefined,
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
         )
         .subscribe((response: UpsertResponse<unknown>) => {
           this._toasterService.showSimpleSuccess(response.type);

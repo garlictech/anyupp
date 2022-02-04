@@ -12,3 +12,8 @@ bgap-order-print {
 ::ng-deep .selectedOrder {
   background-color: nb-theme(color-basic-active) !important;
 }
+
+.user-icon {
+  position: relative;
+  top: 4px;
+}

@@ -1138,6 +1138,7 @@ export const placeOrderToSeat = (
 interface BulkOrderInput {
   order: CrudApi.CreateOrderInput;
   transaction: CrudApi.CreateTransactionInput;
+  tipTransaction: CrudApi.CreateTransactionInput;
 }
 
 export const seedLotsOfOrders = (
@@ -1146,6 +1147,7 @@ export const seedLotsOfOrders = (
   range: number,
   orderInput: CrudApi.CreateOrderInput,
   transactionInput: CrudApi.CreateTransactionInput,
+  tipTransactionInput: CrudApi.CreateTransactionInput,
 ) => {
   console.debug(`Creating a lot of test orders (${range}).`);
 
@@ -1157,12 +1159,16 @@ export const seedLotsOfOrders = (
       const transactionId = `${seededIdPrefix}transaction_id_${
         idxBase + index
       }`;
+      const tipTransactionId = `${seededIdPrefix}tipTransaction_id_${
+        idxBase + index
+      }`;
 
       return {
         order: {
           ...orderInput,
           id: orderId,
           transactionId,
+          tipTransactionId,
           userId,
           orderNum: index.toString().padStart(6, '0'),
         },
@@ -1171,18 +1177,27 @@ export const seedLotsOfOrders = (
           id: transactionId,
           orderId,
         },
+        tipTransaction: {
+          ...tipTransactionInput,
+          id: tipTransactionId,
+          orderId,
+        },
       };
     }),
     x => from(x),
   ).pipe(
-    concatMap((input: BulkOrderInput) =>
-      of('magic').pipe(
+    concatMap((input: BulkOrderInput) => {
+      console.error('input', input);
+      return of('magic').pipe(
         switchMap(() =>
           deps.crudSdk.CreateTransaction({ input: input.transaction }),
         ),
+        switchMap(() =>
+          deps.crudSdk.CreateTransaction({ input: input.tipTransaction }),
+        ),
         switchMap(() => deps.crudSdk.CreateOrder({ input: input.order })),
-      ),
-    ),
+      );
+    }),
     toArray(),
     tap(objects => console.debug(`Created ${objects?.length} test orders.`)),
   );

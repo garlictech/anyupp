@@ -75,6 +75,7 @@ export const hourlyBreakdownOrderAmounts = (
     [EProductType.DRINK]: new Array(24).fill(0),
     [EProductType.FOOD]: new Array(24).fill(0),
     [EProductType.OTHER]: new Array(24).fill(0),
+    [EProductType.TIP]: new Array(24).fill(0),
     ordersCount: new Array(24).fill(0),
     sum: new Array(24).fill(0),
   };
@@ -88,6 +89,7 @@ export const hourlyBreakdownOrderAmounts = (
           i.priceShown.priceSum;
         amounts['sum'][date.hour] += i.priceShown.priceSum;
       });
+      amounts[EProductType.TIP][date.hour] += o.tipTransaction?.total || 0;
 
       amounts['ordersCount'][date.hour] += 1;
     }
@@ -101,6 +103,7 @@ export const dailySalesPerTypeOrderAmounts = (orders: CrudApi.Order[]) => {
     [EProductType.DRINK]: 0,
     [EProductType.FOOD]: 0,
     [EProductType.OTHER]: 0,
+    [EProductType.TIP]: 0,
   };
 
   orders.forEach(o => {
@@ -108,6 +111,7 @@ export const dailySalesPerTypeOrderAmounts = (orders: CrudApi.Order[]) => {
       amounts[i.productType || UNKNOWN_PRODUCT_TYPE] +=
         i.sumPriceShown.priceSum;
     });
+    amounts[EProductType.TIP] += o.tipTransaction?.total || 0;
   });
 
   return amounts;

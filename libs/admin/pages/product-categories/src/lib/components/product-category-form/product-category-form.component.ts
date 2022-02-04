@@ -1,4 +1,4 @@
-import { take } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -60,14 +60,19 @@ export class ProductCategoryFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      this._productCategoryFormService
-        .saveForm$(
-          {
-            ...this.dialogForm.value,
-            chainId: this._selectedChainId,
-            position: this.productCategory?.position || 0,
-          },
-          this.productCategory?.id,
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            this._productCategoryFormService.saveForm$(
+              {
+                ...this.dialogForm?.value,
+                chainId: this._selectedChainId,
+                position: this.productCategory?.position || 0,
+              },
+              this.productCategory?.id,
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
         )
         .subscribe((response: UpsertResponse<unknown>) => {
           this._toasterService.showSimpleSuccess(response.type);

@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash/fp';
 import { Observable } from 'rxjs';
-import { pairwise, startWith, take } from 'rxjs/operators';
+import { pairwise, startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -149,12 +149,16 @@ export class RoleContextFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      const contextId = Math.random().toString(36).substring(2, 8);
-      this._roleContextsFormService
-        .saveForm$(
-          cloneDeep(this.dialogForm.value),
-          contextId,
-          this.roleContext?.id,
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            this._roleContextsFormService.saveForm$(
+              cloneDeep(this.dialogForm?.value),
+              Math.random().toString(36).substring(2, 8),
+              this.roleContext?.id,
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
         )
         .subscribe((response: UpsertResponse<unknown>) => {
           this._toasterService.showSimpleSuccess(response.type);

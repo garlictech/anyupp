@@ -130,7 +130,8 @@
     "packagingTax": "Csomagolási adó",
     "search": "Keresés",
     "value": "Érték",
-    "icon": "Ikon"
+    "icon": "Ikon",
+    "tip": "Borravaló"
   },
   "menu": {
     "dashboard": "Vezérlőpult",

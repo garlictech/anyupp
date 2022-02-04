@@ -23,6 +23,7 @@ describe('Order print functions', () => {
       summarizeVariantsByTax({ localizer: value => `localized ${value}` })(
         variants,
         <CrudApi.OrderItem>printableOrder.items[0],
+        CrudApi.ServingMode.inplace,
       ),
     ).toMatchSnapshot();
   });

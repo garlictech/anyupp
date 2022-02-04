@@ -24,6 +24,8 @@ import {
   summarizeVatByTax,
 } from '../../fn';
 
+type ParsedVariant = CrudApi.OrderItem & { servingMode: CrudApi.ServingMode };
+
 @UntilDestroy()
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,13 +38,14 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public unit?: CrudApi.Unit;
   public chain?: CrudApi.Chain;
   public now = '';
-  public parsedOrders: CrudApi.OrderItem[] = [];
+  public parsedOrders: ParsedVariant[] = [];
   public parsedVats: CrudApi.PriceShown[] = [];
   public parsedServiceFees: CrudApi.PriceShown[] = [];
   public sum: CurrencyValue;
   public place?: CrudApi.Place | null;
   public invoiceData?: CrudApi.Invoice;
   public receiptType?: string;
+  public EServingMode = CrudApi.ServingMode;
 
   constructor(
     private _store: Store,
@@ -110,7 +113,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
       order.items.forEach((item: CrudApi.OrderItem) => {
         variants = summarizeVariantsByTax({
           localizer: value => this._localizePipe.transform(value),
-        })(variants, item);
+        })(variants, item, order.servingMode || CrudApi.ServingMode.inplace);
         vats[item.sumPriceShown.tax] = summarizeVatByTax(
           vats,
           item.sumPriceShown,

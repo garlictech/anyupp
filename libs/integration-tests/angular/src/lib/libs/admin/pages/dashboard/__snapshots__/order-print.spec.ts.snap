@@ -11,7 +11,7 @@ Object {
 
 exports[`Order print functions summarizeVariantsByTax should calculate variant summary 1`] = `
 Object {
-  "seeded_chain_product_variant_c1_p1_1_id-test_product_component_id": Object {
+  "inPlace-seeded_chain_product_variant_c1_p1_1_id-test_product_component_id": Object {
     "configSets": "<div>localized [object Object]</div>",
     "productName": Object {
       "de": "Hamburger",
@@ -19,6 +19,7 @@ Object {
       "hu": "Hamburger",
     },
     "quantity": 5,
+    "servingMode": "inPlace",
     "sumPriceShown": Object {
       "currency": "HUF",
       "pricePerUnit": 298.2,

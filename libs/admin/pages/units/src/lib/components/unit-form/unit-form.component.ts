@@ -1,6 +1,6 @@
 import { cloneDeep, omit, pick } from 'lodash/fp';
 import { Observable } from 'rxjs';
-import { delay, take } from 'rxjs/operators';
+import { delay, switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -179,11 +179,16 @@ export class UnitFormComponent
   }
 
   private _saveForm() {
-    this._unitFormService
-      .saveForm$(
-        cloneDeep(this.dialogForm?.value),
-        this.isInitiallyRkeeper,
-        this.unit?.id,
+    this.setWorking$(true)
+      .pipe(
+        switchMap(() =>
+          this._unitFormService.saveForm$(
+            cloneDeep(this.dialogForm?.value),
+            this.isInitiallyRkeeper,
+            this.unit?.id,
+          ),
+        ),
+        tap(() => this.setWorking$(false)),
       )
       .subscribe((response: UpsertResponse<unknown>) => {
         this._toasterService.showSimpleSuccess(response.type);

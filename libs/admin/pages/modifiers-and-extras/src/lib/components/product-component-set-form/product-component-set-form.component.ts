@@ -1,5 +1,5 @@
 import { combineLatest, iif, Observable, of } from 'rxjs';
-import { startWith, take } from 'rxjs/operators';
+import { startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -147,17 +147,23 @@ export class ProductComponentSetFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      this._modifiersAndExtrasFormService
-        .saveComponentSetForm$(
-          {
-            ...this.dialogForm.value,
-            maxSelection:
-              this.dialogForm.value.type === EProductComponentSetType.MODIFIER
-                ? null
-                : this.dialogForm.value.maxSelection,
-          },
-          this.productComponentSet?.id,
-          this.productComponentSet?.dirty || undefined,
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            this._modifiersAndExtrasFormService.saveComponentSetForm$(
+              {
+                ...this.dialogForm?.value,
+                maxSelection:
+                  this.dialogForm?.value.type ===
+                  EProductComponentSetType.MODIFIER
+                    ? null
+                    : this.dialogForm?.value.maxSelection,
+              },
+              this.productComponentSet?.id,
+              this.productComponentSet?.dirty || undefined,
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
         )
         .subscribe((response: UpsertResponse<unknown>) => {
           this._toasterService.showSimpleSuccess(response.type);

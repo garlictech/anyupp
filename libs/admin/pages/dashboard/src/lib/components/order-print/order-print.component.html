@@ -84,7 +84,15 @@
                 ></div>
               </div>
             </div>
-            <div class="col-1 p-0">{{ order.quantity }}x</div>
+            <div class="col-1 p-0 text-end">
+              <img
+                class="takeaway-logo"
+                src="assets/images/bag.svg"
+                *ngIf="order.servingMode === EServingMode.takeaway"
+              />
+
+              {{ order.quantity }}x
+            </div>
             <div class="col-3 p-0 text-end">
               {{
                 order.sumPriceShown.priceSum

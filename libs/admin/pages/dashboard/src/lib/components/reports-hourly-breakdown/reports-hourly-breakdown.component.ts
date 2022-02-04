@@ -81,6 +81,9 @@ export class ReportsHourlyBreakdownComponent
           (<ChartDataset[]>this._chart.data.datasets)[3].data = [
             ...this._amounts[EProductType.OTHER],
           ];
+          (<ChartDataset[]>this._chart.data.datasets)[4].data = [
+            ...this._amounts[EProductType.TIP],
+          ];
 
           this._chart.update();
         });

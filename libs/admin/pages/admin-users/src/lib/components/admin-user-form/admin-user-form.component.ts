@@ -13,6 +13,7 @@ import { EImageType, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 
 import { AdminUserFormService } from '../../services/admin-user-form.service';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,8 +52,16 @@ export class AdminUserFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      this._adminUserFormService
-        .saveForm$(cloneDeep(this.dialogForm?.value), this.adminUser?.id)
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            this._adminUserFormService.saveForm$(
+              cloneDeep(this.dialogForm?.value),
+              this.adminUser?.id,
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
+        )
         .subscribe((response: UpsertResponse<unknown>) => {
           this._toasterService.showSimpleSuccess(response.type);
 

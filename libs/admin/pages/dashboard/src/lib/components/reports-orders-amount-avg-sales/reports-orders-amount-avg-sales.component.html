@@ -10,20 +10,12 @@
     <div class="sales-value text-center d-block mb-3">
       {{ ordersCount }}
 
-      <nb-icon
-        class="smaller-icon"
-        icon="shopping-cart"
-        pack="material-icons"
-      ></nb-icon>
+      <nb-icon icon="shopping_cart" pack="material-icons"></nb-icon>
     </div>
     <div class="sales-value text-center d-block mb-3">
       {{ ordersSumAvg | currencyFormatter: currency }}
       /
-      <nb-icon
-        class="smaller-icon"
-        icon="shopping-cart"
-        pack="material-icons"
-      ></nb-icon>
+      <nb-icon icon="shopping_cart" pack="material-icons"></nb-icon>
     </div>
   </nb-card-body>
 </nb-card>

@@ -53,6 +53,7 @@ export class ReportsDailySalesPerTypeComponent
           amounts[EProductType.FOOD],
           amounts[EProductType.DRINK],
           amounts[EProductType.OTHER],
+          amounts[EProductType.TIP],
         ];
 
         this._chart.update();

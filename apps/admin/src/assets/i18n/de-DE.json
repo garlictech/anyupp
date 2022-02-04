@@ -130,7 +130,8 @@
     "packagingTax": "Packaging tax",
     "search": "Search",
     "value": "Value",
-    "icon": "Icon"
+    "icon": "Icon",
+    "tip": "Tip"
   },
   "menu": {
     "dashboard": "Dashboard",

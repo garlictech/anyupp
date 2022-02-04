@@ -25,8 +25,14 @@ export const summarizeVariantsByTax =
   (deps: {
     localizer: (value: CrudApi.LocalizedItem | null | undefined) => string;
   }) =>
-  (variants: KeyValueObject, item: CrudApi.OrderItem) => {
-    const uniqueKey = `${item.variantId}-${(item.configSets || [])
+  (
+    variants: KeyValueObject,
+    item: CrudApi.OrderItem,
+    orderServingMode: CrudApi.ServingMode,
+  ) => {
+    const uniqueKey = `${orderServingMode}-${item.variantId}-${(
+      item.configSets || []
+    )
       .map(set => set.items.map(item => item.productComponentId))
       .reduce((a, b) => a.concat(b), [])
       .sort()
@@ -53,6 +59,7 @@ export const summarizeVariantsByTax =
             productName: { ...item.productName },
             sumPriceShown: { ...item.sumPriceShown },
             variantName: { ...item.variantName },
+            servingMode: orderServingMode,
             configSets: (item.configSets || [])
               .map(
                 set =>

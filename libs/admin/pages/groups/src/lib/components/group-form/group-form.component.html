@@ -76,7 +76,7 @@
           type="submit"
           fullWidth
           status="primary"
-          [disabled]="dialogForm?.invalid"
+          [disabled]="dialogForm?.invalid || (working$ | async)"
         >
           {{ 'common.submit' | translate }}
         </button>

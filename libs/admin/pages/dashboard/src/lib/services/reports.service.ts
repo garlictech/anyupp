@@ -74,6 +74,13 @@ export class ReportsService {
               backgroundColor: 'rgba(142,94,162,0.8)',
               yAxisID: 'yAxisLeft',
             },
+            {
+              type: 'bar',
+              label: this._translateService.instant('common.tip'),
+              data: new Array(24).fill(0),
+              backgroundColor: 'rgba(186,60,75,0.8)',
+              yAxisID: 'yAxisLeft',
+            },
           ],
         },
         options: {
@@ -192,7 +199,7 @@ export class ReportsService {
           datasets: [
             {
               ...PIE_CHART_DATASET_STYLES,
-              data: [0, 0, 0],
+              data: [0, 0, 0, 0],
             },
           ],
         },
@@ -316,6 +323,7 @@ export class ReportsService {
     this._translateService.instant('products.productType.food'),
     this._translateService.instant('products.productType.drink'),
     this._translateService.instant('products.productType.other'),
+    this._translateService.instant('common.tip'),
   ];
 
   public translatedPaymentModeLabels = (): string[] => [

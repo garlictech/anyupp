@@ -4,8 +4,8 @@ import { _DeepPartialObject } from 'chart.js/types/utils';
 import { Options } from 'chartjs-plugin-datalabels/types/options';
 
 export const PIE_CHART_DATASET_STYLES = {
-  backgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2'],
-  hoverBackgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2'],
+  backgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2', '#BA3C4B'],
+  hoverBackgroundColor: ['#3cba9f', '#3e95cd', '#8e5ea2', '#BA3C4B'],
   borderWidth: 2,
   borderColor: 'white',
   hoverBorderWidth: 2,
