@@ -47,6 +47,7 @@ query ListProducts(
           hu
         }
         netPackagingFee
+        soldOut
       }
       configSets {
         type

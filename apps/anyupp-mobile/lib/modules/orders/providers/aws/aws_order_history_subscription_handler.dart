@@ -61,14 +61,10 @@ class AwsOrderHistorySubscription {
         client: client,
       )
           .listen((result) async {
-        print('**** startOrderHistorySubscription().onData=${result.data}');
-        // print(jsonEncode(result.data));
+        // print('**** startOrderHistorySubscription().onData=${result.data}');
         // print('**** startOrderSubscription.onData.hasException=${result.hasException}');
         if (!result.hasErrors) {
           Order item = Order.fromJson(result.data!.onOrderChanged!.toJson());
-          print(
-              '**** startOrderHistorySubscription.onData.order[${item.id}].hasRated=${item.hasRated}');
-          // print('**** startOrderSubscription.onData.item=${item.toJson()}');
           // print('**** startOrderSubscription.onData.item=$item');
           if (_items == null) {
             _totalCount = 0;
@@ -94,7 +90,7 @@ class AwsOrderHistorySubscription {
             print('**** startOrderHistorySubscription.onData.ADD');
             _totalCount++;
             _items!.add(item);
-            _items!.sort((a, b) => b.orderNum.compareTo(a.orderNum));
+            _items!.sort((a, b) => b.createdAt.compareTo(a.createdAt));
             controller.add(_items);
           }
         } else {

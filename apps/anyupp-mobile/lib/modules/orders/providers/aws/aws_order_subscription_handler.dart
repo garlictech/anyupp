@@ -73,14 +73,11 @@ class AwsOrderSubscription {
         client: client,
       )
           .listen((result) async {
-        print('**** startListSubscription().onData=${result.data}');
-        // print(jsonEncode(result.data));
+        // print('**** startListSubscription().onData=${result.data}');
         // print('**** startOrderSubscription.onData.hasException=${result.hasException}');
         if (!result.hasErrors) {
           Order item = Order.fromJson(result.data!.onOrderChanged!.toJson());
           getIt<OrderRefreshBloc>().add(RefreshOrder(item));
-          // print('**** startOrderSubscription.onData.archived=${item.toJson()["archived"]}');
-          // print('**** startOrderSubscription.onData.item=${item.toJson()}');
           // print('**** startOrderSubscription.onData.item=$item');
 
           // Schedule notifications if necessary for rating the order

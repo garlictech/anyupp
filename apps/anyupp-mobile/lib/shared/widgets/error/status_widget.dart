@@ -44,7 +44,7 @@ class StatusWidget extends StatelessWidget {
             icon,
             width: 80,
             height: 80,
-            color: theme.primary,
+            // color: theme.primary,
           ),
           SizedBox(
             height: 40.0,

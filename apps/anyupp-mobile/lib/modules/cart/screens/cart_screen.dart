@@ -252,7 +252,7 @@ class CartScreen extends StatelessWidget {
                   }
 
                   if (isServiceFee &&
-                      position == cart.items.length + serviceFeeRowPos) {
+                      position == cart.items.length + serviceFeeRowPos - 1) {
                     return AnimationConfiguration.staggeredList(
                         position: position,
                         duration: const Duration(milliseconds: 200),

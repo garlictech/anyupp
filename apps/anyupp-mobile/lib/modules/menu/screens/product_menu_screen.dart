@@ -25,6 +25,7 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> with TickerProviderStateMixin {
   TabController? _tabController;
   bool _showTooltip = false;
+  int _selectedTab = 0;
 
   @override
   void initState() {
@@ -105,15 +106,24 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
 
   Widget _buildTabBar(BuildContext context, GeoUnit unit,
       List<ProductCategory> productCategories) {
+    _selectedTab = _tabController == null
+        ? productCategories.isEmpty
+            ? 0
+            : 1
+        : _tabController!.index;
     _tabController = TabController(
       length: productCategories.length + 1,
       vsync: this,
-      initialIndex: _tabController == null
-          ? productCategories.isEmpty
-              ? 0
-              : 1
-          : _tabController!.index,
+      initialIndex: _selectedTab,
     );
+    _tabController?.addListener(() {
+      if (_tabController?.indexIsChanging == false) {
+        print('ProductMenuScreen.selectedTab()=${_tabController?.index}');
+        setState(() {
+          _selectedTab = _tabController!.index;
+        });
+      }
+    });
 
     return SafeArea(
       child: Scaffold(
@@ -283,19 +293,6 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                         // indicatorWeight: 2.0,
                         // automaticIndicatorColorAdjustment: true,
                         // enableFeedback: true,
-                        // overlayColor: MaterialStateColor.resolveWith((states) {
-                        //   print('MaterialStateColor.resolveWith=$states');
-                        //   if (states.isEmpty) {
-                        //     return theme.secondary16;
-                        //   }
-                        //   var state = states.first;
-                        //   switch (state) {
-                        //     case MaterialState.selected:
-                        //       return theme.primary;
-                        //     default:
-                        //       return theme.secondary16;
-                        //   }
-                        // }),
                         indicator: BoxDecoration(
                           borderRadius: BorderRadius.circular(
                             56.0,
@@ -317,12 +314,10 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                           bottom: 12.0,
                           top: 12.0,
                         ),
-                        unselectedLabelColor: theme
-                            .secondary, //theme.secondary64.withOpacity(0.4),
+                        unselectedLabelColor: theme.secondary,
                         unselectedLabelStyle: Fonts.satoshi(
                           fontSize: 14.0,
                         ),
-                        // padding: EdgeInsets.zero,
                         tabs: _getTabBarTitles(context, productCategories),
                       ),
                     ),
@@ -335,10 +330,10 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   }
 
   List<Widget> _getTabBarPages(
-      GeoUnit unit, List<ProductCategory> productCategories) {
-    List<Widget> results = [
-      FavoritesScreen(),
-    ];
+    GeoUnit unit,
+    List<ProductCategory> productCategories,
+  ) {
+    List<Widget> results = [FavoritesScreen()];
     results.addAll(productCategories
         .map((category) => ProductMenuTabScreen(
               unit: unit,
@@ -349,27 +344,54 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   }
 
   List<Widget> _getTabBarTitles(
-      BuildContext context, List<ProductCategory> productCategories) {
+    BuildContext context,
+    List<ProductCategory> productCategories,
+  ) {
+    print('ProductMenuScreen._getTabBarTitles()');
+
     List<Widget> results = [
-      Tab(
-        text: trans(
-          'main.menu.favorites',
-        ),
+      _getTab(
+        trans('main.menu.favorites'),
+        0 == _selectedTab,
       )
     ];
 
-    results.addAll(productCategories
-        .map(
-          (category) => Tab(
-            text: getLocalizedText(
-              context,
-              category.name,
-            ),
-          ),
-        )
-        .toList());
+    for (int i = 0; i < productCategories.length; i++) {
+      results.add(_getTab(
+        getLocalizedText(context, productCategories[i].name),
+        i + 1 == _selectedTab,
+      ));
+    }
 
     return results;
+  }
+
+  Tab _getTab(String title, bool selected) {
+    print('ProductMenuScreen._getTap[$title].selected=$selected');
+    return Tab(
+      text: title,
+    );
+    // if (selected) {
+    //   return Tab(
+    //     text: title,
+    //   );
+    // }
+    // return Tab(
+    //   child: Container(
+    //     decoration: BoxDecoration(
+    //       borderRadius: BorderRadius.circular(32.0),
+    //       color: theme.secondary12,
+    //     ),
+    //     padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+    //     child: Text(
+    //       title,
+    //       style: Fonts.satoshi(
+    //         fontSize: 14.0,
+    //         color: theme.secondary,
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _noCategoriesWidget(BuildContext context) {

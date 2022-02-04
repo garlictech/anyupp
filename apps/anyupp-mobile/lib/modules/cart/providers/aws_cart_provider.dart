@@ -192,9 +192,14 @@ class AwsCartProvider implements ICartProvider {
       // print('******** CREATING CART IN BACKEND.result.data=${result.data}');
       // print(
       //     'AwsCartProvider.CREATING CART IN BACKEND.result.errors=${result.errors}');
+      if (result.hasErrors) {
+        print('AwsCartProvider._saveCartToBackend().error()=${result.errors}');
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+      }
 
       String? id = result.data?.createCart?.id;
-      // print('AwsCartProvider._saveCartToBackend().id=$id');
+      print('AwsCartProvider._saveCartToBackend().id=$id');
       if (id != null) {
         _cart = cart.copyWith(id: id);
         _cartController.add(_cart);
@@ -209,13 +214,19 @@ class AwsCartProvider implements ICartProvider {
 
   Future<bool> _updateCartOnBackend(Cart cart) async {
     print(
-        'AwsCartProvider.******** UPDATING CART IN BACKEND.paymentMode=${cart.paymentMode}');
+        'AwsCartProvider.******** UPDATING CART IN BACKEND[${cart.id}].paymentMode=${cart.paymentMode}');
     try {
       var result = await GQL.amplify.execute(UpdateCartMutation(
           variables: UpdateCartArguments(
         updateCartInput: _updateCartInput(cart),
       )));
 
+      if (result.hasErrors) {
+        print(
+            'AwsCartProvider._updateCartOnBackend().error()=${result.errors}');
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+      }
       // print('******** UPDATING CART IN BACKEND.result.data=${result.data}');
       // print('******** UPDATING CART IN BACKEND.result.errors=${result.errors}');
 
