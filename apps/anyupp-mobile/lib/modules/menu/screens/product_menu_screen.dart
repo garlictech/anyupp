@@ -1,16 +1,14 @@
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/selectunit/screens/flutter_qr_code_scanner.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,8 +16,6 @@ import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_tooltip/simple_tooltip.dart';
-
-import 'product_menu_tab_screen.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -29,10 +25,17 @@ class Menu extends StatefulWidget {
 class _MenuState extends State<Menu> with TickerProviderStateMixin {
   TabController? _tabController;
   bool _showTooltip = false;
+  int _selectedTab = 0;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,7 +46,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
 
   Future<void> _checkNeedToShowTooltip() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    GeoUnit? unit = _unit;
+    GeoUnit? unit = currentUnit;
     if (unit != null) {
       bool? showed = preferences.getBool('TOOLTIP_${unit.id}');
       // print('_checkNeedToShowTooltip.showed=$showed');
@@ -69,12 +72,15 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
       child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, UnitSelectState unitState) {
           if (unitState is UnitSelected) {
-            return BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(builder: (context, state) {
+            return BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(
+                builder: (context, state) {
               // print('Menu.ProductCategoriesBloc.state=$state');
               if (state is ProductCategoriesLoaded) {
                 // print('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
-                if (state.productCategories != null && state.productCategories!.isNotEmpty) {
-                  return _buildTabBar(context, unitState.unit, state.productCategories!);
+                if (state.productCategories != null &&
+                    state.productCategories!.isNotEmpty) {
+                  return _buildTabBar(
+                      context, unitState.unit, state.productCategories!);
                 } else {
                   return _noCategoriesWidget(context);
                 }
@@ -98,16 +104,26 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     ));
   }
 
-  Widget _buildTabBar(BuildContext context, GeoUnit unit, List<ProductCategory> productCategories) {
+  Widget _buildTabBar(BuildContext context, GeoUnit unit,
+      List<ProductCategory> productCategories) {
+    _selectedTab = _tabController == null
+        ? productCategories.isEmpty
+            ? 0
+            : 1
+        : _tabController!.index;
     _tabController = TabController(
       length: productCategories.length + 1,
       vsync: this,
-      initialIndex: _tabController == null
-          ? productCategories.isEmpty
-              ? 0
-              : 1
-          : _tabController!.index,
+      initialIndex: _selectedTab,
     );
+    _tabController?.addListener(() {
+      if (_tabController?.indexIsChanging == false) {
+        print('ProductMenuScreen.selectedTab()=${_tabController?.index}');
+        setState(() {
+          _selectedTab = _tabController!.index;
+        });
+      }
+    });
 
     return SafeArea(
       child: Scaffold(
@@ -122,7 +138,8 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     );
   }
 
-  PreferredSize _createAppBar(BuildContext context, List<ProductCategory> productCategories) {
+  PreferredSize _createAppBar(
+      BuildContext context, List<ProductCategory> productCategories) {
     return PreferredSize(
       preferredSize: Size.fromHeight(115.0), // here the desired height
       child: AppBar(
@@ -162,11 +179,13 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    child: BlocBuilder<TakeAwayBloc, TakeAwayState>(builder: (context, state) {
+                    child: BlocBuilder<TakeAwayBloc, TakeAwayState>(
+                        builder: (context, state) {
                       if (state is ServingModeSelectedState) {
                         return AnimatedSwitcher(
                           duration: const Duration(milliseconds: 500),
-                          transitionBuilder: (Widget child, Animation<double> animation) {
+                          transitionBuilder:
+                              (Widget child, Animation<double> animation) {
                             return FadeTransition(
                               child: child,
                               opacity: animation,
@@ -190,7 +209,8 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                                       color: theme.secondary,
                                     ),
                                   ),
-                            onPressed: () => _selectServingMode(context, state.servingMode),
+                            onPressed: () =>
+                                _selectServingMode(context, state.servingMode),
                           ),
                         );
                       }
@@ -238,7 +258,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                 showBorder: false,
                 color: theme.secondary,
                 icon: Icons.chevron_left,
-                onPressed: () => _resetPlaceAndGoToUnitSelection(_unit),
+                onPressed: () => _resetPlaceAndGoToUnitSelection(currentUnit),
               ),
               // if (theme.images?.header != null)
               ImageWidget(
@@ -273,19 +293,6 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                         // indicatorWeight: 2.0,
                         // automaticIndicatorColorAdjustment: true,
                         // enableFeedback: true,
-                        // overlayColor: MaterialStateColor.resolveWith((states) {
-                        //   print('MaterialStateColor.resolveWith=$states');
-                        //   if (states.isEmpty) {
-                        //     return theme.secondary16;
-                        //   }
-                        //   var state = states.first;
-                        //   switch (state) {
-                        //     case MaterialState.selected:
-                        //       return theme.primary;
-                        //     default:
-                        //       return theme.secondary16;
-                        //   }
-                        // }),
                         indicator: BoxDecoration(
                           borderRadius: BorderRadius.circular(
                             56.0,
@@ -307,11 +314,10 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                           bottom: 12.0,
                           top: 12.0,
                         ),
-                        unselectedLabelColor: theme.secondary, //theme.secondary64.withOpacity(0.4),
+                        unselectedLabelColor: theme.secondary,
                         unselectedLabelStyle: Fonts.satoshi(
                           fontSize: 14.0,
                         ),
-                        // padding: EdgeInsets.zero,
                         tabs: _getTabBarTitles(context, productCategories),
                       ),
                     ),
@@ -323,10 +329,11 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     );
   }
 
-  List<Widget> _getTabBarPages(GeoUnit unit, List<ProductCategory> productCategories) {
-    List<Widget> results = [
-      FavoritesScreen(),
-    ];
+  List<Widget> _getTabBarPages(
+    GeoUnit unit,
+    List<ProductCategory> productCategories,
+  ) {
+    List<Widget> results = [FavoritesScreen()];
     results.addAll(productCategories
         .map((category) => ProductMenuTabScreen(
               unit: unit,
@@ -336,27 +343,52 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     return results;
   }
 
-  List<Widget> _getTabBarTitles(BuildContext context, List<ProductCategory> productCategories) {
+  List<Widget> _getTabBarTitles(
+    BuildContext context,
+    List<ProductCategory> productCategories,
+  ) {
     List<Widget> results = [
-      Tab(
-        text: trans(
-          'main.menu.favorites',
-        ),
+      _getTab(
+        trans('main.menu.favorites'),
+        0 == _selectedTab,
       )
     ];
 
-    results.addAll(productCategories
-        .map(
-          (category) => Tab(
-            text: getLocalizedText(
-              context,
-              category.name,
-            ),
-          ),
-        )
-        .toList());
+    for (int i = 0; i < productCategories.length; i++) {
+      results.add(_getTab(
+        getLocalizedText(context, productCategories[i].name),
+        i + 1 == _selectedTab,
+      ));
+    }
 
     return results;
+  }
+
+  Tab _getTab(String title, bool selected) {
+    return Tab(
+      text: title,
+    );
+    // if (selected) {
+    //   return Tab(
+    //     text: title,
+    //   );
+    // }
+    // return Tab(
+    //   child: Container(
+    //     decoration: BoxDecoration(
+    //       borderRadius: BorderRadius.circular(32.0),
+    //       color: theme.secondary12,
+    //     ),
+    //     padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+    //     child: Text(
+    //       title,
+    //       style: Fonts.satoshi(
+    //         fontSize: 14.0,
+    //         color: theme.secondary,
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget _noCategoriesWidget(BuildContext context) {
@@ -378,19 +410,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   }
 
   int get _supportedServiceModeCount {
-    var state = getIt<UnitSelectBloc>().state;
-    if (state is UnitSelected) {
-      return state.unit.supportedServingModes.length;
-    }
-    return 0;
-  }
-
-  GeoUnit? get _unit {
-    var state = getIt<UnitSelectBloc>().state;
-    if (state is UnitSelected) {
-      return state.unit;
-    }
-    return null;
+    return currentUnit?.supportedServingModes.length ?? 0;
   }
 
   void _selectServingMode(BuildContext context, ServingMode current) async {

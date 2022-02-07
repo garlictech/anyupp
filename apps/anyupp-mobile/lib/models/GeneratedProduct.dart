@@ -15,9 +15,10 @@ class GeneratedProduct {
   final int position;
   final String? image;
   final List<ProductVariant> variants;
-  final List<String>? allergens;
+  final List<Allergen>? allergens;
   final List<GeneratedProductConfigSet>? configSets;
   final List<ServingMode> supportedServingModes;
+  final bool soldOut;
 
   GeneratedProduct({
     required this.id,
@@ -33,6 +34,7 @@ class GeneratedProduct {
     this.allergens,
     this.configSets,
     required this.supportedServingModes,
+    this.soldOut = false,
   });
 
   GeneratedProduct copyWith({
@@ -46,9 +48,10 @@ class GeneratedProduct {
     int? position,
     String? image,
     List<ProductVariant>? variants,
-    List<String>? allergens,
+    List<Allergen>? allergens,
     List<GeneratedProductConfigSet>? configSets,
     List<ServingMode>? supportedServingModes,
+    bool? soldOut,
   }) {
     return GeneratedProduct(
       id: id ?? this.id,
@@ -63,7 +66,9 @@ class GeneratedProduct {
       variants: variants ?? this.variants,
       allergens: allergens ?? this.allergens,
       configSets: configSets ?? this.configSets,
-      supportedServingModes: supportedServingModes ?? this.supportedServingModes,
+      supportedServingModes:
+          supportedServingModes ?? this.supportedServingModes,
+      soldOut: soldOut ?? this.soldOut,
     );
   }
 
@@ -79,9 +84,11 @@ class GeneratedProduct {
       'position': position,
       'image': image,
       'variants': variants.map((x) => x.toJson()).toList(),
-      'allergens': allergens?.map((x) => enumToString(x)).toList(),
+      'allergens': allergens,
       'configSets': configSets?.map((x) => x.toJson()).toList(),
-      'supportedServingModes': supportedServingModes.map((x) => enumToString(x)).toList(),
+      'supportedServingModes':
+          supportedServingModes.map((x) => enumToString(x)).toList(),
+      'soldOut': soldOut,
     };
   }
 
@@ -91,15 +98,22 @@ class GeneratedProduct {
       unitId: map['unitId'],
       productCategoryId: map['productCategoryId'],
       name: LocalizedItem.fromJson(map['name']),
-      description: map['description'] != null ? LocalizedItem.fromJson(map['description']) : null,
+      description: map['description'] != null
+          ? LocalizedItem.fromJson(map['description'])
+          : null,
       productType: map['productType'],
       tax: map['tax'],
       position: map['position'],
       image: map['image'],
-      variants: List<ProductVariant>.from(map['variants']?.map((x) => ProductVariant.fromJson(x))),
-      allergens: map['allergens'] != null ? List<String>.from(map['allergens']?.map((x) => x as String)) : null,
+      variants: List<ProductVariant>.from(
+          map['variants']?.map((x) => ProductVariant.fromJson(x))),
+      allergens: map['allergens'] != null
+          ? List<Allergen>.from(
+              map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
+          : null,
       configSets: map['configSets'] != null
-          ? List<GeneratedProductConfigSet>.from(map['configSets']?.map((x) => GeneratedProductConfigSet?.fromJson(x)))
+          ? List<GeneratedProductConfigSet>.from(map['configSets']
+              ?.map((x) => GeneratedProductConfigSet?.fromJson(x)))
           : null,
       supportedServingModes: map['supportedServingModes'] != null
           ? List<ServingMode>.from(
@@ -111,12 +125,13 @@ class GeneratedProduct {
               ),
             )
           : [],
+      soldOut: map['soldOut'] ?? false,
     );
   }
 
   @override
   String toString() {
-    return 'GeneratedProduct(id: $id, unitId: $unitId, supportedServingModes: $supportedServingModes, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets)';
+    return 'GeneratedProduct(id: $id, unitId: $unitId, supportedServingModes: $supportedServingModes, soldOut: $soldOut, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets)';
   }
 
   @override
@@ -134,6 +149,7 @@ class GeneratedProduct {
         other.tax == tax &&
         other.position == position &&
         other.image == image &&
+        other.soldOut == soldOut &&
         listEquals(other.variants, variants) &&
         listEquals(other.allergens, allergens) &&
         listEquals(other.configSets, configSets) &&
@@ -154,6 +170,7 @@ class GeneratedProduct {
         variants.hashCode ^
         allergens.hashCode ^
         configSets.hashCode ^
-        supportedServingModes.hashCode;
+        supportedServingModes.hashCode ^
+        soldOut.hashCode;
   }
 }

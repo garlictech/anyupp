@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createUnitResolver 1`] = `
+Object {
+  "address": Object {
+    "address": "UNIT ADDRESS",
+    "city": "UNIT CITY",
+    "country": "UNIT COUNTRY",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "UNIT POSTAL CODE",
+    "title": "UNTI TITLE",
+  },
+  "chainId": "UNIT CHAINID",
+  "createdAt": Any<String>,
+  "description": Object {
+    "de": "UNIT DESCRIPTION DE",
+    "en": "UNIT DESCRIPTION EN",
+    "hu": "UNIT DESCRIPTION HU",
+  },
+  "groupId": "UNIT GROUPID",
+  "id": "UNITID",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+  ],
+  "name": "UNIT NAME",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "packagingTaxPercentage": 10,
+  "paymentModes": Array [
+    Object {
+      "method": "cash",
+      "type": "cash",
+    },
+  ],
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`hashPasswords: VALID PASSWORDS 1`] = `
+Object {
+  "address": Object {
+    "address": "UNIT ADDRESS",
+    "city": "UNIT CITY",
+    "country": "UNIT COUNTRY",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
+    "postalCode": "UNIT POSTAL CODE",
+    "title": "UNTI TITLE",
+  },
+  "chainId": "UNIT CHAINID",
+  "createdAt": "ORDER CREATEDAT",
+  "description": Object {
+    "de": "UNIT DESCRIPTION DE",
+    "en": "UNIT DESCRIPTION EN",
+    "hu": "UNIT DESCRIPTION HU",
+  },
+  "groupId": "UNIT GROUPID",
+  "id": "UNITID",
+  "isAcceptingOrders": true,
+  "isActive": true,
+  "lanes": Array [
+    Object {
+      "color": "#e72222",
+      "id": "lane_01",
+      "name": "bár",
+    },
+  ],
+  "name": "UNIT NAME",
+  "open": Object {
+    "from": "1970-01-01",
+    "to": "2970-01-01",
+  },
+  "packagingTaxPercentage": 10,
+  "paymentModes": Array [
+    Object {
+      "method": "cash",
+      "type": "cash",
+    },
+  ],
+  "pos": Object {
+    "rkeeper": Object {
+      "anyuppPassword": "ANYUPP_PASSWORD HASHED",
+      "anyuppUsername": "ANYUPP_USERNAME",
+      "endpointUri": "RKEEPER ENDPOINT URI",
+      "rkeeperPassword": "RKEEPER_PASSWORD",
+      "rkeeperUsername": "RKEEPER USERNAME",
+    },
+    "type": "rkeeper",
+  },
+  "supportedOrderModes": Array [
+    "pickup",
+    "instant",
+  ],
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "updatedAt": "ORDER UPDATEDAT",
+}
+`;
+
+exports[`updateUnitRKeeperData: anyupp password only: GetUnit 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNITID",
+    },
+  ],
+]
+`;
+
+exports[`updateUnitRKeeperData: anyupp password only: result 1`] = `"UPDATE RESULT"`;
+
+exports[`updateUnitRKeeperData: anyupp password only: update 1`] = `
+Array [
+  Array [
+    Object {
+      "ExpressionAttributeNames": Object {
+        "#pos": "pos",
+      },
+      "ExpressionAttributeValues": Object {
+        ":pos": Object {
+          "rkeeper": Object {
+            "anyuppPassword": "NEW ANYUPP PASSWORD HASHED",
+            "anyuppUsername": "ANYUPP_USERNAME",
+            "endpointUri": "RKEEPER ENDPOINT URI",
+            "rkeeperPassword": "RKEEPER_PASSWORD",
+            "rkeeperUsername": "RKEEPER USERNAME",
+          },
+          "type": "rkeeper",
+        },
+      },
+      "Key": Object {
+        "id": "UNITID",
+      },
+      "ReturnValues": "ALL_NEW",
+      "TableName": "TABLENAME",
+      "UpdateExpression": "set #pos = :pos",
+      "updatedAt": "MASKED DATE",
+    },
+  ],
+]
+`;
+
+exports[`updateUnitRKeeperData: rkeeper password only: GetUnit 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNITID",
+    },
+  ],
+]
+`;
+
+exports[`updateUnitRKeeperData: rkeeper password only: result 1`] = `"UPDATE RESULT"`;
+
+exports[`updateUnitRKeeperData: rkeeper password only: update 1`] = `
+Array [
+  Array [
+    Object {
+      "ExpressionAttributeNames": Object {
+        "#pos": "pos",
+      },
+      "ExpressionAttributeValues": Object {
+        ":pos": Object {
+          "rkeeper": Object {
+            "anyuppPassword": "ANYUPP_PASSWORD",
+            "anyuppUsername": "ANYUPP_USERNAME",
+            "endpointUri": "RKEEPER ENDPOINT URI",
+            "rkeeperPassword": "NEW RKEEPER PASSWORD",
+            "rkeeperUsername": "RKEEPER USERNAME",
+          },
+          "type": "rkeeper",
+        },
+      },
+      "Key": Object {
+        "id": "UNITID",
+      },
+      "ReturnValues": "ALL_NEW",
+      "TableName": "TABLENAME",
+      "UpdateExpression": "set #pos = :pos",
+      "updatedAt": "MASKED DATE",
+    },
+  ],
+]
+`;
+
+exports[`updateUnitRKeeperData: update everything: GetUnit 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNITID",
+    },
+  ],
+]
+`;
+
+exports[`updateUnitRKeeperData: update everything: result 1`] = `"UPDATE RESULT"`;
+
+exports[`updateUnitRKeeperData: update everything: update 1`] = `
+Array [
+  Array [
+    Object {
+      "ExpressionAttributeNames": Object {
+        "#pos": "pos",
+      },
+      "ExpressionAttributeValues": Object {
+        ":pos": Object {
+          "rkeeper": Object {
+            "anyuppPassword": "NEW ANYUPP PASSWORD HASHED",
+            "anyuppUsername": "ANYUPP_USERNAME",
+            "endpointUri": "RKEEPER ENDPOINT URI",
+            "rkeeperPassword": "NEW RKEEPER PASSWORD",
+            "rkeeperUsername": "NEW RKEEPER USERNAME",
+          },
+          "type": "rkeeper",
+        },
+      },
+      "Key": Object {
+        "id": "UNITID",
+      },
+      "ReturnValues": "ALL_NEW",
+      "TableName": "TABLENAME",
+      "UpdateExpression": "set #pos = :pos",
+      "updatedAt": "MASKED DATE",
+    },
+  ],
+]
+`;

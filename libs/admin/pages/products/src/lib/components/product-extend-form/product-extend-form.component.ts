@@ -1,6 +1,6 @@
 import * as fp from 'lodash/fp';
-import { Observable, of } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { iif, Observable } from 'rxjs';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -9,18 +9,23 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { SERVING_MODES } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductLevel, IKeyValue, Product } from '@bgap/shared/types';
+import {
+  EProductLevel,
+  KeyValue,
+  Product,
+  UpsertResponse,
+} from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
-import { ProductFormService } from '../../services/product-form/product-form.service';
+import { ProductFormService } from '../../services/product-form.service';
 
 @UntilDestroy()
 @Component({
@@ -38,7 +43,7 @@ export class ProductExtendFormComponent
   public editing = false;
   public currency!: string;
   public productCategories$: Observable<CrudApi.ProductCategory[]>;
-  public unitLanes: IKeyValue[] = [];
+  public unitLanes$: Observable<KeyValue[]>;
   public servingModes = SERVING_MODES;
 
   private _selectedChainId = '';
@@ -68,19 +73,14 @@ export class ProductExtendFormComponent
       untilDestroyed(this),
     );
 
-    this._store
-      .pipe(select(unitsSelectors.getSelectedUnit), filterNullish(), take(1))
-      .subscribe((unit: CrudApi.Unit) => {
-        this.unitLanes = unit.lanes
-          ? unit.lanes.map(lane => ({
-              key: lane?.id || '',
-              value: lane?.name,
-            }))
-          : [];
-      });
+    this.unitLanes$ = this._store.pipe(
+      select(unitsSelectors.getSelectedUnitLanes),
+      filterNullish(),
+      take(1),
+    );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.dialogForm = this._productFormService.createProductExtendFormGroup(
       this.productLevel,
     );
@@ -96,7 +96,7 @@ export class ProductExtendFormComponent
       );
 
       this._productFormService.patchConfigSet(
-        this.product,
+        this.product.configSets || [],
         this.dialogForm?.controls.configSets as FormArray,
       );
     } else {
@@ -105,78 +105,61 @@ export class ProductExtendFormComponent
   }
 
   public submit() {
-    this._save().subscribe(() => {
-      this._successAndClose(this.editing ? 'update' : 'inert');
-    });
-  }
-
-  private _save() {
-    if (!this.product) {
-      throw new Error('HANDLE ME: product cannot be undefined');
-    }
-
     if (this.dialogForm?.valid) {
-      if (this.editing) {
-        const value = { ...this.dialogForm?.value };
+      const takeaway = (
+        <string[]>this.dialogForm.value.supportedServingModes || []
+      ).includes(CrudApi.ServingMode.takeaway);
 
-        if (!value.takeawayTax) {
-          delete value.takeawayTax;
-        }
+      const parentInfo = {
+        parentId: this.product?.id || '',
+        chainId: this._selectedChainId,
+        groupId: this._selectedGroupId,
+      };
 
-        // Handle deprecated field
-        if (this.productLevel === EProductLevel.UNIT) {
-          value.takeaway = (
-            <string[]>value.supportedServingModes || []
-          ).includes(CrudApi.ServingMode.takeaway);
-        }
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            iif(
+              () => this.productLevel === EProductLevel.UNIT,
+              this._productFormService.saveUnitExtendForm$(
+                {
+                  ...this.dialogForm?.value,
+                  ...parentInfo,
+                  unitId: this._selectedUnitId,
+                  position: 0,
+                  takeaway,
+                },
+                {
+                  ...this.dialogForm?.value,
+                  id: this.product?.id || '',
+                  dirty: this.product?.dirty ? false : undefined,
+                  takeaway,
+                },
+                this.editing,
+              ),
+              this._productFormService.saveGroupExtendForm$(
+                {
+                  ...this.dialogForm?.value,
+                  ...parentInfo,
+                  takeawayTax: this.dialogForm?.value.takeawayTax || null, // save or remove
+                },
+                {
+                  ...this.dialogForm?.value,
+                  id: this.product?.id || '',
+                  dirty: this.product?.dirty ? false : undefined, // save or leave
+                  takeawayTax: this.dialogForm?.value.takeawayTax || null, // save or remove
+                },
+                this.editing,
+              ),
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
+        )
+        .subscribe((response: UpsertResponse<unknown>) => {
+          this._toasterService.showSimpleSuccess(response.type);
 
-        const input = {
-          ...value,
-          id: this.product.id,
-        };
-
-        if (this.productLevel === EProductLevel.GROUP) {
-          return this._productFormService.updateGroupProduct(input);
-        } else {
-          return this._productFormService.updateUnitProduct(input);
-        }
-      } else {
-        const value = {
-          ...this.dialogForm?.value,
-          parentId: this.product.id,
-          chainId: this._selectedChainId,
-          groupId: this._selectedGroupId,
-        };
-
-        if (!value.takeawayTax) {
-          delete value.takeawayTax;
-        }
-
-        if (this.productLevel === EProductLevel.UNIT) {
-          value.unitId = this._selectedUnitId;
-          value.position = 0;
-
-          // Handle deprecated field
-          value.takeaway = (
-            <string[]>value.supportedServingModes || []
-          ).includes(CrudApi.ServingMode.takeaway);
-        }
-
-        const input = { ...value };
-
-        if (this.productLevel === EProductLevel.GROUP) {
-          return this._productFormService.createGroupProduct(input);
-        } else {
-          return this._productFormService.createUnitProduct(input);
-        }
-      }
+          this.close();
+        });
     }
-
-    return of('Invalid');
-  }
-
-  private _successAndClose(key: string) {
-    this._toasterService.showSimpleSuccess(`common.${key}Successful`);
-    this.close();
   }
 }

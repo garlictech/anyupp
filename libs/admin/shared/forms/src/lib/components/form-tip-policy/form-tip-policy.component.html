@@ -1,0 +1,121 @@
+<fieldset class="form">
+  <legend class="label">{{ 'units.tipPolicy.title' | translate }}</legend>
+  <div>
+    <div class="row">
+      <div class="col-md-4">
+        <bgap-form-text-input
+          caption="common.titleHU"
+          type="text"
+          [control]="
+            tipPolicyFormGroup?.get('title')?.get('hu') | asFormControl
+          "
+          inputId="titleHu"
+        ></bgap-form-text-input>
+      </div>
+      <div class="col-md-4">
+        <bgap-form-text-input
+          caption="common.titleEN"
+          type="text"
+          [control]="
+            tipPolicyFormGroup?.get('title')?.get('en') | asFormControl
+          "
+          inputId="titleEn"
+        ></bgap-form-text-input>
+      </div>
+      <div class="col-md-4">
+        <bgap-form-text-input
+          caption="common.titleDE"
+          type="text"
+          [control]="
+            tipPolicyFormGroup?.get('title')?.get('de') | asFormControl
+          "
+          inputId="titleDe"
+        ></bgap-form-text-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <bgap-form-text-input
+          caption="common.descriptionHU"
+          type="text"
+          [control]="
+            tipPolicyFormGroup?.get('description')?.get('hu') | asFormControl
+          "
+          inputId="descriptionHu"
+        ></bgap-form-text-input>
+      </div>
+      <div class="col-md-4">
+        <bgap-form-text-input
+          caption="common.descriptionEN"
+          type="text"
+          [control]="
+            tipPolicyFormGroup?.get('description')?.get('en') | asFormControl
+          "
+          inputId="descriptionEn"
+        ></bgap-form-text-input>
+      </div>
+      <div class="col-md-4">
+        <bgap-form-text-input
+          caption="common.descriptionDE"
+          type="text"
+          [control]="
+            tipPolicyFormGroup?.get('description')?.get('de') | asFormControl
+          "
+          inputId="descriptionDe"
+        ></bgap-form-text-input>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <bgap-form-text-input
+          caption="units.tipPolicy.newPercent"
+          type="number"
+          [control]="newPercentControl"
+          inputId="newPercent"
+          suffix="%"
+        ></bgap-form-text-input>
+      </div>
+      <div class="col-md-1">
+        <button
+          class="mt-4"
+          nbButton
+          status="danger"
+          type="button"
+          size="tiny"
+          shape="round"
+          [disabled]="!newPercentControl.valid"
+          (click)="addPercent()"
+        >
+          <nb-icon icon="plus-outline"></nb-icon>
+        </button>
+      </div>
+      <div class="col-md-9">
+        <label class="caption"
+          >{{ 'units.tipPolicy.percents' | translate }}<br />
+          <nb-tag-list (tagRemove)="onPercentRemove($event)">
+            <nb-tag
+              class="mt-3"
+              size="tiny"
+              *ngFor="let percent of tipPolicyFormGroup?.get('percents')?.value"
+              text="{{ percent }}%"
+              removable="true"
+            ></nb-tag>
+          </nb-tag-list>
+        </label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <bgap-form-text-input
+          caption="units.tipPolicy.customValue"
+          type="number"
+          [control]="tipPolicyFormGroup?.get('maxOtherAmount') | asFormControl"
+          inputId="maxOtherAmount"
+        ></bgap-form-text-input>
+      </div>
+    </div>
+  </div>
+</fieldset>

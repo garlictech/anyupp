@@ -12,7 +12,8 @@ class FavoritesListWidget extends StatefulWidget {
   final GeoUnit unit;
   final ServingMode mode;
 
-  FavoritesListWidget({Key? key, required this.unit, required this.mode}) : super(key: key);
+  FavoritesListWidget({Key? key, required this.unit, required this.mode})
+      : super(key: key);
 
   @override
   _FavoritesListWidgetState createState() => _FavoritesListWidgetState();
@@ -30,7 +31,8 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: BlocBuilder<FavoritesBloc, FavoritesState>(builder: (context, state) {
+      child:
+          BlocBuilder<FavoritesBloc, FavoritesState>(builder: (context, state) {
         if (state is FavoriteListLoaded) {
           if (state.favorites != null && state.favorites!.isNotEmpty) {
             return _buildList(widget.unit, state.favorites!);
@@ -59,16 +61,23 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
         scrollDirection: Axis.vertical,
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, position) {
-          bool isAvailableInThisServingMode = list[position].product.supportedServingModes.contains(widget.mode);
+          bool isAvailableInThisServingMode = list[position]
+              .product
+              .supportedServingModes
+              .contains(widget.mode);
+          bool isSoldOut = list[position].product.soldOut;
           return AnimationConfiguration.staggeredList(
             position: position,
             duration: const Duration(milliseconds: 200),
             child: SlideAnimation(
-              horizontalOffset: 100.0,
+              verticalOffset: 50.0,
               child: FadeInAnimation(
                 child: ProductMenuItem(
-                  displayState:
-                      isAvailableInThisServingMode ? ProducItemDisplayState.NORMAL : ProducItemDisplayState.DISABLED,
+                  displayState: isAvailableInThisServingMode
+                      ? isSoldOut
+                          ? ProductItemDisplayState.SOLDOUT
+                          : ProductItemDisplayState.NORMAL
+                      : ProductItemDisplayState.DISABLED,
                   unit: unit,
                   item: list[position].product,
                   servingMode: widget.mode,

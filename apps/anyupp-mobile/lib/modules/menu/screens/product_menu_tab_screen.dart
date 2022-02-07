@@ -1,8 +1,6 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/takeaway/bloc/takeaway_bloc.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -41,14 +39,19 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     return BlocProvider(
       create: (BuildContext context) {
         var bloc = getIt<ProductListBloc>();
-        bloc.add(LoadProductList(unitId: widget.unit.id, categoryId: widget.categoryId, nextToken: _nextToken));
+        bloc.add(LoadProductList(
+            unitId: widget.unit.id,
+            categoryId: widget.categoryId,
+            nextToken: _nextToken));
         return bloc;
       },
       child: Container(
         color: theme.secondary12.withOpacity(0.5),
         key: PageStorageKey(widget.categoryId),
-        padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.015),
-        child: BlocBuilder<ProductListBloc, ProductListState>(builder: (context, state) {
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.015),
+        child: BlocBuilder<ProductListBloc, ProductListState>(
+            builder: (context, state) {
           if (state is ProductListLoading) {
             return CenterLoadingWidget();
           }
@@ -79,7 +82,9 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
       if (!hasItems) {
         return EmptyWidget(
           icon: 'assets/icons/empty-category.png',
-          messageKey: mode == ServingMode.takeAway ? 'main.category.emptyTakeaway' : 'main.category.emptyInPlace',
+          messageKey: mode == ServingMode.takeAway
+              ? 'main.category.emptyTakeaway'
+              : 'main.category.emptyInPlace',
           descriptionKey: 'main.category.emptyHint',
           textFontSize: 18.0,
           descriptionFontSize: 14.0,
@@ -106,11 +111,20 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
             // if (mode != null && !list[position].supportedServingModes.contains(mode)) {
             //   return Container();
             // }
-            bool isAvailableInThisServingMode = mode != null && list[position].supportedServingModes.contains(mode);
-            // print(
-            //     'isAvailableInThisServingMode[$mode]=$isAvailableInThisServingMode, items=${list[position].supportedServingModes}');
+            bool isAvailableInThisServingMode = mode != null &&
+                list[position].supportedServingModes.contains(mode);
+            bool isSoldOut = list[position].isSoldOut;
+            bool isHidden = isSoldOut &&
+                unit.soldOutVisibilityPolicy ==
+                    SoldOutVisibilityPolicy.invisible;
 
-            if (position == list.length - 1 && list.length % _pageSize == 0 && _nextToken != null) {
+            if (isHidden) {
+              return Container();
+            }
+
+            if (position == list.length - 1 &&
+                list.length % _pageSize == 0 &&
+                _nextToken != null) {
               getIt<ProductListBloc>().add(LoadProductList(
                 unitId: widget.unit.id,
                 categoryId: widget.categoryId,
@@ -125,11 +139,14 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
                 verticalOffset: 50.0,
                 child: FadeInAnimation(
                   child: ProductMenuItem(
-                    displayState:
-                        isAvailableInThisServingMode ? ProducItemDisplayState.NORMAL : ProducItemDisplayState.DISABLED,
+                    displayState: isAvailableInThisServingMode
+                        ? isSoldOut
+                            ? ProductItemDisplayState.SOLDOUT
+                            : ProductItemDisplayState.NORMAL
+                        : ProductItemDisplayState.DISABLED,
                     unit: unit,
                     item: list[position],
-                    servingMode: mode,
+                    servingMode: mode ?? ServingMode.inPlace,
                   ),
                 ),
               ),
@@ -144,7 +161,9 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     if (mode == null) {
       return list.isNotEmpty;
     }
-    return list.indexWhere((product) => product.supportedServingModes.contains(mode)) != -1;
+    return list.indexWhere(
+            (product) => product.supportedServingModes.contains(mode)) !=
+        -1;
   }
 
   Widget _buildEmptyList(BuildContext context) {

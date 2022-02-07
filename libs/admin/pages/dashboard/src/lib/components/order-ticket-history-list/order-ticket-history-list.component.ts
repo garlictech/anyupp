@@ -11,11 +11,9 @@ import { FormControl } from '@angular/forms';
 import {
   dashboardActions,
   dashboardSelectors,
-} from '@bgap/admin/shared/data-access/dashboard';
-import {
-  currentStatus as currentStatusFn,
-  ordersSelectors,
-} from '@bgap/admin/shared/data-access/orders';
+} from '@bgap/admin/store/dashboard';
+import { ordersSelectors } from '@bgap/admin/store/orders';
+
 import * as CrudApi from '@bgap/crud-gql/api';
 import { customDateCompare, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -31,15 +29,14 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
   public selectedOrder?: CrudApi.Order;
   public dailyOrders: CrudApi.Order[] = [];
   public dateFormControl: FormControl = new FormControl();
-  public currentStatus = currentStatusFn;
+  public currentStatus = CrudApi.currentStatus;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .select(dashboardSelectors.getSelectedHistoryDate)
       .pipe(filterNullish(), take(1), untilDestroyed(this))

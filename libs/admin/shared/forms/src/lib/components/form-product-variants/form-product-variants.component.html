@@ -1,6 +1,6 @@
 <fieldset class="form">
   <legend class="label">{{ 'products.variants' | translate }}</legend>
-  <div>
+  <div *ngIf="variantFormArray">
     <div
       *ngFor="
         let variant of variantFormArray | iterableAbstractControls;
@@ -11,12 +11,6 @@
     >
       <!-- ORDER EDIT -->
       <div class="mb-2" *ngIf="productLevel !== eProductLevel.CHAIN">
-        <!--
-        <span *ngIf="variant.value.variantName">{{ variant.value.variantName | localize }}</span>
-        {{ variant.value.pack.size }}
-        {{ variant.value.pack.unit }}
-        -->
-
         <div class="float-right">
           <button
             type="button"
@@ -28,7 +22,7 @@
             class="float-right me-2"
             (click)="move(i, 1)"
           >
-            <nb-icon icon="chevron-down"></nb-icon>
+            <nb-icon icon="expand_more" pack="material-icons"></nb-icon>
           </button>
           <button
             type="button"
@@ -40,7 +34,7 @@
             class="float-right me-2"
             (click)="move(i, -1)"
           >
-            <nb-icon icon="chevron-up"></nb-icon>
+            <nb-icon icon="expand_less" pack="material-icons"></nb-icon>
           </button>
         </div>
       </div>
@@ -52,7 +46,7 @@
           <bgap-form-text-input
             caption="products.variantNameHU"
             type="text"
-            [control]="variant.get('variantName')!.get('hu')! | asFormControl"
+            [control]="variant.get('variantName')!.get('hu') | asFormControl"
             inputId="variantNameHu"
           ></bgap-form-text-input>
         </div>
@@ -60,7 +54,7 @@
           <bgap-form-text-input
             caption="products.variantNameEN"
             type="text"
-            [control]="variant.get('variantName')!.get('en')! | asFormControl"
+            [control]="variant.get('variantName')!.get('en') | asFormControl"
             inputId="variantNameEn"
           ></bgap-form-text-input>
         </div>
@@ -68,7 +62,7 @@
           <bgap-form-text-input
             caption="products.variantNameDE"
             type="text"
-            [control]="variant.get('variantName')!.get('de')! | asFormControl"
+            [control]="variant.get('variantName')!.get('de') | asFormControl"
             inputId="variantNameDe"
           ></bgap-form-text-input>
         </div>
@@ -79,7 +73,7 @@
           <bgap-form-text-input
             caption="products.packSize"
             type="number"
-            [control]="variant.get('pack')!.get('size')! | asFormControl"
+            [control]="variant.get('pack')!.get('size') | asFormControl"
             inputId="packSize"
           ></bgap-form-text-input>
         </div>
@@ -87,45 +81,67 @@
           <bgap-form-text-input
             caption="products.packUnit"
             type="text"
-            [control]="variant.get('pack')!.get('unit')! | asFormControl"
+            [control]="variant.get('pack')!.get('unit') | asFormControl"
             inputId="packUnit"
           ></bgap-form-text-input>
         </div>
 
-        <div class="col-md-4 pt-4">
-          <bgap-form-checkbox
-            caption="products.isAvailable"
-            [control]="variant.get('isAvailable')! | asFormControl"
-            inputId="isAvailable"
-          ></bgap-form-checkbox>
+        <div class="col-md-4">
+          <bgap-form-text-input
+            *ngIf="productLevel === eProductLevel.GROUP"
+            caption="products.refPrice"
+            type="number"
+            [control]="variant.get('refGroupPrice') | asFormControl"
+            inputId="refGroupPrice"
+          ></bgap-form-text-input>
+
+          <bgap-form-text-input
+            *ngIf="productLevel === eProductLevel.UNIT"
+            [staticCaption]="
+              ('common.packagingFee' | translate) + ' (' + currency! + ')'
+            "
+            type="number"
+            [control]="variant.get('netPackagingFee') | asFormControl"
+            inputId="netPackagingFee"
+          ></bgap-form-text-input>
         </div>
       </div>
 
       <!-- GROUP & UNIT -->
       <ng-container *ngIf="productLevel !== eProductLevel.CHAIN">
         <div class="row">
-          <div class="col-sm-3">
-            <bgap-form-text-input
-              *ngIf="productLevel === eProductLevel.GROUP"
-              caption="products.refPrice"
-              type="number"
-              [control]="variant.get('refGroupPrice')! | asFormControl"
-              inputId="refGroupPrice"
-            ></bgap-form-text-input>
-            <bgap-form-static-text
-              *ngIf="productLevel === eProductLevel.UNIT"
-              caption="products.refPrice"
-              [value]="
-                variant.value.refGroupPrice | currencyFormatter: currency!
-              "
-            >
-            </bgap-form-static-text>
+          <div class="col-sm-4 pt-3">
+            <bgap-form-checkbox
+              caption="products.isAvailable"
+              [control]="variant.get('isAvailable') | asFormControl"
+              inputId="isAvailable"
+            ></bgap-form-checkbox>
           </div>
+
+          <ng-container *ngIf="productLevel === eProductLevel.UNIT">
+            <div class="col-sm-4 pt-3">
+              <bgap-form-checkbox
+                caption="common.soldOutPolicy.soldOut"
+                [control]="variant.get('soldOut') | asFormControl"
+                inputId="soldOut"
+              ></bgap-form-checkbox>
+            </div>
+
+            <div class="col-sm-4">
+              <bgap-form-static-text
+                caption="products.refPrice"
+                [value]="
+                  variant.value.refGroupPrice | currencyFormatter: currency!
+                "
+              >
+              </bgap-form-static-text>
+            </div>
+          </ng-container>
         </div>
 
         <bgap-form-product-availabilities
           *ngIf="productLevel === eProductLevel.UNIT"
-          [availabilityFormArray]="variant.get('availabilities')! | asFormArray"
+          [availabilityFormArray]="variant?.get('availabilities') | asFormArray"
           [currency]="currency"
         ></bgap-form-product-availabilities>
 
@@ -146,7 +162,7 @@
     class="float-right"
     (click)="addVariant()"
   >
-    <nb-icon icon="plus-outline"></nb-icon>
+    <nb-icon icon="add" pack="material-icons"></nb-icon>
     {{ 'products.addVariant' | translate }}
   </button>
 </fieldset>

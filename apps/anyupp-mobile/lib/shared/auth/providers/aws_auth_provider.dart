@@ -6,8 +6,6 @@ import 'package:fa_prev/shared/auth.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'auth_provider_interface.dart';
-
 class AwsAuthProvider implements IAuthProvider {
   StreamController<User?> _userController = BehaviorSubject<User?>();
   User? _user;
@@ -51,10 +49,12 @@ class AwsAuthProvider implements IAuthProvider {
   }
 
   @override
-  Future<User?> loginWithCognitoSession(CognitoUserSession session, String username) async {
+  Future<User?> loginWithCognitoSession(
+      CognitoUserSession session, String username) async {
     // print('loginWithCognitoSession().session=$session, username=$username');
     try {
-      CognitoUser? user = await _service.createCognitoUserFromSession(session, username);
+      CognitoUser? user =
+          await _service.createCognitoUserFromSession(session, username);
       await user.cacheTokens();
       // print('loginWithCognitoSession().cognitoUser=${user.username}');
       _user = await _userFromAttributes(user);
@@ -86,7 +86,8 @@ class AwsAuthProvider implements IAuthProvider {
     String? email;
     String? name;
     String? phone;
-    List<CognitoUserAttribute>? attributes = await cognitoUser.getUserAttributes();
+    List<CognitoUserAttribute>? attributes =
+        await cognitoUser.getUserAttributes();
 
     print('_userFromAttributes().start()');
     for (int i = 0; attributes != null && i < attributes.length; i++) {

@@ -11,24 +11,38 @@ mutation CreateFavoriteProduct($userId: ID!, $unitId: ID!, $productId: ID!) {
     userId
     product {
       id
-      image
-      description {
-        de
-        en
-        hu
-      }
+      unitId
       name {
-        de
         en
+        de
         hu
       }
+      description {
+        en
+        de
+        hu
+      }
+      image
       position
+      productCategoryId
       productType
       tax
       allergens
-      unitId
-      productCategoryId
-      supportedServingModes
+      variants {
+        id
+        position
+        price
+        pack {
+          size
+          unit
+        }
+        variantName {
+          de
+          en
+          hu
+        }
+        netPackagingFee
+      }
       configSets {
         type
         productSetId
@@ -39,6 +53,7 @@ mutation CreateFavoriteProduct($userId: ID!, $unitId: ID!, $productId: ID!) {
           hu
         }
         maxSelection
+        supportedServingModes
         items {
           allergens
           name {
@@ -48,23 +63,13 @@ mutation CreateFavoriteProduct($userId: ID!, $unitId: ID!, $productId: ID!) {
           }
           position
           price
+          netPackagingFee
           productComponentId
+          soldOut
         }
       }
-      variants {
-        id
-        pack {
-          size
-          unit
-        }
-        position
-        price
-        variantName {
-          de
-          en
-          hu
-        }
-      }
+      supportedServingModes
+      soldOut
     }
   }
 }

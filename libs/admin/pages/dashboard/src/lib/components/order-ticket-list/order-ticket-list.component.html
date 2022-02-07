@@ -2,7 +2,7 @@
   <nb-card-header class="p-1">
     <nb-actions [size]="buttonSize" class="pb-2 pt-2" fullWidth>
       <nb-action
-        icon="clock-outline"
+        [icon]="{ icon: 'schedule', pack: 'material-icons' }"
         [badgeText]="
           (placedOrders.length || 0) > 0 ? placedOrders.length.toString() : ''
         "
@@ -17,7 +17,7 @@
         [title]="'dashboard.actions.placedOrders' | translate"
       ></nb-action>
       <nb-action
-        icon="bell-outline"
+        [icon]="{ icon: 'payment', pack: 'material-icons' }"
         [badgeText]="
           (manualPaymentOrders.length || 0) > 0
             ? manualPaymentOrders.length.toString()
@@ -34,7 +34,7 @@
         [title]="'dashboard.actions.manualOrders' | translate"
       ></nb-action>
       <nb-action
-        icon="alert-circle-outline"
+        [icon]="{ icon: 'report_problem', pack: 'material-icons' }"
         [badgeText]="
           (problematicOrders.length || 0) > 0
             ? problematicOrders.length.toString()
@@ -54,18 +54,22 @@
     </nb-actions>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <nb-list-item
-      *ngFor="let order of filteredOrders; trackBy: trackByFn"
-      (click)="selectOrder(order)"
-      [ngClass]="{ selectedOrder: order.id === selectedOrder?.id }"
-    >
-      <bgap-order-ticket-list-item
-        class="w-100"
-        [order]="order"
-        [showMarkers]="true"
-        [selectedOrderUserId]="selectedOrder?.userId"
-        [ticketListType]="dashboardSettings?.ticketListType"
-      ></bgap-order-ticket-list-item>
-    </nb-list-item>
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+      <nb-list>
+        <nb-list-item
+          *cdkVirtualFor="let order of filteredOrders; trackBy: trackByFn"
+          (click)="selectOrder(order)"
+          [ngClass]="{ selectedOrder: order.id === selectedOrder?.id }"
+        >
+          <bgap-order-ticket-list-item
+            class="w-100"
+            [order]="order"
+            [showMarkers]="true"
+            [selectedOrderUserId]="selectedOrder?.userId"
+            [ticketListType]="dashboardSettings?.ticketListType"
+          ></bgap-order-ticket-list-item>
+        </nb-list-item>
+      </nb-list>
+    </cdk-virtual-scroll-viewport>
   </nb-card-body>
 </nb-card>

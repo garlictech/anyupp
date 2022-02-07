@@ -7,7 +7,7 @@
     <div class="float-right">
       <button
         nbButton
-        class="float-right me-2"
+        class="float-right me-3"
         type="button"
         shape="round"
         size="small"
@@ -19,7 +19,7 @@
           ) | translate
         "
       >
-        <nb-icon icon="plus-outline"></nb-icon>
+        <nb-icon icon="add" pack="material-icons"></nb-icon>
       </button>
     </div>
   </nb-card-header>
@@ -29,33 +29,55 @@
         [tabTitle]="'modifiersAndExtras.productComponents' | translate"
         [tabId]="eModExtTab.PRODUCT_COMPONENTS"
         [active]="selectedTab === eModExtTab.PRODUCT_COMPONENTS"
+        [badgeText]="
+          dirtyProductComponentCount > 0
+            ? dirtyProductComponentCount.toString()
+            : ''
+        "
+        badgeStatus="danger"
       >
-        <ng-container
-          *ngFor="let productComponent of productComponents$ | async"
+        <cdk-virtual-scroll-viewport
+          style="height: calc(100vh - 255px)"
+          itemSize="40"
         >
-          <nb-list-item>
-            <bgap-product-component-list-item
-              class="w-100"
-              [productComponent]="productComponent"
-            ></bgap-product-component-list-item>
-          </nb-list-item>
-        </ng-container>
+          <nb-list>
+            <nb-list-item
+              *cdkVirtualFor="let productComponent of productComponents"
+            >
+              <bgap-product-component-list-item
+                class="w-100"
+                [productComponent]="productComponent"
+              ></bgap-product-component-list-item>
+            </nb-list-item>
+          </nb-list>
+        </cdk-virtual-scroll-viewport>
       </nb-tab>
       <nb-tab
         [tabTitle]="'modifiersAndExtras.modExtSets' | translate"
         [tabId]="eModExtTab.MOD_EXT_SETS"
         [active]="selectedTab === eModExtTab.MOD_EXT_SETS"
+        [badgeText]="
+          dirtyProductComponentSetCount > 0
+            ? dirtyProductComponentSetCount.toString()
+            : ''
+        "
+        badgeStatus="danger"
       >
-        <ng-container
-          *ngFor="let productComponentSet of productComponentSets$ | async"
+        <cdk-virtual-scroll-viewport
+          style="height: calc(100vh - 255px)"
+          itemSize="40"
         >
-          <nb-list-item>
-            <bgap-product-component-set-list-item
-              class="w-100"
-              [productComponentSet]="productComponentSet"
-            ></bgap-product-component-set-list-item>
-          </nb-list-item>
-        </ng-container>
+          <nb-list>
+            <nb-list-item
+              *cdkVirtualFor="let productComponentSet of productComponentSets"
+            >
+              <bgap-product-component-set-list-item
+                class="w-100"
+                [productComponentSet]="productComponentSet"
+              ></bgap-product-component-set-list-item>
+            </nb-list-item>
+          </nb-list>
+        </cdk-virtual-scroll-viewport>
       </nb-tab>
     </nb-tabset>
   </nb-card-body>

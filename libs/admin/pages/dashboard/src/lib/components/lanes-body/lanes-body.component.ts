@@ -12,16 +12,16 @@ import {
 import {
   dashboardActions,
   dashboardSelectors,
-} from '@bgap/admin/shared/data-access/dashboard';
-import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+} from '@bgap/admin/store/dashboard';
+import { ordersSelectors } from '@bgap/admin/store/orders';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardSize,
   ENebularButtonSize,
-  IDetailedLane,
-  ILaneOrderItem,
+  DetailedLane,
+  LaneOrderItem,
 } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -29,7 +29,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 const laneFilter =
   (selectedLanes: string[]) =>
-  (orderItem: ILaneOrderItem): boolean =>
+  (orderItem: LaneOrderItem): boolean =>
     selectedLanes.includes(orderItem.laneId || 'default');
 
 @UntilDestroy()
@@ -40,23 +40,22 @@ const laneFilter =
   styleUrls: ['./lanes-body.component.scss'],
 })
 export class LanesBodyComponent implements OnInit, OnDestroy {
-  public placedItems: ILaneOrderItem[] = [];
-  public processingItems: ILaneOrderItem[] = [];
-  public readyItems: ILaneOrderItem[] = [];
+  public placedItems: LaneOrderItem[] = [];
+  public processingItems: LaneOrderItem[] = [];
+  public readyItems: LaneOrderItem[] = [];
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public selectedLanes: string[] = [];
   public unit?: CrudApi.Unit;
-  public unitLanes: CrudApi.Maybe<IDetailedLane>[] = [];
+  public unitLanes: CrudApi.Maybe<DetailedLane>[] = [];
   public DEFAULT_LANE_COLOR = DEFAULT_LANE_COLOR;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     combineLatest([
       this._store.pipe(
         select(
@@ -93,9 +92,9 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
           selectedLanes,
           unit,
         ]: [
-          ILaneOrderItem[],
-          ILaneOrderItem[],
-          ILaneOrderItem[],
+          LaneOrderItem[],
+          LaneOrderItem[],
+          LaneOrderItem[],
           string[],
           CrudApi.Unit | undefined,
         ]): void => {
@@ -109,7 +108,7 @@ export class LanesBodyComponent implements OnInit, OnDestroy {
           this.unitLanes = unit?.lanes ? cloneDeep(unit.lanes) : [];
 
           // Unit lanes
-          this.unitLanes.forEach((lane: CrudApi.Maybe<IDetailedLane>): void => {
+          this.unitLanes.forEach((lane: CrudApi.Maybe<DetailedLane>): void => {
             if (lane) {
               lane.placedCount = rawPlacedItems.filter(
                 (i): boolean => i.laneId === lane.id,

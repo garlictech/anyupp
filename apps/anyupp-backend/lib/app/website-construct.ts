@@ -1,4 +1,5 @@
-import { Construct } from '@aws-cdk/core';
+import * as acm from '@aws-cdk/aws-certificatemanager';
+import { Construct, RemovalPolicy } from '@aws-cdk/core';
 import * as route53 from '@aws-cdk/aws-route53';
 import * as cdk from '@aws-cdk/core';
 import * as sst from '@serverless-stack/resources';
@@ -11,6 +12,7 @@ export interface WebsiteProps extends sst.StackProps {
   domainName: string;
   siteSubDomain: string;
   distDir: string;
+  certificate: acm.ICertificate;
 }
 
 export class WebsiteConstruct extends Construct {
@@ -19,11 +21,6 @@ export class WebsiteConstruct extends Construct {
   constructor(scope: Construct, id: string, props: WebsiteProps) {
     super(scope, id);
     const app = this.node.root as sst.App;
-
-    const certificateArn =
-      app.stage === 'prod'
-        ? 'arn:aws:acm:us-east-1:486782650003:certificate/d743bb2d-00a2-49b4-82c5-f1b46baaa0e9'
-        : 'arn:aws:acm:us-east-1:568276182587:certificate/b669ca50-875b-4e03-99e3-2983e07d7088';
 
     const siteDomain = props.siteSubDomain + '.' + props.domainName;
 
@@ -36,6 +33,8 @@ export class WebsiteConstruct extends Construct {
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
       publicReadAccess: true,
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: app.stage !== 'prod',
     });
 
     new cdk.CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
@@ -45,19 +44,21 @@ export class WebsiteConstruct extends Construct {
       this,
       'SiteDistribution',
       {
-        aliasConfiguration: {
-          acmCertRef: certificateArn,
-          names: [siteDomain],
-          sslMethod: cloudfront.SSLMethod.SNI,
-          securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,
-        },
+        viewerCertificate: cloudfront.ViewerCertificate.fromAcmCertificate(
+          props.certificate,
+          {
+            aliases: [siteDomain],
+            sslMethod: cloudfront.SSLMethod.SNI,
+            securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,
+          },
+        ),
         originConfigs: [
           {
             customOriginSource: {
               domainName: siteBucket.bucketWebsiteDomainName,
               originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
             },
-            behaviors: [{ isDefaultBehavior: true }],
+            behaviors: [{ isDefaultBehavior: true, compress: true }],
           },
         ],
       },

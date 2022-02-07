@@ -7,6 +7,7 @@ import { AdminSharedFormsModule } from '@bgap/admin/shared/forms';
 import { AdminSharedPipesModule } from '@bgap/admin/shared/pipes';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import {
+  NbBadgeModule,
   NbButtonModule,
   NbCardModule,
   NbCheckboxModule,
@@ -19,7 +20,7 @@ import {
   NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ModifiersAndExtrasListComponent } from './components/modifiers-and-extras-list/modifiers-and-extras-list.component';
 import { ProductComponentFormComponent } from './components/product-component-form/product-component-form.component';
 import { ProductComponentListItemComponent } from './components/product-component-list-item/product-component-list-item.component';
@@ -30,6 +31,7 @@ const NB_MODULES = [
   NbLayoutModule,
   NbCardModule,
   NbCheckboxModule,
+  NbBadgeModule,
   NbListModule,
   NbUserModule,
   NbIconModule,
@@ -54,6 +56,7 @@ const NB_MODULES = [
     AdminSharedComponentsModule,
     AdminSharedFormsModule,
     FormsModule,
+    ScrollingModule,
     ReactiveFormsModule,
     AdminSharedPipesModule,
     RouterModule.forChild([

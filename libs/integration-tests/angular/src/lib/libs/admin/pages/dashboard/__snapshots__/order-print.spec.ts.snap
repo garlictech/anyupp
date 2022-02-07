@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Order print functions summarizeServiceFeeByTax should calculate service fee summary 1`] = `
+Object {
+  "currency": "HUF",
+  "priceSum": 200,
+  "tax": 27,
+  "taxSum": 27,
+}
+`;
+
+exports[`Order print functions summarizeVariantsByTax should calculate variant summary 1`] = `
+Object {
+  "inPlace-seeded_chain_product_variant_c1_p1_1_id-test_product_component_id": Object {
+    "configSets": "<div>localized [object Object]</div>",
+    "productName": Object {
+      "de": "Hamburger",
+      "en": "Hamburger",
+      "hu": "Hamburger",
+    },
+    "quantity": 5,
+    "servingMode": "inPlace",
+    "sumPriceShown": Object {
+      "currency": "HUF",
+      "pricePerUnit": 298.2,
+      "priceSum": 1491,
+      "tax": 27,
+      "taxSum": 316.98,
+    },
+    "variantName": Object {
+      "de": "normal",
+      "en": "normal",
+      "hu": "normál",
+    },
+  },
+}
+`;
+
+exports[`Order print functions summarizeVatByTax should calculate variant summary 1`] = `
+Object {
+  "currency": "HUF",
+  "priceSum": 1491,
+  "tax": 27,
+  "taxSum": 316.98,
+}
+`;

@@ -5,7 +5,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../widget/mock/mock_data_faker.dart';
+import '../mock/mock_data_faker.dart';
 
 void main() {
   group('Test product price calculation: Test single variant price', () {

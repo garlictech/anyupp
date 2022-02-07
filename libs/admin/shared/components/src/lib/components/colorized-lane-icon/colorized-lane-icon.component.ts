@@ -7,7 +7,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import { DEFAULT_LANE_COLOR } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { select, Store } from '@ngrx/store';
@@ -23,14 +23,13 @@ export class ColorizedLaneIconComponent implements OnInit {
   public laneColor: string;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.laneColor = DEFAULT_LANE_COLOR;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(unitsSelectors.getSelectedUnit),

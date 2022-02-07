@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,17 +12,20 @@ import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:simple_tooltip/simple_tooltip.dart';
 
 class AddToCartPanelWidget extends StatefulWidget {
   final Function(ConfigsetUpdated state, int quantity)? onAddToCartPressed;
-  final ProducItemDisplayState displayState;
+  final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
+  final ServiceFeePolicy? serviceFeePolicy;
 
   const AddToCartPanelWidget({
     Key? key,
     this.onAddToCartPressed,
-    this.displayState = ProducItemDisplayState.NORMAL,
+    this.displayState = ProductItemDisplayState.NORMAL,
     this.servingMode,
+    this.serviceFeePolicy,
   }) : super(key: key);
 
   @override
@@ -30,6 +34,24 @@ class AddToCartPanelWidget extends StatefulWidget {
 
 class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
   int _quantity = 1;
+  bool _showToolTip = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _showToolTip = widget.serviceFeePolicy == null ||
+        widget.serviceFeePolicy?.type == ServiceFeeType.noFee;
+
+    if (_showToolTip) {
+      Future.delayed(const Duration(seconds: 5), () {
+        if (this.mounted) {
+          setState(() {
+            _showToolTip = false;
+          });
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +67,8 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
   }
 
   Widget _buildAddToCartPanel(BuildContext context, ConfigsetUpdated state) {
-    // print('_buildAddToCartPanel()=$state');
     String price = formatCurrency(state.totalPrice, state.unit.currency);
+
     return Container(
       padding: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -70,9 +92,40 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
               top: 16.0,
               bottom: 16.0,
             ),
-            child: widget.displayState == ProducItemDisplayState.NORMAL
-                ? _buildButtonRow(price)
-                : _buildNotAvailableInfo(),
+            child: widget.displayState == ProductItemDisplayState.NORMAL &&
+                    _showToolTip
+                ? SimpleTooltip(
+                    arrowBaseWidth: 16.0,
+                    arrowLength: 8,
+                    borderWidth: 1.0,
+                    animationDuration: Duration(milliseconds: 0),
+                    show: true,
+                    tooltipDirection: TooltipDirection.up,
+                    hideOnTooltipTap: true,
+                    arrowTipDistance: 4.0,
+                    borderRadius: 8.0,
+                    backgroundColor: theme.secondary,
+                    borderColor: theme.secondary.withOpacity(0.2),
+                    ballonPadding: EdgeInsets.zero,
+                    content: Container(
+                      child: Text(
+                        trans('cart.hasNoServiceFee'),
+                        softWrap: true,
+                        textAlign: TextAlign.center,
+                        style: Fonts.satoshi(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: theme.secondary0,
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                    ),
+                    child: widget.displayState == ProductItemDisplayState.NORMAL
+                        ? _buildButtonRow(price)
+                        : _buildNotAvailableInfo())
+                : widget.displayState == ProductItemDisplayState.NORMAL
+                    ? _buildButtonRow(price)
+                    : _buildNotAvailableInfo(),
           ),
           Platform.isIOS
               ? Container(
@@ -94,16 +147,25 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
   }
 
   Widget _buildNotAvailableInfo() {
+    print(
+        '_buildNotAvailableInfo().displayState=${widget.displayState}, servingMode=${widget.servingMode}');
     return Text(
-      widget.servingMode == ServingMode.takeAway ? trans('product.notTakeAway') : trans('product.notInPlace'),
+      widget.displayState == ProductItemDisplayState.DISABLED
+          ? widget.servingMode == ServingMode.takeAway
+              ? trans('product.notTakeAwayDesc')
+              : trans('product.notInPlaceDesc')
+          : trans('product.soldOutDesc'),
       style: Fonts.satoshi(
         fontSize: 14.0,
         fontWeight: FontWeight.w700,
-        color:
-            widget.displayState == ProducItemDisplayState.DISABLED ? theme.secondary.withOpacity(0.5) : theme.secondary,
+        color: isDisabled ? theme.secondary.withOpacity(0.4) : theme.secondary,
       ),
     );
   }
+
+  bool get isDisabled =>
+      widget.displayState == ProductItemDisplayState.DISABLED ||
+      widget.displayState == ProductItemDisplayState.SOLDOUT;
 
   Widget _buildButtonRow(String price) {
     return Row(
@@ -221,7 +283,8 @@ class AddToCartPanelButtonWidget extends StatelessWidget {
             ),
           ],
         ),
-        onPressed: widget.onAddToCartPressed != null && widget.displayState == ProducItemDisplayState.NORMAL
+        onPressed: widget.onAddToCartPressed != null &&
+                widget.displayState == ProductItemDisplayState.NORMAL
             ? () => widget.onAddToCartPressed!(state, _quantity)
             : null,
       ),

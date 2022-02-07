@@ -1,11 +1,2247 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreatCartFromOrder mutation test should fail in case the cart is not the user's 1`] = `[Error: GraphQL error: Cart is missing]`;
+exports[`CreatOrderFromCart mutation test When creating order from cart, send the order to rkeeper 1`] = `
+Array [
+  Array [
+    Object {
+      "address": Object {
+        "address": "Ág u. 1.",
+        "city": "Budapest",
+        "country": "Magyarország",
+        "location": Object {
+          "lat": 47,
+          "lng": 19,
+        },
+        "postalCode": "1021",
+        "title": "HQ",
+      },
+      "chainId": "test_chain_1_id",
+      "createdAt": "MASKED DATE",
+      "description": Object {
+        "de": null,
+        "en": "Test unit #test_unit_1_id description",
+        "hu": "Teszt unit #test_unit_1_id leírás",
+      },
+      "email": null,
+      "externalId": "restaurantid",
+      "floorMap": null,
+      "groupId": "test_group_1_id",
+      "id": "rkeeper-unit",
+      "isAcceptingOrders": true,
+      "isActive": true,
+      "lanes": Array [
+        Object {
+          "color": "#e72222",
+          "id": "lane_01",
+          "name": "bár",
+        },
+        Object {
+          "color": "#e123ef",
+          "id": "lane_02",
+          "name": "konyha",
+        },
+      ],
+      "lastOrderNum": null,
+      "merchantId": null,
+      "name": "Késdobáló S",
+      "open": Object {
+        "from": "1970-01-01",
+        "to": "2970-01-01",
+      },
+      "openingHours": null,
+      "orderPolicy": null,
+      "packagingTaxPercentage": 27,
+      "paymentModes": Array [
+        Object {
+          "caption": null,
+          "method": "cash",
+          "type": "cash",
+        },
+        Object {
+          "caption": null,
+          "method": "card",
+          "type": "card",
+        },
+        Object {
+          "caption": null,
+          "method": "inapp",
+          "type": "stripe",
+        },
+      ],
+      "phone": null,
+      "pos": Object {
+        "rkeeper": Object {
+          "anyuppPassword": "MASKED ANYUPP PASSWORD",
+          "anyuppUsername": "ANYUPP_USERNAME",
+          "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+          "rkeeperPassword": "b6302d53085c9486d0f765ec475f18",
+          "rkeeperUsername": "795_50_155_539",
+        },
+        "type": "rkeeper",
+      },
+      "ratingPolicies": Array [
+        Object {
+          "description": Object {
+            "de": null,
+            "en": "Desc",
+            "hu": null,
+          },
+          "key": "question1",
+          "ratings": Array [
+            Object {
+              "icon": null,
+              "text": Object {
+                "de": null,
+                "en": "good",
+                "hu": null,
+              },
+              "value": 1,
+            },
+          ],
+          "title": Object {
+            "de": null,
+            "en": "Question",
+            "hu": null,
+          },
+        },
+      ],
+      "serviceFeePolicy": Object {
+        "percentage": 10,
+        "taxPercentage": 10,
+        "type": "applicable",
+      },
+      "soldOutVisibilityPolicy": null,
+      "supportedOrderModes": Array [
+        "pickup",
+        "instant",
+      ],
+      "supportedServingModes": Array [
+        "inPlace",
+        "takeAway",
+      ],
+      "timeZone": null,
+      "tipPolicy": Object {
+        "description": null,
+        "maxOtherAmount": null,
+        "percents": Array [
+          2,
+        ],
+        "title": null,
+      },
+      "updatedAt": "MASKED DATE",
+    },
+    Object {
+      "archived": false,
+      "items": Array [
+        Object {
+          "allergens": Array [
+            "treenuts",
+          ],
+          "configSets": null,
+          "externalId": null,
+          "laneId": "laneId_",
+          "priceShown": Object {
+            "currency": "EUR",
+            "pricePerUnit": 1,
+            "priceSum": 2,
+            "tax": 27,
+            "taxSum": 0.43,
+          },
+          "productId": "seeded_unit_product_c1_g1_1_id",
+          "productName": Object {
+            "de": null,
+            "en": "Water",
+            "hu": "Viz",
+          },
+          "productType": "PRODUCT_TYPE",
+          "quantity": 2,
+          "serviceFee": Object {
+            "currency": "EUR",
+            "netPrice": 0.18000000000000002,
+            "taxPercentage": 10,
+          },
+          "statusLog": Array [
+            Object {
+              "status": "none",
+              "ts": "MASKED TIMESTAMP",
+              "userId": "test_user_1_id",
+            },
+          ],
+          "sumPriceShown": Object {
+            "currency": "EUR",
+            "pricePerUnit": 1,
+            "priceSum": 2,
+            "tax": 27,
+            "taxSum": 0.43,
+          },
+          "variantId": "test_variant_1_id",
+          "variantName": Object {
+            "de": null,
+            "en": "glass",
+            "hu": "pohár",
+          },
+        },
+      ],
+      "orderMode": "instant",
+      "orderNum": "TABLESEAT01",
+      "paymentMode": Object {
+        "caption": null,
+        "method": "inapp",
+        "type": "stripe",
+      },
+      "place": Object {
+        "seat": "SEAT",
+        "table": "TABLE",
+      },
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.18000000000000002,
+        "taxPercentage": 10,
+      },
+      "servingMode": "inPlace",
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "test_user_1_id",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 0,
+        "priceSum": 2,
+        "tax": 0,
+        "taxSum": 0.43,
+      },
+      "takeAway": false,
+      "transactionStatus": "waiting_for_payment",
+      "unitId": "rkeeper-unit",
+      "userId": "test_user_1_id",
+    },
+  ],
+]
+`;
 
-exports[`CreatCartFromOrder mutation test should fail without a cart 1`] = `[Error: GraphQL error: Unexpected empty value]`;
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with old API server: Order content 1`] = `
+Object {
+  "archived": false,
+  "createdAt": Any<String>,
+  "hasRated": null,
+  "id": "MASKED ID",
+  "items": Array [
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": null,
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": null,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.18000000000000002,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": null,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.32999999999999996,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1.8,
+        "priceSum": 3.6,
+        "tax": 27,
+        "taxSum": 0.77,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+        Object {
+          "items": Array [
+            Object {
+              "allergens": null,
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": 5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0201",
+            },
+            Object {
+              "allergens": Array [
+                "peanut",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": -1,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0202",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_02",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": null,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 1.0499999999999998,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 5.8,
+        "priceSum": 11.6,
+        "tax": 27,
+        "taxSum": 2.47,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+  ],
+  "orderMode": "instant",
+  "orderNum": "TABLESEAT01",
+  "packagingSum": null,
+  "paymentIntention": null,
+  "paymentMode": Object {
+    "caption": null,
+    "method": "inapp",
+    "type": "stripe",
+  },
+  "place": Object {
+    "seat": "SEAT",
+    "table": "TABLE",
+  },
+  "rating": null,
+  "serviceFee": Object {
+    "currency": "EUR",
+    "netPrice": 1.56,
+    "taxPercentage": 10,
+  },
+  "servingMode": "inPlace",
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "testuser+test",
+    },
+  ],
+  "sumPriceShown": Object {
+    "currency": "EUR",
+    "pricePerUnit": 0,
+    "priceSum": 17.2,
+    "tax": 0,
+    "taxSum": 3.66,
+  },
+  "takeAway": false,
+  "tip": null,
+  "tipTransaction": null,
+  "tipTransactionId": null,
+  "tipTransactionStatus": null,
+  "transaction": null,
+  "transactionId": null,
+  "transactionStatus": "waiting_for_payment",
+  "unitId": "test_unit_1_id",
+  "unpayCategory": null,
+  "updatedAt": Any<String>,
+  "userId": "testuser+test",
+}
+`;
 
-exports[`CreatCartFromOrder mutation test should fail without a unit 1`] = `[Error: GraphQL error: {"message":"Unit is not accepting orders right now. Try it later!","code":"ERROR_UNIT_NOT_ACCEPTING_ORDERS"}]`;
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with old API server: Takeaway order content 1`] = `
+Object {
+  "archived": false,
+  "createdAt": Any<String>,
+  "hasRated": null,
+  "id": "MASKED ID",
+  "items": Array [
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": null,
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": 1,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.18000000000000002,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": 1,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.32999999999999996,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1.8,
+        "priceSum": 3.6,
+        "tax": 53,
+        "taxSum": 1.25,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+        Object {
+          "items": Array [
+            Object {
+              "allergens": null,
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": 5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0201",
+            },
+            Object {
+              "allergens": Array [
+                "peanut",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": -1,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0202",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_02",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": 1,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 1.0499999999999998,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 5.8,
+        "priceSum": 11.6,
+        "tax": 53,
+        "taxSum": 4.02,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+  ],
+  "orderMode": "instant",
+  "orderNum": "TABLESEAT03",
+  "packagingSum": Object {
+    "currency": "EUR",
+    "netPrice": 10,
+    "taxPercentage": 27,
+  },
+  "paymentIntention": null,
+  "paymentMode": Object {
+    "caption": null,
+    "method": "inapp",
+    "type": "stripe",
+  },
+  "place": Object {
+    "seat": "SEAT",
+    "table": "TABLE",
+  },
+  "rating": null,
+  "serviceFee": Object {
+    "currency": "EUR",
+    "netPrice": 2.72,
+    "taxPercentage": 10,
+  },
+  "servingMode": "takeAway",
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "testuser+test",
+    },
+  ],
+  "sumPriceShown": Object {
+    "currency": "EUR",
+    "pricePerUnit": 0,
+    "priceSum": 29.9,
+    "tax": 0,
+    "taxSum": 8.66,
+  },
+  "takeAway": false,
+  "tip": null,
+  "tipTransaction": null,
+  "tipTransactionId": null,
+  "tipTransactionStatus": null,
+  "transaction": null,
+  "transactionId": null,
+  "transactionStatus": "waiting_for_payment",
+  "unitId": "test_unit_1_id",
+  "unpayCategory": null,
+  "updatedAt": Any<String>,
+  "userId": "testuser+test",
+}
+`;
 
-exports[`CreatCartFromOrder mutation test should fail without an authenticated userId 1`] = `"CreateOrderFromCartRequest Object Validation Error (JOI): \\"userId\\" is required, \\"input\\" is required"`;
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with old API server: fail in case the cart is not the user's 1`] = `[Error: GraphQL error: Cart is missing]`;
 
-exports[`CreatCartFromOrder mutation test should fail without an id in input 1`] = `"CreateOrderFromCartRequest Object Validation Error (JOI): \\"input.id\\" is required"`;
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with old API server: fail without a cart 1`] = `[Error: GraphQL error: Cart is missing: test_NOT_EXSISTING_CART]`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with old API server: fail without a unit 1`] = `[Error: GraphQL error: {"message":"Unit is not accepting orders right now. Try it later!","code":"ERROR_UNIT_NOT_ACCEPTING_ORDERS"}]`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with resolver function: Order content 1`] = `
+Object {
+  "archived": false,
+  "createdAt": Any<String>,
+  "hasRated": null,
+  "id": "MASKED ID",
+  "items": Array [
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": null,
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": null,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.18000000000000002,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": null,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.32999999999999996,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1.8,
+        "priceSum": 3.6,
+        "tax": 27,
+        "taxSum": 0.77,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+        Object {
+          "items": Array [
+            Object {
+              "allergens": null,
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": 5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0201",
+            },
+            Object {
+              "allergens": Array [
+                "peanut",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": -1,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0202",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_02",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": null,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 1.0499999999999998,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 5.8,
+        "priceSum": 11.6,
+        "tax": 27,
+        "taxSum": 2.47,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+  ],
+  "orderMode": "instant",
+  "orderNum": "TABLESEAT01",
+  "packagingSum": null,
+  "paymentIntention": null,
+  "paymentMode": Object {
+    "caption": null,
+    "method": "inapp",
+    "type": "stripe",
+  },
+  "place": Object {
+    "seat": "SEAT",
+    "table": "TABLE",
+  },
+  "rating": null,
+  "serviceFee": Object {
+    "currency": "EUR",
+    "netPrice": 1.56,
+    "taxPercentage": 10,
+  },
+  "servingMode": "inPlace",
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "testuser+test",
+    },
+  ],
+  "sumPriceShown": Object {
+    "currency": "EUR",
+    "pricePerUnit": 0,
+    "priceSum": 17.2,
+    "tax": 0,
+    "taxSum": 3.66,
+  },
+  "takeAway": false,
+  "tip": null,
+  "tipTransaction": null,
+  "tipTransactionId": null,
+  "tipTransactionStatus": null,
+  "transaction": null,
+  "transactionId": null,
+  "transactionStatus": "waiting_for_payment",
+  "unitId": "test_unit_1_id",
+  "unpayCategory": null,
+  "updatedAt": Any<String>,
+  "userId": "testuser+test",
+}
+`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with resolver function: Takeaway order content 1`] = `
+Object {
+  "archived": false,
+  "createdAt": Any<String>,
+  "hasRated": null,
+  "id": "MASKED ID",
+  "items": Array [
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": null,
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": 1,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.18000000000000002,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": 1,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.32999999999999996,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1.8,
+        "priceSum": 3.6,
+        "tax": 53,
+        "taxSum": 1.25,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+        Object {
+          "items": Array [
+            Object {
+              "allergens": null,
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": 5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0201",
+            },
+            Object {
+              "allergens": Array [
+                "peanut",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": -1,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0202",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_02",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": 1,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 1.0499999999999998,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 5.8,
+        "priceSum": 11.6,
+        "tax": 53,
+        "taxSum": 4.02,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+  ],
+  "orderMode": "instant",
+  "orderNum": "TABLESEAT03",
+  "packagingSum": Object {
+    "currency": "EUR",
+    "netPrice": 10,
+    "taxPercentage": 27,
+  },
+  "paymentIntention": null,
+  "paymentMode": Object {
+    "caption": null,
+    "method": "inapp",
+    "type": "stripe",
+  },
+  "place": Object {
+    "seat": "SEAT",
+    "table": "TABLE",
+  },
+  "rating": null,
+  "serviceFee": Object {
+    "currency": "EUR",
+    "netPrice": 2.72,
+    "taxPercentage": 10,
+  },
+  "servingMode": "takeAway",
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "testuser+test",
+    },
+  ],
+  "sumPriceShown": Object {
+    "currency": "EUR",
+    "pricePerUnit": 0,
+    "priceSum": 29.9,
+    "tax": 0,
+    "taxSum": 8.66,
+  },
+  "takeAway": false,
+  "tip": null,
+  "tipTransaction": null,
+  "tipTransactionId": null,
+  "tipTransactionStatus": null,
+  "transaction": null,
+  "transactionId": null,
+  "transactionStatus": "waiting_for_payment",
+  "unitId": "test_unit_1_id",
+  "unpayCategory": null,
+  "updatedAt": Any<String>,
+  "userId": "testuser+test",
+}
+`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with resolver function: fail in case the cart is not the user's 1`] = `"Cart is missing"`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with resolver function: fail without a cart 1`] = `[Error: Cart is missing: test_NOT_EXSISTING_CART]`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with resolver function: fail without a unit 1`] = `"{\\"message\\":\\"Unit is not accepting orders right now. Try it later!\\",\\"code\\":\\"ERROR_UNIT_NOT_ACCEPTING_ORDERS\\"}"`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with server: Order content 1`] = `
+Object {
+  "archived": false,
+  "createdAt": Any<String>,
+  "hasRated": null,
+  "id": "MASKED ID",
+  "items": Array [
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": null,
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": null,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.18000000000000002,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": null,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.32999999999999996,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1.8,
+        "priceSum": 3.6,
+        "tax": 27,
+        "taxSum": 0.77,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+        Object {
+          "items": Array [
+            Object {
+              "allergens": null,
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": 5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0201",
+            },
+            Object {
+              "allergens": Array [
+                "peanut",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": null,
+              "price": -1,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0202",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_02",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": null,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 27,
+        "taxSum": 0.43,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 1.0499999999999998,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 5.8,
+        "priceSum": 11.6,
+        "tax": 27,
+        "taxSum": 2.47,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+  ],
+  "orderMode": "instant",
+  "orderNum": "TABLESEAT01",
+  "packagingSum": null,
+  "paymentIntention": null,
+  "paymentMode": Object {
+    "caption": null,
+    "method": "inapp",
+    "type": "stripe",
+  },
+  "place": Object {
+    "seat": "SEAT",
+    "table": "TABLE",
+  },
+  "rating": null,
+  "serviceFee": Object {
+    "currency": "EUR",
+    "netPrice": 1.56,
+    "taxPercentage": 10,
+  },
+  "servingMode": "inPlace",
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "testuser+test",
+    },
+  ],
+  "sumPriceShown": Object {
+    "currency": "EUR",
+    "pricePerUnit": 0,
+    "priceSum": 17.2,
+    "tax": 0,
+    "taxSum": 3.66,
+  },
+  "takeAway": false,
+  "tip": null,
+  "tipTransaction": null,
+  "tipTransactionId": null,
+  "tipTransactionStatus": null,
+  "transaction": null,
+  "transactionId": null,
+  "transactionStatus": "waiting_for_payment",
+  "unitId": "test_unit_1_id",
+  "unpayCategory": null,
+  "updatedAt": Any<String>,
+  "userId": "testuser+test",
+}
+`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with server: Takeaway order content 1`] = `
+Object {
+  "archived": false,
+  "createdAt": Any<String>,
+  "hasRated": null,
+  "id": "MASKED ID",
+  "items": Array [
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": null,
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": 1,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.18000000000000002,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": 1,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 0.32999999999999996,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1.8,
+        "priceSum": 3.6,
+        "tax": 53,
+        "taxSum": 1.25,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+    Object {
+      "allergens": Array [
+        "treenuts",
+      ],
+      "configSets": Array [
+        Object {
+          "items": Array [
+            Object {
+              "allergens": Array [
+                "egg",
+                "fish",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 1,
+              "price": -1.5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0101",
+            },
+            Object {
+              "allergens": Array [
+                "egg",
+                "gluten",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": 2.3,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0102",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_01",
+          "type": "TYPE",
+        },
+        Object {
+          "items": Array [
+            Object {
+              "allergens": null,
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": 5,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0201",
+            },
+            Object {
+              "allergens": Array [
+                "peanut",
+              ],
+              "externalId": null,
+              "name": Object {
+                "de": "DE_NAME",
+                "en": "EN_NAME",
+                "hu": "HU_NAME",
+              },
+              "netPackagingFee": 0,
+              "price": -1,
+              "productComponentId": "PRODUCT_COMPONENT_ID_0202",
+            },
+          ],
+          "name": Object {
+            "de": "DE_NAME",
+            "en": "EN_NAME",
+            "hu": "HU_NAME",
+          },
+          "productSetId": "PRODUCTSET_ID_02",
+          "type": "TYPE",
+        },
+      ],
+      "created": null,
+      "externalId": null,
+      "image": null,
+      "laneId": "laneId_",
+      "netPackagingFee": 1,
+      "priceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 1,
+        "priceSum": 2,
+        "tax": 53,
+        "taxSum": 0.69,
+      },
+      "productId": "seeded_unit_product_c1_g1_1_id",
+      "productName": Object {
+        "de": null,
+        "en": "Water",
+        "hu": "Viz",
+      },
+      "productType": "PRODUCT_TYPE",
+      "quantity": 2,
+      "serviceFee": Object {
+        "currency": "EUR",
+        "netPrice": 1.0499999999999998,
+        "taxPercentage": 10,
+      },
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": "MASKED TIMESTAMP",
+          "userId": "testuser+test",
+        },
+      ],
+      "sumPriceShown": Object {
+        "currency": "EUR",
+        "pricePerUnit": 5.8,
+        "priceSum": 11.6,
+        "tax": 53,
+        "taxSum": 4.02,
+      },
+      "variantId": "test_generatedProductVariant_id_pseeded_unit_product_c1_g1_1_id_1",
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+        "hu": "VARIANT_NAME_seeded_unit_product_c1_g1_1_id",
+      },
+    },
+  ],
+  "orderMode": "instant",
+  "orderNum": "TABLESEAT03",
+  "packagingSum": Object {
+    "currency": "EUR",
+    "netPrice": 10,
+    "taxPercentage": 27,
+  },
+  "paymentIntention": null,
+  "paymentMode": Object {
+    "caption": null,
+    "method": "inapp",
+    "type": "stripe",
+  },
+  "place": Object {
+    "seat": "SEAT",
+    "table": "TABLE",
+  },
+  "rating": null,
+  "serviceFee": Object {
+    "currency": "EUR",
+    "netPrice": 2.72,
+    "taxPercentage": 10,
+  },
+  "servingMode": "takeAway",
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "testuser+test",
+    },
+  ],
+  "sumPriceShown": Object {
+    "currency": "EUR",
+    "pricePerUnit": 0,
+    "priceSum": 29.9,
+    "tax": 0,
+    "taxSum": 8.66,
+  },
+  "takeAway": false,
+  "tip": null,
+  "tipTransaction": null,
+  "tipTransactionId": null,
+  "tipTransactionStatus": null,
+  "transaction": null,
+  "transactionId": null,
+  "transactionStatus": "waiting_for_payment",
+  "unitId": "test_unit_1_id",
+  "unpayCategory": null,
+  "updatedAt": Any<String>,
+  "userId": "testuser+test",
+}
+`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with server: fail in case the cart is not the user's 1`] = `[Error: GraphQL error: Cart is missing]`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with server: fail without a cart 1`] = `[Error: GraphQL error: Cart is missing: test_NOT_EXSISTING_CART]`;
+
+exports[`CreatOrderFromCart mutation test should create an order from a valid cart with server: fail without a unit 1`] = `[Error: GraphQL error: {"message":"Unit is not accepting orders right now. Try it later!","code":"ERROR_UNIT_NOT_ACCEPTING_ORDERS"}]`;
+
+exports[`CreatOrderFromCart mutation test should fail in case the cart is not the user's 1`] = `"Cart is missing"`;
+
+exports[`CreatOrderFromCart mutation test should fail without a cart 1`] = `[Error: Cart is missing: test_NOT_EXSISTING_CART]`;
+
+exports[`CreatOrderFromCart mutation test should fail without a unit 1`] = `"{\\"message\\":\\"Unit is not accepting orders right now. Try it later!\\",\\"code\\":\\"ERROR_UNIT_NOT_ACCEPTING_ORDERS\\"}"`;
+
+exports[`CreatOrderFromCart mutation test should fail without an id in input 1`] = `[Error: GraphQL error: Variable 'id' has coerced Null value for NonNull type 'ID!']`;

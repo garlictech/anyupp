@@ -1,5 +1,5 @@
-import { cloneDeep } from 'lodash/fp';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -9,23 +9,17 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Validators } from '@angular/forms';
-import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { chainsSelectors } from '@bgap/admin/store/chains';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import {
-  addressFormGroup,
-  addressIsEmpty,
-  contactFormGroup,
-  multiLangValidator,
-} from '@bgap/admin/shared/utils';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
+import { addressIsEmpty } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { IKeyValue } from '@bgap/shared/types';
+import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
+
+import { GroupFormService } from '../../services/group-form.service';
 
 @UntilDestroy()
 @Component({
@@ -38,38 +32,27 @@ export class GroupFormComponent
   implements OnInit, OnDestroy
 {
   public group!: CrudApi.Group;
-  public chainOptions: IKeyValue[] = [];
-  public currencyOptions: IKeyValue[] = [];
+  public chainOptions$: Observable<KeyValue[]>;
+  public currencyOptions: KeyValue[] = [];
 
   constructor(
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _crudSdk: CrudSdkService,
+    private _groupFormService: GroupFormService,
   ) {
     super(_injector);
 
-    this.dialogForm = this._formBuilder.group({
-      chainId: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      description: this._formBuilder.group(
-        {
-          hu: [''],
-          en: [''],
-          de: [''],
-        },
-        { validators: multiLangValidator },
-      ),
-      currency: ['', [Validators.required]],
-      ...contactFormGroup(),
-      ...addressFormGroup(this._formBuilder),
-    });
+    this.dialogForm = this._groupFormService.createGroupFormGroup();
+
+    this.chainOptions$ = this._store.select(
+      chainsSelectors.getAllChainOptions(),
+    );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.group) {
-      this.dialogForm.patchValue(cleanObject(this.group));
+      this.dialogForm?.patchValue(cleanObject(this.group));
     } else {
-      // Patch ChainId
       this._store
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
         .subscribe((selectedChainId: string | undefined | null): void => {
@@ -79,25 +62,10 @@ export class GroupFormComponent
         });
     }
 
-    this._store
-      .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
-      .subscribe((chains: CrudApi.Chain[]): void => {
-        this.chainOptions = chains.map(
-          (chain): IKeyValue => ({
-            key: chain.id,
-            value: chain.name,
-          }),
-        );
-
-        this._changeDetectorRef.detectChanges();
-      });
-
-    this.currencyOptions = ['EUR', 'HUF'].map(
-      (currency): IKeyValue => ({
-        key: currency,
-        value: currency,
-      }),
-    );
+    this.currencyOptions = ['EUR', 'HUF'].map(currency => ({
+      key: currency,
+      value: currency,
+    }));
 
     this._changeDetectorRef.detectChanges();
   }
@@ -108,35 +76,26 @@ export class GroupFormComponent
 
   public submit() {
     if (this.dialogForm?.valid) {
-      const value = cloneDeep(this.dialogForm.value);
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            this._groupFormService.saveForm$(
+              {
+                ...this.dialogForm?.value,
+                address: addressIsEmpty(this.dialogForm?.value.address)
+                  ? null
+                  : this.dialogForm?.value.address,
+              },
+              this.group?.id,
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
+        )
+        .subscribe((response: UpsertResponse<unknown>) => {
+          this._toasterService.showSimpleSuccess(response.type);
 
-      if (addressIsEmpty(value.address)) {
-        value.address = null;
-      }
-
-      if (this.group?.id) {
-        this._crudSdk.sdk
-          .UpdateGroup({
-            input: {
-              id: this.group.id,
-              ...value,
-            },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.updateSuccessful');
-
-            this.close();
-          });
-      } else {
-        this._crudSdk.sdk
-          .CreateGroup({ input: value })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.insertSuccessful');
-            this.close();
-          });
-      }
+          this.close();
+        });
     }
   }
 }

@@ -1,5 +1,5 @@
-import { combineLatest } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { combineLatest, iif, of } from 'rxjs';
+import { startWith, take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -16,10 +16,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { productComponentSetsSelectors } from '@bgap/admin/shared/data-access/product-component-sets';
+import { productComponentSetsSelectors } from '@bgap/admin/store/product-component-sets';
 import { LocalizePipe } from '@bgap/admin/shared/pipes';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductLevel, IKeyValue } from '@bgap/shared/types';
+import { EProductLevel, KeyValue } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -34,19 +34,18 @@ import { FormsService } from '../../services/forms/forms.service';
   styleUrls: ['./form-product-components.component.scss'],
 })
 export class FormProductComponentsComponent implements OnInit, OnDestroy {
-  @Input() componentFormArray!: FormArray;
+  @Input() componentFormArray?: FormArray;
   @Input() productLevel!: EProductLevel;
   @Input() currency?: string;
   public eProductLevel = EProductLevel;
   public eServingMode = CrudApi.ServingMode;
 
-  public componentSetForm!: FormGroup;
-  public productComponentSetOptions: IKeyValue[] = [];
+  public componentSetForm?: FormGroup;
+  public productComponentSetOptions: KeyValue[] = [];
 
   private _productComponentSets: CrudApi.ProductComponentSet[] = [];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _formBuilder: FormBuilder,
     private _formsService: FormsService,
@@ -62,9 +61,14 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
     combineLatest([
       this._store.pipe(
         select(productComponentSetsSelectors.getAllProductComponentSets),
+        take(1),
       ),
-      this.componentFormArray.valueChanges.pipe(
-        startWith(this.componentFormArray.value || []),
+      iif(
+        () => typeof this.componentFormArray !== 'undefined',
+        this.componentFormArray?.valueChanges.pipe(
+          startWith(this.componentFormArray?.value || []),
+        ),
+        of([]),
       ),
     ])
       .pipe(untilDestroyed(this))
@@ -90,7 +94,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
 
   public addComponentSetToList() {
     const componentSet = this._productComponentSets.find(
-      c => c.id === this.componentSetForm.value.productComponentSetId,
+      c => c.id === this.componentSetForm?.value.productComponentSetId,
     );
 
     if (componentSet) {
@@ -98,7 +102,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
         this._formsService.createProductConfigSetFormGroup();
       componentSetGroup.patchValue({
         productSetId: componentSet.id,
-        position: this.componentFormArray.value.length + 1,
+        position: this.componentFormArray?.value.length + 1,
       });
 
       componentSet.items.forEach((componentId, i) => {
@@ -113,7 +117,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
 
       (<FormArray>this.componentFormArray)?.push(componentSetGroup);
 
-      this.componentSetForm.patchValue({ productComponentSetId: '' });
+      this.componentSetForm?.patchValue({ productComponentSetId: '' });
     }
 
     this._changeDetectorRef.detectChanges();
@@ -179,7 +183,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
         productComponentSet => !(items || []).includes(productComponentSet.id),
       )
       .map(
-        (productComponentSet): IKeyValue => ({
+        (productComponentSet): KeyValue => ({
           key: productComponentSet.id,
           value: `${this._localizePipe.transform(productComponentSet.name)} (${
             productComponentSet.description

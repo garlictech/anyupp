@@ -1,11 +1,11 @@
-import * as Chart from 'chart.js';
+import { ChartDataset } from 'chart.js';
+import Chart from 'chart.js/auto';
 import { Context } from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
 
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { hourlyBreakdownOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductType, IOrderAmount } from '@bgap/shared/types';
+import { EProductType, OrderAmount } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -36,12 +36,11 @@ export class ReportsHourlyBreakdownComponent
   @Input() currency = '';
 
   private _chart!: Chart;
-  private _amounts: IOrderAmount = {};
+  private _amounts: OrderAmount = {};
 
   constructor(
     private _translateService: TranslateService,
     private _reportsService: ReportsService,
-    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
@@ -70,43 +69,44 @@ export class ReportsHourlyBreakdownComponent
             orders,
           );
 
-          (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
+          (<ChartDataset[]>this._chart.data.datasets)[0].data = [
             ...this._amounts.ordersCount,
           ];
-          (<Chart.ChartDataSets[]>this._chart.data.datasets)[1].data = [
+          (<ChartDataset[]>this._chart.data.datasets)[1].data = [
             ...this._amounts[EProductType.FOOD],
           ];
-          (<Chart.ChartDataSets[]>this._chart.data.datasets)[2].data = [
+          (<ChartDataset[]>this._chart.data.datasets)[2].data = [
             ...this._amounts[EProductType.DRINK],
           ];
-          (<Chart.ChartDataSets[]>this._chart.data.datasets)[3].data = [
+          (<ChartDataset[]>this._chart.data.datasets)[3].data = [
             ...this._amounts[EProductType.OTHER],
+          ];
+          (<ChartDataset[]>this._chart.data.datasets)[4].data = [
+            ...this._amounts[EProductType.TIP],
           ];
 
           this._chart.update();
-
-          this._changeDetectorRef.detectChanges();
         });
     }
 
     this._translateService.onLangChange
       .pipe(untilDestroyed(this))
       .subscribe(() => {
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].label =
-          this._translateService.instant('dashboard.reports.ordersCount');
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[1].label =
-          this._translateService.instant('products.productType.food');
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[2].label =
-          this._translateService.instant('products.productType.drink');
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[3].label =
-          this._translateService.instant('products.productType.other');
+        this._chart.data.datasets[0].label = this._translateService.instant(
+          'dashboard.reports.ordersCount',
+        );
+        this._chart.data.datasets[1].label = this._translateService.instant(
+          'products.productType.food',
+        );
+        this._chart.data.datasets[2].label = this._translateService.instant(
+          'products.productType.drink',
+        );
+        this._chart.data.datasets[3].label = this._translateService.instant(
+          'products.productType.other',
+        );
 
         this._chart.update();
-
-        this._changeDetectorRef.detectChanges();
       });
-
-    this._changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {

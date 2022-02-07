@@ -11,7 +11,7 @@ Feature: Whole product feature
     Then the "Products" title is displayed
 
   Scenario: Add new chain product
-    When I click the category selector to set "Test product category #1 name"
+    When I click the category selector to set "Hamburgers"
     And I click on the button with title "Add product"
     Then The dialog should be visible
     And I should see "New product" text on the dialog
@@ -21,7 +21,7 @@ Feature: Whole product feature
     And I fill out the "Description (HU)" input with "test chain description"
     And I fill out the "Description (EN)" input with "test chain description"
     And I fill out the "Description (DE)" input with "test chain description"
-    Then I select the "Test product category #1 name" in the category selector
+    Then I select the "Hamburgers" in the category selector
     And I select the "Drink" in the product type selector
     When I click on the "Add variant" button
     And I fill out the "Variant name (HU)" input with "test chain variant 1"
@@ -34,8 +34,8 @@ Feature: Whole product feature
     And I click on the "3. Egg" checkbox
     And I click on the "4. Fish" checkbox
     And I click on the "5. Peanut" checkbox
-    And I click on the "6. Milk" checkbox
-    And I click on the "7. Soya" checkbox
+    And I click on the "6. Soya" checkbox
+    And I click on the "7. Milk" checkbox
     And I click on the "8. Treenuts" checkbox
     And I click on the "9. Sulphites" checkbox
     And I click on the "10. Mustard" checkbox
@@ -43,19 +43,19 @@ Feature: Whole product feature
     And I click on the "12. Sesame" checkbox
     And I click on the "13. Lupin" checkbox
     And I click on the "14. Molluscs" checkbox
-    And I select the "Extra comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_01_id)" in the modifier selector
+    And I select the "Garnish (Köret módosító készlet)" in the modifier selector
     And I click on the "Add" button
-    And I select the "Modifier comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_02_id)" in the modifier selector
+    And I select the "Decoration (Szolíd elegancia)" in the modifier selector
     And I click on the "Add" button
     And I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist
-    Then I should see "test product" text
+    Then I should see "test chain product" text
 
 
   Scenario: Update chain product
     And I should see "Chain products" text
-    When I click the category selector to set "Test product category #1 name"
+    When I click the category selector to set "Hamburgers"
     Then On the active tab I should see "test chain product" text
     When On the active tab I click the edit button in the listitem with "test chain product" content
     Then The dialog should be visible
@@ -68,7 +68,7 @@ Feature: Whole product feature
     And I fill out the "Description (HU)" input with "test chain e2eUpdated description"
     And I fill out the "Description (EN)" input with "test chain e2eUpdated description"
     And I fill out the "Description (DE)" input with "test chain e2eUpdated description"
-    Then The category selector should contain "Test product category #1 name"
+    Then The category selector should contain "Hamburgers"
     And I select the "Other" in the product type selector
     And I fill out the "Variant name (HU)" input with "test chain e2eUpdated variant HU"
     And I fill out the "Variant name (EN)" input with "test chain e2eUpdated variant EN"
@@ -78,12 +78,12 @@ Feature: Whole product feature
     And I click on the "1. Gluten" checkbox
     And I click on the "3. Egg" checkbox
     And I click on the "5. Peanut" checkbox
-    And I click on the "7. Soya" checkbox
+    And I click on the "6. Soya" checkbox
     And I click on the "9. Sulphites" checkbox
     And I click on the "11. Celery" checkbox
     And I click on the "13. Lupin" checkbox
-    And I click the delete button in the listitem with "Modifier comp set" content
-    And I select the "Modifier comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_02_id)" in the modifier selector
+    And I click the delete button in the listitem with "Decoration" content
+    And I select the "Temperature (Tálalási hőmérséklet)" in the modifier selector
     And I click on the "Add" button
     When I click on the "Submit" button
     Then I should see a success toastr
@@ -98,11 +98,11 @@ Feature: Whole product feature
 
   Scenario: Add new group product
     When I click on the "Group products" text
-    And I click the category selector to set "Test product category #1 name"
+    And I click the category selector to set "Hamburgers"
     Then On the active tab I should see "test chain e2eUpdated product" text
     When On the active tab I click the extend button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Extend product" text on the dialog
-    When I fill out the "Tax (%)" input with "27"
+    When I fill out the input with testId "tax" with the "27" value
     # Variant prefill text
     And The "Variant name (HU)" input should contain "test chain e2eUpdated variant HU"
     And The "Variant name (EN)" input should contain "test chain e2eUpdated variant EN"
@@ -115,8 +115,8 @@ Feature: Whole product feature
     And I fill out the "Variant name (DE)" input with "test group variant 1"
     And I fill out the "Pack size" input with "5"
     And I fill out the "Pack unit" input with "dl"
-    And I click the delete button in the listitem with "Extra comp set" content
-    And I select the "Extra comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_01_id)" in the modifier selector
+    And I click the delete button in the listitem with "Garnish" content
+    And I select the "Decoration (Szolíd elegancia)" in the modifier selector
     And I click on the "Add" button
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
@@ -124,19 +124,19 @@ Feature: Whole product feature
 
   Scenario: Update group product
     When I click on the "Group products" text
-    When I click the category selector to set "Test product category #1 name"
+    When I click the category selector to set "Hamburgers"
     And On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Edit product" text on the dialog
     And I should see "test chain e2eUpdated product" text on the dialog
     And The "Variant name (HU)" input should contain "test group variant 1"
-    When I fill out the "Tax (%)" input with "27"
+    When I fill out the input with testId "tax" with the "27" value
     And I fill out the "Variant name (HU)" input with "test group e2eUpdated variant HU"
     And I fill out the "Variant name (EN)" input with "test group e2eUpdated variant EN"
     And I fill out the "Variant name (DE)" input with "test group e2eUpdated variant DE"
     And I fill out the "Pack size" input with "500"
     And I fill out the "Pack unit" input with "ml"
-    And I click the delete button in the listitem with "Modifier comp set" content
-    And I select the "Modifier comp set (PRODUCT_COMPONENT DESCRIPTION seeded_product_component_set_02_id)" in the modifier selector
+    And I click the delete button in the listitem with "Decoration" content
+    And I select the "Garnish (Köret módosító készlet)" in the modifier selector
     And I click on the "Add" button
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
@@ -149,7 +149,7 @@ Feature: Whole product feature
 
   Scenario: Add new unit product
     When I click on the "Unit products" text
-    And I click the category selector to set "Test product category #1 name"
+    And I click the category selector to set "Hamburgers"
     And On the active tab I click the extend button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Extend product" text on the dialog
     When I click the lane selector to set "konyha"
@@ -182,13 +182,14 @@ Feature: Whole product feature
     And I fill out the last "Time from" input with "10:00"
     And I fill out the last "Time to" input with "18:00"
     And I fill out all the "Price (HUF)" input with index multiply by 10
+    And I fill out all the "Packaging fee (HUF)" input with index multiply by 5
     And I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist
 
   Scenario: Update unit product
     When I click on the "Unit products" text
-    When I click the category selector to set "Test product category #1 name"
+    When I click the category selector to set "Hamburgers"
     And On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Edit product" text on the dialog
     And I should see "test chain e2eUpdated product" text on the dialog
@@ -202,7 +203,8 @@ Feature: Whole product feature
     And I fill out the "Pack size" input with "200"
     And I fill out the "Pack unit" input with "ml"
     And I click on the "Is available" checkbox
-    And I fill out all the "Price (HUF)" input with index multiply by 10
+    And I fill out all the "Price (HUF)" input with index multiply by 12
+    And I fill out all the "Packaging fee (HUF)" input with index multiply by 6
     And I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist

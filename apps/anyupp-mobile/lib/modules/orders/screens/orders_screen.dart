@@ -1,6 +1,6 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,15 +18,19 @@ class OrdersScreen extends StatefulWidget {
 class _OrdersScreenState extends State<OrdersScreen> {
   bool _ordersLoaded = false;
   bool _orderHistoryLoaded = false;
+  bool _hasErrors = false;
+  String? _error;
+  String? _errorDetails;
 
   @override
   void initState() {
     super.initState();
-    var state = getIt<UnitSelectBloc>().state;
-    if (state is UnitSelected) {
-      GeoUnit unit = state.unit;
-      getIt<OrderBloc>().add(StartGetOrderListSubscription(unit.chainId, unit.id));
-      getIt<OrderHistoryBloc>().add(StartGetOrderHistoryListSubscription(unit.id));
+    var unit = currentUnit;
+    if (unit != null) {
+      getIt<OrderBloc>()
+          .add(StartGetOrderListSubscription(unit.chainId, unit.id));
+      getIt<OrderHistoryBloc>()
+          .add(StartGetOrderHistoryListSubscription(unit.id));
     }
   }
 
@@ -47,13 +51,28 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     _ordersLoaded = true;
                   });
                 }
+                if (state is OrderLoadError) {
+                  setState(() {
+                    _hasErrors = true;
+                    _error = state.message;
+                    _errorDetails = state.details;
+                  });
+                }
               },
             ),
             BlocListener<OrderHistoryBloc, BaseOrderHistoryState>(
               listener: (context, state) {
-                if (state is NoOrderHistoryLoaded || state is OrderHistoryLoadedState) {
+                if (state is NoOrderHistoryLoaded ||
+                    state is OrderHistoryLoadedState) {
                   setState(() {
                     _orderHistoryLoaded = true;
+                  });
+                }
+                if (state is OrderLoadHistoryError) {
+                  setState(() {
+                    _hasErrors = true;
+                    _error = state.message;
+                    _errorDetails = state.details;
                   });
                 }
               },
@@ -81,7 +100,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     return CenterLoadingWidget();
                   },
                 )
-              : CenterLoadingWidget(),
+              : _hasErrors
+                  ? CommonErrorWidget(
+                      error: _error!,
+                      errorDetails: _errorDetails,
+                    )
+                  : CenterLoadingWidget(),
         ),
       ),
     );

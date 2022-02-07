@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Adding service fee: add service fee - applicable 1`] = `
+Object {
+  "items": Array [
+    Object {
+      "serviceFee": Object {
+        "currency": "HUF",
+        "netPrice": 8.33,
+        "taxPercentage": 20,
+      },
+      "sumPriceShown": Object {
+        "currency": "HUF",
+        "priceSum": 100,
+      },
+    },
+    Object {
+      "serviceFee": Object {
+        "currency": "HUF",
+        "netPrice": 8.33,
+        "taxPercentage": 20,
+      },
+      "sumPriceShown": Object {
+        "currency": "HUF",
+        "priceSum": 100,
+      },
+    },
+  ],
+  "serviceFee": Object {
+    "currency": "HUF",
+    "netPrice": 16.67,
+    "taxPercentage": 20,
+  },
+  "sumPriceShown": Object {
+    "currency": "HUF",
+    "priceSum": 200,
+  },
+}
+`;
+
+exports[`Adding service fee: add service fee - included 1`] = `
+Object {
+  "items": Array [
+    Object {
+      "serviceFee": Object {
+        "currency": "HUF",
+        "netPrice": 8.33,
+        "taxPercentage": 20,
+      },
+      "sumPriceShown": Object {
+        "currency": "HUF",
+        "priceSum": 100,
+      },
+    },
+    Object {
+      "serviceFee": Object {
+        "currency": "HUF",
+        "netPrice": 8.33,
+        "taxPercentage": 20,
+      },
+      "sumPriceShown": Object {
+        "currency": "HUF",
+        "priceSum": 100,
+      },
+    },
+  ],
+  "serviceFee": Object {
+    "currency": "HUF",
+    "netPrice": 16.67,
+    "taxPercentage": 20,
+  },
+  "sumPriceShown": Object {
+    "currency": "HUF",
+    "priceSum": 200,
+  },
+}
+`;
+
+exports[`Adding service fee: add service fee - nofee 1`] = `
+Object {
+  "items": Array [
+    Object {
+      "serviceFee": Object {
+        "currency": "HUF",
+        "netPrice": 0,
+        "taxPercentage": 20,
+      },
+      "sumPriceShown": Object {
+        "currency": "HUF",
+        "priceSum": 100,
+      },
+    },
+    Object {
+      "serviceFee": Object {
+        "currency": "HUF",
+        "netPrice": 0,
+        "taxPercentage": 20,
+      },
+      "sumPriceShown": Object {
+        "currency": "HUF",
+        "priceSum": 100,
+      },
+    },
+  ],
+  "serviceFee": Object {
+    "currency": "HUF",
+    "netPrice": 0,
+    "taxPercentage": 20,
+  },
+  "sumPriceShown": Object {
+    "currency": "HUF",
+    "priceSum": 200,
+  },
+}
+`;
+
+exports[`No items defined 1`] = `
+Object {
+  "items": Array [],
+  "serviceFee": Object {
+    "currency": "HUF",
+    "netPrice": 16.67,
+    "taxPercentage": 20,
+  },
+  "sumPriceShown": Object {
+    "currency": "HUF",
+    "priceSum": 200,
+  },
+}
+`;
+
+exports[`No service fee defined 1`] = `
+Object {
+  "items": Array [
+    Object {
+      "serviceFee": Object {
+        "currency": "HUF",
+        "netPrice": 0,
+        "taxPercentage": 0,
+      },
+      "sumPriceShown": Object {
+        "currency": "HUF",
+        "priceSum": 100,
+      },
+    },
+  ],
+  "serviceFee": Object {
+    "currency": "HUF",
+    "netPrice": 0,
+    "taxPercentage": 0,
+  },
+  "sumPriceShown": Object {
+    "currency": "HUF",
+    "priceSum": 100,
+  },
+}
+`;

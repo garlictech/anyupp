@@ -46,6 +46,8 @@ query ListProducts(
           en
           hu
         }
+        netPackagingFee
+        soldOut
       }
       configSets {
         type
@@ -67,10 +69,13 @@ query ListProducts(
           }
           position
           price
+          netPackagingFee
           productComponentId
+          soldOut
         }
       }
       supportedServingModes
+      soldOut
     }
   }
 }

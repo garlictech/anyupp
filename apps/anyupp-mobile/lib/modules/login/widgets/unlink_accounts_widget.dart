@@ -5,9 +5,6 @@ import 'package:fa_prev/modules/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'link_account_dialog.dart';
-import 'social_login_button_widget.dart';
-
 class UnlinkAccountsWidget extends StatelessWidget {
   final User user;
 
@@ -18,8 +15,10 @@ class UnlinkAccountsWidget extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (BuildContext context, LoginState state) {
         return FutureBuilder<List<LoginMethod>>(
-          future: getIt<LoginRepository>().fetchSignInMethodsForEmail(user.email!),
-          builder: (BuildContext context, AsyncSnapshot<List<LoginMethod>> methodSnapshot) {
+          future:
+              getIt<LoginRepository>().fetchSignInMethodsForEmail(user.email!),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<LoginMethod>> methodSnapshot) {
             if (methodSnapshot.hasData) {
               print('**** User Login methods=${methodSnapshot.data}');
 
@@ -57,7 +56,8 @@ class UnlinkAccountsWidget extends StatelessWidget {
     );
   }
 
-  Widget _createLinkedSocialButtonWidget(BuildContext context, String icon, LoginMethod method, bool linked) {
+  Widget _createLinkedSocialButtonWidget(
+      BuildContext context, String icon, LoginMethod method, bool linked) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Badge(
@@ -75,7 +75,8 @@ class UnlinkAccountsWidget extends StatelessWidget {
     );
   }
 
-  Widget _createSocialButtonWidget(BuildContext context, String icon, LoginMethod method, bool linked) {
+  Widget _createSocialButtonWidget(
+      BuildContext context, String icon, LoginMethod method, bool linked) {
     return SocialLoginButtonWidget(
       providerIcon: icon,
       iconColor: theme.primary,

@@ -1,6 +1,4 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -12,6 +10,7 @@ import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,14 +18,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProductDetailsScreen extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  final ProducItemDisplayState displayState;
+  final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
 
   ProductDetailsScreen({
     Key? key,
     required this.item,
     required this.unit,
-    this.displayState = ProducItemDisplayState.NORMAL,
+    this.displayState = ProductItemDisplayState.NORMAL,
     this.servingMode,
   }) : super(key: key);
 
@@ -34,69 +33,107 @@ class ProductDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var unit = currentUnit!;
+
     return NetworkConnectionWrapperWidget(
       child: Scaffold(
         key: _key,
         backgroundColor: theme.secondary12,
-        appBar: null,
-        body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-            builder: (context, unitState) {
-          if (unitState is UnitSelected) {
-            return Stack(
-              children: [
-                ProductDetailsWidget(
-                  item: item,
-                  unit: unit,
-                  displayState: displayState,
-                  servingMode: servingMode,
-                ),
-                Positioned(
-                  // alignment: Alignment.topCenter,
-                  left: 0,
-                  top: 32, // kTextTabBarHeight, //32.0,
-                  right: 0,
-                  child: Container(
-                    height: 55.0,
-                    // color: Colors.red,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8.0,
-                            bottom: 8.0,
-                            left: 15.0,
-                          ),
-                          child: BackButtonWidget(
-                            color: theme.secondary,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8.0,
-                            bottom: 8.0,
-                            right: 15.0,
-                          ),
-                          child: BorderedWidget(
-                            width: 40,
-                            child: FavoriteIconWidget(
-                              theme: theme,
-                              product: item,
-                              unit: unit,
-                              iconSize: 22,
-                            ),
-                          ),
-                        ),
-                      ],
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                expandedHeight: 260.0,
+                floating: false,
+                snap: false,
+                pinned: true,
+                backgroundColor: theme.secondary0,
+                foregroundColor: theme.secondary,
+                primary: true,
+                // stretch: false,
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text(
+                    getLocalizedText(context, item.name),
+                    textAlign: TextAlign.left,
+                    style: Fonts.satoshi(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
+                      color: theme.secondary,
                     ),
                   ),
-                )
-              ],
-            );
-          }
-
-          return CenterLoadingWidget();
-        }),
+                  // background: Container(
+                  //   padding: const EdgeInsets.only(top: kToolbarHeight),
+                  //   child: ProductImageAndInfoWidget(
+                  //     item: item,
+                  //   ),
+                  // ),
+                  background: Container(
+                    color: theme.secondary0,
+                    padding: const EdgeInsets.only(
+                      top: kToolbarHeight,
+                      bottom: 64.0,
+                    ),
+                    child: _ProductDetailsImageWidget(
+                      item: item,
+                      url: item.image!,
+                    ),
+                  ),
+                ),
+                elevation: 4.0,
+                leading: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 8.0,
+                    bottom: 8.0,
+                    left: 15.0,
+                  ),
+                  child: BackButtonWidget(
+                    color: theme.secondary,
+                  ),
+                ),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                      bottom: 8.0,
+                      right: 15.0,
+                    ),
+                    child: BorderedWidget(
+                      width: 40,
+                      child: FavoriteIconWidget(
+                        theme: theme,
+                        product: item,
+                        unit: unit,
+                        iconSize: 22,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // SliverFadeTransition(opacity: opacity)
+              SliverPadding(
+                padding: EdgeInsets.only(bottom: 0),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    ProductImageAndInfoWidget(
+                      item: item,
+                    ),
+                  ]),
+                ),
+              ),
+            ];
+          },
+          body: Stack(
+            children: [
+              ProductDetailsWidget(
+                item: item,
+                unit: unit,
+                displayState: displayState,
+                servingMode: servingMode,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -105,7 +142,7 @@ class ProductDetailsScreen extends StatelessWidget {
 class ProductDetailsWidget extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
-  final ProducItemDisplayState displayState;
+  final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
 
   const ProductDetailsWidget({
@@ -131,115 +168,21 @@ class ProductDetailsWidget extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               child: Container(
                 color: theme.secondary0,
-                padding: EdgeInsets.only(top: kToolbarHeight),
+                // padding: EdgeInsets.only(top: kToolbarHeight),
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      color: theme.secondary0,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              8.0,
-                            ),
-                            child: InkWell(
-                              onTap: () => Nav.to(
-                                ProductImageDetailsScreen(
-                                  product: item,
-                                ),
-                                animationType: NavAnim.SLIDEIN_DOWN,
-                                duration: Duration(milliseconds: 200),
-                              ),
-                              child: _ProductDetailsImageWidget(
-                                url: item.image!,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 16.0,
-                                top: 16.0,
-                                //bottom: 16.0,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _getProductNameWithInfo(context),
-                                    textAlign: TextAlign.left,
-                                    style: Fonts.satoshi(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: theme.secondary,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: 16.0,
-                                top: 16.0,
-                                bottom: 16.0,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.description == null
-                                        ? ''
-                                        : getLocalizedText(
-                                            context, item.description!),
-                                    textAlign: TextAlign.left,
-                                    style: Fonts.satoshi(
-                                      color: theme.secondary,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  if (item.variants.length == 1)
-                                    Text(
-                                      _getProductPackInfo(context),
-                                      textAlign: TextAlign.left,
-                                      style: Fonts.satoshi(
-                                        color: theme.secondary,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                    // ProductImageAndInfoWidget(
+                    //   item: item,
+                    // ),
+                    if (displayState == ProductItemDisplayState.NORMAL ||
+                        displayState == ProductItemDisplayState.SOLDOUT)
+                      ProductConfiguratorWidget(
+                        product: item,
+                        unit: unit,
+                        servingMode: servingMode,
+                        displayState: displayState,
                       ),
-                    ),
-                    if (displayState == ProducItemDisplayState.NORMAL)
-                      StreamBuilder<Cart?>(
-                        stream: getIt<CartRepository>()
-                            .getCurrentCartStream(unit.id),
-                        builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                          if (snapshot.connectionState !=
-                                  ConnectionState.waiting ||
-                              snapshot.hasData) {
-                            //return _buildVariantsList(snapshot.data, item.variants);
-                            return ProductDetailVariantListWidget(
-                              cart: snapshot.data,
-                              product: item,
-                              unit: unit,
-                              servingMode: servingMode,
-                            );
-                          }
-                          return CenterLoadingWidget();
-                        },
-                      ),
-                    if (displayState == ProducItemDisplayState.DISABLED)
+                    if (isDisabled)
                       Container(
                         color: theme.secondary12,
                         child: _buildAllergensListWidget(
@@ -247,7 +190,7 @@ class ProductDetailsWidget extends StatelessWidget {
                           item.allergens!,
                         ),
                       ),
-                    if (displayState == ProducItemDisplayState.DISABLED ||
+                    if (isDisabled ||
                         item.configSets == null ||
                         (item.configSets != null && item.configSets!.isEmpty))
                       Container(
@@ -260,13 +203,12 @@ class ProductDetailsWidget extends StatelessWidget {
             ),
           ),
         ),
-        // (item.configSets == null || (item.configSets != null && item.configSets!.isEmpty))
-        //     ? Container()
         Container(
           color: theme.secondary12,
           child: AddToCartPanelWidget(
             displayState: displayState,
             servingMode: servingMode,
+            serviceFeePolicy: unit.serviceFeePolicy,
             onAddToCartPressed: (state, quantity) =>
                 _addOrderItemToCart(context, state, quantity),
           ),
@@ -276,7 +218,7 @@ class ProductDetailsWidget extends StatelessWidget {
   }
 
   Widget _buildAllergensListWidget(
-      BuildContext context, List<String> allergeens) {
+      BuildContext context, List<Allergen> allergeens) {
     if (allergeens.isEmpty) {
       return Container();
     }
@@ -312,11 +254,163 @@ class ProductDetailsWidget extends StatelessWidget {
     var orderItem = state.orderItem.copyWith(quantity: quantity);
     print('_addOrderItemToCart().orderItem.quantity=$quantity');
     BlocProvider.of<CartBloc>(context)
-        .add(AddProductToCartAction(state.unit.id, orderItem));
+        .add(AddProductToCartAction(state.unit, orderItem));
     Nav.pop();
     getIt<MainNavigationBloc>().add(
       DoMainNavigation(
         pageIndex: 0,
+      ),
+    );
+  }
+
+  bool get isDisabled =>
+      displayState == ProductItemDisplayState.DISABLED ||
+      (displayState == ProductItemDisplayState.SOLDOUT &&
+          unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.faded);
+  bool get isHidden =>
+      displayState == ProductItemDisplayState.SOLDOUT &&
+      unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.invisible;
+}
+
+class _ProductDetailsImageWidget extends StatelessWidget {
+  final String url;
+  final GeneratedProduct item;
+
+  const _ProductDetailsImageWidget(
+      {Key? key, required this.url, required this.item})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Nav.to(
+        ProductImageDetailsScreen(
+          product: item,
+        ),
+        animationType: NavAnim.SLIDEIN_DOWN,
+        duration: Duration(milliseconds: 200),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(
+          8.0,
+        ),
+        child: ImageWidget(
+          url: url,
+          // height: MediaQuery.of(context).size.width / 2,
+          // height: 100.0,
+          placeholder: Container(
+            padding: EdgeInsets.all(50.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(14.0),
+              ),
+              border: Border.all(
+                width: 1.5,
+                color: theme.secondary16.withOpacity(0.4),
+              ),
+            ),
+            // width: widthContainer,
+            // height: heightContainer,
+            child: CircularProgressIndicator(
+              backgroundColor: theme.secondary12,
+            ),
+          ),
+          errorWidget: Container(
+            padding: EdgeInsets.all(50.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(14.0),
+              ),
+              border: Border.all(
+                width: 1.5,
+                color: theme.secondary16.withOpacity(0.4),
+              ),
+            ),
+            child: Icon(
+              Icons.error,
+              color: Colors.red,
+              size: 32.0,
+            ),
+          ),
+          fit: BoxFit.fitHeight,
+        ),
+      ),
+    );
+  }
+}
+
+class ProductImageAndInfoWidget extends StatelessWidget {
+  final GeneratedProduct item;
+
+  const ProductImageAndInfoWidget({Key? key, required this.item})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: theme.secondary0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // _ProductDetailsImageWidget(
+          //   item: item,
+          //   url: item.image!,
+          // ),
+          // Align(
+          //   alignment: Alignment.centerLeft,
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(
+          //       left: 16.0,
+          //       top: 16.0,
+          //       //bottom: 16.0,
+          //     ),
+          //     child: Text(
+          //       _getProductNameWithInfo(context),
+          //       textAlign: TextAlign.left,
+          //       style: Fonts.satoshi(
+          //         fontSize: 18.0,
+          //         fontWeight: FontWeight.bold,
+          //         color: theme.secondary,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 16.0,
+                // top: 16.0,
+                bottom: 16.0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.description == null
+                        ? ''
+                        : getLocalizedText(context, item.description!),
+                    textAlign: TextAlign.left,
+                    style: Fonts.satoshi(
+                      color: theme.secondary,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                    ),
+                  ),
+                  if (item.variants.length == 1)
+                    Text(
+                      _getProductPackInfo(context),
+                      textAlign: TextAlign.left,
+                      style: Fonts.satoshi(
+                        color: theme.secondary,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -330,58 +424,52 @@ class ProductDetailsWidget extends StatelessWidget {
     }
     return '';
   }
-
-  String _getProductNameWithInfo(BuildContext context) {
-    return getLocalizedText(context, item.name);
-  }
 }
 
-class _ProductDetailsImageWidget extends StatelessWidget {
-  final String url;
+class ProductDetailsToolBarButtonsWidget extends StatelessWidget {
+  final GeneratedProduct item;
+  final GeoUnit unit;
 
-  const _ProductDetailsImageWidget({Key? key, required this.url})
+  const ProductDetailsToolBarButtonsWidget(
+      {Key? key, required this.item, required this.unit})
       : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return ImageWidget(
-      url: url,
-      // width: MediaQuery.of(context).size.width / 2.5,
-      height: MediaQuery.of(context).size.width / 2,
-      placeholder: Container(
-        padding: EdgeInsets.all(50.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(14.0),
+    return Container(
+      height: 55.0,
+      // color: Colors.red,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 8.0,
+              bottom: 8.0,
+              left: 15.0,
+            ),
+            child: BackButtonWidget(
+              color: theme.secondary,
+            ),
           ),
-          border: Border.all(
-            width: 1.5,
-            color: theme.secondary16.withOpacity(0.4),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 8.0,
+              bottom: 8.0,
+              right: 15.0,
+            ),
+            child: BorderedWidget(
+              width: 40,
+              child: FavoriteIconWidget(
+                theme: theme,
+                product: item,
+                unit: unit,
+                iconSize: 22,
+              ),
+            ),
           ),
-        ),
-        // width: widthContainer,
-        // height: heightContainer,
-        child: CircularProgressIndicator(
-          backgroundColor: theme.secondary12,
-        ),
+        ],
       ),
-      errorWidget: Container(
-        padding: EdgeInsets.all(50.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(14.0),
-          ),
-          border: Border.all(
-            width: 1.5,
-            color: theme.secondary16.withOpacity(0.4),
-          ),
-        ),
-        child: Icon(
-          Icons.error,
-          color: Colors.red,
-          size: 32.0,
-        ),
-      ),
-      fit: BoxFit.contain,
     );
   }
 }

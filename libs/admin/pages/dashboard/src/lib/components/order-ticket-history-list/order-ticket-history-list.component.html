@@ -3,17 +3,22 @@
     <div class="mb-2">
       <input nbInput type="date" fullWidth [formControl]="dateFormControl" />
     </div>
-    <nb-list-item
-      *ngFor="let order of dailyOrders"
-      (click)="selectOrder(order)"
-      class="{{ currentStatus(order.statusLog).toLowerCase() }}"
-      [ngClass]="{ selectedOrder: order.id === selectedOrder?.id }"
-    >
-      <bgap-order-ticket-list-item
-        class="w-100"
-        [order]="order"
-        [showMarkers]="false"
-      ></bgap-order-ticket-list-item>
-    </nb-list-item>
+
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+      <nb-list>
+        <nb-list-item
+          *cdkVirtualFor="let order of dailyOrders"
+          (click)="selectOrder(order)"
+          class="{{ currentStatus(order.statusLog).toLowerCase() }}"
+          [ngClass]="{ selectedOrder: order.id === selectedOrder?.id }"
+        >
+          <bgap-order-ticket-list-item
+            class="w-100"
+            [order]="order"
+            [showMarkers]="false"
+          ></bgap-order-ticket-list-item>
+        </nb-list-item>
+      </nb-list>
+    </cdk-virtual-scroll-viewport>
   </nb-card-body>
 </nb-card>

@@ -1,12 +1,9 @@
 import { DateTime } from 'luxon';
+import { timezoneLondon, timezoneBudapest, timezoneNewYork } from './date';
 
 // Skipped because it is only experimenting with the Luxon DateTime and timezone management
 // BUT it is really usefull, so please do NOT remove it
 describe.skip('Luxon', () => {
-  const timezoneLondon = 'Europe/London';
-  const timezoneBudapest = 'Europe/Budapest';
-  const timezoneNewYork = 'America/New_York';
-
   it('utc vs local', () => {
     // console.log(DateTime.utc());
     console.log('new Date().toString()', new Date().toString());

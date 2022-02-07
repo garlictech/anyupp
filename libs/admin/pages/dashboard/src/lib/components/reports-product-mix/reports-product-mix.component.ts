@@ -7,7 +7,7 @@ import {
   Input,
   Optional,
 } from '@angular/core';
-import { IProducMixArrayItem } from '@bgap/shared/types';
+import { ProducMixArrayItem } from '@bgap/shared/types';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -22,13 +22,13 @@ import { map, take } from 'rxjs/operators';
   styleUrls: ['./reports-product-mix.component.scss'],
 })
 export class ReportsProductMixComponent {
-  @Input() productMixData$?: Observable<IProducMixArrayItem[]>;
+  @Input() productMixData$?: Observable<ProducMixArrayItem[]>;
   @Input() selectedUnit$?: Observable<CrudApi.Unit>;
   @Input() date?: Date;
   @Input() isModal = false;
 
-  public productMixListData: IProducMixArrayItem[] = [];
-  private _productMixFullData: IProducMixArrayItem[] = [];
+  public productMixListData: ProducMixArrayItem[] = [];
+  private _productMixFullData: ProducMixArrayItem[] = [];
 
   constructor(
     @Optional() private _nbDialogRef: NbDialogRef<unknown>,
@@ -41,7 +41,7 @@ export class ReportsProductMixComponent {
     if (this.productMixData$) {
       this.productMixData$
         .pipe(untilDestroyed(this))
-        .subscribe((data: IProducMixArrayItem[]) => {
+        .subscribe((data: ProducMixArrayItem[]) => {
           this.productMixListData = this.isModal ? data : data.slice(0, 10);
           this._productMixFullData = data;
 

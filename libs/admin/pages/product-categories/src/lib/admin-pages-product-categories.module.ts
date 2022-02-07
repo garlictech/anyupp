@@ -16,10 +16,11 @@ import {
   NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ProductCategoryFormComponent } from './components/product-category-form/product-category-form.component';
 import { ProductCategoryListItemComponent } from './components/product-category-list-item/product-category-list-item.component';
 import { ProductCategoryListComponent } from './components/product-category-list/product-category-list.component';
+import { ProductCategoryListService } from './services/product-category-list.service';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -44,6 +45,7 @@ const NB_MODULES = [
     TranslateModule,
     AdminSharedFormsModule,
     FormsModule,
+    ScrollingModule,
     ReactiveFormsModule,
     AdminSharedPipesModule,
     RouterModule.forChild([
@@ -54,5 +56,6 @@ const NB_MODULES = [
     ]),
     ...NB_MODULES,
   ],
+  providers: [ProductCategoryListService],
 })
 export class AdminPagesProductCategoriesModule {}

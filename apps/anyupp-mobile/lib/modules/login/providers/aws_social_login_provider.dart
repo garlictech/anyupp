@@ -21,38 +21,65 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   @override
   bool isFederated(LoginMethod method) {
     print('***** AwsSocialLoginProvider.isFederated()=$method');
-    return method == LoginMethod.APPLE || method == LoginMethod.FACEBOOK || method == LoginMethod.GOOGLE;
+    return method == LoginMethod.APPLE ||
+        method == LoginMethod.FACEBOOK ||
+        method == LoginMethod.GOOGLE;
   }
 
   @override
   Future<void> logout() async {
     print('***** AwsSocialLoginProvider.logout()');
-    // await Future.wait([
-    //   _googleSignIn.signOut(),
-    //   _facebookLogin.logOut(),
-    // ]);
+    var url = '${AppConfig.UserPoolDomain}/logout?'
+        'client_id=${AppConfig.UserPoolClientId}&'
+        'logout_uri=${LoginScreen.SIGNOUT_CALLBACK}/logout';
+    try {
+      await http.get(
+        Uri.parse(url),
+      );
+    } on Exception catch (e) {
+      print('AwsSocialLoginProvider.logout().error=$e');
+    }
     await _authProvider.getAuthenticatedUserProfile();
     return;
   }
 
   @override
   Future<ProviderLoginResponse> signUserInWithAuthCode(String authCode) async {
-    print('SocialLoginScreen.signUserInWithAuthCode().authCode=$authCode');
+    print('AwsSocialLoginProvider.signUserInWithAuthCode().authCode=$authCode');
     var url = '${AppConfig.UserPoolDomain}/oauth2/token?'
         'grant_type=authorization_code&'
         'client_id=${AppConfig.UserPoolClientId}&'
         'code=$authCode&'
-        'redirect_uri=${SocialLoginScreen.SIGNIN_CALLBACK}';
+        // 'scope=email%20openid%20profile%20aws.cognito.signin.user.admin0&'
+        'redirect_uri=${LoginScreen.SIGNIN_CALLBACK}';
+    print('AwsSocialLoginProvider.signUserInWithAuthCode().url=$url');
+    // throw Exception('test');
     final response = await http.post(
       Uri.parse(url),
       body: {},
+      // body: {
+      //   'grant_type': 'authorization_code',
+      //   'client_id': AppConfig.UserPoolClientId,
+      //   'code': authCode,
+      //   'redirect_uri': LoginScreen.SIGNIN_CALLBACK,
+      //   'scope': 'email%20openid%20profile%20aws.cognito.signin.user.admin'
+      // },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
+        // 'grant_type': 'authorization_code',
+        // 'client_id': AppConfig.UserPoolClientId,
+        // 'code': authCode,
+        // 'redirect_uri': LoginScreen.SIGNIN_CALLBACK,
       },
     );
-    print('SocialLoginScreen.signUserInWithAuthCode().response=${response.statusCode}');
-    print('SocialLoginScreen.signUserInWithAuthCode().response.body=${response.body}');
+    print(
+        'AwsSocialLoginProvider.signUserInWithAuthCode().response=${response.statusCode}');
+    print(
+        'AwsSocialLoginProvider.signUserInWithAuthCode().response.body=${response.body}');
     if (response.statusCode != 200) {
+      // await logout();
+      print(
+          'AwsSocialLoginProvider.error.reasonPhrase=${response.reasonPhrase}');
       throw Exception('Received bad status code from Cognito for auth code:' +
           response.statusCode.toString() +
           '; body: ' +
@@ -64,16 +91,22 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
       final idToken = CognitoIdToken(tokenData['id_token']);
       final accessToken = CognitoAccessToken(tokenData['access_token']);
       final refreshToken = CognitoRefreshToken(tokenData['refresh_token']);
-      print('SocialLoginScreen.signUserInWithAuthCode().idToken=${idToken.jwtToken}');
-      print('SocialLoginScreen.signUserInWithAuthCode().accessToken=${accessToken.jwtToken}');
-      print('SocialLoginScreen.signUserInWithAuthCode().refreshToken=${refreshToken.token}');
+      print(
+          'AwsSocialLoginProvider.signUserInWithAuthCode().idToken=${idToken.jwtToken}');
+      print(
+          'AwsSocialLoginProvider.signUserInWithAuthCode().accessToken=${accessToken.jwtToken}');
+      print(
+          'AwsSocialLoginProvider.signUserInWithAuthCode().refreshToken=${refreshToken.token}');
 
       dynamic payload = idToken.decodePayload();
       String username = payload['cognito:username'];
-      print('SocialLoginScreen()signUserInWithAuthCode().username=' + username);
+      print('AwsSocialLoginProvider()signUserInWithAuthCode().username=' +
+          username);
 
-      final session = CognitoUserSession(idToken, accessToken, refreshToken: refreshToken);
-      User? user = await _authProvider.loginWithCognitoSession(session, username);
+      final session =
+          CognitoUserSession(idToken, accessToken, refreshToken: refreshToken);
+      User? user =
+          await _authProvider.loginWithCognitoSession(session, username);
       return ProviderLoginResponse(
         user: user,
         credential: session,

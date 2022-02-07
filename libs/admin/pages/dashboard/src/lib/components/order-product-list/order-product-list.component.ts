@@ -8,14 +8,14 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { dashboardSelectors } from '@bgap/admin/shared/data-access/dashboard';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { productCategoriesSelectors } from '@bgap/admin/shared/data-access/product-categories';
-import { productsSelectors } from '@bgap/admin/shared/data-access/products';
+import { dashboardSelectors } from '@bgap/admin/store/dashboard';
+import { groupsSelectors } from '@bgap/admin/store/groups';
+import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
+import { productsSelectors } from '@bgap/admin/store/products';
 import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ProductCategory } from '@bgap/crud-gql/api';
 
 @UntilDestroy()
@@ -40,11 +40,12 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
     this.generatedUnitProducts = [];
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
+      .select(groupsSelectors.getSeletedGroup)
       .pipe(
-        select(groupsSelectors.getSeletedGroup),
         skipWhile((group): boolean => !group),
+        untilDestroyed(this),
       )
       .subscribe((group: CrudApi.Group | undefined): void => {
         this.groupCurrency = group?.currency || '';
@@ -53,7 +54,8 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
       });
 
     this._store
-      .pipe(select(dashboardSelectors.getSize), untilDestroyed(this))
+      .select(dashboardSelectors.getSize)
+      .pipe(untilDestroyed(this))
       .subscribe((size: EDashboardSize): void => {
         this.buttonSize =
           size === EDashboardSize.LARGER
@@ -64,27 +66,18 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
       });
 
     combineLatest([
-      this._store.pipe(
-        select(productCategoriesSelectors.getAllProductCategories),
-        untilDestroyed(this),
-      ),
-      this._store.pipe(
-        select(productsSelectors.getAllGeneratedProducts),
-        untilDestroyed(this),
-      ),
+      this._store.select(productCategoriesSelectors.getAllProductCategories),
+      this._store.select(productsSelectors.getAllGeneratedProducts),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([productCategories, generatedUnitProducts]): void => {
         this.generatedUnitProducts = generatedUnitProducts;
 
         this.productCategories = productCategories.filter(
-          (category: ProductCategory): boolean => {
-            return (
-              this.generatedUnitProducts.filter(
-                p => p.productCategoryId === category.id,
-              ).length > 0
-            );
-          },
+          (category: ProductCategory) =>
+            this.generatedUnitProducts.filter(
+              p => p.productCategoryId === category.id,
+            ).length > 0,
         );
 
         this.selectedProductCategoryId = this.productCategories?.[0]?.id;
@@ -128,11 +121,11 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
             .statusLog,
         ) === CrudApi.OrderStatus.REJECTED
       ) {
-        this._orderService.updateOrderItemStatus(
+        await this._orderService.updateOrderItemStatus$(
           (<CrudApi.Order>this.selectedOrder).id,
           CrudApi.OrderStatus.placed,
           <number>existingVariantOrderIdx,
-        ).subscribe();
+        ).toPromise();
       }
     } else {
       this._orderService.addProductVariant(

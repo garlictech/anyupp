@@ -1,8 +1,3 @@
-import {
-  deleteGeneratedProductCategoriesForAUnit,
-  listGeneratedProductCategoriesForUnits,
-  reGenerateActiveProductCategoriesForAUnit,
-} from '@bgap/anyupp-gql/backend';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   generatedProductCategoryFixture,
@@ -12,6 +7,11 @@ import {
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { sortById } from '@bgap/shared/utils';
+import {
+  deleteGeneratedProductCategoriesForAUnit,
+  listGeneratedProductCategoriesForUnits,
+  reGenerateActiveProductCategoriesForAUnit,
+} from '@bgap/backend/product-categories';
 import { of } from 'rxjs';
 import { delay, map, switchMap, tap } from 'rxjs/operators';
 import { createIamCrudSdk } from '../../../../api-clients';
@@ -138,7 +138,7 @@ describe('GenerateProductCategory tests', () => {
         ),
       );
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       await cleanup()
         .pipe(
           delay(DYNAMODB_OPERATION_DELAY),
@@ -173,6 +173,7 @@ describe('GenerateProductCategory tests', () => {
         )
         .toPromise();
     }, 25000);
+
     afterAll(() => cleanup().toPromise(), 15000);
 
     const startStateCheck = () =>

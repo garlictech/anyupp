@@ -30,11 +30,14 @@
     "chain": "Chain",
     "image": "Image",
     "title": "Title",
+    "titleEN": "Title (EN)",
+    "titleDE": "Title (DE)",
+    "titleHU": "Title (HU)",
     "group": "Group",
     "unit": "Unit",
     "currency": "Currency",
-    "taxPercent": "Tax (%)",
-    "takeawayTaxPercent": "Takeaway tax (%)",
+    "taxPercent": "Tax",
+    "takeawayTaxPercent": "Takeaway tax",
     "from": "From",
     "to": "To",
     "date": "Date",
@@ -60,8 +63,8 @@
     "submit": "Submit",
     "imageUploadSuccess": "Image uploaded successfully",
     "imageRemoveSuccess": "Image removed successfully",
-    "insertSuccessful": "Insert successful",
-    "updateSuccessful": "Update successful",
+    "insertSuccess": "Insert successful",
+    "updateSuccess": "Update successful",
     "removeSuccessful": "Remove successful",
     "imageUploadError": "Image uploaded error",
     "imageRemoveError": "Image remove error",
@@ -99,10 +102,22 @@
       "instant": "instant",
       "pickup": "pickup"
     },
+    "orderPolicy": {
+      "title": "Order policy",
+      "full": "Full",
+      "placeOnly": "Place only",
+      "placeWithPaymentType": "Place with payment type"
+    },
     "transactionStatus": {
       "SUCCESS": "Success",
       "WAITING_FOR_PAYMENT": "Waiting for payment",
       "FAILED": "Failed"
+    },
+    "soldOutPolicy": {
+      "title": "Sold out policy",
+      "invisible": "Not visible if sold out",
+      "faded": "Visible as faded if sold out",
+      "soldOut": "Sold out"
     },
     "sum": "Sum",
     "width": "width",
@@ -110,7 +125,13 @@
     "receipt": "receipt",
     "invoice": "invoice",
     "timeZone": "Timezone",
-    "resetPassword": "Reset password"
+    "resetPassword": "Reset password",
+    "packagingFee": "Packaging fee",
+    "packagingTax": "Packaging tax",
+    "search": "Search",
+    "value": "Value",
+    "icon": "Icon",
+    "tip": "Tip"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -289,6 +310,7 @@
   "units": {
     "listTitle": "Units",
     "editUnit": "Edit unit",
+    "editUnitPos": "Edit unit POS",
     "newUnit": "New unit",
     "addUnit": "Add unit",
     "open": "Open",
@@ -321,7 +343,27 @@
       "anyuppPassword": "AnyUPP password",
       "restaurantId": "Restaurant ID"
     },
-    "rkeeperDeletionAlert": "AnyUPP POS has been selected. RKeeper data will be deleted."
+    "rkeeperDeletionAlert": "AnyUPP POS has been selected. RKeeper data will be deleted.",
+    "rkeeperPasswordUpdated": "RKeepeR AnyUPP password has been changed. The new password is: <strong>{{anyuppPassword}}</strong>",
+    "ratingPolicies": {
+      "title": "Rating policies",
+      "ratingPolicy": "Rating policy"
+    },
+    "tipPolicy": {
+      "title": "Tips",
+      "newPercent": "New Percent",
+      "percents": "Percents",
+      "customValue": "Custom value"
+    },
+    "serviceFee": {
+      "title": "Service fee",
+      "serviceFeePercent": "Service fee",
+      "type": {
+        "noFee": "No service fee",
+        "included": "Fee included in all prices",
+        "applicable": "Fee not included in prices but applicable"
+      }
+    }
   },
   "users": {
     "listTitle": "Users",
@@ -397,6 +439,7 @@
   "print": {
     "items": "Items",
     "vatDetails": "VAT details",
+    "serviceFeeDetails": "Service fee",
     "selectedPaymentMode": "Választott fizetési mód"
   },
   "roles": {

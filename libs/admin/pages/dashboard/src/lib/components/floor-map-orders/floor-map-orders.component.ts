@@ -6,9 +6,11 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { IFloorMapOrderObjects, IFloorMapOrders } from '@bgap/shared/types';
+import { FloorMapOrderObjects, FloorMapOrders } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-floor-map-orders',
@@ -18,8 +20,8 @@ import { NbDialogRef } from '@nebular/theme';
 export class FloorMapOrdersComponent implements OnInit {
   public tableId!: string;
   public seatId!: string;
-  public allOrders$!: BehaviorSubject<IFloorMapOrderObjects>;
-  public tableOrders?: IFloorMapOrders;
+  public allOrders$!: BehaviorSubject<FloorMapOrderObjects>;
+  public tableOrders?: FloorMapOrders;
   public mode?: string;
 
   constructor(
@@ -27,10 +29,10 @@ export class FloorMapOrdersComponent implements OnInit {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.allOrders$
-      .pipe()
-      .subscribe((tableOrders: IFloorMapOrderObjects): void => {
+      .pipe(untilDestroyed(this))
+      .subscribe((tableOrders: FloorMapOrderObjects): void => {
         this.tableOrders =
           this.mode === 'table'
             ? tableOrders[this.tableId]

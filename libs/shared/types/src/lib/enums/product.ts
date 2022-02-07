@@ -2,6 +2,7 @@ export enum EProductType {
   DRINK = 'drink',
   FOOD = 'food',
   OTHER = 'other',
+  TIP = 'tip',
 }
 
 export enum EProductLevel {

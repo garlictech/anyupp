@@ -1,4 +1,6 @@
-import { take } from 'rxjs/operators';
+import { cloneDeep } from 'lodash/fp';
+import { Observable } from 'rxjs';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -8,24 +10,18 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {
-  AbstractControl,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
-import { chainsSelectors } from '@bgap/admin/shared/data-access/chains';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { productComponentsSelectors } from '@bgap/admin/shared/data-access/product-components';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { chainsSelectors } from '@bgap/admin/store/chains';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { productComponentsSelectors } from '@bgap/admin/store/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
-import { multiLangValidator } from '@bgap/admin/shared/utils';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
-import { IKeyValue } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+
+import { ModifiersAndExtrasFormService } from '../../services/modifiers-and-extras-form.service';
 
 @UntilDestroy()
 @Component({
@@ -38,30 +34,21 @@ export class ProductComponentFormComponent
   implements OnInit, OnDestroy
 {
   public productComponent!: CrudApi.ProductComponent;
-  public chainOptions: IKeyValue[] = [];
+  public chainOptions$: Observable<KeyValue[]>;
 
   private _productComponents: CrudApi.ProductComponent[] = [];
 
   constructor(
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
-    private _crudSdk: CrudSdkService,
+    private _modifiersAndExtrasFormService: ModifiersAndExtrasFormService,
   ) {
     super(_injector);
 
-    this.dialogForm = this._formBuilder.group({
-      chainId: ['', [Validators.required]],
-      name: this._formBuilder.group(
-        {
-          hu: ['', [Validators.maxLength(40), this._uniqueNameValidator('hu')]],
-          en: ['', [Validators.maxLength(40), this._uniqueNameValidator('en')]],
-          de: ['', [Validators.maxLength(40), this._uniqueNameValidator('de')]],
-        },
-        { validators: multiLangValidator },
-      ),
-      description: [''],
-      allergens: [[]],
-    });
+    this.dialogForm =
+      this._modifiersAndExtrasFormService.createProductComponentFormGroup(
+        this._uniqueNameValidator,
+      );
 
     // Used for the validator
     this._store
@@ -72,11 +59,15 @@ export class ProductComponentFormComponent
       .subscribe((productComponents: CrudApi.ProductComponent[]): void => {
         this._productComponents = productComponents;
       });
+
+    this.chainOptions$ = this._store.select(
+      chainsSelectors.getAllChainOptions(),
+    );
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.productComponent) {
-      this.dialogForm.patchValue(cleanObject(this.productComponent));
+      this.dialogForm?.patchValue(cleanObject(this.productComponent));
     } else {
       // Patch ChainId
       this._store
@@ -88,19 +79,6 @@ export class ProductComponentFormComponent
         });
     }
 
-    this._store
-      .pipe(select(chainsSelectors.getAllChains), untilDestroyed(this))
-      .subscribe((chains: CrudApi.Chain[]): void => {
-        this.chainOptions = chains.map(
-          (chain): IKeyValue => ({
-            key: chain.id,
-            value: chain.name,
-          }),
-        );
-
-        this._changeDetectorRef.detectChanges();
-      });
-
     this._changeDetectorRef.detectChanges();
   }
 
@@ -108,45 +86,38 @@ export class ProductComponentFormComponent
     // untilDestroyed uses it.
   }
 
-  private _uniqueNameValidator(lang: keyof CrudApi.LocalizedItem): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const names = this._productComponents
+  private _uniqueNameValidator =
+    (lang: keyof CrudApi.LocalizedItem): ValidatorFn =>
+    (control: AbstractControl): ValidationErrors | null =>
+      this._productComponents
         .filter(
           c =>
             c.id !== this.productComponent?.id &&
             (c.name[lang] || '').trim() !== '',
         )
-        .map(c => c.name[lang]);
-
-      return names.includes(control.value) ? { existing: true } : null;
-    };
-  }
+        .map(c => c.name[lang])
+        .includes(control.value)
+        ? { existing: true }
+        : null;
 
   public submit() {
     if (this.dialogForm?.valid) {
-      if (this.productComponent?.id) {
-        this._crudSdk.sdk
-          .UpdateProductComponent({
-            input: {
-              id: this.productComponent.id,
-              ...this.dialogForm.value,
-            },
-          })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.updateSuccessful');
+      this.setWorking$(true)
+        .pipe(
+          switchMap(() =>
+            this._modifiersAndExtrasFormService.saveComponentForm$(
+              cloneDeep(this.dialogForm?.value),
+              this.productComponent?.id,
+              this.productComponent?.dirty || undefined,
+            ),
+          ),
+          tap(() => this.setWorking$(false)),
+        )
+        .subscribe((response: UpsertResponse<unknown>) => {
+          this._toasterService.showSimpleSuccess(response.type);
 
-            this.close();
-          });
-      } else {
-        this._crudSdk.sdk
-          .CreateProductComponent({ input: this.dialogForm?.value })
-          .pipe(catchGqlError(this._store))
-          .subscribe(() => {
-            this._toasterService.showSimpleSuccess('common.insertSuccessful');
-            this.close();
-          });
-      }
+          this.close();
+        });
     }
   }
 }

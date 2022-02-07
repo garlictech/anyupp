@@ -3,7 +3,7 @@ import { v1 as uuidV1 } from 'uuid';
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  makeId,
+  dailyScheduleBothEmptyOrProperlyFilledValidator,
   multiLangValidator,
   productAvailabilityValidator,
   TIME_FORMAT_PATTERN,
@@ -21,9 +21,9 @@ export class FormsService {
       id: [uuidV1()],
       variantName: this._formBuilder.group(
         {
-          hu: ['', Validators.maxLength(40)],
-          en: ['', Validators.maxLength(40)],
-          de: ['', Validators.maxLength(40)],
+          hu: [''],
+          en: [''],
+          de: [''],
         },
         { validators: multiLangValidator },
       ),
@@ -36,6 +36,8 @@ export class FormsService {
       position: [0],
       price: [0],
       refGroupPrice: [0],
+      netPackagingFee: [0],
+      soldOut: [false],
     };
 
     return this._formBuilder.group(groupConfig);
@@ -55,14 +57,16 @@ export class FormsService {
     );
 
   public createCustomDailyScheduleFormGroup = (): FormGroup =>
-    this._formBuilder.group({
-      date: ['', [Validators.required]],
-      from: [
-        '',
-        [Validators.required, Validators.pattern(TIME_FORMAT_PATTERN)],
-      ],
-      to: ['', [Validators.required, Validators.pattern(TIME_FORMAT_PATTERN)]],
-    });
+    this._formBuilder.group(
+      {
+        date: ['', [Validators.required]],
+        from: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
+        to: ['', [Validators.pattern(TIME_FORMAT_PATTERN)]],
+      },
+      {
+        validators: [dailyScheduleBothEmptyOrProperlyFilledValidator],
+      },
+    );
 
   public createLaneFormGroup = (): FormGroup =>
     this._formBuilder.group({
@@ -84,6 +88,7 @@ export class FormsService {
       position: [0, Validators.required],
       refGroupPrice: [0, Validators.required],
       price: [0, Validators.required],
+      netPackagingFee: [0],
     });
 
   public createRkeeperFormGroup = (): FormGroup =>
@@ -96,10 +101,52 @@ export class FormsService {
         { value: '', disabled: true },
         [Validators.required, Validators.minLength(8)],
       ],
-      restaurantId: [{ value: '', disabled: true }, Validators.required],
     });
 
-  public generateRkeeperPassword = (rkeeperFormGroup: FormGroup) => {
-    rkeeperFormGroup.controls['anyuppPassword'].patchValue(makeId(8));
+  public createRatingPolicyFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      key: [''],
+      title: this._formBuilder.group({
+        hu: [''],
+        en: [''],
+        de: [''],
+      }),
+      description: this._formBuilder.group({
+        hu: [''],
+        en: [''],
+        de: [''],
+      }),
+      ratings: this._formBuilder.array([]),
+    });
+
+  public createTipPolicyFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      title: this._formBuilder.group({
+        hu: [''],
+        en: [''],
+        de: [''],
+      }),
+      description: this._formBuilder.group({
+        hu: [''],
+        en: [''],
+        de: [''],
+      }),
+      percents: [[]],
+      maxOtherAmount: [],
+    });
+
+  public addUnitTipPercent = (caption: string, percents: number[]) =>
+    [...new Set(percents), parseFloat(caption)].sort();
+
+  public removeUnitTipPercent = (caption: string, percents: number[]) => {
+    const removable = parseFloat(caption.replace('%', ''));
+    return percents.filter(v => v !== removable).sort();
   };
+
+  public createServiceFeePolicyFormGroup = (): FormGroup =>
+    this._formBuilder.group({
+      type: [{ value: '', disabled: true }, Validators.required],
+      percentage: [{ value: '', disabled: true }, Validators.required],
+      taxPercentage: [{ value: '', disabled: true }, Validators.required],
+    });
 }

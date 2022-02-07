@@ -14,5 +14,9 @@
   [title]="'common.edit' | translate"
   (click)="editProductComponent()"
 >
-  <nb-icon icon="edit-outline"></nb-icon>
+  <nb-icon icon="edit" pack="material-icons"></nb-icon>
 </button>
+
+<div class="dirty-block" *ngIf="productComponentSet?.dirty">
+  <nb-badge text="DIRTY" status="danger" position="top right"></nb-badge>
+</div>

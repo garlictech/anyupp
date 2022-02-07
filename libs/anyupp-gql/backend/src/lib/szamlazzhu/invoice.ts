@@ -1,6 +1,9 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as Szamlazz from 'szamlazz.js';
 
+const getTranslation = (localizedItem: CrudApi.LocalizedItem) =>
+  localizedItem['hu'] || localizedItem['en'] || 'ismeretlen termék';
+
 export const createInvoice =
   (szamlazzClient: Szamlazz.Client) =>
   async ({
@@ -13,31 +16,18 @@ export const createInvoice =
     user: CrudApi.User;
     transaction: CrudApi.Transaction;
     order: CrudApi.Order;
-    language: Szamlazz.Interface.Language;
+    language?: Szamlazz.Interface.Language;
     paymentMethod?: Szamlazz.Interface.PaymentMethod;
-  }): // unit?: CrudApi.Unit,
-  Promise<Szamlazz.InvoiceResponse> => {
+  }): Promise<Szamlazz.InvoiceResponse> => {
     // Unit
-    const seller = new Szamlazz.Seller({
-      // everyting is optional
-      // bank: {
-      //   name: "Test Bank <name>",
-      //   accountNumber: "11111111-11111111-11111111",
-      // },
-      // email: {
-      //   replyToAddress: "test@email.com",
-      //   // subject: "Invoice email subject",
-      //   // message: "This is an email message",
-      // },
-      // issuerName: "",
-    });
+    const seller = new Szamlazz.Seller({});
 
     if (!user.invoiceAddress) {
       throw new Error("The user's invoiceAddress information is missing.");
     }
 
     if (!transaction.currency) {
-      throw new Error("The user's invoiceAddress information is missing.");
+      throw new Error('The transaction currency is missing.');
     }
     if (!transaction.externalTransactionId) {
       throw new Error(
@@ -60,24 +50,36 @@ export const createInvoice =
     });
 
     // OrderItems
-    const items = order.items.map(orderItem => {
-      let label = orderItem.productName.hu;
-      if (!label) {
-        label = orderItem.productName.en;
-        if (!label) {
-          throw new Error(
-            `The required translation is missing for OrderItem with id productId: ${orderItem.productId}`,
-          );
-        }
+    const items = order.items.map(
+      orderItem =>
+        new Szamlazz.Item({
+          label: getTranslation(orderItem.productName),
+          quantity: orderItem.quantity,
+          unit: 'db',
+          vat: orderItem.sumPriceShown.tax, // can be a number or a special string
+          grossUnitPrice: orderItem.sumPriceShown.pricePerUnit, // calculates gross and net values from per item net
+        }),
+    );
+
+    const addPriceItem = (
+      label: string,
+      price?: CrudApi.Maybe<CrudApi.Price>,
+    ) => {
+      if (price) {
+        items.push(
+          new Szamlazz.Item({
+            label,
+            quantity: 1,
+            unit: 'db',
+            vat: price.taxPercentage, // can be a number or a special string
+            grossUnitPrice: price.netPrice * (1 + price.taxPercentage / 100), // can be a number or a special string
+          }),
+        );
       }
-      return new Szamlazz.Item({
-        label,
-        quantity: orderItem.quantity,
-        unit: 'db',
-        vat: orderItem.sumPriceShown.tax, // can be a number or a special string
-        grossUnitPrice: orderItem.sumPriceShown.pricePerUnit, // calculates gross and net values from per item net
-      });
-    });
+    };
+
+    addPriceItem('csomagolás', order.packagingSum);
+    addPriceItem('felszolgálási díj', order.serviceFee);
 
     // Transaction
     const invoice = new Szamlazz.Invoice({
@@ -92,10 +94,5 @@ export const createInvoice =
       comment: transaction.externalTransactionId,
     });
 
-    try {
-      return await szamlazzClient.issueInvoice(invoice);
-    } catch (error) {
-      console.error(error.message, error.code); // handle errors
-      throw error;
-    }
+    return await szamlazzClient.issueInvoice(invoice);
   };

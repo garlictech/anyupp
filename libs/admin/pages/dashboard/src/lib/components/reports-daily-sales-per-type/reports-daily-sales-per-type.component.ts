@@ -1,11 +1,9 @@
-import * as Chart from 'chart.js';
+import Chart from 'chart.js/auto';
 import { Observable } from 'rxjs';
-import { Context } from 'vm';
 
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
@@ -15,7 +13,6 @@ import {
 import { dailySalesPerTypeOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductType } from '@bgap/shared/types';
-import { reducer } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -40,57 +37,39 @@ export class ReportsDailySalesPerTypeComponent
   constructor(
     private _translateService: TranslateService,
     private _reportsService: ReportsService,
-    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit(): void {
     this._chart = this._reportsService.createDailySalesPerTypeChart(
       this.chart,
       this.currency,
-      this._translatedLabels,
-      (value: number, ctx: Context) => {
-        const sum = (
-          (<Chart.ChartDataSets[]>ctx.chart.data.datasets)[0].data as number[]
-        ).reduce(reducer);
-        const perc = ((value / sum) * 100).toFixed(0);
-        return ` ${perc}%`;
-      },
     );
 
     if (this.orders$) {
       this.orders$.pipe(untilDestroyed(this)).subscribe(orders => {
         const amounts = dailySalesPerTypeOrderAmounts(orders);
-        (<Chart.ChartDataSets[]>this._chart.data.datasets)[0].data = [
+
+        this._chart.data.datasets[0].data = [
           amounts[EProductType.FOOD],
           amounts[EProductType.DRINK],
           amounts[EProductType.OTHER],
+          amounts[EProductType.TIP],
         ];
 
         this._chart.update();
-
-        this._changeDetectorRef.detectChanges();
       });
     }
 
     this._translateService.onLangChange
       .pipe(untilDestroyed(this))
       .subscribe(() => {
-        this._chart.data.labels = this._translatedLabels();
+        this._chart.data.labels =
+          this._reportsService.translatedProductTypeLabels();
         this._chart.update();
-
-        this._changeDetectorRef.detectChanges();
       });
-
-    this._changeDetectorRef.detectChanges();
   }
 
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
-
-  private _translatedLabels = (): string[] => [
-    this._translateService.instant('products.productType.food'),
-    this._translateService.instant('products.productType.drink'),
-    this._translateService.instant('products.productType.other'),
-  ];
 }

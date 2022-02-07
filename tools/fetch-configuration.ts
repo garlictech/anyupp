@@ -33,7 +33,9 @@ const generatedParams = [
   'ConsumerUserPoolDomain',
   'ConsumerUserPoolId',
   'AdminUserPoolId',
-  'RKeeperWebhookEndpoint',
+  'RkeeperWebhookEndpoint',
+  'RkeeperWebhookEndpoint',
+  'RkeeperTaskDefinitionArn',
 ].map(paramName => `/${prefix}/generated/${paramName}`);
 
 const fixParams = [

@@ -1,5 +1,5 @@
+import * as CrudApi from '@bgap/crud-gql/api';
 import * as AnyuppApi from '@bgap/anyupp-gql/api';
-import { unitRequestHandler } from '@bgap/anyupp-gql/backend';
 import {
   chainFixture,
   groupFixture,
@@ -9,54 +9,74 @@ import {
   unitFixture,
 } from '@bgap/shared/fixtures';
 import {
-  defaultSupportedOrderModes,
-  defaultSupportedServingModes,
-} from '@bgap/shared/types';
-import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
+  filterNullish,
+  filterNullishElements,
+  throwIfEmptyValue,
+} from '@bgap/shared/utils';
 import * as fp from 'lodash/fp';
-import { combineLatest, defer, from, iif } from 'rxjs';
-import { map, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
+import { combineLatest, from } from 'rxjs';
+import { map, switchMap, tap, throwIfEmpty, take } from 'rxjs/operators';
 import {
   createAuthenticatedAnyuppSdk,
+  createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
 import { createTestChain, deleteTestChain } from '../../../seeds/chain';
 import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
-
-const TEST_NAME = 'GEOUNIT_';
-const DEBUG_MODE_TEST_WITH_LOCALE_CODE = false;
+import { unitRequestHandler } from '@bgap/backend/units';
+import * as R from 'ramda';
 
 const userLoc = { location: { lat: 47.48992, lng: 19.046135 } }; // distance from seededUnitLoc: 54.649.. km
 const distanceLoc_01 = { location: { lat: 47.490108, lng: 19.047077 } }; // distance from userLoc: 0.073.. km
 const distanceLoc_02 = { location: { lat: 47.490471, lng: 19.048001 } }; // distance from userLoc: 0.153.. km
-// const distanceLoc_03 = { location: { lat: 47.490877, lng: 19.04916 } }; // distance from userLoc: 0.250.. km
-// const distanceLoc_04 = { location: { lat: 47.49121, lng: 19.050105 } }; // distance from userLoc: 0.330.. km
-// const distanceLoc_05 = { location: { lat: 47.491979, lng: 19.05219 } }; // distance from userLoc: 0.509.. km
-// const distanceLoc_06 = { location: { lat: 47.493168, lng: 19.055454 } }; // distance from userLoc: 0.787.. km
 
 const unitNotActive = {
-  ...unitFixture.unit_01,
+  ...R.clone(unitFixture.createUnit_01),
   isActive: false,
   id: `${testIdPrefix}NOT_ACTIVE_UNIT`,
 };
 
 const unit_01 = {
-  ...unitFixture.unit_01,
+  ...R.clone(unitFixture.createUnit_01),
   id: `${testIdPrefix}unit_01`,
   address: fp.mergeAll([unitFixture.unit_01.address, distanceLoc_01]),
+  orderPolicy: CrudApi.OrderPolicy.placeonly,
+  serviceFeePolicy: {
+    type: CrudApi.ServiceFeeType.applicable,
+    percentage: 10,
+    taxPercentage: 20,
+  },
+  ratingPolicies: [
+    {
+      key: 'question1',
+      title: {
+        en: 'Question',
+      },
+      description: {
+        en: 'Desc',
+      },
+      ratings: [{ value: 1, text: { en: 'good' } }],
+    },
+  ],
+  tipPolicy: {
+    percents: [2],
+  },
+  soldOutVisibilityPolicy: CrudApi.SoldOutVisibilityPolicy.faded,
 };
 const unit_02 = {
-  ...unitFixture.unit_01,
+  ...R.clone(unitFixture.createUnit_01),
   id: `${testIdPrefix}unit_02`,
   address: fp.mergeAll([unitFixture.unit_01.address, distanceLoc_02]),
+  open: {
+    from: '1970-01-01',
+  },
 };
+
 const unit_03 = {
-  ...unitFixture.unit_01,
+  ...R.clone(unitFixture.createUnit_01),
   id: `${testIdPrefix}unit_03`,
   address: fp.mergeAll([unitFixture.unit_01.address, userLoc]),
-  supportedServingModes: null,
-  supportedOrderModes: null,
 };
 
 describe('GetUnitsNearLocation tests', () => {
@@ -73,6 +93,7 @@ describe('GetUnitsNearLocation tests', () => {
     ]);
 
   let authAnyuppSdk: AnyuppApi.AnyuppSdk;
+  let authCrudSdk: CrudApi.CrudSdk;
 
   beforeAll(done => {
     createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
@@ -80,7 +101,17 @@ describe('GetUnitsNearLocation tests', () => {
         tap(x => {
           authAnyuppSdk = x.authAnyuppSdk;
         }),
-        switchMap(cleanup),
+        switchMap(() =>
+          createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword),
+        ),
+        tap(sdk => (authCrudSdk = sdk)),
+      )
+      .subscribe(() => done());
+  }, 10000);
+
+  beforeEach(done => {
+    cleanup()
+      .pipe(
         switchMap(() =>
           // Seeding
           combineLatest([
@@ -92,9 +123,10 @@ describe('GetUnitsNearLocation tests', () => {
             createTestUnit(unit_03, crudSdk),
           ]),
         ),
+        take(1),
       )
       .subscribe(() => done());
-  }, 10000);
+  });
 
   afterAll(async () => {
     await cleanup().toPromise();
@@ -102,10 +134,8 @@ describe('GetUnitsNearLocation tests', () => {
 
   describe('input validation', () => {
     it('should throw without an input', done => {
-      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {} as any;
-      from(
-        unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),
-      ).subscribe({
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {} as any;
+      from(unitRequestHandler(crudSdk).getUnitsNearLocation(input)).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
           done();
@@ -114,12 +144,10 @@ describe('GetUnitsNearLocation tests', () => {
     }, 15000);
 
     it('should throw without a location input', done => {
-      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
         input: {},
       } as any;
-      from(
-        unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),
-      ).subscribe({
+      from(unitRequestHandler(crudSdk).getUnitsNearLocation(input)).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
           done();
@@ -128,13 +156,11 @@ describe('GetUnitsNearLocation tests', () => {
     }, 15000);
 
     it('should throw without a lat arg in the location input', done => {
-      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lat: 12 } },
       } as any;
 
-      from(
-        unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),
-      ).subscribe({
+      from(unitRequestHandler(crudSdk).getUnitsNearLocation(input)).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
           done();
@@ -143,12 +169,10 @@ describe('GetUnitsNearLocation tests', () => {
     }, 15000);
 
     it('should throw without a lng arg in the location input', done => {
-      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: '12' } },
       } as any;
-      from(
-        unitRequestHandler({ crudSdk }).getUnitsNearLocation(input),
-      ).subscribe({
+      from(unitRequestHandler(crudSdk).getUnitsNearLocation(input)).subscribe({
         error(e) {
           expect(e).toMatchSnapshot();
           done();
@@ -156,70 +180,97 @@ describe('GetUnitsNearLocation tests', () => {
       });
     }, 15000);
 
-    it('should throw without valid location input', done => {
-      const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
+    it('should throw without valid location input with direct resolver', done => {
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
+        input: { location: { lng: 230.0, lat: -100 } },
+      };
+      unitRequestHandler(authCrudSdk)
+        .getUnitsNearLocation(input)
+        .subscribe({
+          error(e) {
+            expect(e).toMatchSnapshot('RESOLVER');
+            done();
+          },
+        });
+    }, 15000);
+
+    it('should throw without valid location input with old api', done => {
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: 230.0, lat: -100 } },
       };
 
-      // from(unitRequestHandler({ crudSdk }).getUnitsNearLocation(input)); // FOR DEBUG
       authAnyuppSdk.GetUnitsNearLocation(input).subscribe({
         error(e) {
-          expect(e).toMatchSnapshot();
+          expect(e).toMatchSnapshot('OLD API');
+          done();
+        },
+      });
+    }, 15000);
+
+    it('should throw without valid location input with new API', done => {
+      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
+        input: { location: { lng: 230.0, lat: -100 } },
+      };
+
+      authCrudSdk.GetUnitsNearLocation(input).subscribe({
+        error(e) {
+          expect(e).toMatchSnapshot('NEW API');
           done();
         },
       });
     }, 15000);
   });
 
-  it('should return all the units in geoUnitsFormat ordered by distance', done => {
-    const input: AnyuppApi.GetUnitsNearLocationQueryVariables = {
+  const testLogic = (
+    op: (
+      input: CrudApi.QueryGetUnitsNearLocationArgs,
+    ) => ReturnType<CrudApi.CrudSdk['GetUnitsNearLocation']>,
+  ) => {
+    const input: CrudApi.GetUnitsNearLocationQueryVariables = {
       input: userLoc,
     };
-    iif(
-      () => DEBUG_MODE_TEST_WITH_LOCALE_CODE,
-      defer(() => unitRequestHandler({ crudSdk }).getUnitsNearLocation(input)),
-      authAnyuppSdk.GetUnitsNearLocation(input),
-    )
-      .pipe(
-        filterNullish(),
-        map(result => result.items),
-        filterNullishElements(),
-        throwIfEmpty(),
-      )
-      .subscribe({
-        next(foundItems) {
-          const ids = foundItems.map(x => x.id);
-          expect(ids).not.toContain(unitNotActive.id);
 
-          expect(foundItems[0].id).toEqual(unit_03.id);
-          expect(foundItems[1].id).toEqual(unit_01.id);
-          expect(foundItems[2].id).toEqual(unit_02.id);
-          expect(foundItems[0].distance).toEqual(0);
-          expect(foundItems[1].distance).toEqual(74);
-          expect(foundItems[2].distance).toEqual(153);
-          expect(foundItems[0].openingHoursNext7).toHaveLength(7);
-          expect(foundItems[1].supportedOrderModes).toEqual(
-            unit_01.supportedOrderModes,
-          );
-          expect(foundItems[1].supportedServingModes).toEqual(
-            unit_01.supportedServingModes,
-          );
-          // check the default values logic
-          expect(foundItems[0].supportedOrderModes).toEqual(
-            defaultSupportedOrderModes,
-          );
-          expect(foundItems[0].supportedServingModes).toEqual(
-            defaultSupportedServingModes,
-          );
+    return op(input).pipe(
+      throwIfEmptyValue(),
+      filterNullish(),
+      map(result => result.items),
+      filterNullishElements(),
+      throwIfEmpty(),
+      tap(foundItems => {
+        const ids = foundItems.map(x => x.id);
+        expect(ids).not.toContain(unitNotActive.id);
 
-          expect(foundItems[0]).toMatchSnapshot({
+        expect(foundItems[0].id).toEqual(unit_03.id);
+        expect(foundItems[1].id).toEqual(unit_01.id);
+        expect(foundItems[2].id).toEqual(unit_02.id);
+        expect(foundItems[0].distance).toEqual(0);
+        expect(foundItems[1].distance).toEqual(74);
+        expect(foundItems[2].distance).toEqual(153);
+        expect(foundItems[0].openingHoursNext7).toHaveLength(7);
+        expect(foundItems[0]).toMatchSnapshot({
+          openingHoursNext7: expect.any(Array),
+        });
+        expect(foundItems[1]).toMatchSnapshot(
+          {
             openingHoursNext7: expect.any(Array),
-          });
-          done();
-        },
-        error(err) {
-          console.error(`${TEST_NAME}Test ERROR`, err);
-        },
-      });
+          },
+          'retrieved unit_01',
+        );
+      }),
+    );
+  };
+
+  it('should return all the units in geoUnitsFormat ordered by distance - using resolver', done => {
+    testLogic(unitRequestHandler(crudSdk).getUnitsNearLocation).subscribe(() =>
+      done(),
+    );
+  }, 15000);
+
+  it('should return all the units in geoUnitsFormat ordered by distance - using API', done => {
+    testLogic(authCrudSdk.GetUnitsNearLocation).subscribe(() => done());
+  }, 15000);
+
+  it('should return all the units in geoUnitsFormat ordered by distance - using old API', done => {
+    testLogic(authAnyuppSdk.GetUnitsNearLocation).subscribe(() => done());
   }, 15000);
 });

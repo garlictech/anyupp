@@ -15,11 +15,13 @@ class ProductConfigModifiersWidget extends StatefulWidget {
   final GeneratedProduct product;
   final GeoUnit unit;
   final OnModifiersSelected onModifiersSelected;
+  final ProductItemDisplayState displayState;
 
   const ProductConfigModifiersWidget({
     required this.product,
     required this.unit,
     required this.onModifiersSelected,
+    required this.displayState,
   });
 
   @override
@@ -45,7 +47,7 @@ class _ProductConfigModifiersWidgetState
     widget.product.configSets?.forEach((modifier) {
       if (modifier.type == ConfigType.MODIFIER &&
           modifier.supportedServingModes.contains(mode)) {
-        if (modifier.items.isNotEmpty) {
+        if (_shouldDisplayConfigSet(modifier)) {
           _selectedModifier[modifier.productSetId] =
               modifier.items.first.productComponentId;
           _expandableModifierController[modifier.productSetId] =
@@ -53,6 +55,25 @@ class _ProductConfigModifiersWidgetState
         }
       }
     });
+  }
+
+  bool _shouldDisplayConfigSet(GeneratedProductConfigSet configSet) {
+    bool display = configSet.items.isNotEmpty;
+    if (widget.unit.soldOutVisibilityPolicy != null) {
+      int visibleItemCount = configSet.items.fold(
+          0,
+          (previousValue, component) =>
+              previousValue + (component.soldOut ? 0 : 1));
+      display = display && visibleItemCount > 0;
+    }
+    return display;
+  }
+
+  bool _shouldDisplayConfigComponent(
+      GeneratedProductConfigComponent component) {
+    return widget.unit.soldOutVisibilityPolicy != null
+        ? !component.soldOut
+        : true;
   }
 
   @override
@@ -75,7 +96,8 @@ class _ProductConfigModifiersWidgetState
     List<Widget> widgets = [];
     ServingMode? mode = takeAwayMode;
     sets?.forEach((modifier) {
-      if (modifier.type == ConfigType.MODIFIER &&
+      if (_shouldDisplayConfigSet(modifier) &&
+          modifier.type == ConfigType.MODIFIER &&
           modifier.supportedServingModes.contains(mode)) {
         widgets.add(_buildSingleModifier(modifier));
       }
@@ -122,7 +144,12 @@ class _ProductConfigModifiersWidgetState
               color: theme.secondary16,
             ),
             ..._buildModifiersList(
-                context, modifier.productSetId, modifier.items),
+                context,
+                modifier.productSetId,
+                modifier.items
+                    .where(
+                        (component) => _shouldDisplayConfigComponent(component))
+                    .toList()),
           ],
         ),
       ),

@@ -1,14 +1,10 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/modules/payment/stripe/widgets/payment_button_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/form_style_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:lottie/lottie.dart';
 
 class NewCardPaymentWidget extends StatefulWidget {
@@ -43,7 +39,8 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
     this._form = CardFormWidget(
       displayAnimatedCard: true,
       formKey: _formKey,
-      cardNumberErrorText: trans('payment.cardFields.card_number.validationError'),
+      cardNumberErrorText:
+          trans('payment.cardFields.card_number.validationError'),
       cardNumberDecoration: createFormFieldDecoration(
         theme: theme,
         labelText: trans('payment.cardFields.card_number.label'),
@@ -83,7 +80,8 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
     );
   }
 
-  Widget _buildPaymentMethodForm(BuildContext context, StripePaymentState state) {
+  Widget _buildPaymentMethodForm(
+      BuildContext context, StripePaymentState state) {
     bool enabled = true;
     if (state is StripePaymentLoading) {
       enabled = false;
@@ -153,7 +151,8 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
           );
   }
 
-  Widget _buildPaymentFailed(BuildContext context, String code, String message) {
+  Widget _buildPaymentFailed(
+      BuildContext context, String code, String message) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

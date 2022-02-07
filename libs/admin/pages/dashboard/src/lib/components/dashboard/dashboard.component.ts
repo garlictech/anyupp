@@ -13,10 +13,10 @@ import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import {
   dashboardActions,
   dashboardSelectors,
-  IDashboardSettings,
-} from '@bgap/admin/shared/data-access/dashboard';
+  DashboardSettings,
+} from '@bgap/admin/store/dashboard';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { unitsSelectors } from '@bgap/admin/shared/data-access/units';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import {
   EDashboardListMode,
   EDashboardSize,
@@ -37,7 +37,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public EDashboardListMode = EDashboardListMode;
-  public dashboardSettings!: IDashboardSettings;
+  public dashboardSettings!: DashboardSettings;
   public resized: boolean;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public selectedUnit?: CrudApi.Unit;
@@ -45,7 +45,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public time?: string;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _dataService: DataService,
     private _nbDialogService: NbDialogService,
@@ -55,10 +54,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.toggleFormControl = new FormControl(false);
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(select(dashboardSelectors.getSettings), untilDestroyed(this))
-      .subscribe((dashboardSettings: IDashboardSettings): void => {
+      .subscribe((dashboardSettings: DashboardSettings): void => {
         this.dashboardSettings = dashboardSettings;
 
         this.resized = this.dashboardSettings.size === EDashboardSize.LARGER;
@@ -158,9 +157,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         },
         {
           label: 'common.cancel',
-          callback: (): void => {
-            /**/
-          },
           status: 'basic',
         },
       ],

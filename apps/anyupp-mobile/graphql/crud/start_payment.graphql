@@ -1,0 +1,22 @@
+mutation StartPayment(
+  $orderId: ID!
+  $paymentMethod: PaymentMethod!
+  $paymentMethodId: String!
+  $savePaymentMethod: Boolean!
+  $invoiceAddress: UserInvoiceAddressInput
+) {
+  startStripePayment(
+    input: {
+      orderId: $orderId
+      paymentMethod: $paymentMethod
+      paymentMethodId: $paymentMethodId
+      savePaymentMethod: $savePaymentMethod
+      invoiceAddress: $invoiceAddress
+    }
+  ) {
+    clientSecret
+    status
+    paymentMethodId
+    stripeAccount
+  }
+}

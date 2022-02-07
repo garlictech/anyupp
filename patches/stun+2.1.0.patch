@@ -1,0 +1,88 @@
+diff --git a/node_modules/stun/src/index.js b/node_modules/stun/src/index.js
+index 6a8c96d..deaeadf 100644
+--- a/node_modules/stun/src/index.js
++++ b/node_modules/stun/src/index.js
+@@ -1,16 +1,23 @@
+ 'use strict';
+ 
+-const StunRequest = require('message/request');
+-const StunResponse = require('message/response');
+-const StunServer = require('net/dgram-server');
+-const defaultConstants = require('lib/constants');
+-const { validateFingerprint, validateMessageIntegrity } = require('lib/validate');
+-const { StunError, StunMessageError, StunResponseError } = require('lib/errors');
+-const { request } = require('net/request');
+-const { createServer } = require('net/create-server');
++const StunRequest = require('./node_modules/message/request');
++const StunResponse = require('./node_modules/message/response');
++const StunServer = require('./node_modules/net/dgram-server');
++const defaultConstants = require('./node_modules/lib/constants');
++const {
++  validateFingerprint,
++  validateMessageIntegrity,
++} = require('./node_modules/lib/validate');
++const {
++  StunError,
++  StunMessageError,
++  StunResponseError,
++} = require('./node_modules/lib/errors');
++const { request } = require('./node_modules/net/request');
++const { createServer } = require('./node_modules/net/create-server');
+ const { createMessage, createTransaction } = require('lib/create-message');
+-const encode = require('message/encode');
+-const decode = require('message/decode');
++const encode = require('./node_modules/message/encode');
++const decode = require('./node_modules/message/decode');
+ 
+ const constants = {};
+ 
+@@ -42,11 +49,13 @@ Object.keys(defaultConstants.errorCode).forEach(errorCode => {
+ });
+ 
+ Object.keys(defaultConstants.errorReason).forEach(errorReason => {
+-  constants[`STUN_REASON_${errorReason}`] = defaultConstants.errorReason[errorReason];
++  constants[`STUN_REASON_${errorReason}`] =
++    defaultConstants.errorReason[errorReason];
+ });
+ 
+ Object.keys(defaultConstants.attributeType).forEach(attributeType => {
+-  constants[`STUN_ATTR_${attributeType}`] = defaultConstants.attributeType[attributeType];
++  constants[`STUN_ATTR_${attributeType}`] =
++    defaultConstants.attributeType[attributeType];
+ });
+ 
+ Object.keys(defaultConstants.eventNames).forEach(eventName => {
+diff --git a/node_modules/stun/src/node_modules/net/create-server.js b/node_modules/stun/src/node_modules/net/create-server.js
+index 7078e74..29da39c 100644
+--- a/node_modules/stun/src/node_modules/net/create-server.js
++++ b/node_modules/stun/src/node_modules/net/create-server.js
+@@ -1,7 +1,7 @@
+ 'use strict';
+ 
+ const dgram = require('dgram');
+-const StunServer = require('net/dgram-server');
++const StunServer = require('./dgram-server');
+ 
+ module.exports = {
+   createServer,
+diff --git a/node_modules/stun/src/node_modules/net/request.js b/node_modules/stun/src/node_modules/net/request.js
+index 9493ecb..02a7e5f 100644
+--- a/node_modules/stun/src/node_modules/net/request.js
++++ b/node_modules/stun/src/node_modules/net/request.js
+@@ -3,11 +3,11 @@
+ const parseUrl = require('parse-url');
+ const debug = require('debug')('stun:request');
+ const { fromCallback } = require('universalify');
+-const StunServer = require('net/dgram-server');
+-const StunRequest = require('message/request');
+-const { messageType, eventNames } = require('lib/constants');
+-const { createServer } = require('net/create-server');
+-const { createMessage } = require('lib/create-message');
++const StunServer = require('./dgram-server');
++const StunRequest = require('../message/request');
++const { messageType, eventNames } = require('../lib/constants');
++const { createServer } = require('./create-server');
++const { createMessage } = require('../lib/create-message');
+ 
+ module.exports = {
+   request: fromCallback(request),

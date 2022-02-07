@@ -1,6 +1,5 @@
-import { seedAll, SeederDependencies } from '@bgap/anyupp-backend-lib';
+import { seedAll, SeederDependencies } from '@bgap/backend/seeder';
 import * as CrudApi from '@bgap/crud-gql/api';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import { CloudFormationCustomResourceEvent } from 'aws-lambda';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { switchMap } from 'rxjs/operators';
@@ -33,7 +32,6 @@ export const handler = async (event: CloudFormationCustomResourceEvent) => {
 
   const seederDeps: SeederDependencies = {
     crudSdk: CrudApi.getCrudSdkForIAM(awsAccessKeyId, awsSecretAccessKey),
-    anyuppSdk: AnyuppApi.getAnyuppSdkForIAM(awsAccessKeyId, awsSecretAccessKey),
     userPoolId: AdminUserPoolId,
     consumerUserPoolId: ConsumerUserPoolId,
     cognitoidentityserviceprovider,

@@ -18,13 +18,20 @@ export const moveDownShouldWork = (listItemElementName: string) =>
     .then($listItem => {
       getListItemTitle($listItem).then(firstItemTitle => {
         cy.wrap($listItem).findAllByTitle('Move down').click();
-        getSuccessToastr().should('be.visible');
-        getSuccessToastr().should('not.exist');
+
+        // Wait for the animation hack
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000);
+
+        // No toaster on move up/down!
+        // getSuccessToastr().should('be.visible');
+        // getSuccessToastr().should('not.exist');
         cy.get(listItemElementName)
           .eq(1)
           .should('contain.text', firstItemTitle);
       });
     });
+
 export const moveUpShouldWork = (listItemElementName: string) =>
   cy
     .get(listItemElementName)
@@ -32,8 +39,14 @@ export const moveUpShouldWork = (listItemElementName: string) =>
     .then($listItem => {
       getListItemTitle($listItem).then(seconditemTitle => {
         cy.wrap($listItem).findAllByTitle('Move up').click();
-        getSuccessToastr().should('be.visible');
-        getSuccessToastr().should('not.exist');
+
+        // Wait for the animation hack
+        // eslint-disable-next-line cypress/no-unnecessary-waiting
+        cy.wait(1000);
+
+        // No toaster on move up/down!
+        // getSuccessToastr().should('be.visible');
+        // getSuccessToastr().should('not.exist');
         cy.get(listItemElementName)
           .eq(0)
           .should('contain.text', seconditemTitle);

@@ -7,43 +7,45 @@
   <bgap-contact [contact]="unit"></bgap-contact>
   <bgap-rkeeper-info-block
     *ngIf="unit?.pos?.type === ePosType.rkeeper"
-    [unitID]="unit?.id"
+    [externalId]="unit?.externalId || ''"
     [pos]="unit?.pos"
   ></bgap-rkeeper-info-block>
 </div>
 
-<button
-  nbButton
-  shape="round"
-  size="tiny"
-  class="float-right"
-  [title]="'common.edit' | translate"
-  (click)="editUnit()"
->
-  <nb-icon icon="edit-outline"></nb-icon>
-</button>
+<div class="float-end edit-buttons">
+  <button
+    nbButton
+    shape="round"
+    size="tiny"
+    class="float-right"
+    [title]="'common.edit' | translate"
+    (click)="editUnit()"
+  >
+    <nb-icon icon="edit" pack="material-icons"></nb-icon>
+  </button>
 
-<button
-  nbButton
-  shape="round"
-  size="tiny"
-  class="float-right me-2"
-  [title]="'units.editFloorMap' | translate"
-  (click)="editUnitFloorMap()"
->
-  <nb-icon icon="map-outline"></nb-icon>
-</button>
+  <button
+    nbButton
+    shape="round"
+    size="tiny"
+    class="float-right me-3"
+    [title]="'units.editFloorMap' | translate"
+    (click)="editUnitFloorMap()"
+  >
+    <nb-icon icon="map-outline"></nb-icon>
+  </button>
 
-<button
-  [nbSpinner]="workingGenerateStatus"
-  nbSpinnerStatus="control"
-  nbButton
-  type="button"
-  shape="round"
-  status="danger"
-  size="tiny"
-  class="float-right me-4"
-  (click)="regenerateData()"
->
-  {{ 'units.regenerateMenu' | translate }}
-</button>
+  <button
+    [nbSpinner]="workingGenerateStatus"
+    nbSpinnerStatus="control"
+    nbButton
+    type="button"
+    shape="round"
+    status="danger"
+    size="tiny"
+    class="float-right me-4"
+    (click)="regenerateData()"
+  >
+    {{ 'units.regenerateMenu' | translate }}
+  </button>
+</div>

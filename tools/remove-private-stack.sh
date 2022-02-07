@@ -10,7 +10,7 @@ echo
 echo "************************************************************************"
 echo "* We remove the Anyupp app."
 echo "*"
-echo "* If the remove operation fails, because soem resources cannot be"
+echo "* If the remove operation fails, because some resources cannot be"
 echo "* removed, then remove the blocking resources manually in the AWS"
 echo "* console. Then re-run this command."
 echo "************************************************************************"

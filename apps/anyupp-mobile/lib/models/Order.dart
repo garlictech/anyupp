@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
-import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
+import 'package:fa_prev/models.dart';
+import 'package:flutter/foundation.dart';
 
 @immutable
 class Order {
@@ -14,13 +15,22 @@ class Order {
   final Place? place;
   final double? paymentIntention;
   final List<StatusLog> statusLog;
-  final String? createdAt;
+  final DateTime createdAt;
+  final DateTime updatedAt;
   final bool archived;
   final Transaction? transaction;
   final PaymentStatus? transactionStatus;
   final String? transactionId;
   final ServingMode? servingMode;
   final OrderMode? orderMode;
+  final Price? packagingSum;
+  final OrderRating? rating;
+  final bool? hasRated;
+  final Tip? tip;
+  final PaymentStatus? tipTransactionStatus;
+  final String? tipTransactionId;
+  final Transaction? tipTransaction;
+  final Price? serviceFee;
 
   Order({
     required this.id,
@@ -33,13 +43,22 @@ class Order {
     this.place,
     this.paymentIntention,
     required this.statusLog,
-    this.createdAt,
+    required this.createdAt,
+    required this.updatedAt,
     required this.archived,
     this.transaction,
     this.transactionStatus,
     this.transactionId,
     this.servingMode,
     this.orderMode,
+    this.packagingSum,
+    this.rating,
+    this.hasRated,
+    this.tip,
+    this.tipTransactionStatus,
+    this.tipTransactionId,
+    this.tipTransaction,
+    this.serviceFee,
   });
   // final UnpayCategory? unpayCategory;
 
@@ -54,13 +73,22 @@ class Order {
     Place? place,
     double? paymentIntention,
     List<StatusLog>? statusLog,
-    String? created,
+    DateTime? createdAt,
+    DateTime? updatedAt,
     bool? archived,
     Transaction? transaction,
     PaymentStatus? transactionStatus,
     String? transactionId,
     ServingMode? servingMode,
     OrderMode? orderMode,
+    Price? packagingSum,
+    OrderRating? rating,
+    bool? hasRated,
+    Tip? tip,
+    PaymentStatus? tipTransactionStatus,
+    String? tipTransactionId,
+    Transaction? tipTransaction,
+    Price? serviceFee,
   }) {
     return Order(
       id: id ?? this.id,
@@ -73,13 +101,22 @@ class Order {
       place: place ?? this.place,
       paymentIntention: paymentIntention ?? this.paymentIntention,
       statusLog: statusLog ?? this.statusLog,
-      createdAt: created ?? this.createdAt,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
       archived: archived ?? this.archived,
       transaction: transaction ?? this.transaction,
       transactionStatus: transactionStatus ?? this.transactionStatus,
       transactionId: transactionId ?? this.transactionId,
       servingMode: servingMode ?? this.servingMode,
       orderMode: orderMode ?? this.orderMode,
+      packagingSum: packagingSum ?? this.packagingSum,
+      rating: rating ?? this.rating,
+      hasRated: hasRated ?? this.hasRated,
+      tip: tip ?? this.tip,
+      tipTransactionStatus: tipTransactionStatus ?? this.tipTransactionStatus,
+      tipTransactionId: tipTransactionId ?? this.tipTransactionId,
+      tipTransaction: tipTransaction ?? this.tipTransaction,
+      serviceFee: serviceFee ?? this.serviceFee,
     );
   }
 
@@ -96,12 +133,21 @@ class Order {
       'paymentIntention': paymentIntention,
       'statusLog': statusLog.map((x) => x.toJson()).toList(),
       'createdAt': createdAt,
+      'updatedAt': updatedAt,
       'archived': archived,
       'transaction': transaction?.toJson(),
       'transactionStatus': transactionStatus,
       'transactionId': transactionId,
       'servingMode': enumToString(servingMode),
       'orderMode': enumToString(orderMode),
+      'packagingSum': packagingSum?.toJson(),
+      'rating': rating?.toJson(),
+      'hasRated': hasRated,
+      'tip': tip?.toJson(),
+      'tipTransactionStatus': tipTransactionStatus,
+      'tipTransactionId': tipTransactionId,
+      'tipTransaction': tipTransaction?.toJson(),
+      'serviceFee': serviceFee?.toJson(),
     };
   }
 
@@ -111,27 +157,52 @@ class Order {
       orderNum: map['orderNum'],
       userId: map['userId'],
       unitId: map['unitId'],
-      items: List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
+      items:
+          List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromJson(x))),
       paymentMode: PaymentMode.fromJson(map['paymentMode']),
       sumPriceShown: PriceShown.fromJson(map['sumPriceShown']),
       place: map['place'] != null ? Place.fromJson(map['place']) : null,
       paymentIntention: map['paymentIntention'],
-      statusLog: List<StatusLog>.from(map['statusLog']?.map((x) => StatusLog.fromJson(x))),
-      createdAt: map['createdAt'],
+      statusLog: List<StatusLog>.from(
+          map['statusLog']?.map((x) => StatusLog.fromJson(x))),
       archived: map['archived'],
-      transaction: map['transaction'] != null ? Transaction.fromJson(map['transaction']) : null,
+      transaction: map['transaction'] != null
+          ? Transaction.fromJson(map['transaction'])
+          : null,
       transactionStatus: map['transactionStatus'] != null
-          ? enumFromString<PaymentStatus>(map['transactionStatus'], PaymentStatus.values)
+          ? enumFromString<PaymentStatus>(
+              map['transactionStatus'], PaymentStatus.values)
           : null,
       transactionId: map['transactionId'],
-      orderMode: enumFromStringNull(map['orderMode'], OrderMode.values, OrderMode.instant),
-      servingMode: enumFromStringNull(map['servingMode'], ServingMode.values, ServingMode.inPlace),
+      orderMode: enumFromStringNull(
+          map['orderMode'], OrderMode.values, OrderMode.instant),
+      servingMode: enumFromStringNull(
+          map['servingMode'], ServingMode.values, ServingMode.inPlace),
+      packagingSum: map['packagingSum'] != null
+          ? Price.fromJson(map['packagingSum'])
+          : null,
+      rating:
+          map['rating'] != null ? OrderRating.fromJson(map['rating']) : null,
+      hasRated: map['hasRated'] ?? false,
+      tip: map['tip'] != null ? Tip.fromJson(map['tip']) : null,
+      tipTransactionStatus: map['tipTransactionStatus'] != null
+          ? enumFromString<PaymentStatus>(
+              map['tipTransactionStatus'], PaymentStatus.values)
+          : null,
+      tipTransactionId: map['tipTransactionId'],
+      tipTransaction: map['tipTransaction'] != null
+          ? Transaction.fromJson(map['tipTransaction'])
+          : null,
+      serviceFee:
+          map['serviceFee'] != null ? Price.fromJson(map['serviceFee']) : null,
+      createdAt: fromGraphQLAWSDateTimeToDartDateTime(map['createdAt']),
+      updatedAt: fromGraphQLAWSDateTimeToDartDateTime(map['updatedAt']),
     );
   }
 
   @override
   String toString() {
-    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, orderMode: $orderMode, servingMode: $servingMode, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
+    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, serviceFee: $serviceFee, orderMode: $orderMode, servingMode: $servingMode, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
   }
 
   @override
@@ -150,12 +221,20 @@ class Order {
         other.paymentIntention == paymentIntention &&
         listEquals(other.statusLog, statusLog) &&
         other.createdAt == createdAt &&
+        other.updatedAt == updatedAt &&
         other.archived == archived &&
         other.transaction == transaction &&
         other.transactionStatus == transactionStatus &&
         other.transactionId == transactionId &&
         other.servingMode == servingMode &&
-        other.orderMode == orderMode;
+        other.orderMode == orderMode &&
+        other.rating == rating &&
+        other.hasRated == hasRated &&
+        other.tip == tip &&
+        other.tipTransactionStatus == tipTransactionStatus &&
+        other.tipTransactionId == tipTransactionId &&
+        other.tipTransaction == tipTransaction &&
+        other.serviceFee == serviceFee;
   }
 
   @override
@@ -171,11 +250,19 @@ class Order {
         paymentIntention.hashCode ^
         statusLog.hashCode ^
         createdAt.hashCode ^
+        updatedAt.hashCode ^
         archived.hashCode ^
         transaction.hashCode ^
         transactionStatus.hashCode ^
         transactionId.hashCode ^
         orderMode.hashCode ^
-        servingMode.hashCode;
+        servingMode.hashCode ^
+        rating.hashCode ^
+        hasRated.hashCode ^
+        tip.hashCode ^
+        tipTransactionStatus.hashCode ^
+        tipTransactionId.hashCode ^
+        tipTransaction.hashCode ^
+        serviceFee.hashCode;
   }
 }

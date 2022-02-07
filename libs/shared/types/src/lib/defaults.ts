@@ -11,3 +11,11 @@ export const defaultOrderMode: CrudApi.OrderMode = CrudApi.OrderMode.instant;
 export const defaultSupportedOrderModes: Array<CrudApi.OrderMode> = [
   defaultOrderMode,
 ];
+
+export const SORTED_ORDER_STATUSES = [
+  CrudApi.OrderStatus.none,
+  CrudApi.OrderStatus.placed,
+  CrudApi.OrderStatus.processing,
+  CrudApi.OrderStatus.ready,
+  CrudApi.OrderStatus.served,
+];

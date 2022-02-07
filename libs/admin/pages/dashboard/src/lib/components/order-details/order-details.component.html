@@ -1,11 +1,11 @@
 <div class="p-2">
   <strong>#{{ order.orderNum }}</strong>
 
-  <nb-icon
-    icon="car-outline"
-    class="ms-2"
+  <img
+    class="takeaway-logo"
+    src="assets/images/bag.svg"
     *ngIf="order.servingMode === EServingMode.takeaway"
-  ></nb-icon>
+  />
 
   <button
     nbSpinnerStatus="control"
@@ -17,7 +17,7 @@
     (click)="printOrder(order)"
     *ngIf="allowPrintOrder"
   >
-    <nb-icon icon="printer-outline"></nb-icon>
+    <nb-icon icon="print" pack="material-icons"></nb-icon>
   </button>
 </div>
 <div class="clearfix"></div>
@@ -46,14 +46,7 @@
       </div>
     </div>
     <div
-      class="
-        col-1 col-md-1
-        p-2
-        m-auto
-        caption
-        text-end
-        font-weight-bold font-larger
-      "
+      class="col-1 col-md-1 p-2 m-auto caption text-end font-weight-bold font-larger"
     >
       {{ orderItem.quantity }}x
     </div>
@@ -74,7 +67,7 @@
           shape="round"
           (click)="resetOrderItemStatus(i)"
         >
-          <nb-icon icon="arrow-ios-back-outline"></nb-icon>
+          <nb-icon icon="arrow_back_ios" pack="material-icons"></nb-icon>
         </button>
 
         <button
@@ -115,6 +108,7 @@
         [size]="buttonSize"
         shape="round"
         (click)="transactionStatusSuccess()"
+        data-testid="transactionSuccessBtn"
       >
         {{ 'common.transactionStatus.SUCCESS' | translate }}
       </button>
@@ -125,6 +119,7 @@
         [size]="buttonSize"
         shape="round"
         (click)="transactionStatusFailed()"
+        data-testid="transactionFailureBtn"
       >
         {{ 'common.transactionStatus.FAILED' | translate }}
       </button>
@@ -180,6 +175,7 @@
       shape="round"
       class="font-larger"
       (click)="updateOrderStatus()"
+      data-testid="orderStatusBtn"
     >
       {{ currentStatus(order.statusLog) }}
     </button>
@@ -192,8 +188,9 @@
       shape="round"
       *ngIf="isListMode('history') && allowRecallHistoryOrder"
       (click)="recallOrderFromHistory(order)"
+      data-testid="orderRecacllBtn"
     >
-      <nb-icon icon="arrow-ios-back-outline"></nb-icon>
+      <nb-icon icon="arrow_back_ios" pack="material-icons"></nb-icon>
     </button>
 
     <nb-badge
@@ -212,8 +209,9 @@
       shape="round"
       (click)="deleteOrder()"
       *ngIf="currentStatus(order.statusLog) === EOrderStatus.none"
+      data-testid="orderDeleteBtn"
     >
-      <nb-icon icon="trash-2-outline"></nb-icon>
+      <nb-icon icon="remove" pack="material-icons"></nb-icon>
       {{ 'orders.deleteOrder' | translate }}
     </button>
   </div>

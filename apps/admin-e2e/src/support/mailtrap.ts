@@ -1,4 +1,5 @@
-import { Client, Inbox } from 'mailtrap';
+import { Client } from 'mailtrap/client/Client';
+import { Inbox } from 'mailtrap/lib/Inbox';
 
 const config = {
   MailtrapApiKey: '646cceec28fd28c1ed832b13e48ad2d1',

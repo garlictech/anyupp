@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
-    {bool dismissable = true, bool deletePlace = false}) async {
+    {bool dismissable = true,
+    bool deletePlace = false,
+    bool useTheme = true}) async {
   if (deletePlace) {
     await clearPlacePref(unit.id);
   }
@@ -38,6 +40,7 @@ Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
     cart?.servingMode ?? ServingMode.inPlace,
     initialPosition: cart?.servingMode == ServingMode.takeAway ? 1 : 0,
     dismissable: dismissable,
+    useTheme: useTheme,
   );
   print('_selectUnitAndGoToMenuScreen().selectedMethodPos=$selectedMethodPos');
   if (selectedMethodPos != null) {

@@ -5,7 +5,9 @@ import { AbstractControl, FormGroup } from '@angular/forms';
   name: 'asFormGroup',
 })
 export class AsFormGroupPipe implements PipeTransform {
-  transform(control: AbstractControl): FormGroup {
-    return control as FormGroup;
+  transform(
+    control: AbstractControl | null | undefined,
+  ): FormGroup | undefined {
+    return control ? (control as FormGroup) : undefined;
   }
 }

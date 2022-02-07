@@ -7,11 +7,16 @@ import {
 import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 
-const prodCompId_01 = `${seededIdPrefix}product_component_01_id`;
-const prodCompId_02 = `${seededIdPrefix}product_component_02_id`;
-const prodCompId_03 = `${seededIdPrefix}product_component_03_id`;
+const prodCompId_11 = `${seededIdPrefix}product_component_11_id`;
+const prodCompId_12 = `${seededIdPrefix}product_component_12_id`;
+const prodCompId_21 = `${seededIdPrefix}product_component_21_id`;
+const prodCompId_22 = `${seededIdPrefix}product_component_22_id`;
+const prodCompId_31 = `${seededIdPrefix}product_component_31_id`;
+const prodCompId_32 = `${seededIdPrefix}product_component_32_id`;
+const prodCompId_33 = `${seededIdPrefix}product_component_33_id`;
 const prodCompSetId_01 = `${seededIdPrefix}product_component_set_01_id`;
 const prodCompSetId_02 = `${seededIdPrefix}product_component_set_02_id`;
+const prodCompSetId_03 = `${seededIdPrefix}product_component_set_03_id`;
 
 const getProductComponent = ({
   id,
@@ -80,38 +85,98 @@ const productComponentSetBase: Omit<
   maxSelection: 0,
 };
 
-const seededProdComp_01: RequiredId<CrudApi.CreateProductComponentInput> = {
+const seededProdComp_11: RequiredId<CrudApi.CreateProductComponentInput> = {
   ...getProductComponent({
-    id: prodCompId_01,
+    id: prodCompId_11,
   }),
   name: {
-    en: 'ROOM TEMPERATURE',
-    de: 'ROOM TEMPERATURE',
-    hu: 'SZOBAHŐMÉRSÉKLETŰ',
+    en: 'Room temperature',
+    de: 'Room temperature',
+    hu: 'Szobahőmérsékletű',
   },
+  description: '20-25 °C',
   chainId: chainFixture.chainId_seeded_01,
 };
-const seededProdComp_02: RequiredId<CrudApi.CreateProductComponentInput> = {
+
+const seededProdComp_12: RequiredId<CrudApi.CreateProductComponentInput> = {
   ...getProductComponent({
-    id: prodCompId_02,
+    id: prodCompId_12,
   }),
   name: {
-    en: 'CLASSIC',
-    de: 'CLASSIC',
-    hu: 'KLASSZIKUS',
+    en: 'Cold',
+    de: 'Cold',
+    hu: 'Hideg',
   },
+  description: '10-20 °C',
   chainId: chainFixture.chainId_seeded_01,
-  allergens: [CrudApi.Allergen.sesame, CrudApi.Allergen.treenuts],
 };
-const seededProdComp_03: RequiredId<CrudApi.CreateProductComponentInput> = {
+
+const seededProdComp_21: RequiredId<CrudApi.CreateProductComponentInput> = {
   ...getProductComponent({
-    id: prodCompId_03,
+    id: prodCompId_21,
   }),
   name: {
-    en: 'FRENCH FRIES',
-    de: 'FRENCH FRIES',
-    hu: 'HASÁBBURGONYA',
+    en: 'Straw',
+    de: 'Straw',
+    hu: 'Szívószál',
   },
+  description: 'Papír szívócső',
+  chainId: chainFixture.chainId_seeded_01,
+  allergens: [],
+};
+
+const seededProdComp_22: RequiredId<CrudApi.CreateProductComponentInput> = {
+  ...getProductComponent({
+    id: prodCompId_22,
+  }),
+  name: {
+    en: 'Mint',
+    de: 'Mint',
+    hu: 'Menta levél',
+  },
+  description: 'Dekoráció',
+  chainId: chainFixture.chainId_seeded_01,
+  allergens: [],
+};
+
+const seededProdComp_31: RequiredId<CrudApi.CreateProductComponentInput> = {
+  ...getProductComponent({
+    id: prodCompId_31,
+  }),
+  name: {
+    en: 'French fries',
+    de: 'French fries',
+    hu: 'Hasábburgonya',
+  },
+  description: 'Frissen szeletelve',
+  chainId: chainFixture.chainId_seeded_01,
+  allergens: [CrudApi.Allergen.mustard],
+};
+
+const seededProdComp_32: RequiredId<CrudApi.CreateProductComponentInput> = {
+  ...getProductComponent({
+    id: prodCompId_32,
+  }),
+  name: {
+    en: 'Boiled potato',
+    de: 'Boiled potato',
+    hu: 'Főtt krumpli',
+  },
+  description: 'Frissen főzve',
+  chainId: chainFixture.chainId_seeded_01,
+  allergens: [CrudApi.Allergen.mustard],
+};
+
+const seededProdComp_33: RequiredId<CrudApi.CreateProductComponentInput> = {
+  ...getProductComponent({
+    id: prodCompId_33,
+  }),
+  name: {
+    en: 'Rice',
+    de: 'Rice',
+    hu: 'Rizs',
+  },
+  description: 'Frissen főzve',
   chainId: chainFixture.chainId_seeded_01,
   allergens: [CrudApi.Allergen.mustard],
 };
@@ -121,14 +186,15 @@ const seededProdCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> =
     ...getComponentSet({
       id: prodCompSetId_01,
       chainId: chainFixture.chainId_seeded_01,
-      itemIds: [prodCompId_01, prodCompId_02],
+      itemIds: [prodCompId_11, prodCompId_12],
     }),
     name: {
-      en: `Extra comp set`,
-      de: `Extra comp set`,
-      hu: `Extra komponens set`,
+      en: `Temperature`,
+      de: `Temperature`,
+      hu: `Hőmérséklet`,
     },
-    type: EProductComponentSetType.EXTRAS,
+    description: 'Tálalási hőmérséklet',
+    type: EProductComponentSetType.MODIFIER,
   };
 
 const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> =
@@ -136,13 +202,31 @@ const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> =
     ...getComponentSet({
       id: prodCompSetId_02,
       chainId: chainFixture.chainId_seeded_01,
-      itemIds: [prodCompId_01, prodCompId_02, prodCompId_03],
+      itemIds: [prodCompId_21, prodCompId_22],
     }),
     name: {
-      en: `Modifier comp set`,
-      de: `Modifier comp set`,
-      hu: `Módosító komponens set`,
+      en: `Decoration`,
+      de: `Decoration`,
+      hu: `Dekoráció`,
     },
+    description: 'Szolíd elegancia',
+    maxSelection: 2,
+    type: EProductComponentSetType.EXTRAS,
+  };
+
+const seededProdCompSet_03: RequiredId<CrudApi.CreateProductComponentSetInput> =
+  {
+    ...getComponentSet({
+      id: prodCompSetId_03,
+      chainId: chainFixture.chainId_seeded_01,
+      itemIds: [prodCompId_31, prodCompId_32, prodCompId_33],
+    }),
+    name: {
+      en: `Garnish`,
+      de: `Garnish`,
+      hu: `Köret`,
+    },
+    description: 'Köret módosító készlet',
     type: EProductComponentSetType.MODIFIER,
   };
 
@@ -181,15 +265,34 @@ const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
         refGroupPrice: 0,
         price: 0,
       },
+    ],
+  },
+  {
+    position: 3,
+    productSetId: seededProdCompSet_03.id,
+    items: [
+      {
+        position: 1,
+        productComponentId: seededProdCompSet_03.items[0],
+        refGroupPrice: 0,
+        price: 0,
+      },
+      {
+        position: 2,
+        productComponentId: seededProdCompSet_03.items[1],
+        refGroupPrice: 0,
+        price: 0,
+      },
       {
         position: 3,
-        productComponentId: seededProdCompSet_02.items[2],
+        productComponentId: seededProdCompSet_03.items[2],
         refGroupPrice: 0,
         price: 0,
       },
     ],
   },
 ];
+
 const groupConfigSets: CrudApi.ProductConfigSetInput[] = [
   {
     ...chainConfigSets[0],
@@ -215,13 +318,27 @@ const groupConfigSets: CrudApi.ProductConfigSetInput[] = [
         ...chainConfigSets[1].items[1],
         refGroupPrice: -1.8,
       },
+    ],
+  },
+  {
+    ...chainConfigSets[2],
+    items: [
       {
-        ...chainConfigSets[1].items[2],
+        ...chainConfigSets[2].items[0],
+        refGroupPrice: 1,
+      },
+      {
+        ...chainConfigSets[2].items[1],
+        refGroupPrice: -1.8,
+      },
+      {
+        ...chainConfigSets[2].items[2],
         refGroupPrice: 0,
       },
     ],
   },
 ];
+
 const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
   {
     ...groupConfigSets[0],
@@ -247,8 +364,21 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
         ...groupConfigSets[1].items[1],
         price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
+    ],
+  },
+  {
+    ...groupConfigSets[2],
+    items: [
       {
-        ...groupConfigSets[1].items[2],
+        ...groupConfigSets[2].items[0],
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
+      },
+      {
+        ...groupConfigSets[2].items[1],
+        price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
+      },
+      {
+        ...groupConfigSets[2].items[2],
         price: groupConfigSets[0].items[0].refGroupPrice * 1.2,
       },
     ],
@@ -257,7 +387,6 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
 
 const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
   {
-    // unitConfigSets[0] == seededProdComp_01
     productSetId: seededProdCompSet_01.id,
     position: unitConfigSets[0].position,
     name: seededProdCompSet_01.name,
@@ -266,25 +395,22 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
     supportedServingModes: defaultSupportedServingModes,
     items: [
       {
-        // unitConfigSets[0].items[0] == seededProdComp_01
         productComponentId: unitConfigSets[0].items[0].productComponentId,
         price: unitConfigSets[0].items[0].price,
         position: unitConfigSets[0].items[0].position,
-        name: seededProdComp_01.name,
-        allergens: seededProdComp_01.allergens,
+        name: seededProdComp_11.name,
+        allergens: seededProdComp_11.allergens,
       },
       {
-        // unitConfigSets[0].items[1] == seededProdComp_02
         productComponentId: unitConfigSets[0].items[1].productComponentId,
         price: unitConfigSets[0].items[1].price,
         position: unitConfigSets[0].items[1].position,
-        name: seededProdComp_02.name,
-        allergens: seededProdComp_02.allergens,
+        name: seededProdComp_12.name,
+        allergens: seededProdComp_12.allergens,
       },
     ],
   },
   {
-    // unitConfigSets[1] == seededProdComp_02
     productSetId: seededProdCompSet_02.id,
     position: unitConfigSets[1].position,
     name: seededProdCompSet_02.name,
@@ -293,42 +419,69 @@ const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
     supportedServingModes: defaultSupportedServingModes,
     items: [
       {
-        // unitConfigSets[1].items[0] == seededProdComp_01
         productComponentId: unitConfigSets[1].items[0].productComponentId,
         price: unitConfigSets[1].items[0].price,
         position: unitConfigSets[1].items[0].position,
-        name: seededProdComp_01.name,
-        allergens: seededProdComp_01.allergens,
+        name: seededProdComp_21.name,
+        allergens: seededProdComp_21.allergens,
       },
       {
-        // unitConfigSets[1].items[1] == seededProdComp_02
         productComponentId: unitConfigSets[1].items[1].productComponentId,
         price: unitConfigSets[1].items[1].price,
         position: unitConfigSets[1].items[1].position,
-        name: seededProdComp_02.name,
-        allergens: seededProdComp_02.allergens,
+        name: seededProdComp_22.name,
+        allergens: seededProdComp_22.allergens,
+      },
+    ],
+  },
+  {
+    productSetId: seededProdCompSet_03.id,
+    position: unitConfigSets[2].position,
+    name: seededProdCompSet_03.name,
+    type: seededProdCompSet_03.type,
+    maxSelection: seededProdCompSet_03.maxSelection,
+    supportedServingModes: defaultSupportedServingModes,
+    items: [
+      {
+        productComponentId: unitConfigSets[2].items[0].productComponentId,
+        price: unitConfigSets[2].items[0].price,
+        position: unitConfigSets[2].items[0].position,
+        name: seededProdComp_31.name,
+        allergens: seededProdComp_31.allergens,
       },
       {
-        // unitConfigSets[1].items[2] == seededProdComp_03
-        productComponentId: unitConfigSets[1].items[2].productComponentId,
-        price: unitConfigSets[1].items[2].price,
-        position: unitConfigSets[1].items[2].position,
-        name: seededProdComp_03.name,
-        allergens: seededProdComp_03.allergens,
+        productComponentId: unitConfigSets[2].items[1].productComponentId,
+        price: unitConfigSets[2].items[1].price,
+        position: unitConfigSets[2].items[1].position,
+        name: seededProdComp_32.name,
+        allergens: seededProdComp_32.allergens,
+      },
+      {
+        productComponentId: unitConfigSets[2].items[2].productComponentId,
+        price: unitConfigSets[2].items[2].price,
+        position: unitConfigSets[2].items[2].position,
+        name: seededProdComp_33.name,
+        allergens: seededProdComp_33.allergens,
       },
     ],
   },
 ];
 
 export const productComponentSetFixture = {
-  base: productComponentSetBase,
+  productComponentBase,
+  productComponentSetBase,
   getProductComponent,
   getComponentSet,
-  seededProdComp_01,
-  seededProdComp_02,
-  seededProdComp_03,
+  seededProdComp_11,
+  seededProdComp_12,
+  seededProdComp_21,
+  seededProdComp_22,
+  seededProdComp_31,
+  seededProdComp_32,
+  seededProdComp_33,
   seededProdCompSet_01,
   seededProdCompSet_02,
+  seededProdCompSet_03,
   seededChainProductConfigSets: chainConfigSets,
   seededGroupProductConfigSets: groupConfigSets,
   seededUnitProductConfigSets: unitConfigSets,

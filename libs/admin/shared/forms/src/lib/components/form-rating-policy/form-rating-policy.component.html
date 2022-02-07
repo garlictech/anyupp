@@ -1,0 +1,59 @@
+<fieldset class="form">
+  <legend class="label">{{ 'units.ratingPolicies.title' | translate }}</legend>
+  <div>
+    <div class="row">
+      <div class="col-12">
+        <bgap-form-select
+          caption="units.ratingPolicies.ratingPolicy"
+          [localize]="true"
+          [forceShowEmptyOption]="true"
+          [options]="(ratingPolicyOptions$ | async) || []"
+          [control]="ratingPolicyControl"
+          inputId="productComponentSetId"
+        ></bgap-form-select>
+
+        <button
+          nbButton
+          size="small"
+          type="button"
+          status="primary"
+          (click)="addRatingPolicyToList()"
+          [disabled]="ratingPolicyControl.invalid"
+        >
+          {{ 'common.add' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-3 mt-3" *ngIf="ratingPoliciesFormArray">
+      <nb-list-item
+        *ngFor="
+          let policy of ratingPoliciesFormArray | iterableAbstractControls;
+          let i = index
+        "
+      >
+        <div class="w-100">
+          <div class="float-start">
+            <div class="subtitle-2">
+              {{ policy.value.title | localize }}
+            </div>
+          </div>
+
+          <button
+            nbButton
+            shape="round"
+            status="danger"
+            size="tiny"
+            class="float-right me-2"
+            type="button"
+            [title]="'common.delete' | translate"
+            (click)="removePolicyFromList(i)"
+            [attr.data-testid]="'removePolicyButton_' + i"
+          >
+            <nb-icon icon="remove" pack="material-icons"></nb-icon>
+          </button>
+        </div>
+      </nb-list-item>
+    </div>
+  </div>
+</fieldset>

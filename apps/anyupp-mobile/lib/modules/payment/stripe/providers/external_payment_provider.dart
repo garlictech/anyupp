@@ -1,4 +1,4 @@
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
@@ -22,13 +22,13 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
     print('startExternalPayment().orderId=$orderId');
 
     try {
-      var result = await GQL.backend.execute(StartPaymentMutation(
+      var result = await GQL.amplify.execute(StartPaymentMutation(
           variables: StartPaymentArguments(
         orderId: orderId,
         paymentMethod: method,
         paymentMethodId: stringFromEnum(paymentMode.method),
         savePaymentMethod: false,
-        invoiceAddress: invoiceAddress,
+        invoiceAddress: invoiceAddress != null ? UserInvoiceAddressInput.fromJson(invoiceAddress.toJson()) : null,
       )));
 
       if (result.hasErrors) {
@@ -52,13 +52,13 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
           .firstWhere((m) => stringFromEnum(m) == stringFromEnum(paymentMode.method), orElse: () => PaymentMethod.cash);
       print('startOrderExternalPayment().method=$method');
 
-      var result = await GQL.backend.execute(StartPaymentMutation(
+      var result = await GQL.amplify.execute(StartPaymentMutation(
           variables: StartPaymentArguments(
         orderId: orderId,
         paymentMethod: method,
         paymentMethodId: stringFromEnum(paymentMode.method),
         savePaymentMethod: false,
-        invoiceAddress: invoiceAddress,
+        invoiceAddress: invoiceAddress != null ? UserInvoiceAddressInput.fromJson(invoiceAddress.toJson()) : null,
       )));
       print('startOrderExternalPayment().result=$result}');
       if (result.hasErrors) {

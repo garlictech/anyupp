@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs';
+
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { adminUsersSelectors } from '@bgap/admin/shared/data-access/admin-users';
-import { NbDialogService } from '@nebular/theme';
+import { adminUsersSelectors } from '@bgap/admin/store/admin-users';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 

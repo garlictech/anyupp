@@ -7,18 +7,19 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { IKeyValue } from '@bgap/shared/types';
+import { KeyValue } from '@bgap/shared/types';
 import { NbComponentSize } from '@nebular/theme';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bgap-form-select',
   templateUrl: './form-select.component.html',
+  styleUrls: ['./form-select.component.scss'],
 })
 export class FormSelectComponent {
   @Input() caption = ''; // Language key!!!
-  @Input() options: IKeyValue[] = [];
-  @Input() control!: FormControl;
+  @Input() options: KeyValue[] = [];
+  @Input() control?: FormControl | null;
   @Input() forceShowEmptyOption?: boolean;
   @Input() localize?: boolean;
   @Input() size: NbComponentSize = 'small';

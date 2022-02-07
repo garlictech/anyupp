@@ -3,27 +3,31 @@ import 'dart:async';
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/exception/bloc/exception_bloc.dart';
-import 'package:fa_prev/shared/exception/bloc/exception_event.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+
+final ChromeSafariBrowser browser = MyChromeSafariBrowser();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen();
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
+
+  static const SIGNIN_CALLBACK = 'anyupp://signin/';
+  static const SIGNOUT_CALLBACK = 'anyupp://signout/';
 }
 
-class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _backgroundImageScaleAnimation;
 
@@ -62,12 +66,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       curve: Curves.easeInOut,
     );
 
-    _buttonsOpacityAnim = CurveTween(curve: Curves.easeOut).animate(_buttonAnimController);
+    _buttonsOpacityAnim =
+        CurveTween(curve: Curves.easeOut).animate(_buttonAnimController);
     _buttonsPositionAnim = Tween(begin: Offset(-1.0, 0.0), end: Offset.zero)
         .chain(CurveTween(curve: Curves.elasticOut))
         .animate(_buttonAnimController);
 
-    Future.delayed(Duration(milliseconds: 1000)).then((value) => _switchAnimation());
+    Future.delayed(Duration(milliseconds: 1000))
+        .then((value) => _switchAnimation());
   }
 
   // Future<void> setUserAgent() async {
@@ -83,34 +89,37 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (BuildContext context, LoginState state) {
-        if (state is EmailFormUIChange) {
-          // print('LoginScreen.listener.state=${state.ui}');
-          double height = 0.0;
-          switch (state.ui) {
-            case LoginFormUI.SHOW_PASSWORD_CONFIRM:
-              height += 290.0;
-              break;
-            case LoginFormUI.SHOW_LOGIN_WITH_PASSWORD:
-              height += 235.0;
-              break;
-            case LoginFormUI.SHOW_REGISTRATION:
-              height += 290.0;
-              break;
-            case LoginFormUI.SHOW_FORGOT_PASSWORD:
-              height += 180.0;
-              break;
-            case LoginFormUI.SHOW_CONFIRM_SIGNUP:
-              height += 235.0;
-              break;
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<LoginBloc, LoginState>(
+            listener: (BuildContext context, LoginState state) {
+          if (state is EmailFormUIChange) {
+            // print('LoginScreen.listener.state=${state.ui}');
+            double height = 0.0;
+            switch (state.ui) {
+              case LoginFormUI.SHOW_PASSWORD_CONFIRM:
+                height += 290.0;
+                break;
+              case LoginFormUI.SHOW_LOGIN_WITH_PASSWORD:
+                height += 235.0;
+                break;
+              case LoginFormUI.SHOW_REGISTRATION:
+                height += 290.0;
+                break;
+              case LoginFormUI.SHOW_FORGOT_PASSWORD:
+                height += 180.0;
+                break;
+              case LoginFormUI.SHOW_CONFIRM_SIGNUP:
+                height += 235.0;
+                break;
+            }
+            setState(() {
+              print('LoginScreen._emailFormHeight=$height');
+              _emailFormHeight = height;
+            });
           }
-          setState(() {
-            print('LoginScreen._emailFormHeight=$height');
-            _emailFormHeight = height;
-          });
-        }
-      },
+        }),
+      ],
       child: BlocBuilder<LoginBloc, LoginState>(
         builder: (BuildContext context, LoginState state) {
           if (state is NeedAccountLinking) {
@@ -129,12 +138,29 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             return _buildSocialLoginWebView(state.provider);
           }
 
+          if (state is LoginError) {
+            return _buildErrorScreen(state.code, state.message);
+          }
+
           // --- Bottom sheet
           return AnimatedBuilder(
             builder: _buildAnimation,
             animation: _controller,
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildErrorScreen(String code, String? message) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        child: CommonErrorWidget(
+          error: code,
+          description: message ?? '',
+          onPressed: () => getIt<LoginBloc>().add(ResetLogin()),
+        ),
       ),
     );
   }
@@ -146,10 +172,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         children: [
           // BACKGROUND IMAGE
           Positioned(
-            top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-            left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-            bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-            right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+            top: -_backgroundImageScaleAnimation.value *
+                _backgroundAnimationSize,
+            left: -_backgroundImageScaleAnimation.value *
+                _backgroundAnimationSize,
+            bottom: -_backgroundImageScaleAnimation.value *
+                _backgroundAnimationSize,
+            right: -_backgroundImageScaleAnimation.value *
+                _backgroundAnimationSize,
             child: _buildBackground(context),
           ),
           CenterLoadingWidget(),
@@ -192,9 +222,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           behavior: HitTestBehavior.deferToChild,
           onTap: () => _switchAnimation(),
           onVerticalDragUpdate: (details) {
-            if (_controller.status == AnimationStatus.dismissed && details.delta.dy < -20.0) {
+            if (_controller.status == AnimationStatus.dismissed &&
+                details.delta.dy < -20.0) {
               _switchAnimation();
-            } else if (_controller.status == AnimationStatus.completed && details.delta.dy > 20.0) {
+            } else if (_controller.status == AnimationStatus.completed &&
+                details.delta.dy > 20.0) {
               _switchAnimation();
             }
           },
@@ -204,10 +236,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 Container(height: iOS ? height : height - statusBarHeight),
                 // BACKGROUND IMAGE
                 Positioned(
-                  top: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-                  left: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-                  bottom: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
-                  right: -_backgroundImageScaleAnimation.value * _backgroundAnimationSize,
+                  top: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
+                  left: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
+                  bottom: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
+                  right: -_backgroundImageScaleAnimation.value *
+                      _backgroundAnimationSize,
                   child: _buildBackground(context),
                 ),
 
@@ -225,7 +261,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
 
                 // Center logo
                 Positioned(
-                  top: (height / 2.0 - 50) - ((height / 2.0 - 50 - 36.0) * _backgroundImageScaleAnimation.value),
+                  top: (height / 2.0 - 50) -
+                      ((height / 2.0 - 50 - 36.0) *
+                          _backgroundImageScaleAnimation.value),
                   left: 0.0,
                   right: 0.0,
                   child: _buildLogo(context),
@@ -238,12 +276,15 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       : _bottomWidgetHeight == null
                           ? height
                           : height -
-                              ((_bottomWidgetHeight! + (iOS == true ? 0.0 : 20.0)) *
+                              ((_bottomWidgetHeight! +
+                                          (iOS == true ? 0.0 : 20.0)) *
                                       _backgroundImageScaleAnimation.value) *
                                   1.0,
                   left: 0.0,
                   right: 0.0,
-                  bottom: _controller.status == AnimationStatus.completed ? 0.0 : null,
+                  bottom: _controller.status == AnimationStatus.completed
+                      ? 0.0
+                      : null,
                   child: _buildBottomSheetContent(context, iOS),
                 ),
               ],
@@ -404,7 +445,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     ))))),
                         _buildEmailLoginForms(context),
                         Padding(
-                          padding: _showLogin ? const EdgeInsets.all(0.0) : const EdgeInsets.only(top: 28.0),
+                          padding: _showLogin
+                              ? const EdgeInsets.all(0.0)
+                              : const EdgeInsets.only(top: 28.0),
                           child: Text(
                             trans('login.continueWith'),
                             style: Fonts.satoshi(
@@ -439,7 +482,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                   padding: EdgeInsets.all(8.0),
                                 ),
                                 //: Colors.blueAccent,
-                                onPressed: () => getIt<LoginBloc>().add(LoginWithMethod(LoginMethod.ANONYMOUS)),
+                                onPressed: () => getIt<LoginBloc>().add(
+                                    LoginWithMethod(LoginMethod.ANONYMOUS)),
                                 child: Text(trans('login.signInAnonymously'),
                                     style: Fonts.satoshi(
                                       fontSize: 14.0,
@@ -504,7 +548,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             _createSocialButtonWidget('facebook', LoginMethod.FACEBOOK),
             // if (snapshot.data == true) // has Apple Login
             _createSocialButtonWidget('apple', LoginMethod.APPLE),
-            _createSocialButtonWidget('email', LoginMethod.EMAIL, iconColor: theme.primary),
+            _createSocialButtonWidget('email', LoginMethod.EMAIL,
+                iconColor: Color(0xFF30BF60)),
             // _createSocialButtonWidget('phone', LoginMethod.PHONE),
           ],
         ),
@@ -521,7 +566,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     );
   }
 
-  Widget _createSocialButtonWidget(String icon, LoginMethod method, {Color? iconColor}) {
+  Widget _createSocialButtonWidget(String icon, LoginMethod method,
+      {Color? iconColor}) {
     final bool iOS = Theme.of(context).platform == TargetPlatform.iOS;
     return Padding(
       padding: const EdgeInsets.all(6.0),
@@ -535,140 +581,15 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               // This dialog handle all the Login BloC calls by itself
               _toggleEmailLoginForm();
             } else {
-              getIt<LoginBloc>().add(LoginWithMethod(method));
+              // getIt<LoginBloc>().add(LoginWithMethod(method));
+              launchURL(LoginMethodUtils.methodToString(method));
             }
           }),
     );
   }
 
   Widget _buildSocialLoginWebView(LoginMethod method) {
-    Completer<WebViewController> _webViewController = Completer<WebViewController>();
-    String provider;
-    switch (method) {
-      case LoginMethod.FACEBOOK:
-        provider = 'Facebook';
-        break;
-      case LoginMethod.GOOGLE:
-        provider = 'Google';
-        break;
-      case LoginMethod.APPLE:
-        provider = 'SignInWithApple';
-        break;
-      default:
-        provider = 'Cognito';
-    }
-    var url = "${AppConfig.UserPoolDomain}/oauth2/authorize?identity_provider=$provider&redirect_uri=" +
-        "anyupp://signin/&response_type=CODE&client_id=${AppConfig.UserPoolClientId}" +
-        "&scope=openid%20phone%20email%20aws.cognito.signin.user.admin%20profile";
-
-    print('loginScreen.url=$url');
-    return Scaffold(
-      appBar: AppBar(
-        leading: Container(
-          padding: EdgeInsets.only(
-            left: 8.0,
-            top: 4.0,
-            bottom: 4.0,
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1,
-                color: theme.secondary40,
-              ),
-            ),
-            child: BackButton(
-              onPressed: () {
-                setState(() {
-                  getIt<LoginBloc>().add(ResetLogin());
-                  isLoading = true;
-                });
-              },
-              color: theme.secondary,
-            ),
-          ),
-        ),
-        elevation: 0.0,
-        iconTheme: IconThemeData(
-          color: theme.secondary, //change your color here
-        ),
-        backgroundColor: theme.secondary0,
-        title: Text(
-          trans("login.email.signIn"),
-          style: Fonts.satoshi(
-            color: Colors.black,
-          ),
-          //getLocalizedText(context, widget.item.name),
-        ),
-      ),
-      body: Stack(
-        children: [
-          WebView(
-            userAgent: 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) ' +
-                'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36',
-            initialUrl: url,
-            onPageFinished: (finish) {
-              setState(() {
-                isLoading = false;
-              });
-            },
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (WebViewController webViewController) async {
-              _webViewController.complete(webViewController);
-            },
-            navigationDelegate: (NavigationRequest request) {
-              print('LoginScreen.navigationDelegate().request=$request');
-              Uri uri = Uri.parse(request.url);
-              String? error = uri.queryParameters['error_description'];
-              if (request.url.startsWith('${SocialLoginScreen.SIGNIN_CALLBACK}?code=')) {
-                var code = request.url.substring('${SocialLoginScreen.SIGNIN_CALLBACK}?code='.length);
-                //For some reasion there is an extra # and some other stuff at the end of the url in case of first login.
-                //Remove it so it will be a valid url
-                code = code.split("#").first;
-                // This is the authorization code!!!
-                signUserInWithAuthCode(code);
-                return NavigationDecision.prevent;
-              }
-              if (error != null) {
-                print('LoginScreen.error()=$error');
-                setState(() {
-                  if (error.contains('UserAlreadyExists')) {
-                    getIt<ExceptionBloc>().add(ShowException(LoginException(
-                      code: LoginException.CODE,
-                      subCode: LoginException.USER_ALREADY_EXISTS,
-                      message: error,
-                    )));
-                  } else {
-                    getIt<ExceptionBloc>().add(ShowException(LoginException(
-                      code: LoginException.CODE,
-                      subCode: LoginException.CODE,
-                      message: error,
-                    )));
-                  }
-
-                  getIt<LoginBloc>().add(ResetLogin());
-                  isLoading = true;
-                });
-              }
-              if (uri.pathSegments.contains("idpresponse")) {
-                setState(() {
-                  isLoading = true;
-                });
-              }
-
-              return NavigationDecision.navigate;
-            },
-            gestureNavigationEnabled: true,
-          ),
-          isLoading
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Container()
-        ],
-      ),
-    );
+    return CenterLoadingWidget();
   }
 
   // ignore: unused_element
@@ -681,5 +602,75 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   void signUserInWithAuthCode(String code) {
     print('loginScreen.signUserInWithAuthCode().code=$code');
     getIt<LoginBloc>().add(CompleteLoginWithMethod(code));
+  }
+}
+
+class MyChromeSafariBrowser extends ChromeSafariBrowser {
+  @override
+  void onOpened() {
+    print("ChromeSafari browser opened");
+    super.onOpened();
+  }
+
+  @override
+  void onCompletedInitialLoad() {
+    print("ChromeSafari browser initial load completed");
+    super.onCompletedInitialLoad();
+  }
+
+  @override
+  void onClosed() {
+    print("ChromeSafari browser closed");
+    super.onClosed();
+  }
+}
+
+String? lastProvider;
+
+void reLaunchURL() async {
+  print('reLaunchURL()');
+  if (lastProvider != null) {
+    launchURL(lastProvider!);
+  }
+}
+
+void launchURL(String provider) async {
+  getIt<LoginBloc>().add(StartLoginLoading());
+  lastProvider = provider;
+  var url = '${AppConfig.UserPoolDomain}/oauth2/authorize?'
+      'identity_provider=${provider}&'
+      'redirect_uri=${LoginScreen.SIGNIN_CALLBACK}&'
+      'response_type=CODE&'
+      'client_id=${AppConfig.UserPoolClientId}'
+      '&scope=email%20openid%20profile%20aws.cognito.signin.user.admin';
+  print('launchURL().url=$url');
+
+  if (browser.isOpened()) {
+    await browser.close();
+  }
+
+  // browser = MyChromeSafariBrowser();
+  try {
+    print('launchURL().start opening().');
+    await browser.open(
+      url: Uri.parse(url),
+      options: ChromeSafariBrowserClassOptions(
+        android: AndroidChromeCustomTabsOptions(
+          addDefaultShareMenuItem: false,
+          showTitle: true,
+          toolbarBackgroundColor: const Color(0xff30bf60),
+          enableUrlBarHiding: true,
+          keepAliveEnabled: true,
+        ),
+        ios: IOSSafariOptions(
+          barCollapsingEnabled: true,
+        ),
+      ),
+    );
+  } catch (e) {
+    print('launchURL().error=$e');
+
+    // An exception is thrown if browser app is not installed on Android device.
+    debugPrint(e.toString());
   }
 }

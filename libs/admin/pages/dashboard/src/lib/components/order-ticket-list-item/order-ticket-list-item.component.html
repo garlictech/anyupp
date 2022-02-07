@@ -25,22 +25,18 @@
 
   <ng-container *ngIf="showMarkers">
     <div class="float-right ms-2" *ngIf="order.userId === selectedOrderUserId">
-      <nb-icon class="smaller-icon" icon="person-outline"></nb-icon>
+      <nb-icon icon="person" pack="material-icons"></nb-icon>
     </div>
 
     <div
       class="float-right ms-2"
       *ngIf="order.servingMode === EServingMode.takeaway"
     >
-      <nb-icon class="smaller-icon" icon="car-outline"></nb-icon>
+      <img class="takeaway-logo" src="assets/images/bag.svg" />
     </div>
 
     <div class="float-right" *ngIf="(order?.paymentIntention || 0) > 0">
-      <nb-icon
-        class="smaller-icon"
-        status="danger"
-        icon="alert-circle-outline"
-      ></nb-icon>
+      <nb-icon status="danger" icon="alert-circle-outline"></nb-icon>
     </div>
 
     <nb-badge

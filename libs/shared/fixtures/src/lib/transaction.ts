@@ -63,6 +63,13 @@ const successCardTransactionInput: CrudApi.CreateTransactionInput = {
   ...cardTransaction,
 };
 
+const successCardTipTransactionInput: CrudApi.CreateTransactionInput = {
+  ...transactionInputBase,
+  ...successTransaction,
+  ...cardTransaction,
+  total: 1200,
+};
+
 const successStripeTransactionInput: CrudApi.CreateTransactionInput = {
   ...transactionInputBase,
   ...successTransaction,
@@ -112,4 +119,7 @@ export const transactionFixture = {
   failedCashTransactionInput,
   failedCardTransactionInput,
   failedStripeTransactionInput,
+
+  // Tip
+  successCardTipTransactionInput,
 };

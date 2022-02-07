@@ -1,13 +1,16 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductType } from '@bgap/shared/types';
+import { EProductType, SORTED_ORDER_STATUSES } from '@bgap/shared/types';
+import { productSnapshotFixture } from './product-snapshot';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { unitFixture } from './unit';
 
 const order_seeded_01_id = `${seededIdPrefix}order_1_id`;
 
-const orderItemInputBase = (productName: string) => ({
+const orderItemInputBase = (
+  productFixture: CrudApi.CreateChainProductInput,
+) => ({
   quantity: 5,
-  productId: `${testIdPrefix}generatedProduct_id_`,
+  productId: productFixture.id || '',
   statusLog: [
     {
       userId: 'test-monad',
@@ -22,16 +25,8 @@ const orderItemInputBase = (productName: string) => ({
     priceSum: 1491,
     pricePerUnit: 298.2,
   },
-  productName: {
-    de: null,
-    en: productName,
-    hu: productName,
-  },
-  allergens: [
-    CrudApi.Allergen.egg,
-    CrudApi.Allergen.gluten,
-    CrudApi.Allergen.peanut,
-  ],
+  productName: productFixture.name,
+  allergens: productFixture.allergens,
   laneId: `lane_01`,
   priceShown: {
     taxSum: 318.9,
@@ -40,16 +35,16 @@ const orderItemInputBase = (productName: string) => ({
     priceSum: 1500,
     pricePerUnit: 300,
   },
-  variantId: `${testIdPrefix}variant_id`,
-  variantName: {
-    de: null,
-    en: 'glass',
-    hu: 'pohár',
+  variantId: productFixture.variants?.[0]?.id || '',
+  variantName: productFixture.variants?.[0]?.variantName || {
+    en: 'unused',
+    hu: 'unused',
+    de: 'unused',
   },
   configSets: [
     {
       name: {
-        de: null,
+        de: null as string | null,
         en: 'Modifier comp set',
         hu: 'Módosító komponens set',
       },
@@ -76,14 +71,9 @@ const orderInputBase = {
   userId: 'test-monad',
   unitId: unitFixture.unitId_seeded_01,
   items: [
-    {
-      ...orderItemInputBase('Hamburger'),
-      productId: `${testIdPrefix}unit_product_hamburger`,
-    },
-    {
-      ...orderItemInputBase('Fanta'),
-      productId: `${testIdPrefix}unit_product_fanta`,
-    },
+    orderItemInputBase(productSnapshotFixture.chainProduct_1),
+    orderItemInputBase(productSnapshotFixture.chainProduct_2),
+    orderItemInputBase(productSnapshotFixture.chainProduct_3),
   ],
   sumPriceShown: {
     taxSum: 633.96,
@@ -99,6 +89,16 @@ const orderInputBase = {
   },
   orderMode: CrudApi.OrderMode.instant,
   servingMode: CrudApi.ServingMode.inplace,
+  hasRated: true,
+  rating: {
+    key: 'RATING KEY',
+    value: 3,
+  },
+  serviceFee: {
+    currency: 'HUF',
+    netPrice: 200,
+    taxPercentage: 27,
+  },
 };
 
 const cardPayment = {
@@ -131,6 +131,38 @@ const getOrderStatusLogItem = (status: CrudApi.OrderStatus) => ({
 const getOrderStatusLog = (status: CrudApi.OrderStatus) => ({
   statusLog: [getOrderStatusLogItem(status)],
 });
+
+const generateOrderItemStatusHistory = (status: CrudApi.OrderStatus) => {
+  const statusIdx = SORTED_ORDER_STATUSES.indexOf(status);
+  const statusArray: CrudApi.StatusLog[] = [];
+
+  if (statusIdx >= 0) {
+    for (let i = 0; i <= statusIdx; i++) {
+      statusArray.push(getOrderStatusLogItem(SORTED_ORDER_STATUSES[i]));
+    }
+  }
+
+  return statusArray;
+};
+
+// Assign a main and item status history to an order
+const buildOrderStatusHistory = (
+  order: CrudApi.CreateOrderInput,
+  status: CrudApi.OrderStatus,
+) => {
+  // Copy base data
+  const filledOrder = {
+    ...order,
+    ...getOrderStatusLog(status),
+  };
+
+  // Update order items
+  order.items.forEach(orderItem => {
+    orderItem.statusLog = generateOrderItemStatusHistory(status);
+  });
+
+  return filledOrder;
+};
 
 const waitingTransaction = {
   transactionStatus: CrudApi.PaymentStatus.waiting_for_payment,
@@ -175,6 +207,28 @@ const activeWaitingStripeOrderInput: CrudApi.CreateOrderInput = {
   ...activeOrderInputBase,
   ...stripePayment,
   ...waitingTransaction,
+};
+
+const activeWaitingPlacedCardOrderInput: CrudApi.CreateOrderInput = {
+  ...buildOrderStatusHistory(
+    {
+      ...activeOrderInputBase,
+      ...cardPayment,
+    },
+    CrudApi.OrderStatus.placed,
+  ),
+  ...waitingTransaction,
+};
+
+const activeSuccessPlacedCashOrderInput: CrudApi.CreateOrderInput = {
+  ...buildOrderStatusHistory(
+    {
+      ...activeOrderInputBase,
+      ...cashPayment,
+    },
+    CrudApi.OrderStatus.placed,
+  ),
+  ...successfullTransaction,
 };
 
 const activeSuccessCardOrderInput: CrudApi.CreateOrderInput = {
@@ -384,6 +438,8 @@ export const orderFixture = {
   activeWaitingCardOrderInput,
   activeWaitingCashOrderInput,
   activeWaitingStripeOrderInput,
+  activeWaitingPlacedCardOrderInput,
+  activeSuccessPlacedCashOrderInput,
   activeSuccessCardOrderInput,
   activeSuccessCashOrderInput,
   activeSuccessStripeOrderInput,

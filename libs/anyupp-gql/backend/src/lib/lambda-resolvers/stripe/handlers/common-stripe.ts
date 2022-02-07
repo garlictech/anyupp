@@ -1,4 +1,3 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
 import { loadUser } from '../stripe-graphql-crud';
@@ -8,23 +7,26 @@ export const loadAndConnectUserForStripe =
   (
     userId: string,
     createStripeUser = true,
-    invoiceAddress: AnyuppApi.UserInvoiceAddress | undefined | null = undefined,
+    invoiceAddress: CrudApi.UserInvoiceAddress | undefined | null = undefined,
   ) =>
   async (deps: StripeResolverDeps) => {
-    let user = await loadUser(userId)(deps);
+    let user = await loadUser()(deps);
     console.debug('loadAndConnectUserForStripe().user.id=' + user?.id);
+    console.debug(
+      'loadAndConnectUserForStripe().createStripeUser=' + createStripeUser,
+    );
 
     if (!user) {
       let customerId: string | undefined;
 
       if (createStripeUser === true) {
-        const stripeResponse: Stripe.Response<Stripe.Customer> =
+        const stripeCustomer: Stripe.Response<Stripe.Customer> =
           await deps.stripeClient.customers.create();
         console.debug(
           'loadAndConnectUserForStripe().stripe.customerId=' +
-            stripeResponse.id,
+            stripeCustomer.id,
         );
-        customerId = stripeResponse.id;
+        customerId = stripeCustomer.id;
       }
 
       const createUserVars: CrudApi.CreateUserMutationVariables = {
@@ -44,16 +46,15 @@ export const loadAndConnectUserForStripe =
             : undefined,
         },
       };
-      user = await deps.crudSdk.CreateUser(createUserVars).toPromise(); //createUser(userId, customerId)(deps);
-      // console.debug('loadAndConnectUserForStripe().User created=' + user?.id);
+      user = await deps.crudSdk.CreateUser(createUserVars).toPromise();
     } else {
       // USER ALREADY EXISTS...
       let customerId = user.stripeCustomerId;
       if (!user.stripeCustomerId && createStripeUser === true) {
-        // console.debug('loadAndConnectUserForStripe().Creating stripe customer');
-        const stripeResponse: Stripe.Response<Stripe.Customer> =
+        console.debug('loadAndConnectUserForStripe().Creating stripe customer');
+        const stripeCustomer: Stripe.Response<Stripe.Customer> =
           await deps.stripeClient.customers.create();
-        customerId = stripeResponse.id;
+        customerId = stripeCustomer.id;
       }
       const updateUserVars: CrudApi.UpdateUserMutationVariables = {
         input: {

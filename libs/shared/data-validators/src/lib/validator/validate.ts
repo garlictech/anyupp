@@ -13,10 +13,15 @@ export interface SchemaValidation<T> {
 export const validateSchema = <REQUIRED_TYPE>(
   schema: Joi.SchemaMap,
   schemaName: string,
+  stripUnknown = false,
 ): SchemaValidation<REQUIRED_TYPE> => {
   return {
     validate: (arg: unknown): Observable<REQUIRED_TYPE> =>
-      from(Joi.object(schema).validateAsync(arg, validationOptions)).pipe(
+      from(
+        Joi.object(schema)
+          .options({ stripUnknown })
+          .validateAsync(arg, validationOptions),
+      ).pipe(
         map(x => x as REQUIRED_TYPE),
         catchError((err: Joi.ValidationError) => {
           console.warn(

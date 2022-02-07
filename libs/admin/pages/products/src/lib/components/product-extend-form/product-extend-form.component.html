@@ -14,11 +14,16 @@
       class="float-right"
       (click)="close()"
     >
-      <nb-icon icon="close-outline"></nb-icon>
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm" (ngSubmit)="submit()" autocomplete="off">
+    <form
+      *ngIf="dialogForm"
+      [formGroup]="dialogForm"
+      (ngSubmit)="submit()"
+      autocomplete="off"
+    >
       <fieldset class="form">
         <legend class="label">{{ 'products.basicInfo' | translate }}</legend>
 
@@ -34,33 +39,36 @@
             <bgap-form-text-input
               caption="common.taxPercent"
               type="number"
-              [control]="dialogForm.get('tax')! | asFormControl"
+              [control]="dialogForm?.get('tax') | asFormControl"
               inputId="tax"
+              suffix="%"
             ></bgap-form-text-input>
           </div>
           <div class="col-3" *ngIf="productLevel === eProductLevel.GROUP">
             <bgap-form-text-input
               caption="common.takeawayTaxPercent"
               type="number"
-              [control]="dialogForm.get('takeawayTax')! | asFormControl"
+              [control]="dialogForm?.get('takeawayTax') | asFormControl"
               inputId="takeawayTax"
+              suffix="%"
             ></bgap-form-text-input>
           </div>
           <div class="col-3" *ngIf="productLevel === eProductLevel.UNIT">
             <bgap-form-select
-              [control]="dialogForm.get('laneId')! | asFormControl"
+              [control]="dialogForm?.get('laneId') | asFormControl"
               caption="products.lane"
-              [options]="unitLanes"
+              [options]="(this.unitLanes$ | async) || []"
               [localize]="false"
               [forceShowEmptyOption]="true"
               inputId="laneId"
             >
             </bgap-form-select>
           </div>
+
           <div class="col-3 pt-4">
             <bgap-form-checkbox
               caption="products.isVisible"
-              [control]="dialogForm.get('isVisible')! | asFormControl"
+              [control]="dialogForm?.get('isVisible') | asFormControl"
               inputId="isVisible"
             ></bgap-form-checkbox>
           </div>
@@ -69,20 +77,20 @@
 
       <bgap-form-serving-mode
         *ngIf="productLevel === eProductLevel.UNIT"
-        [control]="dialogForm.get('supportedServingModes')! | asFormControl"
+        [control]="dialogForm?.get('supportedServingModes') | asFormControl"
         [servingModes]="servingModes"
       ></bgap-form-serving-mode>
 
       <bgap-form-product-variants
         [productLevel]="productLevel"
-        [variantFormArray]="dialogForm.get('variants')! | asFormArray"
+        [variantFormArray]="dialogForm?.get('variants') | asFormArray"
         [allowAddVariant]="false"
         [currency]="currency"
       ></bgap-form-product-variants>
 
       <bgap-form-product-components
         [productLevel]="productLevel"
-        [componentFormArray]="dialogForm.get('configSets')! | asFormArray"
+        [componentFormArray]="dialogForm?.get('configSets') | asFormArray"
         [currency]="currency"
       ></bgap-form-product-components>
 
@@ -93,7 +101,7 @@
           type="submit"
           fullWidth
           status="primary"
-          [disabled]="dialogForm.invalid"
+          [disabled]="dialogForm?.invalid || (working$ | async)"
         >
           {{ 'common.submit' | translate }}
         </button>

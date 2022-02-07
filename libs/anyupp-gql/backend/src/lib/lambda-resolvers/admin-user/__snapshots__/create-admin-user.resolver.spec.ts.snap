@@ -1,49 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Handle adminCreateUser bad data 1`] = `"UnkownCognitoError"`;
-
-exports[`Handle adminCreateUser unknown error 1`] = `[Error: UNKNOWN ADMINCREATEUSER ERROR]`;
-
-exports[`Handle crudSdk.CreateAdminUser error: adminDeleteUser parameters 1`] = `
-Array [
-  Object {
-    "UserPoolId": "USER_POOL_ID",
-    "Username": "GENERATED_USERNAME",
-  },
-]
-`;
-
-exports[`Handle crudSdk.CreateAdminUser error: result 1`] = `
+exports[`Handle adminCreateUser bad data 1`] = `
 Object {
-  "code": "UnknownError",
-  "message": "\\"crudSdk.CreateAdminUser ERROR\\"",
+  "createdAt": Any<String>,
+  "email": "testuser+joe@anyupp.com",
+  "id": "GENERATED_USERNAME",
+  "name": "Test Elek",
+  "phone": "+123456789",
+  "profileImage": undefined,
+  "updatedAt": Any<String>,
 }
 `;
 
-exports[`Handle listUser returns bad data 1`] = `"UnkownCognitoError"`;
+exports[`Handle adminCreateUser unknown error 1`] = `[Error: UNKNOWN ADMINCREATEUSER ERROR]`;
+
+exports[`Handle crudSdk.CreateAdminUser error 1`] = `"dynamodb PUT ERROR"`;
+
+exports[`Handle listUser returns bad data 1`] = `
+Object {
+  "createdAt": Any<String>,
+  "email": "testuser+joe@anyupp.com",
+  "id": "GENERATED_USERNAME",
+  "name": "Test Elek",
+  "phone": "+123456789",
+  "profileImage": undefined,
+  "updatedAt": Any<String>,
+}
+`;
 
 exports[`Handle listUser unknown error 1`] = `[Error: UNKNOWN LISTUSERS ERROR]`;
 
 exports[`Handle multiple users found error 1`] = `
+"{
+  \\"code\\": \\"DatabaseError\\",
+  \\"message\\": \\"Something bad happened, more users found with the provided data\\"
+}"
+`;
+
+exports[`Handle the good case: CreateAdminUser parameters 1`] = `
 Object {
-  "code": "DatabaseError",
-  "message": "Something bad happened, more users found with the provided data",
+  "Item": Object {
+    "createdAt": Any<String>,
+    "email": "testuser+joe@anyupp.com",
+    "id": "GENERATED_USERNAME",
+    "name": "Test Elek",
+    "phone": "+123456789",
+    "profileImage": undefined,
+    "updatedAt": Any<String>,
+  },
+  "TableName": "ADMIN_USER_TABLE",
 }
 `;
 
-exports[`Handle the good case 1`] = `"GENERATED_USERNAME"`;
-
-exports[`Handle the good case: CreateAdminUser parameters 1`] = `
-Array [
-  Object {
-    "input": Object {
-      "email": "a@a.hu",
-      "id": "GENERATED_USERNAME",
-      "name": "Test Elek",
-      "phone": "+123456789",
-    },
-  },
-]
+exports[`Handle the good case: RESULT 1`] = `
+Object {
+  "createdAt": Any<String>,
+  "email": "testuser+joe@anyupp.com",
+  "id": "GENERATED_USERNAME",
+  "name": "Test Elek",
+  "phone": "+123456789",
+  "profileImage": undefined,
+  "updatedAt": Any<String>,
+}
 `;
 
 exports[`Handle the good case: adminCreateUser parameters 1`] = `
@@ -55,10 +73,14 @@ Array [
     "UserAttributes": Array [
       Object {
         "Name": "email",
-        "Value": "a@a.hu",
+        "Value": "testuser+joe@anyupp.com",
       },
       Object {
         "Name": "email_verified",
+        "Value": "true",
+      },
+      Object {
+        "Name": "phone_number_verified",
         "Value": "true",
       },
       Object {
@@ -83,7 +105,7 @@ Array [
       "email",
       "phone_number",
     ],
-    "Filter": "email = \\"a@a.hu\\"",
+    "Filter": "email = \\"testuser+joe@anyupp.com\\"",
     "Limit": 2,
     "UserPoolId": "USER_POOL_ID",
   },
@@ -91,8 +113,8 @@ Array [
 `;
 
 exports[`Handle user already exists error 1`] = `
-Object {
-  "code": "UserAlreadyExists",
-  "message": "User already exists",
-}
+"{
+  \\"code\\": \\"UserAlreadyExists\\",
+  \\"message\\": \\"User already exists\\"
+}"
 `;

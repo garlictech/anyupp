@@ -7,12 +7,15 @@ import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 // Represents one row (one sandwich) in cart page
 class CartListItemWidget extends StatefulWidget {
   final GeoUnit unit;
   final OrderItem order;
-  CartListItemWidget({required this.unit, required this.order});
+  final ServingMode servingMode;
+  CartListItemWidget(
+      {required this.unit, required this.order, required this.servingMode});
 
   @override
   _CartListItemWidgetState createState() => _CartListItemWidgetState();
@@ -68,7 +71,8 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                             height: 16,
                           ),
                           Text(
-                            getLocalizedText(context, widget.order.productName), // .toUpperCase(),
+                            getLocalizedText(context,
+                                widget.order.productName), // .toUpperCase(),
                             textAlign: TextAlign.left,
                             style: Fonts.satoshi(
                               color: theme.secondary,
@@ -112,7 +116,9 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: formatCurrency(widget.order.getPrice(), widget.unit.currency),
+                                      text: formatCurrency(
+                                          widget.order.getPrice(),
+                                          widget.unit.currency),
                                       style: Fonts.satoshi(
                                         color: theme.primary,
                                         fontSize: 14,
@@ -139,10 +145,12 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
           right: 16.0,
           child: BlocBuilder<CartBloc, BaseCartState>(
             builder: (context, state) {
-              bool showAddLoading =
-                  state is CartLoadingState && state.message == 'add' && state.productId == widget.order.productId;
-              bool showRemoveLoading =
-                  state is CartLoadingState && state.message == 'remove' && state.productId == widget.order.productId;
+              bool showAddLoading = state is CartLoadingState &&
+                  state.message == 'add' &&
+                  state.productId == widget.order.productId;
+              bool showRemoveLoading = state is CartLoadingState &&
+                  state.message == 'remove' &&
+                  state.productId == widget.order.productId;
               bool diasbleTap = showAddLoading || showRemoveLoading;
 
               return Row(
@@ -194,7 +202,8 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
     List<Widget> children = [];
     if (widget.order.selectedConfigMap != null) {
       widget.order.selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+        for (GeneratedProductConfigComponent generatedProductConfigComponent
+            in value) {
           children.add(Text(
             '+ ${getLocalizedText(context, generatedProductConfigComponent.name)}',
             textAlign: TextAlign.left,
@@ -206,6 +215,18 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
           ));
         }
       });
+
+      // if (widget.servingMode == ServingMode.takeAway) {
+      //   children.add(Text(
+      //     '+ ' + trans('cart.packagingFee'),
+      //     textAlign: TextAlign.left,
+      //     style: Fonts.satoshi(
+      //       color: theme.secondary,
+      //       fontWeight: FontWeight.normal,
+      //       fontSize: 14,
+      //     ),
+      //   ));
+      // }
     } else {
       children.add(Container());
     }
@@ -215,13 +236,14 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
 
   void _addOrder() {
     BlocProvider.of<CartBloc>(context).add(AddProductToCartAction(
-        widget.unit.id,
+        widget.unit,
         widget.order.copyWith(
           quantity: 1,
         )));
   }
 
   void _removeOrder() {
-    BlocProvider.of<CartBloc>(context).add(RemoveProductFromCartAction(widget.unit.id, widget.order));
+    BlocProvider.of<CartBloc>(context)
+        .add(RemoveProductFromCartAction(widget.unit.id, widget.order));
   }
 }

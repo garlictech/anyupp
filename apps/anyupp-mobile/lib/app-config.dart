@@ -9,10 +9,6 @@ class AppConfig {
 
   static String get StripePublishableKey => _config['StripePublishableKey'];
 
-  static String get AnyuppGraphqlApiUrl => _config['AnyuppGraphqlApiUrl'];
-
-  static String get AnyuppGraphqlApiKey => _config['AnyuppGraphqlApiKey'];
-
   static String get CrudGraphqlApiUrl => _config['CrudGraphqlApiUrl'];
 
   static String get CrudGraphqlApiKey => _config['CrudGraphqlApiKey'];
@@ -34,6 +30,8 @@ class AppConfig {
   static Map<String, dynamic> _config = jsonDecode(AWSCONFIG);
 
   static Map<String, dynamic> get config => _config;
+
+  static Duration get ratingNotificationTimer => const Duration(minutes: 10);
 
   // Private constructor
   AppConfig._();

@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:fa_prev/graphql/generated/anyupp-api.dart';
+import 'package:fa_prev/models.dart';
 
 Map<String, dynamic> createStartPaymentRequestVariables({
   String? orderId,

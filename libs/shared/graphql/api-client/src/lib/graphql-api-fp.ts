@@ -1,11 +1,11 @@
 import { AUTH_TYPE } from 'aws-appsync';
 import { Auth } from '@aws-amplify/auth';
 import { GraphqlApiClient } from './graphql-api-client';
-import { ICrudApiConfig } from './types';
+import { CrudApiConfig } from './types';
 
 export class GraphqlApiFp {
   static createAuthenticatedClient(
-    config: ICrudApiConfig,
+    config: CrudApiConfig,
     disableOffline: boolean,
   ): GraphqlApiClient {
     return new GraphqlApiClient(config, {
@@ -23,7 +23,7 @@ export class GraphqlApiFp {
   }
 
   static createPublicClient(
-    config: ICrudApiConfig,
+    config: CrudApiConfig,
     disableOffline: boolean,
   ): GraphqlApiClient {
     return new GraphqlApiClient(config, {
@@ -39,7 +39,7 @@ export class GraphqlApiFp {
   }
 
   static createAdminClient(
-    config: ICrudApiConfig,
+    config: CrudApiConfig,
     disableOffline: boolean,
   ): GraphqlApiClient {
     return new GraphqlApiClient(config, {
@@ -55,7 +55,7 @@ export class GraphqlApiFp {
   }
 
   static createBackendClient(
-    config: ICrudApiConfig,
+    config: CrudApiConfig,
     accessKeyId: string,
     secretAccessKey: string,
   ): GraphqlApiClient {

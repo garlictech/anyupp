@@ -1,0 +1,8 @@
+mutation TipOrder($orderId: ID!, $type: TipType!, $value: Float!) {
+  payTipWithStripe(
+    input: { orderId: $orderId, tip: { type: $type, value: $value } }
+  ) {
+    clientSecret
+    status
+  }
+}

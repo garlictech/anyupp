@@ -1,7 +1,7 @@
 import { Then, When } from 'cypress-cucumber-preprocessor/steps';
 
 When('I click on the profile button', () => {
-  cy.findByText('John Doe').click();
+  cy.findByText('testuser+monad').click();
 });
 
 Then('I select the {string} chain in the header menu', (value: string) => {

@@ -1,12 +1,14 @@
-import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/pdf_utils.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +18,8 @@ class OrderDetailsScreen extends StatefulWidget {
   final Order order;
   final GeoUnit unit;
 
-  const OrderDetailsScreen({Key? key, required this.order, required this.unit}) : super(key: key);
+  const OrderDetailsScreen({Key? key, required this.order, required this.unit})
+      : super(key: key);
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState(order);
@@ -27,21 +30,38 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   _OrderDetailsScreenState(Order order) {
     _order = order;
+    print(
+        '**** OrderDetails.constructor.order[${order.id}].hasRated=${order.hasRated}');
   }
 
   @override
   Widget build(BuildContext context) {
     setToolbarThemeV2(theme);
 
-    return BlocListener<OrderRefreshBloc, OrderRefreshState>(
-      listener: (context, state) {
-        print('******* OrderDetailsScreen().listener.state=$state');
-        if (state is OrderRefreshed) {
-          setState(() {
-            _order = state.order;
-          });
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<OrderRefreshBloc, OrderRefreshState>(
+          listener: (context, state) {
+            // print('******* OrderDetailsScreen().listener.state=$state');
+            if (state is OrderRefreshed) {
+              setState(() {
+                _order = state.order;
+              });
+            }
+          },
+        ),
+        BlocListener<RatingBloc, RatingState>(
+          listener: (context, state) {
+            // print('******* OrderDetailsScreen().listener.state=$state');
+            if (state is RatingSuccess) {
+              GeoUnit unit = currentUnit!;
+              getIt<OrderBloc>()
+                  .add(StartGetOrderListSubscription(unit.chainId, unit.id));
+              // Nav.pop();
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         // extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -58,7 +78,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           ),
           centerTitle: true,
           title: Text(
-            formatOrderDate(context, fromGraphQLAWSDateTimeToDartDateTime(_order.createdAt!)),
+            formatOrderDate(context, _order.createdAt),
             style: Fonts.satoshi(
               fontSize: 16.0,
               color: theme.secondary,
@@ -71,22 +91,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             color: theme.secondary, //change your color here
           ),
           backgroundColor: theme.secondary0,
-          // actions: <Widget>[
-          //   Padding(
-          //     padding: const EdgeInsets.only(
-          //       top: 8.0,
-          //       bottom: 8.0,
-          //       right: 15.0,
-          //     ),
-          //     child: BorderedWidget(
-          //       width: 40,
-          //       child: Icon(
-          //         Icons.help,
-          //         color: theme.secondary,
-          //       ),
-          //     ),
-          //   ),
-          // ],
         ),
         body: Container(
           color: theme.secondary0,
@@ -102,6 +106,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   ),
                 ),
                 OrderDetailsInfoTextWidget(
+                  order: _order,
+                  unit: widget.unit,
+                ),
+                OrderDetailsRatingAndTipWidget(order: _order),
+                OrderDetailsTipAndServingFeeWidget(
                   order: _order,
                   unit: widget.unit,
                 ),
@@ -127,27 +136,219 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   }
 }
 
+class OrderDetailsServiceFeeWidget extends StatelessWidget {
+  final Order order;
+  final GeoUnit unit;
+
+  const OrderDetailsServiceFeeWidget({
+    Key? key,
+    required this.order,
+    required this.unit,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (order.serviceFee == null || (order.serviceFee?.netPrice ?? 0) == 0) {
+      return Container();
+    }
+
+    return Text(
+      trans(context, 'orders.details.serviceFee',
+          [unit.serviceFeePolicy?.percentage.toInt() ?? 0]),
+      style: Fonts.satoshi(
+        color: theme.secondary64,
+        fontSize: 14.0,
+      ),
+    );
+  }
+}
+
+class OrderDetailsTipAndServingFeeWidget extends StatelessWidget {
+  final Order order;
+  final GeoUnit unit;
+  OrderDetailsTipAndServingFeeWidget(
+      {Key? key, required this.order, required this.unit});
+
+  @override
+  Widget build(BuildContext context) {
+    if (order.tip == null) {
+      return Container();
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 72.0,
+      ),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            trans(context, 'orders.details.tipDetails'),
+            style: Fonts.satoshi(
+              fontSize: 24.0,
+              fontWeight: FontWeight.w700,
+              color: theme.secondary,
+            ),
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Flexible(
+                flex: 12,
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(right: 16.0),
+                      child: Icon(
+                        Icons.monetization_on,
+                        color: theme.secondary,
+                      ),
+                    ),
+                    Text(
+                      trans(context, 'orders.tipAmount'),
+                      style: Fonts.satoshi(
+                        fontSize: 14,
+                        color: theme.secondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(
+                flex: 7,
+                child: Text(
+                  formatCurrency(order.tip?.value ?? 0, unit.currency),
+                  style: Fonts.satoshi(
+                    fontSize: 14,
+                    color: theme.secondary64,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class OrderDetailsRatingAndTipWidget extends StatelessWidget {
+  final Order order;
+
+  final GeoUnit _unit;
+
+  OrderDetailsRatingAndTipWidget({Key? key, required this.order})
+      : _unit = currentUnit!;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!shouldDisplayRating(order, _unit)) {
+      return Container();
+    }
+    print(
+        '************** OrderDetails.order[${order.id}].hasRated=${order.hasRated}');
+
+    return Column(
+      children: [
+        if (_unit.ratingPolicies != null && order.hasRated != true)
+          Container(
+            height: 56.0,
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 16.0),
+            child: ElevatedButton(
+              onPressed: () => Nav.to(RatingAndTippingScreen(
+                orderId: order.id,
+                ratingPolicy: _unit.ratingPolicies![0],
+              )),
+              style: ElevatedButton.styleFrom(
+                primary: lighten(theme.primary, 76),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                elevation: 0.0,
+              ),
+              child: Text(
+                trans(context, 'orders.sendRatingButton'),
+                style: Fonts.satoshi(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                  color: theme.primary,
+                ),
+              ),
+            ),
+          ),
+        if (_unit.tipPolicy != null &&
+            order.tip == null &&
+            order.paymentMode.method == PaymentMethod.inapp &&
+            order.transaction?.status == PaymentStatus.success)
+          Container(
+            height: 56.0,
+            width: double.infinity,
+            margin: EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              top: 12.0,
+            ),
+            child: ElevatedButton(
+              onPressed: () => Nav.to(RatingAndTippingScreen(
+                orderId: order.id,
+                tipPolicy: _unit.tipPolicy,
+              )),
+              style: ElevatedButton.styleFrom(
+                primary: theme.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                elevation: 0.0,
+              ),
+              child: Text(
+                trans(context, 'orders.sendTipButton'),
+                style: Fonts.satoshi(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                  color: theme.secondary0,
+                ),
+              ),
+            ),
+          )
+      ],
+    );
+  }
+}
+
 class OrderDetailsPaymentInfoWidget extends StatelessWidget {
   final Order order;
 
-  const OrderDetailsPaymentInfoWidget({Key? key, required this.order}) : super(key: key);
+  const OrderDetailsPaymentInfoWidget({Key? key, required this.order})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     IconData icon = Icons.payments_rounded;
     String date = '';
-    if (order.paymentMode.method == PaymentMethod.inapp || order.paymentMode.method == PaymentMethod.card) {
+    if (order.paymentMode.method == PaymentMethod.inapp ||
+        order.paymentMode.method == PaymentMethod.card) {
       icon = Icons.credit_card_outlined;
       // if (order.transaction?.createdAt != null) {
       //   date = dateTimeFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.transaction!.createdAt!));
       // }
     }
-    print('orderdetauils.order.transaction?.createdAt=${order.transaction?.createdAt}');
+    // print('orderdetauils.order.transaction?.createdAt=${order.transaction?.createdAt}');
     if (order.transaction?.createdAt != null) {
-      date = dateTimeFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.transaction!.createdAt!));
+      date = dateTimeFormatter.format(
+          fromGraphQLAWSDateTimeToDartDateTime(order.transaction!.createdAt!));
     }
 
-    bool showButton = order.transaction?.receipt?.pdfData != null || order.transaction?.invoice?.pdfUrl != null;
+    bool showButton = order.transaction?.receipt?.pdfData != null ||
+        order.transaction?.invoice?.pdfUrl != null;
     bool isInvoice = order.transaction?.invoice?.pdfUrl != null;
 
     // showButton = true;
@@ -182,7 +383,8 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
                     width: 18.0,
                   ),
                   Text(
-                    trans(context, 'orders.paymentDetails.${enumToString(order.paymentMode.method)}'),
+                    trans(context,
+                        'orders.paymentDetails.${enumToString(order.paymentMode.method)}'),
                     style: Fonts.satoshi(
                       color: theme.secondary,
                       fontWeight: FontWeight.w400,
@@ -245,10 +447,15 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
   final Order order;
   final GeoUnit unit;
 
-  const OrderDetailsInfoTextWidget({Key? key, required this.order, required this.unit}) : super(key: key);
+  const OrderDetailsInfoTextWidget(
+      {Key? key, required this.order, required this.unit})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool addServiceFeeInfoRow =
+        unit.serviceFeePolicy?.percentage != null && order.serviceFee != null;
+
     return Container(
       // color: theme.secondary12,
       width: double.infinity,
@@ -280,13 +487,31 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                   itemCount: order.items.length,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.only(top: index > 0 ? 32 : 0),
-                      child: OrderDetailsInfoTextItemWidget(
-                        item: order.items[index],
-                        unit: unit,
-                      ),
-                    );
+                    return addServiceFeeInfoRow
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              OrderDetailsInfoTextItemWidget(
+                                item: order.items[index],
+                                unit: unit,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: OrderDetailsServiceFeeWidget(
+                                  order: order,
+                                  unit: unit,
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(
+                            padding: EdgeInsets.only(top: index > 0 ? 32 : 0),
+                            child: OrderDetailsInfoTextItemWidget(
+                              item: order.items[index],
+                              unit: unit,
+                            ),
+                          );
                   },
                 ),
               ],
@@ -318,7 +543,8 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    formatCurrency(order.sumPriceShown.priceSum, order.items[0].priceShown.currency),
+                    formatCurrency(
+                        order.totalPrice, order.items[0].priceShown.currency),
                     style: Fonts.satoshi(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,
@@ -338,7 +564,9 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
   final OrderItem item;
   final GeoUnit unit;
 
-  const OrderDetailsInfoTextItemWidget({Key? key, required this.item, required this.unit}) : super(key: key);
+  const OrderDetailsInfoTextItemWidget(
+      {Key? key, required this.item, required this.unit})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -426,8 +654,10 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
     List<String> extraNames = [];
     if (item.selectedConfigMap != null) {
       item.selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
-          extraNames.add(getLocalizedText(context, generatedProductConfigComponent.name));
+        for (GeneratedProductConfigComponent generatedProductConfigComponent
+            in value) {
+          extraNames.add(
+              getLocalizedText(context, generatedProductConfigComponent.name));
         }
       });
     }
@@ -468,7 +698,8 @@ class OrderStatusTimelineData {
 class OrderStatusTimelineWidget extends StatelessWidget {
   final StatusLog status;
 
-  const OrderStatusTimelineWidget({Key? key, required this.status}) : super(key: key);
+  const OrderStatusTimelineWidget({Key? key, required this.status})
+      : super(key: key);
 
   List<OrderStatusTimelineData> _calculateTimelineData(BuildContext context) {
     List<OrderStatusTimelineData> results = [];
@@ -621,9 +852,69 @@ class OrderStatusTimelineWidget extends StatelessWidget {
     return results;
   }
 
+  Widget _buildSimpleRowWidget(BuildContext context) {
+    bool served = status.status == OrderStatus.served;
+
+    return Container(
+      width: double.infinity,
+      // padding: EdgeInsets.only(left: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            trans(context, 'orders.details.orderState'),
+            style: Fonts.satoshi(
+              fontSize: 24.0,
+              fontWeight: FontWeight.w700,
+              color: theme.secondary,
+            ),
+          ),
+          SizedBox(
+            height: 24.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: Icon(
+                  served ? Icons.check_circle_outline : Icons.highlight_off,
+                  color: theme.secondary,
+                ),
+              ),
+              Text(
+                trans(
+                  context,
+                  served
+                      ? 'orders.statusExt.served'
+                      : 'orders.statusExt.rejected',
+                ),
+                style: Fonts.satoshi(
+                  fontSize: 14,
+                  color: theme.secondary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 48.0,
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // IconData icon = Icons.hourglass_bottom_outlined;
+    OrderStatus s = status.status;
+    if (s == OrderStatus.served ||
+        s == OrderStatus.rejected ||
+        s == OrderStatus.failed) {
+      return _buildSimpleRowWidget(context);
+    }
+
     var timelineData = _calculateTimelineData(context);
     return Container(
       width: double.infinity,
@@ -662,7 +953,8 @@ class OrderStatusTimelineWidget extends StatelessWidget {
 class OrderStatusTimelineItemWidget extends StatelessWidget {
   final OrderStatusTimelineData data;
 
-  const OrderStatusTimelineItemWidget({Key? key, required this.data}) : super(key: key);
+  const OrderStatusTimelineItemWidget({Key? key, required this.data})
+      : super(key: key);
 
   IconData get iconFromType {
     switch (data.icon) {
@@ -790,7 +1082,8 @@ class OrderDetailsInfoTableItemData {
   final String title;
   final String value;
 
-  const OrderDetailsInfoTableItemData({required this.icon, required this.title, required this.value});
+  const OrderDetailsInfoTableItemData(
+      {required this.icon, required this.title, required this.value});
 }
 
 class OrderDetailsInfoTableItem extends StatelessWidget {
@@ -798,7 +1091,8 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
   final Order order;
   final GeoUnit unit;
 
-  const OrderDetailsInfoTableItem({Key? key, required this.pos, required this.order, required this.unit})
+  const OrderDetailsInfoTableItem(
+      {Key? key, required this.pos, required this.order, required this.unit})
       : super(key: key);
 
   OrderDetailsInfoTableItemData _generateItemData(BuildContext context) {
@@ -811,7 +1105,9 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
         );
       case 1:
         return OrderDetailsInfoTableItemData(
-          icon: order.servingMode == ServingMode.takeAway ? Icons.arrow_left : Icons.arrow_right,
+          icon: order.servingMode == ServingMode.takeAway
+              ? Icons.arrow_left
+              : Icons.arrow_right,
           title: trans(context, 'orders.infos.titles.1'),
           value: order.servingMode == ServingMode.takeAway
               ? trans(context, 'cart.takeAway').capitalize()
@@ -824,14 +1120,14 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
           value: '#${order.orderNum}',
         );
       case 3:
-        var createdAt = dateFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!));
+        var createdAt = dateFormatter.format(order.createdAt);
         return OrderDetailsInfoTableItemData(
           icon: Icons.event,
           title: trans(context, 'orders.infos.titles.3'),
           value: createdAt,
         );
       case 4:
-        var createdAt = timeFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.createdAt!));
+        var createdAt = timeFormatter.format(order.createdAt);
         return OrderDetailsInfoTableItemData(
           icon: Icons.schedule_rounded,
           title: trans(context, 'orders.infos.titles.4'),

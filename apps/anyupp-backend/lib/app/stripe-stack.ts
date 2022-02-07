@@ -4,8 +4,9 @@ import * as apigateway from '@aws-cdk/aws-apigateway';
 import * as sst from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
 import path from 'path';
-import * as ssm from '@aws-cdk/aws-ssm';
-import { getFQParamName } from './utils';
+import { createApiDomainName } from './utils';
+import * as route53 from '@aws-cdk/aws-route53';
+import * as acm from '@aws-cdk/aws-certificatemanager';
 
 export interface StripeStackProps extends sst.StackProps {
   stripeSecretKey: string;
@@ -13,6 +14,9 @@ export interface StripeStackProps extends sst.StackProps {
   szamlazzhuAgentKey: string;
   apiAccessKeyId: string;
   apiSecretAccessKey: string;
+  rootDomain: string;
+  certificate: acm.ICertificate;
+  zone: route53.IHostedZone;
 }
 
 export class StripeStack extends sst.Stack {
@@ -29,7 +33,7 @@ export class StripeStack extends sst.Stack {
         timeout: cdk.Duration.seconds(30),
         memorySize: 512,
         code: lambda.Code.fromAsset(
-          path.join(__dirname, '../../.serverless/stripe-webhook.zip'),
+          path.join(__dirname, '../../.serverless-1/stripe-webhook.zip'),
         ),
         environment: {
           STRIPE_SECRET_KEY: props.stripeSecretKey,
@@ -41,22 +45,24 @@ export class StripeStack extends sst.Stack {
       },
     );
 
+    const apiName = 'stripe-webhook';
+
     const api = new apigateway.LambdaRestApi(this, 'StripeWebhook', {
       handler: stripeWebhookLambda,
+      restApiName: apiName,
+      proxy: true,
       deployOptions: {
         stageName: scope.stage,
       },
     });
 
-    new ssm.StringParameter(this, 'StripeWebhookEndpointParam', {
-      allowedPattern: '.*',
-      description: 'Webhook for Stripe',
-      parameterName: getFQParamName(scope, 'StripeWebhookEndpoint'),
-      stringValue: api.url,
-    });
-
-    new cdk.CfnOutput(this, 'StripeWebhookEndpoint', {
-      value: api.url,
-    });
+    createApiDomainName(
+      this,
+      apiName,
+      api,
+      props.zone,
+      props.rootDomain,
+      props.certificate,
+    );
   }
 }

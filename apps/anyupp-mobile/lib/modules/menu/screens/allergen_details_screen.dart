@@ -1,75 +1,21 @@
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/widgets/allergen_grid_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/widgets/app_bar.dart';
 import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AllergenDetailsScreen extends StatefulWidget {
-  @override
-  _AllergenDetailsScreenState createState() => _AllergenDetailsScreenState();
-}
-
-class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
-  bool isFavorite = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class AllergenDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   statusBarColor: theme.secondary0,
-    //   statusBarIconBrightness: Brightness.dark,
-    // ));
-
-    return _buildMain(context);
-  }
-
-  Widget _buildMain(
-    BuildContext context,
-  ) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.secondary0,
-        appBar: AppBar(
-          leading: Container(
-            padding: EdgeInsets.only(
-              left: 8.0,
-              top: 4.0,
-              bottom: 4.0,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  width: 1,
-                  color: theme.secondary40,
-                ),
-              ),
-              child: BackButton(
-                onPressed: () => Nav.pop(),
-                color: theme.secondary,
-              ),
-            ),
-          ),
-          elevation: 0.0,
-          iconTheme: IconThemeData(
-            color: theme.secondary, //change your color here
-          ),
-          backgroundColor: theme.secondary0,
-          title: Text(
-            trans("allergens.title"),
-            style: Fonts.satoshi(
-              color: theme.secondary,
-            ),
-            //getLocalizedText(context, widget.item.name),
-          ),
+        appBar: CustomAppBar(
+          title: trans(context, 'allergens.title'),
+          elevation: 4.0,
         ),
         body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
           builder: (context, state) {
@@ -85,25 +31,67 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
 
   Widget buildDetailsScreen(BuildContext context, GeoUnit unit) {
     return Padding(
-      padding: const EdgeInsets.all(14.0),
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 32.0),
       child: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [
-          getAllergenGrids(),
+          SliverGrid(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 100.0,
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 0.0,
+              // childAspectRatio: 1.,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                String allergenName =
+                    enumToString(allergenMap.keys.toList()[index])!;
+
+                int allergenIndex =
+                    allergenMap[allergenMap.keys.toList()[index]]!;
+                return AllergenGridWidget(
+                  allergen: trans(context, 'allergens.$allergenName'),
+                  index: allergenIndex,
+                  assetPath: 'assets/allergens/$allergenName.svg',
+                  showName: true,
+                  fontSize: 12.0,
+                  iconSize: 32.0,
+                );
+              },
+              childCount: allergenMap.keys.length,
+            ),
+          ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 8),
-                  child: Text(
-                    trans("allergens.disclaimer", [unit.name]),
-                    style: Fonts.satoshi(
-                      fontSize: 14,
-                      color: theme.secondary,
-                      fontWeight: FontWeight.w500,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 32.0,
+                        bottom: 16.0,
+                      ),
+                      child: Text(
+                        trans(context, 'allergens.disclaimerTitle'),
+                        style: Fonts.satoshi(
+                          fontSize: 18,
+                          color: theme.secondary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        textAlign: TextAlign.justify,
+                      ),
                     ),
-                    textAlign: TextAlign.justify,
-                  ),
+                    Text(
+                      trans(context, 'allergens.disclaimer', [unit.name]),
+                      style: Fonts.satoshi(
+                        fontSize: 16,
+                        color: theme.secondary,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ],
                 );
               },
               childCount: 1,
@@ -112,28 +100,5 @@ class _AllergenDetailsScreenState extends State<AllergenDetailsScreen> {
         ],
       ),
     );
-  }
-
-  Widget getAllergenGrids() {
-    Map<String, int> allergens = allergenMap;
-    return SliverGrid(
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 150.0,
-          mainAxisSpacing: 10.0,
-          crossAxisSpacing: 10.0,
-          childAspectRatio: 1.0,
-        ),
-        delegate: SliverChildBuilderDelegate((context, index) {
-          String allergenName = allergens.keys.toList()[index];
-          int allergenIndex = allergens[allergenName]!;
-          return AllergenGridWidget(
-            allergen: trans("allergens.$allergenName"),
-            index: allergenIndex,
-            assetPath: "assets/allergens/$allergenName.svg",
-            showName: true,
-            fontSize: 14.0,
-            iconSize: 48.0,
-          );
-        }, childCount: allergens.keys.length));
   }
 }

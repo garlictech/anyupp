@@ -30,14 +30,13 @@ export class FloorMapEditorComponent
 {
   @Input() editMode?: boolean;
   @Input() floorMap?: CrudApi.Maybe<CrudApi.FloorMapData>;
-  public dimensionForm!: FormGroup;
-  public objectForm!: FormGroup;
+  public dimensionForm?: FormGroup;
+  public objectForm?: FormGroup;
   public EUnitMapObjectType = CrudApi.UnitMapObjectType;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(private _store: Store, private _formBuilder: FormBuilder) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     const w = this.floorMap?.w || 800;
     const h = this.floorMap?.h || 300;
 

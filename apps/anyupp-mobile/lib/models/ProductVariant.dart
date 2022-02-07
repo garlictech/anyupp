@@ -8,6 +8,8 @@ class ProductVariant {
   final ProductVariantPack? pack;
   final double price;
   final int position;
+  final double? netPackagingFee;
+  final bool soldOut;
 
   ProductVariant({
     this.id,
@@ -15,6 +17,8 @@ class ProductVariant {
     this.pack,
     required this.price,
     required this.position,
+    this.netPackagingFee,
+    required this.soldOut,
   });
 
   ProductVariant copyWith({
@@ -23,6 +27,8 @@ class ProductVariant {
     ProductVariantPack? pack,
     double? price,
     int? position,
+    double? netPackagingFee,
+    bool? soldOut,
   }) {
     return ProductVariant(
       id: id ?? this.id,
@@ -30,6 +36,8 @@ class ProductVariant {
       pack: pack ?? this.pack,
       price: price ?? this.price,
       position: position ?? this.position,
+      netPackagingFee: netPackagingFee ?? this.netPackagingFee,
+      soldOut: soldOut ?? this.soldOut,
     );
   }
 
@@ -40,6 +48,8 @@ class ProductVariant {
       'pack': pack?.toJson(),
       'price': price,
       'position': position,
+      'netPackagingFee': netPackagingFee,
+      'soldOut': soldOut,
     };
   }
 
@@ -47,15 +57,18 @@ class ProductVariant {
     return ProductVariant(
       id: map['id'],
       variantName: LocalizedItem.fromJson(map['variantName']),
-      pack: map['pack'] != null ? ProductVariantPack.fromJson(map['pack']) : null,
+      pack:
+          map['pack'] != null ? ProductVariantPack.fromJson(map['pack']) : null,
       price: map['price'],
       position: map['position'],
+      netPackagingFee: map['netPackagingFee'],
+      soldOut: map['soldOut'] ?? false,
     );
   }
 
   @override
   String toString() {
-    return 'ProductVariant(id: $id, variantName: $variantName, pack: $pack, price: $price, position: $position)';
+    return 'ProductVariant(id: $id, variantName: $variantName, netPackagingFee: $netPackagingFee, pack: $pack, price: $price, soldOut: $soldOut, position: $position)';
   }
 
   @override
@@ -67,11 +80,19 @@ class ProductVariant {
         other.variantName == variantName &&
         other.pack == pack &&
         other.price == price &&
-        other.position == position;
+        other.position == position &&
+        other.netPackagingFee == netPackagingFee &&
+        other.soldOut == soldOut;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ variantName.hashCode ^ pack.hashCode ^ price.hashCode ^ position.hashCode;
+    return id.hashCode ^
+        variantName.hashCode ^
+        pack.hashCode ^
+        price.hashCode ^
+        position.hashCode ^
+        netPackagingFee.hashCode ^
+        soldOut.hashCode;
   }
 }

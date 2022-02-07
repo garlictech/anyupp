@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormsService createCustomDailyScheduleFormGroup should create form group 1`] = `
+Object {
+  "date": "",
+  "from": "",
+  "to": "",
+}
+`;
+
+exports[`FormsService createLaneFormGroup should create form group 1`] = `
+Object {
+  "color": "#ffffff",
+  "id": Any<String>,
+  "name": "",
+}
+`;
+
+exports[`FormsService createProductAvailabilityFormGroup should create form group 1`] = `
+Object {
+  "dayFrom": "",
+  "dayTo": "",
+  "price": "",
+  "timeFrom": "",
+  "timeTo": "",
+  "type": "A",
+}
+`;
+
+exports[`FormsService createProductConfigSetFormGroup should create form group 1`] = `
+Object {
+  "items": Array [],
+  "position": 0,
+  "productSetId": "",
+}
+`;
+
+exports[`FormsService createProductConfigSetItemFormGroup should create form group 1`] = `
+Object {
+  "netPackagingFee": 0,
+  "position": 0,
+  "price": 0,
+  "productComponentId": "",
+  "refGroupPrice": 0,
+}
+`;
+
+exports[`FormsService createProductVariantFormGroup should create form group 1`] = `
+Object {
+  "availabilities": Array [],
+  "id": Any<String>,
+  "isAvailable": true,
+  "netPackagingFee": 0,
+  "pack": Object {
+    "size": 0,
+    "unit": "",
+  },
+  "position": 0,
+  "price": 0,
+  "refGroupPrice": 0,
+  "soldOut": false,
+  "variantName": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+}
+`;
+
+exports[`FormsService createRatingPolicyFormGroup should create form group  1`] = `
+Object {
+  "description": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+  "key": "",
+  "ratings": Array [],
+  "title": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+}
+`;
+
+exports[`FormsService createRkeeperFormGroup should create form group with anyupp password 1`] = `
+Object {
+  "anyuppPassword": "",
+  "anyuppUsername": "",
+  "endpointUri": "",
+  "rkeeperPassword": "",
+  "rkeeperUsername": "",
+}
+`;
+
+exports[`FormsService createRkeeperFormGroup should create form group without anyupp password 1`] = `
+Object {
+  "anyuppPassword": "",
+  "anyuppUsername": "",
+  "endpointUri": "",
+  "rkeeperPassword": "",
+  "rkeeperUsername": "",
+}
+`;
+
+exports[`FormsService createServiceFeePolicyFormGroup should create form group  1`] = `
+Object {
+  "percentage": "",
+  "taxPercentage": "",
+  "type": "",
+}
+`;
+
+exports[`FormsService createTipPolicyFormGroup should create form group  1`] = `
+Object {
+  "description": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+  "maxOtherAmount": null,
+  "percents": Array [],
+  "title": Object {
+    "de": "",
+    "en": "",
+    "hu": "",
+  },
+}
+`;

@@ -14,17 +14,22 @@
       class="float-right"
       (click)="close()"
     >
-      <nb-icon icon="close-outline"></nb-icon>
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body>
-    <form [formGroup]="dialogForm" (ngSubmit)="submit()" autocomplete="off">
+    <form
+      *ngIf="dialogForm"
+      [formGroup]="dialogForm"
+      (ngSubmit)="submit()"
+      autocomplete="off"
+    >
       <div class="row">
         <div class="col-md-4">
           <bgap-form-text-input
             caption="common.nameHU"
             type="text"
-            [control]="dialogForm.get('name')!.get('hu')! | asFormControl"
+            [control]="dialogForm?.get('name')!.get('hu') | asFormControl"
             inputId="nameHu"
           ></bgap-form-text-input>
         </div>
@@ -32,7 +37,7 @@
           <bgap-form-text-input
             caption="common.nameEN"
             type="text"
-            [control]="dialogForm.get('name')!.get('en')! | asFormControl"
+            [control]="dialogForm?.get('name')!.get('en') | asFormControl"
             inputId="nameEn"
           ></bgap-form-text-input>
         </div>
@@ -40,7 +45,7 @@
           <bgap-form-text-input
             caption="common.nameDE"
             type="text"
-            [control]="dialogForm.get('name')!.get('de')! | asFormControl"
+            [control]="dialogForm?.get('name')!.get('de') | asFormControl"
             inputId="nameDe"
           ></bgap-form-text-input>
         </div>
@@ -52,7 +57,7 @@
             caption="common.descriptionHU"
             type="text"
             [control]="
-              dialogForm.get('description')!.get('hu')! | asFormControl
+              dialogForm?.get('description')!.get('hu') | asFormControl
             "
             inputId="descriptionHu"
           ></bgap-form-text-input>
@@ -62,7 +67,7 @@
             caption="common.descriptionEN"
             type="text"
             [control]="
-              dialogForm.get('description')!.get('en')! | asFormControl
+              dialogForm?.get('description')!.get('en') | asFormControl
             "
             inputId="descriptionEn"
           ></bgap-form-text-input>
@@ -72,7 +77,7 @@
             caption="common.descriptionDE"
             type="text"
             [control]="
-              dialogForm.get('description')!.get('de')! | asFormControl
+              dialogForm?.get('description')!.get('de') | asFormControl
             "
             inputId="descriptionDe"
           ></bgap-form-text-input>
@@ -82,7 +87,7 @@
       <div class="row">
         <div class="col-md-4">
           <bgap-form-select
-            [control]="dialogForm.get('productCategoryId')! | asFormControl"
+            [control]="dialogForm?.get('productCategoryId') | asFormControl"
             caption="common.productCategory"
             [options]="(productCategories$ | async) || []"
             [localize]="true"
@@ -93,7 +98,7 @@
 
         <div class="col-md-4">
           <bgap-form-select
-            [control]="dialogForm.get('productType')! | asFormControl"
+            [control]="dialogForm?.get('productType') | asFormControl"
             caption="common.productType"
             [options]="productTypes"
             [localize]="false"
@@ -105,7 +110,7 @@
         <div class="col-md-4 pt-4">
           <bgap-form-checkbox
             caption="products.isVisible"
-            [control]="dialogForm.get('isVisible')! | asFormControl"
+            [control]="dialogForm?.get('isVisible') | asFormControl"
             inputId="isVisible"
           ></bgap-form-checkbox>
         </div>
@@ -113,16 +118,16 @@
 
       <bgap-form-product-variants
         [productLevel]="productLevel"
-        [variantFormArray]="dialogForm.get('variants')! | asFormArray"
+        [variantFormArray]="dialogForm?.get('variants') | asFormArray"
       ></bgap-form-product-variants>
 
       <bgap-form-allergens
-        [control]="dialogForm.get('allergens')! | asFormControl"
+        [control]="dialogForm?.get('allergens') | asFormControl"
       ></bgap-form-allergens>
 
       <bgap-form-product-components
         [productLevel]="productLevel"
-        [componentFormArray]="dialogForm.get('configSets')! | asFormArray"
+        [componentFormArray]="dialogForm?.get('configSets') | asFormArray"
       ></bgap-form-product-components>
 
       <bgap-form-clickable-image-input
@@ -145,7 +150,7 @@
           type="submit"
           fullWidth
           status="primary"
-          [disabled]="dialogForm.invalid"
+          [disabled]="dialogForm?.invalid || (working$ | async)"
         >
           {{ 'common.submit' | translate }}
         </button>

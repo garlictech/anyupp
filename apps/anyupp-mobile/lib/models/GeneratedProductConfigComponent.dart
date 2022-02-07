@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:fa_prev/models.dart';
+import 'package:flutter/foundation.dart';
 
 @immutable
 class GeneratedProductConfigComponent {
@@ -9,6 +9,9 @@ class GeneratedProductConfigComponent {
   final int? position;
   final LocalizedItem name;
   final List<Allergen>? allergens;
+  final double? netPackagingFee;
+  final bool soldOut;
+  final String? externalId;
 
   GeneratedProductConfigComponent({
     required this.productComponentId,
@@ -16,6 +19,9 @@ class GeneratedProductConfigComponent {
     this.position,
     required this.name,
     this.allergens,
+    this.netPackagingFee,
+    this.soldOut = false,
+    this.externalId,
   });
 
   GeneratedProductConfigComponent copyWith({
@@ -24,6 +30,9 @@ class GeneratedProductConfigComponent {
     int? position,
     LocalizedItem? name,
     List<Allergen>? allergens,
+    double? netPackagingFee,
+    bool? soldOut,
+    String? externalId,
   }) {
     return GeneratedProductConfigComponent(
       productComponentId: productComponentId ?? this.productComponentId,
@@ -31,6 +40,9 @@ class GeneratedProductConfigComponent {
       position: position ?? this.position,
       name: name ?? this.name,
       allergens: allergens ?? this.allergens,
+      netPackagingFee: netPackagingFee ?? this.netPackagingFee,
+      soldOut: soldOut ?? this.soldOut,
+      externalId: externalId ?? this.externalId,
     );
   }
 
@@ -41,6 +53,9 @@ class GeneratedProductConfigComponent {
       'position': position,
       'name': name.toJson(),
       'allergens': allergens?.map((x) => enumToString(x)).toList(),
+      'netPackagingFee': netPackagingFee,
+      'soldOut': soldOut,
+      'externalId': externalId,
     };
   }
 
@@ -49,14 +64,18 @@ class GeneratedProductConfigComponent {
       productComponentId: map['productComponentId'],
       price: map['price'],
       position: map['position'],
+      netPackagingFee: map['netPackagingFee'],
       name: LocalizedItem.fromJson(map['name']),
-      allergens: List<Allergen>.from(map['allergens']?.map((x) => enumFromString(x, Allergen.values))),
+      externalId: map['externalId'],
+      allergens: List<Allergen>.from(
+          map['allergens']?.map((x) => enumFromString(x, Allergen.values))),
+      soldOut: map['soldOut'] ?? false,
     );
   }
 
   @override
   String toString() {
-    return 'GeneratedProductConfigComponent(productComponentId: $productComponentId, price: $price, position: $position, name: $name, allergens: $allergens)';
+    return 'GeneratedProductConfigComponent(productComponentId: $productComponentId, externalId: $externalId, price: $price, soldOut: $soldOut, netPackagingFee: $netPackagingFee, position: $position, name: $name, allergens: $allergens)';
   }
 
   @override
@@ -68,11 +87,21 @@ class GeneratedProductConfigComponent {
         other.price == price &&
         other.position == position &&
         other.name == name &&
+        other.netPackagingFee == netPackagingFee &&
+        other.soldOut == soldOut &&
+        other.externalId == externalId &&
         listEquals(other.allergens, allergens);
   }
 
   @override
   int get hashCode {
-    return productComponentId.hashCode ^ price.hashCode ^ position.hashCode ^ name.hashCode ^ allergens.hashCode;
+    return productComponentId.hashCode ^
+        price.hashCode ^
+        position.hashCode ^
+        name.hashCode ^
+        netPackagingFee.hashCode ^
+        allergens.hashCode ^
+        soldOut.hashCode ^
+        externalId.hashCode;
   }
 }

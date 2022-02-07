@@ -25,11 +25,12 @@
             }}</nb-card-header>
             <nb-card-body class="overflow-auto p-2">
               <bgap-lane-item
-                *ngFor="let orderItem of placedItems"
+                *ngFor="let orderItem of placedItems; let idx = index"
                 class="w-100"
                 [orderItem]="orderItem"
                 [buttonSize]="buttonSize"
                 [unit]="unit"
+                [attr.data-testid]="'placedLaneItem_' + idx"
               ></bgap-lane-item>
             </nb-card-body>
           </nb-card>
@@ -43,11 +44,12 @@
             }}</nb-card-header>
             <nb-card-body class="overflow-auto p-2">
               <bgap-lane-item
-                *ngFor="let orderItem of processingItems"
+                *ngFor="let orderItem of processingItems; let idx = index"
                 class="w-100"
                 [orderItem]="orderItem"
                 [buttonSize]="buttonSize"
                 [unit]="unit"
+                [attr.data-testid]="'processingLaneItem_' + idx"
               ></bgap-lane-item>
             </nb-card-body>
           </nb-card>
@@ -61,11 +63,12 @@
             }}</nb-card-header>
             <nb-card-body class="overflow-auto p-2">
               <bgap-lane-item
-                *ngFor="let orderItem of readyItems"
+                *ngFor="let orderItem of readyItems; let idx = index"
                 class="w-100"
                 [orderItem]="orderItem"
                 [buttonSize]="buttonSize"
                 [unit]="unit"
+                [attr.data-testid]="'readyLaneItem_' + idx"
               ></bgap-lane-item>
             </nb-card-body>
           </nb-card>

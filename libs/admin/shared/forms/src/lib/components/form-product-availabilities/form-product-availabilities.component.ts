@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormArray } from '@angular/forms';
 import { WEEKLY_VARIANT_AVAILABILITY } from '@bgap/admin/shared/utils';
-import { EVariantAvailabilityType, IKeyValue } from '@bgap/shared/types';
+import { EVariantAvailabilityType, KeyValue } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
 
 import { FormsService } from '../../services/forms/forms.service';
@@ -12,10 +12,11 @@ import { FormsService } from '../../services/forms/forms.service';
   templateUrl: './form-product-availabilities.component.html',
 })
 export class FormProductAvailabilitiesComponent {
-  @Input() availabilityFormArray!: FormArray;
+  @Input() availabilityFormArray?: FormArray | null;
   @Input() currency?: string;
   public EVariantAvailabilityType = EVariantAvailabilityType;
-  public iterativeAvailabilities: IKeyValue[];
+  public iterativeAvailabilities: KeyValue[];
+  public availabilityTypes;
 
   constructor(
     private _formsService: FormsService,
@@ -23,7 +24,7 @@ export class FormProductAvailabilitiesComponent {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.iterativeAvailabilities = Object.keys(WEEKLY_VARIANT_AVAILABILITY).map(
-      (key): IKeyValue => ({
+      (key): KeyValue => ({
         key,
         value: this._translateService.instant(
           WEEKLY_VARIANT_AVAILABILITY[
@@ -32,22 +33,21 @@ export class FormProductAvailabilitiesComponent {
         ),
       }),
     );
+    this.availabilityTypes = [
+      {
+        key: EVariantAvailabilityType.ALWAYS,
+        value: this._translateService.instant('products.always'),
+      },
+      {
+        key: EVariantAvailabilityType.WEEKLY,
+        value: this._translateService.instant('products.weekly'),
+      },
+      {
+        key: EVariantAvailabilityType.SEASONAL,
+        value: this._translateService.instant('products.seasonal'),
+      },
+    ];
   }
-
-  public availabilityTypes = [
-    {
-      key: EVariantAvailabilityType.ALWAYS,
-      value: this._translateService.instant('products.always'),
-    },
-    {
-      key: EVariantAvailabilityType.WEEKLY,
-      value: this._translateService.instant('products.weekly'),
-    },
-    {
-      key: EVariantAvailabilityType.SEASONAL,
-      value: this._translateService.instant('products.seasonal'),
-    },
-  ];
 
   public addAvailability(): void {
     (<FormArray>this.availabilityFormArray)?.push(

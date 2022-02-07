@@ -1,0 +1,49 @@
+{
+  "anyupp-backend-SecretsManagerStack": {
+    "SecretsManager": "arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k"
+  },
+  "anyupp-backend-ParamsStack": {
+    "appleServiceIdOutput": "net.cyberg.anyupp.cognito",
+    "stripePublishableKeyOutput": "pk_test_51IBipwKBBjcbSqG0xQP8G0OVkSByIgHVFag20akTEE4EA9wkY5X5A2ojlXb6qepNG3Ti3uSksanZV6O8ZHtL5MPi002tFhppdx",
+    "googleClientIdOutput": "1016713353610-q3nsj1t1flrjuo33sfakis645gl7ijv3.apps.googleusercontent.com",
+    "facebookAppIdOutput": "166876958090898",
+    "googleApiKeyOutput": "AIzaSyDGNIG1eIqvKsRoBsQ2T7PVff2d1XUhsVg",
+    "securityGroupId": "sg-067322e2345a84f7e",
+    "slackChannelOutput": "net.cyberg.anyupp.cognito",
+    "appleTeamIdOutput": "36CW47H75G",
+    "appleKeyIdOutput": "8W2A8ZDZH8",
+    "vpcIdOutput": "vpc-0880d26d0165c9f7f"
+  },
+  "anyupp-backend-sites": {
+    "AdminSiteDomainA75B4E32": "petrot-admin-anyupp-backend.anyupp.com",
+    "AdminDistributionDomainNameA4A4FE5B": "d1e7435npu98qa.cloudfront.net",
+    "AdminSiteEAA17C78": "https://petrot-admin-anyupp-backend.anyupp.com",
+    "AdminDistributionIdB4DE25AB": "E3UU4G7F2T3EKK",
+    "AdminBucketCA57896C": "petrot-admin-anyupp-backend.anyupp.com"
+  },
+  "anyupp-backend-cognito": {
+    "ConsumerUserPoolId": "eu-west-1_UG2rqhBeW",
+    "AdminUserPoolId": "eu-west-1_z3hT7G8m1",
+    "AdminWebUserPoolClientId": "20qu0b43j5tfh51k9i9br2k7re",
+    "ConsumerNativeUserPoolClientId": "1hnpv84tr5rqofvneg5g84q1q",
+    "AdminUserPoolDomain": "https://petrot-anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
+    "ConsumerWebUserPoolClientId": "d4r5avb8mrisp88kb393fjf92",
+    "ConsumerUserPoolDomain": "https://petrot-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
+    "IdentityPoolId": "eu-west-1:cf906a8a-f1d8-4e74-893c-ed80b3c413e8",
+    "AdminNativeUserPoolClientId": "4d712sd9njp25oiknbvfm7jup6"
+  },
+  "anyupp-backend-appsync": {
+    "AnyuppGraphqlApiUrl": "https://akzcwjmnxzcx5lrbocl3vyup4m.appsync-api.eu-west-1.amazonaws.com/graphql",
+    "AnyuppGraphqlApiKey": "da2-tfxqz4qrenerlgbkippb4am24y"
+  },
+  "anyupp-backend-stripe": {
+    "stripewebhookEndpoint": "https://stripe-webhook-petrot.anyupp.com/petrot",
+    "StripeWebhookEndpointE83D65EB": "https://ls0k3rztq0.execute-api.eu-west-1.amazonaws.com/petrot/"
+  },
+  "anyupp-backend-rkeeper": {
+    "RKeeperWebhookEndpointCBC72BD4": "https://27988pfsz7.execute-api.eu-west-1.amazonaws.com/petrot/",
+    "rkeeperwebhookEndpoint": "https://rkeeper-webhook-petrot.anyupp.com/petrot",
+    "RKeeperTaskBucketName": "petrot-anyupp-backend-rk-anyupprkeepermenubucket4-1gdzck7j8hduy",
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/petrot-anyupp-backend-rke-RkeeperECSTaskExecutionR-1X0O0BZP7FQW5"
+  }
+}

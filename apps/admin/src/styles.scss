@@ -139,3 +139,24 @@ nb-card {
     height: 100% !important;
   }
 }
+
+.dirty-block {
+  position: relative;
+  margin-right: 40px;
+
+  nb-badge {
+    margin-top: 2px;
+  }
+}
+
+button.size-small {
+  nb-icon.material-icons {
+    font-size: 1rem !important;
+  }
+}
+
+button.size-tiny {
+  nb-icon.material-icons {
+    font-size: 0.8rem !important;
+  }
+}

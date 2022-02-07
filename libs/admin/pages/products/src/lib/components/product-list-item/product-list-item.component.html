@@ -12,8 +12,8 @@
   [laneId]="product?.laneId"
 ></bgap-colorized-lane-icon>
 
-<ng-container *ngIf="hasRoleToEdit">
-  <div *ngIf="!pending">
+<ng-container *ngIf="hasRoleToEdit$ | async">
+  <div *ngIf="!product?.pending">
     <button
       nbButton
       shape="round"
@@ -22,20 +22,26 @@
       [title]="'common.edit' | translate"
       (click)="editProduct()"
     >
-      <nb-icon icon="edit-outline"></nb-icon>
+      <nb-icon icon="edit" pack="material-icons"></nb-icon>
     </button>
 
-    <ng-container *ngIf="productLevel === EProductLevel.UNIT">
+    <ng-container
+      *ngIf="
+        productLevel === EProductLevel.UNIT &&
+        !product?.pending &&
+        !product?.dirty
+      "
+    >
       <button
         [hidden]="isLast"
         nbButton
         shape="round"
         size="tiny"
         [title]="'common.moveDown' | translate"
-        class="float-right me-2"
+        class="float-right me-3"
         (click)="moveDown()"
       >
-        <nb-icon icon="chevron-down"></nb-icon>
+        <nb-icon icon="expand_more" pack="material-icons"></nb-icon>
       </button>
       <button
         [hidden]="isFirst"
@@ -43,16 +49,20 @@
         shape="round"
         size="tiny"
         [title]="'common.moveUp' | translate"
-        class="float-right me-2"
+        class="float-right me-3"
         (click)="moveUp()"
       >
-        <nb-icon icon="chevron-up"></nb-icon>
+        <nb-icon icon="expand_less" pack="material-icons"></nb-icon>
       </button>
     </ng-container>
   </div>
 
+  <div class="dirty-block" *ngIf="product?.dirty">
+    <nb-badge text="DIRTY" status="danger" position="top right"></nb-badge>
+  </div>
+
   <button
-    *ngIf="pending"
+    *ngIf="product?.pending"
     nbButton
     status="danger"
     shape="round"
@@ -61,7 +71,7 @@
     (click)="extendProduct()"
     [title]="'products.extendProduct' | translate"
   >
-    <nb-icon icon="download-outline"></nb-icon>
+    <nb-icon icon="file_download" pack="material-icons"></nb-icon>
   </button>
 </ng-container>
 
@@ -70,6 +80,7 @@
 <bgap-allergens
   class="ms-5 d-inline-block"
   [allergens]="product?.allergens || []"
+  *ngIf="(product?.allergens || []).length > 0"
 ></bgap-allergens>
 
 <div class="clearfix"></div>
@@ -99,6 +110,12 @@
     <bgap-status-led
       class="ms-1"
       [status]="variant?.isAvailable"
+    ></bgap-status-led>
+
+    <bgap-status-led
+      *ngIf="productLevel === EProductLevel.UNIT"
+      class="ms-1"
+      [status]="!variant?.soldOut"
     ></bgap-status-led>
   </div>
 

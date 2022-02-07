@@ -12,15 +12,19 @@
       (click)="addChain()"
       [title]="'chains.addChain' | translate"
     >
-      <nb-icon icon="plus-outline"></nb-icon>
+      <nb-icon icon="add" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <nb-list-item *ngFor="let chain of chains$ | async">
-      <bgap-chain-list-item
-        class="w-100"
-        [chain]="chain"
-      ></bgap-chain-list-item>
-    </nb-list-item>
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+      <nb-list>
+        <nb-list-item *cdkVirtualFor="let chain of chains$ | async">
+          <bgap-chain-list-item
+            class="w-100"
+            [chain]="chain"
+          ></bgap-chain-list-item>
+        </nb-list-item>
+      </nb-list>
+    </cdk-virtual-scroll-viewport>
   </nb-card-body>
 </nb-card>

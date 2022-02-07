@@ -1,3 +1,3 @@
 export { AdminPagesProductsModule } from './lib/admin-pages-products.module';
 
-export { ProductExtendFormComponent } from './lib/components/product-extend-form/product-extend-form.component';
+export { ProductFormService } from './lib/services/product-form.service';

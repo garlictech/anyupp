@@ -1,10 +1,7 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/bloc/configset_bloc.dart';
-import 'package:fa_prev/modules/menu/bloc/configset_event.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/menu/widgets/allergens_widget.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
@@ -16,11 +13,13 @@ class ProductConfiguratorWidget extends StatefulWidget {
   final GeoUnit unit;
   final GeneratedProduct product;
   final ServingMode? servingMode;
+  final ProductItemDisplayState displayState;
 
   const ProductConfiguratorWidget({
     required this.unit,
     required this.product,
     required this.servingMode,
+    required this.displayState,
   });
 
   @override
@@ -32,13 +31,13 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   Map<String, Map<String, bool>> _selectedExtras = {};
   Map<String, String> _selectedModifiers = {};
   double _modifierTotalPrice = 0.0;
-  Set<String> _allergeens = {};
-  late ProductVariant? _productVariant;
+  Set<Allergen> _allergeens = {};
+  late ProductVariant _productVariant;
 
   @override
   void initState() {
-    print(
-        '******* ProductConfiguratorWidget.initState().widget=${widget.product}');
+    // print(
+    //     '******* ProductConfiguratorWidget.initState().widget=${widget.product}');
     _productVariant = widget.product.variants.first;
     widget.product.configSets?.forEach((element) {
       if (element.items.isNotEmpty) {
@@ -62,105 +61,113 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
 
   Future<OrderItem?> getOrderItem() async {
     User? user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
-    if (_productVariant != null) {
-      return OrderItem(
-        productType: 'productType',
-        productId: widget.product.id,
-        variantId: _productVariant!.id!,
-        image: widget.product.image,
-        priceShown: PriceShown(
-          currency: widget.unit.currency,
-          pricePerUnit: _productVariant!.price,
-          priceSum: _productVariant!.price,
-          tax: 0,
-          taxSum: 0,
+    return OrderItem(
+      productType: 'productType',
+      productId: widget.product.id,
+      variantId: _productVariant.id!,
+      image: widget.product.image,
+      priceShown: PriceShown(
+        currency: widget.unit.currency,
+        pricePerUnit: _productVariant.price,
+        priceSum: _productVariant.price,
+        tax: 0,
+        taxSum: 0,
+      ),
+      sumPriceShown: PriceShown(
+        currency: widget.unit.currency,
+        pricePerUnit: _productVariant.price,
+        priceSum: _productVariant.price,
+        tax: 0,
+        taxSum: 0,
+      ),
+      allergens: widget.product.allergens,
+      productName: widget.product.name,
+      variantName: _productVariant.variantName,
+      // generatedProductConfigSet: widget.product.,
+      statusLog: [
+        StatusLog(
+          userId: user!.id,
+          status: OrderStatus.none,
+          ts: 0,
         ),
-        sumPriceShown: PriceShown(
-          currency: widget.unit.currency,
-          pricePerUnit: _productVariant!.price,
-          priceSum: _productVariant!.price,
-          tax: 0,
-          taxSum: 0,
-        ),
-        allergens: widget.product.allergens,
-        productName: widget.product.name,
-        variantName: _productVariant!.variantName,
-        // generatedProductConfigSet: widget.product.,
-        statusLog: [
-          StatusLog(
-            userId: user!.id,
-            status: OrderStatus.none,
-            ts: 0,
-          ),
-        ],
-        quantity: 0,
-        selectedConfigMap: getSelectedComponentMap(),
-      );
-    }
-
-    return null;
+      ],
+      quantity: 1,
+      netPackagingFee: _productVariant.netPackagingFee,
+      selectedConfigMap: getSelectedComponentMap(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    List<ProductVariant> variants = widget.product.variants;
-    if (variants.isEmpty) {
-      return Container();
+    if (widget.displayState != ProductItemDisplayState.NORMAL) {
+      return SizedBox();
     }
-    bool buildVariants = widget.product.variants.length > 1;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // _buildTotalSummary(context),
-        Divider(
-          color: theme.secondary12,
-          height: 1,
-        ),
-        if (buildVariants) _buildVariants(variants),
-        Container(
-          // padding: EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // _buildAllergensListWidget(context),
-              ProductConfigModifiersWidget(
-                product: widget.product,
-                unit: widget.unit,
-                onModifiersSelected: (modifiers) async {
-                  this._selectedModifiers = modifiers;
-                  await setButton();
-                  _calculateTotalPrice();
-                  setState(() {});
-                },
-              ),
-              // SizedBox(
-              //   height: 16.0,
-              // ),
-              ProductConfigExtrasWidget(
-                product: widget.product,
-                unit: widget.unit,
-                onExtraSelected: (setId, componentId, selected) {
-                  print(
-                      'onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
-                  setState(() {
-                    if (_selectedExtras[setId] == null) {
-                      _selectedExtras[setId] = {};
-                    }
-                    _selectedExtras[setId]![componentId] = selected;
-                    print('onExtraSelected._selectedExtras=$_selectedExtras');
-                    _calculateTotalPrice();
-                  });
-                },
-              )
-              // _buildExtraSets(context, sets),
-            ],
+    List<ProductVariant> variants = widget.product.variants;
+    bool buildVariants = !widget.product.isAllVariantsSoldOut;
+    if (variants.isEmpty || !buildVariants) {
+      return SizedBox();
+    }
+
+    variants = variants.where((variant) => !variant.soldOut).toList();
+
+    return Container(
+      color: theme.secondary12,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // _buildTotalSummary(context),
+          Divider(
+            color: theme.secondary12,
+            height: 1,
           ),
-        ),
-        _buildAllergensListWidget(context),
-        // _buildTotalButtonWidget(context)
-      ],
+          if (buildVariants) _buildVariants(variants),
+          Container(
+            // padding: EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // _buildAllergensListWidget(context),
+                ProductConfigModifiersWidget(
+                  product: widget.product,
+                  unit: widget.unit,
+                  displayState: widget.displayState,
+                  onModifiersSelected: (modifiers) async {
+                    this._selectedModifiers = modifiers;
+                    await setButton();
+                    _calculateTotalPrice();
+                    setState(() {});
+                  },
+                ),
+                // SizedBox(
+                //   height: 16.0,
+                // ),
+                ProductConfigExtrasWidget(
+                  product: widget.product,
+                  unit: widget.unit,
+                  onExtraSelected: (setId, componentId, selected) {
+                    print(
+                        'onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
+                    setState(() {
+                      if (_selectedExtras[setId] == null) {
+                        _selectedExtras[setId] = {};
+                      }
+                      _selectedExtras[setId]![componentId] = selected;
+                      print('onExtraSelected._selectedExtras=$_selectedExtras');
+                      _calculateTotalPrice();
+                    });
+                  },
+                )
+                // _buildExtraSets(context, sets),
+              ],
+            ),
+          ),
+          _buildAllergensListWidget(context),
+          // _buildTotalButtonWidget(context)
+        ],
+      ),
     );
   }
 
@@ -236,11 +243,11 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   void _calculateTotalPrice() {
-    print(
-        '_calculateTotalPrice.modifierPos=$_selectedModifiers  ,extras=${_selectedExtras}');
-    print('_calculateTotalPrice.servingMode=${widget.servingMode}');
+    // print(
+    //     '_calculateTotalPrice.modifierPos=$_selectedModifiers  ,extras=${_selectedExtras}');
+    // print('_calculateTotalPrice.servingMode=${widget.servingMode}');
 
-    Set<String> allergeens = {};
+    Set<Allergen> allergeens = {};
     if (widget.product.allergens != null &&
         widget.product.allergens!.isNotEmpty) {
       allergeens.addAll(widget.product.allergens!);
@@ -253,8 +260,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           getComponentByIdFromSet(value, modifier, widget.servingMode);
 
       if (component != null) {
-        component.allergens?.forEach(
-            (allergen) => allergeens.add(allergen.toString().split('.')[1]));
+        component.allergens?.forEach((allergen) => allergeens.add(allergen));
       }
     });
 
@@ -269,13 +275,13 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
             widget.servingMode,
           );
           if (component != null) {
-            component.allergens?.forEach((allergen) =>
-                allergeens.add(allergen.toString().split('.')[1]));
+            component.allergens
+                ?.forEach((allergen) => allergeens.add(allergen));
           }
         }
       });
     });
-    print('_calculateTotalPrice.allergeens=$allergeens');
+    // print('_calculateTotalPrice.allergeens=$allergeens');
 
     _allergeens = allergeens;
     _modifierTotalPrice = calculateTotalPrice(
@@ -322,7 +328,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               left: 16,
             ),
             child: Text(
-              'Válassz méretet',
+              trans('product.selectSize'),
               style: Fonts.satoshi(
                 color: theme.primary,
                 fontSize: 14,
@@ -379,7 +385,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   Widget _buildVariantItem(ProductVariant variant) {
-    bool selected = variant.id == _productVariant?.id;
+    bool selected = variant.id == _productVariant.id;
     return Column(
       children: [
         InkWell(

@@ -1,30 +1,23 @@
 import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
 
-import 'package:fa_prev/shared/locale.dart';
-
 String getLocalizedText(BuildContext context, LocalizedItem localizedItem) {
-  Map<String, String?> map = Map();
-  map['hu'] = localizedItem.hu;
-  map['en'] = localizedItem.en;
-  map['de'] = localizedItem.de;
-  return getLocalizedTextFromMap(context, map);
-}
-
-String getLocalizedTextFromMap(BuildContext context, Map<String, String?> localizedItem) {
-  var defaultLocale = SupportedLocales.locales.first.languageCode;
   var locale = Localizations.localeOf(context).languageCode;
-  if (localizedItem[locale] != null && localizedItem[locale] != null) {
-    return localizedItem[locale]!;
-  } else if (localizedItem[defaultLocale] != null && localizedItem[defaultLocale] != null) {
-    return localizedItem[defaultLocale]!;
-  } else {
-    for (var item in localizedItem.values) {
-      if (item != null && item != '') {
-        return item;
-      }
-    }
+  switch (locale) {
+    case 'hu':
+      return _getTextByOrder(localizedItem.hu, localizedItem.en);
+    case 'de':
+      return _getTextByOrder(localizedItem.de, localizedItem.en);
+    default:
+      return _getTextByOrder(localizedItem.en);
   }
-
-  return '';
 }
+
+String _getTextByOrder(String? primary, [String? fallback]) =>
+    _isNotEmpty(primary)
+        ? primary!
+        : _isNotEmpty(fallback)
+            ? fallback!
+            : '-';
+
+bool _isNotEmpty(String? s) => s?.isNotEmpty == true;

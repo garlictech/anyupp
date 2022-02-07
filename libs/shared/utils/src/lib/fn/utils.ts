@@ -1,9 +1,9 @@
-import { IDayInterval, IKeyValueObject } from '@bgap/shared/types';
+import { DayInterval, KeyValueObject } from '@bgap/shared/types';
 import { missingParametersError } from './errors';
 
 export const customNumberCompare =
   (field: string, desc = false) =>
-  (a: IKeyValueObject, b: IKeyValueObject): number => {
+  (a: KeyValueObject, b: KeyValueObject): number => {
     if (+a[field] < +b[field]) {
       return desc ? 1 : -1;
     }
@@ -16,7 +16,7 @@ export const customNumberCompare =
 
 export const customDateCompare =
   (field: string, desc = false) =>
-  (a: IKeyValueObject, b: IKeyValueObject): number => {
+  (a: KeyValueObject, b: KeyValueObject): number => {
     if (new Date(a[field]).getTime() < new Date(b[field]).getTime()) {
       return desc ? 1 : -1;
     }
@@ -29,7 +29,7 @@ export const customDateCompare =
 
 export const customStringCompare =
   (field: string, desc = false) =>
-  (a: IKeyValueObject, b: IKeyValueObject): number => {
+  (a: KeyValueObject, b: KeyValueObject): number => {
     if (a[field] < b[field]) {
       return desc ? 1 : -1;
     }
@@ -40,19 +40,16 @@ export const customStringCompare =
     return 0;
   };
 
-export const objectToArray = (
-  obj: IKeyValueObject | unknown,
-  idKey = '_id',
-) => {
+export const objectToArray = (obj: KeyValueObject | unknown, idKey = '_id') => {
   const arr: unknown[] = [];
 
   if (!obj) {
     return [];
   }
 
-  Object.keys(<IKeyValueObject>obj).forEach((key): void => {
+  Object.keys(<KeyValueObject>obj).forEach((key): void => {
     arr.push({
-      ...(<IKeyValueObject>obj)[key],
+      ...(<KeyValueObject>obj)[key],
       [idKey]: key,
     });
   });
@@ -64,7 +61,7 @@ export const zeroFill = (value: number): string => {
   return ('0' + value).slice(-2);
 };
 
-export const dayInterval = (value: string): IDayInterval => {
+export const dayInterval = (value: string): DayInterval => {
   const start = new Date(value);
   start.setHours(0, 0, 0, 0);
 
@@ -81,8 +78,8 @@ export const reducer = (accumulator: number, currentValue: number): number =>
   accumulator + currentValue;
 
 // Recursively remove undefined/null/emptyString from an object
-export const cleanObject = (obj: IKeyValueObject) => {
-  const finalObj: IKeyValueObject = {};
+export const cleanObject = (obj: KeyValueObject) => {
+  const finalObj: KeyValueObject = {};
 
   Object.keys(obj).forEach(key => {
     if (obj[key] && Array.isArray(obj[key])) {

@@ -1,0 +1,35 @@
+<fieldset class="form">
+  <legend class="label">{{ 'units.serviceFee.title' | translate }}</legend>
+  <div>
+    <div class="row">
+      <div class="col-md-6">
+        <bgap-form-select
+          caption="common.type"
+          [options]="serviceFeeOptions"
+          [control]="serviceFeeTypeControl"
+          [localize]="false"
+          inputId="orderPolicy"
+          [forceShowEmptyOption]="true"
+        ></bgap-form-select>
+      </div>
+      <div class="col-md-3">
+        <bgap-form-text-input
+          caption="units.serviceFee.serviceFeePercent"
+          type="number"
+          [control]="serviceFeeFormGroup?.get('percentage') | asFormControl"
+          inputId="packagingTaxPercentage"
+          suffix="%"
+        ></bgap-form-text-input>
+      </div>
+      <div class="col-md-3">
+        <bgap-form-text-input
+          caption="common.taxPercent"
+          type="number"
+          [control]="serviceFeeFormGroup?.get('taxPercentage') | asFormControl"
+          inputId="packagingTaxPercentage"
+          suffix="%"
+        ></bgap-form-text-input>
+      </div>
+    </div>
+  </div>
+</fieldset>

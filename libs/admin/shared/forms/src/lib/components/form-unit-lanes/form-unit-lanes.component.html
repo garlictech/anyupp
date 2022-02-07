@@ -1,6 +1,6 @@
 <fieldset class="form">
   <legend class="label">{{ 'units.lanes' | translate }}</legend>
-  <div>
+  <div *ngIf="lanesFormArray">
     <div
       *ngFor="
         let lane of lanesFormArray['controls'];
@@ -14,13 +14,13 @@
           <bgap-form-text-input
             caption="common.name"
             type="text"
-            [control]="lane.get('name')! | asFormControl"
+            [control]="lane.get('name') | asFormControl"
             inputId="name"
           ></bgap-form-text-input>
         </div>
         <div class="col-10 col-md-4">
           <bgap-form-color-picker
-            [control]="lane.get('color')! | asFormControl"
+            [control]="lane.get('color') | asFormControl"
             caption="common.color"
           >
           </bgap-form-color-picker>
@@ -29,12 +29,12 @@
           <button
             nbButton
             status="danger"
-            size="small"
+            size="tiny"
             shape="round"
             (click)="removeLane(i)"
             [disabled]="usedLaneIds.includes(lane.value._laneId)"
           >
-            <nb-icon icon="trash-2-outline"></nb-icon>
+            <nb-icon icon="remove" pack="material-icons"></nb-icon>
           </button>
         </div>
       </div>
@@ -49,6 +49,7 @@
     class="float-right mt-3"
     (click)="addLane()"
   >
-    <nb-icon icon="plus-outline"></nb-icon> {{ 'units.addLane' | translate }}
+    <nb-icon icon="add" pack="material-icons"></nb-icon>
+    {{ 'units.addLane' | translate }}
   </button>
 </fieldset>

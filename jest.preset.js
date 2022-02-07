@@ -6,6 +6,10 @@ module.exports = {
     '^.+\\.(ts|js|html)$': 'ts-jest',
   },
   resolver: '@nrwl/jest/plugins/resolver',
-  moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageReporters: ['html'],
+  moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
+  reporters: ['default'],
+  passWithNoTests: true,
+  detectOpenHandles: true,
+  forceExit: true,
+  coverage: true,
 };

@@ -1,21 +1,18 @@
 Feature: Transaction History
 
-  Background: Logged in with 3 order history
-    Given I am on the login screen
+  Scenario: Transaction history listing
+    Given I have 3 order histories at unit "Késdobáló #111"
+    And I am on the login screen
     When I tap the text "Continue anonymously"
     Then there is a loading screen
     And there is the unit selection screen
     When I tap the "Késdobáló #111" unit in the list
     And I tap the "In place" button
     Then there is the "Menu" screen
-    Given I have three order historys at unit "Késdobáló #111"
-
-  Scenario: Transaction history listing
     When I tap the "Profile" icon at the bottom navigator
-    Then there is the profile screen
+    Then there is the "Profile" screen
     When I tap the "Transactions" option
-    Then there is the transactions screen
-    When I pull the screen down
-    Then there is a tranasction list
-    And I check if there are three cards
-    And I check if the date at the top left corner of the cards are in descending order from top to down
+    Then there is the "Transactions" screen
+    And I check if there are 3 cards
+    And I check if the date of the cards are in descending order from top to down
+

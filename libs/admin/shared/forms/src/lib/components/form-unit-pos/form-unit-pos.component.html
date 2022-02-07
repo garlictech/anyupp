@@ -3,27 +3,25 @@
   <div>
     <div class="row">
       <div class="col-12">
-        <div class="col-md-6">
-          <bgap-form-radio-group
-            caption="common.type"
-            [options]="posTypeOptions"
-            [control]="posFormGroup.get('type')! | asFormControl"
-            [localize]="false"
-            [horizontal]="true"
-            inputId="posType"
-          ></bgap-form-radio-group>
-        </div>
+        <bgap-form-radio-group
+          caption="common.type"
+          [options]="posTypeOptions"
+          [control]="posFormGroup?.get('type') | asFormControl"
+          [localize]="false"
+          [horizontal]="true"
+          inputId="posType"
+        ></bgap-form-radio-group>
       </div>
     </div>
 
-    <ng-container *ngIf="posFormGroup.value.type === ePosType.rkeeper">
+    <ng-container *ngIf="posFormGroup?.value.type === ePosType.rkeeper">
       <div class="row">
         <div class="col-12">
           <bgap-form-text-input
             caption="units.rkeeper.endpointUri"
             type="text"
             [control]="
-              posFormGroup.get('rkeeper')!.get('endpointUri')! | asFormControl
+              posFormGroup?.get('rkeeper')!.get('endpointUri') | asFormControl
             "
             inputId="endpointUri"
           ></bgap-form-text-input>
@@ -35,7 +33,7 @@
             caption="units.rkeeper.rkeeperUsername"
             type="text"
             [control]="
-              posFormGroup.get('rkeeper')!.get('rkeeperUsername')!
+              posFormGroup?.get('rkeeper')!.get('rkeeperUsername')!
                 | asFormControl
             "
             inputId="rkeeperUsername"
@@ -46,7 +44,7 @@
             caption="units.rkeeper.rkeeperPassword"
             type="text"
             [control]="
-              posFormGroup.get('rkeeper')!.get('rkeeperPassword')!
+              posFormGroup?.get('rkeeper')!.get('rkeeperPassword')!
                 | asFormControl
             "
             inputId="rkeeperPassword"
@@ -59,18 +57,18 @@
             caption="units.rkeeper.anyuppUsername"
             type="text"
             [control]="
-              posFormGroup.get('rkeeper')!.get('anyuppUsername')!
+              posFormGroup?.get('rkeeper')!.get('anyuppUsername')!
                 | asFormControl
             "
             inputId="anyuppUsername"
           ></bgap-form-text-input>
         </div>
-        <div class="col-3">
+        <div class="col-3" *ngIf="!rkeeperEdit">
           <bgap-form-text-input
             caption="units.rkeeper.anyuppPassword"
             type="text"
             [control]="
-              posFormGroup.get('rkeeper')!.get('anyuppPassword')!
+              posFormGroup?.get('rkeeper')!.get('anyuppPassword')!
                 | asFormControl
             "
             inputId="anyuppPassword"
@@ -92,12 +90,11 @@
       <div class="row">
         <div class="col-12">
           <bgap-form-text-input
+            *ngIf="externalIdControl"
             caption="units.rkeeper.restaurantId"
             type="text"
-            [control]="
-              posFormGroup.get('rkeeper')!.get('restaurantId')! | asFormControl
-            "
-            inputId="restaurantId"
+            [control]="externalIdControl"
+            inputId="externalId"
           ></bgap-form-text-input>
         </div>
       </div>

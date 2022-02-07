@@ -29,7 +29,7 @@ export class ReportsOrdersAmountAvgSalesComponent implements OnInit, OnDestroy {
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.orders$) {
       this.orders$
         .pipe(untilDestroyed(this))

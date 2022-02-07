@@ -2,7 +2,6 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -122,8 +121,11 @@ class SelectUnitMainContentWidget extends StatelessWidget {
                       return UnitCardWidget(
                         unit: state.units[index],
                         onTap: () => selectUnitAndGoToMenuScreen(
-                            context, state.units[index],
-                            deletePlace: true),
+                          context,
+                          state.units[index],
+                          deletePlace: true,
+                          useTheme: false,
+                        ),
                       );
                     },
                   ),
@@ -314,7 +316,7 @@ class SelectUnitQRCardWidget extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 35.0),
-              child: SvgPicture.asset('assets/icons/qr-scan.svg'),
+              child: SvgPicture.asset('assets/icons/qr-scan-orig.svg'),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 25.0, bottom: 30.0),

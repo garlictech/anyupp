@@ -1,7 +1,7 @@
 import { debounceTime } from 'rxjs/operators';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
 import {} from '@bgap/shared/types';
@@ -15,62 +15,64 @@ import { combineLatest } from 'rxjs';
 const menuItems = {
   dashboard: {
     title: 'menu.dashboard',
-    icon: 'home-outline',
+    icon: { icon: 'home', pack: 'material-icons' },
     link: '/admin/dashboard',
     home: true,
     roles: MENU_ROLES.DASHBOARD,
   },
   products: {
     title: 'menu.products',
-    icon: 'cube-outline',
+    icon: { icon: 'book', pack: 'material-icons' },
     link: '/admin/products',
     roles: MENU_ROLES.PRODUCTS,
   },
   productCategories: {
     title: 'menu.productCategories',
-    icon: 'grid-outline',
+    icon: { icon: 'local_bar', pack: 'material-icons' },
     link: '/admin/product-categories',
     roles: MENU_ROLES.PRODUCT_CATEGORIES,
   },
   productModifiers: {
     title: 'menu.modifiersAndExtras',
-    icon: 'pantone-outline',
+    icon: { icon: 'domain', pack: 'material-icons' },
     link: '/admin/modifiers-and-extras',
     roles: MENU_ROLES.MODIFIERS_AND_EXTRAS,
   },
   units: {
     title: 'menu.units',
-    icon: 'home-outline',
+    icon: { icon: 'store', pack: 'material-icons' },
     link: '/admin/units',
     roles: MENU_ROLES.UNITS,
   },
   groups: {
     title: 'menu.groups',
-    icon: 'globe-outline',
+    icon: { icon: 'group_work', pack: 'material-icons' },
     link: '/admin/groups',
     roles: MENU_ROLES.GROUPS,
   },
   chains: {
     title: 'menu.chains',
-    icon: 'flag-outline',
+    icon: { icon: 'stars', pack: 'material-icons' },
     link: '/admin/chains',
     roles: MENU_ROLES.CHAINS,
   },
+  /*
   users: {
     title: 'menu.users',
-    icon: 'people-outline',
+    icon: { icon: 'people', pack: 'material-icons' },
     link: '/admin/users',
     roles: MENU_ROLES.USERS,
   },
+  */
   admins: {
     title: 'menu.admins',
-    icon: 'person-outline',
+    icon: { icon: 'people', pack: 'material-icons' },
     link: '/admin/admins',
     roles: MENU_ROLES.ADMINS,
   },
   roleContexts: {
     title: 'menu.roleContexts',
-    icon: 'shield-outline',
+    icon: { icon: 'verified_user_outline', pack: 'material-icons' },
     link: '/admin/role-contexts',
     roles: MENU_ROLES.ROLE_CONTEXTS,
   },
@@ -88,13 +90,12 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   public menu: NbMenuItem[] = [];
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _translateService: TranslateService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     combineLatest([
       this._store
         .select(loggedUserSelectors.getLoggedUserRole)

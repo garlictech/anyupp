@@ -1,10 +1,8 @@
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/core/theme/theme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-
 import 'package:fa_prev/shared/nav.dart';
-import 'common_error_widget.dart';
+import 'package:fa_prev/shared/widgets.dart';
+import 'package:flutter/material.dart';
 
 Future showConfirmDialog(
   BuildContext context, {
@@ -36,9 +34,12 @@ Future showConfirmDialog(
             Container(
               padding: EdgeInsets.only(top: 12.0),
               child: child ??
-                  CommonErrorWidget(
-                    error: title,
+                  StatusWidget(
+                    message: title,
                     description: message,
+                    icon: 'assets/icons/success_order.svg',
+                    buttonText: 'common.ok2',
+                    showButton: false,
                   ),
             ),
             Container(

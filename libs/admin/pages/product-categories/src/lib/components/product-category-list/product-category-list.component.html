@@ -12,24 +12,28 @@
       (click)="addProductCategory()"
       [title]="'productCategories.addProductCategory' | translate"
     >
-      <nb-icon icon="plus-outline"></nb-icon>
+      <nb-icon icon="add" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <nb-list-item
-      *ngFor="
-        let productCategory of productCategories;
-        first as isFirst;
-        last as isLast
-      "
-    >
-      <bgap-product-category-list-item
-        class="w-100"
-        [productCategory]="productCategory"
-        (positionChange)="positionChange($event)"
-        [isFirst]="isFirst"
-        [isLast]="isLast"
-      ></bgap-product-category-list-item>
-    </nb-list-item>
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+      <nb-list>
+        <nb-list-item
+          *cdkVirtualFor="
+            let productCategory of productCategories;
+            first as isFirst;
+            last as isLast
+          "
+        >
+          <bgap-product-category-list-item
+            class="w-100"
+            [productCategory]="productCategory"
+            (positionChange)="positionChange($event)"
+            [isFirst]="isFirst"
+            [isLast]="isLast"
+          ></bgap-product-category-list-item>
+        </nb-list-item>
+      </nb-list>
+    </cdk-virtual-scroll-viewport>
   </nb-card-body>
 </nb-card>

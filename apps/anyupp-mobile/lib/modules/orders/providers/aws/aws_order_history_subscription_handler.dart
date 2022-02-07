@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:artemis/artemis.dart';
-import 'package:fa_prev/core/app-constants.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
@@ -10,7 +9,8 @@ import 'package:fa_prev/models.dart';
 const REPEAT_TIMEOUT_MS = 120000;
 
 class AwsOrderHistorySubscription {
-  StreamSubscription<GraphQLResponse<OnOrderHistoryChanged$Subscription>>? _listSubscription;
+  StreamSubscription<GraphQLResponse<OnOrderHistoryChanged$Subscription>>?
+      _listSubscription;
   List<Order>? _items;
   String? _nextToken;
   int _totalCount = 0;
@@ -61,13 +61,10 @@ class AwsOrderHistorySubscription {
         client: client,
       )
           .listen((result) async {
-        print('**** startOrderHistoryListSubscription().onData=${result.data}');
-        // print(jsonEncode(result.data));
+        // print('**** startOrderHistorySubscription().onData=${result.data}');
         // print('**** startOrderSubscription.onData.hasException=${result.hasException}');
         if (!result.hasErrors) {
           Order item = Order.fromJson(result.data!.onOrderChanged!.toJson());
-          // print('**** startOrderSubscription.onData.archived=${item.toJson()["archived"]}');
-          // print('**** startOrderSubscription.onData.item=${item.toJson()}');
           // print('**** startOrderSubscription.onData.item=$item');
           if (_items == null) {
             _totalCount = 0;
@@ -81,34 +78,35 @@ class AwsOrderHistorySubscription {
             // print('**** startOrderSubscription.onData.filterModel[$filterModel]=${filterModel(item)}');
             if (item.archived) {
               _items![index] = item;
-              print('**** startOrderSubscription.onData.UPDATE');
+              print('**** startOrderHistorySubscription.onData.UPDATE');
             } else {
-              print('**** startOrderSubscription.onData.DELETE');
+              print('**** startOrderHistorySubscription.onData.DELETE');
               _totalCount = max(0, _totalCount - 1);
               _items!.removeAt(index);
             }
             controller.add(_items);
           } else if (item.archived) {
             // Add
-            print('**** startOrderSubscription.onData.ADD');
+            print('**** startOrderHistorySubscription.onData.ADD');
             _totalCount++;
             _items!.add(item);
-            _items!.sort((a, b) => b.orderNum.compareTo(a.orderNum));
+            _items!.sort((a, b) => b.createdAt.compareTo(a.createdAt));
             controller.add(_items);
           }
         } else {
-          print('**** startOrderSubscription.exception=${result.errors}');
+          print(
+              '**** startOrderHistorySubscription.exception=${result.errors}');
           // _listController.add(_items);
           await _initSubscriptionRestartTimer();
         }
       }, onDone: () {
-        print('**** startOrderSubscription.onDone');
+        print('**** startOrderHistorySubscription.onDone');
       }, onError: (error) {
-        print('**** startOrderSubscription.onError=$error');
+        print('**** startOrderHistorySubscription.onError=$error');
         _initSubscriptionRestartTimer();
       }, cancelOnError: false);
     } on Exception catch (e) {
-      print('**** startOrderSubscription.Exception: $e');
+      print('**** startOrderHistorySubscription.Exception: $e');
       rethrow;
     }
     // print('**** startOrderSubscription.end()');
@@ -133,7 +131,7 @@ class AwsOrderHistorySubscription {
         nextToken: _nextToken,
       )));
 
-      // print('_getOrderHistoryList().result.data=${result.data}');
+      print('_getOrderHistoryList().result.data=${result.data}');
       // print('_getOrderHistoryList().result.exception=${result.exception}');
       if (result.data?.searchOrders == null) {
         _nextToken = null;
@@ -156,18 +154,22 @@ class AwsOrderHistorySubscription {
 
       List<Order> results = [];
       for (int i = 0; i < items.length; i++) {
-        results.add(Order.fromJson(items[i].toJson()));
+        print(
+            '**** _getOrderHistoryList._getList.order[${items[i]!.id}].hasRated=${items[i]!.hasRated}');
+
+        results.add(Order.fromJson(items[i]!.toJson()));
       }
 
-      print('***** _getOrderList().results.length=${results.length}');
+      print('***** _getOrderHistoryList().results.length=${results.length}');
       return results;
     } on Exception catch (e) {
-      print('_getOrderList().Exception: $e');
+      print('_getOrderHistoryList().Exception: $e');
       rethrow;
     }
   }
 
-  bool get hasMoreItems => _nextToken != null && _totalCount >= getIt<AppConstants>().paginationSize;
+  bool get hasMoreItems =>
+      _nextToken != null && _totalCount >= getIt<AppConstants>().paginationSize;
 
   int get itemCount => _totalCount;
 

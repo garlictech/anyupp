@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/models/InvoiceInfo.dart';
 
 abstract class IOrdersProvider {
   Future<void> userPaymentIntentionSignal(String unitId);
@@ -11,7 +10,8 @@ abstract class IOrdersProvider {
 
   // Stream<List<Order>> getCurrentOrders(String unitId);
 
-  Future<void> startOrderListSubscription(String unitId, StreamController<List<Order>?> controller);
+  Future<void> startOrderListSubscription(
+      String unitId, StreamController<List<Order>?> controller);
 
   Future<void> stopOrderListSubscription();
 
@@ -29,7 +29,8 @@ abstract class IOrdersProvider {
   // --- ORDER HISTORY
   // Stream<List<Order>> getOrderHistory(String unitId);
 
-  Future<void> startOrderHistoryListSubscription(String unitId, StreamController<List<Order>?> controller);
+  Future<void> startOrderHistoryListSubscription(
+      String unitId, StreamController<List<Order>?> controller);
 
   Future<void> stopOrderHistoryListSubscription();
 

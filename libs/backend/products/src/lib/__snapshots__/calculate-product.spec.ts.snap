@@ -1,0 +1,214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`calculatePricesAndCheckActivity method should return a minimal representation of the product in the correct format: Result of calculateActualPricesAndCheckActivity with ONLY the variants with ACTIVE prices 1`] = `
+Object {
+  "allergens": Array [
+    "peanut",
+    "egg",
+  ],
+  "chainId": "CHAIN_ID",
+  "configSets": Array [
+    Object {
+      "items": Array [
+        Object {
+          "netPackagingFee": 30,
+          "position": 1,
+          "price": 1,
+          "productComponentId": "PRODUCT_COMPONENT_ID_11",
+          "refGroupPrice": 1,
+        },
+        Object {
+          "netPackagingFee": 40,
+          "position": 2,
+          "price": 2,
+          "productComponentId": "PRODUCT_COMPONENT_ID_21",
+          "refGroupPrice": 2,
+        },
+      ],
+      "position": 1,
+      "productSetId": "PRODUCT_SET_01",
+    },
+  ],
+  "createdAt": "12",
+  "description": Object {
+    "en": "DESCRIPTION",
+  },
+  "groupId": "GROUP_ID",
+  "id": "PRODUCT_ID",
+  "image": "IMG",
+  "isVisible": true,
+  "name": Object {
+    "en": "NAME",
+  },
+  "parentId": "PARENT_ID",
+  "position": 1,
+  "productCategoryId": "PROD_CAT_ID",
+  "productType": "drink",
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "takeaway": true,
+  "takeawayTax": 23,
+  "tax": 11,
+  "unitId": "UNIT_ID",
+  "updatedAt": "13",
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 1.5,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "VARIANT_ID_01",
+      "isAvailable": true,
+      "netPackagingFee": 30,
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT",
+      },
+      "position": 1,
+      "price": 1.5,
+      "refGroupPrice": 1,
+      "soldOut": false,
+      "variantName": Object {
+        "en": "VARIANT_NAME_01",
+      },
+    },
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": "",
+          "dayTo": "",
+          "price": 1.5,
+          "timeFrom": "",
+          "timeTo": "",
+          "type": "A",
+        },
+      ],
+      "id": "VARIANT_ID_01",
+      "isAvailable": true,
+      "netPackagingFee": 30,
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT",
+      },
+      "position": 100,
+      "price": 1.5,
+      "refGroupPrice": 1,
+      "soldOut": false,
+      "variantName": Object {
+        "en": "VARIANT_NAME_01",
+      },
+    },
+  ],
+}
+`;
+
+exports[`calculatePricesAndCheckActivity method should return a minimal representation of the product in the correct format: Result of toCreateGeneratedProductInputType 1`] = `
+Object {
+  "allergens": Array [
+    "peanut",
+    "egg",
+  ],
+  "configSets": Array [
+    Object {
+      "items": Array [
+        Object {
+          "allergens": Array [
+            "egg",
+            "fish",
+          ],
+          "externalId": "EXTERNAL_ID",
+          "name": Object {
+            "en": "PRODUCT_COMP_NAME",
+          },
+          "netPackagingFee": 30,
+          "position": 1,
+          "price": 1,
+          "productComponentId": "PRODUCT_COMPONENT_ID_11",
+          "soldOut": true,
+        },
+        Object {
+          "allergens": Array [
+            "egg",
+            "fish",
+          ],
+          "externalId": "EXTERNAL_ID",
+          "name": Object {
+            "en": "PRODUCT_COMP_NAME",
+          },
+          "netPackagingFee": 40,
+          "position": 2,
+          "price": 2,
+          "productComponentId": "PRODUCT_COMPONENT_ID_21",
+          "soldOut": false,
+        },
+      ],
+      "maxSelection": 1,
+      "name": Object {
+        "en": "PRODUCT_COMP_SET_NAME",
+      },
+      "position": 1,
+      "productSetId": "PRODUCT_SET_01",
+      "supportedServingModes": Array [
+        "inPlace",
+      ],
+      "type": "PRODUCT_COMP_SET_TYPE",
+    },
+  ],
+  "description": Object {
+    "en": "DESCRIPTION",
+  },
+  "id": "PRODUCT_ID",
+  "image": "IMG",
+  "name": Object {
+    "en": "NAME",
+  },
+  "position": 1,
+  "productCategoryId": "PROD_CAT_ID",
+  "productType": "drink",
+  "supportedServingModes": Array [
+    "inPlace",
+    "takeAway",
+  ],
+  "takeawayTax": 23,
+  "tax": 11,
+  "unitId": "UNIT_ID",
+  "variants": Array [
+    Object {
+      "id": "VARIANT_ID_01",
+      "netPackagingFee": 30,
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT",
+      },
+      "position": 1,
+      "price": 1.5,
+      "soldOut": false,
+      "variantName": Object {
+        "en": "VARIANT_NAME_01",
+      },
+    },
+    Object {
+      "id": "VARIANT_ID_01",
+      "netPackagingFee": 30,
+      "pack": Object {
+        "size": 1,
+        "unit": "UNIT",
+      },
+      "position": 100,
+      "price": 1.5,
+      "soldOut": false,
+      "variantName": Object {
+        "en": "VARIANT_NAME_01",
+      },
+    },
+  ],
+}
+`;

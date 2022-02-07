@@ -9,8 +9,8 @@ import { config } from '@bgap/shared/config';
   styleUrls: ['./rkeeper-info-block.component.scss'],
 })
 export class RkeeperInfoBlockComponent {
-  @Input() unitID?: string;
+  @Input() externalId?: string;
   @Input() pos?: CrudApi.Pos | undefined | null;
 
-  public webHookUrl = config.RKeeperWebhookEndpoint;
+  public webHookUrl = config.RkeeperWebhookEndpoint;
 }

@@ -1,4 +1,4 @@
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
+import * as CrudApi from '@bgap/crud-gql/api';
 import { mapPaymentMethodToCard, StripeResolverDeps } from '../stripe.utils';
 import {
   handleStripeErrors,
@@ -6,9 +6,10 @@ import {
 } from './common-stripe';
 
 export const listStripeCards =
-  (userId: string) =>
-  async (deps: StripeResolverDeps): Promise<AnyuppApi.StripeCard[]> => {
+  () =>
+  async (deps: StripeResolverDeps): Promise<CrudApi.StripeCard[]> => {
     // 1. get userId
+    const userId = deps.userId;
     console.debug('listStripeCards().start().userId=' + userId);
 
     // 2. get User from DynamoDB

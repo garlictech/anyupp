@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { config } from '@bgap/shared/config';
-import { ILocation } from '@bgap/shared/types';
+import * as CrudApi from '@bgap/crud-gql/api';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,7 +15,7 @@ import { ILocation } from '@bgap/shared/types';
   templateUrl: './form-contact-group.component.html',
 })
 export class FormContactGroupComponent {
-  @Input() contactFormGroup!: FormGroup;
+  @Input() contactFormGroup?: FormGroup;
   @Input() showAddressForm?: boolean = true;
 
   constructor(
@@ -42,11 +42,11 @@ export class FormContactGroupComponent {
       });
   }
 
-  public markerPositionChange($event: ILocation): void {
+  public markerPositionChange($event: CrudApi.Location): void {
     this._patchLocation($event);
   }
 
-  private _patchLocation(location: ILocation): void {
+  private _patchLocation(location: CrudApi.Location): void {
     if (location) {
       this.contactFormGroup?.patchValue({
         ...this.contactFormGroup?.value,

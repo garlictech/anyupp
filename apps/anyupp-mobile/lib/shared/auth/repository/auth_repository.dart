@@ -15,7 +15,6 @@ class AuthRepository implements IAuthProvider {
   }
 
   Stream<User?> getAuthenticatedUserProfileStream() {
-    // TODO: ezt lehet at kene irni, hogy ne null User-t adjon, hanem exception, ha nincs user.
     return _authProvider.getAuthenticatedUserProfileStream();
   }
 
@@ -40,7 +39,8 @@ class AuthRepository implements IAuthProvider {
   }
 
   @override
-  Future<User?> loginWithCognitoSession(CognitoUserSession session, String username) {
+  Future<User?> loginWithCognitoSession(
+      CognitoUserSession session, String username) {
     return _authProvider.loginWithCognitoSession(session, username);
   }
 }

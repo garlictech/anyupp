@@ -20,7 +20,7 @@ Feature: Opening Hours
     Then there is the map screen
     And I should see my location with red marker
     And I should see "Késdobáló #111" unit with green marker
-    When I swipe up at the botttom sheet
+    When I swipe up at the bottom sheet
     Then I should see the list of units
     And I check if below the name of the units there is an opening hour range
     And I check if the range is formatted in this format: "Opened: XX:XX - YY:YY"

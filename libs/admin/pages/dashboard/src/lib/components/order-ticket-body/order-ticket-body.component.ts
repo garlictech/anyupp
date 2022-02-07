@@ -12,15 +12,15 @@ import {
 import {
   dashboardActions,
   dashboardSelectors,
-  IDashboardSettings,
-} from '@bgap/admin/shared/data-access/dashboard';
-import { ordersSelectors } from '@bgap/admin/shared/data-access/orders';
+  DashboardSettings,
+} from '@bgap/admin/store/dashboard';
+import { ordersSelectors } from '@bgap/admin/store/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardListMode,
   EDashboardSize,
   ENebularButtonSize,
-  IOrderSum,
+  OrderSum,
 } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -37,25 +37,24 @@ import { OrderPrintComponent } from '../order-print/order-print.component';
 })
 export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   @Input() unit?: CrudApi.Unit;
-  public dashboardSettings!: IDashboardSettings;
+  public dashboardSettings!: DashboardSettings;
   public selectedOrder?: CrudApi.Order;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
-  public ordersSum: IOrderSum = {};
+  public ordersSum: OrderSum = {};
   public userActiveOrders?: CrudApi.Order[];
   public EDashboardListMode = EDashboardListMode;
   public activeOrdersCount = 0;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(select(dashboardSelectors.getSettings), untilDestroyed(this))
-      .subscribe((dashboardSettings: IDashboardSettings): void => {
+      .subscribe((dashboardSettings: DashboardSettings): void => {
         this.dashboardSettings = dashboardSettings;
 
         this.buttonSize =

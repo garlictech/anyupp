@@ -1,7 +1,7 @@
 import {
   EProductComponentSetType,
-  IKeyValue,
-  IKeyValueObject,
+  KeyValue,
+  KeyValueObject,
 } from '@bgap/shared/types';
 
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -24,7 +24,7 @@ export const getProductComponentOptions = (
   productComponents
     .filter(productComponent => !(items || []).includes(productComponent.id))
     .map(
-      (productComponent): IKeyValue => ({
+      (productComponent): KeyValue => ({
         key: productComponent.id,
         value: productComponent.name,
       }),
@@ -33,7 +33,7 @@ export const getProductComponentOptions = (
 export const getProductComponentObject = (
   productComponents: CrudApi.ProductComponent[],
 ) => {
-  const productComponentObject: IKeyValueObject = {};
+  const productComponentObject: KeyValueObject = {};
   productComponents.forEach(p => (productComponentObject[p.id] = p.name));
   return productComponentObject;
 };
@@ -47,7 +47,7 @@ export const getProductComponentSetOptions = (
       productComponentSet => !(items || []).includes(productComponentSet.id),
     )
     .map(
-      (productComponentSet): IKeyValue => ({
+      (productComponentSet): KeyValue => ({
         key: productComponentSet.id,
         value: productComponentSet.name,
       }),

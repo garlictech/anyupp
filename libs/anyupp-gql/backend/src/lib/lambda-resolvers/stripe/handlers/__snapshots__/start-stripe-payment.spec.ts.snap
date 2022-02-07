@@ -1,0 +1,296 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`payTipWithStripe test: CreateInvoice calls 1`] = `Array []`;
+
+exports[`payTipWithStripe test: CreateTransaction calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "currency": "BATKA",
+        "externalTransactionId": "STRIPE PAYMENT INTENT ID",
+        "orderId": "ORDER_ID",
+        "paymentMethodId": "TRANSACTION PAYMENT METHOD ID",
+        "status": "waiting_for_payment",
+        "total": 10,
+        "type": "stripe",
+        "userId": "USER_ID",
+      },
+    },
+  ],
+]
+`;
+
+exports[`payTipWithStripe test: GetOrder calls 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "ORDER_ID",
+    },
+    Object {
+      "fetchPolicy": "network-only",
+    },
+  ],
+]
+`;
+
+exports[`payTipWithStripe test: GetUnit calls 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT_ID",
+    },
+    Object {
+      "fetchPolicy": "network-only",
+    },
+  ],
+]
+`;
+
+exports[`payTipWithStripe test: GetUser calls 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "USER_ID",
+    },
+    Object {
+      "fetchPolicy": "network-only",
+    },
+  ],
+]
+`;
+
+exports[`payTipWithStripe test: Stripe tip payment result 1`] = `
+Object {
+  "clientSecret": "STRIPE CLIENT SECRET",
+  "status": "processing",
+}
+`;
+
+exports[`payTipWithStripe test: UpdateOrder calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "id": "ORDER_ID",
+        "tip": Object {
+          "type": "amount",
+          "value": 10,
+        },
+        "tipTransactionId": "TRANSACTION_ID",
+        "tipTransactionStatus": "waiting_for_payment",
+      },
+    },
+  ],
+]
+`;
+
+exports[`payTipWithStripe test: UpdateTransaction calls 1`] = `Array []`;
+
+exports[`payTipWithStripe test: UpdateUser calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "id": "USER_ID",
+        "invoiceAddress": undefined,
+        "stripeCustomerId": "STRIPE_CUSTOMER_ID",
+      },
+    },
+  ],
+]
+`;
+
+exports[`payTipWithStripe test: stripeClient.customers.create.mock 1`] = `
+Array [
+  Array [],
+]
+`;
+
+exports[`payTipWithStripe test: stripeClient.paymentIntents.create.mock 1`] = `
+Array [
+  Array [
+    Object {
+      "amount": 10,
+      "currency": "BATKA",
+      "customer": "STRIPE_CUSTOMER_ID",
+      "payment_method": "TRANSACTION PAYMENT METHOD ID",
+      "payment_method_types": Array [
+        "card",
+      ],
+      "statement_descriptor_suffix": "tip",
+    },
+  ],
+]
+`;
+
+exports[`startStripePayment test: CreateInvoice calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "city": "Pornóapáti",
+        "country": "Neverland",
+        "customerName": "Test Elek",
+        "email": undefined,
+        "orderId": "ORDER_ID",
+        "postalCode": "1234",
+        "status": "waiting",
+        "streetAddress": "Netuddhol",
+        "taxNumber": "123456",
+        "transactionId": "TRANSACTION_ID",
+        "userId": "USER_ID",
+      },
+    },
+  ],
+]
+`;
+
+exports[`startStripePayment test: CreateTransaction calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "currency": "BATKA",
+        "externalTransactionId": "STRIPE PAYMENT INTENT ID",
+        "orderId": "ORDER_ID",
+        "paymentMethodId": "PAYMENT_METHOD_ID",
+        "status": "waiting_for_payment",
+        "total": 100,
+        "type": "stripe",
+        "userId": "USER_ID",
+      },
+    },
+  ],
+]
+`;
+
+exports[`startStripePayment test: GetOrder calls 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "ORDER_ID",
+    },
+    Object {
+      "fetchPolicy": "network-only",
+    },
+  ],
+  Array [
+    Object {
+      "id": "ORDER_ID",
+    },
+    Object {
+      "fetchPolicy": "network-only",
+    },
+  ],
+]
+`;
+
+exports[`startStripePayment test: GetUnit calls 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT_ID",
+    },
+    Object {
+      "fetchPolicy": "network-only",
+    },
+  ],
+]
+`;
+
+exports[`startStripePayment test: GetUser calls 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "USER_ID",
+    },
+    Object {
+      "fetchPolicy": "network-only",
+    },
+  ],
+]
+`;
+
+exports[`startStripePayment test: Stripe payment result 1`] = `
+Object {
+  "clientSecret": "STRIPE CLIENT SECRET",
+  "paymentMethodId": "PAYMENT_METHOD_ID",
+  "status": "processing",
+  "stripeAccount": undefined,
+}
+`;
+
+exports[`startStripePayment test: UpdateOrder calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "id": "ORDER_ID",
+        "items": Array [],
+        "statusLog": undefined,
+        "transactionId": "TRANSACTION_ID",
+        "transactionStatus": "waiting_for_payment",
+      },
+    },
+  ],
+]
+`;
+
+exports[`startStripePayment test: UpdateTransaction calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "id": "TRANSACTION_ID",
+        "invoiceId": "INVOICE_ID",
+      },
+    },
+  ],
+]
+`;
+
+exports[`startStripePayment test: UpdateUser calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "id": "USER_ID",
+        "invoiceAddress": Object {
+          "city": "Pornóapáti",
+          "country": "Neverland",
+          "customerName": "Test Elek",
+          "email": undefined,
+          "postalCode": "1234",
+          "streetAddress": "Netuddhol",
+          "taxNumber": "123456",
+        },
+        "stripeCustomerId": "STRIPE_CUSTOMER_ID",
+      },
+    },
+  ],
+]
+`;
+
+exports[`startStripePayment test: stripeClient.customers.create.mock 1`] = `
+Array [
+  Array [],
+]
+`;
+
+exports[`startStripePayment test: stripeClient.paymentIntents.create.mock 1`] = `
+Array [
+  Array [
+    Object {
+      "amount": 100,
+      "currency": "BATKA",
+      "customer": "STRIPE_CUSTOMER_ID",
+      "payment_method": "PAYMENT_METHOD_ID",
+      "payment_method_types": Array [
+        "card",
+      ],
+    },
+    undefined,
+  ],
+]
+`;

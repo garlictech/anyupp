@@ -25,15 +25,18 @@ abstract class _BaseGraphQLWrapper {
         )
         .map(
           (response) => GraphQLResponse<T>(
-            data: response.data == null ? null : query.parse(response.data ?? {}),
+            data:
+                response.data == null ? null : query.parse(response.data ?? {}),
             errors: response.exception?.graphqlErrors,
             context: response.context,
           ),
         );
   }
 
-  Future<GraphQLResponse<T>> execute<T, U extends JsonSerializable>(GraphQLQuery<T, U> query,
-      {FetchPolicy? fetchPolicy, bool useApi = false}) async {
+  Future<GraphQLResponse<T>> execute<T, U extends JsonSerializable>(
+      GraphQLQuery<T, U> query,
+      {FetchPolicy? fetchPolicy,
+      bool useApi = false}) async {
     ValueNotifier<GraphQLClient> client = await _getClient(useApi: useApi);
     try {
       QueryResult response = await client.value.query(
@@ -51,6 +54,9 @@ abstract class _BaseGraphQLWrapper {
         errors: response.exception?.graphqlErrors,
         context: response.context,
       );
+    } catch (e) {
+      print('GraphQL.execute.error=$e');
+      rethrow;
     } finally {
       client.dispose();
     }
@@ -59,17 +65,12 @@ abstract class _BaseGraphQLWrapper {
 
 class GQL {
   static _BaseGraphQLWrapper amplify = AmplifyApi();
-  static _BaseGraphQLWrapper backend = BackendApi();
+  // static _BaseGraphQLWrapper backend = BackendApi();
 }
 
 class AmplifyApi extends _BaseGraphQLWrapper {
   @override
-  Future<ValueNotifier<GraphQLClient>> _getClient({bool useApi = false}) async =>
-      getIt<GraphQLClientService>().getCrudClient();
-}
-
-class BackendApi extends _BaseGraphQLWrapper {
-  @override
-  Future<ValueNotifier<GraphQLClient>> _getClient({bool useApi = false}) async =>
-      getIt<GraphQLClientService>().getAnyuppClient(useApi: useApi);
+  Future<ValueNotifier<GraphQLClient>> _getClient(
+          {bool useApi = false}) async =>
+      getIt<GraphQLClientService>().getCrudClient(useApi: useApi);
 }

@@ -3,10 +3,10 @@ import { DateTime } from 'luxon';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EProductType,
-  IOrderAmount,
-  IOrderAmounts,
-  IProducMixObject,
-  IProducMixObjectInfo,
+  OrderAmount,
+  OrderAmounts,
+  ProducMixObject,
+  ProducMixObjectInfo,
   UnpayCategoryMethodStatObjItem,
   UnpayCategoryStatObj,
   UnpayCategoryStatObjItem,
@@ -70,11 +70,12 @@ export const getDailyOrdersSum = (
 export const hourlyBreakdownOrderAmounts = (
   timeZone: string,
   orders: CrudApi.Order[],
-): IOrderAmount => {
-  const amounts: IOrderAmount = {
+): OrderAmount => {
+  const amounts: OrderAmount = {
     [EProductType.DRINK]: new Array(24).fill(0),
     [EProductType.FOOD]: new Array(24).fill(0),
     [EProductType.OTHER]: new Array(24).fill(0),
+    [EProductType.TIP]: new Array(24).fill(0),
     ordersCount: new Array(24).fill(0),
     sum: new Array(24).fill(0),
   };
@@ -88,6 +89,7 @@ export const hourlyBreakdownOrderAmounts = (
           i.priceShown.priceSum;
         amounts['sum'][date.hour] += i.priceShown.priceSum;
       });
+      amounts[EProductType.TIP][date.hour] += o.tipTransaction?.total || 0;
 
       amounts['ordersCount'][date.hour] += 1;
     }
@@ -97,10 +99,11 @@ export const hourlyBreakdownOrderAmounts = (
 };
 
 export const dailySalesPerTypeOrderAmounts = (orders: CrudApi.Order[]) => {
-  const amounts: IOrderAmounts = {
+  const amounts: OrderAmounts = {
     [EProductType.DRINK]: 0,
     [EProductType.FOOD]: 0,
     [EProductType.OTHER]: 0,
+    [EProductType.TIP]: 0,
   };
 
   orders.forEach(o => {
@@ -108,6 +111,7 @@ export const dailySalesPerTypeOrderAmounts = (orders: CrudApi.Order[]) => {
       amounts[i.productType || UNKNOWN_PRODUCT_TYPE] +=
         i.sumPriceShown.priceSum;
     });
+    amounts[EProductType.TIP] += o.tipTransaction?.total || 0;
   });
 
   return amounts;
@@ -116,7 +120,7 @@ export const dailySalesPerTypeOrderAmounts = (orders: CrudApi.Order[]) => {
 export const dailySalesPerPaymentMethodOrderAmounts = (
   orders: CrudApi.Order[],
 ) => {
-  const amounts: IOrderAmounts = {
+  const amounts: OrderAmounts = {
     [CrudApi.PaymentMethod.card]: 0,
     [CrudApi.PaymentMethod.cash]: 0,
     [CrudApi.PaymentMethod.inapp]: 0,
@@ -130,7 +134,7 @@ export const dailySalesPerPaymentMethodOrderAmounts = (
 };
 
 export const calculateProductMix = (orders: CrudApi.Order[]) => {
-  const productMix: IProducMixObject = {};
+  const productMix: ProducMixObject = {};
 
   orders.forEach(order => {
     order.items.forEach(orderItem => {
@@ -192,7 +196,7 @@ export const calculateProductMix = (orders: CrudApi.Order[]) => {
     });
   });
 
-  const sorter = (a: IProducMixObjectInfo, b: IProducMixObjectInfo) =>
+  const sorter = (a: ProducMixObjectInfo, b: ProducMixObjectInfo) =>
     a.quantity > b.quantity ? -1 : 1;
 
   return Object.values(productMix)

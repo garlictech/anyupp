@@ -15,21 +15,21 @@ part 'product_list_state.dart';
 class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
   final ProductRepository _productRepository;
 
-  ProductListBloc(this._productRepository) : super(NoProductListLoaded());
+  ProductListBloc(this._productRepository) : super(NoProductListLoaded()) {
+    on<LoadProductList>(_onLoadProductList);
+  }
 
-  @override
-  Stream<ProductListState> mapEventToState(ProductListEvent event) async* {
+  FutureOr<void> _onLoadProductList(
+      LoadProductList event, Emitter<ProductListState> emit) async {
     try {
-      if (event is LoadProductList) {
-        print('********* ProductListBloc.LoadProductList()');
-        yield ProductListLoading();
-        var response = await _productRepository.getProductList(
-          event.unitId,
-          event.categoryId,
-          event.nextToken,
-        );
-        yield ProductListLoaded(response);
-      }
+      print('********* ProductListBloc.LoadProductList()');
+      emit(ProductListLoading());
+      var response = await _productRepository.getProductList(
+        event.unitId,
+        event.categoryId,
+        event.nextToken,
+      );
+      emit(ProductListLoaded(response));
     } on GraphQLException catch (e) {
       print('********* ProductListBloc.PlatformException()=$e');
       getIt<ExceptionBloc>().add(ShowException(e));

@@ -1,5 +1,5 @@
-import { combineLatest, Observable } from 'rxjs';
-import { map, skipWhile, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { shareReplay, skipWhile } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -9,14 +9,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { groupsSelectors } from '@bgap/admin/shared/data-access/groups';
-import { loggedUserSelectors } from '@bgap/admin/shared/data-access/logged-user';
-import { productsSelectors } from '@bgap/admin/shared/data-access/products';
-import { catchGqlError } from '@bgap/admin/shared/data-access/app-core';
+import { groupsSelectors } from '@bgap/admin/store/groups';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import {
+  ExtendedGroupProduct,
+  ExtendedUnitProduct,
+} from '@bgap/admin/store/products';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductLevel, IProductOrderChangeEvent } from '@bgap/shared/types';
-import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
+import { EProductLevel, ProductOrderChangeEvent } from '@bgap/shared/types';
 import {
   NbDialogService,
   NbTabComponent,
@@ -25,7 +25,17 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { ProductListService } from '../../services/product-list.service';
 import { ProductFormComponent } from '../product-form/product-form.component';
+import { FormControl } from '@angular/forms';
+
+type GroupTabProducts = (ExtendedGroupProduct | CrudApi.ChainProduct) & {
+  pending?: boolean;
+};
+
+type UnitTabProducts = (ExtendedUnitProduct | ExtendedGroupProduct) & {
+  pending?: boolean;
+};
 
 @UntilDestroy()
 @Component({
@@ -36,117 +46,86 @@ import { ProductFormComponent } from '../product-form/product-form.component';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   @ViewChild('tabset') tabsetEl!: NbTabsetComponent;
-
-  public chainProducts$: Observable<CrudApi.ChainProduct[]>;
-  public groupProducts$: Observable<CrudApi.GroupProduct[]>;
-  public pendingGroupProducts: CrudApi.ChainProduct[] = [];
-  public pendingUnitProducts: CrudApi.GroupProduct[] = [];
+  public chainProducts: CrudApi.ChainProduct[] = [];
+  public groupTabProducts: GroupTabProducts[] = [];
+  public unitTabProducts: UnitTabProducts[] = [];
   public groupCurrency = '';
-  public unitProducts: CrudApi.UnitProduct[] = [];
   public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
-
-  private _loggedUser?: CrudApi.AdminUser | null;
+  public loggedUser$: Observable<CrudApi.AdminUser | undefined>;
+  public searchControl: FormControl;
   private _sortedUnitProductIds: string[] = [];
 
   constructor(
     private _store: Store,
     private _nbDialogService: NbDialogService,
-    private _crudSdk: CrudSdkService,
+    private _productListService: ProductListService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.selectedProductLevel = EProductLevel.CHAIN;
+    this.searchControl = new FormControl('');
 
-    this.groupProducts$ = this._store.pipe(
-      select(productsSelectors.getExtendedGroupProductsOfSelectedCategory()),
-      untilDestroyed(this),
-    );
-
-    this.chainProducts$ = this._store.pipe(
-      select(productsSelectors.getChainProductsOfSelectedCategory()),
-      map(products => products.sort(customNumberCompare('position'))),
-      untilDestroyed(this),
-    );
+    this.loggedUser$ = this._store
+      .select(loggedUserSelectors.getLoggedUser)
+      .pipe(untilDestroyed(this), shareReplay(1));
   }
 
-  get selectedChainId(): string | null | undefined {
-    return this._loggedUser?.settings?.selectedChainId;
+  get dirtyChainProductsCount() {
+    return (this.chainProducts || []).filter(p => p.dirty).length;
   }
 
-  get selectedGroupId(): string | null | undefined {
-    return this._loggedUser?.settings?.selectedGroupId;
+  get pendingAndDirtyGroupProductsCount() {
+    return (this.groupTabProducts || []).filter(p => p.pending || p.dirty)
+      .length;
   }
 
-  get selectedUnitId(): string | null | undefined {
-    return this._loggedUser?.settings?.selectedUnitId;
+  get pendingAndDirtyUnitProductsCount() {
+    return (this.unitTabProducts || []).filter(p => p.pending || p.dirty)
+      .length;
   }
 
-  get selectedProductCategoryId(): string | null | undefined {
-    return this._loggedUser?.settings?.selectedProductCategoryId;
-  }
-
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
-        select(productsSelectors.getExtendedUnitProductsOfSelectedCategory()),
-        map(products => products.sort(customNumberCompare('position'))),
+        select(groupsSelectors.getSeletedGroup),
+        skipWhile((group): boolean => !group),
         untilDestroyed(this),
       )
-      .subscribe(unitProducts => {
-        this.unitProducts = unitProducts;
-        this._sortedUnitProductIds = this.unitProducts.map((p): string => p.id);
+      .subscribe((group: CrudApi.Group | undefined): void => {
+        this.groupCurrency = group?.currency || '';
 
         this._changeDetectorRef.detectChanges();
       });
 
-    combineLatest([
-      this._store.pipe(
-        select(productsSelectors.getPendingGroupProductsOfSelectedCategory()),
-      ),
-      this._store.pipe(
-        select(productsSelectors.getPendingUnitProductsOfSelectedCategory()),
-      ),
-      this._store.pipe(
-        select(loggedUserSelectors.getLoggedUser),
-        filterNullish(),
-      ),
-      this._store.pipe(
-        select(loggedUserSelectors.getLoggedUserRole),
-        filterNullish(),
-      ),
-    ])
+    this._productListService
+      .chainProducts$(this.searchControl.valueChanges)
       .pipe(untilDestroyed(this))
-      .subscribe(
-        ([
-          pendingGroupProducts,
-          pendingUnitProducts,
-          _loggedUser,
-          role,
-        ]): void => {
-          this._loggedUser = _loggedUser;
+      .subscribe((chainProducts: CrudApi.ChainProduct[]) => {
+        this.chainProducts = chainProducts;
 
-          this.pendingGroupProducts = [
-            CrudApi.Role.superuser,
-            CrudApi.Role.chainadmin,
-            CrudApi.Role.groupadmin,
-          ].includes(role)
-            ? pendingGroupProducts
-            : [];
-          this.pendingUnitProducts = pendingUnitProducts;
+        this._changeDetectorRef.detectChanges();
+      });
 
-          this._store
-            .pipe(
-              select(groupsSelectors.getSeletedGroup),
-              skipWhile((group): boolean => !group),
-              take(1),
-            )
-            .subscribe((group: CrudApi.Group | undefined): void => {
-              this.groupCurrency = group?.currency || '';
-            });
+    this._productListService
+      .groupProducts$(this.searchControl.valueChanges)
+      .pipe(untilDestroyed(this))
+      .subscribe((groupTabProducts: GroupTabProducts[]) => {
+        this.groupTabProducts = groupTabProducts;
 
-          this._changeDetectorRef.detectChanges();
-        },
-      );
+        this._changeDetectorRef.detectChanges();
+      });
+
+    this._productListService
+      .unitProducts$(this.searchControl.valueChanges)
+      .pipe(untilDestroyed(this))
+      .subscribe((unitTabProducts: UnitTabProducts[]) => {
+        this.unitTabProducts = unitTabProducts;
+        this._sortedUnitProductIds = this.unitTabProducts.map(
+          (p): string => p.id,
+        );
+
+        this._changeDetectorRef.detectChanges();
+      });
   }
 
   ngOnDestroy(): void {
@@ -155,6 +134,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   public selectLevel($event: NbTabComponent): void {
     this.selectedProductLevel = <EProductLevel>$event.tabId;
+
+    // Trigger an event to fix CdkVirtualScroll height
+    window.dispatchEvent(new Event('resize'));
   }
 
   public addProduct(): void {
@@ -163,37 +145,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     dialog.componentRef.instance.productLevel = this.selectedProductLevel;
   }
 
-  public unitProductPositionChange($event: IProductOrderChangeEvent) {
-    if (this._loggedUser?.settings?.selectedUnitId) {
-      const idx = this._sortedUnitProductIds.indexOf($event.productId);
-
-      if (
-        (idx >= 0 &&
-          $event.change === 1 &&
-          idx < this._sortedUnitProductIds.length - 1) ||
-        ($event.change === -1 && idx > 0)
-      ) {
-        this._sortedUnitProductIds.splice(idx, 1);
-        this._sortedUnitProductIds.splice(
-          idx + $event.change,
-          0,
-          $event.productId,
-        );
-
-        for (let i = 0; i < this._sortedUnitProductIds.length; i++) {
-          const productId = this._sortedUnitProductIds[i];
-
-          this._crudSdk.sdk
-            .UpdateUnitProduct({
-              input: {
-                id: productId,
-                position: i + 1,
-              },
-            })
-            .pipe(catchGqlError(this._store))
-            .subscribe();
-        }
-      }
-    }
+  public unitProductPositionChange($event: ProductOrderChangeEvent) {
+    this._productListService
+      .unitProductPositionChange$($event, this._sortedUnitProductIds)
+      .subscribe();
   }
 }

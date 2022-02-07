@@ -17,8 +17,8 @@ class CartRepository implements ICartProvider {
   Cart? get cart => _cartProvider.cart;
 
   Future<Cart?> addProductToCart(
-      String unitId, OrderItem item, ServingMode servingMode) async {
-    Cart? _cart = await _cartProvider.getCurrentCart(unitId);
+      GeoUnit unit, OrderItem item, ServingMode servingMode) async {
+    Cart? _cart = await _cartProvider.getCurrentCart(unit.id);
     User? user = await _authProvider.getAuthenticatedUserProfile();
     if (user == null) {
       throw LoginException(
@@ -30,13 +30,18 @@ class CartRepository implements ICartProvider {
     if (_cart == null || _cart.items.isEmpty) {
       _cart = Cart(
         userId: user.id,
-        unitId: unitId,
+        unitId: unit.id,
         servingMode: servingMode,
-        place: await getPlacePref(unitId) ??
+        place: await getPlacePref(unit.id) ??
             Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
         items: [
           item.copyWith(quantity: 0),
         ],
+        orderPolicy: unit.orderPolicy,
+        paymentMode: PaymentMode(
+          method: PaymentMethod.cash,
+          type: PaymentType.cash,
+        ),
       );
     }
 
@@ -57,7 +62,7 @@ class CartRepository implements ICartProvider {
       _cart = _cart.copyWith(items: items);
     }
 
-    await _cartProvider.updateCart(unitId, _cart);
+    await _cartProvider.updateCart(unit.id, _cart);
     return _cart;
   }
 

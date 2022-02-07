@@ -5,6 +5,7 @@ import {
   Input,
 } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
+
 import { FormsService } from '../../services/forms/forms.service';
 
 @Component({
@@ -13,7 +14,7 @@ import { FormsService } from '../../services/forms/forms.service';
   templateUrl: './form-weekly-schedule.component.html',
 })
 export class FormWeeklyScheduleComponent {
-  @Input() scheduleControl!: FormControl;
+  @Input() scheduleControl?: FormControl | null;
   public dayKeys: string[];
 
   constructor(
@@ -24,10 +25,14 @@ export class FormWeeklyScheduleComponent {
   }
 
   public addCustomDate(): void {
-    (<FormArray>this.scheduleControl.get('custom')).push(
+    (<FormArray>this.scheduleControl?.get('custom')).push(
       this._formsService.createCustomDailyScheduleFormGroup(),
     );
 
     this._changeDetectorRef.detectChanges();
+  }
+
+  public removeCustomDate(idx: number): void {
+    (<FormArray>this.scheduleControl?.get('custom')).removeAt(idx);
   }
 }

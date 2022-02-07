@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { productsSelectors } from '@bgap/admin/shared/data-access/products';
+import { productsSelectors } from '@bgap/admin/store/products';
 import { FormsService } from '../../services/forms/forms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
@@ -18,7 +18,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-unit-lanes.component.html',
 })
 export class FormUnitLanesComponent implements OnInit {
-  @Input() lanesFormArray!: FormArray;
+  @Input() lanesFormArray?: FormArray;
   public usedLaneIds: string[];
 
   constructor(
@@ -29,7 +29,7 @@ export class FormUnitLanesComponent implements OnInit {
     this.usedLaneIds = [];
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._store
       .pipe(
         select(productsSelectors.getUnitProductLaneIds()),

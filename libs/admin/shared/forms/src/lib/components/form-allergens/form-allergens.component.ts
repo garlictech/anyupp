@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ALLERGENS } from '@bgap/admin/shared/utils';
-import { IAllergen } from '@bgap/shared/types';
+import { Allergen } from '@bgap/shared/types';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -10,15 +10,15 @@ import { IAllergen } from '@bgap/shared/types';
   styleUrls: ['./form-allergens.component.scss'],
 })
 export class FormAllergensComponent {
-  @Input() control!: FormControl;
+  @Input() control?: FormControl | null;
 
   public allergens = ALLERGENS;
 
-  public allergenIsChecked(allergen: IAllergen): boolean {
+  public allergenIsChecked(allergen: Allergen): boolean {
     return (this.control?.value || []).indexOf(allergen.id) >= 0;
   }
 
-  public toggleAllergen(allergen: IAllergen): void {
+  public toggleAllergen(allergen: Allergen): void {
     const allergensArr: string[] = this.control?.value;
     const idx = allergensArr.indexOf(allergen.id);
 

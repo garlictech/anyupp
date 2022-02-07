@@ -5,9 +5,10 @@
     "piece": "db",
     "close": "Close",
     "select": "Select",
-    "ok": "Ok",
+    "ok": "OK",
     "today": "Today",
-    "exit": "Tap back again to exit app."
+    "exit": "Tap back again to exit app.",
+    "ok2": "OK"
   },
   "locale": {
     "EN": "English",
@@ -139,10 +140,14 @@
     "deleteCartAccept": "Delete",
     "deleteCartCancel": "Cancel",
     "takeAway": "takeaway",
-    "inPlace": "in place"
+    "inPlace": "in place",
+    "packagingFee": "Packaging fee",
+    "serviceFee": "Service fee",
+    "hasServiceFee": "The price includes service fee.",
+    "hasNoServiceFee": "The price does't include service fee."
   },
   "allergens": {
-    "title": "Allergens",
+    "title": "ALLERGENS",
     "celery": "Celery",
     "crustaceans": "Crustaceans",
     "egg": "Egg",
@@ -172,11 +177,23 @@
     "noActiveOrderButton": "Discover menu",
     "totalCost": "TOTAL COST",
     "noOrderHistory": "No order history yet",
+    "sendRatingButton": "RATE ORDER",
+    "sendTipButton": "SEND TIP",
     "details": {
       "orderState": "Order status",
       "orderDetails": "Order details",
       "paymentDetails": "Payment details",
-      "otherDetails": "More details"
+      "otherDetails": "More details",
+      "tipDetails": "Tip",
+      "serviceFee": "The price contains {{0}}% service fee."
+    },
+    "sendOrderError": {
+      "title": "Order failed.",
+      "description": "An error has occurred, please contact our team for assistance!"
+    },
+    "sendOrderSuccess": {
+      "title": "Successful order!",
+      "description": "The ordered products have been added to your invoice and will be served soon."
     },
     "status": {
       "none": "WAITING",
@@ -187,6 +204,11 @@
       "rejected": "REJECTED",
       "served": "SERVED"
     },
+    "statusExt": {
+      "served": "Order served",
+      "rejected": "Order deleted"
+    },
+    "tipAmount": "Tip amount",
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
     "simplepay": "Pay with SimplePay",
@@ -280,11 +302,21 @@
   "payment": {
     "title": "PAY",
     "choose": "Please select a payment method",
+    "delete": {
+      "title": "Delete credit card?",
+      "description": "This will delete the credit card from your payment methods.",
+      "reason": "Delete",
+      "cancel": "Cancel"
+    },
     "method": {
-      "cash": "Cash at my table to my server",
-      "creditCard": "Credit card at my table to my server + SZÉP card",
-      "inAppPayment": "Online Card payment via Stripe (preferred)",
-      "noPaymentMethod": "No cards saved yet."
+      "inAppPayment": "Credit Card Payment",
+      "inAppPaymentDesc": "Online",
+      "cash": "Cash",
+      "cashDesc": "I pay at the waiter",
+      "creditCard": "Card, SZÉP card",
+      "creditCardDesc": "I pay at the waiter",
+      "noPaymentMethod": "You have no saved cards yet.",
+      "addNewCard": "Add new card"
     },
     "sendOrder": "PLACE ORDER",
     "fillInvoice": "FILL INVOICE FORM",
@@ -301,6 +333,7 @@
         "paymentInfo": "Payment information"
       },
       "invoicing": {
+        "title": "VAT INVOICE",
         "want_invoice": "I want a VAT invoice",
         "invoice_info": "Invoice Info",
         "receipt_info": "Receipt Info",
@@ -314,7 +347,10 @@
         "invoiceAddress": "Use previous address",
         "show": "Show",
         "downloadReceipt": "DOWNLOAD RECEIPT",
-        "downloadInvoice": "DOWNLOAD INVOICE"
+        "downloadInvoice": "DOWNLOAD INVOICE",
+        "save": "SAVE",
+        "warning": "Data marked in red is required",
+        "modifyAddress": "Modify"
       }
     },
     "simplePayStatus": {
@@ -335,6 +371,16 @@
         "description": "SimplePay transaction ID: {{0}}"
       }
     },
+    "newCard": {
+      "title": "Add new card",
+      "hint": {
+        "card_number": "xxxx xxxx xxxx xxxx",
+        "expiry": "MM/YY",
+        "cvc": "CVV"
+      },
+      "saveCard": "SAVE CARD",
+      "warning": "The card information you entered is invalid. Please check it again!"
+    },
     "cardFields": {
       "card_number": {
         "label": "Card number",
@@ -347,8 +393,8 @@
         "validationError": "Card expirity date invalid"
       },
       "cvc": {
-        "label": "CVC",
-        "hint": "XXX",
+        "label": "CVV",
+        "hint": "CVV",
         "validationError": "Card CVC is invalid"
       }
     },
@@ -399,10 +445,15 @@
     "scanQR": "Click & scan your table to order",
     "qrConnected": "Connected to",
     "chair": "Chair #{{0}} at Table #{{1}}",
-    "findingSeat": "Finding your seat...",
+    "findingSeat": "finding table and chair ...",
+    "findingSeatLoading": "This may take a few seconds. Please do not close this window!",
     "tableReserved": {
       "title": "New Table Reserved!",
       "description": "Seat #{{1}} reversed at Table #{{0}}"
+    },
+    "tableFound": {
+      "title": "Chair: #{{1}}, Table: #{{0}}",
+      "description": "The connection has been made. You can continue the order!"
     },
     "qrCodeError": {
       "title": "QR code invalid!",
@@ -475,18 +526,24 @@
   },
   "profile": {
     "menu": {
-      "contact": "Contact Us",
+      "section1": "Account",
+      "contact": "Contact",
       "transactions": "Transactions",
-      "about": "About",
-      "cards": "Saved cards",
-      "logout": "Logout",
-      "settings": "Settings",
-      "regulations": "Regulations",
+      "paymentMethods": "Saved cards",
+      "allergens": "Allergens",
+      "section2": "Settings",
       "language": "Language",
-      "payment": "Payment and invoicing"
+      "security": "Security & Password",
+      "privacy": "Terms of Use",
+      "about": "About",
+      "logout": "Logout"
+    },
+    "language": {
+      "title": "LANGUAGE",
+      "save": "SET LANGUAGE"
     },
     "transactions": {
-      "status": "Status",
+      "title": "TRANSACTIONS",
       "paymentMethod": "Payment Method",
       "noTransactions": "No Transactions",
       "details": "Details",
@@ -495,13 +552,23 @@
         "stripe": "Stripe",
         "cash": "Cash",
         "-": "Unknown"
+      },
+      "status": {
+        "waitingForPayment": "Waiting for payment",
+        "success": "Served",
+        "failed": "Deleted"
       }
     }
   },
   "product": {
     "notTakeAway": "Only in place",
+    "notTakeAwaDesc": "A termék csak helyben fogyasztásra elérhető.",
     "notInPlace": "Only for takeaway",
-    "size": "Size:"
+    "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
+    "soldOut": "Elfogyott",
+    "soldOutDesc": "A termék sajnos elfogyott",
+    "size": "Size:",
+    "selectSize": "Choose a size"
   },
   "validators": {
     "required": "this field is required",
@@ -642,5 +709,33 @@
       "title": "Unit is closed",
       "description": "Unit is not accepting orders right now. Try it later!"
     }
+  },
+  "rating": {
+    "question": "How did you like your order?",
+    "send": "READY",
+    "stars": {
+      "1": "Bad",
+      "2": "Going",
+      "3": "Appropriate",
+      "4": "Good",
+      "5": "Wonderful"
+    },
+    "notification": {
+      "title": "Rate order",
+      "message": "Rate your latest order!"
+    }
+  },
+  "tipping": {
+    "question": "Do you want to tip?",
+    "description": "100% of the tips are given to our employees.",
+    "otherAmount": "Other amount",
+    "dialog": {
+      "title": "Unique Tip",
+      "description": "Please enter the amount of tips you want.",
+      "ok": "Done",
+      "cancel": "Cancel",
+      "hint": "Tip amount"
+    },
+    "success": "Thank you for your rating and tip!"
   }
 }

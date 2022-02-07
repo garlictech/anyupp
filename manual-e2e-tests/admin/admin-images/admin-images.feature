@@ -28,7 +28,7 @@ Feature: Add images on admin
   Scenario: Add image for a Product category
     And I click on the "Product categories" text
     Then the "Product categories (EN)" title is displayed
-    When I click the edit button in the listitem with "Test product category #1 name" content
+    When I click the edit button in the listitem with "Hamburgers" content
     And I click on the minus icon under the "Image" text
     And I click on the plus button under the "Image" text
     Then my files are open
@@ -41,7 +41,7 @@ Feature: Add images on admin
   Scenario: Add image for a Chain product
     And I click on the "Product categories" text
     Then the "Products" title is displayed
-    When I click the edit button in the listitem with "Test chain product #1 name" content
+    When I click the edit button in the listitem with "Hamburgers" content
     And I click on the minus icon under the "Image" text
     And I click on the plus button under the "Image" text
     Then my files are open
