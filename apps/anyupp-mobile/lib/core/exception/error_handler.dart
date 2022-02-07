@@ -8,8 +8,8 @@ void configureCatcherAndRunZonedApp(Widget mainApp) {
   print('configureCatcherAndRunZonedApp().awsConfig=${AppConfig.config}');
   bool useSlack = AppConfig.SlackErrorWebhookUrl != null;
 
-  final slackHandler = SlackHandler(
-      (AppConfig.SlackErrorWebhookUrl ?? ''), '#' + (AppConfig.SlackErrorChannel ?? 'anyupp-errors'),
+  final slackHandler = SlackHandler((AppConfig.SlackErrorWebhookUrl ?? ''),
+      '#' + (AppConfig.SlackErrorChannel ?? 'anyupp-errors'),
       username: "ErrorCatcher",
       iconEmoji: ":bug:",
       enableDeviceParameters: true,
@@ -21,8 +21,9 @@ void configureCatcherAndRunZonedApp(Widget mainApp) {
   final consoleHandler = ConsoleHandler(enableCustomParameters: true);
 
   /// Debug configuration with dialog report mode and console handler. It will show dialog and once user accepts it, error will be shown   /// in console.
-  CatcherOptions debugOptions =
-      CatcherOptions(SilentReportMode(), [consoleHandler], customParameters: customParameters);
+  CatcherOptions debugOptions = CatcherOptions(
+      SilentReportMode(), [consoleHandler],
+      customParameters: customParameters);
   // CatcherOptions(DialogReportMode(), [ConsoleHandler()]);
 
   /// Release configuration. Same as above, but once user accepts dialog, user will be prompted to send email with crash to support.
@@ -34,5 +35,8 @@ void configureCatcherAndRunZonedApp(Widget mainApp) {
       ],
       customParameters: customParameters);
 
-  Catcher(rootWidget: mainApp, debugConfig: debugOptions, releaseConfig: releaseOptions);
+  Catcher(
+      rootWidget: mainApp,
+      debugConfig: debugOptions,
+      releaseConfig: releaseOptions);
 }

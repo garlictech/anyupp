@@ -184,7 +184,8 @@
       "orderDetails": "Order details",
       "paymentDetails": "Payment details",
       "otherDetails": "More details",
-      "tipDetails": "Tip"
+      "tipDetails": "Tip",
+      "serviceFee": "The price contains {{0}}% service fee."
     },
     "sendOrderError": {
       "title": "Order failed.",

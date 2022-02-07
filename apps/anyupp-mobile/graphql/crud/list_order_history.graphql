@@ -184,6 +184,11 @@ query SearchOrderHistory(
       }
       tipTransactionId
       tipTransactionStatus
+      serviceFee {
+        currency
+        netPrice
+        taxPercentage
+      }
     }
     nextToken
     total

@@ -170,5 +170,10 @@ subscription OnOrderChanged($userId: String, $unitId: String) {
     }
     tipTransactionId
     tipTransactionStatus
+    serviceFee {
+      currency
+      netPrice
+      taxPercentage
+    }
   }
 }

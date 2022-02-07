@@ -347,8 +347,6 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     BuildContext context,
     List<ProductCategory> productCategories,
   ) {
-    print('ProductMenuScreen._getTabBarTitles()');
-
     List<Widget> results = [
       _getTab(
         trans('main.menu.favorites'),
@@ -367,7 +365,6 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   }
 
   Tab _getTab(String title, bool selected) {
-    print('ProductMenuScreen._getTap[$title].selected=$selected');
     return Tab(
       text: title,
     );

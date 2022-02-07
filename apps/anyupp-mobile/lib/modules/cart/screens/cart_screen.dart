@@ -215,12 +215,10 @@ class CartScreen extends StatelessWidget {
       }
     }
 
-    int additionalRowCount = 0;
     bool isTakeAway = cart.servingMode == ServingMode.takeAway;
-
-    bool isServiceFee = cart.totalServiceFee != null;
-    additionalRowCount += (isServiceFee ? 1 : 0) + (isTakeAway ? 1 : 0);
-    int serviceFeeRowPos = (isServiceFee ? 1 : 0);
+    bool isServiceFee =
+        cart.totalServiceFee != null && cart.totalServiceFee! > 0.0;
+    int additionalRowCount = (isServiceFee ? 1 : 0) + (isTakeAway ? 1 : 0);
 
     return Column(
       children: <Widget>[
@@ -252,7 +250,7 @@ class CartScreen extends StatelessWidget {
                   }
 
                   if (isServiceFee &&
-                      position == cart.items.length + serviceFeeRowPos - 1) {
+                      position == cart.items.length + additionalRowCount - 1) {
                     return AnimationConfiguration.staggeredList(
                         position: position,
                         duration: const Duration(milliseconds: 200),
@@ -466,7 +464,7 @@ class CartScreen extends StatelessWidget {
                           height: 16,
                         ),
                         Text(
-                          formatCurrency(cart.totalServiceFee, unit.currency),
+                          '${formatCurrency(cart.totalServiceFee, unit.currency)} (${unit.serviceFeePolicy!.percentage.toInt()} %)',
                           key: const Key('cart-servicefee-text'),
                           style: Fonts.satoshi(
                             color: theme.primary,

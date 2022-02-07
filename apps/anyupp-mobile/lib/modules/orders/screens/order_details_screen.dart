@@ -105,11 +105,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     status: _order.statusLog[_order.statusLog.length - 1],
                   ),
                 ),
-                OrderDetailsRatingAndTipWidget(order: _order),
                 OrderDetailsInfoTextWidget(
                   order: _order,
                   unit: widget.unit,
                 ),
+                OrderDetailsRatingAndTipWidget(order: _order),
                 OrderDetailsTipAndServingFeeWidget(
                   order: _order,
                   unit: widget.unit,
@@ -131,6 +131,33 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class OrderDetailsServiceFeeWidget extends StatelessWidget {
+  final Order order;
+  final GeoUnit unit;
+
+  const OrderDetailsServiceFeeWidget({
+    Key? key,
+    required this.order,
+    required this.unit,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (order.serviceFee == null || (order.serviceFee?.netPrice ?? 0) == 0) {
+      return Container();
+    }
+
+    return Text(
+      trans(context, 'orders.details.serviceFee',
+          [unit.serviceFeePolicy?.percentage.toInt() ?? 0]),
+      style: Fonts.satoshi(
+        color: theme.secondary64,
+        fontSize: 14.0,
       ),
     );
   }
@@ -426,6 +453,9 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool addServiceFeeInfoRow =
+        unit.serviceFeePolicy?.percentage != null && order.serviceFee != null;
+
     return Container(
       // color: theme.secondary12,
       width: double.infinity,
@@ -457,13 +487,31 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                   itemCount: order.items.length,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.only(top: index > 0 ? 32 : 0),
-                      child: OrderDetailsInfoTextItemWidget(
-                        item: order.items[index],
-                        unit: unit,
-                      ),
-                    );
+                    return addServiceFeeInfoRow
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              OrderDetailsInfoTextItemWidget(
+                                item: order.items[index],
+                                unit: unit,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: OrderDetailsServiceFeeWidget(
+                                  order: order,
+                                  unit: unit,
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(
+                            padding: EdgeInsets.only(top: index > 0 ? 32 : 0),
+                            child: OrderDetailsInfoTextItemWidget(
+                              item: order.items[index],
+                              unit: unit,
+                            ),
+                          );
                   },
                 ),
               ],
@@ -495,8 +543,8 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    formatCurrency(order.sumPriceShown.priceSum,
-                        order.items[0].priceShown.currency),
+                    formatCurrency(
+                        order.totalPrice, order.items[0].priceShown.currency),
                     style: Fonts.satoshi(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,
