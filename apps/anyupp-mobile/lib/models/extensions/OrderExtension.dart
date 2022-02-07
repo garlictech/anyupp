@@ -13,4 +13,7 @@ extension OrderExtension on Order {
       return '';
     }
   }
+
+  double get totalPrice =>
+      this.sumPriceShown.priceSum + (this.serviceFee?.netPrice ?? 0);
 }

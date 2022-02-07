@@ -176,5 +176,10 @@ mutation RateOrder($orderId: ID!, $questionKey: String!, $rating: Int!) {
     }
     tipTransactionId
     tipTransactionStatus
+    serviceFee {
+      currency
+      netPrice
+      taxPercentage
+    }
   }
 }

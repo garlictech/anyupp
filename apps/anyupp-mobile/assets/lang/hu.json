@@ -193,7 +193,8 @@
       "orderDetails": "Rendelés részletei",
       "paymentDetails": "Fizetés részletei",
       "otherDetails": "További részletek",
-      "tipDetails": "Borravaló"
+      "tipDetails": "Borravaló",
+      "serviceFee": "Az ár {{0}}% szervízdíjat tartalmaz."
     },
     "status": {
       "none": "VÁR",

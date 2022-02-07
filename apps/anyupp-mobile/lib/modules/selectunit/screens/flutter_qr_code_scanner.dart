@@ -88,7 +88,10 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
                 actions: isDev
                     ? [
                         IconButton(
-                          icon: Icon(Icons.qr_code_2),
+                          icon: Icon(
+                            Icons.qr_code_2,
+                            color: Color(0xFF303030),
+                          ),
                           onPressed: () async {
                             setState(() {
                               _unitId = 'seeded_unit_c1_g1_1_id';

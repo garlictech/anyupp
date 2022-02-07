@@ -183,6 +183,11 @@ query SearchOrders(
         type
         value
       }
+      serviceFee {
+        currency
+        netPrice
+        taxPercentage
+      }
       tipTransactionId
       tipTransactionStatus
     }

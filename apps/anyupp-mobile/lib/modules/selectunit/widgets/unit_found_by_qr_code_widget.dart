@@ -92,14 +92,14 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
           });
         }
       },
-      child: Container(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Spacer(),
-              _showError == false
-                  ? Padding(
+      child: _showError == false
+          ? Container(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Spacer(),
+                    Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 56.0),
                       child: FlipCard(
                         key: _flipCardState,
@@ -108,54 +108,49 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
                         front: _buildQRCodeCard(context),
                         back: _buildConnectedToTableCard(context),
                       ),
-                    )
-                  : Container(
-                      child: Container(
-                        // color: Colors.red,
-                        child: CommonErrorWidget(
-                          error: trans(_errorTitle!),
-                          description: trans(_errorDesc!),
-                          showButton: true,
-                          onPressed: () {
-                            print('clicked');
-                            if (widget.popWhenClose) {
-                              Nav.pop<bool>(false);
-                              return;
-                            }
-                            Nav.reset(SelectUnitChooseMethodScreen());
-                          },
-                        ),
-                      ),
                     ),
-              Spacer(),
-              Container(
-                width: double.infinity,
-                height: 56.0,
-                margin: const EdgeInsets.all(16.0),
-                child: _selectedUnit != null
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40.0),
-                          ),
-                          primary: theme.primary,
-                        ),
-                        onPressed: () => _continueToUnit(),
-                        child: Text(
-                          trans('common.ok2'),
-                          style: Fonts.satoshi(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: theme.secondary0,
-                          ),
-                        ),
-                      )
-                    : null,
-              )
-            ],
-          ),
-        ),
-      ),
+                    Spacer(),
+                    Container(
+                      width: double.infinity,
+                      height: 56.0,
+                      margin: const EdgeInsets.all(16.0),
+                      child: _selectedUnit != null
+                          ? ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40.0),
+                                ),
+                                primary: theme.primary,
+                              ),
+                              onPressed: () => _continueToUnit(),
+                              child: Text(
+                                trans('common.ok2'),
+                                style: Fonts.satoshi(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: theme.secondary0,
+                                ),
+                              ),
+                            )
+                          : null,
+                    )
+                  ],
+                ),
+              ),
+            )
+          : CommonErrorWidget(
+              error: trans(_errorTitle!),
+              description: trans(_errorDesc!),
+              showButton: true,
+              expanded: true,
+              onPressed: () {
+                if (widget.popWhenClose) {
+                  Nav.pop<bool>(false);
+                  return;
+                }
+                Nav.reset(SelectUnitChooseMethodScreen());
+              },
+            ),
     );
   }
 
