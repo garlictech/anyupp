@@ -213,6 +213,7 @@ const toGeneratedProductConfigSetInput = ({
         // comes from the productComponent itself (referenced by productComponentId)
         name: productComponent.name,
         allergens: productComponent.allergens,
+        netPackagingFee: confComponent.netPackagingFee,
         soldOut: productComponent.soldOut,
         externalId: productComponent.externalId,
       };

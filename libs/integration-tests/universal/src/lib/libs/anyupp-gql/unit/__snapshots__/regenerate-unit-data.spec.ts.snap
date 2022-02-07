@@ -23,6 +23,7 @@ Array [
     "position": 1,
     "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
+    "soldOut": null,
     "supportedServingModes": Array [
       "takeAway",
     ],
@@ -32,7 +33,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -48,7 +49,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -64,7 +65,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -80,7 +81,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -112,12 +113,13 @@ Array [
               "soya",
               "peanut",
             ],
+            "externalId": null,
             "name": Object {
               "de": "Room temperature",
               "en": "Room temperature",
               "hu": "Szobahőmérsékletű",
             },
-            "netPackagingFee": null,
+            "netPackagingFee": 1000,
             "position": 1,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_01",
@@ -125,6 +127,7 @@ Array [
           },
           Object {
             "allergens": Array [],
+            "externalId": null,
             "name": Object {
               "de": "Straw",
               "en": "Straw",
@@ -160,6 +163,7 @@ Array [
               "soya",
               "peanut",
             ],
+            "externalId": null,
             "name": Object {
               "de": "Room temperature",
               "en": "Room temperature",
@@ -173,6 +177,7 @@ Array [
           },
           Object {
             "allergens": Array [],
+            "externalId": null,
             "name": Object {
               "de": "Straw",
               "en": "Straw",
@@ -188,6 +193,7 @@ Array [
             "allergens": Array [
               "mustard",
             ],
+            "externalId": null,
             "name": Object {
               "de": "French fries",
               "en": "French fries",
@@ -229,6 +235,7 @@ Array [
     "position": 1,
     "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
+    "soldOut": null,
     "supportedServingModes": Array [
       "takeAway",
     ],
@@ -238,7 +245,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -254,7 +261,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -270,7 +277,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -286,7 +293,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -323,6 +330,7 @@ Array [
     "position": 1,
     "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
+    "soldOut": null,
     "supportedServingModes": Array [
       "takeAway",
     ],
@@ -332,7 +340,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -348,7 +356,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -364,7 +372,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -380,7 +388,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -420,6 +428,7 @@ Array [
     "position": 1,
     "productCategoryId": "productCategoryId_",
     "productType": "PRODUCT_TYPE",
+    "soldOut": null,
     "supportedServingModes": Array [
       "inPlace",
     ],
@@ -481,12 +490,13 @@ Object {
             "soya",
             "peanut",
           ],
+          "externalId": null,
           "name": Object {
             "de": "Room temperature",
             "en": "Room temperature",
             "hu": "Szobahőmérsékletű",
           },
-          "netPackagingFee": null,
+          "netPackagingFee": 1000,
           "position": 1,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_01",
@@ -494,6 +504,7 @@ Object {
         },
         Object {
           "allergens": Array [],
+          "externalId": null,
           "name": Object {
             "de": "Straw",
             "en": "Straw",
@@ -529,6 +540,7 @@ Object {
             "soya",
             "peanut",
           ],
+          "externalId": null,
           "name": Object {
             "de": "Room temperature",
             "en": "Room temperature",
@@ -542,6 +554,7 @@ Object {
         },
         Object {
           "allergens": Array [],
+          "externalId": null,
           "name": Object {
             "de": "Straw",
             "en": "Straw",
@@ -557,6 +570,7 @@ Object {
           "allergens": Array [
             "mustard",
           ],
+          "externalId": null,
           "name": Object {
             "de": "French fries",
             "en": "French fries",
@@ -599,6 +613,7 @@ Object {
   "position": 1,
   "productCategoryId": "test_REGEN__ProductCategoryId_01",
   "productType": "PRODUCT_TYPE",
+  "soldOut": null,
   "supportedServingModes": Array [
     "takeAway",
   ],
@@ -609,7 +624,7 @@ Object {
   "variants": Array [
     Object {
       "id": "test_GroupProductVariant_id_1",
-      "netPackagingFee": null,
+      "netPackagingFee": 300,
       "pack": Object {
         "size": 1,
         "unit": "GROUP_UNIT",
@@ -625,7 +640,7 @@ Object {
     },
     Object {
       "id": "test_GroupProductVariant_id_2",
-      "netPackagingFee": null,
+      "netPackagingFee": 300,
       "pack": Object {
         "size": 2,
         "unit": "GROUP_UNIT",
@@ -641,7 +656,7 @@ Object {
     },
     Object {
       "id": "test_UnitProductVariant_id_1",
-      "netPackagingFee": null,
+      "netPackagingFee": 400,
       "pack": Object {
         "size": 1,
         "unit": "UNIT_UNIT",
@@ -657,7 +672,7 @@ Object {
     },
     Object {
       "id": "test_UnitProductVariant_id_2",
-      "netPackagingFee": null,
+      "netPackagingFee": 400,
       "pack": Object {
         "size": 2,
         "unit": "UNIT_UNIT",
@@ -673,6 +688,74 @@ Object {
     },
   ],
 }
+`;
+
+exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with API: A Generated ProductCategory 1`] = `
+Object {
+  "createdAt": Any<String>,
+  "id": "test_REGEN_UNIT_ID_01__test_REGEN__ProductCategoryId_01",
+  "productCategory": Object {
+    "chainId": "seeded_chain_1_id",
+    "createdAt": Any<String>,
+    "description": Object {
+      "de": null,
+      "en": "DESCRIPTION",
+      "hu": null,
+    },
+    "id": "test_REGEN__ProductCategoryId_01",
+    "image": "IMAGE",
+    "name": Object {
+      "de": null,
+      "en": "PRODUCT_CATEGORY",
+      "hu": null,
+    },
+    "position": 0,
+    "updatedAt": Any<String>,
+  },
+  "productCategoryId": "test_REGEN__ProductCategoryId_01",
+  "productNum": 3,
+  "unitId": "test_REGEN_UNIT_ID_01",
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with API: CONFIG SETS 1`] = `null`;
+
+exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with API: VARIANTS 1`] = `
+Array [
+  Object {
+    "id": "test_generatedProductVariant_id_pundefined_1",
+    "netPackagingFee": 1,
+    "pack": Object {
+      "size": 1,
+      "unit": "UNIT",
+    },
+    "position": 1,
+    "price": 1,
+    "soldOut": null,
+    "variantName": Object {
+      "de": null,
+      "en": "VARIANT_NAME_1",
+      "hu": "VARIANT_NAME_1",
+    },
+  },
+  Object {
+    "id": "test_generatedProductVariant_id_pundefined_2",
+    "netPackagingFee": 1,
+    "pack": Object {
+      "size": 2,
+      "unit": "UNIT",
+    },
+    "position": 2,
+    "price": 2,
+    "soldOut": null,
+    "variantName": Object {
+      "de": null,
+      "en": "VARIANT_NAME_2",
+      "hu": "VARIANT_NAME_2",
+    },
+  },
+]
 `;
 
 exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with direct resolver 1`] = `
@@ -698,6 +781,7 @@ Array [
     "position": 1,
     "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
+    "soldOut": null,
     "supportedServingModes": Array [
       "takeAway",
     ],
@@ -707,7 +791,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -723,7 +807,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -739,7 +823,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
-        "netPackagingFee": 1,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -755,7 +839,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
-        "netPackagingFee": 1,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -787,12 +871,13 @@ Array [
               "soya",
               "peanut",
             ],
+            "externalId": null,
             "name": Object {
               "de": "Room temperature",
               "en": "Room temperature",
               "hu": "Szobahőmérsékletű",
             },
-            "netPackagingFee": null,
+            "netPackagingFee": 1000,
             "position": 1,
             "price": 0,
             "productComponentId": "test_REGEN_prodComp_01",
@@ -800,6 +885,7 @@ Array [
           },
           Object {
             "allergens": Array [],
+            "externalId": null,
             "name": Object {
               "de": "Straw",
               "en": "Straw",
@@ -835,6 +921,7 @@ Array [
               "soya",
               "peanut",
             ],
+            "externalId": null,
             "name": Object {
               "de": "Room temperature",
               "en": "Room temperature",
@@ -848,6 +935,7 @@ Array [
           },
           Object {
             "allergens": Array [],
+            "externalId": null,
             "name": Object {
               "de": "Straw",
               "en": "Straw",
@@ -863,6 +951,7 @@ Array [
             "allergens": Array [
               "mustard",
             ],
+            "externalId": null,
             "name": Object {
               "de": "French fries",
               "en": "French fries",
@@ -904,6 +993,7 @@ Array [
     "position": 1,
     "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
+    "soldOut": null,
     "supportedServingModes": Array [
       "takeAway",
     ],
@@ -913,7 +1003,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -929,7 +1019,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -945,7 +1035,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
-        "netPackagingFee": 1,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -961,7 +1051,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
-        "netPackagingFee": 1,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -998,6 +1088,7 @@ Array [
     "position": 1,
     "productCategoryId": "test_REGEN__ProductCategoryId_01",
     "productType": "PRODUCT_TYPE",
+    "soldOut": null,
     "supportedServingModes": Array [
       "takeAway",
     ],
@@ -1007,7 +1098,7 @@ Array [
     "variants": Array [
       Object {
         "id": "test_GroupProductVariant_id_1",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 1,
           "unit": "GROUP_UNIT",
@@ -1023,7 +1114,7 @@ Array [
       },
       Object {
         "id": "test_GroupProductVariant_id_2",
-        "netPackagingFee": null,
+        "netPackagingFee": 300,
         "pack": Object {
           "size": 2,
           "unit": "GROUP_UNIT",
@@ -1039,7 +1130,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_1",
-        "netPackagingFee": 1,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 1,
           "unit": "UNIT_UNIT",
@@ -1055,7 +1146,7 @@ Array [
       },
       Object {
         "id": "test_UnitProductVariant_id_2",
-        "netPackagingFee": 1,
+        "netPackagingFee": 400,
         "pack": Object {
           "size": 2,
           "unit": "UNIT_UNIT",
@@ -1095,6 +1186,7 @@ Array [
     "position": 1,
     "productCategoryId": "productCategoryId_",
     "productType": "PRODUCT_TYPE",
+    "soldOut": null,
     "supportedServingModes": Array [
       "inPlace",
     ],
@@ -1156,12 +1248,13 @@ Object {
             "soya",
             "peanut",
           ],
+          "externalId": null,
           "name": Object {
             "de": "Room temperature",
             "en": "Room temperature",
             "hu": "Szobahőmérsékletű",
           },
-          "netPackagingFee": null,
+          "netPackagingFee": 1000,
           "position": 1,
           "price": 0,
           "productComponentId": "test_REGEN_prodComp_01",
@@ -1169,6 +1262,7 @@ Object {
         },
         Object {
           "allergens": Array [],
+          "externalId": null,
           "name": Object {
             "de": "Straw",
             "en": "Straw",
@@ -1204,6 +1298,7 @@ Object {
             "soya",
             "peanut",
           ],
+          "externalId": null,
           "name": Object {
             "de": "Room temperature",
             "en": "Room temperature",
@@ -1217,6 +1312,7 @@ Object {
         },
         Object {
           "allergens": Array [],
+          "externalId": null,
           "name": Object {
             "de": "Straw",
             "en": "Straw",
@@ -1232,6 +1328,7 @@ Object {
           "allergens": Array [
             "mustard",
           ],
+          "externalId": null,
           "name": Object {
             "de": "French fries",
             "en": "French fries",
@@ -1274,6 +1371,7 @@ Object {
   "position": 1,
   "productCategoryId": "test_REGEN__ProductCategoryId_01",
   "productType": "PRODUCT_TYPE",
+  "soldOut": null,
   "supportedServingModes": Array [
     "takeAway",
   ],
@@ -1284,7 +1382,7 @@ Object {
   "variants": Array [
     Object {
       "id": "test_GroupProductVariant_id_1",
-      "netPackagingFee": null,
+      "netPackagingFee": 300,
       "pack": Object {
         "size": 1,
         "unit": "GROUP_UNIT",
@@ -1300,7 +1398,7 @@ Object {
     },
     Object {
       "id": "test_GroupProductVariant_id_2",
-      "netPackagingFee": null,
+      "netPackagingFee": 300,
       "pack": Object {
         "size": 2,
         "unit": "GROUP_UNIT",
@@ -1316,7 +1414,7 @@ Object {
     },
     Object {
       "id": "test_UnitProductVariant_id_1",
-      "netPackagingFee": 1,
+      "netPackagingFee": 400,
       "pack": Object {
         "size": 1,
         "unit": "UNIT_UNIT",
@@ -1332,7 +1430,7 @@ Object {
     },
     Object {
       "id": "test_UnitProductVariant_id_2",
-      "netPackagingFee": 1,
+      "netPackagingFee": 400,
       "pack": Object {
         "size": 2,
         "unit": "UNIT_UNIT",
@@ -1350,215 +1448,72 @@ Object {
 }
 `;
 
-exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with direct resolver 3`] = `
+exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with direct resolver: A Generated ProductCategory 1`] = `
 Object {
-  "allergens": Array [
-    "egg",
-    "gluten",
-  ],
-  "configSets": Array [
-    Object {
-      "items": Array [
-        Object {
-          "allergens": Array [
-            "egg",
-            "gluten",
-            "milk",
-            "soya",
-            "peanut",
-          ],
-          "name": Object {
-            "de": "Room temperature",
-            "en": "Room temperature",
-            "hu": "Szobahőmérsékletű",
-          },
-          "netPackagingFee": null,
-          "position": 1,
-          "price": 0,
-          "productComponentId": "test_REGEN_prodComp_01",
-          "soldOut": null,
-        },
-        Object {
-          "allergens": Array [],
-          "name": Object {
-            "de": "Straw",
-            "en": "Straw",
-            "hu": "Szívószál",
-          },
-          "netPackagingFee": null,
-          "position": 2,
-          "price": 0,
-          "productComponentId": "test_REGEN_prodComp_02",
-          "soldOut": null,
-        },
-      ],
-      "maxSelection": 2,
-      "name": Object {
-        "de": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_01",
-        "en": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_01",
-        "hu": "KOMPONENS_SET_test_REGEN_prodCompSet_01",
-      },
-      "position": 1,
-      "productSetId": "test_REGEN_prodCompSet_01",
-      "supportedServingModes": Array [
-        "inPlace",
-      ],
-      "type": "extras",
-    },
-    Object {
-      "items": Array [
-        Object {
-          "allergens": Array [
-            "egg",
-            "gluten",
-            "milk",
-            "soya",
-            "peanut",
-          ],
-          "name": Object {
-            "de": "Room temperature",
-            "en": "Room temperature",
-            "hu": "Szobahőmérsékletű",
-          },
-          "netPackagingFee": null,
-          "position": 1,
-          "price": 0,
-          "productComponentId": "test_REGEN_prodComp_01",
-          "soldOut": null,
-        },
-        Object {
-          "allergens": Array [],
-          "name": Object {
-            "de": "Straw",
-            "en": "Straw",
-            "hu": "Szívószál",
-          },
-          "netPackagingFee": null,
-          "position": 2,
-          "price": 0,
-          "productComponentId": "test_REGEN_prodComp_02",
-          "soldOut": null,
-        },
-        Object {
-          "allergens": Array [
-            "mustard",
-          ],
-          "name": Object {
-            "de": "French fries",
-            "en": "French fries",
-            "hu": "Hasábburgonya",
-          },
-          "netPackagingFee": null,
-          "position": 3,
-          "price": 0,
-          "productComponentId": "test_REGEN_prodComp_03",
-          "soldOut": null,
-        },
-      ],
-      "maxSelection": 3,
-      "name": Object {
-        "de": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_02",
-        "en": "PRODUCT_COMPONENT_SET_test_REGEN_prodCompSet_02",
-        "hu": "KOMPONENS_SET_test_REGEN_prodCompSet_02",
-      },
-      "position": 2,
-      "productSetId": "test_REGEN_prodCompSet_02",
-      "supportedServingModes": Array [
-        "inPlace",
-      ],
-      "type": "modifier",
-    },
-  ],
   "createdAt": Any<String>,
-  "description": Object {
-    "de": null,
-    "en": "DESCRIPTION",
-    "hu": null,
+  "id": "test_REGEN_UNIT_ID_01__test_REGEN__ProductCategoryId_01",
+  "productCategory": Object {
+    "chainId": "seeded_chain_1_id",
+    "createdAt": Any<String>,
+    "description": Object {
+      "de": null,
+      "en": "DESCRIPTION",
+      "hu": null,
+    },
+    "id": "test_REGEN__ProductCategoryId_01",
+    "image": "IMAGE",
+    "name": Object {
+      "de": null,
+      "en": "PRODUCT_CATEGORY",
+      "hu": null,
+    },
+    "position": 0,
+    "updatedAt": Any<String>,
   },
-  "id": "test_REGEN_unitProduct_utest_REGEN_UNIT_ID_01_01",
-  "image": "IMAGE",
-  "name": Object {
-    "de": null,
-    "en": "CHAIN_PRODUCT",
-    "hu": null,
-  },
-  "position": 1,
   "productCategoryId": "test_REGEN__ProductCategoryId_01",
-  "productType": "PRODUCT_TYPE",
-  "supportedServingModes": Array [
-    "takeAway",
-  ],
-  "takeawayTax": 12,
-  "tax": 27,
+  "productNum": 3,
   "unitId": "test_REGEN_UNIT_ID_01",
   "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "id": "test_GroupProductVariant_id_1",
-      "netPackagingFee": null,
-      "pack": Object {
-        "size": 1,
-        "unit": "GROUP_UNIT",
-      },
-      "position": 1,
-      "price": 1,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": "VARIANT_NAME_1",
-        "hu": null,
-      },
-    },
-    Object {
-      "id": "test_GroupProductVariant_id_2",
-      "netPackagingFee": null,
-      "pack": Object {
-        "size": 2,
-        "unit": "GROUP_UNIT",
-      },
-      "position": 2,
-      "price": 2,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": "VARIANT_NAME_2",
-        "hu": null,
-      },
-    },
-    Object {
-      "id": "test_UnitProductVariant_id_1",
-      "netPackagingFee": 1,
-      "pack": Object {
-        "size": 1,
-        "unit": "UNIT_UNIT",
-      },
-      "position": 1,
-      "price": 1.5,
-      "soldOut": true,
-      "variantName": Object {
-        "de": null,
-        "en": "VARIANT_NAME_1",
-        "hu": null,
-      },
-    },
-    Object {
-      "id": "test_UnitProductVariant_id_2",
-      "netPackagingFee": 1,
-      "pack": Object {
-        "size": 2,
-        "unit": "UNIT_UNIT",
-      },
-      "position": 2,
-      "price": 3,
-      "soldOut": true,
-      "variantName": Object {
-        "de": null,
-        "en": "VARIANT_NAME_2",
-        "hu": null,
-      },
-    },
-  ],
 }
+`;
+
+exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with direct resolver: CONFIG SETS 1`] = `null`;
+
+exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with direct resolver: VARIANTS 1`] = `
+Array [
+  Object {
+    "id": "test_generatedProductVariant_id_pundefined_1",
+    "netPackagingFee": 1,
+    "pack": Object {
+      "size": 1,
+      "unit": "UNIT",
+    },
+    "position": 1,
+    "price": 1,
+    "soldOut": null,
+    "variantName": Object {
+      "de": null,
+      "en": "VARIANT_NAME_1",
+      "hu": "VARIANT_NAME_1",
+    },
+  },
+  Object {
+    "id": "test_generatedProductVariant_id_pundefined_2",
+    "netPackagingFee": 1,
+    "pack": Object {
+      "size": 2,
+      "unit": "UNIT",
+    },
+    "position": 2,
+    "price": 2,
+    "soldOut": null,
+    "variantName": Object {
+      "de": null,
+      "en": "VARIANT_NAME_2",
+      "hu": "VARIANT_NAME_2",
+    },
+  },
+]
 `;
 
 exports[`RegenerateUnitData mutation tests should return helpful error message in case the unit has no items 1`] = `"{\\"message\\":\\"There is no product in this unit\\",\\"code\\":\\"ERROR_NO_PRODUCT_IN_UNIT\\"}"`;

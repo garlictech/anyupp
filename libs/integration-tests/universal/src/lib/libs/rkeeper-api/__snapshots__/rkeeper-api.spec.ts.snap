@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: CHAINPRODUCTS 1`] = `
+exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: CHAINPRODUCTST 1`] = `
 Array [
   Object {
     "allergens": null,
-    "chainId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-chain",
+    "chainId": "rkeeper-MASKED ID-chain",
     "configSets": null,
-    "createdAt": Any<String>,
+    "createdAt": "MASKED DATE",
     "description": null,
     "dirty": true,
     "externalId": null,
-    "id": Any<String>,
+    "id": "MASKED ID",
     "image": null,
     "isVisible": true,
     "name": Object {
@@ -18,9 +18,9 @@ Array [
       "en": null,
       "hu": "Próba ital",
     },
-    "productCategoryId": "default-product-category-rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-chain",
+    "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
     "productType": "dish",
-    "updatedAt": Any<String>,
+    "updatedAt": "MASKED DATE",
     "variants": Array [
       Object {
         "availabilities": null,
@@ -43,21 +43,21 @@ Array [
 ]
 `;
 
-exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: GROUPPRODUCTS 1`] = `
+exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: GROUPPRODUCTST 1`] = `
 Array [
   Object {
-    "chainId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-chain",
+    "chainId": "rkeeper-MASKED ID-chain",
     "configSets": null,
-    "createdAt": Any<String>,
+    "createdAt": "MASKED DATE",
     "dirty": true,
     "externalId": null,
-    "groupId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-group",
-    "id": Any<String>,
+    "groupId": "rkeeper-MASKED ID-group",
+    "id": "MASKED ID",
     "isVisible": true,
-    "parentId": Any<String>,
+    "parentId": "MASKED ID",
     "takeawayTax": null,
     "tax": -1,
-    "updatedAt": Any<String>,
+    "updatedAt": "MASKED DATE",
     "variants": Array [
       Object {
         "availabilities": null,
@@ -80,26 +80,26 @@ Array [
 ]
 `;
 
-exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: UNITPRODUCTS 1`] = `
+exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: UNITPRODUCTST 1`] = `
 Array [
   Object {
-    "chainId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-chain",
+    "chainId": "rkeeper-MASKED ID-chain",
     "configSets": Array [],
-    "createdAt": Any<String>,
+    "createdAt": "MASKED DATE",
     "dirty": true,
     "externalId": "9991000114",
-    "groupId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-group",
-    "id": Any<String>,
+    "groupId": "rkeeper-MASKED ID-group",
+    "id": "MASKED ID",
     "isVisible": true,
     "laneId": null,
-    "parentId": Any<String>,
+    "parentId": "MASKED ID",
     "position": -1,
     "supportedServingModes": Array [
       "inPlace",
     ],
     "takeaway": null,
-    "unitId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
-    "updatedAt": Any<String>,
+    "unitId": "rkeeper-MASKED ID-unit",
+    "updatedAt": "MASKED DATE",
     "variants": Array [
       Object {
         "availabilities": Array [
@@ -136,23 +136,23 @@ Array [
 
 exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: update rkeeper product 1`] = `
 Object {
-  "chainId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-chain",
+  "chainId": "rkeeper-MASKED ID-chain",
   "configSets": Array [],
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "dirty": true,
   "externalId": "9991000114",
-  "groupId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-group",
-  "id": Any<String>,
+  "groupId": "rkeeper-MASKED ID-group",
+  "id": "MASKED ID",
   "isVisible": true,
   "laneId": null,
-  "parentId": Any<String>,
+  "parentId": "MASKED ID",
   "position": -1,
   "supportedServingModes": Array [
     "inPlace",
   ],
   "takeaway": null,
-  "unitId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
-  "updatedAt": Any<String>,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
   "variants": Array [
     Object {
       "availabilities": Array [

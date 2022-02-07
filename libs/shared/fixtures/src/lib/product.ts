@@ -25,6 +25,7 @@ const getChainProductVariant = (
     },
   ],
   position: idx,
+  netPackagingFee: 200,
 });
 
 const getGroupProductVariant = (
@@ -47,6 +48,7 @@ const getGroupProductVariant = (
     },
   ],
   position: idx,
+  netPackagingFee: 300,
 });
 
 const getUnitProductVariant = (
@@ -69,7 +71,7 @@ const getUnitProductVariant = (
     },
   ],
   position: idx,
-  netPackagingFee: 1,
+  netPackagingFee: 400,
   soldOut: true,
 });
 

@@ -111,6 +111,7 @@ const prodConfigSet_01: CrudApi.ProductConfigSetInput = {
       productComponentId: prodCompSet_01.items[0],
       refGroupPrice: 0,
       price: 0,
+      netPackagingFee: 1000,
     },
     {
       position: 2,
@@ -369,6 +370,8 @@ describe.skip('RegenerateUnitData mutation tests', () => {
           );
 
           expect(aGeneratedProduct).toHaveProperty('configSets', null);
+          expect(aGeneratedProduct?.variants).toMatchSnapshot('VARIANTS');
+          expect(aGeneratedProduct?.configSets).toMatchSnapshot('CONFIG SETS');
 
           //extra
           expect(genIds).toContainEqual(

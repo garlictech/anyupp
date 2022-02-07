@@ -40,7 +40,7 @@ import {
   commonStackConfig,
   anyuppStackConfig,
 } from '@bgap/shared/config';
-import { maskV4UuidIds } from '@bgap/shared/fixtures';
+import { maskAll, maskV4UuidIds } from '@bgap/shared/fixtures';
 
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();
@@ -188,35 +188,6 @@ describe('Test the rkeeper api basic functionality', () => {
   }, 100000);
 
   test('Create products by an rkeeper product', done => {
-    const matcher = (expectParentId = true) =>
-      pipe(
-        {
-          createdAt: expect.any(String),
-          updatedAt: expect.any(String),
-          id: expect.any(String),
-        },
-        item =>
-          expectParentId ? { ...item, parentId: expect.any(String) } : item,
-      );
-
-    const verifyer = <Y>(
-      op: (x: { filter: { dirty: { eq: boolean } } }) => Observable<
-        | {
-            items?: CrudApi.Maybe<Array<CrudApi.Maybe<Y>>>;
-          }
-        | undefined
-        | null
-      >,
-      label: string,
-      expectParentId = true,
-    ) =>
-      op({ filter: { dirty: { eq: true } } }).pipe(
-        filterNullishGraphqlListWithDefault<Y>([]),
-        tap(res =>
-          expect(res).toMatchSnapshot([matcher(expectParentId)], label),
-        ),
-      );
-
     createRkeeperProduct(crudSdk)(
       fixtures.businessEntity,
       fixtures.processedDish,
@@ -225,21 +196,59 @@ describe('Test the rkeeper api basic functionality', () => {
       .pipe(
         delay(ES_DELAY),
         switchMap(() =>
-          combineLatest(
-            verifyer<CrudApi.UnitProduct>(
-              crudSdk.SearchUnitProducts,
-              'UNITPRODUCTS',
-            ),
-            verifyer<CrudApi.GroupProduct>(
-              crudSdk.SearchGroupProducts,
-              'GROUPPRODUCTS',
-            ),
-            verifyer<CrudApi.ChainProduct>(
-              crudSdk.SearchChainProducts,
-              'CHAINPRODUCTS',
-              false,
-            ),
-          ),
+          combineLatest([
+            crudSdk
+              .SearchUnitProducts({
+                filter: {
+                  and: [
+                    {
+                      dirty: { eq: true },
+                      unitId: { eq: fixtures.businessEntity.unitId },
+                    },
+                  ],
+                },
+              })
+              .pipe(
+                filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
+                tap(res =>
+                  expect(maskAll(res)).toMatchSnapshot('UNITPRODUCTST'),
+                ),
+              ),
+            crudSdk
+              .SearchGroupProducts({
+                filter: {
+                  and: [
+                    {
+                      dirty: { eq: true },
+                      groupId: { eq: fixtures.businessEntity.groupId },
+                    },
+                  ],
+                },
+              })
+              .pipe(
+                filterNullishGraphqlListWithDefault<CrudApi.GroupProduct>([]),
+                tap(res =>
+                  expect(maskAll(res)).toMatchSnapshot('GROUPPRODUCTST'),
+                ),
+              ),
+            crudSdk
+              .SearchChainProducts({
+                filter: {
+                  and: [
+                    {
+                      dirty: { eq: true },
+                      chainId: { eq: fixtures.businessEntity.chainId },
+                    },
+                  ],
+                },
+              })
+              .pipe(
+                filterNullishGraphqlListWithDefault<CrudApi.ChainProduct>([]),
+                tap(res =>
+                  expect(maskAll(res)).toMatchSnapshot('CHAINPRODUCTST'),
+                ),
+              ),
+          ]),
         ),
         map(([unitProducts]) => unitProducts[0]),
         switchMap(unitProduct =>
@@ -250,7 +259,7 @@ describe('Test the rkeeper api basic functionality', () => {
           ),
         ),
         tap(res =>
-          expect(res).toMatchSnapshot(matcher(), 'update rkeeper product'),
+          expect(maskAll(res)).toMatchSnapshot('update rkeeper product'),
         ),
       )
       .subscribe(() => done());

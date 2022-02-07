@@ -128,6 +128,7 @@ Object {
           "name": Object {
             "en": "PRODUCT_COMP_NAME",
           },
+          "netPackagingFee": 30,
           "position": 1,
           "price": 1,
           "productComponentId": "PRODUCT_COMPONENT_ID_11",
@@ -142,6 +143,7 @@ Object {
           "name": Object {
             "en": "PRODUCT_COMP_NAME",
           },
+          "netPackagingFee": 40,
           "position": 2,
           "price": 2,
           "productComponentId": "PRODUCT_COMPONENT_ID_21",
