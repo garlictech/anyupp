@@ -100,7 +100,7 @@
     "lodash-es": "4.17.21",
     "luxon": "2.3.0",
     "material-design-icons": "3.0.1",
-    "ngx-color-picker": "11.0.0",
+    "ngx-color-picker": "12.0.0",
     "ngx-logger": "5.0.7",
     "print-js": "1.6.0",
     "qrcode": "1.5.0",
