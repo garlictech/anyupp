@@ -7,7 +7,7 @@ import { tableConfig } from '@bgap/crud-gql/backend';
 
 const docClient = new DynamoDB.DocumentClient();
 
-// BAsed on https://stackoverflow.com/questions/51110377/delete-all-items-in-dynamodb-using-lambda
+// Based on https://stackoverflow.com/questions/51110377/delete-all-items-in-dynamodb-using-lambda
 const getAllRecords = async (tableName: string) => {
   console.log(`Getting all records in table ${tableName}`);
   const params: DynamoDB.DocumentClient.ScanInput = {

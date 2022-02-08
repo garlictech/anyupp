@@ -689,7 +689,6 @@ Object {
   ],
 }
 `;
-
 exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with direct resolver 1`] = `
 Array [
   Object {
@@ -1162,7 +1161,6 @@ Array [
   },
 ]
 `;
-
 exports[`RegenerateUnitData mutation tests should regenerate all the generated products for the unit with direct resolver 2`] = `
 Object {
   "allergens": Array [
@@ -1379,5 +1377,4 @@ Object {
   ],
 }
 `;
-
 exports[`RegenerateUnitData mutation tests should return helpful error message in case the unit has no items 1`] = `"{\\"message\\":\\"There is no product in this unit\\",\\"code\\":\\"ERROR_NO_PRODUCT_IN_UNIT\\"}"`;
