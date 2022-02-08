@@ -11,6 +11,12 @@ amplify/logs
 amplify/mock-data
 amplify/backend/amplify-meta.json
 amplify/backend/.temp
+amplify-prod/\#current-cloud-backend
+amplify-prod/.config/local-*
+amplify-prod/logs
+amplify-prod/mock-data
+amplify-prod/backend/amplify-meta.json
+amplify-prod/backend/.temp
 build/
 dist/
 node_modules/

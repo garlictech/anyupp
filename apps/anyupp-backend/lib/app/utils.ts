@@ -34,11 +34,15 @@ export const createApiDomainName = (
     endpointType: apigw.EndpointType.EDGE,
   });
 
-  new route53.ARecord(scope, `Anyupp-${apiName}-DNS`, {
-    zone,
-    recordName: `${apiNameFQ}`,
-    target: route53.RecordTarget.fromAlias(new route53Targets.ApiGateway(api)),
-  });
+  if (app.stage !== 'prod') {
+    new route53.ARecord(scope, `Anyupp-${apiName}-DNS`, {
+      zone,
+      recordName: `${apiNameFQ}`,
+      target: route53.RecordTarget.fromAlias(
+        new route53Targets.ApiGateway(api),
+      ),
+    });
+  }
 
   const endpoint = `https://${
     api.domainName?.domainName || 'SOMETHING IS WRONG'
