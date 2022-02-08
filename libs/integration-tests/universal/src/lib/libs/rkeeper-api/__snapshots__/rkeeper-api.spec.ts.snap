@@ -234,7 +234,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 2`] = `
 Object {
   "allergens": null,
@@ -275,7 +274,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 3`] = `
 Object {
   "allergens": null,
@@ -316,7 +314,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 4`] = `
 Object {
   "allergens": null,
@@ -357,7 +354,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 5`] = `
 Object {
   "allergens": null,
@@ -398,7 +394,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Generated products 1`] = `
 Object {
   "allergens": null,
@@ -443,7 +438,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Generated products 2`] = `
 Object {
   "allergens": null,
@@ -619,7 +613,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Generated products 3`] = `
 Object {
   "allergens": null,
@@ -795,7 +788,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Generated products 4`] = `
 Object {
   "allergens": null,
@@ -840,7 +832,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 1`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -875,7 +866,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 2`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -910,7 +900,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 3`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -945,7 +934,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 4`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -980,7 +968,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 5`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -1015,7 +1002,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product component sets 1`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -1042,7 +1028,6 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product component sets 2`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -1066,7 +1051,6 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 1`] = `
 Object {
   "allergens": null,
@@ -1085,7 +1069,6 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 2`] = `
 Object {
   "allergens": null,
@@ -1104,7 +1087,6 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 3`] = `
 Object {
   "allergens": null,
@@ -1123,7 +1105,6 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 4`] = `
 Object {
   "allergens": null,
@@ -1142,7 +1123,6 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 5`] = `
 Object {
   "allergens": null,
@@ -1161,7 +1141,6 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 6`] = `
 Object {
   "allergens": null,
@@ -1180,7 +1159,6 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 7`] = `
 Object {
   "allergens": null,
@@ -1199,7 +1177,6 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 1`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -1251,7 +1228,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 2`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -1303,7 +1279,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 3`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -1424,7 +1399,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 4`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -1545,7 +1519,6 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 5`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
@@ -1597,13 +1570,9 @@ Object {
   ],
 }
 `;
-
 exports[`Test the rkeeper api basic functionality Test the menusync handler 1`] = `[InvalidBucketName: The specified bucket is not valid.]`;
-
 exports[`Test the rkeeper api basic functionality Test the product handling logic in fargate 1`] = `Array []`;
-
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category created 1`] = `true`;
-
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category data 1`] = `
 Object {
   "chainId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-chain",
@@ -1620,9 +1589,7 @@ Object {
   "updatedAt": Any<String>,
 }
 `;
-
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category recreated 1`] = `true`;
-
 exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - existing restaurant 1`] = `
 Object {
   "chainId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-chain",
@@ -1630,16 +1597,13 @@ Object {
   "unitId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
 }
 `;
-
 exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - not existing restaurant 1`] = `[Error: Cannot find unit belonging to external unit id NOT EXISTING RESTO\`]`;
-
 exports[`send order to rkeeper by HTTP post: config.auth 1`] = `
 Object {
   "password": "b6302d53085c9486d0f765ec475f18",
   "username": "795_50_155_539",
 }
 `;
-
 exports[`send order to rkeeper by sendRkeeperOrder: config.auth 1`] = `
 Object {
   "password": "b6302d53085c9486d0f765ec475f18",

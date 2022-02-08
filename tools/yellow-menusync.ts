@@ -18,4 +18,4 @@ const rawData = JSON.parse(
 const crudSdk = createIamCrudSdk();
 const yellowExternalUnitId = '109150001';
 
-handleRkeeperProducts(crudSdk)(yellowExternalUnitId, rawData).subscribe();
+handleRkeeperProducts(crudSdk)(yellowExternalUnitId)(rawData).subscribe();
