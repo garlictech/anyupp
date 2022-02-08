@@ -37,9 +37,14 @@ export class AnyUppStack extends Stack {
 
     const rootDomain = 'anyupp.com';
 
-    const zone = route53.HostedZone.fromLookup(this, 'AnyuppHostedZone', {
-      domainName: rootDomain,
-    });
+    const zone = route53.HostedZone.fromHostedZoneAttributes(
+      this,
+      'AnyuppHostedZone',
+      {
+        hostedZoneId: 'Z07724744XHDX57X0R8H',
+        zoneName: 'anyupp.com',
+      },
+    );
 
     const certificateArn =
       scope.stage === 'prod'

@@ -37,12 +37,12 @@
     "AnyuppGraphqlApiKey": "da2-3q2fhycdrbdphjebocln6orb7e"
   },
   "anyupp-backend-stripe": {
-    "stripewebhookEndpoint": "https://stripe-webhook-prod.anyupp.com/prod",
+    "stripewebhookEndpoint": "https://hf9xrbmszg.execute-api.eu-west-1.amazonaws.com/prod/",
     "StripeWebhookEndpointE83D65EB": "https://hf9xrbmszg.execute-api.eu-west-1.amazonaws.com/prod/"
   },
   "anyupp-backend-rkeeper": {
     "RKeeperWebhookEndpointCBC72BD4": "https://o8d436gkql.execute-api.eu-west-1.amazonaws.com/prod/",
-    "rkeeperwebhookEndpoint": "https://rkeeper-webhook-prod.anyupp.com/prod",
+    "rkeeperwebhookEndpoint": "https://o8d436gkql.execute-api.eu-west-1.amazonaws.com/prod/",
     "RKeeperTaskBucketName": "prod-anyupp-backend-rkee-anyupprkeepermenubucket4-13k4xfoanl5fc",
     "RKeeperTaskRoleArn": "arn:aws:iam::486782650003:role/prod-anyupp-backend-rkeep-RkeeperECSTaskExecutionR-UNP2YNPPK6TU"
   }

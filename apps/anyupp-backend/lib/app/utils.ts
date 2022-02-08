@@ -44,9 +44,12 @@ export const createApiDomainName = (
     });
   }
 
-  const endpoint = `https://${
-    api.domainName?.domainName || 'SOMETHING IS WRONG'
-  }/${app.stage}`;
+  const endpoint =
+    app.stage === 'prod'
+      ? api.url
+      : `https://${api.domainName?.domainName || 'SOMETHING IS WRONG'}/${
+          app.stage
+        }`;
 
   new cdk.CfnOutput(scope, `${apiName}Endpoint`, {
     value: endpoint,
