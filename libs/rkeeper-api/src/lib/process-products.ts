@@ -408,7 +408,7 @@ export const handleRkeeperProducts =
                     : updateRkeeperProduct(sdk)(dish, unitProduct, configSets),
                 ),
               ),
-            100,
+            10,
           ),
           tap(() => console.log('... a product processed')),
           count(),
