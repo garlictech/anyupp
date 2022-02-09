@@ -23,6 +23,7 @@ class MockCartRepository implements CartRepository {
   @override
   Future<Cart?> clearCart() async {
     _cart = null;
+    return _cart;
   }
 
   @override

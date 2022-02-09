@@ -373,8 +373,6 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
             child: variant2 != null
                 ? _buildVariantItem(variant2)
                 : Container(
-                    // DUMMY!!!!
-                    // color: Colors.,
                     width: 80,
                     height: 80,
                   ),
