@@ -5,7 +5,7 @@ import {
   OnChanges,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
+import * as CrudApi from '@bgap/crud-gql/api';
 import { getPreviewSVG } from '../../pure';
 
 @Component({
@@ -15,19 +15,17 @@ import { getPreviewSVG } from '../../pure';
   styleUrls: ['./style-color-preview.component.scss'],
 })
 export class StyleColorPreviewComponent implements OnChanges {
-  @Input() primaryColor?: string;
-  @Input() secondaryColor?: string;
+  @Input() colors?: CrudApi.ChainStyleColors;
 
   public previeImgPath: SafeResourceUrl = '';
 
   constructor(private _sanitizer: DomSanitizer) {}
 
   ngOnChanges() {
-    this.previeImgPath = this._sanitizer.bypassSecurityTrustResourceUrl(
-      'data:image/svg+xml;base64,' +
-        window.btoa(
-          getPreviewSVG(this.primaryColor || '', this.secondaryColor || ''),
-        ),
-    );
+    if (this.colors) {
+      this.previeImgPath = this._sanitizer.bypassSecurityTrustResourceUrl(
+        'data:image/svg+xml;base64,' + window.btoa(getPreviewSVG(this.colors)),
+      );
+    }
   }
 }

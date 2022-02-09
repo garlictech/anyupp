@@ -19,8 +19,8 @@ Feature: Create a new Chain
     And I fill out the "Description (EN)" input with "test description"
     And I fill out the "Description (DE)" input with "test description"
     And I fill out the "Email" input with a fixture adminEmail
-    Then I should see 9 color picker with "#ffffff"
-    Then I should see 1 color picker with "#30bf60"
+    Then I should see 1 color picker with "#ffffff"
+    Then I should see 5 color picker with "#30bf60"
     Then I should see 1 color picker with "#303030"
     When I fill out the "Phone" input with "1234567890"
     And I fill out the "Title" input with "test title"

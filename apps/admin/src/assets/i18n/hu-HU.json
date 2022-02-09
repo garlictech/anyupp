@@ -200,11 +200,15 @@
         "backgroundLight": "Háttér (világos)",
         "borderDark": "Keret (sötét)",
         "borderLight": "Keret (világos)",
-        "highlight": "Kiemelés",
         "indicator": "Indikátor - E.",
         "disabled": "Inaktív",
         "primary": "Elsődleges",
-        "secondary": "Másodlagos"
+        "secondary": "Másodlagos",
+        "button": "Gomb",
+        "buttonText": "Gomb szöveg",
+        "icon": "Ikon",
+        "iconText": "Ikon szöveg",
+        "highlight": "Kiemelés"
       },
       "images": {
         "logo": "Logo",

@@ -50,12 +50,16 @@ type ChainStyleColors @aws_cognito_user_pools {
   borderLight: String @deprecated(reason: "Unused.")
   borderDark: String @deprecated(reason: "Unused.")
   disabled: String @deprecated(reason: "Unused.")
-  highlight: String @deprecated(reason: "Unused.")
   indicator: String @deprecated(reason: "Use `primary`.")
   textLight: String @deprecated(reason: "Unused.")
   textDark: String @deprecated(reason: "Use `secondary`.")
   primary: String
   secondary: String
+  button: String
+  buttonText: String
+  icon: String
+  iconText: String
+  highlight: String
 }
 
 type ChainStyleImages {

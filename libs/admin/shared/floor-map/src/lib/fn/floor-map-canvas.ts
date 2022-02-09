@@ -12,7 +12,6 @@ export const initCanvas = (editMode: boolean): void => {
 
   if (fabricCanvas) {
     fabricCanvas.clear();
-    fabricCanvas.dispose();
     fabricCanvas.__eventListeners = {};
   }
 

@@ -200,11 +200,15 @@
         "backgroundLight": "Background (light)",
         "borderDark": "Border (dark)",
         "borderLight": "Border (light)",
-        "highlight": "Highlight",
         "indicator": "Indicator - Pri",
         "disabled": "Disabled",
         "primary": "Primary",
-        "secondary": "Secondary"
+        "secondary": "Secondary",
+        "button": "Button",
+        "buttonText": "Button text",
+        "icon": "Icon",
+        "iconText": "Icon text",
+        "highlight": "Highlight"
       },
       "images": {
         "logo": "Logo",

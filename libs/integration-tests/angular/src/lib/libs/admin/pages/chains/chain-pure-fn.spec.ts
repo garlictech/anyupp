@@ -56,6 +56,14 @@ describe('Chain pure functions', () => {
   });
 
   it('getPreviewSVG should create SVG preview with replaced colors', () => {
-    expect(getPreviewSVG('#30bf60', '#303030')).toMatchSnapshot();
+    expect(
+      getPreviewSVG({
+        button: '#ffffff',
+        buttonText: '#000000',
+        icon: '#fffffa',
+        iconText: '#00000a',
+        highlight: '#00000b',
+      }),
+    ).toMatchSnapshot();
   });
 });
