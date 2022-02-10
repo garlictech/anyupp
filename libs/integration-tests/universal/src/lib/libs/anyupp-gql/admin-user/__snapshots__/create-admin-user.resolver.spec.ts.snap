@@ -64,6 +64,10 @@ Object {
 }
 `;
 
+exports[`Admin user creation/deletion Admin user should be created/deleted with authenticated API call: RESOLVER CODE: Cleanup 1`] = `undefined`;
+
+exports[`Admin user creation/deletion Admin user should be created/deleted with authenticated API call: RESOLVER CODE: Deleting nonexisting user 1`] = `null`;
+
 exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: RESOLVER CODE: Cleanup 1`] = `undefined`;
 
 exports[`Admin user creation/deletion Admin user should be created/deleted with resolver code: RESOLVER CODE: Deleting nonexisting user 1`] = `null`;

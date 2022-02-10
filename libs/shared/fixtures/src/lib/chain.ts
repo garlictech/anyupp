@@ -39,7 +39,7 @@ const chainBase: CrudApi.CreateChainInput = {
       primary: '#30bf60', // indicator
       secondary: '#303030', // textDark
       button: '#30bf60',
-      buttonText: '#ffffff',
+      buttonText: '#fffffa',
       icon: '#30bf60',
       iconText: '#30bf60',
       highlight: '#30bf60',
