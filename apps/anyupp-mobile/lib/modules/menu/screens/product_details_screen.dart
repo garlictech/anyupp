@@ -20,6 +20,8 @@ class ProductDetailsScreen extends StatelessWidget {
   final GeneratedProduct item;
   final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
+  final double _expandedHeight = 260.0;
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   ProductDetailsScreen({
     Key? key,
@@ -29,12 +31,9 @@ class ProductDetailsScreen extends StatelessWidget {
     this.servingMode,
   }) : super(key: key);
 
-  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     var unit = currentUnit!;
-
     return NetworkConnectionWrapperWidget(
       child: Scaffold(
         key: _key,
@@ -43,7 +42,7 @@ class ProductDetailsScreen extends StatelessWidget {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                expandedHeight: 260.0,
+                expandedHeight: _expandedHeight,
                 floating: false,
                 snap: false,
                 pinned: true,
@@ -53,14 +52,30 @@ class ProductDetailsScreen extends StatelessWidget {
                 // stretch: false,
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
-                  title: Text(
-                    getLocalizedText(context, item.name),
-                    textAlign: TextAlign.left,
-                    style: Fonts.satoshi(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                      color: theme.secondary,
-                    ),
+                  title: SafeArea(
+                    child: Stack(children: [
+                      LayoutBuilder(builder: (context, constraints) {
+                        double scrollExtent =
+                            _expandedHeight - constraints.maxHeight;
+                        double sideRatio = constraints.maxWidth / _expandedHeight;
+                        int padding = 2;
+                        return Stack(
+                          children: [
+                            Positioned(
+                                left: (scrollExtent * (sideRatio / 2)) + padding,
+                                top: _expandedHeight - 20 - scrollExtent,
+                                child: Text(
+                                  getLocalizedText(context, item.name),
+                                  style: Fonts.satoshi(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.secondary,
+                                  ),
+                                )),
+                          ],
+                        );
+                      }),
+                    ]),
                   ),
                   // background: Container(
                   //   padding: const EdgeInsets.only(top: kToolbarHeight),

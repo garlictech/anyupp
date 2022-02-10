@@ -16,6 +16,13 @@ PODS:
   - device_info_plus (0.0.1):
     - Flutter
   - Flutter (1.0.0)
+  - flutter_inappwebview (0.0.1):
+    - Flutter
+    - flutter_inappwebview/Core (= 0.0.1)
+    - OrderedSet (~> 5.0)
+  - flutter_inappwebview/Core (0.0.1):
+    - Flutter
+    - OrderedSet (~> 5.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
   - flutter_mailer (0.0.1):
@@ -26,7 +33,7 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - geolocator (6.2.0):
+  - geolocator_apple (1.2.0):
     - Flutter
   - google_maps_flutter (0.0.1):
     - Flutter
@@ -43,11 +50,12 @@ PODS:
   - MTBBarcodeScanner (5.0.11)
   - open_file (0.0.1):
     - Flutter
+  - OrderedSet (5.0.0)
   - package_info (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
     - Flutter
-  - path_provider (0.0.1):
+  - path_provider_ios (0.0.1):
     - Flutter
   - "permission_handler (5.1.0+2)":
     - Flutter
@@ -55,7 +63,7 @@ PODS:
     - Flutter
     - MTBBarcodeScanner
   - Reachability (3.2)
-  - shared_preferences (0.0.1):
+  - shared_preferences_ios (0.0.1):
     - Flutter
   - sqflite (0.0.2):
     - Flutter
@@ -63,9 +71,9 @@ PODS:
   - Toast (4.0.0)
   - uni_links2 (0.0.1):
     - Flutter
-  - url_launcher (0.0.1):
+  - url_launcher_ios (0.0.1):
     - Flutter
-  - webview_flutter (0.0.1):
+  - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
 DEPENDENCIES:
@@ -77,30 +85,32 @@ DEPENDENCIES:
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
+  - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_mailer (from `.symlinks/plugins/flutter_mailer/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
-  - geolocator (from `.symlinks/plugins/geolocator/ios`)
+  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - open_file (from `.symlinks/plugins/open_file/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
-  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - uni_links2 (from `.symlinks/plugins/uni_links2/ios`)
-  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
-  - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 SPEC REPOS:
   trunk:
     - FMDB
     - GoogleMaps
     - MTBBarcodeScanner
+    - OrderedSet
     - Reachability
     - Toast
 
@@ -121,14 +131,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
+  flutter_inappwebview:
+    :path: ".symlinks/plugins/flutter_inappwebview/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   flutter_mailer:
     :path: ".symlinks/plugins/flutter_mailer/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
-  geolocator:
-    :path: ".symlinks/plugins/geolocator/ios"
+  geolocator_apple:
+    :path: ".symlinks/plugins/geolocator_apple/ios"
   google_maps_flutter:
     :path: ".symlinks/plugins/google_maps_flutter/ios"
   integration_test:
@@ -141,56 +153,58 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
-  path_provider:
-    :path: ".symlinks/plugins/path_provider/ios"
+  path_provider_ios:
+    :path: ".symlinks/plugins/path_provider_ios/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
   qr_code_scanner:
     :path: ".symlinks/plugins/qr_code_scanner/ios"
-  shared_preferences:
-    :path: ".symlinks/plugins/shared_preferences/ios"
+  shared_preferences_ios:
+    :path: ".symlinks/plugins/shared_preferences_ios/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   uni_links2:
     :path: ".symlinks/plugins/uni_links2/ios"
-  url_launcher:
-    :path: ".symlinks/plugins/url_launcher/ios"
-  webview_flutter:
-    :path: ".symlinks/plugins/webview_flutter/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
+  webview_flutter_wkwebview:
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
-  camera: 3164201dc344383e62282964016528c4f5a9ad50
+  camera: fe33292aff715a981eb34d7ce7b35b54337ff34c
   catcher: 67a006a3c121c4bbf1202d1e5ea186afb7ef4a18
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   connectivity_plus: 5f0eb61093bec56935f21a1699dd2758bc895587
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_mailer: 2ef5a67087bc8c6c4cefd04a178bf1ae2c94cd83
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
-  google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
+  geolocator_apple: b741765c55dc21950e3e106e8b3584e55cf81ce5
+  google_maps_flutter: abdb8dee6c52d4be36ad131ee6ebfacd14417c5a
   GoogleMaps: eb03e327edfd70b06de1e6e321653f73712df7ad
-  integration_test: 7db6d89f336f671dcbc7563ee27a5b08f6f8aee1
+  integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   location_permissions: 7e0f9aa0f60deb8ff93ddf0e2a164c7e8197bc94
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
+  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
-  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  shared_preferences_ios: aef470a42dc4675a1cdd50e3158b42e3d1232b32
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   uni_links2: fbc37081577fc19c6e0f7e6cdbd3baa150023635
-  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
-  webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
+  url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
+  webview_flutter_wkwebview: 005fbd90c888a42c5690919a1527ecc6649e1162
 
 PODFILE CHECKSUM: bbd90a1c23f637a4d37d19cd7e9c8b4449c306bf
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

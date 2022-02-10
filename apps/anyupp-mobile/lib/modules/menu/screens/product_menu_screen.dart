@@ -26,6 +26,8 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   TabController? _tabController;
   bool _showTooltip = false;
   int _selectedTab = 0;
+  int? _cachedFromIdx;
+  int? _cachedToIdx;
 
   @override
   void initState() {
@@ -307,7 +309,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                         labelPadding: EdgeInsets.only(
                           left: 16,
                           right: 16,
-                          top: 6.0,
+                          top: 8.0,
                           bottom: 6.0,
                         ),
                         indicatorPadding: EdgeInsets.only(
@@ -347,48 +349,82 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     BuildContext context,
     List<ProductCategory> productCategories,
   ) {
-    List<Widget> results = [
-      _getTab(
-        trans('main.menu.favorites'),
-        0 == _selectedTab,
-      )
-    ];
+    List<Widget> results = [_getTab(trans('main.menu.favorites'), 0)];
 
     for (int i = 0; i < productCategories.length; i++) {
-      results.add(_getTab(
-        getLocalizedText(context, productCategories[i].name),
-        i + 1 == _selectedTab,
-      ));
+      results.add(
+          _getTab(getLocalizedText(context, productCategories[i].name), i + 1));
     }
 
     return results;
   }
 
-  Tab _getTab(String title, bool selected) {
+  Widget _getTab(String title, int index) {
     return Tab(
-      text: title,
+      child: AnimatedBuilder(
+        animation: _tabController!.animation as Listenable,
+        builder: (ctx, snapshot) {
+          print(_tabController?.offset.toString());
+          final forward = _tabController!.offset > 0;
+          final backward = _tabController!.offset < 0;
+          int _fromIndex;
+          int _toIndex;
+          double progress;
+
+          // This value is true during the [animateTo] animation that's triggered when the user taps a [TabBar] tab.
+          // It is false when [offset] is changing as a consequence of the user dragging the [TabBarView].
+          if (_tabController!.indexIsChanging) {
+            _fromIndex = _tabController!.previousIndex;
+            _toIndex = _tabController!.index;
+            _cachedFromIdx = _tabController!.previousIndex;
+            _cachedToIdx = _tabController!.index;
+            progress = (_tabController!.animation!.value - _fromIndex).abs() /
+                (_toIndex - _fromIndex).abs();
+          } else {
+            if (_cachedFromIdx == _tabController!.previousIndex &&
+                _cachedToIdx == _tabController!.index) {
+              // When user tap on a tab bar and the animation is completed, it will execute this block
+              // This block will not be called when user draging the TabBarView
+              _fromIndex = _cachedFromIdx!;
+              _toIndex = _cachedToIdx!;
+              progress = 1;
+              _cachedToIdx = null;
+              _cachedFromIdx = null;
+            } else {
+              _cachedToIdx = null;
+              _cachedFromIdx = null;
+              _fromIndex = _tabController!.index;
+              _toIndex = forward
+                  ? _fromIndex + 1
+                  : backward
+                      ? _fromIndex - 1
+                      : _fromIndex;
+              progress = (_tabController!.animation!.value - _fromIndex).abs();
+            }
+          }
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: index == _fromIndex
+                  ? Color.lerp(theme.primary, theme.secondary12, progress)
+                  : index == _toIndex
+                      ? Color.lerp(theme.secondary12, theme.primary, progress)
+                      : Color.lerp(
+                          theme.secondary12, theme.secondary12, progress),
+              borderRadius: BorderRadius.circular(32),
+            ),
+            child: Text(title,
+                style: Fonts.satoshi(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w400,
+                )),
+          );
+          // return Tab(
+          //   text: title,
+          // );
+        },
+      ),
     );
-    // if (selected) {
-    //   return Tab(
-    //     text: title,
-    //   );
-    // }
-    // return Tab(
-    //   child: Container(
-    //     decoration: BoxDecoration(
-    //       borderRadius: BorderRadius.circular(32.0),
-    //       color: theme.secondary12,
-    //     ),
-    //     padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-    //     child: Text(
-    //       title,
-    //       style: Fonts.satoshi(
-    //         fontSize: 14.0,
-    //         color: theme.secondary,
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
   Widget _noCategoriesWidget(BuildContext context) {

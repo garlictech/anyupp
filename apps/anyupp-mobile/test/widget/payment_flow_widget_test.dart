@@ -177,7 +177,7 @@ void main() {
         expect(find.text('Kártya, SZÉP kártya'), findsOneWidget);
         expect(find.text('Pincérnél fizetek'), findsNWidgets(2));
 
-        expect(find.text('MEGRENDELÉS'), findsOneWidget);
+        expect(find.text('MEGRENDELEM'), findsOneWidget);
       });
     });
   }, skip: false);
@@ -234,7 +234,7 @@ void main() {
 
         expect(find.text('ÁFÁ-S SZÁMLA'), findsOneWidget);
         expect(find.text('Áfás számlát kérek'), findsOneWidget);
-        expect(find.text('MEGRENDELÉS'), findsOneWidget);
+        expect(find.text('MEGRENDELEM'), findsOneWidget);
       });
     });
   }, skip: false);

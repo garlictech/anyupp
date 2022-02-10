@@ -318,7 +318,7 @@
       "noPaymentMethod": "Még nincs mentett kártyád.",
       "addNewCard": "Új kártya hozzáadása"
     },
-    "sendOrder": "MEGRENDELÉS",
+    "sendOrder": "MEGRENDELEM",
     "fillInvoice": "SZÁMLAADATOK MEGADÁSA",
     "orderPlaced": "Köszönjük, átvettük a rendelésed!",
     "status": {
