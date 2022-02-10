@@ -1,6 +1,5 @@
+import { aws_ecs as ecs, aws_ec2 as ec2 } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as ec2 from '@aws-cdk/aws-ec2';
 import { anyuppFargateClusterName } from '@bgap/backend/shared/utils';
 
 export interface FargateStackProps extends sst.StackProps {

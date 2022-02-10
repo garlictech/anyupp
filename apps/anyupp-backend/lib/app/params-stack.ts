@@ -1,5 +1,4 @@
-import * as ssm from '@aws-cdk/aws-ssm';
-import { CfnOutput } from '@aws-cdk/core';
+import { aws_ssm as ssm, CfnOutput } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
 import {
   anyuppVpcSecurityGroupParamName,

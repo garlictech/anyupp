@@ -73,7 +73,7 @@ class Mock {
               en: 'A borravaló 100%-t munkatársaink kapják.',
             ),
             percents: [5.0, 10.0, 15.0],
-            maxOtherAmount: 0,
+            minOtherAmount: 0,
           )
         : null;
   }

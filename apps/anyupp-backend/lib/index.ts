@@ -1,6 +1,8 @@
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as route53 from '@aws-cdk/aws-route53';
+import {
+  aws_ec2 as ec2,
+  aws_certificatemanager as acm,
+  aws_route53 as route53,
+} from 'aws-cdk-lib';
 import { App, Stack } from '@serverless-stack/resources';
 import { AppsyncAppStack } from './app/appsync-app-stack';
 import { CognitoStack } from './app/cognito-stack';
@@ -10,7 +12,6 @@ import { ParamsStack } from './app/params-stack';
 import { ReportGeneratorStack } from './app/report-generator-stack';
 import { RKeeperStack } from './app/rkeeper-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
-//import { SeederStack } from './app/seeder-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
 
@@ -126,17 +127,6 @@ export class AnyUppStack extends Stack {
       certificate,
       rootDomain,
     });
-
-    /*if (scope.stage === 'dev' || scope.stage === 'qa') {
-      new SeederStack(scope, 'seeder', {
-        adminUserPool: cognitoStack.adminUserPool,
-        consumerUserPool: cognitoStack.consumerUserPool,
-        anyuppApiArn: appsyncStack.api.arn,
-        apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
-        apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
-      });
-    }
-    */
   }
 }
 

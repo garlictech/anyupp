@@ -1,7 +1,10 @@
 import * as sst from '@serverless-stack/resources';
-import { CfnOutput, Construct, RemovalPolicy } from '@aws-cdk/core';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
-import { StreamViewType, Table } from '@aws-cdk/aws-dynamodb';
+import {
+  CfnOutput,
+  RemovalPolicy,
+  aws_dynamodb as dynamodb,
+} from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 
 export interface AnyUppTableProps {
   isStreamed?: boolean;
@@ -9,7 +12,7 @@ export interface AnyUppTableProps {
 }
 
 export class TableConstruct extends Construct {
-  public readonly theTable: Table;
+  public readonly theTable: dynamodb.Table;
 
   constructor(scope: Construct, id: string, props?: AnyUppTableProps) {
     super(scope, id);
@@ -24,7 +27,7 @@ export class TableConstruct extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
       stream:
         props && props.isStreamed
-          ? StreamViewType.NEW_AND_OLD_IMAGES
+          ? dynamodb.StreamViewType.NEW_AND_OLD_IMAGES
           : undefined,
     };
 

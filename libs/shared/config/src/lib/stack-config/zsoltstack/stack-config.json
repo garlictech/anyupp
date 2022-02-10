@@ -4,7 +4,7 @@
   },
   "anyupp-backend-ParamsStack": {
     "appleServiceIdOutput": "net.cyberg.anyupp.cognito",
-    "stripePublishableKeyOutput": "pk_test_51IBipwKBBjcbSqG0xQP8G0OVkSByIgHVFag20akTEE4EA9wkY5X5A2ojlXb6qepNG3Ti3uSksanZV6O8ZHtL5MPi002tFhppdx",
+    "stripePublishableKeyOutput": "pk_test_51KLUGRIeYeqvtwSk7GAFrOhEdhx3mCWcoFXtuWmvboJM0zSGzjzG9vpubF6bzMJo9a7usKbM61TNd6hrq8Ntdtjj003SuLcl0n",
     "googleClientIdOutput": "1016713353610-q3nsj1t1flrjuo33sfakis645gl7ijv3.apps.googleusercontent.com",
     "facebookAppIdOutput": "166876958090898",
     "googleApiKeyOutput": "AIzaSyDGNIG1eIqvKsRoBsQ2T7PVff2d1XUhsVg",
@@ -16,34 +16,34 @@
   },
   "anyupp-backend-sites": {
     "AdminSiteDomainA75B4E32": "zsoltstack-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionDomainNameA4A4FE5B": "d1or39cm4yfex3.cloudfront.net",
+    "AdminDistributionDomainNameA4A4FE5B": "d34d3r2046sxnn.cloudfront.net",
     "AdminSiteEAA17C78": "https://zsoltstack-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionIdB4DE25AB": "EO5321TTJIEI2",
+    "AdminDistributionIdB4DE25AB": "E1DLV3Y0FQFBWD",
     "AdminBucketCA57896C": "zsoltstack-admin-anyupp-backend.anyupp.com"
   },
   "anyupp-backend-cognito": {
-    "ConsumerUserPoolId": "eu-west-1_B5SlJLS0S",
-    "AdminUserPoolId": "eu-west-1_Ek2RwsqU1",
-    "AdminWebUserPoolClientId": "3i5a6rngh4990k28vi2qmf7r7n",
-    "ConsumerNativeUserPoolClientId": "q0fc9nuhojr2vkv0kukhjitu2",
+    "ConsumerUserPoolId": "eu-west-1_nuL784RqX",
+    "AdminUserPoolId": "eu-west-1_wJMzPKvG0",
+    "AdminWebUserPoolClientId": "5737he7nfu5klro9kema21vbd1",
+    "ConsumerNativeUserPoolClientId": "2b3eaopsvn06l4hbimrpmh92cv",
     "AdminUserPoolDomain": "https://zsoltstack-anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
-    "ConsumerWebUserPoolClientId": "1cjqrspj9mahg7ekhbasoej0vu",
+    "ConsumerWebUserPoolClientId": "60nu8v0cdifdepd062aigqfnu1",
     "ConsumerUserPoolDomain": "https://zsoltstack-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
-    "IdentityPoolId": "eu-west-1:b0fae31a-70fe-401d-acde-5fff7f977667",
-    "AdminNativeUserPoolClientId": "4sse3agjs09bnfb0d4o2vr0o8j"
+    "IdentityPoolId": "eu-west-1:5ffe08d1-9052-492d-9c8b-830c95ad45a7",
+    "AdminNativeUserPoolClientId": "4c6dre63e126rdbtgic26j3631"
   },
   "anyupp-backend-appsync": {
-    "AnyuppGraphqlApiUrl": "https://dln5onwaijcx5mmkaqnbdg7qii.appsync-api.eu-west-1.amazonaws.com/graphql",
-    "AnyuppGraphqlApiKey": "da2-izlsuo6xevffnpnlyw3zxykbci"
+    "AnyuppGraphqlApiUrl": "https://oxyaojx2rjhm3fue77n72pymmm.appsync-api.eu-west-1.amazonaws.com/graphql",
+    "AnyuppGraphqlApiKey": "da2-morx6dvcnbfmfkrqqf7dgkwpj4"
   },
   "anyupp-backend-stripe": {
     "stripewebhookEndpoint": "https://stripe-webhook-zsoltstack.anyupp.com/zsoltstack",
-    "StripeWebhookEndpointE83D65EB": "https://czl2z5kzoa.execute-api.eu-west-1.amazonaws.com/zsoltstack/"
+    "StripeWebhookEndpointE83D65EB": "https://40u07q0td2.execute-api.eu-west-1.amazonaws.com/zsoltstack/"
   },
   "anyupp-backend-rkeeper": {
-    "RKeeperWebhookEndpointCBC72BD4": "https://qrt8g80wza.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
+    "RKeeperWebhookEndpointCBC72BD4": "https://j6iswmagyc.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-zsoltstack.anyupp.com/zsoltstack",
-    "RKeeperTaskBucketName": "zsoltstack-anyupp-backen-anyupprkeepermenubucket4-su94udjcyz4q",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-RkeeperECSTaskExecutionR-OVI8JFRXX361"
+    "RKeeperTaskBucketName": "zsoltstack-anyupp-backen-anyupprkeepermenubucket4-1kp5jv8379cnv",
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-RkeeperECSTaskExecutionR-523WNND2MB99"
   }
 }

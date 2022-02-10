@@ -1,7 +1,6 @@
 org: anyupp
 service: common-backend
 configValidationMode: error
-frameworkVersion: ^2.16.1
 
 plugins:
   - serverless-bundle
@@ -30,4 +29,3 @@ custom:
 provider:
   name: aws
   runtime: nodejs14.x
-  lambdaHashingVersion: 20201221

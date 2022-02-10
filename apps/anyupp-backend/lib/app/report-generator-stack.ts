@@ -1,12 +1,14 @@
+import {
+  aws_iam as iam,
+  aws_events as events,
+  aws_ecs as ecs,
+  aws_logs as logs,
+  aws_ec2 as ec2,
+  aws_ecr_assets as ecr_assets,
+  aws_events_targets as eventTargets,
+} from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
-import * as events from '@aws-cdk/aws-events';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as logs from '@aws-cdk/aws-logs';
-import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 import path from 'path';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as iam from '@aws-cdk/aws-iam';
-import * as eventTargets from '@aws-cdk/aws-events-targets';
 
 export interface ReportGeneratorStackProps extends sst.StackProps {
   reportAccessKeyId: string;
@@ -43,7 +45,7 @@ export class ReportGeneratorStack extends sst.Stack {
     );
 
     //assets
-    const reportAsset = new DockerImageAsset(
+    const reportAsset = new ecr_assets.DockerImageAsset(
       this,
       'ReportGeneratorBuildImage',
       {

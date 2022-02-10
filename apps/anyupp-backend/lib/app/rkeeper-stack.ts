@@ -1,19 +1,23 @@
-import * as ssm from '@aws-cdk/aws-ssm';
+import {
+  aws_ecr_assets as ecr_assets,
+  aws_iam as iam,
+  aws_ecs as ecs,
+  aws_logs as logs,
+  aws_ec2 as ec2,
+  aws_s3 as s3,
+  aws_lambda as lambda,
+  aws_ssm as ssm,
+  aws_certificatemanager as acm,
+  aws_route53 as route53,
+  aws_apigateway as apigateway,
+  RemovalPolicy,
+  Duration,
+  CfnOutput,
+} from 'aws-cdk-lib';
 import { getFQParamName } from './utils';
-import * as logs from '@aws-cdk/aws-logs';
-import * as route53 from '@aws-cdk/aws-route53';
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import * as ecs from '@aws-cdk/aws-ecs';
-import { DockerImageAsset } from '@aws-cdk/aws-ecr-assets';
 import * as sst from '@serverless-stack/resources';
-import * as cdk from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as apigateway from '@aws-cdk/aws-apigateway';
 import { commonLambdaProps } from './lambda-common';
 import path from 'path';
-import * as iam from '@aws-cdk/aws-iam';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as s3 from '@aws-cdk/aws-s3';
 import { createApiDomainName } from './utils';
 import { tableConfig } from '@bgap/crud-gql/backend';
 
@@ -70,7 +74,7 @@ export class RKeeperStack extends sst.Stack {
       }),
     );
 
-    const menusyncDockerAsset = new DockerImageAsset(
+    const menusyncDockerAsset = new ecr_assets.DockerImageAsset(
       this,
       'RKeepermenusyncProcessor',
       {
@@ -91,7 +95,7 @@ export class RKeeperStack extends sst.Stack {
 
     // The s3 bucket passing the menu json to fargate
     const menuBucket = new s3.Bucket(this, 'AnyuppRkeeperMenuBucket', {
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
     });
 
@@ -120,7 +124,7 @@ export class RKeeperStack extends sst.Stack {
       // It must be relative to the serverless.yml file
       handler: 'lib/lambda/rkeeper-webhook/index.handler',
       memorySize: 512,
-      timeout: cdk.Duration.seconds(20),
+      timeout: Duration.seconds(20),
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless-2/rkeeper-webhook.zip'),
       ),
@@ -178,11 +182,11 @@ export class RKeeperStack extends sst.Stack {
       props.certificate,
     );
 
-    new cdk.CfnOutput(this, 'RKeeperTaskRoleArn', {
+    new CfnOutput(this, 'RKeeperTaskRoleArn', {
       value: taskRole.roleArn,
     });
 
-    new cdk.CfnOutput(this, 'RKeeperTaskBucketName', {
+    new CfnOutput(this, 'RKeeperTaskBucketName', {
       value: menuBucket.bucketName,
     });
 

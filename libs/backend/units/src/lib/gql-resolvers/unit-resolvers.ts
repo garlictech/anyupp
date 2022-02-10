@@ -1,4 +1,4 @@
-import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync';
+import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync-alpha';
 
 export const createUnitResolvers = ({
   lambdaDs,

@@ -84,3 +84,4 @@ amplifytools.xcconfig
 #amplify-do-not-edit-end
 
 cdk.context.json
+.sst

@@ -63,7 +63,7 @@ query getUnitsNearLocation($lat: Float!, $lng: Float!) {
           en
           hu
         }
-        maxOtherAmount
+        minOtherAmount
         percents
         title {
           de

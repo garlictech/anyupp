@@ -1,12 +1,13 @@
-import * as cdk from '@aws-cdk/core';
-import * as route53Targets from '@aws-cdk/aws-route53-targets';
+import {
+  aws_certificatemanager as acm,
+  aws_route53 as route53,
+  aws_route53_targets as route53Targets,
+  aws_ssm as ssm,
+  aws_apigateway as apigateway,
+  CfnOutput,
+} from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
-import * as route53 from '@aws-cdk/aws-route53';
-import * as apigateway from '@aws-cdk/aws-apigateway';
-import * as apigw from '@aws-cdk/aws-apigateway';
-import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as fp from 'lodash/fp';
-import * as ssm from '@aws-cdk/aws-ssm';
 
 export const getFQParamName = (app: sst.App, paramName: string) =>
   getFQParamNameFromDetails(app.stage, app.name, paramName);
@@ -31,7 +32,7 @@ export const createApiDomainName = (
   api.addDomainName(`${apiName}-DomainName`, {
     domainName: `${apiNameFQ}.${rootDomain}`,
     certificate: certificate,
-    endpointType: apigw.EndpointType.EDGE,
+    endpointType: apigateway.EndpointType.EDGE,
   });
 
   if (app.stage !== 'prod') {
@@ -51,7 +52,7 @@ export const createApiDomainName = (
           app.stage
         }`;
 
-  new cdk.CfnOutput(scope, `${apiName}Endpoint`, {
+  new CfnOutput(scope, `${apiName}Endpoint`, {
     value: endpoint,
   });
 

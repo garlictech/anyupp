@@ -1,5 +1,4 @@
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import * as ssm from '@aws-cdk/aws-ssm';
+import { aws_ssm as ssm, aws_certificatemanager as acm } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
 import path from 'path';
 import { PROJECT_ROOT } from './settings';

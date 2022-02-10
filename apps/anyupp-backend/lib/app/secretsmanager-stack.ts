@@ -1,5 +1,4 @@
-import * as sm from '@aws-cdk/aws-secretsmanager';
-import { CfnOutput } from '@aws-cdk/core';
+import { aws_secretsmanager as sm, CfnOutput } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
 import { App } from '@serverless-stack/resources';
 import { secretsManagerArns } from '@bgap/anyupp-backend-lib';

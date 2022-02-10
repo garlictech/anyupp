@@ -3,6 +3,7 @@ set -e
 IFS='|'
 
 ENVNAME=$1
+rm -rf cdk.out
 node --max-old-space-size=8192 ../../node_modules/.bin/sls package --config serverless-1.yml -p .serverless-1 --stage=$ENVNAME
 node --max-old-space-size=8192 ../../node_modules/.bin/sls package --config serverless-2.yml -p .serverless-2 --stage=$ENVNAME
 

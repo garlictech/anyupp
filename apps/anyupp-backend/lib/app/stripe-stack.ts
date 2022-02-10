@@ -1,12 +1,14 @@
-import * as cdk from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as apigateway from '@aws-cdk/aws-apigateway';
+import {
+  aws_lambda as lambda,
+  aws_certificatemanager as acm,
+  aws_route53 as route53,
+  aws_apigateway as apigateway,
+  Duration,
+} from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
 import path from 'path';
 import { createApiDomainName } from './utils';
-import * as route53 from '@aws-cdk/aws-route53';
-import * as acm from '@aws-cdk/aws-certificatemanager';
 
 export interface StripeStackProps extends sst.StackProps {
   stripeSecretKey: string;
@@ -30,7 +32,7 @@ export class StripeStack extends sst.Stack {
         ...commonLambdaProps,
         // It must be relative to the serverless.yml file
         handler: 'lib/lambda/stripe-webhook/index.handler',
-        timeout: cdk.Duration.seconds(30),
+        timeout: Duration.seconds(30),
         memorySize: 512,
         code: lambda.Code.fromAsset(
           path.join(__dirname, '../../.serverless-1/stripe-webhook.zip'),

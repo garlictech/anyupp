@@ -122,7 +122,7 @@ Array [
       "timeZone": null,
       "tipPolicy": Object {
         "description": null,
-        "maxOtherAmount": null,
+        "minOtherAmount": null,
         "percents": Array [
           2,
         ],

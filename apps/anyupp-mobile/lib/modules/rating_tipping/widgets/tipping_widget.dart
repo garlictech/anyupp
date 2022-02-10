@@ -56,7 +56,7 @@ class _TippingWidgetState extends State<TippingWidget> {
             ...widget.tipPolicy.percents
                 .map((percent) => _buildTipItem(percent))
                 .toList(),
-            if (widget.tipPolicy.maxOtherAmount != null) _buildTipItem(0.0),
+            if (widget.tipPolicy.minOtherAmount != null) _buildTipItem(0.0),
           ],
         ),
         SizedBox(

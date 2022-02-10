@@ -1,11 +1,14 @@
-import * as appsync from '@aws-cdk/aws-appsync';
-import { FieldLogLevel } from '@aws-cdk/aws-appsync';
-import * as cognito from '@aws-cdk/aws-cognito';
-import * as iam from '@aws-cdk/aws-iam';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as sm from '@aws-cdk/aws-secretsmanager';
-import * as ssm from '@aws-cdk/aws-ssm';
-import * as cdk from '@aws-cdk/core';
+import {
+  aws_lambda as lambda,
+  aws_iam as iam,
+  aws_cognito as cognito,
+  aws_secretsmanager as sm,
+  aws_ssm as ssm,
+  Expiration,
+  Duration,
+  CfnOutput,
+} from 'aws-cdk-lib';
+import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import {
   createStripeResolvers,
   createUserResolvers,
@@ -37,11 +40,9 @@ export class AppsyncAppStack extends sst.Stack {
 
   constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
     super(scope, id);
-    const app = this.node.root as sst.App;
-
     // Creates the AppSync API
     this.api = new appsync.GraphqlApi(this, 'Api', {
-      name: app.logicalPrefixedName('anyupp-appsync-api'),
+      name: scope.logicalPrefixedName('anyupp-appsync-api'),
       schema: appsync.Schema.fromAsset(
         PROJECT_ROOT +
           'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql',
@@ -50,7 +51,7 @@ export class AppsyncAppStack extends sst.Stack {
         defaultAuthorization: {
           authorizationType: appsync.AuthorizationType.API_KEY,
           apiKeyConfig: {
-            expires: cdk.Expiration.after(cdk.Duration.days(365)),
+            expires: Expiration.after(Duration.days(365)),
           },
         },
         additionalAuthorizationModes: [
@@ -70,7 +71,7 @@ export class AppsyncAppStack extends sst.Stack {
       },
       xrayEnabled: true,
       logConfig: {
-        fieldLogLevel: FieldLogLevel.ALL,
+        fieldLogLevel: appsync.FieldLogLevel.ALL,
       },
     });
 
@@ -91,24 +92,24 @@ export class AppsyncAppStack extends sst.Stack {
     new ssm.StringParameter(this, 'AnyuppGraphqlApiUrlParam', {
       allowedPattern: '.*',
       description: 'The graphql API endpoint URL',
-      parameterName: getFQParamName(app, 'AnyuppGraphqlApiUrl'),
+      parameterName: getFQParamName(scope, 'AnyuppGraphqlApiUrl'),
       stringValue: this.api.graphqlUrl,
     });
 
     new ssm.StringParameter(this, 'AnyuppGraphqlApiKeyParam', {
       allowedPattern: '.*',
       description: 'The graphql API key',
-      parameterName: getFQParamName(app, 'AnyuppGraphqlApiKey'),
+      parameterName: getFQParamName(scope, 'AnyuppGraphqlApiKey'),
       stringValue: this.api.apiKey || '',
     });
 
     // Prints out the AppSync GraphQL endpoint to the terminal
-    new cdk.CfnOutput(this, 'AnyuppGraphqlApiUrl', {
+    new CfnOutput(this, 'AnyuppGraphqlApiUrl', {
       value: this.api.graphqlUrl,
     });
 
     // Prints out the AppSync GraphQL API key to the terminal
-    new cdk.CfnOutput(this, 'AnyuppGraphqlApiKey', {
+    new CfnOutput(this, 'AnyuppGraphqlApiKey', {
       value: this.api.apiKey || '',
     });
   }
@@ -128,7 +129,7 @@ export class AppsyncAppStack extends sst.Stack {
       // It must be relative to the serverless.yml file
       functionName: `${scope}-anyupp-graphql-resolvers`,
       handler: 'lib/lambda/appsync-lambda/index.handler',
-      timeout: cdk.Duration.seconds(30),
+      timeout: Duration.seconds(30),
       memorySize: 512,
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless-1/appsync-lambda.zip'),

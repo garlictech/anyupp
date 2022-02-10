@@ -92,12 +92,12 @@ Object {
       "backgroundLight": "#ffffff",
       "borderDark": "#c3cacd",
       "borderLight": "#e7e5d0",
-      "button": null,
-      "buttonText": null,
+      "button": "#30bf60",
+      "buttonText": "#ffffff",
       "disabled": "#303030",
       "highlight": "#30bf60",
-      "icon": null,
-      "iconText": null,
+      "icon": "#30bf60",
+      "iconText": "#30bf60",
       "indicator": "#30bf60",
       "primary": "#30bf60",
       "secondary": "#303030",
@@ -116,7 +116,7 @@ Object {
   ],
   "tipPolicy": Object {
     "description": null,
-    "maxOtherAmount": null,
+    "minOtherAmount": null,
     "percents": Array [
       2,
     ],
@@ -203,12 +203,12 @@ Object {
       "backgroundLight": "#ffffff",
       "borderDark": "#c3cacd",
       "borderLight": "#e7e5d0",
-      "button": null,
-      "buttonText": null,
+      "button": "#30bf60",
+      "buttonText": "#ffffff",
       "disabled": "#303030",
       "highlight": "#30bf60",
-      "icon": null,
-      "iconText": null,
+      "icon": "#30bf60",
+      "iconText": "#30bf60",
       "indicator": "#30bf60",
       "primary": "#30bf60",
       "secondary": "#303030",
@@ -227,7 +227,7 @@ Object {
   ],
   "tipPolicy": Object {
     "description": null,
-    "maxOtherAmount": null,
+    "minOtherAmount": null,
     "percents": Array [
       2,
     ],
@@ -466,7 +466,7 @@ Object {
   ],
   "tipPolicy": Object {
     "description": null,
-    "maxOtherAmount": null,
+    "minOtherAmount": null,
     "percents": Array [
       2,
     ],
@@ -577,7 +577,7 @@ Object {
   ],
   "tipPolicy": Object {
     "description": null,
-    "maxOtherAmount": null,
+    "minOtherAmount": null,
     "percents": Array [
       2,
     ],

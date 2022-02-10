@@ -6,25 +6,25 @@ class TipPolicy {
   final LocalizedItem? title;
   final LocalizedItem? description;
   final List<double> percents;
-  final double? maxOtherAmount;
+  final double? minOtherAmount;
   TipPolicy({
     this.title,
     this.description,
     required this.percents,
-    this.maxOtherAmount,
+    this.minOtherAmount,
   });
 
   TipPolicy copyWith({
     LocalizedItem? title,
     LocalizedItem? description,
     List<double>? percents,
-    double? maxOtherAmount,
+    double? minOtherAmount,
   }) {
     return TipPolicy(
       title: title ?? this.title,
       description: description ?? this.description,
       percents: percents ?? this.percents,
-      maxOtherAmount: maxOtherAmount ?? this.maxOtherAmount,
+      minOtherAmount: minOtherAmount ?? this.minOtherAmount,
     );
   }
 
@@ -33,7 +33,7 @@ class TipPolicy {
       'title': title?.toJson(),
       'description': description?.toJson(),
       'percents': percents,
-      'maxOtherAmount': maxOtherAmount,
+      'minOtherAmount': minOtherAmount,
     };
   }
 
@@ -44,13 +44,13 @@ class TipPolicy {
           ? LocalizedItem.fromJson(map['description'])
           : null,
       percents: List<double>.from(map['percents']),
-      maxOtherAmount: map['maxOtherAmount']?.toDouble() ?? 0.0,
+      minOtherAmount: map['minOtherAmount']?.toDouble() ?? 0.0,
     );
   }
 
   @override
   String toString() {
-    return 'TipPolicy(title: $title, description: $description, percents: $percents, maxOtherAmount: $maxOtherAmount)';
+    return 'TipPolicy(title: $title, description: $description, percents: $percents, minOtherAmount: $minOtherAmount)';
   }
 
   @override
@@ -61,7 +61,7 @@ class TipPolicy {
         other.title == title &&
         other.description == description &&
         listEquals(other.percents, percents) &&
-        other.maxOtherAmount == maxOtherAmount;
+        other.minOtherAmount == minOtherAmount;
   }
 
   @override
@@ -69,6 +69,6 @@ class TipPolicy {
     return title.hashCode ^
         description.hashCode ^
         percents.hashCode ^
-        maxOtherAmount.hashCode;
+        minOtherAmount.hashCode;
   }
 }

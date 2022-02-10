@@ -1,9 +1,12 @@
-import * as cognito from '@aws-cdk/aws-cognito';
-import { UserPoolClientProps } from '@aws-cdk/aws-cognito';
-import * as iam from '@aws-cdk/aws-iam';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as ssm from '@aws-cdk/aws-ssm';
-import { CfnOutput, Duration, RemovalPolicy } from '@aws-cdk/core';
+import {
+  aws_cognito as cognito,
+  aws_iam as iam,
+  aws_lambda as lambda,
+  aws_ssm as ssm,
+  CfnOutput,
+  Duration,
+  RemovalPolicy,
+} from 'aws-cdk-lib';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
 import path from 'path';
 import { commonLambdaProps } from './lambda-common';
@@ -215,7 +218,7 @@ export class CognitoStack extends Stack {
   private commonUserPoolProps(
     userPool: cognito.UserPool,
     generateSecret: boolean,
-  ): Partial<UserPoolClientProps> & { userPool: cognito.UserPool } {
+  ): Partial<cognito.UserPoolClientProps> & { userPool: cognito.UserPool } {
     return {
       userPool,
       generateSecret,
@@ -246,7 +249,7 @@ export class CognitoStack extends Stack {
     const commonProps = (
       callbackUrls: string[],
       logoutUrls: string[],
-    ): Partial<UserPoolClientProps> => ({
+    ): Partial<cognito.UserPoolClientProps> => ({
       oAuth: {
         flows: {
           authorizationCodeGrant: true,
@@ -307,7 +310,7 @@ export class CognitoStack extends Stack {
   }
 
   private createConsumerUserPoolClient(app: App, userPool: cognito.UserPool) {
-    const commonProps: Partial<UserPoolClientProps> = {
+    const commonProps: Partial<cognito.UserPoolClientProps> = {
       oAuth: {
         flows: {
           authorizationCodeGrant: true,

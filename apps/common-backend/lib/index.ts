@@ -1,14 +1,16 @@
-import * as cdk from '@aws-cdk/core';
 import { App, Stack } from '@serverless-stack/resources';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ssm from '@aws-cdk/aws-ssm';
+import {
+  aws_ec2 as ec2,
+  aws_ssm as ssm,
+  aws_ecs as ecs,
+  CfnOutput,
+} from 'aws-cdk-lib';
 import {
   anyuppVpcName,
   anyuppFargateClusterName,
   anyuppVpcSecurityGroupParamName,
   anyuppVpcIdParamName,
 } from '@bgap/backend/shared/utils';
-import * as ecs from '@aws-cdk/aws-ecs';
 
 export class AnyuppCommonStack extends Stack {
   constructor(scope: App, id: string) {
@@ -40,15 +42,15 @@ export class AnyuppCommonStack extends Stack {
       stringValue: vpc.vpcDefaultSecurityGroup,
     });
 
-    new cdk.CfnOutput(this, 'AnyuppVpcSecurityGroupOutput', {
+    new CfnOutput(this, 'AnyuppVpcSecurityGroupOutput', {
       value: vpc.vpcDefaultSecurityGroup,
     });
 
-    new cdk.CfnOutput(this, 'AnyuppVpcSubnetOutput', {
+    new CfnOutput(this, 'AnyuppVpcSubnetOutput', {
       value: vpc.privateSubnets[0].subnetId,
     });
 
-    new cdk.CfnOutput(this, 'AnyuppVpcIdOutput', {
+    new CfnOutput(this, 'AnyuppVpcIdOutput', {
       value: vpc.vpcId,
     });
   }

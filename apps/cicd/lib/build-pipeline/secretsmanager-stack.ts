@@ -1,5 +1,5 @@
+import { aws_secretsmanager as sm } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
-import * as sm from '@aws-cdk/aws-secretsmanager';
 
 export interface SecretsManagerStackProps extends sst.StackProps {
   projectSecretsManagerArn: string;
@@ -19,7 +19,7 @@ export class SecretsManagerStack extends sst.Stack {
       this,
       'GithubOauthTokenSecret',
       {
-        secretArn: props.githubSecretsManagerArn,
+        secretCompleteArn: props.githubSecretsManagerArn,
       },
     );
 
@@ -27,7 +27,7 @@ export class SecretsManagerStack extends sst.Stack {
       this,
       'ProjectSecrets',
       {
-        secretArn: props.projectSecretsManagerArn,
+        secretCompleteArn: props.projectSecretsManagerArn,
       },
     );
 
@@ -35,7 +35,7 @@ export class SecretsManagerStack extends sst.Stack {
       this,
       'PipelineSecrets',
       {
-        secretArn: props.pipelineSecretsManagerArn,
+        secretCompleteArn: props.pipelineSecretsManagerArn,
       },
     );
   }

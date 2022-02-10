@@ -1,7 +1,6 @@
+import { aws_iam as iam, aws_codebuild as codebuild } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
-import * as codebuild from '@aws-cdk/aws-codebuild';
 import { SecretsManagerStack } from './secretsmanager-stack';
-import * as iam from '@aws-cdk/aws-iam';
 
 export interface CiStackProps extends sst.StackProps {
   readonly secretsManager: SecretsManagerStack;

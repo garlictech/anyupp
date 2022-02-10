@@ -1,17 +1,17 @@
 import {
-  Construct,
   RemovalPolicy,
   Duration,
   CustomResource,
-} from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { Provider } from '@aws-cdk/custom-resources';
-import { Bucket, BucketProps } from '@aws-cdk/aws-s3';
+  aws_lambda as lambda,
+  aws_s3 as s3,
+  custom_resources as cr,
+} from 'aws-cdk-lib';
 import path from 'path';
 import { commonLambdaProps } from './lambda-common';
+import { Construct } from 'constructs';
 
-export class AutoDeleteBucket extends Bucket {
-  constructor(scope: Construct, id: string, props: BucketProps = {}) {
+export class AutoDeleteBucket extends s3.Bucket {
+  constructor(scope: Construct, id: string, props: s3.BucketProps = {}) {
     super(scope, id, {
       ...props,
       removalPolicy: RemovalPolicy.DESTROY,
@@ -31,7 +31,7 @@ export class AutoDeleteBucket extends Bucket {
     // allow the bucket contents to be read and deleted by the lambda
     this.grantReadWrite(adlambda);
 
-    const provider = new Provider(this, 'AutoBucketProvider', {
+    const provider = new cr.Provider(this, 'AutoBucketProvider', {
       onEventHandler: adlambda,
     });
 

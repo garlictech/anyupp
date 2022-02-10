@@ -1,12 +1,15 @@
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import { Construct, RemovalPolicy } from '@aws-cdk/core';
-import * as route53 from '@aws-cdk/aws-route53';
-import * as cdk from '@aws-cdk/core';
+import {
+  aws_route53 as route53,
+  aws_cloudfront as cloudfront,
+  aws_route53_targets as targets,
+  aws_s3_deployment as s3deploy,
+  aws_certificatemanager as acm,
+  RemovalPolicy,
+  CfnOutput,
+} from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as targets from '@aws-cdk/aws-route53-targets';
-import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import { AutoDeleteBucket } from './auto-delete-bucket';
+import { Construct } from 'constructs';
 
 export interface WebsiteProps extends sst.StackProps {
   domainName: string;
@@ -25,10 +28,11 @@ export class WebsiteConstruct extends Construct {
     const siteDomain = props.siteSubDomain + '.' + props.domainName;
 
     this.websiteUrl = 'https://' + siteDomain;
-    new cdk.CfnOutput(this, 'Site', { value: this.websiteUrl });
+    new CfnOutput(this, 'Site', { value: this.websiteUrl });
 
     // Content bucket
     const siteBucket = new AutoDeleteBucket(this, 'SiteBucket', {
+      //const siteBucket = new s3.Bucket(this, 'SiteBucket', {
       bucketName: siteDomain,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
@@ -37,7 +41,7 @@ export class WebsiteConstruct extends Construct {
       autoDeleteObjects: app.stage !== 'prod',
     });
 
-    new cdk.CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
+    new CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
 
     // CloudFront distribution that provides HTTPS
     const distribution = new cloudfront.CloudFrontWebDistribution(
@@ -64,15 +68,15 @@ export class WebsiteConstruct extends Construct {
       },
     );
 
-    new cdk.CfnOutput(this, 'DistributionId', {
+    new CfnOutput(this, 'DistributionId', {
       value: distribution.distributionId,
     });
 
-    new cdk.CfnOutput(this, 'DistributionDomainName', {
+    new CfnOutput(this, 'DistributionDomainName', {
       value: distribution.distributionDomainName,
     });
 
-    new cdk.CfnOutput(this, 'SiteDomain', {
+    new CfnOutput(this, 'SiteDomain', {
       value: siteDomain,
     });
     //

@@ -1,8 +1,10 @@
+import {
+  CustomResource,
+  aws_lambda as lambda,
+  aws_iam as iam,
+  custom_resources as cr,
+} from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
-import { Provider } from '@aws-cdk/custom-resources';
-import { CustomResource } from '@aws-cdk/core';
-import * as iam from '@aws-cdk/aws-iam';
-import * as lambda from '@aws-cdk/aws-lambda';
 import { commonLambdaProps } from './lambda-common';
 import path from 'path';
 import { StackProps } from '@serverless-stack/resources';
@@ -33,7 +35,7 @@ export class ConfiguratorStack extends sst.Stack {
       );
     }
 
-    const provider = new Provider(this, 'CrudApiUpdaterProvider', {
+    const provider = new cr.Provider(this, 'CrudApiUpdaterProvider', {
       onEventHandler: updaterLambda,
     });
 

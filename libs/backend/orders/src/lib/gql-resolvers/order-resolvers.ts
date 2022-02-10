@@ -1,5 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync';
+import { LambdaDataSource, MappingTemplate } from '@aws-cdk/aws-appsync-alpha';
 import { getAuthenticatedUserIdFromContextIdentity } from '@bgap/anyupp-backend-lib';
 import * as R from 'ramda';
 

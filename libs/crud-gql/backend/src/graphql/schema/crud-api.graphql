@@ -739,7 +739,7 @@ type TipPolicy {
   title: LocalizedItem
   description: LocalizedItem
   percents: [Float!]!
-  maxOtherAmount: Float
+  minOtherAmount: Float
 }
 
 input RatingPolicyInput {
@@ -759,7 +759,7 @@ input TipPolicyInput {
   title: LocalizedItemInput
   description: LocalizedItemInput
   percents: [Float!]!
-  maxOtherAmount: Float
+  minOtherAmount: Float
 }
 
 type Unit

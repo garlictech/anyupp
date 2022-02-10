@@ -1,7 +1,9 @@
+import {
+  aws_iam as iam,
+  aws_codebuild as codebuild,
+  aws_chatbot as chatbot,
+} from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
-import * as codebuild from '@aws-cdk/aws-codebuild';
-import * as chatbot from '@aws-cdk/aws-chatbot';
-import * as iam from '@aws-cdk/aws-iam';
 
 // Info: https://aws.amazon.com/blogs/devops/creating-multi-architecture-docker-images-to-support-graviton2-using-aws-codebuild-and-aws-codepipeline/
 

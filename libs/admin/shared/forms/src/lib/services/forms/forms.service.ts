@@ -132,7 +132,7 @@ export class FormsService {
         de: [''],
       }),
       percents: [[]],
-      maxOtherAmount: [],
+      minOtherAmount: [],
     });
 
   public addUnitTipPercent = (caption: string, percents: number[]) =>

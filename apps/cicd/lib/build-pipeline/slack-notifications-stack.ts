@@ -1,6 +1,5 @@
-import * as chatbot from '@aws-cdk/aws-chatbot';
+import { aws_chatbot as chatbot, aws_sns as sns } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
-import * as sns from '@aws-cdk/aws-sns';
 
 export class SlackNotificationsStack extends sst.Stack {
   public chatbot: chatbot.SlackChannelConfiguration;

@@ -170,7 +170,7 @@ Object {
       "en": "",
       "hu": "",
     },
-    "maxOtherAmount": null,
+    "minOtherAmount": null,
     "percents": Array [],
     "title": Object {
       "de": "",
@@ -263,7 +263,7 @@ Object {
       "en": "",
       "hu": "",
     },
-    "maxOtherAmount": null,
+    "minOtherAmount": null,
     "percents": Array [],
     "title": Object {
       "de": "",
@@ -395,7 +395,7 @@ Object {
     "timeZone": null,
     "tipPolicy": Object {
       "description": null,
-      "maxOtherAmount": null,
+      "minOtherAmount": null,
       "percents": Array [
         2,
       ],
@@ -528,7 +528,7 @@ Object {
     "timeZone": null,
     "tipPolicy": Object {
       "description": null,
-      "maxOtherAmount": null,
+      "minOtherAmount": null,
       "percents": Array [
         2,
       ],
