@@ -46,6 +46,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public invoiceData?: CrudApi.Invoice;
   public receiptType?: string;
   public EServingMode = CrudApi.ServingMode;
+  public EServiceFeeType = CrudApi.ServiceFeeType;
 
   constructor(
     private _store: Store,
@@ -124,12 +125,18 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         this.sum.currency = item.sumPriceShown.currency;
       });
 
-      if (order.serviceFee) {
+      if (
+        order.serviceFee &&
+        this.unit?.serviceFeePolicy?.type === this.EServiceFeeType.applicable
+      ) {
         serviceFees[order.serviceFee.taxPercentage] = summarizeServiceFeeByTax(
           serviceFees,
           order.serviceFee,
         );
-        this.sum.value += serviceFees[order.serviceFee.taxPercentage].priceSum;
+        this.sum.value += Math.round(
+          order.serviceFee.netPrice *
+            (1 + order.serviceFee.taxPercentage * 0.01),
+        );
       }
     });
 

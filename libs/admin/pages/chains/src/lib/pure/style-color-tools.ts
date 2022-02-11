@@ -78,6 +78,5 @@ export const getPreviewSVG = (colors: CrudApi.ChainStyleColors) => {
     .replace(new RegExp('__button__', 'g'), colors.button || '')
     .replace(new RegExp('__button_text__', 'g'), colors.buttonText || '')
     .replace(new RegExp('__icon__', 'g'), colors.icon || '')
-    .replace(new RegExp('__icon_text__', 'g'), colors.iconText || '')
     .replace(new RegExp('__highlight__', 'g'), colors.highlight || '');
 };

@@ -59,7 +59,6 @@ type ChainStyleColors @aws_cognito_user_pools @aws_api_key @aws_iam {
   button: String
   buttonText: String
   icon: String
-  iconText: String
   highlight: String
 }
 
@@ -1874,7 +1873,6 @@ input ChainStyleColorsInput {
   button: String
   buttonText: String
   icon: String
-  iconText: String
   highlight: String
 }
 

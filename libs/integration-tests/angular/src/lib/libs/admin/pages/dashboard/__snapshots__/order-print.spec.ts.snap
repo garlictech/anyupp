@@ -3,9 +3,9 @@
 exports[`Order print functions summarizeServiceFeeByTax should calculate service fee summary 1`] = `
 Object {
   "currency": "HUF",
-  "priceSum": 200,
+  "priceSum": 254,
   "tax": 27,
-  "taxSum": 27,
+  "taxSum": 54,
 }
 `;
 

@@ -104,20 +104,6 @@
 
         <div class="bottom-border"></div>
 
-        <div>{{ 'print.serviceFeeDetails' | translate }}:</div>
-
-        <div *ngFor="let serviceFee of parsedServiceFees">
-          <div class="row p-0 m-0">
-            <div class="col-8 p-0">{{ serviceFee.tax }}%</div>
-
-            <div class="col-4 p-0 text-end">
-              {{ serviceFee.priceSum | currencyFormatter: serviceFee.currency }}
-            </div>
-          </div>
-        </div>
-
-        <div class="bottom-border"></div>
-
         <div>{{ 'print.vatDetails' | translate }}:</div>
 
         <div *ngFor="let vat of parsedVats">
@@ -135,25 +121,24 @@
           </div>
         </div>
 
-        <div>{{ 'print.serviceFeeDetails' | translate }}:</div>
+        <ng-container
+          *ngIf="unit?.serviceFeePolicy?.type === EServiceFeeType.applicable"
+        >
+          <div class="bottom-border"></div>
+          <div>{{ 'print.serviceFeeDetails' | translate }}:</div>
 
-        <div *ngFor="let serviceFee of parsedServiceFees">
-          <div class="row p-0 m-0">
-            <div class="col-1 p-0 text-end">{{ serviceFee.tax }}%</div>
-            <div class="col-4 p-0 text-end">
-              {{
-                serviceFee.priceSum - serviceFee.taxSum
-                  | currencyFormatter: serviceFee.currency
-              }}
-            </div>
-            <div class="col-3 p-0 text-end">
-              {{ serviceFee.taxSum | currencyFormatter: serviceFee.currency }}
-            </div>
-            <div class="col-4 p-0 text-end">
-              {{ serviceFee.priceSum | currencyFormatter: serviceFee.currency }}
+          <div *ngFor="let serviceFee of parsedServiceFees">
+            <div class="row p-0 m-0">
+              <!--div class="col-8 p-0">{{ serviceFee.tax }}%</div-->
+
+              <div class="col-12 p-0 text-end">
+                {{
+                  serviceFee.priceSum | currencyFormatter: serviceFee.currency
+                }}
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
 
         <div class="bottom-border"></div>
 
@@ -166,9 +151,13 @@
           </div>
         </div>
 
+        <div *ngIf="unit?.serviceFeePolicy?.type === EServiceFeeType.included">
+          {{ 'units.serviceFee.serviceFeeIncluded' | translate }}
+        </div>
+
         <div class="mt-4">Rendelés azonosítók:</div>
         <div *ngFor="let order of orders">
-          #{{ order.orderNum }} ({{ order.id }})
+          #{{ order.orderNum }} ({{ order.id }})<br />
           {{ 'print.selectedPaymentMode' | translate }}:
           {{ order.paymentMode.type | paymentModeType }}
         </div>

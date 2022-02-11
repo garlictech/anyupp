@@ -48,7 +48,7 @@ const newStyleChainFixture = {
   style: {
     ...chainFixture.chainBase.style,
     colors: pick(
-      ['button', 'buttonText', 'icon', 'iconText', 'highlight'],
+      ['button', 'buttonText', 'icon', 'highlight'],
       chainFixture.chainBase.style.colors,
     ),
   },

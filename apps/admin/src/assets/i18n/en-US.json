@@ -207,7 +207,6 @@
         "button": "Button",
         "buttonText": "Button text",
         "icon": "Icon",
-        "iconText": "Icon text",
         "highlight": "Highlight"
       },
       "images": {
@@ -357,7 +356,7 @@
       "title": "Tips",
       "newPercent": "New Percent",
       "percents": "Percents",
-      "customValue": "Custom value"
+      "maxOtherAmount": "Max amount"
     },
     "serviceFee": {
       "title": "Service fee",
@@ -366,7 +365,8 @@
         "noFee": "No service fee",
         "included": "Fee included in all prices",
         "applicable": "Fee not included in prices but applicable"
-      }
+      },
+      "serviceFeeIncluded": "Service fee included in all prices."
     }
   },
   "users": {

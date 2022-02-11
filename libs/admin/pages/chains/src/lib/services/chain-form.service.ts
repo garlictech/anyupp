@@ -51,7 +51,6 @@ export class ChainFormService {
           button: ['#30bf60', [Validators.required]],
           buttonText: ['#ffffff', [Validators.required]],
           icon: ['#30bf60', [Validators.required]],
-          iconText: ['#30bf60', [Validators.required]],
           highlight: ['#30bf60', [Validators.required]],
         }),
         images: this._formBuilder.group({

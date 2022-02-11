@@ -37,9 +37,7 @@ export class FormRatingPolicyComponent implements OnInit {
   constructor(
     private _formsService: FormsService,
     private _changeDetectorRef: ChangeDetectorRef,
-  ) {
-    console.error('_ratingDefinitionList', this._ratingDefinitionList);
-  }
+  ) {}
 
   ngOnInit() {
     this.ratingPolicyOptions$ = this.ratingPoliciesFormArray?.valueChanges.pipe(

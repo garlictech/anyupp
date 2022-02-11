@@ -207,7 +207,6 @@
         "button": "Gomb",
         "buttonText": "Gomb szöveg",
         "icon": "Ikon",
-        "iconText": "Ikon szöveg",
         "highlight": "Kiemelés"
       },
       "images": {
@@ -359,16 +358,17 @@
       "title": "Borravalók",
       "newPercent": "Új százalék",
       "percents": "Százalékok",
-      "customValue": "Egyedi érték"
+      "maxOtherAmount": "Max összeg"
     },
     "serviceFee": {
-      "title": "Felszolgálási díj",
-      "serviceFeePercent": "Felszolgálási díj",
+      "title": "Szervizdíj",
+      "serviceFeePercent": "Szervizdíj",
       "type": {
-        "noFee": "Nincs felszolgálási díj",
-        "included": "Az árak tartalmazzák a felszolgálási díjat",
-        "applicable": "Az árak nem tartalmazzák a felszolgálási díjat"
-      }
+        "noFee": "Nincs Szervizdíj",
+        "included": "Az árak tartalmazzák a szervizdíjat",
+        "applicable": "Az árak nem tartalmazzák a szervizdíjat"
+      },
+      "serviceFeeIncluded": "Az árak tartalmazzák a szervizdíjat."
     }
   },
   "users": {
@@ -434,7 +434,7 @@
   "print": {
     "items": "Tételek",
     "vatDetails": "ÁFA részletezés",
-    "serviceFeeDetails": "Felszolgállási díj",
+    "serviceFeeDetails": "Felszolgálási díj",
     "selectedPaymentMode": "Választott fizetési mód"
   },
   "auth": {

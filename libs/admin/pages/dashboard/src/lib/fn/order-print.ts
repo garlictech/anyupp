@@ -4,22 +4,25 @@ import { KeyValueObject } from '@bgap/shared/types';
 export const summarizeServiceFeeByTax = (
   serviceFees: KeyValueObject,
   serviceFee: CrudApi.Price,
-) =>
-  serviceFees[serviceFee.taxPercentage]
+) => {
+  const taxValue = Math.round(
+    serviceFee.netPrice * serviceFee.taxPercentage * 0.01,
+  );
+  const grossPrice = Math.round(serviceFee.netPrice + taxValue);
+
+  return serviceFees[serviceFee.taxPercentage]
     ? {
         ...serviceFees[serviceFee.taxPercentage],
-        priceSum:
-          serviceFees[serviceFee.taxPercentage].priceSum + serviceFee.netPrice,
-        taxSum:
-          serviceFees[serviceFee.taxPercentage].taxSum +
-          serviceFee.taxPercentage,
+        priceSum: serviceFees[serviceFee.taxPercentage].priceSum + grossPrice,
+        taxSum: serviceFees[serviceFee.taxPercentage].taxSum + taxValue,
       }
     : {
-        priceSum: serviceFee.netPrice,
-        taxSum: serviceFee.taxPercentage,
+        priceSum: grossPrice,
+        taxSum: taxValue,
         tax: serviceFee.taxPercentage,
         currency: serviceFee.currency,
       };
+};
 
 export const summarizeVariantsByTax =
   (deps: {

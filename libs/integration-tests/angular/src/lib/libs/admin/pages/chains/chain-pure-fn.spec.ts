@@ -61,7 +61,6 @@ describe('Chain pure functions', () => {
         button: '#ffffff',
         buttonText: '#000000',
         icon: '#fffffa',
-        iconText: '#00000a',
         highlight: '#00000b',
       }),
     ).toMatchSnapshot();

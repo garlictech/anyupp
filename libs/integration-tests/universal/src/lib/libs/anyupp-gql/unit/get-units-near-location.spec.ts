@@ -112,6 +112,9 @@ describe('GetUnitsNearLocation tests', () => {
   beforeEach(done => {
     cleanup()
       .pipe(
+        tap(() => {
+          console.error('chainFixture.chain_01', chainFixture.chain_01);
+        }),
         switchMap(() =>
           // Seeding
           combineLatest([

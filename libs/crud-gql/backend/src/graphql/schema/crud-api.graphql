@@ -58,7 +58,6 @@ type ChainStyleColors @aws_cognito_user_pools {
   button: String
   buttonText: String
   icon: String
-  iconText: String
   highlight: String
 }
 
