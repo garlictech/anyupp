@@ -51,7 +51,7 @@ class TransactionInfoWidget extends StatelessWidget {
               trans(context, 'payment.paymentInfo.invoicing.show'),
               style: Fonts.satoshi(
                 fontSize: 14,
-                color: theme.primary,
+                color: theme.highlight,
               ),
             ),
           ),

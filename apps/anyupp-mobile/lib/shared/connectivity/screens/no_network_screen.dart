@@ -20,7 +20,7 @@ class NoNetworkScreen extends StatelessWidget {
                 Icon(
                   Icons.cloud_off,
                   size: 64.0,
-                  color: theme.primary,
+                  color: theme.icon,
                 ),
                 SizedBox(
                   height: 16.0,

@@ -134,7 +134,7 @@ class _ProductConfigModifiersWidgetState
               child: Text(
                 getLocalizedText(context, modifier.name),
                 style: Fonts.satoshi(
-                  color: theme.primary,
+                  color: theme.highlight,
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
@@ -182,8 +182,8 @@ class _ProductConfigModifiersWidgetState
 
     return Container(
       child: InkWell(
-        hoverColor: theme.primary,
-        focusColor: theme.primary,
+        hoverColor: theme.highlight,
+        focusColor: theme.highlight,
         enableFeedback: true,
         onTap: () {
           setState(() {
@@ -214,7 +214,7 @@ class _ProductConfigModifiersWidgetState
                         (item.price > 0 ? '+' : '') +
                             formatCurrency(item.price, widget.unit.currency),
                         style: Fonts.satoshi(
-                          color: theme.primary,
+                          color: theme.highlight,
                           fontSize: 16.0,
                           fontWeight: FontWeight.w400,
                         ),
@@ -222,7 +222,7 @@ class _ProductConfigModifiersWidgetState
                       Radio<String>(
                         groupValue: _selectedModifier[productSetId],
                         value: value,
-                        activeColor: theme.primary,
+                        activeColor: theme.highlight,
                         fillColor: MaterialStateColor.resolveWith((states) {
                           if (states.isEmpty) {
                             return theme.secondary16;
@@ -230,7 +230,7 @@ class _ProductConfigModifiersWidgetState
                           var state = states.first;
                           switch (state) {
                             case MaterialState.selected:
-                              return theme.primary;
+                              return theme.highlight;
                             default:
                               return theme.secondary16;
                           }

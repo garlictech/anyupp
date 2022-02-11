@@ -150,7 +150,7 @@ class NoOrderWidget extends StatelessWidget {
                   blurRadius: 2.0,
                 ),
               ],
-              color: theme.primary,
+              color: theme.button,
             ),
             // child: Container(
             //   height: 136.0,
@@ -205,7 +205,7 @@ class NoOrderWidget extends StatelessWidget {
                             'orders.noActiveOrder'), //'Nincs folyamatban lévő rendelésed',
                         style: Fonts.satoshi(
                           fontSize: 16.0,
-                          color: theme.secondary0,
+                          color: theme.buttonText,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -214,7 +214,7 @@ class NoOrderWidget extends StatelessWidget {
                             'orders.noActiveOrderDesc'), // 'Rendelj néhány kattintással!',
                         style: Fonts.satoshi(
                           fontSize: 14.0,
-                          color: theme.secondary0,
+                          color: theme.buttonText,
                           fontWeight: FontWeight.w400,
                         ),
                       ),

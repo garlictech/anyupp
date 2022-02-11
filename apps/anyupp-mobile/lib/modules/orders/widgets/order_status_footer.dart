@@ -61,7 +61,7 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
 
   Widget _buildStepper(BuildContext context, int progressPosition) {
     List<Widget> steppers = [];
-    Color iconColor = theme.primary;
+    Color iconColor = theme.icon;
     Color lineColor = theme.secondary64.withOpacity(0.3);
 
     switch (progressPosition) {

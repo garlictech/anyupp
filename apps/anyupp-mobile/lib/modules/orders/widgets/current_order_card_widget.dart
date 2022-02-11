@@ -78,7 +78,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
                     border: order.archived
                         ? null
                         : Border.all(
-                            color: theme.primary,
+                            color: theme.icon,
                             width: 2.0,
                           ),
                   ),
@@ -86,7 +86,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
                     child: Icon(
                       _ICONMAP[status],
                       size: 16.0,
-                      color: order.archived ? theme.secondary0 : theme.primary,
+                      color: order.archived ? theme.secondary0 : theme.icon,
                     ),
                   ),
                 ),

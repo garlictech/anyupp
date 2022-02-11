@@ -30,7 +30,7 @@ class RatingIconWidget extends StatelessWidget {
           child: CircleAvatar(
             minRadius: 28,
             maxRadius: 28,
-            backgroundColor: selected ? theme.primary : theme.secondary12,
+            backgroundColor: selected ? theme.icon : theme.secondary12,
             child: SvgPicture.asset(
               'assets/icons/$icon',
               width: 32.0,

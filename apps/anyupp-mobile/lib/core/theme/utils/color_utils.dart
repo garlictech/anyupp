@@ -44,8 +44,8 @@ ThemeData getThemeData(BuildContext context, ThemeChainData theme) {
   return ThemeData(
     fontFamily: 'Satoshi',
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    primarySwatch: MaterialColor(theme.primary.value, _color),
-    primaryColor: theme.primary,
+    primarySwatch: MaterialColor(theme.highlight.value, _color),
+    primaryColor: theme.highlight,
     brightness: Brightness.light,
   );
 }
@@ -53,12 +53,28 @@ ThemeData getThemeData(BuildContext context, ThemeChainData theme) {
 ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
   print('***** unitThemeToThemeChainData().unit=${unit.style.colors}');
   try {
+    String primaryString =
+        unit.style.colors.primary ?? unit.style.colors.indicator ?? '#30BF60';
+    String secondaryString =
+        unit.style.colors.secondary ?? unit.style.colors.textDark ?? '#373737';
     var primary = TinyColor.fromString(
-      unit.style.colors.primary ?? unit.style.colors.indicator ?? '#30BF60',
+      primaryString,
     ).color;
     var secondary = TinyColor.fromString(
-      unit.style.colors.secondary ?? unit.style.colors.textDark ?? '#373737',
+      secondaryString,
     ).color;
+
+    var button =
+        TinyColor.fromString(unit.style.colors.button ?? primaryString)
+            .color;
+    var buttonText =
+        TinyColor.fromString(unit.style.colors.buttonText ?? secondaryString)
+            .color;
+    var icon =
+        TinyColor.fromString(unit.style.colors.icon ?? primaryString).color;
+    var highlight =
+        TinyColor.fromString(unit.style.colors.highlight ?? primaryString)
+            .color;
 
     var secondary64 = _col(secondary, 64);
     var secondary40 = _col(secondary, 40);
@@ -83,6 +99,10 @@ ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
       secondary64: secondary64,
       secondary16: secondary16,
       secondary40: secondary40,
+      button: button,
+      buttonText: buttonText,
+      icon: icon,
+      highlight: highlight,
       images: unit.style.images,
     );
   } catch (error, stackTrace) {

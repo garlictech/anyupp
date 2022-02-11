@@ -147,7 +147,7 @@ Future<bool?> _showdeleteCartConfirmation(
               style: Fonts.satoshi(
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
-                color: theme.primary,
+                color: theme.highlight,
               ),
             ),
             onPressed: () async {

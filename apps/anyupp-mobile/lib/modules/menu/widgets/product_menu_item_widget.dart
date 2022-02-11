@@ -31,7 +31,7 @@ class ProductMenuItem extends StatelessWidget {
     final double widthContainer = 130;
 
     return InkWell(
-      focusColor: theme.primary,
+      focusColor: theme.highlight,
       highlightColor: theme.secondary40,
       onTap: () {
         Nav.to(
@@ -161,8 +161,8 @@ class ProductMenuItem extends StatelessWidget {
         fontSize: 14.0,
         fontWeight: FontWeight.w700,
         color: isDisabled
-            ? theme.primary.withOpacity(_disabled_opacity)
-            : theme.primary,
+            ? theme.highlight.withOpacity(_disabled_opacity)
+            : theme.highlight,
       ),
     );
   }
@@ -179,8 +179,8 @@ class ProductMenuItem extends StatelessWidget {
           fontSize: 14.0,
           fontWeight: FontWeight.w700,
           color: isDisabled
-              ? theme.primary.withOpacity(_disabled_opacity)
-              : theme.primary,
+              ? theme.highlight.withOpacity(_disabled_opacity)
+              : theme.highlight,
         ),
       );
     } else {
@@ -190,8 +190,8 @@ class ProductMenuItem extends StatelessWidget {
           fontSize: 14.0,
           fontWeight: FontWeight.w700,
           color: isDisabled
-              ? theme.primary.withOpacity(_disabled_opacity)
-              : theme.primary,
+              ? theme.highlight.withOpacity(_disabled_opacity)
+              : theme.highlight,
         ),
       );
     }

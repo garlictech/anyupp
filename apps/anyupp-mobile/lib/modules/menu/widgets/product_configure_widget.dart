@@ -330,7 +330,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
             child: Text(
               trans('product.selectSize'),
               style: Fonts.satoshi(
-                color: theme.primary,
+                color: theme.highlight,
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
               ),
@@ -408,10 +408,10 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: selected
-                    ? theme.primary.withOpacity(0.24)
+                    ? theme.button.withOpacity(0.24)
                     : theme.secondary12,
                 border: Border.all(
-                  color: selected ? theme.primary : theme.secondary16,
+                  color: selected ? theme.button : theme.secondary16,
                   width: 4.0,
                 ),
               ),
@@ -449,7 +449,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           style: Fonts.satoshi(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: theme.primary,
+            color: theme.highlight,
           ),
         )
       ],

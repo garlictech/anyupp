@@ -265,7 +265,7 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                   child: ElevatedButton(
                     onPressed: () => _validateAndSaveCard(),
                     style: ElevatedButton.styleFrom(
-                      primary: theme.primary,
+                      primary: theme.button,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),
@@ -276,7 +276,7 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                       style: Fonts.satoshi(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w700,
-                        color: theme.secondary0,
+                        color: theme.buttonText,
                       ),
                     ),
                   ),

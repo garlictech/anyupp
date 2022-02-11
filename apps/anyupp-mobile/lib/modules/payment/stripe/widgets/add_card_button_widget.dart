@@ -18,14 +18,14 @@ class AddCardButtonWidget extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              primary: theme.primary,
+              primary: theme.button,
             ),
             onPressed: () => _startStripePayment(),
             child: Text(
               trans(context, 'payment.manageCard.add_card'),
               style: Fonts.satoshi(
                 fontSize: 16,
-                color: theme.secondary0,
+                color: theme.buttonText,
                 fontWeight: FontWeight.w500,
               ),
             ),

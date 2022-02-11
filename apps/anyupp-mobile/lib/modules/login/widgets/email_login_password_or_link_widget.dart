@@ -140,7 +140,7 @@ class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentW
                           textAlign: TextAlign.start,
                           style: Fonts.satoshi(
                             fontSize: 14,
-                            color: theme.primary,
+                            color: theme.highlight,
                             fontWeight: FontWeight.normal,
                             decoration: TextDecoration.underline,
                           ),
@@ -158,7 +158,7 @@ class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentW
                           textAlign: TextAlign.start,
                           style: Fonts.satoshi(
                             fontSize: 14,
-                            color: theme.primary,
+                            color: theme.highlight,
                             fontWeight: FontWeight.normal,
                             decoration: TextDecoration.underline,
                           ),

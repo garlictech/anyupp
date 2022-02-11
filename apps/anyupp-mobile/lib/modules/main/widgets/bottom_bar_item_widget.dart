@@ -47,7 +47,7 @@ class BottomBarItem extends StatelessWidget {
           ? BoxDecoration(
               border: Border(
                 top: BorderSide(
-                  color: theme.primary,
+                  color: theme.icon,
                   width: 2.0,
                 ),
               ),
@@ -75,19 +75,19 @@ class BottomBarItem extends StatelessWidget {
                       // ),
                       child: IconButton(
                         icon: Icon(icon),
-                        color: theme.primary,
+                        color: theme.icon,
                         onPressed: onTapped,
                       ),
                     )
                   : IconButton(
                       icon: Icon(icon),
-                      color: selected ? theme.primary : theme.secondary64,
+                      color: selected ? theme.highlight : theme.secondary64,
                       onPressed: onTapped,
                     ),
               Text(
                 text,
                 style: Fonts.satoshi(
-                  color: selected ? theme.primary : theme.secondary64,
+                  color: selected ? theme.icon : theme.secondary64,
                   fontSize: 12.0,
                   fontWeight: FontWeight.normal,
                 ),

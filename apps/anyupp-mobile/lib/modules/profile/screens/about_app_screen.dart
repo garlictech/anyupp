@@ -59,7 +59,7 @@ class _AboutAppState extends State<AboutApp> {
                     Text(
                       'hello@anyupp.com',
                       style: Fonts.satoshi(
-                        color: theme.primary,
+                        color: theme.highlight,
                         fontSize: 16.0,
                         fontWeight: FontWeight.w400,
                         decoration: TextDecoration.underline,

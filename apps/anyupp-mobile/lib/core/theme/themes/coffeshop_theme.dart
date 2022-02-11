@@ -13,5 +13,9 @@ class ThemeChainCoffeeshop extends ThemeChainData {
           secondary64: Color(0x663C2F2F),
           secondary16: Color(0xFFE7E5D0),
           secondary40: Color(0xFFE7E5D0),
+          icon: Color(0xFF1E6F4A),
+          button: Color(0xFF1E6F4A),
+          highlight: Color(0xFF1E6F4A),
+          buttonText: Color(0xFFFFFFFF)
         );
 }

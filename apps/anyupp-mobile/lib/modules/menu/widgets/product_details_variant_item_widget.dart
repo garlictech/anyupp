@@ -64,7 +64,7 @@ class ProductDetailVariantItemWidget extends StatelessWidget {
                             '${variant.pack!.size} ${variant.pack!.unit}',
                             textAlign: TextAlign.left,
                             style: Fonts.satoshi(
-                              color: theme.primary,
+                              color: theme.highlight,
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
                             ),

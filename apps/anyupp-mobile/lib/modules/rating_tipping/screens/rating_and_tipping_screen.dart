@@ -120,7 +120,7 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
                         child: ElevatedButton(
                           onPressed: () => _sendRating(),
                           style: ElevatedButton.styleFrom(
-                            primary: theme.primary,
+                            primary: theme.button,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40),
                             ),
@@ -132,7 +132,7 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
                                   style: Fonts.satoshi(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w700,
-                                    color: theme.secondary0,
+                                    color: theme.buttonText,
                                   ),
                                 ),
                         ),

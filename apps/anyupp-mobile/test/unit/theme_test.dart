@@ -16,15 +16,18 @@ void main() {
 
     setUp(() async {
       _theme = ThemeChainData(
-        light: true,
-        primary: Color(0xFF30BF60),
-        secondary: Color(0xFF373737),
-        secondary0: Color(0xFFFFFFFF),
-        secondary12: Color(0xfff1f1f1),
-        secondary16: Color(0xffdedede),
-        secondary40: Color(0xffacacac),
-        secondary64: Color(0xff7b7b7b),
-      );
+          light: true,
+          primary: Color(0xFF30BF60),
+          secondary: Color(0xFF373737),
+          secondary0: Color(0xFFFFFFFF),
+          secondary12: Color(0xfff1f1f1),
+          secondary16: Color(0xffdedede),
+          secondary40: Color(0xffacacac),
+          secondary64: Color(0xff7b7b7b),
+          icon: Color(0xFF30BF60),
+          button: Color(0xFF30BF60),
+          buttonText: Color(0xFFFFFFFF),
+          highlight: Color(0xFF30BF60));
       expect(_theme, isNotNull);
 
       _unit =
@@ -41,7 +44,7 @@ void main() {
       GeoUnit testUnit = _unit.copyWith(
         style: _unit.style.copyWith(
           colors: _unit.style.colors.copyWith(
-            primary: getHtmlHexColorStringFromColor(_theme.primary),
+            primary: getHtmlHexColorStringFromColor(_theme.highlight),
             secondary: getHtmlHexColorStringFromColor(_theme.secondary),
           ),
         ),
@@ -50,7 +53,7 @@ void main() {
       ThemeChainData generated = unitThemeToThemeChainData(testUnit);
 
       expect(generated, isNotNull);
-      expect(generated.primary, equals(_theme.primary));
+      expect(generated.primary, equals(_theme.highlight));
       expect(generated.secondary, equals(_theme.secondary));
     });
 
@@ -63,7 +66,7 @@ void main() {
       GeoUnit testUnit = _unit.copyWith(
         style: _unit.style.copyWith(
           colors: ChainStyleColors(
-            indicator: getHtmlHexColorStringFromColor(_theme.primary),
+            indicator: getHtmlHexColorStringFromColor(_theme.highlight),
             textDark: getHtmlHexColorStringFromColor(_theme.secondary),
           ),
         ),
@@ -72,7 +75,7 @@ void main() {
       ThemeChainData generated = unitThemeToThemeChainData(testUnit);
 
       expect(generated, isNotNull);
-      expect(generated.primary, equals(_theme.primary));
+      expect(generated.primary, equals(_theme.highlight));
       expect(generated.secondary, equals(_theme.secondary));
     });
 
@@ -90,7 +93,7 @@ void main() {
       ThemeChainData generated = unitThemeToThemeChainData(testUnit);
 
       expect(generated, isNotNull);
-      expect(generated.primary, equals(_theme.primary));
+      expect(generated.primary, equals(_theme.highlight));
       expect(generated.secondary, equals(_theme.secondary));
     });
   });

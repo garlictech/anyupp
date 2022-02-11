@@ -97,7 +97,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Checkbox(
-                  activeColor: theme.primary,
+                  activeColor: theme.highlight,
                   // focusColor: theme.secondary,
                   hoverColor: theme.secondary0,
                   //         inactiveTrackColor: theme.secondary64,
@@ -110,7 +110,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
                     var state = states.first;
                     switch (state) {
                       case MaterialState.selected:
-                        return theme.primary;
+                        return theme.highlight;
                       default:
                         return theme.secondary;
                     }

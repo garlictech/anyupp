@@ -30,7 +30,7 @@ class StatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color = buttonColor ?? theme.primary;
+    Color color = buttonColor ?? theme.button;
     print('StatusWidget.onPressed=$onPressed');
 
     return Container(
@@ -44,7 +44,6 @@ class StatusWidget extends StatelessWidget {
             icon,
             width: 80,
             height: 80,
-            // color: theme.primary,
           ),
           SizedBox(
             height: 40.0,
@@ -104,7 +103,7 @@ class StatusWidget extends StatelessWidget {
                   style: Fonts.satoshi(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w700,
-                    color: theme.secondary0,
+                    color: theme.buttonText,
                   ),
                 ),
               ),

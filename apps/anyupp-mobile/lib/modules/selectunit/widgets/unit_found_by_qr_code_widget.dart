@@ -120,7 +120,7 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(40.0),
                                 ),
-                                primary: theme.primary,
+                                primary: theme.button,
                               ),
                               onPressed: () => _continueToUnit(),
                               child: Text(
@@ -128,7 +128,7 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
                                 style: Fonts.satoshi(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
-                                  color: theme.secondary0,
+                                  color: theme.buttonText,
                                 ),
                               ),
                             )

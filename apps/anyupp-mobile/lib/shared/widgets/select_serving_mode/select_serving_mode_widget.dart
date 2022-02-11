@@ -184,7 +184,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
           Spacer(),
           Checkbox(
             shape: CircleBorder(),
-            activeColor: widget.useTheme ? theme.primary : Color(0xFF30BF60),
+            activeColor: widget.useTheme ? theme.highlight : Color(0xFF30BF60),
             fillColor: MaterialStateColor.resolveWith((states) {
               if (states.isEmpty) {
                 return widget.useTheme ? theme.secondary0 : Colors.white;
@@ -192,7 +192,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
               var state = states.first;
               switch (state) {
                 case MaterialState.selected:
-                  return widget.useTheme ? theme.primary : Color(0xFF30BF60);
+                  return widget.useTheme ? theme.highlight : Color(0xFF30BF60);
                 default:
                   return widget.useTheme ? theme.secondary0 : Colors.white;
               }

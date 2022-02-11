@@ -27,18 +27,19 @@ class PaymentButtonWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40.0),
                 ),
-                primary: theme.primary,
+                primary: theme.button,
               ),
               onPressed: isLoading ? null : () => _startStripePayment(),
               child: isLoading
                   ? CenterLoadingWidget(
                       size: 20.0,
+                      color: theme.buttonText,
                     )
                   : Text(
                       trans(context, 'orders.stripepay'),
                       style: Fonts.satoshi(
                         fontSize: 16,
-                        color: theme.secondary0,
+                        color: theme.buttonText,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

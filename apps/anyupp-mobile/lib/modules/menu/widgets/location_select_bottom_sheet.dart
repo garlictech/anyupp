@@ -99,7 +99,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6.0),
-                      color: theme.primary,
+                      color: theme.highlight,
                     ),
                     child: Center(
                       child: Text(
@@ -158,7 +158,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: theme.primary,
+                  primary: theme.button,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40),
                   ),
@@ -167,7 +167,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                   transEx(context, 'location.changeLocation'),
                   style: Fonts.satoshi(
                     fontSize: 18,
-                    color: theme.secondary0,
+                    color: theme.buttonText,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

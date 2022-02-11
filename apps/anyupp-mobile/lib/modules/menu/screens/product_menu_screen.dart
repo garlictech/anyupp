@@ -299,9 +299,9 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                           borderRadius: BorderRadius.circular(
                             56.0,
                           ),
-                          color: theme.primary,
+                          color: theme.button,
                         ),
-                        labelColor: theme.secondary0,
+                        labelColor: theme.buttonText,
                         labelStyle: Fonts.satoshi(
                           fontSize: 14.0,
                           fontWeight: FontWeight.w400,
@@ -309,12 +309,12 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                         labelPadding: EdgeInsets.only(
                           left: 16,
                           right: 16,
-                          top: 8.0,
+                          top: 6.0,
                           bottom: 6.0,
                         ),
                         indicatorPadding: EdgeInsets.only(
-                          bottom: 12.0,
-                          top: 12.0,
+                           bottom: 15.0,
+                           top: 13.0,
                         ),
                         unselectedLabelColor: theme.secondary,
                         unselectedLabelStyle: Fonts.satoshi(
@@ -361,6 +361,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
 
   Widget _getTab(String title, int index) {
     return Tab(
+     // height: 16,
       child: AnimatedBuilder(
         animation: _tabController!.animation as Listenable,
         builder: (ctx, snapshot) {
@@ -403,12 +404,12 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
             }
           }
           return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.only(left: 16, right: 16 ,top: 6, bottom: 6),
             decoration: BoxDecoration(
               color: index == _fromIndex
-                  ? Color.lerp(theme.primary, theme.secondary12, progress)
+                  ? Color.lerp(theme.button, theme.secondary12, progress)
                   : index == _toIndex
-                      ? Color.lerp(theme.secondary12, theme.primary, progress)
+                      ? Color.lerp(theme.secondary12, theme.button, progress)
                       : Color.lerp(
                           theme.secondary12, theme.secondary12, progress),
               borderRadius: BorderRadius.circular(32),
@@ -417,6 +418,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                 style: Fonts.satoshi(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w400,
+                 // color: theme.buttonText
                 )),
           );
           // return Tab(

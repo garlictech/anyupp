@@ -100,7 +100,7 @@ class PaymentMethodListItemWidget extends StatelessWidget {
                         value: value,
                         groupValue: selected,
                         onChanged: onChanged,
-                        activeColor: theme.primary, // Radio selected color
+                        activeColor: theme.highlight, // Radio selected color
                       ),
                     ),
                   ),

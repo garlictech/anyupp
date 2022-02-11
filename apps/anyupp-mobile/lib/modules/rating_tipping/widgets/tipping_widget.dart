@@ -89,7 +89,7 @@ class _TippingWidgetState extends State<TippingWidget> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(16.0)),
-          color: selected ? theme.primary : theme.secondary12,
+          color: selected ? theme.highlight : theme.secondary12,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Text(

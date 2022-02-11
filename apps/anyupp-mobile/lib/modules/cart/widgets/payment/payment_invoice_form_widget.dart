@@ -101,10 +101,10 @@ class PaymentInvoiceFormWidget extends StatelessWidget {
             child: Checkbox(
               shape: CircleBorder(
                   side: BorderSide(
-                color: theme.primary,
+                color: theme.highlight,
                 style: BorderStyle.solid,
               )),
-              activeColor: theme.primary,
+              activeColor: theme.highlight,
               fillColor: MaterialStateColor.resolveWith((states) {
                 if (states.isEmpty) {
                   return theme.secondary16;
@@ -112,7 +112,7 @@ class PaymentInvoiceFormWidget extends StatelessWidget {
                 var state = states.first;
                 switch (state) {
                   case MaterialState.selected:
-                    return theme.primary;
+                    return theme.highlight;
                   default:
                     return theme.secondary;
                 }

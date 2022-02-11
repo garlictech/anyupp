@@ -48,14 +48,14 @@ class SendCartButtonWidget extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: theme.primary,
+              primary: theme.button,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40),
               ),
             ),
             child: loading
                 ? CenterLoadingWidget(
-                    color: theme.secondary0,
+                    color: theme.buttonText,
                     size: 20.0,
                     strokeWidth: 2.0,
                   )
@@ -68,7 +68,7 @@ class SendCartButtonWidget extends StatelessWidget {
                             trans(context, 'payment.sendOrder'),
                             style: Fonts.satoshi(
                               fontSize: 18,
-                              color: theme.secondary0,
+                              color: theme.buttonText,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -84,7 +84,7 @@ class SendCartButtonWidget extends StatelessWidget {
                                 )
                               : Icon(
                                   Icons.arrow_forward,
-                                  color: theme.secondary0,
+                                  color: theme.buttonText,
                                 ),
                         ),
                       )

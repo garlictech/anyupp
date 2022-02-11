@@ -269,7 +269,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
                 ratingPolicy: _unit.ratingPolicies![0],
               )),
               style: ElevatedButton.styleFrom(
-                primary: lighten(theme.primary, 76),
+                primary: lighten(theme.button, 76),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
                 ),
@@ -280,7 +280,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
                 style: Fonts.satoshi(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w700,
-                  color: theme.primary,
+                  color: theme.buttonText,
                 ),
               ),
             ),
@@ -303,7 +303,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
                 tipPolicy: _unit.tipPolicy,
               )),
               style: ElevatedButton.styleFrom(
-                primary: theme.primary,
+                primary: theme.button,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
                 ),
@@ -314,7 +314,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
                 style: Fonts.satoshi(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w700,
-                  color: theme.secondary0,
+                  color: theme.buttonText,
                 ),
               ),
             ),
@@ -417,7 +417,7 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
                     ? Nav.to(PdfWebView(order.transaction!.invoice!.pdfUrl!))
                     : createAndOpenPdf(order.transaction!.receipt!.pdfData),
                 style: ElevatedButton.styleFrom(
-                  primary: theme.primary,
+                  primary: theme.button,
                   // shadowColor: null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40),
@@ -432,7 +432,7 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
                   style: Fonts.satoshi(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w700,
-                    color: theme.secondary0,
+                    color: theme.buttonText,
                   ),
                 ),
               ),
@@ -716,8 +716,8 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         message: trans(context, 'orders.infos.timeline.none.finished'),
         bottomLineColor: Color(0xFFE74C3C),
         textColor: theme.secondary64,
-        circleBackgroundColor: theme.primary,
-        circleBorderColor: theme.primary,
+        circleBackgroundColor: theme.highlight,
+        circleBorderColor: theme.highlight,
       ));
       // 2. Add rejected, failed
       results.add(OrderStatusTimelineData(
@@ -739,8 +739,8 @@ class OrderStatusTimelineWidget extends StatelessWidget {
       iconColor: theme.secondary0,
       textColor: theme.secondary,
       bottomLineColor: theme.secondary12,
-      circleBackgroundColor: theme.primary,
-      circleBorderColor: theme.primary,
+      circleBackgroundColor: theme.highlight,
+      circleBorderColor: theme.highlight,
     ));
     results.add(OrderStatusTimelineData(
       icon: OrderStatusTimelineIconState.not_started,
@@ -777,9 +777,9 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         message: trans(context, 'orders.infos.timeline.none.finished'),
         iconColor: theme.secondary0,
         textColor: theme.secondary64,
-        bottomLineColor: theme.primary,
-        circleBackgroundColor: theme.primary,
-        circleBorderColor: theme.primary,
+        bottomLineColor: theme.highlight,
+        circleBackgroundColor: theme.highlight,
+        circleBorderColor: theme.highlight,
       );
       results[1] = OrderStatusTimelineData(
         icon: OrderStatusTimelineIconState.finished,
@@ -787,8 +787,8 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         iconColor: theme.secondary0,
         textColor: theme.secondary,
         bottomLineColor: theme.secondary12,
-        circleBackgroundColor: theme.primary,
-        circleBorderColor: theme.primary,
+        circleBackgroundColor: theme.highlight,
+        circleBorderColor: theme.highlight,
       );
     }
 
@@ -799,9 +799,9 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         message: trans(context, 'orders.infos.timeline.placed.finished'),
         iconColor: theme.secondary0,
         textColor: theme.secondary64,
-        bottomLineColor: theme.primary,
-        circleBackgroundColor: theme.primary,
-        circleBorderColor: theme.primary,
+        bottomLineColor: theme.highlight,
+        circleBackgroundColor: theme.highlight,
+        circleBorderColor: theme.highlight,
       );
       results[2] = OrderStatusTimelineData(
         icon: OrderStatusTimelineIconState.processing,
@@ -809,8 +809,8 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         iconColor: theme.secondary0,
         textColor: theme.secondary,
         bottomLineColor: theme.secondary12,
-        circleBackgroundColor: theme.primary,
-        circleBorderColor: theme.primary,
+        circleBackgroundColor: theme.highlight,
+        circleBorderColor: theme.highlight,
       );
     }
 
@@ -821,9 +821,9 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         message: trans(context, 'orders.infos.timeline.processing.finished'),
         iconColor: theme.secondary0,
         textColor: theme.secondary64,
-        bottomLineColor: theme.primary,
-        circleBackgroundColor: theme.primary,
-        circleBorderColor: theme.primary,
+        bottomLineColor: theme.highlight,
+        circleBackgroundColor: theme.highlight,
+        circleBorderColor: theme.highlight,
       );
       results[3] = OrderStatusTimelineData(
         icon: OrderStatusTimelineIconState.processing,
@@ -831,8 +831,8 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         iconColor: theme.secondary0,
         textColor: theme.secondary,
         // bottomLineColor: theme.secondary12,
-        circleBackgroundColor: theme.primary,
-        circleBorderColor: theme.primary,
+        circleBackgroundColor: theme.highlight,
+        circleBorderColor: theme.highlight,
       );
     }
 
@@ -844,8 +844,8 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         iconColor: theme.secondary0,
         textColor: theme.secondary,
         // bottomLineColor: theme.secondary12,
-        circleBackgroundColor: theme.primary,
-        circleBorderColor: theme.primary,
+        circleBackgroundColor: theme.highlight,
+        circleBorderColor: theme.highlight,
       );
     }
 

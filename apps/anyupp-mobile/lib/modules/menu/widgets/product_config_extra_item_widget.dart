@@ -56,7 +56,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
                   Text(
                     getLocalizedText(context, widget.extraSet.name),
                     style: Fonts.satoshi(
-                      color: theme.primary,
+                      color: theme.highlight,
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),
@@ -123,7 +123,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
                         Text(
                           (extra.price > 0 ? '+' : '') + formatCurrency(extra.price, widget.unit.currency),
                           style: Fonts.satoshi(
-                            color: theme.primary,
+                            color: theme.highlight,
                             fontSize: 16.0,
                             fontWeight: FontWeight.w400,
                           ),
@@ -133,7 +133,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
                           child: Radio<String?>(
                             groupValue: extra.productComponentId,
                             value: _selectedExtras['${extra.productComponentId}'],
-                            activeColor: theme.primary,
+                            activeColor: theme.highlight,
                             fillColor: MaterialStateColor.resolveWith((states) {
                               if (states.isEmpty) {
                                 return theme.secondary16;
@@ -141,7 +141,7 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
                               var state = states.first;
                               switch (state) {
                                 case MaterialState.selected:
-                                  return theme.primary;
+                                  return theme.highlight;
                                 default:
                                   return _canSelectExtra ? theme.secondary16 : theme.secondary12;
                               }

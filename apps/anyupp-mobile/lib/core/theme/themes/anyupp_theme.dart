@@ -13,5 +13,9 @@ class ThemeAnyUpp extends ThemeChainData {
           secondary64: Color(0xFF303030),
           secondary16: Color(0xFFE7E5D0),
           secondary40: Color(0xFFC3CACD),
+          icon: Color(0xFF30BF60),
+          button: Color(0xFF30BF60),
+          buttonText: Color(0xFFFFFFFF),
+          highlight: Color(0xFF30BF60)
         );
 }

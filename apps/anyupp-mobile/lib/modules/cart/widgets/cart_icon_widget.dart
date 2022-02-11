@@ -40,7 +40,7 @@ class _CartIconWidgetState extends State<CartIconWidget> {
                 return getCartIcon(0);
               }
               return CenterLoadingWidget(
-                color: theme.primary,
+                color: theme.highlight,
                 size: 20.0,
                 strokeWidth: 2.0,
               );
@@ -48,7 +48,7 @@ class _CartIconWidgetState extends State<CartIconWidget> {
           );
         }
         return CenterLoadingWidget(
-          color: theme.primary,
+          color: theme.highlight,
           size: 20.0,
           strokeWidth: 2.0,
         );

@@ -69,7 +69,7 @@ class UnlinkAccountsWidget extends StatelessWidget {
           color: theme.secondary0,
           size: 16.0,
         ),
-        badgeColor: linked ? theme.primary : theme.primary,
+        badgeColor: theme.icon,
         child: _createSocialButtonWidget(context, icon, method, linked),
       ),
     );
@@ -79,7 +79,7 @@ class UnlinkAccountsWidget extends StatelessWidget {
       BuildContext context, String icon, LoginMethod method, bool linked) {
     return SocialLoginButtonWidget(
       providerIcon: icon,
-      iconColor: theme.primary,
+      iconColor: theme.icon,
       method: method,
       borderColor: theme.secondary16,
       size: 60.0,

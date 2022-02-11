@@ -81,7 +81,7 @@ class _CartButtonWidgetState extends State<CartButtonWidget> with SingleTickerPr
             animationType: NavAnim.SLIDEIN_DOWN,
           ),
           style: ElevatedButton.styleFrom(
-            primary: theme.primary,
+            primary: theme.button,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40),
             ),
@@ -98,7 +98,7 @@ class _CartButtonWidgetState extends State<CartButtonWidget> with SingleTickerPr
                     style: Fonts.satoshi(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,
-                      color: theme.secondary0,
+                      color: theme.buttonText,
                     ),
                   ),
                 ),
@@ -108,7 +108,7 @@ class _CartButtonWidgetState extends State<CartButtonWidget> with SingleTickerPr
                   alignment: Alignment.centerRight,
                   child: Icon(
                     Icons.arrow_forward,
-                    color: theme.secondary0,
+                    color: theme.buttonText,
                   ),
                 ),
               )

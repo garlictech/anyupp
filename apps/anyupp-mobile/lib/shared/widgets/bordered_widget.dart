@@ -53,8 +53,8 @@ class BorderedWidget extends StatelessWidget {
 
   Widget _circle() {
     return InkWell(
-      hoverColor: theme.primary,
-      focusColor: theme.primary,
+      hoverColor: theme.highlight,
+      focusColor: theme.highlight,
       highlightColor: Colors.transparent,
       onTap: onPressed,
       child: Container(

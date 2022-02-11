@@ -58,7 +58,7 @@ void showSelectAccountToLinkDialog(
                   itemBuilder: (context, index) {
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: theme.primary,
+                        primary: theme.button,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -72,7 +72,7 @@ void showSelectAccountToLinkDialog(
                                 state.existingProviderList[index])
                           ],
                         ),
-                        style: TextStyle(color: theme.secondary0),
+                        style: TextStyle(color: theme.buttonText),
                       ),
                     );
                   },
@@ -163,7 +163,7 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: theme.primary,
+                        primary: theme.button,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -175,7 +175,7 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
                             [LoginMethodUtils.methodToString(method)]),
                         style: Fonts.satoshi(
                           fontSize: 12.0,
-                          color: theme.secondary0,
+                          color: theme.buttonText,
                         ),
                       ),
                     ),

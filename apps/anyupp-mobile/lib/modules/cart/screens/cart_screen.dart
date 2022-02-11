@@ -121,7 +121,7 @@ class CartScreen extends StatelessWidget {
                                 'assets/icons/table-icon.svg',
                                 width: 20,
                                 height: 20,
-                                color: theme.primary,
+                                color: theme.icon,
                               ),
                               Text(
                                 ' ${snapshot.data?.place?.table ?? "-"}',
@@ -135,7 +135,7 @@ class CartScreen extends StatelessWidget {
                                 'assets/icons/chair-icon.svg',
                                 width: 20,
                                 height: 20,
-                                color: theme.primary,
+                                color: theme.icon,
                               ),
                               Text(
                                 '${snapshot.data?.place?.seat ?? "-"}',
@@ -295,7 +295,7 @@ class CartScreen extends StatelessWidget {
             onPressed: () =>
                 _handlePaymentButtonPressed(unit, cart, showQrCodeScan),
             style: ElevatedButton.styleFrom(
-              primary: theme.primary,
+              primary: theme.button,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40),
               ),
@@ -313,7 +313,7 @@ class CartScreen extends StatelessWidget {
                       style: Fonts.satoshi(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w700,
-                        color: theme.secondary0,
+                        color: theme.buttonText,
                       ),
                     ),
                   ),
@@ -329,7 +329,7 @@ class CartScreen extends StatelessWidget {
                           )
                         : Icon(
                             Icons.arrow_forward,
-                            color: theme.secondary0,
+                            color: theme.buttonText,
                           ),
                   ),
                 ),
@@ -403,7 +403,7 @@ class CartScreen extends StatelessWidget {
                 style: Fonts.satoshi(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
-                  color: theme.primary,
+                  color: theme.highlight,
                 ),
               ),
               onPressed: () async {
@@ -467,7 +467,7 @@ class CartScreen extends StatelessWidget {
                           '${formatCurrency(cart.totalServiceFee, unit.currency)} (${unit.serviceFeePolicy!.percentage.toInt()} %)',
                           key: const Key('cart-servicefee-text'),
                           style: Fonts.satoshi(
-                            color: theme.primary,
+                            color: theme.highlight,
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                           ),
@@ -538,7 +538,7 @@ class CartScreen extends StatelessWidget {
                           formatCurrency(cart.packaginFee, unit.currency),
                           key: const Key('cart-packagingfee-text'),
                           style: Fonts.satoshi(
-                            color: theme.primary,
+                            color: theme.highlight,
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                           ),

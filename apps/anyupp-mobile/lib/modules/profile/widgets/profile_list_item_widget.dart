@@ -49,7 +49,7 @@ class ProfileListItemWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Icon(
                     icon,
-                    color: theme.primary,
+                    color: theme.icon,
                   ),
                 ),
                 Padding(

@@ -61,7 +61,7 @@ class _S3ImageWidgetState extends State<S3ImageWidget> {
       width: widget.width,
       height: widget.height,
       child: CenterLoadingWidget(
-        color: theme.primary,
+        color: theme.highlight,
       ),
     );
   }

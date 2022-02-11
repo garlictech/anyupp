@@ -14,7 +14,9 @@ class ChainStyleColors {
   final String? textDark;
   final String? primary;
   final String? secondary;
-
+  final String? button;
+  final String? buttonText;
+  final String? icon;
   ChainStyleColors({
     this.id,
     this.backgroundLight,
@@ -28,7 +30,11 @@ class ChainStyleColors {
     this.textDark,
     this.primary,
     this.secondary,
+    this.button,
+    this.buttonText,
+    this.icon,
   });
+
 
   ChainStyleColors copyWith({
     String? id,
@@ -43,6 +49,9 @@ class ChainStyleColors {
     String? textDark,
     String? primary,
     String? secondary,
+    String? button,
+    String? buttonText,
+    String? icon,
   }) {
     return ChainStyleColors(
       id: id ?? this.id,
@@ -57,6 +66,9 @@ class ChainStyleColors {
       textDark: textDark ?? this.textDark,
       primary: primary ?? this.primary,
       secondary: secondary ?? this.secondary,
+      button: button ?? this.button,
+      buttonText: buttonText ?? this.buttonText,
+      icon: icon ?? this.icon,
     );
   }
 
@@ -74,6 +86,9 @@ class ChainStyleColors {
       'textDark': textDark,
       'primary': primary,
       'secondary': secondary,
+      'button': button,
+      'buttonText': buttonText,
+      'icon': icon,
     };
   }
 
@@ -91,46 +106,55 @@ class ChainStyleColors {
       textDark: map['textDark'],
       primary: map['primary'],
       secondary: map['secondary'],
+      button: map['button'],
+      buttonText: map['buttonText'],
+      icon: map['icon'],
     );
   }
 
   @override
   String toString() {
-    return 'ChainStyleColors(id: $id, primary: $primary, secondary: $secondary, backgroundLight: $backgroundLight, backgroundDark: $backgroundDark, borderLight: $borderLight, borderDark: $borderDark, disabled: $disabled, highlight: $highlight, indicator: $indicator, textLight: $textLight, textDark: $textDark)';
+    return 'ChainStyleColors(id: $id, backgroundLight: $backgroundLight, backgroundDark: $backgroundDark, borderLight: $borderLight, borderDark: $borderDark, disabled: $disabled, highlight: $highlight, indicator: $indicator, textLight: $textLight, textDark: $textDark, primary: $primary, secondary: $secondary, button: $button, buttonText: $buttonText, icon: $icon)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
+  
     return other is ChainStyleColors &&
-        other.id == id &&
-        other.backgroundLight == backgroundLight &&
-        other.backgroundDark == backgroundDark &&
-        other.borderLight == borderLight &&
-        other.borderDark == borderDark &&
-        other.disabled == disabled &&
-        other.highlight == highlight &&
-        other.indicator == indicator &&
-        other.textLight == textLight &&
-        other.textDark == textDark &&
-        other.primary == primary &&
-        other.secondary == secondary;
+      other.id == id &&
+      other.backgroundLight == backgroundLight &&
+      other.backgroundDark == backgroundDark &&
+      other.borderLight == borderLight &&
+      other.borderDark == borderDark &&
+      other.disabled == disabled &&
+      other.highlight == highlight &&
+      other.indicator == indicator &&
+      other.textLight == textLight &&
+      other.textDark == textDark &&
+      other.primary == primary &&
+      other.secondary == secondary &&
+      other.button == button &&
+      other.buttonText == buttonText &&
+      other.icon == icon;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-        backgroundLight.hashCode ^
-        backgroundDark.hashCode ^
-        borderLight.hashCode ^
-        borderDark.hashCode ^
-        disabled.hashCode ^
-        highlight.hashCode ^
-        indicator.hashCode ^
-        textLight.hashCode ^
-        textDark.hashCode ^
-        primary.hashCode ^
-        secondary.hashCode;
+      backgroundLight.hashCode ^
+      backgroundDark.hashCode ^
+      borderLight.hashCode ^
+      borderDark.hashCode ^
+      disabled.hashCode ^
+      highlight.hashCode ^
+      indicator.hashCode ^
+      textLight.hashCode ^
+      textDark.hashCode ^
+      primary.hashCode ^
+      secondary.hashCode ^
+      button.hashCode ^
+      buttonText.hashCode ^
+      icon.hashCode;
   }
 }

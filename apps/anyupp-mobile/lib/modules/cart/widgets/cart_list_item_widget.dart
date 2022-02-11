@@ -102,7 +102,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                                 text: TextSpan(
                                   text: '${widget.order.quantity}',
                                   style: Fonts.satoshi(
-                                    color: theme.primary,
+                                    color: theme.highlight,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
                                   ),
@@ -120,7 +120,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                                           widget.order.getPrice(),
                                           widget.unit.currency),
                                       style: Fonts.satoshi(
-                                        color: theme.primary,
+                                        color: theme.highlight,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                       ),

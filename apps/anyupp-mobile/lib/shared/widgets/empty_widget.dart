@@ -105,7 +105,7 @@ class EmptyWidget extends StatelessWidget {
       ));
       widgets.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: theme.primary,
+          primary: theme.button,
           padding: EdgeInsets.only(
             top: 16,
             bottom: 16,
@@ -120,7 +120,7 @@ class EmptyWidget extends StatelessWidget {
           trans(context, buttonTextKey!),
           style: Fonts.satoshi(
             fontSize: 16,
-            color: theme.secondary0,
+            color: theme.buttonText,
             fontWeight: FontWeight.normal,
           ),
         ),

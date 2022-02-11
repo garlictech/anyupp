@@ -73,7 +73,7 @@ class InappPaymentMethodItemWidget extends StatelessWidget {
                               method: PaymentMethod.inapp, cardId: method.id),
                           groupValue: selectedPaymentMethod,
                           onChanged: onChanged,
-                          activeColor: theme.primary, // Radio selected color
+                          activeColor: theme.highlight, // Radio selected color
                         ),
                       ),
                     ),

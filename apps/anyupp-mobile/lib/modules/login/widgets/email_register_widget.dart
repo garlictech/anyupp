@@ -130,7 +130,7 @@ class _EmailRegisterDialogContentWidgetState
                       textAlign: TextAlign.start,
                       style: Fonts.satoshi(
                         fontSize: 14,
-                        color: theme.primary,
+                        color: theme.highlight,
                         fontWeight: FontWeight.normal,
                         decoration: TextDecoration.underline,
                       ),

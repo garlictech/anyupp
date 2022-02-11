@@ -48,6 +48,9 @@ query getUnitsNearLocation($lat: Float!, $lng: Float!) {
           textLight
           primary
           secondary
+          button
+          buttonText
+          icon
         }
         images {
           header

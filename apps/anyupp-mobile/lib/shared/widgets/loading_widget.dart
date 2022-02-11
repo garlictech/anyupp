@@ -27,7 +27,7 @@ class CenterLoadingWidget extends StatelessWidget {
             child: CircularProgressIndicator(
               backgroundColor: Colors.transparent,
               strokeWidth: strokeWidth,
-              color: color ?? theme.primary,
+              color: color ?? theme.highlight,
             ),
           ),
         ));

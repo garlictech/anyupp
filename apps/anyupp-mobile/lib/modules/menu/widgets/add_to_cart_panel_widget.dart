@@ -190,7 +190,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
             text: TextSpan(
               text: '$_quantity',
               style: Fonts.satoshi(
-                color: theme.primary,
+                color: theme.highlight,
                 fontSize: 16.0,
                 fontWeight: FontWeight.w700,
               ),
@@ -206,7 +206,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
                 TextSpan(
                   text: price,
                   style: Fonts.satoshi(
-                    color: theme.primary,
+                    color: theme.highlight,
                     fontSize: 16.0,
                     fontWeight: FontWeight.w700,
                   ),
@@ -263,7 +263,7 @@ class AddToCartPanelButtonWidget extends StatelessWidget {
       height: 56.0,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: theme.primary,
+          primary: theme.button,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               40,
@@ -278,7 +278,7 @@ class AddToCartPanelButtonWidget extends StatelessWidget {
               style: Fonts.satoshi(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w700,
-                color: theme.secondary0,
+                color: theme.buttonText,
               ),
             ),
           ],

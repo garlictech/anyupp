@@ -120,7 +120,7 @@ class _LanguageMenuState extends State<LanguageMenu> {
                 child: ElevatedButton(
                   onPressed: () => _setSelectedLocale(),
                   style: ElevatedButton.styleFrom(
-                    primary: theme.primary,
+                    primary: theme.button,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40),
                     ),
@@ -131,7 +131,7 @@ class _LanguageMenuState extends State<LanguageMenu> {
                     style: Fonts.satoshi(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,
-                      color: theme.secondary0,
+                      color: theme.buttonText,
                     ),
                   ),
                 ),
@@ -166,7 +166,7 @@ class _LanguageMenuState extends State<LanguageMenu> {
           ),
           Checkbox(
             shape: CircleBorder(),
-            activeColor: theme.primary,
+            activeColor: theme.highlight,
             fillColor: MaterialStateColor.resolveWith((states) {
               if (states.isEmpty) {
                 return theme.secondary0;
@@ -174,7 +174,7 @@ class _LanguageMenuState extends State<LanguageMenu> {
               var state = states.first;
               switch (state) {
                 case MaterialState.selected:
-                  return theme.primary;
+                  return theme.icon;
                 default:
                   return theme.secondary0;
               }
