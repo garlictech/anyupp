@@ -124,6 +124,8 @@ flutter:
     - assets/animations/
     - assets/lang/
     - assets/icons/
+    - assets/android_icons/
+    - assets/ios_icons/
     - assets/images/
     - assets/flags/
     - assets/allergens/

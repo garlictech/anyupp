@@ -15,35 +15,35 @@ class Mock {
             hu: 'Rossz',
             en: 'Rossz',
           ),
-          icon: 'rating-1.svg'),
+          icon: 'rating-1.png'),
       RatingPolicyItem(
           value: 2,
           text: LocalizedItem(
             hu: 'Elmegy',
             en: 'Elmegy',
           ),
-          icon: 'rating-2.svg'),
+          icon: 'rating-2.png'),
       RatingPolicyItem(
           value: 3,
           text: LocalizedItem(
             hu: 'Megfelelő',
             en: 'Megfelelő',
           ),
-          icon: 'rating-3.svg'),
+          icon: 'rating-3.png'),
       RatingPolicyItem(
           value: 4,
           text: LocalizedItem(
             hu: 'Jó',
             en: 'Jó',
           ),
-          icon: 'rating-4.svg'),
+          icon: 'rating-4.png'),
       RatingPolicyItem(
           value: 5,
           text: LocalizedItem(
             hu: 'Csodás',
             en: 'Csodás',
           ),
-          icon: 'rating-5.svg'),
+          icon: 'rating-5.png'),
     ];
   }
 

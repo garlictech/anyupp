@@ -34,11 +34,20 @@ Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
     return null;
   }
 
+  int? servingModeIndex;
+  if (cart?.servingMode != null) {
+    if (cart!.servingMode == ServingMode.takeAway) {
+      servingModeIndex = 1;
+    } else {
+      servingModeIndex = 0;
+    }
+  }
+
   var selectedMethodPos = await showSelectServingModeSheetWithDeleteConfirm(
     context,
     cart,
     cart?.servingMode ?? ServingMode.inPlace,
-    initialPosition: cart?.servingMode == ServingMode.takeAway ? 1 : 0,
+    initialPosition: servingModeIndex,
     dismissable: dismissable,
     useTheme: useTheme,
   );

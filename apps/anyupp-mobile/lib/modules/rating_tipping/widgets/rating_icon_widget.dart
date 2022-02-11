@@ -1,7 +1,8 @@
+import 'dart:io';
+
 import 'package:fa_prev/core/core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:flutter/material.dart';
 
 class RatingIconWidget extends StatelessWidget {
   final String icon;
@@ -31,8 +32,10 @@ class RatingIconWidget extends StatelessWidget {
             minRadius: 28,
             maxRadius: 28,
             backgroundColor: selected ? theme.icon : theme.secondary12,
-            child: SvgPicture.asset(
-              'assets/icons/$icon',
+            child: Image.asset(
+              Platform.isAndroid
+                  ? 'assets/android_icons/$icon'
+                  : 'assets/ios_icons/$icon',
               width: 32.0,
               height: 32.0,
             ),

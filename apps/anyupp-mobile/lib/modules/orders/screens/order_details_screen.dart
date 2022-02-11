@@ -373,16 +373,16 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
           ),
           Row(
             children: [
-              Row(
-                children: [
-                  Icon(
-                    icon,
-                    color: theme.secondary,
-                  ),
-                  SizedBox(
-                    width: 18.0,
-                  ),
-                  Text(
+              Icon(
+                icon,
+                color: theme.secondary,
+              ),
+              SizedBox(
+                width: 18.0,
+              ),
+              Expanded(
+                  flex: 2,
+                  child: Text(
                     trans(context,
                         'orders.paymentDetails.${enumToString(order.paymentMode.method)}'),
                     style: Fonts.satoshi(
@@ -390,13 +390,15 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       fontSize: 14.0,
                     ),
-                  )
-                ],
+                  )),
+              SizedBox(
+                width: 18,
               ),
-              Spacer(),
-              Container(
+              Expanded(
+                flex: 1,
                 child: Text(
                   date,
+                  textAlign: TextAlign.end,
                   style: Fonts.satoshi(
                     color: theme.secondary64,
                     fontWeight: FontWeight.w400,
