@@ -356,7 +356,7 @@
       "title": "Tips",
       "newPercent": "New Percent",
       "percents": "Percents",
-      "maxOtherAmount": "Max amount"
+      "minOtherAmount": "Min. amount"
     },
     "serviceFee": {
       "title": "Service fee",

@@ -358,7 +358,7 @@
       "title": "Borravalók",
       "newPercent": "Új százalék",
       "percents": "Százalékok",
-      "maxOtherAmount": "Max összeg"
+      "minOtherAmount": "Min. összeg"
     },
     "serviceFee": {
       "title": "Szervizdíj",
