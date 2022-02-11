@@ -7,7 +7,7 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SelectServingModeWidget extends StatefulWidget {
-  final int initialPosition;
+  final int? initialPosition;
   final void Function(int)? onSelected;
   final bool useTheme;
   final bool dismissable;
@@ -26,7 +26,7 @@ class SelectServingModeWidget extends StatefulWidget {
 }
 
 class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
-  int _selectedPosition = 0;
+  int? _selectedPosition;
 
   @override
   void initState() {

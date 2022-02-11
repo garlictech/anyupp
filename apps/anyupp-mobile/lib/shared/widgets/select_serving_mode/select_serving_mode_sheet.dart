@@ -40,7 +40,7 @@ Future<int?> showSelectServingModeSheet(BuildContext context,
 
 Future<int?> showSelectServingModeSheetWithDeleteConfirm(
     BuildContext context, Cart? cart, ServingMode current,
-    {int initialPosition = 0,
+    {int? initialPosition,
     bool useTheme = true,
     bool dismissable = true,
     bool pop = false}) async {

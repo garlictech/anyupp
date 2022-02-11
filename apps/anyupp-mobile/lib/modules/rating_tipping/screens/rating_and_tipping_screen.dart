@@ -32,11 +32,16 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
   void initState() {
     super.initState();
     getIt.get<RatingBloc>().add(ResetRating());
+    print('RatingAndTippingScreen().init().orderId=${widget.orderId}');
+    print('RatingAndTippingScreen().init().tipPolicy=${widget.tipPolicy}');
+    print(
+        'RatingAndTippingScreen().init().ratingPolicy=${widget.ratingPolicy}');
   }
 
   @override
   Widget build(BuildContext context) {
-    bool center = widget.tipPolicy == null || widget.ratingPolicy == null;
+    bool center = (widget.tipPolicy == null || widget.tipPolicy!.isEmpty) ||
+        widget.ratingPolicy == null;
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.secondary0,
@@ -93,7 +98,8 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: widget.tipPolicy != null
+                        child: widget.tipPolicy != null &&
+                                widget.tipPolicy!.isNotEmpty
                             ? TippingWidget(
                                 tipPolicy: widget.tipPolicy!,
                                 onSelected: (tipType, tip) {

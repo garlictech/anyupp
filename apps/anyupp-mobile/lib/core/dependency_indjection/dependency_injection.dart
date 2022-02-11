@@ -181,7 +181,7 @@ void _initBlocs() {
         getIt<OrderRepository>(),
       ));
   getIt.registerLazySingleton(() => RatingOrderNotificationBloc(
-        RatingOrderNotificationRepository(),
+        getIt<OrderRepository>(),
       ));
 
   // Local notifications

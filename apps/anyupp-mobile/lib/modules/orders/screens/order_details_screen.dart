@@ -136,6 +136,76 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   }
 }
 
+class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
+  final Order order;
+  final GeoUnit unit;
+
+  const OrderDetailsServiceFeePriceWidget({
+    Key? key,
+    required this.order,
+    required this.unit,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (order.serviceFee == null || (order.serviceFee?.netPrice ?? 0) == 0) {
+      return Container();
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          trans(context, 'cart.serviceFee'),
+          style: Fonts.satoshi(
+            fontSize: 14.0,
+            fontWeight: FontWeight.w400,
+            color: theme.secondary,
+          ),
+        ),
+        RichText(
+          text: TextSpan(
+            text: '1',
+            style: Fonts.satoshi(
+              color: theme.secondary,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: ' x ',
+                style: Fonts.satoshi(
+                  color: theme.secondary40,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              TextSpan(
+                text: formatCurrency(
+                    order.serviceFee?.netPrice ?? 0, unit.currency),
+                style: Fonts.satoshi(
+                  color: theme.secondary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    // return Text(eq
+    //   trans(context, 'orders.details.serviceFee',
+    //       [unit.serviceFeePolicy?.percentage.toInt() ?? 0]),
+    //   style: Fonts.satoshi(
+    //     color: theme.secondary64,
+    //     fontSize: 14.0,
+    //   ),
+    // );
+  }
+}
+
 class OrderDetailsServiceFeeWidget extends StatelessWidget {
   final Order order;
   final GeoUnit unit;
@@ -253,8 +323,6 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
     if (!shouldDisplayRating(order, _unit)) {
       return Container();
     }
-    print(
-        '************** OrderDetails.order[${order.id}].hasRated=${order.hasRated}');
 
     return Column(
       children: [
@@ -373,16 +441,16 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
           ),
           Row(
             children: [
-              Row(
-                children: [
-                  Icon(
-                    icon,
-                    color: theme.secondary,
-                  ),
-                  SizedBox(
-                    width: 18.0,
-                  ),
-                  Text(
+              Icon(
+                icon,
+                color: theme.secondary,
+              ),
+              SizedBox(
+                width: 18.0,
+              ),
+              Expanded(
+                  flex: 2,
+                  child: Text(
                     trans(context,
                         'orders.paymentDetails.${enumToString(order.paymentMode.method)}'),
                     style: Fonts.satoshi(
@@ -390,13 +458,15 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       fontSize: 14.0,
                     ),
-                  )
-                ],
+                  )),
+              SizedBox(
+                width: 18,
               ),
-              Spacer(),
-              Container(
+              Expanded(
+                flex: 1,
                 child: Text(
                   date,
+                  textAlign: TextAlign.end,
                   style: Fonts.satoshi(
                     color: theme.secondary64,
                     fontWeight: FontWeight.w400,
@@ -453,8 +523,15 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool addServiceFeeInfoRow =
-        unit.serviceFeePolicy?.percentage != null && order.serviceFee != null;
+    bool addServiceFeeInfoRow = unit.serviceFeePolicy?.type != null &&
+        unit.serviceFeePolicy?.type != ServiceFeeType.noFee &&
+        unit.serviceFeePolicy?.percentage != null &&
+        order.serviceFee != null;
+    // bool isServiceFeeIncluded =
+    //     unit.serviceFeePolicy?.type == ServiceFeeType.included;
+
+    print(
+        'OrderDetailsInfoTextWidget.addServiceFeeInfoRow=$addServiceFeeInfoRow');
 
     return Container(
       // color: theme.secondary12,
@@ -487,7 +564,8 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                   itemCount: order.items.length,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return addServiceFeeInfoRow && index == 0
+                    return addServiceFeeInfoRow &&
+                            index == order.items.length - 1
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -497,12 +575,22 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                                 unit: unit,
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: 16.0),
-                                child: OrderDetailsServiceFeeWidget(
-                                  order: order,
-                                  unit: unit,
-                                ),
-                              ),
+                                  padding: const EdgeInsets.only(top: 16.0),
+                                  child: OrderDetailsServiceFeeWidget(
+                                    order: order,
+                                    unit: unit,
+                                  )
+
+                                  // child: isServiceFeeIncluded
+                                  //     ? OrderDetailsServiceFeeWidget(
+                                  //         order: order,
+                                  //         unit: unit,
+                                  //       )
+                                  //     : OrderDetailsServiceFeePriceWidget(
+                                  //         order: order,
+                                  //         unit: unit,
+                                  //       ),
+                                  ),
                             ],
                           )
                         : Container(
@@ -544,7 +632,8 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                   ),
                   Text(
                     formatCurrency(
-                        order.totalPrice, order.items[0].priceShown.currency),
+                        order.totalPrice(unit.serviceFeePolicy?.type),
+                        order.items[0].priceShown.currency),
                     style: Fonts.satoshi(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,
@@ -572,81 +661,79 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var extraNames = _getExtraNames(context);
 
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                getLocalizedText(context, item.productName),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              getLocalizedText(context, item.productName),
+              style: Fonts.satoshi(
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400,
+                color: theme.secondary,
+              ),
+            ),
+            RichText(
+              text: TextSpan(
+                text: '${item.quantity}',
                 style: Fonts.satoshi(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w400,
                   color: theme.secondary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
                 ),
-              ),
-              RichText(
-                text: TextSpan(
-                  text: '${item.quantity}',
-                  style: Fonts.satoshi(
-                    color: theme.secondary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+                children: <TextSpan>[
+                  TextSpan(
+                    text: ' x ',
+                    style: Fonts.satoshi(
+                      color: theme.secondary40,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: ' x ',
-                      style: Fonts.satoshi(
-                        color: theme.secondary40,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
+                  TextSpan(
+                    text: formatCurrency(item.getPrice(), unit.currency),
+                    style: Fonts.satoshi(
+                      color: theme.secondary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                     ),
-                    TextSpan(
-                      text: formatCurrency(item.getPrice(), unit.currency),
-                      style: Fonts.satoshi(
-                        color: theme.secondary,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        // Variant
+        Text(
+          "${getLocalizedText(context, item.variantName)}",
+          style: Fonts.satoshi(
+            color: theme.secondary64,
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+          ),
+        ),
+        // Extras
+        if (item.configSets != null)
+          ListView.builder(
+            primary: false,
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: extraNames.length,
+            itemBuilder: (context, index) {
+              return Text(
+                "+ ${extraNames[index]}",
+                style: Fonts.satoshi(
+                  color: theme.secondary64,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
                 ),
-              ),
-            ],
+              );
+            },
           ),
-          // Variant
-          Text(
-            "${getLocalizedText(context, item.variantName)}",
-            style: Fonts.satoshi(
-              color: theme.secondary64,
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-            ),
-          ),
-          // Extras
-          if (item.configSets != null)
-            ListView.builder(
-              primary: false,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: extraNames.length,
-              itemBuilder: (context, index) {
-                return Text(
-                  "+ ${extraNames[index]}",
-                  style: Fonts.satoshi(
-                    color: theme.secondary64,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
-                );
-              },
-            ),
-        ],
-      ),
+      ],
     );
   }
 

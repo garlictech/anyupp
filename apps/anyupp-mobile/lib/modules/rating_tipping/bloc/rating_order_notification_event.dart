@@ -16,3 +16,12 @@ class CheckAndScheduleOrderRatingNotifications
   @override
   List<Object> get props => [orders];
 }
+
+class ShowRatingFromNotification extends RatingOrderNotificationEvent {
+  final RateOrderPayload payload;
+
+  const ShowRatingFromNotification(this.payload);
+
+  @override
+  List<Object> get props => [payload];
+}

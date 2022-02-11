@@ -3,6 +3,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 
 class ProductConfigExtrasItemWidget extends StatefulWidget {
@@ -10,13 +11,18 @@ class ProductConfigExtrasItemWidget extends StatefulWidget {
   final GeoUnit unit;
   final OnExtraSetItemSelected onExtraSelected;
 
-  const ProductConfigExtrasItemWidget({required this.extraSet, required this.unit, required this.onExtraSelected});
+  const ProductConfigExtrasItemWidget(
+      {required this.extraSet,
+      required this.unit,
+      required this.onExtraSelected});
 
   @override
-  _ProductConfigExtrasItemWidgetState createState() => _ProductConfigExtrasItemWidgetState();
+  _ProductConfigExtrasItemWidgetState createState() =>
+      _ProductConfigExtrasItemWidgetState();
 }
 
-class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemWidget> {
+class _ProductConfigExtrasItemWidgetState
+    extends State<ProductConfigExtrasItemWidget> {
   Map<String, String?> _selectedExtras = {};
   int _selectedExtraCount = 0;
   bool _canSelectExtra = true;
@@ -76,7 +82,8 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
             Divider(
               color: theme.secondary16,
             ),
-            ..._buildSingleExtraList(context, widget.extraSet.items, widget.extraSet),
+            ..._buildSingleExtraList(
+                context, widget.extraSet.items, widget.extraSet),
           ],
         ),
       ),
@@ -84,7 +91,9 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
   }
 
   List<Widget> _buildSingleExtraList(
-      BuildContext context, List<GeneratedProductConfigComponent> components, GeneratedProductConfigSet productSet) {
+      BuildContext context,
+      List<GeneratedProductConfigComponent> components,
+      GeneratedProductConfigSet productSet) {
     List<Widget> widgets = [];
     components.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
     components.forEach((extra) {
@@ -97,10 +106,12 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
               ? null
               : () {
                   setState(() {
-                    _selectedExtras['${extra.productComponentId}'] = isSelected ? null : extra.productComponentId;
+                    _selectedExtras['${extra.productComponentId}'] =
+                        isSelected ? null : extra.productComponentId;
                   });
                   _updateSelectedCount(productSet);
-                  widget.onExtraSelected(productSet.productSetId, extra.productComponentId, !isSelected);
+                  widget.onExtraSelected(productSet.productSetId,
+                      extra.productComponentId, !isSelected);
                 },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -121,7 +132,9 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
                     Row(
                       children: [
                         Text(
-                          (extra.price > 0 ? '+' : '') + formatCurrency(extra.price, widget.unit.currency),
+                          (extra.price > 0 ? '+' : '') +
+                              formatCurrency(extra.price * serviceFeeMul,
+                                  widget.unit.currency),
                           style: Fonts.satoshi(
                             color: theme.highlight,
                             fontSize: 16.0,
@@ -132,7 +145,8 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
                           absorbing: true,
                           child: Radio<String?>(
                             groupValue: extra.productComponentId,
-                            value: _selectedExtras['${extra.productComponentId}'],
+                            value:
+                                _selectedExtras['${extra.productComponentId}'],
                             activeColor: theme.highlight,
                             fillColor: MaterialStateColor.resolveWith((states) {
                               if (states.isEmpty) {
@@ -143,19 +157,28 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
                                 case MaterialState.selected:
                                   return theme.highlight;
                                 default:
-                                  return _canSelectExtra ? theme.secondary16 : theme.secondary12;
+                                  return _canSelectExtra
+                                      ? theme.secondary16
+                                      : theme.secondary12;
                               }
                             }),
                             onChanged: !isSelected && !_canSelectExtra
                                 ? null
                                 : (value) {
                                     setState(() {
-                                      _selectedExtras['${extra.productComponentId}'] =
-                                          value == null ? extra.productComponentId : null;
+                                      _selectedExtras[
+                                              '${extra.productComponentId}'] =
+                                          value == null
+                                              ? extra.productComponentId
+                                              : null;
                                     });
                                     _updateSelectedCount(productSet);
-                                    widget.onExtraSelected(productSet.productSetId, extra.productComponentId,
-                                        _selectedExtras['${extra.productComponentId}'] != null);
+                                    widget.onExtraSelected(
+                                        productSet.productSetId,
+                                        extra.productComponentId,
+                                        _selectedExtras[
+                                                '${extra.productComponentId}'] !=
+                                            null);
                                   },
                           ),
                         ),
@@ -178,9 +201,11 @@ class _ProductConfigExtrasItemWidgetState extends State<ProductConfigExtrasItemW
     return widgets;
   }
 
-  Future<void> _updateSelectedCount(GeneratedProductConfigSet productSet) async {
+  Future<void> _updateSelectedCount(
+      GeneratedProductConfigSet productSet) async {
     int selectedCount = 0;
-    _selectedExtras.forEach((key, value) => value != null ? ++selectedCount : selectedCount);
+    _selectedExtras.forEach(
+        (key, value) => value != null ? ++selectedCount : selectedCount);
     setState(() {
       _canSelectExtra = selectedCount < (widget.extraSet.maxSelection ?? 0);
       _selectedExtraCount = selectedCount;

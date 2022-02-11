@@ -145,7 +145,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
                   ),
                   // color: theme.secondary,
                   child: Text(
-                    formatCurrency(order.sumPriceShown.priceSum,
+                    formatCurrency(
+                        order.totalPrice(unit.serviceFeePolicy?.type),
                         order.sumPriceShown.currency),
                     style: Fonts.satoshi(
                       fontSize: 16.0,
