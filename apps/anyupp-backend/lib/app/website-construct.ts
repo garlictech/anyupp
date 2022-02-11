@@ -4,11 +4,11 @@ import {
   aws_route53_targets as targets,
   aws_s3_deployment as s3deploy,
   aws_certificatemanager as acm,
+  aws_s3 as s3,
   RemovalPolicy,
   CfnOutput,
 } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
-import { AutoDeleteBucket } from './auto-delete-bucket';
 import { Construct } from 'constructs';
 
 export interface WebsiteProps extends sst.StackProps {
@@ -31,8 +31,7 @@ export class WebsiteConstruct extends Construct {
     new CfnOutput(this, 'Site', { value: this.websiteUrl });
 
     // Content bucket
-    const siteBucket = new AutoDeleteBucket(this, 'SiteBucket', {
-      //const siteBucket = new s3.Bucket(this, 'SiteBucket', {
+    const siteBucket = new s3.Bucket(this, 'SiteBucket', {
       bucketName: siteDomain,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
