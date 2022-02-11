@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,23 +35,22 @@ class AddToCartPanelWidget extends StatefulWidget {
 
 class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
   int _quantity = 1;
-  bool _showToolTip = false;
+  bool _hasServiceFee = false;
+  bool _showTooltip = true;
 
   @override
   void initState() {
     super.initState();
-    _showToolTip = widget.serviceFeePolicy == null ||
-        widget.serviceFeePolicy?.type == ServiceFeeType.noFee;
+    _hasServiceFee = widget.serviceFeePolicy != null &&
+        widget.serviceFeePolicy!.type != ServiceFeeType.noFee;
 
-    if (_showToolTip) {
-      Future.delayed(const Duration(seconds: 5), () {
-        if (this.mounted) {
-          setState(() {
-            _showToolTip = false;
-          });
-        }
-      });
-    }
+    Future.delayed(const Duration(seconds: 5), () {
+      if (this.mounted) {
+        setState(() {
+          _showTooltip = false;
+        });
+      }
+    });
   }
 
   @override
@@ -67,7 +67,8 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
   }
 
   Widget _buildAddToCartPanel(BuildContext context, ConfigsetUpdated state) {
-    String price = formatCurrency(state.totalPrice, state.unit.currency);
+    String price =
+        formatCurrency(state.totalPrice * serviceFeeMul, state.unit.currency);
 
     return Container(
       padding: EdgeInsets.all(8.0),
@@ -93,7 +94,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
               bottom: 16.0,
             ),
             child: widget.displayState == ProductItemDisplayState.NORMAL &&
-                    _showToolTip
+                    _showTooltip
                 ? SimpleTooltip(
                     arrowBaseWidth: 16.0,
                     arrowLength: 8,
@@ -109,7 +110,9 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
                     ballonPadding: EdgeInsets.zero,
                     content: Container(
                       child: Text(
-                        trans('cart.hasNoServiceFee'),
+                        _hasServiceFee
+                            ? trans('cart.hasServiceFee')
+                            : trans('cart.hasNoServiceFee'),
                         softWrap: true,
                         textAlign: TextAlign.center,
                         style: Fonts.satoshi(

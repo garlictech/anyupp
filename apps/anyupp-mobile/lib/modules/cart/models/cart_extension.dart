@@ -26,6 +26,7 @@ extension CartExtension on Cart {
       value += orderPrice;
     });
     value += packaginFee;
+    // value *= serviceFeeMul;
     value += totalServiceFee ?? 0;
     return value;
   }
@@ -58,7 +59,9 @@ extension CartExtension on Cart {
   double? get totalServiceFee {
     ServiceFeePolicy? policy = currentUnit?.serviceFeePolicy;
 
-    if (policy == null || policy.type == ServiceFeeType.noFee) {
+    if (policy == null ||
+        policy.type == ServiceFeeType.noFee ||
+        this.servingMode == ServingMode.takeAway) {
       return null;
     }
 

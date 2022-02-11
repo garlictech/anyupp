@@ -5,6 +5,7 @@ import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
@@ -445,7 +446,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
           height: 2.0,
         ),
         Text(
-          formatCurrency(variant.price, widget.unit.currency),
+          formatCurrency(variant.price * serviceFeeMul, widget.unit.currency),
           style: Fonts.satoshi(
             fontSize: 16,
             fontWeight: FontWeight.w400,

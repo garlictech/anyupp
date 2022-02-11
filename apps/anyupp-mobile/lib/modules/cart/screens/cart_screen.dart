@@ -217,7 +217,7 @@ class CartScreen extends StatelessWidget {
 
     bool isTakeAway = cart.servingMode == ServingMode.takeAway;
     bool isServiceFee =
-        cart.totalServiceFee != null && cart.totalServiceFee! > 0.0;
+        unit.serviceFeePolicy?.type == ServiceFeeType.applicable && !isTakeAway;
     int additionalRowCount = (isServiceFee ? 1 : 0) + (isTakeAway ? 1 : 0);
 
     return Column(
@@ -583,36 +583,8 @@ class CartScreen extends StatelessWidget {
     Cart cart,
     bool showQrCodeScan,
   ) async {
-    // if (showQrCodeScan) {
-    //   bool? success = await Nav.toWithResult<bool>(QRCodeScannerScreen(
-    //     popWhenClose: true,
-    //     loadUnits: true,
-    //   ));
-    //   print('_handlePaymentButtonPressed.result=$success');
-    //   if (success == true) {
-    //     Nav.to(
-    //       SimplifiedPaymentScreen(unit: unit),
-    //       animationType: NavAnim.SLIDEIN_DOWN,
-    //     );
-    //   }
-    // } else {
-    //   Nav.to(
-    //     SimplifiedPaymentScreen(unit: unit),
-    //     animationType: NavAnim.SLIDEIN_DOWN,
-    //   );
-    // }
     Nav.to(
-      SelectPaymentMethodScreen(
-        cart: cart,
-        unit: unit,
-      ),
-      // unit: unit.copyWith(
-      //   orderPolicy: OrderPolicy.placeOnly,
-      // )),
-      // SimplifiedPaymentScreen(
-      //     unit: unit.copyWith(
-      //   orderPolicy: OrderPolicy.placeOnly,
-      // )),
+      SelectPaymentMethodScreen(cart: cart, unit: unit),
       animationType: NavAnim.SLIDEIN_DOWN,
     );
   }

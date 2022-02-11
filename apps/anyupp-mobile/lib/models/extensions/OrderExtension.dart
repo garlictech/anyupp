@@ -1,3 +1,4 @@
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +15,9 @@ extension OrderExtension on Order {
     }
   }
 
-  double get totalPrice =>
-      this.sumPriceShown.priceSum + (this.serviceFee?.netPrice ?? 0);
+  double totalPrice([ServiceFeeType? policy]) =>
+      this.sumPriceShown.priceSum +
+      (policy == ServiceFeeType.applicable || policy == ServiceFeeType.included
+          ? this.serviceFee?.netPrice ?? 0
+          : 0);
 }

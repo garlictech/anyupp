@@ -43,7 +43,8 @@ class GeneratedProductConfigSet {
       type: type ?? this.type,
       maxSelection: maxSelection ?? this.maxSelection,
       items: items ?? this.items,
-      supportedServingModes: supportedServingModes ?? this.supportedServingModes,
+      supportedServingModes:
+          supportedServingModes ?? this.supportedServingModes,
     );
   }
 
@@ -56,7 +57,8 @@ class GeneratedProductConfigSet {
       'type': type,
       'maxSelection': maxSelection,
       'items': items.map((x) => x.toJson()).toList(),
-      'supportedServingModes': supportedServingModes.map((x) => enumToString(x)).toList(),
+      'supportedServingModes':
+          supportedServingModes.map((x) => enumToString(x)).toList(),
     };
   }
 
@@ -69,7 +71,8 @@ class GeneratedProductConfigSet {
       type: map['type'],
       maxSelection: map['maxSelection'],
       items: List<GeneratedProductConfigComponent>.from(
-          map['items']?.map((x) => GeneratedProductConfigComponent.fromJson(x))),
+          map['items']?.map((x) => GeneratedProductConfigComponent.fromJson(x)))
+        ..sort((a, b) => (b.position ?? 0) - (a.position ?? 0)),
       supportedServingModes: map['supportedServingModes'] != null
           ? List<ServingMode>.from(
               map['supportedServingModes']?.map(

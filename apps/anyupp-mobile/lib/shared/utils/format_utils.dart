@@ -23,9 +23,6 @@ String ellapsedTimeToStringDescription(DateTime date) {
 }
 
 String formatCurrency(dynamic number, String currency) {
-  // if (languageCode == null) {
-  //   languageCode = Locale('en_US').languageCode;
-  // }
   return getNumberFormatter(currency).format(number);
 }
 

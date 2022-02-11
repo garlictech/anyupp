@@ -120,12 +120,10 @@ void main() {
     final huFinder = find.text('Magyar');
     final enFinder = find.text('Hungarian');
     final deFinder = find.text('Ungarisch');
-    final emptyFinder = find.text('-');
 
     expect(huFinder, findsNothing);
     expect(enFinder, findsNothing);
-    expect(deFinder, findsNothing);
-    expect(emptyFinder, findsOneWidget);
+    expect(deFinder, findsOneWidget);
   }, skip: false);
 
   testWidgets(
@@ -160,6 +158,41 @@ void main() {
       expect(huFinder, findsNothing);
       expect(enFinder, findsOneWidget);
       expect(deFinder, findsNothing);
+    });
+  }, skip: false);
+
+  testWidgets(
+      'LocalizedItem translation flow test - fallback HU translation to DE (no HU and EN translation)',
+      (WidgetTester tester) async {
+    // Create the widget by telling the tester to build it.
+    await tester.runAsync(() async {
+      await tester.pumpWidget(MaterialApp(
+        locale: Locale.fromSubtags(countryCode: 'hu', languageCode: 'hu'),
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          AppLocalizations.delegate,
+        ],
+        supportedLocales: SupportedLocales.locales,
+        home: LocalizationsTestWidget(
+          item: LocalizedItem(
+            hu: '',
+            en: '',
+            de: 'Ungarisch',
+          ),
+        ),
+      ));
+
+      await tester.pumpAndSettle();
+
+      final huFinder = find.text('Magyar');
+      final enFinder = find.text('Hungarian');
+      final deFinder = find.text('Ungarisch');
+
+      expect(huFinder, findsNothing);
+      expect(enFinder, findsNothing);
+      expect(deFinder, findsOneWidget);
     });
   }, skip: false);
 }

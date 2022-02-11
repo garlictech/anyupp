@@ -164,7 +164,7 @@ class AwsOrderSubscription {
       }
 
       var items = result.data!.searchOrders!.items;
-      print('***** _getOrderList().items=$items');
+      // print('***** _getOrderList().items=$items');
       if (items.isEmpty) {
         _nextToken = null;
         _totalCount = 0;

@@ -45,4 +45,6 @@ export 'models/extensions/OrderExtension.dart';
 export 'models/extensions/OrderItemExtension.dart';
 export 'models/extensions/PlaceExtension.dart';
 export 'models/extensions/ProductExtension.dart';
+export 'models/extensions/LocalizedItemExtension.dart';
+export 'models/extensions/TipPolicyExtension.dart';
 export 'models/mock/mock_api_values.dart';

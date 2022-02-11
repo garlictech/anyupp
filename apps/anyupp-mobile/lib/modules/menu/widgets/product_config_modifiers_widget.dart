@@ -5,6 +5,7 @@ import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
@@ -212,7 +213,8 @@ class _ProductConfigModifiersWidgetState
                     children: [
                       Text(
                         (item.price > 0 ? '+' : '') +
-                            formatCurrency(item.price, widget.unit.currency),
+                            formatCurrency(item.price * serviceFeeMul,
+                                widget.unit.currency),
                         style: Fonts.satoshi(
                           color: theme.highlight,
                           fontSize: 16.0,

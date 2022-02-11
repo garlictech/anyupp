@@ -108,15 +108,18 @@ class Locally {
       Map<String, dynamic> json = jsonDecode(payloadStr);
       NotificationPayloadType? type =
           enumFromStringNull(json['type'], NotificationPayloadType.values);
+      print('Notification.onSelectNotification().type=$type');
       if (type == NotificationPayloadType.RATE_ORDER) {
         RateOrderPayload payload = RateOrderPayload.fromJson(json['data']);
         print('Notification.showRating=$payload');
+        getIt<RatingOrderNotificationBloc>()
+            .add(ShowRatingFromNotification(payload));
 
-        Nav.to(RatingAndTippingScreen(
-          orderId: payload.orderId,
-          ratingPolicy: payload.ratingPolicy,
-          tipPolicy: payload.tipPolicy,
-        ));
+        // Nav.to(RatingAndTippingScreen(
+        //   orderId: payload.orderId,
+        //   ratingPolicy: payload.ratingPolicy,
+        //   tipPolicy: payload.tipPolicy,
+        // ));
       }
       if (type == NotificationPayloadType.SHOW_ORDER) {
         ShowOrderPayload payload = ShowOrderPayload.fromJson(json['data']);
