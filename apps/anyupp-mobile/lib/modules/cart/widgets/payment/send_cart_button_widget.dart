@@ -80,7 +80,7 @@ class SendCartButtonWidget extends StatelessWidget {
                           child: cart.isPlaceEmpty
                               ? SvgPicture.asset(
                                   'assets/icons/qr_code_scanner.svg',
-                                  color: theme.secondary0,
+                                  color: theme.buttonText,
                                 )
                               : Icon(
                                   Icons.arrow_forward,

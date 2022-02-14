@@ -337,7 +337,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   ) {
     List<Widget> results = [FavoritesScreen()];
     results.addAll(productCategories
-        .map((category) => ProductMenuTabScreen(
+        .map((category) => ProductMenuTabScreenTemp(
               unit: unit,
               categoryId: category.id!,
             ))
@@ -417,7 +417,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
             child: Text(title,
                 style: Fonts.satoshi(
                   fontSize: 14.0,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                  // color: theme.buttonText
                 )),
           );

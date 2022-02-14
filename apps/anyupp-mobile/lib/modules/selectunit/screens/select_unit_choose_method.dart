@@ -10,6 +10,7 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'flutter_qr_code_scanner.dart';
 
@@ -39,19 +40,15 @@ class _SelectUnitChooseMethodScreenState
               color: Colors.white,
               child: SafeArea(
                 child: Scaffold(
-                  key: const Key('unitselect-screen'),
-                  backgroundColor: Colors.white,
-                  body: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
+                    key: const Key('unitselect-screen'),
+                    backgroundColor: Colors.white,
+                    body: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         SelectUnitUserInfoRowWidget(user: userSnapshot.data!),
-                        const SelectUnitMainContentWidget(),
+                        Expanded(child: const SelectUnitMainContentWidget()),
                       ],
-                    ),
-                  ),
-                ),
+                    )),
               ),
             );
           }
@@ -62,118 +59,140 @@ class _SelectUnitChooseMethodScreenState
   }
 }
 
-class SelectUnitMainContentWidget extends StatelessWidget {
+class SelectUnitMainContentWidget extends StatefulWidget {
   const SelectUnitMainContentWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            // --- Scan QR Code card
-            const SelectUnitQRCardWidget(),
-            // --- Nearest place list
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(
-                top: 35.0,
-                bottom: 12.0,
-              ),
-              child: Text(
-                trans(context, 'selectUnit.findNearest'),
-                textAlign: TextAlign.start,
-                style: Fonts.satoshi(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xFF3C2F2F),
-                ),
-              ),
-            ),
-            BlocBuilder<UnitsBloc, UnitsState>(builder: (context, state) {
-              // print('*********** _buildUnitListBloc().BlocBuilder.state=$state');
-              if (state is UnitsNoNearUnit) {
-                return Container(
-                  padding: EdgeInsets.all(0.0),
-                  height: 138,
-                  child: Center(
-                      child: Text(trans(context, 'selectUnitMap.noNearUnits'))),
-                );
-              }
-              if (state is UnitsNotLoaded) {
-                return Container(
-                  padding: EdgeInsets.all(0.0),
-                  height: 138,
-                  child: Center(
-                      child: Text(trans(context, 'selectUnitMap.notLoaded'))),
-                );
-              }
-              if (state is UnitsLoaded) {
-                return Container(
-                  padding: EdgeInsets.all(0.0),
-                  height: 138,
-                  child: ListView.builder(
-                    itemCount: state.units.length,
-                    scrollDirection: Axis.horizontal,
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return UnitCardWidget(
-                        unit: state.units[index],
-                        onTap: () => selectUnitAndGoToMenuScreen(
-                          context,
-                          state.units[index],
-                          deletePlace: true,
-                          useTheme: false,
-                        ),
-                      );
-                    },
-                  ),
-                );
-              }
-              return Container(
-                padding: EdgeInsets.all(0.0),
-                height: 138,
-                child: CenterLoadingWidget(
-                  backgroundColor: Colors.white,
-                  color: Color(0xFF857C18),
-                ),
-              );
-            }),
+  State<SelectUnitMainContentWidget> createState() =>
+      _SelectUnitMainContentWidgetState();
+}
 
-            // --- Bottom button ('Check them all on the map')
-            Container(
-              width: double.infinity,
-              height: 52.0,
-              margin: EdgeInsets.only(top: 16.0),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Color(0xFFF3F2E7),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
+class _SelectUnitMainContentWidgetState
+    extends State<SelectUnitMainContentWidget> {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    getIt<CartBloc>().add(ResetCartInMemory());
+    getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+    _refreshController.refreshCompleted();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SmartRefresher(
+      enablePullDown: true,
+      header: MaterialClassicHeader(),
+      controller: _refreshController,
+      onRefresh: _onRefresh,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(15.0),
+          child: Column(
+            children: [
+              // --- Scan QR Code card
+              const SelectUnitQRCardWidget(),
+              // --- Nearest place list
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.only(
+                  top: 35.0,
+                  bottom: 12.0,
+                ),
+                child: Text(
+                  trans('selectUnit.findNearest'),
+                  textAlign: TextAlign.start,
+                  style: Fonts.satoshi(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF3C2F2F),
                   ),
                 ),
-                onPressed: () => Nav.to(SelectUnitByLocationScreen()),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      trans(context, 'selectUnit.checkAllOnMap'),
-                      style: Fonts.satoshi(
-                        fontSize: 14,
-                        color: Color(0xFF3C2F2F),
-                        fontWeight: FontWeight.w500,
+              ),
+              BlocBuilder<UnitsBloc, UnitsState>(builder: (context, state) {
+                // print('*********** _buildUnitListBloc().BlocBuilder.state=$state');
+                if (state is UnitsNoNearUnit) {
+                  return Container(
+                    padding: EdgeInsets.all(0.0),
+                    height: 138,
+                    child:
+                        Center(child: Text(trans('selectUnitMap.noNearUnits'))),
+                  );
+                }
+                if (state is UnitsNotLoaded) {
+                  return Container(
+                    padding: EdgeInsets.all(0.0),
+                    height: 138,
+                    child:
+                        Center(child: Text(trans('selectUnitMap.notLoaded'))),
+                  );
+                }
+                if (state is UnitsLoaded) {
+                  return Container(
+                    padding: EdgeInsets.all(0.0),
+                    height: 138,
+                    child: ListView.builder(
+                      itemCount: state.units.length,
+                      scrollDirection: Axis.horizontal,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return UnitCardWidget(
+                          unit: state.units[index],
+                          onTap: () => selectUnitAndGoToMenuScreen(
+                            context,
+                            state.units[index],
+                            deletePlace: true,
+                            useTheme: false,
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                return Container(
+                  padding: EdgeInsets.all(0.0),
+                  height: 138,
+                  child: CenterLoadingWidget(
+                    backgroundColor: Colors.white,
+                    color: Color(0xFF857C18),
+                  ),
+                );
+              }),
+
+              // --- Bottom button ('Check them all on the map')
+              Container(
+                width: double.infinity,
+                height: 52.0,
+                margin: EdgeInsets.only(top: 16.0),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Color(0xFFF3F2E7),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                  onPressed: () => Nav.to(SelectUnitByLocationScreen()),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        trans('selectUnit.checkAllOnMap'),
+                        style: Fonts.satoshi(
+                          fontSize: 14,
+                          color: Color(0xFF3C2F2F),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    Icon(
-                      Icons.navigate_next,
-                      color: Color(0xFF9F6C36),
-                    ),
-                  ],
+                      Icon(
+                        Icons.navigate_next,
+                        color: Color(0xFF9F6C36),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

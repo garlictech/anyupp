@@ -8,6 +8,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+class ProductMenuTabScreenTemp extends StatelessWidget {
+  final GeoUnit unit;
+  final String categoryId;
+
+  const ProductMenuTabScreenTemp(
+      {Key? key, required this.unit, required this.categoryId})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (BuildContext context) {
+        var bloc = getIt<ProductListBloc>();
+        bloc.add(LoadProductList(
+          unitId: unit.id,
+          categoryId: categoryId,
+        ));
+        return bloc;
+      },
+      child: ProductMenuTabScreen(unit: unit, categoryId: categoryId),
+    );
+  }
+}
 
 class ProductMenuTabScreen extends StatefulWidget {
   final GeoUnit unit;
@@ -23,6 +48,8 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     with AutomaticKeepAliveClientMixin<ProductMenuTabScreen> {
   String? _nextToken;
   late int _pageSize;
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   bool get wantKeepAlive => true;
@@ -33,19 +60,20 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     _pageSize = getIt<AppConstants>().paginationSize;
   }
 
+  void _onRefresh() async {
+    BlocProvider.of<ProductListBloc>(context).add(LoadProductList(
+        unitId: widget.unit.id,
+        categoryId: widget.categoryId,
+        nextToken: _nextToken));
+
+    _refreshController.refreshCompleted();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider(
-      create: (BuildContext context) {
-        var bloc = getIt<ProductListBloc>();
-        bloc.add(LoadProductList(
-            unitId: widget.unit.id,
-            categoryId: widget.categoryId,
-            nextToken: _nextToken));
-        return bloc;
-      },
-      child: Container(
+    print("**********build");
+    return Container(
         color: theme.secondary12.withOpacity(0.5),
         key: PageStorageKey(widget.categoryId),
         padding: EdgeInsets.symmetric(
@@ -66,9 +94,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
           }
 
           return CenterLoadingWidget();
-        }),
-      ),
-    );
+        }));
   }
 
   Widget _buildList(GeoUnit unit, List<GeneratedProduct> list) {
@@ -95,6 +121,11 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
       }
 
       return AnimationLimiter(
+          child: SmartRefresher(
+        enablePullDown: true,
+        header: MaterialClassicHeader(),
+        onRefresh: _onRefresh,
+        controller: _refreshController,
         child: ListView.builder(
           itemCount: list.length + 1,
           scrollDirection: Axis.vertical,
@@ -153,7 +184,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
             );
           },
         ),
-      );
+      ));
     });
   }
 

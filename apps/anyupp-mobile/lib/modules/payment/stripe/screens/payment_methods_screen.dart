@@ -8,6 +8,7 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class StripePaymentMethodsScreen extends StatefulWidget {
   @override
@@ -20,11 +21,18 @@ class _StripePaymentMethodsScreenState
   int selectedItem = 0;
   int? initialIndex;
   bool _loading = false;
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     super.initState();
     getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
+  }
+
+  void _onRefresh() async {
+    getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
+    _refreshController.refreshCompleted();
   }
 
   @override
@@ -37,27 +45,33 @@ class _StripePaymentMethodsScreenState
               title: trans('payment.title'),
               elevation: 4.0,
             ),
-      body: BlocListener<StripePaymentBloc, StripePaymentState>(
-        listener: (context, state) {
-          if (state is StripeCardCreated) {
-            showSuccessDialog(
-              context,
-              trans("payment.manageCard.success"),
-              trans("payment.manageCard.card_added"),
-            );
-            getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
-          }
-          if (state is StripeError) {
-            Nav.pop();
-          }
-        },
-        child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
-          builder: (context, StripePaymentState state) {
-            if (state is StripePaymentMethodsList) {
-              return _buildCardList(state.data!);
+      body: SmartRefresher(
+        enablePullDown: true,
+        header: MaterialClassicHeader(),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        child: BlocListener<StripePaymentBloc, StripePaymentState>(
+          listener: (context, state) {
+            if (state is StripeCardCreated) {
+              showSuccessDialog(
+                context,
+                trans("payment.manageCard.success"),
+                trans("payment.manageCard.card_added"),
+              );
+              getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
             }
-            return Scaffold(body: CenterLoadingWidget());
+            if (state is StripeError) {
+              Nav.pop();
+            }
           },
+          child: BlocBuilder<StripePaymentBloc, StripePaymentState>(
+            builder: (context, StripePaymentState state) {
+              if (state is StripePaymentMethodsList) {
+                return _buildCardList(state.data!);
+              }
+              return Scaffold(body: CenterLoadingWidget());
+            },
+          ),
         ),
       ),
     );

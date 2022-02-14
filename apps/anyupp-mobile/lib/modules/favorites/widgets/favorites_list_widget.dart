@@ -7,6 +7,7 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class FavoritesListWidget extends StatefulWidget {
   final GeoUnit unit;
@@ -20,6 +21,9 @@ class FavoritesListWidget extends StatefulWidget {
 }
 
 class _FavoritesListWidgetState extends State<FavoritesListWidget> {
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
@@ -28,29 +32,42 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
     ));
   }
 
+  void _onRefresh() async {
+    getIt<FavoritesBloc>().add(ListFavoriteProducts(
+      unitId: widget.unit.id,
+    ));
+    _refreshController.refreshCompleted();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child:
-          BlocBuilder<FavoritesBloc, FavoritesState>(builder: (context, state) {
-        if (state is FavoriteListLoaded) {
-          if (state.favorites != null && state.favorites!.isNotEmpty) {
-            return _buildList(widget.unit, state.favorites!);
-          } else {
-            return EmptyWidget(
-              icon: 'assets/icons/empty-category.png',
-              messageKey: 'favorites.noFavorites',
-              descriptionKey: 'favorites.noFavoritesDesc',
-              textFontSize: 18.0,
-              descriptionFontSize: 14.0,
-              horizontalPadding: 32.0,
-              iconSize: 32.0,
-              background: Colors.transparent,
-            );
+    return SmartRefresher(
+      enablePullDown: true,
+      header: MaterialClassicHeader(),
+      controller: _refreshController,
+      onRefresh: _onRefresh,
+      child: Container(
+        child: BlocBuilder<FavoritesBloc, FavoritesState>(
+            builder: (context, state) {
+          if (state is FavoriteListLoaded) {
+            if (state.favorites != null && state.favorites!.isNotEmpty) {
+              return _buildList(widget.unit, state.favorites!);
+            } else {
+              return EmptyWidget(
+                icon: 'assets/icons/empty-category.png',
+                messageKey: 'favorites.noFavorites',
+                descriptionKey: 'favorites.noFavoritesDesc',
+                textFontSize: 18.0,
+                descriptionFontSize: 14.0,
+                horizontalPadding: 32.0,
+                iconSize: 32.0,
+                background: Colors.transparent,
+              );
+            }
           }
-        }
-        return CenterLoadingWidget();
-      }),
+          return CenterLoadingWidget();
+        }),
+      ),
     );
   }
 
