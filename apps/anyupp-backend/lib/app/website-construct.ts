@@ -36,8 +36,7 @@ export class WebsiteConstruct extends Construct {
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
       publicReadAccess: true,
-      removalPolicy: RemovalPolicy.DESTROY,
-      autoDeleteObjects: app.stage !== 'prod',
+      removalPolicy: RemovalPolicy.RETAIN,
     });
 
     new CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
