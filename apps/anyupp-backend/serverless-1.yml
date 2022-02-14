@@ -36,9 +36,6 @@ provider:
   runtime: nodejs14.x
 
 functions:
-  auto-delete-bucket:
-    handler: lib/lambda/auto-delete-bucket/index.handler
-
   appsync-lambda:
     handler: lib/lambda/appsync-lambda/index.handler
 
