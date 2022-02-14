@@ -37,7 +37,7 @@ export const calculateAndFilterNotActiveProducts = (
 export const listUnitProductsForAUnit =
   (crudSdk: CrudApi.CrudSdk) => (unitId: string) => {
     const input: CrudApi.SearchUnitProductsQueryVariables = {
-      filter: { unitId: { eq: unitId } },
+      filter: { unitId: { eq: unitId }, dirty: { ne: true } },
     };
     const throwOnEmptyList = (items: CrudApi.UnitProduct[]) =>
       items.length > 0 ? of(items) : throwError(getNoProductInUnitError());

@@ -16,9 +16,9 @@
   },
   "anyupp-backend-sites": {
     "AdminSiteDomainA75B4E32": "zsoltstack-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionDomainNameA4A4FE5B": "d34d3r2046sxnn.cloudfront.net",
+    "AdminDistributionDomainNameA4A4FE5B": "d1wr09pu9falyd.cloudfront.net",
     "AdminSiteEAA17C78": "https://zsoltstack-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionIdB4DE25AB": "E1DLV3Y0FQFBWD",
+    "AdminDistributionIdB4DE25AB": "E3FARM0GV8HB6U",
     "AdminBucketCA57896C": "zsoltstack-admin-anyupp-backend.anyupp.com"
   },
   "anyupp-backend-cognito": {
