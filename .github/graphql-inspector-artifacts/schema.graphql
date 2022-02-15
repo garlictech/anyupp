@@ -501,7 +501,7 @@ type Order @aws_iam @aws_cognito_user_pools {
   unitId: ID!
   orderNum: String!
   items: [OrderItem!]!
-  paymentMode: PaymentMode!
+  paymentMode: PaymentMode
   statusLog: [StatusLog!]!
   archived: Boolean!
   takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
@@ -730,6 +730,11 @@ input TipPolicyInput {
   minOtherAmount: Float
 }
 
+enum OrderPaymentPolicy {
+  prepay
+  afterpay
+}
+
 type Unit @aws_iam @aws_cognito_user_pools {
   id: ID!
   groupId: ID!
@@ -759,6 +764,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1105,6 +1111,7 @@ input CreateUnitInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
 }
 
 input UpdateUnitInput {
@@ -1136,6 +1143,7 @@ input UpdateUnitInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
 }
 
 type CreateAnonymUserOutput {
@@ -2106,7 +2114,7 @@ input CreateOrderInput {
   unitId: ID!
   orderNum: String!
   items: [OrderItemInput!]!
-  paymentMode: PaymentModeInput!
+  paymentMode: PaymentModeInput
   statusLog: [StatusLogInput!]!
   archived: Boolean!
   takeAway: Boolean
@@ -2564,6 +2572,11 @@ input ModelSoldOutVisibilityPolicyInput {
   ne: SoldOutVisibilityPolicy
 }
 
+input ModelOrderPaymentPolicyInput {
+  eq: OrderPaymentPolicy
+  ne: OrderPaymentPolicy
+}
+
 input ModelUnitFilterInput {
   id: ModelIDInput
   groupId: ModelIDInput
@@ -2582,6 +2595,7 @@ input ModelUnitFilterInput {
   orderPolicy: ModelOrderPolicyInput
   packagingTaxPercentage: ModelFloatInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
+  orderPaymentPolicy: ModelOrderPaymentPolicyInput
   and: [ModelUnitFilterInput]
   or: [ModelUnitFilterInput]
   not: ModelUnitFilterInput
@@ -2608,6 +2622,7 @@ input ModelUnitConditionInput {
   orderPolicy: ModelOrderPolicyInput
   packagingTaxPercentage: ModelFloatInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
+  orderPaymentPolicy: ModelOrderPaymentPolicyInput
   and: [ModelUnitConditionInput]
   or: [ModelUnitConditionInput]
   not: ModelUnitConditionInput

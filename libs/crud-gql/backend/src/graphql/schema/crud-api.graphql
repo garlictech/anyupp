@@ -519,7 +519,7 @@ type Order
   unitId: ID!
   orderNum: String!
   items: [OrderItem!]!
-  paymentMode: PaymentMode!
+  paymentMode: PaymentMode
   statusLog: [StatusLog!]!
   archived: Boolean!
   takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
@@ -760,6 +760,11 @@ input TipPolicyInput {
   minOtherAmount: Float
 }
 
+enum OrderPaymentPolicy {
+  prepay
+  afterpay
+}
+
 type Unit
   @model(mutations: { delete: "deleteUnit" })
   @searchable
@@ -792,6 +797,7 @@ type Unit
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
 }
 
 type DateIntervalOpen {
@@ -1149,6 +1155,7 @@ input CreateUnitInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
 }
 
 input UpdateUnitInput {
@@ -1180,6 +1187,7 @@ input UpdateUnitInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
 }
 
 type CreateAnonymUserOutput {
