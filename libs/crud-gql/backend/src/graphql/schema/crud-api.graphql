@@ -131,7 +131,6 @@ type ServiceFeePolicy {
 input ServiceFeePolicyInput {
   type: ServiceFeeType!
   percentage: Float!
-  taxPercentage: Float!
 }
 
 type GroupProduct

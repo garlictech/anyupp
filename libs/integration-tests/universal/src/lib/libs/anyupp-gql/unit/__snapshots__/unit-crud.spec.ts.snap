@@ -1083,7 +1083,6 @@ Object {
   ],
   "serviceFeePolicy": Object {
     "percentage": 10,
-    "taxPercentage": 10,
     "type": "applicable",
   },
   "supportedOrderModes": Array [
@@ -1422,7 +1421,6 @@ Object {
   ],
   "serviceFeePolicy": Object {
     "percentage": 10,
-    "taxPercentage": 10,
     "type": "applicable",
   },
   "supportedOrderModes": Array [
