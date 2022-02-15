@@ -10,7 +10,6 @@ class ServiceFeePolicy {
   ServiceFeePolicy({
     required this.type,
     required this.percentage,
-    required this.taxPercentage,
   });
 
   ServiceFeePolicy copyWith({
@@ -21,7 +20,6 @@ class ServiceFeePolicy {
     return ServiceFeePolicy(
       type: type ?? this.type,
       percentage: percentage ?? this.percentage,
-      taxPercentage: taxPercentage ?? this.taxPercentage,
     );
   }
 
@@ -37,13 +35,11 @@ class ServiceFeePolicy {
     return ServiceFeePolicy(
       type: enumFromString(map['type'], ServiceFeeType.values),
       percentage: map['percentage']?.toDouble() ?? 0.0,
-      taxPercentage: map['taxPercentage']?.toDouble() ?? 0.0,
     );
   }
 
   @override
-  String toString() =>
-      'ServiceFeePolicy(type: $type, percentage: $percentage, taxPercentage: $taxPercentage)';
+  String toString() => 'ServiceFeePolicy(type: $type, percentage: $percentage)';
 
   @override
   bool operator ==(Object other) {
@@ -51,8 +47,7 @@ class ServiceFeePolicy {
 
     return other is ServiceFeePolicy &&
         other.type == type &&
-        other.percentage == percentage &&
-        other.taxPercentage == taxPercentage;
+        other.percentage == percentage;
   }
 
   @override

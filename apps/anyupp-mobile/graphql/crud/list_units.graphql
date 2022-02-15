@@ -4,7 +4,6 @@ query getUnitsNearLocation($lat: Float!, $lng: Float!) {
       serviceFeePolicy {
         type
         percentage
-        taxPercentage
       }
       address {
         address

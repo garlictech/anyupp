@@ -30,12 +30,14 @@ test.each(useCases)('Adding service fee', ({ label, serviceFeeType }) => {
             sumPriceShown: {
               currency: 'HUF',
               priceSum: 100,
+              tax: 10,
             },
           },
           {
             sumPriceShown: {
               currency: 'HUF',
               priceSum: 100,
+              tax: 20,
             },
           },
         ],
@@ -44,7 +46,6 @@ test.each(useCases)('Adding service fee', ({ label, serviceFeeType }) => {
         serviceFeePolicy: {
           type: serviceFeeType,
           percentage: 10,
-          taxPercentage: 20,
         },
       } as any,
     ),
@@ -64,6 +65,7 @@ test('No service fee defined', () => {
             sumPriceShown: {
               currency: 'HUF',
               priceSum: 100,
+              tax: 20,
             },
           },
         ],
@@ -80,13 +82,13 @@ test('No items defined', () => {
         sumPriceShown: {
           currency: 'HUF',
           priceSum: 200,
+          tax: 20,
         },
       } as any,
       {
         serviceFeePolicy: {
           type: CrudApi.ServiceFeeType.included,
           percentage: 10,
-          taxPercentage: 20,
         },
       } as any,
     ),

@@ -107,7 +107,6 @@ Array [
       ],
       "serviceFeePolicy": Object {
         "percentage": 10,
-        "taxPercentage": 10,
         "type": "applicable",
       },
       "soldOutVisibilityPolicy": null,
@@ -157,8 +156,8 @@ Array [
           "quantity": 2,
           "serviceFee": Object {
             "currency": "EUR",
-            "netPrice": 0.18000000000000002,
-            "taxPercentage": 10,
+            "netPrice": 0.16,
+            "taxPercentage": 27,
           },
           "statusLog": Array [
             Object {
@@ -195,8 +194,8 @@ Array [
       },
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.18000000000000002,
-        "taxPercentage": 10,
+        "netPrice": 0.20320000000000002,
+        "taxPercentage": 0,
       },
       "servingMode": "inPlace",
       "statusLog": Array [
@@ -256,8 +255,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.18000000000000002,
-        "taxPercentage": 10,
+        "netPrice": 0.16,
+        "taxPercentage": 27,
       },
       "statusLog": Array [
         Object {
@@ -349,8 +348,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.32999999999999996,
-        "taxPercentage": 10,
+        "netPrice": 0.27999999999999997,
+        "taxPercentage": 27,
       },
       "statusLog": Array [
         Object {
@@ -479,8 +478,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 1.0499999999999998,
-        "taxPercentage": 10,
+        "netPrice": 0.9099999999999999,
+        "taxPercentage": 27,
       },
       "statusLog": Array [
         Object {
@@ -520,8 +519,8 @@ Object {
   "rating": null,
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 1.56,
-    "taxPercentage": 10,
+    "netPrice": 1.7145,
+    "taxPercentage": 0,
   },
   "servingMode": "inPlace",
   "statusLog": Array [
@@ -587,8 +586,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.18000000000000002,
-        "taxPercentage": 10,
+        "netPrice": 0.13,
+        "taxPercentage": 53,
       },
       "statusLog": Array [
         Object {
@@ -680,8 +679,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.32999999999999996,
-        "taxPercentage": 10,
+        "netPrice": 0.24,
+        "taxPercentage": 53,
       },
       "statusLog": Array [
         Object {
@@ -810,8 +809,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 1.0499999999999998,
-        "taxPercentage": 10,
+        "netPrice": 0.7599999999999999,
+        "taxPercentage": 53,
       },
       "statusLog": Array [
         Object {
@@ -855,8 +854,8 @@ Object {
   "rating": null,
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 2.72,
-    "taxPercentage": 10,
+    "netPrice": 1.7288999999999999,
+    "taxPercentage": 0,
   },
   "servingMode": "takeAway",
   "statusLog": Array [
@@ -928,8 +927,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.18000000000000002,
-        "taxPercentage": 10,
+        "netPrice": 0.16,
+        "taxPercentage": 27,
       },
       "statusLog": Array [
         Object {
@@ -1021,8 +1020,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.32999999999999996,
-        "taxPercentage": 10,
+        "netPrice": 0.27999999999999997,
+        "taxPercentage": 27,
       },
       "statusLog": Array [
         Object {
@@ -1151,8 +1150,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 1.0499999999999998,
-        "taxPercentage": 10,
+        "netPrice": 0.9099999999999999,
+        "taxPercentage": 27,
       },
       "statusLog": Array [
         Object {
@@ -1192,8 +1191,8 @@ Object {
   "rating": null,
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 1.56,
-    "taxPercentage": 10,
+    "netPrice": 1.7145,
+    "taxPercentage": 0,
   },
   "servingMode": "inPlace",
   "statusLog": Array [
@@ -1259,8 +1258,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.18000000000000002,
-        "taxPercentage": 10,
+        "netPrice": 0.13,
+        "taxPercentage": 53,
       },
       "statusLog": Array [
         Object {
@@ -1352,8 +1351,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.32999999999999996,
-        "taxPercentage": 10,
+        "netPrice": 0.24,
+        "taxPercentage": 53,
       },
       "statusLog": Array [
         Object {
@@ -1482,8 +1481,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 1.0499999999999998,
-        "taxPercentage": 10,
+        "netPrice": 0.7599999999999999,
+        "taxPercentage": 53,
       },
       "statusLog": Array [
         Object {
@@ -1527,8 +1526,8 @@ Object {
   "rating": null,
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 2.72,
-    "taxPercentage": 10,
+    "netPrice": 1.7288999999999999,
+    "taxPercentage": 0,
   },
   "servingMode": "takeAway",
   "statusLog": Array [
@@ -1600,8 +1599,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.18000000000000002,
-        "taxPercentage": 10,
+        "netPrice": 0.16,
+        "taxPercentage": 27,
       },
       "statusLog": Array [
         Object {
@@ -1693,8 +1692,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.32999999999999996,
-        "taxPercentage": 10,
+        "netPrice": 0.27999999999999997,
+        "taxPercentage": 27,
       },
       "statusLog": Array [
         Object {
@@ -1823,8 +1822,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 1.0499999999999998,
-        "taxPercentage": 10,
+        "netPrice": 0.9099999999999999,
+        "taxPercentage": 27,
       },
       "statusLog": Array [
         Object {
@@ -1864,8 +1863,8 @@ Object {
   "rating": null,
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 1.56,
-    "taxPercentage": 10,
+    "netPrice": 1.7145,
+    "taxPercentage": 0,
   },
   "servingMode": "inPlace",
   "statusLog": Array [
@@ -1931,8 +1930,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.18000000000000002,
-        "taxPercentage": 10,
+        "netPrice": 0.13,
+        "taxPercentage": 53,
       },
       "statusLog": Array [
         Object {
@@ -2024,8 +2023,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.32999999999999996,
-        "taxPercentage": 10,
+        "netPrice": 0.24,
+        "taxPercentage": 53,
       },
       "statusLog": Array [
         Object {
@@ -2154,8 +2153,8 @@ Object {
       "quantity": 2,
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 1.0499999999999998,
-        "taxPercentage": 10,
+        "netPrice": 0.7599999999999999,
+        "taxPercentage": 53,
       },
       "statusLog": Array [
         Object {
@@ -2199,8 +2198,8 @@ Object {
   "rating": null,
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 2.72,
-    "taxPercentage": 10,
+    "netPrice": 1.7288999999999999,
+    "taxPercentage": 0,
   },
   "servingMode": "takeAway",
   "statusLog": Array [
