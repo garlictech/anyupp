@@ -144,7 +144,6 @@ const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
   serviceFeePolicy: {
     type: CrudApi.ServiceFeeType.applicable,
     percentage: 10,
-    taxPercentage: 10,
   },
   ratingPolicies: [
     {

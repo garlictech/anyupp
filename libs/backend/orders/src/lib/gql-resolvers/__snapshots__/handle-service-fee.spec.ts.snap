@@ -6,12 +6,13 @@ Object {
     Object {
       "serviceFee": Object {
         "currency": "HUF",
-        "netPrice": 8.33,
-        "taxPercentage": 20,
+        "netPrice": 9.09,
+        "taxPercentage": 10,
       },
       "sumPriceShown": Object {
         "currency": "HUF",
         "priceSum": 100,
+        "tax": 10,
       },
     },
     Object {
@@ -23,13 +24,14 @@ Object {
       "sumPriceShown": Object {
         "currency": "HUF",
         "priceSum": 100,
+        "tax": 20,
       },
     },
   ],
   "serviceFee": Object {
     "currency": "HUF",
-    "netPrice": 16.67,
-    "taxPercentage": 20,
+    "netPrice": 19.995,
+    "taxPercentage": 0,
   },
   "sumPriceShown": Object {
     "currency": "HUF",
@@ -44,12 +46,13 @@ Object {
     Object {
       "serviceFee": Object {
         "currency": "HUF",
-        "netPrice": 8.33,
-        "taxPercentage": 20,
+        "netPrice": 9.09,
+        "taxPercentage": 10,
       },
       "sumPriceShown": Object {
         "currency": "HUF",
         "priceSum": 100,
+        "tax": 10,
       },
     },
     Object {
@@ -61,13 +64,14 @@ Object {
       "sumPriceShown": Object {
         "currency": "HUF",
         "priceSum": 100,
+        "tax": 20,
       },
     },
   ],
   "serviceFee": Object {
     "currency": "HUF",
-    "netPrice": 16.67,
-    "taxPercentage": 20,
+    "netPrice": 19.995,
+    "taxPercentage": 0,
   },
   "sumPriceShown": Object {
     "currency": "HUF",
@@ -83,11 +87,12 @@ Object {
       "serviceFee": Object {
         "currency": "HUF",
         "netPrice": 0,
-        "taxPercentage": 20,
+        "taxPercentage": 10,
       },
       "sumPriceShown": Object {
         "currency": "HUF",
         "priceSum": 100,
+        "tax": 10,
       },
     },
     Object {
@@ -99,13 +104,14 @@ Object {
       "sumPriceShown": Object {
         "currency": "HUF",
         "priceSum": 100,
+        "tax": 20,
       },
     },
   ],
   "serviceFee": Object {
     "currency": "HUF",
     "netPrice": 0,
-    "taxPercentage": 20,
+    "taxPercentage": 0,
   },
   "sumPriceShown": Object {
     "currency": "HUF",
@@ -119,12 +125,13 @@ Object {
   "items": Array [],
   "serviceFee": Object {
     "currency": "HUF",
-    "netPrice": 16.67,
-    "taxPercentage": 20,
+    "netPrice": 0,
+    "taxPercentage": 0,
   },
   "sumPriceShown": Object {
     "currency": "HUF",
     "priceSum": 200,
+    "tax": 20,
   },
 }
 `;
@@ -136,11 +143,12 @@ Object {
       "serviceFee": Object {
         "currency": "HUF",
         "netPrice": 0,
-        "taxPercentage": 0,
+        "taxPercentage": 20,
       },
       "sumPriceShown": Object {
         "currency": "HUF",
         "priceSum": 100,
+        "tax": 20,
       },
     },
   ],

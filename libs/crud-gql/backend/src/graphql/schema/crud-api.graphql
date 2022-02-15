@@ -126,13 +126,11 @@ enum ServiceFeeType {
 type ServiceFeePolicy {
   type: ServiceFeeType!
   percentage: Float!
-  taxPercentage: Float!
 }
 
 input ServiceFeePolicyInput {
   type: ServiceFeeType!
   percentage: Float!
-  taxPercentage: Float!
 }
 
 type GroupProduct

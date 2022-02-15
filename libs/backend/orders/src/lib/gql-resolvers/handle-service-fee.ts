@@ -10,7 +10,7 @@ const getServiceFee = (
   price: CrudApi.PriceShown,
 ): CrudApi.Price => {
   const serviceFeePercentage = serviceFeePolicy?.percentage ?? 0;
-  const serviceFeeTaxPercentage = serviceFeePolicy?.taxPercentage ?? 0;
+  const serviceFeeTaxPercentage = price.tax;
 
   const calculateServiceFee = flow(
     R.cond<CrudApi.ServiceFeeType, number>([
@@ -59,6 +59,19 @@ export const addServiceFeeToOrder = (
     }),
     newOrder => ({
       ...newOrder,
-      serviceFee: getServiceFee(unit.serviceFeePolicy, order.sumPriceShown),
+      serviceFee: pipe(
+        newOrder.items,
+        R.map(item => item.serviceFee),
+        R.map(
+          serviceFee =>
+            serviceFee.netPrice * (1 + serviceFee.taxPercentage / 100),
+        ),
+        R.sum,
+        sumFee => ({
+          currency: order.sumPriceShown.currency,
+          netPrice: sumFee,
+          taxPercentage: 0,
+        }),
+      ),
     }),
   );

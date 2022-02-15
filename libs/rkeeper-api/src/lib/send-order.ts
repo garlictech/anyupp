@@ -59,10 +59,12 @@ export const sendRkeeperOrder =
           fn: 'Testfn',
         },
         order_number: orderInput.place
-          ? `${parseInt(orderInput.place?.table)}.${parseInt(
-              orderInput.place?.table,
-            )}`
-          : '',
+          ? parseFloat(
+              `${parseInt(orderInput.place?.table)}.${parseInt(
+                orderInput.place?.seat,
+              )}`,
+            )
+          : 0.0,
         order,
       }),
       data => ({

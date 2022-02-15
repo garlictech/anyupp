@@ -36,7 +36,7 @@ Array [
             "type": "d",
           },
         ],
-        "order_number": "1.1",
+        "order_number": 1.1,
         "order_type": 1,
         "pay_online_type": 0,
         "pay_type": 0,
