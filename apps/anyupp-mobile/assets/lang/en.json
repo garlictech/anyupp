@@ -736,6 +736,10 @@
       "cancel": "Cancel",
       "hint": "Tip amount"
     },
+    "errors": {
+      "minAmount": "The minimum amount of tip is {{0}} Ft",
+      "validNumber": "Please enter a valid number for tip..."
+    },
     "success": "Thank you for your rating and tip!"
   }
 }

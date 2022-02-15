@@ -354,6 +354,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
             ),
           ),
         if (_unit.tipPolicy != null &&
+            _unit.tipPolicy?.isNotEmpty == true &&
             order.tip == null &&
             order.paymentMode.method == PaymentMethod.inapp &&
             order.transaction?.status == PaymentStatus.success)

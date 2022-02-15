@@ -42,6 +42,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
   void initState() {
     super.initState();
     _hasServiceFee = widget.serviceFeePolicy != null &&
+        currentServingMode != ServingMode.takeAway &&
         widget.serviceFeePolicy!.type != ServiceFeeType.noFee;
 
     Future.delayed(const Duration(seconds: 5), () {

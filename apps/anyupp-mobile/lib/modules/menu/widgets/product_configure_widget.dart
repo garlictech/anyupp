@@ -39,7 +39,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   void initState() {
     // print(
     //     '******* ProductConfiguratorWidget.initState().widget=${widget.product}');
-    _productVariant = widget.product.variants.first;
+    _productVariant = widget.product.variants.firstWhere(
+        (variant) => variant.soldOut != true,
+        orElse: () => widget.product.variants.first);
     widget.product.configSets?.forEach((element) {
       if (element.items.isNotEmpty) {
         _selectedModifiers[element.productSetId] =

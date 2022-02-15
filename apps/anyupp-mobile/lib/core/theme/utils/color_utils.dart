@@ -4,6 +4,9 @@ import 'package:fa_prev/models.dart';
 import 'package:flutter/material.dart';
 import 'package:tinycolor2/tinycolor2.dart';
 
+Color errorColor = Color(0xFFE74C3C);
+Color successColor = Color(0xFF30BF60);
+
 Color lighten(Color c, int percent) {
   assert(1 <= percent && percent <= 100);
   var p = percent / 100;
@@ -65,8 +68,7 @@ ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
     ).color;
 
     var button =
-        TinyColor.fromString(unit.style.colors.button ?? primaryString)
-            .color;
+        TinyColor.fromString(unit.style.colors.button ?? primaryString).color;
     var buttonText =
         TinyColor.fromString(unit.style.colors.buttonText ?? secondaryString)
             .color;
