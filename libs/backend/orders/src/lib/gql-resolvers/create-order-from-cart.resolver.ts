@@ -27,6 +27,7 @@ import {
 import { addPackagingFeeToOrder } from './handle-packaging-fee';
 import { hasSimplifiedOrder } from './order-resolvers';
 import { addServiceFeeToOrder } from './handle-service-fee';
+import * as E from 'fp-ts/lib/Either';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
@@ -203,6 +204,61 @@ const getNextOrderNum =
 
 const isTakeawayCart = (cart: CrudApi.Cart) =>
   cart.servingMode === CrudApi.ServingMode.takeaway;
+
+export interface CalculationState_WithCart {
+  cart: CrudApi.Cart;
+  userId: string;
+}
+
+export interface CalculationState_UnitAdded {
+  cart: CrudApi.Cart;
+  unit: CrudApi.Unit;
+  userId: string;
+}
+
+export const validateCart = (
+  cartInput: CrudApi.Cart | undefined,
+  userId: string,
+): E.Either<string, CalculationState_WithCart> =>
+  pipe(
+    cartInput,
+    E.fromNullable(`Cart is missing`),
+    E.chain(
+      E.fromPredicate(
+        cart => cart.userId === userId,
+        () => 'User ID-s mismatch',
+      ),
+    ),
+    E.map(cart => ({
+      userId,
+      cart,
+    })),
+  );
+
+export const validateUnitPolicies = (
+  inputState: CalculationState_WithCart,
+  unit: CrudApi.Unit | undefined,
+): E.Either<string, CalculationState_UnitAdded> =>
+  pipe(
+    inputState,
+    E.fromPredicate(
+      () => !!unit,
+      () =>
+        `Unit ${inputState.cart.unitId} in the cart cannot be fetched from the database.`,
+    ),
+    E.map(state => ({
+      ...state,
+      unit: unit as CrudApi.Unit,
+    })),
+    E.chain(
+      E.fromPredicate(
+        state => !state.unit.isAcceptingOrders,
+        () => `Unit does not acept orders`,
+      ),
+    ),
+    //E.chain(E.fromPredicate(() => cart.paymentMode && unit.orderPaymentPolicy !== CrudApi.OrderPaymentPolicy.afterpay,
+    //'Payment mode is not provided in the cart, and the unit does not accept afterpay.')
+  );
 
 export const createOrderFromCart =
   (cartId: string) =>
