@@ -9,9 +9,7 @@ import {
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 import {
-  getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
-  missingParametersError,
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
@@ -27,6 +25,7 @@ import {
 import { addPackagingFeeToOrder } from './handle-packaging-fee';
 import { hasSimplifiedOrder } from './order-resolvers';
 import { addServiceFeeToOrder } from './handle-service-fee';
+import * as E from 'fp-ts/lib/Either';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
@@ -204,6 +203,62 @@ const getNextOrderNum =
 const isTakeawayCart = (cart: CrudApi.Cart) =>
   cart.servingMode === CrudApi.ServingMode.takeaway;
 
+export interface CalculationState_WithCart {
+  cart: CrudApi.Cart;
+  userId: string;
+}
+
+export interface CalculationState_UnitAdded {
+  cart: CrudApi.Cart;
+  unit: CrudApi.Unit;
+  userId: string;
+}
+
+export const validateCart =
+  (userId: string) =>
+  (
+    cartInput: CrudApi.Cart | undefined,
+  ): E.Either<string, CalculationState_WithCart> =>
+    pipe(
+      cartInput,
+      E.fromNullable(`Cart is missing`),
+      E.chain(
+        E.fromPredicate(
+          cart => cart.userId === userId,
+          () => 'User ID-s mismatch',
+        ),
+      ),
+      E.map(cart => ({
+        userId,
+        cart,
+      })),
+    );
+
+export const validateUnitPolicies = (
+  inputState: CalculationState_WithCart,
+  unit: CrudApi.Unit | undefined,
+): E.Either<string, CalculationState_UnitAdded> =>
+  pipe(
+    inputState,
+    E.fromPredicate(
+      () => !!unit,
+      () =>
+        `Unit ${inputState.cart.unitId} in the cart cannot be fetched from the database.`,
+    ),
+    E.map(state => ({
+      ...state,
+      unit: unit as CrudApi.Unit,
+    })),
+    E.chain(
+      E.fromPredicate(
+        state => !state.unit.isAcceptingOrders,
+        () => `Unit does not acept orders`,
+      ),
+    ),
+    //E.chain(E.fromPredicate(() => cart.paymentMode && unit.orderPaymentPolicy !== CrudApi.OrderPaymentPolicy.afterpay,
+    //'Payment mode is not provided in the cart, and the unit does not accept afterpay.')
+  );
+
 export const createOrderFromCart =
   (cartId: string) =>
   (
@@ -214,17 +269,7 @@ export const createOrderFromCart =
     );
     // split a long stream to help the type checker
     const calc1 = getCart(cartId)(deps).pipe(
-      throwIfEmptyValue<CrudApi.Cart>(`Cart is missing: ${cartId}`),
-      switchMap(cart =>
-        cart.userId === deps.userId
-          ? of(cart)
-          : throwError(getCartIsMissingError()),
-      ),
-      switchMap(cart =>
-        cart.paymentMode !== undefined
-          ? of(cart)
-          : throwError(missingParametersError('cart.paymentMode')),
-      ),
+      map(validateCart(deps.userId)),
       switchMap(cart =>
         // create catchError and custom error (Covered by #744)
         getUnit(cart.unitId)(deps).pipe(
