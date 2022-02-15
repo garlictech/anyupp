@@ -414,7 +414,20 @@ export const handleRkeeperProducts =
           count(),
           tap(i => console.log(i + ' Product processed')),
           delay(ES_DELAY),
-          switchMap(() => regenerateUnitData(sdk)(businessEntityInfo.unitId)),
+          switchMap(() =>
+            sdk.SearchUnitProducts({
+              filter: {
+                unitId: { eq: businessEntityInfo.unitId },
+                dirty: { ne: true },
+              },
+              limit: 1,
+            }),
+          ),
+          switchMap(products =>
+            products?.items?.length
+              ? regenerateUnitData(sdk)(businessEntityInfo.unitId)
+              : of(true),
+          ),
         ),
       ),
     );
