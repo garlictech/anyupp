@@ -745,6 +745,10 @@
       "cancel": "Mégsem",
       "hint": "Borravaló összege (Ft)"
     },
+    "errors": {
+      "minAmount": "A borravaló összege minimum {{0}} Ft",
+      "validNumber": "Írj be egy összeget..."
+    },
     "success": "Köszönjük, az értékelésed és a borravalót megkaptuk!"
   }
 }

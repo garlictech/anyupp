@@ -8,10 +8,7 @@ import {
 } from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { sendRkeeperOrder } from '@bgap/rkeeper-api';
-import {
-  getUnitIsNotAcceptingOrdersError,
-  throwIfEmptyValue,
-} from '@bgap/shared/utils';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
 import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
 import { tap, map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
@@ -26,6 +23,7 @@ import { addPackagingFeeToOrder } from './handle-packaging-fee';
 import { hasSimplifiedOrder } from './order-resolvers';
 import { addServiceFeeToOrder } from './handle-service-fee';
 import * as E from 'fp-ts/lib/Either';
+import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
 
 const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
@@ -217,7 +215,7 @@ export interface CalculationState_UnitAdded {
 export const validateCart =
   (userId: string) =>
   (
-    cartInput: CrudApi.Cart | undefined,
+    cartInput: CrudApi.Cart | undefined | null,
   ): E.Either<string, CalculationState_WithCart> =>
     pipe(
       cartInput,
@@ -234,30 +232,31 @@ export const validateCart =
       })),
     );
 
-export const validateUnitPolicies = (
-  inputState: CalculationState_WithCart,
-  unit: CrudApi.Unit | undefined,
-): E.Either<string, CalculationState_UnitAdded> =>
-  pipe(
-    inputState,
-    E.fromPredicate(
-      () => !!unit,
-      () =>
-        `Unit ${inputState.cart.unitId} in the cart cannot be fetched from the database.`,
-    ),
-    E.map(state => ({
-      ...state,
-      unit: unit as CrudApi.Unit,
-    })),
-    E.chain(
+export const validateUnitPolicies =
+  (inputState: CalculationState_WithCart) =>
+  (
+    unit: CrudApi.Unit | undefined | null,
+  ): E.Either<string, CalculationState_UnitAdded> =>
+    pipe(
+      inputState,
       E.fromPredicate(
-        state => !state.unit.isAcceptingOrders,
-        () => `Unit does not acept orders`,
+        () => !!unit,
+        () =>
+          `Unit ${inputState.cart.unitId} in the cart cannot be fetched from the database.`,
       ),
-    ),
-    //E.chain(E.fromPredicate(() => cart.paymentMode && unit.orderPaymentPolicy !== CrudApi.OrderPaymentPolicy.afterpay,
-    //'Payment mode is not provided in the cart, and the unit does not accept afterpay.')
-  );
+      E.map(state => ({
+        ...state,
+        unit: unit as CrudApi.Unit,
+      })),
+      E.chain(
+        E.fromPredicate(
+          state => !state.unit.isAcceptingOrders,
+          () => `Unit does not acept orders`,
+        ),
+      ),
+      //E.chain(E.fromPredicate(() => cart.paymentMode && unit.orderPaymentPolicy !== CrudApi.OrderPaymentPolicy.afterpay,
+      //'Payment mode is not provided in the cart, and the unit does not accept afterpay.')
+    );
 
 export const createOrderFromCart =
   (cartId: string) =>
@@ -270,17 +269,10 @@ export const createOrderFromCart =
     // split a long stream to help the type checker
     const calc1 = getCart(cartId)(deps).pipe(
       map(validateCart(deps.userId)),
-      switchMap(cart =>
-        // create catchError and custom error (Covered by #744)
-        getUnit(cart.unitId)(deps).pipe(
-          map(unit => ({ cart, unit })),
-          switchMap(props =>
-            props?.unit?.isAcceptingOrders
-              ? of(props)
-              : throwError(getUnitIsNotAcceptingOrdersError()),
-          ),
-        ),
+      OE.chain(state =>
+        getUnit(state.cart.unitId)(deps).pipe(map(validateUnitPolicies(state))),
       ),
+      x => x,
       switchMap(props =>
         props?.unit && props?.cart
           ? of(props as { unit: CrudApi.Unit; cart: CrudApi.Cart })

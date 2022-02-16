@@ -128,60 +128,147 @@ class _TippingWidgetState extends State<TippingWidget> {
 
   _showEnterAmountDialog() {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.all(16.0),
-          title: Text(transEx(context, 'tipping.dialog.title')),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                transEx(context, 'tipping.dialog.description'),
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: TipDialogWidget(
+              amountController: _otherAmountController,
+              minOtherAmount: widget.tipPolicy.minOtherAmount ?? 0,
+              onSelected: (type, amount) {
+                setState(() {
+                  _selectedTipAmount = amount;
+                  _selectedTipPercent = null;
+                  widget.onSelected(TipType.amount, amount);
+                });
+              },
+            ),
+          );
+        });
+  }
+}
+
+class TipDialogWidget extends StatefulWidget {
+  final TextEditingController amountController;
+  final double minOtherAmount;
+  final OnTipSelected onSelected;
+  const TipDialogWidget({
+    Key? key,
+    required this.amountController,
+    required this.minOtherAmount,
+    required this.onSelected,
+  }) : super(key: key);
+
+  @override
+  _TipDialogWidgetState createState() => _TipDialogWidgetState();
+}
+
+class _TipDialogWidgetState extends State<TipDialogWidget> {
+  String? _errorKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            transEx(context, 'tipping.dialog.title'),
+            style: Fonts.satoshi(
+              fontSize: 24.0,
+              color: theme.secondary,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Text(
+              transEx(context, 'tipping.dialog.description'),
+            ),
+          ),
+          SizedBox(
+            height: 16.0,
+          ),
+          FormTextFieldWidget(
+            labelKey: 'tipping.dialog.hint',
+            controller: widget.amountController,
+            keyboardType: TextInputType.number,
+            mask: MaskTextInputFormatter(
+              mask: '#####',
+              filter: {"#": RegExp('[0-9]')},
+            ),
+            onChanged: (value) {
+              double? amount = double.tryParse(widget.amountController.text);
+              if (amount == null) {
+                setState(() {
+                  _errorKey = 'tipping.errors.validNumber';
+                });
+                return;
+              }
+              if (_errorKey != null) {
+                setState(() {
+                  _errorKey = null;
+                });
+              }
+            },
+          ),
+          if (_errorKey != null)
+            Container(
+              padding: EdgeInsets.only(
+                top: 8.0,
+                bottom: 8.0,
               ),
-              SizedBox(
-                height: 16.0,
-              ),
-              FormTextFieldWidget(
-                labelKey: 'tipping.dialog.hint',
-                controller: _otherAmountController,
-                keyboardType: TextInputType.number,
-                mask: MaskTextInputFormatter(
-                  mask: '#####',
-                  filter: {"#": RegExp('[0-9]')},
+              child: Text(
+                trans(_errorKey!, [widget.minOtherAmount]),
+                style: Fonts.satoshi(
+                  color: errorColor,
                 ),
               ),
-            ],
-          ),
-          actionsAlignment: MainAxisAlignment.spaceEvenly,
-          actions: [
-            TextButton(
-              child: Text(transEx(context, 'tipping.dialog.cancel')),
-              onPressed: () {
-                widget.onSelected(null, null);
-                Navigator.pop(context);
-              },
             ),
-            TextButton(
-              child: Text(transEx(context, 'tipping.dialog.ok')),
-              onPressed: () async {
-                print('VALUE=${_otherAmountController.text}');
-                try {
-                  double amount = double.parse(_otherAmountController.text);
-                  setState(() {
-                    _selectedTipAmount = amount;
-                    _selectedTipPercent = null;
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                child: Text(transEx(context, 'tipping.dialog.cancel')),
+                onPressed: () {
+                  widget.onSelected(null, null);
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: Text(transEx(context, 'tipping.dialog.ok')),
+                onPressed: () async {
+                  print('VALUE=${widget.amountController.text}');
+                  try {
+                    _errorKey = null;
+                    double? amount =
+                        double.tryParse(widget.amountController.text);
+                    print('amount=${widget.amountController.text}');
+                    if (amount == null) {
+                      setState(() {
+                        _errorKey = 'tipping.errors.validNumber';
+                      });
+                      return;
+                    }
+                    if (amount < 175.0 ||
+                        (widget.minOtherAmount >= 175.0 &&
+                            amount < widget.minOtherAmount)) {
+                      setState(() {
+                        _errorKey = 'tipping.errors.minAmount';
+                      });
+                      return;
+                    }
                     widget.onSelected(TipType.amount, amount);
-                  });
-                } on Exception {
-                  // nothing to do
-                }
-                Nav.pop();
-              },
-            ),
-          ],
-        );
-      },
+                  } on Exception {
+                    // nothing to do
+                  }
+                  Nav.pop();
+                },
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

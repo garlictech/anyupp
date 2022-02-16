@@ -51,6 +51,7 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
           backgroundColor: theme.secondary0,
           leading: BackButtonWidget(
             showBorder: false,
+            color: theme.secondary,
           ),
         ),
         body: BlocBuilder<RatingBloc, RatingState>(
