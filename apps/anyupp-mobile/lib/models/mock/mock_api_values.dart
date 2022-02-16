@@ -80,11 +80,7 @@ class Mock {
 
   static ServiceFeePolicy? mockServiceFeePolicy() {
     return _enabled
-        ? ServiceFeePolicy(
-            type: ServiceFeeType.included,
-            percentage: 5.0,
-            taxPercentage: 0.0,
-          )
+        ? ServiceFeePolicy(type: ServiceFeeType.included, percentage: 5.0)
         : null;
   }
 

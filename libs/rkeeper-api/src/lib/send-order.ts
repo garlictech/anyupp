@@ -1,6 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { pipe } from 'fp-ts/lib/function';
-import axios, { AxiosStatic } from 'axios';
+import { AxiosStatic } from 'axios';
 import { Method } from 'axios';
 import { defer, from } from 'rxjs';
 import * as R from 'ramda';
@@ -9,11 +9,6 @@ export interface SendRkeeperOrderDeps {
   currentTime: () => Date;
   axiosInstance: AxiosStatic;
 }
-
-const defaultDeps: SendRkeeperOrderDeps = {
-  currentTime: () => new Date(),
-  axiosInstance: axios,
-};
 
 const processConfigSet = (configSets: CrudApi.OrderItemConfigSetInput[]) =>
   pipe(
@@ -27,7 +22,7 @@ const processConfigSet = (configSets: CrudApi.OrderItemConfigSetInput[]) =>
   );
 
 export const sendRkeeperOrder =
-  (deps: SendRkeeperOrderDeps = defaultDeps) =>
+  (deps: SendRkeeperOrderDeps) =>
   (unit: CrudApi.Unit, orderInput: CrudApi.CreateOrderInput) =>
     pipe(
       orderInput.items.map(item =>
@@ -48,9 +43,11 @@ export const sendRkeeperOrder =
         remoteId: unit.externalId,
         order_type: 1,
         pay_type:
-          orderInput.paymentMode.method === CrudApi.PaymentMethod.cash ? 0 : 1,
+          orderInput.paymentMode?.method === CrudApi.PaymentMethod.card ? 1 : 0,
         pay_online_type:
-          orderInput.paymentMode.method === CrudApi.PaymentMethod.cash ? 0 : 1,
+          orderInput.paymentMode?.method === CrudApi.PaymentMethod.inapp
+            ? 1
+            : 0,
         delivery_time: deps.currentTime().toISOString().split('.')[0],
         client: {
           phone: unit.phone,

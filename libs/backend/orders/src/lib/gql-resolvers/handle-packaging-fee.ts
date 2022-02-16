@@ -1,21 +1,29 @@
+import * as A from 'fp-ts/lib/Array';
+import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
+import * as E from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/function';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { Observable, from, combineLatest } from 'rxjs';
+import { from, forkJoin } from 'rxjs';
 import * as R from 'ramda';
 import { concatMap, map, toArray } from 'rxjs/operators';
-import { throwIfEmptyValue } from '@bgap/shared/utils';
 import { calculatePackagingFeeOfOrder } from '../packaging-utils';
 import { getGeneratedProduct } from './utils';
+import { sequenceS } from 'fp-ts/lib/Apply';
 
 const getNetPackagingFeeOfOrderItem =
   (sdk: CrudApi.CrudSdk) =>
-  (item: CrudApi.OrderItemInput): Observable<number> =>
+  (item: CrudApi.OrderItemInput): OE.ObservableEither<string, number> =>
     pipe(
       getGeneratedProduct(sdk)(item.productId),
-      map(genProd => genProd?.variants),
-      map(R.find(variant => variant.id === item.variantId)),
-      throwIfEmptyValue(`Variant not found: ${item.variantId}`),
-      map(variant => variant.netPackagingFee || 0),
+      OE.map(genProd => genProd?.variants),
+      OE.map(R.find(variant => variant.id === item.variantId)),
+      OE.chain(
+        OE.fromPredicate(
+          R.complement(R.isNil),
+          () => `Variant not found: ${item.variantId}`,
+        ),
+      ),
+      OE.map(variant => variant?.netPackagingFee || 0),
     );
 
 const getNetPackagingFeeOfConfigComponent =
@@ -24,10 +32,10 @@ const getNetPackagingFeeOfConfigComponent =
     item: CrudApi.OrderItemInput,
     productSetId: string,
     productComponentId: string,
-  ): Observable<number> =>
+  ): OE.ObservableEither<string, number> =>
     pipe(
       getGeneratedProduct(sdk)(item.productId),
-      map(genProd =>
+      OE.map(genProd =>
         pipe(
           genProd?.configSets || [],
           R.find(confSet => confSet?.productSetId === productSetId),
@@ -37,15 +45,20 @@ const getNetPackagingFeeOfConfigComponent =
           ),
         ),
       ),
-      throwIfEmptyValue(`Config set not found. productId: ${item.productId}`),
-      map(confSet => confSet.netPackagingFee || 0),
+      OE.chain(
+        OE.fromPredicate(
+          R.complement(R.isNil),
+          () => `Config set not found: ${item.productId}`,
+        ),
+      ),
+      OE.map(confSet => confSet.netPackagingFee || 0),
     );
 
 const getNetPackagingFeeOfConfigSets =
   (sdk: CrudApi.CrudSdk) =>
   (
     item: CrudApi.OrderItemInput,
-  ): Observable<CrudApi.OrderItemConfigSet[] | undefined> =>
+  ): OE.ObservableEither<string, CrudApi.OrderItemConfigSet[] | undefined> =>
     pipe(
       item.configSets || [],
       x => from(x),
@@ -59,21 +72,23 @@ const getNetPackagingFeeOfConfigSets =
               configSet.productSetId,
               component.productComponentId,
             ).pipe(
-              map(netPackagingFee => ({
+              OE.map(netPackagingFee => ({
                 ...component,
                 netPackagingFee,
               })),
             ),
           ),
           toArray(),
-          map(items => ({
+          map(A.array.sequence(E.either)),
+          OE.map(items => ({
             ...configSet,
             items,
           })),
         ),
       ),
       toArray(),
-      map(sets => (R.isEmpty(sets) ? undefined : sets)),
+      map(A.array.sequence(E.either)),
+      OE.map(sets => (R.isEmpty(sets) ? undefined : sets)),
     );
 
 export const addPackagingFeeToOrder =
@@ -82,17 +97,22 @@ export const addPackagingFeeToOrder =
     order: CrudApi.CreateOrderInput,
     currency: string,
     taxPercentage?: number | null,
-  ): Observable<CrudApi.CreateOrderInput> =>
+  ): OE.ObservableEither<string, CrudApi.CreateOrderInput> =>
     pipe(
       order.items,
       x => from(x),
       concatMap(item =>
         pipe(
-          combineLatest([
+          forkJoin([
             getNetPackagingFeeOfOrderItem(sdk)(item),
             getNetPackagingFeeOfConfigSets(sdk)(item),
           ]),
           map(([netPackagingFee, configSets]) => ({
+            netPackagingFee,
+            configSets,
+          })),
+          map(sequenceS(E.either)),
+          OE.map(({ netPackagingFee, configSets }) => ({
             ...item,
             netPackagingFee,
             configSets,
@@ -100,7 +120,8 @@ export const addPackagingFeeToOrder =
         ),
       ),
       toArray(),
-      map(items => ({
+      map(A.array.sequence(E.either)),
+      OE.map(items => ({
         ...order,
         items,
         packagingSum: {
@@ -109,7 +130,7 @@ export const addPackagingFeeToOrder =
           taxPercentage: taxPercentage || 0,
         },
       })),
-      map(order => ({
+      OE.map(order => ({
         ...order,
         sumPriceShown: {
           ...order.sumPriceShown,

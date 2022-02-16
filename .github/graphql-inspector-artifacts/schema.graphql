@@ -916,6 +916,7 @@ type Cart @aws_iam @aws_cognito_user_pools {
   paymentMode: PaymentMode
   items: [OrderItem!]!
   servingMode: ServingMode
+  orderMode: OrderMode
   orderPolicy: OrderPolicy
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -2690,6 +2691,7 @@ input ModelCartFilterInput {
   unitId: ModelIDInput
   takeAway: ModelBooleanInput
   servingMode: ModelServingModeInput
+  orderMode: ModelOrderModeInput
   orderPolicy: ModelOrderPolicyInput
   and: [ModelCartFilterInput]
   or: [ModelCartFilterInput]
@@ -2705,6 +2707,7 @@ input CreateCartInput {
   paymentMode: PaymentModeInput
   items: [OrderItemInput!]!
   servingMode: ServingMode
+  orderMode: OrderMode
   orderPolicy: OrderPolicy
 }
 
@@ -2717,6 +2720,7 @@ input UpdateCartInput {
   paymentMode: PaymentModeInput
   items: [OrderItemInput!]
   servingMode: ServingMode
+  orderMode: OrderMode
   orderPolicy: OrderPolicy
 }
 
@@ -2729,6 +2733,7 @@ input ModelCartConditionInput {
   unitId: ModelIDInput
   takeAway: ModelBooleanInput
   servingMode: ModelServingModeInput
+  orderMode: ModelOrderModeInput
   orderPolicy: ModelOrderPolicyInput
   and: [ModelCartConditionInput]
   or: [ModelCartConditionInput]
