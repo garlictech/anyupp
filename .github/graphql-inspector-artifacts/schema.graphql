@@ -126,13 +126,11 @@ enum ServiceFeeType {
 type ServiceFeePolicy @aws_api_key @aws_iam @aws_cognito_user_pools {
   type: ServiceFeeType!
   percentage: Float!
-  taxPercentage: Float!
 }
 
 input ServiceFeePolicyInput {
   type: ServiceFeeType!
   percentage: Float!
-  taxPercentage: Float!
 }
 
 type GroupProduct @aws_cognito_user_pools @aws_iam {

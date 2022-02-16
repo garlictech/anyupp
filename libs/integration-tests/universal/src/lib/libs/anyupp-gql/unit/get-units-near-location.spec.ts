@@ -45,7 +45,6 @@ const unit_01 = {
   serviceFeePolicy: {
     type: CrudApi.ServiceFeeType.applicable,
     percentage: 10,
-    taxPercentage: 20,
   },
   ratingPolicies: [
     {

@@ -380,7 +380,6 @@ Object {
     ],
     "serviceFeePolicy": Object {
       "percentage": 10,
-      "taxPercentage": 10,
       "type": "applicable",
     },
     "soldOutVisibilityPolicy": null,
@@ -513,7 +512,6 @@ Object {
     ],
     "serviceFeePolicy": Object {
       "percentage": 10,
-      "taxPercentage": 10,
       "type": "applicable",
     },
     "soldOutVisibilityPolicy": null,

@@ -82,7 +82,6 @@ Object {
   ],
   "serviceFeePolicy": Object {
     "percentage": 10,
-    "taxPercentage": 10,
     "type": "applicable",
   },
   "soldOutVisibilityPolicy": null,
@@ -192,7 +191,6 @@ Object {
   ],
   "serviceFeePolicy": Object {
     "percentage": 10,
-    "taxPercentage": 20,
     "type": "applicable",
   },
   "soldOutVisibilityPolicy": "faded",
@@ -430,7 +428,6 @@ Object {
   ],
   "serviceFeePolicy": Object {
     "percentage": 10,
-    "taxPercentage": 10,
     "type": "applicable",
   },
   "soldOutVisibilityPolicy": null,
@@ -540,7 +537,6 @@ Object {
   ],
   "serviceFeePolicy": Object {
     "percentage": 10,
-    "taxPercentage": 20,
     "type": "applicable",
   },
   "soldOutVisibilityPolicy": "faded",
