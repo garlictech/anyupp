@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../mock/mock_data_faker.dart';
 import '../unit/mock/mock_auth_provider.dart';
 import 'mock/mock_theme_bloc.dart';
 import 'utils/boilerplate_app.dart';
@@ -56,7 +57,7 @@ void main() {
         await tester.pumpWidget(
           _createBoilerPlateApp(
               child: RatingAndTippingScreen(
-            orderId: 'DUMMY_ORDER_ID',
+            transaction: MockGenerator.generateTransaction(),
             tipPolicy: TipPolicy(
               title: _getText('Tip test title'),
               description: _getText('Tip test description'),

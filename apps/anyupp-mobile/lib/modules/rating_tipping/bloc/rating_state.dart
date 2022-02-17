@@ -22,3 +22,9 @@ class RatingFailed extends RatingState {
   @override
   List<Object> get props => [code, message];
 }
+
+class TipFailed extends RatingState {
+  final String code;
+  final String message;
+  TipFailed(this.code, this.message);
+}

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/core.dart';
@@ -21,6 +20,8 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
     on<RateOrder>(_onRateOrder);
     on<TipOrder>(_onTipOrder);
     on<ResetRating>((event, emit) => emit(RatingInitial()));
+    on<InvalidTipAmount>(
+        (event, emit) => emit(TipFailed(event.title, event.description)));
   }
 
   FutureOr<void> _onRateAndTipOrder(

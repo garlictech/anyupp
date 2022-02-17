@@ -46,6 +46,7 @@ query ListFavoriteProducts(
             hu
           }
           netPackagingFee
+          soldOut
         }
         configSets {
           type

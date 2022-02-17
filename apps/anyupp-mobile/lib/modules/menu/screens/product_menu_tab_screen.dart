@@ -142,12 +142,19 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
             // if (mode != null && !list[position].supportedServingModes.contains(mode)) {
             //   return Container();
             // }
+
             bool isAvailableInThisServingMode = mode != null &&
                 list[position].supportedServingModes.contains(mode);
             bool isSoldOut = list[position].isSoldOut;
             bool isHidden = isSoldOut &&
                 unit.soldOutVisibilityPolicy ==
                     SoldOutVisibilityPolicy.invisible;
+            ProductItemDisplayState displayState = ProductItemDisplayState.NORMAL;
+            if (isSoldOut) {
+              displayState = ProductItemDisplayState.SOLDOUT;
+            } else if (!isAvailableInThisServingMode) {
+              displayState = ProductItemDisplayState.DISABLED;
+            }
 
             if (isHidden) {
               return Container();
@@ -170,11 +177,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
                 verticalOffset: 50.0,
                 child: FadeInAnimation(
                   child: ProductMenuItem(
-                    displayState: isAvailableInThisServingMode
-                        ? isSoldOut
-                            ? ProductItemDisplayState.SOLDOUT
-                            : ProductItemDisplayState.NORMAL
-                        : ProductItemDisplayState.DISABLED,
+                    displayState: displayState,
                     unit: unit,
                     item: list[position],
                     servingMode: mode ?? ServingMode.inPlace,

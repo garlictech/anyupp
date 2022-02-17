@@ -332,10 +332,14 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
             width: double.infinity,
             margin: EdgeInsets.symmetric(horizontal: 16.0),
             child: ElevatedButton(
-              onPressed: () => Nav.to(RatingAndTippingScreen(
-                orderId: order.id,
-                ratingPolicy: _unit.ratingPolicies![0],
-              )),
+              onPressed: () {
+                if (order.transaction != null) {
+                  Nav.to(RatingAndTippingScreen(
+                    ratingPolicy: _unit.ratingPolicies![0],
+                    transaction: order.transaction!,
+                  ));
+                }
+              },
               style: ElevatedButton.styleFrom(
                 primary: lighten(theme.button, 76),
                 shape: RoundedRectangleBorder(
@@ -354,6 +358,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
             ),
           ),
         if (_unit.tipPolicy != null &&
+            _unit.tipPolicy?.isNotEmpty == true &&
             order.tip == null &&
             order.paymentMode.method == PaymentMethod.inapp &&
             order.transaction?.status == PaymentStatus.success)
@@ -366,10 +371,14 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
               top: 12.0,
             ),
             child: ElevatedButton(
-              onPressed: () => Nav.to(RatingAndTippingScreen(
-                orderId: order.id,
-                tipPolicy: _unit.tipPolicy,
-              )),
+              onPressed: () {
+                if (order.transaction != null) {
+                  Nav.to(RatingAndTippingScreen(
+                    transaction: order.transaction!,
+                    tipPolicy: _unit.tipPolicy,
+                  ));
+                }
+              },
               style: ElevatedButton.styleFrom(
                 primary: theme.button,
                 shape: RoundedRectangleBorder(

@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 class ServiceFeePolicy {
   final ServiceFeeType type;
   final double percentage;
-  final double taxPercentage;
   ServiceFeePolicy({
     required this.type,
     required this.percentage,
@@ -27,7 +26,6 @@ class ServiceFeePolicy {
     return {
       'type': enumToString(type),
       'percentage': percentage,
-      'taxPercentage': taxPercentage,
     };
   }
 
@@ -51,6 +49,5 @@ class ServiceFeePolicy {
   }
 
   @override
-  int get hashCode =>
-      type.hashCode ^ percentage.hashCode ^ taxPercentage.hashCode;
+  int get hashCode => type.hashCode ^ percentage.hashCode;
 }

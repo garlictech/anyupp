@@ -5,10 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SuccessTipWidget extends StatelessWidget {
-  const SuccessTipWidget({Key? key}) : super(key: key);
+  final bool tipPolicy;
+  final bool ratingPolcicy;
+  const SuccessTipWidget(
+      {required this.tipPolicy, required this.ratingPolcicy, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String successText = trans(context, 'tipping.successRating');
+    if(tipPolicy && ratingPolcicy){
+      successText = trans(context, 'tipping.successTipAndRating');
+    }
+    if(tipPolicy && !ratingPolcicy){
+      successText = trans(context, 'tipping.successTip');
+    }
     return InkWell(
       onTap: () => Nav.pop(),
       child: Container(
@@ -26,7 +37,7 @@ class SuccessTipWidget extends StatelessWidget {
                 height: 40.0,
               ),
               Text(
-                trans(context, 'tipping.success'),
+                successText,
                 textAlign: TextAlign.center,
                 style: Fonts.satoshi(
                   fontSize: 18.0,

@@ -82,7 +82,14 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
               .product
               .supportedServingModes
               .contains(widget.mode);
-          bool isSoldOut = list[position].product.soldOut;
+          bool isSoldOut = list[position].product.isSoldOut;
+          ProductItemDisplayState displayState = ProductItemDisplayState.NORMAL;
+            if (isSoldOut) {
+              displayState = ProductItemDisplayState.SOLDOUT;
+            } else if (!isAvailableInThisServingMode) {
+              displayState = ProductItemDisplayState.DISABLED;
+            }
+          
           return AnimationConfiguration.staggeredList(
             position: position,
             duration: const Duration(milliseconds: 200),
@@ -90,11 +97,7 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
               verticalOffset: 50.0,
               child: FadeInAnimation(
                 child: ProductMenuItem(
-                  displayState: isAvailableInThisServingMode
-                      ? isSoldOut
-                          ? ProductItemDisplayState.SOLDOUT
-                          : ProductItemDisplayState.NORMAL
-                      : ProductItemDisplayState.DISABLED,
+                  displayState: displayState,
                   unit: unit,
                   item: list[position].product,
                   servingMode: widget.mode,
