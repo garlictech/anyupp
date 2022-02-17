@@ -5021,7 +5021,7 @@
     tslib "~2.3.0"
     value-or-promise "1.0.11"
 
-"@graphql-typed-document-node/core@^3.0.0", "@graphql-typed-document-node/core@^3.1.0":
+"@graphql-typed-document-node/core@^3.0.0":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.1.1.tgz#076d78ce99822258cf813ecc1e7fa460fa74d052"
   integrity sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==
@@ -8338,14 +8338,11 @@ anymatch@^3.0.3, anymatch@^3.1.0, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apollo-angular@2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/apollo-angular/-/apollo-angular-2.6.0.tgz#3c8d5732c91aeabe6566fda8db0155a6a1ddca17"
-  integrity sha512-PxlOlYbJB39mKAIMX24twrrM+1qm+o7OIdvtiJJB4MSlDFdlKR6yCrZdxpvoHFRoK1vWl23g4GiLrf8bNyJuyQ==
+apollo-angular@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/apollo-angular/-/apollo-angular-3.0.0.tgz#3c7be4ca0bda99be2be171cd3f950bfd956b6b8b"
+  integrity sha512-rE6O7MifeS5UJj1eVBNNx85mPUr+31X/Ut2g0D3m2g8EbFoa2+CJCpag5g+lHnt0Eqmz5cD1lO5zC+00yT7XTw==
   dependencies:
-    "@graphql-typed-document-node/core" "^3.1.0"
-    extract-files "^9.0.0"
-    semver "^7.0.0"
     tslib "^2.0.0"
 
 apollo-cache-control@^0.14.0:

@@ -68,7 +68,7 @@
     "@types/luxon": "2.0.9",
     "@types/qrcode": "1.4.2",
     "@types/uuid": "8.3.4",
-    "apollo-angular": "2.6.0",
+    "apollo-angular": "3.0.0",
     "apollo-client": "2.6.10",
     "apollo-link-error": "1.1.13",
     "apollo-server-express": "3.6.3",
