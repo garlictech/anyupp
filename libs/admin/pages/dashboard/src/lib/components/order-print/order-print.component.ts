@@ -144,8 +144,8 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     const customerInfoOrder = this.orders.find(
       o =>
         (o.transaction?.invoiceId || o.transaction?.receiptId) &&
-        (o.paymentMode.type === CrudApi.PaymentType.card ||
-          o.paymentMode.type === CrudApi.PaymentType.cash),
+        (o.paymentMode?.type === CrudApi.PaymentType.card ||
+          o.paymentMode?.type === CrudApi.PaymentType.cash),
     );
     if (customerInfoOrder) {
       this.receiptType = customerInfoOrder.transaction?.invoiceId

@@ -129,8 +129,8 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
     this.manualPaymentOrders = [
       ...this._orders.filter(
         (o: CrudApi.Order): boolean =>
-          (o.paymentMode.method === CrudApi.PaymentMethod.card ||
-            o.paymentMode.method === CrudApi.PaymentMethod.cash) &&
+          (o.paymentMode?.method === CrudApi.PaymentMethod.card ||
+            o.paymentMode?.method === CrudApi.PaymentMethod.cash) &&
           o.transaction?.status !== CrudApi.PaymentStatus.success &&
           o.transaction?.status !== CrudApi.PaymentStatus.failed &&
           CrudApi.currentStatus(o.statusLog) !== CrudApi.OrderStatus.rejected,

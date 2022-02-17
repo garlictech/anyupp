@@ -52,9 +52,9 @@ export class FormUnitServiceFeeComponent implements OnInit {
 
           if (newTypeValue === CrudApi.ServiceFeeType.nofee) {
             this.serviceFeeFormGroup?.get('percentage')?.patchValue(0);
-            this.serviceFeeFormGroup?.get('taxPercentage')?.patchValue(0);
           }
         } else {
+          this.serviceFeeFormGroup?.get('percentage')?.patchValue('');
           this.serviceFeeFormGroup?.disable();
         }
 

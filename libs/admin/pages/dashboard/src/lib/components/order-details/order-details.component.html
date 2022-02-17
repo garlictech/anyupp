@@ -140,7 +140,7 @@
     ></nb-badge>
   </div>
   <div class="col-1 text-end p-2 m-auto font-larger caption-2">
-    {{ order.paymentMode.method }}
+    {{ order.paymentMode?.method }}
   </div>
   <!--  *ngIf="currentOrderStatus === OrderStatus.NONE"-->
   <!--div class="col-6 m-auto">

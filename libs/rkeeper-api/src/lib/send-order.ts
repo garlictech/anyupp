@@ -48,9 +48,9 @@ export const sendRkeeperOrder =
         remoteId: unit.externalId,
         order_type: 1,
         pay_type:
-          orderInput.paymentMode.method === CrudApi.PaymentMethod.cash ? 0 : 1,
+          orderInput.paymentMode?.method === CrudApi.PaymentMethod.cash ? 0 : 1,
         pay_online_type:
-          orderInput.paymentMode.method === CrudApi.PaymentMethod.cash ? 0 : 1,
+          orderInput.paymentMode?.method === CrudApi.PaymentMethod.cash ? 0 : 1,
         delivery_time: deps.currentTime().toISOString().split('.')[0],
         client: {
           phone: unit.phone,

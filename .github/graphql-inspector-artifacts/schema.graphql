@@ -54,8 +54,8 @@ type ChainStyleColors @aws_cognito_user_pools @aws_api_key @aws_iam {
   indicator: String @deprecated(reason: "Use `primary`.")
   textLight: String @deprecated(reason: "Unused.")
   textDark: String @deprecated(reason: "Use `secondary`.")
-  primary: String
-  secondary: String
+  primary: String @deprecated(reason: "Unused.")
+  secondary: String @deprecated(reason: "Unused.")
   button: String
   buttonText: String
   icon: String
