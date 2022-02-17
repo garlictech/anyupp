@@ -209,6 +209,11 @@ const activeWaitingStripeOrderInput: CrudApi.CreateOrderInput = {
   ...waitingTransaction,
 };
 
+const activeWaitingAfterPayOrderInput: CrudApi.CreateOrderInput = {
+  ...activeOrderInputBase,
+  ...waitingTransaction,
+};
+
 const activeWaitingPlacedCardOrderInput: CrudApi.CreateOrderInput = {
   ...buildOrderStatusHistory(
     {
@@ -439,6 +444,7 @@ export const orderFixture = {
   activeWaitingCashOrderInput,
   activeWaitingStripeOrderInput,
   activeWaitingPlacedCardOrderInput,
+  activeWaitingAfterPayOrderInput,
   activeSuccessPlacedCashOrderInput,
   activeSuccessCardOrderInput,
   activeSuccessCashOrderInput,

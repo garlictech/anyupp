@@ -22,7 +22,7 @@ export const calculatePaymentMethodSums = (
 
   paymentMethods.forEach(method => {
     paymentMethodSums[method] = orders
-      .filter(o => o.paymentMode.method === method)
+      .filter(o => o.paymentMode?.method === method)
       .reduce((prev, cur) => prev + cur.sumPriceShown.priceSum, 0);
   });
 
@@ -126,9 +126,12 @@ export const dailySalesPerPaymentMethodOrderAmounts = (
     [CrudApi.PaymentMethod.inapp]: 0,
   };
 
-  orders.forEach(o => {
-    amounts[o.paymentMode.method] += o.sumPriceShown.priceSum;
-  });
+  orders
+    .filter(o => !!o.paymentMode)
+    .forEach(o => {
+      amounts[(<CrudApi.PaymentMode>o.paymentMode).method] +=
+        o.sumPriceShown.priceSum;
+    });
 
   return amounts;
 };

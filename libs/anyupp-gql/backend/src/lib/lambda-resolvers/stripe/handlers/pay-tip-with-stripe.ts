@@ -23,7 +23,7 @@ export const payTipWithStripe =
       throw Error('Order not found with id=' + orderId);
     }
 
-    const paymentMethod = order?.paymentMode.method;
+    const paymentMethod = order?.paymentMode?.method;
     const paymentMethodId = order?.transaction?.paymentMethodId;
 
     if (paymentMethod == CrudApi.PaymentMethod.inapp && !paymentMethodId) {

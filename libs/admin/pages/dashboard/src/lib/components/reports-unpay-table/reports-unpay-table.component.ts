@@ -35,8 +35,8 @@ export class ReportsUnpayTableComponent implements OnInit, OnDestroy {
       this.orders$
         .pipe(untilDestroyed(this))
         .subscribe((orders: CrudApi.Order[]): void => {
-          this.paymentMethods = [
-            ...new Set(orders.map(o => o.paymentMode.method)),
+          this.paymentMethods = <CrudApi.PaymentMethod[]>[
+            ...new Set(orders.map(o => o.paymentMode?.method).filter(m => !!m)),
           ];
 
           this.unpayCategoryStats = unpayCategoryTableData(

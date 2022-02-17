@@ -539,12 +539,18 @@ type Order
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
   tipTransaction: Transaction @connection(fields: ["tipTransactionId"])
+  startPreparing: AWSDateTime
 }
 
 enum OrderPolicy {
   placeOnly
   placeWithPaymentType
   full
+}
+
+enum OrderPaymentPolicy {
+  prepay
+  afterpay
 }
 
 enum PaymentStatus {
@@ -791,6 +797,7 @@ type Unit
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicies: [RatingPolicy!]
@@ -956,6 +963,7 @@ type Cart
   items: [OrderItem!]!
   servingMode: ServingMode # Make the Cart.servingMode REQUIRED in the next release (handled in #1835 issue)
   orderPolicy: OrderPolicy
+  startPreparing: AWSDateTime
 }
 
 type Transaction
@@ -1149,6 +1157,7 @@ input CreateUnitInput {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicies: [RatingPolicyInput!]
@@ -1181,6 +1190,7 @@ input UpdateUnitInput {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicies: [RatingPolicyInput!]
