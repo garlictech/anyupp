@@ -32,7 +32,7 @@ const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 
 const toOrderInputFormat = ({
   userId,
-  unitId,
+  unit,
   orderNum,
   paymentMode,
   items,
@@ -41,7 +41,7 @@ const toOrderInputFormat = ({
   servingMode,
 }: {
   userId: string;
-  unitId: string;
+  unit: CrudApi.Unit;
   orderNum: string;
   paymentMode: CrudApi.PaymentMode;
   items: CrudApi.OrderItemInput[];
@@ -59,10 +59,15 @@ const toOrderInputFormat = ({
     statusLog: createStatusLog(userId),
     sumPriceShown: sumPrice,
     place,
-    unitId,
+    unitId: unit.id,
     transactionStatus: PaymentStatus.waiting_for_payment,
     orderMode,
     servingMode,
+    orderPolicy: unit.orderPolicy,
+    serviceFeePolicy: unit.serviceFeePolicy,
+    ratingPolicies: unit.ratingPolicies,
+    tipPolicy: unit.tipPolicy,
+    soldOutVisibilityPolicy: unit.soldOutVisibilityPolicy,
   }));
 };
 
@@ -267,7 +272,7 @@ export const createOrderFromCart =
         ...props,
         orderInput: toOrderInputFormat({
           userId: deps.userId,
-          unitId: props.cart.unitId,
+          unit: props.unit,
           orderNum: props.orderNum,
           paymentMode: props.cart.paymentMode as CrudApi.PaymentMode,
           items: props.items,

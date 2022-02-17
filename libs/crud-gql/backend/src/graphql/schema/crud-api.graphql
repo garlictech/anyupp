@@ -539,6 +539,12 @@ type Order
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
   tipTransaction: Transaction @connection(fields: ["tipTransactionId"])
+  # The policies that were in action when the order was created.
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicies: [RatingPolicy!]
+  tipPolicy: TipPolicy
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
 
 enum OrderPolicy {
