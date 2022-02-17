@@ -53,3 +53,11 @@ class TipOrder extends RatingEvent {
   @override
   List<Object> get props => [orderId];
 }
+
+class InvalidTipAmount extends RatingEvent {
+  final String title;
+  final String description;
+  const InvalidTipAmount(this.title, this.description);
+  @override
+  List<Object> get props => [title, description];
+}

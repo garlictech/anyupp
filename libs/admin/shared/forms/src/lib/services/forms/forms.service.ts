@@ -147,6 +147,5 @@ export class FormsService {
     this._formBuilder.group({
       type: [{ value: '', disabled: true }, Validators.required],
       percentage: [{ value: '', disabled: true }, Validators.required],
-      taxPercentage: [{ value: '', disabled: true }, Validators.required],
     });
 }

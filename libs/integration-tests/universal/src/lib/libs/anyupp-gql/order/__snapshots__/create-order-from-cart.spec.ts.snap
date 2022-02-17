@@ -49,6 +49,7 @@ Array [
         "to": "2970-01-01",
       },
       "openingHours": null,
+      "orderPaymentPolicy": "prepay",
       "orderPolicy": null,
       "packagingTaxPercentage": 27,
       "paymentModes": Array [
@@ -523,6 +524,7 @@ Object {
     "taxPercentage": 0,
   },
   "servingMode": "inPlace",
+  "startPreparing": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -858,6 +860,7 @@ Object {
     "taxPercentage": 0,
   },
   "servingMode": "takeAway",
+  "startPreparing": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -1195,6 +1198,7 @@ Object {
     "taxPercentage": 0,
   },
   "servingMode": "inPlace",
+  "startPreparing": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -1530,6 +1534,7 @@ Object {
     "taxPercentage": 0,
   },
   "servingMode": "takeAway",
+  "startPreparing": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -1867,6 +1872,7 @@ Object {
     "taxPercentage": 0,
   },
   "servingMode": "inPlace",
+  "startPreparing": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -2202,6 +2208,7 @@ Object {
     "taxPercentage": 0,
   },
   "servingMode": "takeAway",
+  "startPreparing": null,
   "statusLog": Array [
     Object {
       "status": "none",

@@ -519,6 +519,7 @@ type Order @aws_iam @aws_cognito_user_pools {
   tip: Tip
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
+  startPreparing: AWSDateTime
   updatedAt: AWSDateTime!
   transaction: Transaction @aws_iam @aws_cognito_user_pools
   tipTransaction: Transaction @aws_iam @aws_cognito_user_pools
@@ -528,6 +529,11 @@ enum OrderPolicy {
   placeOnly
   placeWithPaymentType
   full
+}
+
+enum OrderPaymentPolicy {
+  prepay
+  afterpay
 }
 
 enum PaymentStatus {
@@ -758,6 +764,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicies: [RatingPolicy!]
@@ -918,6 +925,7 @@ type Cart @aws_iam @aws_cognito_user_pools {
   servingMode: ServingMode
   orderMode: OrderMode
   orderPolicy: OrderPolicy
+  startPreparing: AWSDateTime
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1106,6 +1114,7 @@ input CreateUnitInput {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicies: [RatingPolicyInput!]
@@ -1138,6 +1147,7 @@ input UpdateUnitInput {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicies: [RatingPolicyInput!]
@@ -2102,6 +2112,7 @@ input ModelOrderFilterInput {
   hasRated: ModelBooleanInput
   tipTransactionStatus: ModelPaymentStatusInput
   tipTransactionId: ModelIDInput
+  startPreparing: ModelStringInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
@@ -2133,6 +2144,7 @@ input CreateOrderInput {
   tip: TipInput
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
+  startPreparing: AWSDateTime
 }
 
 input UpdateOrderInput {
@@ -2161,6 +2173,7 @@ input UpdateOrderInput {
   tip: TipInput
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
+  startPreparing: AWSDateTime
 }
 
 input DeleteOrderInput {
@@ -2183,6 +2196,7 @@ input ModelOrderConditionInput {
   hasRated: ModelBooleanInput
   tipTransactionStatus: ModelPaymentStatusInput
   tipTransactionId: ModelIDInput
+  startPreparing: ModelStringInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
@@ -2567,6 +2581,11 @@ input ModelOrderPolicyInput {
   ne: OrderPolicy
 }
 
+input ModelOrderPaymentPolicyInput {
+  eq: OrderPaymentPolicy
+  ne: OrderPaymentPolicy
+}
+
 input ModelSoldOutVisibilityPolicyInput {
   eq: SoldOutVisibilityPolicy
   ne: SoldOutVisibilityPolicy
@@ -2593,6 +2612,7 @@ input ModelUnitFilterInput {
   supportedServingModes: ModelServingModeListInput
   supportedOrderModes: ModelOrderModeListInput
   orderPolicy: ModelOrderPolicyInput
+  orderPaymentPolicy: ModelOrderPaymentPolicyInput
   packagingTaxPercentage: ModelFloatInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   orderPaymentPolicy: ModelOrderPaymentPolicyInput
@@ -2620,6 +2640,7 @@ input ModelUnitConditionInput {
   supportedServingModes: ModelServingModeListInput
   supportedOrderModes: ModelOrderModeListInput
   orderPolicy: ModelOrderPolicyInput
+  orderPaymentPolicy: ModelOrderPaymentPolicyInput
   packagingTaxPercentage: ModelFloatInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   orderPaymentPolicy: ModelOrderPaymentPolicyInput
@@ -2693,6 +2714,7 @@ input ModelCartFilterInput {
   servingMode: ModelServingModeInput
   orderMode: ModelOrderModeInput
   orderPolicy: ModelOrderPolicyInput
+  startPreparing: ModelStringInput
   and: [ModelCartFilterInput]
   or: [ModelCartFilterInput]
   not: ModelCartFilterInput
@@ -2709,6 +2731,7 @@ input CreateCartInput {
   servingMode: ServingMode
   orderMode: OrderMode
   orderPolicy: OrderPolicy
+  startPreparing: AWSDateTime
 }
 
 input UpdateCartInput {
@@ -2722,6 +2745,7 @@ input UpdateCartInput {
   servingMode: ServingMode
   orderMode: OrderMode
   orderPolicy: OrderPolicy
+  startPreparing: AWSDateTime
 }
 
 input DeleteCartInput {
@@ -2735,6 +2759,7 @@ input ModelCartConditionInput {
   servingMode: ModelServingModeInput
   orderMode: ModelOrderModeInput
   orderPolicy: ModelOrderPolicyInput
+  startPreparing: ModelStringInput
   and: [ModelCartConditionInput]
   or: [ModelCartConditionInput]
   not: ModelCartConditionInput
@@ -3318,6 +3343,7 @@ input SearchableOrderFilterInput {
   transactionId: SearchableIDFilterInput
   hasRated: SearchableBooleanFilterInput
   tipTransactionId: SearchableIDFilterInput
+  startPreparing: SearchableStringFilterInput
   and: [SearchableOrderFilterInput]
   or: [SearchableOrderFilterInput]
   not: SearchableOrderFilterInput
@@ -3335,6 +3361,7 @@ enum SearchableOrderSortableFields {
   transactionId
   hasRated
   tipTransactionId
+  startPreparing
 }
 
 input SearchableOrderSortInput {
@@ -3619,6 +3646,7 @@ input SearchableCartFilterInput {
   userId: SearchableIDFilterInput
   unitId: SearchableIDFilterInput
   takeAway: SearchableBooleanFilterInput
+  startPreparing: SearchableStringFilterInput
   and: [SearchableCartFilterInput]
   or: [SearchableCartFilterInput]
   not: SearchableCartFilterInput
@@ -3629,6 +3657,7 @@ enum SearchableCartSortableFields {
   userId
   unitId
   takeAway
+  startPreparing
 }
 
 input SearchableCartSortInput {

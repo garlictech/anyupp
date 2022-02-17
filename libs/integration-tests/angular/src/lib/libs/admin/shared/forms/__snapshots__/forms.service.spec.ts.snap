@@ -107,7 +107,6 @@ Object {
 exports[`FormsService createServiceFeePolicyFormGroup should create form group  1`] = `
 Object {
   "percentage": "",
-  "taxPercentage": "",
   "type": "",
 }
 `;

@@ -27,3 +27,13 @@ export const soldOutPolicyOptions = [
     value: `common.soldOutPolicy.${policy}`,
   }),
 );
+
+export const orderPaymentPolicyOptions = [
+  CrudApi.OrderPaymentPolicy.prepay,
+  CrudApi.OrderPaymentPolicy.afterpay,
+].map(
+  (policy): KeyValue => ({
+    key: policy,
+    value: `common.orderPaymentPolicy.${policy}`,
+  }),
+);

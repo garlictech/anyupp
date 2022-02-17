@@ -108,8 +108,8 @@ export const getActiveOrdersByUser = (
           orders: [{ ...order }],
           lastOrder: { ...order },
           hasPaymentIntention:
-            (order.paymentMode.type === CrudApi.PaymentType.card ||
-              order.paymentMode.type === CrudApi.PaymentType.cash) &&
+            (order.paymentMode?.type === CrudApi.PaymentType.card ||
+              order.paymentMode?.type === CrudApi.PaymentType.cash) &&
             order.transactionStatus ===
               CrudApi.PaymentStatus.waiting_for_payment,
           lowestStatus: currentStatus(order.statusLog),
@@ -118,8 +118,8 @@ export const getActiveOrdersByUser = (
         ordersByUser[order.userId].orders.push({ ...order });
         ordersByUser[order.userId].hasPaymentIntention =
           ordersByUser[order.userId].hasPaymentIntention ||
-          ((order.paymentMode.type === CrudApi.PaymentType.card ||
-            order.paymentMode.type === CrudApi.PaymentType.cash) &&
+          ((order.paymentMode?.type === CrudApi.PaymentType.card ||
+            order.paymentMode?.type === CrudApi.PaymentType.cash) &&
             order.transactionStatus ===
               CrudApi.PaymentStatus.waiting_for_payment);
 

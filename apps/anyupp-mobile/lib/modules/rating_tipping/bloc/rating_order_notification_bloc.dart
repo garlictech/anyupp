@@ -76,11 +76,14 @@ class RatingOrderNotificationBloc
       emit(RatingOrderNotificationInitial());
 
       print('RatingOrderNotificationBloc.Showing screen: ${event.payload}');
-      Nav.to(RatingAndTippingScreen(
-        orderId: event.payload.orderId,
-        ratingPolicy: order.rating == null ? event.payload.ratingPolicy : null,
-        tipPolicy: order.tip == null ? event.payload.tipPolicy : null,
-      ));
+      if (order.transaction != null) {
+        Nav.to(RatingAndTippingScreen(
+          transaction: order.transaction!,
+          ratingPolicy:
+              order.rating == null ? event.payload.ratingPolicy : null,
+          tipPolicy: order.tip == null ? event.payload.tipPolicy : null,
+        ));
+      }
     } on Exception catch (e) {
       print('RatingOrderNotificationBloc.onError=$e');
     }

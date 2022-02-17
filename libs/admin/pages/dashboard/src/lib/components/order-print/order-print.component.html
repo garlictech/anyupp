@@ -157,9 +157,12 @@
 
         <div class="mt-4">Rendelés azonosítók:</div>
         <div *ngFor="let order of orders">
-          #{{ order.orderNum }} ({{ order.id }})<br />
-          {{ 'print.selectedPaymentMode' | translate }}:
-          {{ order.paymentMode.type | paymentModeType }}
+          #{{ order.orderNum }} ({{ order.id }})
+          <ng-container *ngIf="!!order.paymentMode">
+            <br />
+            {{ 'print.selectedPaymentMode' | translate }}:
+            {{ order.paymentMode.type | paymentModeType }}
+          </ng-container>
         </div>
 
         <div class="pt-5 text-center">Köszönjük a vásárlást!</div>
