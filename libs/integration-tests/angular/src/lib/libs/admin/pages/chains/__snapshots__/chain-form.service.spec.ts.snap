@@ -74,20 +74,10 @@ Object {
   "phone": "",
   "style": Object {
     "colors": Object {
-      "backgroundDark": "",
-      "backgroundLight": "",
-      "borderDark": "",
-      "borderLight": "",
       "button": "#30bf60",
       "buttonText": "#ffffff",
-      "disabled": "",
       "highlight": "#30bf60",
       "icon": "#30bf60",
-      "indicator": "",
-      "primary": "",
-      "secondary": "",
-      "textDark": "",
-      "textLight": "",
     },
     "images": Object {
       "header": "",

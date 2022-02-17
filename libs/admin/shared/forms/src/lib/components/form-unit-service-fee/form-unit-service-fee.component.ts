@@ -54,6 +54,7 @@ export class FormUnitServiceFeeComponent implements OnInit {
             this.serviceFeeFormGroup?.get('percentage')?.patchValue(0);
           }
         } else {
+          this.serviceFeeFormGroup?.get('percentage')?.patchValue('');
           this.serviceFeeFormGroup?.disable();
         }
 

@@ -22,6 +22,7 @@
       [formGroup]="dialogForm"
       (ngSubmit)="submit()"
       autocomplete="off"
+      (keydown.enter)="$event.preventDefault()"
     >
       <div class="row">
         <div class="col-md-9">
@@ -202,28 +203,6 @@
                     dialogForm.get('style.colors.highlight')! | asFormControl
                   "
                   [caption]="'chains.style.colors.highlight'"
-                >
-                </bgap-form-color-picker>
-              </div>
-            </div>
-
-            <hr />
-            <div class="row">
-              <div class="col-12 col-md-6">
-                <bgap-form-color-picker
-                  [control]="
-                    dialogForm.get('style.colors.primary')! | asFormControl
-                  "
-                  [caption]="'chains.style.colors.primary'"
-                >
-                </bgap-form-color-picker>
-              </div>
-              <div class="col-12 col-md-6">
-                <bgap-form-color-picker
-                  [control]="
-                    dialogForm.get('style.colors.secondary')! | asFormControl
-                  "
-                  [caption]="'chains.style.colors.secondary'"
                 >
                 </bgap-form-color-picker>
               </div>
