@@ -540,7 +540,6 @@ type Order
   tipTransactionId: ID
   tipTransaction: Transaction @connection(fields: ["tipTransactionId"])
   # The policies that were in action when the order was created.
-  startPreparing: AWSDateTime
   orderPolicy: OrderPolicy
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicies: [RatingPolicy!]
@@ -771,11 +770,6 @@ input TipPolicyInput {
   minOtherAmount: Float
 }
 
-enum OrderPaymentPolicy {
-  prepay
-  afterpay
-}
-
 type Unit
   @model(mutations: { delete: "deleteUnit" })
   @searchable
@@ -803,7 +797,6 @@ type Unit
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
-  orderPaymentPolicy: OrderPaymentPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicies: [RatingPolicy!]
@@ -970,7 +963,6 @@ type Cart
   servingMode: ServingMode # Make the Cart.servingMode REQUIRED in the next release (handled in #1835 issue)
   orderMode: OrderMode
   orderPolicy: OrderPolicy
-  startPreparing: AWSDateTime
 }
 
 type Transaction
@@ -1164,7 +1156,6 @@ input CreateUnitInput {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
-  orderPaymentPolicy: OrderPaymentPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicies: [RatingPolicyInput!]
@@ -1197,7 +1188,6 @@ input UpdateUnitInput {
   supportedServingModes: [ServingMode!]
   supportedOrderModes: [OrderMode!]
   orderPolicy: OrderPolicy
-  orderPaymentPolicy: OrderPaymentPolicy
   packagingTaxPercentage: Float
   serviceFeePolicy: ServiceFeePolicyInput
   ratingPolicies: [RatingPolicyInput!]
