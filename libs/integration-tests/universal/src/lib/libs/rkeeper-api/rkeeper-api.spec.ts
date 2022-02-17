@@ -505,7 +505,7 @@ describe('Test the rkeeper api basic functionality', () => {
   }, 15000);
 });
 
-test('send order to rkeeper by HTTP post', done => {
+test.skip('send order to rkeeper by HTTP post', done => {
   defer(() =>
     from(
       axios.request({
@@ -528,7 +528,7 @@ test('send order to rkeeper by HTTP post', done => {
     .subscribe(() => done());
 });
 
-test('send order to rkeeper by sendRkeeperOrder', done => {
+test.skip('send order to rkeeper by sendRkeeperOrder', done => {
   sendRkeeperOrder({
     axiosInstance: axios,
     currentTime: () => new Date('2040.01.01'),

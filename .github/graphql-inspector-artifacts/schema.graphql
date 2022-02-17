@@ -518,8 +518,13 @@ type Order @aws_iam @aws_cognito_user_pools {
   hasRated: Boolean
   tip: Tip
   tipTransactionStatus: PaymentStatus
-  tipTransactionId: ID
   startPreparing: AWSDateTime
+  tipTransactionId: ID
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicies: [RatingPolicy!]
+  tipPolicy: TipPolicy
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   updatedAt: AWSDateTime!
   transaction: Transaction @aws_iam @aws_cognito_user_pools
   tipTransaction: Transaction @aws_iam @aws_cognito_user_pools
@@ -2095,6 +2100,16 @@ input ModelServingModeInput {
   ne: ServingMode
 }
 
+input ModelOrderPolicyInput {
+  eq: OrderPolicy
+  ne: OrderPolicy
+}
+
+input ModelSoldOutVisibilityPolicyInput {
+  eq: SoldOutVisibilityPolicy
+  ne: SoldOutVisibilityPolicy
+}
+
 input ModelOrderFilterInput {
   id: ModelIDInput
   createdAt: ModelStringInput
@@ -2111,8 +2126,10 @@ input ModelOrderFilterInput {
   servingMode: ModelServingModeInput
   hasRated: ModelBooleanInput
   tipTransactionStatus: ModelPaymentStatusInput
-  tipTransactionId: ModelIDInput
   startPreparing: ModelStringInput
+  tipTransactionId: ModelIDInput
+  orderPolicy: ModelOrderPolicyInput
+  soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
@@ -2144,7 +2161,11 @@ input CreateOrderInput {
   tip: TipInput
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
-  startPreparing: AWSDateTime
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicies: [RatingPolicyInput!]
+  tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
 
 input UpdateOrderInput {
@@ -2173,7 +2194,11 @@ input UpdateOrderInput {
   tip: TipInput
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
-  startPreparing: AWSDateTime
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicies: [RatingPolicyInput!]
+  tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
 }
 
 input DeleteOrderInput {
@@ -2196,7 +2221,8 @@ input ModelOrderConditionInput {
   hasRated: ModelBooleanInput
   tipTransactionStatus: ModelPaymentStatusInput
   tipTransactionId: ModelIDInput
-  startPreparing: ModelStringInput
+  orderPolicy: ModelOrderPolicyInput
+  soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
@@ -2574,26 +2600,6 @@ input ModelOrderModeListInput {
   ne: [OrderMode]
   contains: OrderMode
   notContains: OrderMode
-}
-
-input ModelOrderPolicyInput {
-  eq: OrderPolicy
-  ne: OrderPolicy
-}
-
-input ModelOrderPaymentPolicyInput {
-  eq: OrderPaymentPolicy
-  ne: OrderPaymentPolicy
-}
-
-input ModelSoldOutVisibilityPolicyInput {
-  eq: SoldOutVisibilityPolicy
-  ne: SoldOutVisibilityPolicy
-}
-
-input ModelOrderPaymentPolicyInput {
-  eq: OrderPaymentPolicy
-  ne: OrderPaymentPolicy
 }
 
 input ModelUnitFilterInput {
