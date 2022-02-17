@@ -9,12 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RatingAndTippingScreen extends StatefulWidget {
-  final String orderId;
+  final Transaction transaction;
   final TipPolicy? tipPolicy;
   final RatingPolicy? ratingPolicy;
+  final double minTip = 175;
   const RatingAndTippingScreen({
     Key? key,
-    required this.orderId,
+    required this.transaction,
     this.tipPolicy,
     this.ratingPolicy,
   }) : super(key: key);
@@ -27,15 +28,36 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
   int? _rating;
   double? _tip;
   TipType? _tipType;
+  late double _minTip;
 
   @override
   void initState() {
     super.initState();
+    double? minTipAmount = widget.tipPolicy?.minOtherAmount;
+    if (minTipAmount != null && minTipAmount > widget.minTip) {
+      _minTip = minTipAmount;
+    } else {
+      _minTip = widget.minTip;
+    }
     getIt.get<RatingBloc>().add(ResetRating());
-    print('RatingAndTippingScreen().init().orderId=${widget.orderId}');
+    print(
+        'RatingAndTippingScreen().init().orderId=${widget.transaction.orderId}');
     print('RatingAndTippingScreen().init().tipPolicy=${widget.tipPolicy}');
     print(
         'RatingAndTippingScreen().init().ratingPolicy=${widget.ratingPolicy}');
+  }
+
+  double _getCalculatedTip() {
+    return widget.transaction.total! * (_tip! / 100);
+  }
+
+  bool validateTip() {
+    if (_tip != null && widget.transaction.total != null) {
+      if (_getCalculatedTip() > _minTip) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @override
@@ -57,7 +79,10 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
         body: BlocBuilder<RatingBloc, RatingState>(
           builder: (context, state) {
             if (state is RatingSuccess) {
-              return SuccessTipWidget();
+              return SuccessTipWidget(
+                tipPolicy: widget.tipPolicy != null,
+                ratingPolcicy: widget.ratingPolicy != null,
+              );
             }
 
             if (state is RatingLoading) {
@@ -65,6 +90,13 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
             }
 
             if (state is RatingFailed) {
+              return CommonErrorWidget(
+                error: state.code,
+                description: state.message,
+                showButton: true,
+              );
+            }
+            if (state is TipFailed) {
               return CommonErrorWidget(
                 error: state.code,
                 description: state.message,
@@ -155,6 +187,14 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
     );
   }
 
+  _addInvalidTipEvent() {
+    getIt<RatingBloc>().add(InvalidTipAmount(
+        trans(
+          "tipping.errors.tipFailed",
+        ),
+        trans("tipping.errors.minAmount", [_minTip])));
+  }
+
   _sendRating() {
     print('_sendRating(), rating=$_rating, tipType=$_tipType, tip=$_tip');
     if (_rating == null && _tipType == null && _tip == null) {
@@ -165,23 +205,28 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
 
     // Send both rating and tip
     if (widget.tipPolicy != null && widget.ratingPolicy != null) {
-      getIt.get<RatingBloc>().add(
-            RateAndTipOrder(
-              orderId: widget.orderId,
-              rating: OrderRating(
-                key: widget.ratingPolicy!.key,
-                value: _rating ?? -1,
+      bool validated = validateTip();
+      if (validated) {
+        getIt.get<RatingBloc>().add(
+              RateAndTipOrder(
+                orderId: widget.transaction.orderId,
+                rating: OrderRating(
+                  key: widget.ratingPolicy!.key,
+                  value: _rating ?? -1,
+                ),
+                tipType: _tipType,
+                tipValue: _tip,
               ),
-              tipType: _tipType,
-              tipValue: _tip,
-            ),
-          );
+            );
+      } else {
+        _addInvalidTipEvent();
+      }
     } else
     // Send only rating
     if (widget.ratingPolicy != null) {
       getIt.get<RatingBloc>().add(
             RateOrder(
-              orderId: widget.orderId,
+              orderId: widget.transaction.orderId,
               rating: OrderRating(
                 key: widget.ratingPolicy!.key,
                 value: _rating ?? -1,
@@ -191,13 +236,18 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
     } else
     // Send only tip
     if (widget.tipPolicy != null) {
-      getIt.get<RatingBloc>().add(
-            TipOrder(
-              orderId: widget.orderId,
-              tipType: _tipType,
-              tipValue: _tip,
-            ),
-          );
+      bool validated = validateTip();
+      if (validated) {
+        getIt.get<RatingBloc>().add(
+              TipOrder(
+                orderId: widget.transaction.orderId,
+                tipType: _tipType,
+                tipValue: _getCalculatedTip(),
+              ),
+            );
+      } else {
+        _addInvalidTipEvent();
+      }
     }
   }
 }

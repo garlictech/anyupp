@@ -12,16 +12,15 @@ import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:fa_prev/shared/widgets/fade_on_scroll_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
+class ProductDetailsScreen extends StatefulWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
   final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
-  final double _expandedHeight = 260.0;
-  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
 
   ProductDetailsScreen({
     Key? key,
@@ -32,6 +31,20 @@ class ProductDetailsScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
+}
+
+class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  final double _expandedHeight = 260.0;
+
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+
+  final ScrollController _scrollController = ScrollController();
+
+  double titleOpacity = 1.0;
+
+
+  @override
   Widget build(BuildContext context) {
     var unit = currentUnit!;
     return NetworkConnectionWrapperWidget(
@@ -39,6 +52,7 @@ class ProductDetailsScreen extends StatelessWidget {
         key: _key,
         backgroundColor: theme.secondary12,
         body: NestedScrollView(
+          controller: _scrollController,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
@@ -49,49 +63,29 @@ class ProductDetailsScreen extends StatelessWidget {
                 backgroundColor: theme.secondary0,
                 foregroundColor: theme.secondary,
                 primary: true,
-                // stretch: false,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  title: SafeArea(
-                    child: Stack(children: [
-                      LayoutBuilder(builder: (context, constraints) {
-                        double scrollExtent =
-                            _expandedHeight - constraints.maxHeight;
-                        double sideRatio = constraints.maxWidth / _expandedHeight;
-                        int padding = 2;
-                        return Stack(
-                          children: [
-                            Positioned(
-                                left: (scrollExtent * (sideRatio / 2)) + padding,
-                                top: _expandedHeight - 20 - scrollExtent,
-                                child: Text(
-                                  getLocalizedText(context, item.name),
-                                  style: Fonts.satoshi(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.secondary,
-                                  ),
-                                )),
-                          ],
-                        );
-                      }),
-                    ]),
+                title: FadeOnScroll(
+                  scrollController: _scrollController,
+                   zeroOpacityOffset: 0.0,
+                   fullOpacityOffset: _expandedHeight,
+                  child: Text(
+                    getLocalizedText(context, widget.item.name),
+                    style: Fonts.satoshi(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
+                      color: theme.secondary.withOpacity(titleOpacity),
+                    ),
                   ),
-                  // background: Container(
-                  //   padding: const EdgeInsets.only(top: kToolbarHeight),
-                  //   child: ProductImageAndInfoWidget(
-                  //     item: item,
-                  //   ),
-                  // ),
+                ),
+                flexibleSpace: FlexibleSpaceBar(
                   background: Container(
                     color: theme.secondary0,
                     padding: const EdgeInsets.only(
-                      top: kToolbarHeight,
-                      bottom: 64.0,
+                      top: kToolbarHeight + 50,
+                      bottom: 16.0,
                     ),
                     child: _ProductDetailsImageWidget(
-                      item: item,
-                      url: item.image!,
+                      item: widget.item,
+                      url: widget.item.image!,
                     ),
                   ),
                 ),
@@ -117,7 +111,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       width: 40,
                       child: FavoriteIconWidget(
                         theme: theme,
-                        product: item,
+                        product: widget.item,
                         unit: unit,
                         iconSize: 22,
                       ),
@@ -131,7 +125,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 sliver: SliverList(
                   delegate: SliverChildListDelegate([
                     ProductImageAndInfoWidget(
-                      item: item,
+                      item: widget.item,
                     ),
                   ]),
                 ),
@@ -141,10 +135,10 @@ class ProductDetailsScreen extends StatelessWidget {
           body: Stack(
             children: [
               ProductDetailsWidget(
-                item: item,
+                item: widget.item,
                 unit: unit,
-                displayState: displayState,
-                servingMode: servingMode,
+                displayState: widget.displayState,
+                servingMode: widget.servingMode,
               ),
             ],
           ),
@@ -366,29 +360,6 @@ class ProductImageAndInfoWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // _ProductDetailsImageWidget(
-          //   item: item,
-          //   url: item.image!,
-          // ),
-          // Align(
-          //   alignment: Alignment.centerLeft,
-          //   child: Padding(
-          //     padding: const EdgeInsets.only(
-          //       left: 16.0,
-          //       top: 16.0,
-          //       //bottom: 16.0,
-          //     ),
-          //     child: Text(
-          //       _getProductNameWithInfo(context),
-          //       textAlign: TextAlign.left,
-          //       style: Fonts.satoshi(
-          //         fontSize: 18.0,
-          //         fontWeight: FontWeight.bold,
-          //         color: theme.secondary,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -400,6 +371,14 @@ class ProductImageAndInfoWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    getLocalizedText(context, item.name),
+                    style: Fonts.satoshi(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: theme.secondary,
+                    ),
+                  ),
                   Text(
                     item.description == null
                         ? ''

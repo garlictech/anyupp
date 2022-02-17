@@ -2,6 +2,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/orders/screens/order_details_screen.dart';
+import 'package:fa_prev/modules/rating_tipping/bloc/rating_bloc.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,22 +33,31 @@ class _TransactionOrderDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<OrderBloc, BaseOrderState>(
-      builder: (context, state) {
-        if (state is OrderDetailLoadedState) {
-          print('Order loaded=$state');
-          if (state.order == null) {
-            return EmptyWidget();
-          }
-          return OrderDetailsScreen(
-            unit: widget.unit,
-            order: state.order!,
-          );
+    return BlocListener<RatingBloc, RatingState>(
+      listener: (context, state) {
+        if (state is RatingSuccess) {
+          getIt<OrderBloc>().add(LoadOrderDetail(
+            orderId: widget.orderId,
+          ));
         }
-        return Scaffold(
-          body: CenterLoadingWidget(),
-        );
       },
+      child: BlocBuilder<OrderBloc, BaseOrderState>(
+        builder: (context, state) {
+          if (state is OrderDetailLoadedState) {
+            print('Order loaded=$state');
+            if (state.order == null) {
+              return EmptyWidget();
+            }
+            return OrderDetailsScreen(
+              unit: widget.unit,
+              order: state.order!,
+            );
+          }
+          return Scaffold(
+            body: CenterLoadingWidget(),
+          );
+        },
+      ),
     );
   }
 }

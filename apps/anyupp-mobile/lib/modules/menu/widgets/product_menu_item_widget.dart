@@ -126,6 +126,7 @@ class ProductMenuItem extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Fonts.satoshi(
                           fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
                           color: isDisabled
                               ? theme.secondary.withOpacity(_disabled_opacity)
                               : theme.secondary,
@@ -152,12 +153,19 @@ class ProductMenuItem extends StatelessWidget {
   }
 
   Widget _buildNotAvailableInfo(BuildContext context) {
+    late String desc;
+    if (displayState == ProductItemDisplayState.SOLDOUT) {
+      desc = trans(context, 'product.soldOut');
+    } else if (displayState == ProductItemDisplayState.DISABLED) {
+      if (servingMode == ServingMode.takeAway) {
+        desc = trans(context, 'product.notTakeAway');
+      } else {
+        desc = trans(context, 'product.notInPlace');
+      }
+    }
+
     return Text(
-      displayState == ProductItemDisplayState.DISABLED
-          ? servingMode == ServingMode.takeAway
-              ? trans(context, 'product.notTakeAway')
-              : trans(context, 'product.notInPlace')
-          : trans(context, 'product.soldOut'),
+      desc,
       style: Fonts.satoshi(
         fontSize: 14.0,
         fontWeight: FontWeight.w700,

@@ -123,6 +123,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
         print('ProductMenuScreen.selectedTab()=${_tabController?.index}');
         setState(() {
           _selectedTab = _tabController!.index;
+          _checkNeedToShowTooltip();
         });
       }
     });
@@ -313,8 +314,8 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                           bottom: 6.0,
                         ),
                         indicatorPadding: EdgeInsets.only(
-                           bottom: 15.0,
-                           top: 13.0,
+                          bottom: 15.0,
+                          top: 13.0,
                         ),
                         unselectedLabelColor: theme.secondary,
                         unselectedLabelStyle: Fonts.satoshi(
@@ -361,7 +362,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
 
   Widget _getTab(String title, int index) {
     return Tab(
-     // height: 16,
+      // height: 16,
       child: AnimatedBuilder(
         animation: _tabController!.animation as Listenable,
         builder: (ctx, snapshot) {
@@ -404,7 +405,8 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
             }
           }
           return Container(
-            padding: const EdgeInsets.only(left: 16, right: 16 ,top: 6, bottom: 6),
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, top: 6, bottom: 6),
             decoration: BoxDecoration(
               color: index == _fromIndex
                   ? Color.lerp(theme.button, theme.secondary12, progress)
@@ -418,7 +420,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                 style: Fonts.satoshi(
                   fontSize: 14.0,
                   fontWeight: FontWeight.w500,
-                 // color: theme.buttonText
+                  // color: theme.buttonText
                 )),
           );
           // return Tab(
