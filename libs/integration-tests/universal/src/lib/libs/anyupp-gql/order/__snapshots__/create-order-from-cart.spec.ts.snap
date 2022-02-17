@@ -183,6 +183,7 @@ Array [
       ],
       "orderMode": "instant",
       "orderNum": "TABLESEAT01",
+      "orderPolicy": null,
       "paymentMode": Object {
         "caption": null,
         "method": "inapp",
@@ -192,12 +193,43 @@ Array [
         "seat": "SEAT",
         "table": "TABLE",
       },
+      "ratingPolicies": Array [
+        Object {
+          "description": Object {
+            "de": null,
+            "en": "Desc",
+            "hu": null,
+          },
+          "key": "question1",
+          "ratings": Array [
+            Object {
+              "icon": null,
+              "text": Object {
+                "de": null,
+                "en": "good",
+                "hu": null,
+              },
+              "value": 1,
+            },
+          ],
+          "title": Object {
+            "de": null,
+            "en": "Question",
+            "hu": null,
+          },
+        },
+      ],
       "serviceFee": Object {
         "currency": "EUR",
         "netPrice": 0.20320000000000002,
         "taxPercentage": 0,
       },
+      "serviceFeePolicy": Object {
+        "percentage": 10,
+        "type": "applicable",
+      },
       "servingMode": "inPlace",
+      "soldOutVisibilityPolicy": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -213,6 +245,14 @@ Array [
         "taxSum": 0.43,
       },
       "takeAway": false,
+      "tipPolicy": Object {
+        "description": null,
+        "minOtherAmount": null,
+        "percents": Array [
+          2,
+        ],
+        "title": null,
+      },
       "transactionStatus": "waiting_for_payment",
       "unitId": "rkeeper-unit",
       "userId": "test_user_1_id",
@@ -505,6 +545,7 @@ Object {
   ],
   "orderMode": "instant",
   "orderNum": "TABLESEAT01",
+  "orderPolicy": null,
   "packagingSum": null,
   "paymentIntention": null,
   "paymentMode": Object {
@@ -517,12 +558,43 @@ Object {
     "table": "TABLE",
   },
   "rating": null,
+  "ratingPolicies": Array [
+    Object {
+      "description": Object {
+        "de": null,
+        "en": "Desc",
+        "hu": null,
+      },
+      "key": "question1",
+      "ratings": Array [
+        Object {
+          "icon": null,
+          "text": Object {
+            "de": null,
+            "en": "good",
+            "hu": null,
+          },
+          "value": 1,
+        },
+      ],
+      "title": Object {
+        "de": null,
+        "en": "Question",
+        "hu": null,
+      },
+    },
+  ],
   "serviceFee": Object {
     "currency": "EUR",
     "netPrice": 1.7145,
     "taxPercentage": 0,
   },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "type": "applicable",
+  },
   "servingMode": "inPlace",
+  "soldOutVisibilityPolicy": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -539,6 +611,14 @@ Object {
   },
   "takeAway": false,
   "tip": null,
+  "tipPolicy": Object {
+    "description": null,
+    "minOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "tipTransaction": null,
   "tipTransactionId": null,
   "tipTransactionStatus": null,
@@ -836,6 +916,7 @@ Object {
   ],
   "orderMode": "instant",
   "orderNum": "TABLESEAT03",
+  "orderPolicy": null,
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
@@ -852,12 +933,43 @@ Object {
     "table": "TABLE",
   },
   "rating": null,
+  "ratingPolicies": Array [
+    Object {
+      "description": Object {
+        "de": null,
+        "en": "Desc",
+        "hu": null,
+      },
+      "key": "question1",
+      "ratings": Array [
+        Object {
+          "icon": null,
+          "text": Object {
+            "de": null,
+            "en": "good",
+            "hu": null,
+          },
+          "value": 1,
+        },
+      ],
+      "title": Object {
+        "de": null,
+        "en": "Question",
+        "hu": null,
+      },
+    },
+  ],
   "serviceFee": Object {
     "currency": "EUR",
     "netPrice": 1.7288999999999999,
     "taxPercentage": 0,
   },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "type": "applicable",
+  },
   "servingMode": "takeAway",
+  "soldOutVisibilityPolicy": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -874,6 +986,14 @@ Object {
   },
   "takeAway": false,
   "tip": null,
+  "tipPolicy": Object {
+    "description": null,
+    "minOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "tipTransaction": null,
   "tipTransactionId": null,
   "tipTransactionStatus": null,
@@ -1177,6 +1297,7 @@ Object {
   ],
   "orderMode": "instant",
   "orderNum": "TABLESEAT01",
+  "orderPolicy": null,
   "packagingSum": null,
   "paymentIntention": null,
   "paymentMode": Object {
@@ -1189,12 +1310,43 @@ Object {
     "table": "TABLE",
   },
   "rating": null,
+  "ratingPolicies": Array [
+    Object {
+      "description": Object {
+        "de": null,
+        "en": "Desc",
+        "hu": null,
+      },
+      "key": "question1",
+      "ratings": Array [
+        Object {
+          "icon": null,
+          "text": Object {
+            "de": null,
+            "en": "good",
+            "hu": null,
+          },
+          "value": 1,
+        },
+      ],
+      "title": Object {
+        "de": null,
+        "en": "Question",
+        "hu": null,
+      },
+    },
+  ],
   "serviceFee": Object {
     "currency": "EUR",
     "netPrice": 1.7145,
     "taxPercentage": 0,
   },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "type": "applicable",
+  },
   "servingMode": "inPlace",
+  "soldOutVisibilityPolicy": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -1211,6 +1363,14 @@ Object {
   },
   "takeAway": false,
   "tip": null,
+  "tipPolicy": Object {
+    "description": null,
+    "minOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "tipTransaction": null,
   "tipTransactionId": null,
   "tipTransactionStatus": null,
@@ -1508,6 +1668,7 @@ Object {
   ],
   "orderMode": "instant",
   "orderNum": "TABLESEAT03",
+  "orderPolicy": null,
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
@@ -1524,12 +1685,43 @@ Object {
     "table": "TABLE",
   },
   "rating": null,
+  "ratingPolicies": Array [
+    Object {
+      "description": Object {
+        "de": null,
+        "en": "Desc",
+        "hu": null,
+      },
+      "key": "question1",
+      "ratings": Array [
+        Object {
+          "icon": null,
+          "text": Object {
+            "de": null,
+            "en": "good",
+            "hu": null,
+          },
+          "value": 1,
+        },
+      ],
+      "title": Object {
+        "de": null,
+        "en": "Question",
+        "hu": null,
+      },
+    },
+  ],
   "serviceFee": Object {
     "currency": "EUR",
     "netPrice": 1.7288999999999999,
     "taxPercentage": 0,
   },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "type": "applicable",
+  },
   "servingMode": "takeAway",
+  "soldOutVisibilityPolicy": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -1546,6 +1738,14 @@ Object {
   },
   "takeAway": false,
   "tip": null,
+  "tipPolicy": Object {
+    "description": null,
+    "minOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "tipTransaction": null,
   "tipTransactionId": null,
   "tipTransactionStatus": null,
@@ -1849,6 +2049,7 @@ Object {
   ],
   "orderMode": "instant",
   "orderNum": "TABLESEAT01",
+  "orderPolicy": null,
   "packagingSum": null,
   "paymentIntention": null,
   "paymentMode": Object {
@@ -1861,12 +2062,43 @@ Object {
     "table": "TABLE",
   },
   "rating": null,
+  "ratingPolicies": Array [
+    Object {
+      "description": Object {
+        "de": null,
+        "en": "Desc",
+        "hu": null,
+      },
+      "key": "question1",
+      "ratings": Array [
+        Object {
+          "icon": null,
+          "text": Object {
+            "de": null,
+            "en": "good",
+            "hu": null,
+          },
+          "value": 1,
+        },
+      ],
+      "title": Object {
+        "de": null,
+        "en": "Question",
+        "hu": null,
+      },
+    },
+  ],
   "serviceFee": Object {
     "currency": "EUR",
     "netPrice": 1.7145,
     "taxPercentage": 0,
   },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "type": "applicable",
+  },
   "servingMode": "inPlace",
+  "soldOutVisibilityPolicy": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -1883,6 +2115,14 @@ Object {
   },
   "takeAway": false,
   "tip": null,
+  "tipPolicy": Object {
+    "description": null,
+    "minOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "tipTransaction": null,
   "tipTransactionId": null,
   "tipTransactionStatus": null,
@@ -2180,6 +2420,7 @@ Object {
   ],
   "orderMode": "instant",
   "orderNum": "TABLESEAT03",
+  "orderPolicy": null,
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
@@ -2196,12 +2437,43 @@ Object {
     "table": "TABLE",
   },
   "rating": null,
+  "ratingPolicies": Array [
+    Object {
+      "description": Object {
+        "de": null,
+        "en": "Desc",
+        "hu": null,
+      },
+      "key": "question1",
+      "ratings": Array [
+        Object {
+          "icon": null,
+          "text": Object {
+            "de": null,
+            "en": "good",
+            "hu": null,
+          },
+          "value": 1,
+        },
+      ],
+      "title": Object {
+        "de": null,
+        "en": "Question",
+        "hu": null,
+      },
+    },
+  ],
   "serviceFee": Object {
     "currency": "EUR",
     "netPrice": 1.7288999999999999,
     "taxPercentage": 0,
   },
+  "serviceFeePolicy": Object {
+    "percentage": 10,
+    "type": "applicable",
+  },
   "servingMode": "takeAway",
+  "soldOutVisibilityPolicy": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -2218,6 +2490,14 @@ Object {
   },
   "takeAway": false,
   "tip": null,
+  "tipPolicy": Object {
+    "description": null,
+    "minOtherAmount": null,
+    "percents": Array [
+      2,
+    ],
+    "title": null,
+  },
   "tipTransaction": null,
   "tipTransactionId": null,
   "tipTransactionStatus": null,
