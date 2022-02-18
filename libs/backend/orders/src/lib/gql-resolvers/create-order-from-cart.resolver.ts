@@ -81,13 +81,9 @@ const createOrderInDb =
   (input: CrudApi.CreateOrderInput) => (deps: OrderResolverDeps) =>
     from(deps.crudSdk.CreateOrder({ input }));
 
-export interface CalculationState_WithCart {
-  cart: CrudApi.Cart;
-}
-
 export const getCart =
   (deps: OrderResolverDeps) =>
-  (cartId: string): OE.ObservableEither<string, CalculationState_WithCart> =>
+  (cartId: string): OE.ObservableEither<string, CrudApi.Cart> =>
     pipe(
       deps.crudSdk.GetCart({ id: cartId }),
       // Validate cart
@@ -100,9 +96,6 @@ export const getCart =
               () => 'User ID-s mismatch',
             ),
           ),
-          E.map(cart => ({
-            cart,
-          })),
           OE.fromEither,
         ),
       ),
@@ -116,17 +109,17 @@ export interface CalculationState_UnitAdded {
 export const getUnit =
   (deps: OrderResolverDeps) =>
   (
-    inputState: CalculationState_WithCart,
+    cart: CrudApi.Cart,
   ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
     pipe(
-      deps.crudSdk.GetUnit({ id: inputState.cart.unitId }),
+      deps.crudSdk.GetUnit({ id: cart.unitId }),
       switchMap(
         flow(
           // Unit exists?
           E.fromPredicate(
             unit => !!unit,
             () =>
-              `Unit ${inputState.cart.unitId} in the cart cannot be fetched from the database.`,
+              `Unit ${cart.unitId} in the cart cannot be fetched from the database.`,
           ),
           // Unit is not NULL - but typescript cannot yet infer it
           E.map(unit => unit as CrudApi.Unit),
@@ -141,14 +134,14 @@ export const getUnit =
           E.chain(
             E.fromPredicate(
               unit =>
-                !inputState.cart.paymentMode &&
+                !cart.paymentMode &&
                 unit.orderPaymentPolicy !== CrudApi.OrderPaymentPolicy.afterpay,
               () =>
                 'Payment mode is not provided in the cart, and the unit does not accept afterpay.',
             ),
           ),
           E.map(unit => ({
-            ...inputState,
+            cart,
             unit,
           })),
           OE.fromEither,
@@ -276,6 +269,11 @@ export const getOrderInput =
         transactionStatus: PaymentStatus.waiting_for_payment,
         orderMode: inputState.cart.orderMode || CrudApi.OrderMode.instant,
         servingMode: inputState.cart.servingMode || CrudApi.ServingMode.inplace,
+        orderPolicy: inputState.unit.orderPolicy,
+        serviceFeePolicy: inputState.unit.serviceFeePolicy,
+        ratingPolicies: inputState.unit.ratingPolicies,
+        tipPolicy: inputState.unit.tipPolicy,
+        soldOutVisibilityPolicy: inputState.unit.soldOutVisibilityPolicy,
       })),
       OE.map(orderInput => ({
         ...inputState,
@@ -382,12 +380,6 @@ export const placeOrder =
 
 export interface CalculationState_WithCart {
   cart: CrudApi.Cart;
-  userId: string;
-}
-
-export interface CalculationState_UnitAdded {
-  cart: CrudApi.Cart;
-  unit: CrudApi.Unit;
   userId: string;
 }
 
