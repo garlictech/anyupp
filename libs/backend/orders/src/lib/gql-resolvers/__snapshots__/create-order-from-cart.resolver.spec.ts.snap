@@ -1,0 +1,368 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createOrderFromCart should fail without a cart: GETCART CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "CART ID",
+    },
+  ],
+]
+`;
+
+exports[`createOrderFromCart should fail without a cart: GETCART CALLS 2`] = `
+Array [
+  Array [
+    Object {
+      "id": "CART ID",
+    },
+  ],
+]
+`;
+
+exports[`createOrderFromCart should fail without a cart: GETCART CALLS 3`] = `
+Array [
+  Array [
+    Object {
+      "id": "CART ID",
+    },
+  ],
+]
+`;
+
+exports[`createOrderFromCart should fail without a cart: RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "Cart CART ID is missing",
+}
+`;
+
+exports[`createOrderFromCart should fail without a cart: RESULT 2`] = `
+Object {
+  "_tag": "Left",
+  "left": "CART ERROR",
+}
+`;
+
+exports[`createOrderFromCart should fail without a cart: RESULT 3`] = `
+Object {
+  "_tag": "Left",
+  "left": "User ID-s mismatch (USER ID <-> DIFFERENT USER ID)",
+}
+`;
+
+exports[`getGroupCurrency cases: GETGROUPCURRENCY CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "GROUP ID 1",
+    },
+  ],
+]
+`;
+
+exports[`getGroupCurrency cases: GETGROUPCURRENCY CALLS 2`] = `
+Array [
+  Array [
+    Object {
+      "id": "GROUP ID 2",
+    },
+  ],
+]
+`;
+
+exports[`getGroupCurrency cases: GETGROUPCURRENCY CALLS 3`] = `
+Array [
+  Array [
+    Object {
+      "id": "GROUP ID 3",
+    },
+  ],
+]
+`;
+
+exports[`getGroupCurrency cases: RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "Group GROUP ID 1 cannot be fetched from the database.",
+}
+`;
+
+exports[`getGroupCurrency cases: RESULT 2`] = `
+Object {
+  "_tag": "Left",
+  "left": "GROUP CURRENCY FETCH FAILURE",
+}
+`;
+
+exports[`getGroupCurrency cases: RESULT 3`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "cart": Object {
+      "id": "CART ID 3",
+    },
+    "groupCurrency": "GROUP CURRENCY",
+    "unit": Object {
+      "groupId": "GROUP ID 3",
+    },
+  },
+}
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM DEPS CALLS 1`] = `
+Array [
+  Array [
+    "UNIT TABLE NAME",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM DEPS CALLS 2`] = `
+Array [
+  Array [
+    "UNIT TABLE NAME",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM DEPS CALLS 3`] = `
+Array [
+  Array [
+    "UNIT TABLE NAME",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM DEPS CALLS 4`] = `
+Array [
+  Array [
+    "UNIT TABLE NAME",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM FUNC CALLS 1`] = `
+Array [
+  Array [
+    "UNIT ID 1",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM FUNC CALLS 2`] = `
+Array [
+  Array [
+    "UNIT ID 2",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM FUNC CALLS 3`] = `
+Array [
+  Array [
+    "UNIT ID 3",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM FUNC CALLS 4`] = `
+Array [
+  Array [
+    "UNIT ID 4",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "cart": Object {
+      "place": Object {
+        "seat": "SEAT1",
+        "table": "TABLE1",
+      },
+    },
+    "orderNum": "TABLE1SEAT105",
+    "unit": Object {
+      "id": "UNIT ID 1",
+    },
+  },
+}
+`;
+
+exports[`getNextOrderNum cases: RESULT 2`] = `
+Object {
+  "_tag": "Left",
+  "left": "INCREMENT ORDER NUM FAILURE",
+}
+`;
+
+exports[`getNextOrderNum cases: RESULT 3`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "cart": Object {
+      "place": Object {
+        "seat": "SEAT3",
+        "table": "TABLE3",
+      },
+    },
+    "orderNum": "TABLE3SEAT310",
+    "unit": Object {
+      "id": "UNIT ID 3",
+    },
+  },
+}
+`;
+
+exports[`getNextOrderNum cases: RESULT 4`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "cart": Object {},
+    "orderNum": "20",
+    "unit": Object {
+      "id": "UNIT ID 4",
+    },
+  },
+}
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 2`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 3`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 4`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 5`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 6`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 7`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "Unit UNIT ID in the cart cannot be fetched from the database.",
+}
+`;
+
+exports[`getUnit cases: RESULT 2`] = `
+Object {
+  "_tag": "Left",
+  "left": "UNIT ERROR",
+}
+`;
+
+exports[`getUnit cases: RESULT 3`] = `
+Object {
+  "_tag": "Left",
+  "left": "Unit does not accept orders",
+}
+`;
+
+exports[`getUnit cases: RESULT 4`] = `
+Object {
+  "_tag": "Left",
+  "left": "Payment mode is not provided in the cart, and the unit does not accept afterpay.",
+}
+`;
+
+exports[`getUnit cases: RESULT 5`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "cart": Object {
+      "unitId": "UNIT ID",
+    },
+    "unit": Object {
+      "id": "UNIT ID 3",
+      "isAcceptingOrders": true,
+      "orderPaymentPolicy": "afterpay",
+    },
+  },
+}
+`;
+
+exports[`getUnit cases: RESULT 6`] = `
+Object {
+  "_tag": "Left",
+  "left": "Payment mode is not provided in the cart, and the unit does not accept afterpay.",
+}
+`;
+
+exports[`getUnit cases: RESULT 7`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "cart": Object {
+      "paymentMode": Object {},
+      "unitId": "UNIT ID",
+    },
+    "unit": Object {
+      "id": "UNIT ID 5",
+      "isAcceptingOrders": true,
+    },
+  },
+}
+`;

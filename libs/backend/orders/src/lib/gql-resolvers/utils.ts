@@ -10,6 +10,7 @@ export interface OrderResolverDeps {
   userId: string;
   unitTableName: string;
   currentTime: () => Date;
+  random: () => number;
   axiosInstance: AxiosStatic;
 }
 

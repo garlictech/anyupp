@@ -357,22 +357,6 @@ describe('CreatOrderFromCart mutation test', () => {
     });
   }, 15000);
 
-  it('should fail without a cart', done => {
-    const input = { id: cartFixture.cartId_NotExisting };
-    const userId = 'NOT_IMPORTANT';
-
-    defer(() =>
-      orderRequestHandler({ crudSdk, userId }).createOrderFromCart({
-        input,
-      }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  }, 15000);
-
   const testLogic = (
     op: (
       input: CrudApi.CreateOrderFromCartInput,
