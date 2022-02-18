@@ -70,6 +70,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
     userId: event.identity?.username || '',
     unitTableName: tableConfig.Unit.TableName,
     currentTime: () => new Date(),
+    random: Math.random,
     axiosInstance: axios,
   });
 

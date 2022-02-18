@@ -12,4 +12,5 @@ module.exports = {
   detectOpenHandles: true,
   forceExit: true,
   coverage: true,
+  clearMocks: true,
 };

@@ -10,6 +10,7 @@ export interface OrderResolverDeps {
   userId: string;
   unitTableName: string;
   currentTime: () => Date;
+  random: () => number;
   axiosInstance: AxiosStatic;
 }
 
@@ -18,10 +19,18 @@ const getUnitProductHelper = R.memoizeWith(
   (sdk: CrudApi.CrudSdk, id: string) =>
     pipe(
       sdk.GetUnitProduct({ id }),
-      OE.fromPredicate(
-        R.complement(R.isNil),
-        () => `UnitProduct cannot be found: ${id}`,
+      x =>
+        OE.tryCatch(x) as OE.ObservableEither<
+          string,
+          CrudApi.UnitProduct | undefined | null
+        >,
+      OE.chain(
+        OE.fromPredicate(
+          x => !!x,
+          () => `UnitProduct cannot be found: ${id}`,
+        ),
       ),
+      OE.map(x => x as NonNullable<typeof x>),
       shareReplay(1),
     ),
 );
@@ -36,10 +45,18 @@ const getGroupProductHelper = R.memoizeWith(
   (sdk: CrudApi.CrudSdk, id: string) =>
     pipe(
       sdk.GetGroupProduct({ id }),
-      OE.fromPredicate(
-        R.complement(R.isNil),
-        () => `GroupProduct cannot be found: ${id}`,
+      x =>
+        OE.tryCatch(x) as OE.ObservableEither<
+          string,
+          CrudApi.GroupProduct | undefined | null
+        >,
+      OE.chain(
+        OE.fromPredicate(
+          x => !!x,
+          () => `GroupProduct cannot be found: ${id}`,
+        ),
       ),
+      OE.map(x => x as NonNullable<typeof x>),
       shareReplay(1),
     ),
 );
@@ -54,10 +71,18 @@ const getChainProductHelper = R.memoizeWith(
   (sdk: CrudApi.CrudSdk, id: string) =>
     pipe(
       sdk.GetChainProduct({ id }),
-      OE.fromPredicate(
-        R.complement(R.isNil),
-        () => `ChainProduct cannot be found: ${id}`,
+      x =>
+        OE.tryCatch(x) as OE.ObservableEither<
+          string,
+          CrudApi.ChainProduct | undefined | null
+        >,
+      OE.chain(
+        OE.fromPredicate(
+          x => !!x,
+          () => `ChainProduct cannot be found: ${id}`,
+        ),
       ),
+      OE.map(x => x as NonNullable<typeof x>),
       shareReplay(1),
     ),
 );
@@ -80,10 +105,18 @@ const getGeneratedProductHelper = R.memoizeWith(
   (sdk: CrudApi.CrudSdk, productId: string) =>
     pipe(
       sdk.GetGeneratedProduct({ id: productId }),
-      OE.fromPredicate(
-        R.complement(R.isNil),
-        () => `GeneratedProduct cannot be found: ${productId}`,
+      x =>
+        OE.tryCatch(x) as OE.ObservableEither<
+          string,
+          CrudApi.GeneratedProduct | undefined | null
+        >,
+      OE.chain(
+        OE.fromPredicate(
+          x => !!x,
+          () => `GeneratedProduct cannot be found: ${productId}`,
+        ),
       ),
+      OE.map(x => x as NonNullable<typeof x>),
       shareReplay(1),
     ),
 );
