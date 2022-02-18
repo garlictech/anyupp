@@ -12,6 +12,13 @@ bool isNeedScheduleNotification(
   DateTime now,
   SharedPreferences prefs,
 ) {
+  if (order.paymentMode.method != PaymentMethod.inapp &&
+      (order.ratingPolicies == null ||
+          order.ratingPolicies?.isEmpty == true ||
+          order.rating != null)) {
+    return false;
+  }
+
   OrderStatus status = order.statusLog[order.statusLog.length - 1].status;
   bool isInScheduleTime =
       now.difference(order.updatedAt) < AppConfig.ratingNotificationTimer;

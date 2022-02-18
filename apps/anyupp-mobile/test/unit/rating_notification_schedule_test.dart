@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../mock/mock_api_values.dart';
 import '../mock/mock_data_faker.dart';
 import 'mock/mock_shared_preferences.dart';
 
@@ -29,11 +30,11 @@ void main() {
     _mockPrefs = MockSharedPreferences();
     _order = MockGenerator.generateOrder(
       name: 'TEST_ORDER',
-      method: PaymentMethod.cash,
-      paymentType: PaymentType.cash,
+      method: PaymentMethod.inapp,
+      paymentType: PaymentType.stripe,
       status: OrderStatus.served,
       price: 1000,
-    );
+    ).copyWith(ratingPolicies: [TestMock.mockRatingPolicy()!]);
   });
 
   group('Test for Rating scheduling time calculations from order serving time',

@@ -175,5 +175,42 @@ subscription OnOrderChanged($userId: String, $unitId: String) {
       netPrice
       taxPercentage
     }
+    orderPolicy
+    serviceFeePolicy {
+      type
+      percentage
+    }
+    tipPolicy {
+      description {
+        de
+        en
+        hu
+      }
+      minOtherAmount
+      percents
+      title {
+        de
+        en
+        hu
+      }
+    }
+    ratingPolicies {
+      key
+      ratings {
+        value
+        icon
+        text {
+          de
+          en
+          hu
+        }
+      }
+      title {
+        de
+        en
+        hu
+      }
+    }
+    soldOutVisibilityPolicy
   }
 }

@@ -30,8 +30,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   _OrderDetailsScreenState(Order order) {
     _order = order;
-    print(
-        '**** OrderDetails.constructor.order[${order.id}].hasRated=${order.hasRated}');
   }
 
   @override
@@ -194,15 +192,6 @@ class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
         ),
       ],
     );
-
-    // return Text(eq
-    //   trans(context, 'orders.details.serviceFee',
-    //       [unit.serviceFeePolicy?.percentage.toInt() ?? 0]),
-    //   style: Fonts.satoshi(
-    //     color: theme.secondary64,
-    //     fontSize: 14.0,
-    //   ),
-    // );
   }
 }
 
@@ -224,7 +213,7 @@ class OrderDetailsServiceFeeWidget extends StatelessWidget {
 
     return Text(
       trans(context, 'orders.details.serviceFee',
-          [unit.serviceFeePolicy?.percentage.toInt() ?? 0]),
+          [order.serviceFeePolicy?.percentage.toInt() ?? 0]),
       style: Fonts.satoshi(
         color: theme.secondary64,
         fontSize: 14.0,
@@ -313,20 +302,18 @@ class OrderDetailsTipAndServingFeeWidget extends StatelessWidget {
 class OrderDetailsRatingAndTipWidget extends StatelessWidget {
   final Order order;
 
-  final GeoUnit _unit;
-
   OrderDetailsRatingAndTipWidget({Key? key, required this.order})
-      : _unit = currentUnit!;
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (!shouldDisplayRating(order, _unit)) {
+    if (!shouldDisplayRating(order)) {
       return Container();
     }
 
     return Column(
       children: [
-        if (_unit.ratingPolicies != null && order.hasRated != true)
+        if (order.ratingPolicies != null && order.hasRated != true)
           Container(
             height: 56.0,
             width: double.infinity,
@@ -335,7 +322,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
               onPressed: () {
                 if (order.transaction != null) {
                   Nav.to(RatingAndTippingScreen(
-                    ratingPolicy: _unit.ratingPolicies![0],
+                    ratingPolicy: order.ratingPolicies![0],
                     transaction: order.transaction!,
                   ));
                 }
@@ -357,8 +344,8 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
               ),
             ),
           ),
-        if (_unit.tipPolicy != null &&
-            _unit.tipPolicy?.isNotEmpty == true &&
+        if (order.tipPolicy != null &&
+            order.tipPolicy?.isNotEmpty == true &&
             order.tip == null &&
             order.paymentMode.method == PaymentMethod.inapp &&
             order.transaction?.status == PaymentStatus.success)
@@ -375,7 +362,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
                 if (order.transaction != null) {
                   Nav.to(RatingAndTippingScreen(
                     transaction: order.transaction!,
-                    tipPolicy: _unit.tipPolicy,
+                    tipPolicy: order.tipPolicy,
                   ));
                 }
               },
@@ -532,15 +519,16 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool addServiceFeeInfoRow = unit.serviceFeePolicy?.type != null &&
-        unit.serviceFeePolicy?.type != ServiceFeeType.noFee &&
-        unit.serviceFeePolicy?.percentage != null &&
+    bool addServiceFeeInfoRow = order.serviceFeePolicy?.type != null &&
+        order.serviceFeePolicy?.type != ServiceFeeType.noFee &&
+        order.serviceFeePolicy?.percentage != null &&
         order.serviceFee != null;
-    // bool isServiceFeeIncluded =
-    //     unit.serviceFeePolicy?.type == ServiceFeeType.included;
 
-    print(
-        'OrderDetailsInfoTextWidget.addServiceFeeInfoRow=$addServiceFeeInfoRow');
+    bool isServiceFeeIncluded =
+        order.serviceFeePolicy?.type == ServiceFeeType.included;
+    // print('OrderDetailsInfo.addServiceFeeInfoRow=$addServiceFeeInfoRow');
+    // print('OrderDetailsInfo.serviceFeePolicy=${order.serviceFeePolicy}');
+    // print('OrderDetailsInfo.serviceFee=${order.serviceFee}');
 
     return Container(
       // color: theme.secondary12,
@@ -580,31 +568,33 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               OrderDetailsInfoTextItemWidget(
+                                order: order,
                                 item: order.items[index],
                                 unit: unit,
                               ),
                               Padding(
-                                  padding: const EdgeInsets.only(top: 16.0),
-                                  child: OrderDetailsServiceFeeWidget(
-                                    order: order,
-                                    unit: unit,
-                                  )
+                                padding: const EdgeInsets.only(top: 16.0),
+                                // child: OrderDetailsServiceFeeWidget(
+                                //   order: order,
+                                //   unit: unit,
+                                // )
 
-                                  // child: isServiceFeeIncluded
-                                  //     ? OrderDetailsServiceFeeWidget(
-                                  //         order: order,
-                                  //         unit: unit,
-                                  //       )
-                                  //     : OrderDetailsServiceFeePriceWidget(
-                                  //         order: order,
-                                  //         unit: unit,
-                                  //       ),
-                                  ),
+                                child: isServiceFeeIncluded
+                                    ? OrderDetailsServiceFeeWidget(
+                                        order: order,
+                                        unit: unit,
+                                      )
+                                    : OrderDetailsServiceFeePriceWidget(
+                                        order: order,
+                                        unit: unit,
+                                      ),
+                              ),
                             ],
                           )
                         : Container(
                             padding: EdgeInsets.only(top: index > 0 ? 32 : 0),
                             child: OrderDetailsInfoTextItemWidget(
+                              order: order,
                               item: order.items[index],
                               unit: unit,
                             ),
@@ -641,8 +631,7 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                   ),
                   Text(
                     formatCurrency(
-                        order.totalPrice(unit.serviceFeePolicy?.type),
-                        order.items[0].priceShown.currency),
+                        order.totalPrice, order.items[0].priceShown.currency),
                     style: Fonts.satoshi(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w700,
@@ -659,11 +648,12 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
 }
 
 class OrderDetailsInfoTextItemWidget extends StatelessWidget {
+  final Order order;
   final OrderItem item;
   final GeoUnit unit;
 
   const OrderDetailsInfoTextItemWidget(
-      {Key? key, required this.item, required this.unit})
+      {Key? key, required this.order, required this.item, required this.unit})
       : super(key: key);
 
   @override
@@ -703,7 +693,8 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: formatCurrency(item.getPrice(), unit.currency),
+                    text: formatCurrency(
+                        item.getPrice(order.serviceFeePolicy), unit.currency),
                     style: Fonts.satoshi(
                       color: theme.secondary,
                       fontSize: 14,
