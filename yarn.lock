@@ -9287,25 +9287,10 @@ aws-lambda@1.0.7:
     js-yaml "^3.14.1"
     watchpack "^2.0.0-beta.10"
 
-aws-sdk@2.1076.0:
+aws-sdk@2.1076.0, aws-sdk@^2.1076.0:
   version "2.1076.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1076.0.tgz#6a8b7b9ec46f22f4c6bf775c4b11749c03397403"
   integrity sha512-V2nLKCPG4mtKNkmET1eQQNHpEdkBF7pW/i05Qg+umTQlbLgaiL9u4vSTbn5xXeDMwejKiz3J2MB2eemV6uRUUg==
-  dependencies:
-    buffer "4.9.2"
-    events "1.1.1"
-    ieee754 "1.1.13"
-    jmespath "0.16.0"
-    querystring "0.2.0"
-    sax "1.2.1"
-    url "0.10.3"
-    uuid "3.3.2"
-    xml2js "0.4.19"
-
-aws-sdk@^2.1065.0, aws-sdk@^2.761.0, aws-sdk@^2.814.0, aws-sdk@^2.848.0, aws-sdk@^2.979.0:
-  version "2.1072.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1072.0.tgz#4fa844765ebb65b78c242b8edcf98a1669d4523b"
-  integrity sha512-b0gEHuC6xTGduPTS+ZCScurw9RTyOned9gf6H0rDagW8hdSMebsFQy84ZreeiZHHChyKyWrNUbUFugOYdw+WXw==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -9321,6 +9306,21 @@ aws-sdk@^2.1073.0:
   version "2.1073.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1073.0.tgz#96c0c25c89f814c4aa4262e6eeef20eec9fda0da"
   integrity sha512-TtyHDL4ZEs8Zh/DqWY/hv745DTWrIwOyBAvfjBJ45RE9h0TjpWqCIowEtb6gRPAKyPPyfGH4s+rEYu07vNK1Hg==
+  dependencies:
+    buffer "4.9.2"
+    events "1.1.1"
+    ieee754 "1.1.13"
+    jmespath "0.16.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.3.2"
+    xml2js "0.4.19"
+
+aws-sdk@^2.761.0, aws-sdk@^2.814.0, aws-sdk@^2.848.0, aws-sdk@^2.979.0:
+  version "2.1072.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1072.0.tgz#4fa844765ebb65b78c242b8edcf98a1669d4523b"
+  integrity sha512-b0gEHuC6xTGduPTS+ZCScurw9RTyOned9gf6H0rDagW8hdSMebsFQy84ZreeiZHHChyKyWrNUbUFugOYdw+WXw==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -22136,15 +22136,15 @@ serverless-offline-multi@1.2.0:
     minimist "1.2.5"
     nodemon "2.0.3"
 
-serverless-offline@8.4.0:
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-8.4.0.tgz#1750a4e069fbe1f42a9f148472b0b0cab327ac4b"
-  integrity sha512-9vND+6ess5NWUCNvG/v6Z7mqksODV5PWHNjCSs9jAslZwDOG/sVMOahe10pUxusYnMz5BeDBmLnF3M2jmCrKvQ==
+serverless-offline@8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-8.5.0.tgz#cd1c74f6dc3b8c41e4be2d6ea0fc48a5f7ee6700"
+  integrity sha512-72UroBrXOp2JAhIdrf+/6K8JZeH4m2Jv5UYQFudmsFMafgvNRvVk4y4miTNhJkXP35GUhUNhD4fyuPOkUpa7XA==
   dependencies:
     "@hapi/boom" "^9.1.4"
     "@hapi/h2o2" "^9.1.0"
     "@hapi/hapi" "^20.2.1"
-    aws-sdk "^2.1065.0"
+    aws-sdk "^2.1076.0"
     boxen "^5.1.2"
     chalk "^4.1.2"
     cuid "^2.1.8"
@@ -22169,7 +22169,7 @@ serverless-offline@8.4.0:
     semver "^7.3.5"
     update-notifier "^5.1.0"
     velocityjs "^2.0.6"
-    ws "^7.5.6"
+    ws "^7.5.7"
 
 serverless-webpack@^5.3.1:
   version "5.6.1"
@@ -25053,7 +25053,7 @@ ws@8.5.0, ws@^8.1.0, ws@^8.2.3, ws@^8.3.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.5.0.tgz#bfb4be96600757fe5382de12c670dab984a1ed4f"
   integrity sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg==
 
-"ws@^5.2.0 || ^6.0.0 || ^7.0.0", ws@^7.3.1, ws@^7.4.0, ws@^7.4.6, ws@^7.5.3, ws@^7.5.6:
+"ws@^5.2.0 || ^6.0.0 || ^7.0.0", ws@^7.3.1, ws@^7.4.0, ws@^7.4.6, ws@^7.5.3, ws@^7.5.7:
   version "7.5.7"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.7.tgz#9e0ac77ee50af70d58326ecff7e85eb3fa375e67"
   integrity sha512-KMvVuFzpKBuiIXW3E4u3mySRO2/mCHSyZDJQM5NQ9Q9KHWHWh0NHgfbRMLLrceUK5qAL4ytALJbpRMjixFZh8A==
