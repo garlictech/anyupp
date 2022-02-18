@@ -1,4 +1,5 @@
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,14 +56,22 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
             // scale: animation,
           );
         },
-        child: IconButton(
-          key: ValueKey<String>('$_isFavorite'),
-          iconSize: widget.iconSize,
-          icon: Icon(
-            _isFavorite == true ? Icons.favorite : Icons.favorite_border,
-            color: widget.theme.secondary,
-          ),
-          onPressed: () => _addRemoveFavorite(context, widget.product),
+        child: BlocBuilder<FavoritesBloc, FavoritesState>(
+          builder: (context, state) {
+            if (state is FavoriteListLoaded) {
+              return IconButton(
+                key: ValueKey<String>('$_isFavorite'),
+                iconSize: widget.iconSize,
+                icon: Icon(
+                  _isFavorite == true ? Icons.favorite : Icons.favorite_border,
+                  color: widget.theme.secondary,
+                ),
+                onPressed: () => _addRemoveFavorite(context, widget.product),
+              );
+            } else {
+              return CenterLoadingWidget( color:  widget.theme.secondary, strokeWidth: 2,);
+            }
+          },
         ),
       ),
     );
