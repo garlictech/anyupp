@@ -20,15 +20,14 @@ Feature: Create a new Chain
     And I fill out the "Description (DE)" input with "test description"
     And I fill out the "Email" input with a fixture adminEmail
     Then I should see 1 color picker with "#ffffff"
-    Then I should see 4 color picker with "#30bf60"
-    Then I should see 1 color picker with "#303030"
+    Then I should see 3 color picker with "#30bf60"
     When I fill out the "Phone" input with "1234567890"
     And I fill out the "Title" input with "test title"
     And I fill out the "Country" input with "Hungary"
     And I fill out the "Postal code" input with "1021"
-    And I click on the "Primary" picker fill out with "#404040"
+    And I click on the "Button" picker fill out with "#404040"
     And I fill out the "City" input with "Budapest"
-    And I click on the "Secondary" picker fill out with "#505050"
+    And I click on the "Icon" picker fill out with "#505050"
     And I fill out the "Address" input with "Kis u. 45."
     And I click on the "Locate on map" button
     And I click on the "Submit" button
@@ -49,9 +48,9 @@ Feature: Create a new Chain
     And I fill out the "Title" input with "test e2eUpdated title"
     And I fill out the "Country" input with "Hungary"
     And I fill out the "Postal code" input with "9999"
-    And I click on the "Primary" picker fill out with "#404040"
+    And I click on the "Button" picker fill out with "#404040"
     And I fill out the "City" input with "BudaE2eUpdatedpest"
-    And I click on the "Secondary" picker fill out with "#505050"
+    And I click on the "Icon" picker fill out with "#505050"
     And I fill out the "Address" input with "Kis u. 45e2eUpdated."
     And I click on the "Locate on map" button
     And I click on the "Submit" button

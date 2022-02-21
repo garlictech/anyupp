@@ -308,8 +308,8 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                           fontWeight: FontWeight.w400,
                         ),
                         labelPadding: EdgeInsets.only(
-                          left: 16,
-                          right: 16,
+                          left: 4,
+                          right: 4,
                           top: 6.0,
                           bottom: 6.0,
                         ),

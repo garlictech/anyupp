@@ -30,6 +30,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
 
   FutureOr<void> _onAddOrRemoveFavoriteProduct(
       AddOrRemoveFavoriteProduct event, Emitter<FavoritesState> emit) async {
+    emit(FavoritesLoading());
     bool isFavorite = await _favoritesRepository.addOrRemoveFavoriteProduct(
       event.unitId,
       event.categoryId,

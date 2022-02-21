@@ -86,24 +86,26 @@ class StatusWidget extends StatelessWidget {
             ),
           if (expanded && showButton == true) Spacer(),
           if (showButton == true)
-            Container(
-              width: double.infinity,
-              height: 56,
-              // margin: EdgeInsets.all(16.0),
-              child: ElevatedButton(
-                onPressed: onPressed ?? () => Nav.pop(),
-                style: ElevatedButton.styleFrom(
-                  primary: color,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
+            SafeArea(
+              child: Container(
+                width: double.infinity,
+                height: 56,
+                // margin: EdgeInsets.all(16.0),
+                child: ElevatedButton(
+                  onPressed: onPressed ?? () => Nav.pop(),
+                  style: ElevatedButton.styleFrom(
+                    primary: color,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ),
                   ),
-                ),
-                child: Text(
-                  trans(context, buttonText),
-                  style: Fonts.satoshi(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                    color: theme.buttonText,
+                  child: Text(
+                    trans(context, buttonText),
+                    style: Fonts.satoshi(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w700,
+                      color: theme.buttonText,
+                    ),
                   ),
                 ),
               ),

@@ -1,4 +1,3 @@
-import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:intl/intl.dart';
 
@@ -13,8 +12,9 @@ extension OrderExtension on Order {
     }
   }
 
-  double totalPrice([ServiceFeeType? policy]) =>
+  double get totalPrice =>
       this.sumPriceShown.priceSum +
       (this.serviceFee?.netPrice ?? 0) *
-          (1 + (this.serviceFee?.taxPercentage ?? 0) / 100.0);
+          (1 + (this.serviceFee?.taxPercentage ?? 0) / 100.0) +
+      (this.packagingSum?.netPrice ?? 0);
 }

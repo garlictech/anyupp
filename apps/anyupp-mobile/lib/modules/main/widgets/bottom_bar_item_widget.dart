@@ -9,22 +9,31 @@ class BottomBarItem extends StatelessWidget {
   final String? badge;
   final VoidCallback? onTapped;
 
-  const BottomBarItem({required this.text, required this.icon, this.selected = false, this.badge, this.onTapped});
+  const BottomBarItem(
+      {required this.text,
+      required this.icon,
+      this.selected = false,
+      this.badge,
+      this.onTapped});
 
   @override
   Widget build(BuildContext context) {
     return badge != null
         ? Badge(
-            elevation: 3.0,
-            //padding: EdgeInsets.only(left: 10.0),
+            elevation: 0.0,
+            padding: EdgeInsets.all(0),
             position: BadgePosition.topEnd(top: 12.0, end: 24.0),
             animationType: BadgeAnimationType.fade,
             animationDuration: const Duration(milliseconds: 500),
             badgeContent: Padding(
-              padding: const EdgeInsets.all(0.0),
-              child: SizedBox(
-                width: 3.0,
-                height: 3.0,
+              padding: const EdgeInsets.all(4),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFFE74C3C),
+                ),
+                width: 12.0,
+                height: 12.0,
               ),
               // child: Text(
               //   ' $badge ',
@@ -34,7 +43,7 @@ class BottomBarItem extends StatelessWidget {
               //   ),
               // ),
             ),
-            badgeColor: Color(0xFFE74C3C), // theme.primary,
+            badgeColor: theme.secondary0, // theme.primary,
             child: _buildIconAndText(),
           )
         : _buildIconAndText();

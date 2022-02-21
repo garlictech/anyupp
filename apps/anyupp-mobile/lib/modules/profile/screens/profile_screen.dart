@@ -17,16 +17,18 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: theme.secondary12,
-      body: StreamBuilder<User?>(
-          stream: getIt<AuthRepository>().getAuthenticatedUserProfileStream(),
-          builder: (context, userSnapshot) {
-            if (userSnapshot.hasData) {
-              return buildMain(context, userSnapshot.data!);
-            }
-            return CenterLoadingWidget();
-          }),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: theme.secondary12,
+        body: StreamBuilder<User?>(
+            stream: getIt<AuthRepository>().getAuthenticatedUserProfileStream(),
+            builder: (context, userSnapshot) {
+              if (userSnapshot.hasData) {
+                return buildMain(context, userSnapshot.data!);
+              }
+              return CenterLoadingWidget();
+            }),
+      ),
     );
   }
 
