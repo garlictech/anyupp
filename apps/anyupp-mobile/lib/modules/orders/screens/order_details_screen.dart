@@ -97,12 +97,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                Padding(
+               widget.unit.orderPolicy == OrderPolicy.full ? Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: OrderStatusTimelineWidget(
                     status: _order.statusLog[_order.statusLog.length - 1],
                   ),
-                ),
+                ) : Container(),
                 OrderDetailsInfoTextWidget(
                   order: _order,
                   unit: widget.unit,
@@ -339,7 +339,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
                 style: Fonts.satoshi(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w700,
-                  color: theme.buttonText,
+                  color: theme.button,
                 ),
               ),
             ),

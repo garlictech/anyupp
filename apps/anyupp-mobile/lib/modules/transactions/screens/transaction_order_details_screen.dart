@@ -46,9 +46,47 @@ class _TransactionOrderDetailsScreenState
           if (state is OrderDetailLoadedState) {
             print('Order loaded=$state');
             if (state.order == null) {
-              return EmptyWidget();
+              return Container(
+                color: theme.secondary0,
+                child: SafeArea(
+                  child: Scaffold(
+                    appBar: AppBar(
+                      leading: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8.0,
+                          bottom: 8.0,
+                          left: 15.0,
+                        ),
+                        child: BackButtonWidget(
+                          color: theme.secondary,
+                          icon: Icons.arrow_back,
+                        ),
+                      ),
+                      centerTitle: true,
+                      elevation: 3.0,
+                      shadowColor: theme.secondary0.withOpacity(0.3),
+                      iconTheme: IconThemeData(
+                        color: theme.secondary, //change your color here
+                      ),
+                      backgroundColor: theme.secondary0,
+                    ),
+                    backgroundColor: theme.secondary0,
+                    body: Center(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: EmptyWidget(
+                          messageKey: 'main.noCategories',
+                          background: Colors.transparent,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
             }
+
             return OrderDetailsScreen(
+              key: UniqueKey(),
               unit: widget.unit,
               order: state.order!,
             );

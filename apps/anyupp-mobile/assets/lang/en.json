@@ -305,7 +305,7 @@
     "delete": {
       "title": "Delete credit card?",
       "description": "This will delete the credit card from your payment methods.",
-      "reason": "Delete",
+      "ok": "Ok",
       "cancel": "Cancel"
     },
     "method": {
@@ -449,7 +449,7 @@
     "findingSeatLoading": "This may take a few seconds. Please do not close this window!",
     "tableReserved": {
       "title": "New Table Reserved!",
-      "description": "Seat #{{1}} reversed at Table #{{0}}"
+      "description": "Seat #{{1}} reserved at Table #{{0}}"
     },
     "tableFound": {
       "title": "Chair: #{{1}}, Table: #{{0}}",

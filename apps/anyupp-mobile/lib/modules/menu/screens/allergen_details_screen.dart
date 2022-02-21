@@ -10,21 +10,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AllergenDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: theme.secondary0,
-        appBar: CustomAppBar(
-          title: trans(context, 'allergens.title'),
-          elevation: 4.0,
-        ),
-        body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-          builder: (context, state) {
-            if (state is UnitSelected) {
-              return buildDetailsScreen(context, state.unit);
-            }
-            return CenterLoadingWidget();
-          },
-        ),
+    return Scaffold(
+      backgroundColor: theme.secondary0,
+      appBar: CustomAppBar(
+        title: trans(context, 'allergens.title'),
+        elevation: 4.0,
+      ),
+      body: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+        builder: (context, state) {
+          if (state is UnitSelected) {
+            return buildDetailsScreen(context, state.unit);
+          }
+          return CenterLoadingWidget();
+        },
       ),
     );
   }

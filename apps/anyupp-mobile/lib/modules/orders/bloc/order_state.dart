@@ -24,6 +24,8 @@ class OrderDetailLoadedState extends BaseOrderState {
 
 class OrdersLoadingState extends BaseOrderState {}
 
+class OrderLoadingState extends BaseOrderState {}
+
 class OrdersLoadedState extends BaseOrderState {
   final List<Order>? orders;
   final int totalCount;

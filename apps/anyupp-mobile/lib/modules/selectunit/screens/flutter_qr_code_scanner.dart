@@ -238,7 +238,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
         final seat = uri.pathSegments[2];
         final Place place = Place(table: table, seat: seat);
         // print('***** BARCODE.UNIT=$unitId, TABLE=$table, SEAT=$seat');
-        // showNotification(context, 'New Seat Reserved', 'Seat $seat reversed at Table $table', null);
+        // showNotification(context, 'New Seat Reserved', 'Seat $seat reserved at Table $table', null);
 
         setState(() {
           _unitId = unitId;
