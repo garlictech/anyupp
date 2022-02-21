@@ -51,16 +51,6 @@ Array [
               "vatValue": 0,
             },
           },
-          Object {
-            "_options": Object {
-              "grossUnitPrice": 560,
-              "label": "felszolgálási díj",
-              "quantity": 1,
-              "unit": "db",
-              "vat": 40,
-              "vatValue": 0,
-            },
-          },
         ],
         "language": Object {
           "name": "Hungarian",
@@ -124,16 +114,6 @@ Array [
               "quantity": 1,
               "unit": "db",
               "vat": 11,
-              "vatValue": 0,
-            },
-          },
-          Object {
-            "_options": Object {
-              "grossUnitPrice": 560,
-              "label": "felszolgálási díj",
-              "quantity": 1,
-              "unit": "db",
-              "vat": 40,
               "vatValue": 0,
             },
           },
@@ -306,16 +286,6 @@ Array [
               "quantity": 1,
               "unit": "db",
               "vat": 10,
-              "vatValue": 0,
-            },
-          },
-          Object {
-            "_options": Object {
-              "grossUnitPrice": 560,
-              "label": "felszolgálási díj",
-              "quantity": 1,
-              "unit": "db",
-              "vat": 40,
               "vatValue": 0,
             },
           },

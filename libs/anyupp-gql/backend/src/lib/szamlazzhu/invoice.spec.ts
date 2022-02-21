@@ -89,6 +89,7 @@ test('split service fee by tax percentage', async () => {
         currency: 'HUF',
       },
     },
+    {},
     {
       serviceFee: {
         taxPercentage: 0,

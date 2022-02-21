@@ -23,7 +23,7 @@ export const payTipWithStripe =
       throw Error('Order not found with id=' + orderId);
     }
 
-    const paymentMethod = order?.paymentMode.method;
+    const paymentMethod = order?.paymentMode?.method;
     const paymentMethodId = order?.transaction?.paymentMethodId;
 
     if (paymentMethod == CrudApi.PaymentMethod.inapp && !paymentMethodId) {
@@ -86,7 +86,11 @@ export const payTipWithStripe =
         );
       }
 
-      const amount = input.tip.value;
+      const amount =
+        input.tip.type === CrudApi.TipType.percent
+          ? (order.sumPriceShown.priceSum * input.tip.value) / 100
+          : input.tip.value;
+
       const currency = order.sumPriceShown.currency;
 
       const stripeAmount: number =

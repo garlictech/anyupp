@@ -664,11 +664,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.13,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -757,11 +753,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.24,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -887,11 +879,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.7599999999999999,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -959,11 +947,7 @@ Object {
       },
     },
   ],
-  "serviceFee": Object {
-    "currency": "EUR",
-    "netPrice": 1.7288999999999999,
-    "taxPercentage": 0,
-  },
+  "serviceFee": null,
   "serviceFeePolicy": Object {
     "percentage": 10,
     "type": "applicable",
@@ -1416,11 +1400,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.13,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -1509,11 +1489,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.24,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -1639,11 +1615,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.7599999999999999,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -1711,11 +1683,7 @@ Object {
       },
     },
   ],
-  "serviceFee": Object {
-    "currency": "EUR",
-    "netPrice": 1.7288999999999999,
-    "taxPercentage": 0,
-  },
+  "serviceFee": null,
   "serviceFeePolicy": Object {
     "percentage": 10,
     "type": "applicable",
@@ -2168,11 +2136,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.13,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -2261,11 +2225,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.24,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -2391,11 +2351,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.7599999999999999,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -2463,11 +2419,7 @@ Object {
       },
     },
   ],
-  "serviceFee": Object {
-    "currency": "EUR",
-    "netPrice": 1.7288999999999999,
-    "taxPercentage": 0,
-  },
+  "serviceFee": null,
   "serviceFeePolicy": Object {
     "percentage": 10,
     "type": "applicable",
