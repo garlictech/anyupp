@@ -195,6 +195,59 @@ class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
   }
 }
 
+class OrderDetailsPackagingFeeWidget extends StatelessWidget {
+  final Order order;
+  final GeoUnit unit;
+  OrderDetailsPackagingFeeWidget(
+      {Key? key, required this.order, required this.unit});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          trans(context, 'cart.packagingFee'),
+          style: Fonts.satoshi(
+            fontSize: 14.0,
+            fontWeight: FontWeight.w400,
+            color: theme.secondary,
+          ),
+        ),
+        RichText(
+          text: TextSpan(
+            text: '1',
+            style: Fonts.satoshi(
+              color: theme.secondary,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+            children: <TextSpan>[
+              TextSpan(
+                text: ' x ',
+                style: Fonts.satoshi(
+                  color: theme.secondary40,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              TextSpan(
+                text: formatCurrency(
+                    order.packagingSum?.netPrice ?? 0, unit.currency),
+                style: Fonts.satoshi(
+                  color: theme.secondary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class OrderDetailsServiceFeeWidget extends StatelessWidget {
   final Order order;
   final GeoUnit unit;
@@ -519,16 +572,21 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool addServiceFeeInfoRow = order.serviceFeePolicy?.type != null &&
+    bool isTakeAway = order.servingMode == ServingMode.takeAway;
+    bool isServiceFee = order.serviceFeePolicy?.type != null &&
         order.serviceFeePolicy?.type != ServiceFeeType.noFee &&
         order.serviceFeePolicy?.percentage != null &&
-        order.serviceFee != null;
+        order.serviceFee != null &&
+        !isTakeAway;
 
     bool isServiceFeeIncluded =
         order.serviceFeePolicy?.type == ServiceFeeType.included;
+
     // print('OrderDetailsInfo.addServiceFeeInfoRow=$addServiceFeeInfoRow');
-    // print('OrderDetailsInfo.serviceFeePolicy=${order.serviceFeePolicy}');
-    // print('OrderDetailsInfo.serviceFee=${order.serviceFee}');
+    // print('OrderDetailsInfo.totalPrice=${order.totalPrice}');
+    // print('OrderDetailsInfo.serviceFeePrice=${order.serviceFeePrice}');
+    // print('OrderDetailsInfo.servingMode=${order.servingMode}');
+    // print('OrderDetailsInfo.packagingSum=${order.packagingSum}');
 
     return Container(
       // color: theme.secondary12,
@@ -561,36 +619,66 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                   itemCount: order.items.length,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return addServiceFeeInfoRow &&
-                            index == order.items.length - 1
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              OrderDetailsInfoTextItemWidget(
-                                order: order,
-                                item: order.items[index],
-                                unit: unit,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 16.0),
-                                // child: OrderDetailsServiceFeeWidget(
-                                //   order: order,
-                                //   unit: unit,
-                                // )
+                    return index == order.items.length - 1
+                        ? isServiceFee
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  OrderDetailsInfoTextItemWidget(
+                                    order: order,
+                                    item: order.items[index],
+                                    unit: unit,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 16.0),
+                                    // child: OrderDetailsServiceFeeWidget(
+                                    //   order: order,
+                                    //   unit: unit,
+                                    // )
 
-                                child: isServiceFeeIncluded
-                                    ? OrderDetailsServiceFeeWidget(
+                                    child: isServiceFeeIncluded
+                                        ? OrderDetailsServiceFeeWidget(
+                                            order: order,
+                                            unit: unit,
+                                          )
+                                        : OrderDetailsServiceFeePriceWidget(
+                                            order: order,
+                                            unit: unit,
+                                          ),
+                                  ),
+                                ],
+                              )
+                            : isTakeAway
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      OrderDetailsInfoTextItemWidget(
                                         order: order,
-                                        unit: unit,
-                                      )
-                                    : OrderDetailsServiceFeePriceWidget(
-                                        order: order,
+                                        item: order.items[index],
                                         unit: unit,
                                       ),
-                              ),
-                            ],
-                          )
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 16.0),
+                                        child: OrderDetailsPackagingFeeWidget(
+                                          order: order,
+                                          unit: unit,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Container(
+                                    padding: EdgeInsets.only(
+                                        top: index > 0 ? 32 : 0),
+                                    child: OrderDetailsInfoTextItemWidget(
+                                      order: order,
+                                      item: order.items[index],
+                                      unit: unit,
+                                    ),
+                                  )
                         : Container(
                             padding: EdgeInsets.only(top: index > 0 ? 32 : 0),
                             child: OrderDetailsInfoTextItemWidget(
