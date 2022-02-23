@@ -53,12 +53,13 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
       bool? showed = preferences.getBool('TOOLTIP_${unit.id}');
       // print('_checkNeedToShowTooltip.showed=$showed');
       if (showed == null || showed == false) {
+        setState(() {
+          _showTooltip = true;
+        });
         await preferences.setBool('TOOLTIP_${unit.id}', true);
+      } else {
+        _showTooltip = false;
       }
-      setState(() {
-        _showTooltip = showed == null || showed == false;
-        // print('_checkNeedToShowTooltip._showTooltip=$_showTooltip');
-      });
     } else {
       setState(() {
         _showTooltip = false;
@@ -121,10 +122,10 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     _tabController?.addListener(() {
       if (_tabController?.indexIsChanging == false) {
         print('ProductMenuScreen.selectedTab()=${_tabController?.index}');
-        setState(() {
-          _selectedTab = _tabController!.index;
+        if (_showTooltip) {
           _checkNeedToShowTooltip();
-        });
+        }
+        _selectedTab = _tabController!.index;
       }
     });
 
