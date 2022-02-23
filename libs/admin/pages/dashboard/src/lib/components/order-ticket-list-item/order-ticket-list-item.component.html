@@ -17,7 +17,7 @@
         [text]="order.items.length.toString()"
       ></nb-badge>
       <span class="caption ms-4 font-larger font-weight-bold">{{
-        order.sumPriceShown.priceSum + (order.serviceFee?.netPrice || 0)
+        order.sumPriceShown.priceSum + (order.serviceFee?.grossPrice || 0)
           | currencyFormatter: order.sumPriceShown.currency
       }}</span>
     </div>

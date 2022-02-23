@@ -30,7 +30,7 @@ class Order {
   final PaymentStatus? tipTransactionStatus;
   final String? tipTransactionId;
   final Transaction? tipTransaction;
-  final Price? serviceFee;
+  final CumulatedPrice? serviceFee;
   final OrderPolicy? orderPolicy;
   final ServiceFeePolicy? serviceFeePolicy;
   final List<RatingPolicy>? ratingPolicies;
@@ -98,7 +98,7 @@ class Order {
     PaymentStatus? tipTransactionStatus,
     String? tipTransactionId,
     Transaction? tipTransaction,
-    Price? serviceFee,
+    CumulatedPrice? serviceFee,
     OrderPolicy? orderPolicy,
     ServiceFeePolicy? serviceFeePolicy,
     List<RatingPolicy>? ratingPolicies,
@@ -219,8 +219,9 @@ class Order {
       tipTransaction: map['tipTransaction'] != null
           ? Transaction.fromJson(map['tipTransaction'])
           : null,
-      serviceFee:
-          map['serviceFee'] != null ? Price.fromJson(map['serviceFee']) : null,
+      serviceFee: map['serviceFee'] != null
+          ? CumulatedPrice.fromJson(map['serviceFee'])
+          : null,
       orderPolicy: enumFromStringNull(map['orderPolicy'], OrderPolicy.values),
       serviceFeePolicy: map['serviceFeePolicy'] != null
           ? ServiceFeePolicy.fromJson(map['serviceFeePolicy'])

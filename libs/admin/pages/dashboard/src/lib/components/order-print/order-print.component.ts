@@ -130,6 +130,24 @@ export class OrderPrintComponent implements OnInit, OnChanges {
           item.sumPriceShown,
         );
 
+        // Handle service fee
+        if (
+          item.serviceFee &&
+          order.serviceFeePolicy?.type === this.EServiceFeeType.applicable
+        ) {
+          this.hasServiceFee = true;
+
+          serviceFees[item.serviceFee.taxPercentage] = summarizeServiceFeeByTax(
+            serviceFees,
+            item.serviceFee,
+          );
+
+          this.sum.value += Math.round(
+            item.serviceFee.netPrice *
+              (1 + item.serviceFee.taxPercentage * 0.01),
+          );
+        }
+
         // SUM
         this.sum.value += item.sumPriceShown.priceSum;
         this.sum.currency = item.sumPriceShown.currency;
@@ -152,24 +170,6 @@ export class OrderPrintComponent implements OnInit, OnChanges {
             order.packagingSum.netPrice,
             order.packagingSum.taxPercentage,
           ),
-        );
-      }
-
-      // Handle service fee
-      if (
-        order.serviceFee &&
-        order.serviceFeePolicy?.type === this.EServiceFeeType.applicable
-      ) {
-        this.hasServiceFee = true;
-
-        serviceFees[order.serviceFee.taxPercentage] = summarizeServiceFeeByTax(
-          serviceFees,
-          order.serviceFee,
-        );
-
-        this.sum.value += Math.round(
-          order.serviceFee.netPrice *
-            (1 + order.serviceFee.taxPercentage * 0.01),
         );
       }
     });

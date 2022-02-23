@@ -3,6 +3,7 @@ export 'models/Cart.dart';
 export 'models/ChainStyle.dart';
 export 'models/ChainStyleColors.dart';
 export 'models/ChainStyleImages.dart';
+export 'models/CumulatedPrice.dart';
 export 'models/FavoriteProduct.dart';
 export 'models/GeneratedProduct.dart';
 export 'models/GeneratedProductConfigComponent.dart';

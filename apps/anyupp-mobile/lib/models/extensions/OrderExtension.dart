@@ -20,5 +20,5 @@ extension OrderExtension on Order {
 
   double get serviceFeePrice => this.servingMode != ServingMode.inPlace
       ? 0
-      : (serviceFee?.totalPrice ?? 0.0);
+      : (serviceFee?.grossPrice ?? 0.0);
 }

@@ -140,8 +140,8 @@ const order: CrudApi.Order = {
   transactionId: 'ORDER TRANSACTIONID ',
   unpayCategory: CrudApi.UnpayCategory.other,
   serviceFee: {
-    netPrice: 400,
-    taxPercentage: 40,
+    grossPrice: 400,
+    taxContent: 40,
     currency: 'SERVICEFEE CURRENCY',
   },
   packagingSum: {

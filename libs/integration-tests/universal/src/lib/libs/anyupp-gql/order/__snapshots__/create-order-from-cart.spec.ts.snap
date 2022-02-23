@@ -221,8 +221,8 @@ Array [
       ],
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.20320000000000002,
-        "taxPercentage": 0,
+        "grossPrice": 0.20320000000000002,
+        "taxContent": 0.0432,
       },
       "serviceFeePolicy": Object {
         "percentage": 10,
@@ -586,8 +586,8 @@ Object {
   ],
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 1.7145,
-    "taxPercentage": 0,
+    "grossPrice": 1.7145,
+    "taxContent": 0.3645,
   },
   "serviceFeePolicy": Object {
     "percentage": 10,
@@ -1322,8 +1322,8 @@ Object {
   ],
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 1.7145,
-    "taxPercentage": 0,
+    "grossPrice": 1.7145,
+    "taxContent": 0.3645,
   },
   "serviceFeePolicy": Object {
     "percentage": 10,
@@ -2058,8 +2058,8 @@ Object {
   ],
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 1.7145,
-    "taxPercentage": 0,
+    "grossPrice": 1.7145,
+    "taxContent": 0.3645,
   },
   "serviceFeePolicy": Object {
     "percentage": 10,

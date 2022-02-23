@@ -178,8 +178,8 @@ mutation RateOrder($orderId: ID!, $questionKey: String!, $rating: Int!) {
     tipTransactionStatus
     serviceFee {
       currency
-      netPrice
-      taxPercentage
+      grossPrice
+      taxContent
     }
     orderPolicy
     serviceFeePolicy {

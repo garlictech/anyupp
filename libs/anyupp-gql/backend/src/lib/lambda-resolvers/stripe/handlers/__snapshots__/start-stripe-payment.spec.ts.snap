@@ -280,7 +280,7 @@ Array [
         "orderId": "ORDER_ID",
         "paymentMethodId": "PAYMENT_METHOD_ID",
         "status": "waiting_for_payment",
-        "total": 222,
+        "total": 212,
         "type": "stripe",
         "userId": "USER_ID",
       },
@@ -406,7 +406,7 @@ exports[`startStripePayment test: stripeClient.paymentIntents.create.mock 1`] = 
 Array [
   Array [
     Object {
-      "amount": 222,
+      "amount": 212,
       "currency": "BATKA",
       "customer": "STRIPE_CUSTOMER_ID",
       "payment_method": "PAYMENT_METHOD_ID",

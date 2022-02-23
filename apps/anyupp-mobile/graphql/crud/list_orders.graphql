@@ -185,8 +185,8 @@ query SearchOrders(
       }
       serviceFee {
         currency
-        netPrice
-        taxPercentage
+        grossPrice
+        taxContent
       }
       tipTransactionId
       tipTransactionStatus

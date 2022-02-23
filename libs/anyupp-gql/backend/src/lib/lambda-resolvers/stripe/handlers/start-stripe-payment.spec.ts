@@ -34,8 +34,8 @@ const getDepsMock = (): StripeResolverDeps => ({
         },
         serviceFee: {
           currency: 'BATKA',
-          netPrice: 100,
-          taxPercentage: 10,
+          grossPrice: 100,
+          taxContent: 10,
         },
         packagingSum: {
           currency: 'BATKA',

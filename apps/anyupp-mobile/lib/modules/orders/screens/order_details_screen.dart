@@ -148,7 +148,7 @@ class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (order.serviceFee == null || (order.serviceFee?.totalPrice ?? 0) == 0) {
+    if (order.serviceFee == null || (order.serviceFee?.grossPrice ?? 0) == 0) {
       return Container();
     }
 
@@ -182,7 +182,7 @@ class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
               ),
               TextSpan(
                 text: formatCurrency(
-                    order.serviceFee?.totalPrice ?? 0, unit.currency),
+                    order.serviceFee?.grossPrice ?? 0, unit.currency),
                 style: Fonts.satoshi(
                   color: theme.secondary,
                   fontSize: 14,
@@ -262,7 +262,7 @@ class OrderDetailsServiceFeeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (order.serviceFee == null || (order.serviceFee?.totalPrice ?? 0) == 0) {
+    if (order.serviceFee == null || (order.serviceFee?.grossPrice ?? 0) == 0) {
       return Container();
     }
 

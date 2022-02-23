@@ -102,7 +102,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
       this.ordersSum = {
         selected:
           this.selectedOrder.sumPriceShown.priceSum +
-          (this.selectedOrder.serviceFee?.netPrice || 0),
+          (this.selectedOrder.serviceFee?.grossPrice || 0),
         currency: this.selectedOrder.sumPriceShown.currency,
       };
 
@@ -136,7 +136,7 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
             this.ordersSum.all =
               (this.ordersSum?.all || 0) +
               o.sumPriceShown.priceSum +
-              (o.serviceFee?.netPrice || 0);
+              (o.serviceFee?.grossPrice || 0);
           });
 
           this._changeDetectorRef.detectChanges();

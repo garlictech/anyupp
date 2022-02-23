@@ -107,9 +107,7 @@ export const startStripePayment =
       );
     }
 
-    const serviceFee = order.serviceFee
-      ? order.serviceFee.netPrice * (1 + order.serviceFee.taxPercentage / 100)
-      : 0;
+    const serviceFee = order.serviceFee ? order.serviceFee.grossPrice : 0;
     const packagingSum = order.packagingSum
       ? order.packagingSum.netPrice *
         (1 + order.packagingSum.taxPercentage / 100)

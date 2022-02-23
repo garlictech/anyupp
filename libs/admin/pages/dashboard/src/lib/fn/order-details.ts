@@ -15,7 +15,7 @@ export const calculateOrderSum = (
   } else {
     return formatterFn(
       Math.round(
-        order.sumPriceShown.priceSum + (order.serviceFee?.netPrice || 0),
+        order.sumPriceShown.priceSum + (order.serviceFee?.grossPrice || 0),
       ),
       order.sumPriceShown.currency,
     );
@@ -50,7 +50,7 @@ export const calculateServiceFeeSum = (
     // sumPriceShown contains the packaging fee (is set)
     return order.serviceFee
       ? formatterFn(
-          order.serviceFee.netPrice || 0,
+          order.serviceFee.grossPrice || 0,
           order.sumPriceShown.currency,
         )
       : undefined;

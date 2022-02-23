@@ -468,6 +468,12 @@ type Price @aws_api_key @aws_iam @aws_cognito_user_pools {
   taxPercentage: Float!
 }
 
+type CumulatedPrice @aws_api_key @aws_iam @aws_cognito_user_pools {
+  currency: String!
+  grossPrice: Float!
+  taxContent: Float!
+}
+
 type OrderItem @aws_api_key @aws_iam @aws_cognito_user_pools {
   productId: ID!
   variantId: ID!
@@ -511,7 +517,7 @@ type Order @aws_iam @aws_cognito_user_pools {
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: Price
+  serviceFee: CumulatedPrice
   packagingSum: Price
   sumPriceShown: PriceShown!
   rating: OrderRating
@@ -2051,6 +2057,12 @@ input PlaceInput {
   table: String!
 }
 
+input CumulatedPriceInput {
+  currency: String!
+  grossPrice: Float!
+  taxContent: Float!
+}
+
 input OrderRatingInput {
   key: String!
   value: Int!
@@ -2133,7 +2145,7 @@ input CreateOrderInput {
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: PriceInput
+  serviceFee: CumulatedPriceInput
   packagingSum: PriceInput
   sumPriceShown: PriceShownInput!
   rating: OrderRatingInput
@@ -2166,7 +2178,7 @@ input UpdateOrderInput {
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: PriceInput
+  serviceFee: CumulatedPriceInput
   packagingSum: PriceInput
   sumPriceShown: PriceShownInput
   rating: OrderRatingInput
