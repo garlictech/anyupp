@@ -178,7 +178,7 @@
     "cucumber-html-reporter": "5.5.0",
     "cypress": "9.5.0",
     "cypress-cucumber-preprocessor": "4.3.1",
-    "cypress-localstorage-commands": "1.6.1",
+    "cypress-localstorage-commands": "1.7.0",
     "dotenv": "16.0.0",
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.4.0",
