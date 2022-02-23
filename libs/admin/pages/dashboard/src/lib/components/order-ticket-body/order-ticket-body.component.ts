@@ -100,7 +100,9 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
   private _getOrdersInfo(): void {
     if (this.selectedOrder) {
       this.ordersSum = {
-        selected: this.selectedOrder.sumPriceShown.priceSum,
+        selected:
+          this.selectedOrder.sumPriceShown.priceSum +
+          (this.selectedOrder.serviceFee?.netPrice || 0),
         currency: this.selectedOrder.sumPriceShown.currency,
       };
 
@@ -132,7 +134,9 @@ export class OrderTicketBodyComponent implements OnInit, OnDestroy {
           this.ordersSum.all = 0;
           this.userActiveOrders.forEach((o: CrudApi.Order): void => {
             this.ordersSum.all =
-              (this.ordersSum?.all || 0) + o.sumPriceShown.priceSum;
+              (this.ordersSum?.all || 0) +
+              o.sumPriceShown.priceSum +
+              (o.serviceFee?.netPrice || 0);
           });
 
           this._changeDetectorRef.detectChanges();

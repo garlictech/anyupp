@@ -128,6 +128,7 @@
     "resetPassword": "Reset password",
     "packagingFee": "Packaging fee",
     "packagingTax": "Packaging tax",
+    "serviceFee": "Service fee",
     "search": "Search",
     "value": "Value",
     "icon": "Icon",
@@ -443,7 +444,6 @@
   "print": {
     "items": "Items",
     "vatDetails": "VAT details",
-    "serviceFeeDetails": "Service fee",
     "selectedPaymentMode": "Választott fizetési mód"
   },
   "roles": {

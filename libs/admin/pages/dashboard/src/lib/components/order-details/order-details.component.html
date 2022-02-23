@@ -21,76 +21,96 @@
   </button>
 </div>
 <div class="clearfix"></div>
-<div class="row p-0 m-0">
-  <ng-container *ngFor="let orderItem of order?.items; index as i">
-    <div class="col-1 col-md-1 p-2 m-auto subtitle-2 text-end font-larger">
-      {{ i + 1 }}.
-    </div>
-    <div class="col-11 col-md-5 p-2 m-auto subtitle-2 font-larger">
-      <div>
-        {{ orderItem.productName | localize }} ({{
-          orderItem.variantName | localize
-        }})
+<div class="row p-0 m-0" *ngFor="let orderItem of orderItems; index as i">
+  <div class="col-1 col-md-1 p-2 m-auto subtitle-2 text-end font-larger">
+    {{ i + 1 }}.
+  </div>
+  <div class="col-11 col-md-5 p-2 m-auto subtitle-2 font-larger">
+    <div>
+      {{ orderItem.productName | localize }} ({{
+        orderItem.variantName | localize
+      }})
 
-        <bgap-colorized-lane-icon
-          [laneId]="orderItem.laneId!"
-        ></bgap-colorized-lane-icon>
-      </div>
-      <div class="font-weight-normal" *ngIf="orderItem.configSets">
-        <div *ngFor="let set of orderItem.configSets">
-          <span *ngFor="let setItem of set.items; let last = last">
-            {{ setItem.name | localize }}
-            <ng-container *ngIf="!last">,</ng-container>
-          </span>
-        </div>
+      <bgap-colorized-lane-icon
+        [laneId]="orderItem.laneId!"
+      ></bgap-colorized-lane-icon>
+    </div>
+    <div class="font-weight-normal" *ngIf="orderItem.configSets">
+      <div *ngFor="let set of orderItem.configSets">
+        <span *ngFor="let setItem of set.items; let last = last">
+          {{ setItem.name | localize }}
+          <ng-container *ngIf="!last">,</ng-container>
+        </span>
       </div>
     </div>
-    <div
-      class="col-1 col-md-1 p-2 m-auto caption text-end font-weight-bold font-larger"
-    >
-      {{ orderItem.quantity }}x
-    </div>
-    <div class="col-3 col-md-2 p-2 m-auto caption text-end font-larger">
-      {{
-        orderItem.sumPriceShown.priceSum
-          | currencyFormatter: orderItem.sumPriceShown.currency
-      }}
-    </div>
-    <div class="text-end p-2 col-8 col-md-3 m-auto">
-      <ng-container *ngIf="isListMode('current') || isListMode('floormap')">
-        <button
-          *ngIf="isStatusLog(orderItem, 'served')"
-          nbButton
-          class="me-2"
-          [status]="getPlacedButtonStatus()"
-          [size]="buttonSize"
-          shape="round"
-          (click)="resetOrderItemStatus(i)"
-        >
-          <nb-icon icon="arrow_back_ios" pack="material-icons"></nb-icon>
-        </button>
+  </div>
+  <div
+    class="col-1 col-md-1 p-2 m-auto caption text-end font-weight-bold font-larger"
+  >
+    {{ orderItem.quantity }}x
+  </div>
+  <div class="col-3 col-md-2 p-2 m-auto caption text-end font-larger">
+    {{
+      orderItem.sumPriceShown.priceSum
+        | currencyFormatter: orderItem.sumPriceShown.currency
+    }}
+  </div>
+  <div class="text-end p-2 col-8 col-md-3 m-auto">
+    <ng-container *ngIf="isListMode('current') || isListMode('floormap')">
+      <button
+        *ngIf="isStatusLog(orderItem, 'served')"
+        nbButton
+        class="me-2"
+        [status]="getPlacedButtonStatus()"
+        [size]="buttonSize"
+        shape="round"
+        (click)="resetOrderItemStatus(i)"
+      >
+        <nb-icon icon="arrow_back_ios" pack="material-icons"></nb-icon>
+      </button>
 
-        <button
-          nbButton
-          [status]="getButtonStatus(orderItem.statusLog)"
-          [size]="buttonSize"
-          *ngIf="currentStatus(order.statusLog) !== EOrderStatus.none"
-          shape="round"
-          class="font-larger"
-          (click)="updateOrderItemStatus(i)"
-        >
-          {{ currentStatus(orderItem.statusLog) }}
-        </button>
-      </ng-container>
-
-      <nb-badge
-        class="font-larger p-2 position-static"
+      <button
+        nbButton
         [status]="getButtonStatus(orderItem.statusLog)"
-        *ngIf="isListMode('history')"
-        [text]="currentStatus(orderItem.statusLog)"
-      ></nb-badge>
-    </div>
-  </ng-container>
+        [size]="buttonSize"
+        *ngIf="currentStatus(order.statusLog) !== EOrderStatus.none"
+        shape="round"
+        class="font-larger"
+        (click)="updateOrderItemStatus(i)"
+      >
+        {{ currentStatus(orderItem.statusLog) }}
+      </button>
+    </ng-container>
+
+    <nb-badge
+      class="font-larger p-2 position-static"
+      [status]="getButtonStatus(orderItem.statusLog)"
+      *ngIf="isListMode('history')"
+      [text]="currentStatus(orderItem.statusLog)"
+    ></nb-badge>
+  </div>
+</div>
+<div class="row p-0 m-0" *ngIf="packagingFeeStr">
+  <div class="col-1 col-md-1"></div>
+  <div class="col-11 col-md-5 p-2 m-auto subtitle-2 font-larger">
+    {{ 'common.packagingFee' | translate }}
+  </div>
+  <div class="col-1 col-md-1"></div>
+  <div class="col-3 col-md-2 p-2 m-auto caption text-end font-larger">
+    {{ packagingFeeStr }}
+  </div>
+  <div class="col-8 col-md-3"></div>
+</div>
+<div class="row p-0 m-0" *ngIf="serviceFeeStr">
+  <div class="col-1 col-md-1"></div>
+  <div class="col-11 col-md-5 p-2 m-auto subtitle-2 font-larger">
+    {{ 'common.serviceFee' | translate }}
+  </div>
+  <div class="col-1 col-md-1"></div>
+  <div class="col-3 col-md-2 p-2 m-auto caption text-end font-larger">
+    {{ serviceFeeStr }}
+  </div>
+  <div class="col-8 col-md-3"></div>
 </div>
 
 <hr class="mt-1 mb-1" />
@@ -158,10 +178,7 @@
   </div-->
 
   <div class="col-2 p-2 caption text-end m-auto font-weight-bold font-larger">
-    {{
-      order.sumPriceShown.priceSum
-        | currencyFormatter: order.sumPriceShown.currency
-    }}
+    {{ this.orderSumStr }}
   </div>
   <div class="text-end p-2 col-3 m-auto">
     <button
@@ -211,7 +228,6 @@
       *ngIf="currentStatus(order.statusLog) === EOrderStatus.none"
       data-testid="orderDeleteBtn"
     >
-      <nb-icon icon="remove" pack="material-icons"></nb-icon>
       {{ 'orders.deleteOrder' | translate }}
     </button>
   </div>
