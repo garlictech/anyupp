@@ -97,12 +97,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-               widget.unit.orderPolicy == OrderPolicy.full ? Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: OrderStatusTimelineWidget(
-                    status: _order.statusLog[_order.statusLog.length - 1],
-                  ),
-                ) : Container(),
+                widget.unit.orderPolicy == OrderPolicy.full
+                    ? Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: OrderStatusTimelineWidget(
+                          status: _order.statusLog[_order.statusLog.length - 1],
+                        ),
+                      )
+                    : Container(),
                 OrderDetailsInfoTextWidget(
                   order: _order,
                   unit: widget.unit,
@@ -146,7 +148,7 @@ class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (order.serviceFee == null || (order.serviceFee?.netPrice ?? 0) == 0) {
+    if (order.serviceFee == null || (order.serviceFee?.totalPrice ?? 0) == 0) {
       return Container();
     }
 
@@ -180,7 +182,7 @@ class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
               ),
               TextSpan(
                 text: formatCurrency(
-                    order.serviceFee?.netPrice ?? 0, unit.currency),
+                    order.serviceFee?.totalPrice ?? 0, unit.currency),
                 style: Fonts.satoshi(
                   color: theme.secondary,
                   fontSize: 14,
@@ -233,7 +235,7 @@ class OrderDetailsPackagingFeeWidget extends StatelessWidget {
               ),
               TextSpan(
                 text: formatCurrency(
-                    order.packagingSum?.netPrice ?? 0, unit.currency),
+                    order.packagingSum?.totalPrice ?? 0, unit.currency),
                 style: Fonts.satoshi(
                   color: theme.secondary,
                   fontSize: 14,
@@ -260,13 +262,13 @@ class OrderDetailsServiceFeeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (order.serviceFee == null || (order.serviceFee?.netPrice ?? 0) == 0) {
+    if (order.serviceFee == null || (order.serviceFee?.totalPrice ?? 0) == 0) {
       return Container();
     }
 
     return Text(
       trans(context, 'orders.details.serviceFee',
-          [order.serviceFeePolicy?.percentage.toInt() ?? 0]),
+          [formatDouble(order.serviceFeePolicy?.percentage)]),
       style: Fonts.satoshi(
         color: theme.secondary64,
         fontSize: 14.0,
@@ -366,7 +368,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
 
     return Column(
       children: [
-        if (order.ratingPolicies != null && order.hasRated != true)
+        if (order.ratingPolicies?.isNotEmpty == true && order.hasRated != true)
           Container(
             height: 56.0,
             width: double.infinity,
@@ -582,11 +584,13 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
     bool isServiceFeeIncluded =
         order.serviceFeePolicy?.type == ServiceFeeType.included;
 
-    // print('OrderDetailsInfo.addServiceFeeInfoRow=$addServiceFeeInfoRow');
+    // print(
+    //     'OrderDetailsInfo..sumPriceShown.priceSum=${order.sumPriceShown.priceSum}');
     // print('OrderDetailsInfo.totalPrice=${order.totalPrice}');
     // print('OrderDetailsInfo.serviceFeePrice=${order.serviceFeePrice}');
     // print('OrderDetailsInfo.servingMode=${order.servingMode}');
-    // print('OrderDetailsInfo.packagingSum=${order.packagingSum}');
+    // print(
+    //     'OrderDetailsInfo.packagingSum.totalPrice=${order.packagingSum?.totalPrice}');
 
     return Container(
       // color: theme.secondary12,

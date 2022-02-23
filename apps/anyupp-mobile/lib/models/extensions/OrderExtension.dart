@@ -14,12 +14,11 @@ extension OrderExtension on Order {
   }
 
   double get totalPrice =>
-      this.sumPriceShown.priceSum +
+      sumPriceShown.priceSum +
       serviceFeePrice +
-      (this.packagingSum?.netPrice ?? 0);
+      (packagingSum?.totalPrice ?? 0);
 
-  double get serviceFeePrice => this.servingMode == ServingMode.takeAway
+  double get serviceFeePrice => this.servingMode != ServingMode.inPlace
       ? 0
-      : (this.serviceFee?.netPrice ?? 0) *
-          (1 + (this.serviceFee?.taxPercentage ?? 0) / 100.0);
+      : (serviceFee?.totalPrice ?? 0.0);
 }
