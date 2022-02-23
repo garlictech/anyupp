@@ -7807,10 +7807,10 @@
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
-"@vvo/tzdb@6.45.0":
-  version "6.45.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.45.0.tgz#a69d516583bddeaa1c443ed22faa6e32ec903842"
-  integrity sha512-oJFGDRqoTdJo+rNB1Pe/VzEK7Cn8BVdkQJPfGkE3z0bKV0aH5SKsEY+W9w9/AzXS7iYacwFTGZ2jiRF9LIZ8CA==
+"@vvo/tzdb@6.47.0":
+  version "6.47.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.47.0.tgz#44667c81b202fd771d929dca77efd174f36972d5"
+  integrity sha512-XvOQhVh3BXeAO+uuIFpjWU143KZ4f/IzsiBKBYl0Quvd8HB8/hQKb6AlTpVeIwPhgM9PtrdjMm5NR8wh19/fPQ==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
