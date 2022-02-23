@@ -12,6 +12,7 @@ import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/utils/stage_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:fa_prev/shared/widgets/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -366,53 +367,18 @@ class CartScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            transEx(context, 'cart.deleteCartTitle'),
-            style: Fonts.satoshi(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-              color: theme.secondary,
-            ),
-          ),
-          content: Text(
-            transEx(context, 'cart.deleteCartMessage'),
-            style: Fonts.satoshi(
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-              color: theme.secondary,
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: Text(
-                transEx(context, 'cart.deleteCartCancel'),
-                style: Fonts.satoshi(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w400,
-                  color: theme.secondary,
-                ),
-              ),
-              onPressed: () {
-                Nav.pop();
-              },
-            ),
-            TextButton(
-              child: Text(
-                transEx(context, 'cart.deleteCartAccept'),
-                style: Fonts.satoshi(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
-                  color: theme.highlight,
-                ),
-              ),
-              onPressed: () async {
-                Nav.reset(MainNavigation());
-                getIt<CartBloc>().add(ClearCartAction());
-              },
-            ),
-          ],
-        );
+        return PlatformAlertDialog(
+            title: transEx(context, 'cart.deleteCartTitle'),
+            description: transEx(context, 'cart.deleteCartMessage'),
+            cancelButtonText: transEx(context, 'cart.deleteCartCancel'),
+            okButtonText: transEx(context, 'cart.deleteCartAccept'),
+            onOkPressed: () async {
+              Nav.reset(MainNavigation());
+              getIt<CartBloc>().add(ClearCartAction());
+            },
+            onCancelPressed: () {
+              Nav.pop();
+            });
       },
     );
   }

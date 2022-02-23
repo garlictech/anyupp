@@ -53,8 +53,17 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
 
   bool validateTip() {
     if (_tip != null && widget.transaction.total != null) {
-      if (_getCalculatedTip() > _minTip) {
-        return true;
+      if (_tipType != null) {
+        if (_tipType == TipType.percent) {
+          if (_getCalculatedTip() > _minTip) {
+            return true;
+          }
+        }
+        if (_tipType == TipType.amount) {
+          if (_tip! >= _minTip) {
+            return true;
+          }
+        }
       }
     }
     return false;
@@ -64,94 +73,94 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
   Widget build(BuildContext context) {
     bool center = (widget.tipPolicy == null || widget.tipPolicy!.isEmpty) ||
         widget.ratingPolicy == null;
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: theme.secondary0,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0.0,
         backgroundColor: theme.secondary0,
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: theme.secondary0,
-          leading: BackButtonWidget(
-            showBorder: false,
-            color: theme.secondary,
-          ),
+        leading: BackButtonWidget(
+          showBorder: false,
+          color: theme.secondary,
         ),
-        body: BlocBuilder<RatingBloc, RatingState>(
-          builder: (context, state) {
-            if (state is RatingSuccess) {
-              return SuccessTipWidget(
-                tipPolicy: widget.tipPolicy != null,
-                ratingPolcicy: widget.ratingPolicy != null,
-              );
-            }
+      ),
+      body: BlocBuilder<RatingBloc, RatingState>(
+        builder: (context, state) {
+          if (state is RatingSuccess) {
+            return SuccessTipWidget(
+              tipPolicy: widget.tipPolicy != null,
+              ratingPolcicy: widget.ratingPolicy != null,
+            );
+          }
 
-            if (state is RatingLoading) {
-              return CenterLoadingWidget();
-            }
+          if (state is RatingLoading) {
+            return CenterLoadingWidget();
+          }
 
-            if (state is RatingFailed) {
-              return CommonErrorWidget(
-                error: state.code,
-                description: state.message,
-                showButton: true,
-              );
-            }
-            if (state is TipFailed) {
-              return CommonErrorWidget(
-                error: state.code,
-                description: state.message,
-                showButton: true,
-              );
-            }
+          if (state is RatingFailed) {
+            return CommonErrorWidget(
+              error: state.code,
+              description: state.message,
+              showButton: true,
+            );
+          }
+          if (state is TipFailed) {
+            return CommonErrorWidget(
+              error: state.code,
+              description: state.message,
+              showButton: true,
+            );
+          }
 
-            return Stack(
-              children: [
-                Align(
-                  alignment: center ? Alignment.center : Alignment.topCenter,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        height: kToolbarHeight + 24.0,
+          return Stack(
+            children: [
+              Align(
+                alignment: center ? Alignment.center : Alignment.topCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: kToolbarHeight + 24.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        bottom: 80,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 16,
-                          right: 16,
-                          bottom: 80,
-                        ),
-                        child: widget.ratingPolicy != null
-                            ? RatingWidget(
-                                ratingPolicy: widget.ratingPolicy!,
-                                onSelected: (rating) {
-                                  _rating = rating;
-                                },
-                              )
-                            : Container(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: widget.tipPolicy != null &&
-                                widget.tipPolicy!.isNotEmpty
-                            ? TippingWidget(
-                                tipPolicy: widget.tipPolicy!,
-                                onSelected: (tipType, tip) {
-                                  _tipType = tipType;
-                                  _tip = tip;
-                                },
-                              )
-                            : Container(),
-                      ),
-                      // Spacer(),
-                    ],
-                  ),
+                      child: widget.ratingPolicy != null
+                          ? RatingWidget(
+                              ratingPolicy: widget.ratingPolicy!,
+                              onSelected: (rating) {
+                                _rating = rating;
+                              },
+                            )
+                          : Container(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: widget.tipPolicy != null &&
+                              widget.tipPolicy!.isNotEmpty
+                          ? TippingWidget(
+                              tipPolicy: widget.tipPolicy!,
+                              onSelected: (tipType, tip) {
+                                _tipType = tipType;
+                                _tip = tip;
+                              },
+                            )
+                          : Container(),
+                    ),
+                    // Spacer(),
+                  ],
                 ),
-                Align(
+              ),
+              SafeArea(
+                child: Align(
                   alignment: Alignment.bottomCenter,
                   child: BlocBuilder<RatingBloc, RatingState>(
                     builder: (context, state) {
                       bool loading = state is RatingLoading;
-
+              
                       return Container(
                         height: 56.0,
                         width: double.infinity,
@@ -178,11 +187,11 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
                       );
                     },
                   ),
-                )
-              ],
-            );
-          },
-        ),
+                ),
+              )
+            ],
+          );
+        },
       ),
     );
   }
@@ -242,7 +251,7 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
               TipOrder(
                 orderId: widget.transaction.orderId,
                 tipType: _tipType,
-                tipValue: _getCalculatedTip(),
+                tipValue: _tip,
               ),
             );
       } else {

@@ -95,7 +95,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
               bottom: 16.0,
             ),
             child: widget.displayState == ProductItemDisplayState.NORMAL &&
-                    _showTooltip
+                    _showTooltip && widget.servingMode == ServingMode.inPlace
                 ? SimpleTooltip(
                     arrowBaseWidth: 16.0,
                     arrowLength: 8,

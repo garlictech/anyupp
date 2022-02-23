@@ -13,6 +13,7 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final Order order;
@@ -535,7 +536,7 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
               height: 56.0,
               child: ElevatedButton(
                 onPressed: () => isInvoice
-                    ? Nav.to(PdfWebView(order.transaction!.invoice!.pdfUrl!))
+                    ? launch(order.transaction!.invoice!.pdfUrl!)// Nav.to(PdfWebView(order.transaction!.invoice!.pdfUrl!))
                     : createAndOpenPdf(order.transaction!.receipt!.pdfData),
                 style: ElevatedButton.styleFrom(
                   primary: theme.button,
