@@ -19,10 +19,13 @@ import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import {
+  addIncludedServiceFeeToOrderItems,
+  increaseVatWithPackagingTax,
   summarizeServiceFeeByTax,
   summarizeVariantsByTax,
   summarizeVatByTax,
 } from '../../fn';
+import { net2gross } from '@bgap/admin/shared/utils';
 
 type ParsedVariant = CrudApi.OrderItem & { servingMode: CrudApi.ServingMode };
 
@@ -42,11 +45,14 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   public parsedVats: CrudApi.PriceShown[] = [];
   public parsedServiceFees: CrudApi.PriceShown[] = [];
   public sum: CurrencyValue;
+  public packagingSum = 0;
   public place?: CrudApi.Place | null;
   public invoiceData?: CrudApi.Invoice;
   public receiptType?: string;
   public EServingMode = CrudApi.ServingMode;
   public EServiceFeeType = CrudApi.ServiceFeeType;
+  public hasPackagingFee = false; // Used in merged list
+  public hasServiceFee = false; // Used in merged list
 
   constructor(
     private _store: Store,
@@ -98,6 +104,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
       value: 0,
       currency: '',
     };
+    this.packagingSum = 0;
     this.now = new Date().toString();
 
     let variants: KeyValueObject = {};
@@ -111,10 +118,13 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         lastOrderTime = new Date(order.createdAt).getTime();
       }
 
-      order.items.forEach((item: CrudApi.OrderItem) => {
+      // Sum items
+      const orderItems = addIncludedServiceFeeToOrderItems(order);
+      orderItems.forEach((item: CrudApi.OrderItem) => {
         variants = summarizeVariantsByTax({
           localizer: value => this._localizePipe.transform(value),
         })(variants, item, order.servingMode || CrudApi.ServingMode.inplace);
+
         vats[item.sumPriceShown.tax] = summarizeVatByTax(
           vats,
           item.sumPriceShown,
@@ -125,20 +135,46 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         this.sum.currency = item.sumPriceShown.currency;
       });
 
+      // Handle packaging fee
+      if (
+        order.packagingSum &&
+        order.servingMode === this.EServingMode.takeaway
+      ) {
+        this.hasPackagingFee = true;
+
+        vats[order.packagingSum.taxPercentage] = increaseVatWithPackagingTax(
+          vats,
+          order.packagingSum,
+        );
+
+        this.packagingSum += Math.round(
+          net2gross(
+            order.packagingSum.netPrice,
+            order.packagingSum.taxPercentage,
+          ),
+        );
+      }
+
+      // Handle service fee
       if (
         order.serviceFee &&
-        this.unit?.serviceFeePolicy?.type === this.EServiceFeeType.applicable
+        order.serviceFeePolicy?.type === this.EServiceFeeType.applicable
       ) {
+        this.hasServiceFee = true;
+
         serviceFees[order.serviceFee.taxPercentage] = summarizeServiceFeeByTax(
           serviceFees,
           order.serviceFee,
         );
+
         this.sum.value += Math.round(
           order.serviceFee.netPrice *
             (1 + order.serviceFee.taxPercentage * 0.01),
         );
       }
     });
+
+    this.sum.value += this.packagingSum;
 
     // Find the first invoice/receipt data (cash/card only)
     const customerInfoOrder = this.orders.find(

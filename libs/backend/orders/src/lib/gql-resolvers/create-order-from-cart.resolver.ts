@@ -353,11 +353,15 @@ export const createOrderFromCart =
             )
           : of(props),
       ),
-      // Handle service fee
-      map(props => ({
-        ...props,
-        orderInput: addServiceFeeToOrder(props.orderInput, props.unit),
-      })),
+      // Handle service fee  - not in takeaway mode
+      map(props =>
+        props.orderInput.servingMode === CrudApi.ServingMode.takeaway
+          ? props
+          : {
+              ...props,
+              orderInput: addServiceFeeToOrder(props.orderInput, props.unit),
+            },
+      ),
     );
 
     return calc2.pipe(

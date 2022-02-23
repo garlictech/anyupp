@@ -162,6 +162,7 @@
     "soya": "Soya",
     "sulphites": "Sulphites",
     "treenuts": "Treenuts",
+    "disclaimerTitle": "Disclaimer",
     "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out {{0}} Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
   },
   "favorites": {
@@ -305,7 +306,7 @@
     "delete": {
       "title": "Delete credit card?",
       "description": "This will delete the credit card from your payment methods.",
-      "reason": "Delete",
+      "ok": "Ok",
       "cancel": "Cancel"
     },
     "method": {
@@ -449,7 +450,7 @@
     "findingSeatLoading": "This may take a few seconds. Please do not close this window!",
     "tableReserved": {
       "title": "New Table Reserved!",
-      "description": "Seat #{{1}} reversed at Table #{{0}}"
+      "description": "Seat #{{1}} reserved at Table #{{0}}"
     },
     "tableFound": {
       "title": "Chair: #{{1}}, Table: #{{0}}",

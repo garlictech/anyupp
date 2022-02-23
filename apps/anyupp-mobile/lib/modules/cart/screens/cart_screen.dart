@@ -464,7 +464,7 @@ class CartScreen extends StatelessWidget {
                           height: 16,
                         ),
                         Text(
-                          '${formatCurrency(cart.totalServiceFee, unit.currency)} (${unit.serviceFeePolicy!.percentage.toInt()} %)',
+                          '${formatCurrency(cart.totalServiceFee, unit.currency)} (${formatDouble(unit.serviceFeePolicy!.percentage)} %)',
                           key: const Key('cart-servicefee-text'),
                           style: Fonts.satoshi(
                             color: theme.highlight,

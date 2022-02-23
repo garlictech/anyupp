@@ -89,19 +89,21 @@ class _TippingWidgetState extends State<TippingWidget> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(16.0)),
-          color: selected ? theme.highlight : theme.secondary12,
+          color: selected ? theme.button : theme.secondary12,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Text(
-          isOther
-              ? _selectedTipAmount != null
-                  ? '${formatCurrency(_selectedTipAmount, currentUnit?.currency ?? 'huf')}'
-                  : trans('tipping.otherAmount')
-              : '${percent.toStringAsFixed(0)}%',
-          style: Fonts.satoshi(
-            color: selected ? theme.secondary0 : theme.secondary,
-            fontSize: 14.0,
-            fontWeight: FontWeight.w400,
+        child: Center(
+          child: Text(
+            isOther
+                ? _selectedTipAmount != null
+                    ? '${formatCurrency(_selectedTipAmount, currentUnit?.currency ?? 'huf')}'
+                    : trans('tipping.otherAmount')
+                : '${percent.toStringAsFixed(0)}%',
+            style: Fonts.satoshi(
+              color: selected ? theme.secondary0 : theme.secondary,
+              fontSize: 14.0,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
       ),
@@ -164,6 +166,16 @@ class TipDialogWidget extends StatefulWidget {
 
 class _TipDialogWidgetState extends State<TipDialogWidget> {
   String? _errorKey;
+  FocusNode _focusNode = FocusNode();
+  UniqueKey _key = UniqueKey();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      _focusNode.requestFocus();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,27 +202,20 @@ class _TipDialogWidgetState extends State<TipDialogWidget> {
             height: 16.0,
           ),
           FormTextFieldWidget(
+            key: _key,
+            focusNode: _focusNode,
             labelKey: 'tipping.dialog.hint',
             controller: widget.amountController,
             keyboardType: TextInputType.number,
             mask: MaskTextInputFormatter(
               mask: '#####',
-              filter: {"#": RegExp('[0-9]')},
+              filter: {"#": RegExp(r'[0-9]')},
             ),
-            onChanged: (value) {
-              double? amount = double.tryParse(widget.amountController.text);
-              if (amount == null) {
-                setState(() {
-                  _errorKey = 'tipping.errors.validNumber';
-                });
-                return;
-              }
-              if (_errorKey != null) {
-                setState(() {
-                  _errorKey = null;
-                });
-              }
+            validator: (value) {
+              return 'Error';
             },
+
+            onChanged: (value) {},
           ),
           if (_errorKey != null)
             Container(

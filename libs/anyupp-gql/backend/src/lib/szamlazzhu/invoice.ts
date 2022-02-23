@@ -119,10 +119,6 @@ export const createInvoice =
       order.sumPriceShown.currency,
     ).forEach(([title, price]) => addPriceItem(title, price));
 
-    if (order.serviceFee?.netPrice) {
-      addPriceItem('felszolgálási díj', order.serviceFee);
-    }
-
     // Transaction
     const invoice = new Szamlazz.Invoice({
       paymentMethod, // optional, default: BankTransfer

@@ -133,6 +133,7 @@
     "resetPassword": "Új jelszó",
     "packagingFee": "Csomagolási díj",
     "packagingTax": "Csomagolási adó",
+    "serviceFee": "Felszolgálási díj",
     "search": "Keresés",
     "value": "Érték",
     "icon": "Ikon",
@@ -439,7 +440,6 @@
   "print": {
     "items": "Tételek",
     "vatDetails": "ÁFA részletezés",
-    "serviceFeeDetails": "Felszolgálási díj",
     "selectedPaymentMode": "Választott fizetési mód"
   },
   "auth": {

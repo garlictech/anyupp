@@ -109,6 +109,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                       child: TransactionCard(
                         transaction: list[position],
                         onTap: () => Nav.to(TransactionOrderDetailsScreen(
+                          key: UniqueKey(),
                           orderId: list[position].orderId,
                           unit: unit,
                         )),

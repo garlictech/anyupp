@@ -136,7 +136,9 @@ export class FormsService {
     });
 
   public addUnitTipPercent = (caption: string, percents: number[]) =>
-    [...new Set(percents), parseFloat(caption)].sort();
+    [...new Set(percents), parseFloat(caption)].sort((a: number, b: number) =>
+      a > b ? 1 : -1,
+    );
 
   public removeUnitTipPercent = (caption: string, percents: number[]) => {
     const removable = parseFloat(caption.replace('%', ''));

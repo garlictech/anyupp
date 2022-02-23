@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models/Order.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
@@ -29,7 +30,7 @@ class RatingOrderNotificationBloc
     Emitter<RatingOrderNotificationState> emit,
   ) async {
     emit(CheckingRatingNotifications());
-    print('RatingOrderNotificationBloc.start()=${event.orders.length}');
+    // print('RatingOrderNotificationBloc.start()=${event.orders.length}');
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -46,7 +47,9 @@ class RatingOrderNotificationBloc
         getIt<NotificationsBloc>().add(ScheduleOrderRatingNotification(
           orderId: order.id,
           ratingPolicy: order.ratingPolicies![0],
-          tipPolicy: order.tipPolicy,
+          tipPolicy: order.paymentMode.method != PaymentMethod.inapp
+              ? null
+              : order.tipPolicy,
           showDelay: delay,
         ));
         await prefs.setBool('rating_schedule_${order.id}', true);
@@ -69,8 +72,8 @@ class RatingOrderNotificationBloc
         return;
       }
 
-      bool isRated = order.rating != null;
-      bool isTipped = order.tip != null;
+      bool isRated = order.rating != null || event.payload.ratingPolicy == null;
+      bool isTipped = order.tip != null || event.payload.tipPolicy == null;
 
       if (isRated && isTipped) {
         // Already rated and tipped

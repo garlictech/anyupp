@@ -86,7 +86,11 @@ export const payTipWithStripe =
         );
       }
 
-      const amount = input.tip.value;
+      const amount =
+        input.tip.type === CrudApi.TipType.percent
+          ? (order.sumPriceShown.priceSum * input.tip.value) / 100
+          : input.tip.value;
+
       const currency = order.sumPriceShown.currency;
 
       const stripeAmount: number =

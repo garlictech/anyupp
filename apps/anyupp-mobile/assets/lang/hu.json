@@ -142,9 +142,9 @@
     "takeAway": "elvitel",
     "inPlace": "helyben",
     "packagingFee": "Csomagolási díj",
-    "serviceFee": "Szervízdíj",
-    "hasServiceFee": "Az ár szervízdíjat tartalmaz.",
-    "hasNoServiceFee": "Az ár szervízdíjat nem tartalmaz."
+    "serviceFee": "Szervizdíj",
+    "hasServiceFee": "Az ár szervizdíjat tartalmaz.",
+    "hasNoServiceFee": "Az ár szervizdíjat nem tartalmaz."
   },
   "allergens": {
     "title": "ALLERGÉNEK",
@@ -194,7 +194,7 @@
       "paymentDetails": "Fizetés részletei",
       "otherDetails": "További részletek",
       "tipDetails": "Borravaló",
-      "serviceFee": "Az ár {{0}}% szervízdíjat tartalmaz."
+      "serviceFee": "Az ár {{0}}% szervizdíjat tartalmaz."
     },
     "status": {
       "none": "VÁR",

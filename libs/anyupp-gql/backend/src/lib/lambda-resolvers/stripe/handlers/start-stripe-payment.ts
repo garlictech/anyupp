@@ -107,6 +107,15 @@ export const startStripePayment =
       );
     }
 
+    const serviceFee = order.serviceFee
+      ? order.serviceFee.netPrice * (1 + order.serviceFee.taxPercentage / 100)
+      : 0;
+    const packagingSum = order.packagingSum
+      ? order.packagingSum.netPrice *
+        (1 + order.packagingSum.taxPercentage / 100)
+      : 0;
+    const total = order.sumPriceShown.priceSum + serviceFee + packagingSum;
+
     // 5. Handle INAPP payment
     if (paymentMethod == CrudApi.PaymentMethod.inapp) {
       if (!paymentMethodId) {
@@ -136,8 +145,8 @@ export const startStripePayment =
 
       const stripeAmount: number =
         order.sumPriceShown.currency === 'HUF'
-          ? toFixed0Number(order.sumPriceShown.priceSum * 100)
-          : order.sumPriceShown.priceSum;
+          ? toFixed0Number(total * 100)
+          : total;
 
       // 5. Create payment intent data
       const paymentIntentData: Stripe.PaymentIntentCreateParams = {
@@ -219,7 +228,7 @@ export const startStripePayment =
             currency: order.sumPriceShown.currency,
             status: CrudApi.PaymentStatus.waiting_for_payment, // shouldn't we use statusLog instead of the simple actual status ? (Covered by #945)
             externalTransactionId: paymentIntent.id,
-            total: order.sumPriceShown.priceSum,
+            total,
             type: 'stripe',
             paymentMethodId,
           },
@@ -279,7 +288,7 @@ export const startStripePayment =
             orderId: orderId,
             currency: order.sumPriceShown.currency,
             status: CrudApi.PaymentStatus.waiting_for_payment,
-            total: order.sumPriceShown.priceSum,
+            total,
             type: paymentMethod.toString(),
             paymentMethodId,
           },
