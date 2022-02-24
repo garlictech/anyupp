@@ -1,5 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as Szamlazz from 'szamlazz.js';
+import { calculaterServiceFeeItems } from './utils';
 
 export const createReceiptSzamlazzHu =
   (szamlazzClient: Szamlazz.Client) =>
@@ -79,6 +80,30 @@ export const createReceiptSzamlazzHu =
         receiptItemId: orderItem.productId,
       });
     });
+
+    const addPriceItem = (
+      label: string,
+      price?: CrudApi.Maybe<CrudApi.Price>,
+    ) => {
+      if (price) {
+        items.push(
+          new Szamlazz.Item({
+            label,
+            quantity: 1,
+            unit: 'db',
+            vat: price.taxPercentage, // can be a number or a special string
+            grossUnitPrice: price.netPrice * (1 + price.taxPercentage / 100), // can be a number or a special string
+          }),
+        );
+      }
+    };
+
+    addPriceItem('csomagolás', order.packagingSum);
+
+    calculaterServiceFeeItems(
+      order.items,
+      order.sumPriceShown.currency,
+    ).forEach(([title, price]) => addPriceItem(title, price));
 
     const receipt = new Szamlazz.Receipt({
       paymentMethod, // optional, default: BankTransfer

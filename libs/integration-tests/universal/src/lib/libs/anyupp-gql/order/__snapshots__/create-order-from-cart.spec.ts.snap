@@ -546,6 +546,7 @@ Object {
   "orderMode": "instant",
   "orderNum": "TABLESEAT01",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": null,
   "paymentIntention": null,
   "paymentMode": Object {
@@ -905,6 +906,7 @@ Object {
   "orderMode": "instant",
   "orderNum": "TABLESEAT03",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
@@ -1282,6 +1284,7 @@ Object {
   "orderMode": "instant",
   "orderNum": "TABLESEAT01",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": null,
   "paymentIntention": null,
   "paymentMode": Object {
@@ -1641,6 +1644,7 @@ Object {
   "orderMode": "instant",
   "orderNum": "TABLESEAT03",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
@@ -2018,6 +2022,7 @@ Object {
   "orderMode": "instant",
   "orderNum": "TABLESEAT01",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": null,
   "paymentIntention": null,
   "paymentMode": Object {
@@ -2377,6 +2382,7 @@ Object {
   "orderMode": "instant",
   "orderNum": "TABLESEAT03",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,

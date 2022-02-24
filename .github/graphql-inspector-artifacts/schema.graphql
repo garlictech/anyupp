@@ -530,6 +530,7 @@ type Order @aws_iam @aws_cognito_user_pools {
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
   updatedAt: AWSDateTime!
   transaction: Transaction @aws_iam @aws_cognito_user_pools
   tipTransaction: Transaction @aws_iam @aws_cognito_user_pools
@@ -894,6 +895,9 @@ type GeoUnit @aws_cognito_user_pools {
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  unit: Unit
+  chain: Chain
+  group: Group
 }
 
 input GetUnitsNearLocationInput {
@@ -2122,6 +2126,7 @@ input ModelOrderFilterInput {
   tipTransactionId: ModelIDInput
   orderPolicy: ModelOrderPolicyInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
+  packagingFeeTaxPercentage: ModelFloatInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
@@ -2158,6 +2163,7 @@ input CreateOrderInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
 }
 
 input UpdateOrderInput {
@@ -2191,6 +2197,7 @@ input UpdateOrderInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
 }
 
 input DeleteOrderInput {
@@ -2215,6 +2222,7 @@ input ModelOrderConditionInput {
   tipTransactionId: ModelIDInput
   orderPolicy: ModelOrderPolicyInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
+  packagingFeeTaxPercentage: ModelFloatInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
@@ -3329,6 +3337,7 @@ input SearchableOrderFilterInput {
   transactionId: SearchableIDFilterInput
   hasRated: SearchableBooleanFilterInput
   tipTransactionId: SearchableIDFilterInput
+  packagingFeeTaxPercentage: SearchableFloatFilterInput
   and: [SearchableOrderFilterInput]
   or: [SearchableOrderFilterInput]
   not: SearchableOrderFilterInput
@@ -3346,6 +3355,7 @@ enum SearchableOrderSortableFields {
   transactionId
   hasRated
   tipTransactionId
+  packagingFeeTaxPercentage
 }
 
 input SearchableOrderSortInput {
