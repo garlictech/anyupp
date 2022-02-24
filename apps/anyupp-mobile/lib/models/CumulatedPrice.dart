@@ -25,7 +25,7 @@ class CumulatedPrice {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'currency': currency,
       'grossPrice': grossPrice,
@@ -33,18 +33,13 @@ class CumulatedPrice {
     };
   }
 
-  factory CumulatedPrice.fromMap(Map<String, dynamic> map) {
+  factory CumulatedPrice.fromJson(Map<String, dynamic> map) {
     return CumulatedPrice(
       currency: map['currency'] ?? '',
       grossPrice: map['grossPrice']?.toDouble() ?? 0.0,
       taxContent: map['taxContent']?.toDouble() ?? 0.0,
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory CumulatedPrice.fromJson(String source) =>
-      CumulatedPrice.fromMap(json.decode(source));
 
   @override
   String toString() =>
