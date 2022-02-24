@@ -1,12 +1,14 @@
 Feature: Takeaway settings on admin
 
-  Scenario: ORDER MODE settings on Unit form (only admin)
+  Background: login
     Given I am on the dashboard as an authenticated superUser
     Then I set the language to EN
     And I select the "Rab lánc #1" chain in the header menu
     And I select the "Nagy csoport #1" group in the header menu
     And I select the "Késdobáló #111" unit in the header menu
     When I click on the menu icon
+
+  Scenario: ORDER MODE settings on Unit form
     And I click on the "Units" text
     Then the "Units" title is displayed
     When I click the edit button in the listitem with "Késdobáló #112" content
@@ -20,13 +22,7 @@ Feature: Takeaway settings on admin
     And I click on the "Submit" button
     Then I should see a success toastr
 
-  Scenario: TAX and ORDER MODE settings on Product forms (only admin)
-    Given I am on the dashboard as an authenticated superUser
-    Then I set the language to EN
-    And I select the "Rab lánc #1" chain in the header menu
-    And I select the "Nagy csoport #1" group in the header menu
-    And I select the "Késdobáló #111" unit in the header menu
-    When I click on the menu icon
+  Scenario: TAX and ORDER MODE settings on Product forms
     And I click on the "Products" text
     Then the "Products" title is displayed
     When I click on the "Group products" text
@@ -53,16 +49,11 @@ Feature: Takeaway settings on admin
     And I should see "Serving modes" text
     When I click on the "In place" checkbox
     And I click on the "Take away" checkbox
+    When I fill out all the "Packaging fee (HUF)" input with "100"
     And I click on the "Submit" button
     Then I should see a success toastr
 
   Scenario: admin assigned a take away modifier to a product
-    Given I am on the dashboard as an authenticated superUser
-    And I set the language to EN
-    And I select the "Rab lánc #1" chain in the header menu
-    And I select the "Nagy csoport #1" group in the header menu
-    And I select the "Késdobáló #111" unit in the header menu
-    When I click on the menu icon
     And I click on the "Modifiers and Extras" text
     Then the "Modifiers and Extras" title is displayed
     When I click on the button with title "Add product component"
@@ -104,3 +95,12 @@ Feature: Takeaway settings on admin
     Then I should see a success toastr
     And The dialog should NOT exist
     And I should see "Sajtburger" text
+
+# Scenario: one takeaway order (orders, lanes, history)
+#   Given an app user has a takeaway order
+#   When I click on the menu icon
+#   Then the "Dashboard" title is displayed
+#   check on the lanes the product, get from placed to ready
+#   check it if there was the takeaway icon
+#   go to the orders and get it to served and check it on history
+#   check it if there was the takeaway icon

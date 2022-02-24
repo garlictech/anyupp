@@ -65,6 +65,7 @@ Feature: QR code and serving mode change
     Then I should see "Finding your seat..." text
     Then I should see the "Menu" screen
   #nincs már ilyen opció?!
+
   Scenario: QR reading on the cart screen
     Given I am on the login screen
     And the language is set to EN

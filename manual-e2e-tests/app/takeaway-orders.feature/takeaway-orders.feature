@@ -1,72 +1,68 @@
 Feature: Takeaway orders feature
 
-  Scenario: select a unit that supports takeaway (app)
-    Given I am on the login screen
-    And the Admin sets the "Hamburgers" product category available in take away mode
-    When I tap on the text "Continue anonymously"
-    Then there is a loading screen
-    And I should see the "Unit selector" screen
-    When I tap on the "Késdobáló #111" unit in the list
-    And I tap on the "In place" button
-    Then I should see the "Menu" screen
-    When I tap on the "You can switch between ordering methods at any time." text
-    Then I should see "Sorry, this product category is not available in in place mode." text
-    And I tap on the "In place" icon
-    Then I should see "Please select" text
-    And I tap on the "Mode selector" button
-    When I tap on the "Are you sure you want to switch to takeaway?" text
-    And I tap on the "Yes" button
-    Then I should see "Sajtburger" with picture
-    And I should see "Fishburger" with picture
-    And I should see "Hamburger" with picture
-    When I tap on the "Favorites" button
-    Then I should see "You have not added any favorite items yet." text
-
-  Scenario: turn off and on takeaway mode (admin-app-admin-app)
-    Given the Admin turns OFF the "Take away" mode from "Késdobáló #111"
-    And the Admin clicks on the "Regnerate menu" button
+  Background: login
     Given I am on the login screen
     When I tap on the text "Continue anonymously"
     Then there is a loading screen
     And I should see the "Unit selector" screen
     Then I should see "Find the nearest places" text
-    And I should see "In place" icon on the "Késdobáló #111" unit card
+    When I tap on the "Késdobáló #111" unit in the list
+    And I tap on the "Take away" button
+    Then I should see the "Menu" screen
+
+  Scenario: select a unit that supports takeaway
+    Given the Admin sets "Hamburgers" product category only in take away mode
+    Then I should see "Sajtburger" with picture
+    And I should see "Fishburger" with picture
+    And I should see "Hamburger" with picture
+    And I tap on the "Take away" icon
+    Then I should see "Please select" text
+    And I tap on the "In place" button
+    Then I should see "Sorry, this product category is not available in in place mode." text
+
+  Scenario: turn off and on takeaway mode (admin-app-admin-app)
+    Given the Admin turns OFF the "Take away" mode from "Késdobáló #111"
+    And the Admin clicks on the "Regnerate menu" button
+    When I tap on the back arrow button
+    Then I should see "In place" icon on the "Késdobáló #111" unit card
     When I tap on the "Késdobáló #111" unit in the list
     Then I should see the "Menu" screen
-    When I CLOSE the app
+    When I tap on the back arrow button
     When the Admin turns ON the "Take away" mode from "Késdobáló #111"
     And the Admin clicks on the "Regnerate menu" button
-    When I am on the unit selector screen
-    And I should see "Take away" icon on the "Késdobáló #111" unit card
+    And I pull up the screen to refresh the app
+    Then I should see "Take away" icon on the "Késdobáló #111" unit card
     When I tap on the "Késdobáló #111" unit in the list
+    And I tap on the "Take away" button
     Then I should see the "Menu" screen
-    When I CLOSE the app
-
-  Scenario: takeaway product modifier visible on cart screen
-    When I tap on the "Sajtburger" button
-    Then I should see "Válassz méretet" text
-    When I tap on the "1 db double" button
-    And I tap on the "Add to cart" button
-    Then I should see the "Menu screen"
-    When I tap on the "MY CART (2000 Ft)" button
-    Then I should see the "CART" screen
-    When I tap on the "PAY (2000 Ft)" button
-    Then I should see the "PAY" screen
-    When I tap on the option "Card, SZÉP card" button
-    And I should see "PLACE ORDER" text
-    Then the qr code reader opens the camera
-    When I read a seat qr code
-    Then I should see the "Finding your seat..." loading screen
-    And I get the text message "New Table Reserved!"
-    And I should see "Successful order!" text
-    When I tap on the "ALL RIGHT" button
 
   Scenario: Create takeaway order
-    Given I am on the login screen
-    When I tap on the text "Continue anonymously"
-    Then there is a loading screen
-    And I should see the "Unit selector" screen
-    When I tap on the "Késdobáló #111" unit in the list
+    When I tap on the "Sajtburger" button
+    When I tap on the "Frenc fries" button
+    And I tap on the "Add to cart" button
+    Then I should see the "Menu" screen
+    When I tap on the "MY CART (1700 Ft)" button
+    # takeaway product modifier visible on cart screen
+    Then I should see "+ French fries" text
+    When I tap on the "PAY (1700 Ft)" button
+    Then I should see the "PAY" screen
+    When I tap on the "Card, SZÉP card" button
+    Then I tap on the "PLACE ORDER" button
+    Then the qr code reader opens the camera
+    When I read a seat qr code
+    Then I should see the "finding table and chair ..." loading screen
+    And I get the notification message "New Table Reserved!"
+    And I should see "Chair: #01, Table: #01" text
+    When I tap on the "OK" button
+    Then I should see "Successful order!" text
+    When I tap on the "OK" button
+    Then I should see the "Orders" screen
+    And I should see "Current orders" text
+    And I should see "takeaway" on the order card
+    When I tap on the order with "Processing"
+    Then I should see "Order mode" text with "Takeaway" text
+
+  Scenario: Create takeaway order
     And I tap on the "Take away" button
     Then I should see the "Menu" screen
     When I tap on the "Sajtburger" button
@@ -86,11 +82,11 @@ Feature: Takeaway orders feature
     And I tap on the "PLACE ORDER" button
     Then the qr code reader opens the camera
     When I read a seat qr code
-    Then I should see the "Finding your seat..." loading screen
+    Then I should see the "Finding your seat..." and the "Connected to" loading screens
     And I get the text message "New Table Reserved!"
-    And I should see "Successful order!" text
+    And I should see "Successful order!"
     When I tap on the "ALL RIGHT" button
-    Then the "Orders" option is higlighted
+    And the "Orders" option is higlighted
     And I should see "Current orders" text
     And I should see "takeaway" on the order card
     When I tap on the order with "Processed"
@@ -102,11 +98,6 @@ Feature: Takeaway orders feature
     Then I should see "Order mode" text with "Takeaway" text
 
   Scenario: Packaging fee
-    Given I am on the login screen
-    When I tap on the text "Continue anonymously"
-    Then there is a loading screen
-    And I should see the "Unit selector" screen
-    When I tap on the "Késdobáló #111" unit in the list
     And I tap on the "Take away" button
     Then I should see the "Menu" screen
     When I tap on the "Sajtburger" button
@@ -121,7 +112,7 @@ Feature: Takeaway orders feature
     And I tap on the "PLACE ORDER" button
     Then the qr code reader opens the camera
     When I read a seat qr code
-    Then I should see the "Finding your seat..." loading screen
+    Then I should see the "Finding your seat..." and the "Connected to" loading screens
     And I get the text message "New Table Reserved!"
     And I should see "Successful order!"
     When I tap on the "ALL RIGHT" button
