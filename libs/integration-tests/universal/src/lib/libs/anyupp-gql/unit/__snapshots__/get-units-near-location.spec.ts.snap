@@ -39,7 +39,7 @@ Object {
       "postalCode": "1021",
       "title": "HQ",
     },
-    "createdAt": "2022-02-24T18:54:02.098Z",
+    "createdAt": "MASKED DATE",
     "description": Object {
       "de": null,
       "en": "Prisoner chain description",
@@ -69,7 +69,7 @@ Object {
       },
       "images": null,
     },
-    "updatedAt": "2022-02-24T18:54:02.098Z",
+    "updatedAt": "MASKED DATE",
   },
   "chainId": "test_chain_1_id",
   "currency": "EUR",
@@ -87,7 +87,7 @@ Object {
       "title": "HQ",
     },
     "chainId": "test_chain_1_id",
-    "createdAt": "2022-02-24T18:54:01.980Z",
+    "createdAt": "MASKED DATE",
     "currency": "EUR",
     "description": Object {
       "de": null,
@@ -98,7 +98,7 @@ Object {
     "id": "test_group_1_id",
     "name": "Monád csoport S",
     "phone": "36701234123",
-    "updatedAt": "2022-02-24T18:54:01.980Z",
+    "updatedAt": "MASKED DATE",
   },
   "groupId": "test_group_1_id",
   "id": "test_unit_03",
@@ -203,7 +203,7 @@ Object {
       "title": "HQ",
     },
     "chainId": "test_chain_1_id",
-    "createdAt": "2022-02-24T18:54:02.032Z",
+    "createdAt": "MASKED DATE",
     "description": Object {
       "de": null,
       "en": "Test unit #test_unit_1_id description",
@@ -305,7 +305,7 @@ Object {
       ],
       "title": null,
     },
-    "updatedAt": "2022-02-24T18:54:02.032Z",
+    "updatedAt": "MASKED DATE",
   },
 }
 `;
@@ -335,7 +335,7 @@ Object {
       "postalCode": "1021",
       "title": "HQ",
     },
-    "createdAt": "2022-02-24T18:54:02.098Z",
+    "createdAt": "MASKED DATE",
     "description": Object {
       "de": null,
       "en": "Prisoner chain description",
@@ -365,7 +365,7 @@ Object {
       },
       "images": null,
     },
-    "updatedAt": "2022-02-24T18:54:02.098Z",
+    "updatedAt": "MASKED DATE",
   },
   "chainId": "test_chain_1_id",
   "currency": "EUR",
@@ -383,7 +383,7 @@ Object {
       "title": "HQ",
     },
     "chainId": "test_chain_1_id",
-    "createdAt": "2022-02-24T18:54:01.980Z",
+    "createdAt": "MASKED DATE",
     "currency": "EUR",
     "description": Object {
       "de": null,
@@ -394,7 +394,7 @@ Object {
     "id": "test_group_1_id",
     "name": "Monád csoport S",
     "phone": "36701234123",
-    "updatedAt": "2022-02-24T18:54:01.980Z",
+    "updatedAt": "MASKED DATE",
   },
   "groupId": "test_group_1_id",
   "id": "test_unit_01",
@@ -499,7 +499,7 @@ Object {
       "title": "HQ",
     },
     "chainId": "test_chain_1_id",
-    "createdAt": "2022-02-24T18:54:02.046Z",
+    "createdAt": "MASKED DATE",
     "description": Object {
       "de": null,
       "en": "Test unit #test_unit_1_id description",
@@ -601,7 +601,7 @@ Object {
       ],
       "title": null,
     },
-    "updatedAt": "2022-02-24T18:54:02.046Z",
+    "updatedAt": "MASKED DATE",
   },
 }
 `;
@@ -759,7 +759,7 @@ Object {
       "postalCode": "1021",
       "title": "HQ",
     },
-    "createdAt": "2022-02-24T18:54:00.848Z",
+    "createdAt": "MASKED DATE",
     "description": Object {
       "de": null,
       "en": "Prisoner chain description",
@@ -789,7 +789,7 @@ Object {
       },
       "images": null,
     },
-    "updatedAt": "2022-02-24T18:54:00.848Z",
+    "updatedAt": "MASKED DATE",
   },
   "chainId": "test_chain_1_id",
   "currency": "EUR",
@@ -807,7 +807,7 @@ Object {
       "title": "HQ",
     },
     "chainId": "test_chain_1_id",
-    "createdAt": "2022-02-24T18:54:00.755Z",
+    "createdAt": "MASKED DATE",
     "currency": "EUR",
     "description": Object {
       "de": null,
@@ -818,7 +818,7 @@ Object {
     "id": "test_group_1_id",
     "name": "Monád csoport S",
     "phone": "36701234123",
-    "updatedAt": "2022-02-24T18:54:00.755Z",
+    "updatedAt": "MASKED DATE",
   },
   "groupId": "test_group_1_id",
   "id": "test_unit_03",
@@ -923,7 +923,7 @@ Object {
       "title": "HQ",
     },
     "chainId": "test_chain_1_id",
-    "createdAt": "2022-02-24T18:54:00.779Z",
+    "createdAt": "MASKED DATE",
     "description": Object {
       "de": null,
       "en": "Test unit #test_unit_1_id description",
@@ -1025,7 +1025,7 @@ Object {
       ],
       "title": null,
     },
-    "updatedAt": "2022-02-24T18:54:00.779Z",
+    "updatedAt": "MASKED DATE",
   },
 }
 `;
@@ -1055,7 +1055,7 @@ Object {
       "postalCode": "1021",
       "title": "HQ",
     },
-    "createdAt": "2022-02-24T18:54:00.848Z",
+    "createdAt": "MASKED DATE",
     "description": Object {
       "de": null,
       "en": "Prisoner chain description",
@@ -1085,7 +1085,7 @@ Object {
       },
       "images": null,
     },
-    "updatedAt": "2022-02-24T18:54:00.848Z",
+    "updatedAt": "MASKED DATE",
   },
   "chainId": "test_chain_1_id",
   "currency": "EUR",
@@ -1103,7 +1103,7 @@ Object {
       "title": "HQ",
     },
     "chainId": "test_chain_1_id",
-    "createdAt": "2022-02-24T18:54:00.755Z",
+    "createdAt": "MASKED DATE",
     "currency": "EUR",
     "description": Object {
       "de": null,
@@ -1114,7 +1114,7 @@ Object {
     "id": "test_group_1_id",
     "name": "Monád csoport S",
     "phone": "36701234123",
-    "updatedAt": "2022-02-24T18:54:00.755Z",
+    "updatedAt": "MASKED DATE",
   },
   "groupId": "test_group_1_id",
   "id": "test_unit_01",
@@ -1219,7 +1219,7 @@ Object {
       "title": "HQ",
     },
     "chainId": "test_chain_1_id",
-    "createdAt": "2022-02-24T18:54:00.775Z",
+    "createdAt": "MASKED DATE",
     "description": Object {
       "de": null,
       "en": "Test unit #test_unit_1_id description",
@@ -1321,7 +1321,7 @@ Object {
       ],
       "title": null,
     },
-    "updatedAt": "2022-02-24T18:54:00.775Z",
+    "updatedAt": "MASKED DATE",
   },
 }
 `;
