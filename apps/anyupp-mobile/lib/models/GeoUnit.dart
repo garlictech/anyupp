@@ -112,7 +112,7 @@ class GeoUnit {
       'supportedOrderModes':
           supportedOrderModes.map((x) => enumToString(x)).toList(),
       'orderPolicy': enumToString(orderPolicy),
-      'packagingTax': packagingTax,
+      'packagingTaxPercentage': packagingTax,
       'ratingPolicies': ratingPolicies?.map((x) => x.toJson()).toList(),
       'tipPolicy': tipPolicy?.toJson(),
       'serviceFeePolicy': serviceFeePolicy?.toJson(),
@@ -148,7 +148,7 @@ class GeoUnit {
       orderPolicy: map['orderPolicy'] != null
           ? enumFromString(map['orderPolicy'], OrderPolicy.values)
           : Mock.mockOrderPolicy(),
-      packagingTax: map['packagingTax'] ?? 0,
+      packagingTax: map['unit']?['packagingTaxPercentage'] ?? 0,
       ratingPolicies: map['ratingPolicies'] != null
           ? List<RatingPolicy>.from(
               map['ratingPolicies']?.map((x) => RatingPolicy.fromJson(x)))

@@ -31,20 +31,20 @@ class AwsUnitProvider implements IUnitProvider {
       }
 
       var items = result.data?.getUnitsNearLocation?.items;
-      print(
-          '***** searchUnitsNearLocation().items=$items, length=${items?.length}');
+      print('***** searchUnitsNearLocation().items.length=${items?.length}');
       List<GeoUnit> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
           results.add(GeoUnit.fromJson(items[i]!.toJson()));
         }
       }
-      // results.sort((a, b) => a.position.compareTo(b.position));
+      // results.sort((a, b) => a.distance.compareTo(b.distance));
 
       return results;
     } on Exception catch (e) {
       print('***** searchUnitsNearLocation().Exception: $e');
-      return [];
+      rethrow;
+      // return [];
     }
   }
 }

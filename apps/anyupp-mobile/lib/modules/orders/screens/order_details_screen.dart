@@ -536,7 +536,8 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
               height: 56.0,
               child: ElevatedButton(
                 onPressed: () => isInvoice
-                    ? launch(order.transaction!.invoice!.pdfUrl!)// Nav.to(PdfWebView(order.transaction!.invoice!.pdfUrl!))
+                    ? launch(order.transaction!.invoice!
+                        .pdfUrl!) // Nav.to(PdfWebView(order.transaction!.invoice!.pdfUrl!))
                     : createAndOpenPdf(order.transaction!.receipt!.pdfData),
                 style: ElevatedButton.styleFrom(
                   primary: theme.button,
@@ -592,6 +593,10 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
     // print('OrderDetailsInfo.servingMode=${order.servingMode}');
     // print(
     //     'OrderDetailsInfo.packagingSum.totalPrice=${order.packagingSum?.totalPrice}');
+    // print(
+    //     'OrderDetailsInfo.packagingSum.netPrice=${order.packagingSum?.netPrice}');
+    // print(
+    //     'OrderDetailsInfo.packagingSum.taxPercentage=${order.packagingSum?.taxPercentage}');
 
     return Container(
       // color: theme.secondary12,

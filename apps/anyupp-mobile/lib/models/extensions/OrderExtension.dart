@@ -13,10 +13,7 @@ extension OrderExtension on Order {
     }
   }
 
-  double get totalPrice =>
-      sumPriceShown.priceSum +
-      serviceFeePrice +
-      (packagingSum?.totalPrice ?? 0);
+  double get totalPrice => sumPriceShown.priceSum + serviceFeePrice;
 
   double get serviceFeePrice => this.servingMode != ServingMode.inPlace
       ? 0

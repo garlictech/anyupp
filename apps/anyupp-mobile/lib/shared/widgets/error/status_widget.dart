@@ -14,6 +14,7 @@ class StatusWidget extends StatelessWidget {
   final bool? showButton;
   final Color? buttonColor;
   final bool expanded;
+  final bool showIcon;
 
   const StatusWidget({
     Key? key,
@@ -26,6 +27,7 @@ class StatusWidget extends StatelessWidget {
     this.showButton = true,
     this.buttonColor,
     this.expanded = false,
+    this.showIcon = true,
   }) : super(key: key);
 
   @override
@@ -40,14 +42,16 @@ class StatusWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if (expanded) Spacer(),
-          SvgPicture.asset(
-            icon,
-            width: 80,
-            height: 80,
-          ),
-          SizedBox(
-            height: 40.0,
-          ),
+          if (showIcon)
+            SvgPicture.asset(
+              icon,
+              width: 80,
+              height: 80,
+            ),
+          if (showIcon)
+            SizedBox(
+              height: 40.0,
+            ),
           Text(
             trans(context, message),
             style: Fonts.satoshi(
