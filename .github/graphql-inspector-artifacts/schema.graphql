@@ -531,6 +531,7 @@ type Order @aws_iam @aws_cognito_user_pools {
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
+  externalId: String
   updatedAt: AWSDateTime!
   transaction: Transaction @aws_iam @aws_cognito_user_pools
   tipTransaction: Transaction @aws_iam @aws_cognito_user_pools
@@ -2127,6 +2128,7 @@ input ModelOrderFilterInput {
   orderPolicy: ModelOrderPolicyInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   packagingFeeTaxPercentage: ModelFloatInput
+  externalId: ModelStringInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
@@ -2164,6 +2166,7 @@ input CreateOrderInput {
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
+  externalId: String
 }
 
 input UpdateOrderInput {
@@ -2198,6 +2201,7 @@ input UpdateOrderInput {
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
+  externalId: String
 }
 
 input DeleteOrderInput {
@@ -2223,6 +2227,7 @@ input ModelOrderConditionInput {
   orderPolicy: ModelOrderPolicyInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   packagingFeeTaxPercentage: ModelFloatInput
+  externalId: ModelStringInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
@@ -3338,6 +3343,7 @@ input SearchableOrderFilterInput {
   hasRated: SearchableBooleanFilterInput
   tipTransactionId: SearchableIDFilterInput
   packagingFeeTaxPercentage: SearchableFloatFilterInput
+  externalId: SearchableStringFilterInput
   and: [SearchableOrderFilterInput]
   or: [SearchableOrderFilterInput]
   not: SearchableOrderFilterInput
@@ -3356,6 +3362,7 @@ enum SearchableOrderSortableFields {
   hasRated
   tipTransactionId
   packagingFeeTaxPercentage
+  externalId
 }
 
 input SearchableOrderSortInput {

@@ -1,5 +1,5 @@
 import { sendRkeeperOrder } from '@bgap/rkeeper-api';
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ECS } from 'aws-sdk';
 import * as R from 'ramda';
 import * as fs from 'fs';
@@ -15,6 +15,7 @@ import {
   toArray,
   map,
   count,
+  catchError,
 } from 'rxjs/operators';
 import {
   createRkeeperProduct,
@@ -505,7 +506,7 @@ describe('Test the rkeeper api basic functionality', () => {
   }, 15000);
 });
 
-test.skip('send order to rkeeper by HTTP post', done => {
+test('send order to rkeeper by HTTP post', done => {
   defer(() =>
     from(
       axios.request({
@@ -528,7 +529,7 @@ test.skip('send order to rkeeper by HTTP post', done => {
     .subscribe(() => done());
 });
 
-test.skip('send order to rkeeper by sendRkeeperOrder', done => {
+test('send order to rkeeper by sendRkeeperOrder', done => {
   sendRkeeperOrder({
     axiosInstance: axios,
     currentTime: () => new Date('2040.01.01'),
@@ -541,3 +542,50 @@ test.skip('send order to rkeeper by sendRkeeperOrder', done => {
     )
     .subscribe(() => done());
 }, 10000);
+
+test('test the menusync route', done => {
+  const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.yellowRestaurantId}/menusync`;
+  console.warn(url);
+
+  defer(() =>
+    from(
+      axios.request({
+        url,
+        method: 'post',
+        data: {},
+      }),
+    ),
+  )
+    .pipe(
+      tap((result: AxiosResponse) => {
+        expect(result?.status).toEqual(200);
+      }),
+    )
+    .subscribe(() => done());
+});
+
+test('test the order status route', done => {
+  const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.yellowRestaurantId}/order-status`;
+  console.warn(url);
+
+  defer(() =>
+    from(
+      axios.request({
+        url,
+        method: 'post',
+        data: {
+          remoteOrderId: 'REMOTE ORDER ID',
+          currentState: 'served',
+        },
+      }),
+    ),
+  )
+    .pipe(
+      catchError(x => of(x)),
+      tap((result: AxiosError) => {
+        expect(result.response?.data).toMatchSnapshot();
+        expect(result.response?.status).toEqual(400);
+      }),
+    )
+    .subscribe(() => done());
+});

@@ -1186,3 +1186,23 @@ Object {
 `;
 
 exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - not existing restaurant 1`] = `[Error: Cannot find unit belonging to external unit id NOT EXISTING RESTO\`]`;
+
+exports[`send order to rkeeper by HTTP post: config.auth 1`] = `
+Object {
+  "password": "b6302d53085c9486d0f765ec475f18",
+  "username": "795_50_155_539",
+}
+`;
+
+exports[`send order to rkeeper by sendRkeeperOrder: config.auth 1`] = `
+Object {
+  "password": "b6302d53085c9486d0f765ec475f18",
+  "username": "795_50_155_539",
+}
+`;
+
+exports[`test the order status route 1`] = `
+Object {
+  "error": "Order with external ID REMOTE ORDER ID cannot be found",
+}
+`;

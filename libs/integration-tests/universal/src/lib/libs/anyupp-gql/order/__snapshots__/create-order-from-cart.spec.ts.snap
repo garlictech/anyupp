@@ -265,6 +265,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "externalId": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -637,6 +638,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "externalId": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -1003,6 +1005,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "externalId": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -1375,6 +1378,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "externalId": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -1741,6 +1745,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "externalId": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -2113,6 +2118,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "externalId": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
