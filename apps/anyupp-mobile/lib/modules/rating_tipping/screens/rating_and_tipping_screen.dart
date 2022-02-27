@@ -47,23 +47,24 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
         'RatingAndTippingScreen().init().ratingPolicy=${widget.ratingPolicy}');
   }
 
-  double _getCalculatedTip() {
-    return widget.transaction.total! * (_tip! / 100);
+  double? _getCalculatedTip() {
+    double? total = widget.transaction.total;
+    if (_tipType != null && total != null) {
+      if (_tipType == TipType.percent) {
+        return total * (_tip! / 100);
+      }
+      if (_tipType == TipType.amount) {
+        return _tip;
+      }
+    }
+    return null;
   }
 
   bool validateTip() {
-    if (_tip != null && widget.transaction.total != null) {
-      if (_tipType != null) {
-        if (_tipType == TipType.percent) {
-          if (_getCalculatedTip() > _minTip) {
-            return true;
-          }
-        }
-        if (_tipType == TipType.amount) {
-          if (_tip! >= _minTip) {
-            return true;
-          }
-        }
+    double? calculatedTip = _getCalculatedTip();
+    if (calculatedTip != null) {
+      if (calculatedTip >= _minTip) {
+        return true;
       }
     }
     return false;
@@ -160,7 +161,7 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
                   child: BlocBuilder<RatingBloc, RatingState>(
                     builder: (context, state) {
                       bool loading = state is RatingLoading;
-              
+
                       return Container(
                         height: 56.0,
                         width: double.infinity,
@@ -223,8 +224,8 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
                   key: widget.ratingPolicy!.key,
                   value: _rating ?? -1,
                 ),
-                tipType: _tipType,
-                tipValue: _tip,
+                tipType: TipType.amount,
+                tipValue: _getCalculatedTip(),
               ),
             );
       } else {
@@ -250,8 +251,8 @@ class _RatingAndTippingScreenState extends State<RatingAndTippingScreen> {
         getIt.get<RatingBloc>().add(
               TipOrder(
                 orderId: widget.transaction.orderId,
-                tipType: _tipType,
-                tipValue: _tip,
+                tipType: TipType.amount,
+                tipValue: _getCalculatedTip(),
               ),
             );
       } else {

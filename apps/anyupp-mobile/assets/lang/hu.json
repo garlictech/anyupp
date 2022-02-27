@@ -173,7 +173,8 @@
   "orders": {
     "titleCurrentOrder": "Folyamatban lévő rendelések",
     "titleOrderHistory": "Korábbi rendelések",
-    "noActiveOrder": "Eszedbe jutott még valami?.",
+    "noActiveOrderSimplified": "Eszedbe jutott még valami?.",
+    "noActiveOrderFull": "Nincs teljesítésre váró rendelésed.",
     "noActiveOrderDesc": "Rendelj néhány kattintással!",
     "noActiveOrderButton": "Étlap felfedezése",
     "totalCost": "ÖSSZESEN",
@@ -231,8 +232,8 @@
       },
       "status": {
         "none": {
-          "title": "Rendelés leadva",
-          "titleShort": "Rendelés leadva",
+          "title": "Feldolgozás alatt",
+          "titleShort": "Feldolgozás alatt",
           "description": "Rendelésed feldolgozás alatt áll. Ha bármi probléma felmerülne, kollégáink keresni fognak."
         },
         "placed": {
@@ -259,6 +260,11 @@
           "title": "Felszolgálva",
           "titleShort": "Felszolgálva",
           "description": "Rendelésed elkészült, hamarosan felszolgáljuk neked. "
+        },
+        "simplified": {
+          "title": "Rendelés leadva",
+          "titleShort": "Rendelés leadva",
+          "description": "Rendelésed feldolgozás alatt áll. Ha bármi probléma felmerülne, kollégáink keresni fognak."
         }
       },
       "timeline": {

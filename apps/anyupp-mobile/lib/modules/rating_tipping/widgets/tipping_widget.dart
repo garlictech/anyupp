@@ -288,8 +288,9 @@ class _TipDialogWidgetState extends State<TipDialogWidget> {
                   height: 16.0,
                 ),
                 CupertinoTextField(
-                  controller: widget.amountController,
+                  controller: widget.amountController,      
                   inputFormatters: [mask],
+                  keyboardType: TextInputType.number,
                   cursorColor: CupertinoColors.activeBlue,
                   placeholder: trans('tipping.dialog.hint'),
                 ),
