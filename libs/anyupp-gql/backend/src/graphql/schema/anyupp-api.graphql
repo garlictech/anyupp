@@ -256,6 +256,11 @@ type Mutation {
   startStripePayment(
     input: StartStripePaymentInput!
   ): StartStripePaymentOutput! @aws_cognito_user_pools
+  # Stripe Connected
+  startStripePaymentConnected(
+    input: StartStripePaymentInput!
+  ): StartStripePaymentOutput @aws_cognito_user_pools
+
   createStripeCard(input: StripeCardCreateInput!): StripeCard!
     @aws_cognito_user_pools
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard!

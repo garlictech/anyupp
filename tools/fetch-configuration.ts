@@ -40,6 +40,7 @@ const generatedParams = [
 
 const fixParams = [
   'StripePublishableKey',
+  'StripePublishableKeyNewApi',
   'GoogleApiKey',
   'MailtrapApiKey',
 ].map(paramName => `/${prefix}/${paramName}`);

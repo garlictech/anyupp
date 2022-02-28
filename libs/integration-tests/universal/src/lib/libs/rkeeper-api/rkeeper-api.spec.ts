@@ -562,7 +562,7 @@ test('test the menusync route', done => {
       }),
     )
     .subscribe(() => done());
-});
+}, 10000);
 
 test('test the order status route', done => {
   const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.yellowRestaurantId}/order-status`;
@@ -588,4 +588,4 @@ test('test the order status route', done => {
       }),
     )
     .subscribe(() => done());
-});
+}, 10000);

@@ -919,6 +919,7 @@ type User @aws_iam @aws_cognito_user_pools {
 
 type Cart @aws_iam @aws_cognito_user_pools {
   id: ID!
+  version: Int
   userId: ID!
   unitId: ID!
   takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
@@ -1258,6 +1259,7 @@ type Mutation {
   createOrderFromCart(input: CreateOrderFromCartInput!): ID @aws_iam @aws_cognito_user_pools
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_iam @aws_cognito_user_pools
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
+  startStripePaymentConnected(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   createStripeCard(input: StripeCardCreateInput!): StripeCard @aws_cognito_user_pools @aws_iam
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard @aws_iam @aws_cognito_user_pools
@@ -2715,6 +2717,7 @@ type ModelCartConnection @aws_iam @aws_cognito_user_pools {
 
 input ModelCartFilterInput {
   id: ModelIDInput
+  version: ModelIntInput
   userId: ModelIDInput
   unitId: ModelIDInput
   takeAway: ModelBooleanInput
@@ -2727,6 +2730,7 @@ input ModelCartFilterInput {
 
 input CreateCartInput {
   id: ID
+  version: Int
   userId: ID!
   unitId: ID!
   takeAway: Boolean
@@ -2739,6 +2743,7 @@ input CreateCartInput {
 
 input UpdateCartInput {
   id: ID!
+  version: Int
   userId: ID
   unitId: ID
   takeAway: Boolean
@@ -2754,6 +2759,7 @@ input DeleteCartInput {
 }
 
 input ModelCartConditionInput {
+  version: ModelIntInput
   userId: ModelIDInput
   unitId: ModelIDInput
   takeAway: ModelBooleanInput
@@ -3644,6 +3650,7 @@ type SearchableUserConnection @aws_iam @aws_cognito_user_pools {
 
 input SearchableCartFilterInput {
   id: SearchableIDFilterInput
+  version: SearchableIntFilterInput
   userId: SearchableIDFilterInput
   unitId: SearchableIDFilterInput
   takeAway: SearchableBooleanFilterInput
@@ -3654,6 +3661,7 @@ input SearchableCartFilterInput {
 
 enum SearchableCartSortableFields {
   id
+  version
   userId
   unitId
   takeAway

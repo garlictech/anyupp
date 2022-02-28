@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
@@ -255,6 +256,7 @@ class AwsCartProvider implements ICartProvider {
   CreateCartInput _createCartInput(Cart cart) {
     return CreateCartInput(
       id: cart.id,
+      version: AppConfig.AppVersion,
       unitId: cart.unitId,
       userId: cart.userId,
       servingMode: cart.servingMode,
@@ -351,6 +353,7 @@ class AwsCartProvider implements ICartProvider {
   UpdateCartInput _updateCartInput(Cart cart) {
     return UpdateCartInput(
       id: cart.id!,
+      version: AppConfig.AppVersion,
       unitId: cart.unitId,
       userId: cart.userId,
       servingMode: cart.servingMode,

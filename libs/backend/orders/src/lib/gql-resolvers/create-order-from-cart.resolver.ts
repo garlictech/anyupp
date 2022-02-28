@@ -283,6 +283,7 @@ export const createOrderFromCart =
       })),
       // Handle packaging fee - only in takeaway mode
       switchMap(props =>
+        (props.cart.version ?? 0) >= 1 &&
         props.cart.servingMode === CrudApi.ServingMode.takeaway
           ? pipe(
               addPackagingFeeToOrder(deps.crudSdk)(
@@ -299,6 +300,7 @@ export const createOrderFromCart =
       ),
       // Handle service fee  - not in takeaway mode
       map(props =>
+        (props.cart.version ?? 0) >= 1 &&
         props.orderInput.servingMode === CrudApi.ServingMode.takeaway
           ? props
           : {

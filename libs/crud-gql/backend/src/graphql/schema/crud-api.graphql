@@ -962,6 +962,7 @@ type Cart
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
+  version: Int
   userId: ID!
   unitId: ID!
   takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
@@ -1286,6 +1287,14 @@ type Mutation {
 
   # Stripe
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  # Stripe Connected
+  startStripePaymentConnected(
+    input: StartStripePaymentInput!
+  ): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
     @function(name: "${env}-anyupp-graphql-resolvers")
