@@ -24,3 +24,9 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+amplify-prod/\#current-cloud-backend
+amplify-prod/.config/local-*
+amplify-prod/logs
+amplify-prod/mock-data
+amplify-prod/backend/amplify-meta.json
+amplify-prod/backend/.temp

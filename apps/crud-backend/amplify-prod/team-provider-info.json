@@ -26,6 +26,12 @@
           "unauthRoleArn": "arn:aws:iam::486782650003:role/prod-anyupp-backend-cogni-CognitoDefaultUnauthenti-92QNVXAU9TFC",
           "unauthRoleName": "prod-anyupp-backend-cogni-CognitoDefaultUnauthenti-92QNVXAU9TFC"
         }
+      },
+      "api": {
+        "anyuppbackend": {
+          "ElasticSearchInstanceType": "t2.medium.elasticsearch",
+          "ElasticSearchInstanceCount": 3
+        }
       }
     }
   }

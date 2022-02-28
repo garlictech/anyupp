@@ -50,12 +50,15 @@ type ChainStyleColors @aws_cognito_user_pools {
   borderLight: String @deprecated(reason: "Unused.")
   borderDark: String @deprecated(reason: "Unused.")
   disabled: String @deprecated(reason: "Unused.")
-  highlight: String @deprecated(reason: "Unused.")
   indicator: String @deprecated(reason: "Use `primary`.")
   textLight: String @deprecated(reason: "Unused.")
   textDark: String @deprecated(reason: "Use `secondary`.")
-  primary: String
-  secondary: String
+  primary: String @deprecated(reason: "Unused.")
+  secondary: String @deprecated(reason: "Unused.")
+  button: String
+  buttonText: String
+  icon: String
+  highlight: String
 }
 
 type ChainStyleImages {
@@ -123,13 +126,11 @@ enum ServiceFeeType {
 type ServiceFeePolicy {
   type: ServiceFeeType!
   percentage: Float!
-  taxPercentage: Float!
 }
 
 input ServiceFeePolicyInput {
   type: ServiceFeeType!
   percentage: Float!
-  taxPercentage: Float!
 }
 
 type GroupProduct
@@ -482,6 +483,15 @@ type Price {
   taxPercentage: Float!
 }
 
+# When an item type contains summed items with different tax percentages,
+# we use this type to represent the sum. It contains the gross price, the
+# cumulated tax content, but the tax percentages are not included.
+type CumulatedPrice {
+  currency: String!
+  grossPrice: Float!
+  taxContent: Float!
+}
+
 type OrderItem {
   productId: ID!
   variantId: ID!
@@ -529,7 +539,7 @@ type Order
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: Price
+  serviceFee: CumulatedPrice
   packagingSum: Price
   sumPriceShown: PriceShown!
   rating: OrderRating
@@ -538,6 +548,14 @@ type Order
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
   tipTransaction: Transaction @connection(fields: ["tipTransactionId"])
+  # The policies that were in action when the order was created.
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicy
+  ratingPolicies: [RatingPolicy!]
+  tipPolicy: TipPolicy
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
+  externalId: String
 }
 
 enum OrderPolicy {
@@ -917,6 +935,9 @@ type GeoUnit @aws_cognito_user_pools {
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  unit: Unit
+  chain: Chain
+  group: Group
 }
 
 input GetUnitsNearLocationInput {
@@ -941,6 +962,7 @@ type Cart
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
+  version: Int
   userId: ID!
   unitId: ID!
   takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
@@ -1257,11 +1279,6 @@ type Mutation {
     @aws_iam
     @aws_cognito_user_pools
 
-  # rateAndTipOrder(input: RateAndTipOrderInput!): Boolean
-  #   @function(name: "${env}-anyupp-graphql-resolvers")
-  #   @aws_iam
-  #   @aws_cognito_user_pools
-
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
     @function(name: "${env}-anyupp-graphql-resolvers")
@@ -1270,6 +1287,14 @@ type Mutation {
 
   # Stripe
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  # Stripe Connected
+  startStripePaymentConnected(
+    input: StartStripePaymentInput!
+  ): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
     @function(name: "${env}-anyupp-graphql-resolvers")
