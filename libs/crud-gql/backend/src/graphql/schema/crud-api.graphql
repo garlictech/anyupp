@@ -518,10 +518,12 @@ type OrderRating {
 }
 
 type Order
-  @model
+  #@model(mutations: { delete: "deleteOrder", update: "updateOrder" })
+  @model(mutations: { create: null })
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
+  version: Int
   createdAt: AWSDateTime!
   userId: ID!
   unitId: ID!
@@ -1287,6 +1289,11 @@ type Mutation {
     @aws_iam
     @aws_cognito_user_pools
 
+  createOrder(input: CreateOrderInput!): Order
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
     @function(name: "${env}-anyupp-graphql-resolvers")
@@ -1380,12 +1387,6 @@ type Subscription {
       mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
     )
     @aws_cognito_user_pools
-  onOrdersChange: Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
-    @aws_cognito_user_pools
-  onOrdersDelete: Order
-    @aws_subscribe(mutations: ["deleteOrder"])
-    @aws_cognito_user_pools
 
   # Added for the Mobile Application
   onProductChanged(unitId: String): GeneratedProduct
@@ -1396,11 +1397,5 @@ type Subscription {
         "deleteGeneratedProduct"
       ]
     )
-    @aws_cognito_user_pools
-  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
-    @aws_cognito_user_pools
-  onUnitOrdersChange(unitId: String, archived: Boolean): Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
 }

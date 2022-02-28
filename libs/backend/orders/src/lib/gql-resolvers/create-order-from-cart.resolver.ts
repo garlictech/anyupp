@@ -1,5 +1,3 @@
-import * as R from 'ramda';
-import * as A from 'fp-ts/lib/Array';
 import { pipe } from 'fp-ts/lib/function';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
@@ -9,18 +7,68 @@ import {
   PaymentStatus,
 } from '@bgap/crud-gql/api';
 import { sendRkeeperOrder } from '@bgap/rkeeper-api';
+import {
+  getCartIsMissingError,
+  getUnitIsNotAcceptingOrdersError,
+  missingParametersError,
+  throwIfEmptyValue,
+} from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
-import { forkJoin, from, of } from 'rxjs';
-import { map, mapTo, catchError } from 'rxjs/operators';
+import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
+import { tap, map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
-import { OrderResolverDeps, getAllParentsOfUnitProduct } from './utils';
+import {
+  getGroupProduct,
+  getUnitProduct,
+  getChainProduct,
+  OrderResolverDeps,
+} from './utils';
+import { addPackagingFeeToOrder } from './handle-packaging-fee';
 import { hasSimplifiedOrder } from './order-resolvers';
 import { addServiceFeeToOrder } from './handle-service-fee';
-import * as E from 'fp-ts/lib/Either';
-import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
-import { addPackagingFeeToOrder } from './handle-packaging-fee';
 
-export const convertCartOrderItemToOrderItem = ({
+const toOrderInputFormat = ({
+  userId,
+  unit,
+  orderNum,
+  paymentMode,
+  items,
+  place,
+  orderMode,
+  servingMode,
+}: {
+  userId: string;
+  unit: CrudApi.Unit;
+  orderNum: string;
+  paymentMode: CrudApi.PaymentMode;
+  items: CrudApi.OrderItemInput[];
+  place: CrudApi.Place | null | undefined;
+  orderMode: CrudApi.OrderMode;
+  servingMode: CrudApi.ServingMode;
+}): CrudApi.CreateOrderInput => {
+  return pipe(calculateOrderSumPriceRounded(items), sumPrice => ({
+    userId,
+    takeAway: false,
+    archived: false,
+    orderNum,
+    paymentMode,
+    items,
+    statusLog: createStatusLog(userId),
+    sumPriceShown: sumPrice,
+    place,
+    unitId: unit.id,
+    transactionStatus: PaymentStatus.waiting_for_payment,
+    orderMode,
+    servingMode,
+    orderPolicy: unit.orderPolicy,
+    serviceFeePolicy: unit.serviceFeePolicy,
+    ratingPolicies: unit.ratingPolicies,
+    tipPolicy: unit.tipPolicy,
+    soldOutVisibilityPolicy: unit.soldOutVisibilityPolicy,
+  }));
+};
+
+const convertCartOrderItemToOrderItem = ({
   userId,
   cartItem,
   currency,
@@ -70,6 +118,46 @@ const getTax = (
     ? groupProduct.takeawayTax
     : groupProduct.tax;
 
+const getOrderItems =
+  ({
+    userId,
+    cartItems,
+    currency,
+    takeaway,
+  }: {
+    userId: string;
+    cartItems: CrudApi.OrderItem[];
+    currency: string;
+    takeaway: boolean;
+  }) =>
+  (deps: OrderResolverDeps): Observable<CrudApi.OrderItemInput[]> => {
+    return combineLatest(
+      cartItems.map(cartItem =>
+        getUnitProduct(deps.crudSdk)(cartItem.productId).pipe(
+          switchMap(unitProduct =>
+            getGroupProduct(deps.crudSdk)(unitProduct.parentId).pipe(
+              switchMap(groupProduct =>
+                getChainProduct(deps.crudSdk)(groupProduct.parentId).pipe(
+                  map(chainProduct =>
+                    convertCartOrderItemToOrderItem({
+                      userId,
+                      cartItem,
+                      currency,
+                      laneId: unitProduct.laneId,
+                      tax: getTax(takeaway, groupProduct),
+                      productType: chainProduct.productType,
+                      externalId: unitProduct.externalId,
+                    }),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  };
+
 const createStatusLog = (
   userId: string,
   status: CrudApi.OrderStatus = CrudApi.OrderStatus.none,
@@ -81,380 +169,188 @@ const createOrderInDb =
   (input: CrudApi.CreateOrderInput) => (deps: OrderResolverDeps) =>
     from(deps.crudSdk.CreateOrder({ input }));
 
-export const getCart =
-  (deps: OrderResolverDeps) =>
-  (cartId: string): OE.ObservableEither<string, CrudApi.Cart> =>
-    pipe(
-      deps.crudSdk.GetCart({ id: cartId }),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          CrudApi.Cart | undefined | null
-        >,
-      // Validate cart
-      OE.chain(
-        OE.fromPredicate(
-          x => !!x,
-          () => `Cart ${cartId} is missing`,
-        ),
-      ),
-      OE.map(x => x as NonNullable<typeof x>),
-      OE.chain(
-        OE.fromPredicate(
-          cart => cart.userId === deps.userId,
-          cart => `User ID-s mismatch (${deps.userId} <-> ${cart.userId})`,
-        ),
-      ),
-    );
+const getUnit = (id: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetUnit({ id }, { fetchPolicy: 'no-cache' }));
 
-export interface CalculationState_UnitAdded {
-  cart: CrudApi.Cart;
-  unit: CrudApi.Unit;
-}
+const getCart = (id: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetCart({ id }, { fetchPolicy: 'no-cache' }));
 
-export const getUnit =
-  (deps: OrderResolverDeps) =>
-  (
-    cart: CrudApi.Cart,
-  ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
-    pipe(
-      deps.crudSdk.GetUnit({ id: cart.unitId }),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          CrudApi.Unit | undefined | null
-        >,
-      // Unit exists?
-      OE.chain(
-        OE.fromPredicate(
-          x => !!x,
-          () =>
-            `Unit ${cart.unitId} in the cart cannot be fetched from the database.`,
-        ),
-      ),
-      OE.map(x => x as NonNullable<typeof x>),
-      // Does the unit accept order?
-      OE.chain(
-        OE.fromPredicate(
-          unit => unit.isAcceptingOrders,
-          () => `Unit does not accept orders`,
-        ),
-      ),
-      // Payment method is not provided: allowed in afterpay only
-      OE.chain(
-        OE.fromPredicate(
-          unit =>
-            !(
-              !cart.paymentMode &&
-              unit.orderPaymentPolicy !== CrudApi.OrderPaymentPolicy.afterpay
-            ),
-          () =>
-            'Payment mode is not provided in the cart, and the unit does not accept afterpay.',
-        ),
-      ),
-      OE.map(unit => ({
-        cart,
-        unit,
-      })),
-    );
-
-export interface CalculationState_GroupCurrencyAdded {
-  cart: CrudApi.Cart;
-  unit: CrudApi.Unit;
-  groupCurrency: string;
-}
-
-export const getGroupCurrency =
-  (deps: OrderResolverDeps) =>
-  (
-    inputState: CalculationState_UnitAdded,
-  ): OE.ObservableEither<string, CalculationState_GroupCurrencyAdded> =>
-    pipe(
-      deps.crudSdk.GetGroupCurrency({ id: inputState.unit.groupId }),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          string | undefined | null
-        >,
-      OE.chain(
-        OE.fromPredicate(
-          groupCurrency => !!groupCurrency,
-          () =>
-            `Group ${inputState.unit.groupId} cannot be fetched from the database.`,
-        ),
-      ),
-      OE.map(groupCurrency => groupCurrency as string),
-      OE.map(groupCurrency => ({
-        ...inputState,
-        groupCurrency,
-      })),
-    );
-
-export interface CalculationState_OrderNumAdded {
-  cart: CrudApi.Cart;
-  unit: CrudApi.Unit;
-  groupCurrency: string;
-  orderNum: string;
-}
-
-export const getNextOrderNum =
-  (deps: OrderResolverDeps) =>
-  (
-    inputState: CalculationState_GroupCurrencyAdded,
-  ): OE.ObservableEither<string, CalculationState_OrderNumAdded> =>
-    pipe(
-      incrementOrderNum(deps.unitTableName)(inputState.unit.id),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          number | undefined | null
-        >,
-      OE.map(x => x as NonNullable<typeof x>),
-      OE.map(lastOrderNum => lastOrderNum ?? Math.floor(deps.random() * 10)),
-      OE.map(x => (x || 1).toString().padStart(2, '0')),
-      OE.map(num =>
-        inputState.cart.place
-          ? `${inputState.cart.place.table}${inputState.cart.place.seat}${num}`
-          : num,
-      ),
-      OE.map(orderNum => ({
-        ...inputState,
-        orderNum,
-      })),
-    );
-
-export interface CalculationState_OrderInputAdded {
-  cart: CrudApi.Cart;
-  unit: CrudApi.Unit;
-  groupCurrency: string;
-  orderNum: string;
-  orderInput: CrudApi.CreateOrderInput;
-}
-
-export const getOrderInput =
-  (deps: OrderResolverDeps) =>
-  (
-    inputState: CalculationState_OrderNumAdded,
-  ): OE.ObservableEither<string, CalculationState_OrderInputAdded> =>
-    pipe(
-      inputState.cart.items.map(cartItem =>
-        pipe(
-          getAllParentsOfUnitProduct(deps.crudSdk)(cartItem.productId),
-          OE.map(state => ({ ...state, cartItem })),
-        ),
-      ),
-      x => forkJoin(x),
-      map(A.array.sequence(E.either)),
-      OE.map(
-        R.map(productState =>
-          convertCartOrderItemToOrderItem({
-            userId: inputState.cart.userId,
-            cartItem: productState.cartItem,
-            currency: inputState.groupCurrency,
-            laneId: productState.unitProduct.laneId,
-            tax: getTax(
-              inputState.cart.servingMode === CrudApi.ServingMode.takeaway,
-              productState.groupProduct,
-            ),
-            productType: productState.chainProduct.productType,
-            externalId: productState.unitProduct.externalId,
-          }),
-        ),
-      ),
-      OE.map(orderItems => ({
-        userId: inputState.cart.userId,
-        takeAway: false,
-        archived: false,
-        orderNum: inputState.orderNum,
-        paymentMode: inputState.cart.paymentMode,
-        items: orderItems,
-        statusLog: createStatusLog(inputState.cart.userId),
-        sumPriceShown: calculateOrderSumPriceRounded(orderItems),
-        place: inputState.cart.place,
-        unitId: inputState.cart.unitId,
-        transactionStatus: PaymentStatus.waiting_for_payment,
-        orderMode: inputState.cart.orderMode || CrudApi.OrderMode.instant,
-        servingMode: inputState.cart.servingMode || CrudApi.ServingMode.inplace,
-        orderPolicy: inputState.unit.orderPolicy,
-        serviceFeePolicy: inputState.unit.serviceFeePolicy,
-        ratingPolicies: inputState.unit.ratingPolicies,
-        tipPolicy: inputState.unit.tipPolicy,
-        soldOutVisibilityPolicy: inputState.unit.soldOutVisibilityPolicy,
-      })),
-      OE.map(orderInput => ({
-        ...inputState,
-        orderInput,
-      })),
-    );
-
-export const handlePackagingFee =
-  (deps: OrderResolverDeps) =>
-  (
-    inputState: CalculationState_OrderInputAdded,
-  ): OE.ObservableEither<string, CalculationState_OrderInputAdded> =>
-    pipe(
-      inputState.cart.servingMode === CrudApi.ServingMode.takeaway
-        ? pipe(
-            addPackagingFeeToOrder(deps.crudSdk)(
-              inputState.orderInput,
-              inputState.groupCurrency,
-              inputState.unit.packagingTaxPercentage,
-            ),
-            x => x,
-            OE.map(orderInput => ({
-              ...inputState,
-              orderInput,
-            })),
-          )
-        : OE.of<string, CalculationState_OrderInputAdded>(inputState),
-    );
-
-export const handleServiceFee = (
-  inputState: CalculationState_OrderInputAdded,
-): OE.ObservableEither<string, CalculationState_OrderInputAdded> =>
-  pipe(
-    addServiceFeeToOrder(inputState.orderInput, inputState.unit),
-    orderInput => ({
-      ...inputState,
-      orderInput,
-    }),
-    x => OE.of<string, CalculationState_OrderInputAdded>(x),
+const getGroupCurrency = (id: string) => (deps: OrderResolverDeps) =>
+  from(deps.crudSdk.GetGroupCurrency({ id }, { fetchPolicy: 'no-cache' })).pipe(
+    map(x => x?.currency),
+    throwIfEmptyValue<string>(`Group currency is missing for ${id}`),
   );
 
-export const handleRkeeperOrder =
-  (deps: OrderResolverDeps) =>
-  (
-    inputState: CalculationState_OrderInputAdded,
-  ): OE.ObservableEither<string, CalculationState_OrderInputAdded> =>
-    pipe(
-      inputState.unit.pos?.type === CrudApi.PosType.rkeeper
-        ? sendRkeeperOrder({
-            currentTime: deps.currentTime,
-            axiosInstance: deps.axiosInstance,
-          })(inputState.unit, inputState.orderInput)
-        : of({}),
-      mapTo(inputState),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          CalculationState_OrderInputAdded
-        >,
-    );
-
-export const handleSimplifiedOrders = (
-  inputState: CalculationState_OrderInputAdded,
-): OE.ObservableEither<string, CalculationState_OrderInputAdded> =>
-  pipe(
-    {
-      ...inputState,
-      orderInput: {
-        ...inputState.orderInput,
-        // Archive the order immediately if the unit has simplified order policy
-        archived: hasSimplifiedOrder(inputState.unit),
-      },
-    },
-    x => OE.of<string, CalculationState_OrderInputAdded>(x),
-  );
-
-export const placeOrder =
-  (deps: OrderResolverDeps) =>
-  (
-    inputState: CalculationState_OrderInputAdded,
-  ): OE.ObservableEither<string, string> =>
-    pipe(
-      createOrderInDb(inputState.orderInput)(deps),
-      x => OE.tryCatch(x) as OE.ObservableEither<string, CrudApi.Order>,
-      OE.chain(
-        OE.fromPredicate(
-          x => !!x,
-          () => 'Order cannot be placed, unknown error',
+const getNextOrderNum =
+  (tableName: string) =>
+  ({
+    unitId,
+    place,
+  }: {
+    unitId: string;
+    place: CrudApi.Place | undefined | null;
+  }): Observable<string> => {
+    return incrementOrderNum(tableName)(unitId).pipe(
+      mergeMap(lastOrderNum =>
+        iif(
+          () => !!lastOrderNum,
+          of(lastOrderNum),
+          of(Math.floor(Math.random() * 10)), // In case of the lastOrderNum is missing get a random number between 0-99
         ),
       ),
-      OE.chain(order =>
-        pipe(
-          deps.crudSdk.DeleteCart({ input: { id: inputState.cart.id } }),
-          catchError(err => {
-            console.error(
-              'Error during deleting cart, but placing order was successful, so we keep going:',
-              err,
-            );
-            return of(order.id);
-          }),
-          mapTo(order.id),
-          x => OE.fromObservable<string, string>(x),
-        ),
-      ),
-      x => x,
+      map(x => (x || 1).toString().padStart(2, '0')),
+      map(num => (place ? `${place.table}${place.seat}${num}` : num)),
     );
+  };
 
-export interface CalculationState_WithCart {
-  cart: CrudApi.Cart;
-  userId: string;
-}
-
-export const validateCart = (
-  cartInput: CrudApi.Cart | undefined,
-  userId: string,
-): E.Either<string, CalculationState_WithCart> =>
-  pipe(
-    cartInput,
-    E.fromNullable(`Cart is missing`),
-    E.chain(
-      E.fromPredicate(
-        cart => cart.userId === userId,
-        () => 'User ID-s mismatch',
-      ),
-    ),
-    E.map(cart => ({
-      userId,
-      cart,
-    })),
-  );
-
-export const validateUnitPolicies = (
-  inputState: CalculationState_WithCart,
-  unit: CrudApi.Unit | undefined,
-): E.Either<string, CalculationState_UnitAdded> =>
-  pipe(
-    inputState,
-    E.fromPredicate(
-      () => !!unit,
-      () =>
-        `Unit ${inputState.cart.unitId} in the cart cannot be fetched from the database.`,
-    ),
-    E.map(state => ({
-      ...state,
-      unit: unit as CrudApi.Unit,
-    })),
-    E.chain(
-      E.fromPredicate(
-        state => !state.unit.isAcceptingOrders,
-        () => `Unit does not acept orders`,
-      ),
-    ),
-    //E.chain(E.fromPredicate(() => cart.paymentMode && unit.orderPaymentPolicy !== CrudApi.OrderPaymentPolicy.afterpay,
-    //'Payment mode is not provided in the cart, and the unit does not accept afterpay.')
-  );
+const isTakeawayCart = (cart: CrudApi.Cart) =>
+  cart.servingMode === CrudApi.ServingMode.takeaway;
 
 export const createOrderFromCart =
   (cartId: string) =>
-  (deps: OrderResolverDeps): OE.ObservableEither<string, string> => {
+  (
+    deps: OrderResolverDeps,
+  ): ReturnType<CrudApi.CrudSdk['CreateOrderFromCart']> => {
     console.debug(
       `Handling createOrderFromCart: cartId=${cartId}, userId=${deps.userId}`,
     );
     // split a long stream to help the type checker
-    const calc1 = getCart(deps)(cartId).pipe(
-      OE.chain(getUnit(deps)),
-      OE.chain(getGroupCurrency(deps)),
-      OE.chain(getNextOrderNum(deps)),
-      OE.chain(getOrderInput(deps)),
-      OE.chain(handlePackagingFee(deps)),
-      OE.chain(handleServiceFee),
-      OE.chain(handleRkeeperOrder(deps)),
+    const calc1 = getCart(cartId)(deps).pipe(
+      throwIfEmptyValue<CrudApi.Cart>(`Cart is missing: ${cartId}`),
+      switchMap(cart =>
+        cart.userId === deps.userId
+          ? of(cart)
+          : throwError(getCartIsMissingError()),
+      ),
+      switchMap(cart =>
+        cart.paymentMode !== undefined
+          ? of(cart)
+          : throwError(missingParametersError('cart.paymentMode')),
+      ),
+      switchMap(cart =>
+        // create catchError and custom error (Covered by #744)
+        getUnit(cart.unitId)(deps).pipe(
+          map(unit => ({ cart, unit })),
+          switchMap(props =>
+            props?.unit?.isAcceptingOrders
+              ? of(props)
+              : throwError(getUnitIsNotAcceptingOrdersError()),
+          ),
+        ),
+      ),
+      switchMap(props =>
+        props?.unit && props?.cart
+          ? of(props as { unit: CrudApi.Unit; cart: CrudApi.Cart })
+          : throwError('Wrong data'),
+      ),
+      switchMap(props =>
+        getGroupCurrency(props.unit.groupId)(deps).pipe(
+          map(currency => ({ ...props, currency })),
+        ),
+      ),
+      switchMap(props =>
+        getNextOrderNum(deps.unitTableName)({
+          unitId: props.unit.id,
+          place: props.cart.place,
+        }).pipe(map(orderNum => ({ ...props, orderNum }))),
+      ),
     );
 
-    return calc1.pipe(
-      OE.chain(handleSimplifiedOrders),
-      OE.chain(placeOrder(deps)),
+    const calc2 = calc1.pipe(
+      switchMap(props =>
+        getOrderItems({
+          userId: deps.userId,
+          currency: props.currency,
+          cartItems: props.cart.items,
+          takeaway: isTakeawayCart(props.cart),
+        })(deps).pipe(map(items => ({ ...props, items }))),
+      ),
+      map(props => ({
+        ...props,
+        orderInput: toOrderInputFormat({
+          userId: deps.userId,
+          unit: props.unit,
+          orderNum: props.orderNum,
+          paymentMode: props.cart.paymentMode as CrudApi.PaymentMode,
+          items: props.items,
+          place: props.cart.place,
+          orderMode: CrudApi.OrderMode.instant, // Currenty this is a FIXED value
+          servingMode: props.cart.servingMode || CrudApi.ServingMode.inplace, // should NOT use default Serving mode if ALL the carts have servingMode fields (when it will be required in the schema) (handled in #1835)
+        }),
+      })),
+      // Handle packaging fee - only in takeaway mode
+      switchMap(props =>
+        (props.cart.version ?? 0) >= 1 &&
+        props.cart.servingMode === CrudApi.ServingMode.takeaway
+          ? pipe(
+              addPackagingFeeToOrder(deps.crudSdk)(
+                props.orderInput,
+                props.currency,
+                props.unit.packagingTaxPercentage,
+              ),
+              map(orderInput => ({
+                ...props,
+                orderInput,
+              })),
+            )
+          : of(props),
+      ),
+      // Handle service fee  - not in takeaway mode
+      map(props =>
+        (props.cart.version ?? 0) >= 1 &&
+        props.orderInput.servingMode === CrudApi.ServingMode.takeaway
+          ? props
+          : {
+              ...props,
+              orderInput: addServiceFeeToOrder(props.orderInput, props.unit),
+            },
+      ),
+    );
+
+    return calc2.pipe(
+      // Archive the order immediately if the unit has simplified order policy
+      map(props => ({
+        ...props,
+        orderInput: {
+          ...props.orderInput,
+          archived: hasSimplifiedOrder(props.unit),
+        },
+      })),
+      // Place order into the DB
+      switchMap(props =>
+        createOrderInDb(props.orderInput)(deps).pipe(
+          map(newOrder => ({
+            ...props,
+            newOrderId: newOrder?.id,
+          })),
+        ),
+      ),
+      switchMap(props =>
+        deps.crudSdk
+          .DeleteCart({ input: { id: props.cart.id } })
+          .pipe(mapTo(props)),
+      ),
+      // Push the order to rkeeper if the unit is backed by rkeeper
+      tap(x =>
+        console.debug(
+          'Props submitted to rkeeper check:',
+          JSON.stringify(x, null, 2),
+        ),
+      ),
+      switchMap(props =>
+        (props.unit.pos?.type === CrudApi.PosType.rkeeper
+          ? sendRkeeperOrder({
+              currentTime: deps.currentTime,
+              axiosInstance: deps.axiosInstance,
+            })(props.unit, props.orderInput)
+          : of({})
+        ).pipe(
+          map(rkeeperResult => ({
+            ...props,
+            rkeeperResult,
+          })),
+        ),
+      ),
+      map(props => props.newOrderId),
     );
   };
