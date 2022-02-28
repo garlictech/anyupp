@@ -49,7 +49,7 @@ class _SelectServingModeWidgetState extends State<SelectServingModeWidget> {
               children: [
                 if (widget.dismissable)
                   Align(
-                    alignment: Alignment.centerLeft,
+                    alignment: Alignment.topLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, top: 4.0),
                       child: BackButtonWidget(
