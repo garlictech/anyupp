@@ -108,11 +108,7 @@ export const startStripePaymentV2 =
     }
 
     const serviceFee = order.serviceFee ? order.serviceFee.grossPrice : 0;
-    const packagingSum = order.packagingSum
-      ? order.packagingSum.netPrice *
-        (1 + order.packagingSum.taxPercentage / 100)
-      : 0;
-    const total = order.sumPriceShown.priceSum + serviceFee + packagingSum;
+    const total = order.sumPriceShown.priceSum + serviceFee;
 
     // 5. Handle INAPP payment
     if (paymentMethod == CrudApi.PaymentMethod.inapp) {
