@@ -32,6 +32,16 @@ const getDepsMock = (): StripeResolverDeps => ({
         transaction: {
           paymentMethodId: 'TRANSACTION PAYMENT METHOD ID',
         },
+        serviceFee: {
+          currency: 'BATKA',
+          grossPrice: 100,
+          taxContent: 10,
+        },
+        packagingSum: {
+          currency: 'BATKA',
+          netPrice: 10,
+          taxPercentage: 20,
+        },
       }),
     ),
     GetUser: jest.fn().mockReturnValue(
@@ -127,12 +137,28 @@ test('startStripePayment test', async () => {
   checkMocks(deps);
 });
 
-test('payTipWithStripe test', async () => {
+test('payTipWithStripe test - fixed amount', async () => {
+  const input: CrudApi.PayTipWithStripeInput = {
+    orderId: 'ORDER_ID',
+    tip: {
+      value: 100,
+      type: CrudApi.TipType.amount,
+    },
+  };
+
+  const deps = getDepsMock();
+  const res = await payTipWithStripe(input)(deps);
+
+  expect(res).toMatchSnapshot('Stripe tip payment result');
+  checkMocks(deps);
+});
+
+test('payTipWithStripe test - percentage', async () => {
   const input: CrudApi.PayTipWithStripeInput = {
     orderId: 'ORDER_ID',
     tip: {
       value: 10,
-      type: CrudApi.TipType.amount,
+      type: CrudApi.TipType.percent,
     },
   };
 

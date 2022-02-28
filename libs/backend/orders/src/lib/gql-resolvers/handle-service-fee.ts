@@ -69,8 +69,17 @@ export const addServiceFeeToOrder = (
         R.sum,
         sumFee => ({
           currency: order.sumPriceShown.currency,
-          netPrice: sumFee,
-          taxPercentage: 0,
+          grossPrice: sumFee,
+          taxContent: pipe(
+            newOrder.items,
+            R.map(item => item.serviceFee),
+            R.filter(serviceFee => !!serviceFee),
+            R.map(
+              serviceFee =>
+                (serviceFee.netPrice * serviceFee.taxPercentage) / 100,
+            ),
+            R.sum,
+          ),
         }),
       ),
     }),

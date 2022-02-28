@@ -84,7 +84,9 @@ class CurrentOrderCardWidget extends StatelessWidget {
                   ),
                   child: Center(
                     child: Icon(
-                      _ICONMAP[status],
+                      order.orderPolicy == OrderPolicy.full
+                          ? _ICONMAP[status]
+                          : _ICONMAP[OrderStatus.served],
                       size: 16.0,
                       color: order.archived ? theme.secondary0 : theme.icon,
                     ),
@@ -112,8 +114,11 @@ class CurrentOrderCardWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        trans(context,
-                            'orders.infos.status.${enumToString(status)!}.title'),
+                        trans(
+                            context,
+                            order.orderPolicy == OrderPolicy.full
+                                ? 'orders.infos.status.${enumToString(status)!}.title'
+                                : 'orders.infos.status.simplified.title'),
                         style: Fonts.satoshi(
                           fontSize: 14.0,
                           color: theme.secondary,
@@ -146,8 +151,9 @@ class CurrentOrderCardWidget extends StatelessWidget {
                   // color: theme.secondary,
                   child: Text(
                     formatCurrency(
-                        order.totalPrice(unit.serviceFeePolicy?.type),
-                        order.sumPriceShown.currency),
+                      order.totalPrice,
+                      order.sumPriceShown.currency,
+                    ),
                     style: Fonts.satoshi(
                       fontSize: 16.0,
                       color: theme.secondary,

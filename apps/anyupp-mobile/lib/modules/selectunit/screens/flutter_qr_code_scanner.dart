@@ -74,47 +74,51 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: theme.secondary0,
-        appBar: _qr_scan_state == true
-            ? AppBar(
-                backgroundColor: theme.secondary0,
-                leading: BackButtonWidget(
-                  color: theme.secondary,
-                  showBorder: false,
-                  iconSize: 24.0,
-                ),
-                actions: isDev
-                    ? [
-                        IconButton(
-                          icon: Icon(
-                            Icons.qr_code_2,
-                            color: Color(0xFF303030),
+    return Container(
+      color: theme.secondary0,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: theme.secondary0,
+          appBar: _qr_scan_state == true
+              ? AppBar(
+                elevation: 0,
+                  backgroundColor: theme.secondary0,
+                  leading: BackButtonWidget(
+                    color: theme.secondary,
+                    showBorder: false,
+                    iconSize: 24.0,
+                  ),
+                  actions: isDev
+                      ? [
+                          IconButton(
+                            icon: Icon(
+                              Icons.qr_code_2,
+                              color: Color(0xFF303030),
+                            ),
+                            onPressed: () async {
+                              setState(() {
+                                _unitId =
+                                    'seeded_unit_c1_g1_1_id'; // seeded_unit_c1_g1_1_id -MGMw7p0gQsX31ZLZOkK
+                                _place = Place(table: '01', seat: '02');
+                                _qr_scan_state = false;
+                              });
+                            },
                           ),
-                          onPressed: () async {
-                            setState(() {
-                              _unitId =
-                                  'seeded_unit_c1_g1_1_id'; // seeded_unit_c1_g1_1_id -MGMw7p0gQsX31ZLZOkK
-                              _place = Place(table: '01', seat: '02');
-                              _qr_scan_state = false;
-                            });
-                          },
-                        ),
-                      ]
-                    : null,
-              )
-            : null,
-        body: _qr_scan_state
-            ? _buildQrScanningWidget()
-            : UnitFoundByQRCodeWidget(
-                place: _place!,
-                unitId: _unitId!,
-                loadUnits: widget.loadUnits,
-                navigateToCart: widget.navigateToCart,
-                popWhenClose: widget.popWhenClose,
-                onQRChecked: (valid) => Nav.pop<bool>(valid),
-              ),
+                        ]
+                      : null,
+                )
+              : null,
+          body: _qr_scan_state
+              ? _buildQrScanningWidget()
+              : UnitFoundByQRCodeWidget(
+                  place: _place!,
+                  unitId: _unitId!,
+                  loadUnits: widget.loadUnits,
+                  navigateToCart: widget.navigateToCart,
+                  popWhenClose: widget.popWhenClose,
+                  onQRChecked: (valid) => Nav.pop<bool>(valid),
+                ),
+        ),
       ),
     );
   }
@@ -172,7 +176,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
                     textAlign: TextAlign.center,
                     style: Fonts.satoshi(
                       fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
@@ -234,7 +238,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
         final seat = uri.pathSegments[2];
         final Place place = Place(table: table, seat: seat);
         // print('***** BARCODE.UNIT=$unitId, TABLE=$table, SEAT=$seat');
-        // showNotification(context, 'New Seat Reserved', 'Seat $seat reversed at Table $table', null);
+        // showNotification(context, 'New Seat Reserved', 'Seat $seat reserved at Table $table', null);
 
         setState(() {
           _unitId = unitId;

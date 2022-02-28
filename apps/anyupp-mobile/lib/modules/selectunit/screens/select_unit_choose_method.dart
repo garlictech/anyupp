@@ -115,16 +115,22 @@ class _SelectUnitMainContentWidgetState
                   return Container(
                     padding: EdgeInsets.all(0.0),
                     height: 138,
-                    child:
-                        Center(child: Text(trans('selectUnitMap.noNearUnits'))),
+                    child: Center(
+                      child: Text(
+                        trans('selectUnitMap.noNearUnits'),
+                      ),
+                    ),
                   );
                 }
                 if (state is UnitsNotLoaded) {
                   return Container(
                     padding: EdgeInsets.all(0.0),
                     height: 138,
-                    child:
-                        Center(child: Text(trans('selectUnitMap.notLoaded'))),
+                    child: Center(
+                      child: Text(
+                        trans('selectUnitMap.notLoaded'),
+                      ),
+                    ),
                   );
                 }
                 if (state is UnitsLoaded) {

@@ -5,6 +5,7 @@ import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:fa_prev/shared/widgets/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -122,29 +123,21 @@ class _StripePaymentMethodsScreenState
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(transEx(context, 'payment.delete.title')),
-          content: Text(transEx(context, 'payment.delete.description')),
-          // actionsAlignment: MainAxisAlignment.spaceBetween,
-          actions: [
-            TextButton(
-              child: Text(transEx(context, 'payment.delete.cancel')),
-              onPressed: () {
-                Nav.pop();
-              },
-            ),
-            TextButton(
-              child: Text(transEx(context, 'payment.delete.ok')),
-              onPressed: () async {
-                Nav.pop();
-                print('Deleting card=${method.id}');
-                if (method.id != null) {
-                  getIt<StripePaymentBloc>()
-                      .add(DeleteStripeCardEvent(method.id!));
-                }
-              },
-            ),
-          ],
+        return PlatformAlertDialog(
+          title: transEx(context, 'payment.delete.title'),
+          description: transEx(context, 'payment.delete.description'),
+          cancelButtonText: transEx(context, 'payment.delete.cancel'),
+          okButtonText: transEx(context, 'payment.delete.ok'),
+          onOkPressed: () async {
+            Nav.pop();
+            print('Deleting card=${method.id}');
+            if (method.id != null) {
+              getIt<StripePaymentBloc>().add(DeleteStripeCardEvent(method.id!));
+            }
+          },
+          onCancelPressed: () {
+            Nav.pop();
+          },
         );
       },
     );

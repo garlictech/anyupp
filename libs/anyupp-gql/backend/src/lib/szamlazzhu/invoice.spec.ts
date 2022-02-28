@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as CrudApi from '@bgap/crud-gql/api';
-import { calculaterServiceFeeItems, createInvoice } from './invoice';
+import { createInvoice } from './invoice';
 import { simpleFixtures, maskDate } from '@bgap/shared/fixtures';
 import * as R from 'ramda';
+import { calculaterServiceFeeItems } from './utils';
 
 test('createInvoice - general case', async () => {
   const szamlazzClient: any = {
@@ -89,6 +90,7 @@ test('split service fee by tax percentage', async () => {
         currency: 'HUF',
       },
     },
+    {},
     {
       serviceFee: {
         taxPercentage: 0,

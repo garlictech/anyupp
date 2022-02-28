@@ -96,8 +96,8 @@ const orderInputBase = {
   },
   serviceFee: {
     currency: 'HUF',
-    netPrice: 200,
-    taxPercentage: 27,
+    grossPrice: 200,
+    taxContent: 20,
   },
 };
 

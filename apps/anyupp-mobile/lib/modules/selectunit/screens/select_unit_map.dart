@@ -8,6 +8,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/location.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:fa_prev/shared/widgets/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -479,35 +480,21 @@ class _SelectUnitByLocationScreenState
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(trans('selectUnitMap.permission.title')),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(trans('selectUnitMap.permission.description')),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(trans('selectUnitMap.permission.closeApp')),
-              onPressed: () {
-                // Close this dialog
-                Nav.pop();
-                // Exit application
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-              },
-            ),
-            TextButton(
-              child: Text(trans('selectUnitMap.permission.backToMap')),
-              onPressed: () {
-                // Close this dialog
-                Nav.pop();
-                // Restart permission request
-                _determineUserPositionAndLoadUnits();
-              },
-            ),
-          ],
+        return PlatformAlertDialog(
+          title: trans('selectUnitMap.permission.title'),
+          description: trans('selectUnitMap.permission.description'),
+          cancelButtonText: trans('selectUnitMap.permission.closeApp'),
+          okButtonText: trans('selectUnitMap.permission.backToMap'),
+          onOkPressed: () {
+            Nav.pop();
+            _determineUserPositionAndLoadUnits();
+          },
+          onCancelPressed: () {
+            // Close this dialog
+            Nav.pop();
+            // Exit application
+            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+          },
         );
       },
     );

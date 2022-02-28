@@ -54,7 +54,7 @@
           itemSize="90"
         >
           <nb-list>
-            <nb-list-item *ngFor="let product of chainProducts">
+            <nb-list-item *cdkVirtualFor="let product of chainProducts">
               <bgap-product-list-item
                 class="w-100"
                 [product]="product"

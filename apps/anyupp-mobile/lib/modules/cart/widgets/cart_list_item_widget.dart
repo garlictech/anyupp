@@ -4,6 +4,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,7 +118,8 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                                     ),
                                     TextSpan(
                                       text: formatCurrency(
-                                          widget.order.getPrice(),
+                                          widget.order.getPrice(
+                                              currentUnit?.serviceFeePolicy),
                                           widget.unit.currency),
                                       style: Fonts.satoshi(
                                         color: theme.highlight,

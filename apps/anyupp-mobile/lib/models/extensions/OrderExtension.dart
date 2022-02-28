@@ -1,6 +1,6 @@
-import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:intl/intl.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 extension OrderExtension on Order {
   String getFormattedDate() {
@@ -13,8 +13,9 @@ extension OrderExtension on Order {
     }
   }
 
-  double totalPrice([ServiceFeeType? policy]) =>
-      this.sumPriceShown.priceSum +
-      (this.serviceFee?.netPrice ?? 0) *
-          (1 + (this.serviceFee?.taxPercentage ?? 0) / 100.0);
+  double get totalPrice => sumPriceShown.priceSum + serviceFeePrice;
+
+  double get serviceFeePrice => this.servingMode != ServingMode.inPlace
+      ? 0
+      : (serviceFee?.grossPrice ?? 0.0);
 }

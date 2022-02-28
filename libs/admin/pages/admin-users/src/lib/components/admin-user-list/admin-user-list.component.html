@@ -16,7 +16,7 @@
     </button>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="70">
       <nb-list>
         <nb-list-item *cdkVirtualFor="let adminUser of adminUsers$ | async">
           <bgap-admin-user-list-item

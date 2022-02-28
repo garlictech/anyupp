@@ -30,7 +30,12 @@ class Order {
   final PaymentStatus? tipTransactionStatus;
   final String? tipTransactionId;
   final Transaction? tipTransaction;
-  final Price? serviceFee;
+  final CumulatedPrice? serviceFee;
+  final OrderPolicy? orderPolicy;
+  final ServiceFeePolicy? serviceFeePolicy;
+  final List<RatingPolicy>? ratingPolicies;
+  final TipPolicy? tipPolicy;
+  final SoldOutVisibilityPolicy? soldOutVisibilityPolicy;
 
   Order({
     required this.id,
@@ -59,6 +64,11 @@ class Order {
     this.tipTransactionId,
     this.tipTransaction,
     this.serviceFee,
+    this.orderPolicy,
+    this.serviceFeePolicy,
+    this.ratingPolicies,
+    this.tipPolicy,
+    this.soldOutVisibilityPolicy,
   });
   // final UnpayCategory? unpayCategory;
 
@@ -88,7 +98,12 @@ class Order {
     PaymentStatus? tipTransactionStatus,
     String? tipTransactionId,
     Transaction? tipTransaction,
-    Price? serviceFee,
+    CumulatedPrice? serviceFee,
+    OrderPolicy? orderPolicy,
+    ServiceFeePolicy? serviceFeePolicy,
+    List<RatingPolicy>? ratingPolicies,
+    TipPolicy? tipPolicy,
+    SoldOutVisibilityPolicy? soldOutVisibilityPolicy,
   }) {
     return Order(
       id: id ?? this.id,
@@ -117,6 +132,12 @@ class Order {
       tipTransactionId: tipTransactionId ?? this.tipTransactionId,
       tipTransaction: tipTransaction ?? this.tipTransaction,
       serviceFee: serviceFee ?? this.serviceFee,
+      orderPolicy: orderPolicy ?? this.orderPolicy,
+      serviceFeePolicy: serviceFeePolicy ?? this.serviceFeePolicy,
+      ratingPolicies: ratingPolicies ?? this.ratingPolicies,
+      tipPolicy: tipPolicy ?? this.tipPolicy,
+      soldOutVisibilityPolicy:
+          soldOutVisibilityPolicy ?? this.soldOutVisibilityPolicy,
     );
   }
 
@@ -148,6 +169,11 @@ class Order {
       'tipTransactionId': tipTransactionId,
       'tipTransaction': tipTransaction?.toJson(),
       'serviceFee': serviceFee?.toJson(),
+      'orderPolicy': enumToString(orderPolicy),
+      'serviceFeePolicy': serviceFeePolicy?.toJson(),
+      'ratingPolicies': ratingPolicies?.map((x) => x.toJson()).toList(),
+      'tipPolicy': tipPolicy?.toJson(),
+      'soldOutVisibilityPolicy': enumToString(soldOutVisibilityPolicy),
     };
   }
 
@@ -193,8 +219,22 @@ class Order {
       tipTransaction: map['tipTransaction'] != null
           ? Transaction.fromJson(map['tipTransaction'])
           : null,
-      serviceFee:
-          map['serviceFee'] != null ? Price.fromJson(map['serviceFee']) : null,
+      serviceFee: map['serviceFee'] != null
+          ? CumulatedPrice.fromJson(map['serviceFee'])
+          : null,
+      orderPolicy: enumFromStringNull(map['orderPolicy'], OrderPolicy.values),
+      serviceFeePolicy: map['serviceFeePolicy'] != null
+          ? ServiceFeePolicy.fromJson(map['serviceFeePolicy'])
+          : null,
+      ratingPolicies: map['ratingPolicies'] != null
+          ? List<RatingPolicy>.from(
+              map['ratingPolicies']?.map((x) => RatingPolicy.fromJson(x)))
+          : null,
+      tipPolicy: map['tipPolicy'] != null
+          ? TipPolicy.fromJson(map['tipPolicy'])
+          : null,
+      soldOutVisibilityPolicy: enumFromStringNull(
+          map['soldOutVisibilityPolicy'], SoldOutVisibilityPolicy.values),
       createdAt: fromGraphQLAWSDateTimeToDartDateTime(map['createdAt']),
       updatedAt: fromGraphQLAWSDateTimeToDartDateTime(map['updatedAt']),
     );
@@ -234,7 +274,12 @@ class Order {
         other.tipTransactionStatus == tipTransactionStatus &&
         other.tipTransactionId == tipTransactionId &&
         other.tipTransaction == tipTransaction &&
-        other.serviceFee == serviceFee;
+        other.serviceFee == serviceFee &&
+        other.orderPolicy == orderPolicy &&
+        other.serviceFeePolicy == serviceFeePolicy &&
+        listEquals(other.ratingPolicies, ratingPolicies) &&
+        other.tipPolicy == tipPolicy &&
+        other.soldOutVisibilityPolicy == soldOutVisibilityPolicy;
   }
 
   @override
@@ -263,6 +308,11 @@ class Order {
         tipTransactionStatus.hashCode ^
         tipTransactionId.hashCode ^
         tipTransaction.hashCode ^
-        serviceFee.hashCode;
+        serviceFee.hashCode ^
+        orderPolicy.hashCode ^
+        serviceFeePolicy.hashCode ^
+        ratingPolicies.hashCode ^
+        tipPolicy.hashCode ^
+        soldOutVisibilityPolicy.hashCode;
   }
 }

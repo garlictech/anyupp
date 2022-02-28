@@ -1,11 +1,9 @@
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models/Transaction.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/utils/pdf_utils.dart';
-import 'package:fa_prev/shared/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TransactionInfoWidget extends StatelessWidget {
   final Transaction transactionItem;
@@ -45,7 +43,7 @@ class TransactionInfoWidget extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => isInvoice
-                ? Nav.to(PdfWebView(transactionItem.invoice!.pdfUrl!))
+                ? launch(transactionItem.invoice!.pdfUrl!) //Nav.to(PdfWebView(transactionItem.invoice!.pdfUrl!))
                 : createAndOpenPdf(transactionItem.receipt?.pdfData),
             child: Text(
               trans(context, 'payment.paymentInfo.invoicing.show'),
@@ -61,23 +59,3 @@ class TransactionInfoWidget extends StatelessWidget {
   }
 }
 
-class PdfWebView extends StatefulWidget {
-  final String url;
-  PdfWebView(this.url);
-
-  @override
-  _PdfWebViewState createState() => _PdfWebViewState();
-}
-
-class _PdfWebViewState extends State<PdfWebView> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(),
-      body: WebView(
-        initialUrl: widget.url,
-        javascriptMode: JavascriptMode.unrestricted,
-      ),
-    );
-  }
-}

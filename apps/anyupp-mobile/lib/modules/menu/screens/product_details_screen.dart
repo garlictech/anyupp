@@ -56,6 +56,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
+                centerTitle: true,
                 expandedHeight: _expandedHeight,
                 floating: false,
                 snap: false,

@@ -4,7 +4,7 @@
   },
   "anyupp-backend-ParamsStack": {
     "appleServiceIdOutput": "net.cyberg.anyupp.cognito",
-    "stripePublishableKeyOutput": "pk_test_51IBipwKBBjcbSqG0xQP8G0OVkSByIgHVFag20akTEE4EA9wkY5X5A2ojlXb6qepNG3Ti3uSksanZV6O8ZHtL5MPi002tFhppdx",
+    "stripePublishableKeyOutput": "pk_test_51KLUwaAT9h0fyjuxZp7LftoPFgJcZsKS7yoqgHkGlT4xSTtoQVlbm63OMcGV5KKUT60mNzgIW7qvLQxzvelkf77q002BTpq7Mv",
     "googleClientIdOutput": "1016713353610-q3nsj1t1flrjuo33sfakis645gl7ijv3.apps.googleusercontent.com",
     "facebookAppIdOutput": "166876958090898",
     "googleApiKeyOutput": "AIzaSyDGNIG1eIqvKsRoBsQ2T7PVff2d1XUhsVg",

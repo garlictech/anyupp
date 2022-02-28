@@ -5,6 +5,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -292,8 +293,9 @@ class AwsCartProvider implements ICartProvider {
           ],
           sumPriceShown: PriceShownInput(
             currency: item.priceShown.currency,
-            pricePerUnit: item.getPrice(),
-            priceSum: item.getPrice() * item.quantity,
+            pricePerUnit: item.getPrice(currentUnit?.serviceFeePolicy),
+            priceSum:
+                item.getPrice(currentUnit?.serviceFeePolicy) * item.quantity,
             tax: item.priceShown.tax,
             taxSum: item.priceShown.taxSum,
           ),
@@ -387,8 +389,9 @@ class AwsCartProvider implements ICartProvider {
           ],
           sumPriceShown: PriceShownInput(
             currency: item.priceShown.currency,
-            pricePerUnit: item.getPrice(),
-            priceSum: item.getPrice() * item.quantity,
+            pricePerUnit: item.getPrice(currentUnit?.serviceFeePolicy),
+            priceSum:
+                item.getPrice(currentUnit?.serviceFeePolicy) * item.quantity,
             tax: item.priceShown.tax,
             taxSum: item.priceShown.taxSum,
           ),

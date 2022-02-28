@@ -468,6 +468,12 @@ type Price @aws_api_key @aws_iam @aws_cognito_user_pools {
   taxPercentage: Float!
 }
 
+type CumulatedPrice @aws_api_key @aws_iam @aws_cognito_user_pools {
+  currency: String!
+  grossPrice: Float!
+  taxContent: Float!
+}
+
 type OrderItem @aws_api_key @aws_iam @aws_cognito_user_pools {
   productId: ID!
   variantId: ID!
@@ -511,7 +517,7 @@ type Order @aws_iam @aws_cognito_user_pools {
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: Price
+  serviceFee: CumulatedPrice
   packagingSum: Price
   sumPriceShown: PriceShown!
   rating: OrderRating
@@ -524,6 +530,8 @@ type Order @aws_iam @aws_cognito_user_pools {
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
+  externalId: String
   updatedAt: AWSDateTime!
   transaction: Transaction @aws_iam @aws_cognito_user_pools
   tipTransaction: Transaction @aws_iam @aws_cognito_user_pools
@@ -894,6 +902,9 @@ type GeoUnit @aws_cognito_user_pools {
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  unit: Unit
+  chain: Chain
+  group: Group
 }
 
 input GetUnitsNearLocationInput {
@@ -2060,6 +2071,12 @@ input PlaceInput {
   table: String!
 }
 
+input CumulatedPriceInput {
+  currency: String!
+  grossPrice: Float!
+  taxContent: Float!
+}
+
 input OrderRatingInput {
   key: String!
   value: Int!
@@ -2119,6 +2136,8 @@ input ModelOrderFilterInput {
   tipTransactionId: ModelIDInput
   orderPolicy: ModelOrderPolicyInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
+  packagingFeeTaxPercentage: ModelFloatInput
+  externalId: ModelStringInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
@@ -2142,7 +2161,7 @@ input CreateOrderInput {
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: PriceInput
+  serviceFee: CumulatedPriceInput
   packagingSum: PriceInput
   sumPriceShown: PriceShownInput!
   rating: OrderRatingInput
@@ -2155,6 +2174,8 @@ input CreateOrderInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
+  externalId: String
 }
 
 input UpdateOrderInput {
@@ -2175,7 +2196,7 @@ input UpdateOrderInput {
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: PriceInput
+  serviceFee: CumulatedPriceInput
   packagingSum: PriceInput
   sumPriceShown: PriceShownInput
   rating: OrderRatingInput
@@ -2188,6 +2209,8 @@ input UpdateOrderInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
+  externalId: String
 }
 
 input DeleteOrderInput {
@@ -2212,6 +2235,8 @@ input ModelOrderConditionInput {
   tipTransactionId: ModelIDInput
   orderPolicy: ModelOrderPolicyInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
+  packagingFeeTaxPercentage: ModelFloatInput
+  externalId: ModelStringInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
@@ -3337,6 +3362,8 @@ input SearchableOrderFilterInput {
   transactionId: SearchableIDFilterInput
   hasRated: SearchableBooleanFilterInput
   tipTransactionId: SearchableIDFilterInput
+  packagingFeeTaxPercentage: SearchableFloatFilterInput
+  externalId: SearchableStringFilterInput
   and: [SearchableOrderFilterInput]
   or: [SearchableOrderFilterInput]
   not: SearchableOrderFilterInput
@@ -3354,6 +3381,8 @@ enum SearchableOrderSortableFields {
   transactionId
   hasRated
   tipTransactionId
+  packagingFeeTaxPercentage
+  externalId
 }
 
 input SearchableOrderSortInput {

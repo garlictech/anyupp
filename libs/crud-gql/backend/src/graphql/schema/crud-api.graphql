@@ -483,6 +483,15 @@ type Price {
   taxPercentage: Float!
 }
 
+# When an item type contains summed items with different tax percentages,
+# we use this type to represent the sum. It contains the gross price, the
+# cumulated tax content, but the tax percentages are not included.
+type CumulatedPrice {
+  currency: String!
+  grossPrice: Float!
+  taxContent: Float!
+}
+
 type OrderItem {
   productId: ID!
   variantId: ID!
@@ -530,7 +539,7 @@ type Order
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: Price
+  serviceFee: CumulatedPrice
   packagingSum: Price
   sumPriceShown: PriceShown!
   rating: OrderRating
@@ -545,6 +554,8 @@ type Order
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
+  externalId: String
 }
 
 enum OrderPolicy {
@@ -930,6 +941,9 @@ type GeoUnit @aws_cognito_user_pools {
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  unit: Unit
+  chain: Chain
+  group: Group
 }
 
 input GetUnitsNearLocationInput {
@@ -1272,11 +1286,6 @@ type Mutation {
     @function(name: "${env}-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
-
-  # rateAndTipOrder(input: RateAndTipOrderInput!): Boolean
-  #   @function(name: "${env}-anyupp-graphql-resolvers")
-  #   @aws_iam
-  #   @aws_cognito_user_pools
 
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
+import '../../../graphql/generated/crud-api.graphql.dart';
+
 class OrderStatusListWidget extends StatefulWidget {
   final GeoUnit unit;
 
@@ -29,14 +31,14 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
       builder: (context, state) {
         // print('OrderStatusListWidget().state=$state');
         if (state is NoOrdersLoaded) {
-          return NoOrderWidget();
+          return NoOrderWidget(orderPolicy: widget.unit.orderPolicy);
         }
 
         if (state is OrdersLoadedState) {
           // print('***** OrderStatusListWidget.bloc.state=OrdersLoadedState, length=${state.orders?.length}');
           if (state.orders == null ||
               (state.orders != null && state.orders!.isEmpty)) {
-            return NoOrderWidget();
+            return NoOrderWidget(orderPolicy: widget.unit.orderPolicy);
           }
           _orderNotificationService.checkIfShowOrderStatusNotification(
               context, state.orders!);
@@ -125,6 +127,9 @@ class OrderListWidget extends StatelessWidget {
 }
 
 class NoOrderWidget extends StatelessWidget {
+  final OrderPolicy orderPolicy;
+  NoOrderWidget({required this.orderPolicy});
+
   @override
   Widget build(BuildContext context) {
     return AnimationConfiguration.staggeredList(
@@ -201,8 +206,11 @@ class NoOrderWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        trans(context,
-                            'orders.noActiveOrder'), //'Nincs folyamatban lévő rendelésed',
+                        trans(
+                            context,
+                            orderPolicy == OrderPolicy.full
+                                ? 'orders.noActiveOrderFull'
+                                : 'orders.noActiveOrderSimplified'), //'Nincs folyamatban lévő rendelésed',
                         style: Fonts.satoshi(
                           fontSize: 16.0,
                           color: theme.buttonText,

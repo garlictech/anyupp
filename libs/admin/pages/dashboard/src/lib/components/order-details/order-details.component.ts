@@ -5,8 +5,10 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
 } from '@angular/core';
 import {
   ConfirmDialogComponent,
@@ -30,6 +32,13 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { OrderPrintComponent } from '../order-print/order-print.component';
+import { CurrencyFormatterPipe } from '@bgap/admin/shared/pipes';
+import {
+  addIncludedServiceFeeToOrderItems,
+  calculateOrderSum,
+  calculatePackagingSum,
+  calculateServiceFeeSum,
+} from '../../fn';
 
 @UntilDestroy()
 @Component({
@@ -38,7 +47,7 @@ import { OrderPrintComponent } from '../order-print/order-print.component';
   styleUrls: ['./order-details.component.scss'],
   templateUrl: './order-details.component.html',
 })
-export class OrderDetailsComponent implements OnInit, OnDestroy {
+export class OrderDetailsComponent implements OnInit, OnDestroy, OnChanges {
   @Input() order!: CrudApi.Order;
   @Input() unit?: CrudApi.Unit;
   @Input() allowPrintOrder = false;
@@ -51,11 +60,16 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
   public workingOrderStatus: boolean;
   public allowRecallHistoryOrder = false;
   public currentStatus = CrudApi.currentStatus;
+  public orderItems: CrudApi.OrderItem[] = [];
+  public orderSumStr = '';
+  public packagingFeeStr?: string;
+  public serviceFeeStr?: string;
 
   constructor(
     private _store: Store,
     private _orderService: OrderService,
     private _nbDialogService: NbDialogService,
+    private _currencyFormatterPipe: CurrencyFormatterPipe,
     private _logger: NGXLogger,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -90,6 +104,24 @@ export class OrderDetailsComponent implements OnInit, OnDestroy {
 
         this._changeDetectorRef.detectChanges();
       });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.orderSumStr = calculateOrderSum(
+      changes.order.currentValue,
+      this._currencyFormatterPipe.transform,
+    );
+    this.packagingFeeStr = calculatePackagingSum(
+      changes.order.currentValue,
+      this._currencyFormatterPipe.transform,
+    );
+    this.serviceFeeStr = calculateServiceFeeSum(
+      changes.order.currentValue,
+      this._currencyFormatterPipe.transform,
+    );
+    this.orderItems = addIncludedServiceFeeToOrderItems(
+      changes.order.currentValue,
+    );
   }
 
   get currentOrderStatus() {

@@ -14,7 +14,6 @@ class ServiceFeePolicy {
   ServiceFeePolicy copyWith({
     ServiceFeeType? type,
     double? percentage,
-    double? taxPercentage,
   }) {
     return ServiceFeePolicy(
       type: type ?? this.type,

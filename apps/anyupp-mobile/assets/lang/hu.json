@@ -142,9 +142,9 @@
     "takeAway": "elvitel",
     "inPlace": "helyben",
     "packagingFee": "Csomagolási díj",
-    "serviceFee": "Szervízdíj",
-    "hasServiceFee": "Az ár szervízdíjat tartalmaz.",
-    "hasNoServiceFee": "Az ár szervízdíjat nem tartalmaz."
+    "serviceFee": "Szervizdíj",
+    "hasServiceFee": "Az ár szervizdíjat tartalmaz.",
+    "hasNoServiceFee": "Az ár szervizdíjat nem tartalmaz."
   },
   "allergens": {
     "title": "ALLERGÉNEK",
@@ -173,7 +173,8 @@
   "orders": {
     "titleCurrentOrder": "Folyamatban lévő rendelések",
     "titleOrderHistory": "Korábbi rendelések",
-    "noActiveOrder": "Nincs teljesítésre váró rendelésed.",
+    "noActiveOrderSimplified": "Eszedbe jutott még valami?.",
+    "noActiveOrderFull": "Nincs teljesítésre váró rendelésed.",
     "noActiveOrderDesc": "Rendelj néhány kattintással!",
     "noActiveOrderButton": "Étlap felfedezése",
     "totalCost": "ÖSSZESEN",
@@ -194,7 +195,7 @@
       "paymentDetails": "Fizetés részletei",
       "otherDetails": "További részletek",
       "tipDetails": "Borravaló",
-      "serviceFee": "Az ár {{0}}% szervízdíjat tartalmaz."
+      "serviceFee": "Az ár {{0}}% szervizdíjat tartalmaz."
     },
     "status": {
       "none": "VÁR",
@@ -259,6 +260,11 @@
           "title": "Felszolgálva",
           "titleShort": "Felszolgálva",
           "description": "Rendelésed elkészült, hamarosan felszolgáljuk neked. "
+        },
+        "simplified": {
+          "title": "Rendelés leadva",
+          "titleShort": "Rendelés leadva",
+          "description": "Rendelésed feldolgozás alatt áll. Ha bármi probléma felmerülne, kollégáink keresni fognak."
         }
       },
       "timeline": {
@@ -571,7 +577,7 @@
   },
   "product": {
     "notTakeAway": "Csak helyben",
-    "notTakeAwaDesc": "A termék csak helyben fogyasztásra elérhető.",
+    "notTakeAwayDesc": "A termék csak helyben fogyasztásra elérhető.",
     "notInPlace": "Csak elvitelre",
     "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
     "soldOut": "Elfogyott",

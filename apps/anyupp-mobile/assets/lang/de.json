@@ -169,7 +169,7 @@
   "orders": {
     "titleCurrentOrder": "Current orders",
     "titleOrderHistory": "Order history",
-    "noActiveOrder": "No active order placed yet",
+    "noActiveOrder": "Did something else come to your mind?",
     "noActiveOrderDesc": "Find the food and drinks you like under the Menu tab.",
     "noActiveOrderButton": "Discover menu",
     "totalCost": "TOTAL COST",
@@ -219,8 +219,8 @@
       },
       "status": {
         "none": {
-          "title": "Processing",
-          "titleShort": "Processing",
+          "title": "Order placed",
+          "titleShort": "Order placed",
           "description": "Your order is being processed. Should any problems arise, our colleagues will contact you."
         },
         "placed": {
@@ -293,7 +293,7 @@
     "delete": {
       "title": "Delete credit card?",
       "description": "This will delete the credit card from your payment methods.",
-      "reason": "Delete",
+      "ok": "Ok",
       "cancel": "Cancel"
     },
     "method": {
@@ -435,7 +435,7 @@
     "findingSeat": "Finding your seat...",
     "tableReserved": {
       "title": "New Table Reserved!",
-      "description": "Seat #{{1}} reversed at Table #{{0}}"
+      "description": "Seat #{{1}} reserved at Table #{{0}}"
     },
     "qrCodeError": {
       "title": "QR code invalid!",
@@ -544,8 +544,13 @@
   },
   "product": {
     "notTakeAway": "Only in place",
+    "notTakeAwayDesc": "A termék csak helyben fogyasztásra elérhető.",
     "notInPlace": "Only for takeaway",
-    "size": "Size:"
+    "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
+    "soldOut": "Elfogyott",
+    "soldOutDesc": "A termék sajnos elfogyott",
+    "size": "Size:",
+    "selectSize": "Choose a size"
   },
   "validators": {
     "required": "this field is required",

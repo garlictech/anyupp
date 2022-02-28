@@ -30,13 +30,13 @@ When(
   },
 );
 
-// When(
-//   'I click on {string} button at the #{string} order',
-//   (buttonName: string, value: string) => {
-//     // cy.get('bgap-order-details').contains(value).scrollIntoView().next();
-//     cy.get('div.row.p-0.m-0').last().contains('button', buttonName).click();
-//   },
-// );
+When('I click on {string} button at the first order', (buttonName: string) => {
+  cy.findAllByTestId('orderStatusBtn').first().contains(buttonName).click();
+});
+
+Then('I should see the button in {string}', (buttonName: string) => {
+  cy.findAllByTestId('orderStatusBtn').first().contains(buttonName);
+});
 
 Then('the {string} icon is selected', () => {
   cy.findByTestId('currentOrdersAction').contains('nb-action.active');
@@ -53,9 +53,9 @@ Then(
   },
 );
 
-// When('I click the {string} icon with title', (name: string) => {
-//   cy.findAllByTitle(name).click();
-// });
+When('I click the {string} icon with title', (name: string) => {
+  cy.findAllByTitle(name).click();
+});
 
 Then('I should see {int} orders on the list', (num: number) => {
   cy.get('nb-list-item').should('have.length', num);
@@ -77,6 +77,44 @@ When('I click on the {string} option', (option: string) => {
   cy.get('nb-option').contains(option).click();
 });
 
-When('I click on arrow button next to product', () => {
-  cy.findAllByRole('listitem').first().contains('button').click();
+When('I click on the arrow button on the placed product', () => {
+  // cy.findByTestId('placedLaneItem_0').first().contains('button').click();
+  cy.get('button').contains('icon="arrow-right-outline"').click();
 });
+
+When('I click on the arrow button on the processed product', () => {
+  cy.findByTestId('processingLaneItem_0')
+    .first()
+    .contains('button[icon="arrow-right-outline"]')
+    .click();
+});
+
+When('I click on the arrow button on the finished product', () => {
+  cy.findByTestId('readyLaneItem_0')
+    .first()
+    .contains('button[icon="arrow-left-outline"]')
+    .click();
+});
+
+When(
+  'I fill out the {string} input with the {string} id',
+  (value: string, id: string) => {
+    cy.findAllByPlaceholderText(value).clear().type(id);
+  },
+);
+
+When('I click on the print button', () => {
+  cy.get('nb-icon[icon="printer-outline"]').click();
+});
+
+Then('I should see the {string} text', (text: string) => {
+  cy.findAllByText(text).should('be.visible');
+});
+
+When('I wait {int} ms', (time: number) => {
+  cy.wait(time);
+});
+
+// When('I click on the date picker', () => {
+//   cy.get()
+// })

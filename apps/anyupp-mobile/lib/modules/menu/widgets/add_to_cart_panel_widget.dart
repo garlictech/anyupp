@@ -43,7 +43,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
     super.initState();
     _hasServiceFee = widget.serviceFeePolicy != null &&
         currentServingMode != ServingMode.takeAway &&
-        widget.serviceFeePolicy!.type != ServiceFeeType.noFee;
+        widget.serviceFeePolicy!.type == ServiceFeeType.included;
 
     Future.delayed(const Duration(seconds: 5), () {
       if (this.mounted) {
@@ -95,7 +95,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
               bottom: 16.0,
             ),
             child: widget.displayState == ProductItemDisplayState.NORMAL &&
-                    _showTooltip
+                    _showTooltip && widget.servingMode == ServingMode.inPlace
                 ? SimpleTooltip(
                     arrowBaseWidth: 16.0,
                     arrowLength: 8,

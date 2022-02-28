@@ -905,7 +905,7 @@ packages:
       name: in_app_update
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "3.0.0"
   integration_test:
     dependency: "direct dev"
     description: flutter
@@ -1323,7 +1323,7 @@ packages:
       name: qr_code_scanner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.1"
+    version: "0.7.0"
   quiver:
     dependency: transitive
     description:

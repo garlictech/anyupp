@@ -301,7 +301,6 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
               ),
               onPressed: () => _handleStartOrderPressed(),
             ),
-            //child: _buildSendCartButton(context, unit),
           ),
         ],
       ),
@@ -326,13 +325,13 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
       getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
         orderId: widget.orderId,
         paymentMethodId: _selectedPaymentMethod!.cardId!,
-        invoiceAddress: _address,
+        invoiceAddress: _wantsInvoce ? _address : null,
       ));
     } else {
       getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
         paymentMode: getPaymentModeFromSelection(_selectedPaymentMethod),
         orderId: widget.orderId,
-        invoiceAddress: _address,
+        invoiceAddress: _wantsInvoce ? _address : null,
       ));
     }
   }

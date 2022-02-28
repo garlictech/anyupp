@@ -5,3 +5,4 @@ export * from './number.utils';
 export * from './retry-logic';
 export * from './rxjs.utils';
 export * from './utils';
+export * from './functional';

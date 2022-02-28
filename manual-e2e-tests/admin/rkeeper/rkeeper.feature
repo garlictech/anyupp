@@ -1,6 +1,5 @@
 Feature: Admin RKeepeR
 
-
   Background: Login and steps to the Groups
     Given I am on the dashboard as an authenticated superUser
     Then I set the language to EN
