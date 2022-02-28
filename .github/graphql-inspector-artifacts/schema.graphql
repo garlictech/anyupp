@@ -501,6 +501,7 @@ type OrderRating @aws_api_key @aws_iam @aws_cognito_user_pools {
 
 type Order @aws_iam @aws_cognito_user_pools {
   id: ID!
+  version: Int
   createdAt: AWSDateTime!
   userId: ID!
   unitId: ID!
@@ -535,6 +536,100 @@ type Order @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
   transaction: Transaction @aws_iam @aws_cognito_user_pools
   tipTransaction: Transaction @aws_iam @aws_cognito_user_pools
+}
+
+input CreateOrderInput {
+  id: ID
+  createdAt: AWSDateTime
+  userId: ID!
+  unitId: ID!
+  orderNum: String!
+  items: [OrderItemInput!]!
+  paymentMode: PaymentModeInput
+  statusLog: [StatusLogInput!]!
+  archived: Boolean!
+  takeAway: Boolean
+  place: PlaceInput
+  paymentIntention: Float
+  transactionStatus: PaymentStatus
+  transactionId: ID
+  unpayCategory: UnpayCategory
+  orderMode: OrderMode
+  servingMode: ServingMode
+  serviceFee: PriceInput
+  packagingSum: PriceInput
+  sumPriceShown: PriceShownInput!
+  rating: OrderRatingInput
+  hasRated: Boolean
+  tip: TipInput
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
+}
+
+input OrderItemInput {
+  productId: ID!
+  variantId: ID!
+  created: Float
+  productName: LocalizedItemInput!
+  image: String
+  quantity: Int!
+  statusLog: [StatusLogInput!]!
+  variantName: LocalizedItemInput!
+  laneId: ID
+  allergens: [Allergen]
+  configSets: [OrderItemConfigSetInput!]
+  productType: String
+  externalId: String
+  netPackagingFee: Float
+  serviceFee: PriceInput
+  priceShown: PriceShownInput!
+  sumPriceShown: PriceShownInput!
+}
+
+input StatusLogInput {
+  userId: ID!
+  status: OrderStatus!
+  ts: Float!
+}
+
+input PlaceInput {
+  seat: String!
+  table: String!
+}
+
+input PriceInput {
+  currency: String!
+  netPrice: Float!
+  taxPercentage: Float!
+}
+
+input OrderRatingInput {
+  key: String!
+  value: Int!
+}
+
+input PriceShownInput {
+  currency: String!
+  pricePerUnit: Float!
+  priceSum: Float!
+  tax: Int!
+  taxSum: Float!
+}
+
+input OrderItemConfigSetInput {
+  productSetId: ID!
+  name: LocalizedItemInput!
+  type: String!
+  items: [OrderItemConfigComponentInput!]!
+}
+
+input OrderItemConfigComponentInput {
+  productComponentId: ID!
+  price: Float!
+  name: LocalizedItemInput!
+  allergens: [Allergen]
+  netPackagingFee: Float
+  externalId: String
 }
 
 enum OrderPolicy {
@@ -1265,6 +1360,7 @@ type Mutation {
   deleteAdminUser(input: DeleteAdminUserInput!): AdminUser @aws_iam @aws_cognito_user_pools
   createAnonymUser: CreateAnonymUserOutput @aws_iam @aws_api_key
   createOrderFromCart(input: CreateOrderFromCartInput!): ID @aws_iam @aws_cognito_user_pools
+  createOrder(input: CreateOrderInput!): Order @aws_iam @aws_cognito_user_pools
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_iam @aws_cognito_user_pools
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
@@ -1293,7 +1389,6 @@ type Mutation {
   createGroup(input: CreateGroupInput!, condition: ModelGroupConditionInput): Group @aws_iam @aws_cognito_user_pools
   updateGroup(input: UpdateGroupInput!, condition: ModelGroupConditionInput): Group @aws_iam @aws_cognito_user_pools
   deleteGroup(input: DeleteGroupInput!, condition: ModelGroupConditionInput): Group @aws_iam @aws_cognito_user_pools
-  createOrder(input: CreateOrderInput!, condition: ModelOrderConditionInput): Order @aws_iam @aws_cognito_user_pools
   updateOrder(input: UpdateOrderInput!, condition: ModelOrderConditionInput): Order @aws_iam @aws_cognito_user_pools
   deleteOrder(input: DeleteOrderInput!, condition: ModelOrderConditionInput): Order @aws_iam @aws_cognito_user_pools
   createProductCategory(input: CreateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory @aws_iam @aws_cognito_user_pools
@@ -1374,7 +1469,6 @@ type Subscription {
   onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"]) @aws_iam @aws_cognito_user_pools
   onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"]) @aws_iam @aws_cognito_user_pools
   onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"]) @aws_iam @aws_cognito_user_pools
-  onCreateOrder: Order @aws_subscribe(mutations: ["createOrder"]) @aws_iam @aws_cognito_user_pools
   onUpdateOrder: Order @aws_subscribe(mutations: ["updateOrder"]) @aws_iam @aws_cognito_user_pools
   onDeleteOrder: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_iam @aws_cognito_user_pools
   onCreateProductCategory: ProductCategory @aws_subscribe(mutations: ["createProductCategory"]) @aws_iam @aws_cognito_user_pools
@@ -2010,76 +2104,10 @@ input ModelGroupConditionInput {
   not: ModelGroupConditionInput
 }
 
-input OrderItemInput {
-  productId: ID!
-  variantId: ID!
-  created: Float
-  productName: LocalizedItemInput!
-  image: String
-  quantity: Int!
-  statusLog: [StatusLogInput!]!
-  variantName: LocalizedItemInput!
-  laneId: ID
-  allergens: [Allergen]
-  configSets: [OrderItemConfigSetInput!]
-  productType: String
-  externalId: String
-  netPackagingFee: Float
-  serviceFee: PriceInput
-  priceShown: PriceShownInput!
-  sumPriceShown: PriceShownInput!
-}
-
-input StatusLogInput {
-  userId: ID!
-  status: OrderStatus!
-  ts: Float!
-}
-
-input OrderItemConfigSetInput {
-  productSetId: ID!
-  name: LocalizedItemInput!
-  type: String!
-  items: [OrderItemConfigComponentInput!]!
-}
-
-input OrderItemConfigComponentInput {
-  productComponentId: ID!
-  price: Float!
-  name: LocalizedItemInput!
-  allergens: [Allergen]
-  netPackagingFee: Float
-  externalId: String
-}
-
-input PriceInput {
-  currency: String!
-  netPrice: Float!
-  taxPercentage: Float!
-}
-
-input PriceShownInput {
-  currency: String!
-  pricePerUnit: Float!
-  priceSum: Float!
-  tax: Int!
-  taxSum: Float!
-}
-
-input PlaceInput {
-  seat: String!
-  table: String!
-}
-
 input CumulatedPriceInput {
   currency: String!
   grossPrice: Float!
   taxContent: Float!
-}
-
-input OrderRatingInput {
-  key: String!
-  value: Int!
 }
 
 type ModelOrderConnection @aws_iam @aws_cognito_user_pools {
@@ -2119,6 +2147,7 @@ input ModelSoldOutVisibilityPolicyInput {
 
 input ModelOrderFilterInput {
   id: ModelIDInput
+  version: ModelIntInput
   createdAt: ModelStringInput
   userId: ModelIDInput
   unitId: ModelIDInput
@@ -2143,43 +2172,9 @@ input ModelOrderFilterInput {
   not: ModelOrderFilterInput
 }
 
-input CreateOrderInput {
-  id: ID
-  createdAt: AWSDateTime
-  userId: ID!
-  unitId: ID!
-  orderNum: String!
-  items: [OrderItemInput!]!
-  paymentMode: PaymentModeInput
-  statusLog: [StatusLogInput!]!
-  archived: Boolean!
-  takeAway: Boolean
-  place: PlaceInput
-  paymentIntention: Float
-  transactionStatus: PaymentStatus
-  transactionId: ID
-  unpayCategory: UnpayCategory
-  orderMode: OrderMode
-  servingMode: ServingMode
-  serviceFee: CumulatedPriceInput
-  packagingSum: PriceInput
-  sumPriceShown: PriceShownInput!
-  rating: OrderRatingInput
-  hasRated: Boolean
-  tip: TipInput
-  tipTransactionStatus: PaymentStatus
-  tipTransactionId: ID
-  orderPolicy: OrderPolicy
-  serviceFeePolicy: ServiceFeePolicyInput
-  ratingPolicies: [RatingPolicyInput!]
-  tipPolicy: TipPolicyInput
-  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
-  packagingFeeTaxPercentage: Float
-  externalId: String
-}
-
 input UpdateOrderInput {
   id: ID!
+  version: Int
   createdAt: AWSDateTime
   userId: ID
   unitId: ID
@@ -2218,6 +2213,7 @@ input DeleteOrderInput {
 }
 
 input ModelOrderConditionInput {
+  version: ModelIntInput
   createdAt: ModelStringInput
   userId: ModelIDInput
   unitId: ModelIDInput
@@ -3352,6 +3348,7 @@ type SearchableGroupConnection @aws_iam @aws_cognito_user_pools {
 
 input SearchableOrderFilterInput {
   id: SearchableIDFilterInput
+  version: SearchableIntFilterInput
   createdAt: SearchableStringFilterInput
   userId: SearchableIDFilterInput
   unitId: SearchableIDFilterInput
@@ -3371,6 +3368,7 @@ input SearchableOrderFilterInput {
 
 enum SearchableOrderSortableFields {
   id
+  version
   createdAt
   userId
   unitId

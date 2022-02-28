@@ -518,10 +518,11 @@ type OrderRating {
 }
 
 type Order
-  @model
+  @model(mutations: { delete: "deleteOrder", update: "updateOrder" })
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
+  version: Int
   createdAt: AWSDateTime!
   userId: ID!
   unitId: ID!
@@ -555,6 +556,100 @@ type Order
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
+  externalId: String
+}
+
+input CreateOrderInput {
+  id: ID
+  createdAt: AWSDateTime
+  userId: ID!
+  unitId: ID!
+  orderNum: String!
+  items: [OrderItemInput!]!
+  paymentMode: PaymentModeInput
+  statusLog: [StatusLogInput!]!
+  archived: Boolean!
+  takeAway: Boolean
+  place: PlaceInput
+  paymentIntention: Float
+  transactionStatus: PaymentStatus
+  transactionId: ID
+  unpayCategory: UnpayCategory
+  orderMode: OrderMode
+  servingMode: ServingMode
+  serviceFee: PriceInput
+  packagingSum: PriceInput
+  sumPriceShown: PriceShownInput!
+  rating: OrderRatingInput
+  hasRated: Boolean
+  tip: TipInput
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
+}
+
+input OrderItemInput {
+  productId: ID!
+  variantId: ID!
+  created: Float
+  productName: LocalizedItemInput!
+  image: String
+  quantity: Int!
+  statusLog: [StatusLogInput!]!
+  variantName: LocalizedItemInput!
+  laneId: ID
+  allergens: [Allergen]
+  configSets: [OrderItemConfigSetInput!]
+  productType: String
+  externalId: String
+  netPackagingFee: Float
+  serviceFee: PriceInput
+  priceShown: PriceShownInput!
+  sumPriceShown: PriceShownInput!
+}
+
+input StatusLogInput {
+  userId: ID!
+  status: OrderStatus!
+  ts: Float!
+}
+
+input PlaceInput {
+  seat: String!
+  table: String!
+}
+
+input PriceInput {
+  currency: String!
+  netPrice: Float!
+  taxPercentage: Float!
+}
+
+input OrderRatingInput {
+  key: String!
+  value: Int!
+}
+
+input PriceShownInput {
+  currency: String!
+  pricePerUnit: Float!
+  priceSum: Float!
+  tax: Int!
+  taxSum: Float!
+}
+
+input OrderItemConfigSetInput {
+  productSetId: ID!
+  name: LocalizedItemInput!
+  type: String!
+  items: [OrderItemConfigComponentInput!]!
+}
+
+input OrderItemConfigComponentInput {
+  productComponentId: ID!
+  price: Float!
+  name: LocalizedItemInput!
+  allergens: [Allergen]
+  netPackagingFee: Float
   externalId: String
 }
 
@@ -1286,6 +1381,11 @@ type Mutation {
     @function(name: "${env}-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
+
+  createOrder(input: CreateOrderInput!): Order
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
 
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!

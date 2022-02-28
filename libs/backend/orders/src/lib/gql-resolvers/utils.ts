@@ -1,8 +1,9 @@
-import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/function';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { Observable } from 'rxjs';
 import * as R from 'ramda';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay, switchMap } from 'rxjs/operators';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
 import { AxiosStatic } from 'axios';
 
 export interface OrderResolverDeps {
@@ -19,25 +20,14 @@ const getUnitProductHelper = R.memoizeWith(
   (sdk: CrudApi.CrudSdk, id: string) =>
     pipe(
       sdk.GetUnitProduct({ id }),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          CrudApi.UnitProduct | undefined | null
-        >,
-      OE.chain(
-        OE.fromPredicate(
-          x => !!x,
-          () => `UnitProduct cannot be found: ${id}`,
-        ),
-      ),
-      OE.map(x => x as NonNullable<typeof x>),
+      throwIfEmptyValue(`UnitProduct cannot be found: ${id}`),
       shareReplay(1),
     ),
 );
 
 export const getUnitProduct =
   (sdk: CrudApi.CrudSdk) =>
-  (id: string): OE.ObservableEither<string, CrudApi.UnitProduct> =>
+  (id: string): Observable<CrudApi.UnitProduct> =>
     getUnitProductHelper(sdk, id);
 
 const getGroupProductHelper = R.memoizeWith(
@@ -45,25 +35,14 @@ const getGroupProductHelper = R.memoizeWith(
   (sdk: CrudApi.CrudSdk, id: string) =>
     pipe(
       sdk.GetGroupProduct({ id }),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          CrudApi.GroupProduct | undefined | null
-        >,
-      OE.chain(
-        OE.fromPredicate(
-          x => !!x,
-          () => `GroupProduct cannot be found: ${id}`,
-        ),
-      ),
-      OE.map(x => x as NonNullable<typeof x>),
+      throwIfEmptyValue(`GroupProduct cannot be found: ${id}`),
       shareReplay(1),
     ),
 );
 
 export const getGroupProduct =
   (sdk: CrudApi.CrudSdk) =>
-  (id: string): OE.ObservableEither<string, CrudApi.GroupProduct> =>
+  (id: string): Observable<CrudApi.GroupProduct> =>
     getGroupProductHelper(sdk, id);
 
 const getChainProductHelper = R.memoizeWith(
@@ -71,33 +50,22 @@ const getChainProductHelper = R.memoizeWith(
   (sdk: CrudApi.CrudSdk, id: string) =>
     pipe(
       sdk.GetChainProduct({ id }),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          CrudApi.ChainProduct | undefined | null
-        >,
-      OE.chain(
-        OE.fromPredicate(
-          x => !!x,
-          () => `ChainProduct cannot be found: ${id}`,
-        ),
-      ),
-      OE.map(x => x as NonNullable<typeof x>),
+      throwIfEmptyValue(`ChainProduct cannot be found: ${id}`),
       shareReplay(1),
     ),
 );
 
 export const getChainProduct =
   (sdk: CrudApi.CrudSdk) =>
-  (id: string): OE.ObservableEither<string, CrudApi.ChainProduct> =>
+  (id: string): Observable<CrudApi.ChainProduct> =>
     getChainProductHelper(sdk, id);
 
 export const getGroupProductOfUnitProduct =
   (sdk: CrudApi.CrudSdk) =>
-  (unitProductId: string): OE.ObservableEither<string, CrudApi.GroupProduct> =>
+  (unitProductId: string): Observable<CrudApi.GroupProduct> =>
     pipe(
       getUnitProduct(sdk)(unitProductId),
-      OE.chain(unitProduct => getGroupProduct(sdk)(unitProduct.parentId)),
+      switchMap(unitProduct => getGroupProduct(sdk)(unitProduct.parentId)),
     );
 
 const getGeneratedProductHelper = R.memoizeWith(
@@ -105,57 +73,12 @@ const getGeneratedProductHelper = R.memoizeWith(
   (sdk: CrudApi.CrudSdk, productId: string) =>
     pipe(
       sdk.GetGeneratedProduct({ id: productId }),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          CrudApi.GeneratedProduct | undefined | null
-        >,
-      OE.chain(
-        OE.fromPredicate(
-          x => !!x,
-          () => `GeneratedProduct cannot be found: ${productId}`,
-        ),
-      ),
-      OE.map(x => x as NonNullable<typeof x>),
+      throwIfEmptyValue(`GeneratedProduct cannot be found: ${productId}`),
       shareReplay(1),
     ),
 );
 
 export const getGeneratedProduct =
   (sdk: CrudApi.CrudSdk) =>
-  (productId: string): OE.ObservableEither<string, CrudApi.GeneratedProduct> =>
+  (productId: string): Observable<CrudApi.GeneratedProduct> =>
     getGeneratedProductHelper(sdk, productId);
-
-export const getAllParentsOfUnitProduct =
-  (sdk: CrudApi.CrudSdk) =>
-  (
-    unitProductId: string,
-  ): OE.ObservableEither<
-    string,
-    {
-      unitProduct: CrudApi.UnitProduct;
-      groupProduct: CrudApi.GroupProduct;
-      chainProduct: CrudApi.ChainProduct;
-    }
-  > =>
-    pipe(
-      getUnitProduct(sdk)(unitProductId),
-      OE.chain(unitProduct =>
-        pipe(
-          getGroupProduct(sdk)(unitProduct.parentId),
-          OE.map(groupProduct => ({
-            unitProduct,
-            groupProduct,
-          })),
-        ),
-      ),
-      OE.chain(state =>
-        pipe(
-          getChainProduct(sdk)(state.groupProduct.parentId),
-          OE.map(chainProduct => ({
-            ...state,
-            chainProduct,
-          })),
-        ),
-      ),
-    );
