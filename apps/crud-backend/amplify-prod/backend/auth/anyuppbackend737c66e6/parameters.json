@@ -1,6 +1,6 @@
 {
   "authSelections": "identityPoolAndUserPool",
-  "resourceName": "anyuppbackend490c6dda",
+  "resourceName": "anyuppbackend737c66e6",
   "serviceType": "imported",
   "region": "eu-west-1",
   "aliasAttributes": ["email", "phone_number"],

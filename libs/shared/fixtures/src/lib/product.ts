@@ -125,25 +125,19 @@ const unitProductInputBase: Omit<
   supportedServingModes: [CrudApi.ServingMode.takeaway],
 };
 
-const chainProductBase: Omit<RequiredId<CrudApi.ChainProduct>, 'variants'> & {
-  variants: CrudApi.ProductVariant[];
-} = {
+const chainProductBase = {
   ...chainProductInputBase,
   createdAt: '2021-08-17T15:13:47.532Z',
   updatedAt: '2021-08-17T15:14:05.132Z',
 };
 
-const groupProductBase: Omit<RequiredId<CrudApi.GroupProduct>, 'variants'> & {
-  variants: CrudApi.ProductVariant[];
-} = {
+const groupProductBase = {
   ...groupProductInputBase,
   createdAt: '2021-08-17T15:13:47.532Z',
   updatedAt: '2021-08-17T15:14:05.132Z',
 };
 
-const unitProductBase: Omit<RequiredId<CrudApi.UnitProduct>, 'variants'> & {
-  variants: CrudApi.ProductVariant[];
-} = {
+const unitProductBase = {
   ...unitProductInputBase,
   createdAt: '2021-08-17T15:13:47.532Z',
   updatedAt: '2021-08-17T15:14:05.132Z',

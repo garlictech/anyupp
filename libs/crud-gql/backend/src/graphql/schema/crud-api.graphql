@@ -335,15 +335,14 @@ input StripeCardDeleteInput {
 type AdminUser
   @model(mutations: { delete: null, create: null, update: "updateAdminUser" })
   @searchable
-  @auth(rules: [{ allow: private, provider: iam }, { allow: private }]) {
+  @auth(rules: [{ allow: public, provider: iam }, { allow: private }]) {
   id: ID!
   name: String!
   email: String!
   phone: String!
   profileImage: String
   settings: AdminUserSettings
-  roleContexts: [AdminRoleContext]
-    @connection(keyName: "byAdminUser", fields: ["id"])
+  roleContexts: [AdminRoleContext] @hasMany
 }
 
 type AdminUserSettings {
@@ -388,13 +387,11 @@ input CreateAdminUserInput {
 type AdminRoleContext
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "byRoleContext", fields: ["roleContextId", "adminUserId"])
-  @key(name: "byAdminUser", fields: ["adminUserId", "roleContextId"]) {
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   roleContextId: ID!
   adminUserId: ID!
-  roleContext: RoleContext! @connection(fields: ["roleContextId"])
+  roleContext: RoleContext! @hasOne(fields: ["roleContextId"])
 }
 
 enum Role {
@@ -487,9 +484,9 @@ type Price {
 # we use this type to represent the sum. It contains the gross price, the
 # cumulated tax content, but the tax percentages are not included.
 type CumulatedPrice {
-  currency: String!
-  grossPrice: Float!
-  taxContent: Float!
+  currency: String
+  grossPrice: Float
+  taxContent: Float
 }
 
 type OrderItem {
@@ -535,7 +532,7 @@ type Order
   paymentIntention: Float
   transactionStatus: PaymentStatus
   transactionId: ID
-  transaction: Transaction @connection(fields: ["transactionId"])
+  transaction: Transaction @hasOne(fields: ["transactionId"])
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
@@ -547,7 +544,7 @@ type Order
   tip: Tip
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
-  tipTransaction: Transaction @connection(fields: ["tipTransactionId"])
+  tipTransaction: Transaction @hasOne(fields: ["tipTransactionId"])
   # The policies that were in action when the order was created.
   orderPolicy: OrderPolicy
   serviceFeePolicy: ServiceFeePolicy
@@ -664,24 +661,18 @@ type GeneratedProductConfigSet {
 type GeneratedProductCategory
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "productCategoriesByUnit", fields: ["unitId"]) {
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   unitId: ID!
   productNum: Int!
   productCategoryId: ID!
-  productCategory: ProductCategory! @connection(fields: ["productCategoryId"])
+  productCategory: ProductCategory! @hasOne(fields: ["productCategoryId"])
 }
 
 type GeneratedProduct
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "productsByUnit", fields: ["unitId"])
-  @key(
-    name: "productsByUnitAndCategory"
-    fields: ["unitId", "productCategoryId"]
-  ) {
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   unitId: ID!
   productCategoryId: ID!
@@ -712,12 +703,11 @@ type GeneratedProductVariant {
 type FavoriteProduct
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
-  @key(name: "favoritesByUserAndUnit", fields: ["userId", "unitId"]) {
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   unitId: ID!
-  product: GeneratedProduct! @connection
+  product: GeneratedProduct! @hasOne
 }
 
 type Tip {
@@ -779,7 +769,16 @@ input TipPolicyInput {
 type Unit
   @model(mutations: { delete: "deleteUnit" })
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(
+    rules: [
+      { allow: private }
+      {
+        allow: public
+        provider: iam
+        operations: [create, update, read, delete]
+      }
+    ]
+  ) {
   id: ID!
   groupId: ID!
   chainId: ID!
@@ -979,7 +978,7 @@ type Transaction
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
-  user: User! @connection(fields: ["userId"])
+  user: User! @hasOne(fields: ["userId"])
   orderId: ID!
   type: String
   total: Float
@@ -987,9 +986,9 @@ type Transaction
   status: PaymentStatus
   externalTransactionId: String
   invoiceId: ID
-  invoice: Invoice @connection(fields: ["invoiceId"])
+  invoice: Invoice @hasOne(fields: ["invoiceId"])
   receiptId: ID
-  receipt: Receipt @connection(fields: ["receiptId"])
+  receipt: Receipt @hasOne(fields: ["receiptId"])
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   paymentMethodId: String
@@ -1234,54 +1233,54 @@ input RateAndTipOrderInput {
 type Query {
   listStripeCards: [StripeCard]
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 }
 
 type Mutation {
   createUnit(input: CreateUnitInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   updateUnit(input: UpdateUnitInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   updateUnitRKeeperData(input: UpdateRKeeperDataInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   createAdminUser(input: CreateAdminUserInput!): AdminUser
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   deleteAdminUser(input: DeleteAdminUserInput!): AdminUser
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   # User
   createAnonymUser: CreateAnonymUserOutput  # public endpoint
     @aws_iam
     @aws_api_key
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   # Order
   createOrderFromCart(input: CreateOrderFromCartInput!): ID
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
 
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
 
@@ -1289,7 +1288,7 @@ type Mutation {
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   # Stripe Connected
   startStripePaymentConnected(
@@ -1297,27 +1296,27 @@ type Mutation {
   ): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   createStripeCard(input: StripeCardCreateInput!): StripeCard
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
 
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "prod-anyupp-graphql-resolvers")
 }
 
 type Subscription {

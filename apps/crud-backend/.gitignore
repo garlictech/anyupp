@@ -4,6 +4,13 @@ amplify/mock-data
 # We store the schema elsewhere, because we preprocess it
 amplify/backend/api/anyuppbackend/schema.graphql
 
+amplify-prod/\#current-cloud-backend
+amplify-prod/.config/local-*
+amplify-prod/logs
+amplify-prod/mock-data
+amplify-prod/backend/amplify-meta.json
+amplify-prod/backend/.temp
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*

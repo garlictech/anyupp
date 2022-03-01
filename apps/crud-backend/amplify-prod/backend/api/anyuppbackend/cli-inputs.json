@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "anyuppbackend",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/home/molnarzs/ActualProjects/bgap/anyupp/apps/crud-backend/amplify/backend/api/anyuppbackend/schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 365,
+      "apiKeyExpirationDate": "2023-03-01T13:44:29.126Z",
+      "keyDescription": "default"
+    },
+    "conflictResolution": {},
+    "additionalAuthTypes": [
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authanyuppbackend737c66e6"
+      },
+      {
+        "mode": "AWS_IAM"
+      }
+    ]
+  }
+}

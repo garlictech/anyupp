@@ -235,7 +235,7 @@ export class DataService {
     this._logger.log('Subscribe to chain product categories');
     this._crudSdk.doListSubscription(
       productCategoriesActions.resetProductCategories(),
-      getAllPaginatedData(op => this._crudSdk.sdk.SearchProductCategorys(op), {
+      getAllPaginatedData(op => this._crudSdk.sdk.SearchProductCategories(op), {
         query: {
           filter: { chainId: { eq: chainId } },
         },

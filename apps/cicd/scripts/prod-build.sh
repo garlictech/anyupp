@@ -6,6 +6,7 @@ CI=$2
 
 # This is temporary solution!
 rm -rf apps/crud-backend/amplify
+mv apps/crud-backend/amplify-prod apps/crud-backend/amplify
 ./tools/build-workspace.sh $ENVNAME $CI
 
 

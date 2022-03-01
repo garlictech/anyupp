@@ -98,12 +98,12 @@ export const createGeneratedProductCategoriesInDb = (
 export const listGeneratedProductCategoriesForUnits =
   (deps: ProductCategoryResolverDeps) =>
   (unitIds: string[]): Observable<Array<CrudApi.GeneratedProductCategory>> => {
-    const input: CrudApi.SearchGeneratedProductCategorysQueryVariables = {
+    const input: CrudApi.SearchGeneratedProductCategoriesQueryVariables = {
       filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
       limit: 200, // DO NOT USE FIX limit (Covered by #472)
     };
 
-    return getAllPaginatedData(deps.crudSdk.SearchGeneratedProductCategorys, {
+    return getAllPaginatedData(deps.crudSdk.SearchGeneratedProductCategories, {
       query: input,
       options: {
         fetchPolicy: 'no-cache',
