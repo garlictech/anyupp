@@ -1,19 +1,19 @@
 {
   "prod": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-anyuppbackend-prod-132227-authRole",
-      "UnauthRoleArn": "arn:aws:iam::486782650003:role/amplify-anyuppbackend-prod-132227-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::486782650003:role/amplify-anyuppbackend-prod-132227-authRole",
+      "AuthRoleName": "amplify-anyuppbackend-prod-74417-authRole",
+      "UnauthRoleArn": "arn:aws:iam::486782650003:role/amplify-anyuppbackend-prod-74417-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::486782650003:role/amplify-anyuppbackend-prod-74417-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-anyuppbackend-prod-132227-deployment",
-      "UnauthRoleName": "amplify-anyuppbackend-prod-132227-unauthRole",
-      "StackName": "amplify-anyuppbackend-prod-132227",
-      "StackId": "arn:aws:cloudformation:eu-west-1:486782650003:stack/amplify-anyuppbackend-prod-132227/cfbd6390-c84b-11eb-903f-069d6091c759",
-      "AmplifyAppId": "d3ectm535e7q54"
+      "DeploymentBucketName": "amplify-anyuppbackend-prod-74417-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-prod-74417-unauthRole",
+      "StackName": "amplify-anyuppbackend-prod-74417",
+      "StackId": "arn:aws:cloudformation:eu-west-1:486782650003:stack/amplify-anyuppbackend-prod-74417/7038d920-992b-11ec-b000-06dae2baadf9",
+      "AmplifyAppId": "d25x1qxmoaedeb"
     },
     "categories": {
       "auth": {
-        "anyuppbackend490c6dda": {
+        "anyuppbackend737c66e6": {
           "userPoolId": "eu-west-1_oOiyvLxXP",
           "userPoolName": "prod-anyupp-backend-admin-user-pool",
           "webClientId": "2v84j2j4m961tfkl91tvona6kd",
@@ -25,12 +25,6 @@
           "authRoleName": "prod-anyupp-backend-cogni-CognitoDefaultAuthentica-1EA8UY14ZVCOR",
           "unauthRoleArn": "arn:aws:iam::486782650003:role/prod-anyupp-backend-cogni-CognitoDefaultUnauthenti-92QNVXAU9TFC",
           "unauthRoleName": "prod-anyupp-backend-cogni-CognitoDefaultUnauthenti-92QNVXAU9TFC"
-        }
-      },
-      "api": {
-        "anyuppbackend": {
-          "ElasticSearchInstanceType": "t2.medium.elasticsearch",
-          "ElasticSearchInstanceCount": 3
         }
       }
     }

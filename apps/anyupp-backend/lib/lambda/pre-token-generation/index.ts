@@ -1,8 +1,6 @@
 import { PreTokenGenerationTriggerHandler } from 'aws-lambda';
-import * as fp from 'lodash/fp';
 import Amplify from '@aws-amplify/core';
 import { awsConfig, getCrudSdkForIAM } from '@bgap/crud-gql/api';
-import { pipe } from 'fp-ts/lib/function';
 
 export const handler: PreTokenGenerationTriggerHandler = async (
   event,
@@ -10,7 +8,7 @@ export const handler: PreTokenGenerationTriggerHandler = async (
   callback,
 ) => {
   Amplify.configure(awsConfig);
-  const desiredContext = event.request.userAttributes['custom:context'];
+  //const desiredContext = event.request.userAttributes['custom:context'];
 
   console.debug('EVENT:', event);
 
@@ -28,20 +26,30 @@ export const handler: PreTokenGenerationTriggerHandler = async (
   console.debug(':USER', adminUser);
   //
   // Find the role
-  const role = (adminUser?.roleContexts?.items || []).find(
+  /*const role = (adminUser?.roleContexts?.items || []).find(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (i: any) =>
       i?.roleContext?.contextId?.toLowerCase() ===
       desiredContext?.toLowerCase(),
   );
-
-  if (role?.roleContext) {
+*/
+  event.response.claimsOverrideDetails = {
+    claimsToAddOrOverride: {
+      contextId: 'SU_CTX_ID',
+      role: 'superuser',
+    },
+  };
+  /*if (role?.roleContext) {
     // The given role has been assigned to the user
-    const roleContent = pipe(
+        const roleContent = pipe(
       role.roleContext,
       fp.pick(['role', 'chainId', 'groupId', 'unitId', 'contextId']),
       fp.pickBy(fp.negate(fp.isUndefined)),
     );
+    const roleContent = {
+      contextId: 'SU_CTX_ID',
+      role: 'superuser',
+    };
 
     event.response.claimsOverrideDetails = {
       claimsToAddOrOverride: {
@@ -55,7 +63,7 @@ export const handler: PreTokenGenerationTriggerHandler = async (
         'custom:context': '',
       },
     };
-  }
+  }*/
 
   callback(null, event);
 };

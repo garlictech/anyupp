@@ -3,7 +3,7 @@ query ListGeneratedProductCategories(
   $nextToken: String
   $limit: Int
 ) {
-  searchGeneratedProductCategorys(
+  searchGeneratedProductCategories(
     filter: { unitId: { eq: $unitId } }
     nextToken: $nextToken
     limit: $limit

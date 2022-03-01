@@ -1,17 +1,11 @@
 {
   "auth": {
-    "anyuppbackend490c6dda": {
+    "anyuppbackend737c66e6": {
       "service": "Cognito",
       "serviceType": "imported",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false
-    }
-  },
-  "storage": {
-    "anyuppstorage": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation"
     }
   },
   "api": {
@@ -23,15 +17,16 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7,
-              "description": "default api key"
+              "apiKeyExpirationDays": 365,
+              "apiKeyExpirationDate": "2023-03-01T13:44:29.126Z",
+              "description": "default"
             }
           },
           "additionalAuthenticationProviders": [
             {
               "authenticationType": "AMAZON_COGNITO_USER_POOLS",
               "userPoolConfig": {
-                "userPoolId": "authanyuppbackend6bd5f1b1"
+                "userPoolId": "authanyuppbackend737c66e6"
               }
             },
             {
@@ -40,6 +35,13 @@
           ]
         }
       }
+    }
+  },
+  "storage": {
+    "s33fbb09a4": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   }
 }

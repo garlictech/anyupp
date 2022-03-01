@@ -29,16 +29,16 @@ class AwsProductProvider implements IProductProvider {
       }
 
       if (result.data == null ||
-          result.data?.searchGeneratedProductCategorys == null) {
+          result.data?.searchGeneratedProductCategories == null) {
         return PageResponse(data: null);
       }
 
-      int count = result.data?.searchGeneratedProductCategorys?.total ?? 0;
-      String? token = result.data?.searchGeneratedProductCategorys?.nextToken;
+      int count = result.data?.searchGeneratedProductCategories?.total ?? 0;
+      String? token = result.data?.searchGeneratedProductCategories?.nextToken;
       print(
           '***** getProductCategoryList().totalCount=$count, nextToken=$token');
 
-      var items = result.data?.searchGeneratedProductCategorys?.items;
+      var items = result.data?.searchGeneratedProductCategories?.items;
 
       List<ProductCategory> results = [];
       if (items != null) {
