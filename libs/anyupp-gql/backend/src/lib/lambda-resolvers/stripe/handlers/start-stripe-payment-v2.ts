@@ -107,7 +107,9 @@ export const startStripePaymentV2 =
       );
     }
 
-    const serviceFee = order.serviceFee ? order.serviceFee.grossPrice : 0;
+    const serviceFee = order.serviceFee?.grossPrice
+      ? order.serviceFee.grossPrice
+      : 0;
     const total = order.sumPriceShown.priceSum + serviceFee;
 
     // 5. Handle INAPP payment
