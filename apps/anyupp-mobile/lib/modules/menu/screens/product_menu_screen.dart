@@ -121,7 +121,6 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     );
     _tabController?.addListener(() {
       if (_tabController?.indexIsChanging == false) {
-        print('ProductMenuScreen.selectedTab()=${_tabController?.index}');
         if (_showTooltip) {
           _checkNeedToShowTooltip();
         }
