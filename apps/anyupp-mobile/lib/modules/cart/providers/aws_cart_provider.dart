@@ -187,13 +187,12 @@ class AwsCartProvider implements ICartProvider {
     print('AwsCartProvider.CREATING CART IN BACKEND');
     try {
       var result = await GQL.amplify.execute(CreateCartMutation(
-        variables: CreateCartArguments(
-          createCartInput: _createCartInput(cart),
-        ),
+        variables: _createCartArguments(cart),
+        // variables: CreateCartArguments(
+        //   createCartInput: _createCartInput(cart),
+        // ),
       ));
-      // print('******** CREATING CART IN BACKEND.result.data=${result.data}');
-      // print(
-      //     'AwsCartProvider.CREATING CART IN BACKEND.result.errors=${result.errors}');
+      print('******** CREATING CART IN BACKEND.result.data=${result.data}');
       if (result.hasErrors) {
         print('AwsCartProvider._saveCartToBackend().error()=${result.errors}');
         throw GraphQLException.fromGraphQLError(
@@ -253,9 +252,8 @@ class AwsCartProvider implements ICartProvider {
     }
   }
 
-  CreateCartInput _createCartInput(Cart cart) {
-    return CreateCartInput(
-      id: cart.id,
+  CreateCartArguments _createCartArguments(Cart cart) {
+    return CreateCartArguments(
       version: AppConfig.AppVersion,
       unitId: cart.unitId,
       userId: cart.userId,
