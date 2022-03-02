@@ -7,8 +7,11 @@ APPNAME=anyuppbackend
 
 echo 'Copy CRUD schema...'
 echo '=============================='
+
 cp ../../libs/crud-gql/backend/src/graphql/schema/crud-api.graphql \
   amplify/backend/api/$APPNAME/schema.graphql
+
+sed -i "s/\${env}/${ENVNAME}/g" amplify/backend/api/$APPNAME/schema.graphql
 
 echo
 echo 'Compile schema with amplify'
