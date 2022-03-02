@@ -133,7 +133,7 @@ const unitProductFixture: RequiredId<CrudApi.CreateUnitProductInput> = {
   groupId: unitFixture.unit_01.groupId,
 };
 
-const generatedProduct: RequiredId<CrudApi.CreateGeneratedProductInput> = {
+const generatedProduct = {
   ...generatedProductFixture.getGeneratedProduct({
     id: unitProductFixture.id,
     unitId: unitProductFixture.unitId,

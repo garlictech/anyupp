@@ -226,9 +226,9 @@ input AvailabilityInput {
 }
 
 type CardChecks {
-  address_line1_check: String
-  address_postal_code_check: String
-  cvc_check: String
+  address_line1_check: String @aws_iam @aws_cognito_user_pools
+  address_postal_code_check: String @aws_iam @aws_cognito_user_pools
+  cvc_check: String @aws_iam @aws_cognito_user_pools
 }
 
 enum CardBrand {
@@ -266,18 +266,18 @@ type BillingAddress {
 }
 
 type StripeCard {
-  id: String!
-  name: String
-  brand: CardBrand
-  checks: CardChecks
-  country: String
-  last4: String
-  exp_month: Int
-  exp_year: Int
-  fingerprint: String
-  funding: CardFundingType
-  three_d_secure: String
-  billing_details: BillingDetails
+  id: String! @aws_iam @aws_cognito_user_pools
+  name: String @aws_iam @aws_cognito_user_pools
+  brand: CardBrand @aws_iam @aws_cognito_user_pools
+  checks: CardChecks @aws_iam @aws_cognito_user_pools
+  country: String @aws_iam @aws_cognito_user_pools
+  last4: String @aws_iam @aws_cognito_user_pools
+  exp_month: Int @aws_iam @aws_cognito_user_pools
+  exp_year: Int @aws_iam @aws_cognito_user_pools
+  fingerprint: String @aws_iam @aws_cognito_user_pools
+  funding: CardFundingType @aws_iam @aws_cognito_user_pools
+  three_d_secure: String @aws_iam @aws_cognito_user_pools
+  billing_details: BillingDetails @aws_iam @aws_cognito_user_pools
 }
 
 input UserInvoiceAddressInput {
@@ -868,39 +868,39 @@ enum PosType {
 }
 
 type GeoUnitList {
-  items: [GeoUnit]
+  items: [GeoUnit] @aws_iam @aws_cognito_user_pools
 }
 
 type OpeningHoursByDate {
-  date: String!
-  closed: Boolean!
-  from: Float
-  to: Float
+  date: String! @aws_iam @aws_cognito_user_pools
+  closed: Boolean! @aws_iam @aws_cognito_user_pools
+  from: Float @aws_iam @aws_cognito_user_pools
+  to: Float @aws_iam @aws_cognito_user_pools
 }
 
 type GeoUnit {
-  id: ID!
-  groupId: ID!
-  chainId: ID!
-  name: String!
-  address: Address!
-  style: ChainStyle!
-  paymentModes: [PaymentMode]
-  distance: Int!
-  currency: String!
-  isAcceptingOrders: Boolean!
-  openingHours: String @deprecated(reason: "The new and better openingHoursNext7 field should be used instead of this static string")
-  openingHoursNext7: [OpeningHoursByDate!]!
-  supportedServingModes: [ServingMode!]
-  supportedOrderModes: [OrderMode!]
-  orderPolicy: OrderPolicy
-  serviceFeePolicy: ServiceFeePolicy
-  ratingPolicies: [RatingPolicy!]
-  tipPolicy: TipPolicy
-  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
-  unit: Unit
-  chain: Chain
-  group: Group
+  id: ID! @aws_iam @aws_cognito_user_pools
+  groupId: ID! @aws_iam @aws_cognito_user_pools
+  chainId: ID! @aws_iam @aws_cognito_user_pools
+  name: String! @aws_iam @aws_cognito_user_pools
+  address: Address! @aws_iam @aws_cognito_user_pools
+  style: ChainStyle! @aws_iam @aws_cognito_user_pools
+  paymentModes: [PaymentMode] @aws_iam @aws_cognito_user_pools
+  distance: Int! @aws_iam @aws_cognito_user_pools
+  currency: String! @aws_iam @aws_cognito_user_pools
+  isAcceptingOrders: Boolean! @aws_iam @aws_cognito_user_pools
+  openingHours: String @deprecated(reason: "The new and better openingHoursNext7 field should be used instead of this static string") @aws_iam @aws_cognito_user_pools
+  openingHoursNext7: [OpeningHoursByDate!]! @aws_iam @aws_cognito_user_pools
+  supportedServingModes: [ServingMode!] @aws_iam @aws_cognito_user_pools
+  supportedOrderModes: [OrderMode!] @aws_iam @aws_cognito_user_pools
+  orderPolicy: OrderPolicy @aws_iam @aws_cognito_user_pools
+  serviceFeePolicy: ServiceFeePolicy @aws_iam @aws_cognito_user_pools
+  ratingPolicies: [RatingPolicy!] @aws_iam @aws_cognito_user_pools
+  tipPolicy: TipPolicy @aws_iam @aws_cognito_user_pools
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy @aws_iam @aws_cognito_user_pools
+  unit: Unit @aws_iam @aws_cognito_user_pools
+  chain: Chain @aws_iam @aws_cognito_user_pools
+  group: Group @aws_iam @aws_cognito_user_pools
 }
 
 input GetUnitsNearLocationInput {
@@ -1184,8 +1184,8 @@ input RateAndTipOrderInput {
 }
 
 type Query {
-  listStripeCards: [StripeCard]
-  getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
+  listStripeCards: [StripeCard] @aws_iam @aws_cognito_user_pools
+  getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList @aws_iam @aws_cognito_user_pools
   getChainProduct(id: ID!): ChainProduct @aws_iam @aws_cognito_user_pools
   listChainProducts(filter: ModelChainProductFilterInput, limit: Int, nextToken: String): ModelChainProductConnection @aws_iam @aws_cognito_user_pools
   searchChainProducts(filter: SearchableChainProductFilterInput, sort: [SearchableChainProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableChainProductAggregationInput]): SearchableChainProductConnection @aws_iam @aws_cognito_user_pools
@@ -1252,20 +1252,20 @@ type Query {
 }
 
 type Mutation {
-  createUnit(input: CreateUnitInput!): Unit
-  updateUnit(input: UpdateUnitInput!): Unit
-  updateUnitRKeeperData(input: UpdateRKeeperDataInput!): Unit
-  createAdminUser(input: CreateAdminUserInput!): AdminUser
-  deleteAdminUser(input: DeleteAdminUserInput!): AdminUser
-  createAnonymUser: CreateAnonymUserOutput @aws_api_key
-  createOrderFromCart(input: CreateOrderFromCartInput!): ID
-  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
-  startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
-  startStripePaymentConnected(input: StartStripePaymentInput!): StartStripePaymentOutput
-  payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput
-  createStripeCard(input: StripeCardCreateInput!): StripeCard
-  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
-  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
+  createUnit(input: CreateUnitInput!): Unit @aws_iam @aws_cognito_user_pools
+  updateUnit(input: UpdateUnitInput!): Unit @aws_iam @aws_cognito_user_pools
+  updateUnitRKeeperData(input: UpdateRKeeperDataInput!): Unit @aws_iam @aws_cognito_user_pools
+  createAdminUser(input: CreateAdminUserInput!): AdminUser @aws_iam @aws_cognito_user_pools
+  deleteAdminUser(input: DeleteAdminUserInput!): AdminUser @aws_iam @aws_cognito_user_pools
+  createAnonymUser: CreateAnonymUserOutput @aws_iam @aws_api_key
+  createOrderFromCart(input: CreateOrderFromCartInput!): ID @aws_iam @aws_cognito_user_pools
+  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_iam @aws_cognito_user_pools
+  startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
+  startStripePaymentConnected(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
+  payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
+  createStripeCard(input: StripeCardCreateInput!): StripeCard @aws_cognito_user_pools @aws_iam
+  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard @aws_iam @aws_cognito_user_pools
+  deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean @aws_cognito_user_pools @aws_iam
   createChainProduct(input: CreateChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_iam @aws_cognito_user_pools
   updateChainProduct(input: UpdateChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_iam @aws_cognito_user_pools
   deleteChainProduct(input: DeleteChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_iam @aws_cognito_user_pools
@@ -1328,25 +1328,25 @@ type Mutation {
 }
 
 type Subscription {
-  onAdminUserChange(id: ID!): AdminUser @aws_subscribe(mutations: ["updateAdminUser"])
-  onAdminUsersChange: AdminUser @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
-  onRoleContextsChange: RoleContext @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
-  onAdminRoleContextsChange: AdminRoleContext @aws_subscribe(mutations: ["createAdminRoleContext", "updateAdminRoleContext", "deleteAdminRoleContext"])
-  onChainsChange: Chain @aws_subscribe(mutations: ["createChain", "updateChain"])
-  onGroupsChange(chainId: ID!): Group @aws_subscribe(mutations: ["createGroup", "updateGroup"])
-  onUnitsChange(groupId: ID!): Unit @aws_subscribe(mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"])
-  onProductCategoriesChange(chainId: ID!): ProductCategory @aws_subscribe(mutations: ["createProductCategory", "updateProductCategory"])
-  onProductComponentsChange(chainId: ID!): ProductComponent @aws_subscribe(mutations: ["createProductComponent", "updateProductComponent"])
-  onProductComponentSetsChange(chainId: ID!): ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet", "updateProductComponentSet"])
-  onChainProductChange(chainId: ID!): ChainProduct @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
-  onGroupProductChange(groupId: ID!): GroupProduct @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
-  onUnitProductChange(unitId: ID!): UnitProduct @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
-  onGeneratedProductChange(unitId: ID!): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct"])
-  onOrdersChange: Order @aws_subscribe(mutations: ["createOrder", "updateOrder"])
-  onOrdersDelete: Order @aws_subscribe(mutations: ["deleteOrder"])
-  onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"])
-  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"])
-  onUnitOrdersChange(unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+  onAdminUserChange(id: ID!): AdminUser @aws_subscribe(mutations: ["updateAdminUser"]) @aws_cognito_user_pools
+  onAdminUsersChange: AdminUser @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"]) @aws_cognito_user_pools
+  onRoleContextsChange: RoleContext @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"]) @aws_cognito_user_pools
+  onAdminRoleContextsChange: AdminRoleContext @aws_subscribe(mutations: ["createAdminRoleContext", "updateAdminRoleContext", "deleteAdminRoleContext"]) @aws_cognito_user_pools
+  onChainsChange: Chain @aws_subscribe(mutations: ["createChain", "updateChain"]) @aws_cognito_user_pools
+  onGroupsChange(chainId: ID!): Group @aws_subscribe(mutations: ["createGroup", "updateGroup"]) @aws_cognito_user_pools
+  onUnitsChange(groupId: ID!): Unit @aws_subscribe(mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"]) @aws_cognito_user_pools
+  onProductCategoriesChange(chainId: ID!): ProductCategory @aws_subscribe(mutations: ["createProductCategory", "updateProductCategory"]) @aws_cognito_user_pools
+  onProductComponentsChange(chainId: ID!): ProductComponent @aws_subscribe(mutations: ["createProductComponent", "updateProductComponent"]) @aws_cognito_user_pools
+  onProductComponentSetsChange(chainId: ID!): ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet", "updateProductComponentSet"]) @aws_cognito_user_pools
+  onChainProductChange(chainId: ID!): ChainProduct @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"]) @aws_cognito_user_pools
+  onGroupProductChange(groupId: ID!): GroupProduct @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"]) @aws_cognito_user_pools
+  onUnitProductChange(unitId: ID!): UnitProduct @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"]) @aws_cognito_user_pools
+  onGeneratedProductChange(unitId: ID!): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct"]) @aws_cognito_user_pools
+  onOrdersChange: Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
+  onOrdersDelete: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_cognito_user_pools
+  onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"]) @aws_cognito_user_pools
+  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
+  onUnitOrdersChange(unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
   onCreateChainProduct: ChainProduct @aws_subscribe(mutations: ["createChainProduct"]) @aws_iam @aws_cognito_user_pools
   onUpdateChainProduct: ChainProduct @aws_subscribe(mutations: ["updateChainProduct"]) @aws_iam @aws_cognito_user_pools
   onDeleteChainProduct: ChainProduct @aws_subscribe(mutations: ["deleteChainProduct"]) @aws_iam @aws_cognito_user_pools

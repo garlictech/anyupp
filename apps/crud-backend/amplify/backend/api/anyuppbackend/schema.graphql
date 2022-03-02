@@ -1258,55 +1258,55 @@ type Query {
   listStripeCards: [StripeCard]
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 }
 
 type Mutation {
   createUnit(input: CreateUnitInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   updateUnit(input: UpdateUnitInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   updateUnitRKeeperData(input: UpdateRKeeperDataInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   createAdminUser(input: CreateAdminUserInput!): AdminUser
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   deleteAdminUser(input: DeleteAdminUserInput!): AdminUser
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   # User
   createAnonymUser: CreateAnonymUserOutput  # public endpoint
     @aws_iam
     @aws_api_key
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   # Order
   createOrderFromCart(input: CreateOrderFromCartInput!): ID
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
 
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
 
@@ -1314,7 +1314,7 @@ type Mutation {
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   # Stripe Connected
   startStripePaymentConnected(
@@ -1322,27 +1322,27 @@ type Mutation {
   ): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   createStripeCard(input: StripeCardCreateInput!): StripeCard
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
 
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
+    @function(name: "dev-anyupp-graphql-resolvers")
 }
 
 type Subscription {

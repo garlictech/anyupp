@@ -1,5 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { RequiredId } from '@bgap/shared/types';
 import { testIdPrefix } from './common';
 
 const getGeneratedProductVariant = (idx: number, productId?: string) => ({
@@ -22,7 +21,7 @@ const getGeneratedProduct = ({
   id: string;
   unitId: string;
   productCategoryId: string;
-}): RequiredId<CrudApi.CreateGeneratedProductInput> => ({
+}) => ({
   ...generatedProductBase,
   id,
   unitId,
