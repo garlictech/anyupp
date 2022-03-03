@@ -1,17 +1,17 @@
 scalar AWSDateTime
 
-type Location @aws_iam @aws_api_key {
+type Location @aws_iam @aws_cognito_user_pools @aws_api_key {
   lat: Float!
   lng: Float!
 }
 
-type LocalizedItem @aws_iam @aws_api_key {
+type LocalizedItem @aws_iam @aws_cognito_user_pools @aws_api_key {
   en: String
   de: String
   hu: String
 }
 
-type Address @aws_iam @aws_api_key {
+type Address @aws_iam @aws_cognito_user_pools @aws_api_key {
   address: String!
   city: String!
   country: String!
@@ -20,7 +20,7 @@ type Address @aws_iam @aws_api_key {
   location: Location!
 }
 
-type PaymentMode @aws_iam @aws_api_key {
+type PaymentMode @aws_iam @aws_cognito_user_pools @aws_api_key {
   type: PaymentType!
   caption: String
   method: PaymentMethod!
@@ -41,12 +41,12 @@ enum PaymentType {
   googlepay
 }
 
-type ChainStyle @aws_iam @aws_api_key {
+type ChainStyle @aws_iam @aws_cognito_user_pools @aws_api_key {
   colors: ChainStyleColors!
   images: ChainStyleImages
 }
 
-type ChainStyleColors @aws_iam @aws_api_key {
+type ChainStyleColors @aws_iam @aws_cognito_user_pools @aws_api_key {
   backgroundLight: String @deprecated(reason: "Unused.")
   backgroundDark: String @deprecated(reason: "Unused.")
   borderLight: String @deprecated(reason: "Unused.")
@@ -63,12 +63,12 @@ type ChainStyleColors @aws_iam @aws_api_key {
   highlight: String
 }
 
-type ChainStyleImages @aws_iam @aws_api_key {
+type ChainStyleImages @aws_iam @aws_cognito_user_pools @aws_api_key {
   header: String
   logo: String
 }
 
-type ChainProduct @aws_iam @aws_api_key {
+type ChainProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
   chainId: ID!
   name: LocalizedItem!
@@ -124,7 +124,7 @@ enum ServiceFeeType {
   applicable
 }
 
-type ServiceFeePolicy @aws_iam @aws_api_key {
+type ServiceFeePolicy @aws_iam @aws_cognito_user_pools @aws_api_key {
   type: ServiceFeeType!
   percentage: Float!
 }
@@ -134,7 +134,7 @@ input ServiceFeePolicyInput {
   percentage: Float!
 }
 
-type GroupProduct @aws_iam @aws_api_key {
+type GroupProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
   parentId: ID!
   chainId: ID!
@@ -150,7 +150,7 @@ type GroupProduct @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type UnitProduct @aws_iam @aws_api_key {
+type UnitProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
   parentId: ID!
   chainId: ID!
@@ -169,7 +169,7 @@ type UnitProduct @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type ProductConfigComponent @aws_iam @aws_api_key {
+type ProductConfigComponent @aws_iam @aws_cognito_user_pools @aws_api_key {
   productComponentId: ID!
   refGroupPrice: Float!
   price: Float!
@@ -178,13 +178,13 @@ type ProductConfigComponent @aws_iam @aws_api_key {
   netPackagingFee: Float
 }
 
-type ProductConfigSet @aws_iam @aws_api_key {
+type ProductConfigSet @aws_iam @aws_cognito_user_pools @aws_api_key {
   productSetId: ID!
   items: [ProductConfigComponent!]!
   position: Int!
 }
 
-type ProductVariant @aws_iam @aws_api_key {
+type ProductVariant @aws_iam @aws_cognito_user_pools @aws_api_key {
   id: ID!
   variantName: LocalizedItem!
   pack: ProductVariantPack
@@ -197,7 +197,7 @@ type ProductVariant @aws_iam @aws_api_key {
   soldOut: Boolean
 }
 
-type ProductVariantPack @aws_iam @aws_api_key {
+type ProductVariantPack @aws_iam @aws_cognito_user_pools @aws_api_key {
   size: Float!
   unit: String!
 }
@@ -207,7 +207,7 @@ input ProductVariantPackInput {
   unit: String!
 }
 
-type Availability @aws_iam @aws_api_key {
+type Availability @aws_iam @aws_cognito_user_pools @aws_api_key {
   type: String!
   dayFrom: String
   dayTo: String
@@ -225,7 +225,7 @@ input AvailabilityInput {
   price: Float!
 }
 
-type CardChecks @aws_iam @aws_api_key {
+type CardChecks @aws_iam @aws_cognito_user_pools {
   address_line1_check: String
   address_postal_code_check: String
   cvc_check: String
@@ -249,14 +249,14 @@ enum CardFundingType {
   unknown
 }
 
-type BillingDetails @aws_iam @aws_api_key {
+type BillingDetails @aws_iam @aws_cognito_user_pools {
   email: String
   name: String
   phone: String
   address: BillingAddress
 }
 
-type BillingAddress @aws_iam @aws_api_key {
+type BillingAddress @aws_iam @aws_cognito_user_pools {
   city: String
   country: String
   line1: String
@@ -265,7 +265,7 @@ type BillingAddress @aws_iam @aws_api_key {
   state: String
 }
 
-type StripeCard @aws_iam @aws_api_key {
+type StripeCard @aws_iam @aws_cognito_user_pools {
   id: String!
   name: String
   brand: CardBrand
@@ -340,7 +340,7 @@ enum Role {
   inactive
 }
 
-type AdminUser @aws_iam @aws_api_key {
+type AdminUser @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String!
   email: String!
@@ -351,7 +351,7 @@ type AdminUser @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type AdminUserSettings @aws_iam @aws_api_key {
+type AdminUserSettings @aws_iam @aws_cognito_user_pools {
   selectedChainId: String
   selectedGroupId: String
   selectedUnitId: String
@@ -387,7 +387,7 @@ input CreateAdminUserInput {
   settings: AdminUserSettingsInput
 }
 
-type Chain @aws_iam @aws_api_key {
+type Chain @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String!
   description: LocalizedItem
@@ -400,7 +400,7 @@ type Chain @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type Group @aws_iam @aws_api_key {
+type Group @aws_iam @aws_cognito_user_pools {
   id: ID!
   chainId: ID!
   name: String!
@@ -413,13 +413,13 @@ type Group @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type StatusLog @aws_iam @aws_api_key {
+type StatusLog @aws_iam @aws_cognito_user_pools @aws_api_key {
   userId: ID!
   status: OrderStatus!
   ts: Float!
 }
 
-type PriceShown @aws_iam @aws_api_key {
+type PriceShown @aws_iam @aws_cognito_user_pools @aws_api_key {
   currency: String!
   pricePerUnit: Float!
   priceSum: Float!
@@ -427,7 +427,7 @@ type PriceShown @aws_iam @aws_api_key {
   taxSum: Float!
 }
 
-type OrderItemConfigComponent @aws_iam @aws_api_key {
+type OrderItemConfigComponent @aws_iam @aws_cognito_user_pools @aws_api_key {
   productComponentId: ID!
   price: Float!
   name: LocalizedItem!
@@ -436,26 +436,26 @@ type OrderItemConfigComponent @aws_iam @aws_api_key {
   externalId: String
 }
 
-type OrderItemConfigSet @aws_iam @aws_api_key {
+type OrderItemConfigSet @aws_iam @aws_cognito_user_pools @aws_api_key {
   productSetId: ID!
   name: LocalizedItem!
   type: String!
   items: [OrderItemConfigComponent!]!
 }
 
-type Price @aws_iam @aws_api_key {
+type Price @aws_iam @aws_cognito_user_pools @aws_api_key {
   currency: String!
   netPrice: Float!
   taxPercentage: Float!
 }
 
-type CumulatedPrice @aws_iam @aws_api_key {
-  currency: String!
-  grossPrice: Float!
-  taxContent: Float!
+type CumulatedPrice @aws_iam @aws_cognito_user_pools {
+  currency: String
+  grossPrice: Float
+  taxContent: Float
 }
 
-type OrderItem @aws_iam @aws_api_key {
+type OrderItem @aws_iam @aws_cognito_user_pools @aws_api_key {
   productId: ID!
   variantId: ID!
   created: Float
@@ -475,12 +475,12 @@ type OrderItem @aws_iam @aws_api_key {
   sumPriceShown: PriceShown!
 }
 
-type OrderRating @aws_iam @aws_api_key {
+type OrderRating @aws_iam @aws_cognito_user_pools {
   key: String!
   value: Int!
 }
 
-type Order @aws_iam @aws_api_key {
+type Order @aws_iam @aws_cognito_user_pools {
   id: ID!
   createdAt: AWSDateTime!
   userId: ID!
@@ -553,12 +553,12 @@ enum OrderStatus {
   rejected
 }
 
-type Place @aws_iam @aws_api_key {
+type Place @aws_iam @aws_cognito_user_pools @aws_api_key {
   seat: String!
   table: String!
 }
 
-type ProductCategory @aws_iam @aws_api_key {
+type ProductCategory @aws_iam @aws_cognito_user_pools {
   id: ID!
   chainId: ID!
   description: LocalizedItem
@@ -569,7 +569,7 @@ type ProductCategory @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type ProductComponent @aws_iam @aws_api_key {
+type ProductComponent @aws_iam @aws_cognito_user_pools {
   id: ID!
   chainId: ID!
   name: LocalizedItem!
@@ -582,7 +582,7 @@ type ProductComponent @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type ProductComponentSet @aws_iam @aws_api_key {
+type ProductComponentSet @aws_iam @aws_cognito_user_pools {
   id: ID!
   externalId: String
   chainId: ID!
@@ -597,7 +597,7 @@ type ProductComponentSet @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type GeneratedProductConfigComponent @aws_iam @aws_api_key {
+type GeneratedProductConfigComponent @aws_iam @aws_cognito_user_pools {
   productComponentId: ID!
   price: Float!
   position: Int!
@@ -608,7 +608,7 @@ type GeneratedProductConfigComponent @aws_iam @aws_api_key {
   externalId: String
 }
 
-type GeneratedProductConfigSet @aws_iam @aws_api_key {
+type GeneratedProductConfigSet @aws_iam @aws_cognito_user_pools {
   productSetId: ID!
   name: LocalizedItem!
   position: Int!
@@ -618,7 +618,7 @@ type GeneratedProductConfigSet @aws_iam @aws_api_key {
   supportedServingModes: [ServingMode!]
 }
 
-type GeneratedProductCategory @aws_iam @aws_api_key {
+type GeneratedProductCategory @aws_iam @aws_cognito_user_pools {
   id: ID!
   unitId: ID!
   productNum: Int!
@@ -628,7 +628,7 @@ type GeneratedProductCategory @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type GeneratedProduct @aws_iam @aws_api_key {
+type GeneratedProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
   unitId: ID!
   productCategoryId: ID!
@@ -648,7 +648,7 @@ type GeneratedProduct @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type GeneratedProductVariant @aws_iam @aws_api_key {
+type GeneratedProductVariant @aws_iam @aws_cognito_user_pools {
   id: ID!
   variantName: LocalizedItem!
   pack: ProductVariantPack
@@ -658,7 +658,7 @@ type GeneratedProductVariant @aws_iam @aws_api_key {
   soldOut: Boolean
 }
 
-type FavoriteProduct @aws_iam @aws_api_key {
+type FavoriteProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
   userId: ID!
   unitId: ID!
@@ -668,7 +668,7 @@ type FavoriteProduct @aws_iam @aws_api_key {
   favoriteProductProductId: ID!
 }
 
-type Tip @aws_iam @aws_api_key {
+type Tip @aws_iam @aws_cognito_user_pools {
   type: TipType!
   value: Float!
 }
@@ -684,20 +684,20 @@ enum TipType {
   amount
 }
 
-type RatingPolicy @aws_iam @aws_api_key {
+type RatingPolicy @aws_iam @aws_cognito_user_pools @aws_api_key {
   key: String!
   title: LocalizedItem!
   description: LocalizedItem!
   ratings: [RatingPolicyItem!]!
 }
 
-type RatingPolicyItem @aws_iam @aws_api_key {
+type RatingPolicyItem @aws_iam @aws_cognito_user_pools @aws_api_key {
   value: Int!
   text: LocalizedItem!
   icon: String
 }
 
-type TipPolicy @aws_iam @aws_api_key {
+type TipPolicy @aws_iam @aws_cognito_user_pools @aws_api_key {
   title: LocalizedItem
   description: LocalizedItem
   percents: [Float!]!
@@ -724,7 +724,7 @@ input TipPolicyInput {
   minOtherAmount: Float
 }
 
-type Unit @aws_iam @aws_api_key {
+type Unit @aws_iam @aws_cognito_user_pools {
   id: ID!
   groupId: ID!
   chainId: ID!
@@ -757,23 +757,23 @@ type Unit @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type DateIntervalOpen @aws_iam @aws_api_key {
+type DateIntervalOpen @aws_iam @aws_cognito_user_pools {
   from: String
   to: String
 }
 
-type DateInterval @aws_iam @aws_api_key {
+type DateInterval @aws_iam @aws_cognito_user_pools @aws_api_key {
   from: String!
   to: String!
 }
 
-type CustomDailySchedule @aws_iam @aws_api_key {
+type CustomDailySchedule @aws_iam @aws_cognito_user_pools {
   date: String!
   from: String!
   to: String!
 }
 
-type WeeklySchedule @aws_iam @aws_api_key {
+type WeeklySchedule @aws_iam @aws_cognito_user_pools {
   mon: DateInterval
   tue: DateInterval
   wed: DateInterval
@@ -784,13 +784,13 @@ type WeeklySchedule @aws_iam @aws_api_key {
   custom: [CustomDailySchedule]
 }
 
-type FloorMapData @aws_iam @aws_api_key {
+type FloorMapData @aws_iam @aws_cognito_user_pools {
   w: Int!
   h: Int!
   objects: [FloorMapDataObject!]
 }
 
-type FloorMapDataObject @aws_iam @aws_api_key {
+type FloorMapDataObject @aws_iam @aws_cognito_user_pools {
   id: ID!
   t: UnitMapObjectType!
   c: String
@@ -814,18 +814,18 @@ enum UnitMapObjectType {
   label
 }
 
-type Lane @aws_iam @aws_api_key {
+type Lane @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String!
   color: String!
 }
 
-type Pos @aws_iam @aws_api_key {
+type Pos @aws_iam @aws_cognito_user_pools {
   type: PosType!
   rkeeper: RKeeper
 }
 
-type RKeeper @aws_iam @aws_api_key {
+type RKeeper @aws_iam @aws_cognito_user_pools {
   endpointUri: String!
   rkeeperUsername: String!
   rkeeperPassword: String!
@@ -851,14 +851,14 @@ type GeoUnitList {
   items: [GeoUnit]
 }
 
-type OpeningHoursByDate @aws_iam @aws_api_key {
+type OpeningHoursByDate @aws_iam @aws_cognito_user_pools {
   date: String!
   closed: Boolean!
   from: Float
-  to: Float @aws_iam @aws_api_key
+  to: Float @aws_iam @aws_cognito_user_pools
 }
 
-type GeoUnit @aws_iam @aws_api_key {
+type GeoUnit @aws_iam @aws_cognito_user_pools {
   id: ID!
   groupId: ID!
   chainId: ID!
@@ -889,7 +889,7 @@ input GetUnitsNearLocationInput {
   location: LocationInput!
 }
 
-type User @aws_iam @aws_api_key {
+type User @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String
   email: String
@@ -901,7 +901,7 @@ type User @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type Cart @aws_iam @aws_api_key {
+type Cart @aws_iam @aws_cognito_user_pools {
   id: ID!
   version: Int
   userId: ID!
@@ -916,7 +916,7 @@ type Cart @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type Transaction @aws_iam @aws_api_key {
+type Transaction @aws_iam @aws_cognito_user_pools {
   id: ID!
   userId: ID!
   user: User!
@@ -935,7 +935,7 @@ type Transaction @aws_iam @aws_api_key {
   paymentMethodId: String
 }
 
-type UserInvoiceAddress @aws_iam @aws_api_key {
+type UserInvoiceAddress @aws_iam @aws_cognito_user_pools {
   customerName: String!
   taxNumber: String!
   country: String!
@@ -957,7 +957,7 @@ enum ReceiptStatus {
   failed
 }
 
-type Invoice @aws_iam @aws_api_key {
+type Invoice @aws_iam @aws_cognito_user_pools {
   id: ID!
   userId: ID!
   orderId: ID!
@@ -976,7 +976,7 @@ type Invoice @aws_iam @aws_api_key {
   updatedAt: AWSDateTime!
 }
 
-type Receipt @aws_iam @aws_api_key {
+type Receipt @aws_iam @aws_cognito_user_pools {
   id: ID!
   userId: ID!
   orderId: ID!
@@ -1168,63 +1168,63 @@ input RateAndTipOrderInput {
 type Query {
   listStripeCards: [StripeCard] @aws_iam @aws_cognito_user_pools
   getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList @aws_iam @aws_cognito_user_pools
-  getChainProduct(id: ID!): ChainProduct @aws_api_key @aws_iam
-  listChainProducts(filter: ModelChainProductFilterInput, limit: Int, nextToken: String): ModelChainProductConnection @aws_api_key @aws_iam
-  searchChainProducts(filter: SearchableChainProductFilterInput, sort: [SearchableChainProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableChainProductAggregationInput]): SearchableChainProductConnection @aws_api_key @aws_iam
-  getGroupProduct(id: ID!): GroupProduct @aws_api_key @aws_iam
-  listGroupProducts(filter: ModelGroupProductFilterInput, limit: Int, nextToken: String): ModelGroupProductConnection @aws_api_key @aws_iam
-  searchGroupProducts(filter: SearchableGroupProductFilterInput, sort: [SearchableGroupProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableGroupProductAggregationInput]): SearchableGroupProductConnection @aws_api_key @aws_iam
-  getUnitProduct(id: ID!): UnitProduct @aws_api_key @aws_iam
-  listUnitProducts(filter: ModelUnitProductFilterInput, limit: Int, nextToken: String): ModelUnitProductConnection @aws_api_key @aws_iam
-  searchUnitProducts(filter: SearchableUnitProductFilterInput, sort: [SearchableUnitProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableUnitProductAggregationInput]): SearchableUnitProductConnection @aws_api_key @aws_iam
-  getAdminUser(id: ID!): AdminUser @aws_api_key @aws_iam
-  listAdminUsers(filter: ModelAdminUserFilterInput, limit: Int, nextToken: String): ModelAdminUserConnection @aws_api_key @aws_iam
-  searchAdminUsers(filter: SearchableAdminUserFilterInput, sort: [SearchableAdminUserSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableAdminUserAggregationInput]): SearchableAdminUserConnection @aws_api_key @aws_iam
-  getChain(id: ID!): Chain @aws_api_key @aws_iam
-  listChains(filter: ModelChainFilterInput, limit: Int, nextToken: String): ModelChainConnection @aws_api_key @aws_iam
-  searchChains(filter: SearchableChainFilterInput, sort: [SearchableChainSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableChainAggregationInput]): SearchableChainConnection @aws_api_key @aws_iam
-  getGroup(id: ID!): Group @aws_api_key @aws_iam
-  listGroups(filter: ModelGroupFilterInput, limit: Int, nextToken: String): ModelGroupConnection @aws_api_key @aws_iam
-  searchGroups(filter: SearchableGroupFilterInput, sort: [SearchableGroupSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableGroupAggregationInput]): SearchableGroupConnection @aws_api_key @aws_iam
-  getOrder(id: ID!): Order @aws_api_key @aws_iam
-  listOrders(filter: ModelOrderFilterInput, limit: Int, nextToken: String): ModelOrderConnection @aws_api_key @aws_iam
-  searchOrders(filter: SearchableOrderFilterInput, sort: [SearchableOrderSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableOrderAggregationInput]): SearchableOrderConnection @aws_api_key @aws_iam
-  getProductCategory(id: ID!): ProductCategory @aws_api_key @aws_iam
-  listProductCategories(filter: ModelProductCategoryFilterInput, limit: Int, nextToken: String): ModelProductCategoryConnection @aws_api_key @aws_iam
-  searchProductCategories(filter: SearchableProductCategoryFilterInput, sort: [SearchableProductCategorySortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableProductCategoryAggregationInput]): SearchableProductCategoryConnection @aws_api_key @aws_iam
-  getProductComponent(id: ID!): ProductComponent @aws_api_key @aws_iam
-  listProductComponents(filter: ModelProductComponentFilterInput, limit: Int, nextToken: String): ModelProductComponentConnection @aws_api_key @aws_iam
-  searchProductComponents(filter: SearchableProductComponentFilterInput, sort: [SearchableProductComponentSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableProductComponentAggregationInput]): SearchableProductComponentConnection @aws_api_key @aws_iam
-  getProductComponentSet(id: ID!): ProductComponentSet @aws_api_key @aws_iam
-  listProductComponentSets(filter: ModelProductComponentSetFilterInput, limit: Int, nextToken: String): ModelProductComponentSetConnection @aws_api_key @aws_iam
-  searchProductComponentSets(filter: SearchableProductComponentSetFilterInput, sort: [SearchableProductComponentSetSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableProductComponentSetAggregationInput]): SearchableProductComponentSetConnection @aws_api_key @aws_iam
-  getGeneratedProductCategory(id: ID!): GeneratedProductCategory @aws_api_key @aws_iam
-  listGeneratedProductCategories(filter: ModelGeneratedProductCategoryFilterInput, limit: Int, nextToken: String): ModelGeneratedProductCategoryConnection @aws_api_key @aws_iam
-  searchGeneratedProductCategories(filter: SearchableGeneratedProductCategoryFilterInput, sort: [SearchableGeneratedProductCategorySortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableGeneratedProductCategoryAggregationInput]): SearchableGeneratedProductCategoryConnection @aws_api_key @aws_iam
-  getGeneratedProduct(id: ID!): GeneratedProduct @aws_api_key @aws_iam
-  listGeneratedProducts(filter: ModelGeneratedProductFilterInput, limit: Int, nextToken: String): ModelGeneratedProductConnection @aws_api_key @aws_iam
-  searchGeneratedProducts(filter: SearchableGeneratedProductFilterInput, sort: [SearchableGeneratedProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableGeneratedProductAggregationInput]): SearchableGeneratedProductConnection @aws_api_key @aws_iam
-  getFavoriteProduct(id: ID!): FavoriteProduct @aws_api_key @aws_iam
-  listFavoriteProducts(filter: ModelFavoriteProductFilterInput, limit: Int, nextToken: String): ModelFavoriteProductConnection @aws_api_key @aws_iam
-  searchFavoriteProducts(filter: SearchableFavoriteProductFilterInput, sort: [SearchableFavoriteProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableFavoriteProductAggregationInput]): SearchableFavoriteProductConnection @aws_api_key @aws_iam
-  getUnit(id: ID!): Unit @aws_api_key @aws_iam
-  listUnits(filter: ModelUnitFilterInput, limit: Int, nextToken: String): ModelUnitConnection @aws_api_key @aws_iam
-  searchUnits(filter: SearchableUnitFilterInput, sort: [SearchableUnitSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableUnitAggregationInput]): SearchableUnitConnection @aws_api_key @aws_iam
-  getUser(id: ID!): User @aws_api_key @aws_iam
-  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_api_key @aws_iam
-  searchUsers(filter: SearchableUserFilterInput, sort: [SearchableUserSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableUserAggregationInput]): SearchableUserConnection @aws_api_key @aws_iam
-  getCart(id: ID!): Cart @aws_api_key @aws_iam
-  listCarts(filter: ModelCartFilterInput, limit: Int, nextToken: String): ModelCartConnection @aws_api_key @aws_iam
-  searchCarts(filter: SearchableCartFilterInput, sort: [SearchableCartSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableCartAggregationInput]): SearchableCartConnection @aws_api_key @aws_iam
-  getTransaction(id: ID!): Transaction @aws_api_key @aws_iam
-  listTransactions(filter: ModelTransactionFilterInput, limit: Int, nextToken: String): ModelTransactionConnection @aws_api_key @aws_iam
-  searchTransactions(filter: SearchableTransactionFilterInput, sort: [SearchableTransactionSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableTransactionAggregationInput]): SearchableTransactionConnection @aws_api_key @aws_iam
-  getInvoice(id: ID!): Invoice @aws_api_key @aws_iam
-  listInvoices(filter: ModelInvoiceFilterInput, limit: Int, nextToken: String): ModelInvoiceConnection @aws_api_key @aws_iam
-  searchInvoices(filter: SearchableInvoiceFilterInput, sort: [SearchableInvoiceSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableInvoiceAggregationInput]): SearchableInvoiceConnection @aws_api_key @aws_iam
-  getReceipt(id: ID!): Receipt @aws_api_key @aws_iam
-  listReceipts(filter: ModelReceiptFilterInput, limit: Int, nextToken: String): ModelReceiptConnection @aws_api_key @aws_iam
-  searchReceipts(filter: SearchableReceiptFilterInput, sort: [SearchableReceiptSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableReceiptAggregationInput]): SearchableReceiptConnection @aws_api_key @aws_iam
+  getChainProduct(id: ID!): ChainProduct @aws_iam @aws_cognito_user_pools
+  listChainProducts(filter: ModelChainProductFilterInput, limit: Int, nextToken: String): ModelChainProductConnection @aws_iam @aws_cognito_user_pools
+  searchChainProducts(filter: SearchableChainProductFilterInput, sort: [SearchableChainProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableChainProductAggregationInput]): SearchableChainProductConnection @aws_iam @aws_cognito_user_pools
+  getGroupProduct(id: ID!): GroupProduct @aws_iam @aws_cognito_user_pools
+  listGroupProducts(filter: ModelGroupProductFilterInput, limit: Int, nextToken: String): ModelGroupProductConnection @aws_iam @aws_cognito_user_pools
+  searchGroupProducts(filter: SearchableGroupProductFilterInput, sort: [SearchableGroupProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableGroupProductAggregationInput]): SearchableGroupProductConnection @aws_iam @aws_cognito_user_pools
+  getUnitProduct(id: ID!): UnitProduct @aws_iam @aws_cognito_user_pools
+  listUnitProducts(filter: ModelUnitProductFilterInput, limit: Int, nextToken: String): ModelUnitProductConnection @aws_iam @aws_cognito_user_pools
+  searchUnitProducts(filter: SearchableUnitProductFilterInput, sort: [SearchableUnitProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableUnitProductAggregationInput]): SearchableUnitProductConnection @aws_iam @aws_cognito_user_pools
+  getAdminUser(id: ID!): AdminUser @aws_iam @aws_cognito_user_pools
+  listAdminUsers(filter: ModelAdminUserFilterInput, limit: Int, nextToken: String): ModelAdminUserConnection @aws_iam @aws_cognito_user_pools
+  searchAdminUsers(filter: SearchableAdminUserFilterInput, sort: [SearchableAdminUserSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableAdminUserAggregationInput]): SearchableAdminUserConnection @aws_iam @aws_cognito_user_pools
+  getChain(id: ID!): Chain @aws_iam @aws_cognito_user_pools
+  listChains(filter: ModelChainFilterInput, limit: Int, nextToken: String): ModelChainConnection @aws_iam @aws_cognito_user_pools
+  searchChains(filter: SearchableChainFilterInput, sort: [SearchableChainSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableChainAggregationInput]): SearchableChainConnection @aws_iam @aws_cognito_user_pools
+  getGroup(id: ID!): Group @aws_iam @aws_cognito_user_pools
+  listGroups(filter: ModelGroupFilterInput, limit: Int, nextToken: String): ModelGroupConnection @aws_iam @aws_cognito_user_pools
+  searchGroups(filter: SearchableGroupFilterInput, sort: [SearchableGroupSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableGroupAggregationInput]): SearchableGroupConnection @aws_iam @aws_cognito_user_pools
+  getOrder(id: ID!): Order @aws_iam @aws_cognito_user_pools
+  listOrders(filter: ModelOrderFilterInput, limit: Int, nextToken: String): ModelOrderConnection @aws_iam @aws_cognito_user_pools
+  searchOrders(filter: SearchableOrderFilterInput, sort: [SearchableOrderSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableOrderAggregationInput]): SearchableOrderConnection @aws_iam @aws_cognito_user_pools
+  getProductCategory(id: ID!): ProductCategory @aws_iam @aws_cognito_user_pools
+  listProductCategories(filter: ModelProductCategoryFilterInput, limit: Int, nextToken: String): ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools
+  searchProductCategories(filter: SearchableProductCategoryFilterInput, sort: [SearchableProductCategorySortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableProductCategoryAggregationInput]): SearchableProductCategoryConnection @aws_iam @aws_cognito_user_pools
+  getProductComponent(id: ID!): ProductComponent @aws_iam @aws_cognito_user_pools
+  listProductComponents(filter: ModelProductComponentFilterInput, limit: Int, nextToken: String): ModelProductComponentConnection @aws_iam @aws_cognito_user_pools
+  searchProductComponents(filter: SearchableProductComponentFilterInput, sort: [SearchableProductComponentSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableProductComponentAggregationInput]): SearchableProductComponentConnection @aws_iam @aws_cognito_user_pools
+  getProductComponentSet(id: ID!): ProductComponentSet @aws_iam @aws_cognito_user_pools
+  listProductComponentSets(filter: ModelProductComponentSetFilterInput, limit: Int, nextToken: String): ModelProductComponentSetConnection @aws_iam @aws_cognito_user_pools
+  searchProductComponentSets(filter: SearchableProductComponentSetFilterInput, sort: [SearchableProductComponentSetSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableProductComponentSetAggregationInput]): SearchableProductComponentSetConnection @aws_iam @aws_cognito_user_pools
+  getGeneratedProductCategory(id: ID!): GeneratedProductCategory @aws_iam @aws_cognito_user_pools
+  listGeneratedProductCategories(filter: ModelGeneratedProductCategoryFilterInput, limit: Int, nextToken: String): ModelGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools
+  searchGeneratedProductCategories(filter: SearchableGeneratedProductCategoryFilterInput, sort: [SearchableGeneratedProductCategorySortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableGeneratedProductCategoryAggregationInput]): SearchableGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools
+  getGeneratedProduct(id: ID!): GeneratedProduct @aws_iam @aws_cognito_user_pools
+  listGeneratedProducts(filter: ModelGeneratedProductFilterInput, limit: Int, nextToken: String): ModelGeneratedProductConnection @aws_iam @aws_cognito_user_pools
+  searchGeneratedProducts(filter: SearchableGeneratedProductFilterInput, sort: [SearchableGeneratedProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableGeneratedProductAggregationInput]): SearchableGeneratedProductConnection @aws_iam @aws_cognito_user_pools
+  getFavoriteProduct(id: ID!): FavoriteProduct @aws_iam @aws_cognito_user_pools
+  listFavoriteProducts(filter: ModelFavoriteProductFilterInput, limit: Int, nextToken: String): ModelFavoriteProductConnection @aws_iam @aws_cognito_user_pools
+  searchFavoriteProducts(filter: SearchableFavoriteProductFilterInput, sort: [SearchableFavoriteProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableFavoriteProductAggregationInput]): SearchableFavoriteProductConnection @aws_iam @aws_cognito_user_pools
+  getUnit(id: ID!): Unit @aws_iam @aws_cognito_user_pools
+  listUnits(filter: ModelUnitFilterInput, limit: Int, nextToken: String): ModelUnitConnection @aws_iam @aws_cognito_user_pools
+  searchUnits(filter: SearchableUnitFilterInput, sort: [SearchableUnitSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableUnitAggregationInput]): SearchableUnitConnection @aws_iam @aws_cognito_user_pools
+  getUser(id: ID!): User @aws_iam @aws_cognito_user_pools
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_iam @aws_cognito_user_pools
+  searchUsers(filter: SearchableUserFilterInput, sort: [SearchableUserSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableUserAggregationInput]): SearchableUserConnection @aws_iam @aws_cognito_user_pools
+  getCart(id: ID!): Cart @aws_iam @aws_cognito_user_pools
+  listCarts(filter: ModelCartFilterInput, limit: Int, nextToken: String): ModelCartConnection @aws_iam @aws_cognito_user_pools
+  searchCarts(filter: SearchableCartFilterInput, sort: [SearchableCartSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableCartAggregationInput]): SearchableCartConnection @aws_iam @aws_cognito_user_pools
+  getTransaction(id: ID!): Transaction @aws_iam @aws_cognito_user_pools
+  listTransactions(filter: ModelTransactionFilterInput, limit: Int, nextToken: String): ModelTransactionConnection @aws_iam @aws_cognito_user_pools
+  searchTransactions(filter: SearchableTransactionFilterInput, sort: [SearchableTransactionSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableTransactionAggregationInput]): SearchableTransactionConnection @aws_iam @aws_cognito_user_pools
+  getInvoice(id: ID!): Invoice @aws_iam @aws_cognito_user_pools
+  listInvoices(filter: ModelInvoiceFilterInput, limit: Int, nextToken: String): ModelInvoiceConnection @aws_iam @aws_cognito_user_pools
+  searchInvoices(filter: SearchableInvoiceFilterInput, sort: [SearchableInvoiceSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableInvoiceAggregationInput]): SearchableInvoiceConnection @aws_iam @aws_cognito_user_pools
+  getReceipt(id: ID!): Receipt @aws_iam @aws_cognito_user_pools
+  listReceipts(filter: ModelReceiptFilterInput, limit: Int, nextToken: String): ModelReceiptConnection @aws_iam @aws_cognito_user_pools
+  searchReceipts(filter: SearchableReceiptFilterInput, sort: [SearchableReceiptSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableReceiptAggregationInput]): SearchableReceiptConnection @aws_iam @aws_cognito_user_pools
 }
 
 type Mutation {
@@ -1242,59 +1242,59 @@ type Mutation {
   createStripeCard(input: StripeCardCreateInput!): StripeCard @aws_cognito_user_pools @aws_iam
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard @aws_iam @aws_cognito_user_pools
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean @aws_cognito_user_pools @aws_iam
-  createChainProduct(input: CreateChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_api_key @aws_iam
-  updateChainProduct(input: UpdateChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_api_key @aws_iam
-  deleteChainProduct(input: DeleteChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_api_key @aws_iam
-  createGroupProduct(input: CreateGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct @aws_api_key @aws_iam
-  updateGroupProduct(input: UpdateGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct @aws_api_key @aws_iam
-  deleteGroupProduct(input: DeleteGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct @aws_api_key @aws_iam
-  createUnitProduct(input: CreateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_api_key @aws_iam
-  updateUnitProduct(input: UpdateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_api_key @aws_iam
-  deleteUnitProduct(input: DeleteUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_api_key @aws_iam
-  updateAdminUser(input: UpdateAdminUserInput!, condition: ModelAdminUserConditionInput): AdminUser @aws_api_key @aws_iam
-  createChain(input: CreateChainInput!, condition: ModelChainConditionInput): Chain @aws_api_key @aws_iam
-  updateChain(input: UpdateChainInput!, condition: ModelChainConditionInput): Chain @aws_api_key @aws_iam
-  deleteChain(input: DeleteChainInput!, condition: ModelChainConditionInput): Chain @aws_api_key @aws_iam
-  createGroup(input: CreateGroupInput!, condition: ModelGroupConditionInput): Group @aws_api_key @aws_iam
-  updateGroup(input: UpdateGroupInput!, condition: ModelGroupConditionInput): Group @aws_api_key @aws_iam
-  deleteGroup(input: DeleteGroupInput!, condition: ModelGroupConditionInput): Group @aws_api_key @aws_iam
-  createOrder(input: CreateOrderInput!, condition: ModelOrderConditionInput): Order @aws_api_key @aws_iam
-  updateOrder(input: UpdateOrderInput!, condition: ModelOrderConditionInput): Order @aws_api_key @aws_iam
-  deleteOrder(input: DeleteOrderInput!, condition: ModelOrderConditionInput): Order @aws_api_key @aws_iam
-  createProductCategory(input: CreateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory @aws_api_key @aws_iam
-  updateProductCategory(input: UpdateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory @aws_api_key @aws_iam
-  deleteProductCategory(input: DeleteProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory @aws_api_key @aws_iam
-  createProductComponent(input: CreateProductComponentInput!, condition: ModelProductComponentConditionInput): ProductComponent @aws_api_key @aws_iam
-  updateProductComponent(input: UpdateProductComponentInput!, condition: ModelProductComponentConditionInput): ProductComponent @aws_api_key @aws_iam
-  deleteProductComponent(input: DeleteProductComponentInput!, condition: ModelProductComponentConditionInput): ProductComponent @aws_api_key @aws_iam
-  createProductComponentSet(input: CreateProductComponentSetInput!, condition: ModelProductComponentSetConditionInput): ProductComponentSet @aws_api_key @aws_iam
-  updateProductComponentSet(input: UpdateProductComponentSetInput!, condition: ModelProductComponentSetConditionInput): ProductComponentSet @aws_api_key @aws_iam
-  deleteProductComponentSet(input: DeleteProductComponentSetInput!, condition: ModelProductComponentSetConditionInput): ProductComponentSet @aws_api_key @aws_iam
-  createGeneratedProductCategory(input: CreateGeneratedProductCategoryInput!, condition: ModelGeneratedProductCategoryConditionInput): GeneratedProductCategory @aws_api_key @aws_iam
-  updateGeneratedProductCategory(input: UpdateGeneratedProductCategoryInput!, condition: ModelGeneratedProductCategoryConditionInput): GeneratedProductCategory @aws_api_key @aws_iam
-  deleteGeneratedProductCategory(input: DeleteGeneratedProductCategoryInput!, condition: ModelGeneratedProductCategoryConditionInput): GeneratedProductCategory @aws_api_key @aws_iam
-  createGeneratedProduct(input: CreateGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct @aws_api_key @aws_iam
-  updateGeneratedProduct(input: UpdateGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct @aws_api_key @aws_iam
-  deleteGeneratedProduct(input: DeleteGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct @aws_api_key @aws_iam
-  createFavoriteProduct(input: CreateFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct @aws_api_key @aws_iam
-  updateFavoriteProduct(input: UpdateFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct @aws_api_key @aws_iam
-  deleteFavoriteProduct(input: DeleteFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct @aws_api_key @aws_iam
-  deleteUnit(input: DeleteUnitInput!, condition: ModelUnitConditionInput): Unit @aws_api_key @aws_iam
-  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_iam
-  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_iam
-  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_iam
-  createCart(input: CreateCartInput!, condition: ModelCartConditionInput): Cart @aws_api_key @aws_iam
-  updateCart(input: UpdateCartInput!, condition: ModelCartConditionInput): Cart @aws_api_key @aws_iam
-  deleteCart(input: DeleteCartInput!, condition: ModelCartConditionInput): Cart @aws_api_key @aws_iam
-  createTransaction(input: CreateTransactionInput!, condition: ModelTransactionConditionInput): Transaction @aws_api_key @aws_iam
-  updateTransaction(input: UpdateTransactionInput!, condition: ModelTransactionConditionInput): Transaction @aws_api_key @aws_iam
-  deleteTransaction(input: DeleteTransactionInput!, condition: ModelTransactionConditionInput): Transaction @aws_api_key @aws_iam
-  createInvoice(input: CreateInvoiceInput!, condition: ModelInvoiceConditionInput): Invoice @aws_api_key @aws_iam
-  updateInvoice(input: UpdateInvoiceInput!, condition: ModelInvoiceConditionInput): Invoice @aws_api_key @aws_iam
-  deleteInvoice(input: DeleteInvoiceInput!, condition: ModelInvoiceConditionInput): Invoice @aws_api_key @aws_iam
-  createReceipt(input: CreateReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_api_key @aws_iam
-  updateReceipt(input: UpdateReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_api_key @aws_iam
-  deleteReceipt(input: DeleteReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_api_key @aws_iam
+  createChainProduct(input: CreateChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_iam @aws_cognito_user_pools
+  updateChainProduct(input: UpdateChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_iam @aws_cognito_user_pools
+  deleteChainProduct(input: DeleteChainProductInput!, condition: ModelChainProductConditionInput): ChainProduct @aws_iam @aws_cognito_user_pools
+  createGroupProduct(input: CreateGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct @aws_iam @aws_cognito_user_pools
+  updateGroupProduct(input: UpdateGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct @aws_iam @aws_cognito_user_pools
+  deleteGroupProduct(input: DeleteGroupProductInput!, condition: ModelGroupProductConditionInput): GroupProduct @aws_iam @aws_cognito_user_pools
+  createUnitProduct(input: CreateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
+  updateUnitProduct(input: UpdateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
+  deleteUnitProduct(input: DeleteUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
+  updateAdminUser(input: UpdateAdminUserInput!, condition: ModelAdminUserConditionInput): AdminUser @aws_iam @aws_cognito_user_pools
+  createChain(input: CreateChainInput!, condition: ModelChainConditionInput): Chain @aws_iam @aws_cognito_user_pools
+  updateChain(input: UpdateChainInput!, condition: ModelChainConditionInput): Chain @aws_iam @aws_cognito_user_pools
+  deleteChain(input: DeleteChainInput!, condition: ModelChainConditionInput): Chain @aws_iam @aws_cognito_user_pools
+  createGroup(input: CreateGroupInput!, condition: ModelGroupConditionInput): Group @aws_iam @aws_cognito_user_pools
+  updateGroup(input: UpdateGroupInput!, condition: ModelGroupConditionInput): Group @aws_iam @aws_cognito_user_pools
+  deleteGroup(input: DeleteGroupInput!, condition: ModelGroupConditionInput): Group @aws_iam @aws_cognito_user_pools
+  createOrder(input: CreateOrderInput!, condition: ModelOrderConditionInput): Order @aws_iam @aws_cognito_user_pools
+  updateOrder(input: UpdateOrderInput!, condition: ModelOrderConditionInput): Order @aws_iam @aws_cognito_user_pools
+  deleteOrder(input: DeleteOrderInput!, condition: ModelOrderConditionInput): Order @aws_iam @aws_cognito_user_pools
+  createProductCategory(input: CreateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory @aws_iam @aws_cognito_user_pools
+  updateProductCategory(input: UpdateProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory @aws_iam @aws_cognito_user_pools
+  deleteProductCategory(input: DeleteProductCategoryInput!, condition: ModelProductCategoryConditionInput): ProductCategory @aws_iam @aws_cognito_user_pools
+  createProductComponent(input: CreateProductComponentInput!, condition: ModelProductComponentConditionInput): ProductComponent @aws_iam @aws_cognito_user_pools
+  updateProductComponent(input: UpdateProductComponentInput!, condition: ModelProductComponentConditionInput): ProductComponent @aws_iam @aws_cognito_user_pools
+  deleteProductComponent(input: DeleteProductComponentInput!, condition: ModelProductComponentConditionInput): ProductComponent @aws_iam @aws_cognito_user_pools
+  createProductComponentSet(input: CreateProductComponentSetInput!, condition: ModelProductComponentSetConditionInput): ProductComponentSet @aws_iam @aws_cognito_user_pools
+  updateProductComponentSet(input: UpdateProductComponentSetInput!, condition: ModelProductComponentSetConditionInput): ProductComponentSet @aws_iam @aws_cognito_user_pools
+  deleteProductComponentSet(input: DeleteProductComponentSetInput!, condition: ModelProductComponentSetConditionInput): ProductComponentSet @aws_iam @aws_cognito_user_pools
+  createGeneratedProductCategory(input: CreateGeneratedProductCategoryInput!, condition: ModelGeneratedProductCategoryConditionInput): GeneratedProductCategory @aws_iam @aws_cognito_user_pools
+  updateGeneratedProductCategory(input: UpdateGeneratedProductCategoryInput!, condition: ModelGeneratedProductCategoryConditionInput): GeneratedProductCategory @aws_iam @aws_cognito_user_pools
+  deleteGeneratedProductCategory(input: DeleteGeneratedProductCategoryInput!, condition: ModelGeneratedProductCategoryConditionInput): GeneratedProductCategory @aws_iam @aws_cognito_user_pools
+  createGeneratedProduct(input: CreateGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct @aws_iam @aws_cognito_user_pools
+  updateGeneratedProduct(input: UpdateGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct @aws_iam @aws_cognito_user_pools
+  deleteGeneratedProduct(input: DeleteGeneratedProductInput!, condition: ModelGeneratedProductConditionInput): GeneratedProduct @aws_iam @aws_cognito_user_pools
+  createFavoriteProduct(input: CreateFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct @aws_iam @aws_cognito_user_pools
+  updateFavoriteProduct(input: UpdateFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct @aws_iam @aws_cognito_user_pools
+  deleteFavoriteProduct(input: DeleteFavoriteProductInput!, condition: ModelFavoriteProductConditionInput): FavoriteProduct @aws_iam @aws_cognito_user_pools
+  deleteUnit(input: DeleteUnitInput!, condition: ModelUnitConditionInput): Unit @aws_iam @aws_cognito_user_pools
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User @aws_iam @aws_cognito_user_pools
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User @aws_iam @aws_cognito_user_pools
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User @aws_iam @aws_cognito_user_pools
+  createCart(input: CreateCartInput!, condition: ModelCartConditionInput): Cart @aws_iam @aws_cognito_user_pools
+  updateCart(input: UpdateCartInput!, condition: ModelCartConditionInput): Cart @aws_iam @aws_cognito_user_pools
+  deleteCart(input: DeleteCartInput!, condition: ModelCartConditionInput): Cart @aws_iam @aws_cognito_user_pools
+  createTransaction(input: CreateTransactionInput!, condition: ModelTransactionConditionInput): Transaction @aws_iam @aws_cognito_user_pools
+  updateTransaction(input: UpdateTransactionInput!, condition: ModelTransactionConditionInput): Transaction @aws_iam @aws_cognito_user_pools
+  deleteTransaction(input: DeleteTransactionInput!, condition: ModelTransactionConditionInput): Transaction @aws_iam @aws_cognito_user_pools
+  createInvoice(input: CreateInvoiceInput!, condition: ModelInvoiceConditionInput): Invoice @aws_iam @aws_cognito_user_pools
+  updateInvoice(input: UpdateInvoiceInput!, condition: ModelInvoiceConditionInput): Invoice @aws_iam @aws_cognito_user_pools
+  deleteInvoice(input: DeleteInvoiceInput!, condition: ModelInvoiceConditionInput): Invoice @aws_iam @aws_cognito_user_pools
+  createReceipt(input: CreateReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
+  updateReceipt(input: UpdateReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
+  deleteReceipt(input: DeleteReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
 }
 
 type Subscription {
@@ -1315,208 +1315,208 @@ type Subscription {
   onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"]) @aws_cognito_user_pools
   onOrderChanged(userId: String, unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
   onUnitOrdersChange(unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
-  onCreateChainProduct: ChainProduct @aws_subscribe(mutations: ["createChainProduct"]) @aws_api_key @aws_iam
-  onUpdateChainProduct: ChainProduct @aws_subscribe(mutations: ["updateChainProduct"]) @aws_api_key @aws_iam
-  onDeleteChainProduct: ChainProduct @aws_subscribe(mutations: ["deleteChainProduct"]) @aws_api_key @aws_iam
-  onCreateGroupProduct: GroupProduct @aws_subscribe(mutations: ["createGroupProduct"]) @aws_api_key @aws_iam
-  onUpdateGroupProduct: GroupProduct @aws_subscribe(mutations: ["updateGroupProduct"]) @aws_api_key @aws_iam
-  onDeleteGroupProduct: GroupProduct @aws_subscribe(mutations: ["deleteGroupProduct"]) @aws_api_key @aws_iam
-  onCreateUnitProduct: UnitProduct @aws_subscribe(mutations: ["createUnitProduct"]) @aws_api_key @aws_iam
-  onUpdateUnitProduct: UnitProduct @aws_subscribe(mutations: ["updateUnitProduct"]) @aws_api_key @aws_iam
-  onDeleteUnitProduct: UnitProduct @aws_subscribe(mutations: ["deleteUnitProduct"]) @aws_api_key @aws_iam
-  onUpdateAdminUser: AdminUser @aws_subscribe(mutations: ["updateAdminUser"]) @aws_api_key @aws_iam
-  onCreateChain: Chain @aws_subscribe(mutations: ["createChain"]) @aws_api_key @aws_iam
-  onUpdateChain: Chain @aws_subscribe(mutations: ["updateChain"]) @aws_api_key @aws_iam
-  onDeleteChain: Chain @aws_subscribe(mutations: ["deleteChain"]) @aws_api_key @aws_iam
-  onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"]) @aws_api_key @aws_iam
-  onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"]) @aws_api_key @aws_iam
-  onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"]) @aws_api_key @aws_iam
-  onCreateOrder: Order @aws_subscribe(mutations: ["createOrder"]) @aws_api_key @aws_iam
-  onUpdateOrder: Order @aws_subscribe(mutations: ["updateOrder"]) @aws_api_key @aws_iam
-  onDeleteOrder: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_api_key @aws_iam
-  onCreateProductCategory: ProductCategory @aws_subscribe(mutations: ["createProductCategory"]) @aws_api_key @aws_iam
-  onUpdateProductCategory: ProductCategory @aws_subscribe(mutations: ["updateProductCategory"]) @aws_api_key @aws_iam
-  onDeleteProductCategory: ProductCategory @aws_subscribe(mutations: ["deleteProductCategory"]) @aws_api_key @aws_iam
-  onCreateProductComponent: ProductComponent @aws_subscribe(mutations: ["createProductComponent"]) @aws_api_key @aws_iam
-  onUpdateProductComponent: ProductComponent @aws_subscribe(mutations: ["updateProductComponent"]) @aws_api_key @aws_iam
-  onDeleteProductComponent: ProductComponent @aws_subscribe(mutations: ["deleteProductComponent"]) @aws_api_key @aws_iam
-  onCreateProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet"]) @aws_api_key @aws_iam
-  onUpdateProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["updateProductComponentSet"]) @aws_api_key @aws_iam
-  onDeleteProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["deleteProductComponentSet"]) @aws_api_key @aws_iam
-  onCreateGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["createGeneratedProductCategory"]) @aws_api_key @aws_iam
-  onUpdateGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["updateGeneratedProductCategory"]) @aws_api_key @aws_iam
-  onDeleteGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["deleteGeneratedProductCategory"]) @aws_api_key @aws_iam
-  onCreateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct"]) @aws_api_key @aws_iam
-  onUpdateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["updateGeneratedProduct"]) @aws_api_key @aws_iam
-  onDeleteGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["deleteGeneratedProduct"]) @aws_api_key @aws_iam
-  onCreateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["createFavoriteProduct"]) @aws_api_key @aws_iam
-  onUpdateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["updateFavoriteProduct"]) @aws_api_key @aws_iam
-  onDeleteFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["deleteFavoriteProduct"]) @aws_api_key @aws_iam
-  onDeleteUnit: Unit @aws_subscribe(mutations: ["deleteUnit"]) @aws_api_key @aws_iam
-  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_api_key @aws_iam
-  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_api_key @aws_iam
-  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_api_key @aws_iam
-  onCreateCart: Cart @aws_subscribe(mutations: ["createCart"]) @aws_api_key @aws_iam
-  onUpdateCart: Cart @aws_subscribe(mutations: ["updateCart"]) @aws_api_key @aws_iam
-  onDeleteCart: Cart @aws_subscribe(mutations: ["deleteCart"]) @aws_api_key @aws_iam
-  onCreateTransaction: Transaction @aws_subscribe(mutations: ["createTransaction"]) @aws_api_key @aws_iam
-  onUpdateTransaction: Transaction @aws_subscribe(mutations: ["updateTransaction"]) @aws_api_key @aws_iam
-  onDeleteTransaction: Transaction @aws_subscribe(mutations: ["deleteTransaction"]) @aws_api_key @aws_iam
-  onCreateInvoice: Invoice @aws_subscribe(mutations: ["createInvoice"]) @aws_api_key @aws_iam
-  onUpdateInvoice: Invoice @aws_subscribe(mutations: ["updateInvoice"]) @aws_api_key @aws_iam
-  onDeleteInvoice: Invoice @aws_subscribe(mutations: ["deleteInvoice"]) @aws_api_key @aws_iam
-  onCreateReceipt: Receipt @aws_subscribe(mutations: ["createReceipt"]) @aws_api_key @aws_iam
-  onUpdateReceipt: Receipt @aws_subscribe(mutations: ["updateReceipt"]) @aws_api_key @aws_iam
-  onDeleteReceipt: Receipt @aws_subscribe(mutations: ["deleteReceipt"]) @aws_api_key @aws_iam
+  onCreateChainProduct: ChainProduct @aws_subscribe(mutations: ["createChainProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateChainProduct: ChainProduct @aws_subscribe(mutations: ["updateChainProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteChainProduct: ChainProduct @aws_subscribe(mutations: ["deleteChainProduct"]) @aws_iam @aws_cognito_user_pools
+  onCreateGroupProduct: GroupProduct @aws_subscribe(mutations: ["createGroupProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGroupProduct: GroupProduct @aws_subscribe(mutations: ["updateGroupProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGroupProduct: GroupProduct @aws_subscribe(mutations: ["deleteGroupProduct"]) @aws_iam @aws_cognito_user_pools
+  onCreateUnitProduct: UnitProduct @aws_subscribe(mutations: ["createUnitProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUnitProduct: UnitProduct @aws_subscribe(mutations: ["updateUnitProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUnitProduct: UnitProduct @aws_subscribe(mutations: ["deleteUnitProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateAdminUser: AdminUser @aws_subscribe(mutations: ["updateAdminUser"]) @aws_iam @aws_cognito_user_pools
+  onCreateChain: Chain @aws_subscribe(mutations: ["createChain"]) @aws_iam @aws_cognito_user_pools
+  onUpdateChain: Chain @aws_subscribe(mutations: ["updateChain"]) @aws_iam @aws_cognito_user_pools
+  onDeleteChain: Chain @aws_subscribe(mutations: ["deleteChain"]) @aws_iam @aws_cognito_user_pools
+  onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"]) @aws_iam @aws_cognito_user_pools
+  onCreateOrder: Order @aws_subscribe(mutations: ["createOrder"]) @aws_iam @aws_cognito_user_pools
+  onUpdateOrder: Order @aws_subscribe(mutations: ["updateOrder"]) @aws_iam @aws_cognito_user_pools
+  onDeleteOrder: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_iam @aws_cognito_user_pools
+  onCreateProductCategory: ProductCategory @aws_subscribe(mutations: ["createProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onUpdateProductCategory: ProductCategory @aws_subscribe(mutations: ["updateProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onDeleteProductCategory: ProductCategory @aws_subscribe(mutations: ["deleteProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onCreateProductComponent: ProductComponent @aws_subscribe(mutations: ["createProductComponent"]) @aws_iam @aws_cognito_user_pools
+  onUpdateProductComponent: ProductComponent @aws_subscribe(mutations: ["updateProductComponent"]) @aws_iam @aws_cognito_user_pools
+  onDeleteProductComponent: ProductComponent @aws_subscribe(mutations: ["deleteProductComponent"]) @aws_iam @aws_cognito_user_pools
+  onCreateProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet"]) @aws_iam @aws_cognito_user_pools
+  onUpdateProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["updateProductComponentSet"]) @aws_iam @aws_cognito_user_pools
+  onDeleteProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["deleteProductComponentSet"]) @aws_iam @aws_cognito_user_pools
+  onCreateGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["createGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["updateGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["deleteGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onCreateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["updateGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["deleteGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
+  onCreateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["createFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["updateFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["deleteFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUnit: Unit @aws_subscribe(mutations: ["deleteUnit"]) @aws_iam @aws_cognito_user_pools
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_iam @aws_cognito_user_pools
+  onCreateCart: Cart @aws_subscribe(mutations: ["createCart"]) @aws_iam @aws_cognito_user_pools
+  onUpdateCart: Cart @aws_subscribe(mutations: ["updateCart"]) @aws_iam @aws_cognito_user_pools
+  onDeleteCart: Cart @aws_subscribe(mutations: ["deleteCart"]) @aws_iam @aws_cognito_user_pools
+  onCreateTransaction: Transaction @aws_subscribe(mutations: ["createTransaction"]) @aws_iam @aws_cognito_user_pools
+  onUpdateTransaction: Transaction @aws_subscribe(mutations: ["updateTransaction"]) @aws_iam @aws_cognito_user_pools
+  onDeleteTransaction: Transaction @aws_subscribe(mutations: ["deleteTransaction"]) @aws_iam @aws_cognito_user_pools
+  onCreateInvoice: Invoice @aws_subscribe(mutations: ["createInvoice"]) @aws_iam @aws_cognito_user_pools
+  onUpdateInvoice: Invoice @aws_subscribe(mutations: ["updateInvoice"]) @aws_iam @aws_cognito_user_pools
+  onDeleteInvoice: Invoice @aws_subscribe(mutations: ["deleteInvoice"]) @aws_iam @aws_cognito_user_pools
+  onCreateReceipt: Receipt @aws_subscribe(mutations: ["createReceipt"]) @aws_iam @aws_cognito_user_pools
+  onUpdateReceipt: Receipt @aws_subscribe(mutations: ["updateReceipt"]) @aws_iam @aws_cognito_user_pools
+  onDeleteReceipt: Receipt @aws_subscribe(mutations: ["deleteReceipt"]) @aws_iam @aws_cognito_user_pools
 }
 
-type SearchableChainProductConnection @aws_api_key @aws_iam {
+type SearchableChainProductConnection @aws_iam @aws_cognito_user_pools {
   items: [ChainProduct]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableAggregateResult @aws_iam @aws_api_key {
+type SearchableAggregateResult @aws_iam @aws_cognito_user_pools {
   name: String!
   result: SearchableAggregateGenericResult
 }
 
-type SearchableAggregateScalarResult @aws_iam @aws_api_key {
+type SearchableAggregateScalarResult @aws_iam @aws_cognito_user_pools {
   value: Float!
 }
 
-type SearchableAggregateBucketResult @aws_iam @aws_api_key {
+type SearchableAggregateBucketResult @aws_iam @aws_cognito_user_pools {
   buckets: [SearchableAggregateBucketResultItem]
 }
 
-type SearchableAggregateBucketResultItem @aws_iam @aws_api_key {
+type SearchableAggregateBucketResultItem @aws_iam @aws_cognito_user_pools {
   key: String!
   doc_count: Int!
 }
 
 union SearchableAggregateGenericResult = SearchableAggregateScalarResult | SearchableAggregateBucketResult
 
-type SearchableGroupProductConnection @aws_api_key @aws_iam {
+type SearchableGroupProductConnection @aws_iam @aws_cognito_user_pools {
   items: [GroupProduct]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableUnitProductConnection @aws_api_key @aws_iam {
+type SearchableUnitProductConnection @aws_iam @aws_cognito_user_pools {
   items: [UnitProduct]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableAdminUserConnection @aws_api_key @aws_iam {
+type SearchableAdminUserConnection @aws_iam @aws_cognito_user_pools {
   items: [AdminUser]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableChainConnection @aws_api_key @aws_iam {
+type SearchableChainConnection @aws_iam @aws_cognito_user_pools {
   items: [Chain]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableGroupConnection @aws_api_key @aws_iam {
+type SearchableGroupConnection @aws_iam @aws_cognito_user_pools {
   items: [Group]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableOrderConnection @aws_api_key @aws_iam {
+type SearchableOrderConnection @aws_iam @aws_cognito_user_pools {
   items: [Order]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableProductCategoryConnection @aws_api_key @aws_iam {
+type SearchableProductCategoryConnection @aws_iam @aws_cognito_user_pools {
   items: [ProductCategory]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableProductComponentConnection @aws_api_key @aws_iam {
+type SearchableProductComponentConnection @aws_iam @aws_cognito_user_pools {
   items: [ProductComponent]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableProductComponentSetConnection @aws_api_key @aws_iam {
+type SearchableProductComponentSetConnection @aws_iam @aws_cognito_user_pools {
   items: [ProductComponentSet]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableGeneratedProductCategoryConnection @aws_api_key @aws_iam {
+type SearchableGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools {
   items: [GeneratedProductCategory]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableGeneratedProductConnection @aws_api_key @aws_iam {
+type SearchableGeneratedProductConnection @aws_iam @aws_cognito_user_pools {
   items: [GeneratedProduct]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableFavoriteProductConnection @aws_api_key @aws_iam {
+type SearchableFavoriteProductConnection @aws_iam @aws_cognito_user_pools {
   items: [FavoriteProduct]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableUnitConnection @aws_api_key @aws_iam {
+type SearchableUnitConnection @aws_iam @aws_cognito_user_pools {
   items: [Unit]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableUserConnection @aws_api_key @aws_iam {
+type SearchableUserConnection @aws_iam @aws_cognito_user_pools {
   items: [User]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableCartConnection @aws_api_key @aws_iam {
+type SearchableCartConnection @aws_iam @aws_cognito_user_pools {
   items: [Cart]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableTransactionConnection @aws_api_key @aws_iam {
+type SearchableTransactionConnection @aws_iam @aws_cognito_user_pools {
   items: [Transaction]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableInvoiceConnection @aws_api_key @aws_iam {
+type SearchableInvoiceConnection @aws_iam @aws_cognito_user_pools {
   items: [Invoice]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
 }
 
-type SearchableReceiptConnection @aws_api_key @aws_iam {
+type SearchableReceiptConnection @aws_iam @aws_cognito_user_pools {
   items: [Receipt]!
   nextToken: String
   total: Int
@@ -1642,7 +1642,7 @@ input ProductConfigComponentInput {
   netPackagingFee: Float
 }
 
-type ModelChainProductConnection @aws_api_key @aws_iam {
+type ModelChainProductConnection @aws_iam @aws_cognito_user_pools {
   items: [ChainProduct]!
   nextToken: String
 }
@@ -1719,7 +1719,7 @@ input DeleteChainProductInput {
   id: ID!
 }
 
-type ModelGroupProductConnection @aws_api_key @aws_iam {
+type ModelGroupProductConnection @aws_iam @aws_cognito_user_pools {
   items: [GroupProduct]!
   nextToken: String
 }
@@ -1785,7 +1785,7 @@ input DeleteGroupProductInput {
   id: ID!
 }
 
-type ModelUnitProductConnection @aws_api_key @aws_iam {
+type ModelUnitProductConnection @aws_iam @aws_cognito_user_pools {
   items: [UnitProduct]!
   nextToken: String
 }
@@ -1888,7 +1888,7 @@ input BillingAddressInput {
   state: String
 }
 
-type ModelAdminUserConnection @aws_api_key @aws_iam {
+type ModelAdminUserConnection @aws_iam @aws_cognito_user_pools {
   items: [AdminUser]!
   nextToken: String
 }
@@ -1941,7 +1941,7 @@ input ChainStyleImagesInput {
   logo: String
 }
 
-type ModelChainConnection @aws_api_key @aws_iam {
+type ModelChainConnection @aws_iam @aws_cognito_user_pools {
   items: [Chain]!
   nextToken: String
 }
@@ -1993,7 +1993,7 @@ input DeleteChainInput {
   id: ID!
 }
 
-type ModelGroupConnection @aws_api_key @aws_iam {
+type ModelGroupConnection @aws_iam @aws_cognito_user_pools {
   items: [Group]!
   nextToken: String
 }
@@ -2109,9 +2109,9 @@ input PlaceInput {
 }
 
 input CumulatedPriceInput {
-  currency: String!
-  grossPrice: Float!
-  taxContent: Float!
+  currency: String
+  grossPrice: Float
+  taxContent: Float
 }
 
 input OrderRatingInput {
@@ -2119,7 +2119,7 @@ input OrderRatingInput {
   value: Int!
 }
 
-type ModelOrderConnection @aws_api_key @aws_iam {
+type ModelOrderConnection @aws_iam @aws_cognito_user_pools {
   items: [Order]!
   nextToken: String
 }
@@ -2279,7 +2279,7 @@ input DeleteOrderInput {
   id: ID!
 }
 
-type ModelProductCategoryConnection @aws_api_key @aws_iam {
+type ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools {
   items: [ProductCategory]!
   nextToken: String
 }
@@ -2325,7 +2325,7 @@ input DeleteProductCategoryInput {
   id: ID!
 }
 
-type ModelProductComponentConnection @aws_api_key @aws_iam {
+type ModelProductComponentConnection @aws_iam @aws_cognito_user_pools {
   items: [ProductComponent]!
   nextToken: String
 }
@@ -2381,7 +2381,7 @@ input DeleteProductComponentInput {
   id: ID!
 }
 
-type ModelProductComponentSetConnection @aws_api_key @aws_iam {
+type ModelProductComponentSetConnection @aws_iam @aws_cognito_user_pools {
   items: [ProductComponentSet]!
   nextToken: String
 }
@@ -2445,7 +2445,7 @@ input DeleteProductComponentSetInput {
   id: ID!
 }
 
-type ModelGeneratedProductCategoryConnection @aws_api_key @aws_iam {
+type ModelGeneratedProductCategoryConnection @aws_iam @aws_cognito_user_pools {
   items: [GeneratedProductCategory]!
   nextToken: String
 }
@@ -2518,7 +2518,7 @@ input GeneratedProductConfigComponentInput {
   externalId: String
 }
 
-type ModelGeneratedProductConnection @aws_api_key @aws_iam {
+type ModelGeneratedProductConnection @aws_iam @aws_cognito_user_pools {
   items: [GeneratedProduct]!
   nextToken: String
 }
@@ -2596,7 +2596,7 @@ input DeleteGeneratedProductInput {
   id: ID!
 }
 
-type ModelFavoriteProductConnection @aws_api_key @aws_iam {
+type ModelFavoriteProductConnection @aws_iam @aws_cognito_user_pools {
   items: [FavoriteProduct]!
   nextToken: String
 }
@@ -2643,7 +2643,7 @@ input DateIntervalOpenInput {
   to: String
 }
 
-type ModelUnitConnection @aws_api_key @aws_iam {
+type ModelUnitConnection @aws_iam @aws_cognito_user_pools {
   items: [Unit]!
   nextToken: String
 }
@@ -2711,7 +2711,7 @@ input OpeningHoursByDateInput {
   to: Float
 }
 
-type ModelUserConnection @aws_api_key @aws_iam {
+type ModelUserConnection @aws_iam @aws_cognito_user_pools {
   items: [User]!
   nextToken: String
 }
@@ -2763,7 +2763,7 @@ input DeleteUserInput {
   id: ID!
 }
 
-type ModelCartConnection @aws_api_key @aws_iam {
+type ModelCartConnection @aws_iam @aws_cognito_user_pools {
   items: [Cart]!
   nextToken: String
 }
@@ -2823,7 +2823,7 @@ input DeleteCartInput {
   id: ID!
 }
 
-type ModelTransactionConnection @aws_api_key @aws_iam {
+type ModelTransactionConnection @aws_iam @aws_cognito_user_pools {
   items: [Transaction]!
   nextToken: String
 }
@@ -2901,7 +2901,7 @@ input DeleteTransactionInput {
   id: ID!
 }
 
-type ModelInvoiceConnection @aws_api_key @aws_iam {
+type ModelInvoiceConnection @aws_iam @aws_cognito_user_pools {
   items: [Invoice]!
   nextToken: String
 }
@@ -2988,7 +2988,7 @@ input DeleteInvoiceInput {
   id: ID!
 }
 
-type ModelReceiptConnection @aws_api_key @aws_iam {
+type ModelReceiptConnection @aws_iam @aws_cognito_user_pools {
   items: [Receipt]!
   nextToken: String
 }

@@ -86,8 +86,7 @@ export class CognitoService {
   async handleContext() {
     await from(Auth.currentAuthenticatedUser())
       .pipe(
-        tap((user: any) => {
-          console.log('*******', user);
+        tap(() => {
           this._ngZone.run(() => {
             this._router.navigate(['admin/dashboard']);
           });
