@@ -16,7 +16,6 @@ import {
   delay,
   map,
   switchMap,
-  takeLast,
   tap,
   toArray,
 } from 'rxjs/operators';
@@ -24,10 +23,8 @@ import {
   createAdminUser,
   createComponentSets,
   createConsumerUser,
-  createTestAdminRoleContext,
   createTestChain,
   createTestGroup,
-  createTestRoleContext,
   createTestUnit,
   createTestUnitsForOrderHandling,
   SeederDependencies,
@@ -87,16 +84,8 @@ export const seedAdminUser = (deps: SeederDependencies) =>
   );
 
 export const seedBusinessData = (deps: SeederDependencies) =>
-  createTestRoleContext(
-    1,
-    1,
-    1,
-    1,
-  )(deps)
+  of(1)
     .pipe(
-      ce('### RoleContext SEED 01'),
-      takeLast(1), // THIS takeLast is important to not trigger the seed creation multiple times
-      delay(1000),
       switchMap(() =>
         concat(
           createConsumerUser()(deps).pipe(ce('### Consumer user')),
@@ -264,17 +253,6 @@ export const seedAll = (deps: SeederDependencies) =>
       ),
     ),
     delay(2000),
-    switchMap(() =>
-      combineLatest(
-        userData.map(({ username }) =>
-          createTestAdminRoleContext(
-            1,
-            1,
-            username.split('@')[0],
-          )(deps).pipe(ce('### ADMIN_ROLE_CONTEXT SEED CREATE')),
-        ),
-      ),
-    ),
     switchMap(() => seedYellowRKeeperUnit(deps)),
     switchMap(() => seedSportbarRKeeperUnit(deps)),
     delay(5000),
