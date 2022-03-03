@@ -22,7 +22,6 @@ import { AdminSharedProductCategoriesModule } from '@bgap/admin/store/product-ca
 import { AdminSharedProductComponentSetsModule } from '@bgap/admin/store/product-component-sets';
 import { AdminSharedProductComponentsModule } from '@bgap/admin/store/product-components';
 import { AdminSharedProductsModule } from '@bgap/admin/store/products';
-import { AdminSharedRoleContextsModule } from '@bgap/admin/store/role-contexts';
 import { AdminSharedUnitsModule } from '@bgap/admin/store/units';
 import { AdminSharedUsersModule } from '@bgap/admin/store/users';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
@@ -78,7 +77,6 @@ export const FEATURE_STORES = [
   AdminSharedProductsModule,
   AdminSharedUnitsModule,
   AdminSharedUsersModule,
-  AdminSharedRoleContextsModule,
   AdminSharedProductComponentsModule,
   AdminSharedProductComponentSetsModule,
 ];

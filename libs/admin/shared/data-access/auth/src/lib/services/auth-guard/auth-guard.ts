@@ -7,11 +7,9 @@ import {
   CanActivateChild,
   Router,
 } from '@angular/router';
-import { appCoreActions } from '@bgap/admin/store/app-core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { AuthenticatedCognitoUser } from '@bgap/shared/types';
-import { Store } from '@ngrx/store';
 
 import { CognitoService } from '../cognito/cognito.service';
 
@@ -20,7 +18,6 @@ import { CognitoService } from '../cognito/cognito.service';
 })
 export class AuthGuard implements CanActivateChild {
   constructor(
-    private _store: Store,
     private _router: Router,
     private _ngZone: NgZone,
     private _cognitoService: CognitoService,
@@ -35,10 +32,10 @@ export class AuthGuard implements CanActivateChild {
           this._ngZone.run(() => {
             this._router.navigate(['auth/login']);
           });
-        } else if (cognitoUser?.user?.role) {
+        } else {
           this._dataService.initDataConnections(
             cognitoUser?.user?.id || '',
-            <CrudApi.Role>cognitoUser?.user?.role,
+            CrudApi.Role.superuser,
           );
         }
 
@@ -48,35 +45,14 @@ export class AuthGuard implements CanActivateChild {
   }
 
   canActivateChild(
-    next: ActivatedRouteSnapshot,
+    _next: ActivatedRouteSnapshot,
   ): Observable<boolean> | Promise<boolean> | boolean {
     return this._cognitoService.getAuth().pipe(
       map((cognitoUser): boolean => {
-        if (
-          !cognitoUser?.user?.role ||
-          cognitoUser?.user?.role === CrudApi.Role.inactive
-        ) {
-          this._cognitoService.signOut().subscribe(() => {
-            this._ngZone.run(() => {
-              this._router.navigate(['auth/login']);
-
-              this._store.dispatch(
-                appCoreActions.setLoginContextFailure({
-                  loginContextFailure: true,
-                }),
-              );
-            });
+        if (cognitoUser?.user) {
+          this._ngZone.run(() => {
+            this._router.navigate(['admin/dashboard']);
           });
-        } else {
-          const adminRole: CrudApi.Role =
-            <CrudApi.Role>cognitoUser?.user?.role || CrudApi.Role.inactive;
-          const routeRoles: CrudApi.Role[] = next?.data?.roles || [];
-
-          if (!routeRoles.includes(adminRole)) {
-            this._ngZone.run(() => {
-              this._router.navigate(['admin/dashboard']);
-            });
-          }
         }
 
         return true;

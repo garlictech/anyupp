@@ -3,7 +3,6 @@ import { CurrencyFormatterPipe } from './lib/currency-formatter/currency-formatt
 import { LocalizePipe } from './lib/localize/localize.pipe';
 import { LocalizedDatePipe } from './lib/localized-date/localized-date.pipe';
 import { ObjectToArrayPipe } from './lib/object-to-array/object-to-array.pipe';
-import { RoleEntityNamesPipe } from './lib/role-entity-names/role-entity-names.pipe';
 
 export {
   AdminSharedPipesModule,
@@ -11,5 +10,4 @@ export {
   LocalizePipe,
   LocalizedDatePipe,
   ObjectToArrayPipe,
-  RoleEntityNamesPipe,
 };

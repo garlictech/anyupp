@@ -13,14 +13,12 @@ import { ObjectToArrayPipe } from './object-to-array/object-to-array.pipe';
 import { PaymentModeTypePipe } from './payment-mode-type/payment-mode-type.pipe';
 import { ProductComponentInfoPipe } from './product-component-info/product-component-info';
 import { ProductComponentSetInfoPipe } from './product-component-set-info/product-component-set-info';
-import { RoleEntityNamesPipe } from './role-entity-names/role-entity-names.pipe';
 import { SecToHmsPipe } from './sec-to-hms/sec-to-hms.pipe';
 
 const PIPES = [
   LocalizePipe,
   LocalizedDatePipe,
   ObjectToArrayPipe,
-  RoleEntityNamesPipe,
   CurrencyFormatterPipe,
   SecToHmsPipe,
   AsFormControlPipe,

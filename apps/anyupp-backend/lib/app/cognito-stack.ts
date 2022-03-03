@@ -1,15 +1,12 @@
 import {
   aws_cognito as cognito,
   aws_iam as iam,
-  aws_lambda as lambda,
   aws_ssm as ssm,
   CfnOutput,
   Duration,
   RemovalPolicy,
 } from 'aws-cdk-lib';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
-import path from 'path';
-import { commonLambdaProps } from './lambda-common';
 import { getFQParamName } from './utils';
 
 export interface CognitoStackProps extends StackProps {
@@ -32,7 +29,7 @@ export class CognitoStack extends Stack {
   public adminUserPool: cognito.UserPool;
   public consumerUserPool: cognito.UserPool;
 
-  constructor(scope: App, id: string, private props: CognitoStackProps) {
+  constructor(scope: App, id: string, props: CognitoStackProps) {
     super(scope, id, props);
     const app = this.node.root as App;
 
@@ -372,7 +369,7 @@ export class CognitoStack extends Stack {
   }
 
   private createConsumerUserPool(app: App) {
-    const preSignUp = this.createConsumerPreSignupTriggerLambda();
+    //const preSignUp = this.createConsumerPreSignupTriggerLambda();
 
     return new cognito.UserPool(this, 'ConsumerUserPool', {
       userPoolName: app.logicalPrefixedName('consumer-user-pool'),
@@ -426,14 +423,14 @@ export class CognitoStack extends Stack {
           required: false,
         },
       },
-      lambdaTriggers: {
+      /*lambdaTriggers: {
         preSignUp,
-      },
+      },*/
     });
   }
 
   private createAdminUserPool(app: App) {
-    const pretokenTriggerLambda = this.createPretokenTriggerLambda();
+    //const pretokenTriggerLambda = this.createPretokenTriggerLambda();
 
     const userPool = new cognito.UserPool(this, 'AdminUserPool', {
       userPoolName: app.logicalPrefixedName('admin-user-pool'),
@@ -464,9 +461,9 @@ export class CognitoStack extends Stack {
           mutable: true,
         }),
       },
-      lambdaTriggers: {
+      /*lambdaTriggers: {
         preTokenGeneration: pretokenTriggerLambda,
-      },
+      },*/
       userInvitation: {
         emailSubject: 'AnyUPP ideiglenes jelszó | AnyUPP temporary password',
         emailBody: `
@@ -482,7 +479,7 @@ export class CognitoStack extends Stack {
     return userPool;
   }
 
-  private createPretokenTriggerLambda() {
+  /*private createPretokenTriggerLambda() {
     const lambdaFn = new lambda.Function(
       this,
       'AdminPreTokenGenerationLambda',
@@ -511,9 +508,9 @@ export class CognitoStack extends Stack {
     }
 
     return lambdaFn;
-  }
+  }*/
 
-  private createConsumerPreSignupTriggerLambda() {
+  /* private createConsumerPreSignupTriggerLambda() {
     const lambdaFn = new lambda.Function(
       this,
       'ConsumerPreSignupTriggerLambda',
@@ -538,6 +535,7 @@ export class CognitoStack extends Stack {
 
     return lambdaFn;
   }
+  */
 
   private configureIdentityPool(identityPool: cognito.CfnIdentityPool) {
     const authenticatedRole = new iam.Role(
@@ -628,7 +626,7 @@ export class CognitoStack extends Stack {
       accountRecovery: cognito.AccountRecovery.PHONE_WITHOUT_MFA_AND_EMAIL,
       signInCaseSensitive: false,
       removalPolicy:
-        this.stage === 'prod' ? RemovalPolicy.SNAPSHOT : RemovalPolicy.DESTROY,
+        this.stage === 'prod' ? RemovalPolicy.RETAIN : RemovalPolicy.DESTROY,
     };
   }
 }

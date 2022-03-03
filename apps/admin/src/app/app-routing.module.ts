@@ -112,17 +112,6 @@ const routes: Routes = [
           roles: MENU_ROLES.ADMINS,
         },
       },
-      {
-        path: 'role-contexts',
-        loadChildren: () =>
-          import('@bgap/admin/pages/role-contexts').then(
-            m => m.AdminPagesRoleContextsModule,
-          ),
-        canActivateChild: [AuthGuard],
-        data: {
-          roles: MENU_ROLES.ROLE_CONTEXTS,
-        },
-      },
     ],
   },
   {
