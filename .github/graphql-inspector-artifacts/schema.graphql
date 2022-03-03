@@ -848,7 +848,7 @@ enum PosType {
 }
 
 type GeoUnitList {
-  items: [GeoUnit]
+  items: [GeoUnit] @aws_iam @aws_cognito_user_pools
 }
 
 type OpeningHoursByDate @aws_iam @aws_cognito_user_pools {

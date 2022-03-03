@@ -866,6 +866,7 @@ enum PosType {
 
 type GeoUnitList {
   items: [GeoUnit]
+    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
 }
 
 type OpeningHoursByDate {
