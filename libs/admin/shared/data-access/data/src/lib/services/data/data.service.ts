@@ -131,7 +131,6 @@ export class DataService {
     // Lists
     this._subscribeToChains();
     this._subscribeToAdminUsers();
-
     // Get user language
     this._store
       .pipe(
