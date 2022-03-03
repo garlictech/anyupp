@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
 import { AuthenticatedCognitoUser } from '@bgap/shared/types';
-import { from, merge, Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { catchError, map, mapTo, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -13,12 +13,6 @@ export class CognitoService {
   private _onSignInCallback?: () => void;
   private _onSignOutCallback?: () => void;
   // Handle this properly
-  private _currentContext = 'DEFAULTCONTEXT';
-
-  // Call this to set the current context to be authorized
-  set currentContext(context: string) {
-    this._currentContext = context;
-  }
 
   constructor(private _router: Router, private _ngZone: NgZone) {
     Hub.listen('auth', data => {
@@ -50,16 +44,7 @@ export class CognitoService {
 
   public signOut(): Observable<boolean> {
     return from(Auth.currentAuthenticatedUser()).pipe(
-      switchMap((user: CognitoUser) =>
-        merge([
-          from(
-            Auth.updateUserAttributes(user, {
-              'custom:context': '',
-            }),
-          ),
-          from(Auth.signOut()),
-        ]),
-      ),
+      switchMap(() => from(Auth.signOut())),
       mapTo(true),
     );
   }
@@ -91,7 +76,6 @@ export class CognitoService {
           user: {
             id: decoded?.['cognito:username'],
             email: decoded?.email,
-            role: decoded?.role,
           },
         };
       }),
@@ -102,11 +86,12 @@ export class CognitoService {
   async handleContext() {
     await from(Auth.currentAuthenticatedUser())
       .pipe(
-        tap(() =>
+        tap((user: any) => {
+          console.log('*******', user);
           this._ngZone.run(() => {
             this._router.navigate(['admin/dashboard']);
-          }),
-        ),
+          });
+        }),
       )
       .toPromise();
   }
