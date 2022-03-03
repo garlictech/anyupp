@@ -13,23 +13,7 @@ const adminUser: CrudApi.AdminUser = {
   updatedAt: '',
 };
 
-const getRoleContextItem = (role: CrudApi.Role): CrudApi.AdminRoleContext => ({
-  id: `${role}_context_id`,
-  roleContextId: `${role}_role_context_id`,
-  adminUserId: adminUser.id,
-  createdAt: '',
-  updatedAt: '',
-  roleContext: {
-    id: 'role_context_id',
-    contextId: `${role.toUpperCase()}_CTX_ID`,
-    role,
-    createdAt: '',
-    updatedAt: '',
-  },
-});
-
 export const adminUserFixture = {
   adminUserBase,
   adminUser,
-  getRoleContextItem,
 };

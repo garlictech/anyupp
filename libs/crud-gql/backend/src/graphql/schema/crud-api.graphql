@@ -69,7 +69,7 @@ type ChainStyleImages {
 type ChainProduct
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   name: LocalizedItem!
@@ -136,7 +136,7 @@ input ServiceFeePolicyInput {
 type GroupProduct
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   parentId: ID!
   chainId: ID!
@@ -153,7 +153,7 @@ type GroupProduct
 type UnitProduct
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   parentId: ID!
   chainId: ID!
@@ -228,11 +228,8 @@ input AvailabilityInput {
 
 type CardChecks {
   address_line1_check: String
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   address_postal_code_check: String
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   cvc_check: String
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
 }
 
 enum CardBrand {
@@ -269,31 +266,21 @@ type BillingAddress {
   state: String
 }
 
-type StripeCard {
+type StripeCard
+  @model(mutations: null, queries: null, subscriptions: null)
+  @auth(rules: [{ allow: public, provider: iam }, { allow: public }]) {
   id: String!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   name: String
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   brand: CardBrand
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   checks: CardChecks
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   country: String
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   last4: String
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   exp_month: Int
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   exp_year: Int
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   fingerprint: String
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   funding: CardFundingType
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   three_d_secure: String
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   billing_details: BillingDetails
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
 }
 
 input UserInvoiceAddressInput {
@@ -345,18 +332,25 @@ input StripeCardDeleteInput {
   paymentMethodId: String!
 }
 
+enum Role {
+  superuser
+  chainadmin
+  groupadmin
+  unitadmin
+  staff
+  inactive
+}
+
 type AdminUser
   @model(mutations: { delete: null, create: null, update: "updateAdminUser" })
   @searchable
-  @auth(rules: [{ allow: public, provider: iam }, { allow: private }]) {
+  @auth(rules: [{ allow: public, provider: iam }, { allow: public }]) {
   id: ID!
   name: String!
   email: String!
   phone: String!
   profileImage: String
   settings: AdminUserSettings
-  roleContexts: [AdminRoleContext]
-    @hasMany(indexName: "byAdminUser", fields: ["id"])
 }
 
 type AdminUserSettings {
@@ -395,43 +389,10 @@ input CreateAdminUserInput {
   settings: AdminUserSettingsInput
 }
 
-type AdminRoleContext
-  @model
-  @searchable
-  @auth(rules: [{ allow: public, provider: iam }, { allow: private }]) {
-  id: ID!
-  roleContextId: ID!
-    @index(name: "byRoleContext", sortKeyFields: ["adminUserId"])
-  adminUserId: ID! @index(name: "byAdminUser", sortKeyFields: ["roleContextId"])
-  roleContext: RoleContext! @hasOne(fields: ["roleContextId"])
-}
-
-enum Role {
-  superuser
-  chainadmin
-  groupadmin
-  unitadmin
-  staff
-  inactive
-}
-
-type RoleContext
-  @model
-  @searchable
-  @auth(rules: [{ allow: public, provider: iam }, { allow: private }]) {
-  id: ID!
-  contextId: ID!
-  role: Role!
-  name: LocalizedItem
-  chainId: String
-  groupId: String
-  unitId: String
-}
-
 type Chain
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   name: String!
   description: LocalizedItem
@@ -445,7 +406,7 @@ type Chain
 type Group
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   name: String!
@@ -526,7 +487,7 @@ type OrderRating {
 type Order
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   createdAt: AWSDateTime!
   userId: ID!
@@ -606,7 +567,7 @@ type Place {
 type ProductCategory
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   description: LocalizedItem
@@ -618,7 +579,7 @@ type ProductCategory
 type ProductComponent
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   chainId: ID!
   name: LocalizedItem!
@@ -632,7 +593,7 @@ type ProductComponent
 type ProductComponentSet
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   externalId: String
   chainId: ID!
@@ -669,7 +630,7 @@ type GeneratedProductConfigSet {
 type GeneratedProductCategory
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   unitId: ID! @index(name: "productCategoriesByUnit")
   productNum: Int!
@@ -680,7 +641,7 @@ type GeneratedProductCategory
 type GeneratedProduct
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   unitId: ID!
     @index(name: "productsByUnit")
@@ -716,7 +677,7 @@ type GeneratedProductVariant {
 type FavoriteProduct
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID! @index(name: "favoritesByUserAndUnit", sortKeyFields: ["unitId"])
   unitId: ID!
@@ -782,7 +743,7 @@ input TipPolicyInput {
 type Unit
   @model(mutations: { delete: "deleteUnit" })
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   groupId: ID!
   chainId: ID!
@@ -905,66 +866,43 @@ enum PosType {
 
 type GeoUnitList {
   items: [GeoUnit]
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
 }
 
 type OpeningHoursByDate {
   date: String!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   closed: Boolean!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   from: Float
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
-  to: Float @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
+  to: Float @auth(rules: [{ allow: public, provider: iam }, { allow: public }])
 }
 
-type GeoUnit {
-  id: ID! @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
+type GeoUnit
+  @model(mutations: null, queries: null, subscriptions: null)
+  @auth(rules: [{ allow: public, provider: iam }, { allow: public }]) {
+  id: ID!
   groupId: ID!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   chainId: ID!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   name: String!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   address: Address!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   style: ChainStyle!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   paymentModes: [PaymentMode]
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   distance: Int!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   currency: String!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   isAcceptingOrders: Boolean!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   openingHours: String
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
     @deprecated(
       reason: "The new and better openingHoursNext7 field should be used instead of this static string"
     )
   openingHoursNext7: [OpeningHoursByDate!]!
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   supportedServingModes: [ServingMode!]
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   supportedOrderModes: [OrderMode!]
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   orderPolicy: OrderPolicy
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   serviceFeePolicy: ServiceFeePolicy
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   ratingPolicies: [RatingPolicy!]
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   tipPolicy: TipPolicy
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   unit: Unit
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   chain: Chain
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   group: Group
-    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
 }
 
 input GetUnitsNearLocationInput {
@@ -974,7 +912,7 @@ input GetUnitsNearLocationInput {
 type User
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   name: String
   email: String
@@ -987,7 +925,7 @@ type User
 type Cart
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   version: Int
   userId: ID!
@@ -1003,7 +941,7 @@ type Cart
 type Transaction
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   user: User! @hasOne(fields: ["userId"])
@@ -1047,7 +985,7 @@ enum ReceiptStatus {
 type Invoice
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   orderId: ID!
@@ -1067,7 +1005,7 @@ type Invoice
 type Receipt
   @model
   @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  @auth(rules: [{ allow: public }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
   orderId: ID!
@@ -1351,18 +1289,6 @@ type Subscription {
     @aws_cognito_user_pools
   onAdminUsersChange: AdminUser
     @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
-    @aws_cognito_user_pools
-  onRoleContextsChange: RoleContext
-    @aws_subscribe(mutations: ["createRoleContext", "updateRoleContext"])
-    @aws_cognito_user_pools
-  onAdminRoleContextsChange: AdminRoleContext
-    @aws_subscribe(
-      mutations: [
-        "createAdminRoleContext"
-        "updateAdminRoleContext"
-        "deleteAdminRoleContext"
-      ]
-    )
     @aws_cognito_user_pools
   onChainsChange: Chain
     @aws_subscribe(mutations: ["createChain", "updateChain"])

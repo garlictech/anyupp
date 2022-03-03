@@ -20,7 +20,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AdminUserFormComponent } from './components/admin-user-form/admin-user-form.component';
 import { AdminUserListItemComponent } from './components/admin-user-list-item/admin-user-list-item.component';
 import { AdminUserListComponent } from './components/admin-user-list/admin-user-list.component';
-import { AdminUserRoleFormComponent } from './components/admin-user-role-form/admin-user-role-form.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -54,7 +53,6 @@ const NB_MODULES = [
     AdminUserListComponent,
     AdminUserListItemComponent,
     AdminUserFormComponent,
-    AdminUserRoleFormComponent,
   ],
 })
 export class AdminPagesAdminUsersModule {}

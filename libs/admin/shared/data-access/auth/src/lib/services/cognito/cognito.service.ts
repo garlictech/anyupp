@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { Auth, CognitoUser } from '@aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
 import { AuthenticatedCognitoUser } from '@bgap/shared/types';
-import { bindNodeCallback, from, merge, Observable, of } from 'rxjs';
-import { catchError, map, mapTo, switchMap } from 'rxjs/operators';
+import { from, merge, Observable, of } from 'rxjs';
+import { catchError, map, mapTo, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -102,30 +102,10 @@ export class CognitoService {
   async handleContext() {
     await from(Auth.currentAuthenticatedUser())
       .pipe(
-        switchMap((user: CognitoUser) =>
-          from(
-            Auth.updateUserAttributes(user, {
-              'custom:context': this._currentContext,
-            }),
-          ).pipe(
-            switchMap(() => from(Auth.currentSession())),
-            switchMap(session =>
-              bindNodeCallback(
-                (
-                  refreshToken: ReturnType<typeof session.getRefreshToken>,
-                  cb: () => void,
-                ) => user.refreshSession(refreshToken, cb),
-              )(session.getRefreshToken()),
-            ),
-            switchMap(() => this.getAuth()),
-            map(() => {
-              // Finally redirect to dashboard.
-              // The routeGuard will handle the data subscription
-              this._ngZone.run(() => {
-                this._router.navigate(['admin/dashboard']);
-              });
-            }),
-          ),
+        tap(() =>
+          this._ngZone.run(() => {
+            this._router.navigate(['admin/dashboard']);
+          }),
         ),
       )
       .toPromise();
