@@ -5,7 +5,6 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/pdf_utils.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
@@ -361,6 +360,37 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
   OrderDetailsRatingAndTipWidget({Key? key, required this.order})
       : super(key: key);
 
+  void _showRatingModal(
+      {required BuildContext context,
+      required Transaction transaction,
+      TipPolicy? tipPolicy,
+      RatingPolicy? ratingPolicy}) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+      ),
+      enableDrag: true,
+      isScrollControlled: true,
+      elevation: 4.0,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * .9,
+          child: RatingAndTippingModal(
+            ratingPolicy: ratingPolicy,
+            tipPolicy: tipPolicy,
+            transaction: transaction,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!shouldDisplayRating(order)) {
@@ -377,10 +407,10 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 if (order.transaction != null) {
-                  Nav.to(RatingAndTippingScreen(
-                    ratingPolicy: order.ratingPolicies![0],
-                    transaction: order.transaction!,
-                  ));
+                  _showRatingModal(
+                      context: context,
+                      ratingPolicy: order.ratingPolicies![0],
+                      transaction: order.transaction!);
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -416,10 +446,10 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 if (order.transaction != null) {
-                  Nav.to(RatingAndTippingScreen(
-                    transaction: order.transaction!,
-                    tipPolicy: order.tipPolicy,
-                  ));
+                  _showRatingModal(
+                      context: context,
+                      tipPolicy: order.tipPolicy,
+                      transaction: order.transaction!);
                 }
               },
               style: ElevatedButton.styleFrom(

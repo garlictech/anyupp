@@ -504,7 +504,7 @@
         "confirm": "Újrakérés"
       }
     },
-    "info": "A rendelés véglegesítéséhez olvasd be a QR kódot az asztalodon.",
+    "info": "A rendeléshez olvasd be a QR kódot az asztalodon.",
     "infoDesc": "Tartsd a kódot a négyzeten belülre a kapcsolódáshoz."
   },
   "selectUnitMap": {

@@ -5,40 +5,56 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import 'modal_top_widget.dart';
+
 showErrorDialog(BuildContext context, String error, String description,
     {String? exceptionDetails, VoidCallback? onClose}) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   SchedulerBinding.instance?.addPostFrameCallback((_) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) => Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        elevation: 0.0,
-        backgroundColor: theme.secondary0,
-        child: Container(
-          padding: EdgeInsets.all(8.0),
-          // height: 480.0,
-          child: Container(
-            padding: EdgeInsets.only(top: 12.0),
-            child: CommonErrorWidget(
-              error: error,
-              description: description,
-              errorDetails: exceptionDetails,
-              expanded: true,
-              onPressed: onClose == null
-                  ? () => Nav.pop()
-                  : () {
-                      Nav.pop();
-                      onClose();
-                    },
-            ),
-          ),
+      isDismissible: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
         ),
       ),
+      enableDrag: true,
+      isScrollControlled: true,
+      elevation: 4.0,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+            color: theme.secondary0,
+          ),
+          height: MediaQuery.of(context).size.height * .9,
+          child: Column(
+            children: [
+              ModalTopWidget(),
+              Expanded(
+                child: CommonErrorWidget(
+                  error: error,
+                  description: description,
+                  errorDetails: exceptionDetails,
+                  onPressed: onClose == null
+                      ? () => Nav.pop()
+                      : () {
+                          Nav.pop();
+                          onClose();
+                        },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   });
 }
