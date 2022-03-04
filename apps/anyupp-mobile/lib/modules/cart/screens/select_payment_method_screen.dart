@@ -411,41 +411,41 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
   }
 
   Future<void> _handleStartOrderPressed() async {
-    return showModalBottomSheet(
-      context: context,
-      isDismissible: true,
-      enableDrag: true,
-      isScrollControlled: true,
-      elevation: 4.0,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return QRCodeScannerScreen(
-          popWhenClose: true,
-          loadUnits: true,
-        );
-      },
-    ).then((success) {
-      if (widget.cart.isPlaceEmpty) {
-        if (success != true) {
-          setState(() {
-            _loading = false;
-          });
-          return;
-        }
+    if (widget.cart.isPlaceEmpty) {
+      bool success = await showModalBottomSheet(
+        context: context,
+        isDismissible: true,
+        enableDrag: true,
+        isScrollControlled: true,
+        elevation: 4.0,
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return QRCodeScannerScreen(
+            popWhenClose: true,
+            loadUnits: true,
+          );
+        },
+      );
+      if (success != true) {
+        setState(() {
+          _loading = false;
+        });
+        return;
       }
-      if (_selectedPaymentMethod!.method == PaymentMethod.inapp) {
-        getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
-          orderId: widget.orderId,
-          paymentMethodId: _selectedPaymentMethod!.cardId!,
-          invoiceAddress: _wantsInvoce ? _address : null,
-        ));
-      } else {
-        getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
-          paymentMode: getPaymentModeFromSelection(_selectedPaymentMethod),
-          orderId: widget.orderId,
-          invoiceAddress: _wantsInvoce ? _address : null,
-        ));
-      }
-    });
+    }
+
+    if (_selectedPaymentMethod!.method == PaymentMethod.inapp) {
+      getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
+        orderId: widget.orderId,
+        paymentMethodId: _selectedPaymentMethod!.cardId!,
+        invoiceAddress: _wantsInvoce ? _address : null,
+      ));
+    } else {
+      getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
+        paymentMode: getPaymentModeFromSelection(_selectedPaymentMethod),
+        orderId: widget.orderId,
+        invoiceAddress: _wantsInvoce ? _address : null,
+      ));
+    }
   }
 }
