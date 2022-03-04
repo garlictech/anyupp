@@ -308,9 +308,13 @@ input PayTipWithStripeInput {
 
 type StartStripePaymentOutput {
   clientSecret: String!
+    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   status: String!
+    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   paymentMethodId: String
+    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
   stripeAccount: String
+    @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
 }
 
 input StripeCardCreateInput {

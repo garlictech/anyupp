@@ -306,10 +306,10 @@ input PayTipWithStripeInput {
 }
 
 type StartStripePaymentOutput {
-  clientSecret: String!
-  status: String!
-  paymentMethodId: String
-  stripeAccount: String
+  clientSecret: String! @aws_iam @aws_cognito_user_pools
+  status: String! @aws_iam @aws_cognito_user_pools
+  paymentMethodId: String @aws_iam @aws_cognito_user_pools
+  stripeAccount: String @aws_iam @aws_cognito_user_pools
 }
 
 input StripeCardCreateInput {
