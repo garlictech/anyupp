@@ -110,7 +110,7 @@ class AwsOrderSubscription {
             print('**** startOrderSubscription.onData.ADD');
             _totalCount++;
             _items!.add(item);
-            _items!.sort((a, b) => b.orderNum.compareTo(a.orderNum));
+            _items!.sort((a, b) => b.createdAt.compareTo(a.createdAt));
             controller.add(_items);
           }
         } else {

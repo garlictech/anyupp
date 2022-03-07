@@ -15,7 +15,7 @@ export 'profile/screens/about_app_screen.dart';
 export 'profile/screens/contact_us_screen.dart';
 export 'profile/screens/profile_screen.dart';
 export 'profile/screens/settings_screen.dart';
-export 'rating_tipping/screens/rating_and_tipping_screen.dart';
+export 'rating_tipping/widgets/rating_and_tipping_modal.dart';
 export 'selectunit/screens/select_unit_choose_method.dart';
 export 'selectunit/screens/select_unit_map.dart';
 export 'selectunit/screens/unit_found_by_qr_code_screen.dart';

@@ -70,25 +70,44 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
     if (_orderPolicy == OrderPolicy.placeOnly) {
       if (!_placeSelected) {
         await Future.delayed(Duration.zero);
-        bool? success = await Nav.toWithResult<bool>(QRCodeScannerScreen(
-          popWhenClose: true,
-          loadUnits: true,
-        ));
-        print('SelectPaymentMethodScreen.QRCodeScannerScreen.success=$success');
-        if (success != true) {
-          Nav.pop();
-          return;
-        }
-        _placeSelected = true;
+        return showModalBottomSheet(
+          context: context,
+          isDismissible: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
+          enableDrag: true,
+          isScrollControlled: true,
+          elevation: 4.0,
+          backgroundColor: Colors.transparent,
+          builder: (context) {
+            return QRCodeScannerScreen(
+              popWhenClose: true,
+              loadUnits: true,
+            );
+          },
+        ).then((value) async {
+          print('SelectPaymentMethodScreen.QRCodeScannerScreen.success=$value');
+          if (value != true) {
+            Nav.pop();
+            return;
+          }
+          _placeSelected = true;
+          createCashOrder();
+        });
       }
-
-      // --- QR scan success, start payment.
-      // print('SelectPaymentMethodScreen.START PAYMENT!');
-      setState(() {
-        _loading = true;
-      });
-      getIt<CartBloc>().add(CreateAndSendOrder(widget.unit, 'cash'));
+      createCashOrder();
     }
+  }
+
+  void createCashOrder() {
+    setState(() {
+      _loading = true;
+    });
+    getIt<CartBloc>().add(CreateAndSendOrder(widget.unit, 'cash'));
   }
 
   showStatusModal() async {
@@ -118,7 +137,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
               color: theme.secondary0,
             ),
             padding: EdgeInsets.only(
-             // top: 12.0,
+              // top: 12.0,
               // left: 16.0,
               // right: 16.0,
               // bottom: 16.0,
@@ -392,47 +411,41 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
   }
 
   Future<void> _handleStartOrderPressed() async {
-    return showModalBottomSheet(
-      context: context,
-      isDismissible: true,
-      // shape: RoundedRectangleBorder(
-      //   borderRadius: BorderRadius.only(
-      //     topLeft: Radius.circular(16.0),
-      //     topRight: Radius.circular(16.0),
-      //   ),
-      // ),
-      enableDrag: true,
-      isScrollControlled: true,
-      elevation: 4.0,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return QRCodeScannerScreen(
-          popWhenClose: true,
-          loadUnits: true,
-        );
-      },
-    ).then((success) {
-      if (widget.cart.isPlaceEmpty) {
-        if (success != true) {
-          setState(() {
-            _loading = false;
-          });
-          return;
-        }
+    if (widget.cart.isPlaceEmpty) {
+      bool success = await showModalBottomSheet(
+        context: context,
+        isDismissible: true,
+        enableDrag: true,
+        isScrollControlled: true,
+        elevation: 4.0,
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return QRCodeScannerScreen(
+            popWhenClose: true,
+            loadUnits: true,
+          );
+        },
+      );
+      if (success != true) {
+        setState(() {
+          _loading = false;
+        });
+        return;
       }
-      if (_selectedPaymentMethod!.method == PaymentMethod.inapp) {
-        getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
-          orderId: widget.orderId,
-          paymentMethodId: _selectedPaymentMethod!.cardId!,
-          invoiceAddress: _wantsInvoce ? _address : null,
-        ));
-      } else {
-        getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
-          paymentMode: getPaymentModeFromSelection(_selectedPaymentMethod),
-          orderId: widget.orderId,
-          invoiceAddress: _wantsInvoce ? _address : null,
-        ));
-      }
-    });
+    }
+
+    if (_selectedPaymentMethod!.method == PaymentMethod.inapp) {
+      getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
+        orderId: widget.orderId,
+        paymentMethodId: _selectedPaymentMethod!.cardId!,
+        invoiceAddress: _wantsInvoce ? _address : null,
+      ));
+    } else {
+      getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
+        paymentMode: getPaymentModeFromSelection(_selectedPaymentMethod),
+        orderId: widget.orderId,
+        invoiceAddress: _wantsInvoce ? _address : null,
+      ));
+    }
   }
 }

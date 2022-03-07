@@ -56,7 +56,7 @@ void main() {
 
         await tester.pumpWidget(
           _createBoilerPlateApp(
-              child: RatingAndTippingScreen(
+              child: RatingAndTippingModal(
             transaction: MockGenerator.generateTransaction(),
             tipPolicy: TipPolicy(
               title: _getText('Tip test title'),
@@ -81,7 +81,7 @@ void main() {
         await tester.pump();
 
         // Check widgets
-        expect(find.byType(RatingAndTippingScreen), findsOneWidget);
+        expect(find.byType(RatingAndTippingModal), findsOneWidget);
         expect(find.byType(RatingWidget), findsOneWidget);
         expect(find.byType(TippingWidget), findsOneWidget);
 

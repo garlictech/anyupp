@@ -28,7 +28,6 @@ class CommonErrorWidget extends StatusWidget {
           buttonText: buttonText,
           onPressed: onPressed,
           showButton: showButton,
-          buttonColor: const Color(0xFFE74C3C),
           expanded: expanded,
         );
 }
