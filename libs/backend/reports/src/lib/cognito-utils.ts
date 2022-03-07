@@ -1,6 +1,5 @@
-import CognitoIdentityServiceProvider, {
-  ListUsersRequest,
-} from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { ListUsersRequest } from 'aws-sdk/clients/cognitoidentityserviceprovider';
+import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { filterNullish } from '@bgap/shared/utils';
 import { defer, EMPTY, from } from 'rxjs';
 import { expand, map, reduce, shareReplay } from 'rxjs/operators';
@@ -8,6 +7,7 @@ import { ReportDeps, ReportUserData } from './interfaces';
 import { fourWeeksAgo, startOfThisYear, endOfDay } from './report-utils';
 
 export const cognitoUsersStream$ = (deps: ReportDeps) => {
+  console.error('deps', deps);
   const cisp = new CognitoIdentityServiceProvider({
     apiVersion: '2016-04-18',
     region: deps.region,
