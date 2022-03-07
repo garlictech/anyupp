@@ -25,7 +25,6 @@ import {
   throwIfEmpty,
 } from 'rxjs/operators';
 import {
-  createAuthenticatedAnyuppSdk,
   createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
@@ -44,7 +43,6 @@ import {
   createTestUnitProduct,
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 import { orderRequestHandler } from '@bgap/backend/orders';
 import { dateMatcher } from '../../../../utils';
 import * as rkeeperApi from '@bgap/rkeeper-api';
@@ -243,7 +241,6 @@ const cartWithSimplifiedOrderFlow: RequiredId<CrudApi.CreateCartInput> = {
 
 describe('CreatOrderFromCart mutation test', () => {
   let authAnyuppSdk: CrudSdk;
-  let authOldAnyuppSdk: AnyuppSdk;
   let authenticatedUserId = getCognitoUsername(testAdminUsername);
   const crudSdk = createIamCrudSdk();
 
@@ -279,13 +276,6 @@ describe('CreatOrderFromCart mutation test', () => {
           cart_05_takeaway.userId = authenticatedUserId;
           cartVersion0.userId = authenticatedUserId;
         }),
-        switchMap(() =>
-          createAuthenticatedAnyuppSdk(
-            testAdminUsername,
-            testAdminUserPassword,
-          ),
-        ),
-        tap(sdk => (authOldAnyuppSdk = sdk.authAnyuppSdk)),
       )
       .subscribe(() => done());
   });
@@ -517,12 +507,6 @@ describe('CreatOrderFromCart mutation test', () => {
     testLogic(input => authAnyuppSdk.CreateOrderFromCart({ input })).subscribe(
       () => done(),
     );
-  }, 30000);
-
-  it('should create an order from a valid cart with old API server', done => {
-    testLogic(input =>
-      authOldAnyuppSdk.CreateOrderFromCart({ input }),
-    ).subscribe(() => done());
   }, 30000);
 
   test('When creating order from cart, send the order to rkeeper', done => {

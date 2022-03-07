@@ -565,7 +565,7 @@ test('test the menusync route', done => {
 }, 10000);
 
 test('test the order status route', done => {
-  const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.yellowRestaurantId}/order-status`;
+  const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.rkeeperUnit.externalId}/order-status`;
   console.warn(url);
 
   defer(() =>

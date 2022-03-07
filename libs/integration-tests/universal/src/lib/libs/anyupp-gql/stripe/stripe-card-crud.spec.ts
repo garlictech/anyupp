@@ -1,15 +1,11 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import {
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
 import { combineLatest, Observable, of } from 'rxjs';
 import { delay, switchMap, tap } from 'rxjs/operators';
-import {
-  createAuthenticatedAnyuppSdk,
-  createAuthenticatedCrudSdk,
-} from '../../../../api-clients';
+import { createAuthenticatedCrudSdk } from '../../../../api-clients';
 import { throwIfEmptyValue } from 'libs/shared/utils/src';
 import {
   MutationCreateStripeCardArgs,
@@ -17,7 +13,6 @@ import {
 } from '@bgap/crud-gql/api';
 
 describe('Stripe Payment Method CRUD tests', () => {
-  let authOldAnyuppSdk: AnyuppApi.AnyuppSdk;
   let authAnyuppSdk: CrudApi.CrudSdk;
   let paymentMethodIds: string[];
   let initialPaymentMethodCount: number;
@@ -43,13 +38,6 @@ describe('Stripe Payment Method CRUD tests', () => {
         tap(x => {
           authAnyuppSdk = x;
         }),
-        switchMap(() =>
-          createAuthenticatedAnyuppSdk(
-            testAdminUsername,
-            testAdminUserPassword,
-          ),
-        ),
-        tap(sdk => (authOldAnyuppSdk = sdk.authAnyuppSdk)),
       )
       .subscribe(() => done());
   }, 30000);
@@ -141,22 +129,6 @@ describe('Stripe Payment Method CRUD tests', () => {
         }),
       );
     };
-
-    it('should list, create, update and delete Stripe cards with old server', done => {
-      const config = {
-        listOp: () =>
-          authOldAnyuppSdk.ListStripeCards(undefined, {
-            fetchPolicy: 'network-only',
-          }),
-        createOp: authOldAnyuppSdk.CreateStripeCard,
-        updateOp: (input: AnyuppApi.MutationUpdateMyStripeCardArgs) =>
-          authOldAnyuppSdk.UpdateMyStripeCard(input, {
-            fetchPolicy: 'network-only',
-          }),
-      };
-
-      testLogic(config).subscribe(() => done());
-    }, 45000);
 
     it('should list, create, update and delete Stripe cards', done => {
       const config = {

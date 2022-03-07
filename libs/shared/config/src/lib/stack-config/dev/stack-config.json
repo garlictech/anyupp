@@ -32,10 +32,6 @@
     "IdentityPoolId": "eu-west-1:c82aa92c-61fb-4ab8-9512-1edc1654b1ae",
     "AdminNativeUserPoolClientId": "11u02ek00vr4j06qlejdc4fi4u"
   },
-  "anyupp-backend-appsync": {
-    "AnyuppGraphqlApiUrl": "https://zyyskgu355ahffnovnq5ocadjy.appsync-api.eu-west-1.amazonaws.com/graphql",
-    "AnyuppGraphqlApiKey": "da2-pu7idumd7nfajnyy6f3wipqiim"
-  },
   "anyupp-backend-stripe": {
     "stripewebhookEndpoint": "https://stripe-webhook-dev.anyupp.com/dev",
     "StripeWebhookNewEndpoint6D902BCA": "https://2cyc0wbj5c.execute-api.eu-west-1.amazonaws.com/dev/",

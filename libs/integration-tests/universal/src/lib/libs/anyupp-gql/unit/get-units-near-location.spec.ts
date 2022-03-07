@@ -1,5 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import * as AnyuppApi from '@bgap/anyupp-gql/api';
 import {
   chainFixture,
   groupFixture,
@@ -18,7 +17,6 @@ import * as fp from 'lodash/fp';
 import { combineLatest, from } from 'rxjs';
 import { map, switchMap, tap, throwIfEmpty, take } from 'rxjs/operators';
 import {
-  createAuthenticatedAnyuppSdk,
   createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
@@ -92,20 +90,11 @@ describe('GetUnitsNearLocation tests', () => {
       deleteTestChain(chainFixture.chain_01.id, crudSdk),
     ]);
 
-  let authAnyuppSdk: AnyuppApi.AnyuppSdk;
   let authCrudSdk: CrudApi.CrudSdk;
 
   beforeAll(done => {
-    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
-      .pipe(
-        tap(x => {
-          authAnyuppSdk = x.authAnyuppSdk;
-        }),
-        switchMap(() =>
-          createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword),
-        ),
-        tap(sdk => (authCrudSdk = sdk)),
-      )
+    createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
+      .pipe(tap(sdk => (authCrudSdk = sdk)))
       .subscribe(() => done());
   }, 10000);
 
@@ -197,19 +186,6 @@ describe('GetUnitsNearLocation tests', () => {
         });
     }, 15000);
 
-    it('should throw without valid location input with old api', done => {
-      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
-        input: { location: { lng: 230.0, lat: -100 } },
-      };
-
-      authAnyuppSdk.GetUnitsNearLocation(input).subscribe({
-        error(e) {
-          expect(e).toMatchSnapshot('OLD API');
-          done();
-        },
-      });
-    }, 15000);
-
     it('should throw without valid location input with new API', done => {
       const input: CrudApi.GetUnitsNearLocationQueryVariables = {
         input: { location: { lng: 230.0, lat: -100 } },
@@ -271,9 +247,5 @@ describe('GetUnitsNearLocation tests', () => {
 
   it('should return all the units in geoUnitsFormat ordered by distance - using API', done => {
     testLogic(authCrudSdk.GetUnitsNearLocation).subscribe(() => done());
-  }, 15000);
-
-  it('should return all the units in geoUnitsFormat ordered by distance - using old API', done => {
-    testLogic(authAnyuppSdk.GetUnitsNearLocation).subscribe(() => done());
   }, 15000);
 });

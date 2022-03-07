@@ -11,7 +11,6 @@ aws ecr get-login-password --region eu-west-1 | docker login --username AWS --pa
 yarn nx config crud-backend --env=$ENVNAME
 yarn nx config shared-config --env=$ENVNAME
 yarn nx config anyupp-backend --env=$ENVNAME
-yarn nx build-schema anyupp-gql-api
 yarn nx build-schema crud-backend --env=$ENVNAME
 
 # Added mobile schema generation here

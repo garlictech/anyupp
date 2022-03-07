@@ -4,6 +4,7 @@ import { delay, switchMap, tap } from 'rxjs/operators';
 import { recallOrderFromHistory } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
+  getCognitoUsername,
   orderFixture,
   testAdminUsername,
   testAdminUserPassword,
@@ -13,7 +14,7 @@ import { RequiredId } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 
 import {
-  createAuthenticatedAnyuppSdk,
+  createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
 import { createTestOrder, deleteTestOrder } from '../../../seeds/order';
@@ -28,8 +29,6 @@ const archived_order: RequiredId<CrudApi.CreateOrderInput> = {
 };
 
 describe('recallOrderFromHistory test', () => {
-  let authenticatedUserId: string;
-
   const orderDeps = {
     crudSdk: createIamCrudSdk(),
     timestamp: () => 123456789,
@@ -42,11 +41,10 @@ describe('recallOrderFromHistory test', () => {
     ]);
 
   beforeAll(done => {
-    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
+    createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
       .pipe(
-        tap(x => {
-          authenticatedUserId = x.userAttributes.id;
-          archived_order.userId = authenticatedUserId;
+        tap(() => {
+          archived_order.userId = getCognitoUsername(testAdminUsername);
         }),
       )
       .subscribe(() => done());

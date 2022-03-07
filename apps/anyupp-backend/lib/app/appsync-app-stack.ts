@@ -3,24 +3,13 @@ import {
   aws_iam as iam,
   aws_cognito as cognito,
   aws_secretsmanager as sm,
-  aws_ssm as ssm,
-  Expiration,
   Duration,
-  CfnOutput,
 } from 'aws-cdk-lib';
-import * as appsync from '@aws-cdk/aws-appsync-alpha';
-import {
-  createStripeResolvers,
-  createUserResolvers,
-} from '@bgap/anyupp-gql/backend';
+
 import { tableConfig } from '@bgap/crud-gql/backend';
 import * as sst from '@serverless-stack/resources';
-import { createOrderResolvers } from '@bgap/backend/orders';
 import path from 'path';
 import { commonLambdaProps } from './lambda-common';
-import { PROJECT_ROOT } from './settings';
-import { getFQParamName } from './utils';
-import { createUnitResolvers } from '@bgap/backend/units';
 
 export interface AppsyncAppStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
@@ -34,100 +23,12 @@ export interface AppsyncAppStackProps extends sst.StackProps {
 }
 
 export class AppsyncAppStack extends sst.Stack {
-  public api: appsync.GraphqlApi;
-
-  private lambdaDs?: appsync.LambdaDataSource;
-
   constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
     super(scope, id);
-    // Creates the AppSync API
-    this.api = new appsync.GraphqlApi(this, 'Api', {
-      name: scope.logicalPrefixedName('anyupp-appsync-api'),
-      schema: appsync.Schema.fromAsset(
-        PROJECT_ROOT +
-          'libs/anyupp-gql/backend/src/graphql/schema/anyupp-api.graphql',
-      ),
-      authorizationConfig: {
-        defaultAuthorization: {
-          authorizationType: appsync.AuthorizationType.API_KEY,
-          apiKeyConfig: {
-            expires: Expiration.after(Duration.days(365)),
-          },
-        },
-        additionalAuthorizationModes: [
-          {
-            authorizationType: appsync.AuthorizationType.USER_POOL,
-            userPoolConfig: {
-              userPool: props.adminUserPool,
-            },
-          },
-          {
-            authorizationType: appsync.AuthorizationType.USER_POOL,
-            userPoolConfig: {
-              userPool: props.consumerUserPool,
-            },
-          },
-        ],
-      },
-      xrayEnabled: true,
-      logConfig: {
-        fieldLogLevel: appsync.FieldLogLevel.ALL,
-      },
-    });
-
-    this.createDatasources(props, scope.stage);
-
-    if (!this.lambdaDs) {
-      throw new Error(
-        'Make sure that the lambda data source exists before using it!',
-      );
-    }
-
-    const commonResolverInputs = { lambdaDs: this.lambdaDs };
-    createOrderResolvers(commonResolverInputs);
-    createUnitResolvers(commonResolverInputs);
-    createStripeResolvers(commonResolverInputs);
-    createUserResolvers(commonResolverInputs);
-
-    new ssm.StringParameter(this, 'AnyuppGraphqlApiUrlParam', {
-      allowedPattern: '.*',
-      description: 'The graphql API endpoint URL',
-      parameterName: getFQParamName(scope, 'AnyuppGraphqlApiUrl'),
-      stringValue: this.api.graphqlUrl,
-    });
-
-    new ssm.StringParameter(this, 'AnyuppGraphqlApiKeyParam', {
-      allowedPattern: '.*',
-      description: 'The graphql API key',
-      parameterName: getFQParamName(scope, 'AnyuppGraphqlApiKey'),
-      stringValue: this.api.apiKey || '',
-    });
-
-    // Prints out the AppSync GraphQL endpoint to the terminal
-    new CfnOutput(this, 'AnyuppGraphqlApiUrl', {
-      value: this.api.graphqlUrl,
-    });
-
-    // Prints out the AppSync GraphQL API key to the terminal
-    new CfnOutput(this, 'AnyuppGraphqlApiKey', {
-      value: this.api.apiKey || '',
-    });
-  }
-
-  private createDatasources(props: AppsyncAppStackProps, scope: string) {
-    // NO DATA SOURCE
-    new appsync.NoneDataSource(this, 'NoneDataSource', {
-      api: this.api,
-    });
-
-    // LAMBDA DATA SOURCES
-    // Create the lambda first. Mind, that we have to build appsync-lambda.zip
-    // with serverless bundle, in the build step! So, you have to declare the lambda
-    // in serverless.xml as well (see the example)
     const apiLambda = new lambda.Function(this, 'AppsyncLambda', {
       ...commonLambdaProps,
       // It must be relative to the serverless.yml file
-      functionName: `${scope}-anyupp-graphql-resolvers`,
+      functionName: `${scope.stage}-anyupp-graphql-resolvers`,
       handler: 'lib/lambda/appsync-lambda/index.handler',
       timeout: Duration.seconds(30),
       memorySize: 512,
@@ -187,6 +88,5 @@ export class AppsyncAppStack extends sst.Stack {
     }
 
     props.secretsManager.grantRead(apiLambda);
-    this.lambdaDs = this.api.addLambdaDataSource('lambdaDatasource', apiLambda);
   }
 }

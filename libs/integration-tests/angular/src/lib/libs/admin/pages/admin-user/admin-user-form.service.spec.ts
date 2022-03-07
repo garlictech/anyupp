@@ -4,14 +4,9 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminUserFormService } from '@bgap/admin/pages/admin-users';
-import { RoleContextsFormService } from '@bgap/admin/pages/role-contexts';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  adminUserFixture,
-  roleContextFixture,
-  testIdPrefix,
-} from '@bgap/shared/fixtures';
+import { adminUserFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
 import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,11 +17,8 @@ describe('AdminUserFormService', () => {
   const adminUserId1 = `${testIdPrefix}ADMIN_ADMIN_USER_IT_ADMIN_USER_ID_01`;
   const adminUserId2 = `${testIdPrefix}ADMIN_ADMIN_USER_IT_ADMIN_USER_ID_02`;
   const adminUserId3 = `${testIdPrefix}ADMIN_ADMIN_USER_IT_ADMIN_USER_ID_03`;
-  const adminRoleContextId = `${testIdPrefix}ADMIN_ADMIN_ROLE_CONTEXT_IT_ADMIN_RC_ID_01`;
-  const roleContextId = `${testIdPrefix}ADMIN_ROLE_CONTEXT_IT_ROLE_CONTEXT_ID_01`;
 
   let service: AdminUserFormService;
-  let roleContextService: RoleContextsFormService;
   let crudSdk: CrudSdkService;
 
   const cleanup = () =>
@@ -39,9 +31,6 @@ describe('AdminUserFormService', () => {
       }),
       crudSdk.sdk.DeleteAdminUser({
         input: { id: adminUserId3 },
-      }),
-      crudSdk.sdk.DeleteRoleContext({
-        input: { id: roleContextId },
       }),
     ]);
 
@@ -63,7 +52,6 @@ describe('AdminUserFormService', () => {
     });
 
     service = TestBed.inject(AdminUserFormService);
-    roleContextService = TestBed.inject(RoleContextsFormService);
     crudSdk = TestBed.inject(CrudSdkService);
   });
 
@@ -167,19 +155,6 @@ describe('AdminUserFormService', () => {
             id: adminUserId3,
           }),
         ),
-        switchMap(() =>
-          roleContextService.createRoleContext$({
-            ...roleContextFixture.roleContextInputBase,
-            id: roleContextId,
-          }),
-        ),
-        switchMap(() =>
-          service.createAdminRoleContext$({
-            id: adminRoleContextId,
-            adminUserId: adminUserId3,
-            roleContextId,
-          }),
-        ),
         tap(saveResponse => {
           expect(saveResponse).toMatchSnapshot({
             data: {
@@ -192,7 +167,6 @@ describe('AdminUserFormService', () => {
             },
           });
         }),
-        switchMap(() => service.deleteAdminRoleContext$(adminRoleContextId)),
         tap(deleteResponse => {
           expect(deleteResponse).toMatchSnapshot({
             data: {
