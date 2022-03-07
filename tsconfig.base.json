@@ -106,9 +106,6 @@
         "libs/admin/store/product-components/src/index.ts"
       ],
       "@bgap/admin/store/products": ["libs/admin/store/products/src/index.ts"],
-      "@bgap/admin/store/role-contexts": [
-        "libs/admin/store/role-contexts/src/index.ts"
-      ],
       "@bgap/admin/store/units": ["libs/admin/store/units/src/index.ts"],
       "@bgap/admin/store/users": ["libs/admin/store/users/src/index.ts"],
       "@bgap/admin/ui/core": ["libs/admin/ui/core/src/index.ts"],

@@ -40,10 +40,6 @@ import {
   PRODUCTS_FEATURE_KEY,
 } from '@bgap/admin/store/products';
 import {
-  initialRoleContextState,
-  ROLE_CONTEXTS_FEATURE_KEY,
-} from '@bgap/admin/store/role-contexts';
-import {
   initialProductComponentsState,
   PRODUCT_COMPONENTS_FEATURE_KEY,
 } from '@bgap/admin/store/product-components';
@@ -81,6 +77,5 @@ export const initialStateFixture = {
     [PRODUCT_COMPONENTS_FEATURE_KEY]: initialProductComponentsState,
     [PRODUCT_COMPONENT_SETS_FEATURE_KEY]: initialProductComponentSetsState,
     [USERS_FEATURE_KEY]: initialUsersState,
-    [ROLE_CONTEXTS_FEATURE_KEY]: initialRoleContextState,
   },
 };

@@ -991,29 +991,6 @@
       },
       "tags": ["platform:angular"]
     },
-    "admin-store-role-contexts": {
-      "projectType": "library",
-      "root": "libs/admin/store/role-contexts",
-      "sourceRoot": "libs/admin/store/role-contexts/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/store/role-contexts/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/store/role-contexts"],
-          "options": {
-            "jestConfig": "libs/admin/store/role-contexts/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
     "admin-store-units": {
       "root": "libs/admin/store/units",
       "sourceRoot": "libs/admin/store/units/src",
