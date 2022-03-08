@@ -508,14 +508,11 @@ type Order @aws_iam @aws_cognito_user_pools {
   tip: Tip
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
-  tipTransaction: Transaction
   orderPolicy: OrderPolicy
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
-  packagingFeeTaxPercentage: Float
-  externalId: String
   updatedAt: AWSDateTime!
 }
 
@@ -2272,11 +2269,79 @@ input ModelOrderFilterInput {
   tipTransactionId: ModelIDInput
   orderPolicy: ModelOrderPolicyInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
-  packagingFeeTaxPercentage: ModelFloatInput
-  externalId: ModelStringInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
+}
+
+input CreateOrderInput {
+  id: ID
+  createdAt: AWSDateTime
+  userId: ID!
+  unitId: ID!
+  orderNum: String!
+  items: [OrderItemInput!]!
+  paymentMode: PaymentModeInput
+  statusLog: [StatusLogInput!]!
+  archived: Boolean!
+  takeAway: Boolean
+  place: PlaceInput
+  paymentIntention: Float
+  transactionStatus: PaymentStatus
+  transactionId: ID
+  unpayCategory: UnpayCategory
+  orderMode: OrderMode
+  servingMode: ServingMode
+  serviceFee: PriceInput
+  packagingSum: PriceInput
+  sumPriceShown: PriceShownInput!
+  rating: OrderRatingInput
+  hasRated: Boolean
+  tip: TipInput
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicies: [RatingPolicyInput!]
+  tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+}
+
+input UpdateOrderInput {
+  id: ID!
+  createdAt: AWSDateTime
+  userId: ID
+  unitId: ID
+  orderNum: String
+  items: [OrderItemInput!]
+  paymentMode: PaymentModeInput
+  statusLog: [StatusLogInput!]
+  archived: Boolean
+  takeAway: Boolean
+  place: PlaceInput
+  paymentIntention: Float
+  transactionStatus: PaymentStatus
+  transactionId: ID
+  unpayCategory: UnpayCategory
+  orderMode: OrderMode
+  servingMode: ServingMode
+  serviceFee: PriceInput
+  packagingSum: PriceInput
+  sumPriceShown: PriceShownInput
+  rating: OrderRatingInput
+  hasRated: Boolean
+  tip: TipInput
+  tipTransactionStatus: PaymentStatus
+  tipTransactionId: ID
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicies: [RatingPolicyInput!]
+  tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+}
+
+input DeleteOrderInput {
+  id: ID!
 }
 
 input ModelOrderConditionInput {
@@ -2297,8 +2362,6 @@ input ModelOrderConditionInput {
   tipTransactionId: ModelIDInput
   orderPolicy: ModelOrderPolicyInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
-  packagingFeeTaxPercentage: ModelFloatInput
-  externalId: ModelStringInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
@@ -2753,6 +2816,21 @@ input ModelOrderModeListInput {
   ne: [OrderMode]
   contains: OrderMode
   notContains: OrderMode
+}
+
+input ModelOrderPolicyInput {
+  eq: OrderPolicy
+  ne: OrderPolicy
+}
+
+input ModelOrderPaymentPolicyInput {
+  eq: OrderPaymentPolicy
+  ne: OrderPaymentPolicy
+}
+
+input ModelSoldOutVisibilityPolicyInput {
+  eq: SoldOutVisibilityPolicy
+  ne: SoldOutVisibilityPolicy
 }
 
 input ModelOrderPaymentPolicyInput {
