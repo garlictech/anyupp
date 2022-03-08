@@ -14,7 +14,6 @@ import {
 } from '@bgap/admin/shared/utils';
 import { catchGqlError } from '@bgap/admin/store/app-core';
 import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
-import { Maybe } from '@bgap/anyupp-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
@@ -102,7 +101,7 @@ export class ProductFormService {
   }
 
   public patchProductVariants(
-    productVariants: Maybe<CrudApi.ProductVariant>[],
+    productVariants: CrudApi.Maybe<CrudApi.ProductVariant>[],
     variantsArray: FormArray,
   ) {
     (productVariants || []).forEach(variant => {
@@ -118,7 +117,7 @@ export class ProductFormService {
   }
 
   public patchExtendedProductVariants(
-    productVariants: Maybe<CrudApi.ProductVariant>[],
+    productVariants: CrudApi.Maybe<CrudApi.ProductVariant>[],
     variantsArray: FormArray,
   ) {
     pipe(
@@ -146,7 +145,7 @@ export class ProductFormService {
   }
 
   public patchConfigSet(
-    configSetValues: Maybe<CrudApi.ProductConfigSet>[],
+    configSetValues: CrudApi.Maybe<CrudApi.ProductConfigSet>[],
     configSetsArray: FormArray,
   ) {
     (configSetValues || []).forEach(configSet => {

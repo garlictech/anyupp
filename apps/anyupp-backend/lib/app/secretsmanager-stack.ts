@@ -8,6 +8,8 @@ export class SecretsManagerStack extends sst.Stack {
   public facebookAppSecret: string;
   public stripeSecretKey: string;
   public stripeSigningSecret: string;
+  public stripeSecretKeyNewApi: string;
+  public stripeSigningSecretNewApi: string;
   public szamlazzhuAgentKey: string;
   public appleSigninKey: string;
   public apiAccessKeyId: string;
@@ -62,6 +64,16 @@ export class SecretsManagerStack extends sst.Stack {
       'stripeSigningSecret',
     );
     this.stripeSigningSecret = stripeSigningSecret.toString();
+
+    const stripeSecretKeyNewApi = this.secretsManager.secretValueFromJson(
+      'stripeSecretKeyNewApi',
+    );
+    this.stripeSecretKeyNewApi = stripeSecretKeyNewApi.toString();
+
+    const stripeSigningSecretNewApi = this.secretsManager.secretValueFromJson(
+      'stripeSigningSecretNewApi',
+    );
+    this.stripeSigningSecretNewApi = stripeSigningSecretNewApi.toString();
 
     const szamlazzhuAgentKey =
       this.secretsManager.secretValueFromJson('szamlazzhuAgentKey');

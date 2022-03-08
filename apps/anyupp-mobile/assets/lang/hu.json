@@ -451,14 +451,21 @@
     "scanQR": "Kattints ide és olvasd be a QR kódot az asztalodról!",
     "qrConnected": "Helyválasztás",
     "chair": "szék #{{0}} asztalszám #{{1}}",
+    "table": "Asztalszám #{{1}}",
     "findingSeat": "Asztal és szék kiválasztása...",
+    "findingTable": "Asztal kiválasztása ...",
     "findingSeatLoading": "Ez eltarthat néhány másodpercig. Kérjük, ne zárd be az ablakot!",
-    "tableReserved": {
+    "seatReserved": {
       "title": "Hely kiválasztva!",
       "description": "Hely sikeresen kiválasztva. Asztal: #{{0}}, Szék: #{{1}}"
     },
+    "tableReserved": {
+      "title": "Hely kiválasztva!",
+      "description": "Hely sikeresen kiválasztva. Asztal: #{{0}}"
+    },
     "tableFound": {
-      "title": "Szék: #{{1}}, Asztal: #{{0}}",
+      "seat": "Chair: #{{0}}",
+      "table": "Table: #{{0}}",
       "description": "A kapcsolódás megtörtént. Folytathatod a rendelést!"
     },
     "qrCodeError": {
@@ -504,7 +511,7 @@
         "confirm": "Újrakérés"
       }
     },
-    "info": "A rendelés véglegesítéséhez olvasd be a QR kódot az asztalodon.",
+    "info": "A rendeléshez olvasd be a QR kódot az asztalodon.",
     "infoDesc": "Tartsd a kódot a négyzeten belülre a kapcsolódáshoz."
   },
   "selectUnitMap": {

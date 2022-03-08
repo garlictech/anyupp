@@ -25,7 +25,6 @@ import {
   throwIfEmpty,
 } from 'rxjs/operators';
 import {
-  createAuthenticatedAnyuppSdk,
   createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
@@ -44,7 +43,6 @@ import {
   createTestUnitProduct,
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
-import { AnyuppSdk } from '@bgap/anyupp-gql/api';
 import { orderRequestHandler } from '@bgap/backend/orders';
 import { dateMatcher } from '../../../../utils';
 import * as rkeeperApi from '@bgap/rkeeper-api';
@@ -133,7 +131,7 @@ const unitProductFixture: RequiredId<CrudApi.CreateUnitProductInput> = {
   groupId: unitFixture.unit_01.groupId,
 };
 
-const generatedProduct: RequiredId<CrudApi.CreateGeneratedProductInput> = {
+const generatedProduct = {
   ...generatedProductFixture.getGeneratedProduct({
     id: unitProductFixture.id,
     unitId: unitProductFixture.unitId,
@@ -169,6 +167,7 @@ const orderItemFixture: CrudApi.OrderItem = {
 const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   ...cartFixture.cart_01,
   id: `${testIdPrefix}cart_1_id`,
+  version: 1,
   unitId: unitFixture.unit_01.id,
   userId: 'WILL BE THE AUTHENTICATED USERID',
   items: [
@@ -187,6 +186,7 @@ const cart_01: RequiredId<CrudApi.CreateCartInput> = {
 const cart_02: RequiredId<CrudApi.CreateCartInput> = {
   ...cart_01,
   id: `${testIdPrefix}cart_2_id`,
+  version: 1,
   place: {
     seat: 'SEAT_02',
     table: 'TABLE_02',
@@ -196,25 +196,35 @@ const cart_02: RequiredId<CrudApi.CreateCartInput> = {
 const cart_03_different_user: RequiredId<CrudApi.CreateCartInput> = {
   ...cart_01,
   id: `${testIdPrefix}cart_3_id`,
+  version: 1,
   userId: 'NOT_the_authenticated_USERID',
 };
 
 const cart_04_different_unit: RequiredId<CrudApi.CreateCartInput> = {
   ...cart_01,
   id: `${testIdPrefix}cart_4_id`,
+  version: 1,
   unitId: 'DIFFERENT_UNITID',
 };
 
 const cart_05_takeaway: RequiredId<CrudApi.CreateCartInput> = {
   ...cart_01,
   id: `${testIdPrefix}cart_5_id`,
+  version: 1,
   servingMode: CrudApi.ServingMode.takeaway,
 };
 
 const cartWithRkeeperUnit: RequiredId<CrudApi.CreateCartInput> = {
   ...cartFixture.cart_01,
   id: `${testIdPrefix}-rkeeper-cart`,
+  version: 1,
   unitId: unitFixture.createRkeeperUnit.id,
+};
+
+const cartVersion0: RequiredId<CrudApi.CreateCartInput> = {
+  ...cart_01,
+  id: `${testIdPrefix}-version0`,
+  servingMode: CrudApi.ServingMode.takeaway,
 };
 
 const unitWithSimplifiedOrderFlow: RequiredId<CrudApi.CreateUnitInput> = {
@@ -231,7 +241,6 @@ const cartWithSimplifiedOrderFlow: RequiredId<CrudApi.CreateCartInput> = {
 
 describe('CreatOrderFromCart mutation test', () => {
   let authAnyuppSdk: CrudSdk;
-  let authOldAnyuppSdk: AnyuppSdk;
   let authenticatedUserId = getCognitoUsername(testAdminUsername);
   const crudSdk = createIamCrudSdk();
 
@@ -243,6 +252,7 @@ describe('CreatOrderFromCart mutation test', () => {
       deleteTestCart(cart_03_different_user.id, crudSdk),
       deleteTestCart(cart_04_different_unit.id, crudSdk),
       deleteTestCart(cart_05_takeaway.id, crudSdk),
+      deleteTestCart(cartVersion0.id, crudSdk),
       deleteTestCart(cartWithRkeeperUnit.id, crudSdk),
       deleteTestCart(cartWithSimplifiedOrderFlow.id, crudSdk),
       deleteTestUnit(unitFixture.unit_01.id, crudSdk),
@@ -264,14 +274,8 @@ describe('CreatOrderFromCart mutation test', () => {
           cart_02.userId = authenticatedUserId;
           cart_04_different_unit.userId = authenticatedUserId;
           cart_05_takeaway.userId = authenticatedUserId;
+          cartVersion0.userId = authenticatedUserId;
         }),
-        switchMap(() =>
-          createAuthenticatedAnyuppSdk(
-            testAdminUsername,
-            testAdminUserPassword,
-          ),
-        ),
-        tap(sdk => (authOldAnyuppSdk = sdk.authAnyuppSdk)),
       )
       .subscribe(() => done());
   });
@@ -297,6 +301,7 @@ describe('CreatOrderFromCart mutation test', () => {
             createTestCart(cart_05_takeaway, crudSdk),
             createTestCart(cartWithRkeeperUnit, crudSdk),
             createTestCart(cartWithSimplifiedOrderFlow, crudSdk),
+            createTestCart(cartVersion0, crudSdk),
             crudSdk.CreateGeneratedProduct({ input: generatedProduct }),
           ]),
         ),
@@ -488,12 +493,6 @@ describe('CreatOrderFromCart mutation test', () => {
     );
   }, 30000);
 
-  it('should create an order from a valid cart with old API server', done => {
-    testLogic(input =>
-      authOldAnyuppSdk.CreateOrderFromCart({ input }),
-    ).subscribe(() => done());
-  }, 30000);
-
   test('When creating order from cart, send the order to rkeeper', done => {
     const fv = jest.fn().mockReturnValue(of({}));
     jest.spyOn(rkeeperApi, 'sendRkeeperOrder').mockReturnValue(fv);
@@ -529,6 +528,25 @@ describe('CreatOrderFromCart mutation test', () => {
         switchMap(id => crudSdk.GetOrder({ id })),
         filterNullish(),
         tap(order => expect(order.archived).toBe(true)),
+        switchMap(order => crudSdk.DeleteOrder({ input: { id: order.id } })),
+      )
+      .subscribe(() => done(), console.error);
+  }, 20000);
+
+  test('With version 0, no packaging fee + service fee should be handled', done => {
+    defer(() =>
+      orderRequestHandler({
+        crudSdk,
+        userId: cartVersion0.userId,
+      }).createOrderFromCart({
+        input: { id: cartVersion0.id },
+      }),
+    )
+      .pipe(
+        filterNullish(),
+        switchMap(id => crudSdk.GetOrder({ id })),
+        filterNullish(),
+        tap(order => expect(maskAll(order)).toMatchSnapshot()),
         switchMap(order => crudSdk.DeleteOrder({ input: { id: order.id } })),
       )
       .subscribe(() => done(), console.error);

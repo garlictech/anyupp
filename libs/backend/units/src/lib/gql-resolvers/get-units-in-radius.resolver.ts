@@ -111,13 +111,12 @@ const toGeoUnit = ({
     unit.supportedServingModes && unit.supportedServingModes.length > 0
       ? unit.supportedServingModes
       : defaultSupportedServingModes,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 });
 
 const listActiveUnits = () => (crudSdk: CrudApi.CrudSdk) =>
-  crudSdk.ListUnits(
-    { filter: { isActive: { eq: true } } },
-    { fetchPolicy: 'no-cache' },
-  );
+  crudSdk.SearchUnits({ filter: { isActive: { eq: true } } });
 
 const getGroupCurrency =
   (id: string) =>

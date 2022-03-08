@@ -38,7 +38,9 @@
   },
   "anyupp-backend-stripe": {
     "stripewebhookEndpoint": "https://stripe-webhook-gabor.anyupp.com/gabor",
-    "StripeWebhookEndpointE83D65EB": "https://lod7tf65ka.execute-api.eu-west-1.amazonaws.com/gabor/"
+    "StripeWebhookNewEndpoint6D902BCA": "https://3xcxjapt06.execute-api.eu-west-1.amazonaws.com/gabor/",
+    "StripeWebhookEndpointE83D65EB": "https://lod7tf65ka.execute-api.eu-west-1.amazonaws.com/gabor/",
+    "stripewebhookEndpointNew": "https://3xcxjapt06.execute-api.eu-west-1.amazonaws.com/gabor/"
   },
   "anyupp-backend-rkeeper": {
     "RKeeperWebhookEndpointCBC72BD4": "https://rml9ah1g71.execute-api.eu-west-1.amazonaws.com/gabor/",

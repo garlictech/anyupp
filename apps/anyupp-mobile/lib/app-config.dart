@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'awsconfiguration.dart';
 
 class AppConfig {
+  static int get AppVersion => 1;
+
   static String get Region => _config['Region'];
 
   static String get Stage => _config['Stage'];

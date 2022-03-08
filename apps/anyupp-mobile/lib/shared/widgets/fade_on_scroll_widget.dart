@@ -36,7 +36,6 @@ class _FadeOnScrollState extends State<FadeOnScroll> {
   void _setOffset() {
     setState(() {
       _offset = widget.scrollController.offset;
-      print(_offset);
     });
   }
 

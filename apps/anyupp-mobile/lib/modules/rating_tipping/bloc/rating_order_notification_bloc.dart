@@ -1,15 +1,19 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:catcher/core/catcher.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models/Order.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
-import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/notifications/notifications.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../main/bloc/main_navigation_bloc.dart';
+import '../../main/bloc/main_navigation_event.dart';
 
 part 'rating_order_notification_event.dart';
 part 'rating_order_notification_state.dart';
@@ -86,11 +90,38 @@ class RatingOrderNotificationBloc
 
       print('RatingOrderNotificationBloc.Showing screen: ${event.payload}');
       if (order.transaction != null) {
-        Nav.to(RatingAndTippingScreen(
-          transaction: order.transaction!,
-          ratingPolicy: isRated ? null : event.payload.ratingPolicy,
-          tipPolicy: isTipped ? null : event.payload.tipPolicy,
-        ));
+        BuildContext? context = Catcher.navigatorKey?.currentContext;
+        getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+        if (context != null) {
+          await showModalBottomSheet(
+            context: context,
+            isDismissible: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.0),
+                topRight: Radius.circular(16.0),
+              ),
+            ),
+            enableDrag: true,
+            isScrollControlled: true,
+            elevation: 4.0,
+            backgroundColor: Colors.transparent,
+            builder: (context) {
+              return Container(
+                height: MediaQuery.of(context).size.height * .9,
+                child: RatingAndTippingModal(
+                  transaction: order.transaction!,
+                  ratingPolicy: isRated ? null : event.payload.ratingPolicy,
+                  tipPolicy: isTipped ? null : event.payload.tipPolicy,
+                ),
+              );
+            },
+          );
+          //        Nav.to(RatingAndTippingModal(
+
+          // ));
+
+        }
       }
     } on Exception catch (e) {
       print('RatingOrderNotificationBloc.onError=$e');

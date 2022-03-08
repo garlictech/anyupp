@@ -26,8 +26,6 @@ const amplifyConfig = JSON.parse(
 fs.mkdirSync(targetDir, { recursive: true });
 
 const generatedParams = [
-  'AnyuppGraphqlApiKey',
-  'AnyuppGraphqlApiUrl',
   'IdentityPoolId',
   'ConsumerWebUserPoolClientId',
   'ConsumerUserPoolDomain',
@@ -40,6 +38,7 @@ const generatedParams = [
 
 const fixParams = [
   'StripePublishableKey',
+  'StripePublishableKeyNewApi',
   'GoogleApiKey',
   'MailtrapApiKey',
 ].map(paramName => `/${prefix}/${paramName}`);

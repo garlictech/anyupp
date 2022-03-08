@@ -87,7 +87,7 @@ export const createReceiptSzamlazzHu =
     ) => {
       if (price) {
         items.push(
-          new Szamlazz.Item({
+          new Szamlazz.ReceiptItem({
             label,
             quantity: 1,
             unit: 'db',

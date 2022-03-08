@@ -1,12 +1,6 @@
 import { NGXLogger } from 'ngx-logger';
 import { concat, Observable, Subject } from 'rxjs';
-import {
-  distinctUntilChanged,
-  map,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { adminUsersActions } from '@bgap/admin/store/admin-users';
@@ -22,7 +16,6 @@ import { productCategoriesActions } from '@bgap/admin/store/product-categories';
 import { productComponentSetsActions } from '@bgap/admin/store/product-component-sets';
 import { productComponentsActions } from '@bgap/admin/store/product-components';
 import { productsActions } from '@bgap/admin/store/products';
-import { roleContextActions } from '@bgap/admin/store/role-contexts';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { unitsActions } from '@bgap/admin/store/units';
 import { usersActions } from '@bgap/admin/store/users';
@@ -30,7 +23,7 @@ import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { catchGqlError } from '@bgap/admin/store/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
-import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
+import { filterNullish } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -136,11 +129,8 @@ export class DataService {
       );
 
     // Lists
-    this._subscribeToRoleContext();
     this._subscribeToChains();
     this._subscribeToAdminUsers();
-    this._subscribeToAdminRoleContexts();
-
     // Get user language
     this._store
       .pipe(
@@ -154,36 +144,6 @@ export class DataService {
       });
 
     this._dataConnectionInitialized = true;
-  }
-
-  private _subscribeToRoleContext(): void {
-    this._store.dispatch(roleContextActions.resetRoleContexts());
-
-    concat(
-      getAllPaginatedData(op => this._crudSdk.sdk.ListRoleContexts(op), {
-        options: { fetchPolicy: 'no-cache' },
-      }).pipe(
-        filterNullish(),
-        map(result => result.items),
-      ),
-      this._crudSdk.sdk.OnRoleContextsChange().pipe(
-        filterNullish(),
-        map(context => [context]),
-      ),
-    )
-      .pipe(
-        filterNullishElements<CrudApi.RoleContext>(),
-        tap(roleContexts =>
-          this._store.dispatch(
-            roleContextActions.upsertRoleContexts({
-              roleContexts,
-            }),
-          ),
-        ),
-        catchGqlError(this._store),
-        takeUntil(this._destroyConnection$),
-      )
-      .subscribe();
   }
 
   private _subscribeToChains(): void {
@@ -235,7 +195,7 @@ export class DataService {
     this._logger.log('Subscribe to chain product categories');
     this._crudSdk.doListSubscription(
       productCategoriesActions.resetProductCategories(),
-      getAllPaginatedData(op => this._crudSdk.sdk.SearchProductCategorys(op), {
+      getAllPaginatedData(op => this._crudSdk.sdk.SearchProductCategories(op), {
         query: {
           filter: { chainId: { eq: chainId } },
         },
@@ -406,33 +366,6 @@ export class DataService {
         adminUsersActions.upsertAdminUsers({ adminUsers }),
       this._destroyConnection$,
     );
-  }
-
-  private _subscribeToAdminRoleContexts(): void {
-    this._logger.log('Subscribe to admin role contexts');
-    this._crudSdk.sdk
-      .OnAdminRoleContextsChange()
-      .pipe(
-        takeUntil(this._destroyConnection$),
-        filterNullish(),
-        switchMap(data =>
-          this._crudSdk.sdk.GetAdminUser(
-            { id: data.adminUserId },
-            { fetchPolicy: 'no-cache' },
-          ),
-        ),
-        filterNullish(),
-        tap(adminUser => {
-          return this._store.dispatch(
-            adminUsersActions.upsertAdminUsers({
-              adminUsers: [adminUser],
-            }),
-          );
-        }),
-
-        catchGqlError(this._store),
-      )
-      .subscribe();
   }
 
   public destroyDataConnection(): void {

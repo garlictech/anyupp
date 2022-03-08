@@ -14,40 +14,65 @@ class SuccessTipWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String successText = trans(context, 'tipping.successRating');
-    if(tipPolicy && ratingPolcicy){
+    if (tipPolicy && ratingPolcicy) {
       successText = trans(context, 'tipping.successTipAndRating');
     }
-    if(tipPolicy && !ratingPolcicy){
+    if (tipPolicy && !ratingPolcicy) {
       successText = trans(context, 'tipping.successTip');
     }
-    return InkWell(
-      onTap: () => Nav.pop(),
-      child: Container(
-        padding: EdgeInsets.all(32.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                'assets/icons/success_order.svg',
-                width: 80.0,
-                height: 80.0,
-              ),
-              SizedBox(
-                height: 40.0,
-              ),
-              Text(
-                successText,
-                textAlign: TextAlign.center,
-                style: Fonts.satoshi(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w700,
-                  color: theme.secondary,
+    return Container(
+      child: Column(
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/success_order.svg',
+                  width: 80.0,
+                  height: 80.0,
+                ),
+                SizedBox(
+                  height: 40.0,
+                ),
+                Text(
+                  successText,
+                  textAlign: TextAlign.center,
+                  style: Fonts.satoshi(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w700,
+                    color: theme.secondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SafeArea(
+              child: Container(
+            height: 56.0,
+            width: double.infinity,
+            margin: EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: theme.button,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
                 ),
               ),
-            ],
-          ),
-        ),
+              onPressed: () {
+                Nav.pop();
+              },
+              child: Text(
+                trans(context, 'common.ok2'),
+                style: Fonts.satoshi(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                  color: theme.buttonText,
+                ),
+              ),
+            ),
+          ))
+        ],
       ),
     );
   }

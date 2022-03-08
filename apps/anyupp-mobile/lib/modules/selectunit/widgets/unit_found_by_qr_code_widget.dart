@@ -169,7 +169,9 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
           child: Column(
             children: [
               Text(
-                trans('selectUnit.findingSeat'),
+                widget.place.seat != null
+                    ? trans('selectUnit.findingSeat')
+                    : trans('selectUnit.findingTable'),
                 textAlign: TextAlign.center,
                 style: Fonts.satoshi(
                   fontSize: 18.0,
@@ -197,14 +199,19 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
   }
 
   Widget _buildConnectedToTableCard(BuildContext context) {
+    String tableString =
+        trans('selectUnit.tableFound.table', [widget.place.table]);
+    if (widget.place.seat != null) {
+      tableString +=
+          ", " + trans('selectUnit.tableFound.seat', [widget.place.seat]);
+    }
     return Column(
       children: [
         SvgPicture.asset('assets/icons/success_order.svg'),
         Padding(
           padding: const EdgeInsets.only(top: 46.0),
           child: Text(
-            trans('selectUnit.tableFound.title',
-                [widget.place.seat, widget.place.table]),
+            tableString,
             textAlign: TextAlign.center,
             style: Fonts.satoshi(
               fontSize: 18.0,
@@ -243,9 +250,14 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
       await setPlacePref(unit.id, widget.place);
       _flipCardState.currentState?.toggleCard();
       showNotification(
-          trans('selectUnit.tableReserved.title'),
-          trans('selectUnit.tableReserved.description',
-              [widget.place.table, widget.place.seat]),
+          widget.place.seat != null
+              ? trans('selectUnit.seatReserved.title')
+              : trans('selectUnit.tableReserved.title'),
+          widget.place.seat != null
+              ? trans('selectUnit.seatReserved.description',
+                  [widget.place.table, widget.place.seat])
+              : trans(
+                  'selectUnit.tableReserved.description', [widget.place.table]),
           null);
       getIt<UnitSelectBloc>().add(SelectUnit(unit));
       getIt<CartBloc>().add(UpdatePlaceInCartAction(unit, widget.place));

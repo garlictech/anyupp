@@ -12,6 +12,9 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../main/bloc/main_navigation_bloc.dart';
+import '../../main/bloc/main_navigation_event.dart';
+
 class SelectPaymentMethodScreen extends StatefulWidget {
   final String? orderId;
   final GeoUnit unit;
@@ -67,31 +70,134 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
     if (_orderPolicy == OrderPolicy.placeOnly) {
       if (!_placeSelected) {
         await Future.delayed(Duration.zero);
-        bool? success = await Nav.toWithResult<bool>(QRCodeScannerScreen(
-          popWhenClose: true,
-          loadUnits: true,
-        ));
-        print('SelectPaymentMethodScreen.QRCodeScannerScreen.success=$success');
-        if (success != true) {
-          Nav.pop();
-          return;
-        }
-        _placeSelected = true;
+        return showModalBottomSheet(
+          context: context,
+          isDismissible: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
+          enableDrag: true,
+          isScrollControlled: true,
+          elevation: 4.0,
+          backgroundColor: Colors.transparent,
+          builder: (context) {
+            return QRCodeScannerScreen(
+              popWhenClose: true,
+              loadUnits: true,
+            );
+          },
+        ).then((value) async {
+          print('SelectPaymentMethodScreen.QRCodeScannerScreen.success=$value');
+          if (value != true) {
+            Nav.pop();
+            return;
+          }
+          _placeSelected = true;
+          createCashOrder();
+        });
       }
-
-      // --- QR scan success, start payment.
-      // print('SelectPaymentMethodScreen.START PAYMENT!');
-      setState(() {
-        _loading = true;
-      });
-      getIt<CartBloc>().add(CreateAndSendOrder(widget.unit, 'cash'));
+      createCashOrder();
     }
+  }
+
+  void createCashOrder() {
+    setState(() {
+      _loading = true;
+    });
+    getIt<CartBloc>().add(CreateAndSendOrder(widget.unit, 'cash'));
+  }
+
+  showStatusModal() async {
+    Nav.pop();
+    Nav.pop();
+    getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.only(
+      //     topLeft: Radius.circular(16.0),
+      //     topRight: Radius.circular(16.0),
+      //   ),
+      // ),
+      enableDrag: true,
+      isScrollControlled: true,
+      elevation: 4.0,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.0),
+                topRight: Radius.circular(16.0),
+              ),
+              color: theme.secondary0,
+            ),
+            padding: EdgeInsets.only(
+              // top: 12.0,
+              // left: 16.0,
+              // right: 16.0,
+              // bottom: 16.0,
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            height: MediaQuery.of(context).size.height * .9,
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                        child: BackButtonWidget(
+                          // iconSize: 2,
+                          showBorder: false,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: Container(
+                          height: 4.0,
+                          width: 40.0,
+                          margin: const EdgeInsets.only(bottom: 32.0),
+                          decoration: BoxDecoration(
+                            color: theme.secondary16,
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * .8,
+                  child: _orderCreationSuccess == true
+                      ? PaymentSuccessWidget()
+                      : _orderCreationSuccess == false
+                          ? CommonErrorWidget(
+                              error: 'orders.sendOrderError.title',
+                              description: 'orders.sendOrderError.description',
+                            )
+                          : Container(),
+                )
+              ],
+            ));
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _loading || _orderCreationSuccess != null
+      appBar: _loading
           ? null
           : AppBar(
               backgroundColor: theme.secondary0,
@@ -131,6 +237,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                     _loading = false;
                     _orderCreationSuccess = true;
                   });
+                  showStatusModal();
                 }
               }
               if (state is CartErrorState) {
@@ -138,6 +245,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                   _loading = false;
                   _orderCreationSuccess = false;
                 });
+                showStatusModal();
                 // }
               }
             },
@@ -150,24 +258,19 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                   _loading = false;
                   _orderCreationSuccess = true;
                 });
+                showStatusModal();
               }
               if (state is StripeError) {
                 setState(() {
                   _loading = false;
                   _orderCreationSuccess = false;
                 });
+                showStatusModal();
               }
             },
           )
         ],
-        child: _orderCreationSuccess == true
-            ? PaymentSuccessWidget()
-            : _orderCreationSuccess == false
-                ? CommonErrorWidget(
-                    error: 'orders.sendOrderError.title',
-                    description: 'orders.sendOrderError.description',
-                  )
-                : _buildPaymentMethodList(context, widget.unit),
+        child: _buildPaymentMethodList(context, widget.unit),
       ),
     );
   }
@@ -309,10 +412,20 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
 
   Future<void> _handleStartOrderPressed() async {
     if (widget.cart.isPlaceEmpty) {
-      bool? success = await Nav.toWithResult<bool>(QRCodeScannerScreen(
-        popWhenClose: true,
-        loadUnits: true,
-      ));
+      bool success = await showModalBottomSheet(
+        context: context,
+        isDismissible: true,
+        enableDrag: true,
+        isScrollControlled: true,
+        elevation: 4.0,
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return QRCodeScannerScreen(
+            popWhenClose: true,
+            loadUnits: true,
+          );
+        },
+      );
       if (success != true) {
         setState(() {
           _loading = false;

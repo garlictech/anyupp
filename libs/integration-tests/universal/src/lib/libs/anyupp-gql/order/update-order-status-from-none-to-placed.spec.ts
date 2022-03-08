@@ -4,6 +4,7 @@ import { delay, switchMap, tap } from 'rxjs/operators';
 import { updateOrderStatusFromNoneToPlaced } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
+  getCognitoUsername,
   orderFixture,
   testAdminUsername,
   testAdminUserPassword,
@@ -13,7 +14,7 @@ import { RequiredId } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 
 import {
-  createAuthenticatedAnyuppSdk,
+  createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
 import { createTestOrder, deleteTestOrder } from '../../../seeds/order';
@@ -45,8 +46,6 @@ const inprogress_order: RequiredId<CrudApi.CreateOrderInput> = {
 };
 
 describe('updateOrderStatusFromNoneToPlaced test', () => {
-  let authenticatedUserId: string;
-
   const orderDeps = {
     crudSdk: createIamCrudSdk(),
     timestamp: () => 123456789,
@@ -60,12 +59,11 @@ describe('updateOrderStatusFromNoneToPlaced test', () => {
     ]);
 
   beforeAll(done => {
-    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
+    createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
       .pipe(
         tap(x => {
-          authenticatedUserId = x.userAttributes.id;
-          new_order.userId = authenticatedUserId;
-          inprogress_order.userId = authenticatedUserId;
+          new_order.userId = getCognitoUsername(testAdminUsername);
+          inprogress_order.userId = getCognitoUsername(testAdminUsername);
         }),
       )
       .subscribe(() => done());

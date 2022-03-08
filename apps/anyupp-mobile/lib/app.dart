@@ -78,11 +78,13 @@ class _MyAppState extends State<MyApp> {
 
     _deeplinkSubscription = linkStream.listen((String? link) async {
       try {
-        Uri? uri = await getInitialUri();
-        print('_initDeepLinks().uri.stream=$uri');
+        if (link != null) {
+          Uri uri = Uri.parse(link); //await getInitialUri();
+          print('_initDeepLinks().uri.stream=$uri');
 
-        if (isValidUrl(uri)) {
-          await handleUrl(uri!);
+          if (isValidUrl(uri)) {
+            await handleUrl(uri);
+          }
         }
       } on Exception catch (e) {
         print('***** _initDeepLinks().exception=$e');

@@ -12,13 +12,13 @@ import { toFixed0Number } from '@bgap/shared/utils';
 import { createInvoiceAndConnectTransaction } from '../invoice-receipt.utils';
 
 // START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node (Covered by #804)
-export const startStripePayment =
+export const startStripePaymentV2 =
   (input: CrudApi.StartStripePaymentInput) =>
   async (
     deps: StripeResolverDeps,
   ): Promise<CrudApi.StartStripePaymentOutput> => {
     const userId = deps.userId;
-    console.debug('startStripePayment().start()');
+    console.debug('startStripePaymentV2().start()');
 
     // 1. Get parameters, orderId and payment method
     const {
@@ -29,7 +29,7 @@ export const startStripePayment =
       invoiceAddress,
     } = input;
     console.debug(
-      'startStripePayment().orderId=' +
+      'startStripePaymentV2().orderId=' +
         orderId +
         ', paymentMethod=' +
         paymentMethod +
@@ -44,11 +44,11 @@ export const startStripePayment =
         'Payment method is missing from request when payment mode is INAPP!',
       );
     }
-    console.debug('startStripePayment().invoiceAddress=' + invoiceAddress);
+    console.debug('startStripePaymentV2().invoiceAddress=' + invoiceAddress);
 
     // 2. Load order
     let order = await loadOrder(orderId)(deps);
-    console.debug('startStripePayment().order.loaded=' + order?.id);
+    console.debug('startStripePaymentV2().order.loaded=' + order?.id);
 
     if (!order) {
       throw Error('Order not found with id=' + orderId);
@@ -74,14 +74,23 @@ export const startStripePayment =
       );
     }
 
-    // 3. Load User
+    // 3. Load unit
+    console.debug('startStripePaymentV2().loading unit()=' + order.unitId);
+    const unit = await loadUnit(order.unitId)(deps);
+    console.debug('startStripePaymentV2().unit().loaded=' + unit?.id);
+    if (!unit) {
+      throw Error('Unit not found with id=' + order.unitId);
+    }
+
+    // 4. Load User
     const createStripeCustomer = paymentMethod == CrudApi.PaymentMethod.inapp;
+
     const user = await loadAndConnectUserForStripe(
       userId,
       createStripeCustomer,
       input.invoiceAddress,
     )(deps);
-    console.debug('startStripePayment().user.loaded=' + user?.id);
+    console.debug('startStripePaymentV2().user.loaded=' + user?.id);
 
     if (!user) {
       throw Error(
@@ -98,13 +107,10 @@ export const startStripePayment =
       );
     }
 
-    // 4. Load unit
-    console.debug('startStripePayment().loading unit()=' + order.unitId);
-    const unit = await loadUnit(order.unitId)(deps);
-    console.debug('startStripePayment().unit().loaded=' + unit?.id);
-    if (!unit) {
-      throw Error('Unit not found with id=' + order.unitId);
-    }
+    const serviceFee = order.serviceFee?.grossPrice
+      ? order.serviceFee.grossPrice
+      : 0;
+    const total = order.sumPriceShown.priceSum + serviceFee;
 
     // 5. Handle INAPP payment
     if (paymentMethod == CrudApi.PaymentMethod.inapp) {
@@ -116,34 +122,11 @@ export const startStripePayment =
 
       if (!user.stripeCustomerId) {
         throw Error(
-          "User don't have a stripeCustomerId property, but it is mandatory for INAPP mayment mode!",
+          "User don't have a stripeCustomerId property, but it is mandatory for INAPP payment mode!",
         );
       }
 
-      const stripeAmount: number =
-        order.sumPriceShown.currency === 'HUF'
-          ? toFixed0Number(order.sumPriceShown.priceSum * 100)
-          : order.sumPriceShown.priceSum;
-
-      // 6a. Create payment intent data
-      const paymentIntentData: Stripe.PaymentIntentCreateParams = {
-        amount: stripeAmount,
-        currency: order.sumPriceShown.currency,
-        payment_method: paymentMethodId,
-        payment_method_types: ['card'],
-        customer: user.stripeCustomerId,
-      };
-
-      // 6b. Add optional merchantId to the payment
-      if (unit?.merchantId) {
-        console.debug('startStripePayment().set merchantId=' + unit.merchantId);
-        paymentIntentData.application_fee_amount = 0;
-        paymentIntentData.transfer_data = {
-          destination: unit.merchantId,
-        };
-      }
-
-      // 6c. Save card for later use
+      // 5b. Save card for later use
       if (savePaymentMethod === true) {
         await deps.stripeClient.paymentMethods.attach(
           input.paymentMethodId as string,
@@ -153,13 +136,85 @@ export const startStripePayment =
         );
       }
 
-      // 7. Create payment intent
-      // console.debug('startStripePayment().creating payment intent.');
-      const paymentIntent = await deps.stripeClient.paymentIntents.create(
+      let customerId = user.stripeCustomerId;
+      console.debug('startStripePaymentV2().original.customerId=' + customerId);
+
+      const stripeAmount: number =
+        order.sumPriceShown.currency === 'HUF'
+          ? toFixed0Number(total * 100)
+          : total;
+
+      // 5. Create payment intent data
+      const paymentIntentData: Stripe.PaymentIntentCreateParams = {
+        amount: stripeAmount,
+        currency: order.sumPriceShown.currency,
+        payment_method: paymentMethodId,
+        payment_method_types: ['card'],
+        customer: customerId,
+      };
+
+      let stripeOptions: Stripe.RequestOptions | undefined = undefined;
+      // 6. Clone customer and payment method
+      if (unit.merchantId) {
+        console.debug(
+          'startStripePaymentV2().set merchantId=' + unit.merchantId,
+        );
+        paymentIntentData.application_fee_amount = 0;
+        stripeOptions = {
+          stripeAccount: unit.merchantId,
+        };
+        // 6c. Clone Payment Method
+        console.debug(
+          'startStripePaymentV2().Cloning payment method=' + paymentMethodId,
+        );
+        const clonedPaymentMethod =
+          await deps.stripeClient.paymentMethods.create(
+            {
+              customer: user.stripeCustomerId,
+              payment_method: paymentMethodId,
+            },
+            stripeOptions,
+          );
+        console.debug(
+          'startStripePaymentV2().Payment method Cloned. Cloned id=' +
+            clonedPaymentMethod?.id,
+        );
+        paymentIntentData.payment_method = clonedPaymentMethod.id;
+
+        console.debug(
+          'startStripePaymentV2().Creating merchant customer=' +
+            user.stripeCustomerId,
+        );
+        const stripeCustomer: Stripe.Response<Stripe.Customer> =
+          await deps.stripeClient.customers.create(
+            {
+              payment_method: clonedPaymentMethod.id,
+            },
+            {
+              stripeAccount: unit.merchantId,
+            },
+          );
+        customerId = stripeCustomer.id;
+        console.debug(
+          'startStripePaymentV2().New merchant customerId=' + customerId,
+        );
+        paymentIntentData.customer = customerId;
+      }
+
+      console.debug(
+        'startStripePaymentV2().paymentIntentData',
         paymentIntentData,
       );
+      console.debug('startStripePaymentV2().stripeOptions', stripeOptions);
+
+      // 7. Create payment intent
+      console.debug('startStripePaymentV2().creating payment intent.');
+      const paymentIntent = await deps.stripeClient.paymentIntents.create(
+        paymentIntentData,
+        stripeOptions,
+      );
       console.debug(
-        'startStripePayment().payment intent created=' + paymentIntent.id,
+        'startStripePaymentV2().payment intent created=' + paymentIntent.id,
       );
 
       // 8. Create Transaction
@@ -171,13 +226,13 @@ export const startStripePayment =
             currency: order.sumPriceShown.currency,
             status: CrudApi.PaymentStatus.waiting_for_payment, // shouldn't we use statusLog instead of the simple actual status ? (Covered by #945)
             externalTransactionId: paymentIntent.id,
-            total: order.sumPriceShown.priceSum,
+            total,
             type: 'stripe',
             paymentMethodId,
           },
         };
       const transaction = await createTransaction(createTransactionVars)(deps);
-      console.debug('startStripePayment().transaction.id=' + transaction?.id);
+      console.debug('startStripePaymentV2().transaction.id=' + transaction?.id);
 
       if (!transaction) {
         throw new Error('Transaction not created');
@@ -186,7 +241,7 @@ export const startStripePayment =
       // 9. Create invoice if requested
       if (invoiceAddress) {
         console.debug(
-          'startStripePayment().createInvoiceAndConnectTransaction()=' +
+          'startStripePaymentV2().createInvoiceAndConnectTransaction()=' +
             invoiceAddress,
         );
         // Create Invoice
@@ -208,13 +263,15 @@ export const startStripePayment =
         transaction.status ? transaction.status : undefined,
       )(deps);
       console.debug(
-        'startStripePayment().updateOrderState.done()=' + order?.id,
+        'startStripePaymentV2().updateOrderState.done()=' + order?.id,
       );
 
       // 11. Return with client secret
       return Promise.resolve({
         clientSecret: paymentIntent.client_secret as string,
         status: paymentIntent.status,
+        paymentMethodId: paymentIntentData.payment_method,
+        stripeAccount: unit.merchantId,
       });
     } else {
       //
@@ -229,7 +286,7 @@ export const startStripePayment =
             orderId: orderId,
             currency: order.sumPriceShown.currency,
             status: CrudApi.PaymentStatus.waiting_for_payment,
-            total: order.sumPriceShown.priceSum,
+            total,
             type: paymentMethod.toString(),
             paymentMethodId,
           },

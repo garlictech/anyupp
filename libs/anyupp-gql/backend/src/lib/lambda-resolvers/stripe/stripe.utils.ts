@@ -30,6 +30,8 @@ export const mapPaymentMethodToCard = (
   },
   brand: convertBrand(pm.card),
   funding: convertFunding(pm.card),
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 });
 
 export const mapStripeCardToCard = (card: Stripe.Card): CrudApi.StripeCard => ({
@@ -48,6 +50,8 @@ export const mapStripeCardToCard = (card: Stripe.Card): CrudApi.StripeCard => ({
   // name: card.name,
   // exp_year: card.exp_year,
   // exp_month: card.exp_month,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 });
 
 //const convertCardMetadata = (metadata: Stripe.Metadata | null) =>

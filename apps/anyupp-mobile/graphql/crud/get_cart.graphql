@@ -2,6 +2,7 @@ query GetCurrentCart($userId: ID!, $unitId: ID!) {
   listCarts(filter: { unitId: { eq: $unitId }, userId: { eq: $userId } }) {
     items {
       id
+      version
       items {
         priceShown {
           currency

@@ -10,7 +10,6 @@ import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/deeplink_utils.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/utils/stage_utils.dart';
-import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -75,22 +74,47 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: theme.secondary0,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: theme.secondary0,
-          appBar: _qr_scan_state == true
-              ? AppBar(
-                elevation: 0,
-                  backgroundColor: theme.secondary0,
-                  leading: BackButtonWidget(
-                    color: theme.secondary,
-                    showBorder: false,
-                    iconSize: 24.0,
-                  ),
-                  actions: isDev
-                      ? [
-                          IconButton(
+        height: MediaQuery.of(context).size.height * .9,
+        // margin: EdgeInsets.only(top: 64.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0),
+            topRight: Radius.circular(16.0),
+          ),
+          color: theme.secondary0,
+        ),
+        padding: EdgeInsets.only(
+          top: 12.0,
+          // left: 16.0,
+          // right: 16.0,
+          // bottom: 16.0,
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 4.0,
+                      width: 40.0,
+                      margin: const EdgeInsets.only(bottom: 32.0),
+                      decoration: BoxDecoration(
+                        color: theme.secondary16,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(8.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Positioned(
+                    right: 10,
+                    top: -10,
+                    child: isDev
+                        ? IconButton(
                             icon: Icon(
                               Icons.qr_code_2,
                               color: Color(0xFF303030),
@@ -103,24 +127,70 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
                                 _qr_scan_state = false;
                               });
                             },
+                          )
+                        : Container()),
+              ],
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * .81,
+              child: _qr_scan_state
+                  ? Column(
+                      children: [
+                        Expanded(flex: 3, child: _buildQrScanningWidget()),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            color: theme.secondary0,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 32.0,
+                                      vertical: 16.0,
+                                    ),
+                                    child: Text(
+                                      trans('qrScan.info'),
+                                      textAlign: TextAlign.center,
+                                      style: Fonts.satoshi(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      bottom: 32.0,
+                                      left: 64.0,
+                                      right: 64.0,
+                                    ),
+                                    child: Text(
+                                      trans('qrScan.infoDesc'),
+                                      textAlign: TextAlign.center,
+                                      style: Fonts.satoshi(
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ]
-                      : null,
-                )
-              : null,
-          body: _qr_scan_state
-              ? _buildQrScanningWidget()
-              : UnitFoundByQRCodeWidget(
-                  place: _place!,
-                  unitId: _unitId!,
-                  loadUnits: widget.loadUnits,
-                  navigateToCart: widget.navigateToCart,
-                  popWhenClose: widget.popWhenClose,
-                  onQRChecked: (valid) => Nav.pop<bool>(valid),
-                ),
-        ),
-      ),
-    );
+                        ),
+                      ],
+                    )
+                  : UnitFoundByQRCodeWidget(
+                      place: _place!,
+                      unitId: _unitId!,
+                      loadUnits: widget.loadUnits,
+                      navigateToCart: widget.navigateToCart,
+                      popWhenClose: widget.popWhenClose,
+                      onQRChecked: (valid) => Nav.pop<bool>(valid),
+                    ),
+            )
+          ],
+        ));
   }
 
   Widget _buildQrScanningWidget() {
@@ -142,48 +212,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
             },
           ),
         ),
-        Positioned(
-          left: 0.0,
-          bottom: 0.0,
-          right: 0.0,
-          // height: 56,
-          child: Container(
-            color: theme.secondary0,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32.0,
-                    vertical: 16.0,
-                  ),
-                  child: Text(
-                    trans('qrScan.info'),
-                    textAlign: TextAlign.center,
-                    style: Fonts.satoshi(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 32.0,
-                    left: 64.0,
-                    right: 64.0,
-                  ),
-                  child: Text(
-                    trans('qrScan.infoDesc'),
-                    textAlign: TextAlign.center,
-                    style: Fonts.satoshi(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+
         // Container(
         //   constraints: const BoxConstraints.expand(),
         //   child: CustomPaint(
@@ -235,7 +264,11 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerScreen>
 
         final unitId = uri.pathSegments[0];
         final table = uri.pathSegments[1];
-        final seat = uri.pathSegments[2];
+
+        String? seat;
+        if (uri.pathSegments.length == 3) {
+          seat = uri.pathSegments[2];
+        }
         final Place place = Place(table: table, seat: seat);
         // print('***** BARCODE.UNIT=$unitId, TABLE=$table, SEAT=$seat');
         // showNotification(context, 'New Seat Reserved', 'Seat $seat reserved at Table $table', null);

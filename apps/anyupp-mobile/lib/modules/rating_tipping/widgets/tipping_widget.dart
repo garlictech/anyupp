@@ -95,18 +95,16 @@ class _TippingWidgetState extends State<TippingWidget> {
           color: selected ? theme.button : theme.secondary12,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Center(
-          child: Text(
-            isOther
-                ? _selectedTipAmount != null
-                    ? '${formatCurrency(_selectedTipAmount, currentUnit?.currency ?? 'huf')}'
-                    : trans('tipping.otherAmount')
-                : '${percent.toStringAsFixed(0)}%',
-            style: Fonts.satoshi(
-              color: selected ? theme.secondary0 : theme.secondary,
-              fontSize: 14.0,
-              fontWeight: FontWeight.w400,
-            ),
+        child: Text(
+          isOther
+              ? _selectedTipAmount != null
+                  ? '${formatCurrency(_selectedTipAmount, currentUnit?.currency ?? 'huf')}'
+                  : trans('tipping.otherAmount')
+              : '${percent.toStringAsFixed(0)}%',
+          style: Fonts.satoshi(
+            color: selected ? theme.secondary0 : theme.secondary,
+            fontSize: 14.0,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ),

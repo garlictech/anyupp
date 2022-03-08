@@ -1,5 +1,27 @@
-mutation CreateCart($createCartInput: CreateCartInput!) {
-  createCart(input: $createCartInput) {
+mutation CreateCart(
+  $userId: ID!
+  $unitId: ID!
+  $orderPolicy: OrderPolicy
+  $servingMode: ServingMode
+  $takeAway: Boolean
+  $version: Int
+  $paymentMode: PaymentModeInput
+  $place: PlaceInput
+  $items: [OrderItemInput!]!
+) {
+  createCart(
+    input: {
+      orderPolicy: $orderPolicy
+      servingMode: $servingMode
+      takeAway: $takeAway
+      unitId: $unitId
+      userId: $userId
+      version: $version
+      items: $items
+      paymentMode: $paymentMode
+      place: $place
+    }
+  ) {
     id
   }
 }

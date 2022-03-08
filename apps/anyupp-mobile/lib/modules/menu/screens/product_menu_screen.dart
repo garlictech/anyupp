@@ -121,7 +121,6 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     );
     _tabController?.addListener(() {
       if (_tabController?.indexIsChanging == false) {
-        print('ProductMenuScreen.selectedTab()=${_tabController?.index}');
         if (_showTooltip) {
           _checkNeedToShowTooltip();
         }
@@ -225,10 +224,29 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                 Container(
                   margin: EdgeInsets.only(left: 4.0),
                   child: BorderedWidget(
-                    onPressed: () => Nav.to(QRCodeScannerScreen(
-                      navigateToCart: true,
-                      loadUnits: true,
-                    )),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isDismissible: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16.0),
+                            topRight: Radius.circular(16.0),
+                          ),
+                        ),
+                        enableDrag: true,
+                        isScrollControlled: true,
+                        elevation: 4.0,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) {
+                          return QRCodeScannerScreen(
+                            navigateToCart: true,
+                            loadUnits: true,
+                          );
+                        },
+                      );
+                    },
+
                     width: 40.0,
                     child: Padding(
                       padding: const EdgeInsets.all(6.0),

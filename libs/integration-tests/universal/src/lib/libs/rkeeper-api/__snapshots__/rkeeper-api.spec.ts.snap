@@ -1203,6 +1203,6 @@ Object {
 
 exports[`test the order status route 1`] = `
 Object {
-  "error": "Order with external ID REMOTE ORDER ID cannot be found",
+  "error": "Unit with restaurant ID EXTERNAL-RESTAURANT-ID cannot be found",
 }
 `;

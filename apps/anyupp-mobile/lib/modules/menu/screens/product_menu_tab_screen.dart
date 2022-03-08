@@ -72,7 +72,6 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    print("**********build");
     return Container(
         color: theme.secondary12.withOpacity(0.5),
         key: PageStorageKey(widget.categoryId),
@@ -149,7 +148,8 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
             bool isHidden = isSoldOut &&
                 unit.soldOutVisibilityPolicy ==
                     SoldOutVisibilityPolicy.invisible;
-            ProductItemDisplayState displayState = ProductItemDisplayState.NORMAL;
+            ProductItemDisplayState displayState =
+                ProductItemDisplayState.NORMAL;
             if (isSoldOut) {
               displayState = ProductItemDisplayState.SOLDOUT;
             } else if (!isAvailableInThisServingMode) {

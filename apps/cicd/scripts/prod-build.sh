@@ -4,7 +4,6 @@ set -e
 ENVNAME=$1
 CI=$2
 
-# This is temporary solution!
 rm -rf apps/crud-backend/amplify
 ./tools/build-workspace.sh $ENVNAME $CI
 

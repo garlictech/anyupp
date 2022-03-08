@@ -452,14 +452,21 @@
     "scanQR": "Click & scan your table to order",
     "qrConnected": "Connected to",
     "chair": "Chair #{{0}} at Table #{{1}}",
+    "table": "Table #{{1}}",
     "findingSeat": "finding table and chair ...",
+    "findingTable": "finding table ...",
     "findingSeatLoading": "This may take a few seconds. Please do not close this window!",
+    "seatReserved": {
+      "title": "New Seat Reserved!",
+      "description": "Seat #{{1}} reserved Table #{{0}}"
+    },
     "tableReserved": {
       "title": "New Table Reserved!",
-      "description": "Seat #{{1}} reserved at Table #{{0}}"
+      "description": "Table #{{0}} reserved"
     },
     "tableFound": {
-      "title": "Chair: #{{1}}, Table: #{{0}}",
+      "seat": "Chair: #{{0}}",
+      "table": "Table: #{{0}}",
       "description": "The connection has been made. You can continue the order!"
     },
     "qrCodeError": {

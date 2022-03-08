@@ -29,16 +29,16 @@ class AwsProductProvider implements IProductProvider {
       }
 
       if (result.data == null ||
-          result.data?.searchGeneratedProductCategorys == null) {
+          result.data?.searchGeneratedProductCategories == null) {
         return PageResponse(data: null);
       }
 
-      int count = result.data?.searchGeneratedProductCategorys?.total ?? 0;
-      String? token = result.data?.searchGeneratedProductCategorys?.nextToken;
+      int count = result.data?.searchGeneratedProductCategories?.total ?? 0;
+      String? token = result.data?.searchGeneratedProductCategories?.nextToken;
       print(
           '***** getProductCategoryList().totalCount=$count, nextToken=$token');
 
-      var items = result.data?.searchGeneratedProductCategorys?.items;
+      var items = result.data?.searchGeneratedProductCategories?.items;
 
       List<ProductCategory> results = [];
       if (items != null) {
@@ -96,10 +96,18 @@ class AwsProductProvider implements IProductProvider {
         for (int i = 0; i < items.length; i++) {
           GeneratedProduct product =
               GeneratedProduct.fromJson(items[i]!.toJson());
+          product.variants.sort((v1, v2) => v1.position.compareTo(v2.position));
+          product.configSets
+              ?.sort((c1, c2) => c1.position?.compareTo(c2.position ?? 0) ?? 0);
+          product.configSets?.forEach(
+            (configSet) => configSet.items.sort(
+                (i1, i2) => i1.position?.compareTo(i2.position ?? 0) ?? 0),
+          );
           results.add(product);
         }
       }
       results.sort((a, b) => a.position.compareTo(b.position));
+      // debugProductPositions(results);
       print('***** getProductList().items.length=${results.length}');
 
       return PageResponse(
@@ -112,5 +120,17 @@ class AwsProductProvider implements IProductProvider {
       // return PageResponse(data: null);
       rethrow;
     }
+  }
+
+  void debugProductPositions(List<GeneratedProduct> products) {
+    products.forEach((product) {
+      print('PRODUCT[${product.position}]=${product.name.hu}');
+      product.variants.forEach(
+          (v) => print('\tVARIANT[${v.position}]=${v.variantName.hu}'));
+      product.configSets?.forEach((c) {
+        print('\tCONFIGSET[${c.position}]');
+        c.items.forEach((i) => print('\t\tITEM[${i.position}]=${i.name.hu}'));
+      });
+    });
   }
 }
