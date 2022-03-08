@@ -212,10 +212,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/cdk@13.2.4":
-  version "13.2.4"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-13.2.4.tgz#52ca05cabd64bc17fef3c3f23b215604267f3d66"
-  integrity sha512-t8LX/xySaIyN5EpWQjCwZFVLmdW/LE7pvx+6PghYGiLNvS+Vu/INi1Bhwt+b3fJDJ1uNYVCkB64G0UYhIsAwhg==
+"@angular/cdk@13.2.5":
+  version "13.2.5"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-13.2.5.tgz#424a4c040d4f7af3da75749d63ec8fdfda59b4cb"
+  integrity sha512-kYya2Zd+tK5CmzNcxNADqILVZYEb5CKsOnr4DXPmRJ55IwlHiBZJKUdmSaavb7SCdyNOFP3e1dSwOrIIRLeCuQ==
   dependencies:
     tslib "^2.3.0"
   optionalDependencies:
@@ -7348,10 +7348,10 @@
     xstate "4.26.1"
     zod "^3.11.6"
 
-"@serverless-stack/core@^0.67.0":
-  version "0.67.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.67.0.tgz#451fc7d84e721dc8510f475fafb0c8f7534e57fa"
-  integrity sha512-b907t61gb/pWf5YvKI45xF8bwcJ0bH/QrLgx27IivDpmLqBQXfAVCgViY0kWTB8WbIe1zQy99x5WtNDn/usnug==
+"@serverless-stack/core@^0.67.2":
+  version "0.67.2"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.67.2.tgz#ca557529000c6668729e9ae7baca8602393a34a0"
+  integrity sha512-9Z7dDCWRu38EGR9XL9cD2pZBNtX1vrpij9r4mOAae5PUk3XqROfzoEqObIhkU78Qzl/N74bKMu75z0IzXqa2rA==
   dependencies:
     "@trpc/server" "^9.16.0"
     "@typescript-eslint/eslint-plugin" "^5.13.0"
@@ -7371,7 +7371,7 @@
     dotenv-expand "^5.1.0"
     esbuild "^0.14.11"
     eslint "^8.10.0"
-    eslint-config-serverless-stack "^0.67.0"
+    eslint-config-serverless-stack "^0.67.2"
     express "^4.17.1"
     fs-extra "^9.0.1"
     immer "^9.0.7"
@@ -7380,14 +7380,15 @@
     log4js "^6.3.0"
     picomatch "^2.3.0"
     remeda "^0.0.32"
+    typescript "^4.6.2"
     uuid "^8.3.2"
     xstate "4.26.1"
     zod "^3.11.6"
 
-"@serverless-stack/resources@0.67.0":
-  version "0.67.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.67.0.tgz#8035c4b402186e3c42680703f44401aac72af634"
-  integrity sha512-9ySIlDBvbQ5jko+HhwCzjAWPwwj0NRnzs6SdOfU8IqK/FTBnQW/4FdeKwr/0dffnVdua2eymyfzOx4sL81l/Tw==
+"@serverless-stack/resources@0.67.2":
+  version "0.67.2"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.67.2.tgz#3faec66a03fde50bdf13cd05c899e8c2cae486bf"
+  integrity sha512-A97IcWW2UZHFxzc0Z55aBqqZxTIelnbE3obNbcx3h/h8PJURsdMMAfrgA3uksD/2CULEoZcU+hmIwsItGr2V3w==
   dependencies:
     "@aws-cdk/aws-apigatewayv2-alpha" "2.7.0-alpha.0"
     "@aws-cdk/aws-apigatewayv2-authorizers-alpha" "2.7.0-alpha.0"
@@ -7395,7 +7396,7 @@
     "@aws-cdk/aws-appsync-alpha" "2.7.0-alpha.0"
     "@graphql-tools/load-files" "^6.3.2"
     "@graphql-tools/merge" "^6.2.14"
-    "@serverless-stack/core" "^0.67.0"
+    "@serverless-stack/core" "^0.67.2"
     archiver "^5.3.0"
     aws-cdk-lib "2.7.0"
     chalk "^4.1.0"
@@ -10051,7 +10052,7 @@ aws-lambda@1.0.7:
     js-yaml "^3.14.1"
     watchpack "^2.0.0-beta.10"
 
-aws-sdk@2.1088.0, aws-sdk@^2.1084.0:
+aws-sdk@2.1088.0, aws-sdk@^2.1088.0:
   version "2.1088.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1088.0.tgz#e8ea761eff2b5c42aca6136c5a01fa9b8066f0a2"
   integrity sha512-KtGJTvMPJL6QynasbSMNvz7Onc5ejebY6NzuUvgrw6sNohNJDR/3J/0e016ocQwvEq79MNK4v4EsxNi9eMELtg==
@@ -14091,10 +14092,10 @@ eslint-config-serverless-stack@^0.66.3:
     "@typescript-eslint/parser" "^4.15.1"
     eslint "^7.16.0"
 
-eslint-config-serverless-stack@^0.67.0:
-  version "0.67.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.67.0.tgz#6f29e7af5f471402bdbd9dabce54f61b62c6c313"
-  integrity sha512-AoeOD33h4pBL1z3H6tGeCGREjFlbObSTs3s4wkdGkk/9743WDh0vLgfKpaS0/0p/b1AegioaD/KNg4kFbVS4+g==
+eslint-config-serverless-stack@^0.67.2:
+  version "0.67.2"
+  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.67.2.tgz#c2fdbd621f773bcf2a9590b5598439391fc297f1"
+  integrity sha512-xKoY5VN/nzYLh68qe6q+Ci868qHjAZcezJl2vWtoTQaKtPw3r1ThSg3EGeFHWkUrH8Hxtko+rCzIqlbVyZywEQ==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.12.1"
     "@typescript-eslint/parser" "^4.15.1"
@@ -19802,25 +19803,7 @@ mochawesome-merge@4.2.1:
     glob "^7.1.6"
     yargs "^15.3.1"
 
-mochawesome-report-generator@6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/mochawesome-report-generator/-/mochawesome-report-generator-6.1.0.tgz#b15dda48671fea8a152525a972cf1b2492c3f773"
-  integrity sha512-qzSZu7gpddeFzRv1dCEQSFhmePg1sYzKfwXMSd5jSlthw5yDPdRV89yMc3NBpfPY/JjclZiHvDtz5S4HgWZ0Rg==
-  dependencies:
-    chalk "^4.1.2"
-    dateformat "^4.5.1"
-    escape-html "^1.0.3"
-    fs-extra "^10.0.0"
-    fsu "^1.1.1"
-    lodash.isfunction "^3.0.9"
-    opener "^1.5.2"
-    prop-types "^15.7.2"
-    tcomb "^3.2.17"
-    tcomb-validation "^3.3.0"
-    validator "^13.6.0"
-    yargs "^17.2.1"
-
-mochawesome-report-generator@^6.1.1:
+mochawesome-report-generator@6.1.1, mochawesome-report-generator@^6.1.1:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/mochawesome-report-generator/-/mochawesome-report-generator-6.1.1.tgz#2a68cb016271122032747b8b556f7fb2d5d54dc3"
   integrity sha512-wTYGAH2KHOSDi7eSvwniq+h4Wvrvt+Bd4mz8774HOHTcxRTECh5zjvG5fP+/VvPbhzsjOlIsylZaOVEdwZlfJg==
@@ -23231,10 +23214,10 @@ serverless-webpack@^5.6.1:
   optionalDependencies:
     ts-node ">= 8.3.0"
 
-serverless@3.7.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.7.1.tgz#f1f878412f063c127e254c5a42f44bf316d6cc72"
-  integrity sha512-DIPgJ/jbWQpF1kyAhQR6b3Lqjq2Dwv/41D5UdNyMsnvV5eUOEm5pcCAQE7aT+N/rS8F1ez47iaZyi70esNe3PQ==
+serverless@3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.7.2.tgz#8a955c2284b6ef9a35887e3d27d28fc00cb47572"
+  integrity sha512-+mmIJEtPje+9pY16/TOjNE2640VhpoaF2QAuwJKNol2eXA3ipTpJRPyPorDbgpq+y2lR36AHEYBNGZILtTKUqA==
   dependencies:
     "@serverless/aws-lambda-otel-extension-dist" "^0.1.6"
     "@serverless/dashboard-plugin" "^6.1.5"
@@ -23243,7 +23226,7 @@ serverless@3.7.1:
     ajv "^8.10.0"
     ajv-formats "^2.1.1"
     archiver "^5.3.0"
-    aws-sdk "^2.1084.0"
+    aws-sdk "^2.1088.0"
     bluebird "^3.7.2"
     cachedir "^2.3.0"
     chalk "^4.1.2"
@@ -25053,6 +25036,11 @@ typescript@4.5.5, typescript@^4.4.3, typescript@^4.5.3, typescript@^4.5.5:
   version "4.5.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
   integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
+
+typescript@^4.6.2:
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.2.tgz#fe12d2727b708f4eef40f51598b3398baa9611d4"
+  integrity sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==
 
 ua-parser-js@^0.7.30:
   version "0.7.31"
