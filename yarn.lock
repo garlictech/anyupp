@@ -7006,10 +7006,15 @@
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.50.tgz#117540e026d64e1846093abbd5adc7e27fda7bcb"
   integrity sha512-VMhZMMQgV1zsR+lX/0IBfAk+8Eb7dPVMWiQGFAt3qjo5x7Ml6b77jUo0e1C3ToD+XRDXqtrfw+6AB0uUsPEr3Q==
 
-"@types/aws-lambda@*", "@types/aws-lambda@8.10.92":
+"@types/aws-lambda@*":
   version "8.10.92"
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.92.tgz#645f769ff88b8eba1acd35542695ac322c7757c4"
   integrity sha512-dB14TltT1SNq73z3MaZfKyyBZ37NAgAFl8jze59bisR4fJ6pB6AYGxItHFkooZbN7UcVJX/cFudM4p8wp1W4rA==
+
+"@types/aws-lambda@8.10.93":
+  version "8.10.93"
+  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.93.tgz#3e2c80894122477040aabf29b7320556f5702a76"
+  integrity sha512-Vsyi9ogDAY3REZDjYnXMRJJa62SDvxHXxJI5nGDQdZW058dDE+av/anynN2rLKbCKXDRNw3D/sQmqxVflZFi4A==
 
 "@types/aws-serverless-express@3.3.5":
   version "3.3.5"
