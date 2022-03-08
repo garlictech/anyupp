@@ -5,14 +5,17 @@ import * as R from 'ramda';
 import { shareReplay, switchMap } from 'rxjs/operators';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
 import { AxiosStatic } from 'axios';
+import { DynamoDB } from 'aws-sdk';
 
 export interface OrderResolverDeps {
   crudSdk: CrudApi.CrudSdk;
-  userId: string;
   unitTableName: string;
+  orderTableName: string;
   currentTime: () => Date;
   random: () => number;
+  uuid: () => string;
   axiosInstance: AxiosStatic;
+  docClient: DynamoDB.DocumentClient;
 }
 
 const getUnitProductHelper = R.memoizeWith(

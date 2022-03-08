@@ -508,11 +508,14 @@ type Order @aws_iam @aws_cognito_user_pools {
   tip: Tip
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
+  tipTransaction: Transaction
   orderPolicy: OrderPolicy
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
+  externalId: String
   updatedAt: AWSDateTime!
 }
 
@@ -2147,67 +2150,6 @@ input DeleteGroupInput {
   id: ID!
 }
 
-input OrderItemInput {
-  productId: ID!
-  variantId: ID!
-  created: Float
-  productName: LocalizedItemInput!
-  image: String
-  quantity: Int!
-  statusLog: [StatusLogInput!]!
-  variantName: LocalizedItemInput!
-  laneId: ID
-  allergens: [Allergen]
-  configSets: [OrderItemConfigSetInput!]
-  productType: String
-  externalId: String
-  netPackagingFee: Float
-  serviceFee: PriceInput
-  priceShown: PriceShownInput!
-  sumPriceShown: PriceShownInput!
-}
-
-input StatusLogInput {
-  userId: ID!
-  status: OrderStatus!
-  ts: Float!
-}
-
-input OrderItemConfigSetInput {
-  productSetId: ID!
-  name: LocalizedItemInput!
-  type: String!
-  items: [OrderItemConfigComponentInput!]!
-}
-
-input OrderItemConfigComponentInput {
-  productComponentId: ID!
-  price: Float!
-  name: LocalizedItemInput!
-  allergens: [Allergen]
-  netPackagingFee: Float
-  externalId: String
-}
-
-input PriceInput {
-  currency: String!
-  netPrice: Float!
-  taxPercentage: Float!
-}
-
-input PriceShownInput {
-  currency: String!
-  pricePerUnit: Float!
-  priceSum: Float!
-  tax: Int!
-  taxSum: Float!
-}
-
-input PlaceInput {
-  seat: String!
-  table: String!
-}
-
 input CumulatedPriceInput {
   currency: String
   grossPrice: Float
@@ -2269,82 +2211,15 @@ input ModelOrderFilterInput {
   tipTransactionId: ModelIDInput
   orderPolicy: ModelOrderPolicyInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
+  packagingFeeTaxPercentage: ModelFloatInput
+  externalId: ModelStringInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
 }
 
-input CreateOrderInput {
-  id: ID
-  createdAt: AWSDateTime
-  userId: ID!
-  unitId: ID!
-  orderNum: String!
-  items: [OrderItemInput!]!
-  paymentMode: PaymentModeInput
-  statusLog: [StatusLogInput!]!
-  archived: Boolean!
-  takeAway: Boolean
-  place: PlaceInput
-  paymentIntention: Float
-  transactionStatus: PaymentStatus
-  transactionId: ID
-  unpayCategory: UnpayCategory
-  orderMode: OrderMode
-  servingMode: ServingMode
-  serviceFee: PriceInput
-  packagingSum: PriceInput
-  sumPriceShown: PriceShownInput!
-  rating: OrderRatingInput
-  hasRated: Boolean
-  tip: TipInput
-  tipTransactionStatus: PaymentStatus
-  tipTransactionId: ID
-  orderPolicy: OrderPolicy
-  serviceFeePolicy: ServiceFeePolicyInput
-  ratingPolicies: [RatingPolicyInput!]
-  tipPolicy: TipPolicyInput
-  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
-}
-
-input UpdateOrderInput {
-  id: ID!
-  createdAt: AWSDateTime
-  userId: ID
-  unitId: ID
-  orderNum: String
-  items: [OrderItemInput!]
-  paymentMode: PaymentModeInput
-  statusLog: [StatusLogInput!]
-  archived: Boolean
-  takeAway: Boolean
-  place: PlaceInput
-  paymentIntention: Float
-  transactionStatus: PaymentStatus
-  transactionId: ID
-  unpayCategory: UnpayCategory
-  orderMode: OrderMode
-  servingMode: ServingMode
-  serviceFee: PriceInput
-  packagingSum: PriceInput
-  sumPriceShown: PriceShownInput
-  rating: OrderRatingInput
-  hasRated: Boolean
-  tip: TipInput
-  tipTransactionStatus: PaymentStatus
-  tipTransactionId: ID
-  orderPolicy: OrderPolicy
-  serviceFeePolicy: ServiceFeePolicyInput
-  ratingPolicies: [RatingPolicyInput!]
-  tipPolicy: TipPolicyInput
-  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
-}
-
-input DeleteOrderInput {
-  id: ID!
-}
-
 input ModelOrderConditionInput {
+  version: ModelIntInput
   createdAt: ModelStringInput
   userId: ModelIDInput
   unitId: ModelIDInput
@@ -2362,44 +2237,15 @@ input ModelOrderConditionInput {
   tipTransactionId: ModelIDInput
   orderPolicy: ModelOrderPolicyInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
+  packagingFeeTaxPercentage: ModelFloatInput
+  externalId: ModelStringInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
 }
 
-input CreateOrderInput {
-  id: ID
-  createdAt: AWSDateTime
-  userId: ID!
-  unitId: ID!
-  orderNum: String!
-  items: [OrderItemInput!]!
-  paymentMode: PaymentModeInput!
-  statusLog: [StatusLogInput!]!
-  archived: Boolean!
-  takeAway: Boolean
-  place: PlaceInput
-  paymentIntention: Float
-  transactionStatus: PaymentStatus
-  transactionId: ID
-  unpayCategory: UnpayCategory
-  orderMode: OrderMode
-  servingMode: ServingMode
-  serviceFee: CumulatedPriceInput
-  packagingSum: PriceInput
-  sumPriceShown: PriceShownInput!
-  rating: OrderRatingInput
-  hasRated: Boolean
-  tip: TipInput
-  tipTransactionStatus: PaymentStatus
-  tipTransactionId: ID
-  orderPolicy: OrderPolicy
-  serviceFeePolicy: ServiceFeePolicyInput
-  ratingPolicies: [RatingPolicyInput!]
-  tipPolicy: TipPolicyInput
-  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
-  packagingFeeTaxPercentage: Float
-  externalId: String
+input DeleteOrderInput {
+  id: ID!
 }
 
 input UpdateOrderInput {
@@ -2436,10 +2282,6 @@ input UpdateOrderInput {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
   externalId: String
-}
-
-input DeleteOrderInput {
-  id: ID!
 }
 
 type ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools {
@@ -2818,21 +2660,6 @@ input ModelOrderModeListInput {
   notContains: OrderMode
 }
 
-input ModelOrderPolicyInput {
-  eq: OrderPolicy
-  ne: OrderPolicy
-}
-
-input ModelOrderPaymentPolicyInput {
-  eq: OrderPaymentPolicy
-  ne: OrderPaymentPolicy
-}
-
-input ModelSoldOutVisibilityPolicyInput {
-  eq: SoldOutVisibilityPolicy
-  ne: SoldOutVisibilityPolicy
-}
-
 input ModelOrderPaymentPolicyInput {
   eq: OrderPaymentPolicy
   ne: OrderPaymentPolicy
@@ -2973,6 +2800,7 @@ input ModelCartConditionInput {
   unitId: ModelIDInput
   takeAway: ModelBooleanInput
   servingMode: ModelServingModeInput
+  orderMode: ModelOrderModeInput
   orderPolicy: ModelOrderPolicyInput
   and: [ModelCartConditionInput]
   or: [ModelCartConditionInput]
@@ -3684,6 +3512,7 @@ input SearchableOrderSortInput {
 
 enum SearchableOrderAggregateField {
   id
+  version
   createdAt
   userId
   unitId
@@ -4019,6 +3848,7 @@ input SearchableUnitFilterInput {
   supportedOrderModes: SearchableStringFilterInput
   orderPolicy: SearchableStringFilterInput
   soldOutVisibilityPolicy: SearchableStringFilterInput
+  orderPaymentPolicy: SearchableStringFilterInput
   and: [SearchableUnitFilterInput]
   or: [SearchableUnitFilterInput]
   not: SearchableUnitFilterInput
@@ -4065,6 +3895,7 @@ enum SearchableUnitAggregateField {
   orderPolicy
   packagingTaxPercentage
   soldOutVisibilityPolicy
+  orderPaymentPolicy
   createdAt
   updatedAt
 }
@@ -4131,6 +3962,7 @@ input SearchableCartFilterInput {
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   servingMode: SearchableStringFilterInput
+  orderMode: SearchableStringFilterInput
   orderPolicy: SearchableStringFilterInput
   and: [SearchableCartFilterInput]
   or: [SearchableCartFilterInput]
@@ -4159,6 +3991,7 @@ enum SearchableCartAggregateField {
   unitId
   takeAway
   servingMode
+  orderMode
   orderPolicy
   createdAt
   updatedAt

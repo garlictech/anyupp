@@ -3,6 +3,10 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { OrderResolverDeps } from './utils';
 import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/function';
+import { sendRkeeperOrder } from '@bgap/rkeeper-api';
+import { from, of } from 'rxjs';
+import { map, mapTo } from 'rxjs/operators';
+import { oeTryCatch } from '@bgap/shared/utils';
 
 export interface CalculationState_UnitAdded {
   order: CrudApi.CreateOrderInput;
@@ -16,11 +20,7 @@ export const getUnit =
   ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
     pipe(
       deps.crudSdk.GetUnit({ id: order.unitId }),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          CrudApi.Unit | undefined | null
-        >,
+      oeTryCatch,
       // Unit exists?
       OE.chain(
         OE.fromPredicate(
@@ -46,7 +46,7 @@ export const getUnit =
               unit.orderPaymentPolicy !== CrudApi.OrderPaymentPolicy.afterpay
             ),
           () =>
-            'Payment mode is not provided in the cart, and the unit does not accept afterpay.',
+            'Payment mode is not provided in the order, and the unit does not accept afterpay.',
         ),
       ),
       OE.map(unit => ({
@@ -55,61 +55,71 @@ export const getUnit =
       })),
     );
 
-export interface CalculationState_OrderNumAdded {
-  orderNum: string;
-  order: CrudApi.CreateOrderInput;
-  unit: CrudApi.Unit;
-}
-
 export const getNextOrderNum =
   (deps: OrderResolverDeps) =>
   (
-    inputState: CalculationState_UnitAdded,
-  ): OE.ObservableEither<string, CalculationState_OrderNumAdded> =>
+    input: CalculationState_UnitAdded,
+  ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
     pipe(
-      incrementOrderNum(deps.unitTableName)(inputState.unit.id),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          number | undefined | null
-        >,
+      incrementOrderNum(deps.unitTableName)(input.unit.id),
+      oeTryCatch,
       OE.map(x => x as NonNullable<typeof x>),
       OE.map(lastOrderNum => lastOrderNum ?? Math.floor(deps.random() * 10)),
       OE.map(x => (x || 1).toString().padStart(2, '0')),
       OE.map(num =>
-        input.place ? `${input.place.table}${input.place.seat}${num}` : num,
+        input.order.place
+          ? `${input.order.place.table}${input.order.place.seat}${num}`
+          : num,
       ),
       OE.map(orderNum => ({
-        ..inputState,
-        orderNum,
+        ...input,
+        order: {
+          ...input.order,
+          orderNum,
+        },
       })),
     );
 
 export const handleRkeeperOrder =
   (deps: OrderResolverDeps) =>
   (
-    input: CalculationState_OrderNumAdded,
-  ): OE.ObservableEither<string, CalculationState_OrderNumAdded> =>
+    input: CalculationState_UnitAdded,
+  ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
     pipe(
       input.unit.pos?.type === CrudApi.PosType.rkeeper
         ? sendRkeeperOrder({
             currentTime: deps.currentTime,
             axiosInstance: deps.axiosInstance,
-          })(inputState.unit, inputState.orderInput)
+          })(input.unit, input.order)
         : of({}),
-      mapTo(inputState),
-      x =>
-        OE.tryCatch(x) as OE.ObservableEither<
-          string,
-          CalculationState_OrderInputAdded
-        >,
+      mapTo(input),
+      oeTryCatch,
     );
+
+export const placeOrder =
+  (deps: OrderResolverDeps) =>
+  (
+    input: CalculationState_UnitAdded,
+  ): OE.ObservableEither<string, CrudApi.Order> =>
+    pipe(
+      {
+        Item: {
+          id: deps.uuid(),
+          ...input.order,
+        },
+        TableName: deps.orderTableName,
+      },
+      params => from(deps.docClient.put(params).promise()),
+      map(x => x.Attributes as CrudApi.Order),
+      oeTryCatch,
+    );
+
 export const createOrder =
   (input: CrudApi.CreateOrderInput) =>
-  (deps: OrderResolverDeps): OE.ObservableEither<string, string> => {
+  (deps: OrderResolverDeps): OE.ObservableEither<string, CrudApi.Order> => {
     return getUnit(deps)(input).pipe(
-    OE.chain(getNextOrderNum(deps)),
-      OE.chain(handleRkeeperOrder(deps)),
+      OE.chain(getNextOrderNum(deps)),
       OE.chain(placeOrder(deps)),
+      OE.chain(handleRkeeperOrder(deps)),
     );
   };
