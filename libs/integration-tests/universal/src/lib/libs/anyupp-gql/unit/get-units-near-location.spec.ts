@@ -15,7 +15,7 @@ import {
 } from '@bgap/shared/utils';
 import * as fp from 'lodash/fp';
 import { combineLatest, from } from 'rxjs';
-import { map, switchMap, tap, throwIfEmpty, take } from 'rxjs/operators';
+import { map, delay, switchMap, tap, throwIfEmpty, take } from 'rxjs/operators';
 import {
   createAuthenticatedCrudSdk,
   createIamCrudSdk,
@@ -101,9 +101,6 @@ describe('GetUnitsNearLocation tests', () => {
   beforeEach(done => {
     cleanup()
       .pipe(
-        tap(() => {
-          console.error('chainFixture.chain_01', chainFixture.chain_01);
-        }),
         switchMap(() =>
           // Seeding
           combineLatest([
@@ -115,89 +112,14 @@ describe('GetUnitsNearLocation tests', () => {
             createTestUnit(unit_03, crudSdk),
           ]),
         ),
+        delay(3000),
         take(1),
       )
       .subscribe(() => done());
-  });
+  }, 10000);
 
   afterAll(async () => {
     await cleanup().toPromise();
-  });
-
-  describe('input validation', () => {
-    it('should throw without an input', done => {
-      const input: CrudApi.GetUnitsNearLocationQueryVariables = {} as any;
-      from(unitRequestHandler(crudSdk).getUnitsNearLocation(input)).subscribe({
-        error(e) {
-          expect(e).toMatchSnapshot();
-          done();
-        },
-      });
-    }, 15000);
-
-    it('should throw without a location input', done => {
-      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
-        input: {},
-      } as any;
-      from(unitRequestHandler(crudSdk).getUnitsNearLocation(input)).subscribe({
-        error(e) {
-          expect(e).toMatchSnapshot();
-          done();
-        },
-      });
-    }, 15000);
-
-    it('should throw without a lat arg in the location input', done => {
-      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
-        input: { location: { lat: 12 } },
-      } as any;
-
-      from(unitRequestHandler(crudSdk).getUnitsNearLocation(input)).subscribe({
-        error(e) {
-          expect(e).toMatchSnapshot();
-          done();
-        },
-      });
-    }, 15000);
-
-    it('should throw without a lng arg in the location input', done => {
-      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
-        input: { location: { lng: '12' } },
-      } as any;
-      from(unitRequestHandler(crudSdk).getUnitsNearLocation(input)).subscribe({
-        error(e) {
-          expect(e).toMatchSnapshot();
-          done();
-        },
-      });
-    }, 15000);
-
-    it('should throw without valid location input with direct resolver', done => {
-      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
-        input: { location: { lng: 230.0, lat: -100 } },
-      };
-      unitRequestHandler(authCrudSdk)
-        .getUnitsNearLocation(input)
-        .subscribe({
-          error(e) {
-            expect(e).toMatchSnapshot('RESOLVER');
-            done();
-          },
-        });
-    }, 15000);
-
-    it('should throw without valid location input with new API', done => {
-      const input: CrudApi.GetUnitsNearLocationQueryVariables = {
-        input: { location: { lng: 230.0, lat: -100 } },
-      };
-
-      authCrudSdk.GetUnitsNearLocation(input).subscribe({
-        error(e) {
-          expect(e).toMatchSnapshot('NEW API');
-          done();
-        },
-      });
-    }, 15000);
   });
 
   const testLogic = (

@@ -1,17 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GetUnitsNearLocation tests input validation should throw without a lat arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location.lng\\" is required"`;
-
-exports[`GetUnitsNearLocation tests input validation should throw without a lng arg in the location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location.lat\\" is required"`;
-
-exports[`GetUnitsNearLocation tests input validation should throw without a location input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location\\" is required"`;
-
-exports[`GetUnitsNearLocation tests input validation should throw without an input 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input\\" is required"`;
-
-exports[`GetUnitsNearLocation tests input validation should throw without valid location input with direct resolver: RESOLVER 1`] = `"GetUnitsNearLocationQueryVariables Object Validation Error (JOI): \\"input.location.lat\\" must be greater than or equal to -90, \\"input.location.lng\\" must be less than or equal to 180"`;
-
-exports[`GetUnitsNearLocation tests input validation should throw without valid location input with new API: NEW API 1`] = `[Error: GraphQL error: GetUnitsNearLocationQueryVariables Object Validation Error (JOI): "input.location.lat" must be greater than or equal to -90, "input.location.lng" must be less than or equal to 180]`;
-
 exports[`GetUnitsNearLocation tests should return all the units in geoUnitsFormat ordered by distance - using API 1`] = `
 Object {
   "address": Object {

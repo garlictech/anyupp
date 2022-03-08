@@ -10,7 +10,7 @@ Object {
     "cvc_check": "unchecked",
   },
   "country": "US",
-  "createdAt": "2022-03-07T11:41:19.910Z",
+  "createdAt": "MASKED DATE",
   "exp_month": 12,
   "exp_year": 2025,
   "fingerprint": null,
@@ -19,7 +19,7 @@ Object {
   "last4": "4242",
   "name": "Test Card #1",
   "three_d_secure": null,
-  "updatedAt": "2022-03-07T11:41:19.910Z",
+  "updatedAt": "MASKED DATE",
 }
 `;
 
@@ -33,7 +33,7 @@ Object {
     "cvc_check": "pass",
   },
   "country": "US",
-  "createdAt": "2022-03-07T11:41:20.650Z",
+  "createdAt": "MASKED DATE",
   "exp_month": 12,
   "exp_year": 2025,
   "fingerprint": null,
@@ -42,6 +42,6 @@ Object {
   "last4": "4242",
   "name": "Test Card #2",
   "three_d_secure": null,
-  "updatedAt": "2022-03-07T11:41:20.650Z",
+  "updatedAt": "MASKED DATE",
 }
 `;

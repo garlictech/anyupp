@@ -91,10 +91,7 @@ describe('ProductFormService', () => {
   it('patchConfigSet should add configsets to form array', () => {
     const configSetsArray = new FormArray([]);
 
-    service.patchConfigSet(
-      productFixture.groupProductBase.configSets || [],
-      configSetsArray,
-    );
+    service.patchConfigSet([], configSetsArray);
 
     expect(configSetsArray.value).toMatchSnapshot();
   });

@@ -1,13 +1,11 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EVariantAvailabilityType, RequiredId } from '@bgap/shared/types';
+import { EVariantAvailabilityType } from '@bgap/shared/types';
 import { seededIdPrefix, testIdPrefix } from './common';
 
 const unitProductId_seeded_id_01 = `${seededIdPrefix}unit_product_c1_g1_1_id`;
 const unitProductId_seeded_id_02 = `${seededIdPrefix}unit_product_c1_g1_2_id`;
 
-const getChainProductVariant = (
-  idx: number,
-): RequiredId<CrudApi.ProductVariantInput> => ({
+const getChainProductVariant = (idx: number) => ({
   id: `${testIdPrefix}ChainProductVariant_id_${idx}`,
   variantName: { en: `VARIANT_NAME_${idx}` },
   refGroupPrice: idx * 10,
@@ -28,9 +26,7 @@ const getChainProductVariant = (
   netPackagingFee: 200,
 });
 
-const getGroupProductVariant = (
-  idx: number,
-): RequiredId<CrudApi.ProductVariantInput> => ({
+const getGroupProductVariant = (idx: number) => ({
   id: `${testIdPrefix}GroupProductVariant_id_${idx}`,
   variantName: { en: `VARIANT_NAME_${idx}` },
   refGroupPrice: idx * 20,
@@ -51,9 +47,7 @@ const getGroupProductVariant = (
   netPackagingFee: 300,
 });
 
-const getUnitProductVariant = (
-  idx: number,
-): RequiredId<CrudApi.ProductVariantInput> => ({
+const getUnitProductVariant = (idx: number) => ({
   id: `${testIdPrefix}UnitProductVariant_id_${idx}`,
   variantName: { en: `VARIANT_NAME_${idx}` },
   refGroupPrice: idx * 30,
@@ -75,10 +69,7 @@ const getUnitProductVariant = (
   soldOut: true,
 });
 
-const chainProductInputBase: Omit<
-  RequiredId<CrudApi.CreateChainProductInput>,
-  'variants'
-> & { variants: CrudApi.ProductVariantInput[] } = {
+const chainProductInputBase = {
   id: `${testIdPrefix}chainProduct_id_`,
   chainId: 'chainId_',
   name: { en: 'CHAIN_PRODUCT' },
@@ -91,10 +82,7 @@ const chainProductInputBase: Omit<
   allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
 };
 
-const groupProductInputBase: Omit<
-  RequiredId<CrudApi.CreateGroupProductInput>,
-  'variants'
-> & { variants: CrudApi.ProductVariantInput[] } = {
+const groupProductInputBase = {
   id: `${testIdPrefix}generatedProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',
@@ -105,13 +93,7 @@ const groupProductInputBase: Omit<
   variants: [getGroupProductVariant(1), getGroupProductVariant(2)],
 };
 
-const unitProductInputBase: Omit<
-  RequiredId<CrudApi.CreateUnitProductInput>,
-  'variants' | 'supportedServingModes'
-> & {
-  variants: CrudApi.ProductVariantInput[];
-  supportedServingModes: CrudApi.ServingMode[];
-} = {
+const unitProductInputBase = {
   id: `${testIdPrefix}chainProduct_id_`,
   parentId: 'parentId_',
   chainId: 'chainId_',

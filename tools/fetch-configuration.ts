@@ -26,8 +26,6 @@ const amplifyConfig = JSON.parse(
 fs.mkdirSync(targetDir, { recursive: true });
 
 const generatedParams = [
-  'AnyuppGraphqlApiKey',
-  'AnyuppGraphqlApiUrl',
   'IdentityPoolId',
   'ConsumerWebUserPoolClientId',
   'ConsumerUserPoolDomain',

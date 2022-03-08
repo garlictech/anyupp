@@ -2,6 +2,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import {
   testAdminUsername,
   testAdminUserPassword,
+  maskAll,
 } from '@bgap/shared/fixtures';
 import { combineLatest, Observable, of } from 'rxjs';
 import { delay, switchMap, tap } from 'rxjs/operators';
@@ -92,7 +93,7 @@ describe('Stripe Payment Method CRUD tests', () => {
           expect(result.exp_month).toEqual(12);
           expect(result.exp_year).toEqual(2025);
           result.id = 'test_payment_method_id';
-          expect(result).toMatchSnapshot('card1');
+          expect(maskAll(result)).toMatchSnapshot('card1');
         }),
         switchMap(() =>
           updateOp({
@@ -114,7 +115,7 @@ describe('Stripe Payment Method CRUD tests', () => {
           expect(result.exp_month).toEqual(12);
           expect(result.exp_year).toEqual(2025);
           result.id = 'test_payment_method_id';
-          expect(result).toMatchSnapshot('card2');
+          expect(maskAll(result)).toMatchSnapshot('card2');
         }),
         switchMap(listOp),
         tap(result => {

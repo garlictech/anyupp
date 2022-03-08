@@ -145,44 +145,4 @@ describe('AdminUserFormService', () => {
         done();
       });
   }, 25000);
-
-  it('createAdminRoleContext$ and deleteAdminRoleContext$ should handle admin role context', done => {
-    cleanup()
-      .pipe(
-        switchMap(() =>
-          service.createAdminUser$({
-            ...adminUserFixture.adminUserBase,
-            id: adminUserId3,
-          }),
-        ),
-        tap(saveResponse => {
-          expect(saveResponse).toMatchSnapshot({
-            data: {
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-              roleContext: {
-                createdAt: expect.any(String),
-                updatedAt: expect.any(String),
-              },
-            },
-          });
-        }),
-        tap(deleteResponse => {
-          expect(deleteResponse).toMatchSnapshot({
-            data: {
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-              roleContext: {
-                createdAt: expect.any(String),
-                updatedAt: expect.any(String),
-              },
-            },
-          });
-        }),
-        switchMap(() => cleanup()),
-      )
-      .subscribe(() => {
-        done();
-      });
-  }, 25000);
 });

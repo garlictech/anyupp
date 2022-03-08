@@ -116,10 +116,7 @@ const toGeoUnit = ({
 });
 
 const listActiveUnits = () => (crudSdk: CrudApi.CrudSdk) =>
-  crudSdk.ListUnits(
-    { filter: { isActive: { eq: true } } },
-    { fetchPolicy: 'no-cache' },
-  );
+  crudSdk.SearchUnits({ filter: { isActive: { eq: true } } });
 
 const getGroupCurrency =
   (id: string) =>
