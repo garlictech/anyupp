@@ -53,7 +53,7 @@ describe('Test paginated graphql lists', () => {
 
   beforeEach(async () => {
     await setup.toPromise();
-  });
+  }, 10000);
 
   afterAll(async () => {
     await cleanup().toPromise();
