@@ -4,7 +4,7 @@ import { OrderResolverDeps } from './utils';
 import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/function';
 import { sendRkeeperOrder } from '@bgap/rkeeper-api';
-import { from, of } from 'rxjs';
+import { from, Observable, of, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 import { oeTryCatch } from '@bgap/shared/utils';
 
@@ -80,15 +80,44 @@ export const getNextOrderNum =
       })),
     );
 
-export const handleRkeeperOrder =
+export interface CalculationState_OrderAdded {
+  order: CrudApi.Order;
+  unit: CrudApi.Unit;
+}
+
+export const placeOrder =
   (deps: OrderResolverDeps) =>
   (
     input: CalculationState_UnitAdded,
-  ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
+  ): OE.ObservableEither<string, CalculationState_OrderAdded> =>
+    pipe(
+      deps.currentTimeISOString(),
+      time => ({
+        Item: {
+          id: deps.uuid(),
+          createdAt: time,
+          updatedAt: time,
+          ...input.order,
+        },
+        TableName: deps.orderTableName,
+      }),
+      params => from(deps.docClient.put(params).promise()),
+      map(res => ({
+        ...input,
+        order: res.Attributes as CrudApi.Order,
+      })),
+      oeTryCatch,
+    );
+
+export const handleRkeeperOrder =
+  (deps: OrderResolverDeps) =>
+  (
+    input: CalculationState_OrderAdded,
+  ): OE.ObservableEither<string, CalculationState_OrderAdded> =>
     pipe(
       input.unit.pos?.type === CrudApi.PosType.rkeeper
         ? sendRkeeperOrder({
-            currentTime: deps.currentTime,
+            currentTimeISOString: deps.currentTimeISOString,
             axiosInstance: deps.axiosInstance,
           })(input.unit, input.order)
         : of({}),
@@ -96,30 +125,16 @@ export const handleRkeeperOrder =
       oeTryCatch,
     );
 
-export const placeOrder =
-  (deps: OrderResolverDeps) =>
-  (
-    input: CalculationState_UnitAdded,
-  ): OE.ObservableEither<string, CrudApi.Order> =>
-    pipe(
-      {
-        Item: {
-          id: deps.uuid(),
-          ...input.order,
-        },
-        TableName: deps.orderTableName,
-      },
-      params => from(deps.docClient.put(params).promise()),
-      map(x => x.Attributes as CrudApi.Order),
-      oeTryCatch,
-    );
-
 export const createOrder =
   (input: CrudApi.CreateOrderInput) =>
-  (deps: OrderResolverDeps): OE.ObservableEither<string, CrudApi.Order> => {
-    return getUnit(deps)(input).pipe(
+  (deps: OrderResolverDeps): Observable<CrudApi.Order> =>
+    getUnit(deps)(input).pipe(
       OE.chain(getNextOrderNum(deps)),
       OE.chain(placeOrder(deps)),
       OE.chain(handleRkeeperOrder(deps)),
+      OE.map(state => state.order),
+      OE.fold(
+        err => throwError(err),
+        order => of(order),
+      ),
     );
-  };

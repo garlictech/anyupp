@@ -9,13 +9,14 @@ import { DynamoDB } from 'aws-sdk';
 
 export interface OrderResolverDeps {
   crudSdk: CrudApi.CrudSdk;
-  unitTableName: string;
   orderTableName: string;
-  currentTime: () => Date;
+  unitTableName: string;
+  currentTimeISOString: () => string;
   random: () => number;
   uuid: () => string;
   axiosInstance: AxiosStatic;
   docClient: DynamoDB.DocumentClient;
+  userId: string;
 }
 
 const getUnitProductHelper = R.memoizeWith(

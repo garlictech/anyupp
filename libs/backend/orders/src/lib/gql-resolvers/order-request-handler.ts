@@ -6,8 +6,8 @@ import { OrderResolverDeps } from './utils';
 export const orderRequestHandler = (deps: OrderResolverDeps) => ({
   createOrderFromCart: (
     requestPayload: CrudApi.MutationCreateOrderFromCartArgs,
-  ) => createOrderFromCart(requestPayload?.input?.id)(deps).toPromise(),
+  ) => createOrderFromCart(requestPayload?.input?.id)(deps),
 
   createOrder: (requestPayload: CrudApi.MutationCreateOrderArgs) =>
-    createOrder(requestPayload?.input)(deps).toPromise(),
+    createOrder(requestPayload?.input)(deps),
 });

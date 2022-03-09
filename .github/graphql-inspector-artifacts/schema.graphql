@@ -455,6 +455,12 @@ type CumulatedPrice @aws_iam @aws_cognito_user_pools {
   taxContent: Float
 }
 
+input CumulatedPriceInput {
+  currency: String
+  grossPrice: Float
+  taxContent: Float
+}
+
 type OrderItem @aws_iam @aws_cognito_user_pools @aws_api_key {
   productId: ID!
   variantId: ID!
@@ -483,15 +489,13 @@ type OrderRating @aws_iam @aws_cognito_user_pools {
 type Order @aws_iam @aws_cognito_user_pools {
   id: ID!
   version: Int
-  createdAt: AWSDateTime!
   userId: ID!
   unitId: ID!
-  orderNum: String!
+  orderNum: String
   items: [OrderItem!]!
   paymentMode: PaymentMode
   statusLog: [StatusLog!]!
   archived: Boolean!
-  takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
@@ -516,35 +520,37 @@ type Order @aws_iam @aws_cognito_user_pools {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
   externalId: String
+  createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
 
 input CreateOrderInput {
   id: ID
-  createdAt: AWSDateTime
+  version: Int
   userId: ID!
   unitId: ID!
-  orderNum: String!
   items: [OrderItemInput!]!
   paymentMode: PaymentModeInput
-  statusLog: [StatusLogInput!]!
-  archived: Boolean!
+  archived: Boolean
   takeAway: Boolean
   place: PlaceInput
   paymentIntention: Float
-  transactionStatus: PaymentStatus
-  transactionId: ID
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: PriceInput
+  serviceFee: CumulatedPriceInput
   packagingSum: PriceInput
   sumPriceShown: PriceShownInput!
   rating: OrderRatingInput
   hasRated: Boolean
   tip: TipInput
-  tipTransactionStatus: PaymentStatus
-  tipTransactionId: ID
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicies: [RatingPolicyInput!]
+  tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
+  externalId: String
 }
 
 input OrderItemInput {
@@ -1414,11 +1420,7 @@ type Subscription {
   onGroupProductChange(groupId: ID!): GroupProduct @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"]) @aws_cognito_user_pools
   onUnitProductChange(unitId: ID!): UnitProduct @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"]) @aws_cognito_user_pools
   onGeneratedProductChange(unitId: ID!): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct"]) @aws_cognito_user_pools
-  onOrdersChange: Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
-  onOrdersDelete: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_cognito_user_pools
   onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"]) @aws_cognito_user_pools
-  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
-  onUnitOrdersChange(unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
   onCreateChainProduct: ChainProduct @aws_subscribe(mutations: ["createChainProduct"]) @aws_iam @aws_cognito_user_pools
   onUpdateChainProduct: ChainProduct @aws_subscribe(mutations: ["updateChainProduct"]) @aws_iam @aws_cognito_user_pools
   onDeleteChainProduct: ChainProduct @aws_subscribe(mutations: ["deleteChainProduct"]) @aws_iam @aws_cognito_user_pools
@@ -2150,12 +2152,6 @@ input DeleteGroupInput {
   id: ID!
 }
 
-input CumulatedPriceInput {
-  currency: String
-  grossPrice: Float
-  taxContent: Float
-}
-
 type ModelOrderConnection @aws_iam @aws_cognito_user_pools {
   items: [Order]!
   nextToken: String
@@ -2194,12 +2190,10 @@ input ModelSoldOutVisibilityPolicyInput {
 input ModelOrderFilterInput {
   id: ModelIDInput
   version: ModelIntInput
-  createdAt: ModelStringInput
   userId: ModelIDInput
   unitId: ModelIDInput
   orderNum: ModelStringInput
   archived: ModelBooleanInput
-  takeAway: ModelBooleanInput
   paymentIntention: ModelFloatInput
   transactionStatus: ModelPaymentStatusInput
   transactionId: ModelIDInput
@@ -2220,12 +2214,10 @@ input ModelOrderFilterInput {
 
 input ModelOrderConditionInput {
   version: ModelIntInput
-  createdAt: ModelStringInput
   userId: ModelIDInput
   unitId: ModelIDInput
   orderNum: ModelStringInput
   archived: ModelBooleanInput
-  takeAway: ModelBooleanInput
   paymentIntention: ModelFloatInput
   transactionStatus: ModelPaymentStatusInput
   transactionId: ModelIDInput
@@ -2251,7 +2243,6 @@ input DeleteOrderInput {
 input UpdateOrderInput {
   id: ID!
   version: Int
-  createdAt: AWSDateTime
   userId: ID
   unitId: ID
   orderNum: String
@@ -2259,7 +2250,6 @@ input UpdateOrderInput {
   paymentMode: PaymentModeInput
   statusLog: [StatusLogInput!]
   archived: Boolean
-  takeAway: Boolean
   place: PlaceInput
   paymentIntention: Float
   transactionStatus: PaymentStatus
@@ -3462,18 +3452,17 @@ input SearchableGroupAggregationInput {
 input SearchableOrderFilterInput {
   id: SearchableIDFilterInput
   version: SearchableIntFilterInput
-  createdAt: SearchableStringFilterInput
   userId: SearchableIDFilterInput
   unitId: SearchableIDFilterInput
   orderNum: SearchableStringFilterInput
   archived: SearchableBooleanFilterInput
-  takeAway: SearchableBooleanFilterInput
   paymentIntention: SearchableFloatFilterInput
   transactionId: SearchableIDFilterInput
   hasRated: SearchableBooleanFilterInput
   tipTransactionId: SearchableIDFilterInput
   packagingFeeTaxPercentage: SearchableFloatFilterInput
   externalId: SearchableStringFilterInput
+  createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   transactionStatus: SearchableStringFilterInput
   unpayCategory: SearchableStringFilterInput
@@ -3490,18 +3479,17 @@ input SearchableOrderFilterInput {
 enum SearchableOrderSortableFields {
   id
   version
-  createdAt
   userId
   unitId
   orderNum
   archived
-  takeAway
   paymentIntention
   transactionId
   hasRated
   tipTransactionId
   packagingFeeTaxPercentage
   externalId
+  createdAt
   updatedAt
 }
 
@@ -3513,12 +3501,10 @@ input SearchableOrderSortInput {
 enum SearchableOrderAggregateField {
   id
   version
-  createdAt
   userId
   unitId
   orderNum
   archived
-  takeAway
   paymentIntention
   transactionStatus
   transactionId
@@ -3532,6 +3518,7 @@ enum SearchableOrderAggregateField {
   soldOutVisibilityPolicy
   packagingFeeTaxPercentage
   externalId
+  createdAt
   updatedAt
 }
 

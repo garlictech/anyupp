@@ -14,7 +14,7 @@ import {
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import * as fp from 'lodash/fp';
-import { combineLatest, from } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { map, delay, switchMap, tap, throwIfEmpty, take } from 'rxjs/operators';
 import {
   createAuthenticatedCrudSdk,

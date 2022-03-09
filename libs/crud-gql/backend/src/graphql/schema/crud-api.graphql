@@ -463,6 +463,12 @@ type CumulatedPrice {
   taxContent: Float
 }
 
+input CumulatedPriceInput {
+  currency: String
+  grossPrice: Float
+  taxContent: Float
+}
+
 type OrderItem {
   productId: ID!
   variantId: ID!
@@ -494,7 +500,6 @@ type Order
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   version: Int
-  createdAt: AWSDateTime!
   userId: ID!
   unitId: ID!
   orderNum: String
@@ -502,7 +507,6 @@ type Order
   paymentMode: PaymentMode
   statusLog: [StatusLog!]!
   archived: Boolean!
-  takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
@@ -531,30 +535,31 @@ type Order
 
 input CreateOrderInput {
   id: ID
-  createdAt: AWSDateTime
+  version: Int
   userId: ID!
   unitId: ID!
-  orderNum: String!
   items: [OrderItemInput!]!
   paymentMode: PaymentModeInput
-  statusLog: [StatusLogInput!]!
-  archived: Boolean!
+  archived: Boolean
   takeAway: Boolean
   place: PlaceInput
   paymentIntention: Float
-  transactionStatus: PaymentStatus
-  transactionId: ID
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: PriceInput
+  serviceFee: CumulatedPriceInput
   packagingSum: PriceInput
   sumPriceShown: PriceShownInput!
   rating: OrderRatingInput
   hasRated: Boolean
   tip: TipInput
-  tipTransactionStatus: PaymentStatus
-  tipTransactionId: ID
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicies: [RatingPolicyInput!]
+  tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
+  externalId: String
 }
 
 input OrderItemInput {

@@ -463,6 +463,12 @@ type CumulatedPrice {
   taxContent: Float
 }
 
+input CumulatedPriceInput {
+  currency: String
+  grossPrice: Float
+  taxContent: Float
+}
+
 type OrderItem {
   productId: ID!
   variantId: ID!
@@ -494,15 +500,13 @@ type Order
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   version: Int
-  createdAt: AWSDateTime!
   userId: ID!
   unitId: ID!
-  orderNum: String!
+  orderNum: String
   items: [OrderItem!]!
   paymentMode: PaymentMode
   statusLog: [StatusLog!]!
   archived: Boolean!
-  takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
@@ -531,30 +535,31 @@ type Order
 
 input CreateOrderInput {
   id: ID
-  createdAt: AWSDateTime
+  version: Int
   userId: ID!
   unitId: ID!
-  orderNum: String!
   items: [OrderItemInput!]!
   paymentMode: PaymentModeInput
-  statusLog: [StatusLogInput!]!
-  archived: Boolean!
+  archived: Boolean
   takeAway: Boolean
   place: PlaceInput
   paymentIntention: Float
-  transactionStatus: PaymentStatus
-  transactionId: ID
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
-  serviceFee: PriceInput
+  serviceFee: CumulatedPriceInput
   packagingSum: PriceInput
   sumPriceShown: PriceShownInput!
   rating: OrderRatingInput
   hasRated: Boolean
   tip: TipInput
-  tipTransactionStatus: PaymentStatus
-  tipTransactionId: ID
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicies: [RatingPolicyInput!]
+  tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
+  externalId: String
 }
 
 input OrderItemInput {
@@ -1445,12 +1450,6 @@ type Subscription {
       mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
     )
     @aws_cognito_user_pools
-  onOrdersChange: Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
-    @aws_cognito_user_pools
-  onOrdersDelete: Order
-    @aws_subscribe(mutations: ["deleteOrder"])
-    @aws_cognito_user_pools
 
   # Added for the Mobile Application
   onProductChanged(unitId: String): GeneratedProduct
@@ -1461,11 +1460,5 @@ type Subscription {
         "deleteGeneratedProduct"
       ]
     )
-    @aws_cognito_user_pools
-  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
-    @aws_cognito_user_pools
-  onUnitOrdersChange(unitId: String, archived: Boolean): Order
-    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
 }

@@ -340,7 +340,7 @@ export const createOrderFromCart =
       switchMap(props =>
         (props.unit.pos?.type === CrudApi.PosType.rkeeper
           ? sendRkeeperOrder({
-              currentTime: deps.currentTime,
+              currentTimeISOString: deps.currentTimeISOString,
               axiosInstance: deps.axiosInstance,
             })(props.unit, props.orderInput)
           : of({})
