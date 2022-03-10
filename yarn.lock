@@ -8594,10 +8594,10 @@
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
-"@vvo/tzdb@6.47.0":
-  version "6.47.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.47.0.tgz#44667c81b202fd771d929dca77efd174f36972d5"
-  integrity sha512-XvOQhVh3BXeAO+uuIFpjWU143KZ4f/IzsiBKBYl0Quvd8HB8/hQKb6AlTpVeIwPhgM9PtrdjMm5NR8wh19/fPQ==
+"@vvo/tzdb@6.48.0":
+  version "6.48.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.48.0.tgz#3c8125b96b394de48fa7d353cb76338fdb86f0ef"
+  integrity sha512-FY1t99hSjgeQUcM1fgZy4NGb0dEGA2Gpcn4uBksfSuKe4nfXXYsrbMk/7/Op40iZpPa3IyUhVMCIxZF5Z4FSZg==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
