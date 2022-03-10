@@ -55,7 +55,7 @@ class StatusWidget extends StatelessWidget {
           Text(
             trans(context, message),
             style: Fonts.satoshi(
-              fontSize: 18.0,
+              fontSize: 19.0,
               fontWeight: FontWeight.w700,
               color: theme.secondary,
             ),
@@ -65,13 +65,16 @@ class StatusWidget extends StatelessWidget {
               height: 16.0,
             ),
           if (description != null)
-            Text(
-              trans(context, description!),
-              textAlign: TextAlign.center,
-              style: Fonts.satoshi(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400,
-                color: theme.secondary,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 42),
+              child: Text(
+                trans(context, description!),
+                textAlign: TextAlign.center,
+                style: Fonts.satoshi(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w400,
+                  color: theme.secondary,
+                ),
               ),
             ),
           if (details != null)
@@ -106,7 +109,7 @@ class StatusWidget extends StatelessWidget {
                   child: Text(
                     trans(context, buttonText),
                     style: Fonts.satoshi(
-                      fontSize: 16.0,
+                      fontSize: 17.0,
                       fontWeight: FontWeight.w700,
                       color: theme.buttonText,
                     ),

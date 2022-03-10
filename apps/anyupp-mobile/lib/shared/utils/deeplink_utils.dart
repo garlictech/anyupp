@@ -103,14 +103,14 @@ Future<bool> handleUrlQR(Uri uri) async {
   // Not authenticated
   if (user == null) {
     auth.nextPageAfterLogin = page;
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
     print('***** handleUrlQR().login()');
 
     Nav.reset(OnBoarding());
 
     return true;
   } else {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
     print('***** handleUrlQR().qrfound()');
     Nav.reset(page);
     // navigateWithResetWithKey(Catcher.navigatorKey, (_, __, ___) => page);
@@ -136,14 +136,9 @@ Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
   if (uri.pathSegments.length == 3) {
     seat = uri.pathSegments[2];
   }
-  final Place place = Place(table: table, seat: seat);
   print(
       '***** getNavigationPageByUrlFromQRDeeplink().unitId=$unitId, table=$table, seat=$seat');
-  return UnitFoundByQRCodeScreen(
-    place: place,
-    unitId: unitId,
-    loadUnits: false,
-  );
+  return SelectUnitChooseMethodScreen(initialUri: uri,);
 }
 
 // *************************

@@ -28,10 +28,13 @@ class _OnBoardingState extends State<OnBoarding> {
           if (snapshot.hasData) {
             if (snapshot.data == 'AUTHENTICATED') {
               if (_authRepository.nextPageAfterLogin != null) {
-                return _authRepository.nextPageAfterLogin!;
+                Widget afterLoginWidget = _authRepository.nextPageAfterLogin!;
+                _authRepository.nextPageAfterLogin = null;
+                return afterLoginWidget;
               }
 
-              return SelectUnitChooseMethodScreen();
+              return SelectUnitChooseMethodScreen(
+              );
             } else {
               // Not authenticated
               return LoginScreen();

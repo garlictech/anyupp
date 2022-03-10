@@ -44,42 +44,44 @@ class _SelectUnitByLocationScreenState
             _createUnitsMarker(state.units);
           }
         },
-        child: SafeArea(
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              // Custom Back Button
-              leading: Container(
-                padding: EdgeInsets.only(
-                  left: 8.0,
-                  top: 4.0,
-                  bottom: 4.0,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      width: 1,
-                      color: Color(0xFF30BF60).withOpacity(
-                          0.2), //theme.primary.withOpacity(0.2), // Color(0x33857C18),
-                    ),
-                    color: Colors.white, // theme.secondary0, // Colors.white,
-                  ),
-                  child: BackButton(
-                    color: Color(0xFF30BF60), // theme.primary,
-                  ),
-                ),
-              ),
-              elevation: 0.0,
-              iconTheme: IconThemeData(
-                color: Color(
-                    0xFF30BF60), // theme.primary, //change your color here
-              ),
-              backgroundColor: Colors.transparent,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarIconBrightness: Brightness.dark,
+              statusBarBrightness: Brightness.light,
             ),
-            body: _buildContent(theme),
+            // Custom Back Button
+            leading: Container(
+              padding: EdgeInsets.only(
+                left: 8.0,
+                top: 4.0,
+                bottom: 4.0,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    width: 1,
+                    color: Color(0xFF30BF60).withOpacity(
+                        0.2), //theme.primary.withOpacity(0.2), // Color(0x33857C18),
+                  ),
+                  color: Colors.white, // theme.secondary0, // Colors.white,
+                ),
+                child: BackButton(
+                  color: Color(0xFF30BF60), // theme.primary,
+                ),
+              ),
+            ),
+            elevation: 0.0,
+            iconTheme: IconThemeData(
+              color:
+                  Color(0xFF30BF60), // theme.primary, //change your color here
+            ),
+            backgroundColor: Colors.transparent,
           ),
+          body: _buildContent(theme),
         ),
       ),
     );

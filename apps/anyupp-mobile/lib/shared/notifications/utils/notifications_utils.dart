@@ -104,7 +104,7 @@ class Locally {
     //   debugPrint('notification payload: ' + payload);
     // }
     // await Navigator.push(context, pageRoute);
-    if (payloadStr != null) {
+    if (payloadStr != null && payloadStr != "") {
       Map<String, dynamic> json = jsonDecode(payloadStr);
       NotificationPayloadType? type =
           enumFromStringNull(json['type'], NotificationPayloadType.values);
@@ -250,7 +250,7 @@ Future<void> scheduleNotification({
 }) async {
   print('scheduleNotification()=$showDelay');
   await Locally().localNotificationsPlugin.zonedSchedule(
-        payload.hashCode,
+        payload!.type.index,
         title,
         message,
         tz.TZDateTime.now(tz.local).add(showDelay),
@@ -264,8 +264,12 @@ Future<void> scheduleNotification({
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        payload: payload?.toJson(),
+        payload: payload.toJson(),
       );
+}
+
+Future<void> cancelNotification({required notificationId}) async{
+  await Locally().localNotificationsPlugin.cancel(notificationId);
 }
 
 void showNotification(String title, String message, Widget? navigateToPage) {

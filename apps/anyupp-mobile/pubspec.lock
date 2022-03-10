@@ -98,7 +98,7 @@ packages:
       name: bloc_test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "9.0.2"
+    version: "9.0.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -1029,7 +1029,7 @@ packages:
       name: mocktail
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0"
+    version: "0.3.0"
   modal_bottom_sheet:
     dependency: transitive
     description:

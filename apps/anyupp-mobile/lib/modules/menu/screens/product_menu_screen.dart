@@ -4,7 +4,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/modules/selectunit/screens/flutter_qr_code_scanner.dart';
+import 'package:fa_prev/modules/selectunit/widgets/flutter_qr_code_scanner.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
@@ -239,7 +239,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                         elevation: 4.0,
                         backgroundColor: Colors.transparent,
                         builder: (context) {
-                          return QRCodeScannerScreen(
+                          return QRCodeScannerWidget(
                             navigateToCart: true,
                             loadUnits: true,
                           );
