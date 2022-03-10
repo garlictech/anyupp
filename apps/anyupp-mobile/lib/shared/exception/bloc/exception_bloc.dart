@@ -1,17 +1,16 @@
 import 'dart:async';
 
-import 'package:catcher/catcher.dart';
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets/common_error_dialog.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'exception_event.dart';
-import 'exception_state.dart';
-
 class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {
   ExceptionBloc() : super(NoException()) {
     on<ShowException>(_onShowException);
+    on<AddExceptionToBeShown>(_onAddExceptionToBeShown);
   }
 
   FutureOr<void> _onShowException(
@@ -33,26 +32,30 @@ class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {
       details = event.exception.details;
     }
 
-    if (Catcher.navigatorKey?.currentContext != null) {
+    if (AppContext.context != null) {
       await Future.delayed(Duration(milliseconds: 1000));
       SchedulerBinding.instance?.addPostFrameCallback((_) async {
         await showErrorDialog(
-            Catcher.navigatorKey!.currentContext!,
-            transEx(
-                Catcher.navigatorKey!.currentContext!,
-                'error.$subCode.title',
-                details,
-                'error.$code.title',
-                'error.title'),
-            transEx(
-                Catcher.navigatorKey!.currentContext!,
-                'error.$subCode.description',
-                details,
-                'error.$code.description',
-                'error.description'),
-            exceptionDetails:
-                null); //isDev ? event.exception.toString() : null);
+          AppContext.context!,
+          transEx(AppContext.context!, 'error.$subCode.title', details,
+              'error.$code.title', 'error.title'),
+          transEx(AppContext.context!, 'error.$subCode.description', details,
+              'error.$code.description', 'error.description'),
+          exceptionDetails: null,
+          // onClose: () => emit(NoException()),
+        ); //isDev ? event.exception.toString() : null);
       });
     }
+  }
+
+  FutureOr<void> _onAddExceptionToBeShown(
+      AddExceptionToBeShown event, Emitter<ExceptionState> emit) async {
+    emit(
+      ExceptionShowState(CommonException(
+        code: event.code,
+        message: event.message,
+        subCode: event.provider,
+      )),
+    );
   }
 }

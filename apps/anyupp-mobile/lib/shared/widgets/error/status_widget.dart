@@ -33,7 +33,6 @@ class StatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color color = buttonColor ?? theme.button;
-    print('StatusWidget.onPressed=$onPressed');
 
     return Container(
       padding: EdgeInsets.all(16.0),

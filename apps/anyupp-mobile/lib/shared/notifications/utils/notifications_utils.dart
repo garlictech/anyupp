@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models/core/parsers.dart';
 import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
@@ -152,7 +151,7 @@ class Locally {
     print(
         '***** onDidReceiveNotification().id=$id, title=$title, payload=$payload');
     await showDialog(
-      context: Catcher.navigatorKey!.currentContext!,
+      context: AppContext.context!,
       builder: (context) {
         return CupertinoAlertDialog(
           title: title,

@@ -723,6 +723,10 @@
     "ERROR_UNIT_NOT_ACCEPTING_ORDERS": {
       "title": "Unit is closed",
       "description": "Unit is not accepting orders right now. Try it later!"
+    },
+    "SOCIAL_LOGIN_ERROR": {
+      "title": "Login failed",
+      "description": "Sorry, your login was unsuccessful with account {{0}}, please try again with a different social account or continue without sign up."
     }
   },
   "rating": {

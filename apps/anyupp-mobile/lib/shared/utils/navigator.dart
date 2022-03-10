@@ -1,4 +1,4 @@
-import 'package:catcher/catcher.dart';
+import 'package:fa_prev/core/context/app_context.dart';
 import 'package:flutter/material.dart';
 
 enum NavAnim {
@@ -9,39 +9,60 @@ enum NavAnim {
 class Nav {
   static const Duration _DEFAULT_ANIM_DURATION = Duration(milliseconds: 200);
 
-  static void to(Widget page,
-      {Duration duration = _DEFAULT_ANIM_DURATION,
-      NavAnim animationType = NavAnim.FADE_IN}) {
-    Catcher.navigatorKey!.currentState!
-        .push(_createRoute(page, duration, animationType));
+  static void to(
+    Widget page, {
+    Duration duration = _DEFAULT_ANIM_DURATION,
+    NavAnim animationType = NavAnim.FADE_IN,
+  }) {
+    AppContext.state?.push(_createRoute(
+      page,
+      duration,
+      animationType,
+    ));
   }
 
-  static Future<T?> toWithResult<T>(Widget page,
-      {Duration duration = _DEFAULT_ANIM_DURATION,
-      NavAnim animationType = NavAnim.FADE_IN}) async {
-    return Catcher.navigatorKey!.currentState!
-        .push<T>(_createRoute<T>(page, duration, animationType));
+  static Future<T?> toWithResult<T>(
+    Widget page, {
+    Duration duration = _DEFAULT_ANIM_DURATION,
+    NavAnim animationType = NavAnim.FADE_IN,
+  }) async {
+    return AppContext.state?.push<T>(_createRoute<T>(
+      page,
+      duration,
+      animationType,
+    ));
   }
 
-  static void replace(Widget page,
-      {Duration duration = _DEFAULT_ANIM_DURATION,
-      NavAnim animationType = NavAnim.FADE_IN}) {
-    Catcher.navigatorKey!.currentState!
-        .pushReplacement(_createRoute(page, duration, animationType));
+  static void replace(
+    Widget page, {
+    Duration duration = _DEFAULT_ANIM_DURATION,
+    NavAnim animationType = NavAnim.FADE_IN,
+  }) {
+    AppContext.state?.pushReplacement(_createRoute(
+      page,
+      duration,
+      animationType,
+    ));
   }
 
-  static void reset(Widget page,
-      {Duration duration = _DEFAULT_ANIM_DURATION,
-      NavAnim animationType = NavAnim.FADE_IN}) {
-    Catcher.navigatorKey!.currentState!.pushAndRemoveUntil(
-      _createRoute(page, duration, animationType),
+  static void reset(
+    Widget page, {
+    Duration duration = _DEFAULT_ANIM_DURATION,
+    NavAnim animationType = NavAnim.FADE_IN,
+  }) {
+    AppContext.state?.pushAndRemoveUntil(
+      _createRoute(
+        page,
+        duration,
+        animationType,
+      ),
       (Route<dynamic> route) => false,
     );
   }
 
   static void pop<T>([T? result]) {
-    if (Catcher.navigatorKey!.currentState!.canPop()) {
-      Catcher.navigatorKey!.currentState!.pop(result);
+    if (AppContext.state?.canPop() == true) {
+      AppContext.state?.pop(result);
     }
   }
 

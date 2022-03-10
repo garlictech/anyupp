@@ -4,8 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MockMaterialApp extends MaterialApp {
   final Widget child;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
-  MockMaterialApp({Key? key, required this.child})
+  MockMaterialApp({Key? key, required this.child, this.navigatorKey})
       : super(
           themeMode: ThemeMode.light,
           title: 'AnyUpp',
@@ -13,6 +14,7 @@ class MockMaterialApp extends MaterialApp {
           theme: ThemeData(
             primaryColor: Colors.green,
           ),
+          navigatorKey: navigatorKey,
           home: child,
           locale: Locale.fromSubtags(countryCode: 'hu', languageCode: 'hu'),
           localizationsDelegates: [

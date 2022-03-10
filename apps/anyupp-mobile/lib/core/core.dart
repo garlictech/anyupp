@@ -4,3 +4,4 @@ export 'exception/exception.dart';
 export 'simple_bloc_delegate.dart';
 export 'theme/theme.dart';
 export 'units/units.dart';
+export 'context/app_context.dart';

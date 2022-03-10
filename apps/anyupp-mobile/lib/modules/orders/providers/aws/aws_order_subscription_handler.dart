@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:artemis/artemis.dart';
-import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
@@ -82,7 +82,7 @@ class AwsOrderSubscription {
 
           // Schedule notifications if necessary for rating the order
           getIt<OrderNotificationService>().checkIfShowOrderStatusNotification(
-            Catcher.navigatorKey!.currentContext!,
+            AppContext.context!,
             [item],
           );
 
