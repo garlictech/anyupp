@@ -43,7 +43,7 @@
     "@aws-cdk/aws-neptune-alpha": "2.9.0-alpha.0",
     "@aws-cdk/aws-appsync-alpha": "2.9.0-alpha.0",
     "@angular/animations": "13.2.6",
-    "@angular/cdk": "13.2.5",
+    "@angular/cdk": "13.2.6",
     "@angular/common": "13.2.6",
     "@angular/compiler": "13.2.6",
     "@angular/core": "13.2.6",
