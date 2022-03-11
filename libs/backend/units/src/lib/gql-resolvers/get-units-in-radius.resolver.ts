@@ -9,7 +9,7 @@ import {
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import * as geolib from 'geolib';
-import { combineLatest, EMPTY, Observable, of } from 'rxjs';
+import { combineLatest, EMPTY, forkJoin, Observable, of } from 'rxjs';
 import { catchError, defaultIfEmpty, map, switchMap } from 'rxjs/operators';
 import {
   filterOutNotOpenUnits,
@@ -34,13 +34,18 @@ export const getUnitsInRadius =
             getChain(unit.chainId)(crudSdk).pipe(
               switchMap(chain => (chain.isActive ? of(chain) : EMPTY)),
               switchMap(chain =>
-                getGroupCurrency(unit.groupId)(crudSdk).pipe(
-                  map(currency => ({ chain, currency })),
-                ),
+                forkJoin([
+                  getGroupCurrency(unit.groupId)(crudSdk).pipe(
+                    map(currency => ({ chain, currency })),
+                  ),
+                  getGroup(unit.groupId)(crudSdk),
+                ]),
               ),
-              map(props =>
+              map(([props, group]) =>
                 toGeoUnit({
                   unit,
+                  group,
+                  chain: props.chain,
                   currency: props.currency,
                   inputLocation: location,
                   chainStyle: props.chain.style,
@@ -63,12 +68,16 @@ export const getUnitsInRadius =
 
 const toGeoUnit = ({
   unit,
+  group,
+  chain,
   currency,
   inputLocation,
   chainStyle,
   paymentModes,
 }: {
   unit: CrudApi.Unit;
+  group: CrudApi.Group;
+  chain: CrudApi.Chain;
   currency: string;
   inputLocation: CrudApi.LocationInput;
   chainStyle: CrudApi.ChainStyle;
@@ -77,6 +86,9 @@ const toGeoUnit = ({
   id: unit.id,
   groupId: unit.groupId,
   chainId: unit.chainId,
+  unit,
+  chain,
+  group,
   name: unit.name,
   address: unit.address,
   isAcceptingOrders: unit.isAcceptingOrders,
@@ -99,13 +111,12 @@ const toGeoUnit = ({
     unit.supportedServingModes && unit.supportedServingModes.length > 0
       ? unit.supportedServingModes
       : defaultSupportedServingModes,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 });
 
 const listActiveUnits = () => (crudSdk: CrudApi.CrudSdk) =>
-  crudSdk.ListUnits(
-    { filter: { isActive: { eq: true } } },
-    { fetchPolicy: 'no-cache' },
-  );
+  crudSdk.SearchUnits({ filter: { isActive: { eq: true } } });
 
 const getGroupCurrency =
   (id: string) =>
@@ -122,3 +133,10 @@ const getChain =
     crudSdk
       .GetChain({ id }, { fetchPolicy: 'no-cache' })
       .pipe(throwIfEmptyValue<CrudApi.Chain>());
+
+const getGroup =
+  (id: string) =>
+  (crudSdk: CrudApi.CrudSdk): Observable<CrudApi.Group> =>
+    crudSdk
+      .GetGroup({ id }, { fetchPolicy: 'no-cache' })
+      .pipe(throwIfEmptyValue<CrudApi.Group>());

@@ -67,10 +67,14 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
 
   const orderRequestHandlers = orderRequestHandler({
     crudSdk,
-    userId: event.identity?.username || '',
+    orderTableName: tableConfig.Order.TableName,
     unitTableName: tableConfig.Unit.TableName,
-    currentTime: () => new Date(),
+    currentTimeISOString: () => new Date().toISOString(),
+    random: Math.random,
     axiosInstance: axios,
+    uuid: () => uuidV1(),
+    docClient,
+    userId: event.identity?.username || '',
   });
 
   const unitRequestHandlers = unitRequestHandler(unitsDeps.crudSdk);
@@ -93,6 +97,8 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
   const resolverMap: any = {
     Mutation: {
       startStripePayment: stripeRequestHandlers.startStripePayment,
+      startStripePaymentConnected:
+        stripeRequestHandlers.startStripePaymentConnected,
       payTipWithStripe: stripeRequestHandlers.payTipWithStripe,
       createStripeCard: stripeRequestHandlers.createStripeCard,
       updateMyStripeCard: stripeRequestHandlers.updateStripeCard,

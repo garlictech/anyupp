@@ -70,9 +70,8 @@ class GeneratedProductConfigSet {
       position: map['position'],
       type: map['type'],
       maxSelection: map['maxSelection'],
-      items: List<GeneratedProductConfigComponent>.from(
-          map['items']?.map((x) => GeneratedProductConfigComponent.fromJson(x)))
-        ..sort((a, b) => (b.position ?? 0) - (a.position ?? 0)),
+      items: List<GeneratedProductConfigComponent>.from(map['items']
+          ?.map((x) => GeneratedProductConfigComponent.fromJson(x))),
       supportedServingModes: map['supportedServingModes'] != null
           ? List<ServingMode>.from(
               map['supportedServingModes']?.map(

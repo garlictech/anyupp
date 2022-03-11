@@ -39,10 +39,7 @@ Feature: Error messages
     And I tap the "ALL RIGHT" button
 
   Scenario: Stripe payment error message
-    When I tap the text "Continue anonymously"
-    And there is the unit selection screen
-    When I tap the "Késdobáló #111" unit in the list
-    And I tap the "Take away" button
+    When I am logged in "Késdobáló #111" unit as an anonym user
     When I tap the "Sajtburger" card under "Hamburgers" category
     And I tap the "Add To Cart" button
     Then I should see the "Menu" is selected

@@ -130,6 +130,7 @@ class Locally {
           Nav.to(TransactionOrderDetailsScreen(
             orderId: payload.orderId,
             unit: state.unit,
+            key: UniqueKey(),
           ));
         } else {
           // No unit selected.

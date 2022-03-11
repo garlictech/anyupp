@@ -28,3 +28,10 @@ double get serviceFeeMul =>
             currentServingMode != ServingMode.takeAway)
         ? 1.0 + (currentUnit!.serviceFeePolicy!.percentage / 100.0)
         : 1.0;
+
+double serviceFeeMulOrder(ServiceFeePolicy? serviceFeePolicy) =>
+    // 1.0 + ((currentUnit?.serviceFeePolicy?.percentage ?? 0.0) / 100.0);
+    (serviceFeePolicy?.type == ServiceFeeType.included &&
+            currentServingMode != ServingMode.takeAway)
+        ? 1.0 + ((serviceFeePolicy?.percentage ?? 0) / 100.0)
+        : 1.0;

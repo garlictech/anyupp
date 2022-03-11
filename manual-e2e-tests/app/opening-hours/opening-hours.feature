@@ -5,7 +5,7 @@ Feature: Opening Hours
     And the language is set to EN
     When I tap the text "Continue anonymously"
     Then there is a loading screen
-    And there is the unit selection screen
+    And I should see the "Home" screen
 
   Scenario: Read opening hours
     #Scenario: Check opening hours from the unit selection screen
@@ -17,7 +17,7 @@ Feature: Opening Hours
     And the time is after opening hours it should show "Closed"
     # Scenario: Check opening hours from the map
     When I tap the text "Check them all on the map"
-    Then there is the map screen
+    Then I should see the "map" screen
     And I should see my location with red marker
     And I should see "Késdobáló #111" unit with green marker
     When I swipe up at the bottom sheet

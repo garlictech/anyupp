@@ -402,29 +402,6 @@
       },
       "tags": ["type:website", "platform:angular"]
     },
-    "admin-pages-role-contexts": {
-      "projectType": "library",
-      "root": "libs/admin/pages/role-contexts",
-      "sourceRoot": "libs/admin/pages/role-contexts/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/pages/role-contexts"],
-          "options": {
-            "jestConfig": "libs/admin/pages/role-contexts/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["type:website", "platform:angular"]
-    },
     "admin-pages-units": {
       "projectType": "library",
       "root": "libs/admin/pages/units",
@@ -1014,29 +991,6 @@
       },
       "tags": ["platform:angular"]
     },
-    "admin-store-role-contexts": {
-      "projectType": "library",
-      "root": "libs/admin/store/role-contexts",
-      "sourceRoot": "libs/admin/store/role-contexts/src",
-      "prefix": "bgap",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/admin/store/role-contexts/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/admin/store/role-contexts"],
-          "options": {
-            "jestConfig": "libs/admin/store/role-contexts/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": ["platform:angular"]
-    },
     "admin-store-units": {
       "root": "libs/admin/store/units",
       "sourceRoot": "libs/admin/store/units/src",
@@ -1227,36 +1181,6 @@
         }
       },
       "tags": ["platform:nodejs", "type:backend"]
-    },
-    "anyupp-gql-api": {
-      "root": "libs/anyupp-gql/api",
-      "sourceRoot": "libs/anyupp-gql/api/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/anyupp-gql/api/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/anyupp-gql/api"],
-          "options": {
-            "jestConfig": "libs/anyupp-gql/api/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "build-schema": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "cwd": "apps/crud-backend",
-            "commands": ["../../tools/build-schema-anyupp-api.sh"]
-          },
-          "outputs": ["libs/anyupp-gql/api/src/lib/generated"]
-        }
-      },
-      "tags": ["platform:nodejs"]
     },
     "anyupp-gql-backend": {
       "root": "libs/anyupp-gql/backend",

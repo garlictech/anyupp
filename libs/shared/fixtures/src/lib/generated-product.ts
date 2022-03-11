@@ -1,11 +1,7 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { RequiredId } from '@bgap/shared/types';
 import { testIdPrefix } from './common';
 
-const getGeneratedProductVariant = (
-  idx: number,
-  productId?: string,
-): CrudApi.GeneratedProductVariantInput => ({
+const getGeneratedProductVariant = (idx: number, productId?: string) => ({
   id: `${testIdPrefix}generatedProductVariant_id_p${productId}_${idx}`,
   variantName: {
     en: `VARIANT_NAME_${productId || idx}`,
@@ -25,7 +21,7 @@ const getGeneratedProduct = ({
   id: string;
   unitId: string;
   productCategoryId: string;
-}): RequiredId<CrudApi.CreateGeneratedProductInput> => ({
+}) => ({
   ...generatedProductBase,
   id,
   unitId,
@@ -42,7 +38,7 @@ const getGeneratedProduct = ({
   image: 'https://picsum.photos/100',
 });
 
-const generatedProductBase: CrudApi.CreateGeneratedProductInput = {
+const generatedProductBase = {
   id: `${testIdPrefix}generatedProduct_id_`,
   unitId: 'unitId_',
   productCategoryId: 'productCategoryId_',

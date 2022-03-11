@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -185,13 +187,12 @@ class AwsCartProvider implements ICartProvider {
     print('AwsCartProvider.CREATING CART IN BACKEND');
     try {
       var result = await GQL.amplify.execute(CreateCartMutation(
-        variables: CreateCartArguments(
-          createCartInput: _createCartInput(cart),
-        ),
+        variables: _createCartArguments(cart),
+        // variables: CreateCartArguments(
+        //   createCartInput: _createCartInput(cart),
+        // ),
       ));
-      // print('******** CREATING CART IN BACKEND.result.data=${result.data}');
-      // print(
-      //     'AwsCartProvider.CREATING CART IN BACKEND.result.errors=${result.errors}');
+      print('******** CREATING CART IN BACKEND.result.data=${result.data}');
       if (result.hasErrors) {
         print('AwsCartProvider._saveCartToBackend().error()=${result.errors}');
         throw GraphQLException.fromGraphQLError(
@@ -251,9 +252,9 @@ class AwsCartProvider implements ICartProvider {
     }
   }
 
-  CreateCartInput _createCartInput(Cart cart) {
-    return CreateCartInput(
-      id: cart.id,
+  CreateCartArguments _createCartArguments(Cart cart) {
+    return CreateCartArguments(
+      version: AppConfig.AppVersion,
       unitId: cart.unitId,
       userId: cart.userId,
       servingMode: cart.servingMode,
@@ -292,8 +293,9 @@ class AwsCartProvider implements ICartProvider {
           ],
           sumPriceShown: PriceShownInput(
             currency: item.priceShown.currency,
-            pricePerUnit: item.getPrice(),
-            priceSum: item.getPrice() * item.quantity,
+            pricePerUnit: item.getPrice(currentUnit?.serviceFeePolicy),
+            priceSum:
+                item.getPrice(currentUnit?.serviceFeePolicy) * item.quantity,
             tax: item.priceShown.tax,
             taxSum: item.priceShown.taxSum,
           ),
@@ -349,6 +351,7 @@ class AwsCartProvider implements ICartProvider {
   UpdateCartInput _updateCartInput(Cart cart) {
     return UpdateCartInput(
       id: cart.id!,
+      version: AppConfig.AppVersion,
       unitId: cart.unitId,
       userId: cart.userId,
       servingMode: cart.servingMode,
@@ -387,8 +390,9 @@ class AwsCartProvider implements ICartProvider {
           ],
           sumPriceShown: PriceShownInput(
             currency: item.priceShown.currency,
-            pricePerUnit: item.getPrice(),
-            priceSum: item.getPrice() * item.quantity,
+            pricePerUnit: item.getPrice(currentUnit?.serviceFeePolicy),
+            priceSum:
+                item.getPrice(currentUnit?.serviceFeePolicy) * item.quantity,
             tax: item.priceShown.tax,
             taxSum: item.priceShown.taxSum,
           ),

@@ -20,17 +20,6 @@
   shape="round"
   size="tiny"
   class="float-right me-3"
-  [title]="'roles.editRoles' | translate"
-  (click)="editAdminUserRoles()"
->
-  <nb-icon icon="verified_user_outline" pack="material-icons"></nb-icon>
-</button>
-
-<button
-  nbButton
-  shape="round"
-  size="tiny"
-  class="float-right me-3"
   [title]="'auth.sendResetEmail' | translate"
   (click)="resetEmail()"
 >
@@ -38,10 +27,3 @@
 </button>
 
 <div class="clearfix"></div>
-
-<div class="ps-5">
-  <div class="caption" *ngFor="let item of adminUser?.roleContexts?.items">
-    {{ 'roles.' + item?.roleContext?.role | translate }} @
-    {{ item?.roleContext | roleEntityNames | async }}
-  </div>
-</div>

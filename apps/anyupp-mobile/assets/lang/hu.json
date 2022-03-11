@@ -142,9 +142,9 @@
     "takeAway": "elvitel",
     "inPlace": "helyben",
     "packagingFee": "Csomagolási díj",
-    "serviceFee": "Szervízdíj",
-    "hasServiceFee": "Az ár szervízdíjat tartalmaz.",
-    "hasNoServiceFee": "Az ár szervízdíjat nem tartalmaz."
+    "serviceFee": "Szervizdíj",
+    "hasServiceFee": "Az ár szervizdíjat tartalmaz.",
+    "hasNoServiceFee": "Az ár szervizdíjat nem tartalmaz."
   },
   "allergens": {
     "title": "ALLERGÉNEK",
@@ -173,7 +173,8 @@
   "orders": {
     "titleCurrentOrder": "Folyamatban lévő rendelések",
     "titleOrderHistory": "Korábbi rendelések",
-    "noActiveOrder": "Nincs teljesítésre váró rendelésed.",
+    "noActiveOrderSimplified": "Eszedbe jutott még valami?.",
+    "noActiveOrderFull": "Nincs teljesítésre váró rendelésed.",
     "noActiveOrderDesc": "Rendelj néhány kattintással!",
     "noActiveOrderButton": "Étlap felfedezése",
     "totalCost": "ÖSSZESEN",
@@ -194,7 +195,7 @@
       "paymentDetails": "Fizetés részletei",
       "otherDetails": "További részletek",
       "tipDetails": "Borravaló",
-      "serviceFee": "Az ár {{0}}% szervízdíjat tartalmaz."
+      "serviceFee": "Az ár {{0}}% szervizdíjat tartalmaz."
     },
     "status": {
       "none": "VÁR",
@@ -259,6 +260,11 @@
           "title": "Felszolgálva",
           "titleShort": "Felszolgálva",
           "description": "Rendelésed elkészült, hamarosan felszolgáljuk neked. "
+        },
+        "simplified": {
+          "title": "Rendelés leadva",
+          "titleShort": "Rendelés leadva",
+          "description": "Rendelésed feldolgozás alatt áll. Ha bármi probléma felmerülne, kollégáink keresni fognak."
         }
       },
       "timeline": {
@@ -445,14 +451,21 @@
     "scanQR": "Kattints ide és olvasd be a QR kódot az asztalodról!",
     "qrConnected": "Helyválasztás",
     "chair": "szék #{{0}} asztalszám #{{1}}",
+    "table": "Asztalszám #{{1}}",
     "findingSeat": "Asztal és szék kiválasztása...",
+    "findingTable": "Asztal kiválasztása ...",
     "findingSeatLoading": "Ez eltarthat néhány másodpercig. Kérjük, ne zárd be az ablakot!",
-    "tableReserved": {
+    "seatReserved": {
       "title": "Hely kiválasztva!",
       "description": "Hely sikeresen kiválasztva. Asztal: #{{0}}, Szék: #{{1}}"
     },
+    "tableReserved": {
+      "title": "Hely kiválasztva!",
+      "description": "Hely sikeresen kiválasztva. Asztal: #{{0}}"
+    },
     "tableFound": {
-      "title": "Szék: #{{1}}, Asztal: #{{0}}",
+      "seat": "Chair: #{{0}}",
+      "table": "Table: #{{0}}",
       "description": "A kapcsolódás megtörtént. Folytathatod a rendelést!"
     },
     "qrCodeError": {
@@ -498,7 +511,7 @@
         "confirm": "Újrakérés"
       }
     },
-    "info": "A rendelés véglegesítéséhez olvasd be a QR kódot az asztalodon.",
+    "info": "A rendeléshez olvasd be a QR kódot az asztalodon.",
     "infoDesc": "Tartsd a kódot a négyzeten belülre a kapcsolódáshoz."
   },
   "selectUnitMap": {
@@ -571,7 +584,7 @@
   },
   "product": {
     "notTakeAway": "Csak helyben",
-    "notTakeAwaDesc": "A termék csak helyben fogyasztásra elérhető.",
+    "notTakeAwayDesc": "A termék csak helyben fogyasztásra elérhető.",
     "notInPlace": "Csak elvitelre",
     "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
     "soldOut": "Elfogyott",

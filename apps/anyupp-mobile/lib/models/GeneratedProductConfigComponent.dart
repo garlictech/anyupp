@@ -67,8 +67,10 @@ class GeneratedProductConfigComponent {
       netPackagingFee: map['netPackagingFee'],
       name: LocalizedItem.fromJson(map['name']),
       externalId: map['externalId'],
-      allergens: List<Allergen>.from(
-          map['allergens']?.map((x) => enumFromString(x, Allergen.values))),
+      allergens: map['allergens'] != null
+          ? List<Allergen>.from(
+              map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
+          : null,
       soldOut: map['soldOut'] ?? false,
     );
   }

@@ -11,8 +11,7 @@ import {
 import { EProductType, RequiredId } from '@bgap/shared/types';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
-import { DateTime } from 'luxon';
-import { combineLatest, concat, from, Observable, of } from 'rxjs';
+import { combineLatest, from, Observable, of } from 'rxjs';
 import { catchError, concatMap, switchMap, tap, toArray } from 'rxjs/operators';
 import * as R from 'ramda';
 import { seedUtils } from './utils';
@@ -708,14 +707,6 @@ export const createTestOrder =
       orderMode: CrudApi.OrderMode.pickup,
       servingMode: CrudApi.ServingMode.takeaway,
       archived: false,
-      orderNum: '007007',
-      statusLog: [
-        {
-          userId: 'ADMIN_USER_ID',
-          status: CrudApi.OrderStatus.none,
-          ts: DateTime.utc().toMillis(),
-        },
-      ],
       place: {
         seat: '00',
         table: '70',
@@ -774,151 +765,6 @@ export const createTestOrder =
     return deleteCreate(
       () => deps.crudSdk.DeleteOrder({ input: { id: input.id ?? '' } }),
       () => deps.crudSdk.CreateOrder({ input }),
-    );
-  };
-
-export const createTestRoleContext =
-  (
-    roleContextIdx: number,
-    chainIdx: number,
-    groupIdx: number,
-    unitIdx: number,
-  ) =>
-  (deps: SeederDependencies) => {
-    console.debug('createTestRoleContext', {
-      roleContextIdx,
-      chainIdx,
-      groupIdx,
-      unitIdx,
-    });
-
-    const superuserInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-      id: seedUtils.generateRoleContextId(
-        roleContextIdx,
-        CrudApi.Role.superuser,
-      ),
-      name: {
-        hu: `Test superuser role context #${roleContextIdx}`,
-        en: `Test superuser role context #${roleContextIdx}`,
-      },
-      role: CrudApi.Role.superuser,
-      contextId: 'SU_CTX_ID',
-    };
-    const chainadminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-      id: seedUtils.generateRoleContextId(
-        roleContextIdx,
-        CrudApi.Role.chainadmin,
-      ),
-      name: {
-        hu: `Test chainadmin role context #${roleContextIdx}`,
-        en: `Test chainadmin role context #${roleContextIdx}`,
-      },
-      role: CrudApi.Role.chainadmin,
-      contextId: 'CA_CTX_ID',
-      chainId: seedUtils.generateChainId(chainIdx),
-    };
-    const r3 = CrudApi.Role.groupadmin;
-    const groupadminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-      id: seedUtils.generateRoleContextId(roleContextIdx, r3),
-      name: {
-        hu: `Test groupadmin role context #${roleContextIdx}`,
-        en: `Test groupadmin role context #${roleContextIdx}`,
-      },
-      role: r3,
-      contextId: 'GA_CTX_ID',
-      chainId: seedUtils.generateChainId(chainIdx),
-      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
-    };
-    const r4 = CrudApi.Role.unitadmin;
-    const unitAdminInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-      id: seedUtils.generateRoleContextId(roleContextIdx, r4),
-      name: {
-        hu: `Test unitadmin role context #${roleContextIdx}`,
-        en: `Test unitadmin role context #${roleContextIdx}`,
-      },
-      role: r4,
-      contextId: 'UA_CTX_ID',
-      chainId: seedUtils.generateChainId(chainIdx),
-      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
-      unitId: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
-    };
-    const r5 = CrudApi.Role.staff;
-    const staffInput: DeletableInput<CrudApi.CreateRoleContextInput> = {
-      id: seedUtils.generateRoleContextId(roleContextIdx, r5),
-      name: {
-        hu: `Test staff role context #${roleContextIdx}`,
-        en: `Test staff role context #${roleContextIdx}`,
-      },
-      role: r5,
-      contextId: 'STF_CTX_ID',
-      chainId: seedUtils.generateChainId(chainIdx),
-      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
-      unitId: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
-    };
-
-    const handleRoleContext = <INPUT extends CrudApi.CreateRoleContextInput>(
-      input: INPUT,
-    ) =>
-      deleteCreate(
-        () => deps.crudSdk.DeleteRoleContext({ input: { id: input.id ?? '' } }),
-        () => deps.crudSdk.CreateRoleContext({ input }),
-      );
-
-    return concat(
-      ...[
-        superuserInput,
-        chainadminInput,
-        groupadminInput,
-        unitAdminInput,
-        staffInput,
-      ].map(x => handleRoleContext(x)),
-    );
-  };
-
-export const createTestAdminRoleContext =
-  (adminRoleContextIdx: number, roleContextIdx: number, adminUserId: string) =>
-  (deps: SeederDependencies) => {
-    console.debug('createTestAdminRoleContext', {
-      adminRoleContextIdx,
-      roleContextIdx,
-      adminUserId,
-    });
-    const superuserInput: CrudApi.CreateAdminRoleContextInput = {
-      id: seedUtils.generateAdminRoleContextId(
-        adminRoleContextIdx,
-        CrudApi.Role.superuser,
-        adminUserId,
-      ),
-      adminUserId,
-      roleContextId: seedUtils.generateRoleContextId(
-        roleContextIdx,
-        CrudApi.Role.superuser,
-      ),
-    };
-    const chainadminInput: CrudApi.CreateAdminRoleContextInput = {
-      id: seedUtils.generateAdminRoleContextId(
-        adminRoleContextIdx,
-        CrudApi.Role.chainadmin,
-        adminUserId,
-      ),
-      adminUserId,
-      roleContextId: seedUtils.generateRoleContextId(
-        roleContextIdx,
-        CrudApi.Role.chainadmin,
-      ),
-    };
-
-    return pipe(
-      [superuserInput, chainadminInput].map(input =>
-        deleteCreate(
-          () =>
-            deps.crudSdk.DeleteAdminRoleContext({
-              input: { id: input.id ?? '' },
-            }),
-          () => deps.crudSdk.CreateAdminRoleContext({ input }),
-        ),
-      ),
-      combineLatest,
     );
   };
 
@@ -1167,10 +1013,7 @@ export const seedLotsOfOrders = (
         order: {
           ...orderInput,
           id: orderId,
-          transactionId,
-          tipTransactionId,
           userId,
-          orderNum: index.toString().padStart(6, '0'),
         },
         transaction: {
           ...transactionInput,

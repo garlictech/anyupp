@@ -1,35 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Stripe Payment Method CRUD tests Stripe Card CRUD should list, create, update and delete Stripe cards with old server: card1 1`] = `
-Object {
-  "brand": "visa",
-  "country": "US",
-  "exp_month": 12,
-  "exp_year": 2025,
-  "fingerprint": null,
-  "funding": "credit",
-  "id": "test_payment_method_id",
-  "last4": "4242",
-  "name": "Test Card #1",
-  "three_d_secure": null,
-}
-`;
-
-exports[`Stripe Payment Method CRUD tests Stripe Card CRUD should list, create, update and delete Stripe cards with old server: card2 1`] = `
-Object {
-  "brand": "visa",
-  "country": "US",
-  "exp_month": 12,
-  "exp_year": 2025,
-  "fingerprint": null,
-  "funding": "credit",
-  "id": "test_payment_method_id",
-  "last4": "4242",
-  "name": "Test Card #2",
-  "three_d_secure": null,
-}
-`;
-
 exports[`Stripe Payment Method CRUD tests Stripe Card CRUD should list, create, update and delete Stripe cards: card1 1`] = `
 Object {
   "billing_details": null,
@@ -40,6 +10,7 @@ Object {
     "cvc_check": "unchecked",
   },
   "country": "US",
+  "createdAt": "MASKED DATE",
   "exp_month": 12,
   "exp_year": 2025,
   "fingerprint": null,
@@ -48,6 +19,7 @@ Object {
   "last4": "4242",
   "name": "Test Card #1",
   "three_d_secure": null,
+  "updatedAt": "MASKED DATE",
 }
 `;
 
@@ -61,6 +33,7 @@ Object {
     "cvc_check": "pass",
   },
   "country": "US",
+  "createdAt": "MASKED DATE",
   "exp_month": 12,
   "exp_year": 2025,
   "fingerprint": null,
@@ -69,5 +42,6 @@ Object {
   "last4": "4242",
   "name": "Test Card #2",
   "three_d_secure": null,
+  "updatedAt": "MASKED DATE",
 }
 `;

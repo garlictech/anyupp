@@ -4,7 +4,7 @@
       <input nbInput type="date" fullWidth [formControl]="dateFormControl" />
     </div>
 
-    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="100">
+    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="50">
       <nb-list>
         <nb-list-item
           *cdkVirtualFor="let order of dailyOrders"

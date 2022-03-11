@@ -38,7 +38,9 @@
   },
   "anyupp-backend-stripe": {
     "stripewebhookEndpoint": "https://stripe-webhook-staging.anyupp.com/staging",
-    "StripeWebhookEndpointE83D65EB": "https://ftf5884uik.execute-api.eu-west-1.amazonaws.com/staging/"
+    "StripeWebhookNewEndpoint6D902BCA": "https://xy43912v62.execute-api.eu-west-1.amazonaws.com/staging/",
+    "StripeWebhookEndpointE83D65EB": "https://ftf5884uik.execute-api.eu-west-1.amazonaws.com/staging/",
+    "stripewebhookEndpointNew": "https://xy43912v62.execute-api.eu-west-1.amazonaws.com/staging/"
   },
   "anyupp-backend-rkeeper": {
     "RKeeperWebhookEndpointCBC72BD4": "https://q6bb7pplml.execute-api.eu-west-1.amazonaws.com/staging/",

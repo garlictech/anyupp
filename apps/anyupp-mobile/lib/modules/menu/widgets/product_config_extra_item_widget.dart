@@ -95,7 +95,6 @@ class _ProductConfigExtrasItemWidgetState
       List<GeneratedProductConfigComponent> components,
       GeneratedProductConfigSet productSet) {
     List<Widget> widgets = [];
-    components.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
     components.forEach((extra) {
       bool isSelected = _selectedExtras['${extra.productComponentId}'] != null;
       bool last = false;

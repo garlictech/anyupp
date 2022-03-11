@@ -11,26 +11,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../mock/mock_api_values.dart';
 import '../mock/mock_data_faker.dart';
 import 'mock/mocks.dart';
 
 void main() {
-  List<RatingPolicy> _dummyRatingPolicy([String key = 'TEST_KEY']) {
-    return [
-      RatingPolicy(key: key, ratings: [
-        RatingPolicyItem(value: 1),
-        RatingPolicyItem(value: 2),
-        RatingPolicyItem(value: 3),
-        RatingPolicyItem(value: 4),
-        RatingPolicyItem(value: 5),
-      ])
-    ];
-  }
-
-  TipPolicy _dummyTipPolicy() {
-    return TipPolicy(percents: [5, 10, 15, 20, 25]);
-  }
-
   setUpAll(() {
     GoogleFonts.config.allowRuntimeFetching = false;
     MockThemeBloc themeBloc = MockThemeBloc();
@@ -143,7 +128,9 @@ void main() {
         currency: 'HUF',
       );
       _unit = _unit.copyWith(
-        ratingPolicies: _dummyRatingPolicy(),
+        ratingPolicies: [
+          TestMock.mockRatingPolicy()!,
+        ],
       );
       getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
     });
@@ -161,6 +148,10 @@ void main() {
           paymentType: PaymentType.stripe,
           status: OrderStatus.served,
           price: 1000,
+        ).copyWith(
+          ratingPolicies: [
+            TestMock.mockRatingPolicy()!,
+          ],
         );
 
         await tester.pumpWidget(
@@ -190,7 +181,7 @@ void main() {
         currency: 'HUF',
       );
       _unit = _unit.copyWith(
-        tipPolicy: _dummyTipPolicy(),
+        tipPolicy: TestMock.mockTipPolicy(),
       );
       getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
     });
@@ -199,7 +190,7 @@ void main() {
       getIt.unregister<UnitSelectBloc>();
     });
 
-    testWidgets('Test Order details widget with rating',
+    testWidgets('Test Order details widget with rating and tip',
         (WidgetTester tester) async {
       await tester.runAsync(() async {
         Order order = MockGenerator.generateOrder(
@@ -208,10 +199,12 @@ void main() {
           paymentType: PaymentType.stripe,
           status: OrderStatus.served,
           price: 1000,
-        );
-        order = order.copyWith(
+        ).copyWith(
           transaction: MockGenerator.generateTransaction()
               .copyWith(externalTransactionId: 'STRIPE_PAYMENT_INTENT_ID'),
+          ratingPolicies: [
+            TestMock.mockRatingPolicy()!,
+          ],
         );
 
         await tester.pumpWidget(
@@ -242,8 +235,10 @@ void main() {
         currency: 'HUF',
       );
       _unit = _unit.copyWith(
-        ratingPolicies: _dummyRatingPolicy(),
-        tipPolicy: _dummyTipPolicy(),
+        ratingPolicies: [
+          TestMock.mockRatingPolicy()!,
+        ],
+        tipPolicy: TestMock.mockTipPolicy(),
       );
       getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
     });
@@ -261,10 +256,13 @@ void main() {
           paymentType: PaymentType.stripe,
           status: OrderStatus.served,
           price: 1000,
-        );
-        order = order.copyWith(
+        ).copyWith(
           transaction: MockGenerator.generateTransaction()
               .copyWith(externalTransactionId: 'STRIPE_PAYMENT_INTENT_ID'),
+          ratingPolicies: [
+            TestMock.mockRatingPolicy()!,
+          ],
+          tipPolicy: TestMock.mockTipPolicy(),
         );
 
         await tester.pumpWidget(
@@ -294,8 +292,10 @@ void main() {
         currency: 'HUF',
       );
       _unit = _unit.copyWith(
-        ratingPolicies: _dummyRatingPolicy(),
-        tipPolicy: _dummyTipPolicy(),
+        ratingPolicies: [
+          TestMock.mockRatingPolicy()!,
+        ],
+        tipPolicy: TestMock.mockTipPolicy(),
       );
       getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
     });
@@ -325,6 +325,9 @@ void main() {
             TipType.none,
             0,
           ),
+          ratingPolicies: [
+            TestMock.mockRatingPolicy()!,
+          ],
         );
 
         await tester.pumpWidget(
@@ -354,8 +357,10 @@ void main() {
         currency: 'HUF',
       );
       _unit = _unit.copyWith(
-        ratingPolicies: _dummyRatingPolicy(),
-        tipPolicy: _dummyTipPolicy(),
+        ratingPolicies: [
+          TestMock.mockRatingPolicy()!,
+        ],
+        tipPolicy: TestMock.mockTipPolicy(),
       );
       getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
     });
@@ -384,6 +389,9 @@ void main() {
             TipType.amount,
             500,
           ),
+          ratingPolicies: [
+            TestMock.mockRatingPolicy()!,
+          ],
         );
 
         await tester.pumpWidget(

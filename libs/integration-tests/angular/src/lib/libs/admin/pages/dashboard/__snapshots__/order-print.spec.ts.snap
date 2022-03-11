@@ -41,6 +41,6 @@ Object {
   "currency": "HUF",
   "priceSum": 1491,
   "tax": 27,
-  "taxSum": 316.98,
+  "taxSum": 317,
 }
 `;

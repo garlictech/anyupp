@@ -6,7 +6,7 @@ import { defer, from } from 'rxjs';
 import * as R from 'ramda';
 
 export interface SendRkeeperOrderDeps {
-  currentTime: () => Date;
+  currentTimeISOString: () => string;
   axiosInstance: AxiosStatic;
 }
 
@@ -21,9 +21,14 @@ const processConfigSet = (configSets: CrudApi.OrderItemConfigSetInput[]) =>
     })),
   );
 
+export type RkeeperOrder = Pick<
+  CrudApi.CreateOrderInput,
+  'paymentMode' | 'place' | 'items'
+>;
+
 export const sendRkeeperOrder =
   (deps: SendRkeeperOrderDeps) =>
-  (unit: CrudApi.Unit, orderInput: CrudApi.CreateOrderInput) =>
+  (unit: CrudApi.Unit, orderInput: RkeeperOrder) =>
     pipe(
       orderInput.items.map(item =>
         pipe(
@@ -48,7 +53,7 @@ export const sendRkeeperOrder =
           orderInput.paymentMode?.method === CrudApi.PaymentMethod.inapp
             ? 1
             : 0,
-        delivery_time: deps.currentTime().toISOString().split('.')[0],
+        delivery_time: deps.currentTimeISOString().split('.')[0],
         client: {
           phone: unit.phone,
           email: unit.email,

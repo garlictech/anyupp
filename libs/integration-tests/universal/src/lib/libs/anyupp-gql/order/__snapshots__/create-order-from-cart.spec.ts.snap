@@ -222,8 +222,8 @@ Array [
       ],
       "serviceFee": Object {
         "currency": "EUR",
-        "netPrice": 0.20320000000000002,
-        "taxPercentage": 0,
+        "grossPrice": 0.20320000000000002,
+        "taxContent": 0.0432,
       },
       "serviceFeePolicy": Object {
         "percentage": 10,
@@ -262,7 +262,7 @@ Array [
 ]
 `;
 
-exports[`CreatOrderFromCart mutation test should create an order from a valid cart with old API server: Order content 1`] = `
+exports[`CreatOrderFromCart mutation test With version 0, no packaging fee + service fee should be handled 1`] = `
 Object {
   "archived": false,
   "createdAt": Any<String>,
@@ -595,7 +595,7 @@ Object {
     "type": "applicable",
   },
   "servingMode": "inPlace",
-  "startPreparing": null,
+  "soldOutVisibilityPolicy": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -665,11 +665,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.13,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -758,11 +754,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.24,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -888,11 +880,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.7599999999999999,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -916,8 +904,9 @@ Object {
     },
   ],
   "orderMode": "instant",
-  "orderNum": "TABLESEAT03",
+  "orderNum": "TABLESEAT01",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
@@ -960,17 +949,13 @@ Object {
       },
     },
   ],
-  "serviceFee": Object {
-    "currency": "EUR",
-    "netPrice": 1.7288999999999999,
-    "taxPercentage": 0,
-  },
+  "serviceFee": null,
   "serviceFeePolicy": Object {
     "percentage": 10,
     "type": "applicable",
   },
   "servingMode": "takeAway",
-  "startPreparing": null,
+  "soldOutVisibilityPolicy": null,
   "statusLog": Array [
     Object {
       "status": "none",
@@ -1003,21 +988,16 @@ Object {
   "transactionStatus": "waiting_for_payment",
   "unitId": "test_unit_1_id",
   "unpayCategory": null,
-  "updatedAt": Any<String>,
+  "updatedAt": "MASKED DATE",
   "userId": "testuser+test",
 }
 `;
-
-exports[`CreatOrderFromCart mutation test should create an order from a valid cart with old API server: fail in case the cart is not the user's 1`] = `[Error: GraphQL error: Cart is missing]`;
-
-exports[`CreatOrderFromCart mutation test should create an order from a valid cart with old API server: fail without a cart 1`] = `[Error: GraphQL error: Cart is missing: test_NOT_EXSISTING_CART]`;
-
-exports[`CreatOrderFromCart mutation test should create an order from a valid cart with old API server: fail without a unit 1`] = `[Error: GraphQL error: {"message":"Unit is not accepting orders right now. Try it later!","code":"ERROR_UNIT_NOT_ACCEPTING_ORDERS"}]`;
 
 exports[`CreatOrderFromCart mutation test should create an order from a valid cart with resolver function: Order content 1`] = `
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "externalId": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -1299,6 +1279,7 @@ Object {
   "orderMode": "instant",
   "orderNum": "TABLESEAT01",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": null,
   "paymentIntention": null,
   "paymentMode": Object {
@@ -1339,8 +1320,8 @@ Object {
   ],
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 1.7145,
-    "taxPercentage": 0,
+    "grossPrice": 1.7145,
+    "taxContent": 0.3645,
   },
   "serviceFeePolicy": Object {
     "percentage": 10,
@@ -1389,6 +1370,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "externalId": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -1417,11 +1399,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.13,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -1510,11 +1488,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.24,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -1640,11 +1614,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.7599999999999999,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -1670,6 +1640,7 @@ Object {
   "orderMode": "instant",
   "orderNum": "TABLESEAT03",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
@@ -1712,11 +1683,7 @@ Object {
       },
     },
   ],
-  "serviceFee": Object {
-    "currency": "EUR",
-    "netPrice": 1.7288999999999999,
-    "taxPercentage": 0,
-  },
+  "serviceFee": null,
   "serviceFeePolicy": Object {
     "percentage": 10,
     "type": "applicable",
@@ -1770,6 +1737,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "externalId": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -2051,6 +2019,7 @@ Object {
   "orderMode": "instant",
   "orderNum": "TABLESEAT01",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": null,
   "paymentIntention": null,
   "paymentMode": Object {
@@ -2091,8 +2060,8 @@ Object {
   ],
   "serviceFee": Object {
     "currency": "EUR",
-    "netPrice": 1.7145,
-    "taxPercentage": 0,
+    "grossPrice": 1.7145,
+    "taxContent": 0.3645,
   },
   "serviceFeePolicy": Object {
     "percentage": 10,
@@ -2141,6 +2110,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "externalId": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -2169,11 +2139,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.13,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -2262,11 +2228,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.24,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -2392,11 +2354,7 @@ Object {
       },
       "productType": "PRODUCT_TYPE",
       "quantity": 2,
-      "serviceFee": Object {
-        "currency": "EUR",
-        "netPrice": 0.7599999999999999,
-        "taxPercentage": 53,
-      },
+      "serviceFee": null,
       "statusLog": Array [
         Object {
           "status": "none",
@@ -2422,6 +2380,7 @@ Object {
   "orderMode": "instant",
   "orderNum": "TABLESEAT03",
   "orderPolicy": null,
+  "packagingFeeTaxPercentage": null,
   "packagingSum": Object {
     "currency": "EUR",
     "netPrice": 10,
@@ -2464,11 +2423,7 @@ Object {
       },
     },
   ],
-  "serviceFee": Object {
-    "currency": "EUR",
-    "netPrice": 1.7288999999999999,
-    "taxPercentage": 0,
-  },
+  "serviceFee": null,
   "serviceFeePolicy": Object {
     "percentage": 10,
     "type": "applicable",

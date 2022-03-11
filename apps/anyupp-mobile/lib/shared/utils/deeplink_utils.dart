@@ -119,16 +119,23 @@ Future<bool> handleUrlQR(Uri uri) async {
 }
 
 bool isValidQRUrl(Uri uri) {
-  return uri.pathSegments.length == 3 &&
+  bool seatUrl = (uri.pathSegments.length == 3) &&
       regAlphaNumericSeatOrTable.hasMatch(uri.pathSegments[1]) &&
       regAlphaNumericSeatOrTable.hasMatch(uri.pathSegments[2]) &&
       uri.origin.contains('anyupp.com');
+  bool tableUrl = (uri.pathSegments.length == 2) &&
+      regAlphaNumericSeatOrTable.hasMatch(uri.pathSegments[1]) &&
+      uri.origin.contains('anyupp.com');
+  return seatUrl || tableUrl;
 }
 
 Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
   final unitId = uri.pathSegments[0];
   final table = uri.pathSegments[1];
-  final seat = uri.pathSegments[2];
+  String? seat;
+  if (uri.pathSegments.length == 3) {
+    seat = uri.pathSegments[2];
+  }
   final Place place = Place(table: table, seat: seat);
   print(
       '***** getNavigationPageByUrlFromQRDeeplink().unitId=$unitId, table=$table, seat=$seat');

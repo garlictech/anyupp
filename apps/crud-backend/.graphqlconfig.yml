@@ -14,8 +14,7 @@ projects:
         apiId: null
         maxDepth: 6
   anyuppbackend:
-    schemaPath: >-
-      home/molnarzs/ActualProjects/bgap/anyupp/libs/crud-gql/api/src/lib/generated/graphql/schema.json
+    schemaPath: ../../libs/crud-gql/api/src/lib/generated/graphql/schema.json
     includes:
       - src/graphql/**/*.js
     excludes:

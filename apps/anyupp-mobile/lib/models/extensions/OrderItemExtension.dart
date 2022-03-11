@@ -2,7 +2,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
 
 extension OrderItemExtension on OrderItem {
-  double getPrice() {
+  double getPrice(ServiceFeePolicy? policy) {
     double sum = priceShown.pricePerUnit;
     if (selectedConfigMap != null) {
       selectedConfigMap!.forEach((key, value) {
@@ -12,7 +12,7 @@ extension OrderItemExtension on OrderItem {
         }
       });
     }
-    sum *= serviceFeeMul;
+    sum *= serviceFeeMulOrder(policy);
     return sum;
   }
 

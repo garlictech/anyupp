@@ -1,15 +1,4 @@
-import { take } from 'rxjs/operators';
-
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-} from '@angular/core';
-import { appCoreActions, appCoreSelectors } from '@bgap/admin/store/app-core';
-import { CognitoService } from '@bgap/admin/shared/data-access/auth';
-import { NbToastrService } from '@nebular/theme';
-import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,44 +6,11 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements AfterViewInit {
+export class LoginComponent {
   public context;
 
-  constructor(
-    private _store: Store,
-    private _cognitoService: CognitoService,
-    private _nbToastrService: NbToastrService,
-    private _translateService: TranslateService,
-  ) {
+  constructor() {
     // Temp fix
     this.context = 'SU_CTX_ID';
-    this._cognitoService.currentContext = this.context;
-  }
-
-  ngAfterViewInit() {
-    this._store
-      .select(appCoreSelectors.getLoginContextFailure)
-      .pipe(take(1))
-      .subscribe(loginContextFailure => {
-        if (loginContextFailure) {
-          this._nbToastrService.danger(
-            this._translateService.instant('errors.loginContextFailure'),
-            this._translateService.instant('common.error'),
-            {
-              duration: 4000,
-            },
-          );
-
-          this._store.dispatch(
-            appCoreActions.setLoginContextFailure({
-              loginContextFailure: false,
-            }),
-          );
-        }
-      });
-  }
-
-  public contextChanged(context: string): void {
-    this._cognitoService.currentContext = context;
   }
 }

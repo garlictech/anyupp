@@ -622,6 +622,7 @@ class MyChromeSafariBrowser extends ChromeSafariBrowser {
   void onClosed() {
     print("ChromeSafari browser closed");
     super.onClosed();
+    getIt<LoginBloc>().add(ResetLogin());
   }
 }
 

@@ -10,7 +10,7 @@ import {
   saveExcelReport,
   startOfThisYear,
 } from './report-utils';
-import { uploadReport } from './slack-utils';
+// import { uploadReport } from './slack-utils';
 import { tap } from 'rxjs/operators';
 
 export const createReport = (deps: ReportDeps) => {
@@ -47,8 +47,8 @@ export const createReport = (deps: ReportDeps) => {
         saveExcelReport(report, deps.reportFile);
 
         try {
-          const slackResponse = await uploadReport(deps)();
-          console.log('slackResponse data: ', slackResponse?.data);
+          // const slackResponse = await uploadReport(deps)();
+          // console.log('slackResponse data: ', slackResponse?.data);
         } catch (err) {
           console.error('Slack API error: ', err);
         }

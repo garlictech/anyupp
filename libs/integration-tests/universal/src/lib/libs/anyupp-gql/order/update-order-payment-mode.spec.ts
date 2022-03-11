@@ -4,6 +4,7 @@ import { delay, switchMap, tap } from 'rxjs/operators';
 import { updateOrderPaymentMode } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
+  getCognitoUsername,
   orderFixture,
   testAdminUsername,
   testAdminUserPassword,
@@ -13,7 +14,7 @@ import { RequiredId } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 
 import {
-  createAuthenticatedAnyuppSdk,
+  createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
 import { createTestOrder, deleteTestOrder } from '../../../seeds/order';
@@ -27,8 +28,6 @@ const waiting_order: RequiredId<CrudApi.CreateOrderInput> = {
 };
 
 describe('updateOrderPaymentMode test', () => {
-  let authenticatedUserId: string;
-
   const orderDeps = {
     crudSdk: createIamCrudSdk(),
     timestamp: () => 123456789,
@@ -41,11 +40,10 @@ describe('updateOrderPaymentMode test', () => {
     ]);
 
   beforeAll(done => {
-    createAuthenticatedAnyuppSdk(testAdminUsername, testAdminUserPassword)
+    createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
       .pipe(
         tap(x => {
-          authenticatedUserId = x.userAttributes.id;
-          waiting_order.userId = authenticatedUserId;
+          waiting_order.userId = getCognitoUsername(testAdminUsername);
         }),
       )
       .subscribe(() => done());

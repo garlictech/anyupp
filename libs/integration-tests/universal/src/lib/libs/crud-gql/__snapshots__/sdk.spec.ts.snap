@@ -8,10 +8,6 @@ Object {
   "name": "NAME",
   "phone": "+6234567892",
   "profileImage": null,
-  "roleContexts": Object {
-    "items": Array [],
-    "nextToken": null,
-  },
   "settings": null,
   "updatedAt": Any<String>,
 }
@@ -27,10 +23,6 @@ Object {
   "name": "NAME",
   "phone": "+6234567892",
   "profileImage": null,
-  "roleContexts": Object {
-    "items": Array [],
-    "nextToken": null,
-  },
   "settings": null,
   "updatedAt": Any<String>,
 }
@@ -48,10 +40,6 @@ Object {
   "name": "UPDATED_USER",
   "phone": "+6234567892",
   "profileImage": null,
-  "roleContexts": Object {
-    "items": Array [],
-    "nextToken": null,
-  },
   "settings": null,
   "updatedAt": Any<String>,
 }
@@ -65,10 +53,6 @@ Object {
   "name": "NAME2",
   "phone": "+6234567890",
   "profileImage": null,
-  "roleContexts": Object {
-    "items": Array [],
-    "nextToken": null,
-  },
   "settings": null,
   "updatedAt": Any<String>,
 }
@@ -82,10 +66,6 @@ Object {
   "name": "NAME2",
   "phone": "+6234567890",
   "profileImage": null,
-  "roleContexts": Object {
-    "items": Array [],
-    "nextToken": null,
-  },
   "settings": null,
   "updatedAt": Any<String>,
 }

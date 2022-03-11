@@ -41,8 +41,6 @@ export const configurePermissions = (
     'ConsumerNativeUserPoolClientId',
     'ConsumerUserPoolDomain',
     'IdentityPoolId',
-    'AnyuppGraphqlApiKey',
-    'AnyuppGraphqlApiUrl',
     'StripeWebhookEndpoint',
     'AdminSiteUrl',
     'AdminWebUserPoolClientId',

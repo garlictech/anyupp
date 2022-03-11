@@ -5,6 +5,7 @@ import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:fa_prev/shared/widgets/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
@@ -100,64 +101,27 @@ Future<int?> showSelectServingModeSheetWithDeleteConfirm(
 Future<bool?> _showdeleteCartConfirmation(
     BuildContext context, ServingMode servingMode) async {
   print('_showdeleteCartConfirmation().start().mode=$servingMode');
-  final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
-
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(
-          transEx(
+      return PlatformAlertDialog(
+          title: transEx(
             context,
             servingMode == ServingMode.takeAway
                 ? 'servingModeSheet.dialog.title.inplace'
                 : 'servingModeSheet.dialog.title.takeaway',
           ),
-          style: Fonts.satoshi(
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-            color: theme.secondary,
-          ),
-        ),
-        content: Text(
-          transEx(context, 'servingModeSheet.dialog.description'),
-          style: Fonts.satoshi(
-            fontSize: 13,
-            fontWeight: FontWeight.w400,
-            color: theme.secondary,
-          ),
-        ),
-        actions: [
-          TextButton(
-            child: Text(
-              transEx(context, 'servingModeSheet.dialog.cancel'),
-              style: Fonts.satoshi(
-                fontSize: 17,
-                fontWeight: FontWeight.w400,
-                color: theme.secondary,
-              ),
-            ),
-            onPressed: () {
-              Nav.pop(false);
-            },
-          ),
-          TextButton(
-            child: Text(
-              transEx(context, 'servingModeSheet.dialog.ok'),
-              style: Fonts.satoshi(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-                color: theme.highlight,
-              ),
-            ),
-            onPressed: () async {
-              Nav.pop(true);
-              getIt<CartBloc>().add(ClearCartAction());
-              getIt<TakeAwayBloc>().add(SetServingMode(servingMode));
-            },
-          ),
-        ],
-      );
+          description: transEx(context, 'servingModeSheet.dialog.description'),
+          cancelButtonText: transEx(context, 'servingModeSheet.dialog.cancel'),
+          okButtonText: transEx(context, 'servingModeSheet.dialog.ok'),
+          onOkPressed: () async {
+            Nav.pop(true);
+            getIt<CartBloc>().add(ClearCartAction());
+            getIt<TakeAwayBloc>().add(SetServingMode(servingMode));
+          },
+          onCancelPressed: () {
+            Nav.pop(false);
+          });
     },
   );
 }

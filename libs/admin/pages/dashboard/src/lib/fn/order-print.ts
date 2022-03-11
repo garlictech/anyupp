@@ -1,5 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { KeyValueObject } from '@bgap/shared/types';
+import { net2gross, taxValueFromNetPrice } from '@bgap/admin/shared/utils';
 
 export const summarizeServiceFeeByTax = (
   serviceFees: KeyValueObject,
@@ -82,12 +83,43 @@ export const summarizeVatByTax = (
   vats[sumPriceShown.tax]
     ? {
         ...vats[sumPriceShown.tax],
-        priceSum: vats[sumPriceShown.tax].priceSum + sumPriceShown.priceSum,
-        taxSum: vats[sumPriceShown.tax].taxSum + sumPriceShown.taxSum,
+        priceSum: Math.round(
+          vats[sumPriceShown.tax].priceSum + sumPriceShown.priceSum,
+        ),
+        taxSum: Math.round(
+          vats[sumPriceShown.tax].taxSum + sumPriceShown.taxSum,
+        ),
       }
     : {
-        priceSum: sumPriceShown.priceSum,
-        taxSum: sumPriceShown.taxSum,
+        priceSum: Math.round(sumPriceShown.priceSum),
+        taxSum: Math.round(sumPriceShown.taxSum),
         tax: sumPriceShown.tax,
         currency: sumPriceShown.currency,
       };
+
+export const increaseVatWithPackagingTax = (
+  vats: KeyValueObject,
+  packagingSum: CrudApi.Price,
+) => {
+  const priceSum = Math.round(
+    net2gross(packagingSum.netPrice, packagingSum.taxPercentage),
+  );
+  const taxSum = Math.round(
+    taxValueFromNetPrice(packagingSum.netPrice, packagingSum.taxPercentage),
+  );
+
+  return vats[packagingSum.taxPercentage]
+    ? {
+        ...vats[packagingSum.taxPercentage],
+        priceSum: Math.round(
+          vats[packagingSum.taxPercentage].priceSum + priceSum,
+        ),
+        taxSum: Math.round(vats[packagingSum.taxPercentage].taxSum + taxSum),
+      }
+    : {
+        priceSum,
+        taxSum,
+        tax: packagingSum.taxPercentage,
+        currency: packagingSum.currency,
+      };
+};

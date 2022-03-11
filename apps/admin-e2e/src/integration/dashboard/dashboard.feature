@@ -19,56 +19,83 @@ Feature: Dashboard
     Then I should see "testuser+monad" text
     And the "Dashboard" title is displayed
     And I should see "ORDERS ACCEPTED" text
-# And the "Active orders" icon is selected
-# And the "Placed orders" icon is selected
+  # And the "Active orders" icon is selected
+  # And the "Placed orders" icon is selected
 
-# Scenario: Floormap
-#   When I click the "floorMapAction" button
-#   And I click on the #"01" table
-#   Then the "Table #01" title is displayed
-#   And I click the "closeFloorMapOrders" button
-#   Then the "Dashboard" title is displayed
-#   And I click on the #"01" seat of #"02" table
-#   Then the "Seat #01/02" title is displayed
-#   When I click on "placed" button at the #"000005" order
-# # When I click on "processing" button at the #"000005" order
-# # When I click on "ready" button at the #"000005" order
-# # And I click the "closeFloorMapOrders" button
-# # Then the "Dashboard" title is displayed
+  Scenario: Floormap
+    When I click the "floorMapAction" button
+    And I click on the #"01" table
+    Then the "Table #01" title is displayed
+    And I click the "closeFloorMapOrders" button
+    Then the "Dashboard" title is displayed
+    And I click on the #"01" seat of #"02" table
+    Then the "Seat #01/02" title is displayed
+    When I click on "placed" button at the first order
+    Then I should see the button in "processing"
+    When I click on "processing" button at the first order
+    Then I should see the button in "ready"
+    When I click on "ready" button at the first order
+    And I click the "closeFloorMapOrders" button
+    Then the "Dashboard" title is displayed
 
-# Scenario: Active orders
-#   And I should see 15 orders on the "Placed orders" icon
-#   When I click the "Manual payments" icon with title
-#   Then I should see 7 orders on the list
-#   When I click the "Problematic orders" icon with title
-#   Then I should see 4 orders on the list
-#   When I click the "Placed orders" icon with title
-#   Then I should see 7 orders on the list
-# # When I click on the #"000004" order item
-# # When I click on "placed" button at the #"000004" order
-# # When I click on "processing" button at the #"000004" order
-# # When I click on "ready" button at the #"000004" order
-# # When I click the "historyOrdersAction" button
-# # Then I should see the order in "served"
+  Scenario: Active orders, placed to served
+    Then I should see 15 orders on the "Placed orders" icon
+    And I should see 20 orders on the "Manual payments" icon
+    And I should see 5 orders on the "Problematic orders" icon
+    When I click the "Manual payments" icon with title
+    Then I should see 7 orders on the list
+    When I click the "Problematic orders" icon with title
+    Then I should see 5 orders on the list
+    When I click the "Placed orders" icon with title
+    Then I should see 7 orders on the list
+    When I click on the #"000004" order item
+    And I click on the print button
+    Then I should see the "Késdobáló #111" text
+    Then I should see the "1021, Budapest Ág u. 1." text
+    Then I should see the "Table num: 01/02" text
+    When I click on the close button
+  # When I click on "placed" button at the #"000004" order
+  # When I click on "processing" button at the #"000004" order
+  # When I click on "ready" button at the #"000004" order
+  # When I click the "historyOrdersAction" button
+  # Then I should see the order in "served"
 
-# Scenario: Orders history
-#   When I click the "historyOrdersAction" button
+  Scenario: Failed and deleted order
+    When I click the "Manual payments" icon with title
+    When I click on the #"000001" order item
+    And I click on the "Failed" button
+    Then I should see "Failed transaction. Please select unpay category!" text
+    When I click on the "Unpay category" button
+    And I click on the "Staff meal" option
+    And I click on the "OK" button
+    And I wait 1000 ms
+    When I click on the "Delete order" button
+    Then I should see "Are you sure you delete the order?" text
+    And I click on the "OK" button
+    And I wait 1000 ms
+    When I click the "historyOrdersAction" button
 
-# Scenario: Reports feature
-#   When I click the "reportsAction" button
-#   Then I should see "Paid orders" text
-#   And I should see "Unpay orders" text
-#   And I should see "Rejected orders" text
-#   And I should see a "Product mix" table
-#   When I click on the "List all" button
-#   And I click on the close button
-#   When I click on the "Export" button
-# # Then the xlsx file is downloaded with the name "Késdobáló #111"
+  Scenario: Orders history
+    When I click the "historyOrdersAction" button
+    And I click on the date picker
+
+  Scenario: Reports feature
+    When I click the "reportsAction" button
+    Then I should see "Paid orders" text
+    And I should see "Unpay orders" text
+    And I should see "Rejected orders" text
+    And I should see a "Product mix" table
+    When I click on the "List all" button
+    And I click on the close button
+    When I click on the "Export" button
+# Then the xlsx file is downloaded with the name "Késdobáló #111"
 
 # Scenario: Lane view
 #   When I click the "lanesAction" button
 #   And I click on the "bár (60/0/0)" checkbox
-#   And I click on arrow button next to product
+#   And I click on the arrow button on the placed product
+# And I click on the arrow button on the processed product
+# And I click on the arrow button on the finished product
 
 # Scenario: about the #1165 issue (failed payment cash/card)
 #   When I click the button with title "Manual payments"

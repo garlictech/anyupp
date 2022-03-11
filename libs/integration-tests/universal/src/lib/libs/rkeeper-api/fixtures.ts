@@ -89,8 +89,7 @@ export const rkeeperOrder = {
   order_type: 1,
   pay_type: 0,
   pay_online_type: 0,
-  delivery_time:
-    'Tue Jan 11 2022 09:35:28 GMT+0000 (Coordinated Universal Time)',
+  delivery_time: '2122-02-03T12:37:32',
   client: {
     phone: null,
     email: null,
@@ -99,7 +98,7 @@ export const rkeeperOrder = {
   },
   order: [
     {
-      id: '4b9e3ab3-86a0-48d9-a9a9-f4e0c9fbce68',
+      id: '1000114',
       type: 'd',
       qnt: 1000,
     },

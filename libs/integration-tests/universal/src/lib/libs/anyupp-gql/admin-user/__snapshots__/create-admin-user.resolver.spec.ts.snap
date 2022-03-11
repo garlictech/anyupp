@@ -23,10 +23,6 @@ Object {
   "name": "Mekk Elek",
   "phone": "+6834832765328",
   "profileImage": null,
-  "roleContexts": Object {
-    "items": Array [],
-    "nextToken": null,
-  },
   "settings": null,
   "updatedAt": Any<String>,
 }
@@ -55,10 +51,6 @@ Object {
   "name": "Mekk Elek",
   "phone": "+6834832765328",
   "profileImage": null,
-  "roleContexts": Object {
-    "items": Array [],
-    "nextToken": null,
-  },
   "settings": null,
   "updatedAt": Any<String>,
 }
@@ -87,10 +79,6 @@ Object {
   "name": "Mekk Elek",
   "phone": "+6834832765328",
   "profileImage": null,
-  "roleContexts": Object {
-    "items": Array [],
-    "nextToken": null,
-  },
   "settings": null,
   "updatedAt": Any<String>,
 }

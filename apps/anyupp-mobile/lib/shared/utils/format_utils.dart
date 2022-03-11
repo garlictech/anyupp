@@ -26,6 +26,12 @@ String formatCurrency(dynamic number, String currency) {
   return getNumberFormatter(currency).format(number);
 }
 
+NumberFormat _NF = NumberFormat('####.##');
+
+String formatDouble(double? value) {
+  return _NF.format(value ?? 0.0);
+}
+
 NumberFormat getNumberFormatter(String currency) {
   switch (currency.toLowerCase()) {
     case 'eur':

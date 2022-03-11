@@ -16,34 +16,32 @@
   },
   "anyupp-backend-sites": {
     "AdminSiteDomainA75B4E32": "zsoltstack-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionDomainNameA4A4FE5B": "d1wr09pu9falyd.cloudfront.net",
+    "AdminDistributionDomainNameA4A4FE5B": "d3qi6o93d2tn5l.cloudfront.net",
     "AdminSiteEAA17C78": "https://zsoltstack-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionIdB4DE25AB": "E3FARM0GV8HB6U",
+    "AdminDistributionIdB4DE25AB": "E338640UQY3O48",
     "AdminBucketCA57896C": "zsoltstack-admin-anyupp-backend.anyupp.com"
   },
   "anyupp-backend-cognito": {
-    "ConsumerUserPoolId": "eu-west-1_nuL784RqX",
-    "AdminUserPoolId": "eu-west-1_wJMzPKvG0",
-    "AdminWebUserPoolClientId": "5737he7nfu5klro9kema21vbd1",
-    "ConsumerNativeUserPoolClientId": "2b3eaopsvn06l4hbimrpmh92cv",
+    "ConsumerUserPoolId": "eu-west-1_IM0Ji5Rhi",
+    "AdminUserPoolId": "eu-west-1_uGknFkjvK",
+    "AdminWebUserPoolClientId": "44b8kf7rm8u3chmt2o0dic6hrj",
+    "ConsumerNativeUserPoolClientId": "55oumbai7381ekaqvs0fiv1mr2",
     "AdminUserPoolDomain": "https://zsoltstack-anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
-    "ConsumerWebUserPoolClientId": "60nu8v0cdifdepd062aigqfnu1",
+    "ConsumerWebUserPoolClientId": "2oqh2ic9enon54qdgqglgpollv",
     "ConsumerUserPoolDomain": "https://zsoltstack-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
-    "IdentityPoolId": "eu-west-1:5ffe08d1-9052-492d-9c8b-830c95ad45a7",
-    "AdminNativeUserPoolClientId": "4c6dre63e126rdbtgic26j3631"
-  },
-  "anyupp-backend-appsync": {
-    "AnyuppGraphqlApiUrl": "https://oxyaojx2rjhm3fue77n72pymmm.appsync-api.eu-west-1.amazonaws.com/graphql",
-    "AnyuppGraphqlApiKey": "da2-morx6dvcnbfmfkrqqf7dgkwpj4"
+    "IdentityPoolId": "eu-west-1:a503f7ee-d8c3-4b24-a586-fe109eb0d98a",
+    "AdminNativeUserPoolClientId": "33t8i3dt9p92blmfuvpta5rchv"
   },
   "anyupp-backend-stripe": {
     "stripewebhookEndpoint": "https://stripe-webhook-zsoltstack.anyupp.com/zsoltstack",
-    "StripeWebhookEndpointE83D65EB": "https://40u07q0td2.execute-api.eu-west-1.amazonaws.com/zsoltstack/"
+    "StripeWebhookNewEndpoint6D902BCA": "https://1wqg79xhzd.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
+    "StripeWebhookEndpointE83D65EB": "https://tj7hz3wpyk.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
+    "stripewebhookEndpointNew": "https://1wqg79xhzd.execute-api.eu-west-1.amazonaws.com/zsoltstack/"
   },
   "anyupp-backend-rkeeper": {
-    "RKeeperWebhookEndpointCBC72BD4": "https://j6iswmagyc.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
+    "RKeeperWebhookEndpointCBC72BD4": "https://p53x6tyfjg.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-zsoltstack.anyupp.com/zsoltstack",
-    "RKeeperTaskBucketName": "zsoltstack-anyupp-backen-anyupprkeepermenubucket4-1kp5jv8379cnv",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-RkeeperECSTaskExecutionR-523WNND2MB99"
+    "RKeeperTaskBucketName": "zsoltstack-anyupp-backen-anyupprkeepermenubucket4-1pq5m6ix9azrc",
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-RkeeperECSTaskExecutionR-1JVSQ2BW2SKZL"
   }
 }

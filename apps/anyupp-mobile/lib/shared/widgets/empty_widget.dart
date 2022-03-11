@@ -91,6 +91,7 @@ class EmptyWidget extends StatelessWidget {
       ));
       widgets.add(Text(
         trans(context, descriptionKey!),
+        textAlign: TextAlign.center,
         style: Fonts.satoshi(
           color: theme.secondary,
           fontSize: descriptionFontSize,

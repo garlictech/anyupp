@@ -56,24 +56,4 @@ export class AdminUserFormService {
       map(data => ({ data, type: 'update' })),
     );
   }
-
-  public createAdminRoleContext$(input: CrudApi.CreateAdminRoleContextInput) {
-    return this._crudSdk.sdk.CreateAdminRoleContext({ input }).pipe(
-      catchGqlError(this._store),
-      map(data => ({ data, type: 'insert' })),
-    );
-  }
-
-  public deleteAdminRoleContext$(id: string) {
-    return this._crudSdk.sdk
-      .DeleteAdminRoleContext({
-        input: {
-          id,
-        },
-      })
-      .pipe(
-        catchGqlError(this._store),
-        map(data => ({ data, type: 'update' })),
-      );
-  }
 }

@@ -1,25 +1,12 @@
 import {
-  AnyuppSdk,
-  getAnyuppSdkForIAM,
-  getAnyuppSdkForUserPool,
-} from '@bgap/anyupp-gql/api';
-import {
   awsConfig,
   getCrudSdkForIAM,
   getCrudSdkForUserPool,
 } from '@bgap/crud-gql/api';
 import { Auth } from 'aws-amplify';
-import { from, Observable } from 'rxjs';
+import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getCognitoUsername } from '@bgap/shared/fixtures';
-
-interface AuthenticatdGraphQLClientWithUserId {
-  userAttributes: {
-    id: string;
-    email: string;
-  };
-  authAnyuppSdk: AnyuppSdk;
-}
 
 const authConfig = () =>
   Auth.configure({
@@ -39,30 +26,8 @@ export const createAuthenticatedCrudSdk = (
   );
 };
 
-export const createAuthenticatedAnyuppSdk = (
-  userName: string,
-  password: string,
-): Observable<AuthenticatdGraphQLClientWithUserId> => {
-  authConfig();
-  return from(Auth.signIn(`testuser+${userName}`, password)).pipe(
-    map(user => ({
-      userAttributes: {
-        id: user.signInUserSession?.idToken?.payload?.['cognito:username'], // The Username is the new userId
-        ...user.attributes,
-      },
-      authAnyuppSdk: getAnyuppSdkForUserPool(),
-    })),
-  );
-};
-
 export const createIamCrudSdk = () =>
   getCrudSdkForIAM(
-    process.env.AWS_ACCESS_KEY_ID || '',
-    process.env.AWS_SECRET_ACCESS_KEY || '',
-  );
-
-export const createIamAnyuppSdk = () =>
-  getAnyuppSdkForIAM(
     process.env.AWS_ACCESS_KEY_ID || '',
     process.env.AWS_SECRET_ACCESS_KEY || '',
   );

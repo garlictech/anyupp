@@ -121,12 +121,10 @@ const orderInput: CrudApi.CreateOrderInput = {
   orderMode: CrudApi.OrderMode.instant,
   servingMode: CrudApi.ServingMode.inplace,
   archived: false,
-  orderNum: 'ORDERNUM',
   paymentMode: {
     method: CrudApi.PaymentMethod.cash,
     type: CrudApi.PaymentType.cash,
   },
-  statusLog: [],
 };
 
 const unit: any = {
@@ -147,7 +145,8 @@ test('Convert Anyupp order to rkeeper order', done => {
     axiosInstance: {
       request: jest.fn().mockReturnValue(Promise.resolve({})),
     },
-    currentTime: () => new Date('2020-04-13T00:00:00.000+08:00'),
+    currentTimeISOString: () =>
+      new Date('2020-04-13T00:00:00.000+08:00').toISOString(),
   };
 
   sendRkeeperOrder(deps)(unit, orderInput)

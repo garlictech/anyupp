@@ -115,16 +115,22 @@ class _SelectUnitMainContentWidgetState
                   return Container(
                     padding: EdgeInsets.all(0.0),
                     height: 138,
-                    child:
-                        Center(child: Text(trans('selectUnitMap.noNearUnits'))),
+                    child: Center(
+                      child: Text(
+                        trans('selectUnitMap.noNearUnits'),
+                      ),
+                    ),
                   );
                 }
                 if (state is UnitsNotLoaded) {
                   return Container(
                     padding: EdgeInsets.all(0.0),
                     height: 138,
-                    child:
-                        Center(child: Text(trans('selectUnitMap.notLoaded'))),
+                    child: Center(
+                      child: Text(
+                        trans('selectUnitMap.notLoaded'),
+                      ),
+                    ),
                   );
                 }
                 if (state is UnitsLoaded) {
@@ -318,10 +324,28 @@ class SelectUnitQRCardWidget extends StatelessWidget {
     return InkWell(
       highlightColor: Color(0xFF30BF60).withAlpha(128),
       hoverColor: Color(0xFF30BF60).withAlpha(128),
-      onTap: () => Nav.to(QRCodeScannerScreen(
-        // navigateToCart: true,
-        loadUnits: true,
-      )),
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isDismissible: true,
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.only(
+          //     topLeft: Radius.circular(16.0),
+          //     topRight: Radius.circular(16.0),
+          //   ),
+          // ),
+          enableDrag: true,
+          isScrollControlled: true,
+          elevation: 4.0,
+          backgroundColor: Colors.transparent,
+          builder: (context) {
+            return QRCodeScannerScreen(
+              //popWhenClose: true,
+              loadUnits: true,
+            );
+          },
+        );
+      },
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(

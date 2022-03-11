@@ -162,6 +162,7 @@
     "soya": "Soya",
     "sulphites": "Sulphites",
     "treenuts": "Treenuts",
+    "disclaimerTitle": "Disclaimer",
     "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out {{0}} Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
   },
   "favorites": {
@@ -172,7 +173,8 @@
   "orders": {
     "titleCurrentOrder": "Current orders",
     "titleOrderHistory": "Order history",
-    "noActiveOrder": "No active order placed yet",
+    "noActiveOrderSimplified": "Did something else come to your mind?",
+    "noActiveOrderFull": "No active order placed yet",
     "noActiveOrderDesc": "Find the food and drinks you like under the Menu tab.",
     "noActiveOrderButton": "Discover menu",
     "totalCost": "TOTAL COST",
@@ -259,6 +261,11 @@
           "title": "Served",
           "titleShort": "Served",
           "description": "Your order is complete, we will serve you soon."
+        },
+        "simplified": {
+          "title": "Order placed",
+          "titleShort": "Order placed",
+          "description": "Your order is being processed. Should any problems arise, our colleagues will contact you."
         }
       },
       "timeline": {
@@ -305,7 +312,7 @@
     "delete": {
       "title": "Delete credit card?",
       "description": "This will delete the credit card from your payment methods.",
-      "reason": "Delete",
+      "ok": "Ok",
       "cancel": "Cancel"
     },
     "method": {
@@ -445,14 +452,21 @@
     "scanQR": "Click & scan your table to order",
     "qrConnected": "Connected to",
     "chair": "Chair #{{0}} at Table #{{1}}",
+    "table": "Table #{{1}}",
     "findingSeat": "finding table and chair ...",
+    "findingTable": "finding table ...",
     "findingSeatLoading": "This may take a few seconds. Please do not close this window!",
+    "seatReserved": {
+      "title": "New Seat Reserved!",
+      "description": "Seat #{{1}} reserved Table #{{0}}"
+    },
     "tableReserved": {
       "title": "New Table Reserved!",
-      "description": "Seat #{{1}} reversed at Table #{{0}}"
+      "description": "Table #{{0}} reserved"
     },
     "tableFound": {
-      "title": "Chair: #{{1}}, Table: #{{0}}",
+      "seat": "Chair: #{{0}}",
+      "table": "Table: #{{0}}",
       "description": "The connection has been made. You can continue the order!"
     },
     "qrCodeError": {
@@ -562,11 +576,11 @@
   },
   "product": {
     "notTakeAway": "Only in place",
-    "notTakeAwaDesc": "A termék csak helyben fogyasztásra elérhető.",
+    "notTakeAwayDesc": "This product is only available for local consumption.",
     "notInPlace": "Only for takeaway",
-    "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
-    "soldOut": "Elfogyott",
-    "soldOutDesc": "A termék sajnos elfogyott",
+    "notInPlaceDesc": "This product is only available for takeaway.",
+    "soldOut": "Sold out",
+    "soldOutDesc": "Unfortunatley, this product is sold out.",
     "size": "Size:",
     "selectSize": "Choose a size"
   },

@@ -30,6 +30,30 @@ export const createStripeResolvers = ({
     ),
   });
 
+  // --- Create startStripePaymentConnected Mutation lambda resolves
+  lambdaDs.createResolver({
+    typeName: 'Mutation',
+    fieldName: 'startStripePaymentConnected',
+    requestMappingTemplate: MappingTemplate.fromString(
+      `
+      {
+        "version" : "2017-02-28",
+        "operation" : "Invoke",
+        "payload": {
+          "fieldName": "startStripePaymentConnected",
+          "typeName": "Mutation",
+          "identity": {
+            "username": ${getAuthenticatedUserIdFromContextIdentity}
+          },
+          "arguments": {
+            "input": $util.toJson($ctx.arguments.input)
+          }
+        }
+      }
+      `,
+    ),
+  });
+
   // --- Create listStripeCards Query lambda resolves
   lambdaDs.createResolver({
     typeName: 'Query',

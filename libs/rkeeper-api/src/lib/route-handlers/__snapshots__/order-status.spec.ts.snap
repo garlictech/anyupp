@@ -1,0 +1,413 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getOrder case: SearchOrders finds multiple order (meaning database error): RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "Order with external ID REMOTE ORDER ID cannot be found",
+}
+`;
+
+exports[`getOrder case: SearchOrders finds multiple order (meaning database error): SearchOrders calls 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "and": Array [
+          Object {
+            "unitId": Object {
+              "eq": "UNIT ID",
+            },
+          },
+          Object {
+            "externalId": Object {
+              "eq": "REMOTE ORDER ID",
+            },
+          },
+        ],
+      },
+    },
+  ],
+]
+`;
+
+exports[`getOrder case: SearchOrders finds no order: RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "Order with external ID REMOTE ORDER ID cannot be found",
+}
+`;
+
+exports[`getOrder case: SearchOrders finds no order: SearchOrders calls 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "and": Array [
+          Object {
+            "unitId": Object {
+              "eq": "UNIT ID",
+            },
+          },
+          Object {
+            "externalId": Object {
+              "eq": "REMOTE ORDER ID",
+            },
+          },
+        ],
+      },
+    },
+  ],
+]
+`;
+
+exports[`getOrder case: SearchOrders finds order: RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "id": "order FOUND",
+    },
+    "request": Object {
+      "remoteOrderId": "REMOTE ORDER ID",
+    },
+    "unit": Object {
+      "id": "UNIT ID",
+    },
+  },
+}
+`;
+
+exports[`getOrder case: SearchOrders finds order: SearchOrders calls 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "and": Array [
+          Object {
+            "unitId": Object {
+              "eq": "UNIT ID",
+            },
+          },
+          Object {
+            "externalId": Object {
+              "eq": "REMOTE ORDER ID",
+            },
+          },
+        ],
+      },
+    },
+  ],
+]
+`;
+
+exports[`getOrder case: SearchOrders throws error: RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "order SEARCH ERROR",
+}
+`;
+
+exports[`getOrder case: SearchOrders throws error: SearchOrders calls 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "and": Array [
+          Object {
+            "unitId": Object {
+              "eq": "UNIT ID",
+            },
+          },
+          Object {
+            "externalId": Object {
+              "eq": "REMOTE ORDER ID",
+            },
+          },
+        ],
+      },
+    },
+  ],
+]
+`;
+
+exports[`getUnit case: SearchUnits finds multiple unit (meaning database error): RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "Unit with restaurant ID EXTERNAL UNIT ID cannot be found",
+}
+`;
+
+exports[`getUnit case: SearchUnits finds multiple unit (meaning database error): SearchUnits calls 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "EXTERNAL UNIT ID",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`getUnit case: SearchUnits finds no unit: RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "Unit with restaurant ID EXTERNAL UNIT ID cannot be found",
+}
+`;
+
+exports[`getUnit case: SearchUnits finds no unit: SearchUnits calls 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "EXTERNAL UNIT ID",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`getUnit case: SearchUnits finds unit: RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "request": "THE REQUEST",
+    "unit": Object {
+      "id": "UNIT FOUND",
+    },
+  },
+}
+`;
+
+exports[`getUnit case: SearchUnits finds unit: SearchUnits calls 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "EXTERNAL UNIT ID",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`getUnit case: SearchUnits throws error: RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "UNIT SEARCH ERROR",
+}
+`;
+
+exports[`getUnit case: SearchUnits throws error: SearchUnits calls 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "EXTERNAL UNIT ID",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`orderStatusHandler case: UpdateOrder throws error: RESULT 1`] = `"SEND SPY RESULT"`;
+
+exports[`orderStatusHandler case: UpdateOrder throws error: reply send calls 1`] = `Array []`;
+
+exports[`orderStatusHandler case: UpdateOrder throws error: reply sendSpy calls 1`] = `
+Array [
+  Array [
+    Object {
+      "error": "UPDATE ORDER ERROR",
+    },
+  ],
+]
+`;
+
+exports[`orderStatusHandler case: UpdateOrder throws error: reply status calls 1`] = `
+Array [
+  Array [
+    400,
+  ],
+]
+`;
+
+exports[`orderStatusHandler case: everything is OK: RESULT 1`] = `"SEND RESULT"`;
+
+exports[`orderStatusHandler case: everything is OK: reply send calls 1`] = `
+Array [
+  Array [
+    Object {
+      "success": true,
+    },
+  ],
+]
+`;
+
+exports[`orderStatusHandler case: everything is OK: reply sendSpy calls 1`] = `Array []`;
+
+exports[`orderStatusHandler case: everything is OK: reply status calls 1`] = `Array []`;
+
+exports[`updateOrderStatus case: UpdateOrder finds no order: RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "Order with external ID REMOTE ORDER ID not found",
+}
+`;
+
+exports[`updateOrderStatus case: UpdateOrder finds no order: UpdateOrder calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "archived": true,
+        "id": "ORDER ID",
+        "statusLog": Array [
+          "CURRENT STATUSLOG",
+          Object {
+            "status": "served",
+            "ts": 99999,
+            "userId": "remote rkeeper",
+          },
+        ],
+      },
+    },
+  ],
+]
+`;
+
+exports[`updateOrderStatus case: UpdateOrder succes, status: failed: RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": "SUCCESSFULL UPDATE",
+}
+`;
+
+exports[`updateOrderStatus case: UpdateOrder succes, status: failed: UpdateOrder calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "archived": true,
+        "id": "ORDER ID",
+        "statusLog": Array [
+          "CURRENT STATUSLOG",
+          Object {
+            "status": "failed",
+            "ts": 99999,
+            "userId": "remote rkeeper",
+          },
+        ],
+      },
+    },
+  ],
+]
+`;
+
+exports[`updateOrderStatus case: UpdateOrder succes, status: ready: RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": "SUCCESSFULL UPDATE",
+}
+`;
+
+exports[`updateOrderStatus case: UpdateOrder succes, status: ready: UpdateOrder calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "archived": false,
+        "id": "ORDER ID",
+        "statusLog": Array [
+          "CURRENT STATUSLOG",
+          Object {
+            "status": "ready",
+            "ts": 99999,
+            "userId": "remote rkeeper",
+          },
+        ],
+      },
+    },
+  ],
+]
+`;
+
+exports[`updateOrderStatus case: UpdateOrder succes, status: served: RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": "SUCCESSFULL UPDATE",
+}
+`;
+
+exports[`updateOrderStatus case: UpdateOrder succes, status: served: UpdateOrder calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "archived": true,
+        "id": "ORDER ID",
+        "statusLog": Array [
+          "CURRENT STATUSLOG",
+          Object {
+            "status": "served",
+            "ts": 99999,
+            "userId": "remote rkeeper",
+          },
+        ],
+      },
+    },
+  ],
+]
+`;
+
+exports[`updateOrderStatus case: UpdateOrder throws error: RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "UPDATE ORDER ERROR",
+}
+`;
+
+exports[`updateOrderStatus case: UpdateOrder throws error: UpdateOrder calls 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "archived": true,
+        "id": "ORDER ID",
+        "statusLog": Array [
+          "CURRENT STATUSLOG",
+          Object {
+            "status": "served",
+            "ts": 99999,
+            "userId": "remote rkeeper",
+          },
+        ],
+      },
+    },
+  ],
+]
+`;
+
+exports[`validateRequestCases: {"currentState":"foobar","remoteOrderId":"REMOTE ORDER ID 2"} 1`] = `"OrderStatus Object Validation Error (JOI): \\"currentState\\" must be one of [processing, ready, served, failed, rejected]"`;
+
+exports[`validateRequestCases: {"currentState":"ready","remoteOrderId":"REMOTE ORDER ID 1"} 1`] = `
+Object {
+  "currentState": "ready",
+  "remoteOrderId": "REMOTE ORDER ID 1",
+}
+`;
+
+exports[`validateRequestCases: {} 1`] = `"OrderStatus Object Validation Error (JOI): \\"remoteOrderId\\" is required, \\"currentState\\" is required"`;
+
+exports[`validateRequestCases: {} 2`] = `"OrderStatus Object Validation Error (JOI): \\"remoteOrderId\\" is required, \\"currentState\\" is required"`;
+
+exports[`validateRequestCases: null 1`] = `"OrderStatus Object Validation Error (JOI): \\"value\\" must be of type object"`;

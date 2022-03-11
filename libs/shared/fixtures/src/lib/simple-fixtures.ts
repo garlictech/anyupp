@@ -115,7 +115,6 @@ const order: CrudApi.Order = {
     priceSum: 300,
     pricePerUnit: 301,
   },
-  takeAway: false,
   place: {
     table: 'ORDER TABLE',
     seat: 'ORDER SEAT',
@@ -140,8 +139,8 @@ const order: CrudApi.Order = {
   transactionId: 'ORDER TRANSACTIONID ',
   unpayCategory: CrudApi.UnpayCategory.other,
   serviceFee: {
-    netPrice: 400,
-    taxPercentage: 40,
+    grossPrice: 400,
+    taxContent: 40,
     currency: 'SERVICEFEE CURRENCY',
   },
   packagingSum: {

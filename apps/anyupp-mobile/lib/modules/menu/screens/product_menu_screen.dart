@@ -53,12 +53,13 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
       bool? showed = preferences.getBool('TOOLTIP_${unit.id}');
       // print('_checkNeedToShowTooltip.showed=$showed');
       if (showed == null || showed == false) {
+        setState(() {
+          _showTooltip = true;
+        });
         await preferences.setBool('TOOLTIP_${unit.id}', true);
+      } else {
+        _showTooltip = false;
       }
-      setState(() {
-        _showTooltip = showed == null || showed == false;
-        // print('_checkNeedToShowTooltip._showTooltip=$_showTooltip');
-      });
     } else {
       setState(() {
         _showTooltip = false;
@@ -120,11 +121,10 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     );
     _tabController?.addListener(() {
       if (_tabController?.indexIsChanging == false) {
-        print('ProductMenuScreen.selectedTab()=${_tabController?.index}');
-        setState(() {
-          _selectedTab = _tabController!.index;
+        if (_showTooltip) {
           _checkNeedToShowTooltip();
-        });
+        }
+        _selectedTab = _tabController!.index;
       }
     });
 
@@ -224,10 +224,29 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                 Container(
                   margin: EdgeInsets.only(left: 4.0),
                   child: BorderedWidget(
-                    onPressed: () => Nav.to(QRCodeScannerScreen(
-                      navigateToCart: true,
-                      loadUnits: true,
-                    )),
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isDismissible: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16.0),
+                            topRight: Radius.circular(16.0),
+                          ),
+                        ),
+                        enableDrag: true,
+                        isScrollControlled: true,
+                        elevation: 4.0,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) {
+                          return QRCodeScannerScreen(
+                            navigateToCart: true,
+                            loadUnits: true,
+                          );
+                        },
+                      );
+                    },
+
                     width: 40.0,
                     child: Padding(
                       padding: const EdgeInsets.all(6.0),
@@ -308,8 +327,8 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                           fontWeight: FontWeight.w400,
                         ),
                         labelPadding: EdgeInsets.only(
-                          left: 16,
-                          right: 16,
+                          left: 4,
+                          right: 4,
                           top: 6.0,
                           bottom: 6.0,
                         ),

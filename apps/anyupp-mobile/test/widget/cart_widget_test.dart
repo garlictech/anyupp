@@ -79,8 +79,8 @@ void main() {
       await tester.pumpAndSettle(Duration(milliseconds: 1000));
 
       // Character \xa0 is a non-breaking-space
-      checkTextValue('cart-packagingfee-text', '100\xa0Ft');
-      checkTextValue('cart-totalprice-text', 'FIZETEK (600\xa0Ft)');
+      checkTextValue('cart-packagingfee-text', '105\xa0Ft');
+      checkTextValue('cart-totalprice-text', 'FIZETEK (605\xa0Ft)');
     });
   });
 }

@@ -96,8 +96,8 @@ const orderInputBase = {
   },
   serviceFee: {
     currency: 'HUF',
-    netPrice: 200,
-    taxPercentage: 27,
+    grossPrice: 200,
+    taxContent: 20,
   },
 };
 
@@ -418,6 +418,8 @@ const convertInputToOrder = (
   id: input.id || '',
   createdAt: '2021-08-02T01:54:11.843Z',
   updatedAt: '2021-08-02T01:54:11.843Z',
+  statusLog: [],
+  archived: !!input.archived,
 });
 
 export const orderFixture = {

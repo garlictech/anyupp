@@ -16,9 +16,9 @@
   },
   "anyupp-backend-sites": {
     "AdminSiteDomainA75B4E32": "admin2.anyupp.com",
-    "AdminDistributionDomainNameA4A4FE5B": "dqqjfcyo3jdxg.cloudfront.net",
+    "AdminDistributionDomainNameA4A4FE5B": "dmn2slbscsqkq.cloudfront.net",
     "AdminSiteEAA17C78": "https://admin2.anyupp.com",
-    "AdminDistributionIdB4DE25AB": "E9PIK4G3PK4L7",
+    "AdminDistributionIdB4DE25AB": "E3JPN16O523UZA",
     "AdminBucketCA57896C": "admin2.anyupp.com"
   },
   "anyupp-backend-cognito": {
@@ -38,7 +38,9 @@
   },
   "anyupp-backend-stripe": {
     "stripewebhookEndpoint": "https://hf9xrbmszg.execute-api.eu-west-1.amazonaws.com/prod/",
-    "StripeWebhookEndpointE83D65EB": "https://hf9xrbmszg.execute-api.eu-west-1.amazonaws.com/prod/"
+    "StripeWebhookNewEndpoint6D902BCA": "https://hra9c03qp2.execute-api.eu-west-1.amazonaws.com/prod/",
+    "StripeWebhookEndpointE83D65EB": "https://hf9xrbmszg.execute-api.eu-west-1.amazonaws.com/prod/",
+    "stripewebhookEndpointNew": "https://hra9c03qp2.execute-api.eu-west-1.amazonaws.com/prod/"
   },
   "anyupp-backend-rkeeper": {
     "RKeeperWebhookEndpointCBC72BD4": "https://o8d436gkql.execute-api.eu-west-1.amazonaws.com/prod/",

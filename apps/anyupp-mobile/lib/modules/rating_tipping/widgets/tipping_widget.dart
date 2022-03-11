@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/models.dart';
@@ -6,6 +8,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -89,7 +92,7 @@ class _TippingWidgetState extends State<TippingWidget> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(16.0)),
-          color: selected ? theme.highlight : theme.secondary12,
+          color: selected ? theme.button : theme.secondary12,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Text(
@@ -130,18 +133,16 @@ class _TippingWidgetState extends State<TippingWidget> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return Dialog(
-            child: TipDialogWidget(
-              amountController: _otherAmountController,
-              minOtherAmount: widget.tipPolicy.minOtherAmount ?? 0,
-              onSelected: (type, amount) {
-                setState(() {
-                  _selectedTipAmount = amount;
-                  _selectedTipPercent = null;
-                  widget.onSelected(TipType.amount, amount);
-                });
-              },
-            ),
+          return TipDialogWidget(
+            amountController: _otherAmountController,
+            minOtherAmount: widget.tipPolicy.minOtherAmount ?? 0,
+            onSelected: (type, amount) {
+              setState(() {
+                _selectedTipAmount = amount;
+                _selectedTipPercent = null;
+                widget.onSelected(TipType.amount, amount);
+              });
+            },
           );
         });
   }
@@ -164,111 +165,161 @@ class TipDialogWidget extends StatefulWidget {
 
 class _TipDialogWidgetState extends State<TipDialogWidget> {
   String? _errorKey;
+  FocusNode _focusNode = FocusNode();
+  UniqueKey _key = UniqueKey();
+  final MaskTextInputFormatter mask =
+      MaskTextInputFormatter(mask: '#####', filter: {"#": RegExp(r'[0-9]')});
+
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      _focusNode.requestFocus();
+    });
+    super.initState();
+  }
+
+  void _onOkPressed() async {
+    print('VALUE=${widget.amountController.text}');
+    try {
+      _errorKey = null;
+      double? amount = double.tryParse(widget.amountController.text);
+      print('amount=${widget.amountController.text}');
+      if (amount == null) {
+        setState(() {
+          _errorKey = 'tipping.errors.validNumber';
+        });
+        return;
+      }
+      if (amount < 175.0 ||
+          (widget.minOtherAmount >= 175.0 && amount < widget.minOtherAmount)) {
+        setState(() {
+          _errorKey = 'tipping.errors.minAmount';
+        });
+        return;
+      }
+      widget.onSelected(TipType.amount, amount);
+    } on Exception {
+      // nothing to do
+    }
+    Nav.pop();
+  }
+
+  void _onCancelPressed() {
+    widget.onSelected(null, null);
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            transEx(context, 'tipping.dialog.title'),
-            style: Fonts.satoshi(
-              fontSize: 24.0,
-              color: theme.secondary,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: Text(
-              transEx(context, 'tipping.dialog.description'),
-            ),
-          ),
-          SizedBox(
-            height: 16.0,
-          ),
-          FormTextFieldWidget(
-            labelKey: 'tipping.dialog.hint',
-            controller: widget.amountController,
-            keyboardType: TextInputType.number,
-            mask: MaskTextInputFormatter(
-              mask: '#####',
-              filter: {"#": RegExp('[0-9]')},
-            ),
-            onChanged: (value) {
-              double? amount = double.tryParse(widget.amountController.text);
-              if (amount == null) {
-                setState(() {
-                  _errorKey = 'tipping.errors.validNumber';
-                });
-                return;
-              }
-              if (_errorKey != null) {
-                setState(() {
-                  _errorKey = null;
-                });
-              }
-            },
-          ),
-          if (_errorKey != null)
-            Container(
-              padding: EdgeInsets.only(
-                top: 8.0,
-                bottom: 8.0,
+    return Platform.isAndroid
+        ? Dialog(
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    transEx(context, 'tipping.dialog.title'),
+                    style: Fonts.satoshi(
+                      fontSize: 24.0,
+                      color: theme.secondary,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Text(
+                      transEx(context, 'tipping.dialog.description'),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  FormTextFieldWidget(
+                    key: _key,
+                    focusNode: _focusNode,
+                    labelKey: 'tipping.dialog.hint',
+                    controller: widget.amountController,
+                    keyboardType: TextInputType.number,
+                    mask: mask,
+                    validator: (value) {
+                      return 'Error';
+                    },
+                    onChanged: (value) {},
+                  ),
+                  if (_errorKey != null)
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: 8.0,
+                        bottom: 8.0,
+                      ),
+                      child: Text(
+                        trans(_errorKey!, [widget.minOtherAmount]),
+                        style: Fonts.satoshi(
+                          color: errorColor,
+                        ),
+                      ),
+                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        child: Text(transEx(context, 'tipping.dialog.cancel')),
+                        onPressed: _onCancelPressed,
+                      ),
+                      TextButton(
+                        child: Text(transEx(context, 'tipping.dialog.ok')),
+                        onPressed: _onOkPressed,
+                      ),
+                    ],
+                  )
+                ],
               ),
-              child: Text(
-                trans(_errorKey!, [widget.minOtherAmount]),
-                style: Fonts.satoshi(
-                  color: errorColor,
+            ),
+          )
+        : CupertinoAlertDialog(
+            title: Text(trans('tipping.dialog.title')),
+            content: Column(
+              children: [
+                Text(trans('tipping.dialog.description')),
+                SizedBox(
+                  height: 16.0,
                 ),
-              ),
+                CupertinoTextField(
+                  controller: widget.amountController,      
+                  inputFormatters: [mask],
+                  keyboardType: TextInputType.number,
+                  cursorColor: CupertinoColors.activeBlue,
+                  placeholder: trans('tipping.dialog.hint'),
+                ),
+                if (_errorKey != null)
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: 8.0,
+                      bottom: 8.0,
+                    ),
+                    child: Text(
+                      trans(_errorKey!, [widget.minOtherAmount]),
+                      style: Fonts.satoshi(
+                        color: errorColor,
+                      ),
+                    ),
+                  ),
+              ],
             ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
+            actions: <CupertinoDialogAction>[
+              CupertinoDialogAction(
                 child: Text(transEx(context, 'tipping.dialog.cancel')),
                 onPressed: () {
-                  widget.onSelected(null, null);
                   Navigator.pop(context);
                 },
               ),
-              TextButton(
+              CupertinoDialogAction(
                 child: Text(transEx(context, 'tipping.dialog.ok')),
-                onPressed: () async {
-                  print('VALUE=${widget.amountController.text}');
-                  try {
-                    _errorKey = null;
-                    double? amount =
-                        double.tryParse(widget.amountController.text);
-                    print('amount=${widget.amountController.text}');
-                    if (amount == null) {
-                      setState(() {
-                        _errorKey = 'tipping.errors.validNumber';
-                      });
-                      return;
-                    }
-                    if (amount < 175.0 ||
-                        (widget.minOtherAmount >= 175.0 &&
-                            amount < widget.minOtherAmount)) {
-                      setState(() {
-                        _errorKey = 'tipping.errors.minAmount';
-                      });
-                      return;
-                    }
-                    widget.onSelected(TipType.amount, amount);
-                  } on Exception {
-                    // nothing to do
-                  }
-                  Nav.pop();
-                },
-              ),
+                isDefaultAction: true,
+                onPressed: _onOkPressed,
+              )
             ],
-          )
-        ],
-      ),
-    );
+          );
   }
 }

@@ -112,6 +112,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
   FutureOr<void> _onLoadOrderDetail(
       LoadOrderDetail event, Emitter<BaseOrderState> emit) async {
     try {
+      emit(OrderLoadingState());
       Order? order = await _repository.getOrder(event.orderId);
       emit(OrderDetailLoadedState(order: order));
     } on Exception catch (e) {

@@ -12,8 +12,12 @@ import '../widget/mock/mocks.dart';
 void main() {
   setUpAll(() {
     // Setup
-    GeoUnit mockUnit =
-        MockGenerator.generateUnit(name: 'Test Unit', currency: 'huf');
+    GeoUnit mockUnit = MockGenerator.generateUnit(
+      name: 'Test Unit',
+      currency: 'huf',
+    ).copyWith(
+      packagingTax: 10,
+    );
     getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(mockUnit));
   });
 
@@ -62,8 +66,8 @@ void main() {
       cart = cart.copyWith(servingMode: ServingMode.takeAway);
 
       // Takeaway mode the price includes the packagingFee
-      expect(cart.totalPrice, equals(600.0));
-      expect(cart.packaginFee, equals(100.0));
+      expect(cart.totalPrice, equals(610.0)); // 10% tax
+      expect(cart.packaginFee, equals(110.0)); // 100 + 10 = 10% tax
 
       // Increase quantity of the order
       cart = cart.copyWith(items: [
@@ -73,8 +77,8 @@ void main() {
       ]);
 
       // Takeaway mode the price includes the packagingFee and quantity
-      expect(cart.totalPrice, equals(3 * 600.0));
-      expect(cart.packaginFee, equals(3 * 100.0));
+      expect(cart.totalPrice, equals(3 * 610.0));
+      expect(cart.packaginFee, equals(3 * 110.0));
     });
 
     test('Calculate packaging fee: multiple products', () async {
@@ -111,8 +115,9 @@ void main() {
       cart = cart.copyWith(servingMode: ServingMode.takeAway);
 
       // Takeaway mode the price includes the packagingFee
-      expect(cart.totalPrice, equals(750.0 + 500.0 + 100.0 + 150.0));
-      expect(cart.packaginFee, equals(100.0 + 150.0));
+      expect(cart.totalPrice,
+          equals(750.0 + 500.0 + 100.0 + 150.0 + 25.0)); // 25.0 = 10% tax
+      expect(cart.packaginFee, equals(100.0 + 150.0 + 10.0 + 15.0));
     });
 
     test('Calculate packaging fee with modifiers: product with modifiers',
@@ -155,8 +160,9 @@ void main() {
       cart = cart.copyWith(servingMode: ServingMode.takeAway);
 
       // Takeaway mode the price includes the packagingFee
-      expect(cart.totalPrice, equals(100.0 + 50.0 + 500.0 + 100.0));
-      expect(cart.packaginFee, equals(100.0 + 50.0));
+      expect(
+          cart.totalPrice, equals(100.0 + 50.0 + 500.0 + 100.0 + 10.0 + 5.0));
+      expect(cart.packaginFee, equals(100.0 + 50.0 + 10.0 + 5.0));
 
       // Add more modifiers
       cart = cart.copyWith(items: [
@@ -183,8 +189,8 @@ void main() {
       ]);
 
       // Takeaway mode the price includes the packagingFee
-      expect(cart.totalPrice, equals(900.0));
-      expect(cart.packaginFee, equals(100.0 + 50.0 + 50.0));
+      expect(cart.totalPrice, equals(900.0 + 20.0));
+      expect(cart.packaginFee, equals(100.0 + 50.0 + 50.0 + 20.0));
 
       // Multiply items
       cart = cart.copyWith(items: [
@@ -192,8 +198,8 @@ void main() {
       ]);
 
       // Takeaway mode the price includes the packagingFee
-      expect(cart.totalPrice, equals(900.0 * 2));
-      expect(cart.packaginFee, equals(200.0 * 2));
+      expect(cart.totalPrice, equals(920.0 * 2));
+      expect(cart.packaginFee, equals(220.0 * 2));
     });
   });
 }
