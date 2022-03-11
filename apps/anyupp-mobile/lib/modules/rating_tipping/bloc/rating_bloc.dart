@@ -6,6 +6,7 @@ import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
+import 'package:fa_prev/shared/notifications/notifications.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
 
 part 'rating_event.dart';
@@ -54,6 +55,8 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
       if (order != null) {
         getIt<OrderRefreshBloc>().add(RefreshOrder(order));
       }
+      await cancelNotification(
+          notificationId: NotificationPayloadType.RATE_ORDER.index);
       emit(RatingSuccess());
     } on Exception catch (e) {
       emit(RatingFailed('RATING', e.toString()));
@@ -83,6 +86,8 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
         );
         getIt<OrderRefreshBloc>().add(RefreshOrder(order));
       }
+      await cancelNotification(
+          notificationId: NotificationPayloadType.RATE_ORDER.index);
       emit(RatingSuccess());
     } on Exception catch (e) {
       emit(RatingFailed('RATING', e.toString()));

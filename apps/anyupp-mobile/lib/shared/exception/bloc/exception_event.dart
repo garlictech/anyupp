@@ -17,3 +17,14 @@ class ShowException extends ExceptionEvent {
   @override
   List<Object?> get props => [exception, show];
 }
+
+class AddExceptionToBeShown extends ExceptionEvent {
+  final String code;
+  final String message;
+  final String provider;
+
+  AddExceptionToBeShown(this.code, this.message, this.provider);
+
+  @override
+  List<Object?> get props => [code, message, provider];
+}

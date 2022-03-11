@@ -512,8 +512,8 @@
         "confirm": "Retry"
       }
     },
-    "info": "Scan the QR code on your table to finalize your order.",
-    "infoDesc": "Keep the code inside the box to connect."
+    "info": "Scan the QR code on the table to order.",
+    "infoDesc": "Keep the QR inside the frame to connect."
   },
   "selectUnitMap": {
     "noNearUnits": "No Near Unit",
@@ -534,6 +534,7 @@
     "changeLocation": "Change location"
   },
   "about": {
+    "title": "ABOUT",
     "description": "    Why AnyUpp? Let us keep the secret for a while, but for sure we are bringing a lot of new functions which will explain the Any, and the Upp :-) \n\n I guess we all know the situation: you are waving the waiter or waitress and he/she does not even get the eye contact…does the situation sound familiar to you?\n Waiting for the bill, you really want to pay but there is no one bringing it? Or simply, Covid times have made your precautious and you would rather not touch the menu, nor the cash, and simply do not wish to type your PIN with your fingers...\n\n Goods news, all year fears are wiped off by AnyUpp! And it has more to offer than that. Just check out how it works. \n\n Download the app, choose the restaurant closest to you, order and pay. That's all.\n\n Now  AnyUpp by CYBERG is in the test period, available in a couple of restaurants such as our first one: KAJAHU at Corvin Promenade. Come and visit us! Just read the QR code on the table and we will know where you are sitting.\n No need to wait, to speak. Just order your burger or salad, drop them into your basket optionally along with a dessert or drink- whatever your choice is- and we’ll soon serve your ordered items.\n Sounds pretty easy, doesn’t it?\n It is really. You may tick your favs, next time you do not even need to check the menu.\n How yould you like to pay? We offer a growing set of payment options from cash to secure and easy online payments so that you can chose the one most suitable for your needs.\n Restaurant meal has NEVER been easier and faster.\n\n Sure, this is not the future, but pretty cool, isn’t it?\n There are more exciting things to come.\n There will be offers for you, you will see others’ favs, you can meet new people if you wish.\n The more you come the less you pay.\n By the way, this will not only be true about our place. Frequent guests will get discount at other places, too.\n We are planning to introduce our app at many places, you may meet AnyUpp…. anywhere (just a hint for you, guys)\n Test the app and give us some time to fix, to add, or whatever it takes to make the best. We are honoured  by your comments.\n It will rule, for sure.\n If you already like it, just spread the news. :-)",
     "licences": "Licences",
     "version": "Version"
@@ -722,6 +723,10 @@
     "ERROR_UNIT_NOT_ACCEPTING_ORDERS": {
       "title": "Unit is closed",
       "description": "Unit is not accepting orders right now. Try it later!"
+    },
+    "SOCIAL_LOGIN_ERROR": {
+      "title": "Login failed",
+      "description": "Sorry, your login was unsuccessful with account {{0}}, please try again with a different social account or continue without sign up."
     }
   },
   "rating": {

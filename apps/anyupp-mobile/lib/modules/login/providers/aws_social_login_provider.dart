@@ -27,49 +27,19 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
   }
 
   @override
-  Future<void> logout() async {
-    print('***** AwsSocialLoginProvider.logout()');
-    var url = '${AppConfig.UserPoolDomain}/logout?'
-        'client_id=${AppConfig.UserPoolClientId}&'
-        'logout_uri=${LoginScreen.SIGNOUT_CALLBACK}/logout';
-    try {
-      await http.get(
-        Uri.parse(url),
-      );
-    } on Exception catch (e) {
-      print('AwsSocialLoginProvider.logout().error=$e');
-    }
-    await _authProvider.getAuthenticatedUserProfile();
-    return;
-  }
-
-  @override
   Future<ProviderLoginResponse> signUserInWithAuthCode(String authCode) async {
     print('AwsSocialLoginProvider.signUserInWithAuthCode().authCode=$authCode');
     var url = '${AppConfig.UserPoolDomain}/oauth2/token?'
         'grant_type=authorization_code&'
         'client_id=${AppConfig.UserPoolClientId}&'
         'code=$authCode&'
-        // 'scope=email%20openid%20profile%20aws.cognito.signin.user.admin0&'
         'redirect_uri=${LoginScreen.SIGNIN_CALLBACK}';
     print('AwsSocialLoginProvider.signUserInWithAuthCode().url=$url');
-    // throw Exception('test');
     final response = await http.post(
       Uri.parse(url),
       body: {},
-      // body: {
-      //   'grant_type': 'authorization_code',
-      //   'client_id': AppConfig.UserPoolClientId,
-      //   'code': authCode,
-      //   'redirect_uri': LoginScreen.SIGNIN_CALLBACK,
-      //   'scope': 'email%20openid%20profile%20aws.cognito.signin.user.admin'
-      // },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        // 'grant_type': 'authorization_code',
-        // 'client_id': AppConfig.UserPoolClientId,
-        // 'code': authCode,
-        // 'redirect_uri': LoginScreen.SIGNIN_CALLBACK,
       },
     );
     print(
@@ -77,7 +47,6 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
     print(
         'AwsSocialLoginProvider.signUserInWithAuthCode().response.body=${response.body}');
     if (response.statusCode != 200) {
-      // await logout();
       print(
           'AwsSocialLoginProvider.error.reasonPhrase=${response.reasonPhrase}');
       throw Exception('Received bad status code from Cognito for auth code:' +
@@ -114,5 +83,19 @@ class AwsSocialLoginProvider implements ISocialLoginProvider {
     } on Exception catch (e) {
       throw LoginException.fromException('UNKNOWN_ERROR', e);
     }
+  }
+
+  @override
+  Future<void> logout() async {
+    print('AwsSocialLoginProvider.logout()');
+    var url = '${AppConfig.UserPoolDomain}/logout?'
+        'client_id=${AppConfig.UserPoolClientId}&'
+        'logout_uri=${LoginScreen.SIGNOUT_CALLBACK}/logout';
+    try {
+      await http.get(Uri.parse(url));
+    } on Exception catch (e) {
+      print('AwsSocialLoginProvider.logout().error=$e');
+    }
+    await _authProvider.getAuthenticatedUserProfile();
   }
 }

@@ -45,7 +45,7 @@ const inprogress_order: RequiredId<CrudApi.CreateOrderInput> = {
   ],
 };
 
-describe('updateOrderStatusFromNoneToPlaced test', () => {
+describe.skip('updateOrderStatusFromNoneToPlaced test', () => {
   const orderDeps = {
     crudSdk: createIamCrudSdk(),
     timestamp: () => 123456789,

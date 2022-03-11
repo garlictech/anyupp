@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:catcher/core/catcher.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models/Order.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
@@ -90,7 +89,7 @@ class RatingOrderNotificationBloc
 
       print('RatingOrderNotificationBloc.Showing screen: ${event.payload}');
       if (order.transaction != null) {
-        BuildContext? context = Catcher.navigatorKey?.currentContext;
+        BuildContext? context = AppContext.context;
         getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
         if (context != null) {
           await showModalBottomSheet(

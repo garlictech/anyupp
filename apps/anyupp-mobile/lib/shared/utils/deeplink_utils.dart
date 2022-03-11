@@ -4,6 +4,7 @@ import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:flutter/material.dart';
 
@@ -23,42 +24,44 @@ Future<bool> handleUrl(Uri uri) async {
   print('***** handleUrl()=$uri');
   switch (getDeeplinkType(uri)) {
     case DeeplinkType.QR:
-      return await handleUrlQR(uri);
+      return handleUrlQR(uri);
     case DeeplinkType.VERIFY_EMAIL:
-      return await handleVerifyEmail(uri);
+      return handleVerifyEmail(uri);
     case DeeplinkType.COGNITO_CODE:
-      {
-        var code = uri.queryParameters['code'];
-        print('handling cognito code: $code');
-        if (code == null) {
-          String? error = uri.queryParameters['error_description'];
-          if (error != null &&
-              error.contains('UserAlreadyExists') &&
-              relaunchCount > 0) {
-            relaunchCount--;
-            if (browser.isOpened()) {
-              print('closing browser!');
-              await browser.close();
-            }
-            await Future.delayed(Duration(milliseconds: 500));
-            reLaunchURL();
-            return true;
-          }
-          return false;
-        }
-        // if (browser.isOpened()) {
-        //   print('closing browser!');
-        //   await browser.close();
-        // }
-        await Future.delayed(Duration(milliseconds: 2000));
-        getIt<LoginBloc>().add(CompleteLoginWithMethod(code));
-
-        return true;
-      }
+      return _handleCognitoCode(uri);
 
     default:
       return false;
   }
+}
+
+Future<bool> _handleCognitoCode(Uri uri) async {
+  var code = uri.queryParameters['code'];
+  print('handling cognito code: $code');
+  if (code == null) {
+    String? error = uri.queryParameters['error_description'];
+    if (error != null) {
+      if (browser.isOpened()) {
+        print('closing browser!');
+        await browser.close();
+      }
+      getIt<LoginBloc>().add(ResetLogin());
+      getIt<ExceptionBloc>().add(AddExceptionToBeShown(
+        'SOCIAL_LOGIN_ERROR',
+        error,
+        lastProvider == 'SignInWithApple' ? 'Apple' : lastProvider ?? '?',
+      ));
+    }
+    return false;
+  }
+
+  if (browser.isOpened()) {
+    print('closing browser!');
+    await browser.close();
+  }
+  getIt<LoginBloc>().add(CompleteLoginWithMethod(code));
+
+  return true;
 }
 
 bool isValidUrl(Uri? uri) {
@@ -103,17 +106,16 @@ Future<bool> handleUrlQR(Uri uri) async {
   // Not authenticated
   if (user == null) {
     auth.nextPageAfterLogin = page;
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
     print('***** handleUrlQR().login()');
 
     Nav.reset(OnBoarding());
 
     return true;
   } else {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
     print('***** handleUrlQR().qrfound()');
     Nav.reset(page);
-    // navigateWithResetWithKey(Catcher.navigatorKey, (_, __, ___) => page);
     return true;
   }
 }
@@ -136,14 +138,9 @@ Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
   if (uri.pathSegments.length == 3) {
     seat = uri.pathSegments[2];
   }
-  final Place place = Place(table: table, seat: seat);
   print(
       '***** getNavigationPageByUrlFromQRDeeplink().unitId=$unitId, table=$table, seat=$seat');
-  return UnitFoundByQRCodeScreen(
-    place: place,
-    unitId: unitId,
-    loadUnits: false,
-  );
+  return SelectUnitChooseMethodScreen(initialUri: uri,);
 }
 
 // *************************

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:catcher/catcher.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models/core/parsers.dart';
 import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
@@ -104,7 +103,7 @@ class Locally {
     //   debugPrint('notification payload: ' + payload);
     // }
     // await Navigator.push(context, pageRoute);
-    if (payloadStr != null) {
+    if (payloadStr != null && payloadStr != "") {
       Map<String, dynamic> json = jsonDecode(payloadStr);
       NotificationPayloadType? type =
           enumFromStringNull(json['type'], NotificationPayloadType.values);
@@ -152,7 +151,7 @@ class Locally {
     print(
         '***** onDidReceiveNotification().id=$id, title=$title, payload=$payload');
     await showDialog(
-      context: Catcher.navigatorKey!.currentContext!,
+      context: AppContext.context!,
       builder: (context) {
         return CupertinoAlertDialog(
           title: title,
@@ -250,7 +249,7 @@ Future<void> scheduleNotification({
 }) async {
   print('scheduleNotification()=$showDelay');
   await Locally().localNotificationsPlugin.zonedSchedule(
-        payload.hashCode,
+        payload!.type.index,
         title,
         message,
         tz.TZDateTime.now(tz.local).add(showDelay),
@@ -264,8 +263,12 @@ Future<void> scheduleNotification({
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        payload: payload?.toJson(),
+        payload: payload.toJson(),
       );
+}
+
+Future<void> cancelNotification({required notificationId}) async{
+  await Locally().localNotificationsPlugin.cancel(notificationId);
 }
 
 void showNotification(String title, String message, Widget? navigateToPage) {

@@ -38,14 +38,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="staging.anyupp.com" />
-                <data android:scheme="https" android:host="dev.anyupp.com" />
-                <data android:scheme="https" android:host="qa.anyupp.com" />
                 <data android:scheme="https" android:host="anyupp.com" />
-                <data android:scheme="https" android:host="dev-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com"/>
-                <data android:scheme="https" android:host="qa-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com"/>
-                <data android:scheme="https" android:host="staging-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com"/>
-                <data android:scheme="https" android:host="prod-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com"/>
                 <data android:scheme="anyupp" android:host="signin" />
                 <data android:scheme="anyupp" android:host="signout" />
                 <data android:scheme="https" android:host="open.anyupp" />

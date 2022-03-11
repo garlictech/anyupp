@@ -1,3 +1,4 @@
+import { tableConfig } from '@bgap/crud-gql/backend';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
@@ -14,9 +15,9 @@ import {
   maskTimestamp,
   maskV4UuidIds,
 } from '@bgap/shared/fixtures';
-import { RequiredId } from '@bgap/shared/types';
+import { OrderResolverDeps, RequiredId } from '@bgap/shared/types';
 import { filterNullish, throwIfEmptyValue } from '@bgap/shared/utils';
-import { combineLatest, defer, of } from 'rxjs';
+import { forkJoin, defer, of } from 'rxjs';
 import {
   catchError,
   delay,
@@ -244,8 +245,20 @@ describe('CreatOrderFromCart mutation test', () => {
   let authenticatedUserId = getCognitoUsername(testAdminUsername);
   const crudSdk = createIamCrudSdk();
 
+  const deps: OrderResolverDeps = {
+    crudSdk,
+    orderTableName: tableConfig.Order.TableName,
+    unitTableName: tableConfig.Unit.TableName,
+    currentTimeISOString: () => new Date().toISOString(),
+    random: Math.random,
+    axiosInstance: axios,
+    uuid: () => uuidV1(),
+    docClient,
+    userId: 'USER ID',
+  };
+
   const cleanup = () =>
-    combineLatest([
+    forkJoin([
       // CleanUP
       deleteTestCart(cart_01.id, crudSdk),
       deleteTestCart(cart_02.id, crudSdk),
@@ -286,7 +299,7 @@ describe('CreatOrderFromCart mutation test', () => {
         delay(1000),
         switchMap(() =>
           // Seeding
-          combineLatest([
+          forkJoin([
             createTestGroup(groupFixture.group_01, crudSdk),
             createTestUnit(unitFixture.createUnit_01, crudSdk),
             createTestUnit(unitFixture.createRkeeperUnit, crudSdk),
@@ -367,7 +380,10 @@ describe('CreatOrderFromCart mutation test', () => {
       input: CrudApi.CreateOrderFromCartInput,
     ) => ReturnType<CrudApi.CrudSdk['CreateOrderFromCart']>,
   ) => {
-    const rkeeperSpy = jest.spyOn(rkeeperApi, 'sendRkeeperOrder');
+    const funcSpy = jest.fn().mockReturnValue(of({}));
+    const rkeeperSpy = jest
+      .spyOn(rkeeperApi, 'sendRkeeperOrder')
+      .mockReturnValue(funcSpy);
 
     // Cut the long stream to cope with the max 9 op limit
     const calc1 = op({ id: cart_01.id }).pipe(
@@ -375,10 +391,7 @@ describe('CreatOrderFromCart mutation test', () => {
       filterNullish<string>(),
       delay(DYNAMODB_OPERATION_DELAY),
       switchMap(newOrderId =>
-        combineLatest([
-          getOrder(crudSdk, newOrderId),
-          getCart(crudSdk, cart_01.id),
-        ]),
+        forkJoin([getOrder(crudSdk, newOrderId), getCart(crudSdk, cart_01.id)]),
       ),
       tap({
         next([order, cart]) {
@@ -398,7 +411,7 @@ describe('CreatOrderFromCart mutation test', () => {
       delay(1000),
       throwIfEmptyValue<string>(),
       switchMap(newOrderId =>
-        combineLatest([
+        forkJoin([
           getOrder(crudSdk, newOrderId).pipe(),
           getCart(crudSdk, cart_02.id).pipe(),
         ]),
@@ -423,7 +436,7 @@ describe('CreatOrderFromCart mutation test', () => {
       filterNullish<string>(),
       delay(DYNAMODB_OPERATION_DELAY),
       switchMap(newOrderId =>
-        combineLatest([
+        forkJoin([
           getOrder(crudSdk, newOrderId),
           getCart(crudSdk, cart_05_takeaway.id),
         ]),

@@ -18,6 +18,5 @@ export 'profile/screens/settings_screen.dart';
 export 'rating_tipping/widgets/rating_and_tipping_modal.dart';
 export 'selectunit/screens/select_unit_choose_method.dart';
 export 'selectunit/screens/select_unit_map.dart';
-export 'selectunit/screens/unit_found_by_qr_code_screen.dart';
 export 'splash/screens/on_boarding_screen.dart';
 export 'splash/screens/splash_screen.dart';

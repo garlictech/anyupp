@@ -26,46 +26,6 @@
 				<string>anyupp</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>dev-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>https</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>qa-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>https</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>staging-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>https</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>prod-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>https</string>
-			</array>
-		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>

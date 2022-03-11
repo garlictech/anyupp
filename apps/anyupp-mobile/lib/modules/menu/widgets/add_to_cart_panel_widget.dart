@@ -35,16 +35,12 @@ class AddToCartPanelWidget extends StatefulWidget {
 
 class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
   int _quantity = 1;
-  bool _hasServiceFee = false;
   bool _showTooltip = true;
+  ServiceFeeType? serviceFeeType;
 
   @override
   void initState() {
     super.initState();
-    _hasServiceFee = widget.serviceFeePolicy != null &&
-        currentServingMode != ServingMode.takeAway &&
-        widget.serviceFeePolicy!.type == ServiceFeeType.included;
-
     Future.delayed(const Duration(seconds: 5), () {
       if (this.mounted) {
         setState(() {
@@ -95,7 +91,9 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
               bottom: 16.0,
             ),
             child: widget.displayState == ProductItemDisplayState.NORMAL &&
-                    _showTooltip && widget.servingMode == ServingMode.inPlace
+                    _showTooltip &&
+                    widget.servingMode == ServingMode.inPlace &&
+                    serviceFeeType != null && serviceFeeType != ServiceFeeType.noFee
                 ? SimpleTooltip(
                     arrowBaseWidth: 16.0,
                     arrowLength: 8,
@@ -109,19 +107,17 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
                     backgroundColor: theme.secondary,
                     borderColor: theme.secondary.withOpacity(0.2),
                     ballonPadding: EdgeInsets.zero,
-                    content: Container(
-                      child: Text(
-                        _hasServiceFee
-                            ? trans('cart.hasServiceFee')
-                            : trans('cart.hasNoServiceFee'),
-                        softWrap: true,
-                        textAlign: TextAlign.center,
-                        style: Fonts.satoshi(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: theme.secondary0,
-                          decoration: TextDecoration.none,
-                        ),
+                    content: Text(
+                      widget.serviceFeePolicy!.type == ServiceFeeType.included
+                          ? trans('cart.hasServiceFee')
+                          : trans('cart.hasNoServiceFee'),
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: Fonts.satoshi(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: theme.secondary0,
+                        decoration: TextDecoration.none,
                       ),
                     ),
                     child: widget.displayState == ProductItemDisplayState.NORMAL

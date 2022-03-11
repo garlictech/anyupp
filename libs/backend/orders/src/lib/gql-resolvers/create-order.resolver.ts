@@ -94,17 +94,20 @@ export const placeOrder =
       deps.currentTimeISOString(),
       time => ({
         Item: {
-          id: deps.uuid(),
+          ...input.order,
+          id: input.order.id ?? deps.uuid(),
           createdAt: time,
           updatedAt: time,
-          ...input.order,
+          statusLog: [],
+          archived: false,
         },
         TableName: deps.orderTableName,
       }),
-      params => from(deps.docClient.put(params).promise()),
-      map(res => ({
+      params =>
+        from(deps.docClient.put(params).promise()).pipe(mapTo(params.Item)),
+      map(order => ({
         ...input,
-        order: res.Attributes as CrudApi.Order,
+        order,
       })),
       oeTryCatch,
     );

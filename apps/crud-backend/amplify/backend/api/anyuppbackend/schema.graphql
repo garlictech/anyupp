@@ -1450,6 +1450,12 @@ type Subscription {
       mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
     )
     @aws_cognito_user_pools
+  onOrdersChange: Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onOrdersDelete: Order
+    @aws_subscribe(mutations: ["deleteOrder"])
+    @aws_cognito_user_pools
 
   # Added for the Mobile Application
   onProductChanged(unitId: String): GeneratedProduct
@@ -1460,5 +1466,11 @@ type Subscription {
         "deleteGeneratedProduct"
       ]
     )
+    @aws_cognito_user_pools
+  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onUnitOrdersChange(unitId: String, archived: Boolean): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
 }

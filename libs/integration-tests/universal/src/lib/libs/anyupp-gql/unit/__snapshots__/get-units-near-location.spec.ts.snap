@@ -223,6 +223,7 @@ Object {
       "to": "2970-01-01",
     },
     "openingHours": null,
+    "orderPaymentPolicy": "prepay",
     "orderPolicy": null,
     "packagingTaxPercentage": 27,
     "paymentModes": Array [
@@ -521,6 +522,7 @@ Object {
       "to": "2970-01-01",
     },
     "openingHours": null,
+    "orderPaymentPolicy": "prepay",
     "orderPolicy": "placeOnly",
     "packagingTaxPercentage": 27,
     "paymentModes": Array [
@@ -819,6 +821,7 @@ Object {
       "to": "2970-01-01",
     },
     "openingHours": null,
+    "orderPaymentPolicy": "prepay",
     "orderPolicy": null,
     "packagingTaxPercentage": 27,
     "paymentModes": Array [
@@ -1117,6 +1120,7 @@ Object {
       "to": "2970-01-01",
     },
     "openingHours": null,
+    "orderPaymentPolicy": "prepay",
     "orderPolicy": "placeOnly",
     "packagingTaxPercentage": 27,
     "paymentModes": Array [
