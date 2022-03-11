@@ -3,6 +3,7 @@ import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/screens/select_payment_method_screen.dart';
+import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/payment/payment.dart';
 import 'package:fa_prev/modules/takeaway/bloc/takeaway_bloc.dart';
 import 'package:fa_prev/shared/user-details/user_details.dart';
@@ -70,9 +71,14 @@ void main() {
     ));
     getIt.registerSingleton<UserDetailsBloc>(
         UserDetailsBloc(UserDetailsRepository(MockUserDetailsProvider(null))));
+
+    getIt.registerSingleton<MainNavigationBloc>(MainNavigationBloc());
   });
 
   Widget _createBoilerPlateApp({required Widget child}) {
+    var navigatorKey = GlobalKey<NavigatorState>();
+    AppContext.init(navigatorKey);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => getIt<ThemeBloc>()),
@@ -81,9 +87,11 @@ void main() {
         BlocProvider(create: (_) => getIt<StripePaymentBloc>()),
         BlocProvider(create: (_) => getIt<CartBloc>()),
         BlocProvider(create: (_) => getIt<UserDetailsBloc>()),
+        BlocProvider(create: (_) => getIt<MainNavigationBloc>()),
       ],
       child: MockMaterialApp(
         child: child,
+        navigatorKey: navigatorKey,
       ),
     );
   }
@@ -110,13 +118,15 @@ void main() {
       await tester.runAsync(() async {
         tester.binding.window.physicalSizeTestValue = Size(1080, 2048);
 
-        await tester.pumpWidget(
-          _createBoilerPlateApp(
-            child: SelectPaymentMethodScreen(
-              cart: _mockCart,
-              unit: _mockUnit,
-            ),
+        Widget root = _createBoilerPlateApp(
+          child: SelectPaymentMethodScreen(
+            cart: _mockCart,
+            unit: _mockUnit,
           ),
+        );
+
+        await tester.pumpWidget(
+          root,
         );
 
         await tester.pump();

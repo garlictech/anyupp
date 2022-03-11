@@ -4,7 +4,13 @@ exports[`createOrderCases cases: ERROR RESULT 1`] = `"INCREMENT ERROR"`;
 
 exports[`createOrderCases cases: RESULT 1`] = `
 Object {
-  "unitId": "THE ORDER UNIT ID IN ATTRIBUTES",
+  "archived": false,
+  "createdAt": "2022-02-01T00:00:00.000Z",
+  "id": "THE UUID",
+  "orderNum": "10",
+  "statusLog": Array [],
+  "unitId": "UNIT ID",
+  "updatedAt": "2022-02-01T00:00:00.000Z",
 }
 `;
 
@@ -362,13 +368,15 @@ Array [
 ]
 `;
 
-exports[`placeOrderCases cases: PUT CALLS 1`] = `
+exports[`placeOrderCases cases: Case: "All good", PUT CALLS 1`] = `
 Array [
   Array [
     Object {
       "Item": Object {
+        "archived": false,
         "createdAt": "2022-02-01T00:00:00.000Z",
         "id": "THE UUID",
+        "statusLog": Array [],
         "unitId": "THE ORDER UNIT ID",
         "updatedAt": "2022-02-01T00:00:00.000Z",
       },
@@ -378,36 +386,77 @@ Array [
 ]
 `;
 
-exports[`placeOrderCases cases: PUT CALLS 2`] = `
-Array [
-  Array [
-    Object {
-      "Item": Object {
-        "createdAt": "2022-02-01T00:00:00.000Z",
-        "id": "THE UUID",
-        "unitId": "THE ORDER UNIT ID",
-        "updatedAt": "2022-02-01T00:00:00.000Z",
-      },
-      "TableName": "ORDER TABLE NAME",
-    },
-  ],
-]
-`;
-
-exports[`placeOrderCases cases: RESULT 1`] = `
+exports[`placeOrderCases cases: Case: "All good", RESULT 1`] = `
 Object {
   "_tag": "Right",
   "right": Object {
     "order": Object {
-      "unitId": "THE ORDER UNIT ID IN ATTRIBUTES",
+      "archived": false,
+      "createdAt": "2022-02-01T00:00:00.000Z",
+      "id": "THE UUID",
+      "statusLog": Array [],
+      "unitId": "THE ORDER UNIT ID",
+      "updatedAt": "2022-02-01T00:00:00.000Z",
     },
   },
 }
 `;
 
-exports[`placeOrderCases cases: RESULT 2`] = `
+exports[`placeOrderCases cases: Case: "Error happened", PUT CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "Item": Object {
+        "archived": false,
+        "createdAt": "2022-02-01T00:00:00.000Z",
+        "id": "THE UUID",
+        "statusLog": Array [],
+        "unitId": "THE ORDER UNIT ID",
+        "updatedAt": "2022-02-01T00:00:00.000Z",
+      },
+      "TableName": "ORDER TABLE NAME",
+    },
+  ],
+]
+`;
+
+exports[`placeOrderCases cases: Case: "Error happened", RESULT 1`] = `
 Object {
   "_tag": "Left",
   "left": "DB ERRORED",
+}
+`;
+
+exports[`placeOrderCases cases: Case: "Order ID specified", PUT CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "Item": Object {
+        "archived": false,
+        "createdAt": "2022-02-01T00:00:00.000Z",
+        "id": "USER GIVEN ORDER ID",
+        "statusLog": Array [],
+        "unitId": "THE ORDER UNIT ID",
+        "updatedAt": "2022-02-01T00:00:00.000Z",
+      },
+      "TableName": "ORDER TABLE NAME",
+    },
+  ],
+]
+`;
+
+exports[`placeOrderCases cases: Case: "Order ID specified", RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "archived": false,
+      "createdAt": "2022-02-01T00:00:00.000Z",
+      "id": "USER GIVEN ORDER ID",
+      "statusLog": Array [],
+      "unitId": "THE ORDER UNIT ID",
+      "updatedAt": "2022-02-01T00:00:00.000Z",
+    },
+  },
 }
 `;

@@ -1,9 +1,8 @@
 import { cloneDeep } from 'lodash/fp';
 import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-
+import { OrderResolverDeps } from '@bgap/backend/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { OrderResolverDeps } from '@bgap/shared/types';
 import { throwIfEmptyValue } from '../fn';
 
 export const updateOrderStatusFromNoneToPlaced =

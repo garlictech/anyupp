@@ -12,9 +12,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'flutter_qr_code_scanner.dart';
+import '../widgets/flutter_qr_code_scanner.dart';
 
 class SelectUnitChooseMethodScreen extends StatefulWidget {
+  final Uri? initialUri;
+  SelectUnitChooseMethodScreen({this.initialUri, Key? key}) : super(key: key);
   @override
   _SelectUnitChooseMethodScreenState createState() =>
       _SelectUnitChooseMethodScreenState();
@@ -46,7 +48,10 @@ class _SelectUnitChooseMethodScreenState
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         SelectUnitUserInfoRowWidget(user: userSnapshot.data!),
-                        Expanded(child: const SelectUnitMainContentWidget()),
+                        Expanded(
+                            child: SelectUnitMainContentWidget(
+                          initialUri: widget.initialUri,
+                        )),
                       ],
                     )),
               ),
@@ -60,7 +65,9 @@ class _SelectUnitChooseMethodScreenState
 }
 
 class SelectUnitMainContentWidget extends StatefulWidget {
-  const SelectUnitMainContentWidget({Key? key}) : super(key: key);
+  final Uri? initialUri;
+  const SelectUnitMainContentWidget({this.initialUri, Key? key})
+      : super(key: key);
 
   @override
   State<SelectUnitMainContentWidget> createState() =>
@@ -71,6 +78,7 @@ class _SelectUnitMainContentWidgetState
     extends State<SelectUnitMainContentWidget> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  UniqueKey pageKey = UniqueKey();
 
   void _onRefresh() async {
     getIt<CartBloc>().add(ResetCartInMemory());
@@ -91,7 +99,10 @@ class _SelectUnitMainContentWidgetState
           child: Column(
             children: [
               // --- Scan QR Code card
-              const SelectUnitQRCardWidget(),
+              SelectUnitQRCardWidget(
+                key: pageKey,
+                initialUri: widget.initialUri,
+              ),
               // --- Nearest place list
               Container(
                 width: double.infinity,
@@ -316,36 +327,55 @@ class SelectUnitUserInfoRowWidget extends StatelessWidget {
   }
 }
 
-class SelectUnitQRCardWidget extends StatelessWidget {
-  const SelectUnitQRCardWidget({Key? key}) : super(key: key);
+class SelectUnitQRCardWidget extends StatefulWidget {
+  final Uri? initialUri;
+  const SelectUnitQRCardWidget({this.initialUri, Key? key}) : super(key: key);
+
+  @override
+  State<SelectUnitQRCardWidget> createState() => _SelectUnitQRCardWidgetState();
+}
+
+class _SelectUnitQRCardWidgetState extends State<SelectUnitQRCardWidget> {
+  @override
+  void initState() {
+    if (widget.initialUri != null) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        showModal();
+      });
+    }
+    super.initState();
+  }
+
+  void showModal() {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.only(
+      //     topLeft: Radius.circular(16.0),
+      //     topRight: Radius.circular(16.0),
+      //   ),
+      // ),
+      enableDrag: true,
+      isScrollControlled: true,
+      elevation: 4.0,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return QRCodeScannerWidget(
+          initialUri: widget.initialUri,
+          //popWhenClose: true,
+          loadUnits: true,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       highlightColor: Color(0xFF30BF60).withAlpha(128),
       hoverColor: Color(0xFF30BF60).withAlpha(128),
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          isDismissible: true,
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.only(
-          //     topLeft: Radius.circular(16.0),
-          //     topRight: Radius.circular(16.0),
-          //   ),
-          // ),
-          enableDrag: true,
-          isScrollControlled: true,
-          elevation: 4.0,
-          backgroundColor: Colors.transparent,
-          builder: (context) {
-            return QRCodeScannerScreen(
-              //popWhenClose: true,
-              loadUnits: true,
-            );
-          },
-        );
-      },
+      onTap: () => showModal(),
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
@@ -364,7 +394,7 @@ class SelectUnitQRCardWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 25.0, bottom: 30.0),
               child: Text(
-                trans(context, 'selectUnit.scanQR'),
+                trans('selectUnit.scanQR'),
                 textAlign: TextAlign.center,
                 style: Fonts.satoshi(
                   fontSize: 16.0,

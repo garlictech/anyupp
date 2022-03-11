@@ -730,6 +730,10 @@
     "ERROR_UNIT_NOT_ACCEPTING_ORDERS": {
       "title": "Étterem zárva",
       "description": "Az étterem jelenleg nem fogad rendeléseket. Próbáld meg később!"
+    },
+    "SOCIAL_LOGIN_ERROR": {
+      "title": "Sikertelen belépés.",
+      "description": "Sajnos sikertelen volt a belépés {{0}} fiókkal, kérjük próbáld újra más közösségi fiókkal vagy folytasd regisztráció nélkül."
     }
   },
   "rating": {

@@ -10,6 +10,7 @@ class CommonErrorWidget extends StatusWidget {
   final bool expanded;
   final String buttonText;
   final bool showIcon;
+  final Color? buttonColor;
 
   CommonErrorWidget({
     required this.error,
@@ -20,6 +21,7 @@ class CommonErrorWidget extends StatusWidget {
     this.expanded = true,
     this.buttonText = 'common.ok2',
     this.showIcon = true,
+    this.buttonColor,
   }) : super(
           icon: 'assets/icons/error-icon.svg',
           message: error,
@@ -29,5 +31,6 @@ class CommonErrorWidget extends StatusWidget {
           onPressed: onPressed,
           showButton: showButton,
           expanded: expanded,
+          buttonColor: buttonColor,
         );
 }

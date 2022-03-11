@@ -27,7 +27,7 @@ const active_order: RequiredId<CrudApi.CreateOrderInput> = {
   id: `${testIdPrefix}order_1_id`,
 };
 
-describe('updateOrderItemStatus test', () => {
+describe.skip('updateOrderItemStatus test', () => {
   const orderDeps = {
     crudSdk: createIamCrudSdk(),
     timestamp: () => 123456789,

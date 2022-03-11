@@ -1,20 +1,17 @@
 import 'dart:async';
 
-import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
+import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-final ChromeSafariBrowser browser = MyChromeSafariBrowser();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen();
@@ -41,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen>
   bool _showLogin = false;
   double _emailFormHeight = EMAIL_FORM_HEIGHT;
   bool isLoading = true;
-  // String _userAgent = '<unknown>';
 
   static const double EMAIL_FORM_HEIGHT = 235.0;
   static const int EMAIL_ANIMATION_DURATION = 350;
@@ -49,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
+    print('LOGINSCREEN.initState()');
 
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
@@ -60,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen>
       vsync: this,
     );
 
-    // _backgroundImageScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
     _backgroundImageScaleAnimation = CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOut,
@@ -76,10 +72,6 @@ class _LoginScreenState extends State<LoginScreen>
         .then((value) => _switchAnimation());
   }
 
-  // Future<void> setUserAgent() async {
-  //   _userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
-  // }
-
   @override
   void dispose() {
     _buttonAnimController.dispose();
@@ -91,6 +83,15 @@ class _LoginScreenState extends State<LoginScreen>
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
+        BlocListener<ExceptionBloc, ExceptionState>(
+            listener: (BuildContext context, ExceptionState state) {
+          if (state is ExceptionShowState) {
+            print('LoginScreen.ExceptionState=$state');
+            // Future.delayed(Duration(seconds: 1)).then((_) =>
+            //     getIt<ExceptionBloc>().add(ShowException(state.exception)));
+            _showException(context, state.exception);
+          }
+        }),
         BlocListener<LoginBloc, LoginState>(
             listener: (BuildContext context, LoginState state) {
           if (state is EmailFormUIChange) {
@@ -603,75 +604,26 @@ class _LoginScreenState extends State<LoginScreen>
     print('loginScreen.signUserInWithAuthCode().code=$code');
     getIt<LoginBloc>().add(CompleteLoginWithMethod(code));
   }
-}
 
-class MyChromeSafariBrowser extends ChromeSafariBrowser {
-  @override
-  void onOpened() {
-    print("ChromeSafari browser opened");
-    super.onOpened();
-  }
-
-  @override
-  void onCompletedInitialLoad() {
-    print("ChromeSafari browser initial load completed");
-    super.onCompletedInitialLoad();
-  }
-
-  @override
-  void onClosed() {
-    print("ChromeSafari browser closed");
-    super.onClosed();
-    getIt<LoginBloc>().add(ResetLogin());
-  }
-}
-
-String? lastProvider;
-
-void reLaunchURL() async {
-  print('reLaunchURL()');
-  if (lastProvider != null) {
-    launchURL(lastProvider!);
-  }
-}
-
-void launchURL(String provider) async {
-  getIt<LoginBloc>().add(StartLoginLoading());
-  lastProvider = provider;
-  var url = '${AppConfig.UserPoolDomain}/oauth2/authorize?'
-      'identity_provider=${provider}&'
-      'redirect_uri=${LoginScreen.SIGNIN_CALLBACK}&'
-      'response_type=CODE&'
-      'client_id=${AppConfig.UserPoolClientId}'
-      '&scope=email%20openid%20profile%20aws.cognito.signin.user.admin';
-  print('launchURL().url=$url');
-
-  if (browser.isOpened()) {
-    await browser.close();
-  }
-
-  // browser = MyChromeSafariBrowser();
-  try {
-    print('launchURL().start opening().');
-    await browser.open(
-      url: Uri.parse(url),
-      options: ChromeSafariBrowserClassOptions(
-        android: AndroidChromeCustomTabsOptions(
-          addDefaultShareMenuItem: false,
-          showTitle: true,
-          toolbarBackgroundColor: const Color(0xff30bf60),
-          enableUrlBarHiding: true,
-          keepAliveEnabled: true,
+  Future<void> _showException(BuildContext context, AppException e) async {
+    SchedulerBinding.instance?.addPostFrameCallback((_) async {
+      await showErrorDialog(
+        context,
+        transEx(
+          context,
+          'error.${e.code}.title',
+          null,
+          'error.title',
         ),
-        ios: IOSSafariOptions(
-          barCollapsingEnabled: true,
+        transEx(
+          context,
+          'error.${e.code}.description',
+          e.subCode != null ? [e.subCode] : null,
+          'error.description',
         ),
-      ),
-    );
-  } catch (e) {
-    print('launchURL().error=$e');
-
-    // An exception is thrown if browser app is not installed on Android device.
-    debugPrint(e.toString());
+        exceptionDetails: null,
+        buttonColor: Color(0xFF30BF60),
+      );
+    });
   }
 }

@@ -1420,7 +1420,11 @@ type Subscription {
   onGroupProductChange(groupId: ID!): GroupProduct @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"]) @aws_cognito_user_pools
   onUnitProductChange(unitId: ID!): UnitProduct @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"]) @aws_cognito_user_pools
   onGeneratedProductChange(unitId: ID!): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct"]) @aws_cognito_user_pools
+  onOrdersChange: Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
+  onOrdersDelete: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_cognito_user_pools
   onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"]) @aws_cognito_user_pools
+  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
+  onUnitOrdersChange(unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
   onCreateChainProduct: ChainProduct @aws_subscribe(mutations: ["createChainProduct"]) @aws_iam @aws_cognito_user_pools
   onUpdateChainProduct: ChainProduct @aws_subscribe(mutations: ["updateChainProduct"]) @aws_iam @aws_cognito_user_pools
   onDeleteChainProduct: ChainProduct @aws_subscribe(mutations: ["deleteChainProduct"]) @aws_iam @aws_cognito_user_pools

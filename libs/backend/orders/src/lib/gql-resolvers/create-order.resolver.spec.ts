@@ -149,18 +149,29 @@ const placeOrderCases = [
     result: Promise.resolve({
       Attributes: { unitId: 'THE ORDER UNIT ID IN ATTRIBUTES' },
     }),
+    label: 'All good',
   },
   {
     inputState: {
       order: { unitId: 'THE ORDER UNIT ID' },
     },
     result: Promise.reject('DB ERRORED'),
+    label: 'Error happened',
+  },
+  {
+    inputState: {
+      order: { unitId: 'THE ORDER UNIT ID', id: 'USER GIVEN ORDER ID' },
+    },
+    result: Promise.resolve({
+      Attributes: { unitId: 'THE ORDER UNIT ID IN ATTRIBUTES' },
+    }),
+    label: 'Order ID specified',
   },
 ];
 
 test.each(placeOrderCases)(
   'placeOrderCases cases',
-  ({ inputState, result }, done: any) => {
+  ({ inputState, result, label }, done: any) => {
     const depsFixture = {
       docClient: {
         put: jest.fn().mockReturnValue({ promise: () => result }),
@@ -174,10 +185,10 @@ test.each(placeOrderCases)(
       .pipe(
         tap(res => {
           expect(depsFixture.docClient.put.mock.calls).toMatchSnapshot(
-            'PUT CALLS',
+            `Case: "${label}", PUT CALLS`,
           );
 
-          expect(res).toMatchSnapshot('RESULT');
+          expect(res).toMatchSnapshot(`Case: "${label}", RESULT`);
         }),
       )
       .subscribe(() => done());

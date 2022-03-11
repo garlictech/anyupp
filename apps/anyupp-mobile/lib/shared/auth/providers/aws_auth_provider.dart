@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -155,7 +158,59 @@ class AwsAuthProvider implements IAuthProvider {
   Future<void> clearUserSession() async {
     _user = null;
     _userController.add(_user);
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    await sp.clear();
+    print('clearUserSession().start()');
+    try {
+      SharedPreferences sp = await SharedPreferences.getInstance();
+      await sp.clear();
+      print('clearUserSession().deleting.sharedpreferences.done()');
+      await _deleteCacheDir();
+      print('clearUserSession().deleting.cachedir.done()');
+      await _deleteAppDir();
+      print('clearUserSession().deleting.appdir.done()');
+
+      await CookieManager.instance().deleteAllCookies();
+      print('clearUserSession().deleting.browser-cookies.done()');
+
+      var webStorageManager = WebStorageManager.instance();
+      if (Platform.isAndroid) {
+        await webStorageManager.android.deleteAllData();
+        print('clearUserSession().deleting.browser-storage.done()');
+      }
+      if (Platform.isIOS) {
+        var records = await webStorageManager.ios
+            .fetchDataRecords(dataTypes: IOSWKWebsiteDataType.values);
+        var recordsToDelete = <IOSWKWebsiteDataRecord>[];
+        for (var record in records) {
+          recordsToDelete.add(record);
+        }
+        await webStorageManager.ios.removeDataFor(
+            dataTypes: IOSWKWebsiteDataType.values,
+            dataRecords: recordsToDelete);
+        print('clearUserSession().deleting.browser-storage.done()');
+      }
+      print('clearUserSession().done()');
+    } on Exception catch (e) {
+      print('clearUserSession().exception=$e');
+    } on Error catch (e) {
+      print('clearUserSession().error=$e');
+    }
+  }
+
+  Future<void> _deleteCacheDir() async {
+    final cacheDir = await getTemporaryDirectory();
+    print('_deleteCacheDir()=$cacheDir');
+
+    if (cacheDir.existsSync()) {
+      cacheDir.deleteSync(recursive: true);
+    }
+  }
+
+  Future<void> _deleteAppDir() async {
+    final appDir = await getApplicationSupportDirectory();
+    print('_deleteAppDir()=$appDir');
+
+    if (appDir.existsSync()) {
+      appDir.deleteSync(recursive: true);
+    }
   }
 }

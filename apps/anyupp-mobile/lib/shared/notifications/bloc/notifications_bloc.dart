@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:catcher/core/catcher.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/locale/extensions/locale_extension.dart';
 import 'package:fa_prev/shared/notifications/notifications.dart';
@@ -21,14 +21,14 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
   ) {
     print('NotificationsBloc.scheduleNotification()');
     emit(NotificationSending());
-    if (Catcher.navigatorKey?.currentContext != null) {
+    if (AppContext.context != null) {
       scheduleNotification(
           title: transEx(
-            Catcher.navigatorKey!.currentContext!,
+            AppContext.context!,
             'rating.notification.title',
           ),
           message: transEx(
-            Catcher.navigatorKey!.currentContext!,
+            AppContext.context!,
             'rating.notification.message',
           ),
           payload: NotificationPayload(

@@ -184,8 +184,6 @@ class ProductDetailsWidget extends StatelessWidget {
                     // ProductImageAndInfoWidget(
                     //   item: item,
                     // ),
-                    if (displayState == ProductItemDisplayState.NORMAL ||
-                        displayState == ProductItemDisplayState.SOLDOUT)
                       ProductConfiguratorWidget(
                         product: item,
                         unit: unit,

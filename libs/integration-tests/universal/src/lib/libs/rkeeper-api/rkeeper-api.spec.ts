@@ -28,7 +28,7 @@ import {
   handleProducts,
   menusyncHandler,
 } from '@bgap/rkeeper-api';
-import { from, Observable, combineLatest, of, defer } from 'rxjs';
+import { from, Observable, of, defer, forkJoin } from 'rxjs';
 import { ES_DELAY, dateMatcher } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
@@ -94,7 +94,7 @@ describe('Test the rkeeper api basic functionality', () => {
     chainId: string,
   ) => testItemDeleter(searchOp, deleteOp, { chainId: { eq: chainId } });
 
-  const cleanup$ = combineLatest(
+  const cleanup$ = forkJoin([
     dirtyItemDeleter(crudSdk.SearchUnitProducts, crudSdk.DeleteUnitProduct),
     dirtyItemDeleter(crudSdk.SearchGroupProducts, crudSdk.DeleteGroupProduct),
     dirtyItemDeleter(crudSdk.SearchChainProducts, crudSdk.DeleteChainProduct),
@@ -108,7 +108,7 @@ describe('Test the rkeeper api basic functionality', () => {
       crudSdk.DeleteProductComponentSet,
       fixtures.rkeeperUnit.chainId,
     ),
-  ).pipe(
+  ]).pipe(
     switchMap(() =>
       from([fixtures.rkeeperUnitProduct, fixtures.rkeeperUnitProduct2]),
     ),
@@ -133,12 +133,12 @@ describe('Test the rkeeper api basic functionality', () => {
     count(),
     tap(num => console.log(`${num} deleted items`)),
     switchMap(() =>
-      combineLatest(
+      forkJoin([
         crudSdk.DeleteUnit({ input: { id: fixtures.rkeeperUnit.id } }),
         crudSdk.DeleteGroup({ input: { id: fixtures.createGroup.id } }),
         crudSdk.DeleteChain({ input: { id: fixtures.createChain.id } }),
         deleteGeneratedProductsForAUnitFromDb(crudSdk)(''),
-      ),
+      ]),
     ),
     tap(result => console.log(`${result} deleted items`)),
   );
@@ -157,11 +157,11 @@ describe('Test the rkeeper api basic functionality', () => {
         mergeMap(input => crudSdk.CreateUnitProduct({ input })),
         takeLast(1),
         switchMap(() =>
-          combineLatest(
+          forkJoin([
             crudSdk.CreateUnit({ input: fixtures.rkeeperUnit }),
             crudSdk.CreateGroup({ input: fixtures.createGroup }),
             crudSdk.CreateChain({ input: fixtures.createChain }),
-          ),
+          ]),
         ),
         delay(ES_DELAY),
       )
@@ -197,7 +197,7 @@ describe('Test the rkeeper api basic functionality', () => {
       .pipe(
         delay(ES_DELAY),
         switchMap(() =>
-          combineLatest([
+          forkJoin([
             crudSdk
               .SearchUnitProducts({
                 filter: {
@@ -532,7 +532,7 @@ test('send order to rkeeper by HTTP post', done => {
 test('send order to rkeeper by sendRkeeperOrder', done => {
   sendRkeeperOrder({
     axiosInstance: axios,
-    currentTime: () => new Date('2040.01.01'),
+    currentTimeISOString: () => new Date('2040.01.01').toISOString(),
   })(fixtures.yellowUnit, fixtures.orderInput)
     .pipe(
       tap(result => {

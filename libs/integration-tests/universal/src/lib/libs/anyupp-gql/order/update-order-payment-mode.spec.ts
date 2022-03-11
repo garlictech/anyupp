@@ -27,7 +27,7 @@ const waiting_order: RequiredId<CrudApi.CreateOrderInput> = {
   id: `${testIdPrefix}order_1_id`,
 };
 
-describe('updateOrderPaymentMode test', () => {
+describe.skip('updateOrderPaymentMode test', () => {
   const orderDeps = {
     crudSdk: createIamCrudSdk(),
     timestamp: () => 123456789,

@@ -7,8 +7,14 @@ import 'package:flutter/scheduler.dart';
 
 import 'modal_top_widget.dart';
 
-showErrorDialog(BuildContext context, String error, String description,
-    {String? exceptionDetails, VoidCallback? onClose}) {
+showErrorDialog(
+  BuildContext context,
+  String error,
+  String description, {
+  String? exceptionDetails,
+  Color? buttonColor,
+  VoidCallback? onClose,
+}) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
 
   SchedulerBinding.instance?.addPostFrameCallback((_) {
@@ -43,6 +49,7 @@ showErrorDialog(BuildContext context, String error, String description,
                   error: error,
                   description: description,
                   errorDetails: exceptionDetails,
+                  buttonColor: buttonColor,
                   onPressed: onClose == null
                       ? () => Nav.pop()
                       : () {

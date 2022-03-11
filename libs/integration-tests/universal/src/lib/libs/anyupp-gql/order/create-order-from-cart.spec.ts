@@ -1,3 +1,7 @@
+import { DynamoDB } from 'aws-sdk';
+import { v1 as uuidV1 } from 'uuid';
+import axios from 'axios';
+import { tableConfig } from '@bgap/crud-gql/backend';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
@@ -10,13 +14,12 @@ import {
   testAdminUserPassword,
   testIdPrefix,
   unitFixture,
-  maskAll,
   maskTimestamp,
   maskV4UuidIds,
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { filterNullish, throwIfEmptyValue } from '@bgap/shared/utils';
-import { combineLatest, defer, of } from 'rxjs';
+import { forkJoin, defer, of } from 'rxjs';
 import {
   catchError,
   delay,
@@ -43,16 +46,8 @@ import {
   createTestUnitProduct,
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
-import { orderRequestHandler } from '@bgap/backend/orders';
+import { orderRequestHandler, OrderResolverDeps } from '@bgap/backend/orders';
 import { dateMatcher } from '../../../../utils';
-import * as rkeeperApi from '@bgap/rkeeper-api';
-
-// See:https://github.com/aelbore/esbuild-jest/issues/26#issuecomment-968853688
-jest.mock('@bgap/rkeeper-api', () => ({
-  __esModule: true,
-  // @ts-ignore
-  ...jest.requireActual('@bgap/rkeeper-api'),
-}));
 
 const TEST_NAME = 'ORDER_';
 const DYNAMODB_OPERATION_DELAY = 3000;
@@ -214,19 +209,6 @@ const cart_05_takeaway: RequiredId<CrudApi.CreateCartInput> = {
   servingMode: CrudApi.ServingMode.takeaway,
 };
 
-const cartWithRkeeperUnit: RequiredId<CrudApi.CreateCartInput> = {
-  ...cartFixture.cart_01,
-  id: `${testIdPrefix}-rkeeper-cart`,
-  version: 1,
-  unitId: unitFixture.createRkeeperUnit.id,
-};
-
-const cartVersion0: RequiredId<CrudApi.CreateCartInput> = {
-  ...cart_01,
-  id: `${testIdPrefix}-version0`,
-  servingMode: CrudApi.ServingMode.takeaway,
-};
-
 const unitWithSimplifiedOrderFlow: RequiredId<CrudApi.CreateUnitInput> = {
   ...unitFixture.createUnit_01,
   id: `${testIdPrefix}-simplified-order-unit`,
@@ -243,20 +225,30 @@ describe('CreatOrderFromCart mutation test', () => {
   let authAnyuppSdk: CrudSdk;
   let authenticatedUserId = getCognitoUsername(testAdminUsername);
   const crudSdk = createIamCrudSdk();
+  const docClient = new DynamoDB.DocumentClient();
+
+  const deps: OrderResolverDeps = {
+    crudSdk,
+    orderTableName: tableConfig.Order.TableName,
+    unitTableName: tableConfig.Unit.TableName,
+    currentTimeISOString: () => new Date().toISOString(),
+    random: Math.random,
+    axiosInstance: axios,
+    uuid: () => uuidV1(),
+    docClient,
+    userId: 'USER ID',
+  };
 
   const cleanup = () =>
-    combineLatest([
+    forkJoin([
       // CleanUP
       deleteTestCart(cart_01.id, crudSdk),
       deleteTestCart(cart_02.id, crudSdk),
       deleteTestCart(cart_03_different_user.id, crudSdk),
       deleteTestCart(cart_04_different_unit.id, crudSdk),
       deleteTestCart(cart_05_takeaway.id, crudSdk),
-      deleteTestCart(cartVersion0.id, crudSdk),
-      deleteTestCart(cartWithRkeeperUnit.id, crudSdk),
       deleteTestCart(cartWithSimplifiedOrderFlow.id, crudSdk),
       deleteTestUnit(unitFixture.unit_01.id, crudSdk),
-      deleteTestUnit(unitFixture.createRkeeperUnit.id, crudSdk),
       deleteTestUnit(unitWithSimplifiedOrderFlow.id, crudSdk),
       deleteTestGroup(groupFixture.group_01.id, crudSdk),
       deleteTestUnitProduct(unitProductFixture.id, crudSdk),
@@ -274,7 +266,6 @@ describe('CreatOrderFromCart mutation test', () => {
           cart_02.userId = authenticatedUserId;
           cart_04_different_unit.userId = authenticatedUserId;
           cart_05_takeaway.userId = authenticatedUserId;
-          cartVersion0.userId = authenticatedUserId;
         }),
       )
       .subscribe(() => done());
@@ -286,10 +277,9 @@ describe('CreatOrderFromCart mutation test', () => {
         delay(1000),
         switchMap(() =>
           // Seeding
-          combineLatest([
+          forkJoin([
             createTestGroup(groupFixture.group_01, crudSdk),
             createTestUnit(unitFixture.createUnit_01, crudSdk),
-            createTestUnit(unitFixture.createRkeeperUnit, crudSdk),
             createTestUnit(unitWithSimplifiedOrderFlow, crudSdk),
             createTestChainProduct(chainProduct_01, crudSdk),
             createTestGroupProduct(groupProduct_01, crudSdk),
@@ -299,9 +289,7 @@ describe('CreatOrderFromCart mutation test', () => {
             createTestCart(cart_03_different_user, crudSdk),
             createTestCart(cart_04_different_unit, crudSdk),
             createTestCart(cart_05_takeaway, crudSdk),
-            createTestCart(cartWithRkeeperUnit, crudSdk),
             createTestCart(cartWithSimplifiedOrderFlow, crudSdk),
-            createTestCart(cartVersion0, crudSdk),
             crudSdk.CreateGeneratedProduct({ input: generatedProduct }),
           ]),
         ),
@@ -320,7 +308,7 @@ describe('CreatOrderFromCart mutation test', () => {
     const input = { id: cartId };
 
     defer(() =>
-      orderRequestHandler({ crudSdk, userId }).createOrderFromCart({
+      orderRequestHandler({ ...deps, userId }).createOrderFromCart({
         input,
       }),
     ).subscribe({
@@ -331,27 +319,13 @@ describe('CreatOrderFromCart mutation test', () => {
     });
   }, 15000);
 
-  it('should fail without an id in input', done => {
-    defer(() =>
-      orderRequestHandler({ crudSdk, userId: 'FOO' }).createOrderFromCart({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        input: {} as any,
-      }),
-    ).subscribe({
-      error(e) {
-        expect(e).toMatchSnapshot();
-        done();
-      },
-    });
-  });
-
   it('should fail without a unit', done => {
     const cartId = cart_04_different_unit.id;
     const userId = cart_04_different_unit.userId;
     const input = { id: cartId };
 
     defer(() =>
-      orderRequestHandler({ crudSdk, userId }).createOrderFromCart({
+      orderRequestHandler({ ...deps, userId }).createOrderFromCart({
         input,
       }),
     ).subscribe({
@@ -367,18 +341,13 @@ describe('CreatOrderFromCart mutation test', () => {
       input: CrudApi.CreateOrderFromCartInput,
     ) => ReturnType<CrudApi.CrudSdk['CreateOrderFromCart']>,
   ) => {
-    const rkeeperSpy = jest.spyOn(rkeeperApi, 'sendRkeeperOrder');
-
     // Cut the long stream to cope with the max 9 op limit
     const calc1 = op({ id: cart_01.id }).pipe(
       // check order has been truly created
       filterNullish<string>(),
       delay(DYNAMODB_OPERATION_DELAY),
       switchMap(newOrderId =>
-        combineLatest([
-          getOrder(crudSdk, newOrderId),
-          getCart(crudSdk, cart_01.id),
-        ]),
+        forkJoin([getOrder(crudSdk, newOrderId), getCart(crudSdk, cart_01.id)]),
       ),
       tap({
         next([order, cart]) {
@@ -398,7 +367,7 @@ describe('CreatOrderFromCart mutation test', () => {
       delay(1000),
       throwIfEmptyValue<string>(),
       switchMap(newOrderId =>
-        combineLatest([
+        forkJoin([
           getOrder(crudSdk, newOrderId).pipe(),
           getCart(crudSdk, cart_02.id).pipe(),
         ]),
@@ -423,7 +392,7 @@ describe('CreatOrderFromCart mutation test', () => {
       filterNullish<string>(),
       delay(DYNAMODB_OPERATION_DELAY),
       switchMap(newOrderId =>
-        combineLatest([
+        forkJoin([
           getOrder(crudSdk, newOrderId),
           getCart(crudSdk, cart_05_takeaway.id),
         ]),
@@ -439,7 +408,6 @@ describe('CreatOrderFromCart mutation test', () => {
         },
       }),
       throwIfEmpty(),
-      tap(() => expect(rkeeperSpy).not.toHaveBeenCalled()),
     );
 
     const errorCases = takeawayOrder.pipe(
@@ -474,11 +442,11 @@ describe('CreatOrderFromCart mutation test', () => {
     return errorCases;
   };
 
-  it('should create an order from a valid cart with resolver function', done => {
+  it.only('should create an order from a valid cart with resolver function', done => {
     testLogic(input =>
       defer(() =>
         orderRequestHandler({
-          crudSdk,
+          ...deps,
           userId: cart_01.userId,
         }).createOrderFromCart({
           input,
@@ -493,31 +461,10 @@ describe('CreatOrderFromCart mutation test', () => {
     );
   }, 30000);
 
-  test('When creating order from cart, send the order to rkeeper', done => {
-    const fv = jest.fn().mockReturnValue(of({}));
-    jest.spyOn(rkeeperApi, 'sendRkeeperOrder').mockReturnValue(fv);
-
-    defer(() =>
-      orderRequestHandler({
-        crudSdk,
-        userId: cartWithRkeeperUnit.userId,
-      }).createOrderFromCart({
-        input: { id: cartWithRkeeperUnit.id },
-      }),
-    )
-      .pipe(
-        catchError(() => {
-          return of({});
-        }),
-        tap(() => expect(maskAll(fv.mock.calls)).toMatchSnapshot()),
-      )
-      .subscribe(() => done());
-  }, 20000);
-
   test('When creating order with simplified flow, the order must be archived', done => {
     defer(() =>
       orderRequestHandler({
-        crudSdk,
+        ...deps,
         userId: cartWithSimplifiedOrderFlow.userId,
       }).createOrderFromCart({
         input: { id: cartWithSimplifiedOrderFlow.id },
@@ -528,25 +475,6 @@ describe('CreatOrderFromCart mutation test', () => {
         switchMap(id => crudSdk.GetOrder({ id })),
         filterNullish(),
         tap(order => expect(order.archived).toBe(true)),
-        switchMap(order => crudSdk.DeleteOrder({ input: { id: order.id } })),
-      )
-      .subscribe(() => done(), console.error);
-  }, 20000);
-
-  test('With version 0, no packaging fee + service fee should be handled', done => {
-    defer(() =>
-      orderRequestHandler({
-        crudSdk,
-        userId: cartVersion0.userId,
-      }).createOrderFromCart({
-        input: { id: cartVersion0.id },
-      }),
-    )
-      .pipe(
-        filterNullish(),
-        switchMap(id => crudSdk.GetOrder({ id })),
-        filterNullish(),
-        tap(order => expect(maskAll(order)).toMatchSnapshot()),
         switchMap(order => crudSdk.DeleteOrder({ input: { id: order.id } })),
       )
       .subscribe(() => done(), console.error);

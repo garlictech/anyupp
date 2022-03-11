@@ -83,8 +83,3 @@ export interface UnpayCategoryStatObjItem {
 export interface UnpayCategoryStatObj {
   [category: string]: UnpayCategoryStatObjItem;
 }
-
-export interface OrderResolverDeps {
-  crudSdk: CrudApi.CrudSdk;
-  timestamp: () => number;
-}

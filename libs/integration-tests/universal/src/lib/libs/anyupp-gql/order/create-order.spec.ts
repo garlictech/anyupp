@@ -8,11 +8,20 @@ import {
   testAdminUsername,
   testAdminUserPassword,
   testIdPrefix,
-  unitFixture,
   maskAll,
+  rkeeperEndpoint,
+  yellowRkeeperPassword,
+  yellowRkeeperUsername,
+  yellowRestaurantId,
 } from '@bgap/shared/fixtures';
-import { delay, switchMap, tap, throwIfEmpty } from 'rxjs/operators';
-import { defer, forkJoin } from 'rxjs';
+import {
+  delay,
+  switchMap,
+  switchMapTo,
+  tap,
+  throwIfEmpty,
+} from 'rxjs/operators';
+import { defer, forkJoin, of } from 'rxjs';
 import {
   createAuthenticatedCrudSdk,
   createIamCrudSdk,
@@ -88,9 +97,8 @@ const orderItemInput: CrudApi.OrderItemInput = {
 const getId = (num: Number) =>
   `create-order-${num}-8123c8c8-a09a-11ec-b909-0242ac120002`;
 
-const orderInput: CrudApi.CreateOrderInput = {
+const orderInput: Omit<CrudApi.CreateOrderInput, 'unitId'> = {
   userId: 'test-monad',
-  unitId: unitFixture.unitId_seeded_01,
   items: [orderItemInput],
   sumPriceShown: {
     taxSum: 633.96,
@@ -116,21 +124,74 @@ const orderInput: CrudApi.CreateOrderInput = {
     grossPrice: 200,
     taxContent: 20,
   },
+  paymentMode: {
+    method: CrudApi.PaymentMethod.cash,
+    type: CrudApi.PaymentType.card,
+  },
 };
 
-describe('CreatOrder mutation test', () => {
+const unitNoRkeeper: CrudApi.CreateUnitInput = {
+  id: `createorder-unitnorkeeper-8123c8c8-a09a-11ec-b909-0242ac120002`,
+  isActive: true,
+  isAcceptingOrders: true,
+  name: `Order test unit`,
+  address: {
+    address: 'Ág u. 1.',
+    city: 'Budapest',
+    country: 'Magyarország',
+    title: 'HQ',
+    postalCode: '1021',
+    location: {
+      lat: 47,
+      lng: 19,
+    },
+  },
+  orderPaymentPolicy: CrudApi.OrderPaymentPolicy.prepay,
+  paymentModes: [
+    {
+      method: CrudApi.PaymentMethod.cash,
+      type: CrudApi.PaymentType.cash,
+    },
+  ],
+  supportedOrderModes: [CrudApi.OrderMode.instant],
+  supportedServingModes: [
+    CrudApi.ServingMode.inplace,
+    CrudApi.ServingMode.takeaway,
+  ],
+  groupId: 'foobar',
+  chainId: 'foobar',
+};
+
+const unitWithRkeeper: CrudApi.CreateUnitInput = {
+  ...unitNoRkeeper,
+  id: `createorder-unitwithrkeeoer-8123c8c8-a09a-11ec-b909-0242ac120002`,
+  externalId: yellowRestaurantId,
+  pos: {
+    type: CrudApi.PosType.rkeeper,
+    rkeeper: {
+      // let's use the yellow real rkeeper endpoint
+      endpointUri: rkeeperEndpoint,
+      rkeeperUsername: yellowRkeeperUsername,
+      rkeeperPassword: yellowRkeeperPassword,
+      anyuppUsername: 'ANYUPP_USERNAME',
+      anyuppPassword: 'ANYUPP_PASSWORD',
+    },
+  },
+};
+
+describe('CreateOrder mutation test', () => {
   let authAnyuppSdk: CrudSdk;
   const crudSdk = createIamCrudSdk();
 
-  const cleanup = () =>
-    forkJoin([
-      // CleanUP
-      deleteTestUnit(unitFixture.unit_01.id, crudSdk),
-      deleteTestUnit(unitFixture.createRkeeperUnit.id, crudSdk),
-      ...R.range(1, 1).map(x =>
-        crudSdk.DeleteOrder({ input: { id: getId(x) } }),
-      ),
-    ]);
+  const cleanupEach$ = forkJoin([
+    // check the getId-s in the test, ensure, that they cover the range here
+    ...R.range(1, 3).map(x => crudSdk.DeleteOrder({ input: { id: getId(x) } })),
+  ]);
+
+  const cleanupAll$ = forkJoin([
+    deleteTestUnit(unitNoRkeeper.id ?? 'badhappened', crudSdk),
+    deleteTestUnit(unitWithRkeeper.id ?? 'badhappened', crudSdk),
+  ]);
 
   beforeAll(done => {
     createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
@@ -138,48 +199,58 @@ describe('CreatOrder mutation test', () => {
         tap(x => {
           authAnyuppSdk = x;
         }),
-      )
-      .subscribe(() => done());
-  });
-
-  beforeEach(done => {
-    cleanup()
-      .pipe(
-        delay(1000),
-        switchMap(() =>
-          // Seeding
+        switchMapTo(cleanupAll$),
+        switchMapTo(
           forkJoin([
-            createTestUnit(unitFixture.createUnit_01, crudSdk),
-            createTestUnit(unitFixture.createRkeeperUnit, crudSdk),
+            createTestUnit(unitNoRkeeper, crudSdk),
+            createTestUnit(unitWithRkeeper, crudSdk),
           ]),
         ),
-        delay(3000),
       )
       .subscribe(() => done());
-  }, 25000);
+  }, 10000);
 
-  afterAll(async () => {
-    await cleanup().toPromise();
-  });
+  beforeEach(done => {
+    cleanupEach$.pipe(delay(3000)).subscribe(() => done());
+  }, 10000);
+
+  afterAll(done => {
+    forkJoin([cleanupAll$, cleanupEach$]).subscribe(() => done());
+  }, 10000);
 
   const testLogic = (
     op: (
       input: CrudApi.CreateOrderInput,
     ) => ReturnType<CrudApi.CrudSdk['CreateOrder']>,
   ) => {
-    const rkeeperSpy = jest.spyOn(rkeeperApi, 'sendRkeeperOrder');
+    const funcSpy = jest.fn().mockReturnValue(of({}));
+    const rkeeperSpy = jest
+      .spyOn(rkeeperApi, 'sendRkeeperOrder')
+      .mockReturnValue(funcSpy);
+
     // Cut the long stream to cope with the max 9 op limit
 
-    const normalOrder = op(orderInput).pipe(
+    const normalOrder = op({
+      ...orderInput,
+      id: getId(1),
+      unitId: unitNoRkeeper.id ?? 'badhappened',
+    }).pipe(
       tap(order => expect(maskAll(order)).toMatchSnapshot('Order content')),
     );
 
     // Secound ORDER with 02 as orderNum
     const secondOrder = normalOrder.pipe(
-      switchMap(() => op(orderInput)),
-      tap(order =>
-        expect(order?.orderNum).toMatchSnapshot('second order ordernum'),
+      switchMap(() =>
+        op({
+          ...orderInput,
+          id: getId(2),
+          unitId: unitNoRkeeper.id ?? 'badhappened',
+        }),
       ),
+      tap(order => {
+        expect(order?.orderNum).toMatchSnapshot('second order ordernum');
+        expect(rkeeperSpy).not.toHaveBeenCalled();
+      }),
       tap(() => expect(rkeeperSpy).not.toHaveBeenCalled()),
       throwIfEmpty(),
     );
@@ -188,19 +259,23 @@ describe('CreatOrder mutation test', () => {
       switchMap(() =>
         op({
           ...orderInput,
-          unitId: unitFixture.createRkeeperUnit.id,
+          id: getId(3),
+          unitId: unitWithRkeeper.id ?? 'badhappened',
         }),
       ),
 
-      tap(() =>
-        expect(rkeeperSpy.mock.calls).toMatchSnapshot('rkeeper called'),
-      ),
+      tap(() => {
+        expect(rkeeperSpy.mock.calls).toMatchSnapshot('rkeeper deps called');
+        expect(maskAll(funcSpy.mock.calls)).toMatchSnapshot(
+          'rkeeper func called',
+        );
+      }),
     );
 
     return rkeeperOrder;
   };
 
-  it.only('should create an order with resolver function', done => {
+  it('should create an order with resolver function', done => {
     const docClient = new DynamoDB.DocumentClient();
 
     testLogic(input =>

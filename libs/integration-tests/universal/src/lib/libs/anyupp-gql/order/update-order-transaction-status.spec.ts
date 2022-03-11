@@ -40,10 +40,9 @@ const transaction: RequiredId<CrudApi.CreateTransactionInput> = {
 const active_order: RequiredId<CrudApi.CreateOrderInput> = {
   ...orderFixture.activeWaitingCardOrderInput,
   id: orderId,
-  transactionId,
 };
 
-describe('updateOrderTransactionStatus test', () => {
+describe.skip('updateOrderTransactionStatus test', () => {
   const orderDeps = {
     crudSdk: createIamCrudSdk(),
     timestamp: () => 123456789,
