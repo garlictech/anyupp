@@ -17,7 +17,7 @@ import {
   maskTimestamp,
   maskV4UuidIds,
 } from '@bgap/shared/fixtures';
-import { RequiredId } from '@bgap/shared/types';
+import { OrderResolverDeps, RequiredId } from '@bgap/shared/types';
 import { filterNullish, throwIfEmptyValue } from '@bgap/shared/utils';
 import { forkJoin, defer, of } from 'rxjs';
 import {
@@ -226,6 +226,18 @@ describe('CreatOrderFromCart mutation test', () => {
   let authenticatedUserId = getCognitoUsername(testAdminUsername);
   const crudSdk = createIamCrudSdk();
   const docClient = new DynamoDB.DocumentClient();
+
+  const deps: OrderResolverDeps = {
+    crudSdk,
+    orderTableName: tableConfig.Order.TableName,
+    unitTableName: tableConfig.Unit.TableName,
+    currentTimeISOString: () => new Date().toISOString(),
+    random: Math.random,
+    axiosInstance: axios,
+    uuid: () => uuidV1(),
+    docClient,
+    userId: 'USER ID',
+  };
 
   const deps: OrderResolverDeps = {
     crudSdk,
