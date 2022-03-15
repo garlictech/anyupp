@@ -191,7 +191,7 @@
     "jest-preset-angular": "11.1.1",
     "joi": "17.6.0",
     "mailtrap": "2.0.2",
-    "mocha": "9.2.1",
+    "mocha": "9.2.2",
     "mochawesome": "7.1.2",
     "mochawesome-merge": "4.2.1",
     "mochawesome-report-generator": "6.1.1",
