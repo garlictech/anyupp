@@ -7277,11 +7277,6 @@
     graphql "^15.5.1"
     zip-local "^0.3.4"
 
-"@serverless/aws-lambda-otel-extension-dist@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@serverless/aws-lambda-otel-extension-dist/-/aws-lambda-otel-extension-dist-0.1.6.tgz#f5f890317b70a7ee33339cba6dc4bdb303e18c9c"
-  integrity sha512-Xt1bVZvDYKp01kXo8z0/8yd5rHeq1SxOmP4ZsdoASNXVlliR/wo4W/Pt4eJk5/zklA6CjWN4PfhcRkt90XKqtw==
-
 "@serverless/dashboard-plugin@^6.1.5":
   version "6.1.5"
   resolved "https://registry.yarnpkg.com/@serverless/dashboard-plugin/-/dashboard-plugin-6.1.5.tgz#dd34f39b770fc526867355a7bd8a8e51379c391f"
@@ -9736,10 +9731,10 @@ aws-sdk@^2.1076.0:
     uuid "3.3.2"
     xml2js "0.4.19"
 
-aws-sdk@^2.1089.0:
-  version "2.1090.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1090.0.tgz#c30e4cbc177e4c3b7792020cc79dfaf155cc8197"
-  integrity sha512-oHdfbiuSjK9mn6rrm5fsitdwv7jEiYzaYB0Xz1kqjIczcVX3JEc+9ySdxlueQf4o5G3RVUcLRF2pIc5j9vcHSg==
+aws-sdk@^2.1092.0:
+  version "2.1093.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1093.0.tgz#43fd6ded15330b3185d37d81ea8f311f4d980e5c"
+  integrity sha512-YD6VNemoKkzDMHsUiGP/MwpM0T20ukp3KTSxPY34Xw3Ww0zP19C54CfjaXhn//R27f2c57BtVez+he2RZ5GwyQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -19862,6 +19857,19 @@ npm-registry-fetch@^9.0.0:
     minizlib "^2.0.0"
     npm-package-arg "^8.0.0"
 
+npm-registry-utilities@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/npm-registry-utilities/-/npm-registry-utilities-1.0.0.tgz#75dc21fcb96020d506b99823407c2088508a4edd"
+  integrity sha512-9xYfSJy2IFQw1i6462EJzjChL9e65EfSo2Cw6kl0EFeDp05VvU+anrQk3Fc0d1MbVCq7rWIxeer89O9SUQ/uOg==
+  dependencies:
+    ext "^1.6.0"
+    fs2 "^0.3.9"
+    memoizee "^0.4.15"
+    node-fetch "^2.6.7"
+    semver "^7.3.5"
+    type "^2.6.0"
+    validate-npm-package-name "^3.0.0"
+
 npm-run-path@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-2.0.2.tgz#35a9232dfa35d7067b4cb2ddf2357b1871536c5f"
@@ -22580,19 +22588,18 @@ serverless-webpack@^5.6.1:
   optionalDependencies:
     ts-node ">= 8.3.0"
 
-serverless@3.7.3:
-  version "3.7.3"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.7.3.tgz#5cf41f7fdf9317847f43a9ad4484e6a5599916df"
-  integrity sha512-ZnTuD4iuxbGx93cclPsf4s0IFz//Xan8G3YU2hgisBrRzsi9sxv5lBik0KbyTSh0pCwVnU+cWqXD3yr/UVhK0Q==
+serverless@3.7.5:
+  version "3.7.5"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.7.5.tgz#37565d17b430e27305421339af7466964e1d8816"
+  integrity sha512-pAYeBOz+34uxSlwo9GRXHHPUdajbK1WMahVYsoEQRhqizZX/s/jt/35Cy7ShwdaPLsXT4ritKVm07bOKBRcOvA==
   dependencies:
-    "@serverless/aws-lambda-otel-extension-dist" "^0.1.6"
     "@serverless/dashboard-plugin" "^6.1.5"
     "@serverless/platform-client" "^4.3.2"
     "@serverless/utils" "^6.0.3"
     ajv "^8.10.0"
     ajv-formats "^2.1.1"
     archiver "^5.3.0"
-    aws-sdk "^2.1089.0"
+    aws-sdk "^2.1092.0"
     bluebird "^3.7.2"
     cachedir "^2.3.0"
     chalk "^4.1.2"
@@ -22622,6 +22629,7 @@ serverless@3.7.3:
     memoizee "^0.4.15"
     micromatch "^4.0.4"
     node-fetch "^2.6.7"
+    npm-registry-utilities "^1.0.0"
     object-hash "^2.2.0"
     open "^7.4.2"
     path2 "^0.1.0"
