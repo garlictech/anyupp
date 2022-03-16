@@ -59,7 +59,7 @@ dependencies:
   lottie: ^1.0.1
   location_permissions: ^4.0.0
   mask_text_input_formatter: ^2.0.0
-  odometer: ^2.1.0
+  odometer: ^3.0.0
   package_info: ^2.0.2
   path_provider: ^2.0.2
   permission_handler: ^9.0.0
