@@ -15,7 +15,7 @@ Feature: Dashboard
     And I select the "Késdobáló #111" unit in the header menu
     Then the "Dashboard" title is displayed
 
-  Scenario: test
+  Scenario: Dashboard
     Then I should see "testuser+monad" text
     And the "Dashboard" title is displayed
     And I should see "ORDERS ACCEPTED" text
@@ -28,7 +28,7 @@ Feature: Dashboard
     Then the "Table #01" title is displayed
     And I click the "closeFloorMapOrders" button
     Then the "Dashboard" title is displayed
-    And I click on the #"01" seat of #"02" table
+    And I click on the #"02" seat of the #"01" table
     Then the "Seat #01/02" title is displayed
     When I click on "placed" button at the first order
     Then I should see the button in "processing"
@@ -39,15 +39,15 @@ Feature: Dashboard
     Then the "Dashboard" title is displayed
 
   Scenario: Active orders, placed to served
-    Then I should see 15 orders on the "Placed orders" icon
+    Then I should see 14 orders on the "Placed orders" icon
     And I should see 20 orders on the "Manual payments" icon
     And I should see 5 orders on the "Problematic orders" icon
-    When I click the "Manual payments" icon with title
-    Then I should see 7 orders on the list
-    When I click the "Problematic orders" icon with title
-    Then I should see 5 orders on the list
-    When I click the "Placed orders" icon with title
-    Then I should see 7 orders on the list
+  # When I click the "Manual payments" icon with title
+  # Then I should see 7 orders on the list
+  # When I click the "Problematic orders" icon with title
+  # Then I should see 5 orders on the list
+  # When I click the "Placed orders" icon with title
+  # Then I should see 7 orders on the list
     When I click on the #"000004" order item
     And I click on the print button
     Then I should see the "Késdobáló #111" text
@@ -75,9 +75,9 @@ Feature: Dashboard
     And I wait 1000 ms
     When I click the "historyOrdersAction" button
 
-  Scenario: Orders history
-    When I click the "historyOrdersAction" button
-    And I click on the date picker
+# Scenario: Orders history
+#   When I click the "historyOrdersAction" button
+#   And I click on the date picker
 
   Scenario: Reports feature
     When I click the "reportsAction" button

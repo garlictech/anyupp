@@ -13,8 +13,8 @@ When('I click on the #{string} table', (tableId: string) => {
 });
 
 When(
-  'I click on the #{string} seat of #{string} table',
-  (tableId: string, seatId: string) => {
+  'I click on the #{string} seat of the #{string} table',
+  (seatId: string, tableId: string) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cy.findByTestId('fabricCanvas').then((canvas: any) => {
       const fabricCanvas = canvas?.[0]?.fabricCanvas;
@@ -31,11 +31,11 @@ When(
 );
 
 When('I click on {string} button at the first order', (buttonName: string) => {
-  cy.findAllByTestId('orderStatusBtn').first().contains(buttonName).click();
+  cy.findAllByTestId('orderStatusBtn').contains(buttonName).first().click();
 });
 
 Then('I should see the button in {string}', (buttonName: string) => {
-  cy.findAllByTestId('orderStatusBtn').first().contains(buttonName);
+  cy.findAllByTestId('orderStatusBtn').contains(buttonName).first();
 });
 
 Then('the {string} icon is selected', () => {
@@ -104,7 +104,7 @@ When(
 );
 
 When('I click on the print button', () => {
-  cy.get('nb-icon[icon="printer-outline"]').click();
+  cy.get('nb-icon[icon="print"]').click();
 });
 
 Then('I should see the {string} text', (text: string) => {
