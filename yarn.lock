@@ -205,10 +205,10 @@
     "@angular-eslint/bundled-angular-compiler" "13.1.0"
     "@typescript-eslint/experimental-utils" "5.11.0"
 
-"@angular/animations@13.2.6":
-  version "13.2.6"
-  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-13.2.6.tgz#a8f0df5a79396dafb17c47f2a4e9e15e561ef3a1"
-  integrity sha512-DrjpKo68uR3lSLQQXosoTCbjKQS6IKRCpR14E2t8fo0AX8i2hkB8je4SrhdCyB7FgFN7l2kgUYo4Qa8+BOB+aA==
+"@angular/animations@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-13.3.0.tgz#aaa954dd7c359fad8a1313e6abe311f8733732b3"
+  integrity sha512-q7hkImhHCv0QdriR8HOFhsAW05QDmvapcHrBv3y862LUTR5e90/+81RYuwFuKX1lk/sa7LiHlHHWC7oCspzr2Q==
   dependencies:
     tslib "^2.3.0"
 
@@ -246,17 +246,17 @@
     symbol-observable "4.0.0"
     uuid "8.3.2"
 
-"@angular/common@13.2.6":
-  version "13.2.6"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-13.2.6.tgz#cfb4e7d5173d22ed81e978cebfe19796db0759f8"
-  integrity sha512-t4XRb9db4UeRcPs5aHNtGuXRKSvGBlTEr0zzSeoKzHD9TCaO4dSDISh9obS9hThaPuBmPKRUHN5KE1HFmqnSHg==
+"@angular/common@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-13.3.0.tgz#473ea97ee7bf284a63ca2a94da945f4dd68bc468"
+  integrity sha512-yl09TWBmz++Z3MKjzZIwU2wZHiedCn1DjGILjjNXegHFOfINRHiqLhHca4kGWFcTsdvcuEhd9Hk9JATqi45rjg==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/compiler-cli@13.2.6":
-  version "13.2.6"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-13.2.6.tgz#929a32af9989c2bf1ee343bc37c72233a81d2c2c"
-  integrity sha512-QtlLKj3m6a2nkewFxhg+a3tQ2gEIBzMfI2c1laWUfAfJJ56phj79k8Z/kf2HQxypphWixyTK+ugpTlMdvvOquA==
+"@angular/compiler-cli@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-13.3.0.tgz#3ee6011794f3db44dc430e92354106cd1dee54ee"
+  integrity sha512-f9m55YejHJNIDTwHyGwf3wn5AvZepDfdAgeJP0Re4XmO1mf/Z9Ob5mJP5Q1yLNhqk0DlURWsZ1CbJqufPXMTbQ==
   dependencies:
     "@babel/core" "^7.17.2"
     chokidar "^3.0.0"
@@ -269,10 +269,10 @@
     tslib "^2.3.0"
     yargs "^17.2.1"
 
-"@angular/compiler@13.2.6":
-  version "13.2.6"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-13.2.6.tgz#0de8e65fc4fe22273eff1e96917377919dbd2ab3"
-  integrity sha512-LHU29J2/c/03WHkwtzUSElTBsXbzkKdYARodnNfsFdLPsWhyvzO3cqlcZYteFJxEy3dVH+ZrYDjqQ9Sp17aIgA==
+"@angular/compiler@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-13.3.0.tgz#fd1a60fec530a6dd6ca3953d154452ba3aefe5e9"
+  integrity sha512-oeUvaBOVpey2G1I5fWZa3JcyRuBQ3dAeRay5UtQhu1Xw2L8jd2tYkbZb1XOgP9J1/Ma4LO62pjSaOpR2EtO5ww==
   dependencies:
     tslib "^2.3.0"
 
@@ -281,10 +281,10 @@
   resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-9.0.0.tgz#87e0bef4c369b6cadae07e3a4295778fc93799d5"
   integrity sha512-ctjwuntPfZZT2mNj2NDIVu51t9cvbhl/16epc5xEwyzyDt76pX9UgwvY+MbXrf/C/FWwdtmNtfP698BKI+9leQ==
 
-"@angular/core@13.2.6":
-  version "13.2.6"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-13.2.6.tgz#685ca3b6de173f9671e251362a2c88f8685454f0"
-  integrity sha512-ctWsxuaSO3d3afLW+wkJSyiEIA2uhaTKNps9x5wz/oZJDaUDYVa4PM4x7/UHn2bXzBjXjN9LSW8h9F31iwmcTg==
+"@angular/core@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-13.3.0.tgz#0c415b298b61183bf464ec0846d0ee0203ae62af"
+  integrity sha512-ZnuIMEK8YFBtthNqrxapYolMp6qRy4Yp/VG+M11YNiuBp/BoYYDjTaknwO8vu36Cn6372zWjcibsknkZMjdBkg==
   dependencies:
     tslib "^2.3.0"
 
@@ -293,10 +293,10 @@
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-9.0.0.tgz#227dc53e1ac81824f998c6e76000b7efc522641e"
   integrity sha512-6Pxgsrf0qF9iFFqmIcWmjJGkkCaCm6V5QNnxMy2KloO3SDq6QuMVRbN9RtC8Urmo25LP+eZ6ZgYqFYpdD8Hd9w==
 
-"@angular/forms@13.2.6":
-  version "13.2.6"
-  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-13.2.6.tgz#fc0664bc0136a2cc5103dc0a62b12f3bc48cedd9"
-  integrity sha512-3IikvNtO0RBiGb2AWl8aYcE3ivXHPIJz+JOn9Wz9XXSkYx75D3GjuJlz+fVIgz+7Q7tJuS6Q2E5qat/ldeDmoA==
+"@angular/forms@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-13.3.0.tgz#09689757ed7bb197f87ee8b487ed2ce38a2a3005"
+  integrity sha512-eBySo+B3/AV+p3SmD15Tg41N+SoxYPyqGnlCTR+jSrFis5ZZNWf0kKpIKhJhW2taRq6K+1o3KcA0W9bnphrZDQ==
   dependencies:
     tslib "^2.3.0"
 
@@ -308,29 +308,29 @@
     "@types/google.maps" "^3.45.6"
     tslib "^2.3.0"
 
-"@angular/language-service@13.2.6":
-  version "13.2.6"
-  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-13.2.6.tgz#ee417af8a814b531be54e82e73254c3f18793a3a"
-  integrity sha512-nhF8GvEyUKIaDFTIQ4RSPQwRng7XjEWQl2zz0B8ShvQsgF/zMLo7mAci9MXxkYBIejU1I07w32r2J90rkjsARA==
+"@angular/language-service@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-13.3.0.tgz#366bde21a952ae6ccf2f05659924a583fba01577"
+  integrity sha512-XzfamYk39h+ASxb2ycZKfn9nITmns+jTV+DPrFAY1BoW+4x3tAoqt3/CkdJn8UaCePswKXckDQ6y9i109TfddQ==
 
-"@angular/platform-browser-dynamic@13.2.6":
-  version "13.2.6"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-13.2.6.tgz#61e0ea0255982c604e596665b6c1c3441beab9b6"
-  integrity sha512-m77+pzwZw+4kiRhxzrj1kE3N1K82I8Xt+vEBKSL2Xv42hCX0T37erC6KlztFEDj4A68s5+/0C5vfwhEiDcr/Cw==
+"@angular/platform-browser-dynamic@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-13.3.0.tgz#b27fc3fe70dcaf974a3fb2982c61c636d016bdd5"
+  integrity sha512-7/r79Yn8SDH8t0/fJ26PmScm/S1JZ9hxjC8IoROdyC5xBrSGrp946mIKE/4/813zmF8uPj2lveV9p/XiKTbxSw==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/platform-browser@13.2.6":
-  version "13.2.6"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-13.2.6.tgz#eef3ea0c715c319e7135f80d3432e5a980aefe10"
-  integrity sha512-Gc/1TqysW+P+K3NeQihmHWs4KF1mjJT20s06r+YcETnPP11uPk+UxQl7gJNsDV587DYO/wT3oISXVpRw4UJhdQ==
+"@angular/platform-browser@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-13.3.0.tgz#9ab044bf8fac091ebf1917e5335e72463acc286b"
+  integrity sha512-OgNVgRtqTPxzItZbJVe4NmSYKDLEKQYjGulStWl4ycQTsOKteF+sJi8gU5BvEU/KQNZItYnIQxMqTsFyS7xlRQ==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/router@13.2.6":
-  version "13.2.6"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-13.2.6.tgz#5755c109877d16cf16585a5fda2a059500a3506b"
-  integrity sha512-dA9vL4mPLp+iNegzuvm9FaEWirFI2ZK3WQgbdoxoIpneym+BxRTkNDzPcvEaqfUf7eDGRBqlWakFDrd+H2QEbg==
+"@angular/router@13.3.0":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-13.3.0.tgz#84f1430a2252a3bd0762b017178199b49394d68f"
+  integrity sha512-Kz657mtycup+s9emRH66etkBobAF26h3UDXE9pnjUM6MuVTA38P31WyTWKyWJVk8Oruxm/hTHZZBfI88o9/1sA==
   dependencies:
     tslib "^2.3.0"
 
@@ -4754,52 +4754,52 @@
     "@graphql-tools/utils" "^8.1.1"
     tslib "~2.3.0"
 
-"@graphql-codegen/typescript-document-nodes@2.2.7":
-  version "2.2.7"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-document-nodes/-/typescript-document-nodes-2.2.7.tgz#def1000a44a7887d18ebbf68a9b8eeb7709cc553"
-  integrity sha512-7KKwHnE4WmN0TPx6LKV89AE7mTQD6C2AtwexwNopn0UwSlNdNGFvx1mbhkFgPS+pGvDZWEwKzvCaK7i7gtd4eg==
+"@graphql-codegen/typescript-document-nodes@2.2.8":
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-document-nodes/-/typescript-document-nodes-2.2.8.tgz#93a3eeb4064a323b3e510b2c9f7fe209831310da"
+  integrity sha512-eihEDcOwxMOMBcPu6OpXkCcPL/LkWvOf8d0hIIZn0ms8pMMnbRAg0oj7bog8xNDJUyMPFf42CZKqpX9Qqt3ZFQ==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^2.4.0"
-    "@graphql-codegen/visitor-plugin-common" "2.7.3"
+    "@graphql-codegen/visitor-plugin-common" "2.7.4"
     auto-bind "~4.0.0"
     tslib "~2.3.0"
 
-"@graphql-codegen/typescript-generic-sdk@2.3.6":
-  version "2.3.6"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-generic-sdk/-/typescript-generic-sdk-2.3.6.tgz#f542458e6c116717cc5cdbbc0705403070c2092e"
-  integrity sha512-VrLnIOvGPTB1sD2n+bKgEQqcE+JFPYhuaeVem1Ni6Zm4d8DV0r6prMtWh4hIo4n+OcsQkUohu/lxaZd6YV8oiA==
+"@graphql-codegen/typescript-generic-sdk@2.3.7":
+  version "2.3.7"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-generic-sdk/-/typescript-generic-sdk-2.3.7.tgz#469408f76aabc760d0b029908eb7c5132542ce17"
+  integrity sha512-yMKB+6IcltLzzGGHI1n1P5/gnRqMR496EpkkCacxU1CxOtPlx9v9W8Qf/g0COtjy39DqszrfFjKtv008FM0dSA==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^2.4.0"
-    "@graphql-codegen/visitor-plugin-common" "2.7.3"
+    "@graphql-codegen/visitor-plugin-common" "2.7.4"
     auto-bind "~4.0.0"
     tslib "~2.3.0"
 
-"@graphql-codegen/typescript-operations@2.3.4":
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-operations/-/typescript-operations-2.3.4.tgz#3341f940d7fae0417e5738787fa8793696277d54"
-  integrity sha512-Jnsx+YTCqwq8F0ebyZAJGVtt+PQNuB/0uv9mEMbgcUbo/7w6EX6NZ8JArRuuz8MUb/gbpeO+GkfuNX+F6A8ikw==
+"@graphql-codegen/typescript-operations@2.3.5":
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-operations/-/typescript-operations-2.3.5.tgz#1e77b96da0949f9e0ecd6054eb28b582936e35e8"
+  integrity sha512-GCZQW+O+cIF62ioPkQMoSJGzjJhtr7ttZGJOAoN/Q/oolG8ph9jNFePKO67tSQ/POAs5HLqfat4kAlCK8OPV3Q==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^2.4.0"
-    "@graphql-codegen/typescript" "^2.4.7"
-    "@graphql-codegen/visitor-plugin-common" "2.7.3"
+    "@graphql-codegen/typescript" "^2.4.8"
+    "@graphql-codegen/visitor-plugin-common" "2.7.4"
     auto-bind "~4.0.0"
     tslib "~2.3.0"
 
-"@graphql-codegen/typescript@2.4.7", "@graphql-codegen/typescript@^2.4.7":
-  version "2.4.7"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript/-/typescript-2.4.7.tgz#e72e87cd47a51b2bc232293762573a86182de469"
-  integrity sha512-1YAK+m9SZRS1Uy8hdXVQAaAG/WF2jdFD76wbMRQ8Lf5e9YbmtJuy1RpI13nZJTZbhFopd9zqoWFJHsU/oy4i7g==
+"@graphql-codegen/typescript@2.4.8", "@graphql-codegen/typescript@^2.4.8":
+  version "2.4.8"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript/-/typescript-2.4.8.tgz#e8110baba9713cde72d57a5c95aa27400363ed9a"
+  integrity sha512-tVsHIkuyenBany7c5IMU1yi4S1er2hgyXJGNY7PcyhpJMx0eChmbqz1VTiZxDEwi8mDBS2mn3TaSJMh6xuJM5g==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^2.4.0"
     "@graphql-codegen/schema-ast" "^2.4.1"
-    "@graphql-codegen/visitor-plugin-common" "2.7.3"
+    "@graphql-codegen/visitor-plugin-common" "2.7.4"
     auto-bind "~4.0.0"
     tslib "~2.3.0"
 
-"@graphql-codegen/visitor-plugin-common@2.7.3":
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-2.7.3.tgz#f374e8974ae4ab7b1059a7f8748db6393f20c138"
-  integrity sha512-rODPGkrHEf9aHD8SgVWS0xie8VmJoYXLWgQR8PFKrwCUFjf7nvDuATAL2lTFiHATlVBWg1meXVPdUlkKeJj/0Q==
+"@graphql-codegen/visitor-plugin-common@2.7.4":
+  version "2.7.4"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/visitor-plugin-common/-/visitor-plugin-common-2.7.4.tgz#fbc8aec9df0035b8f29fa64a6356cbb02062da5d"
+  integrity sha512-aaDoEudDD+B7DK/UwDSL2Fzej75N9hNJ3N8FQuTIeDyw6FNGWUxmkjVBLQGlzfnYfK8IYkdfYkrPn3Skq0pVxA==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^2.4.0"
     "@graphql-tools/optimize" "^1.0.1"
@@ -7277,15 +7277,15 @@
     node-addon-api "3.2.1"
     node-gyp "8.1.0"
 
-"@serverless-stack/cli@0.69.0":
-  version "0.69.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.69.0.tgz#7b6b070b56f74b8af5190bb8bf4cf7be19810f7a"
-  integrity sha512-7vdm9r1x6RrOEpHRGnTgcQZg5Ov4rvWEmp5aSc0j7DRsfiAGcu8x4Ucrv2rQu0ZZK8/DMLD5HClluIHYB9OUZw==
+"@serverless-stack/cli@0.69.1":
+  version "0.69.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.69.1.tgz#5b4fb77bccda132e17d724ec1dbaf59fa0e3c7d5"
+  integrity sha512-1AM0YhkE0WbR/71FX15YfEwz7CGaCRgNn7kqnEeCMv8dy4RuFRxEQI8LfTdiua5KjlUuiwA0nwlVKepr1fpmxg==
   dependencies:
     "@aws-cdk/aws-apigatewayv2-alpha" "2.15.0-alpha.0"
     "@serverless-stack/aws-lambda-ric" "^2.0.12"
-    "@serverless-stack/core" "^0.69.0"
-    "@serverless-stack/resources" "^0.69.0"
+    "@serverless-stack/core" "^0.69.1"
+    "@serverless-stack/resources" "^0.69.1"
     aws-cdk "2.15.0"
     aws-cdk-lib "2.15.0"
     aws-sdk "^2.761.0"
@@ -7342,7 +7342,44 @@
     xstate "4.26.1"
     zod "^3.11.6"
 
-"@serverless-stack/resources@0.69.0", "@serverless-stack/resources@^0.69.0":
+"@serverless-stack/core@^0.69.1":
+  version "0.69.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.69.1.tgz#0b90f0ae99e1fb623462da97df964c941d1b8dc4"
+  integrity sha512-NYgDoukN7/F0A2g+KJr7xSWE9e8/EeO+zx4NKE7gXX03DZzn4GSKSd718XthVEJUAvQuYLTHAIyScgymuY5Hug==
+  dependencies:
+    "@trpc/server" "^9.16.0"
+    "@typescript-eslint/eslint-plugin" "^5.13.0"
+    async-retry "^1.3.3"
+    aws-cdk "2.15.0"
+    aws-cdk-lib "2.15.0"
+    aws-sdk "^2.761.0"
+    chalk "^4.1.0"
+    chokidar "^3.5.2"
+    ci-info "^3.3.0"
+    conf "^10.1.1"
+    constructs "^10.0.29"
+    cross-spawn "^7.0.3"
+    dataloader "^2.0.0"
+    dendriform-immer-patch-optimiser "^2.1.0"
+    dotenv "^10.0.0"
+    dotenv-expand "^5.1.0"
+    esbuild "^0.14.11"
+    eslint "^8.10.0"
+    eslint-config-serverless-stack "^0.69.1"
+    express "^4.17.1"
+    fs-extra "^9.0.1"
+    immer "^9.0.7"
+    js-yaml "^4.1.0"
+    lerna "^4.0.0"
+    log4js "^6.3.0"
+    picomatch "^2.3.0"
+    remeda "^0.0.32"
+    typescript "^4.6.2"
+    uuid "^8.3.2"
+    xstate "4.26.1"
+    zod "^3.11.6"
+
+"@serverless-stack/resources@0.69.0":
   version "0.69.0"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.69.0.tgz#cf377b356ab3ae10517ff8f25a787a011cdea7d8"
   integrity sha512-/SqBnHYI1Ab6H+ke3NjzesIwtt1DE15kDQfrTNunDbviXkyNoLMAtACa70kw4scDT8gmIcuRZOcpJ8/yNaDyWg==
@@ -7354,6 +7391,28 @@
     "@graphql-tools/load-files" "^6.3.2"
     "@graphql-tools/merge" "^6.2.14"
     "@serverless-stack/core" "^0.69.0"
+    archiver "^5.3.0"
+    aws-cdk-lib "2.15.0"
+    chalk "^4.1.0"
+    constructs "^10.0.29"
+    cross-spawn "^7.0.3"
+    fs-extra "^9.0.1"
+    glob "^7.1.7"
+    graphql "^15.5.1"
+    zip-local "^0.3.4"
+
+"@serverless-stack/resources@^0.69.1":
+  version "0.69.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.69.1.tgz#13a4f89f616df2863ac6c6e631d6212122831af1"
+  integrity sha512-YexS6ddv/mTk7kqIXNbfPua89tuXEbt8/lMmstiAI4PFBUyyw8sJegpw6nIOAfIyVCuVT6mBLOf2CDNWQf1dBA==
+  dependencies:
+    "@aws-cdk/aws-apigatewayv2-alpha" "2.15.0-alpha.0"
+    "@aws-cdk/aws-apigatewayv2-authorizers-alpha" "2.15.0-alpha.0"
+    "@aws-cdk/aws-apigatewayv2-integrations-alpha" "2.15.0-alpha.0"
+    "@aws-cdk/aws-appsync-alpha" "2.15.0-alpha.0"
+    "@graphql-tools/load-files" "^6.3.2"
+    "@graphql-tools/merge" "^6.2.14"
+    "@serverless-stack/core" "^0.69.1"
     archiver "^5.3.0"
     aws-cdk-lib "2.15.0"
     chalk "^4.1.0"
@@ -9863,10 +9922,10 @@ aws-lambda@1.0.7:
     js-yaml "^3.14.1"
     watchpack "^2.0.0-beta.10"
 
-aws-sdk@2.1094.0:
-  version "2.1094.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1094.0.tgz#85cc5fb416ce7af356f1dd1b14fbb714cd923800"
-  integrity sha512-g/pjEl1JKs8+UZSdfdTMwUh7oNSWy6LXkjd0WfI3TBVgU5+yE5bd1VtAiJxJ/kIOFwcWyGPy0fNkGjAqL6NAGw==
+aws-sdk@2.1095.0:
+  version "2.1095.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1095.0.tgz#7847493b09a326a0613010ed9db53302f760edf6"
+  integrity sha512-OrZq2pTDsnfOJYsAdRlw+NXTGLQYqWldSZR3HugW8JT4JPWyFZrgB2yPP2ElFHX+4J4SZg5QvkAXl/7s9gLTgA==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -9893,10 +9952,10 @@ aws-sdk@^2.1076.0:
     uuid "3.3.2"
     xml2js "0.4.19"
 
-aws-sdk@^2.1092.0:
-  version "2.1093.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1093.0.tgz#43fd6ded15330b3185d37d81ea8f311f4d980e5c"
-  integrity sha512-YD6VNemoKkzDMHsUiGP/MwpM0T20ukp3KTSxPY34Xw3Ww0zP19C54CfjaXhn//R27f2c57BtVez+he2RZ5GwyQ==
+aws-sdk@^2.1095.0:
+  version "2.1095.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1095.0.tgz#7847493b09a326a0613010ed9db53302f760edf6"
+  integrity sha512-OrZq2pTDsnfOJYsAdRlw+NXTGLQYqWldSZR3HugW8JT4JPWyFZrgB2yPP2ElFHX+4J4SZg5QvkAXl/7s9gLTgA==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -12515,10 +12574,10 @@ dayjs@^1.10.4:
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
   integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
 
-dayjs@^1.10.8:
-  version "1.10.8"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.8.tgz#267df4bc6276fcb33c04a6735287e3f429abec41"
-  integrity sha512-wbNwDfBHHur9UOzNUjeKUOJ0fCb0a52Wx0xInmQ7Y8FstyajiV1NmK1e00cxsr9YrE9r7yAChE0VvpuY5Rnlow==
+dayjs@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.0.tgz#009bf7ef2e2ea2d5db2e6583d2d39a4b5061e805"
+  integrity sha512-JLC809s6Y948/FuCZPm5IX8rRhQwOiyMb2TfVVQEixG7P8Lm/gt5S7yoQZmC8x1UehI9Pb7sksEt4xx14m+7Ug==
 
 debounce-fn@^4.0.0:
   version "4.0.0"
@@ -13808,6 +13867,15 @@ eslint-config-serverless-stack@^0.69.0:
   version "0.69.0"
   resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.69.0.tgz#4d5f390b7726f83bc5ef13b9b4ceec7b608eddbd"
   integrity sha512-8ve6hZtQrJJenRXkZDJsL34PkKbMIekLe+8qCOwcUOBT608msygkP5iCpeEKTN3iLem0NjYCqz9mabpBhK99TA==
+  dependencies:
+    "@typescript-eslint/eslint-plugin" "^5.12.1"
+    "@typescript-eslint/parser" "^4.15.1"
+    eslint "^8.10.0"
+
+eslint-config-serverless-stack@^0.69.1:
+  version "0.69.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.69.1.tgz#e3c66b7dee36425901aa3ed120e9f729a80cb8ee"
+  integrity sha512-IpZ29HmuQvTUUgiEQUuunAcFZobfVloq5ESnQ5ECQa6tLCj4dW5MyhmTnomUI9M1MklUM73K7ty2dQia9DUKGg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.12.1"
     "@typescript-eslint/parser" "^4.15.1"
@@ -22765,10 +22833,10 @@ serverless-webpack@^5.6.1:
   optionalDependencies:
     ts-node ">= 8.3.0"
 
-serverless@3.7.5:
-  version "3.7.5"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.7.5.tgz#37565d17b430e27305421339af7466964e1d8816"
-  integrity sha512-pAYeBOz+34uxSlwo9GRXHHPUdajbK1WMahVYsoEQRhqizZX/s/jt/35Cy7ShwdaPLsXT4ritKVm07bOKBRcOvA==
+serverless@3.7.8:
+  version "3.7.8"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.7.8.tgz#fd713de47beb787da20b3770daaf543310b16eea"
+  integrity sha512-XErdBVHvd9GipfBMVoTKw8d+IluAn9PWYdI+ZfcHofe3CABuKMtTKxJ570yMmAx8PcvGA01lEc5uR/135r1eLw==
   dependencies:
     "@serverless/dashboard-plugin" "^6.1.5"
     "@serverless/platform-client" "^4.3.2"
@@ -22776,7 +22844,7 @@ serverless@3.7.5:
     ajv "^8.10.0"
     ajv-formats "^2.1.1"
     archiver "^5.3.0"
-    aws-sdk "^2.1092.0"
+    aws-sdk "^2.1095.0"
     bluebird "^3.7.2"
     cachedir "^2.3.0"
     chalk "^4.1.2"
@@ -22784,7 +22852,7 @@ serverless@3.7.5:
     ci-info "^3.3.0"
     cli-progress-footer "^2.3.0"
     d "^1.0.1"
-    dayjs "^1.10.8"
+    dayjs "^1.11.0"
     decompress "^4.2.1"
     dotenv "^10.0.0"
     dotenv-expand "^5.1.0"
