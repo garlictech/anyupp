@@ -148,6 +148,7 @@ test('Convert Anyupp order to rkeeper order', done => {
       request: jest.fn().mockReturnValue(Promise.resolve({})),
     },
     currentTime: () => new Date('2020-04-13T00:00:00.000+08:00'),
+    uuidGenerator: () => 'UUID',
   };
 
   sendRkeeperOrder(deps)(unit, orderInput)

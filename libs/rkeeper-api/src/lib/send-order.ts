@@ -2,17 +2,21 @@ import * as CrudApi from '@bgap/crud-gql/api';
 import { pipe } from 'fp-ts/lib/function';
 import axios, { AxiosStatic } from 'axios';
 import { Method } from 'axios';
-import { defer, from } from 'rxjs';
+import { defer, from, Observable } from 'rxjs';
 import * as R from 'ramda';
+import { v1 as uuidV1 } from 'uuid';
+import { mapTo, tap } from 'rxjs/operators';
 
 export interface SendRkeeperOrderDeps {
   currentTime: () => Date;
   axiosInstance: AxiosStatic;
+  uuidGenerator: () => string;
 }
 
 const defaultDeps: SendRkeeperOrderDeps = {
   currentTime: () => new Date(),
   axiosInstance: axios,
+  uuidGenerator: uuidV1,
 };
 
 const processConfigSet = (configSets: CrudApi.OrderItemConfigSetInput[]) =>
@@ -28,8 +32,13 @@ const processConfigSet = (configSets: CrudApi.OrderItemConfigSetInput[]) =>
 
 export const sendRkeeperOrder =
   (deps: SendRkeeperOrderDeps = defaultDeps) =>
-  (unit: CrudApi.Unit, orderInput: CrudApi.CreateOrderInput) =>
-    pipe(
+  (
+    unit: CrudApi.Unit,
+    orderInput: CrudApi.CreateOrderInput,
+  ): Observable<string | undefined> => {
+    const externalId = deps.uuidGenerator();
+
+    return pipe(
       orderInput.items.map(item =>
         pipe(
           {
@@ -55,18 +64,20 @@ export const sendRkeeperOrder =
         client: {
           phone: unit.phone,
           email: unit.email,
-          ln: 'Testln',
-          fn: 'Testfn',
+          ln: externalId,
         },
-        order_number: orderInput.place
-          ? parseFloat(
-              `${parseInt(orderInput.place?.table)}.${parseInt(
-                orderInput.place?.seat,
-              )}`,
-            )
-          : 0.0,
+        /*order_number: orderInput.place
+            ? parseFloat(
+                `${parseInt(orderInput.place?.table)}.${parseInt(
+                  orderInput.place?.seat,
+                )}`,
+              )
+            : 0.0,*/
+        // temporary solution, asked by rkeeper: we send the seat number only, as an integer
+        order_number: orderInput.place ? parseInt(orderInput.place?.seat) : 0,
         order,
       }),
+      R.tap(x => console.debug('ORDER SENT:', JSON.stringify(x, null, 2))),
       data => ({
         url: `${unit.pos?.rkeeper?.endpointUri}/postorder/${unit.externalId}`,
         method: 'post' as Method,
@@ -76,11 +87,19 @@ export const sendRkeeperOrder =
           password: unit.pos?.rkeeper?.rkeeperPassword || '',
         },
       }),
-      R.tap(x =>
-        console.debug(
-          'Order submitted to rkeeper:',
-          JSON.stringify(x, null, 2),
-        ),
-      ),
       data => defer(() => from(deps.axiosInstance.request(data))),
+      tap(data =>
+        console.debug('RKEEPER RESPONSE: ', JSON.stringify(data.data, null, 2)),
+      ),
+      /*R.tap(x =>
+          console.debug(
+            'Order submitted to rkeeper:',
+            JSON.stringify(x, null, 2),
+          ),
+        ),
+        map(data => data?.data?.data?.remoteResponse?.remoteOrderId),
+        tap(data => console.debug('RKEEPER ORDER EXTERNAL ID: ', data)),
+         */
+      mapTo(externalId),
     );
+  };

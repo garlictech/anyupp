@@ -319,6 +319,21 @@ export const createOrderFromCart =
           archived: hasSimplifiedOrder(props.unit),
         },
       })),
+      // Push the order to rkeeper if the unit is backed by rkeeper
+      switchMap(props =>
+        (props.unit.pos?.type === CrudApi.PosType.rkeeper
+          ? sendRkeeperOrder()(props.unit, props.orderInput)
+          : of(undefined)
+        ).pipe(
+          map(externalId => ({
+            ...props,
+            orderInput: {
+              ...props.orderInput,
+              externalId,
+            },
+          })),
+        ),
+      ),
       // Place order into the DB
       switchMap(props =>
         createOrderInDb(props.orderInput)(deps).pipe(
@@ -333,22 +348,10 @@ export const createOrderFromCart =
           .DeleteCart({ input: { id: props.cart.id } })
           .pipe(mapTo(props)),
       ),
-      // Push the order to rkeeper if the unit is backed by rkeeper
       tap(x =>
         console.debug(
-          'Props submitted to rkeeper check:',
+          'Props at the end of process:',
           JSON.stringify(x, null, 2),
-        ),
-      ),
-      switchMap(props =>
-        (props.unit.pos?.type === CrudApi.PosType.rkeeper
-          ? sendRkeeperOrder()(props.unit, props.orderInput)
-          : of({})
-        ).pipe(
-          map(rkeeperResult => ({
-            ...props,
-            rkeeperResult,
-          })),
         ),
       ),
       map(props => props.newOrderId),
