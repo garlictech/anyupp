@@ -1,8 +1,9 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { OrderResolverDeps } from '@bgap/shared/types';
+
+import { OrderHandlerDeps } from '@bgap/shared/types';
 
 export const updateOrderStatus =
-  (deps: OrderResolverDeps) =>
+  (deps: OrderHandlerDeps) =>
   (orderId: string, status: CrudApi.OrderStatus, adminUserId: string) =>
     deps.crudSdk.UpdateOrder({
       input: {

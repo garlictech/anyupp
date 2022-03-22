@@ -26,7 +26,7 @@ const orders = [
   ),
 ];
 
-describe.skip('Orders pure function tests', () => {
+describe('Orders pure function tests', () => {
   describe('getNextOrderStatus', () => {
     it('should get next order status', () => {
       expect(
@@ -118,13 +118,15 @@ describe.skip('Orders pure function tests', () => {
       const result: FloorMapUserOrderObjects = getActiveOrdersByUser(orders);
 
       expect(orders.length).toBe(4);
-      expect(result['test-monad'].orders.length).toBe(2);
+      expect(result['test-monad'].orders.length).toBe(4);
       expect(
         result['test-monad'].orders.map(o =>
           CrudApi.currentStatus(o.statusLog),
         ),
       ).toMatchInlineSnapshot(`
         Array [
+          "none",
+          "none",
           "none",
           "none",
         ]
@@ -134,6 +136,8 @@ describe.skip('Orders pure function tests', () => {
         Array [
           "waiting_for_payment",
           "waiting_for_payment",
+          "success",
+          "success",
         ]
       `);
     });
@@ -152,7 +156,7 @@ describe.skip('Orders pure function tests', () => {
       expect(
         getTableOrders(['01'], activeOrders)['01'].userOrders?.[0]?.orders
           ?.length,
-      ).toBe(2);
+      ).toBe(4);
     });
   });
 
@@ -169,7 +173,7 @@ describe.skip('Orders pure function tests', () => {
       expect(
         getTableOrders(['01'], activeOrders)['01'].userOrders?.[0]?.orders
           ?.length,
-      ).toBe(2);
+      ).toBe(4);
     });
   });
 });

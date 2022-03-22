@@ -1,25 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
-import { v1 as uuidV1 } from 'uuid';
 import axios from 'axios';
-import { tableConfig } from '@bgap/crud-gql/backend';
-import { CrudSdk } from '@bgap/crud-gql/api';
-import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  getCognitoUsername,
-  generatedProductFixture,
-  cartFixture,
-  groupFixture,
-  productFixture,
-  testAdminUsername,
-  testAdminUserPassword,
-  testIdPrefix,
-  unitFixture,
-  maskTimestamp,
-  maskV4UuidIds,
-} from '@bgap/shared/fixtures';
-import { OrderResolverDeps, RequiredId } from '@bgap/shared/types';
-import { filterNullish, throwIfEmptyValue } from '@bgap/shared/utils';
-import { forkJoin, defer, of } from 'rxjs';
+import { defer, forkJoin, of } from 'rxjs';
 import {
   catchError,
   delay,
@@ -27,10 +8,32 @@ import {
   tap,
   throwIfEmpty,
 } from 'rxjs/operators';
+import { v1 as uuidV1 } from 'uuid';
+
+import { orderRequestHandler, OrderResolverDeps } from '@bgap/backend/orders';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { tableConfig } from '@bgap/crud-gql/backend';
+import {
+  cartFixture,
+  generatedProductFixture,
+  getCognitoUsername,
+  groupFixture,
+  maskTimestamp,
+  maskV4UuidIds,
+  productFixture,
+  testAdminUsername,
+  testAdminUserPassword,
+  testIdPrefix,
+  unitFixture,
+} from '@bgap/shared/fixtures';
+import { RequiredId } from '@bgap/shared/types';
+import { filterNullish, throwIfEmptyValue } from '@bgap/shared/utils';
+
 import {
   createAuthenticatedCrudSdk,
   createIamCrudSdk,
 } from '../../../../api-clients';
+import { dateMatcher } from '../../../../utils';
 import { createTestCart, deleteTestCart } from '../../../seeds/cart';
 import {
   createTestChainProduct,
@@ -46,8 +49,6 @@ import {
   createTestUnitProduct,
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
-import { orderRequestHandler, OrderResolverDeps } from '@bgap/backend/orders';
-import { dateMatcher } from '../../../../utils';
 
 const TEST_NAME = 'ORDER_';
 const DYNAMODB_OPERATION_DELAY = 3000;
@@ -222,22 +223,10 @@ const cartWithSimplifiedOrderFlow: RequiredId<CrudApi.CreateCartInput> = {
 };
 
 describe('CreatOrderFromCart mutation test', () => {
-  let authAnyuppSdk: CrudSdk;
+  let authAnyuppSdk: CrudApi.CrudSdk;
   let authenticatedUserId = getCognitoUsername(testAdminUsername);
   const crudSdk = createIamCrudSdk();
   const docClient = new DynamoDB.DocumentClient();
-
-  const deps: OrderResolverDeps = {
-    crudSdk,
-    orderTableName: tableConfig.Order.TableName,
-    unitTableName: tableConfig.Unit.TableName,
-    currentTimeISOString: () => new Date().toISOString(),
-    random: Math.random,
-    axiosInstance: axios,
-    uuid: () => uuidV1(),
-    docClient,
-    userId: 'USER ID',
-  };
 
   const deps: OrderResolverDeps = {
     crudSdk,

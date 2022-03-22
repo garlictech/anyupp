@@ -3,11 +3,12 @@ import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import * as CrudApi from '@bgap/crud-gql/api';
-import { OrderResolverDeps } from '@bgap/shared/types';
-import { throwIfEmptyValue } from '../fn';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
+
+import { OrderHandlerDeps } from '@bgap/shared/types';
 
 export const updateOrderItemStatus =
-  (deps: OrderResolverDeps) =>
+  (deps: OrderHandlerDeps) =>
   (
     orderId: string,
     itemIdx: number,
