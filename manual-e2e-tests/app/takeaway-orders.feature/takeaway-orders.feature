@@ -38,7 +38,7 @@ Feature: Takeaway orders feature
 
   Scenario: Create takeaway order
     When I tap on the "Sajtburger" button
-    When I tap on the "Frenc fries" button
+    And I tap on the "Frenc fries" button
     And I tap on the "Add to cart" button
     Then I should see the "Menu" screen
     When I tap on the "MY CART (1700 Ft)" button
@@ -68,7 +68,7 @@ Feature: Takeaway orders feature
     When I tap on the "Sajtburger" button
     And I tap on the "ADD TO CART" button
     And I tap on the "MY CART (1700 Ft)" button
-    Then I should see the cart screen
+    Then I should see the "CART" screen
     When I tap on the "PAY (1700 Ft)" button
     Then I should see the "PAY" screen
     When I tap on the option "Credit Card Payment" button
@@ -98,8 +98,6 @@ Feature: Takeaway orders feature
     Then I should see "Order mode" text with "Takeaway" text
 
   Scenario: Packaging fee
-    And I tap on the "Take away" button
-    Then I should see the "Menu" screen
     When I tap on the "Sajtburger" button
     And I tap on the "ADD TO CART" button
     And I tap on the "MY CART (1700 Ft)" button

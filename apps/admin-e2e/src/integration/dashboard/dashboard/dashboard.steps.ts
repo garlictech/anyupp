@@ -38,10 +38,6 @@ Then('I should see the button in {string}', (buttonName: string) => {
   cy.findAllByTestId('orderStatusBtn').contains(buttonName).first();
 });
 
-Then('the {string} icon is selected', () => {
-  cy.findByTestId('currentOrdersAction').contains('nb-action.active');
-});
-
 Then('I should see a {string} table', (tableName: string) => {
   cy.get('bgap-reports-product-mix').findAllByText(tableName);
 });
