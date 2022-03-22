@@ -464,8 +464,8 @@
       "description": "Hely sikeresen kiválasztva. Asztal: #{{0}}"
     },
     "tableFound": {
-      "seat": "Chair: #{{0}}",
-      "table": "Table: #{{0}}",
+      "seat": "Szék: #{{0}}",
+      "table": "Asztal: #{{0}}",
       "description": "A kapcsolódás megtörtént. Folytathatod a rendelést!"
     },
     "qrCodeError": {
@@ -760,7 +760,8 @@
       "description": "Kérjük add meg, mennyi borravalót szeretnél adni.",
       "ok": "Kész",
       "cancel": "Mégsem",
-      "hint": "Borravaló összege (Ft)"
+      "hint": "Borravaló összege (Ft)",
+      "no": "Nem"
     },
     "errors": {
       "minAmount": "A borravaló összege minimum {{0}} Ft",

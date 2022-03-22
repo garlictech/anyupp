@@ -753,7 +753,8 @@
       "description": "Please enter the amount of tips you want.",
       "ok": "Done",
       "cancel": "Cancel",
-      "hint": "Tip amount"
+      "hint": "Tip amount",
+      "no": "No"
     },
     "errors": {
       "minAmount": "The minimum amount of tip is {{0}} Ft",

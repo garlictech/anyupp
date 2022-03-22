@@ -80,7 +80,7 @@ class ProductMenuItem extends StatelessWidget {
                     ? ColorFiltered(
                         colorFilter: ColorFilter.mode(
                             Colors.black.withOpacity(_disabled_opacity),
-                            BlendMode.dstATop),
+                            BlendMode.dstIn),
                         child: ProductImageWidget(
                           url: item.image!,
                           width: widthContainer,
