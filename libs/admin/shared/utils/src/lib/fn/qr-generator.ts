@@ -5,4 +5,4 @@ export const getQR = async (
   unitId: string,
   tID?: CrudApi.Maybe<string>,
   sID?: CrudApi.Maybe<string>,
-) => await QRCode.toString(`https://www.anyupp.com/${unitId}/${tID}/${sID}`);
+) => await QRCode.toString(`https://anyupp.com/${unitId}/${tID}/${sID}`);
