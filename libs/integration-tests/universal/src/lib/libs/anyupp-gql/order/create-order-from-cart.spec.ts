@@ -443,7 +443,7 @@ describe('CreatOrderFromCart mutation test', () => {
     return errorCases;
   };
 
-  it.only('should create an order from a valid cart with resolver function', done => {
+  it('should create an order from a valid cart with resolver function', done => {
     testLogic(input =>
       defer(() =>
         orderRequestHandler({
@@ -461,23 +461,4 @@ describe('CreatOrderFromCart mutation test', () => {
       () => done(),
     );
   }, 30000);
-
-  test('When creating order with simplified flow, the order must be archived', done => {
-    defer(() =>
-      orderRequestHandler({
-        ...deps,
-        userId: cartWithSimplifiedOrderFlow.userId,
-      }).createOrderFromCart({
-        input: { id: cartWithSimplifiedOrderFlow.id },
-      }),
-    )
-      .pipe(
-        filterNullish(),
-        switchMap(id => crudSdk.GetOrder({ id })),
-        filterNullish(),
-        tap(order => expect(order.archived).toBe(true)),
-        switchMap(order => crudSdk.DeleteOrder({ input: { id: order.id } })),
-      )
-      .subscribe(() => done(), console.error);
-  }, 20000);
 });

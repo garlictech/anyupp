@@ -318,6 +318,7 @@ Array [
     Object {
       "axiosInstance": Object {},
       "currentTimeISOString": [Function],
+      "uuidGenerator": [Function],
     },
   ],
 ]
@@ -329,6 +330,7 @@ Array [
     Object {
       "axiosInstance": Object {},
       "currentTimeISOString": [Function],
+      "uuidGenerator": [Function],
     },
   ],
 ]

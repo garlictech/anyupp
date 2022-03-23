@@ -115,15 +115,16 @@ export const placeOrder =
 export const handleRkeeperOrder =
   (deps: OrderResolverDeps) =>
   (
-    input: CalculationState_OrderAdded,
-  ): OE.ObservableEither<string, CalculationState_OrderAdded> =>
+    input: CalculationState_UnitAdded,
+  ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
     pipe(
       input.unit.pos?.type === CrudApi.PosType.rkeeper
         ? sendRkeeperOrder({
             currentTimeISOString: deps.currentTimeISOString,
             axiosInstance: deps.axiosInstance,
+            uuidGenerator: deps.uuid,
           })(input.unit, input.order)
-        : of({}),
+        : of(''),
       mapTo(input),
       oeTryCatch,
     );
@@ -133,8 +134,8 @@ export const createOrder =
   (deps: OrderResolverDeps): Observable<CrudApi.Order> =>
     getUnit(deps)(input).pipe(
       OE.chain(getNextOrderNum(deps)),
-      OE.chain(placeOrder(deps)),
       OE.chain(handleRkeeperOrder(deps)),
+      OE.chain(placeOrder(deps)),
       OE.map(state => state.order),
       OE.fold(
         err => throwError(err),

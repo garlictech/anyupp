@@ -24,6 +24,7 @@ import {
 import { addPackagingFeeToOrder } from './handle-packaging-fee';
 import { hasSimplifiedOrder } from './order-resolvers';
 import { addServiceFeeToOrder } from './handle-service-fee';
+import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 
 const toOrderInputFormat = ({
   userId,
@@ -284,7 +285,11 @@ export const createOrderFromCart =
       // Push the order to rkeeper if the unit is backed by rkeeper
       switchMap(props =>
         (props.unit.pos?.type === CrudApi.PosType.rkeeper
-          ? sendRkeeperOrder()(props.unit, props.orderInput)
+          ? sendRkeeperOrder({
+              currentTimeISOString: deps.currentTimeISOString,
+              axiosInstance: deps.axiosInstance,
+              uuidGenerator: deps.uuid,
+            })(props.unit, props.orderInput)
           : of(undefined)
         ).pipe(
           map(externalId => ({

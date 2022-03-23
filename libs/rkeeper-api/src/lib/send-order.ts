@@ -29,7 +29,7 @@ export type RkeeperOrder = Pick<
 >;
 
 export const sendRkeeperOrder =
-  (deps: SendRkeeperOrderDeps = defaultDeps) =>
+  (deps: SendRkeeperOrderDeps) =>
   (
     unit: CrudApi.Unit,
     orderInput: CrudApi.CreateOrderInput,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as CrudApi from '@bgap/crud-gql/api';
 import { of, throwError } from 'rxjs';
@@ -179,6 +180,7 @@ test.each(placeOrderCases)(
       uuid: () => 'THE UUID',
       orderTableName: 'ORDER TABLE NAME',
       currentTimeISOString: () => new Date('2022-02-01').toISOString(),
+      uuidGenerator: () => 'UUID',
     } as any;
 
     placeOrder(depsFixture)(inputState as CalculationState_UnitAdded)
@@ -235,6 +237,7 @@ test.each(handleRkeeperOrderCases)(
     const depsFixture = {
       currentTimeISOString: () => new Date('2022-02-01').toISOString(),
       axiosInstance: {},
+      uuid: () => 'THE UUID',
     } as any;
 
     const funcSpy = jest.fn().mockReturnValue(result);

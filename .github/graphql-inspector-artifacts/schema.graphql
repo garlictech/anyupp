@@ -535,6 +535,7 @@ input CreateOrderInput {
   takeAway: Boolean
   place: PlaceInput
   paymentIntention: Float
+  transactionStatus: PaymentStatus
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
