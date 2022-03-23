@@ -437,6 +437,10 @@
       "title": "New Table Reserved!",
       "description": "Seat #{{1}} reserved at Table #{{0}}"
     },
+    "tableFound": {
+      "title": "Chair: #{{1}}, Table: #{{0}}",
+      "description": "The connection has been made. You can continue to order!"
+    },
     "qrCodeError": {
       "title": "QR code invalid!",
       "description": "Unit not found with the id from the QR code."
