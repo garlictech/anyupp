@@ -457,16 +457,17 @@ class _SelectUnitByLocationScreenState
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
         position: LatLng(unit.address.location.lat, unit.address.location.lng),
         infoWindow: InfoWindow(
-            title: unit.name,
-            snippet:
-                '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}'),
-        onTap: () {
-          selectUnitAndGoToMenuScreen(
-            context,
-            unit,
-            deletePlace: true,
-          );
-        },
+          title: unit.name,
+          snippet:
+              '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
+          onTap: () {
+            selectUnitAndGoToMenuScreen(
+              context,
+              unit,
+              deletePlace: true,
+            );
+          },
+        ),
       );
     }
 

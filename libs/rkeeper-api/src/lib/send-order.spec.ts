@@ -147,6 +147,7 @@ test('Convert Anyupp order to rkeeper order', done => {
     },
     currentTimeISOString: () =>
       new Date('2020-04-13T00:00:00.000+08:00').toISOString(),
+    uuidGenerator: () => 'UUID',
   };
 
   sendRkeeperOrder(deps)(unit, orderInput)

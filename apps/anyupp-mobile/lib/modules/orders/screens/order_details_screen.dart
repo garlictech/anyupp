@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
@@ -407,9 +409,11 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 if (order.transaction != null) {
+                  order.ratingPolicies!.shuffle();
                   _showRatingModal(
                       context: context,
-                      ratingPolicy: order.ratingPolicies![0],
+                      ratingPolicy: order.ratingPolicies![
+                          Random().nextInt(order.ratingPolicies!.length)],
                       transaction: order.transaction!);
                 }
               },

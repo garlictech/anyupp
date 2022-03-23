@@ -533,11 +533,11 @@ test('send order to rkeeper by sendRkeeperOrder', done => {
   sendRkeeperOrder({
     axiosInstance: axios,
     currentTimeISOString: () => new Date('2040.01.01').toISOString(),
+    uuidGenerator: () => 'UUID',
   })(fixtures.yellowUnit, fixtures.orderInput)
     .pipe(
       tap(result => {
-        expect(result?.config.auth).toMatchSnapshot('config.auth');
-        expect(result?.data.success).toEqual(true);
+        expect(result).toEqual('UUID');
       }),
     )
     .subscribe(() => done());

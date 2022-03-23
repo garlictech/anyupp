@@ -113,8 +113,15 @@ Future<bool> handleUrlQR(Uri uri) async {
 
     return true;
   } else {
-    await Future.delayed(Duration(seconds: 1));
-    print('***** handleUrlQR().qrfound()');
+    print('***** handleUrlQR().qrfound().page=$page');
+    int retryCount = 5;
+    while (retryCount > 0 && await auth.getAuthenticatedUserProfile() == null) {
+      print('***** handleUrlQR().qrfound().wait for user=$retryCount');
+      await Future.delayed(Duration(seconds: 1));
+      retryCount--;
+    }
+    print('***** handleUrlQR().qrfound().user authenticated.');
+
     Nav.reset(page);
     return true;
   }
@@ -140,7 +147,9 @@ Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
   }
   print(
       '***** getNavigationPageByUrlFromQRDeeplink().unitId=$unitId, table=$table, seat=$seat');
-  return SelectUnitChooseMethodScreen(initialUri: uri,);
+  return SelectUnitChooseMethodScreen(
+    initialUri: uri,
+  );
 }
 
 // *************************

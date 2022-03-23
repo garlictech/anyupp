@@ -14,11 +14,14 @@ Feature: QR code and serving mode change
     And I tap the "Add to cart" button
     And I tap the "MY CART (1700)" button
     Then there is the "Cart" screen
-    When I tap the "close" button
+    When I tap the back arrow
     Then there is the "Menu" screen
     When I close the app
     And I open the app
-    Then there is the "Menu" screen
+    Then there is the unit selector screen
+    When I tap on the "Késdobáló #111" card
+    And I tap on the "In place" button
+    Then I should see the "Menu" screen
     And I should see the "MY CART (1700)" text
 
   Scenario: QR reading on the unit selector screen
@@ -26,25 +29,28 @@ Feature: QR code and serving mode change
     And the language is set to EN
     When I tap the text "Continue anonymously"
     Then there is a loading screen
-    Then there is the "Unit selector" screen
+    Then there is the unit selector screen
     And I should see "Click & scan your table to order" text
     When I tap the "Click & scan your table to order" button
     And the app opens my camera
-    Then I should see "Scan the QR code on your table to finalize your order" text
+    Then I should see "Scan the QR code on the table to order" text
     When I read the QR code
-    Then there is a loading screen
+    Then there is a "finding table and chair" loading screen
     And I should get the a text message "New Table Reserved!"
-    And I should see "Please select" dialog
+    Then I should see "Chair: #01, Table: #01" text
+    When I tap on the "OK" button
+    Then I should see "Please select" dialog
     When I tap the "In place" button
     Then there is the "Menu" screen
     When I tap the "Sajtburger" card under "Hamburgers" category
     And I tap the "Add To Cart" button
     And I tap the "MY CART (1700)" button
     Then there is the "Cart" screen
-    When I tap the "close" button
+    When I tap the back arrow button
     Then I should see the "Menu" screen
     When I close the app
     And I open the app
+    And I select the "Késdobáló #111" in in place mode
     Then there is the "Menu" screen
     And I should see the "MY CART (1700 Ft)" text
 
@@ -60,13 +66,14 @@ Feature: QR code and serving mode change
     When I tap the QR reader icon
     Then I should see "AnyUpp Would Like to Access the Camera" text
     When I tap the "OK" button
-    Then I should see the "Scan the QR codoe on your table to finalize your order." text
+    Then I should see the "Scan the QR codoe on the table to order." text
     When I read the QR code
-    Then I should see "Finding your seat..." text
+    Then I should see "Finding table and chair..." text
+    And I should see "Chair: #01, Table: #01" text
+    When I tap on the "OK" button
     Then I should see the "Menu" screen
-  #nincs már ilyen opció?!
 
-  Scenario: QR reading on the cart screen
+  Scenario: QR reading on the pay screen
     Given I am on the login screen
     And the language is set to EN
     When I tap the text "Continue anonymously"
@@ -75,21 +82,26 @@ Feature: QR code and serving mode change
     And I tap the "Take away" button
     Then there is the "Menu" screen
     When I tap the "Sajtburger" card under "Hamburgers" category
-    Then I should see "Add to cart" text
-    When I tap the "Add to cart" button
+    And I tap the "Add to cart" button
     Then I should see the "Menu" screen
-    And I should see "MY CART (1700 Ft)" text
     When I tap on the "MY CART (1700 Ft)" button
     Then I should see the "Cart" screen
-    When I tap the "Pay (1700 Ft)" button
+    When I tap the "PAY (1700 Ft)" button
     Then I should see the "PAY" screen
+    When I tap on the "Cash" button
+    And I tap on the "PALCE ORDER" button
     And the app opens my camera
     Then I should see the "Scan the QR codoe on your table to finalize your order." text
     When I read the QR code
-    Then I should see the "Finding your seat..." and the "Connected to" loading screens
+    Then I should see the "Finding table and chair..." loading screen
     And I get the text message "New Table Reserved!"
+    And I should see "Chair: #01, Table: #01" text
+    When I tap on the "OK" button
+    Then I should see "Successful order!" text
+    When I tap on the "OK" button
+    Then I should see the "Orders" screen
 
-  Scenario: Starting app
+  Scenario: Switch between serving modes
     Given I am on the login screen
     And the language is set to EN
     When I tap the text "Continue anonymously"
@@ -102,48 +114,14 @@ Feature: QR code and serving mode change
     And I tap the "Add To Cart" button
     And I tap the "MY CART (1700 Ft)" button
     Then there is the "Cart" screen
-    When I tap the "close" button
+    When I tap the back arrow
     Then there is the "Menu" screen
-    When I close the app
-    And I open the app
-    Then there is the "Unit selector" screen
-    When I tap on the "Késdobáló #111" card
-    Then I should see the "Menu" screen
-    And I should see the "MY CART (1700 Ft)" text
-    When I tap the Take away icon
-    Then I should see the "Please select" text
-    And I should see "In place" text
-    When I tap the "In place" button
+    When I tap the back arrow
+    And I select the "Késdobáló #111" in in place mode
     Then I should see the "Are you sure you want to switch to in place order mode?" text
     When I tap the "Yes" button
-    Then my cart sould be deleted
-
-  Scenario: End of payment method
-    Given I am on the login screen
-    And the language is set to EN
-    When I tap the text "Continue anonymously"
-    Then there is a loading screen
-    And there is the "Unit selector" screen
-    When I tap the "Késdobáló #111" unit in the list
-    And I tap the "Take away" button
-    Then there is the "Menu" screen
-    When I tap the "Sajtburger" card under "Hamburgers" product category
-    And I tap the "Add To Cart" button
-    And I tap the "MY CART (1700 Ft)" button
-    Then there is the "Cart" screen
-    When I tap the "Pay (1700 Ft)" button
-    Then there is the "PAY" screen
-    When I tap the "Cash" button
-    And I tap the "Place order" button
-    And the app opens my camera
-    Then I should see the "Scan the QR codoe on your table to finalize your order." text
-    When I read the QR code
-    Then I should see the "Finding your seat..." loading screen
-    And I get the text message "New Table Reserved!"
-    And I should see "Successful order!" text
-    When I tap on the "ALL RIGHT" button
-    Then I should see "Current orders" text
-    And my cart should be empty
+    Then I should see the "Menu" screen
+    And my cart sould be deleted
 
   Scenario: Serving mode change on the cart screen
     Given I am on the login screen
@@ -160,8 +138,8 @@ Feature: QR code and serving mode change
     Then there is the "Cart" screen
     When I tap on the "Mode selector" button
     Then I should see "Please select" dialog
-    When I tap on the "Take away" button
-    Then I should see "Are you sure you want to switch to take away order mode?" dialog
+    When I tap on the "In place" button
+    Then I should see "Are you sure you want to switch to in place order mode?" dialog
     When I tap on the "Yes" button
     Then I should see the "Menu" screen
     And my cart should be deleted

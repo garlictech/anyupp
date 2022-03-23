@@ -11,8 +11,7 @@ Array [
       "data": Object {
         "client": Object {
           "email": "UNIT_EMAIL",
-          "fn": "Testfn",
-          "ln": "Testln",
+          "ln": "UUID",
           "phone": "UNIT_PHONE",
         },
         "delivery_time": "2020-04-12T16:00:00",
@@ -36,7 +35,7 @@ Array [
             "type": "d",
           },
         ],
-        "order_number": 1.1,
+        "order_number": 1,
         "order_type": 1,
         "pay_online_type": 0,
         "pay_type": 0,

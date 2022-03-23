@@ -85,7 +85,8 @@ export const createGroup: RequiredId<CrudApi.CreateGroupInput> = {
 };
 
 export const rkeeperOrder = {
-  objectid: '109150001',
+  objectid: yellowRestaurantId,
+  remoteId: yellowRestaurantId,
   order_type: 1,
   pay_type: 0,
   pay_online_type: 0,

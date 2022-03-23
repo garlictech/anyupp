@@ -136,7 +136,9 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
                                     },
                                   )
                                 : Container(),
-                            SizedBox(height: 70,),
+                            SizedBox(
+                              height: 70,
+                            ),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
@@ -251,17 +253,21 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
     } else
     // Send only tip
     if (widget.tipPolicy != null) {
-      bool validated = validateTip();
-      if (validated) {
-        getIt.get<RatingBloc>().add(
-              TipOrder(
-                orderId: widget.transaction.orderId,
-                tipType: TipType.amount,
-                tipValue: _getCalculatedTip(),
-              ),
-            );
+      if (_tip == null) {
+        Nav.pop();
       } else {
-        _addInvalidTipEvent();
+        bool validated = validateTip();
+        if (validated) {
+          getIt.get<RatingBloc>().add(
+                TipOrder(
+                  orderId: widget.transaction.orderId,
+                  tipType: TipType.amount,
+                  tipValue: _getCalculatedTip(),
+                ),
+              );
+        } else {
+          _addInvalidTipEvent();
+        }
       }
     }
   }
