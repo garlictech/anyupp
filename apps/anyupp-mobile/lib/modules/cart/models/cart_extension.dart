@@ -63,9 +63,7 @@ extension CartExtension on Cart {
   double? get totalServiceFee {
     ServiceFeePolicy? policy = currentUnit?.serviceFeePolicy;
 
-    if (policy == null ||
-        policy.type == ServiceFeeType.noFee ||
-        this.servingMode == ServingMode.takeAway) {
+    if (policy == null || this.servingMode == ServingMode.takeAway) {
       return null;
     }
 

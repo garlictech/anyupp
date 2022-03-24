@@ -20,14 +20,14 @@ export class FormSelectComponent {
   @Input() caption = ''; // Language key!!!
   @Input() options: KeyValue[] = [];
   @Input() control?: FormControl | null;
-  @Input() forceShowEmptyOption?: boolean;
+  @Input() forceShowEmptyOption?: boolean = false;
+  @Input() emptyOptionLabel?: string = '-';
   @Input() localize?: boolean;
   @Input() size: NbComponentSize = 'small';
   @Input() inputId = '';
   @Output() selectionChange = new EventEmitter();
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {
-    this.forceShowEmptyOption = false;
     this.size = 'small';
   }
 
