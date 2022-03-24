@@ -56,7 +56,7 @@
     "@aws-sdk/util-config-provider": "3.55.0",
     "@nebular/eva-icons": "9.0.1",
     "@nebular/theme": "8.0.0",
-    "@ngneat/until-destroy": "9.0.0",
+    "@ngneat/until-destroy": "9.0.1",
     "@ngrx/effects": "13.0.2",
     "@ngrx/entity": "13.0.2",
     "@ngrx/router-store": "13.0.2",
