@@ -57,6 +57,7 @@ export class UnitFormService {
       ),
       timeZone: [''],
       paymentModes: [[]],
+      orderPaymentPolicy: [CrudApi.OrderPaymentPolicy.prepay],
       supportedServingModes: [
         [defaultServingMode],
         { validators: notEmptyArray },

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updateOrderPaymentMode test should update order payment mode 1`] = `
+Object {
+  "id": "test_order_1_id",
+  "paymentMode": Object {
+    "caption": "cash",
+    "method": "cash",
+    "type": "cash",
+  },
+}
+`;

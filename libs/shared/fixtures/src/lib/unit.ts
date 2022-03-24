@@ -83,6 +83,7 @@ const unitBase = {
     hu: `Teszt unit #${unitId_01} leírás`,
     en: `Test unit #${unitId_01} description`,
   },
+  orderPaymentPolicy: CrudApi.OrderPaymentPolicy.prepay,
   paymentModes: [
     {
       method: CrudApi.PaymentMethod.cash,

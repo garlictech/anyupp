@@ -29,31 +29,9 @@ export class StripeStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: StripeStackProps) {
     super(scope, id);
 
-    const stripeWebhookLambdaOld = new lambda.Function(
+    const stripeWebhookLambda = new lambda.Function(
       this,
       'StripeWebhookLambda',
-      {
-        ...commonLambdaProps,
-        // It must be relative to the serverless.yml file
-        handler: 'lib/lambda/stripe-webhook-old/index.handler',
-        timeout: Duration.seconds(30),
-        memorySize: 512,
-        code: lambda.Code.fromAsset(
-          path.join(__dirname, '../../.serverless-1/stripe-webhook-old.zip'),
-        ),
-        environment: {
-          STRIPE_SECRET_KEY: props.stripeSecretKey,
-          STRIPE_SIGNING_SECRET: props.stripeSigningSecret,
-          SZAMLAZZ_HU_AGENT_KEY: props.szamlazzhuAgentKey,
-          API_ACCESS_KEY_ID: props.apiAccessKeyId,
-          API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
-        },
-      },
-    );
-
-    const stripeWebhookLambdaNew = new lambda.Function(
-      this,
-      'StripeWebhookLambdaNew',
       {
         ...commonLambdaProps,
         // It must be relative to the serverless.yml file
@@ -79,7 +57,7 @@ export class StripeStack extends sst.Stack {
     const apiName = 'stripe-webhook';
 
     const api = new apigateway.LambdaRestApi(this, 'StripeWebhook', {
-      handler: stripeWebhookLambdaOld,
+      handler: stripeWebhookLambda,
       restApiName: apiName,
       proxy: true,
       deployOptions: {
@@ -87,26 +65,17 @@ export class StripeStack extends sst.Stack {
       },
     });
 
-    const apiNew = new apigateway.LambdaRestApi(this, 'StripeWebhookNew', {
-      handler: stripeWebhookLambdaNew,
-      restApiName: `${apiName}-new`,
-      proxy: true,
-      deployOptions: {
-        stageName: scope.stage,
-      },
-    });
-
-    const paramName = `stripewebhookEndpointNew`;
+    const paramName = `stripewebhookEndpoint`;
 
     new ssm.StringParameter(this, `${paramName}Param`, {
       allowedPattern: '.*',
       parameterName: getFQParamName(scope, paramName),
-      stringValue: apiNew.url,
+      stringValue: api.url,
     });
 
     new CfnOutput(this, paramName, {
-      value: apiNew.url,
-      exportName: scope.logicalPrefixedName('stripewebhookEndpointNew'),
+      value: api.url,
+      exportName: scope.logicalPrefixedName('stripewebhookEndpoint'),
     });
 
     createApiDomainName(

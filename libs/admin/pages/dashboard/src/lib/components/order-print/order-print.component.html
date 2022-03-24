@@ -167,7 +167,6 @@
         <div class="mt-4">Rendelés azonosítók:</div>
         <div *ngFor="let order of orders">
           #{{ order.orderNum }} ({{ order.id }})
-
           <ng-container *ngIf="!!order.paymentMode">
             <br />
             {{ 'print.selectedPaymentMode' | translate }}:

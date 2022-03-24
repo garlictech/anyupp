@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
 import { Context, Handler } from 'aws-lambda';
@@ -77,6 +78,13 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
 
   const orderRequestHandlers = orderRequestHandler({
     crudSdk,
+    orderTableName: tableConfig.Order.TableName,
+    unitTableName: tableConfig.Unit.TableName,
+    currentTimeISOString: () => new Date().toISOString(),
+    random: Math.random,
+    axiosInstance: axios,
+    uuid: () => uuidV1(),
+    docClient,
     userId: event.identity?.username || '',
   });
 
@@ -109,6 +117,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       createAdminUser: adminUserRequestHandlers.createAdminUser,
       deleteAdminUser: adminUserRequestHandlers.deleteAdminUser,
       createOrderFromCart: orderRequestHandlers.createOrderFromCart,
+      createOrder: orderRequestHandlers.createOrder,
       regenerateUnitData: unitRequestHandlers.regenerateUnitData,
       createAnonymUser: userRequestHandlers.createAnonymUser,
       createUnit: createUnitResolver(unitsDeps),

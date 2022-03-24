@@ -3,11 +3,11 @@ import { iif, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import * as CrudApi from '@bgap/crud-gql/api';
-import { OrderResolverDeps } from '@bgap/shared/types';
-import { throwIfEmptyValue } from '../fn';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
+import { OrderHandlerDeps } from '@bgap/shared/types';
 
 export const recallOrderFromHistory =
-  (deps: OrderResolverDeps) => (orderId: string, adminUserId: string) =>
+  (deps: OrderHandlerDeps) => (orderId: string, adminUserId: string) =>
     deps.crudSdk
       .GetOrder({
         id: orderId,

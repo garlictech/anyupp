@@ -6,8 +6,6 @@ import {
   calculateOrderSumPriceRounded,
   PaymentStatus,
 } from '@bgap/crud-gql/api';
-import { tableConfig } from '@bgap/crud-gql/backend';
-import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 import {
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
@@ -15,9 +13,8 @@ import {
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
-import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
-import { tap, map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
-import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
+import { combineLatest, from, Observable, of, throwError } from 'rxjs';
+import { map, mapTo, switchMap } from 'rxjs/operators';
 import {
   getGroupProduct,
   getUnitProduct,
@@ -27,13 +24,11 @@ import {
 import { addPackagingFeeToOrder } from './handle-packaging-fee';
 import { hasSimplifiedOrder } from './order-resolvers';
 import { addServiceFeeToOrder } from './handle-service-fee';
-
-const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
+import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 
 const toOrderInputFormat = ({
   userId,
   unit,
-  orderNum,
   paymentMode,
   items,
   place,
@@ -42,7 +37,6 @@ const toOrderInputFormat = ({
 }: {
   userId: string;
   unit: CrudApi.Unit;
-  orderNum: string;
   paymentMode: CrudApi.PaymentMode;
   items: CrudApi.OrderItemInput[];
   place: CrudApi.Place | null | undefined;
@@ -53,10 +47,8 @@ const toOrderInputFormat = ({
     userId,
     takeAway: false,
     archived: false,
-    orderNum,
     paymentMode,
     items,
-    statusLog: createStatusLog(userId),
     sumPriceShown: sumPrice,
     place,
     unitId: unit.id,
@@ -184,28 +176,6 @@ const getGroupCurrency = (id: string) => (deps: OrderResolverDeps) =>
     throwIfEmptyValue<string>(`Group currency is missing for ${id}`),
   );
 
-const getNextOrderNum =
-  (tableName: string) =>
-  ({
-    unitId,
-    place,
-  }: {
-    unitId: string;
-    place: CrudApi.Place | undefined | null;
-  }): Observable<string> => {
-    return incrementOrderNum(tableName)(unitId).pipe(
-      mergeMap(lastOrderNum =>
-        iif(
-          () => !!lastOrderNum,
-          of(lastOrderNum),
-          of(Math.floor(Math.random() * 10)), // In case of the lastOrderNum is missing get a random number between 0-99
-        ),
-      ),
-      map(x => (x || 1).toString().padStart(2, '0')),
-      map(num => (place ? `${place.table}${place.seat}${num}` : num)),
-    );
-  };
-
 const isTakeawayCart = (cart: CrudApi.Cart) =>
   cart.servingMode === CrudApi.ServingMode.takeaway;
 
@@ -251,12 +221,6 @@ export const createOrderFromCart =
           map(currency => ({ ...props, currency })),
         ),
       ),
-      switchMap(props =>
-        getNextOrderNum(UNIT_TABLE_NAME)({
-          unitId: props.unit.id,
-          place: props.cart.place,
-        }).pipe(map(orderNum => ({ ...props, orderNum }))),
-      ),
     );
 
     const calc2 = calc1.pipe(
@@ -273,7 +237,6 @@ export const createOrderFromCart =
         orderInput: toOrderInputFormat({
           userId: deps.userId,
           unit: props.unit,
-          orderNum: props.orderNum,
           paymentMode: props.cart.paymentMode as CrudApi.PaymentMode,
           items: props.items,
           place: props.cart.place,
@@ -322,7 +285,11 @@ export const createOrderFromCart =
       // Push the order to rkeeper if the unit is backed by rkeeper
       switchMap(props =>
         (props.unit.pos?.type === CrudApi.PosType.rkeeper
-          ? sendRkeeperOrder()(props.unit, props.orderInput)
+          ? sendRkeeperOrder({
+              currentTimeISOString: deps.currentTimeISOString,
+              axiosInstance: deps.axiosInstance,
+              uuidGenerator: deps.uuid,
+            })(props.unit, props.orderInput)
           : of(undefined)
         ).pipe(
           map(externalId => ({
@@ -347,12 +314,6 @@ export const createOrderFromCart =
         deps.crudSdk
           .DeleteCart({ input: { id: props.cart.id } })
           .pipe(mapTo(props)),
-      ),
-      tap(x =>
-        console.debug(
-          'Props at the end of process:',
-          JSON.stringify(x, null, 2),
-        ),
       ),
       map(props => props.newOrderId),
     );

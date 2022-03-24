@@ -2039,6 +2039,32 @@
       },
       "tags": ["layer:utils", "platform:nodejs"]
     },
+    "shared-orders": {
+      "projectType": "library",
+      "root": "libs/shared/orders",
+      "sourceRoot": "libs/shared/orders/src",
+      "prefix": "bgap",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared/orders"],
+          "options": {
+            "jestConfig": "libs/shared/orders/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/orders/src/**/*.ts",
+              "libs/shared/orders/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["platform:nodejs", "layer:utils"]
+    },
     "shared-secrets": {
       "root": "libs/shared/secrets",
       "sourceRoot": "libs/shared/secrets/src",

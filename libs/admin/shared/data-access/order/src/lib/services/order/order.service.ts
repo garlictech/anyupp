@@ -2,16 +2,12 @@ import { defer, EMPTY, iif, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { catchGqlError } from '@bgap/admin/store/app-core';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { getNextOrderStatus, ordersActions } from '@bgap/admin/store/orders';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
-import { DateIntervals } from '@bgap/shared/types';
-import { getDayIntervals, filterNullish } from '@bgap/shared/utils';
-import { select, Store } from '@ngrx/store';
-
 import {
   archiveOrder,
   recallOrderFromHistory,
@@ -20,7 +16,10 @@ import {
   updateOrderStatus,
   updateOrderStatusFromNoneToPlaced,
   updateOrderTransactionStatus,
-} from '@bgap/shared/utils';
+} from '@bgap/shared/orders';
+import { DateIntervals } from '@bgap/shared/types';
+import { filterNullish, getDayIntervals } from '@bgap/shared/utils';
+import { select, Store } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root',

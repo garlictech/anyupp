@@ -115,7 +115,6 @@ const order: CrudApi.Order = {
     priceSum: 300,
     pricePerUnit: 301,
   },
-  takeAway: false,
   place: {
     table: 'ORDER TABLE',
     seat: 'ORDER SEAT',

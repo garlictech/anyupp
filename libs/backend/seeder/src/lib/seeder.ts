@@ -214,13 +214,27 @@ export const seedAll = (deps: SeederDependencies) =>
       seedLotsOfOrders(
         deps,
         5,
-        5,
+        2,
         placeOrderToSeat(
-          orderFixture.activeSuccessPlacedCashOrderInput,
+          orderFixture.activeWaitingAfterPayOrderInput,
+          '02',
           '01',
+        ),
+        transactionFixture.waitingCardTransactionInput,
+        transactionFixture.successCardTipTransactionInput,
+      ),
+    ),
+    switchMap(() =>
+      seedLotsOfOrders(
+        deps,
+        7,
+        3,
+        placeOrderToSeat(
+          orderFixture.activeWaitingAfterPayOrderInput,
+          '02',
           '02',
         ),
-        transactionFixture.waitingCashTransactionInput,
+        transactionFixture.waitingCardTransactionInput,
         transactionFixture.successCardTipTransactionInput,
       ),
     ),
@@ -242,6 +256,20 @@ export const seedAll = (deps: SeederDependencies) =>
       seedLotsOfOrders(
         deps,
         15,
+        5,
+        placeOrderToSeat(
+          orderFixture.activeSuccessPlacedCashOrderInput,
+          '01',
+          '02',
+        ),
+        transactionFixture.waitingCashTransactionInput,
+        transactionFixture.successCardTipTransactionInput,
+      ),
+    ),
+    switchMap(() =>
+      seedLotsOfOrders(
+        deps,
+        20,
         5,
         placeOrderToSeat(
           orderFixture.activeSuccessPlacedCashOrderInput,

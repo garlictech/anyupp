@@ -119,7 +119,10 @@
   <div class="col-1 text-end p-2 m-auto font-larger"><strong>Σ</strong></div>
   <div class="col-5 p-2 m-auto">
     <ng-container
-      *ngIf="order.transactionStatus === EPaymentStatus.waiting_for_payment"
+      *ngIf="
+        order.transactionStatus === EPaymentStatus.waiting_for_payment &&
+        !!order.paymentMode
+      "
     >
       <button
         nbButton
@@ -232,5 +235,4 @@
     </button>
   </div>
 </div>
-
 <hr />

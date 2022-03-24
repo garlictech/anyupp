@@ -32,7 +32,11 @@ import { select } from '@ngrx/store';
 import { timeZonesNames } from '@vvo/tzdb';
 
 import { UnitFormService } from '../../services/unit-form.service';
-import { orderPolicyOptions, soldOutPolicyOptions } from '../../const';
+import {
+  orderPaymentPolicyOptions,
+  orderPolicyOptions,
+  soldOutPolicyOptions,
+} from '../../const';
 
 @UntilDestroy()
 @Component({
@@ -52,6 +56,7 @@ export class UnitFormComponent
   public timeZoneOptions: KeyValue[] = [];
   public orderPolicyOptions: KeyValue[] = orderPolicyOptions;
   public soldOutPolicyOptions: KeyValue[] = soldOutPolicyOptions;
+  public orderPaymentPolicyOptions: KeyValue[] = orderPaymentPolicyOptions;
   public isInitiallyRkeeper = false;
 
   constructor(

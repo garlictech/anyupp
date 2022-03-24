@@ -108,6 +108,11 @@
       "placeOnly": "Place only",
       "placeWithPaymentType": "Place with payment type"
     },
+    "orderPaymentPolicy": {
+      "title": "Rendelés fizetés",
+      "prepay": "Pre pay",
+      "afterpay": "After pay"
+    },
     "transactionStatus": {
       "SUCCESS": "Sikeres",
       "WAITING_FOR_PAYMENT": "Fizetésre vár",

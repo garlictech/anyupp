@@ -82,6 +82,7 @@ export class AppsyncAppStack extends sst.Stack {
             tableConfig.UnitProduct.TableArn,
             tableConfig.GroupProduct.TableArn,
             tableConfig.ChainProduct.TableArn,
+            tableConfig.Order.TableArn,
           ],
         }),
       );

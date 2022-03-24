@@ -464,6 +464,12 @@ type CumulatedPrice {
   taxContent: Float
 }
 
+input CumulatedPriceInput {
+  currency: String
+  grossPrice: Float
+  taxContent: Float
+}
+
 type OrderItem {
   productId: ID!
   variantId: ID!
@@ -490,19 +496,18 @@ type OrderRating {
 }
 
 type Order
-  @model
+  @model(mutations: { delete: "deleteOrder", update: "updateOrder" })
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  createdAt: AWSDateTime!
+  version: Int
   userId: ID!
   unitId: ID!
-  orderNum: String!
+  orderNum: String
   items: [OrderItem!]!
-  paymentMode: PaymentMode!
+  paymentMode: PaymentMode
   statusLog: [StatusLog!]!
   archived: Boolean!
-  takeAway: Boolean @deprecated(reason: "Use `servingMode`.")
   place: Place
   paymentIntention: Float
   transactionStatus: PaymentStatus
@@ -529,10 +534,111 @@ type Order
   externalId: String
 }
 
+input CreateOrderInput {
+  id: ID
+  version: Int
+  userId: ID!
+  unitId: ID!
+  items: [OrderItemInput!]!
+  paymentMode: PaymentModeInput
+  archived: Boolean
+  takeAway: Boolean
+  place: PlaceInput
+  paymentIntention: Float
+  transactionStatus: PaymentStatus
+  unpayCategory: UnpayCategory
+  orderMode: OrderMode
+  servingMode: ServingMode
+  serviceFee: CumulatedPriceInput
+  packagingSum: PriceInput
+  sumPriceShown: PriceShownInput!
+  rating: OrderRatingInput
+  hasRated: Boolean
+  tip: TipInput
+  orderPolicy: OrderPolicy
+  serviceFeePolicy: ServiceFeePolicyInput
+  ratingPolicies: [RatingPolicyInput!]
+  tipPolicy: TipPolicyInput
+  soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  packagingFeeTaxPercentage: Float
+  externalId: String
+}
+
+input OrderItemInput {
+  productId: ID!
+  variantId: ID!
+  created: Float
+  productName: LocalizedItemInput!
+  image: String
+  quantity: Int!
+  statusLog: [StatusLogInput!]!
+  variantName: LocalizedItemInput!
+  laneId: ID
+  allergens: [Allergen]
+  configSets: [OrderItemConfigSetInput!]
+  productType: String
+  externalId: String
+  netPackagingFee: Float
+  serviceFee: PriceInput
+  priceShown: PriceShownInput!
+  sumPriceShown: PriceShownInput!
+}
+
+input StatusLogInput {
+  userId: ID!
+  status: OrderStatus!
+  ts: Float!
+}
+
+input PlaceInput {
+  seat: String!
+  table: String!
+}
+
+input PriceInput {
+  currency: String!
+  netPrice: Float!
+  taxPercentage: Float!
+}
+
+input OrderRatingInput {
+  key: String!
+  value: Int!
+}
+
+input PriceShownInput {
+  currency: String!
+  pricePerUnit: Float!
+  priceSum: Float!
+  tax: Int!
+  taxSum: Float!
+}
+
+input OrderItemConfigSetInput {
+  productSetId: ID!
+  name: LocalizedItemInput!
+  type: String!
+  items: [OrderItemConfigComponentInput!]!
+}
+
+input OrderItemConfigComponentInput {
+  productComponentId: ID!
+  price: Float!
+  name: LocalizedItemInput!
+  allergens: [Allergen]
+  netPackagingFee: Float
+  externalId: String
+}
+
 enum OrderPolicy {
   placeOnly
   placeWithPaymentType
   full
+}
+
+enum OrderPaymentPolicy {
+  prepay
+  afterpay
 }
 
 enum PaymentStatus {
@@ -777,6 +883,7 @@ type Unit
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
   location: Location
 }
 
@@ -941,7 +1048,8 @@ type Cart
   place: Place
   paymentMode: PaymentMode
   items: [OrderItem!]!
-  servingMode: ServingMode
+  servingMode: ServingMode # Make the Cart.servingMode REQUIRED in the next release (handled in #1835 issue)
+  orderMode: OrderMode
   orderPolicy: OrderPolicy
 }
 
@@ -1138,6 +1246,7 @@ input CreateUnitInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
   location: LocationInput!
 }
 
@@ -1170,6 +1279,7 @@ input UpdateUnitInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  orderPaymentPolicy: OrderPaymentPolicy
 }
 
 type CreateAnonymUserOutput {
@@ -1271,6 +1381,11 @@ type Mutation {
     @function(name: "zsoltstack-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
+
+  createOrder(input: CreateOrderInput!): Order
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!

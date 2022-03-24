@@ -4,9 +4,18 @@ import { Observable } from 'rxjs';
 import * as R from 'ramda';
 import { shareReplay, switchMap } from 'rxjs/operators';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
+import { AxiosStatic } from 'axios';
+import { DynamoDB } from 'aws-sdk';
 
 export interface OrderResolverDeps {
   crudSdk: CrudApi.CrudSdk;
+  orderTableName: string;
+  unitTableName: string;
+  currentTimeISOString: () => string;
+  random: () => number;
+  uuid: () => string;
+  axiosInstance: AxiosStatic;
+  docClient: DynamoDB.DocumentClient;
   userId: string;
 }
 

@@ -108,6 +108,11 @@
       "placeOnly": "Place only",
       "placeWithPaymentType": "Place with payment type"
     },
+    "orderPaymentPolicy": {
+      "title": "Order payment policy",
+      "prepay": "Pre pay",
+      "afterpay": "After pay"
+    },
     "transactionStatus": {
       "SUCCESS": "Success",
       "WAITING_FOR_PAYMENT": "Waiting for payment",

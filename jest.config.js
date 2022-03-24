@@ -89,6 +89,7 @@ module.exports = {
     '<rootDir>/libs/backend/product-categories',
     '<rootDir>/libs/backend/reports',
     '<rootDir>/libs/backend/seeder',
+    '<rootDir>/libs/shared/orders',
     '<rootDir>/libs/backend/search',
   ],
 };
