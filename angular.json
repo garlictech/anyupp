@@ -1534,6 +1534,29 @@
       },
       "tags": ["type:backend", "platform:nodejs"]
     },
+    "backend-search": {
+      "root": "libs/backend/search",
+      "sourceRoot": "libs/backend/search/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/backend/search/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/backend/search"],
+          "options": {
+            "jestConfig": "libs/backend/search/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["type:backend", "platform:nodejs"]
+    },
     "backend-seeder": {
       "root": "libs/backend/seeder",
       "sourceRoot": "libs/backend/seeder/src",

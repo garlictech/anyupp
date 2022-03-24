@@ -2,7 +2,8 @@ scalar AWSDateTime
 
 type Location @aws_iam @aws_cognito_user_pools @aws_api_key {
   lat: Float!
-  lng: Float!
+  lng: Float @deprecated(reason: "Use lon")
+  lon: Float
 }
 
 type LocalizedItem @aws_iam @aws_cognito_user_pools @aws_api_key {
@@ -17,7 +18,7 @@ type Address @aws_iam @aws_cognito_user_pools @aws_api_key {
   country: String!
   title: String!
   postalCode: String!
-  location: Location!
+  location: Location @deprecated(reason: "Unused.")
 }
 
 type PaymentMode @aws_iam @aws_cognito_user_pools @aws_api_key {
@@ -753,6 +754,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  location: Location
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -991,7 +993,7 @@ type Receipt @aws_iam @aws_cognito_user_pools {
 
 input LocationInput {
   lat: Float!
-  lng: Float!
+  lon: Float!
 }
 
 input AddressInput {
@@ -1000,7 +1002,6 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationInput!
 }
 
 input LocalizedItemInput {
@@ -1105,6 +1106,7 @@ input CreateUnitInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  location: LocationInput!
 }
 
 input UpdateUnitInput {
@@ -1163,6 +1165,24 @@ input RateAndTipOrderInput {
   orderId: ID!
   rating: Int
   tip: TipInput
+}
+
+enum GeoSearchableObjectType {
+  unit
+}
+
+input SearchByRadiusInput {
+  location: LocationInput!
+  radiusInMeters: Float!
+  objectType: GeoSearchableObjectType!
+  limit: Int
+  nextToken: String
+}
+
+type GeoSearchConnection {
+  items: [String] @aws_iam @aws_api_key
+  nextToken: String @aws_iam @aws_api_key
+  total: Int @aws_iam @aws_api_key
 }
 
 type Query {
@@ -1295,6 +1315,7 @@ type Mutation {
   createReceipt(input: CreateReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
   updateReceipt(input: UpdateReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
   deleteReceipt(input: DeleteReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
+  searchByRadius(input: SearchByRadiusInput!): GeoSearchConnection @aws_iam @aws_api_key
 }
 
 type Subscription {

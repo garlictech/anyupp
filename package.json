@@ -40,6 +40,8 @@
   },
   "private": true,
   "dependencies": {
+    "@elastic/elasticsearch": "~7.13.0",
+    "aws-elasticsearch-js": "^1.0.3",
     "@aws-cdk/aws-neptune-alpha": "2.9.0-alpha.0",
     "@aws-cdk/aws-appsync-alpha": "2.9.0-alpha.0",
     "@angular/animations": "13.3.0",

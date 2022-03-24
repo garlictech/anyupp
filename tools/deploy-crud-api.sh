@@ -16,6 +16,10 @@ APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
 METAFILE=amplify/backend/amplify-meta.json
 API_ID=$(jq -r ".api.$APINAME.output.GraphQLAPIIdOutput" $METAFILE)
 
+OS_ENDPOINT=$(aws cloudformation list-exports | \
+  jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainEndpoint\")" | \
+  jq ".Value")
+
 CRUD_CONFIG_FILE=../../libs/crud-gql/api/src/lib/generated/crud-api-config.ts
 
 printf "Generating ${CRUD_CONFIG_FILE}...\n"
@@ -23,7 +27,8 @@ printf "Generating ${CRUD_CONFIG_FILE}...\n"
 echo "
 export const CrudApiConfig = {
   appId: '${APPID}',
-  appsyncApiId: '${API_ID}'
+  appsyncApiId: '${API_ID}',
+  openSearchEndpoint: ${OS_ENDPOINT}
 }
 " > ${CRUD_CONFIG_FILE}
 

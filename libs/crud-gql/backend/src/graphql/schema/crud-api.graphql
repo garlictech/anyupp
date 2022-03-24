@@ -1,6 +1,7 @@
 type Location {
   lat: Float!
-  lng: Float!
+  lng: Float @deprecated(reason: "Use lon")
+  lon: Float
 }
 
 type LocalizedItem {
@@ -15,7 +16,7 @@ type Address {
   country: String!
   title: String!
   postalCode: String!
-  location: Location!
+  location: Location @deprecated(reason: "Unused.")
 }
 
 type PaymentMode {
@@ -776,6 +777,7 @@ type Unit
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  location: Location
 }
 
 type DateIntervalOpen {
@@ -1023,7 +1025,7 @@ type Receipt
 
 input LocationInput {
   lat: Float!
-  lng: Float!
+  lon: Float!
 }
 
 input AddressInput {
@@ -1032,7 +1034,6 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationInput!
 }
 
 input LocalizedItemInput {
@@ -1137,6 +1138,7 @@ input CreateUnitInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  location: LocationInput!
 }
 
 input UpdateUnitInput {
@@ -1195,6 +1197,29 @@ input RateAndTipOrderInput {
   orderId: ID!
   rating: Int
   tip: TipInput
+}
+
+# Geosearch related types
+enum GeoSearchableObjectType {
+  unit
+}
+
+input SearchByRadiusInput {
+  location: LocationInput!
+  radiusInMeters: Float!
+  objectType: GeoSearchableObjectType!
+  limit: Int
+  nextToken: String
+}
+
+type GeoSearchConnection {
+  items: [String]
+    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+
+  nextToken: String
+    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+
+  total: Int @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
 }
 
 type Query {
@@ -1285,6 +1310,11 @@ type Mutation {
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
     @aws_cognito_user_pools
     @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  # geosearch
+  searchByRadius(input: SearchByRadiusInput!): GeoSearchConnection
+    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
     @function(name: "${env}-anyupp-graphql-resolvers")
 }
 

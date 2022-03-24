@@ -21,6 +21,10 @@ import { adminRequestHandler } from './lambda-resolvers/admin-user';
 import { orderRequestHandler } from '@bgap/backend/orders';
 import { userRequestHandler } from './lambda-resolvers/user';
 import { updateUnitRKeeperDataResolver } from '@bgap/backend/units';
+const { createConnector } = require('aws-elasticsearch-js');
+import { Client } from '@elastic/elasticsearch';
+import { CrudApiConfig } from '@bgap/crud-gql/api';
+import { searchByRadiusResolver } from '@bgap/backend/search';
 
 export interface AnyuppRequest {
   typeName: string;
@@ -43,6 +47,13 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: process.env.AWS_REGION || '',
 });
+
+const searchDeps = {
+  osClient: new Client({
+    nodes: [CrudApiConfig.openSearchEndpoint],
+    Connection: createConnector({ region: process.env.AWS_REGION || '' }),
+  }),
+};
 
 export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
@@ -107,6 +118,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
     Query: {
       listStripeCards: stripeRequestHandlers.listStripeCards,
       getUnitsNearLocation: unitRequestHandlers.getUnitsNearLocation,
+      searchByRadius: searchByRadiusResolver(searchDeps),
     },
   };
 

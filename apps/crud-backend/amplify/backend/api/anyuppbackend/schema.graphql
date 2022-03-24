@@ -1,6 +1,7 @@
 type Location {
   lat: Float!
-  lng: Float!
+  lng: Float @deprecated(reason: "Use lon")
+  lon: Float
 }
 
 type LocalizedItem {
@@ -15,7 +16,7 @@ type Address {
   country: String!
   title: String!
   postalCode: String!
-  location: Location!
+  location: Location @deprecated(reason: "Unused.")
 }
 
 type PaymentMode {
@@ -776,6 +777,7 @@ type Unit
   ratingPolicies: [RatingPolicy!]
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  location: Location
 }
 
 type DateIntervalOpen {
@@ -1023,7 +1025,7 @@ type Receipt
 
 input LocationInput {
   lat: Float!
-  lng: Float!
+  lon: Float!
 }
 
 input AddressInput {
@@ -1032,7 +1034,6 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationInput!
 }
 
 input LocalizedItemInput {
@@ -1137,6 +1138,7 @@ input CreateUnitInput {
   ratingPolicies: [RatingPolicyInput!]
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
+  location: LocationInput!
 }
 
 input UpdateUnitInput {
@@ -1197,63 +1199,82 @@ input RateAndTipOrderInput {
   tip: TipInput
 }
 
+# Geosearch related types
+enum GeoSearchableObjectType {
+  unit
+}
+
+input SearchByRadiusInput {
+  location: LocationInput!
+  radiusInMeters: Float!
+  objectType: GeoSearchableObjectType!
+  limit: Int
+  nextToken: String
+}
+
+type GeoSearchConnection {
+  items: [String]
+    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+
+  nextToken: String
+    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+
+  total: Int @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+}
+
 type Query {
   listStripeCards: [StripeCard]
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 }
 
 type Mutation {
   createUnit(input: CreateUnitInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   updateUnit(input: UpdateUnitInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   updateUnitRKeeperData(input: UpdateRKeeperDataInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   createAdminUser(input: CreateAdminUserInput!): AdminUser
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   deleteAdminUser(input: DeleteAdminUserInput!): AdminUser
     @aws_iam
     @aws_cognito_user_pools
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   # User
   createAnonymUser: CreateAnonymUserOutput  # public endpoint
     @aws_iam
     @aws_api_key
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   # Order
   createOrderFromCart(input: CreateOrderFromCartInput!): ID
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
-
-  # Order
-  createOrderFromCart(input: CreateOrderFromCartInput!): ID
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
 
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
 
@@ -1261,7 +1282,7 @@ type Mutation {
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   # Stripe Connected
   startStripePaymentConnected(
@@ -1269,30 +1290,32 @@ type Mutation {
   ): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   createStripeCard(input: StripeCardCreateInput!): StripeCard
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
-
-  updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
     @aws_iam
     @aws_cognito_user_pools
 
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "tamasstack-anyupp-graphql-resolvers")
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+
+  # geosearch
+  searchByRadius(input: SearchByRadiusInput!): GeoSearchConnection
+    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
 }
 
 type Subscription {
