@@ -119,7 +119,6 @@ enum SoldOutVisibilityPolicy {
 }
 
 enum ServiceFeeType {
-  noFee
   included
   applicable
 }

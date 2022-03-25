@@ -370,7 +370,7 @@
       "title": "Szervizdíj",
       "serviceFeePercent": "Szervizdíj",
       "type": {
-        "noFee": "Nincs Szervizdíj",
+        "noFee": "Nincs szervizdíj",
         "included": "Az árak tartalmazzák a szervizdíjat",
         "applicable": "Az árak nem tartalmazzák a szervizdíjat"
       },

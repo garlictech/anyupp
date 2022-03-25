@@ -612,7 +612,6 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isTakeAway = order.servingMode == ServingMode.takeAway;
     bool isServiceFee = order.serviceFeePolicy?.type != null &&
-        order.serviceFeePolicy?.type != ServiceFeeType.noFee &&
         order.serviceFeePolicy?.percentage != null &&
         order.serviceFee != null &&
         !isTakeAway;

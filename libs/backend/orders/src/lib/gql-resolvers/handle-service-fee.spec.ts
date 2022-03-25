@@ -11,10 +11,6 @@ const useCases = [
     label: 'add service fee - applicable',
     serviceFeeType: CrudApi.ServiceFeeType.applicable,
   },
-  {
-    label: 'add service fee - nofee',
-    serviceFeeType: CrudApi.ServiceFeeType.nofee,
-  },
 ];
 
 test.each(useCases)('Adding service fee', ({ label, serviceFeeType }) => {
