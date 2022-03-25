@@ -384,7 +384,6 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
       child: AnimatedBuilder(
         animation: _tabController!.animation as Listenable,
         builder: (ctx, snapshot) {
-          print(_tabController?.offset.toString());
           final forward = _tabController!.offset > 0;
           final backward = _tabController!.offset < 0;
           int _fromIndex;
