@@ -21,9 +21,11 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   @override
   Future<bool> addOrRemoveFavoriteProduct(
       String unitId, String categoryId, String productId) async {
-    bool add = _favorites == null ||
-        _favorites?.indexWhere((product) => product.product.id == productId) ==
-            -1;
+    List<FavoriteProduct> temp =
+        _favorites != null ? List<FavoriteProduct>.from(_favorites!) : [];
+
+    bool add =
+        temp.indexWhere((product) => product.product.id == productId) == -1;
 
     if (add) {
       FavoriteProduct? added = await _addFavoriteProduct(unitId, productId);
@@ -33,21 +35,19 @@ class AwsFavoritesProvider implements IFavoritesProvider {
         return add;
       }
 
-      if (_favorites == null) {
-        _favorites = [];
-      }
-      _favorites?.add(added);
+      temp.add(added);
     } else {
       int? index =
-          _favorites?.indexWhere((product) => product.product.id == productId);
-      if (index != null && index >= 0) {
-        bool success = await _deleteFavoriteProduct(_favorites![index].id!);
+          temp.indexWhere((product) => product.product.id == productId);
+      if (index >= 0) {
+        bool success = await _deleteFavoriteProduct(temp[index].id!);
         if (success) {
-          _favorites!.removeAt(index);
+          temp.removeAt(index);
         }
       }
     }
 
+    _favorites = temp.isNotEmpty ? List<FavoriteProduct>.from(temp) : null;
     return add;
   }
 
@@ -80,7 +80,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
         );
       }
 
-      _favorites = [];
+      List<FavoriteProduct> temp = [];
       PageResponse<FavoriteProduct>? response;
       var _token = nextToken;
 
@@ -88,13 +88,15 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       do {
         response = await _getNextPage(user.id, unitId, _token);
         if (response.data != null) {
-          _favorites!.addAll(response.data!);
+          temp.addAll(response.data!);
         }
         _token = response.nextToken;
       } while (response.nextToken != null);
 
+      _favorites = temp.isNotEmpty ? List<FavoriteProduct>.from(temp) : null;
+
       return PageResponse(
-        data: favorites,
+        data: _favorites,
         totalCount: _favorites!.length,
         nextToken: null,
       );

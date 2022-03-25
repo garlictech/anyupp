@@ -17,8 +17,17 @@ Feature: Dashboard
 
   Scenario: Dashboard
     Then I should see "testuser+monad" text
-    And the "Dashboard" title is displayed
-    And I should see "ORDERS ACCEPTED" text
+    And I should see "Orders accepted" text
+    When I click on the "Orders accepted" button
+    Then I should see "Confirm" text
+    When I click on the "OK" button
+    And I wait 1000 ms
+    And I click on the "Orders blocked" button
+    And I click on the "OK" button
+    Then I should see "Orders accepted" text
+    When I click the "Manual payments" icon with title
+    And I click the "Problematic orders" icon with title
+    And I click the "Placed orders" icon with title
 
   Scenario: Floormap
     When I click the "floorMapAction" button
@@ -29,37 +38,33 @@ Feature: Dashboard
     And I click on the #"02" seat of the #"01" table
     Then the "Seat #01/02" title is displayed
     When I click on "placed" button at the first order
+    And I wait 1000 ms
     Then I should see the button in "processing"
     When I click on "processing" button at the first order
+    And I wait 1000 ms
     Then I should see the button in "ready"
     When I click on "ready" button at the first order
     And I click the "closeFloorMapOrders" button
     Then the "Dashboard" title is displayed
 
   Scenario: Active orders, placed to served
-    Then I should see 14 orders on the "Placed orders" icon
-    And I should see 20 orders on the "Manual payments" icon
-    And I should see 5 orders on the "Problematic orders" icon
-    # When I click the "Manual payments" icon with title
-    # Then I should see 7 orders on the list
-    # When I click the "Problematic orders" icon with title
-    # Then I should see 5 orders on the list
-    # When I click the "Placed orders" icon with title
-    # Then I should see 7 orders on the list
+    When I click the "Placed orders" icon with title
     When I click on the #"000004" order item
     And I click on the print button
     Then I should see the "Késdobáló #111" text
     And I should see the "1021, Budapest Ág u. 1." text
     And I should see the "Table num: 01/02" text
     When I click on the close button
-  # When I click on "placed" button at the #"000004" order
-  # When I click on "processing" button at the #"000004" order
-  # When I click on "ready" button at the #"000004" order
-  # When I click the "historyOrdersAction" button
-  # Then I should see the order in "served"
+    When I click on "placed" button at the #000004 order
+    When I click on "processing" button at the #000004 order
+    When I click on "ready" button at the #000004 order
+    When I click the "historyOrdersAction" button
+    And I wait 1000 ms
+    When I click on the #"000004" order item
+    Then I should see "served" text
 
   Scenario: Failed and deleted order
-    When I click the "Manual payments" icon with title
+    When I click the "Problematic orders" icon with title
     When I click on the #"000001" order item
     And I click on the "Failed" button
     Then I should see "Failed transaction. Please select unpay category!" text
@@ -93,26 +98,4 @@ Feature: Dashboard
     And I click on the "bár (60/0/0)" checkbox
 # And I click on the arrow button on the placed product
 # And I click on the arrow button on the processed product
-# And I click on the arrow button on the finished product
-
-# Scenario: about the #1165 issue (failed payment cash/card)
-#   When I click the button with title "Manual payments"
-#   When I click on the #"000001" order item
-#   When I click on "none" button at the #"000001" order
-#   When I click on "placed" button at the #"000001" order
-#   When I click on "processing" button at the #"000001" order
-#   When I click on "Failed" button at the #"000001" order
-#   Then I should see "Confirm" text
-#   When I click on the "Unpay category" button
-#   And I click on the "Manager meal" option
-#   When I click on the "OK" button
-#   When I click on "ready" button at the #"000001" order
-# When the "Placed orders" icon is selected
-# And I should see the time of the created order
-# When I click on the order with "298 Ft"
-# Then I should see the deatils of order
-# And I should see "Failed transaction. Please select unpay category!" text
-# Then I should see 10 options on the list
-# And I click on the "Orders history" tab
-# Then I should see the failed order selected
-# And I should see the green badge with "failed" caption
+# And I click on the arrow button on the ready product
