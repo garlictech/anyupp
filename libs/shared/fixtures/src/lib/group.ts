@@ -16,10 +16,6 @@ const groupBase: Omit<CrudApi.CreateGroupInput, 'chainId'> = {
     country: 'Magyarország',
     title: 'HQ',
     postalCode: '1021',
-    location: {
-      lat: 47,
-      lng: 19,
-    },
   },
   description: {
     hu: `Teszt group #${groupId_01} leírás`,

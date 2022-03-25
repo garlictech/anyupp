@@ -32,7 +32,7 @@ test('All the parameters are specified', done => {
     input: {
       location: { lat: 1.0, lon: 2.0 },
       radiusInMeters: 1200,
-      objectType: CrudApi.GeoSearchableObjectType.hike,
+      objectType: CrudApi.GeoSearchableObjectType.unit,
       limit: 3,
       nextToken: '[4]',
     },
@@ -73,7 +73,7 @@ test('Default parameters', done => {
     input: {
       location: { lat: 1.0, lon: 2.0 },
       radiusInMeters: 1200,
-      objectType: CrudApi.GeoSearchableObjectType.hike,
+      objectType: CrudApi.GeoSearchableObjectType.unit,
     },
   })
     .pipe(

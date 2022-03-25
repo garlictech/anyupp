@@ -86,6 +86,12 @@ export class AppsyncAppStack extends sst.Stack {
           ],
         }),
       );
+      apiLambda.role.addToPrincipalPolicy(
+        new iam.PolicyStatement({
+          actions: ['es:ESHttpPost'],
+          resources: ['*'],
+        }),
+      );
     }
 
     props.secretsManager.grantRead(apiLambda);

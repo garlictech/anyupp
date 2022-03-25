@@ -1,7 +1,7 @@
 // EXECUTE: yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/manipulate-os-indices.ts
 import { Client } from '@elastic/elasticsearch';
 import { CrudApiConfig } from '../libs/crud-gql/api/src';
-import { catchError, mergeMap } from 'rxjs/operators';
+import { catchError, mergeMap, switchMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 
 const { createConnector } = require('aws-elasticsearch-js');
@@ -10,36 +10,47 @@ const client = new Client({
   Connection: createConnector({ region: process.env.AWS_REGION || '' }),
 });
 
+console.debug(CrudApiConfig.openSearchEndpoint);
+
 const indices = ['unit'];
 
 from(indices)
   .pipe(
-    mergeMap(index =>
+    mergeMap((index: string) =>
       from(
-        client.indices.create({
+        client.indices.delete({
           index,
-          body: {
-            mappings: {
-              properties: {
-                location: {
-                  type: 'geo_point',
-                },
-              },
-            },
-          },
         }),
       ).pipe(
-        catchError(() =>
+        switchMap(() =>
           from(
-            client.indices.putMapping({
+            client.indices.create({
               index,
               body: {
-                properties: {
-                  location: {
-                    type: 'geo_point',
+                mappings: {
+                  properties: {
+                    location: {
+                      type: 'geo_point',
+                    },
                   },
                 },
               },
+            }),
+          ).pipe(
+            catchError(err => {
+              console.warn(err);
+              return from(
+                client.indices.putMapping({
+                  index,
+                  body: {
+                    properties: {
+                      location: {
+                        type: 'geo_point',
+                      },
+                    },
+                  },
+                }),
+              );
             }),
           ),
         ),
@@ -47,17 +58,3 @@ from(indices)
     ),
   )
   .subscribe();
-
-// delete the indices
-/*from(indices)
-  .pipe(
-    mergeMap((index: string) =>
-      from(
-        client.indices.delete({
-          index,
-        }),
-      ),
-    ),
-  )
-  .subscribe();
-  */
