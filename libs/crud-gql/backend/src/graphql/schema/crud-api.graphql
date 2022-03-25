@@ -1341,6 +1341,11 @@ type Query {
     @aws_iam
     @aws_cognito_user_pools
     @function(name: "${env}-anyupp-graphql-resolvers")
+
+  # geosearch
+  searchByRadius(input: SearchByRadiusInput!): GeoSearchConnection
+    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+    @function(name: "${env}-anyupp-graphql-resolvers")
 }
 
 type Mutation {
@@ -1398,14 +1403,6 @@ type Mutation {
     @aws_iam
     @function(name: "${env}-anyupp-graphql-resolvers")
 
-  # Stripe Connected
-  startStripePaymentConnected(
-    input: StartStripePaymentInput!
-  ): StartStripePaymentOutput
-    @aws_cognito_user_pools
-    @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
-
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
@@ -1424,11 +1421,6 @@ type Mutation {
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
     @aws_cognito_user_pools
     @aws_iam
-    @function(name: "${env}-anyupp-graphql-resolvers")
-
-  # geosearch
-  searchByRadius(input: SearchByRadiusInput!): GeoSearchConnection
-    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
     @function(name: "${env}-anyupp-graphql-resolvers")
 }
 

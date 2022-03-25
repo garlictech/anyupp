@@ -1,5 +1,6 @@
-import { YahaApi } from '@yaha/gql-api';
-import { defer, from, map, Observable } from 'rxjs';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { defer, from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Client } from '@elastic/elasticsearch';
 import * as R from 'ramda';
 import { pipe } from 'fp-ts/lib/function';
@@ -11,8 +12,8 @@ export interface SearchResolverDeps {
 export const searchByRadiusResolver =
   (deps: SearchResolverDeps) =>
   (
-    args: YahaApi.QuerySearchByRadiusArgs,
-  ): Observable<YahaApi.GeoSearchConnection> =>
+    args: CrudApi.QuerySearchByRadiusArgs,
+  ): Observable<CrudApi.GeoSearchConnection> =>
     pipe(
       {
         query: {
@@ -54,7 +55,8 @@ export const searchByRadiusResolver =
         body,
       }),
       x => defer(() => from(deps.osClient.search(x))),
-      map(res =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      map((res: any) =>
         pipe(
           res.body.hits?.hits ?? [],
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

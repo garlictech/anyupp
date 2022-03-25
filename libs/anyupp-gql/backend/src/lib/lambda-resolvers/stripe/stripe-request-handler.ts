@@ -4,7 +4,6 @@ import { deleteStripeCard } from './handlers/delete-stripe-card';
 import { listStripeCards } from './handlers/list-stripe-cards';
 import { payTipWithStripe } from './handlers/pay-tip-with-stripe';
 import { startStripePayment } from './handlers/start-stripe-payment';
-import { startStripePaymentV2 as startStripePaymentConnected } from './handlers/start-stripe-payment-v2';
 import { updateStripeCard } from './handlers/update-stripe-card';
 import { StripeResolverDeps } from './stripe.utils';
 
@@ -43,9 +42,6 @@ export const stripeRequestHandler = (deps: StripeResolverDeps) => ({
 
   startStripePayment: (requestPayload: StartStripePaymentRequest) =>
     startStripePayment(requestPayload.input)(deps),
-
-  startStripePaymentConnected: (requestPayload: StartStripePaymentRequest) =>
-    startStripePaymentConnected(requestPayload.input)(deps),
 
   payTipWithStripe: (requestPayload: PayTipWithStripeRequest) =>
     payTipWithStripe(requestPayload.input)(deps),

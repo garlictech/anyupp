@@ -1,16 +1,14 @@
 import {
-  aws_ssm as ssm,
   aws_lambda as lambda,
   aws_certificatemanager as acm,
   aws_route53 as route53,
   aws_apigateway as apigateway,
   Duration,
-  CfnOutput,
 } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
 import path from 'path';
-import { createApiDomainName, getFQParamName } from './utils';
+import { createApiDomainName } from './utils';
 
 export interface StripeStackProps extends sst.StackProps {
   stripeSecretKey: string;
@@ -63,19 +61,6 @@ export class StripeStack extends sst.Stack {
       deployOptions: {
         stageName: scope.stage,
       },
-    });
-
-    const paramName = `stripewebhookEndpoint`;
-
-    new ssm.StringParameter(this, `${paramName}Param`, {
-      allowedPattern: '.*',
-      parameterName: getFQParamName(scope, paramName),
-      stringValue: api.url,
-    });
-
-    new CfnOutput(this, paramName, {
-      value: api.url,
-      exportName: scope.logicalPrefixedName('stripewebhookEndpoint'),
     });
 
     createApiDomainName(

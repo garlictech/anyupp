@@ -79,6 +79,10 @@ const unitBase = {
       lng: 19,
     },
   },
+  location: {
+    lat: 47,
+    lon: 19,
+  },
   description: {
     hu: `Teszt unit #${unitId_01} leírás`,
     en: `Test unit #${unitId_01} description`,

@@ -1355,6 +1355,7 @@ type Query {
   getReceipt(id: ID!): Receipt @aws_iam @aws_cognito_user_pools
   listReceipts(filter: ModelReceiptFilterInput, limit: Int, nextToken: String): ModelReceiptConnection @aws_iam @aws_cognito_user_pools
   searchReceipts(filter: SearchableReceiptFilterInput, sort: [SearchableReceiptSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableReceiptAggregationInput]): SearchableReceiptConnection @aws_iam @aws_cognito_user_pools
+  searchByRadius(input: SearchByRadiusInput!): GeoSearchConnection @aws_iam @aws_api_key
 }
 
 type Mutation {
@@ -1368,7 +1369,6 @@ type Mutation {
   createOrder(input: CreateOrderInput!): Order @aws_iam @aws_cognito_user_pools
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_iam @aws_cognito_user_pools
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
-  startStripePaymentConnected(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   createStripeCard(input: StripeCardCreateInput!): StripeCard @aws_cognito_user_pools @aws_iam
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard @aws_iam @aws_cognito_user_pools
@@ -1425,7 +1425,6 @@ type Mutation {
   createReceipt(input: CreateReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
   updateReceipt(input: UpdateReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
   deleteReceipt(input: DeleteReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
-  searchByRadius(input: SearchByRadiusInput!): GeoSearchConnection @aws_iam @aws_api_key
 }
 
 type Subscription {
