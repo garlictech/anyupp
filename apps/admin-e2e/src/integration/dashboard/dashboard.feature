@@ -59,7 +59,7 @@ Feature: Dashboard
     When I click on "processing" button at the #000004 order
     When I click on "ready" button at the #000004 order
     When I click the "historyOrdersAction" button
-    And I wait 1000 ms
+    And I wait 5000 ms
     When I click on the #"000004" order item
     Then I should see "served" text
 
@@ -95,7 +95,7 @@ Feature: Dashboard
 
   Scenario: Lane view
     When I click the "lanesAction" button
-    And I click on the "bár (60/0/0)" checkbox
+    And I click on the "bár (57/0/0)" checkbox
 # And I click on the arrow button on the placed product
 # And I click on the arrow button on the processed product
 # And I click on the arrow button on the ready product
