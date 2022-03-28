@@ -112,6 +112,7 @@ Object {
   "groupId": "",
   "isActive": "",
   "lanes": Array [],
+  "merchantId": "",
   "name": "",
   "open": Object {
     "from": "",
@@ -205,6 +206,7 @@ Object {
   "groupId": "",
   "isActive": "",
   "lanes": Array [],
+  "merchantId": "",
   "name": "",
   "open": Object {
     "from": "",
