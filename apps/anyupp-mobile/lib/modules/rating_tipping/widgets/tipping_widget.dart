@@ -131,7 +131,7 @@ class _TippingWidgetState extends State<TippingWidget> {
   }
 
   _updateSelectionState(double? percent) {
-    if (percent != null && percent == _selectedTipPercent) {
+    if (percent == null || percent == _selectedTipPercent) {
       setState(() {
         _selectedTipPercent = null;
         _selectedTipAmount = null;
