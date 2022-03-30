@@ -155,7 +155,7 @@
     "@types/aws-lambda": "8.10.93",
     "@types/axios": "0.14.0",
     "@types/bcryptjs": "2.4.2",
-    "@types/chart.js": "2.9.35",
+    "@types/chart.js": "2.9.36",
     "@types/cli-progress": "3.9.2",
     "@types/cypress-cucumber-preprocessor": "4.0.1",
     "@types/fabric": "4.5.7",
