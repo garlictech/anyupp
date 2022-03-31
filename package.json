@@ -95,7 +95,7 @@
     "graphql": "15.8.0",
     "graphql-subscriptions": "2.0.0",
     "graphql-tag": "2.12.6",
-    "graphql-tools": "8.2.3",
+    "graphql-tools": "8.2.4",
     "isomorphic-fetch": "3.0.0",
     "jszip": "3.7.1",
     "lodash-es": "4.17.21",
