@@ -412,7 +412,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
 
   Future<void> _handleStartOrderPressed() async {
     if (widget.cart.isPlaceEmpty) {
-      await showModalBottomSheet(
+      bool success = await showModalBottomSheet(
         context: context,
         isDismissible: true,
         enableDrag: true,
@@ -425,29 +425,27 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
             loadUnits: true,
           );
         },
-      ).then((success) {
-        if (success != true) {
-          setState(() {
-            _loading = false;
-          });
-          return;
-        } else {
-          if (_selectedPaymentMethod!.method == PaymentMethod.inapp) {
-            getIt<StripePaymentBloc>()
-                .add(StartStripePaymentWithExistingCardEvent(
-              orderId: widget.orderId,
-              paymentMethodId: _selectedPaymentMethod!.cardId!,
-              invoiceAddress: _wantsInvoce ? _address : null,
-            ));
-          } else {
-            getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
-              paymentMode: getPaymentModeFromSelection(_selectedPaymentMethod),
-              orderId: widget.orderId,
-              invoiceAddress: _wantsInvoce ? _address : null,
-            ));
-          }
-        }
-      });
+      );
+      if (success != true) {
+        setState(() {
+          _loading = false;
+        });
+        return;
+      }
+    }
+
+    if (_selectedPaymentMethod!.method == PaymentMethod.inapp) {
+      getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
+        orderId: widget.orderId,
+        paymentMethodId: _selectedPaymentMethod!.cardId!,
+        invoiceAddress: _wantsInvoce ? _address : null,
+      ));
+    } else {
+      getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
+        paymentMode: getPaymentModeFromSelection(_selectedPaymentMethod),
+        orderId: widget.orderId,
+        invoiceAddress: _wantsInvoce ? _address : null,
+      ));
     }
   }
 }

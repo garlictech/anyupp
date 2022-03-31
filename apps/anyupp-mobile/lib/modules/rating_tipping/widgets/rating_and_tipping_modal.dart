@@ -90,7 +90,7 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
               builder: (context, state) {
                 if (state is RatingSuccess) {
                   return SuccessTipWidget(
-                    tipPolicy: widget.tipPolicy != null,
+                    tipPolicy: widget.tipPolicy != null && _tip != null,
                     ratingPolcicy: widget.ratingPolicy != null,
                   );
                 }
@@ -221,7 +221,9 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
     }
 
     // Send both rating and tip
-    if (widget.tipPolicy != null && widget.ratingPolicy != null) {
+    if (widget.tipPolicy != null &&
+        widget.ratingPolicy != null &&
+        _tip != null) {
       bool validated = validateTip();
       if (validated) {
         getIt.get<RatingBloc>().add(
