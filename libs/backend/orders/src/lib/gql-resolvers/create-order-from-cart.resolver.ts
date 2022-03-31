@@ -330,6 +330,7 @@ export const createOrderFromCart =
             orderInput: {
               ...props.orderInput,
               externalId,
+              id: externalId,
             },
           })),
         ),
