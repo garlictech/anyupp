@@ -160,7 +160,7 @@
     "@types/cypress-cucumber-preprocessor": "4.0.1",
     "@types/fabric": "4.5.7",
     "@types/googlemaps": "3.43.3",
-    "@types/jasmine": "4.0.1",
+    "@types/jasmine": "4.0.2",
     "@types/jasminewd2": "2.0.10",
     "@types/jest": "27.4.1",
     "@types/lodash-es": "4.17.6",
