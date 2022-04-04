@@ -106,9 +106,11 @@ export class ProductComponentFormComponent
         .pipe(
           switchMap(() =>
             this._modifiersAndExtrasFormService.saveComponentForm$(
-              cloneDeep(this.dialogForm?.value),
+              cloneDeep({
+                ...this.dialogForm?.value,
+                dirty: this.productComponent?.dirty ? false : undefined,
+              }),
               this.productComponent?.id,
-              this.productComponent?.dirty || undefined,
             ),
           ),
           tap(() => this.setWorking$(false)),

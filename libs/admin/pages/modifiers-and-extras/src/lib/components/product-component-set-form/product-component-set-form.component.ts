@@ -158,9 +158,9 @@ export class ProductComponentSetFormComponent
                   EProductComponentSetType.MODIFIER
                     ? null
                     : this.dialogForm?.value.maxSelection,
+                dirty: this.productComponentSet?.dirty ? false : undefined,
               },
               this.productComponentSet?.id,
-              this.productComponentSet?.dirty || undefined,
             ),
           ),
           tap(() => this.setWorking$(false)),
