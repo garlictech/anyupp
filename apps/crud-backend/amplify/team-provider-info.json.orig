@@ -1,0 +1,279 @@
+{
+<<<<<<< HEAD
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-staging-180553-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-staging-180553-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-staging-180553-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-staging-180553-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-staging-180553-unauthRole",
+      "StackName": "amplify-anyuppbackend-staging-180553",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-staging-180553/2286b600-1bbf-11ec-8a11-0a4027d500dd",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_Y0Ezz1eMQ",
+          "userPoolName": "staging-anyupp-backend-admin-user-pool",
+          "webClientId": "7ml90h1vdlr6olr9ika0vfgl59",
+          "nativeClientId": "3teua9ikg5h88ak2nl915na2rs",
+          "identityPoolId": "eu-west-1:3c719483-0d66-412c-a41e-8c4ceb4dd0b5",
+          "identityPoolName": "IdentityPool_dRJsQixj3uDu",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/staging-anyupp-backend-co-CognitoDefaultAuthentica-IYD8M2GQSVLM",
+          "authRoleName": "staging-anyupp-backend-co-CognitoDefaultAuthentica-IYD8M2GQSVLM",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/staging-anyupp-backend-co-CognitoDefaultUnauthenti-J19BOJXM4LV5",
+          "unauthRoleName": "staging-anyupp-backend-co-CognitoDefaultUnauthenti-J19BOJXM4LV5"
+        }
+      }
+    }
+  },
+||||||| merged common ancestors
+<<<<<<<<< Temporary merge branch 1
+||||||||| 6ae9ac146
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-dev-94152-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-dev-94152-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-dev-94152-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-dev-94152-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-dev-94152-unauthRole",
+      "StackName": "amplify-anyuppbackend-dev-94152",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-dev-94152/d4a1ab00-5739-11ec-8c76-0643742b75d1",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_9vsYLhNMi",
+          "userPoolName": "dev-anyupp-backend-admin-user-pool",
+          "webClientId": "2kvkunpanm48ep3c2g2t1igulb",
+          "nativeClientId": "11u02ek00vr4j06qlejdc4fi4u",
+          "identityPoolId": "eu-west-1:c82aa92c-61fb-4ab8-9512-1edc1654b1ae",
+          "identityPoolName": "IdentityPool_dpObsmtNLlcC",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultAuthentica-1TUEDLKLJJEL9",
+          "authRoleName": "dev-anyupp-backend-cognit-CognitoDefaultAuthentica-1TUEDLKLJJEL9",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-8EDLGOOVN7WC",
+          "unauthRoleName": "dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-8EDLGOOVN7WC"
+        }
+      }
+    }
+  },
+  "qa": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-qa-170427-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-qa-170427-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-qa-170427-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-qa-170427-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-qa-170427-unauthRole",
+      "StackName": "amplify-anyuppbackend-qa-170427",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-qa-170427/01ec1200-7a0b-11ec-be97-069f4eb928c7",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_zw3OZmK3C",
+          "userPoolName": "qa-anyupp-backend-admin-user-pool",
+          "webClientId": "7u09iiccntdh52h4lhn24kqin4",
+          "nativeClientId": "6tp2s73ebjsjs0igjtrgpjg5k8",
+          "identityPoolId": "eu-west-1:3555b08b-6e18-4135-8313-6f0f98736b6b",
+          "identityPoolName": "IdentityPool_fuJwdS0LgY1o",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/qa-anyupp-backend-cognito-CognitoDefaultAuthentica-5BB22GSDSJDX",
+          "authRoleName": "qa-anyupp-backend-cognito-CognitoDefaultAuthentica-5BB22GSDSJDX",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/qa-anyupp-backend-cognito-CognitoDefaultUnauthenti-1I9I85NVL5R9M",
+          "unauthRoleName": "qa-anyupp-backend-cognito-CognitoDefaultUnauthenti-1I9I85NVL5R9M"
+        }
+      }
+    }
+  },
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-staging-180553-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-staging-180553-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-staging-180553-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-staging-180553-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-staging-180553-unauthRole",
+      "StackName": "amplify-anyuppbackend-staging-180553",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-staging-180553/2286b600-1bbf-11ec-8a11-0a4027d500dd",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_Y0Ezz1eMQ",
+          "userPoolName": "staging-anyupp-backend-admin-user-pool",
+          "webClientId": "7ml90h1vdlr6olr9ika0vfgl59",
+          "nativeClientId": "3teua9ikg5h88ak2nl915na2rs",
+          "identityPoolId": "eu-west-1:3c719483-0d66-412c-a41e-8c4ceb4dd0b5",
+          "identityPoolName": "IdentityPool_dRJsQixj3uDu",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/staging-anyupp-backend-co-CognitoDefaultAuthentica-IYD8M2GQSVLM",
+          "authRoleName": "staging-anyupp-backend-co-CognitoDefaultAuthentica-IYD8M2GQSVLM",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/staging-anyupp-backend-co-CognitoDefaultUnauthenti-J19BOJXM4LV5",
+          "unauthRoleName": "staging-anyupp-backend-co-CognitoDefaultUnauthenti-J19BOJXM4LV5"
+        }
+      }
+    }
+  },
+  "tamasstack": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-tamasstack-140809-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-tamasstack-140809-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-tamasstack-140809-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-tamasstack-140809-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-tamasstack-140809-unauthRole",
+      "StackName": "amplify-anyuppbackend-tamasstack-140809",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-tamasstack-140809/ce0cefe0-9ee0-11ec-8c75-06cb7ad133cb",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_QFCe9BzAw",
+          "userPoolName": "tamasstack-anyupp-backend-admin-user-pool",
+          "webClientId": "7p79q4a7cburc0mcrmhn0ktmmu",
+          "nativeClientId": "4t00qhab0n5na22jvfnvmi20tm",
+          "identityPoolId": "eu-west-1:46de1eb1-a24c-40e0-b99f-d915cd3e1707",
+          "identityPoolName": "IdentityPool_Yw4vllRJvwDl",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/tamasstack-anyupp-backend-CognitoDefaultAuthentica-12TVDXSRFUPAZ",
+          "authRoleName": "tamasstack-anyupp-backend-CognitoDefaultAuthentica-12TVDXSRFUPAZ",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/tamasstack-anyupp-backend-CognitoDefaultUnauthenti-QCSKWAJMIJIR",
+          "unauthRoleName": "tamasstack-anyupp-backend-CognitoDefaultUnauthenti-QCSKWAJMIJIR"
+        }
+      }
+    }
+  },
+=========
+=======
+>>>>>>> geosearch
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-dev-94152-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-dev-94152-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-dev-94152-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-dev-94152-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-dev-94152-unauthRole",
+      "StackName": "amplify-anyuppbackend-dev-94152",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-dev-94152/d4a1ab00-5739-11ec-8c76-0643742b75d1",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_9vsYLhNMi",
+          "userPoolName": "dev-anyupp-backend-admin-user-pool",
+          "webClientId": "2kvkunpanm48ep3c2g2t1igulb",
+          "nativeClientId": "11u02ek00vr4j06qlejdc4fi4u",
+          "identityPoolId": "eu-west-1:c82aa92c-61fb-4ab8-9512-1edc1654b1ae",
+          "identityPoolName": "IdentityPool_dpObsmtNLlcC",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultAuthentica-1TUEDLKLJJEL9",
+          "authRoleName": "dev-anyupp-backend-cognit-CognitoDefaultAuthentica-1TUEDLKLJJEL9",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-8EDLGOOVN7WC",
+          "unauthRoleName": "dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-8EDLGOOVN7WC"
+        }
+      }
+    }
+  },
+  "tamasstack": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-tamasstack-125939-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-tamasstack-125939-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-tamasstack-125939-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-tamasstack-125939-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-tamasstack-125939-unauthRole",
+      "StackName": "amplify-anyuppbackend-tamasstack-125939",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-tamasstack-125939/63ebd940-a90e-11ec-bf2d-0a02838841fd",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_RGhhaEKWA",
+          "userPoolName": "tamasstack-anyupp-backend-admin-user-pool",
+          "webClientId": "76otk2k8thtslqmnpi6t865h35",
+          "nativeClientId": "43i2m6pdekkol37g1h2a89aevg",
+          "identityPoolId": "eu-west-1:27f703c5-9112-4e7c-9372-733761ad1674",
+          "identityPoolName": "IdentityPool_pHZpOYA5b9hP",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/tamasstack-anyupp-backend-CognitoDefaultAuthentica-5CK4YBJJXPOQ",
+          "authRoleName": "tamasstack-anyupp-backend-CognitoDefaultAuthentica-5CK4YBJJXPOQ",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/tamasstack-anyupp-backend-CognitoDefaultUnauthenti-1UMAYBN0DW10M",
+          "unauthRoleName": "tamasstack-anyupp-backend-CognitoDefaultUnauthenti-1UMAYBN0DW10M"
+        }
+      }
+    }
+  },
+  "zsoltstack": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-zsoltstack-232903-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-zsoltstack-232903-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-zsoltstack-232903-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-zsoltstack-232903-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-zsoltstack-232903-unauthRole",
+      "StackName": "amplify-anyuppbackend-zsoltstack-232903",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-zsoltstack-232903/68fdf790-9e66-11ec-83a3-06f538fe33d9",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_uGknFkjvK",
+          "userPoolName": "zsoltstack-anyupp-backend-admin-user-pool",
+          "webClientId": "44b8kf7rm8u3chmt2o0dic6hrj",
+          "nativeClientId": "33t8i3dt9p92blmfuvpta5rchv",
+          "identityPoolId": "eu-west-1:a503f7ee-d8c3-4b24-a586-fe109eb0d98a",
+          "identityPoolName": "IdentityPool_79Z11A2uF7hc",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-CognitoDefaultAuthentica-19IRXK838FBDV",
+          "authRoleName": "zsoltstack-anyupp-backend-CognitoDefaultAuthentica-19IRXK838FBDV",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-CognitoDefaultUnauthenti-1ITWNRJIZQ98O",
+          "unauthRoleName": "zsoltstack-anyupp-backend-CognitoDefaultUnauthenti-1ITWNRJIZQ98O"
+        }
+      }
+    }
+  },
+  "gaborstack": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-gaborstack-190245-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-gaborstack-190245-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-gaborstack-190245-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-gaborstack-190245-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-gaborstack-190245-unauthRole",
+      "StackName": "amplify-anyuppbackend-gaborstack-190245",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-gaborstack-190245/cb8b6ad0-9e40-11ec-924f-06d4e6b4bb45",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_4lwSMxSbe",
+          "userPoolName": "gaborstack-anyupp-backend-admin-user-pool",
+          "webClientId": "1h15gkjt17qc801ifejuv0lh5o",
+          "nativeClientId": "35eo8t5voa4vqrgjeon2hlnmr7",
+          "identityPoolId": "eu-west-1:9ecbe030-af6e-42b6-9807-2db39afd2b2c",
+          "identityPoolName": "IdentityPool_rDQwTIrlhDl8",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/tamasstack-anyupp-backend-CognitoDefaultAuthentica-5CK4YBJJXPOQ",
+          "authRoleName": "tamasstack-anyupp-backend-CognitoDefaultAuthentica-5CK4YBJJXPOQ",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/tamasstack-anyupp-backend-CognitoDefaultUnauthenti-1UMAYBN0DW10M",
+          "unauthRoleName": "tamasstack-anyupp-backend-CognitoDefaultUnauthenti-1UMAYBN0DW10M"
+        }
+      }
+    }
+  }
+}

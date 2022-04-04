@@ -99,7 +99,13 @@ const toGeoUnit = ({
   soldOutVisibilityPolicy: unit.soldOutVisibilityPolicy,
   style: chainStyle,
   currency,
-  distance: geolib.getDistance(unit.address.location, inputLocation),
+  distance: geolib.getDistance(
+    {
+      lat: unit.address.location?.lat || unit.location?.lat || 0,
+      lng: unit.address.location?.lon || unit.location?.lng || 0,
+    },
+    inputLocation,
+  ),
   paymentModes: paymentModes,
   openingHours: '09:00-22:00',
   openingHoursNext7: getUnitOpeningHoursAtTime(unit),

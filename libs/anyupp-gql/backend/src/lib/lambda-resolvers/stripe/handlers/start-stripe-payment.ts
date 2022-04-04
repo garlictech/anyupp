@@ -4,7 +4,7 @@ import {
   createTransaction,
   loadOrder,
   loadUnit,
-  updateOrdersOfATransaction,
+  updateOrderState,
 } from '../stripe-graphql-crud';
 import { StripeResolverDeps } from '../stripe.utils';
 import { loadAndConnectUserForStripe } from './common-stripe';
@@ -255,13 +255,13 @@ export const startStripePayment =
       }
 
       // 10. Update ORDER STATUS
-      await updateOrdersOfATransaction(deps)(
-        transaction.id,
+      order = await updateOrderState(
+        order.id,
         undefined, // use undefined to prevend graphql api to override this field
+        transaction.id,
         // it should be undefined because we don't want to overwrite the field with GraphQL API.
         transaction.status ? transaction.status : undefined,
-      ).toPromise();
-
+      )(deps);
       console.debug(
         'startStripePaymentV2().updateOrderState.done()=' + order?.id,
       );
@@ -284,7 +284,7 @@ export const startStripePayment =
           input: {
             userId: userId,
             orderId: orderId,
-            currency: transaction?.currency,
+            currency: order.sumPriceShown.currency,
             status: CrudApi.PaymentStatus.waiting_for_payment,
             total,
             type: paymentMethod.toString(),

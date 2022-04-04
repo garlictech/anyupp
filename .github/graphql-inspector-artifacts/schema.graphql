@@ -2,7 +2,8 @@ scalar AWSDateTime
 
 type Location @aws_iam @aws_cognito_user_pools @aws_api_key {
   lat: Float!
-  lng: Float!
+  lng: Float @deprecated(reason: "Use lon")
+  lon: Float
 }
 
 type LocalizedItem @aws_iam @aws_cognito_user_pools @aws_api_key {
@@ -17,7 +18,7 @@ type Address @aws_iam @aws_cognito_user_pools @aws_api_key {
   country: String!
   title: String!
   postalCode: String!
-  location: Location!
+  location: Location @deprecated(reason: "Unused.")
 }
 
 type PaymentMode @aws_iam @aws_cognito_user_pools @aws_api_key {
@@ -860,6 +861,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
+  location: Location
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1099,7 +1101,7 @@ type Receipt @aws_iam @aws_cognito_user_pools {
 
 input LocationInput {
   lat: Float!
-  lng: Float!
+  lon: Float!
 }
 
 input AddressInput {
@@ -1108,7 +1110,6 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationInput!
 }
 
 input LocalizedItemInput {
@@ -1214,6 +1215,7 @@ input CreateUnitInput {
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
+  location: LocationInput!
 }
 
 input UpdateUnitInput {
@@ -1273,6 +1275,24 @@ input RateAndTipOrderInput {
   orderId: ID!
   rating: Int
   tip: TipInput
+}
+
+enum GeoSearchableObjectType {
+  unit
+}
+
+input SearchByRadiusInput {
+  location: LocationInput!
+  radiusInMeters: Float!
+  objectType: GeoSearchableObjectType!
+  limit: Int
+  nextToken: String
+}
+
+type GeoSearchConnection {
+  items: [String] @aws_iam @aws_api_key
+  nextToken: String @aws_iam @aws_api_key
+  total: Int @aws_iam @aws_api_key
 }
 
 type Query {
@@ -1335,6 +1355,7 @@ type Query {
   getReceipt(id: ID!): Receipt @aws_iam @aws_cognito_user_pools
   listReceipts(filter: ModelReceiptFilterInput, limit: Int, nextToken: String): ModelReceiptConnection @aws_iam @aws_cognito_user_pools
   searchReceipts(filter: SearchableReceiptFilterInput, sort: [SearchableReceiptSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableReceiptAggregationInput]): SearchableReceiptConnection @aws_iam @aws_cognito_user_pools
+  searchByRadius(input: SearchByRadiusInput!): GeoSearchConnection @aws_iam @aws_api_key
 }
 
 type Mutation {
@@ -1348,7 +1369,6 @@ type Mutation {
   createOrder(input: CreateOrderInput!): Order @aws_iam @aws_cognito_user_pools
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_iam @aws_cognito_user_pools
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
-  startStripePaymentConnected(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   createStripeCard(input: StripeCardCreateInput!): StripeCard @aws_cognito_user_pools @aws_iam
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard @aws_iam @aws_cognito_user_pools

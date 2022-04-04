@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`All the parameters are specified: RESULT 1`] = `
+Object {
+  "items": Array [
+    "RETURNED_ID",
+  ],
+  "nextToken": "[12345]",
+  "total": 10,
+}
+`;
+
+exports[`All the parameters are specified: SEARCH CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "body": Object {
+        "query": Object {
+          "bool": Object {
+            "filter": Object {
+              "geo_distance": Object {
+                "distance": "1.2km",
+                "location": Object {
+                  "lat": 1,
+                  "lon": 2,
+                },
+              },
+            },
+            "must": Object {
+              "match_all": Object {},
+            },
+          },
+        },
+        "search_after": Array [
+          4,
+        ],
+        "size": 3,
+        "sort": Array [
+          Object {
+            "_geo_distance": Object {
+              "distance_type": "plane",
+              "location": Object {
+                "lat": 1,
+                "lon": 2,
+              },
+              "order": "asc",
+              "unit": "km",
+            },
+            "createdAt": "desc",
+          },
+        ],
+        "track_total_hits": false,
+      },
+      "index": "unit",
+    },
+  ],
+]
+`;
+
+exports[`Default parameters: RESULT 1`] = `
+Object {
+  "items": Array [
+    "RETURNED_ID",
+  ],
+  "nextToken": undefined,
+  "total": undefined,
+}
+`;
+
+exports[`Default parameters: SEARCH CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "body": Object {
+        "query": Object {
+          "bool": Object {
+            "filter": Object {
+              "geo_distance": Object {
+                "distance": "1.2km",
+                "location": Object {
+                  "lat": 1,
+                  "lon": 2,
+                },
+              },
+            },
+            "must": Object {
+              "match_all": Object {},
+            },
+          },
+        },
+        "size": 10,
+        "sort": Array [
+          Object {
+            "_geo_distance": Object {
+              "distance_type": "plane",
+              "location": Object {
+                "lat": 1,
+                "lon": 2,
+              },
+              "order": "asc",
+              "unit": "km",
+            },
+            "createdAt": "desc",
+          },
+        ],
+        "track_total_hits": true,
+      },
+      "index": "unit",
+    },
+  ],
+]
+`;

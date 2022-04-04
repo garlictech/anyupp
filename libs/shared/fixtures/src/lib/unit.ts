@@ -74,10 +74,10 @@ const unitBase = {
     country: 'Magyarország',
     title: 'HQ',
     postalCode: '1021',
-    location: {
-      lat: 47,
-      lng: 19,
-    },
+  },
+  location: {
+    lat: 47,
+    lon: 19,
   },
   description: {
     hu: `Teszt unit #${unitId_01} leírás`,

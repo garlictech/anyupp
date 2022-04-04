@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { startStripePaymentV2 } from './start-stripe-payment-v2';
+import { startStripePayment } from './start-stripe-payment';
 import { payTipWithStripe } from './pay-tip-with-stripe';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { StripeResolverDeps } from '../stripe.utils';
@@ -131,7 +131,7 @@ test('startStripePayment test', async () => {
   };
 
   const deps = getDepsMock();
-  const res = await startStripePaymentV2(input)(deps);
+  const res = await startStripePayment(input)(deps);
 
   expect(res).toMatchSnapshot('Stripe payment result V2');
   checkMocks(deps);

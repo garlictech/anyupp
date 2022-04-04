@@ -107,7 +107,7 @@ export const updateTransactionState =
     return deps.crudSdk.UpdateTransaction(updateTransactionVars).toPromise();
   };
 
-const updateOrderState =
+export const updateOrderState =
   (
     id: string,
     status?: CrudApi.OrderStatus | undefined,
