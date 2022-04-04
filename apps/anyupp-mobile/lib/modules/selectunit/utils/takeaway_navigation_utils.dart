@@ -43,7 +43,7 @@ Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
     }
   }
 
-  var selectedMethodPos = await showSelectServingModeSheetWithDeleteConfirm(
+  var response = await showSelectServingModeSheetWithDeleteConfirm(
     context,
     cart,
     cart?.servingMode ?? ServingMode.inPlace,
@@ -51,27 +51,30 @@ Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
     dismissable: dismissable,
     useTheme: useTheme,
   );
-  print('_selectUnitAndGoToMenuScreen().selectedMethodPos=$selectedMethodPos');
-  if (selectedMethodPos != null) {
+  print('_selectUnitAndGoToMenuScreen().selectedMethodPos=$response');
+  if (response != null) {
     _selectServingModeAndGo(
-      cart,
-      selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway,
+      response.cart,
+      response.selectedMode == 0 ? ServingMode.inPlace : ServingMode.takeAway,
       unit,
       deletePlace: deletePlace,
+      cartDeleted: cart != null && response.cart == null,
     );
-    return selectedMethodPos;
+    return response.selectedMode;
   } else {
     getIt<TakeAwayBloc>().add(ResetServingMode());
   }
-  return selectedMethodPos;
+  return response?.selectedMode;
 }
 
-void _selectServingModeAndGo(Cart? cart, ServingMode servingMode, GeoUnit unit,
-    {bool deletePlace = false}) async {
-  // if (cart != null && cart.servingMode != servingMode) {
-  //   print('selectUnitAndGoToMenuScreen().DELETE CART!!!!');
-  //   getIt<CartBloc>().add(ClearCartAction());
-  // }
+void _selectServingModeAndGo(
+  Cart? cart,
+  ServingMode servingMode,
+  GeoUnit unit, {
+  bool deletePlace = false,
+  bool cartDeleted = false,
+}) async {
+  // print('_selectServingModeAndGo().cart=${cart?.id}');
   if (cart != null) {
     getIt<CartBloc>().add(SetCartServingMode(unit.id, servingMode));
     if (deletePlace == true) {
@@ -81,5 +84,8 @@ void _selectServingModeAndGo(Cart? cart, ServingMode servingMode, GeoUnit unit,
 
   getIt<UnitSelectBloc>().add(SelectUnit(unit));
   getIt<TakeAwayBloc>().add(SetServingMode(servingMode));
+  if (cartDeleted) {
+    await Future.delayed(Duration(seconds: 1));
+  }
   Nav.reset(MainNavigation());
 }

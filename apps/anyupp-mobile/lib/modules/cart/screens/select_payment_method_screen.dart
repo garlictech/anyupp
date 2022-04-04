@@ -412,7 +412,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
 
   Future<void> _handleStartOrderPressed() async {
     if (widget.cart.isPlaceEmpty) {
-      bool success = await showModalBottomSheet(
+      bool? success = await showModalBottomSheet<bool?>(
         context: context,
         isDismissible: true,
         enableDrag: true,

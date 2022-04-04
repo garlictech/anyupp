@@ -41,71 +41,70 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-      enablePullDown: true,
-      header: MaterialClassicHeader(),
-      controller: _refreshController,
-      onRefresh: _onRefresh,
-      child: Container(
-        child: BlocBuilder<FavoritesBloc, FavoritesState>(
-            builder: (context, state) {
-          if (state is FavoriteListLoaded) {
-            if (state.favorites != null && state.favorites!.isNotEmpty) {
-              return _buildList(widget.unit, state.favorites!);
-            } else {
-              return EmptyWidget(
-                icon: 'assets/icons/empty-category.png',
-                messageKey: 'favorites.noFavorites',
-                descriptionKey: 'favorites.noFavoritesDesc',
-                textFontSize: 18.0,
-                descriptionFontSize: 14.0,
-                horizontalPadding: 32.0,
-                iconSize: 32.0,
-                background: Colors.transparent,
-              );
-            }
-          }
-          return CenterLoadingWidget();
-        }),
-      ),
-    );
+    return BlocBuilder<FavoritesBloc, FavoritesState>(
+        builder: (context, state) {
+      if (state is FavoriteListLoaded) {
+        if (state.favorites != null && state.favorites!.isNotEmpty) {
+          return _buildList(widget.unit, state.favorites!);
+        } else {
+          return EmptyWidget(
+            icon: 'assets/icons/empty-category.png',
+            messageKey: 'favorites.noFavorites',
+            descriptionKey: 'favorites.noFavoritesDesc',
+            textFontSize: 18.0,
+            descriptionFontSize: 14.0,
+            horizontalPadding: 32.0,
+            iconSize: 32.0,
+            background: Colors.transparent,
+          );
+        }
+      }
+      return CenterLoadingWidget();
+    });
   }
 
   Widget _buildList(GeoUnit unit, List<FavoriteProduct> list) {
     return AnimationLimiter(
-      child: ListView.builder(
-        itemCount: list.length,
-        scrollDirection: Axis.vertical,
-        physics: BouncingScrollPhysics(),
-        itemBuilder: (context, position) {
-          bool isAvailableInThisServingMode = list[position]
-              .product
-              .supportedServingModes
-              .contains(widget.mode);
-          bool isSoldOut = list[position].product.isSoldOut;
-          ProductItemDisplayState displayState = ProductItemDisplayState.NORMAL;
+      child: SmartRefresher(
+        enablePullDown: true,
+        header: MaterialClassicHeader(),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        child: ListView.builder(
+          itemCount: list.length,
+          scrollDirection: Axis.vertical,
+          physics: BouncingScrollPhysics(),
+          itemBuilder: (context, position) {
+            bool isAvailableInThisServingMode = list[position]
+                .product
+                .supportedServingModes
+                .contains(widget.mode);
+            bool isSoldOut = list[position].product.isSoldOut;
+            ProductItemDisplayState displayState =
+                ProductItemDisplayState.NORMAL;
             if (isSoldOut) {
               displayState = ProductItemDisplayState.SOLDOUT;
             } else if (!isAvailableInThisServingMode) {
               displayState = ProductItemDisplayState.DISABLED;
             }
-          
-          return AnimationConfiguration.staggeredList(
-            position: position,
-            duration: const Duration(milliseconds: 200),
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: FadeInAnimation(
-                child: ProductMenuItem(
-                  displayState: displayState,
-                  unit: unit,
-                  item: list[position].product,
-                  servingMode: widget.mode,
+
+            return AnimationConfiguration.staggeredList(
+              position: position,
+              duration: const Duration(milliseconds: 200),
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: ProductMenuItem(
+                    displayState: displayState,
+                    unit: unit,
+                    item: list[position].product,
+                    servingMode: widget.mode,
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

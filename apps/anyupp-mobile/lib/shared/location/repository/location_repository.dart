@@ -14,8 +14,10 @@ class LocationRepository {
       if (isLocationEnabled) {
         try {
           // Position? lastPosition = await Geolocator.getLastKnownPosition();
-          // if (lastPosition != null) {
-          //   return LatLng(lastPosition.latitude, lastPosition.longitude);
+          // print(
+          //     "***** location.getCurrentPosition().lastPosition=$lastPosition");
+          // if (_isLastLocationIsValid(lastPosition)) {
+          //   return LatLng(lastPosition!.latitude, lastPosition.longitude);
           // }
 
           Position position = await Geolocator.getCurrentPosition(
@@ -27,8 +29,8 @@ class LocationRepository {
           // print('***** location.error getting location=$e');
           Position? position = await Geolocator.getLastKnownPosition();
           // print("***** location.getLastKnownPosition().position=$position");
-          if (position != null) {
-            return LatLng(position.latitude, position.longitude);
+          if (_isLastLocationIsValid(position)) {
+            return LatLng(position!.latitude, position.longitude);
           } else {
             GeolocationData? position =
                 await GeolocationIPLocationRepository.getLocationByIP();
@@ -52,6 +54,11 @@ class LocationRepository {
         details: e.runtimeType,
       );
     }
+  }
+
+  bool _isLastLocationIsValid(Position? lastPosition) {
+    var diff = lastPosition?.timestamp?.difference(DateTime.now());
+    return lastPosition != null && (diff == null || diff.inMinutes >= -10);
   }
 
   Future<bool> _isLocationAndServiceEnabled() async {

@@ -29,6 +29,7 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
   int? _rating;
   double? _tip;
   TipType? _tipType;
+  bool? _noTip;
   late double _minTip;
 
   @override
@@ -62,6 +63,10 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
   }
 
   bool validateTip() {
+    if (_noTip == true) {
+      return true;
+    }
+
     double? calculatedTip = _getCalculatedTip();
     if (calculatedTip != null) {
       if (calculatedTip >= _minTip) {
@@ -146,9 +151,10 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
                                       widget.tipPolicy!.isNotEmpty
                                   ? TippingWidget(
                                       tipPolicy: widget.tipPolicy!,
-                                      onSelected: (tipType, tip) {
+                                      onSelected: (tipType, tip, noTip) {
                                         _tipType = tipType;
                                         _tip = tip;
+                                        _noTip = noTip;
                                       },
                                     )
                                   : Container(),
@@ -213,8 +219,9 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
   }
 
   _sendRating() {
-    print('_sendRating(), rating=$_rating, tipType=$_tipType, tip=$_tip');
-    if (_rating == null && _tipType == null && _tip == null) {
+    print(
+        '_sendRating(), rating=$_rating, tipType=$_tipType, tip=$_tip, noTip=$_noTip');
+    if (_rating == null && _tipType == null && _tip == null && _noTip != true) {
       // Close screen if nothing to send...
       Nav.pop();
       return;
@@ -223,7 +230,7 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
     // Send both rating and tip
     if (widget.tipPolicy != null &&
         widget.ratingPolicy != null &&
-        _tip != null) {
+        (_tip != null || _noTip == true)) {
       bool validated = validateTip();
       if (validated) {
         getIt.get<RatingBloc>().add(
@@ -233,8 +240,8 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
                   key: widget.ratingPolicy!.key,
                   value: _rating ?? -1,
                 ),
-                tipType: TipType.amount,
-                tipValue: _getCalculatedTip(),
+                tipType: _noTip == true ? TipType.none : TipType.amount,
+                tipValue: _noTip == true ? null : _getCalculatedTip(),
               ),
             );
       } else {
@@ -255,7 +262,8 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
     } else
     // Send only tip
     if (widget.tipPolicy != null) {
-      if (_tip == null) {
+      print('RatingAndTippingModal._tip=$_tip');
+      if (_tip == null && _noTip != true) {
         Nav.pop();
       } else {
         bool validated = validateTip();
@@ -263,8 +271,8 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
           getIt.get<RatingBloc>().add(
                 TipOrder(
                   orderId: widget.transaction.orderId,
-                  tipType: TipType.amount,
-                  tipValue: _getCalculatedTip(),
+                  tipType: _noTip == true ? TipType.none : TipType.amount,
+                  tipValue: _noTip == true ? null : _getCalculatedTip(),
                 ),
               );
         } else {
