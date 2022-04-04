@@ -12,7 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-typedef OnTipSelected = void Function(TipType? tipType, double? tip);
+typedef OnTipSelected = void Function(
+    TipType? tipType, double? tip, bool? noTip);
 
 class TippingWidget extends StatefulWidget {
   final TipPolicy tipPolicy;
@@ -30,6 +31,7 @@ class TippingWidget extends StatefulWidget {
 class _TippingWidgetState extends State<TippingWidget> {
   double? _selectedTipPercent;
   double? _selectedTipAmount;
+  bool _cancel = false;
   final TextEditingController _otherAmountController = TextEditingController();
 
   @override
@@ -55,7 +57,7 @@ class _TippingWidgetState extends State<TippingWidget> {
           runSpacing: 8.0,
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            //
+            _buildTipItem(null),
             ...widget.tipPolicy.percents
                 .map((percent) => _buildTipItem(percent))
                 .toList(),
@@ -79,16 +81,40 @@ class _TippingWidgetState extends State<TippingWidget> {
   }
 
   Widget _buildTipItem(double? percent) {
-    bool isOther = percent == null || percent == 0.0;
-    bool selected =
-        isOther ? _selectedTipAmount != null : percent == _selectedTipPercent;
+    bool isOther = percent == 0.0;
+    bool isCancel = percent == null;
+    bool selected = isOther
+        ? _selectedTipAmount != null
+        : (percent == _selectedTipPercent && percent != null);
+    if (isCancel && _cancel) {
+      selected = true;
+    }
+
+    String text;
+    if (isCancel) {
+      text = trans('tipping.dialog.no');
+    } else if (isOther) {
+      if (_selectedTipAmount != null) {
+        text =
+            '${formatCurrency(_selectedTipAmount, currentUnit?.currency ?? 'huf')}';
+      } else {
+        text = trans('tipping.otherAmount');
+      }
+    } else {
+      text = '${percent.toStringAsFixed(0)}%';
+    }
     return InkWell(
       focusColor: Colors.transparent,
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
-      onTap: () =>
-          isOther ? _showEnterAmountDialog() : _updateSelectionState(percent),
+      onTap: () {
+        isOther
+            ? _showEnterAmountDialog()
+            : _updateSelectionState(percent, isCancel);
+        _cancel = isCancel;
+        setState(() {});
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(16.0)),
@@ -96,11 +122,7 @@ class _TippingWidgetState extends State<TippingWidget> {
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Text(
-          isOther
-              ? _selectedTipAmount != null
-                  ? '${formatCurrency(_selectedTipAmount, currentUnit?.currency ?? 'huf')}'
-                  : trans('tipping.otherAmount')
-              : '${percent.toStringAsFixed(0)}%',
+          text,
           style: Fonts.satoshi(
             color: selected ? theme.secondary0 : theme.secondary,
             fontSize: 14.0,
@@ -111,20 +133,27 @@ class _TippingWidgetState extends State<TippingWidget> {
     );
   }
 
-  _updateSelectionState(double? percent) {
-    if (percent != null && percent == _selectedTipPercent) {
+  _updateSelectionState(double? percent, bool isCancel) {
+    if (isCancel) {
       setState(() {
         _selectedTipPercent = null;
         _selectedTipAmount = null;
         _otherAmountController.text = '';
-        widget.onSelected(null, null);
+        widget.onSelected(null, null, true);
+      });
+    } else if (percent == null || percent == _selectedTipPercent) {
+      setState(() {
+        _selectedTipPercent = null;
+        _selectedTipAmount = null;
+        _otherAmountController.text = '';
+        widget.onSelected(null, null, null);
       });
     } else {
       setState(() {
         _selectedTipPercent = percent;
         _selectedTipAmount = null;
         _otherAmountController.text = '';
-        widget.onSelected(TipType.percent, percent);
+        widget.onSelected(TipType.percent, percent, null);
       });
     }
   }
@@ -136,11 +165,11 @@ class _TippingWidgetState extends State<TippingWidget> {
           return TipDialogWidget(
             amountController: _otherAmountController,
             minOtherAmount: widget.tipPolicy.minOtherAmount ?? 0,
-            onSelected: (type, amount) {
+            onSelected: (type, amount, noTip) {
               setState(() {
                 _selectedTipAmount = amount;
                 _selectedTipPercent = null;
-                widget.onSelected(TipType.amount, amount);
+                widget.onSelected(TipType.amount, amount, noTip);
               });
             },
           );
@@ -197,15 +226,16 @@ class _TipDialogWidgetState extends State<TipDialogWidget> {
         });
         return;
       }
-      widget.onSelected(TipType.amount, amount);
+      widget.onSelected(TipType.amount, amount, null);
     } on Exception {
+      print("pop");
       // nothing to do
     }
     Nav.pop();
   }
 
   void _onCancelPressed() {
-    widget.onSelected(null, null);
+    widget.onSelected(null, null, null);
     Navigator.pop(context);
   }
 
@@ -286,7 +316,7 @@ class _TipDialogWidgetState extends State<TipDialogWidget> {
                   height: 16.0,
                 ),
                 CupertinoTextField(
-                  controller: widget.amountController,      
+                  controller: widget.amountController,
                   inputFormatters: [mask],
                   keyboardType: TextInputType.number,
                   cursorColor: CupertinoColors.activeBlue,

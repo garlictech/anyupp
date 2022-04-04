@@ -80,46 +80,6 @@ Object {
 }
 `;
 
-exports[`Adding service fee: add service fee - nofee 1`] = `
-Object {
-  "items": Array [
-    Object {
-      "serviceFee": Object {
-        "currency": "HUF",
-        "netPrice": 0,
-        "taxPercentage": 10,
-      },
-      "sumPriceShown": Object {
-        "currency": "HUF",
-        "priceSum": 100,
-        "tax": 10,
-      },
-    },
-    Object {
-      "serviceFee": Object {
-        "currency": "HUF",
-        "netPrice": 0,
-        "taxPercentage": 20,
-      },
-      "sumPriceShown": Object {
-        "currency": "HUF",
-        "priceSum": 100,
-        "tax": 20,
-      },
-    },
-  ],
-  "serviceFee": Object {
-    "currency": "HUF",
-    "grossPrice": 0,
-    "taxContent": 0,
-  },
-  "sumPriceShown": Object {
-    "currency": "HUF",
-    "priceSum": 200,
-  },
-}
-`;
-
 exports[`No items defined 1`] = `
 Object {
   "items": Array [],

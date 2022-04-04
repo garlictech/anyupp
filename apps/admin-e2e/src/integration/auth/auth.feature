@@ -28,12 +28,13 @@ Feature: Authentication
     When I click the "sign in" text
     Then I should be on the dashboard page
 
-  Scenario: Login without role context
-    When I fill out the input with id "username" with the adminEmail value
-    And I fill out the input with id "password" with the adminPassword value
-    And I clear the input with id "Context"
-    And I click the "sign in" text
-    Then I should see "Invalid role context!" error message
+  # INVALID SCENARIO
+  #Scenario: Login without role context
+  #  When I fill out the input with id "username" with the adminEmail value
+  #  And I fill out the input with id "password" with the adminPassword value
+  #  And I clear the input with id "Context"
+  #  And I click the "sign in" text
+  #  Then I should see "Invalid role context!" error message
 
   Scenario: Login with the wrong email and pw
     When I fill out the input with id "username" with the adminEmail value

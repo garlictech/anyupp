@@ -13,8 +13,8 @@ When('I click on the #{string} table', (tableId: string) => {
 });
 
 When(
-  'I click on the #{string} seat of #{string} table',
-  (tableId: string, seatId: string) => {
+  'I click on the #{string} seat of the #{string} table',
+  (seatId: string, tableId: string) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     cy.findByTestId('fabricCanvas').then((canvas: any) => {
       const fabricCanvas = canvas?.[0]?.fabricCanvas;
@@ -38,20 +38,16 @@ Then('I should see the button in {string}', (buttonName: string) => {
   cy.findAllByTestId('orderStatusBtn').first().contains(buttonName);
 });
 
-Then('the {string} icon is selected', () => {
-  cy.findByTestId('currentOrdersAction').contains('nb-action.active');
-});
-
 Then('I should see a {string} table', (tableName: string) => {
   cy.get('bgap-reports-product-mix').findAllByText(tableName);
 });
 
-Then(
-  'I should see {int} orders on the {string} icon',
-  (num: number, name: string) => {
-    cy.findAllByTitle(name).contains(num);
-  },
-);
+// Then(
+//   'I should see {int} orders on the {string} icon',
+//   (num: number, name: string) => {
+//     cy.findAllByTitle(name).contains(num);
+//   },
+// );
 
 When('I click the {string} icon with title', (name: string) => {
   cy.findAllByTitle(name).click();
@@ -77,23 +73,17 @@ When('I click on the {string} option', (option: string) => {
   cy.get('nb-option').contains(option).click();
 });
 
-When('I click on the arrow button on the placed product', () => {
-  // cy.findByTestId('placedLaneItem_0').first().contains('button').click();
-  cy.get('button').contains('icon="arrow-right-outline"').click();
-});
+// When('I click on the arrow button on the placed product', () => {
+// cy.findByTestId('placedLaneItem_0').first().contains('button').click();
+// cy.get('nb-icon').contains('').first().click();
+// });
 
 When('I click on the arrow button on the processed product', () => {
-  cy.findByTestId('processingLaneItem_0')
-    .first()
-    .contains('button[icon="arrow-right-outline"]')
-    .click();
+  cy.findByTestId('processingLaneItem_0').first().contains('button').click();
 });
 
-When('I click on the arrow button on the finished product', () => {
-  cy.findByTestId('readyLaneItem_0')
-    .first()
-    .contains('button[icon="arrow-left-outline"]')
-    .click();
+When('I click on the arrow button on the ready product', () => {
+  cy.findByTestId('readyLaneItem_0').first().contains('button').click();
 });
 
 When(
@@ -104,7 +94,7 @@ When(
 );
 
 When('I click on the print button', () => {
-  cy.get('nb-icon[icon="printer-outline"]').click();
+  cy.get('nb-icon[icon="print"]').click();
 });
 
 Then('I should see the {string} text', (text: string) => {
@@ -116,5 +106,9 @@ When('I wait {int} ms', (time: number) => {
 });
 
 // When('I click on the date picker', () => {
-//   cy.get()
-// })
+//   cy.get('input[type="date"]').click();
+// });
+
+When('I click on {string} button at the #000004 order', (text: string) => {
+  cy.findAllByTestId('orderStatusBtn').contains(text).click();
+});

@@ -102,10 +102,10 @@ class AwsCartProvider implements ICartProvider {
 
   Future<Cart?> setServingMode(String unitId, ServingMode mode) async {
     print('AwsCartProvider.setServingMode()=$mode');
-    Cart? _cart = await getCurrentCart(unitId);
+    // Cart? _cart = await getCurrentCart(unitId);
     // print('AwsCartProvider.setServingMode().cart=${_cart?.id}');
     if (_cart != null) {
-      _cart = _cart.copyWith(servingMode: mode);
+      _cart = _cart!.copyWith(servingMode: mode);
       await updateCart(unitId, _cart);
     }
     return _cart;

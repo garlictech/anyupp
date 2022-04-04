@@ -71,6 +71,7 @@ export class UnitFormService {
         rkeeper: this._formsService.createRkeeperFormGroup(),
       }),
       externalId: [''],
+      merchantId: [''],
       packagingTaxPercentage: [''],
       ratingPolicies: this._formBuilder.array([]),
       tipPolicy: this._formsService.createTipPolicyFormGroup(),

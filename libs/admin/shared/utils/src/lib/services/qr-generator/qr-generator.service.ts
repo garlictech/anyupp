@@ -4,24 +4,48 @@ import JSZip from 'jszip';
 import { Injectable } from '@angular/core';
 import * as CrudApi from '@bgap/crud-gql/api';
 
-import { getQR } from '../../fn';
+import { getPDF, getQR } from '../../fn';
+import { from } from 'rxjs';
+import { concatMap, last, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QrGeneratorService {
-  public async printCodes(unit: CrudApi.Unit) {
+  public printCodes(unit: CrudApi.Unit) {
     const zip = new JSZip();
+    const tableObjects = Object.values(unit.floorMap?.objects || {}).filter(o =>
+      o.t.includes('table'),
+    );
     const seatObjects = Object.values(unit.floorMap?.objects || {}).filter(o =>
       o.t.includes('seat'),
     );
 
-    for await (const o of seatObjects) {
-      zip.file(`t${o.tID}-s${o.sID}.svg`, getQR(unit.id, o.tID, o.sID));
-    }
-
-    zip.generateAsync({ type: 'blob' }).then(blob => {
-      saveAs(blob, `${unit.name} QR Codes.zip`);
-    });
+    from(tableObjects)
+      .pipe(
+        concatMap(item =>
+          from(getQR(unit.id, item.tID)).pipe(
+            tap(qrStr => zip.file(`t${item.tID}.svg`, qrStr)),
+            switchMap(qrStr => from(getPDF(qrStr))),
+            tap(pdf => zip.file(`t${item.tID}.pdf`, pdf.output())),
+          ),
+        ),
+        last(),
+        switchMap(() => seatObjects),
+        concatMap(item =>
+          from(getQR(unit.id, item.tID, item.sID)).pipe(
+            tap(qrStr => zip.file(`t${item.tID}-s${item.sID}.svg`, qrStr)),
+            switchMap(qrStr => from(getPDF(qrStr))),
+            tap(pdf => zip.file(`t${item.tID}-s${item.sID}.pdf`, pdf.output())),
+          ),
+        ),
+        last(),
+        tap(() => {
+          zip.generateAsync({ type: 'blob' }).then(blob => {
+            saveAs(blob, `${unit.name} QR Codes.zip`);
+          });
+        }),
+      )
+      .subscribe();
   }
 }

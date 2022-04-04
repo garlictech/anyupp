@@ -4,7 +4,9 @@ import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/screens.dart';
+import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
+import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +42,8 @@ class _MainNavigationState extends State<MainNavigation>
   void initState() {
     super.initState();
 
-    // Start advertisement
-    // getIt<AffiliateBloc>().add(StartAdvertisement());
+    // Reset first deeplink incoming page
+    getIt<AuthRepository>().nextPageAfterLogin = null;
 
     _animationController = AnimationController(
       duration: Duration(milliseconds: 200),
@@ -91,18 +93,6 @@ class _MainNavigationState extends State<MainNavigation>
 
   @override
   Widget build(BuildContext context) {
-    // --- This build method called again AFTER the product screen build run. So it set the statusbar color back.
-    // --- This little trick need to prevent the statusbar color change back to main screen statusbar color
-    var route = ModalRoute.of(context);
-    if (route != null && route.isCurrent) {
-      // setToolbarTheme(theme);
-      // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      //   statusBarColor: _pageOptions![_selectedIndex].systemBarColor,
-      //   statusBarIconBrightness: Brightness.dark,
-      // ));
-    }
-
-    // The main scaffold for the whole application
     return SafeArea(
       top: false,
       bottom: false,
@@ -121,14 +111,32 @@ class _MainNavigationState extends State<MainNavigation>
 
           // Opening the selected page
           // body: pages[_selectedIndex],
-          body: BlocListener<MainNavigationBloc, MainNavigationState>(
-            listener: (BuildContext context, MainNavigationState state) {
-              if (state is MainNavaigationNeed) {
-                print(
-                    '******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
-                _navigateToPage(state.pageIndex);
-              }
-            },
+          body: MultiBlocListener(
+            listeners: [
+              BlocListener<MainNavigationBloc, MainNavigationState>(
+                listener: (BuildContext context, MainNavigationState state) {
+                  if (state is MainNavaigationNeed) {
+                    print(
+                        '******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                    _navigateToPage(state.pageIndex);
+                  }
+                },
+              ),
+              BlocListener<ExceptionBloc, ExceptionState>(
+                listener: (BuildContext context, ExceptionState state) {
+                  if (state is ExceptionShowState) {
+                    print('Main.ExceptionState=$state');
+                    // Future.delayed(Duration(seconds: 1)).then((_) =>
+                    //     getIt<ExceptionBloc>().add(ShowException(state.exception)));
+                    showExceptionDialog(
+                      context,
+                      state.exception,
+                      theme.primary,
+                    );
+                  }
+                },
+              ),
+            ],
             child: DoubleBackToCloseApp(
               snackBar: SnackBar(
                 elevation: 8,
