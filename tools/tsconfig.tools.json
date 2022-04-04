@@ -6,7 +6,8 @@
     "module": "commonjs",
     "target": "es5",
     "types": ["node"],
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noUnusedLocals": false
   },
   "include": ["**/*.ts"]
 }

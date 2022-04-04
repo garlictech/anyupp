@@ -116,17 +116,12 @@ describe('ProductFormService', () => {
       .mockImplementationOnce(() => of({ data: 'ok', type: 'update' }));
 
     service
-      .saveChainForm$(
-        productFixture.chainProductInputBase,
-        chainProductId,
-        false,
-      )
+      .saveChainForm$(productFixture.chainProductInputBase, chainProductId)
       .subscribe();
 
     expect(updateSpy).toHaveBeenCalledWith({
       ...productFixture.chainProductInputBase,
       id: chainProductId,
-      dirty: false,
     });
 
     done();

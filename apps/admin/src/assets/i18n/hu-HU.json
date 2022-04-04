@@ -280,9 +280,7 @@
       "other": "Egyéb",
       "unknown": "Ismeretlen típus"
     },
-    "takeaway": "Elvitelre",
-    "packagingFee": "Csomagolási díj",
-    "packagingTax": "Csomagolási adó"
+    "takeaway": "Elvitelre"
   },
   "productCategories": {
     "addProductCategory": "Termék kategória hozzáadása",
@@ -375,7 +373,8 @@
         "applicable": "Az árak nem tartalmazzák a szervizdíjat"
       },
       "serviceFeeIncluded": "Az árak tartalmazzák a szervizdíjat."
-    }
+    },
+    "merchantId": "Stripe kereskedői azonosító"
   },
   "users": {
     "listTitle": "Felhasználók",

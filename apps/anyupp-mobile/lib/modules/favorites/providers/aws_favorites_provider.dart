@@ -93,7 +93,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
         _token = response.nextToken;
       } while (response.nextToken != null);
 
-      _favorites = temp.isNotEmpty ? List<FavoriteProduct>.from(temp) : null;
+      _favorites = temp.isNotEmpty ? List<FavoriteProduct>.from(temp) : [];
 
       return PageResponse(
         data: _favorites,
@@ -108,6 +108,8 @@ class AwsFavoritesProvider implements IFavoritesProvider {
 
   Future<PageResponse<FavoriteProduct>> _getNextPage(
       String userId, String unitId, String? nextToken) async {
+    print(
+        'AwsFavoritesProvider.getFavoritesList().userId=$userId, unitId=$unitId');
     var result = await GQL.amplify.execute(
       ListFavoriteProductsQuery(
           variables: ListFavoriteProductsArguments(
@@ -117,9 +119,11 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       )),
       fetchPolicy: FetchPolicy.networkOnly,
     );
+    print('AwsFavoritesProvider.getFavoritesList().result=$result');
 
-    if (result.data == null || result.data?.searchFavoriteProducts == null) {
-      return PageResponse(data: []);
+    if (result.hasErrors) {
+      throw GraphQLException.fromGraphQLError(
+          GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
     }
 
     var items = result.data?.searchFavoriteProducts?.items;
@@ -134,7 +138,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
     for (int i = 0; i < items.length; i++) {
       favorites.add(FavoriteProduct.fromJson(items[i]!.toJson()));
     }
-    // print('***** getFavoritesList().favorites=$favorites');
+    print('***** getFavoritesList().favorites=$favorites');
     return PageResponse(
       data: favorites,
       totalCount: count,

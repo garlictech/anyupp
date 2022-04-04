@@ -115,10 +115,8 @@ export class OrderService {
               iif(
                 () =>
                   status === CrudApi.OrderStatus.served &&
-                  (order.transaction?.status ===
-                    CrudApi.PaymentStatus.success ||
-                    order.transaction?.status === CrudApi.PaymentStatus.failed),
-
+                  (order.transactionStatus === CrudApi.PaymentStatus.success ||
+                    order.transactionStatus === CrudApi.PaymentStatus.failed),
                 defer(() => this._archiveOrder$(order.id)),
                 of(true),
               ),
