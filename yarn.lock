@@ -8677,10 +8677,10 @@
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
-"@vvo/tzdb@6.48.0":
-  version "6.48.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.48.0.tgz#3c8125b96b394de48fa7d353cb76338fdb86f0ef"
-  integrity sha512-FY1t99hSjgeQUcM1fgZy4NGb0dEGA2Gpcn4uBksfSuKe4nfXXYsrbMk/7/Op40iZpPa3IyUhVMCIxZF5Z4FSZg==
+"@vvo/tzdb@6.49.0":
+  version "6.49.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.49.0.tgz#ca76cddf8a21f9c432c4f4f62f66042f8aca6314"
+  integrity sha512-DNBZ3xpQhN0oYn8zWGixfYUbJakfBQEJiUehEcIORYU6265VWtzUDQ5XDwpCMZh+TiMH2FzwFGFk0+VHnAViAw==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
