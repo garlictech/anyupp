@@ -1,4 +1,5 @@
 apps/crud-backend/amplify/backend/api/**/schema.graphql
+.migration-backup
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
