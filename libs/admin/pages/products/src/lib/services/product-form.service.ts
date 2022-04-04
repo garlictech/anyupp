@@ -183,7 +183,6 @@ export class ProductFormService {
       | CrudApi.CreateChainProductInput
       | CrudApi.UpdateChainProductInput,
     chainId?: string,
-    dirty?: boolean,
   ) {
     return iif(
       () => !chainId,
@@ -191,7 +190,6 @@ export class ProductFormService {
       this.updateChainProduct$({
         ...formValue,
         id: chainId || '',
-        dirty: dirty === false ? false : undefined,
       }),
     );
   }
