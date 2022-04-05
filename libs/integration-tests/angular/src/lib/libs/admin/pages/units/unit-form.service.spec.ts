@@ -5,11 +5,16 @@ import { TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UnitFormService } from '@bgap/admin/pages/units';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { testIdPrefix, unitFixture } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
-import { StoreModule } from '@ngrx/store';
+import {
+  EntityCollectionServiceElementsFactory,
+  EntityDataModule,
+  EntityDispatcherFactory,
+} from '@ngrx/data';
 import { TranslateService } from '@ngx-translate/core';
 
 import { signInToCognito, signOutFromCognito } from '../../shared/helper';
@@ -17,6 +22,10 @@ import {
   MockNbDialogService,
   MockTranslateService,
 } from '../../shared/service-mocks';
+import { StoreModule } from '@ngrx/store';
+import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
+import { EffectsModule } from '@ngrx/effects';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('UnitFormService', () => {
   const unitId = `${testIdPrefix}ADMIN_UNIT_IT_UNIT_ID_01`;
@@ -38,8 +47,18 @@ describe('UnitFormService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, StoreModule.forRoot({})],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([]),
+        EntityDataModule.forRoot(entityConfig),
+        HttpClientModule,
+        AdminSharedLoggedUserModule,
+      ],
       providers: [
+        EntityCollectionServiceElementsFactory,
+        EntityDispatcherFactory,
         { provide: TranslateService, useClass: MockTranslateService },
         { provide: NbDialogService, useClass: MockNbDialogService },
       ],

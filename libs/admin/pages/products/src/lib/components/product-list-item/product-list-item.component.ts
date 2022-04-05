@@ -44,9 +44,7 @@ export class ProductListItemComponent implements OnDestroy {
     private _nbDialogService: NbDialogService,
     private _productListService: ProductListService,
   ) {
-    this.hasRoleToEdit$ = this._productListService.hasRoleToEdit$(
-      this.productLevel,
-    );
+    this.hasRoleToEdit$ = this._productListService.hasRoleToEdit$();
   }
 
   ngOnDestroy(): void {

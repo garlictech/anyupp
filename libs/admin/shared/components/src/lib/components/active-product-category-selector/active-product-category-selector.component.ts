@@ -2,13 +2,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
 } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
-import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
+import { ProductCategoryCollectionService } from '@bgap/admin/store/product-categories';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -26,6 +28,7 @@ export class ActiveProductCategorySelectorComponent
   implements OnInit, OnDestroy
 {
   @Input() showIcon: boolean;
+  @Output() selectionChange = new EventEmitter();
   public productCategories$: Observable<CrudApi.ProductCategory[]>;
   private _loggedUser!: CrudApi.AdminUser;
 
@@ -33,12 +36,11 @@ export class ActiveProductCategorySelectorComponent
     private _store: Store,
     private _dataService: DataService,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _productCategoryCollectionService: ProductCategoryCollectionService,
   ) {
     this.showIcon = false;
-    this.productCategories$ = this._store.pipe(
-      select(productCategoriesSelectors.getAllProductCategories),
-      untilDestroyed(this),
-    );
+    this.productCategories$ =
+      this._productCategoryCollectionService.filteredEntities$;
   }
 
   get selectedProductCategoryId(): string | null | undefined {
@@ -74,7 +76,9 @@ export class ActiveProductCategorySelectorComponent
           ...(this._loggedUser?.settings || {}),
           selectedProductCategoryId: productCategoryId,
         })
-        .subscribe();
+        .subscribe(() => {
+          this.selectionChange.emit();
+        });
     }
 
     this._changeDetectorRef.detectChanges();

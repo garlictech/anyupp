@@ -1,4 +1,8 @@
-<nb-card class="h-100 mb-0">
+<nb-card
+  class="h-100 mb-0"
+  [nbSpinner]="(loading$ | async) || false"
+  nbSpinnerStatus="basic"
+>
   <nb-card-header>
     <div class="float-start">
       {{ 'units.listTitle' | translate }}
@@ -16,8 +20,13 @@
       <nb-icon icon="add" pack="material-icons"></nb-icon>
     </button>
   </nb-card-header>
-  <nb-card-body class="p-2">
-    <cdk-virtual-scroll-viewport style="height: 100%" itemSize="70">
+  <nb-card-body class="p-2" *ngIf="units$ | async as units">
+    <cdk-virtual-scroll-viewport
+      style="height: 100%"
+      itemSize="70"
+      (scrolledIndexChange)="loadNextPaginatedData($event, units.length)"
+      #dataVSVP
+    >
       <nb-list>
         <nb-list-item *cdkVirtualFor="let unit of units">
           <bgap-unit-list-item

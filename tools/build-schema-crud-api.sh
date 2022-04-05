@@ -11,8 +11,7 @@ echo '=============================='
 cp ../../libs/crud-gql/backend/src/graphql/schema/crud-api.graphql \
   amplify/backend/api/$APPNAME/schema.graphql
 
-if [[ "$OSTYPE" == "darwin"* ]]
-then
+if [[ "$OSTYPE" == "darwin"* ]]; then
   sed -i '' "s/\${env}/${ENVNAME}/g" amplify/backend/api/$APPNAME/schema.graphql
 else
   sed -i "s/\${env}/${ENVNAME}/g" amplify/backend/api/$APPNAME/schema.graphql

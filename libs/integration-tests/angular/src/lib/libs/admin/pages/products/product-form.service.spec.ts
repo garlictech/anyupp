@@ -11,6 +11,15 @@ import { EProductLevel, UpsertResponse } from '@bgap/shared/types';
 import { StoreModule } from '@ngrx/store';
 
 import { signInToCognito, signOutFromCognito } from '../../shared/helper';
+import {
+  EntityCollectionServiceElementsFactory,
+  EntityDataModule,
+  EntityDispatcherFactory,
+} from '@ngrx/data';
+import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
+import { EffectsModule } from '@ngrx/effects';
+import { HttpClientModule } from '@angular/common/http';
+import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
 
 describe('ProductFormService', () => {
   const chainProductId = `${testIdPrefix}ADMIN_PRODUCT_IT_CHAIN_PRODUCT_ID_01`;
@@ -43,7 +52,18 @@ describe('ProductFormService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, StoreModule.forRoot({})],
+      imports: [
+        ReactiveFormsModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([]),
+        EntityDataModule.forRoot(entityConfig),
+        HttpClientModule,
+        AdminSharedLoggedUserModule,
+      ],
+      providers: [
+        EntityCollectionServiceElementsFactory,
+        EntityDispatcherFactory,
+      ],
     });
 
     service = TestBed.inject(ProductFormService);

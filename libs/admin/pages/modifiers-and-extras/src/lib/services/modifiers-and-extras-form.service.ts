@@ -9,7 +9,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { catchGqlError } from '@bgap/admin/store/app-core';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import {
   maxSelectionValidator,
   multiLangValidator,
@@ -18,13 +17,16 @@ import {
 import * as CrudApi from '@bgap/crud-gql/api';
 import { defaultServingMode } from '@bgap/shared/types';
 import { Store } from '@ngrx/store';
+import { ProductComponentCollectionService } from '@bgap/admin/store/product-components';
+import { ProductComponentSetCollectionService } from '@bgap/admin/store/product-component-sets';
 
 @Injectable({ providedIn: 'root' })
 export class ModifiersAndExtrasFormService {
   constructor(
     private _store: Store,
     private _formBuilder: FormBuilder,
-    private _crudSdk: CrudSdkService,
+    private _productComponentCollectionService: ProductComponentCollectionService,
+    private _productComponentSetCollectionService: ProductComponentSetCollectionService,
   ) {}
 
   public createProductComponentFormGroup(
@@ -109,14 +111,14 @@ export class ModifiersAndExtrasFormService {
   }
 
   public createProductComponent$(input: CrudApi.CreateProductComponentInput) {
-    return this._crudSdk.sdk.CreateProductComponent({ input }).pipe(
+    return this._productComponentCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
   public updateProductComponent$(input: CrudApi.UpdateProductComponentInput) {
-    return this._crudSdk.sdk.UpdateProductComponent({ input }).pipe(
+    return this._productComponentCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
     );
@@ -143,7 +145,7 @@ export class ModifiersAndExtrasFormService {
   public createProductComponentSet$(
     input: CrudApi.CreateProductComponentSetInput,
   ) {
-    return this._crudSdk.sdk.CreateProductComponentSet({ input }).pipe(
+    return this._productComponentSetCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
@@ -152,7 +154,7 @@ export class ModifiersAndExtrasFormService {
   public updateProductComponentSet$(
     input: CrudApi.UpdateProductComponentSetInput,
   ) {
-    return this._crudSdk.sdk.UpdateProductComponentSet({ input }).pipe(
+    return this._productComponentSetCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
     );

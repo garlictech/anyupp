@@ -16,13 +16,12 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { productComponentSetsSelectors } from '@bgap/admin/store/product-component-sets';
+import { ProductComponentSetCollectionService } from '@bgap/admin/store/product-component-sets';
 import { LocalizePipe } from '@bgap/admin/shared/pipes';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, KeyValue } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
 
 import { FormsService } from '../../services/forms/forms.service';
 
@@ -46,11 +45,11 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
   private _productComponentSets: CrudApi.ProductComponentSet[] = [];
 
   constructor(
-    private _store: Store,
     private _formBuilder: FormBuilder,
     private _formsService: FormsService,
     private _localizePipe: LocalizePipe,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _productComponentSetCollectionService: ProductComponentSetCollectionService,
   ) {
     this.componentSetForm = this._formBuilder.group({
       productComponentSetId: ['', [Validators.required]],
@@ -59,8 +58,7 @@ export class FormProductComponentsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     combineLatest([
-      this._store.pipe(
-        select(productComponentSetsSelectors.getAllProductComponentSets),
+      this._productComponentSetCollectionService.filteredEntities$.pipe(
         take(1),
       ),
       iif(

@@ -537,6 +537,32 @@
       },
       "tags": ["platform:angular"]
     },
+    "admin-shared-data-access-ngrx-data": {
+      "projectType": "library",
+      "root": "libs/admin/shared/data-access/ngrx-data",
+      "sourceRoot": "libs/admin/shared/data-access/ngrx-data/src",
+      "prefix": "bgap",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/admin/shared/data-access/ngrx-data"],
+          "options": {
+            "jestConfig": "libs/admin/shared/data-access/ngrx-data/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/admin/shared/data-access/ngrx-data/src/**/*.ts",
+              "libs/admin/shared/data-access/ngrx-data/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["platform:angular"]
+    },
     "admin-shared-data-access-order": {
       "root": "libs/admin/shared/data-access/order",
       "sourceRoot": "libs/admin/shared/data-access/order/src",
@@ -720,7 +746,8 @@
             ]
           }
         }
-      }
+      },
+      "tags": ["platform:angular"]
     },
     "admin-shared-utils": {
       "root": "libs/admin/shared/utils",

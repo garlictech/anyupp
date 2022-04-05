@@ -1,6 +1,12 @@
 import { Observable } from 'rxjs';
-import { shareReplay, skipWhile } from 'rxjs/operators';
+import {
+  debounceTime,
+  shareReplay,
+  skipWhile,
+  startWith,
+} from 'rxjs/operators';
 
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,12 +15,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { visibleLinesOnViewport } from '@bgap/admin/shared/utils';
 import { groupsSelectors } from '@bgap/admin/store/groups';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
-import {
-  ExtendedGroupProduct,
-  ExtendedUnitProduct,
-} from '@bgap/admin/store/products';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, ProductOrderChangeEvent } from '@bgap/shared/types';
 import {
@@ -27,13 +31,16 @@ import { select, Store } from '@ngrx/store';
 
 import { ProductListService } from '../../services/product-list.service';
 import { ProductFormComponent } from '../product-form/product-form.component';
-import { FormControl } from '@angular/forms';
+import {
+  ExtendedUnitProduct,
+  ExtendedGroupProduct,
+} from '@bgap/admin/store/products';
 
-type GroupTabProducts = (ExtendedGroupProduct | CrudApi.ChainProduct) & {
+type groupProducts = (ExtendedGroupProduct | CrudApi.ChainProduct) & {
   pending?: boolean;
 };
 
-type UnitTabProducts = (ExtendedUnitProduct | ExtendedGroupProduct) & {
+type unitProducts = (ExtendedUnitProduct | ExtendedGroupProduct) & {
   pending?: boolean;
 };
 
@@ -45,15 +52,25 @@ type UnitTabProducts = (ExtendedUnitProduct | ExtendedGroupProduct) & {
   styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent implements OnInit, OnDestroy {
-  @ViewChild('tabset') tabsetEl!: NbTabsetComponent;
+  @ViewChild('tabset')
+  tabsetEl?: NbTabsetComponent;
+  @ViewChild('chainProductsVSVP')
+  chainProductsVSVP?: CdkVirtualScrollViewport;
+  @ViewChild('groupProductsVSVP')
+  groupProductsVSVP?: CdkVirtualScrollViewport;
+  @ViewChild('unitProductsVSVP')
+  unitProductsVSVP?: CdkVirtualScrollViewport;
+
   public chainProducts: CrudApi.ChainProduct[] = [];
-  public groupTabProducts: GroupTabProducts[] = [];
-  public unitTabProducts: UnitTabProducts[] = [];
+  public groupProducts: groupProducts[] = [];
+  public unitProducts: unitProducts[] = [];
   public groupCurrency = '';
   public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
   public loggedUser$: Observable<CrudApi.AdminUser | undefined>;
   public searchControl: FormControl;
+  public loading$: Observable<boolean>;
+
   private _sortedUnitProductIds: string[] = [];
 
   constructor(
@@ -64,6 +81,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ) {
     this.selectedProductLevel = EProductLevel.CHAIN;
     this.searchControl = new FormControl('');
+    this.loading$ = this._productListService.loading$();
 
     this.loggedUser$ = this._store
       .select(loggedUserSelectors.getLoggedUser)
@@ -75,16 +93,22 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   get pendingAndDirtyGroupProductsCount() {
-    return (this.groupTabProducts || []).filter(p => p.pending || p.dirty)
-      .length;
+    return (this.groupProducts || []).filter(p => p.pending || p.dirty).length;
   }
 
   get pendingAndDirtyUnitProductsCount() {
-    return (this.unitTabProducts || []).filter(p => p.pending || p.dirty)
-      .length;
+    return (this.unitProducts || []).filter(p => p.pending || p.dirty).length;
   }
 
   ngOnInit() {
+    this._productListService.resetNextTokens();
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(200), startWith(''))
+      .subscribe(searchValue => {
+        this._productListService.updateLocalizedItemSearchValue(searchValue);
+      });
+
     this._store
       .pipe(
         select(groupsSelectors.getSeletedGroup),
@@ -98,7 +122,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
 
     this._productListService
-      .chainProducts$(this.searchControl.valueChanges)
+      .chainProducts$()
       .pipe(untilDestroyed(this))
       .subscribe((chainProducts: CrudApi.ChainProduct[]) => {
         this.chainProducts = chainProducts;
@@ -109,8 +133,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this._productListService
       .groupProducts$(this.searchControl.valueChanges)
       .pipe(untilDestroyed(this))
-      .subscribe((groupTabProducts: GroupTabProducts[]) => {
-        this.groupTabProducts = groupTabProducts;
+      .subscribe((groupProducts: groupProducts[]) => {
+        this.groupProducts = groupProducts;
 
         this._changeDetectorRef.detectChanges();
       });
@@ -118,11 +142,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this._productListService
       .unitProducts$(this.searchControl.valueChanges)
       .pipe(untilDestroyed(this))
-      .subscribe((unitTabProducts: UnitTabProducts[]) => {
-        this.unitTabProducts = unitTabProducts;
-        this._sortedUnitProductIds = this.unitTabProducts.map(
-          (p): string => p.id,
-        );
+      .subscribe((unitProducts: unitProducts[]) => {
+        this.unitProducts = unitProducts;
+        this._sortedUnitProductIds = this.unitProducts.map((p): string => p.id);
 
         this._changeDetectorRef.detectChanges();
       });
@@ -149,5 +171,32 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this._productListService
       .unitProductPositionChange$($event, this._sortedUnitProductIds)
       .subscribe();
+  }
+
+  public loadNextChainProductPaginatedData(count: number, itemCount: number) {
+    if (
+      itemCount - count <
+      visibleLinesOnViewport(this.chainProductsVSVP?.elementRef.nativeElement)
+    ) {
+      this._productListService.loadNextChainProductPaginatedData();
+    }
+  }
+
+  public loadNextGroupProductPaginatedData(count: number, itemCount: number) {
+    if (
+      itemCount - count <
+      visibleLinesOnViewport(this.groupProductsVSVP?.elementRef.nativeElement)
+    ) {
+      this._productListService.loadNextGroupProductPaginatedData();
+    }
+  }
+
+  public loadNextUnitProductPaginatedData(count: number, itemCount: number) {
+    if (
+      itemCount - count <
+      visibleLinesOnViewport(this.unitProductsVSVP?.elementRef.nativeElement)
+    ) {
+      this._productListService.loadNextUnitProductPaginatedData();
+    }
   }
 }

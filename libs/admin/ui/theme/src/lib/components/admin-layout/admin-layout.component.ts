@@ -1,16 +1,16 @@
 import { debounceTime } from 'rxjs/operators';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {} from '@bgap/shared/types';
+import { filterNullish } from '@bgap/shared/utils';
 import { NbMenuItem } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { filterNullish } from '@bgap/shared/utils';
-import { combineLatest } from 'rxjs';
 
 const menuItems = {
   dashboard: {
@@ -70,12 +70,14 @@ const menuItems = {
     link: '/admin/admins',
     roles: MENU_ROLES.ADMINS,
   },
+  /*
   roleContexts: {
     title: 'menu.roleContexts',
     icon: { icon: 'verified_user_outline', pack: 'material-icons' },
     link: '/admin/role-contexts',
     roles: MENU_ROLES.ROLE_CONTEXTS,
   },
+  */
 };
 
 @UntilDestroy()
@@ -96,29 +98,24 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    combineLatest([
-      this._store
-        .select(loggedUserSelectors.getLoggedUserRole)
-        .pipe(filterNullish()),
-      this._store
-        .select(loggedUserSelectors.getLoggedUser)
-        .pipe(filterNullish()),
-    ])
+    this._store
+      .select(loggedUserSelectors.getLoggedUser)
       .pipe(
+        filterNullish(),
         debounceTime(10), // Language reload!
         untilDestroyed(this),
       )
-      .subscribe(([role, adminUser]) => {
+      .subscribe(adminUser => {
         this.adminUser = adminUser;
 
         this.menu = [];
         Object.values(menuItems).forEach((menuItem): void => {
-          if (menuItem.roles.includes(role || CrudApi.Role.inactive)) {
-            this.menu.push({
-              ...menuItem,
-              title: this._translateService.instant(menuItem.title),
-            });
-          }
+          // if (menuItem.roles.includes(role || CrudApi.Role.inactive)) {
+          this.menu.push({
+            ...menuItem,
+            title: this._translateService.instant(menuItem.title),
+          });
+          // }
         });
 
         this._changeDetectorRef.detectChanges();

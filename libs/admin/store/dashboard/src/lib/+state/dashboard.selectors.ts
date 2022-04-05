@@ -1,4 +1,3 @@
-import { ordersSelectors } from '@bgap/admin/store/orders';
 import {
   EDashboardListMode,
   EDashboardSize,
@@ -11,15 +10,23 @@ import {
   DashboardSettings,
 } from './dashboard.reducer';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { EntitySelectorsFactory } from '@ngrx/data';
+import { ENTITY_NAME } from '@bgap/admin/shared/types';
 
 export const getDashboardState = createFeatureSelector<DashboardState>(
   DASHBOARD_FEATURE_KEY,
 );
 
+export const orderEntitySelectors =
+  new EntitySelectorsFactory().create<CrudApi.Order>(ENTITY_NAME.ORDER);
+
+export const orderHistoryEntitySelectors =
+  new EntitySelectorsFactory().create<CrudApi.Order>(ENTITY_NAME.ORDER_HISTORY);
+
 export const getSelectedActiveOrder = () => {
   return createSelector(
     getSelectedOrderId,
-    ordersSelectors.getAllActiveOrders,
+    orderEntitySelectors.selectFilteredEntities,
     (
       selectedOrderId: string | undefined,
       activeOrders: CrudApi.Order[],
@@ -34,7 +41,7 @@ export const getSelectedActiveOrder = () => {
 export const getSelectedHistoryOrder = () => {
   return createSelector(
     getSelectedOrderId,
-    ordersSelectors.getAllHistoryOrders,
+    orderHistoryEntitySelectors.selectEntities,
     (
       selectedOrderId: string | undefined,
       historyOrders: CrudApi.Order[],

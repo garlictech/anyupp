@@ -6540,6 +6540,13 @@
   dependencies:
     tslib "^2.3.0"
 
+"@ngrx/data@13.1.0":
+  version "13.1.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/data/-/data-13.1.0.tgz#a993e443089d316394887ed20b3622dc0fefd642"
+  integrity sha512-/gNsy0tjTWRi0JqJG/rguefg75hKSlIZNGhKcCdq4hr2HwAEC4oJCBTlQHO1Ut7Pj96+L64dS9w0j/xNq7vNeA==
+  dependencies:
+    tslib "^2.0.0"
+
 "@ngrx/effects@13.1.0":
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-13.1.0.tgz#06d3fb04e7a37a3176f05054682ba353e8e6dce6"

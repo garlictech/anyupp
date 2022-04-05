@@ -1,14 +1,19 @@
-import { combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { groupsSelectors } from '@bgap/admin/store/groups';
-import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+import { visibleLinesOnViewport } from '@bgap/admin/shared/utils';
+import { GroupCollectionService } from '@bgap/admin/store/groups';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { UntilDestroy } from '@ngneat/until-destroy';
 
+import { GroupListService } from '../../services/group-list.service';
 import { GroupFormComponent } from '../group-form/group-form.component';
 
 @UntilDestroy()
@@ -18,24 +23,19 @@ import { GroupFormComponent } from '../group-form/group-form.component';
   templateUrl: './group-list.component.html',
 })
 export class GroupListComponent implements OnDestroy {
+  @ViewChild('dataVSVP')
+  dataVSVP?: CdkVirtualScrollViewport;
+
+  public loading$: Observable<boolean>;
   public groups$: Observable<CrudApi.Group[]>;
 
   constructor(
-    private _store: Store,
     private _nbDialogService: NbDialogService,
+    private _groupListService: GroupListService,
+    private _groupCollectionService: GroupCollectionService,
   ) {
-    this.groups$ = combineLatest([
-      this._store.pipe(select(groupsSelectors.getAllGroups)),
-      this._store.pipe(select(loggedUserSelectors.getSelectedChainId)),
-    ]).pipe(
-      map(
-        ([groups, selectedChainId]: [
-          CrudApi.Group[],
-          string | null | undefined,
-        ]) => groups.filter(g => g.chainId === selectedChainId),
-      ),
-      untilDestroyed(this),
-    );
+    this.groups$ = this._groupCollectionService.filteredEntities$;
+    this.loading$ = this._groupCollectionService.loading$;
   }
 
   ngOnDestroy(): void {
@@ -44,5 +44,14 @@ export class GroupListComponent implements OnDestroy {
 
   public addGroup(): void {
     this._nbDialogService.open(GroupFormComponent);
+  }
+
+  public loadNextPaginatedData(count: number, itemCount: number) {
+    if (
+      itemCount - count <
+      visibleLinesOnViewport(this.dataVSVP?.elementRef.nativeElement)
+    ) {
+      this._groupListService.loadNextPaginatedData();
+    }
   }
 }
