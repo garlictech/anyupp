@@ -1,4 +1,34 @@
 {
+  "qa": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-anyuppbackend-qa-170427-authRole",
+      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-qa-170427-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-qa-170427-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-anyuppbackend-qa-170427-deployment",
+      "UnauthRoleName": "amplify-anyuppbackend-qa-170427-unauthRole",
+      "StackName": "amplify-anyuppbackend-qa-170427",
+      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-qa-170427/01ec1200-7a0b-11ec-be97-069f4eb928c7",
+      "AmplifyAppId": "d1smguwwq7uajn"
+    },
+    "categories": {
+      "auth": {
+        "anyuppbackend498dda93": {
+          "userPoolId": "eu-west-1_zw3OZmK3C",
+          "userPoolName": "qa-anyupp-backend-admin-user-pool",
+          "webClientId": "7u09iiccntdh52h4lhn24kqin4",
+          "nativeClientId": "6tp2s73ebjsjs0igjtrgpjg5k8",
+          "identityPoolId": "eu-west-1:3555b08b-6e18-4135-8313-6f0f98736b6b",
+          "identityPoolName": "IdentityPool_fuJwdS0LgY1o",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/qa-anyupp-backend-cognito-CognitoDefaultAuthentica-5BB22GSDSJDX",
+          "authRoleName": "qa-anyupp-backend-cognito-CognitoDefaultAuthentica-5BB22GSDSJDX",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/qa-anyupp-backend-cognito-CognitoDefaultUnauthenti-1I9I85NVL5R9M",
+          "unauthRoleName": "qa-anyupp-backend-cognito-CognitoDefaultUnauthenti-1I9I85NVL5R9M"
+        }
+      }
+    }
+  },
   "dev": {
     "awscloudformation": {
       "AuthRoleName": "amplify-anyuppbackend-dev-94152-authRole",

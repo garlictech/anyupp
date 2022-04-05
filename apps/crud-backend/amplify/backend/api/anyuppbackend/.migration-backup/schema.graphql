@@ -118,6 +118,7 @@ enum SoldOutVisibilityPolicy {
 }
 
 enum ServiceFeeType {
+  noFee
   included
   applicable
 }
@@ -505,7 +506,7 @@ type Order
   paymentIntention: Float
   transactionStatus: PaymentStatus
   transactionId: ID
-  transaction: Transaction @hasOne(fields: ["transactionId"])
+  transaction: Transaction
   unpayCategory: UnpayCategory
   orderMode: OrderMode
   servingMode: ServingMode
@@ -517,7 +518,7 @@ type Order
   tip: Tip
   tipTransactionStatus: PaymentStatus
   tipTransactionId: ID
-  tipTransaction: Transaction @hasOne(fields: ["tipTransactionId"])
+  tipTransaction: Transaction
   orderPolicy: OrderPolicy
   serviceFeePolicy: ServiceFeePolicy
   ratingPolicies: [RatingPolicy!]
@@ -635,10 +636,10 @@ type GeneratedProductCategory
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  unitId: ID! @index(name: "productCategoriesByUnit")
+  unitId: ID!
   productNum: Int!
   productCategoryId: ID!
-  productCategory: ProductCategory! @hasOne(fields: ["productCategoryId"])
+  productCategory: ProductCategory!
 }
 
 type GeneratedProduct
@@ -647,11 +648,6 @@ type GeneratedProduct
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   unitId: ID!
-    @index(name: "productsByUnit")
-    @index(
-      name: "productsByUnitAndCategory"
-      sortKeyFields: ["productCategoryId"]
-    )
   productCategoryId: ID!
   name: LocalizedItem!
   description: LocalizedItem
@@ -682,9 +678,9 @@ type FavoriteProduct
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  userId: ID! @index(name: "favoritesByUserAndUnit", sortKeyFields: ["unitId"])
+  userId: ID!
   unitId: ID!
-  product: GeneratedProduct! @hasOne
+  product: GeneratedProduct!
 }
 
 type Tip {
@@ -948,7 +944,7 @@ type Transaction
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   userId: ID!
-  user: User! @hasOne(fields: ["userId"])
+  user: User!
   orderId: ID!
   type: String
   total: Float
@@ -956,9 +952,9 @@ type Transaction
   status: PaymentStatus
   externalTransactionId: String
   invoiceId: ID
-  invoice: Invoice @hasOne(fields: ["invoiceId"])
+  invoice: Invoice
   receiptId: ID
-  receipt: Receipt @hasOne(fields: ["receiptId"])
+  receipt: Receipt
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   paymentMethodId: String
