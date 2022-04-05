@@ -1,7 +1,8 @@
-apps/crud-backend/amplify/backend/api/anyuppbackend/schema.graphql
+amplify/backend/api/anyuppbackend/schema.graphql
 .migration-backup
 
 .migration-backup
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
