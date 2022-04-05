@@ -9,7 +9,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { groupsSelectors } from '@bgap/admin/store/groups';
+import { GroupCollectionService } from '@bgap/admin/store/groups';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { filterNullish } from '@bgap/shared/utils';
@@ -32,12 +32,10 @@ export class ActiveGroupSelectorComponent implements OnInit, OnDestroy {
     private _store: Store,
     private _dataService: DataService,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _groupCollectionService: GroupCollectionService,
   ) {
     this.showIcon = false;
-    this.groups$ = this._store.pipe(
-      select(groupsSelectors.getSelectedChainGroups),
-      untilDestroyed(this),
-    );
+    this.groups$ = this._groupCollectionService.filteredEntities$;
   }
 
   get selectedGroupId(): string | null | undefined {

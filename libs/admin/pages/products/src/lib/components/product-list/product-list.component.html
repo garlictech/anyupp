@@ -1,4 +1,8 @@
-<nb-card class="h-100 mb-0">
+<nb-card
+  class="h-100 mb-0"
+  [nbSpinner]="(loading$ | async) || false"
+  nbSpinnerStatus="basic"
+>
   <nb-card-header>
     <div class="float-start">
       {{ 'products.listTitle' | translate }}
@@ -13,17 +17,16 @@
         [formControl]="searchControl"
         [attr.data-testid]="'productSearchInput'"
         [placeholder]="'common.search' | translate"
+        class="me-2"
       />
-      <bgap-active-product-category-selector
-        class="float-right"
-      ></bgap-active-product-category-selector>
+
       <button
         [disabled]="
           selectedProductLevel !== eProductLevel.CHAIN ||
           !(loggedUser$ | async)?.settings?.selectedProductCategoryId
         "
         nbButton
-        class="float-right me-2"
+        class="float-right"
         type="button"
         shape="round"
         size="small"
@@ -32,6 +35,11 @@
       >
         <nb-icon icon="add" pack="material-icons"></nb-icon>
       </button>
+
+      <bgap-active-product-category-selector
+        class="float-right me-2"
+        (selectionChange)="loadNextChainProductPaginatedData(0, 0)"
+      ></bgap-active-product-category-selector>
     </div>
   </nb-card-header>
   <nb-card-body class="p-2">
@@ -52,6 +60,10 @@
         <cdk-virtual-scroll-viewport
           style="height: calc(100vh - 255px)"
           itemSize="90"
+          (scrolledIndexChange)="
+            loadNextChainProductPaginatedData($event, chainProducts.length)
+          "
+          #chainProductsVSVP
         >
           <nb-list>
             <nb-list-item *cdkVirtualFor="let product of chainProducts">
@@ -82,9 +94,13 @@
           <cdk-virtual-scroll-viewport
             style="height: calc(100vh - 255px)"
             itemSize="90"
+            (scrolledIndexChange)="
+              loadNextGroupProductPaginatedData($event, groupProducts.length)
+            "
+            #groupProductsVSVP
           >
             <nb-list>
-              <nb-list-item *cdkVirtualFor="let product of groupTabProducts">
+              <nb-list-item *cdkVirtualFor="let product of groupProducts">
                 <bgap-product-list-item
                   class="w-100"
                   [product]="product"
@@ -113,11 +129,15 @@
           <cdk-virtual-scroll-viewport
             style="height: calc(100vh - 255px)"
             itemSize="90"
+            (scrolledIndexChange)="
+              loadNextUnitProductPaginatedData($event, groupProducts.length)
+            "
+            #unitProductsVSVP
           >
             <nb-list>
               <nb-list-item
                 *cdkVirtualFor="
-                  let product of unitTabProducts;
+                  let product of unitProducts;
                   first as isFirst;
                   last as isLast
                 "

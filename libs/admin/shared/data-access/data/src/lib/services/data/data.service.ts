@@ -3,24 +3,31 @@ import { concat, Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { adminUsersActions } from '@bgap/admin/store/admin-users';
-import { chainsActions } from '@bgap/admin/store/chains';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { AdminUserCollectionService } from '@bgap/admin/store/admin-users';
+import { catchGqlError } from '@bgap/admin/store/app-core';
+import { ChainCollectionService } from '@bgap/admin/store/chains';
 import { dashboardActions } from '@bgap/admin/store/dashboard';
-import { groupsActions } from '@bgap/admin/store/groups';
+import { GroupCollectionService } from '@bgap/admin/store/groups';
 import {
   loggedUserActions,
   loggedUserSelectors,
 } from '@bgap/admin/store/logged-user';
-import { ordersActions } from '@bgap/admin/store/orders';
-import { productCategoriesActions } from '@bgap/admin/store/product-categories';
-import { productComponentSetsActions } from '@bgap/admin/store/product-component-sets';
-import { productComponentsActions } from '@bgap/admin/store/product-components';
-import { productsActions } from '@bgap/admin/store/products';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { unitsActions } from '@bgap/admin/store/units';
-import { usersActions } from '@bgap/admin/store/users';
-import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import { catchGqlError } from '@bgap/admin/store/app-core';
+import {
+  OrderCollectionService,
+  OrderHistoryCollectionService,
+} from '@bgap/admin/store/orders';
+import { ProductCategoryCollectionService } from '@bgap/admin/store/product-categories';
+import { ProductComponentSetCollectionService } from '@bgap/admin/store/product-component-sets';
+import { ProductComponentCollectionService } from '@bgap/admin/store/product-components';
+import {
+  ChainProductCollectionService,
+  GeneratedProductCollectionService,
+  GroupProductCollectionService,
+  UnitProductCollectionService,
+} from '@bgap/admin/store/products';
+import { UnitCollectionService } from '@bgap/admin/store/units';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { filterNullish } from '@bgap/shared/utils';
@@ -41,6 +48,19 @@ export class DataService {
     private _translateService: TranslateService,
     private _crudSdk: CrudSdkService,
     private _logger: NGXLogger,
+    private _chainCollectionService: ChainCollectionService,
+    private _groupCollectionService: GroupCollectionService,
+    private _unitCollectionService: UnitCollectionService,
+    private _adminUserCollectionService: AdminUserCollectionService,
+    private _chainProductCollectionService: ChainProductCollectionService,
+    private _groupProductCollectionService: GroupProductCollectionService,
+    private _unitProductCollectionService: UnitProductCollectionService,
+    private _generatedProductCollectionService: GeneratedProductCollectionService,
+    private _productCategoryCollectionService: ProductCategoryCollectionService,
+    private _productComponentCollectionService: ProductComponentCollectionService,
+    private _productComponentSetCollectionService: ProductComponentSetCollectionService,
+    private _orderHistoryCollectionService: OrderHistoryCollectionService,
+    private _orderCollectionService: OrderCollectionService,
   ) {}
 
   public async initDataConnections(
@@ -91,36 +111,7 @@ export class DataService {
         ): void => {
           this._settingsChanged$.next(true);
 
-          if (adminUserSettings?.selectedChainId) {
-            this._subscribeToChainProductCategories(
-              adminUserSettings?.selectedChainId,
-            );
-            this._subscribeToChainProductComponents(
-              adminUserSettings?.selectedChainId,
-            );
-            this._subscribeToChainProductComponentSets(
-              adminUserSettings?.selectedChainId,
-            );
-            this._subscribeToSelectedChainProducts(
-              adminUserSettings?.selectedChainId,
-            );
-            this._subscribeToGroups(adminUserSettings?.selectedChainId);
-          }
-
-          if (adminUserSettings?.selectedGroupId) {
-            this._subscribeToSelectedGroupProducts(
-              adminUserSettings?.selectedGroupId,
-            );
-            this._subscribeToUnits(adminUserSettings?.selectedGroupId);
-          }
-
           if (adminUserSettings?.selectedUnitId) {
-            this._subscribeToSelectedUnitProducts(
-              adminUserSettings?.selectedUnitId,
-            );
-            this._subscribeToGeneratedUnitProducts(
-              adminUserSettings?.selectedUnitId,
-            );
             this._subscribeToSelectedUnitOrders(
               adminUserSettings?.selectedUnitId,
             );
@@ -128,9 +119,6 @@ export class DataService {
         },
       );
 
-    // Lists
-    this._subscribeToChains();
-    this._subscribeToAdminUsers();
     // Get user language
     this._store
       .pipe(
@@ -143,195 +131,29 @@ export class DataService {
         localStorage.setItem('selectedLanguage', lang);
       });
 
+    // Collection Services
+    this._chainCollectionService.init(this._destroyConnection$);
+    this._groupCollectionService.init(this._destroyConnection$);
+    this._unitCollectionService.init(this._destroyConnection$);
+    this._orderCollectionService.init(this._destroyConnection$);
+    this._orderHistoryCollectionService.init(this._destroyConnection$);
+    this._chainProductCollectionService.init(this._destroyConnection$);
+    this._groupProductCollectionService.init(this._destroyConnection$);
+    this._unitProductCollectionService.init(this._destroyConnection$);
+    this._generatedProductCollectionService.init(this._destroyConnection$);
+    this._productCategoryCollectionService.init(this._destroyConnection$);
+    this._productComponentCollectionService.init(this._destroyConnection$);
+    this._productComponentSetCollectionService.init(this._destroyConnection$);
+
     this._dataConnectionInitialized = true;
-  }
-
-  private _subscribeToChains(): void {
-    this._logger.log('Subscribe to chains');
-    this._crudSdk.doListSubscription(
-      chainsActions.resetChains(),
-      getAllPaginatedData(op => this._crudSdk.sdk.ListChains(op), {
-        options: { fetchPolicy: 'no-cache' },
-      }),
-      this._crudSdk.sdk.OnChainsChange(),
-      (chains: CrudApi.Chain[]) => chainsActions.upsertChains({ chains }),
-      this._destroyConnection$,
-    );
-  }
-
-  private _subscribeToGroups(chainId: string): void {
-    this._logger.log('Subscribe to groups');
-    this._crudSdk.doListSubscription(
-      groupsActions.resetGroups(),
-      getAllPaginatedData(op => this._crudSdk.sdk.ListGroups(op), {
-        query: {
-          filter: { chainId: { eq: chainId } },
-        },
-        options: { fetchPolicy: 'no-cache' },
-      }),
-      this._crudSdk.sdk.OnGroupsChange({ chainId }),
-      (groups: CrudApi.Group[]) => groupsActions.upsertGroups({ groups }),
-      this._destroyConnection$,
-    );
-  }
-
-  private _subscribeToUnits(groupId: string): void {
-    this._logger.log('Subscribe to units');
-    this._crudSdk.doListSubscription(
-      unitsActions.resetUnits(),
-      getAllPaginatedData(op => this._crudSdk.sdk.ListUnits(op), {
-        query: {
-          filter: { groupId: { eq: groupId } },
-        },
-        options: { fetchPolicy: 'no-cache' },
-      }),
-      this._crudSdk.sdk.OnUnitsChange({ groupId }),
-      (units: CrudApi.Unit[]) => unitsActions.upsertUnits({ units }),
-      this._destroyConnection$,
-    );
-  }
-
-  private _subscribeToChainProductCategories(chainId: string): void {
-    this._logger.log('Subscribe to chain product categories');
-    this._crudSdk.doListSubscription(
-      productCategoriesActions.resetProductCategories(),
-      getAllPaginatedData(op => this._crudSdk.sdk.SearchProductCategories(op), {
-        query: {
-          filter: { chainId: { eq: chainId } },
-        },
-        options: {
-          fetchPolicy: 'no-cache',
-        },
-      }),
-      this._crudSdk.sdk.OnProductCategoriesChange({ chainId }),
-      (productCategories: CrudApi.ProductCategory[]) =>
-        productCategoriesActions.upsertProductCategories({
-          productCategories,
-        }),
-      this._settingsChanged$,
-    );
-  }
-
-  private _subscribeToChainProductComponents(chainId: string): void {
-    this._logger.log('Subscribe to chain product components');
-    this._crudSdk.doListSubscription(
-      productComponentsActions.resetProductComponents(),
-
-      getAllPaginatedData(op => this._crudSdk.sdk.SearchProductComponents(op), {
-        query: {
-          filter: { chainId: { eq: chainId } },
-        },
-        options: {
-          fetchPolicy: 'no-cache',
-        },
-      }),
-      this._crudSdk.sdk.OnProductComponentsChange({ chainId }),
-      (productComponents: CrudApi.ProductComponent[]) =>
-        productComponentsActions.upsertProductComponents({ productComponents }),
-      this._settingsChanged$,
-    );
-  }
-
-  private _subscribeToChainProductComponentSets(chainId: string): void {
-    this._logger.log('Subscribe to chain product component sets');
-    this._crudSdk.doListSubscription(
-      productComponentSetsActions.resetProductComponentSets(),
-
-      getAllPaginatedData(
-        op => this._crudSdk.sdk.SearchProductComponentSets(op),
-        {
-          query: {
-            filter: { chainId: { eq: chainId } },
-          },
-          options: { fetchPolicy: 'no-cache' },
-        },
-      ),
-      this._crudSdk.sdk.OnProductComponentSetsChange({ chainId }),
-      (productComponentSets: CrudApi.ProductComponentSet[]) =>
-        productComponentSetsActions.upsertProductComponentSets({
-          productComponentSets,
-        }),
-      this._settingsChanged$,
-    );
-  }
-
-  private _subscribeToSelectedChainProducts(chainId: string): void {
-    this._logger.log('Subscribe to selected chain products');
-    this._crudSdk.doListSubscription(
-      productsActions.resetChainProducts(),
-
-      getAllPaginatedData(op => this._crudSdk.sdk.SearchChainProducts(op), {
-        query: {
-          filter: { chainId: { eq: chainId } },
-        },
-        options: { fetchPolicy: 'no-cache' },
-      }),
-      this._crudSdk.sdk.OnChainProductChange({ chainId }),
-      (products: CrudApi.ChainProduct[]) =>
-        productsActions.upsertChainsProducts({ products }),
-      this._settingsChanged$,
-    );
-  }
-
-  private _subscribeToSelectedGroupProducts(groupId: string): void {
-    this._logger.log('Subscribe to selected group products');
-    this._crudSdk.doListSubscription(
-      productsActions.resetGroupProducts(),
-
-      getAllPaginatedData(op => this._crudSdk.sdk.SearchGroupProducts(op), {
-        query: {
-          filter: { groupId: { eq: groupId } },
-        },
-        options: { fetchPolicy: 'no-cache' },
-      }),
-      this._crudSdk.sdk.OnGroupProductChange({ groupId }),
-      (products: CrudApi.GroupProduct[]) =>
-        productsActions.upsertGroupProducts({ products }),
-      this._settingsChanged$,
-    );
-  }
-
-  private _subscribeToSelectedUnitProducts(unitId: string): void {
-    this._logger.log('Subscribe to selected unit products');
-    this._crudSdk.doListSubscription(
-      productsActions.resetUnitProducts(),
-
-      getAllPaginatedData(op => this._crudSdk.sdk.SearchUnitProducts(op), {
-        query: {
-          filter: { unitId: { eq: unitId } },
-        },
-        options: { fetchPolicy: 'no-cache' },
-      }),
-      this._crudSdk.sdk.OnUnitProductChange({ unitId }),
-      (products: CrudApi.UnitProduct[]) =>
-        productsActions.upsertUnitProducts({ products }),
-      this._settingsChanged$,
-    );
-  }
-
-  private _subscribeToGeneratedUnitProducts(unitId: string): void {
-    this._logger.log('Subscribe to generated unit products');
-    this._crudSdk.doListSubscription(
-      productsActions.resetGeneratedProducts(),
-
-      getAllPaginatedData(op => this._crudSdk.sdk.SearchGeneratedProducts(op), {
-        query: {
-          filter: { unitId: { eq: unitId } },
-        },
-        options: { fetchPolicy: 'no-cache' },
-      }),
-      this._crudSdk.sdk.OnGeneratedProductChange({ unitId }),
-      (products: CrudApi.GeneratedProduct[]) =>
-        productsActions.upsertGeneratedProducts({ products }),
-      this._settingsChanged$,
-    );
   }
 
   private _subscribeToSelectedUnitOrders(unitId: string): void {
     this._logger.log('Subscribe to selected unit orders');
     this._crudSdk.doListSubscription(
-      ordersActions.resetActiveOrders(),
-
+      () => {
+        this._orderCollectionService.clearCache();
+      },
       getAllPaginatedData(op => this._crudSdk.sdk.SearchOrders(op), {
         query: {
           filter: { unitId: { eq: unitId }, archived: { ne: true } },
@@ -346,25 +168,10 @@ export class DataService {
         unitId,
         archived: false,
       }),
-      (orders: CrudApi.Order[]) =>
-        ordersActions.upsertActiveOrders({
-          orders,
-        }),
+      (orders: CrudApi.Order[]) => {
+        this._orderCollectionService.upsertManyInCache(orders);
+      },
       this._settingsChanged$,
-    );
-  }
-
-  private _subscribeToAdminUsers(): void {
-    this._logger.log('Subscribe to admin users');
-    this._crudSdk.doListSubscription(
-      adminUsersActions.resetAdminUsers(),
-      getAllPaginatedData(op => this._crudSdk.sdk.ListAdminUsers(op), {
-        options: { fetchPolicy: 'no-cache' },
-      }),
-      this._crudSdk.sdk.OnAdminUsersChange(),
-      (adminUsers: CrudApi.AdminUser[]) =>
-        adminUsersActions.upsertAdminUsers({ adminUsers }),
-      this._destroyConnection$,
     );
   }
 
@@ -375,18 +182,20 @@ export class DataService {
     this._rolesChanged$.next(true);
 
     // Clear store
-    this._store.dispatch(chainsActions.resetChains());
-    this._store.dispatch(groupsActions.resetGroups());
-    this._store.dispatch(unitsActions.resetUnits());
-    this._store.dispatch(usersActions.resetUsers());
-    this._store.dispatch(adminUsersActions.resetAdminUsers());
-    this._store.dispatch(productCategoriesActions.resetProductCategories());
-    this._store.dispatch(ordersActions.resetActiveOrders());
-    this._store.dispatch(ordersActions.resetHistoryOrders());
-    this._store.dispatch(productsActions.resetChainProducts());
-    this._store.dispatch(productsActions.resetGroupProducts());
-    this._store.dispatch(productsActions.resetUnitProducts());
-    this._store.dispatch(productsActions.resetGeneratedProducts());
+    this._chainCollectionService.clearCache();
+    this._groupCollectionService.clearCache();
+    this._unitCollectionService.clearCache();
+    this._adminUserCollectionService.clearCache();
+    this._chainProductCollectionService.clearCache();
+    this._groupProductCollectionService.clearCache();
+    this._unitProductCollectionService.clearCache();
+    this._generatedProductCollectionService.clearCache();
+    this._productCategoryCollectionService.clearCache();
+    this._productComponentCollectionService.clearCache();
+    this._productComponentSetCollectionService.clearCache();
+    this._orderHistoryCollectionService.clearCache();
+    this._orderCollectionService.clearCache();
+
     this._store.dispatch(loggedUserActions.resetLoggedUser());
     this._store.dispatch(dashboardActions.resetDashboard());
 
@@ -400,8 +209,8 @@ export class DataService {
   public updateUnit$(
     unit: CrudApi.UpdateUnitInput,
   ): Observable<CrudApi.Unit | undefined | null | unknown> {
-    return this._crudSdk.sdk
-      .UpdateUnit({ input: unit })
+    return this._unitCollectionService
+      .update$(unit)
       .pipe(catchGqlError(this._store));
   }
 
@@ -413,12 +222,10 @@ export class DataService {
     userId: string,
     settings: CrudApi.UpdateAdminUserInput['settings'],
   ) {
-    return this._crudSdk.sdk
-      .UpdateAdminUser({
-        input: {
-          id: userId,
-          settings,
-        },
+    return this._adminUserCollectionService
+      .update$({
+        id: userId,
+        settings,
       })
       .pipe(catchGqlError(this._store));
   }

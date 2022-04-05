@@ -18,8 +18,7 @@ yarn ts-node ./tools/fetch-configuration.ts $ENVNAME
 # Process stack-config: remove stage label
 echo "Creating stack config for testing ($STACKCONFIG_FILE)"
 
-if [[ "$OSTYPE" == "darwin"* ]]
-then
+if [[ "$OSTYPE" == "darwin"* ]]; then
   sed -i '' "s/^  \"${ENVNAME}\-anyupp\-backend/\"anyupp-backend/g" $STACKCONFIG_FILE
 else
   sed -i "s/^  \"${ENVNAME}\-anyupp\-backend/\"anyupp-backend/g" $STACKCONFIG_FILE

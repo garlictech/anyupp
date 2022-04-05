@@ -157,7 +157,7 @@
     "defaultLane": "Default",
     "orderItemsCount": "Rendelés tételek száma",
     "actions": {
-      "fontSize": "Betűméret",
+      "zoom": "Nagyítás",
       "floorMap": "Asztal térkép",
       "lanes": "Pályák",
       "current": "Aktív rendelések",

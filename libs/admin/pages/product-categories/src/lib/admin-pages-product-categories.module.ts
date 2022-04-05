@@ -13,6 +13,7 @@ import {
   NbLayoutModule,
   NbListModule,
   NbSelectModule,
+  NbSpinnerModule,
   NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
@@ -32,6 +33,7 @@ const NB_MODULES = [
   NbEvaIconsModule,
   NbButtonModule,
   NbSelectModule,
+  NbSpinnerModule,
 ];
 
 @NgModule({

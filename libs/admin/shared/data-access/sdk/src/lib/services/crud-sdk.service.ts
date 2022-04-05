@@ -19,18 +19,18 @@ export class CrudSdkService {
   }
 
   public doListSubscription<T>(
-    resetAction: TypedAction<string> | undefined,
+    resetFn: () => void,
     listOp: Observable<
       | { items?: Array<T | undefined | null> | undefined | null }
       | undefined
       | null
     >,
     subscriptionOp: Observable<T | null | undefined>,
-    upsertActionCreator: (items: T[]) => TypedAction<string>,
+    upsertFn: (items: T[]) => void,
     destroyConnection$: Observable<unknown>,
   ) {
-    if (resetAction) {
-      this._store.dispatch(resetAction);
+    if (resetFn) {
+      resetFn();
     }
     concat(
       listOp.pipe(
@@ -44,7 +44,7 @@ export class CrudSdkService {
     )
       .pipe(
         filterNullishElements(),
-        tap(items => this._store.dispatch(upsertActionCreator(items))),
+        tap(items => upsertFn(items)),
         takeUntil(destroyConnection$),
         catchGqlError(this._store),
       )

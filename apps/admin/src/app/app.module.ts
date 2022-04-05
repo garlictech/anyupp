@@ -11,19 +11,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '@bgap/admin/shared/config';
 import { AdminSharedFloorMapModule } from '@bgap/admin/shared/floor-map';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import { AdminSharedAdminUsersModule } from '@bgap/admin/store/admin-users';
 import { AdminSharedAppCoreModule } from '@bgap/admin/store/app-core';
-import { AdminSharedChainsModule } from '@bgap/admin/store/chains';
 import { AdminSharedDashboardModule } from '@bgap/admin/store/dashboard';
-import { AdminSharedGroupsModule } from '@bgap/admin/store/groups';
 import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
-import { AdminSharedOrdersModule } from '@bgap/admin/store/orders';
-import { AdminSharedProductCategoriesModule } from '@bgap/admin/store/product-categories';
-import { AdminSharedProductComponentSetsModule } from '@bgap/admin/store/product-component-sets';
-import { AdminSharedProductComponentsModule } from '@bgap/admin/store/product-components';
-import { AdminSharedProductsModule } from '@bgap/admin/store/products';
-import { AdminSharedUnitsModule } from '@bgap/admin/store/units';
-import { AdminSharedUsersModule } from '@bgap/admin/store/users';
 import { AdminUiCoreModule } from '@bgap/admin/ui/core';
 import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
 import {
@@ -44,6 +34,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found.component';
+import { EntityDataModule } from '@ngrx/data';
+import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -65,20 +57,10 @@ const NB_MODULES = [
 ];
 
 export const FEATURE_STORES = [
-  AdminSharedAdminUsersModule,
   AdminSharedAppCoreModule,
-  AdminSharedChainsModule,
   AdminSharedDashboardModule,
   AdminSharedFloorMapModule,
-  AdminSharedGroupsModule,
   AdminSharedLoggedUserModule,
-  AdminSharedOrdersModule,
-  AdminSharedProductCategoriesModule,
-  AdminSharedProductsModule,
-  AdminSharedUnitsModule,
-  AdminSharedUsersModule,
-  AdminSharedProductComponentsModule,
-  AdminSharedProductComponentSetsModule,
 ];
 
 registerLocaleData(localeDe);
@@ -116,6 +98,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
       },
     ),
     EffectsModule.forRoot([]),
+    EntityDataModule.forRoot(entityConfig),
     ...NB_MODULES,
     ...FEATURE_STORES,
     !environment.production

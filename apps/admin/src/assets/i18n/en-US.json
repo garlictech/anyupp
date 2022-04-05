@@ -157,7 +157,7 @@
     "defaultLane": "Default",
     "orderItemsCount": "Order items count",
     "actions": {
-      "fontSize": "Font size",
+      "zoom": "Zoom",
       "floorMap": "Floor map",
       "lanes": "Lanes",
       "current": "Active orders",
