@@ -39,7 +39,19 @@ Future<int?> showSelectServingModeSheet(BuildContext context,
   );
 }
 
-Future<int?> showSelectServingModeSheetWithDeleteConfirm(
+class SelectServiceModeResult {
+  final int? selectedMode;
+  final Cart? cart;
+
+  SelectServiceModeResult(this.selectedMode, this.cart);
+
+  @override
+  String toString() {
+    return 'SelectServiceModeResult[selectedMode: $selectedMode, cart: ${cart?.id}]';
+  }
+}
+
+Future<SelectServiceModeResult?> showSelectServingModeSheetWithDeleteConfirm(
     BuildContext context, Cart? cart, ServingMode current,
     {int? initialPosition,
     bool useTheme = true,
@@ -88,14 +100,20 @@ Future<int?> showSelectServingModeSheetWithDeleteConfirm(
     if (deleted != true) {
       return null;
     }
-    return selectedMethodPos;
+    return SelectServiceModeResult(
+      selectedMethodPos,
+      deleted == true ? null : cart,
+    );
   }
 
   if ((current == ServingMode.inPlace ? 0 : 1) != selectedMethodPos) {
     print('showSelectServingModeSheetWithDeleteConfirm.mode=$mode');
     getIt<TakeAwayBloc>().add(SetServingMode(mode));
   }
-  return selectedMethodPos;
+  return SelectServiceModeResult(
+    selectedMethodPos,
+    cart,
+  );
 }
 
 Future<bool?> _showdeleteCartConfirmation(

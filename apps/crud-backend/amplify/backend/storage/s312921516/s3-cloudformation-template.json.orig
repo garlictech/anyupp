@@ -1,6 +1,12 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
+<<<<<<< HEAD
+  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.22\",\"stackType\":\"storage-S3\",\"metadata\":{}}",
+||||||| 3d645dde2
+  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.2\",\"stackType\":\"storage-S3\",\"metadata\":{}}",
+=======
   "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.25\",\"stackType\":\"storage-S3\",\"metadata\":{}}",
+>>>>>>> dev
   "Parameters": {
     "bucketName": {
       "Type": "String"

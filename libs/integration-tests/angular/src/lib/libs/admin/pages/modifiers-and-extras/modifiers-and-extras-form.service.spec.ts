@@ -110,14 +110,12 @@ describe('ModifiersAndExtrasFormService', () => {
       .saveComponentForm$(
         productComponentSetFixture.productComponentBase,
         productComponentId,
-        false,
       )
       .subscribe();
 
     expect(updateSpy).toHaveBeenCalledWith({
       ...productComponentSetFixture.productComponentBase,
       id: productComponentId,
-      dirty: false,
     });
 
     done();
@@ -138,7 +136,6 @@ describe('ModifiersAndExtrasFormService', () => {
     expect(updateSpy).toHaveBeenCalledWith({
       ...productComponentSetFixture.productComponentBase,
       id: productComponentId,
-      dirty: undefined,
     });
 
     done();
@@ -230,14 +227,12 @@ describe('ModifiersAndExtrasFormService', () => {
       .saveComponentSetForm$(
         productComponentSetFixture.productComponentSetBase,
         productComponentSetId,
-        false,
       )
       .subscribe();
 
     expect(updateSpy).toHaveBeenCalledWith({
       ...productComponentSetFixture.productComponentSetBase,
       id: productComponentSetId,
-      dirty: false,
     });
 
     done();
@@ -258,7 +253,6 @@ describe('ModifiersAndExtrasFormService', () => {
     expect(updateSpy).toHaveBeenCalledWith({
       ...productComponentSetFixture.productComponentSetBase,
       id: productComponentSetId,
-      dirty: undefined,
     });
 
     done();

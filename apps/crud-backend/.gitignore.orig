@@ -1,5 +1,11 @@
+<<<<<<< HEAD
+apps/crud-backend/amplify/backend/api/anyuppbackend/schema.graphql
+||||||| 3d645dde2
+apps/crud-backend/amplify/backend/api/**/schema.graphql
+=======
 apps/crud-backend/amplify/backend/api/anyuppbackend/schema.graphql
 .migration-backup
+>>>>>>> dev
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend

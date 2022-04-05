@@ -93,9 +93,10 @@ Feature: Dashboard
     When I click on the "Export" button
   # Then the xlsx file is downloaded
 
-  Scenario: Lane view
-    When I click the "lanesAction" button
-    And I click on the "bár (57/0/0)" checkbox
+
+#  Scenario: Lane view
+#    When I click the "lanesAction" button
+#    And I click on the "bár (57/0/0)" checkbox
 # And I click on the arrow button on the placed product
 # And I click on the arrow button on the processed product
 # And I click on the arrow button on the ready product

@@ -105,9 +105,9 @@ export class ProductFormComponent
               {
                 ...this.dialogForm?.value,
                 chainId: this._userSettings?.selectedChainId || '',
+                dirty: this.product?.dirty ? false : undefined,
               },
               this.product?.id || undefined,
-              this.product?.dirty ? false : undefined,
             ),
           ),
           tap(() => this.setWorking$(false)),

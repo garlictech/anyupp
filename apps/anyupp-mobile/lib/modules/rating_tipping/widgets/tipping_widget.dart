@@ -12,7 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-typedef OnTipSelected = void Function(TipType? tipType, double? tip);
+typedef OnTipSelected = void Function(
+    TipType? tipType, double? tip, bool? noTip);
 
 class TippingWidget extends StatefulWidget {
   final TipPolicy tipPolicy;
@@ -108,7 +109,9 @@ class _TippingWidgetState extends State<TippingWidget> {
       highlightColor: Colors.transparent,
       hoverColor: Colors.transparent,
       onTap: () {
-        isOther ? _showEnterAmountDialog() : _updateSelectionState(percent);
+        isOther
+            ? _showEnterAmountDialog()
+            : _updateSelectionState(percent, isCancel);
         _cancel = isCancel;
         setState(() {});
       },
@@ -130,20 +133,27 @@ class _TippingWidgetState extends State<TippingWidget> {
     );
   }
 
-  _updateSelectionState(double? percent) {
-    if (percent != null && percent == _selectedTipPercent) {
+  _updateSelectionState(double? percent, bool isCancel) {
+    if (isCancel) {
       setState(() {
         _selectedTipPercent = null;
         _selectedTipAmount = null;
         _otherAmountController.text = '';
-        widget.onSelected(null, null);
+        widget.onSelected(null, null, true);
+      });
+    } else if (percent == null || percent == _selectedTipPercent) {
+      setState(() {
+        _selectedTipPercent = null;
+        _selectedTipAmount = null;
+        _otherAmountController.text = '';
+        widget.onSelected(null, null, null);
       });
     } else {
       setState(() {
         _selectedTipPercent = percent;
         _selectedTipAmount = null;
         _otherAmountController.text = '';
-        widget.onSelected(TipType.percent, percent);
+        widget.onSelected(TipType.percent, percent, null);
       });
     }
   }
@@ -155,11 +165,11 @@ class _TippingWidgetState extends State<TippingWidget> {
           return TipDialogWidget(
             amountController: _otherAmountController,
             minOtherAmount: widget.tipPolicy.minOtherAmount ?? 0,
-            onSelected: (type, amount) {
+            onSelected: (type, amount, noTip) {
               setState(() {
                 _selectedTipAmount = amount;
                 _selectedTipPercent = null;
-                widget.onSelected(TipType.amount, amount);
+                widget.onSelected(TipType.amount, amount, noTip);
               });
             },
           );
@@ -216,7 +226,7 @@ class _TipDialogWidgetState extends State<TipDialogWidget> {
         });
         return;
       }
-      widget.onSelected(TipType.amount, amount);
+      widget.onSelected(TipType.amount, amount, null);
     } on Exception {
       print("pop");
       // nothing to do
@@ -225,7 +235,7 @@ class _TipDialogWidgetState extends State<TipDialogWidget> {
   }
 
   void _onCancelPressed() {
-    widget.onSelected(null, null);
+    widget.onSelected(null, null, null);
     Navigator.pop(context);
   }
 

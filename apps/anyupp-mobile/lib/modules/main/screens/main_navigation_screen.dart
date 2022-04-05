@@ -6,6 +6,7 @@ import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
+import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:flutter/material.dart';
@@ -110,14 +111,32 @@ class _MainNavigationState extends State<MainNavigation>
 
           // Opening the selected page
           // body: pages[_selectedIndex],
-          body: BlocListener<MainNavigationBloc, MainNavigationState>(
-            listener: (BuildContext context, MainNavigationState state) {
-              if (state is MainNavaigationNeed) {
-                print(
-                    '******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
-                _navigateToPage(state.pageIndex);
-              }
-            },
+          body: MultiBlocListener(
+            listeners: [
+              BlocListener<MainNavigationBloc, MainNavigationState>(
+                listener: (BuildContext context, MainNavigationState state) {
+                  if (state is MainNavaigationNeed) {
+                    print(
+                        '******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                    _navigateToPage(state.pageIndex);
+                  }
+                },
+              ),
+              BlocListener<ExceptionBloc, ExceptionState>(
+                listener: (BuildContext context, ExceptionState state) {
+                  if (state is ExceptionShowState) {
+                    print('Main.ExceptionState=$state');
+                    // Future.delayed(Duration(seconds: 1)).then((_) =>
+                    //     getIt<ExceptionBloc>().add(ShowException(state.exception)));
+                    showExceptionDialog(
+                      context,
+                      state.exception,
+                      theme.primary,
+                    );
+                  }
+                },
+              ),
+            ],
             child: DoubleBackToCloseApp(
               snackBar: SnackBar(
                 elevation: 8,
