@@ -95,7 +95,6 @@ export class ModifiersAndExtrasFormService {
       | CrudApi.CreateProductComponentInput
       | CrudApi.UpdateProductComponentInput,
     componentId?: string,
-    dirty?: boolean,
   ) {
     return iif(
       () => !componentId,
@@ -105,7 +104,6 @@ export class ModifiersAndExtrasFormService {
       this.updateProductComponent$({
         ...formValue,
         id: componentId || '',
-        dirty: dirty === false ? false : undefined,
       }),
     );
   }
@@ -129,7 +127,6 @@ export class ModifiersAndExtrasFormService {
       | CrudApi.CreateProductComponentSetInput
       | CrudApi.UpdateProductComponentSetInput,
     componentId?: string,
-    dirty?: boolean,
   ) {
     return iif(
       () => !componentId,
@@ -139,7 +136,6 @@ export class ModifiersAndExtrasFormService {
       this.updateProductComponentSet$({
         ...formValue,
         id: componentId || '',
-        dirty: dirty === false ? false : undefined,
       }),
     );
   }
