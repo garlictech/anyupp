@@ -1,6 +1,7 @@
+import argparse
 import json
 import logging
-import argparse
+
 import boto3
 import boto3.dynamodb.table
 from boto3 import Session

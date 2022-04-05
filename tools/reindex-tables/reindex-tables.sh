@@ -6,6 +6,7 @@ pushd 'apps/crud-backend'
 
 #ENVNAME=$(amplify status | grep "Current Environment" | rev | cut -d ' ' -f 1 | rev)
 ENVNAME=$1
+FUNCTION_NAME=$2 # like amplify-anyuppbackend-sta-OpenSearchStreamingLambd-iNsDbhVYGANu
 echo "ENVNAME: $ENVNAME"
 
 APPID=$(aws ssm get-parameter --name "/${ENVNAME}-anyupp-backend/generated/CrudApiAppId" | \
@@ -33,6 +34,7 @@ for name in $TABLE_NAMES; do
   python3 tools/reindex-tables/ddb_to_es.py \
   --rn $AWS_REGION \
   --tn $name \
-  --lf "arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT}:function:DdbToEsFn-${API_ID}-${ENVNAME}" \
+  --lf "arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT}:function:${FUNCTION_NAME}" \
   --esarn "arn:aws:dynamodb:${AWS_REGION}:${AWS_ACCOUNT}:table/${name}/stream"
 done
+#--lf "arn:aws:lambda:${AWS_REGION}:${AWS_ACCOUNT}:function:DdbToEsFn-${API_ID}-${ENVNAME}" \
