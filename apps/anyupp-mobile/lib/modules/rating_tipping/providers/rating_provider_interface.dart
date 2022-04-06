@@ -12,4 +12,8 @@ abstract class IRatingProvider {
     TipType? tipType,
     double? tip,
   );
+
+  Future<bool> noTipOrder(
+    String orderId,
+  );
 }
