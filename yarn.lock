@@ -9878,7 +9878,7 @@ aws-lambda@1.0.7:
     js-yaml "^3.14.1"
     watchpack "^2.0.0-beta.10"
 
-aws-sdk@2.1109.0:
+aws-sdk@2.1109.0, aws-sdk@^2.1109.0:
   version "2.1109.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1109.0.tgz#1be11188303f6545891edb0f7facf295f3ff9a40"
   integrity sha512-kcxDBPIpgN2mTgSxbbTPA5l63mCImDY+1YfZGAkZ9LIk+LYX3CPQC1vVP/iMrGioToB0KLSLechNuBif/6LXUA==
@@ -9912,21 +9912,6 @@ aws-sdk@^2.1095.0:
   version "2.1100.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1100.0.tgz#20bbabc12fbc316067ba02af66bf371a455af9e3"
   integrity sha512-StLSQCYFmFPxjoMntIb+8jUZ0vzmq3xkrwG5e/4qU1bSGWCmhhjvz6c+4j38AnIy8MFV1+tV8RArbhLUEV2dGw==
-  dependencies:
-    buffer "4.9.2"
-    events "1.1.1"
-    ieee754 "1.1.13"
-    jmespath "0.16.0"
-    querystring "0.2.0"
-    sax "1.2.1"
-    url "0.10.3"
-    uuid "3.3.2"
-    xml2js "0.4.19"
-
-aws-sdk@^2.1106.0:
-  version "2.1106.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1106.0.tgz#5c536f57b484af56ca2e0b15fcf2e7d5846ffbd8"
-  integrity sha512-3dr0TTR2LI70ST8fa4IgXHpWdH4yv7FLnt9YEndwFQ8ar2EMCMpMU67wwCGBA72GUi0aOg4+lsLjGmCvIq3jug==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -15626,6 +15611,11 @@ graceful-fs@^4.1.10, graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.9.tgz#041b05df45755e587a24942279b9d113146e1c96"
   integrity sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==
 
+graceful-fs@^4.2.10:
+  version "4.2.10"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
+  integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
+
 graphlib@^2.1.8:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/graphlib/-/graphlib-2.1.8.tgz#5761d414737870084c92ec7b5dbcb0592c9d35da"
@@ -18955,6 +18945,11 @@ lru-cache@^7.3.1:
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.3.1.tgz#7702e80694ec2bf19865567a469f2b081fcf53f5"
   integrity sha512-nX1x4qUrKqwbIAhv4s9et4FIUVzNOpeY07bsjGUy8gwJrXH/wScImSQqXErmo/b2jZY2r0mohbLA9zVj7u1cNw==
+
+lru-cache@^7.4.0:
+  version "7.7.3"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.7.3.tgz#98cd19eef89ce6a4a3c4502c17c833888677c252"
+  integrity sha512-WY9wjJNQt9+PZilnLbuFKM+SwDull9+6IAguOrarOMoOHTcJ9GnXSO11+Gw6c7xtDkBkthR57OZMtZKYr+1CEw==
 
 lru-queue@^0.1.0:
   version "0.1.0"
@@ -22749,6 +22744,13 @@ semver@^6.0.0, semver@^6.1.1, semver@^6.1.2, semver@^6.2.0, semver@^6.3.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
 
+semver@^7.3.6:
+  version "7.3.6"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.6.tgz#5d73886fb9c0c6602e79440b97165c29581cbb2b"
+  integrity sha512-HZWqcgwLsjaX1HBD31msI/rXktuIhS+lWvdE4kN9z+8IVT4Itc7vqU2WvYsyD6/sjYCt4dEKH/m1M3dwI9CC5w==
+  dependencies:
+    lru-cache "^7.4.0"
+
 send@0.17.2:
   version "0.17.2"
   resolved "https://registry.yarnpkg.com/send/-/send-0.17.2.tgz#926622f76601c41808012c8bf1688fe3906f7820"
@@ -22933,10 +22935,10 @@ serverless-webpack@^5.6.1:
   optionalDependencies:
     ts-node ">= 8.3.0"
 
-serverless@3.11.0:
-  version "3.11.0"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.11.0.tgz#3e2ac4e1048986a83aeebac88c69eb3bba848818"
-  integrity sha512-v4yfKOK46ri12TkiuNfUrLo+PrfR4BI9WkrUxPF66Cst7Kdu1RH0qiCA6Gxpibauox++gnbxCdgoJ+XKw9nv1g==
+serverless@3.12.0:
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.12.0.tgz#a2519320062aa971414ea284c1ed4d33a81f7ec2"
+  integrity sha512-CKpJGnKYxfxCYw0IojoidfZiueOl0bhbzTcRcHDVDPJLi3DYMQ+o6EwWtF7m36Nkw6FXT36Wot7pmljHoXYrQQ==
   dependencies:
     "@serverless/dashboard-plugin" "^6.2.1"
     "@serverless/platform-client" "^4.3.2"
@@ -22944,7 +22946,7 @@ serverless@3.11.0:
     ajv "^8.11.0"
     ajv-formats "^2.1.1"
     archiver "^5.3.0"
-    aws-sdk "^2.1106.0"
+    aws-sdk "^2.1109.0"
     bluebird "^3.7.2"
     cachedir "^2.3.0"
     chalk "^4.1.2"
@@ -22964,7 +22966,7 @@ serverless@3.11.0:
     get-stdin "^8.0.0"
     globby "^11.1.0"
     got "^11.8.3"
-    graceful-fs "^4.2.9"
+    graceful-fs "^4.2.10"
     https-proxy-agent "^5.0.0"
     is-docker "^2.2.1"
     js-yaml "^4.1.0"
@@ -22981,7 +22983,7 @@ serverless@3.11.0:
     process-utils "^4.0.0"
     promise-queue "^2.2.5"
     require-from-string "^2.0.2"
-    semver "^7.3.5"
+    semver "^7.3.6"
     signal-exit "^3.0.7"
     strip-ansi "^6.0.1"
     supports-color "^8.1.1"
