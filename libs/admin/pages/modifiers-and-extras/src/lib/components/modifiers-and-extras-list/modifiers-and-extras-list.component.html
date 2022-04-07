@@ -1,8 +1,4 @@
-<nb-card
-  class="h-100 mb-0"
-  [nbSpinner]="(loading$ | async) || false"
-  nbSpinnerStatus="basic"
->
+<nb-card class="h-100 mb-0" nbSpinnerStatus="basic">
   <nb-card-header>
     <div class="float-start">
       {{ 'modifiersAndExtras.listTitle' | translate }}
@@ -24,6 +20,7 @@
         "
       >
         <nb-icon icon="add" pack="material-icons"></nb-icon>
+        {{ 'common.add' | translate }}
       </button>
     </div>
   </nb-card-header>

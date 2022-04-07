@@ -1,14 +1,15 @@
-<nb-user
+<bgap-user-block
   class="float-start role-border {{ role?.toLowerCase() }}"
   [name]="adminUser?.name || ''"
   [picture]="(adminUser?.profileImage || '' | awsStoragePath) || ''"
-></nb-user>
+  (onNameClick)="editAdminUser()"
+></bgap-user-block>
 
 <button
   nbButton
   shape="round"
   size="tiny"
-  class="float-right"
+  class="float-right ms-2"
   [title]="'common.edit' | translate"
   (click)="editAdminUser()"
 >
@@ -19,11 +20,12 @@
   nbButton
   shape="round"
   size="tiny"
-  class="float-right me-3"
+  class="float-right"
   [title]="'auth.sendResetEmail' | translate"
   (click)="resetEmail()"
 >
   <nb-icon icon="email" pack="material-icons"></nb-icon>
+  {{ 'adminUsers.resetPassword' | translate }}
 </button>
 
 <div class="clearfix"></div>

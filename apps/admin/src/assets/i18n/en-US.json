@@ -19,6 +19,7 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "add": "Add",
+    "addItem": "Add",
     "moveDown": "Move down",
     "moveUp": "Move up",
     "ok": "OK",
@@ -381,7 +382,8 @@
     "addAdminUser": "Add admin user",
     "editAdminUser": "Edit admin user",
     "newAdminUser": "New admin user",
-    "editAdminUserRole": "Edit admin user role"
+    "editAdminUserRole": "Edit admin user role",
+    "resetPassword": "Reset password"
   },
   "roleContexts": {
     "listTitle": "Role contexts",

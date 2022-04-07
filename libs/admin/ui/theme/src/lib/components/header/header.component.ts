@@ -23,7 +23,7 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { map, take } from 'rxjs/operators';
+import { map, startWith, take } from 'rxjs/operators';
 
 interface IMenuItem {
   title: string;
@@ -46,6 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public languageMenu: IMenuItem[];
   public selectedLang: string;
   public networkError$: Observable<string>;
+  public compacted = true;
 
   constructor(
     private _store: Store,
@@ -131,6 +132,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this._changeDetectorRef.detectChanges();
       },
     );
+
+    this._sidebarService
+      .onToggle()
+      .pipe(
+        map(data => data.compact),
+        startWith(true),
+        untilDestroyed(this),
+      )
+      .subscribe(compacted => {
+        this.compacted = compacted;
+
+        this._changeDetectorRef.detectChanges();
+      });
+
     this._translateMenuItems();
 
     this._menuService
@@ -186,13 +201,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     };
   }
 
-  public toggleSidebar(): boolean {
-    this._sidebarService.toggle(true, 'menu-sidebar');
+  public toggleSidebar($event: Event) {
+    $event.preventDefault();
+
+    this._sidebarService.toggle(!this.compacted, 'menu-sidebar');
     this._layoutService.changeLayoutSize();
 
     this._changeDetectorRef.detectChanges();
-
-    return false;
   }
 
   public navigateHome(): boolean {

@@ -34,6 +34,7 @@ import { RkeeperInfoBlockComponent } from './components/rkeeper-info-block';
 import { StatusLedComponent } from './components/status-led';
 import { UnpayCategoriesComponent } from './components/unpay-categories';
 import { VariantAvailabilityBadgeComponent } from './components/variant-availability-badge';
+import { UserBlockComponent } from './components/user-block/user-block.component';
 
 const NB_MODULES = [
   NbIconModule,
@@ -68,6 +69,7 @@ const COMPONENTS = [
   AllergensComponent,
   UnpayCategoriesComponent,
   RkeeperInfoBlockComponent,
+  UserBlockComponent,
 ];
 
 @NgModule({

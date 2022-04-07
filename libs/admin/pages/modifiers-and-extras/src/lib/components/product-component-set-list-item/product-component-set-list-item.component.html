@@ -1,5 +1,7 @@
 <div class="float-start">
-  <div class="subtitle-2">{{ productComponentSet.name | localize }}</div>
+  <div class="subtitle-2" role="button" (click)="editProductComponent()">
+    {{ productComponentSet.name | localize }}
+  </div>
   <div class="caption">{{ productComponentSet.description }}</div>
   <div class="caption mt-1">
     {{ 'productComponentSets.type.' + productComponentSet.type | translate }}

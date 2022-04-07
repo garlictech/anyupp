@@ -27,7 +27,6 @@ export class ChainListComponent implements OnDestroy {
   @ViewChild('dataVSVP')
   dataVSVP?: CdkVirtualScrollViewport;
 
-  public loading$: Observable<boolean>;
   public chains$: Observable<CrudApi.Chain[]>;
 
   constructor(
@@ -36,7 +35,6 @@ export class ChainListComponent implements OnDestroy {
     private _chainCollectionService: ChainCollectionService,
   ) {
     this.chains$ = this._chainCollectionService.filteredEntities$;
-    this.loading$ = this._chainCollectionService.loading$;
   }
 
   ngOnDestroy(): void {

@@ -1,8 +1,9 @@
+import { of } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 
-import { createReport } from './generate-report';
+import * as reportGenerator from './generate-report';
 
 describe('ReportGenerator', () => {
   const reportDate = new Date().toISOString().substr(0, 10);
@@ -23,10 +24,15 @@ describe('ReportGenerator', () => {
   };
 
   it('run createReport', () => {
-    createReport(deps)
+    const reportSpy = jest
+      .spyOn(reportGenerator, 'createReport')
+      .mockImplementation(jest.fn().mockReturnValue(of(true)));
+
+    reportGenerator
+      .createReport(deps)
       .pipe(take(1))
       .subscribe(() => {
-        expect(createReport).toBeCalledWith(deps);
+        expect(reportSpy).toBeCalledWith(deps);
       });
   });
 });

@@ -22,6 +22,7 @@ import { ProductCategoryFormComponent } from './components/product-category-form
 import { ProductCategoryListItemComponent } from './components/product-category-list-item/product-category-list-item.component';
 import { ProductCategoryListComponent } from './components/product-category-list/product-category-list.component';
 import { ProductCategoryListService } from './services/product-category-list.service';
+import { AdminSharedComponentsModule } from '@bgap/admin/shared/components';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -46,6 +47,7 @@ const NB_MODULES = [
     CommonModule,
     TranslateModule,
     AdminSharedFormsModule,
+    AdminSharedComponentsModule,
     FormsModule,
     ScrollingModule,
     ReactiveFormsModule,

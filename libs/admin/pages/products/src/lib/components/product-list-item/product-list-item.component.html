@@ -1,9 +1,10 @@
-<nb-user
-  class="float-start"
+<bgap-user-block
+  class="float-start d-block"
   [name]="product?.name | localize"
   [title]="product?.description | localize"
   [picture]="(product?.image || '' | awsStoragePath) || ''"
-></nb-user>
+  (onNameClick)="editProduct()"
+></bgap-user-block>
 
 <bgap-status-led class="ms-1" [status]="product?.isVisible"></bgap-status-led>
 
@@ -18,7 +19,7 @@
       nbButton
       shape="round"
       size="tiny"
-      class="float-right"
+      class="float-right ms-2"
       [title]="'common.edit' | translate"
       (click)="editProduct()"
     >
@@ -38,7 +39,7 @@
         shape="round"
         size="tiny"
         [title]="'common.moveDown' | translate"
-        class="float-right me-3"
+        class="float-right ms-2"
         (click)="moveDown()"
       >
         <nb-icon icon="expand_more" pack="material-icons"></nb-icon>
@@ -49,7 +50,7 @@
         shape="round"
         size="tiny"
         [title]="'common.moveUp' | translate"
-        class="float-right me-3"
+        class="float-right"
         (click)="moveUp()"
       >
         <nb-icon icon="expand_less" pack="material-icons"></nb-icon>

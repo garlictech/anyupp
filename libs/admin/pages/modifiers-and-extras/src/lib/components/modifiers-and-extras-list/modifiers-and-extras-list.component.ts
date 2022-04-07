@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   ChangeDetectionStrategy,
@@ -48,7 +46,6 @@ export class ModifiersAndExtrasListComponent implements OnInit, OnDestroy {
   public selectedTab: EModExtTab = EModExtTab.PRODUCT_COMPONENTS;
   public productComponents: CrudApi.ProductComponent[] = [];
   public productComponentSets: CrudApi.ProductComponentSet[] = [];
-  public loading$: Observable<boolean>;
 
   constructor(
     private _nbDialogService: NbDialogService,
@@ -56,9 +53,7 @@ export class ModifiersAndExtrasListComponent implements OnInit, OnDestroy {
     private _modifiersAndExtrasListService: ModifiersAndExtrasListService,
     private _productComponentCollectionService: ProductComponentCollectionService,
     private _productComponentSetCollectionService: ProductComponentSetCollectionService,
-  ) {
-    this.loading$ = this._modifiersAndExtrasListService.loading$();
-  }
+  ) {}
 
   get dirtyProductComponentCount() {
     return this.productComponents.filter(p => p.dirty).length;

@@ -98,8 +98,9 @@
               status="primary"
               (click)="addComponentToList()"
               [disabled]="componentForm?.invalid"
+              data-testid="addComponentToList"
             >
-              {{ 'common.add' | translate }}
+              {{ 'common.addItem' | translate }}
             </button>
           </div>
           <div

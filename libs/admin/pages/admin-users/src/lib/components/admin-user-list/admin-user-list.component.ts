@@ -27,7 +27,6 @@ export class AdminUserListComponent implements OnDestroy {
   @ViewChild('dataVSVP')
   dataVSVP?: CdkVirtualScrollViewport;
 
-  public loading$: Observable<boolean>;
   public adminUsers$: Observable<CrudApi.AdminUser[]>;
 
   constructor(
@@ -36,7 +35,6 @@ export class AdminUserListComponent implements OnDestroy {
     private _adminUserCollectionService: AdminUserCollectionService,
   ) {
     this.adminUsers$ = this._adminUserCollectionService.filteredEntities$;
-    this.loading$ = this._adminUserCollectionService.loading$;
   }
 
   ngOnInit() {
