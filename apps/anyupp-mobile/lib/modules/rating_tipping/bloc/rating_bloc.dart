@@ -67,25 +67,33 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
     emit(RatingLoading());
     try {
       Order? order = await _orderRepository.getOrder(event.orderId);
+      if (order == null) {
+        emit(RatingFailed('TIP', 'Order not found'));
+        return;
+      }
+
       // tip order
-      bool success = await _repository.tipOrder(
-        event.orderId,
-        event.tipType ?? TipType.none,
-        event.tipValue ?? 0.0,
-      );
+      bool success = false;
+      if (event.tipType == TipType.none || event.tipType == null) {
+        success = await _repository.noTipOrder(event.orderId);
+      } else {
+        success = await _repository.tipOrder(
+          event.orderId,
+          event.tipType,
+          event.tipValue,
+        );
+      }
       print('RatingBloc.TipOrder.done().success=$success');
 
       _refreshOrdersIfUnitSelected();
 
-      if (order != null) {
-        order = order.copyWith(
-          tip: Tip(
-            event.tipType ?? TipType.none,
-            event.tipValue ?? 0.0,
-          ),
-        );
-        getIt<OrderRefreshBloc>().add(RefreshOrder(order));
-      }
+      order = order.copyWith(
+        tip: Tip(
+          event.tipType ?? TipType.none,
+          event.tipValue ?? 0.0,
+        ),
+      );
+      getIt<OrderRefreshBloc>().add(RefreshOrder(order));
       await cancelNotification(
           notificationId: NotificationPayloadType.RATE_ORDER.index);
       emit(RatingSuccess());
