@@ -97,4 +97,20 @@ export class ProductListItemComponent implements OnDestroy {
       productId: this.product?.id,
     });
   }
+
+  public deleteProduct(id: string) {
+    switch (this.productLevel) {
+      case EProductLevel.CHAIN:
+        this._productListService.deleteChainProduct(id);
+        break;
+      case EProductLevel.GROUP:
+        this._productListService.deleteGroupProduct(id);
+        break;
+      case EProductLevel.UNIT:
+        this._productListService.deleteUnitProduct(id);
+        break;
+      default:
+        break;
+    }
+  }
 }

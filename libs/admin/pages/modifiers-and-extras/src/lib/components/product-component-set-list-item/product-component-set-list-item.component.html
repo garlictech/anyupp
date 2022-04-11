@@ -17,6 +17,7 @@
   (click)="editProductComponent()"
 >
   <nb-icon icon="edit" pack="material-icons"></nb-icon>
+  {{ 'common.edit' | translate }}
 </button>
 
 <div class="dirty-block" *ngIf="productComponentSet?.dirty">

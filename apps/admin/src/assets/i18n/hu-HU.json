@@ -276,7 +276,8 @@
       "other": "Egyéb",
       "unknown": "Ismeretlen típus"
     },
-    "takeaway": "Elvitelre"
+    "takeaway": "Elvitelre",
+    "confirmDeleteProduct": "Biztosan törlöd a terméket?"
   },
   "productCategories": {
     "addProductCategory": "Termék kategória hozzáadása",

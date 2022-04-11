@@ -276,7 +276,8 @@
       "other": "Other",
       "unknown": "Unknown type"
     },
-    "takeaway": "Takeaway"
+    "takeaway": "Takeaway",
+    "confirmDeleteProduct": "Are you sure you delete the product?"
   },
   "productCategories": {
     "addProductCategory": "Add product category",
