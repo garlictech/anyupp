@@ -13,9 +13,8 @@ import {
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
-import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
-import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
+import { combineLatest, from, Observable, of, throwError } from 'rxjs';
+import { map, mapTo, switchMap } from 'rxjs/operators';
 import {
   getGroupProduct,
   getUnitProduct,
