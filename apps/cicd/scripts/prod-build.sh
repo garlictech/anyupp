@@ -12,8 +12,8 @@ if [ "$ENVNAME" = "prod" ]; then
   yarn nx deploy common-backend --env=${ENVNAME}
 fi
 
-#yarn nx deploy crud-backend --env=${ENVNAME}
-#yarn nx deploy anyupp-backend --env=${ENVNAME}
+yarn nx deploy crud-backend --env=${ENVNAME}
+yarn nx deploy anyupp-backend --env=${ENVNAME}
 yarn nx buildAppbundle-ci anyupp-mobile
 
 npx cowsay "PROJECT BUILD OK!!!"

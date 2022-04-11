@@ -12,4 +12,9 @@ class MockRatingProvider implements IRatingProvider {
   Future<bool> tipOrder(String orderId, TipType? tipType, double? tip) async {
     return true;
   }
+
+  @override
+  Future<bool> noTipOrder(String orderId) async {
+    return true;
+  }
 }

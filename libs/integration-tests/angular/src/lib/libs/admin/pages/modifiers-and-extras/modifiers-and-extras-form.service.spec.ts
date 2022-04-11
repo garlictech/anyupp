@@ -50,11 +50,7 @@ describe('ModifiersAndExtrasFormService', () => {
   });
 
   it('createProductComponentFormGroup should create form group', () => {
-    const mockValidator = () => () => null;
-
-    expect(
-      service.createProductComponentFormGroup(mockValidator).value,
-    ).toMatchSnapshot();
+    expect(service.createProductComponentFormGroup().value).toMatchSnapshot();
   });
 
   it('addComponentToList/removeComponentFromList should handle component to item list', () => {
@@ -110,14 +106,12 @@ describe('ModifiersAndExtrasFormService', () => {
       .saveComponentForm$(
         productComponentSetFixture.productComponentBase,
         productComponentId,
-        false,
       )
       .subscribe();
 
     expect(updateSpy).toHaveBeenCalledWith({
       ...productComponentSetFixture.productComponentBase,
       id: productComponentId,
-      dirty: false,
     });
 
     done();
@@ -138,7 +132,6 @@ describe('ModifiersAndExtrasFormService', () => {
     expect(updateSpy).toHaveBeenCalledWith({
       ...productComponentSetFixture.productComponentBase,
       id: productComponentId,
-      dirty: undefined,
     });
 
     done();
@@ -230,14 +223,12 @@ describe('ModifiersAndExtrasFormService', () => {
       .saveComponentSetForm$(
         productComponentSetFixture.productComponentSetBase,
         productComponentSetId,
-        false,
       )
       .subscribe();
 
     expect(updateSpy).toHaveBeenCalledWith({
       ...productComponentSetFixture.productComponentSetBase,
       id: productComponentSetId,
-      dirty: false,
     });
 
     done();
@@ -258,7 +249,6 @@ describe('ModifiersAndExtrasFormService', () => {
     expect(updateSpy).toHaveBeenCalledWith({
       ...productComponentSetFixture.productComponentSetBase,
       id: productComponentSetId,
-      dirty: undefined,
     });
 
     done();

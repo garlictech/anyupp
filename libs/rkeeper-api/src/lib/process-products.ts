@@ -299,7 +299,7 @@ export const updateRkeeperProduct =
             ...(foundUnitProduct?.variants?.[0] ?? {}),
             id: 'id',
             variantName: {
-              hu: dish.name,
+              hu: foundUnitProduct?.variants?.[0]?.variantName?.hu ?? dish.name,
             },
             isAvailable: dish.active,
             price: dish.price,
@@ -377,7 +377,6 @@ export const handleRkeeperProducts =
       getBusinessEntityInfo(sdk)(externalRestaurantId),
       processDishes(rawData),
     ).pipe(
-      tap(() => console.warn('DISHES PROCESSED')),
       switchMap(([businessEntityInfo, dishes]) =>
         createDefaultProductCategory(sdk)(businessEntityInfo).pipe(
           tap(() =>
@@ -457,7 +456,7 @@ export const upsertComponent =
                 input: {
                   id: component.id,
                   name: {
-                    hu: modifier.name,
+                    hu: component.name?.hu ?? modifier.name,
                   },
                 },
               }),
@@ -543,7 +542,7 @@ const upsertConfigSetsHelper = R.memoizeWith(
                     input: {
                       id: componentSet.id,
                       name: {
-                        hu: modifierGroup.name,
+                        hu: componentSet.name?.hu ?? modifierGroup.name,
                       },
                       items: components.map(c => c.productComponentId),
                     },
@@ -564,11 +563,13 @@ const upsertConfigSetsHelper = R.memoizeWith(
 export const upsertConfigSets =
   (sdk: CrudApi.CrudSdk, chainId: string) =>
   (modifierGroups: ModifierGroup[]): Observable<CrudApi.ProductConfigSet[]> =>
-    combineLatest(
-      modifierGroups.map(modifierGroup =>
-        upsertConfigSetsHelper(sdk, chainId, modifierGroup),
-      ),
-    );
+    R.isEmpty(modifierGroups)
+      ? of([])
+      : combineLatest(
+          modifierGroups.map(modifierGroup =>
+            upsertConfigSetsHelper(sdk, chainId, modifierGroup),
+          ),
+        );
 
 export const filterActiveData = <T extends { active: boolean }>(data: T[]) =>
   data.filter(item => !!item.active);
@@ -624,8 +625,9 @@ const resolveComponentSetsHelper = R.memoizeWith(
               ),
             ),
           ),
-          modifiers =>
-            R.isEmpty(modifiers) ? of([]) : combineLatest(modifiers),
+          (modifierGroups: Observable<ModifierGroup>[]) =>
+            R.isEmpty(modifierGroups) ? of([]) : combineLatest(modifierGroups),
+
           switchMap(upsertConfigSets(sdk, chainId)),
           catchError(err => {
             console.warn(

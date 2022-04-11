@@ -16,7 +16,7 @@ import {
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
 import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
-import { tap, map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
+import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
 import {
   getGroupProduct,
@@ -330,6 +330,7 @@ export const createOrderFromCart =
             orderInput: {
               ...props.orderInput,
               externalId,
+              id: externalId,
             },
           })),
         ),
@@ -347,12 +348,6 @@ export const createOrderFromCart =
         deps.crudSdk
           .DeleteCart({ input: { id: props.cart.id } })
           .pipe(mapTo(props)),
-      ),
-      tap(x =>
-        console.debug(
-          'Props at the end of process:',
-          JSON.stringify(x, null, 2),
-        ),
       ),
       map(props => props.newOrderId),
     );

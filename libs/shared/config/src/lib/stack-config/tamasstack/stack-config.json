@@ -16,32 +16,32 @@
   },
   "anyupp-backend-sites": {
     "AdminSiteDomainA75B4E32": "tamasstack-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionDomainNameA4A4FE5B": "d1vt977o8prgep.cloudfront.net",
+    "AdminDistributionDomainNameA4A4FE5B": "d1rlmtkjqlfunv.cloudfront.net",
     "AdminSiteEAA17C78": "https://tamasstack-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionIdB4DE25AB": "EMWCDIW51OS0R",
+    "AdminDistributionIdB4DE25AB": "E2Q5BR4FWKMAX6",
     "AdminBucketCA57896C": "tamasstack-admin-anyupp-backend.anyupp.com"
   },
   "anyupp-backend-cognito": {
-    "ConsumerUserPoolId": "eu-west-1_kMKdItj11",
-    "AdminUserPoolId": "eu-west-1_QFCe9BzAw",
-    "AdminWebUserPoolClientId": "7p79q4a7cburc0mcrmhn0ktmmu",
-    "ConsumerNativeUserPoolClientId": "7dn9tvpop4hnabd3s24fjko8hu",
+    "ConsumerUserPoolId": "eu-west-1_YBmOWa2ow",
+    "AdminUserPoolId": "eu-west-1_RGhhaEKWA",
+    "AdminWebUserPoolClientId": "76otk2k8thtslqmnpi6t865h35",
+    "ConsumerNativeUserPoolClientId": "11h7jeid2pj7e2m9km0tst9hbc",
     "AdminUserPoolDomain": "https://tamasstack-anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
-    "ConsumerWebUserPoolClientId": "3k8tv9sd7qib1khbkmo3s9mph2",
+    "ConsumerWebUserPoolClientId": "c044bloieoi8ku85rm026gnpa",
     "ConsumerUserPoolDomain": "https://tamasstack-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
-    "IdentityPoolId": "eu-west-1:46de1eb1-a24c-40e0-b99f-d915cd3e1707",
-    "AdminNativeUserPoolClientId": "4t00qhab0n5na22jvfnvmi20tm"
+    "IdentityPoolId": "eu-west-1:27f703c5-9112-4e7c-9372-733761ad1674",
+    "AdminNativeUserPoolClientId": "43i2m6pdekkol37g1h2a89aevg"
   },
   "anyupp-backend-stripe": {
     "stripewebhookEndpoint": "https://stripe-webhook-tamasstack.anyupp.com/tamasstack",
-    "StripeWebhookNewEndpoint6D902BCA": "https://7jqum1txsa.execute-api.eu-west-1.amazonaws.com/tamasstack/",
-    "StripeWebhookEndpointE83D65EB": "https://ct4hisb8a1.execute-api.eu-west-1.amazonaws.com/tamasstack/",
-    "stripewebhookEndpointNew": "https://7jqum1txsa.execute-api.eu-west-1.amazonaws.com/tamasstack/"
+    "StripeWebhookNewEndpoint6D902BCA": "https://hdxm3ir3la.execute-api.eu-west-1.amazonaws.com/tamasstack/",
+    "StripeWebhookEndpointE83D65EB": "https://lzkbbckh33.execute-api.eu-west-1.amazonaws.com/tamasstack/",
+    "stripewebhookEndpointNew": "https://hdxm3ir3la.execute-api.eu-west-1.amazonaws.com/tamasstack/"
   },
   "anyupp-backend-rkeeper": {
-    "RKeeperWebhookEndpointCBC72BD4": "https://x13mbespad.execute-api.eu-west-1.amazonaws.com/tamasstack/",
+    "RKeeperWebhookEndpointCBC72BD4": "https://iplzqqik0b.execute-api.eu-west-1.amazonaws.com/tamasstack/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-tamasstack.anyupp.com/tamasstack",
-    "RKeeperTaskBucketName": "tamasstack-anyupp-backen-anyupprkeepermenubucket4-bz3cucwusqyl",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/tamasstack-anyupp-backend-RkeeperECSTaskExecutionR-RCTVT9FVOOQJ"
+    "RKeeperTaskBucketName": "tamasstack-anyupp-backen-anyupprkeepermenubucket4-15yl0uvhk8emg",
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/tamasstack-anyupp-backend-RkeeperECSTaskExecutionR-R0JWNBJL5Z7J"
   }
 }

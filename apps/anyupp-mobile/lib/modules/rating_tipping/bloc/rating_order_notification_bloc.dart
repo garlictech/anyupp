@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -49,7 +50,7 @@ class RatingOrderNotificationBloc
         // print('RatingOrderNotificationBloc.scheduling[$delay]=${order.id}');
         getIt<NotificationsBloc>().add(ScheduleOrderRatingNotification(
           orderId: order.id,
-          ratingPolicy: order.ratingPolicies![0],
+          ratingPolicy: order.ratingPolicies![Random().nextInt(order.ratingPolicies!.length)],
           tipPolicy: order.paymentMode.method != PaymentMethod.inapp
               ? null
               : order.tipPolicy,

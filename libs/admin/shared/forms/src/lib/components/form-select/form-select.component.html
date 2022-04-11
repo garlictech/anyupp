@@ -10,9 +10,9 @@
       (selectedChange)="onChange($event)"
       [attr.data-testid]="inputId"
     >
-      <nb-option value="" *ngIf="!control?.value || forceShowEmptyOption"
-        >-</nb-option
-      >
+      <nb-option value="" *ngIf="!control?.value || forceShowEmptyOption">{{
+        emptyOptionLabel || '-' | translate
+      }}</nb-option>
       <nb-option *ngFor="let option of options" [value]="option.key">{{
         localize ? (option.value! | localize) : (option.value! | translate)
       }}</nb-option>

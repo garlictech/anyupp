@@ -58,4 +58,26 @@ class AwsRatingProvider implements IRatingProvider {
       rethrow;
     }
   }
+
+  @override
+  Future<bool> noTipOrder(String orderId) async {
+    try {
+      print('AwsRatingProvider.noTipOrder().orderId=$orderId');
+
+      var result = await GQL.amplify.execute(NoTipOrderMutation(
+        variables: NoTipOrderArguments(
+          orderId: orderId,
+        ),
+      ));
+
+      if (result.hasErrors) {
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
+      }
+      return true;
+    } on Exception catch (e) {
+      print('AwsRatingProvider.noTipOrder.Exception: $e');
+      rethrow;
+    }
+  }
 }

@@ -10,6 +10,7 @@
           [localize]="false"
           inputId="orderPolicy"
           [forceShowEmptyOption]="true"
+          [emptyOptionLabel]="'units.serviceFee.type.noFee'"
         ></bgap-form-select>
       </div>
       <div class="col-md-3">
@@ -19,6 +20,7 @@
           [control]="serviceFeeFormGroup?.get('percentage') | asFormControl"
           inputId="packagingTaxPercentage"
           suffix="%"
+          [hidden]="serviceFeeTypeControl.value === ''"
         ></bgap-form-text-input>
       </div>
     </div>

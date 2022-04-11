@@ -2,13 +2,13 @@
   "common": {
     "appTitle": "AnyUpp",
     "cancel": "Cancel",
-    "piece": "db",
+    "piece": "pcs",
     "close": "Close",
     "select": "Select",
     "ok": "OK",
     "today": "Today",
-    "exit": "Tap back again to exit app.",
-    "ok2": "ALL RIGHT"
+    "exit": "Tap the back button again to exit app.",
+    "ok2": "OK"
   },
   "locale": {
     "EN": "English",
@@ -16,14 +16,14 @@
     "HU": "Magyar"
   },
   "login": {
-    "welcome": "It's time to make the world real",
+    "welcome": "Welcome to AnyUpp!",
     "join": "Wanna join?",
     "swipeUp": "Swipe up",
     "continueWith": "Continue with",
     "signInAnonymously": "Continue anonymously",
     "accountLink": {
       "title": "Account link",
-      "description": "You have already used another user with the same e-mail address. Do you want to link them?",
+      "description": "You have already used another account with the same e-mail address. Do you want to link them?",
       "selectAccount": "Select account to link",
       "linkWith": "Link with {{0}}",
       "cancelLogin": "Cancel Login"
@@ -35,8 +35,8 @@
       "cancel": "Cancel"
     },
     "email": {
-      "loginProgress": "Login in progress...",
-      "forgotPassword": "Forgot password. . .",
+      "loginProgress": "Logging in...",
+      "forgotPassword": "Forgot password.",
       "emailFieldLabel": "Email",
       "emailOrPhoneFieldLabel": "Email or Phone number",
       "passwordFieldLabel": "Password",
@@ -110,7 +110,7 @@
       "favorites": "Favorites",
       "orderStatus": "Order status",
       "profile": "Profile",
-      "cart": "CART"
+      "cart": "Cart"
     },
     "tooltip": "You can switch between\n ordering methods at any time.",
     "bottomTitles": {
@@ -133,15 +133,19 @@
     "emptyCartLine2": "Add some products to your cart.",
     "addToCart": "Add To Cart",
     "pay": "PAY",
+    "order": "ORDER",
     "myCart": "MY CART",
     "deleteCart": "Delete cart",
     "deleteCartTitle": "Are you sure you want to delete your cart?",
-    "deleteCartMessage": "This will remove all items in your cart from your cart.",
+    "deleteCartMessage": "This will remove all items from your cart.",
     "deleteCartAccept": "Delete",
     "deleteCartCancel": "Cancel",
     "takeAway": "takeaway",
     "inPlace": "in place",
-    "packagingFee": "Packaging fee"
+    "packagingFee": "Packaging fee",
+    "serviceFee": "Service fee",
+    "hasServiceFee": "The price includes service fee.",
+    "hasNoServiceFee": "The price does't include service fee."
   },
   "allergens": {
     "title": "ALLERGENS",
@@ -159,26 +163,32 @@
     "soya": "Soya",
     "sulphites": "Sulphites",
     "treenuts": "Treenuts",
+    "disclaimerTitle": "Disclaimer",
     "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out {{0}} Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
   },
   "favorites": {
-    "noFavorites": "You have not added any favorite items yet.",
+    "noFavorites": "You have not added any favorites yet.",
     "noFavoritesDesc": "Find the food and drinks you like under the Menu tab.",
     "noFavoritesButton": "Discover menu"
   },
   "orders": {
     "titleCurrentOrder": "Current orders",
     "titleOrderHistory": "Order history",
-    "noActiveOrder": "Did something else come to your mind?",
+    "noActiveOrderSimplified": "Did something else come to your mind?",
+    "noActiveOrderFull": "No active order placed yet",
     "noActiveOrderDesc": "Find the food and drinks you like under the Menu tab.",
     "noActiveOrderButton": "Discover menu",
     "totalCost": "TOTAL COST",
     "noOrderHistory": "No order history yet",
+    "sendRatingButton": "RATE ORDER",
+    "sendTipButton": "SEND TIP",
     "details": {
       "orderState": "Order status",
       "orderDetails": "Order details",
       "paymentDetails": "Payment details",
-      "otherDetails": "More details"
+      "otherDetails": "More details",
+      "tipDetails": "Tip",
+      "serviceFee": "The price contains {{0}}% service fee."
     },
     "sendOrderError": {
       "title": "Order failed.",
@@ -197,6 +207,11 @@
       "rejected": "REJECTED",
       "served": "SERVED"
     },
+    "statusExt": {
+      "served": "Order served",
+      "rejected": "Order deleted"
+    },
+    "tipAmount": "Tip amount",
     "pay": "I'd like to pay",
     "waiting": "Please wait for the waiter.",
     "simplepay": "Pay with SimplePay",
@@ -219,9 +234,9 @@
       },
       "status": {
         "none": {
-          "title": "Order placed",
-          "titleShort": "Order placed",
-          "description": "Your order is being processed. Should any problems arise, our colleagues will contact you."
+          "title": "Processing",
+          "titleShort": "Processing",
+          "description": "Your order is being processed. If any problem occurs, our colleagues will contact you."
         },
         "placed": {
           "title": "Processed",
@@ -247,6 +262,11 @@
           "title": "Served",
           "titleShort": "Served",
           "description": "Your order is complete, we will serve you soon."
+        },
+        "simplified": {
+          "title": "Order placed",
+          "titleShort": "Order placed",
+          "description": "Your order is being processed. Should any problems arise, our colleagues will contact you."
         }
       },
       "timeline": {
@@ -255,24 +275,24 @@
           "waiting": "We have received your order."
         },
         "placed": {
-          "finished": "Your order has been confirmed, everything is fine!",
+          "finished": "Your order has been confirmed, everything's all right!",
           "waiting": "Your order is being confirmed."
         },
         "processing": {
-          "finished": "Your order is complete, we will serve / pick you up soon.",
-          "waiting": "We are just making the ordered items."
+          "finished": "Your order is complete, we will serve it/you can pick it up soon.",
+          "waiting": "We're preparing your order."
         },
         "ready": {
-          "finished": "Your order has been served / received.",
-          "waiting": "Your order is being served / can be received."
+          "finished": "Your order has been served/received.",
+          "waiting": "Your order is being served/can be received."
         },
         "rejected": {
-          "finished": "Your order has been rejected. Please check with the restaurant staff.",
-          "waiting": "Your order has been rejected. Please check with the restaurant staff."
+          "finished": "Your order has been rejected.Please contact the staff.",
+          "waiting": "Your order has been rejected.Please contact the staff."
         },
         "served": {
-          "finished": "Your order has been served / received.",
-          "waiting": "Your order is being served / can be received."
+          "finished": "Your order has been served/received.",
+          "waiting": "Your order is being served/can be received."
         }
       }
     },
@@ -288,7 +308,7 @@
     "orderReady": "Your order is ready!"
   },
   "payment": {
-    "title": "PAY",
+    "title": "PAYMENT",
     "choose": "Please select a payment method",
     "delete": {
       "title": "Delete credit card?",
@@ -300,14 +320,14 @@
       "inAppPayment": "Credit Card Payment",
       "inAppPaymentDesc": "Online",
       "cash": "Cash",
-      "cashDesc": "I pay at the waiter",
+      "cashDesc": "I pay my bill to the waiter",
       "creditCard": "Card, SZÉP card",
-      "creditCardDesc": "I pay at the waiter",
-      "noPaymentMethod": "You have no saved cards yet.",
+      "creditCardDesc": "I pay my bill to the waiter",
+      "noPaymentMethod": "You have not saved any cards yet.",
       "addNewCard": "Add new card"
     },
     "sendOrder": "PLACE ORDER",
-    "fillInvoice": "FILL INVOICE FORM",
+    "fillInvoice": "FILL INVOICE DATA",
     "orderPlaced": "Order successfully received.",
     "status": {
       "waiting_for_payment": "Waiting for payment",
@@ -337,7 +357,8 @@
         "downloadReceipt": "DOWNLOAD RECEIPT",
         "downloadInvoice": "DOWNLOAD INVOICE",
         "save": "SAVE",
-        "warning": "Data marked in red is required"
+        "warning": "Data marked in red is required",
+        "modifyAddress": "Modify"
       }
     },
     "simplePayStatus": {
@@ -363,7 +384,7 @@
       "hint": {
         "card_number": "xxxx xxxx xxxx xxxx",
         "expiry": "MM/YY",
-        "cvc": "CVV"
+        "cvc": "CVC"
       },
       "saveCard": "SAVE CARD",
       "warning": "The card information you entered is invalid. Please check it again!"
@@ -380,19 +401,19 @@
         "validationError": "Card expirity date invalid"
       },
       "cvc": {
-        "label": "CVV",
-        "hint": "CVV",
+        "label": "CVC",
+        "hint": "CVC",
         "validationError": "Card CVC is invalid"
       }
     },
     "stripe": {
       "title": "Pay with Stripe",
       "add_card_tooltip": "Add new card",
-      "save_card": "Save card for later use",
-      "payment_success": "Payment success!",
+      "save_card": "Save card",
+      "payment_success": "Successful payment!",
       "new_card": "New Card",
       "saved_cards": "Saved Cards",
-      "no_payment_methods": "No payment methods saved..."
+      "no_payment_methods": "No cards saved..."
     },
     "manageCard": {
       "card_will_delete": "This card will be deleted",
@@ -419,7 +440,7 @@
         "takeaway": "Are you sure you want to switch to in place order mode?",
         "inplace": "Are you sure you want to switch to takeaway order mode?"
       },
-      "description": "If your cart is not empty this action will delete the contents of your current cart, and you will have to re-select each previously added item you wish to order.",
+      "description": "Switching order mode at this point will delete your current cart.",
       "cancel": "Cancel",
       "ok": "Yes"
     }
@@ -432,22 +453,34 @@
     "scanQR": "Click & scan your table to order",
     "qrConnected": "Connected to",
     "chair": "Chair #{{0}} at Table #{{1}}",
-    "findingSeat": "Finding your seat...",
+    "table": "Table #{{1}}",
+    "findingSeat": "finding table and chair ...",
+    "findingTable": "finding table ...",
+    "findingSeatLoading": "This may take a few seconds. Please do not close this window!",
+    "seatReserved": {
+      "title": "New Seat Reserved!",
+      "description": "Seat #{{1}} reserved Table #{{0}}"
+    },
     "tableReserved": {
       "title": "New Table Reserved!",
-      "description": "Seat #{{1}} reserved at Table #{{0}}"
+      "description": "Table #{{0}} reserved"
+    },
+    "tableFound": {
+      "seat": "Chair: #{{0}}",
+      "table": "Table: #{{0}}",
+      "description": "The connection has been made. You can continue to order!"
     },
     "qrCodeError": {
       "title": "QR code invalid!",
-      "description": "Unit not found with the id from the QR code."
+      "description": "Unit not found with the QR code."
     },
     "qrUnitsError": {
       "title": "Unit not found",
-      "description": "Looks like there aren't any restaurants near you. :("
+      "description": "Looks like there aren't any restaurants near you."
     },
     "qrGeneralError": {
       "title": "Something went wrong",
-      "description": "Something went wrong while searching for restaurants. :("
+      "description": "Something went wrong while searching for restaurants."
     },
     "opened": "Opened",
     "closed": "Closed",
@@ -464,35 +497,35 @@
   },
   "qrScan": {
     "loading": "Loading QR code information...",
-    "moveCloser": "Move closer to the barcode",
-    "pointCamera": "Point your camera at a barcode",
+    "moveCloser": "Move closer to the QR code",
+    "pointCamera": "Point your camera at a QR code",
     "permission": {
       "denied": {
-        "title": "Camera permission",
-        "message": "Camera permission is required for scanning QR codes, but you denied it finally.",
+        "title": "Camera permission blocked",
+        "message": "You need to give permission to your Camera to allow scanning QR codes.",
         "cancel": "Deny",
         "confirm": "Settings"
       },
       "notGranted": {
         "title": "Camera permission",
-        "message": "Camera permission is required for scanning QR codes.",
+        "message": "You need to give permission to your Camera to allow scanning QR codes.",
         "cancel": "Deny",
         "confirm": "Retry"
       }
     },
-    "info": "Scan the QR code on your table to finalize your order.",
-    "infoDesc": "Keep the code inside the box to connect."
+    "info": "Scan the QR code on the table to order.",
+    "infoDesc": "Keep the QR inside the frame to connect."
   },
   "selectUnitMap": {
-    "noNearUnits": "No Near Unit",
-    "notLoaded": "No Not Loaded",
+    "noNearUnits": "Couldn't find any unit nearby",
+    "notLoaded": "Couldn't load any unit",
     "userMarker": {
       "title": "Your position",
       "description": "You are here..."
     },
     "permission": {
       "title": "Permission Warning",
-      "description": "In order to make sure you're at the right location and to help you with calculated distances the application requires a location permission.",
+      "description": "In order to make sure you're at the right location the application requires a location permission.",
       "closeApp": "Close application",
       "backToMap": "Back to map"
     }
@@ -502,8 +535,8 @@
     "changeLocation": "Change location"
   },
   "about": {
-    "title": "NÉVJEGY",
-    "description": "    Why AnyUpp? Let us keep the secret for a while, but for sure we are bringing a lot of new functions which will explain the Any, and the Upp :-) \n\n I guess we all know the situation: you are waving the waiter or waitress and he/she does not even get the eye contact…does the situation sound familiar to you?\n Waiting for the bill, you really want to pay but there is no one bringing it? Or simply, Covid times have made your precautious and you would rather not touch the menu, nor the cash, and simply do not wish to type your PIN with your fingers...\n\n Goods news, all year fears are wiped off by AnyUpp! And it has more to offer than that. Just check out how it works. \n\n Download the app, choose the restaurant closest to you, order and pay. That's all.\n\n Now  AnyUpp by CYBERG is in the test period, available in a couple of restaurants such as our first one: KAJAHU at Corvin Promenade. Come and visit us! Just read the QR code on the table and we will know where you are sitting.\n No need to wait, to speak. Just order your burger or salad, drop them into your basket optionally along with a dessert or drink- whatever your choice is- and we’ll soon serve your ordered items.\n Sounds pretty easy, doesn’t it?\n It is really. You may tick your favs, next time you do not even need to check the menu.\n How yould you like to pay? We offer a growing set of payment options from cash to secure and easy online payments so that you can chose the one most suitable for your needs.\n Restaurant meal has NEVER been easier and faster.\n\n Sure, this is not the future, but pretty cool, isn’t it?\n There are more exciting things to come.\n There will be offers for you, you will see others’ favs, you can meet new people if you wish.\n The more you come the less you pay.\n By the way, this will not only be true about our place. Frequent guests will get discount at other places, too.\n We are planning to introduce our app at many places, you may meet AnyUpp…. anywhere (just a hint for you, guys)\n Test the app and give us some time to fix, to add, or whatever it takes to make the best. We are honoured  by your comments.\n It will rule, for sure.\n If you already like it, just spread the news. :-)",
+    "title": "About us",
+    "description": "Why AnyUpp? Let us keep the secret for a while, but for sure we are bringing a lot of new functions which will explain the Any, and the Upp :-) \n\n I guess we all know the situation: you are waving the waiter or waitress and he/she does not even get the eye contact…does the situation sound familiar to you?\n Waiting for the bill, you really want to pay but there is no one bringing it? Or simply, Covid times have made your precautious and you would rather not touch the menu, nor the cash, and simply do not wish to type your PIN with your fingers...\n\n Goods news, all year fears are wiped off by AnyUpp! And it has more to offer than that. Just check out how it works. \n\n Download the app, choose the restaurant closest to you, order and pay. That's all.\n\n Now  AnyUpp by CYBERG is in the test period, available in a couple of restaurants such as our first one: KAJAHU at Corvin Promenade. Come and visit us! Just read the QR code on the table and we will know where you are sitting.\n No need to wait, to speak. Just order your burger or salad, drop them into your basket optionally along with a dessert or drink- whatever your choice is- and we’ll soon serve your ordered items.\n Sounds pretty easy, doesn’t it?\n It is really. You may tick your favs, next time you do not even need to check the menu.\n How yould you like to pay? We offer a growing set of payment options from cash to secure and easy online payments so that you can chose the one most suitable for your needs.\n Restaurant meal has NEVER been easier and faster.\n\n Sure, this is not the future, but pretty cool, isn’t it?\n There are more exciting things to come.\n There will be offers for you, you will see others’ favs, you can meet new people if you wish.\n The more you come the less you pay.\n By the way, this will not only be true about our place. Frequent guests will get discount at other places, too.\n We are planning to introduce our app at many places, you may meet AnyUpp…. anywhere (just a hint for you, guys)\n Test the app and give us some time to fix, to add, or whatever it takes to make the best. We are honoured  by your comments.\n It will rule, for sure.\n If you already like it, just spread the news. :-)",
     "licences": "Licences",
     "version": "Version"
   },
@@ -528,7 +561,7 @@
     "transactions": {
       "title": "TRANSACTIONS",
       "paymentMethod": "Payment Method",
-      "noTransactions": "No Transactions",
+      "noTransactions": "Cou Transactions",
       "details": "Details",
       "type": {
         "card": "Card",
@@ -545,21 +578,21 @@
   },
   "product": {
     "notTakeAway": "Only in place",
-    "notTakeAwayDesc": "A termék csak helyben fogyasztásra elérhető.",
+    "notTakeAwayDesc": "This product is only available for local consumption.",
     "notInPlace": "Only for takeaway",
-    "notInPlaceDesc": "A termék csak eliveteles módban elérhető.",
-    "soldOut": "Elfogyott",
-    "soldOutDesc": "A termék sajnos elfogyott",
+    "notInPlaceDesc": "This product is only available for takeaway.",
+    "soldOut": "Sold out",
+    "soldOutDesc": "Unfortunatley, this product is sold out.",
     "size": "Size:",
     "selectSize": "Choose a size"
   },
   "validators": {
-    "required": "this field is required",
-    "enterValidEmail": "enter a valid email address",
-    "eneterValidPhone": "enter a valid phone number",
-    "passwordIsRequired": "password is required",
-    "passwordValidatorText": "must have a number, an upper, a lower case letter",
-    "passwordLengthError": "password must be at least 8 digits long"
+    "required": "This field is required",
+    "enterValidEmail": "Please enter a valid email address",
+    "eneterValidPhone": "Please enter a valid phone number",
+    "passwordIsRequired": "Password is required",
+    "passwordValidatorText": "The password must contain a number, an upper and a lower case letter",
+    "passwordLengthError": "The password must be at least 8 digits long"
   },
   "error": {
     "title": "Error",
@@ -698,7 +731,7 @@
     "send": "READY",
     "stars": {
       "1": "Bad",
-      "2": "Going",
+      "2": "Average",
       "3": "Appropriate",
       "4": "Good",
       "5": "Wonderful"
@@ -709,20 +742,21 @@
     }
   },
   "tipping": {
-    "question": "Do you want to tip?",
-    "description": "100% of the tips are given to our employees.",
+    "question": "Do you want to give tip?",
+    "description": "100% of the tip is given to our employees.",
     "otherAmount": "Other amount",
     "dialog": {
-      "title": "Unique Tip",
-      "description": "Please enter the amount of tips you want.",
+      "title": "Unique tip amount",
+      "description": "Please enter the amount of tip you want to give.",
       "ok": "Done",
       "cancel": "Cancel",
-      "hint": "Tip amount"
+      "hint": "Tip amount (Ft)",
+      "no": "No"
     },
     "errors": {
       "minAmount": "The minimum amount of tip is {{0}} Ft",
-      "validNumber": "Please enter a valid number for tip...",
-      "tipFailed": "Tip failed!"
+      "validNumber": "Please enter an amount for tip...",
+      "tipFailed": "Failed to tip!"
     },
     "successTip": "Thank you for your tip!",
     "successRating": "Thank you for your rating!",

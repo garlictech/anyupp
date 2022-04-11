@@ -160,7 +160,6 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                     arrowBaseWidth: 16.0,
                     arrowLength: 8,
                     borderWidth: 1.0,
-                    animationDuration: Duration(milliseconds: 0),
                     show: _showTooltip && _supportedServiceModeCount > 1,
                     tooltipDirection: TooltipDirection.down,
                     hideOnTooltipTap: true,

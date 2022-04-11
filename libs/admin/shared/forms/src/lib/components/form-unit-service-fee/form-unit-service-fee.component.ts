@@ -20,9 +20,9 @@ import { KeyValue } from '@bgap/shared/types';
 export class FormUnitServiceFeeComponent implements OnInit {
   @Input() serviceFeeFormGroup?: FormGroup;
   public serviceFeeTypeControl: FormControl = new FormControl('');
+  public EServiceFeeType = CrudApi.ServiceFeeType;
 
   public serviceFeeOptions: KeyValue[] = [
-    CrudApi.ServiceFeeType.nofee,
     CrudApi.ServiceFeeType.included,
     CrudApi.ServiceFeeType.applicable,
   ].map(
@@ -49,10 +49,6 @@ export class FormUnitServiceFeeComponent implements OnInit {
         if (newTypeValue) {
           this.serviceFeeFormGroup?.enable();
           this.serviceFeeFormGroup?.get('type')?.patchValue(newTypeValue);
-
-          if (newTypeValue === CrudApi.ServiceFeeType.nofee) {
-            this.serviceFeeFormGroup?.get('percentage')?.patchValue(0);
-          }
         } else {
           this.serviceFeeFormGroup?.get('percentage')?.patchValue('');
           this.serviceFeeFormGroup?.disable();

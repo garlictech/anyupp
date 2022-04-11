@@ -1,0 +1,5 @@
+mutation NoTipOrder($orderId: ID!) {
+  updateOrder(input: { id: $orderId, tip: { type: none, value: 0 } }) {
+    id
+  }
+}

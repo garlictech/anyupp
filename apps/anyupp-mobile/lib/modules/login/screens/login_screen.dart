@@ -38,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen>
   bool _showLogin = false;
   double _emailFormHeight = EMAIL_FORM_HEIGHT;
   bool isLoading = true;
+  UniqueKey builderKey = UniqueKey();
 
   static const double EMAIL_FORM_HEIGHT = 235.0;
   static const int EMAIL_ANIMATION_DURATION = 350;
@@ -87,9 +88,11 @@ class _LoginScreenState extends State<LoginScreen>
             listener: (BuildContext context, ExceptionState state) {
           if (state is ExceptionShowState) {
             print('LoginScreen.ExceptionState=$state');
+            builderKey = UniqueKey();
+            setState(() {});
             // Future.delayed(Duration(seconds: 1)).then((_) =>
             //     getIt<ExceptionBloc>().add(ShowException(state.exception)));
-            _showException(context, state.exception);
+            // _showException(context, state.exception);
           }
         }),
         BlocListener<LoginBloc, LoginState>(
@@ -138,13 +141,13 @@ class _LoginScreenState extends State<LoginScreen>
           if (state is ShowSocialLoginWebView) {
             return _buildSocialLoginWebView(state.provider);
           }
-
           if (state is LoginError) {
-            return _buildErrorScreen(state.code, state.message);
+            builderKey = UniqueKey();
           }
 
           // --- Bottom sheet
           return AnimatedBuilder(
+            key: builderKey,
             builder: _buildAnimation,
             animation: _controller,
           );
@@ -153,21 +156,9 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget _buildErrorScreen(String code, String? message) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        child: CommonErrorWidget(
-          error: code,
-          description: message ?? '',
-          onPressed: () => getIt<LoginBloc>().add(ResetLogin()),
-        ),
-      ),
-    );
-  }
-
   Widget _buildLoadingScreen() {
     return Scaffold(
+      key: builderKey,
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -190,6 +181,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   void _switchAnimation() {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (!mounted) {
       return;
     }
@@ -603,27 +595,5 @@ class _LoginScreenState extends State<LoginScreen>
   void signUserInWithAuthCode(String code) {
     print('loginScreen.signUserInWithAuthCode().code=$code');
     getIt<LoginBloc>().add(CompleteLoginWithMethod(code));
-  }
-
-  Future<void> _showException(BuildContext context, AppException e) async {
-    SchedulerBinding.instance?.addPostFrameCallback((_) async {
-      await showErrorDialog(
-        context,
-        transEx(
-          context,
-          'error.${e.code}.title',
-          null,
-          'error.title',
-        ),
-        transEx(
-          context,
-          'error.${e.code}.description',
-          e.subCode != null ? [e.subCode] : null,
-          'error.description',
-        ),
-        exceptionDetails: null,
-        buttonColor: Color(0xFF30BF60),
-      );
-    });
   }
 }

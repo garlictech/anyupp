@@ -113,7 +113,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
   showStatusModal() async {
     Nav.pop();
     Nav.pop();
-    getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+
     return showModalBottomSheet(
       context: context,
       isDismissible: true,
@@ -180,11 +180,20 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height * .8,
                   child: _orderCreationSuccess == true
-                      ? PaymentSuccessWidget()
+                      ? PaymentSuccessWidget(
+                          onPressed: () {
+                            _navigateAfterOrderStatusWidgetClosed();
+                            Nav.pop();
+                          },
+                        )
                       : _orderCreationSuccess == false
                           ? CommonErrorWidget(
                               error: 'orders.sendOrderError.title',
                               description: 'orders.sendOrderError.description',
+                              onPressed: () {
+                                _navigateAfterOrderStatusWidgetClosed();
+                                Nav.pop();
+                              },
                             )
                           : Container(),
                 )
@@ -192,6 +201,10 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
             ));
       },
     );
+  }
+
+  void _navigateAfterOrderStatusWidgetClosed() {
+    getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
   }
 
   @override
@@ -412,7 +425,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
 
   Future<void> _handleStartOrderPressed() async {
     if (widget.cart.isPlaceEmpty) {
-      await showModalBottomSheet(
+      bool? success = await showModalBottomSheet<bool?>(
         context: context,
         isDismissible: true,
         enableDrag: true,
@@ -425,29 +438,27 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
             loadUnits: true,
           );
         },
-      ).then((success) {
-        if (success != true) {
-          setState(() {
-            _loading = false;
-          });
-          return;
-        } else {
-          if (_selectedPaymentMethod!.method == PaymentMethod.inapp) {
-            getIt<StripePaymentBloc>()
-                .add(StartStripePaymentWithExistingCardEvent(
-              orderId: widget.orderId,
-              paymentMethodId: _selectedPaymentMethod!.cardId!,
-              invoiceAddress: _wantsInvoce ? _address : null,
-            ));
-          } else {
-            getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
-              paymentMode: getPaymentModeFromSelection(_selectedPaymentMethod),
-              orderId: widget.orderId,
-              invoiceAddress: _wantsInvoce ? _address : null,
-            ));
-          }
-        }
-      });
+      );
+      if (success != true) {
+        setState(() {
+          _loading = false;
+        });
+        return;
+      }
+    }
+
+    if (_selectedPaymentMethod!.method == PaymentMethod.inapp) {
+      getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
+        orderId: widget.orderId,
+        paymentMethodId: _selectedPaymentMethod!.cardId!,
+        invoiceAddress: _wantsInvoce ? _address : null,
+      ));
+    } else {
+      getIt<StripePaymentBloc>().add(StartExternalPaymentEvent(
+        paymentMode: getPaymentModeFromSelection(_selectedPaymentMethod),
+        orderId: widget.orderId,
+        invoiceAddress: _wantsInvoce ? _address : null,
+      ));
     }
   }
 }
