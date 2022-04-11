@@ -1,12 +1,19 @@
 import { Observable } from 'rxjs';
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { chainsSelectors } from '@bgap/admin/store/chains';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+import { visibleLinesOnViewport } from '@bgap/admin/shared/utils';
+import { ChainCollectionService } from '@bgap/admin/store/chains';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { UntilDestroy } from '@ngneat/until-destroy';
 
+import { ChainListService } from '../../services/chain-list.service';
 import { ChainFormComponent } from '../chain-form/chain-form.component';
 
 @UntilDestroy()
@@ -17,16 +24,17 @@ import { ChainFormComponent } from '../chain-form/chain-form.component';
   styleUrls: ['./chain-list.component.scss'],
 })
 export class ChainListComponent implements OnDestroy {
+  @ViewChild('dataVSVP')
+  dataVSVP?: CdkVirtualScrollViewport;
+
   public chains$: Observable<CrudApi.Chain[]>;
 
   constructor(
-    private _store: Store,
     private _nbDialogService: NbDialogService,
+    private _chainListService: ChainListService,
+    private _chainCollectionService: ChainCollectionService,
   ) {
-    this.chains$ = this._store.pipe(
-      select(chainsSelectors.getAllChains),
-      untilDestroyed(this),
-    );
+    this.chains$ = this._chainCollectionService.filteredEntities$;
   }
 
   ngOnDestroy(): void {
@@ -35,5 +43,14 @@ export class ChainListComponent implements OnDestroy {
 
   public addChain(): void {
     this._nbDialogService.open(ChainFormComponent);
+  }
+
+  public loadNextPaginatedData(count: number, itemCount: number) {
+    if (
+      itemCount - count <
+      visibleLinesOnViewport(this.dataVSVP?.elementRef.nativeElement)
+    ) {
+      this._chainListService.loadNextPaginatedData();
+    }
   }
 }

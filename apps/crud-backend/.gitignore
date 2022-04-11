@@ -1,7 +1,6 @@
 amplify/backend/api/anyuppbackend/schema.graphql
-.migration-backup
-
-.migration-backup
+amplify/backend/api/anyuppbackend/.migration-backup
+amplify/backend/api/anyuppbackend/.migration-config-backup
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend

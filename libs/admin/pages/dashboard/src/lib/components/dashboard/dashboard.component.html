@@ -26,69 +26,99 @@
 
     <nb-actions [size]="buttonSize" class="float-right">
       <nb-action
-        [icon]="{
-          icon: resized ? 'zoom_out' : 'zoom_in',
-          pack: 'material-icons'
-        }"
         (click)="toggleResize()"
-        [title]="'dashboard.actions.fontSize' | translate"
-        data-testid="fontSizeAction"
-      ></nb-action>
+        data-testid="zoom"
+        role="button"
+        class="label-icon"
+      >
+        <nb-icon
+          [icon]="resized ? 'zoom_out' : 'zoom_in'"
+          pack="material-icons"
+        ></nb-icon>
+        <div class="action-label">
+          {{ 'dashboard.actions.zoom' | translate }}
+        </div>
+      </nb-action>
       <nb-action
         [ngClass]="
           dashboardSettings.listMode === EDashboardListMode.floormap
             ? 'active'
             : 'inactive'
         "
-        [icon]="{ icon: 'map', pack: 'material-icons' }"
         (click)="selectListMode(EDashboardListMode.floormap)"
-        [title]="'dashboard.actions.floorMap' | translate"
         data-testid="floorMapAction"
-      ></nb-action>
+        role="button"
+        class="label-icon"
+      >
+        <nb-icon icon="map" pack="material-icons"></nb-icon>
+        <div class="action-label">
+          {{ 'dashboard.actions.floorMap' | translate }}
+        </div>
+      </nb-action>
       <nb-action
         [ngClass]="
           dashboardSettings.listMode === EDashboardListMode.lanes
             ? 'active'
             : 'inactive'
         "
-        [icon]="{ icon: 'swap_horiz', pack: 'material-icons' }"
         (click)="selectListMode(EDashboardListMode.lanes)"
-        [title]="'dashboard.actions.lanes' | translate"
         data-testid="lanesAction"
-      ></nb-action>
+        role="button"
+        class="label-icon"
+      >
+        <nb-icon icon="swap_horiz" pack="material-icons"></nb-icon>
+        <div class="action-label">
+          {{ 'dashboard.actions.lanes' | translate }}
+        </div>
+      </nb-action>
       <nb-action
         [ngClass]="
           dashboardSettings.listMode === EDashboardListMode.current
             ? 'active'
             : 'inactive'
         "
-        [icon]="{ icon: 'schedule', pack: 'material-icons' }"
         (click)="selectListMode(EDashboardListMode.current)"
-        [title]="'dashboard.actions.current' | translate"
         data-testid="currentOrdersAction"
-      ></nb-action>
+        role="button"
+        class="label-icon"
+      >
+        <nb-icon icon="schedule" pack="material-icons"></nb-icon>
+        <div class="action-label">
+          {{ 'dashboard.actions.current' | translate }}
+        </div>
+      </nb-action>
       <nb-action
         [ngClass]="
           dashboardSettings.listMode === EDashboardListMode.history
             ? 'active'
             : 'inactive'
         "
-        [icon]="{ icon: 'archive', pack: 'material-icons' }"
         (click)="selectListMode(EDashboardListMode.history)"
-        [title]="'dashboard.actions.history' | translate"
         data-testid="historyOrdersAction"
-      ></nb-action>
+        role="button"
+        class="label-icon"
+      >
+        <nb-icon icon="archive" pack="material-icons"></nb-icon>
+        <div class="action-label">
+          {{ 'dashboard.actions.history' | translate }}
+        </div>
+      </nb-action>
       <nb-action
         [ngClass]="
           dashboardSettings.listMode === EDashboardListMode.reports
             ? 'active'
             : 'inactive'
         "
-        [icon]="{ icon: 'pie_chart', pack: 'material-icons' }"
         (click)="selectListMode(EDashboardListMode.reports)"
-        [title]="'dashboard.actions.reports' | translate"
         data-testid="reportsAction"
-      ></nb-action>
+        role="button"
+        class="label-icon"
+      >
+        <nb-icon icon="pie_chart" pack="material-icons"></nb-icon>
+        <div class="action-label">
+          {{ 'dashboard.actions.reports' | translate }}
+        </div>
+      </nb-action>
     </nb-actions>
   </nb-card-header>
   <nb-card-body id="dashboardMainCardBody" class="p-1">

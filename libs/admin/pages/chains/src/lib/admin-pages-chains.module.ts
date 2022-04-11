@@ -14,6 +14,7 @@ import {
   NbInputModule,
   NbLayoutModule,
   NbListModule,
+  NbSpinnerModule,
   NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,6 +23,7 @@ import { ChainFormComponent } from './components/chain-form/chain-form.component
 import { ChainListItemComponent } from './components/chain-list-item/chain-list-item.component';
 import { ChainListComponent } from './components/chain-list/chain-list.component';
 import { StyleColorPreviewComponent } from './components/style-color-preview/style-color-preview.component';
+import { ChainListService } from './services/chain-list.service';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -32,6 +34,7 @@ const NB_MODULES = [
   NbInputModule,
   NbEvaIconsModule,
   NbButtonModule,
+  NbSpinnerModule,
 ];
 
 @NgModule({
@@ -58,5 +61,6 @@ const NB_MODULES = [
     ]),
     ...NB_MODULES,
   ],
+  providers: [ChainListService],
 })
 export class AdminPagesChainsModule {}

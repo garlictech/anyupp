@@ -1,35 +1,16 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { ENTITY_NAME } from '@bgap/admin/shared/types';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { EntitySelectorsFactory } from '@ngrx/data';
+import { createSelector } from '@ngrx/store';
 
-import {
-  ProductComponentsState,
-  PRODUCT_COMPONENTS_FEATURE_KEY,
-  productComponentsAdapter,
-} from './product-components.reducer';
-
-export const getProductComponentsState =
-  createFeatureSelector<ProductComponentsState>(PRODUCT_COMPONENTS_FEATURE_KEY);
-
-const { selectAll, selectEntities } = productComponentsAdapter.getSelectors();
-
-export const getProductComponentsError = createSelector(
-  getProductComponentsState,
-  (state: ProductComponentsState) => state.error,
-);
-
-export const getAllProductComponents = createSelector(
-  getProductComponentsState,
-  (state: ProductComponentsState) => selectAll(state),
-);
-
-export const getProductComponentsEntities = createSelector(
-  getProductComponentsState,
-  (state: ProductComponentsState) => selectEntities(state),
-);
+export const productComponentEntitySelectors =
+  new EntitySelectorsFactory().create<CrudApi.ProductComponent>(
+    ENTITY_NAME.PRODUCT_COMPONENT,
+  );
 
 export const getProductComponentById = (id: string) => {
   return createSelector(
-    getAllProductComponents,
+    productComponentEntitySelectors.selectEntities,
     (
       productComponents: CrudApi.ProductComponent[],
     ): CrudApi.ProductComponent | undefined =>

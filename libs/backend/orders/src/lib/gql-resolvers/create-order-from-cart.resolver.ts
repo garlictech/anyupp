@@ -13,8 +13,9 @@ import {
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import { DateTime } from 'luxon';
-import { combineLatest, from, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, switchMap } from 'rxjs/operators';
+import { combineLatest, from, iif, Observable, of, throwError } from 'rxjs';
+import { map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
+import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
 import {
   getGroupProduct,
   getUnitProduct,
@@ -297,6 +298,7 @@ export const createOrderFromCart =
             orderInput: {
               ...props.orderInput,
               externalId,
+              id: externalId,
             },
           })),
         ),

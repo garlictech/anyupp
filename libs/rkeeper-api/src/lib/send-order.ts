@@ -64,7 +64,7 @@ export const sendRkeeperOrder =
         client: {
           phone: unit.phone,
           email: unit.email,
-          ln: externalId,
+          ln: 'Biborka',
         },
         /*order_number: orderInput.place
             ? parseFloat(
@@ -75,6 +75,8 @@ export const sendRkeeperOrder =
             : 0.0,*/
         // temporary solution, asked by rkeeper: we send the seat number only, as an integer
         order_number: orderInput.place ? parseInt(orderInput.place?.seat) : 0,
+        guest_label: 'imi',
+        remoteOrderId: externalId,
         order,
       }),
       R.tap(x => console.debug('ORDER SENT:', JSON.stringify(x, null, 2))),

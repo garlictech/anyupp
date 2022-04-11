@@ -1,5 +1,5 @@
 <div class="float-start">
-  <div class="subtitle-2">
+  <div class="subtitle-2" role="button" (click)="editProductComponent()">
     {{ productComponent.name | localize }}
     <bgap-status-led
       class="ms-1"
@@ -19,6 +19,7 @@
   (click)="editProductComponent()"
 >
   <nb-icon icon="edit" pack="material-icons"></nb-icon>
+  {{ 'common.edit' | translate }}
 </button>
 
 <div class="dirty-block" *ngIf="productComponent?.dirty">

@@ -1,3 +1,4 @@
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,8 +7,9 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { productComponentSetsSelectors } from '@bgap/admin/store/product-component-sets';
-import { productComponentsSelectors } from '@bgap/admin/store/product-components';
+import { visibleLinesOnViewport } from '@bgap/admin/shared/utils';
+import { ProductComponentSetCollectionService } from '@bgap/admin/store/product-component-sets';
+import { ProductComponentCollectionService } from '@bgap/admin/store/product-components';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   NbDialogService,
@@ -15,8 +17,8 @@ import {
   NbTabsetComponent,
 } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
 
+import { ModifiersAndExtrasListService } from '../../services/modifiers-and-extras-list.service';
 import { ProductComponentFormComponent } from '../product-component-form/product-component-form.component';
 import { ProductComponentSetFormComponent } from '../product-component-set-form/product-component-set-form.component';
 
@@ -35,15 +37,22 @@ enum EModExtTab {
 export class ModifiersAndExtrasListComponent implements OnInit, OnDestroy {
   @ViewChild('tabset') tabsetEl!: NbTabsetComponent;
 
+  @ViewChild('productComponentVSVP')
+  productComponentVSVP?: CdkVirtualScrollViewport;
+  @ViewChild('productComponentSetVSVP')
+  productComponentSetVSVP?: CdkVirtualScrollViewport;
+
   public eModExtTab = EModExtTab;
   public selectedTab: EModExtTab = EModExtTab.PRODUCT_COMPONENTS;
   public productComponents: CrudApi.ProductComponent[] = [];
   public productComponentSets: CrudApi.ProductComponentSet[] = [];
 
   constructor(
-    private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _modifiersAndExtrasListService: ModifiersAndExtrasListService,
+    private _productComponentCollectionService: ProductComponentCollectionService,
+    private _productComponentSetCollectionService: ProductComponentSetCollectionService,
   ) {}
 
   get dirtyProductComponentCount() {
@@ -55,21 +64,15 @@ export class ModifiersAndExtrasListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._store
-      .pipe(
-        select(productComponentsSelectors.getAllProductComponents),
-        untilDestroyed(this),
-      )
+    this._productComponentCollectionService.filteredEntities$
+      .pipe(untilDestroyed(this))
       .subscribe((productComponents: CrudApi.ProductComponent[]) => {
         this.productComponents = productComponents;
         this._changeDetectorRef.detectChanges();
       });
 
-    this._store
-      .pipe(
-        select(productComponentSetsSelectors.getAllProductComponentSets),
-        untilDestroyed(this),
-      )
+    this._productComponentSetCollectionService.filteredEntities$
+      .pipe(untilDestroyed(this))
       .subscribe((productComponentSets: CrudApi.ProductComponentSet[]) => {
         this.productComponentSets = productComponentSets;
         this._changeDetectorRef.detectChanges();
@@ -92,6 +95,34 @@ export class ModifiersAndExtrasListComponent implements OnInit, OnDestroy {
       this._nbDialogService.open(ProductComponentFormComponent);
     } else {
       this._nbDialogService.open(ProductComponentSetFormComponent);
+    }
+  }
+
+  public loadNextProductComponentPaginatedData(
+    count: number,
+    itemCount: number,
+  ) {
+    if (
+      itemCount - count <
+      visibleLinesOnViewport(
+        this.productComponentVSVP?.elementRef.nativeElement,
+      )
+    ) {
+      this._modifiersAndExtrasListService.loadNextProductComponentPaginatedData();
+    }
+  }
+
+  public loadNextProductComponentSetPaginatedData(
+    count: number,
+    itemCount: number,
+  ) {
+    if (
+      itemCount - count <
+      visibleLinesOnViewport(
+        this.productComponentSetVSVP?.elementRef.nativeElement,
+      )
+    ) {
+      this._modifiersAndExtrasListService.loadNextProductComponentSetPaginatedData();
     }
   }
 }

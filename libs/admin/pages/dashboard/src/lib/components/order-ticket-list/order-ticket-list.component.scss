@@ -2,3 +2,11 @@
   bottom: -8px !important;
   right: -12px !important;
 }
+
+nb-action.label-icon {
+  ::ng-deep nb-badge {
+    position: relative !important;
+    top: -42px !important;
+    right: -16px !important;
+  }
+}

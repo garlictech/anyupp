@@ -33,6 +33,7 @@ export class LaneItemComponent implements OnInit, OnDestroy {
   @Input() orderItem!: LaneOrderItem;
   @Input() buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   @Input() unit?: CrudApi.Unit;
+  @Input() testId?: string = '';
 
   public EServingMode = CrudApi.ServingMode;
   public processingTimer = 0;

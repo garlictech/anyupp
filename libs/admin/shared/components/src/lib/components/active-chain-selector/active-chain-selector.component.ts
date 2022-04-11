@@ -7,7 +7,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { chainsSelectors } from '@bgap/admin/store/chains';
+import { ChainCollectionService } from '@bgap/admin/store/chains';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -31,12 +31,10 @@ export class ActiveChainSelectorComponent implements OnInit, OnDestroy {
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _dataService: DataService,
+    private _chainCollectionService: ChainCollectionService,
   ) {
     this.showIcon = false;
-    this.chains$ = this._store.pipe(
-      select(chainsSelectors.getAllChains),
-      untilDestroyed(this),
-    );
+    this.chains$ = this._chainCollectionService.filteredEntities$;
   }
 
   get selectedChainId(): string | null | undefined {

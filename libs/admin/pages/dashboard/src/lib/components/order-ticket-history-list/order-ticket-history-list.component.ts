@@ -12,7 +12,7 @@ import {
   dashboardActions,
   dashboardSelectors,
 } from '@bgap/admin/store/dashboard';
-import { ordersSelectors } from '@bgap/admin/store/orders';
+import { OrderHistoryCollectionService } from '@bgap/admin/store/orders';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import { customDateCompare, filterNullish } from '@bgap/shared/utils';
@@ -34,6 +34,7 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
   constructor(
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _orderHistoryCollectionService: OrderHistoryCollectionService,
   ) {}
 
   ngOnInit() {
@@ -57,15 +58,15 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
         select(dashboardSelectors.getSelectedHistoryOrder()),
         untilDestroyed(this),
       )
-      .subscribe((selectedOrder: CrudApi.Order | undefined): void => {
+      .subscribe((selectedOrder: CrudApi.Order | undefined) => {
         this.selectedOrder = selectedOrder;
 
         this._changeDetectorRef.detectChanges();
       });
 
-    this._store
-      .pipe(select(ordersSelectors.getAllHistoryOrders), untilDestroyed(this))
-      .subscribe((historyOrders: CrudApi.Order[]): void => {
+    this._orderHistoryCollectionService.entities$
+      .pipe(untilDestroyed(this))
+      .subscribe((historyOrders: CrudApi.Order[]) => {
         this.dailyOrders = historyOrders.sort(
           customDateCompare('createdAt', true),
         );
@@ -77,7 +78,7 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
         this._changeDetectorRef.detectChanges();
       });
 
-    this.dateFormControl.valueChanges.subscribe((): void => {
+    this.dateFormControl.valueChanges.subscribe(() => {
       this._store.dispatch(
         dashboardActions.setHistoryDate({
           historyDate: this.dateFormControl.value,
@@ -86,11 +87,11 @@ export class OrderTicketHistoryListComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     // untilDestroyed uses it.
   }
 
-  public selectOrder(order: CrudApi.Order): void {
+  public selectOrder(order: CrudApi.Order) {
     const selectedOrder = this.dailyOrders.find(
       (o): boolean => o.id === order?.id,
     );

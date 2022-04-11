@@ -10,15 +10,15 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { chainsSelectors } from '@bgap/admin/store/chains';
-import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
-import { productComponentsSelectors } from '@bgap/admin/store/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import {
   getProductComponentObject,
   getProductComponentOptions,
   SERVING_MODES,
 } from '@bgap/admin/shared/utils';
+import { chainsSelectors } from '@bgap/admin/store/chains';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { ProductComponentCollectionService } from '@bgap/admin/store/product-components';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EProductComponentSetType,
@@ -30,8 +30,8 @@ import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
-import { ModifiersAndExtrasFormService } from '../../services/modifiers-and-extras-form.service';
 import { productComponentSetTypeOptions } from '../../const';
+import { ModifiersAndExtrasFormService } from '../../services/modifiers-and-extras-form.service';
 
 @UntilDestroy()
 @Component({
@@ -57,6 +57,7 @@ export class ProductComponentSetFormComponent
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
     private _modifiersAndExtrasFormService: ModifiersAndExtrasFormService,
+    private _productComponentCollectionService: ProductComponentCollectionService,
   ) {
     super(_injector);
 
@@ -89,9 +90,7 @@ export class ProductComponentSetFormComponent
     }
 
     combineLatest([
-      this._store.pipe(
-        select(productComponentsSelectors.getAllProductComponents),
-      ),
+      this._productComponentCollectionService.filteredEntities$,
       iif(
         () => typeof this.dialogForm !== 'undefined',
         this.dialogForm?.controls['items'].valueChanges.pipe(

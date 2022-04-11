@@ -19,6 +19,7 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "add": "Add",
+    "addItem": "Add",
     "moveDown": "Move down",
     "moveUp": "Move up",
     "ok": "OK",
@@ -162,7 +163,7 @@
     "defaultLane": "Default",
     "orderItemsCount": "Order items count",
     "actions": {
-      "fontSize": "Font size",
+      "zoom": "Zoom",
       "floorMap": "Floor map",
       "lanes": "Lanes",
       "current": "Active orders",
@@ -280,7 +281,8 @@
       "other": "Other",
       "unknown": "Unknown type"
     },
-    "takeaway": "Takeaway"
+    "takeaway": "Takeaway",
+    "confirmDeleteProduct": "Are you sure you delete the product?"
   },
   "productCategories": {
     "addProductCategory": "Add product category",
@@ -386,7 +388,8 @@
     "addAdminUser": "Add admin user",
     "editAdminUser": "Edit admin user",
     "newAdminUser": "New admin user",
-    "editAdminUserRole": "Edit admin user role"
+    "editAdminUserRole": "Edit admin user role",
+    "resetPassword": "Reset password"
   },
   "roleContexts": {
     "listTitle": "Role contexts",

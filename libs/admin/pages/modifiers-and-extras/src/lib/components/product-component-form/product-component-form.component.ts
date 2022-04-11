@@ -13,7 +13,7 @@ import {
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { chainsSelectors } from '@bgap/admin/store/chains';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
-import { productComponentsSelectors } from '@bgap/admin/store/product-components';
+import { ProductComponentCollectionService } from '@bgap/admin/store/product-components';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { KeyValue, UpsertResponse } from '@bgap/shared/types';
@@ -42,6 +42,7 @@ export class ProductComponentFormComponent
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
     private _modifiersAndExtrasFormService: ModifiersAndExtrasFormService,
+    private _productComponentCollectionService: ProductComponentCollectionService,
   ) {
     super(_injector);
 
@@ -51,11 +52,8 @@ export class ProductComponentFormComponent
       );
 
     // Used for the validator
-    this._store
-      .pipe(
-        select(productComponentsSelectors.getAllProductComponents),
-        untilDestroyed(this),
-      )
+    this._productComponentCollectionService.filteredEntities$
+      .pipe(untilDestroyed(this))
       .subscribe((productComponents: CrudApi.ProductComponent[]): void => {
         this._productComponents = productComponents;
       });

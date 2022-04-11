@@ -13,6 +13,7 @@ import {
   NbIconModule,
   NbLayoutModule,
   NbListModule,
+  NbSpinnerModule,
   NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
@@ -20,6 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AdminUserFormComponent } from './components/admin-user-form/admin-user-form.component';
 import { AdminUserListItemComponent } from './components/admin-user-list-item/admin-user-list-item.component';
 import { AdminUserListComponent } from './components/admin-user-list/admin-user-list.component';
+import { AdminUserListService } from './services/admin-user-list.service';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -29,6 +31,7 @@ const NB_MODULES = [
   NbIconModule,
   NbEvaIconsModule,
   NbButtonModule,
+  NbSpinnerModule,
 ];
 
 @NgModule({
@@ -54,5 +57,6 @@ const NB_MODULES = [
     AdminUserListItemComponent,
     AdminUserFormComponent,
   ],
+  providers: [AdminUserListService],
 })
 export class AdminPagesAdminUsersModule {}

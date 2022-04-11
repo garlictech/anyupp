@@ -1,6 +1,3 @@
-import { EMPTY, iif } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
@@ -16,8 +13,10 @@ import {
   TIME_FORMAT_PATTERN,
 } from '@bgap/admin/shared/utils';
 import { catchGqlError } from '@bgap/admin/store/app-core';
-import { groupsSelectors } from '@bgap/admin/store/groups';
+import { GroupCollectionService } from '@bgap/admin/store/groups';
+import { UnitCollectionService } from '@bgap/admin/store/units';
 import * as CrudApi from '@bgap/crud-gql/api';
+import { Maybe } from '@bgap/crud-gql/api';
 import {
   defaultOrderMode,
   defaultServingMode,
@@ -26,9 +25,10 @@ import {
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { Maybe } from '@bgap/crud-gql/api';
+import { EMPTY, iif } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UnitFormService {
@@ -39,6 +39,8 @@ export class UnitFormService {
     private _crudSdk: CrudSdkService,
     private _nbDialogService: NbDialogService,
     private _translateService: TranslateService,
+    private _unitCollectionService: UnitCollectionService,
+    private _groupCollectionService: GroupCollectionService,
   ) {}
 
   public createUnitFormGroup() {
@@ -152,8 +154,7 @@ export class UnitFormService {
   }
 
   public getGroupOptions$() {
-    return this._store.pipe(
-      select(groupsSelectors.getSelectedChainGroups),
+    return this._groupCollectionService.filteredEntities$.pipe(
       map((groups: CrudApi.Group[]) =>
         groups.map(
           (group: CrudApi.Group): KeyValue => ({
@@ -241,10 +242,12 @@ export class UnitFormService {
   }
 
   public createUnit$(input: CrudApi.CreateUnitInput) {
-    return this._crudSdk.sdk.CreateUnit({ input }).pipe(
-      catchGqlError(this._store),
-      map(data => ({ data, type: 'insert' })),
-    );
+    return this._unitCollectionService
+      .add$<CrudApi.CreateUnitInput>(input)
+      .pipe(
+        catchGqlError(this._store),
+        map(data => ({ data, type: 'insert' })),
+      );
   }
 
   public updateUnit$(
@@ -262,18 +265,18 @@ export class UnitFormService {
       }).pipe(
         switchMap((response: UpsertResponse<unknown>) => {
           if (response.type === 'update') {
-            return this._crudSdk.sdk.UpdateUnit({
-              input: {
+            return this._unitCollectionService.update$<CrudApi.UpdateUnitInput>(
+              {
                 ...input,
                 pos: undefined,
               },
-            });
+            );
           }
 
           return EMPTY;
         }),
       ),
-      this._crudSdk.sdk.UpdateUnit({ input }),
+      this._unitCollectionService.update$<CrudApi.UpdateUnitInput>(input),
     ).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),

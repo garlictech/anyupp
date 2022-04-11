@@ -7,7 +7,6 @@ import { ReportDeps, ReportUserData } from './interfaces';
 import { fourWeeksAgo, startOfThisYear, endOfDay } from './report-utils';
 
 export const cognitoUsersStream$ = (deps: ReportDeps) => {
-  console.error('deps', deps);
   const cisp = new CognitoIdentityServiceProvider({
     apiVersion: '2016-04-18',
     region: deps.region,
