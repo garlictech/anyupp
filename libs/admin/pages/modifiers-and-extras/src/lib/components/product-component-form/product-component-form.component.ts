@@ -10,15 +10,13 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { chainsSelectors } from '@bgap/admin/store/chains';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
-import { productComponentsSelectors } from '@bgap/admin/store/product-components';
-import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
 import { ModifiersAndExtrasFormService } from '../../services/modifiers-and-extras-form.service';
@@ -36,8 +34,6 @@ export class ProductComponentFormComponent
   public productComponent!: CrudApi.ProductComponent;
   public chainOptions$: Observable<KeyValue[]>;
 
-  private _productComponents: CrudApi.ProductComponent[] = [];
-
   constructor(
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -46,19 +42,7 @@ export class ProductComponentFormComponent
     super(_injector);
 
     this.dialogForm =
-      this._modifiersAndExtrasFormService.createProductComponentFormGroup(
-        this._uniqueNameValidator,
-      );
-
-    // Used for the validator
-    this._store
-      .pipe(
-        select(productComponentsSelectors.getAllProductComponents),
-        untilDestroyed(this),
-      )
-      .subscribe((productComponents: CrudApi.ProductComponent[]): void => {
-        this._productComponents = productComponents;
-      });
+      this._modifiersAndExtrasFormService.createProductComponentFormGroup();
 
     this.chainOptions$ = this._store.select(
       chainsSelectors.getAllChainOptions(),
@@ -85,20 +69,6 @@ export class ProductComponentFormComponent
   ngOnDestroy(): void {
     // untilDestroyed uses it.
   }
-
-  private _uniqueNameValidator =
-    (lang: keyof CrudApi.LocalizedItem): ValidatorFn =>
-    (control: AbstractControl): ValidationErrors | null =>
-      this._productComponents
-        .filter(
-          c =>
-            c.id !== this.productComponent?.id &&
-            (c.name[lang] || '').trim() !== '',
-        )
-        .map(c => c.name[lang])
-        .includes(control.value)
-        ? { existing: true }
-        : null;
 
   public submit() {
     if (this.dialogForm?.valid) {
