@@ -29,7 +29,6 @@ export class UnitListComponent implements OnDestroy {
   @ViewChild('dataVSVP')
   dataVSVP?: CdkVirtualScrollViewport;
 
-  public loading$: Observable<boolean>;
   public units$: Observable<CrudApi.Unit[]>;
   public selectedGroupId$: Observable<string | undefined | null>;
 
@@ -45,7 +44,6 @@ export class UnitListComponent implements OnDestroy {
     );
 
     this.units$ = this._unitCollectionService.filteredEntities$;
-    this.loading$ = this._unitCollectionService.loading$;
   }
 
   ngOnDestroy(): void {

@@ -5,7 +5,7 @@ import { createSelector } from '@ngrx/store';
 
 export const productComponentSetEntitySelectors =
   new EntitySelectorsFactory().create<CrudApi.ProductComponentSet>(
-    ENTITY_NAME.CHAIN,
+    ENTITY_NAME.PRODUCT_COMPONENT_SET,
   );
 
 export const getProductComponentSetById = (id: string) => {

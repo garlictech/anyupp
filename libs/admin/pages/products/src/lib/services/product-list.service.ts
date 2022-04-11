@@ -1,5 +1,5 @@
 import { partition } from 'lodash/fp';
-import { combineLatest, EMPTY, from, iif, Observable, of } from 'rxjs';
+import { combineLatest, defer, EMPTY, from, iif, Observable, of } from 'rxjs';
 import {
   debounceTime,
   map,
@@ -13,7 +13,9 @@ import {
 } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { PAGINATION_LIMIT } from '@bgap/admin/shared/data-access/ngrx-data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { catchGqlError } from '@bgap/admin/store/app-core';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import {
@@ -25,6 +27,7 @@ import {
 import * as CrudApi from '@bgap/crud-gql/api';
 import { ProductOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
+import { NbDialogService } from '@nebular/theme';
 import { Store } from '@ngrx/store';
 
 import { foundIn } from '../fn';
@@ -53,6 +56,8 @@ export class ProductListService {
     private _chainProductCollectionService: ChainProductCollectionService,
     private _groupProductCollectionService: GroupProductCollectionService,
     private _unitProductCollectionService: UnitProductCollectionService,
+    private _crudSdk: CrudSdkService,
+    private _nbDialogService: NbDialogService,
   ) {}
 
   public hasRoleToEdit$(/*productLevel: EProductLevel*/) {
@@ -89,6 +94,7 @@ export class ProductListService {
   public chainProducts$() {
     return this._chainProductCollectionService.filteredEntities$.pipe(
       switchMap((chainProducts: CrudApi.ChainProduct[]) => {
+        console.error('chainProducts', chainProducts);
         const [dirtyChainProducts, cleanChainProducts] = partition(
           p => p.dirty,
           chainProducts,
@@ -526,5 +532,97 @@ export class ProductListService {
           this._working.unit = false;
         });
     }
+  }
+
+  public deleteChainProduct(id: string) {
+    this._acceptDeletion$()
+      .pipe(
+        switchMap(accepted =>
+          iif(
+            () => accepted,
+            defer(() =>
+              this._crudSdk.sdk.DeleteChainProduct({ input: { id } }),
+            ).pipe(
+              filterNullish(),
+              tap(product => {
+                this._chainProductCollectionService.removeOneFromCache(product);
+              }),
+            ),
+            of(undefined),
+          ),
+        ),
+        take(1),
+      )
+      .subscribe();
+  }
+
+  public deleteGroupProduct(id: string) {
+    this._acceptDeletion$()
+      .pipe(
+        switchMap(accepted =>
+          iif(
+            () => accepted,
+            defer(() =>
+              this._crudSdk.sdk.DeleteGroupProduct({ input: { id } }),
+            ).pipe(
+              filterNullish(),
+              tap(product => {
+                this._groupProductCollectionService.removeOneFromCache(product);
+              }),
+            ),
+            of(undefined),
+          ),
+        ),
+        take(1),
+      )
+      .subscribe();
+  }
+
+  public deleteUnitProduct(id: string) {
+    this._acceptDeletion$()
+      .pipe(
+        switchMap(accepted =>
+          iif(
+            () => accepted,
+            defer(() =>
+              this._crudSdk.sdk.DeleteUnitProduct({ input: { id } }),
+            ).pipe(
+              filterNullish(),
+              tap(product => {
+                this._unitProductCollectionService.removeOneFromCache(product);
+              }),
+            ),
+            of(undefined),
+          ),
+        ),
+        take(1),
+      )
+      .subscribe();
+  }
+
+  private _acceptDeletion$() {
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
+
+    return new Observable<boolean>(observer => {
+      dialog.componentRef.instance.options = {
+        message: 'products.confirmDeleteProduct',
+        buttons: [
+          {
+            label: 'common.ok',
+            callback: () => {
+              observer.next(true);
+            },
+            status: 'success',
+          },
+          {
+            label: 'common.cancel',
+            status: 'basic',
+            callback: () => {
+              observer.next(false);
+            },
+          },
+        ],
+      };
+    });
   }
 }

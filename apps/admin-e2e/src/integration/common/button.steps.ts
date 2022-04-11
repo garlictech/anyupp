@@ -19,14 +19,19 @@ When('I click on the {string} text', (text: string) => {
 When(
   'I click the edit button in the listitem with {string} content',
   (name: string) => {
-    getListItemThatContains(name).scrollIntoView().findByTitle('Edit').click();
+    // getListItemThatContains(name).scrollIntoView().findByTitle('Edit').click();
+    getListItemThatContains(name).scrollIntoView().contains(name).click();
   },
 );
 
 When(
   'On the active tab I click the edit button in the listitem with {string} content',
   (name: string) => {
-    getListItemFromActiveTabThatContains(name).findByTitle('Edit').click();
+    // getListItemFromActiveTabThatContains(name).findByTitle('Edit').click();
+    getListItemFromActiveTabThatContains(name)
+      .scrollIntoView()
+      .contains(name)
+      .click();
   },
 );
 

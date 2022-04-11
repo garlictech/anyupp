@@ -26,8 +26,9 @@ fieldset.debug {
 
 fieldset.form {
   legend {
-    padding: 2px 4px;
-    width: auto; // bootstrap fix
+    padding: 3px 0px;
+    width: auto;
+    font-size: 0.9rem !important;
   }
 
   border: 1px solid #edf1f7;
@@ -78,7 +79,7 @@ label.caption {
 }
 
 nb-list-item {
-  padding: 0.4rem !important;
+  padding: 0.5rem 1rem !important;
 }
 
 nb-select {
@@ -158,5 +159,27 @@ button.size-small {
 button.size-tiny {
   nb-icon.material-icons {
     font-size: 0.8rem !important;
+  }
+}
+
+nb-action.label-icon {
+  display: block;
+  text-align: center;
+
+  nb-icon {
+    position: relative;
+    top: -5px;
+  }
+
+  .action-label {
+    font-size: 0.6rem;
+    position: relative;
+    white-space: nowrap;
+    margin-top: -10px;
+    color: #8f9bb3;
+  }
+
+  &.active > .action-label {
+    color: black;
   }
 }

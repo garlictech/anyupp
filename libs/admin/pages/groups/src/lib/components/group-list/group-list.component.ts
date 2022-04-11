@@ -26,7 +26,6 @@ export class GroupListComponent implements OnDestroy {
   @ViewChild('dataVSVP')
   dataVSVP?: CdkVirtualScrollViewport;
 
-  public loading$: Observable<boolean>;
   public groups$: Observable<CrudApi.Group[]>;
 
   constructor(
@@ -35,7 +34,6 @@ export class GroupListComponent implements OnDestroy {
     private _groupCollectionService: GroupCollectionService,
   ) {
     this.groups$ = this._groupCollectionService.filteredEntities$;
-    this.loading$ = this._groupCollectionService.loading$;
   }
 
   ngOnDestroy(): void {

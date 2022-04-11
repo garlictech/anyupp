@@ -1,10 +1,11 @@
 <div class="float-start">
-  <nb-user
+  <bgap-user-block
     class="float-start d-block"
     [name]="chain.name"
     [title]="chain.description | localize"
     [picture]="(chainLogo || '' | awsStoragePath) || ''"
-  ></nb-user>
+    (onNameClick)="editChain()"
+  ></bgap-user-block>
   <bgap-status-led
     class="float-start ms-2"
     [status]="chain.isActive"
@@ -23,4 +24,5 @@
   (click)="editChain()"
 >
   <nb-icon icon="edit" pack="material-icons"></nb-icon>
+  {{ 'common.edit' | translate }}
 </button>

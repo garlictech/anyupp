@@ -69,7 +69,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
   public selectedProductLevel: EProductLevel;
   public loggedUser$: Observable<CrudApi.AdminUser | undefined>;
   public searchControl: FormControl;
-  public loading$: Observable<boolean>;
 
   private _sortedUnitProductIds: string[] = [];
 
@@ -81,7 +80,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ) {
     this.selectedProductLevel = EProductLevel.CHAIN;
     this.searchControl = new FormControl('');
-    this.loading$ = this._productListService.loading$();
 
     this.loggedUser$ = this._store
       .select(loggedUserSelectors.getLoggedUser)

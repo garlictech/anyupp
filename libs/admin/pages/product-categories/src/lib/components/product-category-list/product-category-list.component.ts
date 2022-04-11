@@ -30,7 +30,6 @@ export class ProductCategoryListComponent implements OnDestroy {
   @ViewChild('dataVSVP')
   dataVSVP?: CdkVirtualScrollViewport;
 
-  public loading$: Observable<boolean>;
   public productCategories$: Observable<CrudApi.ProductCategory[]>;
   private _sortedProductCategoryIds: string[] = [];
 
@@ -49,7 +48,6 @@ export class ProductCategoryListComponent implements OnDestroy {
           this._sortedProductCategoryIds = productCategories.map(p => p.id);
         }),
       );
-    this.loading$ = this._productCategoryCollectionService.loading$;
   }
 
   ngOnDestroy(): void {

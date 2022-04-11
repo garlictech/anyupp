@@ -19,7 +19,8 @@
     "cancel": "Mégse",
     "delete": "Törlés",
     "ok": "OK",
-    "add": "Hozzáadás",
+    "add": "Új",
+    "addItem": "Hozzáadás",
     "moveDown": "Mozgatás lefelé",
     "moveUp": "Mozgatás felfelé",
     "yes": "Igen",
@@ -275,7 +276,8 @@
       "other": "Egyéb",
       "unknown": "Ismeretlen típus"
     },
-    "takeaway": "Elvitelre"
+    "takeaway": "Elvitelre",
+    "confirmDeleteProduct": "Biztosan törlöd a terméket?"
   },
   "productCategories": {
     "addProductCategory": "Termék kategória hozzáadása",
@@ -381,7 +383,8 @@
     "addAdminUser": "Adminisztrátor hozzáadása",
     "editAdminUser": "Adminisztrátor szerkesztése",
     "newAdminUser": "Új adminisztrátor",
-    "editAdminUserRole": "Adminisztrátori jogok szerkesztése"
+    "editAdminUserRole": "Adminisztrátori jogok szerkesztése",
+    "resetPassword": "Jelszó emlékeztető"
   },
   "roleContexts": {
     "listTitle": "Jogkörnyezetek",

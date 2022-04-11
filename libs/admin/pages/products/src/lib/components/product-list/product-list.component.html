@@ -1,8 +1,4 @@
-<nb-card
-  class="h-100 mb-0"
-  [nbSpinner]="(loading$ | async) || false"
-  nbSpinnerStatus="basic"
->
+<nb-card class="h-100 mb-0" nbSpinnerStatus="basic">
   <nb-card-header>
     <div class="float-start">
       {{ 'products.listTitle' | translate }}
@@ -14,6 +10,7 @@
         type="text"
         fieldSize="small"
         shape="round"
+        class="me-2"
         [formControl]="searchControl"
         [attr.data-testid]="'productSearchInput'"
         [placeholder]="'common.search' | translate"
@@ -34,6 +31,7 @@
         (click)="addProduct()"
       >
         <nb-icon icon="add" pack="material-icons"></nb-icon>
+        {{ 'common.add' | translate }}
       </button>
 
       <bgap-active-product-category-selector
@@ -63,6 +61,7 @@
           (scrolledIndexChange)="
             loadNextChainProductPaginatedData($event, chainProducts.length)
           "
+          data-testid="chainProductsVSVP"
           #chainProductsVSVP
         >
           <nb-list>
@@ -97,6 +96,7 @@
             (scrolledIndexChange)="
               loadNextGroupProductPaginatedData($event, groupProducts.length)
             "
+            data-testid="groupProductsVSVP"
             #groupProductsVSVP
           >
             <nb-list>
@@ -132,6 +132,7 @@
             (scrolledIndexChange)="
               loadNextUnitProductPaginatedData($event, groupProducts.length)
             "
+            data-testid="unitProductsVSVP"
             #unitProductsVSVP
           >
             <nb-list>
