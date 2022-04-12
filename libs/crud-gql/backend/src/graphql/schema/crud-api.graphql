@@ -120,6 +120,7 @@ enum SoldOutVisibilityPolicy {
 enum ServiceFeeType {
   included
   applicable
+  noFee
 }
 
 type ServiceFeePolicy {

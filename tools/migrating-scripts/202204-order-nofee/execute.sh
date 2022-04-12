@@ -6,4 +6,4 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Create geoindex in unit table and migrate the unit fields
 yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register \
-  ${SCRIPT_DIR}/unit-nofee.ts
+  ${SCRIPT_DIR}/order-nofee.ts
