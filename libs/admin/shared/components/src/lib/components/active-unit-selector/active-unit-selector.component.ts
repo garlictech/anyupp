@@ -8,7 +8,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
-import { unitsSelectors } from '@bgap/admin/store/units';
+import { UnitCollectionService } from '@bgap/admin/store/units';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -31,12 +31,10 @@ export class ActiveUnitSelectorComponent implements OnInit, OnDestroy {
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _dataService: DataService,
+    private _unitCollectionService: UnitCollectionService,
   ) {
     this.showIcon = false;
-    this.units$ = this._store.pipe(
-      select(unitsSelectors.getSelectedGroupUnits),
-      untilDestroyed(this),
-    );
+    this.units$ = this._unitCollectionService.filteredEntities$;
   }
 
   get selectedUnitId(): string | null | undefined {

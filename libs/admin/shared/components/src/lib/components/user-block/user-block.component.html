@@ -1,0 +1,20 @@
+<div class="block-container">
+  <div
+    class="picture image ng-star-inserted"
+    [ngClass]="{ image: !!picture, initials: !picture }"
+    style="background-image: url('{{ picture }}')"
+  >
+    {{ picture ? '' : initials }}
+  </div>
+  <div class="info-container">
+    <div
+      class="name subtitle-2 ng-star-inserted"
+      role="button"
+      *ngIf="name"
+      (click)="nameClick()"
+    >
+      {{ name }}
+    </div>
+    <div class="title caption ng-star-inserted" *ngIf="title">{{ title }}</div>
+  </div>
+</div>

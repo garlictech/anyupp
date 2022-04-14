@@ -9,6 +9,7 @@ import {
 import { TIME_FORMAT_PATTERN } from '../const';
 import {
   dailyScheduleBothEmptyOrProperlyFilledValidator,
+  getInitials,
   makeId,
 } from './forms';
 
@@ -124,5 +125,17 @@ describe('Form validators', () => {
         expect(form.valid).toBeFalsy();
       },
     );
+  });
+});
+
+describe('Initials', () => {
+  describe('getInitials shoud generate initials', () => {
+    expect(getInitials('')).toMatchInlineSnapshot(`"-"`);
+    expect(getInitials('Gipsz')).toMatchInlineSnapshot(`"G"`);
+    expect(getInitials('gipsz')).toMatchInlineSnapshot(`"G"`);
+    expect(getInitials('Gipsz Jakab')).toMatchInlineSnapshot(`"GJ"`);
+    expect(getInitials('gipsz   jakab')).toMatchInlineSnapshot(`"GJ"`);
+    expect(getInitials('Gipsz Jakab Lajos')).toMatchInlineSnapshot(`"GJ"`);
+    expect(getInitials('gipsz jakab lajos')).toMatchInlineSnapshot(`"GJ"`);
   });
 });

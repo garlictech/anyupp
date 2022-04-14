@@ -25,9 +25,9 @@ Feature: Dashboard
     And I click on the "Orders blocked" button
     And I click on the "OK" button
     Then I should see "Orders accepted" text
-    When I click the "Manual payments" icon with title
-    And I click the "Problematic orders" icon with title
-    And I click the "Placed orders" icon with title
+    When I click the item with "manualOrders" dataTestId
+    And I click the item with "problematicOrders" dataTestId
+    And I click the item with "placedOrders" dataTestId
 
   Scenario: Floormap
     When I click the "floorMapAction" button
@@ -48,7 +48,7 @@ Feature: Dashboard
     Then the "Dashboard" title is displayed
 
   Scenario: Active orders, placed to served
-    When I click the "Placed orders" icon with title
+    When I click the item with "placedOrders" dataTestId
     When I click on the #"000004" order item
     And I click on the print button
     Then I should see the "Késdobáló #111" text
@@ -64,7 +64,7 @@ Feature: Dashboard
     Then I should see "served" text
 
   Scenario: Failed and deleted order
-    When I click the "Problematic orders" icon with title
+    When I click the item with "problematicOrders" dataTestId
     When I click on the #"000001" order item
     And I click on the "Failed" button
     Then I should see "Failed transaction. Please select unpay category!" text

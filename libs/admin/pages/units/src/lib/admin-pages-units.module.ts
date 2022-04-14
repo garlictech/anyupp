@@ -25,6 +25,7 @@ import { UnitFloorMapComponent } from './components/unit-floor-map/unit-floor-ma
 import { UnitFormComponent } from './components/unit-form/unit-form.component';
 import { UnitListItemComponent } from './components/unit-list-item/unit-list-item.component';
 import { UnitListComponent } from './components/unit-list/unit-list.component';
+import { UnitListService } from './services/unit-list.service';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -36,6 +37,7 @@ const NB_MODULES = [
   NbEvaIconsModule,
   NbButtonModule,
   NbCheckboxModule,
+  NbSpinnerModule,
   NbSpinnerModule,
 ];
 
@@ -64,5 +66,6 @@ const NB_MODULES = [
     ]),
     ...NB_MODULES,
   ],
+  providers: [UnitListService],
 })
 export class AdminPagesUnitsModule {}

@@ -10,6 +10,12 @@ const chainProductId_06 = `${seededIdPrefix}chain_product_c1_6_id`;
 const chainProductId_07 = `${seededIdPrefix}chain_product_c1_7_id`;
 const chainProductId_08 = `${seededIdPrefix}chain_product_c1_8_id`;
 const chainProductId_09 = `${seededIdPrefix}chain_product_c1_9_id`;
+const chainProductId_10 = `${seededIdPrefix}chain_product_c1_10_id`;
+const chainProductId_11 = `${seededIdPrefix}chain_product_c1_11_id`;
+const chainProductId_12 = `${seededIdPrefix}chain_product_c1_12_id`;
+const chainProductId_13 = `${seededIdPrefix}chain_product_c1_13_id`;
+const chainProductId_14 = `${seededIdPrefix}chain_product_c1_14_id`;
+const chainProductId_15 = `${seededIdPrefix}chain_product_c1_15_id`;
 
 const groupProductId_01 = `${seededIdPrefix}chain_product_c1_g1_1_id`;
 const groupProductId_02 = `${seededIdPrefix}chain_product_c1_g1_2_id`;
@@ -20,6 +26,12 @@ const groupProductId_06 = `${seededIdPrefix}chain_product_c1_g1_6_id`;
 const groupProductId_07 = `${seededIdPrefix}chain_product_c1_g1_7_id`;
 const groupProductId_08 = `${seededIdPrefix}chain_product_c1_g1_8_id`;
 const groupProductId_09 = `${seededIdPrefix}chain_product_c1_g1_9_id`;
+const groupProductId_10 = `${seededIdPrefix}chain_product_c1_g1_10_id`;
+const groupProductId_11 = `${seededIdPrefix}chain_product_c1_g1_11_id`;
+const groupProductId_12 = `${seededIdPrefix}chain_product_c1_g1_12_id`;
+const groupProductId_13 = `${seededIdPrefix}chain_product_c1_g1_13_id`;
+const groupProductId_14 = `${seededIdPrefix}chain_product_c1_g1_14_id`;
+const groupProductId_15 = `${seededIdPrefix}chain_product_c1_g1_15_id`;
 
 const unitProductId_01 = `${seededIdPrefix}unit_product_c1_g1_u1_1_id`;
 const unitProductId_02 = `${seededIdPrefix}unit_product_c1_g1_u1_2_id`;
@@ -30,6 +42,12 @@ const unitProductId_06 = `${seededIdPrefix}unit_product_c1_g1_u1_6_id`;
 const unitProductId_07 = `${seededIdPrefix}unit_product_c1_g1_u1_7_id`;
 const unitProductId_08 = `${seededIdPrefix}unit_product_c1_g1_u1_8_id`;
 const unitProductId_09 = `${seededIdPrefix}unit_product_c1_g1_u1_9_id`;
+const unitProductId_10 = `${seededIdPrefix}unit_product_c1_g1_u1_10_id`;
+const unitProductId_11 = `${seededIdPrefix}unit_product_c1_g1_u1_11_id`;
+const unitProductId_12 = `${seededIdPrefix}unit_product_c1_g1_u1_12_id`;
+const unitProductId_13 = `${seededIdPrefix}unit_product_c1_g1_u1_13_id`;
+const unitProductId_14 = `${seededIdPrefix}unit_product_c1_g1_u1_14_id`;
+const unitProductId_15 = `${seededIdPrefix}unit_product_c1_g1_u1_15_id`;
 
 const chainProduct_1 = {
   id: chainProductId_01,
@@ -2536,6 +2554,98 @@ const unitProduct_9 = {
   position: 0,
 };
 
+// SEED more mocks
+
+const chainProduct_10 = {
+  ...chainProduct_9,
+  id: chainProductId_10,
+};
+
+const chainProduct_11 = {
+  ...chainProduct_9,
+  id: chainProductId_11,
+};
+
+const chainProduct_12 = {
+  ...chainProduct_9,
+  id: chainProductId_12,
+};
+
+const chainProduct_13 = {
+  ...chainProduct_9,
+  id: chainProductId_13,
+};
+
+const chainProduct_14 = {
+  ...chainProduct_9,
+  id: chainProductId_14,
+};
+
+const chainProduct_15 = {
+  ...chainProduct_9,
+  id: chainProductId_15,
+};
+
+const groupProduct_10 = {
+  ...groupProduct_9,
+  id: groupProductId_10,
+};
+
+const groupProduct_11 = {
+  ...groupProduct_9,
+  id: groupProductId_11,
+};
+
+const groupProduct_12 = {
+  ...groupProduct_9,
+  id: groupProductId_12,
+};
+
+const groupProduct_13 = {
+  ...groupProduct_9,
+  id: groupProductId_13,
+};
+
+const groupProduct_14 = {
+  ...groupProduct_9,
+  id: groupProductId_14,
+};
+
+const groupProduct_15 = {
+  ...groupProduct_9,
+  id: groupProductId_15,
+};
+
+const unitProduct_10 = {
+  ...unitProduct_9,
+  id: unitProductId_10,
+};
+
+const unitProduct_11 = {
+  ...unitProduct_9,
+  id: unitProductId_11,
+};
+
+const unitProduct_12 = {
+  ...unitProduct_9,
+  id: unitProductId_12,
+};
+
+const unitProduct_13 = {
+  ...unitProduct_9,
+  id: unitProductId_13,
+};
+
+const unitProduct_14 = {
+  ...unitProduct_9,
+  id: unitProductId_14,
+};
+
+const unitProduct_15 = {
+  ...unitProduct_9,
+  id: unitProductId_15,
+};
+
 export const productSnapshotFixture = {
   chainProduct_1,
   chainProduct_2,
@@ -2546,6 +2656,12 @@ export const productSnapshotFixture = {
   chainProduct_7,
   chainProduct_8,
   chainProduct_9,
+  chainProduct_10,
+  chainProduct_11,
+  chainProduct_12,
+  chainProduct_13,
+  chainProduct_14,
+  chainProduct_15,
   groupProduct_1,
   groupProduct_2,
   groupProduct_3,
@@ -2555,6 +2671,12 @@ export const productSnapshotFixture = {
   groupProduct_7,
   groupProduct_8,
   groupProduct_9,
+  groupProduct_10,
+  groupProduct_11,
+  groupProduct_12,
+  groupProduct_13,
+  groupProduct_14,
+  groupProduct_15,
   unitProduct_1,
   unitProduct_2,
   unitProduct_3,
@@ -2564,4 +2686,10 @@ export const productSnapshotFixture = {
   unitProduct_7,
   unitProduct_8,
   unitProduct_9,
+  unitProduct_10,
+  unitProduct_11,
+  unitProduct_12,
+  unitProduct_13,
+  unitProduct_14,
+  unitProduct_15,
 };

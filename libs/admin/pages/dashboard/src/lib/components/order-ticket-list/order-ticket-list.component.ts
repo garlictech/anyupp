@@ -13,7 +13,7 @@ import {
   dashboardSelectors,
   DashboardSettings,
 } from '@bgap/admin/store/dashboard';
-import { ordersSelectors } from '@bgap/admin/store/orders';
+import { OrderCollectionService } from '@bgap/admin/store/orders';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EDashboardSize,
@@ -51,33 +51,30 @@ export class OrderTicketListComponent implements OnInit, OnDestroy {
   constructor(
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _orderCollectionService: OrderCollectionService,
   ) {}
 
   ngOnInit() {
     combineLatest([
-      this._store.pipe(
-        select(ordersSelectors.getAllActiveOrders),
-        untilDestroyed(this),
-      ),
-      this._store.pipe(
-        select(dashboardSelectors.getTicketListType),
-        untilDestroyed(this),
-      ),
-    ]).subscribe(
-      ([activeOrders, ticketListType]: [
-        CrudApi.Order[],
-        EDashboardTicketListType,
-      ]): void => {
-        this._orders = activeOrders;
+      this._orderCollectionService.filteredEntities$,
+      this._store.pipe(select(dashboardSelectors.getTicketListType)),
+    ])
+      .pipe(untilDestroyed(this))
+      .subscribe(
+        ([activeOrders, ticketListType]: [
+          CrudApi.Order[],
+          EDashboardTicketListType,
+        ]): void => {
+          this._orders = activeOrders;
 
-        this._refreshPlacedOrders();
-        this._refreshManualPaymentOrders();
-        this._refreshProblematicOrders();
-        this._refreshFilteredOrders(ticketListType);
+          this._refreshPlacedOrders();
+          this._refreshManualPaymentOrders();
+          this._refreshProblematicOrders();
+          this._refreshFilteredOrders(ticketListType);
 
-        this._changeDetectorRef.detectChanges();
-      },
-    );
+          this._changeDetectorRef.detectChanges();
+        },
+      );
 
     this._store
       .pipe(

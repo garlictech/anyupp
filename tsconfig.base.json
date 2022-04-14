@@ -64,6 +64,9 @@
       "@bgap/admin/shared/data-access/data": [
         "libs/admin/shared/data-access/data/src/index.ts"
       ],
+      "@bgap/admin/shared/data-access/ngrx-data": [
+        "libs/admin/shared/data-access/ngrx-data/src/index.ts"
+      ],
       "@bgap/admin/shared/data-access/order": [
         "libs/admin/shared/data-access/order/src/index.ts"
       ],

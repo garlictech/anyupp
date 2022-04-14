@@ -1,45 +1,16 @@
+import { ENTITY_NAME } from '@bgap/admin/shared/types';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { KeyValue } from '@bgap/shared/types';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { EntitySelectorsFactory } from '@ngrx/data';
+import { createSelector } from '@ngrx/store';
 
-import {
-  CHAINS_FEATURE_KEY,
-  chainsAdapter,
-  ChainsState,
-} from './chains.reducer';
+export const chainEntitySelectors =
+  new EntitySelectorsFactory().create<CrudApi.Chain>(ENTITY_NAME.CHAIN);
 
-export const getChainsState =
-  createFeatureSelector<ChainsState>(CHAINS_FEATURE_KEY);
-
-const { selectAll, selectEntities } = chainsAdapter.getSelectors();
-
-export const getChainsError = createSelector(
-  getChainsState,
-  (state: ChainsState) => state.error,
-);
-
-export const getAllChains = createSelector(
-  getChainsState,
-  (state: ChainsState) => selectAll(state),
-);
-
-export const getChainsEntities = createSelector(
-  getChainsState,
-  (state: ChainsState) => selectEntities(state),
-);
-
-export const getChainById = (id: string) => {
-  return createSelector(
-    getAllChains,
-    (chains: CrudApi.Chain[]): CrudApi.Chain | undefined =>
-      chains.find((chain): boolean => chain.id === id),
-  );
-};
-
-export const getSeletedChain = createSelector(
+export const getSelectedChain = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
-  getAllChains,
+  chainEntitySelectors.selectEntities,
   (
     userSettings: CrudApi.AdminUserSettings | undefined | null,
     chains: CrudApi.Chain[],
@@ -48,10 +19,12 @@ export const getSeletedChain = createSelector(
 );
 
 export const getAllChainOptions = () => {
-  return createSelector(getAllChains, (chains: CrudApi.Chain[]): KeyValue[] =>
-    (chains || []).map(chain => ({
-      key: chain.id,
-      value: chain.name,
-    })),
+  return createSelector(
+    chainEntitySelectors.selectEntities,
+    (chains: CrudApi.Chain[]): KeyValue[] =>
+      (chains || []).map(chain => ({
+        key: chain.id,
+        value: chain.name,
+      })),
   );
 };

@@ -1,16 +1,25 @@
 import { combineLatest, EMPTY, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
+import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ModifiersAndExtrasFormService } from '@bgap/admin/pages/modifiers-and-extras';
+import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   productComponentSetFixture,
   testIdPrefix,
 } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
+import {
+  EntityCollectionServiceElementsFactory,
+  EntityDataModule,
+  EntityDispatcherFactory,
+} from '@ngrx/data';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { signInToCognito, signOutFromCognito } from '../../shared/helper';
@@ -42,7 +51,18 @@ describe('ModifiersAndExtrasFormService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, StoreModule.forRoot({})],
+      imports: [
+        ReactiveFormsModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([]),
+        EntityDataModule.forRoot(entityConfig),
+        HttpClientModule,
+        AdminSharedLoggedUserModule,
+      ],
+      providers: [
+        EntityCollectionServiceElementsFactory,
+        EntityDispatcherFactory,
+      ],
     });
 
     service = TestBed.inject(ModifiersAndExtrasFormService);

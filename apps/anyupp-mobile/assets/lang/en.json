@@ -144,8 +144,8 @@
     "inPlace": "in place",
     "packagingFee": "Packaging fee",
     "serviceFee": "Service fee",
-    "hasServiceFee": "The price includes service fee.",
-    "hasNoServiceFee": "The price does't include service fee."
+    "hasServiceFee": "The price includes service fee",
+    "hasNoServiceFee": "The price doesn't include service fee"
   },
   "allergens": {
     "title": "ALLERGENS",

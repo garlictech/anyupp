@@ -4,10 +4,13 @@ import { switchMap, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { catchGqlError } from '@bgap/admin/store/app-core';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
-import { getNextOrderStatus, ordersActions } from '@bgap/admin/store/orders';
+import {
+  getNextOrderStatus,
+  OrderCollectionService,
+  OrderHistoryCollectionService,
+} from '@bgap/admin/store/orders';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { DateIntervals } from '@bgap/shared/types';
 import { getDayIntervals, filterNullish } from '@bgap/shared/utils';
 import { select, Store } from '@ngrx/store';
@@ -28,7 +31,12 @@ import {
 export class OrderService {
   private _adminUser?: CrudApi.AdminUser;
 
-  constructor(private _store: Store, private _crudSdk: CrudSdkService) {
+  constructor(
+    private _store: Store,
+    private _crudSdk: CrudSdkService,
+    private _orderCollectionService: OrderCollectionService,
+    private _orderHistoryCollectionService: OrderHistoryCollectionService,
+  ) {
     this._store
       .pipe(select(loggedUserSelectors.getLoggedUser))
       .subscribe(adminUser => {
@@ -73,7 +81,7 @@ export class OrderService {
     return archiveOrder(this._getDeps())(orderId).pipe(
       filterNullish(),
       tap(() => {
-        this._store.dispatch(ordersActions.removeActiveOrder({ orderId }));
+        this._orderCollectionService.removeOneFromCache(orderId);
       }),
     );
   }
@@ -213,7 +221,7 @@ export class OrderService {
       ).pipe(
         catchGqlError(this._store),
         tap(() => {
-          this._store.dispatch(ordersActions.removeActiveOrder({ orderId }));
+          this._orderHistoryCollectionService.removeOneFromCache(orderId);
         }),
       );
     } else {
@@ -228,25 +236,18 @@ export class OrderService {
   ) {
     const dayIntervals: DateIntervals = getDayIntervals(historyDate, timeZone);
 
-    this._crudSdk.doListQuery(
-      ordersActions.resetHistoryOrders(),
-      getAllPaginatedData(this._crudSdk.sdk.SearchOrders, {
-        query: {
-          filter: {
-            unitId: { eq: unitId },
-            archived: { eq: true },
-            createdAt: {
-              gte: new Date(dayIntervals.from).toISOString(),
-              lte: new Date(dayIntervals.to).toISOString(),
-            },
+    this._orderHistoryCollectionService.clearCache();
+    this._orderHistoryCollectionService
+      .getAllCachedPaginatedData$({
+        filter: {
+          unitId: { eq: unitId },
+          archived: { eq: true },
+          createdAt: {
+            gte: new Date(dayIntervals.from).toISOString(),
+            lte: new Date(dayIntervals.to).toISOString(),
           },
         },
-        options: { fetchPolicy: 'no-cache' },
-      }),
-      (orders: CrudApi.Order[]) =>
-        ordersActions.upsertHistoryOrders({
-          orders,
-        }),
-    );
+      })
+      .subscribe();
   }
 }

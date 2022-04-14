@@ -2,14 +2,29 @@ import { combineLatest, EMPTY } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import { PAGINATION_LIMIT } from '@bgap/admin/shared/data-access/ngrx-data';
 import { catchGqlError } from '@bgap/admin/store/app-core';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { ProductCategoryCollectionService } from '@bgap/admin/store/product-categories';
 import { ProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { Store } from '@ngrx/store';
 
 @Injectable()
 export class ProductCategoryListService {
-  constructor(private _store: Store, private _crudSdk: CrudSdkService) {}
+  private _nextToken?: string;
+  private _working = false;
+  private _selectedChainId?: string | null;
+
+  constructor(
+    private _store: Store,
+    private _productCategoryCollectionService: ProductCategoryCollectionService,
+  ) {
+    this._store
+      .select(loggedUserSelectors.getSelectedChainId)
+      .subscribe(selectedChainId => {
+        this._selectedChainId = selectedChainId;
+      });
+  }
 
   public positionChange(
     $event: ProductCategoryOrderChangeEvent,
@@ -38,13 +53,34 @@ export class ProductCategoryListService {
   }
 
   public updateUnitProductCategoryPosition$(id: string, position: number) {
-    return this._crudSdk.sdk
-      .UpdateProductCategory({
-        input: {
-          id,
-          position,
-        },
+    return this._productCategoryCollectionService
+      .update$({
+        id,
+        position,
       })
       .pipe(catchGqlError(this._store), take(1));
+  }
+
+  public resetNextTokens() {
+    this._nextToken = undefined;
+  }
+
+  public loadNextPaginatedData() {
+    if (!this._working && this._selectedChainId) {
+      this._working = true;
+
+      this._productCategoryCollectionService
+        .getCachedPaginatedData$({
+          limit: PAGINATION_LIMIT,
+          nextToken: this._nextToken,
+          filter: {
+            chainId: { eq: this._selectedChainId },
+          },
+        })
+        .subscribe(result => {
+          this._nextToken = result?.nextToken || undefined;
+          this._working = false;
+        });
+    }
   }
 }

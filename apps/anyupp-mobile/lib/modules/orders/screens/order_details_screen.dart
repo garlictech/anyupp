@@ -158,7 +158,7 @@ class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          trans(context, 'cart.serviceFee'),
+          '${trans(context, 'cart.serviceFee')} ${formatDouble(order.serviceFeePolicy?.percentage)}%',
           style: Fonts.satoshi(
             fontSize: 14.0,
             fontWeight: FontWeight.w400,

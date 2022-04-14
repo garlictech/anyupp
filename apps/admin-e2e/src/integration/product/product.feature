@@ -44,18 +44,18 @@ Feature: Whole product feature
     And I click on the "13. Lupin" checkbox
     And I click on the "14. Molluscs" checkbox
     And I select the "Garnish (Köret módosító készlet)" in the modifier selector
-    And I click on the "Add" button
+    And I click the item with "addComponentSetButton" dataTestId
     And I select the "Decoration (Szolíd elegancia)" in the modifier selector
-    And I click on the "Add" button
+    And I click the item with "addComponentSetButton" dataTestId
     And I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist
     Then I should see "test chain product" text
 
-
   Scenario: Update chain product
     And I should see "Chain products" text
     When I click the category selector to set "Hamburgers"
+    And I wait 1000 ms
     Then On the active tab I should see "test chain product" text
     When On the active tab I click the edit button in the listitem with "test chain product" content
     Then The dialog should be visible
@@ -84,7 +84,7 @@ Feature: Whole product feature
     And I click on the "13. Lupin" checkbox
     And I click the delete button in the listitem with "Decoration" content
     And I select the "Temperature (Tálalási hőmérséklet)" in the modifier selector
-    And I click on the "Add" button
+    And I click the item with "addComponentSetButton" dataTestId
     When I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist
@@ -117,7 +117,7 @@ Feature: Whole product feature
     And I fill out the "Pack unit" input with "dl"
     And I click the delete button in the listitem with "Garnish" content
     And I select the "Decoration (Szolíd elegancia)" in the modifier selector
-    And I click on the "Add" button
+    And I click the item with "addComponentSetButton" dataTestId
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
     And I should see a success toastr
@@ -125,6 +125,8 @@ Feature: Whole product feature
   Scenario: Update group product
     When I click on the "Group products" text
     When I click the category selector to set "Hamburgers"
+    And I wait 2000 ms
+    And I scroll down the list with "groupProductsVSVP" dataTestId
     And On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Edit product" text on the dialog
     And I should see "test chain e2eUpdated product" text on the dialog
@@ -137,7 +139,7 @@ Feature: Whole product feature
     And I fill out the "Pack unit" input with "ml"
     And I click the delete button in the listitem with "Decoration" content
     And I select the "Garnish (Köret módosító készlet)" in the modifier selector
-    And I click on the "Add" button
+    And I click the item with "addComponentSetButton" dataTestId
     And I fill out all the "Reference price" input with index multiply by 10
     And I click on the "Submit" button
     And I should see a success toastr
@@ -190,6 +192,8 @@ Feature: Whole product feature
   Scenario: Update unit product
     When I click on the "Unit products" text
     When I click the category selector to set "Hamburgers"
+    And I wait 2000 ms
+    And I scroll down the list with "unitProductsVSVP" dataTestId
     And On the active tab I click the edit button in the listitem with "test chain e2eUpdated product" content
     Then I should see "Edit product" text on the dialog
     And I should see "test chain e2eUpdated product" text on the dialog

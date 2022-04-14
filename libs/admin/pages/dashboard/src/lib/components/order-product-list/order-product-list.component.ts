@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { dashboardSelectors } from '@bgap/admin/store/dashboard';
 import { groupsSelectors } from '@bgap/admin/store/groups';
-import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
-import { productsSelectors } from '@bgap/admin/store/products';
+import { ProductCategoryCollectionService } from '@bgap/admin/store/product-categories';
+import { GeneratedProductCollectionService } from '@bgap/admin/store/products';
 import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -36,6 +36,8 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
   constructor(
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _productCategoryCollectionService: ProductCategoryCollectionService,
+    private _generatedProductCollectionService: GeneratedProductCollectionService,
   ) {
     this.generatedUnitProducts = [];
   }
@@ -66,8 +68,8 @@ export class OrderProductListComponent implements OnInit, OnDestroy {
       });
 
     combineLatest([
-      this._store.select(productCategoriesSelectors.getAllProductCategories),
-      this._store.select(productsSelectors.getAllGeneratedProducts),
+      this._productCategoryCollectionService.filteredEntities$,
+      this._generatedProductCollectionService.filteredEntities$,
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([productCategories, generatedUnitProducts]): void => {

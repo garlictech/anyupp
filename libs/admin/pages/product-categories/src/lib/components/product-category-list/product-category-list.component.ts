@@ -1,19 +1,21 @@
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnDestroy,
-  OnInit,
+  ViewChild,
 } from '@angular/core';
-import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
+import { visibleLinesOnViewport } from '@bgap/admin/shared/utils';
+import { ProductCategoryCollectionService } from '@bgap/admin/store/product-categories';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { ProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { ProductCategoryListService } from '../../services/product-category-list.service';
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
@@ -24,32 +26,28 @@ import { ProductCategoryFormComponent } from '../product-category-form/product-c
   selector: 'bgap-product-category-list',
   templateUrl: './product-category-list.component.html',
 })
-export class ProductCategoryListComponent implements OnInit, OnDestroy {
-  public productCategories: CrudApi.ProductCategory[] = [];
+export class ProductCategoryListComponent implements OnDestroy {
+  @ViewChild('dataVSVP')
+  dataVSVP?: CdkVirtualScrollViewport;
+
+  public productCategories$: Observable<CrudApi.ProductCategory[]>;
   private _sortedProductCategoryIds: string[] = [];
 
   constructor(
-    private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
     private _productCategoryListService: ProductCategoryListService,
-  ) {}
-
-  ngOnInit() {
-    this._store
-      .pipe(
-        select(productCategoriesSelectors.getAllProductCategories),
+    private _productCategoryCollectionService: ProductCategoryCollectionService,
+  ) {
+    this.productCategories$ =
+      this._productCategoryCollectionService.filteredEntities$.pipe(
         map((products): CrudApi.ProductCategory[] =>
           products.sort(customNumberCompare('position')),
         ),
-        untilDestroyed(this),
-      )
-      .subscribe((productCategories: CrudApi.ProductCategory[]): void => {
-        this.productCategories = productCategories;
-        this._sortedProductCategoryIds = this.productCategories.map(p => p.id);
-
-        this._changeDetectorRef.detectChanges();
-      });
+        tap(productCategories => {
+          this._sortedProductCategoryIds = productCategories.map(p => p.id);
+        }),
+      );
   }
 
   ngOnDestroy(): void {
@@ -66,5 +64,14 @@ export class ProductCategoryListComponent implements OnInit, OnDestroy {
       .subscribe();
 
     this._changeDetectorRef.detectChanges();
+  }
+
+  public loadNextPaginatedData(count: number, itemCount: number) {
+    if (
+      itemCount - count <
+      visibleLinesOnViewport(this.dataVSVP?.elementRef.nativeElement)
+    ) {
+      this._productCategoryListService.loadNextPaginatedData();
+    }
   }
 }

@@ -157,3 +157,11 @@ export const optionalValueValidator: ValidatorFn = (control: AbstractControl) =>
 
 export const notEmptyArray: ValidatorFn = (control: AbstractControl) =>
   control.value.length > 0 ? null : { err: true };
+
+export const getInitials = (text: string) => {
+  const parts = (text || '').split(' ').filter(i => !!i);
+
+  return (
+    (parts[0] || '-').charAt(0) + (parts[1] ? parts[1].charAt(0) : '')
+  ).toUpperCase();
+};
