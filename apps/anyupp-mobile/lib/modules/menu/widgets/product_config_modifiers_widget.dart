@@ -98,8 +98,7 @@ class _ProductConfigModifiersWidgetState
     ServingMode? mode = takeAwayMode;
     sets?.forEach((modifier) {
       if (_shouldDisplayConfigSet(modifier) &&
-          (modifier.type == ConfigType.MODIFIER ||
-              modifier.type == ConfigType.RKEEPER) &&
+          modifier.type == ConfigType.MODIFIER &&
           modifier.supportedServingModes.contains(mode)) {
         widgets.add(_buildSingleModifier(modifier));
       }
