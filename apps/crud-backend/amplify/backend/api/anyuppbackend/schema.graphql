@@ -1201,55 +1201,123 @@ type Query {
   listStripeCards: [StripeCard]
     @aws_iam
     @aws_cognito_user_pools
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 
   getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
     @aws_iam
     @aws_cognito_user_pools
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+
+  # geosearch
+  searchByRadius(input: SearchByRadiusInput!): GeoSearchConnection
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 }
 
 type Mutation {
   createUnit(input: CreateUnitInput!): Unit
+<<<<<<< HEAD
     @aws_iam
     @aws_cognito_user_pools
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 
   updateUnit(input: UpdateUnitInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 
   updateUnitRKeeperData(input: UpdateRKeeperDataInput!): Unit
     @aws_iam
     @aws_cognito_user_pools
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 
   createAdminUser(input: CreateAdminUserInput!): AdminUser
     @aws_iam
     @aws_cognito_user_pools
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 
   deleteAdminUser(input: DeleteAdminUserInput!): AdminUser
     @aws_iam
     @aws_cognito_user_pools
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 
   # User
   createAnonymUser: CreateAnonymUserOutput  # public endpoint
     @aws_iam
     @aws_api_key
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 
   # Order
   createOrderFromCart(input: CreateOrderFromCartInput!): ID
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
     @aws_iam
     @aws_cognito_user_pools
 
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
     @aws_iam
     @aws_cognito_user_pools
 
@@ -1257,6 +1325,7 @@ type Mutation {
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
 
   # Stripe Connected
@@ -1266,25 +1335,57 @@ type Mutation {
     @aws_cognito_user_pools
     @aws_iam
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+
+  # Stripe Connected
+  startStripePaymentConnected(
+    input: StartStripePaymentInput!
+  ): StartStripePaymentOutput
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 
   createStripeCard(input: StripeCardCreateInput!): StripeCard
     @aws_cognito_user_pools
     @aws_iam
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
 
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+>>>>>>> staging
     @aws_iam
     @aws_cognito_user_pools
 
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
     @aws_cognito_user_pools
     @aws_iam
+<<<<<<< HEAD
     @function(name: "dev-anyupp-graphql-resolvers")
 }
 
@@ -1359,4 +1460,82 @@ type Subscription {
   onUnitOrdersChange(unitId: String, archived: Boolean): Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools
+||||||| b20b4bf72
+    @function(name: "zsoltstack-anyupp-graphql-resolvers")
+=======
+    @function(name: "tamasstack-anyupp-graphql-resolvers")
+}
+
+type Subscription {
+  onAdminUserChange(id: ID!): AdminUser
+    @aws_subscribe(mutations: ["updateAdminUser"])
+    @aws_cognito_user_pools
+  onAdminUsersChange: AdminUser
+    @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
+    @aws_cognito_user_pools
+  onChainsChange: Chain
+    @aws_subscribe(mutations: ["createChain", "updateChain"])
+    @aws_cognito_user_pools
+  onGroupsChange(chainId: ID!): Group
+    @aws_subscribe(mutations: ["createGroup", "updateGroup"])
+    @aws_cognito_user_pools
+  onUnitsChange(groupId: ID!): Unit
+    @aws_subscribe(
+      mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"]
+    )
+    @aws_cognito_user_pools
+  # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
+  onProductCategoriesChange(chainId: ID!): ProductCategory
+    @aws_subscribe(
+      mutations: ["createProductCategory", "updateProductCategory"]
+    )
+    @aws_cognito_user_pools
+  onProductComponentsChange(chainId: ID!): ProductComponent
+    @aws_subscribe(
+      mutations: ["createProductComponent", "updateProductComponent"]
+    )
+    @aws_cognito_user_pools
+  onProductComponentSetsChange(chainId: ID!): ProductComponentSet
+    @aws_subscribe(
+      mutations: ["createProductComponentSet", "updateProductComponentSet"]
+    )
+    @aws_cognito_user_pools
+  onChainProductChange(chainId: ID!): ChainProduct
+    @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
+    @aws_cognito_user_pools
+  onGroupProductChange(groupId: ID!): GroupProduct
+    @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
+    @aws_cognito_user_pools
+  onUnitProductChange(unitId: ID!): UnitProduct
+    @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+    @aws_cognito_user_pools
+  onGeneratedProductChange(unitId: ID!): GeneratedProduct
+    @aws_subscribe(
+      mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
+    )
+    @aws_cognito_user_pools
+  onOrdersChange: Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onOrdersDelete: Order
+    @aws_subscribe(mutations: ["deleteOrder"])
+    @aws_cognito_user_pools
+
+  # Added for the Mobile Application
+  onProductChanged(unitId: String): GeneratedProduct
+    @aws_subscribe(
+      mutations: [
+        "createGeneratedProduct"
+        "updateGeneratedProduct"
+        "deleteGeneratedProduct"
+      ]
+    )
+    @aws_cognito_user_pools
+  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onUnitOrdersChange(unitId: String, archived: Boolean): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+>>>>>>> staging
 }

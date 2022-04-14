@@ -116,7 +116,12 @@ class _LanguageMenuState extends State<LanguageMenu> {
               Container(
                 height: 56.0,
                 width: double.infinity,
-                margin: EdgeInsets.all(16.0),
+                margin: EdgeInsets.only(
+                  left: 16.0,
+                  right: 16.0,
+                  top: 16.0,
+                  bottom: 46.0,
+                ),
                 child: ElevatedButton(
                   onPressed: () => _setSelectedLocale(),
                   style: ElevatedButton.styleFrom(

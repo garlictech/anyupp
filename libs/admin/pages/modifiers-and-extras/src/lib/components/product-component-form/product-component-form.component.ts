@@ -38,6 +38,7 @@ export class ProductComponentFormComponent
     protected _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
     private _modifiersAndExtrasFormService: ModifiersAndExtrasFormService,
+    private _productComponentCollectionService: ProductComponentCollectionService,
   ) {
     super(_injector);
 

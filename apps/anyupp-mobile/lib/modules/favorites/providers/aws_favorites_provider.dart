@@ -93,7 +93,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
         _token = response.nextToken;
       } while (response.nextToken != null);
 
-      _favorites = temp.isNotEmpty ? List<FavoriteProduct>.from(temp) : null;
+      _favorites = temp.isNotEmpty ? List<FavoriteProduct>.from(temp) : [];
 
       return PageResponse(
         data: _favorites,
