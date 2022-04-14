@@ -5,6 +5,7 @@ import 'package:fa_prev/graphql/generated/crud-api.dart';
 class ConfigType {
   static const String MODIFIER = 'modifier';
   static const String EXTRA = 'extras';
+  static const String RKEEPER = 'rkeeper';
 }
 
 // String getDetailsTextFromModifierComponent(BuildContext context, GeneratedProductConfigComponent modifier) {
