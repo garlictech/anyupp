@@ -224,6 +224,11 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
                   margin: EdgeInsets.only(left: 4.0),
                   child: BorderedWidget(
                     onPressed: () {
+                      if (_showTooltip == true) {
+                        setState(() {
+                          _showTooltip = false;
+                        });
+                      }
                       showModalBottomSheet(
                         context: context,
                         isDismissible: true,

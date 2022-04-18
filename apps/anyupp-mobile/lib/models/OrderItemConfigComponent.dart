@@ -8,11 +8,13 @@ class OrderItemConfigComponent {
   final double price;
   final LocalizedItem name;
   final List<Allergen>? allergens;
+  final String? externalId;
   OrderItemConfigComponent({
     required this.productComponentId,
     required this.price,
     required this.name,
     this.allergens,
+    this.externalId,
   });
 
   OrderItemConfigComponent copyWith({
@@ -20,12 +22,14 @@ class OrderItemConfigComponent {
     double? price,
     LocalizedItem? name,
     List<Allergen>? allergens,
+    String? externalId,
   }) {
     return OrderItemConfigComponent(
       productComponentId: productComponentId ?? this.productComponentId,
       price: price ?? this.price,
       name: name ?? this.name,
       allergens: allergens ?? this.allergens,
+      externalId: externalId ?? this.externalId,
     );
   }
 
@@ -35,6 +39,7 @@ class OrderItemConfigComponent {
       'price': price,
       'name': name.toJson(),
       'allergens': allergens?.map((x) => enumToString(x)).toList(),
+      'externalId': externalId,
     };
   }
 
@@ -44,14 +49,16 @@ class OrderItemConfigComponent {
       price: map['price'],
       name: LocalizedItem.fromJson(map['name']),
       allergens: map['allergens'] != null
-          ? List<Allergen>.from(map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
+          ? List<Allergen>.from(
+              map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
           : null,
+      externalId: map['externalId'],
     );
   }
 
   @override
   String toString() {
-    return 'OrderItemConfigComponent(productComponentId: $productComponentId, price: $price, name: $name, allergens: $allergens)';
+    return 'OrderItemConfigComponent(productComponentId: $productComponentId, price: $price, name: $name, allergens: $allergens, externalId: $externalId)';
   }
 
   @override
@@ -62,11 +69,16 @@ class OrderItemConfigComponent {
         other.productComponentId == productComponentId &&
         other.price == price &&
         other.name == name &&
+        other.externalId == externalId &&
         listEquals(other.allergens, allergens);
   }
 
   @override
   int get hashCode {
-    return productComponentId.hashCode ^ price.hashCode ^ name.hashCode ^ allergens.hashCode;
+    return productComponentId.hashCode ^
+        price.hashCode ^
+        name.hashCode ^
+        externalId.hashCode ^
+        allergens.hashCode;
   }
 }

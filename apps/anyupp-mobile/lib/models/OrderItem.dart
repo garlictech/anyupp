@@ -21,6 +21,7 @@ class OrderItem {
       selectedConfigMap;
   final double? netPackagingFee;
   final Price? serviceFee;
+  final String? externalId;
 
   OrderItem({
     required this.productId,
@@ -38,6 +39,7 @@ class OrderItem {
     this.selectedConfigMap,
     this.netPackagingFee,
     this.serviceFee,
+    this.externalId,
   });
 
   OrderItem copyWith({
@@ -58,6 +60,7 @@ class OrderItem {
         selectedConfigMap,
     double? netPackagingFee,
     Price? serviceFee,
+    String? externalId,
   }) {
     return OrderItem(
       productId: productId ?? this.productId,
@@ -75,6 +78,7 @@ class OrderItem {
       selectedConfigMap: selectedConfigMap ?? this.selectedConfigMap,
       netPackagingFee: netPackagingFee ?? this.netPackagingFee,
       serviceFee: serviceFee ?? this.serviceFee,
+      externalId: externalId ?? this.externalId,
     );
   }
 
@@ -94,6 +98,7 @@ class OrderItem {
       'configSets': configSets?.map((x) => x.toJson()).toList(),
       'netPackagingFee': netPackagingFee,
       'serviceFee': serviceFee?.toJson(),
+      'externalId': externalId,
     };
   }
 
@@ -126,12 +131,13 @@ class OrderItem {
       netPackagingFee: map['netPackagingFee'],
       serviceFee:
           map['serviceFee'] != null ? Price.fromJson(map['serviceFee']) : null,
+      externalId: map['externalId'],
     );
   }
 
   @override
   String toString() {
-    return 'OrderItem( productId: $productId, variantId: $variantId, productName: $productName, priceShown: $priceShown, sumPriceShown: $sumPriceShown, quantity: $quantity, serviceFee: $serviceFee, netPackagingFee: $netPackagingFee, statusLog: $statusLog, variantName: $variantName, image: $image, allergens: $allergens, configSets: $configSets)';
+    return 'OrderItem( productId: $productId, variantId: $variantId, productName: $productName, externalId: $externalId, priceShown: $priceShown, sumPriceShown: $sumPriceShown, quantity: $quantity, serviceFee: $serviceFee, netPackagingFee: $netPackagingFee, statusLog: $statusLog, variantName: $variantName, image: $image, allergens: $allergens, configSets: $configSets)';
   }
 
   @override
@@ -151,6 +157,7 @@ class OrderItem {
         other.productType == productType &&
         other.netPackagingFee == netPackagingFee &&
         other.serviceFee == serviceFee &&
+        other.externalId == externalId &&
         listEquals(other.allergens, allergens) &&
         listEquals(other.configSets, configSets) &&
         DeepCollectionEquality()
@@ -172,6 +179,7 @@ class OrderItem {
         productType.hashCode ^
         netPackagingFee.hashCode ^
         configSets.hashCode ^
+        externalId.hashCode ^
         serviceFee.hashCode;
   }
 

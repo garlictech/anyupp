@@ -2,12 +2,7 @@ import { iif } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchGqlError } from '@bgap/admin/store/app-core';
 import {
   maxSelectionValidator,
@@ -29,16 +24,14 @@ export class ModifiersAndExtrasFormService {
     private _productComponentSetCollectionService: ProductComponentSetCollectionService,
   ) {}
 
-  public createProductComponentFormGroup(
-    uniqueNameValidator: (lang: keyof CrudApi.LocalizedItem) => ValidatorFn,
-  ) {
+  public createProductComponentFormGroup() {
     return this._formBuilder.group({
       chainId: ['', [Validators.required]],
       name: this._formBuilder.group(
         {
-          hu: ['', [Validators.maxLength(40), uniqueNameValidator('hu')]],
-          en: ['', [Validators.maxLength(40), uniqueNameValidator('en')]],
-          de: ['', [Validators.maxLength(40), uniqueNameValidator('de')]],
+          hu: ['', [Validators.maxLength(40)]],
+          en: ['', [Validators.maxLength(40)]],
+          de: ['', [Validators.maxLength(40)]],
         },
         { validators: multiLangValidator },
       ),

@@ -113,7 +113,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
   showStatusModal() async {
     Nav.pop();
     Nav.pop();
-    getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
+
     return showModalBottomSheet(
       context: context,
       isDismissible: true,
@@ -180,11 +180,20 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height * .8,
                   child: _orderCreationSuccess == true
-                      ? PaymentSuccessWidget()
+                      ? PaymentSuccessWidget(
+                          onPressed: () {
+                            _navigateAfterOrderStatusWidgetClosed();
+                            Nav.pop();
+                          },
+                        )
                       : _orderCreationSuccess == false
                           ? CommonErrorWidget(
                               error: 'orders.sendOrderError.title',
                               description: 'orders.sendOrderError.description',
+                              onPressed: () {
+                                _navigateAfterOrderStatusWidgetClosed();
+                                Nav.pop();
+                              },
                             )
                           : Container(),
                 )
@@ -192,6 +201,10 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
             ));
       },
     );
+  }
+
+  void _navigateAfterOrderStatusWidgetClosed() {
+    getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
   }
 
   @override
