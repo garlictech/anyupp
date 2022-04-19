@@ -1,0 +1,23 @@
+{
+  "root": "libs/backend/seeder",
+  "sourceRoot": "libs/backend/seeder/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/backend/seeder/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/backend/seeder"],
+      "options": {
+        "jestConfig": "libs/backend/seeder/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["type:backend", "platform:nodejs"]
+}

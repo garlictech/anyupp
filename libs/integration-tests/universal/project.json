@@ -1,0 +1,19 @@
+{
+  "root": "libs/integration-tests/universal",
+  "sourceRoot": "libs/integration-tests/universal/src",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/integration-tests/universal"],
+      "options": {
+        "jestConfig": "libs/integration-tests/universal/jest.config.js",
+        "passWithNoTests": true,
+        "detectOpenHandles": true,
+        "forceExit": true,
+        "coverage": false
+      }
+    }
+  },
+  "tags": ["type:integration-tests", "platform:nodejs"]
+}

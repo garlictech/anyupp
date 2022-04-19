@@ -1,0 +1,22 @@
+{
+  "root": "libs/shared/data-validators",
+  "sourceRoot": "libs/shared/data-validators/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/shared/data-validators/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/shared/data-validators"],
+      "options": {
+        "jestConfig": "libs/shared/data-validators/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["platform:nodejs", "layer:utils"]
+}

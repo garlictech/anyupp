@@ -1,0 +1,22 @@
+{
+  "root": "libs/anyupp-gql/backend",
+  "sourceRoot": "libs/anyupp-gql/backend/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/anyupp-gql/backend/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/anyupp-gql/backend"],
+      "options": {
+        "jestConfig": "libs/anyupp-gql/backend/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["platform:nodejs"]
+}
