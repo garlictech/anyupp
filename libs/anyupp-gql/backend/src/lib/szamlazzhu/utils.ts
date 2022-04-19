@@ -3,7 +3,11 @@ import * as R from 'ramda';
 import * as fp from 'lodash/fp';
 import { flow, pipe } from 'fp-ts/lib/function';
 
+export const getTranslation = (localizedItem: CrudApi.LocalizedItem) =>
+  localizedItem['hu'] || localizedItem['en'] || 'ismeretlen termék';
+
 export const calculaterServiceFeeItems = (
+  serviceFeePolicy: CrudApi.Maybe<CrudApi.ServiceFeePolicy> | undefined,
   items: CrudApi.OrderItem[],
   currency: string,
 ): [string, CrudApi.Price][] =>
@@ -25,7 +29,7 @@ export const calculaterServiceFeeItems = (
       sum,
     ]),
     R.map(([taxPercentage, netPrice]) => [
-      `felszolgálási díj ${taxPercentage}% ÁFA tartalommal`,
+      `Szervizdíj - ${serviceFeePolicy?.percentage}%`,
       {
         taxPercentage,
         netPrice,
