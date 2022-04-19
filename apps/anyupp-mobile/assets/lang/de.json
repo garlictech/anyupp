@@ -7,84 +7,68 @@
     "select": "Select",
     "ok": "OK",
     "today": "Today",
-    "exit": "Tap the back button again to exit app.",
     "ok2": "OK"
   },
   "locale": {
     "EN": "English",
-    "DE": "Deutsch",
-    "HU": "Magyar"
+    "DE": "German",
+    "HU": "Hungarian"
   },
   "login": {
     "welcome": "Welcome to AnyUpp!",
-    "join": "Wanna join?",
-    "swipeUp": "Swipe up",
+    "join": "Are you ready to join?",
+    "swipeUp": "Swipe up!",
     "continueWith": "Continue with",
-    "signInAnonymously": "Continue anonymously",
-    "accountLink": {
-      "title": "Account link",
-      "description": "You have already used another account with the same e-mail address. Do you want to link them?",
-      "selectAccount": "Select account to link",
-      "linkWith": "Link with {{0}}",
-      "cancelLogin": "Cancel Login"
-    },
-    "accountUnlink": {
-      "title": "Unlink Social Provider",
-      "description": "With this feature you can unlink from your main user with this social provider. Are you sure want to unlink?",
-      "unlink": "Unlink",
-      "cancel": "Cancel"
-    },
+    "signInAnonymously": "Sign in without register",
     "email": {
       "loginProgress": "Logging in...",
-      "forgotPassword": "Forgot password.",
+      "forgotPassword": "I forgot my password.",
       "emailFieldLabel": "Email",
-      "emailOrPhoneFieldLabel": "Email or Phone number",
+      "emailOrPhoneFieldLabel": "Email or phone number",
       "passwordFieldLabel": "Password",
       "password2FieldLabel": "Password again",
-      "linkLoginWithLink": "Login with email link. . .",
-      "linkLoginWithPassword": "Login with password. . .",
       "signIn": "Sign in",
-      "linkSignIn": "Sign in. . .",
-      "linkRegister": "Sign up. . .",
+      "linkSignIn": "Signing in...",
+      "linkRegister": "Register...",
       "buttonLogin": "Login",
-      "buttonLoginLink": "Send login link",
-      "buttonRegister": "Sign up",
-      "buttonPasswordReset": "Reset my password",
-      "sendPasswordResetMessage": "Reset password in progress...",
+      "buttonLoginLink": "Send link to login",
+      "buttonRegister": "Register",
+      "buttonPasswordReset": "Reset password",
+      "sendPasswordResetMessage": "Resetting password...",
       "dialogEmailSentTitle": "Email sent",
-      "dialogEmailSentMessage": "Check your email and click on the link to login to AnyUpp!",
+      "dialogEmailSentMessage": "Click on the link in the email sent to log in!",
       "dialogResetSentTitle": "Code sent",
-      "dialogResetSentMessage": "Password reset confirmation code sent to ",
-      "dialogPasswordRefreshedTitle": "Password updated'",
-      "dialogPasswordRefreshedMessage": "Your password has been updated, you can sign in now.",
+      "dialogResetSentMessage": "We sent the code to change your password here: ",
+      "dialogPasswordRefreshedTitle": "Password changed successfully",
+      "dialogPasswordRefreshedMessage": "We changed your password, now you can log in.",
       "closeButton": "Close",
-      "setMailTo": "We have sent the activation email",
-      "checkInbox": "Check your inbox!",
-      "enterToConfirm": "Enter it below to confirm your account.",
-      "codeNotReceived": "Didn't receive a link?",
-      "resendCode": "Resend it",
-      "verificationCode": "Verification Code",
-      "confirmAccount": "Confirm Account",
-      "dialogConfirmedTitle": "Account Verified!",
-      "dialogConfirmedMessage": "Your account has been verified.",
-      "enterCode": "Enter Code"
+      "setMailTo": "We sent the activation link to your email",
+      "checkInbox": "Check your email!",
+      "enterToConfirm": "Enter the received code to activate your account",
+      "codeNotReceived": "Haven't received an email?",
+      "resendCode": "Resend email",
+      "verificationCode": "Activation code",
+      "confirmAccount": "Activate account",
+      "dialogConfirmedTitle": "Account activated!",
+      "dialogConfirmedMessage": "Your account is activated.",
+      "enterCode": "Please enter the activation code!"
     },
     "phone": {
-      "loginProgress": "Login in progress...",
-      "title": "Login with Phone",
-      "phoneNumLabel": "Phone Number",
-      "phoneNumDesc": "You will receive a code via SMS...",
-      "smsCodeLabel": "SMS Code",
-      "buttonRequireSMS": "Require SMS",
-      "buttonSendSMSCode": "Log in",
-      "searchByCountry": "Search by country name"
+      "loginProgress": "Logging in...",
+      "title": "Login with phone number",
+      "phoneNumLabel": "Phone number",
+      "phoneNumDesc": "We sent your login code in SMS",
+      "smsCodeLabel": "SMS code",
+      "buttonRequireSMS": "Send SMS code",
+      "buttonSendSMSCode": "Login",
+      "searchByCountry": "Search by country code"
     }
   },
   "logout": {
-    "title": "Confirm Logout",
-    "description": "Are you sure to want log out?",
+    "title": "Confirm logout",
+    "description": "Do you really want to log out?",
     "cancel": "Cancel",
-    "confirm": "Logout"
+    "confirm": "Log out"
   },
   "tos": {
     "acceptionPrefix": "By using this application you agree and consent to the",
@@ -100,19 +84,15 @@
   "specialOffer": {
     "specialOffers": "Special offers"
   },
-  "barcodeScanner": {
-    "flashOn": "Flash on",
-    "flashOff": "Flash off"
-  },
   "main": {
     "menu": {
       "menu": "Menu",
       "favorites": "Favorites",
-      "orderStatus": "Order status",
+      "orderStatus": "Orders",
       "profile": "Profile",
       "cart": "Cart"
     },
-    "tooltip": "You can switch between\n ordering methods at any time.",
+    "tooltip": "You can change order modes any time.",
     "bottomTitles": {
       "menu": "Menu",
       "favorites": "Favorites",
@@ -122,9 +102,9 @@
     "categoryEmpty": "This category is currently empty.",
     "noCategories": "This unit has no products yet.",
     "category": {
-      "emptyTakeaway": "Sorry, this product category is not available in takeaway mode.",
-      "emptyInPlace": "Sorry, this product category is not available in in place mode.",
-      "emptyHint": "Look around the other categories."
+      "emptyTakeaway": "Sorry this category is not available in takeaway mode.",
+      "emptyInPlace": "Sorry this category is not available in in-place mode.",
+      "emptyHint": "Take a look at the other categories."
     }
   },
   "cart": {
@@ -141,11 +121,11 @@
     "deleteCartAccept": "Delete",
     "deleteCartCancel": "Cancel",
     "takeAway": "takeaway",
-    "inPlace": "in place",
+    "inPlace": "in-place",
     "packagingFee": "Packaging fee",
     "serviceFee": "Service fee",
-    "hasServiceFee": "The price includes service fee",
-    "hasNoServiceFee": "The price doesn't include service fee"
+    "hasServiceFee": "The price includes a service fee.",
+    "hasNoServiceFee": "The price doesn't include a service fee."
   },
   "allergens": {
     "title": "ALLERGENS",
@@ -164,24 +144,32 @@
     "sulphites": "Sulphites",
     "treenuts": "Treenuts",
     "disclaimerTitle": "Disclaimer",
-    "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you suffer from a food allergy please inform out {{0}} Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
+    "disclaimer": "Description of the dishes may not contain detailed information on all of the ingredients. If you have a food allergy please inform our {{0}} Team and ask for our allergen guide. We cannot guarantee allergen free environment or products."
   },
   "favorites": {
-    "noFavorites": "You have not added any favorites yet.",
-    "noFavoritesDesc": "Find the food and drinks you like under the Menu tab.",
+    "noFavorites": "You haven't added any favorites yet.",
+    "noFavoritesDesc": "Find food and drinks you like under the Menu tab.",
     "noFavoritesButton": "Discover menu"
   },
   "orders": {
     "titleCurrentOrder": "Current orders",
     "titleOrderHistory": "Order history",
-    "noActiveOrderSimplified": "Did something else come to your mind?",
+    "noActiveOrderSimplified": "Something else came to your mind?",
     "noActiveOrderFull": "No active order placed yet",
-    "noActiveOrderDesc": "Find the food and drinks you like under the Menu tab.",
+    "noActiveOrderDesc": "Find food and drinks you like under the Menu tab.",
     "noActiveOrderButton": "Discover menu",
     "totalCost": "TOTAL COST",
     "noOrderHistory": "No order history yet",
     "sendRatingButton": "RATE ORDER",
     "sendTipButton": "SEND TIP",
+    "sendOrderError": {
+      "title": "Order failed.",
+      "description": "An error has occurred, please contact our team!"
+    },
+    "sendOrderSuccess": {
+      "title": "Successful order!",
+      "description": "The ordered products have been added to your invoice and will be served soon."
+    },
     "details": {
       "orderState": "Order status",
       "orderDetails": "Order details",
@@ -189,14 +177,6 @@
       "otherDetails": "More details",
       "tipDetails": "Tip",
       "serviceFee": "The price contains {{0}}% service fee."
-    },
-    "sendOrderError": {
-      "title": "Order failed.",
-      "description": "An error has occurred, please contact our team for assistance!"
-    },
-    "sendOrderSuccess": {
-      "title": "Successful order!",
-      "description": "The ordered products have been added to your invoice and will be served soon."
     },
     "status": {
       "none": "WAITING",
@@ -236,12 +216,12 @@
         "none": {
           "title": "Processing",
           "titleShort": "Processing",
-          "description": "Your order is being processed. If any problem occurs, our colleagues will contact you."
+          "description": "Your order is being processed."
         },
         "placed": {
           "title": "Processed",
           "titleShort": "Processed",
-          "description": "Your order has been processed. All is well."
+          "description": "Your order has been processed."
         },
         "processing": {
           "title": "Your order is being processed",
@@ -256,7 +236,7 @@
         "rejected": {
           "title": "Deleted",
           "titleShort": "Deleted",
-          "description": "Your order has been canceled. Our colleague will contact you shortly for further action."
+          "description": "Your order has been canceled. Our colleague will contact you."
         },
         "served": {
           "title": "Served",
@@ -266,7 +246,7 @@
         "simplified": {
           "title": "Order placed",
           "titleShort": "Order placed",
-          "description": "Your order is being processed. Should any problems arise, our colleagues will contact you."
+          "description": "Your order is being processed."
         }
       },
       "timeline": {
@@ -275,7 +255,7 @@
           "waiting": "We have received your order."
         },
         "placed": {
-          "finished": "Your order has been confirmed, everything's all right!",
+          "finished": "Your order has been confirmed, everything's fine!",
           "waiting": "Your order is being confirmed."
         },
         "processing": {
@@ -437,10 +417,10 @@
     },
     "dialog": {
       "title": {
-        "takeaway": "Are you sure you want to switch to in place order mode?",
-        "inplace": "Are you sure you want to switch to takeaway order mode?"
+        "takeaway": "Do you want to switch to in-place mode?",
+        "inplace": "Do you want to switch to takeaway mode?"
       },
-      "description": "Switching order mode at this point will delete your current cart.",
+      "description": "Switching order mode at this point will delete your cart.",
       "cancel": "Cancel",
       "ok": "Yes"
     }
@@ -544,7 +524,7 @@
     "menu": {
       "section1": "Account",
       "contact": "Contact",
-      "transactions": "Transactions",
+      "transactions": "Purchases",
       "paymentMethods": "Saved cards",
       "allergens": "Allergens",
       "section2": "Settings",
@@ -559,9 +539,9 @@
       "save": "SET LANGUAGE"
     },
     "transactions": {
-      "title": "TRANSACTIONS",
+      "title": "PURCHASES",
       "paymentMethod": "Payment Method",
-      "noTransactions": "Cou Transactions",
+      "noTransactions": "No previous purchases",
       "details": "Details",
       "type": {
         "card": "Card",
@@ -574,6 +554,14 @@
         "success": "Served",
         "failed": "Deleted"
       }
+    },
+    "edit": {
+      "title": "PROFILE",
+      "firstName": "Last name",
+      "lastName": "First name",
+      "email": "Email",
+      "nickName": "Nickname",
+      "save": "Save profile"
     }
   },
   "product": {
@@ -587,7 +575,7 @@
     "selectSize": "Choose a size"
   },
   "validators": {
-    "required": "This field is required",
+    "required": "Required",
     "enterValidEmail": "Please enter a valid email address",
     "eneterValidPhone": "Please enter a valid phone number",
     "passwordIsRequired": "Password is required",
