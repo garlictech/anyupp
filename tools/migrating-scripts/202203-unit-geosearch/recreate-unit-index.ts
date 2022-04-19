@@ -1,7 +1,14 @@
 // EXECUTE: yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/manipulate-os-indices.ts
 import { Client } from '@elastic/elasticsearch';
 import { CrudApiConfig } from '../../../libs/crud-gql/api/src';
-import { catchError, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+  toArray,
+} from 'rxjs/operators';
 import { from } from 'rxjs';
 import * as CrudApi from '../../../libs/crud-gql/api/src';
 import { pipe } from 'fp-ts/lib/function';
@@ -66,9 +73,14 @@ from(indices)
     ),
     toArray(),
     switchMap(() => crudSdk.ListUnits()),
-    switchMap(
-      (res: any) => from(pipe(res?.items ?? [])),
-      R.reject((unit: CrudApi.Unit) => R.isNil(unit?.address.location)),
+    map(x => x as { items: CrudApi.Unit[] }),
+    switchMap((res: { items: CrudApi.Unit[] }) =>
+      from(
+        pipe(
+          res?.items ?? [],
+          R.reject((unit: CrudApi.Unit) => R.isNil(unit?.address.location)),
+        ),
+      ),
     ),
     mergeMap(
       (unit: CrudApi.Unit) =>

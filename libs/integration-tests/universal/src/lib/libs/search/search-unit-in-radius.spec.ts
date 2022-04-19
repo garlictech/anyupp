@@ -1,7 +1,7 @@
 const { createConnector } = require('aws-elasticsearch-js');
 import { Client } from '@elastic/elasticsearch';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap, delay } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { createIamCrudSdk } from '../../../api-clients';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
@@ -24,30 +24,35 @@ afterAll(done => {
 });
 
 beforeAll(done => {
-  sdk
-    .CreateUnit({
-      input: {
-        id: unitId,
-        location: {
-          lat: 1,
-          lon: 1,
-        },
-        address: {
-          address: 'ADDRESS',
-          city: 'CITY',
-          country: 'COUNTRY',
-          postalCode: 'POSTALCODE',
-          title: 'TITLE',
-        },
-        chainId: 'CHAINID',
-        groupId: 'GROUPID',
-        isAcceptingOrders: true,
-        isActive: true,
-        name: 'NAME',
-      },
-    })
+  cleanup$
+    .pipe(
+      switchMap(() =>
+        sdk.CreateUnit({
+          input: {
+            id: unitId,
+            location: {
+              lat: 1,
+              lon: 1,
+            },
+            address: {
+              address: 'ADDRESS',
+              city: 'CITY',
+              country: 'COUNTRY',
+              postalCode: 'POSTALCODE',
+              title: 'TITLE',
+            },
+            chainId: 'CHAINID',
+            groupId: 'GROUPID',
+            isAcceptingOrders: true,
+            isActive: true,
+            name: 'NAME',
+          },
+        }),
+      ),
+      delay(3000),
+    )
     .subscribe(() => done());
-});
+}, 10000);
 
 test('Search for a unit in radius using resolver', done => {
   searchByRadiusResolver(searchDeps)({
@@ -98,6 +103,6 @@ test('Search for a unit in radius using API', done => {
         limit: 1,
       },
     })
-    .pipe(tap(res => expect(res?.items).toEqual([])))
+    .pipe(tap(res => expect(res?.items).toEqual([unitId])))
     .subscribe(() => done());
 });
