@@ -1,20 +1,22 @@
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnDestroy,
-  OnInit,
+  ViewChild,
 } from '@angular/core';
-import { groupsSelectors } from '@bgap/admin/store/groups';
+import { visibleLinesOnViewport } from '@bgap/admin/shared/utils';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
-import { unitsSelectors } from '@bgap/admin/store/units';
+import { UnitCollectionService } from '@bgap/admin/store/units';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { UnitListService } from '../../services/unit-list.service';
 import { UnitFormComponent } from '../unit-form/unit-form.component';
 
 @UntilDestroy()
@@ -23,44 +25,25 @@ import { UnitFormComponent } from '../unit-form/unit-form.component';
   selector: 'bgap-unit-list',
   templateUrl: './unit-list.component.html',
 })
-export class UnitListComponent implements OnInit, OnDestroy {
-  public units: Array<CrudApi.Unit & { _group?: CrudApi.Group }> = [];
+export class UnitListComponent implements OnDestroy {
+  @ViewChild('dataVSVP')
+  dataVSVP?: CdkVirtualScrollViewport;
+
+  public units$: Observable<CrudApi.Unit[]>;
   public selectedGroupId$: Observable<string | undefined | null>;
 
   constructor(
     private _store: Store,
     private _nbDialogService: NbDialogService,
-    private _changeDetectorRef: ChangeDetectorRef,
+    private _unitListService: UnitListService,
+    private _unitCollectionService: UnitCollectionService,
   ) {
     this.selectedGroupId$ = this._store.pipe(
       select(loggedUserSelectors.getSelectedGroupId),
       untilDestroyed(this),
     );
-  }
 
-  ngOnInit() {
-    combineLatest([
-      this._store.pipe(select(groupsSelectors.getSelectedChainGroups)),
-      this._store.pipe(select(unitsSelectors.getSelectedGroupUnits)),
-      this._store.pipe(select(loggedUserSelectors.getSelectedChainId)),
-    ])
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        ([groups, units, selectedChainId]: [
-          CrudApi.Group[],
-          CrudApi.Unit[],
-          string | null | undefined,
-        ]): void => {
-          this.units = units
-            .map(unit => ({
-              ...unit,
-              _group: groups.find((g): boolean => g.id === unit.groupId),
-            }))
-            .filter(u => u._group?.chainId === selectedChainId);
-
-          this._changeDetectorRef.detectChanges();
-        },
-      );
+    this.units$ = this._unitCollectionService.filteredEntities$;
   }
 
   ngOnDestroy(): void {
@@ -69,5 +52,14 @@ export class UnitListComponent implements OnInit, OnDestroy {
 
   public addUnit(): void {
     this._nbDialogService.open(UnitFormComponent);
+  }
+
+  public loadNextPaginatedData(count: number, itemCount: number) {
+    if (
+      itemCount - count <
+      visibleLinesOnViewport(this.dataVSVP?.elementRef.nativeElement)
+    ) {
+      this._unitListService.loadNextPaginatedData();
+    }
   }
 }

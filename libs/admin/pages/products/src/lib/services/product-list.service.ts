@@ -1,42 +1,68 @@
 import { partition } from 'lodash/fp';
-import { of } from 'ramda';
-import { combineLatest, EMPTY, Observable } from 'rxjs';
-import { debounceTime, map, startWith, switchMap, take } from 'rxjs/operators';
+import { combineLatest, defer, EMPTY, from, iif, Observable, of } from 'rxjs';
+import {
+  debounceTime,
+  map,
+  mapTo,
+  mergeMap,
+  startWith,
+  switchMap,
+  take,
+  tap,
+  toArray,
+} from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
+import { PAGINATION_LIMIT } from '@bgap/admin/shared/data-access/ngrx-data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { catchGqlError } from '@bgap/admin/store/app-core';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
-import { productsSelectors } from '@bgap/admin/store/products';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
-  EProductLevel,
-  Product,
-  ProductOrderChangeEvent,
-} from '@bgap/shared/types';
+  ChainProductCollectionService,
+  GroupProductCollectionService,
+  productsSelectors,
+  UnitProductCollectionService,
+} from '@bgap/admin/store/products';
+import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
-import { select, Store } from '@ngrx/store';
+import { NbDialogService } from '@nebular/theme';
+import { Store } from '@ngrx/store';
 
-const foundIn = (searchValue: string, p: Product) => {
-  const fields = [
-    p.name?.hu ?? '',
-    p.name?.en ?? '',
-    p.name?.de ?? '',
-    p.description?.hu ?? '',
-    p.description?.en ?? '',
-    p.description?.de ?? '',
-  ];
+import { foundIn } from '../fn';
 
-  return searchValue
-    ? fields.some(i => i.toLowerCase().includes(searchValue.toLowerCase()))
-    : true;
-};
+interface CGU<T> {
+  chain?: T;
+  group?: T;
+  unit?: T;
+}
 
 @Injectable()
 export class ProductListService {
-  constructor(private _store: Store, private _crudSdk: CrudSdkService) {}
+  private _nextToken: CGU<string> = {
+    chain: undefined,
+    group: undefined,
+    unit: undefined,
+  };
+  private _working: CGU<boolean> = {
+    chain: false,
+    group: false,
+    unit: false,
+  };
 
-  public hasRoleToEdit$(productLevel: EProductLevel) {
+  constructor(
+    private _store: Store,
+    private _chainProductCollectionService: ChainProductCollectionService,
+    private _groupProductCollectionService: GroupProductCollectionService,
+    private _unitProductCollectionService: UnitProductCollectionService,
+    private _crudSdk: CrudSdkService,
+    private _nbDialogService: NbDialogService,
+  ) {}
+
+  public hasRoleToEdit$(/*productLevel: EProductLevel*/) {
+    return of(true);
+    /*
     return this._store.select(loggedUserSelectors.getLoggedUserRole).pipe(
       map((role: CrudApi.Role | undefined) => {
         switch (productLevel) {
@@ -62,29 +88,20 @@ export class ProductListService {
         }
       }),
     );
+    */
   }
 
-  public chainProducts$(searchValueChanges: Observable<string>) {
-    return combineLatest([
-      searchValueChanges.pipe(debounceTime(200), startWith('')),
-      this._store.pipe(
-        select(productsSelectors.getChainProductsOfSelectedCategory()),
-      ),
-    ]).pipe(
-      switchMap(
-        ([searchValue, chainProducts]: [string, CrudApi.ChainProduct[]]) => {
-          const [dirtyChainProducts, cleanChainProducts] = partition(
-            p => p.dirty,
-            chainProducts,
-          );
+  public chainProducts$() {
+    return this._chainProductCollectionService.filteredEntities$.pipe(
+      switchMap((chainProducts: CrudApi.ChainProduct[]) => {
+        console.error('chainProducts', chainProducts);
+        const [dirtyChainProducts, cleanChainProducts] = partition(
+          p => p.dirty,
+          chainProducts,
+        );
 
-          return of(
-            [...dirtyChainProducts, ...cleanChainProducts].filter(p =>
-              foundIn(searchValue, p),
-            ),
-          );
-        },
-      ),
+        return of([...cleanChainProducts, ...dirtyChainProducts]);
+      }),
     );
   }
 
@@ -92,36 +109,23 @@ export class ProductListService {
     return combineLatest([
       searchValueChanges.pipe(debounceTime(200), startWith('')),
       this._store.select(
-        productsSelectors.getExtendedGroupProductsOfSelectedCategory(),
+        productsSelectors.getExtendedGroupProductsOfSelectedCategory,
       ),
       this._store.select(
-        productsSelectors.getPendingGroupProductsOfSelectedCategory(),
-      ),
-      this._store.pipe(
-        select(loggedUserSelectors.getLoggedUserRole),
-        filterNullish(),
+        productsSelectors.getPendingGroupProductsOfSelectedCategory,
       ),
     ]).pipe(
-      switchMap(([searchValue, groupProducts, pendingGroupProducts, role]) => {
+      switchMap(([searchValue, groupProducts, pendingGroupProducts]) => {
         const [dirtyGroupProducts, cleanGroupProducts] = partition(
           p => p.dirty,
           groupProducts,
         );
 
-        const getPendingProductsByRole = () =>
-          [
-            CrudApi.Role.superuser,
-            CrudApi.Role.chainadmin,
-            CrudApi.Role.groupadmin,
-          ].includes(role)
-            ? pendingGroupProducts.map(p => ({ ...p, pending: true }))
-            : [];
-
         return of(
           [
-            ...getPendingProductsByRole(),
-            ...dirtyGroupProducts,
+            ...pendingGroupProducts.map(p => ({ ...p, pending: true })),
             ...cleanGroupProducts,
+            ...dirtyGroupProducts,
           ].filter(p => foundIn(searchValue, p)),
         );
       }),
@@ -132,10 +136,10 @@ export class ProductListService {
     return combineLatest([
       searchValueChanges.pipe(debounceTime(200), startWith('')),
       this._store
-        .select(productsSelectors.getExtendedUnitProductsOfSelectedCategory())
+        .select(productsSelectors.getExtendedUnitProductsOfSelectedCategory)
         .pipe(map(products => products.sort(customNumberCompare('position')))),
       this._store.select(
-        productsSelectors.getPendingUnitProductsOfSelectedCategory(),
+        productsSelectors.getPendingUnitProductsOfSelectedCategory,
       ),
     ]).pipe(
       switchMap(([searchValue, unitProducts, pendingUnitProducts]) => {
@@ -146,10 +150,9 @@ export class ProductListService {
 
         return of(
           [
-            // Ardberg 10y 4cl
             ...pendingUnitProducts.map(p => ({ ...p, pending: true })),
-            ...dirtyUnitProducts,
             ...cleanUnitProducts,
+            ...dirtyUnitProducts,
           ].filter(p => foundIn(searchValue, p)),
         );
       }),
@@ -182,13 +185,444 @@ export class ProductListService {
   }
 
   public updateUnitProductPosition$(id: string, position: number) {
-    return this._crudSdk.sdk
-      .UpdateUnitProduct({
-        input: {
-          id,
-          position,
-        },
+    return this._unitProductCollectionService
+      .update$({
+        id,
+        position,
       })
       .pipe(catchGqlError(this._store), take(1));
+  }
+
+  public loading$() {
+    return combineLatest([
+      this._chainProductCollectionService.loading$,
+      this._groupProductCollectionService.loading$,
+      this._unitProductCollectionService.loading$,
+    ]).pipe(
+      switchMap(([chainsLoading, groupsLoading, unitsLoading]) =>
+        of(chainsLoading || groupsLoading || unitsLoading),
+      ),
+    );
+  }
+
+  public updateLocalizedItemSearchValue(searchValue: string) {
+    this._chainProductCollectionService.setCurrentLocalizedItemFilter(
+      'name',
+      searchValue,
+    );
+
+    this._groupProductCollectionService.setCurrentLocalizedItemFilter(
+      'name',
+      searchValue,
+    );
+
+    this._unitProductCollectionService.setCurrentLocalizedItemFilter(
+      'name',
+      searchValue,
+    );
+  }
+
+  public resetNextTokens() {
+    this._nextToken = { chain: undefined, group: undefined, unit: undefined };
+  }
+
+  public loadNextChainProductPaginatedData() {
+    if (!this._working.chain) {
+      this._working.chain = true;
+
+      this._store
+        .select(loggedUserSelectors.getLoggedUserSettings)
+        .pipe(
+          take(1),
+          switchMap(settings =>
+            iif(
+              () =>
+                !!settings?.selectedChainId &&
+                !!settings?.selectedProductCategoryId,
+              this._chainProductCollectionService
+                .getCachedPaginatedData$({
+                  filter: {
+                    chainId: { eq: settings?.selectedChainId },
+                    productCategoryId: {
+                      eq: settings?.selectedProductCategoryId,
+                    },
+                  },
+                  limit: PAGINATION_LIMIT,
+                  nextToken: this._nextToken.chain,
+                })
+                .pipe(
+                  // Load groupProducts
+                  switchMap(chainListResult =>
+                    from(chainListResult.items.map(i => i.id)).pipe(
+                      filterNullish(),
+                      mergeMap(chainProductId =>
+                        this._groupProductCollectionService
+                          .getCachedPaginatedData$(
+                            {
+                              filter: {
+                                chainId: { eq: settings?.selectedChainId },
+                                groupId: { eq: settings?.selectedGroupId },
+                                parentId: {
+                                  eq: chainProductId,
+                                },
+                              },
+                            },
+                            false,
+                          )
+                          .pipe(
+                            map(res => res.items[0]),
+                            filterNullish(),
+                            take(1),
+                          ),
+                      ),
+                      toArray(),
+                      tap(groupProducts => {
+                        this._groupProductCollectionService.addManyToCache(
+                          groupProducts,
+                        );
+                      }),
+                      // Load unitProducts
+                      switchMap(groupListResult =>
+                        from(groupListResult.map(i => i.id)).pipe(
+                          filterNullish(),
+                          mergeMap(groupProductId =>
+                            this._unitProductCollectionService
+                              .getCachedPaginatedData$(
+                                {
+                                  filter: {
+                                    chainId: { eq: settings?.selectedChainId },
+                                    groupId: { eq: settings?.selectedGroupId },
+                                    unitId: { eq: settings?.selectedUnitId },
+                                    parentId: {
+                                      eq: groupProductId,
+                                    },
+                                  },
+                                },
+                                false,
+                              )
+                              .pipe(
+                                map(res => res.items[0]),
+                                filterNullish(),
+                                take(1),
+                              ),
+                          ),
+                          toArray(),
+                          tap(unitProducts => {
+                            this._unitProductCollectionService.addManyToCache(
+                              unitProducts,
+                            );
+                          }),
+                        ),
+                      ),
+                      mapTo(chainListResult),
+                    ),
+                  ),
+                ),
+              of(undefined),
+            ),
+          ),
+          take(1),
+        )
+        .subscribe(chainListResult => {
+          this._nextToken.chain = chainListResult?.nextToken || undefined;
+          this._working.chain = false;
+        });
+    }
+  }
+
+  public loadNextGroupProductPaginatedData() {
+    if (!this._working.group) {
+      this._working.group = true;
+
+      this._store
+        .select(loggedUserSelectors.getLoggedUserSettings)
+        .pipe(
+          take(1),
+          switchMap(settings =>
+            iif(
+              () => !!settings?.selectedChainId && !!settings?.selectedGroupId,
+              this._groupProductCollectionService
+                .getCachedPaginatedData$({
+                  filter: {
+                    chainId: { eq: settings?.selectedChainId },
+                    groupId: { eq: settings?.selectedGroupId },
+                  },
+                  limit: PAGINATION_LIMIT,
+                  nextToken: this._nextToken.group,
+                })
+                .pipe(
+                  // Load unitProducts
+                  switchMap(groupListResult =>
+                    from(groupListResult.items.map(i => i.id)).pipe(
+                      filterNullish(),
+                      mergeMap(groupProductId =>
+                        this._unitProductCollectionService
+                          .getCachedPaginatedData$(
+                            {
+                              filter: {
+                                chainId: { eq: settings?.selectedChainId },
+                                groupId: { eq: settings?.selectedGroupId },
+                                unitId: { eq: settings?.selectedUnitId },
+                                parentId: {
+                                  eq: groupProductId,
+                                },
+                              },
+                            },
+                            false,
+                          )
+                          .pipe(
+                            map(res => res.items[0]),
+                            filterNullish(),
+                            take(1),
+                          ),
+                      ),
+                      toArray(),
+                      tap(unitProducts =>
+                        this._unitProductCollectionService.addManyToCache(
+                          unitProducts,
+                        ),
+                      ),
+                      // Load chainProducts
+                      switchMap(() =>
+                        from(groupListResult.items.map(i => i.parentId)).pipe(
+                          filterNullish(),
+                          mergeMap(chainProductId =>
+                            this._chainProductCollectionService
+                              .getCachedPaginatedData$(
+                                {
+                                  filter: {
+                                    chainId: { eq: settings?.selectedChainId },
+                                    id: {
+                                      eq: chainProductId,
+                                    },
+                                  },
+                                },
+                                false,
+                              )
+                              .pipe(
+                                map(res => res.items[0]),
+                                filterNullish(),
+                                take(1),
+                              ),
+                          ),
+                          toArray(),
+                          tap(chainProducts =>
+                            this._chainProductCollectionService.addManyToCache(
+                              chainProducts,
+                            ),
+                          ),
+                        ),
+                      ),
+                      mapTo(groupListResult),
+                    ),
+                  ),
+                ),
+              of(undefined),
+            ),
+          ),
+          take(1),
+        )
+        .subscribe(result => {
+          this._nextToken.group = result?.nextToken || undefined;
+          this._working.group = false;
+        });
+    }
+  }
+
+  public loadNextUnitProductPaginatedData() {
+    if (!this._working.unit) {
+      this._working.unit = true;
+
+      this._store
+        .select(loggedUserSelectors.getLoggedUserSettings)
+        .pipe(
+          take(1),
+          switchMap(settings =>
+            iif(
+              () =>
+                !!settings?.selectedChainId &&
+                !!settings?.selectedGroupId &&
+                !!settings?.selectedUnitId,
+              this._unitProductCollectionService
+                .getCachedPaginatedData$({
+                  filter: {
+                    chainId: { eq: settings?.selectedChainId },
+                    groupId: { eq: settings?.selectedGroupId },
+                    unitId: { eq: settings?.selectedUnitId },
+                  },
+                  limit: PAGINATION_LIMIT,
+                  nextToken: this._nextToken.unit,
+                })
+                .pipe(
+                  // Load groupProducts
+                  switchMap(unitListResult =>
+                    from(unitListResult.items.map(i => i.parentId)).pipe(
+                      filterNullish(),
+                      mergeMap(groupProductId =>
+                        this._groupProductCollectionService
+                          .getCachedPaginatedData$(
+                            {
+                              filter: {
+                                chainId: { eq: settings?.selectedChainId },
+                                groupId: { eq: settings?.selectedGroupId },
+                                id: {
+                                  eq: groupProductId,
+                                },
+                              },
+                            },
+                            false,
+                          )
+                          .pipe(
+                            map(res => res.items[0]),
+                            filterNullish(),
+                            take(1),
+                          ),
+                      ),
+                      toArray(),
+                      tap(groupProducts => {
+                        this._groupProductCollectionService.addManyToCache(
+                          groupProducts,
+                        );
+                      }),
+                      // Load chainProducts
+                      switchMap(groupListResult =>
+                        from(groupListResult.map(i => i.parentId)).pipe(
+                          filterNullish(),
+                          mergeMap(chainProductId =>
+                            this._chainProductCollectionService
+                              .getCachedPaginatedData$(
+                                {
+                                  filter: {
+                                    chainId: { eq: settings?.selectedChainId },
+                                    productCategoryId: {
+                                      eq: settings?.selectedProductCategoryId,
+                                    },
+                                    id: {
+                                      eq: chainProductId,
+                                    },
+                                  },
+                                },
+                                false,
+                              )
+                              .pipe(
+                                map(res => res.items[0]),
+                                filterNullish(),
+                                take(1),
+                              ),
+                          ),
+                          toArray(),
+                          tap(chainProducts => {
+                            this._chainProductCollectionService.addManyToCache(
+                              chainProducts,
+                            );
+                          }),
+                        ),
+                      ),
+                      mapTo(unitListResult),
+                    ),
+                  ),
+                ),
+              of(undefined),
+            ),
+          ),
+          take(1),
+        )
+        .subscribe(result => {
+          this._nextToken.unit = result?.nextToken || undefined;
+          this._working.unit = false;
+        });
+    }
+  }
+
+  public deleteChainProduct(id: string) {
+    this._acceptDeletion$()
+      .pipe(
+        switchMap(accepted =>
+          iif(
+            () => accepted,
+            defer(() =>
+              this._crudSdk.sdk.DeleteChainProduct({ input: { id } }),
+            ).pipe(
+              filterNullish(),
+              tap(product => {
+                this._chainProductCollectionService.removeOneFromCache(product);
+              }),
+            ),
+            of(undefined),
+          ),
+        ),
+        take(1),
+      )
+      .subscribe();
+  }
+
+  public deleteGroupProduct(id: string) {
+    this._acceptDeletion$()
+      .pipe(
+        switchMap(accepted =>
+          iif(
+            () => accepted,
+            defer(() =>
+              this._crudSdk.sdk.DeleteGroupProduct({ input: { id } }),
+            ).pipe(
+              filterNullish(),
+              tap(product => {
+                this._groupProductCollectionService.removeOneFromCache(product);
+              }),
+            ),
+            of(undefined),
+          ),
+        ),
+        take(1),
+      )
+      .subscribe();
+  }
+
+  public deleteUnitProduct(id: string) {
+    this._acceptDeletion$()
+      .pipe(
+        switchMap(accepted =>
+          iif(
+            () => accepted,
+            defer(() =>
+              this._crudSdk.sdk.DeleteUnitProduct({ input: { id } }),
+            ).pipe(
+              filterNullish(),
+              tap(product => {
+                this._unitProductCollectionService.removeOneFromCache(product);
+              }),
+            ),
+            of(undefined),
+          ),
+        ),
+        take(1),
+      )
+      .subscribe();
+  }
+
+  private _acceptDeletion$() {
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
+
+    return new Observable<boolean>(observer => {
+      dialog.componentRef.instance.options = {
+        message: 'products.confirmDeleteProduct',
+        buttons: [
+          {
+            label: 'common.ok',
+            callback: () => {
+              observer.next(true);
+            },
+            status: 'success',
+          },
+          {
+            label: 'common.cancel',
+            status: 'basic',
+            callback: () => {
+              observer.next(false);
+            },
+          },
+        ],
+      };
+    });
   }
 }

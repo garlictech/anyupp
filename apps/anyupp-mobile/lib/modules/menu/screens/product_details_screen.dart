@@ -43,7 +43,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   double titleOpacity = 1.0;
 
-
   @override
   Widget build(BuildContext context) {
     var unit = currentUnit!;
@@ -66,8 +65,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 primary: true,
                 title: FadeOnScroll(
                   scrollController: _scrollController,
-                   zeroOpacityOffset: 0.0,
-                   fullOpacityOffset: _expandedHeight,
+                  zeroOpacityOffset: 0.0,
+                  fullOpacityOffset: _expandedHeight,
                   child: Text(
                     getLocalizedText(context, widget.item.name),
                     style: Fonts.satoshi(
@@ -184,12 +183,12 @@ class ProductDetailsWidget extends StatelessWidget {
                     // ProductImageAndInfoWidget(
                     //   item: item,
                     // ),
-                      ProductConfiguratorWidget(
-                        product: item,
-                        unit: unit,
-                        servingMode: servingMode,
-                        displayState: displayState,
-                      ),
+                    ProductConfiguratorWidget(
+                      product: item,
+                      unit: unit,
+                      servingMode: servingMode,
+                      displayState: displayState,
+                    ),
                     if (isDisabled)
                       Container(
                         color: theme.secondary12,
@@ -198,13 +197,6 @@ class ProductDetailsWidget extends StatelessWidget {
                           item.allergens!,
                         ),
                       ),
-                    if (isDisabled ||
-                        item.configSets == null ||
-                        (item.configSets != null && item.configSets!.isEmpty))
-                      Container(
-                        height: MediaQuery.of(context).size.height / 5,
-                        color: theme.secondary12,
-                      )
                   ],
                 ),
               ),

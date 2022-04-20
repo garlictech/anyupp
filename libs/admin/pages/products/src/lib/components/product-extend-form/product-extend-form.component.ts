@@ -9,11 +9,11 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
-import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
-import { unitsSelectors } from '@bgap/admin/store/units';
 import { AbstractFormDialogComponent } from '@bgap/admin/shared/forms';
 import { SERVING_MODES } from '@bgap/admin/shared/utils';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { ProductCategoryCollectionService } from '@bgap/admin/store/product-categories';
+import { unitsSelectors } from '@bgap/admin/store/units';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
   EProductLevel,
@@ -22,7 +22,7 @@ import {
   UpsertResponse,
 } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
 import { ProductFormService } from '../../services/product-form.service';
@@ -53,6 +53,7 @@ export class ProductExtendFormComponent
   constructor(
     protected _injector: Injector,
     private _productFormService: ProductFormService,
+    private _productCategoryCollectionService: ProductCategoryCollectionService,
   ) {
     super(_injector);
 
@@ -68,10 +69,8 @@ export class ProductExtendFormComponent
         this._selectedUnitId = userSettings?.selectedUnitId || '';
       });
 
-    this.productCategories$ = this._store.pipe(
-      select(productCategoriesSelectors.getAllProductCategories),
-      untilDestroyed(this),
-    );
+    this.productCategories$ =
+      this._productCategoryCollectionService.filteredEntities$;
 
     this.unitLanes$ = this._store.pipe(
       select(unitsSelectors.getSelectedUnitLanes),

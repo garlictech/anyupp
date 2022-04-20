@@ -69,7 +69,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   ngOnInit() {
     combineLatest([
       this._store.pipe(
-        select(chainsSelectors.getSeletedChain),
+        select(chainsSelectors.getSelectedChain),
         filter((chain): boolean => !!chain),
         take(1),
       ),

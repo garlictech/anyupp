@@ -6,7 +6,6 @@
     "close": "Bezár",
     "select": "Kiválaszt",
     "ok": "OK",
-    "exit": "Nyomd meg még egyszer a vissza gombot a kilépéshez.",
     "today": "Ma",
     "ok2": "RENDBEN"
   },
@@ -21,32 +20,23 @@
     "swipeUp": "Húzd fel!",
     "continueWith": "Belépés a következőkkel",
     "signInAnonymously": "Belépek regisztráció nélkül",
-    "accountLink": {
-      "title": "Másik fiók összevonása",
-      "description": "Úgy látjuk, már használtad a rendszerünket a megadott e-mail címmel, de egy másik közösségi fiókkal. Szeretnéd őket összevonva használni?",
-      "selectAccount": "Melyiket szeretnéd összevonni?",
-      "linkWith": "Összevonás ezzel {{0}}",
-      "cancelLogin": "Mégsem ezzel jelentkezem be"
-    },
     "email": {
       "loginProgress": "Bejelentkezés...",
-      "forgotPassword": "Elfelejtett jelszó.",
+      "forgotPassword": "Elfelejtettem a jelszavam.",
       "emailFieldLabel": "Email",
       "emailOrPhoneFieldLabel": "Email vagy Telefonszám",
       "passwordFieldLabel": "Jelszó",
       "password2FieldLabel": "Jelszó újra",
-      "linkLoginWithLink": "Bejelentkezés email üzenetben. . .",
-      "linkLoginWithPassword": "Bejelentkezés jelszóval. . .",
       "signIn": "Belépés",
-      "linkSignIn": "Belépés. . .",
-      "linkRegister": "Regisztráció. . .",
+      "linkSignIn": "Belépés...",
+      "linkRegister": "Regisztráció...",
       "buttonLogin": "Belépés",
       "buttonLoginLink": "Belépési link elküldése",
       "buttonRegister": "Regisztráció",
       "buttonPasswordReset": "Jelszó visszaállítása",
       "sendPasswordResetMessage": "Jelszó visszaállítása folyamatban...",
       "dialogEmailSentTitle": "Email elküldve",
-      "dialogEmailSentMessage": "Ha megkaptad az emailt, kattints a benne található linkre a bejelentkezéshez!",
+      "dialogEmailSentMessage": "Kattints az emailben található linkre a bejelentkezéshez!",
       "dialogResetSentTitle": "Kód elküldve",
       "dialogResetSentMessage": "Elküldtük a jelszó megváltoztatásához szükséges kódot ide: ",
       "dialogPasswordRefreshedTitle": "Jelszó frissítve",
@@ -54,20 +44,14 @@
       "closeButton": "Bezárás",
       "setMailTo": "Az aktiváló linket elküldtük a megadott email címre",
       "checkInbox": "Ellenőrizd a bejövő leveleidet!",
-      "enterToConfirm": "A fiókod aktiválásához add meg a kódot.",
-      "codeNotReceived": "Nem érkezett meg a link?",
-      "resendCode": "Link újraküldése",
-      "verificationCode": "Validációs Kód",
+      "enterToConfirm": "A fiókod aktiválásához add meg a kapott kódot.",
+      "codeNotReceived": "Nem érkezett meg az email?",
+      "resendCode": "Email újraküldése",
+      "verificationCode": "Aktivációs Kód",
       "confirmAccount": "Fiók Aktiválása",
       "dialogConfirmedTitle": "Fiók aktiválva!",
       "dialogConfirmedMessage": "A fiókodat aktiváltuk.",
-      "enterCode": "Enter Code"
-    },
-    "accountUnlink": {
-      "title": "Account lekapcsolása",
-      "description": "Ezzel a funkcióval lekapcsolódhatsz az elsődleges felhasználódról. Le akarsz kapcsolódni?",
-      "unlink": "Lekapcsolás",
-      "cancel": "Mégse"
+      "enterCode": "Add meg az aktivációs kódot!"
     },
     "phone": {
       "loginProgress": "Belépés folyamatban...",
@@ -100,10 +84,6 @@
   "specialOffer": {
     "specialOffers": "Különleges ajánlatok"
   },
-  "barcodeScanner": {
-    "flashOn": "Segédfény be",
-    "flashOff": "Segédfény ki"
-  },
   "main": {
     "menu": {
       "menu": "Étlap",
@@ -120,7 +100,7 @@
       "profile": "Profil"
     },
     "categoryEmpty": "A választott kategória jelenleg üres.",
-    "noCategories": "A választott üzlet még nem rendelkezik elérhető termékekkel.",
+    "noCategories": "A választott vendéglátó egység még nem rendelkezik elérhető termékekkel.",
     "category": {
       "emptyTakeaway": "Sajnos elvitelre nem érhető el ez a kategória.",
       "emptyInPlace": "Sajnos helyben fogyasztásra nem érhető el ez a kategória.",
@@ -137,7 +117,7 @@
     "myCart": "KOSARAM",
     "deleteCart": "Kosár törlése",
     "deleteCartTitle": "Biztosan törlöd a kosarad?",
-    "deleteCartMessage": "Ezzel minden kosárban lévő terméket eltávolítasz a kosaradból.",
+    "deleteCartMessage": "Ezzel minden kosárban lévő terméket eltávolítasz.",
     "deleteCartAccept": "Törlés",
     "deleteCartCancel": "Mégsem",
     "takeAway": "elvitel",
@@ -235,37 +215,37 @@
         "none": {
           "title": "Feldolgozás alatt",
           "titleShort": "Feldolgozás alatt",
-          "description": "Rendelésed feldolgozás alatt áll. Ha bármi probléma felmerülne, kollégáink keresni fognak."
+          "description": "A rendelésed feldolgozás alatt áll."
         },
         "placed": {
           "title": "Feldolgozva",
           "titleShort": "Feldolgozva",
-          "description": "Rendelésed feldolgozásra került. Minden rendben."
+          "description": "A rendelésed feldolgozásra került."
         },
         "processing": {
           "title": "Készül a rendelésed",
           "titleShort": "Készül",
-          "description": "Rendelésed feldolgozásra került. Minden rendben."
+          "description": "A rendelésed feldolgozásra került."
         },
         "ready": {
           "title": "Elkészült",
           "titleShort": "Elkészült",
-          "description": "Rendelésed elkészült, hamarosan felszolgáljuk neked. "
+          "description": "A rendelésed elkészült, hamarosan felszolgáljuk neked."
         },
         "rejected": {
           "title": "Törölve",
           "titleShort": "Törölve",
-          "description": "Rendelésed törlésre került. A további teendőkkel kapcsolatban kollégánk hamarosan felkeres téged."
+          "description": "A rendelésed törlésre került. Kollégánk hamarosan felkeres téged."
         },
         "served": {
           "title": "Felszolgálva",
           "titleShort": "Felszolgálva",
-          "description": "Rendelésed elkészült, hamarosan felszolgáljuk neked. "
+          "description": "A rendelésed elkészült, hamarosan felszolgáljuk neked. "
         },
         "simplified": {
           "title": "Rendelés leadva",
           "titleShort": "Rendelés leadva",
-          "description": "Rendelésed feldolgozás alatt áll. Ha bármi probléma felmerülne, kollégáink keresni fognak."
+          "description": "A rendelésed feldolgozás alatt áll."
         }
       },
       "timeline": {
@@ -274,8 +254,8 @@
           "waiting": "A rendelésed megkaptuk."
         },
         "placed": {
-          "finished": "A rendelésed megerősítettük, minden rendben!",
-          "waiting": "A rendelésed megerősítettük."
+          "finished": "A rendelésed elfogadtuk!",
+          "waiting": "A rendelésed elfogadtuk."
         },
         "processing": {
           "finished": "A rendelésed elkészült, hamarosan felszolgáljuk/átveheted.",
@@ -453,7 +433,6 @@
     "qrConnected": "Helyválasztás",
     "chair": "szék #{{0}} asztalszám #{{1}}",
     "table": "Asztalszám #{{1}}",
-    "findingTable": "Asztal kiválasztása ...",
     "findingSeat": "Asztal és szék kiválasztása...",
     "findingSeatLoading": "Ez eltarthat néhány másodpercig. Kérjük, ne zárd be az ablakot!",
     "seatReserved": {
@@ -474,12 +453,12 @@
       "description": "Úgy látszik a beolvasott QR kód nem megfelelő."
     },
     "qrUnitsError": {
-      "title": "Nem találtam éttermet",
-      "description": "Úgy tűnik nincs éttermünk a közeledben."
+      "title": "Nem találtam vendéglátó egységet",
+      "description": "Úgy tűnik nincs vendéglátó egység a közeledben."
     },
     "qrGeneralError": {
       "title": "Valami hiba történt",
-      "description": "Valami hiba történt az éttermek keresgélése közben."
+      "description": "Valami hiba történt a vendéglátó egységek keresése közben."
     },
     "opened": "Nyitva",
     "closed": "Zárva",
@@ -516,7 +495,7 @@
     "infoDesc": "Tartsd a QR kódot a négyzeten belül a kapcsolódáshoz."
   },
   "selectUnitMap": {
-    "noNearUnits": "Sajnos nem találunk a közeledben üzletet",
+    "noNearUnits": "Sajnos nem találunk a közeledben vendéglátó egységet",
     "notLoaded": "Sikertelen betöltés",
     "userMarker": {
       "title": "Az azonosított pozíciód",
@@ -524,7 +503,7 @@
     },
     "permission": {
       "title": "Engedélykérés",
-      "description": "Hogy segítsünk megbizonyosodni arról, hogy a megfelelő helyen vagy hozzáférést kérünk tőled helyadataidhoz.",
+      "description": "Hogy segítsünk megbizonyosodni arról, hogy a megfelelő helyen vagy hozzáférést kérünk tőled a helyadataidhoz.",
       "closeApp": "Alkalmazás bezárása",
       "backToMap": "Vissza a térképre"
     }
@@ -543,7 +522,7 @@
     "menu": {
       "section1": "Fiók",
       "contact": "Kapcsolat",
-      "transactions": "Tranzakciók",
+      "transactions": "Vásárlások",
       "paymentMethods": "Elmentett bankkártyák",
       "allergens": "Allergének",
       "section2": "Beállítások",
@@ -558,9 +537,9 @@
       "save": "MÓDOSÍTÁSOK MENTÉSE"
     },
     "transactions": {
-      "title": "TRANZAKCIÓK",
+      "title": "VÁSÁRLÁSOK",
       "paymentMethod": "Fizetés módja",
-      "noTransactions": "Nincsenek tranzakciók",
+      "noTransactions": "Nincsenek korábbi vásárlások",
       "details": "Részletek",
       "type": {
         "card": "Kártyás",
@@ -729,8 +708,8 @@
       "description": "Valami félrement."
     },
     "ERROR_UNIT_NOT_ACCEPTING_ORDERS": {
-      "title": "Üzlet zárva",
-      "description": "Az üzlet jelenleg nem fogad rendeléseket. Próbáld meg később!"
+      "title": "vendéglátó egység zárva",
+      "description": "Az vendéglátó egység jelenleg nem fogad rendeléseket. Próbáld meg később!"
     }
   },
   "rating": {
@@ -745,7 +724,7 @@
     },
     "notification": {
       "title": "Rendelés értékelése",
-      "message": "Értékeld a legutóbbi megrendelésed!"
+      "message": "Értékeld a legutóbbi rendelésed!"
     }
   },
   "tipping": {

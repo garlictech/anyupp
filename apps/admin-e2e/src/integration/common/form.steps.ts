@@ -120,3 +120,7 @@ When('I select the {string} in the modifier selector', (value: string) => {
   cy.findByTestId('productComponentSetId').click({ force: true });
   cy.findAllByText(value).first().click({ force: true });
 });
+
+When('I click the item with {string} dataTestId', (value: string) => {
+  cy.findByTestId(value).click();
+});

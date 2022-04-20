@@ -15,6 +15,7 @@ import {
   NbLayoutModule,
   NbListModule,
   NbSelectModule,
+  NbSpinnerModule,
   NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,6 +23,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { GroupFormComponent } from './components/group-form/group-form.component';
 import { GroupListItemComponent } from './components/group-list-item/group-list-item.component';
 import { GroupListComponent } from './components/group-list/group-list.component';
+import { GroupListService } from './services/group-list.service';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -33,6 +35,7 @@ const NB_MODULES = [
   NbEvaIconsModule,
   NbButtonModule,
   NbSelectModule,
+  NbSpinnerModule,
 ];
 
 @NgModule({
@@ -58,5 +61,6 @@ const NB_MODULES = [
     ]),
     ...NB_MODULES,
   ],
+  providers: [GroupListService],
 })
 export class AdminPagesGroupsModule {}

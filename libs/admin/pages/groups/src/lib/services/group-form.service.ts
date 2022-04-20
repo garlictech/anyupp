@@ -3,13 +3,13 @@ import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { catchGqlError } from '@bgap/admin/store/app-core';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import {
   addressFormGroup,
   contactFormGroup,
   multiLangValidator,
 } from '@bgap/admin/shared/utils';
+import { catchGqlError } from '@bgap/admin/store/app-core';
+import { GroupCollectionService } from '@bgap/admin/store/groups';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Store } from '@ngrx/store';
 
@@ -18,7 +18,7 @@ export class GroupFormService {
   constructor(
     private _store: Store,
     private _formBuilder: FormBuilder,
-    private _crudSdk: CrudSdkService,
+    private _groupCollectionService: GroupCollectionService,
   ) {}
 
   public createGroupFormGroup() {
@@ -54,16 +54,20 @@ export class GroupFormService {
   }
 
   public createGroup$(input: CrudApi.CreateGroupInput) {
-    return this._crudSdk.sdk.CreateGroup({ input }).pipe(
-      catchGqlError(this._store),
-      map(data => ({ data, type: 'insert' })),
-    );
+    return this._groupCollectionService
+      .add$<CrudApi.CreateGroupInput>(input)
+      .pipe(
+        catchGqlError(this._store),
+        map(data => ({ data, type: 'insert' })),
+      );
   }
 
   public updateGroup$(input: CrudApi.UpdateGroupInput) {
-    return this._crudSdk.sdk.UpdateGroup({ input }).pipe(
-      catchGqlError(this._store),
-      map(data => ({ data, type: 'update' })),
-    );
+    return this._groupCollectionService
+      .update$<CrudApi.UpdateGroupInput>(input)
+      .pipe(
+        catchGqlError(this._store),
+        map(data => ({ data, type: 'update' })),
+      );
   }
 }

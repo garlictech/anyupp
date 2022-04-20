@@ -54,6 +54,10 @@ export const moveUpShouldWork = (listItemElementName: string) =>
     });
 
 export const getListItemTitle = ($listItem: JQuery<HTMLElement>) =>
-  cy.wrap($listItem).find('.user-name').invoke('text');
+  cy.wrap($listItem).find('.name').invoke('text');
 
 export const getSuccessToastr = () => cy.get('nb-toast.status-success');
+
+export const scrollDownVirtualList = (testId: string) => {
+  cy.findByTestId(testId).scrollTo('bottom');
+};

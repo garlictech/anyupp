@@ -1,4 +1,4 @@
-<nb-card class="h-100 mb-0">
+<nb-card class="h-100 mb-0" nbSpinnerStatus="basic">
   <nb-card-header>
     <div class="float-start">
       {{ 'modifiersAndExtras.listTitle' | translate }}
@@ -7,7 +7,7 @@
     <div class="float-right">
       <button
         nbButton
-        class="float-right me-3"
+        class="float-right"
         type="button"
         shape="round"
         size="small"
@@ -20,6 +20,7 @@
         "
       >
         <nb-icon icon="add" pack="material-icons"></nb-icon>
+        {{ 'common.add' | translate }}
       </button>
     </div>
   </nb-card-header>
@@ -39,6 +40,13 @@
         <cdk-virtual-scroll-viewport
           style="height: calc(100vh - 255px)"
           itemSize="30"
+          (scrolledIndexChange)="
+            loadNextProductComponentPaginatedData(
+              $event,
+              productComponents.length
+            )
+          "
+          #productComponentVSVP
         >
           <nb-list>
             <nb-list-item
@@ -66,6 +74,13 @@
         <cdk-virtual-scroll-viewport
           style="height: calc(100vh - 255px)"
           itemSize="30"
+          (scrolledIndexChange)="
+            loadNextProductComponentSetPaginatedData(
+              $event,
+              productComponents.length
+            )
+          "
+          #productComponentSetVSVP
         >
           <nb-list>
             <nb-list-item

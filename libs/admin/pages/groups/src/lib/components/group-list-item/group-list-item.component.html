@@ -1,5 +1,7 @@
 <div class="float-start">
-  <div class="subtitle-2">{{ group.name }}</div>
+  <div class="subtitle-2" role="button" (click)="editGroup()">
+    {{ group.name }}
+  </div>
   <div class="caption">{{ group.description | localize }}</div>
   <bgap-contact [contact]="group"></bgap-contact>
 </div>
@@ -13,4 +15,5 @@
   (click)="editGroup()"
 >
   <nb-icon icon="edit" pack="material-icons"></nb-icon>
+  {{ 'common.edit' | translate }}
 </button>

@@ -32,7 +32,7 @@ export class FormUnitLanesComponent implements OnInit {
   ngOnInit() {
     this._store
       .pipe(
-        select(productsSelectors.getUnitProductLaneIds()),
+        select(productsSelectors.getUnitProductLaneIds),
         untilDestroyed(this),
       )
       .subscribe((laneIds: string[]): void => {

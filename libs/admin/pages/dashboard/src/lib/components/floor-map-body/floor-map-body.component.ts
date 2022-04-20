@@ -16,7 +16,7 @@ import {
   getActiveOrdersByUser,
   getTableOrders,
   getTableSeatOrders,
-  ordersSelectors,
+  OrderCollectionService,
 } from '@bgap/admin/store/orders';
 import { unitsSelectors } from '@bgap/admin/store/units';
 import {
@@ -61,6 +61,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
     private _store: Store,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _orderCollectionService: OrderCollectionService,
   ) {
     this._store.dispatch(floorMapActions.resetFloorMap());
   }
@@ -117,7 +118,7 @@ export class FloorMapBodyComponent implements OnInit, OnDestroy {
         }),
         switchMap(
           (): Observable<CrudApi.Order[]> =>
-            this._store.pipe(select(ordersSelectors.getAllActiveOrders)),
+            this._orderCollectionService.filteredEntities$,
         ),
         untilDestroyed(this),
       )

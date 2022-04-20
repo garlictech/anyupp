@@ -450,6 +450,12 @@ export const createChainProductsFromSnapshot = (deps: SeederDependencies) => {
     deleteCreateChainProduct(productSnapshotFixture.chainProduct_7),
     deleteCreateChainProduct(productSnapshotFixture.chainProduct_8),
     deleteCreateChainProduct(productSnapshotFixture.chainProduct_9),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_10),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_11),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_12),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_13),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_14),
+    deleteCreateChainProduct(productSnapshotFixture.chainProduct_15),
   ]);
 };
 
@@ -470,6 +476,12 @@ export const createGroupProductsFromSnapshot = (deps: SeederDependencies) => {
     deleteCreateGroupProduct(productSnapshotFixture.groupProduct_7),
     deleteCreateGroupProduct(productSnapshotFixture.groupProduct_8),
     deleteCreateGroupProduct(productSnapshotFixture.groupProduct_9),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_10),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_11),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_12),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_13),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_14),
+    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_15),
   ]);
 };
 
@@ -490,6 +502,12 @@ export const createUnitProductsFromSnapshot = (deps: SeederDependencies) => {
     deleteCreateUnitProduct(productSnapshotFixture.unitProduct_7),
     deleteCreateUnitProduct(productSnapshotFixture.unitProduct_8),
     deleteCreateUnitProduct(productSnapshotFixture.unitProduct_9),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_10),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_11),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_12),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_13),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_14),
+    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_15),
   ]);
 };
 

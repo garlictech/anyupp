@@ -101,10 +101,6 @@ Then('I should see the {string} text', (text: string) => {
   cy.findAllByText(text).should('be.visible');
 });
 
-When('I wait {int} ms', (time: number) => {
-  cy.wait(time);
-});
-
 // When('I click on the date picker', () => {
 //   cy.get('input[type="date"]').click();
 // });

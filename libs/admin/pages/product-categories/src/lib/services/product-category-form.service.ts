@@ -4,17 +4,17 @@ import { multiLangValidator } from '@bgap/admin/shared/utils';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Store } from '@ngrx/store';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { iif } from 'rxjs';
 import { catchGqlError } from '@bgap/admin/store/app-core';
 import { map } from 'rxjs/operators';
+import { ProductCategoryCollectionService } from '@bgap/admin/store/product-categories';
 
 @Injectable({ providedIn: 'root' })
 export class ProductCategoryFormService {
   constructor(
     private _store: Store,
     private _formBuilder: FormBuilder,
-    private _crudSdk: CrudSdkService,
+    private _productCategoryCollectionService: ProductCategoryCollectionService,
   ) {}
 
   public createProductCategoryFormGroup() {
@@ -58,14 +58,14 @@ export class ProductCategoryFormService {
   }
 
   public createProductCategory$(input: CrudApi.CreateProductCategoryInput) {
-    return this._crudSdk.sdk.CreateProductCategory({ input }).pipe(
+    return this._productCategoryCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
   public updateProductCategory$(input: CrudApi.UpdateProductCategoryInput) {
-    return this._crudSdk.sdk.UpdateProductCategory({ input }).pipe(
+    return this._productCategoryCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
     );

@@ -98,8 +98,9 @@
               status="primary"
               (click)="addComponentToList()"
               [disabled]="componentForm?.invalid"
+              data-testid="addComponentToList"
             >
-              {{ 'common.add' | translate }}
+              {{ 'common.addItem' | translate }}
             </button>
           </div>
           <div
@@ -143,7 +144,7 @@
                 [title]="'common.delete' | translate"
                 (click)="removeComponentFromList(componentId)"
               >
-                <nb-icon icon="remove" pack="material-icons"></nb-icon>
+                <nb-icon icon="delete" pack="material-icons"></nb-icon>
               </button>
 
               <button

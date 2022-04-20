@@ -241,7 +241,7 @@ describe('Process rkeeper products tests', () => {
       await resolveComponentSets(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         sdk as any,
-        'CHAINID',
+        'CHAINID' + label,
         fixtures.rawDataWithModifiers,
       )(dishWithModifier).toPromise(),
     ).toMatchSnapshot(`the sets (${label}) `);
@@ -271,15 +271,27 @@ describe('Process rkeeper products tests', () => {
   });
 
   const activeItemCases = [
-    fixtures.fullInactiveModifierGroup,
-    fixtures.partiallyInactiveModifierGroup,
-    fixtures.modifierGroupAllInactiveItems,
-    fixtures.inactiveModifierGroupActiveItems,
+    {
+      label: 'fullInactiveModifierGroup',
+      modifierGroup: fixtures.fullInactiveModifierGroup,
+    },
+    {
+      label: 'partiallyInactiveModifierGroup',
+      modifierGroup: fixtures.partiallyInactiveModifierGroup,
+    },
+    {
+      label: 'modifierGroupAllInactiveItems',
+      modifierGroup: fixtures.modifierGroupAllInactiveItems,
+    },
+    {
+      label: 'inactiveModifierGroupActiveItems',
+      modifierGroup: fixtures.inactiveModifierGroupActiveItems,
+    },
   ];
 
   test.each(activeItemCases)(
     'Test active modifier cases',
-    async modifierGroup => {
+    async ({ label, modifierGroup }) => {
       const rawData = {
         data: {
           dishes: [fixtures.dishWithModifier],
@@ -307,15 +319,6 @@ describe('Process rkeeper products tests', () => {
         fixtures.dishWithModifier,
       ).toPromise();
 
-      expect(
-        await resolveComponentSets(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          sdk as any,
-          'CHAINID',
-          rawData,
-        )(dishWithModifier).toPromise(),
-      ).toMatchSnapshot(`the sets `);
-
       expect(sdk.SearchProductComponents.mock.calls).toMatchSnapshot(
         `SearchProductComponents calls`,
       );
@@ -334,6 +337,14 @@ describe('Process rkeeper products tests', () => {
       expect(sdk.UpdateProductComponentSet.mock.calls).toMatchSnapshot(
         `UpdateProductComponentSet calls`,
       );
+      expect(
+        await resolveComponentSets(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          sdk as any,
+          'CHAINID' + label,
+          rawData,
+        )(dishWithModifier).toPromise(),
+      ).toMatchSnapshot(`the sets `);
     },
   );
 });

@@ -75,7 +75,7 @@ Feature: Create and update components
     And I fill out the "Description" input with "test description"
     And I click the component selector to set "Cold"
     And I fill out the "Max selection" input with "1"
-    And I click on the "Add" button
+    And I click the item with "addComponentToList" dataTestId
     When I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist
@@ -106,7 +106,7 @@ Feature: Create and update components
     And I fill out the "Name (DE)" input with "test modifier"
     And I fill out the "Description" input with "test description"
     And I click the component selector to set "Rice"
-    And I click on the "Add" button
+    And I click the item with "addComponentToList" dataTestId
     When I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist
@@ -123,7 +123,7 @@ Feature: Create and update components
     And I fill out the "Description" input with "test description e2eUpdated"
     And I click on the first "Delete" button
     And I click the component selector to set "Rice"
-    And I click on the "Add" button
+    And I click the item with "addComponentToList" dataTestId
     When I click on the "Submit" button
     Then I should see a success toastr
     And The dialog should NOT exist

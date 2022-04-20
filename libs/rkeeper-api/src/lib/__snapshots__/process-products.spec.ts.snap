@@ -119,69 +119,7 @@ exports[`Process rkeeper products tests Test active modifier cases: UpdateProduc
 exports[`Process rkeeper products tests Test active modifier cases: the sets  1`] = `
 Object {
   "_tag": "Some",
-  "value": Array [
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 50,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 50,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-  ],
+  "value": Array [],
 }
 `;
 
@@ -195,56 +133,15 @@ Object {
           "externalId": undefined,
           "position": -1,
           "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "productComponentId": "COMPONENT ID",
           "refGroupPrice": 0,
         },
         Object {
           "externalId": undefined,
           "position": -1,
           "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "productComponentId": "COMPONENT ID",
           "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 50,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 50,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
         },
       ],
       "position": -1,
@@ -257,138 +154,14 @@ Object {
 exports[`Process rkeeper products tests Test active modifier cases: the sets  3`] = `
 Object {
   "_tag": "Some",
-  "value": Array [
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 50,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 50,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-  ],
+  "value": Array [],
 }
 `;
 
 exports[`Process rkeeper products tests Test active modifier cases: the sets  4`] = `
 Object {
   "_tag": "Some",
-  "value": Array [
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 50,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 50,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-  ],
+  "value": Array [],
 }
 `;
 
@@ -451,16 +224,12 @@ Array [
 ]
 `;
 
-exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponent calls (CreateProductComponent fails) 1`] = `Array []`;
-
-exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponent calls (SearchProductComponentSet fails) 1`] = `Array []`;
-
-exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponent calls (create new components) 1`] = `
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponent calls (CreateProductComponent fails) 1`] = `
 Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINID",
+        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991017196",
         "name": Object {
@@ -472,7 +241,7 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINID",
+        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991017195",
         "name": Object {
@@ -484,7 +253,7 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINID",
+        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991017194",
         "name": Object {
@@ -496,7 +265,7 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINID",
+        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991017193",
         "name": Object {
@@ -508,7 +277,7 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINID",
+        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991017191",
         "name": Object {
@@ -520,7 +289,7 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINID",
+        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991011504",
         "name": Object {
@@ -532,7 +301,185 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINID",
+        "chainId": "CHAINIDCreateProductComponent fails",
+        "dirty": true,
+        "externalId": "9991011517",
+        "name": Object {
+          "hu": "Saját pohár",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponent calls (SearchProductComponentSet fails) 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDSearchProductComponentSet fails",
+        "dirty": true,
+        "externalId": "9991017196",
+        "name": Object {
+          "hu": "Tej sima (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDSearchProductComponentSet fails",
+        "dirty": true,
+        "externalId": "9991017195",
+        "name": Object {
+          "hu": "Kókuszital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDSearchProductComponentSet fails",
+        "dirty": true,
+        "externalId": "9991017194",
+        "name": Object {
+          "hu": "Laktózmentes tej (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDSearchProductComponentSet fails",
+        "dirty": true,
+        "externalId": "9991017193",
+        "name": Object {
+          "hu": "Mandulaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDSearchProductComponentSet fails",
+        "dirty": true,
+        "externalId": "9991017191",
+        "name": Object {
+          "hu": "Zabital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDSearchProductComponentSet fails",
+        "dirty": true,
+        "externalId": "9991011504",
+        "name": Object {
+          "hu": "Papírpohár 2dl",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDSearchProductComponentSet fails",
+        "dirty": true,
+        "externalId": "9991011517",
+        "name": Object {
+          "hu": "Saját pohár",
+        },
+      },
+    },
+  ],
+]
+`;
+
+exports[`Process rkeeper products tests resolveComponentSets: CreateProductComponent calls (create new components) 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDcreate new components",
+        "dirty": true,
+        "externalId": "9991017196",
+        "name": Object {
+          "hu": "Tej sima (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDcreate new components",
+        "dirty": true,
+        "externalId": "9991017195",
+        "name": Object {
+          "hu": "Kókuszital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDcreate new components",
+        "dirty": true,
+        "externalId": "9991017194",
+        "name": Object {
+          "hu": "Laktózmentes tej (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDcreate new components",
+        "dirty": true,
+        "externalId": "9991017193",
+        "name": Object {
+          "hu": "Mandulaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDcreate new components",
+        "dirty": true,
+        "externalId": "9991017191",
+        "name": Object {
+          "hu": "Zabital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDcreate new components",
+        "dirty": true,
+        "externalId": "9991011504",
+        "name": Object {
+          "hu": "Papírpohár 2dl",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "chainId": "CHAINIDcreate new components",
         "dirty": true,
         "externalId": "9991011517",
         "name": Object {
@@ -555,7 +502,7 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINID",
+        "chainId": "CHAINIDcreate new components",
         "description": "describe me",
         "dirty": true,
         "externalId": "9991017198",
@@ -576,7 +523,7 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINID",
+        "chainId": "CHAINIDcreate new components",
         "description": "describe me",
         "dirty": true,
         "externalId": "9991017199",
@@ -598,7 +545,28 @@ exports[`Process rkeeper products tests resolveComponentSets: CreateProductCompo
 
 exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponentSets calls (CreateProductComponent fails) 1`] = `Array []`;
 
-exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponentSets calls (SearchProductComponentSet fails) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponentSets calls (SearchProductComponentSet fails) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017198",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017199",
+        },
+      },
+    },
+  ],
+]
+`;
 
 exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponentSets calls (create new components) 1`] = `
 Array [
@@ -623,11 +591,164 @@ Array [
 ]
 `;
 
-exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponentSets calls (update old components) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponentSets calls (update old components) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017198",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017199",
+        },
+      },
+    },
+  ],
+]
+`;
 
-exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (CreateProductComponent fails) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (CreateProductComponent fails) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017196",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017195",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017194",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017193",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017191",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991011504",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991011517",
+        },
+      },
+    },
+  ],
+]
+`;
 
-exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (SearchProductComponentSet fails) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (SearchProductComponentSet fails) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017196",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017195",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017194",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017193",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017191",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991011504",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991011517",
+        },
+      },
+    },
+  ],
+]
+`;
 
 exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (create new components) 1`] = `
 Array [
@@ -697,7 +818,73 @@ Array [
 ]
 `;
 
-exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (update old components) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: SearchProductComponents calls (update old components) 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017196",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017195",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017194",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017193",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991017191",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991011504",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "filter": Object {
+        "externalId": Object {
+          "eq": "9991011517",
+        },
+      },
+    },
+  ],
+]
+`;
 
 exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponent calls (CreateProductComponent fails) 1`] = `Array []`;
 
@@ -705,7 +892,80 @@ exports[`Process rkeeper products tests resolveComponentSets: UpdateProductCompo
 
 exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponent calls (create new components) 1`] = `Array []`;
 
-exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponent calls (update old components) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponent calls (update old components) 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Tej sima (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Kókuszital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Laktózmentes tej (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Mandulaital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Zabital (90ml)",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Papírpohár 2dl",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT ID",
+        "name": Object {
+          "hu": "Saját pohár",
+        },
+      },
+    },
+  ],
+]
+`;
 
 exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponentSet calls (CreateProductComponent fails) 1`] = `Array []`;
 
@@ -713,143 +973,51 @@ exports[`Process rkeeper products tests resolveComponentSets: UpdateProductCompo
 
 exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponentSet calls (create new components) 1`] = `Array []`;
 
-exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponentSet calls (update old components) 1`] = `Array []`;
+exports[`Process rkeeper products tests resolveComponentSets: UpdateProductComponentSet calls (update old components) 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT SET ID",
+        "items": Array [
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+        ],
+        "name": Object {
+          "hu": "Tejek 90ml",
+        },
+      },
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "id": "THE OLD PRODUCT COMPONENT SET ID",
+        "items": Array [
+          "THE NEW PRODUCT COMPONENT ID",
+          "THE NEW PRODUCT COMPONENT ID",
+        ],
+        "name": Object {
+          "hu": "2dl papírpohár",
+        },
+      },
+    },
+  ],
+]
+`;
 
 exports[`Process rkeeper products tests resolveComponentSets: the sets (CreateProductComponent fails)  1`] = `
 Object {
-  "_tag": "Some",
-  "value": Array [
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 50,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 50,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-  ],
+  "_tag": "None",
 }
 `;
 
 exports[`Process rkeeper products tests resolveComponentSets: the sets (SearchProductComponentSet fails)  1`] = `
 Object {
-  "_tag": "Some",
-  "value": Array [
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-    Object {
-      "items": Array [
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 50,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 50,
-        },
-        Object {
-          "externalId": undefined,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
-        },
-      ],
-      "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
-    },
-  ],
+  "_tag": "None",
 }
 `;
 
@@ -932,40 +1100,40 @@ Object {
           "externalId": undefined,
           "position": -1,
           "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 0,
         },
         Object {
           "externalId": undefined,
           "position": -1,
           "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 100,
         },
         Object {
           "externalId": undefined,
           "position": -1,
           "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 100,
         },
         Object {
           "externalId": undefined,
           "position": -1,
           "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 100,
         },
         Object {
           "externalId": undefined,
           "position": -1,
           "price": 100,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 100,
         },
       ],
       "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+      "productSetId": "THE NEW PRODUCT COMPONENT SET ID",
     },
     Object {
       "items": Array [
@@ -973,19 +1141,19 @@ Object {
           "externalId": undefined,
           "position": -1,
           "price": 50,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 50,
         },
         Object {
           "externalId": undefined,
           "position": -1,
           "price": 0,
-          "productComponentId": "NEW PRODUCT COMPONENT ID",
+          "productComponentId": "THE NEW PRODUCT COMPONENT ID",
           "refGroupPrice": 0,
         },
       ],
       "position": -1,
-      "productSetId": "NEW PRODUCT COMPONENT SET ID",
+      "productSetId": "THE NEW PRODUCT COMPONENT SET ID",
     },
   ],
 }

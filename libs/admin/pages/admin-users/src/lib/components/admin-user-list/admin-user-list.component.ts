@@ -1,12 +1,19 @@
 import { Observable } from 'rxjs';
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { adminUsersSelectors } from '@bgap/admin/store/admin-users';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+import { visibleLinesOnViewport } from '@bgap/admin/shared/utils';
+import { AdminUserCollectionService } from '@bgap/admin/store/admin-users';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
+import { UntilDestroy } from '@ngneat/until-destroy';
 
+import { AdminUserListService } from '../../services/admin-user-list.service';
 import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.component';
 
 @UntilDestroy()
@@ -17,16 +24,21 @@ import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.compo
   styleUrls: ['./admin-user-list.component.scss'],
 })
 export class AdminUserListComponent implements OnDestroy {
+  @ViewChild('dataVSVP')
+  dataVSVP?: CdkVirtualScrollViewport;
+
   public adminUsers$: Observable<CrudApi.AdminUser[]>;
 
   constructor(
-    private _store: Store,
     private _nbDialogService: NbDialogService,
+    private _adminUserListService: AdminUserListService,
+    private _adminUserCollectionService: AdminUserCollectionService,
   ) {
-    this.adminUsers$ = this._store.pipe(
-      select(adminUsersSelectors.getAllAdminUsers),
-      untilDestroyed(this),
-    );
+    this.adminUsers$ = this._adminUserCollectionService.filteredEntities$;
+  }
+
+  ngOnInit() {
+    this._adminUserListService.resetNextTokens();
   }
 
   ngOnDestroy(): void {
@@ -35,5 +47,14 @@ export class AdminUserListComponent implements OnDestroy {
 
   addUser(): void {
     this._nbDialogService.open(AdminUserFormComponent);
+  }
+
+  public loadNextPaginatedData(count: number, itemCount: number) {
+    if (
+      itemCount - count <
+      visibleLinesOnViewport(this.dataVSVP?.elementRef.nativeElement)
+    ) {
+      this._adminUserListService.loadNextPaginatedData();
+    }
   }
 }

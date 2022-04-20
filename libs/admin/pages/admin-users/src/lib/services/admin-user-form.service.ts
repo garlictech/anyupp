@@ -3,18 +3,18 @@ import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { contactFormGroup } from '@bgap/admin/shared/utils';
 import { catchGqlError } from '@bgap/admin/store/app-core';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { Store } from '@ngrx/store';
+import { AdminUserCollectionService } from '@bgap/admin/store/admin-users';
 
 @Injectable({ providedIn: 'root' })
 export class AdminUserFormService {
   constructor(
     private _store: Store,
     private _formBuilder: FormBuilder,
-    private _crudSdk: CrudSdkService,
+    private _adminUserCollectionService: AdminUserCollectionService,
   ) {}
 
   public createAdminUserFormGroup() {
@@ -44,14 +44,14 @@ export class AdminUserFormService {
   }
 
   public createAdminUser$(input: CrudApi.CreateAdminUserInput) {
-    return this._crudSdk.sdk.CreateAdminUser({ input }).pipe(
+    return this._adminUserCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
   public updateAdminUser$(input: CrudApi.UpdateAdminUserInput) {
-    return this._crudSdk.sdk.UpdateAdminUser({ input }).pipe(
+    return this._adminUserCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
     );

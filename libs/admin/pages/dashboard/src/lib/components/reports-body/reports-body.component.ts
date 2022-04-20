@@ -14,7 +14,7 @@ import {
   dashboardSelectors,
 } from '@bgap/admin/store/dashboard';
 import { groupsSelectors } from '@bgap/admin/store/groups';
-import { ordersSelectors } from '@bgap/admin/store/orders';
+import { OrderHistoryCollectionService } from '@bgap/admin/store/orders';
 import { unitsSelectors } from '@bgap/admin/store/units';
 import { calculateProductMix } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
@@ -51,6 +51,7 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
   constructor(
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _orderHistoryCollectionService: OrderHistoryCollectionService,
   ) {
     this.dateFormControl = new FormControl();
 
@@ -87,8 +88,7 @@ export class ReportsBodyComponent implements OnInit, OnDestroy {
         this._changeDetectorRef.detectChanges();
       });
 
-    this._store
-      .select(ordersSelectors.getAllHistoryOrders)
+    this._orderHistoryCollectionService.filteredEntities$
       .pipe(untilDestroyed(this))
       .subscribe((historyOrders: CrudApi.Order[]): void => {
         this.incomeOrders$.next(

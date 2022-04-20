@@ -1,9 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as Szamlazz from 'szamlazz.js';
-import { calculaterServiceFeeItems } from './utils';
-
-const getTranslation = (localizedItem: CrudApi.LocalizedItem) =>
-  localizedItem['hu'] || localizedItem['en'] || 'ismeretlen termék';
+import { calculaterServiceFeeItems, getTranslation } from './utils';
 
 export const createInvoice =
   (szamlazzClient: Szamlazz.Client) =>
@@ -54,7 +51,9 @@ export const createInvoice =
     const items = order.items.map(
       orderItem =>
         new Szamlazz.Item({
-          label: getTranslation(orderItem.productName),
+          label: `${getTranslation(orderItem.productName)} (${
+            orderItem.sumPriceShown.tax
+          }% ÁFA)`,
           quantity: orderItem.quantity,
           unit: 'db',
           vat: orderItem.sumPriceShown.tax, // can be a number or a special string
@@ -79,9 +78,10 @@ export const createInvoice =
       }
     };
 
-    addPriceItem('csomagolás', order.packagingSum);
+    addPriceItem('Csomagolás', order.packagingSum);
 
     calculaterServiceFeeItems(
+      order.serviceFeePolicy,
       order.items,
       order.sumPriceShown.currency,
     ).forEach(([title, price]) => addPriceItem(title, price));

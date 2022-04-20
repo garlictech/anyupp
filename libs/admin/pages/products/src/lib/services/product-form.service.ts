@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { FormsService } from '@bgap/admin/shared/forms';
 import {
   multiLangValidator,
@@ -13,11 +12,17 @@ import {
   optionalValueValidator,
 } from '@bgap/admin/shared/utils';
 import { catchGqlError } from '@bgap/admin/store/app-core';
-import { productCategoriesSelectors } from '@bgap/admin/store/product-categories';
+import { ProductCategoryCollectionService } from '@bgap/admin/store/product-categories';
+import {
+  ChainProductCollectionService,
+  GroupProductCollectionService,
+  UnitProductCollectionService,
+} from '@bgap/admin/store/products';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { EProductLevel, KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
+
 import { handleEmptyPackaginFees } from '../fn';
 
 @Injectable({ providedIn: 'root' })
@@ -25,13 +30,15 @@ export class ProductFormService {
   constructor(
     private _formBuilder: FormBuilder,
     private _formsService: FormsService,
-    private _crudSdk: CrudSdkService,
     private _store: Store,
+    private _unitProductCollectionService: UnitProductCollectionService,
+    private _groupProductCollectionService: GroupProductCollectionService,
+    private _chainProductCollectionService: ChainProductCollectionService,
+    private _productCategoryCollectionService: ProductCategoryCollectionService,
   ) {}
 
   public getProductCategories$() {
-    return this._store.pipe(
-      select(productCategoriesSelectors.getAllProductCategories),
+    return this._productCategoryCollectionService.filteredEntities$.pipe(
       map((productCategories: CrudApi.ProductCategory[]) =>
         productCategories.map(
           (productCategory): KeyValue => ({
@@ -195,14 +202,14 @@ export class ProductFormService {
   }
 
   public createChainProduct$(input: CrudApi.CreateChainProductInput) {
-    return this._crudSdk.sdk.CreateChainProduct({ input }).pipe(
+    return this._chainProductCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
   public updateChainProduct$(input: CrudApi.UpdateChainProductInput) {
-    return this._crudSdk.sdk.UpdateChainProduct({ input }).pipe(
+    return this._chainProductCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
     );
@@ -225,14 +232,14 @@ export class ProductFormService {
   }
 
   public createGroupProduct$(input: CrudApi.CreateGroupProductInput) {
-    return this._crudSdk.sdk.CreateGroupProduct({ input }).pipe(
+    return this._groupProductCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
   public updateGroupProduct$(input: CrudApi.UpdateGroupProductInput) {
-    return this._crudSdk.sdk.UpdateGroupProduct({ input }).pipe(
+    return this._groupProductCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
     );
@@ -265,7 +272,7 @@ export class ProductFormService {
   public createUnitProduct$(
     input: CrudApi.CreateUnitProductInput,
   ): Observable<UpsertResponse<unknown>> {
-    return this._crudSdk.sdk.CreateUnitProduct({ input }).pipe(
+    return this._unitProductCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
@@ -274,7 +281,7 @@ export class ProductFormService {
   public updateUnitProduct$(
     input: CrudApi.UpdateUnitProductInput,
   ): Observable<UpsertResponse<unknown>> {
-    return this._crudSdk.sdk.UpdateUnitProduct({ input }).pipe(
+    return this._unitProductCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
     );
