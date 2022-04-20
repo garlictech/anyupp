@@ -1,6 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import * as Szamlazz from 'szamlazz.js';
-import { calculaterServiceFeeItems } from './utils';
+import { calculaterServiceFeeItems, getTranslation } from './utils';
 
 export const createReceiptSzamlazzHu =
   (szamlazzClient: Szamlazz.Client) =>
@@ -62,22 +62,15 @@ export const createReceiptSzamlazzHu =
 
     // OrderItems
     const items = order.items.map(orderItem => {
-      let label = orderItem.productName.hu; // Should use the language input param (Covered by #750)
-      if (!label) {
-        label = orderItem.productName.en;
-        if (!label) {
-          throw new Error(
-            `The required translation is missing for OrderItem with id productId: ${orderItem.productId}`,
-          );
-        }
-      }
       return new Szamlazz.ReceiptItem({
-        label,
+        label: `${getTranslation(orderItem.productName)} (${
+          orderItem.sumPriceShown.tax
+        }% ÁFA)`,
         quantity: orderItem.quantity,
         unit: 'db', // Should be translated it in the future (Covered by #751)
         vat: orderItem.sumPriceShown.tax, // can be a number or a special string
         grossUnitPrice: orderItem.sumPriceShown.pricePerUnit, // the szamlazz lib will calculate gross and net values from per item net
-        receiptItemId: orderItem.productId,
+        // receiptItemId: orderItem.productId,
       });
     });
 
@@ -98,9 +91,10 @@ export const createReceiptSzamlazzHu =
       }
     };
 
-    addPriceItem('csomagolás', order.packagingSum);
+    addPriceItem('Csomagolás', order.packagingSum);
 
     calculaterServiceFeeItems(
+      order.serviceFeePolicy,
       order.items,
       order.sumPriceShown.currency,
     ).forEach(([title, price]) => addPriceItem(title, price));

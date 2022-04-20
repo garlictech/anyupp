@@ -100,7 +100,16 @@ test('split service fee by tax percentage', async () => {
     },
   ] as CrudApi.OrderItem[];
 
-  expect(calculaterServiceFeeItems(fixture, 'HUF')).toMatchSnapshot();
+  expect(
+    calculaterServiceFeeItems(
+      {
+        percentage: 10,
+        type: CrudApi.ServiceFeeType.included,
+      },
+      fixture,
+      'HUF',
+    ),
+  ).toMatchSnapshot();
 });
 
 test('createInvoice - service fee included', async () => {
@@ -128,6 +137,10 @@ test('createInvoice - service fee included', async () => {
   };
 
   order.packagingSum = undefined;
+  order.serviceFeePolicy = {
+    percentage: 10,
+    type: CrudApi.ServiceFeeType.included,
+  };
 
   expect(
     await createInvoice(szamlazzClient)({ user, transaction, order }),
