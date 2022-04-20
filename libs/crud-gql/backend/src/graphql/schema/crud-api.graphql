@@ -526,6 +526,7 @@ type Order
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
   externalId: String
+  guestLabel: String
 }
 
 enum OrderPolicy {
@@ -941,6 +942,7 @@ type Cart
   items: [OrderItem!]!
   servingMode: ServingMode
   orderPolicy: OrderPolicy
+  guestLabel: String
 }
 
 type Transaction

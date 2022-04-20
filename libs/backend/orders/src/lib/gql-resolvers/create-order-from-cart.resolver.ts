@@ -39,6 +39,7 @@ const toOrderInputFormat = ({
   place,
   orderMode,
   servingMode,
+  guestLabel,
 }: {
   userId: string;
   unit: CrudApi.Unit;
@@ -48,6 +49,7 @@ const toOrderInputFormat = ({
   place: CrudApi.Place | null | undefined;
   orderMode: CrudApi.OrderMode;
   servingMode: CrudApi.ServingMode;
+  guestLabel: string | null | undefined;
 }): CrudApi.CreateOrderInput => {
   return pipe(calculateOrderSumPriceRounded(items), sumPrice => ({
     userId,
@@ -68,6 +70,7 @@ const toOrderInputFormat = ({
     ratingPolicies: unit.ratingPolicies,
     tipPolicy: unit.tipPolicy,
     soldOutVisibilityPolicy: unit.soldOutVisibilityPolicy,
+    guestLabel,
   }));
 };
 
@@ -279,6 +282,7 @@ export const createOrderFromCart =
           place: props.cart.place,
           orderMode: CrudApi.OrderMode.instant, // Currenty this is a FIXED value
           servingMode: props.cart.servingMode || CrudApi.ServingMode.inplace, // should NOT use default Serving mode if ALL the carts have servingMode fields (when it will be required in the schema) (handled in #1835)
+          guestLabel: props.cart.guestLabel,
         }),
       })),
       // Handle packaging fee - only in takeaway mode
