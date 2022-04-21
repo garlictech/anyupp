@@ -5,7 +5,7 @@ mutation StartPayment(
   $savePaymentMethod: Boolean!
   $invoiceAddress: UserInvoiceAddressInput
 ) {
-  startStripePaymentConnected(
+  startStripePayment(
     input: {
       orderId: $orderId
       paymentMethod: $paymentMethod

@@ -1,7 +1,8 @@
 import 'package:fa_prev/graphql/graphql.dart';
 import 'generated/crud-api.dart';
 
-Future<String?> createDummyOrder(String userId, String unitId, bool archived, int orderNum) async {
+Future<String?> createDummyOrder(
+    String userId, String unitId, bool archived, int orderNum) async {
   // print('GraphQLCrud.createDummyOrder().unit=$unitId, user=$userId');
   try {
     var result = await GQL.amplify.execute(CreateOrderMutation(
@@ -12,19 +13,11 @@ Future<String?> createDummyOrder(String userId, String unitId, bool archived, in
         orderMode: OrderMode.instant,
         unitId: unitId,
         userId: userId,
-        orderNum: 'ORDER_$orderNum',
         archived: archived,
         paymentMode: PaymentModeInput(
           type: PaymentType.card,
           method: PaymentMethod.cash,
         ),
-        statusLog: [
-          StatusLogInput(
-            status: OrderStatus.none,
-            userId: userId,
-            ts: DateTime.now().millisecond.toDouble(),
-          )
-        ],
         sumPriceShown: PriceShownInput(
           currency: 'HUF',
           pricePerUnit: 1,
@@ -80,7 +73,8 @@ Future<String?> createDummyOrder(String userId, String unitId, bool archived, in
     if (result.data?.createOrder != null) {
       String id = result.data!.createOrder!.id;
       bool archived = result.data!.createOrder!.archived;
-      print('GraphQLCrud.createDummyOrder().created[$orderNum]=$id, archived=$archived');
+      print(
+          'GraphQLCrud.createDummyOrder().created[$orderNum]=$id, archived=$archived');
       return id;
     } else {
       return null;

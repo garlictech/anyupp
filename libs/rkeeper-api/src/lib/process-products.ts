@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as OO from 'fp-ts-rxjs/ObservableOption';
 import { flow, pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
@@ -361,12 +362,9 @@ export const normalizeModifier = (modifier: Modifier) =>
   normalizeCommon(modifier) as Modifier;
 
 export const resolveComponentSets =
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-
-    (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
-    (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
-      resolveComponentSetsHelper(sdk, chainId, rawData, dish);
+  (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
+  (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
+    resolveComponentSetsHelper(sdk, chainId, rawData, dish);
 
 export const handleRkeeperProducts =
   (sdk: CrudApi.CrudSdk) =>
