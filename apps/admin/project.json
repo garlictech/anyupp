@@ -1,0 +1,180 @@
+{
+  "projectType": "application",
+  "generators": {
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "root": "apps/admin",
+  "sourceRoot": "apps/admin/src",
+  "prefix": "bgap",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/admin",
+        "index": "apps/admin/src/index.html",
+        "main": "apps/admin/src/main.ts",
+        "polyfills": "apps/admin/src/polyfills.ts",
+        "tsConfig": "apps/admin/tsconfig.app.json",
+        "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"],
+        "styles": [
+          "apps/admin/src/styles.scss",
+          "node_modules/@nebular/theme/styles/prebuilt/default.css",
+          "node_modules/bootstrap/dist/css/bootstrap.css",
+          "node_modules/material-design-icons/iconfont/material-icons.css"
+        ],
+        "allowedCommonJsDependencies": [
+          "@angular/common/locales",
+          "@aws-crypto/crc32",
+          "@aws-crypto/sha256-browser",
+          "@aws-crypto/sha256-js",
+          "aws-appsync",
+          "axios",
+          "buffer",
+          "chart.js",
+          "chartjs-plugin-datalabels",
+          "crypto-js",
+          "fabric",
+          "fast-xml-parser",
+          "graphql-tag",
+          "isomorphic-unfetch",
+          "js-cookie",
+          "lodash",
+          "url",
+          "uuid",
+          "ulid",
+          "zen-observable",
+          "@aws-amplify/core",
+          "@aws-amplify/auth",
+          "xlsx",
+          "qrcode"
+        ],
+        "vendorChunk": true,
+        "extractLicenses": false,
+        "buildOptimizer": true,
+        "sourceMap": true,
+        "optimization": true,
+        "namedChunks": true
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
+              "with": "libs/admin/shared/config/src/lib/environments/environment.production.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ]
+        },
+        "qa": {
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
+              "with": "libs/admin/shared/config/src/lib/environments/environment.qa.ts"
+            }
+          ]
+        },
+        "staging": {
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "buildOptimizer": true,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
+              "with": "libs/admin/shared/config/src/lib/environments/environment.staging.ts"
+            }
+          ]
+        }
+      },
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": ""
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "options": {
+        "browserTarget": "admin:build"
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "admin:build:production"
+        }
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "admin:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/admin/**/*.ts", "apps/admin/**/*.html"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "apps/admin/jest.config.js",
+        "passWithNoTests": true
+      },
+      "outputs": ["coverage/apps/admin"]
+    }
+  },
+  "tags": ["type:website", "platform:angular"],
+  "implicitDependencies": ["anyupp-backend"]
+}

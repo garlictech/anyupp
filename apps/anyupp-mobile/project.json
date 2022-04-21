@@ -1,0 +1,238 @@
+{
+  "projectType": "application",
+  "root": "apps/anyupp-mobile",
+  "sourceRoot": "apps/anyupp-mobile/lib",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter analyze",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "lint-ci": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter analyze",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter clean",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "build-schema": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "command": "../../tools/build-schema-mobile-api.sh {args.env} {args.mode}",
+        "cwd": "apps/crud-backend"
+      },
+      "outputs": ["apps/anyupp-mobile/graphql/"]
+    },
+    "pub-get": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "command": "flutter pub get",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "pub-get-ci": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub get",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "graphql-codegen": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "command": "flutter pub run build_runner build --delete-conflicting-outputs",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "graphql-codegen-ci": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build  ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub run build_runner build --delete-conflicting-outputs",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "format": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter format apps/anyupp-mobile/*",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "unit-test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter test ./test/unit",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "unit-test-ci": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/unit",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "integration-test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter test ./test/integration_test",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "integration-test-ci": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/integration_test",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "e2e-test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter test ./e2e/start_app_test.dart",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "e2e-test-ci": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter scripts/e2e-tests-ci.sh",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "assemble": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter assemble",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "attach": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter attach",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "drive": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter drive",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "genL10n": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter gen-l10n",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "install": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter install",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "run": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter run",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "buildAar": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter build aar",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "buildApk": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter build apk",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "buildApk-ci": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build apk",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "buildSplittedApk": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter build apk --split-per-abi",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "buildAppbundle": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter build appbundle",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "buildAppbundle-ci": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build appbundle",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "buildBundle": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter build bundle",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "buildIos": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter build ios",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "buildIosFramework": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter build ios-framework",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "buildIpa": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter build ipa",
+        "cwd": "apps/anyupp-mobile"
+      }
+    },
+    "publish-appcenter": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "../../tools/publish-to-appcenter.sh '{args.env}' '{args.platform}'",
+        "cwd": "apps/anyupp-mobile"
+      }
+    }
+  },
+  "tags": ["type:application", "platform:flutter"]
+}

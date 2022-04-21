@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updateOrderStatusFromNoneToPlaced test should update inprogress order status from none to placed 1`] = `
+Object {
+  "id": "test_order_1_id",
+  "items": Array [
+    Object {
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": 1627909024677,
+          "userId": "test-alice",
+        },
+        Object {
+          "status": "placed",
+          "ts": 1627909024678,
+          "userId": "test-alice",
+        },
+        Object {
+          "status": "processing",
+          "ts": 1627909024679,
+          "userId": "test-alice",
+        },
+      ],
+    },
+    Object {
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": 1627909024677,
+          "userId": "test-alice",
+        },
+        Object {
+          "status": "placed",
+          "ts": 123456789,
+          "userId": "test-alice",
+        },
+      ],
+    },
+  ],
+  "statusLog": Array [
+    Object {
+      "status": "placed",
+      "ts": 123456789,
+      "userId": "test-alice",
+    },
+  ],
+}
+`;
+
+exports[`updateOrderStatusFromNoneToPlaced test should update new order status from none to placed 1`] = `
+Object {
+  "id": "test_order_1_id",
+  "items": Array [
+    Object {
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": 1627909024677,
+          "userId": "test-alice",
+        },
+        Object {
+          "status": "placed",
+          "ts": 123456789,
+          "userId": "test-alice",
+        },
+      ],
+    },
+    Object {
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": 1627909024677,
+          "userId": "test-alice",
+        },
+        Object {
+          "status": "placed",
+          "ts": 123456789,
+          "userId": "test-alice",
+        },
+      ],
+    },
+  ],
+  "statusLog": Array [
+    Object {
+      "status": "placed",
+      "ts": 123456789,
+      "userId": "test-alice",
+    },
+  ],
+}
+`;

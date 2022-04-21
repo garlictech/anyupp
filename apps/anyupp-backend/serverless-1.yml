@@ -42,8 +42,5 @@ functions:
   stripe-webhook:
     handler: lib/lambda/stripe-webhook/index.handler
 
-  stripe-webhook-old:
-    handler: lib/lambda/stripe-webhook-old/index.handler
-
   stack-seeder:
     handler: lib/lambda/stack-seeder/index.handler

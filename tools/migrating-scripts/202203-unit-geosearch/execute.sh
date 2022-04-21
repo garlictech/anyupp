@@ -4,8 +4,11 @@ IFS='|'
 
 ENVNAME=$1
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 # Create geoindex in unit table and migrate the unit fields
-yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./recreate-unit-index.ts
+yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register \
+  ${SCRIPT_DIR}/recreate-unit-index.ts
 
 # Reindex the unit table
 APPID=$(aws ssm get-parameter --name "/${ENVNAME}-anyupp-backend/generated/CrudApiAppId" | \
@@ -15,7 +18,7 @@ echo "APPID=$APPID"
 APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
 echo "APINAME=$APINAME"
 
-METAFILE=apps/cicd/amplify/backend/amplify-meta.json
+METAFILE=apps/crud-backend/amplify/backend/amplify-meta.json
 API_ID=$(jq -r ".api.$APINAME.output.GraphQLAPIIdOutput" $METAFILE)
 echo "API_ID=$API_ID"
 

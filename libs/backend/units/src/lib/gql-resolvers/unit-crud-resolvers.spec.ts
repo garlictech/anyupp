@@ -33,7 +33,7 @@ test('hashPasswords', () => {
 test('createUnitResolver', async () => {
   expect(
     await createUnitResolver(getDeps())({
-      input: simpleFixtures.getUnit(),
+      input: simpleFixtures.getCreateUnitInput(),
     }).toPromise(),
   ).toMatchSnapshot({
     createdAt: expect.any(String),

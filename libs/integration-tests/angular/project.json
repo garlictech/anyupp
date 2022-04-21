@@ -1,0 +1,20 @@
+{
+  "projectType": "library",
+  "root": "libs/integration-tests/angular",
+  "sourceRoot": "libs/integration-tests/angular/src",
+  "prefix": "bgap",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/integration-tests/angular"],
+      "options": {
+        "jestConfig": "libs/integration-tests/angular/jest.config.js",
+        "passWithNoTests": true,
+        "detectOpenHandles": true,
+        "forceExit": true,
+        "coverage": false
+      }
+    }
+  },
+  "tags": ["type:integration-tests", "platform:angular"]
+}

@@ -6,10 +6,6 @@ Object {
     "address": "UNIT ADDRESS",
     "city": "UNIT CITY",
     "country": "UNIT COUNTRY",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
     "postalCode": "UNIT POSTAL CODE",
     "title": "UNTI TITLE",
   },
@@ -31,6 +27,10 @@ Object {
       "name": "bár",
     },
   ],
+  "location": Object {
+    "lat": 47,
+    "lon": 19,
+  },
   "name": "UNIT NAME",
   "open": Object {
     "from": "1970-01-01",
@@ -61,10 +61,6 @@ Object {
     "address": "UNIT ADDRESS",
     "city": "UNIT CITY",
     "country": "UNIT COUNTRY",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
     "postalCode": "UNIT POSTAL CODE",
     "title": "UNTI TITLE",
   },
@@ -86,6 +82,10 @@ Object {
       "name": "bár",
     },
   ],
+  "location": Object {
+    "lat": 47,
+    "lon": 19,
+  },
   "name": "UNIT NAME",
   "open": Object {
     "from": "1970-01-01",

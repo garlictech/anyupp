@@ -164,19 +164,6 @@ const buildOrderStatusHistory = (
   return filledOrder;
 };
 
-const waitingTransaction = {
-  transactionStatus: CrudApi.PaymentStatus.waiting_for_payment,
-};
-
-const successfullTransaction = {
-  transactionStatus: CrudApi.PaymentStatus.success,
-};
-
-const getFailedTransaction = (unpayCategory: CrudApi.UnpayCategory) => ({
-  transactionStatus: CrudApi.PaymentStatus.failed,
-  unpayCategory,
-});
-
 const activeOrderInputBase = {
   ...orderInputBase,
   ...getOrderStatusLog(CrudApi.OrderStatus.none),
@@ -194,19 +181,20 @@ const historyOrderInputBase = {
 const activeWaitingCardOrderInput: CrudApi.CreateOrderInput = {
   ...activeOrderInputBase,
   ...cardPayment,
-  ...waitingTransaction,
 };
 
 const activeWaitingCashOrderInput: CrudApi.CreateOrderInput = {
   ...activeOrderInputBase,
   ...cashPayment,
-  ...waitingTransaction,
 };
 
 const activeWaitingStripeOrderInput: CrudApi.CreateOrderInput = {
   ...activeOrderInputBase,
   ...stripePayment,
-  ...waitingTransaction,
+};
+
+const activeWaitingAfterPayOrderInput: CrudApi.CreateOrderInput = {
+  ...activeOrderInputBase,
 };
 
 const activeWaitingPlacedCardOrderInput: CrudApi.CreateOrderInput = {
@@ -217,7 +205,6 @@ const activeWaitingPlacedCardOrderInput: CrudApi.CreateOrderInput = {
     },
     CrudApi.OrderStatus.placed,
   ),
-  ...waitingTransaction,
 };
 
 const activeSuccessPlacedCashOrderInput: CrudApi.CreateOrderInput = {
@@ -228,182 +215,153 @@ const activeSuccessPlacedCashOrderInput: CrudApi.CreateOrderInput = {
     },
     CrudApi.OrderStatus.placed,
   ),
-  ...successfullTransaction,
 };
 
 const activeSuccessCardOrderInput: CrudApi.CreateOrderInput = {
   ...activeOrderInputBase,
   ...cardPayment,
-  ...successfullTransaction,
   ...getOrderStatusLog(CrudApi.OrderStatus.placed),
 };
 
 const activeSuccessCashOrderInput: CrudApi.CreateOrderInput = {
   ...activeOrderInputBase,
   ...cashPayment,
-  ...successfullTransaction,
   ...getOrderStatusLog(CrudApi.OrderStatus.placed),
 };
 
 const activeServedSuccessCardOrderInput: CrudApi.CreateOrderInput = {
   ...activeOrderInputBase,
   ...cardPayment,
-  ...successfullTransaction,
   ...getOrderStatusLog(CrudApi.OrderStatus.served),
 };
 
 const activeServedSuccessCashOrderInput: CrudApi.CreateOrderInput = {
   ...activeOrderInputBase,
   ...cashPayment,
-  ...successfullTransaction,
   ...getOrderStatusLog(CrudApi.OrderStatus.served),
 };
 
 const activeSuccessStripeOrderInput: CrudApi.CreateOrderInput = {
   ...activeOrderInputBase,
   ...stripePayment,
-  ...successfullTransaction,
   ...getOrderStatusLog(CrudApi.OrderStatus.placed),
 };
 
 const historySuccessCardOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cardPayment,
-  ...successfullTransaction,
 };
 
 const historySuccessCashOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cashPayment,
-  ...successfullTransaction,
 };
 
 const historySuccessStripeOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...stripePayment,
-  ...successfullTransaction,
 };
 
 const historyFailedCardStaffMealOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cardPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.staff_meal),
 };
 
 const historyFailedCardManagerMealOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cardPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.manager_meal),
 };
 
 const historyFailedCardMarketingPromoOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cardPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.marketing_promo),
 };
 
 const historyFailedCardErrorCookedOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cardPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.error_cooked),
 };
 
 const historyFailedCardErrorNoCookedOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cardPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.error_no_cooked),
 };
 
 const historyFailedCardPaymentModeChangedOrderInput: CrudApi.CreateOrderInput =
   {
     ...historyOrderInputBase,
     ...cardPayment,
-    ...getFailedTransaction(CrudApi.UnpayCategory.payment_mode_change),
   };
 
 const historyFailedCardOtherOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cardPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.other),
 };
 
 const historyFailedCardDeliveryOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cardPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.delivery),
 };
 
 const historyFailedCardCouponOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cardPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.coupon),
 };
 
 const historyFailedCardEventOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cardPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.event),
 };
 
 const historyFailedCashStaffMealOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cashPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.staff_meal),
 };
 
 const historyFailedCashManagerMealOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cashPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.manager_meal),
 };
 
 const historyFailedCashMarketingPromoOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cashPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.marketing_promo),
 };
 
 const historyFailedCashErrorCookedOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cashPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.error_cooked),
 };
 
 const historyFailedCashErrorNoCookedOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cashPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.error_no_cooked),
 };
 
 const historyFailedCashPaymentModeChangedOrderInput: CrudApi.CreateOrderInput =
   {
     ...historyOrderInputBase,
     ...cashPayment,
-    ...getFailedTransaction(CrudApi.UnpayCategory.payment_mode_change),
   };
 
 const historyFailedCashOtherOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cashPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.other),
 };
 
 const historyFailedCashDeliveryOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cashPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.delivery),
 };
 
 const historyFailedCashCouponOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cashPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.coupon),
 };
 
 const historyFailedCashEventOrderInput: CrudApi.CreateOrderInput = {
   ...historyOrderInputBase,
   ...cashPayment,
-  ...getFailedTransaction(CrudApi.UnpayCategory.event),
 };
 
 const convertInputToOrder = (
@@ -413,6 +371,8 @@ const convertInputToOrder = (
   id: input.id || '',
   createdAt: '2021-08-02T01:54:11.843Z',
   updatedAt: '2021-08-02T01:54:11.843Z',
+  statusLog: [],
+  archived: !!input.archived,
 });
 
 export const orderFixture = {
@@ -429,16 +389,12 @@ export const orderFixture = {
   getOrderStatusLogItem,
   getOrderStatusLog,
 
-  // Transaction
-  waitingTransaction,
-  successfullTransaction,
-  getFailedTransaction,
-
   // Order inputs
   activeWaitingCardOrderInput,
   activeWaitingCashOrderInput,
   activeWaitingStripeOrderInput,
   activeWaitingPlacedCardOrderInput,
+  activeWaitingAfterPayOrderInput,
   activeSuccessPlacedCashOrderInput,
   activeSuccessCardOrderInput,
   activeSuccessCashOrderInput,

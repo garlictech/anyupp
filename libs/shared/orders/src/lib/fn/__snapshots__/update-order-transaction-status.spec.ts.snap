@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updateOrderTransactionStatus test should update order failed transaction status 1`] = `
+Object {
+  "id": "test_order_1_id",
+  "transactionStatus": "failed",
+  "unpayCategory": "manager_meal",
+}
+`;
+
+exports[`updateOrderTransactionStatus test should update order failed transaction status 2`] = `
+Object {
+  "id": "test_transaction_1_id",
+  "status": "failed",
+}
+`;
+
+exports[`updateOrderTransactionStatus test should update order success transaction status 1`] = `
+Object {
+  "id": "test_order_1_id",
+  "transactionStatus": "success",
+  "unpayCategory": undefined,
+}
+`;
+
+exports[`updateOrderTransactionStatus test should update order success transaction status 2`] = `
+Object {
+  "id": "test_transaction_1_id",
+  "status": "success",
+}
+`;

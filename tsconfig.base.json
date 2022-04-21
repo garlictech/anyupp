@@ -22,7 +22,7 @@
     "importHelpers": true,
     "removeComments": true,
     "downlevelIteration": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "target": "es2020",
     "module": "esnext",
     "typeRoots": ["node_modules/@types"],
@@ -122,6 +122,7 @@
       ],
       "@bgap/backend/products": ["libs/backend/products/src/index.ts"],
       "@bgap/backend/reports": ["libs/backend/reports/src/index.ts"],
+      "@bgap/backend/search": ["libs/backend/search/src/index.ts"],
       "@bgap/backend/seeder": ["libs/backend/seeder/src/index.ts"],
       "@bgap/backend/shared/utils": ["libs/backend/shared/utils/src/index.ts"],
       "@bgap/backend/units": ["libs/backend/units/src/index.ts"],
@@ -143,6 +144,7 @@
       "@bgap/shared/graphql/api-client": [
         "libs/shared/graphql/api-client/src/index.ts"
       ],
+      "@bgap/shared/orders": ["libs/shared/orders/src/index.ts"],
       "@bgap/shared/secrets": ["libs/shared/secrets/src/index.ts"],
       "@bgap/shared/types": ["libs/shared/types/src/index.ts"],
       "@bgap/shared/utils": ["libs/shared/utils/src/index.ts"],

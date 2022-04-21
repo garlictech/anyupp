@@ -112,6 +112,10 @@ done
 RESULT+="\"_closing_tag\": \"dont use me\"}"
 echo $RESULT > ${TABLE_CONFIG_NAME}
 
+OS_ENDPOINT=$(aws cloudformation list-exports | \
+  jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainEndpoint\")" | \
+  jq ".Value")
+
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
 # ----------------------------------------------------------
@@ -124,7 +128,8 @@ printf "Generating ${CRUD_CONFIG_FILE}...\n"
 echo "
 export const CrudApiConfig = {
   appId: '${APPID}',
-  appsyncApiId: '${API_ID}'
+  appsyncApiId: '${API_ID}',
+  openSearchEndpoint: ${OS_ENDPOINT}
 }
 " > ${CRUD_CONFIG_FILE}
 

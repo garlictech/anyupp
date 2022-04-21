@@ -1,0 +1,59 @@
+{
+  "root": "apps/cicd",
+  "sourceRoot": "apps/cicd/src",
+  "projectType": "application",
+  "prefix": "cicd",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [
+        "apps/cicd/cdk.out",
+        "apps/cicd/.build",
+        "apps/cicd/.serverless"
+      ],
+      "options": {
+        "outputPath": "dist/apps/cicd",
+        "main": "apps/cicd/src/main.ts",
+        "tsConfig": "apps/cicd/tsconfig.app.json",
+        "assets": ["apps/cicd/src/assets"]
+      }
+    },
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/cicd",
+        "commands": [
+          {
+            "command": "yarn sst deploy --stage='{args.env}'"
+          }
+        ]
+      }
+    },
+    "remove": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/cicd",
+        "commands": [
+          {
+            "command": "yarn sst remove --stage='{args.env}'"
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/cicd/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/cicd"],
+      "options": {
+        "jestConfig": "apps/cicd/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["type:backend", "platform:nodejs"]
+}

@@ -1,0 +1,22 @@
+{
+  "root": "libs/crud-gql/backend",
+  "sourceRoot": "libs/crud-gql/backend/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/crud-gql/backend/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/crud-gql/backend"],
+      "options": {
+        "jestConfig": "libs/crud-gql/backend/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["type:backend", "platform:nodejs"]
+}

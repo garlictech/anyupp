@@ -13,10 +13,7 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
+    "location": null,
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -47,6 +44,11 @@ Object {
     },
   ],
   "lastOrderNum": null,
+  "location": Object {
+    "lat": 47,
+    "lng": null,
+    "lon": 19,
+  },
   "merchantId": null,
   "name": "Késdobáló S",
   "open": Object {
@@ -54,6 +56,7 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPaymentPolicy": "prepay",
   "orderPolicy": null,
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
@@ -142,10 +145,7 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
+    "location": null,
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -176,6 +176,11 @@ Object {
     },
   ],
   "lastOrderNum": null,
+  "location": Object {
+    "lat": 47,
+    "lng": null,
+    "lon": 19,
+  },
   "merchantId": null,
   "name": "Késdobáló S",
   "open": Object {
@@ -183,6 +188,7 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPaymentPolicy": "prepay",
   "orderPolicy": null,
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
@@ -273,10 +279,7 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
+    "location": null,
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -307,6 +310,11 @@ Object {
     },
   ],
   "lastOrderNum": null,
+  "location": Object {
+    "lat": 47,
+    "lng": null,
+    "lon": 19,
+  },
   "merchantId": null,
   "name": "Késdobáló S",
   "open": Object {
@@ -314,6 +322,7 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPaymentPolicy": "prepay",
   "orderPolicy": null,
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
@@ -402,10 +411,7 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
+    "location": null,
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -436,6 +442,11 @@ Object {
     },
   ],
   "lastOrderNum": null,
+  "location": Object {
+    "lat": 47,
+    "lng": null,
+    "lon": 19,
+  },
   "merchantId": null,
   "name": "Késdobáló S",
   "open": Object {
@@ -443,6 +454,7 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPaymentPolicy": "prepay",
   "orderPolicy": null,
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
@@ -531,10 +543,7 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
+    "location": null,
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -565,6 +574,11 @@ Object {
     },
   ],
   "lastOrderNum": null,
+  "location": Object {
+    "lat": 47,
+    "lng": null,
+    "lon": 19,
+  },
   "merchantId": null,
   "name": "Késdobáló S",
   "open": Object {
@@ -572,6 +586,7 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPaymentPolicy": "prepay",
   "orderPolicy": null,
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
@@ -651,10 +666,7 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
+    "location": null,
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -685,6 +697,11 @@ Object {
     },
   ],
   "lastOrderNum": null,
+  "location": Object {
+    "lat": 47,
+    "lng": null,
+    "lon": 19,
+  },
   "merchantId": null,
   "name": "Késdobáló S",
   "open": Object {
@@ -692,6 +709,7 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPaymentPolicy": "prepay",
   "orderPolicy": null,
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
@@ -773,10 +791,7 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
+    "location": null,
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -807,6 +822,11 @@ Object {
     },
   ],
   "lastOrderNum": null,
+  "location": Object {
+    "lat": 47,
+    "lng": null,
+    "lon": 19,
+  },
   "merchantId": null,
   "name": "Késdobáló S",
   "open": Object {
@@ -814,6 +834,7 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPaymentPolicy": "prepay",
   "orderPolicy": null,
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
@@ -893,10 +914,7 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
+    "location": null,
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -927,6 +945,11 @@ Object {
     },
   ],
   "lastOrderNum": null,
+  "location": Object {
+    "lat": 47,
+    "lng": null,
+    "lon": 19,
+  },
   "merchantId": null,
   "name": "Késdobáló S",
   "open": Object {
@@ -934,6 +957,7 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPaymentPolicy": "prepay",
   "orderPolicy": null,
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
@@ -1013,10 +1037,6 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -1042,11 +1062,16 @@ Object {
       "name": "konyha",
     },
   ],
+  "location": Object {
+    "lat": 47,
+    "lon": 19,
+  },
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
     "to": "2970-01-01",
   },
+  "orderPaymentPolicy": "prepay",
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {
@@ -1108,10 +1133,7 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
+    "location": null,
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -1142,6 +1164,11 @@ Object {
     },
   ],
   "lastOrderNum": null,
+  "location": Object {
+    "lat": 47,
+    "lng": null,
+    "lon": 19,
+  },
   "merchantId": null,
   "name": "Késdobáló S",
   "open": Object {
@@ -1149,6 +1176,7 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPaymentPolicy": "prepay",
   "orderPolicy": null,
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
@@ -1230,10 +1258,7 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
+    "location": null,
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -1264,6 +1289,11 @@ Object {
     },
   ],
   "lastOrderNum": null,
+  "location": Object {
+    "lat": 47,
+    "lng": null,
+    "lon": 19,
+  },
   "merchantId": null,
   "name": "Késdobáló S",
   "open": Object {
@@ -1271,6 +1301,7 @@ Object {
     "to": "2970-01-01",
   },
   "openingHours": null,
+  "orderPaymentPolicy": "prepay",
   "orderPolicy": null,
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
@@ -1350,10 +1381,6 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -1380,11 +1407,16 @@ Object {
       "name": "konyha",
     },
   ],
+  "location": Object {
+    "lat": 47,
+    "lon": 19,
+  },
   "name": "Késdobáló S",
   "open": Object {
     "from": "1970-01-01",
     "to": "2970-01-01",
   },
+  "orderPaymentPolicy": "prepay",
   "packagingTaxPercentage": 27,
   "paymentModes": Array [
     Object {

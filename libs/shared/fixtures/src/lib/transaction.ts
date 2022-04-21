@@ -51,6 +51,12 @@ const waitingStripeTransactionInput: CrudApi.CreateTransactionInput = {
   ...stripeTransaction,
 };
 
+const waitingAfterPayTransactionInput: CrudApi.CreateTransactionInput = {
+  ...transactionInputBase,
+  ...waitingTransaction,
+  ...stripeTransaction,
+};
+
 const successCashTransactionInput: CrudApi.CreateTransactionInput = {
   ...transactionInputBase,
   ...successTransaction,
@@ -111,6 +117,7 @@ export const transactionFixture = {
   waitingCashTransactionInput,
   waitingCardTransactionInput,
   waitingStripeTransactionInput,
+  waitingAfterPayTransactionInput,
 
   successCashTransactionInput,
   successCardTransactionInput,

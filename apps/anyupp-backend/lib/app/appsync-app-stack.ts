@@ -82,7 +82,14 @@ export class AppsyncAppStack extends sst.Stack {
             tableConfig.UnitProduct.TableArn,
             tableConfig.GroupProduct.TableArn,
             tableConfig.ChainProduct.TableArn,
+            tableConfig.Order.TableArn,
           ],
+        }),
+      );
+      apiLambda.role.addToPrincipalPolicy(
+        new iam.PolicyStatement({
+          actions: ['es:ESHttpPost'],
+          resources: ['*'],
         }),
       );
     }

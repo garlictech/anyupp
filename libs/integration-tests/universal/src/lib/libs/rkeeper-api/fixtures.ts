@@ -165,12 +165,10 @@ export const orderInput: CrudApi.CreateOrderInput = {
   orderMode: CrudApi.OrderMode.instant,
   servingMode: CrudApi.ServingMode.inplace,
   archived: false,
-  orderNum: 'ORDERNUM',
   paymentMode: {
     method: CrudApi.PaymentMethod.cash,
     type: CrudApi.PaymentType.cash,
   },
-  statusLog: [],
 };
 
 export {

@@ -146,6 +146,16 @@
         </div>
 
         <div class="col-md-3">
+          <bgap-form-select
+            caption="common.orderPaymentPolicy.title"
+            [options]="orderPaymentPolicyOptions"
+            [control]="dialogForm?.get('orderPaymentPolicy') | asFormControl"
+            [localize]="false"
+            inputId="orderPaymentPolicy"
+          ></bgap-form-select>
+        </div>
+
+        <div class="col-md-3">
           <bgap-form-text-input
             caption="common.packagingTax"
             type="number"

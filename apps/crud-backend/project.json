@@ -1,0 +1,71 @@
+{
+  "root": "apps/crud-backend",
+  "sourceRoot": "apps/crud-backend/src",
+  "projectType": "application",
+  "prefix": "crud-api",
+  "targets": {
+    "config": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/crud-backend",
+        "parallel": false,
+        "commands": ["../../tools/pull-crud-api.sh '{args.env}'"]
+      },
+      "outputs": [
+        "apps/crud-backend/amplify",
+        "libs/crud-gql/api/src/lib/generated",
+        "libs/crud-gql/backend/src/generated"
+      ]
+    },
+    "init": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/crud-backend",
+        "parallel": false,
+        "commands": ["../../tools/init-crud-api.sh '{args.env}'"]
+      }
+    },
+    "reconfig": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/crud-backend",
+        "parallel": false,
+        "commands": ["../../tools/reconfig-crud-api.sh"]
+      }
+    },
+    "remove": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/crud-backend",
+        "parallel": false,
+        "commands": ["../../tools/remove-crud-api.sh '{args.env}'"]
+      }
+    },
+    "build-schema": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/crud-backend",
+        "parallel": false,
+        "commands": ["../../tools/build-schema-crud-api.sh {args.env}"]
+      },
+      "outputs": ["libs/crud-gql/api/src/lib/generated"]
+    },
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/crud-backend",
+        "parallel": false,
+        "commands": ["../../tools/deploy-crud-api.sh {args.env}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/crud-backend"],
+      "options": {
+        "jestConfig": "apps/crud-backend/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["type:backend", "platform:nodejs"]
+}

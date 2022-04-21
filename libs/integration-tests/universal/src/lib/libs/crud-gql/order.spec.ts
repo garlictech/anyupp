@@ -13,7 +13,7 @@ import { delay, map, switchMap } from 'rxjs/operators';
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
 
-describe('SearchOrders function', () => {
+describe.skip('SearchOrders function', () => {
   let crudSdk: CrudApi.CrudSdk = CrudApi.getCrudSdkForIAM(
     accessKeyId,
     secretAccessKey,
@@ -101,7 +101,6 @@ describe('SearchOrders function', () => {
           input: {
             ...ofx.historySuccessCardOrderInput,
             id: orderId,
-            transactionId,
           },
         }),
       ),

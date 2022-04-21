@@ -1,10 +1,12 @@
 // EXECUTE: yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/manipulate-os-indices.ts
 import { Client } from '@elastic/elasticsearch';
 import { CrudApiConfig } from '../../../libs/crud-gql/api/src';
-import { catchError, mergeMap, switchMap, toArray } from 'rxjs/operators';
+import { catchError, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
 import { from } from 'rxjs';
 import * as CrudApi from '../../../libs/crud-gql/api/src';
+import { pipe } from 'fp-ts/lib/function';
 const { createConnector } = require('aws-elasticsearch-js');
+import * as R from 'ramda';
 
 const client = new Client({
   nodes: [CrudApiConfig.openSearchEndpoint],
@@ -64,13 +66,21 @@ from(indices)
     ),
     toArray(),
     switchMap(() => crudSdk.ListUnits()),
-    switchMap(({ items }: { items: CrudApi.Unit[] }) => from(items ?? [])),
-    mergeMap(unit =>
-      crudSdk.UpdateUnit({
-        input: {
-          location: unit.address.location,
-        },
-      }),
+    switchMap(
+      (res: any) => from(pipe(res?.items ?? [])),
+      R.reject((unit: CrudApi.Unit) => R.isNil(unit?.address.location)),
     ),
+    mergeMap(
+      (unit: CrudApi.Unit) =>
+        crudSdk.UpdateUnit({
+          input: {
+            id: unit.id,
+            location: unit.address.location as CrudApi.LocationInput,
+          },
+        }),
+      10,
+    ),
+    toArray(),
+    tap(res => console.log(`Updated ${res.length} units.`)),
   )
   .subscribe();

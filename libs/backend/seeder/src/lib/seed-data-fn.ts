@@ -11,7 +11,6 @@ import {
 import { EProductType, RequiredId } from '@bgap/shared/types';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
-import { DateTime } from 'luxon';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { catchError, concatMap, switchMap, tap, toArray } from 'rxjs/operators';
 import * as R from 'ramda';
@@ -726,14 +725,6 @@ export const createTestOrder =
       orderMode: CrudApi.OrderMode.pickup,
       servingMode: CrudApi.ServingMode.takeaway,
       archived: false,
-      orderNum: '007007',
-      statusLog: [
-        {
-          userId: 'ADMIN_USER_ID',
-          status: CrudApi.OrderStatus.none,
-          ts: DateTime.utc().toMillis(),
-        },
-      ],
       place: {
         seat: '00',
         table: '70',
@@ -1040,10 +1031,7 @@ export const seedLotsOfOrders = (
         order: {
           ...orderInput,
           id: orderId,
-          transactionId,
-          tipTransactionId,
           userId,
-          orderNum: index.toString().padStart(6, '0'),
         },
         transaction: {
           ...transactionInput,

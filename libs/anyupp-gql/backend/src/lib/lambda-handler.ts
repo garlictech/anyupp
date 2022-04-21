@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { config } from '@bgap/shared/config';
 import { Context, Handler } from 'aws-lambda';
@@ -21,6 +22,11 @@ import { adminRequestHandler } from './lambda-resolvers/admin-user';
 import { orderRequestHandler } from '@bgap/backend/orders';
 import { userRequestHandler } from './lambda-resolvers/user';
 import { updateUnitRKeeperDataResolver } from '@bgap/backend/units';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { createConnector } = require('aws-elasticsearch-js');
+import { Client } from '@elastic/elasticsearch';
+import { CrudApiConfig } from '@bgap/crud-gql/api';
+import { searchByRadiusResolver } from '@bgap/backend/search';
 
 export interface AnyuppRequest {
   typeName: string;
@@ -44,6 +50,13 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   region: process.env.AWS_REGION || '',
 });
 
+const searchDeps = {
+  osClient: new Client({
+    nodes: [CrudApiConfig.openSearchEndpoint],
+    Connection: createConnector({ region: process.env.AWS_REGION || '' }),
+  }),
+};
+
 export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
   event: AnyuppRequest,
   _context: Context,
@@ -66,6 +79,13 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
 
   const orderRequestHandlers = orderRequestHandler({
     crudSdk,
+    orderTableName: tableConfig.Order.TableName,
+    unitTableName: tableConfig.Unit.TableName,
+    currentTimeISOString: () => new Date().toISOString(),
+    random: Math.random,
+    axiosInstance: axios,
+    uuid: () => uuidV1(),
+    docClient,
     userId: event.identity?.username || '',
   });
 
@@ -89,8 +109,6 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
   const resolverMap: any = {
     Mutation: {
       startStripePayment: stripeRequestHandlers.startStripePayment,
-      startStripePaymentConnected:
-        stripeRequestHandlers.startStripePaymentConnected,
       payTipWithStripe: stripeRequestHandlers.payTipWithStripe,
       createStripeCard: stripeRequestHandlers.createStripeCard,
       updateMyStripeCard: stripeRequestHandlers.updateStripeCard,
@@ -98,6 +116,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       createAdminUser: adminUserRequestHandlers.createAdminUser,
       deleteAdminUser: adminUserRequestHandlers.deleteAdminUser,
       createOrderFromCart: orderRequestHandlers.createOrderFromCart,
+      createOrder: orderRequestHandlers.createOrder,
       regenerateUnitData: unitRequestHandlers.regenerateUnitData,
       createAnonymUser: userRequestHandlers.createAnonymUser,
       createUnit: createUnitResolver(unitsDeps),
@@ -107,6 +126,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
     Query: {
       listStripeCards: stripeRequestHandlers.listStripeCards,
       getUnitsNearLocation: unitRequestHandlers.getUnitsNearLocation,
+      searchByRadius: searchByRadiusResolver(searchDeps),
     },
   };
 

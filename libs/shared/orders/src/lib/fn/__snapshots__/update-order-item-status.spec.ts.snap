@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`updateOrderItemStatus test should update order item status 1`] = `
+Object {
+  "id": "test_order_1_id",
+  "items": Array [
+    Object {
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": 1627909024677,
+          "userId": "test-alice",
+        },
+        Object {
+          "status": "processing",
+          "ts": 123456789,
+          "userId": "test-monad",
+        },
+      ],
+    },
+  ],
+  "statusLog": Array [
+    Object {
+      "status": "processing",
+      "ts": 123456789,
+      "userId": "test-monad",
+    },
+  ],
+}
+`;

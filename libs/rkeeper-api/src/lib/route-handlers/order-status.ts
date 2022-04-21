@@ -1,11 +1,12 @@
-import * as Joi from 'joi';
 import * as fastify from 'fastify';
+import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
+import { pipe } from 'fp-ts/lib/function';
+import * as Joi from 'joi';
+import * as R from 'ramda';
+import { of } from 'rxjs';
+
 import * as CrudApi from '@bgap/crud-gql/api';
 import { validateSchema } from '@bgap/shared/data-validators';
-import { pipe } from 'fp-ts/lib/function';
-import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
-import { of } from 'rxjs';
-import * as R from 'ramda';
 import { oeTryCatch } from '@bgap/shared/utils';
 
 export type RKeeperRequest = fastify.FastifyRequest<{

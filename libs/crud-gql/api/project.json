@@ -1,0 +1,22 @@
+{
+  "root": "libs/crud-gql/api",
+  "sourceRoot": "libs/crud-gql/api/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/crud-gql/api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/crud-gql/api"],
+      "options": {
+        "jestConfig": "libs/crud-gql/api/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["platform:nodejs", "layer:utils"]
+}

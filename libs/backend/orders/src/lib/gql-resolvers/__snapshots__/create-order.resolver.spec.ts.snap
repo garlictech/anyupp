@@ -1,0 +1,464 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createOrderCases cases: ERROR RESULT 1`] = `"INCREMENT ERROR"`;
+
+exports[`createOrderCases cases: RESULT 1`] = `
+Object {
+  "archived": false,
+  "createdAt": "2022-02-01T00:00:00.000Z",
+  "id": "THE UUID",
+  "orderNum": "10",
+  "statusLog": Array [],
+  "unitId": "UNIT ID",
+  "updatedAt": "2022-02-01T00:00:00.000Z",
+}
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM DEPS CALLS 1`] = `
+Array [
+  Array [
+    "UNIT TABLE NAME",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM DEPS CALLS 2`] = `
+Array [
+  Array [
+    "UNIT TABLE NAME",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM DEPS CALLS 3`] = `
+Array [
+  Array [
+    "UNIT TABLE NAME",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM DEPS CALLS 4`] = `
+Array [
+  Array [
+    "UNIT TABLE NAME",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM FUNC CALLS 1`] = `
+Array [
+  Array [
+    "UNIT ID 1",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM FUNC CALLS 2`] = `
+Array [
+  Array [
+    "UNIT ID 2",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM FUNC CALLS 3`] = `
+Array [
+  Array [
+    "UNIT ID 3",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: INCREMENTORDERNUM FUNC CALLS 4`] = `
+Array [
+  Array [
+    "UNIT ID 4",
+  ],
+]
+`;
+
+exports[`getNextOrderNum cases: RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "orderNum": "TABLE1SEAT105",
+      "place": Object {
+        "seat": "SEAT1",
+        "table": "TABLE1",
+      },
+    },
+    "unit": Object {
+      "id": "UNIT ID 1",
+    },
+  },
+}
+`;
+
+exports[`getNextOrderNum cases: RESULT 2`] = `
+Object {
+  "_tag": "Left",
+  "left": "INCREMENT ORDER NUM FAILURE",
+}
+`;
+
+exports[`getNextOrderNum cases: RESULT 3`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "orderNum": "TABLE3SEAT310",
+      "place": Object {
+        "seat": "SEAT3",
+        "table": "TABLE3",
+      },
+    },
+    "unit": Object {
+      "id": "UNIT ID 3",
+    },
+  },
+}
+`;
+
+exports[`getNextOrderNum cases: RESULT 4`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "orderNum": "20",
+    },
+    "unit": Object {
+      "id": "UNIT ID 4",
+    },
+  },
+}
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 2`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 3`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 4`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 5`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 6`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: GETUNIT CALLS 7`] = `
+Array [
+  Array [
+    Object {
+      "id": "UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`getUnit cases: RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "Unit UNIT ID in the cart cannot be fetched from the database.",
+}
+`;
+
+exports[`getUnit cases: RESULT 2`] = `
+Object {
+  "_tag": "Left",
+  "left": "UNIT ERROR",
+}
+`;
+
+exports[`getUnit cases: RESULT 3`] = `
+Object {
+  "_tag": "Left",
+  "left": "Unit does not accept orders",
+}
+`;
+
+exports[`getUnit cases: RESULT 4`] = `
+Object {
+  "_tag": "Left",
+  "left": "Payment mode is not provided in the order, and the unit does not accept afterpay.",
+}
+`;
+
+exports[`getUnit cases: RESULT 5`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "unitId": "UNIT ID",
+    },
+    "unit": Object {
+      "id": "UNIT ID 3",
+      "isAcceptingOrders": true,
+      "orderPaymentPolicy": "afterpay",
+    },
+  },
+}
+`;
+
+exports[`getUnit cases: RESULT 6`] = `
+Object {
+  "_tag": "Left",
+  "left": "Payment mode is not provided in the order, and the unit does not accept afterpay.",
+}
+`;
+
+exports[`getUnit cases: RESULT 7`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "paymentMode": Object {},
+      "unitId": "UNIT ID",
+    },
+    "unit": Object {
+      "id": "UNIT ID 5",
+      "isAcceptingOrders": true,
+    },
+  },
+}
+`;
+
+exports[`handleRkeeperOrderCases cases: RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "unitId": "THE ORDER UNIT ID",
+    },
+    "unit": Object {
+      "id": "NOT AN RKEEPER UNIT",
+    },
+  },
+}
+`;
+
+exports[`handleRkeeperOrderCases cases: RESULT 2`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "unitId": "THE ORDER UNIT ID",
+    },
+    "unit": Object {
+      "id": "AN RKEEPER UNIT",
+      "pos": Object {
+        "type": "rkeeper",
+      },
+    },
+  },
+}
+`;
+
+exports[`handleRkeeperOrderCases cases: RESULT 3`] = `
+Object {
+  "_tag": "Left",
+  "left": "RKEEPER ERROR",
+}
+`;
+
+exports[`handleRkeeperOrderCases cases: RKEEPER DEPS CALLS 1`] = `Array []`;
+
+exports[`handleRkeeperOrderCases cases: RKEEPER DEPS CALLS 2`] = `
+Array [
+  Array [
+    Object {
+      "axiosInstance": Object {},
+      "currentTimeISOString": [Function],
+      "uuidGenerator": [Function],
+    },
+  ],
+]
+`;
+
+exports[`handleRkeeperOrderCases cases: RKEEPER DEPS CALLS 3`] = `
+Array [
+  Array [
+    Object {
+      "axiosInstance": Object {},
+      "currentTimeISOString": [Function],
+      "uuidGenerator": [Function],
+    },
+  ],
+]
+`;
+
+exports[`handleRkeeperOrderCases cases: RKEEPER FUNC CALLS 1`] = `Array []`;
+
+exports[`handleRkeeperOrderCases cases: RKEEPER FUNC CALLS 2`] = `
+Array [
+  Array [
+    Object {
+      "id": "AN RKEEPER UNIT",
+      "pos": Object {
+        "type": "rkeeper",
+      },
+    },
+    Object {
+      "unitId": "THE ORDER UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`handleRkeeperOrderCases cases: RKEEPER FUNC CALLS 3`] = `
+Array [
+  Array [
+    Object {
+      "id": "AN RKEEPER UNIT",
+      "pos": Object {
+        "type": "rkeeper",
+      },
+    },
+    Object {
+      "unitId": "THE ORDER UNIT ID",
+    },
+  ],
+]
+`;
+
+exports[`placeOrderCases cases: Case: "All good", PUT CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "Item": Object {
+        "archived": false,
+        "createdAt": "2022-02-01T00:00:00.000Z",
+        "id": "THE UUID",
+        "statusLog": Array [],
+        "unitId": "THE ORDER UNIT ID",
+        "updatedAt": "2022-02-01T00:00:00.000Z",
+      },
+      "TableName": "ORDER TABLE NAME",
+    },
+  ],
+]
+`;
+
+exports[`placeOrderCases cases: Case: "All good", RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "archived": false,
+      "createdAt": "2022-02-01T00:00:00.000Z",
+      "id": "THE UUID",
+      "statusLog": Array [],
+      "unitId": "THE ORDER UNIT ID",
+      "updatedAt": "2022-02-01T00:00:00.000Z",
+    },
+  },
+}
+`;
+
+exports[`placeOrderCases cases: Case: "Error happened", PUT CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "Item": Object {
+        "archived": false,
+        "createdAt": "2022-02-01T00:00:00.000Z",
+        "id": "THE UUID",
+        "statusLog": Array [],
+        "unitId": "THE ORDER UNIT ID",
+        "updatedAt": "2022-02-01T00:00:00.000Z",
+      },
+      "TableName": "ORDER TABLE NAME",
+    },
+  ],
+]
+`;
+
+exports[`placeOrderCases cases: Case: "Error happened", RESULT 1`] = `
+Object {
+  "_tag": "Left",
+  "left": "DB ERRORED",
+}
+`;
+
+exports[`placeOrderCases cases: Case: "Order ID specified", PUT CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "Item": Object {
+        "archived": false,
+        "createdAt": "2022-02-01T00:00:00.000Z",
+        "id": "USER GIVEN ORDER ID",
+        "statusLog": Array [],
+        "unitId": "THE ORDER UNIT ID",
+        "updatedAt": "2022-02-01T00:00:00.000Z",
+      },
+      "TableName": "ORDER TABLE NAME",
+    },
+  ],
+]
+`;
+
+exports[`placeOrderCases cases: Case: "Order ID specified", RESULT 1`] = `
+Object {
+  "_tag": "Right",
+  "right": Object {
+    "order": Object {
+      "archived": false,
+      "createdAt": "2022-02-01T00:00:00.000Z",
+      "id": "USER GIVEN ORDER ID",
+      "statusLog": Array [],
+      "unitId": "THE ORDER UNIT ID",
+      "updatedAt": "2022-02-01T00:00:00.000Z",
+    },
+  },
+}
+`;

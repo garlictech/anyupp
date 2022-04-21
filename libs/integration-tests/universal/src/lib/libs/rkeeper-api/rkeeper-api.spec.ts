@@ -28,7 +28,7 @@ import {
   handleProducts,
   menusyncHandler,
 } from '@bgap/rkeeper-api';
-import { from, Observable, combineLatest, of, defer, forkJoin } from 'rxjs';
+import { from, Observable, of, defer, forkJoin } from 'rxjs';
 import { ES_DELAY, dateMatcher } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
@@ -197,7 +197,7 @@ describe('Test the rkeeper api basic functionality', () => {
       .pipe(
         delay(ES_DELAY),
         switchMap(() =>
-          combineLatest([
+          forkJoin([
             crudSdk
               .SearchUnitProducts({
                 filter: {
@@ -532,7 +532,7 @@ test('send order to rkeeper by HTTP post', done => {
 test('send order to rkeeper by sendRkeeperOrder', done => {
   sendRkeeperOrder({
     axiosInstance: axios,
-    currentTime: () => new Date('2040.01.01'),
+    currentTimeISOString: () => new Date('2040.01.01').toISOString(),
     uuidGenerator: () => 'UUID',
   })(fixtures.yellowUnit, fixtures.orderInput)
     .pipe(

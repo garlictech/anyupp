@@ -1,0 +1,76 @@
+{
+  "root": "apps/anyupp-backend",
+  "sourceRoot": "apps/anyupp-backend/src",
+  "projectType": "application",
+  "prefix": "anyupp-backend",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/anyupp-backend",
+        "parallel": false,
+        "commands": ["../../tools/build-anyupp-backend.sh '{args.env}'"]
+      },
+      "outputs": [
+        "apps/anyupp-backend/.serverless-1",
+        "apps/anyupp-backend/.serverless-2"
+      ]
+    },
+    "synth": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/anyupp-backend",
+        "parallel": false,
+        "commands": ["yarn sst cdk synth --stage='{args.env}'"]
+      },
+      "outputs": ["apps/anyupp-backend/cdk.out", "apps/anyupp-backend/.build"]
+    },
+    "config": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": ["tools/config-anyupp-backend.sh '{args.env}'"]
+      }
+    },
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/anyupp-backend",
+        "parallel": false,
+        "commands": [
+          {
+            "command": "../../tools/deploy-anyupp-backend.sh '{args.env}'"
+          }
+        ]
+      }
+    },
+    "remove": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/anyupp-backend",
+        "parallel": false,
+        "commands": [
+          {
+            "command": "yarn sst remove --stage='{args.env}'"
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/anyupp-backend/**/*.ts"],
+        "cache": true
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/anyupp-backend"],
+      "options": {
+        "jestConfig": "apps/anyupp-backend/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["platform:nodejs"]
+}
