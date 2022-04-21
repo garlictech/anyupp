@@ -13,6 +13,7 @@ class Cart {
   final List<OrderItem> items;
   final ServingMode servingMode;
   final OrderPolicy orderPolicy;
+  final String? guestLabel;
 
   Cart({
     this.id,
@@ -23,6 +24,7 @@ class Cart {
     required this.items,
     required this.servingMode,
     required this.orderPolicy,
+    this.guestLabel,
   });
 
   Cart copyWith({
@@ -34,6 +36,7 @@ class Cart {
     List<OrderItem>? items,
     ServingMode? servingMode,
     OrderPolicy? orderPolicy,
+    String? guestLabel,
   }) {
     return Cart(
       id: id ?? this.id,
@@ -44,6 +47,7 @@ class Cart {
       items: items ?? this.items,
       servingMode: servingMode ?? this.servingMode,
       orderPolicy: orderPolicy ?? this.orderPolicy,
+      guestLabel: guestLabel ?? this.guestLabel,
     );
   }
 
@@ -57,6 +61,7 @@ class Cart {
       'items': items.map((x) => x.toJson()).toList(),
       'servingMode': enumToString(servingMode),
       'orderPolicy': enumToString(orderPolicy),
+      'guestLabel': guestLabel,
     };
   }
 
@@ -77,12 +82,13 @@ class Cart {
       orderPolicy: map['orderPolicy'] != null
           ? enumFromString(map['orderPolicy'], OrderPolicy.values)
           : OrderPolicy.full,
+      guestLabel: map['guestLabel'],
     );
   }
 
   @override
   String toString() {
-    return 'Cart(id: $id, userId: $userId, unitId: $unitId, orderPolicy: $orderPolicy, place: $place, paymentMode: $paymentMode, items: $items, servingMode: $servingMode)';
+    return 'Cart(id: $id, userId: $userId, unitId: $unitId, guestLabel: $guestLabel, orderPolicy: $orderPolicy, place: $place, paymentMode: $paymentMode, items: $items, servingMode: $servingMode)';
   }
 
   @override
@@ -98,7 +104,8 @@ class Cart {
         listEquals(other.items, items) &&
         other.servingMode == servingMode &&
         listEquals(other.items, items) &&
-        other.orderPolicy == orderPolicy;
+        other.orderPolicy == orderPolicy &&
+        other.guestLabel == guestLabel;
   }
 
   @override
@@ -110,6 +117,7 @@ class Cart {
         paymentMode.hashCode ^
         items.hashCode ^
         servingMode.hashCode ^
-        orderPolicy.hashCode;
+        orderPolicy.hashCode ^
+        guestLabel.hashCode;
   }
 }

@@ -259,6 +259,7 @@ class AwsCartProvider implements ICartProvider {
       userId: cart.userId,
       servingMode: cart.servingMode,
       orderPolicy: cart.orderPolicy,
+      guestLabel: cart.guestLabel,
       items: cart.items.map((item) {
         return OrderItemInput(
           productId: item.productId,
@@ -356,6 +357,7 @@ class AwsCartProvider implements ICartProvider {
       userId: cart.userId,
       servingMode: cart.servingMode,
       orderPolicy: cart.orderPolicy,
+      guestLabel: cart.guestLabel,
       items: cart.items.map((item) {
         return OrderItemInput(
           productId: item.productId,

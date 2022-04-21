@@ -5,6 +5,7 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
+import 'package:fa_prev/shared/utils/md5_hash.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
@@ -31,6 +32,7 @@ class CartRepository implements ICartProvider {
       _cart = Cart(
         userId: user.id,
         unitId: unit.id,
+        guestLabel: generateHash(user.id),
         servingMode: servingMode,
         place: await getPlacePref(unit.id) ??
             Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
