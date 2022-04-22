@@ -1429,6 +1429,78 @@ type Mutation {
   deleteReceipt(input: DeleteReceiptInput!, condition: ModelReceiptConditionInput): Receipt @aws_iam @aws_cognito_user_pools
 }
 
+type Subscription {
+  onAdminUserChange(id: ID!): AdminUser @aws_subscribe(mutations: ["updateAdminUser"]) @aws_cognito_user_pools
+  onAdminUsersChange: AdminUser @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"]) @aws_cognito_user_pools
+  onChainsChange: Chain @aws_subscribe(mutations: ["createChain", "updateChain"]) @aws_cognito_user_pools
+  onGroupsChange(chainId: ID!): Group @aws_subscribe(mutations: ["createGroup", "updateGroup"]) @aws_cognito_user_pools
+  onUnitsChange(groupId: ID!): Unit @aws_subscribe(mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"]) @aws_cognito_user_pools
+  onProductCategoriesChange(chainId: ID!): ProductCategory @aws_subscribe(mutations: ["createProductCategory", "updateProductCategory"]) @aws_cognito_user_pools
+  onProductComponentsChange(chainId: ID!): ProductComponent @aws_subscribe(mutations: ["createProductComponent", "updateProductComponent"]) @aws_cognito_user_pools
+  onProductComponentSetsChange(chainId: ID!): ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet", "updateProductComponentSet"]) @aws_cognito_user_pools
+  onChainProductChange(chainId: ID!): ChainProduct @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"]) @aws_cognito_user_pools
+  onGroupProductChange(groupId: ID!): GroupProduct @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"]) @aws_cognito_user_pools
+  onUnitProductChange(unitId: ID!): UnitProduct @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"]) @aws_cognito_user_pools
+  onGeneratedProductChange(unitId: ID!): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct"]) @aws_cognito_user_pools
+  onOrdersChange: Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
+  onOrdersDelete: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_cognito_user_pools
+  onProductChanged(unitId: String): GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct", "updateGeneratedProduct", "deleteGeneratedProduct"]) @aws_cognito_user_pools
+  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
+  onUnitOrdersChange(unitId: String, archived: Boolean): Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
+  onCreateChainProduct: ChainProduct @aws_subscribe(mutations: ["createChainProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateChainProduct: ChainProduct @aws_subscribe(mutations: ["updateChainProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteChainProduct: ChainProduct @aws_subscribe(mutations: ["deleteChainProduct"]) @aws_iam @aws_cognito_user_pools
+  onCreateGroupProduct: GroupProduct @aws_subscribe(mutations: ["createGroupProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGroupProduct: GroupProduct @aws_subscribe(mutations: ["updateGroupProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGroupProduct: GroupProduct @aws_subscribe(mutations: ["deleteGroupProduct"]) @aws_iam @aws_cognito_user_pools
+  onCreateUnitProduct: UnitProduct @aws_subscribe(mutations: ["createUnitProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUnitProduct: UnitProduct @aws_subscribe(mutations: ["updateUnitProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUnitProduct: UnitProduct @aws_subscribe(mutations: ["deleteUnitProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateAdminUser: AdminUser @aws_subscribe(mutations: ["updateAdminUser"]) @aws_iam @aws_cognito_user_pools
+  onCreateChain: Chain @aws_subscribe(mutations: ["createChain"]) @aws_iam @aws_cognito_user_pools
+  onUpdateChain: Chain @aws_subscribe(mutations: ["updateChain"]) @aws_iam @aws_cognito_user_pools
+  onDeleteChain: Chain @aws_subscribe(mutations: ["deleteChain"]) @aws_iam @aws_cognito_user_pools
+  onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"]) @aws_iam @aws_cognito_user_pools
+  onUpdateOrder: Order @aws_subscribe(mutations: ["updateOrder"]) @aws_iam @aws_cognito_user_pools
+  onDeleteOrder: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_iam @aws_cognito_user_pools
+  onCreateProductCategory: ProductCategory @aws_subscribe(mutations: ["createProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onUpdateProductCategory: ProductCategory @aws_subscribe(mutations: ["updateProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onDeleteProductCategory: ProductCategory @aws_subscribe(mutations: ["deleteProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onCreateProductComponent: ProductComponent @aws_subscribe(mutations: ["createProductComponent"]) @aws_iam @aws_cognito_user_pools
+  onUpdateProductComponent: ProductComponent @aws_subscribe(mutations: ["updateProductComponent"]) @aws_iam @aws_cognito_user_pools
+  onDeleteProductComponent: ProductComponent @aws_subscribe(mutations: ["deleteProductComponent"]) @aws_iam @aws_cognito_user_pools
+  onCreateProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet"]) @aws_iam @aws_cognito_user_pools
+  onUpdateProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["updateProductComponentSet"]) @aws_iam @aws_cognito_user_pools
+  onDeleteProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["deleteProductComponentSet"]) @aws_iam @aws_cognito_user_pools
+  onCreateGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["createGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["updateGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["deleteGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
+  onCreateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["updateGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["deleteGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
+  onCreateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["createFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
+  onUpdateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["updateFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["deleteFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUnit: Unit @aws_subscribe(mutations: ["deleteUnit"]) @aws_iam @aws_cognito_user_pools
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_iam @aws_cognito_user_pools
+  onCreateCart: Cart @aws_subscribe(mutations: ["createCart"]) @aws_iam @aws_cognito_user_pools
+  onUpdateCart: Cart @aws_subscribe(mutations: ["updateCart"]) @aws_iam @aws_cognito_user_pools
+  onDeleteCart: Cart @aws_subscribe(mutations: ["deleteCart"]) @aws_iam @aws_cognito_user_pools
+  onCreateTransaction: Transaction @aws_subscribe(mutations: ["createTransaction"]) @aws_iam @aws_cognito_user_pools
+  onUpdateTransaction: Transaction @aws_subscribe(mutations: ["updateTransaction"]) @aws_iam @aws_cognito_user_pools
+  onDeleteTransaction: Transaction @aws_subscribe(mutations: ["deleteTransaction"]) @aws_iam @aws_cognito_user_pools
+  onCreateInvoice: Invoice @aws_subscribe(mutations: ["createInvoice"]) @aws_iam @aws_cognito_user_pools
+  onUpdateInvoice: Invoice @aws_subscribe(mutations: ["updateInvoice"]) @aws_iam @aws_cognito_user_pools
+  onDeleteInvoice: Invoice @aws_subscribe(mutations: ["deleteInvoice"]) @aws_iam @aws_cognito_user_pools
+  onCreateReceipt: Receipt @aws_subscribe(mutations: ["createReceipt"]) @aws_iam @aws_cognito_user_pools
+  onUpdateReceipt: Receipt @aws_subscribe(mutations: ["updateReceipt"]) @aws_iam @aws_cognito_user_pools
+  onDeleteReceipt: Receipt @aws_subscribe(mutations: ["deleteReceipt"]) @aws_iam @aws_cognito_user_pools
+}
+
 type SearchableChainProductConnection @aws_iam @aws_cognito_user_pools {
   items: [ChainProduct]!
   nextToken: String
@@ -1776,61 +1848,6 @@ input UpdateChainProductInput {
 
 input DeleteChainProductInput {
   id: ID!
-}
-
-type Subscription {
-  onCreateChainProduct: ChainProduct @aws_subscribe(mutations: ["createChainProduct"]) @aws_iam @aws_cognito_user_pools
-  onUpdateChainProduct: ChainProduct @aws_subscribe(mutations: ["updateChainProduct"]) @aws_iam @aws_cognito_user_pools
-  onDeleteChainProduct: ChainProduct @aws_subscribe(mutations: ["deleteChainProduct"]) @aws_iam @aws_cognito_user_pools
-  onCreateGroupProduct: GroupProduct @aws_subscribe(mutations: ["createGroupProduct"]) @aws_iam @aws_cognito_user_pools
-  onUpdateGroupProduct: GroupProduct @aws_subscribe(mutations: ["updateGroupProduct"]) @aws_iam @aws_cognito_user_pools
-  onDeleteGroupProduct: GroupProduct @aws_subscribe(mutations: ["deleteGroupProduct"]) @aws_iam @aws_cognito_user_pools
-  onCreateUnitProduct: UnitProduct @aws_subscribe(mutations: ["createUnitProduct"]) @aws_iam @aws_cognito_user_pools
-  onUpdateUnitProduct: UnitProduct @aws_subscribe(mutations: ["updateUnitProduct"]) @aws_iam @aws_cognito_user_pools
-  onDeleteUnitProduct: UnitProduct @aws_subscribe(mutations: ["deleteUnitProduct"]) @aws_iam @aws_cognito_user_pools
-  onUpdateAdminUser: AdminUser @aws_subscribe(mutations: ["updateAdminUser"]) @aws_iam @aws_cognito_user_pools
-  onCreateChain: Chain @aws_subscribe(mutations: ["createChain"]) @aws_iam @aws_cognito_user_pools
-  onUpdateChain: Chain @aws_subscribe(mutations: ["updateChain"]) @aws_iam @aws_cognito_user_pools
-  onDeleteChain: Chain @aws_subscribe(mutations: ["deleteChain"]) @aws_iam @aws_cognito_user_pools
-  onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"]) @aws_iam @aws_cognito_user_pools
-  onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"]) @aws_iam @aws_cognito_user_pools
-  onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"]) @aws_iam @aws_cognito_user_pools
-  onUpdateOrder: Order @aws_subscribe(mutations: ["updateOrder"]) @aws_iam @aws_cognito_user_pools
-  onDeleteOrder: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_iam @aws_cognito_user_pools
-  onCreateProductCategory: ProductCategory @aws_subscribe(mutations: ["createProductCategory"]) @aws_iam @aws_cognito_user_pools
-  onUpdateProductCategory: ProductCategory @aws_subscribe(mutations: ["updateProductCategory"]) @aws_iam @aws_cognito_user_pools
-  onDeleteProductCategory: ProductCategory @aws_subscribe(mutations: ["deleteProductCategory"]) @aws_iam @aws_cognito_user_pools
-  onCreateProductComponent: ProductComponent @aws_subscribe(mutations: ["createProductComponent"]) @aws_iam @aws_cognito_user_pools
-  onUpdateProductComponent: ProductComponent @aws_subscribe(mutations: ["updateProductComponent"]) @aws_iam @aws_cognito_user_pools
-  onDeleteProductComponent: ProductComponent @aws_subscribe(mutations: ["deleteProductComponent"]) @aws_iam @aws_cognito_user_pools
-  onCreateProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet"]) @aws_iam @aws_cognito_user_pools
-  onUpdateProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["updateProductComponentSet"]) @aws_iam @aws_cognito_user_pools
-  onDeleteProductComponentSet: ProductComponentSet @aws_subscribe(mutations: ["deleteProductComponentSet"]) @aws_iam @aws_cognito_user_pools
-  onCreateGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["createGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
-  onUpdateGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["updateGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
-  onDeleteGeneratedProductCategory: GeneratedProductCategory @aws_subscribe(mutations: ["deleteGeneratedProductCategory"]) @aws_iam @aws_cognito_user_pools
-  onCreateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["createGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
-  onUpdateGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["updateGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
-  onDeleteGeneratedProduct: GeneratedProduct @aws_subscribe(mutations: ["deleteGeneratedProduct"]) @aws_iam @aws_cognito_user_pools
-  onCreateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["createFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
-  onUpdateFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["updateFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
-  onDeleteFavoriteProduct: FavoriteProduct @aws_subscribe(mutations: ["deleteFavoriteProduct"]) @aws_iam @aws_cognito_user_pools
-  onDeleteUnit: Unit @aws_subscribe(mutations: ["deleteUnit"]) @aws_iam @aws_cognito_user_pools
-  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_iam @aws_cognito_user_pools
-  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_iam @aws_cognito_user_pools
-  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_iam @aws_cognito_user_pools
-  onCreateCart: Cart @aws_subscribe(mutations: ["createCart"]) @aws_iam @aws_cognito_user_pools
-  onUpdateCart: Cart @aws_subscribe(mutations: ["updateCart"]) @aws_iam @aws_cognito_user_pools
-  onDeleteCart: Cart @aws_subscribe(mutations: ["deleteCart"]) @aws_iam @aws_cognito_user_pools
-  onCreateTransaction: Transaction @aws_subscribe(mutations: ["createTransaction"]) @aws_iam @aws_cognito_user_pools
-  onUpdateTransaction: Transaction @aws_subscribe(mutations: ["updateTransaction"]) @aws_iam @aws_cognito_user_pools
-  onDeleteTransaction: Transaction @aws_subscribe(mutations: ["deleteTransaction"]) @aws_iam @aws_cognito_user_pools
-  onCreateInvoice: Invoice @aws_subscribe(mutations: ["createInvoice"]) @aws_iam @aws_cognito_user_pools
-  onUpdateInvoice: Invoice @aws_subscribe(mutations: ["updateInvoice"]) @aws_iam @aws_cognito_user_pools
-  onDeleteInvoice: Invoice @aws_subscribe(mutations: ["deleteInvoice"]) @aws_iam @aws_cognito_user_pools
-  onCreateReceipt: Receipt @aws_subscribe(mutations: ["createReceipt"]) @aws_iam @aws_cognito_user_pools
-  onUpdateReceipt: Receipt @aws_subscribe(mutations: ["updateReceipt"]) @aws_iam @aws_cognito_user_pools
-  onDeleteReceipt: Receipt @aws_subscribe(mutations: ["deleteReceipt"]) @aws_iam @aws_cognito_user_pools
 }
 
 type ModelGroupProductConnection @aws_iam @aws_cognito_user_pools {
