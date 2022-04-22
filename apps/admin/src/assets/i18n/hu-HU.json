@@ -129,7 +129,7 @@
     "resetPassword": "Új jelszó",
     "packagingFee": "Csomagolási díj",
     "packagingTax": "Csomagolási adó",
-    "serviceFee": "Felszolgálási díj",
+    "serviceFee": "Szervizdíj",
     "search": "Keresés",
     "value": "Érték",
     "icon": "Ikon",
@@ -369,7 +369,7 @@
         "included": "Az árak tartalmazzák a szervizdíjat",
         "applicable": "Az árak nem tartalmazzák a szervizdíjat"
       },
-      "serviceFeeIncluded": "Az árak tartalmazzák a szervizdíjat."
+      "serviceFeeIncluded": "Az árak {{tax}}% szervizdíjat tartalmaznak."
     },
     "merchantId": "Stripe kereskedői azonosító"
   },
