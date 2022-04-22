@@ -34,7 +34,7 @@ Array [
           Object {
             "_options": Object {
               "grossUnitPrice": 101,
-              "label": "ORDER PRODUCTNAME HU",
+              "label": "ORDER PRODUCTNAME HU (11% ÁFA)",
               "quantity": 1,
               "unit": "db",
               "vat": 11,
@@ -44,7 +44,7 @@ Array [
           Object {
             "_options": Object {
               "grossUnitPrice": 750,
-              "label": "csomagolás",
+              "label": "Csomagolás",
               "quantity": 1,
               "unit": "db",
               "vat": 50,
@@ -110,7 +110,7 @@ Array [
           Object {
             "_options": Object {
               "grossUnitPrice": 101,
-              "label": "ORDER PRODUCTNAME HU",
+              "label": "ORDER PRODUCTNAME HU (11% ÁFA)",
               "quantity": 1,
               "unit": "db",
               "vat": 11,
@@ -176,7 +176,7 @@ Array [
           Object {
             "_options": Object {
               "grossUnitPrice": 101,
-              "label": "ORDER PRODUCTNAME HU",
+              "label": "ORDER PRODUCTNAME HU (11% ÁFA)",
               "quantity": 1,
               "unit": "db",
               "vat": 11,
@@ -186,7 +186,7 @@ Array [
           Object {
             "_options": Object {
               "grossUnitPrice": 750,
-              "label": "csomagolás",
+              "label": "Csomagolás",
               "quantity": 1,
               "unit": "db",
               "vat": 50,
@@ -252,7 +252,7 @@ Array [
           Object {
             "_options": Object {
               "grossUnitPrice": 101,
-              "label": "ORDER PRODUCTNAME HU",
+              "label": "ORDER PRODUCTNAME HU (11% ÁFA)",
               "quantity": 1,
               "unit": "db",
               "vat": 11,
@@ -262,7 +262,7 @@ Array [
           Object {
             "_options": Object {
               "grossUnitPrice": 101,
-              "label": "ORDER PRODUCTNAME HU",
+              "label": "ORDER PRODUCTNAME HU (11% ÁFA)",
               "quantity": 1,
               "unit": "db",
               "vat": 11,

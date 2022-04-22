@@ -3,6 +3,7 @@ import { defer, from, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { pipe } from 'fp-ts/lib/function';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { createConnector } = require('aws-elasticsearch-js');
 
 const client = new Client({

@@ -80,12 +80,10 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
           GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
     }
 
-    String? clientSecret =
-        result.data?.startStripePaymentConnected?.clientSecret;
+    String? clientSecret = result.data?.startStripePayment?.clientSecret;
     String? merchantPaymentMethodId =
-        result.data?.startStripePaymentConnected?.paymentMethodId;
-    String? stripeAccount =
-        result.data?.startStripePaymentConnected?.stripeAccount;
+        result.data?.startStripePayment?.paymentMethodId;
+    String? stripeAccount = result.data?.startStripePayment?.stripeAccount;
     if (clientSecret == null) {
       throw StripeException(
           code: StripeException.CODE, message: 'Client secret is null!');
@@ -159,8 +157,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
           GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
     }
 
-    String? clientSecret =
-        result.data!.startStripePaymentConnected?.clientSecret;
+    String? clientSecret = result.data!.startStripePayment?.clientSecret;
     print('startStripePaymentWithNewCard.clientSecret=$clientSecret');
     if (clientSecret == null) {
       throw StripeException(

@@ -22,6 +22,7 @@ import { adminRequestHandler } from './lambda-resolvers/admin-user';
 import { orderRequestHandler } from '@bgap/backend/orders';
 import { userRequestHandler } from './lambda-resolvers/user';
 import { updateUnitRKeeperDataResolver } from '@bgap/backend/units';
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { createConnector } = require('aws-elasticsearch-js');
 import { Client } from '@elastic/elasticsearch';
 import { CrudApiConfig } from '@bgap/crud-gql/api';

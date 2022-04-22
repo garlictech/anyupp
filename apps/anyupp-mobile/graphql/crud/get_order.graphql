@@ -7,7 +7,6 @@ query GetOrder($orderId: ID!) {
     paymentIntention
     orderMode
     servingMode
-    takeAway
     paymentMode {
       caption
       type
