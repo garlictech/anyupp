@@ -29,7 +29,7 @@ export const calculaterServiceFeeItems = (
       sum,
     ]),
     R.map(([taxPercentage, netPrice]) => [
-      `Szervizdíj - ${serviceFeePolicy?.percentage}%`,
+      `Szervizdíj - ${serviceFeePolicy?.percentage}% ÁFA tartalommal`,
       {
         taxPercentage,
         netPrice,

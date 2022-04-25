@@ -35,11 +35,12 @@ import { sendRkeeperOrder } from './send-order';
   ],
   crmData: { Holder_ID: '10000000001686', Address_ID: '10000000000131' },
   order_number: 193,
-  CreateTime: '2022-02-02T12:00:39',
+  guest_label: "Guest",
+  guest_label: 1
 };
  */
 
-const orderInput: CrudApi.CreateOrderInput = {
+const orderInputTemplate: CrudApi.CreateOrderInput = {
   userId: 'USER_ID',
   unitId: 'rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit',
   items: [
@@ -140,7 +141,22 @@ const unit: any = {
   },
 };
 
-test('Convert Anyupp order to rkeeper order', done => {
+const testCases = [
+  {
+    label: 'Unknown guest label',
+    orderInput: orderInputTemplate,
+  },
+  {
+    label: 'Known guest label',
+    orderInput: {
+      ...orderInputTemplate,
+
+      guestLabel: 'GUEST LABEL',
+    },
+  },
+];
+
+test.each(testCases)('Test: $label', ({ orderInput }, done: any) => {
   const deps: any = {
     axiosInstance: {
       request: jest.fn().mockReturnValue(Promise.resolve({})),

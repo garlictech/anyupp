@@ -66,16 +66,9 @@ export const sendRkeeperOrder =
           email: unit.email,
           ln: 'Biborka',
         },
-        /*order_number: orderInput.place
-            ? parseFloat(
-                `${parseInt(orderInput.place?.table)}.${parseInt(
-                  orderInput.place?.seat,
-                )}`,
-              )
-            : 0.0,*/
-        // temporary solution, asked by rkeeper: we send the seat number only, as an integer
-        order_number: orderInput.place ? parseInt(orderInput.place?.seat) : 0,
-        guest_label: 'imi',
+        order_number: parseInt(orderInput.place?.table ?? '0'),
+        guest_label: parseInt(orderInput.place?.seat ?? '0'),
+        guest_name: orderInput.guestLabel ?? 'unknown guest',
         remoteOrderId: externalId,
         order,
       }),
