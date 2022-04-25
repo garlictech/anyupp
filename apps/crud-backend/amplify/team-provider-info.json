@@ -28,35 +28,5 @@
         }
       }
     }
-  },
-  "bulazs": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-anyuppbackend-bulazs-134651-authRole",
-      "UnauthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-bulazs-134651-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::568276182587:role/amplify-anyuppbackend-bulazs-134651-authRole",
-      "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-anyuppbackend-bulazs-134651-deployment",
-      "UnauthRoleName": "amplify-anyuppbackend-bulazs-134651-unauthRole",
-      "StackName": "amplify-anyuppbackend-bulazs-134651",
-      "StackId": "arn:aws:cloudformation:eu-west-1:568276182587:stack/amplify-anyuppbackend-bulazs-134651/3f3e5820-c169-11ec-b67d-06b6600a391d",
-      "AmplifyAppId": "d1smguwwq7uajn"
-    },
-    "categories": {
-      "auth": {
-        "anyuppbackend498dda93": {
-          "userPoolId": "eu-west-1_TDpIFRfaw",
-          "userPoolName": "bulazs-anyupp-backend-admin-user-pool",
-          "webClientId": "1u0isqapposn6qi581muvdr31i",
-          "nativeClientId": "22k2i95pnkuu0jj2hn9499p7h6",
-          "identityPoolId": "eu-west-1:a7b56520-c1ba-4501-afe1-516fc4f5f812",
-          "identityPoolName": "IdentityPool_Kmy7E102MPA8",
-          "allowUnauthenticatedIdentities": true,
-          "authRoleArn": "arn:aws:iam::568276182587:role/bulazs-anyupp-backend-cog-CognitoDefaultAuthentica-6W5N56538349",
-          "authRoleName": "bulazs-anyupp-backend-cog-CognitoDefaultAuthentica-6W5N56538349",
-          "unauthRoleArn": "arn:aws:iam::568276182587:role/bulazs-anyupp-backend-cog-CognitoDefaultUnauthenti-ER5YE15AJOCC",
-          "unauthRoleName": "bulazs-anyupp-backend-cog-CognitoDefaultUnauthenti-ER5YE15AJOCC"
-        }
-      }
-    }
   }
 }

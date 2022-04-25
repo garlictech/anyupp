@@ -272,7 +272,7 @@ Array [
           Object {
             "_options": Object {
               "grossUnitPrice": 100,
-              "label": "felszolgálási díj 0% ÁFA tartalommal",
+              "label": "Szervizdíj - 10% ÁFA tartalommal",
               "quantity": 1,
               "unit": "db",
               "vat": 0,
@@ -282,7 +282,7 @@ Array [
           Object {
             "_options": Object {
               "grossUnitPrice": 110.00000000000001,
-              "label": "felszolgálási díj 10% ÁFA tartalommal",
+              "label": "Szervizdíj - 10% ÁFA tartalommal",
               "quantity": 1,
               "unit": "db",
               "vat": 10,
@@ -317,7 +317,7 @@ exports[`createInvoice - service fee included: the result 1`] = `"SZAMLAZZCLIENT
 exports[`split service fee by tax percentage 1`] = `
 Array [
   Array [
-    "felszolgálási díj 0% ÁFA tartalommal",
+    "Szervizdíj - 10% ÁFA tartalommal",
     Object {
       "currency": "HUF",
       "netPrice": 100,
@@ -325,7 +325,7 @@ Array [
     },
   ],
   Array [
-    "felszolgálási díj 10% ÁFA tartalommal",
+    "Szervizdíj - 10% ÁFA tartalommal",
     Object {
       "currency": "HUF",
       "netPrice": 200,
@@ -333,7 +333,7 @@ Array [
     },
   ],
   Array [
-    "felszolgálási díj 20% ÁFA tartalommal",
+    "Szervizdíj - 10% ÁFA tartalommal",
     Object {
       "currency": "HUF",
       "netPrice": 100,

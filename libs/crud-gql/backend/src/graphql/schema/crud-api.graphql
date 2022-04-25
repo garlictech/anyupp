@@ -532,6 +532,7 @@ type Order
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
   externalId: String
+  guestLabel: String
 }
 
 input CreateOrderInput {
@@ -562,6 +563,7 @@ input CreateOrderInput {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
   externalId: String
+  guestLabel: String
 }
 
 input OrderItemInput {
@@ -1051,6 +1053,7 @@ type Cart
   servingMode: ServingMode # Make the Cart.servingMode REQUIRED in the next release (handled in #1835 issue)
   orderMode: OrderMode
   orderPolicy: OrderPolicy
+  guestLabel: String
 }
 
 type Transaction

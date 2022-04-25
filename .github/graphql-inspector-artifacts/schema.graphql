@@ -521,6 +521,7 @@ type Order @aws_iam @aws_cognito_user_pools {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
   externalId: String
+  guestLabel: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -553,6 +554,7 @@ input CreateOrderInput {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
   externalId: String
+  guestLabel: String
 }
 
 input OrderItemInput {
@@ -1023,6 +1025,7 @@ type Cart @aws_iam @aws_cognito_user_pools {
   servingMode: ServingMode
   orderMode: OrderMode
   orderPolicy: OrderPolicy
+  guestLabel: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2233,6 +2236,7 @@ input ModelOrderFilterInput {
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   packagingFeeTaxPercentage: ModelFloatInput
   externalId: ModelStringInput
+  guestLabel: ModelStringInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
@@ -2257,6 +2261,7 @@ input ModelOrderConditionInput {
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   packagingFeeTaxPercentage: ModelFloatInput
   externalId: ModelStringInput
+  guestLabel: ModelStringInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
@@ -2298,6 +2303,7 @@ input UpdateOrderInput {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   packagingFeeTaxPercentage: Float
   externalId: String
+  guestLabel: String
 }
 
 type ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools {
@@ -2805,6 +2811,7 @@ input ModelCartFilterInput {
   servingMode: ModelServingModeInput
   orderMode: ModelOrderModeInput
   orderPolicy: ModelOrderPolicyInput
+  guestLabel: ModelStringInput
   and: [ModelCartFilterInput]
   or: [ModelCartFilterInput]
   not: ModelCartFilterInput
@@ -2818,6 +2825,7 @@ input ModelCartConditionInput {
   servingMode: ModelServingModeInput
   orderMode: ModelOrderModeInput
   orderPolicy: ModelOrderPolicyInput
+  guestLabel: ModelStringInput
   and: [ModelCartConditionInput]
   or: [ModelCartConditionInput]
   not: ModelCartConditionInput
@@ -2835,6 +2843,7 @@ input CreateCartInput {
   servingMode: ServingMode
   orderMode: OrderMode
   orderPolicy: OrderPolicy
+  guestLabel: String
 }
 
 input UpdateCartInput {
@@ -2849,6 +2858,7 @@ input UpdateCartInput {
   servingMode: ServingMode
   orderMode: OrderMode
   orderPolicy: OrderPolicy
+  guestLabel: String
 }
 
 input DeleteCartInput {
@@ -3488,6 +3498,7 @@ input SearchableOrderFilterInput {
   tipTransactionId: SearchableIDFilterInput
   packagingFeeTaxPercentage: SearchableFloatFilterInput
   externalId: SearchableStringFilterInput
+  guestLabel: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   transactionStatus: SearchableStringFilterInput
@@ -3515,6 +3526,7 @@ enum SearchableOrderSortableFields {
   tipTransactionId
   packagingFeeTaxPercentage
   externalId
+  guestLabel
   createdAt
   updatedAt
 }
@@ -3544,6 +3556,7 @@ enum SearchableOrderAggregateField {
   soldOutVisibilityPolicy
   packagingFeeTaxPercentage
   externalId
+  guestLabel
   createdAt
   updatedAt
 }
@@ -3972,6 +3985,7 @@ input SearchableCartFilterInput {
   userId: SearchableIDFilterInput
   unitId: SearchableIDFilterInput
   takeAway: SearchableBooleanFilterInput
+  guestLabel: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   servingMode: SearchableStringFilterInput
@@ -3988,6 +4002,7 @@ enum SearchableCartSortableFields {
   userId
   unitId
   takeAway
+  guestLabel
   createdAt
   updatedAt
 }
@@ -4006,6 +4021,7 @@ enum SearchableCartAggregateField {
   servingMode
   orderMode
   orderPolicy
+  guestLabel
   createdAt
   updatedAt
 }
