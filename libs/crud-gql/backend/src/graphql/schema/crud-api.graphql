@@ -1357,6 +1357,8 @@ type Query {
 
 type Mutation {
   createUnit(input: CreateUnitInput!): Unit
+    @aws_iam
+    @aws_cognito_user_pools
     @function(name: "${env}-anyupp-graphql-resolvers")
 
   updateUnit(input: UpdateUnitInput!): Unit
