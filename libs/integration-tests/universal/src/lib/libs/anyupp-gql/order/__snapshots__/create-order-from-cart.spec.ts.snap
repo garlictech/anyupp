@@ -5,6 +5,7 @@ Object {
   "archived": false,
   "createdAt": Any<String>,
   "externalId": null,
+  "guestLabel": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -372,6 +373,7 @@ Object {
   "archived": false,
   "createdAt": Any<String>,
   "externalId": null,
+  "guestLabel": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -733,6 +735,7 @@ Object {
   "archived": false,
   "createdAt": Any<String>,
   "externalId": null,
+  "guestLabel": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [
@@ -1100,6 +1103,7 @@ Object {
   "archived": false,
   "createdAt": Any<String>,
   "externalId": null,
+  "guestLabel": null,
   "hasRated": null,
   "id": "MASKED ID",
   "items": Array [

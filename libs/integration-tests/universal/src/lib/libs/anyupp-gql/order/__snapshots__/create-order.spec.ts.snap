@@ -290,6 +290,7 @@ Object {
   "archived": false,
   "createdAt": "MASKED DATE",
   "externalId": null,
+  "guestLabel": null,
   "hasRated": true,
   "id": "create-order-1-MASKED ID",
   "items": Array [
