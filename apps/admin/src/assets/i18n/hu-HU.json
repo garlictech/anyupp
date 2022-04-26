@@ -277,7 +277,8 @@
       "unknown": "Ismeretlen típus"
     },
     "takeaway": "Elvitelre",
-    "confirmDeleteProduct": "Biztosan törlöd a terméket?"
+    "confirmDeleteProduct": "Biztosan törlöd a terméket?",
+    "productDeletionNotAllowed": "A termék törlése nem engedélyezett."
   },
   "productCategories": {
     "addProductCategory": "Termék kategória hozzáadása",

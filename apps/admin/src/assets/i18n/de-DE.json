@@ -277,7 +277,8 @@
       "unknown": "Unknown type"
     },
     "takeaway": "Takeaway",
-    "confirmDeleteProduct": "Are you sure you delete the product?"
+    "confirmDeleteProduct": "Are you sure you delete the product?",
+    "productDeletionNotAllowed": "Product deletion not allowed."
   },
   "productCategories": {
     "addProductCategory": "Add product category",

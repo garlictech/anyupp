@@ -19,10 +19,12 @@
     "Requires Uppercase",
     "Requires Numbers"
   ],
-  "mfaConfiguration": "OFF",
+  "mfaConfiguration": "OPTIONAL",
   "autoVerifiedAttributes": [
     "email",
     "phone_number"
   ],
-  "mfaTypes": []
+  "mfaTypes": [
+    "SMS Text Message"
+  ]
 }
