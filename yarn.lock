@@ -7246,7 +7246,7 @@
     "@angular-devkit/schematics" "13.3.3"
     jsonc-parser "3.0.0"
 
-"@serverless-stack/aws-lambda-ric@^2.0.12", "@serverless-stack/aws-lambda-ric@^2.0.13":
+"@serverless-stack/aws-lambda-ric@^2.0.13":
   version "2.0.13"
   resolved "https://registry.yarnpkg.com/@serverless-stack/aws-lambda-ric/-/aws-lambda-ric-2.0.13.tgz#8e2397479a19318795a99bc4ab3058e97ca002cc"
   integrity sha512-Aj4X2wMW6O5/PQoKoBdQGC3LwQyGTgW1XZtF0rs07WE9s6Q+46zWaVgURQjoNmTNQKpHSGJYo6B+ycp9u7/CSA==
@@ -7254,16 +7254,15 @@
     node-addon-api "3.2.1"
     node-gyp "8.1.0"
 
-"@serverless-stack/cli@0.69.5":
-  version "0.69.5"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.69.5.tgz#23be748f94a40841ffee530c9013134f5209ed9f"
-  integrity sha512-vGUUEWYo7Z1Btz+ji7R0o/8pm1Vn7azAsNPAvD3ZVeuJK8OxQ2IlTamid6EqdYfbBG04Kbf1KMimd20hYXuvAA==
+"@serverless-stack/cli@0.69.6":
+  version "0.69.6"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.69.6.tgz#b7f20002b836f9c9d71c31e4f6b9ae1aaa1ff4ab"
+  integrity sha512-KetoW89BFVKk8gXYRqgc0Ka45+SjE6xg3cQR4+UYxAJBLOR+wzRSYNdz1ydD2sS55BugjsAXWnJAUYEgT3b1ag==
   dependencies:
     "@aws-cdk/aws-apigatewayv2-alpha" "2.15.0-alpha.0"
     "@graphql-codegen/cli" "^2.6.2"
-    "@serverless-stack/aws-lambda-ric" "^2.0.12"
-    "@serverless-stack/core" "^0.69.5"
-    "@serverless-stack/resources" "^0.69.5"
+    "@serverless-stack/core" "^0.69.6"
+    "@serverless-stack/resources" "^0.69.6"
     aws-cdk "2.15.0"
     aws-cdk-lib "2.15.0"
     aws-sdk "^2.761.0"
@@ -7343,7 +7342,7 @@
     graphql "^15.5.1"
     zip-local "^0.3.4"
 
-"@serverless-stack/resources@^0.69.5":
+"@serverless-stack/resources@^0.69.6":
   version "0.69.6"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.69.6.tgz#615477e1adc748736a26f6a1a8c0ae1b10a2eb0a"
   integrity sha512-HeCM54yjKpfHbyUlbT0UG0ETaQFuOtStRUmjjaALK8bU2KMEgUV+551gb3sjWSRI7eb+ZvtQxTWt4WkB6Erd8A==
