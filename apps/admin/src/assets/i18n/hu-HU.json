@@ -134,7 +134,7 @@
     "resetPassword": "Új jelszó",
     "packagingFee": "Csomagolási díj",
     "packagingTax": "Csomagolási adó",
-    "serviceFee": "Felszolgálási díj",
+    "serviceFee": "Szervizdíj",
     "search": "Keresés",
     "value": "Érték",
     "icon": "Ikon",
@@ -282,7 +282,8 @@
       "unknown": "Ismeretlen típus"
     },
     "takeaway": "Elvitelre",
-    "confirmDeleteProduct": "Biztosan törlöd a terméket?"
+    "confirmDeleteProduct": "Biztosan törlöd a terméket?",
+    "productDeletionNotAllowed": "A termék törlése nem engedélyezett."
   },
   "productCategories": {
     "addProductCategory": "Termék kategória hozzáadása",
@@ -374,7 +375,7 @@
         "included": "Az árak tartalmazzák a szervizdíjat",
         "applicable": "Az árak nem tartalmazzák a szervizdíjat"
       },
-      "serviceFeeIncluded": "Az árak tartalmazzák a szervizdíjat."
+      "serviceFeeIncluded": "Az árak {{tax}}% szervizdíjat tartalmaznak."
     },
     "merchantId": "Stripe kereskedői azonosító"
   },

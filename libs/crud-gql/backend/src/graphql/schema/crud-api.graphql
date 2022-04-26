@@ -169,6 +169,7 @@ type UnitProduct
   supportedServingModes: [ServingMode!]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 type ProductConfigComponent {

@@ -282,7 +282,8 @@
       "unknown": "Unknown type"
     },
     "takeaway": "Takeaway",
-    "confirmDeleteProduct": "Are you sure you delete the product?"
+    "confirmDeleteProduct": "Are you sure you delete the product?",
+    "productDeletionNotAllowed": "Product deletion not allowed."
   },
   "productCategories": {
     "addProductCategory": "Add product category",
@@ -374,7 +375,7 @@
         "included": "Fee included in all prices",
         "applicable": "Fee not included in prices but applicable"
       },
-      "serviceFeeIncluded": "Service fee included in all prices."
+      "serviceFeeIncluded": "{{tax}}% service fee included in all prices."
     },
     "merchantId": "Stripe Merchant ID"
   },

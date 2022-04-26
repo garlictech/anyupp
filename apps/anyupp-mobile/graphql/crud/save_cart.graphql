@@ -7,6 +7,7 @@ mutation CreateCart(
   $version: Int
   $paymentMode: PaymentModeInput
   $place: PlaceInput
+  $guestLabel: String
   $items: [OrderItemInput!]!
 ) {
   createCart(
@@ -20,6 +21,7 @@ mutation CreateCart(
       items: $items
       paymentMode: $paymentMode
       place: $place
+      guestLabel: $guestLabel
     }
   ) {
     id

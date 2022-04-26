@@ -94,7 +94,6 @@ export class ProductListService {
   public chainProducts$() {
     return this._chainProductCollectionService.filteredEntities$.pipe(
       switchMap((chainProducts: CrudApi.ChainProduct[]) => {
-        console.error('chainProducts', chainProducts);
         const [dirtyChainProducts, cleanChainProducts] = partition(
           p => p.dirty,
           chainProducts,
@@ -293,6 +292,7 @@ export class ProductListService {
                                     chainId: { eq: settings?.selectedChainId },
                                     groupId: { eq: settings?.selectedGroupId },
                                     unitId: { eq: settings?.selectedUnitId },
+                                    deletedAt: { exists: false },
                                     parentId: {
                                       eq: groupProductId,
                                     },
@@ -363,6 +363,7 @@ export class ProductListService {
                                 chainId: { eq: settings?.selectedChainId },
                                 groupId: { eq: settings?.selectedGroupId },
                                 unitId: { eq: settings?.selectedUnitId },
+                                deletedAt: { exists: false },
                                 parentId: {
                                   eq: groupProductId,
                                 },
@@ -449,6 +450,7 @@ export class ProductListService {
                     chainId: { eq: settings?.selectedChainId },
                     groupId: { eq: settings?.selectedGroupId },
                     unitId: { eq: settings?.selectedUnitId },
+                    deletedAt: { exists: false },
                   },
                   limit: PAGINATION_LIMIT,
                   nextToken: this._nextToken.unit,
@@ -535,7 +537,13 @@ export class ProductListService {
   }
 
   public deleteChainProduct(id: string) {
-    this._acceptDeletion$()
+    const childCheck$ = this._crudSdk.sdk.SearchGroupProducts({
+      filter: {
+        parentId: { eq: id },
+      },
+    });
+
+    this._acceptDeletion$(childCheck$)
       .pipe(
         switchMap(accepted =>
           iif(
@@ -557,7 +565,13 @@ export class ProductListService {
   }
 
   public deleteGroupProduct(id: string) {
-    this._acceptDeletion$()
+    const childCheck$ = this._crudSdk.sdk.SearchUnitProducts({
+      filter: {
+        parentId: { eq: id },
+      },
+    });
+
+    this._acceptDeletion$(childCheck$)
       .pipe(
         switchMap(accepted =>
           iif(
@@ -579,14 +593,17 @@ export class ProductListService {
   }
 
   public deleteUnitProduct(id: string) {
-    this._acceptDeletion$()
+    // no childcheck
+    this._acceptDeletion$(of(undefined))
       .pipe(
         switchMap(accepted =>
           iif(
             () => accepted,
-            defer(() =>
-              this._crudSdk.sdk.DeleteUnitProduct({ input: { id } }),
-            ).pipe(
+            defer(() => {
+              return this._crudSdk.sdk.UpdateUnitProduct({
+                input: { id, deletedAt: new Date().toISOString() },
+              });
+            }).pipe(
               filterNullish(),
               tap(product => {
                 this._unitProductCollectionService.removeOneFromCache(product);
@@ -600,29 +617,56 @@ export class ProductListService {
       .subscribe();
   }
 
-  private _acceptDeletion$() {
-    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
+  private _acceptDeletion$(childCheck$: Observable<unknown>) {
+    return childCheck$.pipe(
+      switchMap(child => {
+        const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
-    return new Observable<boolean>(observer => {
-      dialog.componentRef.instance.options = {
-        message: 'products.confirmDeleteProduct',
-        buttons: [
-          {
-            label: 'common.ok',
-            callback: () => {
-              observer.next(true);
-            },
-            status: 'success',
-          },
-          {
-            label: 'common.cancel',
-            status: 'basic',
-            callback: () => {
-              observer.next(false);
-            },
-          },
-        ],
-      };
-    });
+        return iif(
+          () => !child,
+          defer(
+            () =>
+              new Observable<boolean>(observer => {
+                dialog.componentRef.instance.options = {
+                  message: 'products.confirmDeleteProduct',
+                  buttons: [
+                    {
+                      label: 'common.ok',
+                      callback: () => {
+                        observer.next(true);
+                      },
+                      status: 'success',
+                    },
+                    {
+                      label: 'common.cancel',
+                      status: 'basic',
+                      callback: () => {
+                        observer.next(false);
+                      },
+                    },
+                  ],
+                };
+              }),
+          ),
+          defer(
+            () =>
+              new Observable<boolean>(observer => {
+                dialog.componentRef.instance.options = {
+                  message: 'products.productDeletionNotAllowed',
+                  buttons: [
+                    {
+                      label: 'common.ok',
+                      callback: () => {
+                        observer.next(false);
+                      },
+                      status: 'success',
+                    },
+                  ],
+                };
+              }),
+          ),
+        );
+      }),
+    );
   }
 }
