@@ -373,7 +373,7 @@
       "type": {
         "noFee": "Nincs szervizdíj",
         "included": "Az árak tartalmazzák a szervizdíjat",
-        "applicable": "Az árak nem tartalmazzák a szervizdíjat"
+        "applicable": "Az árak nem tartalmaznak szervizdíjat, a végösszeghez adódnak"
       },
       "serviceFeeIncluded": "Az árak {{tax}}% szervizdíjat tartalmaznak."
     },

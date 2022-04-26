@@ -373,7 +373,7 @@
       "type": {
         "noFee": "No service fee",
         "included": "Fee included in all prices",
-        "applicable": "Fee not included in prices but applicable"
+        "applicable": "No service fee in prices, it is added to sum price"
       },
       "serviceFeeIncluded": "{{tax}}% service fee included in all prices."
     },
