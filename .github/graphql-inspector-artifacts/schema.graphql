@@ -166,6 +166,7 @@ type UnitProduct @aws_iam @aws_cognito_user_pools {
   supportedServingModes: [ServingMode!]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1302,7 +1303,7 @@ type GeoSearchConnection {
 
 type Query {
   listStripeCards: [StripeCard] @aws_iam @aws_cognito_user_pools
-  getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList @deprecated(reason: "Search for units only, by searchByRadius") @aws_iam @aws_cognito_user_pools
+  getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList @aws_iam @aws_cognito_user_pools
   searchByRadius(input: SearchByRadiusInput!): GeoSearchConnection @aws_iam @aws_cognito_user_pools
   getChainProduct(id: ID!): ChainProduct @aws_iam @aws_cognito_user_pools
   listChainProducts(filter: ModelChainProductFilterInput, limit: Int, nextToken: String): ModelChainProductConnection @aws_iam @aws_cognito_user_pools
@@ -1944,6 +1945,7 @@ input ModelUnitProductFilterInput {
   supportedServingModes: ModelServingModeListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelUnitProductFilterInput]
   or: [ModelUnitProductFilterInput]
   not: ModelUnitProductFilterInput
@@ -1961,6 +1963,7 @@ input ModelUnitProductConditionInput {
   supportedServingModes: ModelServingModeListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelUnitProductConditionInput]
   or: [ModelUnitProductConditionInput]
   not: ModelUnitProductConditionInput
@@ -1981,6 +1984,7 @@ input CreateUnitProductInput {
   supportedServingModes: [ServingMode!]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 input UpdateUnitProductInput {
@@ -1998,6 +2002,7 @@ input UpdateUnitProductInput {
   supportedServingModes: [ServingMode!]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 input CardChecksInput {
@@ -3298,6 +3303,7 @@ input SearchableUnitProductFilterInput {
   position: SearchableIntFilterInput
   externalId: SearchableStringFilterInput
   dirty: SearchableBooleanFilterInput
+  deletedAt: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
@@ -3318,6 +3324,7 @@ enum SearchableUnitProductSortableFields {
   position
   externalId
   dirty
+  deletedAt
   createdAt
   updatedAt
 }
@@ -3340,6 +3347,7 @@ enum SearchableUnitProductAggregateField {
   supportedServingModes
   externalId
   dirty
+  deletedAt
   createdAt
   updatedAt
 }
