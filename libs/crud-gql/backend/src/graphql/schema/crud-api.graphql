@@ -169,6 +169,7 @@ type UnitProduct
   supportedServingModes: [ServingMode!]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 type ProductConfigComponent {
@@ -1343,7 +1344,6 @@ type Query {
     @function(name: "${env}-anyupp-graphql-resolvers")
 
   getUnitsNearLocation(input: GetUnitsNearLocationInput!): GeoUnitList
-    @deprecated(reason: "Search for units only, by searchByRadius")
     @aws_iam
     @aws_cognito_user_pools
     @function(name: "${env}-anyupp-graphql-resolvers")
@@ -1358,7 +1358,7 @@ type Query {
 type Mutation {
   createUnit(input: CreateUnitInput!): Unit
     @aws_iam
-    @aws_api_key
+    @aws_cognito_user_pools
     @function(name: "${env}-anyupp-graphql-resolvers")
 
   updateUnit(input: UpdateUnitInput!): Unit

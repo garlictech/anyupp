@@ -1,7 +1,9 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductType, SORTED_ORDER_STATUSES } from '@bgap/shared/types';
-import { productSnapshotFixture } from './product-snapshot';
+import { EProductType } from '@bgap/shared/types';
+
 import { seededIdPrefix, testIdPrefix } from './common';
+import { getOrderStatusLog } from './order-utils';
+import { productSnapshotFixture } from './product-snapshot';
 import { unitFixture } from './unit';
 
 const order_seeded_01_id = `${seededIdPrefix}order_1_id`;
@@ -101,267 +103,11 @@ const orderInputBase = {
   },
 };
 
-const cardPayment = {
-  paymentMode: {
-    type: CrudApi.PaymentType.card,
-    method: CrudApi.PaymentMethod.card,
-  },
-};
-
-const cashPayment = {
-  paymentMode: {
-    type: CrudApi.PaymentType.cash,
-    method: CrudApi.PaymentMethod.cash,
-  },
-};
-
-const stripePayment = {
-  paymentMode: {
-    type: CrudApi.PaymentType.stripe,
-    method: CrudApi.PaymentMethod.inapp,
-  },
-};
-
-const getOrderStatusLogItem = (status: CrudApi.OrderStatus) => ({
-  userId: 'test-alice',
-  status,
-  ts: 1627909024677,
-});
-
-const getOrderStatusLog = (status: CrudApi.OrderStatus) => ({
-  statusLog: [getOrderStatusLogItem(status)],
-});
-
-const generateOrderItemStatusHistory = (status: CrudApi.OrderStatus) => {
-  const statusIdx = SORTED_ORDER_STATUSES.indexOf(status);
-  const statusArray: CrudApi.StatusLog[] = [];
-
-  if (statusIdx >= 0) {
-    for (let i = 0; i <= statusIdx; i++) {
-      statusArray.push(getOrderStatusLogItem(SORTED_ORDER_STATUSES[i]));
-    }
-  }
-
-  return statusArray;
-};
-
-// Assign a main and item status history to an order
-const buildOrderStatusHistory = (
-  order: CrudApi.CreateOrderInput,
-  status: CrudApi.OrderStatus,
-) => {
-  // Copy base data
-  const filledOrder = {
-    ...order,
-    ...getOrderStatusLog(status),
-  };
-
-  // Update order items
-  order.items.forEach(orderItem => {
-    orderItem.statusLog = generateOrderItemStatusHistory(status);
-  });
-
-  return filledOrder;
-};
-
-const activeOrderInputBase = {
-  ...orderInputBase,
-  ...getOrderStatusLog(CrudApi.OrderStatus.none),
-  orderNum: '000000',
-  archived: false,
-};
-
 const historyOrderInputBase = {
   ...orderInputBase,
   ...getOrderStatusLog(CrudApi.OrderStatus.served),
   orderNum: '000000',
   archived: true,
-};
-
-const activeWaitingCardOrderInput: CrudApi.CreateOrderInput = {
-  ...activeOrderInputBase,
-  ...cardPayment,
-};
-
-const activeWaitingCashOrderInput: CrudApi.CreateOrderInput = {
-  ...activeOrderInputBase,
-  ...cashPayment,
-};
-
-const activeWaitingStripeOrderInput: CrudApi.CreateOrderInput = {
-  ...activeOrderInputBase,
-  ...stripePayment,
-};
-
-const activeWaitingAfterPayOrderInput: CrudApi.CreateOrderInput = {
-  ...activeOrderInputBase,
-};
-
-const activeWaitingPlacedCardOrderInput: CrudApi.CreateOrderInput = {
-  ...buildOrderStatusHistory(
-    {
-      ...activeOrderInputBase,
-      ...cardPayment,
-    },
-    CrudApi.OrderStatus.placed,
-  ),
-};
-
-const activeSuccessPlacedCashOrderInput: CrudApi.CreateOrderInput = {
-  ...buildOrderStatusHistory(
-    {
-      ...activeOrderInputBase,
-      ...cashPayment,
-    },
-    CrudApi.OrderStatus.placed,
-  ),
-};
-
-const activeSuccessCardOrderInput: CrudApi.CreateOrderInput = {
-  ...activeOrderInputBase,
-  ...cardPayment,
-  ...getOrderStatusLog(CrudApi.OrderStatus.placed),
-};
-
-const activeSuccessCashOrderInput: CrudApi.CreateOrderInput = {
-  ...activeOrderInputBase,
-  ...cashPayment,
-  ...getOrderStatusLog(CrudApi.OrderStatus.placed),
-};
-
-const activeServedSuccessCardOrderInput: CrudApi.CreateOrderInput = {
-  ...activeOrderInputBase,
-  ...cardPayment,
-  ...getOrderStatusLog(CrudApi.OrderStatus.served),
-};
-
-const activeServedSuccessCashOrderInput: CrudApi.CreateOrderInput = {
-  ...activeOrderInputBase,
-  ...cashPayment,
-  ...getOrderStatusLog(CrudApi.OrderStatus.served),
-};
-
-const activeSuccessStripeOrderInput: CrudApi.CreateOrderInput = {
-  ...activeOrderInputBase,
-  ...stripePayment,
-  ...getOrderStatusLog(CrudApi.OrderStatus.placed),
-};
-
-const historySuccessCardOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cardPayment,
-};
-
-const historySuccessCashOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cashPayment,
-};
-
-const historySuccessStripeOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...stripePayment,
-};
-
-const historyFailedCardStaffMealOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cardPayment,
-};
-
-const historyFailedCardManagerMealOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cardPayment,
-};
-
-const historyFailedCardMarketingPromoOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cardPayment,
-};
-
-const historyFailedCardErrorCookedOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cardPayment,
-};
-
-const historyFailedCardErrorNoCookedOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cardPayment,
-};
-
-const historyFailedCardPaymentModeChangedOrderInput: CrudApi.CreateOrderInput =
-  {
-    ...historyOrderInputBase,
-    ...cardPayment,
-  };
-
-const historyFailedCardOtherOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cardPayment,
-};
-
-const historyFailedCardDeliveryOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cardPayment,
-};
-
-const historyFailedCardCouponOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cardPayment,
-};
-
-const historyFailedCardEventOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cardPayment,
-};
-
-const historyFailedCashStaffMealOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cashPayment,
-};
-
-const historyFailedCashManagerMealOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cashPayment,
-};
-
-const historyFailedCashMarketingPromoOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cashPayment,
-};
-
-const historyFailedCashErrorCookedOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cashPayment,
-};
-
-const historyFailedCashErrorNoCookedOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cashPayment,
-};
-
-const historyFailedCashPaymentModeChangedOrderInput: CrudApi.CreateOrderInput =
-  {
-    ...historyOrderInputBase,
-    ...cashPayment,
-  };
-
-const historyFailedCashOtherOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cashPayment,
-};
-
-const historyFailedCashDeliveryOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cashPayment,
-};
-
-const historyFailedCashCouponOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cashPayment,
-};
-
-const historyFailedCashEventOrderInput: CrudApi.CreateOrderInput = {
-  ...historyOrderInputBase,
-  ...cashPayment,
 };
 
 const convertInputToOrder = (
@@ -375,58 +121,12 @@ const convertInputToOrder = (
   archived: !!input.archived,
 });
 
-export const orderFixture = {
+export const orderFixtureBase = {
   order_seeded_01_id,
   orderInputBase,
   orderItemInputBase,
 
-  // Payment
-  cardPayment,
-  stripePayment,
-  cashPayment,
-
-  // Status
-  getOrderStatusLogItem,
-  getOrderStatusLog,
-
-  // Order inputs
-  activeWaitingCardOrderInput,
-  activeWaitingCashOrderInput,
-  activeWaitingStripeOrderInput,
-  activeWaitingPlacedCardOrderInput,
-  activeWaitingAfterPayOrderInput,
-  activeSuccessPlacedCashOrderInput,
-  activeSuccessCardOrderInput,
-  activeSuccessCashOrderInput,
-  activeSuccessStripeOrderInput,
-  activeServedSuccessCardOrderInput,
-  activeServedSuccessCashOrderInput,
-
-  historySuccessCardOrderInput,
-  historySuccessCashOrderInput,
-  historySuccessStripeOrderInput,
-
-  historyFailedCardStaffMealOrderInput,
-  historyFailedCardManagerMealOrderInput,
-  historyFailedCardMarketingPromoOrderInput,
-  historyFailedCardErrorCookedOrderInput,
-  historyFailedCardErrorNoCookedOrderInput,
-  historyFailedCardPaymentModeChangedOrderInput,
-  historyFailedCardOtherOrderInput,
-  historyFailedCardDeliveryOrderInput,
-  historyFailedCardCouponOrderInput,
-  historyFailedCardEventOrderInput,
-
-  historyFailedCashStaffMealOrderInput,
-  historyFailedCashManagerMealOrderInput,
-  historyFailedCashMarketingPromoOrderInput,
-  historyFailedCashErrorCookedOrderInput,
-  historyFailedCashErrorNoCookedOrderInput,
-  historyFailedCashPaymentModeChangedOrderInput,
-  historyFailedCashOtherOrderInput,
-  historyFailedCashDeliveryOrderInput,
-  historyFailedCashCouponOrderInput,
-  historyFailedCashEventOrderInput,
+  historyOrderInputBase,
 
   // Converter
   convertInputToOrder,

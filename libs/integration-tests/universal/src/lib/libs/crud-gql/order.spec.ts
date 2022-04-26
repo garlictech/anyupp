@@ -2,7 +2,8 @@ import { getDayIntervals, timezoneBudapest } from '@bgap/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import {
-  orderFixture as ofx,
+  cardPayment,
+  orderFixtureBase as ofx,
   transactionFixture as tfx,
   unitFixture,
 } from '@bgap/shared/fixtures';
@@ -99,7 +100,8 @@ describe.skip('SearchOrders function', () => {
       switchMap(() =>
         createOrderOp({
           input: {
-            ...ofx.historySuccessCardOrderInput,
+            ...ofx.historyOrderInputBase,
+            ...cardPayment,
             id: orderId,
           },
         }),

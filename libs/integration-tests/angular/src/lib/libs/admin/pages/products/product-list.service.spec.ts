@@ -20,19 +20,19 @@ import { StoreModule } from '@ngrx/store';
 const acceptedDeletionLogic = (
   service: ProductListService,
   crudSdk: CrudSdkService,
-  servicefuncName: string,
-  funcName: string,
+  serviceFuncName: string,
+  deleteFuncName: string,
   accept: boolean,
 ) => {
   const acceptSpy = jest
     .spyOn(service as any, '_acceptDeletion$')
     .mockImplementationOnce(() => of(accept));
   const deleteSpy = jest
-    .spyOn(crudSdk.sdk, <keyof typeof crudSdk.sdk>funcName)
+    .spyOn(crudSdk.sdk, <keyof typeof crudSdk.sdk>deleteFuncName)
     .mockImplementationOnce(() => ({} as any));
   const productId = 'test_id';
 
-  (<any>service)[servicefuncName](productId);
+  (<any>service)[serviceFuncName](productId);
 
   expect(acceptSpy).toHaveBeenCalled();
   if (accept) {
@@ -114,23 +114,35 @@ describe('ProductListService', () => {
     );
   });
 
-  it('deleteUnitProduct$ should not called on falsy accept dialog', () => {
-    acceptedDeletionLogic(
-      service,
-      crudSdk,
-      'deleteUnitProduct',
-      'DeleteUnitProduct',
-      false,
-    );
+  it('deleteUnitProduct$ should called on truly accept dialog', () => {
+    const acceptSpy = jest
+      .spyOn(service as any, '_acceptDeletion$')
+      .mockImplementationOnce(() => of(true));
+    const updateSpy = jest
+      .spyOn(crudSdk.sdk, 'UpdateUnitProduct')
+      .mockImplementationOnce(() => ({} as any));
+    const productId = 'test_id';
+
+    (<any>service).deleteUnitProduct(productId);
+
+    expect(acceptSpy).toHaveBeenCalled();
+    expect(updateSpy).toHaveBeenCalledWith({
+      input: { id: 'test_id', deletedAt: expect.any(String) },
+    });
   });
 
-  it('deleteUnitProduct$ should called on truly accept dialog', () => {
-    acceptedDeletionLogic(
-      service,
-      crudSdk,
-      'deleteUnitProduct',
-      'DeleteUnitProduct',
-      true,
-    );
+  it('deleteUnitProduct$ should not called on falsy accept dialog', () => {
+    const acceptSpy = jest
+      .spyOn(service as any, '_acceptDeletion$')
+      .mockImplementationOnce(() => of(false));
+    const updateSpy = jest
+      .spyOn(crudSdk.sdk, 'UpdateUnitProduct')
+      .mockImplementationOnce(() => ({} as any));
+    const productId = 'test_id';
+
+    (<any>service).deleteUnitProduct(productId);
+
+    expect(acceptSpy).toHaveBeenCalled();
+    expect(updateSpy).not.toHaveBeenCalled();
   });
 });

@@ -1,7 +1,7 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { orderFixture as ofx } from '@bgap/shared/fixtures';
-
+import { orderFixtureBase as ofx } from '@bgap/shared/fixtures';
 import { timezoneBudapest } from '@bgap/shared/utils';
+
 import {
   calculatePaymentMethodSums,
   calculateProductMix,
@@ -12,35 +12,36 @@ import {
   hourlyBreakdownOrderAmounts,
   unpayCategoryTableData,
 } from './dashboard';
+import * as dfx from './dashboard.fixtures';
 
-const singleOrder = [ofx.convertInputToOrder(ofx.historySuccessCardOrderInput)];
+const singleOrder = [ofx.convertInputToOrder(dfx.historySuccessCardOrderInput)];
 const successHistoryOrders = [
-  ofx.convertInputToOrder(ofx.historySuccessCardOrderInput),
-  ofx.convertInputToOrder(ofx.historySuccessCashOrderInput),
-  ofx.convertInputToOrder(ofx.historySuccessStripeOrderInput),
+  ofx.convertInputToOrder(dfx.historySuccessCardOrderInput),
+  ofx.convertInputToOrder(dfx.historySuccessCashOrderInput),
+  ofx.convertInputToOrder(dfx.historySuccessStripeOrderInput),
 ];
 const failedHistoryOrders = [
-  ofx.convertInputToOrder(ofx.historyFailedCardStaffMealOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCardManagerMealOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCardMarketingPromoOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCardErrorCookedOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCardErrorNoCookedOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCardPaymentModeChangedOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCardOtherOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCardDeliveryOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCardCouponOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCardEventOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCardStaffMealOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCardManagerMealOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCardMarketingPromoOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCardErrorCookedOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCardErrorNoCookedOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCardPaymentModeChangedOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCardOtherOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCardDeliveryOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCardCouponOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCardEventOrderInput),
 
-  ofx.convertInputToOrder(ofx.historyFailedCashStaffMealOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCashManagerMealOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCashMarketingPromoOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCashErrorCookedOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCashErrorNoCookedOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCashPaymentModeChangedOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCashOtherOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCashDeliveryOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCashCouponOrderInput),
-  ofx.convertInputToOrder(ofx.historyFailedCashEventOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCashStaffMealOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCashManagerMealOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCashMarketingPromoOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCashErrorCookedOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCashErrorNoCookedOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCashPaymentModeChangedOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCashOtherOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCashDeliveryOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCashCouponOrderInput),
+  ofx.convertInputToOrder(dfx.historyFailedCashEventOrderInput),
 ];
 
 const paymentMethods = [

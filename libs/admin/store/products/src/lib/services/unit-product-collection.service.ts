@@ -32,6 +32,7 @@ export class UnitProductCollectionService extends BaseCollectionService<CrudApi.
             chainId,
             groupId,
             unitId,
+            deletedAt: null,
           });
         }),
         takeUntil(destroyConnection$),

@@ -74,6 +74,7 @@ query GetCurrentCart($userId: ID!, $unitId: ID!) {
       userId
       servingMode
       orderPolicy
+      guestLabel
     }
   }
 }
