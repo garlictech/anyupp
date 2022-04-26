@@ -1,6 +1,6 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import {
-  orderFixture,
+  orderFixtureBase,
   productSnapshotFixture,
   unitFixture,
 } from '@bgap/shared/fixtures';
@@ -14,16 +14,18 @@ import {
   getStatusColor,
   getTableOrders,
 } from './orders';
+import {
+  activeServedSuccessCardOrderInput,
+  activeServedSuccessCashOrderInput,
+  activeWaitingCardOrderInput,
+  activeWaitingCashOrderInput,
+} from './orders.fixture';
 
 const orders = [
-  orderFixture.convertInputToOrder(orderFixture.activeWaitingCardOrderInput),
-  orderFixture.convertInputToOrder(orderFixture.activeWaitingCashOrderInput),
-  orderFixture.convertInputToOrder(
-    orderFixture.activeServedSuccessCardOrderInput,
-  ),
-  orderFixture.convertInputToOrder(
-    orderFixture.activeServedSuccessCashOrderInput,
-  ),
+  orderFixtureBase.convertInputToOrder(activeWaitingCardOrderInput),
+  orderFixtureBase.convertInputToOrder(activeWaitingCashOrderInput),
+  orderFixtureBase.convertInputToOrder(activeServedSuccessCardOrderInput),
+  orderFixtureBase.convertInputToOrder(activeServedSuccessCashOrderInput),
 ];
 
 describe('Orders pure function tests', () => {
@@ -76,7 +78,9 @@ describe('Orders pure function tests', () => {
     const unit: CrudApi.Unit = unitFixture.unit_01;
 
     const orderItem = {
-      ...orderFixture.orderItemInputBase(productSnapshotFixture.chainProduct_1),
+      ...orderFixtureBase.orderItemInputBase(
+        productSnapshotFixture.chainProduct_1,
+      ),
       productId: productSnapshotFixture.chainProduct_1.id,
     };
 
