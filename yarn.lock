@@ -182,10 +182,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/cdk@13.3.3":
-  version "13.3.3"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-13.3.3.tgz#f98d9d67744bf7fa7ee5a8aeb756c6546b88793e"
-  integrity sha512-dzd31mta2VwffxbeO4CelMqb7WswLnkC/r2QZXySnc0CTmj44HqXkqdZuEvVgxaKRVpxsYeuBuhhhy8U00YMOw==
+"@angular/cdk@13.3.4":
+  version "13.3.4"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-13.3.4.tgz#047d3474e1938aa11b4665286bcd09aa4c45424c"
+  integrity sha512-im4LKxJaIuqFVzmtf650PoiYsn/SZlvBV2zEgzusK8HwQ24C1Lya7NQSApwl8k43h4eKO1OvUKBjqL5uDgEQag==
   dependencies:
     tslib "^2.3.0"
   optionalDependencies:
@@ -4878,12 +4878,12 @@
     p-limit "3.1.0"
     tslib "~2.3.0"
 
-"@graphql-tools/merge@8.2.7":
-  version "8.2.7"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.2.7.tgz#add05bcc47df6b7390f31acbcadd986e160d58f9"
-  integrity sha512-rKxjNogqu1UYAG/y5FOb6lJsmSQbWA+jq4inWjNEVX54VGGE7/WGnmPaqcsyomNOfS3vIRS6NnG+DxiQSqetjg==
+"@graphql-tools/merge@8.2.10":
+  version "8.2.10"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.2.10.tgz#fe2fe5ad33dc2d1b0af8751c0c08d18bb6bb6d88"
+  integrity sha512-wpg22seOTNfkIO8jFAgo8w1BsT3IS2OTMpkCNf+dvcKSP09SVidYCOliyWHgjDCmpCrvvSjOX855NUKDx/Biew==
   dependencies:
-    "@graphql-tools/utils" "8.6.6"
+    "@graphql-tools/utils" "8.6.9"
     tslib "~2.3.0"
 
 "@graphql-tools/merge@8.2.9", "@graphql-tools/merge@^8.2.6":
@@ -4955,13 +4955,13 @@
     relay-compiler "12.0.0"
     tslib "~2.3.0"
 
-"@graphql-tools/schema@8.3.7":
-  version "8.3.7"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-8.3.7.tgz#6e2be8e17a1f97f4d11d5b787c414ec29400fde2"
-  integrity sha512-7byr9J6rfMPFPfiR4u65dy20xHATTvbgOY7KYd1sYPnMKKfRZe0tUgpnE+noXcfob7N8s366WaVh7bEoztQMwg==
+"@graphql-tools/schema@8.3.10":
+  version "8.3.10"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/schema/-/schema-8.3.10.tgz#c3e373e6ad854f533fc7e55859dd8f9e81de30dd"
+  integrity sha512-tfhjSTi3OzheDrVzG7rkPZg2BbQjmZRLM2vvQoM2b1TnUwgUIbpAgcnf+AWDLRsoCOWlezeLgij1BLeAR0Q0jg==
   dependencies:
-    "@graphql-tools/merge" "8.2.7"
-    "@graphql-tools/utils" "8.6.6"
+    "@graphql-tools/merge" "8.2.10"
+    "@graphql-tools/utils" "8.6.9"
     tslib "~2.3.0"
     value-or-promise "1.0.11"
 
@@ -5004,17 +5004,17 @@
   dependencies:
     tslib "~2.3.0"
 
-"@graphql-tools/utils@8.6.6":
-  version "8.6.6"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-8.6.6.tgz#f7c88d32818b748f3e3867ed87a562769b544417"
-  integrity sha512-wjY2ljKLCnnbRrDNPPgPNqCujou0LFSOWcxAjV6DYUlfFWTsAEvlYmsmY4T+K12wI/fnqoJ2bUwIlap1plFDMg==
-  dependencies:
-    tslib "~2.3.0"
-
 "@graphql-tools/utils@8.6.8", "@graphql-tools/utils@^8.1.1", "@graphql-tools/utils@^8.3.0", "@graphql-tools/utils@^8.5.2", "@graphql-tools/utils@^8.6.0", "@graphql-tools/utils@^8.6.5":
   version "8.6.8"
   resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-8.6.8.tgz#a0824ed5810f66c504df4e97c5900786ac0c260e"
   integrity sha512-EdUUeKi/wp/UvuknyINpQ/uXDqTM3qxPPPDIq5RpfW0zQOeCvbZcx8xHoMox0TYKvKtg3zoB7aprUtoW+iZLxw==
+  dependencies:
+    tslib "~2.3.0"
+
+"@graphql-tools/utils@8.6.9":
+  version "8.6.9"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-8.6.9.tgz#fe1b81df29c9418b41b7a1ffe731710b93d3a1fe"
+  integrity sha512-Z1X4d4GCT81+8CSt6SgU4t1w1UAUsAIRb67mI90k/zAs+ArkB95iE3bWXuJCUmd1+r8DGGtmUNOArtd6wkt+OQ==
   dependencies:
     tslib "~2.3.0"
 
@@ -7246,7 +7246,7 @@
     "@angular-devkit/schematics" "13.3.3"
     jsonc-parser "3.0.0"
 
-"@serverless-stack/aws-lambda-ric@^2.0.12", "@serverless-stack/aws-lambda-ric@^2.0.13":
+"@serverless-stack/aws-lambda-ric@^2.0.13":
   version "2.0.13"
   resolved "https://registry.yarnpkg.com/@serverless-stack/aws-lambda-ric/-/aws-lambda-ric-2.0.13.tgz#8e2397479a19318795a99bc4ab3058e97ca002cc"
   integrity sha512-Aj4X2wMW6O5/PQoKoBdQGC3LwQyGTgW1XZtF0rs07WE9s6Q+46zWaVgURQjoNmTNQKpHSGJYo6B+ycp9u7/CSA==
@@ -7254,16 +7254,15 @@
     node-addon-api "3.2.1"
     node-gyp "8.1.0"
 
-"@serverless-stack/cli@0.69.5":
-  version "0.69.5"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.69.5.tgz#23be748f94a40841ffee530c9013134f5209ed9f"
-  integrity sha512-vGUUEWYo7Z1Btz+ji7R0o/8pm1Vn7azAsNPAvD3ZVeuJK8OxQ2IlTamid6EqdYfbBG04Kbf1KMimd20hYXuvAA==
+"@serverless-stack/cli@0.69.7":
+  version "0.69.7"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.69.7.tgz#3c8b792cd086cbfd87da9c8c8a37b91e0aaa1d3e"
+  integrity sha512-LsPHVkX3dv5cdSGtPBNVVUGaeDufinhfC+xw6+ADdWziAlbT8+6sVo9wm1ZBTxncd7epnsESCsIUoEqmN6N8KA==
   dependencies:
     "@aws-cdk/aws-apigatewayv2-alpha" "2.15.0-alpha.0"
     "@graphql-codegen/cli" "^2.6.2"
-    "@serverless-stack/aws-lambda-ric" "^2.0.12"
-    "@serverless-stack/core" "^0.69.5"
-    "@serverless-stack/resources" "^0.69.5"
+    "@serverless-stack/core" "^0.69.7"
+    "@serverless-stack/resources" "^0.69.7"
     aws-cdk "2.15.0"
     aws-cdk-lib "2.15.0"
     aws-sdk "^2.761.0"
@@ -7283,7 +7282,7 @@
     ws "^7.4.0"
     yargs "^15.4.1"
 
-"@serverless-stack/core@^0.69.5", "@serverless-stack/core@^0.69.6":
+"@serverless-stack/core@^0.69.5":
   version "0.69.6"
   resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.69.6.tgz#5cfa1c3234c99590ea6ed77e30c0268d4de039b5"
   integrity sha512-znsBex/l16/WWKBz++h6DTtkg/xmdbc7qPVRLQVq/BncaIahfqXU4zeV0KtEk/5xErzN3ghidpTziJoMyID7hg==
@@ -7321,6 +7320,44 @@
     xstate "4.26.1"
     zod "^3.11.6"
 
+"@serverless-stack/core@^0.69.7":
+  version "0.69.7"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.69.7.tgz#aa625838fbb142f0e3a393ae1dc368889b27f825"
+  integrity sha512-DfzTQLYXMWxti1LDo4k3HBx4FyEj8z3exe57kjDxGcNsDbPY4pn2ESnfcITDDbqwC8cHZ89osc/6DTM9KBhsgw==
+  dependencies:
+    "@serverless-stack/aws-lambda-ric" "^2.0.13"
+    "@trpc/server" "^9.16.0"
+    "@typescript-eslint/eslint-plugin" "^5.17.0"
+    async-retry "^1.3.3"
+    aws-cdk "2.15.0"
+    aws-cdk-lib "2.15.0"
+    aws-sdk "^2.1095.0"
+    chalk "^4.1.0"
+    chokidar "^3.5.2"
+    ci-info "^3.3.0"
+    conf "^10.1.1"
+    constructs "^10.0.29"
+    cross-spawn "^7.0.3"
+    dataloader "^2.0.0"
+    dendriform-immer-patch-optimiser "^2.1.0"
+    dotenv "^10.0.0"
+    dotenv-expand "^5.1.0"
+    esbuild "^0.14.11"
+    eslint "^8.10.0"
+    eslint-config-serverless-stack "^0.69.7"
+    express "^4.17.1"
+    fs-extra "^9.0.1"
+    immer "^9.0.7"
+    js-yaml "^4.1.0"
+    lerna "^4.0.0"
+    log4js "^6.3.0"
+    picomatch "^2.3.0"
+    remeda "^0.0.32"
+    typescript "^4.6.2"
+    uuid "^8.3.2"
+    xstate "4.26.1"
+    zod "^3.11.6"
+
 "@serverless-stack/resources@0.69.5":
   version "0.69.5"
   resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.69.5.tgz#f980d0a73c857832207930962bdc12dacb57f5df"
@@ -7343,10 +7380,10 @@
     graphql "^15.5.1"
     zip-local "^0.3.4"
 
-"@serverless-stack/resources@^0.69.5":
-  version "0.69.6"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.69.6.tgz#615477e1adc748736a26f6a1a8c0ae1b10a2eb0a"
-  integrity sha512-HeCM54yjKpfHbyUlbT0UG0ETaQFuOtStRUmjjaALK8bU2KMEgUV+551gb3sjWSRI7eb+ZvtQxTWt4WkB6Erd8A==
+"@serverless-stack/resources@^0.69.7":
+  version "0.69.7"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.69.7.tgz#bb55410fc1c4b5b4e49d2b20cbab308ebcb6c0e2"
+  integrity sha512-IvHLo/IEfT0PoIg1blnzKl2HP+kvGuBl8oxYtmFbJyx/DJjlUe4yzrq3wVC4NuCbBMnADq+mlWprQ/ZfmxUmEQ==
   dependencies:
     "@aws-cdk/aws-apigatewayv2-alpha" "2.15.0-alpha.0"
     "@aws-cdk/aws-apigatewayv2-authorizers-alpha" "2.15.0-alpha.0"
@@ -7354,7 +7391,7 @@
     "@aws-cdk/aws-appsync-alpha" "2.15.0-alpha.0"
     "@graphql-tools/load-files" "^6.3.2"
     "@graphql-tools/merge" "^6.2.14"
-    "@serverless-stack/core" "^0.69.6"
+    "@serverless-stack/core" "^0.69.7"
     archiver "^5.3.0"
     aws-cdk-lib "2.15.0"
     chalk "^4.1.0"
@@ -7816,10 +7853,10 @@
     "@types/node" "*"
     "@types/responselike" "*"
 
-"@types/chart.js@2.9.36":
-  version "2.9.36"
-  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.9.36.tgz#8bdd3a625edaeef10367bc8a9e3239f077332de7"
-  integrity sha512-lkG9C6O5TqKyW3JDWMfCedVUATH4AeQCo8Q/vflT/0VDj6KMcba+jr1wLe+IXQ+F9mVWn80DVsDnt6cPuGutIg==
+"@types/chart.js@2.9.37":
+  version "2.9.37"
+  resolved "https://registry.yarnpkg.com/@types/chart.js/-/chart.js-2.9.37.tgz#8af70862b154fedf938b5b87debdb3a70f6e3208"
+  integrity sha512-9bosRfHhkXxKYfrw94EmyDQcdjMaQPkU1fH2tDxu8DWXxf1mjzWQAV4laJF51ZbC2ycYwNDvIm1rGez8Bug0vg==
   dependencies:
     moment "^2.10.2"
 
@@ -7971,15 +8008,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jasmine@*":
+"@types/jasmine@*", "@types/jasmine@4.0.3":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-4.0.3.tgz#097ce710d70eb7f3662e96c1f75824dd22c27d5c"
   integrity sha512-Opp1LvvEuZdk8fSSvchK2mZwhVrsNT0JgJE9Di6MjnaIpmEXM8TLCPPrVtNTYh8+5MPdY8j9bAHMu2SSfwpZJg==
-
-"@types/jasmine@4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-4.0.2.tgz#9a03589f6aa00ef42a90a8d37f09c893efced14c"
-  integrity sha512-mSPIWhDyQ4nzYdR6Ixy15VhVKMVw93mSUlQxxpVb4S9Hj90lBvg+7kkBw23uYcv8CESPPXit+u3cARYcPeC8Jg==
 
 "@types/jasminewd2@2.0.10":
   version "2.0.10"
@@ -8089,10 +8121,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.25.tgz#527051f3c2f77aa52e5dc74e45a3da5fb2301448"
   integrity sha512-wANk6fBrUwdpY4isjWrKTufkrXdu1D2YHCot2fD/DfWxF5sMrVSA+KN7ydckvaTCh0HiqX9IVl0L5/ZoXg5M7w==
 
-"@types/node@14.18.12":
-  version "14.18.12"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.12.tgz#0d4557fd3b94497d793efd4e7d92df2f83b4ef24"
-  integrity sha512-q4jlIR71hUpWTnGhXWcakgkZeHa3CCjcQcnuzU8M891BAWA2jHiziiWEPEkdS5pFsz7H9HJiy8BrK7tBRNrY7A==
+"@types/node@14.18.16":
+  version "14.18.16"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.16.tgz#878f670ba3f00482bf859b6550b6010610fc54b5"
+  integrity sha512-X3bUMdK/VmvrWdoTkz+VCn6nwKwrKCFTHtqwBIaQJNx4RUIBBUFXM00bqPz/DsDd+Icjmzm6/tyYZzeGVqb6/Q==
 
 "@types/node@^10.1.0":
   version "10.17.60"
@@ -9779,22 +9811,7 @@ aws-lambda@1.0.7:
     js-yaml "^3.14.1"
     watchpack "^2.0.0-beta.10"
 
-aws-sdk@2.1111.0:
-  version "2.1111.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1111.0.tgz#02b1e5c530ef8140235ee7c48c710bb2dbd7dc84"
-  integrity sha512-WRyNcCckzmu1djTAWfR2r+BuI/PbuLrhG3oa+oH39v4NZ4EecYWFL1CoCPlC2kRUML4maSba5T4zlxjcNl7ELQ==
-  dependencies:
-    buffer "4.9.2"
-    events "1.1.1"
-    ieee754 "1.1.13"
-    jmespath "0.16.0"
-    querystring "0.2.0"
-    sax "1.2.1"
-    url "0.10.3"
-    uuid "3.3.2"
-    xml2js "0.4.19"
-
-aws-sdk@^2.1076.0, aws-sdk@^2.1095.0, aws-sdk@^2.761.0, aws-sdk@^2.814.0, aws-sdk@^2.873.0:
+aws-sdk@2.1116.0, aws-sdk@^2.1076.0, aws-sdk@^2.1095.0, aws-sdk@^2.761.0, aws-sdk@^2.814.0, aws-sdk@^2.873.0:
   version "2.1116.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1116.0.tgz#1187ab943e6bf730db282afe7950dd2af409cb5b"
   integrity sha512-36JFrxPPh/fRQWsgGrZZbzTxRu7dq4KyCKKXPxgVMXylEJsG/KEAVMB1f3eq4PiI5eGxYrpt2OkKoMQZQZLjPA==
@@ -13793,6 +13810,15 @@ eslint-config-serverless-stack@^0.69.6:
     "@typescript-eslint/parser" "^5.17.0"
     eslint "^8.10.0"
 
+eslint-config-serverless-stack@^0.69.7:
+  version "0.69.7"
+  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.69.7.tgz#8a6bb86055ec63d1f299cb1039479a304eb2781e"
+  integrity sha512-/l01iDreJYRu9pAm/hNq8quVKEMveFZzag5aOGDVARlqKVhItSRuE8zKoD74d3+m54/CZN4e8oUNYFCZP47dnw==
+  dependencies:
+    "@typescript-eslint/eslint-plugin" "^5.12.1"
+    "@typescript-eslint/parser" "^5.17.0"
+    eslint "^8.10.0"
+
 eslint-config-strongloop@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/eslint-config-strongloop/-/eslint-config-strongloop-2.1.0.tgz#763dd19adfce88d7b0051e6e255f1ae37783b4c6"
@@ -15523,12 +15549,12 @@ graphql-tag@2.12.6, graphql-tag@^2.11.0, graphql-tag@^2.12.3, graphql-tag@^2.12.
   dependencies:
     tslib "^2.1.0"
 
-graphql-tools@8.2.5:
-  version "8.2.5"
-  resolved "https://registry.yarnpkg.com/graphql-tools/-/graphql-tools-8.2.5.tgz#703654ca783ead773ab0098a29d41938b0279e6d"
-  integrity sha512-9OS0j2iaz7Hjawm2FbznBjAAFB35rAUvBsSPWqfL4yY5YJQgrSy9ZGHLPwEtYhEqRcN0m1/0KgOEakbeuXIWKw==
+graphql-tools@8.2.8:
+  version "8.2.8"
+  resolved "https://registry.yarnpkg.com/graphql-tools/-/graphql-tools-8.2.8.tgz#4154fe826591daf5ed5ecfe53d3a9fe8af294b66"
+  integrity sha512-CqavuYcbWb71WiA73GIilJH/dovy77pbv0RG6KemppDUwzu80hHPy7c71kE1w+PQftvgS5PBC89GNqx6YC4hmw==
   dependencies:
-    "@graphql-tools/schema" "8.3.7"
+    "@graphql-tools/schema" "8.3.10"
     tslib "~2.3.0"
   optionalDependencies:
     "@apollo/client" "~3.2.5 || ~3.3.0 || ~3.4.0 || ~3.5.0"
@@ -17388,10 +17414,10 @@ jest-pnp-resolver@^1.2.2:
   resolved "https://registry.yarnpkg.com/jest-pnp-resolver/-/jest-pnp-resolver-1.2.2.tgz#b704ac0ae028a89108a4d040b3f919dfddc8e33c"
   integrity sha512-olV41bKSMm8BdnuMsewT4jqlZ8+3TCARAXjZGT9jcoSnrfUnRCqnMoF9XEeoWjbzObpqF9dRhHQj0Xb9QdF6/w==
 
-jest-preset-angular@11.1.1:
-  version "11.1.1"
-  resolved "https://registry.yarnpkg.com/jest-preset-angular/-/jest-preset-angular-11.1.1.tgz#cc1c0a1395727af332c439174fb689d92e853f6a"
-  integrity sha512-ZlYiKJhAQSU9wIjncX59xutcj49R4MiDsTPSwZiwdTAHQvHm32MS6SGimQIVBqh1DukfwYX0NXKS0D/onLAsLQ==
+jest-preset-angular@11.1.2:
+  version "11.1.2"
+  resolved "https://registry.yarnpkg.com/jest-preset-angular/-/jest-preset-angular-11.1.2.tgz#127a53747821d9a979877da4c42ab00334c7e815"
+  integrity sha512-qPvOP6wnLP8M01TDVSa3UC3PcDWxoj87T58mWEp5yWlWPrXBJ6rhnTEI+HPmZLyehwlK686+O/49hwFRVXFP0A==
   dependencies:
     bs-logger "^0.2.6"
     esbuild-wasm "0.14.11"
@@ -21650,7 +21676,7 @@ qrcode@1.5.0, qrcode@^1.4.4:
     pngjs "^5.0.0"
     yargs "^15.3.1"
 
-qs@6.10.3, qs@^6.10.1, qs@^6.10.3, qs@^6.5.1, qs@^6.9.4:
+qs@6.10.3, qs@^6.10.3, qs@^6.5.1, qs@^6.9.4:
   version "6.10.3"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.10.3.tgz#d6cde1b2ffca87b5aa57889816c5f81535e22e8e"
   integrity sha512-wr7M2E0OFRfIfJZjKGieI8lBKb7fRCH4Fv5KNPEs7gJ8jadvotdsS08PzOKR7opXhZ/Xkjtt3WF9g38drmyRqQ==
@@ -23866,30 +23892,30 @@ superagent@^3.8.3:
     qs "^6.5.1"
     readable-stream "^2.3.5"
 
-superagent@^7.1.0:
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/superagent/-/superagent-7.1.2.tgz#71393141edd086ccf2544a29a4a609e46b7911f3"
-  integrity sha512-o9/fP6dww7a4xmEF5a484o2rG34UUGo8ztDlv7vbCWuqPhpndMi0f7eXxdlryk5U12Kzy46nh8eNpLAJ93Alsg==
+superagent@^7.1.3:
+  version "7.1.3"
+  resolved "https://registry.yarnpkg.com/superagent/-/superagent-7.1.3.tgz#783ff8330e7c2dad6ad8f0095edc772999273b6b"
+  integrity sha512-WA6et4nAvgBCS73lJvv1D0ssI5uk5Gh+TGN/kNe+B608EtcVs/yzfl+OLXTzDs7tOBDIpvgh/WUs1K2OK1zTeQ==
   dependencies:
     component-emitter "^1.3.0"
     cookiejar "^2.1.3"
-    debug "^4.3.3"
+    debug "^4.3.4"
     fast-safe-stringify "^2.1.1"
     form-data "^4.0.0"
     formidable "^2.0.1"
     methods "^1.1.2"
     mime "^2.5.0"
-    qs "^6.10.1"
+    qs "^6.10.3"
     readable-stream "^3.6.0"
-    semver "^7.3.5"
+    semver "^7.3.7"
 
-supertest@6.2.2:
-  version "6.2.2"
-  resolved "https://registry.yarnpkg.com/supertest/-/supertest-6.2.2.tgz#04a5998fd3efaff187cb69f07a169755d655b001"
-  integrity sha512-wCw9WhAtKJsBvh07RaS+/By91NNE0Wh0DN19/hWPlBOU8tAfOtbZoVSV4xXeoKoxgPx0rx2y+y+8660XtE7jzg==
+supertest@6.2.3:
+  version "6.2.3"
+  resolved "https://registry.yarnpkg.com/supertest/-/supertest-6.2.3.tgz#291b220126e5faa654d12abe1ada3658757c8c67"
+  integrity sha512-3GSdMYTMItzsSYjnIcljxMVZKPW1J9kYHZY+7yLfD0wpPwww97GeImZC1oOk0S5+wYl2niJwuFusBJqwLqYM3g==
   dependencies:
     methods "^1.1.2"
-    superagent "^7.1.0"
+    superagent "^7.1.3"
 
 supports-color@8.1.1, supports-color@^8.0.0, supports-color@^8.1.1:
   version "8.1.1"
