@@ -92,5 +92,6 @@ module.exports = {
     '<rootDir>/libs/admin/shared/data-access/ngrx-data',
     '<rootDir>/libs/shared/orders',
     '<rootDir>/libs/backend/search',
+    '<rootDir>/libs/domain',
   ],
 };

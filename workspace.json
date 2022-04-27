@@ -3,7 +3,7 @@
   "projects": {
     "admin": {
       "projectType": "application",
-      "schematics": {
+      "generators": {
         "@nrwl/angular:component": {
           "style": "scss"
         }
@@ -11,9 +11,9 @@
       "root": "apps/admin",
       "sourceRoot": "apps/admin/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "executor": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/apps/admin",
             "index": "apps/admin/src/index.html",
@@ -147,7 +147,7 @@
           "defaultConfiguration": ""
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "executor": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "admin:build"
           },
@@ -158,19 +158,19 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "executor": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "admin:build"
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/admin/**/*.ts", "apps/admin/**/*.html"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "options": {
             "jestConfig": "apps/admin/jest.config.js",
             "passWithNoTests": true
@@ -185,9 +185,9 @@
       "root": "apps/admin-e2e",
       "sourceRoot": "apps/admin-e2e/src",
       "projectType": "application",
-      "architect": {
+      "targets": {
         "e2e": {
-          "builder": "@nrwl/cypress:cypress",
+          "executor": "@nrwl/cypress:cypress",
           "options": {
             "cypressConfig": "apps/admin-e2e/cypress.json",
             "tsConfig": "apps/admin-e2e/tsconfig.e2e.json",
@@ -200,14 +200,14 @@
           }
         },
         "e2e-remote": {
-          "builder": "@nrwl/cypress:cypress",
+          "executor": "@nrwl/cypress:cypress",
           "options": {
             "cypressConfig": "apps/admin-e2e/cypress.json",
             "tsConfig": "apps/admin-e2e/tsconfig.e2e.json"
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/admin-e2e/**/*.{js,ts}"]
           }
@@ -221,15 +221,15 @@
       "root": "libs/admin/pages/admin-users",
       "sourceRoot": "libs/admin/pages/admin-users/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/pages/admin-users/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/pages/admin-users"],
           "options": {
             "jestConfig": "libs/admin/pages/admin-users/jest.config.js",
@@ -244,15 +244,15 @@
       "root": "libs/admin/pages/auth",
       "sourceRoot": "libs/admin/pages/auth/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/pages/auth/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/pages/auth"],
           "options": {
             "jestConfig": "libs/admin/pages/auth/jest.config.js",
@@ -267,15 +267,15 @@
       "root": "libs/admin/pages/chains",
       "sourceRoot": "libs/admin/pages/chains/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/pages/chains/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/pages/chains"],
           "options": {
             "jestConfig": "libs/admin/pages/chains/jest.config.js",
@@ -290,15 +290,15 @@
       "root": "libs/admin/pages/dashboard",
       "sourceRoot": "libs/admin/pages/dashboard/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/pages/dashboard/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/pages/dashboard"],
           "options": {
             "jestConfig": "libs/admin/pages/dashboard/jest.config.js",
@@ -313,15 +313,15 @@
       "root": "libs/admin/pages/groups",
       "sourceRoot": "libs/admin/pages/groups/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/pages/groups/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/pages/groups"],
           "options": {
             "jestConfig": "libs/admin/pages/groups/jest.config.js",
@@ -336,9 +336,9 @@
       "root": "libs/admin/pages/modifiers-and-extras",
       "sourceRoot": "libs/admin/pages/modifiers-and-extras/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "libs/admin/pages/modifiers-and-extras/**/*.ts"
@@ -346,7 +346,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/pages/modifiers-and-extras"],
           "options": {
             "jestConfig": "libs/admin/pages/modifiers-and-extras/jest.config.js",
@@ -361,15 +361,15 @@
       "root": "libs/admin/pages/product-categories",
       "sourceRoot": "libs/admin/pages/product-categories/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/pages/product-categories/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/pages/product-categories"],
           "options": {
             "jestConfig": "libs/admin/pages/product-categories/jest.config.js",
@@ -384,15 +384,15 @@
       "root": "libs/admin/pages/products",
       "sourceRoot": "libs/admin/pages/products/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/pages/products/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/pages/products"],
           "options": {
             "jestConfig": "libs/admin/pages/products/jest.config.js",
@@ -407,15 +407,15 @@
       "root": "libs/admin/pages/units",
       "sourceRoot": "libs/admin/pages/units/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/pages/units/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/pages/units"],
           "options": {
             "jestConfig": "libs/admin/pages/units/jest.config.js",
@@ -430,15 +430,15 @@
       "root": "libs/admin/pages/users",
       "sourceRoot": "libs/admin/pages/users/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/pages/users/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/pages/users"],
           "options": {
             "jestConfig": "libs/admin/pages/users/jest.config.js",
@@ -453,15 +453,15 @@
       "root": "libs/admin/shared/components",
       "sourceRoot": "libs/admin/shared/components/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/components/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/components"],
           "options": {
             "jestConfig": "libs/admin/shared/components/jest.config.js",
@@ -475,15 +475,15 @@
       "root": "libs/admin/shared/config",
       "sourceRoot": "libs/admin/shared/config/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/config/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/config"],
           "options": {
             "jestConfig": "libs/admin/shared/config/jest.config.js",
@@ -497,15 +497,15 @@
       "root": "libs/admin/shared/data-access/auth",
       "sourceRoot": "libs/admin/shared/data-access/auth/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/data-access/auth/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/data-access/auth"],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/auth/jest.config.js",
@@ -519,15 +519,15 @@
       "root": "libs/admin/shared/data-access/data",
       "sourceRoot": "libs/admin/shared/data-access/data/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/data-access/data/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/data-access/data"],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/data/jest.config.js",
@@ -542,9 +542,9 @@
       "root": "libs/admin/shared/data-access/ngrx-data",
       "sourceRoot": "libs/admin/shared/data-access/ngrx-data/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/data-access/ngrx-data"],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/ngrx-data/jest.config.js",
@@ -552,7 +552,7 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "libs/admin/shared/data-access/ngrx-data/src/**/*.ts",
@@ -567,15 +567,15 @@
       "root": "libs/admin/shared/data-access/order",
       "sourceRoot": "libs/admin/shared/data-access/order/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/data-access/order/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/data-access/order"],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/order/jest.config.js",
@@ -589,15 +589,15 @@
       "root": "libs/admin/shared/data-access/sdk",
       "sourceRoot": "libs/admin/shared/data-access/sdk/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/data-access/sdk/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/data-access/sdk"],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/sdk/jest.config.js",
@@ -611,9 +611,9 @@
       "root": "libs/admin/shared/data-access/storage",
       "sourceRoot": "libs/admin/shared/data-access/storage/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "libs/admin/shared/data-access/storage/**/*.ts"
@@ -621,7 +621,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/data-access/storage"],
           "options": {
             "jestConfig": "libs/admin/shared/data-access/storage/jest.config.js",
@@ -636,9 +636,9 @@
       "root": "libs/admin/shared/fixtures",
       "sourceRoot": "libs/admin/shared/fixtures/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/fixtures"],
           "options": {
             "jestConfig": "libs/admin/shared/fixtures/jest.config.js",
@@ -646,7 +646,7 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/fixtures/src/**/*.ts"]
           }
@@ -659,15 +659,15 @@
       "root": "libs/admin/shared/floor-map",
       "sourceRoot": "libs/admin/shared/floor-map/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/floor-map/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/floor-map"],
           "options": {
             "jestConfig": "libs/admin/shared/floor-map/jest.config.js",
@@ -682,15 +682,15 @@
       "root": "libs/admin/shared/forms",
       "sourceRoot": "libs/admin/shared/forms/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/forms/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/forms"],
           "options": {
             "jestConfig": "libs/admin/shared/forms/jest.config.js",
@@ -705,15 +705,15 @@
       "root": "libs/admin/shared/pipes",
       "sourceRoot": "libs/admin/shared/pipes/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/pipes/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/pipes"],
           "options": {
             "jestConfig": "libs/admin/shared/pipes/jest.config.js",
@@ -728,9 +728,9 @@
       "root": "libs/admin/shared/types",
       "sourceRoot": "libs/admin/shared/types/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/types"],
           "options": {
             "jestConfig": "libs/admin/shared/types/jest.config.js",
@@ -738,7 +738,7 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
               "libs/admin/shared/types/src/**/*.ts",
@@ -753,15 +753,15 @@
       "root": "libs/admin/shared/utils",
       "sourceRoot": "libs/admin/shared/utils/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/shared/utils/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/shared/utils"],
           "options": {
             "jestConfig": "libs/admin/shared/utils/jest.config.js",
@@ -775,15 +775,15 @@
       "root": "libs/admin/store/admin-users",
       "sourceRoot": "libs/admin/store/admin-users/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/admin-users/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/admin-users"],
           "options": {
             "jestConfig": "libs/admin/store/admin-users/jest.config.js",
@@ -798,15 +798,15 @@
       "root": "libs/admin/store/app-core",
       "sourceRoot": "libs/admin/store/app-core/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/app-core/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/app-core"],
           "options": {
             "jestConfig": "libs/admin/store/app-core/jest.config.js",
@@ -820,15 +820,15 @@
       "root": "libs/admin/store/chains",
       "sourceRoot": "libs/admin/store/chains/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/chains/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/chains"],
           "options": {
             "jestConfig": "libs/admin/store/chains/jest.config.js",
@@ -842,15 +842,15 @@
       "root": "libs/admin/store/dashboard",
       "sourceRoot": "libs/admin/store/dashboard/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/dashboard/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/dashboard"],
           "options": {
             "jestConfig": "libs/admin/store/dashboard/jest.config.js",
@@ -864,15 +864,15 @@
       "root": "libs/admin/store/groups",
       "sourceRoot": "libs/admin/store/groups/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/groups/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/groups"],
           "options": {
             "jestConfig": "libs/admin/store/groups/jest.config.js",
@@ -887,15 +887,15 @@
       "root": "libs/admin/store/logged-user",
       "sourceRoot": "libs/admin/store/logged-user/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/logged-user/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/logged-user"],
           "options": {
             "jestConfig": "libs/admin/store/logged-user/jest.config.js",
@@ -910,15 +910,15 @@
       "root": "libs/admin/store/orders",
       "sourceRoot": "libs/admin/store/orders/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/orders/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/orders"],
           "options": {
             "jestConfig": "libs/admin/store/orders/jest.config.js",
@@ -932,15 +932,15 @@
       "root": "libs/admin/store/product-categories",
       "sourceRoot": "libs/admin/store/product-categories/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/product-categories/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/product-categories"],
           "options": {
             "jestConfig": "libs/admin/store/product-categories/jest.config.js",
@@ -955,15 +955,15 @@
       "root": "libs/admin/store/product-component-sets",
       "sourceRoot": "libs/admin/store/product-component-sets/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/product-components/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/product-component-sets"],
           "options": {
             "jestConfig": "libs/admin/store/product-component-sets/jest.config.js",
@@ -978,15 +978,15 @@
       "root": "libs/admin/store/product-components",
       "sourceRoot": "libs/admin/store/product-components/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/product-components/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/product-components"],
           "options": {
             "jestConfig": "libs/admin/store/product-components/jest.config.js",
@@ -1000,15 +1000,15 @@
       "root": "libs/admin/store/products",
       "sourceRoot": "libs/admin/store/products/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/products/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/products"],
           "options": {
             "jestConfig": "libs/admin/store/products/jest.config.js",
@@ -1022,15 +1022,15 @@
       "root": "libs/admin/store/units",
       "sourceRoot": "libs/admin/store/units/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/units/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/units"],
           "options": {
             "jestConfig": "libs/admin/store/units/jest.config.js",
@@ -1044,15 +1044,15 @@
       "root": "libs/admin/store/users",
       "sourceRoot": "libs/admin/store/users/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/store/users/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/store/users"],
           "options": {
             "jestConfig": "libs/admin/store/users/jest.config.js",
@@ -1067,15 +1067,15 @@
       "root": "libs/admin/ui/core",
       "sourceRoot": "libs/admin/ui/core/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/ui/core/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/ui/core"],
           "options": {
             "jestConfig": "libs/admin/ui/core/jest.config.js",
@@ -1090,15 +1090,15 @@
       "root": "libs/admin/ui/theme",
       "sourceRoot": "libs/admin/ui/theme/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/admin/ui/theme/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/admin/ui/theme"],
           "options": {
             "jestConfig": "libs/admin/ui/theme/jest.config.js",
@@ -1113,9 +1113,9 @@
       "sourceRoot": "apps/anyupp-backend/src",
       "projectType": "application",
       "prefix": "anyupp-backend",
-      "architect": {
+      "targets": {
         "build": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/anyupp-backend",
             "parallel": false,
@@ -1127,7 +1127,7 @@
           ]
         },
         "synth": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/anyupp-backend",
             "parallel": false,
@@ -1139,14 +1139,14 @@
           ]
         },
         "config": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
             "commands": ["tools/config-anyupp-backend.sh '{args.env}'"]
           }
         },
         "deploy": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/anyupp-backend",
             "parallel": false,
@@ -1158,7 +1158,7 @@
           }
         },
         "remove": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/anyupp-backend",
             "parallel": false,
@@ -1170,14 +1170,14 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/anyupp-backend/**/*.ts"],
             "cache": true
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/anyupp-backend"],
           "options": {
             "jestConfig": "apps/anyupp-backend/jest.config.js",
@@ -1191,15 +1191,15 @@
       "root": "libs/anyupp-backend-lib",
       "sourceRoot": "libs/anyupp-backend-lib/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/anyupp-backend-lib/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/anyupp-backend-lib"],
           "options": {
             "jestConfig": "libs/anyupp-backend-lib/jest.config.js",
@@ -1213,15 +1213,15 @@
       "root": "libs/anyupp-gql/backend",
       "sourceRoot": "libs/anyupp-gql/backend/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/anyupp-gql/backend/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/anyupp-gql/backend"],
           "options": {
             "jestConfig": "libs/anyupp-gql/backend/jest.config.js",
@@ -1235,30 +1235,30 @@
       "projectType": "application",
       "root": "apps/anyupp-mobile",
       "sourceRoot": "apps/anyupp-mobile/lib",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter analyze",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "lint-ci": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter analyze",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "clean": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter clean",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "build-schema": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
             "command": "../../tools/build-schema-mobile-api.sh {args.env} {args.mode}",
@@ -1267,7 +1267,7 @@
           "outputs": ["apps/anyupp-mobile/graphql/"]
         },
         "pub-get": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
             "command": "flutter pub get",
@@ -1275,7 +1275,7 @@
           }
         },
         "pub-get-ci": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
             "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub get",
@@ -1283,7 +1283,7 @@
           }
         },
         "graphql-codegen": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
             "command": "flutter pub run build_runner build --delete-conflicting-outputs",
@@ -1291,7 +1291,7 @@
           }
         },
         "graphql-codegen-ci": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
             "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build  ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter pub run build_runner build --delete-conflicting-outputs",
@@ -1299,168 +1299,168 @@
           }
         },
         "format": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter format apps/anyupp-mobile/*",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "unit-test": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter test ./test/unit",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "unit-test-ci": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/unit",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "integration-test": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter test ./test/integration_test",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "integration-test-ci": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test ./test/integration_test",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "e2e-test": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter test ./e2e/start_app_test.dart",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "e2e-test-ci": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter scripts/e2e-tests-ci.sh",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "assemble": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter assemble",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "attach": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter attach",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "drive": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter drive",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "genL10n": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter gen-l10n",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "install": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter install",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "run": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter run",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "buildAar": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter build aar",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "buildApk": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter build apk",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "buildApk-ci": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build apk",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "buildSplittedApk": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter build apk --split-per-abi",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "buildAppbundle": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter build appbundle",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "buildAppbundle-ci": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build appbundle",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "buildBundle": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter build bundle",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "buildIos": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter build ios",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "buildIosFramework": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter build ios-framework",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "buildIpa": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "flutter build ipa",
             "cwd": "apps/anyupp-mobile"
           }
         },
         "publish-appcenter": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "command": "../../tools/publish-to-appcenter.sh '{args.env}' '{args.platform}'",
             "cwd": "apps/anyupp-mobile"
@@ -1473,16 +1473,16 @@
       "root": "libs/backend/orders",
       "sourceRoot": "libs/backend/orders/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/backend/orders/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/backend/orders"],
           "options": {
             "jestConfig": "libs/backend/orders/jest.config.js",
@@ -1496,16 +1496,16 @@
       "root": "libs/backend/product-categories",
       "sourceRoot": "libs/backend/product-categories/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/backend/product-categories/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/backend/product-categories"],
           "options": {
             "jestConfig": "libs/backend/product-categories/jest.config.js",
@@ -1519,16 +1519,16 @@
       "root": "libs/backend/products",
       "sourceRoot": "libs/backend/products/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/backend/products/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/backend/products"],
           "options": {
             "jestConfig": "libs/backend/products/jest.config.js",
@@ -1542,16 +1542,16 @@
       "root": "libs/backend/reports",
       "sourceRoot": "libs/backend/reports/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/backend/reports/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/backend/reports"],
           "options": {
             "jestConfig": "libs/backend/reports/jest.config.js",
@@ -1565,16 +1565,16 @@
       "root": "libs/backend/seeder",
       "sourceRoot": "libs/backend/seeder/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/backend/seeder/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/backend/seeder"],
           "options": {
             "jestConfig": "libs/backend/seeder/jest.config.js",
@@ -1588,16 +1588,16 @@
       "root": "libs/backend/shared/utils",
       "sourceRoot": "libs/backend/shared/utils/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/backend/shared/utils/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/backend/shared/utils"],
           "options": {
             "jestConfig": "libs/backend/shared/utils/jest.config.js",
@@ -1611,16 +1611,16 @@
       "root": "libs/backend/units",
       "sourceRoot": "libs/backend/units/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["libs/backend/units/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/backend/units"],
           "options": {
             "jestConfig": "libs/backend/units/jest.config.js",
@@ -1635,9 +1635,9 @@
       "sourceRoot": "apps/cicd/src",
       "projectType": "application",
       "prefix": "cicd",
-      "architect": {
+      "targets": {
         "build": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "outputs": [
             "apps/cicd/cdk.out",
             "apps/cicd/.build",
@@ -1651,7 +1651,7 @@
           }
         },
         "deploy": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/cicd",
             "commands": [
@@ -1662,7 +1662,7 @@
           }
         },
         "remove": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/cicd",
             "commands": [
@@ -1673,13 +1673,13 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/cicd/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/cicd"],
           "options": {
             "jestConfig": "apps/cicd/jest.config.js",
@@ -1693,9 +1693,9 @@
       "root": "apps/common-backend",
       "sourceRoot": "apps/common-backend/src",
       "projectType": "application",
-      "architect": {
+      "targets": {
         "synth": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/common-backend",
             "parallel": false,
@@ -1707,7 +1707,7 @@
           ]
         },
         "deploy": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/common-backend",
             "parallel": false,
@@ -1719,7 +1719,7 @@
           }
         },
         "remove": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/common-backend",
             "parallel": false,
@@ -1731,14 +1731,14 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["apps/common-backend/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/common-backend"],
           "options": {
             "jestConfig": "apps/common-backend/jest.config.js",
@@ -1753,9 +1753,9 @@
       "sourceRoot": "apps/crud-backend/src",
       "projectType": "application",
       "prefix": "crud-api",
-      "architect": {
+      "targets": {
         "config": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/crud-backend",
             "parallel": false,
@@ -1768,7 +1768,7 @@
           ]
         },
         "init": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/crud-backend",
             "parallel": false,
@@ -1776,7 +1776,7 @@
           }
         },
         "reconfig": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/crud-backend",
             "parallel": false,
@@ -1784,7 +1784,7 @@
           }
         },
         "remove": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/crud-backend",
             "parallel": false,
@@ -1792,7 +1792,7 @@
           }
         },
         "build-schema": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/crud-backend",
             "parallel": false,
@@ -1801,7 +1801,7 @@
           "outputs": ["libs/crud-gql/api/src/lib/generated"]
         },
         "deploy": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "cwd": "apps/crud-backend",
             "parallel": false,
@@ -1809,7 +1809,7 @@
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/apps/crud-backend"],
           "options": {
             "jestConfig": "apps/crud-backend/jest.config.js",
@@ -1823,15 +1823,15 @@
       "root": "libs/crud-gql/api",
       "sourceRoot": "libs/crud-gql/api/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/crud-gql/api/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/crud-gql/api"],
           "options": {
             "jestConfig": "libs/crud-gql/api/jest.config.js",
@@ -1845,15 +1845,15 @@
       "root": "libs/crud-gql/backend",
       "sourceRoot": "libs/crud-gql/backend/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/crud-gql/backend/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/crud-gql/backend"],
           "options": {
             "jestConfig": "libs/crud-gql/backend/jest.config.js",
@@ -1863,19 +1863,42 @@
       },
       "tags": ["type:backend", "platform:nodejs"]
     },
+    "domain": {
+      "root": "libs/domain",
+      "sourceRoot": "libs/domain/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/domain/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/domain"],
+          "options": {
+            "jestConfig": "libs/domain/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:nodejs"]
+    },
     "gql-sdk": {
       "root": "libs/gql-sdk",
       "sourceRoot": "libs/gql-sdk/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/gql-sdk/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/gql-sdk"],
           "options": {
             "jestConfig": "libs/gql-sdk/jest.config.js",
@@ -1890,9 +1913,9 @@
       "root": "libs/integration-tests/angular",
       "sourceRoot": "libs/integration-tests/angular/src",
       "prefix": "bgap",
-      "architect": {
+      "targets": {
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/integration-tests/angular"],
           "options": {
             "jestConfig": "libs/integration-tests/angular/jest.config.js",
@@ -1909,9 +1932,9 @@
       "root": "libs/integration-tests/universal",
       "sourceRoot": "libs/integration-tests/universal/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/integration-tests/universal"],
           "options": {
             "jestConfig": "libs/integration-tests/universal/jest.config.js",
@@ -1928,15 +1951,15 @@
       "root": "libs/rkeeper-api",
       "sourceRoot": "libs/rkeeper-api/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/rkeeper-api/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/rkeeper-api"],
           "options": {
             "jestConfig": "libs/rkeeper-api/jest.config.js",
@@ -1950,9 +1973,9 @@
       "root": "libs/shared/config",
       "sourceRoot": "libs/shared/config/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "config": {
-          "builder": "@nrwl/workspace:run-commands",
+          "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
               "ts-node ./tools/fetch-configuration.ts '{args.env}'",
@@ -1961,13 +1984,13 @@
           }
         },
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared/config/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/shared/config"],
           "options": {
             "jestConfig": "libs/shared/config/jest.config.js",
@@ -1981,15 +2004,15 @@
       "root": "libs/shared/data-validators",
       "sourceRoot": "libs/shared/data-validators/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared/data-validators/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/shared/data-validators"],
           "options": {
             "jestConfig": "libs/shared/data-validators/jest.config.js",
@@ -2003,15 +2026,15 @@
       "root": "libs/shared/fixtures",
       "sourceRoot": "libs/shared/fixtures/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared/fixtures/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/shared/fixtures"],
           "options": {
             "jestConfig": "libs/shared/fixtures/jest.config.js",
@@ -2025,15 +2048,15 @@
       "root": "libs/shared/graphql/api-client",
       "sourceRoot": "libs/shared/graphql/api-client/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared/graphql/api-client/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/shared/graphql/api-client"],
           "options": {
             "jestConfig": "libs/shared/graphql/api-client/jest.config.js",
@@ -2047,15 +2070,15 @@
       "root": "libs/shared/secrets",
       "sourceRoot": "libs/shared/secrets/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared/secrets/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/shared/secrets"],
           "options": {
             "jestConfig": "libs/shared/secrets/jest.config.js",
@@ -2069,15 +2092,15 @@
       "root": "libs/shared/types",
       "sourceRoot": "libs/shared/types/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared/types/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/shared/types"],
           "options": {
             "jestConfig": "libs/shared/types/jest.config.js",
@@ -2091,15 +2114,15 @@
       "root": "libs/shared/utils",
       "sourceRoot": "libs/shared/utils/src",
       "projectType": "library",
-      "architect": {
+      "targets": {
         "lint": {
-          "builder": "@nrwl/linter:eslint",
+          "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/shared/utils/**/*.ts"]
           }
         },
         "test": {
-          "builder": "@nrwl/jest:jest",
+          "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/libs/shared/utils"],
           "options": {
             "jestConfig": "libs/shared/utils/jest.config.js",
