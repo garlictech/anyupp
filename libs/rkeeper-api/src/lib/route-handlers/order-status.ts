@@ -21,7 +21,7 @@ const requestSchema = {
   remoteOrderId: Joi.string().required(),
   currentState: Joi.string()
     .required()
-    .valid('processing', 'ready', 'served', 'failed', 'rejected'),
+    .valid('placed', 'processing', 'ready', 'served', 'failed', 'rejected'),
 };
 
 export const {

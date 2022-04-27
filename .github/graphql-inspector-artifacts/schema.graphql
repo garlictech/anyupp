@@ -165,6 +165,7 @@ type UnitProduct @aws_iam @aws_cognito_user_pools {
   supportedServingModes: [ServingMode!]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1812,6 +1813,7 @@ input ModelUnitProductFilterInput {
   supportedServingModes: ModelServingModeListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelUnitProductFilterInput]
   or: [ModelUnitProductFilterInput]
   not: ModelUnitProductFilterInput
@@ -1829,6 +1831,7 @@ input ModelUnitProductConditionInput {
   supportedServingModes: ModelServingModeListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelUnitProductConditionInput]
   or: [ModelUnitProductConditionInput]
   not: ModelUnitProductConditionInput
@@ -1849,6 +1852,7 @@ input CreateUnitProductInput {
   supportedServingModes: [ServingMode!]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 input UpdateUnitProductInput {
@@ -1866,6 +1870,7 @@ input UpdateUnitProductInput {
   supportedServingModes: [ServingMode!]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 input CardChecksInput {
@@ -3266,6 +3271,7 @@ input SearchableUnitProductFilterInput {
   position: SearchableIntFilterInput
   externalId: SearchableStringFilterInput
   dirty: SearchableBooleanFilterInput
+  deletedAt: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
@@ -3286,6 +3292,7 @@ enum SearchableUnitProductSortableFields {
   position
   externalId
   dirty
+  deletedAt
   createdAt
   updatedAt
 }
@@ -3308,6 +3315,7 @@ enum SearchableUnitProductAggregateField {
   supportedServingModes
   externalId
   dirty
+  deletedAt
   createdAt
   updatedAt
 }
