@@ -114,7 +114,7 @@
     "random-quote-generator": "1.2.2",
     "reflect-metadata": "0.1.13",
     "rxjs": "6.6.7",
-    "serverless-offline": "8.5.0",
+    "serverless-offline": "8.7.0",
     "serverless-offline-multi": "1.2.0",
     "stripe": "8.216.0",
     "stun": "2.1.0",
