@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "bgap",
+            "prefix": ["bgap", "lib-admin"],
             "style": "kebab-case"
           }
         ]

@@ -1473,7 +1473,7 @@
       "projectType": "library",
       "root": "libs/apps/admin",
       "sourceRoot": "libs/apps/admin/src",
-      "prefix": "bgap",
+      "prefix": "lib-admin",
       "targets": {
         "test": {
           "executor": "@nrwl/jest:jest",
