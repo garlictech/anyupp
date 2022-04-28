@@ -1,4 +1,4 @@
-FROM node:17-alpine
+FROM node:18-alpine
 
 ENV GLIBC_VER=2.31-r0
 
