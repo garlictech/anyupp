@@ -1469,6 +1469,32 @@
       },
       "tags": ["type:application", "platform:flutter"]
     },
+    "apps-admin": {
+      "projectType": "library",
+      "root": "libs/apps/admin",
+      "sourceRoot": "libs/apps/admin/src",
+      "prefix": "bgap",
+      "targets": {
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/apps/admin"],
+          "options": {
+            "jestConfig": "libs/apps/admin/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/apps/admin/src/**/*.ts",
+              "libs/apps/admin/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
     "backend-orders": {
       "root": "libs/backend/orders",
       "sourceRoot": "libs/backend/orders/src",
