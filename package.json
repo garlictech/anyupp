@@ -78,7 +78,7 @@
     "apollo-server-fastify": "3.6.7",
     "aws-amplify": "4.3.20",
     "aws-appsync": "4.1.5",
-    "aws-elasticsearch-js": "^1.0.3",
+    "aws-elasticsearch-js": "1.0.3",
     "aws-lambda": "1.0.7",
     "aws-lambda-fastify": "2.1.2",
     "aws-sdk": "2.1123.0",
