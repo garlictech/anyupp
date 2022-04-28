@@ -70,24 +70,24 @@
         <nb-icon icon="expand_less" pack="material-icons"></nb-icon>
       </button>
     </ng-container>
+
+    <button
+      *ngIf="product?.pending"
+      nbButton
+      status="danger"
+      shape="round"
+      size="tiny"
+      class="float-right"
+      (click)="extendProduct()"
+      [title]="'products.extendProduct' | translate"
+    >
+      <nb-icon icon="file_download" pack="material-icons"></nb-icon>
+    </button>
   </div>
 
-  <div class="dirty-block" *ngIf="product?.dirty">
+  <div class="dirty-block float-right" *ngIf="product?.dirty">
     <nb-badge text="DIRTY" status="danger" position="top right"></nb-badge>
   </div>
-
-  <button
-    *ngIf="product?.pending"
-    nbButton
-    status="danger"
-    shape="round"
-    size="tiny"
-    class="float-right"
-    (click)="extendProduct()"
-    [title]="'products.extendProduct' | translate"
-  >
-    <nb-icon icon="file_download" pack="material-icons"></nb-icon>
-  </button>
 </ng-container>
 
 <div class="clearfix"></div>
