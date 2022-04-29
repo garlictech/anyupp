@@ -61,6 +61,10 @@ Object {
     "address": "UNIT ADDRESS",
     "city": "UNIT CITY",
     "country": "UNIT COUNTRY",
+    "location": Object {
+      "lat": 47,
+      "lon": 19,
+    },
     "postalCode": "UNIT POSTAL CODE",
     "title": "UNTI TITLE",
   },
