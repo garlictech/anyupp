@@ -1495,6 +1495,52 @@
       },
       "tags": ["platform:angular"]
     },
+    "apps-backend-anyupp": {
+      "root": "libs/apps/backend-anyupp",
+      "sourceRoot": "libs/apps/backend-anyupp/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/apps/backend-anyupp/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/apps/backend-anyupp"],
+          "options": {
+            "jestConfig": "libs/apps/backend-anyupp/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:nodejs"]
+    },
+    "apps-shared": {
+      "root": "libs/apps/shared",
+      "sourceRoot": "libs/apps/shared/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/apps/shared/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/apps/shared"],
+          "options": {
+            "jestConfig": "libs/apps/shared/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:nodejs"]
+    },
     "backend-orders": {
       "root": "libs/backend/orders",
       "sourceRoot": "libs/backend/orders/src",

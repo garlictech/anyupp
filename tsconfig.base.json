@@ -117,6 +117,8 @@
       "@bgap/anyupp-gql/backend": ["libs/anyupp-gql/backend/src/index.ts"],
       "@bgap/api/data-access": ["libs/api/data-access/src/index.ts"],
       "@bgap/apps/admin": ["libs/apps/admin/src/index.ts"],
+      "@bgap/apps/backend-anyupp": ["libs/apps/backend-anyupp/src/index.ts"],
+      "@bgap/apps/shared": ["libs/apps/shared/src/index.ts"],
       "@bgap/backend/orders": ["libs/backend/orders/src/index.ts"],
       "@bgap/backend/product-categories": [
         "libs/backend/product-categories/src/index.ts"
