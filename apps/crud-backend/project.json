@@ -62,7 +62,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/crud-backend"],
       "options": {
-        "jestConfig": "apps/crud-backend/jest.config.js",
+        "jestConfig": "apps/crud-backend/jest.config.ts",
         "passWithNoTests": true
       }
     }

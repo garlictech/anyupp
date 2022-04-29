@@ -47,7 +47,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/common-backend"],
       "options": {
-        "jestConfig": "apps/common-backend/jest.config.js",
+        "jestConfig": "apps/common-backend/jest.config.ts",
         "passWithNoTests": true
       }
     }

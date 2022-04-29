@@ -50,7 +50,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/cicd"],
       "options": {
-        "jestConfig": "apps/cicd/jest.config.js",
+        "jestConfig": "apps/cicd/jest.config.ts",
         "passWithNoTests": true
       }
     }

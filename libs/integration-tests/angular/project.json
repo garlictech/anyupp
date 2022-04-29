@@ -8,7 +8,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/integration-tests/angular"],
       "options": {
-        "jestConfig": "libs/integration-tests/angular/jest.config.js",
+        "jestConfig": "libs/integration-tests/angular/jest.config.ts",
         "passWithNoTests": true,
         "detectOpenHandles": true,
         "forceExit": true,

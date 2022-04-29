@@ -13,7 +13,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/crud-gql/api"],
       "options": {
-        "jestConfig": "libs/crud-gql/api/jest.config.js",
+        "jestConfig": "libs/crud-gql/api/jest.config.ts",
         "passWithNoTests": true
       }
     }

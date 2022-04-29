@@ -13,7 +13,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/admin/store/admin-users"],
       "options": {
-        "jestConfig": "libs/admin/store/admin-users/jest.config.js",
+        "jestConfig": "libs/admin/store/admin-users/jest.config.ts",
         "passWithNoTests": true
       }
     }

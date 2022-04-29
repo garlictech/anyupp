@@ -13,7 +13,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/gql-sdk"],
       "options": {
-        "jestConfig": "libs/gql-sdk/jest.config.js",
+        "jestConfig": "libs/gql-sdk/jest.config.ts",
         "passWithNoTests": true
       }
     }

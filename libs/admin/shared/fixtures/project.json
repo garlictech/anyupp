@@ -8,7 +8,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/admin/shared/fixtures"],
       "options": {
-        "jestConfig": "libs/admin/shared/fixtures/jest.config.js",
+        "jestConfig": "libs/admin/shared/fixtures/jest.config.ts",
         "passWithNoTests": true
       }
     },
