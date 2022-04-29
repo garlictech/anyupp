@@ -16,7 +16,7 @@ type Address {
   country: String!
   title: String!
   postalCode: String!
-  location: Location @deprecated(reason: "Unused.")
+  location: Location! #@deprecated(reason: "Unused.")
 }
 
 type PaymentMode {
@@ -1024,7 +1024,7 @@ type GeoUnit
 }
 
 input GetUnitsNearLocationInput {
-  location: LocationInput!
+  location: LocationInputOld!
 }
 
 type User
@@ -1134,6 +1134,11 @@ type Receipt
   email: String
   pdfData: String
   status: ReceiptStatus!
+}
+
+input LocationInputOld {
+  lat: Float!
+  lng: Float!
 }
 
 input LocationInput {

@@ -18,7 +18,7 @@ type Address @aws_iam @aws_cognito_user_pools @aws_api_key {
   country: String!
   title: String!
   postalCode: String!
-  location: Location @deprecated(reason: "Unused.")
+  location: Location!
 }
 
 type PaymentMode @aws_iam @aws_cognito_user_pools @aws_api_key {
@@ -1000,7 +1000,7 @@ type GeoUnit @aws_iam @aws_cognito_user_pools {
 }
 
 input GetUnitsNearLocationInput {
-  location: LocationInput!
+  location: LocationInputOld!
 }
 
 type User @aws_iam @aws_cognito_user_pools {
@@ -1103,6 +1103,11 @@ type Receipt @aws_iam @aws_cognito_user_pools {
   status: ReceiptStatus!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+}
+
+input LocationInputOld {
+  lat: Float!
+  lng: Float!
 }
 
 input LocationInput {

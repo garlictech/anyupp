@@ -1,0 +1,45 @@
+{
+  "anyupp-backend-SecretsManagerStack": {
+    "SecretsManager": "arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-dev-secrets-WtbZ0k"
+  },
+  "anyupp-backend-ParamsStack": {
+    "appleServiceIdOutput": "net.cyberg.anyupp.cognito",
+    "stripePublishableKeyOutput": "pk_test_51KLUGRIeYeqvtwSk7GAFrOhEdhx3mCWcoFXtuWmvboJM0zSGzjzG9vpubF6bzMJo9a7usKbM61TNd6hrq8Ntdtjj003SuLcl0n",
+    "googleClientIdOutput": "1016713353610-q3nsj1t1flrjuo33sfakis645gl7ijv3.apps.googleusercontent.com",
+    "facebookAppIdOutput": "166876958090898",
+    "googleApiKeyOutput": "AIzaSyDGNIG1eIqvKsRoBsQ2T7PVff2d1XUhsVg",
+    "securityGroupId": "sg-067322e2345a84f7e",
+    "slackChannelOutput": "net.cyberg.anyupp.cognito",
+    "appleTeamIdOutput": "36CW47H75G",
+    "appleKeyIdOutput": "8W2A8ZDZH8",
+    "vpcIdOutput": "vpc-0880d26d0165c9f7f"
+  },
+  "anyupp-backend-sites": {
+    "AdminSiteDomainA75B4E32": "gaborstack-admin-anyupp-backend.anyupp.com",
+    "AdminDistributionDomainNameA4A4FE5B": "d1avqdalwvwr00.cloudfront.net",
+    "AdminSiteEAA17C78": "https://gaborstack-admin-anyupp-backend.anyupp.com",
+    "AdminDistributionIdB4DE25AB": "EBVQY4WOB9KW",
+    "AdminBucketCA57896C": "gaborstack-admin-anyupp-backend.anyupp.com"
+  },
+  "anyupp-backend-cognito": {
+    "ConsumerUserPoolId": "eu-west-1_MDte1tksH",
+    "AdminUserPoolId": "eu-west-1_nJbg6CmC4",
+    "AdminWebUserPoolClientId": "3tct3ssfuntr81n191okda31l6",
+    "ConsumerNativeUserPoolClientId": "hlk1dc8joppckg5cbk6gn93e2",
+    "AdminUserPoolDomain": "https://gaborstack-anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
+    "ConsumerWebUserPoolClientId": "6aatrf1fq2b18f8gffdh9j0lao",
+    "ConsumerUserPoolDomain": "https://gaborstack-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
+    "IdentityPoolId": "eu-west-1:81b670e0-0acb-4d22-bab9-7fb88d68ae01",
+    "AdminNativeUserPoolClientId": "396pv9kk2a4lt8svfojcl2dgng"
+  },
+  "anyupp-backend-stripe": {
+    "stripewebhookEndpoint": "https://stripe-webhook-gaborstack.anyupp.com/gaborstack",
+    "StripeWebhookEndpointE83D65EB": "https://lfgnhvc703.execute-api.eu-west-1.amazonaws.com/gaborstack/"
+  },
+  "anyupp-backend-rkeeper": {
+    "RKeeperWebhookEndpointCBC72BD4": "https://q8t6ftcwy2.execute-api.eu-west-1.amazonaws.com/gaborstack/",
+    "rkeeperwebhookEndpoint": "https://rkeeper-webhook-gaborstack.anyupp.com/gaborstack",
+    "RKeeperTaskBucketName": "gaborstack-anyupp-backen-anyupprkeepermenubucket4-1gb3se3otf9lz",
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/gaborstack-anyupp-backend-RkeeperECSTaskExecutionR-1BRJQJ8R5JIC"
+  }
+}

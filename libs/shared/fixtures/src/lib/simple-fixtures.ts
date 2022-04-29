@@ -213,6 +213,10 @@ const unit: CrudApi.Unit = {
     country: 'UNIT COUNTRY',
     title: 'UNTI TITLE',
     postalCode: 'UNIT POSTAL CODE',
+    location: {
+      lat: 47,
+      lon: 19,
+    },
   },
   location: {
     lat: 47,
