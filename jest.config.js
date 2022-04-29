@@ -94,5 +94,6 @@ module.exports = {
     '<rootDir>/libs/backend/search',
     '<rootDir>/libs/domain',
     '<rootDir>/libs/apps/admin',
+    '<rootDir>/libs/data',
   ],
 };
