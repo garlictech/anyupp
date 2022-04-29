@@ -1,4 +1,6 @@
 import {
+  aws_events_targets as eventTargets,
+  aws_events as events,
   aws_ecr_assets as ecr_assets,
   aws_iam as iam,
   aws_ecs as ecs,
@@ -195,6 +197,30 @@ export class RKeeperStack extends sst.Stack {
       description: 'The current rkeeper task definition for Fargate',
       parameterName: getFQParamName(scope, 'RkeeperTaskDefinitionArn'),
       stringValue: menusyncTaskDefinition.taskDefinitionArn,
+    });
+
+    const stuckOrderCleanupLambda = new lambda.Function(
+      this,
+      'RKeeperStuckOrderCleanupLambda',
+      {
+        ...commonLambdaProps,
+        // It must be relative to the serverless.yml file
+        handler: 'lib/lambda/stuck-order-cleanup/index.handler',
+        memorySize: 512,
+        timeout: Duration.seconds(30),
+        code: lambda.Code.fromAsset(
+          path.join(__dirname, '../../.serverless-2/stuck-order-cleanup.zip'),
+        ),
+        environment: {
+          API_ACCESS_KEY_ID: props.apiAccessKeyId,
+          API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
+        },
+      },
+    );
+
+    new events.Rule(this, 'RKeeperStuckOrderCleanupScheduleRule', {
+      schedule: events.Schedule.rate(Duration.minutes(10)),
+      targets: [new eventTargets.LambdaFunction(stuckOrderCleanupLambda)],
     });
   }
 }

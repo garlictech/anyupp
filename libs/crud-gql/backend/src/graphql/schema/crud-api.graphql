@@ -534,6 +534,7 @@ type Order
   packagingFeeTaxPercentage: Float
   externalId: String
   guestLabel: String
+  currentStatus: OrderStatus
 }
 
 input CreateOrderInput {

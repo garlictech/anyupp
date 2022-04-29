@@ -100,6 +100,7 @@ export const placeOrder =
           updatedAt: time,
           statusLog: [],
           archived: false,
+          currentStatus: CrudApi.OrderStatus.none,
         },
         TableName: deps.orderTableName,
       }),

@@ -6,6 +6,7 @@ exports[`createOrderCases cases: RESULT 1`] = `
 Object {
   "archived": false,
   "createdAt": "2022-02-01T00:00:00.000Z",
+  "currentStatus": "none",
   "id": "THE UUID",
   "orderNum": "10",
   "statusLog": Array [],
@@ -377,6 +378,7 @@ Array [
       "Item": Object {
         "archived": false,
         "createdAt": "2022-02-01T00:00:00.000Z",
+        "currentStatus": "none",
         "id": "THE UUID",
         "statusLog": Array [],
         "unitId": "THE ORDER UNIT ID",
@@ -395,6 +397,7 @@ Object {
     "order": Object {
       "archived": false,
       "createdAt": "2022-02-01T00:00:00.000Z",
+      "currentStatus": "none",
       "id": "THE UUID",
       "statusLog": Array [],
       "unitId": "THE ORDER UNIT ID",
@@ -411,6 +414,7 @@ Array [
       "Item": Object {
         "archived": false,
         "createdAt": "2022-02-01T00:00:00.000Z",
+        "currentStatus": "none",
         "id": "THE UUID",
         "statusLog": Array [],
         "unitId": "THE ORDER UNIT ID",
@@ -436,6 +440,7 @@ Array [
       "Item": Object {
         "archived": false,
         "createdAt": "2022-02-01T00:00:00.000Z",
+        "currentStatus": "none",
         "id": "USER GIVEN ORDER ID",
         "statusLog": Array [],
         "unitId": "THE ORDER UNIT ID",
@@ -454,6 +459,7 @@ Object {
     "order": Object {
       "archived": false,
       "createdAt": "2022-02-01T00:00:00.000Z",
+      "currentStatus": "none",
       "id": "USER GIVEN ORDER ID",
       "statusLog": Array [],
       "unitId": "THE ORDER UNIT ID",

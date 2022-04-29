@@ -523,6 +523,7 @@ type Order @aws_iam @aws_cognito_user_pools {
   packagingFeeTaxPercentage: Float
   externalId: String
   guestLabel: String
+  currentStatus: OrderStatus
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2221,6 +2222,11 @@ input ModelSoldOutVisibilityPolicyInput {
   ne: SoldOutVisibilityPolicy
 }
 
+input ModelOrderStatusInput {
+  eq: OrderStatus
+  ne: OrderStatus
+}
+
 input ModelOrderFilterInput {
   id: ModelIDInput
   version: ModelIntInput
@@ -2242,6 +2248,7 @@ input ModelOrderFilterInput {
   packagingFeeTaxPercentage: ModelFloatInput
   externalId: ModelStringInput
   guestLabel: ModelStringInput
+  currentStatus: ModelOrderStatusInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
@@ -2267,6 +2274,7 @@ input ModelOrderConditionInput {
   packagingFeeTaxPercentage: ModelFloatInput
   externalId: ModelStringInput
   guestLabel: ModelStringInput
+  currentStatus: ModelOrderStatusInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
@@ -2309,6 +2317,7 @@ input UpdateOrderInput {
   packagingFeeTaxPercentage: Float
   externalId: String
   guestLabel: String
+  currentStatus: OrderStatus
 }
 
 type ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools {
@@ -3516,6 +3525,7 @@ input SearchableOrderFilterInput {
   tipTransactionStatus: SearchableStringFilterInput
   orderPolicy: SearchableStringFilterInput
   soldOutVisibilityPolicy: SearchableStringFilterInput
+  currentStatus: SearchableStringFilterInput
   and: [SearchableOrderFilterInput]
   or: [SearchableOrderFilterInput]
   not: SearchableOrderFilterInput
@@ -3565,6 +3575,7 @@ enum SearchableOrderAggregateField {
   packagingFeeTaxPercentage
   externalId
   guestLabel
+  currentStatus
   createdAt
   updatedAt
 }

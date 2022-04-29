@@ -50,3 +50,6 @@ functions:
 
   report-generator:
     handler: lib/lambda/report-generator/index.handler
+
+  stuck-order-cleanup:
+    handler: lib/lambda/stuck-order-cleanup/index.handler

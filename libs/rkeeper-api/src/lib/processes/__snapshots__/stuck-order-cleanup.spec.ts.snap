@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`No stuck orders: SearchOrders 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "and": Array [
+          Object {
+            "currentStatus": Object {
+              "eq": "none",
+            },
+          },
+        ],
+      },
+      "limit": 100,
+      "nextToken": undefined,
+    },
+    undefined,
+  ],
+]
+`;
+
+exports[`No stuck orders: UpdateOrders 1`] = `Array []`;
+
+exports[`Stuck order, no timeout: SearchOrders 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "and": Array [
+          Object {
+            "currentStatus": Object {
+              "eq": "none",
+            },
+          },
+        ],
+      },
+      "limit": 100,
+      "nextToken": undefined,
+    },
+    undefined,
+  ],
+]
+`;
+
+exports[`Stuck order, no timeout: UpdateOrders 1`] = `Array []`;
+
+exports[`Stuck order, with timeout: SearchOrders 1`] = `
+Array [
+  Array [
+    Object {
+      "filter": Object {
+        "and": Array [
+          Object {
+            "currentStatus": Object {
+              "eq": "none",
+            },
+          },
+        ],
+      },
+      "limit": 100,
+      "nextToken": undefined,
+    },
+    undefined,
+  ],
+]
+`;
+
+exports[`Stuck order, with timeout: UpdateOrders 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "currentStatus": "failed",
+        "id": "ORDER_ID",
+        "statusLog": Array [
+          "OLD STATUSLOG",
+          Object {
+            "status": "failed",
+            "ts": 1000000,
+            "userId": "blocked-order-lambda",
+          },
+        ],
+      },
+    },
+  ],
+]
+`;

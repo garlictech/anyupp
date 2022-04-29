@@ -8,3 +8,4 @@ export {
   orderStatusHandler,
   OrderStatusRequest,
 } from './lib/route-handlers/order-status';
+export { stuckOrderCleanupHandler } from './lib/processes/stuck-order-cleanup';
