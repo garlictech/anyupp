@@ -520,6 +520,7 @@
   },
   "profile": {
     "menu": {
+      "userinfo": "Profil adatok",
       "section1": "Fiók",
       "contact": "Kapcsolat",
       "transactions": "Vásárlások",

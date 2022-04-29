@@ -111,6 +111,15 @@ class Profile extends StatelessWidget {
                     ),
                   ),
                   ProfileListItemWidget(
+                    icon: Icons.manage_accounts_outlined,
+                    titleKey: 'profile.menu.userinfo',
+                    border: ProfileBorder.TOP,
+                    separator: true,
+                    onTap: () => Nav.to(ProfileViewScreen(
+                      profile: user,
+                    )),
+                  ),
+                  ProfileListItemWidget(
                     icon: Icons.shopping_bag,
                     titleKey: 'profile.menu.transactions',
                     border: ProfileBorder.TOP,

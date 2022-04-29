@@ -522,6 +522,7 @@
   },
   "profile": {
     "menu": {
+      "userinfo": "Profile info",
       "section1": "Account",
       "contact": "Contact",
       "transactions": "Purchases",
