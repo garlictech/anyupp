@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/admin/store/app-core"],
       "options": {
-        "jestConfig": "libs/admin/store/app-core/jest.config.js",
+        "jestConfig": "libs/admin/store/app-core/jest.config.ts",
         "passWithNoTests": true
       }
     }

@@ -13,7 +13,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/anyupp-backend-lib"],
       "options": {
-        "jestConfig": "libs/anyupp-backend-lib/jest.config.js",
+        "jestConfig": "libs/anyupp-backend-lib/jest.config.ts",
         "passWithNoTests": true
       }
     }

@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/backend/search"],
       "options": {
-        "jestConfig": "libs/backend/search/jest.config.js",
+        "jestConfig": "libs/backend/search/jest.config.ts",
         "passWithNoTests": true
       }
     }

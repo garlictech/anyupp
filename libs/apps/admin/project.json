@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/apps/admin",
+  "sourceRoot": "libs/apps/admin/src",
+  "prefix": "lib-admin",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/apps/admin"],
+      "options": {
+        "jestConfig": "libs/apps/admin/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/apps/admin/src/**/*.ts",
+          "libs/apps/admin/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": ["platform:angular", "layer:app-logic", "scope:frontend"]
+}

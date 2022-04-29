@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/admin/shared/pipes"],
       "options": {
-        "jestConfig": "libs/admin/shared/pipes/jest.config.js",
+        "jestConfig": "libs/admin/shared/pipes/jest.config.ts",
         "passWithNoTests": true
       }
     }

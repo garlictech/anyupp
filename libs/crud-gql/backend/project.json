@@ -13,7 +13,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/crud-gql/backend"],
       "options": {
-        "jestConfig": "libs/crud-gql/backend/jest.config.js",
+        "jestConfig": "libs/crud-gql/backend/jest.config.ts",
         "passWithNoTests": true
       }
     }

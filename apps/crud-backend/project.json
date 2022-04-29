@@ -55,14 +55,14 @@
       "options": {
         "cwd": "apps/crud-backend",
         "parallel": false,
-        "commands": ["../../tools/deploy-crud-api.sh {args.env}"]
+        "commands": ["../../tools/deploy-crud-api.sh '{args.env}'"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/crud-backend"],
       "options": {
-        "jestConfig": "apps/crud-backend/jest.config.js",
+        "jestConfig": "apps/crud-backend/jest.config.ts",
         "passWithNoTests": true
       }
     }

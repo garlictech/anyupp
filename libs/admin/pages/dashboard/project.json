@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/admin/pages/dashboard"],
       "options": {
-        "jestConfig": "libs/admin/pages/dashboard/jest.config.js",
+        "jestConfig": "libs/admin/pages/dashboard/jest.config.ts",
         "passWithNoTests": true
       }
     }

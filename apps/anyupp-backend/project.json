@@ -67,7 +67,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/anyupp-backend"],
       "options": {
-        "jestConfig": "apps/anyupp-backend/jest.config.js",
+        "jestConfig": "apps/anyupp-backend/jest.config.ts",
         "passWithNoTests": true
       }
     }

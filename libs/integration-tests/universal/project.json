@@ -7,7 +7,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/integration-tests/universal"],
       "options": {
-        "jestConfig": "libs/integration-tests/universal/jest.config.js",
+        "jestConfig": "libs/integration-tests/universal/jest.config.ts",
         "passWithNoTests": true,
         "detectOpenHandles": true,
         "forceExit": true,

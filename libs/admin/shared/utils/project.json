@@ -13,7 +13,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/admin/shared/utils"],
       "options": {
-        "jestConfig": "libs/admin/shared/utils/jest.config.js",
+        "jestConfig": "libs/admin/shared/utils/jest.config.ts",
         "passWithNoTests": true
       }
     }

@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/backend/seeder"],
       "options": {
-        "jestConfig": "libs/backend/seeder/jest.config.js",
+        "jestConfig": "libs/backend/seeder/jest.config.ts",
         "passWithNoTests": true
       }
     }

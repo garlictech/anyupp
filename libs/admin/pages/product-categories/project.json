@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/admin/pages/product-categories"],
       "options": {
-        "jestConfig": "libs/admin/pages/product-categories/jest.config.js",
+        "jestConfig": "libs/admin/pages/product-categories/jest.config.ts",
         "passWithNoTests": true
       }
     }

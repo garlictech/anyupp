@@ -1,0 +1,23 @@
+{
+  "root": "libs/apps/shared",
+  "sourceRoot": "libs/apps/shared/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/apps/shared/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/apps/shared"],
+      "options": {
+        "jestConfig": "libs/apps/shared/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["platform:nodejs", "layer:app-logic", "scope:shared"]
+}

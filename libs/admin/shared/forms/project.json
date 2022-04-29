@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/admin/shared/forms"],
       "options": {
-        "jestConfig": "libs/admin/shared/forms/jest.config.js",
+        "jestConfig": "libs/admin/shared/forms/jest.config.ts",
         "passWithNoTests": true
       }
     }

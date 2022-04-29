@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/admin/store/logged-user"],
       "options": {
-        "jestConfig": "libs/admin/store/logged-user/jest.config.js",
+        "jestConfig": "libs/admin/store/logged-user/jest.config.ts",
         "passWithNoTests": true
       }
     }

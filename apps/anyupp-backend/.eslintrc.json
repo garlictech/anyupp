@@ -17,7 +17,7 @@
       ],
       "parserOptions": {
         "project": [
-          "apps/anyupp-backend/tsconfig.json"
+          "apps/anyupp-backend/tsconfig.*?.json"
         ]
       }
     }
