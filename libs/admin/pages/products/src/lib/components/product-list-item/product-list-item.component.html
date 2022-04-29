@@ -16,6 +16,7 @@
 <ng-container *ngIf="hasRoleToEdit$ | async">
   <div *ngIf="!product?.pending">
     <button
+      [disabled]="true"
       nbButton
       status="danger"
       shape="round"
@@ -70,20 +71,20 @@
         <nb-icon icon="expand_less" pack="material-icons"></nb-icon>
       </button>
     </ng-container>
-
-    <button
-      *ngIf="product?.pending"
-      nbButton
-      status="danger"
-      shape="round"
-      size="tiny"
-      class="float-right"
-      (click)="extendProduct()"
-      [title]="'products.extendProduct' | translate"
-    >
-      <nb-icon icon="file_download" pack="material-icons"></nb-icon>
-    </button>
   </div>
+
+  <button
+    *ngIf="product?.pending"
+    nbButton
+    status="danger"
+    shape="round"
+    size="tiny"
+    class="float-right"
+    (click)="extendProduct()"
+    [title]="'products.extendProduct' | translate"
+  >
+    <nb-icon icon="file_download" pack="material-icons"></nb-icon>
+  </button>
 
   <div class="dirty-block float-right" *ngIf="product?.dirty">
     <nb-badge text="DIRTY" status="danger" position="top right"></nb-badge>
