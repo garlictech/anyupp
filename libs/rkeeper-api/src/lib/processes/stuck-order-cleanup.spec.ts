@@ -1,7 +1,12 @@
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { stuckOrderCleanupHandler } from './stuck-order-cleanup';
+import {
+  stuckOrderCleanupHandler,
+  STUCK_ORDER_TIME_THRESHOLD,
+} from './stuck-order-cleanup';
 import * as CrudApi from '@bgap/crud-gql/api';
+
+const NOW = 1000000;
 
 const testCases = [
   {
@@ -17,7 +22,7 @@ const testCases = [
         {
           id: 'ORDER_ID',
           currentStatus: CrudApi.OrderStatus.none,
-          updatedAt: '400001',
+          updatedAt: `${NOW - STUCK_ORDER_TIME_THRESHOLD + 1}`,
           statusLog: ['OLD STATUSLOG'],
         },
       ],
@@ -30,7 +35,7 @@ const testCases = [
         {
           id: 'ORDER_ID',
           currentStatus: CrudApi.OrderStatus.none,
-          updatedAt: '399999',
+          updatedAt: `${NOW - STUCK_ORDER_TIME_THRESHOLD - 1}`,
           statusLog: ['OLD STATUSLOG'],
         },
       ],
@@ -45,7 +50,7 @@ test.each(testCases)('$label', ({ result }, done: any) => {
       SearchOrders: jest.fn().mockReturnValue(result),
       UpdateOrder: jest.fn().mockReturnValue(of({})),
     },
-    now: () => 1000000,
+    now: () => NOW,
     timeStamp: (dateString: string) => parseInt(dateString),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;

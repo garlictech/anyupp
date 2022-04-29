@@ -12,6 +12,8 @@ export interface StuckOrdersCleanupDeps {
   timeStamp: (dateString: string) => number;
 }
 
+export const STUCK_ORDER_TIME_THRESHOLD = 1000 * 60 * 10;
+
 export const stuckOrderCleanupHandler = (deps: StuckOrdersCleanupDeps) =>
   getAllPaginatedData(deps.sdk.SearchOrders, {
     query: {
@@ -23,7 +25,8 @@ export const stuckOrderCleanupHandler = (deps: StuckOrdersCleanupDeps) =>
       flow(
         R.filter(
           (order: CrudApi.Order) =>
-            deps.now() - deps.timeStamp(order.updatedAt) > 1000 * 60 * 10,
+            deps.now() - deps.timeStamp(order.updatedAt) >
+            STUCK_ORDER_TIME_THRESHOLD,
         ),
         R.map((order: CrudApi.Order) =>
           deps.sdk.UpdateOrder({
