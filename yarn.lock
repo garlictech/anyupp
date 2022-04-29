@@ -9980,7 +9980,7 @@ aws-lambda@1.0.7:
     js-yaml "^3.14.1"
     watchpack "^2.0.0-beta.10"
 
-aws-sdk@2.1124.0:
+aws-sdk@2.1124.0, aws-sdk@^2.1124.0:
   version "2.1124.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1124.0.tgz#350550b973f210b092a45184036659251d7cbd1e"
   integrity sha512-LIj2EmvduQmyjpSLoDPe2TvRBrGWhJKlCuC7lungN4f+qYPOfVWg6/c9GdP99W0q5p2IqhDkCmQ/ZZBpO1Z/Fg==
@@ -10014,21 +10014,6 @@ aws-sdk@^2.1097.0:
   version "2.1123.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1123.0.tgz#56a94196482d4eb5de8217b9ad2138384caa6c73"
   integrity sha512-yvPDpuzgz8a3YV99hJ0ChLWpbLxNuCiR8+0Fd4w/AoIf08OBZvTN0MAG/XnPVgTLya5qW8YZtghFTrodzwhYwg==
-  dependencies:
-    buffer "4.9.2"
-    events "1.1.1"
-    ieee754 "1.1.13"
-    jmespath "0.16.0"
-    querystring "0.2.0"
-    sax "1.2.1"
-    url "0.10.3"
-    uuid "3.3.2"
-    xml2js "0.4.19"
-
-aws-sdk@^2.1119.0:
-  version "2.1121.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1121.0.tgz#381510f7216f1d177b01620612f60014fa48e562"
-  integrity sha512-SEbPk0cFxiqhx8s2n9ozPafWyoIH944fg8Tpy9AxqZlq/tSCphWNE0CgKATnNAKoltWdVHBTKeLwnOAK/7OX7A==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -23195,10 +23180,10 @@ serverless-webpack@^5.6.1:
   optionalDependencies:
     ts-node ">= 8.3.0"
 
-serverless@3.15.2:
-  version "3.15.2"
-  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.15.2.tgz#e746d9b1a9c86192e112d77d36e784333e11ac31"
-  integrity sha512-UU+o4ZplOBVZPdJndybjQfSC+fcINt8uAgP5Ox+EyjYKAD9do3ceHz4JwjpLJDPPWuDPgOOktkYau+iI9Y6hHg==
+serverless@3.16.0:
+  version "3.16.0"
+  resolved "https://registry.yarnpkg.com/serverless/-/serverless-3.16.0.tgz#d721f6f12ba12661e50974c7895d6dab35efdf90"
+  integrity sha512-z/UV32k+Pipii6CVtaCTDka5+rYExUwvF0Kx8808ghr7MstWclfL81x4CGDoXSTixRE/lus2KHLQfdljnunBnA==
   dependencies:
     "@serverless/dashboard-plugin" "^6.2.2"
     "@serverless/platform-client" "^4.3.2"
@@ -23206,7 +23191,7 @@ serverless@3.15.2:
     ajv "^8.11.0"
     ajv-formats "^2.1.1"
     archiver "^5.3.1"
-    aws-sdk "^2.1119.0"
+    aws-sdk "^2.1124.0"
     bluebird "^3.7.2"
     cachedir "^2.3.0"
     chalk "^4.1.2"
