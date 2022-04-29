@@ -24,6 +24,34 @@
             "allow": [],
             "depConstraints": [
               {
+                "sourceTag": "layer:domain",
+                "onlyDependOnLibsWithTags": [
+                ]
+              },
+              {
+                "sourceTag": "layer:data",
+                "onlyDependOnLibsWithTags": [
+                  "layer:domain",
+                  "layer:todo-refactor-old"
+                ]
+              },
+              {
+                "sourceTag": "layer:app-logic",
+                "onlyDependOnLibsWithTags": [
+                  "layer:domain",
+                  "layer:data",
+                  "layer:todo-refactor-old"
+                ]
+              },
+              {
+                "sourceTag": "layer:app",
+                "onlyDependOnLibsWithTags": [
+                  "layer:domain",
+                  "layer:app-logic",
+                  "layer:todo-refactor-old"
+                ]
+              },
+              {
                 "sourceTag": "platform:nodejs",
                 "onlyDependOnLibsWithTags": [
                   "platform:nodejs"
@@ -38,62 +66,32 @@
                 ]
               },
               {
-                "sourceTag": "type:ui",
+                "sourceTag": "platform:flutter",
                 "onlyDependOnLibsWithTags": [
-                  "type:ui",
-                  "layer:utils"
+                  "platform:nodejs",
+                  "platform:angular",
+                  "platform:flutter"
                 ]
               },
               {
-                "sourceTag": "type:data-access",
+                "sourceTag": "scope:shared",
                 "onlyDependOnLibsWithTags": [
-                  "type:data-access",
-                  "layer:utils"
+                  "scope:shared",
+                  "layer:todo-refactor-old"
                 ]
               },
               {
-                "sourceTag": "layer:utils",
+                "sourceTag": "scope:frontend",
                 "onlyDependOnLibsWithTags": [
-                  "layer:utils"
+                  "scope:shared",
+                  "scope:frontend"
                 ]
               },
               {
-                "sourceTag": "layer:entities",
+                "sourceTag": "scope:backend",
                 "onlyDependOnLibsWithTags": [
-                  "layer:entities"
-                ]
-              },
-              {
-                "sourceTag": "layer:repositories",
-                "onlyDependOnLibsWithTags": [
-                  "layer:entities",
-                  "layer:utils",
-                  "layer:repositories"
-                ]
-              },
-              {
-                "sourceTag": "type:feature",
-                "onlyDependOnLibsWithTags": [
-                  "layer:utils"
-                ]
-              },
-              {
-                "sourceTag": "type:backend",
-                "onlyDependOnLibsWithTags": [
-                  "type:feature",
-                  "layer:utils",
-                  "layer:entities",
-                  "layer:providers",
-                  "type:backend"
-                ]
-              },
-              {
-                "sourceTag": "layer:app-logic",
-                "onlyDependOnLibsWithTags": [
-                  "layer:utils",
-                  "layer:entities",
-                  "layer:providers",
-                  "layer:app-logic"
+                  "scope:shared",
+                  "scope:backend"
                 ]
               },
               {

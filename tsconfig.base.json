@@ -116,6 +116,9 @@
       "@bgap/anyupp-backend-lib": ["libs/anyupp-backend-lib/src/index.ts"],
       "@bgap/anyupp-gql/backend": ["libs/anyupp-gql/backend/src/index.ts"],
       "@bgap/api/data-access": ["libs/api/data-access/src/index.ts"],
+      "@bgap/apps/admin": ["libs/apps/admin/src/index.ts"],
+      "@bgap/apps/backend-anyupp": ["libs/apps/backend-anyupp/src/index.ts"],
+      "@bgap/apps/shared": ["libs/apps/shared/src/index.ts"],
       "@bgap/backend/orders": ["libs/backend/orders/src/index.ts"],
       "@bgap/backend/product-categories": [
         "libs/backend/product-categories/src/index.ts"
@@ -128,6 +131,7 @@
       "@bgap/backend/units": ["libs/backend/units/src/index.ts"],
       "@bgap/crud-gql/api": ["libs/crud-gql/api/src/index.ts"],
       "@bgap/crud-gql/backend": ["libs/crud-gql/backend/src/index.ts"],
+      "@bgap/data": ["libs/data/src/index.ts"],
       "@bgap/domain": ["libs/domain/src/index.ts"],
       "@bgap/gql-sdk": ["libs/gql-sdk/src/index.ts"],
       "@bgap/integration-tests/angular": [

@@ -1469,6 +1469,78 @@
       },
       "tags": ["type:application", "platform:flutter"]
     },
+    "apps-admin": {
+      "projectType": "library",
+      "root": "libs/apps/admin",
+      "sourceRoot": "libs/apps/admin/src",
+      "prefix": "lib-admin",
+      "targets": {
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/apps/admin"],
+          "options": {
+            "jestConfig": "libs/apps/admin/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/apps/admin/src/**/*.ts",
+              "libs/apps/admin/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["platform:angular", "layer:app-logic", "scope:frontend"]
+    },
+    "apps-backend-anyupp": {
+      "root": "libs/apps/backend-anyupp",
+      "sourceRoot": "libs/apps/backend-anyupp/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/apps/backend-anyupp/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/apps/backend-anyupp"],
+          "options": {
+            "jestConfig": "libs/apps/backend-anyupp/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:nodejs", "layer:app-logic", "scope:backend"]
+    },
+    "apps-shared": {
+      "root": "libs/apps/shared",
+      "sourceRoot": "libs/apps/shared/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/apps/shared/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/apps/shared"],
+          "options": {
+            "jestConfig": "libs/apps/shared/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:nodejs", "layer:app-logic", "scope:shared"]
+    },
     "backend-orders": {
       "root": "libs/backend/orders",
       "sourceRoot": "libs/backend/orders/src",
@@ -1863,6 +1935,29 @@
       },
       "tags": ["type:backend", "platform:nodejs"]
     },
+    "data": {
+      "root": "libs/data",
+      "sourceRoot": "libs/data/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/data/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/data"],
+          "options": {
+            "jestConfig": "libs/data/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["platform:nodejs", "layer:data", "scope:shared"]
+    },
     "domain": {
       "root": "libs/domain",
       "sourceRoot": "libs/domain/src",
@@ -1884,7 +1979,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "layer:domain", "scope:shared"]
     },
     "gql-sdk": {
       "root": "libs/gql-sdk",
@@ -1906,7 +2001,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:nodejs"]
+      "tags": ["layer:utils", "platform:nodejs", "layer:todo-refactor-old"]
     },
     "integration-tests-angular": {
       "projectType": "library",

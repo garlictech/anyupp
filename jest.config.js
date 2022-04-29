@@ -93,5 +93,9 @@ module.exports = {
     '<rootDir>/libs/shared/orders',
     '<rootDir>/libs/backend/search',
     '<rootDir>/libs/domain',
+    '<rootDir>/libs/apps/admin',
+    '<rootDir>/libs/data',
+    '<rootDir>/libs/apps/backend-anyupp',
+    '<rootDir>/libs/apps/shared',
   ],
 };
