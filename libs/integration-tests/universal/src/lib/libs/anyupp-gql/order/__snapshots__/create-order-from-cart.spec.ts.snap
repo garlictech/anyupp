@@ -4,6 +4,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "currentStatus": "none",
   "externalId": null,
   "guestLabel": null,
   "hasRated": null,
@@ -372,6 +373,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "currentStatus": "none",
   "externalId": null,
   "guestLabel": null,
   "hasRated": null,
@@ -734,6 +736,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "currentStatus": "none",
   "externalId": null,
   "guestLabel": null,
   "hasRated": null,
@@ -1102,6 +1105,7 @@ exports[`CreatOrderFromCart mutation test should create an order from a valid ca
 Object {
   "archived": false,
   "createdAt": Any<String>,
+  "currentStatus": "none",
   "externalId": null,
   "guestLabel": null,
   "hasRated": null,

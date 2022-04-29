@@ -4,6 +4,7 @@ exports[`CreateOrder mutation test should create an order with resolver function
 Object {
   "archived": false,
   "createdAt": "MASKED DATE",
+  "currentStatus": "none",
   "hasRated": true,
   "id": "create-order-1-MASKED ID",
   "items": Array [
@@ -289,6 +290,7 @@ exports[`CreateOrder mutation test should create an order with server: Order con
 Object {
   "archived": false,
   "createdAt": "MASKED DATE",
+  "currentStatus": "none",
   "externalId": null,
   "guestLabel": null,
   "hasRated": true,
