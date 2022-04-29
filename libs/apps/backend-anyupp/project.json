@@ -1,0 +1,23 @@
+{
+  "root": "libs/apps/backend-anyupp",
+  "sourceRoot": "libs/apps/backend-anyupp/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/apps/backend-anyupp/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/apps/backend-anyupp"],
+      "options": {
+        "jestConfig": "libs/apps/backend-anyupp/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["platform:nodejs", "layer:app-logic", "scope:backend"]
+}

@@ -55,7 +55,7 @@
       "options": {
         "cwd": "apps/crud-backend",
         "parallel": false,
-        "commands": ["../../tools/deploy-crud-api.sh {args.env}"]
+        "commands": ["../../tools/deploy-crud-api.sh '{args.env}'"]
       }
     },
     "test": {
