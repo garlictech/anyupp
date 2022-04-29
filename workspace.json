@@ -1493,7 +1493,7 @@
           }
         }
       },
-      "tags": ["platform:angular"]
+      "tags": ["platform:angular", "layer:app-logic", "scope:frontend"]
     },
     "apps-backend-anyupp": {
       "root": "libs/apps/backend-anyupp",
@@ -1516,7 +1516,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "layer:app-logic", "scope:backend"]
     },
     "apps-shared": {
       "root": "libs/apps/shared",
@@ -1539,7 +1539,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "layer:app-logic", "scope:shared"]
     },
     "backend-orders": {
       "root": "libs/backend/orders",
@@ -1956,7 +1956,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "layer:data", "scope:shared"]
     },
     "domain": {
       "root": "libs/domain",
@@ -1979,7 +1979,7 @@
           }
         }
       },
-      "tags": ["platform:nodejs"]
+      "tags": ["platform:nodejs", "layer:domain", "scope:shared"]
     },
     "gql-sdk": {
       "root": "libs/gql-sdk",
@@ -2001,7 +2001,7 @@
           }
         }
       },
-      "tags": ["layer:utils", "platform:nodejs"]
+      "tags": ["layer:utils", "platform:nodejs", "layer:todo-refactor-old"]
     },
     "integration-tests-angular": {
       "projectType": "library",
