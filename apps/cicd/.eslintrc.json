@@ -14,7 +14,7 @@
       ],
       "parserOptions": {
         "project": [
-          "apps/cicd/tsconfig.json"
+          "apps/cicd/tsconfig.*?.json"
         ]
       }
     }
