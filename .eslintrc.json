@@ -76,7 +76,8 @@
               {
                 "sourceTag": "scope:shared",
                 "onlyDependOnLibsWithTags": [
-                  "scope:shared"
+                  "scope:shared",
+                  "layer:todo-refactor-old"
                 ]
               },
               {
