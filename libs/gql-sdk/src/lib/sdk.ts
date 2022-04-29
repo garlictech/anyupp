@@ -41,7 +41,7 @@ type ApolloRequesterOptions<V, R> =
 // I don't care about the type parameter of AWSAppSyncClient, just give me
 // any appsync client.
 export const getSdkRequester =
-  (client: AWSAppSyncClient<never>) =>
+  (client: AWSAppSyncClient<Record<string, never>>) =>
   <R, V>(
     doc: DocumentNode,
     variables: V,
