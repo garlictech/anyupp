@@ -5,10 +5,12 @@ import 'package:fa_prev/core/theme/theme.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final double? elevation;
+  final bool showBackButtonBorder;
   CustomAppBar({
     Key? key,
     this.title,
     this.elevation = 0.0,
+    this.showBackButtonBorder = true,
   })  : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -26,7 +28,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           child: BackButtonWidget(
             color: theme.secondary,
-            showBorder: true,
+            showBorder: showBackButtonBorder,
             icon: Icons.arrow_back,
           ),
         ),

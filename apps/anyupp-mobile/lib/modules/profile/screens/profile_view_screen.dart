@@ -1,11 +1,12 @@
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/profile/profile.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
+import 'package:fa_prev/shared/utils/md5_hash.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
-class ProfileViewScreen extends StatefulWidget {
+class ProfileViewScreen extends StatelessWidget {
   final User profile;
   const ProfileViewScreen({
     Key? key,
@@ -13,49 +14,12 @@ class ProfileViewScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ProfileViewScreenState createState() => _ProfileViewScreenState();
-}
-
-class _ProfileViewScreenState extends State<ProfileViewScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-
-  bool _showErrorMessage = false;
-
-  @override
-  void initState() {
-    _emailController.text = widget.profile.email ?? '';
-    if (widget.profile.name != null) {
-      String fullName = widget.profile.name!;
-      if (fullName.contains(' ')) {
-        _firstNameController.text =
-            fullName.substring(0, fullName.indexOf(' '));
-        _lastNameController.text =
-            fullName.substring(fullName.indexOf(' ') + 1);
-      } else {
-        _firstNameController.text = fullName;
-        _lastNameController.text = '';
-      }
-    }
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: theme.secondary0,
       appBar: CustomAppBar(
-        title: trans('profile.edit.title'),
+        title: trans(context, 'profile.edit.title'),
+        showBackButtonBorder: false,
         elevation: 4.0,
       ),
       body: Container(
@@ -71,125 +35,106 @@ class _ProfileViewScreenState extends State<ProfileViewScreen> {
           left: 16.0,
           right: 16.0,
         ),
-        child: Form(
-          key: _formKey,
-          child: Theme(
-            data: ThemeData().copyWith(
-              scaffoldBackgroundColor: Colors.white,
-              colorScheme: ThemeData().colorScheme.copyWith(
-                    primary: theme.secondary,
+        child: Theme(
+          data: ThemeData().copyWith(
+            scaffoldBackgroundColor: Colors.white,
+            colorScheme: ThemeData().colorScheme.copyWith(
+                  primary: theme.secondary,
+                ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // User's name
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: theme.secondary16,
+                    width: 1.0,
                   ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FormTextFieldWidget(
-                  controller: _emailController,
-                  readOnly: true,
-                  labelKey: 'profile.edit.email',
-                  border: BorderRadius.only(
+                  borderRadius: BorderRadius.only(
                     topRight: Radius.circular(16.0),
                     bottomRight: Radius.circular(0.0),
                     topLeft: Radius.circular(16.0),
                     bottomLeft: Radius.circular(0.0),
                   ),
-                  keyboardType: TextInputType.number,
-                  onSaved: (value) {
-                    setState(() {});
-                  },
-                  validator: (value) {
-                    return null;
-                  },
+                  // color: theme.secondary40,
                 ),
-                Flex(
-                  direction: Axis.horizontal,
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      child: FormTextFieldWidget(
-                        readOnly: true,
-                        controller: _firstNameController,
-                        labelKey: 'profile.edit.firstName',
-                        border: BorderRadius.only(
-                          topRight: Radius.circular(0.0),
-                          bottomRight: Radius.circular(0.0),
-                          topLeft: Radius.circular(0.0),
-                          bottomLeft: Radius.circular(16.0),
-                        ),
-                        keyboardType: TextInputType.text,
-                        onSaved: (value) {
-                          setState(() {});
-                        },
-                        validator: (value) {
-                          return null;
-                        },
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: FormTextFieldWidget(
-                        controller: _lastNameController,
-                        readOnly: true,
-                        labelKey: 'profile.edit.lastName',
-                        border: BorderRadius.only(
-                          topRight: Radius.circular(0.0),
-                          bottomRight: Radius.circular(16.0),
-                          topLeft: Radius.circular(0.0),
-                          bottomLeft: Radius.circular(0.0),
-                        ),
-                        keyboardType: TextInputType.text,
-                        onSaved: (value) {
-                          setState(() {});
-                        },
-                        validator: (value) {
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 16.0,
                 ),
-                if (_showErrorMessage)
-                  Container(
-                    margin: EdgeInsets.only(bottom: 16.0),
-                    child: PaymentErrorWidget(
-                      messageKey: 'PROFILE SAVE ERROR',
-                      onTap: () => setState(() {
-                        _showErrorMessage = false;
-                      }),
+                child: Text(
+                  profile.name ?? '-',
+                  style: Fonts.satoshi(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                    color: theme.secondary,
+                  ),
+                ),
+              ),
+              // User's email
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border(
+                    left: BorderSide(
+                      color: theme.secondary16,
+                      width: 1.0,
+                    ),
+                    right: BorderSide(
+                      color: theme.secondary16,
+                      width: 1.0,
                     ),
                   ),
-                Spacer(),
-                // Container(
-                //   height: 56.0,
-                //   width: double.infinity,
-                //   margin: EdgeInsets.only(bottom: 16.0),
-                //   child: ElevatedButton(
-                //     onPressed: () => _updateUserProfile(),
-                //     style: ElevatedButton.styleFrom(
-                //       primary: theme.primary,
-                //       shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(40),
-                //       ),
-                //     ),
-                //     child: Text(
-                //       trans('profile.edit.save'),
-                //       style: Fonts.satoshi(
-                //         fontSize: 16.0,
-                //         fontWeight: FontWeight.w700,
-                //         color: theme.secondary0,
-                //       ),
-                //     ),
-                //   ),
-                // )
-              ],
-            ),
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 16.0,
+                ),
+                child: Text(
+                  getFormattedAnonymousEmail(profile.email),
+                  style: Fonts.satoshi(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                    color: theme.secondary,
+                  ),
+                ),
+              ),
+              // Guest Label
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: theme.secondary16,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(0.0),
+                    bottomRight: Radius.circular(16.0),
+                    topLeft: Radius.circular(0.0),
+                    bottomLeft: Radius.circular(16.0),
+                  ),
+                  // color: theme.secondary40,
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 16.0,
+                ),
+                child: Text(
+                  generateHash(profile.id),
+                  style: Fonts.satoshi(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                    color: theme.secondary,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-
-  // Future<void> _updateUserProfile() async {
-  //   print('_updateUserProfile()');
-  // }
 }

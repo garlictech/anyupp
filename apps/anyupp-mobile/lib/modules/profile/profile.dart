@@ -4,4 +4,5 @@ export 'screens/profile_edit_screen.dart';
 export 'screens/profile_screen.dart';
 export 'screens/profile_view_screen.dart';
 export 'screens/settings_screen.dart';
+export 'utils/profile_utils.dart';
 export 'widgets/profile_list_item_widget.dart';
