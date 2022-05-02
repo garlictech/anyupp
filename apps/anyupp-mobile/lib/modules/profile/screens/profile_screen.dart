@@ -54,7 +54,7 @@ class Profile extends StatelessWidget {
                 ),
                 child: Center(
                     child: Text(
-                  _getNameLetters(user),
+                  getNameLetters(user),
                   style: Fonts.satoshi(
                     fontSize: 18.0,
                     color: theme.secondary0,
@@ -78,7 +78,7 @@ class Profile extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      _getFormattedAnonymousEmail(user.email),
+                      getFormattedAnonymousEmail(user.email),
                       textAlign: TextAlign.center,
                       style: Fonts.satoshi(
                         fontSize: 14.0,
@@ -109,6 +109,15 @@ class Profile extends StatelessWidget {
                         fontSize: 14.0,
                       ),
                     ),
+                  ),
+                  ProfileListItemWidget(
+                    icon: Icons.manage_accounts_outlined,
+                    titleKey: 'profile.menu.userinfo',
+                    border: ProfileBorder.TOP,
+                    separator: true,
+                    onTap: () => Nav.to(ProfileViewScreen(
+                      profile: user,
+                    )),
                   ),
                   ProfileListItemWidget(
                     icon: Icons.shopping_bag,
@@ -205,45 +214,4 @@ class Profile extends StatelessWidget {
       ],
     );
   }
-
-  String _getFormattedAnonymousEmail(String? email) {
-    if (email == null) {
-      return '';
-    }
-    if (email.startsWith('anonymuser')) {
-      return 'anonymuser' + email.substring(email.indexOf('@'));
-    }
-    return email;
-  }
-
-  String _getNameLetters(User user) {
-    if (user.name != null) {
-      return user.name!.split(' ').fold(
-            '',
-            (prev, element) => prev += element.substring(0, 1).toUpperCase(),
-          );
-    }
-    return 'A';
-  }
-
-  // void _testNotification(BuildContext context) {
-  //   GeoUnit? unit = currentUnit;
-
-  //   getIt.get<NotificationsBloc>().add(
-  //         ScheduleOrderRatingNotification(
-  //           orderId: '76bdd9bf-6abe-46f9-b6ea-17034ebe7eca',
-  //           ratingPolicy: unit?.ratingPolicy,
-  //           tipPolicy: unit?.tipPolicy,
-  //           showDelay: const Duration(seconds: 10),
-  //         ),
-  //       );
-
-  //   // showNotification(
-  //   //   transEx(context, "notifications.messageFrom"),
-  //   //   transEx(context, "notifications.orderProcessing"),
-  //   //   MainNavigation(
-  //   //     pageIndex: 2,
-  //   //   ),
-  //   // );
-  // }
 }
