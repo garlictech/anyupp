@@ -20,6 +20,39 @@
           "libs/apps/admin/src/**/*.html"
         ]
       }
+    },
+    "storybook": {
+      "executor": "@nrwl/storybook:storybook",
+      "options": {
+        "uiFramework": "@storybook/angular",
+        "port": 4400,
+        "config": {
+          "configFolder": "libs/apps/admin/.storybook"
+        },
+        "projectBuildConfig": "apps-admin:build-storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nrwl/storybook:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "uiFramework": "@storybook/angular",
+        "outputPath": "dist/storybook/apps-admin",
+        "config": {
+          "configFolder": "libs/apps/admin/.storybook"
+        },
+        "projectBuildConfig": "apps-admin:build-storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
     }
   },
   "tags": ["platform:angular", "layer:app-logic", "scope:frontend"]
