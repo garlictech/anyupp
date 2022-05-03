@@ -4,6 +4,7 @@ import {
   debounceTime,
   map,
   mapTo,
+  filter,
   mergeMap,
   startWith,
   switchMap,
@@ -232,6 +233,7 @@ export class ProductListService {
       this._store
         .select(loggedUserSelectors.getLoggedUserSettings)
         .pipe(
+          filter(settings => !!settings),
           take(1),
           switchMap(settings =>
             iif(
@@ -337,6 +339,7 @@ export class ProductListService {
       this._store
         .select(loggedUserSelectors.getLoggedUserSettings)
         .pipe(
+          filter(settings => !!settings),
           take(1),
           switchMap(settings =>
             iif(
@@ -437,6 +440,7 @@ export class ProductListService {
       this._store
         .select(loggedUserSelectors.getLoggedUserSettings)
         .pipe(
+          filter(settings => !!settings),
           take(1),
           switchMap(settings =>
             iif(
