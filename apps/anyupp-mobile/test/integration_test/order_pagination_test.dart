@@ -159,5 +159,5 @@ void main() {
       await _repository.stopOrderHistoryListSubscription();
       getIt.unregister<OrderRepository>();
     });
-  });
+  }, skip: true);
 }

@@ -30,7 +30,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var status = order.statusLog.last.status;
+    var status = order.status;
     return InkWell(
       onTap: () => Nav.to(
         OrderDetailsScreen(

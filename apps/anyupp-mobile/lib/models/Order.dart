@@ -14,7 +14,6 @@ class Order {
   final PriceShown sumPriceShown;
   final Place? place;
   final double? paymentIntention;
-  final List<StatusLog> statusLog;
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool archived;
@@ -36,6 +35,7 @@ class Order {
   final List<RatingPolicy>? ratingPolicies;
   final TipPolicy? tipPolicy;
   final SoldOutVisibilityPolicy? soldOutVisibilityPolicy;
+  final OrderStatus? currentStatus;
 
   Order({
     required this.id,
@@ -47,7 +47,6 @@ class Order {
     required this.sumPriceShown,
     this.place,
     this.paymentIntention,
-    required this.statusLog,
     required this.createdAt,
     required this.updatedAt,
     required this.archived,
@@ -69,8 +68,8 @@ class Order {
     this.ratingPolicies,
     this.tipPolicy,
     this.soldOutVisibilityPolicy,
+    this.currentStatus,
   });
-  // final UnpayCategory? unpayCategory;
 
   Order copyWith({
     String? id,
@@ -82,7 +81,6 @@ class Order {
     PriceShown? sumPriceShown,
     Place? place,
     double? paymentIntention,
-    List<StatusLog>? statusLog,
     DateTime? createdAt,
     DateTime? updatedAt,
     bool? archived,
@@ -104,6 +102,7 @@ class Order {
     List<RatingPolicy>? ratingPolicies,
     TipPolicy? tipPolicy,
     SoldOutVisibilityPolicy? soldOutVisibilityPolicy,
+    OrderStatus? currentStatus,
   }) {
     return Order(
       id: id ?? this.id,
@@ -115,7 +114,6 @@ class Order {
       sumPriceShown: sumPriceShown ?? this.sumPriceShown,
       place: place ?? this.place,
       paymentIntention: paymentIntention ?? this.paymentIntention,
-      statusLog: statusLog ?? this.statusLog,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       archived: archived ?? this.archived,
@@ -138,6 +136,7 @@ class Order {
       tipPolicy: tipPolicy ?? this.tipPolicy,
       soldOutVisibilityPolicy:
           soldOutVisibilityPolicy ?? this.soldOutVisibilityPolicy,
+      currentStatus: currentStatus ?? this.currentStatus,
     );
   }
 
@@ -152,7 +151,6 @@ class Order {
       'sumPriceShown': sumPriceShown.toJson(),
       'place': place?.toJson(),
       'paymentIntention': paymentIntention,
-      'statusLog': statusLog.map((x) => x.toJson()).toList(),
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'archived': archived,
@@ -174,6 +172,7 @@ class Order {
       'ratingPolicies': ratingPolicies?.map((x) => x.toJson()).toList(),
       'tipPolicy': tipPolicy?.toJson(),
       'soldOutVisibilityPolicy': enumToString(soldOutVisibilityPolicy),
+      'currentStatus': enumToString(currentStatus),
     };
   }
 
@@ -189,8 +188,6 @@ class Order {
       sumPriceShown: PriceShown.fromJson(map['sumPriceShown']),
       place: map['place'] != null ? Place.fromJson(map['place']) : null,
       paymentIntention: map['paymentIntention'],
-      statusLog: List<StatusLog>.from(
-          map['statusLog']?.map((x) => StatusLog.fromJson(x))),
       archived: map['archived'],
       transaction: map['transaction'] != null
           ? Transaction.fromJson(map['transaction'])
@@ -235,6 +232,8 @@ class Order {
           : null,
       soldOutVisibilityPolicy: enumFromStringNull(
           map['soldOutVisibilityPolicy'], SoldOutVisibilityPolicy.values),
+      currentStatus:
+          enumFromStringNull(map['currentStatus'], OrderStatus.values),
       createdAt: fromGraphQLAWSDateTimeToDartDateTime(map['createdAt']),
       updatedAt: fromGraphQLAWSDateTimeToDartDateTime(map['updatedAt']),
     );
@@ -242,7 +241,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, serviceFee: $serviceFee, orderMode: $orderMode, servingMode: $servingMode, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, place: $place, paymentIntention: $paymentIntention, statusLog: $statusLog, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
+    return 'Order(id: $id, orderNum: $orderNum, userId: $userId, unitId: $unitId, currentStatus:$currentStatus, serviceFee: $serviceFee, orderMode: $orderMode, servingMode: $servingMode, items: $items, paymentMode: $paymentMode, sumPriceShown: $sumPriceShown, place: $place, paymentIntention: $paymentIntention, createdAt: $createdAt, archived: $archived, transaction: $transaction, transactionStatus: $transactionStatus, transactionId: $transactionId)';
   }
 
   @override
@@ -259,7 +258,6 @@ class Order {
         other.sumPriceShown == sumPriceShown &&
         other.place == place &&
         other.paymentIntention == paymentIntention &&
-        listEquals(other.statusLog, statusLog) &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
         other.archived == archived &&
@@ -279,7 +277,8 @@ class Order {
         other.serviceFeePolicy == serviceFeePolicy &&
         listEquals(other.ratingPolicies, ratingPolicies) &&
         other.tipPolicy == tipPolicy &&
-        other.soldOutVisibilityPolicy == soldOutVisibilityPolicy;
+        other.soldOutVisibilityPolicy == soldOutVisibilityPolicy &&
+        other.currentStatus == currentStatus;
   }
 
   @override
@@ -293,7 +292,6 @@ class Order {
         sumPriceShown.hashCode ^
         place.hashCode ^
         paymentIntention.hashCode ^
-        statusLog.hashCode ^
         createdAt.hashCode ^
         updatedAt.hashCode ^
         archived.hashCode ^
@@ -313,6 +311,7 @@ class Order {
         serviceFeePolicy.hashCode ^
         ratingPolicies.hashCode ^
         tipPolicy.hashCode ^
-        soldOutVisibilityPolicy.hashCode;
+        soldOutVisibilityPolicy.hashCode ^
+        currentStatus.hashCode;
   }
 }

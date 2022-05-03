@@ -2,6 +2,7 @@ subscription OnOrderChanged($userId: String, $unitId: String) {
   onOrderChanged(unitId: $unitId, userId: $userId) {
     id
     orderNum
+    currentStatus
     unitId
     userId
     paymentIntention
@@ -16,11 +17,6 @@ subscription OnOrderChanged($userId: String, $unitId: String) {
     place {
       seat
       table
-    }
-    statusLog {
-      status
-      ts
-      userId
     }
     sumPriceShown {
       currency

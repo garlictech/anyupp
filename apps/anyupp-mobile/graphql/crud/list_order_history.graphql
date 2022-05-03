@@ -21,6 +21,7 @@ query SearchOrderHistory(
       archived
       servingMode
       orderMode
+      currentStatus
       paymentIntention
       paymentMode {
         caption
@@ -30,11 +31,6 @@ query SearchOrderHistory(
       place {
         seat
         table
-      }
-      statusLog {
-        status
-        ts
-        userId
       }
       sumPriceShown {
         currency

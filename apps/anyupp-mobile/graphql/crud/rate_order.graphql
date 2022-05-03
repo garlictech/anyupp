@@ -11,6 +11,7 @@ mutation RateOrder($orderId: ID!, $questionKey: String!, $rating: Int!) {
     unitId
     userId
     paymentIntention
+    currentStatus
     orderMode
     servingMode
     archived
@@ -22,11 +23,6 @@ mutation RateOrder($orderId: ID!, $questionKey: String!, $rating: Int!) {
     place {
       seat
       table
-    }
-    statusLog {
-      status
-      ts
-      userId
     }
     sumPriceShown {
       currency

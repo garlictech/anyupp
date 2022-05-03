@@ -103,7 +103,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     ? Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: OrderStatusTimelineWidget(
-                          status: _order.statusLog[_order.statusLog.length - 1],
+                          orderStatus: _order.status,
                         ),
                       )
                     : Container(),
@@ -914,14 +914,13 @@ class OrderStatusTimelineData {
 }
 
 class OrderStatusTimelineWidget extends StatelessWidget {
-  final StatusLog status;
+  final OrderStatus orderStatus;
 
-  const OrderStatusTimelineWidget({Key? key, required this.status})
+  const OrderStatusTimelineWidget({Key? key, required this.orderStatus})
       : super(key: key);
 
   List<OrderStatusTimelineData> _calculateTimelineData(BuildContext context) {
     List<OrderStatusTimelineData> results = [];
-    OrderStatus orderStatus = status.status;
     // print('_calculateTimelineData.state=$orderStatus');
     // orderStatus = OrderStatus.rejected;
 
@@ -1071,7 +1070,7 @@ class OrderStatusTimelineWidget extends StatelessWidget {
   }
 
   Widget _buildSimpleRowWidget(BuildContext context) {
-    bool served = status.status == OrderStatus.served;
+    bool served = orderStatus == OrderStatus.served;
 
     return Container(
       width: double.infinity,
@@ -1126,7 +1125,7 @@ class OrderStatusTimelineWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    OrderStatus s = status.status;
+    OrderStatus s = orderStatus;
     if (s == OrderStatus.served ||
         s == OrderStatus.rejected ||
         s == OrderStatus.failed) {

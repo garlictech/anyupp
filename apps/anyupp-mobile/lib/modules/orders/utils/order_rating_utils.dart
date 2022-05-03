@@ -5,8 +5,7 @@ bool shouldDisplayRating(Order order) {
   if (order.ratingPolicies == null && order.tipPolicy == null) {
     return false;
   }
-  var status = order.statusLog[order.statusLog.length - 1];
-  if (status.status != OrderStatus.served) {
+  if (order.status != OrderStatus.served) {
     return false;
   }
 

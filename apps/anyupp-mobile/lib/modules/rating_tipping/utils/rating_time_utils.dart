@@ -19,7 +19,7 @@ bool isNeedScheduleNotification(
     return false;
   }
 
-  OrderStatus status = order.statusLog[order.statusLog.length - 1].status;
+  OrderStatus status = order.status;
   bool isInScheduleTime =
       now.difference(order.updatedAt) < AppConfig.ratingNotificationTimer;
   if (status == OrderStatus.served && isInScheduleTime) {

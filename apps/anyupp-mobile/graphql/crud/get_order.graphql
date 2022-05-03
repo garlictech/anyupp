@@ -5,6 +5,7 @@ query GetOrder($orderId: ID!) {
     userId
     archived
     paymentIntention
+    currentStatus
     orderMode
     servingMode
     paymentMode {
@@ -15,11 +16,6 @@ query GetOrder($orderId: ID!) {
     place {
       seat
       table
-    }
-    statusLog {
-      status
-      ts
-      userId
     }
     sumPriceShown {
       currency

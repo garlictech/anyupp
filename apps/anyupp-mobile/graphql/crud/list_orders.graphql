@@ -20,6 +20,7 @@ query SearchOrders(
       userId
       archived
       servingMode
+      currentStatus
       orderMode
       paymentIntention
       paymentMode {
@@ -30,11 +31,6 @@ query SearchOrders(
       place {
         seat
         table
-      }
-      statusLog {
-        status
-        ts
-        userId
       }
       sumPriceShown {
         currency

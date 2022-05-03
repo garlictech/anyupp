@@ -122,16 +122,17 @@ class MockGenerator {
         tax: 0,
         taxSum: 0,
       ),
-      statusLog: [
-        StatusLog(
-          userId: 'DUMMY_USER_ID',
-          status: status,
-          ts: DateTime.now().millisecond.toDouble(),
-        )
-      ],
+      // statusLog: [
+      //   StatusLog(
+      //     userId: 'DUMMY_USER_ID',
+      //     status: status,
+      //     ts: DateTime.now().millisecond.toDouble(),
+      //   )
+      // ],
       archived: archived,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
+      currentStatus: status,
     );
   }
 

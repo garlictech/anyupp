@@ -27,8 +27,7 @@ class OrderNotificationService {
       if (order.archived) {
         return;
       }
-      OrderStatus currentStatus =
-          order.statusLog[order.statusLog.length - 1].status;
+      OrderStatus currentStatus = order.status;
       // print('***** checkIfShowOrderStatusNotification()=${order.id}, status=$currentStatus');
 
       OrderStatus? previousStatus = await getOrderStatusPref(order.id);

@@ -18,4 +18,6 @@ extension OrderExtension on Order {
   double get serviceFeePrice => this.servingMode != ServingMode.inPlace
       ? 0
       : (serviceFee?.grossPrice ?? 0.0);
+
+  OrderStatus get status => currentStatus ?? OrderStatus.none;
 }

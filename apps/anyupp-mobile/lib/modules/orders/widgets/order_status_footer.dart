@@ -22,7 +22,8 @@ class OrderStatusFooter extends StatefulWidget {
   _OrderStatusFooterState createState() => _OrderStatusFooterState();
 }
 
-class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTickerProviderStateMixin {
+class _OrderStatusFooterState extends State<OrderStatusFooter>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
   final List<OrderStatus> statusList = [
@@ -51,8 +52,9 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-    OrderStatus status = widget.order.statusLog[widget.order.statusLog.length - 1].status;
-    int progressPosition = statusList.indexWhere((element) => element == status);
+    OrderStatus status = widget.order.status;
+    int progressPosition =
+        statusList.indexWhere((element) => element == status);
     // int progressPosition = statusList.indexOf(statusList.firstWhere((element) => element.toUpperCase() == status));
     // print('***** status=$status, progressPosition=$progressPosition');
 
@@ -67,34 +69,50 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
     switch (progressPosition) {
       case 0:
         steppers = addStatusProgressLine(context, [
-          OrderStatusItem(enumToString(statusList[0])!, Icons.check_circle, iconColor, iconColor),
-          OrderStatusItem(enumToString(statusList[1])!, Icons.album, lineColor, lineColor),
-          OrderStatusItem(enumToString(statusList[2])!, Icons.album, lineColor, lineColor),
-          OrderStatusItem(enumToString(statusList[3])!, Icons.album, lineColor, lineColor),
+          OrderStatusItem(enumToString(statusList[0])!, Icons.check_circle,
+              iconColor, iconColor),
+          OrderStatusItem(
+              enumToString(statusList[1])!, Icons.album, lineColor, lineColor),
+          OrderStatusItem(
+              enumToString(statusList[2])!, Icons.album, lineColor, lineColor),
+          OrderStatusItem(
+              enumToString(statusList[3])!, Icons.album, lineColor, lineColor),
         ]);
         break;
       case 1:
         steppers = addStatusProgressLine(context, [
-          OrderStatusItem(enumToString(statusList[0])!, Icons.check_circle, iconColor, iconColor),
-          OrderStatusItem(enumToString(statusList[1])!, Icons.watch_later, iconColor, iconColor),
-          OrderStatusItem(enumToString(statusList[2])!, Icons.album, lineColor, lineColor),
-          OrderStatusItem(enumToString(statusList[3])!, Icons.album, lineColor, lineColor),
+          OrderStatusItem(enumToString(statusList[0])!, Icons.check_circle,
+              iconColor, iconColor),
+          OrderStatusItem(enumToString(statusList[1])!, Icons.watch_later,
+              iconColor, iconColor),
+          OrderStatusItem(
+              enumToString(statusList[2])!, Icons.album, lineColor, lineColor),
+          OrderStatusItem(
+              enumToString(statusList[3])!, Icons.album, lineColor, lineColor),
         ]);
         break;
       case 2:
         steppers = addStatusProgressLine(context, [
-          OrderStatusItem(enumToString(statusList[0])!, Icons.check_circle, iconColor, iconColor),
-          OrderStatusItem(enumToString(statusList[1])!, Icons.check_circle, iconColor, iconColor),
-          OrderStatusItem(enumToString(statusList[2])!, Icons.check_circle, iconColor, iconColor),
-          OrderStatusItem(enumToString(statusList[3])!, Icons.album, lineColor, lineColor),
+          OrderStatusItem(enumToString(statusList[0])!, Icons.check_circle,
+              iconColor, iconColor),
+          OrderStatusItem(enumToString(statusList[1])!, Icons.check_circle,
+              iconColor, iconColor),
+          OrderStatusItem(enumToString(statusList[2])!, Icons.check_circle,
+              iconColor, iconColor),
+          OrderStatusItem(
+              enumToString(statusList[3])!, Icons.album, lineColor, lineColor),
         ]);
         break;
       case 3:
         steppers = addStatusProgressLine(context, [
-          OrderStatusItem(enumToString(statusList[0])!, Icons.check_circle, iconColor, iconColor),
-          OrderStatusItem(enumToString(statusList[1])!, Icons.check_circle, iconColor, iconColor),
-          OrderStatusItem(enumToString(statusList[2])!, Icons.check_circle, iconColor, iconColor),
-          OrderStatusItem(enumToString(statusList[3])!, Icons.check_circle, iconColor, iconColor),
+          OrderStatusItem(enumToString(statusList[0])!, Icons.check_circle,
+              iconColor, iconColor),
+          OrderStatusItem(enumToString(statusList[1])!, Icons.check_circle,
+              iconColor, iconColor),
+          OrderStatusItem(enumToString(statusList[2])!, Icons.check_circle,
+              iconColor, iconColor),
+          OrderStatusItem(enumToString(statusList[3])!, Icons.check_circle,
+              iconColor, iconColor),
         ]);
         break;
     }
@@ -146,7 +164,8 @@ class _OrderStatusFooterState extends State<OrderStatusFooter> with SingleTicker
     );
   }
 
-  List<Widget> addStatusProgressLine(BuildContext context, List<OrderStatusItem> items) {
+  List<Widget> addStatusProgressLine(
+      BuildContext context, List<OrderStatusItem> items) {
     List<Widget> steppers = [];
     items.forEach((item) {
       if (item.icon == Icons.watch_later) {
