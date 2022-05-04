@@ -16,58 +16,7 @@ Array [
         },
         "delivery_time": "2020-04-12T16:00:00",
         "guest_label": 1,
-        "guest_name": "GUEST LABEL",
-        "objectid": "UNIT_EXTERNALID",
-        "order": Array [
-          Object {
-            "id": "ITEM_EXTERNAL_ID",
-            "items": Array [
-              Object {
-                "id": "PRODUCT COMPONENT EXTERNAL ID",
-                "qnt": 1000,
-                "type": "m",
-              },
-              Object {
-                "id": "PRODUCT COMPONENT EXTERNAL ID 2",
-                "qnt": 1000,
-                "type": "m",
-              },
-            ],
-            "qnt": 5000,
-            "type": "d",
-          },
-        ],
-        "order_number": 1,
-        "order_type": 1,
-        "pay_online_type": 0,
-        "pay_type": 0,
-        "remoteId": "UNIT_EXTERNALID",
-        "remoteOrderId": "UUID",
-      },
-      "method": "post",
-      "url": "https://RKEEPER_ENDPOINT/postorder/UNIT_EXTERNALID",
-    },
-  ],
-]
-`;
-
-exports[`Test: Unknown guest label 1`] = `
-Array [
-  Array [
-    Object {
-      "auth": Object {
-        "password": "RKEEPER_PASSWORD",
-        "username": "RKEEPER_USERNAME",
-      },
-      "data": Object {
-        "client": Object {
-          "email": "UNIT_EMAIL",
-          "ln": "Biborka",
-          "phone": "UNIT_PHONE",
-        },
-        "delivery_time": "2020-04-12T16:00:00",
-        "guest_label": 1,
-        "guest_name": "unknown guest",
+        "guest_name": "unknown",
         "objectid": "UNIT_EXTERNALID",
         "order": Array [
           Object {
