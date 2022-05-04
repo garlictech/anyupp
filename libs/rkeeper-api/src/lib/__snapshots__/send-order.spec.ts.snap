@@ -15,7 +15,8 @@ Array [
           "phone": "UNIT_PHONE",
         },
         "delivery_time": "2020-04-12T16:00:00",
-        "guest_label": "imi",
+        "guest_label": 1,
+        "guest_name": "unknown",
         "objectid": "UNIT_EXTERNALID",
         "order": Array [
           Object {
