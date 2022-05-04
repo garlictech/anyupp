@@ -17,31 +17,6 @@ import {
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
-const acceptedDeletionLogic = (
-  service: ProductListService,
-  crudSdk: CrudSdkService,
-  serviceFuncName: string,
-  deleteFuncName: string,
-  accept: boolean,
-) => {
-  const acceptSpy = jest
-    .spyOn(service as any, '_acceptDeletion$')
-    .mockImplementationOnce(() => of(accept));
-  const deleteSpy = jest
-    .spyOn(crudSdk.sdk, <keyof typeof crudSdk.sdk>deleteFuncName)
-    .mockImplementationOnce(() => ({} as any));
-  const productId = 'test_id';
-
-  (<any>service)[serviceFuncName](productId);
-
-  expect(acceptSpy).toHaveBeenCalled();
-  if (accept) {
-    expect(deleteSpy).toHaveBeenCalledWith({ input: { id: 'test_id' } });
-  } else {
-    expect(deleteSpy).not.toHaveBeenCalled();
-  }
-};
-
 describe('ProductListService', () => {
   let service: ProductListService;
   let crudSdk: CrudSdkService;
@@ -74,44 +49,68 @@ describe('ProductListService', () => {
     crudSdk = TestBed.inject(CrudSdkService);
   });
 
-  it('deleteChainProduct$ should not called on falsy accept dialog', () => {
-    acceptedDeletionLogic(
-      service,
-      crudSdk,
-      'deleteChainProduct',
-      'DeleteChainProduct',
-      false,
-    );
-  });
-
   it('deleteChainProduct$ should called on truly accept dialog', () => {
-    acceptedDeletionLogic(
-      service,
-      crudSdk,
-      'deleteChainProduct',
-      'DeleteChainProduct',
-      true,
-    );
+    const acceptSpy = jest
+      .spyOn(service as any, '_acceptDeletion$')
+      .mockImplementationOnce(() => of(true));
+    const updateSpy = jest
+      .spyOn(crudSdk.sdk, 'UpdateChainProduct')
+      .mockImplementationOnce(() => ({} as any));
+    const productId = 'test_id';
+
+    (<any>service).deleteChainProduct(productId);
+
+    expect(acceptSpy).toHaveBeenCalled();
+    expect(updateSpy).toHaveBeenCalledWith({
+      input: { id: 'test_id', deletedAt: expect.any(String) },
+    });
   });
 
-  it('deleteGroupProduct$ should not called on falsy accept dialog', () => {
-    acceptedDeletionLogic(
-      service,
-      crudSdk,
-      'deleteGroupProduct',
-      'DeleteGroupProduct',
-      false,
-    );
+  it('deleteChainProduct$ should not called on falsy accept dialog', () => {
+    const acceptSpy = jest
+      .spyOn(service as any, '_acceptDeletion$')
+      .mockImplementationOnce(() => of(false));
+    const updateSpy = jest
+      .spyOn(crudSdk.sdk, 'UpdateChainProduct')
+      .mockImplementationOnce(() => ({} as any));
+    const productId = 'test_id';
+
+    (<any>service).deleteChainProduct(productId);
+
+    expect(acceptSpy).toHaveBeenCalled();
+    expect(updateSpy).not.toHaveBeenCalled();
   });
 
   it('deleteGroupProduct$ should called on truly accept dialog', () => {
-    acceptedDeletionLogic(
-      service,
-      crudSdk,
-      'deleteGroupProduct',
-      'DeleteGroupProduct',
-      true,
-    );
+    const acceptSpy = jest
+      .spyOn(service as any, '_acceptDeletion$')
+      .mockImplementationOnce(() => of(true));
+    const updateSpy = jest
+      .spyOn(crudSdk.sdk, 'UpdateGroupProduct')
+      .mockImplementationOnce(() => ({} as any));
+    const productId = 'test_id';
+
+    (<any>service).deleteGroupProduct(productId);
+
+    expect(acceptSpy).toHaveBeenCalled();
+    expect(updateSpy).toHaveBeenCalledWith({
+      input: { id: 'test_id', deletedAt: expect.any(String) },
+    });
+  });
+
+  it('deleteGroupProduct$ should not called on falsy accept dialog', () => {
+    const acceptSpy = jest
+      .spyOn(service as any, '_acceptDeletion$')
+      .mockImplementationOnce(() => of(false));
+    const updateSpy = jest
+      .spyOn(crudSdk.sdk, 'UpdateGroupProduct')
+      .mockImplementationOnce(() => ({} as any));
+    const productId = 'test_id';
+
+    (<any>service).deleteGroupProduct(productId);
+
+    expect(acceptSpy).toHaveBeenCalled();
+    expect(updateSpy).not.toHaveBeenCalled();
   });
 
   it('deleteUnitProduct$ should called on truly accept dialog', () => {

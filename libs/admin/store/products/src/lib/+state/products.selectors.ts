@@ -32,7 +32,9 @@ export const getPendingGroupProductsOfSelectedCategory = createSelector(
   (chainProducts, groupProducts, productCategoryId) =>
     chainProducts.filter(chainProduct => {
       const found = groupProducts.filter(
-        groupProduct => groupProduct?.parentId === chainProduct.id,
+        groupProduct =>
+          groupProduct?.parentId === chainProduct.id &&
+          !groupProduct?.deletedAt,
       ).length;
 
       return (
@@ -78,7 +80,8 @@ export const getPendingUnitProductsOfSelectedCategory = createSelector(
   (groupProducts, unitProducts, productCategoryId) =>
     groupProducts.filter(groupProduct => {
       const found = unitProducts.filter(
-        unitProduct => unitProduct?.parentId === groupProduct.id,
+        unitProduct =>
+          unitProduct?.parentId === groupProduct.id && !unitProduct?.deletedAt,
       ).length;
 
       return (

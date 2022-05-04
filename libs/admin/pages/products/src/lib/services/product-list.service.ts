@@ -244,6 +244,7 @@ export class ProductListService {
                 .getCachedPaginatedData$({
                   filter: {
                     chainId: { eq: settings?.selectedChainId },
+                    deletedAt: { exists: false },
                     productCategoryId: {
                       eq: settings?.selectedProductCategoryId,
                     },
@@ -263,6 +264,7 @@ export class ProductListService {
                               filter: {
                                 chainId: { eq: settings?.selectedChainId },
                                 groupId: { eq: settings?.selectedGroupId },
+                                deletedAt: { exists: false },
                                 parentId: {
                                   eq: chainProductId,
                                 },
@@ -349,6 +351,7 @@ export class ProductListService {
                   filter: {
                     chainId: { eq: settings?.selectedChainId },
                     groupId: { eq: settings?.selectedGroupId },
+                    deletedAt: { exists: false },
                   },
                   limit: PAGINATION_LIMIT,
                   nextToken: this._nextToken.group,
@@ -396,6 +399,7 @@ export class ProductListService {
                                 {
                                   filter: {
                                     chainId: { eq: settings?.selectedChainId },
+                                    deletedAt: { exists: false },
                                     id: {
                                       eq: chainProductId,
                                     },
@@ -471,6 +475,7 @@ export class ProductListService {
                               filter: {
                                 chainId: { eq: settings?.selectedChainId },
                                 groupId: { eq: settings?.selectedGroupId },
+                                deletedAt: { exists: false },
                                 id: {
                                   eq: groupProductId,
                                 },
@@ -500,6 +505,7 @@ export class ProductListService {
                                 {
                                   filter: {
                                     chainId: { eq: settings?.selectedChainId },
+                                    deletedAt: { exists: false },
                                     productCategoryId: {
                                       eq: settings?.selectedProductCategoryId,
                                     },
@@ -544,6 +550,7 @@ export class ProductListService {
     const childCheck$ = this._crudSdk.sdk.SearchGroupProducts({
       filter: {
         parentId: { eq: id },
+        deletedAt: { exists: false },
       },
     });
 
@@ -553,7 +560,9 @@ export class ProductListService {
           iif(
             () => accepted,
             defer(() =>
-              this._crudSdk.sdk.DeleteChainProduct({ input: { id } }),
+              this._crudSdk.sdk.UpdateChainProduct({
+                input: { id, deletedAt: new Date().toISOString() },
+              }),
             ).pipe(
               filterNullish(),
               tap(product => {
@@ -572,6 +581,7 @@ export class ProductListService {
     const childCheck$ = this._crudSdk.sdk.SearchUnitProducts({
       filter: {
         parentId: { eq: id },
+        deletedAt: { exists: false },
       },
     });
 
@@ -581,7 +591,9 @@ export class ProductListService {
           iif(
             () => accepted,
             defer(() =>
-              this._crudSdk.sdk.DeleteGroupProduct({ input: { id } }),
+              this._crudSdk.sdk.UpdateGroupProduct({
+                input: { id, deletedAt: new Date().toISOString() },
+              }),
             ).pipe(
               filterNullish(),
               tap(product => {
@@ -603,11 +615,11 @@ export class ProductListService {
         switchMap(accepted =>
           iif(
             () => accepted,
-            defer(() => {
-              return this._crudSdk.sdk.UpdateUnitProduct({
+            defer(() =>
+              this._crudSdk.sdk.UpdateUnitProduct({
                 input: { id, deletedAt: new Date().toISOString() },
-              });
-            }).pipe(
+              }),
+            ).pipe(
               filterNullish(),
               tap(product => {
                 this._unitProductCollectionService.removeOneFromCache(product);
@@ -621,13 +633,15 @@ export class ProductListService {
       .subscribe();
   }
 
-  private _acceptDeletion$(childCheck$: Observable<unknown>) {
+  private _acceptDeletion$(
+    childCheck$: Observable<Partial<{ items: unknown[] }> | undefined | null>,
+  ) {
     return childCheck$.pipe(
-      switchMap(child => {
+      switchMap(childs => {
         const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
         return iif(
-          () => !child,
+          () => (childs?.items || []).length === 0,
           defer(
             () =>
               new Observable<boolean>(observer => {

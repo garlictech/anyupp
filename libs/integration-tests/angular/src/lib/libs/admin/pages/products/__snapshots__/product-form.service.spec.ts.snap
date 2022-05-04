@@ -10,6 +10,7 @@ Object {
     "chainId": "chainId_",
     "configSets": null,
     "createdAt": Any<String>,
+    "deletedAt": null,
     "description": Object {
       "de": null,
       "en": "DESCRIPTION",
@@ -97,6 +98,7 @@ Object {
     "chainId": "chainId_",
     "configSets": null,
     "createdAt": Any<String>,
+    "deletedAt": null,
     "dirty": null,
     "externalId": null,
     "groupId": "groupId_",
@@ -411,6 +413,7 @@ Object {
     "chainId": "chainId_",
     "configSets": null,
     "createdAt": Any<String>,
+    "deletedAt": null,
     "description": Object {
       "de": null,
       "en": "DESCRIPTION",
@@ -498,6 +501,7 @@ Object {
     "chainId": "chainId_",
     "configSets": null,
     "createdAt": Any<String>,
+    "deletedAt": null,
     "dirty": null,
     "externalId": null,
     "groupId": "groupId_",
