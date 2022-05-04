@@ -189,7 +189,7 @@ class ProductDetailsWidget extends StatelessWidget {
                       servingMode: servingMode,
                       displayState: displayState,
                     ),
-                    if (isDisabled)
+                    if (isDisabled && item.allergens != null)
                       Container(
                         color: theme.secondary12,
                         child: _buildAllergensListWidget(

@@ -433,6 +433,7 @@
     "qrConnected": "Helyválasztás",
     "chair": "szék #{{0}} asztalszám #{{1}}",
     "table": "Asztalszám #{{1}}",
+    "findingTable": "Asztal kiválasztása...",
     "findingSeat": "Asztal és szék kiválasztása...",
     "findingSeatLoading": "Ez eltarthat néhány másodpercig. Kérjük, ne zárd be az ablakot!",
     "seatReserved": {
