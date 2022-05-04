@@ -855,11 +855,17 @@ input TipPolicyInput {
   minOtherAmount: Float
 }
 
+type AdBanner {
+  imageUrl: String!
+}
+
 type Unit
   @model(mutations: { delete: "deleteUnit" })
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
+  adBanners: [AdBanner!]
+  adBannersEnabled: Boolean
   groupId: ID!
   chainId: ID!
   lastOrderNum: Int
@@ -1227,8 +1233,14 @@ input RKeeperInput {
   anyuppPassword: String!
 }
 
+input AdBannerInput {
+  imageUrl: String!
+}
+
 input CreateUnitInput {
   id: ID
+  adBanners: [AdBannerInput]
+  adBannersEnabled: Boolean
   groupId: ID!
   chainId: ID!
   lastOrderNum: Int
@@ -1262,6 +1274,8 @@ input CreateUnitInput {
 
 input UpdateUnitInput {
   id: ID!
+  adBanners: [AdBannerInput]
+  adBannersEnabled: Boolean
   groupId: ID
   chainId: ID
   lastOrderNum: Int
