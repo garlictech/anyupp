@@ -84,6 +84,7 @@ type ChainProduct
   configSets: [ProductConfigSet]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 enum Allergen {
@@ -149,6 +150,7 @@ type GroupProduct
   configSets: [ProductConfigSet]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 type UnitProduct

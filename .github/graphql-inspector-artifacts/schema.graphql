@@ -83,6 +83,7 @@ type ChainProduct @aws_iam @aws_cognito_user_pools {
   configSets: [ProductConfigSet]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -147,6 +148,7 @@ type GroupProduct @aws_iam @aws_cognito_user_pools {
   configSets: [ProductConfigSet]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1820,6 +1822,7 @@ input ModelChainProductFilterInput {
   allergens: ModelAllergenListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelChainProductFilterInput]
   or: [ModelChainProductFilterInput]
   not: ModelChainProductFilterInput
@@ -1834,6 +1837,7 @@ input ModelChainProductConditionInput {
   allergens: ModelAllergenListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelChainProductConditionInput]
   or: [ModelChainProductConditionInput]
   not: ModelChainProductConditionInput
@@ -1853,6 +1857,7 @@ input CreateChainProductInput {
   configSets: [ProductConfigSetInput]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 input UpdateChainProductInput {
@@ -1869,6 +1874,7 @@ input UpdateChainProductInput {
   configSets: [ProductConfigSetInput]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 input DeleteChainProductInput {
@@ -1890,6 +1896,7 @@ input ModelGroupProductFilterInput {
   takeawayTax: ModelIntInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelGroupProductFilterInput]
   or: [ModelGroupProductFilterInput]
   not: ModelGroupProductFilterInput
@@ -1904,6 +1911,7 @@ input ModelGroupProductConditionInput {
   takeawayTax: ModelIntInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelGroupProductConditionInput]
   or: [ModelGroupProductConditionInput]
   not: ModelGroupProductConditionInput
@@ -1921,6 +1929,7 @@ input CreateGroupProductInput {
   configSets: [ProductConfigSetInput]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 input UpdateGroupProductInput {
@@ -1935,6 +1944,7 @@ input UpdateGroupProductInput {
   configSets: [ProductConfigSetInput]
   externalId: String
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 input DeleteGroupProductInput {
@@ -3207,6 +3217,7 @@ input SearchableChainProductFilterInput {
   image: SearchableStringFilterInput
   externalId: SearchableStringFilterInput
   dirty: SearchableBooleanFilterInput
+  deletedAt: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   allergens: SearchableStringFilterInput
@@ -3229,6 +3240,7 @@ enum SearchableChainProductSortableFields {
   image
   externalId
   dirty
+  deletedAt
   createdAt
   updatedAt
 }
@@ -3256,6 +3268,7 @@ enum SearchableChainProductAggregateField {
   allergens
   externalId
   dirty
+  deletedAt
   createdAt
   updatedAt
 }
@@ -3276,6 +3289,7 @@ input SearchableGroupProductFilterInput {
   takeawayTax: SearchableIntFilterInput
   externalId: SearchableStringFilterInput
   dirty: SearchableBooleanFilterInput
+  deletedAt: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   and: [SearchableGroupProductFilterInput]
@@ -3293,6 +3307,7 @@ enum SearchableGroupProductSortableFields {
   takeawayTax
   externalId
   dirty
+  deletedAt
   createdAt
   updatedAt
 }
@@ -3312,6 +3327,7 @@ enum SearchableGroupProductAggregateField {
   takeawayTax
   externalId
   dirty
+  deletedAt
   createdAt
   updatedAt
 }
