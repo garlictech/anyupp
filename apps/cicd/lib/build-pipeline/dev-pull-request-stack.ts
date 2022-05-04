@@ -17,10 +17,16 @@ export class DevPullRequestBuildStack extends sst.Stack {
       webhookFilters: [
         codebuild.FilterGroup.inEventOf(
           codebuild.EventAction.PULL_REQUEST_CREATED,
-        ).andBaseBranchIs(stage),
+        ).andBaseBranchIs('dev'),
         codebuild.FilterGroup.inEventOf(
           codebuild.EventAction.PULL_REQUEST_UPDATED,
-        ).andBaseBranchIs(stage),
+        ).andBaseBranchIs('staging'),
+        codebuild.FilterGroup.inEventOf(
+          codebuild.EventAction.PULL_REQUEST_UPDATED,
+        ).andBaseBranchIs('qa'),
+        codebuild.FilterGroup.inEventOf(
+          codebuild.EventAction.PULL_REQUEST_UPDATED,
+        ).andBaseBranchIs('prod'),
       ],
     });
 
