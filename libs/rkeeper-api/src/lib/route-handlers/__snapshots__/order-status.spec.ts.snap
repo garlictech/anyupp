@@ -397,7 +397,7 @@ Array [
 ]
 `;
 
-exports[`validateRequestCases: {"currentState":"foobar","remoteOrderId":"REMOTE ORDER ID 2"} 1`] = `"OrderStatus Object Validation Error (JOI): \\"currentState\\" must be one of [processing, ready, served, failed, rejected]"`;
+exports[`validateRequestCases: {"currentState":"foobar","remoteOrderId":"REMOTE ORDER ID 2"} 1`] = `"OrderStatus Object Validation Error (JOI): \\"currentState\\" must be one of [placed, processing, ready, served, failed, rejected]"`;
 
 exports[`validateRequestCases: {"currentState":"ready","remoteOrderId":"REMOTE ORDER ID 1"} 1`] = `
 Object {

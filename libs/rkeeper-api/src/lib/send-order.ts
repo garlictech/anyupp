@@ -68,7 +68,7 @@ export const sendRkeeperOrder =
         },
         order_number: parseInt(orderInput.place?.table ?? '0'),
         guest_label: parseInt(orderInput.place?.seat ?? '0'),
-        guest_name: orderInput.guestLabel ?? 'unknown guest',
+        guest_name: orderInput.guestLabel ?? 'unknown',
         remoteOrderId: externalId,
         order,
       }),
