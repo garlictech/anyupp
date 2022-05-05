@@ -12,7 +12,7 @@ class ProductImageWidget extends StatelessWidget {
     required this.url,
     required this.width,
     required this.height,
-    this.fit = BoxFit.cover,
+    this.fit = BoxFit.contain,
   }) : super(key: key);
 
   @override

@@ -124,8 +124,8 @@
     "inPlace": "helyben",
     "packagingFee": "Csomagolási díj",
     "serviceFee": "Szervizdíj",
-    "hasServiceFee": "Az ár szervizdíjat tartalmaz.",
-    "hasNoServiceFee": "Az ár szervizdíjat nem tartalmaz."
+    "hasServiceFee": "Az ár szervizdíjat tartalmaz",
+    "hasNoServiceFee": "Az ár szervizdíjat nem tartalmaz"
   },
   "allergens": {
     "title": "ALLERGÉNEK",

@@ -17,7 +17,6 @@ class _OnBoardingState extends State<OnBoarding> {
 
   @override
   Widget build(BuildContext context) {
-    print('***** OnBoarding().build()');
     return NetworkConnectionWrapperWidget(
       child: BlocListener<ExceptionBloc, ExceptionState>(
         listener: (BuildContext context, ExceptionState state) {

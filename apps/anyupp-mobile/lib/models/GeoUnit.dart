@@ -25,6 +25,7 @@ class GeoUnit {
   final TipPolicy? tipPolicy;
   final ServiceFeePolicy? serviceFeePolicy;
   final SoldOutVisibilityPolicy? soldOutVisibilityPolicy;
+  final Location? location;
 
   GeoUnit({
     required this.id,
@@ -46,6 +47,7 @@ class GeoUnit {
     this.tipPolicy,
     this.serviceFeePolicy,
     this.soldOutVisibilityPolicy,
+    this.location,
   });
 
   GeoUnit copyWith({
@@ -68,6 +70,7 @@ class GeoUnit {
     TipPolicy? tipPolicy,
     ServiceFeePolicy? serviceFeePolicy,
     SoldOutVisibilityPolicy? soldOutVisibilityPolicy,
+    Location? location,
   }) {
     return GeoUnit(
       id: id ?? this.id,
@@ -91,6 +94,7 @@ class GeoUnit {
       serviceFeePolicy: serviceFeePolicy ?? this.serviceFeePolicy,
       soldOutVisibilityPolicy:
           soldOutVisibilityPolicy ?? this.soldOutVisibilityPolicy,
+      location: location ?? this.location,
     );
   }
 
@@ -117,6 +121,7 @@ class GeoUnit {
       'tipPolicy': tipPolicy?.toJson(),
       'serviceFeePolicy': serviceFeePolicy?.toJson(),
       'soldOutVisibilityPolicy': enumToString(soldOutVisibilityPolicy),
+      'location': location?.toJson(),
     };
   }
 
@@ -165,12 +170,14 @@ class GeoUnit {
         map['soldOutVisibilityPolicy'],
         SoldOutVisibilityPolicy.values,
       ),
+      location:
+          map['location'] != null ? Location.fromJson(map['location']) : null,
     );
   }
 
   @override
   String toString() {
-    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, serviceFeePolicy: $serviceFeePolicy, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, orderPolicy: $orderPolicy, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
+    return 'GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, location: $location, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, serviceFeePolicy: $serviceFeePolicy, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, orderPolicy: $orderPolicy, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
   }
 
   @override
@@ -196,7 +203,8 @@ class GeoUnit {
         other.packagingTax == packagingTax &&
         other.serviceFeePolicy == serviceFeePolicy &&
         other.tipPolicy == tipPolicy &&
-        other.soldOutVisibilityPolicy == soldOutVisibilityPolicy;
+        other.soldOutVisibilityPolicy == soldOutVisibilityPolicy &&
+        other.location == location;
   }
 
   @override
@@ -218,6 +226,7 @@ class GeoUnit {
         ratingPolicies.hashCode ^
         tipPolicy.hashCode ^
         serviceFeePolicy.hashCode ^
-        soldOutVisibilityPolicy.hashCode;
+        soldOutVisibilityPolicy.hashCode ^
+        location.hashCode;
   }
 }

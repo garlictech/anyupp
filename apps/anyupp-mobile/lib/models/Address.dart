@@ -11,7 +11,7 @@ class Address {
   final String country;
   final String title;
   final String postalCode;
-  final Location location;
+  final Location? location;
   Address({
     this.id,
     required this.address,
@@ -19,7 +19,7 @@ class Address {
     required this.country,
     required this.title,
     required this.postalCode,
-    required this.location,
+    this.location,
   });
 
   Address copyWith({
@@ -50,7 +50,7 @@ class Address {
       'country': country,
       'title': title,
       'postalCode': postalCode,
-      'location': location.toJson(),
+      'location': location?.toJson(),
     };
   }
 
@@ -62,7 +62,8 @@ class Address {
       country: map['country'],
       title: map['title'],
       postalCode: map['postalCode'],
-      location: Location.fromJson(map['location']),
+      location:
+          map['location'] != null ? Location.fromJson(map['location']) : null,
     );
   }
 

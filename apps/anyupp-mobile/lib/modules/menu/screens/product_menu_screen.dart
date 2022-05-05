@@ -56,6 +56,15 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
         setState(() {
           _showTooltip = true;
         });
+        // ignore: unawaited_futures
+        Future.delayed(Duration(seconds: 3)).then((_) {
+          if (mounted) {
+            setState(() {
+              _showTooltip = false;
+            });
+          }
+        });
+
         await preferences.setBool('TOOLTIP_${unit.id}', true);
       } else {
         _showTooltip = false;
@@ -427,8 +436,9 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
             }
           }
           return Container(
+            // height: 48.0,
             padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 6, bottom: 6),
+                const EdgeInsets.only(left: 16, right: 16, top: 6, bottom: 7),
             decoration: BoxDecoration(
               color: index == _fromIndex
                   ? Color.lerp(theme.button, theme.secondary12, progress)

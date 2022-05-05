@@ -455,7 +455,7 @@ class _SelectUnitByLocationScreenState
       unitMarkers[markerId] = Marker(
         markerId: markerId,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        position: LatLng(unit.address.location.lat, unit.address.location.lng),
+        position: LatLng(unit.loc.lat, unit.loc.lng),
         infoWindow: InfoWindow(
           title: unit.name,
           snippet:

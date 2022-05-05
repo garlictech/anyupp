@@ -1,83 +1,50 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-
-import 'success_animation_widget.dart';
 
 showSuccessDialog(BuildContext context, String title, String message,
     [VoidCallback? onClose]) {
+  final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
   SchedulerBinding.instance?.addPostFrameCallback((_) {
-    showDialog(
+    showModalBottomSheet(
         context: context,
-        barrierDismissible: true,
+        isDismissible: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0),
+            topRight: Radius.circular(16.0),
+          ),
+        ),
+        enableDrag: true,
+        isScrollControlled: true,
+        elevation: 4.0,
+        backgroundColor: Colors.transparent,
         builder: (context) {
-          return Platform.isAndroid
-              ? SimpleDialog(
-                  children: <Widget>[
-                    _getDialogContent(
-                      context,
-                      title,
-                      message,
-                    ),
-                  ],
-                )
-              : CupertinoAlertDialog(
-                  content: _getDialogContent(
-                    context,
-                    title,
-                    message,
-                  ),
-                );
-        }).then((value) => onClose != null ? onClose() : null);
-  });
-}
-
-Widget _getDialogContent(BuildContext context, String title, String message) {
-  return Padding(
-    padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        SizedBox(
-          width: 64.0,
-          height: 64.0,
-
-          // Check mark animation
-          child: SuccessAnimationWidget(),
-        ),
-        SizedBox(
-          height: 32.0,
-        ),
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: Fonts.satoshi(
-            fontSize: 16.0,
-            fontWeight: FontWeight.w400,
-            color: Colors.green,
-          ),
-        ),
-        // Display message to the user
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 20.0,
-            left: 4.0,
-            right: 4.0,
-          ),
-          child: Text(
-            message,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 15.0,
-              fontWeight: FontWeight.w500,
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.0),
+                topRight: Radius.circular(16.0),
+              ),
+              color: theme.secondary0,
             ),
-          ),
-        )
-      ],
-    ),
-  );
+            height: MediaQuery.of(context).size.height * .9,
+            child: StatusWidget(
+              icon: 'assets/icons/success_order.svg',
+              message: title,
+              description: message,
+              expanded: true,
+              buttonText: 'common.ok2',
+              onPressed: () {
+                if (onClose != null) {
+                  onClose();
+                }
+                Nav.pop();
+              },
+            ),
+          );
+        });
+  });
 }

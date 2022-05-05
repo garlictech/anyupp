@@ -1,5 +1,5 @@
 query getUnitsNearLocation($lat: Float!, $lng: Float!) {
-  getUnitsNearLocation(input: { location: { lat: $lat, lon: $lng } }) {
+  getUnitsNearLocation(input: { location: { lat: $lat, lng: $lng } }) {
     items {
       serviceFeePolicy {
         type

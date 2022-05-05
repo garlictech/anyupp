@@ -38,23 +38,20 @@ class _SelectUnitChooseMethodScreenState
         future: getIt<AuthRepository>().getAuthenticatedUserProfile(),
         builder: (BuildContext context, AsyncSnapshot<User?> userSnapshot) {
           if (userSnapshot.hasData) {
-            return Container(
-              color: Colors.white,
-              child: SafeArea(
-                child: Scaffold(
-                    key: const Key('unitselect-screen'),
-                    backgroundColor: Colors.white,
-                    body: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        SelectUnitUserInfoRowWidget(user: userSnapshot.data!),
-                        Expanded(
-                            child: SelectUnitMainContentWidget(
-                          initialUri: widget.initialUri,
-                        )),
-                      ],
-                    )),
-              ),
+            return SafeArea(
+              child: Scaffold(
+                  key: const Key('unitselect-screen'),
+                  backgroundColor: Colors.white,
+                  body: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SelectUnitUserInfoRowWidget(user: userSnapshot.data!),
+                      Expanded(
+                          child: SelectUnitMainContentWidget(
+                        initialUri: widget.initialUri,
+                      )),
+                    ],
+                  )),
             );
           }
           return CenterLoadingWidget(

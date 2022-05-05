@@ -41,6 +41,7 @@ export 'models/UserInvoiceAddress.dart';
 export 'models/core/parsers.dart';
 export 'models/core/uuid.dart';
 export 'models/enums/Allergens.dart';
+export 'models/extensions/GeoUnitExtension.dart';
 export 'models/extensions/LocalizedItemExtension.dart';
 export 'models/extensions/OpeningHoursExtension.dart';
 export 'models/extensions/OrderExtension.dart';
