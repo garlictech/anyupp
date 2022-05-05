@@ -836,8 +836,14 @@ input TipPolicyInput {
   minOtherAmount: Float
 }
 
+type AdBanner @aws_iam @aws_cognito_user_pools {
+  imageUrl: String!
+}
+
 type Unit @aws_iam @aws_cognito_user_pools {
   id: ID!
+  adBanners: [AdBanner!]
+  adBannersEnabled: Boolean
   groupId: ID!
   chainId: ID!
   lastOrderNum: Int
@@ -1196,8 +1202,14 @@ input RKeeperInput {
   anyuppPassword: String!
 }
 
+input AdBannerInput {
+  imageUrl: String!
+}
+
 input CreateUnitInput {
   id: ID
+  adBanners: [AdBannerInput]
+  adBannersEnabled: Boolean
   groupId: ID!
   chainId: ID!
   lastOrderNum: Int
@@ -1231,6 +1243,8 @@ input CreateUnitInput {
 
 input UpdateUnitInput {
   id: ID!
+  adBanners: [AdBannerInput]
+  adBannersEnabled: Boolean
   groupId: ID
   chainId: ID
   lastOrderNum: Int
@@ -2708,6 +2722,7 @@ input ModelOrderPaymentPolicyInput {
 
 input ModelUnitFilterInput {
   id: ModelIDInput
+  adBannersEnabled: ModelBooleanInput
   groupId: ModelIDInput
   chainId: ModelIDInput
   lastOrderNum: ModelIntInput
@@ -2731,6 +2746,7 @@ input ModelUnitFilterInput {
 }
 
 input ModelUnitConditionInput {
+  adBannersEnabled: ModelBooleanInput
   groupId: ModelIDInput
   chainId: ModelIDInput
   lastOrderNum: ModelIntInput
@@ -3880,6 +3896,7 @@ input SearchableFavoriteProductAggregationInput {
 
 input SearchableUnitFilterInput {
   id: SearchableIDFilterInput
+  adBannersEnabled: SearchableBooleanFilterInput
   groupId: SearchableIDFilterInput
   chainId: SearchableIDFilterInput
   lastOrderNum: SearchableIntFilterInput
@@ -3906,6 +3923,7 @@ input SearchableUnitFilterInput {
 
 enum SearchableUnitSortableFields {
   id
+  adBannersEnabled
   groupId
   chainId
   lastOrderNum
@@ -3929,6 +3947,7 @@ input SearchableUnitSortInput {
 
 enum SearchableUnitAggregateField {
   id
+  adBannersEnabled
   groupId
   chainId
   lastOrderNum
