@@ -14,6 +14,10 @@ const chainBase: CrudApi.CreateChainInput = {
     country: 'Magyarország',
     title: 'HQ',
     postalCode: '1021',
+    location: {
+      lat: 0,
+      lon: 0,
+    },
   },
   description: {
     hu: `Rab lánc leírás`,
