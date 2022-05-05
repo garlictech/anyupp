@@ -63,7 +63,7 @@ Object {
     "country": "UNIT COUNTRY",
     "location": Object {
       "lat": 47,
-      "lon": 19,
+      "lng": 19,
     },
     "postalCode": "UNIT POSTAL CODE",
     "title": "UNTI TITLE",
