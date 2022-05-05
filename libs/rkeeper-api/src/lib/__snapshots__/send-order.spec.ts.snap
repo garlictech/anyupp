@@ -16,7 +16,7 @@ Array [
         },
         "delivery_time": "2020-04-12T16:00:00",
         "guest_label": 1,
-        "guest_name": "unknown",
+        "guest_name": "GUEST LABEL",
         "objectid": "UNIT_EXTERNALID",
         "order": Array [
           Object {
