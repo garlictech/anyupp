@@ -33,7 +33,7 @@ export class GoogleMapComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const location = {
       lat: parseFloat(changes.markerLocation.currentValue.lat || 0),
-      lng: parseFloat(changes.markerLocation.currentValue.lng || 0),
+      lng: parseFloat(changes.markerLocation.currentValue.lon || 0),
     };
 
     this.markerPosition = location;
@@ -45,7 +45,7 @@ export class GoogleMapComponent implements OnChanges {
   public dragEnd($event: google.maps.MapMouseEvent): void {
     this.positionChange.emit({
       lat: $event.latLng?.lat(),
-      lng: $event.latLng?.lng(),
+      lon: $event.latLng?.lng(),
     });
   }
 }

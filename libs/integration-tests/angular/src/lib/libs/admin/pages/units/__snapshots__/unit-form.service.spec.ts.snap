@@ -101,10 +101,6 @@ Object {
     "address": "",
     "city": "",
     "country": "",
-    "location": Object {
-      "lat": 0,
-      "lng": 0,
-    },
     "postalCode": "",
     "title": "",
   },
@@ -119,6 +115,10 @@ Object {
   "groupId": "",
   "isActive": "",
   "lanes": Array [],
+  "location": Object {
+    "lat": 0,
+    "lon": 0,
+  },
   "merchantId": "",
   "name": "",
   "open": Object {
@@ -196,10 +196,6 @@ Object {
     "address": "",
     "city": "",
     "country": "",
-    "location": Object {
-      "lat": 0,
-      "lng": 0,
-    },
     "postalCode": "",
     "title": "",
   },
@@ -214,6 +210,10 @@ Object {
   "groupId": "",
   "isActive": "",
   "lanes": Array [],
+  "location": Object {
+    "lat": 0,
+    "lon": 0,
+  },
   "merchantId": "",
   "name": "",
   "open": Object {

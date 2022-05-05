@@ -34,9 +34,7 @@
   },
   "anyupp-backend-stripe": {
     "stripewebhookEndpoint": "https://stripe-webhook-tamasstack.anyupp.com/tamasstack",
-    "StripeWebhookNewEndpoint6D902BCA": "https://hdxm3ir3la.execute-api.eu-west-1.amazonaws.com/tamasstack/",
-    "StripeWebhookEndpointE83D65EB": "https://lzkbbckh33.execute-api.eu-west-1.amazonaws.com/tamasstack/",
-    "stripewebhookEndpointNew": "https://hdxm3ir3la.execute-api.eu-west-1.amazonaws.com/tamasstack/"
+    "StripeWebhookEndpointE83D65EB": "https://lzkbbckh33.execute-api.eu-west-1.amazonaws.com/tamasstack/"
   },
   "anyupp-backend-rkeeper": {
     "RKeeperWebhookEndpointCBC72BD4": "https://iplzqqik0b.execute-api.eu-west-1.amazonaws.com/tamasstack/",

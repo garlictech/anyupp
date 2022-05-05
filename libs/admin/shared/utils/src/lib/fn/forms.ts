@@ -29,12 +29,21 @@ export const addressFormGroup = (
       country: ['', required ? [Validators.required] : []],
       title: [''],
       postalCode: ['', required ? [Validators.required] : []],
-      location: formBuilder.group({
-        lat: [0],
-        lng: [0],
-      }),
     },
     required ? {} : { validators: emptyAddressValidator },
+  ),
+});
+
+export const locationFormGroup = (
+  formBuilder: FormBuilder,
+  required = false,
+) => ({
+  location: formBuilder.group(
+    {
+      lat: [0],
+      lon: [0],
+    },
+    required ? {} : { validators: emptyLocationValidator },
   ),
 });
 
@@ -50,24 +59,20 @@ export const addressIsEmpty = (address?: CrudApi.Address) => {
   const stringFields = omit(['location'], address);
   const allStringsAreEmpty = Object.values(stringFields).every(v => !v);
 
-  // 0 or empty string
-  const locationIsEmpty = !address?.location?.lat && !address?.location?.lng;
-
-  return allStringsAreEmpty && locationIsEmpty;
+  return allStringsAreEmpty;
 };
 
 export const addressIsFilled = (address: CrudApi.Address) => {
   const stringFields = omit(['location'], address);
   const allStringsAreFilled = Object.values(stringFields).every(v => v);
 
-  // not 0 numeric
-  const locationIsFilled =
-    isNumber(address.location?.lat) &&
-    isNumber(address.location?.lng) &&
-    (address.location?.lat !== 0 || address.location?.lng !== 0);
-
-  return allStringsAreFilled && locationIsFilled;
+  return allStringsAreFilled;
 };
+
+export const locationIsFilled = (location: CrudApi.LocationLatLon) =>
+  isNumber(location?.lat) &&
+  isNumber(location?.lon) &&
+  (location?.lat !== 0 || location?.lon !== 0);
 
 // Address: all fields are empty, or all fields are required.
 export const emptyAddressValidator: ValidatorFn = (
@@ -78,6 +83,10 @@ export const emptyAddressValidator: ValidatorFn = (
 
   return isEmpty || isFilled ? null : { err: true };
 };
+
+// Address: all fields are empty, or all fields are required.
+export const emptyLocationValidator: ValidatorFn = (control: AbstractControl) =>
+  locationIsFilled(control.value) ? null : { err: true };
 
 export const productAvailabilityValidator: ValidatorFn = (
   control: AbstractControl,

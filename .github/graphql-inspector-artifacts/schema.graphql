@@ -1,9 +1,13 @@
 scalar AWSDateTime
 
-type Location @aws_iam @aws_cognito_user_pools @aws_api_key {
+type LocationLatLng @aws_iam @aws_cognito_user_pools @aws_api_key {
   lat: Float!
-  lng: Float @deprecated(reason: "Use lon")
-  lon: Float
+  lng: Float!
+}
+
+type LocationLatLon @aws_iam @aws_cognito_user_pools {
+  lat: Float!
+  lon: Float!
 }
 
 type LocalizedItem @aws_iam @aws_cognito_user_pools @aws_api_key {
@@ -18,7 +22,7 @@ type Address @aws_iam @aws_cognito_user_pools @aws_api_key {
   country: String!
   title: String!
   postalCode: String!
-  location: Location!
+  location: LocationLatLng!
 }
 
 type PaymentMode @aws_iam @aws_cognito_user_pools @aws_api_key {
@@ -874,7 +878,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
-  location: Location
+  location: LocationLatLon
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1008,7 +1012,7 @@ type GeoUnit @aws_iam @aws_cognito_user_pools {
 }
 
 input GetUnitsNearLocationInput {
-  location: LocationInputOld!
+  location: LocationLatLngInput!
 }
 
 type User @aws_iam @aws_cognito_user_pools {
@@ -1113,12 +1117,12 @@ type Receipt @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
 }
 
-input LocationInputOld {
+input LocationLatLngInput {
   lat: Float!
   lng: Float!
 }
 
-input LocationInput {
+input LocationLatLonInput {
   lat: Float!
   lon: Float!
 }
@@ -1129,7 +1133,7 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationInput
+  location: LocationLatLngInput
 }
 
 input LocalizedItemInput {
@@ -1241,7 +1245,7 @@ input CreateUnitInput {
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
-  location: LocationInput!
+  location: LocationLatLonInput!
 }
 
 input UpdateUnitInput {
@@ -1276,7 +1280,7 @@ input UpdateUnitInput {
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
-  location: LocationInput
+  location: LocationLatLonInput
 }
 
 type CreateAnonymUserOutput {
@@ -1311,7 +1315,7 @@ enum GeoSearchableObjectType {
 }
 
 input SearchByRadiusInput {
-  location: LocationInput!
+  location: LocationLatLonInput!
   radiusInMeters: Float!
   objectType: GeoSearchableObjectType!
   limit: Int

@@ -43,6 +43,16 @@ export class GroupFormService {
     formValue: CrudApi.CreateGroupInput | CrudApi.UpdateGroupInput,
     groupId?: string,
   ) {
+    if (formValue.address) {
+      formValue.address = {
+        ...formValue.address,
+        location: {
+          lat: 0,
+          lng: 0,
+        },
+      };
+    }
+
     return iif(
       () => !groupId,
       this.createGroup$(<CrudApi.CreateGroupInput>formValue),

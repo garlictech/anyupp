@@ -66,6 +66,16 @@ export class ChainFormService {
     formValue: CrudApi.CreateChainInput | CrudApi.UpdateChainInput,
     chainId?: string,
   ) {
+    if (formValue.address) {
+      formValue.address = {
+        ...formValue.address,
+        location: {
+          lat: 0,
+          lng: 0,
+        },
+      };
+    }
+
     return iif(
       () => !chainId,
       this.createChain$(<CrudApi.CreateChainInput>formValue),

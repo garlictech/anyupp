@@ -7,6 +7,7 @@ import {
   addressFormGroup,
   contactFormGroup,
   dailyScheduleBothEmptyOrProperlyFilledValidator,
+  locationFormGroup,
   makeId,
   multiLangValidator,
   notEmptyArray,
@@ -69,6 +70,7 @@ export class UnitFormService {
       soldOutVisibilityPolicy: [CrudApi.SoldOutVisibilityPolicy.faded],
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder, true),
+      ...locationFormGroup(this._formBuilder, true),
       pos: this._formBuilder.group({
         type: [CrudApi.PosType.anyupp],
         rkeeper: this._formsService.createRkeeperFormGroup(),
@@ -187,6 +189,16 @@ export class UnitFormService {
     formValue.packagingTaxPercentage = formValue.packagingTaxPercentage
       ? formValue.packagingTaxPercentage
       : 0;
+
+    if (formValue.address) {
+      formValue.address = {
+        ...formValue.address,
+        location: {
+          lat: formValue.location?.lat || 0,
+          lng: formValue.location?.lon || 0,
+        },
+      };
+    }
 
     if (formValue.pos?.type !== CrudApi.PosType.rkeeper) {
       formValue.externalId = null;

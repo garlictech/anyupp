@@ -17,6 +17,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
 export class FormContactGroupComponent {
   @Input() contactFormGroup?: FormGroup;
   @Input() showAddressForm?: boolean = true;
+  @Input() showLocationForm?: boolean = true;
 
   constructor(
     private _httpClient: HttpClient,
@@ -37,22 +38,25 @@ export class FormContactGroupComponent {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .subscribe((response: any): void => {
         if (response.status === 'OK' && response.results[0]) {
-          this._patchLocation(response?.results?.[0]?.geometry?.location);
+          const googleLoc = response?.results?.[0]?.geometry?.location;
+
+          this._patchLocation({
+            lat: googleLoc.lat,
+            lon: googleLoc.lng,
+          });
         }
       });
   }
 
-  public markerPositionChange($event: CrudApi.Location): void {
+  public markerPositionChange($event: CrudApi.LocationLatLon): void {
     this._patchLocation($event);
   }
 
-  private _patchLocation(location: CrudApi.Location): void {
+  private _patchLocation(location: CrudApi.LocationLatLon): void {
     if (location) {
       this.contactFormGroup?.patchValue({
         ...this.contactFormGroup?.value,
-        address: {
-          location,
-        },
+        location,
       });
 
       this._changeDetectorRef.detectChanges();

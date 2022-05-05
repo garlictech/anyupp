@@ -18,7 +18,7 @@ const groupBase: Omit<CrudApi.CreateGroupInput, 'chainId'> = {
     postalCode: '1021',
     location: {
       lat: 0,
-      lon: 0,
+      lng: 0,
     },
   },
   description: {

@@ -76,7 +76,7 @@ const unitBase = {
     postalCode: '1021',
     location: {
       lat: 47,
-      lon: 19,
+      lng: 19,
     },
   },
   location: {

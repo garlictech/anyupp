@@ -48,33 +48,35 @@
       inputId="addressAddress"
     ></bgap-form-text-input>
 
-    <div class="row">
-      <div class="col-md-6">
-        <bgap-form-static-text
-          caption="common.contact.locationLat"
-          [value]="contactFormGroup?.value?.address?.location?.lat"
-          inputId="addressLocationLat"
-        ></bgap-form-static-text>
+    <ng-container *ngIf="showLocationForm">
+      <div class="row">
+        <div class="col-md-6">
+          <bgap-form-static-text
+            caption="common.contact.locationLat"
+            [value]="contactFormGroup?.value?.location?.lat"
+            inputId="addressLocationLat"
+          ></bgap-form-static-text>
+        </div>
+        <div class="col-md-6">
+          <bgap-form-static-text
+            caption="common.contact.locationLng"
+            [value]="contactFormGroup?.value?.location?.lon"
+            inputId="addressLocationLng"
+          ></bgap-form-static-text>
+        </div>
       </div>
-      <div class="col-md-6">
-        <bgap-form-static-text
-          caption="common.contact.locationLng"
-          [value]="contactFormGroup?.value?.address?.location?.lng"
-          inputId="addressLocationLng"
-        ></bgap-form-static-text>
+
+      <bgap-google-map
+        [markerLocation]="contactFormGroup?.value?.location"
+        (positionChange)="markerPositionChange($event)"
+      ></bgap-google-map>
+
+      <div class="mt-3">
+        <button type="button" nbButton size="small" (click)="locateAddress()">
+          <nb-icon icon="location_on" pack="material-icons"></nb-icon>
+          {{ 'units.locateOnMap' | translate }}
+        </button>
       </div>
-    </div>
-
-    <bgap-google-map
-      [markerLocation]="contactFormGroup?.value?.address?.location"
-      (positionChange)="markerPositionChange($event)"
-    ></bgap-google-map>
-
-    <div class="mt-3">
-      <button type="button" nbButton size="small" (click)="locateAddress()">
-        <nb-icon icon="location_on" pack="material-icons"></nb-icon>
-        {{ 'units.locateOnMap' | translate }}
-      </button>
-    </div>
+    </ng-container>
   </ng-container>
 </fieldset>

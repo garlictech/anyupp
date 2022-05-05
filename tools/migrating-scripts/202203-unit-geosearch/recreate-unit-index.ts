@@ -87,7 +87,10 @@ from(indices)
         crudSdk.UpdateUnit({
           input: {
             id: unit.id,
-            location: unit.address.location as CrudApi.LocationInput,
+            location: {
+              lat: unit.address.location.lat,
+              lon: unit.address.location.lng,
+            },
           },
         }),
       10,

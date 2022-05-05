@@ -22,7 +22,7 @@ type ListResponse<T> = {
 };
 
 export const getUnitsInRadius =
-  (location: CrudApi.LocationInputOld) =>
+  (location: CrudApi.LocationLatLngInput) =>
   (crudSdk: CrudApi.CrudSdk): Observable<ListResponse<CrudApi.GeoUnit>> => {
     return listActiveUnits()(crudSdk).pipe(
       catchError(err => of(err)),
@@ -79,7 +79,7 @@ const toGeoUnit = ({
   group: CrudApi.Group;
   chain: CrudApi.Chain;
   currency: string;
-  inputLocation: CrudApi.LocationInputOld;
+  inputLocation: CrudApi.LocationLatLngInput;
   chainStyle: CrudApi.ChainStyle;
   paymentModes?: Maybe<CrudApi.PaymentMode>[];
 }): CrudApi.GeoUnit => ({
@@ -102,7 +102,7 @@ const toGeoUnit = ({
   distance: geolib.getDistance(
     {
       lat: unit.address.location?.lat || unit.location?.lat || 0,
-      lng: unit.address.location?.lon || unit.location?.lng || 0,
+      lng: unit.address.location?.lng || unit.location?.lon || 0,
     },
     inputLocation,
   ),

@@ -39,10 +39,6 @@ Object {
     "address": "",
     "city": "",
     "country": "",
-    "location": Object {
-      "lat": 0,
-      "lng": 0,
-    },
     "postalCode": "",
     "title": "",
   },

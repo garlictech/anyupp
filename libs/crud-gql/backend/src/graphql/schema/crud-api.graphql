@@ -1,7 +1,11 @@
-type Location {
+type LocationLatLng {
   lat: Float!
-  lng: Float @deprecated(reason: "Use lon")
-  lon: Float
+  lng: Float!
+}
+
+type LocationLatLon {
+  lat: Float!
+  lon: Float!
 }
 
 type LocalizedItem {
@@ -16,7 +20,7 @@ type Address {
   country: String!
   title: String!
   postalCode: String!
-  location: Location! #@deprecated(reason: "Unused.")
+  location: LocationLatLng!
 }
 
 type PaymentMode {
@@ -896,7 +900,7 @@ type Unit
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
-  location: Location
+  location: LocationLatLon
 }
 
 type DateIntervalOpen {
@@ -1032,7 +1036,7 @@ type GeoUnit
 }
 
 input GetUnitsNearLocationInput {
-  location: LocationInputOld!
+  location: LocationLatLngInput!
 }
 
 type User
@@ -1144,12 +1148,12 @@ type Receipt
   status: ReceiptStatus!
 }
 
-input LocationInputOld {
+input LocationLatLngInput {
   lat: Float!
   lng: Float!
 }
 
-input LocationInput {
+input LocationLatLonInput {
   lat: Float!
   lon: Float!
 }
@@ -1160,7 +1164,7 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationInput
+  location: LocationLatLngInput
 }
 
 input LocalizedItemInput {
@@ -1272,7 +1276,7 @@ input CreateUnitInput {
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
-  location: LocationInput!
+  location: LocationLatLonInput!
 }
 
 input UpdateUnitInput {
@@ -1307,7 +1311,7 @@ input UpdateUnitInput {
   tipPolicy: TipPolicyInput
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
-  location: LocationInput
+  location: LocationLatLonInput
 }
 
 type CreateAnonymUserOutput {
@@ -1343,7 +1347,7 @@ enum GeoSearchableObjectType {
 }
 
 input SearchByRadiusInput {
-  location: LocationInput!
+  location: LocationLatLonInput!
   radiusInMeters: Float!
   objectType: GeoSearchableObjectType!
   limit: Int
