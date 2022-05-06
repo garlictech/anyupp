@@ -6,6 +6,10 @@ export const createUnit = /* GraphQL */ `
   mutation CreateUnit($input: CreateUnitInput!) {
     createUnit(input: $input) {
       id
+      adBanners {
+        imageUrl
+      }
+      adBannersEnabled
       groupId
       chainId
       lastOrderNum
@@ -26,7 +30,6 @@ export const createUnit = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -158,7 +161,6 @@ export const createUnit = /* GraphQL */ `
       orderPaymentPolicy
       location {
         lat
-        lng
         lon
       }
       createdAt
@@ -170,6 +172,10 @@ export const updateUnit = /* GraphQL */ `
   mutation UpdateUnit($input: UpdateUnitInput!) {
     updateUnit(input: $input) {
       id
+      adBanners {
+        imageUrl
+      }
+      adBannersEnabled
       groupId
       chainId
       lastOrderNum
@@ -190,7 +196,6 @@ export const updateUnit = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -322,7 +327,6 @@ export const updateUnit = /* GraphQL */ `
       orderPaymentPolicy
       location {
         lat
-        lng
         lon
       }
       createdAt
@@ -334,6 +338,10 @@ export const updateUnitRKeeperData = /* GraphQL */ `
   mutation UpdateUnitRKeeperData($input: UpdateRKeeperDataInput!) {
     updateUnitRKeeperData(input: $input) {
       id
+      adBanners {
+        imageUrl
+      }
+      adBannersEnabled
       groupId
       chainId
       lastOrderNum
@@ -354,7 +362,6 @@ export const updateUnitRKeeperData = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -486,7 +493,6 @@ export const updateUnitRKeeperData = /* GraphQL */ `
       orderPaymentPolicy
       location {
         lat
-        lng
         lon
       }
       createdAt
@@ -846,6 +852,7 @@ export const createOrder = /* GraphQL */ `
       packagingFeeTaxPercentage
       externalId
       guestLabel
+      currentStatus
       createdAt
       updatedAt
     }
@@ -1016,6 +1023,7 @@ export const createChainProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -1084,6 +1092,7 @@ export const updateChainProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -1152,6 +1161,7 @@ export const deleteChainProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -1210,6 +1220,7 @@ export const createGroupProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -1268,6 +1279,7 @@ export const updateGroupProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -1326,6 +1338,7 @@ export const deleteGroupProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -1586,7 +1599,6 @@ export const createChain = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -1641,7 +1653,6 @@ export const updateChain = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -1696,7 +1707,6 @@ export const deleteChain = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -1730,7 +1740,6 @@ export const createGroup = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -1764,7 +1773,6 @@ export const updateGroup = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -1798,7 +1806,6 @@ export const deleteGroup = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -2108,6 +2115,7 @@ export const updateOrder = /* GraphQL */ `
       packagingFeeTaxPercentage
       externalId
       guestLabel
+      currentStatus
       createdAt
       updatedAt
     }
@@ -2413,6 +2421,7 @@ export const deleteOrder = /* GraphQL */ `
       packagingFeeTaxPercentage
       externalId
       guestLabel
+      currentStatus
       createdAt
       updatedAt
     }
@@ -3211,6 +3220,10 @@ export const deleteUnit = /* GraphQL */ `
   ) {
     deleteUnit(input: $input, condition: $condition) {
       id
+      adBanners {
+        imageUrl
+      }
+      adBannersEnabled
       groupId
       chainId
       lastOrderNum
@@ -3231,7 +3244,6 @@ export const deleteUnit = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -3363,7 +3375,6 @@ export const deleteUnit = /* GraphQL */ `
       orderPaymentPolicy
       location {
         lat
-        lng
         lon
       }
       createdAt

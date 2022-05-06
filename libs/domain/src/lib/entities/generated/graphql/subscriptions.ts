@@ -86,7 +86,6 @@ export const onChainsChange = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -117,7 +116,6 @@ export const onGroupsChange = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -131,6 +129,10 @@ export const onUnitsChange = /* GraphQL */ `
   subscription OnUnitsChange($groupId: ID!) {
     onUnitsChange(groupId: $groupId) {
       id
+      adBanners {
+        imageUrl
+      }
+      adBannersEnabled
       groupId
       chainId
       lastOrderNum
@@ -151,7 +153,6 @@ export const onUnitsChange = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -283,7 +284,6 @@ export const onUnitsChange = /* GraphQL */ `
       orderPaymentPolicy
       location {
         lat
-        lng
         lon
       }
       createdAt
@@ -415,6 +415,7 @@ export const onChainProductChange = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -470,6 +471,7 @@ export const onGroupProductChange = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -902,6 +904,7 @@ export const onOrdersChange = /* GraphQL */ `
       packagingFeeTaxPercentage
       externalId
       guestLabel
+      currentStatus
       createdAt
       updatedAt
     }
@@ -1204,6 +1207,7 @@ export const onOrdersDelete = /* GraphQL */ `
       packagingFeeTaxPercentage
       externalId
       guestLabel
+      currentStatus
       createdAt
       updatedAt
     }
@@ -1581,6 +1585,7 @@ export const onOrderChanged = /* GraphQL */ `
       packagingFeeTaxPercentage
       externalId
       guestLabel
+      currentStatus
       createdAt
       updatedAt
     }
@@ -1883,6 +1888,7 @@ export const onUnitOrdersChange = /* GraphQL */ `
       packagingFeeTaxPercentage
       externalId
       guestLabel
+      currentStatus
       createdAt
       updatedAt
     }
@@ -1948,6 +1954,7 @@ export const onCreateChainProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -2013,6 +2020,7 @@ export const onUpdateChainProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -2078,6 +2086,7 @@ export const onDeleteChainProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -2133,6 +2142,7 @@ export const onCreateGroupProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -2188,6 +2198,7 @@ export const onUpdateGroupProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -2243,6 +2254,7 @@ export const onDeleteGroupProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -2488,7 +2500,6 @@ export const onCreateChain = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -2540,7 +2551,6 @@ export const onUpdateChain = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -2592,7 +2602,6 @@ export const onDeleteChain = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -2623,7 +2632,6 @@ export const onCreateGroup = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -2654,7 +2662,6 @@ export const onUpdateGroup = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -2685,7 +2692,6 @@ export const onDeleteGroup = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -2992,6 +2998,7 @@ export const onUpdateOrder = /* GraphQL */ `
       packagingFeeTaxPercentage
       externalId
       guestLabel
+      currentStatus
       createdAt
       updatedAt
     }
@@ -3294,6 +3301,7 @@ export const onDeleteOrder = /* GraphQL */ `
       packagingFeeTaxPercentage
       externalId
       guestLabel
+      currentStatus
       createdAt
       updatedAt
     }
@@ -4035,6 +4043,10 @@ export const onDeleteUnit = /* GraphQL */ `
   subscription OnDeleteUnit {
     onDeleteUnit {
       id
+      adBanners {
+        imageUrl
+      }
+      adBannersEnabled
       groupId
       chainId
       lastOrderNum
@@ -4055,7 +4067,6 @@ export const onDeleteUnit = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -4187,7 +4198,6 @@ export const onDeleteUnit = /* GraphQL */ `
       orderPaymentPolicy
       location {
         lat
-        lng
         lon
       }
       createdAt

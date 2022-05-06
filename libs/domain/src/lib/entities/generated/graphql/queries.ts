@@ -55,7 +55,6 @@ export const getUnitsNearLocation = /* GraphQL */ `
           location {
             lat
             lng
-            lon
           }
         }
         style {
@@ -141,6 +140,10 @@ export const getUnitsNearLocation = /* GraphQL */ `
         soldOutVisibilityPolicy
         unit {
           id
+          adBanners {
+            imageUrl
+          }
+          adBannersEnabled
           groupId
           chainId
           lastOrderNum
@@ -161,7 +164,6 @@ export const getUnitsNearLocation = /* GraphQL */ `
             location {
               lat
               lng
-              lon
             }
           }
           email
@@ -293,7 +295,6 @@ export const getUnitsNearLocation = /* GraphQL */ `
           orderPaymentPolicy
           location {
             lat
-            lng
             lon
           }
           createdAt
@@ -339,7 +340,6 @@ export const getUnitsNearLocation = /* GraphQL */ `
             location {
               lat
               lng
-              lon
             }
           }
           email
@@ -366,7 +366,6 @@ export const getUnitsNearLocation = /* GraphQL */ `
             location {
               lat
               lng
-              lon
             }
           }
           email
@@ -449,6 +448,7 @@ export const getChainProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -519,6 +519,7 @@ export const listChainProducts = /* GraphQL */ `
         }
         externalId
         dirty
+        deletedAt
         createdAt
         updatedAt
       }
@@ -601,6 +602,7 @@ export const searchChainProducts = /* GraphQL */ `
         }
         externalId
         dirty
+        deletedAt
         createdAt
         updatedAt
       }
@@ -673,6 +675,7 @@ export const getGroupProduct = /* GraphQL */ `
       }
       externalId
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -733,6 +736,7 @@ export const listGroupProducts = /* GraphQL */ `
         }
         externalId
         dirty
+        deletedAt
         createdAt
         updatedAt
       }
@@ -805,6 +809,7 @@ export const searchGroupProducts = /* GraphQL */ `
         }
         externalId
         dirty
+        deletedAt
         createdAt
         updatedAt
       }
@@ -1187,7 +1192,6 @@ export const getChain = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -1244,7 +1248,6 @@ export const listChains = /* GraphQL */ `
           location {
             lat
             lng
-            lon
           }
         }
         email
@@ -1313,7 +1316,6 @@ export const searchChains = /* GraphQL */ `
           location {
             lat
             lng
-            lon
           }
         }
         email
@@ -1361,7 +1363,6 @@ export const getGroup = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -1397,7 +1398,6 @@ export const listGroups = /* GraphQL */ `
           location {
             lat
             lng
-            lon
           }
         }
         email
@@ -1445,7 +1445,6 @@ export const searchGroups = /* GraphQL */ `
           location {
             lat
             lng
-            lon
           }
         }
         email
@@ -1769,6 +1768,7 @@ export const getOrder = /* GraphQL */ `
       packagingFeeTaxPercentage
       externalId
       guestLabel
+      currentStatus
       createdAt
       updatedAt
     }
@@ -2076,6 +2076,7 @@ export const listOrders = /* GraphQL */ `
         packagingFeeTaxPercentage
         externalId
         guestLabel
+        currentStatus
         createdAt
         updatedAt
       }
@@ -2395,6 +2396,7 @@ export const searchOrders = /* GraphQL */ `
         packagingFeeTaxPercentage
         externalId
         guestLabel
+        currentStatus
         createdAt
         updatedAt
       }
@@ -3411,6 +3413,10 @@ export const getUnit = /* GraphQL */ `
   query GetUnit($id: ID!) {
     getUnit(id: $id) {
       id
+      adBanners {
+        imageUrl
+      }
+      adBannersEnabled
       groupId
       chainId
       lastOrderNum
@@ -3431,7 +3437,6 @@ export const getUnit = /* GraphQL */ `
         location {
           lat
           lng
-          lon
         }
       }
       email
@@ -3563,7 +3568,6 @@ export const getUnit = /* GraphQL */ `
       orderPaymentPolicy
       location {
         lat
-        lng
         lon
       }
       createdAt
@@ -3580,6 +3584,10 @@ export const listUnits = /* GraphQL */ `
     listUnits(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        adBanners {
+          imageUrl
+        }
+        adBannersEnabled
         groupId
         chainId
         lastOrderNum
@@ -3600,7 +3608,6 @@ export const listUnits = /* GraphQL */ `
           location {
             lat
             lng
-            lon
           }
         }
         email
@@ -3732,7 +3739,6 @@ export const listUnits = /* GraphQL */ `
         orderPaymentPolicy
         location {
           lat
-          lng
           lon
         }
         createdAt
@@ -3761,6 +3767,10 @@ export const searchUnits = /* GraphQL */ `
     ) {
       items {
         id
+        adBanners {
+          imageUrl
+        }
+        adBannersEnabled
         groupId
         chainId
         lastOrderNum
@@ -3781,7 +3791,6 @@ export const searchUnits = /* GraphQL */ `
           location {
             lat
             lng
-            lon
           }
         }
         email
@@ -3913,7 +3922,6 @@ export const searchUnits = /* GraphQL */ `
         orderPaymentPolicy
         location {
           lat
-          lng
           lon
         }
         createdAt
