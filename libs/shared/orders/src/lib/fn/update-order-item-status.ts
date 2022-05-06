@@ -44,6 +44,7 @@ export const updateOrderItemStatus =
               userId: adminUserId,
             },
           ];
+          input.currentStatus = newOrderStatus;
         }
 
         return deps.crudSdk.UpdateOrder({

@@ -3,14 +3,15 @@
 exports[`UnitFormService createUnit$ should create unit 1`] = `
 Object {
   "data": Object {
+    "adBanners": null,
+    "adBannersEnabled": null,
     "address": Object {
       "address": "Ág u. 1.",
       "city": "Budapest",
       "country": "Magyarország",
       "location": Object {
         "lat": 47,
-        "lng": null,
-        "lon": 19,
+        "lng": 19,
       },
       "postalCode": "1021",
       "title": "HQ",
@@ -44,7 +45,6 @@ Object {
     "lastOrderNum": null,
     "location": Object {
       "lat": 47,
-      "lng": null,
       "lon": 19,
     },
     "merchantId": null,
@@ -288,14 +288,15 @@ Object {
 exports[`UnitFormService updateRKeeperData$ should update the RKeepeR AnyUPP password 1`] = `
 Object {
   "data": Object {
+    "adBanners": null,
+    "adBannersEnabled": null,
     "address": Object {
       "address": "Ág u. 1.",
       "city": "Budapest",
       "country": "Magyarország",
       "location": Object {
         "lat": 47,
-        "lng": null,
-        "lon": 19,
+        "lng": 19,
       },
       "postalCode": "1021",
       "title": "HQ",
@@ -329,7 +330,6 @@ Object {
     "lastOrderNum": null,
     "location": Object {
       "lat": 47,
-      "lng": null,
       "lon": 19,
     },
     "merchantId": null,
@@ -427,14 +427,15 @@ Object {
 exports[`UnitFormService updateRKeeperData$ should update the RKeepeR POS content 1`] = `
 Object {
   "data": Object {
+    "adBanners": null,
+    "adBannersEnabled": null,
     "address": Object {
       "address": "Ág u. 1.",
       "city": "Budapest",
       "country": "Magyarország",
       "location": Object {
         "lat": 47,
-        "lng": null,
-        "lon": 19,
+        "lng": 19,
       },
       "postalCode": "1021",
       "title": "HQ",
@@ -468,7 +469,6 @@ Object {
     "lastOrderNum": null,
     "location": Object {
       "lat": 47,
-      "lng": null,
       "lon": 19,
     },
     "merchantId": null,
@@ -566,14 +566,15 @@ Object {
 exports[`UnitFormService updateUnit$ should update unit 1`] = `
 Object {
   "data": Object {
+    "adBanners": null,
+    "adBannersEnabled": null,
     "address": Object {
       "address": "Ág u. 1.",
       "city": "Budapest",
       "country": "Magyarország",
       "location": Object {
         "lat": 47,
-        "lng": null,
-        "lon": 19,
+        "lng": 19,
       },
       "postalCode": "1021",
       "title": "HQ",
@@ -607,7 +608,6 @@ Object {
     "lastOrderNum": null,
     "location": Object {
       "lat": 47,
-      "lng": null,
       "lon": 19,
     },
     "merchantId": null,

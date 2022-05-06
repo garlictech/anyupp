@@ -9,8 +9,7 @@ Object {
       "country": "Magyarország",
       "location": Object {
         "lat": 0,
-        "lng": null,
-        "lon": 0,
+        "lng": 0,
       },
       "postalCode": "1021",
       "title": "HQ",
@@ -93,8 +92,7 @@ Object {
       "country": "Magyarország",
       "location": Object {
         "lat": 0,
-        "lng": null,
-        "lon": 0,
+        "lng": 0,
       },
       "postalCode": "1021",
       "title": "HQ",
@@ -143,8 +141,7 @@ Object {
     "country": "Magyarország",
     "location": Object {
       "lat": 0,
-      "lng": null,
-      "lon": 0,
+      "lng": 0,
     },
     "postalCode": "1021",
     "title": "HQ",
@@ -194,8 +191,7 @@ Object {
     "country": "Magyarország",
     "location": Object {
       "lat": 0,
-      "lng": null,
-      "lon": 0,
+      "lng": 0,
     },
     "postalCode": "1021",
     "title": "HQ",

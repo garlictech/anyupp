@@ -11,7 +11,6 @@ export const updateOrderPaymentMode =
       deps.crudSdk.UpdateOrder({
         input: {
           id: orderId,
-
           paymentMode,
         },
       }),

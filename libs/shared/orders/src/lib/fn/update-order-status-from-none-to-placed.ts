@@ -41,6 +41,7 @@ export const updateOrderStatusFromNoneToPlaced =
                 userId: adminUserId,
               },
             ],
+            currentStatus: CrudApi.OrderStatus.placed,
           },
         });
       }),

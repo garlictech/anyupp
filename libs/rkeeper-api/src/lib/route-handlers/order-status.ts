@@ -123,6 +123,7 @@ export const updateOrderStatus =
               ts: deps.timestamp(),
             },
           ],
+          currentStatus: state.request.currentState,
           archived: R.includes(state.request.currentState, [
             CrudApi.OrderStatus.failed,
             CrudApi.OrderStatus.served,

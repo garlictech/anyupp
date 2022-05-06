@@ -157,6 +157,7 @@ export const updateOrderState =
               },
             ]
           : undefined,
+        currentStatus: status,
       },
     };
     return deps.crudSdk.UpdateOrder(updateOrderVars).toPromise();

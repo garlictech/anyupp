@@ -133,6 +133,7 @@ const order: CrudApi.Order = {
       ts: 22222,
     },
   ],
+  currentStatus: CrudApi.OrderStatus.none,
   archived: false,
   paymentIntention: 2.3,
   transactionStatus: CrudApi.PaymentStatus.waiting_for_payment,

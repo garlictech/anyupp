@@ -9,11 +9,16 @@ Object {
 
 exports[`Test unit CRUD operations The resolver must hash the anyupp passwords for rkeeper units: CREATE 1`] = `
 Object {
+  "adBanners": null,
+  "adBannersEnabled": null,
   "address": Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": null,
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -46,7 +51,6 @@ Object {
   "lastOrderNum": null,
   "location": Object {
     "lat": 47,
-    "lng": null,
     "lon": 19,
   },
   "merchantId": null,
@@ -141,11 +145,16 @@ Object {
 
 exports[`Test unit CRUD operations The resolver must hash the anyupp passwords for rkeeper units: DELETE 1`] = `
 Object {
+  "adBanners": null,
+  "adBannersEnabled": null,
   "address": Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": null,
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -178,7 +187,6 @@ Object {
   "lastOrderNum": null,
   "location": Object {
     "lat": 47,
-    "lng": null,
     "lon": 19,
   },
   "merchantId": null,
@@ -275,11 +283,16 @@ exports[`Test unit CRUD operations The resolver must hash the anyupp passwords f
 
 exports[`Test unit CRUD operations The resolver must hash the anyupp passwords for rkeeper units: READ 1`] = `
 Object {
+  "adBanners": null,
+  "adBannersEnabled": null,
   "address": Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": null,
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -312,7 +325,6 @@ Object {
   "lastOrderNum": null,
   "location": Object {
     "lat": 47,
-    "lng": null,
     "lon": 19,
   },
   "merchantId": null,
@@ -407,11 +419,16 @@ Object {
 
 exports[`Test unit CRUD operations The resolver must hash the anyupp passwords for rkeeper units: UPDATE 1`] = `
 Object {
+  "adBanners": null,
+  "adBannersEnabled": null,
   "address": Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": null,
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -444,7 +461,6 @@ Object {
   "lastOrderNum": null,
   "location": Object {
     "lat": 47,
-    "lng": null,
     "lon": 19,
   },
   "merchantId": null,
@@ -539,11 +555,16 @@ Object {
 
 exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: CREATE 1`] = `
 Object {
+  "adBanners": null,
+  "adBannersEnabled": null,
   "address": Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": null,
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -576,7 +597,6 @@ Object {
   "lastOrderNum": null,
   "location": Object {
     "lat": 47,
-    "lng": null,
     "lon": 19,
   },
   "merchantId": null,
@@ -662,11 +682,16 @@ Object {
 
 exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: DELETE 1`] = `
 Object {
+  "adBanners": null,
+  "adBannersEnabled": null,
   "address": Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": null,
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -699,7 +724,6 @@ Object {
   "lastOrderNum": null,
   "location": Object {
     "lat": 47,
-    "lng": null,
     "lon": 19,
   },
   "merchantId": null,
@@ -787,11 +811,16 @@ exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: RE-READ
 
 exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: READ 1`] = `
 Object {
+  "adBanners": null,
+  "adBannersEnabled": null,
   "address": Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": null,
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -824,7 +853,6 @@ Object {
   "lastOrderNum": null,
   "location": Object {
     "lat": 47,
-    "lng": null,
     "lon": 19,
   },
   "merchantId": null,
@@ -910,11 +938,16 @@ Object {
 
 exports[`Test unit CRUD operations Unit shoud be able to CRUD on server: UPDATE 1`] = `
 Object {
+  "adBanners": null,
+  "adBannersEnabled": null,
   "address": Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": null,
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -947,7 +980,6 @@ Object {
   "lastOrderNum": null,
   "location": Object {
     "lat": 47,
-    "lng": null,
     "lon": 19,
   },
   "merchantId": null,
@@ -1037,6 +1069,10 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -1129,11 +1165,16 @@ Object {
 
 exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: DELETE 1`] = `
 Object {
+  "adBanners": null,
+  "adBannersEnabled": null,
   "address": Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": null,
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -1166,7 +1207,6 @@ Object {
   "lastOrderNum": null,
   "location": Object {
     "lat": 47,
-    "lng": null,
     "lon": 19,
   },
   "merchantId": null,
@@ -1254,11 +1294,16 @@ exports[`Test unit CRUD operations Unit should be able to CRUD with direct resol
 
 exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: READ 1`] = `
 Object {
+  "adBanners": null,
+  "adBannersEnabled": null,
   "address": Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
-    "location": null,
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },
@@ -1291,7 +1336,6 @@ Object {
   "lastOrderNum": null,
   "location": Object {
     "lat": 47,
-    "lng": null,
     "lon": 19,
   },
   "merchantId": null,
@@ -1381,6 +1425,10 @@ Object {
     "address": "Ág u. 1.",
     "city": "Budapest",
     "country": "Magyarország",
+    "location": Object {
+      "lat": 47,
+      "lng": 19,
+    },
     "postalCode": "1021",
     "title": "HQ",
   },

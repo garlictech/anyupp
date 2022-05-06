@@ -15,5 +15,6 @@ export const updateOrderStatus =
             userId: adminUserId,
           },
         ],
+        currentStatus: status,
       },
     });

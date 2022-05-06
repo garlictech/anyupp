@@ -41,6 +41,7 @@ export const recallOrderFromHistory =
                     userId: adminUserId,
                   },
                 ],
+                currentStatus: CrudApi.OrderStatus.ready,
                 transactionStatus: CrudApi.PaymentStatus.waiting_for_payment,
               },
             })
