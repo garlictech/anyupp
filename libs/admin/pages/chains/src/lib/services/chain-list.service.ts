@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { PAGINATION_LIMIT } from '@bgap/admin/shared/data-access/ngrx-data';
 
 import { ChainCollectionService } from '@bgap/admin/store/chains';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class ChainListService {
@@ -19,10 +20,16 @@ export class ChainListService {
       this._working = true;
 
       this._chainCollectionService
-        .getCachedPaginatedData$({
-          limit: PAGINATION_LIMIT,
-          nextToken: this._nextToken,
-        })
+        .getCurrentUserChainFilter$()
+        .pipe(
+          switchMap(filter =>
+            this._chainCollectionService.getCachedPaginatedData$({
+              limit: PAGINATION_LIMIT,
+              nextToken: this._nextToken,
+              filter,
+            }),
+          ),
+        )
         .subscribe(result => {
           this._nextToken = result?.nextToken || undefined;
           this._working = false;

@@ -23,8 +23,8 @@ export const orderEntitySelectors =
 export const orderHistoryEntitySelectors =
   new EntitySelectorsFactory().create<CrudApi.Order>(ENTITY_NAME.ORDER_HISTORY);
 
-export const getSelectedActiveOrder = () => {
-  return createSelector(
+export const getSelectedActiveOrder = () =>
+  createSelector(
     getSelectedOrderId,
     orderEntitySelectors.selectFilteredEntities,
     (
@@ -36,10 +36,9 @@ export const getSelectedActiveOrder = () => {
       );
     },
   );
-};
 
-export const getSelectedHistoryOrder = () => {
-  return createSelector(
+export const getSelectedHistoryOrder = () =>
+  createSelector(
     getSelectedOrderId,
     orderHistoryEntitySelectors.selectEntities,
     (
@@ -51,7 +50,6 @@ export const getSelectedHistoryOrder = () => {
       );
     },
   );
-};
 
 export const getSettings = createSelector(
   getDashboardState,

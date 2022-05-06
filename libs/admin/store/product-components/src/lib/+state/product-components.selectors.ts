@@ -8,8 +8,8 @@ export const productComponentEntitySelectors =
     ENTITY_NAME.PRODUCT_COMPONENT,
   );
 
-export const getProductComponentById = (id: string) => {
-  return createSelector(
+export const getProductComponentById = (id: string) =>
+  createSelector(
     productComponentEntitySelectors.selectEntities,
     (
       productComponents: CrudApi.ProductComponent[],
@@ -18,4 +18,3 @@ export const getProductComponentById = (id: string) => {
         (productComponent): boolean => productComponent.id === id,
       ),
   );
-};

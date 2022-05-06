@@ -95,6 +95,7 @@ const routes: Routes = [
       },
       {
         path: 'admins',
+        canActivateChild: [AuthGuard],
         loadChildren: () =>
           import('@bgap/admin/pages/admin-users').then(
             m => m.AdminPagesAdminUsersModule,

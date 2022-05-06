@@ -1,8 +1,9 @@
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, map, take } from 'rxjs/operators';
 
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { environment } from '@bgap/admin/shared/config';
 import { MENU_ROLES } from '@bgap/admin/shared/utils';
+import { appCoreSelectors } from '@bgap/admin/store/app-core';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import * as CrudApi from '@bgap/crud-gql/api';
 import {} from '@bgap/shared/types';
@@ -107,26 +108,43 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       )
       .subscribe(adminUser => {
         this.adminUser = adminUser;
-
         this.menu = [];
-        Object.values(menuItems).forEach((menuItem): void => {
-          // if (menuItem.roles.includes(role || CrudApi.Role.inactive)) {
-          this.menu.push({
-            ...menuItem,
-            title: this._translateService.instant(menuItem.title),
-          });
-          // }
+
+        Object.values(menuItems).forEach(async menuItem => {
+          if (await this._allowAddMenu(adminUser, menuItem.title)) {
+            this.menu.push({
+              ...menuItem,
+              title: this._translateService.instant(menuItem.title),
+            });
+          }
         });
 
         this._changeDetectorRef.detectChanges();
       });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     // untilDestroyed uses it.
   }
 
-  public reloadWindow(): void {
+  public reloadWindow() {
     window.location.reload();
+  }
+
+  private async _allowAddMenu(
+    adminUser: CrudApi.AdminUser,
+    menuItemTitle: string,
+  ) {
+    if (menuItemTitle !== 'menu.admins') {
+      return true;
+    }
+
+    return await this._store
+      .select(appCoreSelectors.getChainRestrictionsByUserId(adminUser?.id))
+      .pipe(
+        map(restrictions => restrictions.length === 0),
+        take(1),
+      )
+      .toPromise();
   }
 }

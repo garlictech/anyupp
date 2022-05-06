@@ -18,8 +18,8 @@ export const getSelectedChain = createSelector(
     chains.find((chain): boolean => chain.id === userSettings?.selectedChainId),
 );
 
-export const getAllChainOptions = () => {
-  return createSelector(
+export const getAllChainOptions = () =>
+  createSelector(
     chainEntitySelectors.selectEntities,
     (chains: CrudApi.Chain[]): KeyValue[] =>
       (chains || []).map(chain => ({
@@ -27,4 +27,3 @@ export const getAllChainOptions = () => {
         value: chain.name,
       })),
   );
-};

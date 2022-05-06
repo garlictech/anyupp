@@ -127,9 +127,8 @@ export const getUnitProductLaneIds = createSelector(
     ),
 );
 
-export const getGeneratedProductImageById = (id: string) => {
-  return createSelector(
+export const getGeneratedProductImageById = (id: string) =>
+  createSelector(
     generatedProductEntitySelectors.selectEntities,
     products => products.find(product => product.id === id)?.image || '',
   );
-};

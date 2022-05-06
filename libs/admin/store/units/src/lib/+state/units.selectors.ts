@@ -7,13 +7,12 @@ import { createSelector } from '@ngrx/store';
 export const unitEntitySelectors =
   new EntitySelectorsFactory().create<CrudApi.Unit>(ENTITY_NAME.UNIT);
 
-export const getUnitById = (id: string) => {
-  return createSelector(
+export const getUnitById = (id: string) =>
+  createSelector(
     unitEntitySelectors.selectEntities,
     (units: CrudApi.Unit[]): CrudApi.Unit | undefined =>
       units.find((unit): boolean => unit.id === id),
   );
-};
 
 export const getSelectedUnit = createSelector(
   loggedUserSelectors.getLoggedUserSettings,

@@ -22,10 +22,9 @@ export const getUsersEntities = createSelector(
   (state: UsersState) => selectEntities(state),
 );
 
-export const getUserById = (id: string) => {
-  return createSelector(
+export const getUserById = (id: string) =>
+  createSelector(
     getAllUsers,
     (users: CrudApi.User[]): CrudApi.User | undefined =>
       users.find((user): boolean => user.id === id),
   );
-};

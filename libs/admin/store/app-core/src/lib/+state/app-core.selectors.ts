@@ -14,3 +14,9 @@ export const getClosableDialog = createSelector(
   getAppCoreState,
   (state: AppCoreState) => state.closableDialog,
 );
+
+export const getChainRestrictionsByUserId = (id: string) =>
+  createSelector(
+    getAppCoreState,
+    (state: AppCoreState) => state.chainRestrictions[id] || [],
+  );

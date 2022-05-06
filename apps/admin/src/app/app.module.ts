@@ -5,7 +5,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeEnGb from '@angular/common/locales/en-GB';
 import localeHu from '@angular/common/locales/hu';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '@bgap/admin/shared/config';
@@ -36,6 +36,7 @@ import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found.component';
 import { EntityDataModule } from '@ngrx/data';
 import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
+import { AppInitializerService } from '@bgap/admin/shared/data-access/data';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -70,6 +71,9 @@ registerLocaleData(localeEnGb);
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+export const initApp = (settingsService: AppInitializerService) => () =>
+  settingsService.init$();
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent],
@@ -113,5 +117,13 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     }),
   ],
   bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initApp,
+      deps: [AppInitializerService],
+      multi: true,
+    },
+  ],
 })
 export class AppModule {}

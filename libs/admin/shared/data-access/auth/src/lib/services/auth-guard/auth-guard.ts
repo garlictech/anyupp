@@ -1,19 +1,30 @@
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { defer, iif, Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { Injectable, NgZone } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { DataService } from '@bgap/admin/shared/data-access/data';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { AuthenticatedCognitoUser } from '@bgap/shared/types';
 
 import { CognitoService } from '../cognito/cognito.service';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
+import { Store } from '@ngrx/store';
+import { filterNullish } from '@bgap/shared/utils';
+import { appCoreSelectors } from '@bgap/admin/store/app-core';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(
+    private _store: Store,
     private _router: Router,
     private _ngZone: NgZone,
     private _cognitoService: CognitoService,
@@ -37,6 +48,24 @@ export class AuthGuard implements CanActivate {
 
         return true;
       }),
+    );
+  }
+
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return iif(
+      () => state.url === '/admin/admins',
+      defer(() =>
+        this._store.select(loggedUserSelectors.getLoggedUser).pipe(
+          filterNullish(),
+          switchMap(loggedUser =>
+            this._store.select(
+              appCoreSelectors.getChainRestrictionsByUserId(loggedUser?.id),
+            ),
+          ),
+          map(chainRestrictions => chainRestrictions.length === 0),
+        ),
+      ),
+      defer(() => of(true)),
     );
   }
 }

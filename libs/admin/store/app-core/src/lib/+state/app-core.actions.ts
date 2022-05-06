@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { TempChainRestrictionObject } from './app-core.reducer';
 
 export const gqlFailure = createAction(
   '[App Core] GQL failure',
@@ -18,4 +19,10 @@ export const successAlert = createAction(
 export const setClosableDialog = createAction(
   '[App Core] Set closable dialog',
   props<{ closableDialog: boolean }>(),
+);
+
+// TEMP SECURITY
+export const setChainRestrictionObject = createAction(
+  '[App Core] Set chain restriction object',
+  props<{ chainRestrictions: TempChainRestrictionObject }>(),
 );

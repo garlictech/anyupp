@@ -8,30 +8,27 @@ import { createSelector } from '@ngrx/store';
 export const orderEntitySelectors =
   new EntitySelectorsFactory().create<CrudApi.Order>(ENTITY_NAME.ORDER);
 
-export const getActiveOrderById = (id: string) => {
-  return createSelector(
+export const getActiveOrderById = (id: string) =>
+  createSelector(
     orderEntitySelectors.selectFilteredEntities,
     (orders: CrudApi.Order[]): CrudApi.Order | undefined =>
       orders.find((order): boolean => order.id === id),
   );
-};
 
-export const getActiveOrdersByUserId = (userId: string) => {
-  return createSelector(orderEntitySelectors.selectFilteredEntities, orders =>
+export const getActiveOrdersByUserId = (userId: string) =>
+  createSelector(orderEntitySelectors.selectFilteredEntities, orders =>
     orders.filter((order): boolean => order.userId === userId),
   );
-};
 
-export const getActiveOrdersCountByUserId = (userId: string) => {
-  return createSelector(
+export const getActiveOrdersCountByUserId = (userId: string) =>
+  createSelector(
     orderEntitySelectors.selectFilteredEntities,
     orders =>
       (orders.filter((order): boolean => order.userId === userId) || []).length,
   );
-};
 
-export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) => {
-  return createSelector(orderEntitySelectors.selectFilteredEntities, orders => {
+export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) =>
+  createSelector(orderEntitySelectors.selectFilteredEntities, orders => {
     const laneOrderItems: CrudApi.OrderItem[] = [];
 
     orders.forEach(order => {
@@ -61,4 +58,3 @@ export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) => {
 
     return laneOrderItems;
   });
-};

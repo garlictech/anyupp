@@ -5,13 +5,21 @@ import * as appCoreActions from './app-core.actions';
 
 export const APP_CORE_FEATURE_KEY = 'appCore';
 
+// TEMP SECURITY
+export interface TempChainRestrictionObject {
+  [userId: string]: string[];
+}
+
 export interface AppCoreState {
   loginContextFailure?: boolean;
   closableDialog: boolean;
+  // TEMP SECURITY
+  chainRestrictions: TempChainRestrictionObject;
 }
 
 export const initialAppCoreState: AppCoreState = {
   closableDialog: false,
+  chainRestrictions: {},
 };
 
 const reducer = createReducer(
@@ -24,6 +32,14 @@ const reducer = createReducer(
     ...state,
     closableDialog,
   })),
+  // TEMP SECURITY
+  on(
+    appCoreActions.setChainRestrictionObject,
+    (state, { chainRestrictions }) => ({
+      ...state,
+      chainRestrictions,
+    }),
+  ),
 );
 
 export function appCoreReducer(
