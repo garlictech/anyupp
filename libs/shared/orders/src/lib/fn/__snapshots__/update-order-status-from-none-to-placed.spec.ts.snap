@@ -2,6 +2,7 @@
 
 exports[`updateOrderStatusFromNoneToPlaced test should update inprogress order status from none to placed 1`] = `
 Object {
+  "currentStatus": "placed",
   "id": "test_order_1_id",
   "items": Array [
     Object {
@@ -50,6 +51,7 @@ Object {
 
 exports[`updateOrderStatusFromNoneToPlaced test should update new order status from none to placed 1`] = `
 Object {
+  "currentStatus": "placed",
   "id": "test_order_1_id",
   "items": Array [
     Object {

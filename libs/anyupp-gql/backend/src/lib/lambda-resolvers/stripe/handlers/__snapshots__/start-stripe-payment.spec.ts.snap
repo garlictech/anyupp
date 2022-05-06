@@ -350,6 +350,7 @@ Array [
   Array [
     Object {
       "input": Object {
+        "currentStatus": undefined,
         "id": "ORDER_ID",
         "items": Array [],
         "statusLog": undefined,

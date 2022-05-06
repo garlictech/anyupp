@@ -2,6 +2,7 @@
 
 exports[`updateOrderItemStatus test should update order item status 1`] = `
 Object {
+  "currentStatus": "processing",
   "id": "test_order_1_id",
   "items": Array [
     Object {
