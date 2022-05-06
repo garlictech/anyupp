@@ -2,9 +2,10 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/orders/orders.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
@@ -116,9 +117,8 @@ class CurrentOrderCardWidget extends StatelessWidget {
                       Text(
                         trans(
                             context,
-                            order.orderPolicy == OrderPolicy.full
-                                ? 'orders.infos.status.${enumToString(status)!}.title'
-                                : 'orders.infos.status.simplified.title'),
+                            getOrderStatusTitleKeyByPolicy(
+                                order.orderPolicy, status)),
                         style: Fonts.satoshi(
                           fontSize: 14.0,
                           color: theme.secondary,

@@ -16,3 +16,17 @@ bool shouldDisplayRating(Order order) {
 
   return true;
 }
+
+String getOrderStatusTitleKeyByPolicy(
+  OrderPolicy? policy,
+  OrderStatus status,
+) {
+  String key = 'orders.infos.status.${enumToString(status)!}.title';
+  if ((policy == OrderPolicy.placeOnly ||
+          policy == OrderPolicy.placeWithPaymentType) &&
+      status != OrderStatus.none) {
+    key = 'orders.infos.status.simplified.title';
+  }
+
+  return key;
+}
