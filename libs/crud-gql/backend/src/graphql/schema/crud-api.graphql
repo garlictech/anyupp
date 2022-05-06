@@ -541,6 +541,8 @@ type Order
   externalId: String
   guestLabel: String
   currentStatus: OrderStatus
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 input CreateOrderInput {
