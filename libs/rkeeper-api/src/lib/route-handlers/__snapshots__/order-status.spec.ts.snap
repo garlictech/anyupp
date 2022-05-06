@@ -270,6 +270,7 @@ Array [
     Object {
       "input": Object {
         "archived": true,
+        "currentStatus": "served",
         "id": "ORDER ID",
         "statusLog": Array [
           "CURRENT STATUSLOG",
@@ -298,6 +299,7 @@ Array [
     Object {
       "input": Object {
         "archived": true,
+        "currentStatus": "failed",
         "id": "ORDER ID",
         "statusLog": Array [
           "CURRENT STATUSLOG",
@@ -326,6 +328,7 @@ Array [
     Object {
       "input": Object {
         "archived": false,
+        "currentStatus": "ready",
         "id": "ORDER ID",
         "statusLog": Array [
           "CURRENT STATUSLOG",
@@ -354,6 +357,7 @@ Array [
     Object {
       "input": Object {
         "archived": true,
+        "currentStatus": "served",
         "id": "ORDER ID",
         "statusLog": Array [
           "CURRENT STATUSLOG",
@@ -382,6 +386,7 @@ Array [
     Object {
       "input": Object {
         "archived": true,
+        "currentStatus": "served",
         "id": "ORDER ID",
         "statusLog": Array [
           "CURRENT STATUSLOG",
