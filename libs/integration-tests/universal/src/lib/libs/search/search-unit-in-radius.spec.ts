@@ -40,6 +40,10 @@ beforeAll(done => {
               country: 'COUNTRY',
               postalCode: 'POSTALCODE',
               title: 'TITLE',
+              location: {
+                lat: 47,
+                lng: 19,
+              },
             },
             chainId: 'CHAINID',
             groupId: 'GROUPID',

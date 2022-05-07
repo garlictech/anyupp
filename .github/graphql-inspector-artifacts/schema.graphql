@@ -1135,7 +1135,7 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationLatLngInput
+  location: LocationLatLngInput!
 }
 
 input LocalizedItemInput {
@@ -2285,6 +2285,8 @@ input ModelOrderFilterInput {
   externalId: ModelStringInput
   guestLabel: ModelStringInput
   currentStatus: ModelOrderStatusInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
   and: [ModelOrderFilterInput]
   or: [ModelOrderFilterInput]
   not: ModelOrderFilterInput
@@ -2311,6 +2313,8 @@ input ModelOrderConditionInput {
   externalId: ModelStringInput
   guestLabel: ModelStringInput
   currentStatus: ModelOrderStatusInput
+  createdAt: ModelStringInput
+  updatedAt: ModelStringInput
   and: [ModelOrderConditionInput]
   or: [ModelOrderConditionInput]
   not: ModelOrderConditionInput
@@ -2354,6 +2358,8 @@ input UpdateOrderInput {
   externalId: String
   guestLabel: String
   currentStatus: OrderStatus
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
 }
 
 type ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools {

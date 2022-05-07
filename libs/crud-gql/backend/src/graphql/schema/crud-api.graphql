@@ -1168,7 +1168,7 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationLatLngInput
+  location: LocationLatLngInput!
 }
 
 input LocalizedItemInput {

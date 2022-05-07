@@ -141,6 +141,10 @@ const unitNoRkeeper: CrudApi.CreateUnitInput = {
     country: 'Magyarország',
     title: 'HQ',
     postalCode: '1021',
+    location: {
+      lat: 47,
+      lng: 19,
+    },
   },
   orderPaymentPolicy: CrudApi.OrderPaymentPolicy.prepay,
   paymentModes: [
