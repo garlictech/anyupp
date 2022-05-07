@@ -696,6 +696,7 @@ type ProductComponent @aws_iam @aws_cognito_user_pools {
   externalId: String
   dirty: Boolean
   soldOut: Boolean
+  deletedAt: AWSDateTime
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -711,6 +712,7 @@ type ProductComponentSet @aws_iam @aws_cognito_user_pools {
   maxSelection: Int
   supportedServingModes: [ServingMode!]
   dirty: Boolean
+  deletedAt: AWSDateTime
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2413,6 +2415,7 @@ input ModelProductComponentFilterInput {
   externalId: ModelStringInput
   dirty: ModelBooleanInput
   soldOut: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelProductComponentFilterInput]
   or: [ModelProductComponentFilterInput]
   not: ModelProductComponentFilterInput
@@ -2425,6 +2428,7 @@ input ModelProductComponentConditionInput {
   externalId: ModelStringInput
   dirty: ModelBooleanInput
   soldOut: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelProductComponentConditionInput]
   or: [ModelProductComponentConditionInput]
   not: ModelProductComponentConditionInput
@@ -2439,6 +2443,7 @@ input CreateProductComponentInput {
   externalId: String
   dirty: Boolean
   soldOut: Boolean
+  deletedAt: AWSDateTime
 }
 
 input UpdateProductComponentInput {
@@ -2450,6 +2455,7 @@ input UpdateProductComponentInput {
   externalId: String
   dirty: Boolean
   soldOut: Boolean
+  deletedAt: AWSDateTime
 }
 
 input DeleteProductComponentInput {
@@ -2471,6 +2477,7 @@ input ModelProductComponentSetFilterInput {
   maxSelection: ModelIntInput
   supportedServingModes: ModelServingModeListInput
   dirty: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelProductComponentSetFilterInput]
   or: [ModelProductComponentSetFilterInput]
   not: ModelProductComponentSetFilterInput
@@ -2485,6 +2492,7 @@ input ModelProductComponentSetConditionInput {
   maxSelection: ModelIntInput
   supportedServingModes: ModelServingModeListInput
   dirty: ModelBooleanInput
+  deletedAt: ModelStringInput
   and: [ModelProductComponentSetConditionInput]
   or: [ModelProductComponentSetConditionInput]
   not: ModelProductComponentSetConditionInput
@@ -2501,6 +2509,7 @@ input CreateProductComponentSetInput {
   maxSelection: Int
   supportedServingModes: [ServingMode!]
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 input UpdateProductComponentSetInput {
@@ -2514,6 +2523,7 @@ input UpdateProductComponentSetInput {
   maxSelection: Int
   supportedServingModes: [ServingMode!]
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 input DeleteProductComponentSetInput {
@@ -3676,6 +3686,7 @@ input SearchableProductComponentFilterInput {
   externalId: SearchableStringFilterInput
   dirty: SearchableBooleanFilterInput
   soldOut: SearchableBooleanFilterInput
+  deletedAt: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   allergens: SearchableStringFilterInput
@@ -3691,6 +3702,7 @@ enum SearchableProductComponentSortableFields {
   externalId
   dirty
   soldOut
+  deletedAt
   createdAt
   updatedAt
 }
@@ -3708,6 +3720,7 @@ enum SearchableProductComponentAggregateField {
   externalId
   dirty
   soldOut
+  deletedAt
   createdAt
   updatedAt
 }
@@ -3727,6 +3740,7 @@ input SearchableProductComponentSetFilterInput {
   items: SearchableIDFilterInput
   maxSelection: SearchableIntFilterInput
   dirty: SearchableBooleanFilterInput
+  deletedAt: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
@@ -3744,6 +3758,7 @@ enum SearchableProductComponentSetSortableFields {
   items
   maxSelection
   dirty
+  deletedAt
   createdAt
   updatedAt
 }
@@ -3763,6 +3778,7 @@ enum SearchableProductComponentSetAggregateField {
   maxSelection
   supportedServingModes
   dirty
+  deletedAt
   createdAt
   updatedAt
 }

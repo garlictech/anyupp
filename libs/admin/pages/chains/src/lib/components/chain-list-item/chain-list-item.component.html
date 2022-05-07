@@ -2,6 +2,7 @@
   <bgap-user-block
     class="float-start d-block"
     [name]="chain.name"
+    [id]="chain?.id"
     [title]="chain.description | localize"
     [picture]="(chainLogo || '' | awsStoragePath) || ''"
     (onNameClick)="editChain()"

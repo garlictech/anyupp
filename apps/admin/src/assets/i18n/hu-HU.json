@@ -292,12 +292,13 @@
     "newProductCategory": "Új kategória"
   },
   "productComponents": {
+    "addProductComponent": "Termék komponens hozzáadása",
     "editProductComponent": "Termék komponens szerkesztése",
-    "newProductComponent": "Új termék komponens"
+    "newProductComponent": "Új termék komponens",
+    "confirmDeleteProductComponent": "Biztosan törlöd a termék komponenst?"
   },
   "productComponentSets": {
-    "addProductComponent": "Termék komponens hozzáadása",
-    "addProductComponentSet": "Módosító vagy extra hozzáadása",
+    "addProductComponentSet": "Termék komponens készlet hozzáadása",
     "editProductComponentSet": "Termék komponens készlet szerkesztése",
     "newProductComponentSet": "Új termék komponens készlet",
     "productComponent": "Termék komponens",
@@ -306,7 +307,8 @@
       "extras": "Extrák",
       "modifier": "Módosító"
     },
-    "maxSelection": "Max. kiválaszható elem"
+    "maxSelection": "Max. kiválaszható elem",
+    "confirmDeleteProductComponentSet": "Biztosan törlöd a termék komponens készletet?"
   },
   "modifiersAndExtras": {
     "listTitle": "Módosítók és extrák",

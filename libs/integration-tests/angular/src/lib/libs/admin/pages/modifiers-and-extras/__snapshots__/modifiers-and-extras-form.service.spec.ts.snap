@@ -12,6 +12,7 @@ Object {
     ],
     "chainId": "chainId",
     "createdAt": Any<String>,
+    "deletedAt": null,
     "description": "DESCRIPTION",
     "dirty": null,
     "externalId": null,
@@ -47,6 +48,7 @@ Object {
   "data": Object {
     "chainId": "chainId",
     "createdAt": Any<String>,
+    "deletedAt": null,
     "description": "DESCRIPTION",
     "dirty": null,
     "externalId": null,
@@ -78,6 +80,7 @@ Object {
     ],
     "chainId": "chainId MOD",
     "createdAt": Any<String>,
+    "deletedAt": null,
     "description": "DESCRIPTION",
     "dirty": null,
     "externalId": null,
@@ -99,6 +102,7 @@ Object {
   "data": Object {
     "chainId": "chainId MOD",
     "createdAt": Any<String>,
+    "deletedAt": null,
     "description": "DESCRIPTION",
     "dirty": null,
     "externalId": null,

@@ -1,11 +1,15 @@
-import { combineLatest, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { combineLatest, defer, iif, Observable, of } from 'rxjs';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { PAGINATION_LIMIT } from '@bgap/admin/shared/data-access/ngrx-data';
+import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { ProductComponentSetCollectionService } from '@bgap/admin/store/product-component-sets';
 import { ProductComponentCollectionService } from '@bgap/admin/store/product-components';
+import { filterNullish } from '@bgap/shared/utils';
+import { NbDialogService } from '@nebular/theme';
 import { Store } from '@ngrx/store';
 
 interface CS<T> {
@@ -29,6 +33,8 @@ export class ModifiersAndExtrasListService {
     private _store: Store,
     private _productComponentCollectionService: ProductComponentCollectionService,
     private _productComponentSetCollectionService: ProductComponentSetCollectionService,
+    private _nbDialogService: NbDialogService,
+    private _crudSdk: CrudSdkService,
   ) {
     this._store
       .select(loggedUserSelectors.getSelectedChainId)
@@ -62,6 +68,7 @@ export class ModifiersAndExtrasListService {
           nextToken: this._nextToken.component,
           filter: {
             chainId: { eq: this._selectedChainId },
+            deletedAt: { exists: false },
           },
         })
         .subscribe(result => {
@@ -81,6 +88,7 @@ export class ModifiersAndExtrasListService {
           nextToken: this._nextToken.componentSet,
           filter: {
             chainId: { eq: this._selectedChainId },
+            deletedAt: { exists: false },
           },
         })
         .subscribe(result => {
@@ -88,5 +96,87 @@ export class ModifiersAndExtrasListService {
           this._working.componentSet = false;
         });
     }
+  }
+
+  public deleteProductComponent(id: string) {
+    // no childcheck
+    this._acceptDeletion$('productComponents.confirmDeleteProductComponent')
+      .pipe(
+        switchMap(accepted =>
+          iif(
+            () => accepted,
+            defer(() =>
+              this._crudSdk.sdk.UpdateProductComponent({
+                input: { id, deletedAt: new Date().toISOString() },
+              }),
+            ).pipe(
+              filterNullish(),
+              tap(productComponent => {
+                this._productComponentCollectionService.removeOneFromCache(
+                  productComponent,
+                );
+              }),
+            ),
+            of(undefined),
+          ),
+        ),
+        take(1),
+      )
+      .subscribe();
+  }
+
+  public deleteProductComponentSet(id: string) {
+    // no childcheck
+    this._acceptDeletion$(
+      'productComponentSets.confirmDeleteProductComponentSet',
+    )
+      .pipe(
+        switchMap(accepted =>
+          iif(
+            () => accepted,
+            defer(() =>
+              this._crudSdk.sdk.UpdateProductComponentSet({
+                input: { id, deletedAt: new Date().toISOString() },
+              }),
+            ).pipe(
+              filterNullish(),
+              tap(productComponentSet => {
+                this._productComponentSetCollectionService.removeOneFromCache(
+                  productComponentSet,
+                );
+              }),
+            ),
+            of(undefined),
+          ),
+        ),
+        take(1),
+      )
+      .subscribe();
+  }
+
+  private _acceptDeletion$(message: string) {
+    const dialog = this._nbDialogService.open(ConfirmDialogComponent);
+
+    return new Observable<boolean>(observer => {
+      dialog.componentRef.instance.options = {
+        message,
+        buttons: [
+          {
+            label: 'common.ok',
+            callback: () => {
+              observer.next(true);
+            },
+            status: 'success',
+          },
+          {
+            label: 'common.cancel',
+            status: 'basic',
+            callback: () => {
+              observer.next(false);
+            },
+          },
+        ],
+      };
+    });
   }
 }

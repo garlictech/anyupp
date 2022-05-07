@@ -7,8 +7,22 @@
     ></bgap-status-led>
   </div>
   <div class="caption">{{ productComponent.description }}</div>
+  <div class="caption">ID: {{ productComponent?.id }}</div>
   <bgap-allergens [allergens]="productComponent.allergens"></bgap-allergens>
 </div>
+
+<button
+  nbButton
+  status="danger"
+  shape="round"
+  size="tiny"
+  class="float-right ms-2"
+  (click)="deleteProductComponent(productComponent?.id || '')"
+  [title]="'products.extendProduct' | translate"
+>
+  <nb-icon icon="delete" pack="material-icons"></nb-icon>
+  {{ 'common.delete' | translate }}
+</button>
 
 <button
   nbButton

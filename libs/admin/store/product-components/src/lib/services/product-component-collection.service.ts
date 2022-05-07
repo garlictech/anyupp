@@ -36,6 +36,7 @@ export class ProductComponentCollectionService extends BaseCollectionService<Cru
           this.getAllCachedPaginatedData$({
             filter: {
               chainId: { eq: selectedChainId },
+              deletedAt: { exists: false },
             },
           }),
         ),

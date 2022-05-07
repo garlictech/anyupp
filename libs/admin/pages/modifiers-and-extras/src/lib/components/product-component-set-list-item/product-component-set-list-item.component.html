@@ -1,8 +1,9 @@
 <div class="float-start">
-  <div class="subtitle-2" role="button" (click)="editProductComponent()">
+  <div class="subtitle-2" role="button" (click)="editProductComponentSet()">
     {{ productComponentSet.name | localize }}
   </div>
   <div class="caption">{{ productComponentSet.description }}</div>
+  <div class="caption">ID: {{ productComponentSet?.id }}</div>
   <div class="caption mt-1">
     {{ 'productComponentSets.type.' + productComponentSet.type | translate }}
   </div>
@@ -10,11 +11,24 @@
 
 <button
   nbButton
+  status="danger"
+  shape="round"
+  size="tiny"
+  class="float-right ms-2"
+  (click)="deleteProductComponentSet(productComponentSet?.id || '')"
+  [title]="'products.extendProduct' | translate"
+>
+  <nb-icon icon="delete" pack="material-icons"></nb-icon>
+  {{ 'common.delete' | translate }}
+</button>
+
+<button
+  nbButton
   shape="round"
   size="tiny"
   class="float-right"
   [title]="'common.edit' | translate"
-  (click)="editProductComponent()"
+  (click)="editProductComponentSet()"
 >
   <nb-icon icon="edit" pack="material-icons"></nb-icon>
   {{ 'common.edit' | translate }}

@@ -293,7 +293,8 @@
   },
   "productComponents": {
     "editProductComponent": "Edit product component",
-    "newProductComponent": "New product component"
+    "newProductComponent": "New product component",
+    "confirmDeleteProductComponent": "Are you sure you delete the product component?"
   },
   "productComponentSets": {
     "addProductComponent": "Add product component",
@@ -306,7 +307,8 @@
       "extras": "Extras",
       "modifier": "Modifier"
     },
-    "maxSelection": "Max selection"
+    "maxSelection": "Max selection",
+    "confirmDeleteProductComponentSet": "Are you sure you delete the product component set?"
   },
   "modifiersAndExtras": {
     "listTitle": "Modifiers and Extras",

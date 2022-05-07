@@ -18,6 +18,7 @@ export class UserBlockComponent implements OnInit {
   @Input() name?: string;
   @Input() title?: string;
   @Input() picture?: string;
+  @Input() id?: string;
   @Output() onNameClick = new EventEmitter();
 
   public initials = '';

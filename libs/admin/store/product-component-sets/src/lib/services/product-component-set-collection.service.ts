@@ -36,6 +36,7 @@ export class ProductComponentSetCollectionService extends BaseCollectionService<
           this.getAllCachedPaginatedData$({
             filter: {
               chainId: { eq: selectedChainId },
+              deletedAt: { exists: false },
             },
           }),
         ),

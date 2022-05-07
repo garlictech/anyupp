@@ -1,6 +1,7 @@
 <bgap-user-block
   class="float-start d-block"
   [name]="productCategory.name | localize"
+  [id]="productCategory?.id"
   [title]="productCategory.description | localize"
   [picture]="(productCategory.image || '' | awsStoragePath) || ''"
   (onNameClick)="editProductCategory()"

@@ -1,6 +1,7 @@
 <bgap-user-block
   class="float-start d-block"
   [name]="product?.name | localize"
+  [id]="product?.id"
   [title]="product?.description | localize"
   [picture]="(product?.image || '' | awsStoragePath) || ''"
   (onNameClick)="editProduct()"
@@ -16,7 +17,6 @@
 <ng-container *ngIf="hasRoleToEdit$ | async">
   <div *ngIf="!product?.pending">
     <button
-      [disabled]="true"
       nbButton
       status="danger"
       shape="round"

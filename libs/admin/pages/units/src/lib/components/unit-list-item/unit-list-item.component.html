@@ -4,6 +4,7 @@
     <bgap-status-led class="ms-1" [status]="unit?.isActive"></bgap-status-led>
   </div>
   <div class="caption">{{ unit!.description! | localize }}</div>
+  <div class="caption">ID: {{ unit?.id }}</div>
   <bgap-contact [contact]="unit"></bgap-contact>
   <bgap-rkeeper-info-block
     *ngIf="unit?.pos?.type === ePosType.rkeeper"

@@ -1,6 +1,7 @@
 <bgap-user-block
   class="float-start role-border {{ role?.toLowerCase() }}"
   [name]="adminUser?.name || ''"
+  [id]="adminUser?.id"
   [picture]="(adminUser?.profileImage || '' | awsStoragePath) || ''"
   (onNameClick)="editAdminUser()"
 ></bgap-user-block>

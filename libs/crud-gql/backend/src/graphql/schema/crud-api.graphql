@@ -711,6 +711,7 @@ type ProductComponent
   externalId: String
   dirty: Boolean
   soldOut: Boolean
+  deletedAt: AWSDateTime
 }
 
 type ProductComponentSet
@@ -727,6 +728,7 @@ type ProductComponentSet
   maxSelection: Int
   supportedServingModes: [ServingMode!]
   dirty: Boolean
+  deletedAt: AWSDateTime
 }
 
 type GeneratedProductConfigComponent {

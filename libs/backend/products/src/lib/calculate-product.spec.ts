@@ -95,6 +95,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       externalId: 'EXTERNAL_ID',
       dirty: false,
       soldOut: true,
+      deletedAt: '',
     },
     PRODUCT_COMPONENT_ID_21: {
       id: 'PRODUCT_COMPONENT_ID_21',
@@ -107,6 +108,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       externalId: 'EXTERNAL_ID',
       dirty: false,
       soldOut: false,
+      deletedAt: '',
     },
   };
   const prodComponentSetMap: ProductComponentSetMap = {
@@ -123,6 +125,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       items: ['PRODUCT_COMPONENT_ID_11', 'PRODUCT_COMPONENT_ID_21'],
       externalId: 'EXTERNAL_ID',
       dirty: false,
+      deletedAt: '',
     },
   };
   const timezone01 = 'Europe/London';

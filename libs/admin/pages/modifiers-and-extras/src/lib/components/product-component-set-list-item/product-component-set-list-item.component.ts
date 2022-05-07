@@ -6,6 +6,7 @@ import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { ProductComponentSetFormComponent } from '../product-component-set-form/product-component-set-form.component';
+import { ModifiersAndExtrasListService } from '../../services/modifiers-and-extras-list.service';
 
 @UntilDestroy()
 @Component({
@@ -16,14 +17,21 @@ import { ProductComponentSetFormComponent } from '../product-component-set-form/
 export class ProductComponentSetListItemComponent {
   @Input() productComponentSet!: CrudApi.ProductComponentSet;
 
-  constructor(private _nbDialogService: NbDialogService) {}
+  constructor(
+    private _nbDialogService: NbDialogService,
+    private _modifiersAndExtrasListService: ModifiersAndExtrasListService,
+  ) {}
 
-  public editProductComponent(): void {
+  public editProductComponentSet(): void {
     const dialog = this._nbDialogService.open(ProductComponentSetFormComponent);
 
     dialog.componentRef.instance.productComponentSet = fp.cloneDeep(
       this.productComponentSet,
     );
     dialog.componentRef.instance.editing = true;
+  }
+
+  public deleteProductComponentSet(id: string) {
+    this._modifiersAndExtrasListService.deleteProductComponentSet(id);
   }
 }
