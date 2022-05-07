@@ -16,7 +16,10 @@ class MainNavigation extends StatefulWidget {
   final int pageIndex;
   final bool animateCartIcon;
 
-  const MainNavigation({this.pageIndex = 0, this.animateCartIcon = true});
+  const MainNavigation({
+    this.pageIndex = 0,
+    this.animateCartIcon = true,
+  });
 
   _MainNavigationState createState() => _MainNavigationState();
 }
@@ -54,6 +57,7 @@ class _MainNavigationState extends State<MainNavigation>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     if (_pageOptions == null) {
       _pageOptions = [
         MainPageOptions(

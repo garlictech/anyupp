@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models/core/parsers.dart';
+import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 import 'package:fa_prev/modules/transactions/screens/transaction_order_details_screen.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/notifications/notifications.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -113,12 +115,6 @@ class Locally {
         print('Notification.showRating=$payload');
         getIt<RatingOrderNotificationBloc>()
             .add(ShowRatingFromNotification(payload));
-
-        // Nav.to(RatingAndTippingScreen(
-        //   orderId: payload.orderId,
-        //   ratingPolicy: payload.ratingPolicy,
-        //   tipPolicy: payload.tipPolicy,
-        // ));
       }
       if (type == NotificationPayloadType.SHOW_ORDER) {
         ShowOrderPayload payload = ShowOrderPayload.fromJson(json['data']);
@@ -133,6 +129,25 @@ class Locally {
           ));
         } else {
           // No unit selected.
+        }
+      }
+      if (type == NotificationPayloadType.SHOW_DIALOG) {
+        ShowDialogPayload payload = ShowDialogPayload.fromJson(json['data']);
+        print('Notification.showDialog=$payload');
+        var context = AppContext.context;
+        if (context != null) {
+          showSuccessDialog(
+              context: context,
+              title: payload.title,
+              message: payload.message,
+              bigTitle: payload.bigTitle,
+              onClose: () {
+                Nav.reset(
+                  MainNavigation(
+                    pageIndex: 2,
+                  ),
+                );
+              });
         }
       }
       return;
@@ -267,12 +282,21 @@ Future<void> scheduleNotification({
       );
 }
 
-Future<void> cancelNotification({required notificationId}) async{
+Future<void> cancelNotification({required notificationId}) async {
   await Locally().localNotificationsPlugin.cancel(notificationId);
 }
 
-void showNotification(String title, String message, Widget? navigateToPage) {
+void showNotification({
+  required String title,
+  required String message,
+  Widget? navigateToPage,
+  NotificationPayload? payload,
+}) {
   print('showNotification().title=$title, mmessage=$message');
   Locally().navigatePage = navigateToPage;
-  Locally().show(title: title, message: message);
+  Locally().show(
+    title: title,
+    message: message,
+    payload: payload?.toJson(),
+  );
 }

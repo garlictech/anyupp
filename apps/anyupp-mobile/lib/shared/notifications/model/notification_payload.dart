@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 enum NotificationPayloadType {
   RATE_ORDER,
   SHOW_ORDER,
+  SHOW_DIALOG,
 }
 
 @immutable

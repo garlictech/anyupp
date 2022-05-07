@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class StatusWidget extends StatelessWidget {
   final String icon;
+  final String? bigTitle;
   final String message;
   final String? description;
   final String? details;
@@ -21,6 +22,7 @@ class StatusWidget extends StatelessWidget {
     required this.icon,
     required this.message,
     required this.buttonText,
+    this.bigTitle,
     this.description,
     this.details,
     this.onPressed,
@@ -42,15 +44,34 @@ class StatusWidget extends StatelessWidget {
         children: [
           if (expanded) Spacer(),
           if (showIcon)
-            SvgPicture.asset(
-              icon,
-              width: 80,
-              height: 80,
-            ),
-          if (showIcon)
-            SizedBox(
-              height: 40.0,
-            ),
+            bigTitle != null
+                ? Column(
+                    children: [
+                      Text(
+                        bigTitle!,
+                        style: Fonts.satoshi(
+                          color: theme.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 55,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40.0,
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      SvgPicture.asset(
+                        icon,
+                        width: 80,
+                        height: 80,
+                      ),
+                      SizedBox(
+                        height: 40.0,
+                      ),
+                    ],
+                  ),
           Text(
             trans(context, message),
             style: Fonts.satoshi(

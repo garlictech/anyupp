@@ -173,6 +173,7 @@
     "details": {
       "orderState": "Rendelés állapota",
       "orderDetails": "Rendelés részletei",
+      "orderDetailsWithNum": "Rendelés(#{{0}}) állapota",
       "paymentDetails": "Fizetés részletei",
       "otherDetails": "További részletek",
       "tipDetails": "Borravaló",
@@ -242,6 +243,11 @@
           "titleShort": "Felszolgálva",
           "description": "A rendelésed elkészült, hamarosan felszolgáljuk neked. "
         },
+        "failed": {
+          "title": "Törölve",
+          "titleShort": "Törölve",
+          "description": "A rendelésed törlésre került. Kollégánk hamarosan felkeres téged."
+        },
         "simplified": {
           "title": "Rendelés leadva",
           "titleShort": "Rendelés leadva",
@@ -284,7 +290,27 @@
   "notifications": {
     "messageFrom": "Üzenet az AnyUpp-tól!",
     "orderProcessing": "Rendelésed már készítjük.",
-    "orderReady": "A rendelésed elkészült."
+    "orderReady": "A rendelésed elkészült.",
+    "full": {
+      "processing": {
+        "title": "Készítjük a rendelésed",
+        "message": "A #{{0}} számú rendelésedet készítjük, hamarosan felszolgáljuk"
+      },
+      "ready": {
+        "title": "Elkészült a rendelésed",
+        "message": "A #{{0}} számú rendelésed elkészült"
+      }
+    },
+    "simplified": {
+      "processing": {
+        "title": "Készítjük a rendelésed",
+        "message": "A #{{0}} számú rendelésedet készítjük, hamarosan felszolgáljuk"
+      },
+      "ready": {
+        "title": "Elkészült a rendelésed",
+        "message": "A #{{0}} számú rendelésed elkészült"
+      }
+    }
   },
   "payment": {
     "title": "FIZETÉSI MÓDOK",

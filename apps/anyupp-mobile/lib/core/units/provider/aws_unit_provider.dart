@@ -27,6 +27,7 @@ class AwsUnitProvider implements IUnitProvider {
       }
 
       if (result.data == null || result.data?.getUnitsNearLocation == null) {
+        print('***** searchUnitsNearLocation():No units found.');
         return [];
       }
 

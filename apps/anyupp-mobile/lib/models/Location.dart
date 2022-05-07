@@ -47,7 +47,10 @@ class Location {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Location && other.id == id && other.lat == lat && other.lng == lng;
+    return other is Location &&
+        other.id == id &&
+        other.lat == lat &&
+        other.lng == lng;
   }
 
   @override

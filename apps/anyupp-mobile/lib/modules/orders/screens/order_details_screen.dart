@@ -645,7 +645,10 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  trans(context, 'orders.details.orderDetails'),
+                  order.orderPolicy == OrderPolicy.full
+                      ? trans(context, 'orders.details.orderDetailsWithNum',
+                          [order.orderNum])
+                      : trans(context, 'orders.details.orderDetails'),
                   style: Fonts.satoshi(
                     fontSize: 24.0,
                     fontWeight: FontWeight.w700,

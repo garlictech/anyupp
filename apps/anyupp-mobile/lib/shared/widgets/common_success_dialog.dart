@@ -4,8 +4,13 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-showSuccessDialog(BuildContext context, String title, String message,
-    [VoidCallback? onClose]) {
+showSuccessDialog({
+  required BuildContext context,
+  required String title,
+  required String message,
+  String? bigTitle,
+  VoidCallback? onClose,
+}) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
   SchedulerBinding.instance?.addPostFrameCallback((_) {
     showModalBottomSheet(
@@ -33,6 +38,7 @@ showSuccessDialog(BuildContext context, String title, String message,
             height: MediaQuery.of(context).size.height * .9,
             child: StatusWidget(
               icon: 'assets/icons/success_order.svg',
+              bigTitle: bigTitle,
               message: title,
               description: message,
               expanded: true,

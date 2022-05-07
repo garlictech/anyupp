@@ -25,13 +25,12 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
       listener: (context, state) {
         if (state is ConfirmCodeEmailSent) {
           showSuccessDialog(
-              context,
-              trans('login.email.setMailTo'),
-              trans(
-                'login.email.checkInbox',
-              ));
-
-          // return _buildConfirmLinkSent(context, state.user);
+            context: context,
+            title: trans('login.email.setMailTo'),
+            message: trans(
+              'login.email.checkInbox',
+            ),
+          );
         }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
@@ -119,7 +118,8 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                         InkWell(
                           onTap: () {
                             getIt<LoginBloc>().add(ChangeEmailFormUI(
-                                ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
+                                ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                                animationCurve: Curves.easeIn));
                           },
                           child: Text(
                             trans('login.email.signIn'),
@@ -218,7 +218,8 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
                         InkWell(
                           onTap: () {
                             getIt<LoginBloc>().add(ChangeEmailFormUI(
-                                ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
+                                ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                                animationCurve: Curves.easeIn));
                           },
                           child: Text(
                             trans('login.email.signIn'),

@@ -55,9 +55,9 @@ class _StripePaymentMethodsScreenState
           listener: (context, state) {
             if (state is StripeCardCreated) {
               showSuccessDialog(
-                context,
-                trans("payment.manageCard.success"),
-                trans("payment.manageCard.card_added"),
+                context: context,
+                title: trans('payment.manageCard.success'),
+                message: trans('payment.manageCard.card_added'),
               );
               getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
             }

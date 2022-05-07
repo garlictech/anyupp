@@ -64,6 +64,10 @@ class AwsOrderHistorySubscription {
         // print('**** startOrderHistorySubscription().onData=${result.data}');
         // print('**** startOrderSubscription.onData.hasException=${result.hasException}');
         if (!result.hasErrors) {
+          if (result.data?.onOrderChanged == null) {
+            return;
+          }
+
           Order item = Order.fromJson(result.data!.onOrderChanged!.toJson());
           // print('**** startOrderSubscription.onData.item=$item');
           if (_items == null) {

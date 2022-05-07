@@ -250,15 +250,15 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
       await setPlacePref(unit.id, widget.place);
       _flipCardState.currentState?.toggleCard();
       showNotification(
-          widget.place.seat != null
-              ? trans('selectUnit.seatReserved.title')
-              : trans('selectUnit.tableReserved.title'),
-          widget.place.seat != null
-              ? trans('selectUnit.seatReserved.description',
-                  [widget.place.table, widget.place.seat])
-              : trans(
-                  'selectUnit.tableReserved.description', [widget.place.table]),
-          null);
+        title: widget.place.seat != null
+            ? trans('selectUnit.seatReserved.title')
+            : trans('selectUnit.tableReserved.title'),
+        message: widget.place.seat != null
+            ? trans('selectUnit.seatReserved.description',
+                [widget.place.table, widget.place.seat])
+            : trans(
+                'selectUnit.tableReserved.description', [widget.place.table]),
+      );
       getIt<UnitSelectBloc>().add(SelectUnit(unit));
       getIt<CartBloc>().add(UpdatePlaceInCartAction(unit, widget.place));
       setState(() {
