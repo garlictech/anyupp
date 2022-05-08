@@ -120,11 +120,16 @@ exports[`CreateOrder mutation test should create an order with resolver function
 Array [
   Array [
     Object {
+      "adBanners": null,
+      "adBannersEnabled": null,
       "address": Object {
         "address": "Ág u. 1.",
         "city": "Budapest",
         "country": "Magyarország",
-        "location": null,
+        "location": Object {
+          "lat": 47,
+          "lng": 19,
+        },
         "postalCode": "1021",
         "title": "HQ",
       },
@@ -142,7 +147,6 @@ Array [
       "lastOrderNum": null,
       "location": Object {
         "lat": 47,
-        "lng": null,
         "lon": 19,
       },
       "merchantId": null,
@@ -285,144 +289,3 @@ Array [
 `;
 
 exports[`CreateOrder mutation test should create an order with resolver function: second order ordernum 1`] = `"010102"`;
-
-exports[`CreateOrder mutation test should create an order with server: Order content 1`] = `
-Object {
-  "archived": false,
-  "createdAt": "MASKED DATE",
-  "currentStatus": "none",
-  "externalId": null,
-  "guestLabel": null,
-  "hasRated": true,
-  "id": "create-order-1-MASKED ID",
-  "items": Array [
-    Object {
-      "allergens": null,
-      "configSets": Array [
-        Object {
-          "items": Array [
-            Object {
-              "allergens": Array [
-                "egg",
-                "gluten",
-              ],
-              "externalId": null,
-              "name": Object {
-                "de": "Room temperature",
-                "en": "Room temperature",
-                "hu": "Szobahőmérsékletű",
-              },
-              "netPackagingFee": null,
-              "price": -1.7999999999999998,
-              "productComponentId": "test_product_component_id",
-            },
-          ],
-          "name": Object {
-            "de": null,
-            "en": "Modifier comp set",
-            "hu": "Módosító komponens set",
-          },
-          "productSetId": "test_product_component_set_id",
-          "type": "modifier",
-        },
-      ],
-      "created": null,
-      "externalId": null,
-      "image": null,
-      "laneId": "lane_01",
-      "netPackagingFee": null,
-      "priceShown": Object {
-        "currency": "HUF",
-        "pricePerUnit": 300,
-        "priceSum": 1500,
-        "tax": 27,
-        "taxSum": 318.9,
-      },
-      "productId": "PRODUCT ID",
-      "productName": Object {
-        "de": null,
-        "en": "Product name",
-        "hu": null,
-      },
-      "productType": "drink",
-      "quantity": 5,
-      "serviceFee": null,
-      "statusLog": Array [
-        Object {
-          "status": "none",
-          "ts": "MASKED TIMESTAMP",
-          "userId": "test-monad",
-        },
-      ],
-      "sumPriceShown": Object {
-        "currency": "HUF",
-        "pricePerUnit": 298.2,
-        "priceSum": 1491,
-        "tax": 27,
-        "taxSum": 316.98,
-      },
-      "variantId": "VARIANT ID",
-      "variantName": Object {
-        "de": null,
-        "en": "VARIANT NAME",
-        "hu": null,
-      },
-    },
-  ],
-  "orderMode": "instant",
-  "orderNum": "010103",
-  "orderPolicy": null,
-  "packagingFeeTaxPercentage": null,
-  "packagingSum": null,
-  "paymentIntention": null,
-  "paymentMode": Object {
-    "caption": null,
-    "method": "cash",
-    "type": "card",
-  },
-  "place": Object {
-    "seat": "01",
-    "table": "01",
-  },
-  "rating": Object {
-    "key": "RATING KEY",
-    "value": 3,
-  },
-  "ratingPolicies": null,
-  "serviceFee": Object {
-    "currency": "HUF",
-    "grossPrice": 200,
-    "taxContent": 20,
-  },
-  "serviceFeePolicy": null,
-  "servingMode": "inPlace",
-  "soldOutVisibilityPolicy": null,
-  "statusLog": Array [],
-  "sumPriceShown": Object {
-    "currency": "HUF",
-    "pricePerUnit": 298.2,
-    "priceSum": 2982,
-    "tax": 27,
-    "taxSum": 633.96,
-  },
-  "tip": null,
-  "tipPolicy": null,
-  "tipTransaction": null,
-  "tipTransactionId": null,
-  "tipTransactionStatus": null,
-  "transaction": null,
-  "transactionId": null,
-  "transactionStatus": null,
-  "unitId": "createorder-unitnorkeeper-MASKED ID",
-  "unpayCategory": null,
-  "updatedAt": "MASKED DATE",
-  "userId": "test-monad",
-  "version": null,
-}
-`;
-
-exports[`CreateOrder mutation test should create an order with server: rkeeper deps called 1`] = `Array []`;
-
-exports[`CreateOrder mutation test should create an order with server: rkeeper func called 1`] = `Array []`;
-
-exports[`CreateOrder mutation test should create an order with server: second order ordernum 1`] = `"010104"`;
