@@ -1,0 +1,24 @@
+.file-input {
+  display: none;
+}
+
+.file-upload {
+  //background-color: purple;
+  max-width: 500px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .file-details,
+  .upload-description {
+    word-break: break-all;
+    font-size: 18px;
+    line-height: 18px;
+
+    //font-weight: bold;
+  }
+
+  .choose-file-btn {
+    margin-left: 10px;
+  }
+}

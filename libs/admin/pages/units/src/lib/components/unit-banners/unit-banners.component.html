@@ -1,0 +1,23 @@
+<nb-card>
+  <nb-card-header>
+    <div class="float-start">
+      {{ 'units.editBanners' | translate }}
+    </div>
+    <button
+      nbButton
+      ghost
+      shape="round"
+      size="small"
+      class="float-right"
+      (click)="close()"
+    >
+      <nb-icon icon="close" pack="material-icons"></nb-icon>
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <lib-admin-banner-upload-form
+      [unitId]="unit.id"
+      [imageUrlPrefix]="awsStoragePathPrefix"
+    ></lib-admin-banner-upload-form>
+  </nb-card-body>
+</nb-card>

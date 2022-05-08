@@ -26,6 +26,8 @@ import { UnitFormComponent } from './components/unit-form/unit-form.component';
 import { UnitListItemComponent } from './components/unit-list-item/unit-list-item.component';
 import { UnitListComponent } from './components/unit-list/unit-list.component';
 import { UnitListService } from './services/unit-list.service';
+import { AppsAdminModule } from '@bgap/apps/admin';
+import { UnitBannersComponent } from './components/unit-banners/unit-banners.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -47,6 +49,7 @@ const NB_MODULES = [
     UnitListItemComponent,
     UnitFormComponent,
     UnitFloorMapComponent,
+    UnitBannersComponent,
   ],
   imports: [
     CommonModule,
@@ -58,6 +61,7 @@ const NB_MODULES = [
     ReactiveFormsModule,
     AdminSharedPipesModule,
     AdminSharedFloorMapModule,
+    AppsAdminModule,
     RouterModule.forChild([
       {
         component: UnitListComponent,

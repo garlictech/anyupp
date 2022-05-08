@@ -1,0 +1,71 @@
+<div class="banner-status">
+  <span class="label"> A bannerek jelenlegi állapota: </span>
+
+  <span class="status" [class.enabled]="currentUnitBannersEnabled">
+    {{ currentUnitBannersEnabled ? 'BEKAPCSOLVA' : 'KIKAPCSOLVA' }}
+  </span>
+
+  <div class="fill-space"></div>
+
+  <lib-admin-button-ui
+    class="button"
+    [label]="currentUnitBannersEnabled ? 'Kikapcsolás!' : 'Bekapcsolás!'"
+    [style]="currentUnitBannersEnabled ? 'danger' : 'success'"
+    [disabled]="operationIsPending"
+    [loading]="operationsPending.toggleBanners"
+    (pushed)="onToggleBanners()"
+  ></lib-admin-button-ui>
+</div>
+
+<h3>Aktuális bannerek:</h3>
+
+<div class="unit-banners" *ngIf="currentUnitBanners.length > 0; else noBanners">
+  <lib-admin-unit-banner-ui
+    *ngFor="let unitBanner of currentUnitBanners"
+    [disabled]="operationIsPending"
+    [bannerPath]="unitBanner.imageUrl"
+    [bannerUrlPrefix]="imageUrlPrefix"
+    (deleteRequested)="onRemoveBanner($event)"
+  ></lib-admin-unit-banner-ui>
+</div>
+
+<ng-template #noBanners>
+  <div class="no-unit-banners">Jelenleg nincs feltöltött banner</div>
+</ng-template>
+
+<h3>Új banner feltöltése</h3>
+
+<form
+  class="banner-upload-form"
+  [formGroup]="bannerUploadForm"
+  *ngIf="bannerUploadEnabled"
+>
+  <div class="form-field-upload-banner">
+    <lib-admin-file-uploader-ui
+      [formControl]="fileUpload"
+    ></lib-admin-file-uploader-ui>
+
+    <div
+      class="error"
+      *ngIf="fileUpload.errors?.[validatorErrorTypes.fileSize]"
+    >
+      A méret túl nagy, a maximum 5MB
+    </div>
+    <div
+      class="error"
+      *ngIf="fileUpload.errors?.[validatorErrorTypes.fileType]"
+    >
+      Nem képfájl lett kiválasztva
+    </div>
+    <div class="error" *ngIf="fileUpload.errors?.['required']">
+      Nincs kivalasztva kep!!!
+    </div>
+  </div>
+
+  <lib-admin-button-ui
+    class="button"
+    [label]="'Feltöltés'"
+    [disabled]="bannerUploadForm.invalid || operationIsPending"
+    (pushed)="onUploadBanner()"
+  ></lib-admin-button-ui>
+</form>

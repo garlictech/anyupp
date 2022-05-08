@@ -1,0 +1,11 @@
+<div
+  class="banner-ui"
+  [ngStyle]="{ 'background-image': 'url(\'' + prefixedBannerUrl + '\')' }"
+>
+  <lib-admin-button-ui
+    [disabled]="disabled"
+    (pushed)="deletePressed()"
+    [style]="'danger'"
+    [label]="'Törlés'"
+  ></lib-admin-button-ui>
+</div>

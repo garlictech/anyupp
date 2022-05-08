@@ -1,0 +1,78 @@
+$margin-on-sides: 10px;
+
+.banner-status {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid gray;
+  font-size: 18px;
+
+  .label {
+  }
+
+  .status {
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #c1d6cc;
+    border: 2px solid gray;
+    border-radius: 6px;
+    color: red;
+    font-weight: bold;
+
+    &.enabled {
+      color: green;
+    }
+  }
+
+  .button {
+    margin-left: 10px;
+  }
+}
+
+.unit-banners {
+  //background-color: blue;
+  display: grid;
+  width: 100%;
+  grid-gap: $margin-on-sides;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+
+  justify-content: space-around;
+}
+
+.no-unit-banners {
+  width: 100%;
+  display: flex;
+  padding: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner-upload-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid gray;
+  border-radius: 10px;
+  //background-color: mediumpurple;
+
+  .form-field-upload-banner {
+    width: 100%;
+    //background-color: purple;
+    .error {
+      padding: 6px;
+      color: red;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+}
+
+.fill-space {
+  // This fills the remaining space, by using flexbox.
+  // Every toolbar row uses a flexbox row layout.
+  flex: 1 1 auto;
+}

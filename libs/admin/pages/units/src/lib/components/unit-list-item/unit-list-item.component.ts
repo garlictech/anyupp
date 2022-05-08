@@ -18,6 +18,7 @@ import { Store } from '@ngrx/store';
 
 import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.component';
 import { UnitFormComponent } from '../unit-form/unit-form.component';
+import { UnitBannersComponent } from '../unit-banners/unit-banners.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,6 +49,14 @@ export class UnitListItemComponent {
 
   public editUnitFloorMap(): void {
     const dialog = this._nbDialogService.open(UnitFloorMapComponent);
+
+    if (this.unit) {
+      dialog.componentRef.instance.unit = cloneDeep(this.unit);
+    }
+  }
+
+  public editUnitBanners(): void {
+    const dialog = this._nbDialogService.open(UnitBannersComponent);
 
     if (this.unit) {
       dialog.componentRef.instance.unit = cloneDeep(this.unit);

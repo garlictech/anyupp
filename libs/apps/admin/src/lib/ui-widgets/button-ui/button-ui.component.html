@@ -1,0 +1,12 @@
+<button
+  class="button-ui"
+  [class.disabled]="disabled"
+  [class.loading]="loading"
+  [class.danger]="style === 'danger'"
+  [class.success]="style === 'success'"
+  type="button"
+  [disabled]="disabled"
+  (click)="pushed.emit()"
+>
+  {{ label }}
+</button>

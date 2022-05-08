@@ -1,0 +1,27 @@
+<input
+  #fileInput
+  class="file-input"
+  type="file"
+  [multiple]="false"
+  [disabled]="disabled"
+/>
+
+<div class="file-upload">
+  <div class="file-details" *ngIf="fileToUpload; else chooseFile">
+    <ul>
+      <li>{{ fileToUpload.name }}</li>
+      <li>{{ fileToUpload.size / 1000000 | number: '1.2-2' }} MB</li>
+      <li>{{ fileToUpload.type }}</li>
+    </ul>
+  </div>
+  <ng-template #chooseFile>
+    <div class="upload-description">Válaszd ki a feltöltendő bannert...</div>
+  </ng-template>
+
+  <lib-admin-button-ui
+    class="choose-file-btn"
+    [label]="'Fájl kiválasztása'"
+    [disabled]="disabled"
+    (pushed)="fileInput.click()"
+  ></lib-admin-button-ui>
+</div>

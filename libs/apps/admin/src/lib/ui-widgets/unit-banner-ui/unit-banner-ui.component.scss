@@ -1,0 +1,12 @@
+.banner-ui {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: darkgrey;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

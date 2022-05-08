@@ -39,6 +39,18 @@
   </button>
 
   <button
+    nbButton
+    shape="round"
+    size="tiny"
+    class="float-right me-2"
+    [title]="'units.editBanners' | translate"
+    (click)="editUnitBanners()"
+  >
+    <nb-icon icon="image-outline"></nb-icon>
+    {{ 'units.editBanners' | translate }}
+  </button>
+
+  <button
     [nbSpinner]="workingGenerateStatus"
     nbSpinnerStatus="control"
     nbButton
