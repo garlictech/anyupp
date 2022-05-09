@@ -54,7 +54,8 @@
               {
                 "sourceTag": "platform:nodejs",
                 "onlyDependOnLibsWithTags": [
-                  "platform:nodejs"
+                  "platform:nodejs",
+                  "layer:todo-refactor-old"
                 ]
               },
               {
@@ -62,7 +63,8 @@
                 "onlyDependOnLibsWithTags": [
                   "platform:nodejs",
                   "platform:angular",
-                  "platform:flutter"
+                  "platform:flutter",
+                  "layer:todo-refactor-old"
                 ]
               },
               {
@@ -70,7 +72,8 @@
                 "onlyDependOnLibsWithTags": [
                   "platform:nodejs",
                   "platform:angular",
-                  "platform:flutter"
+                  "platform:flutter",
+                  "layer:todo-refactor-old"
                 ]
               },
               {
@@ -84,18 +87,26 @@
                 "sourceTag": "scope:frontend",
                 "onlyDependOnLibsWithTags": [
                   "scope:shared",
-                  "scope:frontend"
+                  "scope:frontend",
+                  "layer:todo-refactor-old"
                 ]
               },
               {
                 "sourceTag": "scope:backend",
                 "onlyDependOnLibsWithTags": [
                   "scope:shared",
-                  "scope:backend"
+                  "scope:backend",
+                  "layer:todo-refactor-old"
                 ]
               },
               {
                 "sourceTag": "type:integration-tests",
+                "onlyDependOnLibsWithTags": [
+                  "*"
+                ]
+              },
+              {
+                "sourceTag": "layer:todo-refactor-old",
                 "onlyDependOnLibsWithTags": [
                   "*"
                 ]

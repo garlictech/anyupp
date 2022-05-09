@@ -18,5 +18,5 @@
       }
     }
   },
-  "tags": ["platform:nodejs", "layer:domain", "scope:shared"]
+  "tags": ["platform:nodejs", "layer:todo-refactor-old"]
 }
