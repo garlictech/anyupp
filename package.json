@@ -55,7 +55,7 @@
     "@aws-cdk/aws-appsync-alpha": "2.9.0-alpha.0",
     "@aws-cdk/aws-neptune-alpha": "2.9.0-alpha.0",
     "@aws-sdk/util-config-provider": "3.55.0",
-    "@elastic/elasticsearch": "7.17.0",
+    "@elastic/elasticsearch": "7.13.0",
     "@nebular/eva-icons": "9.0.2",
     "@nebular/theme": "8.0.0",
     "@ngneat/until-destroy": "9.0.2",
