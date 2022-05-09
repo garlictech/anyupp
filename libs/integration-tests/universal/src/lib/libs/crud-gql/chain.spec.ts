@@ -7,6 +7,7 @@ import { filterNullish } from '@bgap/shared/utils';
 
 const TEST_NAME = 'CHAIN_';
 const DYNAMODB_OPERATION_DELAY = 3000;
+const JEST_TIMEOUT = 60000;
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
@@ -115,75 +116,105 @@ describe('Chain mutations', () => {
       switchMap(() => cleanup(id)),
     );
 
-  it('should create chain from an old styled fixture', done => {
-    creationTestLogic(oldStyleChainFixture.id, oldStyleChainFixture).subscribe({
-      next() {
-        done();
-      },
-      error(err) {
-        console.error(`${TEST_NAME}Test ERROR`, err);
-      },
-    });
-  }, 20000);
+  it(
+    'should create chain from an old styled fixture',
+    done => {
+      creationTestLogic(
+        oldStyleChainFixture.id,
+        oldStyleChainFixture,
+      ).subscribe({
+        next() {
+          done();
+        },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
+        },
+      });
+    },
+    JEST_TIMEOUT,
+  );
 
-  it('should create chain from a mixed styled fixture', done => {
-    creationTestLogic(
-      mixedStyleChainFixture.id,
-      mixedStyleChainFixture,
-    ).subscribe({
-      next() {
-        done();
-      },
-      error(err) {
-        console.error(`${TEST_NAME}Test ERROR`, err);
-      },
-    });
-  }, 20000);
+  it(
+    'should create chain from a mixed styled fixture',
+    done => {
+      creationTestLogic(
+        mixedStyleChainFixture.id,
+        mixedStyleChainFixture,
+      ).subscribe({
+        next() {
+          done();
+        },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
+        },
+      });
+    },
+    JEST_TIMEOUT,
+  );
 
-  it('should create chain from a new styled fixture', done => {
-    creationTestLogic(newStyleChainFixture.id, newStyleChainFixture).subscribe({
-      next() {
-        done();
-      },
-      error(err) {
-        console.error(`${TEST_NAME}Test ERROR`, err);
-      },
-    });
-  }, 20000);
+  it(
+    'should create chain from a new styled fixture',
+    done => {
+      creationTestLogic(
+        newStyleChainFixture.id,
+        newStyleChainFixture,
+      ).subscribe({
+        next() {
+          done();
+        },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
+        },
+      });
+    },
+    JEST_TIMEOUT,
+  );
 
-  it('should update chain from an old styled fixture', done => {
-    updateTestLogic(oldStyleChainFixture.id, oldStyleChainFixture).subscribe({
-      next() {
-        done();
-      },
-      error(err) {
-        console.error(`${TEST_NAME}Test ERROR`, err);
-      },
-    });
-  }, 20000);
+  it(
+    'should update chain from an old styled fixture',
+    done => {
+      updateTestLogic(oldStyleChainFixture.id, oldStyleChainFixture).subscribe({
+        next() {
+          done();
+        },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
+        },
+      });
+    },
+    JEST_TIMEOUT,
+  );
 
-  it('should update chain from a mixed styled fixture', done => {
-    updateTestLogic(
-      mixedStyleChainFixture.id,
-      mixedStyleChainFixture,
-    ).subscribe({
-      next() {
-        done();
-      },
-      error(err) {
-        console.error(`${TEST_NAME}Test ERROR`, err);
-      },
-    });
-  }, 20000);
+  it(
+    'should update chain from a mixed styled fixture',
+    done => {
+      updateTestLogic(
+        mixedStyleChainFixture.id,
+        mixedStyleChainFixture,
+      ).subscribe({
+        next() {
+          done();
+        },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
+        },
+      });
+    },
+    JEST_TIMEOUT,
+  );
 
-  it('should update chain from a new styled fixture', done => {
-    updateTestLogic(newStyleChainFixture.id, newStyleChainFixture).subscribe({
-      next() {
-        done();
-      },
-      error(err) {
-        console.error(`${TEST_NAME}Test ERROR`, err);
-      },
-    });
-  }, 20000);
+  it(
+    'should update chain from a new styled fixture',
+    done => {
+      updateTestLogic(newStyleChainFixture.id, newStyleChainFixture).subscribe({
+        next() {
+          done();
+        },
+        error(err) {
+          console.error(`${TEST_NAME}Test ERROR`, err);
+        },
+      });
+    },
+    JEST_TIMEOUT,
+  );
 });
