@@ -165,7 +165,7 @@
     "@storybook/core-server": "6.4.12",
     "@storybook/manager-webpack5": "6.4.12",
     "@testing-library/cypress": "8.0.2",
-    "@types/aws-lambda": "8.10.95",
+    "@types/aws-lambda": "8.10.97",
     "@types/axios": "0.14.0",
     "@types/bcryptjs": "2.4.2",
     "@types/chart.js": "2.9.37",
