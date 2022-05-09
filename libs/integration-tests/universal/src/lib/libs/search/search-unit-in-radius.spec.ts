@@ -58,7 +58,7 @@ beforeAll(done => {
     .subscribe(() => done());
 }, 10000);
 
-test('Search for a unit in radius using resolver', done => {
+xtest('Search for a unit in radius using resolver', done => {
   searchByRadiusResolver(searchDeps)({
     input: {
       location: { lat: 1, lon: 1 },
@@ -97,7 +97,7 @@ test('Search for a unit in radius using resolver', done => {
     .subscribe(() => done());
 }, 20000);
 
-test('Search for a unit in radius using API', done => {
+xtest('Search for a unit in radius using API', done => {
   sdk
     .SearchByRadius({
       input: {
