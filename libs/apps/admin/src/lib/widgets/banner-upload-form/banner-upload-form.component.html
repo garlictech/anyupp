@@ -45,6 +45,10 @@
       [formControl]="fileUpload"
     ></lib-admin-file-uploader-ui>
 
+    <div class="description">
+      Ugyanolyan felbontású (600px * 300px) képek feltöltését ajánljuk.
+    </div>
+
     <div
       class="error"
       *ngIf="fileUpload.errors?.[validatorErrorTypes.fileSize]"
@@ -58,7 +62,7 @@
       Nem képfájl lett kiválasztva
     </div>
     <div class="error" *ngIf="fileUpload.errors?.['required']">
-      Nincs kivalasztva kep!!!
+      Nincs kép kiválasztva
     </div>
   </div>
 

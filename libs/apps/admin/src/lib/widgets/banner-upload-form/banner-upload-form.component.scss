@@ -58,9 +58,15 @@ $margin-on-sides: 10px;
 
   .form-field-upload-banner {
     width: 100%;
-    //background-color: purple;
+
+    .description {
+      margin-top: 8px;
+      font-size: 14px;
+      font-style: italic;
+    }
+
     .error {
-      padding: 6px;
+      margin-top: 8px;
       color: red;
       font-size: 14px;
       font-weight: bold;
