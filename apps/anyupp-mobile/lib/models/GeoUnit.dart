@@ -26,6 +26,8 @@ class GeoUnit {
   final ServiceFeePolicy? serviceFeePolicy;
   final SoldOutVisibilityPolicy? soldOutVisibilityPolicy;
   final Location? location;
+  final bool? adBannersEnabled;
+  final List<AdBanner>? adBanners;
 
   GeoUnit({
     required this.id,
@@ -48,6 +50,8 @@ class GeoUnit {
     this.serviceFeePolicy,
     this.soldOutVisibilityPolicy,
     this.location,
+    this.adBannersEnabled,
+    this.adBanners,
   });
 
   GeoUnit copyWith({
@@ -71,6 +75,8 @@ class GeoUnit {
     ServiceFeePolicy? serviceFeePolicy,
     SoldOutVisibilityPolicy? soldOutVisibilityPolicy,
     Location? location,
+    bool? adBannersEnabled,
+    List<AdBanner>? adBanners,
   }) {
     return GeoUnit(
       id: id ?? this.id,
@@ -95,6 +101,8 @@ class GeoUnit {
       soldOutVisibilityPolicy:
           soldOutVisibilityPolicy ?? this.soldOutVisibilityPolicy,
       location: location ?? this.location,
+      adBannersEnabled: adBannersEnabled ?? this.adBannersEnabled,
+      adBanners: adBanners ?? this.adBanners,
     );
   }
 
@@ -122,6 +130,8 @@ class GeoUnit {
       'serviceFeePolicy': serviceFeePolicy?.toJson(),
       'soldOutVisibilityPolicy': enumToString(soldOutVisibilityPolicy),
       'location': location?.toJson(),
+      'adBannersEnabled': adBannersEnabled,
+      'adBanners': adBanners?.map((x) => x.toJson()).toList(),
     };
   }
 
@@ -172,6 +182,11 @@ class GeoUnit {
       ),
       location:
           map['location'] != null ? Location.fromJson(map['location']) : null,
+      adBannersEnabled: map['adBannersEnabled'] ?? false,
+      adBanners: map['unit']?['adBanners'] != null
+          ? List<AdBanner>.from(
+              map['unit']?['adBanners']?.map((x) => AdBanner.fromJson(x)))
+          : null,
     );
   }
 
@@ -204,7 +219,9 @@ class GeoUnit {
         other.serviceFeePolicy == serviceFeePolicy &&
         other.tipPolicy == tipPolicy &&
         other.soldOutVisibilityPolicy == soldOutVisibilityPolicy &&
-        other.location == location;
+        other.location == location &&
+        other.adBannersEnabled == adBannersEnabled &&
+        listEquals(other.adBanners, adBanners);
   }
 
   @override
@@ -227,6 +244,8 @@ class GeoUnit {
         tipPolicy.hashCode ^
         serviceFeePolicy.hashCode ^
         soldOutVisibilityPolicy.hashCode ^
-        location.hashCode;
+        location.hashCode ^
+        adBannersEnabled.hashCode ^
+        adBanners.hashCode;
   }
 }

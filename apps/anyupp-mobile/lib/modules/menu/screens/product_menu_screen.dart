@@ -370,9 +370,12 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   ) {
     List<Widget> results = [FavoritesScreen()];
     results.addAll(productCategories
-        .map((category) => ProductMenuTabScreenTemp(
+        .asMap()
+        .entries
+        .map((entry) => ProductMenuTabScreenTemp(
               unit: unit,
-              categoryId: category.id!,
+              categoryId: entry.value.id!,
+              tabPosition: entry.key,
             ))
         .toList());
     return results;

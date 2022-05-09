@@ -1,3 +1,4 @@
+export 'models/AdBanner.dart';
 export 'models/Address.dart';
 export 'models/Cart.dart';
 export 'models/ChainStyle.dart';
@@ -41,6 +42,7 @@ export 'models/UserInvoiceAddress.dart';
 export 'models/core/parsers.dart';
 export 'models/core/uuid.dart';
 export 'models/enums/Allergens.dart';
+export 'models/extensions/GeneratedProductExtensions.dart';
 export 'models/extensions/GeoUnitExtension.dart';
 export 'models/extensions/LocalizedItemExtension.dart';
 export 'models/extensions/OpeningHoursExtension.dart';
