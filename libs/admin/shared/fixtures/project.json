@@ -1,9 +1,14 @@
 {
-  "projectType": "library",
   "root": "libs/admin/shared/fixtures",
   "sourceRoot": "libs/admin/shared/fixtures/src",
-  "prefix": "bgap",
+  "projectType": "library",
   "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/admin/shared/fixtures/src/**/*.ts"]
+      }
+    },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/admin/shared/fixtures"],
@@ -11,13 +16,7 @@
         "jestConfig": "libs/admin/shared/fixtures/jest.config.ts",
         "passWithNoTests": true
       }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "lintFilePatterns": ["libs/admin/shared/fixtures/src/**/*.ts"]
-      }
     }
   },
-  "tags": ["platform:angular"]
+  "tags": ["platform:nodejs", "layer:domain", "scope:shared"]
 }

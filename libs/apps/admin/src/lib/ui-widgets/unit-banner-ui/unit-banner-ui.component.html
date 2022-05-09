@@ -1,6 +1,8 @@
 <div
   class="banner-ui"
-  [ngStyle]="{ 'background-image': 'url(\'' + prefixedBannerUrl + '\')' }"
+  [ngStyle]="{
+    'background-image': 'url(\'' + bannerUrlPrefix + bannerPath + '\')'
+  }"
 >
   <lib-admin-button-ui
     [disabled]="disabled"

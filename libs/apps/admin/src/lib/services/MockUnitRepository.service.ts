@@ -1,7 +1,7 @@
 import { AbsUnitRepository, AdBanner, CrudApi } from '@bgap/domain';
 import { unitFixture } from '@bgap/shared/fixtures';
-import { AdBannerInput, InputMaybe } from '@bgap/crud-gql/api';
 import { Injectable } from '@angular/core';
+import { AdBannerInput, InputMaybe } from '@bgap/crud-gql/api';
 
 @Injectable({
   providedIn: 'root',

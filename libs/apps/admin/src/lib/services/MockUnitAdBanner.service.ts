@@ -11,7 +11,9 @@ import {
 import { unitBannersToggleUseCase } from '@bgap/domain';
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class MockUnitAdBannerService extends AbsUnitAdBannerService {
   constructor(
     private storageService: AbsStorageService,

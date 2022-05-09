@@ -1,4 +1,4 @@
-import { AdBanner } from '@bgap/domain';
+import { AdBanner } from '../entities';
 
 export const UNIT_AD_BANNER_STORAGE_FOLDER = 'banners';
 export const UNIT_AD_BANNER_MAX_SIZE = 640;

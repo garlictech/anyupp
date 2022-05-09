@@ -10,13 +10,9 @@ export class UnitBannerUIComponent {
   @Input() bannerUrlPrefix?: string;
   @Input() disabled = false;
 
-  @Output() deleteRequested = new EventEmitter<string>();
+  @Output() readonly deleteRequested = new EventEmitter<string>();
 
-  get prefixedBannerUrl(): string {
-    return `${this.bannerUrlPrefix}${this.bannerPath}`;
-  }
-
-  deletePressed() {
+  deletePressed(): void {
     this.deleteRequested.emit(this.bannerPath);
   }
 }

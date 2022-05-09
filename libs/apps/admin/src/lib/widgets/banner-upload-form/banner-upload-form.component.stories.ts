@@ -10,12 +10,12 @@ import {
 } from '@bgap/domain';
 import { UnitBannerUIComponent } from '../../ui-widgets/unit-banner-ui/unit-banner-ui.component';
 import { ButtonUIComponent } from '../../ui-widgets/button-ui/button-ui.component';
-import { MockUnitAdBannerService } from '../../services/MockUnitAdBanner.service';
-import { MockStorageService } from '../../services/MockStorage.service';
-import { MockUnitRepositoryService } from '../../services/MockUnitRepository.service';
-import { MockImageCompressionService } from '../../services/MockImageCompression.service';
-import { unitFixture } from '../../../../../../shared/fixtures/src';
+import { MockUnitAdBannerService } from '../../services';
+import { MockStorageService } from '../../services';
+import { MockUnitRepositoryService } from '../../services';
+import { MockImageCompressionService } from '../../services';
 import { action } from '@storybook/addon-actions';
+import { unitFixture } from '@bgap/shared/fixtures';
 
 export default {
   title: 'BannerUploadFormComponent',

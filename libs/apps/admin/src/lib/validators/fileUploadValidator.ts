@@ -11,11 +11,6 @@ export interface ValidatorParams {
   allowedMimePrefixes: string[];
 }
 
-export const fileUploadValidator =
-  ({ allowedMimePrefixes }: ValidatorParams): ValidatorFn =>
-  (control: AbstractControl): ValidationErrors | null =>
-    validateFile(control.value as File | null, allowedMimePrefixes);
-
 const validateFile = (
   file: File | null,
   allowedMimePrefixes: string[],
@@ -38,3 +33,8 @@ const validateFile = (
 
   return validationErrors === {} ? null : validationErrors;
 };
+
+export const fileUploadValidator =
+  ({ allowedMimePrefixes }: ValidatorParams): ValidatorFn =>
+  (control: AbstractControl): ValidationErrors | null =>
+    validateFile(control.value as File | null, allowedMimePrefixes);

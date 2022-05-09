@@ -123,7 +123,7 @@ export class UnitAdBannerService extends AbsUnitAdBannerService {
       .toPromise();
   }
 
-  private async saveAdBannersOnUnit(
+  private saveAdBannersOnUnit(
     unitId: string,
     adBanners: AdBanner[],
   ): Promise<unknown> {

@@ -1,4 +1,4 @@
-import { CrudApi } from '@bgap/domain';
+import { CrudApi } from '../../models';
 import { AbsRepositoryBase } from './AbsRepositoryBase';
 
 export abstract class AbsUnitRepository extends AbsRepositoryBase<

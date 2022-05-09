@@ -11,5 +11,5 @@ export class ButtonUIComponent {
   @Input() loading = false;
   @Input() style: 'primary' | 'danger' | 'success' = 'primary';
 
-  @Output() pushed = new EventEmitter<void>();
+  @Output() readonly pushed = new EventEmitter<void>();
 }

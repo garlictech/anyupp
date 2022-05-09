@@ -21,7 +21,7 @@ export class FileUploaderUIComponent implements ControlValueAccessor {
   disabled = false;
 
   @HostListener('change', ['$event.target.files'])
-  emitFiles(files: FileList) {
+  emitFiles(files: FileList): void {
     if (files) {
       this.fileToUpload = files.item(0);
       this.onChange(this.fileToUpload);
@@ -29,7 +29,7 @@ export class FileUploaderUIComponent implements ControlValueAccessor {
   }
 
   @HostListener('blur', ['$event'])
-  onBlur() {
+  onBlur(): void {
     this.onTouched();
   }
 

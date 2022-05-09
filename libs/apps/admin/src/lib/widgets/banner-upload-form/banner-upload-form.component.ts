@@ -17,8 +17,8 @@ export class BannerUploadFormComponent implements OnInit {
   @Input() unitId?: string;
   @Input() imageUrlPrefix?: string;
 
-  @Output() operationSuccess = new EventEmitter<string>();
-  @Output() operationError = new EventEmitter<string>();
+  @Output() readonly operationSuccess = new EventEmitter<string>();
+  @Output() readonly operationError = new EventEmitter<string>();
 
   validatorErrorTypes = FileUploadValidatorErrorTypes;
   currentUnitBanners: AdBanner[] = [];
@@ -53,13 +53,11 @@ export class BannerUploadFormComponent implements OnInit {
     return this.currentUnitBanners.length < MAX_NUMBER_OF_BANNERS;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     void this.initializeData();
   }
 
   async initializeData(): Promise<void> {
-    console.debug('initializeData...', this.unitId);
-
     if (this.unitId) {
       this.operationsPending.initializeData = true;
 

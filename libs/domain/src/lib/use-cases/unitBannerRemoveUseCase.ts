@@ -1,4 +1,4 @@
-import { AdBanner } from '@bgap/domain';
+import { AdBanner } from '../entities';
 
 interface Deps {
   storagePath: string;

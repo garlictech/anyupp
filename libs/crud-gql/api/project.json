@@ -18,5 +18,5 @@
       }
     }
   },
-  "tags": ["platform:nodejs", "layer:utils"]
+  "tags": ["platform:nodejs", "layer:domain", "scope:shared"]
 }
