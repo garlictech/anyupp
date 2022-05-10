@@ -156,7 +156,7 @@
     "@nrwl/tao": "14.0.5",
     "@nrwl/workspace": "14.0.5",
     "@nxrocks/nx-flutter": "3.0.2",
-    "@serverless-stack/cli": "1.0.2",
+    "@serverless-stack/cli": "1.0.4",
     "@serverless-stack/resources": "0.69.7",
     "@storybook/addon-actions": "6.4.22",
     "@storybook/addon-essentials": "6.4.12",
