@@ -20,7 +20,6 @@ export class FormClickableImageInputComponent {
   @Input() caption = ''; // Language key!!!
   @Input() image?: string | null;
   @Input() maxSize = 400;
-  @Input() imageType: EImageType = EImageType.JPEG;
   @Input() uploadFolderPath?: string;
 
   @Input() uploadCallbackFn?: (imageKey: string, param: string) => void;
@@ -56,7 +55,11 @@ export class FormClickableImageInputComponent {
         this._uploadFile(file);
       } else {
         this._imageCompressorService
-          .compress(file, this.imageType, this.maxSize)
+          .compress(
+            file,
+            file.type === 'image/png' ? EImageType.PNG : EImageType.JPEG,
+            this.maxSize,
+          )
           .subscribe(
             (_file): void => {
               this._uploadFile(_file);
