@@ -15,16 +15,66 @@ void main() {
   const int dummy_order_count = 13;
   const int dummy_order_history_count = 12;
   const int dummy_page_size = 3;
+  late OrderRepository _repository;
+  late StreamController<List<Order>> _controller;
 
+  cleanUpOrders() async {
+    List<bool> deleteResults = await deleteAllOrders(testUsername, unitId);
+    print('***** Deleting all orders results=${deleteResults}');
+  }
+
+  setUpAll(() async {
+    EquatableConfig.stringify = true;
+    await initDependencyInjection();
+
+    _controller = BehaviorSubject();
+    expect(_controller, isNotNull);
+
+    _repository = getIt<OrderRepository>();
+    expect(_repository, isNotNull);
+
+    AppConstants constants = getIt<AppConstants>();
+    await getIt.unregister<AppConstants>(instance: constants);
+    getIt.registerLazySingleton<AppConstants>(() => AppConstants(
+          paginationSize: dummy_page_size,
+        ));
+
+    constants = getIt<AppConstants>();
+    print('Pagination size=' + constants.paginationSize.toString());
+
+    ProviderLoginResponse response =
+        await getIt<LoginRepository>().loginWithEmailAndPassword(
+      testUserEmail,
+      testUserPassword,
+    );
+    expect(response, isNotNull);
+    expect(response.user, isNotNull);
+
+    await cleanUpOrders();
+
+    print('Creating orders');
+    await createDummyOrders(
+      userId: testUsername,
+      unitId: unitId,
+      count: dummy_order_count,
+      archived: false,
+    );
+
+    print('Creating order histories');
+    await createDummyOrders(
+      userId: testUsername,
+      unitId: unitId,
+      count: dummy_order_history_count,
+      archived: true,
+    );
+
+    print('Waiting to backend to finish order creation');
+    await Future.delayed(Duration(seconds: 5));
+
+    await _repository.startOrderListSubscription(unitId, _controller);
+    await _repository.startOrderHistoryListSubscription(unitId, _controller);
+  });
   group('Order list pagination test...', () {
-    late OrderRepository _repository;
-    late StreamController<List<Order>> _controller;
-
-    cleanUpOrders() async {
-      List<bool> deleteResults = await deleteAllOrders(testUsername, unitId);
-      print('***** Deleting all orders results=${deleteResults}');
-    }
-
     void _checkOrdersSortOrder(List<Order> orders) {
       expect(orders, isNotNull);
       for (int i = 0; i < orders.length - 1; i++) {
@@ -34,58 +84,6 @@ void main() {
             greaterThanOrEqualTo(date2.millisecondsSinceEpoch));
       }
     }
-
-    setUpAll(() async {
-      EquatableConfig.stringify = true;
-      await initDependencyInjection();
-
-      _controller = BehaviorSubject();
-      expect(_controller, isNotNull);
-
-      _repository = getIt<OrderRepository>();
-      expect(_repository, isNotNull);
-
-      AppConstants constants = getIt<AppConstants>();
-      await getIt.unregister<AppConstants>(instance: constants);
-      getIt.registerLazySingleton<AppConstants>(() => AppConstants(
-            paginationSize: dummy_page_size,
-          ));
-
-      constants = getIt<AppConstants>();
-      print('Pagination size=' + constants.paginationSize.toString());
-
-      ProviderLoginResponse response =
-          await getIt<LoginRepository>().loginWithEmailAndPassword(
-        testUserEmail,
-        testUserPassword,
-      );
-      expect(response, isNotNull);
-      expect(response.user, isNotNull);
-
-      await cleanUpOrders();
-
-      print('Creating orders');
-      await createDummyOrders(
-        userId: testUsername,
-        unitId: unitId,
-        count: dummy_order_count,
-        archived: false,
-      );
-
-      print('Creating order histories');
-      await createDummyOrders(
-        userId: testUsername,
-        unitId: unitId,
-        count: dummy_order_history_count,
-        archived: true,
-      );
-
-      print('Waiting to backend to finish order creation');
-      await Future.delayed(Duration(seconds: 5));
-
-      await _repository.startOrderListSubscription(unitId, _controller);
-      await _repository.startOrderHistoryListSubscription(unitId, _controller);
-    });
 
     test('Test pagination on Order repository', () async {
       String? nextToken;
