@@ -8,7 +8,7 @@ Object {
   "createdAt": "2022-02-01T00:00:00.000Z",
   "currentStatus": "none",
   "id": "THE UUID",
-  "orderNum": "10",
+  "orderNum": "010",
   "statusLog": Array [],
   "unitId": "UNIT ID",
   "updatedAt": "2022-02-01T00:00:00.000Z",
@@ -84,7 +84,7 @@ Object {
   "_tag": "Right",
   "right": Object {
     "order": Object {
-      "orderNum": "TABLE1SEAT105",
+      "orderNum": "050",
       "place": Object {
         "seat": "SEAT1",
         "table": "TABLE1",
@@ -109,7 +109,7 @@ Object {
   "_tag": "Right",
   "right": Object {
     "order": Object {
-      "orderNum": "TABLE3SEAT310",
+      "orderNum": "010",
       "place": Object {
         "seat": "SEAT3",
         "table": "TABLE3",
@@ -127,7 +127,7 @@ Object {
   "_tag": "Right",
   "right": Object {
     "order": Object {
-      "orderNum": "20",
+      "orderNum": "020",
     },
     "unit": Object {
       "id": "UNIT ID 4",

@@ -64,13 +64,8 @@ export const getNextOrderNum =
       incrementOrderNum(deps.unitTableName)(input.unit.id),
       oeTryCatch,
       OE.map(x => x as NonNullable<typeof x>),
-      OE.map(lastOrderNum => lastOrderNum ?? Math.floor(deps.random() * 10)),
-      OE.map(x => (x || 1).toString().padStart(2, '0')),
-      OE.map(num =>
-        input.order.place
-          ? `${input.order.place.table}${input.order.place.seat}${num}`
-          : num,
-      ),
+      OE.map(lastOrderNum => lastOrderNum ?? Math.floor(deps.random() * 100)),
+      OE.map(x => (x || 1).toString().padStart(3, '0')),
       OE.map(orderNum => ({
         ...input,
         order: {
