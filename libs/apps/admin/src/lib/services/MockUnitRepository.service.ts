@@ -1,15 +1,14 @@
 import { AbsUnitRepository, AdBanner, CrudApi } from '@bgap/domain';
-import { unitFixture } from '@bgap/shared/fixtures';
 import { Injectable } from '@angular/core';
-import { AdBannerInput, InputMaybe } from '@bgap/crud-gql/api';
+import { mockUnit } from '@bgap/domain';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MockUnitRepositoryService extends AbsUnitRepository {
   private units: { [unitId: string]: CrudApi.Unit } = {
-    [unitFixture.unit_01.id]: {
-      ...unitFixture.unit_01,
+    [mockUnit.id]: {
+      ...mockUnit,
       adBannersEnabled: true,
       adBanners: [
         {
@@ -46,7 +45,9 @@ export class MockUnitRepositoryService extends AbsUnitRepository {
   }
 
   getUpdatedBannersFromInput(
-    adBanners: InputMaybe<Array<InputMaybe<AdBannerInput>>> | undefined,
+    adBanners:
+      | CrudApi.InputMaybe<Array<CrudApi.InputMaybe<CrudApi.AdBannerInput>>>
+      | undefined,
   ): AdBanner[] {
     console.log('input', adBanners);
 

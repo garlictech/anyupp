@@ -7,15 +7,17 @@ import {
   AbsStorageService,
   AbsUnitAdBannerService,
   AbsUnitRepository,
+  mockUnit,
 } from '@bgap/domain';
 import { UnitBannerUIComponent } from '../../ui-widgets/unit-banner-ui/unit-banner-ui.component';
 import { ButtonUIComponent } from '../../ui-widgets/button-ui/button-ui.component';
-import { MockUnitAdBannerService } from '../../services';
-import { MockStorageService } from '../../services';
-import { MockUnitRepositoryService } from '../../services';
-import { MockImageCompressionService } from '../../services';
+import {
+  MockImageCompressionService,
+  MockStorageService,
+  MockUnitAdBannerService,
+  MockUnitRepositoryService,
+} from '../../services';
 import { action } from '@storybook/addon-actions';
-import { unitFixture } from '@bgap/shared/fixtures';
 
 export default {
   title: 'BannerUploadFormComponent',
@@ -59,6 +61,6 @@ const Template: Story<BannerUploadFormComponent> = (
 
 export const Primary = Template.bind({});
 Primary.args = {
-  unitId: unitFixture.unit_01.id,
+  unitId: mockUnit.id,
   imageUrlPrefix: 'https://placekitten.com/',
 };

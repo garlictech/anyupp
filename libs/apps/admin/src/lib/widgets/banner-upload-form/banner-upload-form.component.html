@@ -33,13 +33,13 @@
   <div class="no-unit-banners">Jelenleg nincs feltöltött banner</div>
 </ng-template>
 
-<h3>Új banner feltöltése</h3>
-
 <form
   class="banner-upload-form"
   [formGroup]="bannerUploadForm"
-  *ngIf="bannerUploadEnabled"
+  *ngIf="currentUnitBanners.length < bannerLimit; else uploadLimitReached"
 >
+  <h3>Új banner feltöltése</h3>
+
   <div class="form-field-upload-banner">
     <lib-admin-file-uploader-ui
       [formControl]="fileUpload"
@@ -73,3 +73,9 @@
     (pushed)="onUploadBanner()"
   ></lib-admin-button-ui>
 </form>
+
+<ng-template #uploadLimitReached>
+  <div class="banner-limit-reached">
+    A feltölthető bannerek száma elérte a maximumot.
+  </div>
+</ng-template>

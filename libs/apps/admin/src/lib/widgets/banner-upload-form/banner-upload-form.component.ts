@@ -20,6 +20,7 @@ export class BannerUploadFormComponent implements OnInit {
   @Output() readonly operationSuccess = new EventEmitter<string>();
   @Output() readonly operationError = new EventEmitter<string>();
 
+  bannerLimit = MAX_NUMBER_OF_BANNERS;
   validatorErrorTypes = FileUploadValidatorErrorTypes;
   currentUnitBanners: AdBanner[] = [];
   currentUnitBannersEnabled = false;
@@ -47,10 +48,6 @@ export class BannerUploadFormComponent implements OnInit {
 
   get operationIsPending(): boolean {
     return Object.values(this.operationsPending).some(pending => pending);
-  }
-
-  get bannerUploadEnabled(): boolean {
-    return this.currentUnitBanners.length < MAX_NUMBER_OF_BANNERS;
   }
 
   ngOnInit(): void {
