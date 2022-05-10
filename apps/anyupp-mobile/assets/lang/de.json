@@ -173,6 +173,7 @@
     "details": {
       "orderState": "Order status",
       "orderDetails": "Order details",
+      "orderDetailsWithNum": "Order(#{{0}}) details",
       "paymentDetails": "Payment details",
       "otherDetails": "More details",
       "tipDetails": "Tip",
@@ -285,7 +286,27 @@
   "notifications": {
     "messageFrom": "Message from AnyUpp!",
     "orderProcessing": "Your order is being processed.",
-    "orderReady": "Your order is ready!"
+    "orderReady": "Your order is ready!",
+    "full": {
+      "processing": {
+        "title": "We are placing your order",
+        "message": "Your order # {{0}} is being processed and will be served soon"
+      },
+      "ready": {
+        "title": "Your order is served",
+        "message": "Your order #{{0}} has been served"
+      }
+    },
+    "simplified": {
+      "processing": {
+        "title": "We are placing your order",
+        "message": "Your order #{{0}} is being processed and will be served soon"
+      },
+      "ready": {
+        "title": "Your order is served",
+        "message": "Your order #{{0}} has been served"
+      }
+    }
   },
   "payment": {
     "title": "PAYMENT",

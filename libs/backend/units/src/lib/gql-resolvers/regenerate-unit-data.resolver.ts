@@ -87,7 +87,7 @@ export const regenerateUnitData =
       map(generatedProducts => generatedProducts.map(prop => prop.id)),
     );
 
-    return combineLatest(listOriginalGeneratedProducts$, regenerate$).pipe(
+    return combineLatest([listOriginalGeneratedProducts$, regenerate$]).pipe(
       map(([originalProducts, newProducts]) =>
         R.difference(originalProducts, newProducts),
       ),

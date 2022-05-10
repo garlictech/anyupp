@@ -37,7 +37,11 @@ export const calculateAndFilterNotActiveProducts = (
 export const listUnitProductsForAUnit =
   (crudSdk: CrudApi.CrudSdk) => (unitId: string) => {
     const input: CrudApi.SearchUnitProductsQueryVariables = {
-      filter: { unitId: { eq: unitId }, dirty: { ne: true } },
+      filter: {
+        unitId: { eq: unitId },
+        dirty: { ne: true },
+        deletedAt: { exists: false },
+      },
     };
     const throwOnEmptyList = (items: CrudApi.UnitProduct[]) =>
       items.length > 0 ? of(items) : throwError(getNoProductInUnitError());
@@ -94,7 +98,7 @@ export const getProductComponentSetMap =
   (crudSdk: CrudApi.CrudSdk) =>
   (chainId: string): Observable<ProductComponentSetMap> => {
     const input: CrudApi.SearchProductComponentSetsQueryVariables = {
-      filter: { chainId: { eq: chainId } },
+      filter: { chainId: { eq: chainId }, deletedAt: { exists: false } },
     };
 
     return getAllPaginatedData(crudSdk.SearchProductComponentSets, {
@@ -111,7 +115,7 @@ export const getProductComponentMap =
   (crudSdk: CrudApi.CrudSdk) =>
   (chainId: string): Observable<ProductComponentMap> => {
     const input: CrudApi.SearchProductComponentsQueryVariables = {
-      filter: { chainId: { eq: chainId } },
+      filter: { chainId: { eq: chainId }, deletedAt: { exists: false } },
     };
     return getAllPaginatedData(crudSdk.SearchProductComponents, {
       query: input,

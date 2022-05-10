@@ -85,6 +85,6 @@ class Mock {
   }
 
   static OrderPolicy mockOrderPolicy() {
-    return OrderPolicy.placeOnly;
+    return OrderPolicy.full;
   }
 }

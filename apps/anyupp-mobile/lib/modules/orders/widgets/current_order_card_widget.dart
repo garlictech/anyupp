@@ -105,9 +105,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        order.archived
-                            ? dateFormatter.format(order.createdAt)
-                            : formatOrderDate(context, order.createdAt),
+                        _getCardTitle(context),
                         style: Fonts.satoshi(
                           fontSize: 16.0,
                           color: theme.secondary,
@@ -167,5 +165,15 @@ class CurrentOrderCardWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _getCardTitle(BuildContext context) {
+    if (order.orderPolicy == OrderPolicy.full) {
+      return '#${order.orderNum}';
+    }
+
+    return order.archived
+        ? dateFormatter.format(order.createdAt)
+        : formatOrderDate(context, order.createdAt);
   }
 }

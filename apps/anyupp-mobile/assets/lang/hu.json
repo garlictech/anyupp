@@ -173,7 +173,7 @@
     "details": {
       "orderState": "Rendelés állapota",
       "orderDetails": "Rendelés részletei",
-      "orderDetailsWithNum": "Rendelés(#{{0}}) állapota",
+      "orderDetailsWithNum": "Rendelés(#{{0}}) részletei",
       "paymentDetails": "Fizetés részletei",
       "otherDetails": "További részletek",
       "tipDetails": "Borravaló",

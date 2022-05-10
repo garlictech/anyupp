@@ -63,9 +63,12 @@ export const startStripePayment =
       );
     }
 
-    const status = order.statusLog[order.statusLog.length - 1];
+    const status =
+      order.currentStatus ||
+      order.statusLog[order.statusLog.length - 1]?.status ||
+      CrudApi.OrderStatus.none;
 
-    if (status.status != CrudApi.OrderStatus.none) {
+    if (status != CrudApi.OrderStatus.none) {
       throw Error(
         'Order status must be OrderStatus.NONE if you want to pay the order! Current status:' +
           status +

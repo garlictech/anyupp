@@ -104,6 +104,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: OrderStatusTimelineWidget(
                           orderStatus: _order.status,
+                          orderNum: _order.orderPolicy == OrderPolicy.full
+                              ? _order.orderNum
+                              : null,
                         ),
                       )
                     : Container(),
@@ -645,10 +648,7 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  order.orderPolicy == OrderPolicy.full
-                      ? trans(context, 'orders.details.orderDetailsWithNum',
-                          [order.orderNum])
-                      : trans(context, 'orders.details.orderDetails'),
+                  trans(context, 'orders.details.orderDetails'),
                   style: Fonts.satoshi(
                     fontSize: 24.0,
                     fontWeight: FontWeight.w700,
@@ -918,9 +918,13 @@ class OrderStatusTimelineData {
 
 class OrderStatusTimelineWidget extends StatelessWidget {
   final OrderStatus orderStatus;
+  final String? orderNum;
 
-  const OrderStatusTimelineWidget({Key? key, required this.orderStatus})
-      : super(key: key);
+  const OrderStatusTimelineWidget({
+    Key? key,
+    required this.orderStatus,
+    this.orderNum,
+  }) : super(key: key);
 
   List<OrderStatusTimelineData> _calculateTimelineData(BuildContext context) {
     List<OrderStatusTimelineData> results = [];
@@ -1082,7 +1086,11 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            trans(context, 'orders.details.orderState'),
+            orderNum != null
+                ? trans(
+                    context, 'orders.details.orderDetailsWithNum', [orderNum])
+                : trans(context, 'orders.details.orderDetails'),
+            // trans(context, 'orders.details.orderState'),
             style: Fonts.satoshi(
               fontSize: 24.0,
               fontWeight: FontWeight.w700,
