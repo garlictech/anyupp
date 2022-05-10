@@ -374,7 +374,7 @@ Object {
     },
   ],
   "orderMode": "instant",
-  "orderNum": "010103",
+  "orderNum": "003",
   "orderPolicy": null,
   "packagingFeeTaxPercentage": null,
   "packagingSum": null,
@@ -429,4 +429,4 @@ exports[`CreateOrder mutation test should create an order with server: rkeeper d
 
 exports[`CreateOrder mutation test should create an order with server: rkeeper func called 1`] = `Array []`;
 
-exports[`CreateOrder mutation test should create an order with server: second order ordernum 1`] = `"010104"`;
+exports[`CreateOrder mutation test should create an order with server: second order ordernum 1`] = `"004"`;
