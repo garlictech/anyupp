@@ -632,6 +632,7 @@ input OrderItemConfigComponentInput {
 }
 
 enum OrderPolicy {
+  noOrders
   placeOnly
   placeWithPaymentType
   full
