@@ -37,7 +37,7 @@ export interface AddressInput {
   address: Scalars['String'];
   city: Scalars['String'];
   country: Scalars['String'];
-  location?: InputMaybe<LocationLatLngInput>;
+  location: LocationLatLngInput;
   postalCode: Scalars['String'];
   title: Scalars['String'];
 }
@@ -461,6 +461,7 @@ export interface CreateProductCategoryInput {
 export interface CreateProductComponentInput {
   allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
   chainId: Scalars['ID'];
+  deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
   description?: InputMaybe<Scalars['String']>;
   dirty?: InputMaybe<Scalars['Boolean']>;
   externalId?: InputMaybe<Scalars['String']>;
@@ -471,6 +472,7 @@ export interface CreateProductComponentInput {
 
 export interface CreateProductComponentSetInput {
   chainId: Scalars['ID'];
+  deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
   description: Scalars['String'];
   dirty?: InputMaybe<Scalars['Boolean']>;
   externalId?: InputMaybe<Scalars['String']>;
@@ -1380,6 +1382,7 @@ export interface ModelInvoiceStatusInput {
 export interface ModelOrderConditionInput {
   and?: InputMaybe<Array<InputMaybe<ModelOrderConditionInput>>>;
   archived?: InputMaybe<ModelBooleanInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
   currentStatus?: InputMaybe<ModelOrderStatusInput>;
   externalId?: InputMaybe<ModelStringInput>;
   guestLabel?: InputMaybe<ModelStringInput>;
@@ -1399,6 +1402,7 @@ export interface ModelOrderConditionInput {
   transactionStatus?: InputMaybe<ModelPaymentStatusInput>;
   unitId?: InputMaybe<ModelIdInput>;
   unpayCategory?: InputMaybe<ModelUnpayCategoryInput>;
+  updatedAt?: InputMaybe<ModelStringInput>;
   userId?: InputMaybe<ModelIdInput>;
   version?: InputMaybe<ModelIntInput>;
 }
@@ -1411,6 +1415,7 @@ export interface ModelOrderConnection {
 export interface ModelOrderFilterInput {
   and?: InputMaybe<Array<InputMaybe<ModelOrderFilterInput>>>;
   archived?: InputMaybe<ModelBooleanInput>;
+  createdAt?: InputMaybe<ModelStringInput>;
   currentStatus?: InputMaybe<ModelOrderStatusInput>;
   externalId?: InputMaybe<ModelStringInput>;
   guestLabel?: InputMaybe<ModelStringInput>;
@@ -1431,6 +1436,7 @@ export interface ModelOrderFilterInput {
   transactionStatus?: InputMaybe<ModelPaymentStatusInput>;
   unitId?: InputMaybe<ModelIdInput>;
   unpayCategory?: InputMaybe<ModelUnpayCategoryInput>;
+  updatedAt?: InputMaybe<ModelStringInput>;
   userId?: InputMaybe<ModelIdInput>;
   version?: InputMaybe<ModelIntInput>;
 }
@@ -1495,6 +1501,7 @@ export interface ModelProductComponentConditionInput {
   allergens?: InputMaybe<ModelAllergenListInput>;
   and?: InputMaybe<Array<InputMaybe<ModelProductComponentConditionInput>>>;
   chainId?: InputMaybe<ModelIdInput>;
+  deletedAt?: InputMaybe<ModelStringInput>;
   description?: InputMaybe<ModelStringInput>;
   dirty?: InputMaybe<ModelBooleanInput>;
   externalId?: InputMaybe<ModelStringInput>;
@@ -1512,6 +1519,7 @@ export interface ModelProductComponentFilterInput {
   allergens?: InputMaybe<ModelAllergenListInput>;
   and?: InputMaybe<Array<InputMaybe<ModelProductComponentFilterInput>>>;
   chainId?: InputMaybe<ModelIdInput>;
+  deletedAt?: InputMaybe<ModelStringInput>;
   description?: InputMaybe<ModelStringInput>;
   dirty?: InputMaybe<ModelBooleanInput>;
   externalId?: InputMaybe<ModelStringInput>;
@@ -1524,6 +1532,7 @@ export interface ModelProductComponentFilterInput {
 export interface ModelProductComponentSetConditionInput {
   and?: InputMaybe<Array<InputMaybe<ModelProductComponentSetConditionInput>>>;
   chainId?: InputMaybe<ModelIdInput>;
+  deletedAt?: InputMaybe<ModelStringInput>;
   description?: InputMaybe<ModelStringInput>;
   dirty?: InputMaybe<ModelBooleanInput>;
   externalId?: InputMaybe<ModelStringInput>;
@@ -1543,6 +1552,7 @@ export interface ModelProductComponentSetConnection {
 export interface ModelProductComponentSetFilterInput {
   and?: InputMaybe<Array<InputMaybe<ModelProductComponentSetFilterInput>>>;
   chainId?: InputMaybe<ModelIdInput>;
+  deletedAt?: InputMaybe<ModelStringInput>;
   description?: InputMaybe<ModelStringInput>;
   dirty?: InputMaybe<ModelBooleanInput>;
   externalId?: InputMaybe<ModelStringInput>;
@@ -2395,6 +2405,7 @@ export enum OrderPaymentPolicy {
 
 export enum OrderPolicy {
   full = 'full',
+  noorders = 'noOrders',
   placeonly = 'placeOnly',
   placewithpaymenttype = 'placeWithPaymentType'
 }
@@ -2525,6 +2536,7 @@ export interface ProductComponent {
   allergens?: Maybe<Array<Maybe<Allergen>>>;
   chainId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
+  deletedAt?: Maybe<Scalars['AWSDateTime']>;
   description?: Maybe<Scalars['String']>;
   dirty?: Maybe<Scalars['Boolean']>;
   externalId?: Maybe<Scalars['String']>;
@@ -2537,6 +2549,7 @@ export interface ProductComponent {
 export interface ProductComponentSet {
   chainId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
+  deletedAt?: Maybe<Scalars['AWSDateTime']>;
   description: Scalars['String'];
   dirty?: Maybe<Scalars['Boolean']>;
   externalId?: Maybe<Scalars['String']>;
@@ -3994,6 +4007,7 @@ export enum SearchableProductComponentAggregateField {
   allergens = 'allergens',
   chainid = 'chainId',
   createdat = 'createdAt',
+  deletedat = 'deletedAt',
   description = 'description',
   dirty = 'dirty',
   externalid = 'externalId',
@@ -4020,6 +4034,7 @@ export interface SearchableProductComponentFilterInput {
   and?: InputMaybe<Array<InputMaybe<SearchableProductComponentFilterInput>>>;
   chainId?: InputMaybe<SearchableIdFilterInput>;
   createdAt?: InputMaybe<SearchableStringFilterInput>;
+  deletedAt?: InputMaybe<SearchableStringFilterInput>;
   description?: InputMaybe<SearchableStringFilterInput>;
   dirty?: InputMaybe<SearchableBooleanFilterInput>;
   externalId?: InputMaybe<SearchableStringFilterInput>;
@@ -4033,6 +4048,7 @@ export interface SearchableProductComponentFilterInput {
 export enum SearchableProductComponentSetAggregateField {
   chainid = 'chainId',
   createdat = 'createdAt',
+  deletedat = 'deletedAt',
   description = 'description',
   dirty = 'dirty',
   externalid = 'externalId',
@@ -4061,6 +4077,7 @@ export interface SearchableProductComponentSetFilterInput {
   and?: InputMaybe<Array<InputMaybe<SearchableProductComponentSetFilterInput>>>;
   chainId?: InputMaybe<SearchableIdFilterInput>;
   createdAt?: InputMaybe<SearchableStringFilterInput>;
+  deletedAt?: InputMaybe<SearchableStringFilterInput>;
   description?: InputMaybe<SearchableStringFilterInput>;
   dirty?: InputMaybe<SearchableBooleanFilterInput>;
   externalId?: InputMaybe<SearchableStringFilterInput>;
@@ -4082,6 +4099,7 @@ export interface SearchableProductComponentSetSortInput {
 export enum SearchableProductComponentSetSortableFields {
   chainid = 'chainId',
   createdat = 'createdAt',
+  deletedat = 'deletedAt',
   description = 'description',
   dirty = 'dirty',
   externalid = 'externalId',
@@ -4100,6 +4118,7 @@ export interface SearchableProductComponentSortInput {
 export enum SearchableProductComponentSortableFields {
   chainid = 'chainId',
   createdat = 'createdAt',
+  deletedat = 'deletedAt',
   description = 'description',
   dirty = 'dirty',
   externalid = 'externalId',
@@ -4961,6 +4980,7 @@ export interface UpdateInvoiceInput {
 
 export interface UpdateOrderInput {
   archived?: InputMaybe<Scalars['Boolean']>;
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
   currentStatus?: InputMaybe<OrderStatus>;
   externalId?: InputMaybe<Scalars['String']>;
   guestLabel?: InputMaybe<Scalars['String']>;
@@ -4991,6 +5011,7 @@ export interface UpdateOrderInput {
   transactionStatus?: InputMaybe<PaymentStatus>;
   unitId?: InputMaybe<Scalars['ID']>;
   unpayCategory?: InputMaybe<UnpayCategory>;
+  updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
   userId?: InputMaybe<Scalars['ID']>;
   version?: InputMaybe<Scalars['Int']>;
 }
@@ -5007,6 +5028,7 @@ export interface UpdateProductCategoryInput {
 export interface UpdateProductComponentInput {
   allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
   chainId?: InputMaybe<Scalars['ID']>;
+  deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
   description?: InputMaybe<Scalars['String']>;
   dirty?: InputMaybe<Scalars['Boolean']>;
   externalId?: InputMaybe<Scalars['String']>;
@@ -5017,6 +5039,7 @@ export interface UpdateProductComponentInput {
 
 export interface UpdateProductComponentSetInput {
   chainId?: InputMaybe<Scalars['ID']>;
+  deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
   description?: InputMaybe<Scalars['String']>;
   dirty?: InputMaybe<Scalars['Boolean']>;
   externalId?: InputMaybe<Scalars['String']>;
@@ -5451,7 +5474,7 @@ export type CreateProductComponentMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductComponentMutation = { createProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type CreateProductComponentMutation = { createProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type UpdateProductComponentMutationVariables = Exact<{
   input: UpdateProductComponentInput;
@@ -5459,7 +5482,7 @@ export type UpdateProductComponentMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProductComponentMutation = { updateProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type UpdateProductComponentMutation = { updateProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type DeleteProductComponentMutationVariables = Exact<{
   input: DeleteProductComponentInput;
@@ -5467,7 +5490,7 @@ export type DeleteProductComponentMutationVariables = Exact<{
 }>;
 
 
-export type DeleteProductComponentMutation = { deleteProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type DeleteProductComponentMutation = { deleteProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type CreateProductComponentSetMutationVariables = Exact<{
   input: CreateProductComponentSetInput;
@@ -5475,7 +5498,7 @@ export type CreateProductComponentSetMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductComponentSetMutation = { createProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type CreateProductComponentSetMutation = { createProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type UpdateProductComponentSetMutationVariables = Exact<{
   input: UpdateProductComponentSetInput;
@@ -5483,7 +5506,7 @@ export type UpdateProductComponentSetMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProductComponentSetMutation = { updateProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type UpdateProductComponentSetMutation = { updateProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type DeleteProductComponentSetMutationVariables = Exact<{
   input: DeleteProductComponentSetInput;
@@ -5491,7 +5514,7 @@ export type DeleteProductComponentSetMutationVariables = Exact<{
 }>;
 
 
-export type DeleteProductComponentSetMutation = { deleteProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type DeleteProductComponentSetMutation = { deleteProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type CreateGeneratedProductCategoryMutationVariables = Exact<{
   input: CreateGeneratedProductCategoryInput;
@@ -5941,7 +5964,7 @@ export type GetProductComponentQueryVariables = Exact<{
 }>;
 
 
-export type GetProductComponentQuery = { getProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type GetProductComponentQuery = { getProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type ListProductComponentsQueryVariables = Exact<{
   filter?: InputMaybe<ModelProductComponentFilterInput>;
@@ -5950,7 +5973,7 @@ export type ListProductComponentsQueryVariables = Exact<{
 }>;
 
 
-export type ListProductComponentsQuery = { listProductComponents?: { nextToken?: string | null, items: Array<{ id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
+export type ListProductComponentsQuery = { listProductComponents?: { nextToken?: string | null, items: Array<{ id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
 
 export type SearchProductComponentsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableProductComponentFilterInput>;
@@ -5962,14 +5985,14 @@ export type SearchProductComponentsQueryVariables = Exact<{
 }>;
 
 
-export type SearchProductComponentsQuery = { searchProductComponents?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchProductComponentsQuery = { searchProductComponents?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetProductComponentSetQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetProductComponentSetQuery = { getProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type GetProductComponentSetQuery = { getProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type ListProductComponentSetsQueryVariables = Exact<{
   filter?: InputMaybe<ModelProductComponentSetFilterInput>;
@@ -5978,7 +6001,7 @@ export type ListProductComponentSetsQueryVariables = Exact<{
 }>;
 
 
-export type ListProductComponentSetsQuery = { listProductComponentSets?: { nextToken?: string | null, items: Array<{ id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
+export type ListProductComponentSetsQuery = { listProductComponentSets?: { nextToken?: string | null, items: Array<{ id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
 
 export type SearchProductComponentSetsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableProductComponentSetFilterInput>;
@@ -5990,7 +6013,7 @@ export type SearchProductComponentSetsQueryVariables = Exact<{
 }>;
 
 
-export type SearchProductComponentSetsQuery = { searchProductComponentSets?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchProductComponentSetsQuery = { searchProductComponentSets?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetGeneratedProductCategoryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6287,14 +6310,14 @@ export type OnProductComponentsChangeSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnProductComponentsChangeSubscription = { onProductComponentsChange?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnProductComponentsChangeSubscription = { onProductComponentsChange?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnProductComponentSetsChangeSubscriptionVariables = Exact<{
   chainId: Scalars['ID'];
 }>;
 
 
-export type OnProductComponentSetsChangeSubscription = { onProductComponentSetsChange?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnProductComponentSetsChangeSubscription = { onProductComponentSetsChange?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnChainProductChangeSubscriptionVariables = Exact<{
   chainId: Scalars['ID'];
@@ -6466,32 +6489,32 @@ export type OnDeleteProductCategorySubscription = { onDeleteProductCategory?: { 
 export type OnCreateProductComponentSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateProductComponentSubscription = { onCreateProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnCreateProductComponentSubscription = { onCreateProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnUpdateProductComponentSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateProductComponentSubscription = { onUpdateProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnUpdateProductComponentSubscription = { onUpdateProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnDeleteProductComponentSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteProductComponentSubscription = { onDeleteProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnDeleteProductComponentSubscription = { onDeleteProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnCreateProductComponentSetSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateProductComponentSetSubscription = { onCreateProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnCreateProductComponentSetSubscription = { onCreateProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnUpdateProductComponentSetSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateProductComponentSetSubscription = { onUpdateProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnUpdateProductComponentSetSubscription = { onUpdateProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnDeleteProductComponentSetSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteProductComponentSetSubscription = { onDeleteProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnDeleteProductComponentSetSubscription = { onDeleteProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: string, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnCreateGeneratedProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -9221,6 +9244,7 @@ export const CreateProductComponentDocument = gql`
     externalId
     dirty
     soldOut
+    deletedAt
     createdAt
     updatedAt
   }
@@ -9241,6 +9265,7 @@ export const UpdateProductComponentDocument = gql`
     externalId
     dirty
     soldOut
+    deletedAt
     createdAt
     updatedAt
   }
@@ -9261,6 +9286,7 @@ export const DeleteProductComponentDocument = gql`
     externalId
     dirty
     soldOut
+    deletedAt
     createdAt
     updatedAt
   }
@@ -9283,6 +9309,7 @@ export const CreateProductComponentSetDocument = gql`
     maxSelection
     supportedServingModes
     dirty
+    deletedAt
     createdAt
     updatedAt
   }
@@ -9305,6 +9332,7 @@ export const UpdateProductComponentSetDocument = gql`
     maxSelection
     supportedServingModes
     dirty
+    deletedAt
     createdAt
     updatedAt
   }
@@ -9327,6 +9355,7 @@ export const DeleteProductComponentSetDocument = gql`
     maxSelection
     supportedServingModes
     dirty
+    deletedAt
     createdAt
     updatedAt
   }
@@ -13153,6 +13182,7 @@ export const GetProductComponentDocument = gql`
     externalId
     dirty
     soldOut
+    deletedAt
     createdAt
     updatedAt
   }
@@ -13174,6 +13204,7 @@ export const ListProductComponentsDocument = gql`
       externalId
       dirty
       soldOut
+      deletedAt
       createdAt
       updatedAt
     }
@@ -13204,6 +13235,7 @@ export const SearchProductComponentsDocument = gql`
       externalId
       dirty
       soldOut
+      deletedAt
       createdAt
       updatedAt
     }
@@ -13243,6 +13275,7 @@ export const GetProductComponentSetDocument = gql`
     maxSelection
     supportedServingModes
     dirty
+    deletedAt
     createdAt
     updatedAt
   }
@@ -13266,6 +13299,7 @@ export const ListProductComponentSetsDocument = gql`
       maxSelection
       supportedServingModes
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -13298,6 +13332,7 @@ export const SearchProductComponentSetsDocument = gql`
       maxSelection
       supportedServingModes
       dirty
+      deletedAt
       createdAt
       updatedAt
     }
@@ -15606,6 +15641,7 @@ export const OnProductComponentsChangeDocument = gql`
     externalId
     dirty
     soldOut
+    deletedAt
     createdAt
     updatedAt
   }
@@ -15628,6 +15664,7 @@ export const OnProductComponentSetsChangeDocument = gql`
     maxSelection
     supportedServingModes
     dirty
+    deletedAt
     createdAt
     updatedAt
   }
@@ -18662,6 +18699,7 @@ export const OnCreateProductComponentDocument = gql`
     externalId
     dirty
     soldOut
+    deletedAt
     createdAt
     updatedAt
   }
@@ -18682,6 +18720,7 @@ export const OnUpdateProductComponentDocument = gql`
     externalId
     dirty
     soldOut
+    deletedAt
     createdAt
     updatedAt
   }
@@ -18702,6 +18741,7 @@ export const OnDeleteProductComponentDocument = gql`
     externalId
     dirty
     soldOut
+    deletedAt
     createdAt
     updatedAt
   }
@@ -18724,6 +18764,7 @@ export const OnCreateProductComponentSetDocument = gql`
     maxSelection
     supportedServingModes
     dirty
+    deletedAt
     createdAt
     updatedAt
   }
@@ -18746,6 +18787,7 @@ export const OnUpdateProductComponentSetDocument = gql`
     maxSelection
     supportedServingModes
     dirty
+    deletedAt
     createdAt
     updatedAt
   }
@@ -18768,6 +18810,7 @@ export const OnDeleteProductComponentSetDocument = gql`
     maxSelection
     supportedServingModes
     dirty
+    deletedAt
     createdAt
     updatedAt
   }
