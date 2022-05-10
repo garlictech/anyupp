@@ -7064,10 +7064,10 @@
   dependencies:
     intersection-observer "0.7.0"
 
-"@ngneat/until-destroy@9.0.2":
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/@ngneat/until-destroy/-/until-destroy-9.0.2.tgz#0c39bb071b5e09de148e6f5b98d8c62df8c9fc5b"
-  integrity sha512-/vq7Nx556SZJ7eExT9FG/fHbvhVgf2CmZgI6FNCIXVoEasUkWQd9xVC/azwP6xkYY0i2DrbXEKutAZa+6lqrEg==
+"@ngneat/until-destroy@9.2.0":
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/until-destroy/-/until-destroy-9.2.0.tgz#970c1c7397f95b18c922c22765691539a61003e1"
+  integrity sha512-VbnDFsdAI0QTjz1aD+nsn/GK9j4N26YJUdQZSdL9De6zBIz/s+UtG/DXis0qY/J/kboM5wJNUZEEsTRyoyv+CQ==
   dependencies:
     tslib "^2.3.0"
 
