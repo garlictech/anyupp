@@ -182,7 +182,7 @@ class GeoUnit {
       ),
       location:
           map['location'] != null ? Location.fromJson(map['location']) : null,
-      adBannersEnabled: map['adBannersEnabled'] ?? false,
+      adBannersEnabled: map['unit']?['adBannersEnabled'] ?? false,
       adBanners: map['unit']?['adBanners'] != null
           ? List<AdBanner>.from(
               map['unit']?['adBanners']?.map((x) => AdBanner.fromJson(x)))
