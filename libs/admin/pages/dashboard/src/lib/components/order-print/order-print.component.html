@@ -163,7 +163,12 @@
           </div>
         </div>
 
-        <div *ngIf="unit?.serviceFeePolicy?.type === EServiceFeeType.included">
+        <div
+          *ngIf="
+            hasServiceFee &&
+            unit?.serviceFeePolicy?.type === EServiceFeeType.included
+          "
+        >
           {{
             'units.serviceFee.serviceFeeIncluded'
               | translate: { tax: unit?.serviceFeePolicy?.percentage }

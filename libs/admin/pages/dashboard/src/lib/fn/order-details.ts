@@ -46,7 +46,10 @@ export const calculateServiceFeeSum = (
   order: CrudApi.Order,
   formatterFn: (value: string | number | undefined, currency: string) => string,
 ) => {
-  if (order.serviceFeePolicy?.type === CrudApi.ServiceFeeType.applicable) {
+  if (
+    order.serviceFeePolicy?.type === CrudApi.ServiceFeeType.applicable &&
+    order.servingMode === CrudApi.ServingMode.inplace
+  ) {
     // sumPriceShown contains the packaging fee (is set)
     return order.serviceFee
       ? formatterFn(
@@ -60,7 +63,10 @@ export const calculateServiceFeeSum = (
 };
 
 export const addIncludedServiceFeeToOrderItems = (order: CrudApi.Order) => {
-  if (order.serviceFeePolicy?.type === CrudApi.ServiceFeeType.included) {
+  if (
+    order.serviceFeePolicy?.type === CrudApi.ServiceFeeType.included &&
+    order.servingMode === CrudApi.ServingMode.inplace
+  ) {
     return order.items.map(item => ({
       ...item,
       sumPriceShown: {
