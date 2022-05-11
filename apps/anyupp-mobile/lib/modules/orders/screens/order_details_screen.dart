@@ -104,9 +104,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: OrderStatusTimelineWidget(
                           orderStatus: _order.status,
-                          orderNum: _order.orderPolicy == OrderPolicy.full
-                              ? _order.orderNum
-                              : null,
+                          orderNum: _order.orderNum,
                         ),
                       )
                     : Container(),
@@ -649,6 +647,10 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
               children: [
                 Text(
                   trans(context, 'orders.details.orderDetails'),
+                  // order.orderPolicy == OrderPolicy.full
+                  //     ? trans(context, 'orders.details.orderDetailsWithNum',
+                  //         [order.orderNum])
+                  //     : trans(context, 'orders.details.orderDetails'),
                   style: Fonts.satoshi(
                     fontSize: 24.0,
                     fontWeight: FontWeight.w700,
@@ -1087,9 +1089,8 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         children: [
           Text(
             orderNum != null
-                ? trans(
-                    context, 'orders.details.orderDetailsWithNum', [orderNum])
-                : trans(context, 'orders.details.orderDetails'),
+                ? trans(context, 'orders.details.orderStateWithNum', [orderNum])
+                : trans(context, 'orders.details.orderState'),
             // trans(context, 'orders.details.orderState'),
             style: Fonts.satoshi(
               fontSize: 24.0,

@@ -38,11 +38,12 @@ class _SelectUnitChooseMethodScreenState
         future: getIt<AuthRepository>().getAuthenticatedUserProfile(),
         builder: (BuildContext context, AsyncSnapshot<User?> userSnapshot) {
           if (userSnapshot.hasData) {
-            return SafeArea(
-              child: Scaffold(
-                  key: const Key('unitselect-screen'),
-                  backgroundColor: Colors.white,
-                  body: Column(
+            return Scaffold(
+                key: const Key('unitselect-screen'),
+                backgroundColor: Colors.white,
+                body: Container(
+                  padding: const EdgeInsets.only(top: kToolbarHeight),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       SelectUnitUserInfoRowWidget(user: userSnapshot.data!),
@@ -51,8 +52,8 @@ class _SelectUnitChooseMethodScreenState
                         initialUri: widget.initialUri,
                       )),
                     ],
-                  )),
-            );
+                  ),
+                ));
           }
           return CenterLoadingWidget(
             backgroundColor: Colors.white,
@@ -221,7 +222,7 @@ class SelectUnitUserInfoRowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(14.0),
+      padding: const EdgeInsets.only(left: 14.0, right: 14.0, bottom: 14.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

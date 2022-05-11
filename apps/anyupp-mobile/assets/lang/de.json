@@ -172,6 +172,7 @@
     },
     "details": {
       "orderState": "Order status",
+      "orderStateWithNum": "Order(#{{0}}) status",
       "orderDetails": "Order details",
       "orderDetailsWithNum": "Order(#{{0}}) details",
       "paymentDetails": "Payment details",

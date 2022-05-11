@@ -119,7 +119,6 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       )),
       fetchPolicy: FetchPolicy.networkOnly,
     );
-    print('AwsFavoritesProvider.getFavoritesList().result=$result');
 
     if (result.hasErrors) {
       throw GraphQLException.fromGraphQLError(

@@ -30,7 +30,7 @@ class Order {
   final String? tipTransactionId;
   final Transaction? tipTransaction;
   final CumulatedPrice? serviceFee;
-  final OrderPolicy? orderPolicy;
+  final OrderPolicy orderPolicy;
   final ServiceFeePolicy? serviceFeePolicy;
   final List<RatingPolicy>? ratingPolicies;
   final TipPolicy? tipPolicy;
@@ -63,7 +63,7 @@ class Order {
     this.tipTransactionId,
     this.tipTransaction,
     this.serviceFee,
-    this.orderPolicy,
+    required this.orderPolicy,
     this.serviceFeePolicy,
     this.ratingPolicies,
     this.tipPolicy,
@@ -219,7 +219,9 @@ class Order {
       serviceFee: map['serviceFee'] != null
           ? CumulatedPrice.fromJson(map['serviceFee'])
           : null,
-      orderPolicy: enumFromStringNull(map['orderPolicy'], OrderPolicy.values),
+      orderPolicy: map['orderPolicy'] != null
+          ? enumFromString(map['orderPolicy'], OrderPolicy.values)
+          : OrderPolicy.full,
       serviceFeePolicy: map['serviceFeePolicy'] != null
           ? ServiceFeePolicy.fromJson(map['serviceFeePolicy'])
           : null,

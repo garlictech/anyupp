@@ -132,6 +132,7 @@ class MockGenerator {
       archived: archived,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
+      orderPolicy: OrderPolicy.full,
       currentStatus: status,
     );
   }

@@ -14,24 +14,16 @@ GeoUnit? get currentUnit {
 
 Cart? get currentCart => getIt.get<CartRepository>().cart;
 
-ServingMode? get currentServingMode {
-  var state = getIt<TakeAwayBloc>().state;
-  if (state is ServingModeSelectedState) {
-    return state.servingMode;
-  }
-  return null;
-}
-
 double get serviceFeeMul =>
     // 1.0 + ((currentUnit?.serviceFeePolicy?.percentage ?? 0.0) / 100.0);
     (currentUnit?.serviceFeePolicy?.type == ServiceFeeType.included &&
-            currentServingMode != ServingMode.takeAway)
+            takeAwayMode == ServingMode.inPlace)
         ? 1.0 + (currentUnit!.serviceFeePolicy!.percentage / 100.0)
         : 1.0;
 
 double serviceFeeMulOrder(ServiceFeePolicy? serviceFeePolicy) =>
     // 1.0 + ((currentUnit?.serviceFeePolicy?.percentage ?? 0.0) / 100.0);
     (serviceFeePolicy?.type == ServiceFeeType.included &&
-            currentServingMode != ServingMode.takeAway)
+            takeAwayMode == ServingMode.inPlace)
         ? 1.0 + ((serviceFeePolicy?.percentage ?? 0) / 100.0)
         : 1.0;

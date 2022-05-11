@@ -4,7 +4,6 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -178,8 +177,7 @@ class ProductMenuItem extends StatelessWidget {
 
   Widget _buildVariantsInfo(BuildContext context, ThemeChainData theme,
       List<ProductVariant> variants, String currency) {
-    final prices =
-        variants.map((variant) => variant.price * serviceFeeMul).toList();
+    final prices = variants.map((variant) => variant.price).toList();
     prices.sort();
 
     if (prices.first == prices.last) {

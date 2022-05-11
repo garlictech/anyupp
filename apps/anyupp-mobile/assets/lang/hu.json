@@ -172,6 +172,7 @@
     },
     "details": {
       "orderState": "Rendelés állapota",
+      "orderStateWithNum": "Rendelés(#{{0}}) állapota",
       "orderDetails": "Rendelés részletei",
       "orderDetailsWithNum": "Rendelés(#{{0}}) részletei",
       "paymentDetails": "Fizetés részletei",
