@@ -104,10 +104,11 @@
       "pickup": "pickup"
     },
     "orderPolicy": {
-      "title": "Megrendelési mód",
-      "full": "Full",
-      "placeOnly": "Place only",
-      "placeWithPaymentType": "Place with payment type"
+      "title": "Rendelési mód",
+      "full": "Teljes rendelési folyamat",
+      "placeOnly": "Csak rendelés beküldés",
+      "placeWithPaymentType": "Csak rendelés beküldés a fizetési típus jelzésével",
+      "noOrders": "Nincs rendelés beküldés"
     },
     "orderPaymentPolicy": {
       "title": "Rendelés fizetés",

@@ -11,6 +11,7 @@ export const orderPolicyOptions = [
   CrudApi.OrderPolicy.full,
   CrudApi.OrderPolicy.placeonly,
   CrudApi.OrderPolicy.placewithpaymenttype,
+  CrudApi.OrderPolicy.noorders,
 ].map(
   (policy): KeyValue => ({
     key: policy,

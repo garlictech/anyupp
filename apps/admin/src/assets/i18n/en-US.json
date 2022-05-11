@@ -107,7 +107,8 @@
       "title": "Order policy",
       "full": "Full",
       "placeOnly": "Place only",
-      "placeWithPaymentType": "Place with payment type"
+      "placeWithPaymentType": "Place with payment type",
+      "noOrders": "No orders"
     },
     "orderPaymentPolicy": {
       "title": "Order payment policy",
