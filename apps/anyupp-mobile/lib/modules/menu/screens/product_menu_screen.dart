@@ -10,12 +10,12 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
+import 'package:fa_prev/shared/widgets/tooltip/simple_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_tooltip/simple_tooltip.dart';
 
 class Menu extends StatefulWidget {
   @override
@@ -165,31 +165,10 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
               children: [
                 Container(
                   margin: EdgeInsets.only(right: 4.0),
-                  child: SimpleTooltip(
-                    arrowBaseWidth: 16.0,
-                    arrowLength: 8,
-                    borderWidth: 1.0,
+                  child: TooltipWidget(
                     show: _showTooltip && _supportedServiceModeCount > 1,
+                    text: trans('main.tooltip'),
                     tooltipDirection: TooltipDirection.down,
-                    hideOnTooltipTap: true,
-                    arrowTipDistance: 4.0,
-                    borderRadius: 8.0,
-                    backgroundColor: theme.secondary,
-                    borderColor: theme.secondary.withOpacity(0.2),
-                    ballonPadding: EdgeInsets.zero,
-                    content: Container(
-                      child: Text(
-                        trans('main.tooltip'),
-                        softWrap: true,
-                        textAlign: TextAlign.center,
-                        style: Fonts.satoshi(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: theme.secondary0,
-                          decoration: TextDecoration.none,
-                        ),
-                      ),
-                    ),
                     child: BlocBuilder<TakeAwayBloc, TakeAwayState>(
                         builder: (context, state) {
                       if (state is ServingModeSelectedState) {

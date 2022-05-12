@@ -125,6 +125,7 @@
     "packagingFee": "Packaging fee",
     "serviceFee": "Service fee",
     "hasServiceFee": "The price includes a service fee",
+    "hasServiceFeeNotIncluded": "Prices do not include {{0}}% service fee",
     "hasNoServiceFee": "The price doesn't include a service fee"
   },
   "allergens": {

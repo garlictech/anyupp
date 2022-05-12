@@ -93,6 +93,7 @@ query getUnitsNearLocation($lat: Float!, $lng: Float!) {
       soldOutVisibilityPolicy
       unit {
         packagingTaxPercentage
+        canRequestVatInvoice
         adBannersEnabled
         adBanners {
           imageUrl

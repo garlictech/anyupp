@@ -376,10 +376,6 @@ describe('CreatOrderFromCart mutation test', () => {
       tap({
         next([order, cart]) {
           expect(order).not.toBeNull();
-          expect(order?.orderNum).toEqual(
-            `${cart_02.place?.table}${cart_02.place?.seat}02`,
-          );
-
           // Cart should be deleted
           expect(cart).toBeNull();
         },

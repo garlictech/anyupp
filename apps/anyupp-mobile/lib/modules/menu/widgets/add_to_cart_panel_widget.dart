@@ -13,7 +13,6 @@ import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:simple_tooltip/simple_tooltip.dart';
 
 class AddToCartPanelWidget extends StatefulWidget {
   final Function(ConfigsetUpdated state, int quantity)? onAddToCartPressed;
@@ -70,6 +69,13 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
     String price =
         formatCurrency(state.totalPrice * serviceFeeMul, state.unit.currency);
 
+    String serviceFeeMessage = serviceFeeType == ServiceFeeType.included
+        ? trans('cart.hasServiceFee')
+        : serviceFeeType == ServiceFeeType.applicable
+            ? trans('cart.hasServiceFeeNotIncluded',
+                [widget.serviceFeePolicy?.percentage.toInt() ?? 0])
+            : trans('cart.hasNoServiceFee');
+
     return Container(
       padding: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
@@ -96,34 +102,12 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
             child: widget.displayState == ProductItemDisplayState.NORMAL &&
                     _showTooltip &&
                     widget.servingMode == ServingMode.inPlace
-                ? SimpleTooltip(
-                    arrowBaseWidth: 16.0,
-                    arrowLength: 8,
-                    borderWidth: 1.0,
-                    show: true,
-                    tooltipDirection: TooltipDirection.up,
-                    hideOnTooltipTap: true,
-                    arrowTipDistance: 4.0,
-                    borderRadius: 8.0,
-                    backgroundColor: theme.secondary,
-                    borderColor: theme.secondary.withOpacity(0.2),
-                    ballonPadding: EdgeInsets.zero,
-                    content: Text(
-                      serviceFeeType == ServiceFeeType.included
-                          ? trans('cart.hasServiceFee')
-                          : trans('cart.hasNoServiceFee'),
-                      softWrap: true,
-                      textAlign: TextAlign.center,
-                      style: Fonts.satoshi(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: theme.secondary0,
-                        decoration: TextDecoration.none,
-                      ),
-                    ),
+                ? TooltipWidget(
+                    text: serviceFeeMessage,
                     child: widget.displayState == ProductItemDisplayState.NORMAL
                         ? _buildButtonRow(price)
-                        : _buildNotAvailableInfo())
+                        : _buildNotAvailableInfo(),
+                  )
                 : widget.displayState == ProductItemDisplayState.NORMAL
                     ? _buildButtonRow(price)
                     : _buildNotAvailableInfo(),

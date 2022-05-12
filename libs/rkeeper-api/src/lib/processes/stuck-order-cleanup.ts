@@ -33,6 +33,7 @@ export const stuckOrderCleanupHandler = (deps: StuckOrdersCleanupDeps) =>
             input: {
               id: order.id,
               currentStatus: CrudApi.OrderStatus.failed,
+              archived: true,
               statusLog: [
                 ...order.statusLog,
                 {

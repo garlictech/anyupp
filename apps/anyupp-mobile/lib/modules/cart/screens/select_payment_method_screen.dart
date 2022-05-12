@@ -351,7 +351,8 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                       _selectedPaymentMethod = value;
                     }),
                   ),
-                if (_orderPolicy == OrderPolicy.full)
+                if (_orderPolicy == OrderPolicy.full &&
+                    widget.unit.canRequestVatInvoice == true)
                   Padding(
                     padding: const EdgeInsets.only(
                       top: 64.0,
@@ -368,7 +369,8 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                if (_orderPolicy == OrderPolicy.full)
+                if (_orderPolicy == OrderPolicy.full &&
+                    widget.unit.canRequestVatInvoice == true)
                   BlocListener<UserDetailsBloc, UserDetailsState>(
                     listener: (BuildContext context, UserDetailsState state) {
                       if (state is UserDetailsLoaded) {

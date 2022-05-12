@@ -28,6 +28,7 @@ class GeoUnit {
   final Location? location;
   final bool? adBannersEnabled;
   final List<AdBanner>? adBanners;
+  final bool? canRequestVatInvoice;
 
   GeoUnit({
     required this.id,
@@ -52,6 +53,7 @@ class GeoUnit {
     this.location,
     this.adBannersEnabled,
     this.adBanners,
+    this.canRequestVatInvoice,
   });
 
   GeoUnit copyWith({
@@ -77,6 +79,7 @@ class GeoUnit {
     Location? location,
     bool? adBannersEnabled,
     List<AdBanner>? adBanners,
+    bool? canRequestVatInvoice,
   }) {
     return GeoUnit(
       id: id ?? this.id,
@@ -103,6 +106,8 @@ class GeoUnit {
       location: location ?? this.location,
       adBannersEnabled: adBannersEnabled ?? this.adBannersEnabled,
       adBanners: adBanners ?? this.adBanners,
+      canRequestVatInvoice:
+          canRequestVatInvoice ?? this.canRequestVatInvoice ?? true,
     );
   }
 
@@ -132,6 +137,7 @@ class GeoUnit {
       'location': location?.toJson(),
       'adBannersEnabled': adBannersEnabled,
       'adBanners': adBanners?.map((x) => x.toJson()).toList(),
+      'canRequestVatInvoice': canRequestVatInvoice,
     };
   }
 
@@ -187,6 +193,7 @@ class GeoUnit {
           ? List<AdBanner>.from(
               map['unit']?['adBanners']?.map((x) => AdBanner.fromJson(x)))
           : null,
+      canRequestVatInvoice: map['unit']?['canRequestVatInvoice'] ?? true,
     );
   }
 
@@ -221,7 +228,8 @@ class GeoUnit {
         other.soldOutVisibilityPolicy == soldOutVisibilityPolicy &&
         other.location == location &&
         other.adBannersEnabled == adBannersEnabled &&
-        listEquals(other.adBanners, adBanners);
+        listEquals(other.adBanners, adBanners) &&
+        other.canRequestVatInvoice == canRequestVatInvoice;
   }
 
   @override
@@ -246,6 +254,7 @@ class GeoUnit {
         soldOutVisibilityPolicy.hashCode ^
         location.hashCode ^
         adBannersEnabled.hashCode ^
-        adBanners.hashCode;
+        adBanners.hashCode ^
+        canRequestVatInvoice.hashCode;
   }
 }

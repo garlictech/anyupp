@@ -125,6 +125,7 @@
     "packagingFee": "Csomagolási díj",
     "serviceFee": "Szervizdíj",
     "hasServiceFee": "Az ár szervizdíjat tartalmaz",
+    "hasServiceFeeNotIncluded": "Az árak nem tartalmazzák a {{0}}%-os szervizdíjat",
     "hasNoServiceFee": "Az ár szervizdíjat nem tartalmaz"
   },
   "allergens": {
