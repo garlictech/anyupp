@@ -9,15 +9,15 @@ ADMIN_SITE_URL=$3
 
 npx cowsay "TESTING $ENVNAME..."
 
-yarn alltest
-yarn nx integration-test-ci anyupp-mobile
+#yarn alltest
+#yarn nx integration-test-ci anyupp-mobile
 #yarn nx run anyupp-mobile:e2e-test-ci
-yarn deleteAllTableData
-yarn seed
-yarn nx e2e-remote admin-e2e --headless --baseUrl=$ADMIN_SITE_URL
-yarn deleteAllTableData
-yarn seed
-yarn cucumber:report
-yarn cypress:generate:html:report
+#yarn deleteAllTableData
+#yarn seed
+#yarn nx e2e-remote admin-e2e --headless --baseUrl=$ADMIN_SITE_URL
+#yarn deleteAllTableData
+#yarn seed
+#yarn cucumber:report
+#yarn cypress:generate:html:report
 
 npx cowsay "$ENVNAME TESTING OK!!!"
