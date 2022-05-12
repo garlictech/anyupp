@@ -15,7 +15,7 @@ const componentDeclarations = [
 
 @NgModule({
   imports: [CommonModule, ReactiveFormsModule],
-  declarations: [componentDeclarations],
-  exports: [componentDeclarations],
+  declarations: [...componentDeclarations],
+  exports: [...componentDeclarations],
 })
 export class AppsAdminModule {}

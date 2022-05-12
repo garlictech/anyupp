@@ -906,6 +906,7 @@ type Unit
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLon
+  canRequestVatInvoice: Boolean
 }
 
 type DateIntervalOpen {
@@ -1282,6 +1283,7 @@ input CreateUnitInput {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLonInput!
+  canRequestVatInvoice: Boolean
 }
 
 input UpdateUnitInput {
@@ -1317,6 +1319,7 @@ input UpdateUnitInput {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLonInput
+  canRequestVatInvoice: Boolean
 }
 
 type CreateAnonymUserOutput {

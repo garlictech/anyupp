@@ -882,6 +882,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLon
+  canRequestVatInvoice: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1249,6 +1250,7 @@ input CreateUnitInput {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLonInput!
+  canRequestVatInvoice: Boolean
 }
 
 input UpdateUnitInput {
@@ -1284,6 +1286,7 @@ input UpdateUnitInput {
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLonInput
+  canRequestVatInvoice: Boolean
 }
 
 type CreateAnonymUserOutput {
@@ -2772,6 +2775,7 @@ input ModelUnitFilterInput {
   packagingTaxPercentage: ModelFloatInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   orderPaymentPolicy: ModelOrderPaymentPolicyInput
+  canRequestVatInvoice: ModelBooleanInput
   and: [ModelUnitFilterInput]
   or: [ModelUnitFilterInput]
   not: ModelUnitFilterInput
@@ -2796,6 +2800,7 @@ input ModelUnitConditionInput {
   packagingTaxPercentage: ModelFloatInput
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   orderPaymentPolicy: ModelOrderPaymentPolicyInput
+  canRequestVatInvoice: ModelBooleanInput
   and: [ModelUnitConditionInput]
   or: [ModelUnitConditionInput]
   not: ModelUnitConditionInput
@@ -3953,6 +3958,7 @@ input SearchableUnitFilterInput {
   timeZone: SearchableStringFilterInput
   externalId: SearchableStringFilterInput
   packagingTaxPercentage: SearchableFloatFilterInput
+  canRequestVatInvoice: SearchableBooleanFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
@@ -3980,6 +3986,7 @@ enum SearchableUnitSortableFields {
   timeZone
   externalId
   packagingTaxPercentage
+  canRequestVatInvoice
   createdAt
   updatedAt
 }
@@ -4009,6 +4016,7 @@ enum SearchableUnitAggregateField {
   packagingTaxPercentage
   soldOutVisibilityPolicy
   orderPaymentPolicy
+  canRequestVatInvoice
   createdAt
   updatedAt
 }

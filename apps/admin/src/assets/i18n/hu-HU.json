@@ -381,7 +381,8 @@
       },
       "serviceFeeIncluded": "Az árak {{tax}}% szervizdíjat tartalmaznak."
     },
-    "merchantId": "Stripe kereskedői azonosító"
+    "merchantId": "Stripe kereskedői azonosító",
+    "canRequestVatInvoice": "ÁFA-s számla igényelhető"
   },
   "users": {
     "listTitle": "Felhasználók",

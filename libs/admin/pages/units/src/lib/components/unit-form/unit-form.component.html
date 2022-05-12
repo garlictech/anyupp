@@ -166,7 +166,9 @@
             suffix="%"
           ></bgap-form-text-input>
         </div>
+      </div>
 
+      <div class="row">
         <div class="col-md-4">
           <bgap-form-text-input
             caption="units.merchantId"
@@ -174,6 +176,14 @@
             [control]="dialogForm?.get('merchantId') | asFormControl"
             inputId="merchantId"
           ></bgap-form-text-input>
+        </div>
+
+        <div class="col-md-4 pt-4">
+          <bgap-form-checkbox
+            caption="units.canRequestVatInvoice"
+            [control]="dialogForm?.get('canRequestVatInvoice') | asFormControl"
+            inputId="canRequestVatInvoice"
+          ></bgap-form-checkbox>
         </div>
       </div>
 
