@@ -131,21 +131,21 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         );
 
         // Handle service fee
-        if (
-          item.serviceFee &&
-          order.serviceFeePolicy?.type === this.EServiceFeeType.applicable
-        ) {
+        if (item.serviceFee) {
+          // We have at least one service fee
           this.hasServiceFee = true;
 
-          serviceFees[item.serviceFee.taxPercentage] = summarizeServiceFeeByTax(
-            serviceFees,
-            item.serviceFee,
-          );
+          if (
+            order.serviceFeePolicy?.type === this.EServiceFeeType.applicable
+          ) {
+            serviceFees[item.serviceFee.taxPercentage] =
+              summarizeServiceFeeByTax(serviceFees, item.serviceFee);
 
-          this.sum.value += Math.round(
-            item.serviceFee.netPrice *
-              (1 + item.serviceFee.taxPercentage * 0.01),
-          );
+            this.sum.value += Math.round(
+              item.serviceFee.netPrice *
+                (1 + item.serviceFee.taxPercentage * 0.01),
+            );
+          }
         }
 
         // SUM
