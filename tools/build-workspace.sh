@@ -14,17 +14,17 @@ yarn nx config anyupp-backend --env=$ENVNAME
 yarn nx build-schema crud-backend --env=$ENVNAME
 
 # Added mobile schema generation here
-#yarn nx build-schema anyupp-mobile --env=$ENVNAME --mode=$MODE
+yarn nx build-schema anyupp-mobile --env=$ENVNAME --mode=$MODE
 
 
-#if [ $ENVNAME = 'dev' ]; then
-#  yarn nx build admin --skip-nx-cache
-#elif [ $ENVNAME = 'prod' ]; then
-#  yarn nx build admin --configuration=production --skip-nx-cache
-#elif [ $ENVNAME = 'qa' ] || [ $ENVNAME = 'staging' ]; then
-#  yarn nx build admin --configuration=$ENVNAME --skip-nx-cache
-#else
-#  yarn nx build admin --skip-nx-cache
-#fi
+if [ $ENVNAME = 'dev' ]; then
+  yarn nx build admin --skip-nx-cache
+elif [ $ENVNAME = 'prod' ]; then
+  yarn nx build admin --configuration=production --skip-nx-cache
+elif [ $ENVNAME = 'qa' ] || [ $ENVNAME = 'staging' ]; then
+  yarn nx build admin --configuration=$ENVNAME --skip-nx-cache
+else
+  yarn nx build admin --skip-nx-cache
+fi
 
-#yarn nx build anyupp-backend --env=$ENVNAME --skip-nx-cache
+yarn nx build anyupp-backend --env=$ENVNAME --skip-nx-cache

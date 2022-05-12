@@ -503,9 +503,7 @@ type OrderRating {
 }
 
 type Order
-  @model(
-    mutations: { delete: "deleteOrder", update: "updateOrder", create: null }
-  )
+  @model(mutations: { delete: "deleteOrder", update: "updateOrder" })
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
@@ -1430,6 +1428,11 @@ type Mutation {
     @aws_iam
     @aws_cognito_user_pools
 
+  createOrder(input: CreateOrderInput!): Order
+    @aws_iam
+    @aws_cognito_user_pools
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
   # Unit
   regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
     @function(name: "${env}-anyupp-graphql-resolvers")
@@ -1461,4 +1464,77 @@ type Mutation {
     @aws_cognito_user_pools
     @aws_iam
     @function(name: "${env}-anyupp-graphql-resolvers")
+}
+
+type Subscription {
+  onAdminUserChange(id: ID!): AdminUser
+    @aws_subscribe(mutations: ["updateAdminUser"])
+    @aws_cognito_user_pools
+  onAdminUsersChange: AdminUser
+    @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
+    @aws_cognito_user_pools
+  onChainsChange: Chain
+    @aws_subscribe(mutations: ["createChain", "updateChain"])
+    @aws_cognito_user_pools
+  onGroupsChange(chainId: ID!): Group
+    @aws_subscribe(mutations: ["createGroup", "updateGroup"])
+    @aws_cognito_user_pools
+  onUnitsChange(groupId: ID!): Unit
+    @aws_subscribe(
+      mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"]
+    )
+    @aws_cognito_user_pools
+  # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
+  onProductCategoriesChange(chainId: ID!): ProductCategory
+    @aws_subscribe(
+      mutations: ["createProductCategory", "updateProductCategory"]
+    )
+    @aws_cognito_user_pools
+  onProductComponentsChange(chainId: ID!): ProductComponent
+    @aws_subscribe(
+      mutations: ["createProductComponent", "updateProductComponent"]
+    )
+    @aws_cognito_user_pools
+  onProductComponentSetsChange(chainId: ID!): ProductComponentSet
+    @aws_subscribe(
+      mutations: ["createProductComponentSet", "updateProductComponentSet"]
+    )
+    @aws_cognito_user_pools
+  onChainProductChange(chainId: ID!): ChainProduct
+    @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
+    @aws_cognito_user_pools
+  onGroupProductChange(groupId: ID!): GroupProduct
+    @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
+    @aws_cognito_user_pools
+  onUnitProductChange(unitId: ID!): UnitProduct
+    @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
+    @aws_cognito_user_pools
+  onGeneratedProductChange(unitId: ID!): GeneratedProduct
+    @aws_subscribe(
+      mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
+    )
+    @aws_cognito_user_pools
+  onOrdersChange: Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onOrdersDelete: Order
+    @aws_subscribe(mutations: ["deleteOrder"])
+    @aws_cognito_user_pools
+
+  # Added for the Mobile Application
+  onProductChanged(unitId: String): GeneratedProduct
+    @aws_subscribe(
+      mutations: [
+        "createGeneratedProduct"
+        "updateGeneratedProduct"
+        "deleteGeneratedProduct"
+      ]
+    )
+    @aws_cognito_user_pools
+  onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
+  onUnitOrdersChange(unitId: String, archived: Boolean): Order
+    @aws_subscribe(mutations: ["createOrder", "updateOrder"])
+    @aws_cognito_user_pools
 }
