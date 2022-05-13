@@ -2,12 +2,10 @@ import 'dart:convert';
 
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models/core/parsers.dart';
-import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 import 'package:fa_prev/modules/transactions/screens/transaction_order_details_screen.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/notifications/notifications.dart';
-import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -131,25 +129,26 @@ class Locally {
           // No unit selected.
         }
       }
-      if (type == NotificationPayloadType.SHOW_DIALOG) {
-        ShowDialogPayload payload = ShowDialogPayload.fromJson(json['data']);
-        print('Notification.showDialog=$payload');
-        var context = AppContext.context;
-        if (context != null) {
-          showSuccessDialog(
-              context: context,
-              title: payload.title,
-              message: payload.message,
-              bigTitle: payload.bigTitle,
-              onClose: () {
-                Nav.reset(
-                  MainNavigation(
-                    pageIndex: 2,
-                  ),
-                );
-              });
-        }
-      }
+      // SHOW INSIDE APP INSTEAD OF HERE
+      // if (type == NotificationPayloadType.SHOW_DIALOG) {
+      //   ShowDialogPayload payload = ShowDialogPayload.fromJson(json['data']);
+      //   print('Notification.showDialog=$payload');
+      //   var context = AppContext.context;
+      //   if (context != null) {
+      //     showSuccessDialog(
+      //         context: context,
+      //         title: payload.title,
+      //         message: payload.message,
+      //         bigTitle: payload.bigTitle,
+      //         onClose: () {
+      //           Nav.reset(
+      //             MainNavigation(
+      //               pageIndex: 2,
+      //             ),
+      //           );
+      //         });
+      //   }
+      // }
       return;
     }
 

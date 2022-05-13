@@ -169,7 +169,7 @@
     },
     "sendOrderSuccess": {
       "title": "Sikeres rendelés!",
-      "description": "A megrendelt termékeket hozzáadtuk a számládhoz és hamarosan felszolgáljuk."
+      "description": "A megrendelt termékeket hozzáadtuk a számládhoz, kérjük ne zárd be az appot, hogy követni tudd a rendelésed állapotát!"
     },
     "details": {
       "orderState": "Rendelés állapota",

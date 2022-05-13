@@ -169,7 +169,7 @@
     },
     "sendOrderSuccess": {
       "title": "Successful order!",
-      "description": "The ordered products have been added to your invoice and will be served soon."
+      "description": "The ordered products have been added to your invoice, please do not close the app so you can track the status of your order!"
     },
     "details": {
       "orderState": "Order status",

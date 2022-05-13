@@ -6,6 +6,7 @@ import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/notifications/notifications.dart';
 import 'package:fa_prev/shared/utils/order_status_preferences.dart';
+import 'package:fa_prev/shared/widgets/common_success_dialog.dart';
 import 'package:flutter/material.dart';
 
 class OrderNotificationService {
@@ -105,18 +106,25 @@ class OrderNotificationService {
 
   void _showNotification(BuildContext context, String titleKey,
       String messageKey, String orderNum) {
-    showNotification(
+    showSuccessDialog(
+      context: context,
       title: transEx(context, titleKey),
       message: transEx(context, messageKey, [orderNum]),
-      payload: NotificationPayload(
-        NotificationPayloadType.SHOW_DIALOG,
-        ShowDialogPayload(
-          title: transEx(context, titleKey),
-          bigTitle: '#$orderNum',
-          message: transEx(context, messageKey, [orderNum]),
-          showButton: true,
-        ).toJson(),
-      ),
+      bigTitle: '#$orderNum',
     );
+
+    // showNotification(
+    //   title: transEx(context, titleKey),
+    //   message: transEx(context, messageKey, [orderNum]),
+    //   payload: NotificationPayload(
+    //     NotificationPayloadType.SHOW_DIALOG,
+    //     ShowDialogPayload(
+    //       title: transEx(context, titleKey),
+    //       bigTitle: '#$orderNum',
+    //       message: transEx(context, messageKey, [orderNum]),
+    //       showButton: true,
+    //     ).toJson(),
+    //   ),
+    // );
   }
 }
