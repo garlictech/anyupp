@@ -22,6 +22,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "canRequestVatInvoice": null,
   "chainId": "test_chain_1_id",
   "createdAt": Any<String>,
   "description": Object {
@@ -158,6 +159,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "canRequestVatInvoice": null,
   "chainId": "test_chain_1_id",
   "createdAt": Any<String>,
   "description": Object {
@@ -296,6 +298,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "canRequestVatInvoice": null,
   "chainId": "test_chain_1_id",
   "createdAt": Any<String>,
   "description": Object {
@@ -432,6 +435,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "canRequestVatInvoice": null,
   "chainId": "test_chain_1_id",
   "createdAt": Any<String>,
   "description": Object {
@@ -568,6 +572,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "canRequestVatInvoice": null,
   "chainId": "test_chain_1_id",
   "createdAt": Any<String>,
   "description": Object {
@@ -695,6 +700,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "canRequestVatInvoice": null,
   "chainId": "test_chain_1_id",
   "createdAt": Any<String>,
   "description": Object {
@@ -824,6 +830,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "canRequestVatInvoice": null,
   "chainId": "test_chain_1_id",
   "createdAt": Any<String>,
   "description": Object {
@@ -951,6 +958,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "canRequestVatInvoice": null,
   "chainId": "test_chain_1_id",
   "createdAt": Any<String>,
   "description": Object {
@@ -1163,135 +1171,6 @@ Object {
 }
 `;
 
-exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: DELETE 1`] = `
-Object {
-  "adBanners": null,
-  "adBannersEnabled": null,
-  "address": Object {
-    "address": "Ág u. 1.",
-    "city": "Budapest",
-    "country": "Magyarország",
-    "location": Object {
-      "lat": 47,
-      "lng": 19,
-    },
-    "postalCode": "1021",
-    "title": "HQ",
-  },
-  "chainId": "test_chain_1_id",
-  "createdAt": Any<String>,
-  "description": Object {
-    "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
-  },
-  "email": "NEW EMAIL",
-  "externalId": null,
-  "floorMap": null,
-  "groupId": "test_group_1_id",
-  "id": "test_unit_1_id",
-  "isAcceptingOrders": true,
-  "isActive": true,
-  "lanes": Array [
-    Object {
-      "color": "#e72222",
-      "id": "lane_01",
-      "name": "bár",
-    },
-    Object {
-      "color": "#e123ef",
-      "id": "lane_02",
-      "name": "konyha",
-    },
-  ],
-  "lastOrderNum": null,
-  "location": Object {
-    "lat": 47,
-    "lon": 19,
-  },
-  "merchantId": null,
-  "name": "Késdobáló S",
-  "open": Object {
-    "from": "1970-01-01",
-    "to": "2970-01-01",
-  },
-  "openingHours": null,
-  "orderPaymentPolicy": "prepay",
-  "orderPolicy": null,
-  "packagingTaxPercentage": 27,
-  "paymentModes": Array [
-    Object {
-      "caption": null,
-      "method": "cash",
-      "type": "cash",
-    },
-    Object {
-      "caption": null,
-      "method": "card",
-      "type": "card",
-    },
-    Object {
-      "caption": null,
-      "method": "inapp",
-      "type": "stripe",
-    },
-  ],
-  "phone": null,
-  "pos": null,
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
-  "soldOutVisibilityPolicy": null,
-  "supportedOrderModes": Array [
-    "pickup",
-    "instant",
-  ],
-  "supportedServingModes": Array [
-    "inPlace",
-    "takeAway",
-  ],
-  "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
-  "updatedAt": Any<String>,
-}
-`;
-
-exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: RE-READ 1`] = `null`;
-
 exports[`Test unit CRUD operations Unit should be able to CRUD with direct resolvers: READ 1`] = `
 Object {
   "adBanners": null,
@@ -1307,6 +1186,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "canRequestVatInvoice": null,
   "chainId": "test_chain_1_id",
   "createdAt": Any<String>,
   "description": Object {

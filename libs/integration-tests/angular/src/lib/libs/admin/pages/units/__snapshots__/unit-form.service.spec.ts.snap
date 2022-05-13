@@ -16,6 +16,7 @@ Object {
       "postalCode": "1021",
       "title": "HQ",
     },
+    "canRequestVatInvoice": null,
     "chainId": "test_chain_1_id",
     "createdAt": Any<String>,
     "description": Object {
@@ -104,6 +105,7 @@ Object {
     "postalCode": "",
     "title": "",
   },
+  "canRequestVatInvoice": true,
   "chainId": "",
   "description": Object {
     "de": "",
@@ -199,6 +201,7 @@ Object {
     "postalCode": "",
     "title": "",
   },
+  "canRequestVatInvoice": true,
   "chainId": "",
   "description": Object {
     "de": "",
@@ -301,6 +304,7 @@ Object {
       "postalCode": "1021",
       "title": "HQ",
     },
+    "canRequestVatInvoice": null,
     "chainId": "test_chain_1_id",
     "createdAt": Any<String>,
     "description": Object {
@@ -440,6 +444,7 @@ Object {
       "postalCode": "1021",
       "title": "HQ",
     },
+    "canRequestVatInvoice": null,
     "chainId": "test_chain_1_id",
     "createdAt": Any<String>,
     "description": Object {
@@ -579,6 +584,7 @@ Object {
       "postalCode": "1021",
       "title": "HQ",
     },
+    "canRequestVatInvoice": null,
     "chainId": "test_chain_1_id",
     "createdAt": Any<String>,
     "description": Object {

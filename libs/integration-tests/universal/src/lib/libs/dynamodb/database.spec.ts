@@ -42,7 +42,7 @@ describe('Dynamo DB function tests', () => {
             console.error(err);
           },
         });
-    }, 5000);
+    }, 60000);
 
     it('should increment and reset to 0 in case the next orderNum is 100', done => {
       deleteTestUnit(unit_01.id, crudSdk)
@@ -73,6 +73,6 @@ describe('Dynamo DB function tests', () => {
             console.error(err);
           },
         });
-    }, 5000);
+    }, 60000);
   });
 });

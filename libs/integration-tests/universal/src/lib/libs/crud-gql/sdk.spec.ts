@@ -79,7 +79,7 @@ describe('CRUD sdk test', () => {
         ),
       )
       .subscribe(() => done());
-  }, 5000);
+  }, 60000);
 
   test('An arbitrary subscription', done => {
     const id = 'ADMIN_USERCRUD_SDK_ID';
@@ -127,5 +127,5 @@ describe('CRUD sdk test', () => {
           done();
         },
       });
-  }, 10000);
+  }, 60000);
 });

@@ -1,50 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CRUD sdk test An arbitrary CRUD: CREATE 1`] = `
-Object {
-  "createdAt": Any<String>,
-  "email": "testuser+a1@anyupp.com",
-  "id": "TEST_ADMIN_USER",
-  "name": "NAME",
-  "phone": "+6234567892",
-  "profileImage": null,
-  "settings": null,
-  "updatedAt": Any<String>,
-}
-`;
-
-exports[`CRUD sdk test An arbitrary CRUD: DELETE 1`] = `null`;
-
-exports[`CRUD sdk test An arbitrary CRUD: READ 1`] = `
-Object {
-  "createdAt": Any<String>,
-  "email": "testuser+a1@anyupp.com",
-  "id": "TEST_ADMIN_USER",
-  "name": "NAME",
-  "phone": "+6234567892",
-  "profileImage": null,
-  "settings": null,
-  "updatedAt": Any<String>,
-}
-`;
-
-exports[`CRUD sdk test An arbitrary CRUD: READ AFTER DELETE - SHOULD BE NULL 1`] = `null`;
-
-exports[`CRUD sdk test An arbitrary CRUD: SHOULD BE NULL 1`] = `null`;
-
-exports[`CRUD sdk test An arbitrary CRUD: UPDATE 1`] = `
-Object {
-  "createdAt": Any<String>,
-  "email": "testuser+a1@anyupp.com",
-  "id": "TEST_ADMIN_USER",
-  "name": "UPDATED_USER",
-  "phone": "+6234567892",
-  "profileImage": null,
-  "settings": null,
-  "updatedAt": Any<String>,
-}
-`;
-
 exports[`CRUD sdk test An arbitrary subscription 1`] = `
 Object {
   "createdAt": Any<String>,

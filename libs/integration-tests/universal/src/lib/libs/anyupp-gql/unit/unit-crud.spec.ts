@@ -75,7 +75,7 @@ describe('Test unit CRUD operations', () => {
         tap(x => expect(x).toMatchSnapshot('RE-READ')),
       )
       .subscribe(() => done());
-  });
+  }, 60000);
 
   test('Unit should be able to CRUD with direct resolvers', done => {
     const unitsDeps = createUnitsDeps();
@@ -135,7 +135,7 @@ describe('Test unit CRUD operations', () => {
         tap(x => expect(x).toMatchSnapshot('RE-READ')),
       )
       .subscribe(() => done());
-  });
+  }, 60000);
 
   test('The resolver handlers must work', async () => {
     process.env.STRIPE_SECRET_KEY = '';

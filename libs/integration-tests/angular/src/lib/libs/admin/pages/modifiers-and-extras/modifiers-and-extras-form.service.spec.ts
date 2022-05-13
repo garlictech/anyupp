@@ -297,7 +297,7 @@ describe('ModifiersAndExtrasFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateProductComponentSet$ should update product component set', done => {
     cleanup()
@@ -333,5 +333,5 @@ describe('ModifiersAndExtrasFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 });

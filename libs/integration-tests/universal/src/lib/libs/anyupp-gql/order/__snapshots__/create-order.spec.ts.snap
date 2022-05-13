@@ -133,6 +133,7 @@ Array [
         "postalCode": "1021",
         "title": "HQ",
       },
+      "canRequestVatInvoice": null,
       "chainId": "foobar",
       "createdAt": "MASKED DATE",
       "description": null,
