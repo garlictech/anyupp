@@ -151,7 +151,7 @@ describe('Admin user creation/deletion', () => {
       deleteOp: x => deleteAdminUser(x)(deps),
       getOp: sdk.GetAdminUser,
     }).subscribe(() => done());
-  }, 15000);
+  }, 60000);
 
   test('Admin user should be created/deleted with authenticated API call', done => {
     createAuthenticatedCrudSdk(testAdminUsername, testAdminUserPassword)
@@ -166,7 +166,7 @@ describe('Admin user creation/deletion', () => {
         ),
       )
       .subscribe(() => done());
-  }, 25000);
+  }, 60000);
 
   test('Admin user should be created/deleted with IAM API call', done => {
     const sdk = createIamCrudSdk();
@@ -176,5 +176,5 @@ describe('Admin user creation/deletion', () => {
       deleteOp: sdk.DeleteAdminUser,
       getOp: sdk.GetAdminUser,
     }).subscribe(() => done());
-  }, 25000);
+  }, 60000);
 });

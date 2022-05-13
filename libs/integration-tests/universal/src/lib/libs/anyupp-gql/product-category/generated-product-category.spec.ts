@@ -172,9 +172,9 @@ describe('GenerateProductCategory tests', () => {
           delay(DYNAMODB_OPERATION_DELAY),
         )
         .toPromise();
-    }, 25000);
+    }, 60000);
 
-    afterAll(() => cleanup().toPromise(), 15000);
+    afterAll(() => cleanup().toPromise(), 60000);
 
     const startStateCheck = () =>
       of('GENERATE_PRODUCT_CATEGORIES').pipe(

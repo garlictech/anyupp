@@ -56,7 +56,7 @@ import { unitRequestHandler } from '@bgap/backend/units';
 import { listGeneratedProductsForUnits } from '@bgap/backend/products';
 import { dateMatcher, ES_DELAY } from '../../../../utils';
 
-const DYNAMODB_OPERATION_DELAY = 5000;
+const DYNAMODB_OPERATION_DELAY = 60000;
 const TEST_NAME = 'REGEN_';
 
 const chainId_01_seeded = productComponentSetFixture.seededProdComp_11.chainId;

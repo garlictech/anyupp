@@ -270,7 +270,7 @@ describe('CreatOrderFromCart mutation test', () => {
         }),
       )
       .subscribe(() => done());
-  });
+  }, 60000);
 
   beforeEach(done => {
     cleanup()
@@ -297,11 +297,11 @@ describe('CreatOrderFromCart mutation test', () => {
         delay(5000),
       )
       .subscribe(() => done());
-  }, 25000);
+  }, 60000);
 
   afterAll(async () => {
     await cleanup().toPromise();
-  });
+  }, 60000);
 
   it("should fail in case the cart is not the user's", done => {
     const cartId = cart_03_different_user.id;
@@ -318,7 +318,7 @@ describe('CreatOrderFromCart mutation test', () => {
         done();
       },
     });
-  }, 15000);
+  }, 60000);
 
   it('should fail without a unit', done => {
     const cartId = cart_04_different_unit.id;
@@ -335,7 +335,7 @@ describe('CreatOrderFromCart mutation test', () => {
         done();
       },
     });
-  }, 15000);
+  }, 60000);
 
   const testLogic = (
     op: (
@@ -450,11 +450,11 @@ describe('CreatOrderFromCart mutation test', () => {
         }),
       ),
     ).subscribe(() => done());
-  }, 30000);
+  }, 60000);
 
   it('should create an order from a valid cart with server', done => {
     testLogic(input => authAnyuppSdk.CreateOrderFromCart({ input })).subscribe(
       () => done(),
     );
-  }, 30000);
+  }, 60000);
 });

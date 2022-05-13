@@ -44,11 +44,11 @@ describe('ProductFormService', () => {
 
   beforeAll(async () => {
     await signInToCognito();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await signOutFromCognito();
-  });
+  }, 60000);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -68,7 +68,7 @@ describe('ProductFormService', () => {
 
     service = TestBed.inject(ProductFormService);
     crudSdk = TestBed.inject(CrudSdkService);
-  });
+  }, 60000);
 
   it('createProductFormGroup should create form group', () => {
     expect(service.createProductFormGroup().value).toMatchSnapshot();
@@ -128,7 +128,7 @@ describe('ProductFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('saveChainForm$ should call updateChainProduct$ method when id is specified', done => {
     const updateSpy = jest
@@ -145,7 +145,7 @@ describe('ProductFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('saveChainForm$ should call updateChainProduct$ method with avoided dirty flag', done => {
     const updateSpy = jest
@@ -163,7 +163,7 @@ describe('ProductFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('createChainProduct$ should create chain product', done => {
     cleanup()
@@ -187,7 +187,7 @@ describe('ProductFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateChainProduct$ should update chain product', done => {
     cleanup()
@@ -223,7 +223,7 @@ describe('ProductFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('saveGroupExtendForm$ should call createGroupProduct$ method when editing mode is false', done => {
     const createSpy = jest
@@ -243,7 +243,7 @@ describe('ProductFormService', () => {
     );
 
     done();
-  });
+  }, 60000);
 
   it('saveGroupExtendForm$ should call updateGroupProduct$ method when editing mode is true', done => {
     const updateSpy = jest
@@ -263,7 +263,7 @@ describe('ProductFormService', () => {
     );
 
     done();
-  });
+  }, 60000);
 
   it('createGroupProduct$ should create group product', done => {
     cleanup()
@@ -287,7 +287,7 @@ describe('ProductFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateGroupProduct$ should update group product', done => {
     cleanup()
@@ -323,7 +323,7 @@ describe('ProductFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('saveUnitExtendForm$ should call createUnitProduct$ method when editing mode is false', done => {
     const createSpy = jest
@@ -341,7 +341,7 @@ describe('ProductFormService', () => {
     expect(createSpy).toHaveBeenCalledWith(productFixture.unitProductInputBase);
 
     done();
-  });
+  }, 60000);
 
   it('saveUnitExtendForm$ should call updateUnitProduct$ method when editing mode is true', done => {
     const updateSpy = jest
@@ -359,7 +359,7 @@ describe('ProductFormService', () => {
     expect(updateSpy).toHaveBeenCalledWith(productFixture.unitProductInputBase);
 
     done();
-  });
+  }, 60000);
 
   it('createUnitProduct$ should create unit product', done => {
     cleanup()
@@ -383,7 +383,7 @@ describe('ProductFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateUnitProduct$ should update unit product', done => {
     cleanup()
@@ -419,5 +419,5 @@ describe('ProductFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 });

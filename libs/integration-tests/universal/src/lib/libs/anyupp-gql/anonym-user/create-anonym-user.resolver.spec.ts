@@ -115,5 +115,5 @@ describe('Anonym user creation', () => {
           console.error(`${TEST_NAME}Test ERROR`, err);
         },
       });
-  }, 40000);
+  }, 60000);
 });

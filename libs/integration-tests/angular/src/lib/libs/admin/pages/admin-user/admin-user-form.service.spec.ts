@@ -45,11 +45,11 @@ describe('AdminUserFormService', () => {
 
   beforeAll(async () => {
     await signInToCognito();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await signOutFromCognito();
-  });
+  }, 60000);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -70,7 +70,7 @@ describe('AdminUserFormService', () => {
 
     service = TestBed.inject(AdminUserFormService);
     crudSdk = TestBed.inject(CrudSdkService);
-  });
+  }, 60000);
 
   it('createAdminUserFormGroup should create form group', () => {
     expect(service.createAdminUserFormGroup().value).toMatchSnapshot();
@@ -86,7 +86,7 @@ describe('AdminUserFormService', () => {
     expect(createSpy).toHaveBeenCalledWith(adminUserFixture.adminUserBase);
 
     done();
-  });
+  }, 60000);
 
   it('saveForm$ should call updateAdminUser$ method when id is not specified', done => {
     const updateSpy = jest
@@ -101,7 +101,7 @@ describe('AdminUserFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('createAdminUser$ should create admin user', done => {
     cleanup()
@@ -125,7 +125,7 @@ describe('AdminUserFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateAdminUser$ should update admin user', done => {
     cleanup()
@@ -161,5 +161,5 @@ describe('AdminUserFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 });

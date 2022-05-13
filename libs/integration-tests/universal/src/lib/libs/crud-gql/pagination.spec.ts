@@ -53,11 +53,11 @@ describe('Test paginated graphql lists', () => {
 
   beforeEach(async () => {
     await setup.toPromise();
-  }, 10000);
+  }, 60000);
 
   afterAll(async () => {
     await cleanup().toPromise();
-  });
+  }, 60000);
 
   const limitCases = [undefined, null, 1, 2, 3, 4, 5, 100000];
 
@@ -110,7 +110,7 @@ describe('Test paginated graphql lists', () => {
         ),
       )
       .toPromise();
-  }, 10000);
+  }, 60000);
 
   test('Pagination must work with missing op parameter', async () => {
     await getAllPaginatedData(crudSdk.ListAdminUsers)
@@ -125,7 +125,7 @@ describe('Test paginated graphql lists', () => {
         ),
       )
       .toPromise();
-  }, 10000);
+  }, 60000);
 
   test('Pagination should call operation with proper options', () => {
     const operation = jest.fn().mockReturnValue(of({}));
@@ -136,5 +136,5 @@ describe('Test paginated graphql lists', () => {
     });
 
     expect((operation as jest.Mock).mock.calls).toMatchSnapshot();
-  }, 10000);
+  }, 60000);
 });

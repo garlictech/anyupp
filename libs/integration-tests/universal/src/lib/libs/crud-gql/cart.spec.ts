@@ -16,17 +16,17 @@ describe('getCart test', () => {
       testAdminUsername,
       testAdminUserPassword,
     ).toPromise();
-  }, 15000);
+  }, 60000);
 
   beforeEach(async () => {
     await deleteTestCart(cartFixture.cart_01.id, authSdk)
       .pipe(switchMap(() => createTestCart(cartFixture.cart_01, authSdk)))
       .toPromise();
-  }, 15000);
+  }, 60000);
 
   afterAll(async () => {
     await deleteTestCart(cartFixture.cart_01.id, authSdk).toPromise();
-  });
+  }, 60000);
 
   it('successful query execution', done => {
     authSdk.GetCart({ id: cartFixture.cart_01.id }).subscribe({
@@ -35,7 +35,7 @@ describe('getCart test', () => {
         done();
       },
     });
-  }, 15000);
+  }, 60000);
 
   it('should return null for a not existing item', done => {
     authSdk.GetCart({ id: cartFixture.cartId_NotExisting }).subscribe({
@@ -44,7 +44,7 @@ describe('getCart test', () => {
         done();
       },
     });
-  }, 10000);
+  }, 60000);
 
   it('should throw error without id as input', done => {
     authSdk.GetCart(undefined as any).subscribe({
@@ -53,5 +53,5 @@ describe('getCart test', () => {
         done();
       },
     });
-  }, 15000);
+  }, 60000);
 });

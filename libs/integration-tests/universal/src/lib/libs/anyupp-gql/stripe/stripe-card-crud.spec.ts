@@ -41,18 +41,18 @@ describe('Stripe Payment Method CRUD tests', () => {
         }),
       )
       .subscribe(() => done());
-  }, 30000);
+  }, 60000);
 
   afterAll(async () => {
     await cleanup().toPromise();
-  });
+  }, 60000);
 
   describe('Stripe Card CRUD', () => {
     beforeEach(done => {
       cleanup()
         .pipe(delay(1000))
         .subscribe(() => done());
-    }, 10000);
+    }, 60000);
 
     const testLogic = ({
       listOp,
@@ -145,7 +145,7 @@ describe('Stripe Payment Method CRUD tests', () => {
       };
 
       testLogic(config).subscribe(() => done());
-    }, 45000);
+    }, 60000);
   });
 
   describe('Stripe Card CRUD error testing', () => {
@@ -172,6 +172,6 @@ describe('Stripe Payment Method CRUD tests', () => {
           },
           () => {},
         );
-    }, 30000);
+    }, 60000);
   });
 });

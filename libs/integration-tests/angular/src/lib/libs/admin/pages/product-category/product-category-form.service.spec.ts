@@ -34,11 +34,11 @@ describe('ProductCategoryFormService', () => {
 
   beforeAll(async () => {
     await signInToCognito();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await signOutFromCognito();
-  });
+  }, 60000);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -58,7 +58,7 @@ describe('ProductCategoryFormService', () => {
 
     service = TestBed.inject(ProductCategoryFormService);
     crudSdk = TestBed.inject(CrudSdkService);
-  });
+  }, 60000);
 
   it('createGroupFormGroup should create form group', () => {
     expect(service.createProductCategoryFormGroup().value).toMatchSnapshot();
@@ -76,7 +76,7 @@ describe('ProductCategoryFormService', () => {
     );
 
     done();
-  });
+  }, 60000);
 
   it('saveForm$ should call updateProductCategory$ method when id is specified', done => {
     const updateSpy = jest
@@ -93,7 +93,7 @@ describe('ProductCategoryFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('createProductCategory$ should create product category', done => {
     cleanup()
@@ -117,7 +117,7 @@ describe('ProductCategoryFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateProductCategory$ should update product category', done => {
     cleanup()
@@ -153,5 +153,5 @@ describe('ProductCategoryFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 });

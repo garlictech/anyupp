@@ -27,15 +27,15 @@ describe('CRUD sdk test', () => {
       testAdminUsername,
       testAdminUserPassword,
     ).toPromise();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await sdk.DeleteAdminUser({ input: { id } }).toPromise();
-  });
+  }, 60000);
 
   beforeEach(async () => {
     await sdk.DeleteAdminUser({ input: { id } }).toPromise();
-  });
+  }, 60000);
 
   test('An arbitrary CRUD', done => {
     const toMatchSnapshot = (x: any, name?: string) =>

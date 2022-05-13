@@ -57,7 +57,7 @@ describe.skip('GenerateProduct tests', () => {
         done();
       },
     });
-  });
+  }, 60000);
 
   describe('complex tests', () => {
     const cleanup = () =>
@@ -91,7 +91,7 @@ describe.skip('GenerateProduct tests', () => {
 
     afterAll(async () => {
       await cleanup().toPromise();
-    }, 10000);
+    }, 60000);
 
     it('should be able to create and delete all the given products LESS then 25', done => {
       // using UNIT 03

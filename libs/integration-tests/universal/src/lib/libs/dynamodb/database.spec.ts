@@ -24,7 +24,7 @@ describe('Dynamo DB function tests', () => {
 
   afterAll(async () => {
     await cleanup().toPromise();
-  });
+  }, 60000);
 
   describe('incrementOrderNum on Unit', () => {
     it('should increment without existing lastOrderNum field on the Unit', done => {

@@ -20,7 +20,7 @@ describe('Test unit CRUD operations', () => {
       .DeleteUnit({ input: { id: unitFixture.createUnit_01.id } })
       .pipe(catchError(of), delay(1000), take(1))
       .subscribe(() => done());
-  });
+  }, 60000);
 
   test('Unit shoud be able to CRUD on server', done => {
     crudSdk
@@ -217,5 +217,5 @@ describe('Test unit CRUD operations', () => {
         tap(x => expect(x).toMatchSnapshot('RE-READ')),
       )
       .subscribe(() => done());
-  }, 10000);
+  }, 60000);
 });

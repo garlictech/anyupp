@@ -21,7 +21,7 @@ const cleanup$ = forkJoin([sdk.DeleteUnit({ input: { id: unitId } })]);
 
 afterAll(done => {
   cleanup$.subscribe(() => done());
-});
+}, 60000);
 
 beforeAll(done => {
   cleanup$
@@ -56,7 +56,7 @@ beforeAll(done => {
       delay(3000),
     )
     .subscribe(() => done());
-}, 10000);
+}, 60000);
 
 test('Search for a unit in radius using resolver', done => {
   searchByRadiusResolver(searchDeps)({
@@ -95,7 +95,7 @@ test('Search for a unit in radius using resolver', done => {
       tap(res => expect(res.items).toEqual([])),
     )
     .subscribe(() => done());
-}, 20000);
+}, 60000);
 
 test('Search for a unit in radius using API', done => {
   sdk
@@ -109,4 +109,4 @@ test('Search for a unit in radius using API', done => {
     })
     .pipe(tap(res => expect(res?.items).toEqual([unitId])))
     .subscribe(() => done());
-});
+}, 60000);

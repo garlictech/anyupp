@@ -212,15 +212,15 @@ describe('CreateOrder mutation test', () => {
         ),
       )
       .subscribe(() => done());
-  }, 10000);
+  }, 60000);
 
   beforeEach(done => {
     cleanupEach$.pipe(delay(3000)).subscribe(() => done());
-  }, 10000);
+  }, 60000);
 
   afterAll(done => {
     forkJoin([cleanupAll$, cleanupEach$]).subscribe(() => done());
-  }, 10000);
+  }, 60000);
 
   const testLogic = (
     op: (
@@ -299,11 +299,11 @@ describe('CreateOrder mutation test', () => {
         }),
       ),
     ).subscribe(() => done());
-  }, 30000);
+  }, 60000);
 
   it('should create an order with server', done => {
     testLogic(input => authAnyuppSdk.CreateOrder({ input })).subscribe(() =>
       done(),
     );
-  }, 30000);
+  }, 60000);
 });

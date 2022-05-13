@@ -15,7 +15,7 @@ describe('Report', () => {
       expect(calculateReport(reportDate, [], [], [])).toMatchSnapshot();
 
       done();
-    });
+    }, 60000);
 
     it('should calculate from fixtures', done => {
       expect(
@@ -28,6 +28,6 @@ describe('Report', () => {
       ).toMatchSnapshot();
 
       done();
-    });
+    }, 60000);
   });
 });

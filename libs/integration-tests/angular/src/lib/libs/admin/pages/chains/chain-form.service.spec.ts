@@ -34,11 +34,11 @@ describe('ChainFormService', () => {
 
   beforeAll(async () => {
     await signInToCognito();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await signOutFromCognito();
-  });
+  }, 60000);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -58,7 +58,7 @@ describe('ChainFormService', () => {
 
     service = TestBed.inject(ChainFormService);
     crudSdk = TestBed.inject(CrudSdkService);
-  });
+  }, 60000);
 
   it('createChainFormGroup should create form group', () => {
     expect(service.createChainFormGroup().value).toMatchSnapshot();
@@ -74,7 +74,7 @@ describe('ChainFormService', () => {
     expect(createSpy).toHaveBeenCalledWith(chainFixture.chainBase);
 
     done();
-  });
+  }, 60000);
 
   it('saveForm$ should call updateChain$ method when id is specified', done => {
     const updateSpy = jest
@@ -89,7 +89,7 @@ describe('ChainFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('createChain$ should create chain', done => {
     cleanup()
@@ -113,7 +113,7 @@ describe('ChainFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateChain$ should update chain', done => {
     cleanup()
@@ -149,7 +149,7 @@ describe('ChainFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateChainImageStyles$ should update chain image style', done => {
     cleanup()
@@ -188,5 +188,5 @@ describe('ChainFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 });

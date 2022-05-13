@@ -170,7 +170,7 @@ describe('Test the rkeeper api basic functionality', () => {
 
   afterAll(done => {
     cleanup$.subscribe(() => done());
-  }, 30000);
+  }, 60000);
 
   test('It shouls be able to search for external product', done => {
     searchExternalUnitProduct(crudSdk)(fixtures.rkeeperProductGuid)
@@ -264,7 +264,7 @@ describe('Test the rkeeper api basic functionality', () => {
         ),
       )
       .subscribe(() => done());
-  }, 15000);
+  }, 60000);
 
   test('getBusinessEntityInfo - not existing restaurant', done => {
     getBusinessEntityInfo(crudSdk)('NOT EXISTING RESTO`').subscribe({
@@ -273,7 +273,7 @@ describe('Test the rkeeper api basic functionality', () => {
         done();
       },
     });
-  });
+  }, 60000);
 
   test('getBusinessEntityInfo - existing restaurant', done => {
     getBusinessEntityInfo(crudSdk)(
@@ -284,7 +284,7 @@ describe('Test the rkeeper api basic functionality', () => {
         done();
       },
     });
-  });
+  }, 60000);
 
   test('Test full rkeeper product handling - not not existing unit', done => {
     handleRkeeperProducts(crudSdk)('NOT EXISTING RESTAURANT')(
@@ -295,7 +295,7 @@ describe('Test the rkeeper api basic functionality', () => {
         done();
       },
     });
-  }, 15000);
+  }, 60000);
 
   test('Test full rkeeper product handling - the use case', done => {
     const createMatcher =
@@ -417,7 +417,7 @@ describe('Test the rkeeper api basic functionality', () => {
       .subscribe({
         next: () => done(),
       });
-  }, 35000);
+  }, 60000);
 
   // We skip this extremely long-running test by default
   test.skip('Test full rkeeper product handling - the use case with lots of records', done => {
@@ -453,7 +453,7 @@ describe('Test the rkeeper api basic functionality', () => {
     );
 
     expect(res).toMatchSnapshot();
-  }, 10000);
+  }, 60000);
 
   test.skip('Test the product handling logic in fargate', done => {
     const deps = {
@@ -503,7 +503,7 @@ describe('Test the rkeeper api basic functionality', () => {
         ),
       )
       .subscribe(() => done());
-  }, 15000);
+  }, 60000);
 });
 
 test('send order to rkeeper by HTTP post', done => {
@@ -527,7 +527,7 @@ test('send order to rkeeper by HTTP post', done => {
       }),
     )
     .subscribe(() => done());
-});
+}, 60000);
 
 test('send order to rkeeper by sendRkeeperOrder', done => {
   sendRkeeperOrder({
@@ -541,7 +541,7 @@ test('send order to rkeeper by sendRkeeperOrder', done => {
       }),
     )
     .subscribe(() => done());
-}, 10000);
+}, 60000);
 
 test('test the menusync route', done => {
   const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.yellowRestaurantId}/menusync`;
@@ -562,7 +562,7 @@ test('test the menusync route', done => {
       }),
     )
     .subscribe(() => done());
-}, 10000);
+}, 60000);
 
 test('test the order status route', done => {
   const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.rkeeperUnit.externalId}/order-status`;
@@ -588,4 +588,4 @@ test('test the order status route', done => {
       }),
     )
     .subscribe(() => done());
-}, 10000);
+}, 60000);

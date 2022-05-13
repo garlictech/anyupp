@@ -34,11 +34,11 @@ describe('GroupFormService', () => {
 
   beforeAll(async () => {
     await signInToCognito();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await signOutFromCognito();
-  });
+  }, 60000);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -58,7 +58,7 @@ describe('GroupFormService', () => {
 
     service = TestBed.inject(GroupFormService);
     crudSdk = TestBed.inject(CrudSdkService);
-  });
+  }, 60000);
 
   it('createGroupFormGroup should create form group', () => {
     expect(service.createGroupFormGroup().value).toMatchSnapshot();
@@ -74,7 +74,7 @@ describe('GroupFormService', () => {
     expect(createSpy).toHaveBeenCalledWith(groupFixture.group_01);
 
     done();
-  });
+  }, 60000);
 
   it('saveForm$ should call updateGroup$ method when id is specified', done => {
     const updateSpy = jest
@@ -89,7 +89,7 @@ describe('GroupFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('createGroup$ should create group', done => {
     cleanup()
@@ -113,7 +113,7 @@ describe('GroupFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateGroup$ should update group', done => {
     cleanup()
@@ -149,5 +149,5 @@ describe('GroupFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 });

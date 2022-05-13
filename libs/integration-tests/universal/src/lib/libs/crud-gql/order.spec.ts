@@ -43,11 +43,11 @@ describe.skip('SearchOrders function', () => {
 
   beforeEach(async () => {
     await cleanup();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await cleanup();
-  });
+  }, 60000);
 
   const testLogic = (
     searchOp: (
@@ -125,5 +125,5 @@ describe.skip('SearchOrders function', () => {
     ).subscribe({
       next: done,
     });
-  }, 20000);
+  }, 60000);
 });

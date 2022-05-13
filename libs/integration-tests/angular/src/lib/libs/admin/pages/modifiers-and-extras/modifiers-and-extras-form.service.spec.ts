@@ -43,11 +43,11 @@ describe('ModifiersAndExtrasFormService', () => {
 
   beforeAll(async () => {
     await signInToCognito();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await signOutFromCognito();
-  });
+  }, 60000);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -67,7 +67,7 @@ describe('ModifiersAndExtrasFormService', () => {
 
     service = TestBed.inject(ModifiersAndExtrasFormService);
     crudSdk = TestBed.inject(CrudSdkService);
-  });
+  }, 60000);
 
   it('createProductComponentFormGroup should create form group', () => {
     expect(service.createProductComponentFormGroup().value).toMatchSnapshot();
@@ -115,7 +115,7 @@ describe('ModifiersAndExtrasFormService', () => {
     );
 
     done();
-  });
+  }, 60000);
 
   it('saveComponentForm$ should call updateProductComponent$ method when id is specified', done => {
     const updateSpy = jest
@@ -135,7 +135,7 @@ describe('ModifiersAndExtrasFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('saveComponentForm$ should call updateProductComponent$ method with avoided dirty flag', done => {
     const updateSpy = jest
@@ -155,7 +155,7 @@ describe('ModifiersAndExtrasFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('createProductComponent$ should create product component', done => {
     cleanup()
@@ -180,7 +180,7 @@ describe('ModifiersAndExtrasFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateProductComponent$ should update product component', done => {
     cleanup()
@@ -216,7 +216,7 @@ describe('ModifiersAndExtrasFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('saveComponentSetForm$ should call createProductComponentSet$ method when id is not specified', done => {
     const createSpy = jest
@@ -232,7 +232,7 @@ describe('ModifiersAndExtrasFormService', () => {
     );
 
     done();
-  });
+  }, 60000);
 
   it('saveComponentSetForm$ should call updateProductComponentSet$ method when id is specified', done => {
     const updateSpy = jest
@@ -252,7 +252,7 @@ describe('ModifiersAndExtrasFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('saveComponentSetForm$ should call updateProductComponentSet$ method with avoided dirty flag', done => {
     const updateSpy = jest
@@ -272,7 +272,7 @@ describe('ModifiersAndExtrasFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('createProductComponentSet$ should create product component set', done => {
     cleanup()

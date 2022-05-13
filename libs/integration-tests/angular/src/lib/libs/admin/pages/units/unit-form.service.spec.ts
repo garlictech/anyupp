@@ -39,11 +39,11 @@ describe('UnitFormService', () => {
 
   beforeAll(async () => {
     await signInToCognito();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await signOutFromCognito();
-  });
+  }, 60000);
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -66,7 +66,7 @@ describe('UnitFormService', () => {
 
     service = TestBed.inject(UnitFormService);
     crudSdk = TestBed.inject(CrudSdkService);
-  });
+  }, 60000);
 
   it('createUnitFormGroup should create new form group', () => {
     expect(service.createUnitFormGroup().value).toMatchSnapshot();
@@ -89,7 +89,7 @@ describe('UnitFormService', () => {
     });
 
     done();
-  });
+  }, 60000);
 
   it('saveForm$ should call updateUnit method when id is specified', done => {
     const updateSpy = jest
@@ -107,7 +107,7 @@ describe('UnitFormService', () => {
     );
 
     done();
-  });
+  }, 60000);
 
   it('createUnit$ should create unit', done => {
     cleanup()
@@ -131,7 +131,7 @@ describe('UnitFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateUnit$ should update unit', done => {
     cleanup()
@@ -171,7 +171,7 @@ describe('UnitFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateRKeeperData$ should update the RKeepeR POS content', done => {
     let hashedPassword = '';
@@ -226,7 +226,7 @@ describe('UnitFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 
   it('updateRKeeperData$ should update the RKeepeR AnyUPP password', done => {
     let hashedPassword = '';
@@ -278,5 +278,5 @@ describe('UnitFormService', () => {
       .subscribe(() => {
         done();
       });
-  }, 25000);
+  }, 60000);
 });
