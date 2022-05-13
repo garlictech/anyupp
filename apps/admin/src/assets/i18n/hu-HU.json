@@ -112,8 +112,8 @@
     },
     "orderPaymentPolicy": {
       "title": "Rendelés fizetés",
-      "prepay": "Pre pay",
-      "afterpay": "After pay"
+      "prepay": "Előre fizetés",
+      "afterpay": "Utánfizetés"
     },
     "transactionStatus": {
       "SUCCESS": "Sikeres",
