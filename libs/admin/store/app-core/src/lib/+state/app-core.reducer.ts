@@ -13,12 +13,14 @@ export interface TempChainRestrictionObject {
 export interface AppCoreState {
   loginContextFailure?: boolean;
   closableDialog: boolean;
+  playNewOrderNotification: boolean;
   // TEMP SECURITY
   chainRestrictions: TempChainRestrictionObject;
 }
 
 export const initialAppCoreState: AppCoreState = {
   closableDialog: false,
+  playNewOrderNotification: false,
   chainRestrictions: {},
 };
 
@@ -32,6 +34,13 @@ const reducer = createReducer(
     ...state,
     closableDialog,
   })),
+  on(
+    appCoreActions.setPlayNewOrderNotification,
+    (state, { playNewOrderNotification }) => ({
+      ...state,
+      playNewOrderNotification,
+    }),
+  ),
   // TEMP SECURITY
   on(
     appCoreActions.setChainRestrictionObject,

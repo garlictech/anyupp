@@ -1,12 +1,19 @@
 import { NGXLogger } from 'ngx-logger';
 import { concat, Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { AdminUserCollectionService } from '@bgap/admin/store/admin-users';
-import { catchGqlError } from '@bgap/admin/store/app-core';
+import { appCoreActions, catchGqlError } from '@bgap/admin/store/app-core';
 import { ChainCollectionService } from '@bgap/admin/store/chains';
 import { dashboardActions } from '@bgap/admin/store/dashboard';
 import { GroupCollectionService } from '@bgap/admin/store/groups';
@@ -17,6 +24,7 @@ import {
 import {
   OrderCollectionService,
   OrderHistoryCollectionService,
+  ordersSelectors,
 } from '@bgap/admin/store/orders';
 import { ProductCategoryCollectionService } from '@bgap/admin/store/product-categories';
 import { ProductComponentSetCollectionService } from '@bgap/admin/store/product-component-sets';
@@ -169,6 +177,7 @@ export class DataService {
         archived: false,
       }),
       (orders: CrudApi.Order[]) => {
+        this._handleNewOrderAlert(orders);
         this._orderCollectionService.upsertManyInCache(orders);
       },
       this._settingsChanged$,
@@ -228,5 +237,31 @@ export class DataService {
         settings,
       })
       .pipe(catchGqlError(this._store));
+  }
+
+  //
+  // Order
+  //
+
+  private _handleNewOrderAlert(newOrders: CrudApi.Order[]) {
+    this._store
+      .select(ordersSelectors.getActiveOrderIds)
+      .pipe(
+        take(1),
+        map(
+          existingOrderIds =>
+            newOrders
+              .map(o => o.id)
+              .filter(no => existingOrderIds.indexOf(no) < 0).length > 0,
+        ),
+        filter(newOrderExists => !!newOrderExists),
+      )
+      .subscribe(() => {
+        this._store.dispatch(
+          appCoreActions.setPlayNewOrderNotification({
+            playNewOrderNotification: true,
+          }),
+        );
+      });
   }
 }

@@ -21,6 +21,11 @@ export const setClosableDialog = createAction(
   props<{ closableDialog: boolean }>(),
 );
 
+export const setPlayNewOrderNotification = createAction(
+  '[App Core] Set play new order notification',
+  props<{ playNewOrderNotification: boolean }>(),
+);
+
 // TEMP SECURITY
 export const setChainRestrictionObject = createAction(
   '[App Core] Set chain restriction object',

@@ -15,6 +15,11 @@ export const getClosableDialog = createSelector(
   (state: AppCoreState) => state.closableDialog,
 );
 
+export const getPlayNewOrderNotification = createSelector(
+  getAppCoreState,
+  (state: AppCoreState) => state.playNewOrderNotification,
+);
+
 export const getChainRestrictionsByUserId = (id: string) =>
   createSelector(
     getAppCoreState,

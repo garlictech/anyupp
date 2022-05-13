@@ -1,5 +1,6 @@
 import { fromEvent, Observable } from 'rxjs';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { map, startWith, take } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,13 +9,16 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { appCoreActions } from '@bgap/admin/store/app-core';
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from '@bgap/admin/shared/components';
 import { CognitoService } from '@bgap/admin/shared/data-access/auth';
 import { DataService } from '@bgap/admin/shared/data-access/data';
-import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
+import { appCoreSelectors } from '@bgap/admin/store/app-core';
+import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { LayoutService } from '@bgap/admin/ui/core';
+import * as CrudApi from '@bgap/crud-gql/api';
 import {
   NbDialogService,
   NbMenuService,
@@ -23,7 +27,6 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { map, startWith, take } from 'rxjs/operators';
 
 interface IMenuItem {
   title: string;
@@ -124,6 +127,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this._changeDetectorRef.detectChanges();
       });
 
+    this._store
+      .pipe(
+        select(appCoreSelectors.getPlayNewOrderNotification),
+        untilDestroyed(this),
+      )
+      .subscribe(play => {
+        this._playNotification(play);
+      });
+
     this._translateService.onLangChange.subscribe(
       (event: LangChangeEvent): void => {
         this.selectedLang = (event.lang || '').split('-')[0];
@@ -199,6 +211,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
         },
       ],
     };
+  }
+
+  private _playNotification(play: boolean) {
+    if (play) {
+      const audio = new Audio('/assets/sounds/doorbell.mp3');
+      audio.load();
+      audio.play();
+
+      this._store.dispatch(
+        appCoreActions.setPlayNewOrderNotification({
+          playNewOrderNotification: false,
+        }),
+      );
+    }
   }
 
   public toggleSidebar($event: Event) {

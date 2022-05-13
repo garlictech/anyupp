@@ -20,6 +20,11 @@ export const getActiveOrdersByUserId = (userId: string) =>
     orders.filter((order): boolean => order.userId === userId),
   );
 
+export const getActiveOrderIds = createSelector(
+  orderEntitySelectors.selectFilteredEntities,
+  orders => orders.map(order => order.id),
+);
+
 export const getActiveOrdersCountByUserId = (userId: string) =>
   createSelector(
     orderEntitySelectors.selectFilteredEntities,
