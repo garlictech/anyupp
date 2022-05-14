@@ -14,7 +14,7 @@ git clone https://github.com/flutter/flutter.git -b 2.10.5 --depth 1
 export PATH=`pwd`/flutter/bin:$PATH
 echo "Installed flutter to `pwd`/flutter"
 
-flutter channel stable
+#flutter channel stable
 flutter doctor
 
 ARTIFACT_NAME=$(git rev-parse HEAD).tgz
