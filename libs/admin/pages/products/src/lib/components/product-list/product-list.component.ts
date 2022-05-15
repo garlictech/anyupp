@@ -146,6 +146,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
         this._changeDetectorRef.detectChanges();
       });
+
+    this._store
+      .pipe(
+        select(loggedUserSelectors.getSelectedProductCategoryId),
+        skipWhile((categoryId): boolean => !categoryId),
+        untilDestroyed(this),
+      )
+      .subscribe(() => {
+        this.loadNextChainProductPaginatedData(0, 0);
+      });
   }
 
   ngOnDestroy(): void {

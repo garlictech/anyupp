@@ -327,8 +327,8 @@ export class ProductListService {
           ),
           take(1),
         )
-        .subscribe(chainListResult => {
-          this._nextToken.chain = chainListResult?.nextToken || undefined;
+        .subscribe(result => {
+          this._nextToken.chain = result?.nextToken || undefined;
           this._working.chain = false;
         });
     }
