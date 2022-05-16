@@ -3,6 +3,7 @@ import {
   aws_lambda as lambda,
   aws_iam as iam,
   custom_resources as cr,
+  Duration,
 } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
@@ -20,6 +21,7 @@ export class ConfiguratorStack extends sst.Stack {
 
     const updaterLambda = new lambda.Function(this, 'CrudApiUpdaterLambda', {
       ...commonLambdaProps,
+      timeout: Duration.seconds(10),
       handler: 'lib/lambda/crud-api-updater/index.handler',
       code: lambda.Code.fromAsset(
         path.join(__dirname, '../../.serverless-2/crud-api-updater.zip'),
