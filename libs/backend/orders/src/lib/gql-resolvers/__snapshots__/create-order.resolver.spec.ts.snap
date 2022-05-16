@@ -9,7 +9,13 @@ Object {
   "currentStatus": "none",
   "id": "THE UUID",
   "orderNum": "010",
-  "statusLog": Array [],
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": 1652694766996,
+      "userId": undefined,
+    },
+  ],
   "unitId": "UNIT ID",
   "updatedAt": "2022-02-01T00:00:00.000Z",
 }
@@ -380,7 +386,13 @@ Array [
         "createdAt": "2022-02-01T00:00:00.000Z",
         "currentStatus": "none",
         "id": "THE UUID",
-        "statusLog": Array [],
+        "statusLog": Array [
+          Object {
+            "status": "none",
+            "ts": 1652694766943,
+            "userId": undefined,
+          },
+        ],
         "unitId": "THE ORDER UNIT ID",
         "updatedAt": "2022-02-01T00:00:00.000Z",
       },
@@ -399,7 +411,13 @@ Object {
       "createdAt": "2022-02-01T00:00:00.000Z",
       "currentStatus": "none",
       "id": "THE UUID",
-      "statusLog": Array [],
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": 1652694766943,
+          "userId": undefined,
+        },
+      ],
       "unitId": "THE ORDER UNIT ID",
       "updatedAt": "2022-02-01T00:00:00.000Z",
     },
@@ -416,7 +434,13 @@ Array [
         "createdAt": "2022-02-01T00:00:00.000Z",
         "currentStatus": "none",
         "id": "THE UUID",
-        "statusLog": Array [],
+        "statusLog": Array [
+          Object {
+            "status": "none",
+            "ts": 1652694766952,
+            "userId": undefined,
+          },
+        ],
         "unitId": "THE ORDER UNIT ID",
         "updatedAt": "2022-02-01T00:00:00.000Z",
       },
@@ -442,7 +466,13 @@ Array [
         "createdAt": "2022-02-01T00:00:00.000Z",
         "currentStatus": "none",
         "id": "USER GIVEN ORDER ID",
-        "statusLog": Array [],
+        "statusLog": Array [
+          Object {
+            "status": "none",
+            "ts": 1652694766959,
+            "userId": undefined,
+          },
+        ],
         "unitId": "THE ORDER UNIT ID",
         "updatedAt": "2022-02-01T00:00:00.000Z",
       },
@@ -461,7 +491,13 @@ Object {
       "createdAt": "2022-02-01T00:00:00.000Z",
       "currentStatus": "none",
       "id": "USER GIVEN ORDER ID",
-      "statusLog": Array [],
+      "statusLog": Array [
+        Object {
+          "status": "none",
+          "ts": 1652694766959,
+          "userId": undefined,
+        },
+      ],
       "unitId": "THE ORDER UNIT ID",
       "updatedAt": "2022-02-01T00:00:00.000Z",
     },

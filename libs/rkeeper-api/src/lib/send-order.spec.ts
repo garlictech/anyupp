@@ -47,7 +47,13 @@ const orderInputTemplate: CrudApi.CreateOrderInput = {
     {
       quantity: 5,
       productId: 'PRODUCT ID',
-      statusLog: [],
+      statusLog: [
+        {
+          userId: 'USER_ID',
+          status: CrudApi.OrderStatus.none,
+          ts: 1627909024677,
+        },
+      ],
       sumPriceShown: {
         taxSum: 316.98,
         currency: 'HUF',

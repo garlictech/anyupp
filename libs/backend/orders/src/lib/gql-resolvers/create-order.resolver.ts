@@ -7,7 +7,7 @@ import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 import { from, Observable, of, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 import { oeTryCatch } from '@bgap/shared/utils';
-
+import { DateTime } from 'luxon';
 export interface CalculationState_UnitAdded {
   order: CrudApi.CreateOrderInput;
   unit: CrudApi.Unit;
@@ -93,7 +93,13 @@ export const placeOrder =
           id: input.order.id ?? deps.uuid(),
           createdAt: time,
           updatedAt: time,
-          statusLog: [],
+          statusLog: [
+            {
+              userId: input.order.userId,
+              status: CrudApi.OrderStatus.none,
+              ts: DateTime.utc().toMillis(),
+            },
+          ],
           archived: false,
           currentStatus: CrudApi.OrderStatus.none,
         },

@@ -11,9 +11,10 @@ import {
 import { EProductType, RequiredId } from '@bgap/shared/types';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
+import { DateTime } from 'luxon';
+import * as R from 'ramda';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { catchError, concatMap, switchMap, tap, toArray } from 'rxjs/operators';
-import * as R from 'ramda';
 import { seedUtils } from './utils';
 
 export interface SeederDependencies {
@@ -775,7 +776,13 @@ export const createTestOrder =
           },
           laneId: 'lane_01',
           image: 'https://picsum.photos/100',
-          statusLog: [],
+          statusLog: [
+            {
+              userId: seedUtils.generateUserId(userIdx),
+              status: CrudApi.OrderStatus.none,
+              ts: DateTime.utc().toMillis(),
+            },
+          ],
           productType: EProductType.DRINK,
         },
       ],
