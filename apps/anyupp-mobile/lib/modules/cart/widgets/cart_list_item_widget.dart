@@ -52,7 +52,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                     url: this.widget.order.image,
                     placeholder: CircularProgressIndicator(),
                     errorWidget: Icon(Icons.error),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     width: 112,
                     height: 112,
                   ),
