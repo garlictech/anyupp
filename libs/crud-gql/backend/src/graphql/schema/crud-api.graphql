@@ -1445,6 +1445,13 @@ type Mutation {
     @aws_iam
     @function(name: "${env}-anyupp-graphql-resolvers")
 
+  startStripePaymentConnected(
+    input: StartStripePaymentInput!
+  ): StartStripePaymentOutput
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
     @aws_iam

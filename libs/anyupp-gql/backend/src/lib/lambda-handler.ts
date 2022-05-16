@@ -109,6 +109,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
   const resolverMap: any = {
     Mutation: {
       startStripePayment: stripeRequestHandlers.startStripePayment,
+      startStripePaymentConnected: stripeRequestHandlers.startStripePayment,
       payTipWithStripe: stripeRequestHandlers.payTipWithStripe,
       createStripeCard: stripeRequestHandlers.createStripeCard,
       updateMyStripeCard: stripeRequestHandlers.updateStripeCard,
