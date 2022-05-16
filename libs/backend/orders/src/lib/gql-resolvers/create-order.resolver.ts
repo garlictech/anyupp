@@ -101,6 +101,7 @@ export const placeOrder =
             },
           ],
           archived: false,
+          takeAway: input.order.servingMode === CrudApi.ServingMode.takeaway,
           currentStatus: CrudApi.OrderStatus.none,
         },
         TableName: deps.orderTableName,
