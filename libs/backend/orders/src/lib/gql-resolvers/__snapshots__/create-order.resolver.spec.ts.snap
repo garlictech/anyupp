@@ -12,7 +12,7 @@ Object {
   "statusLog": Array [
     Object {
       "status": "none",
-      "ts": 1652694766996,
+      "ts": 1627909024677,
       "userId": undefined,
     },
   ],
@@ -389,7 +389,7 @@ Array [
         "statusLog": Array [
           Object {
             "status": "none",
-            "ts": 1652694766943,
+            "ts": 1627909024677,
             "userId": undefined,
           },
         ],
@@ -414,7 +414,7 @@ Object {
       "statusLog": Array [
         Object {
           "status": "none",
-          "ts": 1652694766943,
+          "ts": 1627909024677,
           "userId": undefined,
         },
       ],
@@ -437,7 +437,7 @@ Array [
         "statusLog": Array [
           Object {
             "status": "none",
-            "ts": 1652694766952,
+            "ts": 1627909024677,
             "userId": undefined,
           },
         ],
@@ -469,7 +469,7 @@ Array [
         "statusLog": Array [
           Object {
             "status": "none",
-            "ts": 1652694766959,
+            "ts": 1627909024677,
             "userId": undefined,
           },
         ],
@@ -494,7 +494,7 @@ Object {
       "statusLog": Array [
         Object {
           "status": "none",
-          "ts": 1652694766959,
+          "ts": 1627909024677,
           "userId": undefined,
         },
       ],

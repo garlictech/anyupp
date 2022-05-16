@@ -27,6 +27,8 @@ jest.mock('@bgap/anyupp-backend-lib', () => ({
   ...jest.requireActual('@bgap/anyupp-backend-lib'),
 }));
 
+Date.now = () => 1627909024677;
+
 const getUnitCases = [
   { orderInput: { unitId: 'UNIT ID' }, unit: of(undefined) },
   { orderInput: { unitId: 'UNIT ID' }, unit: throwError('UNIT ERROR') },
