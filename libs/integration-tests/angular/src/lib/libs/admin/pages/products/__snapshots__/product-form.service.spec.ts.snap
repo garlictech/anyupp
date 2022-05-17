@@ -27,7 +27,7 @@ Object {
       "hu": null,
     },
     "productCategoryId": "productCategoryId_",
-    "productType": "PRODUCT_TYPE",
+    "productType": "drink",
     "updatedAt": Any<String>,
     "variants": Array [
       Object {
@@ -430,7 +430,7 @@ Object {
       "hu": null,
     },
     "productCategoryId": "productCategoryId_",
-    "productType": "PRODUCT_TYPE_MOD",
+    "productType": "other",
     "updatedAt": Any<String>,
     "variants": Array [
       Object {
