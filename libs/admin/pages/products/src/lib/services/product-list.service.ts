@@ -39,13 +39,15 @@ interface CGU<T> {
   unit?: T;
 }
 
+const INITIAL_TOKENS = {
+  chain: undefined,
+  group: undefined,
+  unit: undefined,
+};
+
 @Injectable()
 export class ProductListService {
-  private _nextToken: CGU<string> = {
-    chain: undefined,
-    group: undefined,
-    unit: undefined,
-  };
+  private _nextToken: CGU<string> = { ...INITIAL_TOKENS };
   private _working: CGU<boolean> = {
     chain: false,
     group: false,
@@ -59,7 +61,16 @@ export class ProductListService {
     private _unitProductCollectionService: UnitProductCollectionService,
     private _crudSdk: CrudSdkService,
     private _nbDialogService: NbDialogService,
-  ) {}
+  ) {
+    combineLatest([
+      this._store.select(loggedUserSelectors.getSelectedProductCategoryId),
+      this._store.select(loggedUserSelectors.getSelectedChainId),
+      this._store.select(loggedUserSelectors.getSelectedGroupId),
+      this._store.select(loggedUserSelectors.getSelectedUnitId),
+    ]).subscribe(() => {
+      this.resetNextTokens();
+    });
+  }
 
   public hasRoleToEdit$(/*productLevel: EProductLevel*/) {
     return of(true);
@@ -223,7 +234,7 @@ export class ProductListService {
   }
 
   public resetNextTokens() {
-    this._nextToken = { chain: undefined, group: undefined, unit: undefined };
+    this._nextToken = { ...INITIAL_TOKENS };
   }
 
   public loadNextChainProductPaginatedData() {
