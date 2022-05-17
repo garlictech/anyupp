@@ -46,6 +46,18 @@ enum PaymentType {
   googlepay
 }
 
+enum ProductType {
+  drink
+  food
+  other
+}
+
+enum ProductComponentSetType {
+  modifier
+  extras
+  rkeeper
+}
+
 type ChainStyle @aws_iam @aws_cognito_user_pools @aws_api_key {
   colors: ChainStyleColors!
   images: ChainStyleImages
@@ -79,7 +91,7 @@ type ChainProduct @aws_iam @aws_cognito_user_pools {
   name: LocalizedItem!
   description: LocalizedItem
   productCategoryId: ID!
-  productType: String!
+  productType: ProductType!
   isVisible: Boolean!
   image: String
   variants: [ProductVariant]
@@ -447,7 +459,7 @@ type OrderItemConfigComponent @aws_iam @aws_cognito_user_pools @aws_api_key {
 type OrderItemConfigSet @aws_iam @aws_cognito_user_pools @aws_api_key {
   productSetId: ID!
   name: LocalizedItem!
-  type: String!
+  type: ProductComponentSetType!
   items: [OrderItemConfigComponent!]!
 }
 
@@ -481,7 +493,7 @@ type OrderItem @aws_iam @aws_cognito_user_pools @aws_api_key {
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
-  productType: String
+  productType: ProductType
   externalId: String
   netPackagingFee: Float
   serviceFee: Price
@@ -577,7 +589,7 @@ input OrderItemInput {
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSetInput!]
-  productType: String
+  productType: ProductType
   externalId: String
   netPackagingFee: Float
   serviceFee: PriceInput
@@ -618,7 +630,7 @@ input PriceShownInput {
 input OrderItemConfigSetInput {
   productSetId: ID!
   name: LocalizedItemInput!
-  type: String!
+  type: ProductComponentSetType!
   items: [OrderItemConfigComponentInput!]!
 }
 
@@ -706,7 +718,7 @@ type ProductComponentSet @aws_iam @aws_cognito_user_pools {
   id: ID!
   externalId: String
   chainId: ID!
-  type: String!
+  type: ProductComponentSetType!
   name: LocalizedItem!
   description: String!
   items: [ID!]!
@@ -733,7 +745,7 @@ type GeneratedProductConfigSet @aws_iam @aws_cognito_user_pools {
   productSetId: ID!
   name: LocalizedItem!
   position: Int!
-  type: String!
+  type: ProductComponentSetType!
   maxSelection: Int
   items: [GeneratedProductConfigComponent!]!
   supportedServingModes: [ServingMode!]
@@ -755,7 +767,7 @@ type GeneratedProduct @aws_iam @aws_cognito_user_pools {
   productCategoryId: ID!
   name: LocalizedItem!
   description: LocalizedItem
-  productType: String!
+  productType: ProductType!
   tax: Int!
   takeawayTax: Int
   position: Int!
@@ -1816,6 +1828,11 @@ type ModelChainProductConnection @aws_iam @aws_cognito_user_pools {
   nextToken: String
 }
 
+input ModelProductTypeInput {
+  eq: ProductType
+  ne: ProductType
+}
+
 input ModelAllergenListInput {
   eq: [Allergen]
   ne: [Allergen]
@@ -1827,7 +1844,7 @@ input ModelChainProductFilterInput {
   id: ModelIDInput
   chainId: ModelIDInput
   productCategoryId: ModelIDInput
-  productType: ModelStringInput
+  productType: ModelProductTypeInput
   isVisible: ModelBooleanInput
   image: ModelStringInput
   allergens: ModelAllergenListInput
@@ -1842,7 +1859,7 @@ input ModelChainProductFilterInput {
 input ModelChainProductConditionInput {
   chainId: ModelIDInput
   productCategoryId: ModelIDInput
-  productType: ModelStringInput
+  productType: ModelProductTypeInput
   isVisible: ModelBooleanInput
   image: ModelStringInput
   allergens: ModelAllergenListInput
@@ -1860,7 +1877,7 @@ input CreateChainProductInput {
   name: LocalizedItemInput!
   description: LocalizedItemInput
   productCategoryId: ID!
-  productType: String!
+  productType: ProductType!
   isVisible: Boolean!
   image: String
   variants: [ProductVariantInput]
@@ -1877,7 +1894,7 @@ input UpdateChainProductInput {
   name: LocalizedItemInput
   description: LocalizedItemInput
   productCategoryId: ID
-  productType: String
+  productType: ProductType
   isVisible: Boolean
   image: String
   variants: [ProductVariantInput]
@@ -2478,11 +2495,16 @@ type ModelProductComponentSetConnection @aws_iam @aws_cognito_user_pools {
   nextToken: String
 }
 
+input ModelProductComponentSetTypeInput {
+  eq: ProductComponentSetType
+  ne: ProductComponentSetType
+}
+
 input ModelProductComponentSetFilterInput {
   id: ModelIDInput
   externalId: ModelStringInput
   chainId: ModelIDInput
-  type: ModelStringInput
+  type: ModelProductComponentSetTypeInput
   description: ModelStringInput
   items: ModelIDInput
   maxSelection: ModelIntInput
@@ -2497,7 +2519,7 @@ input ModelProductComponentSetFilterInput {
 input ModelProductComponentSetConditionInput {
   externalId: ModelStringInput
   chainId: ModelIDInput
-  type: ModelStringInput
+  type: ModelProductComponentSetTypeInput
   description: ModelStringInput
   items: ModelIDInput
   maxSelection: ModelIntInput
@@ -2513,7 +2535,7 @@ input CreateProductComponentSetInput {
   id: ID
   externalId: String
   chainId: ID!
-  type: String!
+  type: ProductComponentSetType!
   name: LocalizedItemInput!
   description: String!
   items: [ID!]!
@@ -2527,7 +2549,7 @@ input UpdateProductComponentSetInput {
   id: ID!
   externalId: String
   chainId: ID
-  type: String
+  type: ProductComponentSetType
   name: LocalizedItemInput
   description: String
   items: [ID!]
@@ -2597,7 +2619,7 @@ input GeneratedProductConfigSetInput {
   productSetId: ID!
   name: LocalizedItemInput!
   position: Int!
-  type: String!
+  type: ProductComponentSetType!
   maxSelection: Int
   items: [GeneratedProductConfigComponentInput!]!
   supportedServingModes: [ServingMode!]
@@ -2623,7 +2645,7 @@ input ModelGeneratedProductFilterInput {
   id: ModelIDInput
   unitId: ModelIDInput
   productCategoryId: ModelIDInput
-  productType: ModelStringInput
+  productType: ModelProductTypeInput
   tax: ModelIntInput
   takeawayTax: ModelIntInput
   position: ModelIntInput
@@ -2639,7 +2661,7 @@ input ModelGeneratedProductFilterInput {
 input ModelGeneratedProductConditionInput {
   unitId: ModelIDInput
   productCategoryId: ModelIDInput
-  productType: ModelStringInput
+  productType: ModelProductTypeInput
   tax: ModelIntInput
   takeawayTax: ModelIntInput
   position: ModelIntInput
@@ -2658,7 +2680,7 @@ input CreateGeneratedProductInput {
   productCategoryId: ID!
   name: LocalizedItemInput!
   description: LocalizedItemInput
-  productType: String!
+  productType: ProductType!
   tax: Int!
   takeawayTax: Int
   position: Int!
@@ -2676,7 +2698,7 @@ input UpdateGeneratedProductInput {
   productCategoryId: ID
   name: LocalizedItemInput
   description: LocalizedItemInput
-  productType: String
+  productType: ProductType
   tax: Int
   takeawayTax: Int
   position: Int
@@ -3239,7 +3261,6 @@ input SearchableChainProductFilterInput {
   id: SearchableIDFilterInput
   chainId: SearchableIDFilterInput
   productCategoryId: SearchableIDFilterInput
-  productType: SearchableStringFilterInput
   isVisible: SearchableBooleanFilterInput
   image: SearchableStringFilterInput
   externalId: SearchableStringFilterInput
@@ -3247,6 +3268,7 @@ input SearchableChainProductFilterInput {
   deletedAt: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
+  productType: SearchableStringFilterInput
   allergens: SearchableStringFilterInput
   and: [SearchableChainProductFilterInput]
   or: [SearchableChainProductFilterInput]
@@ -3262,7 +3284,6 @@ enum SearchableChainProductSortableFields {
   id
   chainId
   productCategoryId
-  productType
   isVisible
   image
   externalId
@@ -3748,7 +3769,6 @@ input SearchableProductComponentSetFilterInput {
   id: SearchableIDFilterInput
   externalId: SearchableStringFilterInput
   chainId: SearchableIDFilterInput
-  type: SearchableStringFilterInput
   description: SearchableStringFilterInput
   items: SearchableIDFilterInput
   maxSelection: SearchableIntFilterInput
@@ -3756,6 +3776,7 @@ input SearchableProductComponentSetFilterInput {
   deletedAt: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
+  type: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
   and: [SearchableProductComponentSetFilterInput]
   or: [SearchableProductComponentSetFilterInput]
@@ -3766,7 +3787,6 @@ enum SearchableProductComponentSetSortableFields {
   id
   externalId
   chainId
-  type
   description
   items
   maxSelection
@@ -3847,7 +3867,6 @@ input SearchableGeneratedProductFilterInput {
   id: SearchableIDFilterInput
   unitId: SearchableIDFilterInput
   productCategoryId: SearchableIDFilterInput
-  productType: SearchableStringFilterInput
   tax: SearchableIntFilterInput
   takeawayTax: SearchableIntFilterInput
   position: SearchableIntFilterInput
@@ -3855,6 +3874,7 @@ input SearchableGeneratedProductFilterInput {
   soldOut: SearchableBooleanFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
+  productType: SearchableStringFilterInput
   allergens: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
   and: [SearchableGeneratedProductFilterInput]
@@ -3866,7 +3886,6 @@ enum SearchableGeneratedProductSortableFields {
   id
   unitId
   productCategoryId
-  productType
   tax
   takeawayTax
   position

@@ -81,7 +81,7 @@ void main() {
         position: 0,
       );
       configSet = configSet.copyWith(
-        type: ConfigType.EXTRA,
+        type: ProductComponentSetType.extras,
         items: [
           MockGenerator.generateProductConfigComponent(
             name: 'Mustár',
@@ -134,7 +134,7 @@ void main() {
         position: 0,
       );
       configSet = configSet.copyWith(
-        type: ConfigType.MODIFIER,
+        type: ProductComponentSetType.modifier,
         items: [
           MockGenerator.generateProductConfigComponent(
             name: 'Dupla hús',
@@ -187,7 +187,7 @@ void main() {
         position: 0,
       );
       configModifierSet = configModifierSet.copyWith(
-        type: ConfigType.MODIFIER,
+        type: ProductComponentSetType.modifier,
         items: [
           MockGenerator.generateProductConfigComponent(
             name: 'Dupla hús',
@@ -201,7 +201,7 @@ void main() {
         position: 0,
       );
       configExtrasSet = configExtrasSet.copyWith(
-        type: ConfigType.EXTRA,
+        type: ProductComponentSetType.extras,
         items: [
           MockGenerator.generateProductConfigComponent(
             name: 'Mustár',
@@ -260,7 +260,7 @@ void main() {
         position: 0,
       );
       configModifierSet = configModifierSet.copyWith(
-        type: ConfigType.MODIFIER,
+        type: ProductComponentSetType.modifier,
         supportedServingModes: [ServingMode.inPlace, ServingMode.takeAway],
         items: [
           MockGenerator.generateProductConfigComponent(
@@ -275,7 +275,7 @@ void main() {
         position: 0,
       );
       configExtrasSet = configExtrasSet.copyWith(
-        type: ConfigType.EXTRA,
+        type: ProductComponentSetType.extras,
         supportedServingModes: [ServingMode.takeAway],
         items: [
           MockGenerator.generateProductConfigComponent(

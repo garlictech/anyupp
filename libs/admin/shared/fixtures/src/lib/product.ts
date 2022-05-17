@@ -3,7 +3,7 @@ import { productComponentSetFixture } from '@bgap/shared/fixtures';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import { productFixture } from '@bgap/shared/fixtures';
-import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
+import { RequiredId } from '@bgap/shared/types';
 
 import {
   CHAIN_ID_01,
@@ -66,7 +66,7 @@ const prodCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> = {
     chainId: CHAIN_ID_01,
     itemIds: [prodComponent_11.id, prodComponent_12.id],
   }),
-  type: EProductComponentSetType.EXTRAS,
+  type: CrudApi.ProductComponentSetType.extras,
 };
 
 const prodCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
@@ -75,7 +75,7 @@ const prodCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
     chainId: CHAIN_ID_01,
     itemIds: [prodComponent_21.id, prodComponent_22.id],
   }),
-  type: EProductComponentSetType.MODIFIER,
+  type: CrudApi.ProductComponentSetType.modifier,
 };
 
 const prodCompSet_03: RequiredId<CrudApi.CreateProductComponentSetInput> = {
@@ -84,7 +84,7 @@ const prodCompSet_03: RequiredId<CrudApi.CreateProductComponentSetInput> = {
     chainId: CHAIN_ID_01,
     itemIds: [prodComponent_31.id, prodComponent_32.id, prodComponent_33.id],
   }),
-  type: EProductComponentSetType.MODIFIER,
+  type: CrudApi.ProductComponentSetType.modifier,
 };
 
 const prodConfigSet_01: CrudApi.ProductConfigSetInput = {

@@ -2,7 +2,6 @@ import { ChartDataset } from 'chart.js';
 import Chart from 'chart.js/auto';
 import { Context } from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
-
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -14,7 +13,7 @@ import {
 } from '@angular/core';
 import { hourlyBreakdownOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductType, OrderAmount } from '@bgap/shared/types';
+import { OrderAmount, TIP_KEY } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -73,16 +72,16 @@ export class ReportsHourlyBreakdownComponent
             ...this._amounts.ordersCount,
           ];
           (<ChartDataset[]>this._chart.data.datasets)[1].data = [
-            ...this._amounts[EProductType.FOOD],
+            ...this._amounts[CrudApi.ProductType.food],
           ];
           (<ChartDataset[]>this._chart.data.datasets)[2].data = [
-            ...this._amounts[EProductType.DRINK],
+            ...this._amounts[CrudApi.ProductType.drink],
           ];
           (<ChartDataset[]>this._chart.data.datasets)[3].data = [
-            ...this._amounts[EProductType.OTHER],
+            ...this._amounts[CrudApi.ProductType.other],
           ];
           (<ChartDataset[]>this._chart.data.datasets)[4].data = [
-            ...this._amounts[EProductType.TIP],
+            ...this._amounts[TIP_KEY],
           ];
 
           this._chart.update();

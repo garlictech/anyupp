@@ -8,7 +8,7 @@ const orderItemConfigSetBase: Pick<
 > = {
   productSetId: 'PRODUCTSET_ID',
   name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-  type: 'TYPE',
+  type: CrudApi.ProductComponentSetType.modifier,
 };
 const orderItemConfigComponentBase: Pick<
   CrudApi.OrderItemConfigComponentInput,

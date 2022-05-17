@@ -75,7 +75,7 @@ const chainProductInputBase = {
   name: { en: 'CHAIN_PRODUCT' },
   description: { en: 'DESCRIPTION' },
   productCategoryId: 'productCategoryId_',
-  productType: 'PRODUCT_TYPE',
+  productType: CrudApi.ProductType.drink,
   isVisible: true,
   image: 'IMAGE',
   variants: [getChainProductVariant(1), getChainProductVariant(2)],

@@ -201,7 +201,7 @@ export const createRkeeperProduct =
           name: {
             hu: dish.name,
           },
-          productType: 'dish',
+          productType: CrudApi.ProductType.other,
           isVisible: true,
           dirty: true,
           variants: [
@@ -527,7 +527,7 @@ const upsertConfigSetsHelper = R.memoizeWith(
                     input: {
                       externalId: modifierGroup.id.toString(),
                       chainId,
-                      type: 'rkeeper',
+                      type: CrudApi.ProductComponentSetType.rkeeper,
                       name: {
                         hu: modifierGroup.name,
                       },

@@ -2,22 +2,6 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
-class ConfigType {
-  static const String MODIFIER = 'modifier';
-  static const String EXTRA = 'extras';
-}
-
-// String getDetailsTextFromModifierComponent(BuildContext context, GeneratedProductConfigComponent modifier) {
-//   StringBuffer sb = StringBuffer();
-//   for (int i = 0; i < modifier.items.length; i++) {
-//     sb.write(getLocalizedText(context, modifier.items[i].name));
-//     if (i < modifier.items.length - 1) {
-//       sb.write(' + ');
-//     }
-//   }
-//   return sb.toString(); //'#' + getLocalizedText(context, modifier.name);
-// }
-
 String getModifierItemsTotalPrice(
     GeneratedProductConfigSet modifier, String currency) {
   double price = 0;
@@ -35,7 +19,7 @@ GeneratedProductConfigSet? getModifierConfigSetById(
     String productSetId, List<GeneratedProductConfigSet> sets) {
   // print('getModifierConfigSetById()=$productSetId');
   int index = sets.indexWhere((configSet) =>
-      configSet.type == ConfigType.MODIFIER &&
+      configSet.type == ProductComponentSetType.modifier &&
       configSet.productSetId == productSetId);
   // print('getModifierConfigSetById().indec=$index');
   if (index != -1) {
@@ -47,7 +31,7 @@ GeneratedProductConfigSet? getModifierConfigSetById(
 GeneratedProductConfigSet? getExtraConfigSetById(
     String extraSetId, List<GeneratedProductConfigSet> sets) {
   int index = sets.indexWhere((configSet) =>
-      configSet.type == ConfigType.EXTRA &&
+      configSet.type == ProductComponentSetType.extras &&
       configSet.productSetId == extraSetId);
   if (index != -1) {
     return sets[index];

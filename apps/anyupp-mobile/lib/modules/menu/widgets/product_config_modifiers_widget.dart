@@ -46,7 +46,7 @@ class _ProductConfigModifiersWidgetState
     ServingMode? mode = takeAwayMode;
 
     widget.product.configSets?.forEach((modifier) {
-      if (modifier.type == ConfigType.MODIFIER &&
+      if (modifier.type == ProductComponentSetType.modifier &&
           modifier.supportedServingModes.contains(mode)) {
         if (_shouldDisplayConfigSet(modifier)) {
           _selectedModifier[modifier.productSetId] =
@@ -98,7 +98,7 @@ class _ProductConfigModifiersWidgetState
     ServingMode? mode = takeAwayMode;
     sets?.forEach((modifier) {
       if (_shouldDisplayConfigSet(modifier) &&
-          modifier.type == ConfigType.MODIFIER &&
+          modifier.type == ProductComponentSetType.modifier &&
           modifier.supportedServingModes.contains(mode)) {
         widgets.add(_buildSingleModifier(modifier));
       }

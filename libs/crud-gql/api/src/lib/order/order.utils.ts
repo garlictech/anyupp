@@ -213,7 +213,7 @@ const sumItems = (items: CrudApi.OrderItem[]): CrudApi.PriceShown => {
  *  because those have no meaning in a summarized object
  */
 export const calculateOrderSumPriceRounded = (
-  items: CrudApi.OrderItemInput[],
+  items: CrudApi.OrderItem[],
 ): CrudApi.PriceShown => pipe(items, sumItems, roundSums);
 
 /**
@@ -223,7 +223,7 @@ export const calculateOrderSumPriceRounded = (
  * @returns a complete recalculate PriceShown object with added config set prices
  */
 export const calculateOrderItemSumPriceRounded = (
-  item: CrudApi.OrderItemInput,
+  item: CrudApi.OrderItem,
 ): CrudApi.PriceShown =>
   pipe(item, calculateItemPriceShownWithConfigSets, roundSums);
 
@@ -234,5 +234,5 @@ export const calculateOrderItemSumPriceRounded = (
  * @returns a complete recalculate PriceShown object without config set prices
  */
 export const calculateOrderItemPriceRounded = (
-  item: CrudApi.OrderItemInput,
+  item: CrudApi.OrderItem,
 ): CrudApi.PriceShown => pipe(item, calculatePriceShown, roundSums);

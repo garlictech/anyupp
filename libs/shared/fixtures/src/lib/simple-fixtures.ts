@@ -68,7 +68,7 @@ const orderItem: CrudApi.OrderItem = {
         hu: 'ORDERITEM CONFIGSET HU',
         en: 'ORDERITEM CONFIGSET EN',
       },
-      type: 'ORDERITEM CONFIGSET TYPE',
+      type: CrudApi.ProductComponentSetType.modifier,
       items: [
         {
           productComponentId: 'ORDERITEM PRODUCTCOMPONENT ID',
@@ -84,7 +84,7 @@ const orderItem: CrudApi.OrderItem = {
       productSetId: `ORDERITEM PRODUCT SET ID`,
     },
   ],
-  productType: 'ORDERITEM PRODUCT TYPE',
+  productType: CrudApi.ProductType.drink,
 };
 
 const transaction: CrudApi.Transaction = {

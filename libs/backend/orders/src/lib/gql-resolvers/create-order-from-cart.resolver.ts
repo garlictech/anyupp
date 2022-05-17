@@ -80,7 +80,7 @@ const convertCartOrderItemToOrderItem = ({
   currency: string;
   laneId: string | null | undefined;
   tax: number;
-  productType: string;
+  productType: CrudApi.ProductType;
   externalId?: CrudApi.Maybe<string>;
 }): CrudApi.OrderItemInput => {
   const orderItemWithCorrectTaxAndCurrency: CrudApi.OrderItem = {

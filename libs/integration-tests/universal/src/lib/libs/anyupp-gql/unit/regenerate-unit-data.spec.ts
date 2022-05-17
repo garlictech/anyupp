@@ -12,7 +12,7 @@ import {
   testIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { EProductComponentSetType, RequiredId } from '@bgap/shared/types';
+import { RequiredId } from '@bgap/shared/types';
 import {
   filterNullishGraphqlListWithDefault,
   getSortedIds,
@@ -91,7 +91,7 @@ const prodCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> = {
     chainId: chainId_01_seeded,
     itemIds: [prodComponent_01.id, prodComponent_02.id],
   }),
-  type: EProductComponentSetType.EXTRAS,
+  type: CrudApi.ProductComponentSetType.extras,
 };
 const prodCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
   ...productComponentSetFixture.getComponentSet({
@@ -99,7 +99,7 @@ const prodCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
     chainId: chainId_01_seeded,
     itemIds: [prodComponent_01.id, prodComponent_02.id, prodComponent_03.id],
   }),
-  type: EProductComponentSetType.MODIFIER,
+  type: CrudApi.ProductComponentSetType.modifier,
 };
 
 const prodConfigSet_01: CrudApi.ProductConfigSetInput = {

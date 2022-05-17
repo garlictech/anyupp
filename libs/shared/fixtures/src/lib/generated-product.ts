@@ -44,7 +44,7 @@ const generatedProductBase = {
   productCategoryId: 'productCategoryId_',
   name: { en: 'GENERATED_PRODUCT', hu: 'GENERALT_TERMEK' },
   description: { en: 'DESCRIPTION', hu: 'LEIRAS' },
-  productType: 'PRODUCT_TYPE',
+  productType: CrudApi.ProductType.drink,
   tax: 1,
   position: 1,
   image: 'https://picsum.photos/100',
@@ -63,7 +63,7 @@ const generatedProductBase = {
 const generatedDrinkProduct: CrudApi.GeneratedProduct = {
   ...generatedProductBase,
   id: `${testIdPrefix}_generated_product_id_1`,
-  productType: 'drink',
+  productType: CrudApi.ProductType.drink,
   createdAt: '',
   updatedAt: '',
 };
@@ -71,7 +71,7 @@ const generatedDrinkProduct: CrudApi.GeneratedProduct = {
 const generatedFoodProduct: CrudApi.GeneratedProduct = {
   ...generatedProductBase,
   id: `${testIdPrefix}_generated_product_id_2`,
-  productType: 'food',
+  productType: CrudApi.ProductType.food,
   createdAt: '',
   updatedAt: '',
 };

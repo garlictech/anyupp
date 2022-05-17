@@ -10,7 +10,7 @@ class GeneratedProduct {
   final String productCategoryId;
   final LocalizedItem name;
   final LocalizedItem? description;
-  final String productType;
+  final ProductType productType;
   final int tax;
   final int position;
   final String? image;
@@ -43,7 +43,7 @@ class GeneratedProduct {
     String? productCategoryId,
     LocalizedItem? name,
     LocalizedItem? description,
-    String? productType,
+    ProductType? productType,
     int? tax,
     int? position,
     String? image,
@@ -79,7 +79,7 @@ class GeneratedProduct {
       'productCategoryId': productCategoryId,
       'name': name.toJson(),
       'description': description?.toJson(),
-      'productType': productType,
+      'productType': enumToString(productType),
       'tax': tax,
       'position': position,
       'image': image,
@@ -101,7 +101,7 @@ class GeneratedProduct {
       description: map['description'] != null
           ? LocalizedItem.fromJson(map['description'])
           : null,
-      productType: map['productType'],
+      productType: enumFromString(map['productType'], ProductType.values),
       tax: map['tax'],
       position: map['position'],
       image: map['image'],

@@ -205,7 +205,7 @@ describe('ProductFormService', () => {
                 ...productFixture.chainProductInputBase,
                 id: chainProductId,
                 image: 'IMAGE_MOD',
-                productType: 'PRODUCT_TYPE_MOD',
+                productType: CrudApi.ProductType.other,
               })
             : EMPTY,
         ),

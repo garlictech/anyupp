@@ -75,7 +75,7 @@ const orderItemInput: CrudApi.OrderItemInput = {
         en: 'Modifier comp set',
         hu: 'Módosító komponens set',
       },
-      type: 'modifier',
+      type: CrudApi.ProductComponentSetType.modifier,
       items: [
         {
           productComponentId: `${testIdPrefix}product_component_id`,
@@ -91,7 +91,7 @@ const orderItemInput: CrudApi.OrderItemInput = {
       productSetId: `${testIdPrefix}product_component_set_id`,
     },
   ],
-  productType: 'drink',
+  productType: CrudApi.ProductType.drink,
 };
 
 const getId = (num: Number) =>

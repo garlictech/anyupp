@@ -15,7 +15,7 @@ class OrderItem {
   final LocalizedItem variantName;
   final String? image;
   final List<Allergen>? allergens;
-  final String productType;
+  final ProductType productType;
   final List<OrderItemConfigSet>? configSets;
   final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
       selectedConfigMap;
@@ -54,7 +54,7 @@ class OrderItem {
     LocalizedItem? variantName,
     String? image,
     List<Allergen>? allergens,
-    String? productType,
+    ProductType? productType,
     List<OrderItemConfigSet>? configSets,
     Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
         selectedConfigMap,
@@ -94,7 +94,7 @@ class OrderItem {
       'variantName': variantName.toJson(),
       'image': image,
       'allergens': allergens,
-      'productType': productType,
+      'productType': enumToString(productType),
       'configSets': configSets?.map((x) => x.toJson()).toList(),
       'netPackagingFee': netPackagingFee,
       'serviceFee': serviceFee?.toJson(),
@@ -118,7 +118,7 @@ class OrderItem {
           ? List<Allergen>.from(
               map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
           : null,
-      productType: map['productType'] ?? '',
+      productType: enumFromString(map['productType'], ProductType.values),
       configSets: map['configSets'] != null
           ? List<OrderItemConfigSet>.from(
               map['configSets']?.map((x) => OrderItemConfigSet.fromJson(x)))

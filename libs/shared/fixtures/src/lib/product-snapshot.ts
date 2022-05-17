@@ -77,7 +77,7 @@ const chainProduct_1 = {
       position: 1,
     },
   ],
-  productType: 'food',
+  productType: CrudApi.ProductType.food,
   variants: [
     {
       refGroupPrice: 0,
@@ -167,7 +167,7 @@ const chainProduct_2 = {
       position: 1,
     },
   ],
-  productType: 'food',
+  productType: CrudApi.ProductType.food,
   variants: [
     {
       refGroupPrice: 0,
@@ -258,7 +258,7 @@ const chainProduct_3 = {
       position: 1,
     },
   ],
-  productType: 'food',
+  productType: CrudApi.ProductType.food,
   variants: [
     {
       refGroupPrice: 0,
@@ -334,7 +334,7 @@ const chainProduct_4 = {
       position: 1,
     },
   ],
-  productType: 'drink',
+  productType: CrudApi.ProductType.drink,
   variants: [
     {
       refGroupPrice: 0,
@@ -427,7 +427,7 @@ const chainProduct_5 = {
       position: 1,
     },
   ],
-  productType: 'drink',
+  productType: CrudApi.ProductType.drink,
   variants: [
     {
       refGroupPrice: 0,
@@ -538,7 +538,7 @@ const chainProduct_6 = {
       position: 2,
     },
   ],
-  productType: 'food',
+  productType: CrudApi.ProductType.food,
   variants: [
     {
       refGroupPrice: 0,
@@ -636,7 +636,7 @@ const chainProduct_7 = {
       position: 2,
     },
   ],
-  productType: 'drink',
+  productType: CrudApi.ProductType.drink,
   variants: [
     {
       refGroupPrice: 0,
@@ -712,7 +712,7 @@ const chainProduct_8 = {
       position: 1,
     },
   ],
-  productType: 'drink',
+  productType: CrudApi.ProductType.drink,
   variants: [
     {
       refGroupPrice: 0,
@@ -823,7 +823,7 @@ const chainProduct_9 = {
       position: 2,
     },
   ],
-  productType: 'drink',
+  productType: CrudApi.ProductType.drink,
   variants: [
     {
       refGroupPrice: 0,

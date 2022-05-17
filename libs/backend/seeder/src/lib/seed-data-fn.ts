@@ -8,7 +8,7 @@ import {
   seededIdPrefix,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { EProductType, RequiredId } from '@bgap/shared/types';
+import { RequiredId } from '@bgap/shared/types';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import { DateTime } from 'luxon';
@@ -517,7 +517,7 @@ export const createTestChainProduct =
     productCategoryIdx: number,
     productIdx: number,
     productName: string,
-    productType: EProductType,
+    productType: CrudApi.ProductType,
   ) =>
   (deps: SeederDependencies) => {
     console.debug('createTestChainProduct', {
@@ -783,7 +783,7 @@ export const createTestOrder =
               ts: DateTime.utc().toMillis(),
             },
           ],
-          productType: EProductType.DRINK,
+          productType: CrudApi.ProductType.drink,
         },
       ],
     };

@@ -159,7 +159,7 @@ Object {
       "supportedServingModes": Array [
         "inPlace",
       ],
-      "type": "PRODUCT_COMP_SET_TYPE",
+      "type": "extras",
     },
   ],
   "description": Object {

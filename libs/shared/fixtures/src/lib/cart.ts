@@ -1,5 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductType, RequiredId } from '@bgap/shared/types';
+import { RequiredId } from '@bgap/shared/types';
 import { testIdPrefix } from './common';
 import { productFixture } from './product';
 import { unitFixture } from './unit';
@@ -55,7 +55,7 @@ const getOrderItem = (
     },
   ],
   allergens: [CrudApi.Allergen.treenuts],
-  productType: EProductType.FOOD,
+  productType: CrudApi.ProductType.food,
 });
 const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   id: cartId_01,

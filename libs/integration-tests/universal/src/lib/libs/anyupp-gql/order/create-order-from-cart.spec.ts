@@ -83,7 +83,7 @@ const unitProduct_01: RequiredId<CrudApi.CreateUnitProductInput> = {
 const orderItemConfigSet_01: CrudApi.OrderItemConfigSetInput = {
   productSetId: 'PRODUCTSET_ID_01',
   name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-  type: 'TYPE',
+  type: CrudApi.ProductComponentSetType.modifier,
   items: [
     {
       productComponentId: 'PRODUCT_COMPONENT_ID_0101',
@@ -104,7 +104,7 @@ const orderItemConfigSet_01: CrudApi.OrderItemConfigSetInput = {
 const orderItemConfigSet_02: CrudApi.OrderItemConfigSetInput = {
   productSetId: 'PRODUCTSET_ID_02',
   name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-  type: 'TYPE',
+  type: CrudApi.ProductComponentSetType.modifier,
   items: [
     {
       productComponentId: 'PRODUCT_COMPONENT_ID_0201',

@@ -1,9 +1,5 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  defaultSupportedServingModes,
-  EProductComponentSetType,
-  RequiredId,
-} from '@bgap/shared/types';
+import { defaultSupportedServingModes, RequiredId } from '@bgap/shared/types';
 import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 
@@ -80,7 +76,7 @@ const productComponentSetBase: Omit<
   id: `${testIdPrefix}product_component_set_id_`,
   name: { en: 'COMPONENT_SET', de: 'COMPONENT_SET', hu: 'KOMPONENS_SET' },
   description: 'DESCRIPTION',
-  type: EProductComponentSetType.EXTRAS,
+  type: CrudApi.ProductComponentSetType.extras,
   items: [],
   maxSelection: 0,
 };
@@ -194,7 +190,7 @@ const seededProdCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> =
       hu: `Hőmérséklet`,
     },
     description: 'Tálalási hőmérséklet',
-    type: EProductComponentSetType.MODIFIER,
+    type: CrudApi.ProductComponentSetType.modifier,
   };
 
 const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> =
@@ -211,7 +207,7 @@ const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> =
     },
     description: 'Szolíd elegancia',
     maxSelection: 2,
-    type: EProductComponentSetType.EXTRAS,
+    type: CrudApi.ProductComponentSetType.extras,
   };
 
 const seededProdCompSet_03: RequiredId<CrudApi.CreateProductComponentSetInput> =
@@ -227,7 +223,7 @@ const seededProdCompSet_03: RequiredId<CrudApi.CreateProductComponentSetInput> =
       hu: `Köret`,
     },
     description: 'Köret módosító készlet',
-    type: EProductComponentSetType.MODIFIER,
+    type: CrudApi.ProductComponentSetType.modifier,
   };
 
 const chainConfigSets: CrudApi.ProductConfigSetInput[] = [

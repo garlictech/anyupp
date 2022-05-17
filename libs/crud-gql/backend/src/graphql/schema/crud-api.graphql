@@ -44,6 +44,18 @@ enum PaymentType {
   googlepay
 }
 
+enum ProductType {
+  drink
+  food
+  other
+}
+
+enum ProductComponentSetType {
+  modifier
+  extras
+  rkeeper
+}
+
 type ChainStyle {
   colors: ChainStyleColors!
   images: ChainStyleImages
@@ -80,7 +92,7 @@ type ChainProduct
   name: LocalizedItem!
   description: LocalizedItem
   productCategoryId: ID!
-  productType: String!
+  productType: ProductType!
   isVisible: Boolean!
   image: String
   variants: [ProductVariant]
@@ -455,7 +467,7 @@ type OrderItemConfigComponent {
 type OrderItemConfigSet {
   productSetId: ID!
   name: LocalizedItem!
-  type: String!
+  type: ProductComponentSetType!
   items: [OrderItemConfigComponent!]!
 }
 
@@ -489,7 +501,7 @@ type OrderItem {
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSet!]
-  productType: String
+  productType: ProductType
   externalId: String
   netPackagingFee: Float
   serviceFee: Price
@@ -588,7 +600,7 @@ input OrderItemInput {
   laneId: ID
   allergens: [Allergen]
   configSets: [OrderItemConfigSetInput!]
-  productType: String
+  productType: ProductType
   externalId: String
   netPackagingFee: Float
   serviceFee: PriceInput
@@ -629,7 +641,7 @@ input PriceShownInput {
 input OrderItemConfigSetInput {
   productSetId: ID!
   name: LocalizedItemInput!
-  type: String!
+  type: ProductComponentSetType!
   items: [OrderItemConfigComponentInput!]!
 }
 
@@ -722,7 +734,7 @@ type ProductComponentSet
   id: ID!
   externalId: String
   chainId: ID!
-  type: String!
+  type: ProductComponentSetType!
   name: LocalizedItem!
   description: String!
   items: [ID!]!
@@ -747,7 +759,7 @@ type GeneratedProductConfigSet {
   productSetId: ID!
   name: LocalizedItem!
   position: Int!
-  type: String!
+  type: ProductComponentSetType!
   maxSelection: Int
   items: [GeneratedProductConfigComponent!]!
   supportedServingModes: [ServingMode!]
@@ -778,7 +790,7 @@ type GeneratedProduct
   productCategoryId: ID!
   name: LocalizedItem!
   description: LocalizedItem
-  productType: String!
+  productType: ProductType!
   tax: Int!
   takeawayTax: Int
   position: Int!

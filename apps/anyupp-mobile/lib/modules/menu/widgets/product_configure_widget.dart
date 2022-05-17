@@ -65,7 +65,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   Future<OrderItem?> getOrderItem() async {
     User? user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
     return OrderItem(
-      productType: 'productType',
+      productType: widget.product.productType,
       productId: widget.product.id,
       variantId: _productVariant.id!,
       image: widget.product.image,

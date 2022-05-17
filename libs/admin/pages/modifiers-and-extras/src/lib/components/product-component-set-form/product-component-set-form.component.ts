@@ -20,12 +20,7 @@ import { chainsSelectors } from '@bgap/admin/store/chains';
 import { loggedUserSelectors } from '@bgap/admin/store/logged-user';
 import { ProductComponentCollectionService } from '@bgap/admin/store/product-components';
 import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  EProductComponentSetType,
-  KeyValue,
-  KeyValueObject,
-  UpsertResponse,
-} from '@bgap/shared/types';
+import { KeyValue, KeyValueObject, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
@@ -49,7 +44,7 @@ export class ProductComponentSetFormComponent
   public typeOptions: KeyValue[] = [];
   public productComponentOptions: KeyValue[] = [];
   public productComponentObject: KeyValueObject = {};
-  public eProductComponentSetType = EProductComponentSetType;
+  public eProductComponentSetType = CrudApi.ProductComponentSetType;
   public servingModes = SERVING_MODES;
   public editing = false;
 
@@ -154,7 +149,7 @@ export class ProductComponentSetFormComponent
                 ...this.dialogForm?.value,
                 maxSelection:
                   this.dialogForm?.value.type ===
-                  EProductComponentSetType.MODIFIER
+                  CrudApi.ProductComponentSetType.modifier
                     ? null
                     : this.dialogForm?.value.maxSelection,
                 dirty: this.productComponentSet?.dirty ? false : undefined,

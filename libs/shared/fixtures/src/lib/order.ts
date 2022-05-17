@@ -1,5 +1,4 @@
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductType } from '@bgap/shared/types';
 
 import { seededIdPrefix, testIdPrefix } from './common';
 import { getOrderStatusLog } from './order-utils';
@@ -50,7 +49,7 @@ const orderItemInputBase = (
         en: 'Modifier comp set',
         hu: 'Módosító komponens set',
       },
-      type: 'modifier',
+      type: CrudApi.ProductComponentSetType.modifier,
       items: [
         {
           productComponentId: `${testIdPrefix}product_component_id`,
@@ -66,7 +65,7 @@ const orderItemInputBase = (
       productSetId: `${testIdPrefix}product_component_set_id`,
     },
   ],
-  productType: EProductType.DRINK,
+  productType: CrudApi.ProductType.drink,
 });
 
 const orderInputBase = {
@@ -106,7 +105,7 @@ const orderInputBase = {
 const historyOrderInputBase = {
   ...orderInputBase,
   ...getOrderStatusLog(CrudApi.OrderStatus.served),
-  orderNum: '000000',
+  orderNum: '000',
   archived: true,
 };
 

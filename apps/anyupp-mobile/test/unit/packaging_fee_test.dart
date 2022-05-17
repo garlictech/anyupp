@@ -1,12 +1,10 @@
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../mock/mock_data_faker.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-
 import '../widget/mock/mocks.dart';
 
 void main() {
@@ -132,7 +130,7 @@ void main() {
       GeneratedProductConfigSet configSet =
           MockGenerator.generateEmptyProductConfigSet(
         name: 'Test Modifier Set',
-        type: ConfigType.MODIFIER,
+        type: ProductComponentSetType.modifier,
       );
 
       cart = cart.copyWith(items: [

@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:faker/faker.dart' hide Address;
 
 class MockGenerator {
@@ -181,7 +180,7 @@ class MockGenerator {
           hu: variantName,
           de: variantName,
         ),
-        productType: 'TEST',
+        productType: ProductType.food,
         netPackagingFee: packagingFee);
   }
 
@@ -192,7 +191,7 @@ class MockGenerator {
       ServingMode.inPlace,
       ServingMode.takeAway,
     ],
-    String type = ConfigType.MODIFIER,
+    ProductComponentSetType type = ProductComponentSetType.modifier,
     String? description,
     int maxSelection = 1,
     int position = 0,
@@ -216,7 +215,7 @@ class MockGenerator {
   static OrderItemConfigSet generateEmptyOrderItemConfigSet({
     String? productSetId,
     required String name,
-    String type = ConfigType.MODIFIER,
+    ProductComponentSetType type = ProductComponentSetType.modifier,
   }) {
     return OrderItemConfigSet(
       name: LocalizedItem(
@@ -343,7 +342,7 @@ class MockGenerator {
         de: name,
         hu: name,
       ),
-      productType: 'FAKE_PRODUCT_TYPE',
+      productType: ProductType.drink,
       tax: 10,
       position: 0,
       variants: variants,
@@ -396,7 +395,7 @@ class MockGenerator {
         hu: name,
         en: name,
       ),
-      type: 'FAKE_CONFIG_TYPE',
+      type: ProductComponentSetType.modifier,
       items: items,
       supportedServingModes: servingModes,
       description: 'Description of $name',

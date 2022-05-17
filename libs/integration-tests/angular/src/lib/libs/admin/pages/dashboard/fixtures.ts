@@ -1,3 +1,5 @@
+import * as CrudApi from '@bgap/crud-gql/api';
+
 export const printableOrder = {
   id: 'seeded_order_id_6',
   createdAt: '2022-01-31T15:04:37.521Z',
@@ -43,7 +45,7 @@ export const printableOrder = {
             de: null,
             hu: 'Módosító komponens set',
           },
-          type: 'modifier',
+          type: CrudApi.ProductComponentSetType.modifier,
           items: [
             {
               productComponentId: 'test_product_component_id',
@@ -59,7 +61,7 @@ export const printableOrder = {
           ],
         },
       ],
-      productType: 'drink',
+      productType: CrudApi.ProductType.drink,
       externalId: null,
       netPackagingFee: null,
       serviceFee: null,
@@ -125,7 +127,7 @@ export const printableOrder = {
             de: null,
             hu: 'Módosító komponens set',
           },
-          type: 'modifier',
+          type: CrudApi.ProductComponentSetType.modifier,
           items: [
             {
               productComponentId: 'test_product_component_id',
@@ -141,7 +143,7 @@ export const printableOrder = {
           ],
         },
       ],
-      productType: 'drink',
+      productType: CrudApi.ProductType.drink,
       externalId: null,
       netPackagingFee: null,
       serviceFee: null,
@@ -198,7 +200,7 @@ export const printableOrder = {
             de: null,
             hu: 'Módosító komponens set',
           },
-          type: 'modifier',
+          type: CrudApi.ProductComponentSetType.modifier,
           items: [
             {
               productComponentId: 'test_product_component_id',
@@ -214,7 +216,7 @@ export const printableOrder = {
           ],
         },
       ],
-      productType: 'drink',
+      productType: CrudApi.ProductType.drink,
       externalId: null,
       netPackagingFee: null,
       serviceFee: null,

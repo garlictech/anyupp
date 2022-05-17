@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { dailySalesPerTypeOrderAmounts } from '@bgap/admin/shared/utils';
 import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductType } from '@bgap/shared/types';
+import { TIP_KEY } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -50,10 +50,10 @@ export class ReportsDailySalesPerTypeComponent
         const amounts = dailySalesPerTypeOrderAmounts(orders);
 
         this._chart.data.datasets[0].data = [
-          amounts[EProductType.FOOD],
-          amounts[EProductType.DRINK],
-          amounts[EProductType.OTHER],
-          amounts[EProductType.TIP],
+          amounts[CrudApi.ProductType.food],
+          amounts[CrudApi.ProductType.drink],
+          amounts[CrudApi.ProductType.other],
+          amounts[TIP_KEY],
         ];
 
         this._chart.update();

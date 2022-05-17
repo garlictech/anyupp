@@ -34,7 +34,7 @@ class _ProductConfigExtrasWidgetState extends State<ProductConfigExtrasWidget> {
 
     List<Widget> widgets = [];
     for (int i = 0; extras != null && i < extras.length; i++) {
-      if (extras[i].type == ConfigType.EXTRA &&
+      if (extras[i].type == ProductComponentSetType.extras &&
           extras[i].supportedServingModes.contains(mode)) {
         widgets.add(Container(
           margin: EdgeInsets.only(bottom: (i != extras.length - 1 ? 16.0 : 0)),

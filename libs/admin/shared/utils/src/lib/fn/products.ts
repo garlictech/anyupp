@@ -1,8 +1,4 @@
-import {
-  EProductComponentSetType,
-  KeyValue,
-  KeyValueObject,
-} from '@bgap/shared/types';
+import { KeyValue, KeyValueObject } from '@bgap/shared/types';
 
 import * as CrudApi from '@bgap/crud-gql/api';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
@@ -10,7 +6,7 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
 export const maxSelectionValidator = (
   control: AbstractControl,
 ): ValidationErrors | null =>
-  control.value?.type === EProductComponentSetType.MODIFIER
+  control.value?.type === CrudApi.ProductComponentSetType.modifier
     ? null
     : (control.value?.maxSelection || 0) > 0 &&
       (control.value?.maxSelection || 0) <= (control.value?.items || []).length

@@ -9,7 +9,7 @@ class GeneratedProductConfigSet {
   final LocalizedItem name;
   final String? description;
   final int? position;
-  final String type;
+  final ProductComponentSetType type;
   final int? maxSelection;
   final List<GeneratedProductConfigComponent> items;
   final List<ServingMode> supportedServingModes;
@@ -30,7 +30,7 @@ class GeneratedProductConfigSet {
     LocalizedItem? name,
     String? description,
     int? position,
-    String? type,
+    ProductComponentSetType? type,
     int? maxSelection,
     List<GeneratedProductConfigComponent>? items,
     List<ServingMode>? supportedServingModes,
@@ -54,7 +54,7 @@ class GeneratedProductConfigSet {
       'name': name.toJson(),
       'description': description,
       'position': position,
-      'type': type,
+      'type': enumToString(type),
       'maxSelection': maxSelection,
       'items': items.map((x) => x.toJson()).toList(),
       'supportedServingModes':
@@ -68,7 +68,7 @@ class GeneratedProductConfigSet {
       name: LocalizedItem.fromJson(map['name']),
       description: map['description'],
       position: map['position'],
-      type: map['type'],
+      type: enumFromString(map['type'], ProductComponentSetType.values),
       maxSelection: map['maxSelection'],
       items: List<GeneratedProductConfigComponent>.from(map['items']
           ?.map((x) => GeneratedProductConfigComponent.fromJson(x))),

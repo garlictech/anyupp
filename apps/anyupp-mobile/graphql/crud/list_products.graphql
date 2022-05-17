@@ -53,6 +53,7 @@ query ListProducts(
         type
         productSetId
         position
+        type
         name {
           de
           en

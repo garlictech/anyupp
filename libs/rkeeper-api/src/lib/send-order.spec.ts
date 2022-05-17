@@ -81,7 +81,7 @@ const orderInputTemplate: CrudApi.CreateOrderInput = {
           name: {
             en: 'CONFIG SET NAME',
           },
-          type: 'CONFIG SET TYPE',
+          type: CrudApi.ProductComponentSetType.modifier,
           productSetId: 'PRODUCT SET ID',
           items: [
             {
@@ -98,7 +98,7 @@ const orderInputTemplate: CrudApi.CreateOrderInput = {
           name: {
             en: 'CONFIG SET NAME 2',
           },
-          type: 'CONFIG SET TYPE 2',
+          type: CrudApi.ProductComponentSetType.modifier,
           productSetId: 'PRODUCT SET ID',
           items: [
             {

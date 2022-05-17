@@ -1,3 +1,4 @@
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
@@ -5,7 +6,7 @@ import 'package:flutter/foundation.dart';
 class OrderItemConfigSet {
   final String productSetId;
   final LocalizedItem name;
-  final String type;
+  final ProductComponentSetType type;
   final List<OrderItemConfigComponent> items;
   OrderItemConfigSet({
     required this.productSetId,
@@ -17,7 +18,7 @@ class OrderItemConfigSet {
   OrderItemConfigSet copyWith({
     String? productSetId,
     LocalizedItem? name,
-    String? type,
+    ProductComponentSetType? type,
     List<OrderItemConfigComponent>? items,
   }) {
     return OrderItemConfigSet(
@@ -32,7 +33,7 @@ class OrderItemConfigSet {
     return {
       'productSetId': productSetId,
       'name': name.toJson(),
-      'type': type,
+      'type': enumToString(type),
       'items': items.map((x) => x.toJson()).toList(),
     };
   }
@@ -41,8 +42,9 @@ class OrderItemConfigSet {
     return OrderItemConfigSet(
       productSetId: map['productSetId'],
       name: LocalizedItem.fromJson(map['name']),
-      type: map['type'],
-      items: List<OrderItemConfigComponent>.from(map['items']?.map((x) => OrderItemConfigComponent.fromJson(x))),
+      type: enumFromString(map['type'], ProductComponentSetType.values),
+      items: List<OrderItemConfigComponent>.from(
+          map['items']?.map((x) => OrderItemConfigComponent.fromJson(x))),
     );
   }
 
@@ -64,6 +66,9 @@ class OrderItemConfigSet {
 
   @override
   int get hashCode {
-    return productSetId.hashCode ^ name.hashCode ^ type.hashCode ^ items.hashCode;
+    return productSetId.hashCode ^
+        name.hashCode ^
+        type.hashCode ^
+        items.hashCode;
   }
 }
