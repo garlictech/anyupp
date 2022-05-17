@@ -23,8 +23,10 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
   }
 
   FutureOr<void> _handleError(Exception e, Emitter<StripePaymentState> emit) {
-    if (e is AppException) {
-      emit(StripeError(e.code, e.message!));
+    if (e is StripeException) {
+      emit(StripeError(e.subCode ?? StripeException.UNKNOWN_ERROR, e.code));
+    } else if (e is AppException) {
+      emit(StripeError(e.code, e.message ?? ''));
     } else {
       emit(StripeError(StripeException.UNKNOWN_ERROR, e.toString()));
     }
@@ -125,13 +127,18 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
       CreateStripeCardEvent event, Emitter<StripePaymentState> emit) async {
     try {
       emit(StripePaymentLoading());
+      // throw StripeException(code: StripeException.CODE, message: 'Test error');
       StripePaymentMethod result = await _paymentRepository.createStripeCard(
           event.stripeCard, event.name);
       print('StripePaymentBloc.CreateStripeCard.result=$result');
       emit(StripeCardCreated());
       getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
-    } on Exception catch (e) {
-      _handleError(e, emit);
+    } on Exception catch (_) {
+      _handleError(
+          StripeException(
+              code: StripeException.CODE,
+              subCode: StripeException.CARD_CREATE_ERROR),
+          emit);
     }
   }
 
@@ -156,8 +163,12 @@ class StripePaymentBloc extends Bloc<StripePaymentEvent, StripePaymentState> {
           await _paymentRepository.deleteStripeCard(event.stripeCardId);
       print('StripePaymentBloc.DeleteStripeCard.result=$result');
       getIt<StripePaymentBloc>().add(PaymentMethodListEvent());
-    } on Exception catch (e) {
-      _handleError(e, emit);
+    } on Exception catch (_) {
+      _handleError(
+          StripeException(
+              code: StripeException.CODE,
+              subCode: StripeException.CARD_DELETE_ERROR),
+          emit);
     }
   }
 }

@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 
 class StripeException extends AppException {
   static const CODE = 'STRIPE_EXCEPTION';
-
   static const UNKNOWN_ERROR = 'UNKNOWN_ERROR';
+  static const CARD_DELETE_ERROR = 'CARD_DELETE_ERROR';
+  static const CARD_CREATE_ERROR = 'CARD_CREATE_ERROR';
 
   StripeException({
     code,
@@ -23,6 +24,10 @@ class StripeException extends AppException {
   }
 
   factory StripeException.fromException(String code, Exception e) {
-    return StripeException(code: StripeException.CODE, subCode: code, message: e.toString(), details: e.runtimeType);
+    return StripeException(
+        code: StripeException.CODE,
+        subCode: code,
+        message: e.toString(),
+        details: e.runtimeType);
   }
 }

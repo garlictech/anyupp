@@ -420,7 +420,17 @@
       "payment_success": "Sikeres fizetés!",
       "new_card": "Új kártya",
       "saved_cards": "Mentett Kártyák",
-      "no_payment_methods": "Nincsenek elmentett kártyáid..."
+      "no_payment_methods": "Nincsenek elmentett kártyáid...",
+      "errors": {
+        "CARD_CREATE_ERROR": {
+          "title": "Sikertelen művelet",
+          "message": "Nem sikerült a kártyádat hozzáadni"
+        },
+        "CARD_DELETE_ERROR": {
+          "title": "Sikertelen művelet",
+          "message": "Nem sikerült a kártyád törlése"
+        }
+      }
     },
     "manageCard": {
       "card_will_delete": "Ez a kártya törlésre kerül.",

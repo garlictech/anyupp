@@ -416,7 +416,17 @@
       "payment_success": "Successful payment!",
       "new_card": "New Card",
       "saved_cards": "Saved Cards",
-      "no_payment_methods": "No cards saved..."
+      "no_payment_methods": "No cards saved...",
+      "errors": {
+        "CARD_CREATE_ERROR": {
+          "title": "Operation failed",
+          "message": "Your card could not be added"
+        },
+        "CARD_DELETE_ERROR": {
+          "title": "Operation failed",
+          "message": "Your card could not be deleted"
+        }
+      }
     },
     "manageCard": {
       "card_will_delete": "This card will be deleted",

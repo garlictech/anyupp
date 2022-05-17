@@ -1,12 +1,12 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/widgets/loading_widget.dart';
+import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:fa_prev/shared/locale.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 class AddPaymentMethodWidget extends StatefulWidget {
@@ -57,8 +57,17 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
     return BlocListener<StripePaymentBloc, StripePaymentState>(
       listener: (context, state) {
         if (state is StripeCardCreated) {
-          getIt.get<StripePaymentBloc>().add(PaymentMethodListEvent());
           Nav.pop();
+          return;
+        }
+        if (state is StripeError) {
+          getIt.get<StripePaymentBloc>().add(PaymentMethodListEvent());
+          showErrorDialog(
+            context,
+            trans('payment.stripe.errors.${state.code}.title'),
+            trans('payment.stripe.errors.${state.code}.message'),
+          );
+          return;
         }
       },
       child: Container(
