@@ -137,7 +137,6 @@ export const createOrder =
   (deps: OrderResolverDeps): Observable<CrudApi.Order> =>
     getUnit(deps)(input).pipe(
       OE.chain(getNextOrderNum(deps)),
-      OE.chain(handleRkeeperOrder(deps)),
       OE.chain(placeOrder(deps)),
       OE.map(state => state.order),
       OE.fold(

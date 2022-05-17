@@ -233,7 +233,7 @@ const handleRkeeperOrderCases = [
   },
 ];
 
-test.each(handleRkeeperOrderCases)(
+xtest.each(handleRkeeperOrderCases)(
   'handleRkeeperOrderCases cases',
   ({ inputState, result }, done: any) => {
     const depsFixture = {

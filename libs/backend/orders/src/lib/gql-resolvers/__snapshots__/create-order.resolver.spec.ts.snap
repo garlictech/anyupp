@@ -16,6 +16,7 @@ Object {
       "userId": undefined,
     },
   ],
+  "takeAway": false,
   "unitId": "UNIT ID",
   "updatedAt": "2022-02-01T00:00:00.000Z",
 }
@@ -279,104 +280,6 @@ Object {
 }
 `;
 
-exports[`handleRkeeperOrderCases cases: RESULT 1`] = `
-Object {
-  "_tag": "Right",
-  "right": Object {
-    "order": Object {
-      "unitId": "THE ORDER UNIT ID",
-    },
-    "unit": Object {
-      "id": "NOT AN RKEEPER UNIT",
-    },
-  },
-}
-`;
-
-exports[`handleRkeeperOrderCases cases: RESULT 2`] = `
-Object {
-  "_tag": "Right",
-  "right": Object {
-    "order": Object {
-      "unitId": "THE ORDER UNIT ID",
-    },
-    "unit": Object {
-      "id": "AN RKEEPER UNIT",
-      "pos": Object {
-        "type": "rkeeper",
-      },
-    },
-  },
-}
-`;
-
-exports[`handleRkeeperOrderCases cases: RESULT 3`] = `
-Object {
-  "_tag": "Left",
-  "left": "RKEEPER ERROR",
-}
-`;
-
-exports[`handleRkeeperOrderCases cases: RKEEPER DEPS CALLS 1`] = `Array []`;
-
-exports[`handleRkeeperOrderCases cases: RKEEPER DEPS CALLS 2`] = `
-Array [
-  Array [
-    Object {
-      "axiosInstance": Object {},
-      "currentTimeISOString": [Function],
-      "uuidGenerator": [Function],
-    },
-  ],
-]
-`;
-
-exports[`handleRkeeperOrderCases cases: RKEEPER DEPS CALLS 3`] = `
-Array [
-  Array [
-    Object {
-      "axiosInstance": Object {},
-      "currentTimeISOString": [Function],
-      "uuidGenerator": [Function],
-    },
-  ],
-]
-`;
-
-exports[`handleRkeeperOrderCases cases: RKEEPER FUNC CALLS 1`] = `Array []`;
-
-exports[`handleRkeeperOrderCases cases: RKEEPER FUNC CALLS 2`] = `
-Array [
-  Array [
-    Object {
-      "id": "AN RKEEPER UNIT",
-      "pos": Object {
-        "type": "rkeeper",
-      },
-    },
-    Object {
-      "unitId": "THE ORDER UNIT ID",
-    },
-  ],
-]
-`;
-
-exports[`handleRkeeperOrderCases cases: RKEEPER FUNC CALLS 3`] = `
-Array [
-  Array [
-    Object {
-      "id": "AN RKEEPER UNIT",
-      "pos": Object {
-        "type": "rkeeper",
-      },
-    },
-    Object {
-      "unitId": "THE ORDER UNIT ID",
-    },
-  ],
-]
-`;
-
 exports[`placeOrderCases cases: Case: "All good", PUT CALLS 1`] = `
 Array [
   Array [
@@ -393,6 +296,7 @@ Array [
             "userId": undefined,
           },
         ],
+        "takeAway": false,
         "unitId": "THE ORDER UNIT ID",
         "updatedAt": "2022-02-01T00:00:00.000Z",
       },
@@ -418,6 +322,7 @@ Object {
           "userId": undefined,
         },
       ],
+      "takeAway": false,
       "unitId": "THE ORDER UNIT ID",
       "updatedAt": "2022-02-01T00:00:00.000Z",
     },
@@ -441,6 +346,7 @@ Array [
             "userId": undefined,
           },
         ],
+        "takeAway": false,
         "unitId": "THE ORDER UNIT ID",
         "updatedAt": "2022-02-01T00:00:00.000Z",
       },
@@ -473,6 +379,7 @@ Array [
             "userId": undefined,
           },
         ],
+        "takeAway": false,
         "unitId": "THE ORDER UNIT ID",
         "updatedAt": "2022-02-01T00:00:00.000Z",
       },
@@ -498,6 +405,7 @@ Object {
           "userId": undefined,
         },
       ],
+      "takeAway": false,
       "unitId": "THE ORDER UNIT ID",
       "updatedAt": "2022-02-01T00:00:00.000Z",
     },
