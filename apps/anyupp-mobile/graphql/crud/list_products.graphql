@@ -50,7 +50,6 @@ query ListProducts(
         soldOut
       }
       configSets {
-        type
         productSetId
         position
         type
