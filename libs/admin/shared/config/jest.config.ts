@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'admin-shared-config',
 
@@ -11,5 +11,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../../coverage/libs/admin/shared/config',
-  preset: '../../../../jest.preset.ts',
+  preset: '../../../../jest.preset.js',
 };

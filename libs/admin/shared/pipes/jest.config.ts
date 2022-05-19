@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'admin-shared-pipes',
 
@@ -23,5 +23,5 @@ module.exports = {
     'node_modules/(?!@angular)',
     'node_modules/(?!.*\\.mjs$)',
   ],
-  preset: '../../../../jest.preset.ts',
+  preset: '../../../../jest.preset.js',
 };

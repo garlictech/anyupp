@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'anyupp-backend-lib',
 
   globals: {
@@ -9,5 +9,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/anyupp-backend-lib',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 };

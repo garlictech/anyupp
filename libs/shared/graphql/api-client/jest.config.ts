@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'shared-graphql-api-client',
 
   globals: {
@@ -9,5 +9,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../../coverage/libs/shared/graphql/api-client',
-  preset: '../../../../jest.preset.ts',
+  preset: '../../../../jest.preset.js',
 };

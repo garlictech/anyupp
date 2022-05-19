@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'admin-shared-data-access-sdk',
 
   globals: {
@@ -12,5 +12,5 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory:
     '../../../../../coverage/libs/admin/shared/data-access/sdk',
-  preset: '../../../../../jest.preset.ts',
+  preset: '../../../../../jest.preset.js',
 };

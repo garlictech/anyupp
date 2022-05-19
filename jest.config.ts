@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   projects: [
     '<rootDir>/apps/admin',
     '<rootDir>/libs/graphql/schema',

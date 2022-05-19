@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'integration-tests-universal',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
 
@@ -11,5 +11,5 @@ module.exports = {
   testEnvironment: 'node',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/integration-tests/universal',
-  preset: '../../../jest.preset.ts',
+  preset: '../../../jest.preset.js',
 };

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'rkeeper-api',
 
   globals: {
@@ -12,5 +12,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/rkeeper-api',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 };
