@@ -119,7 +119,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
       if (state is ServingModeSelectedState) {
         mode = state.servingMode;
       }
-      // print('_buildList.servingMode=$mode');
+      // log.d('_buildList.servingMode=$mode');
       bool hasItems = _hasServingModeProducts(list, mode);
       if (!hasItems) {
         return EmptyWidget(

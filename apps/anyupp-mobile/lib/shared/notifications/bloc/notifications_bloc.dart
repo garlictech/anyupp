@@ -19,7 +19,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     ScheduleOrderRatingNotification event,
     Emitter<NotificationsState> emit,
   ) {
-    print('NotificationsBloc.scheduleNotification()');
+    log.d('NotificationsBloc.scheduleNotification()');
     emit(NotificationSending());
     if (AppContext.context != null) {
       scheduleNotification(

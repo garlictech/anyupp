@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
-    print('LOGINSCREEN.initState()');
+    log.d('LOGINSCREEN.initState()');
 
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen>
         BlocListener<ExceptionBloc, ExceptionState>(
             listener: (BuildContext context, ExceptionState state) {
           if (state is ExceptionShowState) {
-            print('LoginScreen.ExceptionState=$state');
+            log.d('LoginScreen.ExceptionState=$state');
             builderKey = UniqueKey();
             setState(() {});
             // Future.delayed(Duration(seconds: 1)).then((_) =>
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen>
         BlocListener<LoginBloc, LoginState>(
             listener: (BuildContext context, LoginState state) {
           if (state is EmailFormUIChange) {
-            // print('LoginScreen.listener.state=${state.ui}');
+            // log.d('LoginScreen.listener.state=${state.ui}');
             double height = 0.0;
             switch (state.ui) {
               case LoginFormUI.SHOW_PASSWORD_CONFIRM:
@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen>
                 break;
             }
             setState(() {
-              print('LoginScreen._emailFormHeight=$height');
+              log.d('LoginScreen._emailFormHeight=$height');
               _emailFormHeight = height;
             });
           }
@@ -204,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen>
     final statusBarHeight = MediaQuery.of(context).padding.top;
     // final bottomBarHeight = MediaQuery.of(context).padding.bottom;
     final iOS = Theme.of(context).platform == TargetPlatform.iOS;
-    //print('**** isIOS=$iOS');
+    //log.d('**** isIOS=$iOS');
 
     return SafeArea(
       bottom: !iOS,
@@ -353,7 +353,7 @@ class _LoginScreenState extends State<LoginScreen>
   Widget _buildBottomSheetContent(BuildContext context, bool iOS) {
     return MeasuredWidget(
       onChange: (Size size) {
-        // print('Size changed=$size');
+        // log.d('Size changed=$size');
         setState(() {
           _bottomWidgetHeight = size.height;
         });
@@ -593,7 +593,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   void signUserInWithAuthCode(String code) {
-    print('loginScreen.signUserInWithAuthCode().code=$code');
+    log.d('loginScreen.signUserInWithAuthCode().code=$code');
     getIt<LoginBloc>().add(CompleteLoginWithMethod(code));
   }
 }

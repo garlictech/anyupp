@@ -169,7 +169,7 @@ class _NewCardPaymentWidgetState extends State<NewCardPaymentWidget> {
   }
 
   void _startStripePayment() {
-    print('_startStripePayment().cart=${_form.card}');
+    log.d('_startStripePayment().cart=${_form.card}');
     if (_paymentMethod != null) {
       getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
         orderId: widget.orderId,

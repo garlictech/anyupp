@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fa_prev/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -22,7 +23,7 @@ class LocaleBloc extends Bloc<LocaleEvent, LocaleState> {
       if (defaultLocale.startsWith('hu')) {
         locale = Locale('hu', 'HU');
       }
-      print('LocaleBloc.set.defaultLocale()=$locale');
+      log.d('LocaleBloc.set.defaultLocale()=$locale');
       add(SetLocale(locale));
     } else {
       add(SetLocale(Locale(language_code, country_code)));
@@ -31,7 +32,7 @@ class LocaleBloc extends Bloc<LocaleEvent, LocaleState> {
 
   FutureOr<void> _onSetLocale(
       SetLocale event, Emitter<LocaleState> emit) async {
-    print('LocaleBloc._onSetLocale()=${event.locale}');
+    log.d('LocaleBloc._onSetLocale()=${event.locale}');
     SharedPreferences sp = await SharedPreferences.getInstance();
     if (event.locale != null) {
       await sp.setString('LANGUAGE_CODE', event.locale!.languageCode);

@@ -42,10 +42,10 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
       _minTip = widget.minTip;
     }
     getIt.get<RatingBloc>().add(ResetRating());
-    print(
+    log.d(
         'RatingAndTippingScreen().init().orderId=${widget.transaction.orderId}');
-    print('RatingAndTippingScreen().init().tipPolicy=${widget.tipPolicy}');
-    print(
+    log.d('RatingAndTippingScreen().init().tipPolicy=${widget.tipPolicy}');
+    log.d(
         'RatingAndTippingScreen().init().ratingPolicy=${widget.ratingPolicy}');
   }
 
@@ -219,7 +219,7 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
   }
 
   _sendRating() {
-    print(
+    log.d(
         '_sendRating(), rating=$_rating, tipType=$_tipType, tip=$_tip, noTip=$_noTip');
     if (_rating == null && _tipType == null && _tip == null && _noTip != true) {
       // Close screen if nothing to send...
@@ -262,7 +262,7 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
     } else
     // Send only tip
     if (widget.tipPolicy != null) {
-      print('RatingAndTippingModal._tip=$_tip');
+      log.d('RatingAndTippingModal._tip=$_tip');
       if (_tip == null && _noTip != true) {
         Nav.pop();
       } else {

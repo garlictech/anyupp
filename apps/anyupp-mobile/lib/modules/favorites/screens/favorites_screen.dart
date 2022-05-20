@@ -27,7 +27,7 @@ class _FavoritesScreenState extends State<FavoritesScreen>
           if (unitState is UnitSelected) {
             return BlocBuilder<TakeAwayBloc, TakeAwayState>(
               builder: (context, takeawayState) {
-                // print('FavoritesScreen.takeawayState=$takeawayState');
+                // log.d('FavoritesScreen.takeawayState=$takeawayState');
                 ServingMode mode = ServingMode.inPlace;
                 if (takeawayState is ServingModeSelectedState) {
                   mode = takeawayState.servingMode;

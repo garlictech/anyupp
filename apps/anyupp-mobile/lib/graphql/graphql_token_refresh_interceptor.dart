@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/connectivity/bloc/network_event.dart';
 import 'package:fa_prev/shared/connectivity/bloc/network_status_bloc.dart';
@@ -22,7 +22,7 @@ class DioTokenInterceptor extends QueuedInterceptorsWrapper {
     if (options.headers.containsKey('requirestoken')) {
       options.headers.remove('requirestoken');
       String? accessToken = (await _prefs).getString('cognito_accesstoken');
-      print('accessToken: $accessToken');
+      log.d('accessToken: $accessToken');
       options.headers.addAll({'Authorization': 'Bearer $accessToken'});
     }
     handler.next(options);
@@ -32,9 +32,9 @@ class DioTokenInterceptor extends QueuedInterceptorsWrapper {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
     if (response.data['token'] != null) {
-      // print('SAVING TOKENS!');
+      // log.d('SAVING TOKENS!');
       await setTokenPreferences(response, (await _prefs));
-      // print('TOKENS SAVED!');
+      // log.d('TOKENS SAVED!');
     }
     handler.next(response);
   }
@@ -57,18 +57,18 @@ class DioTokenInterceptor extends QueuedInterceptorsWrapper {
 
   _handleRetriableError(
       DioError dioError, ErrorInterceptorHandler handler) async {
-    print('_handleRetriableError()=$dioError');
-    print('_handleRetriableError().response=${dioError.response}');
-    print('_handleRetriableError().response.data=${dioError.response?.data}');
-    print('_handleRetriableError().headers=${dioError.requestOptions.headers}');
+    log.d('_handleRetriableError()=$dioError');
+    log.d('_handleRetriableError().response=${dioError.response}');
+    log.d('_handleRetriableError().response.data=${dioError.response?.data}');
+    log.d('_handleRetriableError().headers=${dioError.requestOptions.headers}');
     bool isRetriable = dioError.response?.data?['error']?['retryable'] ==
             true ||
         dioError.response?.data?['error']?['originalResponse']?['retryable'] ==
             true;
-    print('_handleRetriableError().isRetriable=$isRetriable');
+    log.d('_handleRetriableError().isRetriable=$isRetriable');
     if (isRetriable) {
       int retryCount = dioError.requestOptions.headers['retryCount'] ?? 0;
-      print('_handleRetriableError().retryCount=$retryCount');
+      log.d('_handleRetriableError().retryCount=$retryCount');
       if (retryCount == 0) {
         handler.reject(dioError);
         return;
@@ -79,9 +79,9 @@ class DioTokenInterceptor extends QueuedInterceptorsWrapper {
               ?['retryDelay'] ??
           0;
       int retryDelay = (r * 1000).toInt();
-      print('_handleRetriableError().retryDelay=$retryDelay');
+      log.d('_handleRetriableError().retryDelay=$retryDelay');
       if (retryDelay != 0) {
-        print('_handleRetriableError().waiting $retryDelay ms...');
+        log.d('_handleRetriableError().waiting $retryDelay ms...');
         await Future<void>.delayed(Duration(
           milliseconds: retryDelay,
         ));
@@ -113,7 +113,7 @@ class DioTokenInterceptor extends QueuedInterceptorsWrapper {
     if (refreshToken == null) {
       return handler.reject(dioError);
     }
-    print('==>Refresh token=' + refreshToken);
+    log.d('==>Refresh token=' + refreshToken);
 
     await _provider.getAuthenticatedUserProfile();
 

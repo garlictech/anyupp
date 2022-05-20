@@ -24,7 +24,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
 
   @override
   Future<void> close() async {
-    // print('OrderBloc.close()');
+    // log.d('OrderBloc.close()');
     await _orderController?.close();
     await _repository.stopOrderListSubscription();
     await _repository.stopOrderHistoryListSubscription();
@@ -32,13 +32,13 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
   }
 
   FutureOr<void> _handleError(Exception e, Emitter<BaseOrderState> emit) {
-    print('_handleError()=$e');
+    log.d('_handleError()=$e');
     emit(OrderLoadError('ORDER_BLOC', e.toString(), null));
   }
 
   FutureOr<void> _onOrdersLoaded(
       OrdersLoaded event, Emitter<BaseOrderState> emit) {
-    print(
+    log.d(
         '**** OrderBloc.OrderCounterBloc.add.UpdateActiveOrderCount(${event.totalCount})');
     getIt<OrderCounterBloc>().add(UpdateActiveOrderCount(event.totalCount));
     emit(OrdersLoadedState(
@@ -74,7 +74,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
       StartGetOrderListSubscription event, Emitter<BaseOrderState> emit) async {
     try {
       emit(OrdersLoadingState());
-      // print('OrderBloc.mapEventToState().StartGetOrderListSubscription()');
+      // log.d('OrderBloc.mapEventToState().StartGetOrderListSubscription()');
       if (_orderController != null && !_orderController!.isClosed) {
         await _orderController!.close();
         _orderController = null;
@@ -82,8 +82,8 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
       await Future.delayed(Duration(microseconds: 700));
       _orderController = BehaviorSubject<List<Order>>();
       _orderController!.stream.asBroadcastStream().listen((orderList) {
-        // print('********************* OrderBloc.ORDER.listen=${orderList?.length}');
-        // print('********************* OrderBloc.ORDER.status=${order');
+        // log.d('********************* OrderBloc.ORDER.listen=${orderList?.length}');
+        // log.d('********************* OrderBloc.ORDER.status=${order');
         // int count = orderList != null ? orderList.length : 0;
         add(OrdersLoaded(
           orders: orderList,

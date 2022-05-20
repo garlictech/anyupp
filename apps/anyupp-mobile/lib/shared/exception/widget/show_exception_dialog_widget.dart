@@ -8,7 +8,7 @@ import 'package:flutter/scheduler.dart';
 Future<void> showExceptionDialog(BuildContext context, AppException e,
     [Color buttonColor = const Color(0xFF30BF60)]) async {
   SchedulerBinding.instance?.addPostFrameCallback((_) async {
-    print('showErrorDialog()=$e');
+    log.d('showErrorDialog()=$e');
     await showErrorDialog(
       context,
       transEx(

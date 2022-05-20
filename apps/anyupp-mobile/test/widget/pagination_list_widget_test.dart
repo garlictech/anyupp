@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../test_logger.dart';
 import 'mock/mock_transaction_repository.dart';
 
 void main() {
@@ -22,12 +23,12 @@ void main() {
   Future<PageResponse<Transaction>> loadNextPage(String? nextToken) async {
     var result = await _repository.loadNextPage(nextToken: nextToken);
     _nextToken = result.nextToken;
-    print('loadNextPage.result._nextToken=$_nextToken');
+    tlog.d('loadNextPage.result._nextToken=$_nextToken');
     return result;
   }
 
   Widget renderListItemWidget(Transaction transaction) {
-    print('renderListItemWidget()=${transaction.id}');
+    tlog.d('renderListItemWidget()=${transaction.id}');
     // return TransactionInfoWidget(item);
     return TransactionCard(transaction: transaction);
   }
@@ -37,7 +38,8 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: PaginationListWidget<Transaction>(
         loadNextPage: (token) => loadNextPage(token),
-        renderListItemWidget: (transaction) => renderListItemWidget(transaction),
+        renderListItemWidget: (transaction) =>
+            renderListItemWidget(transaction),
       ),
     ));
 
@@ -46,8 +48,9 @@ void main() {
     DateTime? dateTime = _repository.mockTransactions[0].createdAt != null
         ? parser.parseUTC(_repository.mockTransactions[0].createdAt!)
         : null;
-    String dateString = dateTime == null ? '-' : formatter.format(dateTime.toLocal());
-    print('DateTimeString=$dateString');
+    String dateString =
+        dateTime == null ? '-' : formatter.format(dateTime.toLocal());
+    tlog.d('DateTimeString=$dateString');
 
     //find.
 

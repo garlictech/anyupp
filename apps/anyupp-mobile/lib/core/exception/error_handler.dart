@@ -1,11 +1,12 @@
 import 'package:catcher/catcher.dart';
 import 'package:fa_prev/app-config.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:flutter/material.dart';
 
 void configureCatcherAndRunZonedApp(Widget mainApp) {
   final customParameters = {'stage': 'anyupp'};
 
-  print('configureCatcherAndRunZonedApp().awsConfig=${AppConfig.config}');
+  log.d('configureCatcherAndRunZonedApp().awsConfig=${AppConfig.config}');
   bool useSlack = AppConfig.SlackErrorWebhookUrl != null;
 
   final slackHandler = SlackHandler((AppConfig.SlackErrorWebhookUrl ?? ''),

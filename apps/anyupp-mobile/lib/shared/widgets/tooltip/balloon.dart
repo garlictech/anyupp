@@ -60,7 +60,7 @@ class __BallonState extends State<_Ballon> {
       if (renderBox == null) return null;
       final Size size = renderBox.size;
       final position = renderBox.localToGlobal(Offset.zero);
-      // print("position : ${position.dx},${position.dy}, Size: ${renderBox.size}");
+      // log.d("position : ${position.dx},${position.dy}, Size: ${renderBox.size}");
 
       if (_lastSizeNotified == null ||
           _lastSizeNotified!.size != size ||
@@ -181,7 +181,7 @@ class _BalloonShape extends ShapeBorder {
     } else if (tooltipDirection == TooltipDirection.left) {
       targetCenter = rect.centerRight.translate(arrowLength, 0);
     }
-    // print(targetCenter);
+    // log.d(targetCenter);
 
     switch (tooltipDirection) {
       //

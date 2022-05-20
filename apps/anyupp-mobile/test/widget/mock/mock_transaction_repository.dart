@@ -3,6 +3,7 @@ import 'package:fa_prev/modules/transactions/transactions.dart';
 import 'package:fa_prev/shared/pagination/pagination.dart';
 
 import '../../mock/mock_data_faker.dart';
+import '../../test_logger.dart';
 
 class MockTransactionRepository implements ITransactionProvider {
   final int pageSize = 10;
@@ -15,7 +16,7 @@ class MockTransactionRepository implements ITransactionProvider {
 
   Future<PageResponse<Transaction>> loadNextPage(
       {String? nextToken, int pageSize = 10}) async {
-    print(
+    tlog.d(
         'MockTransactionRepository.loadNextPage().token=$nextToken, pageSize=$pageSize');
     if (nextToken == null) {
       return PageResponse(
@@ -49,7 +50,7 @@ class MockTransactionRepository implements ITransactionProvider {
   @override
   Future<PageResponse<Transaction>?> getTransactions(
       {String? nextToken}) async {
-    print(
+    tlog.d(
         'MockTransactionRepository.loadNextPage().token=$nextToken, pageSize=$pageSize');
     if (nextToken == null) {
       return PageResponse(

@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models/Transaction.dart';
@@ -48,7 +49,7 @@ class AwsTransactionsProvider implements ITransactionProvider {
         nextToken: token,
       );
     } on Exception catch (e) {
-      print('AwsTransactionsProvider.listTransactions.Exception: $e');
+      log.e('AwsTransactionsProvider.listTransactions.Exception: $e');
       rethrow;
     }
   }

@@ -1,4 +1,5 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/main/main.dart';
@@ -97,114 +98,118 @@ class _MainNavigationState extends State<MainNavigation>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      bottom: false,
-      child: NetworkConnectionWrapperWidget(
-        child: Scaffold(
-          // Depending on the boolean showAppBar, you can control the appearance of the appBar
-          appBar: _pageOptions![_selectedIndex].showAppBar
-              ? AppBar(
-                  title: Text(_pageOptions![_selectedIndex].appBarText,
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary)),
-                  centerTitle: false,
-                  leading: Container(),
-                )
-              : null,
+    return LogConsoleOnShake(
+      debugOnly: true,
+      enabled: AppConfig.Stage != 'prod',
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        child: NetworkConnectionWrapperWidget(
+          child: Scaffold(
+            // Depending on the boolean showAppBar, you can control the appearance of the appBar
+            appBar: _pageOptions![_selectedIndex].showAppBar
+                ? AppBar(
+                    title: Text(_pageOptions![_selectedIndex].appBarText,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary)),
+                    centerTitle: false,
+                    leading: Container(),
+                  )
+                : null,
 
-          // Opening the selected page
-          // body: pages[_selectedIndex],
-          body: MultiBlocListener(
-            listeners: [
-              BlocListener<MainNavigationBloc, MainNavigationState>(
-                listener: (BuildContext context, MainNavigationState state) {
-                  if (state is MainNavaigationNeed) {
-                    print(
-                        '******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
-                    _navigateToPage(state.pageIndex);
-                  }
-                },
-              ),
-              BlocListener<ExceptionBloc, ExceptionState>(
-                listener: (BuildContext context, ExceptionState state) {
-                  if (state is ExceptionShowState) {
-                    print('Main.ExceptionState=$state');
-                    // Future.delayed(Duration(seconds: 1)).then((_) =>
-                    //     getIt<ExceptionBloc>().add(ShowException(state.exception)));
-                    showExceptionDialog(
-                      context,
-                      state.exception,
-                      theme.primary,
-                    );
-                  }
-                },
-              ),
-            ],
-            child: DoubleBackToCloseApp(
-              snackBar: SnackBar(
-                elevation: 8,
-                duration: Duration(seconds: 1),
-                content: Text(
-                  trans('common.exit'),
-                  textAlign: TextAlign.center,
-                  style: Fonts.satoshi(
-                    fontSize: 16.0,
-                    color: theme.secondary0,
-                  ),
-                  // style: TextStyle(
-                  //   color: Theme.of(context).colorScheme.secondary,
-                  // ),
+            // Opening the selected page
+            // body: pages[_selectedIndex],
+            body: MultiBlocListener(
+              listeners: [
+                BlocListener<MainNavigationBloc, MainNavigationState>(
+                  listener: (BuildContext context, MainNavigationState state) {
+                    if (state is MainNavaigationNeed) {
+                      log.d(
+                          '******** MainNavigationScreen.MainNavigationBloc.state=${state.pageIndex}');
+                      _navigateToPage(state.pageIndex);
+                    }
+                  },
                 ),
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: Color(0xAA880000),
-              ),
-              child: Stack(children: [
-                IndexedStack(
-                  index: _selectedIndex,
-                  children: _pages,
+                BlocListener<ExceptionBloc, ExceptionState>(
+                  listener: (BuildContext context, ExceptionState state) {
+                    if (state is ExceptionShowState) {
+                      log.d('Main.ExceptionState=$state');
+                      // Future.delayed(Duration(seconds: 1)).then((_) =>
+                      //     getIt<ExceptionBloc>().add(ShowException(state.exception)));
+                      showExceptionDialog(
+                        context,
+                        state.exception,
+                        theme.primary,
+                      );
+                    }
+                  },
                 ),
-                Positioned(
-                  bottom: 12,
-                  left: 0,
-                  right: 0,
-                  child: CartButtonWidget(
-                    controller: _animationController,
-                  ),
-                ),
-              ]),
-              // child: _pages[_selectedIndex],
-            ),
-          ),
-          bottomNavigationBar: Material(
-            elevation: 8.0,
-            child: Container(
-              child: BottomAppBar(
-                // elevation: 0.0,
-                // shape: AutomaticNotchedShape(
-                //   StadiumBorder(),
-                //   // RoundedRectangleBorder(
-                //   //   borderRadius: BorderRadius.all(Radius.circular(25)),
-                //   // ),
-                // ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    _createBottomBarIconWithText(
-                        0, Icons.fastfood, 'main.bottomTitles.menu'),
-                    // _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
-                    // SizedBox(
-                    //   width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
+              ],
+              child: DoubleBackToCloseApp(
+                snackBar: SnackBar(
+                  elevation: 8,
+                  duration: Duration(seconds: 1),
+                  content: Text(
+                    trans('common.exit'),
+                    textAlign: TextAlign.center,
+                    style: Fonts.satoshi(
+                      fontSize: 16.0,
+                      color: theme.secondary0,
+                    ),
+                    // style: TextStyle(
+                    //   color: Theme.of(context).colorScheme.secondary,
                     // ),
-                    _createOrdersBottomBarIconWithTextAndBadge(),
-                    _createBottomBarIconWithText(
-                        3, Icons.account_circle, 'main.bottomTitles.profile'),
-                  ],
+                  ),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Color(0xAA880000),
                 ),
-                // shape: CircularNotchedRectangle(),
-                color: theme.secondary0,
-                // elevation: 18.0,
+                child: Stack(children: [
+                  IndexedStack(
+                    index: _selectedIndex,
+                    children: _pages,
+                  ),
+                  Positioned(
+                    bottom: 12,
+                    left: 0,
+                    right: 0,
+                    child: CartButtonWidget(
+                      controller: _animationController,
+                    ),
+                  ),
+                ]),
+                // child: _pages[_selectedIndex],
+              ),
+            ),
+            bottomNavigationBar: Material(
+              elevation: 8.0,
+              child: Container(
+                child: BottomAppBar(
+                  // elevation: 0.0,
+                  // shape: AutomaticNotchedShape(
+                  //   StadiumBorder(),
+                  //   // RoundedRectangleBorder(
+                  //   //   borderRadius: BorderRadius.all(Radius.circular(25)),
+                  //   // ),
+                  // ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      _createBottomBarIconWithText(
+                          0, Icons.fastfood, 'main.bottomTitles.menu'),
+                      // _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
+                      // SizedBox(
+                      //   width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
+                      // ),
+                      _createOrdersBottomBarIconWithTextAndBadge(),
+                      _createBottomBarIconWithText(
+                          3, Icons.account_circle, 'main.bottomTitles.profile'),
+                    ],
+                  ),
+                  // shape: CircularNotchedRectangle(),
+                  color: theme.secondary0,
+                  // elevation: 18.0,
+                ),
               ),
             ),
           ),
@@ -244,7 +249,7 @@ class _MainNavigationState extends State<MainNavigation>
   }
 
   void _navigateToPage(int index) {
-    // print('MainNavigationScreen._navigateToPage.index=$index, _selectedIndex=$_selectedIndex');
+    // log.d('MainNavigationScreen._navigateToPage.index=$index, _selectedIndex=$_selectedIndex');
     if (index == 0) {
       _animationController.forward();
     } else {

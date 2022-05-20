@@ -399,7 +399,7 @@ class _SelectUnitByLocationScreenState
     try {
       LatLng? userLocation =
           await getIt<LocationRepository>().getUserCurrentLocation();
-      print('_determineUserPositionAndLoadUnits().location=$userLocation');
+      log.d('_determineUserPositionAndLoadUnits().location=$userLocation');
       if (userLocation != null) {
         await _animateMapToLocation(userLocation);
         _loadNearUnits(userLocation);

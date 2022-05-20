@@ -1,5 +1,4 @@
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
@@ -37,7 +36,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
 
   @override
   void initState() {
-    // print(
+    // log.d(
     //     '******* ProductConfiguratorWidget.initState().widget=${widget.product}');
     _productVariant = widget.product.variants.firstWhere(
         (variant) => variant.soldOut != true,
@@ -151,14 +150,14 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
                   product: widget.product,
                   unit: widget.unit,
                   onExtraSelected: (setId, componentId, selected) {
-                    print(
+                    log.d(
                         'onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
                     setState(() {
                       if (_selectedExtras[setId] == null) {
                         _selectedExtras[setId] = {};
                       }
                       _selectedExtras[setId]![componentId] = selected;
-                      print('onExtraSelected._selectedExtras=$_selectedExtras');
+                      log.d('onExtraSelected._selectedExtras=$_selectedExtras');
                       _calculateTotalPrice();
                     });
                   },
@@ -246,9 +245,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   void _calculateTotalPrice() {
-    // print(
+    // log.d(
     //     '_calculateTotalPrice.modifierPos=$_selectedModifiers  ,extras=${_selectedExtras}');
-    // print('_calculateTotalPrice.servingMode=${widget.servingMode}');
+    // log.d('_calculateTotalPrice.servingMode=${widget.servingMode}');
 
     Set<Allergen> allergeens = {};
     if (widget.product.allergens != null &&
@@ -284,7 +283,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
         }
       });
     });
-    // print('_calculateTotalPrice.allergeens=$allergeens');
+    // log.d('_calculateTotalPrice.allergeens=$allergeens');
 
     _allergeens = allergeens;
     _modifierTotalPrice = calculateTotalPrice(
@@ -301,7 +300,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     List<Widget> variantItems = [];
     // var size = 1;
     for (int i = 0; i < variants.length; i += 2) {
-      // print('_buildVariants=$i');
+      // log.d('_buildVariants=$i');
       variantItems.add(
         _buildVariantsGrid(
           variants[i],

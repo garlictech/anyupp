@@ -55,7 +55,7 @@ abstract class _BaseGraphQLWrapper {
         context: response.context,
       );
     } catch (e) {
-      print('GraphQL.execute.error=$e');
+      log.e('GraphQL.execute.error=$e');
       rethrow;
     } finally {
       client.dispose();

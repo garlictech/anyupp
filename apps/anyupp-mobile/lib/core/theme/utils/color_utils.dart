@@ -43,7 +43,7 @@ final Map<int, Color> _color = {
 };
 
 ThemeData getThemeData(BuildContext context, ThemeChainData theme) {
-  // print('***** getThemeData.light=${theme.secondary0.isLight}');
+  // log.d('***** getThemeData.light=${theme.secondary0.isLight}');
   return ThemeData(
     fontFamily: 'Satoshi',
     visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -54,7 +54,7 @@ ThemeData getThemeData(BuildContext context, ThemeChainData theme) {
 }
 
 ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
-  print('***** unitThemeToThemeChainData().unit=${unit.style.colors}');
+  log.d('***** unitThemeToThemeChainData().unit=${unit.style.colors}');
   try {
     String primaryString =
         unit.style.colors.primary ?? unit.style.colors.indicator ?? '#30BF60';
@@ -84,13 +84,13 @@ ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
     var secondary12 = _col(secondary, 7);
     var secondary0 = _col(secondary, 0);
 
-    // print('\tfinal primary = $primary;');
-    // print('\tfinal secondary=$secondary;');
-    // print('\tfinal secondary64=$secondary64;');
-    // print('\tfinal secondary40=$secondary40;');
-    // print('\tfinal secondary16=$secondary16;');
-    // print('\tfinal secondary12=$secondary12;');
-    // print('\tfinal secondary0=$secondary0;');
+    // log.d('\tfinal primary = $primary;');
+    // log.d('\tfinal secondary=$secondary;');
+    // log.d('\tfinal secondary64=$secondary64;');
+    // log.d('\tfinal secondary40=$secondary40;');
+    // log.d('\tfinal secondary16=$secondary16;');
+    // log.d('\tfinal secondary12=$secondary12;');
+    // log.d('\tfinal secondary0=$secondary0;');
 
     return ThemeChainData(
       light: secondary0.isLight,
@@ -122,7 +122,7 @@ Color _col(Color color, int percent) {
 }
 
 void setToolbarThemeV1(ThemeChainData theme) {
-  // print('setToolbarThemeV1()');
+  // log.d('setToolbarThemeV1()');
   setToolbarColor(
     statusBarColor: theme.secondary0,
     systemNavigationBarColor: theme.secondary0,
@@ -131,7 +131,7 @@ void setToolbarThemeV1(ThemeChainData theme) {
 }
 
 void setToolbarThemeV2(ThemeChainData theme) {
-  // print('setToolbarThemeV2()');
+  // log.d('setToolbarThemeV2()');
   setToolbarColor(
     statusBarColor: theme.secondary12,
     systemNavigationBarColor: theme.secondary12,

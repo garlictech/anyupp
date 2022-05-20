@@ -42,7 +42,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       listeners: [
         BlocListener<OrderRefreshBloc, OrderRefreshState>(
           listener: (context, state) {
-            // print('******* OrderDetailsScreen().listener.state=$state');
+            // log.d('******* OrderDetailsScreen().listener.state=$state');
             if (state is OrderRefreshed) {
               setState(() {
                 _order = state.order;
@@ -52,7 +52,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         ),
         BlocListener<RatingBloc, RatingState>(
           listener: (context, state) {
-            // print('******* OrderDetailsScreen().listener.state=$state');
+            // log.d('******* OrderDetailsScreen().listener.state=$state');
             if (state is RatingSuccess) {
               GeoUnit unit = currentUnit!;
               getIt<OrderBloc>()
@@ -496,7 +496,7 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
       //   date = dateTimeFormatter.format(fromGraphQLAWSDateTimeToDartDateTime(order.transaction!.createdAt!));
       // }
     }
-    // print('orderdetauils.order.transaction?.createdAt=${order.transaction?.createdAt}');
+    // log.d('orderdetauils.order.transaction?.createdAt=${order.transaction?.createdAt}');
     if (order.transaction?.createdAt != null) {
       date = dateTimeFormatter.format(
           fromGraphQLAWSDateTimeToDartDateTime(order.transaction!.createdAt!));
@@ -620,16 +620,16 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
     bool isServiceFeeIncluded =
         order.serviceFeePolicy?.type == ServiceFeeType.included;
 
-    // print(
+    // log.d(
     //     'OrderDetailsInfo..sumPriceShown.priceSum=${order.sumPriceShown.priceSum}');
-    // print('OrderDetailsInfo.totalPrice=${order.totalPrice}');
-    // print('OrderDetailsInfo.serviceFeePrice=${order.serviceFeePrice}');
-    // print('OrderDetailsInfo.servingMode=${order.servingMode}');
-    // print(
+    // log.d('OrderDetailsInfo.totalPrice=${order.totalPrice}');
+    // log.d('OrderDetailsInfo.serviceFeePrice=${order.serviceFeePrice}');
+    // log.d('OrderDetailsInfo.servingMode=${order.servingMode}');
+    // log.d(
     //     'OrderDetailsInfo.packagingSum.totalPrice=${order.packagingSum?.totalPrice}');
-    // print(
+    // log.d(
     //     'OrderDetailsInfo.packagingSum.netPrice=${order.packagingSum?.netPrice}');
-    // print(
+    // log.d(
     //     'OrderDetailsInfo.packagingSum.taxPercentage=${order.packagingSum?.taxPercentage}');
 
     return Container(
@@ -930,7 +930,7 @@ class OrderStatusTimelineWidget extends StatelessWidget {
 
   List<OrderStatusTimelineData> _calculateTimelineData(BuildContext context) {
     List<OrderStatusTimelineData> results = [];
-    // print('_calculateTimelineData.state=$orderStatus');
+    // log.d('_calculateTimelineData.state=$orderStatus');
     // orderStatus = OrderStatus.rejected;
 
     // Handle FAILED

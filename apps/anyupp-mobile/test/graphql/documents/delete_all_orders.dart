@@ -1,10 +1,11 @@
 import 'package:fa_prev/graphql/graphql.dart';
 
+import '../../test_logger.dart';
 import '../generated/crud-api.dart';
 import 'list_all_orders.dart';
 
 Future<List<bool>> deleteAllOrders(String userId, String unitId) async {
-  print('deleteAllOrders().userId=$userId, unitId=$unitId');
+  tlog.d('deleteAllOrders().userId=$userId, unitId=$unitId');
   List<String> orderIdList = await listAllDummyOrders(userId, unitId);
   return await _deleteDummyOrders(orderIdList);
 }
@@ -14,7 +15,7 @@ Future<List<bool>> _deleteDummyOrders(List<String> orderIdList) async {
   for (int i = 0; i < orderIdList.length; i++) {
     bool deleted = await _deleteOrder(orderIdList[i]);
     deleteResults.add(deleted);
-    print('Order deleted[$i]=${orderIdList[i]}');
+    tlog.d('Order deleted[$i]=${orderIdList[i]}');
   }
   return deleteResults;
 }
@@ -29,7 +30,7 @@ Future<bool> _deleteOrder(String id) async {
 
     return !result.hasErrors;
   } on Exception catch (e) {
-    print('AwsOrderProvider._deleteCartFromBackend.Exception: $e');
+    tlog.d('AwsOrderProvider._deleteCartFromBackend.Exception: $e');
     rethrow;
   }
 }

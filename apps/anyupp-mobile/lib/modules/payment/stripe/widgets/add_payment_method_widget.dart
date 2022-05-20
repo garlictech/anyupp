@@ -40,9 +40,9 @@ class _StripeAddPaymentMethodWidgetState
                 if (_formKey.currentState != null &&
                     _formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  // print('saving card=$_cardData');
-                  // print('saving card=${_cardData.cvc}');
-                  // print('saving card=${_cardData.number}');
+                  // log.d('saving card=$_cardData');
+                  // log.d('saving card=${_cardData.cvc}');
+                  // log.d('saving card=${_cardData.number}');
                   getIt<StripePaymentBloc>()
                       .add(CreateStripeCardEvent(_cardData, ''));
                   // Nav.pop();

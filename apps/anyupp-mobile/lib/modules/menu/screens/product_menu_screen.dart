@@ -51,7 +51,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     GeoUnit? unit = currentUnit;
     if (unit != null) {
       bool? showed = preferences.getBool('TOOLTIP_${unit.id}');
-      // print('_checkNeedToShowTooltip.showed=$showed');
+      // log.d('_checkNeedToShowTooltip.showed=$showed');
       if (showed == null || showed == false) {
         setState(() {
           _showTooltip = true;
@@ -72,7 +72,7 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
     } else {
       setState(() {
         _showTooltip = false;
-        // print('_checkNeedToShowTooltip._showTooltip=$_showTooltip');
+        // log.d('_checkNeedToShowTooltip._showTooltip=$_showTooltip');
       });
     }
   }
@@ -86,9 +86,9 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
           if (unitState is UnitSelected) {
             return BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(
                 builder: (context, state) {
-              // print('Menu.ProductCategoriesBloc.state=$state');
+              // log.d('Menu.ProductCategoriesBloc.state=$state');
               if (state is ProductCategoriesLoaded) {
-                // print('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
+                // log.d('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
                 if (state.productCategories != null &&
                     state.productCategories!.isNotEmpty) {
                   return _buildTabBar(
@@ -468,9 +468,9 @@ class _MenuState extends State<Menu> with TickerProviderStateMixin {
   }
 
   void _selectServingMode(BuildContext context, ServingMode current) async {
-    print('_selectServingMode.current=$current');
+    log.d('_selectServingMode.current=$current');
     Cart? cart = getIt.get<CartRepository>().cart;
-    print('_selectServingMode.cart=$cart');
+    log.d('_selectServingMode.cart=$cart');
 
     setState(() {
       _showTooltip = false;

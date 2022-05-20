@@ -10,7 +10,7 @@ bool shouldDisplayRating(Order order) {
   }
 
   // if (order.paymentMode.method != PaymentMethod.inapp) {
-  //   print('shouldDisplayRating().false2');
+  //   log.d('shouldDisplayRating().false2');
   //   return false;
   // }
 

@@ -20,7 +20,7 @@ class UnlinkAccountsWidget extends StatelessWidget {
           builder: (BuildContext context,
               AsyncSnapshot<List<LoginMethod>> methodSnapshot) {
             if (methodSnapshot.hasData) {
-              print('**** User Login methods=${methodSnapshot.data}');
+              log.d('**** User Login methods=${methodSnapshot.data}');
 
               return Center(
                 child: Wrap(

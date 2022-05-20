@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,11 +14,11 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
   NetworkStatusBloc()
       : super(NetworkState(ConnectivityResult.wifi, true, null, null)) {
     _initConnectionSubscription();
-    print(
+    log.d(
         'NetworkStatusBloc.constructor()._connectivitySubscription=$_connectivitySubscription');
 
     Connectivity().checkConnectivity().then((result) {
-      print('NetworkStatusBloc.checkConnectivity()=$result');
+      log.d('NetworkStatusBloc.checkConnectivity()=$result');
       checkDataConnection().then((value) =>
           add(NetworkConnectionChangedEvent(result, value, false, false)));
     });
@@ -43,7 +44,7 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
   void _initConnectionSubscription() {
     _connectivitySubscription = Connectivity().onConnectivityChanged.listen(
       (ConnectivityResult result) async {
-        print('NetworkStatusBloc.result=$result');
+        log.d('NetworkStatusBloc.result=$result');
         bool show = false;
         bool hide = false;
 
@@ -82,7 +83,7 @@ class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {
 
   @override
   Future<void> close() async {
-    print(
+    log.d(
         'NetworkStatusBloc.close()._connectivitySubscription=$_connectivitySubscription');
     await _connectivitySubscription.cancel();
     return super.close();

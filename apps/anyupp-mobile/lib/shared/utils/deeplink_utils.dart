@@ -21,7 +21,7 @@ final regTransactionId = RegExp(r'^[a-zA-Z0-9_-]{21}$'); // NanoId uuid
 int relaunchCount = 1;
 
 Future<bool> handleUrl(Uri uri) async {
-  print('***** handleUrl()=$uri');
+  log.d('***** handleUrl()=$uri');
   switch (getDeeplinkType(uri)) {
     case DeeplinkType.QR:
       return handleUrlQR(uri);
@@ -37,12 +37,12 @@ Future<bool> handleUrl(Uri uri) async {
 
 Future<bool> _handleCognitoCode(Uri uri) async {
   var code = uri.queryParameters['code'];
-  print('handling cognito code: $code');
+  log.d('handling cognito code: $code');
   if (code == null) {
     String? error = uri.queryParameters['error_description'];
     if (error != null) {
       if (browser.isOpened()) {
-        print('closing browser!');
+        log.d('closing browser!');
         await browser.close();
       }
       getIt<LoginBloc>().add(ResetLogin());
@@ -56,7 +56,7 @@ Future<bool> _handleCognitoCode(Uri uri) async {
   }
 
   if (browser.isOpened()) {
-    print('closing browser!');
+    log.d('closing browser!');
     await browser.close();
   }
   getIt<LoginBloc>().add(CompleteLoginWithMethod(code));
@@ -65,7 +65,7 @@ Future<bool> _handleCognitoCode(Uri uri) async {
 }
 
 bool isValidUrl(Uri? uri) {
-  // print('***** isValidUrl().uri=$uri');
+  // log.d('***** isValidUrl().uri=$uri');
   if (uri == null) {
     return false;
   }
@@ -107,20 +107,20 @@ Future<bool> handleUrlQR(Uri uri) async {
   if (user == null) {
     auth.nextPageAfterLogin = page;
     await Future.delayed(Duration(seconds: 1));
-    print('***** handleUrlQR().login()');
+    log.d('***** handleUrlQR().login()');
 
     Nav.reset(OnBoarding());
 
     return true;
   } else {
-    print('***** handleUrlQR().qrfound().page=$page');
+    log.d('***** handleUrlQR().qrfound().page=$page');
     int retryCount = 5;
     while (retryCount > 0 && await auth.getAuthenticatedUserProfile() == null) {
-      print('***** handleUrlQR().qrfound().wait for user=$retryCount');
+      log.d('***** handleUrlQR().qrfound().wait for user=$retryCount');
       await Future.delayed(Duration(seconds: 1));
       retryCount--;
     }
-    print('***** handleUrlQR().qrfound().user authenticated.');
+    log.d('***** handleUrlQR().qrfound().user authenticated.');
 
     Nav.reset(page);
     return true;
@@ -145,7 +145,7 @@ Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
   if (uri.pathSegments.length == 3) {
     seat = uri.pathSegments[2];
   }
-  print(
+  log.d(
       '***** getNavigationPageByUrlFromQRDeeplink().unitId=$unitId, table=$table, seat=$seat');
   return SelectUnitChooseMethodScreen(
     initialUri: uri,

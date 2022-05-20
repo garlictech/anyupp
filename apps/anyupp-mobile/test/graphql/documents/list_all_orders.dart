@@ -1,6 +1,8 @@
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 
+import '../../test_logger.dart';
+
 Future<List<String>> listAllDummyOrders(String userId, String unitId) async {
   List<String> results = await _listAllDummyOrdersNotArchived(userId, unitId);
   results.addAll(await _listAllDummyOrdersArchived(userId, unitId));
@@ -16,16 +18,16 @@ Future<List<String>> _listAllDummyOrdersNotArchived(
       ),
     );
 
-    // print('***** listAllDummyOrders.result.data=${result.data}');
-    // print('***** listAllDummyOrders.result.errors=${result.errors}');
+    // tlog.d('***** listAllDummyOrders.result.data=${result.data}');
+    // tlog.d('***** listAllDummyOrders.result.errors=${result.errors}');
     if (result.data?.searchOrders?.items == null) {
-      print('***** listAllDummyOrders.results=0');
+      tlog.d('***** listAllDummyOrders.results=0');
       return [];
     }
 
     var items = result.data!.searchOrders!.items;
     if (items.isEmpty) {
-      print('***** listAllDummyOrders.results=0');
+      tlog.d('***** listAllDummyOrders.results=0');
       return [];
     }
 
@@ -35,10 +37,10 @@ Future<List<String>> _listAllDummyOrdersNotArchived(
       results.add(item);
     }
 
-    print('***** listAllDummyOrders.results=${results.length}');
+    tlog.d('***** listAllDummyOrders.results=${results.length}');
     return results;
   } on Exception catch (e) {
-    print('***** listAllDummyOrders.Exception: $e');
+    tlog.d('***** listAllDummyOrders.Exception: $e');
     rethrow;
   }
 }
@@ -52,16 +54,16 @@ Future<List<String>> _listAllDummyOrdersArchived(
       ),
     );
 
-    // print('***** listAllDummyOrders.result.data=${result.data}');
-    // print('***** listAllDummyOrders.result.errors=${result.errors}');
+    // tlog.d('***** listAllDummyOrders.result.data=${result.data}');
+    // tlog.d('***** listAllDummyOrders.result.errors=${result.errors}');
     if (result.data?.searchOrders?.items == null) {
-      print('***** listAllDummyOrders.results=0');
+      tlog.d('***** listAllDummyOrders.results=0');
       return [];
     }
 
     var items = result.data!.searchOrders!.items;
     if (items.isEmpty) {
-      print('***** listAllDummyOrders.results=0');
+      tlog.d('***** listAllDummyOrders.results=0');
       return [];
     }
 
@@ -71,10 +73,10 @@ Future<List<String>> _listAllDummyOrdersArchived(
       results.add(item);
     }
 
-    print('***** listAllDummyOrders.results=${results.length}');
+    tlog.d('***** listAllDummyOrders.results=${results.length}');
     return results;
   } on Exception catch (e) {
-    print('***** listAllDummyOrders.Exception: $e');
+    tlog.d('***** listAllDummyOrders.Exception: $e');
     rethrow;
   }
 }

@@ -130,7 +130,7 @@ class _StripePaymentMethodsScreenState
           okButtonText: transEx(context, 'payment.delete.ok'),
           onOkPressed: () async {
             Nav.pop();
-            print('Deleting card=${method.id}');
+            log.d('Deleting card=${method.id}');
             if (method.id != null) {
               getIt<StripePaymentBloc>().add(DeleteStripeCardEvent(method.id!));
             }

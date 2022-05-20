@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 
 Map<String, dynamic> createStartPaymentRequestVariables({
@@ -15,6 +17,6 @@ Map<String, dynamic> createStartPaymentRequestVariables({
     'savePaymentMethod': saveCard,
     'invoiceAddress': invoiceAddress?.toJson(),
   };
-  print('createStartPaymentRequestVariables().map=${jsonEncode(map)}');
+  log.d('createStartPaymentRequestVariables().map=${jsonEncode(map)}');
   return map;
 }

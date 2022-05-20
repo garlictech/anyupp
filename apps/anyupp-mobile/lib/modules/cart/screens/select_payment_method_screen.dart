@@ -56,8 +56,8 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
     }
 
     _placeSelected = widget.cart.place?.isNotEmpty ?? false;
-    print('SelectPaymentMethodScreen._placeSelected=$_placeSelected');
-    print('SelectPaymentMethodScreen._orderPolicy=$_orderPolicy');
+    log.d('SelectPaymentMethodScreen._placeSelected=$_placeSelected');
+    log.d('SelectPaymentMethodScreen._orderPolicy=$_orderPolicy');
     _checkInitialStatus();
   }
 
@@ -90,7 +90,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
             );
           },
         ).then((value) async {
-          print('SelectPaymentMethodScreen.QRCodeScannerScreen.success=$value');
+          log.d('SelectPaymentMethodScreen.QRCodeScannerScreen.success=$value');
           if (value != true) {
             Nav.pop();
             return;
@@ -243,7 +243,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
         listeners: [
           BlocListener<CartBloc, BaseCartState>(
             listener: (BuildContext context, BaseCartState state) {
-              print('SelectPaymentMethodScreen.CartBloc.state=$state');
+              log.d('SelectPaymentMethodScreen.CartBloc.state=$state');
               if (state is EmptyCartState) {
                 if (_orderPolicy != OrderPolicy.full) {
                   setState(() {
@@ -265,7 +265,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
           ),
           BlocListener<StripePaymentBloc, StripePaymentState>(
             listener: (BuildContext context, StripePaymentState state) {
-              print('SelectPaymentMethodScreen.StripePaymentBloc.state=$state');
+              log.d('SelectPaymentMethodScreen.StripePaymentBloc.state=$state');
               if (state is StripeOperationSuccess) {
                 setState(() {
                   _loading = false;
@@ -289,7 +289,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
   }
 
   Widget _buildPaymentMethodList(BuildContext context, GeoUnit unit) {
-    // print('_buildPaymentMethodList().unit.paymentModes=${unit.id}: ${unit.paymentModes}');
+    // log.d('_buildPaymentMethodList().unit.paymentModes=${unit.id}: ${unit.paymentModes}');
 
     if (_loading) {
       return CenterLoadingWidget();
@@ -374,7 +374,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                   BlocListener<UserDetailsBloc, UserDetailsState>(
                     listener: (BuildContext context, UserDetailsState state) {
                       if (state is UserDetailsLoaded) {
-                        print(
+                        log.d(
                             'USER ADDRESS LOADED=${state.userDetails.invoiceAddress}');
                         setState(() {
                           _address = state.userDetails.invoiceAddress;
@@ -396,11 +396,11 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                       address: _address,
                       onAddressChanged: (address) => setState(() {
                         _address = address;
-                        print('onAddressChanged()=$_address');
+                        log.d('onAddressChanged()=$_address');
                       }),
                       onWantInvoiceChanged: (wantInvoice) => setState(() {
                         _wantsInvoce = wantInvoice;
-                        print('onWantInvoiceChanged()=$_wantsInvoce');
+                        log.d('onWantInvoiceChanged()=$_wantsInvoce');
                       }),
                     ),
                   ),

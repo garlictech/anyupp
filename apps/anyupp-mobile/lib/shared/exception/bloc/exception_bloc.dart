@@ -11,7 +11,7 @@ class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {
 
   FutureOr<void> _onShowException(
       ShowException event, Emitter<ExceptionState> emit) async {
-    // print('ExceptionBloc.ShowException.exception=${event.exception}');
+    // log.d('ExceptionBloc.ShowException.exception=${event.exception}');
 
     emit(ExceptionShowState(event.exception));
   }

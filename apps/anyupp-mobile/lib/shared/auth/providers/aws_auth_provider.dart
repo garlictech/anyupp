@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -15,7 +16,7 @@ class AwsAuthProvider implements IAuthProvider {
   final CognitoService _service;
 
   AwsAuthProvider(this._service) {
-    // print('AwsAuthProvider().constructor()');
+    // log.d('AwsAuthProvider().constructor()');
     getAuthenticatedUserProfile();
   }
 
@@ -23,7 +24,7 @@ class AwsAuthProvider implements IAuthProvider {
   Future<User?> getAuthenticatedUserProfile() async {
     try {
       bool isLooggedIn = await _service.refreshUserToken();
-      // print('getAuthenticatedUserProfile().isLoggedIn=$isLooggedIn, user=$_user');
+      // log.d('getAuthenticatedUserProfile().isLoggedIn=$isLooggedIn, user=$_user');
       if (isLooggedIn) {
         if (_user == null) {
           CognitoUser? user = await _service.currentUser;
@@ -39,12 +40,12 @@ class AwsAuthProvider implements IAuthProvider {
       _userController.add(_user);
       return _user;
     } on Exception catch (e) {
-      print('getAuthenticatedUserProfile().exception=$e');
+      log.e('getAuthenticatedUserProfile().exception=$e');
       _user = null;
       _userController.add(null);
       return null;
     } on Error catch (e) {
-      print('getAuthenticatedUserProfile().error=$e');
+      log.e('getAuthenticatedUserProfile().error=$e');
       _user = null;
       _userController.add(null);
       return null;
@@ -54,18 +55,18 @@ class AwsAuthProvider implements IAuthProvider {
   @override
   Future<User?> loginWithCognitoSession(
       CognitoUserSession session, String username) async {
-    // print('loginWithCognitoSession().session=$session, username=$username');
+    // log.d('loginWithCognitoSession().session=$session, username=$username');
     try {
       CognitoUser? user =
           await _service.createCognitoUserFromSession(session, username);
       await user.cacheTokens();
-      // print('loginWithCognitoSession().cognitoUser=${user.username}');
+      // log.d('loginWithCognitoSession().cognitoUser=${user.username}');
       _user = await _userFromAttributes(user);
-      // print('loginWithCognitoSession().user=$_user');
+      // log.d('loginWithCognitoSession().user=$_user');
       // await _service.createCognitoUserFromSession(session, _user.id);
       _userController.add(_user);
     } on Exception catch (e) {
-      print('loginWithCognitoSession().error=$e');
+      log.e('loginWithCognitoSession().error=$e');
       _user = null;
       _userController.add(_user);
     }
@@ -92,17 +93,17 @@ class AwsAuthProvider implements IAuthProvider {
     List<CognitoUserAttribute>? attributes =
         await cognitoUser.getUserAttributes();
 
-    print('_userFromAttributes().start()');
+    log.d('_userFromAttributes().start()');
     for (int i = 0; attributes != null && i < attributes.length; i++) {
       CognitoUserAttribute a = attributes[i];
-      print('\tattr[${a.name}]=${a.value}');
+      log.d('\tattr[${a.name}]=${a.value}');
       if (a.name != null && a.name == 'name') {
         name = a.value;
         // if (name == null || name.startsWith('anonymuser')) {
         //   name = 'AnonymUser';
         // }
       }
-      // print('\t attr[${a.userAttributeKey}]=${a.value}');
+      // log.d('\t attr[${a.userAttributeKey}]=${a.value}');
       if (a.name != null && a.name == 'email') {
         email = a.value;
         // name = email.split('@').first;
@@ -122,7 +123,7 @@ class AwsAuthProvider implements IAuthProvider {
       CognitoIdToken idToken = session.idToken;
       dynamic payload = idToken.decodePayload();
       String username = payload['cognito:username'];
-      print('loginWithCognitoSession().username=' + username);
+      log.i('loginWithCognitoSession().username=' + username);
       User user = User(email: email, name: name, id: username, phone: phone);
       return user;
     }
@@ -138,7 +139,7 @@ class AwsAuthProvider implements IAuthProvider {
       }
       return session?.accessToken.jwtToken;
     } on Exception catch (e) {
-      print('***** getAccessToken().error=$e');
+      log.e('***** getAccessToken().error=$e');
       return null;
     }
   }
@@ -149,7 +150,7 @@ class AwsAuthProvider implements IAuthProvider {
       CognitoUserSession? session = await _service.session;
       return session?.idToken.jwtToken;
     } on Exception catch (e) {
-      print('***** getIdToken().error=$e');
+      log.e('***** getIdToken().error=$e');
       return null;
     }
   }
@@ -158,23 +159,23 @@ class AwsAuthProvider implements IAuthProvider {
   Future<void> clearUserSession() async {
     _user = null;
     _userController.add(_user);
-    print('clearUserSession().start()');
+    log.i('clearUserSession().start()');
     try {
       SharedPreferences sp = await SharedPreferences.getInstance();
       await sp.clear();
-      print('clearUserSession().deleting.sharedpreferences.done()');
+      log.d('clearUserSession().deleting.sharedpreferences.done()');
       await _deleteCacheDir();
-      print('clearUserSession().deleting.cachedir.done()');
+      log.d('clearUserSession().deleting.cachedir.done()');
       await _deleteAppDir();
-      print('clearUserSession().deleting.appdir.done()');
+      log.d('clearUserSession().deleting.appdir.done()');
 
       await CookieManager.instance().deleteAllCookies();
-      print('clearUserSession().deleting.browser-cookies.done()');
+      log.d('clearUserSession().deleting.browser-cookies.done()');
 
       var webStorageManager = WebStorageManager.instance();
       if (Platform.isAndroid) {
         await webStorageManager.android.deleteAllData();
-        print('clearUserSession().deleting.browser-storage.done()');
+        log.d('clearUserSession().deleting.browser-storage.done()');
       }
       if (Platform.isIOS) {
         var records = await webStorageManager.ios
@@ -186,19 +187,19 @@ class AwsAuthProvider implements IAuthProvider {
         await webStorageManager.ios.removeDataFor(
             dataTypes: IOSWKWebsiteDataType.values,
             dataRecords: recordsToDelete);
-        print('clearUserSession().deleting.browser-storage.done()');
+        log.d('clearUserSession().deleting.browser-storage.done()');
       }
-      print('clearUserSession().done()');
+      log.i('clearUserSession().done()');
     } on Exception catch (e) {
-      print('clearUserSession().exception=$e');
+      log.e('clearUserSession().exception=$e');
     } on Error catch (e) {
-      print('clearUserSession().error=$e');
+      log.e('clearUserSession().error=$e');
     }
   }
 
   Future<void> _deleteCacheDir() async {
     final cacheDir = await getTemporaryDirectory();
-    print('_deleteCacheDir()=$cacheDir');
+    log.d('_deleteCacheDir()=$cacheDir');
 
     if (cacheDir.existsSync()) {
       cacheDir.deleteSync(recursive: true);
@@ -207,7 +208,7 @@ class AwsAuthProvider implements IAuthProvider {
 
   Future<void> _deleteAppDir() async {
     final appDir = await getApplicationSupportDirectory();
-    print('_deleteAppDir()=$appDir');
+    log.d('_deleteAppDir()=$appDir');
 
     if (appDir.existsSync()) {
       appDir.deleteSync(recursive: true);

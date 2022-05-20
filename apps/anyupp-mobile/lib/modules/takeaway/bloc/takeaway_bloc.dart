@@ -20,10 +20,10 @@ class TakeAwayBloc extends Bloc<TakeAwayEvent, TakeAwayState> {
     ServingMode? mode = await _getServingMode();
     if (mode != null) {
       emit(ServingModeSelectedState(mode));
-      // print('TakeAwayBloc.ServingModeSelectedState=$mode');
+      // log.d('TakeAwayBloc.ServingModeSelectedState=$mode');
     } else {
       emit(NoServingModeSelectedState());
-      // print('TakeAwayBloc.NoServingModeSelectedState');
+      // log.d('TakeAwayBloc.NoServingModeSelectedState');
     }
   }
 

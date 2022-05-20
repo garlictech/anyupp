@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/utils/md5_hash.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class CartRepository implements ICartProvider {
   final IAuthProvider _authProvider;
@@ -126,13 +127,13 @@ class CartRepository implements ICartProvider {
   // }
 
   Future<Cart?> clearCart() async {
-    print('CartRepository.clearCart()');
+    log.d('CartRepository.clearCart()');
     await _cartProvider.clearCart();
     return null;
   }
 
   Future<Cart?> clearPlaceInCart(GeoUnit unit) async {
-    // print('CartRepository.clearPlaceInCart()=${unit.id}');
+    // log.d('CartRepository.clearPlaceInCart()=${unit.id}');
     Cart? cart = await getCurrentCart(unit.id);
     if (cart != null) {
       cart = cart.copyWith(place: Place(seat: EMPTY_SEAT, table: EMPTY_TABLE));

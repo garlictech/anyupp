@@ -93,7 +93,7 @@ class SendCartButtonWidget extends StatelessWidget {
             onPressed: isPaymentMethodSelected
                 ? () async {
                     if (!loading) {
-                      // print(
+                      // log.d(
                       //     'StartPayment._selectedPaymentMethod=$selectedPaymentMethod, invoce=${wantsInvoice ? address : null}');
                       onLoading(true);
                       onPressed();

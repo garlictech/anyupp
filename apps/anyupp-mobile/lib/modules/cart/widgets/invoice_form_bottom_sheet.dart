@@ -101,7 +101,7 @@ class _InvoiceFormBottomSheetWidgetState
       child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (context, state) {
           if (state is UnitSelected) {
-            // print('Unit selected=${state.unit}');
+            // log.d('Unit selected=${state.unit}');
             return _buildInvoiceFormScreen(
               context,
               state.unit,
@@ -198,7 +198,7 @@ class _InvoiceFormBottomSheetWidgetState
   }
 
   Widget _buildInvoiceForm(BuildContext context) {
-    // print('_buildInvoiceForm()=${_userProfile?.email}');
+    // log.d('_buildInvoiceForm()=${_userProfile?.email}');
 
     return Form(
       key: profileFormKey,

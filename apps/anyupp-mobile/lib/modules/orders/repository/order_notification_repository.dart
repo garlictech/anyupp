@@ -29,10 +29,10 @@ class OrderNotificationService {
         return;
       }
       OrderStatus currentStatus = order.status;
-      // print('***** checkIfShowOrderStatusNotification()=${order.id}, status=$currentStatus');
+      // log.d('***** checkIfShowOrderStatusNotification()=${order.id}, status=$currentStatus');
 
       OrderStatus? previousStatus = await getOrderStatusPref(order.id);
-      // print('***** checkIfShowOrderStatusNotification()=$previousStatus');
+      // log.d('***** checkIfShowOrderStatusNotification()=$previousStatus');
 
       if (previousStatus == null || previousStatus != currentStatus) {
         await setOrderStatusPref(order.id, currentStatus);
@@ -41,7 +41,7 @@ class OrderNotificationService {
       if (previousStatus != null) {
         if (currentStatus == OrderStatus.processing &&
             previousStatus == OrderStatus.placed) {
-          // print('***** checkIfShowOrderStatusNotification().showProcessingNotif()');
+          // log.d('***** checkIfShowOrderStatusNotification().showProcessingNotif()');
           if (!_checkNeedNotification(order.id, currentStatus)) {
             return;
           }
@@ -69,7 +69,7 @@ class OrderNotificationService {
 
         if (currentStatus == OrderStatus.ready &&
             previousStatus == OrderStatus.processing) {
-          // print('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMode}');
+          // log.d('***** checkIfShowOrderStatusNotification().showReadyNotif()=${order.paymentMode}');
           if (!_checkNeedNotification(order.id, currentStatus)) {
             return;
           }

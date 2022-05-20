@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/core/core.dart';
 
 part 'theme_event.dart';
 part 'theme_state.dart';
@@ -17,7 +16,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
     on<ThemeSelected>(_onThemeSelected);
     _unitSelectSubscription =
         _unitSelectBloc.stream.asBroadcastStream().listen((unitSelectedState) {
-      print('****** ThemeBloc._unitSelectSubscription=$unitSelectedState');
+      log.d('****** ThemeBloc._unitSelectSubscription=$unitSelectedState');
       if (unitSelectedState is UnitSelected) {
         add(ThemeSelected(
             theme: unitThemeToThemeChainData(unitSelectedState.unit)));

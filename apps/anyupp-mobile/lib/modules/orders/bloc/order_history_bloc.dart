@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models/Order.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 class OrderHistoryBloc
@@ -23,7 +23,7 @@ class OrderHistoryBloc
 
   @override
   Future<void> close() async {
-    // print('OrderBloc.close()');
+    // log.d('OrderBloc.close()');
     await _orderHistoryController?.close();
     await _repository.stopOrderListSubscription();
     await _repository.stopOrderHistoryListSubscription();
@@ -32,7 +32,7 @@ class OrderHistoryBloc
 
   FutureOr<void> _handleError(
       Exception e, Emitter<BaseOrderHistoryState> emit) {
-    print('OrderHistoryBloc.error=$e');
+    log.d('OrderHistoryBloc.error=$e');
     emit(OrderLoadHistoryError('ORDER_HISTORY_BLOC', e.toString(), null));
   }
 
@@ -82,12 +82,12 @@ class OrderHistoryBloc
       _orderHistoryController!.stream
           .asBroadcastStream()
           .listen((orderHistoryList) {
-        print('OrderHistoryBloc.listen=${orderHistoryList?.length}');
-        print(
+        log.d('OrderHistoryBloc.listen=${orderHistoryList?.length}');
+        log.d(
             'OrderHistoryBloc.listen=${orderHistoryList?.map((order) => order.hasRated)}');
 
-        // print('********************* OrderBloc.HISTROY.hashCode=$hashCode');
-        // print('********************* OrderBloc.HISTROY.state=${this.state}');
+        // log.d('********************* OrderBloc.HISTROY.hashCode=$hashCode');
+        // log.d('********************* OrderBloc.HISTROY.state=${this.state}');
         add(OrderHistoryLoaded(
           orders: orderHistoryList,
           nextToken: _repository.orderHistoryListNextToken,

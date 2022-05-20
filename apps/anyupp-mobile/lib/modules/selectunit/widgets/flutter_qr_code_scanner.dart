@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/models/Place.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
@@ -274,7 +274,7 @@ class _QRCodeScannerWidgetState extends State<QRCodeScannerWidget>
         seat = uri.pathSegments[2];
       }
       final Place place = Place(table: table, seat: seat);
-      // print('***** BARCODE.UNIT=$unitId, TABLE=$table, SEAT=$seat');
+      // log.d('***** BARCODE.UNIT=$unitId, TABLE=$table, SEAT=$seat');
       // showNotification(context, 'New Seat Reserved', 'Seat $seat reserved at Table $table', null);
 
       setState(() {
@@ -305,13 +305,13 @@ class _QRCodeScannerWidgetState extends State<QRCodeScannerWidget>
       }
 
       final Uri uri = Uri.parse(scanData.code!);
-      print('********* BARCODE FOUND.uri=$uri');
-      // print('********* BARCODE FOUND.uri.scheme=${uri.scheme}');
-      // print('********* BARCODE FOUND.uri.path=${uri.path}');
-      // print('********* BARCODE FOUND.uri.query=${uri.query}');
-      // print('********* BARCODE FOUND.uri.origin=${uri.origin}');
-      // print('********* BARCODE FOUND.uri.pathSegments=${uri.pathSegments}');
-      // print('********* BARCODE FOUND.uri.port=${uri.port}');
+      log.d('********* BARCODE FOUND.uri=$uri');
+      // log.d('********* BARCODE FOUND.uri.scheme=${uri.scheme}');
+      // log.d('********* BARCODE FOUND.uri.path=${uri.path}');
+      // log.d('********* BARCODE FOUND.uri.query=${uri.query}');
+      // log.d('********* BARCODE FOUND.uri.origin=${uri.origin}');
+      // log.d('********* BARCODE FOUND.uri.pathSegments=${uri.pathSegments}');
+      // log.d('********* BARCODE FOUND.uri.port=${uri.port}');
       handleUri(uri);
 
       setState(() {

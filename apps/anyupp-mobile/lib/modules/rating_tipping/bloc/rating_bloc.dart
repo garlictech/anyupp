@@ -47,7 +47,7 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
         event.orderId,
         event.rating,
       );
-      print('RatingBloc.RateOrder.done().success=$success');
+      log.d('RatingBloc.RateOrder.done().success=$success');
 
       _refreshOrdersIfUnitSelected();
 
@@ -83,7 +83,7 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
           event.tipValue,
         );
       }
-      print('RatingBloc.TipOrder.done().success=$success');
+      log.d('RatingBloc.TipOrder.done().success=$success');
 
       _refreshOrdersIfUnitSelected();
 

@@ -21,7 +21,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
       var response = await _transactionsRepository.getTransactions();
       emit(TransactionsLoadedState(response: response));
     } on Exception catch (e) {
-      print('TransactionsBloc.exception=$e');
+      log.e('TransactionsBloc.exception=$e');
       getIt<ExceptionBloc>().add(ShowException(
         TransactionException(
             code: TransactionException.CODE, message: e.toString()),

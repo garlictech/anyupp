@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models/User.dart';
@@ -14,7 +15,9 @@ class AwsUserDetailsProvider implements IUserDetailsProvider {
   Future<User?> getUserDetails() async {
     User? user = await _authProvider.getAuthenticatedUserProfile();
     if (user == null) {
-      throw LoginException(code: LoginException.INVALID_CREDENTIALS, message: 'No user logged in. User is null.');
+      throw LoginException(
+          code: LoginException.INVALID_CREDENTIALS,
+          message: 'No user logged in. User is null.');
     }
 
     var result = await GQL.amplify.execute(GetUserQueryQuery(
@@ -25,7 +28,13 @@ class AwsUserDetailsProvider implements IUserDetailsProvider {
     if (result.data == null || result.data?.getUser == null) {
       return null;
     }
-    print('getUserDetails().data=${result.data}');
+
+    if (result.hasErrors) {
+      throw GraphQLException.fromGraphQLError(
+          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+    }
+
+    log.d('getUserDetails().data=${result.data}');
     return User.fromJson(result.data!.getUser!.toJson());
   }
 }

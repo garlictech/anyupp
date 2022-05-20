@@ -8,10 +8,12 @@ import 'package:fa_prev/modules/login/login.dart';
 
 class EmailLoginDialogContentWidget extends StatefulWidget {
   @override
-  _EmailLoginDialogContentWidgetState createState() => _EmailLoginDialogContentWidgetState();
+  _EmailLoginDialogContentWidgetState createState() =>
+      _EmailLoginDialogContentWidgetState();
 }
 
-class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentWidget> {
+class _EmailLoginDialogContentWidgetState
+    extends State<EmailLoginDialogContentWidget> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -26,16 +28,18 @@ class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentW
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (BuildContext context, LoginState state) {
-        print('EmailDialogContentWidget.auth.bloc.state=$state');
+        log.d('EmailDialogContentWidget.auth.bloc.state=$state');
         if (state is LoginError || state is LoginSuccess) {
           // Navigator.of(context).pop();
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(builder: (BuildContext context, LoginState state) {
-        // print('EmailLoginDialogContentWidget.bloc.state=$state');
+      child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (BuildContext context, LoginState state) {
+        // log.d('EmailLoginDialogContentWidget.bloc.state=$state');
 
         if (state is EmailLoginInProgress) {
-          return _buildLoading(context, message: trans('login.email.loginProgress'));
+          return _buildLoading(context,
+              message: trans('login.email.loginProgress'));
         }
 
         if (state is EmailLinkSent) {
@@ -208,7 +212,8 @@ class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentW
                       ),
                       child: AnimatedSwitcher(
                         duration: const Duration(milliseconds: 350),
-                        transitionBuilder: (Widget child, Animation<double> animation) {
+                        transitionBuilder:
+                            (Widget child, Animation<double> animation) {
                           return ScaleTransition(
                             child: child,
                             scale: animation,
@@ -277,10 +282,11 @@ class _EmailLoginDialogContentWidgetState extends State<EmailLoginDialogContentW
   }
 
   void _loginWithEmailAndPassword() {
-    print('_loginWithEmailAndPassword()=${_emailController.text}');
+    log.d('_loginWithEmailAndPassword()=${_emailController.text}');
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      getIt<LoginBloc>().add(LoginWithEmailAndPassword(_emailController.text, _passwordController.text));
+      getIt<LoginBloc>().add(LoginWithEmailAndPassword(
+          _emailController.text, _passwordController.text));
     }
   }
 }

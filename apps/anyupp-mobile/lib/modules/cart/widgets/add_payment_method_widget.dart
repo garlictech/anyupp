@@ -145,11 +145,11 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                     setState(() {
                       _card.number = value?.replaceAll(' ', '');
                     });
-                    print('Card number=${_card.number}');
+                    log.d('Card number=${_card.number}');
                   },
                   validator: (value) {
                     _card.number = value?.replaceAll(' ', '');
-                    print(
+                    log.d(
                         'Validate card: , ${_card.number} = ${_card.validateNumber()}');
                     return _card.validateNumber() ? null : '';
                   },
@@ -176,7 +176,7 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                           filter: {"#": RegExp('[0-9]')},
                         ),
                         onSaved: (value) {
-                          print('ExpDate.value=');
+                          log.d('ExpDate.value=');
                           if (value == null ||
                               value.isEmpty ||
                               !value.contains('/')) {
@@ -191,7 +191,7 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                             _card.expMonth = int.tryParse(expDate[0]);
                             _card.expYear = int.tryParse(expDate[1]);
                           });
-                          print(
+                          log.d(
                               'Card exp date=${_card.expMonth}/${_card.expYear}');
                         },
                         validator: (value) {
@@ -207,7 +207,7 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
 
                           _card.expMonth = int.tryParse(expDate[0]);
                           _card.expYear = int.tryParse(expDate[1]);
-                          print(
+                          log.d(
                               'Validate expdate: , ${_card.expMonth}/${_card.expYear} = ${_card.validateDate()}');
                           return _card.validateDate() ? null : '';
                         },
@@ -232,14 +232,14 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                           filter: {"#": RegExp('[0-9]')},
                         ),
                         onSaved: (value) {
-                          print('CVC.value=');
+                          log.d('CVC.value=');
                           setState(() {
                             _card.cvc = value;
                           });
                         },
                         validator: (value) {
                           _card.cvc = value;
-                          print(
+                          log.d(
                               'Validate cvc: , ${_card.cvc} = ${_card.validateCVC()}');
                           return _card.validateCVC() ? null : '';
                         },
@@ -299,7 +299,7 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
   }
 
   void _validateAndSaveCard() {
-    print('_validateAndSaveCard()');
+    log.d('_validateAndSaveCard()');
     setState(() {
       _showErrorMessage = false;
     });
@@ -309,10 +309,10 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
       setState(() {
         FocusScope.of(context).unfocus();
       });
-      print('_validateAndSaveCard().VALID');
+      log.d('_validateAndSaveCard().VALID');
       getIt<StripePaymentBloc>().add(CreateStripeCardEvent(_card, ''));
     } else {
-      print('_validateAndSaveCard().INVALID');
+      log.d('_validateAndSaveCard().INVALID');
       setState(() {
         _showErrorMessage = true;
       });

@@ -97,7 +97,7 @@ class Locally {
   /// Obtains a string payload
   /// And perform navigation function
   Future<void> onSelectNotification(String? payloadStr) async {
-    print(
+    log.d(
         'Notification.onSelectNotification().payload=$payloadStr, page=$navigatePage');
     // if (payload != null) {
     //   debugPrint('notification payload: ' + payload);
@@ -107,16 +107,16 @@ class Locally {
       Map<String, dynamic> json = jsonDecode(payloadStr);
       NotificationPayloadType? type =
           enumFromStringNull(json['type'], NotificationPayloadType.values);
-      print('Notification.onSelectNotification().type=$type');
+      log.d('Notification.onSelectNotification().type=$type');
       if (type == NotificationPayloadType.RATE_ORDER) {
         RateOrderPayload payload = RateOrderPayload.fromJson(json['data']);
-        print('Notification.showRating=$payload');
+        log.d('Notification.showRating=$payload');
         getIt<RatingOrderNotificationBloc>()
             .add(ShowRatingFromNotification(payload));
       }
       if (type == NotificationPayloadType.SHOW_ORDER) {
         ShowOrderPayload payload = ShowOrderPayload.fromJson(json['data']);
-        print('Notification.showOrder=$payload');
+        log.d('Notification.showOrder=$payload');
 
         var state = getIt.get<UnitSelectBloc>().state;
         if (state is UnitSelected) {
@@ -132,7 +132,7 @@ class Locally {
       // SHOW INSIDE APP INSTEAD OF HERE
       // if (type == NotificationPayloadType.SHOW_DIALOG) {
       //   ShowDialogPayload payload = ShowDialogPayload.fromJson(json['data']);
-      //   print('Notification.showDialog=$payload');
+      //   log.d('Notification.showDialog=$payload');
       //   var context = AppContext.context;
       //   if (context != null) {
       //     showSuccessDialog(
@@ -153,7 +153,7 @@ class Locally {
     }
 
     if (navigatePage != null) {
-      print('***** onSelectNotification().navigateTo=$navigatePage');
+      log.d('***** onSelectNotification().navigateTo=$navigatePage');
       Nav.reset(navigatePage!);
     }
   }
@@ -162,7 +162,7 @@ class Locally {
   /// it required for IOS initialization
   /// it takes in id, title, body and payload
   Future<void> onDidReceiveNotification(id, title, body, payload) async {
-    print(
+    log.d(
         '***** onDidReceiveNotification().id=$id, title=$title, payload=$payload');
     await showDialog(
       context: AppContext.context!,
@@ -203,7 +203,7 @@ class Locally {
       importance = Importance.high,
       priority = Priority.high,
       ticker = 'ticker'}) async {
-    print('Notification.show()');
+    log.d('Notification.show()');
     this.title = title;
     this.message = message;
 
@@ -261,7 +261,7 @@ Future<void> scheduleNotification({
   NotificationPayload? payload,
   Duration showDelay = const Duration(minutes: 10),
 }) async {
-  print('scheduleNotification()=$showDelay');
+  log.d('scheduleNotification()=$showDelay');
   await Locally().localNotificationsPlugin.zonedSchedule(
         payload!.type.index,
         title,
@@ -291,7 +291,7 @@ void showNotification({
   Widget? navigateToPage,
   NotificationPayload? payload,
 }) {
-  print('showNotification().title=$title, mmessage=$message');
+  log.d('showNotification().title=$title, mmessage=$message');
   Locally().navigatePage = navigateToPage;
   Locally().show(
     title: title,

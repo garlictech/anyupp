@@ -85,7 +85,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginInProgress());
       ProviderLoginResponse response =
           await _repository.signUserInWithAuthCode(event.code);
-      print('*** LoginBloc().federated.loginResponse=$response');
+      log.d('*** LoginBloc().federated.loginResponse=$response');
       if (browser.isOpened()) {
         await browser.close();
       }
@@ -101,7 +101,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(EmailLoginInProgress());
       ProviderLoginResponse response = await _repository
           .loginWithEmailAndPassword(event.email, event.password);
-      print('**** LoginBloc.LoginWithEmailAndPassword().finish()=$response');
+      log.d('**** LoginBloc.LoginWithEmailAndPassword().finish()=$response');
       emit(LoginSuccess());
     } on Exception catch (e) {
       _handleError(e, emit);
@@ -225,10 +225,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           event.password,
         );
       } on SignUpException catch (se) {
-        print('********* SignUpBloc.Exception()=$se');
+        log.d('********* SignUpBloc.Exception()=$se');
         getIt<ExceptionBloc>().add(ShowException(se));
       } on Exception catch (e) {
-        print('********* LoginBloc.Exception()=$e');
+        log.d('********* LoginBloc.Exception()=$e');
         getIt<ExceptionBloc>().add(ShowException(SignUpException.fromException(
           SignUpException.UNKNOWN_ERROR,
           e.toString(),

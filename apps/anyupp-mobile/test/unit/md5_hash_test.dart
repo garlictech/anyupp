@@ -2,11 +2,12 @@
 
 import 'package:fa_prev/shared/utils/md5_hash.dart';
 import 'package:flutter_test/flutter_test.dart';
+import '../test_logger.dart';
 
 void main() {
   void checkHashExpected(String source, String expected, [bool debug = false]) {
     String hash = generateHash(source);
-    if (debug) print('source: $source, hash: $hash');
+    if (debug) tlog.d('source: $source, hash: $hash');
     expect(hash, equals(expected));
   }
 

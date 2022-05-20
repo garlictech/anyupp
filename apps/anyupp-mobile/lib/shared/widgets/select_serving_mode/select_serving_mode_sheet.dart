@@ -33,7 +33,7 @@ Future<int?> showSelectServingModeSheet(BuildContext context,
           initialPosition: initialPosition,
           useTheme: useTheme,
           onSelected: (pos) {
-            print('showSelectServingModeSheet.pos=$pos');
+            log.d('showSelectServingModeSheet.pos=$pos');
           });
     },
   );
@@ -58,7 +58,7 @@ Future<SelectServiceModeResult?> showSelectServingModeSheetWithDeleteConfirm(
     bool dismissable = true,
     bool pop = false}) async {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
-  print(
+  log.d(
       'showSelectServingModeSheetWithDeleteConfirm().cart=${cart?.id}, current=$current');
 
   int? selectedMethodPos = await showModalBottomSheet(
@@ -79,7 +79,7 @@ Future<SelectServiceModeResult?> showSelectServingModeSheetWithDeleteConfirm(
           initialPosition: initialPosition,
           useTheme: useTheme,
           onSelected: (pos) {
-            print('showSelectServingModeSheet.pos=$pos');
+            log.d('showSelectServingModeSheet.pos=$pos');
           });
     },
   );
@@ -93,7 +93,7 @@ Future<SelectServiceModeResult?> showSelectServingModeSheetWithDeleteConfirm(
   if (cart != null &&
       (current == ServingMode.inPlace ? 0 : 1) != selectedMethodPos) {
     bool? deleted = await _showdeleteCartConfirmation(context, mode);
-    print('showSelectServingModeSheetWithDeleteConfirm.deleted=$deleted');
+    log.d('showSelectServingModeSheetWithDeleteConfirm.deleted=$deleted');
     if (deleted == true && pop) {
       Nav.pop();
     }
@@ -107,7 +107,7 @@ Future<SelectServiceModeResult?> showSelectServingModeSheetWithDeleteConfirm(
   }
 
   if ((current == ServingMode.inPlace ? 0 : 1) != selectedMethodPos) {
-    print('showSelectServingModeSheetWithDeleteConfirm.mode=$mode');
+    log.d('showSelectServingModeSheetWithDeleteConfirm.mode=$mode');
     getIt<TakeAwayBloc>().add(SetServingMode(mode));
   }
   return SelectServiceModeResult(
@@ -118,7 +118,7 @@ Future<SelectServiceModeResult?> showSelectServingModeSheetWithDeleteConfirm(
 
 Future<bool?> _showdeleteCartConfirmation(
     BuildContext context, ServingMode servingMode) async {
-  print('_showdeleteCartConfirmation().start().mode=$servingMode');
+  log.d('_showdeleteCartConfirmation().start().mode=$servingMode');
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {

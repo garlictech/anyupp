@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/modules/login/widgets/confirm_signup_widget.dart';
 import 'package:fa_prev/modules/login/widgets/password_reset_widget.dart';
@@ -8,7 +9,8 @@ typedef LoginPageViewIndexChangedCallback = void Function({int selectedIndex});
 
 class EmailLoginPageViewWidget extends StatefulWidget {
   @override
-  _EmailLoginPageViewWidgetState createState() => _EmailLoginPageViewWidgetState();
+  _EmailLoginPageViewWidgetState createState() =>
+      _EmailLoginPageViewWidgetState();
 }
 
 class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
@@ -19,7 +21,7 @@ class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (BuildContext context, LoginState state) {
         if (state is EmailFormUIChange) {
-          print('EmailLoginPageViewWidget.state=$state');
+          log.d('EmailLoginPageViewWidget.state=$state');
           setPage(state);
         }
       },
@@ -57,7 +59,8 @@ class _EmailLoginPageViewWidgetState extends State<EmailLoginPageViewWidget> {
         index = 4;
         break;
     }
-    print('setPage().page=$index, duration=${state.animationDuration}, curve=${state.animationCurve}');
+    log.d(
+        'setPage().page=$index, duration=${state.animationDuration}, curve=${state.animationCurve}');
 
     _pageController.animateToPage(
       index,

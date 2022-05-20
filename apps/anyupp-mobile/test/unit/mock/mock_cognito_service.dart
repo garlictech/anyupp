@@ -1,4 +1,5 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import '../../test_logger.dart';
 
 class MockCognitoService {
   final String region = 'eu-west-1';
@@ -45,7 +46,8 @@ class MockCognitoService {
     return true;
   }
 
-  Future<CognitoUser?> createCognitoUserFromSession(CognitoUserSession session, String userName) async {
+  Future<CognitoUser?> createCognitoUserFromSession(
+      CognitoUserSession session, String userName) async {
     return _cognitoUser;
   }
 
@@ -53,9 +55,11 @@ class MockCognitoService {
     return true;
   }
 
-  Future<CognitoCredentials> loginWithCredentials(String accessToken, String provider) async {
-    print('loginWithCredentials()=$provider, identityPoolId=$identityPoolId');
-    CognitoCredentials credentials = CognitoCredentials(identityPoolId, userPool!);
+  Future<CognitoCredentials> loginWithCredentials(
+      String accessToken, String provider) async {
+    tlog.d('loginWithCredentials()=$provider, identityPoolId=$identityPoolId');
+    CognitoCredentials credentials =
+        CognitoCredentials(identityPoolId, userPool!);
     return credentials;
   }
 }

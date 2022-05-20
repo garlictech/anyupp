@@ -10,6 +10,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../fixtures.dart';
 import '../graphql/graphql_dummy.dart';
+import '../test_logger.dart';
 
 void main() {
   const int dummy_order_count = 13;
@@ -20,7 +21,7 @@ void main() {
 
   cleanUpOrders() async {
     List<bool> deleteResults = await deleteAllOrders(testUsername, unitId);
-    print('***** Deleting all orders results=${deleteResults}');
+    tlog.d('***** Deleting all orders results=${deleteResults}');
   }
 
   setUpAll(() async {
@@ -40,7 +41,7 @@ void main() {
         ));
 
     constants = getIt<AppConstants>();
-    print('Pagination size=' + constants.paginationSize.toString());
+    tlog.d('Pagination size=' + constants.paginationSize.toString());
 
     ProviderLoginResponse response =
         await getIt<LoginRepository>().loginWithEmailAndPassword(
@@ -52,7 +53,7 @@ void main() {
 
     await cleanUpOrders();
 
-    print('Creating orders');
+    tlog.d('Creating orders');
     await createDummyOrders(
       userId: testUsername,
       unitId: unitId,
@@ -60,7 +61,7 @@ void main() {
       archived: false,
     );
 
-    print('Creating order histories');
+    tlog.d('Creating order histories');
     await createDummyOrders(
       userId: testUsername,
       unitId: unitId,
@@ -68,7 +69,7 @@ void main() {
       archived: true,
     );
 
-    print('Waiting to backend to finish order creation');
+    tlog.d('Waiting to backend to finish order creation');
     await Future.delayed(Duration(seconds: 5));
 
     await _repository.startOrderListSubscription(unitId, _controller);
@@ -88,7 +89,7 @@ void main() {
     test('Test pagination on Order repository', () async {
       String? nextToken;
       int remainingCount = dummy_order_count % dummy_page_size;
-      print('TEST.remainingCount=$remainingCount');
+      tlog.d('TEST.remainingCount=$remainingCount');
       int i = 0;
       do {
         List<Order>? orders = await _repository.loadOrdersNextPage(
@@ -96,9 +97,9 @@ void main() {
           controller: _controller,
         );
         expect(orders, isNotNull);
-        print('TEST[$i].orders.length=${orders?.length}');
+        tlog.d('TEST[$i].orders.length=${orders?.length}');
         nextToken = _repository.orderListNextToken;
-        print('TEST[$i].nextToken=$nextToken');
+        tlog.d('TEST[$i].nextToken=$nextToken');
         if (orders!.length == dummy_page_size) {
           _checkOrdersSortOrder(orders);
           expect(orders.length, dummy_page_size);
@@ -116,14 +117,14 @@ void main() {
     }, skip: false);
 
     test('dummy', () async {
-      print('DUMMY.START 5 SEC');
+      tlog.d('DUMMY.START 5 SEC');
       await Future.delayed(Duration(seconds: 2));
     }, skip: true);
 
     test('Test pagination on Order History repository', () async {
       String? nextToken;
       int remainingCount = dummy_order_history_count % dummy_page_size;
-      print('HISTORY TEST.remainingCount=$remainingCount');
+      tlog.d('HISTORY TEST.remainingCount=$remainingCount');
       int i = 0;
       do {
         List<Order>? histories = await _repository.loadOrderHistoryNextPage(
@@ -131,9 +132,9 @@ void main() {
           controller: _controller,
         );
         expect(histories, isNotNull);
-        print('HISTORY TEST[$i].orders.length=${histories?.length}');
+        tlog.d('HISTORY TEST[$i].orders.length=${histories?.length}');
         nextToken = _repository.orderHistoryListNextToken;
-        print('HISTORY TEST[$i].nextToken=$nextToken');
+        tlog.d('HISTORY TEST[$i].nextToken=$nextToken');
         if (histories!.length == dummy_page_size) {
           _checkOrdersSortOrder(histories);
           expect(histories.length, dummy_page_size);

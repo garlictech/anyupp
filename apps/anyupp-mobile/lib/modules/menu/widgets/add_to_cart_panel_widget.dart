@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -132,7 +131,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
   }
 
   Widget _buildNotAvailableInfo() {
-    print(
+    log.d(
         '_buildNotAvailableInfo().displayState=${widget.displayState}, servingMode=${widget.servingMode}');
     return Text(
       widget.displayState == ProductItemDisplayState.DISABLED
@@ -215,14 +214,14 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
   }
 
   void _incQuantity() {
-    print('_addOrder()');
+    log.d('_addOrder()');
     setState(() {
       _quantity++;
     });
   }
 
   void _decQuantity() {
-    print('_removeOrder()');
+    log.d('_removeOrder()');
     setState(() {
       _quantity = max(_quantity - 1, 1);
     });

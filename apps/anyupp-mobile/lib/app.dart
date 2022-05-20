@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
       await checkForAndroidUpdates();
     }
     final status = await AppTrackingTransparency.requestTrackingAuthorization();
-    print('checkTrackingTransparencyPermission().status=$status');
+    log.d('checkTrackingTransparencyPermission().status=$status');
   }
 
   @override
@@ -67,31 +67,31 @@ class _MyAppState extends State<MyApp> {
   Future<void> _initDeepLinks() async {
     try {
       Uri? uri = await getInitialUri();
-      print('_initDeepLinks().uri=$uri');
+      log.d('_initDeepLinks().uri=$uri');
 
       if (isValidUrl(uri)) {
         await handleUrl(uri!);
       }
     } on Exception catch (e) {
-      print('***** _initDeepLinks().exception=$e');
+      log.e('***** _initDeepLinks().exception=$e');
     }
 
     _deeplinkSubscription = linkStream.listen((String? link) async {
       try {
         if (link != null) {
           Uri uri = Uri.parse(link); //await getInitialUri();
-          print('_initDeepLinks().uri.stream=$uri');
+          log.d('_initDeepLinks().uri.stream=$uri');
 
           if (isValidUrl(uri)) {
             await handleUrl(uri);
           }
         }
       } on Exception catch (e) {
-        print('***** _initDeepLinks().exception=$e');
+        log.e('***** _initDeepLinks().exception=$e');
       }
     }, onError: (err) {
       // Handle exception by warning the user their action did not succeed
-      print('***** _initDeepLinks().error=$err');
+      log.d('***** _initDeepLinks().error=$err');
     });
   }
 
@@ -103,7 +103,7 @@ class _MyAppState extends State<MyApp> {
         await InAppUpdate.performImmediateUpdate();
       }
     } catch (e) {
-      print('checkForAndroidUpdates.error=$e');
+      log.e('checkForAndroidUpdates.error=$e');
     }
   }
 

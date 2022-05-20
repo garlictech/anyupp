@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/location/location.dart';
 import 'package:fa_prev/shared/location/repository/geoip_location_repository.dart';
 import 'package:flutter/services.dart';
@@ -9,12 +10,12 @@ class LocationRepository {
   Future<LatLng?> getUserCurrentLocation() async {
     try {
       bool isLocationEnabled = await _isLocationAndServiceEnabled();
-      print(
+      log.d(
           "***** LocationRepository.getUserCurrentLocation.start().isLocationEnabled=$isLocationEnabled");
       if (isLocationEnabled) {
         try {
           // Position? lastPosition = await Geolocator.getLastKnownPosition();
-          // print(
+          // log.d(
           //     "***** location.getCurrentPosition().lastPosition=$lastPosition");
           // if (_isLastLocationIsValid(lastPosition)) {
           //   return LatLng(lastPosition!.latitude, lastPosition.longitude);
@@ -23,28 +24,28 @@ class LocationRepository {
           Position position = await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.low,
               timeLimit: Duration(seconds: 20));
-          // print("***** location.getCurrentPosition().position=$position");
+          // log.d("***** location.getCurrentPosition().position=$position");
           return LatLng(position.latitude, position.longitude);
         } on Exception {
-          // print('***** location.error getting location=$e');
+          // log.d('***** location.error getting location=$e');
           Position? position = await Geolocator.getLastKnownPosition();
-          // print("***** location.getLastKnownPosition().position=$position");
+          // log.d("***** location.getLastKnownPosition().position=$position");
           if (_isLastLocationIsValid(position)) {
             return LatLng(position!.latitude, position.longitude);
           } else {
             GeolocationData? position =
                 await GeolocationIPLocationRepository.getLocationByIP();
-            // print('***** location.getLocationByIP()=$position');
+            // log.d('***** location.getLocationByIP()=$position');
             return (position == null
                 ? null
                 : LatLng(position.lat, position.lon));
           }
         }
       } else {
-        // print('1. ************* SERVICE REQUEST NOT ACCEPTED!!!!');
+        // log.d('1. ************* SERVICE REQUEST NOT ACCEPTED!!!!');
         GeolocationData? position =
             await GeolocationIPLocationRepository.getLocationByIP();
-        // print('***** location.getLocationByIP()=$position');
+        // log.d('***** location.getLocationByIP()=$position');
         return (position == null ? null : LatLng(position.lat, position.lon));
       }
     } on Exception catch (e) {
@@ -64,7 +65,7 @@ class LocationRepository {
   Future<bool> _isLocationAndServiceEnabled() async {
     PermissionStatus permission =
         await LocationPermissions().requestPermissions();
-    print(
+    log.d(
         '**** LocationRepository._isLocationAndServiceEnabled.status=$permission');
     if (permission == PermissionStatus.granted) {
       return true;

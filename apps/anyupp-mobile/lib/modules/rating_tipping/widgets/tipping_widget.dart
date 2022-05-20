@@ -208,11 +208,11 @@ class _TipDialogWidgetState extends State<TipDialogWidget> {
   }
 
   void _onOkPressed() async {
-    print('VALUE=${widget.amountController.text}');
+    log.d('VALUE=${widget.amountController.text}');
     try {
       _errorKey = null;
       double? amount = double.tryParse(widget.amountController.text);
-      print('amount=${widget.amountController.text}');
+      log.d('amount=${widget.amountController.text}');
       if (amount == null) {
         setState(() {
           _errorKey = 'tipping.errors.validNumber';
@@ -228,7 +228,7 @@ class _TipDialogWidgetState extends State<TipDialogWidget> {
       }
       widget.onSelected(TipType.amount, amount, null);
     } on Exception {
-      print("pop");
+      log.d("pop");
       // nothing to do
     }
     Nav.pop();

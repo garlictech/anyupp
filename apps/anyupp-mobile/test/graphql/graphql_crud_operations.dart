@@ -1,9 +1,11 @@
 import 'package:fa_prev/graphql/graphql.dart';
+
+import '../test_logger.dart';
 import 'generated/crud-api.dart';
 
 Future<String?> createDummyOrder(
     String userId, String unitId, bool archived, int orderNum) async {
-  // print('GraphQLCrud.createDummyOrder().unit=$unitId, user=$userId');
+  // tlog.d('GraphQLCrud.createDummyOrder().unit=$unitId, user=$userId');
   try {
     var result = await GQL.amplify.execute(CreateOrderMutation(
         variables: CreateOrderArguments(
@@ -67,20 +69,20 @@ Future<String?> createDummyOrder(
       ),
     )));
 
-    // print('GraphQLCrud.createDummyOrder().result.data=${result.data}');
-    // print('GraphQLCrud.createDummyOrder().result.exception=${result.exception}');
+    // tlog.d('GraphQLCrud.createDummyOrder().result.data=${result.data}');
+    // tlog.d('GraphQLCrud.createDummyOrder().result.exception=${result.exception}');
 
     if (result.data?.createOrder != null) {
       String id = result.data!.createOrder!.id;
       bool archived = result.data!.createOrder!.archived;
-      print(
+      tlog.d(
           'GraphQLCrud.createDummyOrder().created[$orderNum]=$id, archived=$archived');
       return id;
     } else {
       return null;
     }
   } on Exception catch (e) {
-    print('GraphQLCrud.createDummyOrder().Exception: $e');
+    tlog.d('GraphQLCrud.createDummyOrder().Exception: $e');
     rethrow;
   }
 }
@@ -98,6 +100,6 @@ Future<List<String>> createDummyOrders({
       ids.add(id);
     }
   }
-  print('createDummyOrders().created[${ids.length}]=$ids');
+  tlog.d('createDummyOrders().created[${ids.length}]=$ids');
   return ids;
 }

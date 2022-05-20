@@ -244,7 +244,7 @@ class _ConfirmSignUpWidgetState extends State<ConfirmSignUpWidget> {
   }
 
   void _resendCode(String user) {
-    print('_resendCode');
+    log.d('_resendCode');
     getIt<LoginBloc>().add(ResendConfirmationCode(user));
   }
 }

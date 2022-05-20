@@ -8,7 +8,7 @@ class AwsUnitProvider implements IUnitProvider {
   @override
   Future<List<GeoUnit>> searchUnitsNearLocation(
       LatLng location, int radius) async {
-    print(
+    log.d(
         '***** searchUnitsNearLocation().start(): lat=${location.latitude} lng:${location.longitude}');
     try {
       var result = await GQL.amplify.execute(
@@ -21,31 +21,28 @@ class AwsUnitProvider implements IUnitProvider {
       );
 
       if (result.hasErrors) {
-        print('***** searchUnitsNearLocation().result.errors=${result.errors}');
         throw GraphQLException.fromGraphQLError(
             GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
 
       if (result.data == null || result.data?.getUnitsNearLocation == null) {
-        print('***** searchUnitsNearLocation():No units found.');
+        log.w('***** searchUnitsNearLocation():No units found.');
         return [];
       }
 
       var items = result.data?.getUnitsNearLocation?.items;
-      print('***** searchUnitsNearLocation().items.length=${items?.length}');
+      log.d('***** searchUnitsNearLocation().items.length=${items?.length}');
       List<GeoUnit> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
           results.add(GeoUnit.fromJson(items[i]!.toJson()));
         }
       }
-      // results.sort((a, b) => a.distance.compareTo(b.distance));
 
       return results;
     } on Exception catch (e) {
-      print('***** searchUnitsNearLocation().Exception: $e');
+      log.e('***** searchUnitsNearLocation().Exception: $e');
       rethrow;
-      // return [];
     }
   }
 }

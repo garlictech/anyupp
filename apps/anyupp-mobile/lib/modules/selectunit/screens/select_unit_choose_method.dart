@@ -119,7 +119,7 @@ class _SelectUnitMainContentWidgetState
                 ),
               ),
               BlocBuilder<UnitsBloc, UnitsState>(builder: (context, state) {
-                // print('*********** _buildUnitListBloc().BlocBuilder.state=$state');
+                // log.d('*********** _buildUnitListBloc().BlocBuilder.state=$state');
                 if (state is UnitsNoNearUnit) {
                   return Container(
                     padding: EdgeInsets.all(0.0),

@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
@@ -7,7 +8,7 @@ class AwsRatingProvider implements IRatingProvider {
   @override
   Future<bool> rateOrder(String orderId, OrderRating rating) async {
     try {
-      print('AwsRatingProvider.rateOrder().orderId=$orderId, rating=$rating');
+      log.d('AwsRatingProvider.rateOrder().orderId=$orderId, rating=$rating');
 
       var result = await GQL.amplify.execute(RateOrderMutation(
         variables: RateOrderArguments(
@@ -23,10 +24,10 @@ class AwsRatingProvider implements IRatingProvider {
       }
 
       String? id = result.data?.updateOrder?.id;
-      print('AwsRatingProvider.rateOrder().success=$id');
+      log.d('AwsRatingProvider.rateOrder().success=$id');
       return id != null;
     } on Exception catch (e) {
-      print('AwsRatingProvider.rateOrder.Exception: $e');
+      log.e('AwsRatingProvider.rateOrder.Exception: $e');
       rethrow;
     }
   }
@@ -34,7 +35,7 @@ class AwsRatingProvider implements IRatingProvider {
   @override
   Future<bool> tipOrder(String orderId, TipType? tipType, double? tip) async {
     try {
-      print(
+      log.d(
           'AwsRatingProvider.tipOrder().orderId=$orderId, tipType=$tipType, tip=$tip');
 
       var result = await GQL.amplify.execute(TipOrderMutation(
@@ -51,10 +52,10 @@ class AwsRatingProvider implements IRatingProvider {
       }
 
       String? status = result.data?.payTipWithStripe?.status;
-      print('AwsRatingProvider.tipOrder().status=$status');
+      log.d('AwsRatingProvider.tipOrder().status=$status');
       return status != null;
     } on Exception catch (e) {
-      print('AwsRatingProvider.tipOrder.Exception: $e');
+      log.e('AwsRatingProvider.tipOrder.Exception: $e');
       rethrow;
     }
   }
@@ -62,7 +63,7 @@ class AwsRatingProvider implements IRatingProvider {
   @override
   Future<bool> noTipOrder(String orderId) async {
     try {
-      print('AwsRatingProvider.noTipOrder().orderId=$orderId');
+      log.d('AwsRatingProvider.noTipOrder().orderId=$orderId');
 
       var result = await GQL.amplify.execute(NoTipOrderMutation(
         variables: NoTipOrderArguments(
@@ -76,7 +77,7 @@ class AwsRatingProvider implements IRatingProvider {
       }
       return true;
     } on Exception catch (e) {
-      print('AwsRatingProvider.noTipOrder.Exception: $e');
+      log.e('AwsRatingProvider.noTipOrder.Exception: $e');
       rethrow;
     }
   }

@@ -1,12 +1,13 @@
 import 'package:fa_prev/app-config.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart' as api;
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/payment/stripe/stripe.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart' hide PaymentMethod;
-import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   final Stripe _stripe;
@@ -16,7 +17,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
 
   @override
   Future<List<StripePaymentMethod>> getPaymentMethods() async {
-    print('getPaymentMethods().start()');
+    log.d('getPaymentMethods().start()');
     try {
       var result = await GQL.amplify.execute(
         api.ListStripePaymentMethodsQuery(),
@@ -26,15 +27,15 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       List<StripePaymentMethod> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
-          print('getPaymentMethods().card=${items[i]!.toJson()}');
+          log.d('getPaymentMethods().card=${items[i]!.toJson()}');
           results.add(StripePaymentMethod.fromJson(items[i]!.toJson()));
         }
       }
       // results.add(createPaymentMethod(Map<String,dynamic>.from(card)));
-      print('getPaymentMethods.results=${results.length}');
+      log.d('getPaymentMethods.results=${results.length}');
       return results;
     } catch (err) {
-      print('err charging user: ${err.toString()}');
+      log.e('err charging user: ${err.toString()}');
       return [];
     }
   }
@@ -42,8 +43,8 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   @override
   Future<void> startStripePaymentWithExistingCard(Cart cart,
       String paymentMethodId, UserInvoiceAddress? invoiceAddress) async {
-    print('startStripePaymentWithExistingCard().start()=$cart');
-    print(
+    log.d('startStripePaymentWithExistingCard().start()=$cart');
+    log.d(
         'startStripePaymentWithExistingCard().invoiceAddress=$invoiceAddress');
     await _cartProvider.setPaymentMode(
         cart.unitId,
@@ -54,7 +55,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
         ));
 
     String orderId = await _cartProvider.createAndSendOrderFromCart();
-    print('startStripePaymentWithExistingCard().orderId=$orderId');
+    log.d('startStripePaymentWithExistingCard().orderId=$orderId');
     return startOrderStripePaymentWithExistingCard(
         orderId, paymentMethodId, invoiceAddress);
   }
@@ -75,7 +76,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     ));
 
     if (result.hasErrors) {
-      print('startStripePaymentWithExistingCard.error=${result.errors}');
+      log.d('startStripePaymentWithExistingCard.error=${result.errors}');
       throw GraphQLException.fromGraphQLError(
           GraphQLException.CODE_MUTATION_EXCEPTION, result.errors);
     }
@@ -95,11 +96,11 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       stripeAccount: stripeAccount,
     );
 
-    print('startStripePaymentWithExistingCard.confirmPayment().start()');
+    log.d('startStripePaymentWithExistingCard.confirmPayment().start()');
     Map<String, dynamic> paymentResponse = await stripe.confirmPayment(
         clientSecret,
         paymentMethodId: merchantPaymentMethodId ?? paymentMethodId);
-    print(
+    log.d(
         'startStripePaymentWithExistingCard.confirmPayment().paymentResponse=$paymentResponse');
   }
 
@@ -107,9 +108,9 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
   @override
   Future<void> startStripePaymentWithNewCard(Cart cart, StripeCard stripeCard,
       UserInvoiceAddress? invoiceAddress, bool saveCard) async {
-    print('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
-    print('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
-    print(
+    log.d('startStripePaymentWithNewCard().start()=$cart, $stripeCard');
+    log.d('startStripePaymentWithNewCard().card.number=${stripeCard.number}');
+    log.d(
         'startStripePaymentWithExistingCard().invoiceAddress=$invoiceAddress');
     await _cartProvider.setPaymentMode(
         cart.unitId,
@@ -120,7 +121,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
         ));
 
     String? orderId = await _cartProvider.createAndSendOrderFromCart();
-    print('startStripePaymentWithNewCard().orderId=$orderId');
+    log.d('startStripePaymentWithNewCard().orderId=$orderId');
     return startOrderStripePaymentWithNewCard(
       orderId,
       stripeCard,
@@ -138,7 +139,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     Map<String, dynamic> paymentMethod =
         await _stripe.api.createPaymentMethodFromCard(stripeCard);
     String paymentMethodId = paymentMethod['id'];
-    print('startStripePaymentWithNewCard().paymentMethodId=$paymentMethodId');
+    log.d('startStripePaymentWithNewCard().paymentMethodId=$paymentMethodId');
 
     var result = await GQL.amplify.execute(api.StartPaymentMutation(
       variables: api.StartPaymentArguments(
@@ -158,27 +159,27 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
     }
 
     String? clientSecret = result.data!.startStripePayment?.clientSecret;
-    print('startStripePaymentWithNewCard.clientSecret=$clientSecret');
+    log.d('startStripePaymentWithNewCard.clientSecret=$clientSecret');
     if (clientSecret == null) {
       throw StripeException(
           code: StripeException.CODE, message: 'Client secret is null!');
     }
 
-    print('startStripePaymentWithNewCard.confirmPayment().start()');
+    log.d('startStripePaymentWithNewCard.confirmPayment().start()');
     Map<String, dynamic> paymentResponse =
         await _stripe.confirmPayment(clientSecret);
-    print(
+    log.d(
         'startStripePaymentWithNewCard.confirmPayment().paymentResponse=$paymentResponse');
   }
 
   @override
   Future<bool> createPaymentMethodFromCard(
       String secret, StripeCard card) async {
-    print('createPaymentMethodFromCard().start()');
+    log.d('createPaymentMethodFromCard().start()');
     try {
       // _stripe.api.createPaymentMethodFromCard();
       final paymentMethod = await _stripe.api.createPaymentMethodFromCard(card);
-      print('createPaymentMethodFromCard().paymentMethod=$paymentMethod');
+      log.d('createPaymentMethodFromCard().paymentMethod=$paymentMethod');
       return false;
     } on Exception catch (e) {
       throw StripeException.fromException(StripeException.UNKNOWN_ERROR, e);
@@ -222,7 +223,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       return StripePaymentMethod.fromJson(
           result.data!.createStripeCard!.toJson());
     } on Exception catch (e) {
-      print('createStripeCard().exception=$e');
+      log.e('createStripeCard().exception=$e');
       rethrow;
     }
   }
@@ -242,7 +243,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
 
       return !result.hasErrors;
     } on Exception catch (e) {
-      print('deleteStripeCard().exception=$e');
+      log.e('deleteStripeCard().exception=$e');
       rethrow;
     }
   }
@@ -264,7 +265,7 @@ class GraphQLStripePaymentProvider implements IStripePaymentProvider {
       return StripePaymentMethod.fromJson(
           result.data!.updateMyStripeCard!.toJson());
     } on Exception catch (e) {
-      print('updateStripeCard().exception=$e');
+      log.e('updateStripeCard().exception=$e');
       rethrow;
     }
   }

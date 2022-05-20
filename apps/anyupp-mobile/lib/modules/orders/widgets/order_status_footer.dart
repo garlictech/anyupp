@@ -56,7 +56,7 @@ class _OrderStatusFooterState extends State<OrderStatusFooter>
     int progressPosition =
         statusList.indexWhere((element) => element == status);
     // int progressPosition = statusList.indexOf(statusList.firstWhere((element) => element.toUpperCase() == status));
-    // print('***** status=$status, progressPosition=$progressPosition');
+    // log.d('***** status=$status, progressPosition=$progressPosition');
 
     return _buildStepper(context, progressPosition);
   }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
@@ -37,14 +36,14 @@ class _LanguageMenuState extends State<LanguageMenu> {
   void initState() {
     super.initState();
     LocaleState state = getIt<LocaleBloc>().state;
-    print('LanguageMenu.initState()=$state');
+    log.d('LanguageMenu.initState()=$state');
     if (state is LocaleSelected) {
       _selectedLocale = state.locale;
     }
 
     if (_selectedLocale == null) {
       final String defaultLocale = Platform.localeName;
-      print('LanguageMenu.defaultLocale()=$defaultLocale');
+      log.d('LanguageMenu.defaultLocale()=$defaultLocale');
       if (defaultLocale.startsWith('hu')) {
         _selectedLocale = Locale('hu', 'HU');
       } else {
@@ -52,7 +51,7 @@ class _LanguageMenuState extends State<LanguageMenu> {
       }
     }
 
-    print('LanguageMenu._selectedLocale()=$_selectedLocale');
+    log.d('LanguageMenu._selectedLocale()=$_selectedLocale');
   }
 
   @override

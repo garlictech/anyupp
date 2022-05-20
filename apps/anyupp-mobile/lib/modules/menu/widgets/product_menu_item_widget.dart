@@ -26,7 +26,7 @@ class ProductMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print('ProductMenuItem.servingMode=$servingMode');
+    // log.d('ProductMenuItem.servingMode=$servingMode');
     final double heightContainer = 130;
     final double widthContainer = 130;
 

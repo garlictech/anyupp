@@ -12,7 +12,7 @@ final ChromeSafariBrowser browser = ChromeSafariBrowserExt(
 );
 
 void reLaunchURL() async {
-  print('reLaunchURL()');
+  log.d('reLaunchURL()');
   if (lastProvider != null) {
     launchURL(lastProvider!);
   }
@@ -27,7 +27,7 @@ void launchURL(String provider) async {
       'response_type=CODE&'
       'client_id=${AppConfig.UserPoolClientId}'
       '&scope=email+openid+profile+phone+aws.cognito.signin.user.admin';
-  print('launchURL().url=$url');
+  log.d('launchURL().url=$url');
 
   if (browser.isOpened()) {
     await browser.close();
@@ -35,7 +35,7 @@ void launchURL(String provider) async {
 
   // browser = MyChromeSafariBrowser();
   try {
-    print('launchURL().start opening().');
+    log.d('launchURL().start opening().');
     await browser.open(
       url: Uri.parse(url),
       options: ChromeSafariBrowserClassOptions(
@@ -55,7 +55,7 @@ void launchURL(String provider) async {
       ),
     );
   } catch (e) {
-    print('launchURL().error=$e');
+    log.e('launchURL().error=$e');
 
     // An exception is thrown if browser app is not installed on Android device.
     debugPrint(e.toString());

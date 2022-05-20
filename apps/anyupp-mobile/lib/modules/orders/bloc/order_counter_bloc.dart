@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderCounterBloc
     extends Bloc<BaseOrderCounterAction, BaseOrderCounterState> {
@@ -19,7 +21,7 @@ class OrderCounterBloc
       int count = await _repository.getActiveOrderCount(event.unitId);
       emit(ActiveOrderCount(count));
     } on Exception catch (e) {
-      print('OrderCounterBloc.error=$e');
+      log.e('OrderCounterBloc.error=$e');
       emit(OrderCounterLoadError('ORDER_COUNTER_BLOC', e.toString(), null));
     }
   }

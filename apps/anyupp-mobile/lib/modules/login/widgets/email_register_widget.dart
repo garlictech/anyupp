@@ -36,12 +36,12 @@ class _EmailRegisterDialogContentWidgetState
       child: BlocBuilder<LoginBloc, LoginState>(
           builder: (BuildContext context, LoginState state) {
         if (state is EmailRegistrationSuccess) {
-          print('EmailRegisterDialogContentWidget.auth.bloc.state=$state');
+          log.d('EmailRegisterDialogContentWidget.auth.bloc.state=$state');
           getIt<LoginBloc>().add(ChangeEmailFormUI(
               ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
               animationCurve: Curves.easeIn));
         }
-        // print('PhoneDialogContentWidget.bloc.state=$state');
+        // log.d('PhoneDialogContentWidget.bloc.state=$state');
 
         if (state is EmailLoginInProgress) {
           return _buildLoading(context);
@@ -174,7 +174,7 @@ class _EmailRegisterDialogContentWidgetState
   }
 
   void _sendRegistrationRequest() {
-    print('_sendRegistrationRequest()=${_emailController.text}');
+    log.d('_sendRegistrationRequest()=${_emailController.text}');
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       if (_password1Controller.text != _password2Controller.text) {

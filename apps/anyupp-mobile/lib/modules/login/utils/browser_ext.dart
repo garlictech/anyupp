@@ -1,4 +1,5 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:fa_prev/core/core.dart';
 
 class ChromeSafariBrowserExt extends ChromeSafariBrowser {
   final Function? whenClosed;
@@ -9,13 +10,13 @@ class ChromeSafariBrowserExt extends ChromeSafariBrowser {
 
   @override
   void onOpened() {
-    print("ChromeSafari browser opened");
+    log.d("ChromeSafari browser opened");
     super.onOpened();
   }
 
   @override
   void onCompletedInitialLoad() {
-    print("ChromeSafari browser initial load completed");
+    log.d("ChromeSafari browser initial load completed");
     super.onCompletedInitialLoad();
     if (closeWhenLoaded == true) {
       // this.close();
@@ -25,7 +26,7 @@ class ChromeSafariBrowserExt extends ChromeSafariBrowser {
 
   @override
   void onClosed() {
-    print("ChromeSafari browser closed");
+    log.d("ChromeSafari browser closed");
     super.onClosed();
     if (whenClosed != null) {
       whenClosed!();

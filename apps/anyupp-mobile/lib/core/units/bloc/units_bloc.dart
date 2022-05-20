@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/units/units.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/location.dart';
 import 'package:flutter/services.dart';
@@ -54,10 +54,10 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
       DetectLocationAndLoadUnits event, Emitter<UnitsState> emit) async {
     emit(UnitsLoading());
     try {
-      print('****** Start getting location');
+      log.d('****** Start getting location');
       // --- Get device current location (ask permissions if not granted)
       final LatLng? location = await _locationService.getUserCurrentLocation();
-      print('****** Current Location=$location');
+      log.d('****** Current Location=$location');
       if (location == null) {
         emit(UnitsNotLoaded(
           reasonCode: 'ERROR_LOCATION_NOT_FOUND',

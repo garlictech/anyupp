@@ -33,7 +33,7 @@ Future<void> initDependencyInjection() async {
 }
 
 void _initCommon() async {
-  // print('AWS CONFIG=${AppConfig.config}');
+  // log.d('AWS CONFIG=${AppConfig.config}');
 
   final Stripe stripe = Stripe(
     AppConfig.StripePublishableKey,

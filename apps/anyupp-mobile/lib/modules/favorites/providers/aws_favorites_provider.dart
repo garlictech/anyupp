@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
@@ -7,6 +8,7 @@ import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/pagination/pagination.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+
 import 'favorites_provider_interface.dart';
 
 class AwsFavoritesProvider implements IFavoritesProvider {
@@ -31,7 +33,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       FavoriteProduct? added = await _addFavoriteProduct(unitId, productId);
 
       if (added == null) {
-        print('addOrRemoveFavoriteProduct.add failed');
+        log.w('addOrRemoveFavoriteProduct.add failed');
         return add;
       }
 
@@ -69,7 +71,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   @override
   Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId,
       [String? nextToken]) async {
-    print('_getFavorites().unitId=$unitId');
+    log.d('_getFavorites().unitId=$unitId');
     try {
       User? user = await _authProvider.getAuthenticatedUserProfile();
       if (user == null) {
@@ -101,14 +103,14 @@ class AwsFavoritesProvider implements IFavoritesProvider {
         nextToken: null,
       );
     } on Exception catch (e) {
-      print('AwsFavoritesProvider.getFavoritesList.Exception: $e');
+      log.e('AwsFavoritesProvider.getFavoritesList.Exception: $e');
       rethrow;
     }
   }
 
   Future<PageResponse<FavoriteProduct>> _getNextPage(
       String userId, String unitId, String? nextToken) async {
-    print(
+    log.d(
         'AwsFavoritesProvider.getFavoritesList().userId=$userId, unitId=$unitId');
     var result = await GQL.amplify.execute(
       ListFavoriteProductsQuery(
@@ -137,7 +139,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
     for (int i = 0; i < items.length; i++) {
       favorites.add(FavoriteProduct.fromJson(items[i]!.toJson()));
     }
-    print('***** getFavoritesList().favorites=$favorites');
+    log.d('***** getFavoritesList().favorites=$favorites');
     return PageResponse(
       data: favorites,
       totalCount: count,
@@ -146,7 +148,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   }
 
   Future<bool> _deleteFavoriteProduct(String favoriteProductId) async {
-    print('_deleteFavoriteProduct().id=$favoriteProductId');
+    log.d('_deleteFavoriteProduct().id=$favoriteProductId');
     try {
       var result = await GQL.amplify.execute(DeleteFavoriteProductMutation(
           variables: DeleteFavoriteProductArguments(
@@ -156,14 +158,14 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       return result.errors == null ||
           (result.errors != null && result.errors!.isEmpty);
     } on Exception catch (e) {
-      print('AwsFavoritesProvider._deleteFavoriteProduct.Exception: $e');
+      log.e('AwsFavoritesProvider._deleteFavoriteProduct.Exception: $e');
       rethrow;
     }
   }
 
   Future<FavoriteProduct?> _addFavoriteProduct(
       String unitId, String productId) async {
-    print('AwsFavoritesProvider._addFavoriteProduct().unit=$unitId');
+    log.d('AwsFavoritesProvider._addFavoriteProduct().unit=$unitId');
     try {
       User? user = await _authProvider.getAuthenticatedUserProfile();
       if (user == null) {
@@ -192,7 +194,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       return FavoriteProduct.fromJson(
           result.data!.createFavoriteProduct!.toJson());
     } on Exception catch (e) {
-      print('AwsFavoritesProvider._addFavoriteProduct.Exception: $e');
+      log.e('AwsFavoritesProvider._addFavoriteProduct.Exception: $e');
       rethrow;
     }
   }

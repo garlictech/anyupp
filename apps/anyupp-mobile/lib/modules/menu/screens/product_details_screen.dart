@@ -250,9 +250,9 @@ class ProductDetailsWidget extends StatelessWidget {
 
   void _addOrderItemToCart(
       BuildContext context, ConfigsetUpdated state, int quantity) {
-    print('_addOrderItemToCart().quantity=$quantity');
+    log.d('_addOrderItemToCart().quantity=$quantity');
     var orderItem = state.orderItem.copyWith(quantity: quantity);
-    print('_addOrderItemToCart().orderItem.quantity=$quantity');
+    log.d('_addOrderItemToCart().orderItem.quantity=$quantity');
     BlocProvider.of<CartBloc>(context)
         .add(AddProductToCartAction(state.unit, orderItem));
     Nav.pop();

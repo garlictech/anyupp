@@ -16,13 +16,13 @@ Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
   if (deletePlace) {
     await clearPlacePref(unit.id);
   }
-  print('selectUnitAndGoToMenuScreen=${unit.id}');
-  print(
+  log.d('selectUnitAndGoToMenuScreen=${unit.id}');
+  log.d(
       'selectUnitAndGoToMenuScreen.servingModes=${unit.supportedServingModes}');
 
   Cart? cart = await getIt<CartRepository>().getCurrentCart(unit.id);
-  print('selectUnitAndGoToMenuScreen().cart=${cart?.id}');
-  print('selectUnitAndGoToMenuScreen().servingMode=${cart?.servingMode}');
+  log.d('selectUnitAndGoToMenuScreen().cart=${cart?.id}');
+  log.d('selectUnitAndGoToMenuScreen().servingMode=${cart?.servingMode}');
 
   if (unit.supportedServingModes.length == 1) {
     _selectServingModeAndGo(
@@ -51,7 +51,7 @@ Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
     dismissable: dismissable,
     useTheme: useTheme,
   );
-  print('_selectUnitAndGoToMenuScreen().selectedMethodPos=$response');
+  log.d('_selectUnitAndGoToMenuScreen().selectedMethodPos=$response');
   if (response != null) {
     _selectServingModeAndGo(
       response.cart,
@@ -74,7 +74,7 @@ void _selectServingModeAndGo(
   bool deletePlace = false,
   bool cartDeleted = false,
 }) async {
-  // print('_selectServingModeAndGo().cart=${cart?.id}');
+  // log.d('_selectServingModeAndGo().cart=${cart?.id}');
   if (cart != null) {
     getIt<CartBloc>().add(SetCartServingMode(unit.id, servingMode));
     if (deletePlace == true) {

@@ -1,4 +1,4 @@
-import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -209,7 +209,7 @@ class _ProductConfigExtrasItemWidgetState
       _canSelectExtra = selectedCount < (widget.extraSet.maxSelection ?? 0);
       _selectedExtraCount = selectedCount;
     });
-    print(
+    log.d(
         '_updateSelectedCount()._canSelectExtra=$_canSelectExtra, count=$_selectedExtraCount, maxCount=${widget.extraSet.maxSelection}');
   }
 }

@@ -68,7 +68,7 @@ class _BalloonTransitionState extends State<_BalloonTransition>
       child: AnimatedBuilder(
         animation: _rotationAnimation,
         builder: (context, _) {
-          // print(_rotationAnimation.value);
+          // log.d(_rotationAnimation.value);
           // _BallonTransformation _ballonTransformation =
           //     _BallonTransformation.forAnimationValue(
           //   _rotationAnimation.value,

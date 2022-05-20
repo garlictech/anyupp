@@ -1,4 +1,6 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/auth.dart';
+
 import 'common_login_provider_interface.dart';
 
 class AwsCommonLoginProvider implements ICommonLoginProvider {
@@ -13,7 +15,7 @@ class AwsCommonLoginProvider implements ICommonLoginProvider {
       await _service.signOut();
       await _provider.clearUserSession();
     } on Exception catch (e) {
-      print('logoutFromBackend().error=$e');
+      log.e('logoutFromBackend().error=$e');
       rethrow;
     }
   }

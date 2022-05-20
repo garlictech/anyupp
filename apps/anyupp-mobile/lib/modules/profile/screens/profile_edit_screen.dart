@@ -190,6 +190,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   }
 
   // Future<void> _updateUserProfile() async {
-  //   print('_updateUserProfile()');
+  //   log.d('_updateUserProfile()');
   // }
 }

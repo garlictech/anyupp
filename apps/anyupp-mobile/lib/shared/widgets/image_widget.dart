@@ -27,7 +27,7 @@ class ImageWidget extends StatelessWidget {
     }
 
     final bool isS3Image = !url!.startsWith('http');
-    // print('ImageWidget.isS3=$isS3Image, image=$url');
+    // log.d('ImageWidget.isS3=$isS3Image, image=$url');
 
     final bool isSvg = url!.toLowerCase().endsWith('.svg');
     return isS3Image
@@ -45,12 +45,16 @@ class ImageWidget extends StatelessWidget {
                 fit: fit,
                 width: width,
                 height: height,
-                placeholderBuilder: placeholder != null ? (context) => placeholder! : null,
+                placeholderBuilder:
+                    placeholder != null ? (context) => placeholder! : null,
               )
             : CachedNetworkImage(
                 imageUrl: url!,
-                placeholder: placeholder != null ? (context, url) => placeholder! : null,
-                errorWidget: errorWidget != null ? (context, url, error) => errorWidget! : null,
+                placeholder:
+                    placeholder != null ? (context, url) => placeholder! : null,
+                errorWidget: errorWidget != null
+                    ? (context, url, error) => errorWidget!
+                    : null,
                 fit: fit,
                 width: width,
                 height: height,

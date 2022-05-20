@@ -34,12 +34,12 @@ class RatingOrderNotificationBloc
     Emitter<RatingOrderNotificationState> emit,
   ) async {
     emit(CheckingRatingNotifications());
-    // print('RatingOrderNotificationBloc.start()=${event.orders.length}');
+    // log.d('RatingOrderNotificationBloc.start()=${event.orders.length}');
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     event.orders.forEach((order) async {
-      // print('RatingOrderNotificationBloc.order=${order.id}');
+      // log.d('RatingOrderNotificationBloc.order=${order.id}');
       var now = DateTime.now();
 
       bool schedule = await isNeedScheduleNotification(order, now, prefs);
@@ -47,10 +47,11 @@ class RatingOrderNotificationBloc
       if (schedule) {
         var delay = calculateNotificationScheduleDelay(order, now);
 
-        // print('RatingOrderNotificationBloc.scheduling[$delay]=${order.id}');
+        // log.d('RatingOrderNotificationBloc.scheduling[$delay]=${order.id}');
         getIt<NotificationsBloc>().add(ScheduleOrderRatingNotification(
           orderId: order.id,
-          ratingPolicy: order.ratingPolicies![Random().nextInt(order.ratingPolicies!.length)],
+          ratingPolicy: order
+              .ratingPolicies![Random().nextInt(order.ratingPolicies!.length)],
           tipPolicy: order.paymentMode.method != PaymentMethod.inapp
               ? null
               : order.tipPolicy,
@@ -68,7 +69,7 @@ class RatingOrderNotificationBloc
     ShowRatingFromNotification event,
     Emitter<RatingOrderNotificationState> emit,
   ) async {
-    print('RatingOrderNotificationBloc._onShowRatingFromNotification=$event');
+    log.d('RatingOrderNotificationBloc._onShowRatingFromNotification=$event');
     try {
       Order? order = await orderRepository.getOrder(event.payload.orderId);
       if (order == null) {
@@ -81,14 +82,14 @@ class RatingOrderNotificationBloc
 
       if (isRated && isTipped) {
         // Already rated and tipped
-        print('RatingOrderNotificationBloc.Already rated and tipped.');
+        log.d('RatingOrderNotificationBloc.Already rated and tipped.');
         emit(RatingOrderNotificationInitial());
         return;
       }
 
       emit(RatingOrderNotificationInitial());
 
-      print('RatingOrderNotificationBloc.Showing screen: ${event.payload}');
+      log.d('RatingOrderNotificationBloc.Showing screen: ${event.payload}');
       if (order.transaction != null) {
         BuildContext? context = AppContext.context;
         getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
@@ -124,7 +125,7 @@ class RatingOrderNotificationBloc
         }
       }
     } on Exception catch (e) {
-      print('RatingOrderNotificationBloc.onError=$e');
+      log.e('RatingOrderNotificationBloc.onError=$e');
     }
   }
 }

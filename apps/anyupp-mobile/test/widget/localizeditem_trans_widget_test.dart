@@ -3,6 +3,7 @@ import 'package:fa_prev/shared/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import '../test_logger.dart';
 
 class LocalizationsTestWidget extends StatelessWidget {
   final LocalizedItem item;
@@ -12,7 +13,7 @@ class LocalizationsTestWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
+    tlog.d(
         'LocalizationsTestWidget.getLocalizedText().text=${getLocalizedText(context, item)}');
     return Column(
       children: [

@@ -20,7 +20,7 @@ class UnitCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print('unit.supportedServingModes=${unit.supportedServingModes}');
+    // log.d('unit.supportedServingModes=${unit.supportedServingModes}');
     return InkWell(
       key: const Key('unit-widget'),
       onTap: onTap,
@@ -76,12 +76,15 @@ class UnitCardWidget extends StatelessWidget {
                               unit,
                               transEx(context, "selectUnit.closed"),
                               transEx(context, "selectUnit.opens"),
-                              transEx(
-                                  context, "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
+                              transEx(context,
+                                  "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
                             )
                           : transEx(context, "selectUnit.opened") +
                               ": " +
-                              transEx(context, GeoUnitUtils.getOpenedHour(unit)!.getOpenRangeString()!),
+                              transEx(
+                                  context,
+                                  GeoUnitUtils.getOpenedHour(unit)!
+                                      .getOpenRangeString()!),
                       style: Fonts.satoshi(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w400,

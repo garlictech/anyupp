@@ -74,7 +74,7 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
     return BlocListener<UnitsBloc, UnitsState>(
       listener: (BuildContext context, UnitsState state) async {
         if (state is UnitsLoaded) {
-          print('***************** UNITS LOADED');
+          log.d('***************** UNITS LOADED');
           await _handleUnitFoundByQRCode(context, state.units);
         }
         if (state is UnitsNotLoaded) {
@@ -246,7 +246,7 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
     int index = units.indexWhere((GeoUnit unit) => unit.id == widget.unitId);
     GeoUnit? unit = index >= 0 ? units[index] : null;
     if (unit != null) {
-      print('***************** UNIT FOUND FOR QR=$unit');
+      log.d('***************** UNIT FOUND FOR QR=$unit');
       await setPlacePref(unit.id, widget.place);
       _flipCardState.currentState?.toggleCard();
       showNotification(

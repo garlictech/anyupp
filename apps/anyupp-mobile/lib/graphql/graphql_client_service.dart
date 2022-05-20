@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gql_dio_link/gql_dio_link.dart';
@@ -31,7 +32,7 @@ class GraphQLClientService {
       return getCrudClientWithApiKey(useApi: useApi);
     }
     String? accessToken = await authProvider.getAccessToken();
-    // print('GraphQLClientService.getAmplifyClient.accessToken=$accessToken');
+    // log.d('GraphQLClientService.getAmplifyClient.accessToken=$accessToken');
 
     // accessToken = null;
 
@@ -47,7 +48,7 @@ class GraphQLClientService {
         'host': Uri.parse(amplifyApiUrl).host,
       };
     }
-    // print('GraphQLClientService.headers=$headers');
+    // log.d('GraphQLClientService.headers=$headers');
     final encodedHeader = base64.encode(utf8.encode(jsonEncode(headers)));
 
     final httpLink = Link.from([
@@ -73,7 +74,7 @@ class GraphQLClientService {
     String graphqlWsApiUrl = amplifyApiUrl
         .replaceFirst('https:', 'wss:')
         .replaceFirst('appsync-api', 'appsync-realtime-api');
-    // print('GraphQLClientService.websocket=$graphqlWsApiUrl');
+    // log.d('GraphQLClientService.websocket=$graphqlWsApiUrl');
 
     final wsLink =
         WebSocketLink('$graphqlWsApiUrl?header=$encodedHeader&payload=e30=',
@@ -101,9 +102,9 @@ class GraphQLClientService {
 
   Future<ValueNotifier<GraphQLClient>> getCrudClientWithApiKey(
       {bool useApi = false}) async {
-    print('GraphQLClientService.getCrudClientWithApiKey().useApi=$useApi');
+    log.d('GraphQLClientService.getCrudClientWithApiKey().useApi=$useApi');
     String? accessToken = useApi ? null : await authProvider.getAccessToken();
-    // print('GraphQLClientService.getGraphQLClient.accessToken=$accessToken');
+    // log.d('GraphQLClientService.getGraphQLClient.accessToken=$accessToken');
 
     // accessToken = null;
 
@@ -128,7 +129,7 @@ class GraphQLClientService {
       ),
     ]);
 
-    print('GraphQLClientService.getCrudClientWithApiKey().headers=$headers');
+    log.d('GraphQLClientService.getCrudClientWithApiKey().headers=$headers');
 
     // final AuthLink authLink = AuthLink(
     //   getToken: () => accessToken, //accessToken != null ? 'Bearer $accessToken' : null,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
@@ -26,7 +27,7 @@ class AwsOrderProvider implements IOrdersProvider {
       //   variables: {},
       // );
     } on Exception catch (e) {
-      print('AwsOrderProvider.addInvoiceInfo().exception=$e');
+      log.e('AwsOrderProvider.addInvoiceInfo().exception=$e');
       rethrow;
     }
   }
@@ -41,11 +42,11 @@ class AwsOrderProvider implements IOrdersProvider {
     String unitId,
     StreamController<List<Order>?> controller,
   ) async {
-    print('startOrderListSubscription().controller=$controller');
+    log.d('startOrderListSubscription().controller=$controller');
     if (_subOrderList != null) {
-      // print('startOrderListSubscription().stopping');
+      // log.d('startOrderListSubscription().stopping');
       await stopOrderListSubscription();
-      // print('startOrderListSubscription().stopped');
+      // log.d('startOrderListSubscription().stopped');
     }
     User? user = await _authProvider.getAuthenticatedUserProfile();
     if (user == null) {
@@ -62,18 +63,19 @@ class AwsOrderProvider implements IOrdersProvider {
     await _subOrderList!.startListSubscription(
       controller: controller,
     );
-    print('startOrderListSubscription().end()');
+    log.d('startOrderListSubscription().end()');
   }
 
   @override
   Future<void> stopOrderListSubscription() async {
-    print('stopOrderListSubscription()');
+    log.d('stopOrderListSubscription()');
     await _subOrderList?.stopListSubscription();
   }
 
   @override
-  Future<void> startOrderHistoryListSubscription(String unitId, StreamController<List<Order>?> controller) async {
-    print('startOrderHistoryListSubscription()');
+  Future<void> startOrderHistoryListSubscription(
+      String unitId, StreamController<List<Order>?> controller) async {
+    log.d('startOrderHistoryListSubscription()');
     if (_subOrderHistoryList != null) {
       await stopOrderHistoryListSubscription();
     }
@@ -89,7 +91,7 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> stopOrderHistoryListSubscription() async {
-    print('stopOrderHistoryListSubscription()');
+    log.d('stopOrderHistoryListSubscription()');
     await _subOrderHistoryList?.stopListSubscription();
   }
 
@@ -103,7 +105,8 @@ class AwsOrderProvider implements IOrdersProvider {
       ));
 
       if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
 
       if (result.data?.getOrder == null) {
@@ -112,7 +115,7 @@ class AwsOrderProvider implements IOrdersProvider {
       Order order = Order.fromJson(result.data!.getOrder!.toJson());
       return order;
     } on Exception catch (e) {
-      print('AwsOrderProvider.getOrder.Exception: $e');
+      log.e('AwsOrderProvider.getOrder.Exception: $e');
       rethrow;
     }
   }
@@ -140,7 +143,8 @@ class AwsOrderProvider implements IOrdersProvider {
   }
 
   @override
-  bool get orderHistoryListHasMoreItems => _subOrderHistoryList?.hasMoreItems ?? false;
+  bool get orderHistoryListHasMoreItems =>
+      _subOrderHistoryList?.hasMoreItems ?? false;
 
   @override
   int get orderHistoryListTotalCount => _subOrderHistoryList?.itemCount ?? 0;
@@ -172,7 +176,7 @@ class AwsOrderProvider implements IOrdersProvider {
       }
       return result.data!.searchOrders?.total ?? 0;
     } on Exception catch (e) {
-      print('getActiveOrderCount.Exception: $e');
+      log.e('getActiveOrderCount.Exception: $e');
       return 0;
     }
   }

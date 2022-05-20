@@ -194,7 +194,7 @@ class CartScreen extends StatelessWidget {
   }
 
   Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
-    // print('_buildCartListAndTotal()=${cart.servingMode}');
+    // log.d('_buildCartListAndTotal()=${cart.servingMode}');
     Map<int, Allergen> cartAllergens = {};
     for (OrderItem item in cart.items) {
       if (item.allergens != null) {
@@ -281,8 +281,8 @@ class CartScreen extends StatelessWidget {
     Cart cart,
   ) {
     bool showQrCodeScan = cart.isPlaceEmpty;
-    // print('_buildPaymentButtonPanel().cart.orderPolicy=${cart.orderPolicy}');
-    // print('_buildPaymentButtonPanel().cart.place.empty=$showQrCodeScan');
+    // log.d('_buildPaymentButtonPanel().cart.orderPolicy=${cart.orderPolicy}');
+    // log.d('_buildPaymentButtonPanel().cart.place.empty=$showQrCodeScan');
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -528,7 +528,7 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildCartItem(BuildContext context, GeoUnit unit, OrderItem order,
       ServingMode servingMode) {
-    // print('_buildCartItem()=$order');
+    // log.d('_buildCartItem()=$order');
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(

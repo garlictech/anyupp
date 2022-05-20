@@ -10,8 +10,8 @@ void checkTextValue(String key, String expectedValue) {
   var textWidget = textFinder.evaluate().single.widget as Text;
   expect(textWidget, isNotNull);
 
-  // print('${textWidget.data?.characters} vs ${expectedValue.characters}');
-  // print('${textWidget.data?.codeUnits} vs ${expectedValue.codeUnits}');
+  // tlog.d('${textWidget.data?.characters} vs ${expectedValue.characters}');
+  // tlog.d('${textWidget.data?.codeUnits} vs ${expectedValue.codeUnits}');
 
   expect(textWidget.data, equals(expectedValue));
 }

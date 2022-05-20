@@ -22,7 +22,7 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
   FutureOr<void> _onLoadProductList(
       LoadProductList event, Emitter<ProductListState> emit) async {
     try {
-      print('********* ProductListBloc.LoadProductList()');
+      log.d('********* ProductListBloc.LoadProductList()');
       emit(ProductListLoading());
       var response = await _productRepository.getProductList(
         event.unitId,
@@ -31,10 +31,10 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
       );
       emit(ProductListLoaded(response));
     } on GraphQLException catch (e) {
-      print('********* ProductListBloc.PlatformException()=$e');
+      log.e('********* ProductListBloc.PlatformException()=$e');
       getIt<ExceptionBloc>().add(ShowException(e));
     } on Exception catch (e) {
-      print('********* ProductListBloc.Exception()=$e');
+      log.e('********* ProductListBloc.Exception()=$e');
       getIt<ExceptionBloc>().add(ShowException(ProductException.fromException(
         ProductException.ERROR_LOADING_PRODUCT_CATEGORIES,
         e,

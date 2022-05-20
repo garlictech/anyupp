@@ -17,11 +17,11 @@ String formatCurrencyWithSignal(double price, String currency) {
 
 GeneratedProductConfigSet? getModifierConfigSetById(
     String productSetId, List<GeneratedProductConfigSet> sets) {
-  // print('getModifierConfigSetById()=$productSetId');
+  // log.d('getModifierConfigSetById()=$productSetId');
   int index = sets.indexWhere((configSet) =>
       configSet.type == ProductComponentSetType.modifier &&
       configSet.productSetId == productSetId);
-  // print('getModifierConfigSetById().indec=$index');
+  // log.d('getModifierConfigSetById().indec=$index');
   if (index != -1) {
     return sets[index];
   }
@@ -121,6 +121,6 @@ double calculateTotalPrice(
       }
     });
   });
-  // print('calculateTotalPrice.price=${price}');
+  // log.d('calculateTotalPrice.price=${price}');
   return price;
 }

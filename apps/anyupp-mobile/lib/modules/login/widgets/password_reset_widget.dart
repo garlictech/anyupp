@@ -8,10 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PasswordResetDialogContentWidget extends StatefulWidget {
   @override
-  _PasswordResetDialogContentWidgetState createState() => _PasswordResetDialogContentWidgetState();
+  _PasswordResetDialogContentWidgetState createState() =>
+      _PasswordResetDialogContentWidgetState();
 }
 
-class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogContentWidget> {
+class _PasswordResetDialogContentWidgetState
+    extends State<PasswordResetDialogContentWidget> {
   final _codeController = TextEditingController();
   final _password1Controller = TextEditingController();
   final _password2Controller = TextEditingController();
@@ -29,8 +31,9 @@ class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogCo
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
       listener: (BuildContext context, LoginState state) {},
-      child: BlocBuilder<LoginBloc, LoginState>(builder: (BuildContext context, LoginState state) {
-        // print('PhoneDialogContentWidget.bloc.state=$state');
+      child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (BuildContext context, LoginState state) {
+        // log.d('PhoneDialogContentWidget.bloc.state=$state');
         if (state is PasswordResetInfoSentState) {
           return _buildRegistrationForm(context, state.userName);
         }
@@ -97,8 +100,9 @@ class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogCo
                   )),
               InkWell(
                 onTap: () {
-                  getIt<LoginBloc>()
-                      .add(ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
+                  getIt<LoginBloc>().add(ChangeEmailFormUI(
+                      ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                      animationCurve: Curves.easeIn));
                 },
                 child: Text(
                   trans('login.email.signIn'),
@@ -156,8 +160,9 @@ class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogCo
                   ),
                   InkWell(
                     onTap: () {
-                      getIt<LoginBloc>().add(
-                          ChangeEmailFormUI(ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD, animationCurve: Curves.easeIn));
+                      getIt<LoginBloc>().add(ChangeEmailFormUI(
+                          ui: LoginFormUI.SHOW_LOGIN_WITH_PASSWORD,
+                          animationCurve: Curves.easeIn));
                     },
                     child: Text(
                       trans('login.email.linkSignIn'),
@@ -208,7 +213,7 @@ class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogCo
   }
 
   void _sendRegistrationRequest(String userName) {
-    print('_sendRegistrationRequest()=${_codeController.text}');
+    log.d('_sendRegistrationRequest()=${_codeController.text}');
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       bool passwordsMatch = false;
@@ -217,11 +222,14 @@ class _PasswordResetDialogContentWidgetState extends State<PasswordResetDialogCo
       }
 
       if (!passwordsMatch) {
-        getIt<ExceptionBloc>().add(
-            ShowException(LoginException(code: LoginException.CODE, subCode: LoginException.ERROR_PASSWORD_MISMATCH)));
+        getIt<ExceptionBloc>().add(ShowException(LoginException(
+            code: LoginException.CODE,
+            subCode: LoginException.ERROR_PASSWORD_MISMATCH)));
       } else {
-        getIt<LoginBloc>()
-            .add(ConfirmPassword(userName: userName, code: _codeController.text, password: _password1Controller.text));
+        getIt<LoginBloc>().add(ConfirmPassword(
+            userName: userName,
+            code: _codeController.text,
+            password: _password1Controller.text));
       }
     }
   }

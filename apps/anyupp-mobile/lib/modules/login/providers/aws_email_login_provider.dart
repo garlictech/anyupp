@@ -1,4 +1,5 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
@@ -39,7 +40,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
           message: 'Invalid credentials');
     } on CognitoClientException catch (e) {
       // handle Wrong Username and Password and Cognito Client
-      print('loginWithEmailAndPassword.CognitoClientException=$e');
+      log.d('loginWithEmailAndPassword.CognitoClientException=$e');
       if (e.code == 'UserNotConfirmedException') {
         throw LoginException(
             code: e.code,
@@ -57,6 +58,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
         rethrow;
       }
     } on Exception catch (e) {
+      log.e('loginWithEmailAndPassword.exception=$e');
       throw LoginException.fromException(LoginException.UNKNOWN_ERROR, e);
     }
   }
@@ -68,7 +70,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
           await GQL.amplify.execute(CreateAnonymUserMutation(), useApi: true);
 
       if (result.hasErrors) {
-        print('signInAnonymously.response().exception=${result.errors}');
+        log.d('signInAnonymously.response().exception=${result.errors}');
         throw GraphQLException.fromGraphQLError(
           GraphQLException.CODE_MUTATION_EXCEPTION,
           result.errors,
@@ -87,7 +89,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
     } on LoginException {
       rethrow;
     } on Exception catch (e) {
-      print('signInAnonymously.exception=$e');
+      log.e('signInAnonymously.exception=$e');
       throw LoginException(
           code: LoginException.CODE,
           message: "Failed to Create Anonymus user",
@@ -107,16 +109,16 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       List<AttributeArg> attributes = [];
       attributes.add(AttributeArg(name: 'email', value: userEmail));
       String username = UUID.getUUID();
-      print(
+      log.d(
           '**** registerUserWithEmailAndPassword().username=$username, email=$email');
       CognitoUserPoolData userPoolData = await _service.userPool
           .signUp(username, password, userAttributes: attributes);
-      print(
+      log.d(
           '**** registerUserWithEmailAndPassword().userPoolData=$userPoolData');
 
       return Future.value(username);
     } on CognitoClientException catch (e) {
-      print(
+      log.e(
           '**** registerUserWithEmailAndPassword().CognitoClientException=$e');
       if (e.code == 'UsernameExistsException' ||
           e.code == 'UserLambdaValidationException') {
@@ -130,7 +132,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
 
       rethrow;
     } on Exception catch (e) {
-      print('**** registerUserWithEmailAndPassword().error=$e');
+      log.e('**** registerUserWithEmailAndPassword().error=$e');
       throw SignUpException.fromException(
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
@@ -153,6 +155,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
             message: userName);
       }
     } on Exception catch (e) {
+      log.e('confirmSignUp.exception=$e');
       throw SignUpException.fromException(
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
@@ -176,6 +179,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
             message: userName);
       }
     } on Exception catch (e) {
+      log.e('resendConfirmationCode.exception=$e');
       throw SignUpException.fromException(
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
@@ -193,6 +197,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       }
       return Future.value(codeDeliveryDetails);
     } on Exception catch (e) {
+      log.e('sendPasswordResetEmail.exception=$e');
       throw SignUpException.fromException(
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
@@ -206,6 +211,7 @@ class AwsEmailLoginProvider implements IEmailLoginProvider {
       final passwordConfirmed = await user.confirmPassword(code, newPassword);
       return Future.value(passwordConfirmed);
     } on Exception catch (e) {
+      log.e('confirmPassword.exception=$e');
       throw SignUpException.fromException(
           SignUpException.UNKNOWN_ERROR, e.toString(), e);
     }
