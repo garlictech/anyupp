@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   displayName: 'admin-shared-data-access-order',
 
   globals: {
@@ -12,5 +12,5 @@ export default {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory:
     '../../../../../coverage/libs/admin/shared/data-access/order',
-  preset: '../../../../../jest.preset.js',
+  preset: '../../../../../jest.preset.ts',
 };

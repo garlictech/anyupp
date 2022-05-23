@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   displayName: 'shared-fixtures',
 
   globals: {
@@ -9,5 +9,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/shared/fixtures',
-  preset: '../../../jest.preset.js',
+  preset: '../../../jest.preset.ts',
 };

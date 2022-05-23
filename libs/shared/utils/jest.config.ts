@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'shared-utils',
 
@@ -11,5 +11,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/shared/utils',
-  preset: '../../../jest.preset.js',
+  preset: '../../../jest.preset.ts',
 };

@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   displayName: 'backend-products',
 
   globals: {
@@ -12,5 +12,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/backend/products',
-  preset: '../../../jest.preset.js',
+  preset: '../../../jest.preset.ts',
 };

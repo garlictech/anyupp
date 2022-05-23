@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'admin-shared-data-access-auth',
 
@@ -12,5 +12,5 @@ export default {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory:
     '../../../../../coverage/libs/admin/shared/data-access/auth',
-  preset: '../../../../../jest.preset.js',
+  preset: '../../../../../jest.preset.ts',
 };

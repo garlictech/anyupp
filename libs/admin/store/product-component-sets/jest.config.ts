@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   displayName: 'admin-store-product-component-sets',
 
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
@@ -20,5 +20,5 @@ export default {
     '^.+.(ts|mjs|js|html)$': 'jest-preset-angular',
   },
   transformIgnorePatterns: ['node_modules/(?!.*.mjs$)'],
-  preset: '../../../../jest.preset.js',
+  preset: '../../../../jest.preset.ts',
 };

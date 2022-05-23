@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   displayName: 'common-backend',
 
   globals: {
@@ -13,5 +13,5 @@ export default {
   moduleFileExtensions: ['ts', 'js', 'html'],
   modulePathIgnorePatterns: ['cdk.out', '.build', '.serverless'],
   coverageDirectory: '../../coverage/apps/common-backend',
-  preset: '../../jest.preset.js',
+  preset: '../../jest.preset.ts',
 };

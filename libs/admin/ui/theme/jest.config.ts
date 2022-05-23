@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'admin-ui-theme',
 
@@ -20,5 +20,5 @@ export default {
     '^.+.(ts|mjs|js|html)$': 'jest-preset-angular',
   },
   transformIgnorePatterns: ['node_modules/(?!.*.mjs$)'],
-  preset: '../../../../jest.preset.js',
+  preset: '../../../../jest.preset.ts',
 };

@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'anyupp-gql-backend',
 
@@ -11,5 +11,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/anyupp-gql/backend',
-  preset: '../../../jest.preset.js',
+  preset: '../../../jest.preset.ts',
 };

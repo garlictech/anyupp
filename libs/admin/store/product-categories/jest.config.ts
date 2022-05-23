@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'admin-store-product-categories',
 
@@ -10,5 +10,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../../coverage/libs/admin/store/product-categories',
-  preset: '../../../../jest.preset.js',
+  preset: '../../../../jest.preset.ts',
 };

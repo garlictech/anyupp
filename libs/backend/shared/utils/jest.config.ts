@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   displayName: 'backend-shared-utils',
 
   globals: {
@@ -12,5 +12,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../../coverage/libs/backend/shared/utils',
-  preset: '../../../../jest.preset.js',
+  preset: '../../../../jest.preset.ts',
 };

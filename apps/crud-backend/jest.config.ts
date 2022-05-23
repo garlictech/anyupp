@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   displayName: 'crud-backend',
 
   globals: {
@@ -9,5 +9,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/crud-backend',
-  preset: '../../jest.preset.js',
+  preset: '../../jest.preset.ts',
 };

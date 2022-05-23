@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'cicd',
 
@@ -11,5 +11,5 @@ export default {
   moduleFileExtensions: ['ts', 'js', 'html'],
   modulePathIgnorePatterns: ['cdk.out', '.build', '.serverless'],
   coverageDirectory: '../../coverage/apps/cicd',
-  preset: '../../jest.preset.js',
+  preset: '../../jest.preset.ts',
 };

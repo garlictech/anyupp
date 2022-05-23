@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   displayName: 'admin-shared-data-access-ngrx-data',
 
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
@@ -19,5 +19,5 @@ export default {
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
-  preset: '../../../../../jest.preset.js',
+  preset: '../../../../../jest.preset.ts',
 };

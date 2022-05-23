@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   displayName: 'gql-sdk',
 
   globals: {
@@ -9,5 +9,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/gql-sdk',
-  preset: '../../jest.preset.js',
+  preset: '../../jest.preset.ts',
 };
