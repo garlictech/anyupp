@@ -4,10 +4,9 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { GroupFormService } from '@bgap/admin/pages/groups';
-import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
+import { GroupFormService } from '@bgap/admin/refactor';
+import { entityConfig } from '@bgap/admin/refactor';
+import { CrudSdkService } from '@bgap/admin/refactor';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { groupFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
@@ -48,7 +47,6 @@ describe('GroupFormService', () => {
         EffectsModule.forRoot([]),
         EntityDataModule.forRoot(entityConfig),
         HttpClientModule,
-        AdminSharedLoggedUserModule,
       ],
       providers: [
         EntityCollectionServiceElementsFactory,

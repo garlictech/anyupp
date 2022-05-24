@@ -1,0 +1,19 @@
+@import '../../../../../../../../../apps/admin/src/themes.scss';
+
+.accepting-orders {
+  position: relative;
+  top: -4px;
+}
+
+bgap-order-print {
+  display: none;
+}
+
+::ng-deep .selectedOrder {
+  background-color: nb-theme(color-basic-active) !important;
+}
+
+.user-icon {
+  position: relative;
+  top: 4px;
+}

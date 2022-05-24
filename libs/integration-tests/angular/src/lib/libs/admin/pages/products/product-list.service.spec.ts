@@ -4,10 +4,9 @@ import { of } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ProductListService } from '@bgap/admin/pages/products';
-import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
+import { ProductListService } from '@bgap/admin/refactor';
+import { entityConfig } from '@bgap/admin/refactor';
+import { CrudSdkService } from '@bgap/admin/refactor';
 import { NbDialogService } from '@nebular/theme';
 import {
   EntityCollectionServiceElementsFactory,
@@ -29,7 +28,6 @@ describe('ProductListService', () => {
         EffectsModule.forRoot([]),
         EntityDataModule.forRoot(entityConfig),
         HttpClientModule,
-        AdminSharedLoggedUserModule,
       ],
       providers: [
         ProductListService,

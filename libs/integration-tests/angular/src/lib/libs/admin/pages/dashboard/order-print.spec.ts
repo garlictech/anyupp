@@ -2,7 +2,7 @@ import {
   summarizeServiceFeeByTax,
   summarizeVariantsByTax,
   summarizeVatByTax,
-} from '@bgap/admin/pages/dashboard';
+} from '@bgap/admin/refactor';
 import { KeyValueObject } from '@bgap/shared/types';
 import { printableOrder } from './fixtures';
 import * as CrudApi from '@bgap/crud-gql/api';

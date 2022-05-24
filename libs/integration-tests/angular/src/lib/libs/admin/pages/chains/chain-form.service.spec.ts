@@ -1,13 +1,15 @@
 import { EMPTY, of } from 'rxjs';
 import { catchError, delay, switchMap, tap } from 'rxjs/operators';
 
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ChainFormService } from '@bgap/admin/pages/chains';
-import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
-import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
+import {
+  ChainFormService,
+  CrudSdkService,
+  entityConfig,
+} from '@bgap/admin/refactor';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { chainFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
@@ -48,7 +50,6 @@ describe('ChainFormService', () => {
         EffectsModule.forRoot([]),
         EntityDataModule.forRoot(entityConfig),
         HttpClientModule,
-        AdminSharedLoggedUserModule,
       ],
       providers: [
         EntityCollectionServiceElementsFactory,

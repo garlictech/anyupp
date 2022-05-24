@@ -1,7 +1,8 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
-import { ChainCollectionService } from '@bgap/admin/store/chains';
+import { entityConfig } from '@bgap/admin/refactor';
+import { ChainCollectionService } from '@bgap/admin/refactor';
 import {
   EntityCollectionServiceElementsFactory,
   EntityDataModule,

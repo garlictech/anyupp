@@ -8,14 +8,6 @@ import localeHu from '@angular/common/locales/hu';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { environment } from '@bgap/admin/shared/config';
-import { AdminSharedFloorMapModule } from '@bgap/admin/shared/floor-map';
-import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
-import { AdminSharedAppCoreModule } from '@bgap/admin/store/app-core';
-import { AdminSharedDashboardModule } from '@bgap/admin/store/dashboard';
-import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
-import { AdminUiCoreModule } from '@bgap/admin/ui/core';
-import { AdminUiThemeModule } from '@bgap/admin/ui/theme';
 import {
   NbDialogModule,
   NbGlobalPhysicalPosition,
@@ -31,12 +23,21 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NotFoundComponent } from './not-found.component';
 import { EntityDataModule } from '@ngrx/data';
-import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
-import { AppInitializerService } from '@bgap/admin/shared/data-access/data';
+import {
+  AdminUiThemeModule,
+  AdminUiCoreModule,
+  environment,
+  AdminSharedFloorMapModule,
+  AdminSharedLoggedUserModule,
+  AdminSharedDashboardModule,
+  AdminSharedAppCoreModule,
+  DEFAULT_LANG,
+  entityConfig,
+  AppInitializerService,
+  AppRoutingModule,
+} from '@bgap/admin/refactor';
 
 const NB_MODULES = [
   NbThemeModule.forRoot({ name: 'anyUppTheme' }),
@@ -76,7 +77,7 @@ export const initApp = (settingsService: AppInitializerService) => () =>
   settingsService.init$();
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent],
+  declarations: [AppComponent],
   imports: [
     CommonModule,
     BrowserModule,

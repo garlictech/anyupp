@@ -1,9 +1,10 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import {
   getPreviewSVG,
   hexToRgb,
   isDark,
   mixWithOpacity,
-} from '@bgap/admin/pages/chains';
+} from '@bgap/admin/refactor';
 
 describe('Chain pure functions', () => {
   it('hexToRgb should calculate rgb values from a hex value', () => {

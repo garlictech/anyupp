@@ -1,0 +1,50 @@
+::ng-deep #print-content {
+  display: block;
+
+  transform: scale(0.5);
+  transform-origin: top left;
+
+  width: 140mm;
+  font-size: 15pt !important;
+  line-height: 20pt !important;
+
+  padding: 0;
+
+  padding-bottom: 40px;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-weight: bold;
+
+  .bottom-border {
+    border-bottom: 1px solid silver;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+
+  .bottom-placeholder {
+    color: silver;
+    padding-top: 20px;
+  }
+
+  .logo {
+    // width: 200px;
+    width: 150px;
+  }
+  .chain-header {
+    vertical-align: top;
+    padding-top: 20px;
+  }
+  .qr {
+    width: 180px;
+  }
+}
+
+::ng-deep #preview-content {
+  transform: scale(1.5);
+  transform-origin: top left;
+}
+
+.takeaway-logo {
+  width: 16px;
+  position: relative;
+  margin-bottom: 3px;
+}

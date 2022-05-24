@@ -1,0 +1,33 @@
+.block-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.picture {
+  height: 2.5rem;
+  width: 2.5rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  background-color: transparent;
+  border: 1px solid #edf1f7;
+  margin-right: 0.5rem;
+}
+
+.initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-container {
+  margin-left: 0;
+}
+
+.title {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}

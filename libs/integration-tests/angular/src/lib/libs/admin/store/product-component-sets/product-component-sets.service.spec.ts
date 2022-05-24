@@ -1,6 +1,7 @@
+/* eslint-disable @nrwl/nx/enforce-module-boundaries */
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
+import { entityConfig } from '@bgap/admin/refactor';
 import {
   EntityCollectionServiceElementsFactory,
   EntityDataModule,
@@ -8,7 +9,7 @@ import {
 } from '@ngrx/data';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { ProductComponentSetCollectionService } from '@bgap/admin/store/product-component-sets';
+import { ProductComponentSetCollectionService } from '@bgap/admin/refactor';
 
 import { testFixtures } from '../helper/fixtures';
 import {

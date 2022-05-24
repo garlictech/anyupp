@@ -3,8 +3,8 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ProductCategoryFormService } from '@bgap/admin/pages/product-categories';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+import { ProductCategoryFormService } from '@bgap/admin/refactor';
+import { CrudSdkService } from '@bgap/admin/refactor';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { productCategoryFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
@@ -17,9 +17,8 @@ import {
   EntityDataModule,
   EntityDispatcherFactory,
 } from '@ngrx/data';
-import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
+import { entityConfig } from '@bgap/admin/refactor';
 import { HttpClientModule } from '@angular/common/http';
-import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
 
 describe('ProductCategoryFormService', () => {
   const productCategoryId = `${testIdPrefix}ADMIN_PRODUCT_CATEGORY_IT_PRODUCT_CATEGORY_ID_01`;
@@ -48,7 +47,6 @@ describe('ProductCategoryFormService', () => {
         EffectsModule.forRoot([]),
         EntityDataModule.forRoot(entityConfig),
         HttpClientModule,
-        AdminSharedLoggedUserModule,
       ],
       providers: [
         EntityCollectionServiceElementsFactory,

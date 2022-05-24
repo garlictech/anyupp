@@ -1,4 +1,4 @@
-import { getPDF, getQR } from '@bgap/admin/shared/utils';
+import { getPDF, getQR } from '@bgap/admin/refactor';
 
 describe('QrGenerator', () => {
   it('getQR should create SVG', async () => {

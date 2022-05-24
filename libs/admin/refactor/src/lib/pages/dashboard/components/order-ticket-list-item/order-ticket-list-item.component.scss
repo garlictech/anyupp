@@ -1,0 +1,45 @@
+@import '../../../../../../../../../apps/admin/src/themes.scss';
+
+.smaller-icon {
+  font-size: smaller;
+}
+
+.table-seat {
+  width: 30px !important;
+  position: absolute;
+  left: -0.4rem;
+  top: -0.4rem;
+  bottom: -0.4rem;
+  text-align: center;
+  font-size: 20px;
+  color: white;
+  padding-top: 3px;
+}
+
+.bg-placed {
+  background-color: nb-theme(color-warning-500) !important;
+}
+.bg-processing {
+  background-color: nb-theme(color-primary-500) !important;
+}
+.bg-ready {
+  background-color: nb-theme(color-info-500) !important;
+}
+.bg-paid,
+.bg-served {
+  background-color: nb-theme(color-success-500) !important;
+}
+.bg-rejected,
+.bg-none {
+  background-color: nb-theme(color-danger-500) !important;
+}
+
+.ml-4-5 {
+  margin-left: 1.8rem !important;
+}
+
+.takeaway-logo {
+  width: 16px;
+  position: relative;
+  margin-bottom: 2px;
+}

@@ -1,0 +1,16 @@
+@import '../../../../../../../../../apps/admin/src/themes.scss';
+
+span {
+  display: inline-block;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+
+  &.green {
+    background-color: nb-theme(color-success-500);
+  }
+
+  &.red {
+    background-color: nb-theme(color-danger-500);
+  }
+}

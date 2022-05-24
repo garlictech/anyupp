@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { CognitoService } from '@bgap/admin/shared/data-access/auth';
-import { DataService } from '@bgap/admin/shared/data-access/data';
-import { DEFAULT_LANG } from '@bgap/admin/shared/utils';
 import { TranslateService } from '@ngx-translate/core';
+import {
+  CognitoService,
+  DataService,
+  DEFAULT_LANG,
+} from '@bgap/admin/refactor';
 
 @Component({
   selector: 'bgap-root',

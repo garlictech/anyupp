@@ -3,8 +3,8 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { TestBed } from '@angular/core/testing';
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
-import { ProductFormService } from '@bgap/admin/pages/products';
-import { CrudSdkService } from '@bgap/admin/shared/data-access/sdk';
+import { ProductFormService } from '@bgap/admin/refactor';
+import { CrudSdkService } from '@bgap/admin/refactor';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { productFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { EProductLevel, UpsertResponse } from '@bgap/shared/types';
@@ -16,10 +16,9 @@ import {
   EntityDataModule,
   EntityDispatcherFactory,
 } from '@ngrx/data';
-import { entityConfig } from '@bgap/admin/shared/data-access/ngrx-data';
+import { entityConfig } from '@bgap/admin/refactor';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
-import { AdminSharedLoggedUserModule } from '@bgap/admin/store/logged-user';
 
 describe('ProductFormService', () => {
   const chainProductId = `${testIdPrefix}ADMIN_PRODUCT_IT_CHAIN_PRODUCT_ID_01`;
@@ -58,7 +57,6 @@ describe('ProductFormService', () => {
         EffectsModule.forRoot([]),
         EntityDataModule.forRoot(entityConfig),
         HttpClientModule,
-        AdminSharedLoggedUserModule,
       ],
       providers: [
         EntityCollectionServiceElementsFactory,

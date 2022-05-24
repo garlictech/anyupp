@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormsService } from '@bgap/admin/shared/forms';
+import { FormsService } from '@bgap/admin/refactor';
 import { StoreModule } from '@ngrx/store';
 
 describe('FormsService', () => {
