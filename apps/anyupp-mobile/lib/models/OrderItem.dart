@@ -118,7 +118,8 @@ class OrderItem {
           ? List<Allergen>.from(
               map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
           : null,
-      productType: enumFromString(map['productType'], ProductType.values),
+      productType: enumFromStringNull(map['productType'], ProductType.values) ??
+          ProductType.other,
       configSets: map['configSets'] != null
           ? List<OrderItemConfigSet>.from(
               map['configSets']?.map((x) => OrderItemConfigSet.fromJson(x)))

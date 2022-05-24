@@ -122,7 +122,7 @@ class Profile extends StatelessWidget {
                   ProfileListItemWidget(
                     icon: Icons.shopping_bag,
                     titleKey: 'profile.menu.transactions',
-                    border: ProfileBorder.TOP,
+                    border: ProfileBorder.NONE,
                     separator: true,
                     onTap: () => Nav.to(TransactionsScreen()),
                   ),

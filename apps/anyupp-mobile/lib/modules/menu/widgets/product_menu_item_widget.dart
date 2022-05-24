@@ -17,7 +17,7 @@ class ProductMenuItem extends StatelessWidget {
 
   final double _disabled_opacity = 0.5;
 
-  ProductMenuItem({
+  const ProductMenuItem({
     required this.item,
     required this.unit,
     required this.displayState,

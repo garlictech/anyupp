@@ -126,7 +126,7 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                 ),
                 FormTextFieldWidget(
                   controller: _cardNumberController,
-                  focusNode: _focusNodes[0],
+                  // focusNode: _focusNodes[0],
                   labelKey: 'payment.newCard.hint.card_number',
                   icon: Icons.credit_card_outlined,
                   autofocus: true,
@@ -161,7 +161,7 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                       flex: 1,
                       child: FormTextFieldWidget(
                         controller: _expDateController,
-                        focusNode: _focusNodes[1],
+                        // focusNode: _focusNodes[1],
                         labelKey: 'payment.newCard.hint.expiry',
                         icon: Icons.event_outlined,
                         border: BorderRadius.only(
@@ -217,7 +217,7 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                       flex: 1,
                       child: FormTextFieldWidget(
                         controller: _cvvNumberController,
-                        focusNode: _focusNodes[2],
+                        // focusNode: _focusNodes[2],
                         labelKey: 'payment.newCard.hint.cvc',
                         icon: Icons.lock,
                         border: BorderRadius.only(

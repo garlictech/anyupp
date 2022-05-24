@@ -295,8 +295,7 @@ class _ProductDetailsImageWidget extends StatelessWidget {
         ),
         child: ImageWidget(
           url: url,
-          // height: MediaQuery.of(context).size.width / 2,
-          // height: 100.0,
+          fit: BoxFit.fitHeight,
           placeholder: Container(
             padding: EdgeInsets.all(50.0),
             decoration: BoxDecoration(
@@ -308,8 +307,6 @@ class _ProductDetailsImageWidget extends StatelessWidget {
                 color: theme.secondary16.withOpacity(0.4),
               ),
             ),
-            // width: widthContainer,
-            // height: heightContainer,
             child: CircularProgressIndicator(
               backgroundColor: theme.secondary12,
             ),
@@ -331,7 +328,6 @@ class _ProductDetailsImageWidget extends StatelessWidget {
               size: 32.0,
             ),
           ),
-          fit: BoxFit.fitHeight,
         ),
       ),
     );

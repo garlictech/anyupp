@@ -97,176 +97,194 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
         child: BlocBuilder<ProductListBloc, ProductListState>(
             builder: (context, state) {
           if (state is ProductListLoading) {
-            return CenterLoadingWidget();
+            return const CenterLoadingWidget();
           }
 
           if (state is ProductListLoaded) {
             var items = state.products.data;
             _nextToken = state.products.nextToken;
             if (items == null || items.isEmpty) {
-              return _buildEmptyList(context);
+              return const ProductEmptyListWidget();
             }
-            return _buildList(widget.unit, items);
+            return BlocBuilder<TakeAwayBloc, TakeAwayState>(
+                builder: (context, state) {
+              ServingMode? mode;
+              if (state is ServingModeSelectedState) {
+                mode = state.servingMode;
+              }
+              // log.d('_buildList.servingMode=$mode');
+              bool hasItems = _hasVisibleProducts(
+                items,
+                mode,
+                widget.unit.soldOutVisibilityPolicy,
+              );
+
+              int itemCount = items.length;
+
+              // Banner rendering
+              bool hasAdBanner = widget.unit.adBannersEnabled == true;
+              AdBanner? banner;
+              int bannerIndex = -1;
+              if (hasAdBanner) {
+                banner = getRandomBanner(
+                  banners: widget.unit.adBanners,
+                  position: -1,
+                );
+                bannerIndex = RND.nextInt(items.length);
+                itemCount += 1;
+              }
+              if (banner == null || bannerIndex < 0 || _adBannerHidden) {
+                hasAdBanner = false;
+                itemCount = items.length;
+              }
+
+              return AnimationLimiter(
+                  child: SmartRefresher(
+                enablePullDown: true,
+                header: const MaterialClassicHeader(),
+                onRefresh: _onRefresh,
+                controller: _refreshController,
+                child: !hasItems
+                    ? EmptyWidget(
+                        icon: 'assets/icons/empty-category.png',
+                        messageKey: mode == ServingMode.takeAway
+                            ? 'main.category.emptyTakeaway'
+                            : 'main.category.emptyInPlace',
+                        descriptionKey: 'main.category.emptyHint',
+                        textFontSize: 18.0,
+                        descriptionFontSize: 14.0,
+                        horizontalPadding: 32.0,
+                        iconSize: 32.0,
+                        background: Colors.transparent,
+                      )
+                    : ListView.builder(
+                        itemCount: itemCount,
+                        scrollDirection: Axis.vertical,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, position) {
+                          if (hasAdBanner &&
+                              banner != null &&
+                              position == bannerIndex) {
+                            return AnimationConfiguration.staggeredList(
+                              position: position,
+                              duration: const Duration(milliseconds: 200),
+                              child: SlideAnimation(
+                                verticalOffset: 50.0,
+                                child: FadeInAnimation(
+                                  child: AdBannerCardWidget(
+                                      banner: banner,
+                                      animated: true,
+                                      onClosed: () {
+                                        setState(() {
+                                          _adBannerHidden = true;
+                                        });
+                                      }),
+                                ),
+                              ),
+                            );
+                          }
+
+                          int pos = position;
+                          if (hasAdBanner && position > bannerIndex) {
+                            pos--;
+                          }
+                          var product = items[pos];
+
+                          bool isAvailableInThisServingMode =
+                              product.isAvailableInServingMode(mode);
+                          bool isSoldOut = product.isSoldOut;
+                          bool isHidden = isSoldOut &&
+                              widget.unit.soldOutVisibilityPolicy ==
+                                  SoldOutVisibilityPolicy.invisible;
+                          ProductItemDisplayState displayState =
+                              ProductItemDisplayState.NORMAL;
+                          if (isSoldOut) {
+                            displayState = ProductItemDisplayState.SOLDOUT;
+                          } else if (!isAvailableInThisServingMode) {
+                            displayState = ProductItemDisplayState.DISABLED;
+                          }
+
+                          if (isHidden) {
+                            return Container();
+                          }
+
+                          if (pos == itemCount &&
+                              itemCount % _pageSize == 0 &&
+                              _nextToken != null) {
+                            getIt<ProductListBloc>().add(LoadProductList(
+                              unitId: widget.unit.id,
+                              categoryId: widget.categoryId,
+                              nextToken: _nextToken,
+                            ));
+                          }
+
+                          return AnimationConfiguration.staggeredList(
+                            position: pos,
+                            duration: const Duration(milliseconds: 200),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              child: FadeInAnimation(
+                                child: ProductMenuItem(
+                                  displayState: displayState,
+                                  unit: widget.unit,
+                                  item: product,
+                                  servingMode: mode ?? ServingMode.inPlace,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+              ));
+            });
           }
 
-          return CenterLoadingWidget();
+          return const CenterLoadingWidget();
         }));
   }
 
-  Widget _buildList(GeoUnit unit, List<GeneratedProduct> list) {
-    return BlocBuilder<TakeAwayBloc, TakeAwayState>(builder: (context, state) {
-      ServingMode? mode;
-      if (state is ServingModeSelectedState) {
-        mode = state.servingMode;
-      }
-      // log.d('_buildList.servingMode=$mode');
-      bool hasItems = _hasServingModeProducts(list, mode);
-      if (!hasItems) {
-        return EmptyWidget(
-          icon: 'assets/icons/empty-category.png',
-          messageKey: mode == ServingMode.takeAway
-              ? 'main.category.emptyTakeaway'
-              : 'main.category.emptyInPlace',
-          descriptionKey: 'main.category.emptyHint',
-          textFontSize: 18.0,
-          descriptionFontSize: 14.0,
-          horizontalPadding: 32.0,
-          iconSize: 32.0,
-          background: Colors.transparent,
-        );
-      }
-
-      int itemCount = list.length;
-
-      // Banner rendering
-      bool hasAdBanner = unit.adBannersEnabled == true;
-      AdBanner? banner;
-      int bannerIndex = -1;
-      if (hasAdBanner) {
-        banner = getRandomBanner(
-          banners: unit.adBanners,
-          position: -1,
-        );
-        bannerIndex = RND.nextInt(list.length);
-        itemCount += 1;
-      }
-      if (banner == null || bannerIndex < 0 || _adBannerHidden) {
-        hasAdBanner = false;
-        itemCount = list.length;
-      }
-
-      return AnimationLimiter(
-          child: SmartRefresher(
-        enablePullDown: true,
-        header: MaterialClassicHeader(),
-        onRefresh: _onRefresh,
-        controller: _refreshController,
-        child: ListView.builder(
-          itemCount: itemCount,
-          scrollDirection: Axis.vertical,
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (context, position) {
-            if (hasAdBanner && banner != null && position == bannerIndex) {
-              return AnimationConfiguration.staggeredList(
-                position: position,
-                duration: const Duration(milliseconds: 200),
-                child: SlideAnimation(
-                  verticalOffset: 50.0,
-                  child: FadeInAnimation(
-                    child: AdBannerCardWidget(
-                        banner: banner,
-                        animated: true,
-                        onClosed: () {
-                          setState(() {
-                            _adBannerHidden = true;
-                          });
-                        }),
-                  ),
-                ),
-              );
-            }
-
-            int pos = position;
-            if (hasAdBanner && position > bannerIndex) {
-              pos--;
-            }
-            var product = list[pos];
-
-            bool isAvailableInThisServingMode =
-                product.isAvailableInServingMode(mode);
-            bool isSoldOut = product.isSoldOut;
-            bool isHidden = isSoldOut &&
-                unit.soldOutVisibilityPolicy ==
-                    SoldOutVisibilityPolicy.invisible;
-            ProductItemDisplayState displayState =
-                ProductItemDisplayState.NORMAL;
-            if (isSoldOut) {
-              displayState = ProductItemDisplayState.SOLDOUT;
-            } else if (!isAvailableInThisServingMode) {
-              displayState = ProductItemDisplayState.DISABLED;
-            }
-
-            if (isHidden) {
-              return Container();
-            }
-
-            if (pos == itemCount &&
-                itemCount % _pageSize == 0 &&
-                _nextToken != null) {
-              getIt<ProductListBloc>().add(LoadProductList(
-                unitId: widget.unit.id,
-                categoryId: widget.categoryId,
-                nextToken: _nextToken,
-              ));
-            }
-
-            return AnimationConfiguration.staggeredList(
-              position: pos,
-              duration: const Duration(milliseconds: 200),
-              child: SlideAnimation(
-                verticalOffset: 50.0,
-                child: FadeInAnimation(
-                  child: ProductMenuItem(
-                    displayState: displayState,
-                    unit: unit,
-                    item: product,
-                    servingMode: mode ?? ServingMode.inPlace,
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ));
-    });
-  }
-
-  bool _hasServingModeProducts(List<GeneratedProduct> list, ServingMode? mode) {
+  bool _hasVisibleProducts(
+    List<GeneratedProduct> list,
+    ServingMode? mode,
+    SoldOutVisibilityPolicy? soldOutVisibility,
+  ) {
     if (mode == null) {
       return list.isNotEmpty;
     }
-    return list.indexWhere(
+
+    bool hasItem = list.indexWhere(
             (product) => product.supportedServingModes.contains(mode)) !=
         -1;
-  }
 
-  Widget _buildEmptyList(BuildContext context) {
+    bool allSoldOut = soldOutVisibility == SoldOutVisibilityPolicy.invisible &&
+        list.every((product) => product.isSoldOut);
+
+    return hasItem && !allSoldOut;
+  }
+}
+
+class ProductEmptyListWidget extends StatelessWidget {
+  const ProductEmptyListWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        SizedBox(height: 20.0),
+        const SizedBox(height: 20.0),
         Center(
-
-            // Display message to the user
-            child: Text(
-          trans('main.categoryEmpty'),
-          style: Fonts.satoshi(
-            color: theme.secondary,
-            fontWeight: FontWeight.normal,
-            fontSize: 14,
+          child: Text(
+            trans(context, 'main.categoryEmpty'),
+            style: Fonts.satoshi(
+              color: theme.secondary,
+              fontWeight: FontWeight.normal,
+              fontSize: 14,
+            ),
           ),
-        ))
+        ),
       ],
     );
   }

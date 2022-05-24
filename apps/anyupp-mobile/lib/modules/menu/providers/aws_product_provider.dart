@@ -66,8 +66,6 @@ class AwsProductProvider implements IProductProvider {
   Future<PageResponse<GeneratedProduct>> getProductList(
       String unitId, String categoryId,
       [String? nextToken]) async {
-    log.d(
-        '***** getProductList().start().unitId=$unitId, categoryId=$categoryId');
     try {
       var result = await GQL.amplify.execute(ListProductsQuery(
         variables: ListProductsArguments(
@@ -89,7 +87,6 @@ class AwsProductProvider implements IProductProvider {
 
       int count = result.data?.searchGeneratedProducts?.total ?? 0;
       String? token = result.data?.searchGeneratedProducts?.nextToken;
-      log.d('***** getProductList().totalCount=$count, nextToken=$token');
       var items = result.data?.searchGeneratedProducts?.items;
       List<GeneratedProduct> results = [];
       if (items != null) {
@@ -107,7 +104,7 @@ class AwsProductProvider implements IProductProvider {
         }
       }
       results.sort((a, b) => a.position.compareTo(b.position));
-      log.d('***** getProductList().items.length=${results.length}');
+      // log.d('***** getProductList().items.length=${results.length}');
 
       return PageResponse(
         data: results,
