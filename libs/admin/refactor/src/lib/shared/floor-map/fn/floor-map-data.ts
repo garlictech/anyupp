@@ -185,9 +185,9 @@ export const getRawDataField = (
 const _getObjectProperties = (obj: any): FabricObjectProperties => ({
   id: obj.id,
   type: obj.type,
-  width: getObjectBg(obj)?.width || 0,
-  height: getObjectBg(obj)?.height || 0,
-  radius: getObjectRadius(obj) || 0,
+  width: Math.round(obj.scaleX * obj.width),
+  height: Math.round(obj.scaleY * obj.height),
+  radius: Math.round(obj.scaleX * (getObjectRadius(obj) || 0)),
   angle: obj.angle,
   left: obj.left,
   top: obj.top,
