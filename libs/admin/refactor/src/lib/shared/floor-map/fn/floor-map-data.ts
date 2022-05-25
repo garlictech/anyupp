@@ -16,7 +16,6 @@ import {
 } from './floor-map-objects';
 import {
   generateId,
-  getObjectBg,
   getObjectRadius,
   getObjectText,
 } from './floor-map-utils';
