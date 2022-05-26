@@ -79,6 +79,7 @@ export class UnitFormService {
       merchantId: [''],
       packagingTaxPercentage: [''],
       canRequestVatInvoice: [true],
+      canCallWaiter: [false],
       ratingPolicies: this._formBuilder.array([]),
       tipPolicy: this._formsService.createTipPolicyFormGroup(),
       serviceFeePolicy: this._formsService.createServiceFeePolicyFormGroup(),

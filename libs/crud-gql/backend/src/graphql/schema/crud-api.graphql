@@ -919,6 +919,7 @@ type Unit
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLon
   canRequestVatInvoice: Boolean
+  canCallWaiter: Boolean
 }
 
 type DateIntervalOpen {
@@ -1296,6 +1297,7 @@ input CreateUnitInput {
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLonInput!
   canRequestVatInvoice: Boolean
+  canCallWaiter: Boolean
 }
 
 input UpdateUnitInput {
@@ -1332,6 +1334,7 @@ input UpdateUnitInput {
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLonInput
   canRequestVatInvoice: Boolean
+  canCallWaiter: Boolean
 }
 
 type CreateAnonymUserOutput {

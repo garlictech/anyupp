@@ -178,11 +178,19 @@
           ></bgap-form-text-input>
         </div>
 
-        <div class="col-md-4 pt-4">
+        <div class="col-md-3 pt-4">
           <bgap-form-checkbox
             caption="units.canRequestVatInvoice"
             [control]="dialogForm?.get('canRequestVatInvoice') | asFormControl"
             inputId="canRequestVatInvoice"
+          ></bgap-form-checkbox>
+        </div>
+
+        <div class="col-md-3 pt-4">
+          <bgap-form-checkbox
+            caption="units.canCallWaiter"
+            [control]="dialogForm?.get('canCallWaiter') | asFormControl"
+            inputId="canCallWaiter"
           ></bgap-form-checkbox>
         </div>
       </div>

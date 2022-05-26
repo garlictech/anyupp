@@ -895,6 +895,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLon
   canRequestVatInvoice: Boolean
+  canCallWaiter: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1263,6 +1264,7 @@ input CreateUnitInput {
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLonInput!
   canRequestVatInvoice: Boolean
+  canCallWaiter: Boolean
 }
 
 input UpdateUnitInput {
@@ -1299,6 +1301,7 @@ input UpdateUnitInput {
   orderPaymentPolicy: OrderPaymentPolicy
   location: LocationLatLonInput
   canRequestVatInvoice: Boolean
+  canCallWaiter: Boolean
 }
 
 type CreateAnonymUserOutput {
@@ -2799,6 +2802,7 @@ input ModelUnitFilterInput {
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   orderPaymentPolicy: ModelOrderPaymentPolicyInput
   canRequestVatInvoice: ModelBooleanInput
+  canCallWaiter: ModelBooleanInput
   and: [ModelUnitFilterInput]
   or: [ModelUnitFilterInput]
   not: ModelUnitFilterInput
@@ -2824,6 +2828,7 @@ input ModelUnitConditionInput {
   soldOutVisibilityPolicy: ModelSoldOutVisibilityPolicyInput
   orderPaymentPolicy: ModelOrderPaymentPolicyInput
   canRequestVatInvoice: ModelBooleanInput
+  canCallWaiter: ModelBooleanInput
   and: [ModelUnitConditionInput]
   or: [ModelUnitConditionInput]
   not: ModelUnitConditionInput
@@ -3979,6 +3984,7 @@ input SearchableUnitFilterInput {
   externalId: SearchableStringFilterInput
   packagingTaxPercentage: SearchableFloatFilterInput
   canRequestVatInvoice: SearchableBooleanFilterInput
+  canCallWaiter: SearchableBooleanFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
@@ -4007,6 +4013,7 @@ enum SearchableUnitSortableFields {
   externalId
   packagingTaxPercentage
   canRequestVatInvoice
+  canCallWaiter
   createdAt
   updatedAt
 }
@@ -4037,6 +4044,7 @@ enum SearchableUnitAggregateField {
   soldOutVisibilityPolicy
   orderPaymentPolicy
   canRequestVatInvoice
+  canCallWaiter
   createdAt
   updatedAt
 }
