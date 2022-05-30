@@ -74,9 +74,6 @@ export const configurePermissions = (
 export const getAppcenterArtifactBucketName = (stage: string) =>
   `${appConfig.appcenterArtifactBucketNamePrefix}-${stage}`;
 
-export const getCacheBucketName = (stage: string) =>
-  `anyupp-build-cache-${stage}`;
-
 export const createBuildProject = (
   stack: sst.Stack,
   cache: codebuild.Cache,
@@ -214,16 +211,8 @@ export const createPipeline = (
 ) => {
   const sourceOutput = new codepipeline.Artifact();
   const buildOutput = new codepipeline.Artifact('buildOutput');
-  const cacheBucket = new s3.Bucket(scope, 'CacheBucket', {
-    bucketName: getCacheBucketName(stage),
-    removalPolicy: RemovalPolicy.DESTROY,
-    lifecycleRules: [
-      {
-        expiration: Duration.days(14),
-      },
-    ],
-  });
-  const cache = codebuild.Cache.bucket(cacheBucket);
+
+  const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
   const build = utils.createBuildProject(
     scope,
     cache,
