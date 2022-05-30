@@ -61,8 +61,8 @@
         "production": {
           "fileReplacements": [
             {
-              "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
-              "with": "libs/admin/shared/config/src/lib/environments/environment.production.ts"
+              "replace": "libs/admin/refactor/src/lib/shared/config/environments/environment.ts",
+              "with": "libs/admin/refactor/src/lib/shared/config/environments/environment.production.ts"
             }
           ],
           "optimization": true,
@@ -107,8 +107,8 @@
           ],
           "fileReplacements": [
             {
-              "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
-              "with": "libs/admin/shared/config/src/lib/environments/environment.qa.ts"
+              "replace": "libs/admin/refactor/src/lib/shared/config/environments/environment.ts",
+              "with": "libs/admin/refactor/src/lib/shared/config/environments/environment.qa.ts"
             }
           ]
         },
@@ -134,8 +134,8 @@
           ],
           "fileReplacements": [
             {
-              "replace": "libs/admin/shared/config/src/lib/environments/environment.ts",
-              "with": "libs/admin/shared/config/src/lib/environments/environment.staging.ts"
+              "replace": "libs/admin/refactor/src/lib/shared/config/environments/environment.ts",
+              "with": "libs/admin/refactor/src/lib/shared/config/environments/environment.staging.ts"
             }
           ]
         }
