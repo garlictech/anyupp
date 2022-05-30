@@ -382,7 +382,8 @@
       "serviceFeeIncluded": "{{tax}}% service fee included in all prices."
     },
     "merchantId": "Stripe Merchant ID",
-    "canRequestVatInvoice": "Can request VAT invoice"
+    "canRequestVatInvoice": "Can request VAT invoice",
+    "canCallWaiter": "Can call a waiter"
   },
   "users": {
     "listTitle": "Users",
