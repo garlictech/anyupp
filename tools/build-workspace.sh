@@ -14,7 +14,7 @@ yarn nx config anyupp-backend --env=$ENVNAME
 yarn nx build-schema crud-backend --env=$ENVNAME
 
 # Added mobile schema generation here
-#arn nx build-schema anyupp-mobile --env=$ENVNAME --mode=$MODE
+yarn nx build-schema anyupp-mobile --env=$ENVNAME --mode=$MODE
 
 
 if [ $ENVNAME = 'dev' ]; then
