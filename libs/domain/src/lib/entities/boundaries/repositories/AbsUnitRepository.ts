@@ -1,7 +1,7 @@
-import { CrudApi } from '../../models';
+import { Unit, UpdateUnitInput } from '../../models';
 import { AbsRepositoryBase } from './AbsRepositoryBase';
 
 export abstract class AbsUnitRepository extends AbsRepositoryBase<
-  CrudApi.Unit,
-  CrudApi.UpdateUnitInput
+  Unit,
+  UpdateUnitInput
 > {}

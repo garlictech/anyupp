@@ -1,4 +1,11 @@
-import { AbsUnitRepository, AdBanner, CrudApi } from '@bgap/domain';
+import {
+  AbsUnitRepository,
+  AdBanner,
+  AdBannerInput,
+  InputMaybe,
+  Unit,
+  UpdateUnitInput,
+} from '@bgap/domain';
 import { Injectable } from '@angular/core';
 import { mockUnit } from '@bgap/domain';
 
@@ -6,7 +13,7 @@ import { mockUnit } from '@bgap/domain';
   providedIn: 'root',
 })
 export class MockUnitRepositoryService extends AbsUnitRepository {
-  private units: { [unitId: string]: CrudApi.Unit } = {
+  private units: { [unitId: string]: Unit } = {
     [mockUnit.id]: {
       ...mockUnit,
       adBannersEnabled: true,
@@ -21,13 +28,13 @@ export class MockUnitRepositoryService extends AbsUnitRepository {
     },
   };
 
-  async getById(id: string): Promise<CrudApi.Unit | null> {
+  async getById(id: string): Promise<Unit | null> {
     return new Promise(resolve => {
       setTimeout(() => resolve(this.units[id] || null), 1000);
     });
   }
 
-  update(update: CrudApi.UpdateUnitInput): Promise<CrudApi.Unit | null> {
+  update(update: UpdateUnitInput): Promise<Unit | null> {
     this.units = {
       ...this.units,
       [update.id]: {
@@ -45,9 +52,7 @@ export class MockUnitRepositoryService extends AbsUnitRepository {
   }
 
   getUpdatedBannersFromInput(
-    adBanners:
-      | CrudApi.InputMaybe<Array<CrudApi.InputMaybe<CrudApi.AdBannerInput>>>
-      | undefined,
+    adBanners: InputMaybe<Array<InputMaybe<AdBannerInput>>> | undefined,
   ): AdBanner[] {
     console.log('input', adBanners);
 

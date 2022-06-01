@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   AbsUnitAdBannerService,
   AdBanner,
-  CrudApi,
+  Unit,
   unitBannerAddUseCase,
   unitBannerRemoveUseCase,
   unitBannersToggleUseCase,
@@ -112,7 +112,7 @@ export class UnitAdBannerService extends AbsUnitAdBannerService {
     });
   }
 
-  private getCurrentUnit$(unitId: string): Observable<CrudApi.Unit> {
+  private getCurrentUnit$(unitId: string): Observable<Unit> {
     return this._unitCollectionService.getByKey$(unitId).pipe(take(1));
   }
 

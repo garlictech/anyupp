@@ -4,7 +4,7 @@ import {
   AbsUnitAdBannerService,
   AbsUnitRepository,
   AdBanner,
-  CrudApi,
+  Unit,
   unitBannerAddUseCase,
   unitBannerRemoveUseCase,
 } from '@bgap/domain';
@@ -105,7 +105,7 @@ export class MockUnitAdBannerService extends AbsUnitAdBannerService {
     });
   }
 
-  private async getCurrentUnit(unitId: string): Promise<CrudApi.Unit | null> {
+  private async getCurrentUnit(unitId: string): Promise<Unit | null> {
     return this.unitRepository.getById(unitId);
   }
 

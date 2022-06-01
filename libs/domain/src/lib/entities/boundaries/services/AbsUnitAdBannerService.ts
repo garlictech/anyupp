@@ -1,4 +1,4 @@
-import { AdBanner } from '../../models';
+import { AdBanner } from '@bgap/domain';
 
 export abstract class AbsUnitAdBannerService {
   abstract getAdBannersForUnit(params: { unitId: string }): Promise<AdBanner[]>;
