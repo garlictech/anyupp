@@ -5,12 +5,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BannerUploadFormComponent } from './widgets/banner-upload-form/banner-upload-form.component';
 import { UnitBannerUIComponent } from './ui-widgets/unit-banner-ui/unit-banner-ui.component';
 import { ButtonUIComponent } from './ui-widgets/button-ui/button-ui.component';
+import { NotificationToggleComponent } from './widgets/notification-toggle/notification-toggle.component';
+import { ToggleButtonUiComponent } from './ui-widgets/toggle-button-ui/toggle-button-ui.component';
 
 const componentDeclarations = [
   FileUploaderUIComponent,
   BannerUploadFormComponent,
   UnitBannerUIComponent,
   ButtonUIComponent,
+  NotificationToggleComponent,
+  ToggleButtonUiComponent,
 ];
 
 @NgModule({

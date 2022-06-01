@@ -9,7 +9,10 @@ export class ButtonUIComponent {
   @Input() label = 'Button';
   @Input() disabled = false;
   @Input() loading = false;
-  @Input() style: 'primary' | 'danger' | 'success' = 'primary';
+  @Input() rounded = false;
+  @Input() bordered = true;
+  @Input() style: 'primary' | 'danger' | 'success' | 'light' = 'primary';
+  @Input() size: 'sm' | 'md' | 'lg' = 'md';
 
   @Output() readonly pushed = new EventEmitter<void>();
 }

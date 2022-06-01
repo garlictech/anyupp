@@ -1,0 +1,9 @@
+<lib-admin-button-ui
+  [label]="toggled ? options.toggledText : options.untoggledText"
+  [style]="'light'"
+  [disabled]="disabled"
+  [rounded]="rounded"
+  [bordered]="bordered"
+  [size]="size"
+  (pushed)="toggledEvent.emit()"
+></lib-admin-button-ui>

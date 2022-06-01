@@ -1,0 +1,9 @@
+<lib-admin-toggle-button-ui
+  [toggled]="(toggled$ | async) || false"
+  [disabled]="disabled"
+  [rounded]="true"
+  [bordered]="true"
+  [options]="options"
+  [size]="size"
+  (toggledEvent)="onToggled()"
+></lib-admin-toggle-button-ui>

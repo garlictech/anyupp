@@ -25,6 +25,8 @@ export const Primary = Template.bind({});
 Primary.args = {
   label: 'Test Button',
   disabled: false,
+  rounded: false,
   loading: false,
+  size: 'sm',
   style: 'primary',
 };

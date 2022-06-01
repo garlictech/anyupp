@@ -1,16 +1,16 @@
 .button-ui {
   background: #1e90ffff;
-  border: 1px solid #1e90ffff;
+  border-color: #1e90ffff;
+  border-style: solid;
   border-radius: 6px;
-  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  border-width: 0;
+  // box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
   box-sizing: border-box;
   color: #ffffff;
   cursor: pointer;
   display: inline-block;
-  font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 16px;
-  min-height: 40px;
   outline: 0;
   padding: 12px 14px;
   text-align: center;
@@ -29,7 +29,7 @@
 
   &.danger {
     background: #ff4742ff;
-    border: 1px solid #ff4742ff;
+    border-color: #ff4742ff;
 
     &:hover,
     &:active {
@@ -40,7 +40,7 @@
 
   &.success {
     background: #008000ff;
-    border: 1px solid #008000ff;
+    border-color: #008000ff;
 
     &:hover,
     &:active {
@@ -49,8 +49,47 @@
     }
   }
 
+  &.light {
+    background: #edf1f7;
+    border-color: #e4e9f2;
+    color: black;
+
+    &:hover,
+    &:active {
+      background-color: #f7f9fc;
+      opacity: 1;
+      border-color: E6E9F0;
+    }
+  }
+
+  &.rounded {
+    border-radius: 1.5rem !important;
+  }
+
+  &.sm {
+    padding: 0.4375rem 0.875rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  &.md {
+    padding: 0.6875rem 1.125rem;
+    font-size: 0.875rem;
+    line-height: 1rem;
+  }
+
+  &.lg {
+    padding: 0.8125rem 1.125rem;
+    font-size: 1rem;
+    line-height: 1.25rem;
+  }
+
+  &.bordered {
+    border-width: 1px !important;
+  }
+
   &.disabled {
-    border: 1px solid #999999 !important;
+    border-color: #999999 !important;
     background-color: #cccccc !important;
     color: #666666 !important;
     cursor: not-allowed;
