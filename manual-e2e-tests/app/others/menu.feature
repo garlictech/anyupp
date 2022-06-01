@@ -5,23 +5,19 @@ Feature: Update menu and see the changes in the app
     And the language is set to EN
     Then I should see the "Unit selector" screen
 
-  Scenario: The Menu and 1 sold out item
-    Given the admin sets the "Fishburger" to sold out
-    And the admin pushes the "Regenerate menu" button
-    When I pull the "Unit selector" screen to refresh
-    And I select the "Késdobáló #111" in in place mode
-    Then I should see the logo on the screen
-    # if there is any, or the unit should has a seed logo(?)
-    When I tap on the "In place" icon
+  Scenario: The Menu
+    When I select the "Késdobáló #111" in in place mode
+    And I tap on the mode selector button
     Then I should see "Please select" text
     When I tap on the "Take away" icon
     Then the app switches to take away mode
     When I tap on the qr code icon
     And the app opens my camera
     And I read a seat qr code
-    Then I should see a loading screen
+    Then I should see "finding table and chair..." loading screen
+    Then I should see "Table: #01, Chair: #02" popup
     When I tap on the "OK" button
-    Then I should see the categories
+    Then I should see the product categories
     And I should see "Favorites" category
     And the "Hamburgers" category is selected
     And I should see the products with picture

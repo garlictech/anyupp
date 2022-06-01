@@ -14,11 +14,7 @@ import {
   createTableRect,
   createWall,
 } from './floor-map-objects';
-import {
-  generateId,
-  getObjectRadius,
-  getObjectText,
-} from './floor-map-utils';
+import { generateId, getObjectRadius, getObjectText } from './floor-map-utils';
 
 export let mapRawData: CrudApi.FloorMapData;
 

@@ -35,7 +35,7 @@ Feature: Cash and card payment
     When I tap on the "minus" button
     Then I should see "2 x 2000 Ft" text
     When I tap on the "PAY (4000 Ft)" button
-    Then I should see the "PAY" screen
+    Then I should see the "PAYMENT" screen
     When I tap on the option "Card, SZÉP card"
     And I tap the button next to "I want a VAT invoice"
     Then I should see "Invoice Info" dialog
@@ -61,7 +61,7 @@ Feature: Cash and card payment
     And I should see "Current orders" text
     And I should see "in place" on the order card
     And I should see "4000 Ft" on the order card
-    And I should see the date/time of the created order
+    And I should see a three digit order number
     When I tap on the order with "Processing"
     Then I should see "Order status" text
     And the "We have received your order." state is checked
@@ -71,16 +71,18 @@ Feature: Cash and card payment
     And I should see "Payment details" text
     And I should see "Card payment at the waiter." text
     And I should see "More details" text
-    And I should see "Order num" with 6 numbers
+    And I should see "Order num" with 3 numbers
     And I should see "Késdobáló #111" text
     And the admin set the state of order to "SUCCESS"
     And the "Your order has been confirmed, everything is fine!" state is checked
     When the admin set the state of order to "PROCESSING"
-    Then I get the notification message "Message from AnyUpp! Your order is being processed."
-    And the "We are just making the ordered items." state is highlighted
+    Then I should see the popup with "We are placing your order" text and a 3 digit order number
+    When I tap on the "OK" button
+    And the "We're preparing your order." state is highlighted
     When the admin set the state of order to "READY"
-    Then I get the notification message "Message from AnyUpp! Your order is ready!"
-    And the "Your order is complete, we will serve / pick you up soon." state is checked
+    Then I should see the popup with "Your order is served" text and a 3 digit order number
+    When I tap on the "OK" button
+    Then I should see the "Your order is commplete, we will serve it/you can pick is up soon." state is checked
     And the "Your order is being served / can be received." state is higlighted
     When the admin set the state of order to "SERVED"
     Then I should see "Order served" text
@@ -91,7 +93,7 @@ Feature: Cash and card payment
     # Scenario: next order, with VAT and in HU, from order list
     When I tap on the "Profile" button
     And I tap on the "Language" tab
-    And I tap on the "Magyar" tab
+    And I tap on the "Hungarian" tab
     And I tap on the "SET LANGUAGE" button
     Then I should see the app in HU language
     When I tap on the "Étlap" button
@@ -106,15 +108,15 @@ Feature: Cash and card payment
     Then I should see the "FIZETÉSI MÓDOK" screen
     When I tap on the option "Készpénz"
     And I tap on the checkbox under "ÁFÁ-S SZÁMLA"
-    And I tap on the "MEGRENDELÉS" button
+    And I tap on the "MEGRENDELEM" button
     Then I should see a loading screen
-    And I should see "Sikeres rendelés!" text
+    And I should see "Sikeres rendelés!" popup
     When I tap on the "RENDBEN" button
     Then I should see the "Rendelések" screen
     And I should see "Folyamatban lévő rendelések" text
     And I should see "1700 Ft" on the order card
     And I should see "helyben" on the order card
-    And I should see the date/time of the created order
+    And I should see a 3 digit order number
     When I tap on the order with "Feldolgozás alatt"
     Then the "A rendelésedet megkaptuk." state is checked
     And I should see "ÖSSZESEN 1700 Ft" text
@@ -122,14 +124,16 @@ Feature: Cash and card payment
     And the admin set the state of order to "SUCCESS"
     Then I should see "Feldolgozva" on the order card
     When the admin set the state of order to "PROCESSING"
-    Then I get the notification message "Üzenet az AnyUpp-tól! Rendelésed már készítjük."
+    Then I should see "#001 Készítjük a rendelésed" popup
+    When I tap on the "RENDBEN" button
     And I should see "Készül a rendelésed" on the order card
     When the admin set the state of order to "READY"
-    Then I get the notification message "Üzenet az AnyUpp-tól! Felszolgálása folyamatban."
+    Then I should see "#001 Elékszült a rendelésed" popup
+    When I tap on the "RENDBEN" button
     And I should see "Elkészült" on the order card
     When the admin set the state of order to "SERVED"
     Then I should see "Korábbi rendelések" text
-    When I tap on the order with "1700 Ft"
+    When I tap on the order with "#001"
     Then the "Rendelésed teljesítve" state is checked
 
   Scenario: Failed/deleted payment with cash or card
@@ -140,7 +144,7 @@ Feature: Cash and card payment
     When I tap on the "MY CART (300 Ft)" button
     Then I should see the "Cart" screen
     When I tap on the "PAY (300 Ft)" button
-    Then I should see the "PAY" screen
+    Then I should see the "PAYMENT" screen
     When I tap on the option "Card, SZÉP card" button
     And I tap on the "PLACE ORDER" button
     Then the qr code reader opens the camera
@@ -149,10 +153,10 @@ Feature: Cash and card payment
     And I get the notification message "New Table Reserved!"
     And I should see "Chair: #01, Table: #01" text
     When I tap on the "OK" button
-    Then I should see "Successful order!" text
+    Then I should see "Successful order!" popup
     When I tap on the "OK" button
     Then the "Orders" option is higlighted
-    And I should see the date of the created order
+    And I should see the 3 digit order ID of the created order
     When I tap on the order with "Processing"
     Then the "We have received your order." state is checked
     And I should see "Total cost 300 Ft" text
