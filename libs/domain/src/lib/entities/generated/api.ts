@@ -2621,6 +2621,7 @@ export interface ProductConfigSetInput {
 }
 
 export enum ProductType {
+  dish = 'dish',
   drink = 'drink',
   food = 'food',
   other = 'other'

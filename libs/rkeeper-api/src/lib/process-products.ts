@@ -201,7 +201,7 @@ export const createRkeeperProduct =
           name: {
             hu: dish.name,
           },
-          productType: CrudApi.ProductType.other,
+          productType: CrudApi.ProductType.dish,
           isVisible: true,
           dirty: true,
           variants: [

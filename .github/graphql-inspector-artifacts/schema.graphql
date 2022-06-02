@@ -49,6 +49,7 @@ enum PaymentType {
 enum ProductType {
   drink
   food
+  dish
   other
 }
 
