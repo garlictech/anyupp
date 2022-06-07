@@ -1,23 +1,26 @@
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { BannerUploadFormComponent } from './banner-upload-form.component';
-import { FileUploaderUIComponent } from '../../ui-widgets/file-uploader-ui/file-uploader-ui.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   AbsImageCompressorService,
   AbsStorageService,
-  AbsUnitAdBannerService,
+  AbsUnitBannerService,
   AbsUnitRepository,
   mockUnit,
 } from '@bgap/domain';
-import { UnitBannerUIComponent } from '../../ui-widgets/unit-banner-ui/unit-banner-ui.component';
-import { ButtonUIComponent } from '../../ui-widgets/button-ui/button-ui.component';
+import { action } from '@storybook/addon-actions';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
+
+import { commonStorybookImports } from '../../pure';
 import {
   MockImageCompressionService,
   MockStorageService,
-  MockUnitAdBannerService,
+  MockUnitBannerService,
   MockUnitRepositoryService,
 } from '../../services';
-import { action } from '@storybook/addon-actions';
+import { ButtonUIComponent } from '../../ui-widgets/button-ui/button-ui.component';
+import { FileUploaderUIComponent } from '../../ui-widgets/file-uploader-ui/file-uploader-ui.component';
+import { ToggleButtonUiComponent } from '../../ui-widgets/toggle-button-ui/toggle-button-ui.component';
+import { UnitBannerUIComponent } from '../../ui-widgets/unit-banner-ui/unit-banner-ui.component';
+import { BannerUploadFormComponent } from './banner-upload-form.component';
 
 export default {
   title: 'BannerUploadFormComponent',
@@ -28,10 +31,11 @@ export default {
         FileUploaderUIComponent,
         UnitBannerUIComponent,
         ButtonUIComponent,
+        ToggleButtonUiComponent,
       ],
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, ...commonStorybookImports],
       providers: [
-        { provide: AbsUnitAdBannerService, useClass: MockUnitAdBannerService },
+        { provide: AbsUnitBannerService, useClass: MockUnitBannerService },
         { provide: AbsStorageService, useClass: MockStorageService },
         {
           provide: AbsImageCompressorService,
@@ -54,6 +58,7 @@ const Template: Story<BannerUploadFormComponent> = (
   template:
     '<lib-admin-banner-upload-form ' +
     '[unitId]="unitId" ' +
+    '[type]="type" ' +
     '[imageUrlPrefix]="imageUrlPrefix" ' +
     '(operationSuccess)="onOperationSuccess($event)" ' +
     '(operationError)="onOperationError($event)"></lib-admin-banner-upload-form>',
@@ -63,4 +68,5 @@ export const Primary = Template.bind({});
 Primary.args = {
   unitId: mockUnit.id,
   imageUrlPrefix: 'https://placekitten.com/',
+  type: 'ad',
 };

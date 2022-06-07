@@ -10,18 +10,24 @@
   <div class="file-details" *ngIf="fileToUpload; else chooseFile">
     <ul>
       <li>{{ fileToUpload.name }}</li>
-      <li>{{ fileToUpload.size / 1000000 | number: '1.2-2' }} MB</li>
+      <li>{{ fileToUpload.size / 1000000 | number: '1.3-3' }} MB</li>
       <li>{{ fileToUpload.type }}</li>
     </ul>
   </div>
   <ng-template #chooseFile>
-    <div class="upload-description">Válaszd ki a feltöltendő bannert...</div>
+    <div class="upload-description">
+      {{ 'common.chooseFileDesc' | translate }}
+    </div>
   </ng-template>
 
   <lib-admin-button-ui
     class="choose-file-btn"
-    [label]="'Fájl kiválasztása'"
+    label="common.chooseFile"
     [disabled]="disabled"
+    [bordered]="true"
+    [rounded]="true"
+    [size]="'sm'"
+    color="light"
     (pushed)="fileInput.click()"
   ></lib-admin-button-ui>
 </div>

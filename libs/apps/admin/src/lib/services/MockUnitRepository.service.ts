@@ -1,7 +1,7 @@
 import {
   AbsUnitRepository,
-  AdBanner,
-  AdBannerInput,
+  ImageAsset,
+  ImageAssetInput,
   InputMaybe,
   Unit,
   UpdateUnitInput,
@@ -52,16 +52,16 @@ export class MockUnitRepositoryService extends AbsUnitRepository {
   }
 
   getUpdatedBannersFromInput(
-    adBanners: InputMaybe<Array<InputMaybe<AdBannerInput>>> | undefined,
-  ): AdBanner[] {
+    adBanners: InputMaybe<Array<InputMaybe<ImageAssetInput>>> | undefined,
+  ): ImageAsset[] {
     console.log('input', adBanners);
 
     const calculated = adBanners
       ? adBanners
           .map(adBanner => {
-            return adBanner ? (adBanner as AdBanner) : null;
+            return adBanner ? (adBanner as ImageAsset) : null;
           })
-          .filter((adBanner): adBanner is AdBanner => adBanner !== null)
+          .filter((adBanner): adBanner is ImageAsset => adBanner !== null)
       : [];
 
     console.log('calculated', calculated);

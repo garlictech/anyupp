@@ -11,6 +11,7 @@ import { ToggleButtonOptions } from '../../ui-widgets/toggle-button-ui/toggle-bu
 })
 export class NotificationToggleComponent {
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
+  @Input() color: 'primary' | 'danger' | 'success' | 'light' = 'light';
 
   public toggled$: Observable<boolean>;
   public disabled = false;

@@ -1,38 +1,36 @@
-import { AdBanner } from '../entities';
+import { ImageAsset } from '../entities';
 
 interface Deps {
   storagePath: string;
-  getCurrentAdBanners: () => Promise<AdBanner[]>;
-  updateAdBannersOnUnit: (params: {
-    adBanners: AdBanner[];
-  }) => Promise<unknown>;
+  getCurrentBanners: () => Promise<ImageAsset[]>;
+  updateBannersOnUnit: (params: { banners: ImageAsset[] }) => Promise<unknown>;
   deleteFromStorage: (params: { folderPath: string }) => Promise<unknown>;
 }
 
 export const unitBannerRemoveUseCase = async (
   deps: Deps,
-): Promise<AdBanner[]> => {
+): Promise<ImageAsset[]> => {
   const {
     storagePath,
-    getCurrentAdBanners,
-    updateAdBannersOnUnit,
+    getCurrentBanners,
+    updateBannersOnUnit,
     deleteFromStorage,
   } = deps;
 
   try {
-    const updatedAdBanners: AdBanner[] = (await getCurrentAdBanners()).filter(
+    const updatedBanners: ImageAsset[] = (await getCurrentBanners()).filter(
       adBanner => adBanner.imageUrl !== storagePath,
     );
 
-    await updateAdBannersOnUnit({
-      adBanners: updatedAdBanners,
+    await updateBannersOnUnit({
+      banners: updatedBanners,
     });
 
     await deleteFromStorage({
       folderPath: storagePath,
     });
 
-    return updatedAdBanners;
+    return updatedBanners;
   } catch (e) {
     console.error('Error in unitBannerRemoveUseCase', e);
 

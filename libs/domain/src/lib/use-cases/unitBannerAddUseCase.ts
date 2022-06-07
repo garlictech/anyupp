@@ -1,4 +1,4 @@
-import { AdBanner } from '../entities';
+import { ImageAsset } from '../entities';
 
 export const UNIT_AD_BANNER_STORAGE_FOLDER = 'banners';
 export const UNIT_AD_BANNER_MAX_SIZE = 640;
@@ -13,19 +13,19 @@ interface Deps {
     folderPath: string;
     file: File;
   }) => Promise<{ storagePath: string }>;
-  getCurrentAdBanners: () => Promise<AdBanner[]>;
-  updateAdBannersOnUnit: (params: {
-    adBanners: AdBanner[];
-  }) => Promise<unknown>;
+  getCurrentBanners: () => Promise<ImageAsset[]>;
+  updateBannersOnUnit: (params: { banners: ImageAsset[] }) => Promise<unknown>;
 }
 
-export const unitBannerAddUseCase = async (deps: Deps): Promise<AdBanner[]> => {
+export const unitBannerAddUseCase = async (
+  deps: Deps,
+): Promise<ImageAsset[]> => {
   const {
     bannerImage,
     compressImage,
     uploadToStorage,
-    getCurrentAdBanners,
-    updateAdBannersOnUnit,
+    getCurrentBanners,
+    updateBannersOnUnit,
   } = deps;
 
   try {
@@ -39,16 +39,16 @@ export const unitBannerAddUseCase = async (deps: Deps): Promise<AdBanner[]> => {
       file: compressedBanner,
     });
 
-    const updatedAdBanners = [
-      ...(await getCurrentAdBanners()),
+    const updatedBanners = [
+      ...(await getCurrentBanners()),
       { imageUrl: storagePath },
     ];
 
-    await updateAdBannersOnUnit({
-      adBanners: updatedAdBanners,
+    await updateBannersOnUnit({
+      banners: updatedBanners,
     });
 
-    return updatedAdBanners;
+    return updatedBanners;
   } catch (e) {
     console.error('Error in unitBannerRemoveUseCase', e);
 

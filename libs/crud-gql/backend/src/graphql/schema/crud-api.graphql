@@ -879,7 +879,7 @@ input TipPolicyInput {
   minOtherAmount: Float
 }
 
-type AdBanner {
+type ImageAsset {
   imageUrl: String!
 }
 
@@ -888,8 +888,10 @@ type Unit
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  adBanners: [AdBanner!]
+  adBanners: [ImageAsset!]
   adBannersEnabled: Boolean
+  coverBanners: [ImageAsset!]
+  coverBannersEnabled: Boolean
   groupId: ID!
   chainId: ID!
   lastOrderNum: Int
@@ -1260,14 +1262,16 @@ input RKeeperInput {
   anyuppPassword: String!
 }
 
-input AdBannerInput {
+input ImageAssetInput {
   imageUrl: String!
 }
 
 input CreateUnitInput {
   id: ID
-  adBanners: [AdBannerInput]
+  adBanners: [ImageAssetInput]
   adBannersEnabled: Boolean
+  coverBanners: [ImageAssetInput]
+  coverBannersEnabled: Boolean
   groupId: ID!
   chainId: ID!
   lastOrderNum: Int
@@ -1303,8 +1307,10 @@ input CreateUnitInput {
 
 input UpdateUnitInput {
   id: ID!
-  adBanners: [AdBannerInput]
+  adBanners: [ImageAssetInput]
   adBannersEnabled: Boolean
+  coverBanners: [ImageAssetInput]
+  coverBannersEnabled: Boolean
   groupId: ID
   chainId: ID
   lastOrderNum: Int

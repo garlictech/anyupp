@@ -1,9 +1,10 @@
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { AbsNotificationToggleService } from '@bgap/domain';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
+
+import { commonStorybookImports } from '../../pure';
 import { MockNotificationToggleService } from '../../services';
 import { ButtonUIComponent } from '../../ui-widgets/button-ui/button-ui.component';
 import { ToggleButtonUiComponent } from '../../ui-widgets/toggle-button-ui/toggle-button-ui.component';
-
 import { NotificationToggleComponent } from './notification-toggle.component';
 
 export default {
@@ -12,7 +13,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [ToggleButtonUiComponent, ButtonUIComponent],
-      imports: [],
+      imports: [...commonStorybookImports],
       providers: [
         {
           provide: AbsNotificationToggleService,

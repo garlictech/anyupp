@@ -1,7 +1,9 @@
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { ToggleButtonUiComponent } from './toggle-button-ui.component';
-import { ButtonUIComponent } from '../button-ui/button-ui.component';
 import { action } from '@storybook/addon-actions';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
+
+import { commonStorybookImports } from '../../pure';
+import { ButtonUIComponent } from '../button-ui/button-ui.component';
+import { ToggleButtonUiComponent } from './toggle-button-ui.component';
 
 export default {
   title: 'ToggleButtonUiComponent',
@@ -9,7 +11,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [ButtonUIComponent],
-      imports: [],
+      imports: [...commonStorybookImports],
     }),
   ],
 } as Meta<ToggleButtonUiComponent>;

@@ -2,8 +2,8 @@ import { Component, Injector } from '@angular/core';
 import { AbstractFormDialogComponent } from '../../../../shared/forms';
 import * as CrudApi from '@bgap/crud-gql/api';
 import { awsConfig } from '@bgap/crud-gql/api';
-import { AbsUnitAdBannerService } from '@bgap/domain';
-import { UnitAdBannerService } from '../../services/unit-ad-banner.service';
+import { AbsUnitBannerService } from '@bgap/domain';
+import { UnitBannerService } from '../../services/unit-ad-banner.service';
 
 @Component({
   selector: 'bgap-unit-banners',
@@ -11,8 +11,8 @@ import { UnitAdBannerService } from '../../services/unit-ad-banner.service';
   styleUrls: ['./unit-banners.component.scss'],
   providers: [
     {
-      provide: AbsUnitAdBannerService,
-      useClass: UnitAdBannerService,
+      provide: AbsUnitBannerService,
+      useClass: UnitBannerService,
     },
   ],
 })

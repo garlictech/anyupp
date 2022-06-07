@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-  AbsUnitAdBannerService,
-  AdBanner,
+  AbsUnitBannerService,
+  bannerType,
+  ImageAsset,
   Unit,
   unitBannerAddUseCase,
   unitBannerRemoveUseCase,
@@ -19,7 +20,7 @@ import { EImageType } from '@bgap/shared/types';
 @Injectable({
   providedIn: 'root',
 })
-export class UnitAdBannerService extends AbsUnitAdBannerService {
+export class UnitBannerService extends AbsUnitBannerService {
   constructor(
     private _store: Store,
     private _unitCollectionService: UnitCollectionService,
@@ -29,11 +30,12 @@ export class UnitAdBannerService extends AbsUnitAdBannerService {
     super();
   }
 
-  addNewAdBannerToUnit(params: {
+  addNewBannerToUnit(params: {
     bannerImage: File;
     unitId: string;
-  }): Promise<AdBanner[]> {
-    const { unitId, bannerImage } = params;
+    type: bannerType;
+  }): Promise<ImageAsset[]> {
+    const { unitId, bannerImage, type } = params;
 
     return unitBannerAddUseCase({
       bannerImage,
@@ -48,9 +50,9 @@ export class UnitAdBannerService extends AbsUnitAdBannerService {
             }),
           )
           .toPromise(),
-      getCurrentAdBanners: () => this.getCurrentAdBanners(unitId),
-      updateAdBannersOnUnit: ({ adBanners }) =>
-        this.saveAdBannersOnUnit(unitId, adBanners),
+      getCurrentBanners: () => this.getCurrentBanners(unitId, type),
+      updateBannersOnUnit: ({ banners }) =>
+        this.saveBannersOnUnit(unitId, banners, type),
       uploadToStorage: async ({ folderPath, file }) => {
         return {
           storagePath: await this._storageService.uploadFile(folderPath, file),
@@ -59,52 +61,61 @@ export class UnitAdBannerService extends AbsUnitAdBannerService {
     });
   }
 
-  getAdBannersEnabledStatusForUnit(params: {
+  getBannersEnabledStatusForUnit(params: {
     unitId: string;
+    type: bannerType;
   }): Promise<boolean> {
-    const { unitId } = params;
+    const { unitId, type } = params;
     return this.getCurrentUnit$(unitId)
       .pipe(
         map(unit => {
-          return unit.adBannersEnabled || false;
+          return unit[`${type}BannersEnabled`] || false;
         }),
       )
       .toPromise();
   }
 
-  getAdBannersForUnit({ unitId }: { unitId: string }): Promise<AdBanner[]> {
-    return this.getCurrentAdBanners(unitId);
+  getBannersForUnit({
+    unitId,
+    type,
+  }: {
+    unitId: string;
+    type: bannerType;
+  }): Promise<ImageAsset[]> {
+    return this.getCurrentBanners(unitId, type);
   }
 
-  removeAdBannerFromUnit(params: {
+  removeBannerFromUnit(params: {
     unitId: string;
     bannerPath: string;
-  }): Promise<AdBanner[]> {
-    const { unitId, bannerPath } = params;
+    type: bannerType;
+  }): Promise<ImageAsset[]> {
+    const { unitId, bannerPath, type } = params;
 
     return unitBannerRemoveUseCase({
       storagePath: bannerPath,
-      getCurrentAdBanners: () => this.getCurrentAdBanners(unitId),
-      updateAdBannersOnUnit: ({ adBanners }) =>
-        this.saveAdBannersOnUnit(unitId, adBanners),
+      getCurrentBanners: () => this.getCurrentBanners(unitId, type),
+      updateBannersOnUnit: ({ banners }) =>
+        this.saveBannersOnUnit(unitId, banners, type),
       deleteFromStorage: ({ folderPath }) =>
         this._storageService.removeFile(folderPath),
     });
   }
 
-  toggleAdBannersEnabledStatusForUnit(params: {
+  toggleBannersEnabledStatusForUnit(params: {
     unitId: string;
+    type: bannerType;
   }): Promise<boolean> {
-    const { unitId } = params;
+    const { unitId, type } = params;
 
     return unitBannersToggleUseCase({
-      getCurrentAdBannersEnabledStatus: () =>
-        this.getAdBannersEnabledStatusForUnit({ unitId }),
-      setAdBannersEnabledStatus: ({ enabled }) => {
+      getCurrentBannersEnabledStatus: () =>
+        this.getBannersEnabledStatusForUnit({ unitId, type }),
+      setBannersEnabledStatus: ({ enabled }) => {
         return this._unitCollectionService
           .update$({
             id: unitId,
-            adBannersEnabled: enabled,
+            [`${type}BannersEnabled`]: enabled,
           })
           .pipe(catchGqlError(this._store))
           .toPromise();
@@ -116,24 +127,28 @@ export class UnitAdBannerService extends AbsUnitAdBannerService {
     return this._unitCollectionService.getByKey$(unitId).pipe(take(1));
   }
 
-  private getCurrentAdBanners(unitId: string): Promise<AdBanner[]> {
+  private getCurrentBanners(
+    unitId: string,
+    type: bannerType,
+  ): Promise<ImageAsset[]> {
     return this.getCurrentUnit$(unitId)
       .pipe(
         map(unit => {
-          return unit.adBanners || [];
+          return unit[`${type}Banners`] || [];
         }),
       )
       .toPromise();
   }
 
-  private saveAdBannersOnUnit(
+  private saveBannersOnUnit(
     unitId: string,
-    adBanners: AdBanner[],
+    banners: ImageAsset[],
+    type: bannerType,
   ): Promise<unknown> {
     return this._unitCollectionService
       .update$({
         id: unitId,
-        adBanners,
+        [`${type}Banners`]: banners,
       })
       .pipe(catchGqlError(this._store))
       .toPromise();

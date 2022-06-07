@@ -16,6 +16,7 @@ export class ToggleButtonUiComponent {
   @Input() rounded = true;
   @Input() bordered = true;
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
+  @Input() color: 'primary' | 'danger' | 'success' | 'light' = 'primary';
   @Input() options: ToggleButtonOptions = {
     toggledText: 'ON',
     untoggledText: 'OFF',

@@ -139,7 +139,12 @@
     "search": "Keresés",
     "value": "Érték",
     "icon": "Ikon",
-    "tip": "Borravaló"
+    "tip": "Borravaló",
+    "allowed": "Engedélyezve",
+    "disallowed": "Tiltva",
+    "chooseFile": "Fájl kiválasztása",
+    "chooseFileDesc": "Válaszd ki a feltöltendő fájlt...",
+    "upload": "Feltöltés"
   },
   "menu": {
     "dashboard": "Vezérlőpult",
@@ -383,7 +388,17 @@
     },
     "merchantId": "Stripe kereskedői azonosító",
     "canRequestVatInvoice": "ÁFA-s számla igényelhető",
-    "canCallWaiter": "Pincér hívható"
+    "canCallWaiter": "Pincér hívható",
+    "adBanner": "Reklám banner",
+    "coverBanner": "Fejléc banner",
+    "showBanners": "Bannerek megjelenítése",
+    "uploadNewBanners": "Új banner feltöltése",
+    "noUploadedBanner": "Nincs feltöltött banner",
+    "maxBannerCountReached": "A feltölthető bannerek száma elérte a maximumot",
+    "selectedFileIsNotAnImage": "Nem képfájl lett kiválasztva",
+    "noSelectedImage": "Nincs kép kiválasztva",
+    "bannerSizeIsTooHigh": "A méret túl nagy (max. {{size}}MB)",
+    "recommendedBannerSize": "Ugyanolyan felbontású (600px * 300px) képek feltöltését ajánljuk."
   },
   "users": {
     "listTitle": "Felhasználók",

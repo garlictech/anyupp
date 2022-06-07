@@ -5,6 +5,7 @@ import { ToggleButtonUiComponent } from '../../ui-widgets/toggle-button-ui/toggl
 import { ButtonUIComponent } from '../../ui-widgets/button-ui/button-ui.component';
 import { AbsNotificationToggleService } from '@bgap/domain';
 import { MockNotificationToggleService } from '../../services';
+import { commonStorybookMockedImports } from '../../pure';
 
 describe('NotificationToggleComponent', () => {
   let component: NotificationToggleComponent;
@@ -17,6 +18,7 @@ describe('NotificationToggleComponent', () => {
         ToggleButtonUiComponent,
         ButtonUIComponent,
       ],
+      imports: [...commonStorybookMockedImports],
       providers: [
         {
           provide: AbsNotificationToggleService,

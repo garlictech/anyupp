@@ -11,7 +11,7 @@ export class ButtonUIComponent {
   @Input() loading = false;
   @Input() rounded = false;
   @Input() bordered = true;
-  @Input() style: 'primary' | 'danger' | 'success' | 'light' = 'primary';
+  @Input() color: 'primary' | 'danger' | 'success' | 'light' = 'primary';
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
 
   @Output() readonly pushed = new EventEmitter<void>();

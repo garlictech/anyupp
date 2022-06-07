@@ -2,15 +2,12 @@
   <label class="caption"
     >{{ staticCaption || (caption | translate)
     }}<nb-form-field>
-      <span *ngIf="prefix" nbPrefix>{{ prefix }}</span>
-      <input
+      <textarea
         *ngIf="control"
         nbInput
-        [type]="type"
         fullWidth
         [fieldSize]="fieldSize"
         [formControl]="control"
-        autocomplete="off"
         [readonly]="readonly"
         [status]="
           control?.touched && (control?.errors?.['required'] || control?.invalid)
@@ -18,8 +15,7 @@
             : 'basic'
         "
         [attr.data-testid]="inputId"
-      />
-      <span *ngIf="suffix" nbSuffix>{{ suffix }}</span>
+      ></textarea>
     </nb-form-field>
   </label>
 </div>

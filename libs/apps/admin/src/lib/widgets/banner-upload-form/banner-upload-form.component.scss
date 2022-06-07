@@ -5,15 +5,10 @@ $margin-on-sides: 10px;
   justify-content: flex-start;
   align-items: center;
   padding: 10px;
-  border: 2px solid gray;
-  font-size: 18px;
 
   .status {
     margin-left: 10px;
     padding: 10px;
-    background-color: #c1d6cc;
-    border: 2px solid gray;
-    border-radius: 6px;
     color: red;
     font-weight: bold;
 
@@ -28,7 +23,6 @@ $margin-on-sides: 10px;
 }
 
 .unit-banners {
-  //background-color: blue;
   display: grid;
   width: 100%;
   grid-gap: $margin-on-sides;
@@ -39,25 +33,19 @@ $margin-on-sides: 10px;
 
 .no-unit-banners {
   width: 100%;
-  display: flex;
   padding: 20px;
-  font-size: 20px;
   font-weight: bold;
   justify-content: center;
   align-items: center;
 }
 
 .banner-upload-form {
-  display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border: 2px solid gray;
-  border-radius: 10px;
-  //background-color: mediumpurple;
 
   .form-field-upload-banner {
     width: 100%;
+    margin-bottom: 20px;
 
     .description {
       margin-top: 8px;
@@ -76,7 +64,6 @@ $margin-on-sides: 10px;
 
 .banner-limit-reached {
   margin-top: 10px;
-  font-size: 16px;
   font-style: italic;
 }
 

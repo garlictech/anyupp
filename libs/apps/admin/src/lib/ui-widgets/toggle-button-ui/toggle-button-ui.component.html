@@ -1,6 +1,6 @@
 <lib-admin-button-ui
-  [label]="toggled ? options.toggledText : options.untoggledText"
-  [style]="'light'"
+  [label]="(toggled ? options.toggledText : options.untoggledText) | translate"
+  [color]="color"
   [disabled]="disabled"
   [rounded]="rounded"
   [bordered]="bordered"

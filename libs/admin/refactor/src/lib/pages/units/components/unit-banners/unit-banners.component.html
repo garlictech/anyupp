@@ -15,9 +15,23 @@
     </button>
   </nb-card-header>
   <nb-card-body>
-    <lib-admin-banner-upload-form
-      [unitId]="unit.id"
-      [imageUrlPrefix]="awsStoragePathPrefix"
-    ></lib-admin-banner-upload-form>
+    <div class="row">
+      <div class="col-md-6">
+        <div>{{ 'units.adBanner' | translate }}</div>
+        <lib-admin-banner-upload-form
+          [unitId]="unit.id"
+          [imageUrlPrefix]="awsStoragePathPrefix"
+          [type]="'ad'"
+        ></lib-admin-banner-upload-form>
+      </div>
+      <div class="col-md-6">
+        <div>{{ 'units.coverBanner' | translate }}</div>
+        <lib-admin-banner-upload-form
+          [unitId]="unit.id"
+          [imageUrlPrefix]="awsStoragePathPrefix"
+          [type]="'cover'"
+        ></lib-admin-banner-upload-form>
+      </div>
+    </div>
   </nb-card-body>
 </nb-card>

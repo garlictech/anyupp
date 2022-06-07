@@ -1,13 +1,15 @@
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { ButtonUIComponent } from './button-ui.component';
 import { action } from '@storybook/addon-actions';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
+
+import { commonStorybookImports } from '../../pure';
+import { ButtonUIComponent } from './button-ui.component';
 
 export default {
   title: 'ButtonUIComponent',
   component: ButtonUIComponent,
   decorators: [
     moduleMetadata({
-      imports: [],
+      imports: [...commonStorybookImports],
     }),
   ],
 } as Meta<ButtonUIComponent>;
@@ -28,5 +30,5 @@ Primary.args = {
   rounded: false,
   loading: false,
   size: 'sm',
-  style: 'primary',
+  color: 'primary',
 };
