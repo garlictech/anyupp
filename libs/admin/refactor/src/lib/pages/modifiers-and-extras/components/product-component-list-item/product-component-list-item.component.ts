@@ -1,12 +1,12 @@
 import * as fp from 'lodash/fp';
 
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductComponent } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
-import { ProductComponentFormComponent } from '../product-component-form/product-component-form.component';
 import { ModifiersAndExtrasListService } from '../../services/modifiers-and-extras-list.service';
+import { ProductComponentFormComponent } from '../product-component-form/product-component-form.component';
 
 @UntilDestroy()
 @Component({
@@ -15,7 +15,7 @@ import { ModifiersAndExtrasListService } from '../../services/modifiers-and-extr
   templateUrl: './product-component-list-item.component.html',
 })
 export class ProductComponentListItemComponent {
-  @Input() productComponent!: CrudApi.ProductComponent;
+  @Input() productComponent!: ProductComponent;
 
   constructor(
     private _nbDialogService: NbDialogService,

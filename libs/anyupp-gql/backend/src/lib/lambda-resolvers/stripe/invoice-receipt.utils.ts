@@ -1,4 +1,11 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  CreateInvoiceMutationVariables,
+  CreateReceiptMutationVariables,
+  InvoiceStatus,
+  ReceiptStatus,
+  UpdateTransactionMutationVariables,
+  UserInvoiceAddress,
+} from '@bgap/domain';
 import { createInvoice } from './stripe-graphql-crud';
 import { StripeResolverDeps, StripeResolverDepsUnauth } from './stripe.utils';
 
@@ -7,8 +14,8 @@ export const createInvoiceAndConnectTransaction =
     orderId: string,
     userId: string,
     transactionId: string,
-    invoiceAddress: CrudApi.UserInvoiceAddress,
-    status: CrudApi.InvoiceStatus,
+    invoiceAddress: UserInvoiceAddress,
+    status: InvoiceStatus,
   ) =>
   async (deps: StripeResolverDeps) => {
     console.debug('createInvoiceAndConnectTransaction().orderId=' + orderId);
@@ -36,7 +43,7 @@ export const createReceiptAndConnectTransaction =
     userId: string,
     transactionId: string,
     email: string | undefined | null,
-    status: CrudApi.ReceiptStatus,
+    status: ReceiptStatus,
     receiptId: string | undefined,
     recepitPdf: string | undefined,
   ) =>
@@ -68,9 +75,9 @@ const createInvoiceMutationVariables = (
   orderId: string,
   userId: string,
   transactionId: string,
-  invoiceAddress: CrudApi.UserInvoiceAddress,
-  status: CrudApi.InvoiceStatus,
-): CrudApi.CreateInvoiceMutationVariables => {
+  invoiceAddress: UserInvoiceAddress,
+  status: InvoiceStatus,
+): CreateInvoiceMutationVariables => {
   return {
     input: {
       userId,
@@ -93,10 +100,10 @@ const createReceiptMutationVariables = (
   userId: string,
   transactionId: string,
   email: string | undefined | null,
-  status: CrudApi.ReceiptStatus,
+  status: ReceiptStatus,
   receiptId: string | undefined,
   pdfData: string | undefined,
-): CrudApi.CreateReceiptMutationVariables => {
+): CreateReceiptMutationVariables => {
   return {
     input: {
       orderId,
@@ -112,7 +119,7 @@ const createReceiptMutationVariables = (
 
 const updateTransactionInvoiceId =
   (id: string, invoiceId: string) => (deps: StripeResolverDeps) => {
-    const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
+    const updateTransactionVars: UpdateTransactionMutationVariables = {
       input: {
         id,
         invoiceId,
@@ -124,7 +131,7 @@ const updateTransactionInvoiceId =
 
 const updateTransactionReceiptId =
   (id: string, receiptId: string) => (deps: StripeResolverDepsUnauth) => {
-    const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
+    const updateTransactionVars: UpdateTransactionMutationVariables = {
       input: {
         id,
         receiptId,

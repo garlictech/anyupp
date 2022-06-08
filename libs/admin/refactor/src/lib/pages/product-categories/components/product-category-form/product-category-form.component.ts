@@ -7,12 +7,12 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import { AbstractFormDialogComponent } from '../../../../shared/forms';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductCategory } from '@bgap/domain';
 import { EImageType, UpsertResponse } from '@bgap/shared/types';
 import { select } from '@ngrx/store';
 
+import { AbstractFormDialogComponent } from '../../../../shared/forms';
+import { loggedUserSelectors } from '../../../../store/logged-user';
 import { ProductCategoryFormService } from '../../services/product-category-form.service';
 
 @Component({
@@ -24,13 +24,13 @@ export class ProductCategoryFormComponent
   extends AbstractFormDialogComponent
   implements OnInit
 {
-  public productCategory?: CrudApi.ProductCategory;
+  public productCategory?: ProductCategory;
   public eImageType = EImageType;
 
   private _selectedChainId?: string | undefined | null;
 
   constructor(
-    protected _injector: Injector,
+    protected override _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
     private _productCategoryFormService: ProductCategoryFormService,
   ) {
@@ -83,7 +83,7 @@ export class ProductCategoryFormComponent
   }
 
   public imageUploadCallback = (image: string) => {
-    this.dialogForm?.controls.image.setValue(image);
+    this.dialogForm?.controls['image'].setValue(image);
 
     if (this.productCategory?.id) {
       this._productCategoryFormService
@@ -97,7 +97,7 @@ export class ProductCategoryFormComponent
   };
 
   public imageRemoveCallback = () => {
-    this.dialogForm?.controls.image.setValue('');
+    this.dialogForm?.controls['image'].setValue('');
 
     if (this.productCategory?.id) {
       this._productCategoryFormService

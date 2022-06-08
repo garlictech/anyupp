@@ -1,5 +1,17 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
+
+import {
+  CreateTransactionMutationVariables,
+  InvoiceStatus,
+  OrderStatus,
+  PaymentMethod,
+  PaymentStatus,
+  StartStripePaymentInput,
+  StartStripePaymentOutput,
+} from '@bgap/domain';
+import { toFixed0Number } from '@bgap/shared/utils';
+
+import { createInvoiceAndConnectTransaction } from '../invoice-receipt.utils';
 import {
   createTransaction,
   loadOrder,
@@ -8,15 +20,11 @@ import {
 } from '../stripe-graphql-crud';
 import { StripeResolverDeps } from '../stripe.utils';
 import { loadAndConnectUserForStripe } from './common-stripe';
-import { toFixed0Number } from '@bgap/shared/utils';
-import { createInvoiceAndConnectTransaction } from '../invoice-receipt.utils';
 
 // START PAYMENT INTENTION should use indempotency key https://stripe.com/docs/api/idempotent_requests?lang=node (Covered by #804)
 export const startStripePayment =
-  (input: CrudApi.StartStripePaymentInput) =>
-  async (
-    deps: StripeResolverDeps,
-  ): Promise<CrudApi.StartStripePaymentOutput> => {
+  (input: StartStripePaymentInput) =>
+  async (deps: StripeResolverDeps): Promise<StartStripePaymentOutput> => {
     const userId = deps.userId;
     console.debug('startStripePaymentV2().start()');
 
@@ -39,7 +47,7 @@ export const startStripePayment =
         savePaymentMethod,
     );
 
-    if (paymentMethod == CrudApi.PaymentMethod.inapp && !paymentMethodId) {
+    if (paymentMethod == PaymentMethod.inapp && !paymentMethodId) {
       throw Error(
         'Payment method is missing from request when payment mode is INAPP!',
       );
@@ -66,9 +74,9 @@ export const startStripePayment =
     const status =
       order.currentStatus ||
       order.statusLog[order.statusLog.length - 1]?.status ||
-      CrudApi.OrderStatus.none;
+      OrderStatus.none;
 
-    if (status != CrudApi.OrderStatus.none) {
+    if (status != OrderStatus.none) {
       throw Error(
         'Order status must be OrderStatus.NONE if you want to pay the order! Current status:' +
           status +
@@ -86,7 +94,7 @@ export const startStripePayment =
     }
 
     // 4. Load User
-    const createStripeCustomer = paymentMethod == CrudApi.PaymentMethod.inapp;
+    const createStripeCustomer = paymentMethod == PaymentMethod.inapp;
 
     const user = await loadAndConnectUserForStripe(
       userId,
@@ -101,10 +109,7 @@ export const startStripePayment =
       );
     }
 
-    if (
-      paymentMethod == CrudApi.PaymentMethod.inapp &&
-      !user.stripeCustomerId
-    ) {
+    if (paymentMethod == PaymentMethod.inapp && !user.stripeCustomerId) {
       throw Error(
         'User initialization failed. User must have a stripeCustomerId property!',
       );
@@ -116,7 +121,7 @@ export const startStripePayment =
     const total = order.sumPriceShown.priceSum + serviceFee;
 
     // 5. Handle INAPP payment
-    if (paymentMethod == CrudApi.PaymentMethod.inapp) {
+    if (paymentMethod == PaymentMethod.inapp) {
       if (!paymentMethodId) {
         throw Error(
           'Payment method is missing from request when payment mode is INAPP!',
@@ -221,19 +226,18 @@ export const startStripePayment =
       );
 
       // 8. Create Transaction
-      const createTransactionVars: CrudApi.CreateTransactionMutationVariables =
-        {
-          input: {
-            userId: userId,
-            orderId: orderId,
-            currency: order.sumPriceShown.currency,
-            status: CrudApi.PaymentStatus.waiting_for_payment, // shouldn't we use statusLog instead of the simple actual status ? (Covered by #945)
-            externalTransactionId: paymentIntent.id,
-            total,
-            type: 'stripe',
-            paymentMethodId,
-          },
-        };
+      const createTransactionVars: CreateTransactionMutationVariables = {
+        input: {
+          userId: userId,
+          orderId: orderId,
+          currency: order.sumPriceShown.currency,
+          status: PaymentStatus.waiting_for_payment, // shouldn't we use statusLog instead of the simple actual status ? (Covered by #945)
+          externalTransactionId: paymentIntent.id,
+          total,
+          type: 'stripe',
+          paymentMethodId,
+        },
+      };
       const transaction = await createTransaction(createTransactionVars)(deps);
       console.debug('startStripePaymentV2().transaction.id=' + transaction?.id);
 
@@ -253,7 +257,7 @@ export const startStripePayment =
           order.userId,
           transaction.id,
           invoiceAddress,
-          CrudApi.InvoiceStatus.waiting,
+          InvoiceStatus.waiting,
         )(deps);
       }
 
@@ -282,18 +286,17 @@ export const startStripePayment =
       console.debug('***** startCashPayment()');
 
       // 6. Create Transaction
-      const createTransactionVars: CrudApi.CreateTransactionMutationVariables =
-        {
-          input: {
-            userId: userId,
-            orderId: orderId,
-            currency: order.sumPriceShown.currency,
-            status: CrudApi.PaymentStatus.waiting_for_payment,
-            total,
-            type: paymentMethod.toString(),
-            paymentMethodId,
-          },
-        };
+      const createTransactionVars: CreateTransactionMutationVariables = {
+        input: {
+          userId: userId,
+          orderId: orderId,
+          currency: order.sumPriceShown.currency,
+          status: PaymentStatus.waiting_for_payment,
+          total,
+          type: paymentMethod.toString(),
+          paymentMethodId,
+        },
+      };
 
       console.debug('startCashPayment().creating.transaction');
       const transaction = await createTransaction(createTransactionVars)(deps);
@@ -313,7 +316,7 @@ export const startStripePayment =
           order.userId,
           transaction.id,
           invoiceAddress,
-          CrudApi.InvoiceStatus.success,
+          InvoiceStatus.success,
         )(deps);
       } else {
         // await createReceiptAndConnectTransaction(
@@ -321,7 +324,7 @@ export const startStripePayment =
         //   order.userId,
         //   transaction.id,
         //   user.email,
-        //   CrudApi.ReceiptStatus.success,
+        //   ReceiptStatus.success,
         // );
       }
 
@@ -338,7 +341,7 @@ export const startStripePayment =
       // 9. Return with success
       return Promise.resolve({
         clientSecret: '',
-        status: CrudApi.PaymentStatus.waiting_for_payment,
+        status: PaymentStatus.waiting_for_payment,
       });
     }
   };

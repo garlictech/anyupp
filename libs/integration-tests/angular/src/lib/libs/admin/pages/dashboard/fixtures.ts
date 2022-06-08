@@ -1,4 +1,4 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductComponentSetType, ProductType } from '@bgap/domain';
 
 export const printableOrder = {
   id: 'seeded_order_id_6',
@@ -45,7 +45,7 @@ export const printableOrder = {
             de: null,
             hu: 'Módosító komponens set',
           },
-          type: CrudApi.ProductComponentSetType.modifier,
+          type: ProductComponentSetType.modifier,
           items: [
             {
               productComponentId: 'test_product_component_id',
@@ -61,7 +61,7 @@ export const printableOrder = {
           ],
         },
       ],
-      productType: CrudApi.ProductType.drink,
+      productType: ProductType.drink,
       externalId: null,
       netPackagingFee: null,
       serviceFee: null,
@@ -127,7 +127,7 @@ export const printableOrder = {
             de: null,
             hu: 'Módosító komponens set',
           },
-          type: CrudApi.ProductComponentSetType.modifier,
+          type: ProductComponentSetType.modifier,
           items: [
             {
               productComponentId: 'test_product_component_id',
@@ -143,7 +143,7 @@ export const printableOrder = {
           ],
         },
       ],
-      productType: CrudApi.ProductType.drink,
+      productType: ProductType.drink,
       externalId: null,
       netPackagingFee: null,
       serviceFee: null,
@@ -200,7 +200,7 @@ export const printableOrder = {
             de: null,
             hu: 'Módosító komponens set',
           },
-          type: CrudApi.ProductComponentSetType.modifier,
+          type: ProductComponentSetType.modifier,
           items: [
             {
               productComponentId: 'test_product_component_id',
@@ -216,7 +216,7 @@ export const printableOrder = {
           ],
         },
       ],
-      productType: CrudApi.ProductType.drink,
+      productType: ProductType.drink,
       externalId: null,
       netPackagingFee: null,
       serviceFee: null,

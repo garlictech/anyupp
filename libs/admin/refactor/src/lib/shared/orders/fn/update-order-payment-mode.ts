@@ -1,12 +1,10 @@
 import { from } from 'rxjs';
 
-import * as CrudApi from '@bgap/crud-gql/api';
-
 import { OrderHandlerDeps } from '@bgap/shared/types';
+import { PaymentMode } from '@bgap/domain';
 
 export const updateOrderPaymentMode =
-  (deps: OrderHandlerDeps) =>
-  (orderId: string, paymentMode: CrudApi.PaymentMode) =>
+  (deps: OrderHandlerDeps) => (orderId: string, paymentMode: PaymentMode) =>
     from(
       deps.crudSdk.UpdateOrder({
         input: {

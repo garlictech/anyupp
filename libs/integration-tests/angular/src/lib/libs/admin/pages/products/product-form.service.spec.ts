@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { ProductFormService } from '@bgap/admin/refactor';
 import { CrudSdkService } from '@bgap/admin/refactor';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { productFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { EProductLevel, UpsertResponse } from '@bgap/shared/types';
 import { StoreModule } from '@ngrx/store';
@@ -19,6 +19,13 @@ import {
 import { entityConfig } from '@bgap/admin/refactor';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule } from '@angular/common/http';
+import {
+  ChainProduct,
+  GroupProduct,
+  ProductType,
+  ServingMode,
+  UnitProduct,
+} from '@bgap/domain';
 
 describe('ProductFormService', () => {
   const chainProductId = `${testIdPrefix}ADMIN_PRODUCT_IT_CHAIN_PRODUCT_ID_01`;
@@ -198,12 +205,12 @@ describe('ProductFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.ChainProduct>>saveResponse).data.id
+          (<UpsertResponse<ChainProduct>>saveResponse).data.id
             ? service.updateChainProduct$({
                 ...productFixture.chainProductInputBase,
                 id: chainProductId,
                 image: 'IMAGE_MOD',
-                productType: CrudApi.ProductType.other,
+                productType: ProductType.other,
               })
             : EMPTY,
         ),
@@ -298,7 +305,7 @@ describe('ProductFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.GroupProduct>>saveResponse).data.id
+          (<UpsertResponse<GroupProduct>>saveResponse).data.id
             ? service.updateGroupProduct$({
                 ...productFixture.groupProductInputBase,
                 id: groupProductId,
@@ -394,11 +401,11 @@ describe('ProductFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.UnitProduct>>saveResponse).data.id
+          (<UpsertResponse<UnitProduct>>saveResponse).data.id
             ? service.updateUnitProduct$({
                 ...productFixture.unitProductInputBase,
                 id: unitProductId,
-                supportedServingModes: [CrudApi.ServingMode.inplace],
+                supportedServingModes: [ServingMode.inplace],
                 isVisible: false,
               })
             : EMPTY,

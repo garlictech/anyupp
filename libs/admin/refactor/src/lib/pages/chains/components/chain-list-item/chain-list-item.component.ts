@@ -1,6 +1,7 @@
 import * as fp from 'lodash/fp';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Chain } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
 
 import { ChainFormComponent } from '../chain-form/chain-form.component';
@@ -12,7 +13,7 @@ import { ChainFormComponent } from '../chain-form/chain-form.component';
   styleUrls: ['./chain-list-item.component.scss'],
 })
 export class ChainListItemComponent {
-  @Input() chain!: CrudApi.Chain;
+  @Input() chain!: Chain;
 
   constructor(private _nbDialogService: NbDialogService) {}
 

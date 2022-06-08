@@ -1,5 +1,7 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import * as Szamlazz from 'szamlazz.js';
+
+import { Maybe, Order, Price, Transaction, User } from '@bgap/domain';
+
 import { calculaterServiceFeeItems, getTranslation } from './utils';
 
 export const createInvoice =
@@ -11,9 +13,9 @@ export const createInvoice =
     language = Szamlazz.Language.Hungarian,
     paymentMethod = Szamlazz.PaymentMethod.Stripe,
   }: {
-    user: CrudApi.User;
-    transaction: CrudApi.Transaction;
-    order: CrudApi.Order;
+    user: User;
+    transaction: Transaction;
+    order: Order;
     language?: Szamlazz.Interface.Language;
     paymentMethod?: Szamlazz.Interface.PaymentMethod;
   }): Promise<Szamlazz.InvoiceResponse> => {
@@ -61,10 +63,7 @@ export const createInvoice =
         }),
     );
 
-    const addPriceItem = (
-      label: string,
-      price?: CrudApi.Maybe<CrudApi.Price>,
-    ) => {
+    const addPriceItem = (label: string, price?: Maybe<Price>) => {
       if (price) {
         items.push(
           new Szamlazz.Item({

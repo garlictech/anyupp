@@ -8,13 +8,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import {
-  dashboardActions,
-  dashboardSelectors,
-  DashboardSettings,
-} from '../../../../store/dashboard';
-import { ordersSelectors } from '../../../../store/orders';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Order, Unit } from '@bgap/domain';
 import {
   EDashboardListMode,
   EDashboardSize,
@@ -25,6 +19,12 @@ import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import {
+  dashboardActions,
+  dashboardSelectors,
+  DashboardSettings,
+} from '../../../../store/dashboard';
+import { ordersSelectors } from '../../../../store/orders';
 import { OrderPrintComponent } from '../order-print/order-print.component';
 
 @UntilDestroy()
@@ -35,12 +35,12 @@ import { OrderPrintComponent } from '../order-print/order-print.component';
   styleUrls: ['./order-ticket-body.component.scss'],
 })
 export class OrderTicketBodyComponent implements OnInit {
-  @Input() unit?: CrudApi.Unit;
+  @Input() unit?: Unit;
   public dashboardSettings!: DashboardSettings;
-  public selectedOrder?: CrudApi.Order;
+  public selectedOrder?: Order;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public ordersSum: OrderSum = {};
-  public userActiveOrders?: CrudApi.Order[];
+  public userActiveOrders?: Order[];
   public EDashboardListMode = EDashboardListMode;
   public activeOrdersCount = 0;
 
@@ -68,9 +68,7 @@ export class OrderTicketBodyComponent implements OnInit {
       .pipe(
         select(dashboardSelectors.getListMode),
         switchMap(
-          (
-            listMode: EDashboardListMode,
-          ): Observable<CrudApi.Order | undefined> => {
+          (listMode: EDashboardListMode): Observable<Order | undefined> => {
             return this._store.pipe(
               select(
                 listMode === EDashboardListMode.current
@@ -83,7 +81,7 @@ export class OrderTicketBodyComponent implements OnInit {
         delay(0), // ExpressionChangedAfterItHasBeenCheckedError - trick
         untilDestroyed(this),
       )
-      .subscribe((selectedOrder: CrudApi.Order | undefined) => {
+      .subscribe((selectedOrder: Order | undefined) => {
         this.selectedOrder = selectedOrder;
 
         this._getOrdersInfo();
@@ -123,11 +121,11 @@ export class OrderTicketBodyComponent implements OnInit {
           ),
           take(1),
         )
-        .subscribe((userActiveOrders: CrudApi.Order[]) => {
+        .subscribe((userActiveOrders: Order[]) => {
           this.userActiveOrders = userActiveOrders;
 
           this.ordersSum.all = 0;
-          this.userActiveOrders.forEach((o: CrudApi.Order) => {
+          this.userActiveOrders.forEach((o: Order) => {
             this.ordersSum.all =
               (this.ordersSum?.all || 0) +
               o.sumPriceShown.priceSum +
@@ -164,6 +162,6 @@ export class OrderTicketBodyComponent implements OnInit {
       this.dashboardSettings.showAllUserOrders
         ? this.userActiveOrders
         : [this.selectedOrder]
-    ) as CrudApi.Order[];
+    ) as Order[];
   }
 }

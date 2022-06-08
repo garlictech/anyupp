@@ -1,29 +1,33 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { MergedProduct } from '@bgap/shared/types';
+import {
+  ChainProduct,
+  GroupProduct,
+  Maybe,
+  ProductVariant,
+  UnitProduct,
+} from '@bgap/domain';
 
 export const mergeAllProductLayers = ({
   chainProduct,
   groupProduct,
   unitProduct,
 }: {
-  chainProduct: CrudApi.ChainProduct;
-  groupProduct: CrudApi.GroupProduct;
-  unitProduct: CrudApi.UnitProduct;
-}): MergedProduct => {
-  return {
-    ...chainProduct,
-    ...groupProduct,
-    ...unitProduct,
+  chainProduct: ChainProduct;
+  groupProduct: GroupProduct;
+  unitProduct: UnitProduct;
+}): MergedProduct => ({
+  ...chainProduct,
+  ...groupProduct,
+  ...unitProduct,
 
-    isVisible: calculateIsVisible(
-      chainProduct?.isVisible,
-      groupProduct?.isVisible,
-      unitProduct?.isVisible,
-    ),
-    variants:
-      mergeVariantMaps(groupProduct?.variants, unitProduct?.variants) ?? [],
-  };
-};
+  isVisible: calculateIsVisible(
+    chainProduct?.isVisible,
+    groupProduct?.isVisible,
+    unitProduct?.isVisible,
+  ),
+  variants:
+    mergeVariantMaps(groupProduct?.variants, unitProduct?.variants) ?? [],
+});
 
 const calculateIsVisible = (
   visibility1 = true,
@@ -35,12 +39,12 @@ const calculateIsAvailable = (availability1 = true, availability2 = true) =>
   availability1 && availability2;
 
 const mergeVariantMaps = (
-  groupVariants: CrudApi.Maybe<CrudApi.ProductVariant>[] | undefined | null,
-  unitVariants: CrudApi.Maybe<CrudApi.ProductVariant>[] | undefined | null,
+  groupVariants: Maybe<ProductVariant>[] | undefined | null,
+  unitVariants: Maybe<ProductVariant>[] | undefined | null,
 ) => {
   if (groupVariants && unitVariants) {
     const groupVariantsMap: {
-      [key: string]: CrudApi.ProductVariant;
+      [key: string]: ProductVariant;
     } = groupVariants.reduce((variants, current) => {
       if (current?.id) {
         return { ...variants, [current.id]: current };
@@ -51,7 +55,7 @@ const mergeVariantMaps = (
     }, {});
 
     const unitVariantsMap: {
-      [key: string]: CrudApi.ProductVariant;
+      [key: string]: ProductVariant;
     } = unitVariants.reduce((variants, current) => {
       if (current?.id) {
         return { ...variants, [current.id]: current };
@@ -81,8 +85,8 @@ const mergeVariants = ({
   groupVariant,
   unitVariant,
 }: {
-  groupVariant: CrudApi.ProductVariant;
-  unitVariant: CrudApi.ProductVariant;
+  groupVariant: ProductVariant;
+  unitVariant: ProductVariant;
 }) => {
   return {
     ...groupVariant,

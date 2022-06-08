@@ -8,17 +8,17 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { appCoreActions } from '../../../../store/app-core';
-import { DataService } from '../../../../shared/data-access/data';
-import { ToasterService } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { PosType, Unit } from '@bgap/domain';
 import { jsonParsedOrNull } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { Store } from '@ngrx/store';
 
+import { DataService } from '../../../../shared/data-access/data';
+import { ToasterService } from '../../../../shared/utils';
+import { appCoreActions } from '../../../../store/app-core';
+import { UnitBannersComponent } from '../unit-banners/unit-banners.component';
 import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.component';
 import { UnitFormComponent } from '../unit-form/unit-form.component';
-import { UnitBannersComponent } from '../unit-banners/unit-banners.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,9 +27,9 @@ import { UnitBannersComponent } from '../unit-banners/unit-banners.component';
   styleUrls: ['./unit-list-item.component.scss'],
 })
 export class UnitListItemComponent {
-  @Input() unit?: CrudApi.Unit;
+  @Input() unit?: Unit;
   public workingGenerateStatus = false;
-  public ePosType = CrudApi.PosType;
+  public ePosType = PosType;
 
   constructor(
     private _store: Store,

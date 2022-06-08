@@ -17,7 +17,7 @@ import {
 } from '../../../../api-clients';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { CrudSdk } from '@bgap/crud-gql/api';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { CreateAdminUserMutationVariables } from '@bgap/domain';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -146,7 +146,7 @@ describe('Admin user creation/deletion', () => {
     const sdk = createIamCrudSdk();
     testLogic({
       label: 'RESOLVER CODE',
-      createOp: (x: CrudApi.CreateAdminUserMutationVariables) =>
+      createOp: (x: CreateAdminUserMutationVariables) =>
         createAdminUser(x)(deps),
       deleteOp: x => deleteAdminUser(x)(deps),
       getOp: sdk.GetAdminUser,

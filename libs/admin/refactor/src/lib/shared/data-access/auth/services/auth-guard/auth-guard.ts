@@ -9,15 +9,15 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { DataService } from '../../../../../shared/data-access/data';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Role } from '@bgap/domain';
 import { AuthenticatedCognitoUser } from '@bgap/shared/types';
-
-import { CognitoService } from '../cognito/cognito.service';
-import { loggedUserSelectors } from '../../../../../store/logged-user';
-import { Store } from '@ngrx/store';
 import { filterNullish } from '@bgap/shared/utils';
+import { Store } from '@ngrx/store';
+
+import { DataService } from '../../../../../shared/data-access/data';
 import { appCoreSelectors } from '../../../../../store/app-core';
+import { loggedUserSelectors } from '../../../../../store/logged-user';
+import { CognitoService } from '../cognito/cognito.service';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         } else {
           this._dataService.initDataConnections(
             cognitoUser?.user?.id || '',
-            CrudApi.Role.superuser,
+            Role.superuser,
           );
         }
 

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-
+import { currentStatus } from '@bgap/crud-gql/api';
+import { Order, ServingMode } from '@bgap/domain';
 import { EDashboardTicketListType } from '@bgap/shared/types';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -10,22 +10,22 @@ import * as CrudApi from '@bgap/crud-gql/api';
   styleUrls: ['./order-ticket-list-item.component.scss'],
 })
 export class OrderTicketListItemComponent {
-  @Input() order!: CrudApi.Order;
+  @Input() order!: Order;
   @Input() showMarkers?: boolean;
   @Input() selectedOrderUserId?: string;
   @Input() ticketListType?: EDashboardTicketListType;
 
-  public currentStatus = CrudApi.currentStatus;
+  public currentStatus = currentStatus;
   public readyCount = 0;
-  public EServingMode = CrudApi.ServingMode;
+  public EServingMode = ServingMode;
 
   /*
   ngOnChanges() {
     this.readyCount =
       this.ticketListType === EDashboardTicketListType.placed
         ? this.order.items.filter(
-            (i: CrudApi.OrderItem): boolean =>
-              currentStatus(i.statusLog) === CrudApi.OrderStatus.ready
+            (i: OrderItem): boolean =>
+              currentStatus(i.statusLog) === OrderStatus.ready
           ).length
         : 0; // Show badhe only in placed list
   }

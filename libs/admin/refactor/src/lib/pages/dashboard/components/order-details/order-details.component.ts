@@ -9,18 +9,19 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
+import { adminUserRoleIsAtLeast, currentStatus } from '@bgap/crud-gql/api';
 import {
-  ConfirmDialogComponent,
-  UnpayCategoriesComponent,
-} from '../../../../shared/components';
-import {
-  dashboardSelectors,
-  DashboardSettings,
-} from '../../../../store/dashboard';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import { OrderService } from '../../../../shared/data-access/order';
-import { getNextOrderStatus, getStatusColor } from '../../../../store/orders';
-import * as CrudApi from '@bgap/crud-gql/api';
+  Order,
+  OrderItem,
+  OrderStatus,
+  PaymentMode,
+  PaymentStatus,
+  Role,
+  ServingMode,
+  StatusLog,
+  Unit,
+  UnpayCategory,
+} from '@bgap/domain';
 import {
   EDashboardListMode,
   EDashboardSize,
@@ -30,14 +31,25 @@ import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
-import { OrderPrintComponent } from '../order-print/order-print.component';
+import {
+  ConfirmDialogComponent,
+  UnpayCategoriesComponent,
+} from '../../../../shared/components';
+import { OrderService } from '../../../../shared/data-access/order';
 import { CurrencyFormatterPipe } from '../../../../shared/pipes';
+import {
+  dashboardSelectors,
+  DashboardSettings,
+} from '../../../../store/dashboard';
+import { loggedUserSelectors } from '../../../../store/logged-user';
+import { getNextOrderStatus, getStatusColor } from '../../../../store/orders';
 import {
   addIncludedServiceFeeToOrderItems,
   calculateOrderSum,
   calculatePackagingSum,
   calculateServiceFeeSum,
 } from '../../fn';
+import { OrderPrintComponent } from '../order-print/order-print.component';
 
 @UntilDestroy()
 @Component({
@@ -47,19 +59,19 @@ import {
   templateUrl: './order-details.component.html',
 })
 export class OrderDetailsComponent implements OnInit, OnChanges {
-  @Input() order!: CrudApi.Order;
-  @Input() unit?: CrudApi.Unit;
+  @Input() order!: Order;
+  @Input() unit?: Unit;
   @Input() allowPrintOrder = false;
   public dashboardSettings!: DashboardSettings;
   public EDashboardListMode = EDashboardListMode;
-  public EOrderStatus = CrudApi.OrderStatus;
-  public EPaymentStatus = CrudApi.PaymentStatus;
-  public EServingMode = CrudApi.ServingMode;
+  public EOrderStatus = OrderStatus;
+  public EPaymentStatus = PaymentStatus;
+  public EServingMode = ServingMode;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
   public allowRecallHistoryOrder = false;
-  public currentStatus = CrudApi.currentStatus;
-  public orderItems: CrudApi.OrderItem[] = [];
+  public currentStatus = currentStatus;
+  public orderItems: OrderItem[] = [];
   public orderSumStr = '';
   public packagingFeeStr?: string;
   public serviceFeeStr?: string;
@@ -93,9 +105,9 @@ export class OrderDetailsComponent implements OnInit, OnChanges {
       .pipe(select(loggedUserSelectors.getLoggedUser), untilDestroyed(this))
       .subscribe(adminUser => {
         if (adminUser) {
-          this.allowRecallHistoryOrder = CrudApi.adminUserRoleIsAtLeast(
+          this.allowRecallHistoryOrder = adminUserRoleIsAtLeast(
             adminUser,
-            CrudApi.Role.unitadmin,
+            Role.unitadmin,
           );
         } else {
           this.allowRecallHistoryOrder = false;
@@ -107,32 +119,32 @@ export class OrderDetailsComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.orderSumStr = calculateOrderSum(
-      changes.order.currentValue,
+      changes['order'].currentValue,
       this._currencyFormatterPipe.transform,
     );
     this.packagingFeeStr = calculatePackagingSum(
-      changes.order.currentValue,
+      changes['order'].currentValue,
       this._currencyFormatterPipe.transform,
     );
     this.serviceFeeStr = calculateServiceFeeSum(
-      changes.order.currentValue,
+      changes['order'].currentValue,
       this._currencyFormatterPipe.transform,
     );
     this.orderItems = addIncludedServiceFeeToOrderItems(
-      changes.order.currentValue,
+      changes['order'].currentValue,
     );
   }
 
   get currentOrderStatus() {
-    return CrudApi.currentStatus(this.order.statusLog || []);
+    return currentStatus(this.order.statusLog || []);
   }
 
-  public getButtonStatus(status: CrudApi.StatusLog[]): string {
-    return getStatusColor(CrudApi.currentStatus(status));
+  public getButtonStatus(status: StatusLog[]): string {
+    return getStatusColor(currentStatus(status));
   }
 
   public getPlacedButtonStatus(): string {
-    return getStatusColor(CrudApi.OrderStatus.placed);
+    return getStatusColor(OrderStatus.placed);
   }
 
   public async updateOrderStatus(): Promise<void> {
@@ -148,7 +160,7 @@ export class OrderDetailsComponent implements OnInit, OnChanges {
 
   public async updateOrderItemStatus(idx: number): Promise<void> {
     const status = getNextOrderStatus(
-      CrudApi.currentStatus(this.order.items[idx].statusLog),
+      currentStatus(this.order.items[idx].statusLog),
     );
 
     if (status) {
@@ -159,7 +171,7 @@ export class OrderDetailsComponent implements OnInit, OnChanges {
   }
 
   public async updateOrderPaymentMethod(
-    paymentMode: CrudApi.PaymentMode,
+    paymentMode: PaymentMode,
   ): Promise<void> {
     await this._orderService
       .updateOrderPaymentMode$(this.order.id, paymentMode)
@@ -179,7 +191,7 @@ export class OrderDetailsComponent implements OnInit, OnChanges {
               await this._orderService
                 .handleSuccessfulTransactionStatus$(
                   this.order,
-                  CrudApi.PaymentStatus.success,
+                  PaymentStatus.success,
                 )
                 .toPromise();
             },
@@ -201,12 +213,12 @@ export class OrderDetailsComponent implements OnInit, OnChanges {
       const dialog = this._nbDialogService.open(UnpayCategoriesComponent);
 
       dialog.componentRef.instance.clickCallback = async (
-        unpayCategory: CrudApi.UnpayCategory,
+        unpayCategory: UnpayCategory,
       ) => {
         await this._orderService
           .handleFailedTransactionStatus$(
             this.order,
-            CrudApi.PaymentStatus.failed,
+            PaymentStatus.failed,
             unpayCategory,
           )
           .toPromise();
@@ -226,11 +238,7 @@ export class OrderDetailsComponent implements OnInit, OnChanges {
           label: 'common.ok',
           callback: async (): Promise<void> => {
             await this._orderService
-              .updateOrderItemStatus$(
-                this.order.id,
-                CrudApi.OrderStatus.placed,
-                idx,
-              )
+              .updateOrderItemStatus$(this.order.id, OrderStatus.placed, idx)
               .toPromise();
           },
           status: 'success',
@@ -272,15 +280,13 @@ export class OrderDetailsComponent implements OnInit, OnChanges {
   }
 
   public isStatusLog(
-    orderItem: CrudApi.OrderItem,
-    status: keyof typeof CrudApi.OrderStatus,
+    orderItem: OrderItem,
+    status: keyof typeof OrderStatus,
   ): boolean {
-    return (
-      this.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
-    );
+    return this.currentStatus(orderItem.statusLog) === OrderStatus[status];
   }
 
-  public printOrder(order: CrudApi.Order) {
+  public printOrder(order: Order) {
     const dialog = this._nbDialogService.open(OrderPrintComponent, {
       dialogClass: 'print-dialog',
     });
@@ -288,7 +294,7 @@ export class OrderDetailsComponent implements OnInit, OnChanges {
     dialog.componentRef.instance.orders = [order];
   }
 
-  public recallOrderFromHistory(order: CrudApi.Order) {
+  public recallOrderFromHistory(order: Order) {
     const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
     dialog.componentRef.instance.options = {

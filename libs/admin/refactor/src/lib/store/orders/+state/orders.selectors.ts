@@ -1,17 +1,19 @@
-import { ENTITY_NAME } from '../../../shared/types';
-
-import * as CrudApi from '@bgap/crud-gql/api';
+import { currentStatus } from '@bgap/crud-gql/api';
+import { Order, OrderItem, OrderStatus } from '@bgap/domain';
 import { LaneOrderItem } from '@bgap/shared/types';
 import { EntitySelectorsFactory } from '@ngrx/data';
 import { createSelector } from '@ngrx/store';
 
-export const orderEntitySelectors =
-  new EntitySelectorsFactory().create<CrudApi.Order>(ENTITY_NAME.ORDER);
+import { ENTITY_NAME } from '../../../shared/types';
+
+export const orderEntitySelectors = new EntitySelectorsFactory().create<Order>(
+  ENTITY_NAME.ORDER,
+);
 
 export const getActiveOrderById = (id: string) =>
   createSelector(
     orderEntitySelectors.selectFilteredEntities,
-    (orders: CrudApi.Order[]): CrudApi.Order | undefined =>
+    (orders: Order[]): Order | undefined =>
       orders.find((order): boolean => order.id === id),
   );
 
@@ -32,25 +34,25 @@ export const getActiveOrdersCountByUserId = (userId: string) =>
       (orders.filter((order): boolean => order.userId === userId) || []).length,
   );
 
-export const getLaneOrderItemsByStatus = (status: CrudApi.OrderStatus) =>
+export const getLaneOrderItemsByStatus = (status: OrderStatus) =>
   createSelector(orderEntitySelectors.selectFilteredEntities, orders => {
-    const laneOrderItems: CrudApi.OrderItem[] = [];
+    const laneOrderItems: OrderItem[] = [];
 
     orders.forEach(order => {
       laneOrderItems.push(
         ...order.items
           // use "map" first for the correct idx!!!
           .map(
-            (orderItem: CrudApi.OrderItem, idx: number): LaneOrderItem => ({
+            (orderItem: OrderItem, idx: number): LaneOrderItem => ({
               ...orderItem,
               idx,
             }),
           )
           .filter(
-            (orderItem: CrudApi.OrderItem): boolean =>
-              CrudApi.currentStatus(orderItem.statusLog) === status,
+            (orderItem: OrderItem): boolean =>
+              currentStatus(orderItem.statusLog) === status,
           )
-          .map((orderItem: CrudApi.OrderItem) => ({
+          .map((orderItem: OrderItem) => ({
             ...orderItem,
             orderId: order.id,
             servingMode: order.servingMode,

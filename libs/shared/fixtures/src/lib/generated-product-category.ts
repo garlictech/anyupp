@@ -1,5 +1,5 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { RequiredId } from '@bgap/shared/types';
+import { CreateGeneratedProductCategoryInput } from '@bgap/domain';
 import { testIdPrefix } from './common';
 
 const getGeneratedProductCategory = ({
@@ -10,14 +10,14 @@ const getGeneratedProductCategory = ({
   id: string;
   unitId: string;
   productCategoryId: string;
-}): RequiredId<CrudApi.CreateGeneratedProductCategoryInput> => ({
+}): RequiredId<CreateGeneratedProductCategoryInput> => ({
   ...generatedProductCategoryBase,
   id,
   unitId,
   productCategoryId,
 });
 
-const generatedProductCategoryBase: RequiredId<CrudApi.CreateGeneratedProductCategoryInput> =
+const generatedProductCategoryBase: RequiredId<CreateGeneratedProductCategoryInput> =
   {
     id: `${testIdPrefix}generatedProduct_id_`,
     unitId: 'unitId_',

@@ -1,7 +1,9 @@
 import { CognitoIdentityServiceProvider, DynamoDB } from 'aws-sdk';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { CrudSdk } from '@bgap/crud-gql/api';
+import { AdminUser, Maybe } from '@bgap/domain';
 
 export interface AdminUserResolverDeps {
   userPoolId: string;
@@ -13,7 +15,7 @@ export interface AdminUserResolverDeps {
 
 export const deleteAdminUserFromTable =
   (deps: AdminUserResolverDeps) =>
-  (username: string): ReturnType<CrudApi.CrudSdk['DeleteAdminUser']> =>
+  (username: string): ReturnType<CrudSdk['DeleteAdminUser']> =>
     from(
       deps.docClient
         .delete({
@@ -23,4 +25,4 @@ export const deleteAdminUserFromTable =
           },
         })
         .promise(),
-    ).pipe(map(res => res.Attributes as CrudApi.Maybe<CrudApi.AdminUser>));
+    ).pipe(map(res => res.Attributes as Maybe<AdminUser>));

@@ -1,7 +1,6 @@
 import { switchMap } from 'rxjs/operators';
 
-import * as CrudApi from '@bgap/crud-gql/api';
-
+import { PaymentStatus, UnpayCategory } from '@bgap/domain';
 import { OrderHandlerDeps } from '@bgap/shared/types';
 
 export const updateOrderTransactionStatus =
@@ -9,8 +8,8 @@ export const updateOrderTransactionStatus =
   (
     orderId: string,
     transactionId: string,
-    status: CrudApi.PaymentStatus,
-    unpayCategory?: CrudApi.UnpayCategory,
+    status: PaymentStatus,
+    unpayCategory?: UnpayCategory,
   ) =>
     deps.crudSdk
       .UpdateTransaction({

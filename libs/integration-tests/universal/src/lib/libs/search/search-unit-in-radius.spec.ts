@@ -1,11 +1,11 @@
 const { createConnector } = require('@opensearch-project/opensearch');
 import { Client } from '@opensearch-project/opensearch';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { switchMap, tap, delay } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { createIamCrudSdk } from '../../../api-clients';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
 import { searchByRadiusResolver } from '@bgap/backend/search';
+import { GeoSearchableObjectType } from '@bgap/domain';
 
 const unitId = '12-search-unit-in-radius-c86e6484-a2c7-11ec-b909-0242ac120002';
 
@@ -63,7 +63,7 @@ test('Search for a unit in radius using resolver', done => {
     input: {
       location: { lat: 1, lon: 1 },
       radiusInMeters: 100,
-      objectType: CrudApi.GeoSearchableObjectType.unit,
+      objectType: GeoSearchableObjectType.unit,
       limit: 1,
     },
   })
@@ -74,7 +74,7 @@ test('Search for a unit in radius using resolver', done => {
           input: {
             location: { lat: 1, lon: 1 },
             radiusInMeters: 100,
-            objectType: CrudApi.GeoSearchableObjectType.unit,
+            objectType: GeoSearchableObjectType.unit,
             limit: 1,
             nextToken: res.nextToken,
           },
@@ -86,7 +86,7 @@ test('Search for a unit in radius using resolver', done => {
           input: {
             location: { lat: 2, lon: 2 },
             radiusInMeters: 100,
-            objectType: CrudApi.GeoSearchableObjectType.unit,
+            objectType: GeoSearchableObjectType.unit,
             limit: 1,
           },
         }),
@@ -103,7 +103,7 @@ test('Search for a unit in radius using API', done => {
       input: {
         location: { lat: 1, lon: 1 },
         radiusInMeters: 100,
-        objectType: CrudApi.GeoSearchableObjectType.unit,
+        objectType: GeoSearchableObjectType.unit,
         limit: 1,
       },
     })

@@ -3,9 +3,10 @@ import { Observable, of } from 'rxjs';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { productComponentsSelectors } from '../../../store/product-components';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductComponent } from '@bgap/domain';
 import { Store } from '@ngrx/store';
+
+import { productComponentsSelectors } from '../../../store/product-components';
 
 @Pipe({
   name: 'productComponentInfo',
@@ -13,7 +14,7 @@ import { Store } from '@ngrx/store';
 export class ProductComponentInfoPipe implements PipeTransform {
   constructor(private _store: Store) {}
 
-  transform(componentId?: string | null): Observable<CrudApi.ProductComponent> {
+  transform(componentId?: string | null): Observable<ProductComponent> {
     return of(componentId).pipe(
       filter(fp.negate(fp.isEmpty)),
       switchMap(id =>

@@ -3,14 +3,14 @@ import { Observable } from 'rxjs';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { visibleLinesOnViewport } from '../../../../shared/utils';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import { UnitCollectionService } from '../../../../store/units';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Unit } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { visibleLinesOnViewport } from '../../../../shared/utils';
+import { loggedUserSelectors } from '../../../../store/logged-user';
+import { UnitCollectionService } from '../../../../store/units';
 import { UnitListService } from '../../services/unit-list.service';
 import { UnitFormComponent } from '../unit-form/unit-form.component';
 
@@ -24,7 +24,7 @@ export class UnitListComponent {
   @ViewChild('dataVSVP')
   dataVSVP?: CdkVirtualScrollViewport;
 
-  public units$: Observable<CrudApi.Unit[]>;
+  public units$: Observable<Unit[]>;
   public hasSelectedGroupId$: Observable<boolean>;
 
   constructor(

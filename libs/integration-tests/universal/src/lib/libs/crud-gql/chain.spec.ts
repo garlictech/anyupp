@@ -1,9 +1,10 @@
 import { pick } from 'ramda';
 import { delay, switchMap, tap } from 'rxjs/operators';
 
-import * as CrudApi from '@bgap/crud-gql/api';
 import { chainFixture } from '@bgap/shared/fixtures';
 import { filterNullish } from '@bgap/shared/utils';
+import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
+import { CreateChainInput } from '@bgap/domain';
 
 const TEST_NAME = 'CHAIN_';
 const DYNAMODB_OPERATION_DELAY = 3000;
@@ -56,8 +57,8 @@ const newStyleChainFixture = {
 };
 
 describe('Chain mutations', () => {
-  let crudSdk: CrudApi.CrudSdk;
-  crudSdk = CrudApi.getCrudSdkForIAM(accessKeyId, secretAccessKey);
+  let crudSdk: CrudSdk;
+  crudSdk = getCrudSdkForIAM(accessKeyId, secretAccessKey);
 
   const cleanup = (id: string) =>
     crudSdk.DeleteChain({
@@ -66,7 +67,7 @@ describe('Chain mutations', () => {
       },
     });
 
-  const creationTestLogic = (id: string, input: CrudApi.CreateChainInput) =>
+  const creationTestLogic = (id: string, input: CreateChainInput) =>
     cleanup(id).pipe(
       delay(DYNAMODB_OPERATION_DELAY),
       switchMap(() =>
@@ -85,7 +86,7 @@ describe('Chain mutations', () => {
       switchMap(() => cleanup(id)),
     );
 
-  const updateTestLogic = (id: string, input: CrudApi.CreateChainInput) =>
+  const updateTestLogic = (id: string, input: CreateChainInput) =>
     cleanup(id).pipe(
       delay(DYNAMODB_OPERATION_DELAY),
       switchMap(() =>

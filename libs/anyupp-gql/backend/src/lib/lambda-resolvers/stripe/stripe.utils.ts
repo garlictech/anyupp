@@ -1,8 +1,9 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { Stripe } from 'stripe';
-import { toFixed0Number, toFixed2Number } from '@bgap/shared/utils';
-import { CrudSdk } from '@bgap/crud-gql/api';
 import * as Szamlazz from 'szamlazz.js';
+
+import { CrudSdk } from '@bgap/crud-gql/api';
+import { CardBrand, CardFundingType, StripeCard } from '@bgap/domain';
+import { toFixed0Number, toFixed2Number } from '@bgap/shared/utils';
 
 export interface StripeResolverDepsUnauth {
   crudSdk: CrudSdk;
@@ -16,7 +17,7 @@ export interface StripeResolverDeps extends StripeResolverDepsUnauth {
 
 export const mapPaymentMethodToCard = (
   pm: Stripe.PaymentMethod,
-): CrudApi.StripeCard => ({
+): StripeCard => ({
   id: pm.id,
   name: pm.metadata?.name,
   country: pm.card?.country,
@@ -34,16 +35,16 @@ export const mapPaymentMethodToCard = (
   updatedAt: new Date().toISOString(),
 });
 
-export const mapStripeCardToCard = (card: Stripe.Card): CrudApi.StripeCard => ({
+export const mapStripeCardToCard = (card: Stripe.Card): StripeCard => ({
   ...card,
   // id: card.id,
   // metadata: convertCardMetadata(card.metadata),
   // object: card.object,
-  // brand: CrudApi.CardBrand[card.brand as keyof typeof CrudApi.CardBrand],
+  // brand: CardBrand[card.brand as keyof typeof CardBrand],
   // country: card.country,
   // funding:
-  //   CrudApi.CardFundingType[
-  //     card.funding as keyof typeof CrudApi.CardFundingType
+  //   CardFundingType[
+  //     card.funding as keyof typeof CardFundingType
   //   ],
   brand: convertBrand(card),
   funding: convertFunding(card),
@@ -59,14 +60,11 @@ export const mapStripeCardToCard = (card: Stripe.Card): CrudApi.StripeCard => ({
 
 const convertBrand = (
   card: Stripe.Card | Stripe.PaymentMethod.Card | undefined,
-) => CrudApi.CardBrand[card?.brand as keyof typeof CrudApi.CardBrand];
+) => CardBrand[card?.brand as keyof typeof CardBrand];
 
 const convertFunding = (
   card: Stripe.Card | Stripe.PaymentMethod.Card | undefined,
-) =>
-  CrudApi.CardFundingType[
-    card?.funding as keyof typeof CrudApi.CardFundingType
-  ];
+) => CardFundingType[card?.funding as keyof typeof CardFundingType];
 
 // [key, value] => {key:key, value:value}
 /*const mapMetadataToObjectArray = ([key, value]: [string, string]) => ({

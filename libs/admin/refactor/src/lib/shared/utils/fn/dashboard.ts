@@ -1,6 +1,17 @@
 import { DateTime } from 'luxon';
 
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  UNPAY_INCOME_CATEGORIES_ARR,
+  UNPAY_NO_INCOME_CATEGORIES_ARR,
+} from '@bgap/crud-gql/api';
+import {
+  Order,
+  OrderItem,
+  PaymentMethod,
+  PaymentMode,
+  ProductType,
+  UnpayCategory,
+} from '@bgap/domain';
 import {
   OrderAmount,
   OrderAmounts,
@@ -15,8 +26,8 @@ import {
 const UNKNOWN_PRODUCT_TYPE = 'unknown';
 
 export const calculatePaymentMethodSums = (
-  paymentMethods: CrudApi.PaymentMethod[],
-  orders: CrudApi.Order[],
+  paymentMethods: PaymentMethod[],
+  orders: Order[],
 ) => {
   const paymentMethodSums: UnpayCategoryMethodStatObjItem = {};
 
@@ -30,9 +41,9 @@ export const calculatePaymentMethodSums = (
 };
 
 export const calculateUnpayCategoryStat = (
-  category: CrudApi.UnpayCategory,
-  orders: CrudApi.Order[],
-  paymentMethods: CrudApi.PaymentMethod[],
+  category: UnpayCategory,
+  orders: Order[],
+  paymentMethods: PaymentMethod[],
 ): UnpayCategoryStatObjItem => {
   const categoryOrders = (orders || []).filter(
     o => o.unpayCategory === category,
@@ -55,9 +66,7 @@ export const calculateUnpayCategoryStat = (
   return stat;
 };
 
-export const getDailyOrdersSum = (
-  dailyHistoryOrders: CrudApi.Order[],
-): number => {
+export const getDailyOrdersSum = (dailyHistoryOrders: Order[]): number => {
   let sum = 0;
 
   dailyHistoryOrders.forEach(o => {
@@ -69,12 +78,12 @@ export const getDailyOrdersSum = (
 
 export const hourlyBreakdownOrderAmounts = (
   timeZone: string,
-  orders: CrudApi.Order[],
+  orders: Order[],
 ): OrderAmount => {
   const amounts: OrderAmount = {
-    [CrudApi.ProductType.drink]: new Array(24).fill(0),
-    [CrudApi.ProductType.food]: new Array(24).fill(0),
-    [CrudApi.ProductType.other]: new Array(24).fill(0),
+    [ProductType.drink]: new Array(24).fill(0),
+    [ProductType.food]: new Array(24).fill(0),
+    [ProductType.other]: new Array(24).fill(0),
     [TIP_KEY]: new Array(24).fill(0),
     ordersCount: new Array(24).fill(0),
     sum: new Array(24).fill(0),
@@ -84,7 +93,7 @@ export const hourlyBreakdownOrderAmounts = (
     if (o.createdAt) {
       const date: DateTime = DateTime.fromISO(o.createdAt, { zone: timeZone });
 
-      o.items?.forEach((i: CrudApi.OrderItem) => {
+      o.items?.forEach((i: OrderItem) => {
         amounts[i.productType || UNKNOWN_PRODUCT_TYPE][date.hour] +=
           i.priceShown.priceSum;
         amounts['sum'][date.hour] += i.priceShown.priceSum;
@@ -98,11 +107,11 @@ export const hourlyBreakdownOrderAmounts = (
   return amounts;
 };
 
-export const dailySalesPerTypeOrderAmounts = (orders: CrudApi.Order[]) => {
+export const dailySalesPerTypeOrderAmounts = (orders: Order[]) => {
   const amounts: OrderAmounts = {
-    [CrudApi.ProductType.drink]: 0,
-    [CrudApi.ProductType.food]: 0,
-    [CrudApi.ProductType.other]: 0,
+    [ProductType.drink]: 0,
+    [ProductType.food]: 0,
+    [ProductType.other]: 0,
     [TIP_KEY]: 0,
   };
 
@@ -117,26 +126,23 @@ export const dailySalesPerTypeOrderAmounts = (orders: CrudApi.Order[]) => {
   return amounts;
 };
 
-export const dailySalesPerPaymentMethodOrderAmounts = (
-  orders: CrudApi.Order[],
-) => {
+export const dailySalesPerPaymentMethodOrderAmounts = (orders: Order[]) => {
   const amounts: OrderAmounts = {
-    [CrudApi.PaymentMethod.card]: 0,
-    [CrudApi.PaymentMethod.cash]: 0,
-    [CrudApi.PaymentMethod.inapp]: 0,
+    [PaymentMethod.card]: 0,
+    [PaymentMethod.cash]: 0,
+    [PaymentMethod.inapp]: 0,
   };
 
   orders
     .filter(o => !!o.paymentMode)
     .forEach(o => {
-      amounts[(<CrudApi.PaymentMode>o.paymentMode).method] +=
-        o.sumPriceShown.priceSum;
+      amounts[(<PaymentMode>o.paymentMode).method] += o.sumPriceShown.priceSum;
     });
 
   return amounts;
 };
 
-export const calculateProductMix = (orders: CrudApi.Order[]) => {
+export const calculateProductMix = (orders: Order[]) => {
   const productMix: ProducMixObject = {};
 
   orders.forEach(order => {
@@ -212,24 +218,24 @@ export const calculateProductMix = (orders: CrudApi.Order[]) => {
 };
 
 export const unpayCategoryTableData = (
-  orders: CrudApi.Order[],
+  orders: Order[],
   hasIncome: boolean,
-  paymentMethods: CrudApi.PaymentMethod[],
+  paymentMethods: PaymentMethod[],
 ) => {
   const unpayCategoryStatObj: UnpayCategoryStatObj = {};
 
-  const incomeFilteredOrders: CrudApi.Order[] = orders.filter(
+  const incomeFilteredOrders: Order[] = orders.filter(
     o =>
       o.unpayCategory &&
       (hasIncome
-        ? CrudApi.UNPAY_INCOME_CATEGORIES_ARR
-        : CrudApi.UNPAY_NO_INCOME_CATEGORIES_ARR
+        ? UNPAY_INCOME_CATEGORIES_ARR
+        : UNPAY_NO_INCOME_CATEGORIES_ARR
       ).includes(o.unpayCategory),
   );
 
   (hasIncome
-    ? CrudApi.UNPAY_INCOME_CATEGORIES_ARR
-    : CrudApi.UNPAY_NO_INCOME_CATEGORIES_ARR
+    ? UNPAY_INCOME_CATEGORIES_ARR
+    : UNPAY_NO_INCOME_CATEGORIES_ARR
   ).forEach(category => {
     unpayCategoryStatObj[category] = calculateUnpayCategoryStat(
       category,

@@ -1,9 +1,10 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { StripeCardDeleteInput } from '@bgap/domain';
+
 import { loadUser } from '../stripe-graphql-crud';
 import { StripeResolverDeps } from '../stripe.utils';
 
 export const deleteStripeCard =
-  (input: CrudApi.StripeCardDeleteInput) =>
+  (input: StripeCardDeleteInput) =>
   async (deps: StripeResolverDeps): Promise<boolean> => {
     const userId = deps.userId;
     console.debug('**** deleteStripeCard().start()');

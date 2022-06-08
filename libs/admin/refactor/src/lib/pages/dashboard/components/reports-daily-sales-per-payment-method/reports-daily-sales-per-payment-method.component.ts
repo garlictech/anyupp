@@ -10,11 +10,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { dailySalesPerPaymentMethodOrderAmounts } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
 import { ReportsService } from '../../services/reports.service';
+import { Order, PaymentMethod } from '@bgap/domain';
 
 @UntilDestroy()
 @Component({
@@ -27,7 +28,7 @@ export class ReportsDailySalesPerPaymentMethodComponent
   implements AfterViewInit
 {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$?: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<Order[]>;
   @Input() currency = '';
 
   private _chart!: Chart;
@@ -44,19 +45,17 @@ export class ReportsDailySalesPerPaymentMethodComponent
     );
 
     if (this.orders$) {
-      this.orders$
-        .pipe(untilDestroyed(this))
-        .subscribe((orders: CrudApi.Order[]) => {
-          const amounts = dailySalesPerPaymentMethodOrderAmounts(orders);
+      this.orders$.pipe(untilDestroyed(this)).subscribe((orders: Order[]) => {
+        const amounts = dailySalesPerPaymentMethodOrderAmounts(orders);
 
-          this._chart.data.datasets[0].data = [
-            amounts[CrudApi.PaymentMethod.card],
-            amounts[CrudApi.PaymentMethod.cash],
-            amounts[CrudApi.PaymentMethod.inapp],
-          ];
+        this._chart.data.datasets[0].data = [
+          amounts[PaymentMethod.card],
+          amounts[PaymentMethod.cash],
+          amounts[PaymentMethod.inapp],
+        ];
 
-          this._chart.update();
-        });
+        this._chart.update();
+      });
     }
 
     this._translateService.onLangChange

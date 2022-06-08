@@ -1,41 +1,47 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  OrderStatus,
+  PaymentMethod,
+  PaymentStatus,
+  PaymentType,
+  UnpayCategory,
+} from '@bgap/domain';
 
-export const getOrderStatusLogItem = (status: CrudApi.OrderStatus) => ({
+export const getOrderStatusLogItem = (status: OrderStatus) => ({
   userId: 'test-alice',
   status,
   ts: 1627909024677,
 });
 
-export const getOrderStatusLog = (status: CrudApi.OrderStatus) => ({
+export const getOrderStatusLog = (status: OrderStatus) => ({
   statusLog: [getOrderStatusLogItem(status)],
 });
 
 export const cardPayment = {
   paymentMode: {
-    type: CrudApi.PaymentType.card,
-    method: CrudApi.PaymentMethod.card,
+    type: PaymentType.card,
+    method: PaymentMethod.card,
   },
 };
 
 export const cashPayment = {
   paymentMode: {
-    type: CrudApi.PaymentType.cash,
-    method: CrudApi.PaymentMethod.cash,
+    type: PaymentType.cash,
+    method: PaymentMethod.cash,
   },
 };
 
 export const stripePayment = {
   paymentMode: {
-    type: CrudApi.PaymentType.stripe,
-    method: CrudApi.PaymentMethod.inapp,
+    type: PaymentType.stripe,
+    method: PaymentMethod.inapp,
   },
 };
 
 export const successfullTransaction = {
-  transactionStatus: CrudApi.PaymentStatus.success,
+  transactionStatus: PaymentStatus.success,
 };
 
-export const getFailedTransaction = (unpayCategory: CrudApi.UnpayCategory) => ({
-  transactionStatus: CrudApi.PaymentStatus.failed,
+export const getFailedTransaction = (unpayCategory: UnpayCategory) => ({
+  transactionStatus: PaymentStatus.failed,
   unpayCategory,
 });

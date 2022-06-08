@@ -1,10 +1,17 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  LocalizedItem,
+  OrderItem,
+  Price,
+  PriceShown,
+  ServingMode,
+} from '@bgap/domain';
 import { KeyValueObject } from '@bgap/shared/types';
+
 import { net2gross, taxValueFromNetPrice } from '../../../shared/utils';
 
 export const summarizeServiceFeeByTax = (
   serviceFees: KeyValueObject,
-  serviceFee: CrudApi.Price,
+  serviceFee: Price,
 ) => {
   const taxValue = Math.round(
     serviceFee.netPrice * serviceFee.taxPercentage * 0.01,
@@ -26,13 +33,11 @@ export const summarizeServiceFeeByTax = (
 };
 
 export const summarizeVariantsByTax =
-  (deps: {
-    localizer: (value: CrudApi.LocalizedItem | null | undefined) => string;
-  }) =>
+  (deps: { localizer: (value: LocalizedItem | null | undefined) => string }) =>
   (
     variants: KeyValueObject,
-    item: CrudApi.OrderItem,
-    orderServingMode: CrudApi.ServingMode,
+    item: OrderItem,
+    orderServingMode: ServingMode,
   ) => {
     const uniqueKey = `${orderServingMode}-${item.variantId}-${(
       item.configSets || []
@@ -78,7 +83,7 @@ export const summarizeVariantsByTax =
 
 export const summarizeVatByTax = (
   vats: KeyValueObject,
-  sumPriceShown: CrudApi.PriceShown,
+  sumPriceShown: PriceShown,
 ) =>
   vats[sumPriceShown.tax]
     ? {
@@ -99,7 +104,7 @@ export const summarizeVatByTax = (
 
 export const increaseVatWithPackagingTax = (
   vats: KeyValueObject,
-  packagingSum: CrudApi.Price,
+  packagingSum: Price,
 ) => {
   const priceSum = Math.round(
     net2gross(packagingSum.netPrice, packagingSum.taxPercentage),

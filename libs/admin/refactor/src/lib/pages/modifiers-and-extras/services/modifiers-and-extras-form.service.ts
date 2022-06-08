@@ -3,17 +3,23 @@ import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { catchGqlError } from '../../../store/app-core';
+import {
+  CreateProductComponentInput,
+  CreateProductComponentSetInput,
+  UpdateProductComponentInput,
+  UpdateProductComponentSetInput,
+} from '@bgap/domain';
+import { defaultServingMode } from '@bgap/shared/types';
+import { Store } from '@ngrx/store';
+
 import {
   maxSelectionValidator,
   multiLangValidator,
   notEmptyArray,
 } from '../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { defaultServingMode } from '@bgap/shared/types';
-import { Store } from '@ngrx/store';
-import { ProductComponentCollectionService } from '../../../store/product-components';
+import { catchGqlError } from '../../../store/app-core';
 import { ProductComponentSetCollectionService } from '../../../store/product-component-sets';
+import { ProductComponentCollectionService } from '../../../store/product-components';
 
 @Injectable({ providedIn: 'root' })
 export class ModifiersAndExtrasFormService {
@@ -83,16 +89,12 @@ export class ModifiersAndExtrasFormService {
   }
 
   public saveComponentForm$(
-    formValue:
-      | CrudApi.CreateProductComponentInput
-      | CrudApi.UpdateProductComponentInput,
+    formValue: CreateProductComponentInput | UpdateProductComponentInput,
     componentId?: string,
   ) {
     return iif(
       () => !componentId,
-      this.createProductComponent$(
-        <CrudApi.CreateProductComponentInput>formValue,
-      ),
+      this.createProductComponent$(<CreateProductComponentInput>formValue),
       this.updateProductComponent$({
         ...formValue,
         id: componentId || '',
@@ -100,14 +102,14 @@ export class ModifiersAndExtrasFormService {
     );
   }
 
-  public createProductComponent$(input: CrudApi.CreateProductComponentInput) {
+  public createProductComponent$(input: CreateProductComponentInput) {
     return this._productComponentCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
-  public updateProductComponent$(input: CrudApi.UpdateProductComponentInput) {
+  public updateProductComponent$(input: UpdateProductComponentInput) {
     return this._productComponentCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
@@ -115,15 +117,13 @@ export class ModifiersAndExtrasFormService {
   }
 
   public saveComponentSetForm$(
-    formValue:
-      | CrudApi.CreateProductComponentSetInput
-      | CrudApi.UpdateProductComponentSetInput,
+    formValue: CreateProductComponentSetInput | UpdateProductComponentSetInput,
     componentId?: string,
   ) {
     return iif(
       () => !componentId,
       this.createProductComponentSet$(
-        <CrudApi.CreateProductComponentSetInput>formValue,
+        <CreateProductComponentSetInput>formValue,
       ),
       this.updateProductComponentSet$({
         ...formValue,
@@ -132,18 +132,14 @@ export class ModifiersAndExtrasFormService {
     );
   }
 
-  public createProductComponentSet$(
-    input: CrudApi.CreateProductComponentSetInput,
-  ) {
+  public createProductComponentSet$(input: CreateProductComponentSetInput) {
     return this._productComponentSetCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
-  public updateProductComponentSet$(
-    input: CrudApi.UpdateProductComponentSetInput,
-  ) {
+  public updateProductComponentSet$(input: UpdateProductComponentSetInput) {
     return this._productComponentSetCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),

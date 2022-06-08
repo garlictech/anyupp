@@ -1,4 +1,4 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { UnitMapObjectType } from '@bgap/domain';
 
 export const FLOOR_MAP_config = {
   grid: 10,
@@ -72,29 +72,29 @@ export const FLOOR_MAP_OBJECT_COMMON_DEFAULTS = {
 };
 
 export const FLOOR_MAP_OBJECT_DEFAULTS = {
-  [CrudApi.UnitMapObjectType.table_r]: {
+  [UnitMapObjectType.table_r]: {
     w: 150,
     h: 60,
   },
-  [CrudApi.UnitMapObjectType.table_c]: {
+  [UnitMapObjectType.table_c]: {
     r: 30,
   },
-  [CrudApi.UnitMapObjectType.seat_r]: {
+  [UnitMapObjectType.seat_r]: {
     w: 30,
     h: 30,
   },
-  [CrudApi.UnitMapObjectType.seat_c]: {
+  [UnitMapObjectType.seat_c]: {
     r: 15,
   },
-  [CrudApi.UnitMapObjectType.counter]: {
+  [UnitMapObjectType.counter]: {
     w: 180,
     h: 60,
   },
-  [CrudApi.UnitMapObjectType.wall]: {
+  [UnitMapObjectType.wall]: {
     w: 10,
     h: 60,
   },
-  [CrudApi.UnitMapObjectType.label]: {
+  [UnitMapObjectType.label]: {
     w: 150,
     h: 60,
     c: '..........',

@@ -7,8 +7,9 @@ import {
   Input,
   Output,
 } from '@angular/core';
+import { ProductCategory } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
 
 @Component({
@@ -18,7 +19,7 @@ import { ProductCategoryFormComponent } from '../product-category-form/product-c
   styleUrls: ['./product-category-list-item.component.scss'],
 })
 export class ProductCategoryListItemComponent {
-  @Input() productCategory!: CrudApi.ProductCategory;
+  @Input() productCategory!: ProductCategory;
   @Input() isFirst?: boolean;
   @Input() isLast?: boolean;
   @Output() positionChange = new EventEmitter();

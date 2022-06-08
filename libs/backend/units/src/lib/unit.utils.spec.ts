@@ -1,4 +1,3 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { timezoneBudapest, timezoneLondon } from '@bgap/shared/utils';
 import { unitFixture } from '@bgap/shared/fixtures';
 import { DateTime } from 'luxon';
@@ -9,11 +8,12 @@ import {
   getWeekDayNameFromDate,
   isTimeInOpeningHours,
 } from './unit.utils';
+import { Address, OpeningHoursByDate, Unit } from '@bgap/domain';
 
 // USE THIS TIMESTAMP converter to check the timestamps if it is needed https://www.epochconverter.com/#tools
 // it can handle timezones too
 
-const unitBase: CrudApi.Unit = {
+const unitBase: Unit = {
   ...unitFixture.unitBase,
   id: 'unitId',
   groupId: 'groupId',
@@ -22,7 +22,7 @@ const unitBase: CrudApi.Unit = {
   updatedAt: '',
 };
 
-const addressInLondon: CrudApi.Address = {
+const addressInLondon: Address = {
   address: 'Bridge Street',
   city: 'London',
   country: 'Egyesült Királyság',
@@ -33,47 +33,47 @@ const addressInLondon: CrudApi.Address = {
     lng: -0.2416802,
   },
 };
-const pluckId = (unit: CrudApi.Unit) => unit.id;
+const pluckId = (unit: Unit) => unit.id;
 
 describe('Unit utils', () => {
   describe('filterOutCurrentlyNotOpenUnits function', () => {
     // THIS IS NOT for THE DAILY OPENING HOURS
     it('should filter out the NOT open units simple case with current time', () => {
-      const openUnit_01_openEnded: CrudApi.Unit = {
+      const openUnit_01_openEnded: Unit = {
         ...unitBase,
         id: 'openUnit_01_openEnded',
       };
-      const openUnit_02_inInterval: CrudApi.Unit = {
+      const openUnit_02_inInterval: Unit = {
         ...unitBase,
         id: 'openUnit_02_inInterval',
         open: { from: '1970-01-01', to: '2100-01-01' }, // these are in the units timezone
       };
-      const openUnit_03_openStarted: CrudApi.Unit = {
+      const openUnit_03_openStarted: Unit = {
         ...unitBase,
         id: 'openUnit_03_openStarted',
         open: { to: '2100-01-01', from: '2100-01-01' },
       };
-      const openUnit_04_allways: CrudApi.Unit = {
+      const openUnit_04_allways: Unit = {
         ...unitBase,
         id: 'openUnit_04_allways',
         open: null,
       };
-      const closedUnit_01_beforeFrom: CrudApi.Unit = {
+      const closedUnit_01_beforeFrom: Unit = {
         ...unitBase,
         id: 'closedUnit_01_beforeFrom',
         open: { from: '2100-01-01' },
       };
-      const closedUnit_02_beforeFrom: CrudApi.Unit = {
+      const closedUnit_02_beforeFrom: Unit = {
         ...unitBase,
         id: 'closedUnit_02_beforeFrom',
         open: { from: '2100-01-01', to: '2200-01-01' },
       };
-      const closedUnit_01_afterTo: CrudApi.Unit = {
+      const closedUnit_01_afterTo: Unit = {
         ...unitBase,
         id: 'closedUnit_01_afterTo',
         open: { to: '2000-10-01' },
       };
-      const closedUnit_02_afterTo: CrudApi.Unit = {
+      const closedUnit_02_afterTo: Unit = {
         ...unitBase,
         id: 'closedUnit_02_afterTo',
         open: { from: '2000-01-01', to: '2020-01-03' },
@@ -97,27 +97,27 @@ describe('Unit utils', () => {
     describe("using the unit's timezone", () => {
       const open_0405 = { from: '2100-01-04', to: '2100-01-05' };
       const open_0506 = { from: '2100-01-05', to: '2100-01-06' };
-      const unit_0405_inLondon: CrudApi.Unit = {
+      const unit_0405_inLondon: Unit = {
         ...unitBase,
         id: 'unit_0405_inLondon',
         address: addressInLondon,
         open: open_0405,
         timeZone: timezoneLondon,
       };
-      const unit_0506_inLondon: CrudApi.Unit = {
+      const unit_0506_inLondon: Unit = {
         ...unitBase,
         id: 'unit_0506_inLondon',
         address: addressInLondon,
         open: open_0506,
         timeZone: timezoneLondon,
       };
-      const unit_0405_inBudapest: CrudApi.Unit = {
+      const unit_0405_inBudapest: Unit = {
         ...unitBase,
         id: 'unit_0405_inBudapest',
         open: open_0405,
         timeZone: timezoneBudapest,
       };
-      const unit_0506_inBudapest: CrudApi.Unit = {
+      const unit_0506_inBudapest: Unit = {
         ...unitBase,
         id: 'unit_0506_inBudapest',
         open: open_0506,
@@ -261,7 +261,7 @@ describe('Unit utils', () => {
   });
 
   describe('getOpeningHoursAtDate function', () => {
-    const unit_inBudapest: CrudApi.Unit = {
+    const unit_inBudapest: Unit = {
       ...unitBase,
       openingHours: {
         mon: {
@@ -279,7 +279,7 @@ describe('Unit utils', () => {
       },
       timeZone: timezoneBudapest,
     };
-    const unit_inLondon: CrudApi.Unit = {
+    const unit_inLondon: Unit = {
       ...unit_inBudapest,
       address: addressInLondon,
       timeZone: timezoneLondon,
@@ -330,7 +330,7 @@ describe('Unit utils', () => {
     });
 
     it('should return the proper opening hours with custom schedule overrides', () => {
-      const unit: CrudApi.Unit = {
+      const unit: Unit = {
         ...unitBase,
         openingHours: {
           mon: {
@@ -374,7 +374,7 @@ describe('Unit utils', () => {
     });
 
     it('should return the custom schedule in case there is not any default for that day', () => {
-      const unit: CrudApi.Unit = {
+      const unit: Unit = {
         ...unitBase,
         openingHours: {
           mon: undefined,
@@ -399,7 +399,7 @@ describe('Unit utils', () => {
     });
 
     it('should return CLOSED for the given date in case there is no opening hours for that day', () => {
-      const unit: CrudApi.Unit = {
+      const unit: Unit = {
         ...unitBase,
         openingHours: {
           mon: undefined,
@@ -414,7 +414,7 @@ describe('Unit utils', () => {
       `);
     });
     it('should return CLOSED for the given date in case there is no opening hours at all', () => {
-      const unit: CrudApi.Unit = {
+      const unit: Unit = {
         ...unitBase,
         openingHours: {
           mon: {
@@ -440,7 +440,7 @@ describe('Unit utils', () => {
       `);
     });
     it('should return CLOSED for the given date in case there is default opening ours BUT the custom one overrides it', () => {
-      const unit: CrudApi.Unit = {
+      const unit: Unit = {
         ...unitBase,
         openingHours: undefined,
       };
@@ -453,7 +453,7 @@ describe('Unit utils', () => {
       `);
     });
     it('should return tomorrow as the TO timestamp in case the to part of the time interval is before the from', () => {
-      const unit: CrudApi.Unit = {
+      const unit: Unit = {
         ...unitBase,
         openingHours: {
           mon: {
@@ -482,7 +482,7 @@ describe('Unit utils', () => {
       //     to: 1626134400000,
       //   },
       // }
-      const openingHours_closed: CrudApi.OpeningHoursByDate = {
+      const openingHours_closed: OpeningHoursByDate = {
         closed: true,
         date: 'NOT IMPORTANT',
       };
@@ -494,7 +494,7 @@ describe('Unit utils', () => {
       ).toEqual(false);
     });
     it('should return FALSE in case the given time is outside the given openingHours', () => {
-      const openingHours_open: CrudApi.OpeningHoursByDate = {
+      const openingHours_open: OpeningHoursByDate = {
         date: '2021-07-12',
         from: DateTime.fromISO('2021-07-12T12:00', {
           zone: timezoneBudapest,
@@ -515,7 +515,7 @@ describe('Unit utils', () => {
       ).toEqual(false);
     });
     it('should return TRUE in case the given time is in the openingHours input', () => {
-      const openingHours_open: CrudApi.OpeningHoursByDate = {
+      const openingHours_open: OpeningHoursByDate = {
         date: '2021-07-12',
         from: DateTime.fromISO('2021-07-12T12:00', {
           zone: timezoneBudapest,
@@ -538,7 +538,7 @@ describe('Unit utils', () => {
   });
 
   describe('getUnitOpeningHoursFromTime function', () => {
-    const unit: CrudApi.Unit = {
+    const unit: Unit = {
       ...unitBase,
       openingHours: {
         mon: {
@@ -773,7 +773,7 @@ describe('Unit utils', () => {
         '2021-07-13T01:01',
         { zone: timezoneBudapest },
       );
-      const unit: CrudApi.Unit = {
+      const unit: Unit = {
         ...unitBase,
         openingHours: {
           mon: {

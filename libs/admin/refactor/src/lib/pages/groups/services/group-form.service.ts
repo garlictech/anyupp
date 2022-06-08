@@ -3,6 +3,9 @@ import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { CreateGroupInput, UpdateGroupInput } from '@bgap/domain';
+import { Store } from '@ngrx/store';
+
 import {
   addressFormGroup,
   contactFormGroup,
@@ -10,8 +13,6 @@ import {
 } from '../../../shared/utils';
 import { catchGqlError } from '../../../store/app-core';
 import { GroupCollectionService } from '../../../store/groups';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { Store } from '@ngrx/store';
 
 @Injectable({ providedIn: 'root' })
 export class GroupFormService {
@@ -40,7 +41,7 @@ export class GroupFormService {
   }
 
   public saveForm$(
-    formValue: CrudApi.CreateGroupInput | CrudApi.UpdateGroupInput,
+    formValue: CreateGroupInput | UpdateGroupInput,
     groupId?: string,
   ) {
     if (formValue.address) {
@@ -55,7 +56,7 @@ export class GroupFormService {
 
     return iif(
       () => !groupId,
-      this.createGroup$(<CrudApi.CreateGroupInput>formValue),
+      this.createGroup$(<CreateGroupInput>formValue),
       this.updateGroup$({
         ...formValue,
         id: groupId || '',
@@ -63,21 +64,17 @@ export class GroupFormService {
     );
   }
 
-  public createGroup$(input: CrudApi.CreateGroupInput) {
-    return this._groupCollectionService
-      .add$<CrudApi.CreateGroupInput>(input)
-      .pipe(
-        catchGqlError(this._store),
-        map(data => ({ data, type: 'insert' })),
-      );
+  public createGroup$(input: CreateGroupInput) {
+    return this._groupCollectionService.add$<CreateGroupInput>(input).pipe(
+      catchGqlError(this._store),
+      map(data => ({ data, type: 'insert' })),
+    );
   }
 
-  public updateGroup$(input: CrudApi.UpdateGroupInput) {
-    return this._groupCollectionService
-      .update$<CrudApi.UpdateGroupInput>(input)
-      .pipe(
-        catchGqlError(this._store),
-        map(data => ({ data, type: 'update' })),
-      );
+  public updateGroup$(input: UpdateGroupInput) {
+    return this._groupCollectionService.update$<UpdateGroupInput>(input).pipe(
+      catchGqlError(this._store),
+      map(data => ({ data, type: 'update' })),
+    );
   }
 }

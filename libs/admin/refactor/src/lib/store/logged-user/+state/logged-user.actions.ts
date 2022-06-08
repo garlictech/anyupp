@@ -1,9 +1,9 @@
+import { AdminUser, Role } from '@bgap/domain';
 import { createAction, props } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 export const loadLoggedUserSuccess = createAction(
   '[LoggedUser/API] Load LoggedUser Success',
-  props<{ loggedUser: CrudApi.AdminUser }>(),
+  props<{ loggedUser: AdminUser }>(),
 );
 
 export const resetLoggedUser = createAction(
@@ -12,10 +12,10 @@ export const resetLoggedUser = createAction(
 
 export const setCurrentContextRole = createAction(
   '[LoggedUser/API] Set the current context',
-  props<{ currentContextRole: CrudApi.Role }>(),
+  props<{ currentContextRole: Role }>(),
 );
 
 export const setLoggedUserRole = createAction(
   '[LoggedUser/API] Set the logged user role',
-  props<{ role: CrudApi.Role }>(),
+  props<{ role: Role }>(),
 );

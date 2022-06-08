@@ -1,8 +1,10 @@
 import * as fp from 'lodash/fp';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AdminUser } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
+
 import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.component';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,7 +13,7 @@ import * as CrudApi from '@bgap/crud-gql/api';
   styleUrls: ['./admin-user-list-item.component.scss'],
 })
 export class AdminUserListItemComponent {
-  @Input() adminUser?: CrudApi.AdminUser;
+  @Input() adminUser?: AdminUser;
   @Input() role?: string;
 
   constructor(private _nbDialogService: NbDialogService) {}

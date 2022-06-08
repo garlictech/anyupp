@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,13 +7,14 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import { UnitCollectionService } from '../../../../store/units';
+import { AdminUser, Unit } from '@bgap/domain';
+import { filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { filterNullish } from '@bgap/shared/utils';
+
 import { DataService } from '../../../../shared/data-access/data';
+import { loggedUserSelectors } from '../../../../store/logged-user';
+import { UnitCollectionService } from '../../../../store/units';
 
 @UntilDestroy()
 @Component({
@@ -23,8 +25,8 @@ import { DataService } from '../../../../shared/data-access/data';
 })
 export class ActiveUnitSelectorComponent implements OnInit {
   @Input() showIcon: boolean;
-  public units$: Observable<CrudApi.Unit[]>;
-  private _loggedUser!: CrudApi.AdminUser;
+  public units$: Observable<Unit[]>;
+  private _loggedUser!: AdminUser;
 
   constructor(
     private _store: Store,

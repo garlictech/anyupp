@@ -9,15 +9,15 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { AbstractFormDialogComponent } from '../../../../shared/forms';
-import { chainsSelectors } from '../../../../store/chains';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductComponent } from '@bgap/domain';
 import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
+import { AbstractFormDialogComponent } from '../../../../shared/forms';
+import { chainsSelectors } from '../../../../store/chains';
+import { loggedUserSelectors } from '../../../../store/logged-user';
 import { ModifiersAndExtrasFormService } from '../../services/modifiers-and-extras-form.service';
 
 @UntilDestroy()
@@ -30,11 +30,11 @@ export class ProductComponentFormComponent
   extends AbstractFormDialogComponent
   implements OnInit
 {
-  public productComponent!: CrudApi.ProductComponent;
+  public productComponent!: ProductComponent;
   public chainOptions$: Observable<KeyValue[]>;
 
   constructor(
-    protected _injector: Injector,
+    protected override _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
     private _modifiersAndExtrasFormService: ModifiersAndExtrasFormService,
   ) {
@@ -57,7 +57,7 @@ export class ProductComponentFormComponent
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
         .subscribe((selectedChainId: string | undefined | null) => {
           if (selectedChainId) {
-            this.dialogForm?.controls.chainId.patchValue(selectedChainId);
+            this.dialogForm?.controls['chainId'].patchValue(selectedChainId);
           }
         });
     }

@@ -1,6 +1,10 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  CreateTransactionInput,
+  PaymentStatus,
+  PaymentType,
+} from '@bgap/domain';
 
-const transactionInputBase: CrudApi.CreateTransactionInput = {
+const transactionInputBase: CreateTransactionInput = {
   id: '',
   currency: 'HUF',
   orderId: '',
@@ -10,91 +14,91 @@ const transactionInputBase: CrudApi.CreateTransactionInput = {
 };
 
 const waitingTransaction = {
-  status: CrudApi.PaymentStatus.waiting_for_payment,
+  status: PaymentStatus.waiting_for_payment,
 };
 
 const successTransaction = {
-  status: CrudApi.PaymentStatus.success,
+  status: PaymentStatus.success,
 };
 
 const failedTransaction = {
-  status: CrudApi.PaymentStatus.failed,
+  status: PaymentStatus.failed,
 };
 
 const cashTransaction = {
-  type: CrudApi.PaymentType.cash,
+  type: PaymentType.cash,
 };
 
 const cardTransaction = {
-  type: CrudApi.PaymentType.card,
+  type: PaymentType.card,
 };
 
 const stripeTransaction = {
-  type: CrudApi.PaymentType.stripe,
+  type: PaymentType.stripe,
 };
 
-const waitingCashTransactionInput: CrudApi.CreateTransactionInput = {
+const waitingCashTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...waitingTransaction,
   ...cashTransaction,
 };
 
-const waitingCardTransactionInput: CrudApi.CreateTransactionInput = {
+const waitingCardTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...waitingTransaction,
   ...cardTransaction,
 };
 
-const waitingStripeTransactionInput: CrudApi.CreateTransactionInput = {
+const waitingStripeTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...waitingTransaction,
   ...stripeTransaction,
 };
 
-const waitingAfterPayTransactionInput: CrudApi.CreateTransactionInput = {
+const waitingAfterPayTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...waitingTransaction,
   ...stripeTransaction,
 };
 
-const successCashTransactionInput: CrudApi.CreateTransactionInput = {
+const successCashTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...successTransaction,
   ...cashTransaction,
 };
 
-const successCardTransactionInput: CrudApi.CreateTransactionInput = {
+const successCardTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...successTransaction,
   ...cardTransaction,
 };
 
-const successCardTipTransactionInput: CrudApi.CreateTransactionInput = {
+const successCardTipTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...successTransaction,
   ...cardTransaction,
   total: 1200,
 };
 
-const successStripeTransactionInput: CrudApi.CreateTransactionInput = {
+const successStripeTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...successTransaction,
   ...stripeTransaction,
 };
 
-const failedCashTransactionInput: CrudApi.CreateTransactionInput = {
+const failedCashTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...successTransaction,
   ...cashTransaction,
 };
 
-const failedCardTransactionInput: CrudApi.CreateTransactionInput = {
+const failedCardTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...successTransaction,
   ...cardTransaction,
 };
 
-const failedStripeTransactionInput: CrudApi.CreateTransactionInput = {
+const failedStripeTransactionInput: CreateTransactionInput = {
   ...transactionInputBase,
   ...successTransaction,
   ...stripeTransaction,

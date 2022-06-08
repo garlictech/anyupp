@@ -1,18 +1,18 @@
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
-
-import { Injectable } from '@angular/core';
-import * as CrudApi from '@bgap/crud-gql/api';
-
-import { getPDF, getQR } from '../../fn';
 import { from } from 'rxjs';
 import { concatMap, last, switchMap, tap } from 'rxjs/operators';
+
+import { Injectable } from '@angular/core';
+import { Unit } from '@bgap/domain';
+
+import { getPDF, getQR } from '../../fn';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QrGeneratorService {
-  public printCodes(unit: CrudApi.Unit) {
+  public printCodes(unit: Unit) {
     const zip = new JSZip();
     const tableObjects = Object.values(unit.floorMap?.objects || {}).filter(o =>
       o.t.includes('table'),

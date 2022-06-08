@@ -1,19 +1,25 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  CustomDailySchedule,
+  DateInterval,
+  OpeningHoursByDate,
+  Unit,
+  WeeklySchedule,
+} from '@bgap/domain';
 import { findLast } from 'lodash/fp';
 import { DateTime } from 'luxon';
 
 const dateFormat = 'y-MM-dd';
 
-export const getUnitTimeZone = (unit: CrudApi.Unit): string =>
+export const getUnitTimeZone = (unit: Unit): string =>
   unit.timeZone || 'Europe/Budapest';
 
 export const filterOutNotOpenUnits = ({
   units,
   atUtcTimeISO = DateTime.utc().toISO(),
 }: {
-  units: Array<CrudApi.Unit>;
+  units: Array<Unit>;
   atUtcTimeISO?: string;
-}): Array<CrudApi.Unit> =>
+}): Array<Unit> =>
   units.filter(
     isUnitOpenAtTime(
       DateTime.fromISO(atUtcTimeISO, {
@@ -24,7 +30,7 @@ export const filterOutNotOpenUnits = ({
 
 const isUnitOpenAtTime =
   (atUtcTime: DateTime) =>
-  (unit: CrudApi.Unit): boolean => {
+  (unit: Unit): boolean => {
     const unitTimeZone = getUnitTimeZone(unit);
 
     /** Millisecunds from the open.FROM in the units timeZone or a time in the past because the open field is optional */
@@ -45,7 +51,7 @@ export const isTimeInOpeningHours = ({
   openingHours,
 }: {
   atUtcTime: DateTime;
-  openingHours: CrudApi.OpeningHoursByDate;
+  openingHours: OpeningHoursByDate;
 }): boolean => {
   const atTimeMillis = atUtcTime.toMillis();
 
@@ -70,12 +76,10 @@ const getDatetimeHoursMinutesFromString = (time: string | null | undefined) => {
 
 const isOfTypeWeeklyScheduleKeys = (
   keyInput: string,
-): keyInput is keyof CrudApi.WeeklySchedule => {
+): keyInput is keyof WeeklySchedule => {
   return ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].includes(keyInput);
 };
-const isOfTypeDateInterval = (
-  input: unknown,
-): input is CrudApi.DateInterval => {
+const isOfTypeDateInterval = (input: unknown): input is DateInterval => {
   return (
     input instanceof Object &&
     Object.keys(input).reduce(
@@ -86,7 +90,7 @@ const isOfTypeDateInterval = (
 };
 
 const getCustomDailyScheduleForADate = (
-  openingHours: CrudApi.WeeklySchedule | null | undefined,
+  openingHours: WeeklySchedule | null | undefined,
   dateString: string,
 ) => {
   if (!openingHours || !openingHours.custom) {
@@ -94,13 +98,13 @@ const getCustomDailyScheduleForADate = (
   }
 
   return findLast(
-    (schedule: CrudApi.CustomDailySchedule) => schedule.date === dateString,
+    (schedule: CustomDailySchedule) => schedule.date === dateString,
   )(openingHours.custom);
 };
 
 export const getWeekDayNameFromDate = (
   date: DateTime,
-): keyof CrudApi.WeeklySchedule => {
+): keyof WeeklySchedule => {
   const weekDayName: string = date.toFormat('EEE').toLocaleLowerCase();
   if (!weekDayName || !isOfTypeWeeklyScheduleKeys(weekDayName)) {
     throw 'Week day name parse error on date: ' + date.toISO();
@@ -116,14 +120,14 @@ export const getWeekDayNameFromDate = (
  */
 export const getOpeningHoursAtDate = (
   dateString: string,
-  unit: CrudApi.Unit,
-): CrudApi.OpeningHoursByDate => {
+  unit: Unit,
+): OpeningHoursByDate => {
   const unitTimeZone = getUnitTimeZone(unit);
   // Creating the date in the unit's timezone
   const date: DateTime = DateTime.fromISO(dateString, { zone: unitTimeZone });
   const weekDayName = getWeekDayNameFromDate(date);
 
-  const closedResponse: CrudApi.OpeningHoursByDate = {
+  const closedResponse: OpeningHoursByDate = {
     date: date.toFormat(dateFormat),
     closed: true,
   };
@@ -181,9 +185,9 @@ export const getOpeningHoursAtDate = (
  * @returns An array with daily opening hours
  */
 export const getUnitOpeningHoursAtTime = (
-  unit: CrudApi.Unit,
+  unit: Unit,
   time: DateTime = DateTime.utc(),
-): Array<CrudApi.OpeningHoursByDate> => {
+): Array<OpeningHoursByDate> => {
   const yesterday = time.minus({ days: 1 });
   const today = time;
   const openingHoursYesterday = getOpeningHoursAtDate(
@@ -206,7 +210,7 @@ export const getUnitOpeningHoursAtTime = (
   });
 
   let firstActiveDate;
-  let actualOpeningHours: CrudApi.OpeningHoursByDate;
+  let actualOpeningHours: OpeningHoursByDate;
 
   if (isYesterdayOpeningHoursStillActive) {
     firstActiveDate = yesterday;

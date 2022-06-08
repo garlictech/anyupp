@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ServingMode } from '@bgap/domain';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -9,13 +9,13 @@ import * as CrudApi from '@bgap/crud-gql/api';
 })
 export class FormServingModeComponent {
   @Input() control?: FormControl | null;
-  @Input() servingModes: CrudApi.ServingMode[] = [];
+  @Input() servingModes: ServingMode[] = [];
 
-  public servingModeIsChecked(servingMode: CrudApi.ServingMode): boolean {
+  public servingModeIsChecked(servingMode: ServingMode): boolean {
     return (this.control?.value || []).indexOf(servingMode) >= 0;
   }
 
-  public toggleServingMode = (servingMode: CrudApi.ServingMode) => {
+  public toggleServingMode = (servingMode: ServingMode) => {
     const servingModesArr = this.control?.value;
     const idx = servingModesArr.indexOf(servingMode);
 

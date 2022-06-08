@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as CrudApi from '@bgap/crud-gql/api';
+
+import { ServiceFeeType } from '@bgap/domain';
+
 import { addServiceFeeToOrder } from './handle-service-fee';
 
 const useCases = [
   {
     label: 'add service fee - included',
-    serviceFeeType: CrudApi.ServiceFeeType.included,
+    serviceFeeType: ServiceFeeType.included,
   },
   {
     label: 'add service fee - applicable',
-    serviceFeeType: CrudApi.ServiceFeeType.applicable,
+    serviceFeeType: ServiceFeeType.applicable,
   },
 ];
 
@@ -83,7 +85,7 @@ test('No items defined', () => {
       } as any,
       {
         serviceFeePolicy: {
-          type: CrudApi.ServiceFeeType.included,
+          type: ServiceFeeType.included,
           percentage: 10,
         },
       } as any,

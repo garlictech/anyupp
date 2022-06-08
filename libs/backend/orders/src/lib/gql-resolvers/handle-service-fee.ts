@@ -1,23 +1,32 @@
-import { pipe, flow } from 'fp-ts/lib/function';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { flow, pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
+
+import {
+  CreateOrderInput,
+  Maybe,
+  Price,
+  PriceShown,
+  ServiceFeePolicy,
+  ServiceFeeType,
+  Unit,
+} from '@bgap/domain';
 
 const round = (num: number) => Math.round(num * 100) / 100;
 
 const getServiceFee = (
   // The order must already contain productPriceSum
-  serviceFeePolicy: CrudApi.Maybe<CrudApi.ServiceFeePolicy> | undefined,
-  price: CrudApi.PriceShown,
-): CrudApi.Price => {
+  serviceFeePolicy: Maybe<ServiceFeePolicy> | undefined,
+  price: PriceShown,
+): Price => {
   const serviceFeePercentage = serviceFeePolicy?.percentage ?? 0;
   const serviceFeeTaxPercentage = price.tax;
 
   const calculateServiceFee = flow(
-    R.cond<CrudApi.ServiceFeeType | undefined, number>([
+    R.cond<ServiceFeeType | undefined, number>([
       [
-        (feeType?: CrudApi.ServiceFeeType) =>
-          feeType === CrudApi.ServiceFeeType.included ||
-          feeType === CrudApi.ServiceFeeType.applicable,
+        (feeType?: ServiceFeeType) =>
+          feeType === ServiceFeeType.included ||
+          feeType === ServiceFeeType.applicable,
         R.always((price.priceSum * serviceFeePercentage) / 100),
       ],
       [R.T, R.always(0)],
@@ -40,9 +49,9 @@ const getServiceFee = (
 };
 
 export const addServiceFeeToOrder = (
-  order: CrudApi.CreateOrderInput,
-  unit: CrudApi.Unit,
-): CrudApi.CreateOrderInput =>
+  order: CreateOrderInput,
+  unit: Unit,
+): CreateOrderInput =>
   pipe(
     order.items ?? [],
     R.map(orderItem => ({

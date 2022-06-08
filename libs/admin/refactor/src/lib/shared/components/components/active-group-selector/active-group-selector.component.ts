@@ -7,13 +7,14 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { DataService } from '../../../../shared/data-access/data';
-import { GroupCollectionService } from '../../../../store/groups';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { AdminUser, Group } from '@bgap/domain';
 import { filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+import { DataService } from '../../../../shared/data-access/data';
+import { GroupCollectionService } from '../../../../store/groups';
+import { loggedUserSelectors } from '../../../../store/logged-user';
 
 @UntilDestroy()
 @Component({
@@ -24,8 +25,8 @@ import { select, Store } from '@ngrx/store';
 })
 export class ActiveGroupSelectorComponent implements OnInit {
   @Input() showIcon: boolean;
-  public groups$: Observable<CrudApi.Group[]>;
-  private _loggedUser!: CrudApi.AdminUser;
+  public groups$: Observable<Group[]>;
+  private _loggedUser!: AdminUser;
 
   constructor(
     private _store: Store,

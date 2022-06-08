@@ -1,22 +1,33 @@
-import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { OrderResolverDeps } from './utils';
 import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/function';
-import { sendRkeeperOrder } from '@bgap/rkeeper-api';
+import { DateTime } from 'luxon';
 import { from, Observable, of, throwError } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
+
+import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
+import {
+  CreateOrderInput,
+  Order,
+  OrderPaymentPolicy,
+  OrderStatus,
+  PosType,
+  ServingMode,
+  Unit,
+} from '@bgap/domain';
+import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 import { oeTryCatch } from '@bgap/shared/utils';
-import { DateTime } from 'luxon';
+
+import { OrderResolverDeps } from './utils';
+
 export interface CalculationState_UnitAdded {
-  order: CrudApi.CreateOrderInput;
-  unit: CrudApi.Unit;
+  order: CreateOrderInput;
+  unit: Unit;
 }
 
 export const getUnit =
   (deps: OrderResolverDeps) =>
   (
-    order: CrudApi.CreateOrderInput,
+    order: CreateOrderInput,
   ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
     pipe(
       deps.crudSdk.GetUnit({ id: order.unitId }),
@@ -43,7 +54,7 @@ export const getUnit =
           unit =>
             !(
               !order.paymentMode &&
-              unit.orderPaymentPolicy !== CrudApi.OrderPaymentPolicy.afterpay
+              unit.orderPaymentPolicy !== OrderPaymentPolicy.afterpay
             ),
           () =>
             'Payment mode is not provided in the order, and the unit does not accept afterpay.',
@@ -76,8 +87,8 @@ export const getNextOrderNum =
     );
 
 export interface CalculationState_OrderAdded {
-  order: CrudApi.Order;
-  unit: CrudApi.Unit;
+  order: Order;
+  unit: Unit;
 }
 
 export const placeOrder =
@@ -96,13 +107,13 @@ export const placeOrder =
           statusLog: [
             {
               userId: input.order.userId,
-              status: CrudApi.OrderStatus.none,
+              status: OrderStatus.none,
               ts: DateTime.utc().toMillis(),
             },
           ],
           archived: false,
-          takeAway: input.order.servingMode === CrudApi.ServingMode.takeaway,
-          currentStatus: CrudApi.OrderStatus.none,
+          takeAway: input.order.servingMode === ServingMode.takeaway,
+          currentStatus: OrderStatus.none,
         },
         TableName: deps.orderTableName,
       }),
@@ -121,7 +132,7 @@ export const handleRkeeperOrder =
     input: CalculationState_UnitAdded,
   ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
     pipe(
-      input.unit.pos?.type === CrudApi.PosType.rkeeper
+      input.unit.pos?.type === PosType.rkeeper
         ? sendRkeeperOrder({
             currentTimeISOString: deps.currentTimeISOString,
             axiosInstance: deps.axiosInstance,
@@ -133,8 +144,8 @@ export const handleRkeeperOrder =
     );
 
 export const createOrder =
-  (input: CrudApi.CreateOrderInput) =>
-  (deps: OrderResolverDeps): Observable<CrudApi.Order> =>
+  (input: CreateOrderInput) =>
+  (deps: OrderResolverDeps): Observable<Order> =>
     getUnit(deps)(input).pipe(
       OE.chain(getNextOrderNum(deps)),
       OE.chain(placeOrder(deps)),

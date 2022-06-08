@@ -7,9 +7,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { getDailyOrdersSum } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Order } from '@bgap/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { getDailyOrdersSum } from '../../../../shared/utils';
 
 @UntilDestroy()
 @Component({
@@ -19,7 +20,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./reports-unique-guest-avg-sales.component.scss'],
 })
 export class ReportsUniqueGuestAvgSalesComponent implements OnInit {
-  @Input() orders$?: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<Order[]>;
   @Input() currency = '';
 
   public uniqueUserCount = 0;
@@ -29,18 +30,14 @@ export class ReportsUniqueGuestAvgSalesComponent implements OnInit {
 
   ngOnInit() {
     if (this.orders$) {
-      this.orders$
-        .pipe(untilDestroyed(this))
-        .subscribe((orders: CrudApi.Order[]) => {
-          this.uniqueUserCount = [...new Set(orders.map(o => o.userId))].length;
-          const dailyOrdersSum = getDailyOrdersSum(orders);
-          this.ordersSumAvg =
-            this.uniqueUserCount > 0
-              ? dailyOrdersSum / this.uniqueUserCount
-              : 0;
+      this.orders$.pipe(untilDestroyed(this)).subscribe((orders: Order[]) => {
+        this.uniqueUserCount = [...new Set(orders.map(o => o.userId))].length;
+        const dailyOrdersSum = getDailyOrdersSum(orders);
+        this.ordersSumAvg =
+          this.uniqueUserCount > 0 ? dailyOrdersSum / this.uniqueUserCount : 0;
 
-          this._changeDetectorRef.detectChanges();
-        });
+        this._changeDetectorRef.detectChanges();
+      });
     }
   }
 }

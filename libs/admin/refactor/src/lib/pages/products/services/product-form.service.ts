@@ -5,6 +5,22 @@ import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import {
+  CreateChainProductInput,
+  CreateGroupProductInput,
+  CreateUnitProductInput,
+  Maybe,
+  ProductCategory,
+  ProductConfigSet,
+  ProductVariant,
+  UpdateChainProductInput,
+  UpdateGroupProductInput,
+  UpdateUnitProductInput,
+} from '@bgap/domain';
+import { EProductLevel, KeyValue, UpsertResponse } from '@bgap/shared/types';
+import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
+import { Store } from '@ngrx/store';
+
 import { FormsService } from '../../../shared/forms';
 import {
   multiLangValidator,
@@ -18,11 +34,6 @@ import {
   GroupProductCollectionService,
   UnitProductCollectionService,
 } from '../../../store/products';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { EProductLevel, KeyValue, UpsertResponse } from '@bgap/shared/types';
-import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
-import { Store } from '@ngrx/store';
-
 import { handleEmptyPackaginFees } from '../fn';
 
 @Injectable({ providedIn: 'root' })
@@ -39,7 +50,7 @@ export class ProductFormService {
 
   public getProductCategories$() {
     return this._productCategoryCollectionService.filteredEntities$.pipe(
-      map((productCategories: CrudApi.ProductCategory[]) =>
+      map((productCategories: ProductCategory[]) =>
         productCategories.map(
           (productCategory): KeyValue => ({
             key: productCategory.id,
@@ -108,7 +119,7 @@ export class ProductFormService {
   }
 
   public patchProductVariants(
-    productVariants: CrudApi.Maybe<CrudApi.ProductVariant>[],
+    productVariants: Maybe<ProductVariant>[],
     variantsArray: FormArray,
   ) {
     (productVariants || []).forEach(variant => {
@@ -124,14 +135,14 @@ export class ProductFormService {
   }
 
   public patchExtendedProductVariants(
-    productVariants: CrudApi.Maybe<CrudApi.ProductVariant>[],
+    productVariants: Maybe<ProductVariant>[],
     variantsArray: FormArray,
   ) {
     pipe(
       [...(productVariants || [])],
-      fp.filter<CrudApi.ProductVariant>(x => !!x),
+      fp.filter<ProductVariant>(x => !!x),
       x => x.sort(customNumberCompare('position')),
-      fp.forEach<CrudApi.ProductVariant>(variant => {
+      fp.forEach<ProductVariant>(variant => {
         const variantGroup = this._formsService.createProductVariantFormGroup();
         variantGroup.patchValue(cleanObject(variant));
 
@@ -140,7 +151,7 @@ export class ProductFormService {
             const availabilityGroup =
               this._formsService.createProductAvailabilityFormGroup();
             availabilityGroup.patchValue(cleanObject(availability));
-            (variantGroup.controls.availabilities as FormArray).push(
+            (variantGroup.controls['availabilities'] as FormArray).push(
               availabilityGroup,
             );
           }
@@ -152,7 +163,7 @@ export class ProductFormService {
   }
 
   public patchConfigSet(
-    configSetValues: CrudApi.Maybe<CrudApi.ProductConfigSet>[],
+    configSetValues: Maybe<ProductConfigSet>[],
     configSetsArray: FormArray,
   ) {
     (configSetValues || []).forEach(configSet => {
@@ -166,7 +177,9 @@ export class ProductFormService {
             this._formsService.createProductConfigSetItemFormGroup();
           configSetItemGroup.patchValue(cleanObject(item));
 
-          (configSetGroup.controls.items as FormArray).push(configSetItemGroup);
+          (configSetGroup.controls['items'] as FormArray).push(
+            configSetItemGroup,
+          );
         }
       });
 
@@ -186,14 +199,12 @@ export class ProductFormService {
   //
 
   public saveChainForm$(
-    formValue:
-      | CrudApi.CreateChainProductInput
-      | CrudApi.UpdateChainProductInput,
+    formValue: CreateChainProductInput | UpdateChainProductInput,
     chainId?: string,
   ) {
     return iif(
       () => !chainId,
-      this.createChainProduct$(<CrudApi.CreateChainProductInput>formValue),
+      this.createChainProduct$(<CreateChainProductInput>formValue),
       this.updateChainProduct$({
         ...formValue,
         id: chainId || '',
@@ -201,14 +212,14 @@ export class ProductFormService {
     );
   }
 
-  public createChainProduct$(input: CrudApi.CreateChainProductInput) {
+  public createChainProduct$(input: CreateChainProductInput) {
     return this._chainProductCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
-  public updateChainProduct$(input: CrudApi.UpdateChainProductInput) {
+  public updateChainProduct$(input: UpdateChainProductInput) {
     return this._chainProductCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
@@ -220,8 +231,8 @@ export class ProductFormService {
   //
 
   public saveGroupExtendForm$(
-    createFormValue: CrudApi.CreateGroupProductInput,
-    updateFormValue: CrudApi.UpdateGroupProductInput,
+    createFormValue: CreateGroupProductInput,
+    updateFormValue: UpdateGroupProductInput,
     isEditing: boolean,
   ) {
     return iif(
@@ -231,14 +242,14 @@ export class ProductFormService {
     );
   }
 
-  public createGroupProduct$(input: CrudApi.CreateGroupProductInput) {
+  public createGroupProduct$(input: CreateGroupProductInput) {
     return this._groupProductCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
-  public updateGroupProduct$(input: CrudApi.UpdateGroupProductInput) {
+  public updateGroupProduct$(input: UpdateGroupProductInput) {
     return this._groupProductCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
@@ -250,27 +261,23 @@ export class ProductFormService {
   //
 
   public saveUnitExtendForm$(
-    createFormValue: CrudApi.CreateUnitProductInput,
-    updateFormValue: CrudApi.UpdateUnitProductInput,
+    createFormValue: CreateUnitProductInput,
+    updateFormValue: UpdateUnitProductInput,
     isEditing: boolean,
   ) {
     return iif(
       () => !isEditing,
       this.createUnitProduct$(
-        <CrudApi.CreateUnitProductInput>(
-          handleEmptyPackaginFees(createFormValue)
-        ),
+        <CreateUnitProductInput>handleEmptyPackaginFees(createFormValue),
       ),
       this.updateUnitProduct$(
-        <CrudApi.UpdateUnitProductInput>(
-          handleEmptyPackaginFees(updateFormValue)
-        ),
+        <UpdateUnitProductInput>handleEmptyPackaginFees(updateFormValue),
       ),
     );
   }
 
   public createUnitProduct$(
-    input: CrudApi.CreateUnitProductInput,
+    input: CreateUnitProductInput,
   ): Observable<UpsertResponse<unknown>> {
     return this._unitProductCollectionService.add$(input).pipe(
       catchGqlError(this._store),
@@ -279,7 +286,7 @@ export class ProductFormService {
   }
 
   public updateUnitProduct$(
-    input: CrudApi.UpdateUnitProductInput,
+    input: UpdateUnitProductInput,
   ): Observable<UpsertResponse<unknown>> {
     return this._unitProductCollectionService.update$(input).pipe(
       catchGqlError(this._store),

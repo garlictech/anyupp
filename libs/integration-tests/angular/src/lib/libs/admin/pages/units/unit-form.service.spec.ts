@@ -9,7 +9,7 @@ import {
   entityConfig,
   UnitFormService,
 } from '@bgap/admin/refactor';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { testIdPrefix, unitFixture } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
@@ -27,6 +27,7 @@ import {
   MockNbDialogService,
   MockTranslateService,
 } from '../../shared/service-mocks';
+import { ChainProduct, OrderMode, ServingMode, Unit } from '@bgap/domain';
 
 describe('UnitFormService', () => {
   const unitId = `${testIdPrefix}ADMIN_UNIT_IT_UNIT_ID_01`;
@@ -145,14 +146,14 @@ describe('UnitFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.ChainProduct>>saveResponse).data.id
+          (<UpsertResponse<ChainProduct>>saveResponse).data.id
             ? service.updateUnit$(
                 {
                   ...unitFixture.unitInputBase,
                   id: unitId,
                   name: `${unitFixture.unitInputBase} MOD`,
-                  supportedOrderModes: [CrudApi.OrderMode.pickup],
-                  supportedServingModes: [CrudApi.ServingMode.takeaway],
+                  supportedOrderModes: [OrderMode.pickup],
+                  supportedServingModes: [ServingMode.takeaway],
                 },
                 false,
               )
@@ -187,12 +188,12 @@ describe('UnitFormService', () => {
         ),
         tap(saveResponse => {
           hashedPassword =
-            (<UpsertResponse<CrudApi.Unit>>saveResponse).data?.pos?.rkeeper
+            (<UpsertResponse<Unit>>saveResponse).data?.pos?.rkeeper
               ?.anyuppPassword || '';
         }),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.Unit>>saveResponse).data.id
+          (<UpsertResponse<Unit>>saveResponse).data.id
             ? service.updateRKeeperData$({
                 unitId,
                 rkeeperPassword: 'test-rkeeperPassword',
@@ -218,7 +219,7 @@ describe('UnitFormService', () => {
 
           // anyuppPassword unmodified
           expect(
-            (<UpsertResponse<CrudApi.Unit>>updateResponse).data?.pos?.rkeeper
+            (<UpsertResponse<Unit>>updateResponse).data?.pos?.rkeeper
               ?.anyuppPassword,
           ).toEqual(hashedPassword);
         }),
@@ -242,12 +243,12 @@ describe('UnitFormService', () => {
         ),
         tap(saveResponse => {
           hashedPassword =
-            (<UpsertResponse<CrudApi.Unit>>saveResponse).data?.pos?.rkeeper
+            (<UpsertResponse<Unit>>saveResponse).data?.pos?.rkeeper
               ?.anyuppPassword || '';
         }),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.ChainProduct>>saveResponse).data.id
+          (<UpsertResponse<ChainProduct>>saveResponse).data.id
             ? service.updateRKeeperData$({
                 unitId,
                 anyuppPassword: 'new-anyuppPassword',
@@ -270,7 +271,7 @@ describe('UnitFormService', () => {
 
           // anyuppPassword changed
           expect(
-            (<UpsertResponse<CrudApi.Unit>>updateResponse).data?.pos?.rkeeper
+            (<UpsertResponse<Unit>>updateResponse).data?.pos?.rkeeper
               ?.anyuppPassword,
           ).not.toEqual(hashedPassword);
         }),

@@ -1,27 +1,29 @@
+import { Order } from '@bgap/domain';
 import {
   EDashboardListMode,
   EDashboardSize,
   EDashboardTicketListType,
 } from '@bgap/shared/types';
+import { EntitySelectorsFactory } from '@ngrx/data';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+
+import { ENTITY_NAME } from '../../../shared/types';
 import {
   DASHBOARD_FEATURE_KEY,
-  DashboardState,
   DashboardSettings,
+  DashboardState,
 } from './dashboard.reducer';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { EntitySelectorsFactory } from '@ngrx/data';
-import { ENTITY_NAME } from '../../../shared/types';
 
 export const getDashboardState = createFeatureSelector<DashboardState>(
   DASHBOARD_FEATURE_KEY,
 );
 
-export const orderEntitySelectors =
-  new EntitySelectorsFactory().create<CrudApi.Order>(ENTITY_NAME.ORDER);
+export const orderEntitySelectors = new EntitySelectorsFactory().create<Order>(
+  ENTITY_NAME.ORDER,
+);
 
 export const orderHistoryEntitySelectors =
-  new EntitySelectorsFactory().create<CrudApi.Order>(ENTITY_NAME.ORDER_HISTORY);
+  new EntitySelectorsFactory().create<Order>(ENTITY_NAME.ORDER_HISTORY);
 
 export const getSelectedActiveOrder = () =>
   createSelector(
@@ -29,8 +31,8 @@ export const getSelectedActiveOrder = () =>
     orderEntitySelectors.selectFilteredEntities,
     (
       selectedOrderId: string | undefined,
-      activeOrders: CrudApi.Order[],
-    ): CrudApi.Order | undefined => {
+      activeOrders: Order[],
+    ): Order | undefined => {
       return activeOrders.find(
         (order): boolean => order.id === selectedOrderId,
       );
@@ -43,8 +45,8 @@ export const getSelectedHistoryOrder = () =>
     orderHistoryEntitySelectors.selectEntities,
     (
       selectedOrderId: string | undefined,
-      historyOrders: CrudApi.Order[],
-    ): CrudApi.Order | undefined => {
+      historyOrders: Order[],
+    ): Order | undefined => {
       return historyOrders?.find(
         (order): boolean => order.id === selectedOrderId,
       );

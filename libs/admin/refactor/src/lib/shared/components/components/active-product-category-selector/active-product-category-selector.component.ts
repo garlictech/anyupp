@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,14 +9,14 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { AdminUser, ProductCategory } from '@bgap/domain';
+import { filterNullish } from '@bgap/shared/utils';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
 import { DataService } from '../../../../shared/data-access/data';
 import { loggedUserSelectors } from '../../../../store/logged-user';
 import { ProductCategoryCollectionService } from '../../../../store/product-categories';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { Observable } from 'rxjs';
-import { filterNullish } from '@bgap/shared/utils';
 
 @UntilDestroy()
 @Component({
@@ -26,8 +28,8 @@ import { filterNullish } from '@bgap/shared/utils';
 export class ActiveProductCategorySelectorComponent implements OnInit {
   @Input() showIcon: boolean;
   @Output() selectionChange = new EventEmitter();
-  public productCategories$: Observable<CrudApi.ProductCategory[]>;
-  private _loggedUser!: CrudApi.AdminUser;
+  public productCategories$: Observable<ProductCategory[]>;
+  private _loggedUser!: AdminUser;
 
   constructor(
     private _store: Store,

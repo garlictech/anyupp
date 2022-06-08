@@ -1,15 +1,16 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { CrudSdk } from '@bgap/crud-gql/api';
+import { CreateChainProductInput } from '@bgap/domain';
 import { resultTap } from './seed.util';
 
 export const createTestChainProduct = (
-  input: CrudApi.CreateChainProductInput,
-  crudSdk: CrudApi.CrudSdk,
+  input: CreateChainProductInput,
+  crudSdk: CrudSdk,
 ) =>
   crudSdk
     .CreateChainProduct({ input })
     .pipe(resultTap('CHAIN PRODUCT create', input.id!));
 
-export const deleteTestChainProduct = (id: string, crudSdk: CrudApi.CrudSdk) =>
+export const deleteTestChainProduct = (id: string, crudSdk: CrudSdk) =>
   crudSdk
     .DeleteChainProduct({ input: { id } })
     .pipe(resultTap('CHAIN PRODUCT delete', id));

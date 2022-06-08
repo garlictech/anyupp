@@ -1,6 +1,6 @@
 import { fabric } from 'fabric';
 
-import * as CrudApi from '@bgap/crud-gql/api';
+import { FloorMapData, FloorMapDataObject, OrderStatus } from '@bgap/domain';
 
 import { FLOOR_MAP_STATUS_COLORS } from '../const';
 
@@ -82,35 +82,35 @@ export const isTableOrSeat = (obj: fabric.Object): boolean =>
 export const isSeat = (obj: fabric.Object): boolean =>
   (<string>obj.type || '').indexOf('seat') === 0;
 
-export const getTableIds = (data: CrudApi.FloorMapData): string[] =>
+export const getTableIds = (data: FloorMapData): string[] =>
   Object.values(data?.objects || {})
     .filter(o => o?.t?.indexOf('table') === 0)
     .map(o => o.tID || '');
 
-export const getTableSeatIds = (data: CrudApi.FloorMapData): string[] =>
+export const getTableSeatIds = (data: FloorMapData): string[] =>
   Object.values(data?.objects || {})
     .filter(o => o?.t?.indexOf('seat') === 0)
     .map(o => getTableSeatId(o));
 
 export const getStatusBgColor = (
-  status: CrudApi.OrderStatus,
+  status: OrderStatus,
   hasPaymentIntention: boolean,
 ): string | undefined => {
   switch (status) {
-    case CrudApi.OrderStatus.none:
+    case OrderStatus.none:
       return FLOOR_MAP_STATUS_COLORS.NONE;
-    case CrudApi.OrderStatus.placed:
+    case OrderStatus.placed:
       return FLOOR_MAP_STATUS_COLORS.PLACED;
-    case CrudApi.OrderStatus.processing:
+    case OrderStatus.processing:
       return FLOOR_MAP_STATUS_COLORS.PROCESSING;
-    case CrudApi.OrderStatus.ready:
+    case OrderStatus.ready:
       return FLOOR_MAP_STATUS_COLORS.READY;
-    case CrudApi.OrderStatus.served:
+    case OrderStatus.served:
       return hasPaymentIntention ? FLOOR_MAP_STATUS_COLORS.SERVED : undefined;
     default:
       return '';
   }
 };
 
-export const getTableSeatId = (obj: CrudApi.FloorMapDataObject): string =>
+export const getTableSeatId = (obj: FloorMapDataObject): string =>
   `${obj.tID}.${obj.sID}`;

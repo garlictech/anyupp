@@ -1,8 +1,13 @@
 import { debounceTime } from 'rxjs/operators';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FloorMapData,
+  FloorMapDataObject,
+  Maybe,
+  UnitMapObjectType,
+} from '@bgap/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 
@@ -21,10 +26,10 @@ import * as floorMapFuncs from '../../fn';
 })
 export class FloorMapEditorComponent implements OnInit, AfterViewInit {
   @Input() editMode?: boolean;
-  @Input() floorMap?: CrudApi.Maybe<CrudApi.FloorMapData>;
+  @Input() floorMap?: Maybe<FloorMapData>;
   public dimensionForm?: FormGroup;
   public objectForm?: FormGroup;
-  public EUnitMapObjectType = CrudApi.UnitMapObjectType;
+  public EUnitMapObjectType = UnitMapObjectType;
 
   constructor(private _store: Store, private _formBuilder: FormBuilder) {}
 
@@ -114,11 +119,11 @@ export class FloorMapEditorComponent implements OnInit, AfterViewInit {
     );
   }
 
-  public addObject(objectType: keyof typeof CrudApi.UnitMapObjectType) {
+  public addObject(objectType: keyof typeof UnitMapObjectType) {
     const id = floorMapFuncs.generateId();
-    const rawDataObject: CrudApi.FloorMapDataObject = {
+    const rawDataObject: FloorMapDataObject = {
       id,
-      t: CrudApi.UnitMapObjectType[objectType],
+      t: UnitMapObjectType[objectType],
       ...FLOOR_MAP_OBJECT_COMMON_DEFAULTS,
       ...FLOOR_MAP_OBJECT_DEFAULTS[objectType],
     };

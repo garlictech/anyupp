@@ -8,6 +8,14 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { isRejectedOrder, orderHasIncome } from '@bgap/crud-gql/api';
+import { Group, Order, PaymentStatus, Unit } from '@bgap/domain';
+import { KeyValueObject, ProducMixArrayItem } from '@bgap/shared/types';
+import { filterNullish } from '@bgap/shared/utils';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
+import { calculateProductMix } from '../../../../shared/utils';
 import {
   dashboardActions,
   dashboardSelectors,
@@ -15,12 +23,6 @@ import {
 import { groupsSelectors } from '../../../../store/groups';
 import { OrderHistoryCollectionService } from '../../../../store/orders';
 import { unitsSelectors } from '../../../../store/units';
-import { calculateProductMix } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { KeyValueObject, ProducMixArrayItem } from '@bgap/shared/types';
-import { filterNullish } from '@bgap/shared/utils';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
@@ -31,17 +33,19 @@ import { select, Store } from '@ngrx/store';
 })
 export class ReportsBodyComponent implements OnInit {
   public dateFormControl: FormControl;
-  public incomeOrders$: BehaviorSubject<CrudApi.Order[]> = new BehaviorSubject<
-    CrudApi.Order[]
+  public incomeOrders$: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>(
+    [],
+  );
+  public noIncomeOrders$: BehaviorSubject<Order[]> = new BehaviorSubject<
+    Order[]
   >([]);
-  public noIncomeOrders$: BehaviorSubject<CrudApi.Order[]> =
-    new BehaviorSubject<CrudApi.Order[]>([]);
-  public unpayOrders$: BehaviorSubject<CrudApi.Order[]> = new BehaviorSubject<
-    CrudApi.Order[]
+  public unpayOrders$: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>(
+    [],
+  );
+  public rejectedOrders$: BehaviorSubject<Order[]> = new BehaviorSubject<
+    Order[]
   >([]);
-  public rejectedOrders$: BehaviorSubject<CrudApi.Order[]> =
-    new BehaviorSubject<CrudApi.Order[]>([]);
-  public selectedUnit$: Observable<CrudApi.Unit>;
+  public selectedUnit$: Observable<Unit>;
   public dailyOrdersSum: KeyValueObject = {};
   public groupCurrency = '';
   public productMixData$: BehaviorSubject<ProducMixArrayItem[]> =
@@ -60,7 +64,7 @@ export class ReportsBodyComponent implements OnInit {
         skipWhile((group): boolean => !group),
         untilDestroyed(this),
       )
-      .subscribe((group: CrudApi.Group | undefined) => {
+      .subscribe((group: Group | undefined) => {
         this.groupCurrency = group?.currency || '';
       });
 
@@ -89,28 +93,24 @@ export class ReportsBodyComponent implements OnInit {
 
     this._orderHistoryCollectionService.filteredEntities$
       .pipe(untilDestroyed(this))
-      .subscribe((historyOrders: CrudApi.Order[]) => {
+      .subscribe((historyOrders: Order[]) => {
         this.incomeOrders$.next(
-          historyOrders.filter(
-            o => CrudApi.orderHasIncome(o) && !CrudApi.isRejectedOrder(o),
-          ),
+          historyOrders.filter(o => orderHasIncome(o) && !isRejectedOrder(o)),
         );
         this.noIncomeOrders$.next(
-          historyOrders.filter(
-            o => !CrudApi.orderHasIncome(o) && !CrudApi.isRejectedOrder(o),
-          ),
+          historyOrders.filter(o => !orderHasIncome(o) && !isRejectedOrder(o)),
         );
         this.unpayOrders$.next(
           historyOrders.filter(
-            o => o.transactionStatus === CrudApi.PaymentStatus.failed,
+            o => o.transactionStatus === PaymentStatus.failed,
           ),
         );
         this.rejectedOrders$.next(
-          historyOrders.filter(o => CrudApi.isRejectedOrder(o)),
+          historyOrders.filter(o => isRejectedOrder(o)),
         );
 
         const productMix = calculateProductMix(
-          historyOrders.filter(o => !CrudApi.isRejectedOrder(o)),
+          historyOrders.filter(o => !isRejectedOrder(o)),
         );
         this.productMixData$.next(productMix);
 

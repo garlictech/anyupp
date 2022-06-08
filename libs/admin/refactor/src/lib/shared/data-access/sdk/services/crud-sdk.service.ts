@@ -1,18 +1,19 @@
+import { concat, Observable } from 'rxjs';
+import { map, takeUntil, tap } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
-import { catchGqlError } from '../../../../store/app-core';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { getCrudSdkForUserPool } from '@bgap/crud-gql/api';
+import { CrudSdk, getCrudSdkForUserPool } from '@bgap/crud-gql/api';
 import { filterNullish, filterNullishElements } from '@bgap/shared/utils';
 import { Store } from '@ngrx/store';
 import { TypedAction } from '@ngrx/store/src/models';
-import { concat, Observable } from 'rxjs';
-import { map, takeUntil, tap } from 'rxjs/operators';
+
+import { catchGqlError } from '../../../../store/app-core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CrudSdkService {
-  public sdk: CrudApi.CrudSdk;
+  public sdk: CrudSdk;
 
   constructor(private _store: Store) {
     this.sdk = getCrudSdkForUserPool();
@@ -116,7 +117,7 @@ interface ISnapshotParams extends ISubscriptionParams, IQueryParams {}
   providedin: 'root',
 })
 export class AmplifyDataService {
-  private crudSdk: CrudApi.CrudSdk;
+  private crudSdk: CrudSdk;
 
   constructor(private _ngZone: NgZone, private sdk: AngularApi.OnAdminUserChangeGQL ) {
     this._crudSdk = getCrudSdkForUserPool();

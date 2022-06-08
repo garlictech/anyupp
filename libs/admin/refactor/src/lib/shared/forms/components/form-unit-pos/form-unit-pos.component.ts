@@ -8,7 +8,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { PosType } from '@bgap/domain';
 import { KeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -25,14 +25,14 @@ export class FormUnitPosComponent implements OnInit {
   @Input() rkeeperEdit = false;
   @Output() changePasswordEmitter = new EventEmitter();
 
-  public ePosType = CrudApi.PosType;
+  public ePosType = PosType;
   public posTypeOptions: KeyValue[] = [
     {
-      key: CrudApi.PosType.anyupp,
+      key: PosType.anyupp,
       value: 'AnyUPP',
     },
     {
-      key: CrudApi.PosType.rkeeper,
+      key: PosType.rkeeper,
       value: 'RKeepeR',
     },
   ];
@@ -43,7 +43,7 @@ export class FormUnitPosComponent implements OnInit {
     this.posFormGroup?.controls['type'].valueChanges
       .pipe(untilDestroyed(this))
       .subscribe(newTypeValue => {
-        if (newTypeValue === CrudApi.PosType.rkeeper) {
+        if (newTypeValue === PosType.rkeeper) {
           this.posFormGroup?.controls['rkeeper'].enable();
 
           if (!this.posFormGroup?.value.rkeeper?.anyuppPassword) {

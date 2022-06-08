@@ -1,5 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as CrudApi from '@bgap/crud-gql/api';
+
+import {
+  CreateOrderInput,
+  OrderMode,
+  OrderStatus,
+  PaymentMethod,
+  PaymentType,
+  ProductComponentSetType,
+  ServingMode,
+} from '@bgap/domain';
 import { tap } from 'rxjs/operators';
 import { sendRkeeperOrder } from './send-order';
 
@@ -40,7 +49,7 @@ import { sendRkeeperOrder } from './send-order';
 };
  */
 
-const orderInputTemplate: CrudApi.CreateOrderInput = {
+const orderInputTemplate: CreateOrderInput = {
   userId: 'USER_ID',
   unitId: 'rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit',
   items: [
@@ -50,7 +59,7 @@ const orderInputTemplate: CrudApi.CreateOrderInput = {
       statusLog: [
         {
           userId: 'USER_ID',
-          status: CrudApi.OrderStatus.none,
+          status: OrderStatus.none,
           ts: 1627909024677,
         },
       ],
@@ -81,7 +90,7 @@ const orderInputTemplate: CrudApi.CreateOrderInput = {
           name: {
             en: 'CONFIG SET NAME',
           },
-          type: CrudApi.ProductComponentSetType.modifier,
+          type: ProductComponentSetType.modifier,
           productSetId: 'PRODUCT SET ID',
           items: [
             {
@@ -98,7 +107,7 @@ const orderInputTemplate: CrudApi.CreateOrderInput = {
           name: {
             en: 'CONFIG SET NAME 2',
           },
-          type: CrudApi.ProductComponentSetType.modifier,
+          type: ProductComponentSetType.modifier,
           productSetId: 'PRODUCT SET ID',
           items: [
             {
@@ -125,12 +134,12 @@ const orderInputTemplate: CrudApi.CreateOrderInput = {
     table: '01',
     seat: '01',
   },
-  orderMode: CrudApi.OrderMode.instant,
-  servingMode: CrudApi.ServingMode.inplace,
+  orderMode: OrderMode.instant,
+  servingMode: ServingMode.inplace,
   archived: false,
   paymentMode: {
-    method: CrudApi.PaymentMethod.cash,
-    type: CrudApi.PaymentType.cash,
+    method: PaymentMethod.cash,
+    type: PaymentType.cash,
   },
 };
 

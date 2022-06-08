@@ -1,9 +1,11 @@
 import { take } from 'rxjs/operators';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { Pipe, PipeTransform } from '@angular/core';
-import { loggedUserSelectors } from '../../../store/logged-user';
-import { DEFAULT_LANG } from '../../../shared/utils';
+import { LocalizedItem } from '@bgap/domain';
 import { select, Store } from '@ngrx/store';
+
+import { DEFAULT_LANG } from '../../../shared/utils';
+import { loggedUserSelectors } from '../../../store/logged-user';
 
 @Pipe({
   name: 'localize',
@@ -12,7 +14,7 @@ import { select, Store } from '@ngrx/store';
 export class LocalizePipe implements PipeTransform {
   constructor(private _store: Store) {}
 
-  transform(value: CrudApi.LocalizedItem | null | undefined): string {
+  transform(value: LocalizedItem | null | undefined): string {
     if (!value) {
       return '';
     }

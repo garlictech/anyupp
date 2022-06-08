@@ -2,18 +2,19 @@ import { Subject } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import { Chain } from '@bgap/domain';
+import { filterNullish } from '@bgap/shared/utils';
+import { EntityCollectionServiceElementsFactory } from '@ngrx/data';
+import { Store } from '@ngrx/store';
+
 import { BaseCollectionService } from '../../../shared/data-access/ngrx-data';
 import { CrudSdkService } from '../../../shared/data-access/sdk';
 import { ENTITY_NAME } from '../../../shared/types';
 import { appCoreSelectors } from '../../../store/app-core';
 import { loggedUserSelectors } from '../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { filterNullish } from '@bgap/shared/utils';
-import { EntityCollectionServiceElementsFactory } from '@ngrx/data';
-import { Store } from '@ngrx/store';
 
 @Injectable({ providedIn: 'root' })
-export class ChainCollectionService extends BaseCollectionService<CrudApi.Chain> {
+export class ChainCollectionService extends BaseCollectionService<Chain> {
   constructor(
     private _store: Store,
     serviceElementsFactory: EntityCollectionServiceElementsFactory,

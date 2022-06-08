@@ -7,9 +7,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { getDailyOrdersSum } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Order } from '@bgap/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { getDailyOrdersSum } from '../../../../shared/utils';
 
 @UntilDestroy()
 @Component({
@@ -19,7 +20,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./reports-orders-amount-avg-sales.component.scss'],
 })
 export class ReportsOrdersAmountAvgSalesComponent implements OnInit {
-  @Input() orders$?: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<Order[]>;
   @Input() currency = '';
 
   public ordersSum = 0;
@@ -30,16 +31,14 @@ export class ReportsOrdersAmountAvgSalesComponent implements OnInit {
 
   ngOnInit() {
     if (this.orders$) {
-      this.orders$
-        .pipe(untilDestroyed(this))
-        .subscribe((orders: CrudApi.Order[]) => {
-          this.ordersSum = getDailyOrdersSum(orders);
-          this.ordersCount = orders.length;
-          this.ordersSumAvg =
-            orders.length > 0 ? this.ordersSum / orders.length : 0;
+      this.orders$.pipe(untilDestroyed(this)).subscribe((orders: Order[]) => {
+        this.ordersSum = getDailyOrdersSum(orders);
+        this.ordersCount = orders.length;
+        this.ordersSumAvg =
+          orders.length > 0 ? this.ordersSum / orders.length : 0;
 
-          this._changeDetectorRef.detectChanges();
-        });
+        this._changeDetectorRef.detectChanges();
+      });
     }
   }
 }

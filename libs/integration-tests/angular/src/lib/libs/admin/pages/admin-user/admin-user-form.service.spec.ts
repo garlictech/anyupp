@@ -10,7 +10,7 @@ import {
   CrudSdkService,
   entityConfig,
 } from '@bgap/admin/refactor';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { adminUserFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
 import {
@@ -23,6 +23,7 @@ import { StoreModule } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { signInToCognito, signOutFromCognito } from '../../shared/helper';
+import { ProductCategory } from '@bgap/domain';
 
 describe('AdminUserFormService', () => {
   const adminUserId1 = `${testIdPrefix}ADMIN_ADMIN_USER_IT_ADMIN_USER_ID_01`;
@@ -139,7 +140,7 @@ describe('AdminUserFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.ProductCategory>>saveResponse).data.id
+          (<UpsertResponse<ProductCategory>>saveResponse).data.id
             ? service.updateAdminUser$({
                 ...adminUserFixture.adminUserBase,
                 id: adminUserId2,

@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ECS } from 'aws-sdk';
 import * as R from 'ramda';
 import * as fs from 'fs';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { createIamCrudSdk } from '../../../api-clients';
 import {
   mergeMap,
@@ -42,6 +42,17 @@ import {
   anyuppStackConfig,
 } from '@bgap/shared/config';
 import { maskAll, maskV4UuidIds } from '@bgap/shared/fixtures';
+import {
+  ChainProduct,
+  GeneratedProduct,
+  GeneratedProductConfigSet,
+  GroupProduct,
+  Maybe,
+  ProductComponent,
+  ProductComponentSet,
+  ProductConfigSet,
+  UnitProduct,
+} from '@bgap/domain';
 
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();
@@ -49,7 +60,7 @@ describe('Test the rkeeper api basic functionality', () => {
   const testItemDeleter = <Y extends { id: string }, FILTER>(
     searchOp: (x: { filter: FILTER }) => Observable<
       | {
-          items?: CrudApi.Maybe<Array<CrudApi.Maybe<Y>>>;
+          items?: Maybe<Array<Maybe<Y>>>;
         }
       | undefined
       | null
@@ -74,7 +85,7 @@ describe('Test the rkeeper api basic functionality', () => {
   const dirtyItemDeleter = <Y extends { id: string }>(
     searchOp: (x: { filter: { dirty: { eq: boolean } } }) => Observable<
       | {
-          items?: CrudApi.Maybe<Array<CrudApi.Maybe<Y>>>;
+          items?: Maybe<Array<Maybe<Y>>>;
         }
       | undefined
       | null
@@ -85,7 +96,7 @@ describe('Test the rkeeper api basic functionality', () => {
   const chainDataDeleter = <Y extends { id: string }>(
     searchOp: (x: { filter: { chainId: { eq: string } } }) => Observable<
       | {
-          items?: CrudApi.Maybe<Array<CrudApi.Maybe<Y>>>;
+          items?: Maybe<Array<Maybe<Y>>>;
         }
       | undefined
       | null
@@ -210,7 +221,7 @@ describe('Test the rkeeper api basic functionality', () => {
                 },
               })
               .pipe(
-                filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
+                filterNullishGraphqlListWithDefault<UnitProduct>([]),
                 tap(res =>
                   expect(maskAll(res)).toMatchSnapshot('UNITPRODUCTST'),
                 ),
@@ -227,7 +238,7 @@ describe('Test the rkeeper api basic functionality', () => {
                 },
               })
               .pipe(
-                filterNullishGraphqlListWithDefault<CrudApi.GroupProduct>([]),
+                filterNullishGraphqlListWithDefault<GroupProduct>([]),
                 tap(res =>
                   expect(maskAll(res)).toMatchSnapshot('GROUPPRODUCTST'),
                 ),
@@ -244,7 +255,7 @@ describe('Test the rkeeper api basic functionality', () => {
                 },
               })
               .pipe(
-                filterNullishGraphqlListWithDefault<CrudApi.ChainProduct>([]),
+                filterNullishGraphqlListWithDefault<ChainProduct>([]),
                 tap(res =>
                   expect(maskAll(res)).toMatchSnapshot('CHAINPRODUCTST'),
                 ),
@@ -313,12 +324,10 @@ describe('Test the rkeeper api basic functionality', () => {
 
     const sortConfigSets = <
       T extends {
-        items?: CrudApi.Maybe<
-          CrudApi.GeneratedProductConfigSet | CrudApi.ProductConfigSet
-        >;
+        items?: Maybe<GeneratedProductConfigSet | ProductConfigSet>;
       },
     >(
-      sets: CrudApi.Maybe<T>[],
+      sets: Maybe<T>[],
     ) =>
       pipe(
         sets,
@@ -326,8 +335,8 @@ describe('Test the rkeeper api basic functionality', () => {
           ...configSet,
           items: configSet?.items
             ? pipe(
-                (configSet?.items ?? []) as CrudApi.Maybe<
-                  CrudApi.ProductConfigSet | CrudApi.GeneratedProductConfigSet
+                (configSet?.items ?? []) as Maybe<
+                  ProductConfigSet | GeneratedProductConfigSet
                 >[],
                 R.reject(R.isNil),
                 R.sortBy(JSON.stringify),
@@ -340,7 +349,7 @@ describe('Test the rkeeper api basic functionality', () => {
     const processProducts = <
       K,
       T extends {
-        configSets?: CrudApi.Maybe<CrudApi.Maybe<K>[]>;
+        configSets?: Maybe<Maybe<K>[]>;
       },
     >(
       products: T[],
@@ -367,12 +376,9 @@ describe('Test the rkeeper api basic functionality', () => {
             filter: { unitId: { eq: fixtures.rkeeperUnit.id } },
           }),
         ),
-        filterNullishGraphqlListWithDefault<CrudApi.GeneratedProduct>([]),
+        filterNullishGraphqlListWithDefault<GeneratedProduct>([]),
         map(res =>
-          processProducts<
-            CrudApi.GeneratedProductConfigSet,
-            CrudApi.GeneratedProduct
-          >(res),
+          processProducts<GeneratedProductConfigSet, GeneratedProduct>(res),
         ),
         tap(checkMatches('Generated products')),
         switchMap(() =>
@@ -380,38 +386,36 @@ describe('Test the rkeeper api basic functionality', () => {
             filter: { unitId: { eq: fixtures.rkeeperUnit.id } },
           }),
         ),
-        filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]),
-        map(res =>
-          processProducts<CrudApi.ProductConfigSet, CrudApi.UnitProduct>(res),
-        ),
+        filterNullishGraphqlListWithDefault<UnitProduct>([]),
+        map(res => processProducts<ProductConfigSet, UnitProduct>(res)),
         tap(checkMatches('Unit products')),
         switchMap(() =>
           crudSdk.SearchGroupProducts({
             filter: { groupId: { eq: fixtures.rkeeperUnit.groupId } },
           }),
         ),
-        filterNullishGraphqlListWithDefault<CrudApi.GroupProduct>([]),
+        filterNullishGraphqlListWithDefault<GroupProduct>([]),
         tap(checkMatches('Group products')),
         switchMap(() =>
           crudSdk.SearchChainProducts({
             filter: { chainId: { eq: fixtures.rkeeperUnit.chainId } },
           }),
         ),
-        filterNullishGraphqlListWithDefault<CrudApi.ChainProduct>([]),
+        filterNullishGraphqlListWithDefault<ChainProduct>([]),
         tap(checkMatches('Chain products')),
         switchMap(() =>
           crudSdk.SearchProductComponents({
             filter: { chainId: { eq: fixtures.rkeeperUnit.chainId } },
           }),
         ),
-        filterNullishGraphqlListWithDefault<CrudApi.ProductComponent>([]),
+        filterNullishGraphqlListWithDefault<ProductComponent>([]),
         tap(checkMatches('Product components')),
         switchMap(() =>
           crudSdk.SearchProductComponentSets({
             filter: { chainId: { eq: fixtures.rkeeperUnit.chainId } },
           }),
         ),
-        filterNullishGraphqlListWithDefault<CrudApi.ProductComponentSet>([]),
+        filterNullishGraphqlListWithDefault<ProductComponentSet>([]),
         tap(checkMatches('Product component sets')),
       )
       .subscribe({

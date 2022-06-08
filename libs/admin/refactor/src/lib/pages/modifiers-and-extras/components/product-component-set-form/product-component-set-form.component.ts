@@ -9,6 +9,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
+import { ProductComponentSet, ProductComponentSetType } from '@bgap/domain';
+import { KeyValue, KeyValueObject, UpsertResponse } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select } from '@ngrx/store';
+
 import { AbstractFormDialogComponent } from '../../../../shared/forms';
 import {
   getProductComponentObject,
@@ -18,12 +24,6 @@ import {
 import { chainsSelectors } from '../../../../store/chains';
 import { loggedUserSelectors } from '../../../../store/logged-user';
 import { ProductComponentCollectionService } from '../../../../store/product-components';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { KeyValue, KeyValueObject, UpsertResponse } from '@bgap/shared/types';
-import { cleanObject } from '@bgap/shared/utils';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select } from '@ngrx/store';
-
 import { productComponentSetTypeOptions } from '../../const';
 import { ModifiersAndExtrasFormService } from '../../services/modifiers-and-extras-form.service';
 
@@ -38,17 +38,17 @@ export class ProductComponentSetFormComponent
   implements OnInit
 {
   public componentForm?: FormGroup;
-  public productComponentSet!: CrudApi.ProductComponentSet;
+  public productComponentSet!: ProductComponentSet;
   public chainOptions$: Observable<KeyValue[]>;
   public typeOptions: KeyValue[] = [];
   public productComponentOptions: KeyValue[] = [];
   public productComponentObject: KeyValueObject = {};
-  public eProductComponentSetType = CrudApi.ProductComponentSetType;
+  public eProductComponentSetType = ProductComponentSetType;
   public servingModes = SERVING_MODES;
   public editing = false;
 
   constructor(
-    protected _injector: Injector,
+    protected override _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
     private _modifiersAndExtrasFormService: ModifiersAndExtrasFormService,
     private _productComponentCollectionService: ProductComponentCollectionService,
@@ -78,7 +78,7 @@ export class ProductComponentSetFormComponent
         .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
         .subscribe((selectedChainId: string | undefined | null) => {
           if (selectedChainId) {
-            this.dialogForm?.controls.chainId.patchValue(selectedChainId);
+            this.dialogForm?.controls['chainId'].patchValue(selectedChainId);
           }
         });
     }
@@ -144,7 +144,7 @@ export class ProductComponentSetFormComponent
                 ...this.dialogForm?.value,
                 maxSelection:
                   this.dialogForm?.value.type ===
-                  CrudApi.ProductComponentSetType.modifier
+                  ProductComponentSetType.modifier
                     ? null
                     : this.dialogForm?.value.maxSelection,
                 dirty: this.productComponentSet?.dirty ? false : undefined,

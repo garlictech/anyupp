@@ -1,12 +1,12 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductComponentSetType } from '@bgap/domain';
 
 export const productComponentSetTypeOptions = [
   {
-    key: CrudApi.ProductComponentSetType.extras,
+    key: ProductComponentSetType.extras,
     value: 'productComponentSets.type.extras',
   },
   {
-    key: CrudApi.ProductComponentSetType.modifier,
+    key: ProductComponentSetType.modifier,
     value: 'productComponentSets.type.modifier',
   },
 ];

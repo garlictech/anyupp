@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import * as CrudApi from '@bgap/crud-gql/api';
+import { OrderStatus } from '@bgap/domain';
 
 import { updateOrderItemStatus } from './update-order-item-status';
 
@@ -36,7 +36,7 @@ describe('updateOrderItemStatus test', () => {
     updateOrderItemStatus(<any>orderDeps)(
       waiting_order.id,
       0,
-      CrudApi.OrderStatus.processing,
+      OrderStatus.processing,
       waiting_order.userId,
     )
       .pipe(

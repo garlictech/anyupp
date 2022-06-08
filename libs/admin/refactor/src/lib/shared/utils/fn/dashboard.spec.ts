@@ -1,4 +1,4 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { PaymentMethod, UnpayCategory } from '@bgap/domain';
 import { orderFixtureBase as ofx } from '@bgap/shared/fixtures';
 import { timezoneBudapest } from '@bgap/shared/utils';
 
@@ -45,9 +45,9 @@ const failedHistoryOrders = [
 ];
 
 const paymentMethods = [
-  CrudApi.PaymentMethod.card,
-  CrudApi.PaymentMethod.cash,
-  CrudApi.PaymentMethod.inapp,
+  PaymentMethod.card,
+  PaymentMethod.cash,
+  PaymentMethod.inapp,
 ];
 
 describe('Dashboard pure function tests', () => {
@@ -65,7 +65,7 @@ describe('Dashboard pure function tests', () => {
   describe('calculateUnpayCategoryStat', () => {
     it('should calculate 1 item', () => {
       const result = calculateUnpayCategoryStat(
-        CrudApi.UnpayCategory.manager_meal,
+        UnpayCategory.manager_meal,
         failedHistoryOrders,
         paymentMethods,
       );

@@ -8,9 +8,10 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { TipPolicy } from '@bgap/domain';
 import { KeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
 import { FormsService } from '../../services/forms/forms.service';
 
 @UntilDestroy()
@@ -35,7 +36,7 @@ export class FormTipPolicyComponent implements OnInit {
   ngOnInit() {
     this.tipPolicyFormGroup?.valueChanges
       .pipe(startWith(this.tipPolicyFormGroup.value), untilDestroyed(this))
-      .subscribe((tipPolicy: CrudApi.TipPolicy) => {
+      .subscribe((tipPolicy: TipPolicy) => {
         this.percentList = tipPolicy.percents.join('; ');
       });
   }

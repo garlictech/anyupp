@@ -1,5 +1,10 @@
+import {
+  Allergen,
+  AvailabilityInput,
+  ProductType,
+  ServingMode,
+} from '@bgap/domain';
 import { seededIdPrefix } from './common';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 const chainProductId_01 = `${seededIdPrefix}chain_product_c1_1_id`;
 const chainProductId_02 = `${seededIdPrefix}chain_product_c1_2_id`;
@@ -77,13 +82,13 @@ const chainProduct_1 = {
       position: 1,
     },
   ],
-  productType: CrudApi.ProductType.food,
+  productType: ProductType.food,
   variants: [
     {
       refGroupPrice: 0,
       isAvailable: true,
       price: 11,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'seeded_chain_product_variant_c1_p1_1_id',
       position: 10,
       variantName: {
@@ -100,7 +105,7 @@ const chainProduct_1 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'ec84f130-528b-11ec-afe3-15e1afd659e2',
       position: 0,
       variantName: {
@@ -124,13 +129,13 @@ const chainProduct_1 = {
   chainId: 'seeded_chain_1_id',
   image: 'https://picsum.photos/200?random=1',
   allergens: [
-    CrudApi.Allergen.egg,
-    CrudApi.Allergen.gluten,
-    CrudApi.Allergen.mustard,
-    CrudApi.Allergen.milk,
-    CrudApi.Allergen.soya,
-    CrudApi.Allergen.fish,
-    CrudApi.Allergen.sesame,
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.mustard,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.fish,
+    Allergen.sesame,
   ],
   description: {
     de: 'laktató szendvics',
@@ -167,13 +172,13 @@ const chainProduct_2 = {
       position: 1,
     },
   ],
-  productType: CrudApi.ProductType.food,
+  productType: ProductType.food,
   variants: [
     {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '16853de0-528d-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -190,7 +195,7 @@ const chainProduct_2 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '1ce35690-528d-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -214,14 +219,14 @@ const chainProduct_2 = {
   chainId: 'seeded_chain_1_id',
   image: 'https://picsum.photos/200?random=2',
   allergens: [
-    CrudApi.Allergen.lupin,
-    CrudApi.Allergen.molluscs,
-    CrudApi.Allergen.crustaceans,
-    CrudApi.Allergen.egg,
-    CrudApi.Allergen.soya,
-    CrudApi.Allergen.sesame,
-    CrudApi.Allergen.fish,
-    CrudApi.Allergen.gluten,
+    Allergen.lupin,
+    Allergen.molluscs,
+    Allergen.crustaceans,
+    Allergen.egg,
+    Allergen.soya,
+    Allergen.sesame,
+    Allergen.fish,
+    Allergen.gluten,
   ],
   description: {
     de: 'sea fish burger',
@@ -258,13 +263,13 @@ const chainProduct_3 = {
       position: 1,
     },
   ],
-  productType: CrudApi.ProductType.food,
+  productType: ProductType.food,
   variants: [
     {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'd22dee40-528b-11ec-afe3-15e1afd659e2',
       position: 0,
       variantName: {
@@ -281,7 +286,7 @@ const chainProduct_3 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'de590330-528b-11ec-afe3-15e1afd659e2',
       position: 0,
       variantName: {
@@ -304,7 +309,7 @@ const chainProduct_3 = {
   },
   chainId: 'seeded_chain_1_id',
   image: 'https://picsum.photos/200?random=3',
-  allergens: [CrudApi.Allergen.sesame],
+  allergens: [Allergen.sesame],
   description: {
     de: 'sajtos szendvics',
     en: 'sajtos szendvics',
@@ -334,13 +339,13 @@ const chainProduct_4 = {
       position: 1,
     },
   ],
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
   variants: [
     {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '85322620-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -357,7 +362,7 @@ const chainProduct_4 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '858b1b90-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -374,7 +379,7 @@ const chainProduct_4 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '86353e40-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -397,7 +402,7 @@ const chainProduct_4 = {
   },
   chainId: 'seeded_chain_1_id',
   image: 'https://picsum.photos/200?random=4',
-  allergens: [] as CrudApi.Allergen[],
+  allergens: [] as Allergen[],
   description: {
     de: 'lager beer',
     en: 'lager beer',
@@ -427,13 +432,13 @@ const chainProduct_5 = {
       position: 1,
     },
   ],
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
   variants: [
     {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '4d498eb0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -450,7 +455,7 @@ const chainProduct_5 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '4dc8a9c0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -467,7 +472,7 @@ const chainProduct_5 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '4e2fa8f0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -490,7 +495,7 @@ const chainProduct_5 = {
   },
   chainId: 'seeded_chain_1_id',
   image: 'https://picsum.photos/200?random=5',
-  allergens: [] as CrudApi.Allergen[],
+  allergens: [] as Allergen[],
   description: {
     de: 'lager beer',
     en: 'lager beer',
@@ -538,13 +543,13 @@ const chainProduct_6 = {
       position: 2,
     },
   ],
-  productType: CrudApi.ProductType.food,
+  productType: ProductType.food,
   variants: [
     {
       refGroupPrice: 0,
       isAvailable: true,
       price: 11,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'seeded_chain_product_variant_c1_p3_1_id',
       position: 10,
       variantName: {
@@ -561,7 +566,7 @@ const chainProduct_6 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '3a20c280-528b-11ec-afe3-15e1afd659e2',
       position: 0,
       variantName: {
@@ -584,11 +589,7 @@ const chainProduct_6 = {
   },
   chainId: 'seeded_chain_1_id',
   image: 'https://picsum.photos/200?random=6',
-  allergens: [
-    CrudApi.Allergen.egg,
-    CrudApi.Allergen.gluten,
-    CrudApi.Allergen.peanut,
-  ],
+  allergens: [Allergen.egg, Allergen.gluten, Allergen.peanut],
   description: {
     de: 'klasszikus íz',
     en: 'klasszikus íz',
@@ -636,13 +637,13 @@ const chainProduct_7 = {
       position: 2,
     },
   ],
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
   variants: [
     {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'f1200050-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -659,7 +660,7 @@ const chainProduct_7 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'f1c6a090-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -682,7 +683,7 @@ const chainProduct_7 = {
   },
   chainId: 'seeded_chain_1_id',
   image: 'https://picsum.photos/200?random=7',
-  allergens: [CrudApi.Allergen.sulphites],
+  allergens: [Allergen.sulphites],
   description: {
     de: 'soda-pop',
     en: 'soda-pop',
@@ -712,13 +713,13 @@ const chainProduct_8 = {
       position: 1,
     },
   ],
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
   variants: [
     {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '065caaa0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -735,7 +736,7 @@ const chainProduct_8 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '0c565c30-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -752,7 +753,7 @@ const chainProduct_8 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '13eaaaf0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -775,7 +776,7 @@ const chainProduct_8 = {
   },
   chainId: 'seeded_chain_1_id',
   image: 'https://picsum.photos/200?random=8',
-  allergens: [] as CrudApi.Allergen[],
+  allergens: [] as Allergen[],
   description: {
     de: 'lager beer',
     en: 'lager beer',
@@ -823,13 +824,13 @@ const chainProduct_9 = {
       position: 2,
     },
   ],
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
   variants: [
     {
       refGroupPrice: 0,
       isAvailable: true,
       price: 11,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'seeded_chain_product_variant_c1_p2_1_id',
       position: 10,
       variantName: {
@@ -846,7 +847,7 @@ const chainProduct_9 = {
       refGroupPrice: 0,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'af36ee60-528a-11ec-afe3-15e1afd659e2',
       position: 0,
       variantName: {
@@ -869,7 +870,7 @@ const chainProduct_9 = {
   },
   chainId: 'seeded_chain_1_id',
   image: 'https://picsum.photos/200?random=9',
-  allergens: [CrudApi.Allergen.sulphites],
+  allergens: [Allergen.sulphites],
   description: {
     de: 'orange drink',
     en: 'orange drink',
@@ -911,7 +912,7 @@ const groupProduct_1 = {
       refGroupPrice: 1200,
       isAvailable: true,
       price: 11,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'seeded_chain_product_variant_c1_p1_1_id',
       position: 1,
       variantName: {
@@ -928,7 +929,7 @@ const groupProduct_1 = {
       refGroupPrice: 1500,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'ec84f130-528b-11ec-afe3-15e1afd659e2',
       position: 2,
       variantName: {
@@ -995,7 +996,7 @@ const groupProduct_2 = {
       refGroupPrice: 300,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'f1200050-528f-11ec-90c0-fdfe82b3802d',
       position: 1,
       variantName: {
@@ -1012,7 +1013,7 @@ const groupProduct_2 = {
       refGroupPrice: 500,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'f1c6a090-528f-11ec-90c0-fdfe82b3802d',
       position: 2,
       variantName: {
@@ -1079,7 +1080,7 @@ const groupProduct_3 = {
       refGroupPrice: 300,
       isAvailable: true,
       price: 11,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'seeded_chain_product_variant_c1_p3_1_id',
       position: 1,
       variantName: {
@@ -1096,7 +1097,7 @@ const groupProduct_3 = {
       refGroupPrice: 500,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '3a20c280-528b-11ec-afe3-15e1afd659e2',
       position: 2,
       variantName: {
@@ -1145,7 +1146,7 @@ const groupProduct_4 = {
       refGroupPrice: 400,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '85322620-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1162,7 +1163,7 @@ const groupProduct_4 = {
       refGroupPrice: 500,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '858b1b90-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1179,7 +1180,7 @@ const groupProduct_4 = {
       refGroupPrice: 600,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '86353e40-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1246,7 +1247,7 @@ const groupProduct_5 = {
       refGroupPrice: 300,
       isAvailable: true,
       price: 11,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'seeded_chain_product_variant_c1_p2_1_id',
       position: 1,
       variantName: {
@@ -1263,7 +1264,7 @@ const groupProduct_5 = {
       refGroupPrice: 500,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'af36ee60-528a-11ec-afe3-15e1afd659e2',
       position: 2,
       variantName: {
@@ -1312,7 +1313,7 @@ const groupProduct_6 = {
       refGroupPrice: 400,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '065caaa0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1329,7 +1330,7 @@ const groupProduct_6 = {
       refGroupPrice: 500,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '0c565c30-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1346,7 +1347,7 @@ const groupProduct_6 = {
       refGroupPrice: 600,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '13eaaaf0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1401,7 +1402,7 @@ const groupProduct_7 = {
       refGroupPrice: 1200,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'd22dee40-528b-11ec-afe3-15e1afd659e2',
       position: 0,
       variantName: {
@@ -1418,7 +1419,7 @@ const groupProduct_7 = {
       refGroupPrice: 1500,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: 'de590330-528b-11ec-afe3-15e1afd659e2',
       position: 0,
       variantName: {
@@ -1467,7 +1468,7 @@ const groupProduct_8 = {
       refGroupPrice: 400,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '4d498eb0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1484,7 +1485,7 @@ const groupProduct_8 = {
       refGroupPrice: 500,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '4dc8a9c0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1501,7 +1502,7 @@ const groupProduct_8 = {
       refGroupPrice: 600,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '4e2fa8f0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1556,7 +1557,7 @@ const groupProduct_9 = {
       refGroupPrice: 1200,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '16853de0-528d-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1573,7 +1574,7 @@ const groupProduct_9 = {
       refGroupPrice: 1500,
       isAvailable: true,
       price: 0,
-      availabilities: [] as CrudApi.AvailabilityInput[],
+      availabilities: [] as AvailabilityInput[],
       id: '1ce35690-528d-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
@@ -1634,10 +1635,7 @@ const unitProduct_1 = {
       position: 2,
     },
   ],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
   variants: [
     {
       refGroupPrice: 300,
@@ -1730,10 +1728,7 @@ const unitProduct_2 = {
       position: 1,
     },
   ],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
   variants: [
     {
       refGroupPrice: 1200,
@@ -1820,10 +1815,7 @@ const unitProduct_3 = {
       position: 1,
     },
   ],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
   variants: [
     {
       refGroupPrice: 400,
@@ -1942,10 +1934,7 @@ const unitProduct_4 = {
       position: 1,
     },
   ],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
   variants: [
     {
       refGroupPrice: 1200,
@@ -2032,10 +2021,7 @@ const unitProduct_5 = {
       position: 1,
     },
   ],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
   variants: [
     {
       refGroupPrice: 400,
@@ -2148,10 +2134,7 @@ const unitProduct_6 = {
       position: 1,
     },
   ],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
   variants: [
     {
       refGroupPrice: 400,
@@ -2282,10 +2265,7 @@ const unitProduct_7 = {
       position: 2,
     },
   ],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
   variants: [
     {
       refGroupPrice: 300,
@@ -2390,10 +2370,7 @@ const unitProduct_8 = {
       position: 2,
     },
   ],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
   variants: [
     {
       refGroupPrice: 300,
@@ -2486,10 +2463,7 @@ const unitProduct_9 = {
       position: 1,
     },
   ],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
   variants: [
     {
       refGroupPrice: 1200,

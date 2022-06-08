@@ -1,10 +1,15 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { pipe } from 'fp-ts/lib/function';
 import { AxiosStatic } from 'axios';
 import { Method } from 'axios';
 import { defer, from, Observable } from 'rxjs';
 import * as R from 'ramda';
 import { mapTo, tap } from 'rxjs/operators';
+import {
+  CreateOrderInput,
+  OrderItemConfigSetInput,
+  PaymentMethod,
+  Unit,
+} from '@bgap/domain';
 
 export interface SendRkeeperOrderDeps {
   currentTimeISOString: () => string;
@@ -12,7 +17,7 @@ export interface SendRkeeperOrderDeps {
   uuidGenerator: () => string;
 }
 
-const processConfigSet = (configSets: CrudApi.OrderItemConfigSetInput[]) =>
+const processConfigSet = (configSets: OrderItemConfigSetInput[]) =>
   pipe(
     configSets.map(configSet => configSet.items),
     R.flatten,
@@ -24,15 +29,15 @@ const processConfigSet = (configSets: CrudApi.OrderItemConfigSetInput[]) =>
   );
 
 export type RkeeperOrder = Pick<
-  CrudApi.CreateOrderInput,
+  CreateOrderInput,
   'paymentMode' | 'place' | 'items'
 >;
 
 export const sendRkeeperOrder =
   (deps: SendRkeeperOrderDeps) =>
   (
-    unit: CrudApi.Unit,
-    orderInput: CrudApi.CreateOrderInput,
+    unit: Unit,
+    orderInput: CreateOrderInput,
   ): Observable<string | undefined> => {
     const externalId = deps.uuidGenerator();
 
@@ -54,12 +59,9 @@ export const sendRkeeperOrder =
         objectid: unit.externalId,
         remoteId: unit.externalId,
         order_type: 1,
-        pay_type:
-          orderInput.paymentMode?.method === CrudApi.PaymentMethod.card ? 1 : 0,
+        pay_type: orderInput.paymentMode?.method === PaymentMethod.card ? 1 : 0,
         pay_online_type:
-          orderInput.paymentMode?.method === CrudApi.PaymentMethod.inapp
-            ? 1
-            : 0,
+          orderInput.paymentMode?.method === PaymentMethod.inapp ? 1 : 0,
         delivery_time: deps.currentTimeISOString().split('.')[0],
         client: {
           phone: unit.phone,

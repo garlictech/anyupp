@@ -3,7 +3,7 @@ import { v1 as uuidV1 } from 'uuid';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { DynamoDB } from 'aws-sdk';
 import { CrudSdk } from '@bgap/crud-gql/api';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import {
   testAdminUsername,
   testAdminUserPassword,
@@ -30,6 +30,21 @@ import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import { orderRequestHandler } from '@bgap/backend/orders';
 import * as rkeeperApi from '@bgap/rkeeper-api';
 import * as R from 'ramda';
+import {
+  Allergen,
+  CreateOrderInput,
+  CreateUnitInput,
+  OrderItemInput,
+  OrderMode,
+  OrderPaymentPolicy,
+  OrderStatus,
+  PaymentMethod,
+  PaymentType,
+  PosType,
+  ProductComponentSetType,
+  ProductType,
+  ServingMode,
+} from '@bgap/domain';
 
 // See:https://github.com/aelbore/esbuild-jest/issues/26#issuecomment-968853688
 jest.mock('@bgap/rkeeper-api', () => ({
@@ -38,13 +53,13 @@ jest.mock('@bgap/rkeeper-api', () => ({
   ...jest.requireActual('@bgap/rkeeper-api'),
 }));
 
-const orderItemInput: CrudApi.OrderItemInput = {
+const orderItemInput: OrderItemInput = {
   quantity: 5,
   productId: 'PRODUCT ID',
   statusLog: [
     {
       userId: 'test-monad',
-      status: CrudApi.OrderStatus.none,
+      status: OrderStatus.none,
       ts: 1627909024677,
     },
   ],
@@ -75,7 +90,7 @@ const orderItemInput: CrudApi.OrderItemInput = {
         en: 'Modifier comp set',
         hu: 'Módosító komponens set',
       },
-      type: CrudApi.ProductComponentSetType.modifier,
+      type: ProductComponentSetType.modifier,
       items: [
         {
           productComponentId: `${testIdPrefix}product_component_id`,
@@ -85,19 +100,19 @@ const orderItemInput: CrudApi.OrderItemInput = {
             hu: 'Szobahőmérsékletű',
           },
           price: -1.7999999999999998,
-          allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
+          allergens: [Allergen.egg, Allergen.gluten],
         },
       ],
       productSetId: `${testIdPrefix}product_component_set_id`,
     },
   ],
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
 };
 
 const getId = (num: Number) =>
   `create-order-${num}-8123c8c8-a09a-11ec-b909-0242ac120002`;
 
-const orderInput: Omit<CrudApi.CreateOrderInput, 'unitId'> = {
+const orderInput: Omit<CreateOrderInput, 'unitId'> = {
   userId: 'test-monad',
   items: [orderItemInput],
   sumPriceShown: {
@@ -112,8 +127,8 @@ const orderInput: Omit<CrudApi.CreateOrderInput, 'unitId'> = {
     table: '01',
     seat: '01',
   },
-  orderMode: CrudApi.OrderMode.instant,
-  servingMode: CrudApi.ServingMode.inplace,
+  orderMode: OrderMode.instant,
+  servingMode: ServingMode.inplace,
   hasRated: true,
   rating: {
     key: 'RATING KEY',
@@ -125,12 +140,12 @@ const orderInput: Omit<CrudApi.CreateOrderInput, 'unitId'> = {
     taxContent: 20,
   },
   paymentMode: {
-    method: CrudApi.PaymentMethod.cash,
-    type: CrudApi.PaymentType.card,
+    method: PaymentMethod.cash,
+    type: PaymentType.card,
   },
 };
 
-const unitNoRkeeper: CrudApi.CreateUnitInput = {
+const unitNoRkeeper: CreateUnitInput = {
   id: `createorder-unitnorkeeper-8123c8c8-a09a-11ec-b909-0242ac120002`,
   isActive: true,
   isAcceptingOrders: true,
@@ -146,18 +161,15 @@ const unitNoRkeeper: CrudApi.CreateUnitInput = {
       lng: 19,
     },
   },
-  orderPaymentPolicy: CrudApi.OrderPaymentPolicy.prepay,
+  orderPaymentPolicy: OrderPaymentPolicy.prepay,
   paymentModes: [
     {
-      method: CrudApi.PaymentMethod.cash,
-      type: CrudApi.PaymentType.cash,
+      method: PaymentMethod.cash,
+      type: PaymentType.cash,
     },
   ],
-  supportedOrderModes: [CrudApi.OrderMode.instant],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedOrderModes: [OrderMode.instant],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
   groupId: 'foobar',
   chainId: 'foobar',
   location: {
@@ -166,12 +178,12 @@ const unitNoRkeeper: CrudApi.CreateUnitInput = {
   },
 };
 
-const unitWithRkeeper: CrudApi.CreateUnitInput = {
+const unitWithRkeeper: CreateUnitInput = {
   ...unitNoRkeeper,
   id: `createorder-unitwithrkeeoer-8123c8c8-a09a-11ec-b909-0242ac120002`,
   externalId: yellowRestaurantId,
   pos: {
-    type: CrudApi.PosType.rkeeper,
+    type: PosType.rkeeper,
     rkeeper: {
       // let's use the yellow real rkeeper endpoint
       endpointUri: rkeeperEndpoint,
@@ -223,9 +235,7 @@ describe('CreateOrder mutation test', () => {
   }, 60000);
 
   const testLogic = (
-    op: (
-      input: CrudApi.CreateOrderInput,
-    ) => ReturnType<CrudApi.CrudSdk['CreateOrder']>,
+    op: (input: CreateOrderInput) => ReturnType<CrudSdk['CreateOrder']>,
   ) => {
     const funcSpy = jest.fn().mockReturnValue(of({}));
     const rkeeperSpy = jest

@@ -10,14 +10,28 @@ import {
   OnChanges,
   OnInit,
 } from '@angular/core';
-import { chainsSelectors } from '../../../../store/chains';
-import { unitsSelectors } from '../../../../store/units';
-import { LocalizePipe } from '../../../../shared/pipes';
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  Chain,
+  Invoice,
+  Order,
+  OrderItem,
+  PaymentType,
+  Place,
+  PriceShown,
+  PriceShownInput,
+  ServiceFeeType,
+  ServingMode,
+  Unit,
+} from '@bgap/domain';
 import { CurrencyValue, KeyValueObject } from '@bgap/shared/types';
 import { NbDialogRef } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
+
+import { LocalizePipe } from '../../../../shared/pipes';
+import { net2gross } from '../../../../shared/utils';
+import { chainsSelectors } from '../../../../store/chains';
+import { unitsSelectors } from '../../../../store/units';
 import {
   addIncludedServiceFeeToOrderItems,
   increaseVatWithPackagingTax,
@@ -25,9 +39,8 @@ import {
   summarizeVariantsByTax,
   summarizeVatByTax,
 } from '../../fn';
-import { net2gross } from '../../../../shared/utils';
 
-type ParsedVariant = CrudApi.OrderItem & { servingMode: CrudApi.ServingMode };
+type ParsedVariant = OrderItem & { servingMode: ServingMode };
 
 @UntilDestroy()
 @Component({
@@ -37,20 +50,20 @@ type ParsedVariant = CrudApi.OrderItem & { servingMode: CrudApi.ServingMode };
   styleUrls: ['./order-print.component.scss'],
 })
 export class OrderPrintComponent implements OnInit, OnChanges {
-  @Input() orders!: CrudApi.Order[];
-  public unit?: CrudApi.Unit;
-  public chain?: CrudApi.Chain;
+  @Input() orders!: Order[];
+  public unit?: Unit;
+  public chain?: Chain;
   public now = '';
   public parsedOrders: ParsedVariant[] = [];
-  public parsedVats: CrudApi.PriceShown[] = [];
-  public parsedServiceFees: CrudApi.PriceShown[] = [];
+  public parsedVats: PriceShownInput[] = [];
+  public parsedServiceFees: PriceShown[] = [];
   public sum: CurrencyValue;
   public packagingSum = 0;
-  public place?: CrudApi.Place | null;
-  public invoiceData?: CrudApi.Invoice;
+  public place?: Place | null;
+  public invoiceData?: Invoice;
   public receiptType?: string;
-  public EServingMode = CrudApi.ServingMode;
-  public EServiceFeeType = CrudApi.ServiceFeeType;
+  public EServingMode = ServingMode;
+  public EServiceFeeType = ServiceFeeType;
   public hasPackagingFee = false; // Used in merged list
   public hasServiceFee = false; // Used in merged list
 
@@ -78,17 +91,12 @@ export class OrderPrintComponent implements OnInit, OnChanges {
         filter((unit): boolean => !!unit),
         take(1),
       ),
-    ]).subscribe(
-      ([chain, unit]: [
-        CrudApi.Chain | undefined,
-        CrudApi.Unit | undefined,
-      ]) => {
-        this.chain = chain;
-        this.unit = unit;
+    ]).subscribe(([chain, unit]: [Chain | undefined, Unit | undefined]) => {
+      this.chain = chain;
+      this.unit = unit;
 
-        this._changeDetectorRef.detectChanges();
-      },
-    );
+      this._changeDetectorRef.detectChanges();
+    });
 
     this._groupOrders();
 
@@ -112,7 +120,7 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     const serviceFees: KeyValueObject = {};
     let lastOrderTime = 0;
 
-    this.orders.forEach((order: CrudApi.Order) => {
+    this.orders.forEach((order: Order) => {
       if (new Date(order.createdAt).getTime() > lastOrderTime) {
         this.place = order.place;
         lastOrderTime = new Date(order.createdAt).getTime();
@@ -120,10 +128,10 @@ export class OrderPrintComponent implements OnInit, OnChanges {
 
       // Sum items
       const orderItems = addIncludedServiceFeeToOrderItems(order);
-      orderItems.forEach((item: CrudApi.OrderItem) => {
+      orderItems.forEach((item: OrderItem) => {
         variants = summarizeVariantsByTax({
           localizer: value => this._localizePipe.transform(value),
-        })(variants, item, order.servingMode || CrudApi.ServingMode.inplace);
+        })(variants, item, order.servingMode || ServingMode.inplace);
 
         vats[item.sumPriceShown.tax] = summarizeVatByTax(
           vats,
@@ -180,8 +188,8 @@ export class OrderPrintComponent implements OnInit, OnChanges {
     const customerInfoOrder = this.orders.find(
       o =>
         (o.transaction?.invoiceId || o.transaction?.receiptId) &&
-        (o.paymentMode?.type === CrudApi.PaymentType.card ||
-          o.paymentMode?.type === CrudApi.PaymentType.cash),
+        (o.paymentMode?.type === PaymentType.card ||
+          o.paymentMode?.type === PaymentType.cash),
     );
     if (customerInfoOrder) {
       this.receiptType = customerInfoOrder.transaction?.invoiceId

@@ -9,7 +9,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { AdminUser, Group } from '@bgap/domain';
 import {
   NbDialogService,
   NbMenuService,
@@ -40,8 +40,8 @@ interface IMenuItem {
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
-  public groups$?: Observable<CrudApi.Group[]>;
-  public loggedUser?: CrudApi.AdminUser;
+  public groups$?: Observable<Group[]>;
+  public loggedUser?: AdminUser;
   public userPictureOnly = false;
   public userMenu: IMenuItem[];
   public languageMenu: IMenuItem[];

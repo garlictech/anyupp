@@ -10,11 +10,12 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import { RATING_DEFINITIONS } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { KeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { FormsService } from '../../services/forms/forms.service';
+import { RatingPolicy } from '@bgap/domain';
 
 @UntilDestroy()
 @Component({
@@ -43,7 +44,7 @@ export class FormRatingPolicyComponent implements OnInit {
     this.ratingPolicyOptions$ = this.ratingPoliciesFormArray?.valueChanges.pipe(
       startWith(this.ratingPoliciesFormArray.value || []),
       untilDestroyed(this),
-      map((arrayValues: CrudApi.RatingPolicy[]): KeyValue[] =>
+      map((arrayValues: RatingPolicy[]): KeyValue[] =>
         this._ratingDefinitionList
           .filter(p => !arrayValues.map(v => v.key).includes(p.key))
           .map(rating => ({

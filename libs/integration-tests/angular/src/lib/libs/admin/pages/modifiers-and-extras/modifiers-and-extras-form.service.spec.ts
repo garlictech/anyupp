@@ -7,7 +7,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ModifiersAndExtrasFormService } from '@bgap/admin/refactor';
 import { entityConfig } from '@bgap/admin/refactor';
 import { CrudSdkService } from '@bgap/admin/refactor';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import {
   productComponentSetFixture,
   testIdPrefix,
@@ -22,6 +22,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { signInToCognito, signOutFromCognito } from '../../shared/helper';
+import { ProductComponent, ProductComponentSet } from '@bgap/domain';
 
 describe('ModifiersAndExtrasFormService', () => {
   const productComponentId = `${testIdPrefix}ADMIN_PRODUCT_COMPONENT_IT_COMP_01`;
@@ -192,7 +193,7 @@ describe('ModifiersAndExtrasFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.ProductComponent>>saveResponse).data.id
+          (<UpsertResponse<ProductComponent>>saveResponse).data.id
             ? service.updateProductComponent$({
                 ...productComponentSetFixture.productComponentBase,
                 id: productComponentId,
@@ -309,7 +310,7 @@ describe('ModifiersAndExtrasFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.ProductComponentSet>>saveResponse).data.id
+          (<UpsertResponse<ProductComponentSet>>saveResponse).data.id
             ? service.updateProductComponentSet$({
                 ...productComponentSetFixture.productComponentSetBase,
                 id: productComponentSetId,

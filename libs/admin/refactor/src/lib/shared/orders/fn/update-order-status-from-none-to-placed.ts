@@ -2,10 +2,10 @@ import { cloneDeep } from 'lodash/fp';
 import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import * as CrudApi from '@bgap/crud-gql/api';
-import { throwIfEmptyValue } from '@bgap/shared/utils';
-
+import { currentStatus } from '@bgap/crud-gql/api';
+import { Order, OrderStatus } from '@bgap/domain';
 import { OrderHandlerDeps } from '@bgap/shared/types';
+import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 export const updateOrderStatusFromNoneToPlaced =
   (deps: OrderHandlerDeps) => (orderId: string, adminUserId: string) =>
@@ -14,16 +14,14 @@ export const updateOrderStatusFromNoneToPlaced =
         id: orderId,
       }),
     ).pipe(
-      throwIfEmptyValue<CrudApi.Order>(),
+      throwIfEmptyValue<Order>(),
       switchMap(order => {
         const _orderItems = cloneDeep(order.items);
         _orderItems.forEach(item => {
           // Update only none item status to placed!!!
-          if (
-            CrudApi.currentStatus(item.statusLog) === CrudApi.OrderStatus.none
-          ) {
+          if (currentStatus(item.statusLog) === OrderStatus.none) {
             item.statusLog.push({
-              status: CrudApi.OrderStatus.placed,
+              status: OrderStatus.placed,
               ts: deps.timestamp(),
               userId: adminUserId,
             });
@@ -36,12 +34,12 @@ export const updateOrderStatusFromNoneToPlaced =
             items: _orderItems,
             statusLog: [
               {
-                status: CrudApi.OrderStatus.placed,
+                status: OrderStatus.placed,
                 ts: deps.timestamp(),
                 userId: adminUserId,
               },
             ],
-            currentStatus: CrudApi.OrderStatus.placed,
+            currentStatus: OrderStatus.placed,
           },
         });
       }),

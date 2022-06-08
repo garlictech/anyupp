@@ -8,14 +8,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ConfirmDialogComponent } from '../../../../shared/components';
-import {
-  dashboardActions,
-  dashboardSelectors,
-  DashboardSettings,
-} from '../../../../store/dashboard';
-import { DataService } from '../../../../shared/data-access/data';
-import { unitsSelectors } from '../../../../store/units';
+import { Unit } from '@bgap/domain';
 import {
   EDashboardListMode,
   EDashboardSize,
@@ -25,7 +18,15 @@ import { zeroFill } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
+
+import { ConfirmDialogComponent } from '../../../../shared/components';
+import { DataService } from '../../../../shared/data-access/data';
+import {
+  dashboardActions,
+  dashboardSelectors,
+  DashboardSettings,
+} from '../../../../store/dashboard';
+import { unitsSelectors } from '../../../../store/units';
 
 @UntilDestroy()
 @Component({
@@ -39,7 +40,7 @@ export class DashboardComponent implements OnInit {
   public dashboardSettings!: DashboardSettings;
   public resized: boolean;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
-  public selectedUnit?: CrudApi.Unit;
+  public selectedUnit?: Unit;
   public toggleFormControl: FormControl;
   public time?: string;
 
@@ -73,7 +74,7 @@ export class DashboardComponent implements OnInit {
         filter((unit): boolean => !!unit),
         untilDestroyed(this),
       )
-      .subscribe((unit: CrudApi.Unit | undefined) => {
+      .subscribe((unit: Unit | undefined) => {
         this.selectedUnit = unit;
 
         this.toggleFormControl.setValue(this.selectedUnit?.isAcceptingOrders);

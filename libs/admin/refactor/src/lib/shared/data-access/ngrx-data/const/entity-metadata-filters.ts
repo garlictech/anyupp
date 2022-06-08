@@ -1,23 +1,17 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { LocalizedItem } from '@bgap/domain';
 
 // Return true, if no name filter has been specified
 export const localizedItemFilter =
-  <T>(
-    fieldName: keyof T,
-    lang: string,
-    toFind?: CrudApi.LocalizedItem | null,
-  ) =>
+  <T>(fieldName: keyof T, lang: string, toFind?: LocalizedItem | null) =>
   (item: T) =>
-    toFind?.[<keyof CrudApi.LocalizedItem>lang]
+    toFind?.[<keyof LocalizedItem>lang]
       ? -1 <
         (
-          (<CrudApi.LocalizedItem>item?.[fieldName])?.[
-            <keyof CrudApi.LocalizedItem>lang
+          (<LocalizedItem>item?.[fieldName])?.[
+            <keyof LocalizedItem>lang
           ]?.toLocaleLowerCase() || ''
         ).indexOf(
-          (
-            toFind?.[<keyof CrudApi.LocalizedItem>lang] || ''
-          ).toLocaleLowerCase(),
+          (toFind?.[<keyof LocalizedItem>lang] || '').toLocaleLowerCase(),
         )
       : true;
 

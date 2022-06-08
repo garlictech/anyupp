@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -8,12 +9,12 @@ import {
   OnInit,
   Optional,
 } from '@angular/core';
+import { Unit } from '@bgap/domain';
 import { ProducMixArrayItem } from '@bgap/shared/types';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { ReportsService } from '../../services/reports.service';
-import { map, take } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -24,7 +25,7 @@ import { map, take } from 'rxjs/operators';
 })
 export class ReportsProductMixComponent implements OnInit {
   @Input() productMixData$?: Observable<ProducMixArrayItem[]>;
-  @Input() selectedUnit$?: Observable<CrudApi.Unit>;
+  @Input() selectedUnit$?: Observable<Unit>;
   @Input() date?: Date;
   @Input() isModal = false;
 
@@ -65,7 +66,7 @@ export class ReportsProductMixComponent implements OnInit {
       ? await this.selectedUnit$
           .pipe(
             take(1),
-            map((unit: CrudApi.Unit) => unit.name),
+            map((unit: Unit) => unit.name),
           )
           .toPromise()
       : '';

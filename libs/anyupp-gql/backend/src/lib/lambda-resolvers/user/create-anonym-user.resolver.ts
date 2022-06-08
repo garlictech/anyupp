@@ -1,13 +1,13 @@
 import { Observable } from 'rxjs';
 import { v1 as uuidV1 } from 'uuid';
 
-import * as CrudApi from '@bgap/crud-gql/api';
+import { CreateAnonymUserOutput } from '@bgap/domain';
 
 import { createConfirmedUserInCognito, UserResolverDeps } from './utils';
 
 export const createAnonymUser = (
   deps: UserResolverDeps,
-): Observable<CrudApi.CreateAnonymUserOutput> => {
+): Observable<CreateAnonymUserOutput> => {
   const generatedId = uuidV1();
   const email = `anonymuser+${generatedId}@anyupp.com`;
   const password = uuidV1() + 'UPPERCASE';

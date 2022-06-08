@@ -1,5 +1,5 @@
 import { getDayIntervals, timezoneBudapest } from '@bgap/shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import {
   cardPayment,
@@ -10,15 +10,18 @@ import {
 
 import { DateIntervals } from '@bgap/shared/types';
 import { delay, map, switchMap } from 'rxjs/operators';
+import { CrudSdk, getCrudSdkForIAM } from 'libs/crud-gql/api/src';
+import {
+  MutationCreateOrderArgs,
+  MutationCreateTransactionArgs,
+  QuerySearchOrdersArgs,
+} from '@bgap/domain';
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || '';
 
 describe.skip('SearchOrders function', () => {
-  let crudSdk: CrudApi.CrudSdk = CrudApi.getCrudSdkForIAM(
-    accessKeyId,
-    secretAccessKey,
-  );
+  let crudSdk: CrudSdk = getCrudSdkForIAM(accessKeyId, secretAccessKey);
 
   const orderId = 'int_test_order_id_1';
   const transactionId = 'int_test_transaction_id_1';
@@ -51,16 +54,16 @@ describe.skip('SearchOrders function', () => {
 
   const testLogic = (
     searchOp: (
-      input: CrudApi.QuerySearchOrdersArgs,
-    ) => ReturnType<CrudApi.CrudSdk['SearchOrders']>,
+      input: QuerySearchOrdersArgs,
+    ) => ReturnType<CrudSdk['SearchOrders']>,
 
     createTransactionOp: (
-      input: CrudApi.MutationCreateTransactionArgs,
-    ) => ReturnType<CrudApi.CrudSdk['CreateTransaction']>,
+      input: MutationCreateTransactionArgs,
+    ) => ReturnType<CrudSdk['CreateTransaction']>,
 
     createOrderOp: (
-      input: CrudApi.MutationCreateOrderArgs,
-    ) => ReturnType<CrudApi.CrudSdk['CreateOrder']>,
+      input: MutationCreateOrderArgs,
+    ) => ReturnType<CrudSdk['CreateOrder']>,
   ) => {
     const isoDate = new Date().toISOString();
     const dayIntervals: DateIntervals = getDayIntervals(

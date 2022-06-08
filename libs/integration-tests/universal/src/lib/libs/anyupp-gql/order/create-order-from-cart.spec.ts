@@ -11,7 +11,7 @@ import {
 import { v1 as uuidV1 } from 'uuid';
 
 import { orderRequestHandler, OrderResolverDeps } from '@bgap/backend/orders';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   cartFixture,
@@ -49,62 +49,78 @@ import {
   createTestUnitProduct,
   deleteTestUnitProduct,
 } from '../../../seeds/unit-product';
+import { CrudSdk } from 'libs/crud-gql/api/src';
+import {
+  Allergen,
+  CreateCartInput,
+  CreateChainProductInput,
+  CreateGroupProductInput,
+  CreateOrderFromCartInput,
+  CreateUnitInput,
+  CreateUnitProductInput,
+  Order,
+  OrderItem,
+  OrderItemConfigSetInput,
+  OrderPolicy,
+  ProductComponentSetType,
+  ServingMode,
+} from '@bgap/domain';
 
 const TEST_NAME = 'ORDER_';
 const DYNAMODB_OPERATION_DELAY = 3000;
 
-const getOrder = (crudSdk: CrudApi.CrudSdk, id: string) => {
+const getOrder = (crudSdk: CrudSdk, id: string) => {
   return crudSdk
     .GetOrder({ id }, { fetchPolicy: 'no-cache' })
-    .pipe(throwIfEmptyValue<CrudApi.Order>());
+    .pipe(throwIfEmptyValue<Order>());
 };
 
-const getCart = (crudSdk: CrudApi.CrudSdk, id: string) => {
+const getCart = (crudSdk: CrudSdk, id: string) => {
   return crudSdk.GetCart({ id }, { fetchPolicy: 'no-cache' });
 };
 
 // PRODUCTS to create
-const chainProduct_01: RequiredId<CrudApi.CreateChainProductInput> = {
+const chainProduct_01: RequiredId<CreateChainProductInput> = {
   ...productFixture.chainProductInputBase,
   id: `${testIdPrefix}${TEST_NAME}chainProduct_01`,
 };
-const groupProduct_01: RequiredId<CrudApi.CreateGroupProductInput> = {
+const groupProduct_01: RequiredId<CreateGroupProductInput> = {
   ...productFixture.groupProductInputBase,
   id: `${testIdPrefix}${TEST_NAME}groupProduct_01`,
   parentId: chainProduct_01.id,
   takeawayTax: 53,
 };
-const unitProduct_01: RequiredId<CrudApi.CreateUnitProductInput> = {
+const unitProduct_01: RequiredId<CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: productFixture.unitProductId_seeded_id_01,
   parentId: groupProduct_01.id,
 };
 
-const orderItemConfigSet_01: CrudApi.OrderItemConfigSetInput = {
+const orderItemConfigSet_01: OrderItemConfigSetInput = {
   productSetId: 'PRODUCTSET_ID_01',
   name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-  type: CrudApi.ProductComponentSetType.modifier,
+  type: ProductComponentSetType.modifier,
   items: [
     {
       productComponentId: 'PRODUCT_COMPONENT_ID_0101',
       name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
       price: -1.5,
-      allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
+      allergens: [Allergen.egg, Allergen.fish],
       netPackagingFee: 1,
     },
     {
       productComponentId: 'PRODUCT_COMPONENT_ID_0102',
       name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
       price: 2.3,
-      allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
+      allergens: [Allergen.egg, Allergen.gluten],
     },
   ],
 };
 
-const orderItemConfigSet_02: CrudApi.OrderItemConfigSetInput = {
+const orderItemConfigSet_02: OrderItemConfigSetInput = {
   productSetId: 'PRODUCTSET_ID_02',
   name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-  type: CrudApi.ProductComponentSetType.modifier,
+  type: ProductComponentSetType.modifier,
   items: [
     {
       productComponentId: 'PRODUCT_COMPONENT_ID_0201',
@@ -115,12 +131,12 @@ const orderItemConfigSet_02: CrudApi.OrderItemConfigSetInput = {
       productComponentId: 'PRODUCT_COMPONENT_ID_0202',
       name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
       price: -1,
-      allergens: [CrudApi.Allergen.peanut],
+      allergens: [Allergen.peanut],
     },
   ],
 };
 
-const unitProductFixture: RequiredId<CrudApi.CreateUnitProductInput> = {
+const unitProductFixture: RequiredId<CreateUnitProductInput> = {
   ...unitProduct_01,
   unitId: unitFixture.unit_01.id,
   chainId: unitFixture.unit_01.chainId,
@@ -154,13 +170,13 @@ const generatedProduct = {
   ], // Price (1 + (-1.5 + 2.3) + (5 + -1)) * 2
 };
 
-const orderItemFixture: CrudApi.OrderItem = {
+const orderItemFixture: OrderItem = {
   ...cartFixture.getOrderItem(),
   variantId: generatedProduct.variants[0].id,
   variantName: generatedProduct.variants[0].variantName,
 };
 
-const cart_01: RequiredId<CrudApi.CreateCartInput> = {
+const cart_01: RequiredId<CreateCartInput> = {
   ...cartFixture.cart_01,
   id: `${testIdPrefix}cart_1_id`,
   version: 1,
@@ -179,7 +195,7 @@ const cart_01: RequiredId<CrudApi.CreateCartInput> = {
   ],
 };
 
-const cart_02: RequiredId<CrudApi.CreateCartInput> = {
+const cart_02: RequiredId<CreateCartInput> = {
   ...cart_01,
   id: `${testIdPrefix}cart_2_id`,
   version: 1,
@@ -189,41 +205,41 @@ const cart_02: RequiredId<CrudApi.CreateCartInput> = {
   },
 };
 
-const cart_03_different_user: RequiredId<CrudApi.CreateCartInput> = {
+const cart_03_different_user: RequiredId<CreateCartInput> = {
   ...cart_01,
   id: `${testIdPrefix}cart_3_id`,
   version: 1,
   userId: 'NOT_the_authenticated_USERID',
 };
 
-const cart_04_different_unit: RequiredId<CrudApi.CreateCartInput> = {
+const cart_04_different_unit: RequiredId<CreateCartInput> = {
   ...cart_01,
   id: `${testIdPrefix}cart_4_id`,
   version: 1,
   unitId: 'DIFFERENT_UNITID',
 };
 
-const cart_05_takeaway: RequiredId<CrudApi.CreateCartInput> = {
+const cart_05_takeaway: RequiredId<CreateCartInput> = {
   ...cart_01,
   id: `${testIdPrefix}cart_5_id`,
   version: 1,
-  servingMode: CrudApi.ServingMode.takeaway,
+  servingMode: ServingMode.takeaway,
 };
 
-const unitWithSimplifiedOrderFlow: RequiredId<CrudApi.CreateUnitInput> = {
+const unitWithSimplifiedOrderFlow: RequiredId<CreateUnitInput> = {
   ...unitFixture.createUnit_01,
   id: `${testIdPrefix}-simplified-order-unit`,
-  orderPolicy: CrudApi.OrderPolicy.placeonly,
+  orderPolicy: OrderPolicy.placeonly,
 };
 
-const cartWithSimplifiedOrderFlow: RequiredId<CrudApi.CreateCartInput> = {
+const cartWithSimplifiedOrderFlow: RequiredId<CreateCartInput> = {
   ...cartFixture.cart_01,
   id: `${testIdPrefix}-simplified-order-flow-cart`,
   unitId: unitWithSimplifiedOrderFlow.id,
 };
 
 describe('CreatOrderFromCart mutation test', () => {
-  let authAnyuppSdk: CrudApi.CrudSdk;
+  let authAnyuppSdk: CrudSdk;
   let authenticatedUserId = getCognitoUsername(testAdminUsername);
   const crudSdk = createIamCrudSdk();
   const docClient = new DynamoDB.DocumentClient();
@@ -339,8 +355,8 @@ describe('CreatOrderFromCart mutation test', () => {
 
   const testLogic = (
     op: (
-      input: CrudApi.CreateOrderFromCartInput,
-    ) => ReturnType<CrudApi.CrudSdk['CreateOrderFromCart']>,
+      input: CreateOrderFromCartInput,
+    ) => ReturnType<CrudSdk['CreateOrderFromCart']>,
   ) => {
     // Cut the long stream to cope with the max 9 op limit
     const calc1 = op({ id: cart_01.id }).pipe(

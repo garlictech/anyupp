@@ -1,5 +1,31 @@
+import { EMPTY, iif } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { Maybe } from '@bgap/crud-gql/api';
+import {
+  CreateUnitInput,
+  Group,
+  OrderPaymentPolicy,
+  OrderPolicy,
+  PosType,
+  RatingPolicy,
+  SoldOutVisibilityPolicy,
+  UpdateRKeeperDataInput,
+  UpdateUnitInput,
+} from '@bgap/domain';
+import {
+  defaultOrderMode,
+  defaultServingMode,
+  KeyValue,
+  UpsertResponse,
+} from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
+import { NbDialogService } from '@nebular/theme';
+import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+
 import { ConfirmDialogComponent } from '../../../shared/components';
 import { CrudSdkService } from '../../../shared/data-access/sdk';
 import { FormsService } from '../../../shared/forms';
@@ -16,20 +42,6 @@ import {
 import { catchGqlError } from '../../../store/app-core';
 import { GroupCollectionService } from '../../../store/groups';
 import { UnitCollectionService } from '../../../store/units';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { Maybe } from '@bgap/crud-gql/api';
-import {
-  defaultOrderMode,
-  defaultServingMode,
-  KeyValue,
-  UpsertResponse,
-} from '@bgap/shared/types';
-import { cleanObject } from '@bgap/shared/utils';
-import { NbDialogService } from '@nebular/theme';
-import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { EMPTY, iif } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UnitFormService {
@@ -60,19 +72,19 @@ export class UnitFormService {
       ),
       timeZone: [''],
       paymentModes: [[]],
-      orderPaymentPolicy: [CrudApi.OrderPaymentPolicy.prepay],
+      orderPaymentPolicy: [OrderPaymentPolicy.prepay],
       supportedServingModes: [
         [defaultServingMode],
         { validators: notEmptyArray },
       ],
       supportedOrderModes: [[defaultOrderMode], { validators: notEmptyArray }],
-      orderPolicy: [CrudApi.OrderPolicy.full],
-      soldOutVisibilityPolicy: [CrudApi.SoldOutVisibilityPolicy.faded],
+      orderPolicy: [OrderPolicy.full],
+      soldOutVisibilityPolicy: [SoldOutVisibilityPolicy.faded],
       ...contactFormGroup(),
       ...addressFormGroup(this._formBuilder, true),
       ...locationFormGroup(this._formBuilder, true),
       pos: this._formBuilder.group({
-        type: [CrudApi.PosType.anyupp],
+        type: [PosType.anyupp],
         rkeeper: this._formsService.createRkeeperFormGroup(),
       }),
       externalId: [''],
@@ -159,9 +171,9 @@ export class UnitFormService {
 
   public getGroupOptions$() {
     return this._groupCollectionService.filteredEntities$.pipe(
-      map((groups: CrudApi.Group[]) =>
+      map((groups: Group[]) =>
         groups.map(
-          (group: CrudApi.Group): KeyValue => ({
+          (group: Group): KeyValue => ({
             key: group.id,
             value: group.name,
           }),
@@ -171,7 +183,7 @@ export class UnitFormService {
   }
 
   public patchRatingPolicies(
-    ratingPolicyValues: Maybe<CrudApi.RatingPolicy>[],
+    ratingPolicyValues: Maybe<RatingPolicy>[],
     ratingPoliciesArray: FormArray,
   ) {
     (ratingPolicyValues || []).forEach(ratingPolicyValue => {
@@ -183,7 +195,7 @@ export class UnitFormService {
   }
 
   public saveForm$(
-    formValue: CrudApi.CreateUnitInput | CrudApi.UpdateUnitInput,
+    formValue: CreateUnitInput | UpdateUnitInput,
     isInitiallyRkeeper: boolean,
     unitId?: string,
   ) {
@@ -202,7 +214,7 @@ export class UnitFormService {
       };
     }
 
-    if (formValue.pos?.type !== CrudApi.PosType.rkeeper) {
+    if (formValue.pos?.type !== PosType.rkeeper) {
       formValue.externalId = null;
     }
 
@@ -213,7 +225,7 @@ export class UnitFormService {
     return iif(
       () => !unitId,
       this.createUnit$({
-        ...(<CrudApi.CreateUnitInput>formValue),
+        ...(<CreateUnitInput>formValue),
         isAcceptingOrders: false,
       }),
       this.updateUnit$(
@@ -255,21 +267,16 @@ export class UnitFormService {
     );
   }
 
-  public createUnit$(input: CrudApi.CreateUnitInput) {
-    return this._unitCollectionService
-      .add$<CrudApi.CreateUnitInput>(input)
-      .pipe(
-        catchGqlError(this._store),
-        map(data => ({ data, type: 'insert' })),
-      );
+  public createUnit$(input: CreateUnitInput) {
+    return this._unitCollectionService.add$<CreateUnitInput>(input).pipe(
+      catchGqlError(this._store),
+      map(data => ({ data, type: 'insert' })),
+    );
   }
 
-  public updateUnit$(
-    input: CrudApi.UpdateUnitInput,
-    isInitiallyRkeeper: boolean,
-  ) {
+  public updateUnit$(input: UpdateUnitInput, isInitiallyRkeeper: boolean) {
     return iif(
-      () => isInitiallyRkeeper && input.pos?.type === CrudApi.PosType.rkeeper,
+      () => isInitiallyRkeeper && input.pos?.type === PosType.rkeeper,
       // Save the RKeeper Unit data in 2 steps:
       // 1) update RKeeper data
       // 2) update the rest of the data
@@ -279,25 +286,23 @@ export class UnitFormService {
       }).pipe(
         switchMap((response: UpsertResponse<unknown>) => {
           if (response.type === 'update') {
-            return this._unitCollectionService.update$<CrudApi.UpdateUnitInput>(
-              {
-                ...input,
-                pos: undefined,
-              },
-            );
+            return this._unitCollectionService.update$<UpdateUnitInput>({
+              ...input,
+              pos: undefined,
+            });
           }
 
           return EMPTY;
         }),
       ),
-      this._unitCollectionService.update$<CrudApi.UpdateUnitInput>(input),
+      this._unitCollectionService.update$<UpdateUnitInput>(input),
     ).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
     );
   }
 
-  public updateRKeeperData$(input: CrudApi.UpdateRKeeperDataInput) {
+  public updateRKeeperData$(input: UpdateRKeeperDataInput) {
     return this._crudSdk.sdk.UpdateUnitRKeeperData({ input }).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),

@@ -1,41 +1,41 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { CreateOrderInput, OrderStatus, PaymentStatus } from '@bgap/domain';
 import {
-  orderFixtureBase as ox,
-  getOrderStatusLog,
   cardPayment,
   cashPayment,
+  getOrderStatusLog,
+  orderFixtureBase as ox,
   successfullTransaction,
 } from '@bgap/shared/fixtures';
 
 const activeOrderInputBase = {
   ...ox.orderInputBase,
-  ...getOrderStatusLog(CrudApi.OrderStatus.none),
+  ...getOrderStatusLog(OrderStatus.none),
   orderNum: '000000',
   archived: false,
 };
 
-export const activeWaitingCardOrderInput: CrudApi.CreateOrderInput = {
+export const activeWaitingCardOrderInput: CreateOrderInput = {
   ...activeOrderInputBase,
   ...cardPayment,
-  transactionStatus: CrudApi.PaymentStatus.waiting_for_payment,
+  transactionStatus: PaymentStatus.waiting_for_payment,
 };
 
-export const activeWaitingCashOrderInput: CrudApi.CreateOrderInput = {
+export const activeWaitingCashOrderInput: CreateOrderInput = {
   ...activeOrderInputBase,
   ...cashPayment,
-  transactionStatus: CrudApi.PaymentStatus.waiting_for_payment,
+  transactionStatus: PaymentStatus.waiting_for_payment,
 };
 
-export const activeServedSuccessCardOrderInput: CrudApi.CreateOrderInput = {
+export const activeServedSuccessCardOrderInput: CreateOrderInput = {
   ...activeOrderInputBase,
   ...cardPayment,
   ...successfullTransaction,
-  ...getOrderStatusLog(CrudApi.OrderStatus.served),
+  ...getOrderStatusLog(OrderStatus.served),
 };
 
-export const activeServedSuccessCashOrderInput: CrudApi.CreateOrderInput = {
+export const activeServedSuccessCashOrderInput: CreateOrderInput = {
   ...activeOrderInputBase,
   ...cashPayment,
   ...successfullTransaction,
-  ...getOrderStatusLog(CrudApi.OrderStatus.served),
+  ...getOrderStatusLog(OrderStatus.served),
 };

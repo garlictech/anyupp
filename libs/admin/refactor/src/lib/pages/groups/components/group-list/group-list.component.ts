@@ -2,12 +2,12 @@ import { Observable } from 'rxjs';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { visibleLinesOnViewport } from '../../../../shared/utils';
-import { GroupCollectionService } from '../../../../store/groups';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Group } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
+import { visibleLinesOnViewport } from '../../../../shared/utils';
+import { GroupCollectionService } from '../../../../store/groups';
 import { GroupListService } from '../../services/group-list.service';
 import { GroupFormComponent } from '../group-form/group-form.component';
 
@@ -21,7 +21,7 @@ export class GroupListComponent {
   @ViewChild('dataVSVP')
   dataVSVP?: CdkVirtualScrollViewport;
 
-  public groups$: Observable<CrudApi.Group[]>;
+  public groups$: Observable<Group[]>;
 
   constructor(
     private _nbDialogService: NbDialogService,

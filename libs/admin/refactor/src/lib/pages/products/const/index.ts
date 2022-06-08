@@ -1,17 +1,17 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductType } from '@bgap/domain';
 import { KeyValue } from '@bgap/shared/types';
 
 export const PRODUCT_TYPES: KeyValue[] = [
   {
-    key: CrudApi.ProductType.drink,
+    key: ProductType.drink,
     value: 'products.productType.drink',
   },
   {
-    key: CrudApi.ProductType.food,
+    key: ProductType.food,
     value: 'products.productType.food',
   },
   {
-    key: CrudApi.ProductType.other,
+    key: ProductType.other,
     value: 'products.productType.other',
   },
 ];

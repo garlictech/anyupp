@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import * as CrudApi from '@bgap/crud-gql/api';
+import { PaymentMethod, PaymentType } from '@bgap/domain';
 
 import { updateOrderPaymentMode } from './update-order-payment-mode';
 
@@ -20,8 +20,8 @@ describe('updateOrderPaymentMode test', () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     updateOrderPaymentMode(<any>orderDeps)('test_order_1_id', {
-      method: CrudApi.PaymentMethod.cash,
-      type: CrudApi.PaymentType.cash,
+      method: PaymentMethod.cash,
+      type: PaymentType.cash,
       caption: 'cash',
     })
       .pipe(

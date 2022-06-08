@@ -1,13 +1,16 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  MutationCreateOrderFromCartArgs,
+  MutationCreateOrderArgs,
+} from '@bgap/domain';
+
 import { createOrderFromCart } from './create-order-from-cart.resolver';
 import { createOrder } from './create-order.resolver';
 import { OrderResolverDeps } from './utils';
 
 export const orderRequestHandler = (deps: OrderResolverDeps) => ({
-  createOrderFromCart: (
-    requestPayload: CrudApi.MutationCreateOrderFromCartArgs,
-  ) => createOrderFromCart(requestPayload?.input?.id)(deps),
+  createOrderFromCart: (requestPayload: MutationCreateOrderFromCartArgs) =>
+    createOrderFromCart(requestPayload?.input?.id)(deps),
 
-  createOrder: (requestPayload: CrudApi.MutationCreateOrderArgs) =>
+  createOrder: (requestPayload: MutationCreateOrderArgs) =>
     createOrder(requestPayload?.input)(deps),
 });

@@ -1,12 +1,16 @@
+import { iif } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { multiLangValidator } from '../../../shared/utils';
-
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  CreateProductCategoryInput,
+  UpdateProductCategoryInput,
+} from '@bgap/domain';
 import { Store } from '@ngrx/store';
-import { iif } from 'rxjs';
+
+import { multiLangValidator } from '../../../shared/utils';
 import { catchGqlError } from '../../../store/app-core';
-import { map } from 'rxjs/operators';
 import { ProductCategoryCollectionService } from '../../../store/product-categories';
 
 @Injectable({ providedIn: 'root' })
@@ -40,16 +44,12 @@ export class ProductCategoryFormService {
   }
 
   public saveForm$(
-    formValue:
-      | CrudApi.CreateProductCategoryInput
-      | CrudApi.UpdateProductCategoryInput,
+    formValue: CreateProductCategoryInput | UpdateProductCategoryInput,
     productCategoryId?: string,
   ) {
     return iif(
       () => !productCategoryId,
-      this.createProductCategory$(
-        <CrudApi.CreateProductCategoryInput>formValue,
-      ),
+      this.createProductCategory$(<CreateProductCategoryInput>formValue),
       this.updateProductCategory$({
         ...formValue,
         id: productCategoryId || '',
@@ -57,14 +57,14 @@ export class ProductCategoryFormService {
     );
   }
 
-  public createProductCategory$(input: CrudApi.CreateProductCategoryInput) {
+  public createProductCategory$(input: CreateProductCategoryInput) {
     return this._productCategoryCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
-  public updateProductCategory$(input: CrudApi.UpdateProductCategoryInput) {
+  public updateProductCategory$(input: UpdateProductCategoryInput) {
     return this._productCategoryCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),

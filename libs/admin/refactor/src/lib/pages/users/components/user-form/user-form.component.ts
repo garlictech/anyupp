@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { User } from '@bgap/domain';
+
 import { AbstractFormDialogComponent } from '../../../../shared/forms';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -8,9 +9,9 @@ import * as CrudApi from '@bgap/crud-gql/api';
   templateUrl: './user-form.component.html',
 })
 export class UserFormComponent extends AbstractFormDialogComponent {
-  public user: CrudApi.User | undefined;
+  public user: User | undefined;
 
-  constructor(protected _injector: Injector) {
+  constructor(protected override _injector: Injector) {
     super(_injector);
   }
 

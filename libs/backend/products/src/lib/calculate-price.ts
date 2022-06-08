@@ -1,4 +1,3 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { EVariantAvailabilityType } from '@bgap/shared/types';
 import { DateTime } from 'luxon';
 import {
@@ -6,6 +5,7 @@ import {
   getSeasonalAvailabilityToTime,
   WEEK_DAYS,
 } from '@bgap/anyupp-backend-lib';
+import { Availability, Maybe } from '@bgap/domain';
 
 /**
  *
@@ -14,9 +14,7 @@ import {
  * usually this in the Unit's timezone
  */
 export const calculatePriceFromAvailabilities = (
-  availabilities:
-    | CrudApi.Maybe<CrudApi.Maybe<CrudApi.Availability>[]>
-    | undefined,
+  availabilities: Maybe<Maybe<Availability>[]> | undefined,
   atTime: DateTime,
 ): number | undefined => {
   if (!availabilities) {
@@ -43,7 +41,7 @@ export const calculatePriceFromAvailabilities = (
 };
 
 const isAvailabilityActiveAtTime =
-  (atTime: DateTime) => (availability: CrudApi.Maybe<CrudApi.Availability>) => {
+  (atTime: DateTime) => (availability: Maybe<Availability>) => {
     return (
       availability &&
       (availability.type === EVariantAvailabilityType.ALWAYS ||
@@ -58,7 +56,7 @@ const isAvailabilityActiveAtTime =
 // => the calculation should use the timezone information because the atTime comes from the server
 // and the server is NOT in the Unit's timezone
 const isSeasonalActive = (
-  availability: CrudApi.Availability,
+  availability: Availability,
   atTime: DateTime,
 ): boolean => {
   if (
@@ -82,7 +80,7 @@ const isSeasonalActive = (
 // it is in the Unit's timezone and the atTime's weekday and hour values are in the same timezone as the Unit
 // => the calculation don't need the timezone information
 export const isWeeklyActive = (
-  availability: CrudApi.Availability,
+  availability: Availability,
   atTime: DateTime,
 ): boolean => {
   return (
@@ -91,7 +89,7 @@ export const isWeeklyActive = (
 };
 
 export const inDayWindow = (
-  availability: CrudApi.Availability,
+  availability: Availability,
   atTime: DateTime,
 ): boolean => {
   if (
@@ -114,7 +112,7 @@ export const inDayWindow = (
 };
 
 export const inTimeWindow = (
-  availability: CrudApi.Availability,
+  availability: Availability,
   atTime: DateTime,
 ): boolean => {
   if (

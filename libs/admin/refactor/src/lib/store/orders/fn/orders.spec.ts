@@ -1,4 +1,5 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { currentStatus } from '@bgap/crud-gql/api';
+import { OrderStatus, Unit } from '@bgap/domain';
 import {
   orderFixtureBase,
   productSnapshotFixture,
@@ -31,51 +32,51 @@ const orders = [
 describe('Orders pure function tests', () => {
   describe('getNextOrderStatus', () => {
     it('should get next order status', () => {
-      expect(
-        getNextOrderStatus(CrudApi.OrderStatus.none),
-      ).toMatchInlineSnapshot(`"placed"`);
-      expect(
-        getNextOrderStatus(CrudApi.OrderStatus.placed),
-      ).toMatchInlineSnapshot(`"processing"`);
-      expect(
-        getNextOrderStatus(CrudApi.OrderStatus.processing),
-      ).toMatchInlineSnapshot(`"ready"`);
-      expect(
-        getNextOrderStatus(CrudApi.OrderStatus.ready),
-      ).toMatchInlineSnapshot(`"served"`);
+      expect(getNextOrderStatus(OrderStatus.none)).toMatchInlineSnapshot(
+        `"placed"`,
+      );
+      expect(getNextOrderStatus(OrderStatus.placed)).toMatchInlineSnapshot(
+        `"processing"`,
+      );
+      expect(getNextOrderStatus(OrderStatus.processing)).toMatchInlineSnapshot(
+        `"ready"`,
+      );
+      expect(getNextOrderStatus(OrderStatus.ready)).toMatchInlineSnapshot(
+        `"served"`,
+      );
     });
   });
 
   describe('getNextOrderItemStatus', () => {
     it('should get next order item status', () => {
+      expect(getNextOrderItemStatus(OrderStatus.placed)).toMatchInlineSnapshot(
+        `"processing"`,
+      );
       expect(
-        getNextOrderItemStatus(CrudApi.OrderStatus.placed),
-      ).toMatchInlineSnapshot(`"processing"`);
-      expect(
-        getNextOrderItemStatus(CrudApi.OrderStatus.processing),
+        getNextOrderItemStatus(OrderStatus.processing),
       ).toMatchInlineSnapshot(`"ready"`);
-      expect(
-        getNextOrderItemStatus(CrudApi.OrderStatus.ready),
-      ).toMatchInlineSnapshot(`"served"`);
+      expect(getNextOrderItemStatus(OrderStatus.ready)).toMatchInlineSnapshot(
+        `"served"`,
+      );
     });
   });
 
   describe('getPrevOrderItemStatus', () => {
     it('should get prev order item status', () => {
+      expect(getNextOrderItemStatus(OrderStatus.served)).toMatchInlineSnapshot(
+        `undefined`,
+      );
+      expect(getNextOrderItemStatus(OrderStatus.ready)).toMatchInlineSnapshot(
+        `"served"`,
+      );
       expect(
-        getNextOrderItemStatus(CrudApi.OrderStatus.served),
-      ).toMatchInlineSnapshot(`undefined`);
-      expect(
-        getNextOrderItemStatus(CrudApi.OrderStatus.ready),
-      ).toMatchInlineSnapshot(`"served"`);
-      expect(
-        getNextOrderItemStatus(CrudApi.OrderStatus.processing),
+        getNextOrderItemStatus(OrderStatus.processing),
       ).toMatchInlineSnapshot(`"ready"`);
     });
   });
 
   describe('getOrderLaneColor', () => {
-    const unit: CrudApi.Unit = unitFixture.unit_01;
+    const unit: Unit = unitFixture.unit_01;
 
     const orderItem = {
       ...orderFixtureBase.orderItemInputBase(
@@ -93,27 +94,25 @@ describe('Orders pure function tests', () => {
 
   describe('getStatusColor', () => {
     it('should get status color', () => {
-      expect(getStatusColor(CrudApi.OrderStatus.none)).toMatchInlineSnapshot(
+      expect(getStatusColor(OrderStatus.none)).toMatchInlineSnapshot(
         `"danger"`,
       );
-      expect(getStatusColor(CrudApi.OrderStatus.placed)).toMatchInlineSnapshot(
+      expect(getStatusColor(OrderStatus.placed)).toMatchInlineSnapshot(
         `"warning"`,
       );
-      expect(
-        getStatusColor(CrudApi.OrderStatus.processing),
-      ).toMatchInlineSnapshot(`"primary"`);
-      expect(getStatusColor(CrudApi.OrderStatus.ready)).toMatchInlineSnapshot(
-        `"info"`,
+      expect(getStatusColor(OrderStatus.processing)).toMatchInlineSnapshot(
+        `"primary"`,
       );
-      expect(getStatusColor(CrudApi.OrderStatus.served)).toMatchInlineSnapshot(
+      expect(getStatusColor(OrderStatus.ready)).toMatchInlineSnapshot(`"info"`);
+      expect(getStatusColor(OrderStatus.served)).toMatchInlineSnapshot(
         `"success"`,
       );
-      expect(getStatusColor(CrudApi.OrderStatus.failed)).toMatchInlineSnapshot(
+      expect(getStatusColor(OrderStatus.failed)).toMatchInlineSnapshot(
         `"danger"`,
       );
-      expect(
-        getStatusColor(CrudApi.OrderStatus.rejected),
-      ).toMatchInlineSnapshot(`"danger"`);
+      expect(getStatusColor(OrderStatus.rejected)).toMatchInlineSnapshot(
+        `"danger"`,
+      );
     });
   });
 
@@ -123,11 +122,8 @@ describe('Orders pure function tests', () => {
 
       expect(orders.length).toBe(4);
       expect(result['test-monad'].orders.length).toBe(4);
-      expect(
-        result['test-monad'].orders.map(o =>
-          CrudApi.currentStatus(o.statusLog),
-        ),
-      ).toMatchInlineSnapshot(`
+      expect(result['test-monad'].orders.map(o => currentStatus(o.statusLog)))
+        .toMatchInlineSnapshot(`
         Array [
           "none",
           "none",

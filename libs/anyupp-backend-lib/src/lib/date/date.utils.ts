@@ -1,5 +1,6 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { DateTime } from 'luxon';
+
+import { Availability } from '@bgap/domain';
 
 export const WEEK_DAYS: {
   MONDAY: number;
@@ -21,7 +22,7 @@ export const WEEK_DAYS: {
 };
 
 export const getSeasonalAvailabilityFromTime = (
-  availability: CrudApi.Availability,
+  availability: Availability,
   inTimeZone: string,
 ) =>
   DateTime.fromISO(`${availability.dayFrom}T${availability.timeFrom}`, {
@@ -29,7 +30,7 @@ export const getSeasonalAvailabilityFromTime = (
   });
 
 export const getSeasonalAvailabilityToTime = (
-  availability: CrudApi.Availability,
+  availability: Availability,
   inTimeZone: string,
 ) =>
   DateTime.fromISO(`${availability.dayTo}T${availability.timeTo}`, {

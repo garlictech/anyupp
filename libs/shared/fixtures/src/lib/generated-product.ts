@@ -1,4 +1,9 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  Allergen,
+  GeneratedProduct,
+  ProductType,
+  ServingMode,
+} from '@bgap/domain';
 import { testIdPrefix } from './common';
 
 const getGeneratedProductVariant = (idx: number, productId?: string) => ({
@@ -44,34 +49,34 @@ const generatedProductBase = {
   productCategoryId: 'productCategoryId_',
   name: { en: 'GENERATED_PRODUCT', hu: 'GENERALT_TERMEK' },
   description: { en: 'DESCRIPTION', hu: 'LEIRAS' },
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
   tax: 1,
   position: 1,
   image: 'https://picsum.photos/100',
   variants: [getGeneratedProductVariant(1), getGeneratedProductVariant(2)],
   allergens: [
-    CrudApi.Allergen.egg,
-    CrudApi.Allergen.gluten,
-    CrudApi.Allergen.milk,
-    CrudApi.Allergen.soya,
-    CrudApi.Allergen.peanut,
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.peanut,
   ],
-  supportedServingModes: [CrudApi.ServingMode.inplace],
+  supportedServingModes: [ServingMode.inplace],
   takeawayTax: 2,
 };
 
-const generatedDrinkProduct: CrudApi.GeneratedProduct = {
+const generatedDrinkProduct: GeneratedProduct = {
   ...generatedProductBase,
   id: `${testIdPrefix}_generated_product_id_1`,
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
   createdAt: '',
   updatedAt: '',
 };
 
-const generatedFoodProduct: CrudApi.GeneratedProduct = {
+const generatedFoodProduct: GeneratedProduct = {
   ...generatedProductBase,
   id: `${testIdPrefix}_generated_product_id_2`,
-  productType: CrudApi.ProductType.food,
+  productType: ProductType.food,
   createdAt: '',
   updatedAt: '',
 };

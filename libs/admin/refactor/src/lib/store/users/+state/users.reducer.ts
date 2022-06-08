@@ -1,4 +1,4 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { User } from '@bgap/domain';
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
 
@@ -6,12 +6,11 @@ import * as UsersActions from './users.actions';
 
 export const USERS_FEATURE_KEY = 'users';
 
-export interface UsersState extends EntityState<CrudApi.User> {
+export interface UsersState extends EntityState<User> {
   error?: string | null; // last known error (if any)
 }
 
-export const usersAdapter: EntityAdapter<CrudApi.User> =
-  createEntityAdapter<CrudApi.User>();
+export const usersAdapter: EntityAdapter<User> = createEntityAdapter<User>();
 
 export const initialUsersState: UsersState = usersAdapter.getInitialState({});
 

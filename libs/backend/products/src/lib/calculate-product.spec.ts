@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import {
   defaultSupportedServingModes,
   EVariantAvailabilityType,
@@ -7,6 +7,13 @@ import {
   ProductComponentMap,
   ProductComponentSetMap,
 } from '@bgap/shared/types';
+import {
+  Allergen,
+  ProductComponentSetType,
+  ProductType,
+  ProductVariant,
+  ServingMode,
+} from '@bgap/domain';
 import {
   calculateActualPricesAndCheckActivity,
   toCreateGeneratedProductInputType,
@@ -28,14 +35,11 @@ describe('calculatePricesAndCheckActivity method', () => {
     createdAt: 'CREATED_AT',
     updatedAt: 'UPDATED_AT',
     productCategoryId: 'PROD_CAT_ID',
-    productType: CrudApi.ProductType.drink,
+    productType: ProductType.drink,
     position: 1,
     isVisible: true,
-    allergens: [CrudApi.Allergen.peanut, CrudApi.Allergen.egg],
-    supportedServingModes: [
-      CrudApi.ServingMode.inplace,
-      CrudApi.ServingMode.takeaway,
-    ],
+    allergens: [Allergen.peanut, Allergen.egg],
+    supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
     variants: [
       {
         id: `VARIANT_ID_01`,
@@ -88,7 +92,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_NAME' },
       description: 'PRODUCT_COMP_DESC',
-      allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
+      allergens: [Allergen.egg, Allergen.fish],
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
       externalId: 'EXTERNAL_ID',
@@ -101,7 +105,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_NAME' },
       description: 'PRODUCT_COMP_DESC',
-      allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.fish],
+      allergens: [Allergen.egg, Allergen.fish],
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
       externalId: 'EXTERNAL_ID',
@@ -116,7 +120,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       chainId: 'CHAIN_ID',
       name: { en: 'PRODUCT_COMP_SET_NAME' },
       description: 'PRODUCT_COMP_SET_DESC',
-      type: CrudApi.ProductComponentSetType.extras,
+      type: ProductComponentSetType.extras,
       maxSelection: 1,
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
@@ -134,7 +138,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       throw new Error('wrong data');
     }
 
-    const notActiveVariant: CrudApi.ProductVariant = {
+    const notActiveVariant: ProductVariant = {
       ...baseProduct.variants[0],
       availabilities: [
         {
@@ -147,7 +151,7 @@ describe('calculatePricesAndCheckActivity method', () => {
         },
       ],
     };
-    const anotherActiveVariant: CrudApi.ProductVariant = {
+    const anotherActiveVariant: ProductVariant = {
       ...baseProduct.variants[0],
       position: 100,
     };
@@ -253,7 +257,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       });
 
       it('should remove the variant in case it is not Available', () => {
-        const variant: CrudApi.ProductVariant = {
+        const variant: ProductVariant = {
           id: 'VAR_ID',
           variantName: { en: 'variantName' },
           pack: { size: 1, unit: 'unit' },
@@ -290,7 +294,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     });
 
     describe('calculate actual variant price for each variants', () => {
-      const variant: CrudApi.ProductVariant = {
+      const variant: ProductVariant = {
         id: 'VAR_ID',
         variantName: { en: 'variantName' },
         price: 14,
@@ -306,7 +310,7 @@ describe('calculatePricesAndCheckActivity method', () => {
         isVisible: true,
         name: { en: 'prodName' },
         productCategoryId: 'productCategoryId',
-        productType: CrudApi.ProductType.drink,
+        productType: ProductType.drink,
         description: { en: 'desc' },
         image: 'image',
         tax: 0,

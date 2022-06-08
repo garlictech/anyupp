@@ -15,10 +15,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { visibleLinesOnViewport } from '../../../../shared/utils';
-import { groupsSelectors } from '../../../../store/groups';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { AdminUser, ChainProduct, Group } from '@bgap/domain';
 import { EProductLevel, ProductOrderChangeEvent } from '@bgap/shared/types';
 import {
   NbDialogService,
@@ -28,14 +25,17 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { visibleLinesOnViewport } from '../../../../shared/utils';
+import { groupsSelectors } from '../../../../store/groups';
+import { loggedUserSelectors } from '../../../../store/logged-user';
+import {
+  ExtendedGroupProduct,
+  ExtendedUnitProduct,
+} from '../../../../store/products';
 import { ProductListService } from '../../services/product-list.service';
 import { ProductFormComponent } from '../product-form/product-form.component';
-import {
-  ExtendedUnitProduct,
-  ExtendedGroupProduct,
-} from '../../../../store/products';
 
-type groupProducts = (ExtendedGroupProduct | CrudApi.ChainProduct) & {
+type groupProducts = (ExtendedGroupProduct | ChainProduct) & {
   pending?: boolean;
 };
 
@@ -60,13 +60,13 @@ export class ProductListComponent implements OnInit {
   @ViewChild('unitProductsVSVP')
   unitProductsVSVP?: CdkVirtualScrollViewport;
 
-  public chainProducts: CrudApi.ChainProduct[] = [];
+  public chainProducts: ChainProduct[] = [];
   public groupProducts: groupProducts[] = [];
   public unitProducts: unitProducts[] = [];
   public groupCurrency = '';
   public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
-  public loggedUser$: Observable<CrudApi.AdminUser | undefined>;
+  public loggedUser$: Observable<AdminUser | undefined>;
   public searchControl: FormControl;
 
   private _sortedUnitProductIds: string[] = [];
@@ -112,7 +112,7 @@ export class ProductListComponent implements OnInit {
         skipWhile((group): boolean => !group),
         untilDestroyed(this),
       )
-      .subscribe((group: CrudApi.Group | undefined) => {
+      .subscribe((group: Group | undefined) => {
         this.groupCurrency = group?.currency || '';
 
         this._changeDetectorRef.detectChanges();
@@ -121,7 +121,7 @@ export class ProductListComponent implements OnInit {
     this._productListService
       .chainProducts$()
       .pipe(untilDestroyed(this))
-      .subscribe((chainProducts: CrudApi.ChainProduct[]) => {
+      .subscribe((chainProducts: ChainProduct[]) => {
         this.chainProducts = chainProducts;
 
         this._changeDetectorRef.detectChanges();
