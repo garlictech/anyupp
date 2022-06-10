@@ -45,6 +45,7 @@ export class ProductExtendFormComponent
   public productCategories$: Observable<ProductCategory[]>;
   public unitLanes$: Observable<KeyValue[]>;
   public servingModes = SERVING_MODES;
+  public selectedUnit?: CrudApi.Unit;
 
   private _selectedChainId = '';
   private _selectedGroupId = '';
@@ -77,6 +78,12 @@ export class ProductExtendFormComponent
       filterNullish(),
       take(1),
     );
+
+    this._store
+      .pipe(select(unitsSelectors.getSelectedUnit), filterNullish(), take(1))
+      .subscribe(unit => {
+        this.selectedUnit = unit;
+      });
   }
 
   ngOnInit() {

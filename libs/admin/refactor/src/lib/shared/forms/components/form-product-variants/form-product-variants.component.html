@@ -143,6 +143,8 @@
           *ngIf="productLevel === eProductLevel.UNIT"
           [availabilityFormArray]="variant?.get('availabilities') | asFormArray"
           [currency]="currency"
+          [unitServiceFeePolicy]="unitServiceFeePolicy"
+          [productTax]="productTax"
         ></bgap-form-product-availabilities>
 
         <div class="clearfix"></div>

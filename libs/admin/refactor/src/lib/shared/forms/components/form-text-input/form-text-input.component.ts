@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NbComponentSize } from '@nebular/theme';
 
@@ -17,8 +23,13 @@ export class FormTextInputComponent {
   @Input() fieldSize: NbComponentSize = 'small';
   @Input() inputId = '';
   @Input() readonly = false;
+  @Output() inputChange = new EventEmitter();
 
   constructor() {
     this.fieldSize = 'small';
+  }
+
+  public onInput() {
+    this.inputChange.emit(this.control?.value);
   }
 }

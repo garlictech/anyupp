@@ -212,7 +212,7 @@ type ProductVariant {
   pack: ProductVariantPack
   refGroupPrice: Float
   isAvailable: Boolean!
-  price: Float!
+  price: Float! # Gross
   availabilities: [Availability]
   position: Int!
   netPackagingFee: Float
@@ -235,7 +235,7 @@ type Availability {
   dayTo: String
   timeFrom: String
   timeTo: String
-  price: Float!
+  price: Float! # Gross
 }
 
 input AvailabilityInput {

@@ -20,6 +20,8 @@ export class FormProductVariantsComponent {
   @Input() allowAddVariant: boolean;
   @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
+  @Input() unitServiceFeePolicy?: CrudApi.ServiceFeePolicy | null;
+  @Input() productTax?: number;
 
   public eProductLevel = EProductLevel;
 

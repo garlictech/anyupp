@@ -18,6 +18,7 @@
             : 'basic'
         "
         [attr.data-testid]="inputId"
+        (input)="onInput()"
       />
       <span *ngIf="suffix" nbSuffix>{{ suffix }}</span>
     </nb-form-field>

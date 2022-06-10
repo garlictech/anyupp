@@ -51,3 +51,9 @@ export const getProductComponentSetOptions = (
         value: productComponentSet.name,
       }),
     );
+
+export const baseFromTaxedPrice = (price: number, tax: number) =>
+  +(price / +`1.${tax}`).toFixed(4);
+
+export const taxedFromBasePrice = (price: number, tax: number) =>
+  +(price * +`1.${tax}`).toFixed(4);

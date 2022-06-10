@@ -86,6 +86,8 @@
         [variantFormArray]="dialogForm?.get('variants') | asFormArray"
         [allowAddVariant]="false"
         [currency]="currency"
+        [unitServiceFeePolicy]="selectedUnit?.serviceFeePolicy"
+        [productTax]="product?.tax"
       ></bgap-form-product-variants>
 
       <bgap-form-product-components
