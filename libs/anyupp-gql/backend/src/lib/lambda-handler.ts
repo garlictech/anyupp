@@ -23,8 +23,8 @@ import { orderRequestHandler } from '@bgap/backend/orders';
 import { userRequestHandler } from './lambda-resolvers/user';
 import { updateUnitRKeeperDataResolver } from '@bgap/backend/units';
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { createConnector } = require('aws-elasticsearch-js');
-import { Client } from '@elastic/elasticsearch';
+const { createConnector } = require('@opensearch-project/opensearch');
+import { Client } from '@opensearch-project/opensearch';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
 import { searchByRadiusResolver } from '@bgap/backend/search';
 

@@ -1,7 +1,7 @@
 import * as CrudApi from '@bgap/crud-gql/api';
 import { defer, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Client } from '@elastic/elasticsearch';
+import { Client } from '@opensearch-project/opensearch';
 import * as R from 'ramda';
 import { pipe } from 'fp-ts/lib/function';
 
