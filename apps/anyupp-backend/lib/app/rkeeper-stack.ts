@@ -99,6 +99,11 @@ export class RKeeperStack extends sst.Stack {
     const menuBucket = new s3.Bucket(this, 'AnyuppRkeeperMenuBucket', {
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
+      lifecycleRules: [
+        {
+          expiration: Duration.days(1),
+        },
+      ],
     });
 
     menuBucket.grantReadWrite(taskRole);
