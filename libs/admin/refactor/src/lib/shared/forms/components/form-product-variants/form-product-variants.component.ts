@@ -8,7 +8,7 @@ import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { EProductLevel } from '@bgap/shared/types';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Availability, ProductVariant } from '@bgap/domain';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,6 +20,8 @@ export class FormProductVariantsComponent {
   @Input() allowAddVariant: boolean;
   @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
+  @Input() unitServiceFeePolicy?: CrudApi.ServiceFeePolicy | null;
+  @Input() productTax?: number;
 
   public eProductLevel = EProductLevel;
 
@@ -48,7 +50,7 @@ export class FormProductVariantsComponent {
     ) {
       arr.splice(idx, 1);
       arr.splice(idx + change, 0, movingItem);
-      arr.forEach((variant: CrudApi.ProductVariant, pos: number) => {
+      arr.forEach((variant: ProductVariant, pos: number) => {
         variant.position = pos + 1;
       });
 
@@ -60,7 +62,7 @@ export class FormProductVariantsComponent {
           (g.get('availabilities') as FormArray).clear();
 
           (arr[i]?.availabilities || []).forEach(
-            (availability: CrudApi.Availability) => {
+            (availability: Availability) => {
               const availabilityGroup =
                 this._formsService.createProductAvailabilityFormGroup();
               availabilityGroup.patchValue(availability);

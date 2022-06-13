@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import * as CrudApi from '@bgap/crud-gql/api';
+import { OrderStatus } from '@bgap/domain';
 
 import { updateOrderStatusFromNoneToPlaced } from './update-order-status-from-none-to-placed';
 
@@ -13,7 +13,7 @@ const new_order = {
       statusLog: [
         {
           userId: 'test-alice',
-          status: CrudApi.OrderStatus.none,
+          status: OrderStatus.none,
           ts: 1627909024677,
         },
       ],
@@ -22,7 +22,7 @@ const new_order = {
       statusLog: [
         {
           userId: 'test-alice',
-          status: CrudApi.OrderStatus.none,
+          status: OrderStatus.none,
           ts: 1627909024677,
         },
       ],
@@ -38,17 +38,17 @@ const inprogress_order = {
       statusLog: [
         {
           userId: 'test-alice',
-          status: CrudApi.OrderStatus.none,
+          status: OrderStatus.none,
           ts: 1627909024677,
         },
         {
           userId: 'test-alice',
-          status: CrudApi.OrderStatus.placed,
+          status: OrderStatus.placed,
           ts: 1627909024678,
         },
         {
           userId: 'test-alice',
-          status: CrudApi.OrderStatus.processing,
+          status: OrderStatus.processing,
           ts: 1627909024679,
         },
       ],
@@ -57,7 +57,7 @@ const inprogress_order = {
       statusLog: [
         {
           userId: 'test-alice',
-          status: CrudApi.OrderStatus.none,
+          status: OrderStatus.none,
           ts: 1627909024677,
         },
       ],

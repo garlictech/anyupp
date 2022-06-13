@@ -1,15 +1,15 @@
+import { AdminUser, Role } from '@bgap/domain';
 import {} from '@bgap/shared/types';
 import { Action, createReducer, on } from '@ngrx/store';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 import * as LoggedUserActions from './logged-user.actions';
 
 export const LOGGED_USER_FEATURE_KEY = 'loggedUser';
 
 export interface LoggedUserState {
-  loggedUser?: CrudApi.AdminUser;
-  currentContextRole?: CrudApi.Role;
-  role?: CrudApi.Role; // Filled from token
+  loggedUser?: AdminUser;
+  currentContextRole?: Role;
+  role?: Role; // Filled from token
 }
 
 export const initialLoggedUserState: LoggedUserState = {};

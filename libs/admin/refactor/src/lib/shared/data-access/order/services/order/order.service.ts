@@ -2,6 +2,19 @@ import { defer, EMPTY, iif, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import { currentStatus } from '@bgap/crud-gql/api';
+import {
+  AdminUser,
+  Order,
+  OrderStatus,
+  PaymentMode,
+  PaymentStatus,
+  UnpayCategory,
+} from '@bgap/domain';
+import { DateIntervals } from '@bgap/shared/types';
+import { filterNullish, getDayIntervals } from '@bgap/shared/utils';
+import { select, Store } from '@ngrx/store';
+
 import { CrudSdkService } from '../../../../../shared/data-access/sdk';
 import { catchGqlError } from '../../../../../store/app-core';
 import { loggedUserSelectors } from '../../../../../store/logged-user';
@@ -10,8 +23,6 @@ import {
   OrderCollectionService,
   OrderHistoryCollectionService,
 } from '../../../../../store/orders';
-import * as CrudApi from '@bgap/crud-gql/api';
-
 import {
   archiveOrder,
   recallOrderFromHistory,
@@ -21,15 +32,12 @@ import {
   updateOrderStatusFromNoneToPlaced,
   updateOrderTransactionStatus,
 } from '../../../../orders';
-import { DateIntervals } from '@bgap/shared/types';
-import { filterNullish, getDayIntervals } from '@bgap/shared/utils';
-import { select, Store } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  private _adminUser?: CrudApi.AdminUser;
+  private _adminUser?: AdminUser;
 
   constructor(
     private _store: Store,
@@ -61,9 +69,9 @@ export class OrderService {
   }
 
   private _updateOrderTransactionStatus$(
-    order: CrudApi.Order,
-    status: CrudApi.PaymentStatus,
-    unpayCategory?: CrudApi.UnpayCategory,
+    order: Order,
+    status: PaymentStatus,
+    unpayCategory?: UnpayCategory,
   ) {
     if (order.transactionId) {
       return updateOrderTransactionStatus(this._getDeps())(
@@ -86,10 +94,7 @@ export class OrderService {
     );
   }
 
-  public updateOrderPaymentMode$(
-    orderId: string,
-    paymentMode: CrudApi.PaymentMode,
-  ) {
+  public updateOrderPaymentMode$(orderId: string, paymentMode: PaymentMode) {
     return updateOrderPaymentMode(this._getDeps())(orderId, paymentMode);
   }
 
@@ -97,7 +102,7 @@ export class OrderService {
     if (this._adminUser?.id) {
       return updateOrderStatus(this._getDeps())(
         orderId,
-        CrudApi.OrderStatus.rejected,
+        OrderStatus.rejected,
         this._adminUser.id,
       ).pipe(switchMap(() => this._archiveOrder$(orderId)));
     } else {
@@ -105,14 +110,14 @@ export class OrderService {
     }
   }
 
-  public handleOrderStatusChange$(order: CrudApi.Order) {
-    const currentStatus = CrudApi.currentStatus(order.statusLog);
+  public handleOrderStatusChange$(order: Order) {
+    const _currentStatus = currentStatus(order.statusLog);
 
     return iif(
-      () => currentStatus === CrudApi.OrderStatus.none,
+      () => _currentStatus === OrderStatus.none,
       this._updateOrderStatusFromNoneToPlaced$(order.id),
       defer(() => {
-        const status = getNextOrderStatus(currentStatus);
+        const status = getNextOrderStatus(_currentStatus);
 
         if (status && this._adminUser?.id) {
           return updateOrderStatus(this._getDeps())(
@@ -123,9 +128,9 @@ export class OrderService {
             switchMap(() =>
               iif(
                 () =>
-                  status === CrudApi.OrderStatus.served &&
-                  (order.transactionStatus === CrudApi.PaymentStatus.success ||
-                    order.transactionStatus === CrudApi.PaymentStatus.failed),
+                  status === OrderStatus.served &&
+                  (order.transactionStatus === PaymentStatus.success ||
+                    order.transactionStatus === PaymentStatus.failed),
                 defer(() => this._archiveOrder$(order.id)),
                 of(true),
               ),
@@ -139,19 +144,19 @@ export class OrderService {
   }
 
   public handleSuccessfulTransactionStatus$(
-    order: CrudApi.Order,
-    paymentStatus: CrudApi.PaymentStatus,
+    order: Order,
+    paymentStatus: PaymentStatus,
   ) {
     return this._updateOrderTransactionStatus$(order, paymentStatus).pipe(
       catchGqlError(this._store),
       switchMap(() => {
-        const currentStatus = CrudApi.currentStatus(order.statusLog);
+        const _currentStatus = currentStatus(order.statusLog);
 
         return iif(
-          () => currentStatus === CrudApi.OrderStatus.none,
+          () => _currentStatus === OrderStatus.none,
           defer(() => this._updateOrderStatusFromNoneToPlaced$(order.id)),
           iif(
-            () => currentStatus === CrudApi.OrderStatus.served,
+            () => _currentStatus === OrderStatus.served,
             defer(() => this._archiveOrder$(order.id)),
             of(true),
           ),
@@ -161,9 +166,9 @@ export class OrderService {
   }
 
   public handleFailedTransactionStatus$(
-    order: CrudApi.Order,
-    paymentStatus: CrudApi.PaymentStatus,
-    unpayCategory: CrudApi.UnpayCategory,
+    order: Order,
+    paymentStatus: PaymentStatus,
+    unpayCategory: UnpayCategory,
   ) {
     return this._updateOrderTransactionStatus$(
       order,
@@ -172,10 +177,10 @@ export class OrderService {
     ).pipe(
       catchGqlError(this._store),
       switchMap(() => {
-        const currentStatus = CrudApi.currentStatus(order.statusLog);
+        const _currentStatus = currentStatus(order.statusLog);
 
         return iif(
-          () => currentStatus === CrudApi.OrderStatus.served,
+          () => _currentStatus === OrderStatus.served,
           defer(() => this._archiveOrder$(order.id)),
           of(true),
         );
@@ -185,7 +190,7 @@ export class OrderService {
 
   public updateOrderItemStatus$(
     orderId: string,
-    status: CrudApi.OrderStatus,
+    status: OrderStatus,
     idx: number,
   ) {
     if (this._adminUser?.id) {
@@ -196,13 +201,12 @@ export class OrderService {
         this._adminUser?.id,
       ).pipe(
         filterNullish(),
-        switchMap((order: CrudApi.Order) =>
+        switchMap((order: Order) =>
           iif(
             () =>
-              CrudApi.currentStatus(order.statusLog) ===
-                CrudApi.OrderStatus.served &&
-              (order.transactionStatus === CrudApi.PaymentStatus.success ||
-                order.transactionStatus === CrudApi.PaymentStatus.failed),
+              currentStatus(order.statusLog) === OrderStatus.served &&
+              (order.transactionStatus === PaymentStatus.success ||
+                order.transactionStatus === PaymentStatus.failed),
             defer(() => this._archiveOrder$(order.id)),
             of(true),
           ),

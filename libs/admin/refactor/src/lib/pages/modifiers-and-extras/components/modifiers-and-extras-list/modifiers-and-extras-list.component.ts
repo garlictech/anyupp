@@ -6,10 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { visibleLinesOnViewport } from '../../../../shared/utils';
-import { ProductComponentSetCollectionService } from '../../../../store/product-component-sets';
-import { ProductComponentCollectionService } from '../../../../store/product-components';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductComponent, ProductComponentSet } from '@bgap/domain';
 import {
   NbDialogService,
   NbTabComponent,
@@ -17,6 +14,9 @@ import {
 } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+import { visibleLinesOnViewport } from '../../../../shared/utils';
+import { ProductComponentSetCollectionService } from '../../../../store/product-component-sets';
+import { ProductComponentCollectionService } from '../../../../store/product-components';
 import { ModifiersAndExtrasListService } from '../../services/modifiers-and-extras-list.service';
 import { ProductComponentFormComponent } from '../product-component-form/product-component-form.component';
 import { ProductComponentSetFormComponent } from '../product-component-set-form/product-component-set-form.component';
@@ -43,8 +43,8 @@ export class ModifiersAndExtrasListComponent implements OnInit {
 
   public eModExtTab = EModExtTab;
   public selectedTab: EModExtTab = EModExtTab.PRODUCT_COMPONENTS;
-  public productComponents: CrudApi.ProductComponent[] = [];
-  public productComponentSets: CrudApi.ProductComponentSet[] = [];
+  public productComponents: ProductComponent[] = [];
+  public productComponentSets: ProductComponentSet[] = [];
 
   constructor(
     private _nbDialogService: NbDialogService,
@@ -65,14 +65,14 @@ export class ModifiersAndExtrasListComponent implements OnInit {
   ngOnInit() {
     this._productComponentCollectionService.filteredEntities$
       .pipe(untilDestroyed(this))
-      .subscribe((productComponents: CrudApi.ProductComponent[]) => {
+      .subscribe((productComponents: ProductComponent[]) => {
         this.productComponents = productComponents;
         this._changeDetectorRef.detectChanges();
       });
 
     this._productComponentSetCollectionService.filteredEntities$
       .pipe(untilDestroyed(this))
-      .subscribe((productComponentSets: CrudApi.ProductComponentSet[]) => {
+      .subscribe((productComponentSets: ProductComponentSet[]) => {
         this.productComponentSets = productComponentSets;
         this._changeDetectorRef.detectChanges();
       });

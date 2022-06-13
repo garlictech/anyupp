@@ -6,8 +6,8 @@ import {
   Input,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { LocationLatLon } from '@bgap/domain';
 import { config } from '@bgap/shared/config';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,11 +48,11 @@ export class FormContactGroupComponent {
       });
   }
 
-  public markerPositionChange($event: CrudApi.LocationLatLon) {
+  public markerPositionChange($event: LocationLatLon) {
     this._patchLocation($event);
   }
 
-  private _patchLocation(location: CrudApi.LocationLatLon) {
+  private _patchLocation(location: LocationLatLon) {
     if (location) {
       this.contactFormGroup?.patchValue({
         ...this.contactFormGroup?.value,

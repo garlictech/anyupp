@@ -1,11 +1,11 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { RequiredId } from '@bgap/shared/types';
+import { CreateChainInput } from '@bgap/domain';
 
 const chainId_01 = `${testIdPrefix}chain_1_id`;
 const chainId_seeded_01 = `${seededIdPrefix}chain_1_id`;
 
-const chainBase: CrudApi.CreateChainInput = {
+const chainBase: CreateChainInput = {
   id: `${testIdPrefix}chain_id_`,
   name: `˜Rab lánc S`,
   address: {
@@ -46,7 +46,7 @@ const chainBase: CrudApi.CreateChainInput = {
   },
 };
 
-const chain_01: RequiredId<CrudApi.CreateChainInput> = {
+const chain_01: RequiredId<CreateChainInput> = {
   ...chainBase,
   id: chainId_01,
 };

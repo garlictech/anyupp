@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
+import { AdminUser } from '@bgap/domain';
+import { EntityCollectionServiceElementsFactory } from '@ngrx/data';
+
 import { BaseCollectionService } from '../../../shared/data-access/ngrx-data';
 import { CrudSdkService } from '../../../shared/data-access/sdk';
 import { ENTITY_NAME } from '../../../shared/types';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { EntityCollectionServiceElementsFactory } from '@ngrx/data';
 
 @Injectable({ providedIn: 'root' })
-export class AdminUserCollectionService extends BaseCollectionService<CrudApi.AdminUser> {
+export class AdminUserCollectionService extends BaseCollectionService<AdminUser> {
   constructor(
     serviceElementsFactory: EntityCollectionServiceElementsFactory,
     crudSdk: CrudSdkService,

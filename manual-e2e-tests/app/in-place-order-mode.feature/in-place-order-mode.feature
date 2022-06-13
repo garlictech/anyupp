@@ -1,6 +1,6 @@
 Feature: In place order mode feature
 
-  Background: Background name
+  Background: Background
     Given I am on the login screen
     And the Admin sets the "Hamburgers" product category available in in place mode
     When I tap on the text "Continue anonymously"
@@ -11,14 +11,14 @@ Feature: In place order mode feature
     Then I should see the "Menu" screen
 
   Scenario: select a unit that supports in place (app)
-    Given the Admin sets "Hamburgers" product category only in in place mode
+    Given the Admin sets "Hamburgers" product category available only in in place mode
     Then I should see "Sajtburger" with picture
     And I should see "Fishburger" with picture
     And I should see "Hamburger" with picture
     And I tap on the "Mode selector" button
     Then I should see "Please select" text
     And I tap on the "Take away" button
-    Then I should see "Sorry, this product category is not available in take away mode." text
+    Then I should see "Sorry, this category is not available in takeaway mode." text
 
   Scenario: turn off/on in place mode (admin-app-admin-app)
     Given the Admin turns OFF the "In place" mode from "Késdobáló #111"
@@ -28,7 +28,7 @@ Feature: In place order mode feature
     When I tap on the "Késdobáló #111" unit in the list
     Then I should see the "Menu" screen
     When I tap on the back arrow button
-    When the Admin turns ON the "In place" mode from "Késdobáló #111"
+    And the Admin turns ON the "In place" mode from "Késdobáló #111"
     And the Admin clicks on the "Regnerate menu" button
     And I pull up the screen to refresh the app
     Then I should see "In place" icon on the "Késdobáló #111" unit card
@@ -46,30 +46,29 @@ Feature: In place order mode feature
 
   Scenario: Create inplace order
     When I tap on the "Sajtburger" button
-    Then I should see "Rice" text
-    And I should see "French fries" text
+    And I tap on the "Rice" button
     And I tap on the "ADD TO CART" button
     And I tap on the "MY CART (1700 Ft)" button
     Then I should see the "CART" screen
     And I should see "+ Rice" text
     When I tap on the "PAY (1700 Ft)" button
-    Then I should see the "PAY" screen
+    Then I should see the "PAYMENT" screen
     When I tap on the option "Credit Card Payment" button
     Then I should see "Add new card" screen with a form
     When I fill out the input "xxxx xxxx xxxx xxxx" with "4242 4242 4242 4242"
     And I fill out the input "MM/YY" with "01/23" date
     And I fill out the "CVV" input with the "111"
     And I tap on the "SAVE CARD" button
-    Then I should see the "PAY" screen
+    Then I should see the "PAYMENT" screen
     When I tap on the "visa **** 4242" button
     And I tap on the "PLACE ORDER" button
     Then the qr code reader opens the camera
     When I read a seat qr code
     Then I should see the "finding table and chair ..." loading screen
     And I get the notification message "New Table Reserved!"
-    And I should see "Chair: #01, Table: #01" text
+    And I should see "Table: #01, Chair: #01" text
     When I tap on the "OK" button
-    And I should see "Successful order!" text
+    Then I should see "Successful order!" text
     When I tap on the "OK" button
     Then the "Orders" option is higlighted
     And I should see "Current orders" text
@@ -83,15 +82,14 @@ Feature: In place order mode feature
     Then I should see "Order mode" text with "In place" text
 
   Scenario: Available products in in place mode
-    Given I am logged in as an anonym user
-    Given the Admin sets a product available only in in place order mode
-    When I tap on the "Mode selector" button
-    And I tap on the "Take away" button
+    Given the Admin sets "Hamburger" product available only in in place order mode
+    When I pull the screen to refresh the app
     Then I should see "Sajtburger" with picture
     And I should see "Fishburger" with picture
     And I should see "Hamburger" with "Only in place" text
     When I tap on the "Hamburger" button
-    Then I shuld see the "ADD TO CART" button is disabled
+    Then I should see the "ADD TO CART" button is disabled
+    And I shpuld see "This product is only available for local consumption."
     When I tap on the "X" button
     And I tap on the "Mode selector" button
     Then I should see the "Please select" dialog

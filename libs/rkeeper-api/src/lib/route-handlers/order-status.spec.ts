@@ -1,4 +1,4 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { OrderStatus } from '@bgap/domain';
 import { from, of, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
@@ -105,27 +105,27 @@ test.each(getOrderCases)(
 const updateOrderStatusCases = [
   {
     UpdateOrderResult: of(undefined),
-    status: CrudApi.OrderStatus.served,
+    status: OrderStatus.served,
     label: 'UpdateOrder finds no order',
   },
   {
     UpdateOrderResult: throwError('UPDATE ORDER ERROR'),
-    status: CrudApi.OrderStatus.served,
+    status: OrderStatus.served,
     label: 'UpdateOrder throws error',
   },
   {
     UpdateOrderResult: of('SUCCESSFULL UPDATE'),
-    status: CrudApi.OrderStatus.served,
+    status: OrderStatus.served,
     label: 'UpdateOrder succes, status: served',
   },
   {
     UpdateOrderResult: of('SUCCESSFULL UPDATE'),
-    status: CrudApi.OrderStatus.failed,
+    status: OrderStatus.failed,
     label: 'UpdateOrder succes, status: failed',
   },
   {
     UpdateOrderResult: of('SUCCESSFULL UPDATE'),
-    status: CrudApi.OrderStatus.ready,
+    status: OrderStatus.ready,
     label: 'UpdateOrder succes, status: ready',
   },
 ];
@@ -201,7 +201,7 @@ test.each(orderStatusHandlerCases)(
     const request: any = {
       body: {
         remoteOrderId: 'REMOTE ORDER ID',
-        currentState: CrudApi.OrderStatus.ready,
+        currentState: OrderStatus.ready,
       },
       params: {
         externalUnitId: 'EXTERNAL UNIT ID',

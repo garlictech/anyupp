@@ -1,4 +1,3 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { DEFAULT_LANE_COLOR } from '../../../shared/utils';
 import {
   FloorMapOrderObjects,
@@ -6,50 +5,57 @@ import {
   FloorMapUserOrders,
   LaneOrderItem,
 } from '@bgap/shared/types';
-import { currentStatus } from '@bgap/crud-gql/api';
+import { currentStatus, getLowestStatus } from '@bgap/crud-gql/api';
+import {
+  Order,
+  OrderStatus,
+  PaymentStatus,
+  PaymentType,
+  Unit,
+} from '@bgap/domain';
 
 export const getNextOrderStatus = (
-  currStatus?: CrudApi.OrderStatus,
-): CrudApi.OrderStatus | undefined => {
+  currStatus?: OrderStatus,
+): OrderStatus | undefined => {
   switch (currStatus) {
-    case CrudApi.OrderStatus.none:
-      return CrudApi.OrderStatus.placed;
-    case CrudApi.OrderStatus.placed:
-      return CrudApi.OrderStatus.processing;
-    case CrudApi.OrderStatus.processing:
-      return CrudApi.OrderStatus.ready;
-    case CrudApi.OrderStatus.ready:
-      return CrudApi.OrderStatus.served;
+    case OrderStatus.none:
+      return OrderStatus.placed;
+    case OrderStatus.placed:
+      return OrderStatus.processing;
+    case OrderStatus.processing:
+      return OrderStatus.ready;
+    case OrderStatus.ready:
+      return OrderStatus.served;
     default:
       return;
   }
 };
 
 export const getNextOrderItemStatus = (
-  currStatus: CrudApi.OrderStatus,
-): CrudApi.OrderStatus | undefined => {
+  currStatus: OrderStatus,
+): OrderStatus | undefined => {
   switch (currStatus) {
-    case CrudApi.OrderStatus.placed:
-      return CrudApi.OrderStatus.processing;
-    case CrudApi.OrderStatus.processing:
-      return CrudApi.OrderStatus.ready;
-    case CrudApi.OrderStatus.ready:
-      return CrudApi.OrderStatus.served;
+    case OrderStatus.placed:
+      return OrderStatus.processing;
+    case OrderStatus.processing:
+      return OrderStatus.ready;
+    case OrderStatus.ready:
+      return OrderStatus.served;
     default:
       return;
   }
 };
 
 export const getPrevOrderItemStatus = (
-  currStatus?: CrudApi.OrderStatus,
-): CrudApi.OrderStatus | undefined => {
+  currStatus?: OrderStatus,
+): OrderStatus | undefined => {
   switch (currStatus) {
-    case CrudApi.OrderStatus.served:
-      return CrudApi.OrderStatus.ready;
-    case CrudApi.OrderStatus.ready:
-      return CrudApi.OrderStatus.processing;
-    case CrudApi.OrderStatus.processing:
-      return CrudApi.OrderStatus.placed;
+    case OrderStatus.served:
+      return OrderStatus.ready;
+    case OrderStatus.ready:
+      return OrderStatus.processing;
+    case OrderStatus.processing:
+      return OrderStatus.placed;
     default:
       return;
   }
@@ -57,7 +63,7 @@ export const getPrevOrderItemStatus = (
 
 export const getOrderLaneColor = (
   orderItem: LaneOrderItem,
-  unit: CrudApi.Unit,
+  unit: Unit,
 ): string => {
   return unit?.lanes && orderItem.laneId
     ? unit.lanes.find(l => l?.id === orderItem.laneId)?.color ||
@@ -65,21 +71,21 @@ export const getOrderLaneColor = (
     : DEFAULT_LANE_COLOR;
 };
 
-export const getStatusColor = (status: CrudApi.OrderStatus): string => {
+export const getStatusColor = (status: OrderStatus): string => {
   switch (status) {
-    case CrudApi.OrderStatus.none:
+    case OrderStatus.none:
       return 'danger';
-    case CrudApi.OrderStatus.placed:
+    case OrderStatus.placed:
       return 'warning';
-    case CrudApi.OrderStatus.processing:
+    case OrderStatus.processing:
       return 'primary';
-    case CrudApi.OrderStatus.ready:
+    case OrderStatus.ready:
       return 'info';
-    case CrudApi.OrderStatus.served:
+    case OrderStatus.served:
       return 'success';
-    case CrudApi.OrderStatus.failed:
+    case OrderStatus.failed:
       return 'danger';
-    case CrudApi.OrderStatus.rejected:
+    case OrderStatus.rejected:
       return 'danger';
     default:
       return '';
@@ -87,7 +93,7 @@ export const getStatusColor = (status: CrudApi.OrderStatus): string => {
 };
 
 export const getActiveOrdersByUser = (
-  orders: CrudApi.Order[],
+  orders: Order[],
 ): FloorMapUserOrderObjects => {
   const ordersByUser: FloorMapUserOrderObjects = {};
 
@@ -96,34 +102,32 @@ export const getActiveOrdersByUser = (
     .filter(
       o =>
         !(
-          CrudApi.currentStatus(o.statusLog) === CrudApi.OrderStatus.served &&
-          (o.transactionStatus === CrudApi.PaymentStatus.success ||
-            o.transactionStatus === CrudApi.PaymentStatus.failed)
+          currentStatus(o.statusLog) === OrderStatus.served &&
+          (o.transactionStatus === PaymentStatus.success ||
+            o.transactionStatus === PaymentStatus.failed)
         ),
     )
-    .forEach((order: CrudApi.Order) => {
+    .forEach((order: Order) => {
       if (!ordersByUser[order.userId]) {
         ordersByUser[order.userId] = {
           userId: order.userId,
           orders: [{ ...order }],
           lastOrder: { ...order },
           hasPaymentIntention:
-            (order.paymentMode?.type === CrudApi.PaymentType.card ||
-              order.paymentMode?.type === CrudApi.PaymentType.cash) &&
-            order.transactionStatus ===
-              CrudApi.PaymentStatus.waiting_for_payment,
+            (order.paymentMode?.type === PaymentType.card ||
+              order.paymentMode?.type === PaymentType.cash) &&
+            order.transactionStatus === PaymentStatus.waiting_for_payment,
           lowestStatus: currentStatus(order.statusLog),
         };
       } else {
         ordersByUser[order.userId].orders.push({ ...order });
         ordersByUser[order.userId].hasPaymentIntention =
           ordersByUser[order.userId].hasPaymentIntention ||
-          ((order.paymentMode?.type === CrudApi.PaymentType.card ||
-            order.paymentMode?.type === CrudApi.PaymentType.cash) &&
-            order.transactionStatus ===
-              CrudApi.PaymentStatus.waiting_for_payment);
+          ((order.paymentMode?.type === PaymentType.card ||
+            order.paymentMode?.type === PaymentType.cash) &&
+            order.transactionStatus === PaymentStatus.waiting_for_payment);
 
-        ordersByUser[order.userId].lowestStatus = CrudApi.getLowestStatus([
+        ordersByUser[order.userId].lowestStatus = getLowestStatus([
           ordersByUser[order.userId].lowestStatus,
           currentStatus(order.statusLog),
         ]);
@@ -174,8 +178,8 @@ export const getTableSeatOrders = (
       hasPaymentIntention: userOrders
         .map((o): boolean => o.hasPaymentIntention)
         .some((i): boolean => !!i),
-      lowestStatus: CrudApi.getLowestStatus(
-        userOrders.map((o): CrudApi.OrderStatus => o.lowestStatus),
+      lowestStatus: getLowestStatus(
+        userOrders.map((o): OrderStatus => o.lowestStatus),
       ),
     };
   });

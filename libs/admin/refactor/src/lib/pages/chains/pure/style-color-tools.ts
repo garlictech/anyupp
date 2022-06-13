@@ -1,4 +1,4 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ChainStyleColors } from '@bgap/domain';
 
 import { appPreviewSVG } from './svg-preview';
 
@@ -64,7 +64,7 @@ const colorMap = {
   __card_background__: '#ffffff',
 };
 
-export const getPreviewSVG = (colors: CrudApi.ChainStyleColors) => {
+export const getPreviewSVG = (colors: ChainStyleColors) => {
   let preview = appPreviewSVG;
 
   Object.keys(colorMap).forEach(key => {

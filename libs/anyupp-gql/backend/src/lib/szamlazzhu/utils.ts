@@ -1,22 +1,29 @@
-import * as CrudApi from '@bgap/crud-gql/api';
-import * as R from 'ramda';
-import * as fp from 'lodash/fp';
 import { flow, pipe } from 'fp-ts/lib/function';
+import * as fp from 'lodash/fp';
+import * as R from 'ramda';
 
-export const getTranslation = (localizedItem: CrudApi.LocalizedItem) =>
+import {
+  LocalizedItem,
+  Maybe,
+  OrderItem,
+  Price,
+  ServiceFeePolicy,
+} from '@bgap/domain';
+
+export const getTranslation = (localizedItem: LocalizedItem) =>
   localizedItem['hu'] || localizedItem['en'] || 'ismeretlen termék';
 
 export const calculaterServiceFeeItems = (
-  serviceFeePolicy: CrudApi.Maybe<CrudApi.ServiceFeePolicy> | undefined,
-  items: CrudApi.OrderItem[],
+  serviceFeePolicy: Maybe<ServiceFeePolicy> | undefined,
+  items: OrderItem[],
   currency: string,
-): [string, CrudApi.Price][] =>
+): [string, Price][] =>
   pipe(
     items,
     R.map(items => items.serviceFee),
     R.reject(R.isNil),
-    x => x as CrudApi.Price[],
-    R.groupBy((fee: CrudApi.Price) => fee.taxPercentage.toString()),
+    x => x as Price[],
+    R.groupBy((fee: Price) => fee.taxPercentage.toString()),
     fp.mapValues(
       flow(
         R.map(item => item.netPrice),

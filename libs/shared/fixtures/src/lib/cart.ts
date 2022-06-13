@@ -1,5 +1,13 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { RequiredId } from '@bgap/shared/types';
+import {
+  Allergen,
+  CreateCartInput,
+  OrderItemInput,
+  OrderStatus,
+  PaymentMethod,
+  PaymentType,
+  ProductType,
+} from '@bgap/domain';
 import { testIdPrefix } from './common';
 import { productFixture } from './product';
 import { unitFixture } from './unit';
@@ -17,7 +25,7 @@ const getOrderItem = (
   }: {
     tax: number;
   } = { tax: 0 },
-): CrudApi.OrderItemInput => ({
+): OrderItemInput => ({
   productName: {
     en: 'Water',
     hu: 'Viz',
@@ -50,28 +58,28 @@ const getOrderItem = (
   statusLog: [
     {
       userId: userId_01,
-      status: CrudApi.OrderStatus.placed,
+      status: OrderStatus.placed,
       ts: 1234,
     },
   ],
-  allergens: [CrudApi.Allergen.treenuts],
-  productType: CrudApi.ProductType.food,
+  allergens: [Allergen.treenuts],
+  productType: ProductType.food,
 });
-const cart_01: RequiredId<CrudApi.CreateCartInput> = {
+const cart_01: RequiredId<CreateCartInput> = {
   id: cartId_01,
   userId: userId_01,
   unitId: unitId_01,
   takeAway: false,
   paymentMode: {
-    type: CrudApi.PaymentType.stripe,
-    method: CrudApi.PaymentMethod.inapp,
+    type: PaymentType.stripe,
+    method: PaymentMethod.inapp,
   },
   place: {
     seat: 'SEAT',
     table: 'TABLE',
   },
   items: [getOrderItem()],
-  // servingMode: CrudApi.ServingMode.inplace, CURRENTLY this attribute is OPTIONAL so the logic should work without it TOO (handled in #1835)
+  // servingMode: ServingMode.inplace, CURRENTLY this attribute is OPTIONAL so the logic should work without it TOO (handled in #1835)
 };
 export const cartFixture = {
   cartId_NotExisting,

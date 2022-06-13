@@ -1,8 +1,9 @@
 import { fabric } from 'fabric';
-import * as CrudApi from '@bgap/crud-gql/api';
 
-import { customStringCompare } from '@bgap/shared/utils';
+import { FloorMapDataObject } from '@bgap/crud-gql/api';
+import { FloorMapData, UnitMapObjectType } from '@bgap/domain';
 import { FabricGroup, FabricObjectProperties } from '@bgap/shared/types';
+import { customStringCompare } from '@bgap/shared/utils';
 
 import { fabricCanvas } from './floor-map-canvas';
 import {
@@ -14,13 +15,9 @@ import {
   createTableRect,
   createWall,
 } from './floor-map-objects';
-import {
-  generateId,
-  getObjectRadius,
-  getObjectText,
-} from './floor-map-utils';
+import { generateId, getObjectRadius, getObjectText } from './floor-map-utils';
 
-export let mapRawData: CrudApi.FloorMapData;
+export let mapRawData: FloorMapData;
 
 export const initRawData = (w: number, h: number) => {
   mapRawData = {
@@ -30,19 +27,19 @@ export const initRawData = (w: number, h: number) => {
   };
 };
 
-export const loadRawData = (data: CrudApi.FloorMapData) => {
+export const loadRawData = (data: FloorMapData) => {
   mapRawData = Object.assign(mapRawData, data);
 
-  (<CrudApi.FloorMapDataObject[]>data.objects)
+  (<FloorMapDataObject[]>data.objects)
     // Sort by type for z-indexing
     .sort(customStringCompare('t', true))
-    .forEach((rawData: CrudApi.FloorMapDataObject) => {
+    .forEach((rawData: FloorMapDataObject) => {
       _drawObject(rawData, false);
     });
 };
 
 export const loadRawDataObject = (
-  rawData: CrudApi.FloorMapDataObject,
+  rawData: FloorMapDataObject,
   setActive: boolean,
 ) => {
   const dataIdx = mapRawData?.objects?.map(d => d.id).indexOf(rawData.id);
@@ -60,7 +57,7 @@ export const loadRawDataObject = (
   _drawObject(rawData, setActive);
 };
 
-const _drawObject = (o: CrudApi.FloorMapDataObject, setActive: boolean) => {
+const _drawObject = (o: FloorMapDataObject, setActive: boolean) => {
   const obj: fabric.Group = <fabric.Group>createObject(o);
 
   fabricCanvas.add(obj);
@@ -71,22 +68,22 @@ const _drawObject = (o: CrudApi.FloorMapDataObject, setActive: boolean) => {
 };
 
 export const createObject = (
-  mapObject: CrudApi.FloorMapDataObject,
+  mapObject: FloorMapDataObject,
 ): fabric.Group | undefined => {
   switch (mapObject.t) {
-    case CrudApi.UnitMapObjectType.table_r:
+    case UnitMapObjectType.table_r:
       return createTableRect(mapObject);
-    case CrudApi.UnitMapObjectType.table_c:
+    case UnitMapObjectType.table_c:
       return createTableCircle(mapObject);
-    case CrudApi.UnitMapObjectType.seat_r:
+    case UnitMapObjectType.seat_r:
       return createSeatRect(mapObject);
-    case CrudApi.UnitMapObjectType.seat_c:
+    case UnitMapObjectType.seat_c:
       return createSeatCircle(mapObject);
-    case CrudApi.UnitMapObjectType.counter:
+    case UnitMapObjectType.counter:
       return createBar(mapObject);
-    case CrudApi.UnitMapObjectType.wall:
+    case UnitMapObjectType.wall:
       return createWall(mapObject);
-    case CrudApi.UnitMapObjectType.label:
+    case UnitMapObjectType.label:
       return createLabel(mapObject);
     default:
       return undefined;
@@ -155,7 +152,7 @@ export const setTextToActiveObject = (text: string) => {
 };
 
 export const setRawDataField = (
-  key: keyof CrudApi.FloorMapDataObject,
+  key: keyof FloorMapDataObject,
   value: string | number,
 ) => {
   const obj = fabricCanvas.getActiveObject();
@@ -176,7 +173,7 @@ export const setRawDataField = (
 
 export const getRawDataField = (
   obj: FabricGroup,
-  key: keyof CrudApi.FloorMapDataObject,
+  key: keyof FloorMapDataObject,
 ): string | number =>
   mapRawData?.objects?.find(o => o.id === obj.id)?.[key] || '';
 

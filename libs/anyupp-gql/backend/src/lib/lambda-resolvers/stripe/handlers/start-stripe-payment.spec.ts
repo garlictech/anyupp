@@ -1,9 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { startStripePayment } from './start-stripe-payment';
-import { payTipWithStripe } from './pay-tip-with-stripe';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { StripeResolverDeps } from '../stripe.utils';
 import { of } from 'rxjs';
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  OrderStatus,
+  PaymentMethod,
+  PaymentStatus,
+  PaymentType,
+  PayTipWithStripeInput,
+  StartStripePaymentInput,
+  TipType,
+  User,
+} from '@bgap/domain';
+
+import { StripeResolverDeps } from '../stripe.utils';
+import { payTipWithStripe } from './pay-tip-with-stripe';
+import { startStripePayment } from './start-stripe-payment';
 
 const getDepsMock = (): StripeResolverDeps => ({
   userId: 'USER_ID',
@@ -17,13 +28,13 @@ const getDepsMock = (): StripeResolverDeps => ({
         statusLog: [
           {
             userId: 'USER_ID',
-            status: CrudApi.OrderStatus.none,
+            status: OrderStatus.none,
             ts: 123456,
           },
         ],
         paymentMode: {
-          method: CrudApi.PaymentMethod.inapp,
-          type: CrudApi.PaymentType.stripe,
+          method: PaymentMethod.inapp,
+          type: PaymentType.stripe,
         },
         sumPriceShown: {
           currency: 'BATKA',
@@ -45,7 +56,7 @@ const getDepsMock = (): StripeResolverDeps => ({
       }),
     ),
     GetUser: jest.fn().mockReturnValue(
-      of<CrudApi.User>({
+      of<User>({
         id: 'USER_ID',
         createdAt: 'CREATEDAT',
         updatedAt: 'UPDATEDAT',
@@ -58,7 +69,7 @@ const getDepsMock = (): StripeResolverDeps => ({
     CreateTransaction: jest.fn().mockReturnValue(
       of({
         id: 'TRANSACTION_ID',
-        status: CrudApi.PaymentStatus.waiting_for_payment,
+        status: PaymentStatus.waiting_for_payment,
       }),
     ),
     UpdateTransaction: jest.fn().mockReturnValue(
@@ -115,7 +126,7 @@ const checkMocks = (deps: StripeResolverDeps) => {
 };
 
 test('startStripePayment test', async () => {
-  const input: CrudApi.StartStripePaymentInput = {
+  const input: StartStripePaymentInput = {
     invoiceAddress: {
       city: 'Pornóapáti',
       country: 'Neverland',
@@ -125,7 +136,7 @@ test('startStripePayment test', async () => {
       taxNumber: '123456',
     },
     orderId: 'ORDER_ID',
-    paymentMethod: CrudApi.PaymentMethod.inapp,
+    paymentMethod: PaymentMethod.inapp,
     savePaymentMethod: false,
     paymentMethodId: 'PAYMENT_METHOD_ID',
   };
@@ -138,11 +149,11 @@ test('startStripePayment test', async () => {
 });
 
 test('payTipWithStripe test - fixed amount', async () => {
-  const input: CrudApi.PayTipWithStripeInput = {
+  const input: PayTipWithStripeInput = {
     orderId: 'ORDER_ID',
     tip: {
       value: 100,
-      type: CrudApi.TipType.amount,
+      type: TipType.amount,
     },
   };
 
@@ -154,11 +165,11 @@ test('payTipWithStripe test - fixed amount', async () => {
 });
 
 test('payTipWithStripe test - percentage', async () => {
-  const input: CrudApi.PayTipWithStripeInput = {
+  const input: PayTipWithStripeInput = {
     orderId: 'ORDER_ID',
     tip: {
       value: 10,
-      type: CrudApi.TipType.percent,
+      type: TipType.percent,
     },
   };
 

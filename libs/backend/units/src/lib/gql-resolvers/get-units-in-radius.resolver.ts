@@ -1,5 +1,4 @@
-import * as CrudApi from '@bgap/crud-gql/api';
-import { Maybe } from '@bgap/crud-gql/api';
+import { CrudSdk, Maybe } from '@bgap/crud-gql/api';
 import {
   defaultSupportedOrderModes,
   defaultSupportedServingModes,
@@ -9,6 +8,15 @@ import {
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import * as geolib from 'geolib';
+import {
+  Chain,
+  ChainStyle,
+  GeoUnit,
+  Group,
+  LocationLatLngInput,
+  PaymentMode,
+  Unit,
+} from '@bgap/domain';
 import { combineLatest, EMPTY, forkJoin, Observable, of } from 'rxjs';
 import { catchError, defaultIfEmpty, map, switchMap } from 'rxjs/operators';
 import {
@@ -22,11 +30,11 @@ type ListResponse<T> = {
 };
 
 export const getUnitsInRadius =
-  (location: CrudApi.LocationLatLngInput) =>
-  (crudSdk: CrudApi.CrudSdk): Observable<ListResponse<CrudApi.GeoUnit>> => {
+  (location: LocationLatLngInput) =>
+  (crudSdk: CrudSdk): Observable<ListResponse<GeoUnit>> => {
     return listActiveUnits()(crudSdk).pipe(
       catchError(err => of(err)),
-      filterNullishGraphqlListWithDefault<CrudApi.Unit>([]),
+      filterNullishGraphqlListWithDefault<Unit>([]),
       map(units => filterOutNotOpenUnits({ units })),
       switchMap(units =>
         combineLatest(
@@ -52,7 +60,7 @@ export const getUnitsInRadius =
                   paymentModes: unit.paymentModes ? [...unit.paymentModes] : [],
                 }),
               ),
-              defaultIfEmpty({} as CrudApi.GeoUnit),
+              defaultIfEmpty({} as GeoUnit),
             ),
           ),
         ),
@@ -75,14 +83,14 @@ const toGeoUnit = ({
   chainStyle,
   paymentModes,
 }: {
-  unit: CrudApi.Unit;
-  group: CrudApi.Group;
-  chain: CrudApi.Chain;
+  unit: Unit;
+  group: Group;
+  chain: Chain;
   currency: string;
-  inputLocation: CrudApi.LocationLatLngInput;
-  chainStyle: CrudApi.ChainStyle;
-  paymentModes?: Maybe<CrudApi.PaymentMode>[];
-}): CrudApi.GeoUnit => ({
+  inputLocation: LocationLatLngInput;
+  chainStyle: ChainStyle;
+  paymentModes?: Maybe<PaymentMode>[];
+}): GeoUnit => ({
   id: unit.id,
   groupId: unit.groupId,
   chainId: unit.chainId,
@@ -121,12 +129,12 @@ const toGeoUnit = ({
   updatedAt: new Date().toISOString(),
 });
 
-const listActiveUnits = () => (crudSdk: CrudApi.CrudSdk) =>
+const listActiveUnits = () => (crudSdk: CrudSdk) =>
   crudSdk.SearchUnits({ filter: { isActive: { eq: true } } });
 
 const getGroupCurrency =
   (id: string) =>
-  (crudSdk: CrudApi.CrudSdk): Observable<string> =>
+  (crudSdk: CrudSdk): Observable<string> =>
     crudSdk.GetGroupCurrency({ id }, { fetchPolicy: 'no-cache' }).pipe(
       // pipeDebug(`### getGroupCurrency by groupId: ${id}`),
       throwIfEmptyValue<{ currency: string }>(),
@@ -135,14 +143,14 @@ const getGroupCurrency =
 
 const getChain =
   (id: string) =>
-  (crudSdk: CrudApi.CrudSdk): Observable<CrudApi.Chain> =>
+  (crudSdk: CrudSdk): Observable<Chain> =>
     crudSdk
       .GetChain({ id }, { fetchPolicy: 'no-cache' })
-      .pipe(throwIfEmptyValue<CrudApi.Chain>());
+      .pipe(throwIfEmptyValue<Chain>());
 
 const getGroup =
   (id: string) =>
-  (crudSdk: CrudApi.CrudSdk): Observable<CrudApi.Group> =>
+  (crudSdk: CrudSdk): Observable<Group> =>
     crudSdk
       .GetGroup({ id }, { fetchPolicy: 'no-cache' })
-      .pipe(throwIfEmptyValue<CrudApi.Group>());
+      .pipe(throwIfEmptyValue<Group>());

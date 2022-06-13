@@ -1,17 +1,18 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as E from 'fp-ts/lib/Either';
 import { flow, pipe } from 'fp-ts/lib/function';
 import { defer, from, of, throwError } from 'rxjs';
 import { map, mapTo, switchMap, throwIfEmpty } from 'rxjs/operators';
+
+import { AdminUser, CreateAdminUserMutationVariables } from '@bgap/domain';
+
 import { ResolverErrorCode } from '../../utils/errors';
 import { AdminUserResolverDeps } from './utils';
+import { CrudSdk } from '@bgap/crud-gql/api';
 
 export const createAdminUser =
-  (vars: CrudApi.CreateAdminUserMutationVariables) =>
-  (
-    deps: AdminUserResolverDeps,
-  ): ReturnType<CrudApi.CrudSdk['CreateAdminUser']> => {
+  (vars: CreateAdminUserMutationVariables) =>
+  (deps: AdminUserResolverDeps): ReturnType<CrudSdk['CreateAdminUser']> => {
     console.debug('createAdminUser Resolver parameters: ', vars);
     const newUsername = vars.input.id ?? deps.userNameGenerator();
 
@@ -98,7 +99,7 @@ export const createAdminUser =
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
           }),
-          (adminUser: CrudApi.AdminUser) => ({
+          (adminUser: AdminUser) => ({
             Item: adminUser,
             TableName: deps.adminUserTableName,
           }),

@@ -4,7 +4,7 @@ import { flow, pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
 import * as O from 'fp-ts/lib/Option';
 import * as Joi from 'joi';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { validateSchema } from '@bgap/shared/data-validators';
 import {
   map,
@@ -34,6 +34,20 @@ import {
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import { regenerateUnitData } from '@bgap/backend/units';
+import {
+  Maybe,
+  ProductComponent,
+  ProductComponentSetType,
+  ProductConfigComponent,
+  ProductConfigSet,
+  ProductType,
+  ServingMode,
+  UnitProduct,
+  UpdateChainProductInput,
+  UpdateGroupProductInput,
+  UpdateUnitProductInput,
+} from '@bgap/domain';
+import { CrudSdk } from '@bgap/crud-gql/api';
 
 // make sure that everything gets (re)indexed
 export const ES_DELAY = 5000; //ms
@@ -62,9 +76,9 @@ const commonSchema = {
 };
 
 export interface ProductUpdateCommands {
-  chain: CrudApi.UpdateChainProductInput;
-  unit: CrudApi.UpdateUnitProductInput;
-  group: CrudApi.UpdateGroupProductInput;
+  chain: UpdateChainProductInput;
+  unit: UpdateUnitProductInput;
+  group: UpdateGroupProductInput;
 }
 
 export interface Dish {
@@ -147,10 +161,8 @@ const getFirstFoundItem = <T>(): UnaryFunction<
   );
 
 export const searchExternalUnitProduct =
-  (sdk: CrudApi.CrudSdk) =>
-  (
-    rkeeperProductGuid: string,
-  ): Observable<CrudApi.Maybe<CrudApi.UnitProduct>> =>
+  (sdk: CrudSdk) =>
+  (rkeeperProductGuid: string): Observable<Maybe<UnitProduct>> =>
     sdk
       .SearchUnitProducts({
         filter: {
@@ -168,7 +180,7 @@ export interface RKeeperBusinessEntityInfo {
 }
 
 export const getBusinessEntityInfo =
-  (sdk: CrudApi.CrudSdk) =>
+  (sdk: CrudSdk) =>
   (externalRestaurantId: string): Observable<RKeeperBusinessEntityInfo> =>
     sdk
       .SearchUnits({
@@ -187,11 +199,11 @@ export const getBusinessEntityInfo =
       );
 
 export const createRkeeperProduct =
-  (sdk: CrudApi.CrudSdk) =>
+  (sdk: CrudSdk) =>
   (
     businessEntity: RKeeperBusinessEntityInfo,
     dish: Dish,
-    configSets: CrudApi.ProductConfigSet[] | null,
+    configSets: ProductConfigSet[] | null,
   ) =>
     sdk
       .CreateChainProduct({
@@ -201,7 +213,7 @@ export const createRkeeperProduct =
           name: {
             hu: dish.name,
           },
-          productType: CrudApi.ProductType.other,
+          productType: ProductType.dish,
           isVisible: true,
           dirty: true,
           variants: [
@@ -253,7 +265,7 @@ export const createRkeeperProduct =
               unitId: businessEntity.unitId,
               isVisible: dish.active,
               position: -1,
-              supportedServingModes: [CrudApi.ServingMode.inplace],
+              supportedServingModes: [ServingMode.inplace],
               externalId: externalProductIdMaker(dish.id.toString()),
               variants: [
                 {
@@ -284,11 +296,11 @@ export const createRkeeperProduct =
       );
 
 export const updateRkeeperProduct =
-  (sdk: CrudApi.CrudSdk) =>
+  (sdk: CrudSdk) =>
   (
     dish: Dish,
-    foundUnitProduct: CrudApi.UnitProduct,
-    configSets: CrudApi.ProductConfigSet[] | null,
+    foundUnitProduct: UnitProduct,
+    configSets: ProductConfigSet[] | null,
   ) =>
     sdk.UpdateUnitProduct({
       input: {
@@ -322,7 +334,7 @@ export const defaultProductCategoryId = (businessEntityInfo: {
 }) => `default-product-category-${businessEntityInfo.chainId}`;
 
 export const createDefaultProductCategory =
-  (sdk: CrudApi.CrudSdk) => (businessEntityInfo: RKeeperBusinessEntityInfo) =>
+  (sdk: CrudSdk) => (businessEntityInfo: RKeeperBusinessEntityInfo) =>
     sdk
       .CreateProductCategory({
         input: {
@@ -362,12 +374,12 @@ export const normalizeModifier = (modifier: Modifier) =>
   normalizeCommon(modifier) as Modifier;
 
 export const resolveComponentSets =
-  (sdk: CrudApi.CrudSdk, chainId: string, rawData: any) =>
-  (dish: Dish): OO.ObservableOption<CrudApi.ProductConfigSet[]> =>
+  (sdk: CrudSdk, chainId: string, rawData: any) =>
+  (dish: Dish): OO.ObservableOption<ProductConfigSet[]> =>
     resolveComponentSetsHelper(sdk, chainId, rawData, dish);
 
 export const handleRkeeperProducts =
-  (sdk: CrudApi.CrudSdk) =>
+  (sdk: CrudSdk) =>
   (externalRestaurantId: string) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (rawData: any): Observable<boolean> =>
@@ -389,9 +401,7 @@ export const handleRkeeperProducts =
                   businessEntityInfo.chainId,
                   rawData,
                 )(dish).pipe(
-                  map(
-                    O.getOrElse<CrudApi.ProductConfigSet[] | null>(() => null),
-                  ),
+                  map(O.getOrElse<ProductConfigSet[] | null>(() => null)),
                 ),
                 searchExternalUnitProduct(sdk)(dish.id.toString()),
               ).pipe(
@@ -430,8 +440,8 @@ export const handleRkeeperProducts =
     );
 
 export const upsertComponent =
-  (sdk: CrudApi.CrudSdk, chainId: string) =>
-  (modifier: Modifier): Observable<CrudApi.ProductConfigComponent> =>
+  (sdk: CrudSdk, chainId: string) =>
+  (modifier: Modifier): Observable<ProductConfigComponent> =>
     sdk
       .SearchProductComponents({
         filter: {
@@ -439,7 +449,7 @@ export const upsertComponent =
         },
       })
       .pipe(
-        getFirstFoundItem<CrudApi.ProductComponent>(),
+        getFirstFoundItem<ProductComponent>(),
         switchMap(component =>
           component === null
             ? sdk.CreateProductComponent({
@@ -470,15 +480,15 @@ export const upsertComponent =
       );
 
 const modifierUpdaterHelper = R.memoizeWith(
-  (_sdk: CrudApi.CrudSdk, chainId: string, modifier: Modifier) =>
+  (_sdk: CrudSdk, chainId: string, modifier: Modifier) =>
     chainId + modifier.id.toString(),
-  (sdk: CrudApi.CrudSdk, chainId: string, modifier: Modifier) =>
+  (sdk: CrudSdk, chainId: string, modifier: Modifier) =>
     pipe(upsertComponent(sdk, chainId)(modifier), shareReplay(1)),
 );
 
 export const modifierUpdater =
-  (sdk: CrudApi.CrudSdk, chainId: string) =>
-  (modifier: Modifier): Observable<CrudApi.ProductConfigComponent> =>
+  (sdk: CrudSdk, chainId: string) =>
+  (modifier: Modifier): Observable<ProductConfigComponent> =>
     modifierUpdaterHelper(sdk, chainId, modifier);
 
 export interface ModifierGroup {
@@ -505,9 +515,9 @@ export const normalizeModifierGroup = (modifierGroup: ModifierGroup) => ({
 });
 
 const upsertConfigSetsHelper = R.memoizeWith(
-  (_sdk: CrudApi.CrudSdk, chainId: string, modifierGroup: ModifierGroup) =>
+  (_sdk: CrudSdk, chainId: string, modifierGroup: ModifierGroup) =>
     chainId + modifierGroup.id.toString(),
-  (sdk: CrudApi.CrudSdk, chainId: string, modifierGroup: ModifierGroup) =>
+  (sdk: CrudSdk, chainId: string, modifierGroup: ModifierGroup) =>
     pipe(
       modifierGroup.modifiers.map(modifierUpdater(sdk, chainId)),
       res => (R.isEmpty(res) ? of([]) : combineLatest(res)),
@@ -527,7 +537,7 @@ const upsertConfigSetsHelper = R.memoizeWith(
                     input: {
                       externalId: modifierGroup.id.toString(),
                       chainId,
-                      type: CrudApi.ProductComponentSetType.rkeeper,
+                      type: ProductComponentSetType.rkeeper,
                       name: {
                         hu: modifierGroup.name,
                       },
@@ -559,8 +569,8 @@ const upsertConfigSetsHelper = R.memoizeWith(
 );
 
 export const upsertConfigSets =
-  (sdk: CrudApi.CrudSdk, chainId: string) =>
-  (modifierGroups: ModifierGroup[]): Observable<CrudApi.ProductConfigSet[]> =>
+  (sdk: CrudSdk, chainId: string) =>
+  (modifierGroups: ModifierGroup[]): Observable<ProductConfigSet[]> =>
     R.isEmpty(modifierGroups)
       ? of([])
       : combineLatest(
@@ -574,10 +584,10 @@ export const filterActiveData = <T extends { active: boolean }>(data: T[]) =>
 
 const resolveComponentSetsHelper = R.memoizeWith(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (_sdk: CrudApi.CrudSdk, chainId: string, _rawData: any, dish: Dish) =>
+  (_sdk: CrudSdk, chainId: string, _rawData: any, dish: Dish) =>
     chainId + (dish.modischeme ?? -1).toString(),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (sdk: CrudApi.CrudSdk, chainId: string, rawData: any, dish: Dish) =>
+  (sdk: CrudSdk, chainId: string, rawData: any, dish: Dish) =>
     pipe(
       rawData?.data?.modifiers,
       O.fromPredicate(() => !!rawData?.data?.modifiers && !!dish.modischeme),

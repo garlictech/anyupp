@@ -1,5 +1,5 @@
 import { filterNullish } from '@bgap/shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import bcrypt from 'bcryptjs';
 import { catchError, switchMap, tap, delay, take } from 'rxjs/operators';
 import { unitFixture } from '@bgap/shared/fixtures';
@@ -11,6 +11,7 @@ import {
   createUnitsDeps,
   updateUnitResolver,
 } from '@bgap/backend/units';
+import { Unit } from '@bgap/domain';
 
 describe('Test unit CRUD operations', () => {
   const crudSdk = createIamCrudSdk();
@@ -173,8 +174,8 @@ describe('Test unit CRUD operations', () => {
         switchMap(() =>
           crudSdk.GetUnit({ id: unitFixture.createRkeeperUnit.id }),
         ),
-        filterNullish<CrudApi.Unit>(),
-        tap(async (x: CrudApi.Unit) => {
+        filterNullish<Unit>(),
+        tap(async (x: Unit) => {
           expect(x).toMatchSnapshot(matcher, 'READ');
 
           expect(
@@ -196,8 +197,8 @@ describe('Test unit CRUD operations', () => {
             },
           }),
         ),
-        filterNullish<CrudApi.Unit>(),
-        tap(async (x: CrudApi.Unit) => {
+        filterNullish<Unit>(),
+        tap(async (x: Unit) => {
           expect(x).toMatchSnapshot(matcher, 'UPDATE');
 
           expect(

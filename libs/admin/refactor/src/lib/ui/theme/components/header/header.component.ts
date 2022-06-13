@@ -8,18 +8,8 @@ import {
   NgZone,
   OnInit,
 } from '@angular/core';
-
-import { appCoreActions } from '../../../../store/app-core';
-
 import { Router } from '@angular/router';
-import { ConfirmDialogComponent } from '../../../../shared/components';
-import { CognitoService } from '../../../../shared/data-access/auth';
-import { DataService } from '../../../../shared/data-access/data';
-import { DEFAULT_LANG } from '../../../../shared/utils';
-import { appCoreSelectors } from '../../../../store/app-core';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import { LayoutService } from '../../../../ui/core';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { AdminUser, Group } from '@bgap/domain';
 import {
   NbDialogService,
   NbMenuService,
@@ -28,6 +18,13 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+
+import { ConfirmDialogComponent } from '../../../../shared/components';
+import { CognitoService } from '../../../../shared/data-access/auth';
+import { DataService } from '../../../../shared/data-access/data';
+import { DEFAULT_LANG } from '../../../../shared/utils';
+import { loggedUserSelectors } from '../../../../store/logged-user';
+import { LayoutService } from '../../../../ui/core';
 
 interface IMenuItem {
   title: string;
@@ -43,8 +40,8 @@ interface IMenuItem {
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
-  public groups$?: Observable<CrudApi.Group[]>;
-  public loggedUser?: CrudApi.AdminUser;
+  public groups$?: Observable<Group[]>;
+  public loggedUser?: AdminUser;
   public userPictureOnly = false;
   public userMenu: IMenuItem[];
   public languageMenu: IMenuItem[];
@@ -128,15 +125,6 @@ export class HeaderComponent implements OnInit {
         this._changeDetectorRef.detectChanges();
       });
 
-    this._store
-      .pipe(
-        select(appCoreSelectors.getPlayNewOrderNotification),
-        untilDestroyed(this),
-      )
-      .subscribe(play => {
-        this._playNotification(play);
-      });
-
     this._translateService.onLangChange.subscribe(
       (event: LangChangeEvent): void => {
         this.selectedLang = (event.lang || '').split('-')[0];
@@ -208,20 +196,6 @@ export class HeaderComponent implements OnInit {
         },
       ],
     };
-  }
-
-  private _playNotification(play: boolean) {
-    if (play) {
-      const audio = new Audio('/assets/sounds/doorbell.mp3');
-      audio.load();
-      audio.play();
-
-      this._store.dispatch(
-        appCoreActions.setPlayNewOrderNotification({
-          playNewOrderNotification: false,
-        }),
-      );
-    }
   }
 
   public toggleSidebar($event: Event) {

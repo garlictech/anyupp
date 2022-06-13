@@ -5,9 +5,10 @@ import * as Joi from 'joi';
 import * as R from 'ramda';
 import { of } from 'rxjs';
 
-import * as CrudApi from '@bgap/crud-gql/api';
 import { validateSchema } from '@bgap/shared/data-validators';
 import { oeTryCatch } from '@bgap/shared/utils';
+import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
+import { Order, OrderStatus, Unit } from '@bgap/domain';
 
 export type RKeeperRequest = fastify.FastifyRequest<{
   Params: { externalUnitId: string };
@@ -15,7 +16,7 @@ export type RKeeperRequest = fastify.FastifyRequest<{
 
 export interface OrderStatusRequest {
   remoteOrderId: string;
-  currentState: CrudApi.OrderStatus;
+  currentState: OrderStatus;
 }
 
 const requestSchema = {
@@ -31,16 +32,16 @@ export const {
 } = validateSchema<OrderStatusRequest>(requestSchema, 'OrderStatus', true);
 
 export interface OrderStatusHandlerDeps {
-  anyuppSdk: CrudApi.CrudSdk;
+  anyuppSdk: CrudSdk;
   timestamp: () => number;
 }
 
 const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
-const anyuppSdk = CrudApi.getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
+const anyuppSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 
 export interface State_UnitFetched {
-  unit: CrudApi.Unit;
+  unit: Unit;
   request: OrderStatusRequest;
 }
 
@@ -59,7 +60,7 @@ export const getUnit =
           R.reject(item => !item),
         ),
       ),
-      OE.map(x => x as CrudApi.Unit[]),
+      OE.map(x => x as Unit[]),
       OE.chain(
         OE.fromPredicate(
           units => units.length === 1,
@@ -73,7 +74,7 @@ export const getUnit =
     );
 
 export interface State_OrderFetched extends State_UnitFetched {
-  order: CrudApi.Order;
+  order: Order;
 }
 
 export const getOrder =
@@ -95,7 +96,7 @@ export const getOrder =
           R.reject(item => !item),
         ),
       ),
-      OE.map(x => x as CrudApi.Order[]),
+      OE.map(x => x as Order[]),
       OE.chain(
         OE.fromPredicate(
           orders => orders.length === 1,
@@ -125,8 +126,8 @@ export const updateOrderStatus =
           ],
           currentStatus: state.request.currentState,
           archived: R.includes(state.request.currentState, [
-            CrudApi.OrderStatus.failed,
-            CrudApi.OrderStatus.served,
+            OrderStatus.failed,
+            OrderStatus.served,
           ]),
         },
       }),

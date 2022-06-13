@@ -139,7 +139,12 @@
     "search": "Search",
     "value": "Value",
     "icon": "Icon",
-    "tip": "Tip"
+    "tip": "Tip",
+    "allowed": "Allowed",
+    "disallowed": "Disallowed",
+    "chooseFile": "Choose file",
+    "chooseFileDesc": "Select a file to upload...",
+    "upload": "Upload"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -261,6 +266,9 @@
     "packUnit": "Pack unit",
     "refPrice": "Reference price",
     "price": "Price",
+    "menuPrice": "Menu price",
+    "grossPrice": "Gross price",
+    "netPrice": "Net price",
     "variantName": "Variant name",
     "variantNameEN": "Variant name (EN)",
     "variantNameDE": "Variant name (DE)",
@@ -383,7 +391,17 @@
     },
     "merchantId": "Stripe Merchant ID",
     "canRequestVatInvoice": "Can request VAT invoice",
-    "canCallWaiter": "Can call a waiter"
+    "canCallWaiter": "Can call a waiter",
+    "adBanner": "Advertisement banner",
+    "coverBanner": "Cover image banner",
+    "showBanners": "Show banners",
+    "uploadNewBanners": "Upload new banner",
+    "noUploadedBanner": "There's no uploaded banner",
+    "maxBannerCountReached": "Max banner count has been reached",
+    "selectedFileIsNotAnImage": "The selected file is not an image file",
+    "noSelectedImage": "No selected image",
+    "bannerSizeIsTooHigh": "Banner size is too high (max. {{size}}MB)",
+    "recommendedBannerSize": "We recommend uploading images with the same resolution (600px * 300px)."
   },
   "users": {
     "listTitle": "Users",

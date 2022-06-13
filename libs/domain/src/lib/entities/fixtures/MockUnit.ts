@@ -1,6 +1,13 @@
-import { CrudApi } from '../models';
+import {
+  Unit,
+  OrderPaymentPolicy,
+  PaymentMethod,
+  PaymentType,
+  ServingMode,
+  OrderMode,
+} from '../models';
 
-export const mockUnit: CrudApi.Unit = {
+export const mockUnit: Unit = {
   id: 'dummy_unit_id',
   groupId: 'dummy_group_id',
   chainId: 'dummy_chain_id',
@@ -29,19 +36,19 @@ export const mockUnit: CrudApi.Unit = {
     hu: `Teszt unit #dummy_unit_id leírás`,
     en: `Test unit #dummy_unit_id description`,
   },
-  orderPaymentPolicy: CrudApi.OrderPaymentPolicy.prepay,
+  orderPaymentPolicy: OrderPaymentPolicy.prepay,
   paymentModes: [
     {
-      method: CrudApi.PaymentMethod.cash,
-      type: CrudApi.PaymentType.cash,
+      method: PaymentMethod.cash,
+      type: PaymentType.cash,
     },
     {
-      method: CrudApi.PaymentMethod.card,
-      type: CrudApi.PaymentType.card,
+      method: PaymentMethod.card,
+      type: PaymentType.card,
     },
     {
-      method: CrudApi.PaymentMethod.inapp,
-      type: CrudApi.PaymentType.stripe,
+      method: PaymentMethod.inapp,
+      type: PaymentType.stripe,
     },
   ],
   lanes: [
@@ -60,9 +67,6 @@ export const mockUnit: CrudApi.Unit = {
     from: '1970-01-01',
     to: '2970-01-01',
   },
-  supportedOrderModes: [CrudApi.OrderMode.pickup, CrudApi.OrderMode.instant],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
 };

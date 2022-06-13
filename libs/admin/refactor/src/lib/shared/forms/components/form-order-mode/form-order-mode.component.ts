@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { OrderMode } from '@bgap/domain';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -9,13 +9,13 @@ import * as CrudApi from '@bgap/crud-gql/api';
 })
 export class FormOrderModeComponent {
   @Input() control?: FormControl | null;
-  @Input() orderModes: CrudApi.OrderMode[] = [];
+  @Input() orderModes: OrderMode[] = [];
 
-  public orderModeIsChecked(orderMode: CrudApi.OrderMode): boolean {
+  public orderModeIsChecked(orderMode: OrderMode): boolean {
     return (this.control?.value || []).indexOf(orderMode) >= 0;
   }
 
-  public toggleOrderMode(orderMode: CrudApi.OrderMode) {
+  public toggleOrderMode(orderMode: OrderMode) {
     const orderModesArr = this.control?.value;
     const idx = orderModesArr.indexOf(orderMode);
 

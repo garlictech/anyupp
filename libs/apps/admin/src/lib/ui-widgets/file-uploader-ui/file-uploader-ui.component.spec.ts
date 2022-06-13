@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { commonStorybookMockedImports } from '../../pure';
 import { FileUploaderUIComponent } from './file-uploader-ui.component';
 import { ButtonUIComponent } from '../button-ui/button-ui.component';
 
@@ -10,6 +10,7 @@ describe('FileUploaderUIComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FileUploaderUIComponent, ButtonUIComponent],
+      imports: [...commonStorybookMockedImports],
     }).compileComponents();
   });
 

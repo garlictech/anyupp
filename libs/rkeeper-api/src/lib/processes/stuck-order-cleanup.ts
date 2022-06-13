@@ -1,13 +1,14 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { flow } from 'fp-ts/lib/function';
 import * as R from 'ramda';
 import { switchMap, tap } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
+import { Order, OrderStatus } from '@bgap/domain';
+import { CrudSdk } from '@bgap/crud-gql/api';
 
 export interface StuckOrdersCleanupDeps {
-  sdk: CrudApi.CrudSdk;
+  sdk: CrudSdk;
   now: () => number;
   timeStamp: (dateString: string) => number;
 }
@@ -17,29 +18,29 @@ export const STUCK_ORDER_TIME_THRESHOLD = 1000 * 60 * 10;
 export const stuckOrderCleanupHandler = (deps: StuckOrdersCleanupDeps) =>
   getAllPaginatedData(deps.sdk.SearchOrders, {
     query: {
-      filter: { and: [{ currentStatus: { eq: CrudApi.OrderStatus.none } }] },
+      filter: { and: [{ currentStatus: { eq: OrderStatus.none } }] },
     },
   }).pipe(
-    filterNullishGraphqlListWithDefault<CrudApi.Order>([]),
+    filterNullishGraphqlListWithDefault<Order>([]),
     switchMap(
       flow(
         R.filter(
-          (order: CrudApi.Order) =>
+          (order: Order) =>
             deps.now() - deps.timeStamp(order.updatedAt) >
             STUCK_ORDER_TIME_THRESHOLD,
         ),
-        R.map((order: CrudApi.Order) =>
+        R.map((order: Order) =>
           deps.sdk.UpdateOrder({
             input: {
               id: order.id,
-              currentStatus: CrudApi.OrderStatus.failed,
+              currentStatus: OrderStatus.failed,
               archived: true,
               statusLog: [
                 ...order.statusLog,
                 {
                   userId: 'blocked-order-lambda',
                   ts: deps.now(),
-                  status: CrudApi.OrderStatus.failed,
+                  status: OrderStatus.failed,
                 },
               ],
             },

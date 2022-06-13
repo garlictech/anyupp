@@ -1,4 +1,11 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  ChainProduct,
+  GroupProduct,
+  ProductComponent,
+  ProductComponentSet,
+  ProductVariant,
+  UnitProduct,
+} from '@bgap/domain';
 
 export interface Allergen {
   id: string;
@@ -10,28 +17,26 @@ export interface ProductOrderChangeEvent {
   productId: string;
 }
 
-export type MergedProduct = CrudApi.ChainProduct &
-  CrudApi.GroupProduct &
-  CrudApi.UnitProduct;
+export type MergedProduct = ChainProduct & GroupProduct & UnitProduct;
 
-export type ProductVariantWithPrice = Omit<CrudApi.ProductVariant, 'price'> &
-  Required<Pick<CrudApi.ProductVariant, 'price'>>;
+export type ProductVariantWithPrice = Omit<ProductVariant, 'price'> &
+  Required<Pick<ProductVariant, 'price'>>;
 
 export type MergedProductWithPrices = Omit<MergedProduct, 'variants'> & {
   variants: ProductVariantWithPrice[];
 };
 
 export interface ProductComponentSetMap {
-  [key: string]: Required<CrudApi.ProductComponentSet>;
+  [key: string]: Required<ProductComponentSet>;
 }
 
 export interface ProductComponentMap {
-  [key: string]: Required<CrudApi.ProductComponent>;
+  [key: string]: Required<ProductComponent>;
 }
 
 export interface Product
-  extends Partial<CrudApi.ChainProduct>,
-    Partial<CrudApi.GroupProduct>,
-    Partial<CrudApi.UnitProduct> {
+  extends Partial<ChainProduct>,
+    Partial<GroupProduct>,
+    Partial<UnitProduct> {
   pending?: boolean;
 }

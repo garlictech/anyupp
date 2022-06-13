@@ -1,4 +1,3 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
   testAdminUsername,
   testAdminUserPassword,
@@ -8,13 +7,14 @@ import { combineLatest, Observable, of } from 'rxjs';
 import { delay, switchMap, tap } from 'rxjs/operators';
 import { createAuthenticatedCrudSdk } from '../../../../api-clients';
 import { throwIfEmptyValue } from 'libs/shared/utils/src';
+import { CrudSdk } from '@bgap/crud-gql/api';
 import {
   MutationCreateStripeCardArgs,
   MutationUpdateMyStripeCardArgs,
-} from '@bgap/crud-gql/api';
+} from '@bgap/domain';
 
 describe('Stripe Payment Method CRUD tests', () => {
-  let authAnyuppSdk: CrudApi.CrudSdk;
+  let authAnyuppSdk: CrudSdk;
   let paymentMethodIds: string[];
   let initialPaymentMethodCount: number;
   let tempPaymentMethodId: string;
@@ -59,13 +59,13 @@ describe('Stripe Payment Method CRUD tests', () => {
       updateOp,
       createOp,
     }: {
-      listOp: () => ReturnType<CrudApi.CrudSdk['ListStripeCards']>;
+      listOp: () => ReturnType<CrudSdk['ListStripeCards']>;
       updateOp: (
         input: MutationUpdateMyStripeCardArgs,
-      ) => ReturnType<CrudApi.CrudSdk['UpdateMyStripeCard']>;
+      ) => ReturnType<CrudSdk['UpdateMyStripeCard']>;
       createOp: (
         input: MutationCreateStripeCardArgs,
-      ) => ReturnType<CrudApi.CrudSdk['CreateStripeCard']>;
+      ) => ReturnType<CrudSdk['CreateStripeCard']>;
     }) => {
       const calc1 = listOp().pipe(
         tap(result => {
@@ -138,7 +138,7 @@ describe('Stripe Payment Method CRUD tests', () => {
             fetchPolicy: 'network-only',
           }),
         createOp: authAnyuppSdk.CreateStripeCard,
-        updateOp: (input: CrudApi.MutationUpdateMyStripeCardArgs) =>
+        updateOp: (input: MutationUpdateMyStripeCardArgs) =>
           authAnyuppSdk.UpdateMyStripeCard(input, {
             fetchPolicy: 'network-only',
           }),

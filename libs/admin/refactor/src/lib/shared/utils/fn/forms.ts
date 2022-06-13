@@ -6,7 +6,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Address, LocationLatLon } from '@bgap/domain';
 import { EVariantAvailabilityType } from '@bgap/shared/types';
 
 import { WEEKLY_VARIANT_AVAILABILITY } from '../const';
@@ -55,21 +55,21 @@ export const multiLangValidator: ValidatorFn = (control: AbstractControl) => {
   return hu || en || de ? null : { empty: true };
 };
 
-export const addressIsEmpty = (address?: CrudApi.Address) => {
+export const addressIsEmpty = (address?: Address) => {
   const stringFields = omit(['location'], address);
   const allStringsAreEmpty = Object.values(stringFields).every(v => !v);
 
   return allStringsAreEmpty;
 };
 
-export const addressIsFilled = (address: CrudApi.Address) => {
+export const addressIsFilled = (address: Address) => {
   const stringFields = omit(['location'], address);
   const allStringsAreFilled = Object.values(stringFields).every(v => v);
 
   return allStringsAreFilled;
 };
 
-export const locationIsFilled = (location: CrudApi.LocationLatLon) =>
+export const locationIsFilled = (location: LocationLatLon) =>
   isNumber(location?.lat) &&
   isNumber(location?.lon) &&
   (location?.lat !== 0 || location?.lon !== 0);

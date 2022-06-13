@@ -7,12 +7,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { visibleLinesOnViewport } from '../../../../shared/utils';
-import { AdminUserCollectionService } from '../../../../store/admin-users';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { AdminUser } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
+import { visibleLinesOnViewport } from '../../../../shared/utils';
+import { AdminUserCollectionService } from '../../../../store/admin-users';
 import { AdminUserListService } from '../../services/admin-user-list.service';
 import { AdminUserFormComponent } from '../admin-user-form/admin-user-form.component';
 
@@ -27,7 +27,7 @@ export class AdminUserListComponent implements OnInit {
   @ViewChild('dataVSVP')
   dataVSVP?: CdkVirtualScrollViewport;
 
-  public adminUsers$: Observable<CrudApi.AdminUser[]>;
+  public adminUsers$: Observable<AdminUser[]>;
 
   constructor(
     private _nbDialogService: NbDialogService,

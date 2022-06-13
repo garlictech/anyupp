@@ -1,13 +1,15 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { CrudSdk } from '@bgap/crud-gql/api';
+import {
+  GetUnitsNearLocationQueryVariables,
+  MutationRegenerateUnitDataArgs,
+} from '@bgap/domain';
 import { getUnitsInRadius } from './get-units-in-radius.resolver';
 import { regenerateUnitData } from './regenerate-unit-data.resolver';
 
-export const unitRequestHandler = (crudSdk: CrudApi.CrudSdk) => ({
-  getUnitsNearLocation: (
-    requestPayload: CrudApi.GetUnitsNearLocationQueryVariables,
-  ) => getUnitsInRadius(requestPayload.input.location)(crudSdk),
+export const unitRequestHandler = (crudSdk: CrudSdk) => ({
+  getUnitsNearLocation: (requestPayload: GetUnitsNearLocationQueryVariables) =>
+    getUnitsInRadius(requestPayload.input.location)(crudSdk),
 
-  regenerateUnitData: (
-    requestPayload: CrudApi.MutationRegenerateUnitDataArgs,
-  ) => regenerateUnitData(crudSdk)(requestPayload.input.id),
+  regenerateUnitData: (requestPayload: MutationRegenerateUnitDataArgs) =>
+    regenerateUnitData(crudSdk)(requestPayload.input.id),
 });

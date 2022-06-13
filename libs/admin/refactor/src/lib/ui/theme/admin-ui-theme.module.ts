@@ -15,10 +15,13 @@ import {
   NbUserModule,
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
+import { AppsAdminModule } from '@bgap/apps/admin';
 import { AdminSharedComponentsModule } from '../../shared/components';
 import { AdminSharedPipesModule } from '../../shared/pipes';
 import { FooterComponent, HeaderComponent } from './components';
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
+import { AbsNotificationToggleService } from '@bgap/domain';
+import { NotificationToggleService } from './services/NotificationToggle.service';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -43,9 +46,16 @@ const COMPONENTS = [HeaderComponent, FooterComponent, AdminLayoutComponent];
     RouterModule,
     AdminSharedComponentsModule,
     AdminSharedPipesModule,
+    AppsAdminModule,
     ...NB_MODULES,
   ],
   exports: [CommonModule, ...COMPONENTS],
   declarations: [...COMPONENTS],
+  providers: [
+    {
+      provide: AbsNotificationToggleService,
+      useClass: NotificationToggleService,
+    },
+  ],
 })
 export class AdminUiThemeModule {}

@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { GroupFormService } from '@bgap/admin/refactor';
 import { entityConfig } from '@bgap/admin/refactor';
 import { CrudSdkService } from '@bgap/admin/refactor';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { groupFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
 import {
@@ -19,6 +19,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { signInToCognito, signOutFromCognito } from '../../shared/helper';
+import { Group } from '@bgap/domain';
 
 describe('GroupFormService', () => {
   const groupId = `${testIdPrefix}ADMIN_GROUP_IT_GROUP_ID_01`;
@@ -124,7 +125,7 @@ describe('GroupFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.Group>>saveResponse).data.id
+          (<UpsertResponse<Group>>saveResponse).data.id
             ? service.updateGroup$({
                 ...groupFixture.group_01,
                 id: groupId,

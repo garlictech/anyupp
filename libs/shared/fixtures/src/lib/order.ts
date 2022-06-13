@@ -1,5 +1,14 @@
-import * as CrudApi from '@bgap/crud-gql/api';
-
+import {
+  Allergen,
+  CreateChainProductInput,
+  CreateOrderInput,
+  Order,
+  OrderMode,
+  OrderStatus,
+  ProductComponentSetType,
+  ProductType,
+  ServingMode,
+} from '@bgap/domain';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { getOrderStatusLog } from './order-utils';
 import { productSnapshotFixture } from './product-snapshot';
@@ -7,15 +16,13 @@ import { unitFixture } from './unit';
 
 const order_seeded_01_id = `${seededIdPrefix}order_1_id`;
 
-const orderItemInputBase = (
-  productFixture: CrudApi.CreateChainProductInput,
-) => ({
+const orderItemInputBase = (productFixture: CreateChainProductInput) => ({
   quantity: 5,
   productId: productFixture.id || '',
   statusLog: [
     {
       userId: 'test-monad',
-      status: CrudApi.OrderStatus.none,
+      status: OrderStatus.none,
       ts: 1627909024677,
     },
   ],
@@ -49,7 +56,7 @@ const orderItemInputBase = (
         en: 'Modifier comp set',
         hu: 'Módosító komponens set',
       },
-      type: CrudApi.ProductComponentSetType.modifier,
+      type: ProductComponentSetType.modifier,
       items: [
         {
           productComponentId: `${testIdPrefix}product_component_id`,
@@ -59,13 +66,13 @@ const orderItemInputBase = (
             hu: 'Szobahőmérsékletű',
           },
           price: -1.7999999999999998,
-          allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
+          allergens: [Allergen.egg, Allergen.gluten],
         },
       ],
       productSetId: `${testIdPrefix}product_component_set_id`,
     },
   ],
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
 });
 
 const orderInputBase = {
@@ -88,8 +95,8 @@ const orderInputBase = {
     table: '01',
     seat: '01',
   },
-  orderMode: CrudApi.OrderMode.instant,
-  servingMode: CrudApi.ServingMode.inplace,
+  orderMode: OrderMode.instant,
+  servingMode: ServingMode.inplace,
   hasRated: true,
   rating: {
     key: 'RATING KEY',
@@ -104,14 +111,12 @@ const orderInputBase = {
 
 const historyOrderInputBase = {
   ...orderInputBase,
-  ...getOrderStatusLog(CrudApi.OrderStatus.served),
+  ...getOrderStatusLog(OrderStatus.served),
   orderNum: '000',
   archived: true,
 };
 
-const convertInputToOrder = (
-  input: CrudApi.CreateOrderInput,
-): CrudApi.Order => ({
+const convertInputToOrder = (input: CreateOrderInput): Order => ({
   ...input,
   id: input.id || '',
   createdAt: '2021-08-02T01:54:11.843Z',

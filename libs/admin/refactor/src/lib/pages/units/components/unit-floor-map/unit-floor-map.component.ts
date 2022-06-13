@@ -7,9 +7,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Unit } from '@bgap/domain';
+
 import * as floorMapLib from '../../../../shared/floor-map';
 import { AbstractFormDialogComponent } from '../../../../shared/forms';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { QrGeneratorService } from '../../../../shared/utils';
 
 @Component({
@@ -23,11 +24,11 @@ export class UnitFloorMapComponent
   implements OnInit
 {
   @ViewChild('container') container!: ElementRef;
-  public unit!: CrudApi.Unit;
+  public unit!: Unit;
   public rawForm?: FormGroup;
 
   constructor(
-    protected _injector: Injector,
+    protected override _injector: Injector,
     private _qrGeneratorService: QrGeneratorService,
   ) {
     super(_injector);

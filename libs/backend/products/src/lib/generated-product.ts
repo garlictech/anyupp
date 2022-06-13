@@ -1,15 +1,20 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { createItems, deleteItems } from '@bgap/anyupp-backend-lib';
+import { CrudSdk } from '@bgap/crud-gql/api';
+import {
+  CreateGeneratedProductInput,
+  GeneratedProduct,
+  SearchGeneratedProductsQueryVariables,
+} from '@bgap/domain';
 
 const TABLE_NAME = tableConfig.GeneratedProduct.TableName;
 
 export const deleteGeneratedProductsForAUnitFromDb =
-  (crudSdk: CrudApi.CrudSdk) => (unitId: string) => {
+  (crudSdk: CrudSdk) => (unitId: string) => {
     return listGeneratedProductsForUnits(crudSdk)([unitId]).pipe(
       switchMap(items =>
         items.length > 0
@@ -23,20 +28,20 @@ export const deleteGeneratedProductsItemsFromDb = (itemIds: string[]) =>
   deleteItems(TABLE_NAME)(itemIds.map(id => ({ id })));
 
 export const createGeneratedProductsInDb = (
-  products: CrudApi.CreateGeneratedProductInput[],
+  products: CreateGeneratedProductInput[],
 ) => {
   return createItems(TABLE_NAME)(products);
 };
 
 export const listGeneratedProductsForUnits =
-  (crudSdk: CrudApi.CrudSdk) =>
-  (unitIds: string[]): Observable<Array<CrudApi.GeneratedProduct>> => {
-    const input: CrudApi.SearchGeneratedProductsQueryVariables = {
+  (crudSdk: CrudSdk) =>
+  (unitIds: string[]): Observable<Array<GeneratedProduct>> => {
+    const input: SearchGeneratedProductsQueryVariables = {
       filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
     };
 
     return getAllPaginatedData(crudSdk.SearchGeneratedProducts, {
       query: input,
       options: { fetchPolicy: 'no-cache' },
-    }).pipe(filterNullishGraphqlListWithDefault<CrudApi.GeneratedProduct>([]));
+    }).pipe(filterNullishGraphqlListWithDefault<GeneratedProduct>([]));
   };

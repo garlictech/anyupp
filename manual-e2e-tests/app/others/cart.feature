@@ -25,7 +25,7 @@ Feature: Add more items to cart
     And I should see "Sajtburger" text
     And I should see "Coca-cola" text
     And I should see "PAY (2000 Ft)" button
-    When I tap on the "X" button
+    When I tap on the back arrow
     Then I should see the "Menu" screen
     When I tap on the "Beers" category
     And I tap on the "Dreher" card

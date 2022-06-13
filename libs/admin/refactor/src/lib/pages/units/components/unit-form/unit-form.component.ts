@@ -10,6 +10,14 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
+import { PaymentMode, PosType, Unit } from '@bgap/domain';
+import { KeyValue, UpsertResponse } from '@bgap/shared/types';
+import { cleanObject } from '@bgap/shared/utils';
+import { NbDialogService } from '@nebular/theme';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { select } from '@ngrx/store';
+import { timeZonesNames } from '@vvo/tzdb';
+
 import { ConfirmDialogComponent } from '../../../../shared/components';
 import {
   AbstractFormDialogComponent,
@@ -22,20 +30,12 @@ import {
   SERVING_MODES,
 } from '../../../../shared/utils';
 import { loggedUserSelectors } from '../../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { KeyValue, UpsertResponse } from '@bgap/shared/types';
-import { cleanObject } from '@bgap/shared/utils';
-import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy } from '@ngneat/until-destroy';
-import { select } from '@ngrx/store';
-import { timeZonesNames } from '@vvo/tzdb';
-
-import { UnitFormService } from '../../services/unit-form.service';
 import {
   orderPaymentPolicyOptions,
   orderPolicyOptions,
   soldOutPolicyOptions,
 } from '../../const';
+import { UnitFormService } from '../../services/unit-form.service';
 
 @UntilDestroy()
 @Component({
@@ -47,7 +47,7 @@ export class UnitFormComponent
   extends AbstractFormDialogComponent
   implements OnInit
 {
-  public unit!: CrudApi.Unit;
+  public unit!: Unit;
   public paymentModes = PAYMENT_MODES;
   public servingModes = SERVING_MODES;
   public orderModes = ORDER_MODES;
@@ -59,7 +59,7 @@ export class UnitFormComponent
   public isInitiallyRkeeper = false;
 
   constructor(
-    protected _injector: Injector,
+    protected override _injector: Injector,
     private _formsService: FormsService,
     private _nbDialogService: NbDialogService,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -82,7 +82,7 @@ export class UnitFormComponent
       this.dialogForm.patchValue(cleanObject(omit(['lanes'], this.unit)));
 
       // Setup RKeeper form for updating
-      if (this.unit.pos?.type === CrudApi.PosType.rkeeper) {
+      if (this.unit.pos?.type === PosType.rkeeper) {
         this.isInitiallyRkeeper = true;
 
         this.dialogForm.get('pos.rkeeper')?.enable();
@@ -91,7 +91,7 @@ export class UnitFormComponent
 
       this._unitFormService.patchRatingPolicies(
         this.unit.ratingPolicies || [],
-        this.dialogForm?.controls.ratingPolicies as FormArray,
+        this.dialogForm?.controls['ratingPolicies'] as FormArray,
       );
 
       // Parse openingHours object to temp array
@@ -152,7 +152,7 @@ export class UnitFormComponent
     if (this.dialogForm?.valid) {
       if (
         this.isInitiallyRkeeper &&
-        this.dialogForm?.value.pos?.type !== CrudApi.PosType.rkeeper
+        this.dialogForm?.value.pos?.type !== PosType.rkeeper
       ) {
         const dialog = this._nbDialogService.open(ConfirmDialogComponent);
 
@@ -197,12 +197,12 @@ export class UnitFormComponent
       });
   }
 
-  public paymentModeIsChecked = (paymentMode: CrudApi.PaymentMode) =>
+  public paymentModeIsChecked = (paymentMode: PaymentMode) =>
     (this.dialogForm?.value.paymentModes || [])
       .map((m: { type: string }) => m.type)
       .indexOf(paymentMode.type) >= 0;
 
-  public togglePaymentMode(paymentMode: CrudApi.PaymentMode) {
+  public togglePaymentMode(paymentMode: PaymentMode) {
     const paymentModesArr = this.dialogForm?.value.paymentModes;
     const idx = paymentModesArr
       .map((m: { type: string }) => m.type)
@@ -214,7 +214,7 @@ export class UnitFormComponent
       paymentModesArr.splice(idx, 1);
     }
 
-    this.dialogForm?.controls.paymentModes.setValue(paymentModesArr);
+    this.dialogForm?.controls['paymentModes'].setValue(paymentModesArr);
   }
 
   public generatePassword() {

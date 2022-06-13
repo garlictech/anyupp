@@ -1,5 +1,12 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { defaultSupportedServingModes, RequiredId } from '@bgap/shared/types';
+import {
+  Allergen,
+  CreateProductComponentInput,
+  CreateProductComponentSetInput,
+  GeneratedProductConfigSetInput,
+  ProductComponentSetType,
+  ProductConfigSetInput,
+} from '@bgap/domain';
 import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 
@@ -18,7 +25,7 @@ const getProductComponent = ({
   id,
 }: {
   id: string;
-}): RequiredId<CrudApi.CreateProductComponentInput> => ({
+}): RequiredId<CreateProductComponentInput> => ({
   ...productComponentBase,
   id,
   name: {
@@ -29,7 +36,7 @@ const getProductComponent = ({
   description: `PRODUCT_COMPONENT DESCRIPTION ${id}`,
 });
 
-const productComponentBase: RequiredId<CrudApi.CreateProductComponentInput> = {
+const productComponentBase: RequiredId<CreateProductComponentInput> = {
   id: `${testIdPrefix}product_component_id_`,
   chainId: 'chainId_',
   name: {
@@ -39,11 +46,11 @@ const productComponentBase: RequiredId<CrudApi.CreateProductComponentInput> = {
   },
   description: 'DESCRIPTION',
   allergens: [
-    CrudApi.Allergen.egg,
-    CrudApi.Allergen.gluten,
-    CrudApi.Allergen.milk,
-    CrudApi.Allergen.soya,
-    CrudApi.Allergen.peanut,
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.peanut,
   ],
 };
 
@@ -55,7 +62,7 @@ const getComponentSet = ({
   id: string;
   chainId: string;
   itemIds: string[];
-}): RequiredId<CrudApi.CreateProductComponentSetInput> => ({
+}): RequiredId<CreateProductComponentSetInput> => ({
   ...productComponentSetBase,
   id,
   items: itemIds,
@@ -70,18 +77,18 @@ const getComponentSet = ({
 });
 
 const productComponentSetBase: Omit<
-  RequiredId<CrudApi.CreateProductComponentSetInput>,
+  RequiredId<CreateProductComponentSetInput>,
   'chainId'
 > = {
   id: `${testIdPrefix}product_component_set_id_`,
   name: { en: 'COMPONENT_SET', de: 'COMPONENT_SET', hu: 'KOMPONENS_SET' },
   description: 'DESCRIPTION',
-  type: CrudApi.ProductComponentSetType.extras,
+  type: ProductComponentSetType.extras,
   items: [],
   maxSelection: 0,
 };
 
-const seededProdComp_11: RequiredId<CrudApi.CreateProductComponentInput> = {
+const seededProdComp_11: RequiredId<CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_11,
   }),
@@ -94,7 +101,7 @@ const seededProdComp_11: RequiredId<CrudApi.CreateProductComponentInput> = {
   chainId: chainFixture.chainId_seeded_01,
 };
 
-const seededProdComp_12: RequiredId<CrudApi.CreateProductComponentInput> = {
+const seededProdComp_12: RequiredId<CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_12,
   }),
@@ -107,7 +114,7 @@ const seededProdComp_12: RequiredId<CrudApi.CreateProductComponentInput> = {
   chainId: chainFixture.chainId_seeded_01,
 };
 
-const seededProdComp_21: RequiredId<CrudApi.CreateProductComponentInput> = {
+const seededProdComp_21: RequiredId<CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_21,
   }),
@@ -121,7 +128,7 @@ const seededProdComp_21: RequiredId<CrudApi.CreateProductComponentInput> = {
   allergens: [],
 };
 
-const seededProdComp_22: RequiredId<CrudApi.CreateProductComponentInput> = {
+const seededProdComp_22: RequiredId<CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_22,
   }),
@@ -135,7 +142,7 @@ const seededProdComp_22: RequiredId<CrudApi.CreateProductComponentInput> = {
   allergens: [],
 };
 
-const seededProdComp_31: RequiredId<CrudApi.CreateProductComponentInput> = {
+const seededProdComp_31: RequiredId<CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_31,
   }),
@@ -146,10 +153,10 @@ const seededProdComp_31: RequiredId<CrudApi.CreateProductComponentInput> = {
   },
   description: 'Frissen szeletelve',
   chainId: chainFixture.chainId_seeded_01,
-  allergens: [CrudApi.Allergen.mustard],
+  allergens: [Allergen.mustard],
 };
 
-const seededProdComp_32: RequiredId<CrudApi.CreateProductComponentInput> = {
+const seededProdComp_32: RequiredId<CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_32,
   }),
@@ -160,10 +167,10 @@ const seededProdComp_32: RequiredId<CrudApi.CreateProductComponentInput> = {
   },
   description: 'Frissen főzve',
   chainId: chainFixture.chainId_seeded_01,
-  allergens: [CrudApi.Allergen.mustard],
+  allergens: [Allergen.mustard],
 };
 
-const seededProdComp_33: RequiredId<CrudApi.CreateProductComponentInput> = {
+const seededProdComp_33: RequiredId<CreateProductComponentInput> = {
   ...getProductComponent({
     id: prodCompId_33,
   }),
@@ -174,59 +181,56 @@ const seededProdComp_33: RequiredId<CrudApi.CreateProductComponentInput> = {
   },
   description: 'Frissen főzve',
   chainId: chainFixture.chainId_seeded_01,
-  allergens: [CrudApi.Allergen.mustard],
+  allergens: [Allergen.mustard],
 };
 
-const seededProdCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> =
-  {
-    ...getComponentSet({
-      id: prodCompSetId_01,
-      chainId: chainFixture.chainId_seeded_01,
-      itemIds: [prodCompId_11, prodCompId_12],
-    }),
-    name: {
-      en: `Temperature`,
-      de: `Temperature`,
-      hu: `Hőmérséklet`,
-    },
-    description: 'Tálalási hőmérséklet',
-    type: CrudApi.ProductComponentSetType.modifier,
-  };
+const seededProdCompSet_01: RequiredId<CreateProductComponentSetInput> = {
+  ...getComponentSet({
+    id: prodCompSetId_01,
+    chainId: chainFixture.chainId_seeded_01,
+    itemIds: [prodCompId_11, prodCompId_12],
+  }),
+  name: {
+    en: `Temperature`,
+    de: `Temperature`,
+    hu: `Hőmérséklet`,
+  },
+  description: 'Tálalási hőmérséklet',
+  type: ProductComponentSetType.modifier,
+};
 
-const seededProdCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> =
-  {
-    ...getComponentSet({
-      id: prodCompSetId_02,
-      chainId: chainFixture.chainId_seeded_01,
-      itemIds: [prodCompId_21, prodCompId_22],
-    }),
-    name: {
-      en: `Decoration`,
-      de: `Decoration`,
-      hu: `Dekoráció`,
-    },
-    description: 'Szolíd elegancia',
-    maxSelection: 2,
-    type: CrudApi.ProductComponentSetType.extras,
-  };
+const seededProdCompSet_02: RequiredId<CreateProductComponentSetInput> = {
+  ...getComponentSet({
+    id: prodCompSetId_02,
+    chainId: chainFixture.chainId_seeded_01,
+    itemIds: [prodCompId_21, prodCompId_22],
+  }),
+  name: {
+    en: `Decoration`,
+    de: `Decoration`,
+    hu: `Dekoráció`,
+  },
+  description: 'Szolíd elegancia',
+  maxSelection: 2,
+  type: ProductComponentSetType.extras,
+};
 
-const seededProdCompSet_03: RequiredId<CrudApi.CreateProductComponentSetInput> =
-  {
-    ...getComponentSet({
-      id: prodCompSetId_03,
-      chainId: chainFixture.chainId_seeded_01,
-      itemIds: [prodCompId_31, prodCompId_32, prodCompId_33],
-    }),
-    name: {
-      en: `Garnish`,
-      de: `Garnish`,
-      hu: `Köret`,
-    },
-    description: 'Köret módosító készlet',
-    type: CrudApi.ProductComponentSetType.modifier,
-  };
+const seededProdCompSet_03: RequiredId<CreateProductComponentSetInput> = {
+  ...getComponentSet({
+    id: prodCompSetId_03,
+    chainId: chainFixture.chainId_seeded_01,
+    itemIds: [prodCompId_31, prodCompId_32, prodCompId_33],
+  }),
+  name: {
+    en: `Garnish`,
+    de: `Garnish`,
+    hu: `Köret`,
+  },
+  description: 'Köret módosító készlet',
+  type: ProductComponentSetType.modifier,
+};
 
-const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
+const chainConfigSets: ProductConfigSetInput[] = [
   {
     position: 1,
     productSetId: seededProdCompSet_01.id,
@@ -289,7 +293,7 @@ const chainConfigSets: CrudApi.ProductConfigSetInput[] = [
   },
 ];
 
-const groupConfigSets: CrudApi.ProductConfigSetInput[] = [
+const groupConfigSets: ProductConfigSetInput[] = [
   {
     ...chainConfigSets[0],
     items: [
@@ -335,7 +339,7 @@ const groupConfigSets: CrudApi.ProductConfigSetInput[] = [
   },
 ];
 
-const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
+const unitConfigSets: ProductConfigSetInput[] = [
   {
     ...groupConfigSets[0],
     items: [
@@ -381,7 +385,7 @@ const unitConfigSets: CrudApi.ProductConfigSetInput[] = [
   },
 ];
 
-const generatedProductConfigSets: CrudApi.GeneratedProductConfigSetInput[] = [
+const generatedProductConfigSets: GeneratedProductConfigSetInput[] = [
   {
     productSetId: seededProdCompSet_01.id,
     position: unitConfigSets[0].position,

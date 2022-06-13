@@ -1,9 +1,29 @@
 // Fixtures to import and modify in unit tests. They are gfeneral purpose
 // fixtures, no implicit scenarios.
-import * as CrudApi from '@bgap/crud-gql/api';
+
+import {
+  Allergen,
+  CreateUnitInput,
+  Order,
+  OrderItem,
+  OrderMode,
+  OrderStatus,
+  PaymentMethod,
+  PaymentStatus,
+  PaymentType,
+  PosType,
+  ProductComponentSetType,
+  ProductType,
+  ServingMode,
+  Transaction,
+  Unit,
+  UnpayCategory,
+  User,
+  UserInvoiceAddress,
+} from '@bgap/domain';
 import * as R from 'ramda';
 
-const userInvoiceAddress: CrudApi.UserInvoiceAddress = {
+const userInvoiceAddress: UserInvoiceAddress = {
   customerName: 'USER INVOICEADDRESS CUSTOMERNAME ',
   taxNumber: 'USER INVOICEADDRESS TAX NUMBER',
   country: 'USER INVOICEADDRESS COUNTRY',
@@ -13,7 +33,7 @@ const userInvoiceAddress: CrudApi.UserInvoiceAddress = {
   email: 'USER INVOICEADDRESS EMAIL',
 };
 
-const user: CrudApi.User = {
+const user: User = {
   id: 'USER ID',
   createdAt: 'USER CREATEDAT',
   updatedAt: 'USER UPDATEDAT',
@@ -24,13 +44,13 @@ const user: CrudApi.User = {
   invoiceAddress: userInvoiceAddress,
 };
 
-const orderItem: CrudApi.OrderItem = {
+const orderItem: OrderItem = {
   quantity: 1,
   productId: 'PRODUCT_ID',
   statusLog: [
     {
       userId: 'ORDERITEM STATUSLOG USERID',
-      status: CrudApi.OrderStatus.none,
+      status: OrderStatus.none,
       ts: 12345,
     },
   ],
@@ -46,7 +66,7 @@ const orderItem: CrudApi.OrderItem = {
     en: 'ORDER PRODUCTNAME EN',
     de: 'ORDER PRODUCTNAME DE',
   },
-  allergens: [CrudApi.Allergen.egg],
+  allergens: [Allergen.egg],
   laneId: `ORDERITEM LANEID`,
   priceShown: {
     taxSum: 20,
@@ -68,7 +88,7 @@ const orderItem: CrudApi.OrderItem = {
         hu: 'ORDERITEM CONFIGSET HU',
         en: 'ORDERITEM CONFIGSET EN',
       },
-      type: CrudApi.ProductComponentSetType.modifier,
+      type: ProductComponentSetType.modifier,
       items: [
         {
           productComponentId: 'ORDERITEM PRODUCTCOMPONENT ID',
@@ -78,16 +98,16 @@ const orderItem: CrudApi.OrderItem = {
             hu: 'ORDERITEM CONFIGSET NAME DE',
           },
           price: 400,
-          allergens: [CrudApi.Allergen.gluten],
+          allergens: [Allergen.gluten],
         },
       ],
       productSetId: `ORDERITEM PRODUCT SET ID`,
     },
   ],
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
 };
 
-const transaction: CrudApi.Transaction = {
+const transaction: Transaction = {
   id: 'TRANSACTION ID',
   createdAt: 'TRANSACTION CREATEDAT',
   updatedAt: 'TRANSACTION UPDATEDAT',
@@ -100,7 +120,7 @@ const transaction: CrudApi.Transaction = {
   externalTransactionId: 'TRANSACTION EXTERNAL TRANSACTION ID',
 };
 
-const order: CrudApi.Order = {
+const order: Order = {
   id: 'ORDER_ID',
   createdAt: 'ORDER CREATEDAT',
   updatedAt: 'ORDER UPDATEDAT',
@@ -119,26 +139,26 @@ const order: CrudApi.Order = {
     table: 'ORDER TABLE',
     seat: 'ORDER SEAT',
   },
-  orderMode: CrudApi.OrderMode.instant,
-  servingMode: CrudApi.ServingMode.inplace,
+  orderMode: OrderMode.instant,
+  servingMode: ServingMode.inplace,
   paymentMode: {
-    type: CrudApi.PaymentType.stripe,
+    type: PaymentType.stripe,
     caption: 'ORDER PAYMENTMODE CAPTION',
-    method: CrudApi.PaymentMethod.inapp,
+    method: PaymentMethod.inapp,
   },
   statusLog: [
     {
       userId: 'ORDER STATUSLOG USERID',
-      status: CrudApi.OrderStatus.none,
+      status: OrderStatus.none,
       ts: 22222,
     },
   ],
-  currentStatus: CrudApi.OrderStatus.none,
+  currentStatus: OrderStatus.none,
   archived: false,
   paymentIntention: 2.3,
-  transactionStatus: CrudApi.PaymentStatus.waiting_for_payment,
+  transactionStatus: PaymentStatus.waiting_for_payment,
   transactionId: 'ORDER TRANSACTIONID ',
-  unpayCategory: CrudApi.UnpayCategory.other,
+  unpayCategory: UnpayCategory.other,
   serviceFee: {
     grossPrice: 400,
     taxContent: 40,
@@ -151,7 +171,7 @@ const order: CrudApi.Order = {
   },
 };
 
-const createUnitInput: CrudApi.CreateUnitInput = {
+const createUnitInput: CreateUnitInput = {
   id: 'UNITID',
   chainId: 'UNIT CHAINID',
   groupId: 'UNIT GROUPID',
@@ -181,8 +201,8 @@ const createUnitInput: CrudApi.CreateUnitInput = {
   },
   paymentModes: [
     {
-      method: CrudApi.PaymentMethod.cash,
-      type: CrudApi.PaymentType.cash,
+      method: PaymentMethod.cash,
+      type: PaymentType.cash,
     },
   ],
   lanes: [
@@ -196,13 +216,10 @@ const createUnitInput: CrudApi.CreateUnitInput = {
     from: '1970-01-01',
     to: '2970-01-01',
   },
-  supportedOrderModes: [CrudApi.OrderMode.pickup, CrudApi.OrderMode.instant],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
 };
-const unit: CrudApi.Unit = {
+const unit: Unit = {
   id: 'UNITID',
   createdAt: 'ORDER CREATEDAT',
   updatedAt: 'ORDER UPDATEDAT',
@@ -234,8 +251,8 @@ const unit: CrudApi.Unit = {
   },
   paymentModes: [
     {
-      method: CrudApi.PaymentMethod.cash,
-      type: CrudApi.PaymentType.cash,
+      method: PaymentMethod.cash,
+      type: PaymentType.cash,
     },
   ],
   lanes: [
@@ -249,17 +266,14 @@ const unit: CrudApi.Unit = {
     from: '1970-01-01',
     to: '2970-01-01',
   },
-  supportedOrderModes: [CrudApi.OrderMode.pickup, CrudApi.OrderMode.instant],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
 };
 
-const rkeeperUnit: CrudApi.Unit = {
+const rkeeperUnit: Unit = {
   ...unit,
   pos: {
-    type: CrudApi.PosType.rkeeper,
+    type: PosType.rkeeper,
     rkeeper: {
       endpointUri: 'RKEEPER ENDPOINT URI',
       rkeeperUsername: 'RKEEPER USERNAME',

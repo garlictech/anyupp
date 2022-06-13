@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import * as CrudApi from '@bgap/crud-gql/api';
+import { PaymentStatus, UnpayCategory } from '@bgap/domain';
 
 import { updateOrderTransactionStatus } from './update-order-transaction-status';
 
@@ -34,7 +34,7 @@ describe('updateOrderTransactionStatus test', () => {
     );
 
   it('should update order success transaction status', done => {
-    const status = CrudApi.PaymentStatus.success;
+    const status = PaymentStatus.success;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     updateOrderTransactionStatus(<any>orderDeps)(orderId, transactionId, status)
@@ -56,14 +56,14 @@ describe('updateOrderTransactionStatus test', () => {
   }, 3000);
 
   it('should update order failed transaction status', done => {
-    const status = CrudApi.PaymentStatus.failed;
+    const status = PaymentStatus.failed;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     updateOrderTransactionStatus(<any>orderDeps)(
       orderId,
       transactionId,
       status,
-      CrudApi.UnpayCategory.manager_meal,
+      UnpayCategory.manager_meal,
     )
       .pipe(
         tap({

@@ -2,17 +2,18 @@ import { cloneDeep } from 'lodash/fp';
 import { from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import * as CrudApi from '@bgap/crud-gql/api';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 import { OrderHandlerDeps } from '@bgap/shared/types';
+import { Order, OrderStatus, UpdateOrderInput } from '@bgap/domain';
+import { getOrderStatusByItemsStatus } from '@bgap/crud-gql/api';
 
 export const updateOrderItemStatus =
   (deps: OrderHandlerDeps) =>
   (
     orderId: string,
     itemIdx: number,
-    status: CrudApi.OrderStatus,
+    status: OrderStatus,
     adminUserId: string,
   ) =>
     from(
@@ -20,7 +21,7 @@ export const updateOrderItemStatus =
         id: orderId,
       }),
     ).pipe(
-      throwIfEmptyValue<CrudApi.Order>(),
+      throwIfEmptyValue<Order>(),
       switchMap(order => {
         const _orderItems = cloneDeep(order.items);
         _orderItems[itemIdx].statusLog.push({
@@ -29,12 +30,12 @@ export const updateOrderItemStatus =
           userId: adminUserId,
         });
 
-        const input: CrudApi.UpdateOrderInput = {
+        const input: UpdateOrderInput = {
           id: orderId,
           items: _orderItems,
         };
 
-        const newOrderStatus = CrudApi.getOrderStatusByItemsStatus(_orderItems);
+        const newOrderStatus = getOrderStatusByItemsStatus(_orderItems);
 
         if (newOrderStatus) {
           input.statusLog = [

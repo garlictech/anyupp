@@ -1,8 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as CrudApi from '@bgap/crud-gql/api';
-import { createInvoice } from './invoice';
-import { simpleFixtures, maskDate } from '@bgap/shared/fixtures';
+
 import * as R from 'ramda';
+
+import {
+  Order,
+  OrderItem,
+  ServiceFeeType,
+  Transaction,
+  User,
+} from '@bgap/domain';
+import { maskDate, simpleFixtures } from '@bgap/shared/fixtures';
+
+import { createInvoice } from './invoice';
 import { calculaterServiceFeeItems } from './utils';
 
 test('createInvoice - general case', async () => {
@@ -12,9 +21,9 @@ test('createInvoice - general case', async () => {
       .mockReturnValue(Promise.resolve('SZAMLAZZCLIENT ISSUEINVOICE RESULT')),
   };
 
-  const user: CrudApi.User = simpleFixtures.getUser();
-  const transaction: CrudApi.Transaction = simpleFixtures.getTransaction();
-  const order: CrudApi.Order = simpleFixtures.getOrder();
+  const user: User = simpleFixtures.getUser();
+  const transaction: Transaction = simpleFixtures.getTransaction();
+  const order: Order = simpleFixtures.getOrder();
 
   expect(
     await createInvoice(szamlazzClient)({ user, transaction, order }),
@@ -32,9 +41,9 @@ test('createInvoice - no service fee', async () => {
       .mockReturnValue(Promise.resolve('SZAMLAZZCLIENT ISSUEINVOICE RESULT')),
   };
 
-  const user: CrudApi.User = simpleFixtures.getUser();
-  const transaction: CrudApi.Transaction = simpleFixtures.getTransaction();
-  const order: CrudApi.Order = simpleFixtures.getOrder();
+  const user: User = simpleFixtures.getUser();
+  const transaction: Transaction = simpleFixtures.getTransaction();
+  const order: Order = simpleFixtures.getOrder();
   order.serviceFee = undefined;
 
   expect(
@@ -53,9 +62,9 @@ test('createInvoice - no packaging', async () => {
       .mockReturnValue(Promise.resolve('SZAMLAZZCLIENT ISSUEINVOICE RESULT')),
   };
 
-  const user: CrudApi.User = simpleFixtures.getUser();
-  const transaction: CrudApi.Transaction = simpleFixtures.getTransaction();
-  const order: CrudApi.Order = simpleFixtures.getOrder();
+  const user: User = simpleFixtures.getUser();
+  const transaction: Transaction = simpleFixtures.getTransaction();
+  const order: Order = simpleFixtures.getOrder();
   order.packagingSum = undefined;
 
   expect(
@@ -98,13 +107,13 @@ test('split service fee by tax percentage', async () => {
         currency: 'HUF',
       },
     },
-  ] as CrudApi.OrderItem[];
+  ] as OrderItem[];
 
   expect(
     calculaterServiceFeeItems(
       {
         percentage: 10,
-        type: CrudApi.ServiceFeeType.included,
+        type: ServiceFeeType.included,
       },
       fixture,
       'HUF',
@@ -119,9 +128,9 @@ test('createInvoice - service fee included', async () => {
       .mockReturnValue(Promise.resolve('SZAMLAZZCLIENT ISSUEINVOICE RESULT')),
   };
 
-  const user: CrudApi.User = simpleFixtures.getUser();
-  const transaction: CrudApi.Transaction = simpleFixtures.getTransaction();
-  const order: CrudApi.Order = R.clone(simpleFixtures.getOrder());
+  const user: User = simpleFixtures.getUser();
+  const transaction: Transaction = simpleFixtures.getTransaction();
+  const order: Order = R.clone(simpleFixtures.getOrder());
   order.items[0].serviceFee = {
     taxPercentage: 0,
     netPrice: 100,
@@ -139,7 +148,7 @@ test('createInvoice - service fee included', async () => {
   order.packagingSum = undefined;
   order.serviceFeePolicy = {
     percentage: 10,
-    type: CrudApi.ServiceFeeType.included,
+    type: ServiceFeeType.included,
   };
 
   expect(

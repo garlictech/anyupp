@@ -22,18 +22,45 @@
           </bgap-form-select>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-2">
           <bgap-form-text-input
             [staticCaption]="
-              ('products.price' | translate) + ' (' + currency! + ')'
+              ('products.grossPrice' | translate) + ' (' + currency! + ')'
             "
             type="number"
             [control]="availability.get('price') | asFormControl"
             inputId="price"
+            (inputChange)="grossPriceChanged($event, i)"
           ></bgap-form-text-input>
         </div>
 
-        <div class="col-md-4 pt-3 text-end">
+        <div class="col-md-2">
+          <bgap-form-text-input
+            [staticCaption]="
+              ('products.menuPrice' | translate) + ' (' + currency! + ')'
+            "
+            type="number"
+            [control]="menuPriceFormArray.controls[i] | asFormControl"
+            inputId="price"
+            (inputChange)="menuPriceChanged($event, i)"
+            class="helper"
+          ></bgap-form-text-input>
+        </div>
+
+        <div class="col-md-2">
+          <bgap-form-text-input
+            [staticCaption]="
+              ('products.netPrice' | translate) + ' (' + currency! + ')'
+            "
+            type="number"
+            [control]="netPriceFormArray.controls[i] | asFormControl"
+            inputId="price"
+            (inputChange)="netPriceChanged($event, i)"
+            class="helper"
+          ></bgap-form-text-input>
+        </div>
+
+        <div class="col-md-2 pt-3 text-end">
           <button
             nbButton
             status="danger"
@@ -114,10 +141,10 @@
       </div>
 
       <ng-container *ngIf="availability.errors">
-        <div class="form-error-msg" *ngIf="availability.errors.dayInterval">
+        <div class="form-error-msg" *ngIf="availability.errors['dayInterval']">
           {{ 'errors.availabilityWeeklyDateInterval' | translate }}
         </div>
-        <div class="form-error-msg" *ngIf="availability.errors.timeInterval">
+        <div class="form-error-msg" *ngIf="availability.errors['timeInterval']">
           {{ 'errors.availabilityWeeklyTimeInterval' | translate }}
         </div>
       </ng-container>

@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ProductCategoryFormService } from '@bgap/admin/refactor';
 import { CrudSdkService } from '@bgap/admin/refactor';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { productCategoryFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
 import { StoreModule } from '@ngrx/store';
@@ -19,6 +19,7 @@ import {
 } from '@ngrx/data';
 import { entityConfig } from '@bgap/admin/refactor';
 import { HttpClientModule } from '@angular/common/http';
+import { ProductCategory } from '@bgap/domain';
 
 describe('ProductCategoryFormService', () => {
   const productCategoryId = `${testIdPrefix}ADMIN_PRODUCT_CATEGORY_IT_PRODUCT_CATEGORY_ID_01`;
@@ -128,7 +129,7 @@ describe('ProductCategoryFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.ProductCategory>>saveResponse).data.id
+          (<UpsertResponse<ProductCategory>>saveResponse).data.id
             ? service.updateProductCategory$({
                 ...productCategoryFixture.productCategoryBase,
                 id: productCategoryId,

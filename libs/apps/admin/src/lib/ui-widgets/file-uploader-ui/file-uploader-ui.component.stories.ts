@@ -1,6 +1,8 @@
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { FileUploaderUIComponent } from './file-uploader-ui.component';
+
+import { commonStorybookImports } from '../../pure';
 import { ButtonUIComponent } from '../button-ui/button-ui.component';
+import { FileUploaderUIComponent } from './file-uploader-ui.component';
 
 export default {
   title: 'FileUploaderUIComponent',
@@ -8,7 +10,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [ButtonUIComponent],
-      imports: [],
+      imports: [...commonStorybookImports],
     }),
   ],
 } as Meta<FileUploaderUIComponent>;

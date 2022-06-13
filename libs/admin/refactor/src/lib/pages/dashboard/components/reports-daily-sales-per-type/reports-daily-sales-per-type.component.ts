@@ -9,12 +9,12 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
-import { dailySalesPerTypeOrderAmounts } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Order, ProductType } from '@bgap/domain';
 import { TIP_KEY } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
+import { dailySalesPerTypeOrderAmounts } from '../../../../shared/utils';
 import { ReportsService } from '../../services/reports.service';
 
 @UntilDestroy()
@@ -26,7 +26,7 @@ import { ReportsService } from '../../services/reports.service';
 })
 export class ReportsDailySalesPerTypeComponent implements AfterViewInit {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$?: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<Order[]>;
   @Input() currency = '';
 
   private _chart!: Chart;
@@ -47,9 +47,9 @@ export class ReportsDailySalesPerTypeComponent implements AfterViewInit {
         const amounts = dailySalesPerTypeOrderAmounts(orders);
 
         this._chart.data.datasets[0].data = [
-          amounts[CrudApi.ProductType.food],
-          amounts[CrudApi.ProductType.drink],
-          amounts[CrudApi.ProductType.other],
+          amounts[ProductType.food],
+          amounts[ProductType.drink],
+          amounts[ProductType.other],
           amounts[TIP_KEY],
         ];
 

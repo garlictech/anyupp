@@ -5,10 +5,10 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ServiceFeeType } from '@bgap/domain';
 import { KeyValue } from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Component({
@@ -20,11 +20,11 @@ import { KeyValue } from '@bgap/shared/types';
 export class FormUnitServiceFeeComponent implements OnInit {
   @Input() serviceFeeFormGroup?: FormGroup;
   public serviceFeeTypeControl: FormControl = new FormControl('');
-  public EServiceFeeType = CrudApi.ServiceFeeType;
+  public EServiceFeeType = ServiceFeeType;
 
   public serviceFeeOptions: KeyValue[] = [
-    CrudApi.ServiceFeeType.included,
-    CrudApi.ServiceFeeType.applicable,
+    ServiceFeeType.included,
+    ServiceFeeType.applicable,
   ].map(
     (feeType): KeyValue => ({
       key: feeType,

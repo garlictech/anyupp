@@ -11,13 +11,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {
-  getActiveOrdersByUser,
-  getTableOrders,
-  getTableSeatOrders,
-  OrderCollectionService,
-} from '../../../../store/orders';
-import { unitsSelectors } from '../../../../store/units';
+import { FloorMapDataObject, Order, Unit } from '@bgap/domain';
+import { FloorMapOrderObjects, FloorMapOrders } from '@bgap/shared/types';
+import { NbDialogService } from '@nebular/theme';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
 import {
   fabricCanvas,
   FLOOR_MAP_STATUS_COLORS,
@@ -32,12 +31,13 @@ import {
   setBgColor,
   setBorder,
 } from '../../../../shared/floor-map';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { FloorMapOrderObjects, FloorMapOrders } from '@bgap/shared/types';
-import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
-
+import {
+  getActiveOrdersByUser,
+  getTableOrders,
+  getTableSeatOrders,
+  OrderCollectionService,
+} from '../../../../store/orders';
+import { unitsSelectors } from '../../../../store/units';
 import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.component';
 
 @UntilDestroy()
@@ -49,7 +49,7 @@ import { FloorMapOrdersComponent } from '../floor-map-orders/floor-map-orders.co
 export class FloorMapBodyComponent implements OnInit {
   @ViewChild('floorMap') floorMapEl?: ElementRef;
 
-  public unit?: CrudApi.Unit;
+  public unit?: Unit;
 
   private _allTableSeatOrders$: BehaviorSubject<FloorMapOrderObjects> =
     new BehaviorSubject({});
@@ -72,8 +72,8 @@ export class FloorMapBodyComponent implements OnInit {
         tap(() => {
           this.unit = undefined;
         }),
-        filter((unit: CrudApi.Unit | undefined): boolean => !!unit),
-        tap((unit: CrudApi.Unit | undefined) => {
+        filter((unit: Unit | undefined): boolean => !!unit),
+        tap((unit: Unit | undefined) => {
           this.unit = fp.cloneDeep(unit);
 
           // Update html - show floor-map component
@@ -116,12 +116,12 @@ export class FloorMapBodyComponent implements OnInit {
           }
         }),
         switchMap(
-          (): Observable<CrudApi.Order[]> =>
+          (): Observable<Order[]> =>
             this._orderCollectionService.filteredEntities$,
         ),
         untilDestroyed(this),
       )
-      .subscribe((orders: CrudApi.Order[]) => {
+      .subscribe((orders: Order[]) => {
         if (this.unit?.floorMap?.objects) {
           const tableIds = getTableIds(this.unit.floorMap);
           const tableSeatIds = getTableSeatIds(this.unit.floorMap);
@@ -141,10 +141,10 @@ export class FloorMapBodyComponent implements OnInit {
           // tableOrders contains ALL seats!
           Object.values(_allTableSeatOrders).forEach(
             (tableSeatOrder: FloorMapOrders) => {
-              const rawObj: CrudApi.FloorMapDataObject | undefined = (
-                <CrudApi.FloorMapDataObject[]>this.unit?.floorMap?.objects || []
+              const rawObj: FloorMapDataObject | undefined = (
+                <FloorMapDataObject[]>this.unit?.floorMap?.objects || []
               ).find(
-                (o: CrudApi.FloorMapDataObject): boolean =>
+                (o: FloorMapDataObject): boolean =>
                   getTableSeatId(o) === tableSeatOrder.tsID,
               );
 
@@ -181,7 +181,7 @@ export class FloorMapBodyComponent implements OnInit {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _onMouseUp = (e: any) => {
-    const rawObject: CrudApi.FloorMapDataObject = <CrudApi.FloorMapDataObject>(
+    const rawObject: FloorMapDataObject = <FloorMapDataObject>(
       (this.unit?.floorMap?.objects || []).find(o => o.id === e.target?.id)
     );
 

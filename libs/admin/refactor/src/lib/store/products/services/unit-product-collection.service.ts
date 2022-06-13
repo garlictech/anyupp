@@ -2,16 +2,17 @@ import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import { UnitProduct } from '@bgap/domain';
+import { EntityCollectionServiceElementsFactory } from '@ngrx/data';
+import { Store } from '@ngrx/store';
+
 import { BaseCollectionService } from '../../../shared/data-access/ngrx-data';
 import { CrudSdkService } from '../../../shared/data-access/sdk';
 import { ENTITY_NAME } from '../../../shared/types';
 import { loggedUserSelectors } from '../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { EntityCollectionServiceElementsFactory } from '@ngrx/data';
-import { Store } from '@ngrx/store';
 
 @Injectable({ providedIn: 'root' })
-export class UnitProductCollectionService extends BaseCollectionService<CrudApi.UnitProduct> {
+export class UnitProductCollectionService extends BaseCollectionService<UnitProduct> {
   constructor(
     private _store: Store,
     serviceElementsFactory: EntityCollectionServiceElementsFactory,

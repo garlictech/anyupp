@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,13 +7,14 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { ChainCollectionService } from '../../../../store/chains';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { AdminUser, Chain } from '@bgap/domain';
+import { filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
-import { filterNullish } from '@bgap/shared/utils';
+
 import { DataService } from '../../../../shared/data-access/data';
+import { ChainCollectionService } from '../../../../store/chains';
+import { loggedUserSelectors } from '../../../../store/logged-user';
 
 @UntilDestroy()
 @Component({
@@ -23,8 +25,8 @@ import { DataService } from '../../../../shared/data-access/data';
 })
 export class ActiveChainSelectorComponent implements OnInit {
   @Input() showIcon: boolean;
-  public chains$: Observable<CrudApi.Chain[]>;
-  private _loggedUser!: CrudApi.AdminUser;
+  public chains$: Observable<Chain[]>;
+  private _loggedUser!: AdminUser;
 
   constructor(
     private _store: Store,

@@ -1,15 +1,22 @@
 import { pipe } from 'fp-ts/lib/function';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { Observable, from, combineLatest } from 'rxjs';
 import * as R from 'ramda';
+import { combineLatest, from, Observable } from 'rxjs';
 import { concatMap, map, toArray } from 'rxjs/operators';
+
+import { CrudSdk } from '@bgap/crud-gql/api';
+import {
+  CreateOrderInput,
+  OrderItemConfigSet,
+  OrderItemInput,
+} from '@bgap/domain';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
+
 import { calculatePackagingFeeOfOrder } from '../packaging-utils';
 import { getGeneratedProduct } from './utils';
 
 const getNetPackagingFeeOfOrderItem =
-  (sdk: CrudApi.CrudSdk) =>
-  (item: CrudApi.OrderItemInput): Observable<number> =>
+  (sdk: CrudSdk) =>
+  (item: OrderItemInput): Observable<number> =>
     pipe(
       getGeneratedProduct(sdk)(item.productId),
       map(genProd => genProd?.variants),
@@ -19,9 +26,9 @@ const getNetPackagingFeeOfOrderItem =
     );
 
 const getNetPackagingFeeOfConfigComponent =
-  (sdk: CrudApi.CrudSdk) =>
+  (sdk: CrudSdk) =>
   (
-    item: CrudApi.OrderItemInput,
+    item: OrderItemInput,
     productSetId: string,
     productComponentId: string,
   ): Observable<number> =>
@@ -42,10 +49,8 @@ const getNetPackagingFeeOfConfigComponent =
     );
 
 const getNetPackagingFeeOfConfigSets =
-  (sdk: CrudApi.CrudSdk) =>
-  (
-    item: CrudApi.OrderItemInput,
-  ): Observable<CrudApi.OrderItemConfigSet[] | undefined> =>
+  (sdk: CrudSdk) =>
+  (item: OrderItemInput): Observable<OrderItemConfigSet[] | undefined> =>
     pipe(
       item.configSets || [],
       x => from(x),
@@ -77,12 +82,12 @@ const getNetPackagingFeeOfConfigSets =
     );
 
 export const addPackagingFeeToOrder =
-  (sdk: CrudApi.CrudSdk) =>
+  (sdk: CrudSdk) =>
   (
-    order: CrudApi.CreateOrderInput,
+    order: CreateOrderInput,
     currency: string,
     taxPercentage?: number | null,
-  ): Observable<CrudApi.CreateOrderInput> =>
+  ): Observable<CreateOrderInput> =>
     pipe(
       order.items,
       x => from(x),

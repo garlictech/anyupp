@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash/fp';
+import { switchMap, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -7,13 +8,12 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { AbstractFormDialogComponent } from '../../../../shared/forms';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { AdminUser } from '@bgap/domain';
 import { EImageType, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 
+import { AbstractFormDialogComponent } from '../../../../shared/forms';
 import { AdminUserFormService } from '../../services/admin-user-form.service';
-import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,11 +25,11 @@ export class AdminUserFormComponent
   extends AbstractFormDialogComponent
   implements OnInit
 {
-  public adminUser!: CrudApi.AdminUser;
+  public adminUser!: AdminUser;
   public eImageType = EImageType;
 
   constructor(
-    protected _injector: Injector,
+    protected override _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
     private _adminUserFormService: AdminUserFormService,
   ) {
@@ -71,7 +71,7 @@ export class AdminUserFormComponent
   }
 
   public imageUploadCallback = (image: string) => {
-    this.dialogForm?.controls.profileImage.setValue(image);
+    this.dialogForm?.controls['profileImage'].setValue(image);
 
     if (this.adminUser?.id) {
       this._adminUserFormService
@@ -88,7 +88,7 @@ export class AdminUserFormComponent
   };
 
   public imageRemoveCallback = () => {
-    this.dialogForm?.controls.profileImage.setValue('');
+    this.dialogForm?.controls['profileImage'].setValue('');
 
     if (this.adminUser) {
       delete this.adminUser.profileImage;

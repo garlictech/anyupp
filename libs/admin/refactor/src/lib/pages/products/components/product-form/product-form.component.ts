@@ -10,9 +10,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { AbstractFormDialogComponent } from '../../../../shared/forms';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { AdminUserSettings } from '@bgap/domain';
 import {
   EImageType,
   EProductLevel,
@@ -24,6 +22,8 @@ import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
+import { AbstractFormDialogComponent } from '../../../../shared/forms';
+import { loggedUserSelectors } from '../../../../store/logged-user';
 import { PRODUCT_TYPES } from '../../const';
 import { ProductFormService } from '../../services/product-form.service';
 
@@ -43,10 +43,10 @@ export class ProductFormComponent
   public productCategories$: Observable<KeyValue[]>;
   public productTypes: KeyValue[] = PRODUCT_TYPES;
 
-  private _userSettings: CrudApi.AdminUserSettings = {};
+  private _userSettings: AdminUserSettings = {};
 
   constructor(
-    protected _injector: Injector,
+    protected override _injector: Injector,
     private _productFormService: ProductFormService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
@@ -60,7 +60,7 @@ export class ProductFormComponent
         take(1),
         filterNullish(),
       )
-      .subscribe((userSettings: CrudApi.AdminUserSettings) => {
+      .subscribe((userSettings: AdminUserSettings) => {
         this._userSettings = userSettings;
       });
 
@@ -79,20 +79,20 @@ export class ProductFormComponent
 
       this._productFormService.patchProductVariants(
         this.product.variants || [],
-        this.dialogForm?.controls.variants as FormArray,
+        this.dialogForm?.controls['variants'] as FormArray,
       );
 
       this._productFormService.patchConfigSet(
         this.product.configSets || [],
-        this.dialogForm?.controls.configSets as FormArray,
+        this.dialogForm?.controls['configSets'] as FormArray,
       );
     } else {
       if (this._userSettings?.selectedProductCategoryId) {
-        this.dialogForm?.controls.productCategoryId.patchValue(
+        this.dialogForm?.controls['productCategoryId'].patchValue(
           this._userSettings?.selectedProductCategoryId,
         );
       }
-      this.dialogForm?.controls.isVisible.patchValue(true);
+      this.dialogForm?.controls['isVisible'].patchValue(true);
     }
   }
 
@@ -121,7 +121,7 @@ export class ProductFormComponent
   }
 
   public imageUploadCallback = (image: string) => {
-    this.dialogForm?.controls.image.setValue(image);
+    this.dialogForm?.controls['image'].setValue(image);
     this._changeDetectorRef.detectChanges();
 
     if (this.product?.id) {
@@ -136,7 +136,7 @@ export class ProductFormComponent
   };
 
   public imageRemoveCallback = () => {
-    this.dialogForm?.controls.image.setValue('');
+    this.dialogForm?.controls['image'].setValue('');
     this._changeDetectorRef.detectChanges();
 
     if (this.product?.id) {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import {
@@ -14,6 +14,7 @@ import {
 } from './create-order.resolver';
 import * as anyuppBackendLib from '@bgap/anyupp-backend-lib';
 import * as rkeeperApi from '@bgap/rkeeper-api';
+import { CreateOrderInput, OrderPaymentPolicy, PosType } from '@bgap/domain';
 
 jest.mock('@bgap/rkeeper-api', () => ({
   __esModule: true,
@@ -42,7 +43,7 @@ const getUnitCases = [
     unit: of({
       id: 'UNIT ID 3',
       isAcceptingOrders: true,
-      orderPaymentPolicy: CrudApi.OrderPaymentPolicy.afterpay,
+      orderPaymentPolicy: OrderPaymentPolicy.afterpay,
     }),
   },
   {
@@ -50,7 +51,7 @@ const getUnitCases = [
     unit: of({
       id: 'UNIT ID 4',
       isAcceptingOrders: true,
-      orderPaymentPolicy: CrudApi.OrderPaymentPolicy.prepay,
+      orderPaymentPolicy: OrderPaymentPolicy.prepay,
     }),
   },
   {
@@ -69,7 +70,7 @@ test.each(getUnitCases)('getUnit cases', ({ orderInput, unit }, done: any) => {
     },
   } as any;
 
-  getUnit(depsFixture)(orderInput as CrudApi.CreateOrderInput)
+  getUnit(depsFixture)(orderInput as CreateOrderInput)
     .pipe(
       tap(res => {
         expect(depsFixture.crudSdk.GetUnit.mock.calls).toMatchSnapshot(
@@ -212,7 +213,7 @@ const handleRkeeperOrderCases = [
       unit: {
         id: 'AN RKEEPER UNIT',
         pos: {
-          type: CrudApi.PosType.rkeeper,
+          type: PosType.rkeeper,
         },
       },
       order: { unitId: 'THE ORDER UNIT ID' },
@@ -224,7 +225,7 @@ const handleRkeeperOrderCases = [
       unit: {
         id: 'AN RKEEPER UNIT',
         pos: {
-          type: CrudApi.PosType.rkeeper,
+          type: PosType.rkeeper,
         },
       },
       order: { unitId: 'THE ORDER UNIT ID' },
@@ -273,7 +274,7 @@ test.each(createOrderCases)(
           of({
             id: 'THE UNTI ID',
             isAcceptingOrders: true,
-            orderPaymentPolicy: CrudApi.OrderPaymentPolicy.afterpay,
+            orderPaymentPolicy: OrderPaymentPolicy.afterpay,
           }),
         ),
       },
@@ -300,7 +301,7 @@ test.each(createOrderCases)(
     const rkeeperFuncSpy = jest.fn().mockReturnValue(of({}));
     jest.spyOn(rkeeperApi, 'sendRkeeperOrder').mockReturnValue(rkeeperFuncSpy);
 
-    createOrder(orderInput as CrudApi.CreateOrderInput)(depsFixture)
+    createOrder(orderInput as CreateOrderInput)(depsFixture)
       .pipe(
         tap(res => {
           expect(res).toMatchSnapshot('RESULT');

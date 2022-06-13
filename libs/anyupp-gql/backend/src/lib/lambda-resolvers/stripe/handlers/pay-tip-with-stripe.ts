@@ -1,15 +1,22 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
+
+import {
+  CreateTransactionMutationVariables,
+  PaymentMethod,
+  PaymentStatus,
+  PayTipWithStripeInput,
+  StartStripePaymentOutput,
+  TipType,
+} from '@bgap/domain';
+import { toFixed0Number } from '@bgap/shared/utils';
+
 import { createTransaction, loadOrder, loadUnit } from '../stripe-graphql-crud';
 import { StripeResolverDeps } from '../stripe.utils';
 import { loadAndConnectUserForStripe } from './common-stripe';
-import { toFixed0Number } from '@bgap/shared/utils';
 
 export const payTipWithStripe =
-  (input: CrudApi.PayTipWithStripeInput) =>
-  async (
-    deps: StripeResolverDeps,
-  ): Promise<CrudApi.StartStripePaymentOutput> => {
+  (input: PayTipWithStripeInput) =>
+  async (deps: StripeResolverDeps): Promise<StartStripePaymentOutput> => {
     const userId = deps.userId;
     console.debug('startStripePayment().start()');
 
@@ -26,7 +33,7 @@ export const payTipWithStripe =
     const paymentMethod = order?.paymentMode?.method;
     const paymentMethodId = order?.transaction?.paymentMethodId;
 
-    if (paymentMethod == CrudApi.PaymentMethod.inapp && !paymentMethodId) {
+    if (paymentMethod == PaymentMethod.inapp && !paymentMethodId) {
       throw Error(
         'Payment method is missing from request when payment mode is INAPP!',
       );
@@ -42,7 +49,7 @@ export const payTipWithStripe =
     }
 
     // 3. Load User
-    const createStripeCustomer = paymentMethod == CrudApi.PaymentMethod.inapp;
+    const createStripeCustomer = paymentMethod == PaymentMethod.inapp;
     const user = await loadAndConnectUserForStripe(
       userId,
       createStripeCustomer,
@@ -55,10 +62,7 @@ export const payTipWithStripe =
       );
     }
 
-    if (
-      paymentMethod == CrudApi.PaymentMethod.inapp &&
-      !user.stripeCustomerId
-    ) {
+    if (paymentMethod == PaymentMethod.inapp && !user.stripeCustomerId) {
       throw Error(
         'User initialization failed. User must have a stripeCustomerId property!',
       );
@@ -73,7 +77,7 @@ export const payTipWithStripe =
     }
 
     // 5. Handle INAPP payment
-    if (paymentMethod == CrudApi.PaymentMethod.inapp) {
+    if (paymentMethod == PaymentMethod.inapp) {
       if (!paymentMethodId) {
         throw Error(
           'Payment method is missing from request when payment mode is INAPP!',
@@ -87,7 +91,7 @@ export const payTipWithStripe =
       }
 
       const amount =
-        input.tip.type === CrudApi.TipType.percent
+        input.tip.type === TipType.percent
           ? (order.sumPriceShown.priceSum * input.tip.value) / 100
           : input.tip.value;
 
@@ -124,19 +128,18 @@ export const payTipWithStripe =
       );
 
       // 8. Create Transaction
-      const createTransactionVars: CrudApi.CreateTransactionMutationVariables =
-        {
-          input: {
-            userId: userId,
-            orderId: orderId,
-            currency,
-            status: CrudApi.PaymentStatus.waiting_for_payment, // shouldn't we use statusLog instead of the simple actual status ? (Covered by #945)
-            externalTransactionId: paymentIntent.id,
-            total: amount,
-            type: 'stripe',
-            paymentMethodId,
-          },
-        };
+      const createTransactionVars: CreateTransactionMutationVariables = {
+        input: {
+          userId: userId,
+          orderId: orderId,
+          currency,
+          status: PaymentStatus.waiting_for_payment, // shouldn't we use statusLog instead of the simple actual status ? (Covered by #945)
+          externalTransactionId: paymentIntent.id,
+          total: amount,
+          type: 'stripe',
+          paymentMethodId,
+        },
+      };
 
       const transaction = await createTransaction(createTransactionVars)(deps);
       console.debug('startStripePayment().transaction.id=' + transaction?.id);

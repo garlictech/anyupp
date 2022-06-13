@@ -1,14 +1,33 @@
-import { getAllPaginatedData } from '@bgap/gql-sdk';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { pipe } from 'fp-ts/lib/function';
-import { map, switchMap } from 'rxjs/operators';
-import { forkJoin, from } from 'rxjs';
-import { StripeResolverDeps, StripeResolverDepsUnauth } from './stripe.utils';
 import * as R from 'ramda';
+import { forkJoin, from } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+
+import {
+  CreateInvoiceMutationVariables,
+  CreateTransactionMutationVariables,
+  CreateUserMutationVariables,
+  GetInvoiceQueryVariables,
+  GetOrderQueryVariables,
+  GetUnitQueryVariables,
+  GetUserQueryVariables,
+  InvoiceStatus,
+  Order,
+  OrderStatus,
+  PaymentStatus,
+  SearchTransactionsQueryVariables,
+  UpdateInvoiceMutationVariables,
+  UpdateOrderMutationVariables,
+  UpdateTransactionMutationVariables,
+  UpdateUserMutationVariables,
+} from '@bgap/domain';
+import { getAllPaginatedData } from '@bgap/gql-sdk';
+
+import { StripeResolverDeps, StripeResolverDepsUnauth } from './stripe.utils';
 
 export const createUser =
   (stripeCustomerId: string | undefined) => (deps: StripeResolverDeps) => {
-    const createUserVars: CrudApi.CreateUserMutationVariables = {
+    const createUserVars: CreateUserMutationVariables = {
       input: {
         stripeCustomerId: stripeCustomerId,
         id: deps.userId,
@@ -20,7 +39,7 @@ export const createUser =
 
 export const updateUser =
   (stripeCustomerId: string | undefined) => (deps: StripeResolverDeps) => {
-    const updateUserVars: CrudApi.UpdateUserMutationVariables = {
+    const updateUserVars: UpdateUserMutationVariables = {
       input: {
         stripeCustomerId: stripeCustomerId,
         id: deps.userId,
@@ -31,7 +50,7 @@ export const updateUser =
   };
 
 export const loadUser = () => (deps: StripeResolverDeps) => {
-  const getUserVars: CrudApi.GetUserQueryVariables = {
+  const getUserVars: GetUserQueryVariables = {
     id: deps.userId,
   };
 
@@ -44,7 +63,7 @@ export const loadUser = () => (deps: StripeResolverDeps) => {
 
 export const loadOrder =
   (orderId: string) => (deps: StripeResolverDepsUnauth) => {
-    const getOrderVars: CrudApi.GetOrderQueryVariables = {
+    const getOrderVars: GetOrderQueryVariables = {
       id: orderId,
     };
 
@@ -57,7 +76,7 @@ export const loadOrder =
 
 export const loadUnit =
   (unitId: string) => (deps: StripeResolverDepsUnauth) => {
-    const getUnitVars: CrudApi.GetUnitQueryVariables = {
+    const getUnitVars: GetUnitQueryVariables = {
       id: unitId,
     };
 
@@ -74,7 +93,7 @@ export const loadTransactionByExternalTransactionId =
       'loadTransactionByExternalTransactionId.external_id=' +
         externalTransactionId,
     );
-    const searchTransactionsVars: CrudApi.SearchTransactionsQueryVariables = {
+    const searchTransactionsVars: SearchTransactionsQueryVariables = {
       filter: {
         externalTransactionId: { eq: externalTransactionId },
       },
@@ -89,15 +108,14 @@ export const loadTransactionByExternalTransactionId =
   };
 
 export const createTransaction =
-  (transaction: CrudApi.CreateTransactionMutationVariables) =>
+  (transaction: CreateTransactionMutationVariables) =>
   (deps: StripeResolverDeps) =>
     deps.crudSdk.CreateTransaction(transaction).toPromise();
 
 export const updateTransactionState =
-  (id: string, status: CrudApi.PaymentStatus) =>
-  (deps: StripeResolverDepsUnauth) => {
+  (id: string, status: PaymentStatus) => (deps: StripeResolverDepsUnauth) => {
     console.debug('updateTransactionState().id=' + id + ', status=' + status);
-    const updateTransactionVars: CrudApi.UpdateTransactionMutationVariables = {
+    const updateTransactionVars: UpdateTransactionMutationVariables = {
       input: {
         id,
         status,
@@ -110,9 +128,9 @@ export const updateTransactionState =
 export const updateOrderState =
   (
     id: string,
-    status?: CrudApi.OrderStatus | undefined,
+    status?: OrderStatus | undefined,
     transactionId?: string | undefined,
-    transactionStatus?: CrudApi.PaymentStatus | undefined,
+    transactionStatus?: PaymentStatus | undefined,
   ) =>
   async (deps: StripeResolverDeps) => {
     const userId = deps.userId;
@@ -142,7 +160,7 @@ export const updateOrderState =
       });
     }
 
-    const updateOrderVars: CrudApi.UpdateOrderMutationVariables = {
+    const updateOrderVars: UpdateOrderMutationVariables = {
       input: {
         id: id,
         transactionId: transactionId,
@@ -167,8 +185,8 @@ export const updateOrdersOfATransaction =
   (deps: StripeResolverDeps) =>
   (
     transactionId: string,
-    status: CrudApi.OrderStatus | undefined,
-    transactionStatus: CrudApi.PaymentStatus | undefined,
+    status: OrderStatus | undefined,
+    transactionStatus: PaymentStatus | undefined,
   ) =>
     getAllPaginatedData(deps.crudSdk.SearchOrders, {
       query: { filter: { transactionId: { eq: transactionId } } },
@@ -177,8 +195,8 @@ export const updateOrdersOfATransaction =
         pipe(
           x?.items || [],
           R.reject(x => R.isNil(x)),
-          z => z as CrudApi.Order[],
-          y => R.defaultTo([] as CrudApi.Order[])(y),
+          z => z as Order[],
+          y => R.defaultTo([] as Order[])(y),
           R.map(order =>
             from(
               updateOrderState(
@@ -195,14 +213,13 @@ export const updateOrdersOfATransaction =
     );
 
 export const createInvoice =
-  (invoice: CrudApi.CreateInvoiceMutationVariables) =>
-  (deps: StripeResolverDeps) =>
+  (invoice: CreateInvoiceMutationVariables) => (deps: StripeResolverDeps) =>
     deps.crudSdk.CreateInvoice(invoice).toPromise();
 
 export const updateInvoice =
-  (id: string, status: CrudApi.InvoiceStatus, externalInvoiceId: string) =>
+  (id: string, status: InvoiceStatus, externalInvoiceId: string) =>
   (deps: StripeResolverDeps) => {
-    const updateInvoiceVars: CrudApi.UpdateInvoiceMutationVariables = {
+    const updateInvoiceVars: UpdateInvoiceMutationVariables = {
       input: {
         id,
         status,
@@ -215,7 +232,7 @@ export const updateInvoice =
 
 export const loadInvoice =
   (invoiceId: string) => async (deps: StripeResolverDeps) => {
-    const getInvoiceVars: CrudApi.GetInvoiceQueryVariables = {
+    const getInvoiceVars: GetInvoiceQueryVariables = {
       id: invoiceId,
     };
 
@@ -229,7 +246,7 @@ export const loadInvoice =
 export const updateInvoiceState =
   (
     id: string,
-    status: CrudApi.InvoiceStatus,
+    status: InvoiceStatus,
     externalInvoiceId: string | undefined,
     pdfData: string | undefined,
   ) =>
@@ -242,7 +259,7 @@ export const updateInvoiceState =
         ', externalInvoiceId=' +
         externalInvoiceId,
     );
-    const updateInvoiceVars: CrudApi.UpdateInvoiceMutationVariables = {
+    const updateInvoiceVars: UpdateInvoiceMutationVariables = {
       input: {
         id: id,
         externalInvoiceId: externalInvoiceId,

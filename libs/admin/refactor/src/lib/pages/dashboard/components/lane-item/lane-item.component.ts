@@ -9,6 +9,11 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { OrderStatus, ServingMode, Unit } from '@bgap/domain';
+import { ENebularButtonSize, LaneOrderItem } from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
 import { OrderService } from '../../../../shared/data-access/order';
 import {
   getNextOrderStatus,
@@ -16,10 +21,6 @@ import {
   getPrevOrderItemStatus,
 } from '../../../../store/orders';
 import { productsSelectors } from '../../../../store/products';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { ENebularButtonSize, LaneOrderItem } from '@bgap/shared/types';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
@@ -31,10 +32,10 @@ import { select, Store } from '@ngrx/store';
 export class LaneItemComponent implements OnInit {
   @Input() orderItem!: LaneOrderItem;
   @Input() buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
-  @Input() unit?: CrudApi.Unit;
+  @Input() unit?: Unit;
   @Input() testId?: string = '';
 
-  public EServingMode = CrudApi.ServingMode;
+  public EServingMode = ServingMode;
   public processingTimer = 0;
 
   constructor(
@@ -67,9 +68,9 @@ export class LaneItemComponent implements OnInit {
 
     this.orderItem.laneColor = getOrderLaneColor(this.orderItem, this.unit);
 
-    if (this.orderItem.currentStatus === CrudApi.OrderStatus.processing) {
+    if (this.orderItem.currentStatus === OrderStatus.processing) {
       const lastProcessing = findLast(
-        logItem => logItem?.status === CrudApi.OrderStatus.processing,
+        logItem => logItem?.status === OrderStatus.processing,
         this.orderItem.statusLog,
       );
 
@@ -87,8 +88,8 @@ export class LaneItemComponent implements OnInit {
     this._changeDetectorRef.detectChanges();
   }
 
-  public isOrderItemStatus(status: keyof typeof CrudApi.OrderStatus): boolean {
-    return this.orderItem.currentStatus === CrudApi.OrderStatus[status];
+  public isOrderItemStatus(status: keyof typeof OrderStatus): boolean {
+    return this.orderItem.currentStatus === OrderStatus[status];
   }
 
   public async moveForward(): Promise<void> {

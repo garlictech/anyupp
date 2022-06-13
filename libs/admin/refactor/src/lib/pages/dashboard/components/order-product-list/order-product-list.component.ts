@@ -1,5 +1,6 @@
 import { combineLatest } from 'rxjs';
 import { skipWhile } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,15 +8,16 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { ProductCategory } from '@bgap/crud-gql/api';
+import { GeneratedProduct, Group, Order } from '@bgap/domain';
+import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Store } from '@ngrx/store';
+
 import { dashboardSelectors } from '../../../../store/dashboard';
 import { groupsSelectors } from '../../../../store/groups';
 import { ProductCategoryCollectionService } from '../../../../store/product-categories';
 import { GeneratedProductCollectionService } from '../../../../store/products';
-import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Store } from '@ngrx/store';
-import { ProductCategory } from '@bgap/crud-gql/api';
 
 @UntilDestroy()
 @Component({
@@ -25,8 +27,8 @@ import { ProductCategory } from '@bgap/crud-gql/api';
   styleUrls: ['./order-product-list.component.scss'],
 })
 export class OrderProductListComponent implements OnInit {
-  @Input() selectedOrder?: CrudApi.Order;
-  public generatedUnitProducts: CrudApi.GeneratedProduct[];
+  @Input() selectedOrder?: Order;
+  public generatedUnitProducts: GeneratedProduct[];
   public productCategories: ProductCategory[] = [];
   public selectedProductCategoryId = '';
   public groupCurrency = '';
@@ -48,7 +50,7 @@ export class OrderProductListComponent implements OnInit {
         skipWhile((group): boolean => !group),
         untilDestroyed(this),
       )
-      .subscribe((group: CrudApi.Group | undefined) => {
+      .subscribe((group: Group | undefined) => {
         this.groupCurrency = group?.currency || '';
 
         this._changeDetectorRef.detectChanges();
@@ -91,14 +93,11 @@ export class OrderProductListComponent implements OnInit {
     this.selectedProductCategoryId = productCategoryId;
   }
 
-  public addProductVariant(
-    product: CrudApi.GeneratedProduct,
-    variantId: string,
-  ) {
+  public addProductVariant(product: GeneratedProduct, variantId: string) {
     console.error('TODO addProductVariant', product, variantId);
     /* TODO variant object refactor
     const existingVariantOrderIdx = this.selectedOrder?.items.findIndex(
-      (orderItem: CrudApi.OrderItem): boolean =>
+      (orderItem: OrderItem): boolean =>
         orderItem.productId === product.id &&
         orderItem.variantId === variantId &&
         orderItem.priceShown.pricePerUnit === product.variants[variantId].price,
@@ -107,26 +106,26 @@ export class OrderProductListComponent implements OnInit {
 
     if ((existingVariantOrderIdx || 0) >= 0) {
       this._orderService.updateQuantity(
-        fp.cloneDeep(<CrudApi.Order>this.selectedOrder),
+        fp.cloneDeep(<Order>this.selectedOrder),
         <number>existingVariantOrderIdx,
         1,
       );
 
       if (
         currentStatus(
-          (<CrudApi.Order>this.selectedOrder).items[<number>existingVariantOrderIdx]
+          (<Order>this.selectedOrder).items[<number>existingVariantOrderIdx]
             .statusLog,
-        ) === CrudApi.OrderStatus.REJECTED
+        ) === OrderStatus.REJECTED
       ) {
         await this._orderService.updateOrderItemStatus$(
-          (<CrudApi.Order>this.selectedOrder).id,
-          CrudApi.OrderStatus.placed,
+          (<Order>this.selectedOrder).id,
+          OrderStatus.placed,
           <number>existingVariantOrderIdx,
         ).toPromise();
       }
     } else {
       this._orderService.addProductVariant(
-        fp.cloneDeep(<CrudApi.Order>this.selectedOrder),
+        fp.cloneDeep(<Order>this.selectedOrder),
         product,
         variantId,
       );

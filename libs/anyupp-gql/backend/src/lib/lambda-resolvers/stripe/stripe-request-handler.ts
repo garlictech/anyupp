@@ -1,4 +1,11 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  MutationCreateStripeCardArgs,
+  MutationDeleteMyStripeCardArgs,
+  MutationPayTipWithStripeArgs,
+  MutationStartStripePaymentArgs,
+  MutationUpdateMyStripeCardArgs,
+} from '@bgap/domain';
+
 import { createStripeCard } from './handlers/create-stripe-card';
 import { deleteStripeCard } from './handlers/delete-stripe-card';
 import { listStripeCards } from './handlers/list-stripe-cards';
@@ -12,19 +19,15 @@ interface WithCognitoUser {
 }
 
 type StartStripePaymentRequest = WithCognitoUser &
-  CrudApi.MutationStartStripePaymentArgs;
+  MutationStartStripePaymentArgs;
 
-type PayTipWithStripeRequest = WithCognitoUser &
-  CrudApi.MutationPayTipWithStripeArgs;
+type PayTipWithStripeRequest = WithCognitoUser & MutationPayTipWithStripeArgs;
 
-type CreateStripeCardRequest = WithCognitoUser &
-  CrudApi.MutationCreateStripeCardArgs;
+type CreateStripeCardRequest = WithCognitoUser & MutationCreateStripeCardArgs;
 
-type DeleteStripeCardRequest = WithCognitoUser &
-  CrudApi.MutationDeleteMyStripeCardArgs;
+type DeleteStripeCardRequest = WithCognitoUser & MutationDeleteMyStripeCardArgs;
 
-type UpdateStripeCardRequest = WithCognitoUser &
-  CrudApi.MutationUpdateMyStripeCardArgs;
+type UpdateStripeCardRequest = WithCognitoUser & MutationUpdateMyStripeCardArgs;
 
 export type ListStripeCardsRequest = WithCognitoUser;
 

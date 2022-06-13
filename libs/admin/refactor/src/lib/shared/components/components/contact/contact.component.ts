@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Chain, Group, Unit } from '@bgap/domain';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -8,5 +8,5 @@ import * as CrudApi from '@bgap/crud-gql/api';
   styleUrls: ['./contact.component.scss'],
 })
 export class ContactComponent {
-  @Input() contact?: CrudApi.Chain | CrudApi.Group | CrudApi.Unit;
+  @Input() contact?: Chain | Group | Unit;
 }

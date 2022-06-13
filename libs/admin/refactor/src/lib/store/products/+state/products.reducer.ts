@@ -1,9 +1,7 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ChainProduct, GroupProduct, UnitProduct } from '@bgap/domain';
 
-export interface ExtendedGroupProduct
-  extends CrudApi.ChainProduct,
-    CrudApi.GroupProduct {}
+export interface ExtendedGroupProduct extends ChainProduct, GroupProduct {}
 
 export interface ExtendedUnitProduct
   extends ExtendedGroupProduct,
-    CrudApi.UnitProduct {}
+    UnitProduct {}

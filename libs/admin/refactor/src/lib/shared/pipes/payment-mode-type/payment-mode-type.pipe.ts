@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { PaymentType } from '@bgap/domain';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class PaymentModeTypePipe implements PipeTransform {
   constructor(private _translateService: TranslateService) {}
 
-  transform(paymentModeType: CrudApi.PaymentType): string {
+  transform(paymentModeType: PaymentType): string {
     return this._translateService.instant(
       `common.paymentModes.${paymentModeType}`,
     );

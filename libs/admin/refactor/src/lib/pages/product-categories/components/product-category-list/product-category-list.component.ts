@@ -8,14 +8,14 @@ import {
   Component,
   ViewChild,
 } from '@angular/core';
-import { visibleLinesOnViewport } from '../../../../shared/utils';
-import { ProductCategoryCollectionService } from '../../../../store/product-categories';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductCategory } from '@bgap/domain';
 import { ProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
+import { visibleLinesOnViewport } from '../../../../shared/utils';
+import { ProductCategoryCollectionService } from '../../../../store/product-categories';
 import { ProductCategoryListService } from '../../services/product-category-list.service';
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
 
@@ -29,7 +29,7 @@ export class ProductCategoryListComponent {
   @ViewChild('dataVSVP')
   dataVSVP?: CdkVirtualScrollViewport;
 
-  public productCategories$: Observable<CrudApi.ProductCategory[]>;
+  public productCategories$: Observable<ProductCategory[]>;
   private _sortedProductCategoryIds: string[] = [];
 
   constructor(
@@ -40,7 +40,7 @@ export class ProductCategoryListComponent {
   ) {
     this.productCategories$ =
       this._productCategoryCollectionService.filteredEntities$.pipe(
-        map((products): CrudApi.ProductCategory[] =>
+        map((products): ProductCategory[] =>
           products.sort(customNumberCompare('position')),
         ),
         tap(productCategories => {

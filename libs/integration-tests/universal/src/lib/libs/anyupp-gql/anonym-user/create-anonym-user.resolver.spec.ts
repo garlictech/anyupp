@@ -1,7 +1,7 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { createAnonymUser, UserResolverDeps } from '@bgap/anyupp-gql/backend';
 import { config } from '@bgap/shared/config';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
+import { getCrudSdkPublic } from '@bgap/crud-gql/api';
 import { from } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
 
 describe('Anonym user creation', () => {
   const deps: UserResolverDeps = {
-    crudSdk: CrudApi.getCrudSdkPublic(),
+    crudSdk: getCrudSdkPublic(),
     consumerUserPoolId: config.ConsumerUserPoolId,
     cognitoidentityserviceprovider,
   };
@@ -25,8 +25,8 @@ describe('Anonym user creation', () => {
         // USE this to check the endpoint registration, permissions, etc, the whole endpoint
         // switchMap(() =>
         //   executeMutation(anyuppGraphQLClient)<
-        //     CrudApi.CreateAnonymUserMutation
-        //   >(CrudApi.CreateAnonymUser).pipe(map(x => x.createAnonymUser)),
+        //     CreateAnonymUserMutation
+        //   >(CreateAnonymUser).pipe(map(x => x.createAnonymUser)),
         // ),
         tap({
           next(result) {

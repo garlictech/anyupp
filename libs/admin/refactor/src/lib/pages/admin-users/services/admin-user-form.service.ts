@@ -3,11 +3,12 @@ import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { contactFormGroup } from '../../../shared/utils';
-import { catchGqlError } from '../../../store/app-core';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { CreateAdminUserInput, UpdateAdminUserInput } from '@bgap/domain';
 import { Store } from '@ngrx/store';
+
+import { contactFormGroup } from '../../../shared/utils';
 import { AdminUserCollectionService } from '../../../store/admin-users';
+import { catchGqlError } from '../../../store/app-core';
 
 @Injectable({ providedIn: 'root' })
 export class AdminUserFormService {
@@ -26,7 +27,7 @@ export class AdminUserFormService {
   }
 
   public saveForm$(
-    formValue: CrudApi.CreateAdminUserInput | CrudApi.UpdateAdminUserInput,
+    formValue: CreateAdminUserInput | UpdateAdminUserInput,
     adminUserId?: string,
   ) {
     return iif(
@@ -43,14 +44,14 @@ export class AdminUserFormService {
     );
   }
 
-  public createAdminUser$(input: CrudApi.CreateAdminUserInput) {
+  public createAdminUser$(input: CreateAdminUserInput) {
     return this._adminUserCollectionService.add$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'insert' })),
     );
   }
 
-  public updateAdminUser$(input: CrudApi.UpdateAdminUserInput) {
+  public updateAdminUser$(input: UpdateAdminUserInput) {
     return this._adminUserCollectionService.update$(input).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),

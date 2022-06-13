@@ -7,10 +7,11 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { unitsSelectors } from '../../../../store/units';
-import { DEFAULT_LANE_COLOR } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Unit } from '@bgap/domain';
 import { select, Store } from '@ngrx/store';
+
+import { DEFAULT_LANE_COLOR } from '../../../../shared/utils';
+import { unitsSelectors } from '../../../../store/units';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,10 +34,10 @@ export class ColorizedLaneIconComponent implements OnInit {
     this._store
       .pipe(
         select(unitsSelectors.getSelectedUnit),
-        skipWhile((unit: CrudApi.Unit | undefined): boolean => !unit),
+        skipWhile((unit: Unit | undefined): boolean => !unit),
         take(1),
       )
-      .subscribe((unit: CrudApi.Unit | undefined) => {
+      .subscribe((unit: Unit | undefined) => {
         this.laneColor =
           unit?.lanes?.find(l => l?.id === this.laneId)?.color ||
           DEFAULT_LANE_COLOR;

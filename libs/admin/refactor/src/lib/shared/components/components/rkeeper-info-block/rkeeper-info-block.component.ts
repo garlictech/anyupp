@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Pos } from '@bgap/domain';
 import { config } from '@bgap/shared/config';
 
 @Component({
@@ -10,7 +10,7 @@ import { config } from '@bgap/shared/config';
 })
 export class RkeeperInfoBlockComponent {
   @Input() externalId?: string;
-  @Input() pos?: CrudApi.Pos | undefined | null;
+  @Input() pos?: Pos | undefined | null;
 
   public webHookUrl = config.RkeeperWebhookEndpoint;
 }

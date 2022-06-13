@@ -1,4 +1,4 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { getCrudSdkPublic, CrudSdk } from '@bgap/crud-gql/api';
 import {
   otherAdminUsernames,
   testAdminUsername,
@@ -11,8 +11,8 @@ import {
 } from '../../api-clients';
 
 describe.skip('CRUD ownership tests', () => {
-  let authSdk: CrudApi.CrudSdk;
-  const publicSdk = CrudApi.getCrudSdkPublic();
+  let authSdk: CrudSdk;
+  const publicSdk = getCrudSdkPublic();
   const iamSdk = createIamCrudSdk();
   const adminUserId = testAdminUsername;
 

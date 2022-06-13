@@ -1,4 +1,3 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
   Dish,
   RKeeperBusinessEntityInfo,
@@ -15,6 +14,20 @@ import {
   yellowRkeeperUsername,
   yellowRkeeperPassword,
 } from '@bgap/shared/fixtures';
+import {
+  CreateChainInput,
+  CreateGroupInput,
+  CreateOrderInput,
+  CreateUnitInput,
+  CreateUnitProductInput,
+  OrderMode,
+  OrderStatus,
+  PaymentMethod,
+  PaymentType,
+  RKeeper,
+  ServingMode,
+  Unit,
+} from '@bgap/domain';
 
 const testIdPrefix = `rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad`;
 
@@ -39,7 +52,7 @@ const unitId = `${testIdPrefix}-unit`;
 const chainId = `${testIdPrefix}-chain`;
 const groupId = `${testIdPrefix}-group`;
 
-export const rkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
+export const rkeeperUnit: RequiredId<CreateUnitInput> = {
   ...unitFixture.createRkeeperUnit,
   id: unitId,
   groupId,
@@ -47,13 +60,13 @@ export const rkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
   externalId: 'EXTERNAL-RESTAURANT-ID',
 };
 
-export const rkeeperUnitProduct: RequiredId<CrudApi.CreateUnitProductInput> = {
+export const rkeeperUnitProduct: RequiredId<CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}-unitproduct`,
   externalId: rkeeperProductGuid,
 };
 
-export const rkeeperUnitProduct2: RequiredId<CrudApi.CreateUnitProductInput> = {
+export const rkeeperUnitProduct2: RequiredId<CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}-unitproduct2`,
   externalId: rkeeperProductGuid + '2',
@@ -73,12 +86,12 @@ export const businessEntity: RKeeperBusinessEntityInfo = {
   unitId,
 };
 
-export const createChain: RequiredId<CrudApi.CreateChainInput> = {
+export const createChain: RequiredId<CreateChainInput> = {
   ...chainFixture.chainBase,
   id: chainId,
 };
 
-export const createGroup: RequiredId<CrudApi.CreateGroupInput> = {
+export const createGroup: RequiredId<CreateGroupInput> = {
   ...groupFixture.groupBase,
   id: groupId,
   chainId,
@@ -116,11 +129,11 @@ export const yellowUnit = {
       rkeeperUsername: yellowRkeeperUsername,
       rkeeperPassword: yellowRkeeperPassword,
       endpointUri: rkeeperEndpoint,
-    } as CrudApi.RKeeper,
+    } as RKeeper,
   },
-} as CrudApi.Unit;
+} as Unit;
 
-export const orderInput: CrudApi.CreateOrderInput = {
+export const orderInput: CreateOrderInput = {
   userId: 'USER_ID',
   unitId: yellowUnit.id,
   items: [
@@ -130,7 +143,7 @@ export const orderInput: CrudApi.CreateOrderInput = {
       statusLog: [
         {
           userId: 'USER_ID',
-          status: CrudApi.OrderStatus.none,
+          status: OrderStatus.none,
           ts: 1627909024677,
         },
       ],
@@ -168,12 +181,12 @@ export const orderInput: CrudApi.CreateOrderInput = {
     table: '01',
     seat: '01',
   },
-  orderMode: CrudApi.OrderMode.instant,
-  servingMode: CrudApi.ServingMode.inplace,
+  orderMode: OrderMode.instant,
+  servingMode: ServingMode.inplace,
   archived: false,
   paymentMode: {
-    method: CrudApi.PaymentMethod.cash,
-    type: CrudApi.PaymentType.cash,
+    method: PaymentMethod.cash,
+    type: PaymentType.cash,
   },
 };
 

@@ -13,11 +13,12 @@
         autocomplete="off"
         [readonly]="readonly"
         [status]="
-          control?.touched && (control?.errors?.required || control?.invalid)
+          control?.touched && (control?.errors?.['required'] || control?.invalid)
             ? 'danger'
             : 'basic'
         "
         [attr.data-testid]="inputId"
+        (input)="onInput()"
       />
       <span *ngIf="suffix" nbSuffix>{{ suffix }}</span>
     </nb-form-field>

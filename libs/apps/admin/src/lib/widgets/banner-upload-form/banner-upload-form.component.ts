@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbsUnitBannerService, bannerType, ImageAsset } from '@bgap/domain';
+
+import { ToggleButtonOptions } from '../../ui-widgets/toggle-button-ui/toggle-button-ui.component';
 import {
   fileUploadValidator,
   FileUploadValidatorErrorTypes,
 } from '../../validators/fileUploadValidator';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AbsUnitAdBannerService, AdBanner } from '@bgap/domain';
 
 const MAX_NUMBER_OF_BANNERS = 5;
 
@@ -16,14 +18,22 @@ const MAX_NUMBER_OF_BANNERS = 5;
 export class BannerUploadFormComponent implements OnInit {
   @Input() unitId?: string;
   @Input() imageUrlPrefix?: string;
+  @Input() type: bannerType = 'ad';
 
   @Output() readonly operationSuccess = new EventEmitter<string>();
   @Output() readonly operationError = new EventEmitter<string>();
 
   bannerLimit = MAX_NUMBER_OF_BANNERS;
   validatorErrorTypes = FileUploadValidatorErrorTypes;
-  currentUnitBanners: AdBanner[] = [];
+
+  currentUnitBanners: ImageAsset[] = [];
   currentUnitBannersEnabled = false;
+
+  toggleOptions: ToggleButtonOptions = {
+    toggledText: 'common.allowed',
+    untoggledText: 'common.disallowed',
+  };
+
   bannerUploadForm = new FormGroup({
     fileUpload: new FormControl(null, [
       Validators.required,
@@ -40,7 +50,7 @@ export class BannerUploadFormComponent implements OnInit {
     uploadBanner: false,
   };
 
-  constructor(private bannerService: AbsUnitAdBannerService) {}
+  constructor(private _bannerService: AbsUnitBannerService) {}
 
   get fileUpload(): FormControl {
     return this.bannerUploadForm.get('fileUpload') as FormControl;
@@ -58,13 +68,15 @@ export class BannerUploadFormComponent implements OnInit {
     if (this.unitId) {
       this.operationsPending.initializeData = true;
 
-      this.currentUnitBanners = await this.bannerService.getAdBannersForUnit({
+      this.currentUnitBanners = await this._bannerService.getBannersForUnit({
         unitId: this.unitId,
+        type: this.type,
       });
 
       this.currentUnitBannersEnabled =
-        await this.bannerService.getAdBannersEnabledStatusForUnit({
+        await this._bannerService.getBannersEnabledStatusForUnit({
           unitId: this.unitId,
+          type: this.type,
         });
 
       this.operationsPending.initializeData = false;
@@ -77,14 +89,19 @@ export class BannerUploadFormComponent implements OnInit {
 
       try {
         this.currentUnitBannersEnabled =
-          await this.bannerService.toggleAdBannersEnabledStatusForUnit({
+          await this._bannerService.toggleBannersEnabledStatusForUnit({
             unitId: this.unitId,
+            type: this.type,
           });
 
-        this.operationSuccess.emit('Banners status toggled successfully');
+        this.operationSuccess.emit(
+          `${this.type}Banners status toggled successfully`,
+        );
       } catch (e) {
         console.error('error in onBannerDelete', e);
-        this.operationError.emit('Error while changing banners enabled status');
+        this.operationError.emit(
+          `Error while changing ${this.type} banners enabled status`,
+        );
       }
       this.operationsPending.toggleBanners = false;
     }
@@ -96,11 +113,12 @@ export class BannerUploadFormComponent implements OnInit {
 
       try {
         this.currentUnitBanners =
-          await this.bannerService.removeAdBannerFromUnit({
+          await this._bannerService.removeBannerFromUnit({
             unitId: this.unitId,
             bannerPath,
+            type: this.type,
           });
-        this.operationSuccess.emit('Banner removed successfully');
+        this.operationSuccess.emit(`${this.type}Banner removed successfully`);
       } catch (e) {
         console.error('error in onBannerDelete', e);
         this.operationError.emit('Error while removing banner');
@@ -116,12 +134,11 @@ export class BannerUploadFormComponent implements OnInit {
       this.operationsPending.uploadBanner = true;
 
       try {
-        this.currentUnitBanners = await this.bannerService.addNewAdBannerToUnit(
-          {
-            unitId: this.unitId,
-            bannerImage: this.fileUpload.value,
-          },
-        );
+        this.currentUnitBanners = await this._bannerService.addNewBannerToUnit({
+          unitId: this.unitId,
+          bannerImage: this.fileUpload.value,
+          type: this.type,
+        });
         this.fileUpload.setValue(null);
         this.operationSuccess.emit('Banner added successfully');
       } catch (e) {

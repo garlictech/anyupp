@@ -4,8 +4,8 @@ import {
   summarizeVatByTax,
 } from '@bgap/admin/refactor';
 import { KeyValueObject } from '@bgap/shared/types';
+import { OrderItem, ServingMode } from '@bgap/domain';
 import { printableOrder } from './fixtures';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 describe('Order print functions', () => {
   it('summarizeServiceFeeByTax should calculate service fee summary', () => {
@@ -22,8 +22,8 @@ describe('Order print functions', () => {
     expect(
       summarizeVariantsByTax({ localizer: value => `localized ${value}` })(
         variants,
-        <CrudApi.OrderItem>printableOrder.items[0],
-        CrudApi.ServingMode.inplace,
+        <OrderItem>printableOrder.items[0],
+        ServingMode.inplace,
       ),
     ).toMatchSnapshot();
   });

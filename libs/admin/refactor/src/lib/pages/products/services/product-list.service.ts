@@ -2,9 +2,9 @@ import { partition } from 'lodash/fp';
 import { combineLatest, defer, EMPTY, from, iif, Observable, of } from 'rxjs';
 import {
   debounceTime,
+  filter,
   map,
   mapTo,
-  filter,
   mergeMap,
   startWith,
   switchMap,
@@ -14,6 +14,12 @@ import {
 } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import { ChainProduct } from '@bgap/domain';
+import { ProductOrderChangeEvent } from '@bgap/shared/types';
+import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
+import { NbDialogService } from '@nebular/theme';
+import { Store } from '@ngrx/store';
+
 import { ConfirmDialogComponent } from '../../../shared/components';
 import { PAGINATION_LIMIT } from '../../../shared/data-access/ngrx-data';
 import { CrudSdkService } from '../../../shared/data-access/sdk';
@@ -25,12 +31,6 @@ import {
   productsSelectors,
   UnitProductCollectionService,
 } from '../../../store/products';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { ProductOrderChangeEvent } from '@bgap/shared/types';
-import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
-import { NbDialogService } from '@nebular/theme';
-import { Store } from '@ngrx/store';
-
 import { foundIn } from '../fn';
 
 interface CGU<T> {
@@ -76,25 +76,25 @@ export class ProductListService {
     return of(true);
     /*
     return this._store.select(loggedUserSelectors.getLoggedUserRole).pipe(
-      map((role: CrudApi.Role | undefined) => {
+      map((role: Role | undefined) => {
         switch (productLevel) {
           case EProductLevel.CHAIN:
-            return [CrudApi.Role.superuser, CrudApi.Role.chainadmin].includes(
-              role || CrudApi.Role.inactive,
+            return [Role.superuser, Role.chainadmin].includes(
+              role || Role.inactive,
             );
           case EProductLevel.GROUP:
             return [
-              CrudApi.Role.superuser,
-              CrudApi.Role.chainadmin,
-              CrudApi.Role.groupadmin,
-            ].includes(role || CrudApi.Role.inactive);
+              Role.superuser,
+              Role.chainadmin,
+              Role.groupadmin,
+            ].includes(role || Role.inactive);
           case EProductLevel.UNIT:
             return [
-              CrudApi.Role.superuser,
-              CrudApi.Role.chainadmin,
-              CrudApi.Role.groupadmin,
-              CrudApi.Role.unitadmin,
-            ].includes(role || CrudApi.Role.inactive);
+              Role.superuser,
+              Role.chainadmin,
+              Role.groupadmin,
+              Role.unitadmin,
+            ].includes(role || Role.inactive);
           default:
             return true;
         }
@@ -105,7 +105,7 @@ export class ProductListService {
 
   public chainProducts$() {
     return this._chainProductCollectionService.filteredEntities$.pipe(
-      switchMap((chainProducts: CrudApi.ChainProduct[]) => {
+      switchMap((chainProducts: ChainProduct[]) => {
         const [dirtyChainProducts, cleanChainProducts] = partition(
           p => p.dirty,
           chainProducts,

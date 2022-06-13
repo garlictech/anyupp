@@ -1,9 +1,11 @@
 import { switchMap, tap, map, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
-import * as CrudApi from '../../../libs/crud-gql/api/src';
+
 import { getAllPaginatedData } from '../../../libs/gql-sdk/src';
 import * as R from 'ramda';
 import { flow } from 'fp-ts/lib/function';
+import { Order, ServiceFeeType } from '../../../libs/domain/src';
+import { getCrudSdkForIAM } from '../../../libs/crud-gql/api/src';
 
 const awsAccessKeyId =
   process.env.API_ACCESS_KEY_ID || process.env.AWS_ACCESS_KEY_ID || '';
@@ -11,17 +13,17 @@ const awsAccessKeyId =
 const awsSecretAccessKey =
   process.env.API_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY || '';
 
-const crudSdk = CrudApi.getCrudSdkForIAM(awsAccessKeyId, awsSecretAccessKey);
+const crudSdk = getCrudSdkForIAM(awsAccessKeyId, awsSecretAccessKey);
 
 getAllPaginatedData(crudSdk.ListOrders)
   .pipe(
     map(
       flow(
-        res => (res?.items || []) as CrudApi.Order[],
-        (res: CrudApi.Order[]) =>
+        res => (res?.items || []) as Order[],
+        (res: Order[]) =>
           R.filter(
-            (order: CrudApi.Order) =>
-              order?.serviceFeePolicy?.type === CrudApi.ServiceFeeType.nofee,
+            (order: Order) =>
+              order?.serviceFeePolicy?.type === ServiceFeeType.nofee,
           )(res),
       ),
     ),

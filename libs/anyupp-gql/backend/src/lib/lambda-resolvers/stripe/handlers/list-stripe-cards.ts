@@ -1,4 +1,5 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { StripeCard } from '@bgap/domain';
+
 import { mapPaymentMethodToCard, StripeResolverDeps } from '../stripe.utils';
 import {
   handleStripeErrors,
@@ -7,7 +8,7 @@ import {
 
 export const listStripeCards =
   () =>
-  async (deps: StripeResolverDeps): Promise<CrudApi.StripeCard[]> => {
+  async (deps: StripeResolverDeps): Promise<StripeCard[]> => {
     // 1. get userId
     const userId = deps.userId;
     console.debug('listStripeCards().start().userId=' + userId);

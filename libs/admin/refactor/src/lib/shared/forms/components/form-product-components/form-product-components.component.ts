@@ -15,13 +15,18 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ProductComponentSetCollectionService } from '../../../../store/product-component-sets';
-import { LocalizePipe } from '../../../../shared/pipes';
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  ProductComponentSet,
+  ProductConfigComponent,
+  ProductConfigSet,
+  ServingMode,
+} from '@bgap/domain';
 import { EProductLevel, KeyValue } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+import { LocalizePipe } from '../../../../shared/pipes';
+import { ProductComponentSetCollectionService } from '../../../../store/product-component-sets';
 import { FormsService } from '../../services/forms/forms.service';
 
 @UntilDestroy()
@@ -36,12 +41,12 @@ export class FormProductComponentsComponent implements OnInit {
   @Input() productLevel!: EProductLevel;
   @Input() currency?: string;
   public eProductLevel = EProductLevel;
-  public eServingMode = CrudApi.ServingMode;
+  public eServingMode = ServingMode;
 
   public componentSetForm?: FormGroup;
   public productComponentSetOptions: KeyValue[] = [];
 
-  private _productComponentSets: CrudApi.ProductComponentSet[] = [];
+  private _productComponentSets: ProductComponentSet[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -71,8 +76,8 @@ export class FormProductComponentsComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(
         ([productComponentSets, items]: [
-          CrudApi.ProductComponentSet[],
-          CrudApi.ProductConfigSet[],
+          ProductComponentSet[],
+          ProductConfigSet[],
         ]) => {
           this._productComponentSets = productComponentSets;
           this.productComponentSetOptions = this._getProductComponentSetOptions(
@@ -105,7 +110,7 @@ export class FormProductComponentsComponent implements OnInit {
           productComponentId: componentId,
           position: i + 1,
         });
-        (componentSetGroup.controls.items as FormArray).push(itemGroup);
+        (componentSetGroup.controls['items'] as FormArray).push(itemGroup);
       });
 
       (<FormArray>this.componentFormArray)?.push(componentSetGroup);
@@ -138,7 +143,7 @@ export class FormProductComponentsComponent implements OnInit {
     ) {
       arr.splice(idx, 1);
       arr.splice(idx + change, 0, movingItem);
-      arr.forEach((componentSet: CrudApi.ProductConfigSet, pos: number) => {
+      arr.forEach((componentSet: ProductConfigSet, pos: number) => {
         componentSet.position = pos + 1;
       });
 
@@ -149,15 +154,13 @@ export class FormProductComponentsComponent implements OnInit {
           g.patchValue(arr[i]);
           (g.get('items') as FormArray).clear();
 
-          (arr[i]?.items || []).forEach(
-            (item: CrudApi.ProductConfigComponent) => {
-              const itemGroup =
-                this._formsService.createProductConfigSetItemFormGroup();
-              itemGroup.patchValue(item);
+          (arr[i]?.items || []).forEach((item: ProductConfigComponent) => {
+            const itemGroup =
+              this._formsService.createProductConfigSetItemFormGroup();
+            itemGroup.patchValue(item);
 
-              (g.get('items') as FormArray).push(itemGroup);
-            },
-          );
+            (g.get('items') as FormArray).push(itemGroup);
+          });
         },
       );
     }
@@ -166,7 +169,7 @@ export class FormProductComponentsComponent implements OnInit {
   }
 
   private _getProductComponentSetOptions(
-    productComponentSets: CrudApi.ProductComponentSet[],
+    productComponentSets: ProductComponentSet[],
     items: string[],
   ) {
     return productComponentSets
@@ -184,8 +187,8 @@ export class FormProductComponentsComponent implements OnInit {
   }
 
   public hasServingMode(
-    compSet: CrudApi.ProductComponentSet,
-    servingMode: CrudApi.ServingMode,
+    compSet: ProductComponentSet,
+    servingMode: ServingMode,
   ) {
     return (compSet.supportedServingModes || []).includes(servingMode);
   }

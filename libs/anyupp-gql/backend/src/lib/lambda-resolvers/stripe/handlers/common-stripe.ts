@@ -1,5 +1,11 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import Stripe from 'stripe';
+
+import {
+  CreateUserMutationVariables,
+  UpdateUserMutationVariables,
+  UserInvoiceAddress,
+} from '@bgap/domain';
+
 import { loadUser } from '../stripe-graphql-crud';
 import { StripeResolverDeps } from '../stripe.utils';
 
@@ -7,7 +13,7 @@ export const loadAndConnectUserForStripe =
   (
     userId: string,
     createStripeUser = true,
-    invoiceAddress: CrudApi.UserInvoiceAddress | undefined | null = undefined,
+    invoiceAddress: UserInvoiceAddress | undefined | null = undefined,
   ) =>
   async (deps: StripeResolverDeps) => {
     let user = await loadUser()(deps);
@@ -29,7 +35,7 @@ export const loadAndConnectUserForStripe =
         customerId = stripeCustomer.id;
       }
 
-      const createUserVars: CrudApi.CreateUserMutationVariables = {
+      const createUserVars: CreateUserMutationVariables = {
         input: {
           id: userId,
           stripeCustomerId: customerId,
@@ -56,7 +62,7 @@ export const loadAndConnectUserForStripe =
           await deps.stripeClient.customers.create();
         customerId = stripeCustomer.id;
       }
-      const updateUserVars: CrudApi.UpdateUserMutationVariables = {
+      const updateUserVars: UpdateUserMutationVariables = {
         input: {
           id: userId,
           stripeCustomerId: customerId,

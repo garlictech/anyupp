@@ -1,7 +1,7 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { User } from '@bgap/domain';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { UsersState, USERS_FEATURE_KEY, usersAdapter } from './users.reducer';
+import { USERS_FEATURE_KEY, usersAdapter, UsersState } from './users.reducer';
 
 export const getUsersState =
   createFeatureSelector<UsersState>(USERS_FEATURE_KEY);
@@ -23,8 +23,6 @@ export const getUsersEntities = createSelector(
 );
 
 export const getUserById = (id: string) =>
-  createSelector(
-    getAllUsers,
-    (users: CrudApi.User[]): CrudApi.User | undefined =>
-      users.find((user): boolean => user.id === id),
+  createSelector(getAllUsers, (users: User[]): User | undefined =>
+    users.find((user): boolean => user.id === id),
   );

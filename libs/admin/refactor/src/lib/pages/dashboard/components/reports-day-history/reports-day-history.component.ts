@@ -9,7 +9,7 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Order } from '@bgap/domain';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -24,7 +24,7 @@ import { ReportsService } from '../../services/reports.service';
 })
 export class ReportsDayHistoryComponent implements AfterViewInit {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$?: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<Order[]>;
   @Input() currency = '';
 
   constructor(

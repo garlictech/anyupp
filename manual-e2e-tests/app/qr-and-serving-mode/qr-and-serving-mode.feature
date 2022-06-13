@@ -6,8 +6,12 @@ Feature: QR code and serving mode change
     Given I have my camera opened
     When I read the QR code with my camera
     And I tap the "Anyupp" button
-    Then I should see a loading screen
-    And I should see the "Please select" dialog
+    Then I should see the login screen
+    When I tap on the "Sign in without register" button
+    Then I should see "finding table and chair..." loading screen
+    And I should see "Table: #01, Chair: #01" popup
+    When I tap on the "OK" button
+    Then I should see the "Please select" dialog
     When I tap the "In place" button
     Then there is the "Menu" screen
     When I tap the "Sajtburger" card under "Hamburgers" product category
@@ -37,7 +41,7 @@ Feature: QR code and serving mode change
     When I read the QR code
     Then there is a "finding table and chair" loading screen
     And I should get the a text message "New Table Reserved!"
-    Then I should see "Chair: #01, Table: #01" text
+    Then I should see "Chair: #01, Table: #01" popup
     When I tap on the "OK" button
     Then I should see "Please select" dialog
     When I tap the "In place" button
@@ -68,8 +72,8 @@ Feature: QR code and serving mode change
     When I tap the "OK" button
     Then I should see the "Scan the QR codoe on the table to order." text
     When I read the QR code
-    Then I should see "Finding table and chair..." text
-    And I should see "Chair: #01, Table: #01" text
+    Then I should see "finding table and chair..." loading screen
+    And I should see "Chair: #01, Table: #01" popup
     When I tap on the "OK" button
     Then I should see the "Menu" screen
 
@@ -84,17 +88,17 @@ Feature: QR code and serving mode change
     When I tap the "Sajtburger" card under "Hamburgers" category
     And I tap the "Add to cart" button
     Then I should see the "Menu" screen
-    When I tap on the "MY CART (1700 Ft)" button
+    When I tap on the "MY CART (1200 Ft)" button
     Then I should see the "Cart" screen
-    When I tap the "PAY (1700 Ft)" button
-    Then I should see the "PAY" screen
+    When I tap the "PAY (1200 Ft)" button
+    Then I should see the "PAYMENT" screen
     When I tap on the "Cash" button
     And I tap on the "PALCE ORDER" button
     And the app opens my camera
-    Then I should see the "Scan the QR codoe on your table to finalize your order." text
+    Then I should see the "Scan the QR code on your table to order." text
     When I read the QR code
-    Then I should see the "Finding table and chair..." loading screen
-    And I get the text message "New Table Reserved!"
+    Then I should see the "finding table and chair..." loading screen
+    And I get the text message "New Seat Reserved!"
     And I should see "Chair: #01, Table: #01" text
     When I tap on the "OK" button
     Then I should see "Successful order!" text
@@ -134,12 +138,12 @@ Feature: QR code and serving mode change
     Then there is the "Menu" screen
     When I tap the "Sajtburger" card under "Hamburgers" category
     And I tap the "Add To Cart" button
-    And I tap the "MY CART (1700 Ft)" button
+    And I tap the "MY CART (1200 Ft)" button
     Then there is the "Cart" screen
     When I tap on the "Mode selector" button
     Then I should see "Please select" dialog
     When I tap on the "In place" button
-    Then I should see "Are you sure you want to switch to in place order mode?" dialog
+    Then I should see "Do you want to switch to in-place mode?" dialog
     When I tap on the "Yes" button
     Then I should see the "Menu" screen
     And my cart should be deleted

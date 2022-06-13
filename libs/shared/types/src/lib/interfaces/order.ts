@@ -1,18 +1,27 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { CrudSdk } from '@bgap/crud-gql/api';
+import {
+  LocalizedItem,
+  Order,
+  OrderItem,
+  OrderStatus,
+  Place,
+  UnpayCategory,
+  ServingMode,
+} from '@bgap/domain';
 
-export interface LaneOrderItem extends CrudApi.OrderItem {
+export interface LaneOrderItem extends OrderItem {
   orderId?: string;
   userId?: string;
   idx?: number;
   laneColor?: string;
   image?: string | null;
-  place?: CrudApi.Place;
-  servingMode?: CrudApi.ServingMode;
-  currentStatus?: CrudApi.OrderStatus;
+  place?: Place;
+  servingMode?: ServingMode;
+  currentStatus?: OrderStatus;
 }
 
 export interface Orders {
-  [key: string]: CrudApi.Order;
+  [key: string]: Order;
 }
 
 export interface DateIntervals {
@@ -38,7 +47,7 @@ export interface ProducMixObjectInfo {
   variantId?: string;
   componentId?: string;
   quantity: number;
-  name: CrudApi.LocalizedItem;
+  name: LocalizedItem;
 }
 
 export interface ProducMixObjectItem extends ProducMixObjectInfo {
@@ -73,7 +82,7 @@ export interface UnpayCategoryMethodStatObjItem {
 }
 
 export interface UnpayCategoryStatObjItem {
-  category: CrudApi.UnpayCategory | string;
+  category: UnpayCategory | string;
   count: number;
   sum: number;
   paymentMethodSums: UnpayCategoryMethodStatObjItem;
@@ -85,6 +94,6 @@ export interface UnpayCategoryStatObj {
 }
 
 export interface OrderHandlerDeps {
-  crudSdk: CrudApi.CrudSdk;
+  crudSdk: CrudSdk;
   timestamp: () => number;
 }

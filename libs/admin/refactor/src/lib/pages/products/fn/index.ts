@@ -1,9 +1,9 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { CreateUnitProductInput, UpdateUnitProductInput } from '@bgap/domain';
 import { Product } from '@bgap/shared/types';
 
 // Send null instead of empty strings (avoid type failure)
 export const handleEmptyPackaginFees = (
-  fromInput: CrudApi.CreateUnitProductInput | CrudApi.UpdateUnitProductInput,
+  fromInput: CreateUnitProductInput | UpdateUnitProductInput,
 ) => ({
   ...fromInput,
   variants: fromInput.variants?.map(v => ({

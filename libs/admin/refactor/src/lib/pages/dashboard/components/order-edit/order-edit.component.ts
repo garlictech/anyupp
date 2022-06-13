@@ -5,16 +5,24 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { dashboardSelectors } from '../../../../store/dashboard';
-import { OrderService } from '../../../../shared/data-access/order';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { currentStatus } from '@bgap/crud-gql/api';
+import {
+  Order,
+  OrderItem,
+  OrderStatus,
+  PaymentMethod,
+  PaymentMode,
+} from '@bgap/domain';
 import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
+import { OrderService } from '../../../../shared/data-access/order';
+import { dashboardSelectors } from '../../../../store/dashboard';
+
 interface IPaymentMethodKV {
   key: string;
-  value: CrudApi.PaymentMethod;
+  value: PaymentMethod;
 }
 
 @UntilDestroy()
@@ -25,7 +33,7 @@ interface IPaymentMethodKV {
   styleUrls: ['./order-edit.component.scss'],
 })
 export class OrderEditComponent implements OnInit {
-  @Input() order!: CrudApi.Order;
+  @Input() order!: Order;
   public paymentMethods: IPaymentMethodKV[] = [];
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public workingOrderStatus: boolean;
@@ -39,9 +47,9 @@ export class OrderEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.paymentMethods = Object.keys(CrudApi.PaymentMethod).map(key => ({
+    this.paymentMethods = Object.keys(PaymentMethod).map(key => ({
       key,
-      value: CrudApi.PaymentMethod[<keyof typeof CrudApi.PaymentMethod>key],
+      value: PaymentMethod[<keyof typeof PaymentMethod>key],
     }));
 
     this._store
@@ -74,7 +82,7 @@ export class OrderEditComponent implements OnInit {
             input: {
               adminUserId: adminUser.id,
               orderId: this.order.id,
-              status: CrudApi.OrderStatus.rejected,
+              status: OrderStatus.rejected,
             },
           }),
         ),
@@ -92,12 +100,12 @@ export class OrderEditComponent implements OnInit {
 
   public async removeOrderItem(idx: number): Promise<void> {
     await this._orderService
-      .updateOrderItemStatus$(this.order.id, CrudApi.OrderStatus.rejected, idx)
+      .updateOrderItemStatus$(this.order.id, OrderStatus.rejected, idx)
       .toPromise();
   }
 
   public async updateOrderPaymentMethod(
-    paymentMode: CrudApi.PaymentMode,
+    paymentMode: PaymentMode,
   ): Promise<void> {
     await this._orderService
       .updateOrderPaymentMode$(this.order.id, paymentMode)
@@ -105,11 +113,9 @@ export class OrderEditComponent implements OnInit {
   }
 
   public isCurrentStatus(
-    orderItem: CrudApi.OrderItem,
-    status: keyof typeof CrudApi.OrderStatus,
+    orderItem: OrderItem,
+    status: keyof typeof OrderStatus,
   ): boolean {
-    return (
-      CrudApi.currentStatus(orderItem.statusLog) === CrudApi.OrderStatus[status]
-    );
+    return currentStatus(orderItem.statusLog) === OrderStatus[status];
   }
 }

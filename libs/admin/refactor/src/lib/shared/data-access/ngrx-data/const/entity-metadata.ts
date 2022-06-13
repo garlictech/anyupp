@@ -1,85 +1,74 @@
-import { ENTITY_NAME } from '../../../../shared/types';
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  AdminUser,
+  Chain,
+  ChainProduct,
+  GeneratedProduct,
+  Group,
+  GroupProduct,
+  Order,
+  ProductCategory,
+  ProductComponent,
+  ProductComponentSet,
+  Unit,
+  UnitProduct,
+} from '@bgap/domain';
 import { EntityMetadataMap } from '@ngrx/data';
 
+import { ENTITY_NAME } from '../../../../shared/types';
 import { localizedItemFilter, simpleFilter } from './entity-metadata-filters';
 
 const entityMetadata: EntityMetadataMap = {
   [ENTITY_NAME.ADMIN_USER]: {
-    filterFn: (
-      entities: CrudApi.AdminUser[],
-      { name, email }: Partial<CrudApi.AdminUser>,
-    ) =>
+    filterFn: (entities: AdminUser[], { name, email }: Partial<AdminUser>) =>
       entities
-        .filter(simpleFilter<CrudApi.AdminUser>('name', true, name))
-        .filter(simpleFilter<CrudApi.AdminUser>('email', true, email)),
+        .filter(simpleFilter<AdminUser>('name', true, name))
+        .filter(simpleFilter<AdminUser>('email', true, email)),
   },
   [ENTITY_NAME.CHAIN]: {
-    filterFn: (
-      entities: CrudApi.Chain[],
-      { name, description }: Partial<CrudApi.Chain>,
-    ) =>
+    filterFn: (entities: Chain[], { name, description }: Partial<Chain>) =>
       entities
-        .filter(simpleFilter<CrudApi.Chain>('name', true, name))
-        .filter(
-          localizedItemFilter<CrudApi.Chain>('description', 'hu', description),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.Chain>('description', 'en', description),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.Chain>('description', 'de', description),
-        ),
+        .filter(simpleFilter<Chain>('name', true, name))
+        .filter(localizedItemFilter<Chain>('description', 'hu', description))
+        .filter(localizedItemFilter<Chain>('description', 'en', description))
+        .filter(localizedItemFilter<Chain>('description', 'de', description)),
   },
   [ENTITY_NAME.GROUP]: {
     filterFn: (
-      entities: CrudApi.Group[],
-      { chainId, name, description }: Partial<CrudApi.Group>,
+      entities: Group[],
+      { chainId, name, description }: Partial<Group>,
     ) =>
       entities
-        .filter(simpleFilter<CrudApi.Group>('chainId', false, chainId))
-        .filter(simpleFilter<CrudApi.Group>('name', true, name))
-        .filter(
-          localizedItemFilter<CrudApi.Group>('description', 'hu', description),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.Group>('description', 'en', description),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.Group>('description', 'de', description),
-        ),
+        .filter(simpleFilter<Group>('chainId', false, chainId))
+        .filter(simpleFilter<Group>('name', true, name))
+        .filter(localizedItemFilter<Group>('description', 'hu', description))
+        .filter(localizedItemFilter<Group>('description', 'en', description))
+        .filter(localizedItemFilter<Group>('description', 'de', description)),
   },
   [ENTITY_NAME.UNIT]: {
     filterFn: (
-      entities: CrudApi.Unit[],
-      { groupId, chainId, name, description }: Partial<CrudApi.Unit>,
+      entities: Unit[],
+      { groupId, chainId, name, description }: Partial<Unit>,
     ) =>
       entities
-        .filter(simpleFilter<CrudApi.Unit>('chainId', false, chainId))
-        .filter(simpleFilter<CrudApi.Unit>('groupId', false, groupId))
-        .filter(simpleFilter<CrudApi.Unit>('name', true, name))
-        .filter(
-          localizedItemFilter<CrudApi.Unit>('description', 'hu', description),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.Unit>('description', 'en', description),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.Unit>('description', 'de', description),
-        ),
+        .filter(simpleFilter<Unit>('chainId', false, chainId))
+        .filter(simpleFilter<Unit>('groupId', false, groupId))
+        .filter(simpleFilter<Unit>('name', true, name))
+        .filter(localizedItemFilter<Unit>('description', 'hu', description))
+        .filter(localizedItemFilter<Unit>('description', 'en', description))
+        .filter(localizedItemFilter<Unit>('description', 'de', description)),
   },
   [ENTITY_NAME.CHAIN_PRODUCT]: {
     filterFn: (
-      entities: CrudApi.ChainProduct[],
-      { name, chainId, productCategoryId }: Partial<CrudApi.ChainProduct>,
+      entities: ChainProduct[],
+      { name, chainId, productCategoryId }: Partial<ChainProduct>,
     ) =>
       entities
-        .filter(localizedItemFilter<CrudApi.ChainProduct>('name', 'hu', name))
-        .filter(localizedItemFilter<CrudApi.ChainProduct>('name', 'en', name))
-        .filter(localizedItemFilter<CrudApi.ChainProduct>('name', 'de', name))
-        .filter(simpleFilter<CrudApi.ChainProduct>('chainId', false, chainId))
+        .filter(localizedItemFilter<ChainProduct>('name', 'hu', name))
+        .filter(localizedItemFilter<ChainProduct>('name', 'en', name))
+        .filter(localizedItemFilter<ChainProduct>('name', 'de', name))
+        .filter(simpleFilter<ChainProduct>('chainId', false, chainId))
         .filter(
-          simpleFilter<CrudApi.ChainProduct>(
+          simpleFilter<ChainProduct>(
             'productCategoryId',
             false,
             productCategoryId,
@@ -88,96 +77,70 @@ const entityMetadata: EntityMetadataMap = {
   },
   [ENTITY_NAME.GROUP_PRODUCT]: {
     filterFn: (
-      entities: CrudApi.GroupProduct[],
-      { groupId, chainId }: Partial<CrudApi.GroupProduct>,
+      entities: GroupProduct[],
+      { groupId, chainId }: Partial<GroupProduct>,
     ) =>
       entities
-        .filter(simpleFilter<CrudApi.GroupProduct>('chainId', false, chainId))
-        .filter(simpleFilter<CrudApi.GroupProduct>('groupId', false, groupId)),
+        .filter(simpleFilter<GroupProduct>('chainId', false, chainId))
+        .filter(simpleFilter<GroupProduct>('groupId', false, groupId)),
   },
   [ENTITY_NAME.UNIT_PRODUCT]: {
     filterFn: (
-      entities: CrudApi.UnitProduct[],
-      { chainId, groupId, unitId }: Partial<CrudApi.UnitProduct>,
+      entities: UnitProduct[],
+      { chainId, groupId, unitId }: Partial<UnitProduct>,
     ) =>
       entities
-        .filter(simpleFilter<CrudApi.UnitProduct>('chainId', false, chainId))
-        .filter(simpleFilter<CrudApi.UnitProduct>('groupId', false, groupId))
-        .filter(simpleFilter<CrudApi.UnitProduct>('unitId', false, unitId)),
+        .filter(simpleFilter<UnitProduct>('chainId', false, chainId))
+        .filter(simpleFilter<UnitProduct>('groupId', false, groupId))
+        .filter(simpleFilter<UnitProduct>('unitId', false, unitId)),
   },
   [ENTITY_NAME.GENERATED_PRODUCT]: {
     filterFn: (
-      entities: CrudApi.GeneratedProduct[],
-      { unitId }: Partial<CrudApi.GeneratedProduct>,
+      entities: GeneratedProduct[],
+      { unitId }: Partial<GeneratedProduct>,
     ) =>
-      entities.filter(
-        simpleFilter<CrudApi.GeneratedProduct>('unitId', false, unitId),
-      ),
+      entities.filter(simpleFilter<GeneratedProduct>('unitId', false, unitId)),
   },
   [ENTITY_NAME.PRODUCT_CATEGORY]: {
     filterFn: (
-      entities: CrudApi.ProductCategory[],
-      { name, chainId }: Partial<CrudApi.ProductCategory>,
+      entities: ProductCategory[],
+      { name, chainId }: Partial<ProductCategory>,
     ) =>
       entities
-        .filter(
-          localizedItemFilter<CrudApi.ProductCategory>('name', 'hu', name),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.ProductCategory>('name', 'en', name),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.ProductCategory>('name', 'de', name),
-        )
-        .filter(
-          simpleFilter<CrudApi.ProductCategory>('chainId', false, chainId),
-        ),
+        .filter(localizedItemFilter<ProductCategory>('name', 'hu', name))
+        .filter(localizedItemFilter<ProductCategory>('name', 'en', name))
+        .filter(localizedItemFilter<ProductCategory>('name', 'de', name))
+        .filter(simpleFilter<ProductCategory>('chainId', false, chainId)),
   },
   [ENTITY_NAME.PRODUCT_COMPONENT]: {
     filterFn: (
-      entities: CrudApi.ProductComponent[],
-      { name, chainId }: Partial<CrudApi.ProductComponent>,
+      entities: ProductComponent[],
+      { name, chainId }: Partial<ProductComponent>,
     ) =>
       entities
-        .filter(
-          localizedItemFilter<CrudApi.ProductComponent>('name', 'hu', name),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.ProductComponent>('name', 'en', name),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.ProductComponent>('name', 'de', name),
-        )
-        .filter(
-          simpleFilter<CrudApi.ProductComponent>('chainId', false, chainId),
-        ),
+        .filter(localizedItemFilter<ProductComponent>('name', 'hu', name))
+        .filter(localizedItemFilter<ProductComponent>('name', 'en', name))
+        .filter(localizedItemFilter<ProductComponent>('name', 'de', name))
+        .filter(simpleFilter<ProductComponent>('chainId', false, chainId)),
   },
   [ENTITY_NAME.PRODUCT_COMPONENT_SET]: {
     filterFn: (
-      entities: CrudApi.ProductComponentSet[],
-      { name, chainId }: Partial<CrudApi.ProductComponentSet>,
+      entities: ProductComponentSet[],
+      { name, chainId }: Partial<ProductComponentSet>,
     ) =>
       entities
-        .filter(
-          localizedItemFilter<CrudApi.ProductComponentSet>('name', 'hu', name),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.ProductComponentSet>('name', 'en', name),
-        )
-        .filter(
-          localizedItemFilter<CrudApi.ProductComponentSet>('name', 'de', name),
-        )
-        .filter(
-          simpleFilter<CrudApi.ProductComponentSet>('chainId', false, chainId),
-        ),
+        .filter(localizedItemFilter<ProductComponentSet>('name', 'hu', name))
+        .filter(localizedItemFilter<ProductComponentSet>('name', 'en', name))
+        .filter(localizedItemFilter<ProductComponentSet>('name', 'de', name))
+        .filter(simpleFilter<ProductComponentSet>('chainId', false, chainId)),
   },
   [ENTITY_NAME.ORDER]: {
-    filterFn: (entities: CrudApi.Order[], { unitId }: Partial<CrudApi.Order>) =>
-      entities.filter(simpleFilter<CrudApi.Order>('unitId', false, unitId)),
+    filterFn: (entities: Order[], { unitId }: Partial<Order>) =>
+      entities.filter(simpleFilter<Order>('unitId', false, unitId)),
   },
   [ENTITY_NAME.ORDER_HISTORY]: {
-    filterFn: (entities: CrudApi.Order[], { unitId }: Partial<CrudApi.Order>) =>
-      entities.filter(simpleFilter<CrudApi.Order>('unitId', false, unitId)),
+    filterFn: (entities: Order[], { unitId }: Partial<Order>) =>
+      entities.filter(simpleFilter<Order>('unitId', false, unitId)),
   },
 };
 

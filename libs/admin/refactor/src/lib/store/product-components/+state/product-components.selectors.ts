@@ -1,19 +1,18 @@
-import { ENTITY_NAME } from '../../../shared/types';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ProductComponent } from '@bgap/domain';
 import { EntitySelectorsFactory } from '@ngrx/data';
 import { createSelector } from '@ngrx/store';
 
+import { ENTITY_NAME } from '../../../shared/types';
+
 export const productComponentEntitySelectors =
-  new EntitySelectorsFactory().create<CrudApi.ProductComponent>(
+  new EntitySelectorsFactory().create<ProductComponent>(
     ENTITY_NAME.PRODUCT_COMPONENT,
   );
 
 export const getProductComponentById = (id: string) =>
   createSelector(
     productComponentEntitySelectors.selectEntities,
-    (
-      productComponents: CrudApi.ProductComponent[],
-    ): CrudApi.ProductComponent | undefined =>
+    (productComponents: ProductComponent[]): ProductComponent | undefined =>
       productComponents.find(
         (productComponent): boolean => productComponent.id === id,
       ),

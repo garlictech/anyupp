@@ -5,7 +5,8 @@ import {
   OnChanges,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { ChainStyleColors } from '@bgap/domain';
+
 import { getPreviewSVG } from '../../pure';
 
 @Component({
@@ -15,7 +16,7 @@ import { getPreviewSVG } from '../../pure';
   styleUrls: ['./style-color-preview.component.scss'],
 })
 export class StyleColorPreviewComponent implements OnChanges {
-  @Input() colors?: CrudApi.ChainStyleColors;
+  @Input() colors?: ChainStyleColors;
 
   public previeImgPath: SafeResourceUrl = '';
 

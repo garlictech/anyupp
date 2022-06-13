@@ -1,11 +1,13 @@
-import * as CrudApi from '@bgap/crud-gql/api';
-import { mapPaymentMethodToCard, StripeResolverDeps } from '../stripe.utils';
-import { loadAndConnectUserForStripe } from './common-stripe';
 import Stripe from 'stripe';
 
+import { StripeCard, StripeCardCreateInput } from '@bgap/domain';
+
+import { mapPaymentMethodToCard, StripeResolverDeps } from '../stripe.utils';
+import { loadAndConnectUserForStripe } from './common-stripe';
+
 export const createStripeCard =
-  (input: CrudApi.StripeCardCreateInput) =>
-  async (deps: StripeResolverDeps): Promise<CrudApi.StripeCard> => {
+  (input: StripeCardCreateInput) =>
+  async (deps: StripeResolverDeps): Promise<StripeCard> => {
     const userId = deps.userId;
     console.debug('**** createStripeCard().start()');
 

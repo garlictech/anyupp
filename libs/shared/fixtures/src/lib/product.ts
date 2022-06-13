@@ -1,5 +1,5 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { EVariantAvailabilityType } from '@bgap/shared/types';
+import { Allergen, ProductType, ServingMode } from '@bgap/domain';
 import { seededIdPrefix, testIdPrefix } from './common';
 
 const unitProductId_seeded_id_01 = `${seededIdPrefix}unit_product_c1_g1_1_id`;
@@ -75,11 +75,11 @@ const chainProductInputBase = {
   name: { en: 'CHAIN_PRODUCT' },
   description: { en: 'DESCRIPTION' },
   productCategoryId: 'productCategoryId_',
-  productType: CrudApi.ProductType.drink,
+  productType: ProductType.drink,
   isVisible: true,
   image: 'IMAGE',
   variants: [getChainProductVariant(1), getChainProductVariant(2)],
-  allergens: [CrudApi.Allergen.egg, CrudApi.Allergen.gluten],
+  allergens: [Allergen.egg, Allergen.gluten],
 };
 
 const groupProductInputBase = {
@@ -104,7 +104,7 @@ const unitProductInputBase = {
   laneId: 'laneId_',
   position: 1,
   variants: [getUnitProductVariant(1), getUnitProductVariant(2)],
-  supportedServingModes: [CrudApi.ServingMode.takeaway],
+  supportedServingModes: [ServingMode.takeaway],
 };
 
 const chainProductBase = {

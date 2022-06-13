@@ -1,4 +1,3 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
   chainFixture,
   groupFixture,
@@ -11,6 +10,31 @@ import {
 import { RequiredId } from '@bgap/shared/types';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
+import { CrudSdk } from '@bgap/crud-gql/api';
+import {
+  Allergen,
+  CreateAdminUserInput,
+  CreateChainInput,
+  CreateChainProductInput,
+  CreateGroupInput,
+  CreateGroupProductInput,
+  CreateOrderInput,
+  CreateProductCategoryInput,
+  CreateProductComponentInput,
+  CreateProductComponentSetInput,
+  CreateTransactionInput,
+  CreateUnitInput,
+  CreateUnitProductInput,
+  CreateUserInput,
+  OrderMode,
+  OrderStatus,
+  PaymentMethod,
+  PaymentType,
+  PosType,
+  ProductType,
+  ServingMode,
+  UnitMapObjectType,
+} from '@bgap/domain';
 import { DateTime } from 'luxon';
 import * as R from 'ramda';
 import { combineLatest, from, Observable, of } from 'rxjs';
@@ -18,7 +42,7 @@ import { catchError, concatMap, switchMap, tap, toArray } from 'rxjs/operators';
 import { seedUtils } from './utils';
 
 export interface SeederDependencies {
-  crudSdk: CrudApi.CrudSdk;
+  crudSdk: CrudSdk;
   userPoolId: string;
   consumerUserPoolId: string;
   cognitoidentityserviceprovider: CognitoIdentityServiceProvider;
@@ -41,7 +65,7 @@ const deleteCreate = <T, K>(
 export const createConsumerUser = () => (deps: SeederDependencies) => {
   console.debug('createConsumerUser');
 
-  const input: CrudApi.CreateUserInput = {
+  const input: CreateUserInput = {
     id: 'test-alice',
     name: 'Mekk Elek',
     email: 'testuser+alice@anyupp.com',
@@ -58,7 +82,7 @@ export const createTestChain =
     console.debug('createTestChain', {
       chainIdx,
     });
-    const input: CrudApi.CreateChainInput = {
+    const input: CreateChainInput = {
       ...chainFixture.chainBase,
       id: seedUtils.generateChainId(chainIdx),
       name: `Rab lánc #${chainIdx}`,
@@ -75,7 +99,7 @@ export const createTestGroup =
       chainIdx,
       groupIdx,
     });
-    const input: CrudApi.CreateGroupInput = {
+    const input: CreateGroupInput = {
       ...groupFixture.groupBase,
       id: seedUtils.generateGroupId(chainIdx, groupIdx),
       chainId: seedUtils.generateChainId(chainIdx),
@@ -96,7 +120,7 @@ export const createAdminUser =
       adminUserId,
       email,
     });
-    const input: DeletableInput<CrudApi.CreateAdminUserInput> = {
+    const input: DeletableInput<CreateAdminUserInput> = {
       id: adminUserId,
       name: adminUserId,
       email,
@@ -118,7 +142,7 @@ export const createTestUnit =
       groupIdx,
       unitIdx,
     });
-    const input: CrudApi.CreateUnitInput = {
+    const input: CreateUnitInput = {
       ...R.omit(['createdAt', 'updatedAt'], unitFixture.unitBase),
       id: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
       groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
@@ -128,11 +152,11 @@ export const createTestUnit =
       supportedServingModes:
         unitIdx % 2 === 1
           ? unitFixture.unitBase.supportedServingModes
-          : [CrudApi.ServingMode.inplace],
+          : [ServingMode.inplace],
       supportedOrderModes:
         unitIdx % 2 === 1
           ? unitFixture.unitBase.supportedOrderModes
-          : [CrudApi.OrderMode.instant],
+          : [OrderMode.instant],
       lanes: [
         {
           color: '#e72222',
@@ -182,7 +206,7 @@ export const createTestUnit =
         objects: [
           {
             id: 'caxj47xzn7n',
-            t: CrudApi.UnitMapObjectType.table_r,
+            t: UnitMapObjectType.table_r,
             c: '01',
             w: 150,
             h: 60,
@@ -195,7 +219,7 @@ export const createTestUnit =
           },
           {
             id: 'f87azndb8ct',
-            t: CrudApi.UnitMapObjectType.table_r,
+            t: UnitMapObjectType.table_r,
             c: '03',
             w: 150,
             h: 60,
@@ -208,7 +232,7 @@ export const createTestUnit =
           },
           {
             id: 'cyh9qwe2axr',
-            t: CrudApi.UnitMapObjectType.table_r,
+            t: UnitMapObjectType.table_r,
             c: '02',
             w: 150,
             h: 60,
@@ -221,7 +245,7 @@ export const createTestUnit =
           },
           {
             id: 'ufegqdtf82h',
-            t: CrudApi.UnitMapObjectType.seat_r,
+            t: UnitMapObjectType.seat_r,
             x: 20,
             y: 60,
             c: '01',
@@ -233,7 +257,7 @@ export const createTestUnit =
           },
           {
             id: 'eohk3z8f9oq',
-            t: CrudApi.UnitMapObjectType.seat_r,
+            t: UnitMapObjectType.seat_r,
             x: 68,
             y: 60,
             c: '02',
@@ -245,7 +269,7 @@ export const createTestUnit =
           },
           {
             id: 'l4i62x7idpo',
-            t: CrudApi.UnitMapObjectType.seat_r,
+            t: UnitMapObjectType.seat_r,
             x: 116,
             y: 60,
             c: '03',
@@ -257,7 +281,7 @@ export const createTestUnit =
           },
           {
             id: 'nlqoylp88p9',
-            t: CrudApi.UnitMapObjectType.seat_r,
+            t: UnitMapObjectType.seat_r,
             x: 206,
             y: 60,
             c: '01',
@@ -269,7 +293,7 @@ export const createTestUnit =
           },
           {
             id: 'mxo7tnz53sh',
-            t: CrudApi.UnitMapObjectType.seat_r,
+            t: UnitMapObjectType.seat_r,
             x: 254,
             y: 60,
             c: '02',
@@ -281,7 +305,7 @@ export const createTestUnit =
           },
           {
             id: 'temzt4yr0uc',
-            t: CrudApi.UnitMapObjectType.seat_r,
+            t: UnitMapObjectType.seat_r,
             x: 300,
             y: 60,
             c: '03',
@@ -293,7 +317,7 @@ export const createTestUnit =
           },
           {
             id: '7r01h7bl7j2',
-            t: CrudApi.UnitMapObjectType.seat_r,
+            t: UnitMapObjectType.seat_r,
             x: 386,
             y: 60,
             c: '01',
@@ -305,7 +329,7 @@ export const createTestUnit =
           },
           {
             id: 't767czui7oj',
-            t: CrudApi.UnitMapObjectType.seat_r,
+            t: UnitMapObjectType.seat_r,
             x: 436,
             y: 60,
             c: '02',
@@ -317,7 +341,7 @@ export const createTestUnit =
           },
           {
             id: 'w6hsmjl8jo',
-            t: CrudApi.UnitMapObjectType.seat_r,
+            t: UnitMapObjectType.seat_r,
             x: 484,
             y: 60,
             c: '03',
@@ -370,7 +394,7 @@ export const createTestProductCategory =
       productCategoryId,
     });
 
-    const input: DeletableInput<CrudApi.CreateProductCategoryInput> = {
+    const input: DeletableInput<CreateProductCategoryInput> = {
       id: seedUtils.generateProductCategoryId(chainIdx, productCategoryId),
       chainId: seedUtils.generateChainId(chainIdx),
       name: {
@@ -434,7 +458,7 @@ export const createTestProductCategoryFromFixtures =
   };
 
 export const createChainProductsFromSnapshot = (deps: SeederDependencies) => {
-  const deleteCreateChainProduct = (input: CrudApi.CreateChainProductInput) =>
+  const deleteCreateChainProduct = (input: CreateChainProductInput) =>
     deleteCreate(
       () => deps.crudSdk.DeleteChainProduct({ input: { id: input.id ?? '' } }),
       () => deps.crudSdk.CreateChainProduct({ input }),
@@ -460,7 +484,7 @@ export const createChainProductsFromSnapshot = (deps: SeederDependencies) => {
 };
 
 export const createGroupProductsFromSnapshot = (deps: SeederDependencies) => {
-  const deleteCreateGroupProduct = (input: CrudApi.CreateGroupProductInput) =>
+  const deleteCreateGroupProduct = (input: CreateGroupProductInput) =>
     deleteCreate(
       () => deps.crudSdk.DeleteGroupProduct({ input: { id: input.id ?? '' } }),
       () => deps.crudSdk.CreateGroupProduct({ input }),
@@ -486,7 +510,7 @@ export const createGroupProductsFromSnapshot = (deps: SeederDependencies) => {
 };
 
 export const createUnitProductsFromSnapshot = (deps: SeederDependencies) => {
-  const deleteCreateUnitProduct = (input: CrudApi.CreateUnitProductInput) =>
+  const deleteCreateUnitProduct = (input: CreateUnitProductInput) =>
     deleteCreate(
       () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id ?? '' } }),
       () => deps.crudSdk.CreateUnitProduct({ input }),
@@ -517,7 +541,7 @@ export const createTestChainProduct =
     productCategoryIdx: number,
     productIdx: number,
     productName: string,
-    productType: CrudApi.ProductType,
+    productType: ProductType,
   ) =>
   (deps: SeederDependencies) => {
     console.debug('createTestChainProduct', {
@@ -527,7 +551,7 @@ export const createTestChainProduct =
       productName,
       productType,
     });
-    const input: DeletableInput<CrudApi.CreateChainProductInput> = {
+    const input: DeletableInput<CreateChainProductInput> = {
       id: seedUtils.generateChainProductId(chainIdx, productIdx),
       chainId: seedUtils.generateChainId(chainIdx),
       name: {
@@ -561,11 +585,7 @@ export const createTestChainProduct =
         },
       ],
       image: 'https://picsum.photos/200',
-      allergens: [
-        CrudApi.Allergen.egg,
-        CrudApi.Allergen.gluten,
-        CrudApi.Allergen.peanut,
-      ],
+      allergens: [Allergen.egg, Allergen.gluten, Allergen.peanut],
       // Use existing ProductComponentSet
       configSets: productComponentSetFixture.seededChainProductConfigSets,
     };
@@ -589,7 +609,7 @@ export const createTestGroupProduct =
       chainProductIdx,
       productIdx,
     });
-    const input: DeletableInput<CrudApi.CreateGroupProductInput> = {
+    const input: DeletableInput<CreateGroupProductInput> = {
       id: seedUtils.generateGroupProductId(chainIdx, groupIdx, productIdx),
       parentId: seedUtils.generateChainProductId(chainIdx, chainProductIdx),
       chainId: seedUtils.generateChainId(chainIdx),
@@ -640,7 +660,7 @@ export const createTestUnitProduct =
       groupProductIdx,
       productIdx,
     });
-    const input: DeletableInput<CrudApi.CreateUnitProductInput> = {
+    const input: DeletableInput<CreateUnitProductInput> = {
       id: seedUtils.generateUnitProductId(chainIdx, groupIdx, productIdx),
       parentId: seedUtils.generateGroupProductId(
         chainIdx,
@@ -653,7 +673,7 @@ export const createTestUnitProduct =
       laneId: 'lane_01',
       isVisible: true,
       takeaway: false,
-      supportedServingModes: [CrudApi.ServingMode.takeaway],
+      supportedServingModes: [ServingMode.takeaway],
       position: productIdx,
       variants: [
         {
@@ -714,17 +734,17 @@ export const createTestOrder =
       userIdx,
       orderIdx,
     });
-    const input: DeletableInput<CrudApi.CreateOrderInput> = {
+    const input: DeletableInput<CreateOrderInput> = {
       id: seedUtils.generateOrderId(orderIdx),
       userId: seedUtils.generateUserId(userIdx),
       unitId: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
       paymentMode: {
-        type: CrudApi.PaymentType.stripe,
-        method: CrudApi.PaymentMethod.inapp,
+        type: PaymentType.stripe,
+        method: PaymentMethod.inapp,
       },
       takeAway: false,
-      orderMode: CrudApi.OrderMode.pickup,
-      servingMode: CrudApi.ServingMode.takeaway,
+      orderMode: OrderMode.pickup,
+      servingMode: ServingMode.takeaway,
       archived: false,
       place: {
         seat: '00',
@@ -779,11 +799,11 @@ export const createTestOrder =
           statusLog: [
             {
               userId: seedUtils.generateUserId(userIdx),
-              status: CrudApi.OrderStatus.none,
+              status: OrderStatus.none,
               ts: DateTime.utc().toMillis(),
             },
           ],
-          productType: CrudApi.ProductType.drink,
+          productType: ProductType.drink,
         },
       ],
     };
@@ -797,7 +817,7 @@ export const createComponentSets = (deps: SeederDependencies) => {
   console.debug('createComponentSets - 3 components and 2 component sets');
 
   const deleteCreateProductComponent = (
-    comp: RequiredId<CrudApi.CreateProductComponentInput>,
+    comp: RequiredId<CreateProductComponentInput>,
   ) =>
     deleteCreate(
       () =>
@@ -811,7 +831,7 @@ export const createComponentSets = (deps: SeederDependencies) => {
     );
 
   const deleteCreateProductComponentSet = (
-    compSet: RequiredId<CrudApi.CreateProductComponentSetInput>,
+    compSet: RequiredId<CreateProductComponentSetInput>,
   ) =>
     deleteCreate(
       () =>
@@ -885,16 +905,13 @@ export const seedSportbarRKeeperUnit = (deps: SeederDependencies) =>
             ...unitFixture.createRkeeperUnit,
             id: 'sportbar-rkeeper-unit',
             name: `sportbar RKEEPER unit`,
-            supportedOrderModes: [CrudApi.OrderMode.pickup],
-            supportedServingModes: [
-              CrudApi.ServingMode.inplace,
-              CrudApi.ServingMode.takeaway,
-            ],
+            supportedOrderModes: [OrderMode.pickup],
+            supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
             externalId: '170880001',
             groupId: 'sportbar-rkeeper-group',
             chainId: 'sportbar-rkeeper-chain',
             pos: {
-              type: CrudApi.PosType.rkeeper,
+              type: PosType.rkeeper,
               rkeeper: {
                 endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
                 rkeeperUsername: '350_55_64_458',
@@ -945,19 +962,13 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
             ...unitFixture.createRkeeperUnit,
             id: 'yellow-rkeeper-unit',
             name: `yellow RKEEPER unit`,
-            supportedOrderModes: [
-              CrudApi.OrderMode.pickup,
-              CrudApi.OrderMode.instant,
-            ],
-            supportedServingModes: [
-              CrudApi.ServingMode.takeaway,
-              CrudApi.ServingMode.inplace,
-            ],
+            supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
+            supportedServingModes: [ServingMode.takeaway, ServingMode.inplace],
             externalId: '109150001',
             groupId: 'yellow-rkeeper-group',
             chainId: 'yellow-rkeeper-chain',
             pos: {
-              type: CrudApi.PosType.rkeeper,
+              type: PosType.rkeeper,
               rkeeper: {
                 endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
                 rkeeperUsername: '795_50_155_539',
@@ -995,7 +1006,7 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
   );
 
 export const placeOrderToSeat = (
-  orderInput: CrudApi.CreateOrderInput,
+  orderInput: CreateOrderInput,
   table: string,
   seat: string,
 ) => ({
@@ -1007,18 +1018,18 @@ export const placeOrderToSeat = (
 });
 
 interface BulkOrderInput {
-  order: CrudApi.CreateOrderInput;
-  transaction: CrudApi.CreateTransactionInput;
-  tipTransaction: CrudApi.CreateTransactionInput;
+  order: CreateOrderInput;
+  transaction: CreateTransactionInput;
+  tipTransaction: CreateTransactionInput;
 }
 
 export const seedLotsOfOrders = (
   deps: SeederDependencies,
   idxBase: number,
   range: number,
-  orderInput: CrudApi.CreateOrderInput,
-  transactionInput: CrudApi.CreateTransactionInput,
-  tipTransactionInput: CrudApi.CreateTransactionInput,
+  orderInput: CreateOrderInput,
+  transactionInput: CreateTransactionInput,
+  tipTransactionInput: CreateTransactionInput,
 ) => {
   console.debug(`Creating a lot of test orders (${range}).`);
 

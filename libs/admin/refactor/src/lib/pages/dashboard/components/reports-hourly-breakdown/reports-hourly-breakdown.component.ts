@@ -2,6 +2,7 @@ import { ChartDataset } from 'chart.js';
 import Chart from 'chart.js/auto';
 import { Context } from 'chartjs-plugin-datalabels';
 import { combineLatest, Observable } from 'rxjs';
+
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -10,12 +11,12 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
-import { hourlyBreakdownOrderAmounts } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Order, ProductType, Unit } from '@bgap/domain';
 import { OrderAmount, TIP_KEY } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TranslateService } from '@ngx-translate/core';
 
+import { hourlyBreakdownOrderAmounts } from '../../../../shared/utils';
 import { ReportsService } from '../../services/reports.service';
 
 @UntilDestroy()
@@ -27,8 +28,8 @@ import { ReportsService } from '../../services/reports.service';
 })
 export class ReportsHourlyBreakdownComponent implements AfterViewInit {
   @ViewChild('chart', { static: false }) chart!: ElementRef<HTMLCanvasElement>;
-  @Input() orders$?: Observable<CrudApi.Order[]>;
-  @Input() selectedUnit$?: Observable<CrudApi.Unit>;
+  @Input() orders$?: Observable<Order[]>;
+  @Input() selectedUnit$?: Observable<Unit>;
   @Input() currency = '';
 
   private _chart!: Chart;
@@ -47,10 +48,11 @@ export class ReportsHourlyBreakdownComponent implements AfterViewInit {
         if (ctx.datasetIndex === 0) {
           return value > 0 ? value : '';
         } else {
-          return this._amounts?.sum?.[ctx.dataIndex] > 0
-            ? `${((value / this._amounts?.sum?.[ctx.dataIndex]) * 100).toFixed(
-                0,
-              )}%`
+          return this._amounts?.['sum']?.[ctx.dataIndex] > 0
+            ? `${(
+                (value / this._amounts?.['sum']?.[ctx.dataIndex]) *
+                100
+              ).toFixed(0)}%`
             : '';
         }
       },
@@ -66,16 +68,16 @@ export class ReportsHourlyBreakdownComponent implements AfterViewInit {
           );
 
           (<ChartDataset[]>this._chart.data.datasets)[0].data = [
-            ...this._amounts.ordersCount,
+            ...this._amounts['ordersCount'],
           ];
           (<ChartDataset[]>this._chart.data.datasets)[1].data = [
-            ...this._amounts[CrudApi.ProductType.food],
+            ...this._amounts[ProductType.food],
           ];
           (<ChartDataset[]>this._chart.data.datasets)[2].data = [
-            ...this._amounts[CrudApi.ProductType.drink],
+            ...this._amounts[ProductType.drink],
           ];
           (<ChartDataset[]>this._chart.data.datasets)[3].data = [
-            ...this._amounts[CrudApi.ProductType.other],
+            ...this._amounts[ProductType.other],
           ];
           (<ChartDataset[]>this._chart.data.datasets)[4].data = [
             ...this._amounts[TIP_KEY],

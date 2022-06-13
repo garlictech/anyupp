@@ -16,7 +16,7 @@ Feature: Favorites in the app
     When I tap on the "Sajtburger" card
     And I tap on the "Hearth" icon
     And I tap on the "close" button
-    Then I should see "You have not added any favorite items yet."
+    Then I should see "You haven't added any favorites yet."
 
   Scenario: When a favorite product is available only in inplace
     Given the admin sets "Sajtburger" product to only in place mode
@@ -26,7 +26,7 @@ Feature: Favorites in the app
     Then I should see the "Menu" screen
     When I tap on the "Favorites" category
     Then I should see the "Sajtburger" card
-    When I tap on the "In place" icon
+    When I tap on the mode selector button
     And I tap on the "Take away" button
     Then I should see the "Sajtburger" card
     And I should see the "Only in place" text

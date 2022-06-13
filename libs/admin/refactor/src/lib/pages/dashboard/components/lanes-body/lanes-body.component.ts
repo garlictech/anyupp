@@ -8,23 +8,24 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
+import { Maybe, OrderStatus, Unit } from '@bgap/domain';
+import {
+  DetailedLane,
+  EDashboardSize,
+  ENebularButtonSize,
+  LaneOrderItem,
+} from '@bgap/shared/types';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+
+import { DEFAULT_LANE_COLOR } from '../../../../shared/utils';
 import {
   dashboardActions,
   dashboardSelectors,
 } from '../../../../store/dashboard';
 import { ordersSelectors } from '../../../../store/orders';
 import { unitsSelectors } from '../../../../store/units';
-import { DEFAULT_LANE_COLOR } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
-import {
-  EDashboardSize,
-  ENebularButtonSize,
-  DetailedLane,
-  LaneOrderItem,
-} from '@bgap/shared/types';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
 
 const laneFilter =
   (selectedLanes: string[]) =>
@@ -44,8 +45,8 @@ export class LanesBodyComponent implements OnInit {
   public readyItems: LaneOrderItem[] = [];
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public selectedLanes: string[] = [];
-  public unit?: CrudApi.Unit;
-  public unitLanes: CrudApi.Maybe<DetailedLane>[] = [];
+  public unit?: Unit;
+  public unitLanes: Maybe<DetailedLane>[] = [];
   public DEFAULT_LANE_COLOR = DEFAULT_LANE_COLOR;
 
   constructor(
@@ -57,21 +58,15 @@ export class LanesBodyComponent implements OnInit {
   ngOnInit() {
     combineLatest([
       this._store.pipe(
-        select(
-          ordersSelectors.getLaneOrderItemsByStatus(CrudApi.OrderStatus.placed),
-        ),
+        select(ordersSelectors.getLaneOrderItemsByStatus(OrderStatus.placed)),
       ),
       this._store.pipe(
         select(
-          ordersSelectors.getLaneOrderItemsByStatus(
-            CrudApi.OrderStatus.processing,
-          ),
+          ordersSelectors.getLaneOrderItemsByStatus(OrderStatus.processing),
         ),
       ),
       this._store.pipe(
-        select(
-          ordersSelectors.getLaneOrderItemsByStatus(CrudApi.OrderStatus.ready),
-        ),
+        select(ordersSelectors.getLaneOrderItemsByStatus(OrderStatus.ready)),
       ),
       this._store.pipe(
         select(dashboardSelectors.getSelectedLanes),
@@ -79,7 +74,7 @@ export class LanesBodyComponent implements OnInit {
       ),
       this._store.pipe(
         select(unitsSelectors.getSelectedUnit),
-        filter((unit: CrudApi.Unit | undefined): boolean => !!unit),
+        filter((unit: Unit | undefined): boolean => !!unit),
       ),
     ])
       .pipe(debounceTime(100), untilDestroyed(this))
@@ -95,7 +90,7 @@ export class LanesBodyComponent implements OnInit {
           LaneOrderItem[],
           LaneOrderItem[],
           string[],
-          CrudApi.Unit | undefined,
+          Unit | undefined,
         ]) => {
           this.selectedLanes = selectedLanes;
           this.placedItems = rawPlacedItems.filter(laneFilter(selectedLanes));
@@ -107,7 +102,7 @@ export class LanesBodyComponent implements OnInit {
           this.unitLanes = unit?.lanes ? cloneDeep(unit.lanes) : [];
 
           // Unit lanes
-          this.unitLanes.forEach((lane: CrudApi.Maybe<DetailedLane>) => {
+          this.unitLanes.forEach((lane: Maybe<DetailedLane>) => {
             if (lane) {
               lane.placedCount = rawPlacedItems.filter(
                 (i): boolean => i.laneId === lane.id,

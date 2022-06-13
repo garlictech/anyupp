@@ -1,10 +1,10 @@
+import { OrderStatus } from '@bgap/domain';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import {
   stuckOrderCleanupHandler,
   STUCK_ORDER_TIME_THRESHOLD,
 } from './stuck-order-cleanup';
-import * as CrudApi from '@bgap/crud-gql/api';
 
 const NOW = 1000000;
 
@@ -21,7 +21,7 @@ const testCases = [
       items: [
         {
           id: 'ORDER_ID',
-          currentStatus: CrudApi.OrderStatus.none,
+          currentStatus: OrderStatus.none,
           updatedAt: `${NOW - STUCK_ORDER_TIME_THRESHOLD + 1}`,
           statusLog: ['OLD STATUSLOG'],
         },
@@ -34,7 +34,7 @@ const testCases = [
       items: [
         {
           id: 'ORDER_ID',
-          currentStatus: CrudApi.OrderStatus.none,
+          currentStatus: OrderStatus.none,
           updatedAt: `${NOW - STUCK_ORDER_TIME_THRESHOLD - 1}`,
           statusLog: ['OLD STATUSLOG'],
         },

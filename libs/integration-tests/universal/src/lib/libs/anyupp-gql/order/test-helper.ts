@@ -1,8 +1,9 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
+import { CrudSdk } from '@bgap/crud-gql/api';
+import { Order } from '@bgap/domain';
 
-export const getOrder = (crudSdk: CrudApi.CrudSdk, id: string) => {
+export const getOrder = (crudSdk: CrudSdk, id: string) => {
   return crudSdk
     .GetOrder({ id }, { fetchPolicy: 'no-cache' })
-    .pipe(throwIfEmptyValue<CrudApi.Order>());
+    .pipe(throwIfEmptyValue<Order>());
 };

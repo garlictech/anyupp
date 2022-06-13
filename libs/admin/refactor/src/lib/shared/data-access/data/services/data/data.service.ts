@@ -10,6 +10,21 @@ import {
 } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
+import {
+  AdminUserSettings,
+  Order,
+  Role,
+  SearchableOrderSortableFields,
+  SearchableSortDirection,
+  Unit,
+  UpdateAdminUserInput,
+  UpdateUnitInput,
+} from '@bgap/domain';
+import { getAllPaginatedData } from '@bgap/gql-sdk';
+import { filterNullish } from '@bgap/shared/utils';
+import { select, Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+
 import { CrudSdkService } from '../../../../../shared/data-access/sdk';
 import { DEFAULT_LANG } from '../../../../../shared/utils';
 import { AdminUserCollectionService } from '../../../../../store/admin-users';
@@ -36,11 +51,6 @@ import {
   UnitProductCollectionService,
 } from '../../../../../store/products';
 import { UnitCollectionService } from '../../../../../store/units';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { getAllPaginatedData } from '@bgap/gql-sdk';
-import { filterNullish } from '@bgap/shared/utils';
-import { select, Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -71,10 +81,7 @@ export class DataService {
     private _orderCollectionService: OrderCollectionService,
   ) {}
 
-  public async initDataConnections(
-    userId: string,
-    role: CrudApi.Role,
-  ): Promise<void> {
+  public async initDataConnections(userId: string, role: Role): Promise<void> {
     // Prevent multiple initialization on login
     if (this._dataConnectionInitialized) return;
 
@@ -113,17 +120,15 @@ export class DataService {
         ),
         takeUntil(this._destroyConnection$),
       )
-      .subscribe(
-        (adminUserSettings: CrudApi.AdminUserSettings | undefined | null) => {
-          this._settingsChanged$.next(true);
+      .subscribe((adminUserSettings: AdminUserSettings | undefined | null) => {
+        this._settingsChanged$.next(true);
 
-          if (adminUserSettings?.selectedUnitId) {
-            this._subscribeToSelectedUnitOrders(
-              adminUserSettings?.selectedUnitId,
-            );
-          }
-        },
-      );
+        if (adminUserSettings?.selectedUnitId) {
+          this._subscribeToSelectedUnitOrders(
+            adminUserSettings?.selectedUnitId,
+          );
+        }
+      });
 
     // Get user language
     this._store
@@ -164,8 +169,8 @@ export class DataService {
         query: {
           filter: { unitId: { eq: unitId }, archived: { ne: true } },
           sort: {
-            field: CrudApi.SearchableOrderSortableFields.createdat,
-            direction: CrudApi.SearchableSortDirection.desc,
+            field: SearchableOrderSortableFields.createdat,
+            direction: SearchableSortDirection.desc,
           },
         },
         options: { fetchPolicy: 'no-cache' },
@@ -174,7 +179,7 @@ export class DataService {
         unitId,
         archived: false,
       }),
-      (orders: CrudApi.Order[]) => {
+      (orders: Order[]) => {
         this._handleNewOrderAlert(orders);
         this._orderCollectionService.upsertManyInCache(orders);
       },
@@ -214,8 +219,8 @@ export class DataService {
   //
 
   public updateUnit$(
-    unit: CrudApi.UpdateUnitInput,
-  ): Observable<CrudApi.Unit | undefined | null | unknown> {
+    unit: UpdateUnitInput,
+  ): Observable<Unit | undefined | null | unknown> {
     return this._unitCollectionService
       .update$(unit)
       .pipe(catchGqlError(this._store));
@@ -227,7 +232,7 @@ export class DataService {
 
   public updateAdminUserSettings$(
     userId: string,
-    settings: CrudApi.UpdateAdminUserInput['settings'],
+    settings: UpdateAdminUserInput['settings'],
   ) {
     return this._adminUserCollectionService
       .update$({
@@ -241,7 +246,7 @@ export class DataService {
   // Order
   //
 
-  private _handleNewOrderAlert(newOrders: CrudApi.Order[]) {
+  private _handleNewOrderAlert(newOrders: Order[]) {
     this._store
       .select(ordersSelectors.getActiveOrderIds)
       .pipe(

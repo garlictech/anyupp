@@ -1,14 +1,21 @@
 import { pipe } from 'fp-ts/lib/function';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { Observable } from 'rxjs';
 import * as R from 'ramda';
 import { shareReplay, switchMap } from 'rxjs/operators';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
 import { AxiosStatic } from 'axios';
 import { DynamoDB } from 'aws-sdk';
+import { CrudSdk } from '@bgap/crud-gql/api';
+import {
+  ChainProduct,
+  GeneratedProduct,
+  GroupProduct,
+  UnitProduct,
+} from '@bgap/domain';
 
 export interface OrderResolverDeps {
-  crudSdk: CrudApi.CrudSdk;
+  crudSdk: CrudSdk;
   orderTableName: string;
   unitTableName: string;
   currentTimeISOString: () => string;
@@ -20,8 +27,8 @@ export interface OrderResolverDeps {
 }
 
 const getUnitProductHelper = R.memoizeWith(
-  (_sdk: CrudApi.CrudSdk, id: string) => id,
-  (sdk: CrudApi.CrudSdk, id: string) =>
+  (_sdk: CrudSdk, id: string) => id,
+  (sdk: CrudSdk, id: string) =>
     pipe(
       sdk.GetUnitProduct({ id }),
       throwIfEmptyValue(`UnitProduct cannot be found: ${id}`),
@@ -30,13 +37,13 @@ const getUnitProductHelper = R.memoizeWith(
 );
 
 export const getUnitProduct =
-  (sdk: CrudApi.CrudSdk) =>
-  (id: string): Observable<CrudApi.UnitProduct> =>
+  (sdk: CrudSdk) =>
+  (id: string): Observable<UnitProduct> =>
     getUnitProductHelper(sdk, id);
 
 const getGroupProductHelper = R.memoizeWith(
-  (_sdk: CrudApi.CrudSdk, id: string) => id,
-  (sdk: CrudApi.CrudSdk, id: string) =>
+  (_sdk: CrudSdk, id: string) => id,
+  (sdk: CrudSdk, id: string) =>
     pipe(
       sdk.GetGroupProduct({ id }),
       throwIfEmptyValue(`GroupProduct cannot be found: ${id}`),
@@ -45,13 +52,13 @@ const getGroupProductHelper = R.memoizeWith(
 );
 
 export const getGroupProduct =
-  (sdk: CrudApi.CrudSdk) =>
-  (id: string): Observable<CrudApi.GroupProduct> =>
+  (sdk: CrudSdk) =>
+  (id: string): Observable<GroupProduct> =>
     getGroupProductHelper(sdk, id);
 
 const getChainProductHelper = R.memoizeWith(
-  (_sdk: CrudApi.CrudSdk, id: string) => id,
-  (sdk: CrudApi.CrudSdk, id: string) =>
+  (_sdk: CrudSdk, id: string) => id,
+  (sdk: CrudSdk, id: string) =>
     pipe(
       sdk.GetChainProduct({ id }),
       throwIfEmptyValue(`ChainProduct cannot be found: ${id}`),
@@ -60,21 +67,21 @@ const getChainProductHelper = R.memoizeWith(
 );
 
 export const getChainProduct =
-  (sdk: CrudApi.CrudSdk) =>
-  (id: string): Observable<CrudApi.ChainProduct> =>
+  (sdk: CrudSdk) =>
+  (id: string): Observable<ChainProduct> =>
     getChainProductHelper(sdk, id);
 
 export const getGroupProductOfUnitProduct =
-  (sdk: CrudApi.CrudSdk) =>
-  (unitProductId: string): Observable<CrudApi.GroupProduct> =>
+  (sdk: CrudSdk) =>
+  (unitProductId: string): Observable<GroupProduct> =>
     pipe(
       getUnitProduct(sdk)(unitProductId),
       switchMap(unitProduct => getGroupProduct(sdk)(unitProduct.parentId)),
     );
 
 const getGeneratedProductHelper = R.memoizeWith(
-  (_sdk: CrudApi.CrudSdk, productId: string) => productId,
-  (sdk: CrudApi.CrudSdk, productId: string) =>
+  (_sdk: CrudSdk, productId: string) => productId,
+  (sdk: CrudSdk, productId: string) =>
     pipe(
       sdk.GetGeneratedProduct({ id: productId }),
       throwIfEmptyValue(`GeneratedProduct cannot be found: ${productId}`),
@@ -83,6 +90,6 @@ const getGeneratedProductHelper = R.memoizeWith(
 );
 
 export const getGeneratedProduct =
-  (sdk: CrudApi.CrudSdk) =>
-  (productId: string): Observable<CrudApi.GeneratedProduct> =>
+  (sdk: CrudSdk) =>
+  (productId: string): Observable<GeneratedProduct> =>
     getGeneratedProductHelper(sdk, productId);

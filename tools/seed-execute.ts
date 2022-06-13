@@ -2,11 +2,10 @@
 // execute with:
 // yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts
 
-import { awsConfig } from '../libs/crud-gql/api/src';
+import { awsConfig, getCrudSdkForIAM } from '../libs/crud-gql/api/src';
 import { config } from '../libs/shared/config/src';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';
 import { seedAll, SeederDependencies } from '../libs/backend/seeder/src';
-import * as CrudApi from '../libs/crud-gql/api/src';
 
 const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
@@ -22,7 +21,7 @@ const awsSecretAccessKey =
   process.env.API_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY || '';
 
 const seederDeps: SeederDependencies = {
-  crudSdk: CrudApi.getCrudSdkForIAM(awsAccessKeyId, awsSecretAccessKey),
+  crudSdk: getCrudSdkForIAM(awsAccessKeyId, awsSecretAccessKey),
   userPoolId: AdminUserPoolId,
   consumerUserPoolId: ConsumerUserPoolId,
   cognitoidentityserviceprovider,

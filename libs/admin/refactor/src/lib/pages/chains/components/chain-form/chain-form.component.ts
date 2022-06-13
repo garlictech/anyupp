@@ -1,3 +1,5 @@
+import { switchMap, tap } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,13 +8,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AbstractFormDialogComponent } from '../../../../shared/forms';
-import { addressIsEmpty } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Chain } from '@bgap/domain';
 import { EImageType, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
-import { switchMap, tap } from 'rxjs/operators';
 
+import { AbstractFormDialogComponent } from '../../../../shared/forms';
+import { addressIsEmpty } from '../../../../shared/utils';
 import { ChainFormService } from '../../services/chain-form.service';
 
 @Component({
@@ -25,11 +26,11 @@ export class ChainFormComponent
   extends AbstractFormDialogComponent
   implements OnInit
 {
-  public chain?: CrudApi.Chain;
+  public chain?: Chain;
   public eImageType = EImageType;
 
   constructor(
-    protected _injector: Injector,
+    protected override _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
     private _chainFormService: ChainFormService,
   ) {

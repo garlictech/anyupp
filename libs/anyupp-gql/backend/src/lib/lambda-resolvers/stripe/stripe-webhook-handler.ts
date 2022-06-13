@@ -1,10 +1,18 @@
-import * as CrudApi from '@bgap/crud-gql/api';
-import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import * as awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
 import bodyParser from 'body-parser';
 import express from 'express';
 import Stripe from 'stripe';
 import * as Szamlazz from 'szamlazz.js';
+
+import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
+import {
+  InvoiceStatus,
+  OrderStatus,
+  PaymentStatus,
+  ReceiptStatus,
+  Transaction,
+} from '@bgap/domain';
+
 import { createInvoice } from '../../szamlazzhu';
 import { createReceiptSzamlazzHu } from '../../szamlazzhu/receipt';
 import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
@@ -107,8 +115,7 @@ export const createStripeWebhookExpressApp = (
 };
 
 const handleInvoice =
-  (transaction: CrudApi.Transaction) =>
-  async (deps: StripeResolverDepsUnauth) => {
+  (transaction: Transaction) => async (deps: StripeResolverDepsUnauth) => {
     if (!transaction.invoice) {
       throw Error(
         'The transaction with id=' +
@@ -155,7 +162,7 @@ const handleInvoice =
 
       await updateInvoiceState(
         transaction.invoice.id,
-        CrudApi.InvoiceStatus.success,
+        InvoiceStatus.success,
         invoice.invoiceId,
         pdfUrl,
       )(deps);
@@ -167,7 +174,7 @@ const handleInvoice =
       );
       await updateInvoiceState(
         transaction.invoice.id,
-        CrudApi.InvoiceStatus.failed,
+        InvoiceStatus.failed,
         undefined,
         undefined,
       )(deps);
@@ -175,8 +182,7 @@ const handleInvoice =
   };
 
 const handleReceipt =
-  (transaction: CrudApi.Transaction) =>
-  async (deps: StripeResolverDepsUnauth) => {
+  (transaction: Transaction) => async (deps: StripeResolverDepsUnauth) => {
     console.debug('***** handleReceipt().transaction=' + transaction?.id);
     const user = await loadUser()({ ...deps, userId: transaction.userId });
     console.debug('***** handleReceipt().user loaded=' + user?.id);
@@ -217,7 +223,7 @@ const handleReceipt =
         transaction.userId,
         transaction.id,
         user?.email,
-        CrudApi.ReceiptStatus.success,
+        ReceiptStatus.success,
         receipt.receiptId,
         receiptData.pdfBase64,
       )(deps);
@@ -228,7 +234,7 @@ const handleReceipt =
         transaction.userId,
         transaction.id,
         user?.email,
-        CrudApi.ReceiptStatus.failed,
+        ReceiptStatus.failed,
         undefined,
         undefined,
       )(deps);
@@ -240,19 +246,16 @@ const handleSuccessTransaction =
     console.debug(
       '***** handleSuccessTransaction().id=' + externalTransactionId,
     );
-    const transaction: CrudApi.Transaction | null =
+    const transaction: Transaction | null =
       await loadTransactionByExternalTransactionId(externalTransactionId)(deps);
     // console.debug('***** handleSuccessTransaction().loaded.transaction=' + transaction);
     if (transaction) {
-      await updateTransactionState(
-        transaction.id,
-        CrudApi.PaymentStatus.success,
-      )(deps);
+      await updateTransactionState(transaction.id, PaymentStatus.success)(deps);
       await updateOrderState(
         transaction.orderId,
-        CrudApi.OrderStatus.placed,
+        OrderStatus.placed,
         transaction.id,
-        CrudApi.PaymentStatus.success,
+        PaymentStatus.success,
       )({ ...deps, userId: transaction.userId });
       // console.debug('***** handleSuccessTransaction().success()');
       if (transaction.invoiceId) {
@@ -277,16 +280,13 @@ const handleFailedTransaction =
       externalTransactionId,
     )(deps);
     if (transaction) {
-      await updateTransactionState(
-        transaction.id,
-        CrudApi.PaymentStatus.failed,
-      )(deps);
+      await updateTransactionState(transaction.id, PaymentStatus.failed)(deps);
       console.debug('***** handleFailedTransaction().success()');
       await updateOrderState(
         transaction.orderId,
         undefined, // Do nothing with order state if transaction failed
         transaction.id,
-        CrudApi.PaymentStatus.failed,
+        PaymentStatus.failed,
       )({ ...deps, userId: transaction.userId });
     }
   };

@@ -1,12 +1,15 @@
-import { KeyValue, KeyValueObject } from '@bgap/shared/types';
-
-import * as CrudApi from '@bgap/crud-gql/api';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  ProductComponent,
+  ProductComponentSet,
+  ProductComponentSetType,
+} from '@bgap/domain';
+import { KeyValue, KeyValueObject } from '@bgap/shared/types';
 
 export const maxSelectionValidator = (
   control: AbstractControl,
 ): ValidationErrors | null =>
-  control.value?.type === CrudApi.ProductComponentSetType.modifier
+  control.value?.type === ProductComponentSetType.modifier
     ? null
     : (control.value?.maxSelection || 0) > 0 &&
       (control.value?.maxSelection || 0) <= (control.value?.items || []).length
@@ -14,7 +17,7 @@ export const maxSelectionValidator = (
     : { missing: true };
 
 export const getProductComponentOptions = (
-  productComponents: CrudApi.ProductComponent[],
+  productComponents: ProductComponent[],
   items: string[],
 ) =>
   productComponents
@@ -27,7 +30,7 @@ export const getProductComponentOptions = (
     );
 
 export const getProductComponentObject = (
-  productComponents: CrudApi.ProductComponent[],
+  productComponents: ProductComponent[],
 ) => {
   const productComponentObject: KeyValueObject = {};
   productComponents.forEach(p => (productComponentObject[p.id] = p.name));
@@ -35,7 +38,7 @@ export const getProductComponentObject = (
 };
 
 export const getProductComponentSetOptions = (
-  productComponentSets: CrudApi.ProductComponentSet[],
+  productComponentSets: ProductComponentSet[],
   items: string[],
 ) =>
   productComponentSets
@@ -48,3 +51,9 @@ export const getProductComponentSetOptions = (
         value: productComponentSet.name,
       }),
     );
+
+export const baseFromTaxedPrice = (price: number, tax: number) =>
+  +(price / +`1.${tax}`).toFixed(4);
+
+export const taxedFromBasePrice = (price: number, tax: number) =>
+  +(price * +`1.${tax}`).toFixed(4);

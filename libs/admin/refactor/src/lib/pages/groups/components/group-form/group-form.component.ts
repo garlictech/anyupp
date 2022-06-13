@@ -8,16 +8,16 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { chainsSelectors } from '../../../../store/chains';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import { AbstractFormDialogComponent } from '../../../../shared/forms';
-import { addressIsEmpty } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Group } from '@bgap/domain';
 import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
+import { AbstractFormDialogComponent } from '../../../../shared/forms';
+import { addressIsEmpty } from '../../../../shared/utils';
+import { chainsSelectors } from '../../../../store/chains';
+import { loggedUserSelectors } from '../../../../store/logged-user';
 import { GroupFormService } from '../../services/group-form.service';
 
 @UntilDestroy()
@@ -30,12 +30,12 @@ export class GroupFormComponent
   extends AbstractFormDialogComponent
   implements OnInit
 {
-  public group!: CrudApi.Group;
+  public group!: Group;
   public chainOptions$: Observable<KeyValue[]>;
   public currencyOptions: KeyValue[] = [];
 
   constructor(
-    protected _injector: Injector,
+    protected override _injector: Injector,
     private _changeDetectorRef: ChangeDetectorRef,
     private _groupFormService: GroupFormService,
   ) {

@@ -1,12 +1,14 @@
-import * as CrudApi from '@bgap/crud-gql/api';
-import { net2gross } from '../../../shared/utils';
 import { cloneDeep } from 'lodash/fp';
 
+import { Order, ServiceFeeType, ServingMode } from '@bgap/domain';
+
+import { net2gross } from '../../../shared/utils';
+
 export const calculateOrderSum = (
-  order: CrudApi.Order,
+  order: Order,
   formatterFn: (value: string | number | undefined, currency: string) => string,
 ) => {
-  if (order.servingMode === CrudApi.ServingMode.takeaway) {
+  if (order.servingMode === ServingMode.takeaway) {
     // sumPriceShown contains the packaging fee (is set)
     return formatterFn(
       order.sumPriceShown.priceSum,
@@ -23,10 +25,10 @@ export const calculateOrderSum = (
 };
 
 export const calculatePackagingSum = (
-  order: CrudApi.Order,
+  order: Order,
   formatterFn: (value: string | number | undefined, currency: string) => string,
 ) => {
-  if (order.servingMode === CrudApi.ServingMode.takeaway) {
+  if (order.servingMode === ServingMode.takeaway) {
     // sumPriceShown contains the packaging fee (is set)
     return order.packagingSum
       ? formatterFn(
@@ -43,12 +45,12 @@ export const calculatePackagingSum = (
 };
 
 export const calculateServiceFeeSum = (
-  order: CrudApi.Order,
+  order: Order,
   formatterFn: (value: string | number | undefined, currency: string) => string,
 ) => {
   if (
-    order.serviceFeePolicy?.type === CrudApi.ServiceFeeType.applicable &&
-    order.servingMode === CrudApi.ServingMode.inplace
+    order.serviceFeePolicy?.type === ServiceFeeType.applicable &&
+    order.servingMode === ServingMode.inplace
   ) {
     // sumPriceShown contains the packaging fee (is set)
     return order.serviceFee
@@ -62,10 +64,10 @@ export const calculateServiceFeeSum = (
   }
 };
 
-export const addIncludedServiceFeeToOrderItems = (order: CrudApi.Order) => {
+export const addIncludedServiceFeeToOrderItems = (order: Order) => {
   if (
-    order.serviceFeePolicy?.type === CrudApi.ServiceFeeType.included &&
-    order.servingMode === CrudApi.ServingMode.inplace
+    order.serviceFeePolicy?.type === ServiceFeeType.included &&
+    order.servingMode === ServingMode.inplace
   ) {
     return order.items.map(item => ({
       ...item,

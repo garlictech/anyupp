@@ -1,21 +1,22 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import * as fp from 'lodash/fp';
 import { defer, from, of } from 'rxjs';
 import {
+  catchError,
   filter,
   map,
   switchMap,
   throwIfEmpty,
-  catchError,
 } from 'rxjs/operators';
+
+import { CrudSdk } from '@bgap/crud-gql/api';
+import { DeleteAdminUserMutationVariables } from '@bgap/domain';
+
 import { AdminUserResolverDeps, deleteAdminUserFromTable } from './utils';
 
 export const deleteAdminUser =
-  (params: CrudApi.DeleteAdminUserMutationVariables) =>
-  (
-    deps: AdminUserResolverDeps,
-  ): ReturnType<CrudApi.CrudSdk['DeleteAdminUser']> => {
+  (params: DeleteAdminUserMutationVariables) =>
+  (deps: AdminUserResolverDeps): ReturnType<CrudSdk['DeleteAdminUser']> => {
     console.debug('deleteAdminUser Resolver parameters: ', params);
 
     return defer(() =>

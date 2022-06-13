@@ -1,4 +1,3 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
   generatedProductCategoryFixture,
   generatedProductFixture,
@@ -16,26 +15,30 @@ import { of } from 'rxjs';
 import { delay, map, switchMap, tap } from 'rxjs/operators';
 import { createIamCrudSdk } from '../../../../api-clients';
 import { getSortedProductCatIds } from '../test-utils/test-utils';
+import {
+  CreateGeneratedProductInput,
+  CreateProductCategoryInput,
+} from '@bgap/domain';
 
 const DYNAMODB_OPERATION_DELAY = 3000;
 const TEST_NAME = 'GEN_PRODUCT_CAT';
 
 const unitId = `${testIdPrefix}${TEST_NAME}_UNIT_ID`;
 
-const productCategory_01: RequiredId<CrudApi.CreateProductCategoryInput> = {
+const productCategory_01: RequiredId<CreateProductCategoryInput> = {
   ...productCategoryFixture.productCategoryBase,
   id: `${testIdPrefix}${TEST_NAME}_01`,
 };
-const productCategory_02: RequiredId<CrudApi.CreateProductCategoryInput> = {
+const productCategory_02: RequiredId<CreateProductCategoryInput> = {
   ...productCategoryFixture.productCategoryBase,
   id: `${testIdPrefix}${TEST_NAME}_02`,
 };
-const productCategory_03_wont_be_regenerated: RequiredId<CrudApi.CreateProductCategoryInput> =
+const productCategory_03_wont_be_regenerated: RequiredId<CreateProductCategoryInput> =
   {
     ...productCategoryFixture.productCategoryBase,
     id: `${testIdPrefix}${TEST_NAME}_03_WONT_BE_REGENERATED`,
   };
-const productCategory_04: RequiredId<CrudApi.CreateProductCategoryInput> = {
+const productCategory_04: RequiredId<CreateProductCategoryInput> = {
   ...productCategoryFixture.productCategoryBase,
   id: `${testIdPrefix}${TEST_NAME}_04`,
 };
@@ -54,7 +57,7 @@ const generatedProductCategory_03_wont_be_regenerated =
 //   .map(id => id.toString().padStart(2, '0'))
 //   .map(id => `${testIdPrefix}${TEST_NAME}ID_${id}`);
 
-const generatedProducts: Array<CrudApi.CreateGeneratedProductInput> = [
+const generatedProducts: Array<CreateGeneratedProductInput> = [
   generatedProductFixture.getGeneratedProduct({
     id: 'NotImportant',
     unitId,

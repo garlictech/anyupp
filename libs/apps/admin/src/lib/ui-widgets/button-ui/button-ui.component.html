@@ -2,11 +2,16 @@
   class="button-ui"
   [class.disabled]="disabled"
   [class.loading]="loading"
-  [class.danger]="style === 'danger'"
-  [class.success]="style === 'success'"
+  [class.danger]="color === 'danger'"
+  [class.success]="color === 'success'"
+  [class.light]="color === 'light'"
+  [class.rounded]="rounded"
+  [class.sm]="size === 'sm'"
+  [class.lg]="size === 'lg'"
+  [class.bordered]="bordered"
   type="button"
   [disabled]="disabled"
   (click)="pushed.emit()"
 >
-  {{ label }}
+  {{ label | translate }}
 </button>

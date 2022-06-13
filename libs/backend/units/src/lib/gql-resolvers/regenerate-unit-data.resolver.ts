@@ -17,11 +17,12 @@ import {
   listUnitProductsForAUnit,
 } from './regenerate-unit-data-utils';
 import { RegenerateUnitDataHandler } from './utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import * as R from 'ramda';
+import { CrudSdk } from '@bgap/crud-gql/api';
 
 export const regenerateUnitData =
-  (crudSdk: CrudApi.CrudSdk): RegenerateUnitDataHandler =>
+  (crudSdk: CrudSdk): RegenerateUnitDataHandler =>
   (unitId: string) => {
     console.log(
       '### ~ file: REGENERATE-unit-data.resolver.ts 02 ~ line 36 ~ unitId',

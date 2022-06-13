@@ -5,17 +5,18 @@ import { ButtonUIComponent } from '../../ui-widgets/button-ui/button-ui.componen
 import {
   AbsImageCompressorService,
   AbsStorageService,
-  AbsUnitAdBannerService,
+  AbsUnitBannerService,
   AbsUnitRepository,
 } from '@bgap/domain';
 import {
   MockImageCompressionService,
   MockStorageService,
-  MockUnitAdBannerService,
+  MockUnitBannerService,
   MockUnitRepositoryService,
 } from '../../services';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FileUploaderUIComponent } from '../../ui-widgets/file-uploader-ui/file-uploader-ui.component';
+import { commonStorybookMockedImports } from '../../pure';
 
 describe('BannerUploadFormComponent', () => {
   let component: BannerUploadFormComponent;
@@ -28,9 +29,9 @@ describe('BannerUploadFormComponent', () => {
         ButtonUIComponent,
         FileUploaderUIComponent,
       ],
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, ...commonStorybookMockedImports],
       providers: [
-        { provide: AbsUnitAdBannerService, useClass: MockUnitAdBannerService },
+        { provide: AbsUnitBannerService, useClass: MockUnitBannerService },
         { provide: AbsStorageService, useClass: MockStorageService },
         {
           provide: AbsImageCompressorService,

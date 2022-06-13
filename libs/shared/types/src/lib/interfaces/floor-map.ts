@@ -1,13 +1,12 @@
 import { fabric } from 'fabric';
-
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Order, OrderStatus, UnitMapObjectType } from '@bgap/domain';
 
 export interface FloorMapUserOrders {
   userId: string;
-  orders: CrudApi.Order[];
-  lastOrder: CrudApi.Order;
+  orders: Order[];
+  lastOrder: Order;
   hasPaymentIntention: boolean;
-  lowestStatus: CrudApi.OrderStatus;
+  lowestStatus: OrderStatus;
 }
 
 export interface FloorMapUserOrderObjects {
@@ -18,7 +17,7 @@ export interface FloorMapOrders {
   tsID: string;
   userOrders: FloorMapUserOrders[];
   hasPaymentIntention?: boolean;
-  lowestStatus?: CrudApi.OrderStatus;
+  lowestStatus?: OrderStatus;
 }
 
 export interface FloorMapOrderObjects {
@@ -35,7 +34,7 @@ export interface FabricGroup extends fabric.Group {
 
 export interface FabricObjectProperties {
   id: string;
-  type: CrudApi.UnitMapObjectType;
+  type: UnitMapObjectType;
   width: number;
   height: number;
   radius: number;

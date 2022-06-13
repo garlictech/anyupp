@@ -1,5 +1,5 @@
 import { CrudSdk } from '@bgap/crud-gql/api';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import {
   chainFixture,
   generatedProductFixture,
@@ -55,6 +55,20 @@ import {
 import { unitRequestHandler } from '@bgap/backend/units';
 import { listGeneratedProductsForUnits } from '@bgap/backend/products';
 import { dateMatcher, ES_DELAY } from '../../../../utils';
+import {
+  CreateChainProductInput,
+  CreateGroupProductInput,
+  CreateProductCategoryInput,
+  CreateProductComponentInput,
+  CreateProductComponentSetInput,
+  CreateUnitInput,
+  CreateUnitProductInput,
+  MutationRegenerateUnitDataArgs,
+  ProductComponentSetType,
+  ProductConfigSetInput,
+  SearchUnitProductsQueryVariables,
+  UnitProduct,
+} from '@bgap/domain';
 
 const DYNAMODB_OPERATION_DELAY = 60000;
 const TEST_NAME = 'REGEN_';
@@ -64,7 +78,7 @@ const unitId_01_to_regen = `${testIdPrefix}${TEST_NAME}UNIT_ID_01`;
 const unitId_02 = `${testIdPrefix}${TEST_NAME}UNIT_ID_02`;
 
 // UNIT
-const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
+const unit_01: RequiredId<CreateUnitInput> = {
   ...unitFixture.unitBase,
   id: unitId_01_to_regen,
   groupId: groupFixture.groupId_seeded_01,
@@ -72,37 +86,37 @@ const unit_01: RequiredId<CrudApi.CreateUnitInput> = {
 };
 
 // CONFIG SETS/COMPONENTS to create
-const prodComponent_01: RequiredId<CrudApi.CreateProductComponentInput> = {
+const prodComponent_01: RequiredId<CreateProductComponentInput> = {
   ...productComponentSetFixture.seededProdComp_11,
   id: `${testIdPrefix}${TEST_NAME}prodComp_01`,
 };
-const prodComponent_02: RequiredId<CrudApi.CreateProductComponentInput> = {
+const prodComponent_02: RequiredId<CreateProductComponentInput> = {
   ...productComponentSetFixture.seededProdComp_21,
   id: `${testIdPrefix}${TEST_NAME}prodComp_02`,
 };
-const prodComponent_03: RequiredId<CrudApi.CreateProductComponentInput> = {
+const prodComponent_03: RequiredId<CreateProductComponentInput> = {
   ...productComponentSetFixture.seededProdComp_31,
   id: `${testIdPrefix}${TEST_NAME}prodComp_03`,
 };
 
-const prodCompSet_01: RequiredId<CrudApi.CreateProductComponentSetInput> = {
+const prodCompSet_01: RequiredId<CreateProductComponentSetInput> = {
   ...productComponentSetFixture.getComponentSet({
     id: `${testIdPrefix}${TEST_NAME}prodCompSet_01`,
     chainId: chainId_01_seeded,
     itemIds: [prodComponent_01.id, prodComponent_02.id],
   }),
-  type: CrudApi.ProductComponentSetType.extras,
+  type: ProductComponentSetType.extras,
 };
-const prodCompSet_02: RequiredId<CrudApi.CreateProductComponentSetInput> = {
+const prodCompSet_02: RequiredId<CreateProductComponentSetInput> = {
   ...productComponentSetFixture.getComponentSet({
     id: `${testIdPrefix}${TEST_NAME}prodCompSet_02`,
     chainId: chainId_01_seeded,
     itemIds: [prodComponent_01.id, prodComponent_02.id, prodComponent_03.id],
   }),
-  type: CrudApi.ProductComponentSetType.modifier,
+  type: ProductComponentSetType.modifier,
 };
 
-const prodConfigSet_01: CrudApi.ProductConfigSetInput = {
+const prodConfigSet_01: ProductConfigSetInput = {
   position: 1,
   productSetId: prodCompSet_01.id,
   items: [
@@ -121,7 +135,7 @@ const prodConfigSet_01: CrudApi.ProductConfigSetInput = {
     },
   ],
 };
-const prodConfigSet_02: CrudApi.ProductConfigSetInput = {
+const prodConfigSet_02: ProductConfigSetInput = {
   position: 2,
   productSetId: prodCompSet_02.id,
   items: [
@@ -146,27 +160,27 @@ const prodConfigSet_02: CrudApi.ProductConfigSetInput = {
   ],
 };
 // PRODUCT CATEGORY to create
-const productCategory_01: RequiredId<CrudApi.CreateProductCategoryInput> = {
+const productCategory_01: RequiredId<CreateProductCategoryInput> = {
   ...productCategoryFixture.productCategoryBase,
   id: `${testIdPrefix}${TEST_NAME}_ProductCategoryId_01`,
   chainId: unit_01.chainId,
 };
 // PRODUCTS to create
-const chainProduct_01: RequiredId<CrudApi.CreateChainProductInput> = {
+const chainProduct_01: RequiredId<CreateChainProductInput> = {
   ...productFixture.chainProductInputBase,
   id: `${testIdPrefix}${TEST_NAME}chainProduct_01`,
   productCategoryId: productCategory_01.id,
 };
-const groupProduct_01: RequiredId<CrudApi.CreateGroupProductInput> = {
+const groupProduct_01: RequiredId<CreateGroupProductInput> = {
   ...productFixture.groupProductInputBase,
   id: `${testIdPrefix}${TEST_NAME}groupProduct_01`,
   parentId: chainProduct_01.id,
 };
 // THE IMPORTANT UNIT
-const unitProduct_0101: Omit<
-  CrudApi.CreateUnitProductInput,
-  'id' | 'configSets'
-> & { id: string; configSets: CrudApi.ProductConfigSetInput[] } = {
+const unitProduct_0101: Omit<CreateUnitProductInput, 'id' | 'configSets'> & {
+  id: string;
+  configSets: ProductConfigSetInput[];
+} = {
   ...productFixture.unitProductInputBase,
   // id = test_REGEN_unitProduct_useeded_unit_c1_g1_1_id_01
   id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_01_to_regen}_01`,
@@ -175,28 +189,27 @@ const unitProduct_0101: Omit<
   chainId: chainId_01_seeded,
   configSets: [prodConfigSet_01, prodConfigSet_02],
 };
-const unitProduct_0102: RequiredId<CrudApi.CreateUnitProductInput> = {
+const unitProduct_0102: RequiredId<CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_01_to_regen}_02`,
   parentId: groupProduct_01.id,
   chainId: chainId_01_seeded,
   unitId: unitId_01_to_regen,
 };
-const unitProduct_0104_NEW: RequiredId<CrudApi.CreateUnitProductInput> = {
+const unitProduct_0104_NEW: RequiredId<CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: `${testIdPrefix}${TEST_NAME}unit01_have_not_been_here_before`,
   parentId: groupProduct_01.id,
   chainId: chainId_01_seeded,
   unitId: unitId_01_to_regen,
 };
-const unitProduct_0201_DIFFERENTUNIT: RequiredId<CrudApi.CreateUnitProductInput> =
-  {
-    ...productFixture.unitProductInputBase,
-    id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_02}_01`,
-    parentId: groupProduct_01.id, // it is from a different unit, but it is not
-    chainId: chainId_01_seeded,
-    unitId: unitId_02,
-  };
+const unitProduct_0201_DIFFERENTUNIT: RequiredId<CreateUnitProductInput> = {
+  ...productFixture.unitProductInputBase,
+  id: `${testIdPrefix}${TEST_NAME}unitProduct_u${unitId_02}_01`,
+  parentId: groupProduct_01.id, // it is from a different unit, but it is not
+  chainId: chainId_01_seeded,
+  unitId: unitId_02,
+};
 
 // GENERATED PRODUCTS to create
 const generatedProduct_fromUnitProduct_0101 = {
@@ -338,8 +351,8 @@ describe.skip('RegenerateUnitData mutation tests', () => {
 
   const testLogic = (
     op: (
-      input: CrudApi.MutationRegenerateUnitDataArgs,
-    ) => ReturnType<CrudApi.CrudSdk['RegenerateUnitData']>,
+      input: MutationRegenerateUnitDataArgs,
+    ) => ReturnType<CrudSdk['RegenerateUnitData']>,
   ) => {
     const input = { id: unitId_01_to_regen };
 
@@ -478,13 +491,13 @@ describe.skip('RegenerateUnitData mutation tests', () => {
 });
 
 const listProductsForUnits = (
-  sdk: CrudApi.CrudSdk,
+  sdk: CrudSdk,
   unitIds: string[],
-): Observable<Array<CrudApi.UnitProduct>> => {
-  const input: CrudApi.SearchUnitProductsQueryVariables = {
+): Observable<Array<UnitProduct>> => {
+  const input: SearchUnitProductsQueryVariables = {
     filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
   };
   return sdk
     .SearchUnitProducts(input, { fetchPolicy: 'no-cache' })
-    .pipe(filterNullishGraphqlListWithDefault<CrudApi.UnitProduct>([]));
+    .pipe(filterNullishGraphqlListWithDefault<UnitProduct>([]));
 };

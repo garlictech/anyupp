@@ -50,7 +50,7 @@ Feature: Error messages
     When I tap the option "Credit Card Payment"
     Then there is the "Add a new card" screen with a form
     When I fill out the input with id "xxxx xxxx xxxx xxxx" with "1111 1111 1111 1111"
-    And I fill out the input with id "MM/YY" with "01/21" date
+    And I fill out the input with id "MM/YY" with "01/23" date
     And I fill out the "CVV" input with the "1111"
     And I tap the button "SAVE CARD"
     Then I should see "The card information you entered is invalid. Please check it again!" dialog
@@ -61,5 +61,7 @@ Feature: Error messages
     # it is a Discover test card which is only accepted in the US
     And I tap the button "SAVE CARD"
     Then there is a loading screen
-    And I should see the "Error An error happened during the process!" message
-    And I tap the "Close" button
+    And I should see the "Operation failed Your card could not be added" popup
+    And I tap the "OK" button
+    Then I should see "Order failed" popup
+    And I tap the "OK" button

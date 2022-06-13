@@ -2,12 +2,12 @@ import { Observable } from 'rxjs';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { visibleLinesOnViewport } from '../../../../shared/utils';
-import { ChainCollectionService } from '../../../../store/chains';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Chain } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
+import { visibleLinesOnViewport } from '../../../../shared/utils';
+import { ChainCollectionService } from '../../../../store/chains';
 import { ChainListService } from '../../services/chain-list.service';
 import { ChainFormComponent } from '../chain-form/chain-form.component';
 
@@ -22,7 +22,7 @@ export class ChainListComponent {
   @ViewChild('dataVSVP')
   dataVSVP?: CdkVirtualScrollViewport;
 
-  public chains$: Observable<CrudApi.Chain[]>;
+  public chains$: Observable<Chain[]>;
 
   constructor(
     private _nbDialogService: NbDialogService,

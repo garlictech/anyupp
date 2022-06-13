@@ -1,17 +1,17 @@
 interface Deps {
-  getCurrentAdBannersEnabledStatus: () => Promise<boolean>;
-  setAdBannersEnabledStatus: (props: { enabled: boolean }) => Promise<unknown>;
+  getCurrentBannersEnabledStatus: () => Promise<boolean>;
+  setBannersEnabledStatus: (props: { enabled: boolean }) => Promise<unknown>;
 }
 
 export const unitBannersToggleUseCase = async (
   deps: Deps,
 ): Promise<boolean> => {
-  const { getCurrentAdBannersEnabledStatus, setAdBannersEnabledStatus } = deps;
+  const { getCurrentBannersEnabledStatus, setBannersEnabledStatus } = deps;
 
   try {
-    const toggledStatus = !(await getCurrentAdBannersEnabledStatus());
+    const toggledStatus = !(await getCurrentBannersEnabledStatus());
 
-    await setAdBannersEnabledStatus({
+    await setBannersEnabledStatus({
       enabled: toggledStatus,
     });
 

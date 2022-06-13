@@ -1,5 +1,16 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { RequiredId } from '@bgap/shared/types';
+import {
+  CreateUnitInput,
+  OrderMode,
+  OrderPaymentPolicy,
+  PaymentMethod,
+  PaymentType,
+  PosType,
+  ServiceFeeType,
+  ServingMode,
+  Unit,
+  WeeklySchedule,
+} from '@bgap/domain';
 import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { groupFixture } from './group';
@@ -15,7 +26,7 @@ const unitId_seeded_02 = `${seededIdPrefix}unit_c1_g1_2_id`;
 const unitId_seeded_03 = `${seededIdPrefix}unit_c1_g2_1_id`;
 const unitId_NotExisting = `${testIdPrefix}NOT_EXISTING_UNIT`;
 
-const openingHours: CrudApi.WeeklySchedule = {
+const openingHours: WeeklySchedule = {
   mon: {
     from: '09:00',
     to: '17:00',
@@ -87,19 +98,19 @@ const unitBase = {
     hu: `Teszt unit #${unitId_01} leírás`,
     en: `Test unit #${unitId_01} description`,
   },
-  orderPaymentPolicy: CrudApi.OrderPaymentPolicy.prepay,
+  orderPaymentPolicy: OrderPaymentPolicy.prepay,
   paymentModes: [
     {
-      method: CrudApi.PaymentMethod.cash,
-      type: CrudApi.PaymentType.cash,
+      method: PaymentMethod.cash,
+      type: PaymentType.cash,
     },
     {
-      method: CrudApi.PaymentMethod.card,
-      type: CrudApi.PaymentType.card,
+      method: PaymentMethod.card,
+      type: PaymentType.card,
     },
     {
-      method: CrudApi.PaymentMethod.inapp,
-      type: CrudApi.PaymentType.stripe,
+      method: PaymentMethod.inapp,
+      type: PaymentType.stripe,
     },
   ],
   lanes: [
@@ -118,14 +129,11 @@ const unitBase = {
     from: '1970-01-01',
     to: '2970-01-01',
   },
-  supportedOrderModes: [CrudApi.OrderMode.pickup, CrudApi.OrderMode.instant],
-  supportedServingModes: [
-    CrudApi.ServingMode.inplace,
-    CrudApi.ServingMode.takeaway,
-  ],
+  supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
+  supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
 };
 
-const unit_01: CrudApi.Unit = {
+const unit_01: Unit = {
   ...unitBase,
   id: unitId_01,
   groupId: groupFixture.group_01.id,
@@ -134,20 +142,20 @@ const unit_01: CrudApi.Unit = {
   updatedAt: '2021-08-02T01:54:11.843Z',
 };
 
-const unitInputBase: CrudApi.CreateUnitInput = {
+const unitInputBase: CreateUnitInput = {
   ...unitBase,
   id: unitId_01,
   groupId: groupFixture.group_01.id,
   chainId: chainFixture.chain_01.id,
 };
 
-const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
+const createUnit_01: RequiredId<CreateUnitInput> = {
   ...unitBase,
   id: unitId_01,
   groupId: groupFixture.group_01.id,
   chainId: chainFixture.chain_01.id,
   serviceFeePolicy: {
-    type: CrudApi.ServiceFeeType.applicable,
+    type: ServiceFeeType.applicable,
     percentage: 10,
   },
   ratingPolicies: [
@@ -167,12 +175,12 @@ const createUnit_01: RequiredId<CrudApi.CreateUnitInput> = {
   },
 };
 
-const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
+const createRkeeperUnit: RequiredId<CreateUnitInput> = {
   ...createUnit_01,
   id: 'rkeeper-unit',
   externalId: 'restaurantid',
   pos: {
-    type: CrudApi.PosType.rkeeper,
+    type: PosType.rkeeper,
     rkeeper: {
       // let's use the yellow real rkeeper endpoint
       endpointUri: rkeeperEndpoint,
@@ -184,36 +192,36 @@ const createRkeeperUnit: RequiredId<CrudApi.CreateUnitInput> = {
   },
 };
 
-const unitInstantTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
+const unitInstantTakeaway: RequiredId<CreateUnitInput> = {
   ...unitInputBase,
   id: 'unit-it',
   name: `Instant Takeaway Kocsma`,
-  supportedOrderModes: [CrudApi.OrderMode.instant],
-  supportedServingModes: [CrudApi.ServingMode.takeaway],
+  supportedOrderModes: [OrderMode.instant],
+  supportedServingModes: [ServingMode.takeaway],
 };
 
-const unitPickupTakeaway: RequiredId<CrudApi.CreateUnitInput> = {
+const unitPickupTakeaway: RequiredId<CreateUnitInput> = {
   ...unitInputBase,
   id: 'unit-pt',
   name: `Pickup Takeaway Kifőzde`,
-  supportedOrderModes: [CrudApi.OrderMode.pickup],
-  supportedServingModes: [CrudApi.ServingMode.takeaway],
+  supportedOrderModes: [OrderMode.pickup],
+  supportedServingModes: [ServingMode.takeaway],
 };
 
-const unitInstantInplace: RequiredId<CrudApi.CreateUnitInput> = {
+const unitInstantInplace: RequiredId<CreateUnitInput> = {
   ...unitInputBase,
   id: 'unit-ii',
   name: `Instant Inplace Csárda`,
-  supportedOrderModes: [CrudApi.OrderMode.instant],
-  supportedServingModes: [CrudApi.ServingMode.inplace],
+  supportedOrderModes: [OrderMode.instant],
+  supportedServingModes: [ServingMode.inplace],
 };
 
-const unitPickupInplace: RequiredId<CrudApi.CreateUnitInput> = {
+const unitPickupInplace: RequiredId<CreateUnitInput> = {
   ...unitInputBase,
   id: 'unit-pi',
   name: `Pickup Inplace Resztoran`,
-  supportedOrderModes: [CrudApi.OrderMode.pickup],
-  supportedServingModes: [CrudApi.ServingMode.inplace],
+  supportedOrderModes: [OrderMode.pickup],
+  supportedServingModes: [ServingMode.inplace],
 };
 
 export const unitFixture = {

@@ -1,5 +1,5 @@
 import { getAllPaginatedData } from '@bgap/gql-sdk';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   filterNullishElements,
@@ -9,6 +9,12 @@ import { iif, Observable, of } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 import { createItems, deleteItems } from '@bgap/anyupp-backend-lib';
 import { ProductCategoryResolverDeps } from './utils';
+import {
+  CreateGeneratedProductCategoryInput,
+  CreateGeneratedProductInput,
+  GeneratedProductCategory,
+  SearchGeneratedProductCategoriesQueryVariables,
+} from '@bgap/domain';
 
 interface ProductCategoryMap {
   [key: string]: number;
@@ -21,7 +27,7 @@ export const reGenerateActiveProductCategoriesForAUnit =
     generatedProducts,
   }: {
     unitId: string;
-    generatedProducts: Array<CrudApi.CreateGeneratedProductInput>;
+    generatedProducts: Array<CreateGeneratedProductInput>;
   }): Observable<string[]> => {
     return of(unitId).pipe(
       switchMap(deleteGeneratedProductCategoriesForAUnit(deps)),
@@ -49,7 +55,7 @@ const fromProductCategoryMapToGeneratedProductCategoryInput = ({
 }: {
   unitId: string;
   productCategoryMap: ProductCategoryMap;
-}): Array<CrudApi.CreateGeneratedProductCategoryInput> =>
+}): Array<CreateGeneratedProductCategoryInput> =>
   Object.entries(productCategoryMap).map(([productCategoryId, productNum]) => ({
     id: `${unitId}__${productCategoryId}`,
     unitId,
@@ -58,7 +64,7 @@ const fromProductCategoryMapToGeneratedProductCategoryInput = ({
   }));
 
 export const getProductNumberMap = (
-  // generatedProducts: CrudApi.CreateGeneratedProductInput[],
+  // generatedProducts: CreateGeneratedProductInput[],
   productsWithProductCategories: Array<{ productCategoryId: string }>,
 ): ProductCategoryMap =>
   productsWithProductCategories.reduce(
@@ -86,19 +92,19 @@ export const deleteGeneratedProductCategoriesForAUnit =
     );
   };
 const deleteGeneratedProductCategoryItemsFromDb = (
-  items: Required<CrudApi.GeneratedProductCategory>[],
+  items: Required<GeneratedProductCategory>[],
 ) => deleteItems(TABLE_NAME)(items);
 
 export const createGeneratedProductCategoriesInDb = (
-  items: CrudApi.CreateGeneratedProductCategoryInput[],
+  items: CreateGeneratedProductCategoryInput[],
 ) => {
   return createItems(TABLE_NAME)(items);
 };
 
 export const listGeneratedProductCategoriesForUnits =
   (deps: ProductCategoryResolverDeps) =>
-  (unitIds: string[]): Observable<Array<CrudApi.GeneratedProductCategory>> => {
-    const input: CrudApi.SearchGeneratedProductCategoriesQueryVariables = {
+  (unitIds: string[]): Observable<Array<GeneratedProductCategory>> => {
+    const input: SearchGeneratedProductCategoriesQueryVariables = {
       filter: { or: unitIds.map(x => ({ unitId: { eq: x } })) },
       limit: 200, // DO NOT USE FIX limit (Covered by #472)
     };
@@ -108,7 +114,5 @@ export const listGeneratedProductCategoriesForUnits =
       options: {
         fetchPolicy: 'no-cache',
       },
-    }).pipe(
-      filterNullishGraphqlListWithDefault<CrudApi.GeneratedProductCategory>([]),
-    );
+    }).pipe(filterNullishGraphqlListWithDefault<GeneratedProductCategory>([]));
   };

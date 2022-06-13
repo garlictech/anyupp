@@ -1,27 +1,27 @@
-import { ENTITY_NAME } from '../../../shared/types';
-import { loggedUserSelectors } from '../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
+import {
+  ChainProduct,
+  GeneratedProduct,
+  GroupProduct,
+  UnitProduct,
+} from '@bgap/domain';
 import { EntitySelectorsFactory } from '@ngrx/data';
 import { createSelector } from '@ngrx/store';
+
+import { ENTITY_NAME } from '../../../shared/types';
+import { loggedUserSelectors } from '../../../store/logged-user';
 import { ExtendedGroupProduct, ExtendedUnitProduct } from './products.reducer';
 
 export const chainProductEntitySelectors =
-  new EntitySelectorsFactory().create<CrudApi.ChainProduct>(
-    ENTITY_NAME.CHAIN_PRODUCT,
-  );
+  new EntitySelectorsFactory().create<ChainProduct>(ENTITY_NAME.CHAIN_PRODUCT);
 
 export const groupProductEntitySelectors =
-  new EntitySelectorsFactory().create<CrudApi.GroupProduct>(
-    ENTITY_NAME.GROUP_PRODUCT,
-  );
+  new EntitySelectorsFactory().create<GroupProduct>(ENTITY_NAME.GROUP_PRODUCT);
 
 export const unitProductEntitySelectors =
-  new EntitySelectorsFactory().create<CrudApi.UnitProduct>(
-    ENTITY_NAME.UNIT_PRODUCT,
-  );
+  new EntitySelectorsFactory().create<UnitProduct>(ENTITY_NAME.UNIT_PRODUCT);
 
 export const generatedProductEntitySelectors =
-  new EntitySelectorsFactory().create<CrudApi.GeneratedProduct>(
+  new EntitySelectorsFactory().create<GeneratedProduct>(
     ENTITY_NAME.GENERATED_PRODUCT,
   );
 

@@ -10,7 +10,7 @@ import {
   CrudSdkService,
   entityConfig,
 } from '@bgap/admin/refactor';
-import * as CrudApi from '@bgap/crud-gql/api';
+
 import { chainFixture, testIdPrefix } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
 import {
@@ -22,6 +22,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { signInToCognito, signOutFromCognito } from '../../shared/helper';
+import { Chain } from 'libs/domain/src';
 
 describe('ChainFormService', () => {
   const chainId = `${testIdPrefix}ADMIN_CHAIN_IT_CHAIN_ID_01`;
@@ -127,7 +128,7 @@ describe('ChainFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<CrudApi.Chain>>saveResponse).data.id
+          (<UpsertResponse<Chain>>saveResponse).data.id
             ? service.updateChain$({
                 ...chainFixture.chainBase,
                 id: chainId,

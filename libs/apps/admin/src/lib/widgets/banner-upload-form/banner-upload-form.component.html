@@ -1,23 +1,74 @@
-<div class="banner-status">
-  <span class="label"> A bannerek jelenlegi állapota: </span>
+<fieldset class="form">
+  <legend>{{ 'units.showBanners' | translate }}</legend>
 
-  <span class="status" [class.enabled]="currentUnitBannersEnabled">
-    {{ currentUnitBannersEnabled ? 'BEKAPCSOLVA' : 'KIKAPCSOLVA' }}
-  </span>
+  <div class="banner-status">
+    <lib-admin-toggle-button-ui
+      [toggled]="currentUnitBannersEnabled"
+      [disabled]="operationIsPending"
+      [rounded]="true"
+      [bordered]="true"
+      [color]="currentUnitBannersEnabled ? 'success' : 'danger'"
+      [options]="toggleOptions"
+      [size]="'sm'"
+      (toggledEvent)="onToggleBanners()"
+    ></lib-admin-toggle-button-ui>
+  </div>
+</fieldset>
 
-  <div class="fill-space"></div>
+<fieldset class="form">
+  <legend>{{ 'units.uploadNewBanners' | translate }}</legend>
 
-  <lib-admin-button-ui
-    class="button"
-    [label]="currentUnitBannersEnabled ? 'Kikapcsolás!' : 'Bekapcsolás!'"
-    [style]="currentUnitBannersEnabled ? 'danger' : 'success'"
-    [disabled]="operationIsPending"
-    [loading]="operationsPending.toggleBanners"
-    (pushed)="onToggleBanners()"
-  ></lib-admin-button-ui>
-</div>
+  <form
+    class="banner-upload-form"
+    [formGroup]="bannerUploadForm"
+    *ngIf="currentUnitBanners.length < bannerLimit; else uploadLimitReached"
+  >
+    <div class="form-field-upload-banner">
+      <lib-admin-file-uploader-ui
+        [formControl]="fileUpload"
+      ></lib-admin-file-uploader-ui>
 
-<h3>Aktuális bannerek:</h3>
+      <div class="description">
+        {{ 'units.recommendedBannerSize' | translate: { size: '5' } }}
+      </div>
+
+      <div
+        class="error"
+        *ngIf="fileUpload.errors?.[validatorErrorTypes.fileSize]"
+      >
+        {{ 'units.bannerSizeIsTooHigh' | translate: { size: '5' } }}
+      </div>
+      <div
+        class="error"
+        *ngIf="fileUpload.errors?.[validatorErrorTypes.fileType]"
+      >
+        {{ 'units.selectedFileIsNotAnImage' | translate }}
+      </div>
+      <div class="error" *ngIf="fileUpload.errors?.['required']">
+        {{ 'units.noSelectedImage' | translate }}
+      </div>
+    </div>
+
+    <div>
+      <lib-admin-button-ui
+        class="button"
+        label="common.upload"
+        [disabled]="bannerUploadForm.invalid || operationIsPending"
+        [bordered]="true"
+        [rounded]="true"
+        [size]="'sm'"
+        color="light"
+        (pushed)="onUploadBanner()"
+      ></lib-admin-button-ui>
+    </div>
+  </form>
+</fieldset>
+
+<ng-template #uploadLimitReached>
+  <div class="banner-limit-reached">
+    {{ 'units.maxBannerCountReached' | translate }}
+  </div>
+</ng-template>
 
 <div class="unit-banners" *ngIf="currentUnitBanners.length > 0; else noBanners">
   <lib-admin-unit-banner-ui
@@ -30,52 +81,7 @@
 </div>
 
 <ng-template #noBanners>
-  <div class="no-unit-banners">Jelenleg nincs feltöltött banner</div>
-</ng-template>
-
-<form
-  class="banner-upload-form"
-  [formGroup]="bannerUploadForm"
-  *ngIf="currentUnitBanners.length < bannerLimit; else uploadLimitReached"
->
-  <h3>Új banner feltöltése</h3>
-
-  <div class="form-field-upload-banner">
-    <lib-admin-file-uploader-ui
-      [formControl]="fileUpload"
-    ></lib-admin-file-uploader-ui>
-
-    <div class="description">
-      Ugyanolyan felbontású (600px * 300px) képek feltöltését ajánljuk.
-    </div>
-
-    <div
-      class="error"
-      *ngIf="fileUpload.errors?.[validatorErrorTypes.fileSize]"
-    >
-      A méret túl nagy, a maximum 5MB
-    </div>
-    <div
-      class="error"
-      *ngIf="fileUpload.errors?.[validatorErrorTypes.fileType]"
-    >
-      Nem képfájl lett kiválasztva
-    </div>
-    <div class="error" *ngIf="fileUpload.errors?.['required']">
-      Nincs kép kiválasztva
-    </div>
-  </div>
-
-  <lib-admin-button-ui
-    class="button"
-    [label]="'Feltöltés'"
-    [disabled]="bannerUploadForm.invalid || operationIsPending"
-    (pushed)="onUploadBanner()"
-  ></lib-admin-button-ui>
-</form>
-
-<ng-template #uploadLimitReached>
-  <div class="banner-limit-reached">
-    A feltölthető bannerek száma elérte a maximumot.
+  <div class="no-unit-banners">
+    {{ 'units.noUploadedBanner' | translate }}
   </div>
 </ng-template>

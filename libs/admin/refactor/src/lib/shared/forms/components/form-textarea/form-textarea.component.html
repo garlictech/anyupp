@@ -1,0 +1,21 @@
+<div class="form-control-group">
+  <label class="caption"
+    >{{ staticCaption || (caption | translate)
+    }}<nb-form-field>
+      <textarea
+        *ngIf="control"
+        nbInput
+        fullWidth
+        [fieldSize]="fieldSize"
+        [formControl]="control"
+        [readonly]="readonly"
+        [status]="
+          control?.touched && (control?.errors?.['required'] || control?.invalid)
+            ? 'danger'
+            : 'basic'
+        "
+        [attr.data-testid]="inputId"
+      ></textarea>
+    </nb-form-field>
+  </label>
+</div>

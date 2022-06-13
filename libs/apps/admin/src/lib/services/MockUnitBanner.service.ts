@@ -1,10 +1,11 @@
 import {
   AbsImageCompressorService,
   AbsStorageService,
-  AbsUnitAdBannerService,
+  AbsUnitBannerService,
   AbsUnitRepository,
-  AdBanner,
-  CrudApi,
+  bannerType,
+  ImageAsset,
+  Unit,
   unitBannerAddUseCase,
   unitBannerRemoveUseCase,
 } from '@bgap/domain';
@@ -14,7 +15,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class MockUnitAdBannerService extends AbsUnitAdBannerService {
+export class MockUnitBannerService extends AbsUnitBannerService {
   constructor(
     private storageService: AbsStorageService,
     private imageCompressorService: AbsImageCompressorService,
@@ -23,19 +24,22 @@ export class MockUnitAdBannerService extends AbsUnitAdBannerService {
     super();
   }
 
-  async getAdBannersForUnit({
+  async getBannersForUnit({
     unitId,
+    type,
   }: {
     unitId: string;
-  }): Promise<AdBanner[]> {
-    return this.getCurrentAdBanners(unitId);
+    type: bannerType;
+  }): Promise<ImageAsset[]> {
+    return this.getCurrentBanners(unitId, type);
   }
 
-  addNewAdBannerToUnit(params: {
+  addNewBannerToUnit(params: {
     bannerImage: File;
     unitId: string;
-  }): Promise<AdBanner[]> {
-    const { unitId, bannerImage } = params;
+    type: bannerType;
+  }): Promise<ImageAsset[]> {
+    const { unitId, bannerImage, type } = params;
 
     return unitBannerAddUseCase({
       bannerImage,
@@ -53,23 +57,24 @@ export class MockUnitAdBannerService extends AbsUnitAdBannerService {
           }),
         };
       },
-      getCurrentAdBanners: () => this.getCurrentAdBanners(unitId),
-      updateAdBannersOnUnit: ({ adBanners }) =>
-        this.updateAdBannersOnUnit({ unitId, adBanners }),
+      getCurrentBanners: () => this.getCurrentBanners(unitId, type),
+      updateBannersOnUnit: ({ banners }) =>
+        this.updateBannersOnUnit({ unitId, banners, type }),
     });
   }
 
-  removeAdBannerFromUnit(params: {
+  removeBannerFromUnit(params: {
     unitId: string;
     bannerPath: string;
-  }): Promise<AdBanner[]> {
-    const { unitId, bannerPath } = params;
+    type: bannerType;
+  }): Promise<ImageAsset[]> {
+    const { unitId, bannerPath, type } = params;
 
     return unitBannerRemoveUseCase({
       storagePath: bannerPath,
-      getCurrentAdBanners: () => this.getCurrentAdBanners(unitId),
-      updateAdBannersOnUnit: ({ adBanners }) =>
-        this.updateAdBannersOnUnit({ unitId, adBanners }),
+      getCurrentBanners: () => this.getCurrentBanners(unitId, type),
+      updateBannersOnUnit: ({ banners }) =>
+        this.updateBannersOnUnit({ unitId, banners, type }),
       deleteFromStorage: async ({ folderPath }) => {
         await this.storageService.removeFile({
           key: folderPath,
@@ -78,25 +83,29 @@ export class MockUnitAdBannerService extends AbsUnitAdBannerService {
     });
   }
 
-  async getAdBannersEnabledStatusForUnit({
+  async getBannersEnabledStatusForUnit({
     unitId,
+    type,
   }: {
     unitId: string;
+    type: bannerType;
   }): Promise<boolean> {
     const unit = await this.getCurrentUnit(unitId);
 
-    return unit ? !!unit.adBannersEnabled : false;
+    return unit ? !!unit[`${type}BannersEnabled`] : false;
   }
 
-  toggleAdBannersEnabledStatusForUnit({
+  toggleBannersEnabledStatusForUnit({
     unitId,
+    type,
   }: {
     unitId: string;
+    type: bannerType;
   }): Promise<boolean> {
     return unitBannersToggleUseCase({
-      getCurrentAdBannersEnabledStatus: () =>
-        this.getAdBannersEnabledStatusForUnit({ unitId }),
-      setAdBannersEnabledStatus: async ({ enabled }) => {
+      getCurrentBannersEnabledStatus: () =>
+        this.getBannersEnabledStatusForUnit({ unitId, type }),
+      setBannersEnabledStatus: async ({ enabled }) => {
         await this.unitRepository.update({
           id: unitId,
           adBannersEnabled: enabled,
@@ -105,25 +114,27 @@ export class MockUnitAdBannerService extends AbsUnitAdBannerService {
     });
   }
 
-  private async getCurrentUnit(unitId: string): Promise<CrudApi.Unit | null> {
+  private async getCurrentUnit(unitId: string): Promise<Unit | null> {
     return this.unitRepository.getById(unitId);
   }
 
-  private async getCurrentAdBanners(unitId: string) {
+  private async getCurrentBanners(unitId: string, type: bannerType) {
     const unit = await this.getCurrentUnit(unitId);
-    return unit ? unit.adBanners || [] : [];
+    return unit ? unit[`${type}Banners`] || [] : [];
   }
 
-  private async updateAdBannersOnUnit({
+  private async updateBannersOnUnit({
     unitId,
-    adBanners,
+    banners,
+    type,
   }: {
     unitId: string;
-    adBanners: AdBanner[];
+    banners: ImageAsset[];
+    type: bannerType;
   }) {
     await this.unitRepository.update({
       id: unitId,
-      adBanners,
+      [`${type}Banners`]: banners,
     });
   }
 }

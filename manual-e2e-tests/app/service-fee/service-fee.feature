@@ -16,40 +16,42 @@ Feature: Service fee on app
 
   Scenario: Service fee not included in price but applicable
     Given the admin set the service fee type to "Fee not included in prices but applicable"
+    Given the admin set the service fee to "10%"
     When I tap the "Sajtburger" card under "Hamburgers" category
     Then I should see "Sajtburger sajtos szendvics" text
-    Then I should see "The price doesn't include service fee" text
+    Then I should see "Prices do not include 10% service fee" text
     When I tap the "Add To Cart" button
     Then I should see the "Menu" is selected
     When I tap the "MY CART (1700 Ft)" button
     Then there is the "Cart" screen
     And I should see "Service fee" text
-    And I should see "85 Ft (5%)" text
-    When I tap the "PAY (1700 Ft)" button
-    Then I should see the "PAY" screen
+    And I should see "170 Ft (10%)" text
+    When I tap the "PAY (1870 Ft)" button
+    Then I should see the "PAYMENT" screen
     When I tap on the "Cash" button
     Then I tap on the "PLACE ORDER" button
     Then the qr code reader opens the camera
     When I read a seat qr code
-    Then I should see the "Finding table and chair" loading screen
-    And I get the text message "New Table Reserved!"
+    Then I should see the "finding table and chair..." loading screen
+    And I get the text message "New Seat Reserved!"
     And I should see "Chair: #01, Table: #01" text
     When I tap on the "OK" button
-    And I should see "Successful order!"
+    And I should see "Successful order!" popup
     When I tap on the "OK" button
     Then I should see "Current orders" text
     When I tap on the order with "Processing"
     Then I should see "Order status" text
-    And I should see "Service fee 1 x 85 Ft" text
+    And I should see "Service fee 1 x 170 Ft" text
 
   Scenario: Service fee included in price
     Given the admin set the service fee type to "Fee included in all prices"
+    Given the admin set the service fee to "10%"
     When I tap the "Sajtburger" card under "Hamburgers" category
     Then I should see "Sajtburger sajtos szendvics" text
-    Then I should see "The price includes service fee" text
+    Then I should see "The price includes a service fee" text
     When I tap the "Add To Cart" button
     Then I should see the "Menu" is selected
-    When I tap the "MY CART (1785 Ft)" button
+    When I tap the "MY CART (1700 Ft)" button
     Then there is the "Cart" screen
     And I should NOT see "Service fee" text
     When I tap the "PAY (1700 Ft)" button
@@ -58,8 +60,8 @@ Feature: Service fee on app
     Then I tap on the "PLACE ORDER" button
     Then the qr code reader opens the camera
     When I read a seat qr code
-    Then I should see the "Finding table and chair" loading screen
-    And I get the text message "New Table Reserved!"
+    Then I should see the "finding table and chair..." loading screen
+    And I get the text message "New Seat Reserved!"
     And I should see "Chair: #01, Table: #01" text
     When I tap on the "OK" button
     And I should see "Successful order!"
@@ -68,7 +70,7 @@ Feature: Service fee on app
     When I tap on the order with "Processing"
     Then I should see "Order status" text
     And I should see "Order details" text
-    And íi should see "The price contains 5% service fee." text
+    And I should see "The price contains 10% service fee." text
 
   Scenario: Service fee in szamlazz.hu
     Given I am on the "Menu" screen
@@ -79,25 +81,27 @@ Feature: Service fee on app
     When I tap the "MY CART (1700 Ft)" button
     Then there is the "Cart" screen
     And I tap the "PAY (1700 Ft)" button
-    Then I should see the "PAY" screen
-    When I tap on the option "Credit Card Payment" button
+    Then I should see the "PAYMENT" screen
+    When I tap on the option "Credit Card Payment"
     Then I should see "Add new card" screen with a form
     When I fill out the input "xxxx xxxx xxxx xxxx" with "4242 4242 4242 4242"
     And I fill out the input "MM/YY" with "01/23" date
-    And I fill out the "CVV" input with the "111"
+    And I fill out the "CVC" input with the "111"
     And I tap on the "SAVE CARD" button
-    Then I should see the "PAY" screen
+    Then I should see the "PAYMENT" screen
     When I tap on the "visa **** 4242" button
     And I tap on the "PLACE ORDER" button
     Then the qr code reader opens the camera
     When I read a seat qr code
-    Then I should see the "Finding table and chair" loading screen
+    Then I should see the "finding table and chair..." loading screen
     And I get the text message "New Table Reserved!"
+    And I should see "Chair: #01, Table: #01" text
+    When I tap on the "OK" button
     And I should see "Successful order!"
     When I tap on the "OK" button
     Then I should see "Current orders" text
-    When I tap on the order with "Processing"
+    When I tap on the order with "Processed"
     Then I should see "Ordes status" text
     When I tap the "DOWNLOAD RECEIPT" button
     Then I should see "Számlázz.hu" receipt
-    And I should see "Service fee ...Ft" text
+    And I should see "Service fee 170 Ft" text

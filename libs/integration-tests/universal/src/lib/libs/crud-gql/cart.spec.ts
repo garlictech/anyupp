@@ -1,15 +1,15 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import {
   cartFixture,
   testAdminUsername,
   testAdminUserPassword,
 } from '@bgap/shared/fixtures';
+import { CrudSdk } from '@bgap/crud-gql/api';
 import { switchMap } from 'rxjs/operators';
 import { createAuthenticatedCrudSdk } from '../../../api-clients';
 import { createTestCart, deleteTestCart } from '../../seeds/cart';
 
 describe('getCart test', () => {
-  let authSdk: CrudApi.CrudSdk;
+  let authSdk: CrudSdk;
 
   beforeAll(async () => {
     authSdk = await createAuthenticatedCrudSdk(

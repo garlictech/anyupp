@@ -7,16 +7,17 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { currentStatus } from '@bgap/crud-gql/api';
+import { Order } from '@bgap/domain';
+import { customDateCompare, filterNullish } from '@bgap/shared/utils';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { select, Store } from '@ngrx/store';
+
 import {
   dashboardActions,
   dashboardSelectors,
 } from '../../../../store/dashboard';
 import { OrderHistoryCollectionService } from '../../../../store/orders';
-
-import * as CrudApi from '@bgap/crud-gql/api';
-import { customDateCompare, filterNullish } from '@bgap/shared/utils';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { select, Store } from '@ngrx/store';
 
 @UntilDestroy()
 @Component({
@@ -25,10 +26,10 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './order-ticket-history-list.component.html',
 })
 export class OrderTicketHistoryListComponent implements OnInit {
-  public selectedOrder?: CrudApi.Order;
-  public dailyOrders: CrudApi.Order[] = [];
+  public selectedOrder?: Order;
+  public dailyOrders: Order[] = [];
   public dateFormControl: FormControl = new FormControl();
-  public currentStatus = CrudApi.currentStatus;
+  public currentStatus = currentStatus;
 
   constructor(
     private _store: Store,
@@ -57,7 +58,7 @@ export class OrderTicketHistoryListComponent implements OnInit {
         select(dashboardSelectors.getSelectedHistoryOrder()),
         untilDestroyed(this),
       )
-      .subscribe((selectedOrder: CrudApi.Order | undefined) => {
+      .subscribe((selectedOrder: Order | undefined) => {
         this.selectedOrder = selectedOrder;
 
         this._changeDetectorRef.detectChanges();
@@ -65,7 +66,7 @@ export class OrderTicketHistoryListComponent implements OnInit {
 
     this._orderHistoryCollectionService.entities$
       .pipe(untilDestroyed(this))
-      .subscribe((historyOrders: CrudApi.Order[]) => {
+      .subscribe((historyOrders: Order[]) => {
         this.dailyOrders = historyOrders.sort(
           customDateCompare('createdAt', true),
         );
@@ -86,7 +87,7 @@ export class OrderTicketHistoryListComponent implements OnInit {
     });
   }
 
-  public selectOrder(order: CrudApi.Order) {
+  public selectOrder(order: Order) {
     const selectedOrder = this.dailyOrders.find(
       (o): boolean => o.id === order?.id,
     );

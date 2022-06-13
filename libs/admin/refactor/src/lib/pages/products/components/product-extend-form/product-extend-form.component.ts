@@ -9,12 +9,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { AbstractFormDialogComponent } from '../../../../shared/forms';
-import { SERVING_MODES } from '../../../../shared/utils';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import { ProductCategoryCollectionService } from '../../../../store/product-categories';
-import { unitsSelectors } from '../../../../store/units';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { AdminUserSettings, ProductCategory, ServingMode } from '@bgap/domain';
 import {
   EProductLevel,
   KeyValue,
@@ -25,6 +20,11 @@ import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
+import { AbstractFormDialogComponent } from '../../../../shared/forms';
+import { SERVING_MODES } from '../../../../shared/utils';
+import { loggedUserSelectors } from '../../../../store/logged-user';
+import { ProductCategoryCollectionService } from '../../../../store/product-categories';
+import { unitsSelectors } from '../../../../store/units';
 import { ProductFormService } from '../../services/product-form.service';
 
 @UntilDestroy()
@@ -42,16 +42,17 @@ export class ProductExtendFormComponent
   public eProductLevel = EProductLevel;
   public editing = false;
   public currency!: string;
-  public productCategories$: Observable<CrudApi.ProductCategory[]>;
+  public productCategories$: Observable<ProductCategory[]>;
   public unitLanes$: Observable<KeyValue[]>;
   public servingModes = SERVING_MODES;
+  public selectedUnit?: CrudApi.Unit;
 
   private _selectedChainId = '';
   private _selectedGroupId = '';
   private _selectedUnitId = '';
 
   constructor(
-    protected _injector: Injector,
+    protected override _injector: Injector,
     private _productFormService: ProductFormService,
     private _productCategoryCollectionService: ProductCategoryCollectionService,
   ) {
@@ -63,7 +64,7 @@ export class ProductExtendFormComponent
         take(1),
         filterNullish(),
       )
-      .subscribe((userSettings: CrudApi.AdminUserSettings) => {
+      .subscribe((userSettings: AdminUserSettings) => {
         this._selectedChainId = userSettings?.selectedChainId || '';
         this._selectedGroupId = userSettings?.selectedGroupId || '';
         this._selectedUnitId = userSettings?.selectedUnitId || '';
@@ -77,6 +78,12 @@ export class ProductExtendFormComponent
       filterNullish(),
       take(1),
     );
+
+    this._store
+      .pipe(select(unitsSelectors.getSelectedUnit), filterNullish(), take(1))
+      .subscribe(unit => {
+        this.selectedUnit = unit;
+      });
   }
 
   ngOnInit() {
@@ -91,15 +98,15 @@ export class ProductExtendFormComponent
 
       this._productFormService.patchExtendedProductVariants(
         this.product.variants || [],
-        this.dialogForm?.controls.variants as FormArray,
+        this.dialogForm?.controls['variants'] as FormArray,
       );
 
       this._productFormService.patchConfigSet(
         this.product.configSets || [],
-        this.dialogForm?.controls.configSets as FormArray,
+        this.dialogForm?.controls['configSets'] as FormArray,
       );
     } else {
-      this.dialogForm.controls.isVisible.patchValue(true);
+      this.dialogForm.controls['isVisible'].patchValue(true);
     }
   }
 
@@ -107,7 +114,7 @@ export class ProductExtendFormComponent
     if (this.dialogForm?.valid) {
       const takeaway = (
         <string[]>this.dialogForm.value.supportedServingModes || []
-      ).includes(CrudApi.ServingMode.takeaway);
+      ).includes(ServingMode.takeaway);
 
       const parentInfo = {
         parentId: this.product?.id || '',

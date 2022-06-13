@@ -1,9 +1,9 @@
-import * as CrudApi from '@bgap/crud-gql/api';
+import { CrudSdk } from '@bgap/crud-gql/api';
 
 export interface ReportDeps {
   region: string;
   userPoolId: string;
-  crudSdk: CrudApi.CrudSdk;
+  crudSdk: CrudSdk;
   reportFile: string;
   reportDate: string;
   slackBotToken: string;

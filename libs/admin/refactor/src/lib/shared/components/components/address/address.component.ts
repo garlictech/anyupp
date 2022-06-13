@@ -1,6 +1,5 @@
-import * as CrudApi from '@bgap/crud-gql/api';
-
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Address } from '@bgap/domain';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -8,5 +7,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   templateUrl: './address.component.html',
 })
 export class AddressComponent {
-  @Input() address?: CrudApi.Address | null;
+  @Input() address?: Address | null;
 }

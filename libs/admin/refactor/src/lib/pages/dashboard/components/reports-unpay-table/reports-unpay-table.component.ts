@@ -7,10 +7,11 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { unpayCategoryTableData } from '../../../../shared/utils';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Order, PaymentMethod } from '@bgap/domain';
 import { UnpayCategoryStatObjItem } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { unpayCategoryTableData } from '../../../../shared/utils';
 
 @UntilDestroy()
 @Component({
@@ -20,32 +21,30 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./reports-unpay-table.component.scss'],
 })
 export class ReportsUnpayTableComponent implements OnInit {
-  @Input() orders$?: Observable<CrudApi.Order[]>;
+  @Input() orders$?: Observable<Order[]>;
   @Input() currency = '';
   @Input() hasIncome = false;
 
   public unpayCategoryStats: UnpayCategoryStatObjItem[] = [];
-  public paymentMethods: CrudApi.PaymentMethod[] = [];
+  public paymentMethods: PaymentMethod[] = [];
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit() {
     if (this.orders$) {
-      this.orders$
-        .pipe(untilDestroyed(this))
-        .subscribe((orders: CrudApi.Order[]) => {
-          this.paymentMethods = <CrudApi.PaymentMethod[]>[
-            ...new Set(orders.map(o => o.paymentMode?.method).filter(m => !!m)),
-          ];
+      this.orders$.pipe(untilDestroyed(this)).subscribe((orders: Order[]) => {
+        this.paymentMethods = <PaymentMethod[]>[
+          ...new Set(orders.map(o => o.paymentMode?.method).filter(m => !!m)),
+        ];
 
-          this.unpayCategoryStats = unpayCategoryTableData(
-            orders,
-            this.hasIncome,
-            this.paymentMethods,
-          );
+        this.unpayCategoryStats = unpayCategoryTableData(
+          orders,
+          this.hasIncome,
+          this.paymentMethods,
+        );
 
-          this._changeDetectorRef.detectChanges();
-        });
+        this._changeDetectorRef.detectChanges();
+      });
     }
   }
 }

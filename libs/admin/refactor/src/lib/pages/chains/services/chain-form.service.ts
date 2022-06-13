@@ -5,15 +5,21 @@ import { map, switchMap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
+  Chain,
+  ChainStyleImages,
+  CreateChainInput,
+  UpdateChainInput,
+} from '@bgap/domain';
+import { filterNullish } from '@bgap/shared/utils';
+import { Store } from '@ngrx/store';
+
+import {
   addressFormGroup,
   contactFormGroup,
   multiLangValidator,
 } from '../../../shared/utils';
 import { catchGqlError } from '../../../store/app-core';
 import { ChainCollectionService } from '../../../store/chains';
-import * as CrudApi from '@bgap/crud-gql/api';
-import { filterNullish } from '@bgap/shared/utils';
-import { Store } from '@ngrx/store';
 
 @Injectable({ providedIn: 'root' })
 export class ChainFormService {
@@ -63,7 +69,7 @@ export class ChainFormService {
   }
 
   public saveForm$(
-    formValue: CrudApi.CreateChainInput | CrudApi.UpdateChainInput,
+    formValue: CreateChainInput | UpdateChainInput,
     chainId?: string,
   ) {
     if (formValue.address) {
@@ -78,7 +84,7 @@ export class ChainFormService {
 
     return iif(
       () => !chainId,
-      this.createChain$(<CrudApi.CreateChainInput>formValue),
+      this.createChain$(<CreateChainInput>formValue),
       this.updateChain$({
         ...formValue,
         id: chainId || '',
@@ -86,22 +92,18 @@ export class ChainFormService {
     );
   }
 
-  public createChain$(input: CrudApi.CreateChainInput) {
-    return this._chainCollectionService
-      .add$<CrudApi.CreateChainInput>(input)
-      .pipe(
-        catchGqlError(this._store),
-        map(data => ({ data, type: 'insert' })),
-      );
+  public createChain$(input: CreateChainInput) {
+    return this._chainCollectionService.add$<CreateChainInput>(input).pipe(
+      catchGqlError(this._store),
+      map(data => ({ data, type: 'insert' })),
+    );
   }
 
-  public updateChain$(input: CrudApi.UpdateChainInput) {
-    return this._chainCollectionService
-      .update$<CrudApi.UpdateChainInput>(input)
-      .pipe(
-        catchGqlError(this._store),
-        map(data => ({ data, type: 'update' })),
-      );
+  public updateChain$(input: UpdateChainInput) {
+    return this._chainCollectionService.update$<UpdateChainInput>(input).pipe(
+      catchGqlError(this._store),
+      map(data => ({ data, type: 'update' })),
+    );
   }
 
   public updateChainImageStyles$(
@@ -112,11 +114,8 @@ export class ChainFormService {
     return this._chainCollectionService.getByKey$(chainId, true, true).pipe(
       filterNullish(),
       switchMap(data => {
-        const _data: CrudApi.Chain = cloneDeep(data);
-        const chainStyleImagesRecord: Record<
-          string,
-          keyof CrudApi.ChainStyleImages
-        > = {
+        const _data: Chain = cloneDeep(data);
+        const chainStyleImagesRecord: Record<string, keyof ChainStyleImages> = {
           header: 'header',
           logo: 'logo',
         };
@@ -129,7 +128,7 @@ export class ChainFormService {
           _data.style.images[chainStyleImagesRecord[param]] = image;
         }
 
-        return this._chainCollectionService.update$<CrudApi.UpdateChainInput>({
+        return this._chainCollectionService.update$<UpdateChainInput>({
           id: _data.id,
           style: _data.style,
         });

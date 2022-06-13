@@ -1,30 +1,32 @@
-import { ENTITY_NAME } from '../../../shared/types';
-import { loggedUserSelectors } from '../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Unit } from '@bgap/domain';
 import { EntitySelectorsFactory } from '@ngrx/data';
 import { createSelector } from '@ngrx/store';
 
-export const unitEntitySelectors =
-  new EntitySelectorsFactory().create<CrudApi.Unit>(ENTITY_NAME.UNIT);
+import { ENTITY_NAME } from '../../../shared/types';
+import { loggedUserSelectors } from '../../../store/logged-user';
+
+export const unitEntitySelectors = new EntitySelectorsFactory().create<Unit>(
+  ENTITY_NAME.UNIT,
+);
 
 export const getUnitById = (id: string) =>
   createSelector(
     unitEntitySelectors.selectEntities,
-    (units: CrudApi.Unit[]): CrudApi.Unit | undefined =>
+    (units: Unit[]): Unit | undefined =>
       units.find((unit): boolean => unit.id === id),
   );
 
 export const getSelectedUnit = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   unitEntitySelectors.selectEntities,
-  (userSettings, units: CrudApi.Unit[]): CrudApi.Unit | undefined =>
+  (userSettings, units: Unit[]): Unit | undefined =>
     units.find((unit): boolean => unit.id === userSettings?.selectedUnitId),
 );
 
 export const getSelectedUnitLanes = createSelector(
   loggedUserSelectors.getLoggedUserSettings,
   unitEntitySelectors.selectEntities,
-  (userSettings, units: CrudApi.Unit[]) =>
+  (userSettings, units: Unit[]) =>
     units
       .find(unit => unit.id === userSettings?.selectedUnitId)
       ?.lanes?.map(lane => ({

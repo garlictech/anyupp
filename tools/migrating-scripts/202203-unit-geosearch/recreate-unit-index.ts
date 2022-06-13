@@ -1,6 +1,9 @@
 // EXECUTE: yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/manipulate-os-indices.ts
-import { Client } from '@elastic/elasticsearch';
-import { CrudApiConfig } from '../../../libs/crud-gql/api/src';
+import { Client } from '@opensearch-project/opensearch';
+import {
+  CrudApiConfig,
+  getCrudSdkForIAM,
+} from '../../../libs/crud-gql/api/src';
 import {
   catchError,
   map,
@@ -10,10 +13,11 @@ import {
   toArray,
 } from 'rxjs/operators';
 import { from } from 'rxjs';
-import * as CrudApi from '../../../libs/crud-gql/api/src';
+
 import { pipe } from 'fp-ts/lib/function';
-const { createConnector } = require('aws-elasticsearch-js');
+const { createConnector } = require('@opensearch-project/opensearch');
 import * as R from 'ramda';
+import { Unit } from '../../../libs/domain/src';
 
 const client = new Client({
   nodes: [CrudApiConfig.openSearchEndpoint],
@@ -26,7 +30,7 @@ const awsAccessKeyId =
 const awsSecretAccessKey =
   process.env.API_SECRET_ACCESS_KEY || process.env.AWS_SECRET_ACCESS_KEY || '';
 
-const crudSdk = CrudApi.getCrudSdkForIAM(awsAccessKeyId, awsSecretAccessKey);
+const crudSdk = getCrudSdkForIAM(awsAccessKeyId, awsSecretAccessKey);
 const indices = ['unit'];
 
 from(indices)
@@ -73,17 +77,17 @@ from(indices)
     ),
     toArray(),
     switchMap(() => crudSdk.ListUnits()),
-    map(x => x as { items: CrudApi.Unit[] }),
-    switchMap((res: { items: CrudApi.Unit[] }) =>
+    map(x => x as { items: Unit[] }),
+    switchMap((res: { items: Unit[] }) =>
       from(
         pipe(
           res?.items ?? [],
-          R.reject((unit: CrudApi.Unit) => R.isNil(unit?.address.location)),
+          R.reject((unit: Unit) => R.isNil(unit?.address.location)),
         ),
       ),
     ),
     mergeMap(
-      (unit: CrudApi.Unit) =>
+      (unit: Unit) =>
         crudSdk.UpdateUnit({
           input: {
             id: unit.id,

@@ -1,10 +1,11 @@
-import { Client } from '@elastic/elasticsearch';
+import { Client } from '@opensearch-project/opensearch';
 import { defer, from, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { pipe } from 'fp-ts/lib/function';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
+
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { createConnector } = require('aws-elasticsearch-js');
+const { createConnector } = require('@opensearch-project/opensearch');
 
 const client = new Client({
   nodes: [CrudApiConfig.openSearchEndpoint],

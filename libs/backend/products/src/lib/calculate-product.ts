@@ -1,4 +1,3 @@
-import * as CrudApi from '@bgap/crud-gql/api';
 import { Maybe } from '@bgap/crud-gql/api';
 import {
   defaultSupportedServingModes,
@@ -8,6 +7,14 @@ import {
   ProductComponentSetMap,
   ProductVariantWithPrice,
 } from '@bgap/shared/types';
+import {
+  CreateGeneratedProductInput,
+  GeneratedProductConfigComponentInput,
+  GeneratedProductConfigSetInput,
+  GeneratedProductVariantInput,
+  ProductConfigSet,
+  ProductVariant,
+} from '@bgap/domain';
 import { DateTime } from 'luxon';
 import { calculatePriceFromAvailabilities } from './calculate-price';
 
@@ -54,9 +61,7 @@ export const isProductVisibleAndHasAnyAvailableVariant = (
   return product.isVisible && !!isAnyVariantAvailable(product.variants);
 };
 
-const isAnyVariantAvailable = (
-  variants: CrudApi.Maybe<CrudApi.ProductVariant>[],
-) => {
+const isAnyVariantAvailable = (variants: Maybe<ProductVariant>[]) => {
   if (!variants) {
     return false;
   }
@@ -73,7 +78,7 @@ const calculateActualPriceForEachVariant = ({
   atTimeISO,
   inTimeZone,
 }: {
-  variants: CrudApi.Maybe<CrudApi.ProductVariant>[];
+  variants: Maybe<ProductVariant>[];
   atTimeISO: string;
   inTimeZone: string;
 }): ProductVariantWithPrice[] => {
@@ -96,7 +101,7 @@ const calculateActualPriceForEachVariant = ({
 
 const toGeneratedProductVariantInputType = (
   variant: ProductVariantWithPrice,
-): CrudApi.GeneratedProductVariantInput => {
+): GeneratedProductVariantInput => {
   if (!variant?.pack) {
     throw new Error('HANDLE ME: variant.pack expected to be an object');
   }
@@ -123,8 +128,8 @@ export const toCreateGeneratedProductInputType = ({
   unitId: string;
   productComponentSetMap: ProductComponentSetMap;
   productComponentMap: ProductComponentMap;
-  productConfigSets?: Maybe<Maybe<CrudApi.ProductConfigSet>[]>;
-}): CrudApi.CreateGeneratedProductInput => {
+  productConfigSets?: Maybe<Maybe<ProductConfigSet>[]>;
+}): CreateGeneratedProductInput => {
   if (
     !(
       product.unitId &&
@@ -170,10 +175,10 @@ const toGeneratedProductConfigSetInput = ({
   productComponentSetMap,
   productComponentMap,
 }: {
-  productConfigSet: Maybe<CrudApi.ProductConfigSet>;
+  productConfigSet: Maybe<ProductConfigSet>;
   productComponentSetMap: ProductComponentSetMap;
   productComponentMap: ProductComponentMap;
-}): CrudApi.GeneratedProductConfigSetInput | null => {
+}): GeneratedProductConfigSetInput | null => {
   if (!productConfigSet) {
     return null;
   }
@@ -206,7 +211,7 @@ const toGeneratedProductConfigSetInput = ({
         );
       }
 
-      const configComponent: CrudApi.GeneratedProductConfigComponentInput = {
+      const configComponent: GeneratedProductConfigComponentInput = {
         productComponentId: confComponent.productComponentId,
         price: confComponent.price,
         position: confComponent.position,

@@ -1,6 +1,10 @@
-import { timeZonesNames } from '@vvo/tzdb';
+import {
+  OrderPaymentPolicy,
+  OrderPolicy,
+  SoldOutVisibilityPolicy,
+} from '@bgap/domain';
 import { KeyValue } from '@bgap/shared/types';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { timeZonesNames } from '@vvo/tzdb';
 
 export const timeZoneOptions = timeZonesNames.map(n => ({
   key: n,
@@ -8,10 +12,10 @@ export const timeZoneOptions = timeZonesNames.map(n => ({
 }));
 
 export const orderPolicyOptions = [
-  CrudApi.OrderPolicy.full,
-  CrudApi.OrderPolicy.placeonly,
-  CrudApi.OrderPolicy.placewithpaymenttype,
-  CrudApi.OrderPolicy.noorders,
+  OrderPolicy.full,
+  OrderPolicy.placeonly,
+  OrderPolicy.placewithpaymenttype,
+  OrderPolicy.noorders,
 ].map(
   (policy): KeyValue => ({
     key: policy,
@@ -20,8 +24,8 @@ export const orderPolicyOptions = [
 );
 
 export const soldOutPolicyOptions = [
-  CrudApi.SoldOutVisibilityPolicy.faded,
-  CrudApi.SoldOutVisibilityPolicy.invisible,
+  SoldOutVisibilityPolicy.faded,
+  SoldOutVisibilityPolicy.invisible,
 ].map(
   (policy): KeyValue => ({
     key: policy,
@@ -30,8 +34,8 @@ export const soldOutPolicyOptions = [
 );
 
 export const orderPaymentPolicyOptions = [
-  CrudApi.OrderPaymentPolicy.prepay,
-  CrudApi.OrderPaymentPolicy.afterpay,
+  OrderPaymentPolicy.prepay,
+  OrderPaymentPolicy.afterpay,
 ].map(
   (policy): KeyValue => ({
     key: policy,

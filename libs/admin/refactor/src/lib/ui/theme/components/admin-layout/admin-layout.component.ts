@@ -1,17 +1,18 @@
 import { debounceTime, map, take } from 'rxjs/operators';
 
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { environment } from '../../../../shared/config';
-import { appCoreSelectors } from '../../../../store/app-core';
-import { loggedUserSelectors } from '../../../../store/logged-user';
-import * as CrudApi from '@bgap/crud-gql/api';
+import { Router } from '@angular/router';
+import { AdminUser } from '@bgap/domain';
 import {} from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 import { NbMenuItem } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+
+import { environment } from '../../../../shared/config';
+import { appCoreSelectors } from '../../../../store/app-core';
+import { loggedUserSelectors } from '../../../../store/logged-user';
 
 const menuItems = {
   dashboard: {
@@ -64,7 +65,7 @@ const menuItems = {
   styleUrls: ['./admin-layout.component.scss'],
 })
 export class AdminLayoutComponent implements OnInit {
-  public adminUser?: CrudApi.AdminUser;
+  public adminUser?: AdminUser;
   public env = environment;
   public menu: NbMenuItem[] = [];
 
@@ -105,10 +106,7 @@ export class AdminLayoutComponent implements OnInit {
     window.location.reload();
   }
 
-  private async _allowAddMenu(
-    adminUser: CrudApi.AdminUser,
-    menuItemTitle: string,
-  ) {
+  private async _allowAddMenu(adminUser: AdminUser, menuItemTitle: string) {
     if (menuItemTitle !== 'menu.admins') {
       return true;
     }

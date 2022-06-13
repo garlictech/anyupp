@@ -1,7 +1,9 @@
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { UnitBannerUIComponent } from './unit-banner-ui.component';
 import { action } from '@storybook/addon-actions';
+import { Meta, moduleMetadata, Story } from '@storybook/angular';
+
+import { commonStorybookImports } from '../../pure';
 import { ButtonUIComponent } from '../button-ui/button-ui.component';
+import { UnitBannerUIComponent } from './unit-banner-ui.component';
 
 export default {
   title: 'UnitBannerUIComponent',
@@ -9,7 +11,7 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [ButtonUIComponent],
-      imports: [],
+      imports: [...commonStorybookImports],
     }),
   ],
 } as Meta<UnitBannerUIComponent>;
