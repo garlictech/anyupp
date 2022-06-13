@@ -1,4 +1,4 @@
-import { Client } from '@opensearch-project/opensearch';
+import { Client } from '@elastic/elasticsearch';
 import { defer, from, of } from 'rxjs';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { pipe } from 'fp-ts/lib/function';

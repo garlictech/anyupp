@@ -1,5 +1,5 @@
 // EXECUTE: yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/manipulate-os-indices.ts
-import { Client } from '@opensearch-project/opensearch';
+import { Client } from '@elastic/elasticsearch';
 import {
   CrudApiConfig,
   getCrudSdkForIAM,
@@ -15,7 +15,7 @@ import {
 import { from } from 'rxjs';
 
 import { pipe } from 'fp-ts/lib/function';
-const { createConnector } = require('@opensearch-project/opensearch');
+const { createConnector } = require('aws-elasticsearch-js');
 import * as R from 'ramda';
 import { Unit } from '../../../libs/domain/src';
 
