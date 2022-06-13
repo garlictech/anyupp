@@ -8,7 +8,7 @@ import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { EProductLevel } from '@bgap/shared/types';
-import { Availability, ProductVariant } from '@bgap/domain';
+import { Availability, ProductVariant, ServiceFeePolicy } from '@bgap/domain';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,7 +20,7 @@ export class FormProductVariantsComponent {
   @Input() allowAddVariant: boolean;
   @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
-  @Input() unitServiceFeePolicy?: CrudApi.ServiceFeePolicy | null;
+  @Input() unitServiceFeePolicy?: ServiceFeePolicy | null;
   @Input() productTax?: number;
 
   public eProductLevel = EProductLevel;

@@ -9,7 +9,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray } from '@angular/forms';
-import { AdminUserSettings, ProductCategory, ServingMode } from '@bgap/domain';
+import {
+  AdminUserSettings,
+  ProductCategory,
+  ServingMode,
+  Unit,
+} from '@bgap/domain';
 import {
   EProductLevel,
   KeyValue,
@@ -45,7 +50,7 @@ export class ProductExtendFormComponent
   public productCategories$: Observable<ProductCategory[]>;
   public unitLanes$: Observable<KeyValue[]>;
   public servingModes = SERVING_MODES;
-  public selectedUnit?: CrudApi.Unit;
+  public selectedUnit?: Unit;
 
   private _selectedChainId = '';
   private _selectedGroupId = '';
