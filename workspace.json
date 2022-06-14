@@ -8,6 +8,7 @@
     "anyupp-backend-lib": "libs/anyupp-backend-lib",
     "anyupp-gql-backend": "libs/anyupp-gql/backend",
     "anyupp-mobile": "apps/anyupp-mobile",
+    "anyupp-schema": "libs/anyupp-schema",
     "apps-admin": "libs/apps/admin",
     "apps-backend-anyupp": "libs/apps/backend-anyupp",
     "apps-shared": "libs/apps/shared",

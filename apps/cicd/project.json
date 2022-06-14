@@ -4,20 +4,6 @@
   "projectType": "application",
   "prefix": "cicd",
   "targets": {
-    "build": {
-      "executor": "@nrwl/workspace:run-commands",
-      "outputs": [
-        "apps/cicd/cdk.out",
-        "apps/cicd/.build",
-        "apps/cicd/.serverless"
-      ],
-      "options": {
-        "outputPath": "dist/apps/cicd",
-        "main": "apps/cicd/src/main.ts",
-        "tsConfig": "apps/cicd/tsconfig.app.json",
-        "assets": ["apps/cicd/src/assets"]
-      }
-    },
     "deploy": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {

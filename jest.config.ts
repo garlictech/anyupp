@@ -57,5 +57,6 @@ module.exports = {
     '<rootDir>/libs/data',
     '<rootDir>/libs/apps/backend-anyupp',
     '<rootDir>/libs/apps/shared',
+    '<rootDir>/libs/anyupp-schema',
   ],
 };

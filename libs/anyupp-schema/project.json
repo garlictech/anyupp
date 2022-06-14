@@ -1,0 +1,7 @@
+{
+  "root": "libs/anyupp-schema",
+  "sourceRoot": "libs/anyupp-schema/src",
+  "projectType": "library",
+  "targets": {},
+  "tags": []
+}

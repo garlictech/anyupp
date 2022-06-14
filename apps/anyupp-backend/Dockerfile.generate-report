@@ -2,10 +2,6 @@ FROM public.ecr.aws/bitnami/node:14
 
 WORKDIR /
 
-COPY .serverless-2/report-generator.zip /
+COPY build/report-generator.js /
 
-RUN unzip /report-generator.zip \
-  && rm /report-generator.zip \
-  && npm install aws-sdk
-
-ENTRYPOINT node /lib/lambda/report-generator/index.js
+ENTRYPOINT node /report-generator.js

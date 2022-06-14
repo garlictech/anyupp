@@ -7,7 +7,6 @@ import {
   aws_logs as logs,
   aws_ec2 as ec2,
   aws_s3 as s3,
-  aws_lambda as lambda,
   aws_ssm as ssm,
   aws_certificatemanager as acm,
   aws_route53 as route53,
@@ -15,13 +14,14 @@ import {
   RemovalPolicy,
   Duration,
   CfnOutput,
+  aws_lambda_nodejs,
 } from 'aws-cdk-lib';
 import { getFQParamName } from './utils';
 import * as sst from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
-import path from 'path';
 import { createApiDomainName } from './utils';
 import { tableConfig } from '@bgap/crud-gql/backend';
+import path from 'path';
 
 export interface RKeeperStackProps extends sst.StackProps {
   apiAccessKeyId: string;
@@ -121,25 +121,27 @@ export class RKeeperStack extends sst.Stack {
       }),
     });
 
-    const rkeeperLambda = new lambda.Function(this, 'RKeeperWebhookLambda', {
-      ...commonLambdaProps,
-      // It must be relative to the serverless.yml file
-      handler: 'lib/lambda/rkeeper-webhook/index.handler',
-      memorySize: 512,
-      timeout: Duration.seconds(20),
-      code: lambda.Code.fromAsset(
-        path.join(__dirname, '../../.serverless-2/rkeeper-webhook.zip'),
-      ),
-      environment: {
-        API_ACCESS_KEY_ID: props.apiAccessKeyId,
-        API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
-        RKeeperProcessProductSecurityGroup: props.securityGroupId,
-        taskDefinitionArn: menusyncTaskDefinition.taskDefinitionArn,
-        RKeeperProcessProductSubnet: props.vpc.privateSubnets[0].subnetId,
-        BUCKET_NAME: menuBucket.bucketName,
+    const rkeeperLambda = new aws_lambda_nodejs.NodejsFunction(
+      this,
+      'RKeeperWebhookLambda',
+      {
+        ...commonLambdaProps,
+        // It must be relative to the serverless.yml file
+        memorySize: 512,
+        timeout: Duration.seconds(20),
+        handler: 'handler',
+        entry: __dirname + '/../../lib/lambda/rkeeper-webhook/index.ts',
+        environment: {
+          API_ACCESS_KEY_ID: props.apiAccessKeyId,
+          API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
+          RKeeperProcessProductSecurityGroup: props.securityGroupId,
+          taskDefinitionArn: menusyncTaskDefinition.taskDefinitionArn,
+          RKeeperProcessProductSubnet: props.vpc.privateSubnets[0].subnetId,
+          BUCKET_NAME: menuBucket.bucketName,
+        },
+        vpc: props.vpc,
       },
-      vpc: props.vpc,
-    });
+    );
 
     if (rkeeperLambda.role) {
       rkeeperLambda.role.addToPrincipalPolicy(
@@ -199,18 +201,16 @@ export class RKeeperStack extends sst.Stack {
       stringValue: menusyncTaskDefinition.taskDefinitionArn,
     });
 
-    const stuckOrderCleanupLambda = new lambda.Function(
+    const stuckOrderCleanupLambda = new aws_lambda_nodejs.NodejsFunction(
       this,
       'RKeeperStuckOrderCleanupLambda',
       {
         ...commonLambdaProps,
         // It must be relative to the serverless.yml file
-        handler: 'lib/lambda/stuck-order-cleanup/index.handler',
         memorySize: 512,
         timeout: Duration.seconds(30),
-        code: lambda.Code.fromAsset(
-          path.join(__dirname, '../../.serverless-2/stuck-order-cleanup.zip'),
-        ),
+        handler: 'handler',
+        entry: __dirname + '/../../lib/lambda/stuck-order-cleanup/index.ts',
         environment: {
           API_ACCESS_KEY_ID: props.apiAccessKeyId,
           API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,

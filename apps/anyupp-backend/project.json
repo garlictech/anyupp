@@ -12,8 +12,9 @@
         "commands": ["../../tools/build-anyupp-backend.sh '{args.env}'"]
       },
       "outputs": [
-        "apps/anyupp-backend/.serverless-1",
-        "apps/anyupp-backend/.serverless-2"
+        "apps/anyupp-backend/build/rkeeper-product-processor.js",
+        "libs/shared/config/src/lib/stack-config/'{args.env}'/stack-config.json",
+        "libs/shared/config/src/lib/stack-config/generated/stack-config.json"
       ]
     },
     "synth": {
@@ -30,7 +31,16 @@
       "options": {
         "parallel": false,
         "commands": ["tools/config-anyupp-backend.sh '{args.env}'"]
-      }
+      },
+      "outputs": [
+        "libs/shared/config/src/lib/stack-config/{args.env}/stack-config.json"
+      ],
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "config"
+        }
+      ]
     },
     "deploy": {
       "executor": "@nrwl/workspace:run-commands",

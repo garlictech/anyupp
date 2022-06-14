@@ -1,6 +1,0 @@
-{
-  "name": "anyupp-crud-infra",
-  "type": "@serverless-stack/resources",
-  "region": "eu-west-1",
-  "lint": false
-}

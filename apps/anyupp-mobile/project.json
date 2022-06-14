@@ -2,6 +2,7 @@
   "projectType": "application",
   "root": "apps/anyupp-mobile",
   "sourceRoot": "apps/anyupp-mobile/lib",
+  "implicitDependencies": ["anyupp-schema"],
   "targets": {
     "lint": {
       "executor": "@nrwl/workspace:run-commands",
@@ -24,7 +25,7 @@
         "cwd": "apps/anyupp-mobile"
       }
     },
-    "build-schema": {
+    "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "parallel": false,

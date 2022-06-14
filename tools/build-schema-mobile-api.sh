@@ -23,7 +23,7 @@ echo 'Copy and merge CRUD schema...'
 echo '=============================='
 cat \
   apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql \
-  libs/gql-sdk/src/schema/aws.graphql \
+  libs/anyupp-schema/src/schema/aws.graphql \
   > apps/anyupp-mobile/graphql/crud-api-schema.graphql
 echo 'Done.'
 

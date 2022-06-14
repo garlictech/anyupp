@@ -8,7 +8,7 @@ APPNAME=anyuppbackend
 echo 'Copy CRUD schema...'
 echo '=============================='
 
-cp ../../libs/crud-gql/backend/src/graphql/schema/crud-api.graphql \
+cp ../../libs/anyupp-schema/src/schema/crud-api.graphql \
   amplify/backend/api/$APPNAME/schema.graphql
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -30,7 +30,7 @@ yarn graphql-codegen --config tools/graphql-codegen-crud.yml
 echo 'Done.'
 
 echo "Preparing schema for graphql schema checker..."
-cat ../../libs/gql-sdk/src/schema/aws.graphql \
+cat ../../libs/anyupp-schema/src/schema/aws.graphql \
   ../../apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql \
   > ../../.github/graphql-inspector-artifacts/schema.graphql
 

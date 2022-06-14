@@ -39,6 +39,7 @@
       "@bgap/admin/refactor": ["libs/admin/refactor/src/index.ts"],
       "@bgap/anyupp-backend-lib": ["libs/anyupp-backend-lib/src/index.ts"],
       "@bgap/anyupp-gql/backend": ["libs/anyupp-gql/backend/src/index.ts"],
+      "@bgap/anyupp-schema": ["libs/anyupp-schema/src/index.ts"],
       "@bgap/api/data-access": ["libs/api/data-access/src/index.ts"],
       "@bgap/apps/admin": ["libs/apps/admin/src/index.ts"],
       "@bgap/apps/backend-anyupp": ["libs/apps/backend-anyupp/src/index.ts"],

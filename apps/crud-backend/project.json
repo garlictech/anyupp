@@ -3,6 +3,7 @@
   "sourceRoot": "apps/crud-backend/src",
   "projectType": "application",
   "prefix": "crud-api",
+  "implicitDependencies": ["anyupp-schema"],
   "targets": {
     "config": {
       "executor": "@nrwl/workspace:run-commands",
@@ -12,9 +13,9 @@
         "commands": ["../../tools/pull-crud-api.sh '{args.env}'"]
       },
       "outputs": [
-        "apps/crud-backend/amplify",
-        "libs/crud-gql/api/src/lib/generated",
-        "libs/crud-gql/backend/src/generated"
+        "libs/crud-gql/api/src/lib/generated/aws-exports.ts",
+        "libs/crud-gql/api/src/lib/generated/crud-api-config.ts",
+        "libs/crud-gql/backend/src/generated/table-config.json"
       ]
     },
     "init": {
@@ -41,7 +42,7 @@
         "commands": ["../../tools/remove-crud-api.sh '{args.env}'"]
       }
     },
-    "build-schema": {
+    "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "cwd": "apps/crud-backend",

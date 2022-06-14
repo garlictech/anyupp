@@ -1,5 +1,5 @@
 import {
-  aws_lambda as lambda,
+  aws_lambda_nodejs,
   aws_certificatemanager as acm,
   aws_route53 as route53,
   aws_apigateway as apigateway,
@@ -7,7 +7,6 @@ import {
 } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
-import path from 'path';
 import { createApiDomainName } from './utils';
 
 export interface StripeStackProps extends sst.StackProps {
@@ -27,18 +26,16 @@ export class StripeStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: StripeStackProps) {
     super(scope, id);
 
-    const stripeWebhookLambda = new lambda.Function(
+    const stripeWebhookLambda = new aws_lambda_nodejs.NodejsFunction(
       this,
       'StripeWebhookLambda',
       {
         ...commonLambdaProps,
         // It must be relative to the serverless.yml file
-        handler: 'lib/lambda/stripe-webhook/index.handler',
         timeout: Duration.seconds(30),
         memorySize: 512,
-        code: lambda.Code.fromAsset(
-          path.join(__dirname, '../../.serverless-1/stripe-webhook.zip'),
-        ),
+        handler: 'handler',
+        entry: __dirname + '/../../lib/lambda/stripe-webhook/index.ts',
         environment: {
           STRIPE_SECRET_KEY: props.stripeSecretKeyNewApi,
           STRIPE_SIGNING_SECRET: props.stripeSigningSecretNewApi,

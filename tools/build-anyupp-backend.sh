@@ -4,9 +4,9 @@ IFS='|'
 
 ENVNAME=$1
 rm -rf cdk.out
-node --max-old-space-size=8192 ../../node_modules/.bin/sls package --config serverless-1.yml -p .serverless-1 --stage=$ENVNAME
-node --max-old-space-size=8192 ../../node_modules/.bin/sls package --config serverless-2.yml -p .serverless-2 --stage=$ENVNAME
-
+mkdir -p build
+yarn esbuild lib/lambda/rkeeper-product-processor/index.ts --bundle --platform=node --minify --outfile=./build/rkeeper-product-processor.js
+yarn esbuild lib/lambda/report-generator/index.ts --bundle --platform=node --minify --outfile=./build/report-generator.js
 cd ../..
 
 STACKCONFIG_DIR=libs/shared/config/src/lib/stack-config

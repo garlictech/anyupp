@@ -2,10 +2,6 @@ FROM public.ecr.aws/bitnami/node:14
 
 WORKDIR /
 
-COPY .serverless-2/rkeeper-product-processor.zip /
+COPY build/rkeeper-product-processor.js /
 
-RUN unzip /rkeeper-product-processor.zip \
-  && rm rkeeper-product-processor.zip \
-  && npm install aws-sdk
-
-ENTRYPOINT node /lib/lambda/rkeeper-product-processor/index.js
+ENTRYPOINT node /rkeeper-product-processor.js

@@ -1,9 +1,9 @@
 overwrite: true
 schema:
-  - libs/gql-sdk/src/schema/aws.graphql
+  - libs/anyupp-schema/src/schema/aws.graphql
   - apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql
 documents:
-  - libs/crud-gql/backend/src/graphql/documents/*.graphql
+  - libs/anyupp-schema/src/documents/*.graphql
   - libs/crud-gql/api/src/lib/generated/graphql/*.ts
 generates:
   libs/crud-gql/api/src/lib/generated/api.ts:
