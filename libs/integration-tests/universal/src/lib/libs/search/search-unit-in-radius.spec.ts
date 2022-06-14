@@ -1,5 +1,5 @@
-const { createConnector } = require('@opensearch-project/opensearch');
-import { Client } from '@opensearch-project/opensearch';
+const { createConnector } = require('aws-elasticsearch-js');
+import { Client } from '@elastic/elasticsearch';
 import { switchMap, tap, delay } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { createIamCrudSdk } from '../../../api-clients';

@@ -1,6 +1,6 @@
 import { defer, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Client } from '@opensearch-project/opensearch';
+import { Client } from '@elastic/elasticsearch';
 import * as R from 'ramda';
 import { pipe } from 'fp-ts/lib/function';
 import { GeoSearchConnection, QuerySearchByRadiusArgs } from '@bgap/domain';
