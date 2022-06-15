@@ -227,7 +227,13 @@ Object {
   "serviceFeePolicy": null,
   "servingMode": "inPlace",
   "soldOutVisibilityPolicy": null,
-  "statusLog": Array [],
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "test-monad",
+    },
+  ],
   "sumPriceShown": Object {
     "currency": "HUF",
     "pricePerUnit": 298.2,

@@ -338,7 +338,13 @@ Object {
   },
   "servingMode": "inPlace",
   "soldOutVisibilityPolicy": null,
-  "statusLog": Array [],
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "testuser+test",
+    },
+  ],
   "sumPriceShown": Object {
     "currency": "EUR",
     "pricePerUnit": 0,
@@ -695,7 +701,13 @@ Object {
   },
   "servingMode": "takeAway",
   "soldOutVisibilityPolicy": null,
-  "statusLog": Array [],
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "testuser+test",
+    },
+  ],
   "sumPriceShown": Object {
     "currency": "EUR",
     "pricePerUnit": 0,
@@ -1070,7 +1082,13 @@ Object {
   },
   "servingMode": "inPlace",
   "soldOutVisibilityPolicy": null,
-  "statusLog": Array [],
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "testuser+test",
+    },
+  ],
   "sumPriceShown": Object {
     "currency": "EUR",
     "pricePerUnit": 0,
@@ -1427,7 +1445,13 @@ Object {
   },
   "servingMode": "takeAway",
   "soldOutVisibilityPolicy": null,
-  "statusLog": Array [],
+  "statusLog": Array [
+    Object {
+      "status": "none",
+      "ts": "MASKED TIMESTAMP",
+      "userId": "testuser+test",
+    },
+  ],
   "sumPriceShown": Object {
     "currency": "EUR",
     "pricePerUnit": 0,
