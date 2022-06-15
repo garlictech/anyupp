@@ -9,8 +9,8 @@ excludes="--exclude=anyupp-mobile"
 yarn nx synth anyupp-backend --env=${ENVNAME}
 yarn nx synth common-backend --env=dev
 yarn nx format:check --affected
-yarn nx affected:lint --base=${ENVNAME} ${excludes}
-yarn nx run-many --target=test --all --base=${ENVNAME} ${excludes} \
+yarn nx affected:lint --base=dev ${excludes}
+yarn nx affected:test --base=dev ${excludes} \
   --exclude="integration-tests-angular" \
   --exclude="integration-tests-universal" \
   ${excludes} --codeCoverage --coverageReporters=clover
