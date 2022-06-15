@@ -6,11 +6,12 @@
     "config": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "commands": [
-          "ts-node ./tools/fetch-configuration.ts '{args.env}'",
-          "ts-node ./tools/get-secrets.ts '{args.env}'"
-        ]
-      }
+        "commands": ["ts-node ./tools/get-secrets.ts '{args.env}'"]
+      },
+      "outputs": [
+        "apps/anyupp-mobile/android/anyupp-keystore.jks",
+        "apps/anyupp-mobile/android/key.properties"
+      ]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

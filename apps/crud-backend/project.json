@@ -15,7 +15,10 @@
       "outputs": [
         "libs/crud-gql/api/src/lib/generated/aws-exports.ts",
         "libs/crud-gql/api/src/lib/generated/crud-api-config.ts",
-        "libs/crud-gql/backend/src/generated/table-config.json"
+        "libs/crud-gql/backend/src/generated/table-config.json",
+        "libs/crud-gql/backend/src/generated/table-config.json",
+        "apps/anyupp-mobile/lib/awsconfiguration.dart",
+        "libs/shared/config/src/lib/generated/config.json"
       ]
     },
     "init": {

@@ -138,3 +138,10 @@ export const CrudApiConfig = {
 # ----------------------------------------------------------
 rm -f  ../../libs/crud-gql/api/src/lib/generated/aws-exports.ts
 mv -f ../../libs/crud-gql/api/src/lib/generated/aws-exports.js ../../libs/crud-gql/api/src/lib/generated/aws-exports.ts
+
+# ----------------------------------------------------------
+# Generate global config
+# ----------------------------------------------------------
+pushd ../.. 
+yarn ts-node ./tools/fetch-configuration.ts $ENVNAME
+popd
