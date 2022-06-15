@@ -20,7 +20,7 @@ Array [
       "hu": "Próba ital",
     },
     "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-    "productType": "other",
+    "productType": "dish",
     "updatedAt": "MASKED DATE",
     "variants": Array [
       Object {
@@ -215,7 +215,7 @@ Object {
     "hu": "Próba kaja",
   },
   "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-  "productType": "other",
+  "productType": "dish",
   "updatedAt": Any<String>,
   "variants": Array [
     Object {
@@ -257,7 +257,7 @@ Object {
     "hu": "TA KM Kiotói Szilvás Krémkávé",
   },
   "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-  "productType": "other",
+  "productType": "dish",
   "updatedAt": Any<String>,
   "variants": Array [
     Object {
@@ -299,7 +299,7 @@ Object {
     "hu": "TA Kiotói Szilvás Krémkávé",
   },
   "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-  "productType": "other",
+  "productType": "dish",
   "updatedAt": Any<String>,
   "variants": Array [
     Object {
@@ -341,7 +341,7 @@ Object {
     "hu": "próba ital inactive",
   },
   "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-  "productType": "other",
+  "productType": "dish",
   "updatedAt": Any<String>,
   "variants": Array [
     Object {
@@ -383,7 +383,7 @@ Object {
     "hu": "próba ital",
   },
   "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-  "productType": "other",
+  "productType": "dish",
   "updatedAt": Any<String>,
   "variants": Array [
     Object {
