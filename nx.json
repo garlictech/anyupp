@@ -15,6 +15,7 @@
       "options": {
         "accessToken": "ZmQxOTFkZTQtODBhYi00MmVlLTgxZmMtYTkwYmUwZDBjNTIwfHJlYWQtd3JpdGU=",
         "cacheableOperations": ["build", "test", "lint", "e2e", "config"],
+        "cacheDirectory": "/tmp/nx",
         "runtimeCacheInputs": ["node -v"],
         "canTrackAnalytics": false,
         "showUsageWarnings": true,
