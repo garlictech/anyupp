@@ -108,7 +108,7 @@ export const createBuildProject = (
     }),
     cache,
     environment: {
-      computeType: codebuild.ComputeType.MEDIUM,
+      computeType: codebuild.ComputeType.LARGE,
       buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
       privileged: true,
     },
