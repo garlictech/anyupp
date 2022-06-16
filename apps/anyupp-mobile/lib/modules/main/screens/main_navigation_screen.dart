@@ -10,8 +10,10 @@ import 'package:fa_prev/shared/connectivity.dart';
 import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fa_prev/models.dart';
 
 class MainNavigation extends StatefulWidget {
   final int pageIndex;
@@ -29,13 +31,17 @@ class _MainNavigationState extends State<MainNavigation>
     with SingleTickerProviderStateMixin {
   List<MainPageOptions>? _pageOptions;
 
+  int _orderCount = 0;
+
   // --- For bottom animation bar
   int _selectedIndex = 0;
   late AnimationController _animationController;
+  bool _canOrder = true;
+  bool _hasCart = false;
 
   // Caching pages
   List<Widget> _pages = [
-    Menu(),
+    MenuScreen(),
     FavoritesScreen(),
     OrdersScreen(key: UniqueKey()),
     Profile(),
@@ -53,6 +59,7 @@ class _MainNavigationState extends State<MainNavigation>
       duration: Duration(milliseconds: 200),
       vsync: this,
     );
+    _canOrder = currentUnit?.canOrder ?? true;
   }
 
   @override
@@ -121,6 +128,15 @@ class _MainNavigationState extends State<MainNavigation>
             // body: pages[_selectedIndex],
             body: MultiBlocListener(
               listeners: [
+                BlocListener<CartBloc, BaseCartState>(
+                  listener: (BuildContext context, BaseCartState state) {
+                    if (state is CurrentCartState) {
+                      setState(() {
+                        _hasCart = state.currentCart != null;
+                      });
+                    }
+                  },
+                ),
                 BlocListener<MainNavigationBloc, MainNavigationState>(
                   listener: (BuildContext context, MainNavigationState state) {
                     if (state is MainNavaigationNeed) {
@@ -174,41 +190,51 @@ class _MainNavigationState extends State<MainNavigation>
                     right: 0,
                     child: CartButtonWidget(
                       controller: _animationController,
+                      showQRScanButton: _selectedIndex == 0,
                     ),
                   ),
                 ]),
                 // child: _pages[_selectedIndex],
               ),
             ),
-            bottomNavigationBar: Material(
-              elevation: 8.0,
-              child: Container(
-                child: BottomAppBar(
-                  // elevation: 0.0,
-                  // shape: AutomaticNotchedShape(
-                  //   StadiumBorder(),
-                  //   // RoundedRectangleBorder(
-                  //   //   borderRadius: BorderRadius.all(Radius.circular(25)),
-                  //   // ),
-                  // ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      _createBottomBarIconWithText(
-                          0, Icons.fastfood, 'main.bottomTitles.menu'),
-                      // _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
-                      // SizedBox(
-                      //   width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
+            bottomNavigationBar: AnimatedContainer(
+              duration: const Duration(milliseconds: 750),
+              height: _hasCart ? 0 : 66.0,
+              curve: Curves.easeInOut,
+              child: AnimatedOpacity(
+                opacity: _hasCart ? 0 : 1,
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeInOut,
+                child: Material(
+                  elevation: 8.0,
+                  child: Container(
+                    child: BottomAppBar(
+                      // elevation: 0.0,
+                      // shape: AutomaticNotchedShape(
+                      //   StadiumBorder(),
+                      //   // RoundedRectangleBorder(
+                      //   //   borderRadius: BorderRadius.all(Radius.circular(25)),
+                      //   // ),
                       // ),
-                      _createOrdersBottomBarIconWithTextAndBadge(),
-                      _createBottomBarIconWithText(
-                          3, Icons.account_circle, 'main.bottomTitles.profile'),
-                    ],
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          _createBottomBarIconWithText(
+                              0, Icons.fastfood, 'main.bottomTitles.menu'),
+                          // _createBottomBarIconWithText(1, Icons.favorite, 'main.bottomTitles.favorites'),
+                          // SizedBox(
+                          //   width: (MediaQuery.of(context).size.width / 100.0) * 8.0,
+                          // ),
+                          if (_canOrder)
+                            _createOrdersBottomBarIconWithTextAndBadge(),
+                          _createBottomBarIconWithText(3, Icons.account_circle,
+                              'main.bottomTitles.profile'),
+                        ],
+                      ),
+                      color: theme.secondary0,
+                    ),
                   ),
-                  // shape: CircularNotchedRectangle(),
-                  color: theme.secondary0,
-                  // elevation: 18.0,
                 ),
               ),
             ),
@@ -217,8 +243,6 @@ class _MainNavigationState extends State<MainNavigation>
       ),
     );
   }
-
-  int _orderCount = 0;
 
   Widget _createOrdersBottomBarIconWithTextAndBadge() {
     return BlocListener<OrderCounterBloc, BaseOrderCounterState>(

@@ -5,14 +5,19 @@ import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/place_preferences.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
-Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
-    {bool dismissable = true,
-    bool deletePlace = false,
-    bool useTheme = true}) async {
+Future<int?> selectUnitAndGoToMenuScreen(
+  BuildContext context,
+  GeoUnit unit, {
+  bool dismissable = true,
+  bool deletePlace = false,
+  bool useTheme = true,
+  bool showSelectServingMode = true,
+}) async {
   if (deletePlace) {
     await clearPlacePref(unit.id);
   }
@@ -22,7 +27,18 @@ Future<int?> selectUnitAndGoToMenuScreen(BuildContext context, GeoUnit unit,
 
   Cart? cart = await getIt<CartRepository>().getCurrentCart(unit.id);
   log.d('selectUnitAndGoToMenuScreen().cart=${cart?.id}');
-  log.d('selectUnitAndGoToMenuScreen().servingMode=${cart?.servingMode}');
+  log.d('selectUnitAndGoToMenuScreen().cart.servingMode=${cart?.servingMode}');
+  log.d('selectUnitAndGoToMenuScreen().currentServingMode=$currentServingMode');
+
+  if (!showSelectServingMode) {
+    _selectServingModeAndGo(
+      cart,
+      currentServingMode,
+      unit,
+      deletePlace: deletePlace,
+    );
+    return null;
+  }
 
   if (unit.supportedServingModes.length == 1) {
     _selectServingModeAndGo(
@@ -74,7 +90,7 @@ void _selectServingModeAndGo(
   bool deletePlace = false,
   bool cartDeleted = false,
 }) async {
-  // log.d('_selectServingModeAndGo().cart=${cart?.id}');
+  log.d('_selectServingModeAndGo().cart=${cart?.id}, servingMode=$servingMode');
   if (cart != null) {
     getIt<CartBloc>().add(SetCartServingMode(unit.id, servingMode));
     if (deletePlace == true) {

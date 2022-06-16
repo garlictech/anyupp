@@ -23,8 +23,9 @@ class AllergenGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      direction: Axis.vertical,
       children: [
         SvgPicture.asset(
           assetPath,

@@ -92,12 +92,24 @@ query getUnitsNearLocation($lat: Float!, $lng: Float!) {
       }
       soldOutVisibilityPolicy
       unit {
+        canCallWaiter
         packagingTaxPercentage
         canRequestVatInvoice
         adBannersEnabled
         adBanners {
           imageUrl
         }
+        coverBannersEnabled
+        coverBanners {
+          imageUrl
+        }
+        description {
+          de
+          en
+          hu
+        }
+        phone
+        email
       }
     }
   }

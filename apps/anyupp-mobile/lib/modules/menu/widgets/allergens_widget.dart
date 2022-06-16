@@ -30,7 +30,7 @@ class AllergensWidget extends StatelessWidget {
       String name = enumToString(allergen) ?? '';
       allergenGrids.add(
         Container(
-          // height: size,
+          height: size,
           // width: size,
           padding: EdgeInsets.only(
               top: 8.0,

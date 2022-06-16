@@ -27,37 +27,52 @@ class ImageWidget extends StatelessWidget {
     }
 
     final bool isS3Image = !url!.startsWith('http');
-    // log.d('ImageWidget.isS3=$isS3Image, image=$url');
+    final bool isAssets = url!.startsWith('assets');
 
     final bool isSvg = url!.toLowerCase().endsWith('.svg');
-    return isS3Image
-        ? S3ImageWidget(
-            bucketImageKey: url!,
-            fit: fit,
-            width: width,
-            height: height,
-            placeholder: placeholder,
-            errorWidget: errorWidget,
-          )
-        : isSvg
-            ? SvgPicture.network(
+    return isAssets
+        ? isSvg
+            ? SvgPicture.asset(
                 url!,
-                fit: fit,
                 width: width,
                 height: height,
-                placeholderBuilder:
-                    placeholder != null ? (context) => placeholder! : null,
+                fit: fit,
               )
-            : CachedNetworkImage(
-                imageUrl: url!,
-                placeholder:
-                    placeholder != null ? (context, url) => placeholder! : null,
-                errorWidget: errorWidget != null
-                    ? (context, url, error) => errorWidget!
-                    : null,
+            : Image.asset(
+                url!,
+                width: width,
+                height: height,
+                fit: fit,
+              )
+        : isS3Image
+            ? S3ImageWidget(
+                bucketImageKey: url!,
                 fit: fit,
                 width: width,
                 height: height,
-              );
+                placeholder: placeholder,
+                errorWidget: errorWidget,
+              )
+            : isSvg
+                ? SvgPicture.network(
+                    url!,
+                    fit: fit,
+                    width: width,
+                    height: height,
+                    placeholderBuilder:
+                        placeholder != null ? (context) => placeholder! : null,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: url!,
+                    placeholder: placeholder != null
+                        ? (context, url) => placeholder!
+                        : null,
+                    errorWidget: errorWidget != null
+                        ? (context, url, error) => errorWidget!
+                        : null,
+                    fit: fit,
+                    width: width,
+                    height: height,
+                  );
   }
 }

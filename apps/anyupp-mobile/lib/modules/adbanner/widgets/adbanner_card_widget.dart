@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fa_prev/core/theme/theme.dart';
 
 class AdBannerCardWidget extends StatefulWidget {
-  final AdBanner banner;
+  final ImageAsset banner;
   final double? height;
   final VoidCallback? onClosed;
   final bool animated;

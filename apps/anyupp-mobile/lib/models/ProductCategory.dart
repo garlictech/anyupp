@@ -3,7 +3,8 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 class ProductCategory {
-  final String? id;
+  final String id;
+  final String? parentId;
   final String chainId;
   final LocalizedItem name;
   final LocalizedItem? description;
@@ -11,9 +12,10 @@ class ProductCategory {
   final int position;
 
   ProductCategory({
-    this.id,
+    required this.id,
     required this.chainId,
     required this.name,
+    this.parentId,
     this.description,
     this.image,
     required this.position,
@@ -22,6 +24,7 @@ class ProductCategory {
   ProductCategory copyWith({
     String? id,
     String? chainId,
+    String? parentId,
     LocalizedItem? name,
     LocalizedItem? description,
     String? image,
@@ -30,6 +33,7 @@ class ProductCategory {
     return ProductCategory(
       id: id ?? this.id,
       chainId: chainId ?? this.chainId,
+      parentId: parentId ?? this.parentId,
       name: name ?? this.name,
       description: description ?? this.description,
       image: image ?? this.image,
@@ -41,6 +45,7 @@ class ProductCategory {
     return {
       'id': id,
       'chainId': chainId,
+      'parentId': parentId,
       'name': name.toJson(),
       'description': description?.toJson(),
       'image': image,
@@ -52,8 +57,11 @@ class ProductCategory {
     return ProductCategory(
       id: map['id'],
       chainId: map['chainId'],
+      parentId: map['parentId'],
       name: LocalizedItem.fromJson(map['name']),
-      description: map['description'] != null ? LocalizedItem.fromJson(map['description']) : null,
+      description: map['description'] != null
+          ? LocalizedItem.fromJson(map['description'])
+          : null,
       image: map['image'],
       position: map['position'],
     );
@@ -61,7 +69,7 @@ class ProductCategory {
 
   @override
   String toString() {
-    return 'ProductCategory(id: $id, chainId: $chainId, name: $name, description: $description, image: $image, position: $position)';
+    return 'ProductCategory(id: $id, parent: $id, chainId: $chainId, name: $name, description: $description, image: $image, position: $position)';
   }
 
   @override
@@ -71,6 +79,7 @@ class ProductCategory {
     return other is ProductCategory &&
         other.id == id &&
         other.chainId == chainId &&
+        other.parentId == parentId &&
         other.name == name &&
         other.description == description &&
         other.image == image &&
@@ -79,6 +88,12 @@ class ProductCategory {
 
   @override
   int get hashCode {
-    return id.hashCode ^ chainId.hashCode ^ name.hashCode ^ description.hashCode ^ image.hashCode ^ position.hashCode;
+    return id.hashCode ^
+        chainId.hashCode ^
+        parentId.hashCode ^
+        name.hashCode ^
+        description.hashCode ^
+        image.hashCode ^
+        position.hashCode;
   }
 }

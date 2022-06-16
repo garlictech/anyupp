@@ -7,7 +7,8 @@
     "select": "Kiválaszt",
     "ok": "OK",
     "today": "Ma",
-    "ok2": "RENDBEN"
+    "ok2": "RENDBEN",
+    "exit": "Nyomd meg még egyszer a vissza gombot a kilépéshez..."
   },
   "locale": {
     "EN": "Angol",
@@ -465,9 +466,11 @@
   "selectUnit": {
     "welcome": "Üdvözlünk {{0}}!",
     "unknown": "Ismeretlen",
+    "noUnitImage": "Feltöltés alatt",
+    "you": "Itt vagy!",
     "findNearest": "Találj egy közeli helyet!",
     "checkAllOnMap": "Térkép használata",
-    "scanQR": "Kattints ide és olvasd be a QR kódot az asztalodról!",
+    "scanQR": "Csatlakozás asztalhoz",
     "qrConnected": "Helyválasztás",
     "chair": "szék #{{1}} asztalszám #{{0}}",
     "table": "Asztalszám #{{0}}",
@@ -510,7 +513,10 @@
       "friday": "péntek",
       "saturday": "szombat",
       "sunday": "vasárnap"
-    }
+    },
+    "close": "Zárás",
+    "distance": "távolságra",
+    "discount": "kedvezmény"
   },
   "qrScan": {
     "loading": "QR kód adatainak betöltése...",
@@ -602,6 +608,14 @@
       "save": "PROFIL MENTÉSE"
     }
   },
+  "home": {
+    "menu": {
+      "discover": "Felfedezés",
+      "map": "Térkép",
+      "orders": "Rendelések",
+      "profile": "Profil"
+    }
+  },
   "product": {
     "notTakeAway": "Csak helyben",
     "notTakeAwayDesc": "A termék csak helyben fogyasztásra elérhető.",
@@ -611,6 +625,10 @@
     "soldOutDesc": "A termék sajnos elfogyott",
     "size": "Méret:",
     "selectSize": "Válassz méretet"
+  },
+  "unitinfo": {
+    "infoButton": "További információk",
+    "title": "RÉSZLETEK"
   },
   "validators": {
     "required": "Ezt a mezőt kötelező kitöltened",

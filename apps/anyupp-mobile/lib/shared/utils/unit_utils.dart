@@ -12,6 +12,14 @@ GeoUnit? get currentUnit {
   return null;
 }
 
+ServingMode get currentServingMode {
+  var state = getIt<TakeAwayBloc>().state;
+  if (state is ServingModeSelectedState) {
+    return state.servingMode;
+  }
+  return ServingMode.inPlace;
+}
+
 Cart? get currentCart => getIt.get<CartRepository>().cart;
 
 double get serviceFeeMul =>

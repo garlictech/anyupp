@@ -1,17 +1,16 @@
 import 'package:flutter/foundation.dart';
 
 @immutable
-class AdBanner {
+class ImageAsset {
   final String imageUrl;
-
-  AdBanner({
+  ImageAsset({
     required this.imageUrl,
   });
 
-  AdBanner copyWith({
+  ImageAsset copyWith({
     String? imageUrl,
   }) {
-    return AdBanner(
+    return ImageAsset(
       imageUrl: imageUrl ?? this.imageUrl,
     );
   }
@@ -22,20 +21,20 @@ class AdBanner {
     };
   }
 
-  factory AdBanner.fromJson(Map<String, dynamic> map) {
-    return AdBanner(
+  factory ImageAsset.fromJson(Map<String, dynamic> map) {
+    return ImageAsset(
       imageUrl: map['imageUrl'] ?? '',
     );
   }
 
   @override
-  String toString() => 'AdBanner(imageUrl: $imageUrl)';
+  String toString() => 'ImageAsset(imageUrl: $imageUrl)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is AdBanner && other.imageUrl == imageUrl;
+    return other is ImageAsset && other.imageUrl == imageUrl;
   }
 
   @override

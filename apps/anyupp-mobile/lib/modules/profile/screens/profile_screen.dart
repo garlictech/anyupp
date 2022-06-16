@@ -8,6 +8,7 @@ import 'package:fa_prev/modules/transactions/screens/transactions_screen.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -33,6 +34,7 @@ class Profile extends StatelessWidget {
   }
 
   Widget buildMain(BuildContext context, User user) {
+    bool canOrder = currentUnit?.canOrder ?? true;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -119,20 +121,22 @@ class Profile extends StatelessWidget {
                       profile: user,
                     )),
                   ),
-                  ProfileListItemWidget(
-                    icon: Icons.shopping_bag,
-                    titleKey: 'profile.menu.transactions',
-                    border: ProfileBorder.NONE,
-                    separator: true,
-                    onTap: () => Nav.to(TransactionsScreen()),
-                  ),
-                  ProfileListItemWidget(
-                    icon: Icons.credit_card,
-                    titleKey: 'profile.menu.paymentMethods',
-                    border: ProfileBorder.NONE,
-                    separator: true,
-                    onTap: () => Nav.to(StripePaymentMethodsScreen()),
-                  ),
+                  if (canOrder)
+                    ProfileListItemWidget(
+                      icon: Icons.shopping_bag,
+                      titleKey: 'profile.menu.transactions',
+                      border: ProfileBorder.NONE,
+                      separator: true,
+                      onTap: () => Nav.to(TransactionsScreen()),
+                    ),
+                  if (canOrder)
+                    ProfileListItemWidget(
+                      icon: Icons.credit_card,
+                      titleKey: 'profile.menu.paymentMethods',
+                      border: ProfileBorder.NONE,
+                      separator: true,
+                      onTap: () => Nav.to(StripePaymentMethodsScreen()),
+                    ),
                   ProfileListItemWidget(
                     icon: Icons.no_food,
                     titleKey: 'profile.menu.allergens',

@@ -1,5 +1,6 @@
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';
@@ -45,7 +46,9 @@ class _OnBoardingState extends State<OnBoarding> {
                     return afterLoginWidget;
                   }
 
-                  return SelectUnitChooseMethodScreen();
+                  // return SelectUnitChooseMethodScreen();
+                  // return SelectUnitScreen();
+                  return HomeScreen();
                 } else {
                   // Not authenticated
                   return LoginScreen();

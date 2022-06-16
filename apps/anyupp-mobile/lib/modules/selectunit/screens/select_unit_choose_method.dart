@@ -186,7 +186,7 @@ class _SelectUnitMainContentWidgetState
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
-                  onPressed: () => Nav.to(SelectUnitByLocationScreen()),
+                  onPressed: () => Nav.to(SelectUnitMapScreen()),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

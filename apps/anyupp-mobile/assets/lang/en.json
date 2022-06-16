@@ -7,7 +7,8 @@
     "select": "Select",
     "ok": "OK",
     "today": "Today",
-    "ok2": "OK"
+    "ok2": "OK",
+    "exit": "Tap back again to exit app."
   },
   "locale": {
     "EN": "English",
@@ -461,6 +462,8 @@
   "selectUnit": {
     "welcome": "Welcome {{0}}!",
     "unknown": "Unknown",
+    "noUnitImage": "Uploading soon",
+    "you": "You are here!",
     "findNearest": "Find the nearest places",
     "checkAllOnMap": "Check them all on the map",
     "scanQR": "Click & scan your table to order",
@@ -506,7 +509,10 @@
       "friday": "friday",
       "saturday": "saturday",
       "sunday": "sunday"
-    }
+    },
+    "close": "close",
+    "distance": "distant",
+    "discount": "discount"
   },
   "qrScan": {
     "loading": "Loading QR code information...",
@@ -598,6 +604,14 @@
       "save": "Save profile"
     }
   },
+  "home": {
+    "menu": {
+      "discover": "Discover",
+      "map": "Map",
+      "orders": "Orders",
+      "profile": "Profile"
+    }
+  },
   "product": {
     "notTakeAway": "Only in place",
     "notTakeAwayDesc": "This product is only available for local consumption.",
@@ -607,6 +621,10 @@
     "soldOutDesc": "Unfortunatley, this product is sold out.",
     "size": "Size:",
     "selectSize": "Choose a size"
+  },
+  "unitinfo": {
+    "infoButton": "Information",
+    "title": "DETAILS"
   },
   "validators": {
     "required": "Required",

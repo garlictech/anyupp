@@ -14,12 +14,12 @@ class LocationRepository {
           "***** LocationRepository.getUserCurrentLocation.start().isLocationEnabled=$isLocationEnabled");
       if (isLocationEnabled) {
         try {
-          // Position? lastPosition = await Geolocator.getLastKnownPosition();
-          // log.d(
-          //     "***** location.getCurrentPosition().lastPosition=$lastPosition");
-          // if (_isLastLocationIsValid(lastPosition)) {
-          //   return LatLng(lastPosition!.latitude, lastPosition.longitude);
-          // }
+          Position? lastPosition = await Geolocator.getLastKnownPosition();
+          log.d(
+              "***** location.getCurrentPosition().lastPosition=$lastPosition");
+          if (_isLastLocationIsValid(lastPosition)) {
+            return LatLng(lastPosition!.latitude, lastPosition.longitude);
+          }
 
           Position position = await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.low,

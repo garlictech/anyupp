@@ -8,13 +8,20 @@ class BottomBarItem extends StatelessWidget {
   final bool selected;
   final String? badge;
   final VoidCallback? onTapped;
+  final Color? badgeColor;
+  final Color? selectedColor;
+  final Color? unselectedColor;
 
-  const BottomBarItem(
-      {required this.text,
-      required this.icon,
-      this.selected = false,
-      this.badge,
-      this.onTapped});
+  const BottomBarItem({
+    required this.text,
+    required this.icon,
+    this.selected = false,
+    this.badge,
+    this.onTapped,
+    this.badgeColor,
+    this.selectedColor,
+    this.unselectedColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,75 +42,67 @@ class BottomBarItem extends StatelessWidget {
                 width: 12.0,
                 height: 12.0,
               ),
-              // child: Text(
-              //   ' $badge ',
-              //   style: Fonts.satoshi(
-              //     fontSize: 14.0,
-              //     color: theme.secondary0,
-              //   ),
-              // ),
             ),
-            badgeColor: theme.secondary0, // theme.primary,
+            badgeColor: badgeColor ?? theme.secondary0, // theme.primary,
             child: _buildIconAndText(),
           )
         : _buildIconAndText();
   }
 
   Widget _buildIconAndText() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      decoration: selected
-          ? BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: theme.icon,
-                  width: 2.0,
+    return InkWell(
+      onTap: onTapped,
+      child: Container(
+        height: 66.0,
+        // padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        padding: const EdgeInsets.only(
+          bottom: 8.0,
+          left: 24.0,
+          right: 24.0,
+        ),
+        decoration: selected
+            ? BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: selectedColor ?? theme.icon,
+                    width: 2.0,
+                  ),
                 ),
-              ),
-            )
-          : BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: theme.secondary0,
-                  width: 2.0,
-                ),
+              )
+            : null,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 0.0),
+              child: Icon(
+                icon,
+                color: selected
+                    ? (selectedColor ?? theme.highlight)
+                    : (unselectedColor ?? theme.secondary64),
               ),
             ),
-      child: Stack(
-        children: [
-          Wrap(
-            direction: Axis.vertical,
-            alignment: WrapAlignment.spaceAround,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              selected
-                  ? Container(
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(10),
-                      //   color: theme.primary.withOpacity(0.2),
-                      // ),
-                      child: IconButton(
-                        icon: Icon(icon),
-                        color: theme.icon,
-                        onPressed: onTapped,
-                      ),
-                    )
-                  : IconButton(
-                      icon: Icon(icon),
-                      color: selected ? theme.highlight : theme.secondary64,
-                      onPressed: onTapped,
-                    ),
-              Text(
+            Padding(
+              padding: const EdgeInsets.only(top: 6.0),
+              child: Text(
                 text,
-                style: Fonts.satoshi(
-                  color: selected ? theme.icon : theme.secondary64,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.normal,
-                ),
+                style: selected
+                    ? Fonts.pP2Bold(
+                        color: selectedColor ?? theme.icon,
+                      )
+                    : Fonts.pP2(
+                        color: unselectedColor ?? theme.secondary64,
+                      ),
               ),
-            ],
-          ),
-        ],
+            ),
+            // if (selected)
+            //   SizedBox(
+            //     height: 3,
+            //   ),
+          ],
+        ),
       ),
     );
   }

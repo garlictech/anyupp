@@ -13,11 +13,12 @@ class UnitsLoading extends UnitsState {}
 
 class UnitsLoaded extends UnitsState {
   final List<GeoUnit> units;
+  final LatLng? userLocation;
 
-  const UnitsLoaded([this.units = const []]);
+  const UnitsLoaded({required this.units, this.userLocation});
 
   @override
-  List<Object?> get props => [units];
+  List<Object?> get props => [units, userLocation];
 }
 
 class UnitsNoNearUnit extends UnitsState {}

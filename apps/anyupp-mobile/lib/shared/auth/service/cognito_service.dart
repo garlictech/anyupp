@@ -34,9 +34,13 @@ class CognitoService {
   }
 
   Future<CognitoUser?> get currentUser async {
-    _cognitoUser = await _userPool.getCurrentUser();
-    _userSession = await _cognitoUser?.getSession();
-
+    try {
+      _cognitoUser = await _userPool.getCurrentUser();
+      _userSession = await _cognitoUser?.getSession();
+    } on Exception catch (e) {
+      log.e('getCurrentUser().exception=$e');
+      return null;
+    }
     return _cognitoUser;
   }
 

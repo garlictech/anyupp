@@ -1,0 +1,74 @@
+query ListAllProducts($unitId: ID!, $nextToken: String, $limit: Int) {
+  searchGeneratedProducts(
+    filter: { unitId: { eq: $unitId } }
+    nextToken: $nextToken
+    limit: $limit
+  ) {
+    total
+    nextToken
+    items {
+      id
+      unitId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      image
+      position
+      productCategoryId
+      productType
+      tax
+      allergens
+      variants {
+        id
+        position
+        price
+        pack {
+          size
+          unit
+        }
+        variantName {
+          de
+          en
+          hu
+        }
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        position
+        type
+        name {
+          de
+          en
+          hu
+        }
+        maxSelection
+        supportedServingModes
+        items {
+          allergens
+          name {
+            de
+            en
+            hu
+          }
+          position
+          price
+          netPackagingFee
+          productComponentId
+          soldOut
+          externalId
+        }
+      }
+      supportedServingModes
+      soldOut
+    }
+  }
+}
