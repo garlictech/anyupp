@@ -3,7 +3,7 @@ set -e
 
 ENVNAME=$1
 
-excludes="--exclude=anyupp-mobile"
+excludes="--exclude=anyupp-mobile,apps-admin"
 
 rm -rf /tmp/nx
 ./tools/build-workspace.sh ${ENVNAME} ${CI}
