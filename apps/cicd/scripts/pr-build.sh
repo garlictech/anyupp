@@ -7,8 +7,6 @@ excludes="--exclude=anyupp-mobile"
 
 rm -rf /tmp/nx
 ./tools/build-workspace.sh ${ENVNAME} ${CI}
-yarn nx synth anyupp-backend --env=${ENVNAME}
-yarn nx synth common-backend --env=dev
 yarn nx format:check --affected
 yarn nx affected:lint --base=dev ${excludes} --skip-nx-cache
 yarn nx affected:test --base=dev ${excludes} \
