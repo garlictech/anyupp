@@ -63,7 +63,7 @@ export class DevPullRequestBuildStack extends sst.Stack {
         }),
         environment: {
           buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
-          computeType: codebuild.ComputeType.MEDIUM,
+          computeType: codebuild.ComputeType.LARGE,
           privileged: true,
         },
       },
