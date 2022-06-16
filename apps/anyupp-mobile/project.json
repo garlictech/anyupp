@@ -2,7 +2,7 @@
   "projectType": "application",
   "root": "apps/anyupp-mobile",
   "sourceRoot": "apps/anyupp-mobile/lib",
-  "implicitDependencies": ["anyupp-schema"],
+  "implicitDependencies": ["crud-backend"],
   "targets": {
     "lint": {
       "executor": "@nrwl/workspace:run-commands",
@@ -32,6 +32,12 @@
         "command": "../../tools/build-schema-mobile-api.sh {args.env} {args.mode}",
         "cwd": "apps/crud-backend"
       },
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "build"
+        }
+      ],
       "outputs": [
         "apps/anyupp-mobile/graphql/crud-api-schema.graphql",
         "apps/anyupp-mobile/lib/awsconfiguration.dart",
